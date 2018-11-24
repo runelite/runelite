@@ -92,7 +92,7 @@ public class IdleNotifierPlugin extends Plugin
 	private int lastCombatCountdown = 0;
 	private Instant sixHourWarningTime;
 	private boolean ready;
-	private Instant lastInteractingFishing;
+	private boolean lastInteractWasCombat;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -265,12 +265,15 @@ public class IdleNotifierPlugin extends Plugin
 			resetTimers();
 			lastInteract = target;
 			lastInteracting = Instant.now();
+			lastInteractWasCombat = true;
 		}
-
-		if (target.getName() != null && target.getName().contains(FISHING_SPOT))
+		else if (target.getName() != null && target.getName().contains(FISHING_SPOT))
 		{
+			// Player is fishing
 			resetTimers();
-			lastInteractingFishing = Instant.now();
+			lastInteract = target;
+			lastInteracting = Instant.now();
+			lastInteractWasCombat = false;
 		}
 	}
 
@@ -352,9 +355,16 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("[" + local.getName() + "] is now idle!");
 		}
 
-		if (config.combatIdle() && checkOutOfCombat(waitDuration, local))
+		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))
 		{
-			notifier.notify("[" + local.getName() + "] is now out of combat!");
+			if (lastInteractWasCombat)
+			{
+				notifier.notify("[" + local.getName() + "] is now out of combat!");
+			}
+			else
+			{
+				notifier.notify("[" + local.getName() + "] is now idle!");
+			}
 		}
 
 		if (checkLowHitpoints())
@@ -370,11 +380,6 @@ public class IdleNotifierPlugin extends Plugin
 		if (checkLowOxygen())
 		{
 			notifier.notify("[" + local.getName() + "] has low oxygen!");
-		}
-
-		if (config.fishingIdle() && checkFishingIdle(waitDuration, local))
-		{
-			notifier.notify("[" + local.getName() + "] has stopped fishing!");
 		}
 	}
 
@@ -449,7 +454,7 @@ public class IdleNotifierPlugin extends Plugin
 		return false;
 	}
 
-	private boolean checkOutOfCombat(Duration waitDuration, Player local)
+	private boolean checkInteractionIdle(Duration waitDuration, Player local)
 	{
 		if (lastInteract == null)
 		{
@@ -564,33 +569,6 @@ public class IdleNotifierPlugin extends Plugin
 		return false;
 	}
 
-	private boolean checkFishingIdle(Duration waitDuration, Player local)
-	{
-		if (lastInteractingFishing == null)
-		{
-			return false;
-		}
-
-		final Actor actor = local.getInteracting();
-
-		if (actor == null)
-		{
-			if (lastInteractingFishing != null
-				&& Instant.now().compareTo(lastInteractingFishing.plus(waitDuration)) >= 0)
-			{
-				lastInteractingFishing = null;
-				return true;
-			}
-		}
-		else
-		{
-			lastInteractingFishing = Instant.now();
-		}
-
-		return false;
-
-	}
-
 	private void resetTimers()
 	{
 		final Player local = client.getLocalPlayer();
@@ -602,21 +580,11 @@ public class IdleNotifierPlugin extends Plugin
 			lastAnimation = IDLE;
 		}
 
-		// Reset combat idle timer
+		// Reset interaction idle timer
 		lastInteracting = null;
 		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
 		{
 			lastInteract = null;
-		}
-
-		// Reset fishing idle timer
-		if (client.getGameState() == GameState.LOGIN_SCREEN
-			|| local == null
-			|| local.getInteracting() == null
-			|| local.getInteracting().getName() == null
-			|| !local.getInteracting().getName().contains(FISHING_SPOT))
-		{
-			lastInteractingFishing = null;
 		}
 	}
 }
