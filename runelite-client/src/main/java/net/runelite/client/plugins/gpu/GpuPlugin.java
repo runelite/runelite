@@ -376,17 +376,20 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				shutdownProgram();
 				shutdownVao();
 				shutdownStretchedFbo();
+			}
 
+			if (jawtWindow != null)
+			{
 				if (!jawtWindow.getLock().isLocked())
 				{
 					jawtWindow.lockSurface();
 				}
 
-				glContext.destroy();
-			}
+				if (glContext != null)
+				{
+					glContext.destroy();
+				}
 
-			if (jawtWindow != null)
-			{
 				NewtFactoryAWT.destroyNativeWindow(jawtWindow);
 			}
 
