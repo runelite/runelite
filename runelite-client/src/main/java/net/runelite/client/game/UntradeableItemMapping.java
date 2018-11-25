@@ -29,7 +29,7 @@ import lombok.Getter;
 import net.runelite.api.ItemID;
 
 @Getter
-public enum UntradeableItemSellPrice
+public enum UntradeableItemMapping
 {
 	MARK_OF_GRACE(ItemID.MARK_OF_GRACE, 10, ItemID.AMYLASE_CRYSTAL),
 	GRACEFUL_HOOD(ItemID.GRACEFUL_HOOD, 28, ItemID.MARK_OF_GRACE),
@@ -50,25 +50,25 @@ public enum UntradeableItemSellPrice
 	private final int quantity;
 	private final int priceID;
 
-	private static final ImmutableMap<Integer, UntradeableItemSellPrice> UNTRADEABLE_RECLAIM_MAP;
+	private static final ImmutableMap<Integer, UntradeableItemMapping> UNTRADEABLE_RECLAIM_MAP;
 	static
 	{
-		ImmutableMap.Builder<Integer, UntradeableItemSellPrice> map = ImmutableMap.builder();
-		for (UntradeableItemSellPrice p : values())
+		ImmutableMap.Builder<Integer, UntradeableItemMapping> map = ImmutableMap.builder();
+		for (UntradeableItemMapping p : values())
 		{
 			map.put(p.getItemID(), p);
 		}
 		UNTRADEABLE_RECLAIM_MAP = map.build();
 	}
 
-	UntradeableItemSellPrice(int itemID, int quantity, int priceID)
+	UntradeableItemMapping(int itemID, int quantity, int priceID)
 	{
 		this.itemID = itemID;
 		this.quantity = quantity;
 		this.priceID = priceID;
 	}
 
-	public static UntradeableItemSellPrice map(int itemId)
+	public static UntradeableItemMapping map(int itemId)
 	{
 		return UNTRADEABLE_RECLAIM_MAP.get(itemId);
 	}
