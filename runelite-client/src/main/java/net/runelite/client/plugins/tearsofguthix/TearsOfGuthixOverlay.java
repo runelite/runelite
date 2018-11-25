@@ -38,6 +38,7 @@ import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 class TearsOfGuthixOverlay extends Overlay
 {
 	private static final Color CYAN_ALPHA = new Color(Color.CYAN.getRed(), Color.CYAN.getGreen(), Color.CYAN.getBlue(), 100);
+	private static final Color GREEN_ALPHA = new Color(Color.GREEN.getRed(), Color.GREEN.getGreen(), Color.GREEN.getBlue(), 100);
 	private static final Duration MAX_TIME = Duration.ofSeconds(9);
 	private final TearsOfGuthixPlugin plugin;
 
@@ -54,18 +55,36 @@ class TearsOfGuthixOverlay extends Overlay
 	{
 		plugin.getStreams().forEach((object, timer) ->
 		{
-			final ProgressPieComponent progressPie = new ProgressPieComponent();
-			progressPie.setDiameter(15);
-			progressPie.setFill(CYAN_ALPHA);
-			progressPie.setBorderColor(Color.CYAN);
-			progressPie.setPosition(object.getCanvasLocation(100));
+			if (object.getId() == 6661 || object.getId() == 6665)
+			{
+				final ProgressPieComponent progressPie = new ProgressPieComponent();
+				progressPie.setDiameter(15);
+				progressPie.setFill(CYAN_ALPHA);
+				progressPie.setBorderColor(Color.CYAN);
+				progressPie.setPosition(object.getCanvasLocation(100));
 
-			final Duration duration = Duration.between(timer, Instant.now());
-			progressPie.setProgress(1 - (duration.compareTo(MAX_TIME) < 0
-				? (double) duration.toMillis() / MAX_TIME.toMillis()
-				: 1));
+				final Duration duration = Duration.between(timer, Instant.now());
+				progressPie.setProgress(1 - (duration.compareTo(MAX_TIME) < 0
+					? (double) duration.toMillis() / MAX_TIME.toMillis()
+					: 1));
 
-			progressPie.render(graphics);
+				progressPie.render(graphics);
+			}
+
+			if (object.getId() == 6662 || object.getId() == 6666) {
+				final ProgressPieComponent progressPie = new ProgressPieComponent();
+				progressPie.setDiameter(15);
+				progressPie.setFill(GREEN_ALPHA);
+				progressPie.setBorderColor(Color.GREEN);
+				progressPie.setPosition(object.getCanvasLocation(100));
+
+				final Duration duration = Duration.between(timer, Instant.now());
+				progressPie.setProgress(1 - (duration.compareTo(MAX_TIME) < 0
+					? (double) duration.toMillis() / MAX_TIME.toMillis()
+					: 1));
+
+				progressPie.render(graphics);
+			}
 		});
 
 		return null;
