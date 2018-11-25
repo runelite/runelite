@@ -26,12 +26,16 @@ package net.runelite.client.plugins.experiencedrop;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+
 import java.util.Arrays;
-import java.util.stream.IntStream;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -59,6 +63,78 @@ public class XpDropPlugin extends Plugin
 	XpDropConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(XpDropConfig.class);
+	}
+
+	private int hitpointsXp = -1;
+	private int magicXp = -1;
+	private int rangedXp = -1;
+	private int attackXp = -1;
+	private int strengthXp = -1;
+	private int defenseXp = -1;
+
+	private SkillAmountPrayer hpDrop = null;
+	private SkillAmountPrayer magicDrop = null;
+	private SkillAmountPrayer rangedDrop = null;
+	private SkillAmountPrayer attackDrop = null;
+	private SkillAmountPrayer strengthDrop = null;
+	private SkillAmountPrayer defenseDrop = null;
+
+	@Subscribe
+	public void onExperienceChanged(ExperienceChanged event)
+	{
+		final Skill skill = event.getSkill();
+		final int currentXp = client.getSkillExperience(skill);
+		switch (skill)
+		{
+			case HITPOINTS:
+				if (hitpointsXp != -1)
+				{
+					final int delta = currentXp - hitpointsXp;
+					hpDrop = new SkillAmountPrayer(Skill.HITPOINTS, delta, getActivePrayerType());
+				}
+				hitpointsXp = currentXp;
+				break;
+			case MAGIC:
+				if (magicXp != -1)
+				{
+					final int delta = currentXp - magicXp;
+					magicDrop = new SkillAmountPrayer(Skill.MAGIC, delta, getActivePrayerType());
+				}
+				magicXp = currentXp;
+				break;
+			case RANGED:
+				if (rangedXp != -1)
+				{
+					final int delta = currentXp - rangedXp;
+					rangedDrop = new SkillAmountPrayer(Skill.RANGED, delta, getActivePrayerType());
+				}
+				rangedXp = currentXp;
+				break;
+			case ATTACK:
+				if (attackXp != -1)
+				{
+					final int delta = currentXp - attackXp;
+					attackDrop = new SkillAmountPrayer(Skill.ATTACK, delta, getActivePrayerType());
+				}
+				attackXp = currentXp;
+				break;
+			case STRENGTH:
+				if (strengthXp != -1)
+				{
+					final int delta = currentXp - strengthXp;
+					strengthDrop = new SkillAmountPrayer(Skill.STRENGTH, delta, getActivePrayerType());
+				}
+				strengthXp = currentXp;
+				break;
+			case DEFENCE:
+				if (defenseXp != -1)
+				{
+					final int delta = currentXp - defenseXp;
+					defenseDrop = new SkillAmountPrayer(Skill.DEFENCE, delta, getActivePrayerType());
+				}
+				defenseXp = currentXp;
+				break;
+		}
 	}
 
 	@Subscribe
@@ -121,44 +197,61 @@ public class XpDropPlugin extends Plugin
 			}
 		}
 
-		PrayerType prayer = getActivePrayerType();
-		if (prayer == null)
-		{
-			resetTextColor(widget);
-			return;
-		}
-
 		String text = widget.getText();
-		final IntStream spriteIDs =
-			Arrays.stream(widget.getParent().getDynamicChildren()).mapToInt(Widget::getSpriteId);
+		final Set<Integer> spriteIDs = Arrays.stream(widget.getParent()
+			.getDynamicChildren()).map(Widget::getSpriteId).collect(Collectors.toSet());
 
 		if (text != null)
 		{
-			int color = widget.getTextColor();
+			int defaultColorIdx = client.getVar(Varbits.EXPERIENCE_DROP_COLOR);
+			int color = DefaultColors.values()[defaultColorIdx].getColor().getRGB();
 
-			switch (prayer)
+			if (spriteIDs.contains(SpriteID.SKILL_RANGED))
 			{
-				case MELEE:
-					if (spriteIDs.anyMatch(id ->
-							id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE
-								|| id == SpriteID.SKILL_HITPOINTS))
+				if (rangedDrop != null && rangedDrop.getPrayerType() == PrayerType.RANGE)
+				{
+					color = config.getRangePrayerColor().getRGB();
+				}
+			}
+			else if (spriteIDs.contains(SpriteID.SKILL_MAGIC))
+			{
+				if (magicDrop != null && magicDrop.getPrayerType() == PrayerType.MAGIC)
+				{
+					color = config.getMagePrayerColor().getRGB();
+				}
+			}
+			else if (spriteIDs.contains(SpriteID.SKILL_ATTACK) || spriteIDs.contains(SpriteID.SKILL_STRENGTH)
+				|| spriteIDs.contains(SpriteID.SKILL_DEFENCE))
+			{
+				if (attackDrop != null && attackDrop.getPrayerType() == PrayerType.MELEE)
+				{
+					color = config.getMeleePrayerColor().getRGB();
+				}
+				if (strengthDrop != null && strengthDrop.getPrayerType() == PrayerType.MELEE)
+				{
+					color = config.getMeleePrayerColor().getRGB();
+				}
+				if (defenseDrop != null && defenseDrop.getPrayerType() == PrayerType.MELEE)
+				{
+					color = config.getMeleePrayerColor().getRGB();
+				}
+			}
+			if (spriteIDs.contains(SpriteID.SKILL_HITPOINTS))
+			{
+				if (hpDrop != null && hpDrop.getPrayerType() != null)
+				{
+					switch (hpDrop.getPrayerType())
 					{
-						color = config.getMeleePrayerColor().getRGB();
+						case MELEE:
+							color = config.getMeleePrayerColor().getRGB();
+							break;
+						case MAGIC:
+							color = config.getMagePrayerColor().getRGB();
+							break;
+						case RANGE:
+							color = config.getRangePrayerColor().getRGB();
 					}
-					break;
-
-				case RANGE:
-					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_RANGED || id == SpriteID.SKILL_HITPOINTS))
-					{
-						color = config.getRangePrayerColor().getRGB();
-					}
-					break;
-				case MAGIC:
-					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_MAGIC || id == SpriteID.SKILL_HITPOINTS))
-					{
-						color = config.getMagePrayerColor().getRGB();
-					}
-					break;
+				}
 			}
 
 			widget.setTextColor(color);
