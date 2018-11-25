@@ -118,6 +118,8 @@ public class ClientUI
 	private final Provider<ClientThread> clientThreadProvider;
 	private final CardLayout cardLayout = new CardLayout();
 	private final Rectangle sidebarButtonPosition = new Rectangle();
+	private final Rectangle sidebarButtonRange = new Rectangle();
+	private boolean mouseInSidebarButtonRange = false;
 	private boolean withTitleBar;
 	private BufferedImage sidebarOpenIcon;
 	private BufferedImage sidebarClosedIcon;
@@ -368,6 +370,32 @@ public class ClientUI
 						mouseEvent.consume();
 					}
 
+					return mouseEvent;
+				}
+
+				@Override
+				public MouseEvent mouseMoved(MouseEvent mouseEvent)
+				{
+					if (!(ClientUI.this.client instanceof Client) || withTitleBar)
+					{
+						return mouseEvent;
+					}
+
+					if (sidebarButtonRange.contains(mouseEvent.getPoint()))
+					{
+						mouseInSidebarButtonRange = true;
+					}
+					else if (mouseInSidebarButtonRange)
+					{
+						mouseInSidebarButtonRange = false;
+
+						final Client client = (Client) ClientUI.this.client;
+						//Repaint of client canvas required to remove image artifact in black bars when on login screen with stretched enabled.
+						if (client.getGameState() == GameState.LOGIN_SCREEN)
+						{
+							client.getCanvas().repaint();
+						}
+					}
 					return mouseEvent;
 				}
 			};
@@ -630,11 +658,16 @@ public class ClientUI
 			: 5;
 
 		final BufferedImage image = sidebarOpen ? sidebarClosedIcon : sidebarOpenIcon;
-		graphics.drawImage(image, x, y, null);
+
+		if (mouseInSidebarButtonRange)
+		{
+			graphics.drawImage(image, x, y, null);
+		}
 
 		// Update button dimensions
 		sidebarButtonPosition.setBounds(x, y, image.getWidth(), image.getHeight());
-	}
+		sidebarButtonRange.setBounds(x - 15, 0, image.getWidth() + 5 + 15, client.getRealDimensions().height);
+}
 
 	public GraphicsConfiguration getGraphicsConfiguration()
 	{
