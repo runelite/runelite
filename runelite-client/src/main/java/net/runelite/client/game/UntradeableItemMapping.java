@@ -26,9 +26,11 @@ package net.runelite.client.game;
 
 import com.google.common.collect.ImmutableMap;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.runelite.api.ItemID;
 
 @Getter
+@RequiredArgsConstructor
 public enum UntradeableItemMapping
 {
 	MARK_OF_GRACE(ItemID.MARK_OF_GRACE, 10, ItemID.AMYLASE_CRYSTAL),
@@ -46,11 +48,12 @@ public enum UntradeableItemMapping
 	PROSPECTOR_LEGS(ItemID.PROSPECTOR_LEGS, 40, ItemID.GOLDEN_NUGGET),
 	PROSPECTOR_BOOTS(ItemID.PROSPECTOR_BOOTS, 24, ItemID.GOLDEN_NUGGET);
 
+	private static final ImmutableMap<Integer, UntradeableItemMapping> UNTRADEABLE_RECLAIM_MAP;
+
 	private final int itemID;
 	private final int quantity;
 	private final int priceID;
 
-	private static final ImmutableMap<Integer, UntradeableItemMapping> UNTRADEABLE_RECLAIM_MAP;
 	static
 	{
 		ImmutableMap.Builder<Integer, UntradeableItemMapping> map = ImmutableMap.builder();
@@ -59,13 +62,6 @@ public enum UntradeableItemMapping
 			map.put(p.getItemID(), p);
 		}
 		UNTRADEABLE_RECLAIM_MAP = map.build();
-	}
-
-	UntradeableItemMapping(int itemID, int quantity, int priceID)
-	{
-		this.itemID = itemID;
-		this.quantity = quantity;
-		this.priceID = priceID;
 	}
 
 	public static UntradeableItemMapping map(int itemId)
