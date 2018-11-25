@@ -27,9 +27,28 @@ package net.runelite.client.plugins.timers;
 
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.Player;
+import net.runelite.api.Prayer;
+import net.runelite.api.SkullIcon;
+import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
@@ -56,6 +75,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameIndicator.VENGEANCE_ACTIVE;
 import static net.runelite.client.plugins.timers.GameTimer.*;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
@@ -104,7 +124,9 @@ public class TimersPlugin extends Plugin
 	private WorldPoint lastPoint;
 	private TeleportWidget lastTeleportClicked;
 	private int lastAnimation;
+	private int lastRegionID;
 	private SkullIcon lastSkullIcon;
+	private boolean avariceLastTick = false;
 	private boolean loggedInRace;
 	private boolean widgetHiddenChangedOnPvpWorld;
 
@@ -138,6 +160,8 @@ public class TimersPlugin extends Plugin
 		lastTeleportClicked = null;
 		lastAnimation = -1;
 		lastSkullIcon = null;
+		lastRegionID = -1;
+		avariceLastTick = false;
 		loggedInRace = false;
 		widgetHiddenChangedOnPvpWorld = false;
 	}
@@ -517,6 +541,46 @@ public class TimersPlugin extends Plugin
 		Player player = client.getLocalPlayer();
 		WorldPoint currentWorldPoint = player.getWorldLocation();
 
+		SkullIcon currentSkullIcon = player.getSkullIcon();
+		int currentRegionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+		final int abyssRegionID = 12107;
+		Item[] equippedItems = client.getItemContainer(InventoryID.EQUIPMENT).getItems();
+		boolean avariceThisTick;
+
+		if (equippedItems[2].getId() == ItemID.AMULET_OF_AVARICE)
+		{
+			avariceThisTick = true;
+		}
+		else
+		{
+			avariceThisTick = false;
+		}
+
+		if (currentRegionID != lastRegionID && currentRegionID == abyssRegionID && currentSkullIcon == SkullIcon.SKULL)
+		{
+			createGameTimer(SKULL, Duration.of(10, ChronoUnit.MINUTES));
+		}
+		else if (avariceLastTick == false && avariceThisTick == true)
+		{
+			removeGameTimer(SKULL);
+		}
+		else if (avariceLastTick == true && avariceThisTick == false)
+		{
+			createGameTimer(SKULL);
+		}
+		else if (lastSkullIcon == null && currentSkullIcon == SkullIcon.SKULL)
+		{
+			createGameTimer(SKULL);
+		}
+		else if (currentSkullIcon == null && lastSkullIcon == SkullIcon.SKULL)
+		{
+			removeGameTimer(SKULL);
+		}
+
+		avariceLastTick = avariceThisTick;
+		lastSkullIcon = currentSkullIcon;
+		lastRegionID = currentRegionID;
+
 		if (freezeTimer != null)
 		{
 			// assume movement means unfrozen
@@ -544,19 +608,6 @@ public class TimersPlugin extends Plugin
 			log.debug("Entered safe zone in PVP world, clearing Teleblock timer.");
 			removeTbTimers();
 		}
-
-		SkullIcon currentSkullIcon = player.getSkullIcon();
-
-		if (lastSkullIcon == null && currentSkullIcon == SkullIcon.SKULL)
-		{
-			createGameTimer(SKULL);
-		}
-		else if (currentSkullIcon == null)
-		{
-			removeGameTimer(SKULL);
-		}
-
-		lastSkullIcon = currentSkullIcon;
 	}
 
 	@Subscribe
@@ -812,6 +863,40 @@ public class TimersPlugin extends Plugin
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
 		return t;
+	}
+
+	private void createGameTimer(final GameTimer timer, Duration duration)
+	{
+		boolean shouldAdd = removeGameTimer(timer, duration);
+		if (shouldAdd == false)
+			return;
+
+		BufferedImage image = timer.getImage(itemManager, spriteManager);
+		TimerTimer t = new TimerTimer(timer, this, image, duration);
+		t.setTooltip(timer.getDescription());
+		infoBoxManager.addInfoBox(t);
+	}
+
+	//returns whether a new game timer called from createGameTimer(final GameTimer timer, Duration duration) should be added or not
+	private boolean removeGameTimer(GameTimer timer, Duration duration)
+	{
+		List<InfoBox> list = infoBoxManager.getInfoBoxes();
+		for (InfoBox box : list)
+		{
+			if (box instanceof  TimerTimer && ((TimerTimer) box).getTimer() == timer)
+			{
+				if (((TimerTimer) box).getTimeleft().toMillis() < duration.toMillis())
+				{
+					infoBoxManager.removeInfoBox(box);
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	private void removeGameTimer(GameTimer timer)
