@@ -36,13 +36,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.Duration;
 import java.time.Instant;
-<<<<<<< HEAD
 import java.util.*;
-=======
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
->>>>>>> parent of d475f79... Merge branch 'slayer-highlight-dwarf' of https://github.com/15987632/runelite into slayer-plugin-kill-count-fix
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -52,19 +46,14 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-<<<<<<< HEAD
 import net.runelite.api.*;
-
-=======
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
->>>>>>> parent of d475f79... Merge branch 'slayer-highlight-dwarf' of https://github.com/15987632/runelite into slayer-plugin-kill-count-fix
 import static net.runelite.api.Skill.SLAYER;
-
 import net.runelite.api.events.*;
 import net.runelite.api.vars.SlayerUnlock;
 import net.runelite.api.coords.WorldPoint;
