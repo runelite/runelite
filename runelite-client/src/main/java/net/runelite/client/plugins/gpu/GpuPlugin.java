@@ -29,8 +29,6 @@ import com.google.inject.Provides;
 import com.jogamp.nativewindow.awt.AWTGraphicsConfiguration;
 import com.jogamp.nativewindow.awt.JAWTWindow;
 import com.jogamp.opengl.GL;
-import static com.jogamp.opengl.GL2ES2.GL_DEBUG_OUTPUT;
-import static com.jogamp.opengl.GL3ES3.GL_SHADER_STORAGE_BARRIER_BIT;
 import com.jogamp.opengl.GL4;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLContext;
@@ -286,7 +284,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				if (log.isDebugEnabled())
 				{
-					gl.glEnable(GL_DEBUG_OUTPUT);
+					gl.glEnable(gl.GL_DEBUG_OUTPUT);
 
 					// Suppress warning messages which flood the log on NVIDIA systems.
 					gl.getContext().glDebugMessageControl(gl.GL_DEBUG_SOURCE_API, gl.GL_DEBUG_TYPE_OTHER,
@@ -920,7 +918,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			gl.glDispatchCompute(largeModels, 1, 1);
 
-			gl.glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+			gl.glMemoryBarrier(gl.GL_SHADER_STORAGE_BARRIER_BIT);
 
 			if (textureArrayId == -1)
 			{
