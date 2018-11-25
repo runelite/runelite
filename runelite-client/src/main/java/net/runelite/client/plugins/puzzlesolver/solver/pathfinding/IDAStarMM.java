@@ -654,12 +654,6 @@ public class IDAStarMM extends IDAStar
 			case ROTATE_DOWN_RIGHT:
 				offsets = ROTATE_UP_LEFT.getPoints();
 				break;
-			case LAST_PIECE_ROW:
-				offsets = pattern.getPoints();
-				break;
-			case LAST_PIECE_COLUMN:
-				offsets = pattern.getPoints();
-				break;
 			default:
 				offsets = pattern.getPoints();
 		}
