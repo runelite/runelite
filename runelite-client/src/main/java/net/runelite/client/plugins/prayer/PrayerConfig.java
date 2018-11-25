@@ -129,4 +129,16 @@ public interface PrayerConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 9,
+			keyName = "rechargePrayerNotification",
+			name = "Recharge prayer notification",
+			description = "Configures whether to notify you that your prayer points are empty"
+	)
+	default boolean rechargePrayerNotification()
+	{
+		return true;
+	}
+
 }

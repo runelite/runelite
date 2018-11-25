@@ -38,6 +38,8 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Prayer;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
@@ -46,6 +48,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.Notifier;
 
 @PluginDescriptor(
 	name = "Prayer",
@@ -69,6 +72,9 @@ public class PrayerPlugin extends Plugin
 
 	@Inject
 	private SpriteManager spriteManager;
+
+	@Inject
+	private Notifier notifier;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -147,6 +153,23 @@ public class PrayerPlugin extends Plugin
 				doseOverlay.setPrayerBonus(checkContainerForPrayer(equipment.getItems()));
 			}
 
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.SERVER) {
+			return;
+		}
+
+		if (event.getMessage().contains("You have run out of prayer points"))
+		{
+
+			if (config.rechargePrayerNotification())
+			{
+				notifier.notify("You have run out of prayer points!");
+			}
 		}
 	}
 
