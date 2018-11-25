@@ -320,19 +320,21 @@ public class SlayerPlugin extends Plugin
 		}
 
 		final NPC npc = (NPC) e.getActor();
-
-		if (npc.isDead())
+		int id = npc.getId();
+		final Integer deathAnim = NPC_DEATH_ANIMATIONS.get(id);
+		// when we aren't special casing the death animation we can just do a simple isDead check
+		if (deathAnim == null)
 		{
-			deadThisTick.add(npc);
+			if (npc.isDead())
+			{
+				deadThisTick.add(npc);
+			}
 		}
+		// otherwise when we are checking for the death animation explicitly we only add to deadThisTick if
+		// the animation matches the expected death animation
 		else
 		{
-			int id = npc.getId();
-			final Integer deathAnim = NPC_DEATH_ANIMATIONS.get(id);
-
-			// some npcs die with >0 hp left so we need to check for their death
-			// animations explicitly
-			if (deathAnim != null && deathAnim == npc.getAnimation())
+			if (deathAnim == npc.getAnimation())
 			{
 				deadThisTick.add(npc);
 			}
