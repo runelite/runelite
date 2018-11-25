@@ -628,13 +628,10 @@ public class SlayerPlugin extends Plugin
 			{
 				taskTooltip += "</br>"
 						+ ColorUtil.wrapWithColorTag("Start:", Color.YELLOW)
-						+ " %s";
-				counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak, initialAmount));
+						+ " " + initialAmount;
+
 			}
-			else
-			{
-				counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak));
-			}
+			counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak));
 		}
 	}
 
