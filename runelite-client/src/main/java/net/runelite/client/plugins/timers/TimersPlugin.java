@@ -29,6 +29,7 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.EnumSet;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -115,6 +116,7 @@ public class TimersPlugin extends Plugin
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
 	private static final String VENGEANCE_USED_MESSAGE = "Taste vengeance!";
+	private static final int abyssRegionID = 12107;
 
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
@@ -540,46 +542,46 @@ public class TimersPlugin extends Plugin
 
 		Player player = client.getLocalPlayer();
 		WorldPoint currentWorldPoint = player.getWorldLocation();
+		EnumSet<WorldType> worldTypes = client.getWorldType();
 
-		SkullIcon currentSkullIcon = player.getSkullIcon();
-		int currentRegionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-		final int abyssRegionID = 12107;
-		Item[] equippedItems = client.getItemContainer(InventoryID.EQUIPMENT).getItems();
-		boolean avariceThisTick;
 
-		if (equippedItems[2].getId() == ItemID.AMULET_OF_AVARICE)
+		if (config.showSkull() && !worldTypes.contains(WorldType.DEADMAN) && !worldTypes.contains(WorldType.SEASONAL_DEADMAN))
 		{
-			avariceThisTick = true;
-		}
-		else
-		{
-			avariceThisTick = false;
-		}
+			SkullIcon currentSkullIcon = player.getSkullIcon();
+			int currentRegionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+			Item[] equippedItems = client.getItemContainer(InventoryID.EQUIPMENT).getItems();
+			boolean avariceThisTick = (equippedItems[2].getId() == ItemID.AMULET_OF_AVARICE);
 
-		if (currentRegionID != lastRegionID && currentRegionID == abyssRegionID && currentSkullIcon == SkullIcon.SKULL)
-		{
-			createGameTimer(SKULL, Duration.of(10, ChronoUnit.MINUTES));
-		}
-		else if (avariceLastTick == false && avariceThisTick == true)
-		{
-			removeGameTimer(SKULL);
-		}
-		else if (avariceLastTick == true && avariceThisTick == false)
-		{
-			createGameTimer(SKULL);
-		}
-		else if (lastSkullIcon == null && currentSkullIcon == SkullIcon.SKULL)
-		{
-			createGameTimer(SKULL);
-		}
-		else if (currentSkullIcon == null && lastSkullIcon == SkullIcon.SKULL)
-		{
-			removeGameTimer(SKULL);
-		}
+			//Enter the abyss
+			if (currentRegionID != lastRegionID && currentRegionID == abyssRegionID && currentSkullIcon == SkullIcon.SKULL)
+			{
+				createGameTimer(SKULL, Duration.of(10, ChronoUnit.MINUTES));
+			}
+			//When the amulet of avarice is equipped, make sure that there isn't a skull timer anymore
+			else if (avariceLastTick == false && avariceThisTick == true)
+			{
+				removeGameTimer(SKULL);
+			}
+			//when the amulet of avarice is unequipped, start a 20 min skull timer
+			else if (avariceLastTick == true && avariceThisTick == false)
+			{
+				createGameTimer(SKULL);
+			}
+			//Only pvp and the bounter hunter shop should be left so when a player gets a skull start the 20 mins timer
+			else if (lastSkullIcon == null && currentSkullIcon == SkullIcon.SKULL)
+			{
+				createGameTimer(SKULL);
+			}
+			//Get rid of the skull timer when a players loses a skull
+			else if (currentSkullIcon == null && lastSkullIcon == SkullIcon.SKULL)
+			{
+				removeGameTimer(SKULL);
+			}
 
-		avariceLastTick = avariceThisTick;
-		lastSkullIcon = currentSkullIcon;
-		lastRegionID = currentRegionID;
+			avariceLastTick = avariceThisTick;
+			lastSkullIcon = currentSkullIcon;
+			lastRegionID = currentRegionID;
+		}
 
 		if (freezeTimer != null)
 		{
@@ -878,6 +880,8 @@ public class TimersPlugin extends Plugin
 	}
 
 	//returns whether a new game timer called from createGameTimer(final GameTimer timer, Duration duration) should be added or not
+	//returns true if the timeleft of the current timer is less than the new one or there isn't a timer active already
+	//returns false if the current timer has a greater timeleft than the new timer
 	private boolean removeGameTimer(GameTimer timer, Duration duration)
 	{
 		List<InfoBox> list = infoBoxManager.getInfoBoxes();
