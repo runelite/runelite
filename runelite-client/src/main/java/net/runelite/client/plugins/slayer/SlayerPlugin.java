@@ -100,6 +100,7 @@ public class SlayerPlugin extends Plugin
 	//NPC messages
 	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill\\s*(\\d*) (.*)\\.");
 	private static final Pattern NPC_ASSIGN_BOSS_MESSAGE = Pattern.compile("^Excellent. You're now assigned to kill (?:the )?(.*) (\\d+) times.*Your reward point tally is (.*)\\.$");
+	private static final Pattern NPC_ASSIGN_FIRST_MESSAGE = Pattern.compile("^We'll start you off hunting (.*), you'll need to kill (\\d*) of them.");
 	private static final Pattern NPC_CURRENT_MESSAGE = Pattern.compile("You're still hunting (.*); you have (\\d*) to go\\..*");
 
 	//Reward UI
@@ -270,12 +271,17 @@ public class SlayerPlugin extends Plugin
 		{
 			String npcText = Text.sanitizeMultilineText(npcDialog.getText()); //remove color and linebreaks
 			final Matcher mAssign = NPC_ASSIGN_MESSAGE.matcher(npcText); //number, name
+			final Matcher mAssignFirst = NPC_ASSIGN_FIRST_MESSAGE.matcher(npcText); //name, number
 			final Matcher mAssignBoss = NPC_ASSIGN_BOSS_MESSAGE.matcher(npcText); // name, number, points
 			final Matcher mCurrent = NPC_CURRENT_MESSAGE.matcher(npcText); //name, number
 
 			if (mAssign.find())
 			{
 				setTask(mAssign.group(2), Integer.parseInt(mAssign.group(1)));
+			}
+			else if (mAssignFirst.find())
+			{
+				setTask(mAssignFirst.group(1), Integer.parseInt(mAssignFirst.group(2)));
 			}
 			else if (mAssignBoss.find())
 			{
