@@ -641,8 +641,10 @@ public class SlayerPluginTest
 	}
 
 	@Test
-	public void testSack()
+	public void testSackMulti()
 	{
+		slayerPlugin.loadXpJson();
+
 		List<NPC> died = new ArrayList<>();
 		NPC npc0 = newNPC("Dust devil", 93);
 		NPC npc1 = newNPC("Dust devil", 110);
@@ -653,10 +655,78 @@ public class SlayerPluginTest
 		died.add(npc1);
 		died.add(npc0);
 		died.add(npc0);
+		died.add(npc0);
+		died.add(npc0);
+		died.add(npc0);
+		died.add(npc1);
 		// 5 93s and 2 110s
 		// = 5 * 105 + 2 * 130 = 785
-		slayerPlugin.loadXpJson();
 		int estimatedCount = slayerPlugin.estimateKillCount(died, 785);
 		Assert.assertEquals(7, estimatedCount);
 	}
+
+	@Test
+	public void testSackSingle()
+	{
+		slayerPlugin.loadXpJson();
+
+		List<NPC> died0 = new ArrayList<>();
+		NPC npc0 = newNPC("Dust devil", 93);
+		died0.add(npc0);
+		died0.add(npc0);
+		// 1 93
+		// = 1 * 105 = 105
+		int estimatedCount0 = slayerPlugin.estimateKillCount(died0, 105);
+		Assert.assertEquals(1, estimatedCount0);
+
+		List<NPC> died1 = new ArrayList<>();
+		NPC npc1 = newNPC("Dust devil", 110);
+		died1.add(npc1);
+		died1.add(npc1);
+		died1.add(npc1);
+		// 1 110
+		// = 1 * 130 = 130
+		int estimatedCount1 = slayerPlugin.estimateKillCount(died1, 130);
+		Assert.assertEquals(1, estimatedCount1);
+	}
+
+	@Test
+	public void testSackAmbiguous()
+	{
+		slayerPlugin.loadXpJson();
+
+		List<NPC> died = new ArrayList<>();
+		NPC npc0 = newNPC("Desert Lizard", 42);
+		NPC npc1 = newNPC("Desert Lizard", 24);
+		NPC npc2 = newNPC("Desert Lizard", 12);
+		died.add(npc0);
+		died.add(npc0);
+		died.add(npc1);
+		died.add(npc2);
+		died.add(npc2);
+		// 1 42
+		// = 1 * 40 = 40
+		// but 1 12 and 1 24
+		// = 1 * 15 + 1 * 25 = 40
+		// so expect to go for smallest kill count and return 1 for the lvl 42 kill
+		int estimatedCount = slayerPlugin.estimateKillCount(died, 40);
+		Assert.assertEquals(1, estimatedCount);
+	}
+
+	@Test
+	public void testSackAlwaysOne()
+	{
+		slayerPlugin.loadXpJson();
+
+		List<NPC> died = new ArrayList<>();
+		NPC npc = newNPC("Greater demon", 92);
+		died.add(npc);
+		// 1 92 (partial)
+		// 1 * 87 * 0.5 = 43.5 round down to 43
+		// but 87 can't fit into 43.5 any times so knapsack solver gives 0
+		// but we gained xp and 1 enemy died so failsafes give at least 1
+		int estimatedCount = slayerPlugin.estimateKillCount(died, 43);
+		Assert.assertEquals(1, estimatedCount);
+	}
+
 }

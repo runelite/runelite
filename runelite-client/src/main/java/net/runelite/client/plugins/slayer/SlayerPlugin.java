@@ -406,6 +406,25 @@ public class SlayerPlugin extends Plugin
 		return -1;
 	}
 
+	private List<Map.Entry<NPC, Integer>> reconstructItemsInSack(int [] [] sackTable, List<Map.Entry<NPC, Integer>> orderedIntXpDrops, int i, int w)
+	{
+		if (i == 0)
+		{
+			return new ArrayList<>();
+		}
+		if (sackTable[i][w] > sackTable[i - 1][w])
+		{
+			List<Map.Entry<NPC, Integer>> list = reconstructItemsInSack(sackTable, orderedIntXpDrops,
+					i - 1, w - orderedIntXpDrops.get(i - 1).getValue());
+			list.add(orderedIntXpDrops.get(i - 1));
+			return list;
+		}
+		else
+		{
+			return reconstructItemsInSack(sackTable, orderedIntXpDrops, i - 1, w);
+		}
+	}
+
 	private int stuffNpcsIntoXp(List<Map.Entry<NPC, Double>> potentialXpDrops, int gains)
 	{
 		// add one to max gains allowed for knapsack optimization
@@ -415,10 +434,9 @@ public class SlayerPlugin extends Plugin
 
 		// scale the problem up by a factor of 10 since knapsack problem is solved better with integers
 		// and xp drops can have a single number after the decimal point
-		// additionally we half the slayer xp drops in order to try and deal with partials
-		int tenFudgedGains = gains * 10;
+		int tenFudgedGains = fudgedGains * 10;
 		List<Map.Entry<NPC, Integer>> orderedIntXpDrops = potentialXpDrops.stream()
-			.map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), (int) ((entry.getValue() * 10) / 2)))
+			.map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), (int) (entry.getValue() * 10)))
 			.collect(Collectors.toCollection(ArrayList::new));
 
 		// see https://en.wikipedia.org/wiki/Knapsack_problem for psuedocode for 0/1 knapsack problem
@@ -447,7 +465,7 @@ public class SlayerPlugin extends Plugin
 				}
 			}
 		}
-		return sackMatrix[itemCount][tenFudgedGains];
+		return reconstructItemsInSack(sackMatrix, orderedIntXpDrops, itemCount, tenFudgedGains).size();
 	}
 
 	int estimateKillCount(List<NPC> died, int gains)
@@ -459,26 +477,19 @@ public class SlayerPlugin extends Plugin
 			double xp = findXpForNpc(dead, xpCombatLevel);
 			potentialXpDrops.add(new AbstractMap.SimpleEntry<NPC, Double>(dead, xp));
 		}
-		// stuffNpcsIntoXp returns partial counts so if it thinks there were 13 partial kills
-		// that could be 6 real kills + 1 partial kills = 7 which is ceil(13/2)
-		// note that this is ineffective in the case that those 13 partial kills worth of xp were
-		// made of 5 real kills + 3 partial kills = 8 but we would estimate 7 and note that
-		// if the 13 partial kills was quite literally 13 partial kills we would be off by almost
-		// a factor of 2 - unfortunately there's no real way to figure out if something has been
-		// damaged by another player so this is probably the best we can do
-		int estimatedCount = (int) Math.ceil(stuffNpcsIntoXp(potentialXpDrops, gains) / 2);
-		// cannot have an estimate larger than the number of enemies that died this tick
-		// (note that this shouldn't be able to happen with the knapsack solver in stuffNpcsIntoXp)
-		// but this is a fail safe
-		if (estimatedCount > died.size())
-		{
-			estimatedCount = died.size();
-		}
-		// also if the knapsack solver gets 0 we want to make sure that we think at least 1 enemy died
+		int estimatedCount = stuffNpcsIntoXp(potentialXpDrops, gains);
+		// if the knapsack solver gets 0 we want to make sure that we think at least 1 enemy died
 		// if xp was gained
 		if (estimatedCount <= 0 && gains > 0)
 		{
 			estimatedCount = 1;
+		}
+		// cannot have an estimate larger than the number of enemies that died this tick - note
+		// that this may happen if the player gets slayer xp from a quest while a task is running
+		// this should make sure that the quest xp (hopefully) does not get registered as a kill
+		if (estimatedCount > died.size())
+		{
+			estimatedCount = died.size();
 		}
 		return estimatedCount;
 	}
