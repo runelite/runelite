@@ -27,18 +27,19 @@ package net.runelite.client.plugins.slayer;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import joptsimple.internal.Strings;
 import lombok.AccessLevel;
@@ -158,6 +159,36 @@ public class SlayerPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private int points;
 
+	private static final double EPSILON = 1e-6;
+	private static final Map<Integer, Integer> NPC_DEATH_ANIMATIONS = new HashMap<>();
+
+	static
+	{
+		NPC_DEATH_ANIMATIONS.put(NpcID.GARGOYLE, AnimationID.GARGOYLE_DEATH);
+		NPC_DEATH_ANIMATIONS.put(NpcID.GARGOYLE_413, AnimationID.GARGOYLE_DEATH);
+		NPC_DEATH_ANIMATIONS.put(NpcID.GARGOYLE_1543, AnimationID.GARGOYLE_DEATH);
+		NPC_DEATH_ANIMATIONS.put(NpcID.MARBLE_GARGOYLE, AnimationID.MARBLE_GARGOYLE_DEATH);
+		NPC_DEATH_ANIMATIONS.put(NpcID.MARBLE_GARGOYLE_7408, AnimationID.MARBLE_GARGOYLE_DEATH);
+		NPC_DEATH_ANIMATIONS.put(NpcID.ROCKSLUG, AnimationID.ROCKSLUG_DEATH);
+		NPC_DEATH_ANIMATIONS.put(NpcID.ROCKSLUG_422, AnimationID.ROCKSLUG_DEATH);
+		NPC_DEATH_ANIMATIONS.put(NpcID.LIZARD, AnimationID.LIZARD_DEATH);
+		NPC_DEATH_ANIMATIONS.put(NpcID.ZYGOMITE, AnimationID.ZYGOMITE_DEATH);
+		NPC_DEATH_ANIMATIONS.put(NpcID.ZYGOMITE_474, AnimationID.ZYGOMITE_DEATH);
+		// TODO: DUSK_7888 DUSK_7889
+
+		// TODO: GIANT_ROCKSLUG
+		// TODO: SMALL_LIZARD
+		// TODO: DESERT_LIZARD
+
+		// TODO: ANCIENT_ZYGOMITE
+
+		// Does ZYOGMITE_DEATH work for ANCIENT_ZYGOMITE?
+		// Does ROCKSLUG_DEATAH work for GIANT_ROCKSLUG?
+		// Does GARGOYLE_DEATH work for DUSK?
+		// Does LIZARD_DEATH work for SMALL_LIZARD and DESERT_LIZARD
+		// TODO: must be filled in with death animations of npcs that die with hp > 0
+	}
+
 	private TaskCounter counter;
 	private int cachedXp;
 	private Instant infoTimer;
@@ -166,6 +197,17 @@ public class SlayerPlugin extends Plugin
 
 	private int gainsThisTick = -1;
 	private List<NPC> deadThisTick = new ArrayList<>();
+	private Map<String, List<Double>> xpMap;
+
+	void loadXpJson()
+	{
+		final InputStream xpFile = getClass().getResourceAsStream("/slayer_xp.json");
+		Gson gson = new Gson();
+		xpMap = gson.fromJson(new InputStreamReader(xpFile), new TypeToken<Map<String, List<Double>>>()
+		{
+
+		}.getType());
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -173,6 +215,8 @@ public class SlayerPlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(targetClickboxOverlay);
 		overlayManager.add(targetMinimapOverlay);
+
+		loadXpJson();
 
 		if (client.getGameState() == GameState.LOGGED_IN
 			&& config.amount() != -1
@@ -277,16 +321,179 @@ public class SlayerPlugin extends Plugin
 		{
 			deadThisTick.add(npc);
 		}
+		else
+		{
+			int id = npc.getId();
+			final Integer deathAnim = NPC_DEATH_ANIMATIONS.get(id);
+
+			// some npcs die with >0 hp left so we need to check for their death
+			// animations explicitly
+			if (deathAnim != null && deathAnim == npc.getAnimation())
+			{
+				deadThisTick.add(npc);
+			}
+		}
+	}
+
+	/**
+	 * Finds the xp for a given npc using the xp + combat level data provided
+	 * from the JSON - since scrapping from the wiki isn't perfectly accurate
+	 * we make some estimations
+	 *
+	 * 1. first check to see if anywhere in the xp + combat level data this
+	 *    creature name give slayer xp - if it doesn't just return -1 and
+	 *    be done with this - if it does give slayer xp then continue
+	 * 2. now check to see if we can find the xp for this combat level where
+	 *    that xp is greater than 0. note that we don't just find the xp for
+	 *    this combat level - this is because for some monsters the wiki
+	 *    only has slayer xp data for some combat levels and has it unknown
+	 *    for the other combat levels. this way we only return the combat level
+	 *    related xp data for a monster if it is know
+	 * 3. finally if the slayer xp data for the monster was unknown for the given
+	 *    level we estimate the slayer xp by using one of the slayer xps for a level
+	 *    that does have xp given
+	 * 4. note that if a monster gives no slayer xp for any level it will return
+	 *    -1 so we don't accidentally misscount non-slayer targets dying as giving
+	 *    slayer xp
+	 *
+	 * @param npc the npc we are estimating slayer xp for
+	 * @param xpCombatLevel the data mapping combat lvl -> xp for this npc name
+	 * @return our best guess for the slayer xp for this npc
+	 */
+	private double findXpForNpc(NPC npc, List<Double> xpCombatLevel)
+	{
+		boolean givesSlayerXp = false;
+		for (int i = 0; i < xpCombatLevel.size() - 1; i += 2)
+		{
+			if (xpCombatLevel.get(i) > 0)
+			{
+				givesSlayerXp = true;
+			}
+		}
+		if (!givesSlayerXp)
+		{
+			return -1;
+		}
+		boolean foundCombatLevel = false;
+		for (int i = 0; i < xpCombatLevel.size() - 1; i += 2)
+		{
+			if (Math.abs(xpCombatLevel.get(i + 1) - npc.getCombatLevel()) < EPSILON
+				&& xpCombatLevel.get(i) > 0)
+			{
+				foundCombatLevel = true;
+			}
+		}
+		if (foundCombatLevel)
+		{
+			for (int i = 0; i < xpCombatLevel.size() - 1; i += 2)
+			{
+				if (Math.abs(xpCombatLevel.get(i + 1) - npc.getCombatLevel()) < EPSILON)
+				{
+					return xpCombatLevel.get(i);
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < xpCombatLevel.size() - 1; i += 2)
+			{
+				if (xpCombatLevel.get(i) > 0)
+				{
+					return xpCombatLevel.get(i);
+				}
+			}
+		}
+		return -1;
+	}
+
+	private int stuffNpcsIntoXp(List<Map.Entry<NPC, Double>> potentialXpDrops, int gains)
+	{
+		// add one to max gains allowed for knapsack optimization
+		// since xp is only sent to us as integers but is stored on servers
+		// (and therefore gained as) a double
+		int fudgedGains = gains + 1;
+
+		// scale the problem up by a factor of 10 since knapsack problem is solved better with integers
+		// and xp drops can have a single number after the decimal point
+		// additionally we half the slayer xp drops in order to try and deal with partials
+		int tenFudgedGains = gains * 10;
+		List<Map.Entry<NPC, Integer>> orderedIntXpDrops = potentialXpDrops.stream()
+			.map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), (int) ((entry.getValue() * 10) / 2)))
+			.collect(Collectors.toCollection(ArrayList::new));
+
+		// see https://en.wikipedia.org/wiki/Knapsack_problem for psuedocode for 0/1 knapsack problem
+		// extended to bounded knapsack problem by simply having multiples of each item that has multiples
+		int itemCount = orderedIntXpDrops.size();
+
+		int[] [] sackMatrix = new int[itemCount + 1] [tenFudgedGains + 1];
+		for (int i = 1; i <= itemCount; i++)
+		{
+			for (int j = 0; j <= tenFudgedGains; j++)
+			{
+				if (orderedIntXpDrops.get(i - 1).getValue() > j)
+				{
+					sackMatrix[i][j] = sackMatrix[i - 1][j];
+				}
+				else
+				{
+					sackMatrix[i][j] = Math.max(
+						sackMatrix[i - 1][j],
+						sackMatrix[i - 1][j - orderedIntXpDrops.get(i - 1).getValue()] +
+							// let value = weight ^ 2 to get a conservative estimate that tries to minimize
+							// the number of enemies shoved in the xp sack while still maintaining as close
+							// to total xp value as possible
+							// note that I'm not sure if this is the most appropriate estimation scheme
+							(orderedIntXpDrops.get(i - 1).getValue() * orderedIntXpDrops.get(i - 1).getValue()));
+				}
+			}
+		}
+		return sackMatrix[itemCount][tenFudgedGains];
+	}
+
+	int estimateKillCount(List<NPC> died, int gains)
+	{
+		List<Map.Entry<NPC, Double>> potentialXpDrops = new ArrayList<>();
+		for (NPC dead : died)
+		{
+			List<Double> xpCombatLevel = xpMap.get(dead.getName());
+			double xp = findXpForNpc(dead, xpCombatLevel);
+			potentialXpDrops.add(new AbstractMap.SimpleEntry<NPC, Double>(dead, xp));
+		}
+		// stuffNpcsIntoXp returns partial counts so if it thinks there were 13 partial kills
+		// that could be 6 real kills + 1 partial kills = 7 which is ceil(13/2)
+		// note that this is ineffective in the case that those 13 partial kills worth of xp were
+		// made of 5 real kills + 3 partial kills = 8 but we would estimate 7 and note that
+		// if the 13 partial kills was quite literally 13 partial kills we would be off by almost
+		// a factor of 2 - unfortunately there's no real way to figure out if something has been
+		// damaged by another player so this is probably the best we can do
+		int estimatedCount = (int) Math.ceil(stuffNpcsIntoXp(potentialXpDrops, gains) / 2);
+		// cannot have an estimate larger than the number of enemies that died this tick
+		// (note that this shouldn't be able to happen with the knapsack solver in stuffNpcsIntoXp)
+		// but this is a fail safe
+		if (estimatedCount > died.size())
+		{
+			estimatedCount = died.size();
+		}
+		// also if the knapsack solver gets 0 we want to make sure that we think at least 1 enemy died
+		// if xp was gained
+		if (estimatedCount <= 0 && gains > 0)
+		{
+			estimatedCount = 1;
+		}
+		return estimatedCount;
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		System.out.println("=======================");
-		System.out.println("died previous tick is " + deadThisTick.toString());
-		System.out.println("gains previous tick is " + gainsThisTick);
-
-		// optimally here we pull from the map of npc id to slayer drop
+		if (gainsThisTick > 0)
+		{
+			int killed = estimateKillCount(deadThisTick, gainsThisTick);
+			for (int i = 0; i < killed; i++)
+			{
+				killedOne();
+			}
+		}
 
 		deadThisTick.clear();
 		gainsThisTick = -1;
