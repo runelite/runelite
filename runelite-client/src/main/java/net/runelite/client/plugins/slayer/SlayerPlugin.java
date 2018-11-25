@@ -36,7 +36,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.Duration;
 import java.time.Instant;
+<<<<<<< HEAD
 import java.util.*;
+=======
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+>>>>>>> parent of d475f79... Merge branch 'slayer-highlight-dwarf' of https://github.com/15987632/runelite into slayer-plugin-kill-count-fix
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -46,8 +52,17 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+<<<<<<< HEAD
 import net.runelite.api.*;
 
+=======
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.ItemID;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+>>>>>>> parent of d475f79... Merge branch 'slayer-highlight-dwarf' of https://github.com/15987632/runelite into slayer-plugin-kill-count-fix
 import static net.runelite.api.Skill.SLAYER;
 
 import net.runelite.api.events.*;
@@ -193,7 +208,7 @@ public class SlayerPlugin extends Plugin
 	private int cachedXp;
 	private Instant infoTimer;
 	private boolean loginFlag;
-	private final Set<Integer> targetIds = new HashSet<>();
+	private List<String> targetNames = new ArrayList<>();
 
 	private int gainsThisTick = -1;
 	private List<NPC> deadThisTick = new ArrayList<>();
@@ -769,18 +784,44 @@ public class SlayerPlugin extends Plugin
 
 	private boolean isTarget(NPC npc)
 	{
-		int npcId = npc.getId();
-		return targetIds.contains(npcId);
+		if (targetNames.isEmpty())
+		{
+			return false;
+		}
+
+		String name = npc.getName();
+		if (name == null)
+		{
+			return false;
+		}
+
+		name = name.toLowerCase();
+
+		for (String target : targetNames)
+		{
+			if (name.contains(target))
+			{
+				NPCComposition composition = npc.getTransformedComposition();
+				if (composition != null && Arrays.asList(composition.getActions()).contains("Attack"))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
-	private void rebuildTargetIds(Task task)
+	private void rebuildTargetNames(Task task)
 	{
-		targetIds.clear();
+		targetNames.clear();
 
 		if (task != null)
 		{
-			Arrays.stream(task.getTargetIds())
-				.forEach(targetIds::add);
+			Arrays.stream(task.getTargetNames())
+				.map(String::toLowerCase)
+				.forEach(targetNames::add);
+
+			targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
 		}
 	}
 
@@ -807,7 +848,7 @@ public class SlayerPlugin extends Plugin
 		infoTimer = Instant.now();
 
 		Task task = Task.getTask(name);
-		rebuildTargetIds(task);
+		rebuildTargetNames(task);
 		rebuildTargetList();
 	}
 
