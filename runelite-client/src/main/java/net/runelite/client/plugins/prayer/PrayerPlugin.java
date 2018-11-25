@@ -159,7 +159,8 @@ public class PrayerPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.SERVER) {
+		if (event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.SERVER)
+		{
 			return;
 		}
 
