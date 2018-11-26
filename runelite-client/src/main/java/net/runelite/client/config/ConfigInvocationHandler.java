@@ -32,7 +32,7 @@ import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-class ConfigInvocationHandler implements InvocationHandler
+public class ConfigInvocationHandler implements InvocationHandler
 {
 	private final ConfigManager manager;
 
@@ -81,7 +81,13 @@ class ConfigInvocationHandler implements InvocationHandler
 			
 			try
 			{
-				return ConfigManager.stringToObject(value, returnType);
+				Object returnValue = ConfigManager.stringToObject(value, returnType);
+				if (returnValue == null && method.isDefault())
+				{
+					return callDefaultMethod(proxy, method, null);
+				}
+
+				return returnValue;
 			}
 			catch (Exception e)
 			{
@@ -138,7 +144,7 @@ class ConfigInvocationHandler implements InvocationHandler
 		}
 	}
 
-	static Object callDefaultMethod(Object proxy, Method method, Object[] args) throws Throwable
+	public static Object callDefaultMethod(Object proxy, Method method, Object[] args) throws Throwable
 	{
 		// Call the default method implementation - https://rmannibucau.wordpress.com/2014/03/27/java-8-default-interface-methods-and-jdk-dynamic-proxies/
 		Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class, int.class);
