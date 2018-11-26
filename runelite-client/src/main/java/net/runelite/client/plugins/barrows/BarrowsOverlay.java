@@ -74,6 +74,10 @@ class BarrowsOverlay extends Overlay
 			final List<NPC> npcs = client.getNpcs();
 			for (NPC npc : npcs)
 			{
+				if (npc.isPet())
+				{
+					continue;
+				}
 				net.runelite.api.Point minimapLocation = npc.getMinimapLocation();
 				if (minimapLocation != null)
 				{
