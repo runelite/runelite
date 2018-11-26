@@ -75,4 +75,6 @@ public interface NPC extends Actor
 	 * @return
 	 */
 	boolean isDead();
+
+	boolean isPet();
 }

@@ -26,6 +26,7 @@ package net.runelite.mixins;
 
 import net.runelite.api.AnimationID;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.NpcID;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
@@ -49,6 +50,77 @@ public abstract class RSNPCMixin implements RSNPC
 
 	@Inject
 	private boolean dead;
+
+	//NOTE:: Unsure of correct Ids for kraken, snakeling and smoke devil pets, so have left commented out for now.
+	private int[] petIds = {
+			NpcID.ABYSSAL_ORPHAN,
+			NpcID.ABYSSAL_ORPHAN_5884,
+			NpcID.BABY_MOLE,
+			NpcID.BABY_MOLE_5781,
+			NpcID.BABY_MOLE_5782,
+			NpcID.BABY_MOLE_6635,
+			NpcID.BABY_MOLE_6651,
+			NpcID.CALLISTO_CUB,
+			NpcID.CALLISTO_CUB_5558,
+			NpcID.HELLPUPPY,
+			NpcID.HELLPUPPY_3099,
+			NpcID.JALNIBREK,
+			NpcID.JALNIBREK_7675,
+			NpcID.TZREKZUK,
+			NpcID.TZREKZUK_8011,
+			NpcID.KALPHITE_PRINCESS,
+			NpcID.KALPHITE_PRINCESS_6638,
+			NpcID.KALPHITE_PRINCESS_6653,
+			NpcID.KALPHITE_PRINCESS_6654,
+			NpcID.LIL_ZIK,
+			NpcID.LIL_ZIK_8337,
+			NpcID.NOON,
+			NpcID.NOON_7892,
+			NpcID.MIDNIGHT,
+			NpcID.MIDNIGHT_7893,
+			NpcID.OLMLET,
+			NpcID.OLMLET_7520,
+			NpcID.CHAOS_ELEMENTAL_JR,
+			NpcID.CHAOS_ELEMENTAL_JR_5907,
+			NpcID.DAGANNOTH_PRIME_JR,
+			NpcID.DAGANNOTH_PRIME_JR_6629,
+			NpcID.DAGANNOTH_REX_JR,
+			NpcID.DAGANNOTH_REX_JR_6641,
+			NpcID.DAGANNOTH_SUPREME_JR,
+			NpcID.DAGANNOTH_SUPREME_JR_6628,
+			NpcID.DARK_CORE,
+			NpcID.DARK_CORE_388,
+			NpcID.CORPOREAL_CRITTER,
+			NpcID.CORPOREAL_CRITTER_8010,
+			NpcID.GENERAL_GRAARDOR_JR,
+			NpcID.GENERAL_GRAARDOR_JR_6644,
+			NpcID.KRIL_TSUTSAROTH_JR,
+			NpcID.KRIL_TSUTSAROTH_JR_6647,
+//			NpcID.KRAKEN,
+			NpcID.KREEARRA_JR,
+			NpcID.KREEARRA_JR_6643,
+//			NpcID.THERMONUCLEAR_SMOKE_DEVIL,
+//			NpcID.SNAKELING,
+			NpcID.ZILYANA_JR,
+			NpcID.ZILYANA_JR_6646,
+			NpcID.PRINCE_BLACK_DRAGON,
+			NpcID.PRINCE_BLACK_DRAGON_6652,
+			NpcID.SCORPIAS_OFFSPRING,
+			NpcID.SCORPIAS_OFFSPRING_5561,
+			NpcID.SCORPIAS_OFFSPRING_6616,
+			NpcID.SKOTOS,
+			NpcID.SKOTOS_7671,
+			NpcID.TZREKJAD,
+			NpcID.TZREKJAD_5893,
+			NpcID.VENENATIS_SPIDERLING,
+			NpcID.VENENATIS_SPIDERLING_5557,
+			NpcID.VETION_JR,
+			NpcID.VETION_JR_5537,
+			NpcID.VETION_JR_5559,
+			NpcID.VETION_JR_5560,
+			NpcID.VORKI,
+			NpcID.VORKI_8029
+	};
 
 	@Inject
 	@Override
@@ -166,5 +238,20 @@ public abstract class RSNPCMixin implements RSNPC
 	public void setDead(boolean dead)
 	{
 		this.dead = dead;
+	}
+
+	@Inject
+	@Override
+	public boolean isPet()
+	{
+		int id = this.getId();
+		for (int petId : petIds)
+		{
+			if (id == petId)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
