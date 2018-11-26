@@ -58,6 +58,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -67,9 +68,10 @@ import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 public class DevToolsOverlay extends Overlay
 {
-	public static final int ITEM_EMPTY = 6512;
-	public static final int ITEM_FILLED = 20594;
+	private static final int ITEM_EMPTY = 6512;
+	private static final int ITEM_FILLED = 20594;
 
+	private static final Font FONT = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16);
 	private static final Color RED = new Color(221, 44, 0);
 	private static final Color GREEN = new Color(0, 200, 83);
 	private static final Color ORANGE = new Color(255, 109, 0);
@@ -87,7 +89,7 @@ public class DevToolsOverlay extends Overlay
 	private final TooltipManager toolTipManager;
 
 	@Inject
-	public DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
+	private DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
@@ -99,11 +101,7 @@ public class DevToolsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Font font = plugin.getFont();
-		if (font != null)
-		{
-			graphics.setFont(font);
-		}
+		graphics.setFont(FONT);
 
 		if (plugin.isTogglePlayers())
 		{

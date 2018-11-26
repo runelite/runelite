@@ -54,7 +54,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -123,7 +122,6 @@ public class DevToolsPlugin extends Plugin
 	Widget currentWidget;
 	int itemIndex = -1;
 
-	private Font font;
 	private NavigationButton navButton;
 
 	@Provides
@@ -153,9 +151,6 @@ public class DevToolsPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
-
-		font = FontManager.getRunescapeFont()
-			.deriveFont(Font.BOLD, 16);
 	}
 
 	@Override
@@ -320,11 +315,6 @@ public class DevToolsPlugin extends Plugin
 			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", JagexColors.MENU_TARGET));
 			client.setMenuEntries(entries);
 		}
-	}
-
-	Font getFont()
-	{
-		return font;
 	}
 
 	void togglePlayers()
