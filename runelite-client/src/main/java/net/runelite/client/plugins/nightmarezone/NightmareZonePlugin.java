@@ -109,9 +109,9 @@ public class NightmareZonePlugin extends Plugin
 			if (!absorptionNotificationSend)
 			{
 				absorptionNotificationSend = true;
-        lastTickMillis=0;
-        gameTime=0;
-        pointsPerHour=0;
+				lastTickMillis = 0;
+				gameTime = 0;
+				pointsPerHour = 0;
 			}
 
 			return;
@@ -122,25 +122,26 @@ public class NightmareZonePlugin extends Plugin
 		}
 	}
 
-  @Schedule(
+	@Schedule(
 		period = 1,
 		unit = ChronoUnit.SECONDS
 	)
-  public void tickSkillTimes()
-  {
-    if(isInNightmareZone()){
-      if (lastTickMillis == 0)
+	public void tickSkillTimes()
+	{
+		if(isInNightmareZone())
 		{
-			lastTickMillis = System.currentTimeMillis();
-			return;
+			if (lastTickMillis == 0)
+			{
+				lastTickMillis = System.currentTimeMillis();
+				return;
+			}
+			final long nowMillis = System.currentTimeMillis();
+			final long tickDelta = nowMillis - lastTickMillis;
+			lastTickMillis = nowMillis;
+			gameTime += tickDelta;
+			pointsPerHour = 3600 * client.getVar(Varbits.NMZ_POINTS) / (gameTime / 1000);
 		}
-		final long nowMillis = System.currentTimeMillis();
-		final long tickDelta = nowMillis - lastTickMillis;
-    lastTickMillis = nowMillis;
-    gameTime+=tickDelta;
-    pointsPerHour=3600*client.getVar(Varbits.NMZ_POINTS)/(gameTime/1000);
-    }
-  }
+	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
@@ -218,8 +219,8 @@ public class NightmareZonePlugin extends Plugin
 		return Arrays.equals(client.getMapRegions(), NMZ_MAP_REGION);
 	}
   
-  public int getPointsPerHour()
-  {
-    return pointsPerHour;
-  }
+	public int getPointsPerHour()
+	{
+		return pointsPerHour;
+	}
 }

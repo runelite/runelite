@@ -103,19 +103,20 @@ class NightmareZoneOverlay extends Overlay
 			.left("Points: ")
 			.right(StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)))
 			.build());
-    if(config.totalPoints()){
-      panelComponent.getChildren().add(LineComponent.builder()
-        .left("Total: ")
-        .right(StackFormatter.formatNumber(client.getVar(VarPlayer.NMZ_REWARD_POINTS)))
-        .build());
-    }
-    if(config.pointsPerHour()){
-      panelComponent.getChildren().add(LineComponent.builder()
-        .left("Points/hr: ")
-        .right(StackFormatter.formatNumber(plugin.getPointsPerHour()))
-        .build());
-    }
-
+		if (config.totalPoints())
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Total: ")
+				.right(StackFormatter.formatNumber(client.getVar(VarPlayer.NMZ_REWARD_POINTS)))
+				.build());
+		}
+		if (config.pointsPerHour())
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Points/hr: ")
+				.right(StackFormatter.formatNumber(plugin.getPointsPerHour()))
+				.build());
+		}
 		return panelComponent.render(graphics);
 	}
 

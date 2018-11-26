@@ -143,7 +143,7 @@ public interface NightmareZoneConfig extends Config
 		return Color.RED;
 	}
 
-  @ConfigItem(
+	@ConfigItem(
 		keyName = "pointsperhour",
 		name = "Show points per hour",
 		description = "Toggles weither or not showing points per hour.",
@@ -152,9 +152,9 @@ public interface NightmareZoneConfig extends Config
 	default boolean pointsPerHour()
 	{
 		return false;
-  }
+	}
   
-  @ConfigItem(
+	@ConfigItem(
 		keyName = "totalpoints",
 		name = "Show total NMZ points",
 		description = "Toggles weither or not showing total NMZ points.",
