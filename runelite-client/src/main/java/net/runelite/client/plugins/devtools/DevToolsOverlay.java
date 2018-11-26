@@ -35,6 +35,9 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -66,7 +69,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
-public class DevToolsOverlay extends Overlay
+@Singleton
+class DevToolsOverlay extends Overlay
 {
 	private static final int ITEM_EMPTY = 6512;
 	private static final int ITEM_FILLED = 20594;
@@ -87,6 +91,13 @@ public class DevToolsOverlay extends Overlay
 	private final Client client;
 	private final DevToolsPlugin plugin;
 	private final TooltipManager toolTipManager;
+
+	@Setter
+	@Getter
+	private Widget widget;
+
+	@Setter
+	private int itemIndex = -1;
 
 	@Inject
 	private DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
@@ -435,9 +446,6 @@ public class DevToolsOverlay extends Overlay
 
 	public void renderWidgets(Graphics2D graphics)
 	{
-		Widget widget = plugin.currentWidget;
-		int itemIndex = plugin.itemIndex;
-
 		if (widget == null || widget.isHidden())
 		{
 			return;

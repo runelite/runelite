@@ -61,8 +61,8 @@ class WidgetInspector extends JFrame
 {
 	private final Client client;
 	private final ClientThread clientThread;
-	private final DevToolsPlugin plugin;
 	private final DevToolsConfig config;
+	private final DevToolsOverlay overlay;
 
 	private final JTree widgetTree;
 	private final WidgetInfoTableModel infoTableModel;
@@ -71,13 +71,19 @@ class WidgetInspector extends JFrame
 	private static final Map<Integer, WidgetInfo> widgetIdMap = new HashMap<>();
 
 	@Inject
-	WidgetInspector(DevToolsPlugin plugin, Client client, ClientThread clientThread, WidgetInfoTableModel infoTableModel, DevToolsConfig config, EventBus eventBus)
+	private WidgetInspector(
+		Client client,
+		ClientThread clientThread,
+		WidgetInfoTableModel infoTableModel,
+		DevToolsConfig config,
+		EventBus eventBus,
+		DevToolsOverlay overlay)
 	{
-		this.plugin = plugin;
 		this.client = client;
 		this.clientThread = clientThread;
 		this.infoTableModel = infoTableModel;
 		this.config = config;
+		this.overlay = overlay;
 
 		eventBus.register(this);
 
@@ -90,8 +96,8 @@ class WidgetInspector extends JFrame
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
-				plugin.currentWidget = null;
-				plugin.itemIndex = -1;
+				overlay.setWidget(null);
+				overlay.setItemIndex(-1);
 			}
 		});
 
@@ -107,16 +113,16 @@ class WidgetInspector extends JFrame
 			{
 				WidgetTreeNode node = (WidgetTreeNode) selected;
 				Widget widget = node.getWidget();
-				plugin.currentWidget = widget;
-				plugin.itemIndex = widget.getItemId();
+				overlay.setWidget(widget);
+				overlay.setItemIndex(widget.getItemId());
 				refreshInfo();
 				log.debug("Set widget to {} and item index to {}", widget, widget.getItemId());
 			}
 			else if (selected instanceof WidgetItemNode)
 			{
 				WidgetItemNode node = (WidgetItemNode) selected;
-				plugin.itemIndex = node.getWidgetItem().getIndex();
-				log.debug("Set item index to {}", plugin.itemIndex);
+				overlay.setItemIndex(node.getWidgetItem().getIndex());
+				log.debug("Set item index to {}", node.getWidgetItem().getIndex());
 			}
 		});
 
@@ -145,12 +151,12 @@ class WidgetInspector extends JFrame
 		final JButton revalidateWidget = new JButton("Revalidate");
 		revalidateWidget.addActionListener(ev -> clientThread.invokeLater(() ->
 		{
-			if (plugin.currentWidget == null)
+			if (overlay.getWidget() == null)
 			{
 				return;
 			}
 
-			plugin.currentWidget.revalidate();
+			overlay.getWidget().revalidate();
 		}));
 		bottomPanel.add(revalidateWidget);
 
@@ -175,8 +181,8 @@ class WidgetInspector extends JFrame
 			Widget[] rootWidgets = client.getWidgetRoots();
 			DefaultMutableTreeNode root = new DefaultMutableTreeNode();
 
-			plugin.currentWidget = null;
-			plugin.itemIndex = -1;
+			overlay.setWidget(null);
+			overlay.setItemIndex(-1);
 
 			for (Widget widget : rootWidgets)
 			{
@@ -189,8 +195,8 @@ class WidgetInspector extends JFrame
 
 			SwingUtilities.invokeLater(() ->
 			{
-				plugin.currentWidget = null;
-				plugin.itemIndex = -1;
+				overlay.setWidget(null);
+				overlay.setItemIndex(-1);
 				refreshInfo();
 				widgetTree.setModel(new DefaultTreeModel(root));
 			});
@@ -264,7 +270,7 @@ class WidgetInspector extends JFrame
 
 	private void refreshInfo()
 	{
-		infoTableModel.setWidget(plugin.currentWidget);
+		infoTableModel.setWidget(overlay.getWidget());
 	}
 
 	static WidgetInfo getWidgetInfo(int packedId)

@@ -49,7 +49,6 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -122,10 +121,6 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton detachedCamera;
 	private DevToolsButton widgetInspector;
 	private DevToolsButton varInspector;
-
-	Widget currentWidget;
-	int itemIndex = -1;
-
 	private NavigationButton navButton;
 
 	@Provides
