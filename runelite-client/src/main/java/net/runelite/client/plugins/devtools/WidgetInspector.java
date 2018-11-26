@@ -267,7 +267,7 @@ class WidgetInspector extends JFrame
 		infoTableModel.setWidget(plugin.currentWidget);
 	}
 
-	public static WidgetInfo getWidgetInfo(int packedId)
+	static WidgetInfo getWidgetInfo(int packedId)
 	{
 		if (widgetIdMap.size() == 0)
 		{
@@ -281,5 +281,17 @@ class WidgetInspector extends JFrame
 		}
 
 		return widgetIdMap.get(packedId);
+	}
+
+	public void open()
+	{
+		setVisible(true);
+		toFront();
+		repaint();
+	}
+
+	public void close()
+	{
+		setVisible(false);
 	}
 }

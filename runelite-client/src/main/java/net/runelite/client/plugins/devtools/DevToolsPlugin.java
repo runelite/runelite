@@ -30,11 +30,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
-import java.awt.Font;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
 import java.util.List;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -66,6 +66,7 @@ import org.slf4j.LoggerFactory;
 	tags = {"panel"},
 	developerPlugin = true
 )
+@Getter
 public class DevToolsPlugin extends Plugin
 {
 	private static final List<MenuAction> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuAction.EXAMINE_ITEM,
@@ -98,26 +99,29 @@ public class DevToolsPlugin extends Plugin
 	@Inject
 	private EventBus eventBus;
 
-	private boolean togglePlayers;
-	private boolean toggleNpcs;
-	private boolean toggleGroundItems;
-	private boolean toggleGroundObjects;
-	private boolean toggleGameObjects;
-	private boolean toggleWalls;
-	private boolean toggleDecor;
-	private boolean toggleInventory;
-	private boolean toggleProjectiles;
-	private boolean toggleLocation;
-	private boolean toggleChunkBorders;
-	private boolean toggleMapSquares;
-	private boolean toggleValidMovement;
-	private boolean toggleLineOfSight;
-	private boolean toggleGraphicsObjects;
-	private boolean toggleCamera;
-	private boolean toggleWorldMapLocation;
-	private boolean toggleTileLocation;
-	private boolean toggleInteracting;
-	private boolean toggleExamineInfo;
+	private DevToolsButton players;
+	private DevToolsButton npcs;
+	private DevToolsButton groundItems;
+	private DevToolsButton groundObjects;
+	private DevToolsButton gameObjects;
+	private DevToolsButton graphicsObjects;
+	private DevToolsButton walls;
+	private DevToolsButton decorations;
+	private DevToolsButton inventory;
+	private DevToolsButton projectiles;
+	private DevToolsButton location;
+	private DevToolsButton chunkBorders;
+	private DevToolsButton mapSquares;
+	private DevToolsButton validMovement;
+	private DevToolsButton lineOfSight;
+	private DevToolsButton cameraPosition;
+	private DevToolsButton worldMapLocation ;
+	private DevToolsButton tileLocation;
+	private DevToolsButton interacting;
+	private DevToolsButton examine;
+	private DevToolsButton detachedCamera;
+	private DevToolsButton widgetInspector;
+	private DevToolsButton varInspector;
 
 	Widget currentWidget;
 	int itemIndex = -1;
@@ -133,6 +137,36 @@ public class DevToolsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		players = new DevToolsButton("Players");
+		npcs = new DevToolsButton("NPCs");
+
+		groundItems = new DevToolsButton("Ground Items");
+		groundObjects = new DevToolsButton("Ground Objects");
+		gameObjects = new DevToolsButton("Game Objects");
+		graphicsObjects = new DevToolsButton("Graphics Objects");
+		walls = new DevToolsButton("Walls");
+		decorations = new DevToolsButton("Decorations");
+
+		inventory = new DevToolsButton("Inventory");
+		projectiles = new DevToolsButton("Projectiles");
+
+		location = new DevToolsButton("Location");
+		worldMapLocation = new DevToolsButton("World Map Location");
+		tileLocation = new DevToolsButton("Tile Location");
+		cameraPosition = new DevToolsButton("Camera Position");
+
+		chunkBorders = new DevToolsButton("Chunk Borders");
+		mapSquares = new DevToolsButton("Map Squares");
+
+		lineOfSight = new DevToolsButton("Line Of Sight");
+		validMovement = new DevToolsButton("Valid Movement");
+		interacting = new DevToolsButton("Interacting");
+		examine = new DevToolsButton("Examine");
+
+		detachedCamera = new DevToolsButton("Detached Camera");
+		widgetInspector = new DevToolsButton("Widget Inspector");
+		varInspector = new DevToolsButton("Var Inspector");
+
 		overlayManager.add(overlay);
 		overlayManager.add(locationOverlay);
 		overlayManager.add(sceneOverlay);
@@ -281,7 +315,7 @@ public class DevToolsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!toggleExamineInfo)
+		if (!examine.isActive())
 		{
 			return;
 		}
@@ -315,200 +349,5 @@ public class DevToolsPlugin extends Plugin
 			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", JagexColors.MENU_TARGET));
 			client.setMenuEntries(entries);
 		}
-	}
-
-	void togglePlayers()
-	{
-		togglePlayers = !togglePlayers;
-	}
-
-	void toggleNpcs()
-	{
-		toggleNpcs = !toggleNpcs;
-	}
-
-	void toggleGroundItems()
-	{
-		toggleGroundItems = !toggleGroundItems;
-	}
-
-	void toggleGroundObjects()
-	{
-		toggleGroundObjects = !toggleGroundObjects;
-	}
-
-	void toggleGameObjects()
-	{
-		toggleGameObjects = !toggleGameObjects;
-	}
-
-	void toggleWalls()
-	{
-		toggleWalls = !toggleWalls;
-	}
-
-	void toggleDecor()
-	{
-		toggleDecor = !toggleDecor;
-	}
-
-	void toggleInventory()
-	{
-		toggleInventory = !toggleInventory;
-	}
-
-	void toggleProjectiles()
-	{
-		toggleProjectiles = !toggleProjectiles;
-	}
-
-	void toggleLocation()
-	{
-		toggleLocation = !toggleLocation;
-	}
-
-	void toggleChunkBorders()
-	{
-		toggleChunkBorders = !toggleChunkBorders;
-	}
-
-	void toggleMapSquares()
-	{
-		toggleMapSquares = !toggleMapSquares;
-	}
-
-	void toggleValidMovement()
-	{
-		toggleValidMovement = !toggleValidMovement;
-	}
-
-	void toggleLineOfSight()
-	{
-		toggleLineOfSight = !toggleLineOfSight;
-	}
-
-	void toggleGraphicsObjects()
-	{
-		toggleGraphicsObjects = !toggleGraphicsObjects;
-	}
-
-	void toggleCamera()
-	{
-		toggleCamera = !toggleCamera;
-	}
-
-	void toggleWorldMapLocation()
-	{
-		toggleWorldMapLocation = !toggleWorldMapLocation;
-	}
-
-	void toggleTileLocation()
-	{
-		toggleTileLocation = !toggleTileLocation;
-	}
-
-	void toggleInteracting()
-	{
-		toggleInteracting = !toggleInteracting;
-	}
-
-	void toggleExamineInfo()
-	{
-		toggleExamineInfo = !toggleExamineInfo;
-	}
-
-	boolean isTogglePlayers()
-	{
-		return togglePlayers;
-	}
-
-	boolean isToggleNpcs()
-	{
-		return toggleNpcs;
-	}
-
-	boolean isToggleGroundItems()
-	{
-		return toggleGroundItems;
-	}
-
-	boolean isToggleGroundObjects()
-	{
-		return toggleGroundObjects;
-	}
-
-	boolean isToggleGameObjects()
-	{
-		return toggleGameObjects;
-	}
-
-	boolean isToggleWalls()
-	{
-		return toggleWalls;
-	}
-
-	boolean isToggleDecor()
-	{
-		return toggleDecor;
-	}
-
-	boolean isToggleInventory()
-	{
-		return toggleInventory;
-	}
-
-	boolean isToggleProjectiles()
-	{
-		return toggleProjectiles;
-	}
-
-	boolean isToggleLocation()
-	{
-		return toggleLocation;
-	}
-
-	boolean isToggleChunkBorders()
-	{
-		return toggleChunkBorders;
-	}
-
-	boolean isToggleMapSquares()
-	{
-		return toggleMapSquares;
-	}
-
-	boolean isToggleValidMovement()
-	{
-		return toggleValidMovement;
-	}
-
-	boolean isToggleLineOfSight()
-	{
-		return toggleLineOfSight;
-	}
-
-	boolean isToggleGraphicsObjects()
-	{
-		return toggleGraphicsObjects;
-	}
-
-	boolean isToggleCamera()
-	{
-		return toggleCamera;
-	}
-
-	boolean isToggleWorldMapLocation()
-	{
-		return toggleWorldMapLocation;
-	}
-
-	boolean isToggleTileLocation()
-	{
-		return toggleTileLocation;
-	}
-
-	boolean isToggleInteracting()
-	{
-		return toggleInteracting;
 	}
 }

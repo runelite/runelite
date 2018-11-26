@@ -103,32 +103,32 @@ public class DevToolsOverlay extends Overlay
 	{
 		graphics.setFont(FONT);
 
-		if (plugin.isTogglePlayers())
+		if (plugin.getPlayers().isActive())
 		{
 			renderPlayers(graphics);
 		}
 
-		if (plugin.isToggleNpcs())
+		if (plugin.getNpcs().isActive())
 		{
 			renderNpcs(graphics);
 		}
 
-		if (plugin.isToggleGroundItems() || plugin.isToggleGroundObjects() || plugin.isToggleGameObjects() || plugin.isToggleWalls() || plugin.isToggleDecor() || plugin.isToggleTileLocation())
+		if (plugin.getGroundItems().isActive() || plugin.getGroundObjects().isActive() || plugin.getGameObjects().isActive() || plugin.getWalls().isActive() || plugin.getDecorations().isActive() || plugin.getTileLocation().isActive())
 		{
 			renderTileObjects(graphics);
 		}
 
-		if (plugin.isToggleInventory())
+		if (plugin.getInventory().isActive())
 		{
 			renderInventory(graphics);
 		}
 
-		if (plugin.isToggleProjectiles())
+		if (plugin.getProjectiles().isActive())
 		{
 			renderProjectiles(graphics);
 		}
 
-		if (plugin.isToggleGraphicsObjects())
+		if (plugin.getGraphicsObjects().isActive())
 		{
 			renderGraphicsObjects(graphics);
 		}
@@ -211,32 +211,32 @@ public class DevToolsOverlay extends Overlay
 					continue;
 				}
 
-				if (plugin.isToggleGroundItems())
+				if (plugin.getGroundItems().isActive())
 				{
 					renderGroundItems(graphics, tile, player);
 				}
 
-				if (plugin.isToggleGroundObjects())
+				if (plugin.getGroundObjects().isActive())
 				{
 					renderGroundObject(graphics, tile, player);
 				}
 
-				if (plugin.isToggleGameObjects())
+				if (plugin.getGameObjects().isActive())
 				{
 					renderGameObjects(graphics, tile, player);
 				}
 
-				if (plugin.isToggleWalls())
+				if (plugin.getWalls().isActive())
 				{
 					renderWallObject(graphics, tile, player);
 				}
 
-				if (plugin.isToggleDecor())
+				if (plugin.getDecorations().isActive())
 				{
 					renderDecorObject(graphics, tile, player);
 				}
 
-				if (plugin.isToggleTileLocation())
+				if (plugin.getTileLocation().isActive())
 				{
 					renderTileTooltip(graphics, tile);
 				}
