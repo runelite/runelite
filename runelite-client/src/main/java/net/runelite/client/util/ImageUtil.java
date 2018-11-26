@@ -30,6 +30,7 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.DirectColorModel;
 import java.awt.image.PixelGrabber;
 import java.awt.image.RescaleOp;
 import java.io.IOException;
@@ -426,8 +427,19 @@ public class ImageUtil
 
 		try
 		{
-			new PixelGrabber(image, 0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth())
-				.grabPixels();
+			PixelGrabber g = new PixelGrabber(image, 0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
+			g.setColorModel(new DirectColorModel(32, 0xff0000, 0xff00, 0xff, 0xff000000));
+			g.grabPixels();
+
+			// Make any fully transparent pixels fully black, because the sprite draw routines
+			// check for == 0, not actual transparency
+			for (int i = 0; i < pixels.length; i++)
+			{
+				if ((pixels[i] & 0xFF000000) == 0)
+				{
+					pixels[i] = 0;
+				}
+			}
 		}
 		catch (InterruptedException ex)
 		{
