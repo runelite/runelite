@@ -153,7 +153,7 @@ public interface NightmareZoneConfig extends Config
 	{
 		return false;
 	}
-  
+	
 	@ConfigItem(
 		keyName = "totalpoints",
 		name = "Show total NMZ points",

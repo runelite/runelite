@@ -71,9 +71,9 @@ public class NightmareZonePlugin extends Plugin
 	// This starts as true since you need to get
 	// above the threshold before sending notifications
 	private boolean absorptionNotificationSend = true;
-  private int pointsPerHour = 0;
-  private int gameTime = 0;
-  private long lastTickMillis = 0;
+	private int pointsPerHour = 0;
+	private int gameTime = 0;
+	private long lastTickMillis = 0;
 
 	@Override
 	protected void startUp() throws Exception
@@ -128,7 +128,7 @@ public class NightmareZonePlugin extends Plugin
 	)
 	public void tickSkillTimes()
 	{
-		if(isInNightmareZone())
+		if (isInNightmareZone())
 		{
 			if (lastTickMillis == 0)
 			{
@@ -218,7 +218,7 @@ public class NightmareZonePlugin extends Plugin
 	{
 		return Arrays.equals(client.getMapRegions(), NMZ_MAP_REGION);
 	}
-  
+
 	public int getPointsPerHour()
 	{
 		return pointsPerHour;
