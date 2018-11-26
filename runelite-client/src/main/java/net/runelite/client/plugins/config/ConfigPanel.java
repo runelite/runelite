@@ -73,10 +73,12 @@ import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigInvocationHandler;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
+import net.runelite.client.config.Range;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -128,7 +130,7 @@ public class ConfigPanel extends PluginPanel
 	}
 
 	ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService,
-		RuneLiteConfig runeLiteConfig, ChatColorConfig chatColorConfig)
+				RuneLiteConfig runeLiteConfig, ChatColorConfig chatColorConfig)
 	{
 		super(false);
 		this.pluginManager = pluginManager;
@@ -337,6 +339,35 @@ public class ConfigPanel extends PluginPanel
 				item.add(checkbox, BorderLayout.EAST);
 			}
 
+			if (cid.getType() == Range.class)
+			{
+				Range range = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), Range.class);
+
+				if (range == null)
+				{
+					try
+					{
+						range = (Range) ConfigInvocationHandler.callDefaultMethod(config, cid.getMethod(), null);
+					}
+					catch (Throwable throwable)
+					{
+						log.warn(null, throwable);
+						continue;
+					}
+				}
+
+				Range r = range;
+
+				SpinnerModel model = new SpinnerNumberModel(r.get(), r.getMin(), r.getMax(), 1);
+				JSpinner spinner = new JSpinner(model);
+				Component editor = spinner.getEditor();
+				JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
+				spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
+				spinner.addChangeListener(ce -> changeConfiguration(cd, cid, r.set((int) spinner.getValue())));
+
+				item.add(spinner, BorderLayout.EAST);
+			}
+
 			if (cid.getType() == int.class)
 			{
 				int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
@@ -532,6 +563,11 @@ public class ConfigPanel extends PluginPanel
 
 		revalidate();
 		scrollPane.getVerticalScrollBar().setValue(0);
+	}
+
+	private void changeConfiguration(ConfigDescriptor cd, ConfigItemDescriptor cid, Object o)
+	{
+		configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), o);
 	}
 
 	private void changeConfiguration(PluginListItem listItem, Config config, JComponent component, ConfigDescriptor cd, ConfigItemDescriptor cid)

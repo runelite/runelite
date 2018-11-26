@@ -379,7 +379,8 @@ public class ConfigManager
 			.filter(m -> m.getParameterCount() == 0)
 			.map(m -> new ConfigItemDescriptor(
 				m.getDeclaredAnnotation(ConfigItem.class),
-				m.getReturnType()
+				m.getReturnType(),
+				m
 			))
 			.sorted((a, b) -> ComparisonChain.start()
 				.compare(a.getItem().position(), b.getItem().position())
@@ -514,6 +515,18 @@ public class ConfigManager
 			int mods = Integer.parseInt(splitStr[1]);
 			return new Keybind(code, mods);
 		}
+		if (type == Range.class)
+		{
+			String[] splitStr = str.split(":");
+			if (splitStr.length != 3)
+			{
+				return null;
+			}
+			int value = Integer.parseInt(splitStr[0]);
+			int min = Integer.parseInt(splitStr[1]);
+			int max = Integer.parseInt(splitStr[2]);
+			return new Range(value, min, max);
+		}
 		return str;
 	}
 
@@ -550,6 +563,11 @@ public class ConfigManager
 		{
 			Keybind k = (Keybind) object;
 			return k.getKeyCode() + ":" + k.getModifiers();
+		}
+		if (object instanceof Range)
+		{
+			Range r = (Range) object;
+			return r.getValue() + ":" + r.getMin() + ":" + r.getMax();
 		}
 		return object.toString();
 	}
