@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Nickolaj <https://github.com/fire-proof>
+ * Copyright (c) 2018, Haashi <https://github.com/Haashi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -101,6 +102,12 @@ class NightmareZoneOverlay extends Overlay
 			.left("Points: ")
 			.right(StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)))
 			.build());
+    if(config.pointsPerHour()){
+      panelComponent.getChildren().add(LineComponent.builder()
+        .left("Points/hr: ")
+        .right(StackFormatter.formatNumber(plugin.getPointsPerHour()))
+        .build());
+    }
 
 		return panelComponent.render(graphics);
 	}

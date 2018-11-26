@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Nickolaj <https://github.com/fire-proof>
+ * Copyright (c) 2018, Haashi <https://github.com/Haashi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -142,4 +143,14 @@ public interface NightmareZoneConfig extends Config
 		return Color.RED;
 	}
 
+  @ConfigItem(
+		keyName = "pointsperhour",
+		name = "Show points per hour",
+		description = "Toggles weither or not showing points per hour.",
+		position = 11
+	)
+	default boolean pointsPerHour()
+	{
+		return false;
+  }
 }
