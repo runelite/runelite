@@ -26,7 +26,6 @@ package net.runelite.rs.api;
 
 import java.util.Map;
 import net.runelite.api.Client;
-import net.runelite.api.IndexDataBase;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.World;
 import net.runelite.api.widgets.Widget;
@@ -373,9 +372,53 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("createSprite")
 	RSSpritePixels createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
 
-	@Import("getSpritesAsSpritePixels")
-	@Override
-	RSSpritePixels[] getSprites(IndexDataBase source, int archiveId, int fileId);
+	@Import("decodeSprite")
+	void decodeSprite(byte[] data);
+
+	@Import("indexedSpriteCount")
+	int getIndexedSpriteCount();
+
+	@Import("indexedSpriteWidth")
+	int getIndexedSpriteWidth();
+
+	@Import("indexedSpriteHeight")
+	int getIndexedSpriteHeight();
+
+	@Import("indexedSpriteOffsetXs")
+	int[] getIndexedSpriteOffsetXs();
+
+	@Import("indexedSpriteOffsetXs")
+	void setIndexedSpriteOffsetXs(int[] indexedSpriteOffsetXs);
+
+	@Import("indexedSpriteOffsetYs")
+	int[] getIndexedSpriteOffsetYs();
+
+	@Import("indexedSpriteOffsetYs")
+	void setIndexedSpriteOffsetYs(int[] indexedSpriteOffsetYs);
+
+	@Import("indexSpriteWidths")
+	int[] getIndexSpriteWidths();
+
+	@Import("indexSpriteWidths")
+	void setIndexSpriteWidths(int[] indexSpriteWidths);
+
+	@Import("indexedSpriteHeights")
+	int[] getIndexedSpriteHeights();
+
+	@Import("indexedSpriteHeights")
+	void setIndexedSpriteHeights(int[] indexedSpriteHeights);
+
+	@Import("spritePixels")
+	byte[][] getSpritePixels();
+
+	@Import("spritePixels")
+	void setSpritePixels(byte[][] spritePixels);
+
+	@Import("indexedSpritePalette")
+	int[] getIndexedSpritePalette();
+
+	@Import("indexedSpritePalette")
+	void setIndexSpritePalette(int[] indexSpritePalette);
 
 	@Import("indexSprites")
 	@Override

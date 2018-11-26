@@ -72,21 +72,11 @@ class XpStateSingle
 
 	private int toHourly(int value)
 	{
-		if (skillTime == 0)
-		{
-			return 0;
-		}
-
 		return (int) ((1.0 / (getTimeElapsedInSeconds() / 3600.0)) * value);
 	}
 
 	private long getTimeElapsedInSeconds()
 	{
-		if (skillTime == 0)
-		{
-			return 0;
-		}
-
 		// If the skill started just now, we can divide by near zero, this results in odd behavior.
 		// To prevent that, pretend the skill has been active for a minute (60 seconds)
 		// This will create a lower estimate for the first minute,
@@ -206,7 +196,8 @@ class XpStateSingle
 		}
 		else
 		{
-			// So we have a decent average off the bat, lets populate all values with what we see.
+			// populate all values in our action history array with this first value that we see
+			// so the average value of our action history starts out as this first value we see
 			for (int i = 0; i < action.getActionExps().length; i++)
 			{
 				action.getActionExps()[i] = actionExp;

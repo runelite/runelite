@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,57 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.updatecheck;
 
-import com.google.gson.JsonParseException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+ #define PI 3.1415926535897932384626433832795f
+ #define UNIT PI / 1024.0f
 
-public class UpdateCheckClient
-{
-	private static final Logger logger = LoggerFactory.getLogger(UpdateCheckClient.class);
+ layout(std140) uniform uniforms {
+   int cameraYaw;
+   int cameraPitch;
+   int centerX;
+   int centerY;
+   int zoom;
+   int cameraX;
+   int cameraY;
+   int cameraZ;
+   ivec2 sinCosTable[2048];
+ };
 
-	public boolean isOutdated()
-	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("update-check")
-			.build();
+ struct modelinfo {
+   int offset;   // offset into buffer
+   int uvOffset; // offset into uv buffer
+   int length;   // length in faces
+   int idx;      // write idx in target buffer
+   int flags;    // radius, orientation
+   int x;        // scene position x
+   int y;        // scene position y
+   int z;        // scene position z
+ };
 
-		logger.debug("Built URI: {}", url);
+ layout(std430, binding = 0) readonly buffer modelbuffer_in {
+   modelinfo ol[];
+ };
 
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
+ layout(std430, binding = 1) readonly buffer vertexbuffer_in {
+   ivec4 vb[];
+ };
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
-		{
-			ResponseBody body = response.body();
+ layout(std430, binding = 2) readonly buffer tempvertexbuffer_in {
+   ivec4 tempvb[];
+ };
 
-			InputStream in = body.byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), boolean.class);
-		}
-		catch (JsonParseException | IOException ex)
-		{
-			logger.debug("Unable to update-check", ex);
-			return false;
-		}
-	}
-}
+ layout(std430, binding = 3) writeonly buffer vertex_out {
+   ivec4 vout[];
+ };
+
+ layout(std430, binding = 4) writeonly buffer uv_out {
+   vec4 uvout[];
+ };
+
+ layout(std430, binding = 5) readonly buffer uvbuffer_in {
+   vec4 uv[];
+ };
+
+ layout(std430, binding = 6) readonly buffer tempuvbuffer_in {
+   vec4 tempuv[];
+ };

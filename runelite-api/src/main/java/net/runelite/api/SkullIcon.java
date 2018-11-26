@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.gpu;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+package net.runelite.api;
 
-@ConfigGroup("gpu")
-public interface GpuPluginConfig extends Config
+/**
+ * An enumeration of PK skulls.
+ */
+public enum SkullIcon
 {
-	@ConfigItem(
-		keyName = "drawDistance",
-		name = "Draw Distance",
-		description = "Draw distance",
-		position = 1
-	)
-	default int drawDistance()
-	{
-		return 25;
-	}
-
-	@ConfigItem(
-		keyName = "smoothBanding",
-		name = "Remove Color Banding",
-		description = "Smooths out the color banding that is present in the CPU renderer",
-		position = 2
-	)
-	default boolean smoothBanding()
-	{
-		return false;
-	}
+	/**
+	 * White skull from PVP world or wilderness
+	 */
+	SKULL,
+	/**
+	 * Red skull from Tzhaar Fight Pits
+	 */
+	SKULL_FIGHT_PIT,
+	/**
+	 * Deadman mode sprite carrying one key
+	 */
+	DEAD_MAN_ONE,
+	/**
+	 * Deadman mode sprite carrying two keys
+	 */
+	DEAD_MAN_TWO,
+	/**
+	 * Deadman mode sprite carrying three keys
+	 */
+	DEAD_MAN_THREE,
+	/**
+	 * Deadman mode sprite carrying four keys
+	 */
+	DEAD_MAN_FOUR,
+	/**
+	 * Deadman mode sprite carrying five keys
+	 */
+	DEAD_MAN_FIVE,
 }

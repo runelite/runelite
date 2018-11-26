@@ -54,6 +54,9 @@ public class ZoomPlugin extends Plugin implements KeyListener
 	 */
 	private static final int INNER_ZOOM_LIMIT = 1004;
 
+	private static final int OUTER_CONFIG_ZOOM_LIMIT_MIN = 0;
+	private static final int OUTER_CONFIG_ZOOM_LIMIT_MAX = 400;
+
 	private boolean controlDown;
 	
 	@Inject
@@ -92,6 +95,14 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		if ("innerZoomLimit".equals(event.getEventName()) && zoomConfig.innerLimit())
 		{
 			intStack[intStackSize - 1] = INNER_ZOOM_LIMIT;
+			return;
+		}
+
+		if ("outerZoomLimit".equals(event.getEventName()))
+		{
+			int outerLimit = Math.max(OUTER_CONFIG_ZOOM_LIMIT_MIN, Math.min(OUTER_CONFIG_ZOOM_LIMIT_MAX, zoomConfig.outerLimit()));
+			int outerZoomLimit = 128 - outerLimit;
+			intStack[intStackSize - 1] = outerZoomLimit;
 			return;
 		}
 

@@ -51,6 +51,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 @Slf4j
 public class LoginScreenPlugin extends Plugin implements KeyListener
 {
+	private static final int MAX_USERNAME_LENGTH = 254;
+	private static final int MAX_PASSWORD_LENGTH = 20;
+
 	@Inject
 	private Client client;
 
@@ -178,11 +181,13 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 				// 0 is username, 1 is password
 				if (client.getCurrentLoginField() == 0)
 				{
-					client.setUsername(data);
+					// Truncate data to maximum username length if necessary
+					client.setUsername(data.substring(0, Math.min(data.length(), MAX_USERNAME_LENGTH)));
 				}
 				else
 				{
-					client.setPassword(data);
+					// Truncate data to maximum password length if necessary
+					client.setPassword(data.substring(0, Math.min(data.length(), MAX_PASSWORD_LENGTH)));
 				}
 			}
 			catch (UnsupportedFlavorException | IOException ex)

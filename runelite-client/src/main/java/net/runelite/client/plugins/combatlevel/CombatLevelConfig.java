@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Brett Middle <https://github.com/bmiddle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,30 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.updatecheck;
+package net.runelite.client.plugins.combatlevel;
 
-import java.util.HashMap;
-import java.util.Map;
-import lombok.Getter;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@Getter
-class RSConfig
+@ConfigGroup("combatlevel")
+public interface CombatLevelConfig extends Config
 {
-	private final Map<String, String> appletProperties = new HashMap<>();
-	private final Map<String, String> classLoaderProperties = new HashMap<>();
-
-	String getCodeBase()
+	@ConfigItem(
+		keyName = "showLevelsUntil",
+		name = "Calculate next level",
+		description = "Mouse over the combat level to calculate what skill levels will increase combat."
+	)
+	default boolean showLevelsUntil()
 	{
-		return classLoaderProperties.get("codebase");
-	}
-
-	String getInitialJar()
-	{
-		return classLoaderProperties.get("initial_jar");
-	}
-
-	String getInitialClass()
-	{
-		return classLoaderProperties.get("initial_class").replace(".class", "");
+		return true;
 	}
 }
