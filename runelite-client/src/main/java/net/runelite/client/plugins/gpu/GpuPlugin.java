@@ -47,6 +47,8 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.function.Function;
 import javax.inject.Inject;
+import javax.swing.JOptionPane;
+
 import jogamp.nativewindow.jawt.x11.X11JAWTWindow;
 import jogamp.newt.awt.NewtFactoryAWT;
 import lombok.extern.slf4j.Slf4j;
@@ -84,6 +86,7 @@ import static net.runelite.client.plugins.gpu.GLUtil.glGenVertexArrays;
 import static net.runelite.client.plugins.gpu.GLUtil.inputStreamToString;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.DrawManager;
+import net.runelite.client.util.OSType;
 
 @PluginDescriptor(
 	name = "GPU",
@@ -321,6 +324,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			catch (Throwable e)
 			{
 				log.error("Error starting GPU plugin", e);
+
+				if (OSType.getOSType() == OSType.MacOS)
+				{
+					JOptionPane.showMessageDialog(null, "The GPU plugin does not support macOS.",
+						"Error starting GPU plugin", JOptionPane.ERROR_MESSAGE);
+				}
 
 				try
 				{
