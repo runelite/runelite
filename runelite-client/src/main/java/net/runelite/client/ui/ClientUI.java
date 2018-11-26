@@ -118,7 +118,6 @@ public class ClientUI
 	private final Provider<ClientThread> clientThreadProvider;
 	private final CardLayout cardLayout = new CardLayout();
 	private final Rectangle sidebarButtonPosition = new Rectangle();
-	private final Rectangle sidebarButtonRange = new Rectangle();
 	private boolean withTitleBar;
 	private BufferedImage sidebarOpenIcon;
 	private BufferedImage sidebarClosedIcon;
@@ -632,6 +631,7 @@ public class ClientUI
 
 		final BufferedImage image = sidebarOpen ? sidebarClosedIcon : sidebarOpenIcon;
 
+		Rectangle sidebarButtonRange = new Rectangle(x - 15, 0, image.getWidth() + 5 + 15, client.getRealDimensions().height);
 		Point mousePosition = client.getMouseCanvasPosition();
 		if (sidebarButtonRange.contains(mousePosition.getX(), mousePosition.getY()))
 		{
@@ -640,7 +640,6 @@ public class ClientUI
 
 		// Update button dimensions
 		sidebarButtonPosition.setBounds(x, y, image.getWidth(), image.getHeight());
-		sidebarButtonRange.setBounds(x - 15, 0, image.getWidth() + 5 + 15, client.getRealDimensions().height);
 }
 
 	public GraphicsConfiguration getGraphicsConfiguration()
