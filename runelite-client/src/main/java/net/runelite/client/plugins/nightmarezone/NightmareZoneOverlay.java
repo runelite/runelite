@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
@@ -102,6 +103,12 @@ class NightmareZoneOverlay extends Overlay
 			.left("Points: ")
 			.right(StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)))
 			.build());
+    if(config.totalPoints()){
+      panelComponent.getChildren().add(LineComponent.builder()
+        .left("Total: ")
+        .right(StackFormatter.formatNumber(client.getVar(VarPlayer.NMZ_REWARD_POINTS)))
+        .build());
+    }
     if(config.pointsPerHour()){
       panelComponent.getChildren().add(LineComponent.builder()
         .left("Points/hr: ")

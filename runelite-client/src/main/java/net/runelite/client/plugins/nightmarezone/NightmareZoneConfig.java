@@ -153,4 +153,16 @@ public interface NightmareZoneConfig extends Config
 	{
 		return false;
   }
+  
+  @ConfigItem(
+		keyName = "totalpoints",
+		name = "Show total NMZ points",
+		description = "Toggles weither or not showing total NMZ points.",
+		position = 12
+	)
+	default boolean totalPoints()
+	{
+		return false;
+	}
+
 }
