@@ -41,7 +41,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class TargetWeaknessOverlay extends Overlay
+class TargetWeaknessOverlay extends Overlay
 {
 	private final Client client;
 	private final SlayerConfig config;
@@ -49,7 +49,7 @@ public class TargetWeaknessOverlay extends Overlay
 	private final ItemManager itemManager;
 
 	@Inject
-	TargetWeaknessOverlay(Client client, SlayerConfig config, SlayerPlugin plugin, ItemManager itemManager)
+	private TargetWeaknessOverlay(Client client, SlayerConfig config, SlayerPlugin plugin, ItemManager itemManager)
 	{
 		this.client = client;
 		this.config = config;
@@ -67,6 +67,21 @@ public class TargetWeaknessOverlay extends Overlay
 			return null;
 		}
 
+		Task curTask = Task.getTask(plugin.getTaskName());
+		if (curTask == null)
+		{
+			return null;
+		}
+
+		float threshold = 0f;
+		switch (curTask)
+		{
+			case DESERT_LIZARDS:	threshold = 0.1f;	break;
+			case GARGOYLES:			threshold = 0.086f; break;
+			case ROCKSLUGS:			threshold = 0.185f; break;
+		}
+
+
 		List<NPC> targets = plugin.getHighlightedTargets();
 		for (NPC target : targets)
 		{
@@ -79,24 +94,24 @@ public class TargetWeaknessOverlay extends Overlay
 
 			float currentHealth = healthRatio / healthScale;
 
-			if (target.getName().toLowerCase().contains("lizard") && currentHealth <= 0.1f)
+			if (currentHealth <= threshold)
 			{
-				renderTargetItem(graphics, target, itemManager.getImage(ItemID.ICE_COOLER));
-			}
-			else if (target.getName().toLowerCase().contains("gargoyle") && currentHealth <= 0.086f)
-			{
-				renderTargetItem(graphics, target, itemManager.getImage(ItemID.ROCK_HAMMER));
-			}
-			else if (target.getName().toLowerCase().contains("rockslug") && currentHealth <= 0.185f)
-			{
-				renderTargetItem(graphics, target, itemManager.getImage(ItemID.BAG_OF_SALT));
+				renderTargetItem(graphics, target, curTask);
 			}
 		}
 		return null;
 	}
 
-	private void renderTargetItem(Graphics2D graphics, NPC actor, BufferedImage image)
+	private void renderTargetItem(Graphics2D graphics, NPC actor, Task curTask)
 	{
+		BufferedImage image = null;
+		switch (curTask)
+		{
+			case DESERT_LIZARDS:	image = itemManager.getImage(ItemID.ICE_COOLER);	break;
+			case GARGOYLES:			image = itemManager.getImage(ItemID.ROCK_HAMMER);	break;
+			case ROCKSLUGS:			image = itemManager.getImage(ItemID.BAG_OF_SALT);	break;
+		}
+
 		LocalPoint actorPosition = actor.getLocalLocation();
 		int offset = actor.getLogicalHeight() + 40;
 
