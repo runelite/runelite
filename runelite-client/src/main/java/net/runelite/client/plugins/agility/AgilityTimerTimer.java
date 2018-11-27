@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018, Sebastiaan <https://github.com/ItsSebas>
  * Copyright (c) 2018, Alex Kolpa <https://github.com/AlexKolpa>
  * All rights reserved.
  *
@@ -24,16 +25,22 @@
  */
 package net.runelite.client.plugins.agility;
 
+import lombok.Getter;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import net.runelite.client.ui.overlay.infobox.Timer;
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.Timer;
 
-class AgilityArenaTimer extends Timer
+public class AgilityTimerTimer extends Timer
 {
-	AgilityArenaTimer(Plugin plugin, BufferedImage image)
+	@Getter
+	private final AgilityTimer timer;
+
+	AgilityTimerTimer(AgilityTimer timer, Plugin plugin, BufferedImage image)
 	{
-		super(1, ChronoUnit.MINUTES, image, plugin);
-		setTooltip("Time left until location changes");
+		super(timer.getDuration().toMillis(), ChronoUnit.MILLIS, image, plugin);
+		this.timer = timer;
+		setPriority(InfoBoxPriority.MED);
 	}
 }
