@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,38 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache;
 
-public enum ConfigType
+import com.google.common.io.Files;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Map;
+import net.runelite.cache.definitions.StructDefinition;
+import net.runelite.cache.fs.Store;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class StructManagerTest
 {
-	// types from https://github.com/im-frizzy/OpenRS/blob/master/source/net/openrs/cache/type/ConfigArchive.java
-	UNDERLAY(1),
-	IDENTKIT(3),
-	OVERLAY(4),
-	INV(5),
-	OBJECT(6),
-	ENUM(8),
-	NPC(9),
-	ITEM(10),
-	SEQUENCE(12),
-	SPOTANIM(13),
-	VARBIT(14),
-	VARCLIENT(19),
-	VARCLIENTSTRING(15),
-	VARPLAYER(16),
-	STRUCT(34),
-	AREA(35);
+	private static final Logger logger = LoggerFactory.getLogger(StructManagerTest.class);
 
-	private final int id;
+	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-	ConfigType(int id)
+	@Rule
+	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
+
+	@Test
+	public void test() throws IOException
 	{
-		this.id = id;
-	}
+		File dumpDir = folder.newFolder();
+		int count = 0;
 
-	public int getId()
-	{
-		return id;
+		try (Store store = new Store(StoreLocation.LOCATION))
+		{
+			store.load();
+			StructManager loader = new StructManager(store);
+			loader.load();
+
+			for (Map.Entry<Integer, StructDefinition> struct : loader.getStructs().entrySet())
+			{
+				StructDefinition def = struct.getValue();
+
+				Files.write(gson.toJson(def), new File(dumpDir, struct.getKey() + ".json"), Charset.defaultCharset());
+				++count;
+			}
+		}
+
+		logger.info("Dumped {} structs to {}", count, dumpDir);
 	}
 }
