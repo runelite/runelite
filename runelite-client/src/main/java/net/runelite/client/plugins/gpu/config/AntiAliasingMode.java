@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.gpu;
+package net.runelite.client.plugins.gpu.config;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@ConfigGroup("gpu")
-public interface GpuPluginConfig extends Config
+@Getter
+@RequiredArgsConstructor
+public enum AntiAliasingMode
 {
-	@ConfigItem(
-		keyName = "drawDistance",
-		name = "Draw Distance",
-		description = "Draw distance",
-		position = 1
-	)
-	default int drawDistance()
-	{
-		return 25;
-	}
+	DISABLED("Disabled", 0),
+	MSAA_2("MSAA x2", 2),
+	MSAA_4("MSAA x4", 4),
+	MSAA_8("MSAA x8", 8),
+	MSAA_16("MSAA x16", 16);
 
-	@ConfigItem(
-		keyName = "smoothBanding",
-		name = "Remove Color Banding",
-		description = "Smooths out the color banding that is present in the CPU renderer",
-		position = 2
-	)
-	default boolean smoothBanding()
-	{
-		return false;
-	}
+	private final String name;
+	private final int samples;
 
-	@ConfigItem(
-		keyName = "antiAliasingMode",
-		name = "Anti Aliasing",
-		description = "Configures the anti-aliasing mode",
-		position = 3
-	)
-	default AntiAliasingMode antiAliasingMode()
+	@Override
+	public String toString()
 	{
-		return AntiAliasingMode.DISABLED;
+		return name;
 	}
 }
