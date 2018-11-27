@@ -32,7 +32,7 @@ import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
-public class DevToolsPanel extends PluginPanel
+class DevToolsPanel extends PluginPanel
 {
 	private final Client client;
 	private final DevToolsPlugin plugin;

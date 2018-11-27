@@ -444,7 +444,7 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
-	public void renderWidgets(Graphics2D graphics)
+	private void renderWidgets(Graphics2D graphics)
 	{
 		if (widget == null || widget.isHidden())
 		{
