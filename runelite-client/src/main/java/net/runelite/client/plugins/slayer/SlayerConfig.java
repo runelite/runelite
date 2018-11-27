@@ -106,7 +106,9 @@ public interface SlayerConfig extends Config
 		description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles & Rockslugs)"
 	)
 	default boolean weaknessPrompt()
-	{ return true; }
+	{
+		return true;
+	}
 
 	// Stored data
 	@ConfigItem(

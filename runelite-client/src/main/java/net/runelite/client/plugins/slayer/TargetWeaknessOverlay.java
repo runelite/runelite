@@ -30,7 +30,6 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
