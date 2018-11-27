@@ -480,4 +480,10 @@ public class XpTrackerPlugin extends Plugin
 			pauseSkill(skill, pause);
 		}
 	}
+
+	void setTargetLevel(Skill skill, int level)
+	{
+		xpState.getSkill(skill).setTargetLevel(level);
+		xpPanel.updateSkillExperience(true, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
+	}
 }

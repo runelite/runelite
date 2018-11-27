@@ -27,6 +27,8 @@ package net.runelite.client.plugins.xptracker;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import javax.swing.JOptionPane;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -113,6 +115,10 @@ class XpInfoBox extends JPanel
 		final JMenuItem resetOthers = new JMenuItem("Reset others");
 		resetOthers.addActionListener(e -> xpTrackerPlugin.resetOtherSkillState(skill));
 
+		// Set a target level for this skill
+		final JMenuItem targetLevel = new JMenuItem("Set target level");
+		targetLevel.addActionListener(e -> showTargetLevel(targetLevel, xpTrackerPlugin));
+
 		// Create reset others menu
 		pauseSkill.addActionListener(e -> xpTrackerPlugin.pauseSkill(skill, !paused));
 
@@ -123,6 +129,7 @@ class XpInfoBox extends JPanel
 		popupMenu.add(reset);
 		popupMenu.add(resetOthers);
 		popupMenu.add(pauseSkill);
+		popupMenu.add(targetLevel);
 
 		JLabel skillIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(skill)));
 		skillIcon.setHorizontalAlignment(SwingConstants.CENTER);
@@ -168,6 +175,23 @@ class XpInfoBox extends JPanel
 		progressBar.setComponentPopupMenu(popupMenu);
 
 		add(container, BorderLayout.NORTH);
+	}
+
+	private void showTargetLevel(Component parent, XpTrackerPlugin xpTrackerPlugin)
+	{
+		String strLevel = JOptionPane.showInputDialog(parent, "Target level", null);
+		if (strLevel == null || strLevel.isEmpty())
+		{
+			return;
+		}
+
+		try
+		{
+			xpTrackerPlugin.setTargetLevel(skill, Integer.parseInt(strLevel));
+		}
+		catch (NumberFormatException exc)
+		{
+		}
 	}
 
 	void reset()

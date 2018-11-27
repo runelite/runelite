@@ -53,6 +53,7 @@ class XpStateSingle
 	private long skillTime = 0;
 	private int startLevelExp = 0;
 	private int endLevelExp = 0;
+	private int targetLevel = 0;
 
 	XpAction getXpAction(final XpActionType type)
 	{
@@ -225,9 +226,11 @@ class XpStateSingle
 		if (goalEndXp <= 0 || currentXp > goalEndXp)
 		{
 			int currentLevel = Experience.getLevelForXp(currentXp);
-			endLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL
-				? Experience.getXpForLevel(currentLevel + 1)
-				: Experience.MAX_SKILL_XP;
+			if (targetLevel <= 0 || targetLevel <= currentLevel)
+			{
+				targetLevel = currentLevel + 1;
+			}
+			endLevelExp = getEndLevelExp();
 		}
 		else
 		{
@@ -235,6 +238,13 @@ class XpStateSingle
 		}
 
 		return true;
+	}
+
+	private int getEndLevelExp()
+	{
+		return targetLevel <= Experience.MAX_VIRT_LEVEL
+				? Experience.getXpForLevel(targetLevel)
+				: Experience.MAX_SKILL_XP;
 	}
 
 	public void tick(long delta)
@@ -251,7 +261,7 @@ class XpStateSingle
 	{
 		return XpSnapshotSingle.builder()
 			.startLevel(Experience.getLevelForXp(startLevelExp))
-			.endLevel(Experience.getLevelForXp(endLevelExp))
+			.endLevel(targetLevel)
 			.xpGainedInSession(xpGained)
 			.xpRemainingToGoal(getXpRemaining())
 			.xpPerHour(getXpHr())
@@ -264,5 +274,22 @@ class XpStateSingle
 			.startGoalXp(startLevelExp)
 			.endGoalXp(endLevelExp)
 			.build();
+	}
+
+	public void setTargetLevel(int level)
+	{
+		int currentLevel = Experience.getLevelForXp(getCurrentXp());
+		if (level <= currentLevel)
+		{
+			// set next level
+			targetLevel = currentLevel + 1;
+			return;
+		}
+		else
+		{
+			targetLevel = level;
+		}
+
+		endLevelExp = getEndLevelExp();
 	}
 }
