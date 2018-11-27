@@ -84,6 +84,7 @@ class VarInspector extends JFrame
 	private final static int MAX_LOG_ENTRIES = 10_000;
 
 	private final Client client;
+	private final DevToolsPlugin plugin;
 	private final EventBus eventBus;
 
 	private final JPanel tracker = new JPanel();
@@ -98,10 +99,11 @@ class VarInspector extends JFrame
 	private String[] oldStrVarcs = null;
 
 	@Inject
-	VarInspector(Client client, EventBus eventBus)
+	VarInspector(Client client, EventBus eventBus, DevToolsPlugin plugin)
 	{
 		this.eventBus = eventBus;
 		this.client = client;
+		this.plugin = plugin;
 
 		setTitle("RuneLite Var Inspector");
 		setIconImage(ClientUI.ICON);
@@ -115,6 +117,7 @@ class VarInspector extends JFrame
 			public void windowClosing(WindowEvent e)
 			{
 				close();
+				plugin.getVarInspector().setActive(false);
 			}
 		});
 

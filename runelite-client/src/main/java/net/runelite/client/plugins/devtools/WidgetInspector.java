@@ -63,6 +63,7 @@ class WidgetInspector extends JFrame
 	private final ClientThread clientThread;
 	private final DevToolsConfig config;
 	private final DevToolsOverlay overlay;
+	private final DevToolsPlugin plugin;
 
 	private final JTree widgetTree;
 	private final WidgetInfoTableModel infoTableModel;
@@ -77,13 +78,15 @@ class WidgetInspector extends JFrame
 		WidgetInfoTableModel infoTableModel,
 		DevToolsConfig config,
 		EventBus eventBus,
-		DevToolsOverlay overlay)
+		DevToolsOverlay overlay,
+		DevToolsPlugin plugin)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
 		this.infoTableModel = infoTableModel;
 		this.config = config;
 		this.overlay = overlay;
+		this.plugin = plugin;
 
 		eventBus.register(this);
 
@@ -96,8 +99,8 @@ class WidgetInspector extends JFrame
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
-				overlay.setWidget(null);
-				overlay.setItemIndex(-1);
+				close();
+				plugin.getWidgetInspector().setActive(false);
 			}
 		});
 
@@ -298,6 +301,8 @@ class WidgetInspector extends JFrame
 
 	public void close()
 	{
+		overlay.setWidget(null);
+		overlay.setItemIndex(-1);
 		setVisible(false);
 	}
 }
