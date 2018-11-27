@@ -67,12 +67,13 @@ class TargetWeaknessOverlay extends Overlay
 		}
 
 		Task curTask = Task.getTask(plugin.getTaskName());
-		if (curTask == null || curTask.getWeaknessThreshold() < 0)
+		if (curTask == null || curTask.getWeaknessThreshold() < 0 || curTask.getWeaknessItem() < 0)
 		{
 			return null;
 		}
 
 		float threshold = curTask.getWeaknessThreshold();
+		BufferedImage image = itemManager.getImage(curTask.getWeaknessItem());
 
 		List<NPC> targets = plugin.getHighlightedTargets();
 		for (NPC target : targets)
@@ -88,19 +89,14 @@ class TargetWeaknessOverlay extends Overlay
 
 			if (currentHealth <= threshold)
 			{
-				renderTargetItem(graphics, target, curTask);
+				renderTargetItem(graphics, target, image);
 			}
 		}
 		return null;
 	}
 
-	private void renderTargetItem(Graphics2D graphics, NPC actor, Task curTask)
+	private void renderTargetItem(Graphics2D graphics, NPC actor, BufferedImage image)
 	{
-		if (curTask.getWeaknessItem() < 0)
-		{
-			return;
-		}
-		BufferedImage image = itemManager.getImage(curTask.getWeaknessItem());
 		LocalPoint actorPosition = actor.getLocalLocation();
 		int offset = actor.getLogicalHeight() + 40;
 
