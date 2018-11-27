@@ -87,27 +87,27 @@ public class SceneOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.isToggleChunkBorders())
+		if (plugin.getChunkBorders().isActive())
 		{
 			renderChunkBorders(graphics);
 		}
 
-		if (plugin.isToggleMapSquares())
+		if (plugin.getMapSquares().isActive())
 		{
 			renderMapSquares(graphics);
 		}
 
-		if (plugin.isToggleLineOfSight())
+		if (plugin.getLineOfSight().isActive())
 		{
 			renderLineOfSight(graphics);
 		}
 
-		if (plugin.isToggleValidMovement())
+		if (plugin.getValidMovement().isActive())
 		{
 			renderValidMovement(graphics);
 		}
 
-		if (plugin.isToggleInteracting())
+		if (plugin.getInteracting().isActive())
 		{
 			renderInteracting(graphics);
 		}
