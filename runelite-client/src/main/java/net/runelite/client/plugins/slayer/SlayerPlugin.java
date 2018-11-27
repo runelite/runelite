@@ -139,6 +139,9 @@ public class SlayerPlugin extends Plugin
 	private TargetClickboxOverlay targetClickboxOverlay;
 
 	@Inject
+	private TargetWeaknessOverlay targetWeaknessOverlay;
+
+	@Inject
 	private TargetMinimapOverlay targetMinimapOverlay;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -181,6 +184,7 @@ public class SlayerPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(targetClickboxOverlay);
+		overlayManager.add(targetWeaknessOverlay);
 		overlayManager.add(targetMinimapOverlay);
 
 		if (client.getGameState() == GameState.LOGGED_IN
@@ -200,6 +204,7 @@ public class SlayerPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(targetClickboxOverlay);
+		overlayManager.remove(targetWeaknessOverlay);
 		overlayManager.remove(targetMinimapOverlay);
 		removeCounter();
 		highlightedTargets.clear();
