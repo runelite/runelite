@@ -25,13 +25,20 @@
 package net.runelite.client.plugins.statusbars;
 
 import javax.inject.Inject;
+
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import net.runelite.api.Client;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.itemstats.ItemStatPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
+
+import java.time.Duration;
+import java.time.Instant;
 
 @PluginDescriptor(
 	name = "Status Bars",
@@ -42,26 +49,56 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class StatusBarsPlugin extends Plugin
 {
 	@Inject
-	private StatusBarsOverlay overlay;
+	private Client client;
+
+	@Inject
+	private StatusBarsConfig statusBarsConfig;
+
+	@Inject
+	private StatusBarsOverlay statusBarsOverlay;
 
 	@Inject
 	private OverlayManager overlayManager;
 
+	private Instant lastHitsplat;
+
+
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(overlay);
+		overlayManager.add(statusBarsOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(overlay);
+		overlayManager.remove(statusBarsOverlay);
 	}
 
 	@Provides
 	StatusBarsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(StatusBarsConfig.class);
+	}
+
+	boolean outOfCombat() {
+		if (lastHitsplat == null)
+		{
+			return true;
+		}
+
+		final Duration waitDuration = Duration.ofSeconds(statusBarsConfig.getHideAfterDelay());
+		return Instant.now().compareTo(lastHitsplat.plus(waitDuration)) >= 0;
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied event)
+	{
+		if (event.getActor() != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		lastHitsplat = Instant.now();
 	}
 }

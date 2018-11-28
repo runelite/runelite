@@ -34,7 +34,7 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "enableCounter",
 		name = "Show hitpoints & prayer counter",
-		description = "Shows current amount of hitpoints & prayer on the status bars"
+		description = "Shows current amount of hitpoints & prayer on the status bars."
 	)
 	default boolean enableCounter()
 	{
@@ -59,5 +59,15 @@ public interface StatusBarsConfig extends Config
 	default boolean enableRestorationBars()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			keyName = "hideAfterDelay",
+			name = "Hide the status bars after",
+			description = "Hides the status bars when the player is out of combat for X seconds. 0 always shows status bars."
+	)
+	default int getHideAfterDelay()
+	{
+		return 0;
 	}
 }
