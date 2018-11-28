@@ -35,7 +35,6 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -43,8 +42,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class AgilityOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE = 2350;
-
 	private final Client client;
 	private final AgilityPlugin plugin;
 	private final AgilityConfig config;
@@ -62,7 +59,6 @@ class AgilityOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 		Point mousePosition = client.getMouseCanvasPosition();
 		final List<Tile> marksOfGrace = plugin.getMarksOfGrace();
 		plugin.getObstacles().forEach((object, tile) ->
@@ -73,8 +69,7 @@ class AgilityOverlay extends Overlay
 				return;
 			}
 
-			if (tile.getPlane() == client.getPlane()
-				&& object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+			if (tile.getPlane() == client.getPlane())
 			{
 				// This assumes that the obstacle is not clickable.
 				if (Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()))
@@ -117,8 +112,7 @@ class AgilityOverlay extends Overlay
 		{
 			for (Tile markOfGraceTile : marksOfGrace)
 			{
-				if (markOfGraceTile.getPlane() == client.getPlane() && markOfGraceTile.getItemLayer() != null
-						&& markOfGraceTile.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+				if (markOfGraceTile.getPlane() == client.getPlane() && markOfGraceTile.getItemLayer() != null)
 				{
 					final Polygon poly = markOfGraceTile.getItemLayer().getCanvasTilePoly();
 

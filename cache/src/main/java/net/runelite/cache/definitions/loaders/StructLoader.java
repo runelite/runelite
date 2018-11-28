@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,38 +22,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.definitions.loaders;
 
-package net.runelite.cache;
+import java.util.HashMap;
+import net.runelite.cache.definitions.StructDefinition;
+import net.runelite.cache.io.InputStream;
 
-public enum ConfigType
+public class StructLoader
 {
-	// types from https://github.com/im-frizzy/OpenRS/blob/master/source/net/openrs/cache/type/ConfigArchive.java
-	UNDERLAY(1),
-	IDENTKIT(3),
-	OVERLAY(4),
-	INV(5),
-	OBJECT(6),
-	ENUM(8),
-	NPC(9),
-	ITEM(10),
-	SEQUENCE(12),
-	SPOTANIM(13),
-	VARBIT(14),
-	VARCLIENT(19),
-	VARCLIENTSTRING(15),
-	VARPLAYER(16),
-	STRUCT(34),
-	AREA(35);
 
-	private final int id;
-
-	ConfigType(int id)
+	public StructDefinition load(int id, byte[] b)
 	{
-		this.id = id;
+		StructDefinition def = new StructDefinition();
+		InputStream is = new InputStream(b);
+
+		while (true)
+		{
+			int opcode = is.readUnsignedByte();
+			if (opcode == 0)
+			{
+				break;
+			}
+
+			this.decodeValues(opcode, def, is);
+		}
+
+		return def;
 	}
 
-	public int getId()
+	private void decodeValues(int opcode, StructDefinition def, InputStream stream)
 	{
-		return id;
+		if (opcode == 249)
+		{
+			int length = stream.readUnsignedByte();
+
+			def.params = new HashMap<>(length);
+
+			for (int i = 0; i < length; i++)
+			{
+				boolean isString = stream.readUnsignedByte() == 1;
+				int key = stream.read24BitInt();
+				Object value;
+
+				if (isString)
+				{
+					value = stream.readString();
+				}
+				else
+				{
+					value = stream.readInt();
+				}
+
+				def.params.put(key, value);
+			}
+		}
 	}
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,68 +24,61 @@
  */
 package net.runelite.cache;
 
-import com.google.common.io.Files;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import net.runelite.cache.definitions.EnumDefinition;
-import net.runelite.cache.definitions.loaders.EnumLoader;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import net.runelite.cache.definitions.StructDefinition;
+import net.runelite.cache.definitions.loaders.StructLoader;
+import net.runelite.cache.definitions.providers.StructProvider;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class EnumDumperTest
+public class StructManager implements StructProvider
 {
-	private static final Logger logger = LoggerFactory.getLogger(EnumDumperTest.class);
+	private final Store store;
+	private final Map<Integer, StructDefinition> structs = new HashMap<>();
 
-	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	@Test
-	public void test() throws IOException
+	public StructManager(Store store)
 	{
-		File dumpDir = folder.newFolder();
-		int count = 0;
+		this.store = store;
+	}
 
-		try (Store store = new Store(StoreLocation.LOCATION))
+	public void load() throws IOException
+	{
+		StructLoader loader = new StructLoader();
+
+		Storage storage = store.getStorage();
+		Index index = store.getIndex(IndexType.CONFIGS);
+		Archive archive = index.getArchive(ConfigType.STRUCT.getId());
+
+		byte[] archiveData = storage.loadArchive(archive);
+		ArchiveFiles files = archive.getFiles(archiveData);
+
+		for (FSFile f : files.getFiles())
 		{
-			store.load();
-
-			Storage storage = store.getStorage();
-			Index index = store.getIndex(IndexType.CONFIGS);
-			Archive archive = index.getArchive(ConfigType.ENUM.getId());
-
-			byte[] archiveData = storage.loadArchive(archive);
-			ArchiveFiles files = archive.getFiles(archiveData);
-
-			EnumLoader loader = new EnumLoader();
-
-			for (FSFile file : files.getFiles())
-			{
-				byte[] b = file.getContents();
-
-				EnumDefinition def = loader.load(file.getFileId(), b);
-
-				if (def != null)
-				{
-					Files.write(gson.toJson(def), new File(dumpDir, file.getFileId() + ".json"), Charset.defaultCharset());
-					++count;
-				}
-			}
+			StructDefinition def = loader.load(f.getFileId(), f.getContents());
+			structs.put(f.getFileId(), def);
 		}
+	}
 
-		logger.info("Dumped {} enums to {}", count, dumpDir);
+	public Map<Integer, StructDefinition> getStructs()
+	{
+		return Collections.unmodifiableMap(structs);
+	}
+
+	public StructDefinition getStruct(int structId)
+	{
+		return structs.get(structId);
+	}
+
+	@Override
+	public StructDefinition provide(int structId)
+	{
+		return getStruct(structId);
 	}
 }

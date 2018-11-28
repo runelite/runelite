@@ -43,12 +43,12 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "combatidle",
-		name = "Combat Idle Notifications",
-		description = "Configures if out of combat notifications are enabled",
+		keyName = "interactionidle",
+		name = "Idle Interaction Notifications",
+		description = "Configures if idle interaction notifications are enabled e.g. combat, fishing",
 		position = 2
 	)
-	default boolean combatIdle()
+	default boolean interactionIdle()
 	{
 		return true;
 	}
@@ -107,5 +107,4 @@ public interface IdleNotifierConfig extends Config
 	{
 		return 0;
 	}
-
 }

@@ -188,7 +188,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationFocused",
 		name = "Send notifications when focused",
-		description = "Toggles idle notifications for when the client is focused",
+		description = "Toggles all notifications for when the client is focused",
 		position = 25
 	)
 	default boolean sendNotificationsWhenFocused()
