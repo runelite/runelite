@@ -63,7 +63,7 @@ public class GroundItemInputListener extends MouseAdapter implements KeyListener
 				plugin.setHotKeyPressed(true);
 				lastPress = null;
 			}
-			else if (lastPress != null && !plugin.isHotKeyPressed() && Duration.between(lastPress, Instant.now()).compareTo(Duration.ofMillis(config.doubleTapDelay())) < 0)
+			else if (lastPress != null && !plugin.isHotKeyPressed() && config.doubleTapDelay() > 0 && Duration.between(lastPress, Instant.now()).compareTo(Duration.ofMillis(config.doubleTapDelay())) < 0)
 			{
 				plugin.setHideAll(true);
 				lastPress = null;
