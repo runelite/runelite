@@ -114,7 +114,7 @@ class Obstacles
 		// Yanille
 		CASTLE_WALL, HOLE_16520, WALL_17047,
 		// Observatory
-		NULL_31852,
+		NULL_31849,
 		// Gnome Stronghold
 		ROCKS_16534, ROCKS_16535,
 		// Karamja Volcano
