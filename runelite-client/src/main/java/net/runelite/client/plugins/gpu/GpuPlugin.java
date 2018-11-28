@@ -1154,8 +1154,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	 */
 	private Image screenshot()
 	{
-		final int width = client.getCanvasWidth();
-		final int height = client.getCanvasHeight();
+		int width  = client.getCanvasWidth();
+		int height = client.getCanvasHeight();
+
+		if (client.isStretchedEnabled())
+		{
+			Dimension dim = client.getStretchedDimensions();
+			width  = dim.width;
+			height = dim.height;
+		}
 
 		ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4)
 			.order(ByteOrder.nativeOrder());
