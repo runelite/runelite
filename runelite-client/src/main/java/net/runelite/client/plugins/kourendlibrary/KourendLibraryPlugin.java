@@ -49,8 +49,8 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
@@ -62,6 +62,8 @@ import net.runelite.client.util.ImageUtil;
 @Slf4j
 public class KourendLibraryPlugin extends Plugin
 {
+	private static final Pattern BOOK_EXTRACTOR = Pattern.compile("'<col=0000ff>(.*)</col>'");
+	private static final Pattern TAG_MATCHER = Pattern.compile("(<[^>]*>)");
 	final static int REGION = 6459;
 
 	final static boolean debug = false;
@@ -90,7 +92,6 @@ public class KourendLibraryPlugin extends Plugin
 	private KourendLibraryPanel panel;
 	private NavigationButton navButton;
 	private boolean buttonAttached = false;
-
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
 
@@ -103,7 +104,6 @@ public class KourendLibraryPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(overlay);
 		Book.fillImages(itemManager);
 
 		panel = injector.getInstance(KourendLibraryPanel.class);
@@ -118,10 +118,23 @@ public class KourendLibraryPlugin extends Plugin
 			.panel(panel)
 			.build();
 
+		overlayManager.add(overlay);
+
 		if (!config.hideButton())
 		{
 			clientToolbar.addNavigation(navButton);
 		}
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		overlay.setHidden(true);
+		overlayManager.remove(overlay);
+		clientToolbar.removeNavigation(navButton);
+		buttonAttached = false;
+		lastBookcaseClick = null;
+		lastBookcaseAnimatedOn = null;
 	}
 
 	@Subscribe
@@ -154,25 +167,18 @@ public class KourendLibraryPlugin extends Plugin
 		});
 	}
 
-	@Override
-	protected void shutDown()
-	{
-		overlayManager.remove(overlay);
-
-		clientToolbar.removeNavigation(navButton);
-	}
-
 	@Subscribe
-	private void onMenuOptionClicked(MenuOptionClicked menuOpt)
+	public void onMenuOptionClicked(MenuOptionClicked menuOpt)
 	{
 		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getMenuTarget().contains("Bookshelf"))
 		{
 			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
+			overlay.setHidden(false);
 		}
 	}
 
 	@Subscribe
-	private void onAnimationChanged(AnimationChanged anim)
+	public void onAnimationChanged(AnimationChanged anim)
 	{
 		if (anim.getActor() == client.getLocalPlayer() && anim.getActor().getAnimation() == AnimationID.LOOKING_INTO)
 		{
@@ -194,11 +200,8 @@ public class KourendLibraryPlugin extends Plugin
 		}
 	}
 
-	private static final Pattern BOOK_EXTRACTOR = Pattern.compile("'<col=0000ff>(.*)</col>'");
-	private static final Pattern TAG_MATCHER = Pattern.compile("(<[^>]*>)");
-
 	@Subscribe
-	void onTick(GameTick tick)
+	public void onGameTick(GameTick tick)
 	{
 		boolean inRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == REGION;
 		if (config.hideButton() && inRegion != buttonAttached)
@@ -255,6 +258,8 @@ public class KourendLibraryPlugin extends Plugin
 						log.warn("Book '{}' is not recognised", bookName);
 						return;
 					}
+
+					overlay.setHidden(false);
 					library.setCustomer(cust, book);
 					panel.update();
 				}

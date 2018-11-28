@@ -84,7 +84,7 @@ public class NightmareZonePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void updateConfig(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		overlay.updateConfig();
 	}
@@ -149,6 +149,13 @@ public class NightmareZonePlugin extends Plugin
 			else if (msg.contains("Zapper"))
 			{
 				if (config.zapperNotification())
+				{
+					notifier.notify(msg);
+				}
+			}
+			else if (msg.contains("Ultimate force"))
+			{
+				if (config.ultimateForceNotification())
 				{
 					notifier.notify(msg);
 				}

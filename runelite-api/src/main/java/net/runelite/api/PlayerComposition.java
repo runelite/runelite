@@ -59,6 +59,13 @@ public interface PlayerComposition
 	 */
 	int getKitId(KitType type);
 
+	/**
+	 * Update the cached hash value for player equipment
+	 * Used to cache the player models based on equipment.
+	 */
+	@VisibleForDevtools
+	void setHash();
+
 	@VisibleForDevtools
 	void setTransformedNpcId(int id);
 }

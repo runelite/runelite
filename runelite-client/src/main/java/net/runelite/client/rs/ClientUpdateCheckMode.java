@@ -28,6 +28,5 @@ public enum ClientUpdateCheckMode
 {
 	AUTO,
 	NONE,
-	VANILLA,
-	RUNELITE
+	VANILLA
 }

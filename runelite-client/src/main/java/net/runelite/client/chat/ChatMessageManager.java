@@ -35,7 +35,6 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -46,9 +45,12 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ResizeableChanged;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.SetMessage;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 @Singleton
@@ -56,18 +58,20 @@ public class ChatMessageManager
 {
 	private final Multimap<ChatMessageType, ChatColor> colorCache = HashMultimap.create();
 	private final Client client;
-	private final ScheduledExecutorService executor;
 	private final ChatColorConfig chatColorConfig;
+	private final ClientThread clientThread;
 	private int transparencyVarbit = -1;
 	private final Queue<QueuedMessage> queuedMessages = new ConcurrentLinkedQueue<>();
 
 	@Inject
-	private ChatMessageManager(Client client, ScheduledExecutorService executor,
-		ChatColorConfig chatColorConfig)
+	private ChatMessageManager(
+		Client client,
+		ChatColorConfig chatColorConfig,
+		ClientThread clientThread)
 	{
 		this.client = client;
-		this.executor = executor;
 		this.chatColorConfig = chatColorConfig;
+		this.clientThread = clientThread;
 	}
 
 	@Subscribe
@@ -83,7 +87,7 @@ public class ChatMessageManager
 	}
 
 	@Subscribe
-	public void onResizableChanged(ResizeableChanged event)
+	public void onResizeableChanged(ResizeableChanged event)
 	{
 		refreshAll();
 	}
@@ -94,7 +98,7 @@ public class ChatMessageManager
 		if (event.getGroup().equals("textrecolor"))
 		{
 			loadColors();
-			refreshAll();
+			clientThread.invokeLater(this::refreshAll);
 		}
 	}
 
@@ -164,6 +168,37 @@ public class ChatMessageManager
 		}
 	}
 
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
+	{
+		final String eventName = scriptCallbackEvent.getEventName();
+
+		switch (eventName)
+		{
+			case "privateChatFrom":
+			case "privateChatTo":
+			case "privateChatSplitFrom":
+			case "privateChatSplitTo":
+				break;
+			default:
+				return;
+		}
+
+		boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+		Color usernameColor = isChatboxTransparent ? chatColorConfig.transparentPrivateUsernames() : chatColorConfig.opaquePrivateUsernames();
+		if (usernameColor == null)
+		{
+			return;
+		}
+
+		final String[] stringStack = client.getStringStack();
+		final int stringStackSize = client.getStringStackSize();
+
+		// Stack is: To/From playername :
+		String toFrom = stringStack[stringStackSize - 3];
+		stringStack[stringStackSize - 3] = ColorUtil.prependColorTag(toFrom, usernameColor);
+	}
+
 	private static Color getDefaultColor(ChatMessageType type, boolean transparent)
 	{
 		if (!transparent)
@@ -172,17 +207,18 @@ public class ChatMessageManager
 			{
 				case PUBLIC:
 				case PUBLIC_MOD:
-					return Color.decode("#0000FF");
+					return JagexColors.CHAT_PUBLIC_TEXT_OPAQUE_BACKGROUND;
 				case PRIVATE_MESSAGE_SENT:
+				case PRIVATE_MESSAGE_RECEIVED_MOD:
 				case PRIVATE_MESSAGE_RECEIVED:
-					return Color.decode("#00FFFF");
+					return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_OPAQUE_BACKGROUND;
 				case CLANCHAT:
-					return Color.decode("#7F0000");
+					return JagexColors.CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
 				case EXAMINE_ITEM:
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
 				case GAME:
-					return Color.decode("#000000");
+					return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
 			}
 		}
 		else
@@ -191,17 +227,18 @@ public class ChatMessageManager
 			{
 				case PUBLIC:
 				case PUBLIC_MOD:
-					return Color.decode("#9090FF");
+					return JagexColors.CHAT_PUBLIC_TEXT_TRANSPARENT_BACKGROUND;
 				case PRIVATE_MESSAGE_SENT:
+				case PRIVATE_MESSAGE_RECEIVED_MOD:
 				case PRIVATE_MESSAGE_RECEIVED:
-					return Color.decode("#00FFFF");
+					return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_TRANSPARENT_BACKGROUND;
 				case CLANCHAT:
-					return Color.decode("#7F0000");
+					return JagexColors.CHAT_CLAN_TEXT_TRANSPARENT_BACKGROUND;
 				case EXAMINE_ITEM:
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
 				case GAME:
-					return Color.decode("#FFFFFF");
+					return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
 			}
 		}
 
@@ -259,11 +296,15 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaquePrivateMessageReceived(), false),
 				ChatMessageType.PRIVATE_MESSAGE_RECEIVED);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaquePrivateMessageReceived(), false),
+				ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
 		if (chatColorConfig.opaquePrivateMessageReceivedHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaquePrivateMessageReceivedHighlight(), false),
 				ChatMessageType.PRIVATE_MESSAGE_RECEIVED);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaquePrivateMessageReceivedHighlight(), false),
+				ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
 		if (chatColorConfig.opaqueClanChatInfo() != null)
 		{
@@ -383,11 +424,15 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentPrivateMessageReceived(), true),
 				ChatMessageType.PRIVATE_MESSAGE_RECEIVED);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentPrivateMessageReceived(), true),
+				ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
 		if (chatColorConfig.transparentPrivateMessageReceivedHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentPrivateMessageReceivedHighlight(), true),
 				ChatMessageType.PRIVATE_MESSAGE_RECEIVED);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentPrivateMessageReceivedHighlight(), true),
+				ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
 		if (chatColorConfig.transparentClanChatInfo() != null)
 		{
@@ -529,7 +574,7 @@ public class ChatMessageManager
 			return;
 		}
 
-		final boolean transparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) != 0;
+		final boolean transparent = client.isResized() && transparencyVarbit != 0;
 		final Collection<ChatColor> chatColors = colorCache.get(target.getType());
 
 		// If we do not have any colors cached, simply set clean message
@@ -560,15 +605,12 @@ public class ChatMessageManager
 
 	private void refreshAll()
 	{
-		executor.submit(() ->
-		{
-			client.getChatLineMap().values().stream()
-				.filter(Objects::nonNull)
-				.flatMap(clb -> Arrays.stream(clb.getLines()))
-				.filter(Objects::nonNull)
-				.forEach(this::update);
+		client.getChatLineMap().values().stream()
+			.filter(Objects::nonNull)
+			.flatMap(clb -> Arrays.stream(clb.getLines()))
+			.filter(Objects::nonNull)
+			.forEach(this::update);
 
-			client.refreshChat();
-		});
+		client.refreshChat();
 	}
 }

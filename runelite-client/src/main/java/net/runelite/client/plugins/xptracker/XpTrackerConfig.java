@@ -33,6 +33,17 @@ public interface XpTrackerConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
+		keyName = "hideMaxed",
+		name = "Hide maxed skills",
+		description = "Stop globes from showing up for level 99 skills "
+	)
+	default boolean hideMaxed()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 1,
 		keyName = "logoutPausing",
 		name = "Pause on Logout",
 		description = "Configures whether skills should pause on logout"
@@ -43,7 +54,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
+		position = 2,
 		keyName = "pauseSkillAfter",
 		name = "Auto pause after",
 		description = "Configures how many minutes passes before pausing a skill while in game and there's no XP, 0 means disabled"

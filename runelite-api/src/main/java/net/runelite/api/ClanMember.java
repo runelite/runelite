@@ -27,7 +27,7 @@ package net.runelite.api;
 /**
  * Represents a clan member.
  */
-public interface ClanMember
+public interface ClanMember extends ChatPlayer
 {
 	/**
 	 * Gets the username of the member.

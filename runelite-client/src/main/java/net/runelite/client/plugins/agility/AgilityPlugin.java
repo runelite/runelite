@@ -26,12 +26,14 @@ package net.runelite.client.plugins.agility;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import javax.inject.Inject;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
@@ -72,6 +74,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	description = "Show helpful information about agility courses and obstacles",
 	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
 )
+@Slf4j
 public class AgilityPlugin extends Plugin
 {
 	private static final int AGILITY_ARENA_REGION_ID = 11157;
@@ -80,7 +83,7 @@ public class AgilityPlugin extends Plugin
 	private final Map<TileObject, Tile> obstacles = new HashMap<>();
 
 	@Getter
-	private Tile markOfGrace;
+	private final List<Tile> marksOfGrace = new ArrayList<>();
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -130,13 +133,13 @@ public class AgilityPlugin extends Plugin
 	{
 		overlayManager.remove(agilityOverlay);
 		overlayManager.remove(lapCounterOverlay);
-		markOfGrace = null;
+		marksOfGrace.clear();
 		obstacles.clear();
 		session = null;
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -147,7 +150,7 @@ public class AgilityPlugin extends Plugin
 				removeAgilityArenaTimer();
 				break;
 			case LOADING:
-				markOfGrace = null;
+				marksOfGrace.clear();
 				obstacles.clear();
 				break;
 			case LOGGED_IN:
@@ -218,19 +221,15 @@ public class AgilityPlugin extends Plugin
 
 		if (item.getId() == ItemID.MARK_OF_GRACE)
 		{
-			markOfGrace = tile;
+			marksOfGrace.add(tile);
 		}
 	}
 
 	@Subscribe
 	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
-		final Item item = itemDespawned.getItem();
-
-		if (item.getId() == ItemID.MARK_OF_GRACE)
-		{
-			markOfGrace = null;
-		}
+		final Tile tile = itemDespawned.getTile();
+		marksOfGrace.remove(tile);
 	}
 
 	@Subscribe
@@ -238,24 +237,26 @@ public class AgilityPlugin extends Plugin
 	{
 		if (isInAgilityArena())
 		{
+			// Hint arrow has no plane, and always returns the current plane
 			WorldPoint newTicketPosition = client.getHintArrowPoint();
-			if (!Objects.equals(lastArenaTicketPosition, newTicketPosition))
-			{
-				// We don't want to notify when players first enter the course
-				if (lastArenaTicketPosition != null && newTicketPosition != null)
-				{
-					if (config.notifyAgilityArena())
-					{
-						notifier.notify("Ticket location changed");
-					}
+			WorldPoint oldTickPosition = lastArenaTicketPosition;
 
-					if (config.showAgilityArenaTimer())
-					{
-						showNewAgilityArenaTimer();
-					}
+			lastArenaTicketPosition = newTicketPosition;
+
+			if (oldTickPosition != null && newTicketPosition != null
+				&& (oldTickPosition.getX() != newTicketPosition.getX() || oldTickPosition.getY() != newTicketPosition.getY()))
+			{
+				log.debug("Ticked position moved from {} to {}", oldTickPosition, newTicketPosition);
+
+				if (config.notifyAgilityArena())
+				{
+					notifier.notify("Ticket location changed");
 				}
 
-				lastArenaTicketPosition = newTicketPosition;
+				if (config.showAgilityArenaTimer())
+				{
+					showNewAgilityArenaTimer();
+				}
 			}
 		}
 	}
@@ -296,7 +297,7 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectDeSpawned(GameObjectDespawned event)
+	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGameObject(), null);
 	}
@@ -314,7 +315,7 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGroundObjectDeSpawned(GroundObjectDespawned event)
+	public void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGroundObject(), null);
 	}
@@ -332,7 +333,7 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWallObjectDeSpawned(WallObjectDespawned event)
+	public void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getWallObject(), null);
 	}
@@ -350,7 +351,7 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onDecorativeObjectDeSpawned(DecorativeObjectDespawned event)
+	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getDecorativeObject(), null);
 	}

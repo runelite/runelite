@@ -181,24 +181,22 @@ public interface Actor extends Renderable
 	 * Gets the point at which an image should be drawn, relative to the
 	 * current location with the given z-axis offset.
 	 *
-	 * @param graphics engine graphics
 	 * @param image the image to draw
 	 * @param zOffset the z-axis offset
 	 * @return the image drawing location
 	 */
-	Point getCanvasImageLocation(Graphics2D graphics, BufferedImage image, int zOffset);
+	Point getCanvasImageLocation(BufferedImage image, int zOffset);
 
 
 	/**
 	 * Gets the point at which a sprite should be drawn, relative to the
 	 * current location with the given z-axis offset.
 	 *
-	 * @param graphics engine graphics
 	 * @param sprite the sprite to draw
 	 * @param zOffset the z-axis offset
 	 * @return the sprite drawing location
 	 */
-	Point getCanvasSpriteLocation(Graphics2D graphics, SpritePixels sprite, int zOffset);
+	Point getCanvasSpriteLocation(SpritePixels sprite, int zOffset);
 
 	/**
 	 * Gets a point on the canvas of where this actors mini-map indicator

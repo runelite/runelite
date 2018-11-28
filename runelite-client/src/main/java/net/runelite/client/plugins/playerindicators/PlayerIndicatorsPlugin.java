@@ -41,7 +41,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Player Indicators",
@@ -94,7 +93,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdd(MenuEntryAdded menuEntryAdded)
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
 		int type = menuEntryAdded.getType();
 
@@ -113,7 +112,8 @@ public class PlayerIndicatorsPlugin extends Plugin
 			|| type == PLAYER_FIFTH_OPTION.getId()
 			|| type == PLAYER_SIXTH_OPTION.getId()
 			|| type == PLAYER_SEVENTH_OPTION.getId()
-			|| type == PLAYER_EIGTH_OPTION.getId())
+			|| type == PLAYER_EIGTH_OPTION.getId()
+			|| type == RUNELITE.getId())
 		{
 			final Player localPlayer = client.getLocalPlayer();
 			Player[] players = client.getCachedPlayers();
@@ -162,8 +162,14 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 				if (color != null && config.colorPlayerMenu())
 				{
-					// strip out existing tags (color, etc.)
-					String target = Text.removeTags(lastEntry.getTarget());
+					// strip out existing <col...
+					String target = lastEntry.getTarget();
+					int idx = target.indexOf('>');
+					if (idx != -1)
+					{
+						target = target.substring(idx + 1);
+					}
+
 					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
 				}
 

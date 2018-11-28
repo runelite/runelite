@@ -32,21 +32,54 @@ import net.runelite.client.config.ConfigItem;
 public interface FishingConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showIcons",
-		name = "Display Fish icons",
-		description = "Configures whether icons or text is displayed",
-		position = 1
+		position = 0,
+		keyName = "onlyCurrent",
+		name = "Display only currently fished fish",
+		description = "Configures whether only current fished fish's fishing spots are displayed"
 	)
-	default boolean showIcons()
+	default boolean onlyCurrentSpot()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "showTiles",
+		name = "Display spot tiles",
+		description = "Configures whether tiles for fishing spots are highlighted"
+	)
+	default boolean showSpotTiles()
 	{
 		return true;
 	}
 
 	@ConfigItem(
+		position = 2,
+		keyName = "showIcons",
+		name = "Display spot icons",
+		description = "Configures whether icons for fishing spots are displayed"
+	)
+	default boolean showSpotIcons()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "showNames",
+		name = "Display spot names",
+		description = "Configures whether names for fishing spots are displayed"
+	)
+	default boolean showSpotNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "statTimeout",
 		name = "Reset stats (minutes)",
-		description = "Configures the time until statistic is reset",
-		position = 2
+		description = "The time until fishing session data is reset in minutes."
 	)
 	default int statTimeout()
 	{
@@ -54,164 +87,10 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showShrimp",
-		name = "Show Shrimp/Anchovies",
-		description = "Configures whether shrimp/anchovies is displayed",
-		position = 3
-	)
-	default boolean showShrimp()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showLobster",
-		name = "Show Lobster/Swordfish/Tuna",
-		description = "Configures whether lobster/swordfish/tuna is displayed",
-		position = 4
-	)
-	default boolean showLobster()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showShark",
-		name = "Show Shark",
-		description = "Configures whether shark is displayed",
-		position = 5
-	)
-	default boolean showShark()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showMonkfish",
-		name = "Show Monkfish",
-		description = "Configures whether monkfish displayed",
-		position = 6
-	)
-	default boolean showMonkfish()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showSalmon",
-		name = "Show Salmon/Trout",
-		description = "Configures whether salmon/trout is displayed",
-		position = 7
-	)
-	default boolean showSalmon()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showBarb",
-		name = "Show Barbarian fish",
-		description = "Configures whether barbarian fish is displayed",
-		position = 8
-	)
-	default boolean showBarb()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showAngler",
-		name = "Show Anglerfish",
-		description = "Configures whether anglerfish is displayed",
-		position = 9
-	)
-	default boolean showAngler()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showMinnow",
-		name = "Show Minnow fish",
-		description = "Configures whether minnow fish is displayed",
-		position = 10
-	)
-	default boolean showMinnow()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showInfernalEel",
-		name = "Show Infernal Eel",
-		description = "Configures whether infernal eel is displayed",
-		position = 11
-	)
-	default boolean showInfernalEel()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showSacredEel",
-		name = "Show Sacred Eel",
-		description = "Configures whether sacred eel is displayed",
-		position = 12
-	)
-	default boolean showSacredEel()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showCaveEel",
-		name = "Show Cave Eel",
-		description = "Configures whether cave eel is displayed",
-		position = 13
-	)
-	default boolean showCaveEel()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showSlimyEel",
-		name = "Show Slimy Eel",
-		description = "Configures whether slimy eel is displayed",
-		position = 14
-	)
-	default boolean showSlimyEel()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showKarambwanji",
-		name = "Show Karambwanji",
-		description = "Configures whether karambwanji is displayed",
-		position = 15
-	)
-	default boolean showKarambwanji()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showKarambwan",
-		name = "Show Karambwan",
-		description = "Configures whether karambwan is displayed",
-		position = 16
-	)
-	default boolean showKarambwan()
-	{
-		return true;
-	}
-
-	@ConfigItem(
+		position = 5,
 		keyName = "showFishingStats",
 		name = "Show Fishing session stats",
-		description = "Configures whether to display the fishing session stats",
-		position = 17
+		description = "Display the fishing session stats."
 	)
 	default boolean showFishingStats()
 	{
@@ -219,12 +98,23 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 6,
 		keyName = "showMinnowOverlay",
 		name = "Show Minnow Movement overlay",
-		description = "Configures whether to display the minnow progress pie overlay",
-		position = 18
+		description = "Display the minnow progress pie overlay."
 	)
 	default boolean showMinnowOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "trawlerNotification",
+		name = "Trawler activity notification",
+		description = "Send a notification when fishing trawler activity drops below 15%."
+	)
+	default boolean trawlerNotification()
 	{
 		return true;
 	}

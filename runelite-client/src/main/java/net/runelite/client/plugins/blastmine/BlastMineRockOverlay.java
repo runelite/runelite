@@ -130,7 +130,7 @@ public class BlastMineRockOverlay extends Overlay
 			return;
 		}
 
-		Point loc = Perspective.getCanvasImageLocation(client, graphics, rock.getGameObject().getLocalLocation(), icon, 150);
+		Point loc = Perspective.getCanvasImageLocation(client, rock.getGameObject().getLocalLocation(), icon, 150);
 
 		if (loc != null)
 		{
@@ -145,7 +145,7 @@ public class BlastMineRockOverlay extends Overlay
 			return;
 		}
 
-		Point loc = Perspective.worldToCanvas(client, rock.getGameObject().getX(), rock.getGameObject().getY(), client.getPlane(), 150);
+		Point loc = Perspective.localToCanvas(client, rock.getGameObject().getLocalLocation(), rock.getGameObject().getPlane(), 150);
 
 		if (loc != null)
 		{

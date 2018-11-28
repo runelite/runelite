@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,68 +29,45 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.Player;
 import net.runelite.api.Prayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.timers.GameTimer.ABYSSAL_SIRE_STUN;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUS;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUSPLUS;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIPOISON;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOM;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOMPLUS;
-import static net.runelite.client.plugins.timers.GameTimer.BIND;
-import static net.runelite.client.plugins.timers.GameTimer.CANNON;
-import static net.runelite.client.plugins.timers.GameTimer.CHARGE;
-import static net.runelite.client.plugins.timers.GameTimer.ENTANGLE;
-import static net.runelite.client.plugins.timers.GameTimer.EXANTIFIRE;
-import static net.runelite.client.plugins.timers.GameTimer.EXSUPERANTIFIRE;
-import static net.runelite.client.plugins.timers.GameTimer.FULLTB;
-import static net.runelite.client.plugins.timers.GameTimer.GOD_WARS_ALTAR;
-import static net.runelite.client.plugins.timers.GameTimer.HALFBIND;
-import static net.runelite.client.plugins.timers.GameTimer.HALFENTANGLE;
-import static net.runelite.client.plugins.timers.GameTimer.HALFSNARE;
-import static net.runelite.client.plugins.timers.GameTimer.HALFTB;
-import static net.runelite.client.plugins.timers.GameTimer.ICEBARRAGE;
-import static net.runelite.client.plugins.timers.GameTimer.ICEBLITZ;
-import static net.runelite.client.plugins.timers.GameTimer.ICEBURST;
-import static net.runelite.client.plugins.timers.GameTimer.ICERUSH;
-import static net.runelite.client.plugins.timers.GameTimer.IMBUEDHEART;
-import static net.runelite.client.plugins.timers.GameTimer.MAGICIMBUE;
-import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
-import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD_RAID;
-import static net.runelite.client.plugins.timers.GameTimer.PRAYER_ENHANCE;
-import static net.runelite.client.plugins.timers.GameTimer.SANFEW;
-import static net.runelite.client.plugins.timers.GameTimer.SNARE;
-import static net.runelite.client.plugins.timers.GameTimer.STAFF_OF_THE_DEAD;
-import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
-import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
-import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIPOISON;
-import static net.runelite.client.plugins.timers.GameTimer.VENGEANCE;
-import static net.runelite.client.plugins.timers.GameTimer.VENGEANCEOTHER;
+import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -97,6 +75,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	description = "Show various timers in an infobox",
 	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
 )
+@Slf4j
 public class TimersPlugin extends Plugin
 {
 	private static final String ANTIFIRE_DRINK_MESSAGE = "You drink some of your antifire potion.";
@@ -107,8 +86,10 @@ public class TimersPlugin extends Plugin
 	private static final String CANNON_REPAIR_MESSAGE = "You repair your cannon, restoring it to working order.";
 	private static final String CHARGE_EXPIRED_MESSAGE = "<col=ef1020>Your magical charge fades away.</col>";
 	private static final String CHARGE_MESSAGE = "<col=ef1020>You feel charged with magic power.</col>";
+	private static final String DEADMAN_HALF_TELEBLOCK_MESSAGE = "<col=4f006f>A teleblock spell has been cast on you. It will expire in 1 minute, 15 seconds.</col>";
 	private static final String EXTENDED_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended antifire potion.";
 	private static final String EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended super antifire potion.";
+	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
 	private static final String FULL_TELEBLOCK_MESSAGE = "<col=4f006f>A teleblock spell has been cast on you. It will expire in 5 minutes, 0 seconds.</col>";
 	private static final String GOD_WARS_ALTAR_MESSAGE = "you recharge your prayer.";
 	private static final String HALF_TELEBLOCK_MESSAGE = "<col=4f006f>A teleblock spell has been cast on you. It will expire in 2 minutes, 30 seconds.</col>";
@@ -119,12 +100,22 @@ public class TimersPlugin extends Plugin
 	private static final String STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE = "Your protection fades away";
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
 	private static final String STAMINA_DRINK_MESSAGE = "You drink some of your stamina potion.";
+	private static final String STAMINA_SHARED_DRINK_MESSAGE = "You have received a shared dose of stamina potion.";
 	private static final String STAMINA_EXPIRED_MESSAGE = "<col=8f4808>Your stamina potion has expired.</col>";
 	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
 
+	private TimerTimer freezeTimer;
+	private int freezeTime = -1; // time frozen, in game ticks
+
 	private int lastRaidVarb;
+	private int lastWildernessVarb;
+	private WorldPoint lastPoint;
+	private TeleportWidget lastTeleportClicked;
+	private int lastAnimation;
+	private boolean loggedInRace;
+	private boolean widgetHiddenChangedOnPvpWorld;
 
 	@Inject
 	private ItemManager itemManager;
@@ -151,10 +142,16 @@ public class TimersPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer);
+		lastRaidVarb = -1;
+		lastPoint = null;
+		lastTeleportClicked = null;
+		lastAnimation = -1;
+		loggedInRace = false;
+		widgetHiddenChangedOnPvpWorld = false;
 	}
 
 	@Subscribe
-	public void onVarbitChange(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		int raidVarb = client.getVar(Varbits.IN_RAID);
 		if (lastRaidVarb != raidVarb)
@@ -163,48 +160,57 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(PRAYER_ENHANCE);
 			lastRaidVarb = raidVarb;
 		}
+
+		int inWilderness = client.getVar(Varbits.IN_WILDERNESS);
+
+		if (lastWildernessVarb != inWilderness
+			&& client.getGameState() == GameState.LOGGED_IN
+			&& !loggedInRace)
+		{
+			if (!WorldType.isPvpWorld(client.getWorldType())
+				&& inWilderness == 0)
+			{
+				log.debug("Left wilderness in non-PVP world, clearing Teleblock timer.");
+				removeTbTimers();
+			}
+
+			lastWildernessVarb = inWilderness;
+		}
 	}
 
 	@Subscribe
-	public void updateConfig(ConfigChanged event)
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
-		if (!config.showAntidotePlus())
+		Widget widget = event.getWidget();
+		if (WorldType.isPvpWorld(client.getWorldType())
+			&& WidgetInfo.TO_GROUP(widget.getId()) == WidgetInfo.PVP_CONTAINER.getGroupId())
+		{
+			widgetHiddenChangedOnPvpWorld = true;
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!config.showHomeMinigameTeleports())
+		{
+			removeGameTimer(HOME_TELEPORT);
+			removeGameTimer(MINIGAME_TELEPORT);
+		}
+
+		if (!config.showAntiPoison())
 		{
 			removeGameTimer(ANTIDOTEPLUS);
-		}
-
-		if (!config.showAntidotePlusPlus())
-		{
 			removeGameTimer(ANTIDOTEPLUSPLUS);
-		}
-
-		if (!config.showSanfew())
-		{
 			removeGameTimer(SANFEW);
-		}
-
-		if (!config.showAntiVenom())
-		{
 			removeGameTimer(ANTIVENOM);
-		}
-
-		if (!config.showAntiVenomPlus())
-		{
 			removeGameTimer(ANTIVENOMPLUS);
 		}
 
 		if (!config.showAntiFire())
 		{
 			removeGameTimer(ANTIFIRE);
-		}
-
-		if (!config.showExAntiFire())
-		{
 			removeGameTimer(EXANTIFIRE);
-		}
-
-		if (!config.showSuperAntiFire())
-		{
 			removeGameTimer(SUPERANTIFIRE);
 		}
 
@@ -252,17 +258,12 @@ public class TimersPlugin extends Plugin
 		if (!config.showVengeance())
 		{
 			removeGameTimer(VENGEANCE);
-		}
-
-		if (!config.showVengeanceOther())
-		{
 			removeGameTimer(VENGEANCEOTHER);
 		}
 
 		if (!config.showTeleblock())
 		{
-			removeGameTimer(FULLTB);
-			removeGameTimer(HALFTB);
+			removeTbTimers();
 		}
 
 		if (!config.showFreezes())
@@ -283,7 +284,7 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (config.showAntidotePlusPlus()
+		if (config.showAntiPoison()
 			&& event.getMenuOption().contains("Drink")
 			&& (event.getId() == ItemID.ANTIDOTE1_5958
 			|| event.getId() == ItemID.ANTIDOTE2_5956
@@ -295,7 +296,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showAntidotePlus()
+		if (config.showAntiPoison()
 			&& event.getMenuOption().contains("Drink")
 			&& (event.getId() == ItemID.ANTIDOTE1
 			|| event.getId() == ItemID.ANTIDOTE2
@@ -318,7 +319,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showSuperantipoison()
+		if (config.showAntiPoison()
 			&& event.getMenuOption().contains("Drink")
 			&& (event.getId() == ItemID.SUPERANTIPOISON1
 			|| event.getId() == ItemID.SUPERANTIPOISON2
@@ -338,6 +339,12 @@ public class TimersPlugin extends Plugin
 			createGameTimer(STAMINA);
 			return;
 		}
+
+		TeleportWidget teleportWidget = TeleportWidget.of(event.getWidgetId());
+		if (teleportWidget != null)
+		{
+			lastTeleportClicked = teleportWidget;
+		}
 	}
 
 	@Subscribe
@@ -349,12 +356,12 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showStamina() && event.getMessage().equals(STAMINA_DRINK_MESSAGE))
+		if (config.showStamina() && (event.getMessage().equals(STAMINA_DRINK_MESSAGE) || event.getMessage().equals(STAMINA_SHARED_DRINK_MESSAGE)))
 		{
 			createGameTimer(STAMINA);
 		}
 
-		if (event.getMessage().equals(STAMINA_EXPIRED_MESSAGE))
+		if (config.showStamina() && event.getMessage().equals(STAMINA_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(STAMINA);
 		}
@@ -364,7 +371,7 @@ public class TimersPlugin extends Plugin
 			createGameTimer(ANTIFIRE);
 		}
 
-		if (config.showExAntiFire() && event.getMessage().equals(EXTENDED_ANTIFIRE_DRINK_MESSAGE))
+		if (config.showAntiFire() && event.getMessage().equals(EXTENDED_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(EXANTIFIRE);
 		}
@@ -374,12 +381,12 @@ public class TimersPlugin extends Plugin
 			createGameTimer(GOD_WARS_ALTAR);
 		}
 
-		if (config.showExSuperAntifire() && event.getMessage().equals(EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE))
+		if (config.showAntiFire() && event.getMessage().equals(EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(EXSUPERANTIFIRE);
 		}
 
-		if (event.getMessage().equals(ANTIFIRE_EXPIRED_MESSAGE))
+		if (config.showAntiFire() && event.getMessage().equals(ANTIFIRE_EXPIRED_MESSAGE))
 		{
 			//they have the same expired message
 			removeGameTimer(ANTIFIRE);
@@ -404,12 +411,12 @@ public class TimersPlugin extends Plugin
 			createGameTimer(CANNON);
 		}
 
-		if (event.getMessage().equals(CANNON_PICKUP_MESSAGE))
+		if (config.showCannon() && event.getMessage().equals(CANNON_PICKUP_MESSAGE))
 		{
 			removeGameTimer(CANNON);
 		}
 
-		if (config.showAntiVenomPlus() && event.getMessage().contains(SUPER_ANTIVENOM_DRINK_MESSAGE))
+		if (config.showAntiPoison() && event.getMessage().contains(SUPER_ANTIVENOM_DRINK_MESSAGE))
 		{
 			createGameTimer(ANTIVENOMPLUS);
 		}
@@ -431,30 +438,42 @@ public class TimersPlugin extends Plugin
 
 		if (config.showTeleblock() && event.getMessage().equals(HALF_TELEBLOCK_MESSAGE))
 		{
-			createGameTimer(HALFTB);
+			if (client.getWorldType().contains(WorldType.DEADMAN))
+			{
+				createGameTimer(DMM_FULLTB);
+			}
+			else
+			{
+				createGameTimer(HALFTB);
+			}
 		}
 
-		if (config.showSuperAntiFire() && event.getMessage().contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
+		if (config.showTeleblock() && event.getMessage().equals(DEADMAN_HALF_TELEBLOCK_MESSAGE))
+		{
+			createGameTimer(DMM_HALFTB);
+		}
+
+		if (config.showAntiFire() && event.getMessage().contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(SUPERANTIFIRE);
 		}
 
-		if (event.getMessage().equals(SUPER_ANTIFIRE_EXPIRED_MESSAGE))
+		if (config.showAntiFire() && event.getMessage().equals(SUPER_ANTIFIRE_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(SUPERANTIFIRE);
 		}
 
-		if (event.getMessage().equals(IMBUED_HEART_READY_MESSAGE))
+		if (config.showImbuedHeart() && event.getMessage().equals(IMBUED_HEART_READY_MESSAGE))
 		{
 			removeGameTimer(IMBUEDHEART);
 		}
 
-		if (config.showAntiVenom() && event.getMessage().contains(ANTIVENOM_DRINK_MESSAGE))
+		if (config.showAntiPoison() && event.getMessage().contains(ANTIVENOM_DRINK_MESSAGE))
 		{
 			createGameTimer(ANTIVENOM);
 		}
 
-		if (config.showSanfew() && event.getMessage().contains(SANFEW_SERUM_DRINK_MESSAGE))
+		if (config.showAntiPoison() && event.getMessage().contains(SANFEW_SERUM_DRINK_MESSAGE))
 		{
 			createGameTimer(SANFEW);
 		}
@@ -482,6 +501,64 @@ public class TimersPlugin extends Plugin
 		if (config.showStaffOfTheDead() && event.getMessage().contains(STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(STAFF_OF_THE_DEAD);
+		}
+
+		if (config.showFreezes() && event.getMessage().equals(FROZEN_MESSAGE))
+		{
+			freezeTimer = createGameTimer(ICEBARRAGE);
+			freezeTime = client.getTickCount();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		loggedInRace = false;
+
+		Player player = client.getLocalPlayer();
+		WorldPoint currentWorldPoint = player.getWorldLocation();
+
+		if (freezeTimer != null)
+		{
+			// assume movement means unfrozen
+			if (freezeTime != client.getTickCount()
+				&& !currentWorldPoint.equals(lastPoint))
+			{
+				removeGameTimer(freezeTimer.getTimer());
+				freezeTimer = null;
+			}
+		}
+
+		lastPoint = currentWorldPoint;
+
+		if (!widgetHiddenChangedOnPvpWorld)
+		{
+			return;
+		}
+
+		widgetHiddenChangedOnPvpWorld = false;
+
+		Widget widget = client.getWidget(PVP_WORLD_SAFE_ZONE);
+		if (widget != null
+			&& !widget.isSelfHidden())
+		{
+			log.debug("Entered safe zone in PVP world, clearing Teleblock timer.");
+			removeTbTimers();
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		switch (gameStateChanged.getGameState())
+		{
+			case HOPPING:
+			case LOGIN_SCREEN:
+				removeTbTimers();
+				break;
+			case LOGGED_IN:
+				loggedInRace = true;
+				break;
 		}
 	}
 
@@ -521,12 +598,29 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showVengeanceOther()
+		if (config.showVengeance()
 			&& actor.getAnimation() == AnimationID.ENERGY_TRANSFER_VENGEANCE_OTHER
 			&& actor.getInteracting().getGraphic() == VENGEANCEOTHER.getGraphicId())
 		{
 			createGameTimer(VENGEANCEOTHER);
 		}
+
+		if (config.showHomeMinigameTeleports()
+			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
+			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
+			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6))
+		{
+			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
+			{
+				createGameTimer(HOME_TELEPORT);
+			}
+			else if (lastTeleportClicked == TeleportWidget.MINIGAME_TELEPORT)
+			{
+				createGameTimer(MINIGAME_TELEPORT);
+			}
+		}
+
+		lastAnimation = client.getLocalPlayer().getAnimation();
 	}
 
 
@@ -554,7 +648,8 @@ public class TimersPlugin extends Plugin
 		{
 			if (actor.getGraphic() == BIND.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFBIND);
 				}
@@ -566,7 +661,8 @@ public class TimersPlugin extends Plugin
 
 			if (actor.getGraphic() == SNARE.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFSNARE);
 				}
@@ -578,7 +674,8 @@ public class TimersPlugin extends Plugin
 
 			if (actor.getGraphic() == ENTANGLE.getGraphicId())
 			{
-				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC))
+				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
 				{
 					createGameTimer(HALFENTANGLE);
 				}
@@ -588,24 +685,26 @@ public class TimersPlugin extends Plugin
 				}
 			}
 
-			if (actor.getGraphic() == ICERUSH.getGraphicId())
+			// downgrade freeze based on graphic, if at the same tick as the freeze message
+			if (freezeTime == client.getTickCount())
 			{
-				createGameTimer(ICERUSH);
-			}
+				if (actor.getGraphic() == ICERUSH.getGraphicId())
+				{
+					removeGameTimer(ICEBARRAGE);
+					freezeTimer = createGameTimer(ICERUSH);
+				}
 
-			if (actor.getGraphic() == ICEBURST.getGraphicId())
-			{
-				createGameTimer(ICEBURST);
-			}
+				if (actor.getGraphic() == ICEBURST.getGraphicId())
+				{
+					removeGameTimer(ICEBARRAGE);
+					freezeTimer = createGameTimer(ICEBURST);
+				}
 
-			if (actor.getGraphic() == ICEBLITZ.getGraphicId())
-			{
-				createGameTimer(ICEBLITZ);
-			}
-
-			if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
-			{
-				createGameTimer(ICEBARRAGE);
+				if (actor.getGraphic() == ICEBLITZ.getGraphicId())
+				{
+					removeGameTimer(ICEBARRAGE);
+					freezeTimer = createGameTimer(ICEBLITZ);
+				}
 			}
 		}
 	}
@@ -669,7 +768,13 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	private void createGameTimer(GameTimer timer)
+	@Subscribe
+	public void onLocalPlayerDeath(LocalPlayerDeath event)
+	{
+		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer().isRemovedOnDeath());
+	}
+
+	private TimerTimer createGameTimer(final GameTimer timer)
 	{
 		removeGameTimer(timer);
 
@@ -677,10 +782,19 @@ public class TimersPlugin extends Plugin
 		TimerTimer t = new TimerTimer(timer, this, image);
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);
+		return t;
 	}
 
 	private void removeGameTimer(GameTimer timer)
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
+	}
+
+	private void removeTbTimers()
+	{
+		removeGameTimer(FULLTB);
+		removeGameTimer(HALFTB);
+		removeGameTimer(DMM_FULLTB);
+		removeGameTimer(DMM_HALFTB);
 	}
 }

@@ -64,6 +64,7 @@ import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
@@ -117,7 +118,7 @@ public class ScreenshotPlugin extends Plugin
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
-
+	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
@@ -273,12 +274,21 @@ public class ScreenshotPlugin extends Plugin
 		{
 			// "You have completed The Corsair Curse!"
 			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
-			fileName = text.substring(19, text.length() - 1);
+			fileName = "Quest(" + text.substring(19, text.length() - 1) + ")";
 		}
 
 		if (fileName != null)
 		{
 			takeScreenshot(fileName);
+		}
+	}
+
+	@Subscribe
+	public void onLocalPlayerDeath(LocalPlayerDeath death)
+	{
+		if (config.screenshotPlayerDeath())
+		{
+			takeScreenshot("Death " + format(new Date()));
 		}
 	}
 
@@ -343,6 +353,18 @@ public class ScreenshotPlugin extends Plugin
 		{
 			String fileName = "Kill " + format(new Date());
 			takeScreenshot(fileName);
+		}
+
+		if (config.screenshotBossKills() )
+		{
+			Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage);
+			if (m.matches())
+			{
+				String bossName = m.group(1);
+				String bossKillcount = m.group(2);
+				String fileName = bossName + "(" + bossKillcount + ")";
+				takeScreenshot(fileName);
+			}
 		}
 	}
 
@@ -480,7 +502,7 @@ public class ScreenshotPlugin extends Plugin
 	 *
 	 * @param fileName    Filename to use, without file extension.
 	 */
-	void takeScreenshot(String fileName)
+	private void takeScreenshot(String fileName)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{

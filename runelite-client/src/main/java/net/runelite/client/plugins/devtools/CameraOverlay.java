@@ -52,7 +52,7 @@ public class CameraOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isToggleCamera())
+		if (!plugin.getCameraPosition().isActive())
 		{
 			return null;
 		}

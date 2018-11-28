@@ -24,7 +24,6 @@
  */
 package net.runelite.client.util;
 
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 import static org.junit.Assert.assertEquals;
@@ -81,20 +80,20 @@ public class StackFormatterTest
 	{
 		assertEquals("0", StackFormatter.quantityToStackSize(0));
 		assertEquals("999", StackFormatter.quantityToStackSize(999));
-		assertEquals(NumberFormat.getIntegerInstance().format(1000), StackFormatter.quantityToStackSize(1000));
-		assertEquals(NumberFormat.getIntegerInstance().format(9450), StackFormatter.quantityToStackSize(9450));
-		assertEquals(NumberFormat.getNumberInstance().format(14.5) + "K", StackFormatter.quantityToStackSize(14_500));
-		assertEquals(NumberFormat.getNumberInstance().format(99.9) + "K", StackFormatter.quantityToStackSize(99_920));
+		assertEquals("1,000", StackFormatter.quantityToStackSize(1000));
+		assertEquals("9,450", StackFormatter.quantityToStackSize(9450));
+		assertEquals("14.5K", StackFormatter.quantityToStackSize(14_500));
+		assertEquals("99.9K", StackFormatter.quantityToStackSize(99_920));
 		assertEquals("100K", StackFormatter.quantityToStackSize(100_000));
 		assertEquals("10M", StackFormatter.quantityToStackSize(10_000_000));
-		assertEquals(NumberFormat.getNumberInstance().format(2.14) + "B", StackFormatter.quantityToStackSize(Integer.MAX_VALUE));
+		assertEquals("2.14B", StackFormatter.quantityToStackSize(Integer.MAX_VALUE));
 		assertEquals("100B", StackFormatter.quantityToStackSize(100_000_000_000L));
 
 		assertEquals("0", StackFormatter.quantityToStackSize(-0));
 		assertEquals("-400", StackFormatter.quantityToStackSize(-400));
 		assertEquals("-400K", StackFormatter.quantityToStackSize(-400_000));
 		assertEquals("-40M", StackFormatter.quantityToStackSize(-40_000_000));
-		assertEquals(NumberFormat.getNumberInstance().format(-2.14) + "B", StackFormatter.quantityToStackSize(Integer.MIN_VALUE));
+		assertEquals("-2.14B", StackFormatter.quantityToStackSize(Integer.MIN_VALUE));
 		assertEquals("-400B", StackFormatter.quantityToStackSize(-400_000_000_000L));
 	}
 
@@ -104,15 +103,15 @@ public class StackFormatterTest
 		assertEquals(0, StackFormatter.stackSizeToQuantity("0"));
 		assertEquals(907, StackFormatter.stackSizeToQuantity("907"));
 		assertEquals(1200, StackFormatter.stackSizeToQuantity("1200"));
-		assertEquals(10_500, StackFormatter.stackSizeToQuantity(NumberFormat.getNumberInstance().format(10_500)));
-		assertEquals(10_500, StackFormatter.stackSizeToQuantity(NumberFormat.getNumberInstance().format(10.5) + "K"));
-		assertEquals(33_560_000, StackFormatter.stackSizeToQuantity(NumberFormat.getNumberInstance().format(33.56) + "M"));
+		assertEquals(10_500, StackFormatter.stackSizeToQuantity("10,500"));
+		assertEquals(10_500, StackFormatter.stackSizeToQuantity("10.5K"));
+		assertEquals(33_560_000, StackFormatter.stackSizeToQuantity("33.56M"));
 		assertEquals(2_000_000_000, StackFormatter.stackSizeToQuantity("2B"));
 
 		assertEquals(0, StackFormatter.stackSizeToQuantity("-0"));
 		assertEquals(-400, StackFormatter.stackSizeToQuantity("-400"));
 		assertEquals(-400_000, StackFormatter.stackSizeToQuantity("-400k"));
-		assertEquals(-40_543_000, StackFormatter.stackSizeToQuantity(NumberFormat.getNumberInstance().format(-40.543) + "M"));
+		assertEquals(-40_543_000, StackFormatter.stackSizeToQuantity("-40.543M"));
 
 		try
 		{

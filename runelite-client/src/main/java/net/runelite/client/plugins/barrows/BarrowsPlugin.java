@@ -39,7 +39,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import static net.runelite.api.ItemID.COINS_995;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.WallObject;
@@ -66,7 +65,7 @@ import net.runelite.client.util.StackFormatter;
 @PluginDescriptor(
 	name = "Barrows Brothers",
 	description = "Show helpful information for the Barrows minigame",
-	tags = {"combat", "minigame", "minimap"}
+	tags = {"combat", "minigame", "minimap", "bosses", "pve", "pvm"}
 )
 public class BarrowsPlugin extends Plugin
 {
@@ -210,14 +209,6 @@ public class BarrowsPlugin extends Plugin
 			ItemContainer barrowsRewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
 			Item[] items = barrowsRewardContainer.getItems();
 			long chestPrice = 0;
-
-			for (Item item : items)
-			{
-				if (item.getId() == COINS_995)
-				{
-					chestPrice += item.getQuantity();
-				}
-			}
 
 			for (Item item : items)
 			{

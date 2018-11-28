@@ -82,7 +82,7 @@ class UIActionSlot extends JPanel
 	@Setter(AccessLevel.PACKAGE)
 	private double value = 0;
 
-	UIActionSlot(SkillDataEntry action)
+	UIActionSlot(SkillDataEntry action, JLabel uiIcon)
 	{
 		this.action = action;
 
@@ -112,14 +112,6 @@ class UIActionSlot extends JPanel
 		};
 
 		addMouseListener(hoverListener);
-
-		JLabel uiIcon = new JLabel();
-
-		if (action.getIcon() != null)
-			SkillCalculator.itemManager.getImage(action.getIcon()).addTo(uiIcon);
-		else if (action.getSprite() != null)
-			SkillCalculator.spriteManager.addSpriteTo(uiIcon, action.getSprite(), 0);
-
 		uiIcon.setMinimumSize(ICON_SIZE);
 		uiIcon.setMaximumSize(ICON_SIZE);
 		uiIcon.setPreferredSize(ICON_SIZE);

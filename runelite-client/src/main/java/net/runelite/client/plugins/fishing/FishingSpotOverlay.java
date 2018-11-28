@@ -27,10 +27,13 @@ package net.runelite.client.plugins.fishing;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicID;
 import net.runelite.api.NPC;
@@ -54,6 +57,9 @@ class FishingSpotOverlay extends Overlay
 	private final Client client;
 	private final ItemManager itemManager;
 
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hidden;
+
 	@Inject
 	private FishingSpotOverlay(FishingPlugin plugin, FishingConfig config, Client client, ItemManager itemManager)
 	{
@@ -68,6 +74,11 @@ class FishingSpotOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (hidden)
+		{
+			return null;
+		}
+
 		NPC[] fishingSpots = plugin.getFishingSpots();
 		if (fishingSpots == null)
 		{
@@ -76,9 +87,14 @@ class FishingSpotOverlay extends Overlay
 
 		for (NPC npc : fishingSpots)
 		{
-			FishingSpot spot = FishingSpot.getSpot(npc.getId());
+			FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
 
 			if (spot == null)
+			{
+				continue;
+			}
+
+			if (config.onlyCurrentSpot() && plugin.getCurrentSpot() != null && plugin.getCurrentSpot() != spot)
 			{
 				continue;
 			}
@@ -97,7 +113,7 @@ class FishingSpotOverlay extends Overlay
 					}
 
 					LocalPoint localPoint = npc.getLocalLocation();
-					Point location = Perspective.worldToCanvas(client, localPoint.getX(), localPoint.getY(), client.getPlane());
+					Point location = Perspective.localToCanvas(client, localPoint, client.getPlane());
 
 					if (location != null)
 					{
@@ -111,27 +127,39 @@ class FishingSpotOverlay extends Overlay
 				}
 			}
 
-			if (config.showIcons())
+			if (config.showSpotTiles())
 			{
-				BufferedImage fishImage = getFishImage(spot);
-				if (fishImage != null)
+				Polygon poly = npc.getCanvasTilePoly();
+				if (poly != null)
 				{
-					OverlayUtil.renderActorOverlayImage(graphics, npc, fishImage, color.darker(), npc.getLogicalHeight());
+					OverlayUtil.renderPolygon(graphics, poly, color.darker());
 				}
 			}
-			else
+
+			if (config.showSpotIcons())
+			{
+				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());;
+				if (fishImage != null)
+				{
+					Point imageLocation = npc.getCanvasImageLocation(fishImage, npc.getLogicalHeight());
+					if (imageLocation != null)
+					{
+						OverlayUtil.renderImageLocation(graphics, imageLocation, fishImage);
+					}
+				}
+			}
+
+			if (config.showSpotNames())
 			{
 				String text = spot.getName();
-				OverlayUtil.renderActorOverlay(graphics, npc, text, color.darker());
+				Point textLocation = npc.getCanvasTextLocation(graphics, text, npc.getLogicalHeight() + 40);
+				if (textLocation != null)
+				{
+					OverlayUtil.renderTextLocation(graphics, textLocation, text, color.darker());
+				}
 			}
 		}
 
 		return null;
-	}
-
-	private BufferedImage getFishImage(FishingSpot spot)
-	{
-		BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
-		return fishImage;
 	}
 }

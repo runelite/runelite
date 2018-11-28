@@ -29,7 +29,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
 import lombok.Getter;
-import net.runelite.api.GameObject;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.ObjectComposition;
 import static net.runelite.api.ObjectID.CRATE_18506;
@@ -37,6 +36,7 @@ import static net.runelite.api.ObjectID.CRATE_2620;
 import static net.runelite.api.ObjectID.CRATE_354;
 import static net.runelite.api.ObjectID.CRATE_357;
 import static net.runelite.api.ObjectID.CRATE_6616;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
@@ -44,6 +44,8 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLI
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
+import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -87,6 +89,8 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		new MapClue(CLUE_SCROLL_ELITE_19786, new WorldPoint(2703, 2716, 0), CRATE_6616)
 	);
 
+	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(SPADE);
+
 	private final int itemId;
 	private final WorldPoint location;
 	private final int objectId;
@@ -121,8 +125,8 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		panelComponent.getChildren().add(TitleComponent.builder().text("Map Clue").build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Click the clue scroll along the edge of your world map to see your destination.")
-				.build());
+			.left("Click the clue scroll along the edge of your world map to see your destination.")
+			.build());
 
 		if (objectId != -1)
 		{
@@ -153,6 +157,15 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 				.left(description)
 				.build());
 		}
+
+		if (objectId == -1 && plugin.getInventoryItems() != null)
+		{
+			if (!HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
+			{
+				panelComponent.getChildren().add(LineComponent.builder().left("").build());
+				panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
+			}
+		}
 	}
 
 	@Override
@@ -172,7 +185,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 
 			if (plugin.getObjectsToMark() != null)
 			{
-				for (GameObject gameObject : plugin.getObjectsToMark())
+				for (TileObject gameObject : plugin.getObjectsToMark())
 				{
 					OverlayUtil.renderHoverableArea(graphics, gameObject.getClickbox(), mousePosition,
 						CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_HOVER_BORDER_COLOR);
@@ -199,5 +212,10 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		}
 
 		return null;
+	}
+
+	public int[] getObjectIds()
+	{
+		return new int[] {objectId};
 	}
 }

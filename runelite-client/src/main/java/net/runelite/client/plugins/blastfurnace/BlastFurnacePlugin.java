@@ -93,7 +93,7 @@ public class BlastFurnacePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectSpawn(GameObjectSpawned event)
+	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
 
@@ -110,7 +110,7 @@ public class BlastFurnacePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectDespawn(GameObjectDespawned event)
+	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		GameObject gameObject = event.getGameObject();
 

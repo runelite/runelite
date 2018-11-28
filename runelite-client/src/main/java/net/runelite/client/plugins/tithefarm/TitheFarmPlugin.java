@@ -55,9 +55,6 @@ public class TitheFarmPlugin extends Plugin
 	@Inject
 	private TitheFarmPlantOverlay titheFarmOverlay;
 
-	@Inject
-	private TitheFarmSackOverlay titheFarmSackOverlay;
-
 	@Getter
 	private final Set<TitheFarmPlant> plants = new HashSet<>();
 
@@ -71,7 +68,6 @@ public class TitheFarmPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(titheFarmOverlay);
-		overlayManager.add(titheFarmSackOverlay);
 		titheFarmOverlay.updateConfig();
 	}
 
@@ -79,7 +75,6 @@ public class TitheFarmPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(titheFarmOverlay);
-		overlayManager.remove(titheFarmSackOverlay);
 	}
 
 	@Subscribe

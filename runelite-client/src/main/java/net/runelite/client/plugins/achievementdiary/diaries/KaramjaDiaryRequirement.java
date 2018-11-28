@@ -60,7 +60,7 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 		add("Trap a horned graahk.",
 			new Requirement(Skill.HUNTER, 41));
 		add("Chop the vines to gain deeper access to Brimhaven Dungeon.",
-			new Requirement(Skill.FARMING, 27));
+			new Requirement(Skill.WOODCUTTING, 10));
 		add("Cross the lava using the stepping stones within Brimhaven Dungeon.",
 			new Requirement(Skill.AGILITY, 12));
 		add("Climb the stairs within Brimhaven Dungeon.",
@@ -86,6 +86,7 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 		add("Collect 5 palm leaves.",
 			new Requirement(Skill.WOODCUTTING, 15));
 		add("Be assigned a Slayer task by Duradel north of Shilo Village.",
+			new Requirement("Combat", 100),
 			new Requirement(Skill.SLAYER, 50));
 		add("Kill a metal dragon in Brimhaven Dungeon.",
 			new Requirement(Skill.AGILITY, 12),

@@ -98,14 +98,14 @@ public class ChatboxInputManager
 		}
 		this.open = false;
 		clientThread.invoke(() -> client.runScript(
-			ScriptID.CLOSE_CHATBOX_INPUT,
+			ScriptID.RESET_CHATBOX_INPUT,
 			1,
 			1
 		));
 	}
 
 	@Subscribe
-	public void scriptCallback(ScriptCallbackEvent ev)
+	public void onScriptCallbackEvent(ScriptCallbackEvent ev)
 	{
 		// This replaces script 74 and most of 112
 		if ("chatboxInputHandler".equals(ev.getEventName()))

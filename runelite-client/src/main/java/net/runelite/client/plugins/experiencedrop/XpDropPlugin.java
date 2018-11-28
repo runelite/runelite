@@ -62,7 +62,7 @@ public class XpDropPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetHidden(WidgetHiddenChanged event)
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		Widget widget = event.getWidget();
 

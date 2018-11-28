@@ -68,11 +68,9 @@ public class GrandExchangeOfferSlot extends JPanel
 	private final JLabel itemIcon = new JLabel();
 	private final JLabel itemName = new JLabel();
 	private final JLabel offerInfo = new JLabel();
-	private final JLabel switchFaceViewIcon = new JLabel();
 
 	private final JLabel itemPrice = new JLabel();
 	private final JLabel offerSpent = new JLabel();
-	private final JLabel switchDetailsViewIcon = new JLabel();
 
 	private final ThinProgressBar progressBar = new ThinProgressBar();
 
@@ -91,11 +89,6 @@ public class GrandExchangeOfferSlot extends JPanel
 	 */
 	GrandExchangeOfferSlot()
 	{
-		buildPanel();
-	}
-
-	private void buildPanel()
-	{
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setBorder(new EmptyBorder(7, 0, 0, 0));
@@ -113,22 +106,22 @@ public class GrandExchangeOfferSlot extends JPanel
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
 				super.mouseEntered(mouseEvent);
-				container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR.brighter());
+				container.setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
 				super.mouseExited(mouseEvent);
-				container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+				container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			}
 		};
 
 		container.setLayout(cardLayout);
-		container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		JPanel faceCard = new JPanel();
-		faceCard.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		faceCard.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		faceCard.setLayout(new BorderLayout());
 		faceCard.addMouseListener(ml);
 
@@ -144,13 +137,14 @@ public class GrandExchangeOfferSlot extends JPanel
 		offerInfo.setVerticalAlignment(JLabel.TOP);
 		offerInfo.setFont(FontManager.getRunescapeSmallFont());
 
+		JLabel switchFaceViewIcon = new JLabel();
 		switchFaceViewIcon.setIcon(RIGHT_ARROW_ICON);
 		switchFaceViewIcon.setVerticalAlignment(JLabel.CENTER);
 		switchFaceViewIcon.setHorizontalAlignment(JLabel.CENTER);
 		switchFaceViewIcon.setPreferredSize(new Dimension(30, 45));
 
 		JPanel offerFaceDetails = new JPanel();
-		offerFaceDetails.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		offerFaceDetails.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		offerFaceDetails.setLayout(new GridLayout(2, 1, 0, 2));
 
 		offerFaceDetails.add(itemName);
@@ -161,7 +155,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		faceCard.add(switchFaceViewIcon, BorderLayout.EAST);
 
 		JPanel detailsCard = new JPanel();
-		detailsCard.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		detailsCard.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		detailsCard.setLayout(new BorderLayout());
 		detailsCard.setBorder(new EmptyBorder(0, 15, 0, 0));
 		detailsCard.addMouseListener(ml);
@@ -174,13 +168,14 @@ public class GrandExchangeOfferSlot extends JPanel
 		offerSpent.setVerticalAlignment(JLabel.TOP);
 		offerSpent.setFont(FontManager.getRunescapeSmallFont());
 
+		JLabel switchDetailsViewIcon = new JLabel();
 		switchDetailsViewIcon.setIcon(LEFT_ARROW_ICON);
 		switchDetailsViewIcon.setVerticalAlignment(JLabel.CENTER);
 		switchDetailsViewIcon.setHorizontalAlignment(JLabel.CENTER);
 		switchDetailsViewIcon.setPreferredSize(new Dimension(30, 45));
 
 		JPanel offerDetails = new JPanel();
-		offerDetails.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		offerDetails.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		offerDetails.setLayout(new GridLayout(2, 1));
 
 		offerDetails.add(itemPrice);
@@ -197,7 +192,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		add(container, BorderLayout.CENTER);
 		add(progressBar, BorderLayout.SOUTH);
 	}
-	
+
 	void updateOffer(ItemComposition offerItem, BufferedImage itemImage, @Nullable GrandExchangeOffer newOffer)
 	{
 		if (newOffer == null || newOffer.getState() == EMPTY)

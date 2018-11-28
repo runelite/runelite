@@ -1,0 +1,109 @@
+.id                 396
+.int_stack_count    2
+.string_stack_count 0
+.int_var_count      3
+.string_var_count   2
+   invoke                 1007
+   istore                 2
+   load_string            "Total level:"
+   load_string            "<br>"
+   iload                  2
+   int_to_string         
+   string_append          3
+   iload                  0
+   load_string            "skillTabTotalLevel" ; push event name
+   runelite_callback     ; invoke callback
+   widget_put_text_widget
+   iload                  0
+   widget_put_actions_null_widget
+   load_string            ""
+   sstore                 0
+   load_string            ""
+   sstore                 1
+   get_ismembers         
+   load_int               1
+   if_icmpeq              LABEL22
+   get_varc               103
+   load_int               1
+   if_icmpeq              LABEL22
+   jump                   LABEL28
+LABEL22:
+   load_string            "Total XP:"
+   sstore                 0
+   invoke                 1008
+   invoke                 1009
+   sstore                 1
+   jump                   LABEL37
+LABEL28:
+   load_string            "Total XP:|Free Total Level:"
+   sstore                 0
+   invoke                 1008
+   invoke                 1009
+   load_string            "|"
+   invoke                 1320
+   int_to_string         
+   string_append          3
+   sstore                 1
+LABEL37:
+   invoke                 1972
+   load_int               1
+   if_icmpeq              LABEL41
+   jump                   LABEL72
+LABEL41:
+   load_int               1
+   load_string            "Toggle Total XP"
+   iload                  0
+   widget_put_action_widget
+   load_int               2367
+   load_int               -2147483644
+   load_int               -2147483645
+   load_int               -1
+   iload                  1
+   sload                  0
+   sload                  1
+   load_int               495
+   load_string            "iIiIssf"
+   iload                  0
+   widget_put_option_click_listener_widget
+   get_varc               218
+   iload                  0
+   if_icmpeq              LABEL60
+   jump                   LABEL71
+LABEL60:
+   get_varc               217
+   load_int               -1
+   if_icmpeq              LABEL64
+   jump                   LABEL71
+LABEL64:
+   iload                  0
+   load_int               -1
+   iload                  1
+   sload                  0
+   sload                  1
+   load_int               495
+   invoke                 2344
+LABEL71:
+   jump                   LABEL92
+LABEL72:
+   load_int               992
+   load_int               -2147483645
+   load_int               -1
+   iload                  1
+   sload                  0
+   sload                  1
+   load_int               495
+   load_int               25
+   load_int               5
+   idiv                  
+   load_string            "IiIssfi"
+   iload                  0
+   widget_put_mouse_hover_listener_widget
+   load_int               40
+   iload                  1
+   load_string            "I"
+   iload                  0
+   widget_put_mouse_exit_listener_widget
+   load_int               0
+   put_varc               2
+LABEL92:
+   return                

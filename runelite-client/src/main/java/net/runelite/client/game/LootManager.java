@@ -31,8 +31,10 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +50,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
@@ -66,6 +69,7 @@ public class LootManager
 	private final EventBus eventBus;
 	private final Client client;
 	private final ListMultimap<Integer, ItemStack> itemSpawns = ArrayListMultimap.create();
+	private final Set<LocalPoint> killPoints = new HashSet<>();
 	private WorldPoint playerLocationLastTick;
 	private WorldPoint krakenPlayerLocation;
 
@@ -90,6 +94,8 @@ public class LootManager
 				case NpcID.GARGOYLE_1543:
 				case NpcID.MARBLE_GARGOYLE:
 				case NpcID.MARBLE_GARGOYLE_7408:
+				case NpcID.DUSK_7888:
+				case NpcID.DUSK_7889:
 
 				case NpcID.ROCKSLUG:
 				case NpcID.ROCKSLUG_422:
@@ -121,8 +127,14 @@ public class LootManager
 	public void onPlayerDespawned(PlayerDespawned playerDespawned)
 	{
 		final Player player = playerDespawned.getPlayer();
+		// Only care about dead Players
+		if (player.getHealthRatio() != 0)
+		{
+			return;
+		}
+
 		final LocalPoint location = LocalPoint.fromWorld(client, player.getWorldLocation());
-		if (location == null)
+		if (location == null || killPoints.contains(location))
 		{
 			return;
 		}
@@ -137,6 +149,7 @@ public class LootManager
 			return;
 		}
 
+		killPoints.add(location);
 		eventBus.post(new PlayerLootReceived(player, items));
 	}
 
@@ -148,7 +161,15 @@ public class LootManager
 		final LocalPoint location = tile.getLocalLocation();
 		final int packed = location.getSceneX() << 8 | location.getSceneY();
 		itemSpawns.put(packed, new ItemStack(item.getId(), item.getQuantity()));
-		log.debug("Item spawn {} location {},{}", item.getId(), location);
+		log.debug("Item spawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
+	}
+
+	@Subscribe
+	public void onItemDespawned(ItemDespawned itemDespawned)
+	{
+		final Item item = itemDespawned.getItem();
+		final LocalPoint location = itemDespawned.getTile().getLocalLocation();
+		log.debug("Item despawn {} ({}) location {},{}", item.getId(), item.getQuantity(), location);
 	}
 
 	@Subscribe
@@ -203,12 +224,13 @@ public class LootManager
 	{
 		playerLocationLastTick = client.getLocalPlayer().getWorldLocation();
 		itemSpawns.clear();
+		killPoints.clear();
 	}
 
 	private void processNpcLoot(NPC npc)
 	{
 		final LocalPoint location = LocalPoint.fromWorld(client, getDropLocation(npc, npc.getWorldLocation()));
-		if (location == null)
+		if (location == null || killPoints.contains(location))
 		{
 			return;
 		}
@@ -234,6 +256,7 @@ public class LootManager
 			return;
 		}
 
+		killPoints.add(location);
 		eventBus.post(new NpcLootReceived(npc, allItems));
 	}
 

@@ -32,6 +32,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.Duration;
+import java.time.format.DateTimeParseException;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -51,6 +53,9 @@ abstract class ClockPanel extends JPanel
 
 	private static final Color ACTIVE_CLOCK_COLOR = ColorScheme.LIGHT_GRAY_COLOR.brighter();
 	private static final Color INACTIVE_CLOCK_COLOR = ColorScheme.LIGHT_GRAY_COLOR.darker();
+
+	private static final String INPUT_HMS_REGEX = ".*[hms].*";
+	private static final String WHITESPACE_REGEX = "\\s+";
 
 	// additional content or buttons should be added to these panels in the subclasses
 	final JPanel contentContainer;
@@ -133,20 +138,14 @@ abstract class ClockPanel extends JPanel
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				String[] parts = displayInput.getText().split(":");
 				long duration = 0;
 
-				// parse from back to front, so as to accept hour:min:sec, min:sec, and sec formats
-				for (int i = parts.length - 1, multiplier = 1; i >= 0 && multiplier <= 3600; i--, multiplier *= 60)
+				try
 				{
-					try
-					{
-						duration += Integer.parseInt(parts[i].trim()) * multiplier;
-					}
-					catch (NumberFormatException nfe)
-					{
-						// ignored
-					}
+					duration = stringToSeconds(displayInput.getText());
+				}
+				catch (Exception ignored)
+				{
 				}
 
 				clock.setDuration(Math.max(0, duration));
@@ -265,5 +264,28 @@ abstract class ClockPanel extends JPanel
 		long seconds = duration % 60;
 
 		return String.format("%02d:%02d:%02d", hours, mins, seconds);
+	}
+
+	static long stringToSeconds(String time) throws NumberFormatException, DateTimeParseException
+	{
+		long duration = 0;
+
+		if (time.matches(INPUT_HMS_REGEX))
+		{
+			String textWithoutWhitespaces = time.replaceAll(WHITESPACE_REGEX, "");
+			//parse input using ISO-8601 Duration format (e.g. 'PT1h30m10s')
+			duration = Duration.parse("PT" + textWithoutWhitespaces).toMillis() / 1000;
+		}
+		else
+		{
+			String[] parts = time.split(":");
+			// parse from back to front, so as to accept hour:min:sec, min:sec, and sec formats
+			for (int i = parts.length - 1, multiplier = 1; i >= 0 && multiplier <= 3600; i--, multiplier *= 60)
+			{
+				duration += Integer.parseInt(parts[i].trim()) * multiplier;
+			}
+		}
+
+		return duration;
 	}
 }
