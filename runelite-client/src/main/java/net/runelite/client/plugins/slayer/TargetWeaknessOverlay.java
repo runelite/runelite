@@ -75,6 +75,11 @@ class TargetWeaknessOverlay extends Overlay
 		float threshold = curTask.getWeaknessThreshold();
 		BufferedImage image = itemManager.getImage(curTask.getWeaknessItem());
 
+		if (image == null)
+		{
+			return null;
+		}
+
 		List<NPC> targets = plugin.getHighlightedTargets();
 		for (NPC target : targets)
 		{
