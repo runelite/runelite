@@ -170,6 +170,7 @@ public class SlayerPlugin extends Plugin
 	private Instant infoTimer;
 	private boolean loginFlag;
 	private List<String> targetNames = new ArrayList<>();
+	private List<Integer> targetIds = new ArrayList<>();
 
 	@Override
 	protected void startUp() throws Exception
@@ -524,7 +525,7 @@ public class SlayerPlugin extends Plugin
 
 	private boolean isTarget(NPC npc)
 	{
-		if (targetNames.isEmpty())
+		if (targetNames.isEmpty() && targetIds.isEmpty())
 		{
 			return false;
 		}
@@ -548,6 +549,25 @@ public class SlayerPlugin extends Plugin
 				}
 			}
 		}
+
+		int id = npc.getId();
+		if (id <= 0)
+		{
+			return false;
+		}
+
+		for (int target : targetIds)
+		{
+			if (id == target)
+			{
+				NPCComposition composition = npc.getTransformedComposition();
+				if (composition != null && Arrays.asList(composition.getActions()).contains("Attack"))
+				{
+					return true;
+				}
+			}
+		}
+
 		return false;
 	}
 
@@ -557,11 +577,22 @@ public class SlayerPlugin extends Plugin
 
 		if (task != null)
 		{
-			Arrays.stream(task.getTargetNames())
+			task.getTargetNames().stream()
 				.map(String::toLowerCase)
 				.forEach(targetNames::add);
 
 			targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
+		}
+	}
+
+	private void rebuildTargetIds(Task task)
+	{
+		targetIds.clear();
+
+		if (task != null)
+		{
+			task.getNpcIds().stream()
+				.forEach(targetIds::add);
 		}
 	}
 
@@ -589,6 +620,7 @@ public class SlayerPlugin extends Plugin
 
 		Task task = Task.getTask(name);
 		rebuildTargetNames(task);
+		rebuildTargetIds(task);
 		rebuildTargetList();
 	}
 
