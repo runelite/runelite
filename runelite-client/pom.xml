@@ -161,6 +161,12 @@
 			<groupId>io.sigpipe</groupId>
 			<artifactId>jbsdiff</artifactId>
 			<version>1.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.tukaani</groupId>
+					<artifactId>xz</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
