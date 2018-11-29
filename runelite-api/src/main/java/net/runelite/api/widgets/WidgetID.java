@@ -709,13 +709,13 @@ public class WidgetID
 	{
 		static final int KILLDEATH_RATIO = 6;
 		static final int BOUNTY_HUNTER_STATS = 25;
-		static final int PVP_WIDGET_CONTAINER = 50;
-		static final int SKULL_CONTAINER = 51;
-		static final int SKULL = 52;
-		static final int SAFE_ZONE = 53;
-		static final int ATTACK_RANGE = 55;
-		static final int WILDERNESS_LEVEL = 56; // this can also be the Deadman Mode "Protection" text
-		static final int DEADMAN_PROTECTION_TIME = 57;
+		static final int PVP_WIDGET_CONTAINER = 52;
+		static final int SKULL_CONTAINER = 53;
+		static final int SKULL = 54;
+		static final int SAFE_ZONE = 55;
+		static final int ATTACK_RANGE = 57;
+		static final int WILDERNESS_LEVEL = 58; // this can also be the Deadman Mode "Protection" text
+		static final int DEADMAN_PROTECTION_TIME = 59;
 	}
 
 	static class Zeah
