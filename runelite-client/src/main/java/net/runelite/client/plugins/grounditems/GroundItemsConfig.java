@@ -327,7 +327,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "doubleTapDelay",
 		name = "Delay for double-tap ALT to hide",
-		description = "Decrease this number if you accidentally hide ground items often.",
+		description = "Decrease this number if you accidentally hide ground items often. (0 = Disabled)",
 		position = 25
 	)
 	default int doubleTapDelay()
