@@ -524,7 +524,7 @@ public class SlayerPlugin extends Plugin
 				SlayerUnlock.GROTESQUE_GARDIAN_DOUBLE_COUNT.isEnabled(client);
 	}
 
-	private boolean contiguousSubsequenceMatches(String[] seq0, String[] seq1)
+	boolean contiguousSubsequenceMatches(String[] seq0, String toMatch)
 	{
 		for (int i = 0; i < seq0.length; i++)
 		{
@@ -536,21 +536,9 @@ public class SlayerPlugin extends Plugin
 					sub0 += seq0[k] + " ";
 				}
 				sub0 = sub0.substring(0, sub0.length() - 1); // remove extra space
-				for (int i1 = 0; i1 < seq1.length; i1++)
+				if (sub0.equals(toMatch))
 				{
-					for (int j1 = i1; j1 < seq1.length; j1++)
-					{
-						String sub1 = "";
-						for (int k1 = i1; k1 <= j1; k1++)
-						{
-							sub1 += seq1[k1] + " ";
-						}
-						sub1 = sub1.substring(0, sub1.length() - 1); // remove extra space
-						if (sub0 == sub1)
-						{
-							return true;
-						}
-					}
+					return true;
 				}
 			}
 		}
@@ -598,8 +586,7 @@ public class SlayerPlugin extends Plugin
 			else
 			{
 				String[] nameTokens = name.split(" ");
-				String[] targetTokens = name.split(" ");
-				if (contiguousSubsequenceMatches(nameTokens, targetTokens))
+				if (contiguousSubsequenceMatches(nameTokens, target))
 				{
 					NPCComposition composition = npc.getTransformedComposition();
 					if (composition != null && Arrays.asList(composition.getActions()).contains("Attack"))
