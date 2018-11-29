@@ -52,11 +52,13 @@ public class ZoomPlugin extends Plugin implements KeyListener
 {
 	/**
 	 * The largest (most zoomed in) value that can be used without the client crashing.
-	 * <p>
+	 *
 	 * Larger values trigger an overflow in the engine's fov to scale code.
 	 */
 	private static final int INNER_ZOOM_LIMIT = 1004;
-	private static final int OUTER_ZOOM_LIMIT = 128;
+
+	private static final int OUTER_CONFIG_ZOOM_LIMIT_MIN = 0;
+	private static final int OUTER_CONFIG_ZOOM_LIMIT_MAX = 400;
 
 	private boolean controlDown;
 
@@ -79,7 +81,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onScriptEvent(ScriptCallbackEvent event)
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (client.getIndexScripts().isOverlayOutdated())
 		{
@@ -99,6 +101,14 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		if ("innerZoomLimit".equals(event.getEventName()) && zoomConfig.innerLimit())
 		{
 			intStack[intStackSize - 1] = INNER_ZOOM_LIMIT;
+			return;
+		}
+
+		if ("outerZoomLimit".equals(event.getEventName()))
+		{
+			int outerLimit = Math.max(OUTER_CONFIG_ZOOM_LIMIT_MIN, Math.min(OUTER_CONFIG_ZOOM_LIMIT_MAX, zoomConfig.outerLimit()));
+			int outerZoomLimit = 128 - outerLimit;
+			intStack[intStackSize - 1] = outerZoomLimit;
 			return;
 		}
 
@@ -183,10 +193,9 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		if (e.getKeyCode() == KeyEvent.VK_CONTROL)
 		{
 			controlDown = false;
-
 			if (zoomConfig.controlFunction() == ControlFunction.CONTROL_TO_RESET)
 			{
-				final int zoomValue = Ints.constrainToRange(zoomConfig.ctrlZoomValue(), OUTER_ZOOM_LIMIT, INNER_ZOOM_LIMIT);
+				final int zoomValue = Ints.constrainToRange(zoomConfig.ctrlZoomValue(), OUTER_CONFIG_ZOOM_LIMIT_MIN, INNER_ZOOM_LIMIT);
 				clientThread.invokeLater(() -> client.runScript(ScriptID.CAMERA_DO_ZOOM, zoomValue, zoomValue));
 			}
 		}
