@@ -27,6 +27,8 @@ package net.runelite.client.plugins.xptracker;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -91,26 +93,14 @@ class XpPanel extends PluginPanel
 
 		// Create pause all menu
 		final JMenuItem pauseAll = new JMenuItem("Pause All");
-		pauseAll.addActionListener(e ->
-		{
-			if (pauseAll.getText().equals("Pause All"))
-			{
-				xpTrackerPlugin.pauseAllSkills(true);
-				pauseAll.setText("Unpause All");
-			}
-			else
-			{
-				xpTrackerPlugin.pauseAllSkills(false);
-				pauseAll.setText("Pause All");
-			}
-		});
+		pauseAll.addActionListener(e -> pauseAllInfoBoxes(pauseAll, xpTrackerPlugin));
 
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+		popupMenu.add(pauseAll);
 		popupMenu.add(openXpTracker);
 		popupMenu.add(reset);
-		popupMenu.add(pauseAll);
 		overallPanel.setComponentPopupMenu(popupMenu);
 
 		final JLabel overallIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(Skill.OVERALL)));
@@ -129,6 +119,19 @@ class XpPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
+		MouseAdapter leftClickPauseAll = new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				if (SwingUtilities.isLeftMouseButton(e))
+				{
+					pauseAllInfoBoxes(pauseAll, xpTrackerPlugin);
+				}
+			}
+		};
+
+		overallPanel.addMouseListener(leftClickPauseAll);
 
 		final JPanel infoBoxPanel = new JPanel();
 		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
@@ -173,6 +176,20 @@ class XpPanel extends PluginPanel
 			.addPathSegment("now")
 			.build()
 			.toString();
+	}
+
+	void pauseAllInfoBoxes(JMenuItem pauseAll, XpTrackerPlugin xpTrackerPlugin)
+	{
+		if (pauseAll.getText().equals("Pause All"))
+		{
+			xpTrackerPlugin.pauseAllSkills(true);
+			pauseAll.setText("Unpause All");
+		}
+		else
+		{
+			xpTrackerPlugin.pauseAllSkills(false);
+			pauseAll.setText("Pause All");
+		}
 	}
 
 	void resetAllInfoBoxes()
