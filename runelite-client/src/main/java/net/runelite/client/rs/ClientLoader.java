@@ -178,7 +178,7 @@ public class ClientLoader
 
 			String initialClass = config.getInitialClass();
 
-			ClassLoader rsClassLoader = new ClassLoader()
+			ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
 			{
 				@Override
 				protected Class<?> findClass(String name) throws ClassNotFoundException
