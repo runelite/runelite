@@ -62,9 +62,9 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hideAfterDelay",
-			name = "Hide the status bars after",
-			description = "Hides the status bars when the player is out of combat for X seconds. 0 always shows status bars."
+		keyName = "hideAfterDelay",
+		name = "Hide the status bars after",
+		description = "Hides the status bars when the player is out of combat for X seconds. 0 always shows status bars."
 	)
 	default int getHideAfterDelay()
 	{

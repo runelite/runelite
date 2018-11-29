@@ -81,7 +81,8 @@ public class StatusBarsPlugin extends Plugin
 		return configManager.getConfig(StatusBarsConfig.class);
 	}
 
-	boolean outOfCombat() {
+	boolean outOfCombat()
+	{
 		if (lastHitsplat == null)
 		{
 			return true;
