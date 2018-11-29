@@ -216,7 +216,7 @@ enum Task
 	TROLLS("Trolls", ItemID.TROLL_GUARD),
 	TUROTH("Turoth", ItemID.TUROTH),
 	TZHAAR("Tzhaar", ItemID.ENSOULED_TZHAAR_HEAD,
-		asList("Tz-"), asList()),
+		asList("Tz-"), asList(), false),
 	VAMPIRES("Vampires", ItemID.STAKE,
 		asList("Vampyre"), asList()),
 	VENENATIS("Venenatis", ItemID.VENENATIS_SPIDERLING),
@@ -241,6 +241,7 @@ enum Task
 	private final int itemSpriteId;
 	private final List<String> targetNames;
 	private final List<Integer> npcIds;
+	private final boolean checkAsTokens;
 
 	static
 	{
@@ -257,6 +258,17 @@ enum Task
 		this.itemSpriteId = itemSpriteId;
 		this.targetNames = new ArrayList<>();
 		this.npcIds = new ArrayList<>();
+		this.checkAsTokens = true;
+	}
+
+	Task(String name, int itemSpriteId, boolean checkAsTokens)
+	{
+		Preconditions.checkArgument(itemSpriteId >= 0);
+		this.name = name;
+		this.itemSpriteId = itemSpriteId;
+		this.targetNames = new ArrayList<>();
+		this.npcIds = new ArrayList<>();
+		this.checkAsTokens = checkAsTokens;
 	}
 
 	Task(String name, int itemSpriteId, List<String> targetNames, List<Integer> npcIds)
@@ -266,6 +278,17 @@ enum Task
 		this.itemSpriteId = itemSpriteId;
 		this.targetNames = targetNames;
 		this.npcIds = npcIds;
+		this.checkAsTokens = true;
+	}
+
+	Task(String name, int itemSpriteId, List<String> targetNames, List<Integer> npcIds, boolean checkAsTokens)
+	{
+		Preconditions.checkArgument(itemSpriteId >= 0);
+		this.name = name;
+		this.itemSpriteId = itemSpriteId;
+		this.targetNames = targetNames;
+		this.npcIds = npcIds;
+		this.checkAsTokens = checkAsTokens;
 	}
 
 	static Task getTask(String taskName)

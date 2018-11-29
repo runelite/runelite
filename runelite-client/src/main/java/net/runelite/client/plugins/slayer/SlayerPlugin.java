@@ -171,6 +171,7 @@ public class SlayerPlugin extends Plugin
 	private boolean loginFlag;
 	private List<String> targetNames = new ArrayList<>();
 	private List<Integer> targetIds = new ArrayList<>();
+	private boolean checkAsTokens = true;
 
 	@Override
 	protected void startUp() throws Exception
@@ -523,6 +524,39 @@ public class SlayerPlugin extends Plugin
 				SlayerUnlock.GROTESQUE_GARDIAN_DOUBLE_COUNT.isEnabled(client);
 	}
 
+	private boolean contiguousSubsequenceMatches(String[] seq0, String[] seq1)
+	{
+		for (int i = 0; i < seq0.length; i++)
+		{
+			for (int j = i; j < seq0.length; j++)
+			{
+				String sub0 = "";
+				for (int k = i; k <= j; k++)
+				{
+					sub0 += seq0[k] + " ";
+				}
+				sub0 = sub0.substring(0, sub0.length() - 1); // remove extra space
+				for (int i1 = 0; i1 < seq1.length; i1++)
+				{
+					for (int j1 = i1; j1 < seq1.length; j1++)
+					{
+						String sub1 = "";
+						for (int k1 = i1; k1 <= j1; k1++)
+						{
+							sub1 += seq1[k1] + " ";
+						}
+						sub1 = sub1.substring(0, sub1.length() - 1); // remove extra space
+						if (sub0 == sub1)
+						{
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
 	private boolean isTarget(NPC npc)
 	{
 		if (targetNames.isEmpty() && targetIds.isEmpty())
@@ -538,14 +572,40 @@ public class SlayerPlugin extends Plugin
 
 		name = name.toLowerCase();
 
+		// in order to avoid issues like pirates being highlighted on a rats task
+		// rather than checking if the name contains any of the targets we do a complete
+		// token check which is where we tokenize the name and the targets on the space charachter
+		// then we check if any contiguous subsequence (of at least length 1) from the name matches
+		// any contiguous subsequence (of at least length 1) from the target.
+
+		// we have a boolean flag that also allows the behavior of just doing a contains check to happen
+		// this is done specifically for the tzhaar task because it's much easier to just check if the enemy
+		// contains "Tz-" then listing the many many many types of tzhaar.
+
 		for (String target : targetNames)
 		{
-			if (name.contains(target))
+			if (!checkAsTokens)
 			{
-				NPCComposition composition = npc.getTransformedComposition();
-				if (composition != null && Arrays.asList(composition.getActions()).contains("Attack"))
+				if (name.contains(target))
 				{
-					return true;
+					NPCComposition composition = npc.getTransformedComposition();
+					if (composition != null && Arrays.asList(composition.getActions()).contains("Attack"))
+					{
+						return true;
+					}
+				}
+			}
+			else
+			{
+				String[] nameTokens = name.split(" ");
+				String[] targetTokens = name.split(" ");
+				if (contiguousSubsequenceMatches(nameTokens, targetTokens))
+				{
+					NPCComposition composition = npc.getTransformedComposition();
+					if (composition != null && Arrays.asList(composition.getActions()).contains("Attack"))
+					{
+						return true;
+					}
 				}
 			}
 		}
@@ -596,6 +656,14 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
+	private void rebuildCheckAsTokens(Task task)
+	{
+		if (task != null)
+		{
+			checkAsTokens = task.isCheckAsTokens();
+		}
+	}
+
 	private void rebuildTargetList()
 	{
 		highlightedTargets.clear();
@@ -621,6 +689,7 @@ public class SlayerPlugin extends Plugin
 		Task task = Task.getTask(name);
 		rebuildTargetNames(task);
 		rebuildTargetIds(task);
+		rebuildCheckAsTokens(task);
 		rebuildTargetList();
 	}
 
