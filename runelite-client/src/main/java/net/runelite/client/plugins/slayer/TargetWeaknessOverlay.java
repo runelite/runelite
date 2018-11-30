@@ -35,10 +35,12 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.NPCManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.Text;
 
 class TargetWeaknessOverlay extends Overlay
 {
@@ -46,14 +48,16 @@ class TargetWeaknessOverlay extends Overlay
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;
 	private final ItemManager itemManager;
+	private final NPCManager npcManager;
 
 	@Inject
-	private TargetWeaknessOverlay(Client client, SlayerConfig config, SlayerPlugin plugin, ItemManager itemManager)
+	private TargetWeaknessOverlay(Client client, SlayerConfig config, SlayerPlugin plugin, ItemManager itemManager, NPCManager npcManager)
 	{
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
 		this.itemManager = itemManager;
+		this.npcManager = npcManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
@@ -72,7 +76,7 @@ class TargetWeaknessOverlay extends Overlay
 			return null;
 		}
 
-		float threshold = curTask.getWeaknessThreshold();
+		int threshold = curTask.getWeaknessThreshold();
 		BufferedImage image = itemManager.getImage(curTask.getWeaknessItem());
 
 		if (image == null)
@@ -83,21 +87,59 @@ class TargetWeaknessOverlay extends Overlay
 		List<NPC> targets = plugin.getHighlightedTargets();
 		for (NPC target : targets)
 		{
-			float healthRatio = target.getHealthRatio();
-			float healthScale = target.getHealth();
-			if (healthRatio <= 0 || healthScale <= 0)
-			{
-				continue;
-			}
+			int currentHealth = calculateHealth(target);
 
-			float currentHealth = healthRatio / healthScale;
-
-			if (currentHealth <= threshold)
+			if (currentHealth > 0 && currentHealth <= threshold)
 			{
 				renderTargetItem(graphics, target, image);
 			}
 		}
 		return null;
+	}
+
+
+	/**
+	 * Based on how health is calculated in OpponentInfoOverlay
+	 */
+	private int calculateHealth(NPC target)
+	{
+		if (target == null || target.getName() == null || target.getHealth() <= 0)
+		{
+			return -1;
+		}
+
+		int healthRatio = target.getHealthRatio();
+		int healthScale = target.getHealth();
+		String targetName = Text.removeTags(target.getName());
+		Integer maxHealth = npcManager.getHealth(targetName, target.getCombatLevel());
+		if (healthRatio < 0 || healthScale <= 0 || maxHealth == null)
+		{
+			return 0;
+		}
+		int minCurHealth = 1;
+		int maxCurHealth;
+		if (healthScale > 1)
+		{
+			if (healthRatio > 1)
+			{
+				// This doesn't apply if healthRatio = 1, because of the special case in the server calculation that
+				// health = 0 forces healthRatio = 0 instead of the expected healthRatio = 1
+				minCurHealth = (maxHealth * (healthRatio - 1) + healthScale - 2) / (healthScale - 1);
+			}
+			maxCurHealth = (maxHealth * healthRatio - 1) / (healthScale - 1);
+			if (maxCurHealth > maxHealth)
+			{
+				maxCurHealth = maxHealth;
+			}
+		}
+		else
+		{
+			// If healthScale is 1, healthRatio will always be 1 unless health = 0
+			// so we know nothing about the upper limit except that it can't be higher than maxHealth
+			maxCurHealth = maxHealth;
+		}
+		// Take the average of min and max possible healths
+		return (minCurHealth + maxCurHealth + 1) / 2;
 	}
 
 	private void renderTargetItem(Graphics2D graphics, NPC actor, BufferedImage image)
