@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
  * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2018, Haashi <https://github.com/Haashi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,11 +28,18 @@ package net.runelite.client.plugins.virtuallevels;
 
 import com.google.common.eventbus.Subscribe;
 import javax.inject.Inject;
+
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.SkillLeveledUp;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -51,6 +59,9 @@ public class VirtualLevelsPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	@Override
 	protected void shutDown()
@@ -121,4 +132,25 @@ public class VirtualLevelsPlugin extends Plugin
 			}
 		}
 	}
+
+	@Subscribe
+	public void onSkillLeveledUp(SkillLeveledUp event)
+	{
+		final Skill skill = event.getSkill();
+		final int lvl = Experience.getLevelForXp(client.getSkillExperience(skill));
+		if (lvl > 99)
+		{
+			final String message = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append("Congratulations, you've just advanced your " + skill.getName() + " level. You are now level " + lvl + ".")
+			.build();
+
+			chatMessageManager.queue(
+				QueuedMessage.builder()
+					.type(ChatMessageType.GAME)
+					.runeLiteFormattedMessage(message)
+					.build());
+			}
+	}
+
 }
