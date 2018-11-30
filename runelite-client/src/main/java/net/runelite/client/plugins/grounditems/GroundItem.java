@@ -27,6 +27,7 @@ package net.runelite.client.plugins.grounditems;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Value;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
 @Data
@@ -38,11 +39,14 @@ class GroundItem
 	private String name;
 	private int quantity;
 	private WorldPoint location;
+	private LocalPoint localLoc;
 	private int height;
 	private int haPrice;
 	private int gePrice;
 	private int offset;
 	private boolean tradeable;
+
+	int getId() { return id; }
 
 	int getHaPrice()
 	{
@@ -53,6 +57,10 @@ class GroundItem
 	{
 		return gePrice * quantity;
 	}
+
+	WorldPoint getWorldLocation() { return location; }
+
+	LocalPoint getLocalLocation() { return localLoc; }
 
 	@Value
 	static class GroundItemKey
