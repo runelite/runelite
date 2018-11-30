@@ -203,6 +203,7 @@ public class FairyRingPlugin extends Plugin
 				searchBtn.setOnOpListener((JavaScriptCallback) this::menuOpen);
 				searchBtn.setAction(1, MENU_OPEN);
 			})
+			.consumeEscape(false)
 			.build();
 	}
 

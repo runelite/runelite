@@ -92,6 +92,8 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	@Getter
 	private Consumer<String> onChanged = null;
 
+	private boolean consumeEscape = true;
+
 	@Getter
 	private int fontID = FontID.QUILL_8;
 
@@ -180,6 +182,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			val = getDefaultCharValidator();
 		}
 		this.charValidator = val;
+		return this;
+	}
+
+	public ChatboxTextInput consumeEscape(boolean consumeEscape)
+	{
+		this.consumeEscape = consumeEscape;
 		return this;
 	}
 
@@ -552,7 +560,10 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				chatboxPanelManager.close();
 				return;
 			case KeyEvent.VK_ESCAPE:
-				ev.consume();
+				if (consumeEscape)
+				{
+					ev.consume();
+				}
 				if (cursor != cursorEnd)
 				{
 					cursorAt(cursor);
