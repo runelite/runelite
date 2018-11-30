@@ -30,9 +30,15 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.SERVER;
 
-import lombok.Builder;
-import net.runelite.api.*;
+import net.runelite.api.Actor;
+import net.runelite.api.Client;
+import net.runelite.api.Model;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.Node;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.SpritePixels;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -57,11 +63,11 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @RunWith(MockitoJUnitRunner.class)
 public class SlayerPluginTest
