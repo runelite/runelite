@@ -52,6 +52,10 @@ public class OverlayIndex
 		{
 			log.warn("unable to load overlay index", ex);
 		}
+		catch (NullPointerException ex)
+		{
+			log.warn("unable to load overlays", ex);
+		}
 	}
 
 	public static boolean hasOverlay(int indexId, int archiveId)

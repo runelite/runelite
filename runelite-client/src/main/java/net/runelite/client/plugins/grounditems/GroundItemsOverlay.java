@@ -164,6 +164,11 @@ public class GroundItemsOverlay extends Overlay
 
 		for (GroundItem item : groundItemList)
 		{
+			if (config.hideOtherPlayersLoot() && !plugin.isPlayerOwned(item))
+			{
+				continue;
+			}
+
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
 
 			if (groundPoint == null || localLocation.distanceTo(groundPoint) > MAX_DISTANCE)

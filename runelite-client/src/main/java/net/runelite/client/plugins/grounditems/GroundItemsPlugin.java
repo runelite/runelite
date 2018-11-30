@@ -29,34 +29,23 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemID;
-import net.runelite.api.ItemLayer;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.Node;
-import net.runelite.api.Player;
-import net.runelite.api.Scene;
-import net.runelite.api.Tile;
+import net.runelite.api.*;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -66,7 +55,10 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.events.NpcLootReceived;
+import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStack;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
@@ -150,6 +142,8 @@ public class GroundItemsPlugin extends Plugin
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
 
+	private final Multimap<Integer, LocalPoint> lootItems = HashMultimap.create();
+
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
 	{
@@ -195,6 +189,7 @@ public class GroundItemsPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			collectedGroundItems.clear();
+			lootItems.clear();
 		}
 	}
 
@@ -234,6 +229,27 @@ public class GroundItemsPlugin extends Plugin
 			return;
 		}
 
+		if (lootItems.containsKey(groundItem.getId()))
+		{
+			try
+			{
+				for (Map.Entry<Integer, LocalPoint> entry : lootItems.entries())
+				{
+					if (entry.getKey() == groundItem.getId() &&
+							entry.getValue().getSceneX() == groundItem.getLocalLocation().getSceneX() + 1 &&
+							entry.getValue().getSceneY() == groundItem.getLocalLocation().getSceneY() + 1)
+					{
+						lootItems.remove(entry.getKey(), entry.getValue());
+					}
+				}
+			}
+
+			catch (ConcurrentModificationException ex)
+			{
+				// Should be safe to ignore
+			}
+		}
+
 		if (groundItem.getQuantity() <= item.getQuantity())
 		{
 			collectedGroundItems.remove(groundItemKey);
@@ -261,6 +277,44 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
+	{
+		final NPC npc = npcLootReceived.getNpc();
+		final Collection<ItemStack> items = npcLootReceived.getItems();
+
+		for (ItemStack i: items)
+		{
+			lootItems.put(i.getId(), npc.getLocalLocation());
+		}
+	}
+
+	@Subscribe
+	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
+	{
+		final Player player = playerLootReceived.getPlayer();
+		final Collection<ItemStack> items = playerLootReceived.getItems();
+
+		for (ItemStack i: items)
+		{
+			lootItems.put(i.getId(), player.getLocalLocation());
+		}
+	}
+
+	boolean isPlayerOwned(GroundItem groundItem)
+	{
+		for (LocalPoint loc : lootItems.get(groundItem.getId()))
+		{
+			if (loc.getSceneX() == groundItem.getLocalLocation().getSceneX() + 1 &&
+					loc.getSceneY() == groundItem.getLocalLocation().getSceneY() + 1)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private GroundItem buildGroundItem(final Tile tile, final Item item)
 	{
 		// Collect the data for the item
@@ -272,6 +326,7 @@ public class GroundItemsPlugin extends Plugin
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
 			.location(tile.getWorldLocation())
+			.localLoc(tile.getLocalLocation())
 			.itemId(realItemId)
 			.quantity(item.getQuantity())
 			.name(itemComposition.getName())
