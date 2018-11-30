@@ -250,6 +250,12 @@ public class ItemManager
 			return 1000;
 		}
 
+		UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
+		if (p != null)
+		{
+			return getItemPrice(p.getPriceID()) * p.getQuantity();
+		}
+
 		int price = 0;
 		for (int mappedID : ItemMapping.map(itemID))
 		{
