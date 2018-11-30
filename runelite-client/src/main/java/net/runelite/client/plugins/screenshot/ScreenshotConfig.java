@@ -154,7 +154,6 @@ public interface ScreenshotConfig extends Config
 		return false;
 	}
 
-
 	@ConfigItem(
 			keyName = "valuableDrop",
 			name = "Screenshot Valuable drops",
@@ -176,6 +175,4 @@ public interface ScreenshotConfig extends Config
 	{
 		return Keybind.NOT_SET;
 	}
-
-
 }
