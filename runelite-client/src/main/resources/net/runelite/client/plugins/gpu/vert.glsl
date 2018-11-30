@@ -48,6 +48,10 @@ float fogFactorLinear(const float dist, const float start, const float end) {
     return 1.0 - clamp((end - dist) / (end - start), 0.0, 1.0);
 }
 
+float boxDistance(vec3 v1, vec3 v2){
+    return max(abs(v1.x - v2.x), abs(v1.z - v2.z));
+}
+
 void main()
 {
   ivec3 vertex = VertexPosition.xyz;
@@ -64,8 +68,7 @@ void main()
 
   if (useFog == 1)
   {
-    vec3 v = vec3(vPosition - cameraPosition);
-    float fogDistance = length(v);
+    float fogDistance = boxDistance(vPosition, cameraPosition);
     float fogEnd = (drawDistance * 2) * FOG_DIST_SCALE;
     float fogStart = fogEnd - ((drawDistance / 2) * FOG_DIST_SCALE);
 

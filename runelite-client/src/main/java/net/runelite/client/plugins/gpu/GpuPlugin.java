@@ -1102,9 +1102,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUniform1i(uniDrawDistance, drawDistance);
 			gl.glUniform3i(uniCameraPosition, client.getCameraX2(), client.getCameraY2(), client.getCameraZ2());
 
-			if (config.enableFog())
+			if (config.enableSkybox())
 			{
 				drawSkybox();
+			}
+			else
+			{
+				gl.glUniform4f(uniFogColor, 0, 0,0, 1f);
 			}
 
 			// Brightness happens to also be stored in the texture provider, so we use that
