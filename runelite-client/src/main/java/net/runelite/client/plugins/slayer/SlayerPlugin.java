@@ -287,7 +287,7 @@ public class SlayerPlugin extends Plugin
 			}
 			else if (mAssignFirst.find())
 			{
-				setTask(mAssignFirst.group(1), Integer.parseInt(mAssignFirst.group(2)));
+				setTask(mAssignFirst.group(1), Integer.parseInt(mAssignFirst.group(2)), Integer.parseInt(mAssignFirst.group(2)));
 			}
 			else if (mAssignBoss.find())
 			{
