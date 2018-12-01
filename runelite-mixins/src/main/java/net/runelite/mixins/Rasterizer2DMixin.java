@@ -151,10 +151,14 @@ public abstract class Rasterizer2DMixin implements RSClient
 				else
 				{
 					int var16 = (var14 * (var5 & 16711935) + var13 * (var4 & 16711935) & -16711936) + (var14 * (var5 & 65280) + var13 * (var4 & 65280) & 16711680) >>> 8;
+					int var17 = 255 - var15;
+					int var18 = ((var16 & 16711935) * var15 >> 8 & 16711935) + (var15 * (var16 & 65280) >> 8 & 65280);
 
 					for (int var19 = -var2; var19 < 0; ++var19)
 					{
-						drawAlpha(pixels, var11++, 0, var16, var15);
+						int var20 = pixels[var11];
+						var20 = ((var20 & 16711935) * var17 >> 8 & 16711935) + (var17 * (var20 & 65280) >> 8 & 65280);
+						drawAlpha(pixels, var11++, var18 + var20, var16, var15);
 					}
 
 					var11 += var10;
@@ -260,7 +264,10 @@ public abstract class Rasterizer2DMixin implements RSClient
 							}
 
 							int var20 = var19 >>> 24;
-							drawAlpha(pixels, var14++, 0, var19, var20);
+							int var21 = 255 - var20;
+							int var22 = pixels[var14];
+							int var23 = ((var19 & 16711935) * var20 + (var22 & 16711935) * var21 & -16711936) + (var20 * (var19 & 65280) + var21 * (var22 & 65280) & 16711680) >> 8;
+							drawAlpha(pixels, var14++, var23, var19, var20);
 						}
 
 						var14 += var11;
