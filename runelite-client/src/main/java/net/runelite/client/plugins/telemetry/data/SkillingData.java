@@ -24,20 +24,16 @@
  */
 package net.runelite.client.plugins.telemetry.data;
 
-import java.util.Date;
+import java.util.Collection;
 import lombok.Value;
+import net.runelite.api.Skill;
 
 @Value
-public class TelemetryData
+public class SkillingData
 {
-	private final long date;
-	private final Object data;
-	private final String type;
-
-	public TelemetryData(Date date, Object data)
-	{
-		this.date = date.getTime();
-		this.data = data;
-		this.type = data.getClass().getSimpleName();
-	}
+	private final Skill skill;
+	private final int level;
+	private final Collection<GameItem> items;
+	private final int toolID;
+	private final int ticksElapsed;
 }

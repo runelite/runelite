@@ -26,8 +26,8 @@
 
 package net.runelite.client.plugins.telemetry;
 
-import com.google.common.collect.Sets;
-import com.google.common.eventbus.Subscribe;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -43,12 +43,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
@@ -60,18 +62,21 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.barrows.BarrowsBrothers;
 import net.runelite.client.plugins.telemetry.data.BarrowsLootTelemetry;
 import net.runelite.client.plugins.telemetry.data.CoXLootTelemetry;
 import net.runelite.client.plugins.telemetry.data.EventLootTelemetry;
+import net.runelite.client.plugins.telemetry.data.FishingSpots;
+import net.runelite.client.plugins.telemetry.data.GameItem;
 import net.runelite.client.plugins.telemetry.data.InventoryItem;
 import net.runelite.client.plugins.telemetry.data.MotherlodeMineTelemetry;
 import net.runelite.client.plugins.telemetry.data.NpcLootTelemetry;
 import net.runelite.client.plugins.telemetry.data.NpcSpawnedTelemetry;
+import net.runelite.client.plugins.telemetry.data.SkillingData;
 import net.runelite.client.plugins.telemetry.data.ToBLootTelemetry;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.util.Text;
@@ -83,6 +88,11 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class TelemetryPlugin extends Plugin
 {
+	private class InventoryType
+	{
+		public static final String REMOVED = "removed";
+		public static final String ADDED = "added";
+	}
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
 	private static final int PEST_CONTROL_REGION = 10536;
 	private static final int MAX_SPAWN_TILE_RANGE = 10;
@@ -99,6 +109,13 @@ public class TelemetryPlugin extends Plugin
 	private WorldPoint posLastTick;
 	private Set<InventoryItem> playerInventory;
 	private Set<InventoryItem> oldPlayerInventory;
+
+	private List<GameItem> itemsCollectedWhileSkilling = new ArrayList<>();
+	private boolean isSkilling = false;
+	private Skill currentSkill;
+	private int tickStarted;
+	private int elapsedTicks;
+	private int interactingID = -1;
 
 	// Motherlode Mine
 	private int sackOre;
@@ -136,10 +153,24 @@ public class TelemetryPlugin extends Plugin
 	public void onGameTick(GameTick tick)
 	{
 		posLastTick = client.getLocalPlayer().getWorldLocation();
+
+		// Store current values as they will change when checking `isSkilling()`
+		boolean oldSkilling = isSkilling;
+		Skill skill = currentSkill;
+		elapsedTicks = client.getTickCount() - tickStarted;
+
+		isSkilling = isSkilling();
+
+		// State changed or doing a new skill
+		if (oldSkilling != isSkilling || skill != currentSkill)
+		{
+			tickStarted = isSkilling ? client.getTickCount() : tickStarted;
+			skillStateChanged(skill, isSkilling);
+		}
 	}
 
 	@Subscribe
-	public void onVarbitChange(VarbitChanged c)
+	public void onVarbitChanged(VarbitChanged c)
 	{
 		int oldOre = sackOre;
 		sackOre = client.getVar(Varbits.SACK_NUMBER);
@@ -252,7 +283,7 @@ public class TelemetryPlugin extends Plugin
 		// Convert container items to array of ItemStack
 		final Collection<ItemStack> items = Arrays.stream(container.getItems())
 			.filter(item -> item.getId() > 0)
-			.map(item -> new ItemStack(item.getId(), item.getQuantity()))
+			.map(item -> new ItemStack(item.getId(), item.getQuantity(), client.getLocalPlayer().getLocalLocation()))
 			.collect(Collectors.toList());
 
 		if (!items.isEmpty())
@@ -260,20 +291,18 @@ public class TelemetryPlugin extends Plugin
 			EventLootTelemetry data = new EventLootTelemetry(eventType, items);
 			if (eventType.equals("Barrows"))
 			{
-				int slain = getSlainBrothers();
-				int reward = (slain * 2) + client.getVar(Varbits.BARROWS_REWARD_POTENTIAL);
-				data = new BarrowsLootTelemetry(eventType, items, reward, slain);
+				data = new BarrowsLootTelemetry(items, client);
 			}
 			if (eventType.equals("Chambers of Xeric"))
 			{
 				int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
 				int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
 				int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
-				data = new CoXLootTelemetry(eventType, items, personalPoints, totalPoints, partySize);
+				data = new CoXLootTelemetry(items, personalPoints, totalPoints, partySize);
 			}
 			if (eventType.equals("Theatre of Blood"))
 			{
-				data = new ToBLootTelemetry(eventType, items, personalDeaths, teamDeaths);
+				data = new ToBLootTelemetry(items, personalDeaths, teamDeaths);
 			}
 			telemetryManager.submit(data);
 		}
@@ -346,8 +375,13 @@ public class TelemetryPlugin extends Plugin
 			if (lootedMlmSack)
 			{
 				lootedMlmSack = false;
-				Set<InventoryItem> addedItems = getInventoryChanges(false);
-				telemetryManager.submit(new MotherlodeMineTelemetry(getAsItemStackList(addedItems), client.getRealSkillLevel(Skill.MINING)));
+				Collection<GameItem> addedItems = getInventoryChanges().get(InventoryType.ADDED);
+				telemetryManager.submit(new MotherlodeMineTelemetry(stackGameItems(addedItems), client.getRealSkillLevel(Skill.MINING)));
+			}
+			else if (isSkilling)
+			{
+				Collection<GameItem> addedItems = getInventoryChanges().get(InventoryType.ADDED);
+				itemsCollectedWhileSkilling.addAll(stackGameItems(addedItems));
 			}
 		}
 	}
@@ -396,17 +430,43 @@ public class TelemetryPlugin extends Plugin
 		return checks.contains(true);
 	}
 
-	/**
-	 * Returns the changes in the inventory
-	 * @param removed Show items removed instead of items added
-	 * @return
-	 */
-	private Set<InventoryItem> getInventoryChanges(boolean removed)
+	private Multimap<String, GameItem> getInventoryChanges()
 	{
-		Set<InventoryItem> changed = removed ? Sets.difference(oldPlayerInventory, playerInventory) : Sets.difference(playerInventory, oldPlayerInventory);
-		log.info("The following items have been " + (removed ? "removed from" : "added to") + " your inventory: {}", changed);
+		Map<Integer, Integer> inventory = new HashMap<>();
+		for (InventoryItem item : oldPlayerInventory)
+		{
+			int qty = item.getQuantity() * -1;
+			if (inventory.containsKey(item.getId()))
+			{
+				qty += inventory.get(item.getId());
+			}
+			inventory.put(item.getId(), qty);
+		}
+		for (InventoryItem item : playerInventory)
+		{
+			int qty = item.getQuantity();
+			if (inventory.containsKey(item.getId()))
+			{
+				qty += inventory.get(item.getId());
+			}
+			inventory.put(item.getId(), qty);
+		}
 
-		return changed;
+		Multimap<String, GameItem> items = ArrayListMultimap.create();
+		for (Map.Entry<Integer, Integer> e : inventory.entrySet())
+		{
+			GameItem item = new GameItem(e.getKey(), e.getValue());
+			int qty = item.getQuantity();
+			if (qty == 0)
+			{
+				continue;
+			}
+			String type = qty < 0 ? InventoryType.REMOVED : InventoryType.ADDED;
+			items.put(type, item);
+		}
+
+		log.info("The following inventory changes have occurred: {}", items);
+		return items;
 	}
 
 	// Converts an Item[] into a Set of Inventory Items for easier comparisons
@@ -433,33 +493,199 @@ public class TelemetryPlugin extends Plugin
 		return set;
 	}
 
-	// Converts a Set<InventoryItem> into a list of ItemStacks
-	private Collection<ItemStack> getAsItemStackList(Set<InventoryItem> items)
+	private boolean isSkilling()
 	{
-		Map<Integer, ItemStack> l = new HashMap<>();
-		for (InventoryItem i : items)
+		currentSkill = null;
+		Actor a = client.getLocalPlayer().getInteracting();
+		if (a instanceof NPC)
 		{
-			int quantity = i.getQuantity();
-			if (l.containsKey(i.getId()))
+			NPC n = (NPC) a;
+			interactingID = n.getId();
+			switch (n.getId())
 			{
-				quantity += l.get(i.getId()).getQuantity();
+				case NpcID.FISHING_SPOT:
+				case NpcID.FISHING_SPOT_1497:
+				case NpcID.FISHING_SPOT_1498:
+				case NpcID.FISHING_SPOT_1499:
+				case NpcID.FISHING_SPOT_1500:
+				case NpcID.ROD_FISHING_SPOT:
+				case NpcID.ROD_FISHING_SPOT_1507:
+				case NpcID.ROD_FISHING_SPOT_1508:
+				case NpcID.ROD_FISHING_SPOT_1509:
+				case NpcID.FISHING_SPOT_1510:
+				case NpcID.FISHING_SPOT_1511:
+				case NpcID.ROD_FISHING_SPOT_1512:
+				case NpcID.ROD_FISHING_SPOT_1513:
+				case NpcID.FISHING_SPOT_1514:
+				case NpcID.ROD_FISHING_SPOT_1515:
+				case NpcID.ROD_FISHING_SPOT_1516:
+				case NpcID.FISHING_SPOT_1517:
+				case NpcID.FISHING_SPOT_1518:
+				case NpcID.FISHING_SPOT_1519:
+				case NpcID.FISHING_SPOT_1520:
+				case NpcID.FISHING_SPOT_1521:
+				case NpcID.FISHING_SPOT_1522:
+				case NpcID.FISHING_SPOT_1523:
+				case NpcID.FISHING_SPOT_1524:
+				case NpcID.FISHING_SPOT_1525:
+				case NpcID.ROD_FISHING_SPOT_1526:
+				case NpcID.ROD_FISHING_SPOT_1527:
+				case NpcID.FISHING_SPOT_1528:
+				case NpcID.ROD_FISHING_SPOT_1529:
+				case NpcID.FISHING_SPOT_1530:
+				case NpcID.ROD_FISHING_SPOT_1531:
+				case NpcID.FISHING_SPOT_1532:
+				case NpcID.FISHING_SPOT_1533:
+				case NpcID.FISHING_SPOT_1534:
+				case NpcID.FISHING_SPOT_1535:
+				case NpcID.FISHING_SPOT_1536:
+				case NpcID.FISHING_SPOT_1542:
+				case NpcID.FISHING_SPOT_1544:
+				case NpcID.FISHING_SPOT_2146:
+				case NpcID.FISHING_SPOT_2653:
+				case NpcID.FISHING_SPOT_2654:
+				case NpcID.FISHING_SPOT_2655:
+				case NpcID.FISHING_SPOT_3317:
+				case NpcID.ROD_FISHING_SPOT_3417:
+				case NpcID.ROD_FISHING_SPOT_3418:
+				case NpcID.FISHING_SPOT_3419:
+				case NpcID.FISHING_SPOT_3657:
+				case NpcID.FISHING_SPOT_3913:
+				case NpcID.FISHING_SPOT_3914:
+				case NpcID.FISHING_SPOT_3915:
+				case NpcID.FISHING_SPOT_4079:
+				case NpcID.FISHING_SPOT_4080:
+				case NpcID.FISHING_SPOT_4081:
+				case NpcID.FISHING_SPOT_4082:
+				case NpcID.FISHING_SPOT_4316:
+				case NpcID.FISHING_SPOT_4476:
+				case NpcID.FISHING_SPOT_4477:
+				case NpcID.FISHING_SPOT_4710:
+				case NpcID.FISHING_SPOT_4711:
+				case NpcID.FISHING_SPOT_4712:
+				case NpcID.FISHING_SPOT_4713:
+				case NpcID.FISHING_SPOT_4714:
+				case NpcID.FISHING_SPOT_4928:
+				case NpcID.FISHING_SPOT_5233:
+				case NpcID.FISHING_SPOT_5234:
+				case NpcID.FISHING_SPOT_5820:
+				case NpcID.FISHING_SPOT_5821:
+				case NpcID.FISHING_SPOT_6488:
+				case NpcID.FISHING_SPOT_6731:
+				case NpcID.ROD_FISHING_SPOT_6825:
+				case NpcID.FISHING_SPOT_7155:
+				case NpcID.FISHING_SPOT_7199:
+				case NpcID.FISHING_SPOT_7200:
+				case NpcID.FISHING_SPOT_7323:
+				case NpcID.FISHING_SPOT_7459:
+				case NpcID.FISHING_SPOT_7460:
+				case NpcID.FISHING_SPOT_7461:
+				case NpcID.FISHING_SPOT_7462:
+				case NpcID.ROD_FISHING_SPOT_7463:
+				case NpcID.ROD_FISHING_SPOT_7464:
+				case NpcID.FISHING_SPOT_7465:
+				case NpcID.FISHING_SPOT_7466:
+				case NpcID.FISHING_SPOT_7467:
+				case NpcID.ROD_FISHING_SPOT_7468:
+				case NpcID.FISHING_SPOT_7469:
+				case NpcID.FISHING_SPOT_7470:
+				case NpcID.ROD_FISHING_SPOT_7676:
+				case NpcID.FISHING_SPOT_7730:
+				case NpcID.FISHING_SPOT_7731:
+				case NpcID.FISHING_SPOT_7732:
+				case NpcID.FISHING_SPOT_7733:
+				case NpcID.FISHING_SPOT_7946:
+				case NpcID.FISHING_SPOT_7947:
+					currentSkill = Skill.FISHING;
+					return true;
+				default:
+					return false;
 			}
-			l.put(i.getId(), new ItemStack(i.getId(), quantity));
 		}
 
-		return l.values();
+		return false;
 	}
 
-	private int getSlainBrothers()
+	private void skillStateChanged(Skill skill, boolean newState)
 	{
-		int slain = 0;
-		for (BarrowsBrothers brother : BarrowsBrothers.values())
+		if (skill == null)
 		{
-			if (client.getVar(brother.getKilledVarbit()) > 0)
+			if (newState)
 			{
-				slain++;
+				// Just started skilling, Ensure the list of items gathered is empty
+				itemsCollectedWhileSkilling.clear();
+			}
+			else
+			{
+				log.warn("Stopped skilling but skill is null?");
+			}
+			return;
+		}
+
+		// If they stopped skilling or started a new skill submit the current data
+		submitSkillData(skill);
+	}
+
+	private void submitSkillData(Skill skill)
+	{
+		if (elapsedTicks < 5)
+		{
+			log.debug("Skilled for less than 5 ticks, most likely tick manipulating");
+			return;
+		}
+		
+		telemetryManager.submit(new SkillingData(skill, client.getRealSkillLevel(skill), stackGameItems(itemsCollectedWhileSkilling), getToolId(skill), elapsedTicks));
+	}
+
+	private Collection<GameItem> stackGameItems(Collection<GameItem> items)
+	{
+		Map<Integer, GameItem> map = new HashMap<>();
+		for (GameItem i : items)
+		{
+			int id = i.getId();
+			int qty = i.getQuantity();
+			if (map.containsKey(id))
+			{
+				qty += map.get(id).getQuantity();
+			}
+			map.put(id, new GameItem(id, qty));
+		}
+
+		return map.values();
+	}
+
+	private int getToolId(Skill skill)
+	{
+		switch (skill)
+		{
+			case FISHING:
+				if (interactingID != -1 && FishingSpots.getSPOTS().containsKey(interactingID))
+				{
+					// Check for a tool in their inventory
+					int[] toolIds = FishingSpots.getSPOTS().get(interactingID).getSkillingTools().getTools();
+					for (int i : toolIds)
+					{
+						if (playerInventoryContainsTool(i))
+						{
+							return i;
+						}
+					}
+					return -1;
+				}
+		}
+		return -1;
+	}
+
+	private boolean playerInventoryContainsTool(int toolID)
+	{
+		for (InventoryItem i : playerInventory)
+		{
+			if (i.getId() == toolID)
+			{
+				return true;
 			}
 		}
-		return slain;
+
+		return false;
 	}
 }

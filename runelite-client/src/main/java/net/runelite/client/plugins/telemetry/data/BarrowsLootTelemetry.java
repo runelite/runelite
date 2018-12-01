@@ -24,20 +24,35 @@
  */
 package net.runelite.client.plugins.telemetry.data;
 
-
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import lombok.Getter;
+import lombok.ToString;
+import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.client.game.ItemStack;
+import net.runelite.client.plugins.barrows.BarrowsBrothers;
 
 @Getter
+@ToString(callSuper = true)
 public class BarrowsLootTelemetry extends EventLootTelemetry
 {
 	private final int rewardPotential;
-	private final int barrowsSlain;
-	public BarrowsLootTelemetry(String type, Collection<ItemStack> items, int rewardPotential, int barrowsSlain)
+	private final boolean diaryCompleted;
+	private final List<String> killedBrothers = new ArrayList<>();
+
+	public BarrowsLootTelemetry(Collection<ItemStack> items, Client client)
 	{
-		super(type, items);
-		this.rewardPotential = rewardPotential;
-		this.barrowsSlain = barrowsSlain;
+		super(null, items);
+		for (BarrowsBrothers brother : BarrowsBrothers.values())
+		{
+			if (client.getVar(brother.getKilledVarbit()) > 0)
+			{
+				killedBrothers.add(brother.getName());
+			}
+		}
+		this.rewardPotential = (killedBrothers.size() * 2) + client.getVar(Varbits.BARROWS_REWARD_POTENTIAL);
+		this.diaryCompleted = client.getVar(Varbits.DIARY_MORYTANIA_HARD) > 0;
 	}
 }

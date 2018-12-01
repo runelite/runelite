@@ -31,6 +31,6 @@ import net.runelite.client.game.ItemStack;
 @Data
 public class EventLootTelemetry
 {
-	private final String type;
+	private final String eventName;
 	private final Collection<ItemStack> items;
 }

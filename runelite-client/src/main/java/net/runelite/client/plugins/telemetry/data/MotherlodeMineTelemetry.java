@@ -26,11 +26,10 @@ package net.runelite.client.plugins.telemetry.data;
 
 import java.util.Collection;
 import lombok.Value;
-import net.runelite.client.game.ItemStack;
 
 @Value
 public class MotherlodeMineTelemetry
 {
-	private final Collection<ItemStack> itemsReceived;
+	private final Collection<GameItem> itemsReceived;
 	private final int miningLevel;
 }
