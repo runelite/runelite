@@ -86,6 +86,7 @@ class XpInfoBox extends JPanel
 	private final JLabel expHour = new JLabel();
 	private final JLabel expLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
+	private final JLabel expPerAction = new JLabel();
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
 
 	private boolean paused = false;
@@ -139,12 +140,14 @@ class XpInfoBox extends JPanel
 		expGained.setFont(FontManager.getRunescapeSmallFont());
 		expHour.setFont(FontManager.getRunescapeSmallFont());
 		expLeft.setFont(FontManager.getRunescapeSmallFont());
+		expPerAction.setFont(FontManager.getRunescapeSmallFont());
 		actionsLeft.setFont(FontManager.getRunescapeSmallFont());
 
 		statsPanel.add(expGained);
 		statsPanel.add(expLeft);
 		statsPanel.add(expHour);
 		statsPanel.add(actionsLeft);
+		statsPanel.add(expPerAction);
 
 		headerPanel.add(skillIcon, BorderLayout.WEST);
 		headerPanel.add(statsPanel, BorderLayout.CENTER);
@@ -195,9 +198,11 @@ class XpInfoBox extends JPanel
 			paused = skillPaused;
 
 			// Update information labels
+			String actionLabel = xpSnapshotSingle.getActionType().getLabel();
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
 			expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
-			actionsLeft.setText(htmlLabel(xpSnapshotSingle.getActionType().getLabel() + ": ", xpSnapshotSingle.getActionsRemainingToGoal()));
+			expPerAction.setText(htmlLabel("XP/" + actionLabel.substring(0, actionLabel.length()-1) + ": ", xpSnapshotSingle.getXpPerAction()));
+			actionsLeft.setText(htmlLabel(actionLabel + ": ", xpSnapshotSingle.getActionsRemainingToGoal()));
 
 			// Update progress bar
 			progressBar.setValue((int) xpSnapshotSingle.getSkillProgressToGoal());
