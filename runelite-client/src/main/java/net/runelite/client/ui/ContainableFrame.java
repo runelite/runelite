@@ -25,7 +25,10 @@
 package net.runelite.client.ui;
 
 import java.awt.Frame;
+import java.awt.GraphicsConfiguration;
+import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 import lombok.Setter;
 import net.runelite.client.config.ExpandResizeType;
@@ -56,7 +59,7 @@ public class ContainableFrame extends JFrame
 	{
 		if (containedInScreen)
 		{
-			Rectangle bounds = this.getGraphicsConfiguration().getBounds();
+			Rectangle bounds = getEffectiveScreenSize();
 			x = Math.max(x, (int)bounds.getX());
 			x = Math.min(x, (int)(bounds.getX() + bounds.getWidth() - this.getWidth()));
 			y = Math.max(y, (int)bounds.getY());
@@ -71,7 +74,7 @@ public class ContainableFrame extends JFrame
 	{
 		if (containedInScreen)
 		{
-			Rectangle bounds = this.getGraphicsConfiguration().getBounds();
+			Rectangle bounds = getEffectiveScreenSize();
 			width = Math.min(width, width - (int)bounds.getX() + x);
 			x = Math.max(x, (int)bounds.getX());
 			height = Math.min(height, height - (int)bounds.getY() + y);
@@ -88,7 +91,7 @@ public class ContainableFrame extends JFrame
 	 * the side.
 	 * @param value size to expand frame by
 	 */
-	public void expandBy(final int value)
+	void expandBy(final int value)
 	{
 		if (isFullScreen())
 		{
@@ -143,7 +146,7 @@ public class ContainableFrame extends JFrame
 	 * If the frame was pushed from side before, restore it's original position.
 	 * @param value value to contract frame by
 	 */
-	public void contractBy(final int value)
+	void contractBy(final int value)
 	{
 		if (isFullScreen())
 		{
@@ -176,7 +179,7 @@ public class ContainableFrame extends JFrame
 	/**
 	 * Force minimum size of frame to be it's layout manager's minimum size
 	 */
-	public void revalidateMinimumSize()
+	void revalidateMinimumSize()
 	{
 		setMinimumSize(getLayout().minimumLayoutSize(this));
 	}
@@ -196,5 +199,24 @@ public class ContainableFrame extends JFrame
 	{
 		Rectangle screenBounds = getGraphicsConfiguration().getBounds();
 		return Math.abs((getX() + getWidth()) - (screenBounds.getX() + screenBounds.getWidth())) <= SCREEN_EDGE_CLOSE_DISTANCE;
+	}
+
+	private Rectangle getEffectiveScreenSize()
+	{
+		GraphicsConfiguration gc = getGraphicsConfiguration();
+
+		// First, get whole screen bounds
+		Rectangle bounds = gc.getBounds();
+
+		// Then get screen insets (removes unusable area, like bars)
+		Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(gc);
+		Rectangle effectiveScreenArea = new Rectangle();
+
+		// Now, calculate effective area
+		effectiveScreenArea.x = bounds.x + screenInsets.left;
+		effectiveScreenArea.y = bounds.y + screenInsets.top;
+		effectiveScreenArea.height = bounds.height - screenInsets.top - screenInsets.bottom;
+		effectiveScreenArea.width = bounds.width - screenInsets.left - screenInsets.right;
+		return effectiveScreenArea;
 	}
 }
