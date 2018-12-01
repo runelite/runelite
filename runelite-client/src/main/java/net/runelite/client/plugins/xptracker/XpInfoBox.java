@@ -61,6 +61,7 @@ class XpInfoBox extends JPanel
 	private static final String HTML_TOOL_TIP_TEMPLATE =
 		"<html>%s %s done<br/>"
 			+ "%s %s/hr<br/>"
+			+ "%s XP/%s<br/>"
 			+ "%s till goal lvl</html>";
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
@@ -86,7 +87,6 @@ class XpInfoBox extends JPanel
 	private final JLabel expHour = new JLabel();
 	private final JLabel expLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
-	private final JLabel expPerAction = new JLabel();
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
 
 	private boolean paused = false;
@@ -140,14 +140,12 @@ class XpInfoBox extends JPanel
 		expGained.setFont(FontManager.getRunescapeSmallFont());
 		expHour.setFont(FontManager.getRunescapeSmallFont());
 		expLeft.setFont(FontManager.getRunescapeSmallFont());
-		expPerAction.setFont(FontManager.getRunescapeSmallFont());
 		actionsLeft.setFont(FontManager.getRunescapeSmallFont());
 
 		statsPanel.add(expGained);
 		statsPanel.add(expLeft);
 		statsPanel.add(expHour);
 		statsPanel.add(actionsLeft);
-		statsPanel.add(expPerAction);
 
 		headerPanel.add(skillIcon, BorderLayout.WEST);
 		headerPanel.add(statsPanel, BorderLayout.CENTER);
@@ -196,12 +194,10 @@ class XpInfoBox extends JPanel
 			}
 
 			paused = skillPaused;
-
-			// Update information labels
 			String actionLabel = xpSnapshotSingle.getActionType().getLabel();
+			// Update information labels
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
 			expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
-			expPerAction.setText(htmlLabel("XP/" + actionLabel.substring(0, actionLabel.length()-1) + ": ", xpSnapshotSingle.getXpPerAction()));
 			actionsLeft.setText(htmlLabel(actionLabel + ": ", xpSnapshotSingle.getActionsRemainingToGoal()));
 
 			// Update progress bar
@@ -215,9 +211,11 @@ class XpInfoBox extends JPanel
 			progressBar.setToolTipText(String.format(
 				HTML_TOOL_TIP_TEMPLATE,
 				xpSnapshotSingle.getActionsInSession(),
-				xpSnapshotSingle.getActionType().getLabel(),
+				actionLabel,
 				xpSnapshotSingle.getActionsPerHour(),
-				xpSnapshotSingle.getActionType().getLabel(),
+				actionLabel,
+				xpSnapshotSingle.getXpPerAction(),
+				actionLabel.substring(0,actionLabel.length()-1),
 				xpSnapshotSingle.getTimeTillGoal()));
 
 			progressBar.setDimmed(skillPaused);
