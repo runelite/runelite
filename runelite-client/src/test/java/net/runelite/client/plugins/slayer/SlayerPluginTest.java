@@ -647,9 +647,9 @@ public class SlayerPluginTest
 	}
 
 	@Test
-	public void testSackMulti()
+	public void testSackMulti() throws Exception
 	{
-		slayerPlugin.loadXpJson();
+		slayerPlugin.startUp();
 
 		List<NPC> died = new ArrayList<>();
 		NPC npc0 = newNPC("Dust devil", 93);
@@ -672,9 +672,9 @@ public class SlayerPluginTest
 	}
 
 	@Test
-	public void testSackSingle()
+	public void testSackSingle() throws Exception
 	{
-		slayerPlugin.loadXpJson();
+		slayerPlugin.startUp();
 
 		List<NPC> died0 = new ArrayList<>();
 		NPC npc0 = newNPC("Dust devil", 93);
@@ -697,9 +697,9 @@ public class SlayerPluginTest
 	}
 
 	@Test
-	public void testSackAmbiguous()
+	public void testSackAmbiguous() throws Exception
 	{
-		slayerPlugin.loadXpJson();
+		slayerPlugin.startUp();
 
 		List<NPC> died = new ArrayList<>();
 		NPC npc0 = newNPC("Desert Lizard", 42);
@@ -720,9 +720,9 @@ public class SlayerPluginTest
 	}
 
 	@Test
-	public void testSackAlwaysOne()
+	public void testSackAlwaysOne() throws Exception
 	{
-		slayerPlugin.loadXpJson();
+		slayerPlugin.startUp();
 
 		List<NPC> died = new ArrayList<>();
 		NPC npc = newNPC("Greater demon", 92);

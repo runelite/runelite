@@ -27,16 +27,11 @@ package net.runelite.client.plugins.slayer;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.eventbus.Subscribe;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -176,7 +171,6 @@ public class SlayerPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private int points;
 
-	private static final double EPSILON = 1e-6;
 	private static final Map<String, Integer> NPC_DEATH_ANIMATIONS = new HashMap<>();
 
 	static
@@ -209,17 +203,7 @@ public class SlayerPlugin extends Plugin
 
 	private int gainsThisTick = -1;
 	private List<NPC> deadThisTick = new ArrayList<>();
-	private Map<String, List<Double>> xpMap;
-
-	void loadXpJson()
-	{
-		final InputStream xpFile = getClass().getResourceAsStream("/slayer_xp.json");
-		Gson gson = new Gson();
-		xpMap = gson.fromJson(new InputStreamReader(xpFile), new TypeToken<Map<String, List<Double>>>()
-		{
-
-		}.getType());
-	}
+	private SlayerXpDrop slayerXpDrop = null;
 
 	@Override
 	protected void startUp() throws Exception
@@ -228,7 +212,11 @@ public class SlayerPlugin extends Plugin
 		overlayManager.add(targetClickboxOverlay);
 		overlayManager.add(targetMinimapOverlay);
 
-		loadXpJson();
+		if (slayerXpDrop == null)
+		{
+			// create this in startup since it needs to pull files during creation
+			slayerXpDrop = new SlayerXpDrop();
+		}
 
 		if (client.getGameState() == GameState.LOGGED_IN
 			&& config.amount() != -1
@@ -250,7 +238,6 @@ public class SlayerPlugin extends Plugin
 		overlayManager.remove(targetMinimapOverlay);
 		removeCounter();
 		highlightedTargets.clear();
-		xpMap.clear();
 	}
 
 	@Provides
@@ -356,85 +343,6 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	/**
-	 * Finds the xp for a given npc using the xp + combat level data provided
-	 * from the JSON - since scrapping from the wiki isn't perfectly accurate
-	 * we make some estimations
-	 *
-	 * precondition is that xpCombatLevel array is non-null - if it is null
-	 * we can simply return -1 to indicate no slayer xp because this npc
-	 * has no associated xpCombatLevel array
-	 *
-	 * 1. first check to see if anywhere in the xp + combat level data this
-	 *    creature name give slayer xp - if it doesn't just return -1 and
-	 *    be done with this - if it does give slayer xp then continue
-	 * 2. now check to see if we can find the xp for this combat level where
-	 *    that xp is greater than 0. note that we don't just find the xp for
-	 *    this combat level - this is because for some monsters the wiki
-	 *    only has slayer xp data for some combat levels and has it unknown
-	 *    for the other combat levels. this way we only return the combat level
-	 *    related xp data for a monster if it is know
-	 * 3. finally if the slayer xp data for the monster was unknown for the given
-	 *    level we estimate the slayer xp by using one of the slayer xps for a level
-	 *    that does have xp given
-	 * 4. note that if a monster gives no slayer xp for any level it will return
-	 *    -1 so we don't accidentally misscount non-slayer targets dying as giving
-	 *    slayer xp
-	 *
-	 * @param npc the npc we are estimating slayer xp for
-	 * @param xpCombatLevel the data mapping combat lvl -> xp for this npc name
-	 * @return our best guess for the slayer xp for this npc
-	 */
-	private double findXpForNpc(NPC npc, List<Double> xpCombatLevel)
-	{
-		if (xpCombatLevel == null)
-		{
-			return -1;
-		}
-		boolean givesSlayerXp = false;
-		for (int i = 0; i < xpCombatLevel.size() - 1; i += 2)
-		{
-			if (xpCombatLevel.get(i) > 0)
-			{
-				givesSlayerXp = true;
-			}
-		}
-		if (!givesSlayerXp)
-		{
-			return -1;
-		}
-		boolean foundCombatLevel = false;
-		for (int i = 0; i < xpCombatLevel.size() - 1; i += 2)
-		{
-			if (Math.abs(xpCombatLevel.get(i + 1) - npc.getCombatLevel()) < EPSILON
-				&& xpCombatLevel.get(i) > 0)
-			{
-				foundCombatLevel = true;
-			}
-		}
-		if (foundCombatLevel)
-		{
-			for (int i = 0; i < xpCombatLevel.size() - 1; i += 2)
-			{
-				if (Math.abs(xpCombatLevel.get(i + 1) - npc.getCombatLevel()) < EPSILON)
-				{
-					return xpCombatLevel.get(i);
-				}
-			}
-		}
-		else
-		{
-			for (int i = 0; i < xpCombatLevel.size() - 1; i += 2)
-			{
-				if (xpCombatLevel.get(i) > 0)
-				{
-					return xpCombatLevel.get(i);
-				}
-			}
-		}
-		return -1;
-	}
-	
 	int estimateKillCount(List<NPC> died, int gains)
 	{
 		// first determine potential xp drops given by all npcs that died this tick by grabbing the slayer xp
@@ -442,8 +350,7 @@ public class SlayerPlugin extends Plugin
 		List<Double> potentialXpDrops = new ArrayList<>();
 		for (NPC dead : died)
 		{
-			List<Double> xpCombatLevel = xpMap.get(dead.getName());
-			double xp = findXpForNpc(dead, xpCombatLevel);
+			double xp = slayerXpDrop.findXpForNpc(dead);
 			potentialXpDrops.add(xp);
 		}
 
