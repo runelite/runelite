@@ -46,9 +46,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 	name = "levelup",
 	hidden = true
 )
-public class LevelUpPlugin extends Plugin {
+public class LevelUpPlugin extends Plugin
+{
 
-	
 	private final Map<Skill, Integer> xpSkills = new EnumMap<>(Skill.class);
 	
 	@Inject
@@ -64,8 +64,7 @@ public class LevelUpPlugin extends Plugin {
 		{
 			for (Skill skill : Skill.values())
 			{
-				final int experience = client.getSkillExperience(skill);
-				xpSkills.put(skill,experience);
+				xpSkills.put(skill, null);
 			}
 		}
 	}
@@ -74,6 +73,17 @@ public class LevelUpPlugin extends Plugin {
 	public void onExperienceChanged(ExperienceChanged event)
 	{
 		final Skill skill = event.getSkill();
+		final Integer experience = xpSkills.get(skill);
+		if (experience != null)
+		{
+			checkLevelUp(skill);
+		}
+		final int experienceAfter = client.getSkillExperience(skill);
+		xpSkills.put(skill, experienceAfter);
+	}
+
+	private void checkLevelUp(Skill skill)
+	{
 		final int experienceBefore = xpSkills.get(skill);
 		final int experienceAfter = client.getSkillExperience(skill);
 		final int lvlBefore = Experience.getLevelForXp(experienceBefore);
@@ -85,5 +95,4 @@ public class LevelUpPlugin extends Plugin {
 			eventBus.post(skillLeveledUp);
 		}
 	}
-
 }
