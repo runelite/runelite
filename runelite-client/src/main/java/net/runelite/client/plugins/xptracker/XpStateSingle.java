@@ -173,8 +173,8 @@ class XpStateSingle
 	int getXpAction()
 	{
 		int actions = getXpAction(actionType).getActions();
-		if(actions == 0) return 0;
-		return xpGained/actions;
+		if (actions == 0) return 0;
+		return xpGained / actions;
 	}
 
 	boolean update(int currentXp, int goalStartXp, int goalEndXp)

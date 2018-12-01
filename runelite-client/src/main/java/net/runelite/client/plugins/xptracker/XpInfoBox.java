@@ -215,7 +215,7 @@ class XpInfoBox extends JPanel
 				xpSnapshotSingle.getActionsPerHour(),
 				actionLabel,
 				xpSnapshotSingle.getXpPerAction(),
-				actionLabel.substring(0,actionLabel.length()-1),
+				actionLabel.substring(0, actionLabel.length() - 1),
 				xpSnapshotSingle.getTimeTillGoal()));
 
 			progressBar.setDimmed(skillPaused);
