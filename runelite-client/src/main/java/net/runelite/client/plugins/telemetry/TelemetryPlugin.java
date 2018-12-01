@@ -26,6 +26,7 @@
 
 package net.runelite.client.plugins.telemetry;
 
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import java.time.temporal.ChronoUnit;
@@ -33,7 +34,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -41,14 +46,18 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
+import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.events.NpcLootReceived;
@@ -56,6 +65,8 @@ import net.runelite.client.game.ItemStack;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.telemetry.data.EventLootTelemetry;
+import net.runelite.client.plugins.telemetry.data.InventoryItem;
+import net.runelite.client.plugins.telemetry.data.MotherlodeMineTelemetry;
 import net.runelite.client.plugins.telemetry.data.NpcLootTelemetry;
 import net.runelite.client.plugins.telemetry.data.NpcSpawnedTelemetry;
 import net.runelite.client.task.Schedule;
@@ -74,10 +85,18 @@ public class TelemetryPlugin extends Plugin
 	// 5 Minute in Milliseconds
 	private static final int TIME_EXPIRE_PERIOD = 5 * 60 * 1000;
 
+	private static final int INVENTORY_SIZE = 28;
+
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails.");
 
 	private String eventType;
 	private WorldPoint posLastTick;
+	private Set<InventoryItem> playerInventory;
+	private Set<InventoryItem> oldPlayerInventory;
+
+	// Motherlode Mine
+	private int sackOre;
+	private boolean lootedMlmSack = false;
 
 	@Inject
 	private Client client;
@@ -106,6 +125,26 @@ public class TelemetryPlugin extends Plugin
 	public void onGameTick(GameTick tick)
 	{
 		posLastTick = client.getLocalPlayer().getWorldLocation();
+	}
+
+	@Subscribe
+	public void onVarbitChange(VarbitChanged c)
+	{
+		int oldOre = sackOre;
+		sackOre = client.getVar(Varbits.SACK_NUMBER);
+		if (oldOre == -1)
+		{
+			return;
+		}
+
+		if (oldOre != sackOre)
+		{
+			int removed = oldOre - sackOre;
+			if (removed > 0)
+			{
+				lootedMlmSack = true;
+			}
+		}
 	}
 
 	@Subscribe
@@ -236,6 +275,23 @@ public class TelemetryPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged c)
+	{
+		if (c.getItemContainer().equals(client.getItemContainer(InventoryID.INVENTORY)))
+		{
+			oldPlayerInventory = playerInventory;
+			playerInventory = getAsInventoryItemSet(c.getItemContainer().getItems());
+
+			if (lootedMlmSack)
+			{
+				lootedMlmSack = false;
+				Set<InventoryItem> addedItems = getInventoryChanges(false);
+				telemetryManager.submit(new MotherlodeMineTelemetry(getAsItemStackList(addedItems), client.getRealSkillLevel(Skill.MINING)));
+			}
+		}
+	}
+
 	@Schedule(
 		unit = ChronoUnit.MINUTES,
 		period = 1
@@ -278,5 +334,59 @@ public class TelemetryPlugin extends Plugin
 		}
 
 		return checks.contains(true);
+	}
+
+	/**
+	 * Returns the changes in the inventory
+	 * @param removed Show items removed instead of items added
+	 * @return
+	 */
+	private Set<InventoryItem> getInventoryChanges(boolean removed)
+	{
+		Set<InventoryItem> changed = removed ? Sets.difference(oldPlayerInventory, playerInventory) : Sets.difference(playerInventory, oldPlayerInventory);
+		log.info("The following items have been " + (removed ? "removed from" : "added to") + " your inventory: {}", changed);
+
+		return changed;
+	}
+
+	// Converts an Item[] into a Set of Inventory Items for easier comparisons
+	private Set<InventoryItem> getAsInventoryItemSet(Item[] items)
+	{
+		Set<InventoryItem> set = new HashSet<>();
+		if (items == null)
+		{
+			return set;
+		}
+
+		for (int i = 0; i < INVENTORY_SIZE; i++)
+		{
+			if (i < items.length)
+			{
+				Item item = items[i];
+				if (item.getId() != -1)
+				{
+					set.add(new InventoryItem(item.getId(), item.getQuantity(), i));
+				}
+			}
+		}
+
+		return set;
+	}
+
+	// Converts a Set<InventoryItem> into a list of ItemStacks
+	private Collection<ItemStack> getAsItemStackList(Set<InventoryItem> items)
+	{
+		Map<Integer, ItemStack> l = new HashMap<>();
+		for (InventoryItem i : items)
+		{
+			int quantity = i.getQuantity();
+			if (l.containsKey(i.getId()))
+			{
+				quantity += l.get(i.getId()).getQuantity();
+			}
+			l.put(i.getId(), new ItemStack(i.getId(), quantity));
+		}
+
+		return l.values();
 	}
 }
