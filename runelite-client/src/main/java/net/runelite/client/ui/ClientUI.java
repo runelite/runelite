@@ -630,16 +630,7 @@ public class ClientUI
 			: 5;
 
 		final BufferedImage image = sidebarOpen ? sidebarClosedIcon : sidebarOpenIcon;
-
-		final Rectangle sidebarButtonRange = new Rectangle(x - 15, 0, image.getWidth() + 25, client.getRealDimensions().height);
-		final Point mousePosition = new Point(
-			client.getMouseCanvasPosition().getX() + client.getViewportXOffset(),
-			client.getMouseCanvasPosition().getY() + client.getViewportYOffset());
-
-		if (sidebarButtonRange.contains(mousePosition.getX(), mousePosition.getY()))
-		{
-			graphics.drawImage(image, x, y, null);
-		}
+		graphics.drawImage(image, x, y, null);
 
 		// Update button dimensions
 		sidebarButtonPosition.setBounds(x, y, image.getWidth(), image.getHeight());
