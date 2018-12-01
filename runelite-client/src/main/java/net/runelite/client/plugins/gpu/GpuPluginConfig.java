@@ -82,8 +82,16 @@ public interface GpuPluginConfig extends Config
 		description = "Enables skybox-colored fog",
 		position = 5
 	)
-	default boolean enableFog()
+	default boolean enableFog() { return false; }
+
+	@ConfigItem(
+			keyName = "fogDepth",
+			name = "Fog Depth",
+			description = "Fog depth in tiles",
+			position = 6
+	)
+	default int fogDepth()
 	{
-		return false;
+		return 8;
 	}
 }

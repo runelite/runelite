@@ -35,6 +35,8 @@ uniform float brightness;
 uniform int useFog;
 uniform int drawDistance;
 uniform ivec3 cameraPosition;
+uniform ivec4 sceneBounds;
+uniform int fogDepth;
 
 out ivec3 vPosition;
 out vec4 vColor;
@@ -45,11 +47,11 @@ out float vFogAmount;
 #include hsl_to_rgb.glsl
 
 float fogFactorLinear(const float dist, const float start, const float end) {
-    return 1.0 - clamp((end - dist) / (end - start), 0.0, 1.0);
+    return 1.0 - clamp((dist - start) / (end - start), 0.0, 1.0);
 }
 
-float boxDistance(vec3 v1, vec3 v2){
-    return max(abs(v1.x - v2.x), abs(v1.z - v2.z));
+float edgeDistance(vec3 v1, vec4 bounds){
+    return min( min(v1.x - bounds.x, bounds.y - v1.x) , min(v1.z - bounds.z, bounds.w - v1.z) );
 }
 
 void main()
@@ -68,11 +70,10 @@ void main()
 
   if (useFog == 1)
   {
-    float fogDistance = boxDistance(vPosition, cameraPosition);
-    float fogEnd = (drawDistance * 2) * FOG_DIST_SCALE;
-    float fogStart = fogEnd - ((drawDistance / 2) * FOG_DIST_SCALE);
+    float fogDistance = edgeDistance(vPosition, sceneBounds);
+    float fogDepthScaled = (fogDepth << 1) * FOG_DIST_SCALE;
 
-    vFogAmount = fogFactorLinear(fogDistance, fogStart, fogEnd);
+    vFogAmount = fogFactorLinear(fogDistance, 0, fogDepthScaled);
   }
   else
   {
