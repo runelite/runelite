@@ -42,7 +42,6 @@ import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.EventBus;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemContainerChanged;
@@ -51,6 +50,7 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.EventBus;
 
 @Singleton
 public class GameEventManager

@@ -46,10 +46,10 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.SetMessage;
-import net.runelite.api.events.Subscribe;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 

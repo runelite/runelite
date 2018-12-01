@@ -28,7 +28,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.events.EventBus;
+import net.runelite.client.eventbus.EventBus;
 
 @Singleton
 public class DeferredEventBus extends EventBus

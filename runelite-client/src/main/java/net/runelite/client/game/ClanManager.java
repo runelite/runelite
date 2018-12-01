@@ -48,7 +48,7 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.Subscribe;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 

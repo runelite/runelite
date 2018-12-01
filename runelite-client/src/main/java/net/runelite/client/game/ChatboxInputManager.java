@@ -30,10 +30,10 @@ import java.util.function.Consumer;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
-import net.runelite.api.events.EventBus;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.events.Subscribe;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 
 @Singleton
 public class ChatboxInputManager

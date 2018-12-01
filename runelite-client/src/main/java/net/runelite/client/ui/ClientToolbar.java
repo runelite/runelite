@@ -28,7 +28,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.events.EventBus;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
 

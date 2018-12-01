@@ -29,9 +29,9 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.Subscribe;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 

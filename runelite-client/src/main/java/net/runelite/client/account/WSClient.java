@@ -31,7 +31,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.events.EventBus;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ws.WebsocketGsonFactory;
 import net.runelite.http.api.ws.WebsocketMessage;
