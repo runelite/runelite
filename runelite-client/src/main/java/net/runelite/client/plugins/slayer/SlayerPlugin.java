@@ -400,6 +400,7 @@ public class SlayerPlugin extends Plugin
 		if (gainsThisTick > 0)
 		{
 			int killed = estimateKillCount(deadThisTick, gainsThisTick);
+			System.out.println("gains this tick = " + gainsThisTick + " on this kill count " + killed);
 			for (int i = 0; i < killed; i++)
 			{
 				killedOne();
@@ -604,20 +605,16 @@ public class SlayerPlugin extends Plugin
 
 		int slayerExp = client.getSkillExperience(SLAYER);
 
-		gainsThisTick = slayerExp;
-
 		if (slayerExp <= cachedXp)
 		{
 			return;
 		}
 
-		if (cachedXp == 0)
+		if (cachedXp != 0)
 		{
-			// this is the initial xp sent on login
-			cachedXp = slayerExp;
-			return;
+			// this is not the initial xp sent on login
+			gainsThisTick = slayerExp - cachedXp;
 		}
-
 		cachedXp = slayerExp;
 	}
 
