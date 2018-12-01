@@ -60,7 +60,6 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
 
-import net.runelite.api.NpcID;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -178,24 +177,15 @@ public class SlayerPlugin extends Plugin
 	private int points;
 
 	private static final double EPSILON = 1e-6;
-	private static final Map<Integer, Integer> NPC_DEATH_ANIMATIONS = new HashMap<>();
+	private static final Map<String, Integer> NPC_DEATH_ANIMATIONS = new HashMap<>();
 
-	// perhaps rather than relying on getting the npc ids for specific monsters correct from the cache dump
-	// it would make sense to add a method with signature public static List<Integer> getIdsForName(String name)
-	// that returns the ids for all npcs that have a name that exactly matches the searched for name
-	// this way this map would instead be doing for (int id : getIdsForName("Gargoyle")) {NPC_DEATH_ANIMATIONS.put(id, AnimationID.GARGOYLE_DEATH);}
 	static
 	{
-		NPC_DEATH_ANIMATIONS.put(NpcID.GARGOYLE, AnimationID.GARGOYLE_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.GARGOYLE_413, AnimationID.GARGOYLE_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.GARGOYLE_1543, AnimationID.GARGOYLE_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.MARBLE_GARGOYLE, AnimationID.MARBLE_GARGOYLE_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.MARBLE_GARGOYLE_7408, AnimationID.MARBLE_GARGOYLE_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.ROCKSLUG, AnimationID.ROCKSLUG_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.ROCKSLUG_422, AnimationID.ROCKSLUG_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.LIZARD, AnimationID.LIZARD_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.ZYGOMITE, AnimationID.ZYGOMITE_DEATH);
-		NPC_DEATH_ANIMATIONS.put(NpcID.ZYGOMITE_474, AnimationID.ZYGOMITE_DEATH);
+		NPC_DEATH_ANIMATIONS.put("Gargoyle".toLowerCase(), AnimationID.GARGOYLE_DEATH);
+		NPC_DEATH_ANIMATIONS.put("Marble gargoyle".toLowerCase(), AnimationID.MARBLE_GARGOYLE_DEATH);
+		NPC_DEATH_ANIMATIONS.put("Rockslug".toLowerCase(), AnimationID.ROCKSLUG_DEATH);
+		NPC_DEATH_ANIMATIONS.put("Lizard".toLowerCase(), AnimationID.LIZARD_DEATH);
+		NPC_DEATH_ANIMATIONS.put("Zygmoite".toLowerCase(), AnimationID.ZYGOMITE_DEATH);
 		// TODO: DUSK_7888 DUSK_7889
 
 		// TODO: GIANT_ROCKSLUG
@@ -339,8 +329,8 @@ public class SlayerPlugin extends Plugin
 		}
 
 		final NPC npc = (NPC) e.getActor();
-		int id = npc.getId();
-		final Integer deathAnim = NPC_DEATH_ANIMATIONS.get(id);
+		String name = npc.getName();
+		final Integer deathAnim = NPC_DEATH_ANIMATIONS.get(name.toLowerCase());
 		// note that the reason for the below code checking explicit death animations is because there are some odd
 		// cases in the game that could throw us off - most notably desert lizards and rock slugs that can be not dead
 		// yet even when npc.isDead() returns true (b/c 0 hp != dead for them) and also the fact that they can be dead
