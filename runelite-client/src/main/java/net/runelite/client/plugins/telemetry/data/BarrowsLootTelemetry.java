@@ -24,13 +24,20 @@
  */
 package net.runelite.client.plugins.telemetry.data;
 
+
 import java.util.Collection;
-import lombok.Data;
+import lombok.Getter;
 import net.runelite.client.game.ItemStack;
 
-@Data
-public class EventLootTelemetry
+@Getter
+public class BarrowsLootTelemetry extends EventLootTelemetry
 {
-	private final String type;
-	private final Collection<ItemStack> items;
+	private final int rewardPotential;
+	private final int barrowsSlain;
+	public BarrowsLootTelemetry(String type, Collection<ItemStack> items, int rewardPotential, int barrowsSlain)
+	{
+		super(type, items);
+		this.rewardPotential = rewardPotential;
+		this.barrowsSlain = barrowsSlain;
+	}
 }

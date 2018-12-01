@@ -64,6 +64,8 @@ import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.barrows.BarrowsBrothers;
+import net.runelite.client.plugins.telemetry.data.BarrowsLootTelemetry;
 import net.runelite.client.plugins.telemetry.data.EventLootTelemetry;
 import net.runelite.client.plugins.telemetry.data.InventoryItem;
 import net.runelite.client.plugins.telemetry.data.MotherlodeMineTelemetry;
@@ -233,7 +235,14 @@ public class TelemetryPlugin extends Plugin
 
 		if (!items.isEmpty())
 		{
-			telemetryManager.submit(new EventLootTelemetry(eventType, items));
+			EventLootTelemetry data = new EventLootTelemetry(eventType, items);
+			if (eventType.equals("Barrows"))
+			{
+				int slain = getSlainBrothers();
+				int reward = (slain * 2) + client.getVar(Varbits.BARROWS_REWARD_POTENTIAL);
+				data = new BarrowsLootTelemetry(eventType, items, reward, slain);
+			}
+			telemetryManager.submit(data);
 		}
 		else
 		{
@@ -388,5 +397,18 @@ public class TelemetryPlugin extends Plugin
 		}
 
 		return l.values();
+	}
+
+	private int getSlainBrothers()
+	{
+		int slain = 0;
+		for (BarrowsBrothers brother : BarrowsBrothers.values())
+		{
+			if (client.getVar(brother.getKilledVarbit()) > 0)
+			{
+				slain++;
+			}
+		}
+		return slain;
 	}
 }
