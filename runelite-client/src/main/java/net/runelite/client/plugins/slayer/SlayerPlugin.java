@@ -317,6 +317,11 @@ public class SlayerPlugin extends Plugin
 
 		final NPC npc = (NPC) e.getActor();
 		String name = npc.getName();
+		if (name == null || name.isEmpty())
+		{
+			// npc w/o name wouldn't be giving slayer xp drop (also prevents an npe)
+			return;
+		}
 		final Integer deathAnim = NPC_DEATH_ANIMATIONS.get(name.toLowerCase());
 		// note that the reason for the below code checking explicit death animations is because there are some odd
 		// cases in the game that could throw us off - most notably desert lizards and rock slugs that can be not dead
