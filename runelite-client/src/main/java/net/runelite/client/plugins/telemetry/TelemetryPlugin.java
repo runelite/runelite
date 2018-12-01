@@ -72,6 +72,7 @@ import net.runelite.client.plugins.telemetry.data.InventoryItem;
 import net.runelite.client.plugins.telemetry.data.MotherlodeMineTelemetry;
 import net.runelite.client.plugins.telemetry.data.NpcLootTelemetry;
 import net.runelite.client.plugins.telemetry.data.NpcSpawnedTelemetry;
+import net.runelite.client.plugins.telemetry.data.ToBLootTelemetry;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.util.Text;
 
@@ -91,6 +92,8 @@ public class TelemetryPlugin extends Plugin
 	private static final int INVENTORY_SIZE = 28;
 
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails.");
+	private static final Pattern PERSONAL_DEATH_TEXT = Pattern.compile("You have died. Death count: \\d*");
+	private static final Pattern TEAMMATE_DEATH_TEXT = Pattern.compile(".* has died. Death count: \\d*");
 
 	private String eventType;
 	private WorldPoint posLastTick;
@@ -100,6 +103,11 @@ public class TelemetryPlugin extends Plugin
 	// Motherlode Mine
 	private int sackOre;
 	private boolean lootedMlmSack = false;
+
+	// Theatre of Blood deaths
+	private int personalDeaths = 0;
+	private int teamDeaths = 0;
+	private int tobVarbit = 0;
 
 	@Inject
 	private Client client;
@@ -146,6 +154,19 @@ public class TelemetryPlugin extends Plugin
 			if (removed > 0)
 			{
 				lootedMlmSack = true;
+			}
+		}
+
+		// Theatre of Blood Varbit
+		int oldTobVarbit = tobVarbit;
+		tobVarbit = client.getVar(Varbits.THEATRE_OF_BLOOD);
+		if (oldTobVarbit != tobVarbit)
+		{
+			// Was in a party and now is inside, reset the values.
+			if (oldTobVarbit == 1 && tobVarbit == 2)
+			{
+				personalDeaths = 0;
+				teamDeaths = 0;
 			}
 		}
 	}
@@ -250,6 +271,10 @@ public class TelemetryPlugin extends Plugin
 				int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
 				data = new CoXLootTelemetry(eventType, items, personalPoints, totalPoints, partySize);
 			}
+			if (eventType.equals("Theatre of Blood"))
+			{
+				data = new ToBLootTelemetry(eventType, items, personalDeaths, teamDeaths);
+			}
 			telemetryManager.submit(data);
 		}
 		else
@@ -266,8 +291,10 @@ public class TelemetryPlugin extends Plugin
 			return;
 		}
 
+		String message = Text.removeTags(event.getMessage());
+
 		// Check if message is for a clue scroll reward
-		final Matcher m = CLUE_SCROLL_PATTERN.matcher(Text.removeTags(event.getMessage()));
+		final Matcher m = CLUE_SCROLL_PATTERN.matcher(message);
 		if (m.find())
 		{
 			final String type = m.group(1).toLowerCase();
@@ -288,6 +315,22 @@ public class TelemetryPlugin extends Plugin
 				case "master":
 					eventType = "Clue Scroll (Master)";
 					break;
+			}
+		}
+
+		if (tobVarbit > 1)
+		{
+			Matcher match = PERSONAL_DEATH_TEXT.matcher(message);
+			if (match.matches())
+			{
+				personalDeaths++;
+				teamDeaths++;
+			}
+
+			Matcher match2 = TEAMMATE_DEATH_TEXT.matcher(message);
+			if (match2.matches())
+			{
+				teamDeaths++;
 			}
 		}
 	}
