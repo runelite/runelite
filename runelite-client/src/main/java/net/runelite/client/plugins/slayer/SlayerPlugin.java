@@ -50,7 +50,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
-import net.runelite.api.vars.SlayerUnlock;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -59,6 +58,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.vars.SlayerUnlock;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
@@ -150,6 +150,10 @@ public class SlayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
+	private int initialAmount;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int expeditiousChargeCount;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -187,7 +191,7 @@ public class SlayerPlugin extends Plugin
 			streak = config.streak();
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
-			clientThread.invoke(() -> setTask(config.taskName(), config.amount()));
+			clientThread.invoke(() -> setTask(config.taskName(), config.amount(), config.initialAmount()));
 		}
 	}
 
@@ -229,7 +233,7 @@ public class SlayerPlugin extends Plugin
 					streak = config.streak();
 					setExpeditiousChargeCount(config.expeditious());
 					setSlaughterChargeCount(config.slaughter());
-					setTask(config.taskName(), config.amount());
+					setTask(config.taskName(), config.amount(), config.initialAmount());
 					loginFlag = false;
 				}
 				break;
@@ -239,6 +243,7 @@ public class SlayerPlugin extends Plugin
 	private void save()
 	{
 		config.amount(amount);
+		config.initialAmount(initialAmount);
 		config.taskName(taskName);
 		config.points(points);
 		config.streak(streak);
@@ -277,20 +282,24 @@ public class SlayerPlugin extends Plugin
 
 			if (mAssign.find())
 			{
-				setTask(mAssign.group(2), Integer.parseInt(mAssign.group(1)));
+				int amount = Integer.parseInt(mAssign.group(1));
+				setTask(mAssign.group(2), amount, amount);
 			}
 			else if (mAssignFirst.find())
 			{
-				setTask(mAssignFirst.group(1), Integer.parseInt(mAssignFirst.group(2)));
+				int amount = Integer.parseInt(mAssignFirst.group(2));
+				setTask(mAssignFirst.group(1), amount, amount);
 			}
 			else if (mAssignBoss.find())
 			{
-				setTask(mAssignBoss.group(1), Integer.parseInt(mAssignBoss.group(2)));
+				int amount = Integer.parseInt(mAssignBoss.group(2));
+				setTask(mAssignBoss.group(1), amount, amount);
 				points = Integer.parseInt(mAssignBoss.group(3).replaceAll(",", ""));
 			}
 			else if (mCurrent.find())
 			{
-				setTask(mCurrent.group(1), Integer.parseInt(mCurrent.group(2)));
+				int amount = Integer.parseInt(mCurrent.group(2));
+				setTask(mCurrent.group(1), amount, amount);
 			}
 		}
 
@@ -413,13 +422,13 @@ public class SlayerPlugin extends Plugin
 				default:
 					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
 			}
-			setTask("", 0);
+			setTask("", 0, 0);
 			return;
 		}
 
 		if (chatMsg.equals(CHAT_GEM_COMPLETE_MESSAGE) || chatMsg.equals(CHAT_CANCEL_MESSAGE) || chatMsg.equals(CHAT_CANCEL_MESSAGE_JAD))
 		{
-			setTask("", 0);
+			setTask("", 0, 0);
 			return;
 		}
 
@@ -435,7 +444,7 @@ public class SlayerPlugin extends Plugin
 		{
 			String gemTaskName = mProgress.group(1);
 			int gemAmount = Integer.parseInt(mProgress.group(2));
-			setTask(gemTaskName, gemAmount);
+			setTask(gemTaskName, gemAmount, initialAmount);
 			return;
 		}
 
@@ -444,7 +453,7 @@ public class SlayerPlugin extends Plugin
 		if (bracerProgress.find())
 		{
 			final int taskAmount = Integer.parseInt(bracerProgress.group(1));
-			setTask(taskName, taskAmount);
+			setTask(taskName, taskAmount, initialAmount);
 
 			// Avoid race condition (combat brace message goes through first before XP drop)
 			amount++;
@@ -584,10 +593,11 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	private void setTask(String name, int amt)
+	private void setTask(String name, int amt, int initAmt)
 	{
 		taskName = name;
 		amount = amt;
+		initialAmount = initAmt;
 		save();
 		removeCounter();
 		addCounter();
@@ -613,11 +623,19 @@ public class SlayerPlugin extends Plugin
 		}
 
 		BufferedImage taskImg = itemManager.getImage(itemSpriteId);
-		final String taskTooltip = ColorUtil.prependColorTag("%s</br>", new Color(255, 119, 0))
+		String taskTooltip = ColorUtil.prependColorTag("%s</br>", new Color(255, 119, 0))
 			+ ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
 			+ " %s</br>"
 			+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
 			+ " %s";
+
+		if (initialAmount > 0)
+		{
+			taskTooltip += "</br>"
+				+ ColorUtil.wrapWithColorTag("Start:", Color.YELLOW)
+				+ " " + initialAmount;
+		}
+
 		counter = new TaskCounter(taskImg, this, amount);
 		counter.setTooltip(String.format(taskTooltip, capsString(taskName), points, streak));
 
