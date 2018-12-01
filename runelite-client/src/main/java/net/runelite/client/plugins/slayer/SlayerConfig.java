@@ -137,24 +137,6 @@ public interface SlayerConfig extends Config
 	void amount(int amt);
 
 	@ConfigItem(
-		keyName = "initialAmount",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int initialAmount()
-	{
-		return -1;
-	}
-
-	@ConfigItem(
-		keyName = "initialAmount",
-		name = "",
-		description = ""
-	)
-	void initialAmount(int initAmt);
-
-	@ConfigItem(
 		keyName = "streak",
 		name = "",
 		description = "",
