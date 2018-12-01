@@ -180,6 +180,10 @@ public class SlayerPlugin extends Plugin
 	private static final double EPSILON = 1e-6;
 	private static final Map<Integer, Integer> NPC_DEATH_ANIMATIONS = new HashMap<>();
 
+	// perhaps rather than relying on getting the npc ids for specific monsters correct from the cache dump
+	// it would make sense to add a method with signature public static List<Integer> getIdsForName(String name)
+	// that returns the ids for all npcs that have a name that exactly matches the searched for name
+	// this way this map would instead be doing for (int id : getIdsForName("Gargoyle")) {NPC_DEATH_ANIMATIONS.put(id, AnimationID.GARGOYLE_DEATH);}
 	static
 	{
 		NPC_DEATH_ANIMATIONS.put(NpcID.GARGOYLE, AnimationID.GARGOYLE_DEATH);
@@ -256,6 +260,7 @@ public class SlayerPlugin extends Plugin
 		overlayManager.remove(targetMinimapOverlay);
 		removeCounter();
 		highlightedTargets.clear();
+		xpMap.clear();
 	}
 
 	@Provides
@@ -336,6 +341,12 @@ public class SlayerPlugin extends Plugin
 		final NPC npc = (NPC) e.getActor();
 		int id = npc.getId();
 		final Integer deathAnim = NPC_DEATH_ANIMATIONS.get(id);
+		// note that the reason for the below code checking explicit death animations is because there are some odd
+		// cases in the game that could throw us off - most notably desert lizards and rock slugs that can be not dead
+		// yet even when npc.isDead() returns true (b/c 0 hp != dead for them) and also the fact that they can be dead
+		// at greater than 0 hp (for example desert lizards can be killed at 4 or less hp with the ice thing) so they
+		// could throw an animation change and be dying but not trigger the npc.isDead() check.
+
 		// when we aren't special casing the death animation we can just do a simple isDead check
 		if (deathAnim == null)
 		{
@@ -360,6 +371,10 @@ public class SlayerPlugin extends Plugin
 	 * from the JSON - since scrapping from the wiki isn't perfectly accurate
 	 * we make some estimations
 	 *
+	 * precondition is that xpCombatLevel array is non-null - if it is null
+	 * we can simply return -1 to indicate no slayer xp because this npc
+	 * has no associated xpCombatLevel array
+	 *
 	 * 1. first check to see if anywhere in the xp + combat level data this
 	 *    creature name give slayer xp - if it doesn't just return -1 and
 	 *    be done with this - if it does give slayer xp then continue
@@ -382,6 +397,10 @@ public class SlayerPlugin extends Plugin
 	 */
 	private double findXpForNpc(NPC npc, List<Double> xpCombatLevel)
 	{
+		if (xpCombatLevel == null)
+		{
+			return -1;
+		}
 		boolean givesSlayerXp = false;
 		for (int i = 0; i < xpCombatLevel.size() - 1; i += 2)
 		{
@@ -426,6 +445,9 @@ public class SlayerPlugin extends Plugin
 		return -1;
 	}
 
+	// the knapsack problem solver used only finds the maximum value that could have been put into the sack, not the items required
+	// to obtain that value so now we must use that maximum value information to compute the items that actually would obtain
+	// that value
 	private List<Map.Entry<NPC, Integer>> reconstructItemsInSack(int [] [] sackTable, List<Map.Entry<NPC, Integer>> orderedIntXpDrops, int i, int w)
 	{
 		if (i == 0)
@@ -474,14 +496,14 @@ public class SlayerPlugin extends Plugin
 				}
 				else
 				{
+					// note that for our purposes of the knapsack problem we want the value of each item exactly
+					// equal to the weight of the item. this ensures that the maximum sack value we calculated is
+					// equal to the max sack weight which means it is the maximum amount of xp from kills that we
+					// can shove into the xp drop the player received
 					sackMatrix[i][j] = Math.max(
 						sackMatrix[i - 1][j],
 						sackMatrix[i - 1][j - orderedIntXpDrops.get(i - 1).getValue()] +
-							// let value = weight ^ 2 to get a conservative estimate that tries to minimize
-							// the number of enemies shoved in the xp sack while still maintaining as close
-							// to total xp value as possible
-							// note that I'm not sure if this is the most appropriate estimation scheme
-							(orderedIntXpDrops.get(i - 1).getValue() * orderedIntXpDrops.get(i - 1).getValue()));
+							(orderedIntXpDrops.get(i - 1).getValue()));
 				}
 			}
 		}
@@ -490,6 +512,8 @@ public class SlayerPlugin extends Plugin
 
 	int estimateKillCount(List<NPC> died, int gains)
 	{
+		// first determine potential xp drops given by all npcs that died this tick by grabbing the slayer xp
+		// info from the map made out of the data in slayer_xp.json
 		List<Map.Entry<NPC, Double>> potentialXpDrops = new ArrayList<>();
 		for (NPC dead : died)
 		{
@@ -497,6 +521,8 @@ public class SlayerPlugin extends Plugin
 			double xp = findXpForNpc(dead, xpCombatLevel);
 			potentialXpDrops.add(new AbstractMap.SimpleEntry<NPC, Double>(dead, xp));
 		}
+		// we can attempt to determine exactly how many npcs died to give this amount of xp
+		// by using a solver for the knapsack problem
 		int estimatedCount = stuffNpcsIntoXp(potentialXpDrops, gains);
 		// if the knapsack solver gets 0 we want to make sure that we think at least 1 enemy died
 		// if xp was gained
@@ -526,6 +552,11 @@ public class SlayerPlugin extends Plugin
 			}
 		}
 
+		// we only need to track the npcs that died and xp gains on a tick by tick basis so when we receive the game
+		// tick we reset both of these - this is viable because the onGameTick method will be called after we
+		// get onExperienceChanged and onAnimationChanged - note that this means that if the order of those methods
+		// changes then this will break - therefore we need a test in the slayer plugin that verifies that the runelite
+		// always makes these things go in that order, i.e. (xp change + animation change before game tick)
 		deadThisTick.clear();
 		gainsThisTick = -1;
 
