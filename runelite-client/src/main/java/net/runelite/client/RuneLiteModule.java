@@ -24,8 +24,6 @@
  */
 package net.runelite.client;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.SubscriberExceptionContext;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.name.Names;
@@ -36,6 +34,7 @@ import javax.annotation.Nullable;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.events.EventBus;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.Hooks;
@@ -88,6 +87,9 @@ public class RuneLiteModule extends AbstractModule
 		bind(Callbacks.class).to(Hooks.class);
 
 		bind(EventBus.class)
+			.toInstance(new EventBus());
+
+		bind(EventBus.class)
 			.annotatedWith(Names.named("Deferred EventBus"))
 			.to(DeferredEventBus.class);
 
@@ -122,17 +124,5 @@ public class RuneLiteModule extends AbstractModule
 	ChatColorConfig provideChatColorConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatColorConfig.class);
-	}
-
-	@Provides
-	@Singleton
-	EventBus provideEventBus()
-	{
-		return new EventBus(RuneLiteModule::eventExceptionHandler);
-	}
-
-	private static void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
-	{
-		log.warn("uncaught exception in event subscriber", exception);
 	}
 }

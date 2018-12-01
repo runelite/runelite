@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.wasdcamera;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import javax.inject.Inject;
@@ -39,6 +38,7 @@ import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.Subscribe;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;

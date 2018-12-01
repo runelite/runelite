@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.fishing;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.time.Duration;
@@ -55,6 +54,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.Subscribe;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.Notifier;

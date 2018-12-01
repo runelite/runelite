@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.combatlevel;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.text.DecimalFormat;
 import javax.inject.Inject;
@@ -33,6 +32,7 @@ import net.runelite.api.Experience;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.Subscribe;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;

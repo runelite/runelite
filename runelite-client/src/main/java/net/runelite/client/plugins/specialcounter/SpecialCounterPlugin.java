@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
-import com.google.common.eventbus.Subscribe;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -42,6 +41,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.Subscribe;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;

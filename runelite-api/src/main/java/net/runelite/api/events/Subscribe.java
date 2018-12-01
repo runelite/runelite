@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,27 +24,18 @@
  */
 package net.runelite.api.events;
 
-import net.runelite.api.Actor;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Represents the base event where an {@link Actor} has spawned.
- * <p>
- * To hook into a more focused actor type, see the {@link PlayerSpawned}
- * or {@link NpcSpawned} events.
- * <p>
- * Examples of when this event may trigger include:
- * <ul>
- *     <li>Entering a new region or area with actors inside</li>
- *     <li>A player logging in nearby</li>
- *     <li>An actor moving into render distance</li>
- * </ul>
+ * Marks a method as an event subscriber.
  */
-public interface ActorSpawned
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@Documented
+public @interface Subscribe
 {
-	/**
-	 * Gets the spawned player or NPC.
-	 *
-	 * @return spawned entity
-	 */
-	Actor getActor();
 }

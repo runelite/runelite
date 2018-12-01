@@ -25,7 +25,7 @@
  */
 package net.runelite.client.plugins.mta.alchemy;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.events.Subscribe;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;

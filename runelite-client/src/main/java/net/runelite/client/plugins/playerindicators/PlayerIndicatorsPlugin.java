@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.events.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import javax.inject.Inject;

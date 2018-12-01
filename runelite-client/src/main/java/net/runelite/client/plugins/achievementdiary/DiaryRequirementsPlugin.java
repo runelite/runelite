@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.achievementdiary;
 
-import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
+import net.runelite.api.events.Subscribe;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;

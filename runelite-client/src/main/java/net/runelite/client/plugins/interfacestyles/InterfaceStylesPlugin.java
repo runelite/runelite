@@ -26,7 +26,6 @@
  */
 package net.runelite.client.plugins.interfacestyles;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
@@ -39,6 +38,7 @@ import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.Subscribe;
 import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;

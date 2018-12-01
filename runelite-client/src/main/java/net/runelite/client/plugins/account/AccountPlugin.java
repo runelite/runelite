@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.account;
 
-import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
@@ -32,6 +31,7 @@ import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.SessionClose;
 import net.runelite.api.events.SessionOpen;
+import net.runelite.api.events.Subscribe;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.plugins.Plugin;

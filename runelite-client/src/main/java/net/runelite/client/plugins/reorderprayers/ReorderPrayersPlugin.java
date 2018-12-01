@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.reorderprayers;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +39,7 @@ import net.runelite.api.WidgetNode;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.Subscribe;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.Widget;

@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.loginscreen;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
@@ -38,6 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SessionOpen;
+import net.runelite.api.events.Subscribe;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;

@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.mta.graveyard;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.events.Subscribe;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;

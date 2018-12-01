@@ -27,7 +27,6 @@ package net.runelite.client.plugins.chatnotifications;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -40,6 +39,7 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SetMessage;
+import net.runelite.api.events.Subscribe;
 import net.runelite.client.Notifier;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.chat.ChatColorType;
