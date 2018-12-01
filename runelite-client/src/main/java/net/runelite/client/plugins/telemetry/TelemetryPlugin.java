@@ -66,6 +66,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.barrows.BarrowsBrothers;
 import net.runelite.client.plugins.telemetry.data.BarrowsLootTelemetry;
+import net.runelite.client.plugins.telemetry.data.CoXLootTelemetry;
 import net.runelite.client.plugins.telemetry.data.EventLootTelemetry;
 import net.runelite.client.plugins.telemetry.data.InventoryItem;
 import net.runelite.client.plugins.telemetry.data.MotherlodeMineTelemetry;
@@ -241,6 +242,13 @@ public class TelemetryPlugin extends Plugin
 				int slain = getSlainBrothers();
 				int reward = (slain * 2) + client.getVar(Varbits.BARROWS_REWARD_POTENTIAL);
 				data = new BarrowsLootTelemetry(eventType, items, reward, slain);
+			}
+			if (eventType.equals("Chambers of Xeric"))
+			{
+				int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
+				int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
+				int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
+				data = new CoXLootTelemetry(eventType, items, personalPoints, totalPoints, partySize);
 			}
 			telemetryManager.submit(data);
 		}
