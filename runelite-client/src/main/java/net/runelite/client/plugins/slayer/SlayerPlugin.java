@@ -434,31 +434,22 @@ public class SlayerPlugin extends Plugin
 		}
 		return -1;
 	}
-
-	// the knapsack problem solver used only finds the maximum value that could have been put into the sack, not the items required
-	// to obtain that value so now we must use that maximum value information to compute the items that actually would obtain
-	// that value
-	private List<Map.Entry<NPC, Integer>> reconstructItemsInSack(int [] [] sackTable, List<Map.Entry<NPC, Integer>> orderedIntXpDrops, int i, int w)
+	
+	int estimateKillCount(List<NPC> died, int gains)
 	{
-		if (i == 0)
+		// first determine potential xp drops given by all npcs that died this tick by grabbing the slayer xp
+		// info from the map made out of the data in slayer_xp.json
+		List<Double> potentialXpDrops = new ArrayList<>();
+		for (NPC dead : died)
 		{
-			return new ArrayList<>();
+			List<Double> xpCombatLevel = xpMap.get(dead.getName());
+			double xp = findXpForNpc(dead, xpCombatLevel);
+			potentialXpDrops.add(xp);
 		}
-		if (sackTable[i][w] > sackTable[i - 1][w])
-		{
-			List<Map.Entry<NPC, Integer>> list = reconstructItemsInSack(sackTable, orderedIntXpDrops,
-					i - 1, w - orderedIntXpDrops.get(i - 1).getValue());
-			list.add(orderedIntXpDrops.get(i - 1));
-			return list;
-		}
-		else
-		{
-			return reconstructItemsInSack(sackTable, orderedIntXpDrops, i - 1, w);
-		}
-	}
 
-	private int stuffNpcsIntoXp(List<Map.Entry<NPC, Double>> potentialXpDrops, int gains)
-	{
+		// we can attempt to determine exactly how many npcs died to give this amount of xp
+		// by using a solver for the knapsack problem
+
 		// add one to max gains allowed for knapsack optimization
 		// since xp is only sent to us as integers but is stored on servers
 		// (and therefore gained as) a double
@@ -467,53 +458,14 @@ public class SlayerPlugin extends Plugin
 		// scale the problem up by a factor of 10 since knapsack problem is solved better with integers
 		// and xp drops can have a single number after the decimal point
 		int tenFudgedGains = fudgedGains * 10;
-		List<Map.Entry<NPC, Integer>> orderedIntXpDrops = potentialXpDrops.stream()
-			.map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), (int) (entry.getValue() * 10)))
-			.collect(Collectors.toCollection(ArrayList::new));
+		List<Integer> potentialXpDropsAsInts = potentialXpDrops.stream()
+				.map(xpDrop -> (int) (xpDrop * 10))
+				.collect(Collectors.toCollection(ArrayList::new));
 
-		// see https://en.wikipedia.org/wiki/Knapsack_problem for psuedocode for 0/1 knapsack problem
-		// extended to bounded knapsack problem by simply having multiples of each item that has multiples
-		int itemCount = orderedIntXpDrops.size();
+		KnapsackSolver solver = new KnapsackSolver();
 
-		int[] [] sackMatrix = new int[itemCount + 1] [tenFudgedGains + 1];
-		for (int i = 1; i <= itemCount; i++)
-		{
-			for (int j = 0; j <= tenFudgedGains; j++)
-			{
-				if (orderedIntXpDrops.get(i - 1).getValue() > j)
-				{
-					sackMatrix[i][j] = sackMatrix[i - 1][j];
-				}
-				else
-				{
-					// note that for our purposes of the knapsack problem we want the value of each item exactly
-					// equal to the weight of the item. this ensures that the maximum sack value we calculated is
-					// equal to the max sack weight which means it is the maximum amount of xp from kills that we
-					// can shove into the xp drop the player received
-					sackMatrix[i][j] = Math.max(
-						sackMatrix[i - 1][j],
-						sackMatrix[i - 1][j - orderedIntXpDrops.get(i - 1).getValue()] +
-							(orderedIntXpDrops.get(i - 1).getValue()));
-				}
-			}
-		}
-		return reconstructItemsInSack(sackMatrix, orderedIntXpDrops, itemCount, tenFudgedGains).size();
-	}
+		int estimatedCount = solver.howMuchFitsInSack(potentialXpDropsAsInts, tenFudgedGains);
 
-	int estimateKillCount(List<NPC> died, int gains)
-	{
-		// first determine potential xp drops given by all npcs that died this tick by grabbing the slayer xp
-		// info from the map made out of the data in slayer_xp.json
-		List<Map.Entry<NPC, Double>> potentialXpDrops = new ArrayList<>();
-		for (NPC dead : died)
-		{
-			List<Double> xpCombatLevel = xpMap.get(dead.getName());
-			double xp = findXpForNpc(dead, xpCombatLevel);
-			potentialXpDrops.add(new AbstractMap.SimpleEntry<NPC, Double>(dead, xp));
-		}
-		// we can attempt to determine exactly how many npcs died to give this amount of xp
-		// by using a solver for the knapsack problem
-		int estimatedCount = stuffNpcsIntoXp(potentialXpDrops, gains);
 		// if the knapsack solver gets 0 we want to make sure that we think at least 1 enemy died
 		// if xp was gained
 		if (estimatedCount <= 0 && gains > 0)
