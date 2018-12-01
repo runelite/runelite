@@ -167,6 +167,7 @@ class LootTrackerBox extends JPanel
 		buildItems();
 
 		priceLabel.setText(StackFormatter.quantityToStackSize(totalPrice) + " gp");
+		priceLabel.setToolTipText(StackFormatter.formatNumber(totalPrice) + " gp");
 
 		final long kills = getTotalKills();
 		if (kills > 1)
