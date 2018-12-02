@@ -120,6 +120,7 @@ public class WidgetID
 	public static final int SPELLBOOK_GROUP_ID = 218;
 	public static final int PVP_GROUP_ID = 90;
 	public static final int ZEAH_MESS_HALL_GROUP_ID = 235;
+	public static final int KOUREND_FAVOUR_GROUP_ID = 246;
 	public static final int LOOTING_BAG_GROUP_ID = 81;
 	public static final int SKOTIZO_GROUP_ID = 308;
 
@@ -716,6 +717,11 @@ public class WidgetID
 		static final int ATTACK_RANGE = 57;
 		static final int WILDERNESS_LEVEL = 58; // this can also be the Deadman Mode "Protection" text
 		static final int DEADMAN_PROTECTION_TIME = 59;
+	}
+
+	static class KourendFavour
+	{
+		static final int KOUREND_FAVOUR_OVERLAY = 1;
 	}
 
 	static class Zeah
