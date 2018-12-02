@@ -121,126 +121,18 @@ class DevToolsPanel extends PluginPanel
 			}
 		});
 
-		final JButton renderLocationBtn = new JButton("Location");
-		renderLocationBtn.addActionListener(e ->
+		container.add(plugin.getChatInspector());
+		plugin.getChatInspector().addActionListener((ev) ->
 		{
-			highlightButton(renderLocationBtn);
-			plugin.toggleLocation();
+			if (plugin.getChatInspector().isActive())
+			{
+				chatInspector.close();
+			}
+			else
+			{
+				chatInspector.open();
+			}
 		});
-		container.add(renderLocationBtn);
-
-		final JButton widgetInspectorBtn = new JButton("Widget Tools");
-		widgetInspectorBtn.addActionListener(e ->
-		{
-			widgetInspector.setVisible(true);
-			widgetInspector.toFront();
-			widgetInspector.repaint();
-		});
-		container.add(widgetInspectorBtn);
-
-		final JButton varInspectorBtn = new JButton("Var Tools");
-		varInspectorBtn.addActionListener(e ->
-		{
-			varInspector.open();
-		});
-		container.add(varInspectorBtn);
-
-		final JButton chunkBordersBtn = new JButton("Chunk borders");
-		chunkBordersBtn.addActionListener(e ->
-		{
-			highlightButton(chunkBordersBtn);
-			plugin.toggleChunkBorders();
-		});
-		container.add(chunkBordersBtn);
-
-		final JButton mapSquaresBtn = new JButton("Map squares");
-		mapSquaresBtn.addActionListener(e ->
-		{
-			highlightButton(mapSquaresBtn);
-			plugin.toggleMapSquares();
-		});
-		container.add(mapSquaresBtn);
-
-		final JButton validMovementBtn = new JButton("Valid Moves");
-		validMovementBtn.addActionListener(e ->
-		{
-			highlightButton(validMovementBtn);
-			plugin.toggleValidMovement();
-		});
-		container.add(validMovementBtn);
-
-		final JButton lineOfSightBtn = new JButton("Line of Sight");
-		lineOfSightBtn.addActionListener(e ->
-		{
-			highlightButton(lineOfSightBtn);
-			plugin.toggleLineOfSight();
-		});
-		container.add(lineOfSightBtn);
-
-		final JButton graphicsObjectsBtn = new JButton("Graphics objects");
-		graphicsObjectsBtn.addActionListener(e ->
-		{
-			highlightButton(graphicsObjectsBtn);
-			plugin.toggleGraphicsObjects();
-		});
-		container.add(graphicsObjectsBtn);
-
-		final JButton cameraPositionBtn = new JButton("Camera Position");
-		cameraPositionBtn.addActionListener(e ->
-		{
-			highlightButton(cameraPositionBtn);
-			plugin.toggleCamera();
-		});
-		container.add(cameraPositionBtn);
-
-		final JButton worldMapBtn = new JButton("World Map Location");
-		worldMapBtn.addActionListener(e ->
-		{
-			highlightButton(worldMapBtn);
-			plugin.toggleWorldMapLocation();
-		});
-		container.add(worldMapBtn);
-
-		final JButton tileLocationBtn = new JButton("Tile Location Tooltip");
-		tileLocationBtn.addActionListener(e ->
-		{
-			highlightButton(tileLocationBtn);
-			plugin.toggleTileLocation();
-		});
-		container.add(tileLocationBtn);
-
-		final JButton oculusOrbBtn = new JButton("Detached camera");
-		oculusOrbBtn.addActionListener(e ->
-		{
-			highlightButton(oculusOrbBtn);
-			boolean enabled = oculusOrbBtn.getBackground().equals(Color.GREEN);
-			client.setOculusOrbState(enabled ? 1 : 0);
-			client.setOculusOrbNormalSpeed(enabled ? 36 : 12);
-		});
-		container.add(oculusOrbBtn);
-
-		final JButton interactingBtn = new JButton("Interacting");
-		interactingBtn.addActionListener(e ->
-		{
-			highlightButton(interactingBtn);
-			plugin.toggleInteracting();
-		});
-		container.add(interactingBtn);
-
-		final JButton examineInfoBtn = new JButton("Examine Info");
-		examineInfoBtn.addActionListener(e ->
-		{
-			highlightButton(examineInfoBtn);
-			plugin.toggleExamineInfo();
-		});
-		container.add(examineInfoBtn);
-
-		final JButton chatInspectorBtn = new JButton("Chat Inspector");
-		chatInspectorBtn.addActionListener(e ->
-		{
-			chatInspector.open();
-		});
-		container.add(chatInspectorBtn);
 
 		return container;
 	}

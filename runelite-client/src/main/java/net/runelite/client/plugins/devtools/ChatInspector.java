@@ -24,8 +24,9 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import com.google.common.html.HtmlEscapers;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
@@ -45,7 +46,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.events.SetMessage;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -162,9 +162,9 @@ class ChatInspector extends JFrame
 	}
 
 	@Subscribe
-	public void onSetMessage(SetMessage event)
+	public void onChatMessage(ChatMessage event)
 	{
-		addChatLog(event.getType(), event.getSender(), event.getName(), event.getValue());
+		addChatLog(event.getType(), event.getSender(), event.getName(), event.getMessage());
 	}
 
 	public void open()

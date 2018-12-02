@@ -125,6 +125,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton widgetInspector;
 	private DevToolsButton varInspector;
 	private NavigationButton navButton;
+	private DevToolsButton chatInspector;
 
 	@Provides
 	DevToolsConfig provideConfig(ConfigManager configManager)
@@ -164,6 +165,7 @@ public class DevToolsPlugin extends Plugin
 		detachedCamera = new DevToolsButton("Detached Camera");
 		widgetInspector = new DevToolsButton("Widget Inspector");
 		varInspector = new DevToolsButton("Var Inspector");
+		chatInspector = new DevToolsButton("Chat Inspector");
 
 		overlayManager.add(overlay);
 		overlayManager.add(locationOverlay);
