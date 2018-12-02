@@ -31,8 +31,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum XpActionType
 {
-	EXPERIENCE("Actions"),
-	ACTOR_HEALTH("Kills");
+	EXPERIENCE("Actions");
 
 	private final String label;
 }

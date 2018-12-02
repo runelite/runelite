@@ -54,7 +54,7 @@ class XpStateSingle
 	private int startLevelExp = 0;
 	private int endLevelExp = 0;
 
-	XpAction getXpAction(final XpActionType type)
+	private XpAction getXpAction(final XpActionType type)
 	{
 		actions.putIfAbsent(type, new XpAction());
 		return actions.get(type);
