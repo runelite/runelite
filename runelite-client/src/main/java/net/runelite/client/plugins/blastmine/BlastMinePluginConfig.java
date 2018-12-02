@@ -98,4 +98,26 @@ public interface BlastMinePluginConfig extends Config
 	{
 		return new Color(217, 54, 0);
 	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "showCollectionExp",
+		name = "Show collection exp",
+		description = "Configures whether or not to show the exp from collecting ores"
+	)
+	default boolean showCollectionExp()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "isWearingFullProspector",
+		name = "Prospector's outfit equipped",
+		description = "Configures whether or not the collection exp should be multiplied by bonus"
+	)
+	default boolean isWearingFullProspector()
+	{
+		return false;
+	}
 }
