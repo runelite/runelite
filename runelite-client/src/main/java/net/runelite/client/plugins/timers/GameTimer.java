@@ -63,7 +63,7 @@ enum GameTimer
 	ICEBARRAGE(SpriteID.SPELL_ICE_BARRAGE, GameTimerImageType.SPRITE, "Ice barrage", GraphicID.ICE_BARRAGE, 20, ChronoUnit.SECONDS, true),
 	IMBUEDHEART(ItemID.IMBUED_HEART, GameTimerImageType.ITEM, "Imbued heart", GraphicID.IMBUED_HEART, 420, ChronoUnit.SECONDS),
 	VENGEANCE(SpriteID.SPELL_VENGEANCE, GameTimerImageType.SPRITE, "Vengeance", GraphicID.VENGEANCE, 30, ChronoUnit.SECONDS),
-	VENGEANCEOTHER(SpriteID.SPELL_VENGEANCE_OTHER, GameTimerImageType.SPRITE, "Vengeance Other", GraphicID.VENGEANCE_OTHER, 30, ChronoUnit.SECONDS),
+	VENGEANCEOTHER(SpriteID.SPELL_VENGEANCE, GameTimerImageType.SPRITE, "Vengeance Other", GraphicID.VENGEANCE_OTHER, 30, ChronoUnit.SECONDS),
 	ANTIDOTEPLUS(ItemID.ANTIDOTE4, GameTimerImageType.ITEM, "Antidote+", 518, ChronoUnit.SECONDS),
 	ANTIVENOM(ItemID.ANTIVENOM4, GameTimerImageType.ITEM, "Anti-venom", 12, ChronoUnit.MINUTES, true),
 	EXSUPERANTIFIRE(ItemID.EXTENDED_SUPER_ANTIFIRE4, GameTimerImageType.ITEM, "Extended Super AntiFire", 6, ChronoUnit.MINUTES),
@@ -87,10 +87,8 @@ enum GameTimer
 	private final String description;
 	@Getter
 	private final boolean removedOnDeath;
-	private int imageId = -1;
-	private GameTimerImageType imageType;
-
-	private BufferedImage image;
+	private final int imageId;
+	private final GameTimerImageType imageType;
 
 	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, ChronoUnit unit, boolean removedOnDeath)
 	{
@@ -119,21 +117,14 @@ enum GameTimer
 
 	BufferedImage getImage(ItemManager itemManager, SpriteManager spriteManager)
 	{
-		if (image != null)
-		{
-			return image;
-		}
-
 		switch (imageType)
 		{
 			case ITEM:
-				image = itemManager.getImage(imageId);
-				break;
+				return itemManager.getImage(imageId);
 			case SPRITE:
-				image = spriteManager.getSprite(imageId, 0);
-				break;
+				return spriteManager.getSprite(imageId, 0);
+			default:
+				return null;
 		}
-
-		return image;
 	}
 }
