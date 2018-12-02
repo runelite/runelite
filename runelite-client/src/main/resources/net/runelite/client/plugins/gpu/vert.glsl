@@ -35,6 +35,7 @@ uniform float brightness;
 uniform int useFog;
 uniform ivec4 sceneBounds;
 uniform int fogDepth;
+uniform float fogInverseThickness;
 
 out ivec3 vPosition;
 out vec4 vColor;
@@ -48,8 +49,8 @@ float fogFactorLinear(const float dist, const float start, const float end) {
     return 1.0 - clamp((dist - start) / (end - start), 0.0, 1.0);
 }
 
-float edgeDistance(vec3 v1, vec4 bounds){
-    return min( min(v1.x - bounds.x, bounds.y - v1.x) , min(v1.z - bounds.z, bounds.w - v1.z) );
+float sqrtMultEdgeDistance(vec3 v1, vec4 bounds){
+    return sqrt(min(v1.x - bounds.x, bounds.y - v1.x) * min(v1.z - bounds.z, bounds.w - v1.z));
 }
 
 void main()
@@ -68,7 +69,7 @@ void main()
 
   if (useFog == 1)
   {
-    float fogDistance = edgeDistance(vPosition, sceneBounds);
+    float fogDistance = sqrtMultEdgeDistance(vPosition, sceneBounds);
     float fogDepthScaled = (fogDepth << 1) * FOG_DIST_SCALE;
 
     vFogAmount = fogFactorLinear(fogDistance, 0, fogDepthScaled);

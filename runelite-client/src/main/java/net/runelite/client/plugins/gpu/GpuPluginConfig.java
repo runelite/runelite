@@ -96,17 +96,17 @@ public interface GpuPluginConfig extends Config
 	)
 	default boolean enableFog()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
 		keyName = "fogDepth",
 		name = "Fog Depth",
-		description = "Fog depth in tiles",
+		description = "Fog depth",
 		position = 7
 	)
 	default int fogDepth()
 	{
-		return 8;
+		return 16;
 	}
 }

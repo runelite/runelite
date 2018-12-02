@@ -99,6 +99,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private static final int SMALL_TRIANGLE_COUNT = 512;
 	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
 	private static final int MAX_DISTANCE = 90;
+	private static final int SCENE_TILES = 104; // in tiles
 
 	@Inject
 	private Client client;
@@ -236,10 +237,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniSmoothBanding;
 
 	private int drawDistance;
-	private int minDrawnX;
-	private int maxDrawnX;
-	private int minDrawnZ;
-	private int maxDrawnZ;
 
 	@Override
 	protected void startUp()
@@ -778,11 +775,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final Scene scene = client.getScene();
 		drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
 		scene.setDrawDistance(drawDistance);
-
-		minDrawnX = Integer.MAX_VALUE;
-		maxDrawnX = Integer.MIN_VALUE;
-		minDrawnZ = Integer.MAX_VALUE;
-		maxDrawnZ = Integer.MIN_VALUE;
 	}
 
 	public void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
@@ -808,12 +800,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			buffer.put(x).put(y).put(z);
 
 			targetBufferOffset += 2 * 3;
-
-			// Ideally this shouldn't be done on every frame
-			minDrawnX = Integer.min(minDrawnX, x);
-			maxDrawnX = Integer.max(maxDrawnX, x);
-			minDrawnZ = Integer.min(minDrawnZ, z);
-			maxDrawnZ = Integer.max(maxDrawnZ, z);
 		}
 	}
 
@@ -840,12 +826,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			buffer.put(x).put(y).put(z);
 
 			targetBufferOffset += model.getBufferLen();
-
-			// Ideally this shouldn't be done on every frame
-			minDrawnX = Integer.min(minDrawnX, x);
-			maxDrawnX = Integer.max(maxDrawnX, x);
-			minDrawnZ = Integer.min(minDrawnZ, z);
-			maxDrawnZ = Integer.max(maxDrawnZ, z);
 		}
 	}
 
@@ -1090,10 +1070,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUniform1i(uniUseFog, config.enableFog() ? 1 : 0);
 			gl.glUniform1i(uniFogDepth, config.fogDepth());
 			gl.glUniform4i(uniSceneBounds,
-					Integer.max(minDrawnX, client.getCameraX2() - drawDistance * Perspective.LOCAL_TILE_SIZE),
-					Integer.min(maxDrawnX, client.getCameraX2() + (drawDistance - 1) * Perspective.LOCAL_TILE_SIZE),
-					Integer.max(minDrawnZ, client.getCameraZ2() - drawDistance * Perspective.LOCAL_TILE_SIZE),
-					Integer.min(maxDrawnZ, client.getCameraZ2() + (drawDistance - 1) * Perspective.LOCAL_TILE_SIZE - 1)
+					Integer.max(1 * Perspective.LOCAL_TILE_SIZE, client.getCameraX2() - drawDistance * Perspective.LOCAL_TILE_SIZE),
+					Integer.min((SCENE_TILES - 1) * Perspective.LOCAL_TILE_SIZE, client.getCameraX2() + (drawDistance - 1) * Perspective.LOCAL_TILE_SIZE),
+					Integer.max(1 * Perspective.LOCAL_TILE_SIZE, client.getCameraZ2() - drawDistance * Perspective.LOCAL_TILE_SIZE),
+					Integer.min((SCENE_TILES - 1) * Perspective.LOCAL_TILE_SIZE, client.getCameraZ2() + (drawDistance - 1) * Perspective.LOCAL_TILE_SIZE)
 			);
 
 			if (config.enableSkybox())
