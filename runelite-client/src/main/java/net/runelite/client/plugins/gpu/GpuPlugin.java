@@ -40,13 +40,11 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.function.Function;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import jogamp.nativewindow.jawt.x11.X11JAWTWindow;
 import jogamp.newt.awt.NewtFactoryAWT;
@@ -58,16 +56,12 @@ import net.runelite.api.GameState;
 import net.runelite.api.Model;
 import net.runelite.api.NodeCache;
 import net.runelite.api.Perspective;
-import net.runelite.api.Player;
-import net.runelite.api.Point;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
 import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Texture;
 import net.runelite.api.TextureProvider;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.client.callback.ClientThread;
@@ -225,18 +219,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int centerX;
 	private int centerY;
 
-	private int minDrawnX = Integer.MAX_VALUE;
-	private int maxDrawnX = Integer.MIN_VALUE;
-	private int minDrawnZ = Integer.MAX_VALUE;
-	private int maxDrawnZ = Integer.MIN_VALUE;
-
 	// Uniforms
 	private int uniUseFog;
 	private int uniFogColor;
-	private int uniDrawDistance;
 	private int uniFogDepth;
 	private int uniSceneBounds;
-	private int uniCameraPosition;
 	private int uniProjectionMatrix;
 	private int uniBrightness;
 	private int uniTex;
@@ -248,13 +235,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniBlockMain;
 	private int uniSmoothBanding;
 
-	private static final int SCALE = 2;
-	private static final int LOCAL_SCALE = Perspective.LOCAL_TILE_SIZE * SCALE;
-
-	private BufferedImage skybox = null;
-	private static Point shift;
-
 	private int drawDistance;
+	private int minDrawnX;
+	private int maxDrawnX;
+	private int minDrawnZ;
+	private int maxDrawnZ;
 
 	@Override
 	protected void startUp()
@@ -331,7 +316,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				initProgram();
 				initInterfaceTexture();
 				initUniformBuffer();
-				initSkybox();
 
 				client.setDrawCallbacks(this);
 				client.setGpu(true);
@@ -521,12 +505,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniProjectionMatrix = gl.glGetUniformLocation(glProgram, "projectionMatrix");
 		uniBrightness = gl.glGetUniformLocation(glProgram, "brightness");
 		uniSmoothBanding = gl.glGetUniformLocation(glProgram, "smoothBanding");
-		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 		uniFogDepth = gl.glGetUniformLocation(glProgram, "fogDepth");
 		uniSceneBounds = gl.glGetUniformLocation(glProgram, "sceneBounds");
 		uniFogColor = gl.glGetUniformLocation(glProgram, "fogColor");
 		uniUseFog = gl.glGetUniformLocation(glProgram, "useFog");
-		uniCameraPosition = gl.glGetUniformLocation(glProgram, "cameraPosition");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
 		uniTexPremul = gl.glGetUniformLocation(glUiPremulProgram, "tex");
@@ -536,26 +518,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniBlockSmall = gl.glGetUniformBlockIndex(glSmallComputeProgram, "uniforms");
 		uniBlockLarge = gl.glGetUniformBlockIndex(glComputeProgram, "uniforms");
 		uniBlockMain = gl.glGetUniformBlockIndex(glProgram, "uniforms");
-	}
-
-	private void initSkybox()
-	{
-		synchronized (ImageIO.class)
-		{
-			try
-			{
-				skybox = ImageIO.read(getClass().getResourceAsStream("skybox/skybox.png"));
-			}
-			catch (IOException e)
-			{
-				throw new RuntimeException(e);
-			}
-		}
-
-		Point wp = new Point(3232, 3232);
-		Point px = new Point(1040, 3600);
-
-		shift = new Point(px.getX() - (wp.getX() / 2), (skybox.getHeight() - px.getY()) - (wp.getY() / 2));
 	}
 
 	private void shutdownProgram()
@@ -832,6 +794,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			x = tileX * Perspective.LOCAL_TILE_SIZE;
 			y = 0;
 			z = tileY * Perspective.LOCAL_TILE_SIZE;
+
 			GpuIntBuffer b = modelBufferUnordered;
 			++unorderedModels;
 
@@ -911,9 +874,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int viewportHeight = client.getViewportHeight();
 		final int viewportWidth = client.getViewportWidth();
 
-		gl.glClearColor(0f, 0f, 0f, 1f);
-		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
-
 		// If the viewport has changed, update the projection matrix
 		if (viewportWidth > 0 && viewportHeight > 0 && (viewportWidth != lastViewportWidth || viewportHeight != lastViewportHeight))
 		{
@@ -957,8 +917,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		lastAntiAliasingMode = antiAliasingMode;
 
-		// Clear scene
-		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
+		if (!config.enableSkybox())
+		{
+			// Clear scene
+			gl.glClearColor(0f, 0f, 0f, 1f);
+			gl.glClear(gl.GL_COLOR_BUFFER_BIT);
+		}
 
 		// Upload buffers
 		vertexBuffer.flip();
@@ -1124,9 +1088,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUseProgram(glProgram);
 
 			gl.glUniform1i(uniUseFog, config.enableFog() ? 1 : 0);
-			gl.glUniform1i(uniDrawDistance, drawDistance);
 			gl.glUniform1i(uniFogDepth, config.fogDepth());
-			gl.glUniform3i(uniCameraPosition, client.getCameraX2(), client.getCameraY2(), client.getCameraZ2());
 			gl.glUniform4i(uniSceneBounds,
 					Integer.max(minDrawnX, client.getCameraX2() - drawDistance * Perspective.LOCAL_TILE_SIZE),
 					Integer.min(maxDrawnX, client.getCameraX2() + (drawDistance - 1) * Perspective.LOCAL_TILE_SIZE),
@@ -1140,7 +1102,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			}
 			else
 			{
-				gl.glUniform4f(uniFogColor, 0, 0,0, 1f);
+				gl.glUniform4f(uniFogColor, 0, 0, 0, 1f);
 			}
 
 			// Brightness happens to also be stored in the texture provider, so we use that
@@ -1234,77 +1196,27 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void drawSkybox()
 	{
-		if (skybox == null)
+		if (client.getLocalPlayer().getWorldLocation().getY() < 4200)
 		{
-			return;
+			gl.glClearColor(
+				config.skyboxColor().getRed() / 255f,
+				config.skyboxColor().getGreen() / 255f,
+				config.skyboxColor().getBlue() / 255f,
+				1f
+			);
+
+			gl.glUniform4f(uniFogColor,
+				config.skyboxColor().getRed() / 255f,
+				config.skyboxColor().getGreen() / 255f,
+				config.skyboxColor().getBlue() / 255f,
+				1f);
 		}
-
-		int[] rgbAvg = new int[3];
-
-		Player player = client.getLocalPlayer();
-		if (player == null)
+		else
 		{
-			return;
+			gl.glClearColor(0, 0, 0, 1f);
+			gl.glUniform4f(uniFogColor, 0, 0, 0, 1f);
 		}
-
-		LocalPoint lp = player.getLocalLocation();
-
-		// basic bilinear to smooth the values
-
-		int xm = lp.getX();
-		int ym = lp.getY();
-		int x0 = xm & ~(LOCAL_SCALE - 1);
-		int y0 = ym & ~(LOCAL_SCALE - 1);
-		int x1 = x0 + LOCAL_SCALE;
-		int y1 = y0 + LOCAL_SCALE;
-
-		int area = 0;
-		area += getColorForTile(x1, y1, xm - x0, ym - y0, rgbAvg);
-		area += getColorForTile(x1, y0, xm - x0, y1 - ym, rgbAvg);
-		area += getColorForTile(x0, y1, x1 - xm, ym - y0, rgbAvg);
-		area += getColorForTile(x0, y0, x1 - xm, y1 - ym, rgbAvg);
-
-		if (area <= 0)
-		{
-			return;
-		}
-
-		rgbAvg[0] /= area;
-		rgbAvg[1] /= area;
-		rgbAvg[2] /= area;
-
-
-		gl.glClearColor(rgbAvg[0] / 255f, rgbAvg[1] / 255f, rgbAvg[2] / 255f, 1f);
 		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
-
-		gl.glUniform4f(uniFogColor, rgbAvg[0] / 255f, rgbAvg[1] / 255f, rgbAvg[2] / 255f, 1f);
-	}
-
-	private int getColorForTile(int lx, int ly, int xlen, int ylen, int[] rgbAvg)
-	{
-		WorldPoint twp = WorldPoint.fromLocalInstance(client, new LocalPoint(lx, ly));
-		if (twp == null)
-		{
-			return 0;
-		}
-
-		int px = twp.getX() / SCALE + shift.getX();
-		int py = skybox.getHeight() - (twp.getY() / SCALE + shift.getY());
-
-		if (px < 0 || py < 0 || px >= skybox.getWidth() || py >= skybox.getHeight())
-		{
-			return 0;
-		}
-
-		int area = xlen * ylen;
-
-		int rgb = skybox.getRGB(px, py);
-
-		rgbAvg[0] += ((rgb >> 16) & 0xFF) * area;
-		rgbAvg[1] += ((rgb >> 8) & 0xFF) * area;
-		rgbAvg[2] += (rgb & 0xFF) * area;
-
-		return area;
 	}
 
 	private void drawUi(final int canvasHeight, final int canvasWidth)

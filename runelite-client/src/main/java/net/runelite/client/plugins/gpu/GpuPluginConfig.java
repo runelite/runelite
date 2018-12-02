@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.gpu;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -68,7 +69,7 @@ public interface GpuPluginConfig extends Config
 	@ConfigItem(
 		keyName = "enableSkybox",
 		name = "Enable Skybox",
-		description = "Enables a dynamically colored skybox",
+		description = "Enables a colored skybox",
 		position = 4
 	)
 	default boolean enableSkybox()
@@ -77,18 +78,32 @@ public interface GpuPluginConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "skyboxColor",
+		name = "Sky Color",
+		description = "Color of the skybox",
+		position = 5
+	)
+	default Color skyboxColor()
+	{
+		return Color.decode("#87CEEB"); // Web color sky blue
+	}
+
+	@ConfigItem(
 		keyName = "enableFog",
 		name = "Enable Fog",
 		description = "Enables skybox-colored fog",
-		position = 5
+		position = 6
 	)
-	default boolean enableFog() { return false; }
+	default boolean enableFog()
+	{
+		return false;
+	}
 
 	@ConfigItem(
-			keyName = "fogDepth",
-			name = "Fog Depth",
-			description = "Fog depth in tiles",
-			position = 6
+		keyName = "fogDepth",
+		name = "Fog Depth",
+		description = "Fog depth in tiles",
+		position = 7
 	)
 	default int fogDepth()
 	{

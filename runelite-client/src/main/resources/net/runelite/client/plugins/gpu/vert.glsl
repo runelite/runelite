@@ -33,8 +33,6 @@ layout (location = 1) in vec4 uv;
 
 uniform float brightness;
 uniform int useFog;
-uniform int drawDistance;
-uniform ivec3 cameraPosition;
 uniform ivec4 sceneBounds;
 uniform int fogDepth;
 
