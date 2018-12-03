@@ -63,6 +63,7 @@ public class ScreenshotPluginTest
 	private static final String BARROWS_CHEST = "Your Barrows chest count is <col=ff0000>310</col>";
 	private static final String CHAMBERS_OF_XERIC_CHEST = "Your completed Chambers of Xeric count is: <col=ff0000>489</col>.";
 	private static final String THEATRE_OF_BLOOD_CHEST = "Your completed Theatre of Blood count is: <col=ff0000>73</col>.";
+	private static final String PVP_KILL = "Nerdpuff should take lessons from you. You're clearly too good for him.";
 
 	@Mock
 	@Bind
@@ -101,6 +102,7 @@ public class ScreenshotPluginTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		when(screenshotConfig.screenshotRewards()).thenReturn(true);
 		when(screenshotConfig.screenshotLevels()).thenReturn(true);
+		when(screenshotConfig.screenshotKills()).thenReturn(true);
 	}
 
 	@Test
@@ -230,5 +232,14 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onGameTick(tick);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
+	}
+
+	@Test
+	public void testPvPKill()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", PVP_KILL, null);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals("Nerdpuff", screenshotPlugin.getPvPKillName());
 	}
 }

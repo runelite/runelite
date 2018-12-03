@@ -43,8 +43,10 @@ import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -119,14 +121,37 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
+
+	private static final ImmutableList<Pattern> PVP_KILL_MESSAGES = ImmutableList.of(
+			// Complete list available from Mod Ash: https://twitter.com/JagexAsh/status/1056613188513468416
+			Pattern.compile("With a crushing blow you finish (.+)\\."),
+			Pattern.compile("What was (.+) thinking challenging you\\.\\.\\."),
+			Pattern.compile("(.+) was no match for you\\."),
+			Pattern.compile("You were clearly a better fighter than (.+)\\."),
+			Pattern.compile("A humiliating defeat for (.+)\\."),
+			Pattern.compile("RIP (.+)\\."),
+			Pattern.compile("Can anyone defeat you\\? Certainly not (.+)\\."),
+			Pattern.compile("(.+) falls before your might\\."),
+			Pattern.compile("What an embarrassing performance by (.+)\\."),
+			Pattern.compile("You have defeated (.+)\\."),
+			Pattern.compile("(.+) didn't stand a chance against you\\."),
+			// Rarer death messages.
+			Pattern.compile("(.+) will probably tell you s?he wanted a free teleport after that performance\\."),
+			Pattern.compile("(.+) probably logged out after that beating\\."),
+			Pattern.compile("Such a shame that (.+) can't play this game\\."),
+			Pattern.compile("How not to do it right: Written by (.+)\\."),
+			Pattern.compile("A certain, crouching-over-face animation would be suitable for (.+) right now\\."),
+			Pattern.compile("(.+) got rekt\\."),
+			Pattern.compile("(.+) was made to sit down\\."),
+			Pattern.compile("The struggle for (.+) is real\\."),
+			Pattern.compile("(.+) should take lessons from you\\. You're clearly too good for (?:him|her)\\."),
+			Pattern.compile("MUM! GET THE CAMERA, I JUST KILLED (.+)!")
+			);
+
+
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
-
-	private static final ImmutableList<String> KILL_MESSAGES = ImmutableList.of("into tiny pieces and sat on them", "you have obliterated",
-		"falls before your might", "A humiliating defeat for", "With a crushing blow you", "thinking challenging you",
-		"Can anyone defeat you? Certainly", "was no match for you", "You were clearly a better fighter than", "RIP",
-		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
 
 	static String format(Date date)
 	{
@@ -138,12 +163,10 @@ public class ScreenshotPlugin extends Plugin
 
 	private String clueType;
 	private Integer clueNumber;
-
 	private Integer barrowsNumber;
-
 	private Integer chambersOfXericNumber;
-
 	private Integer theatreOfBloodNumber;
+	private String pvpKillName;
 
 	private boolean shouldTakeScreenshot;
 
@@ -349,10 +372,18 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName);
 		}
 
-		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
+		if (config.screenshotKills())
 		{
-			String fileName = "Kill " + format(new Date());
-			takeScreenshot(fileName);
+			for (Pattern killMessage : PVP_KILL_MESSAGES)
+			{
+				Matcher m = killMessage.matcher(chatMessage);
+				if (m.matches())
+				{
+					pvpKillName = m.group(1);
+					String fileName = "Killed " + m.group(1) + " " + format(new Date());
+					takeScreenshot(fileName);
+				}
+			}
 		}
 
 		if (config.screenshotBossKills() )
@@ -672,4 +703,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		return theatreOfBloodNumber;
 	}
+
+	@VisibleForTesting
+	String getPvPKillName() { return pvpKillName; }
 }
