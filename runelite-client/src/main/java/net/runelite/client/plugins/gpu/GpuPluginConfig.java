@@ -67,32 +67,10 @@ public interface GpuPluginConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "enableSkybox",
-		name = "Enable Skybox",
-		description = "Enables a colored skybox",
-		position = 4
-	)
-	default boolean enableSkybox()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "skyboxColor",
-		name = "Sky Color",
-		description = "Color of the skybox",
-		position = 5
-	)
-	default Color skyboxColor()
-	{
-		return Color.decode("#a5d5e1");
-	}
-
-	@ConfigItem(
 		keyName = "enableFog",
 		name = "Enable Fog",
-		description = "Enables skybox-colored fog",
-		position = 6
+		description = "Enables fog",
+		position = 4
 	)
 	default boolean enableFog()
 	{
@@ -100,13 +78,24 @@ public interface GpuPluginConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "fogColor",
+		name = "Fog Color",
+		description = "Color of the fog",
+		position = 5
+	)
+	default Color fogColor()
+	{
+		return Color.decode("#000000");
+	}
+
+	@ConfigItem(
 		keyName = "fogDepth",
 		name = "Fog Depth",
-		description = "Fog depth",
-		position = 7
+		description = "Fog depth in % of render distance",
+		position = 6
 	)
 	default int fogDepth()
 	{
-		return 16;
+		return 25;
 	}
 }

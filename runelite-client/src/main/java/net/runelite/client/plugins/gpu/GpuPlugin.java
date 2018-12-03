@@ -100,6 +100,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
 	private static final int MAX_DISTANCE = 90;
 	private static final int SCENE_TILES = 104; // in tiles
+	private static final int FOG_WEST_SOUTH_LIMIT = Perspective.LOCAL_TILE_SIZE;
+	private static final int FOG_EAST_NORTH_LIMIT = (SCENE_TILES - 1) * Perspective.LOCAL_TILE_SIZE;
 
 	@Inject
 	private Client client;
@@ -897,12 +899,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		lastAntiAliasingMode = antiAliasingMode;
 
-		if (!config.enableSkybox())
-		{
-			// Clear scene
-			gl.glClearColor(0f, 0f, 0f, 1f);
-			gl.glClear(gl.GL_COLOR_BUFFER_BIT);
-		}
+		// Clear scene
+		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
 
 		// Upload buffers
 		vertexBuffer.flip();
@@ -1067,23 +1065,22 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			gl.glUseProgram(glProgram);
 
+			int distance = drawDistance * Perspective.LOCAL_TILE_SIZE;
 			gl.glUniform1i(uniUseFog, config.enableFog() ? 1 : 0);
-			gl.glUniform1i(uniFogDepth, config.fogDepth());
-			gl.glUniform4i(uniSceneBounds,
-					Integer.max(1 * Perspective.LOCAL_TILE_SIZE, client.getCameraX2() - drawDistance * Perspective.LOCAL_TILE_SIZE),
-					Integer.min((SCENE_TILES - 1) * Perspective.LOCAL_TILE_SIZE, client.getCameraX2() + (drawDistance - 1) * Perspective.LOCAL_TILE_SIZE),
-					Integer.max(1 * Perspective.LOCAL_TILE_SIZE, client.getCameraZ2() - drawDistance * Perspective.LOCAL_TILE_SIZE),
-					Integer.min((SCENE_TILES - 1) * Perspective.LOCAL_TILE_SIZE, client.getCameraZ2() + (drawDistance - 1) * Perspective.LOCAL_TILE_SIZE)
-			);
+			gl.glUniform4f(uniFogColor,config.fogColor().getRed() / 255f,config.fogColor().getGreen() / 255f,config.fogColor().getBlue() / 255f,1f);
+			gl.glUniform1i(uniFogDepth, config.fogDepth() * distance / 100);
 
-			if (config.enableSkybox())
-			{
-				drawSkybox();
-			}
-			else
-			{
-				gl.glUniform4f(uniFogColor, 0, 0, 0, 1f);
-			}
+			// currently this doesn't care if the camera is in the fog
+			int fogWest = client.getCameraX2() - distance;
+			int fogEast = client.getCameraX2() + distance - Perspective.LOCAL_TILE_SIZE;
+			int fogSouth = client.getCameraZ2() - distance;
+			int fogNorth = client.getCameraZ2() + distance - Perspective.LOCAL_TILE_SIZE;
+			gl.glUniform4i(uniSceneBounds,
+					Integer.max(FOG_WEST_SOUTH_LIMIT, fogWest),
+					Integer.min(FOG_EAST_NORTH_LIMIT, fogEast),
+					Integer.max(FOG_WEST_SOUTH_LIMIT, fogSouth),
+					Integer.min(FOG_EAST_NORTH_LIMIT, fogNorth)
+			);
 
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
@@ -1172,31 +1169,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glDrawable.swapBuffers();
 
 		drawManager.processDrawComplete(this::screenshot);
-	}
-
-	private void drawSkybox()
-	{
-		if (client.getLocalPlayer().getWorldLocation().getY() < 4200)
-		{
-			gl.glClearColor(
-				config.skyboxColor().getRed() / 255f,
-				config.skyboxColor().getGreen() / 255f,
-				config.skyboxColor().getBlue() / 255f,
-				1f
-			);
-
-			gl.glUniform4f(uniFogColor,
-				config.skyboxColor().getRed() / 255f,
-				config.skyboxColor().getGreen() / 255f,
-				config.skyboxColor().getBlue() / 255f,
-				1f);
-		}
-		else
-		{
-			gl.glClearColor(0, 0, 0, 1f);
-			gl.glUniform4f(uniFogColor, 0, 0, 0, 1f);
-		}
-		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
 	}
 
 	private void drawUi(final int canvasHeight, final int canvasWidth)

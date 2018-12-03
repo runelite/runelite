@@ -25,9 +25,6 @@
 
 #version 400
 
-// Define tile size.
-#define FOG_DIST_SCALE 64
-
 layout (location = 0) in ivec4 VertexPosition;
 layout (location = 1) in vec4 uv;
 
@@ -35,7 +32,6 @@ uniform float brightness;
 uniform int useFog;
 uniform ivec4 sceneBounds;
 uniform int fogDepth;
-uniform float fogInverseThickness;
 
 out ivec3 vPosition;
 out vec4 vColor;
@@ -70,9 +66,7 @@ void main()
   if (useFog == 1)
   {
     float fogDistance = sqrtMultEdgeDistance(vPosition, sceneBounds);
-    float fogDepthScaled = (fogDepth << 1) * FOG_DIST_SCALE;
-
-    vFogAmount = fogFactorLinear(fogDistance, 0, fogDepthScaled);
+    vFogAmount = fogFactorLinear(fogDistance, 0, fogDepth);
   }
   else
   {
