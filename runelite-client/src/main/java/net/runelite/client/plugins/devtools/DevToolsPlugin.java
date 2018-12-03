@@ -93,6 +93,9 @@ public class DevToolsPlugin extends Plugin
 	private CameraOverlay cameraOverlay;
 
 	@Inject
+	private CameraSceneOverlay cameraSceneOverlay;
+
+	@Inject
 	private WorldMapLocationOverlay worldMapLocationOverlay;
 
 	@Inject
@@ -169,6 +172,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.add(locationOverlay);
 		overlayManager.add(sceneOverlay);
 		overlayManager.add(cameraOverlay);
+		overlayManager.add(cameraSceneOverlay);
 		overlayManager.add(worldMapLocationOverlay);
 		overlayManager.add(mapRegionOverlay);
 
@@ -193,6 +197,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.remove(locationOverlay);
 		overlayManager.remove(sceneOverlay);
 		overlayManager.remove(cameraOverlay);
+		overlayManager.remove(cameraSceneOverlay);
 		overlayManager.remove(worldMapLocationOverlay);
 		overlayManager.remove(mapRegionOverlay);
 		clientToolbar.removeNavigation(navButton);
