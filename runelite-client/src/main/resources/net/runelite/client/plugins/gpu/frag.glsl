@@ -56,14 +56,9 @@ void main() {
     vec4 textureColor = texture(textures, vec3(animatedUv, n));
     vec4 textureColorBrightness = pow(textureColor, vec4(brightness, brightness, brightness, 1.0f));
 
-    FragColor = textureColorBrightness * smoothColor;
-  } else {
-    FragColor = smoothColor;
+    smoothColor *= textureColorBrightness;
   }
 
-  // only apply fog to pixels that are not transparent. (Trees would be colored black where the texture is transparent)
-  if (FragColor.w > 0.0f)
-  {
-    FragColor = mix(FragColor, fogColor, fogAmount);
-  }
+  vec3 mixedColor = mix(smoothColor.rgb, fogColor.rgb, fogAmount);
+  FragColor = vec4(mixedColor, smoothColor.a);
 }

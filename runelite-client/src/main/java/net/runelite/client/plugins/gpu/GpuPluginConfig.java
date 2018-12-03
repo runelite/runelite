@@ -91,11 +91,11 @@ public interface GpuPluginConfig extends Config
 	@ConfigItem(
 		keyName = "fogDepth",
 		name = "Fog Depth",
-		description = "Fog depth in % of render distance",
+		description = "Fog depth in % of whole scene",
 		position = 6
 	)
 	default int fogDepth()
 	{
-		return 25;
+		return 30;
 	}
 }

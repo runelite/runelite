@@ -45,6 +45,7 @@ float fogFactorLinear(const float dist, const float start, const float end) {
     return 1.0 - clamp((dist - start) / (end - start), 0.0, 1.0);
 }
 
+// Returns a value that decreases as v1 approaches the boundaries, faster if approaching on both axes
 float sqrtMultEdgeDistance(vec3 v1, vec4 bounds){
     return sqrt(min(v1.x - bounds.x, bounds.y - v1.x) * min(v1.z - bounds.z, bounds.w - v1.z));
 }
@@ -63,13 +64,7 @@ void main()
   vHsl = float(hsl);
   vUv = uv;
 
-  if (useFog == 1)
-  {
-    float fogDistance = sqrtMultEdgeDistance(vPosition, sceneBounds);
-    vFogAmount = fogFactorLinear(fogDistance, 0, fogDepth);
-  }
-  else
-  {
-    vFogAmount = 0;
-  }
+  // Calculate a fog blend value
+  float fogDistance = sqrtMultEdgeDistance(vPosition, sceneBounds);
+  vFogAmount = fogFactorLinear(fogDistance, 0, fogDepth) * useFog;
 }
