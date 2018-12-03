@@ -99,8 +99,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private static final int SMALL_TRIANGLE_COUNT = 512;
 	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
 	private static final int MAX_DISTANCE = 90;
-	private static final int FOG_SCENE_EDGE_MIN = Perspective.LOCAL_TILE_SIZE;
-	private static final int FOG_SCENE_EDGE_MAX = (Constants.SCENE_SIZE - 1) * Perspective.LOCAL_TILE_SIZE;
 
 	@Inject
 	private Client client;
@@ -225,6 +223,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniUseFog;
 	private int uniFogColor;
 	private int uniFogDepth;
+	private int uniFogDensity;
 	private int uniDrawDistance;
 	private int uniProjectionMatrix;
 	private int uniBrightness;
@@ -504,6 +503,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniBrightness = gl.glGetUniformLocation(glProgram, "brightness");
 		uniSmoothBanding = gl.glGetUniformLocation(glProgram, "smoothBanding");
 		uniFogDepth = gl.glGetUniformLocation(glProgram, "fogDepth");
+		uniFogDensity = gl.glGetUniformLocation(glProgram, "fogDensity");
 		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 		uniFogColor = gl.glGetUniformLocation(glProgram, "fogColor");
 		uniUseFog = gl.glGetUniformLocation(glProgram, "useFog");
@@ -1065,8 +1065,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUseProgram(glProgram);
 
 			gl.glUniform1i(uniUseFog, config.enableFog() ? 1 : 0);
-			gl.glUniform4f(uniFogColor, config.fogColor().getRed() / 255f, config.fogColor().getGreen() / 255f, config.fogColor().getBlue() / 255f, 1f);
-			gl.glUniform1i(uniFogDepth, config.fogDepth() * Perspective.LOCAL_TILE_SIZE * Math.min(Constants.SCENE_SIZE / 2, drawDistance) / 100);
+			gl.glUniform3f(uniFogColor, 0, 0, 0);
+			gl.glUniform1f(uniFogDepth, config.fogDepth() * Perspective.LOCAL_TILE_SIZE * Math.min(Constants.SCENE_SIZE / 2, drawDistance) / 100.0f);
+			gl.glUniform1f(uniFogDensity, config.fogDensity() * 0.1f);
 			gl.glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
 
 			// Brightness happens to also be stored in the texture provider, so we use that

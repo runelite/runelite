@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.gpu;
 
-import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -78,24 +77,24 @@ public interface GpuPluginConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "fogColor",
-		name = "Fog Color",
-		description = "Color of the fog",
-		position = 5
-	)
-	default Color fogColor()
-	{
-		return Color.decode("#000000");
-	}
-
-	@ConfigItem(
 		keyName = "fogDepth",
 		name = "Fog Depth",
 		description = "Fog depth in % of whole scene",
-		position = 6
+		position = 5
 	)
 	default int fogDepth()
 	{
 		return 30;
+	}
+
+	@ConfigItem(
+		keyName = "fogDensity",
+		name = "Fog Density",
+		description = "Relative fog thickness",
+		position = 6
+	)
+	default int fogDensity()
+	{
+		return 10;
 	}
 }

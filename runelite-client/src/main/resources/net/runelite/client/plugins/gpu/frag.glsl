@@ -28,7 +28,7 @@ uniform sampler2DArray textures;
 uniform vec2 textureOffsets[64];
 uniform float brightness;
 uniform float smoothBanding;
-uniform vec4 fogColor;
+uniform vec3 fogColor;
 
 in vec4 Color;
 in float fHsl;

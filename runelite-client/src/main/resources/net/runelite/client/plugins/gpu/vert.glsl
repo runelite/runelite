@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#version 400
+#version 330
 
 #define TILE_SIZE 128
 
@@ -48,7 +48,8 @@ layout(std140) uniform uniforms {
 uniform float brightness;
 uniform int useFog;
 uniform int drawDistance;
-uniform int fogDepth;
+uniform float fogDepth;
+uniform float fogDensity;
 
 out ivec3 vPosition;
 out vec4 vColor;
@@ -58,13 +59,25 @@ out float vFogAmount;
 
 #include hsl_to_rgb.glsl
 
-float fogFactorLinear(const float dist, const float start, const float end) {
-    return 1.0 - clamp((dist - start) / (end - start), 0.0, 1.0);
+// accel=1 for linear, accel<1 to decrease faster then slower, accel>1 to decrease slower then faster
+float fogFactorCurved(const float dist, const float start, const float end, const float accel) {
+    return 1.0 - pow(clamp((dist - start) / (end - start), 0.0, 1.0), accel);
 }
 
-// Returns a value that decreases as v1 approaches the boundaries, faster if approaching on both axes
-float sqrtMultEdgeDistance(vec3 v1, vec4 bounds){
-    return sqrt(min(v1.x - bounds.x, bounds.y - v1.x) * min(v1.z - bounds.z, bounds.w - v1.z));
+// Returns the distance to the closest edge
+float minEdgeDistance(vec3 v1, vec4 bounds){
+    return min(min(v1.x - bounds.x, bounds.y - v1.x), min(v1.z - bounds.z, bounds.w - v1.z));
+}
+
+// Corner truncating function
+float averageEdgeDistance(vec3 v1, vec4 bounds){
+    return (min(v1.x - bounds.x, bounds.y - v1.x) + min(v1.z - bounds.z, bounds.w - v1.z)) / 2;
+}
+
+float truncatedRectangleFunction(vec3 v1, vec4 bounds){
+	float minXDistance = min(v1.x - bounds.x, bounds.y - v1.x);
+	float minZDistance = min(v1.z - bounds.z, bounds.w - v1.z);
+	return min( min(minXDistance, minZDistance), (minXDistance + minZDistance) / 4 ); // = min(minEdgeDistance(v1, bounds), averageEdgeDistance(v1, bounds) / 2)
 }
 
 void main()
@@ -81,17 +94,12 @@ void main()
   vHsl = float(hsl);
   vUv = uv;
 
-  int fogWest = cameraX - drawDistance;
-  int fogEast = cameraX + drawDistance - TILE_SIZE;
-  int fogSouth = cameraZ - drawDistance;
-  int fogNorth = cameraZ + drawDistance - TILE_SIZE;
-
-  fogWest = max(FOG_SCENE_EDGE_MIN, fogWest);
-  fogEast = min(FOG_SCENE_EDGE_MAX, fogEast);
-  fogSouth = max(FOG_SCENE_EDGE_MIN, fogSouth);
-  fogNorth = min(FOG_SCENE_EDGE_MAX, fogNorth);
+  int fogWest = max(FOG_SCENE_EDGE_MIN, cameraX - drawDistance);
+  int fogEast = min(FOG_SCENE_EDGE_MAX, cameraX + drawDistance - TILE_SIZE);
+  int fogSouth = max(FOG_SCENE_EDGE_MIN, cameraZ - drawDistance);
+  int fogNorth = min(FOG_SCENE_EDGE_MAX, cameraZ + drawDistance - TILE_SIZE);
 
   // Calculate a fog blend value
-  float fogDistance = sqrtMultEdgeDistance(vPosition, vec4(fogWest, fogEast, fogSouth, fogNorth));
-  vFogAmount = fogFactorLinear(fogDistance, 0, fogDepth) * useFog;
+  float fogDistance = truncatedRectangleFunction(vPosition, vec4(fogWest, fogEast, fogSouth, fogNorth));
+  vFogAmount = fogFactorCurved(fogDistance, 0, fogDepth, fogDensity) * useFog;
 }
