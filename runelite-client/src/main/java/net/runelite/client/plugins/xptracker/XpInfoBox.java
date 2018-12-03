@@ -28,6 +28,9 @@ package net.runelite.client.plugins.xptracker;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import javax.swing.ImageIcon;
@@ -74,12 +77,13 @@ class XpInfoBox extends JPanel
 	/* The tracker's wrapping container */
 	private final JPanel container = new JPanel();
 
-	/* Contains the skill icon and the stats panel */
-	private final JPanel headerPanel = new JPanel();
+	/* Contains the skill icon */
+	private final JPanel skillWrapper = new JPanel();
 
 	/* Contains all the skill information (exp gained, per hour, etc) */
 	private final JPanel statsPanel = new JPanel();
 
+	private final JPanel progressWrapper = new JPanel();
 	private final ProgressBar progressBar = new ProgressBar();
 
 	private final JLabel expGained = new JLabel();
@@ -89,6 +93,14 @@ class XpInfoBox extends JPanel
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
 
 	private boolean paused = false;
+
+	private Style style = Style.FULL;
+
+	private enum Style
+	{
+		FULL,
+		SIMPLE
+	}
 
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
@@ -124,17 +136,20 @@ class XpInfoBox extends JPanel
 		popupMenu.add(resetOthers);
 		popupMenu.add(pauseSkill);
 
+		skillWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		skillWrapper.setLayout(new BorderLayout());
+		skillWrapper.setBorder(new EmptyBorder(0, 5, 0, 0));
+
 		JLabel skillIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(skill)));
 		skillIcon.setHorizontalAlignment(SwingConstants.CENTER);
 		skillIcon.setVerticalAlignment(SwingConstants.CENTER);
-		skillIcon.setPreferredSize(new Dimension(35, 35));
+		skillIcon.setPreferredSize(new Dimension(30, 30));
 
-		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		headerPanel.setLayout(new BorderLayout());
+		skillWrapper.add(skillIcon, BorderLayout.NORTH);
 
 		statsPanel.setLayout(new DynamicGridLayout(2, 2));
 		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		statsPanel.setBorder(new EmptyBorder(9, 2, 9, 2));
+		statsPanel.setBorder(new EmptyBorder(6, 5, 0, 2));
 
 		expGained.setFont(FontManager.getRunescapeSmallFont());
 		expHour.setFont(FontManager.getRunescapeSmallFont());
@@ -146,13 +161,8 @@ class XpInfoBox extends JPanel
 		statsPanel.add(expHour);
 		statsPanel.add(actionsLeft);
 
-		headerPanel.add(skillIcon, BorderLayout.WEST);
-		headerPanel.add(statsPanel, BorderLayout.CENTER);
-
-		JPanel progressWrapper = new JPanel();
 		progressWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		progressWrapper.setLayout(new BorderLayout());
-		progressWrapper.setBorder(new EmptyBorder(0, 7, 7, 7));
 
 		progressBar.setMaximumValue(100);
 		progressBar.setBackground(new Color(61, 56, 49));
@@ -161,13 +171,45 @@ class XpInfoBox extends JPanel
 
 		progressWrapper.add(progressBar, BorderLayout.NORTH);
 
-		container.add(headerPanel, BorderLayout.NORTH);
-		container.add(progressWrapper, BorderLayout.SOUTH);
-
 		container.setComponentPopupMenu(popupMenu);
 		progressBar.setComponentPopupMenu(popupMenu);
 
+		MouseListener mouseListener = new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (SwingUtilities.isLeftMouseButton(e))
+				{
+					toggleStyle();
+				}
+			}
+		};
+		container.addMouseListener(mouseListener);
+		progressBar.addMouseListener(mouseListener);
+
 		add(container, BorderLayout.NORTH);
+	}
+
+	void setStyle(Style style)
+	{
+		container.removeAll();
+		switch (style)
+		{
+			case SIMPLE:
+				progressWrapper.setBorder(new EmptyBorder(7, 7, 7, 7));
+				container.add(skillWrapper, BorderLayout.WEST);
+				container.add(progressWrapper, BorderLayout.CENTER);
+				break;
+			default:
+				progressWrapper.setBorder(new EmptyBorder(4, 7, 7, 7));
+				container.add(skillWrapper, BorderLayout.WEST);
+				container.add(statsPanel, BorderLayout.CENTER);
+				container.add(progressWrapper, BorderLayout.SOUTH);
+				break;
+		}
+		panel.revalidate();
+		this.style = style;
 	}
 
 	void reset()
@@ -189,7 +231,7 @@ class XpInfoBox extends JPanel
 			if (getParent() != panel)
 			{
 				panel.add(this);
-				panel.revalidate();
+				setStyle(style);
 			}
 
 			paused = skillPaused;
@@ -238,6 +280,19 @@ class XpInfoBox extends JPanel
 
 		// Update exp per hour separately, every time (not only when there's an update)
 		expHour.setText(htmlLabel("XP/Hour: ", xpSnapshotSingle.getXpPerHour()));
+	}
+
+	private void toggleStyle()
+	{
+		switch (style)
+		{
+			case FULL:
+				setStyle(Style.SIMPLE);
+				break;
+			default:
+				setStyle(Style.FULL);
+				break;
+		}
 	}
 
 	static String htmlLabel(String key, int value)
