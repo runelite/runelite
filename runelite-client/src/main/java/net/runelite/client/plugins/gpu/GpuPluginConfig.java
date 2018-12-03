@@ -96,7 +96,7 @@ public interface GpuPluginConfig extends Config
 	)
 	default boolean enableFog()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
