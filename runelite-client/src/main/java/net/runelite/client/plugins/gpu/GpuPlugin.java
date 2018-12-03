@@ -225,7 +225,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniUseFog;
 	private int uniFogColor;
 	private int uniFogDepth;
-	private int uniSceneBounds;
+	private int uniDrawDistance;
 	private int uniProjectionMatrix;
 	private int uniBrightness;
 	private int uniTex;
@@ -504,7 +504,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniBrightness = gl.glGetUniformLocation(glProgram, "brightness");
 		uniSmoothBanding = gl.glGetUniformLocation(glProgram, "smoothBanding");
 		uniFogDepth = gl.glGetUniformLocation(glProgram, "fogDepth");
-		uniSceneBounds = gl.glGetUniformLocation(glProgram, "sceneBounds");
+		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 		uniFogColor = gl.glGetUniformLocation(glProgram, "fogColor");
 		uniUseFog = gl.glGetUniformLocation(glProgram, "useFog");
 
@@ -1067,19 +1067,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUniform1i(uniUseFog, config.enableFog() ? 1 : 0);
 			gl.glUniform4f(uniFogColor, config.fogColor().getRed() / 255f, config.fogColor().getGreen() / 255f, config.fogColor().getBlue() / 255f, 1f);
 			gl.glUniform1i(uniFogDepth, config.fogDepth() * Perspective.LOCAL_TILE_SIZE * Math.min(Constants.SCENE_SIZE / 2, drawDistance) / 100);
-
-			// currently this doesn't care if the camera is in the fog
-			int distance = drawDistance * Perspective.LOCAL_TILE_SIZE;
-			int fogWest = client.getCameraX2() - distance;
-			int fogEast = client.getCameraX2() + distance - Perspective.LOCAL_TILE_SIZE;
-			int fogSouth = client.getCameraZ2() - distance;
-			int fogNorth = client.getCameraZ2() + distance - Perspective.LOCAL_TILE_SIZE;
-			gl.glUniform4i(uniSceneBounds,
-				Math.max(FOG_SCENE_EDGE_MIN, fogWest),
-				Math.min(FOG_SCENE_EDGE_MAX, fogEast),
-				Math.max(FOG_SCENE_EDGE_MIN, fogSouth),
-				Math.min(FOG_SCENE_EDGE_MAX, fogNorth)
-			);
+			gl.glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
 
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());

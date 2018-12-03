@@ -25,12 +25,29 @@
 
 #version 400
 
+#define TILE_SIZE 128
+
+#define FOG_SCENE_EDGE_MIN TILE_SIZE
+#define FOG_SCENE_EDGE_MAX (103 * TILE_SIZE)
+
 layout (location = 0) in ivec4 VertexPosition;
 layout (location = 1) in vec4 uv;
 
+layout(std140) uniform uniforms {
+  int cameraYaw;
+  int cameraPitch;
+  int centerX;
+  int centerY;
+  int zoom;
+  int cameraX;
+  int cameraY;
+  int cameraZ;
+  ivec2 sinCosTable[2048];
+};
+
 uniform float brightness;
 uniform int useFog;
-uniform ivec4 sceneBounds;
+uniform int drawDistance;
 uniform int fogDepth;
 
 out ivec3 vPosition;
@@ -64,7 +81,17 @@ void main()
   vHsl = float(hsl);
   vUv = uv;
 
+  int fogWest = cameraX - drawDistance;
+  int fogEast = cameraX + drawDistance - TILE_SIZE;
+  int fogSouth = cameraZ - drawDistance;
+  int fogNorth = cameraZ + drawDistance - TILE_SIZE;
+
+  fogWest = max(FOG_SCENE_EDGE_MIN, fogWest);
+  fogEast = min(FOG_SCENE_EDGE_MAX, fogEast);
+  fogSouth = max(FOG_SCENE_EDGE_MIN, fogSouth);
+  fogNorth = min(FOG_SCENE_EDGE_MAX, fogNorth);
+
   // Calculate a fog blend value
-  float fogDistance = sqrtMultEdgeDistance(vPosition, sceneBounds);
+  float fogDistance = sqrtMultEdgeDistance(vPosition, vec4(fogWest, fogEast, fogSouth, fogNorth));
   vFogAmount = fogFactorLinear(fogDistance, 0, fogDepth) * useFog;
 }
