@@ -32,7 +32,7 @@ import lombok.AllArgsConstructor;
 public enum ScriptVarType
 {
 	INTEGER('i', "integer"),
-	BOOLEAN('l', "boolean"),
+	BOOLEAN('1', "boolean"),
 	SEQ('A', "seq"),
 	COLOUR('C', "colour"),
 	/**
