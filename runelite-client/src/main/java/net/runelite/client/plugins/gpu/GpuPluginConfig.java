@@ -85,7 +85,7 @@ public interface GpuPluginConfig extends Config
 	)
 	default Color skyboxColor()
 	{
-		return Color.decode("#87CEEB"); // Web color sky blue
+		return Color.decode("#a5d5e1");
 	}
 
 	@ConfigItem(
