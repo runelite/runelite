@@ -35,6 +35,7 @@ public class CacheProperties
 		Properties properties = new Properties();
 		InputStream resourceAsStream = StoreLocation.class.getResourceAsStream("/cache.properties");
 		properties.load(resourceAsStream);
+		resourceAsStream.close();
 		return properties;
 	}
 

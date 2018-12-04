@@ -57,6 +57,7 @@ public class RuneLiteAPI
 
 			version = properties.getProperty("runelite.version");
 			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
+			in.close();
 		}
 		catch (NumberFormatException e)
 		{

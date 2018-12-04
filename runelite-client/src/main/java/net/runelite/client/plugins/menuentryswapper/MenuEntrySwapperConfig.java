@@ -42,6 +42,39 @@ public interface MenuEntrySwapperConfig extends Config
 		return true;
 	}
 
+//	@ConfigItem(
+//		position = -4,
+//		keyName = "swapAttack",
+//		name = "Attack",
+//		description = "Swap Attack with Walk Here"
+//	)
+//	default boolean swapAttack()
+//	{
+//		return true;
+//	}
+//
+//	@ConfigItem(
+//		position = -3,
+//		keyName = "shiftWalkHere",
+//		name = "Shift Walk here",
+//		description = "Hold shift to walk here"
+//	)
+//	default boolean shiftWalk()
+//	{
+//		return true;
+//	}
+//
+//  @ConfigItem(
+//    position = -5,
+//    keyName = "noAttack",
+//    name = "no Attack",
+//    description = "dont attack team"
+//  )
+//  default boolean noAttack()
+//  {
+//    return true;
+//  }
+
 	@ConfigItem(
 		keyName = "swapAdmire",
 		name = "Admire",
@@ -112,7 +145,7 @@ public interface MenuEntrySwapperConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(		
+	@ConfigItem(
 		keyName = "swapDarkMage",
 		name = "Repairs",
 		description = "Swap Talk-to with Repairs for Dark Mage"

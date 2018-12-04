@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.util;
+package net.runelite.client.plugins.world;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.inject.Provides;
+import javax.inject.Inject;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
-public class Djb2Manager
+@PluginDescriptor(
+	name = "World",
+	description = "Allows you to see the world you're currently in"
+)
+public class WorldPlugin extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(Djb2Manager.class);
+	@Inject
+	private OverlayManager overlayManager;
 
-	private final Map<Integer, String> hashes = new HashMap<>();
+	@Inject
+	private WorldOverlay overlay;
 
-	public void load() throws IOException
+	@Provides
+	WorldConfig provideConfig(ConfigManager configManager)
 	{
-		Properties properties = new Properties();
-		properties.load(Djb2Manager.class.getResourceAsStream("/djb2.properties"));
-
-		for (Object key : properties.keySet())
-		{
-			int hash = Integer.parseInt((String) key);
-			String value = properties.getProperty((String) key);
-
-			hashes.put(hash, value);
-		}
-
-		logger.info("Loaded {} djb2 hashes", hashes.size());
-		properties.clear();
+		return configManager.getConfig(WorldConfig.class);
 	}
 
-	public String getName(int hash)
+	@Override
+	protected void startUp() throws Exception
 	{
-		return hashes.get(hash);
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 	}
 }

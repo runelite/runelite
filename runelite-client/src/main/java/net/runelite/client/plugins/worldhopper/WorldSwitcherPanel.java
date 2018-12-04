@@ -41,12 +41,14 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.worlds.World;
+import net.runelite.http.api.worlds.WorldType;
 
 @Slf4j
 class WorldSwitcherPanel extends PluginPanel
 {
 	private static final Color ODD_ROW = new Color(44, 44, 44);
 
+	private static final int TYPE_COLUMN_WIDTH = 40;
 	private static final int WORLD_COLUMN_WIDTH = 60;
 	private static final int PLAYERS_COLUMN_WIDTH = 40;
 
@@ -183,7 +185,7 @@ class WorldSwitcherPanel extends PluginPanel
 		for (int i = 0; i < worlds.size(); i++)
 		{
 			World world = worlds.get(i);
-			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));
+			rows.add(buildRow(world.getTypes().contains(WorldType.MEMBERS), world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));
 		}
 
 		updateList();
@@ -219,6 +221,22 @@ class WorldSwitcherPanel extends PluginPanel
 	{
 		JPanel header = new JPanel(new BorderLayout());
 		JPanel leftSide = new JPanel(new BorderLayout());
+
+		worldHeader = new WorldTableHeader("Type", orderIndex == WorldOrder.TYPE, ascendingOrder, plugin::refresh);
+		worldHeader.setPreferredSize(new Dimension(TYPE_COLUMN_WIDTH, 0));
+		worldHeader.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				if (SwingUtilities.isRightMouseButton(mouseEvent))
+				{
+					return;
+				}
+				ascendingOrder = orderIndex != WorldOrder.TYPE || !ascendingOrder;
+				orderBy(WorldOrder.TYPE);
+			}
+		});
 
 		worldHeader = new WorldTableHeader("World", orderIndex == WorldOrder.WORLD, ascendingOrder, plugin::refresh);
 		worldHeader.setPreferredSize(new Dimension(WORLD_COLUMN_WIDTH, 0));
@@ -280,9 +298,9 @@ class WorldSwitcherPanel extends PluginPanel
 	/**
 	 * Builds a table row, that displays the world's information.
 	 */
-	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite)
+	private WorldTableRow buildRow(boolean type, World world, boolean stripe, boolean current, boolean favorite)
 	{
-		WorldTableRow row = new WorldTableRow(world, current, favorite,
+		WorldTableRow row = new WorldTableRow(type, world, current, favorite,
 			world1 ->
 			{
 				plugin.hopTo(world1);
@@ -310,6 +328,7 @@ class WorldSwitcherPanel extends PluginPanel
 	 */
 	private enum WorldOrder
 	{
+		TYPE,
 		WORLD,
 		PLAYERS,
 		ACTIVITY,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,68 +22,75 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.playerindicators;
+package net.runelite.client.plugins.world;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import javax.inject.Singleton;
+import java.util.EnumSet;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Player;
-import net.runelite.api.Client;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
+import net.runelite.api.Client;
+import net.runelite.api.WorldType;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Slf4j
-@Singleton
-public class PlayerIndicatorsMinimapOverlay extends Overlay
+class WorldOverlay extends Overlay
 {
-	private final PlayerIndicatorsService playerIndicatorsService;
-	private final PlayerIndicatorsConfig config;
+	private final WorldConfig config;
 	private final Client client;
+	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private PlayerIndicatorsMinimapOverlay(Client client, PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
+	private WorldOverlay(WorldConfig config, Client client)
 	{
+		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
 		this.config = config;
 		this.client = client;
-		this.playerIndicatorsService = playerIndicatorsService;
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGH);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
-		return null;
-	}
+		panelComponent.getChildren().clear();
+		boolean showWorld = config.showWorld();
 
-	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
-	{
-		final String name = actor.getName().replace('\u00A0', ' ');
-
-		if (config.drawMinimapNames())
+		if (showWorld)
 		{
-			final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
+			final String world = Integer.toString(client.getWorld());
+			EnumSet<WorldType> currentWorldTypes = client.getWorldType();
+			final Color c;
 
-			if (minimapLocation != null)
+
+			if (currentWorldTypes.contains(WorldType.PVP))
 			{
-				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
-
-				if ((!actor.isFriend() && client.isFriended(name, false) &&
-					config.highlightOfflineFriends() && !actor.isClanMember()))
-				{
-					Color c = config.getOfflineFriendColor();
-					OverlayUtil.renderMinimapLocation(graphics, minimapLocation, c);
-				}
+				c = Color.RED;
 			}
+			else if (currentWorldTypes.contains(WorldType.BOUNTY))
+			{
+				c = Color.ORANGE;
+			}
+			else
+			{
+				c = Color.WHITE;
+			}
+
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text(world)
+				.color(c)
+				.build());
+
+			panelComponent.setPreferredSize(new Dimension(
+				graphics.getFontMetrics().stringWidth(world) + 10,
+				5));
+
+			return panelComponent.render(graphics);
 		}
+
+		return null;
 	}
 }

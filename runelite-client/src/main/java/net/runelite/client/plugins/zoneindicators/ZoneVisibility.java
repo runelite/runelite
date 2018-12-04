@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.util;
+package net.runelite.client.plugins.zoneindicators;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
 
-public class Djb2Manager
+@RequiredArgsConstructor
+public enum ZoneVisibility
 {
-	private static final Logger logger = LoggerFactory.getLogger(Djb2Manager.class);
+	HIDE("Hide"),
+	SHOW_IN_PVP("Show in PvP"),
+	SHOW_EVERYWHERE("Show everywhere");
 
-	private final Map<Integer, String> hashes = new HashMap<>();
+	private final String visibility;
 
-	public void load() throws IOException
+	@Override
+	public String toString()
 	{
-		Properties properties = new Properties();
-		properties.load(Djb2Manager.class.getResourceAsStream("/djb2.properties"));
-
-		for (Object key : properties.keySet())
-		{
-			int hash = Integer.parseInt((String) key);
-			String value = properties.getProperty((String) key);
-
-			hashes.put(hash, value);
-		}
-
-		logger.info("Loaded {} djb2 hashes", hashes.size());
-		properties.clear();
-	}
-
-	public String getName(int hash)
-	{
-		return hashes.get(hash);
+		return visibility;
 	}
 }

@@ -37,6 +37,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -52,6 +53,7 @@ class WorldTableRow extends JPanel
 	private static final ImageIcon FLAG_US;
 	private static final ImageIcon FLAG_GER;
 
+	private static final int TYPE_COLUMN_WIDTH = 40;
 	private static final int WORLD_COLUMN_WIDTH = 60;
 	private static final int PLAYERS_COLUMN_WIDTH = 40;
 
@@ -72,10 +74,12 @@ class WorldTableRow extends JPanel
 
 	private final JMenuItem favoriteMenuOption = new JMenuItem();
 
+	private JLabel typeField;
 	private JLabel worldField;
 	private JLabel playerCountField;
 	private JLabel activityField;
 	private BiConsumer<World, Boolean> onFavorite;
+
 
 	@Getter
 	private final World world;
@@ -85,13 +89,15 @@ class WorldTableRow extends JPanel
 
 	private Color lastBackground;
 	private boolean current;
+	private boolean type;
 
-	WorldTableRow(World world, boolean current, boolean favorite, Consumer<World> onSelect, BiConsumer<World, Boolean> onFavorite)
+	WorldTableRow(boolean type, World world, boolean current, boolean favorite, Consumer<World> onSelect, BiConsumer<World, Boolean> onFavorite)
 	{
 		this.current = current;
 		this.world = world;
 		this.onFavorite = onFavorite;
 		this.updatedPlayerCount = world.getPlayers();
+		this.type = type;
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(2, 0, 2, 0));
@@ -152,6 +158,10 @@ class WorldTableRow extends JPanel
 
 		JPanel leftSide = new JPanel(new BorderLayout());
 		leftSide.setOpaque(false);
+
+		JPanel typeField = buildTypeField();
+		typeField.setPreferredSize(new Dimension(TYPE_COLUMN_WIDTH, 0));
+		typeField.setOpaque(false);
 
 		JPanel worldField = buildWorldField();
 		worldField.setPreferredSize(new Dimension(WORLD_COLUMN_WIDTH, 0));
@@ -228,6 +238,23 @@ class WorldTableRow extends JPanel
 		worldField.setForeground(world.getTypes().contains(WorldType.MEMBERS) ? MEMBERS_WORLD : FREE_WORLD);
 	}
 
+
+	/**
+	 * Builds the world type field
+	 */
+	private JPanel buildTypeField()
+	{
+		JPanel column = new JPanel(new BorderLayout());
+		column.setBorder(new EmptyBorder(0, 5, 0, 5));
+
+		typeField = new JLabel(world.getTypes() + "");
+		typeField.setFont(FontManager.getRunescapeSmallFont());
+
+		column.add(typeField, BorderLayout.WEST);
+
+		return column;
+	}
+
 	/**
 	 * Builds the players list field (containing the amount of players logged in that world).
 	 */
@@ -291,5 +318,10 @@ class WorldTableRow extends JPanel
 			default:
 				return FLAG_GER;
 		}
+	}
+
+	public World getWorld()
+	{
+		return world;
 	}
 }
