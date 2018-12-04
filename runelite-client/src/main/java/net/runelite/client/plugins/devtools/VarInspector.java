@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -53,8 +55,6 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -84,7 +84,6 @@ class VarInspector extends JFrame
 	private final static int MAX_LOG_ENTRIES = 10_000;
 
 	private final Client client;
-	private final DevToolsPlugin plugin;
 	private final EventBus eventBus;
 
 	private final JPanel tracker = new JPanel();
@@ -99,11 +98,10 @@ class VarInspector extends JFrame
 	private String[] oldStrVarcs = null;
 
 	@Inject
-	VarInspector(Client client, EventBus eventBus, DevToolsPlugin plugin)
+	VarInspector(Client client, EventBus eventBus)
 	{
 		this.eventBus = eventBus;
 		this.client = client;
-		this.plugin = plugin;
 
 		setTitle("RuneLite Var Inspector");
 		setIconImage(ClientUI.ICON);
@@ -117,7 +115,6 @@ class VarInspector extends JFrame
 			public void windowClosing(WindowEvent e)
 			{
 				close();
-				plugin.getVarInspector().setActive(false);
 			}
 		});
 

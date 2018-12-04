@@ -35,9 +35,6 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import javax.inject.Inject;
-import javax.inject.Singleton;
-import lombok.Getter;
-import lombok.Setter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -61,7 +58,6 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -69,13 +65,11 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
-@Singleton
-class DevToolsOverlay extends Overlay
+public class DevToolsOverlay extends Overlay
 {
-	private static final int ITEM_EMPTY = 6512;
-	private static final int ITEM_FILLED = 20594;
+	public static final int ITEM_EMPTY = 6512;
+	public static final int ITEM_FILLED = 20594;
 
-	private static final Font FONT = FontManager.getRunescapeFont().deriveFont(Font.BOLD, 16);
 	private static final Color RED = new Color(221, 44, 0);
 	private static final Color GREEN = new Color(0, 200, 83);
 	private static final Color ORANGE = new Color(255, 109, 0);
@@ -92,15 +86,8 @@ class DevToolsOverlay extends Overlay
 	private final DevToolsPlugin plugin;
 	private final TooltipManager toolTipManager;
 
-	@Setter
-	@Getter
-	private Widget widget;
-
-	@Setter
-	private int itemIndex = -1;
-
 	@Inject
-	private DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
+	public DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
@@ -112,34 +99,38 @@ class DevToolsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		graphics.setFont(FONT);
+		Font font = plugin.getFont();
+		if (font != null)
+		{
+			graphics.setFont(font);
+		}
 
-		if (plugin.getPlayers().isActive())
+		if (plugin.isTogglePlayers())
 		{
 			renderPlayers(graphics);
 		}
 
-		if (plugin.getNpcs().isActive())
+		if (plugin.isToggleNpcs())
 		{
 			renderNpcs(graphics);
 		}
 
-		if (plugin.getGroundItems().isActive() || plugin.getGroundObjects().isActive() || plugin.getGameObjects().isActive() || plugin.getWalls().isActive() || plugin.getDecorations().isActive() || plugin.getTileLocation().isActive())
+		if (plugin.isToggleGroundItems() || plugin.isToggleGroundObjects() || plugin.isToggleGameObjects() || plugin.isToggleWalls() || plugin.isToggleDecor() || plugin.isToggleTileLocation())
 		{
 			renderTileObjects(graphics);
 		}
 
-		if (plugin.getInventory().isActive())
+		if (plugin.isToggleInventory())
 		{
 			renderInventory(graphics);
 		}
 
-		if (plugin.getProjectiles().isActive())
+		if (plugin.isToggleProjectiles())
 		{
 			renderProjectiles(graphics);
 		}
 
-		if (plugin.getGraphicsObjects().isActive())
+		if (plugin.isToggleGraphicsObjects())
 		{
 			renderGraphicsObjects(graphics);
 		}
@@ -222,32 +213,32 @@ class DevToolsOverlay extends Overlay
 					continue;
 				}
 
-				if (plugin.getGroundItems().isActive())
+				if (plugin.isToggleGroundItems())
 				{
 					renderGroundItems(graphics, tile, player);
 				}
 
-				if (plugin.getGroundObjects().isActive())
+				if (plugin.isToggleGroundObjects())
 				{
 					renderGroundObject(graphics, tile, player);
 				}
 
-				if (plugin.getGameObjects().isActive())
+				if (plugin.isToggleGameObjects())
 				{
 					renderGameObjects(graphics, tile, player);
 				}
 
-				if (plugin.getWalls().isActive())
+				if (plugin.isToggleWalls())
 				{
 					renderWallObject(graphics, tile, player);
 				}
 
-				if (plugin.getDecorations().isActive())
+				if (plugin.isToggleDecor())
 				{
 					renderDecorObject(graphics, tile, player);
 				}
 
-				if (plugin.getTileLocation().isActive())
+				if (plugin.isToggleTileLocation())
 				{
 					renderTileTooltip(graphics, tile);
 				}
@@ -444,8 +435,11 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
-	private void renderWidgets(Graphics2D graphics)
+	public void renderWidgets(Graphics2D graphics)
 	{
+		Widget widget = plugin.currentWidget;
+		int itemIndex = plugin.itemIndex;
+
 		if (widget == null || widget.isHidden())
 		{
 			return;

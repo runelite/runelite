@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.boosts;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -41,7 +42,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;

@@ -26,6 +26,8 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -52,8 +54,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.ClientUI;
 
 @Slf4j
@@ -61,9 +61,8 @@ class WidgetInspector extends JFrame
 {
 	private final Client client;
 	private final ClientThread clientThread;
-	private final DevToolsConfig config;
-	private final DevToolsOverlay overlay;
 	private final DevToolsPlugin plugin;
+	private final DevToolsConfig config;
 
 	private final JTree widgetTree;
 	private final WidgetInfoTableModel infoTableModel;
@@ -72,21 +71,13 @@ class WidgetInspector extends JFrame
 	private static final Map<Integer, WidgetInfo> widgetIdMap = new HashMap<>();
 
 	@Inject
-	private WidgetInspector(
-		Client client,
-		ClientThread clientThread,
-		WidgetInfoTableModel infoTableModel,
-		DevToolsConfig config,
-		EventBus eventBus,
-		DevToolsOverlay overlay,
-		DevToolsPlugin plugin)
+	WidgetInspector(DevToolsPlugin plugin, Client client, ClientThread clientThread, WidgetInfoTableModel infoTableModel, DevToolsConfig config, EventBus eventBus)
 	{
+		this.plugin = plugin;
 		this.client = client;
 		this.clientThread = clientThread;
 		this.infoTableModel = infoTableModel;
 		this.config = config;
-		this.overlay = overlay;
-		this.plugin = plugin;
 
 		eventBus.register(this);
 
@@ -99,8 +90,8 @@ class WidgetInspector extends JFrame
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
-				close();
-				plugin.getWidgetInspector().setActive(false);
+				plugin.currentWidget = null;
+				plugin.itemIndex = -1;
 			}
 		});
 
@@ -116,16 +107,16 @@ class WidgetInspector extends JFrame
 			{
 				WidgetTreeNode node = (WidgetTreeNode) selected;
 				Widget widget = node.getWidget();
-				overlay.setWidget(widget);
-				overlay.setItemIndex(widget.getItemId());
+				plugin.currentWidget = widget;
+				plugin.itemIndex = widget.getItemId();
 				refreshInfo();
 				log.debug("Set widget to {} and item index to {}", widget, widget.getItemId());
 			}
 			else if (selected instanceof WidgetItemNode)
 			{
 				WidgetItemNode node = (WidgetItemNode) selected;
-				overlay.setItemIndex(node.getWidgetItem().getIndex());
-				log.debug("Set item index to {}", node.getWidgetItem().getIndex());
+				plugin.itemIndex = node.getWidgetItem().getIndex();
+				log.debug("Set item index to {}", plugin.itemIndex);
 			}
 		});
 
@@ -154,12 +145,12 @@ class WidgetInspector extends JFrame
 		final JButton revalidateWidget = new JButton("Revalidate");
 		revalidateWidget.addActionListener(ev -> clientThread.invokeLater(() ->
 		{
-			if (overlay.getWidget() == null)
+			if (plugin.currentWidget == null)
 			{
 				return;
 			}
 
-			overlay.getWidget().revalidate();
+			plugin.currentWidget.revalidate();
 		}));
 		bottomPanel.add(revalidateWidget);
 
@@ -184,8 +175,8 @@ class WidgetInspector extends JFrame
 			Widget[] rootWidgets = client.getWidgetRoots();
 			DefaultMutableTreeNode root = new DefaultMutableTreeNode();
 
-			overlay.setWidget(null);
-			overlay.setItemIndex(-1);
+			plugin.currentWidget = null;
+			plugin.itemIndex = -1;
 
 			for (Widget widget : rootWidgets)
 			{
@@ -198,8 +189,8 @@ class WidgetInspector extends JFrame
 
 			SwingUtilities.invokeLater(() ->
 			{
-				overlay.setWidget(null);
-				overlay.setItemIndex(-1);
+				plugin.currentWidget = null;
+				plugin.itemIndex = -1;
 				refreshInfo();
 				widgetTree.setModel(new DefaultTreeModel(root));
 			});
@@ -273,10 +264,10 @@ class WidgetInspector extends JFrame
 
 	private void refreshInfo()
 	{
-		infoTableModel.setWidget(overlay.getWidget());
+		infoTableModel.setWidget(plugin.currentWidget);
 	}
 
-	static WidgetInfo getWidgetInfo(int packedId)
+	public static WidgetInfo getWidgetInfo(int packedId)
 	{
 		if (widgetIdMap.size() == 0)
 		{
@@ -290,19 +281,5 @@ class WidgetInspector extends JFrame
 		}
 
 		return widgetIdMap.get(packedId);
-	}
-
-	public void open()
-	{
-		setVisible(true);
-		toFront();
-		repaint();
-	}
-
-	public void close()
-	{
-		overlay.setWidget(null);
-		overlay.setItemIndex(-1);
-		setVisible(false);
 	}
 }

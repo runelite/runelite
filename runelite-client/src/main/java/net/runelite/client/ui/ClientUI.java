@@ -25,6 +25,7 @@
 package net.runelite.client.ui;
 
 import com.google.common.base.Strings;
+import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.CardLayout;
@@ -75,7 +76,6 @@ import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
 import net.runelite.client.input.KeyManager;

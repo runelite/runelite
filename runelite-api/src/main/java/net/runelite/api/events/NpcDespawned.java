@@ -32,13 +32,14 @@ import net.runelite.api.NPC;
  * An event where an {@link NPC} has despawned.
  */
 @Value
-public class NpcDespawned
+public class NpcDespawned implements ActorDespawned
 {
 	/**
 	 * The despawned NPC.
 	 */
 	private final NPC npc;
 
+	@Override
 	public Actor getActor()
 	{
 		return npc;

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.agility;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,7 +63,6 @@ import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;

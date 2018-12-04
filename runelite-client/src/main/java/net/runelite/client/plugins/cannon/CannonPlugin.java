@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.cannon;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.temporal.ChronoUnit;
@@ -55,7 +56,6 @@ import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;

@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.worldmap;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
@@ -35,7 +36,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.tithefarm;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,7 +37,6 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;

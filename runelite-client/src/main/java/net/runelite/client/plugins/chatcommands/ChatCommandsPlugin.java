@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.List;
@@ -55,7 +56,6 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.ChatboxInputListener;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.events.PrivateMessageInput;
 import net.runelite.client.game.ItemManager;

@@ -42,7 +42,6 @@ public enum ConfigType
 	VARCLIENT(19),
 	VARCLIENTSTRING(15),
 	VARPLAYER(16),
-	STRUCT(34),
 	AREA(35);
 
 	private final int id;

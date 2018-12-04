@@ -62,7 +62,7 @@ public class WorldMapLocationOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.getWorldMapLocation().isActive())
+		if (!plugin.isToggleWorldMapLocation())
 		{
 			return null;
 		}

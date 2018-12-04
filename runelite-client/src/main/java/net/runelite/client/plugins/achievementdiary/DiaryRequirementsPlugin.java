@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.achievementdiary;
 
+import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +42,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.achievementdiary.diaries.ArdougneDiaryRequirement;

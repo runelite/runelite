@@ -51,10 +51,4 @@ public interface RSGameEngine extends GameEngine
 
 	@Import("replaceCanvasNextFrame")
 	void setReplaceCanvasNextFrame(boolean replace);
-
-	@Import("maxCanvasWidth")
-	void setMaxCanvasWidth(int width);
-
-	@Import("maxCanvasHeight")
-	void setMaxCanvasHeight(int height);
 }

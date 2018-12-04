@@ -25,13 +25,14 @@
  */
 package net.runelite.client.plugins.stretchedmode;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.events.CanvasSizeChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -89,6 +90,12 @@ public class StretchedModePlugin extends Plugin
 	public void onResizeableChanged(ResizeableChanged event)
 	{
 		client.invalidateStretching(true);
+	}
+
+	@Subscribe
+	public void onCanvasSizeChanged(CanvasSizeChanged event)
+	{
+		client.invalidateStretching(false);
 	}
 
 	@Subscribe

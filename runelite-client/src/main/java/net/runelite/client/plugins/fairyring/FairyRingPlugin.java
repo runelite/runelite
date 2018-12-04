@@ -29,6 +29,7 @@
 package net.runelite.client.plugins.fairyring;
 
 import com.google.common.base.Strings;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Collection;
 import java.util.Map;
@@ -53,7 +54,6 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;

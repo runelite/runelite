@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.chatboxperformance;
 
+import com.google.common.eventbus.Subscribe;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.WidgetType;
@@ -32,7 +33,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 

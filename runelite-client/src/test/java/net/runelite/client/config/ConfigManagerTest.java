@@ -24,6 +24,7 @@
  */
 package net.runelite.client.config;
 
+import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
@@ -33,7 +34,6 @@ import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.client.account.AccountSession;
-import net.runelite.client.eventbus.EventBus;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

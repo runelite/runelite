@@ -27,6 +27,7 @@ package net.runelite.client.plugins.worldhopper;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -69,7 +70,6 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;

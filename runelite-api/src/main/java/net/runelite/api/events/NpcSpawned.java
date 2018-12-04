@@ -32,13 +32,14 @@ import net.runelite.api.NPC;
  * An event where an {@link NPC} has spawned.
  */
 @Value
-public class NpcSpawned
+public class NpcSpawned implements ActorSpawned
 {
 	/**
 	 * The spawned NPC.
 	 */
 	private final NPC npc;
 
+	@Override
 	public Actor getActor()
 	{
 		return npc;

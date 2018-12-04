@@ -26,15 +26,14 @@
 package net.runelite.cache.definitions;
 
 import lombok.Data;
-import net.runelite.cache.util.ScriptVarType;
 
 @Data
 public class EnumDefinition
 {
 	private int id;
 	private int[] intVals;
-	private ScriptVarType keyType;
-	private ScriptVarType valType;
+	private char keyType;
+	private char valType;
 	private String defaultString = "null";
 	private int defaultInt;
 	private int size;

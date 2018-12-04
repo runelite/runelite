@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.twitch;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
@@ -40,7 +41,6 @@ import net.runelite.client.chat.ChatboxInputListener;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.events.PrivateMessageInput;
 import net.runelite.client.plugins.Plugin;

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.xtea;
 
+import com.google.common.eventbus.Subscribe;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -31,7 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.xtea.XteaClient;

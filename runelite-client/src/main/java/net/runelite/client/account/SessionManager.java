@@ -24,6 +24,8 @@
  */
 package net.runelite.client.account;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,8 +42,6 @@ import net.runelite.api.events.SessionClose;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.http.api.account.AccountClient;
 import net.runelite.http.api.account.OAuthResponse;
