@@ -61,8 +61,7 @@ public class ClueScrollOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().clear();
-		panelComponent.setPreferredSize(new Dimension((int) Math.round(ComponentConstants.STANDARD_WIDTH * 1.5) , 0));
-
+		panelComponent.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH, 0));
 
 		clue.makeOverlayHint(panelComponent, plugin);
 
