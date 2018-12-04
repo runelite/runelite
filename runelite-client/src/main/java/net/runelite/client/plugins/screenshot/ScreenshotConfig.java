@@ -155,10 +155,10 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "valuableDrop",
-			name = "Screenshot Valuable drops",
-			description = "Configures whether or not screenshots are automatically taken when you receive a valuable/untradeable drop.",
-			position = 11
+		keyName = "valuableDrop",
+		name = "Screenshot Valuable drops",
+		description = "Configures whether or not screenshots are automatically taken when you receive a valuable/untradeable drop.",
+		position = 11
 	)
 	default boolean screenshotValuableDrop()
 	{

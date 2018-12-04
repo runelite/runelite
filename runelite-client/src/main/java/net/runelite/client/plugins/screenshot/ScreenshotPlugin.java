@@ -140,9 +140,6 @@ public class ScreenshotPlugin extends Plugin
 	private String clueType;
 	private Integer clueNumber;
 
-	private String valuableDropType;
-	private String valuableDropName;
-
 	private Integer barrowsNumber;
 
 	private Integer chambersOfXericNumber;
@@ -376,9 +373,9 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = VALUABLE_DROP_PATTERN.matcher(chatMessage);
 			if (m.matches())
 			{
-				valuableDropType = m.group(1);
-				valuableDropName = m.group(2);
-				String fileName = valuableDropType + " drop " + valuableDropName + " " + LocalDate.now();
+				String valuableDropType = m.group(1);
+				String valuableDropName = m.group(2);
+				String fileName = valuableDropType + " drop " + valuableDropName + " " + format(new Date());
 				takeScreenshot(fileName);
 			}
 		}
@@ -669,18 +666,6 @@ public class ScreenshotPlugin extends Plugin
 	String getClueType()
 	{
 		return clueType;
-	}
-
-	@VisibleForTesting
-	String getValuableDropType()
-	{
-		return valuableDropType;
-	}
-
-	@VisibleForTesting
-	String getValueableDropName()
-	{
-		return valuableDropName;
 	}
 
 	@VisibleForTesting

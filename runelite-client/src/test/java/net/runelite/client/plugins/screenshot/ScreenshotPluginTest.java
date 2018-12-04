@@ -149,8 +149,7 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", VALUABLE_DROP, null);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals("Valuable",screenshotPlugin.getValuableDropType());
-		assertEquals("6 x Bronze arrow (42 coins)",screenshotPlugin.getValueableDropName());
+		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
 
 	@Test
@@ -159,8 +158,7 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", UNTRADEABLE_DROP, null);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals("Untradeable",screenshotPlugin.getValuableDropType());
-		assertEquals("Rusty sword",screenshotPlugin.getValueableDropName());
+		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
 
 	@Test
