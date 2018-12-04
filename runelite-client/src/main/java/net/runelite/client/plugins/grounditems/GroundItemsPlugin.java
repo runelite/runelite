@@ -33,6 +33,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -56,6 +57,7 @@ import net.runelite.api.Node;
 import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -66,7 +68,10 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.NpcLootReceived;
+import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemStack;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
@@ -258,6 +263,35 @@ public class GroundItemsPlugin extends Plugin
 		if (groundItem != null)
 		{
 			groundItem.setQuantity(groundItem.getQuantity() + diff);
+		}
+	}
+
+	@Subscribe
+	public void onNpcLootReceived(NpcLootReceived npcLootReceived)
+	{
+		Collection<ItemStack> items = npcLootReceived.getItems();
+		WorldPoint location = npcLootReceived.getNpc().getWorldLocation();
+		lootReceived(items, location);
+	}
+
+	@Subscribe
+	public void onPlayerLootReceived(PlayerLootReceived playerLootReceived)
+	{
+		Collection<ItemStack> items = playerLootReceived.getItems();
+		WorldPoint location = playerLootReceived.getPlayer().getWorldLocation();
+		lootReceived(items, location);
+	}
+
+	private void lootReceived(Collection<ItemStack> items, WorldPoint location)
+	{
+		for (ItemStack itemStack : items)
+		{
+			GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(itemStack.getId(), location);
+			GroundItem groundItem = collectedGroundItems.get(groundItemKey);
+			if (groundItem != null)
+			{
+				groundItem.setMine(true);
+			}
 		}
 	}
 
