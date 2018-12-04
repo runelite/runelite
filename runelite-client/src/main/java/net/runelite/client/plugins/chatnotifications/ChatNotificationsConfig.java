@@ -97,4 +97,15 @@ public interface ChatNotificationsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "hideHelmets",
+		name = "Hide Iron man Helmets",
+		description =  "Hides all Iron man helmets from in-game chat"
+	)
+	default boolean hideHelmets()
+	{
+		return false;
+	}
 }

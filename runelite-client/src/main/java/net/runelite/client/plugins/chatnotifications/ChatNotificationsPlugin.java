@@ -58,6 +58,7 @@ import net.runelite.client.util.Text;
 public class ChatNotificationsPlugin extends Plugin
 {
 	private static final Splitter SPLITTER = Splitter.on(",").trimResults().omitEmptyStrings();
+	private static final Pattern HELMET_IMG = Pattern.compile("<img=(\\d*)>(.*)");
 
 	@Inject
 	private Client client;
@@ -199,6 +200,23 @@ public class ChatNotificationsPlugin extends Plugin
 				if (config.notifyOnHighlight())
 				{
 					sendNotification(event);
+				}
+			}
+		}
+
+		if (config.hideHelmets())
+		{
+			Matcher m = HELMET_IMG.matcher(messageNode.getName());
+			if (m.matches())
+			{
+				int imageID = Integer.valueOf(m.group(1));
+				switch (imageID)
+				{
+					case 2: // Regular Ironman
+					case 3: // Ultimate Ironman
+					case 10:// Hardcore Ironman
+						messageNode.setName(m.group(2));
+						break;
 				}
 			}
 		}
