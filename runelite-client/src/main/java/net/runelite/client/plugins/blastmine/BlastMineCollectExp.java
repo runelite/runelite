@@ -44,11 +44,11 @@ class BlastMineCollectExp extends Overlay
 	private final BlastMinePluginConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
-	public static final int COAL_EXP = 30;
-	public static final int GOLD_EXP = 60;
-	public static final int MITHRIL_EXP = 110;
-	public static final int ADAMANT_EXP = 170;
-	public static final int RUNITE_EXP = 240;
+	private static final int COAL_EXP = 30;
+	private static final int GOLD_EXP = 60;
+	private static final int MITHRIL_EXP = 110;
+	private static final int ADAMANT_EXP = 170;
+	private static final int RUNITE_EXP = 240;
 
 	@Inject
 	public BlastMineCollectExp(Client client, BlastMinePluginConfig config)
