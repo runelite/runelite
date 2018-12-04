@@ -194,6 +194,7 @@ class XpInfoBox extends JPanel
 			}
 
 			paused = skillPaused;
+
 			String actionLabel = xpSnapshotSingle.getActionType().getLabel();
 			// Update information labels
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));

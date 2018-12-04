@@ -173,7 +173,13 @@ class XpStateSingle
 	int getXpAction()
 	{
 		int actions = getXpAction(actionType).getActions();
-		if (actions == 0) return 0;
+
+		//No actions performed
+		if (actions == 0)
+		{
+			return 0;
+		}
+
 		return xpGained / actions;
 	}
 
