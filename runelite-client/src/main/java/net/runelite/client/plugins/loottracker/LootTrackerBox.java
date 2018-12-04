@@ -175,6 +175,7 @@ class LootTrackerBox extends JPanel
 			subTitleLabel.setText("x " + kills);
 		}
 
+		validate();
 		repaint();
 	}
 
