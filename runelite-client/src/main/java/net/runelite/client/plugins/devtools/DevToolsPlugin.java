@@ -96,6 +96,9 @@ public class DevToolsPlugin extends Plugin
 	private WorldMapLocationOverlay worldMapLocationOverlay;
 
 	@Inject
+	private WorldMapRegionOverlay mapRegionOverlay;
+
+	@Inject
 	private EventBus eventBus;
 
 	private DevToolsButton players;
@@ -167,6 +170,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.add(sceneOverlay);
 		overlayManager.add(cameraOverlay);
 		overlayManager.add(worldMapLocationOverlay);
+		overlayManager.add(mapRegionOverlay);
 
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
 
@@ -190,6 +194,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.remove(sceneOverlay);
 		overlayManager.remove(cameraOverlay);
 		overlayManager.remove(worldMapLocationOverlay);
+		overlayManager.remove(mapRegionOverlay);
 		clientToolbar.removeNavigation(navButton);
 	}
 
