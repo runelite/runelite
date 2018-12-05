@@ -63,6 +63,8 @@ public class ScreenshotPluginTest
 	private static final String BARROWS_CHEST = "Your Barrows chest count is <col=ff0000>310</col>";
 	private static final String CHAMBERS_OF_XERIC_CHEST = "Your completed Chambers of Xeric count is: <col=ff0000>489</col>.";
 	private static final String THEATRE_OF_BLOOD_CHEST = "Your completed Theatre of Blood count is: <col=ff0000>73</col>.";
+	private static final String VALUABLE_DROP = "<col=ef1020>Valuable drop: 6 x Bronze arrow (42 coins)</col>";
+	private static final String UNTRADEABLE_DROP = "<col=ef1020>Untradeable drop: Rusty sword";
 
 	@Mock
 	@Bind
@@ -101,6 +103,7 @@ public class ScreenshotPluginTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		when(screenshotConfig.screenshotRewards()).thenReturn(true);
 		when(screenshotConfig.screenshotLevels()).thenReturn(true);
+		when(screenshotConfig.screenshotValuableDrop()).thenReturn(true);
 	}
 
 	@Test
@@ -138,6 +141,24 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(73, screenshotPlugin.gettheatreOfBloodNumber());
+	}
+
+	@Test
+	public void testValuableDrop()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", VALUABLE_DROP, null);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
+	}
+
+	@Test
+	public void testUntradeableDrop()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", UNTRADEABLE_DROP, null);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
 
 	@Test
