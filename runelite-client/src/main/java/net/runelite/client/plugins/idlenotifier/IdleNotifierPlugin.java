@@ -42,8 +42,10 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.SkullIcon;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -95,11 +97,19 @@ public class IdleNotifierPlugin extends Plugin
 	private Instant sixHourWarningTime;
 	private boolean ready;
 	private boolean lastInteractWasCombat;
+	private SkullIcon lastTickSkull = null;
+	private boolean isFirstTick;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(IdleNotifierConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		isFirstTick = true;
 	}
 
 	@Subscribe
@@ -330,6 +340,28 @@ public class IdleNotifierPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		final Player local = client.getLocalPlayer();
+		SkullIcon currentTickSkull = local.getSkullIcon();
+		if (client.getWorldType().contains(WorldType.DEADMAN) || client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+		{
+			if (!isFirstTick)
+			{
+				if (config.showSkullNotification() && lastTickSkull == null && currentTickSkull == SkullIcon.SKULL)
+				{
+					notifier.notify("[" + local.getName() + "] is now skulled!");
+				}
+				else if (config.showUnskullNotification() && lastTickSkull == SkullIcon.SKULL && currentTickSkull == null)
+				{
+					notifier.notify("[" + local.getName() + "] is now unskulled!");
+				}
+			}
+			else
+			{
+				isFirstTick = false;
+			}
+
+			lastTickSkull = currentTickSkull;
+		}
+
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
 		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
