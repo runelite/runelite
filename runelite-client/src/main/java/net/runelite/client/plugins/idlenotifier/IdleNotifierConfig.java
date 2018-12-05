@@ -72,7 +72,7 @@ public interface IdleNotifierConfig extends Config
 	)
 	default boolean showSkullNotification()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
