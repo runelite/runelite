@@ -91,7 +91,6 @@ public class FairyRingPlugin extends Plugin
 
 	private ChatboxTextInput searchInput = null;
 	private Widget searchBtn;
-	private boolean chatboxOpenLastTick = false;
 	private Collection<CodeWidgets> codes = null;
 
 	@Data
@@ -214,12 +213,10 @@ public class FairyRingPlugin extends Plugin
 		boolean fairyRingWidgetOpen = fairyRingTeleportButton != null && !fairyRingTeleportButton.isHidden();
 		boolean chatboxOpen = chatboxPanelManager.getCurrentInput() == searchInput;
 
-		if (!fairyRingWidgetOpen && chatboxOpen && chatboxOpenLastTick)
+		if (!fairyRingWidgetOpen && chatboxOpen)
 		{
 			chatboxPanelManager.close();
 		}
-
-		chatboxOpenLastTick = chatboxOpen && fairyRingWidgetOpen;
 	}
 
 	private void updateFilter(String filter)
