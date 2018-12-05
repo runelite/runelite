@@ -112,34 +112,12 @@ class TargetWeaknessOverlay extends Overlay
 		int healthScale = target.getHealth();
 		String targetName = Text.removeTags(target.getName());
 		Integer maxHealth = npcManager.getHealth(targetName, target.getCombatLevel());
-		if (healthRatio < 0 || healthScale <= 0 || maxHealth == null)
+		if (healthRatio <= 0 || healthScale <= 0 || maxHealth == null)
 		{
 			return 0;
 		}
-		int minCurHealth = 1;
-		int maxCurHealth;
-		if (healthScale > 1)
-		{
-			if (healthRatio > 1)
-			{
-				// This doesn't apply if healthRatio = 1, because of the special case in the server calculation that
-				// health = 0 forces healthRatio = 0 instead of the expected healthRatio = 1
-				minCurHealth = (maxHealth * (healthRatio - 1) + healthScale - 2) / (healthScale - 1);
-			}
-			maxCurHealth = (maxHealth * healthRatio - 1) / (healthScale - 1);
-			if (maxCurHealth > maxHealth)
-			{
-				maxCurHealth = maxHealth;
-			}
-		}
-		else
-		{
-			// If healthScale is 1, healthRatio will always be 1 unless health = 0
-			// so we know nothing about the upper limit except that it can't be higher than maxHealth
-			maxCurHealth = maxHealth;
-		}
-		// Take the average of min and max possible healths
-		return (minCurHealth + maxCurHealth + 1) / 2;
+
+		return (int)((maxHealth * healthRatio / healthScale) + 0.5f);
 	}
 
 	private void renderTargetItem(Graphics2D graphics, NPC actor, BufferedImage image)
