@@ -29,6 +29,7 @@ import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
@@ -335,7 +336,8 @@ public class IdleNotifierPlugin extends Plugin
 	{
 		final Player local = client.getLocalPlayer();
 		SkullIcon currentTickSkull = local.getSkullIcon();
-		if (!(client.getWorldType().contains(WorldType.DEADMAN) || client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)))
+		EnumSet worldTypes = client.getWorldType();
+		if (!(worldTypes.contains(WorldType.DEADMAN) || worldTypes.contains(WorldType.SEASONAL_DEADMAN)))
 		{
 			if (!isFirstTick)
 			{
