@@ -98,18 +98,12 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean ready;
 	private boolean lastInteractWasCombat;
 	private SkullIcon lastTickSkull = null;
-	private boolean isFirstTick;
+	private boolean isFirstTick = true;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(IdleNotifierConfig.class);
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		isFirstTick = true;
 	}
 
 	@Subscribe
