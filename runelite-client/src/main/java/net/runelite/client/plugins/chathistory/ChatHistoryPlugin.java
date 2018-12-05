@@ -30,11 +30,13 @@ import java.util.Queue;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.ClanMemberRank;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -61,6 +63,9 @@ public class ChatHistoryPlugin extends Plugin
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
+
+	@Inject
+	private ClanManager clanManager;
 	
 	@Override
 	protected void startUp()
@@ -94,6 +99,16 @@ public class ChatHistoryPlugin extends Plugin
 
 		if (ALLOWED_HISTORY.contains(message.getType()))
 		{
+			if (message.getType() == ChatMessageType.CLANCHAT)
+			{
+				final ClanMemberRank rank = clanManager.getRank(message.getName());
+				if (rank != null && rank != ClanMemberRank.UNRANKED)
+				{
+					int iconNumber = clanManager.getIconNumber(rank);
+					message.setSender(message.getSender() + " <img=" + iconNumber + ">");
+				}
+			}
+
 			final QueuedMessage queuedMessage = QueuedMessage.builder()
 				.type(message.getType())
 				.name(message.getName())
