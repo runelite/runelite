@@ -415,17 +415,17 @@ public class HiscorePanel extends PluginPanel
 					label.setText(Integer.toString(combatLevel));
 				}
 			}
-			else if (result.getSkill(skill) != null && result.getSkill(skill).getRank() != -1)
+			else if (result.getSkill(skill) != null)
 			{
 				Skill s = result.getSkill(skill);
 				int level;
 				if (config.virtualLevels() && SKILLS.contains(skill))
 				{
-					level = Experience.getLevelForXp((int) s.getExperience());
+					level = Experience.getLevelForXp((int) Math.max(0, s.getExperience()));
 				}
 				else
 				{
-					level = s.getLevel();
+					level = Math.max(0, s.getLevel());
 				}
 
 				label.setText(Integer.toString(level));
@@ -554,7 +554,7 @@ public class HiscorePanel extends PluginPanel
 				{
 					Skill requestedSkill = result.getSkill(skill);
 					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
-					String exp = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
+					String exp = StackFormatter.formatNumber(Math.max(0, requestedSkill.getExperience()));
 					content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
@@ -565,17 +565,12 @@ public class HiscorePanel extends PluginPanel
 					Skill requestedSkill = result.getSkill(skill);
 
 					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
-					String exp = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
+					long true_exp = Math.max(0, requestedSkill.getExperience());
+					String exp = StackFormatter.formatNumber(true_exp);
 					String remainingXp;
-					if (requestedSkill.getRank() == -1)
-					{
-						remainingXp = "Unranked";
-					}
-					else
-					{
-						int currentLevel = Experience.getLevelForXp((int) requestedSkill.getExperience());
-						remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? StackFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - requestedSkill.getExperience()) : "0";
-					}
+
+					int currentLevel = Experience.getLevelForXp((int) true_exp);
+					remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? StackFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - true_exp) : "0";
 
 					content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
