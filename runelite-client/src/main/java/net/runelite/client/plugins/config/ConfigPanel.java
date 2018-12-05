@@ -35,6 +35,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -57,13 +59,17 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -95,6 +101,7 @@ public class ConfigPanel extends PluginPanel
 {
 	private static final int SPINNER_FIELD_WIDTH = 6;
 	private static final int SCROLLBAR_WIDTH = 17;
+	private static final int SCROLL_INCREMENT = 24;
 	private static final int OFFSET = 6;
 	private static final ImageIcon BACK_ICON;
 	private static final ImageIcon BACK_ICON_HOVER;
@@ -104,17 +111,22 @@ public class ConfigPanel extends PluginPanel
 	private static final String RUNELITE_PLUGIN = "RuneLite";
 	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
 	private static final Splitter COMMA_SPLITTER = Splitter.on(',');
+	private static final Border CONFIG_TOP_BORDER = new EmptyBorder(10, 10, 10, 10);
+	private static final Border LIST_TOP_BORDER = new CompoundBorder(
+		new MatteBorder(0, 0, 1, 0, ColorScheme.MEDIUM_GRAY_COLOR),
+		new EmptyBorder(10, 10, 5, 10)
+	);
+	private static final Border CORE_BORDER = new EmptyBorder(0, 0, 0, 8);
 
 	private final PluginManager pluginManager;
 	private final ConfigManager configManager;
 	private final ScheduledExecutorService executorService;
-	private final RuneLiteConfig runeLiteConfig;
-	private final ChatColorConfig chatColorConfig;
 	private final List<PluginListItem> pluginList = new ArrayList<>();
 
 	private final IconTextField searchBar = new IconTextField();
 	private final JPanel topPanel;
 	private final JPanel mainPanel;
+	private final JPanel corePanel;
 	private final JScrollPane scrollPane;
 
 	private boolean showingPluginList = true;
@@ -134,8 +146,6 @@ public class ConfigPanel extends PluginPanel
 		this.pluginManager = pluginManager;
 		this.configManager = configManager;
 		this.executorService = executorService;
-		this.runeLiteConfig = runeLiteConfig;
-		this.chatColorConfig = chatColorConfig;
 
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
@@ -166,14 +176,31 @@ public class ConfigPanel extends PluginPanel
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		topPanel = new JPanel();
-		topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		topPanel.setLayout(new BorderLayout(0, OFFSET));
 		add(topPanel, BorderLayout.NORTH);
 
 		mainPanel = new FixedWidthPanel();
 		mainPanel.setBorder(new EmptyBorder(8, 10, 10, 10));
-		mainPanel.setLayout(new DynamicGridLayout(0, 1, 0, 5));
+		mainPanel.setLayout(new DynamicGridLayout(0, 1, 0, 4));
 		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+		corePanel = new FixedWidthPanel();
+		corePanel.setLayout(new DynamicGridLayout(0, 1, 0, 4));
+		corePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		corePanel.setBorder(CORE_BORDER);
+
+		final PluginListItem runeLite = new PluginListItem(this, runeLiteConfig,
+			configManager.getConfigDescriptor(runeLiteConfig),
+			RUNELITE_PLUGIN, "RuneLite client settings", "client");
+		runeLite.removePinnedButton();
+
+		final PluginListItem chatColor = new PluginListItem(this, chatColorConfig,
+			configManager.getConfigDescriptor(chatColorConfig),
+			CHAT_COLOR_PLUGIN, "Recolor chat text", "colour", "messages");
+		chatColor.removePinnedButton();
+
+		corePanel.add(runeLite);
+		corePanel.add(chatColor);
 
 		JPanel northPanel = new FixedWidthPanel();
 		northPanel.setLayout(new BorderLayout());
@@ -181,6 +208,30 @@ public class ConfigPanel extends PluginPanel
 
 		scrollPane = new JScrollPane(northPanel);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollBar b = scrollPane.getVerticalScrollBar();
+		MouseWheelListener scrollListener = new MouseWheelListener()
+		{
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e)
+			{
+				// UnitIncrement is based off OS Mouse Wheel settings (lines per scroll)
+				// To account for this we are going to apply the exact pixel increment instead
+				int newPosition = scrollPane.getVerticalScrollBar().getValue() + (SCROLL_INCREMENT * e.getWheelRotation());
+				scrollPane.getVerticalScrollBar().setValue(newPosition);
+				scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
+			}
+		};
+
+		// Remove existing Scroll Pane MouseWheelListeners to prevent conflicts
+		for (MouseWheelListener l : scrollPane.getMouseWheelListeners())
+		{
+			scrollPane.removeMouseWheelListener(l);
+		}
+
+		// Add to both to ensure same functionality regardless of mouse location
+		b.addMouseWheelListener(scrollListener);
+		scrollPane.addMouseWheelListener(scrollListener);
+
 		add(scrollPane, BorderLayout.CENTER);
 
 		initializePluginList();
@@ -204,19 +255,6 @@ public class ConfigPanel extends PluginPanel
 				listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
 				pluginList.add(listItem);
 			});
-
-		// add special entries for core client configurations
-		final PluginListItem runeLite = new PluginListItem(this, runeLiteConfig,
-			configManager.getConfigDescriptor(runeLiteConfig),
-			RUNELITE_PLUGIN, "RuneLite client settings", "client");
-		runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN));
-		pluginList.add(runeLite);
-
-		final PluginListItem chatColor = new PluginListItem(this, chatColorConfig,
-			configManager.getConfigDescriptor(chatColorConfig),
-			CHAT_COLOR_PLUGIN, "Recolor chat text", "colour", "messages");
-		chatColor.setPinned(pinnedPlugins.contains(CHAT_COLOR_PLUGIN));
-		pluginList.add(chatColor);
 
 		pluginList.sort(Comparator.comparing(PluginListItem::getName));
 	}
@@ -250,7 +288,9 @@ public class ConfigPanel extends PluginPanel
 
 		topPanel.removeAll();
 		mainPanel.removeAll();
-		topPanel.add(searchBar, BorderLayout.CENTER);
+		topPanel.add(searchBar, BorderLayout.NORTH);
+		topPanel.add(corePanel, BorderLayout.CENTER);
+		topPanel.setBorder(LIST_TOP_BORDER);
 
 		onSearchBarChanged();
 		searchBar.requestFocusInWindow();
@@ -268,6 +308,11 @@ public class ConfigPanel extends PluginPanel
 		showMatchingPlugins(false, text);
 
 		revalidate();
+
+		// Check if a scrollbar is going to be visible with the new children quantity
+		boolean scrollBar = mainPanel.getComponentCount() * SCROLL_INCREMENT > scrollPane.getHeight();
+		corePanel.setBorder(scrollBar ? CORE_BORDER : null);
+		topPanel.revalidate();
 	}
 
 	private void showMatchingPlugins(boolean pinned, String text)
@@ -295,6 +340,7 @@ public class ConfigPanel extends PluginPanel
 		scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
 		topPanel.removeAll();
 		mainPanel.removeAll();
+		topPanel.setBorder(CONFIG_TOP_BORDER);
 
 		final IconButton topPanelBackButton = new IconButton(BACK_ICON, BACK_ICON_HOVER);
 		topPanelBackButton.setPreferredSize(new Dimension(22, 0));

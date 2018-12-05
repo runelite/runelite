@@ -234,6 +234,11 @@ class PluginListItem extends JPanel
 		pinButton.setToolTipText(pinned ? "Unpin plugin" : "Pin plugin");
 	}
 
+	void removePinnedButton()
+	{
+		remove(pinButton);
+	}
+
 	private void updateToggleButton(IconButton button)
 	{
 		button.setIcon(isPluginEnabled ? ON_SWITCHER : OFF_SWITCHER);
