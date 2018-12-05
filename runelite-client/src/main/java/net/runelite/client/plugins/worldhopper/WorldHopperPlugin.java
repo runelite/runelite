@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.worldhopper;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
@@ -37,6 +38,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -73,8 +75,10 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.worldhopper.ping.Ping;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.util.ExecutorServiceExceptionLogger;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WorldUtil;
@@ -92,6 +96,7 @@ import org.apache.commons.lang3.ArrayUtils;
 public class WorldHopperPlugin extends Plugin
 {
 	private static final int WORLD_FETCH_TIMER = 10;
+	private static final int WORLD_PING_TIMER = 10;
 	private static final int REFRESH_THROTTLE = 60_000;  // ms
 	private static final int TICK_THROTTLE = (int) Duration.ofMinutes(10).toMillis();
 
@@ -126,6 +131,8 @@ public class WorldHopperPlugin extends Plugin
 	@Inject
 	private WorldHopperConfig config;
 
+	private final ScheduledExecutorService hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
+
 	private NavigationButton navButton;
 	private WorldSwitcherPanel panel;
 
@@ -137,9 +144,10 @@ public class WorldHopperPlugin extends Plugin
 
 	private int favoriteWorld1, favoriteWorld2;
 
-	private ScheduledFuture<?> worldResultFuture;
+	private ScheduledFuture<?> worldResultFuture, pingFuture;
 	private WorldResult worldResult;
 	private Instant lastFetch;
+	private boolean firstRun;
 
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
 	{
@@ -167,10 +175,10 @@ public class WorldHopperPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		firstRun = true;
+
 		keyManager.registerKeyListener(previousKeyListener);
 		keyManager.registerKeyListener(nextKeyListener);
-
-		worldResultFuture = executorService.scheduleAtFixedRate(this::tick, 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
 
 		panel = new WorldSwitcherPanel(this);
 
@@ -191,11 +199,17 @@ public class WorldHopperPlugin extends Plugin
 		{
 			clientToolbar.addNavigation(navButton);
 		}
+
+		worldResultFuture = executorService.scheduleAtFixedRate(this::tick, 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
+		pingFuture = hopperExecutorService.scheduleAtFixedRate(this::pingWorlds, WORLD_PING_TIMER, WORLD_PING_TIMER, TimeUnit.MINUTES);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		pingFuture.cancel(true);
+		pingFuture = null;
+
 		keyManager.unregisterKeyListener(previousKeyListener);
 		keyManager.unregisterKeyListener(nextKeyListener);
 
@@ -205,20 +219,37 @@ public class WorldHopperPlugin extends Plugin
 		lastFetch = null;
 
 		clientToolbar.removeNavigation(navButton);
+
+		hopperExecutorService.shutdown();
 	}
 
 	@Subscribe
 	public void onConfigChanged(final ConfigChanged event)
 	{
-		if (event.getGroup().equals(WorldHopperConfig.GROUP) && event.getKey().equals("showSidebar"))
+		if (event.getGroup().equals(WorldHopperConfig.GROUP))
 		{
-			if (config.showSidebar())
+			switch (event.getKey())
 			{
-				clientToolbar.addNavigation(navButton);
-			}
-			else
-			{
-				clientToolbar.removeNavigation(navButton);
+				case "showSidebar":
+					if (config.showSidebar())
+					{
+						clientToolbar.addNavigation(navButton);
+					}
+					else
+					{
+						clientToolbar.removeNavigation(navButton);
+					}
+					break;
+				case "ping":
+					if (config.ping())
+					{
+						SwingUtilities.invokeLater(() -> panel.showPing());
+					}
+					else
+					{
+						SwingUtilities.invokeLater(() -> panel.hidePing());
+					}
+					break;
 			}
 		}
 	}
@@ -400,6 +431,13 @@ public class WorldHopperPlugin extends Plugin
 		}
 
 		fetchWorlds();
+
+		// Ping worlds once at startup
+		if (firstRun)
+		{
+			firstRun = false;
+			hopperExecutorService.execute(this::pingWorlds);
+		}
 	}
 
 	void refresh()
@@ -689,5 +727,25 @@ public class WorldHopperPlugin extends Plugin
 		}
 
 		return null;
+	}
+
+	private void pingWorlds()
+	{
+		if (worldResult == null || !config.showSidebar() || !config.ping())
+		{
+			return;
+		}
+
+		Stopwatch stopwatch = Stopwatch.createStarted();
+
+		for (World world : worldResult.getWorlds())
+		{
+			int ping = Ping.ping(world);
+			SwingUtilities.invokeLater(() -> panel.updatePing(world, ping));
+		}
+
+		stopwatch.stop();
+
+		log.debug("Done pinging worlds in {}", stopwatch.elapsed());
 	}
 }
