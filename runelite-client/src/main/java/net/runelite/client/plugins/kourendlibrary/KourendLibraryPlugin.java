@@ -24,11 +24,10 @@
  */
 package net.runelite.client.plugins.kourendlibrary;
 
-import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
@@ -36,32 +35,41 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
+import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Kourend Library"
+	name = "Kourend Library",
+	description = "Show where the books are found in the Kourend Library",
+	tags = {"arceuus", "magic", "runecrafting", "overlay", "panel"}
 )
 @Slf4j
 public class KourendLibraryPlugin extends Plugin
 {
+	private static final Pattern BOOK_EXTRACTOR = Pattern.compile("'<col=0000ff>(.*)</col>'");
+	private static final Pattern TAG_MATCHER = Pattern.compile("(<[^>]*>)");
 	final static int REGION = 6459;
 
 	final static boolean debug = false;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private Client client;
@@ -76,29 +84,32 @@ public class KourendLibraryPlugin extends Plugin
 	private KourendLibraryOverlay overlay;
 
 	@Inject
+	private KourendLibraryConfig config;
+
+	@Inject
 	private ItemManager itemManager;
 
 	private KourendLibraryPanel panel;
 	private NavigationButton navButton;
 	private boolean buttonAttached = false;
-
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
+
+	@Provides
+	KourendLibraryConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(KourendLibraryConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(overlay);
 		Book.fillImages(itemManager);
 
 		panel = injector.getInstance(KourendLibraryPanel.class);
 		panel.init();
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(Book.class.getResourceAsStream("panel_icon.png"));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
 
 		navButton = NavigationButton.builder()
 			.tooltip("Kourend Library")
@@ -106,27 +117,68 @@ public class KourendLibraryPlugin extends Plugin
 			.icon(icon)
 			.panel(panel)
 			.build();
+
+		overlayManager.add(overlay);
+
+		if (!config.hideButton())
+		{
+			clientToolbar.addNavigation(navButton);
+		}
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		overlay.setHidden(true);
 		overlayManager.remove(overlay);
-
-		pluginToolbar.removeNavigation(navButton);
+		clientToolbar.removeNavigation(navButton);
+		buttonAttached = false;
+		lastBookcaseClick = null;
+		lastBookcaseAnimatedOn = null;
 	}
 
 	@Subscribe
-	private void onMenuOptionClicked(MenuOptionClicked menuOpt)
+	public void onConfigChanged(ConfigChanged ev)
+	{
+		if (!KourendLibraryConfig.GROUP_KEY.equals(ev.getGroup()))
+		{
+			return;
+		}
+
+		SwingUtilities.invokeLater(() ->
+		{
+			if (!config.hideButton())
+			{
+				clientToolbar.addNavigation(navButton);
+			}
+			else
+			{
+				Player lp = client.getLocalPlayer();
+				boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
+				if (inRegion)
+				{
+					clientToolbar.addNavigation(navButton);
+				}
+				else
+				{
+					clientToolbar.removeNavigation(navButton);
+				}
+			}
+		});
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked menuOpt)
 	{
 		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getMenuTarget().contains("Bookshelf"))
 		{
-			lastBookcaseClick = WorldPoint.fromRegion(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
+			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
+			overlay.setHidden(false);
 		}
 	}
 
 	@Subscribe
-	private void onAnimationChanged(AnimationChanged anim)
+	public void onAnimationChanged(AnimationChanged anim)
 	{
 		if (anim.getActor() == client.getLocalPlayer() && anim.getActor().getAnimation() == AnimationID.LOOKING_INTO)
 		{
@@ -148,24 +200,21 @@ public class KourendLibraryPlugin extends Plugin
 		}
 	}
 
-	private static final Pattern BOOK_EXTRACTOR = Pattern.compile("'<col=0000ff>(.*)</col>'");
-	private static final Pattern TAG_MATCHER = Pattern.compile("(<[^>]*>)");
-
 	@Subscribe
-	void onTick(GameTick tick)
+	public void onGameTick(GameTick tick)
 	{
 		boolean inRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == REGION;
-		if (inRegion != buttonAttached)
+		if (config.hideButton() && inRegion != buttonAttached)
 		{
 			SwingUtilities.invokeLater(() ->
 			{
 				if (inRegion)
 				{
-					pluginToolbar.addNavigation(navButton);
+					clientToolbar.addNavigation(navButton);
 				}
 				else
 				{
-					pluginToolbar.removeNavigation(navButton);
+					clientToolbar.removeNavigation(navButton);
 				}
 			});
 			buttonAttached = inRegion;
@@ -209,6 +258,8 @@ public class KourendLibraryPlugin extends Plugin
 						log.warn("Book '{}' is not recognised", bookName);
 						return;
 					}
+
+					overlay.setHidden(false);
 					library.setCustomer(cust, book);
 					panel.update();
 				}

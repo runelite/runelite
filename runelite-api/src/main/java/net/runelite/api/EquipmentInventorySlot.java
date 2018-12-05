@@ -45,7 +45,8 @@ public enum EquipmentInventorySlot
 	LEGS(7),
 	GLOVES(9),
 	BOOTS(10),
-	RING(12);
+	RING(12),
+	AMMO(13);
 
 	private final int slotIdx;
 

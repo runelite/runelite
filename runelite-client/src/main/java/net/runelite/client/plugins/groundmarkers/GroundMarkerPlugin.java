@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.groundmarkers;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
@@ -53,6 +52,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -60,7 +60,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Ground Markers"
+	name = "Ground Markers",
+	description = "Enable marking of tiles using the Shift key",
+	tags = {"overlay", "tiles"}
 )
 public class GroundMarkerPlugin extends Plugin
 {
@@ -237,7 +239,7 @@ public class GroundMarkerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged gameStateChanged)
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
@@ -283,7 +285,7 @@ public class GroundMarkerPlugin extends Plugin
 			return;
 		}
 
-		Tile target = client.getSelectedRegionTile();
+		Tile target = client.getSelectedSceneTile();
 		markTile(target.getLocalLocation());
 	}
 
@@ -309,39 +311,7 @@ public class GroundMarkerPlugin extends Plugin
 			return;
 		}
 
-		WorldPoint worldPoint;
-
-		if (client.isInInstancedRegion())
-		{
-			// get position in the scene
-			int sceneX = localPoint.getRegionX();
-			int sceneY = localPoint.getRegionY();
-
-			// get chunk from scene
-			int chunkX = sceneX / CHUNK_SIZE;
-			int chunkY = sceneY / CHUNK_SIZE;
-
-			// get the template chunk for the chunk
-			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
-			int templateChunk = instanceTemplateChunks[client.getPlane()][chunkX][chunkY];
-
-			int rotation = templateChunk >> 1 & 0x3;
-			int templateChunkY = (templateChunk >> 3 & 0x7FF) * CHUNK_SIZE;
-			int templateChunkX = (templateChunk >> 14 & 0x3FF) * CHUNK_SIZE;
-			int plane = templateChunk >> 24 & 0x3;
-
-			// calculate world point of the template
-			int x = templateChunkX + (sceneX & (CHUNK_SIZE - 1));
-			int y = templateChunkY + (sceneY & (CHUNK_SIZE - 1));
-
-			worldPoint = new WorldPoint(x, y, plane);
-			// rotate point back to 0, to match with template
-			worldPoint = rotateInverse(worldPoint, rotation);
-		}
-		else
-		{
-			worldPoint = WorldPoint.fromLocal(client, localPoint);
-		}
+		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, localPoint);
 
 		int regionId = worldPoint.getRegionID();
 		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getX() & 0x3f, worldPoint.getY() & 0x3f, client.getPlane());

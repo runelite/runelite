@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.worldmap;
 
-import java.awt.image.BufferedImage;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
@@ -44,7 +43,6 @@ enum FairyRingLocation
 	BIP("BIP", new WorldPoint(3409, 3326, 0)),
 	BIQ("BIQ", new WorldPoint(3248, 3095, 0)),
 	BIS("BIS", new WorldPoint(2635, 3268, 0)),
-	BJQ("BJQ", new WorldPoint(1737, 5342, 0)),
 	BJS("BJS", new WorldPoint(2147, 3069, 0)),
 	BKP("BKP", new WorldPoint(2384, 3037, 0)),
 	BKR("BKR", new WorldPoint(3468, 3433, 0)),
@@ -72,20 +70,10 @@ enum FairyRingLocation
 
 	private final String code;
 	private final WorldPoint location;
-	private final FairyRingPoint fairyRingPoint;
 
 	FairyRingLocation(String code, WorldPoint location)
 	{
 		this.code = code;
 		this.location = location;
-		this.fairyRingPoint = new FairyRingPoint(code, location);
-	}
-
-	static void setIcon(BufferedImage image)
-	{
-		for (FairyRingLocation fairyRingLocation : values())
-		{
-			fairyRingLocation.fairyRingPoint.setImage(image);
-		}
 	}
 }

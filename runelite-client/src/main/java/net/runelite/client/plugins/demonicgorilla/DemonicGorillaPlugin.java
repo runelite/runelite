@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.demonicgorilla;
 
-import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -34,7 +33,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -56,14 +54,16 @@ import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Demonic Gorillas"
+	name = "Demonic Gorillas",
+	description = "Count demonic gorilla attacks and display their next possible attack styles",
+	tags = {"combat", "overlay", "pve", "pvm"}
 )
-@Slf4j
 public class DemonicGorillaPlugin extends Plugin
 {
 	@Inject
@@ -95,7 +95,7 @@ public class DemonicGorillaPlugin extends Plugin
 		recentBoulders = new ArrayList<>();
 		pendingAttacks = new ArrayList<>();
 		memorizedPlayers = new HashMap<>();
-		clientThread.invokeLater(this::reset); // Updates the list of gorillas and players
+		clientThread.invoke(this::reset); // Updates the list of gorillas and players
 	}
 
 	@Override
@@ -527,7 +527,7 @@ public class DemonicGorillaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onProjectile(ProjectileMoved event)
+	public void onProjectileMoved(ProjectileMoved event)
 	{
 		Projectile projectile = event.getProjectile();
 		int projectileId = projectile.getId();
@@ -616,7 +616,7 @@ public class DemonicGorillaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onHitsplat(HitsplatApplied event)
+	public void onHitsplatApplied(HitsplatApplied event)
 	{
 		if (gorillas.isEmpty())
 		{
@@ -645,7 +645,7 @@ public class DemonicGorillaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameState(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		GameState gs = event.getGameState();
 		if (gs == GameState.LOGGING_IN ||

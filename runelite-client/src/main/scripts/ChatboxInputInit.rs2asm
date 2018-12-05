@@ -1,0 +1,88 @@
+; Copyright (c) 2018 Abex
+; All rights reserved.
+;
+; Redistribution and use in source and binary forms, with or without
+; modification, are permitted provided that the following conditions are met:
+;
+; 1. Redistributions of source code must retain the above copyright notice, this
+;    list of conditions and the following disclaimer.
+; 2. Redistributions in binary form must reproduce the above copyright notice,
+;    this list of conditions and the following disclaimer in the documentation
+;    and/or other materials provided with the distribution.
+;
+; THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+; ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+; WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+; DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+; ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+; (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+; ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+; (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+; SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+;;
+; Creates a chatbox text input
+;
+; @param String  Prompt text
+; @param String  Default value
+;
+; Script 752 GE input panel
+; Script 103-111 various input panels
+; Script 74 validates input
+; script 112 key callback
+;;
+
+.id                 10001
+.int_stack_count    0
+.string_stack_count 2
+.int_var_count      0
+.string_var_count   2
+
+; Hide the chat pane
+   invoke                 677
+
+; Set current value
+   sload                  1
+   put_varc_string        22
+
+; Mark varcstring22 for our use
+   load_int               -2
+   put_varc               5
+
+; Set text
+   sload                  0
+   load_int               10616876
+   widget_put_text_widget
+
+; Init the widgets
+   load_string            ""
+   invoke                 222
+
+; Register the key listener
+   load_int               10002
+   load_int               -2147483639 ; typedKey
+   load_string            "i"
+   load_int               10616877
+   widget_put_key_listener_widget
+
+; Restore the chatbox on exit
+   load_int               299
+   load_int               1
+   load_int               1
+   load_string            "ii"
+   load_int               10616877
+   widget_put_dialog_abort_listener_widget
+
+; 70% sure this opens the keyboard on mobile
+   invoke                 1972
+   load_int               1
+   if_icmpeq              LABEL25
+   jump                   LABEL26
+LABEL25:
+   load_int               1
+   load_int               10
+   invoke                 1983
+LABEL26:
+
+   return

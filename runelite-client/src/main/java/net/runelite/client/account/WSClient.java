@@ -24,7 +24,6 @@
  */
 package net.runelite.client.account;
 
-import com.google.common.eventbus.EventBus;
 import com.google.gson.Gson;
 import java.time.Duration;
 import java.time.Instant;
@@ -32,6 +31,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ws.WebsocketGsonFactory;
 import net.runelite.http.api.ws.WebsocketMessage;

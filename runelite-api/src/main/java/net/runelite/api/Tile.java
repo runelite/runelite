@@ -90,12 +90,11 @@ public interface Tile
 	WorldPoint getWorldLocation();
 
 	/**
-	 * Gets the location coordinate of the tile relative to the current
-	 * region start point.
+	 * Gets the location coordinate of the tile in scene coords
 	 *
-	 * @return the region location
+	 * @return the scene location
 	 */
-	Point getRegionLocation();
+	Point getSceneLocation();
 
 	/**
 	 * Gets the local coordinate of the tile.
@@ -112,6 +111,13 @@ public interface Tile
 	int getPlane();
 
 	/**
+	 * Get the plane this tile is rendered on, which is where the tile heights are from.
+	 *
+	 * @return
+	 */
+	int getRenderLevel();
+
+	/**
 	 * Computes and returns whether this tile has line of sight to another.
 	 *
 	 * @param other the other tile
@@ -125,4 +131,11 @@ public interface Tile
 	 * @return the ground items
 	 */
 	List<Item> getGroundItems();
+
+	/**
+	 * Return the tile under this one, if this tile is a bridge
+	 *
+	 * @return
+	 */
+	Tile getBridge();
 }

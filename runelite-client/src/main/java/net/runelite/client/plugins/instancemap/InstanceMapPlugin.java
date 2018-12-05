@@ -24,13 +24,13 @@
  */
 package net.runelite.client.plugins.instancemap;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import javax.inject.Inject;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_OPTION;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.menus.MenuManager;
@@ -40,7 +40,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Instance Map"
+	name = "Instance Map",
+	description = "Add an instanced map, accessible by right-clicking the map button"
 )
 public class InstanceMapPlugin extends Plugin
 {
@@ -93,15 +94,16 @@ public class InstanceMapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlay.setShowMap(false);
 		overlayManager.remove(overlay);
 		removeCustomOptions();
 		keyManager.unregisterKeyListener(inputListener);
-		mouseManager.registerMouseListener(inputListener);
+		mouseManager.unregisterMouseListener(inputListener);
 		mouseManager.unregisterMouseWheelListener(inputListener);
 	}
 
 	@Subscribe
-	public void gameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		overlay.onGameStateChange(event);
 	}

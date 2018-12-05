@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -57,7 +56,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
-import net.runelite.client.util.RunnableExceptionLogger;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
@@ -99,10 +98,6 @@ public class HiscorePanel extends PluginPanel
 	/* The maximum allowed username length in runescape accounts */
 	private static final int MAX_USERNAME_LENGTH = 12;
 
-	private static final ImageIcon SEARCH_ICON;
-	private static final ImageIcon LOADING_ICON;
-	private static final ImageIcon ERROR_ICON;
-
 	/**
 	 * Real skills, ordered in the way they should be displayed in the panel.
 	 */
@@ -125,7 +120,8 @@ public class HiscorePanel extends PluginPanel
 	private Client client;
 
 	private final HiscoreConfig config;
-	private final IconTextField input;
+
+	private final IconTextField searchBar;
 
 	private final List<JLabel> skillLabels = new ArrayList<>();
 
@@ -143,23 +139,6 @@ public class HiscorePanel extends PluginPanel
 
 	/* Used to prevent users from switching endpoint tabs while the results are loading */
 	private boolean loading = false;
-
-	static
-	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				SEARCH_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("search.png")));
-				LOADING_ICON = new ImageIcon(IconTextField.class.getResource("loading_spinner_darker.gif"));
-				ERROR_ICON = new ImageIcon(ImageIO.read(IconTextField.class.getResourceAsStream("error.png")));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
 
 	@Inject
 	public HiscorePanel(HiscoreConfig config)
@@ -183,13 +162,14 @@ public class HiscorePanel extends PluginPanel
 		c.weighty = 0;
 		c.insets = new Insets(0, 0, 10, 0);
 
-		input = new IconTextField();
-		input.setMinimumSize(new Dimension(0, 30));
-		input.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		input.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
-		input.setIcon(SEARCH_ICON);
-		input.addActionListener(e -> executor.execute(RunnableExceptionLogger.wrap(this::lookup)));
-		input.addMouseListener(new MouseAdapter()
+		searchBar = new IconTextField();
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
+		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchBar.setMinimumSize(new Dimension(0, 30));
+		searchBar.addActionListener(e -> executor.execute(this::lookup));
+		searchBar.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseClicked(MouseEvent e)
@@ -212,7 +192,7 @@ public class HiscorePanel extends PluginPanel
 			}
 		});
 
-		add(input, c);
+		add(searchBar, c);
 		c.gridy++;
 
 		tabGroup = new MaterialTabGroup();
@@ -220,51 +200,39 @@ public class HiscorePanel extends PluginPanel
 
 		for (HiscoreEndpoint endpoint : HiscoreEndpoint.values())
 		{
-			try
+			final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), endpoint.name().toLowerCase() + ".png");
+
+			MaterialTab tab = new MaterialTab(new ImageIcon(iconImage), tabGroup, null);
+			tab.setToolTipText(endpoint.getName() + " Hiscores");
+			tab.setOnSelectEvent(() ->
 			{
-				BufferedImage iconImage;
-				synchronized (ImageIO.class)
+				if (loading)
 				{
-					iconImage = ImageIO.read(HiscorePanel.class.getResourceAsStream(
-						endpoint.name().toLowerCase() + ".png"));
+					return false;
 				}
 
-				MaterialTab tab = new MaterialTab(new ImageIcon(iconImage), tabGroup, null);
-				tab.setToolTipText(endpoint.getName() + " Hiscores");
-				tab.setOnSelectEvent(() ->
+				selectedEndPoint = endpoint;
+				return true;
+			});
+
+			// Adding the lookup method to a mouseListener instead of the above onSelectedEvent
+			// Because sometimes you might want to switch the tab, without calling for lookup
+			// Ex: selecting the normal hiscores as default
+			tab.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mousePressed(MouseEvent mouseEvent)
 				{
 					if (loading)
 					{
-						return false;
+						return;
 					}
 
-					selectedEndPoint = endpoint;
-					return true;
-				});
+					executor.execute(HiscorePanel.this::lookup);
+				}
+			});
 
-				// Adding the lookup method to a mouseListener instead of the above onSelectedEvent
-				// Because sometimes you might want to switch the tab, without calling for lookup
-				// Ex: selecting the normal hiscores as default
-				tab.addMouseListener(new MouseAdapter()
-				{
-					@Override
-					public void mousePressed(MouseEvent mouseEvent)
-					{
-						if (loading)
-						{
-							return;
-						}
-
-						executor.execute(HiscorePanel.this::lookup);
-					}
-				});
-
-				tabGroup.addTab(tab);
-			}
-			catch (IOException ex)
-			{
-				throw new RuntimeException(ex);
-			}
+			tabGroup.addTab(tab);
 		}
 
 		// Default selected tab is normal hiscores
@@ -318,7 +286,7 @@ public class HiscorePanel extends PluginPanel
 	public void onActivate()
 	{
 		super.onActivate();
-		input.requestFocusInWindow();
+		searchBar.requestFocusInWindow();
 	}
 
 	/* Builds a JPanel displaying an icon and level/number associated with it */
@@ -328,22 +296,22 @@ public class HiscorePanel extends PluginPanel
 		label.setFont(FontManager.getRunescapeSmallFont());
 		label.setText("--");
 
-		String skillIcon = "skill_icons_small/" + (skill == null ? "combat" : skill.getName().toLowerCase()) + ".png";
+		String skillName = (skill == null ? "combat" : skill.getName().toLowerCase());
+		String directory = "/skill_icons";
+		if (skillName.equals("combat") || skillName.equals("overall"))
+		{
+			// Cannot use SpriteManager as HiscorePlugin loads before a Client is available
+			directory += "/";
+		}
+		else
+		{
+			directory += "_small/";
+		}
+
+		String skillIcon = directory + skillName + ".png";
 		log.debug("Loading skill icon from {}", skillIcon);
 
-		try
-		{
-			BufferedImage icon;
-			synchronized (ImageIO.class)
-			{
-				icon = ImageIO.read(HiscorePanel.class.getResourceAsStream(skillIcon));
-			}
-			label.setIcon(new ImageIcon(icon));
-		}
-		catch (IOException ex)
-		{
-			log.warn(null, ex);
-		}
+		label.setIcon(new ImageIcon(ImageUtil.getResourceStreamFromClass(getClass(), skillIcon)));
 
 		boolean totalLabel = skill == HiscoreSkill.OVERALL || skill == null; //overall or combat
 		label.setIconTextGap(totalLabel ? 10 : 4);
@@ -359,14 +327,14 @@ public class HiscorePanel extends PluginPanel
 
 	public void lookup(String username)
 	{
-		input.setText(username);
+		searchBar.setText(username);
 		resetEndpoints();
 		lookup();
 	}
 
 	private void lookup()
 	{
-		String lookup = input.getText();
+		String lookup = searchBar.getText();
 
 		lookup = sanitize(lookup);
 
@@ -378,13 +346,13 @@ public class HiscorePanel extends PluginPanel
 		/* Runescape usernames can't be longer than 12 characters long */
 		if (lookup.length() > MAX_USERNAME_LENGTH)
 		{
-			input.setIcon(ERROR_ICON);
+			searchBar.setIcon(IconTextField.Icon.ERROR);
 			loading = false;
 			return;
 		}
 
-		input.setEditable(false);
-		input.setIcon(LOADING_ICON);
+		searchBar.setEditable(false);
+		searchBar.setIcon(IconTextField.Icon.LOADING_DARKER);
 		loading = true;
 
 		for (JLabel label : skillLabels)
@@ -407,27 +375,23 @@ public class HiscorePanel extends PluginPanel
 		catch (IOException ex)
 		{
 			log.warn("Error fetching Hiscore data " + ex.getMessage());
-			input.setIcon(ERROR_ICON);
-			input.setEditable(true);
+			searchBar.setIcon(IconTextField.Icon.ERROR);
+			searchBar.setEditable(true);
 			loading = false;
 			return;
 		}
 
-		/*
-		For some reason, the fetch results would sometimes return a not null object
-		with all null attributes, to check for that, i'll just null check one of the attributes.
-		 */
-		if (result == null || result.getAttack() == null)
+		if (result == null)
 		{
-			input.setIcon(ERROR_ICON);
-			input.setEditable(true);
+			searchBar.setIcon(IconTextField.Icon.ERROR);
+			searchBar.setEditable(true);
 			loading = false;
 			return;
 		}
 
 		//successful player search
-		input.setIcon(SEARCH_ICON);
-		input.setEditable(true);
+		searchBar.setIcon(IconTextField.Icon.SEARCH);
+		searchBar.setEditable(true);
 		loading = false;
 
 		int index = 0;
@@ -474,12 +438,12 @@ public class HiscorePanel extends PluginPanel
 
 	void addInputKeyListener(KeyListener l)
 	{
-		this.input.addKeyListener(l);
+		this.searchBar.addKeyListener(l);
 	}
 
 	void removeInputKeyListener(KeyListener l)
 	{
-		this.input.removeKeyListener(l);
+		this.searchBar.removeKeyListener(l);
 	}
 
 	/*
@@ -548,7 +512,6 @@ public class HiscorePanel extends PluginPanel
 			{
 				case CLUE_SCROLL_ALL:
 				{
-					String rank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
 					String allRank = (result.getClueScrollAll().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollAll().getRank());
 					String easyRank = (result.getClueScrollEasy().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollEasy().getRank());
 					String mediumRank = (result.getClueScrollMedium().getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(result.getClueScrollMedium().getRank());

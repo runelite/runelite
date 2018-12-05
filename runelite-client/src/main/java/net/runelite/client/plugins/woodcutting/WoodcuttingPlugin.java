@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -46,6 +45,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -53,7 +53,9 @@ import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Woodcutting"
+	name = "Woodcutting",
+	description = "Show woodcutting statistics and/or bird nest notifications",
+	tags = {"birds", "nest", "notifications", "overlay", "skilling", "wc"}
 )
 @PluginDependency(XpTrackerPlugin.class)
 public class WoodcuttingPlugin extends Plugin
@@ -131,7 +133,7 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		if (event.getType() == ChatMessageType.FILTERED || event.getType() == ChatMessageType.SERVER)
 		{
-			if (event.getMessage().startsWith("You get some") && event.getMessage().endsWith("logs."))
+			if (event.getMessage().startsWith("You get some") && (event.getMessage().endsWith("logs.") || event.getMessage().endsWith("mushrooms.")))
 			{
 				if (session == null)
 				{

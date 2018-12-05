@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.herbiboars;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,7 +34,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.ObjectID.DRIFTWOOD_30523;
 import static net.runelite.api.ObjectID.MUSHROOM_30520;
@@ -55,13 +53,15 @@ import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-@Slf4j
 @PluginDescriptor(
-	name = "Herbiboar"
+	name = "Herbiboar",
+	description = "Highlight starting rocks, trails, and the objects to search at the end of each trail",
+	tags = {"herblore", "hunter", "skilling", "overlay"}
 )
 public class HerbiboarPlugin extends Plugin
 {
@@ -213,7 +213,7 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -249,7 +249,7 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectDeSpawned(GameObjectDespawned event)
+	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onGameObject(event.getTile(), event.getGameObject(), null);
 	}
@@ -267,7 +267,7 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGroundObjectDeSpawned(GroundObjectDespawned event)
+	public void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		onGroundObject(event.getTile(), event.getGroundObject(), null);
 	}

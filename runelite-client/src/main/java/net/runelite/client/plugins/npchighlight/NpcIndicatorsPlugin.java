@@ -25,8 +25,9 @@
  */
 package net.runelite.client.plugins.npchighlight;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
-import com.google.common.eventbus.Subscribe;
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -36,14 +37,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
+import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
@@ -56,6 +58,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
@@ -63,7 +66,12 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.WildcardMatcher;
 
-@PluginDescriptor(name = "NPC Indicators")
+@PluginDescriptor(
+	name = "NPC Indicators",
+	description = "Highlight NPCs on-screen and/or on the minimap",
+	tags = {"highlight", "minimap", "npcs", "overlay", "respawn", "tags"}
+)
+@Slf4j
 public class NpcIndicatorsPlugin extends Plugin
 {
 	private static final int MAX_ACTOR_VIEW_RANGE = 15;
@@ -71,8 +79,11 @@ public class NpcIndicatorsPlugin extends Plugin
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
 
+	private static final List<MenuAction> NPC_MENU_ACTIONS = ImmutableList.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
+		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
+
 	// Regex for splitting the hidden items in the config.
-	private static final Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*")).trimResults();
+	private static final Splitter COMMA_SPLITTER = Splitter.on(",").omitEmptyStrings().trimResults();
 
 	@Inject
 	private Client client;
@@ -179,7 +190,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		overlayManager.add(npcMinimapOverlay);
 		keyManager.registerKeyListener(inputListener);
 		highlights = getHighlights();
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
 			skipNextSpawnCheck = true;
 			rebuildAllNpcs();
@@ -202,7 +213,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN ||
 			event.getGameState() == GameState.HOPPING)
@@ -238,12 +249,15 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuObjectClicked(MenuOptionClicked click)
+	public void onMenuOptionClicked(MenuOptionClicked click)
 	{
-		if (click.getMenuOption().equals(TAG))
+		if (!config.isTagEnabled())
 		{
-			click.consume();
+			return;
+		}
 
+		if (click.getMenuOption().equals(TAG) && NPC_MENU_ACTIONS.contains(click.getMenuAction()))
+		{
 			final int id = click.getId();
 			final boolean removed = npcTags.remove(id);
 			final NPC[] cachedNPCs = client.getCachedNPCs();
@@ -262,6 +276,8 @@ public class NpcIndicatorsPlugin extends Plugin
 					npcTags.add(id);
 					highlightedNpcs.add(npc);
 				}
+
+				click.consume();
 			}
 		}
 	}
@@ -405,7 +421,8 @@ public class NpcIndicatorsPlugin extends Plugin
 		hotKeyPressed = pressed;
 	}
 
-	private List<String> getHighlights()
+	@VisibleForTesting
+	List<String> getHighlights()
 	{
 		final String configNpcs = config.getNpcToHighlight().toLowerCase();
 
@@ -489,6 +506,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 						if (!mn.getPossibleRespawnLocations().isEmpty())
 						{
+							log.debug("Starting {} tick countdown for {}", mn.getRespawnTime(), mn.getNpcName());
 							deadNpcsToDisplay.put(mn.getNpcIndex(), mn);
 						}
 					}

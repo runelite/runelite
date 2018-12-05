@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.cannon;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.temporal.ChronoUnit;
@@ -38,6 +37,8 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ObjectID.CANNON_BASE;
 import net.runelite.api.Player;
@@ -49,10 +50,12 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -61,7 +64,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Cannon"
+	name = "Cannon",
+	description = "Show information about cannon placement and/or amount of cannonballs",
+	tags = {"combat", "notifications", "ranged", "overlay"}
 )
 public class CannonPlugin extends Plugin
 {
@@ -129,12 +134,65 @@ public class CannonPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		cannonSpotOverlay.setHidden(true);
 		overlayManager.remove(cannonOverlay);
 		overlayManager.remove(cannonSpotOverlay);
 		cannonPlaced = false;
 		cannonPosition = null;
 		cballsLeft = 0;
 		removeCounter();
+		skipProjectileCheckThisTick = false;
+		spotPoints.clear();
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		{
+			return;
+		}
+
+		boolean hasBase = false;
+		boolean hasStand = false;
+		boolean hasBarrels = false;
+		boolean hasFurnace = false;
+		boolean hasAll = false;
+
+		if (!cannonPlaced)
+		{
+			for (Item item : event.getItemContainer().getItems())
+			{
+				if (item == null)
+				{
+					continue;
+				}
+
+				switch (item.getId())
+				{
+					case ItemID.CANNON_BASE:
+						hasBase = true;
+						break;
+					case ItemID.CANNON_STAND:
+						hasStand = true;
+						break;
+					case ItemID.CANNON_BARRELS:
+						hasBarrels = true;
+						break;
+					case ItemID.CANNON_FURNACE:
+						hasFurnace = true;
+						break;
+				}
+
+				if (hasBase && hasStand && hasBarrels && hasFurnace)
+				{
+					hasAll = true;
+					break;
+				}
+			}
+		}
+
+		cannonSpotOverlay.setHidden(!hasAll);
 	}
 
 	@Subscribe
@@ -150,7 +208,7 @@ public class CannonPlugin extends Plugin
 			{
 				if (cannonPlaced)
 				{
-					clientThread.invokeLater(this::addCounter);
+					clientThread.invoke(this::addCounter);
 				}
 			}
 		}

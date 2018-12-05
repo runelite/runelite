@@ -1,0 +1,168 @@
+.id                 223
+.int_stack_count    0
+.string_stack_count 0
+.int_var_count      4
+.string_var_count   3
+   load_string            "<col=0000ff>"
+   sstore                 0
+   load_int               0
+   istore                 0
+   load_int               6250335
+   istore                 1
+   invoke                 921
+   load_int               1
+   if_icmpeq              LABEL10
+   jump                   LABEL20
+LABEL10:
+   load_string            "<col=9090ff>"
+   load_int               16777215
+   load_int               12566463
+   istore                 1
+   istore                 0
+   sstore                 0
+   load_int               1
+   load_int               10616889
+   widget_put_text_shadowed_widget
+   jump                   LABEL23
+LABEL20:
+   load_int               0
+   load_int               10616889
+   widget_put_text_shadowed_widget
+LABEL23:
+   iload                  0
+   load_int               10616889
+   widget_put_textcolor_widget
+   get_varc_string        1
+   string_length         
+   istore                 2
+   get_varc_string        1
+   appendtags            
+   sstore                 1
+   load_string            ""
+   sstore                 2
+   load_int               0
+   istore                 3
+   get_varc               203
+   load_int               1
+   if_icmpeq              LABEL40
+   jump                   LABEL99
+LABEL40:
+   load_int               105
+   load_int               115
+   load_int               1894
+   get_varbit             1777
+   get_enum_value        
+   get_localplayer_name  
+   load_string            ": "
+   sload                  0
+   sload                  1
+   load_string            "</col>"
+   string_append          6
+   sstore                 2
+   iload                  2
+   load_int               80
+   if_icmplt              LABEL56
+   jump                   LABEL63
+LABEL56:
+   sload                  2
+   sload                  0
+   load_string            "*"
+   load_string            "</col>"
+   string_append          3
+   concat_string         
+   sstore                 2
+LABEL63:
+   sload                  2
+   load_int               2147483647
+   load_int               495
+   get_max_line_width    
+   istore                 3
+   iload                  3
+   load_int               10616889
+   widget_get_width_widget
+   if_icmpgt              LABEL73
+   jump                   LABEL79
+LABEL73:
+   load_int               2
+   load_int               2
+   load_int               0
+   load_int               10616889
+   widget_put_text_alignment_widget
+   jump                   LABEL84
+LABEL79:
+   load_int               0
+   load_int               2
+   load_int               0
+   load_int               10616889
+   widget_put_text_alignment_widget
+LABEL84:
+   load_int               10616889
+   widget_put_actions_null_widget
+   load_int               -1
+   load_string            ""
+   load_int               10616889
+   widget_put_mouse_hover_listener_widget
+   load_int               -1
+   load_string            ""
+   load_int               10616889
+   widget_put_mouse_exit_listener_widget
+   load_int               -1
+   load_string            ""
+   load_int               10616889
+   widget_put_option_click_listener_widget
+   jump                   LABEL140
+LABEL99:
+   load_int               105
+   load_int               115
+   load_int               1894
+   get_varbit             1777
+   get_enum_value        
+   load_string            " You must set a name before you can chat."
+   string_append          2
+   sstore                 2
+   load_int               1
+   load_int               2
+   load_int               0
+   load_int               10616889
+   widget_put_text_alignment_widget
+   load_int               10
+   load_string            "Configure"
+   load_int               10616889
+   widget_put_action_widget
+   load_string            "<col=ff9040>"
+   load_string            "Display name"
+   load_string            "</col>"
+   string_append          3
+   load_int               10616889
+   widget_put_name_widget
+   load_int               45
+   load_int               -2147483645
+   iload                  1
+   load_string            "Ii"
+   load_int               10616889
+   widget_put_mouse_hover_listener_widget
+   load_int               45
+   load_int               -2147483645
+   iload                  0
+   load_string            "Ii"
+   load_int               10616889
+   widget_put_mouse_exit_listener_widget
+   load_int               489
+   load_int               -2147483644
+   load_int               1024
+   load_string            "ii"
+   load_int               10616889
+   widget_put_option_click_listener_widget
+LABEL140:
+   sload                  2
+   load_int               10616889
+   widget_put_text_widget
+   load_string            "setChatboxInput"
+   runelite_callback     
+   load_int               3
+   load_int               16
+   load_int               1
+   load_int               0
+   load_int               10616889
+   widget_put_size_widget
+   return                

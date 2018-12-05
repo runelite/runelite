@@ -29,24 +29,9 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "tithefarmplugin",
-	name = "Tithe Farm",
-	description = "Configuration for the Tithe Farm plugin"
-)
+@ConfigGroup("tithefarmplugin")
 public interface TitheFarmPluginConfig extends Config
 {
-	@ConfigItem(
-		position = 0,
-		keyName = "showSack",
-		name = "Show fruit sack",
-		description = "Configures whether or not the fruit sack is displayed"
-	)
-	default boolean showSack()
-	{
-		return true;
-	}
-
 	@ConfigItem(
 		position = 1,
 		keyName = "hexColorUnwatered",

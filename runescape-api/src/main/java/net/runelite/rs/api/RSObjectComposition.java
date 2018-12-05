@@ -29,6 +29,10 @@ import net.runelite.mapping.Import;
 
 public interface RSObjectComposition extends ObjectComposition
 {
+	@Import("id")
+	@Override
+	int getId();
+
 	@Import("name")
 	@Override
 	String getName();

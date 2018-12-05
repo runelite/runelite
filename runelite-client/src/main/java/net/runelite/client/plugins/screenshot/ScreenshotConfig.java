@@ -27,12 +27,9 @@ package net.runelite.client.plugins.screenshot;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
-@ConfigGroup(
-	keyName = "screenshot",
-	name = "Screenshot",
-	description = "Configuration for the Screenshot plugin"
-)
+@ConfigGroup("screenshot")
 public interface ScreenshotConfig extends Config
 {
 	@ConfigItem(
@@ -123,25 +120,59 @@ public interface ScreenshotConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "enableShortcut",
-		name = "Screenshot with [Insert]",
-		description = "Configures whether or not screenshots can be taken with the Insert key",
-		position = 8
-	)
-	default boolean isScreenshotEnabled()
-	{
-		return false;
-	}
 
 	@ConfigItem(
 		keyName = "kills",
 		name = "Screenshot PvP Kills",
 		description = "Configures whether or not screenshots are automatically taken of PvP kills",
-		position = 9
+		position = 8
 	)
 	default boolean screenshotKills()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "boss",
+		name = "Screenshot Boss Kills",
+		description = "Configures whether or not screenshots are automatically taken of boss kills",
+		position = 9
+	)
+	default boolean screenshotBossKills()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "playerDeath",
+		name = "Screenshot Deaths",
+		description = "Configures whether or not screenshots are automatically taken when you die.",
+		position = 10
+	)
+	default boolean screenshotPlayerDeath()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "valuableDrop",
+		name = "Screenshot Valuable drops",
+		description = "Configures whether or not screenshots are automatically taken when you receive a valuable/untradeable drop.",
+		position = 11
+	)
+	default boolean screenshotValuableDrop()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hotkey",
+		name = "Screenshot hotkey",
+		description = "When you press this key a screenshot will be taken",
+		position = 12
+	)
+	default Keybind hotkey()
+	{
+		return Keybind.NOT_SET;
 	}
 }

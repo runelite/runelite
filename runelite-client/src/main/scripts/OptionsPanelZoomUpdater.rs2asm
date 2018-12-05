@@ -1,0 +1,83 @@
+.id                 1049
+.int_stack_count    0
+.string_stack_count 0
+.int_var_count      6
+.string_var_count   0
+; locals
+; 0 resizableZoomRange
+; 1 fixedZoomRange
+; 2 bar size
+   load_int               896
+   load_string            "innerZoomLimit"
+   runelite_callback     
+   load_int               128
+   load_string            "outerZoomLimit"
+   runelite_callback
+   isub                  
+   istore                 0
+   load_int               896
+   load_string            "innerZoomLimit"
+   runelite_callback     
+   load_int               128
+   load_string            "outerZoomLimit"
+   runelite_callback
+   isub                  
+   istore                 1
+   load_int               17104910
+   widget_get_width_widget
+   load_int               17104911
+   widget_get_width_widget
+   isub                  
+   istore                 2
+   load_int               0
+   istore                 3
+   load_int               0
+   istore                 4
+   get_viewport_size     
+   istore                 4
+   istore                 3
+   load_int               0
+   istore                 5
+   iload                  3
+   load_int               334
+   if_icmpgt              LABEL27
+   jump                   LABEL36
+LABEL27:
+   get_varc               74
+   load_int               128
+   load_string            "outerZoomLimit"
+   runelite_callback
+   isub                  
+   iload                  0
+   load_string            "zoomExpToLin"
+   runelite_callback     
+   pop_int               
+   iload                  2
+   imul                  
+   iload                  0
+   idiv                  
+   istore                 5
+   jump                   LABEL44
+LABEL36:
+   get_varc               73
+   load_int               128
+   load_string            "outerZoomLimit"
+   runelite_callback
+   isub                  
+   iload                  0
+   load_string            "zoomExpToLin"
+   runelite_callback     
+   pop_int               
+   iload                  2
+   imul                  
+   iload                  1
+   idiv                  
+   istore                 5
+LABEL44:
+   iload                  5
+   load_int               0
+   load_int               0
+   load_int               0
+   load_int               17104911
+   widget_put_position_widget
+   return                

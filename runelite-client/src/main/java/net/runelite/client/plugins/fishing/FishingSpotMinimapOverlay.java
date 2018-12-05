@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Setter;
 import net.runelite.api.GraphicID;
 import net.runelite.api.NPC;
 import net.runelite.client.ui.overlay.Overlay;
@@ -38,18 +40,28 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 class FishingSpotMinimapOverlay extends Overlay
 {
 	private final FishingPlugin plugin;
+	private final FishingConfig config;
+
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hidden;
 
 	@Inject
-	public FishingSpotMinimapOverlay(FishingPlugin plugin)
+	public FishingSpotMinimapOverlay(FishingPlugin plugin, FishingConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (hidden)
+		{
+			return null;
+		}
+
 		NPC[] fishingSpots = plugin.getFishingSpots();
 		if (fishingSpots == null)
 		{
@@ -58,9 +70,14 @@ class FishingSpotMinimapOverlay extends Overlay
 
 		for (NPC npc : fishingSpots)
 		{
-			FishingSpot spot = FishingSpot.getSpot(npc.getId());
+			FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
 
 			if (spot == null)
+			{
+				continue;
+			}
+
+			if (config.onlyCurrentSpot() && plugin.getCurrentSpot() != null && plugin.getCurrentSpot() != spot)
 			{
 				continue;
 			}

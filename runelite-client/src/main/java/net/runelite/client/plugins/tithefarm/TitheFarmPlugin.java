@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.tithefarm;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,13 +36,16 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Tithe Farm"
+	name = "Tithe Farm",
+	description = "Show timers for the farming patches within the Tithe Farm minigame",
+	tags = {"farming", "minigame", "overlay", "skilling", "timers"}
 )
 public class TitheFarmPlugin extends Plugin
 {
@@ -52,9 +54,6 @@ public class TitheFarmPlugin extends Plugin
 
 	@Inject
 	private TitheFarmPlantOverlay titheFarmOverlay;
-
-	@Inject
-	private TitheFarmSackOverlay titheFarmSackOverlay;
 
 	@Getter
 	private final Set<TitheFarmPlant> plants = new HashSet<>();
@@ -69,7 +68,6 @@ public class TitheFarmPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(titheFarmOverlay);
-		overlayManager.add(titheFarmSackOverlay);
 		titheFarmOverlay.updateConfig();
 	}
 
@@ -77,7 +75,6 @@ public class TitheFarmPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(titheFarmOverlay);
-		overlayManager.remove(titheFarmSackOverlay);
 	}
 
 	@Subscribe

@@ -24,17 +24,19 @@
  */
 package net.runelite.client.plugins.animsmoothing;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import javax.inject.Inject;
 
 @PluginDescriptor(
 	name = "Animation Smoothing",
+	description = "Show smoother player, NPC, and object animations",
+	tags = {"npcs", "objects", "players"},
 	enabledByDefault = false
 )
 public class AnimationSmoothingPlugin extends Plugin

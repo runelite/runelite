@@ -37,9 +37,20 @@ import static java.lang.Math.max;
 public class Experience
 {
 	/**
+	 * Maximum effective skill level at 13,034,431 experience.
+	 */
+	public static final int MAX_REAL_LEVEL = 99;
+
+	/**
 	 * The maximum virtual skill level for any skill (200M experience).
 	 */
 	public static final int MAX_VIRT_LEVEL = 126;
+	public static final int MAX_SKILL_XP = 200_000_000;
+
+	/**
+	 * The maximum possible combat level.
+	 */
+	public static final int MAX_COMBAT_LEVEL = 126;
 
 	/**
 	 * The total experience required for each skill level.

@@ -70,12 +70,12 @@ class BookPanel extends JPanel
 		setComponentZOrder(image, getComponentCount() - 1);
 	}
 
-	public void setLocation(String location)
+	void setLocation(String location)
 	{
 		this.location.setText(location);
 	}
 
-	public void setIsTarget(boolean target)
+	void setIsTarget(boolean target)
 	{
 		location.setForeground(target ? Color.GREEN : Color.WHITE);
 	}

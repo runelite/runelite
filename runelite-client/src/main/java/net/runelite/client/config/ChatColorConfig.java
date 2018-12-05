@@ -25,12 +25,9 @@
 package net.runelite.client.config;
 
 import java.awt.Color;
+import net.runelite.client.ui.JagexColors;
 
-@ConfigGroup(
-	keyName = "textrecolor",
-	name = "Chat Text Recolor",
-	description = "Configuration for chat text recoloring"
-)
+@ConfigGroup("textrecolor")
 public interface ChatColorConfig extends Config
 {
 	@ConfigItem(
@@ -74,7 +71,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 35,
 		keyName = "opaquePrivateMessageReceived",
-		name = "Recieved private messages",
+		name = "Received private messages",
 		description = "Color of Private messages you've received"
 	)
 	Color opaquePrivateMessageReceived();
@@ -96,7 +93,10 @@ public interface ChatColorConfig extends Config
 		name = "Clan chat info",
 		description = "Clan Chat Information (eg. when joining a channel)"
 	)
-	Color opaqueClanChatInfo();
+	default Color opaqueClanChatInfo()
+	{
+		return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
+	}
 
 	@ConfigItem(
 		position = 38,
@@ -106,7 +106,7 @@ public interface ChatColorConfig extends Config
 	)
 	default Color opaqueClanChatInfoHighlight()
 	{
-		return Color.decode("#EF20FF");
+		return Color.RED;
 	}
 
 	@ConfigItem(
@@ -333,7 +333,10 @@ public interface ChatColorConfig extends Config
 		name = "Clan chat info (transparent)",
 		description = "Clan Chat Information (eg. when joining a channel) (transparent)"
 	)
-	Color transparentClanChatInfo();
+	default Color transparentClanChatInfo()
+	{
+		return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
+	}
 
 	@ConfigItem(
 		position = 68,
@@ -343,7 +346,7 @@ public interface ChatColorConfig extends Config
 	)
 	default Color transparentClanChatInfoHighlight()
 	{
-		return Color.decode("#EF20FF");
+		return Color.RED;
 	}
 
 	@ConfigItem(

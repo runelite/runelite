@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.combatlevel;
 
-import com.google.common.eventbus.Subscribe;
+import com.google.inject.Provides;
 import java.text.DecimalFormat;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -34,22 +34,45 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Combat Level"
+	name = "Combat Level",
+	description = "Show a more accurate combat level in Combat Options panel"
 )
 public class CombatLevelPlugin extends Plugin
 {
-	private final DecimalFormat decimalFormat = new DecimalFormat("#.###");
+	private final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");
 
 	@Inject
-	Client client;
+	private Client client;
+
+	@Inject
+	private CombatLevelOverlay overlay;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Provides
+	CombatLevelConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(CombatLevelConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(overlay);
+	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
 		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
 
 		if (combatLevelWidget != null)
@@ -64,7 +87,7 @@ public class CombatLevelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void updateCombatLevel(GameTick event)
+	public void onGameTick(GameTick event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -87,6 +110,6 @@ public class CombatLevelPlugin extends Plugin
 				client.getRealSkillLevel(Skill.PRAYER)
 		);
 
-		combatLevelWidget.setText("Combat Lvl: " + decimalFormat.format(combatLevelPrecise));
+		combatLevelWidget.setText("Combat Lvl: " + DECIMAL_FORMAT.format(combatLevelPrecise));
 	}
 }

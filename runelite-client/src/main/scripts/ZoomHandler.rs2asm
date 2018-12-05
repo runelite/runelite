@@ -1,0 +1,91 @@
+.id                 42
+.int_stack_count    2
+.string_stack_count 0
+.int_var_count      6
+.string_var_count   0
+   get_varbit             4606
+   load_int               0
+   if_icmpne              LABEL4
+   jump                   LABEL5
+LABEL4:
+   return                
+LABEL5:
+   load_int               896
+   load_string            "innerZoomLimit"
+   runelite_callback     
+   iload                  0
+   invoke                 1046
+   istore                 0
+   load_int               128
+   load_string            "outerZoomLimit"
+   runelite_callback
+   iload                  0
+   invoke                 1045
+   istore                 0
+   load_int               896
+   load_string            "innerZoomLimit"
+   runelite_callback     
+   iload                  1
+   invoke                 1046
+   istore                 1
+   load_int               128
+   load_string            "outerZoomLimit"
+   runelite_callback
+   iload                  1
+   invoke                 1045
+   istore                 1
+   iload                  0
+   iload                  1
+   6200                  
+   load_int               0
+   istore                 2
+   load_int               0
+   istore                 3
+   get_viewport_size     
+   istore                 3
+   istore                 2
+   iload                  3
+   load_int               334
+   isub                  
+   istore                 4
+   iload                  4
+   load_int               0
+   if_icmplt              LABEL39
+   jump                   LABEL42
+LABEL39:
+   load_int               0
+   istore                 4
+   jump                   LABEL48
+LABEL42:
+   iload                  4
+   load_int               100
+   if_icmpgt              LABEL46
+   jump                   LABEL48
+LABEL46:
+   load_int               100
+   istore                 4
+LABEL48:
+   iload                  0
+   iload                  1
+   iload                  0
+   isub                  
+   iload                  4
+   imul                  
+   load_int               100
+   idiv                  
+   iadd                  
+   istore                 5
+   load_int               25
+   load_int               25
+   iload                  5
+   imul                  
+   load_int               256
+   idiv                  
+   iadd                  
+   set_camera_focal_point_height
+   iload                  0
+   iload                  1
+   put_varc               74
+   put_varc               73
+   invoke                 1049
+   return                

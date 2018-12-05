@@ -25,15 +25,34 @@
 package net.runelite.mixins;
 
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.events.SetMessage;
 import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSMessageNode;
 
 @Mixin(RSMessageNode.class)
 public abstract class RSMessageNodeMixin implements RSMessageNode
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@Inject
 	private String runeLiteFormatMessage;
+
+	@Inject
+	RSMessageNodeMixin()
+	{
+		final SetMessage setMessage = new SetMessage();
+		setMessage.setMessageNode(this);
+		setMessage.setType(getType());
+		setMessage.setName(getName());
+		setMessage.setSender(getSender());
+		setMessage.setValue(getValue());
+		client.getCallbacks().post(setMessage);
+	}
 
 	@Inject
 	@Override
@@ -54,5 +73,22 @@ public abstract class RSMessageNodeMixin implements RSMessageNode
 	public void setRuneLiteFormatMessage(String runeLiteFormatMessage)
 	{
 		this.runeLiteFormatMessage = runeLiteFormatMessage;
+	}
+
+	@Inject
+	@MethodHook(value = "setMessage", end = true)
+	public void setMessage(int type, String name, String sender, String value)
+	{
+		// Message nodes get reused after a time by calling setMessage.
+		// Clear the runelite formatted message then.
+		runeLiteFormatMessage = null;
+
+		final SetMessage setMessage = new SetMessage();
+		setMessage.setMessageNode(this);
+		setMessage.setType(ChatMessageType.of(type));
+		setMessage.setName(name);
+		setMessage.setSender(sender);
+		setMessage.setValue(value);
+		client.getCallbacks().post(setMessage);
 	}
 }

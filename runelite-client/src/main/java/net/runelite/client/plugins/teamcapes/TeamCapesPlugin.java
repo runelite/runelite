@@ -44,6 +44,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Team Capes",
+	description = "Show the different team capes in your area and the amount of each",
+	tags = {"overlay", "players"},
 	enabledByDefault = false
 )
 public class TeamCapesPlugin extends Plugin
@@ -113,7 +115,6 @@ public class TeamCapesPlugin extends Plugin
 						Comparator.comparing(Map.Entry<Integer, Integer>::getValue, Comparator.reverseOrder())
 								.thenComparingInt(Map.Entry::getKey)
 					)
-					.limit(5)
 					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 	}
 
