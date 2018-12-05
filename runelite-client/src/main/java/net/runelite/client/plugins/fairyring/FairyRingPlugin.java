@@ -211,7 +211,7 @@ public class FairyRingPlugin extends Plugin
 		// This has to happen because the only widget that gets hidden is the tli one
 		Widget fairyRingTeleportButton = client.getWidget(WidgetInfo.FAIRY_RING_TELEPORT_BUTTON);
 		boolean fairyRingWidgetOpen = fairyRingTeleportButton != null && !fairyRingTeleportButton.isHidden();
-		boolean chatboxOpen = chatboxPanelManager.getCurrentInput() == searchInput;
+		boolean chatboxOpen = searchInput != null && chatboxPanelManager.getCurrentInput() == searchInput;
 
 		if (!fairyRingWidgetOpen && chatboxOpen)
 		{
