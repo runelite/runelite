@@ -158,8 +158,6 @@ public class ItemStatChanges
 		add(combo(3, boost(ATTACK, perc(.13, 5)), boost(STRENGTH, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), ELDER_POTION_1, ELDER_POTION_2, ELDER_POTION_3, ELDER_POTION_4);
 		add(combo(2, boost(RANGED, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), TWISTED_POTION_1, TWISTED_POTION_2, TWISTED_POTION_3, TWISTED_POTION_4);
 		add(combo(2, boost(MAGIC, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), KODAI_POTION_1, KODAI_POTION_2, KODAI_POTION_3, KODAI_POTION_4);
-		add(new SuperRestore(.25, 8), REVITALISATION_POTION_1, REVITALISATION_POTION_2, REVITALISATION_POTION_3, REVITALISATION_POTION_4);
-		add(new SaradominBrew(0.15, 0.2, 0.1, 2, 2), XERICS_AID_1_20977, XERICS_AID_2_20978, XERICS_AID_3_20979, XERICS_AID_4_20980);
 
 		// Raids potions (-)
 		add(combo(5, boost(ATTACK, perc(.10, 4)), boost(STRENGTH, perc(.10, 4)), boost(DEFENCE, perc(.10, 4)), boost(RANGED, perc(.10, 4)), boost(MAGIC, perc(.10, 4)), heal(HITPOINTS, -50)), OVERLOAD_1_20985, OVERLOAD_2_20986, OVERLOAD_3_20987, OVERLOAD_4_20988);
