@@ -70,6 +70,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -232,6 +233,19 @@ public class ConfigPanel extends PluginPanel
 		b.addMouseWheelListener(scrollListener);
 		scrollPane.addMouseWheelListener(scrollListener);
 
+		scrollPane.getViewport().addChangeListener(new ChangeListener()
+		{
+			@Override
+			public void stateChanged(ChangeEvent e)
+			{
+				if (showingPluginList)
+				{
+					corePanel.setBorder(scrollPane.getVerticalScrollBar().isVisible() ? CORE_BORDER : null);
+					corePanel.revalidate();
+				}
+			}
+		});
+
 		add(scrollPane, BorderLayout.CENTER);
 
 		initializePluginList();
@@ -308,11 +322,6 @@ public class ConfigPanel extends PluginPanel
 		showMatchingPlugins(false, text);
 
 		revalidate();
-
-		// Check if a scrollbar is going to be visible with the new children quantity
-		boolean scrollBar = mainPanel.getComponentCount() * SCROLL_INCREMENT > scrollPane.getHeight();
-		corePanel.setBorder(scrollBar ? CORE_BORDER : null);
-		topPanel.revalidate();
 	}
 
 	private void showMatchingPlugins(boolean pinned, String text)
