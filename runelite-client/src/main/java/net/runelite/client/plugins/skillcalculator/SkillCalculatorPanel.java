@@ -169,6 +169,11 @@ class SkillCalculatorPanel extends PluginPanel
 		}
 
 		MaterialTab selected = tabGroup.getTab(0);
+		if (tabs.contains(currentTab))
+		{
+			selected = tabGroup.getTab(tabs.indexOf(currentTab));
+		}
+
 		tabGroup.select(selected);
 		currentTab = selected.getText();
 	}
