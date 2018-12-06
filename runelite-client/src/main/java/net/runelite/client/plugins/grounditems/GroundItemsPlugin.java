@@ -270,22 +270,21 @@ public class GroundItemsPlugin extends Plugin
 	public void onNpcLootReceived(NpcLootReceived npcLootReceived)
 	{
 		Collection<ItemStack> items = npcLootReceived.getItems();
-		WorldPoint location = npcLootReceived.getNpc().getWorldLocation();
-		lootReceived(items, location);
+		lootReceived(items);
 	}
 
 	@Subscribe
 	public void onPlayerLootReceived(PlayerLootReceived playerLootReceived)
 	{
 		Collection<ItemStack> items = playerLootReceived.getItems();
-		WorldPoint location = playerLootReceived.getPlayer().getWorldLocation();
-		lootReceived(items, location);
+		lootReceived(items);
 	}
 
-	private void lootReceived(Collection<ItemStack> items, WorldPoint location)
+	private void lootReceived(Collection<ItemStack> items)
 	{
 		for (ItemStack itemStack : items)
 		{
+			WorldPoint location = WorldPoint.fromLocal(client, itemStack.getLocation());
 			GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(itemStack.getId(), location);
 			GroundItem groundItem = collectedGroundItems.get(groundItemKey);
 			if (groundItem != null)
