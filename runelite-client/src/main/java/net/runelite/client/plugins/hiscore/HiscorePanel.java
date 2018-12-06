@@ -398,6 +398,7 @@ public class HiscorePanel extends PluginPanel
 		for (JLabel label : skillLabels)
 		{
 			HiscoreSkill skill = find(index);
+			Skill s;
 
 			if (skill == null)
 			{
@@ -415,20 +416,26 @@ public class HiscorePanel extends PluginPanel
 					label.setText(Integer.toString(combatLevel));
 				}
 			}
-			else if (result.getSkill(skill) != null && result.getSkill(skill).getRank() != -1)
+			else if ((s = result.getSkill(skill)) != null)
 			{
-				Skill s = result.getSkill(skill);
-				int level;
-				if (config.virtualLevels() && SKILLS.contains(skill))
+				final long exp = s.getExperience();
+				final boolean isSkill = SKILLS.contains(skill);
+				int level = -1;
+				if (config.virtualLevels() && isSkill && exp > -1L)
 				{
-					level = Experience.getLevelForXp((int) s.getExperience());
+					level = Experience.getLevelForXp((int) exp);
 				}
-				else
+				else if (!isSkill || exp != -1L)
 				{
+					// for skills, level is only valid if exp is not -1
+					// otherwise level is always valid
 					level = s.getLevel();
 				}
 
-				label.setText(Integer.toString(level));
+				if (level != -1)
+				{
+					label.setText(Integer.toString(level));
+				}
 			}
 
 			label.setToolTipText(detailsHtml(result, skill));
@@ -554,7 +561,7 @@ public class HiscorePanel extends PluginPanel
 				{
 					Skill requestedSkill = result.getSkill(skill);
 					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
-					String exp = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
+					String exp = (requestedSkill.getExperience() == -1L) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
 					content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
@@ -563,18 +570,19 @@ public class HiscorePanel extends PluginPanel
 				default:
 				{
 					Skill requestedSkill = result.getSkill(skill);
+					final long experience = requestedSkill.getExperience();
 
 					String rank = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getRank());
-					String exp = (requestedSkill.getRank() == -1) ? "Unranked" : StackFormatter.formatNumber(requestedSkill.getExperience());
+					String exp = (experience == -1L) ? "Unranked" : StackFormatter.formatNumber(experience);
 					String remainingXp;
-					if (requestedSkill.getRank() == -1)
+					if (experience == -1L)
 					{
 						remainingXp = "Unranked";
 					}
 					else
 					{
-						int currentLevel = Experience.getLevelForXp((int) requestedSkill.getExperience());
-						remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? StackFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - requestedSkill.getExperience()) : "0";
+						int currentLevel = Experience.getLevelForXp((int) experience);
+						remainingXp = (currentLevel + 1 <= Experience.MAX_VIRT_LEVEL) ? StackFormatter.formatNumber(Experience.getXpForLevel(currentLevel + 1) - experience) : "0";
 					}
 
 					content += "<p><span style = 'color:white'>Skill:</span> " + skill.getName() + "</p>";
