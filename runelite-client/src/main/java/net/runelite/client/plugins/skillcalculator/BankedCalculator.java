@@ -50,6 +50,7 @@ import net.runelite.client.plugins.skillcalculator.banked.CriticalItem;
 import net.runelite.client.plugins.skillcalculator.banked.beans.Activity;
 import net.runelite.client.plugins.skillcalculator.banked.beans.SecondaryItem;
 import net.runelite.client.plugins.skillcalculator.banked.ui.CriticalItemPanel;
+import net.runelite.client.plugins.skillcalculator.beans.SkillDataBonus;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
@@ -65,8 +66,12 @@ public class BankedCalculator extends JPanel
 	private final SkillCalculatorConfig config;
 	private final ItemManager itemManager;
 
+	private final CacheSkillData skillData = new CacheSkillData();
+	private final List<JCheckBox> bonusCheckBoxes = new ArrayList<>();
+
 	// UI Input data
 	private float xpFactor = 1.0f;
+	private CalculatorType currentCalc;
 	private Skill currentSkill;
 
 	private double totalBankedXp = 0.0f;
@@ -140,6 +145,7 @@ public class BankedCalculator extends JPanel
 			activityMap.clear();
 			categoryMap.clear();
 		}
+		currentCalc = calculatorType;
 		currentSkill = calculatorType.getSkill();
 		bankMap = parent.getBankMap();
 
@@ -165,7 +171,7 @@ public class BankedCalculator extends JPanel
 			// Adds Config Options for this panel
 			renderBankedXpOptions();
 
-			// TODO: Add in checkboxes for available xp bonuses, similar to Skill Calc
+			renderBonusXpOptions();
 
 			// sprite 202
 			calculatedBankedMaps();
@@ -591,5 +597,70 @@ public class BankedCalculator extends JPanel
 		return possible;
 	}
 
+	/**
+	 * Renders the Xp Modifier options
+	 */
 
+	private void renderBonusXpOptions()
+	{
+		SkillDataBonus[] bonuses = skillData.getSkillData(currentCalc.getDataFile()).getBonuses();
+		add(new JLabel("Bonus Experience:"));
+		if (bonuses != null)
+		{
+			for (SkillDataBonus bonus : bonuses)
+			{
+				JPanel checkboxPanel = buildCheckboxPanel(bonus);
+
+				add(checkboxPanel);
+				add(Box.createRigidArea(new Dimension(0, 5)));
+			}
+		}
+	}
+
+	private JPanel buildCheckboxPanel(SkillDataBonus bonus)
+	{
+		JPanel uiOption = new JPanel(new BorderLayout());
+		JLabel uiLabel = new JLabel(bonus.getName());
+		JCheckBox uiCheckbox = new JCheckBox();
+
+		uiLabel.setForeground(Color.WHITE);
+		uiLabel.setFont(FontManager.getRunescapeSmallFont());
+
+		uiOption.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 0));
+		uiOption.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		// Adjust XP bonus depending on check-state of the boxes.
+		uiCheckbox.addActionListener(event -> adjustCheckboxes(uiCheckbox, bonus));
+
+		uiCheckbox.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+
+		uiOption.add(uiLabel, BorderLayout.WEST);
+		uiOption.add(uiCheckbox, BorderLayout.EAST);
+		bonusCheckBoxes.add(uiCheckbox);
+
+		return uiOption;
+	}
+
+	private void adjustCheckboxes(JCheckBox target, SkillDataBonus bonus)
+	{
+		adjustXPBonus(0);
+		bonusCheckBoxes.forEach(otherSelectedCheckbox ->
+		{
+			if (otherSelectedCheckbox != target)
+			{
+				otherSelectedCheckbox.setSelected(false);
+			}
+		});
+
+		if (target.isSelected())
+		{
+			adjustXPBonus(bonus.getValue());
+		}
+	}
+
+	private void adjustXPBonus(float value)
+	{
+		xpFactor = 1f + value;
+		refreshDetailContainer();
+	}
 }
