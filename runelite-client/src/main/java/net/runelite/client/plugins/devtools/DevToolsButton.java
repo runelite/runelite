@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.plugins.devtools;
 
-import net.runelite.api.Actor;
+import java.awt.Color;
+import javax.swing.JButton;
+import lombok.Getter;
 
-/**
- * Represents the base event where an {@link Actor} has spawned.
- * <p>
- * To hook into a more focused actor type, see the {@link PlayerSpawned}
- * or {@link NpcSpawned} events.
- * <p>
- * Examples of when this event may trigger include:
- * <ul>
- *     <li>Entering a new region or area with actors inside</li>
- *     <li>A player logging in nearby</li>
- *     <li>An actor moving into render distance</li>
- * </ul>
- */
-public interface ActorSpawned
+class DevToolsButton extends JButton
 {
-	/**
-	 * Gets the spawned player or NPC.
-	 *
-	 * @return spawned entity
-	 */
-	Actor getActor();
+	@Getter
+	private boolean active;
+
+	DevToolsButton(String title)
+	{
+		super(title);
+		addActionListener((ev) -> setActive(!active));
+	}
+
+	void setActive(boolean active)
+	{
+		this.active = active;
+
+		if (active)
+		{
+			setBackground(Color.GREEN);
+		}
+		else
+		{
+			setBackground(null);
+		}
+	}
 }

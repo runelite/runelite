@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,30 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.updatecheck;
+#version 330
 
-import java.util.HashMap;
-import java.util.Map;
-import lombok.Getter;
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec2 aTexCoord;
 
-@Getter
-class RSConfig
+out vec2 TexCoord;
+
+void main()
 {
-	private final Map<String, String> appletProperties = new HashMap<>();
-	private final Map<String, String> classLoaderProperties = new HashMap<>();
+	gl_Position = vec4(aPos, 1.0);
 
-	String getCodeBase()
-	{
-		return classLoaderProperties.get("codebase");
-	}
-
-	String getInitialJar()
-	{
-		return classLoaderProperties.get("initial_jar");
-	}
-
-	String getInitialClass()
-	{
-		return classLoaderProperties.get("initial_class").replace(".class", "");
-	}
+	// Flip the UV because it's pre-flipped in the ui texture buffer, but we don't need it to be flipped here.
+	TexCoord = vec2(aTexCoord.x, 1 - aTexCoord.y);
 }

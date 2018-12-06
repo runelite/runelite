@@ -106,7 +106,7 @@ public class IdleNotifierPluginTest
 		// Mock config
 		when(config.logoutIdle()).thenReturn(true);
 		when(config.animationIdle()).thenReturn(true);
-		when(config.combatIdle()).thenReturn(true);
+		when(config.interactionIdle()).thenReturn(true);
 		when(config.getIdleNotificationDelay()).thenReturn(0);
 		when(config.getHitpointsThreshold()).thenReturn(42);
 		when(config.getPrayerThreshold()).thenReturn(42);

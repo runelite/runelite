@@ -971,21 +971,24 @@ public interface Client extends GameEngine
 	BufferProvider getBufferProvider();
 
 	/**
-	 * Gets the amount of ticks since the last mouse movement occurred.
+	 * Gets the amount of client ticks since the last mouse movement occurred.
 	 *
 	 * @return amount of idle mouse ticks
+	 * @see Constants#CLIENT_TICK_LENGTH
 	 */
 	int getMouseIdleTicks();
 
 	/**
-	 * Gets the number of milliseconds since the last mouse press occurred.
+	 * Gets the time at which the last mouse press occurred in milliseconds since
+	 * the UNIX epoch.
 	 */
 	long getMouseLastPressedMillis();
 
 	/**
-	 * Gets the amount of ticks since the last keyboard press occurred.
+	 * Gets the amount of client ticks since the last keyboard press occurred.
 	 *
 	 * @return amount of idle keyboard ticks
+	 * @see Constants#CLIENT_TICK_LENGTH
 	 */
 	int getKeyboardIdleTicks();
 

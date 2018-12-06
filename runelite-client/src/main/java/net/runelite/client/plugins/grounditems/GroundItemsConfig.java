@@ -313,4 +313,15 @@ public interface GroundItemsConfig extends Config
 	{
 		return 10000000;
 	}
+
+	@ConfigItem(
+		keyName = "onlyShowLoot",
+		name = "Only show loot",
+		description = "Only shows drops from NPCs and players",
+		position = 24
+	)
+	default boolean onlyShowLoot()
+	{
+		return false;
+	}
 }

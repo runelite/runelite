@@ -131,6 +131,9 @@ enum TeleportLocationData
 	KHAREDSTS_MEMOIRS_HOSIDIUS(TeleportType.OTHER, "Kharedst's Memoirs", "Lunch by the Lancalliums (Hosidius)", new WorldPoint(1713, 3612, 0), "kharedsts_memoirs_teleport_icon.png"),
 	KHAREDSTS_MEMOIRS_PISCARILIUS(TeleportType.OTHER, "Kharedst's Memoirs", "The Fisher's Flute (Piscarilius)", new WorldPoint(1802, 3748, 0), "kharedsts_memoirs_teleport_icon.png"),
 	KHAREDSTS_MEMOIRS_SHAYZIEN(TeleportType.OTHER, "Kharedst's Memoirs", "Hearsay and History (Shayzien)", new WorldPoint(1476, 3580, 0), "kharedsts_memoirs_teleport_icon.png"),
+	PHARAOHS_SCEPTRE_JALSAVRAH(TeleportType.OTHER, "Pharaoh's Sceptre", "Jalsavrah (Pyramid Plunder)", new WorldPoint(3288, 2795, 0), "pharaohs_sceptre_teleport_icon.png"),
+	PHARAOHS_SCEPTRE_JALEUSTROPHOS(TeleportType.OTHER, "Pharaoh's Sceptre", "Jaleustrophos (Agility Pyramid)", new WorldPoint(3341, 2827, 0), "pharaohs_sceptre_teleport_icon.png"),
+	PHARAOHS_SCEPTRE_JALDRAOCHT(TeleportType.OTHER, "Pharaoh's Sceptre", "Jaldraocht (Desert Treasure Pyramid)", new WorldPoint(3232, 2897, 0), "pharaohs_sceptre_teleport_icon.png"),
 
 	// Wilderness
 	OBELISK_13(TeleportType.OTHER, "Obelisk", "13", new WorldPoint(3156, 3620, 0), "obelisk_icon.png"),

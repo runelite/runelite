@@ -43,6 +43,7 @@ class GroundItem
 	private int gePrice;
 	private int offset;
 	private boolean tradeable;
+	private boolean isMine;
 
 	int getHaPrice()
 	{

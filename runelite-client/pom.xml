@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.1-SNAPSHOT</version>
+		<version>1.5.4-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -157,6 +157,17 @@
 			<classifier>natives-linux-i586</classifier>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.sigpipe</groupId>
+			<artifactId>jbsdiff</artifactId>
+			<version>1.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.tukaani</groupId>
+					<artifactId>xz</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 		<dependency>
 			<groupId>net.runelite</groupId>
@@ -171,7 +182,7 @@
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
-			<artifactId>injected-client</artifactId>
+			<artifactId>client-patch</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
@@ -267,7 +278,7 @@
 							<filters>
 								<!-- include runtime apis -->
 								<filter>
-									<!-- net.runelite:injected-client and net.runelite:api -->
+									<!-- net.runelite:client-patch and net.runelite:api -->
 									<artifact>net.runelite:*</artifact>
 									<includes>
 										<include>**</include>
@@ -337,17 +348,6 @@
 					<alias>${jarsigner.alias}</alias>
 					<storepass>${jarsigner.storepass}</storepass>
 					<keypass>${jarsigner.keypass}</keypass>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>de.jutzig</groupId>
-				<artifactId>github-release-plugin</artifactId>
-				<version>1.1.1</version>
-				<configuration>
-					<releaseName>${project.version} Release</releaseName>
-					<tag>runelite-parent-${project.version}</tag>
-					<repositoryId>runelite/runelite</repositoryId>
-					<artifact>${project.build.directory}/${project.artifactId}-${project.version}-shaded.${project.packaging}</artifact>
 				</configuration>
 			</plugin>
 			<plugin>

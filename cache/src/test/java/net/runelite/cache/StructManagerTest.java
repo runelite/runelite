@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,62 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.updatecheck;
+package net.runelite.cache;
 
-import java.io.BufferedReader;
+import com.google.common.io.Files;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.nio.charset.Charset;
+import java.util.Map;
+import net.runelite.cache.definitions.StructDefinition;
+import net.runelite.cache.fs.Store;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-class ClientConfigLoader
+public class StructManagerTest
 {
-	private static final String CONFIG_URL = "http://oldschool.runescape.com/jav_config.ws";
+	private static final Logger logger = LoggerFactory.getLogger(StructManagerTest.class);
 
-	static RSConfig fetch() throws IOException
+	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+	@Rule
+	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
+
+	@Test
+	public void test() throws IOException
 	{
-		final Request request = new Request.Builder()
-			.url(CONFIG_URL)
-			.build();
+		File dumpDir = folder.newFolder();
+		int count = 0;
 
-		final RSConfig config = new RSConfig();
-
-		try (final Response response = RuneLiteAPI.CLIENT.newCall(request).execute(); final BufferedReader in = new BufferedReader(
-			new InputStreamReader(response.body().byteStream())))
+		try (Store store = new Store(StoreLocation.LOCATION))
 		{
-			String str;
+			store.load();
+			StructManager loader = new StructManager(store);
+			loader.load();
 
-			while ((str = in.readLine()) != null)
+			for (Map.Entry<Integer, StructDefinition> struct : loader.getStructs().entrySet())
 			{
-				int idx = str.indexOf('=');
+				StructDefinition def = struct.getValue();
 
-				if (idx == -1)
-				{
-					continue;
-				}
-
-				String s = str.substring(0, idx);
-
-				switch (s)
-				{
-					case "param":
-						str = str.substring(idx + 1);
-						idx = str.indexOf('=');
-						s = str.substring(0, idx);
-
-						config.getAppletProperties().put(s, str.substring(idx + 1));
-						break;
-					case "msg":
-						// ignore
-						break;
-					default:
-						config.getClassLoaderProperties().put(s, str.substring(idx + 1));
-						break;
-				}
+				Files.write(gson.toJson(def), new File(dumpDir, struct.getKey() + ".json"), Charset.defaultCharset());
+				++count;
 			}
 		}
 
-		return config;
+		logger.info("Dumped {} structs to {}", count, dumpDir);
 	}
 }

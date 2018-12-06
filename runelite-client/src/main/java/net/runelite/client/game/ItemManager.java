@@ -28,7 +28,6 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -51,8 +50,9 @@ import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.api.events.PostItemComposition;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 
@@ -248,6 +248,12 @@ public class ItemManager
 		if (itemID == ItemID.PLATINUM_TOKEN)
 		{
 			return 1000;
+		}
+
+		UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
+		if (p != null)
+		{
+			return getItemPrice(p.getPriceID()) * p.getQuantity();
 		}
 
 		int price = 0;

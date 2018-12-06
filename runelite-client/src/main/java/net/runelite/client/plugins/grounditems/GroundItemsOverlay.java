@@ -162,11 +162,14 @@ public class GroundItemsOverlay extends Overlay
 		plugin.setHiddenBoxBounds(null);
 		plugin.setHighlightBoxBounds(null);
 
+		final boolean onlyShowLoot = config.onlyShowLoot();
+
 		for (GroundItem item : groundItemList)
 		{
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
 
-			if (groundPoint == null || localLocation.distanceTo(groundPoint) > MAX_DISTANCE)
+			if (groundPoint == null || localLocation.distanceTo(groundPoint) > MAX_DISTANCE
+				|| (onlyShowLoot && !item.isMine()))
 			{
 				continue;
 			}

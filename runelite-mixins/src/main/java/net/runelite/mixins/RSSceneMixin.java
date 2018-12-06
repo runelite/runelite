@@ -191,9 +191,9 @@ public abstract class RSSceneMixin implements RSScene
 					if (tile != null)
 					{
 						if (tile.getPhysicalLevel() <= plane
-							&& (renderArea[x - screenCenterX + MAX_DISTANCE][y - screenCenterZ + MAX_DISTANCE]
-							|| tileHeights[z][x][y] - cameraY >= 2000
-							|| isGpu))
+							&& (isGpu
+							|| renderArea[x - screenCenterX + DEFAULT_DISTANCE][y - screenCenterZ + DEFAULT_DISTANCE]
+							|| tileHeights[z][x][y] - cameraY >= 2000))
 						{
 							tile.setDraw(true);
 							tile.setVisible(true);
