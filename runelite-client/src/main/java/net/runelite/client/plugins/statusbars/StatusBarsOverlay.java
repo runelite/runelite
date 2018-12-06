@@ -35,8 +35,6 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.SkillIconManager;
@@ -53,12 +51,12 @@ import net.runelite.client.util.ImageUtil;
 
 class StatusBarsOverlay extends Overlay
 {
-	private static final Color PRAYER_COLOR = new Color(50, 200, 200, 175);
-	private static final Color QUICK_PRAYER_COLOR = new Color(57, 255, 186, 225);
+	public static final Color PRAYER_COLOR = new Color(50, 200, 200, 175);
+	public static final Color ACTIVE_PRAYER_COLOR = new Color(57, 255, 186, 225);
 	private static final Color BACKGROUND = new Color(0, 0, 0, 150);
-	private static final Color HEALTH_COLOR = new Color(225, 35, 0, 125);
-	private static final Color POISONED_COLOR = new Color(0, 145, 0, 150);
-	private static final Color VENOMED_COLOR = new Color(0, 65, 0, 150);
+	public static final Color HEALTH_COLOR = new Color(225, 35, 0, 125);
+	public static final Color POISONED_COLOR = new Color(0, 145, 0, 150);
+	public static final Color VENOMED_COLOR = new Color(0, 65, 0, 150);
 	private static final Color HEAL_COLOR = new Color(255, 112, 6, 150);
 	private static final Color PRAYER_HEAL_COLOR = new Color(57, 255, 186, 75);
 	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
@@ -78,6 +76,8 @@ class StatusBarsOverlay extends Overlay
 	private static final int SKILL_ICON_HEIGHT = 35;
 	private static final int COUNTER_ICON_HEIGHT = 18;
 	private static final int OFFSET = 2;
+	public Color healthBar;
+	public Color prayerBar;
 	private final Client client;
 	private final StatusBarsConfig config;
 	private final SkillIconManager skillIconManager;
@@ -145,28 +145,10 @@ class StatusBarsOverlay extends Overlay
 			offsetPrayerY = (location.getY() - offsetRight.getY());
 		}
 
-		final int poisonState = client.getVar(VarPlayer.IS_POISONED);
-		final Color healthBar;
-
-		if (poisonState > 0 && poisonState < 50)
-		{
-			healthBar = POISONED_COLOR;
-		}
-		else if (poisonState >= 1000000)
-		{
-			healthBar = VENOMED_COLOR;
-		}
-		else
-		{
-			healthBar = HEALTH_COLOR;
-		}
-
 		final int maxHealth = client.getRealSkillLevel(Skill.HITPOINTS);
 		final int maxPrayer = client.getRealSkillLevel(Skill.PRAYER);
 		final int currentHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
 		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
-		final int quickPrayerState = client.getVar(Varbits.QUICK_PRAYER);
-		final Color prayerBar = quickPrayerState == 1 ? QUICK_PRAYER_COLOR : PRAYER_COLOR;
 
 		renderBar(g, offsetHealthX, offsetHealthY,
 			maxHealth, currentHealth, height, healthBar);
