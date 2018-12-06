@@ -32,5 +32,5 @@ public class ItemStack
 {
 	private final int id;
 	private final int quantity;
-	private final LocalPoint point;
+	private final LocalPoint location;
 }

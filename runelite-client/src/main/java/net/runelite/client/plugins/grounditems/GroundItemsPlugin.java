@@ -284,7 +284,7 @@ public class GroundItemsPlugin extends Plugin
 	{
 		for (ItemStack itemStack : items)
 		{
-			WorldPoint location = WorldPoint.fromLocalInstance(client, itemStack.getPoint());
+			WorldPoint location = WorldPoint.fromLocalInstance(client, itemStack.getLocation());
 			GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(itemStack.getId(), location);
 			GroundItem groundItem = collectedGroundItems.get(groundItemKey);
 			if (groundItem != null)
