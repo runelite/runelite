@@ -89,7 +89,7 @@ class TargetWeaknessOverlay extends Overlay
 		{
 			int currentHealth = calculateHealth(target);
 
-			if (currentHealth > 0 && currentHealth <= threshold)
+			if (currentHealth >= 0 && currentHealth <= threshold)
 			{
 				renderTargetItem(graphics, target, image);
 			}
