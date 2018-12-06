@@ -42,6 +42,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.client.game.ItemManager;
@@ -59,6 +60,7 @@ public class BankedCalculator extends JPanel
 	private static final DecimalFormat XP_FORMAT_COMMA = new DecimalFormat("#,###.#");
 
 	private final SkillCalculatorPanel parent;
+	private final Client client;
 	private final UICalculatorInputArea uiInput;
 	private final SkillCalculatorConfig config;
 	private final ItemManager itemManager;
@@ -82,11 +84,13 @@ public class BankedCalculator extends JPanel
 
 	BankedCalculator(
 		SkillCalculatorPanel parent,
+		Client client,
 		UICalculatorInputArea uiInput,
 		SkillCalculatorConfig config,
 		ItemManager itemManager)
 	{
 		this.parent = parent;
+		this.client = client;
 		this.uiInput = uiInput;
 		this.config = config;
 		this.itemManager = itemManager;
@@ -102,7 +106,6 @@ public class BankedCalculator extends JPanel
 
 	private void reset()
 	{
-		categoryMap.clear();
 		criticalMap.clear();
 		linkedMap.clear();
 	}
@@ -130,12 +133,18 @@ public class BankedCalculator extends JPanel
 	{
 		// clean slate for creating the required panel
 		removeAll();
+		reset();
 		if (calculatorType.getSkill() != currentSkill)
 		{
-			reset();
+			// Only clear Category and Activity map on skill change.
+			activityMap.clear();
+			categoryMap.clear();
 		}
 		currentSkill = calculatorType.getSkill();
 		bankMap = parent.getBankMap();
+
+		uiInput.setCurrentLevelInput(client.getRealSkillLevel(currentSkill));
+		uiInput.setCurrentXPInput(client.getSkillExperience(currentSkill));
 
 		// Only adds Banked Experience portion if enabled for this SkillCalc and have seen their bank
 		if (!calculatorType.isBankedXpFlag())
@@ -322,6 +331,11 @@ public class BankedCalculator extends JPanel
 				}
 			}
 
+			// If it doesn't have any activities ignore it in the breakdown.
+			if (activities.size() <= 0)
+			{
+				return;
+			}
 			// Either this item has multiple activities or the single activity rewards xp, create the item panel.
 
 			// Determine xp rate for this item
@@ -366,7 +380,14 @@ public class BankedCalculator extends JPanel
 		}
 
 		// If not in memory select the first Activity and add to memory
-		Activity selected = Activity.getByCriticalItem(i).get(0);
+		List<Activity> activities = Activity.getByCriticalItem(i);
+		if (activities.size() == 0)
+		{
+			// If you can't find an activity it means this item must link to one and give 0 xp
+			return null;
+		}
+
+		Activity selected = activities.get(0);
 		activityMap.put(i, selected);
 		return selected;
 	}

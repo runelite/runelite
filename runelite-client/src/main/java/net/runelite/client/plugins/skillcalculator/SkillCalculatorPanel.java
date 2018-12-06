@@ -93,7 +93,7 @@ class SkillCalculatorPanel extends PluginPanel
 		uiInput.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		uiCalculator = new SkillCalculator(client, uiInput, spriteManager, itemManager);
 
-		bankedCalculator = new BankedCalculator(this, uiInput, config, itemManager);
+		bankedCalculator = new BankedCalculator(this, client, uiInput, config, itemManager);
 
 		tabGroup = new MaterialTabGroup();
 		tabGroup.setBorder(new EmptyBorder(0, 0, 10, 0));
@@ -218,6 +218,9 @@ class SkillCalculatorPanel extends PluginPanel
 		// Recreate Tabs (in case of Config change) and selects the first tab
 		addTabButtons();
 
+		// Ensure reload
+		selectedTab(currentTab, true);
+
 		this.revalidate();
 		this.repaint();
 	}
@@ -226,7 +229,7 @@ class SkillCalculatorPanel extends PluginPanel
 	void updateBankMap(Map<Integer, Integer> bank)
 	{
 		bankMap = bank;
-		if (currentTab.equals("Banked Xp"))
+		if (currentCalc != null & currentTab.equals("Banked Xp"))
 		{
 			bankedCalculator.updateBankMap(bankMap);
 		}
