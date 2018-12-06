@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import static net.runelite.api.Constants.TILE_FLAG_BRIDGE;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.model.Jarvis;
 import net.runelite.api.model.Triangle;
@@ -55,8 +56,6 @@ public class Perspective
 	public static final int LOCAL_TILE_SIZE = 1 << LOCAL_COORD_BITS; // 128 - size of a tile in local coordinates
 
 	public static final int SCENE_SIZE = Constants.SCENE_SIZE; // in tiles
-
-	private static final int TILE_FLAG_BRIDGE = 2;
 
 	public static final int[] SINE = new int[2048]; // sine angles for each of the 2048 units, * 65536 and stored as an int
 	public static final int[] COSINE = new int[2048]; // cosine
@@ -139,7 +138,9 @@ public class Perspective
 			{
 				int pointX = client.getViewportWidth() / 2 + x * client.getScale() / y;
 				int pointY = client.getViewportHeight() / 2 + var8 * client.getScale() / y;
-				return new Point(pointX, pointY);
+				return new Point(
+					pointX + client.getViewportXOffset(),
+					pointY + client.getViewportYOffset());
 			}
 		}
 
@@ -592,15 +593,6 @@ public class Perspective
 			// For some reason, this calculation is always 4 pixels short of the actual in-client one
 			int maxX = Math.max(Math.max(a.getX(), b.getX()), c.getX()) + 4;
 			int maxY = Math.max(Math.max(a.getY(), b.getY()), c.getY()) + 4;
-
-			// ...and the rectangles in the fixed client are shifted 4 pixels right and down
-			if (!client.isResized())
-			{
-				minX += client.getViewportXOffset();
-				minY += client.getViewportYOffset();
-				maxX += client.getViewportXOffset();
-				maxY += client.getViewportYOffset();
-			}
 
 			Rectangle clickableRect = new Rectangle(
 				minX - radius, minY - radius,

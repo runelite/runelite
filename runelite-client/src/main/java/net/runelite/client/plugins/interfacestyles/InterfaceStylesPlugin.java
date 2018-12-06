@@ -26,7 +26,6 @@
  */
 package net.runelite.client.plugins.interfacestyles;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
@@ -44,6 +43,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -270,29 +270,7 @@ public class InterfaceStylesPlugin extends Plugin
 
 			if (widget != null)
 			{
-				if (widgetOffset.isOriginalWidthAndHeight())
-				{
-					widget.setHeight(widget.getOriginalHeight());
-					widget.setWidth(widget.getOriginalWidth());
-				}
-
-				if (widgetOffset.getOriginalX() != null)
-				{
-					widget.setRelativeX(widgetOffset.getOriginalX());
-				}
-				else
-				{
-					widget.setRelativeX(widget.getOriginalX());
-				}
-
-				if (widgetOffset.getOriginalY() != null)
-				{
-					widget.setRelativeY(widgetOffset.getOriginalY());
-				}
-				else
-				{
-					widget.setRelativeY(widget.getOriginalY());
-				}
+				widget.revalidate();
 			}
 		}
 	}

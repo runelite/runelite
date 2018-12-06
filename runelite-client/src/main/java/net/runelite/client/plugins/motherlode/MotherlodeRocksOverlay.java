@@ -71,7 +71,7 @@ class MotherlodeRocksOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showRocks() || !plugin.isInMlm())
+		if ((!config.showVeins() && !config.showRockFalls()) || !plugin.isInMlm())
 		{
 			return null;
 		}
@@ -86,27 +86,35 @@ class MotherlodeRocksOverlay extends Overlay
 	private void renderTiles(Graphics2D graphics, Player local)
 	{
 		LocalPoint localLocation = local.getLocalLocation();
-		for (WallObject vein : plugin.getVeins())
+
+		if (config.showVeins())
 		{
-			LocalPoint location = vein.getLocalLocation();
-			if (localLocation.distanceTo(location) <= MAX_DISTANCE)
+			for (WallObject vein : plugin.getVeins())
 			{
-				// Only draw veins on the same level
-				if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(vein.getLocalLocation()))
+				LocalPoint location = vein.getLocalLocation();
+				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 				{
-					renderVein(graphics, vein);
+					// Only draw veins on the same level
+					if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(vein.getLocalLocation()))
+					{
+						renderVein(graphics, vein);
+					}
 				}
 			}
 		}
 
-		for (GameObject rock : plugin.getRocks())
+		if (config.showRockFalls())
 		{
-			LocalPoint location = rock.getLocalLocation();
-			if (localLocation.distanceTo(location) <= MAX_DISTANCE)
+			for (GameObject rock : plugin.getRocks())
 			{
-				renderRock(graphics, rock);
+				LocalPoint location = rock.getLocalLocation();
+				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
+				{
+					renderRock(graphics, rock);
+				}
 			}
 		}
+
 	}
 
 	private void renderVein(Graphics2D graphics, WallObject vein)

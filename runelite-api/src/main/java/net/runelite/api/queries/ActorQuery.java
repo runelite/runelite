@@ -32,8 +32,6 @@ import net.runelite.api.coords.LocalPoint;
 /**
  * Used for getting players in view,deprecated as of existence of Actor spawn events
  *
- * @see net.runelite.api.events.ActorSpawned
- * @see net.runelite.api.events.ActorDespawned
  */
 @Deprecated
 public abstract class ActorQuery<EntityType extends Actor, QueryType> extends Query<EntityType, QueryType>

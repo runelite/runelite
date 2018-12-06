@@ -38,6 +38,7 @@ import net.runelite.api.GraphicsObject;
 import net.runelite.api.HashTable;
 import net.runelite.api.HintArrowType;
 import net.runelite.api.Ignore;
+import net.runelite.api.IndexDataBase;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.InventoryID;
 import net.runelite.api.MenuAction;
@@ -87,6 +88,7 @@ import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.hooks.Callbacks;
+import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -104,6 +106,7 @@ import net.runelite.rs.api.RSFriendContainer;
 import net.runelite.rs.api.RSFriendManager;
 import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSIgnoreContainer;
+import net.runelite.rs.api.RSIndexDataBase;
 import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSItem;
 import net.runelite.rs.api.RSItemContainer;
@@ -111,6 +114,7 @@ import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSName;
 import net.runelite.rs.api.RSNameable;
 import net.runelite.rs.api.RSPlayer;
+import net.runelite.rs.api.RSSpritePixels;
 import net.runelite.rs.api.RSWidget;
 import org.slf4j.Logger;
 
@@ -123,6 +127,9 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	@javax.inject.Inject
 	private Callbacks callbacks;
+
+	@Inject
+	private DrawCallbacks drawCallbacks;
 
 	@Inject
 	@javax.inject.Inject
@@ -157,6 +164,9 @@ public abstract class RSClientMixin implements RSClient
 	private static RSItem lastItemDespawn;
 
 	@Inject
+	private boolean gpu;
+
+	@Inject
 	private static boolean oldIsResized;
 
 	@Inject
@@ -164,6 +174,20 @@ public abstract class RSClientMixin implements RSClient
 	public Callbacks getCallbacks()
 	{
 		return callbacks;
+	}
+
+	@Inject
+	@Override
+	public DrawCallbacks getDrawCallbacks()
+	{
+		return drawCallbacks;
+	}
+
+	@Inject
+	@Override
+	public void setDrawCallbacks(DrawCallbacks drawCallbacks)
+	{
+		this.drawCallbacks = drawCallbacks;
 	}
 
 	@Inject
@@ -1279,11 +1303,82 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
+	public boolean isGpu()
+	{
+		return gpu;
+	}
+
+	@Inject
+	@Override
+	public void setGpu(boolean gpu)
+	{
+		this.gpu = gpu;
+	}
+
+	@Inject
+	@Override
 	public void queueChangedSkill(Skill skill)
 	{
 		int[] skills = client.getChangedSkills();
 		int count = client.getChangedSkillsCount();
 		skills[++count - 1 & 31] = skill.ordinal();
 		client.setChangedSkillsCount(count);
+	}
+
+	@Inject
+	@Override
+	public RSSpritePixels[] getSprites(IndexDataBase source, int archiveId, int fileId)
+	{
+		RSIndexDataBase rsSource = (RSIndexDataBase) source;
+		byte[] configData = rsSource.getConfigData(archiveId, fileId);
+		if (configData == null)
+		{
+			return null;
+		}
+
+		decodeSprite(configData);
+
+		int indexedSpriteCount = getIndexedSpriteCount();
+		int maxWidth = getIndexedSpriteWidth();
+		int maxHeight = getIndexedSpriteHeight();
+		int[] offsetX = getIndexedSpriteOffsetXs();
+		int[] offsetY = getIndexedSpriteOffsetYs();
+		int[] widths = getIndexSpriteWidths();
+		int[] heights = getIndexedSpriteHeights();
+		byte[][] spritePixelsArray = getSpritePixels();
+		int[] indexedSpritePalette = getIndexedSpritePalette();
+
+		RSSpritePixels[] array = new RSSpritePixels[indexedSpriteCount];
+
+		for (int i = 0; i < indexedSpriteCount; ++i)
+		{
+			int width = widths[i];
+			int height = heights[i];
+
+			byte[] pixelArray = spritePixelsArray[i];
+			int[] pixels = new int[width * height];
+
+			RSSpritePixels spritePixels = createSpritePixels(pixels, width, height);
+			spritePixels.setMaxHeight(maxHeight);
+			spritePixels.setMaxWidth(maxWidth);
+			spritePixels.setOffsetX(offsetX[i]);
+			spritePixels.setOffsetY(offsetY[i]);
+
+			for (int j = 0; j < width * height; ++j)
+			{
+				pixels[j] = indexedSpritePalette[pixelArray[j] & 0xff];
+			}
+
+			array[i] = spritePixels;
+		}
+
+		setIndexedSpriteOffsetXs(null);
+		setIndexedSpriteOffsetYs(null);
+		setIndexSpriteWidths(null);
+		setIndexedSpriteHeights(null);
+		setIndexSpritePalette(null);
+		setSpritePixels(null);
+
+		return array;
 	}
 }

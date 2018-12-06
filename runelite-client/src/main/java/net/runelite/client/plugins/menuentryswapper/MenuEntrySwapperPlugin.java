@@ -25,9 +25,9 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
-import com.google.common.eventbus.Subscribe;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
-import java.awt.Color;
+import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +36,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -45,14 +46,13 @@ import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -67,7 +67,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
 	private static final String RESET = "Reset";
-	private static final String MENU_TARGET = ColorUtil.prependColorTag("Shift-click", new Color(255, 144, 64));
+	private static final String MENU_TARGET = "Shift-click";
 
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
@@ -90,6 +90,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
+	private static final Set<MenuAction> NPC_MENU_TYPES = ImmutableSet.of(
+		MenuAction.NPC_FIRST_OPTION,
+		MenuAction.NPC_SECOND_OPTION,
+		MenuAction.NPC_THIRD_OPTION,
+		MenuAction.NPC_FOURTH_OPTION,
+		MenuAction.NPC_FIFTH_OPTION,
+		MenuAction.EXAMINE_NPC);
+
 	@Inject
 	private Client client;
 
@@ -101,9 +109,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	@Inject
 	private ConfigManager configManager;
-
-	@Inject
-	private ItemManager itemManager;
 
 	@Inject
 	private KeyManager keyManager;
@@ -197,7 +202,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB
 			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB)
 		{
-			configuringShiftClick = event.getMenuOption().equals(CONFIGURE);
+			configuringShiftClick = event.getMenuOption().equals(CONFIGURE) && Text.removeTags(event.getMenuTarget()).equals(MENU_TARGET);
 			refreshShiftClickCustomizationMenus();
 		}
 	}
@@ -330,9 +335,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		int itemId = event.getIdentifier();
-		String option = Text.removeTags(event.getOption()).toLowerCase();
-		String target = Text.removeTags(event.getTarget()).toLowerCase();
+		final int eventId = event.getIdentifier();
+		final String option = Text.removeTags(event.getOption()).toLowerCase();
+		final String target = Text.removeTags(event.getTarget()).toLowerCase();
+		final NPC hintArrowNpc  = client.getHintArrowNpc();
+
+		if (hintArrowNpc != null
+			&& hintArrowNpc.getIndex() == eventId
+			&& NPC_MENU_TYPES.contains(MenuAction.of(event.getType())))
+		{
+			return;
+		}
 
 		if (option.equals("talk-to"))
 		{
@@ -354,6 +367,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapExchange())
 			{
 				swap("exchange", option, target, true);
+			}
+
+			if (config.swapDarkMage())
+			{
+				swap("repairs", option, target, true);
 			}
 
 			// make sure assignment swap is higher priority than trade swap for slayer masters
@@ -484,9 +502,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap("spellbook", option, target, true);
 			swap("perks", option, target, true);
 		}
+		else if (config.swapPrivate() && option.equals("shared"))
+		{
+			swap("private", option, target, true);
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
-			Integer customOption = getSwapConfig(itemId);
+			Integer customOption = getSwapConfig(eventId);
 
 			if (customOption != null && customOption == -1)
 			{

@@ -43,10 +43,21 @@ public interface ZoomConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "outerLimit",
+		name = "Expand outer zoom limit",
+		description = "Configures how much the outer zoom limit is increased, 0 is off",
+		position = 2
+	)
+	default int outerLimit()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
 		keyName = "relaxCameraPitch",
 		name = "Vertical camera",
 		description = "Relax the camera's upper pitch limit",
-		position = 2
+		position = 3
 	)
 	default boolean relaxCameraPitch()
 	{
@@ -57,7 +68,7 @@ public interface ZoomConfig extends Config
 		keyName = "requireControlDown",
 		name = "Require control down",
 		description = "Configures if holding control is required for zooming",
-		position = 3
+		position = 4
 	)
 	default boolean requireControlDown()
 	{

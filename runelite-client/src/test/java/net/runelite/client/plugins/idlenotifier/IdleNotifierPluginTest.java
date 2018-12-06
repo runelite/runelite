@@ -106,7 +106,7 @@ public class IdleNotifierPluginTest
 		// Mock config
 		when(config.logoutIdle()).thenReturn(true);
 		when(config.animationIdle()).thenReturn(true);
-		when(config.combatIdle()).thenReturn(true);
+		when(config.interactionIdle()).thenReturn(true);
 		when(config.getIdleNotificationDelay()).thenReturn(0);
 		when(config.getHitpointsThreshold()).thenReturn(42);
 		when(config.getPrayerThreshold()).thenReturn(42);
@@ -155,7 +155,6 @@ public class IdleNotifierPluginTest
 		AnimationChanged animationChanged = new AnimationChanged();
 		animationChanged.setActor(player);
 		plugin.onAnimationChanged(animationChanged);
-		plugin.onInteractingChanged(new InteractingChanged(player, monster));
 		plugin.onGameTick(new GameTick());
 
 		// Logout

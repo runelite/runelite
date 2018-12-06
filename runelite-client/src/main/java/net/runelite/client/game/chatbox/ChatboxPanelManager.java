@@ -24,22 +24,24 @@
  */
 package net.runelite.client.game.chatbox;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientInt;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseListener;
@@ -144,30 +146,44 @@ public class ChatboxPanelManager
 	{
 		if (currentInput != null && "resetChatboxInput".equals(ev.getEventName()))
 		{
-			try
-			{
-				currentInput.close();
-			}
-			catch (Exception e)
-			{
-				log.warn("Exception closing {}", currentInput.getClass(), e);
-			}
-
-			eventBus.unregister(currentInput);
-			if (currentInput instanceof KeyListener)
-			{
-				keyManager.unregisterKeyListener((KeyListener) currentInput);
-			}
-			if (currentInput instanceof MouseListener)
-			{
-				mouseManager.unregisterMouseListener((MouseListener) currentInput);
-			}
-			if (currentInput instanceof MouseWheelListener)
-			{
-				mouseManager.unregisterMouseWheelListener((MouseWheelListener) currentInput);
-			}
-			currentInput = null;
+			killCurrentPanel();
 		}
+	}
+
+	@Subscribe
+	private void onGameStateChanged(GameStateChanged ev)
+	{
+		if (currentInput != null && ev.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			killCurrentPanel();
+		}
+	}
+
+	private void killCurrentPanel()
+	{
+		try
+		{
+			currentInput.close();
+		}
+		catch (Exception e)
+		{
+			log.warn("Exception closing {}", currentInput.getClass(), e);
+		}
+
+		eventBus.unregister(currentInput);
+		if (currentInput instanceof KeyListener)
+		{
+			keyManager.unregisterKeyListener((KeyListener) currentInput);
+		}
+		if (currentInput instanceof MouseListener)
+		{
+			mouseManager.unregisterMouseListener((MouseListener) currentInput);
+		}
+		if (currentInput instanceof MouseWheelListener)
+		{
+			mouseManager.unregisterMouseWheelListener((MouseWheelListener) currentInput);
+		}
+		currentInput = null;
 	}
 
 	public Widget getContainerWidget()

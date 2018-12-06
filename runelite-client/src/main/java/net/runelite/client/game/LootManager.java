@@ -27,8 +27,6 @@ package net.runelite.client.game;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -55,6 +53,8 @@ import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.PlayerDespawned;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 

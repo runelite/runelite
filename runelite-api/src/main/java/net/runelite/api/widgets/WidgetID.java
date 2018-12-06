@@ -120,6 +120,9 @@ public class WidgetID
 	public static final int SPELLBOOK_GROUP_ID = 218;
 	public static final int PVP_GROUP_ID = 90;
 	public static final int ZEAH_MESS_HALL_GROUP_ID = 235;
+	public static final int KOUREND_FAVOUR_GROUP_ID = 246;
+	public static final int LOOTING_BAG_GROUP_ID = 81;
+	public static final int SKOTIZO_GROUP_ID = 308;
 
 	static class WorldMap
 	{
@@ -201,13 +204,13 @@ public class WidgetID
 		static final int BANK_CONTAINER = 1;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
 		static final int BANK_TITLE_BAR = 4;
-		static final int CONTENT_CONTAINER = 9;
-		static final int ITEM_CONTAINER = 12;
-		static final int SEARCH_BUTTON_BACKGROUND = 39;
-		static final int DEPOSIT_INVENTORY = 41;
-		static final int DEPOSIT_EQUIPMENT = 43;
-		static final int INCINERATOR = 45;
-		static final int INCINERATOR_CONFIRM = 46;
+		static final int CONTENT_CONTAINER = 10;
+		static final int ITEM_CONTAINER = 13;
+		static final int SEARCH_BUTTON_BACKGROUND = 40;
+		static final int DEPOSIT_INVENTORY = 42;
+		static final int DEPOSIT_EQUIPMENT = 44;
+		static final int INCINERATOR = 46;
+		static final int INCINERATOR_CONFIRM = 47;
 	}
 
 	static class GrandExchange
@@ -374,6 +377,7 @@ public class WidgetID
 		static final int EQUIPMENT_ICON = 62;
 		static final int PRAYER_ICON = 63;
 		static final int MAGIC_ICON = 64;
+		static final int INTERFACE_CONTAINER = 65;
 	}
 
 	static class ResizableViewportBottomLine
@@ -414,10 +418,12 @@ public class WidgetID
 		static final int BUTTONS = 1;
 		static final int REPORT_TEXT = 36;
 		static final int FRAME = 37;
+		static final int TRANSPARENT_BACKGROUND = 38;
 		static final int CONTAINER = 40;
 		static final int TITLE = 44;
 		static final int FULL_INPUT = 45;
 		static final int MESSAGES = 55;
+		static final int TRANSPARENT_BACKGROUND_LINES = 56;
 		static final int INPUT = 57;
 	}
 
@@ -702,19 +708,34 @@ public class WidgetID
 
 	static class Pvp
 	{
-		static final int KILLDEATH_RATIO = 6;
-		static final int BOUNTY_HUNTER_STATS = 25;
-		static final int PVP_WIDGET_CONTAINER = 50;
-		static final int SKULL_CONTAINER = 51;
-		static final int SKULL = 52;
-		static final int SAFE_ZONE = 53;
-		static final int ATTACK_RANGE = 55;
-		static final int WILDERNESS_LEVEL = 56; // this can also be the Deadman Mode "Protection" text
-		static final int DEADMAN_PROTECTION_TIME = 57;
+		static final int KILLDEATH_RATIO = 9;
+		static final int BOUNTY_HUNTER_STATS = 28;
+		static final int PVP_WIDGET_CONTAINER = 54;
+		static final int SKULL_CONTAINER = 55;
+		static final int SKULL = 56;
+		static final int SAFE_ZONE = 57;
+		static final int ATTACK_RANGE = 59;
+		static final int WILDERNESS_LEVEL = 60; // this can also be the Deadman Mode "Protection" text
+		static final int DEADMAN_PROTECTION_TIME = 61;
+	}
+
+	static class KourendFavour
+	{
+		static final int KOUREND_FAVOUR_OVERLAY = 1;
 	}
 
 	static class Zeah
 	{
 		static final int MESS_HALL_COOKING_DISPLAY = 3;
+	}
+
+	static class LootingBag
+	{
+		static final int LOOTING_BAG_INVENTORY = 5;
+	}
+
+	static class Skotizo
+	{
+		static final int CONTAINER = 3;
 	}
 }

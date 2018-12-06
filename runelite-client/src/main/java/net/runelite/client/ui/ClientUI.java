@@ -25,7 +25,6 @@
 package net.runelite.client.ui;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.CardLayout;
@@ -34,12 +33,14 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.TrayIcon;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -64,6 +65,8 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.callback.ClientThread;
@@ -72,9 +75,13 @@ import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseAdapter;
+import net.runelite.client.input.MouseListener;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
@@ -97,16 +104,7 @@ public class ClientUI
 	private static final String CONFIG_CLIENT_MAXIMIZED = "clientMaximized";
 	private static final int CLIENT_WELL_HIDDEN_MARGIN = 160;
 	private static final int CLIENT_WELL_HIDDEN_MARGIN_TOP = 10;
-	public static final BufferedImage ICON;
-	private static final BufferedImage SIDEBAR_OPEN;
-	private static final BufferedImage SIDEBAR_CLOSE;
-
-	static
-	{
-		ICON = ImageUtil.getResourceStreamFromClass(ClientUI.class, "/runelite.png");
-		SIDEBAR_OPEN = ImageUtil.getResourceStreamFromClass(ClientUI.class, "open.png");
-		SIDEBAR_CLOSE = ImageUtil.flipImage(SIDEBAR_OPEN, true, false);
-	}
+	public static final BufferedImage ICON = ImageUtil.getResourceStreamFromClass(ClientUI.class, "/runelite.png");
 
 	@Getter
 	private TrayIcon trayIcon;
@@ -114,10 +112,15 @@ public class ClientUI
 	private final RuneLiteProperties properties;
 	private final RuneLiteConfig config;
 	private final KeyManager keyManager;
+	private final MouseManager mouseManager;
 	private final Applet client;
 	private final ConfigManager configManager;
 	private final Provider<ClientThread> clientThreadProvider;
 	private final CardLayout cardLayout = new CardLayout();
+	private final Rectangle sidebarButtonPosition = new Rectangle();
+	private boolean withTitleBar;
+	private BufferedImage sidebarOpenIcon;
+	private BufferedImage sidebarClosedIcon;
 	private ContainableFrame frame;
 	private JPanel navContainer;
 	private PluginPanel pluginPanel;
@@ -136,6 +139,7 @@ public class ClientUI
 		RuneLiteProperties properties,
 		RuneLiteConfig config,
 		KeyManager keyManager,
+		MouseManager mouseManager,
 		@Nullable Applet client,
 		ConfigManager configManager,
 		Provider<ClientThread> clientThreadProvider)
@@ -143,6 +147,7 @@ public class ClientUI
 		this.properties = properties;
 		this.config = config;
 		this.keyManager = keyManager;
+		this.mouseManager = mouseManager;
 		this.client = client;
 		this.configManager = configManager;
 		this.clientThreadProvider = clientThreadProvider;
@@ -168,8 +173,7 @@ public class ClientUI
 		{
 			final NavigationButton navigationButton = event.getButton();
 			final PluginPanel pluginPanel = navigationButton.getPanel();
-			final boolean inTitle = !event.getButton().isTab() &&
-				(config.enableCustomChrome() || SwingUtil.isCustomTitlePanePresent(frame));
+			final boolean inTitle = !event.getButton().isTab() && withTitleBar;
 			final int iconSize = 16;
 
 			if (pluginPanel != null)
@@ -352,8 +356,26 @@ public class ClientUI
 
 			keyManager.registerKeyListener(sidebarListener);
 
+			// Add mouse listener
+			final MouseListener mouseListener = new MouseAdapter()
+			{
+				@Override
+				public MouseEvent mousePressed(MouseEvent mouseEvent)
+				{
+					if (SwingUtilities.isLeftMouseButton(mouseEvent) && sidebarButtonPosition.contains(mouseEvent.getPoint()))
+					{
+						SwingUtilities.invokeLater(ClientUI.this::toggleSidebar);
+						mouseEvent.consume();
+					}
+
+					return mouseEvent;
+				}
+			};
+
+			mouseManager.registerMouseListener(mouseListener);
+
 			// Decorate window with custom chrome and titlebar if needed
-			final boolean withTitleBar = config.enableCustomChrome();
+			withTitleBar = config.enableCustomChrome();
 			frame.setUndecorated(withTitleBar);
 
 			if (withTitleBar)
@@ -407,10 +429,14 @@ public class ClientUI
 			updateFrameConfig(true);
 
 			// Create hide sidebar button
+
+			sidebarOpenIcon = ImageUtil.getResourceStreamFromClass(ClientUI.class, withTitleBar ? "open.png" : "open_rs.png");
+			sidebarClosedIcon = ImageUtil.flipImage(sidebarOpenIcon, true, false);
+
 			sidebarNavigationButton = NavigationButton
 				.builder()
 				.priority(100)
-				.icon(SIDEBAR_CLOSE)
+				.icon(sidebarClosedIcon)
 				.onClick(this::toggleSidebar)
 				.build();
 
@@ -583,12 +609,48 @@ public class ClientUI
 		return new Point(0, 0);
 	}
 
+	/**
+	 * Paint UI related overlays to target graphics
+	 * @param graphics target graphics
+	 */
+	public void paintOverlays(final Graphics2D graphics)
+	{
+		if (!(client instanceof Client) || withTitleBar)
+		{
+			return;
+		}
+
+		final Client client = (Client) this.client;
+		final int x = client.getRealDimensions().width - sidebarOpenIcon.getWidth() - 5;
+
+		// Offset sidebar button if resizable mode logout is visible
+		final Widget logoutButton = client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON);
+		final int y = logoutButton != null && !logoutButton.isHidden() && logoutButton.getParent() != null
+			? logoutButton.getHeight() + logoutButton.getRelativeY()
+			: 5;
+
+		final BufferedImage image = sidebarOpen ? sidebarClosedIcon : sidebarOpenIcon;
+
+		final Rectangle sidebarButtonRange = new Rectangle(x - 15, 0, image.getWidth() + 25, client.getRealDimensions().height);
+		final Point mousePosition = new Point(
+			client.getMouseCanvasPosition().getX() + client.getViewportXOffset(),
+			client.getMouseCanvasPosition().getY() + client.getViewportYOffset());
+
+		if (sidebarButtonRange.contains(mousePosition.getX(), mousePosition.getY()))
+		{
+			graphics.drawImage(image, x, y, null);
+		}
+
+		// Update button dimensions
+		sidebarButtonPosition.setBounds(x, y, image.getWidth(), image.getHeight());
+	}
+
 	public GraphicsConfiguration getGraphicsConfiguration()
 	{
 		return frame.getGraphicsConfiguration();
 	}
 
-	void toggleSidebar()
+	private void toggleSidebar()
 	{
 		// Toggle sidebar open
 		boolean isSidebarOpen = sidebarOpen;
@@ -607,7 +669,7 @@ public class ClientUI
 
 		if (isSidebarOpen)
 		{
-			sidebarNavigationJButton.setIcon(new ImageIcon(SIDEBAR_OPEN));
+			sidebarNavigationJButton.setIcon(new ImageIcon(sidebarOpenIcon));
 			sidebarNavigationJButton.setToolTipText("Open SideBar");
 
 			contract();
@@ -617,7 +679,7 @@ public class ClientUI
 		}
 		else
 		{
-			sidebarNavigationJButton.setIcon(new ImageIcon(SIDEBAR_CLOSE));
+			sidebarNavigationJButton.setIcon(new ImageIcon(sidebarClosedIcon));
 			sidebarNavigationJButton.setToolTipText("Close SideBar");
 
 			// Try to restore last panel
@@ -751,7 +813,7 @@ public class ClientUI
 		}
 
 		frame.setExpandResizeType(config.automaticResizeType());
-		frame.setContainedInScreen(config.containInScreen() && config.enableCustomChrome());
+		frame.setContainedInScreen(config.containInScreen() && withTitleBar);
 
 		if (!config.rememberScreenBounds())
 		{

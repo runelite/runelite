@@ -106,22 +106,22 @@ public class GrandExchangeOfferSlot extends JPanel
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
 				super.mouseEntered(mouseEvent);
-				container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR.brighter());
+				container.setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
 				super.mouseExited(mouseEvent);
-				container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+				container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			}
 		};
 
 		container.setLayout(cardLayout);
-		container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		JPanel faceCard = new JPanel();
-		faceCard.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		faceCard.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		faceCard.setLayout(new BorderLayout());
 		faceCard.addMouseListener(ml);
 
@@ -144,7 +144,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		switchFaceViewIcon.setPreferredSize(new Dimension(30, 45));
 
 		JPanel offerFaceDetails = new JPanel();
-		offerFaceDetails.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		offerFaceDetails.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		offerFaceDetails.setLayout(new GridLayout(2, 1, 0, 2));
 
 		offerFaceDetails.add(itemName);
@@ -155,7 +155,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		faceCard.add(switchFaceViewIcon, BorderLayout.EAST);
 
 		JPanel detailsCard = new JPanel();
-		detailsCard.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		detailsCard.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		detailsCard.setLayout(new BorderLayout());
 		detailsCard.setBorder(new EmptyBorder(0, 15, 0, 0));
 		detailsCard.addMouseListener(ml);
@@ -175,7 +175,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		switchDetailsViewIcon.setPreferredSize(new Dimension(30, 45));
 
 		JPanel offerDetails = new JPanel();
-		offerDetails.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		offerDetails.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		offerDetails.setLayout(new GridLayout(2, 1));
 
 		offerDetails.add(itemPrice);

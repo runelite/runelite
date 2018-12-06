@@ -50,6 +50,8 @@ public class WidgetOverlay extends Overlay
 		.put(WidgetInfo.ZEAH_MESS_HALL_COOKING_DISPLAY, OverlayPosition.TOP_LEFT)
 		.put(WidgetInfo.PVP_BOUNTY_HUNTER_STATS, OverlayPosition.TOP_RIGHT)
 		.put(WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT)
+		.put(WidgetInfo.SKOTIZO_CONTAINER, OverlayPosition.TOP_LEFT)
+		.put(WidgetInfo.KOUREND_FAVOUR_OVERLAY, OverlayPosition.TOP_CENTER)
 		.build();
 
 	public static Collection<WidgetOverlay> createOverlays(final Client client)

@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.twitch;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
@@ -34,12 +33,14 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.ChatboxInputListener;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.events.PrivateMessageInput;
 import net.runelite.client.plugins.Plugin;
@@ -156,6 +157,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 	private void addChatMessage(String sender, String message)
 	{
 		String chatMessage = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
 			.append(message)
 			.build();
 

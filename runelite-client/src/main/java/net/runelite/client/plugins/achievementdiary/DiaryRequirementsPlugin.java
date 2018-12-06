@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.achievementdiary;
 
-import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,11 +35,13 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
+import net.runelite.api.Skill;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.achievementdiary.diaries.ArdougneDiaryRequirement;
@@ -242,7 +243,16 @@ public class DiaryRequirementsPlugin extends Plugin
 			{
 				RequirementStringBuilder requirementStringBuilder = new RequirementStringBuilder(i);
 
-				int realSkillLevel = client.getRealSkillLevel(i.getSkill());
+				Skill skill = i.getSkill();
+				int realSkillLevel;
+				if (skill == null && i.getCustomRequirement().equals("Combat"))
+				{
+					realSkillLevel = client.getLocalPlayer().getCombatLevel();
+				}
+				else
+				{
+					realSkillLevel = client.getRealSkillLevel(skill);
+				}
 				List<Integer> altRealSkillLevels = null;
 				if (i.getAltRequirements() != null)
 				{

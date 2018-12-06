@@ -24,7 +24,6 @@
  */
 package net.runelite.client.ui.overlay.worldmap;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -42,6 +41,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -50,7 +50,6 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 @Singleton
 public class WorldMapOverlay extends Overlay
 {
-	private static final Color TOOLTIP_BACKGROUND = new Color(255, 255, 160);
 	private static final int TOOLTIP_OFFSET_HEIGHT = 25;
 	private static final int TOOLTIP_OFFSET_WIDTH = 5;
 	private static final int TOOLTIP_PADDING_HEIGHT = 1;
@@ -96,6 +95,7 @@ public class WorldMapOverlay extends Overlay
 		// in fixed, the bounds are offset by the size of the black borders outside the canvas
 		canvasBounds.setLocation(0, 0);
 		final Area canvasViewArea = getWorldMapClipArea(canvasBounds);
+		Area currentClip = null;
 
 		WorldMapPoint tooltipPoint = null;
 
@@ -114,10 +114,19 @@ public class WorldMapOverlay extends Overlay
 					continue;
 				}
 
-				if (worldPoint.isSnapToEdge())
+				if (worldPoint.isSnapToEdge() && canvasViewArea != currentClip)
 				{
 					graphics.setClip(canvasViewArea);
+					currentClip = canvasViewArea;
+				}
+				else if (!worldPoint.isSnapToEdge() && mapViewArea != currentClip)
+				{
+					graphics.setClip(mapViewArea);
+					currentClip = mapViewArea;
+				}
 
+				if (worldPoint.isSnapToEdge())
+				{
 					if (worldMapRectangle.contains(drawPoint.getX(), drawPoint.getY()))
 					{
 						if (worldPoint.isCurrentlyEdgeSnapped())
@@ -135,10 +144,6 @@ public class WorldMapOverlay extends Overlay
 							worldPoint.onEdgeSnap();
 						}
 					}
-				}
-				else
-				{
-					graphics.setClip(mapViewArea);
 				}
 
 				int drawX = drawPoint.getX();
@@ -260,7 +265,7 @@ public class WorldMapOverlay extends Overlay
 		drawPoint = new Point(drawPoint.getX() + TOOLTIP_OFFSET_WIDTH, drawPoint.getY() + TOOLTIP_OFFSET_HEIGHT);
 
 		graphics.setClip(client.getCanvas().getBounds());
-		graphics.setColor(TOOLTIP_BACKGROUND);
+		graphics.setColor(JagexColors.TOOLTIP_BACKGROUND);
 		graphics.setFont(FontManager.getRunescapeFont());
 		FontMetrics fm = graphics.getFontMetrics();
 		int width = fm.stringWidth(tooltip);
@@ -269,8 +274,9 @@ public class WorldMapOverlay extends Overlay
 		Rectangle tooltipRect = new Rectangle(drawPoint.getX() - TOOLTIP_PADDING_WIDTH, drawPoint.getY() - TOOLTIP_PADDING_HEIGHT, width + TOOLTIP_PADDING_WIDTH * 2, height + TOOLTIP_PADDING_HEIGHT * 2);
 		graphics.fillRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight());
 
-		graphics.setColor(Color.black);
+		graphics.setColor(JagexColors.TOOLTIP_BORDER);
 		graphics.drawRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight());
+		graphics.setColor(JagexColors.TOOLTIP_TEXT);
 		graphics.drawString(tooltip, drawPoint.getX(), drawPoint.getY() + height);
 	}
 

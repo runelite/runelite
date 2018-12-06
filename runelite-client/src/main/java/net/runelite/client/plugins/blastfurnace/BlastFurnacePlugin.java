@@ -24,19 +24,19 @@
  */
 package net.runelite.client.plugins.blastfurnace;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import static net.runelite.api.ObjectID.CONVEYOR_BELT;
 import static net.runelite.api.NullObjectID.NULL_9092;
+import static net.runelite.api.ObjectID.CONVEYOR_BELT;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;

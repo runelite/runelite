@@ -37,10 +37,12 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.time.Instant;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.plugins.xptracker.XpActionType;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.overlay.Overlay;
@@ -89,8 +91,11 @@ public class XpGlobesOverlay extends Overlay
 			return null;
 		}
 
+		final List<XpGlobe> sortedXpGlobes = plugin.getXpGlobes();
+		sortedXpGlobes.sort((a, b) -> a.getSkill().compareTo(b.getSkill()));
+
 		int curDrawX = 0;
-		for (final XpGlobe xpGlobe : plugin.getXpGlobes())
+		for (final XpGlobe xpGlobe : sortedXpGlobes)
 		{
 			int startXp = xpTrackerService.getStartGoalXp(xpGlobe.getSkill());
 			int goalXp = xpTrackerService.getEndGoalXp(xpGlobe.getSkill());
@@ -246,12 +251,14 @@ public class XpGlobesOverlay extends Overlay
 
 		if (goalXp != -1)
 		{
+			XpActionType xpActionType = xpTrackerService.getActionType(mouseOverSkill.getSkill());
+
 			int actionsLeft = xpTrackerService.getActionsLeft(mouseOverSkill.getSkill());
 			if (actionsLeft != Integer.MAX_VALUE)
 			{
 				String actionsLeftString = decimalFormat.format(actionsLeft);
 				xpTooltip.getChildren().add(LineComponent.builder()
-					.left("Actions left:")
+					.left(xpActionType.getLabel() + " left:")
 					.leftColor(Color.ORANGE)
 					.right(actionsLeftString)
 					.build());

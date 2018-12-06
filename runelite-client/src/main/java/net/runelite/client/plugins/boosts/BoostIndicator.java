@@ -81,7 +81,7 @@ public class BoostIndicator extends InfoBox
 			return new Color(238, 51, 51);
 		}
 
-		return boosted - base < config.boostThreshold() ? Color.YELLOW : Color.GREEN;
+		return boosted - base <= config.boostThreshold() ? Color.YELLOW : Color.GREEN;
 	}
 
 	@Override

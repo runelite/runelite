@@ -112,6 +112,16 @@ public interface MenuEntrySwapperConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(		
+		keyName = "swapDarkMage",
+		name = "Repairs",
+		description = "Swap Talk-to with Repairs for Dark Mage"
+	)
+	default boolean swapDarkMage()
+	{
+		return true;
+	}
+
 	@ConfigItem(
 		keyName = "swapDecant",
 		name = "Decant",
@@ -180,6 +190,16 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapPay()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapPrivate",
+		name = "Private",
+		description = "Swap Shared with Private on the Chamber of Xeric storage units."
+	)
+	default boolean swapPrivate()
+	{
+		return false;
 	}
 
 	@ConfigItem(

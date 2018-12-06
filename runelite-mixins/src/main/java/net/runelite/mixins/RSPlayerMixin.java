@@ -37,6 +37,14 @@ import static net.runelite.api.HeadIcon.SMITE;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.SkullIcon;
+import static net.runelite.api.SkullIcon.DEAD_MAN_FIVE;
+import static net.runelite.api.SkullIcon.DEAD_MAN_FOUR;
+import static net.runelite.api.SkullIcon.DEAD_MAN_ONE;
+import static net.runelite.api.SkullIcon.DEAD_MAN_THREE;
+import static net.runelite.api.SkullIcon.DEAD_MAN_TWO;
+import static net.runelite.api.SkullIcon.SKULL;
+import static net.runelite.api.SkullIcon.SKULL_FIGHT_PIT;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
@@ -55,9 +63,6 @@ public abstract class RSPlayerMixin implements RSPlayer
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
-
-	@Inject
-	private int playerIndex;
 
 	@Inject
 	@Override
@@ -98,6 +103,37 @@ public abstract class RSPlayerMixin implements RSPlayer
 				return SMITE;
 			case 5:
 				return REDEMPTION;
+			default:
+				return null;
+		}
+	}
+
+	@Inject
+	@Override
+	public SkullIcon getSkullIcon()
+	{
+		if (this != client.getLocalPlayer())
+		{
+			// prevent seeing skulls of other players.
+			return null;
+		}
+
+		switch (getRsSkullIcon())
+		{
+			case 0:
+				return SKULL;
+			case 1:
+				return SKULL_FIGHT_PIT;
+			case 8:
+				return DEAD_MAN_FIVE;
+			case 9:
+				return DEAD_MAN_FOUR;
+			case 10:
+				return DEAD_MAN_THREE;
+			case 11:
+				return DEAD_MAN_TWO;
+			case 12:
+				return DEAD_MAN_ONE;
 			default:
 				return null;
 		}

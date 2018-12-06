@@ -24,22 +24,22 @@
  */
 package net.runelite.client.plugins.crystalmathlabs;
 
-import com.google.common.eventbus.Subscribe;
 import java.io.IOException;
-import lombok.extern.slf4j.Slf4j;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import net.runelite.api.Client;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.api.GameState;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.plugins.Plugin;
 import okhttp3.Response;
 
 @PluginDescriptor(

@@ -59,8 +59,8 @@ class XpInfoBox extends JPanel
 
 	// Templates
 	private static final String HTML_TOOL_TIP_TEMPLATE =
-		"<html>%s actions done<br/>"
-			+ "%s actions/hr<br/>"
+		"<html>%s %s done<br/>"
+			+ "%s %s/hr<br/>"
 			+ "%s till goal lvl</html>";
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
@@ -197,7 +197,7 @@ class XpInfoBox extends JPanel
 			// Update information labels
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
 			expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
-			actionsLeft.setText(htmlLabel("Actions: ", xpSnapshotSingle.getActionsRemainingToGoal()));
+			actionsLeft.setText(htmlLabel(xpSnapshotSingle.getActionType().getLabel() + ": ", xpSnapshotSingle.getActionsRemainingToGoal()));
 
 			// Update progress bar
 			progressBar.setValue((int) xpSnapshotSingle.getSkillProgressToGoal());
@@ -210,7 +210,9 @@ class XpInfoBox extends JPanel
 			progressBar.setToolTipText(String.format(
 				HTML_TOOL_TIP_TEMPLATE,
 				xpSnapshotSingle.getActionsInSession(),
+				xpSnapshotSingle.getActionType().getLabel(),
 				xpSnapshotSingle.getActionsPerHour(),
+				xpSnapshotSingle.getActionType().getLabel(),
 				xpSnapshotSingle.getTimeTillGoal()));
 
 			progressBar.setDimmed(skillPaused);

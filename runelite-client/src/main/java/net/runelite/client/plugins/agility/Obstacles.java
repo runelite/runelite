@@ -114,7 +114,7 @@ class Obstacles
 		// Yanille
 		CASTLE_WALL, HOLE_16520, WALL_17047,
 		// Observatory
-		NULL_31852,
+		NULL_31849,
 		// Gnome Stronghold
 		ROCKS_16534, ROCKS_16535,
 		// Karamja Volcano
@@ -206,7 +206,7 @@ class Obstacles
 		ROCK_16115,
 		// Agility Pyramid Entrance
 		CLIMBING_ROCKS_11948, CLIMBING_ROCKS_11949,
-		//Lumber Yard
+		// Lumber Yard
 		BROKEN_FENCE_2618,
 		// Ungael and Vorkath crater
 		NULL_25337, NULL_29868, NULL_29869, NULL_29870, ICE_CHUNKS_31822, NULL_31823, ICE_CHUNKS_31990,
@@ -217,7 +217,13 @@ class Obstacles
 		// Weiss
 		LITTLE_BOULDER, ROCKSLIDE_33184, ROCKSLIDE_33185, NULL_33327, NULL_33328,
 		// Al-Kharid
-		BROKEN_WALL_33344, BIG_WINDOW
+		BROKEN_WALL_33344, BIG_WINDOW,
+		// Burgh de Rott
+		LOW_FENCE,
+		// Taverley
+		STILE,
+		// Asgarnian Ice Dungeon
+		STEPS
 	);
 
 	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(

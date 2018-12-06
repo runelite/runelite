@@ -26,7 +26,6 @@ package net.runelite.client.plugins.examine;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.eventbus.Subscribe;
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -48,6 +47,7 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -55,7 +55,7 @@ import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.examine.ExamineClient;
 
 /**
- * Submits exammine info to the api
+ * Submits examine info to the api
  *
  * @author Adam
  */
@@ -259,6 +259,16 @@ public class ExaminePlugin extends Plugin
 				}
 			}
 			else if (WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup)
+			{
+				Widget[] children = widget.getDynamicChildren();
+				if (pendingExamine.getActionParam() < children.length)
+				{
+					Widget widgetItem = children[pendingExamine.getActionParam()];
+					quantity = widgetItem.getItemQuantity();
+					itemId = widgetItem.getItemId();
+				}
+			}
+			else if (WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup)
 			{
 				Widget[] children = widget.getDynamicChildren();
 				if (pendingExamine.getActionParam() < children.length)
