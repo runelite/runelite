@@ -107,4 +107,14 @@ public interface IdleNotifierConfig extends Config
 	{
 		return 0;
 	}
+	@ConfigItem(
+		keyName = "catidle",
+		name = "Cat Health Notification",
+		description = "Configures whether to notify when your cat's health is low.",
+		position = 8
+	)
+	default boolean catIdle()
+	{
+		return false;
+	}
 }

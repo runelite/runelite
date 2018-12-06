@@ -25,6 +25,8 @@
  */
 package net.runelite.client.plugins.idlenotifier;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -65,7 +67,18 @@ public class IdleNotifierPlugin extends Plugin
 	private static final int LOGOUT_WARNING_CLIENT_TICKS = ((4 * 60) + 40) * 50;// 4 minutes and 40 seconds
 	private static final int COMBAT_WARNING_MILLIS = 19 * 60 * 1000; // 19 minutes
 	private static final int COMBAT_WARNING_CLIENT_TICKS = COMBAT_WARNING_MILLIS / 20;
+	private static final ImmutableList<String> CAT_NAMES = ImmutableList.of(
+		"kitten",
+		"cat",
+		"overgrown cat",
+		"willy cat",
+		"lazy cat",
 
+		"hell-kitten",
+		"hellcat",
+		"overgrown hellcat",
+		"wily hellcat",
+		"lazy hellcat");
 	private static final int HIGHEST_MONSTER_ATTACK_SPEED = 8; // Except Scarab Mage, but they are with other monsters
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
 
@@ -310,18 +323,31 @@ public class IdleNotifierPlugin extends Plugin
 	@Subscribe
 	public void onHitsplatApplied(HitsplatApplied event)
 	{
-		if (event.getActor() != client.getLocalPlayer())
+		Actor actor = event.getActor();
+		if (event.getActor() == client.getLocalPlayer())
 		{
-			return;
+			final Hitsplat hitsplat = event.getHitsplat();
+			if (hitsplat.getHitsplatType() == Hitsplat.HitsplatType.DAMAGE
+				|| hitsplat.getHitsplatType() == Hitsplat.HitsplatType.BLOCK)
+			{
+				lastCombatCountdown = HIGHEST_MONSTER_ATTACK_SPEED;
+			}
+		}
+		else if (config.catIdle())
+		{
+			if (CAT_NAMES.contains(actor.getName().toLowerCase()) && !(actor instanceof Player))
+			{
+				if (event.getHitsplat().getHitsplatType() == Hitsplat.HitsplatType.DAMAGE)
+				{
+					if (event.getActor().getHealthRatio() == 20)
+					{
+						notifier.notify("[" + client.getLocalPlayer().getName() + "] his cat has low health!");
+					}
+				}
+			}
 		}
 
-		final Hitsplat hitsplat = event.getHitsplat();
 
-		if (hitsplat.getHitsplatType() == Hitsplat.HitsplatType.DAMAGE
-			|| hitsplat.getHitsplatType() == Hitsplat.HitsplatType.BLOCK)
-		{
-			lastCombatCountdown = HIGHEST_MONSTER_ATTACK_SPEED;
-		}
 	}
 
 	@Subscribe
