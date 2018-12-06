@@ -48,7 +48,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.skillcalculator.banked.CriticalItem;
 import net.runelite.client.plugins.skillcalculator.banked.beans.Activity;
 import net.runelite.client.plugins.skillcalculator.banked.beans.SecondaryItem;
-import net.runelite.client.plugins.skillcalculator.banked.ui.ItemPanel;
+import net.runelite.client.plugins.skillcalculator.banked.ui.CriticalItemPanel;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
@@ -75,7 +75,7 @@ public class BankedCalculator extends JPanel
 	// Banked Experience magic
 	private Map<Integer, Integer> bankMap = new HashMap<>();
 	private Map<String, Boolean> categoryMap = new HashMap<>();			// Check if CriticalItem Category is enabled
-	private Map<CriticalItem, ItemPanel> panelMap = new HashMap<>();
+	private Map<CriticalItem, CriticalItemPanel> panelMap = new HashMap<>();
 	private Map<CriticalItem, Integer> criticalMap = new HashMap<>();	// Quantity of CriticalItem inside bankMap
 	private Map<CriticalItem, Activity> activityMap = new HashMap<>(); 	// Selected Activity used for calculating xp
 	private Map<CriticalItem, Integer> linkedMap = new HashMap<>();		// ItemID of item that links to the CriticalItem
@@ -344,7 +344,7 @@ public class BankedCalculator extends JPanel
 			}
 
 			// Actually create the panel displaying banked experience for this item
-			ItemPanel panel = new ItemPanel(this, itemManager, item, xp, amount, links);
+			CriticalItemPanel panel = new CriticalItemPanel(this, itemManager, item, xp, amount, links);
 			panelMap.put(item, panel);
 			detailContainer.add(panel);
 		}
@@ -419,7 +419,7 @@ public class BankedCalculator extends JPanel
 			if (cur.isPreventLinked() != a.isPreventLinked())
 			{
 				CriticalItem linked = CriticalItem.getByItemId(i.getLinkedItemId());
-				ItemPanel l = panelMap.get(linked);
+				CriticalItemPanel l = panelMap.get(linked);
 				if (l != null)
 				{
 					l.updateLinkedMap(getLinkedTotalMap(linked));
@@ -429,7 +429,7 @@ public class BankedCalculator extends JPanel
 		}
 
 		// Total banked experience
-		ItemPanel p = panelMap.get(i);
+		CriticalItemPanel p = panelMap.get(i);
 		if (p != null)
 		{
 			p.updateLinkedMap(getLinkedTotalMap(i));
@@ -529,7 +529,7 @@ public class BankedCalculator extends JPanel
 	private void calculateBankedXpTotal()
 	{
 		double total = 0.0;
-		for (ItemPanel p : panelMap.values())
+		for (CriticalItemPanel p : panelMap.values())
 		{
 			total += p.getTotal();
 		}

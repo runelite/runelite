@@ -63,7 +63,7 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 import net.runelite.client.util.StackFormatter;
 
 @Slf4j
-public class ItemPanel extends JPanel
+public class CriticalItemPanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(36, 36);
 	private static final DecimalFormat FORMAT_COMMA = new DecimalFormat("#,###.#");
@@ -106,7 +106,7 @@ public class ItemPanel extends JPanel
 	private final JLabel image;
 	private boolean infoVisibility = false;
 
-	public ItemPanel(BankedCalculator bankedCalculator, ItemManager itemManager, CriticalItem item, double xp, int amount, Map<CriticalItem, Integer> linkedMap)
+	public CriticalItemPanel(BankedCalculator bankedCalculator, ItemManager itemManager, CriticalItem item, double xp, int amount, Map<CriticalItem, Integer> linkedMap)
 	{
 		this.bankedCalculator = bankedCalculator;
 		this.item = item;
