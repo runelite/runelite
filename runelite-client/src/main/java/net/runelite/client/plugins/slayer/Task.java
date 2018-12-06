@@ -94,7 +94,7 @@ enum Task
 	GOBLINS("Goblins", ItemID.ENSOULED_GOBLIN_HEAD),
 	GREATER_DEMONS("Greater demons", ItemID.GREATER_DEMON_MASK),
 	GREEN_DRAGONS("Green dragons", ItemID.GREEN_DRAGON_MASK),
-	GROTESQUE_GUARDIANS("Grotesque Guardians", ItemID.MIDNIGHT, 9, ItemID.ROCK_HAMMER),
+	GROTESQUE_GUARDIANS("Grotesque Guardians", ItemID.MIDNIGHT, 0, ItemID.ROCK_HAMMER, "Dusk", "Dawn"),
 	HARPIE_BUG_SWARMS("Harpie bug swarms", ItemID.SWARM),
 	HELLHOUNDS("Hellhounds", ItemID.HELLHOUND),
 	HILL_GIANTS("Hill giants", ItemID.ENSOULED_GIANT_HEAD),
