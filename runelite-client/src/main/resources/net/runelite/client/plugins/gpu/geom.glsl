@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#version 400
+#version 330
 
 #define PI 3.1415926535897932384626433832795f
 #define UNIT PI / 1024.0f
@@ -31,29 +31,36 @@
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
 
-layout(std140) uniform Uniforms {
-    int cameraYaw;
-    int cameraPitch;
-    int centerX;
-    int centerY;
-    int zoom;
+layout(std140) uniform uniforms {
+  int cameraYaw;
+  int cameraPitch;
+  int centerX;
+  int centerY;
+  int zoom;
+  int cameraX;
+  int cameraY;
+  int cameraZ;
+  ivec2 sinCosTable[2048];
 };
 
 uniform mat4 projectionMatrix;
 
 in ivec3 vPosition[];
 in vec4 vColor[];
+in float vHsl[];
 in vec4 vUv[];
 
 out vec4 Color;
+out float fHsl;
 out vec4 fUv;
 
 #include to_screen.glsl
 
 void main() {
-  ivec3 screenA = toScreen(vPosition[0], cameraYaw, cameraPitch, centerX, centerY, zoom);
-  ivec3 screenB = toScreen(vPosition[1], cameraYaw, cameraPitch, centerX, centerY, zoom);
-  ivec3 screenC = toScreen(vPosition[2], cameraYaw, cameraPitch, centerX, centerY, zoom);
+  ivec3 cameraPos = ivec3(cameraX, cameraY, cameraZ);
+  ivec3 screenA = toScreen(vPosition[0] - cameraPos, cameraYaw, cameraPitch, centerX, centerY, zoom);
+  ivec3 screenB = toScreen(vPosition[1] - cameraPos, cameraYaw, cameraPitch, centerX, centerY, zoom);
+  ivec3 screenC = toScreen(vPosition[2] - cameraPos, cameraYaw, cameraPitch, centerX, centerY, zoom);
 
   if (-screenA.z < 50 || -screenB.z < 50 || -screenC.z < 50) {
     // the client does not draw a triangle if any vertex distance is <50
@@ -62,18 +69,21 @@ void main() {
 
   vec4 tmp = vec4(screenA.xyz, 1.0);
   Color = vColor[0];
+  fHsl = vHsl[0];
   fUv = vUv[0];
   gl_Position  = projectionMatrix * tmp;
   EmitVertex();
 
   tmp = vec4(screenB.xyz, 1.0);
   Color = vColor[1];
+  fHsl = vHsl[1];
   fUv = vUv[1];
   gl_Position  = projectionMatrix * tmp;
   EmitVertex();
 
   tmp = vec4(screenC.xyz, 1.0);
   Color = vColor[2];
+  fHsl = vHsl[2];
   fUv = vUv[2];
   gl_Position  = projectionMatrix * tmp;
   EmitVertex();

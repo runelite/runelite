@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.hunter;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.HashMap;
@@ -46,6 +45,7 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -128,7 +128,7 @@ public class HunterPlugin extends Plugin
 
 			case ObjectID.MONKEY_TRAP: // Maniacal monkey trap placed
 				// If player is right next to "object" trap assume that player placed the trap
-				if (localPlayer.getWorldLocation().distanceTo(trapLocation) <= 1)
+				if (localPlayer.getWorldLocation().distanceTo(trapLocation) <= 2)
 				{
 					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), trapLocation);
 					traps.put(trapLocation, new HunterTrap(gameObject));

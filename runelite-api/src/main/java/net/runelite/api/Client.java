@@ -145,6 +145,20 @@ public interface Client extends GameEngine
 	void setUsername(String name);
 
 	/**
+	 * Sets the password on login screen.
+	 *
+	 * @param password the login screen password
+	 */
+	void setPassword(String password);
+
+	/**
+	 * Gets currently selected login field. 0 is username, and 1 is password.
+	 *
+	 * @return currently selected login field
+	 */
+	int getCurrentLoginField();
+
+	/**
 	 * Gets the account type of the logged in player.
 	 *
 	 * @return the account type
@@ -957,21 +971,24 @@ public interface Client extends GameEngine
 	BufferProvider getBufferProvider();
 
 	/**
-	 * Gets the amount of ticks since the last mouse movement occurred.
+	 * Gets the amount of client ticks since the last mouse movement occurred.
 	 *
 	 * @return amount of idle mouse ticks
+	 * @see Constants#CLIENT_TICK_LENGTH
 	 */
 	int getMouseIdleTicks();
 
 	/**
-	 * Gets the number of milliseconds since the last mouse press occurred.
+	 * Gets the time at which the last mouse press occurred in milliseconds since
+	 * the UNIX epoch.
 	 */
 	long getMouseLastPressedMillis();
 
 	/**
-	 * Gets the amount of ticks since the last keyboard press occurred.
+	 * Gets the amount of client ticks since the last keyboard press occurred.
 	 *
 	 * @return amount of idle keyboard ticks
+	 * @see Constants#CLIENT_TICK_LENGTH
 	 */
 	int getKeyboardIdleTicks();
 

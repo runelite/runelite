@@ -26,8 +26,6 @@
 package net.runelite.client.plugins.info;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -50,6 +48,8 @@ import net.runelite.api.events.SessionClose;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;

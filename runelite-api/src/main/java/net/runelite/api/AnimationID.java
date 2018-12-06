@@ -118,6 +118,7 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_INFERNAL = 4481;
 	public static final int MINING_MOTHERLODE_3A = 7282;
 	public static final int DENSE_ESSENCE_CHIPPING = 7201;
+	public static final int DENSE_ESSENCE_CHISELING = 7202;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int MAGIC_MAKE_TABLET = 4068;

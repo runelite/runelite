@@ -27,6 +27,7 @@ package net.runelite.client.plugins.gpu;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 
 @ConfigGroup("gpu")
 public interface GpuPluginConfig extends Config
@@ -34,10 +35,33 @@ public interface GpuPluginConfig extends Config
 	@ConfigItem(
 		keyName = "drawDistance",
 		name = "Draw Distance",
-		description = "Draw distance"
+		description = "Draw distance",
+		position = 1
 	)
 	default int drawDistance()
 	{
 		return 25;
+	}
+
+	@ConfigItem(
+		keyName = "smoothBanding",
+		name = "Remove Color Banding",
+		description = "Smooths out the color banding that is present in the CPU renderer",
+		position = 2
+	)
+	default boolean smoothBanding()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "antiAliasingMode",
+		name = "Anti Aliasing",
+		description = "Configures the anti-aliasing mode",
+		position = 3
+	)
+	default AntiAliasingMode antiAliasingMode()
+	{
+		return AntiAliasingMode.DISABLED;
 	}
 }

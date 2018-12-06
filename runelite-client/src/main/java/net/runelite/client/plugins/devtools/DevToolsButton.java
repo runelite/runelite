@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.plugins.devtools;
 
-import net.runelite.api.Actor;
+import java.awt.Color;
+import javax.swing.JButton;
+import lombok.Getter;
 
-/**
- * Represents the base event where an {@link Actor} has despawned.
- * <p>
- * To hook into a more focused actor type, see the {@link PlayerDespawned}
- * or {@link NpcDespawned} events.
- * <p>
- * Examples of when this event may trigger include:
- * <ul>
- *     <li>An actor moving out of render distance</li>
- *     <li>An actor despawning after death</li>
- *     <li>Moving out of or away from a region with Actor entities in it</li>
- * </ul>
- * <p>
- * During a world change, the event is only called for Players,
- * ie. {@link PlayerDespawned} will trigger but {@link NpcDespawned}
- * will not.
- * <p>
- * The client logging out does not trigger this event.
- */
-public interface ActorDespawned
+class DevToolsButton extends JButton
 {
-	/**
-	 * Gets the despawned player or NPC.
-	 *
-	 * @return despawned entity
-	 */
-	Actor getActor();
+	@Getter
+	private boolean active;
+
+	DevToolsButton(String title)
+	{
+		super(title);
+		addActionListener((ev) -> setActive(!active));
+	}
+
+	void setActive(boolean active)
+	{
+		this.active = active;
+
+		if (active)
+		{
+			setBackground(Color.GREEN);
+		}
+		else
+		{
+			setBackground(null);
+		}
+	}
 }

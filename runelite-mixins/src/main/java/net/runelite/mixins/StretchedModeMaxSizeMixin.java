@@ -38,21 +38,39 @@ public abstract class StretchedModeMaxSizeMixin implements RSGameEngine
 	@Shadow("clientInstance")
 	private static RSClient client;
 
+	@Copy("resizeCanvas")
+	abstract void rs$resizeCanvas();
+
+	@Replace("resizeCanvas")
+	public void rl$resizeCanvas()
+	{
+		if (client.isStretchedEnabled())
+		{
+			client.invalidateStretching(false);
+
+			if (client.isResized())
+			{
+				Dimension realDimensions = client.getRealDimensions();
+
+				setMaxCanvasWidth(realDimensions.width);
+				setMaxCanvasHeight(realDimensions.height);
+			}
+		}
+
+		rs$resizeCanvas();
+	}
+
 	@Copy("setMaxCanvasSize")
 	abstract void rs$setMaxCanvasSize(int width, int height);
 
 	@Replace("setMaxCanvasSize")
-	public void setMaxCanvasSize(int width, int height)
+	public void rl$setMaxCanvasSize(int width, int height)
 	{
 		if (client.isStretchedEnabled() && client.isResized())
 		{
-			Dimension realDimensions = client.getRealDimensions();
+			return;
+		}
 
-			rs$setMaxCanvasSize(realDimensions.width, realDimensions.height);
-		}
-		else
-		{
-			rs$setMaxCanvasSize(width, height);
-		}
+		rs$setMaxCanvasSize(width, height);
 	}
 }

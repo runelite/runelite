@@ -28,7 +28,6 @@ package net.runelite.client.plugins.banktags;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
@@ -61,6 +60,7 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.input.KeyListener;

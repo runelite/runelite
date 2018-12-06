@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.List;
@@ -39,6 +38,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
+import net.runelite.api.IconID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
@@ -55,6 +55,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.ChatboxInputListener;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.events.PrivateMessageInput;
 import net.runelite.client.game.ItemManager;
@@ -811,15 +812,15 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	 */
 	private static HiscoreEndpoint getHiscoreEndpointByName(final String name)
 	{
-		if (name.contains("<img=2>"))
+		if (name.contains(IconID.IRONMAN.toString()))
 		{
 			return toEndPoint(AccountType.IRONMAN);
 		}
-		else if (name.contains("<img=3>"))
+		else if (name.contains(IconID.ULTIMATE_IRONMAN.toString()))
 		{
 			return toEndPoint(AccountType.ULTIMATE_IRONMAN);
 		}
-		else if (name.contains("<img=10>"))
+		else if (name.contains(IconID.HARDCORE_IRONMAN.toString()))
 		{
 			return toEndPoint(AccountType.HARDCORE_IRONMAN);
 		}

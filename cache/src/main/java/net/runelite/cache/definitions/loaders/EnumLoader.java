@@ -26,6 +26,7 @@ package net.runelite.cache.definitions.loaders;
 
 import net.runelite.cache.definitions.EnumDefinition;
 import net.runelite.cache.io.InputStream;
+import net.runelite.cache.util.ScriptVarType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +36,11 @@ public class EnumLoader
 
 	public EnumDefinition load(int id, byte[] b)
 	{
+		if (b.length == 1 && b[0] == 0)
+		{
+			return null;
+		}
+
 		EnumDefinition def = new EnumDefinition();
 		InputStream is = new InputStream(b);
 
@@ -59,10 +65,10 @@ public class EnumLoader
 		switch (opcode)
 		{
 			case 1:
-				def.setKeyType((char) is.readUnsignedByte());
+				def.setKeyType(ScriptVarType.forCharKey((char) is.readUnsignedByte()));
 				break;
 			case 2:
-				def.setValType((char) is.readUnsignedByte());
+				def.setValType(ScriptVarType.forCharKey((char) is.readUnsignedByte()));
 				break;
 			case 3:
 				def.setDefaultString(is.readString());

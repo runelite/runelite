@@ -25,7 +25,6 @@
 package net.runelite.client.ui.overlay;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.eventbus.Subscribe;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -42,6 +41,7 @@ import lombok.Getter;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
 
 /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.updatecheck;
+package net.runelite.client.plugins.loginscreen;
 
-import com.google.gson.JsonParseException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public class UpdateCheckClient
+@ConfigGroup("loginscreen")
+public interface LoginScreenConfig extends Config
 {
-	private static final Logger logger = LoggerFactory.getLogger(UpdateCheckClient.class);
-
-	public boolean isOutdated()
+	@ConfigItem(
+		keyName = "syncusername",
+		name = "Sync username",
+		description = "Syncs the username that is currently remembered between computers"
+	)
+	default boolean syncUsername()
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("update-check")
-			.build();
-
-		logger.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
-		{
-			ResponseBody body = response.body();
-
-			InputStream in = body.byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), boolean.class);
-		}
-		catch (JsonParseException | IOException ex)
-		{
-			logger.debug("Unable to update-check", ex);
-			return false;
-		}
+		return true;
 	}
+
+	@ConfigItem(
+		keyName = "pasteenabled",
+		name = "Ctrl-V paste",
+		description = "Enables Ctrl+V pasting on the login screen"
+	)
+	default boolean pasteEnabled()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "username",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String username()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "username",
+		name = "",
+		description = ""
+	)
+	void username(String key);
 }

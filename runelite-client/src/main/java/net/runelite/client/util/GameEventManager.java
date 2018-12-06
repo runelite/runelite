@@ -24,7 +24,6 @@
  */
 package net.runelite.client.util;
 
-import com.google.common.eventbus.EventBus;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
@@ -51,6 +50,7 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.EventBus;
 
 @Singleton
 public class GameEventManager

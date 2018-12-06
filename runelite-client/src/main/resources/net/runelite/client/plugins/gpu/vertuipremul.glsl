@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.usernamesyncer;
+#version 330
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec2 aTexCoord;
 
-@ConfigGroup("rememberusername")
-public interface UsernameSyncerConfig extends Config
+out vec2 TexCoord;
+
+void main()
 {
-	@ConfigItem(
-		keyName = "username",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default String username()
-	{
-		return "";
-	}
+	gl_Position = vec4(aPos, 1.0);
 
-	@ConfigItem(
-		keyName = "username",
-		name = "",
-		description = ""
-	)
-	void username(String key);
+	// Flip the UV because it's pre-flipped in the ui texture buffer, but we don't need it to be flipped here.
+	TexCoord = vec2(aTexCoord.x, 1 - aTexCoord.y);
 }

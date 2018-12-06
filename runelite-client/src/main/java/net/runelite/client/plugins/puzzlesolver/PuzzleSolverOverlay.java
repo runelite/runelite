@@ -332,7 +332,8 @@ public class PuzzleSolverOverlay extends Overlay
 		}
 
 		// Solve the puzzle if we don't have an up to date solution
-		if (solver == null || cachedItems == null || (!shouldCache && !Arrays.equals(cachedItems, itemIds)))
+		if (solver == null || cachedItems == null
+			|| (!shouldCache && solver.hasExceededWaitDuration() && !Arrays.equals(cachedItems, itemIds)))
 		{
 			solve(itemIds);
 			shouldCache = true;

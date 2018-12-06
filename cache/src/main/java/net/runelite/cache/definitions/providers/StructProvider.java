@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fightcave;
+package net.runelite.cache.definitions.providers;
 
-import net.runelite.api.AnimationID;
-import net.runelite.api.Prayer;
+import net.runelite.cache.definitions.StructDefinition;
 
-public enum JadAttack
+public interface StructProvider
 {
-	MAGIC(AnimationID.TZTOK_JAD_MAGIC_ATTACK, Prayer.PROTECT_FROM_MAGIC),
-	RANGE(AnimationID.TZTOK_JAD_RANGE_ATTACK, Prayer.PROTECT_FROM_MISSILES);
-
-	private final int animation;
-	private final Prayer prayer;
-
-	JadAttack(int animation, Prayer prayer)
-	{
-		this.animation = animation;
-		this.prayer = prayer;
-	}
-
-	public int getAnimation()
-	{
-		return animation;
-	}
-
-	public Prayer getPrayer()
-	{
-		return prayer;
-	}
+	StructDefinition provide(int structId);
 }
