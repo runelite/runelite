@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,8 +40,11 @@ import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Skill;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
@@ -52,7 +56,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
 
-class SkillCalculator extends JPanel
+public class SkillCalculator extends JPanel
 {
 	private static final int MAX_XP = 200_000_000;
 	private static final DecimalFormat XP_FORMAT = new DecimalFormat("#.#");
@@ -61,6 +65,7 @@ class SkillCalculator extends JPanel
 	private final Client client;
 	private final SpriteManager spriteManager;
 	private final ItemManager itemManager;
+	private final SkillCalculatorConfig config;
 	private final List<UIActionSlot> uiActionSlots = new ArrayList<>();
 	private final CacheSkillData cacheSkillData = new CacheSkillData();
 	private final UICombinedActionSlot combinedActionSlot;
@@ -69,18 +74,27 @@ class SkillCalculator extends JPanel
 	private final IconTextField searchBar = new IconTextField();
 
 	private SkillData skillData;
+	@Getter
 	private int currentLevel = 1;
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
+	@Getter
 	private float xpFactor = 1.0f;
+	@Getter
+	@Setter
+	private String currentTab;
+	@Getter
+	@Setter
+	private Skill skill;
 
-	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
+	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager, SkillCalculatorConfig config)
 	{
 		this.client = client;
 		this.uiInput = uiInput;
 		this.spriteManager = spriteManager;
 		this.itemManager = itemManager;
+		this.config = config;
 
 		combinedActionSlot = new UICombinedActionSlot(spriteManager);
 
@@ -109,22 +123,18 @@ class SkillCalculator extends JPanel
 		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
 	}
 
+	/*
+	 * Calculator Logic
+	 */
+
+	// Opens the Calculator tab for the current Skill
 	void openCalculator(CalculatorType calculatorType)
 	{
-		// Load the skill data.
-		skillData = cacheSkillData.getSkillData(calculatorType.getDataFile());
+		currentTab = "Calculator";
 
-		// Reset the XP factor, removing bonuses.
-		xpFactor = 1.0f;
-
-		// Update internal skill/XP values.
-		currentXP = client.getSkillExperience(calculatorType.getSkill());
-		currentLevel = Experience.getLevelForXp(currentXP);
-		targetLevel = enforceSkillBounds(currentLevel + 1);
-		targetXP = Experience.getXpForLevel(targetLevel);
-
-		// Remove all components (action slots) from this panel.
-		removeAll();
+		// clean slate for creating the required panel
+		this.removeAll();
+		updateData(calculatorType);
 
 		// Clear the search bar
 		searchBar.setText(null);
@@ -327,6 +337,64 @@ class SkillCalculator extends JPanel
 		return XP_FORMAT.format(xp) + expExpression + NumberFormat.getIntegerInstance().format(actionCount) + (actionCount > 1 ? " actions" : " action");
 	}
 
+	private void onSearch()
+	{
+		//only show slots that match our search text
+		uiActionSlots.forEach(slot ->
+		{
+			if (slotContainsText(slot, searchBar.getText()))
+			{
+				super.add(slot);
+			}
+			else
+			{
+				super.remove(slot);
+			}
+
+			revalidate();
+		});
+	}
+
+	private boolean slotContainsText(UIActionSlot slot, String text)
+	{
+		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
+	}
+
+	/*
+	 * Global Helpers
+	 */
+
+	// Update UI panel for new skill/tab data
+	public void updateData(CalculatorType calculatorType)
+	{
+		// Load the skill data.
+		skillData = cacheSkillData.getSkillData(calculatorType.getDataFile());
+
+		// Store the current skill
+		skill = calculatorType.getSkill();
+
+		// Reset the XP factor, removing bonuses.
+		xpFactor = 1.0f;
+
+		// Update internal skill/XP values.
+		currentXP = client.getSkillExperience(skill);
+		currentLevel = Experience.getLevelForXp(currentXP);
+		targetLevel = enforceSkillBounds(currentLevel + 1);
+		targetXP = Experience.getXpForLevel(targetLevel);
+
+		if (currentTab.equals("Banked Xp"))
+		{
+			uiInput.getUiFieldTargetLevel().setEditable(false);
+			uiInput.getUiFieldTargetXP().setEditable(false);
+		}
+		else
+		{
+			uiInput.getUiFieldTargetLevel().setEditable(true);
+			uiInput.getUiFieldTargetXP().setEditable(true);
+		}
+
+	}
+
 	private void updateInputFields()
 	{
 		if (targetXP < currentXP)
@@ -335,17 +403,35 @@ class SkillCalculator extends JPanel
 			targetXP = Experience.getXpForLevel(targetLevel);
 		}
 
+		syncInputFields();
+	}
+
+	public void syncInputFields()
+	{
 		uiInput.setCurrentLevelInput(currentLevel);
 		uiInput.setCurrentXPInput(currentXP);
 		uiInput.setTargetLevelInput(targetLevel);
 		uiInput.setTargetXPInput(targetXP);
-		calculate();
+
+		// Can only edit input fields when on Calculator tab
+		if (currentTab.equals("Calculator"))
+		{
+			calculate();
+		}
 	}
 
 	private void adjustXPBonus(float value)
 	{
 		xpFactor = 1f + value;
-		calculate();
+		switch (currentTab)
+		{
+			case "Calculator":
+				calculate();
+				break;
+			case "Banked Xp":
+				// Todo
+				break;
+		}
 	}
 
 	private void onFieldCurrentLevelUpdated()
@@ -385,28 +471,4 @@ class SkillCalculator extends JPanel
 	{
 		return Math.min(MAX_XP, Math.max(0, input));
 	}
-
-	private void onSearch()
-	{
-		//only show slots that match our search text
-		uiActionSlots.forEach(slot ->
-		{
-			if (slotContainsText(slot, searchBar.getText()))
-			{
-				super.add(slot);
-			}
-			else
-			{
-				super.remove(slot);
-			}
-
-			revalidate();
-		});
-	}
-
-	private boolean slotContainsText(UIActionSlot slot, String text)
-	{
-		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
-	}
-
 }

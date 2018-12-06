@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
@@ -25,46 +24,32 @@
  */
 package net.runelite.client.plugins.skillcalculator;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.runelite.api.Skill;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@AllArgsConstructor
-@Getter
-public enum CalculatorType
+@ConfigGroup("skillCalculator")
+public interface  SkillCalculatorConfig extends Config
 {
-	AGILITY(Skill.AGILITY, "skill_agility.json", false),
-	CONSTRUCTION(Skill.CONSTRUCTION, "skill_construction.json", true),
-	COOKING(Skill.COOKING, "skill_cooking.json", true),
-	CRAFTING(Skill.CRAFTING, "skill_crafting.json", true),
-	FARMING(Skill.FARMING, "skill_farming.json", true),
-	FIREMAKING(Skill.FIREMAKING, "skill_firemaking.json", false),
-	FLETCHING(Skill.FLETCHING, "skill_fletching.json", false),
-	FISHING(Skill.FISHING, "skill_fishing.json", false),
-	HERBLORE(Skill.HERBLORE, "skill_herblore.json", true),
-	HUNTER(Skill.HUNTER, "skill_hunter.json", false),
-	MAGIC(Skill.MAGIC, "skill_magic.json", false),
-	MINING(Skill.MINING, "skill_mining.json", false),
-	PRAYER(Skill.PRAYER, "skill_prayer.json", true),
-	RUNECRAFT(Skill.RUNECRAFT, "skill_runecraft.json", false),
-	SMITHING(Skill.SMITHING, "skill_smithing.json", true),
-	THIEVING(Skill.THIEVING, "skill_thieving.json", false),
-	WOODCUTTING(Skill.WOODCUTTING, "skill_woodcutting.json", false);
-
-	private final Skill skill;
-	private final String dataFile;
-	private final boolean bankedXpFlag;
-
-	public static CalculatorType getBySkill(Skill skill)
+	@ConfigItem(
+		keyName = "showBankedXp",
+		name = "Show Banked xp Tab",
+		description = "Shows the Banked xp tab inside the Calculator Panel",
+		position = 0
+	)
+	default boolean showBankedXp()
 	{
-		for (CalculatorType c : values())
-		{
-			if (c.getSkill().equals(skill))
-			{
-				return c;
-			}
-		}
+		return true;
+	}
 
-		return null;
+	@ConfigItem(
+		keyName = "limitedBankedSecondaries",
+		name = "Limit Banked xp to Secondaries",
+		description = "Limits the Banked xp shown based on secondaries banked as well",
+		position = 1
+	)
+	default boolean limitedBankedSecondaries()
+	{
+		return false;
 	}
 }
