@@ -549,8 +549,16 @@ public class TimersPlugin extends Plugin
 		{
 			SkullIcon currentSkullIcon = player.getSkullIcon();
 			int currentRegionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-			Item[] equippedItems = client.getItemContainer(InventoryID.EQUIPMENT).getItems();
-			boolean avariceThisTick = (equippedItems[2].getId() == ItemID.AMULET_OF_AVARICE);
+			Item[] equippedItems;
+			try
+			{
+				equippedItems = client.getItemContainer(InventoryID.EQUIPMENT).getItems();
+			}
+			catch (NullPointerException exception)
+			{
+				equippedItems = null;
+			}
+			boolean avariceThisTick = equippedItems != null && equippedItems[2].getId() == ItemID.AMULET_OF_AVARICE;
 
 			//Enter the abyss
 			if (currentRegionID != lastRegionID && currentRegionID == abyssRegionID && currentSkullIcon == SkullIcon.SKULL)
