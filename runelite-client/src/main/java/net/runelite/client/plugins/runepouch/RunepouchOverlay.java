@@ -28,7 +28,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Point;
@@ -66,6 +69,7 @@ public class RunepouchOverlay extends Overlay
 	private final Client client;
 	private final RunepouchConfig config;
 	private final TooltipManager tooltipManager;
+	private final Supplier<WidgetItem> cachedRunePouchWidget;
 
 	@Inject
 	private ItemManager itemManager;
@@ -79,19 +83,20 @@ public class RunepouchOverlay extends Overlay
 		this.queryRunner = queryRunner;
 		this.client = client;
 		this.config = config;
+		this.cachedRunePouchWidget = Suppliers.memoizeWithExpiration(() -> {
+			Query query = new InventoryWidgetItemQuery().idEquals(ItemID.RUNE_POUCH);
+			WidgetItem[] items = queryRunner.runQuery(query);
+			return items.length == 0 ? null : items[0];
+		}, 600, TimeUnit.MILLISECONDS);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Query query = new InventoryWidgetItemQuery().idEquals(ItemID.RUNE_POUCH);
-		WidgetItem[] items = queryRunner.runQuery(query);
-		if (items.length == 0)
-		{
+		WidgetItem runePouch = cachedRunePouchWidget.get();
+		if(runePouch == null)
 			return null;
-		}
 
-		WidgetItem runePouch = items[0];
 		Point location = runePouch.getCanvasLocation();
 		if (location == null)
 		{
