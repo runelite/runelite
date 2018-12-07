@@ -87,7 +87,6 @@ class ItemChargeOverlay extends Overlay
 		this.config = config;
 		updateConfig();
 		this.memorizedChargeItemWidgetList = Suppliers.memoizeWithExpiration(this::getChargeWidgetItems, 500, TimeUnit.MILLISECONDS);
-
 	}
 
 	@Subscribe
@@ -193,21 +192,21 @@ class ItemChargeOverlay extends Overlay
 	private Color getColor(int charges)
 	{
 		Color color = Color.WHITE;
-		if (charges <= config.veryLowWarning())
+		if (charges <= veryLowWarning)
 		{
-			color = config.veryLowWarningColor();
+			color = veryLowWarningColor;
 		}
-		else if (charges <= config.lowWarning())
+		else if (charges <= lowWarning)
 		{
-			color = config.lowWarningolor();
+			color = lowWarningColor;
 		}
 		return color;
 	}
 
 	private boolean displayOverlay()
 	{
-		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
-			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
-			|| config.showBellowCharges() || config.showAbyssalBraceletCharges();
+		return showTeleportCharges || showDodgyCount || showFungicideCharges
+			|| showImpCharges || showWateringCanCharges ||showWaterskinCharges
+			|| showBellowCharges || showAbyssalBraceletCharges;
 	}
 }
