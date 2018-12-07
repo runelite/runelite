@@ -377,13 +377,7 @@ public class TabInterface
 				break;
 			case Tab.RENAME_TAB:
 				String renameTarget = Text.standardize(event.getOpbase());
-				chatboxPanelManager.openTextMenuInput("Rename " + renameTarget + "?")
-						.option("Yes", () ->
-								clientThread.invoke(() ->
-										renameTab(renameTarget))
-						)
-						.option("No", Runnables::doNothing)
-						.build();
+				renameTab(renameTarget);
 				break;
 		}
 	}
@@ -734,7 +728,7 @@ public class TabInterface
 
 	private void renameTab(String oldTag)
 	{
-		chatboxPanelManager.openTextInput("Tag name")
+		chatboxPanelManager.openTextInput("Enter new tag name for tag \"" + oldTag + "\":")
 				.onDone((newTag) -> clientThread.invoke(() ->
 				{
 					if (!Strings.isNullOrEmpty(newTag) && !newTag.equalsIgnoreCase(oldTag))
@@ -764,7 +758,14 @@ public class TabInterface
 						else
 						{
 							chatboxPanelManager.openTextMenuInput("The specified bank tag already exists.")
-									.option("Ok", () ->
+									.option("1. Merge into existing tag \"" + newTag + "\".", () ->
+											clientThread.invoke(() ->
+											{
+												tagManager.renameTag(oldTag, newTag);
+												deleteTab(oldTag);
+											})
+									)
+									.option("2. Choose a different name.", () ->
 											clientThread.invoke(() ->
 													renameTab(oldTag))
 									)
