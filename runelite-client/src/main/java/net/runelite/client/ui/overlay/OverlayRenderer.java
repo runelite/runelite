@@ -31,6 +31,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -39,6 +40,7 @@ import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -78,6 +80,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private boolean isResizeable;
 	private OverlayBounds snapCorners;
 
+	// Overlay Fonts
+	private Font standardFont;
+	private Font tooltipFont;
+	private Font interfaceFont;
+
 	@Inject
 	private OverlayRenderer(
 		final Client client,
@@ -89,8 +96,26 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		this.client = client;
 		this.overlayManager = overlayManager;
 		this.runeLiteConfig = runeLiteConfig;
+		this.updateConfig();
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
+
+	}
+
+	private void updateConfig()
+	{
+		this.standardFont = runeLiteConfig.fontType().getFont();
+		this.tooltipFont = runeLiteConfig.tooltipFontType().getFont();
+		this.interfaceFont = runeLiteConfig.interfaceFontType().getFont();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if(event.getGroup().equals("runelite"))
+		{
+			updateConfig();
+		}
 	}
 
 	@Subscribe
@@ -377,15 +402,15 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		// Set font based on configuration
 		if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
 		{
-			subGraphics.setFont(runeLiteConfig.fontType().getFont());
+			subGraphics.setFont(standardFont);
 		}
 		else if (position == OverlayPosition.TOOLTIP)
 		{
-			subGraphics.setFont(runeLiteConfig.tooltipFontType().getFont());
+			subGraphics.setFont(tooltipFont);
 		}
 		else
 		{
-			subGraphics.setFont(runeLiteConfig.interfaceFontType().getFont());
+			subGraphics.setFont(interfaceFont);
 		}
 
 		subGraphics.translate(point.x, point.y);
