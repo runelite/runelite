@@ -57,7 +57,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 @PluginDescriptor(
 	name = "Idle Notifier",
 	description = "Send a notification when going idle, or when HP/Prayer reaches a threshold",
-	tags = {"health", "hitpoints", "notifications", "prayer"}
+	tags = {"health", "hitpoints", "notifications", "prayer", "fishing", "oxygen"}
 )
 public class IdleNotifierPlugin extends Plugin
 {
@@ -356,13 +356,13 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("[" + local.getName() + "] is now idle!");
 		}
 
-		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))
+		if ((config.combatIdle() || config.interactionIdle()) && checkInteractionIdle(waitDuration, local))
 		{
-			if (lastInteractWasCombat)
+			if (config.combatIdle() && lastInteractWasCombat)
 			{
 				notifier.notify("[" + local.getName() + "] is now out of combat!");
 			}
-			else
+			else if (config.interactionIdle() && !lastInteractWasCombat)
 			{
 				notifier.notify("[" + local.getName() + "] is now idle!");
 			}
