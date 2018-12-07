@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.slayer;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import static com.google.common.collect.ObjectArrays.concat;
@@ -32,6 +34,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import com.google.common.primitives.ImmutableIntArray;
 import net.runelite.api.ItemID;
@@ -92,6 +95,8 @@ class SlayerOverlay extends Overlay
 	private final SlayerPlugin plugin;
 	private final QueryRunner queryRunner;
 
+	private final Supplier<ImmutableList<WidgetItem>> memorizedSlayerItemWidgetList;
+
 	@Inject
 	private SlayerOverlay(SlayerPlugin plugin, SlayerConfig config, QueryRunner queryRunner)
 	{
@@ -100,6 +105,7 @@ class SlayerOverlay extends Overlay
 		this.plugin = plugin;
 		this.config = config;
 		this.queryRunner = queryRunner;
+		this.memorizedSlayerItemWidgetList = Suppliers.memoizeWithExpiration(this::getSlayerItems, 200, TimeUnit.MILLISECONDS);
 	}
 
 	private ImmutableList<WidgetItem> getSlayerItems()
@@ -134,8 +140,11 @@ class SlayerOverlay extends Overlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem item : getSlayerItems())
+		for (WidgetItem item : memorizedSlayerItemWidgetList.get())
 		{
+			if(item == null)
+				continue;
+
 			int itemId = item.getId();
 
 			final Rectangle bounds = item.getCanvasBounds();
