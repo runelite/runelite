@@ -741,7 +741,7 @@ public class WorldHopperPlugin extends Plugin
 		for (World world : worldResult.getWorlds())
 		{
 			int ping = Ping.ping(world);
-			SwingUtilities.invokeLater(() -> panel.updatePing(world, ping));
+			SwingUtilities.invokeLater(() -> panel.updatePing(world.getId(), ping));
 		}
 
 		stopwatch.stop();

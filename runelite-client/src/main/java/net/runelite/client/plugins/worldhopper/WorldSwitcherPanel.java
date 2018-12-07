@@ -113,11 +113,11 @@ class WorldSwitcherPanel extends PluginPanel
 		}
 	}
 
-	void updatePing(World world, int ping)
+	void updatePing(int world, int ping)
 	{
 		for (WorldTableRow worldTableRow : rows)
 		{
-			if (worldTableRow.getWorld() == world)
+			if (worldTableRow.getWorld().getId() == world)
 			{
 				worldTableRow.setPing(ping);
 
