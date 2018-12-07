@@ -365,9 +365,11 @@ public class AgilityPlugin extends Plugin
 			return;
 		}
 
-		if (Obstacles.COURSE_OBSTACLE_IDS.contains(newObject.getId()) ||
-			Obstacles.SHORTCUT_OBSTACLE_IDS.contains(newObject.getId()) ||
-			(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
+		int objectId = newObject.getId();
+
+		if (Obstacles.COURSE_OBSTACLE_IDS.contains(objectId) ||
+			Obstacles.SHORTCUT_OBSTACLE_IDS.contains(objectId) ||
+			(Obstacles.TRAP_OBSTACLE_IDS.contains(objectId)
 				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
 		{
 			obstacles.put(newObject, tile);
