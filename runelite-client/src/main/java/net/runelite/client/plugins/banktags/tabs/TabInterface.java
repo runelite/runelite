@@ -103,6 +103,7 @@ public class TabInterface
 	private static final String EXPORT_TAB = "Export tag tab";
 	private static final String IMPORT_TAB = "Import tag tab";
 	private static final String VIEW_TAB = "View tag tab";
+	private static final String RENAME_TAB = "Rename tag tab";
 	private static final String CHANGE_ICON = "Change icon";
 	private static final String REMOVE_TAG = "Remove-tag";
 	private static final String TAG_GEAR = "Tag-equipment";
@@ -373,6 +374,16 @@ public class TabInterface
 				final StringSelection stringSelection = new StringSelection(BankTagsPlugin.JOINER.join(data));
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
 				notifier.notify("Tag tab " + tagTab.getTag() + " has been copied to your clipboard!");
+				break;
+			case Tab.RENAME_TAB:
+				String renameTarget = Text.standardize(event.getOpbase());
+				chatboxPanelManager.openTextMenuInput("Rename " + renameTarget + "?")
+						.option("Yes", () ->
+								clientThread.invoke(() ->
+										renameTab(renameTarget))
+						)
+						.option("No", Runnables::doNothing)
+						.build();
 				break;
 		}
 	}
@@ -684,6 +695,7 @@ public class TabInterface
 			btn.setAction(2, CHANGE_ICON);
 			btn.setAction(3, REMOVE_TAB);
 			btn.setAction(4, EXPORT_TAB);
+			btn.setAction(5, RENAME_TAB);
 			btn.setOnOpListener((JavaScriptCallback) this::handleTagTab);
 			tagTab.setBackground(btn);
 		}
@@ -718,6 +730,49 @@ public class TabInterface
 
 		updateBounds();
 		scrollTab(0);
+	}
+
+	private void renameTab(String oldTag)
+	{
+		chatboxPanelManager.openTextInput("Tag name")
+				.onDone((newTag) -> clientThread.invoke(() ->
+				{
+					if (!Strings.isNullOrEmpty(newTag) && !newTag.equalsIgnoreCase(oldTag))
+					{
+						if (tabManager.find(newTag) == null)
+						{
+							loadTab(newTag);
+							tabManager.move(oldTag, newTag);
+
+							TagTab oldTagTab = tabManager.find(oldTag);
+							TagTab newTagTab = tabManager.find(newTag);
+
+							if (oldTagTab != null && newTagTab != null)
+							{
+								Widget currentIcon = newTagTab.getIcon();
+								Widget newIcon = oldTagTab.getIcon();
+								currentIcon.setItemId(newIcon.getItemId());
+								newTagTab.setIcon(currentIcon);
+								newTagTab.setIconItemId(currentIcon.getItemId());
+								configManager.setConfiguration(CONFIG_GROUP, ICON_SEARCH + newTag, currentIcon.getItemId() + "");
+							}
+
+							deleteTab(oldTag);
+							tabManager.save();
+							tagManager.renameTag(oldTag, newTag);
+						}
+						else
+						{
+							chatboxPanelManager.openTextMenuInput("The specified bank tag already exists.")
+									.option("Ok", () ->
+											clientThread.invoke(() ->
+													renameTab(oldTag))
+									)
+									.build();
+						}
+					}
+				}))
+				.build();
 	}
 
 	private void scrollTick(int direction)

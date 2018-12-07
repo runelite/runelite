@@ -169,6 +169,33 @@ public class TagManager
 		}
 	}
 
+	public void renameTag(String oldTag, String newTag)
+	{
+		final String prefix = CONFIG_GROUP + "." + ITEM_KEY_PREFIX;
+		configManager.getConfigurationKeys(prefix).forEach(item ->
+		{
+			int id = Integer.parseInt(item.replace(prefix, ""));
+			renameTag(id, oldTag, newTag);
+		});
+	}
+
+	public void renameTag(int itemId, String oldTag, String newTag)
+	{
+		Collection<String> tags = getTags(itemId, false);
+		if (tags.remove(Text.standardize(oldTag)))
+		{
+			tags.add(Text.standardize(newTag));
+			setTags(itemId, tags, false);
+		}
+
+		tags = getTags(itemId, true);
+		if (tags.remove(Text.standardize(oldTag)))
+		{
+			tags.add(Text.standardize(newTag));
+			setTags(itemId, tags, true);
+		}
+	}
+
 	private int getItemId(int itemId, boolean variation)
 	{
 		itemId = Math.abs(itemId);
