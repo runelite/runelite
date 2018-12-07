@@ -40,6 +40,8 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
 
+	private boolean drawTiles;
+
 	@Inject
 	private PlayerIndicatorsTileOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
 	{
@@ -48,12 +50,18 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
+		updateConfig();
+	}
+
+	public void updateConfig()
+	{
+		this.drawTiles = config.drawTiles();
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.drawTiles())
+		if (!drawTiles)
 		{
 			return null;
 		}

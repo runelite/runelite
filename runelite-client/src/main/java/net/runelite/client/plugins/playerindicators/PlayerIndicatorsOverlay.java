@@ -46,6 +46,9 @@ public class PlayerIndicatorsOverlay extends Overlay
 	private final PlayerIndicatorsConfig config;
 	private final ClanManager clanManager;
 
+	private boolean drawOverheadPlayerNames;
+	private boolean showClanRanks;
+
 	@Inject
 	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService,
 		ClanManager clanManager)
@@ -55,21 +58,27 @@ public class PlayerIndicatorsOverlay extends Overlay
 		this.clanManager = clanManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
+		updateConfig();
+	}
+
+	public void updateConfig()
+	{
+		this.drawOverheadPlayerNames = config.drawOverheadPlayerNames();
+		this.showClanRanks = config.showClanRanks();
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
+		if(drawOverheadPlayerNames)
+		{
+			playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
+		}
 		return null;
 	}
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		if (!config.drawOverheadPlayerNames())
-		{
-			return;
-		}
 
 		String name = actor.getName().replace('\u00A0', ' ');
 		int offset = actor.getLogicalHeight() + 40;
@@ -77,7 +86,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 		if (textLocation != null)
 		{
-			if (config.showClanRanks() && actor.isClanMember())
+			if (showClanRanks && actor.isClanMember())
 			{
 				ClanMemberRank rank = clanManager.getRank(name);
 

@@ -42,6 +42,8 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
 
+	private boolean drawMinimapNames;
+
 	@Inject
 	private PlayerIndicatorsMinimapOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
 	{
@@ -50,12 +52,20 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
+		updateConfig();
+	}
+
+	public void updateConfig(){
+		this.drawMinimapNames = config.drawMinimapNames();
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
+		if (drawMinimapNames)
+		{
+			playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
+		}
 		return null;
 	}
 
@@ -63,14 +73,11 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 	{
 		final String name = actor.getName().replace('\u00A0', ' ');
 
-		if (config.drawMinimapNames())
-		{
-			final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
+		final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
 
-			if (minimapLocation != null)
-			{
-				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
-			}
+		if (minimapLocation != null)
+		{
+			OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
 		}
 	}
 }

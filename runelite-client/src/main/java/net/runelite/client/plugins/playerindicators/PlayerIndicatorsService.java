@@ -37,6 +37,18 @@ public class PlayerIndicatorsService
 	private final Client client;
 	private final PlayerIndicatorsConfig config;
 
+	private boolean highlightOwnPlayer;
+	private boolean highlightFriends;
+	private boolean drawClanMemberNames;
+	private boolean highlightNonClanMembers;
+	private boolean highlightTeamMembers;
+
+	private Color ownPlayerColor;
+	private Color friendColor;
+	private Color clanMemberColor;
+	private Color teamMemberColor;
+	private Color nonClanMemberColor;
+
 	@Inject
 	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config)
 	{
@@ -44,10 +56,23 @@ public class PlayerIndicatorsService
 		this.client = client;
 	}
 
+	public void updateConfig()
+	{
+		this.highlightOwnPlayer = config.highlightOwnPlayer();
+		this.highlightFriends = config.highlightFriends();
+		this.drawClanMemberNames = config.drawClanMemberNames();
+		this.highlightNonClanMembers = config.highlightNonClanMembers();
+		this.highlightTeamMembers = config.highlightTeamMembers();
+		this.ownPlayerColor = config.getOwnPlayerColor();
+		this.friendColor = config.getFriendColor();
+		this.clanMemberColor = config.getClanMemberColor();
+		this.teamMemberColor = config.getTeamMemberColor();
+		this.nonClanMemberColor = config.getNonClanMemberColor();
+	}
+
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
-		if (!config.highlightOwnPlayer() && !config.drawClanMemberNames()
-			&& !config.highlightFriends() && !config.highlightNonClanMembers())
+		if (!highlightOwnPlayer && !drawClanMemberNames && !highlightFriends&& !highlightNonClanMembers)
 		{
 			return;
 		}
@@ -65,26 +90,26 @@ public class PlayerIndicatorsService
 
 			if (player == localPlayer)
 			{
-				if (config.highlightOwnPlayer())
+				if (highlightOwnPlayer)
 				{
-					consumer.accept(player, config.getOwnPlayerColor());
+					consumer.accept(player, ownPlayerColor);
 				}
 			}
-			else if (config.highlightFriends() && player.isFriend())
+			else if (highlightFriends && player.isFriend())
 			{
-				consumer.accept(player, config.getFriendColor());
+				consumer.accept(player, friendColor);
 			}
-			else if (config.drawClanMemberNames() && isClanMember)
+			else if (drawClanMemberNames && isClanMember)
 			{
-				consumer.accept(player, config.getClanMemberColor());
+				consumer.accept(player, this.clanMemberColor);
 			}
-			else if (config.highlightTeamMembers() && localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
+			else if (highlightTeamMembers && localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
 			{
-				consumer.accept(player, config.getTeamMemberColor());
+				consumer.accept(player, teamMemberColor);
 			}
-			else if (config.highlightNonClanMembers() && !isClanMember)
+			else if (highlightNonClanMembers && !isClanMember)
 			{
-				consumer.accept(player, config.getNonClanMemberColor());
+				consumer.accept(player, nonClanMemberColor);
 			}
 		}
 	}

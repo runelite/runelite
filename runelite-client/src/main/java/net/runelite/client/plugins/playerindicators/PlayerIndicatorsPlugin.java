@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.*;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -65,6 +66,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
 
 	@Inject
+	private PlayerIndicatorsService playerIndicatorsService;
+
+	@Inject
 	private Client client;
 
 	@Inject
@@ -90,6 +94,18 @@ public class PlayerIndicatorsPlugin extends Plugin
 		overlayManager.remove(playerIndicatorsOverlay);
 		overlayManager.remove(playerIndicatorsTileOverlay);
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("playerindicators"))
+		{
+			playerIndicatorsOverlay.updateConfig();
+			playerIndicatorsMinimapOverlay.updateConfig();
+			playerIndicatorsService.updateConfig();
+			playerIndicatorsTileOverlay.updateConfig();
+		}
 	}
 
 	@Subscribe
