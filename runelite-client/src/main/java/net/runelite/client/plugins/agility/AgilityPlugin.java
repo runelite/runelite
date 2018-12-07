@@ -367,8 +367,7 @@ public class AgilityPlugin extends Plugin
 
 		int objectId = newObject.getId();
 
-		if (Obstacles.COURSE_OBSTACLE_IDS.contains(objectId) ||
-			Obstacles.SHORTCUT_OBSTACLE_IDS.contains(objectId) ||
+		if (Obstacles.isShortcutOrCourseObstacle(objectId) ||
 			(Obstacles.TRAP_OBSTACLE_IDS.contains(objectId)
 				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
 		{

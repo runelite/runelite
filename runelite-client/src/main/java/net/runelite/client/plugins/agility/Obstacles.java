@@ -26,8 +26,13 @@ package net.runelite.client.plugins.agility;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import net.runelite.client.util.SparseBitSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 import static net.runelite.api.NullObjectID.*;
 import static net.runelite.api.ObjectID.*;
 
@@ -225,6 +230,19 @@ class Obstacles
 		// Asgarnian Ice Dungeon
 		STEPS
 	);
+
+	// Faster way to check if an id is within SHORTCUT_OBSTACLE_IDS or COURSE_OBSTACLE_IDS
+	private static final SparseBitSet SHORTCUT_AND_OBSTACLE_IDS =
+			Stream.concat(SHORTCUT_OBSTACLE_IDS.stream(), COURSE_OBSTACLE_IDS.stream())
+				.collect(SparseBitSet::new, SparseBitSet::set, (a,b) -> a.or(b));
+
+	public static boolean isShortcutOrCourseObstacle(int tileId) {
+		try {
+			return SHORTCUT_AND_OBSTACLE_IDS.get(tileId);
+		} catch(IndexOutOfBoundsException e) {
+			return false;
+		}
+	}
 
 	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
 		// Agility pyramid
