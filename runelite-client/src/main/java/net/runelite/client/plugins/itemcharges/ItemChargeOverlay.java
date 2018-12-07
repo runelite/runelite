@@ -32,14 +32,22 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
+import com.google.common.collect.ImmutableList;
 import net.runelite.api.ItemID;
 import net.runelite.api.Query;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
+
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -53,6 +61,22 @@ class ItemChargeOverlay extends Overlay
 	private final ItemChargePlugin itemChargePlugin;
 	private final ItemChargeConfig config;
 
+	// Config values
+	private boolean showDodgyCount;
+	private boolean showTeleportCharges;
+	private boolean showFungicideCharges;
+	private boolean showImpCharges;
+	private boolean showWateringCanCharges;
+	private boolean showWaterskinCharges;
+	private boolean showBellowCharges;
+	private boolean showAbyssalBraceletCharges;
+	private int veryLowWarning;
+	private int lowWarning;
+	private Color veryLowWarningColor;
+	private Color lowWarningColor;
+
+	private final Supplier<Collection<WidgetItem>> memorizedChargeItemWidgetList;
+
 	@Inject
 	ItemChargeOverlay(QueryRunner queryRunner, ItemChargePlugin itemChargePlugin, ItemChargeConfig config)
 	{
@@ -61,6 +85,32 @@ class ItemChargeOverlay extends Overlay
 		this.queryRunner = queryRunner;
 		this.itemChargePlugin = itemChargePlugin;
 		this.config = config;
+		updateConfig();
+		this.memorizedChargeItemWidgetList = Suppliers.memoizeWithExpiration(this::getChargeWidgetItems, 500, TimeUnit.MILLISECONDS);
+
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("itemCharge"))
+			updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.showDodgyCount = config.showDodgyCount();
+		this.showTeleportCharges = config.showTeleportCharges();
+		this.showFungicideCharges = config.showFungicideCharges();
+		this.showImpCharges = config.showImpCharges();
+		this.showWateringCanCharges = config.showWateringCanCharges();
+		this.showWaterskinCharges = config.showWaterskinCharges();
+		this.showBellowCharges = config.showBellowCharges();
+		this.showAbyssalBraceletCharges = config.showAbyssalBraceletCharges();
+		this.veryLowWarning = config.veryLowWarning();
+		this.lowWarning = config.lowWarning();
+		this.veryLowWarningColor = config.veryLowWarningColor();
+		this.lowWarningColor = config.lowWarningolor();
 	}
 
 	@Override
@@ -73,12 +123,15 @@ class ItemChargeOverlay extends Overlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem item : getChargeWidgetItems())
+		for (WidgetItem item : memorizedChargeItemWidgetList.get())
 		{
+			if(item == null)
+				continue;
+			
 			int charges;
 			if (item.getId() == ItemID.DODGY_NECKLACE)
 			{
-				if (!config.showDodgyCount())
+				if (!showDodgyCount)
 				{
 					continue;
 				}
@@ -94,13 +147,13 @@ class ItemChargeOverlay extends Overlay
 				}
 
 				ItemChargeType type = chargeItem.getType();
-				if ((type == TELEPORT && !config.showTeleportCharges())
-					|| (type == FUNGICIDE_SPRAY && !config.showFungicideCharges())
-					|| (type == IMPBOX && !config.showImpCharges())
-					|| (type == WATERCAN && !config.showWateringCanCharges())
-					|| (type == WATERSKIN && !config.showWaterskinCharges())
-					|| (type == BELLOWS && !config.showBellowCharges())
-					|| (type == ABYSSAL_BRACELET && !config.showAbyssalBraceletCharges()))
+				if ((type == TELEPORT && !showTeleportCharges)
+					|| (type == FUNGICIDE_SPRAY && !showFungicideCharges)
+					|| (type == IMPBOX && !showImpCharges)
+					|| (type == WATERCAN && !showWateringCanCharges)
+					|| (type == WATERSKIN && !showWaterskinCharges)
+					|| (type == BELLOWS && !showBellowCharges)
+					|| (type == ABYSSAL_BRACELET && !showAbyssalBraceletCharges))
 				{
 					continue;
 				}
