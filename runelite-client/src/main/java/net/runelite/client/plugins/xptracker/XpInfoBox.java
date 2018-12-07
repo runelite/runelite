@@ -65,6 +65,8 @@ class XpInfoBox extends JPanel
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
+	private static String HEX_COLOR = ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR);
+
 	// Instance members
 	private final JPanel panel;
 
@@ -243,6 +245,6 @@ class XpInfoBox extends JPanel
 	static String htmlLabel(String key, int value)
 	{
 		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
-		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
+		return String.format(HTML_LABEL_TEMPLATE, HEX_COLOR, key, valueStr);
 	}
 }

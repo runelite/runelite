@@ -71,6 +71,8 @@ class LootTrackerPanel extends PluginPanel
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
+	private static String HEX_COLOR = ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR);
+
 	// When there is no loot, display this
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
@@ -517,6 +519,6 @@ class LootTrackerPanel extends PluginPanel
 	private static String htmlLabel(String key, long value)
 	{
 		final String valueStr = StackFormatter.quantityToStackSize(value);
-		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
+		return String.format(HTML_LABEL_TEMPLATE, HEX_COLOR, key, valueStr);
 	}
 }

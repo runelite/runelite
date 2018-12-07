@@ -59,6 +59,8 @@ public class GrandExchangeOfferSlot extends JPanel
 	private static final String FACE_CARD = "FACE_CARD";
 	private static final String DETAILS_CARD = "DETAILS_CARD";
 
+	private static String HEX_COLOR = ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR);
+
 	private static final ImageIcon RIGHT_ARROW_ICON;
 	private static final ImageIcon LEFT_ARROW_ICON;
 
@@ -246,12 +248,12 @@ public class GrandExchangeOfferSlot extends JPanel
 
 	private String htmlTooltip(String value)
 	{
-		return "<html><body style = 'color:" + ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>Progress: <span style = 'color:white'>" + value + "</span></body></html>";
+		return "<html><body style = 'color:" + HEX_COLOR + "'>Progress: <span style = 'color:white'>" + value + "</span></body></html>";
 	}
 
 	private String htmlLabel(String key, String value)
 	{
-		return "<html><body style = 'color:white'>" + key + "<span style = 'color:" + ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + value + "</span></body></html>";
+		return "<html><body style = 'color:white'>" + key + "<span style = 'color:" + HEX_COLOR + "'>" + value + "</span></body></html>";
 	}
 
 	private void switchPanel()
