@@ -57,6 +57,8 @@ public class FpsDrawListener implements Runnable
 	private int lastDelayIndex = 0;
 	private long sleepDelay = 0;
 
+	private FpsLimitMode limitMode;
+
 	@Inject
 	private FpsDrawListener(FpsConfig config)
 	{
@@ -69,6 +71,7 @@ public class FpsDrawListener implements Runnable
 		lastMillis = System.currentTimeMillis();
 		targetDelay = 1000 / Math.max(1, config.maxFps());
 		sleepDelay = targetDelay;
+		limitMode = config.limitMode();
 
 		for (int i = 0; i < SAMPLE_SIZE; i++)
 		{
@@ -83,8 +86,8 @@ public class FpsDrawListener implements Runnable
 
 	private boolean isEnforced()
 	{
-		return FpsLimitMode.ALWAYS == config.limitMode()
-			|| (FpsLimitMode.UNFOCUSED == config.limitMode() && !isFocused);
+		return FpsLimitMode.ALWAYS == this.limitMode
+			|| (FpsLimitMode.UNFOCUSED == this.limitMode && !isFocused);
 	}
 
 	@Override
