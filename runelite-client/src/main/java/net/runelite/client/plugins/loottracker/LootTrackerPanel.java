@@ -33,6 +33,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -334,6 +335,23 @@ class LootTrackerPanel extends PluginPanel
 			box.rebuild();
 			updateOverall();
 		}
+	}
+
+	/**
+	 * Adds a Collection of records to the panel
+	 */
+	void addRecords(Collection<LootTrackerRecord> recs)
+	{
+		for (LootTrackerRecord r : recs)
+		{
+			records.add(r);
+			LootTrackerBox box = buildBox(r);
+			if (box != null)
+			{
+				box.rebuild();
+			}
+		}
+		updateOverall();
 	}
 
 	/**

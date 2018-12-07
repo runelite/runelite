@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.loottracker;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.Collection;
+import lombok.Data;
+import net.runelite.client.game.GameItem;
+import net.runelite.http.api.RuneLiteAPI;
 
-@ConfigGroup("loottracker")
-public interface LootTrackerConfig extends Config
+@Data
+class LootTrackerData
 {
-	@ConfigItem(
-		keyName = "ignoredItems",
-		name = "Ignored items",
-		description = "Configures which items should be ignored when calculating loot prices."
-	)
-	default String getIgnoredItems()
+	// In order to save on space inside the config all variable names will be 1 letter long
+	private final String n;
+	private final Collection<GameItem> i;
+
+	String asJson()
 	{
-		return "";
+		return RuneLiteAPI.GSON.toJson(this);
 	}
 
-	@ConfigItem(
-		keyName = "ignoredItems",
-		name = "",
-		description = ""
-	)
-	void setIgnoredItems(String key);
-
-	@ConfigItem(
-		keyName = "persistDataToggle",
-		name = "Persistent data",
-		description = "Configures whether loot should be tracked between sessions"
-	)
-	default boolean getPersistDataToggle()
+	static Collection<LootTrackerData> fromJson(String json)
 	{
-		return false;
+		Type listType = new TypeToken<Collection<LootTrackerData>>()
+		{
+		}.getType();
+		return RuneLiteAPI.GSON.fromJson(json, listType);
 	}
 }

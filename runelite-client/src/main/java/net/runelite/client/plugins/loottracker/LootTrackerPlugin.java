@@ -27,11 +27,15 @@ package net.runelite.client.plugins.loottracker;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -54,10 +58,12 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
+import net.runelite.client.game.GameItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
@@ -88,8 +94,21 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
 
+	// Data Persistence
+	private static final String GROUP_NAME = "loottracker";
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM-dd-YY");
+	private static final String KEY_PREFIX = "persistentData-";
+	private static final int MAX_CONFIG_LENGTH = 65535;
+
+
 	@Inject
 	private ClientToolbar clientToolbar;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	private ItemManager itemManager;
@@ -108,30 +127,34 @@ public class LootTrackerPlugin extends Plugin
 	private String eventType;
 
 	private List<String> ignoredItems = new ArrayList<>();
+	private Multimap<String, LootTrackerRecord> records = ArrayListMultimap.create();
+	private String keyName = KEY_PREFIX + DATE_FORMAT.format(new Date());
+	private int keyIncrement = 0;
 
-	private static Collection<ItemStack> stack(Collection<ItemStack> items)
+	// stacks and converts ItemStack into GameItem since we don't care about the location
+	private static Collection<GameItem> stack(Collection<ItemStack> items)
 	{
-		final List<ItemStack> list = new ArrayList<>();
+		final List<GameItem> list = new ArrayList<>();
 
 		for (final ItemStack item : items)
 		{
 			int quantity = 0;
-			for (final ItemStack i : list)
+			for (final GameItem i : list)
 			{
 				if (i.getId() == item.getId())
 				{
-					quantity = i.getQuantity();
+					quantity = i.getQty();
 					list.remove(i);
 					break;
 				}
 			}
 			if (quantity > 0)
 			{
-				list.add(new ItemStack(item.getId(), item.getQuantity() + quantity, item.getLocation()));
+				list.add(new GameItem(item.getId(), item.getQuantity() + quantity));
 			}
 			else
 			{
-				list.add(item);
+				list.add(new GameItem(item.getId(), item.getQuantity()));
 			}
 		}
 
@@ -149,8 +172,11 @@ public class LootTrackerPlugin extends Plugin
 	{
 		if (event.getGroup().equals("loottracker"))
 		{
-			ignoredItems = COMMA_SPLITTER.splitToList(config.getIgnoredItems());
-			panel.updateIgnoredRecords();
+			if (event.getKey().equals("ignoredItems"))
+			{
+				ignoredItems = COMMA_SPLITTER.splitToList(config.getIgnoredItems());
+				panel.updateIgnoredRecords();
+			}
 		}
 	}
 
@@ -171,6 +197,25 @@ public class LootTrackerPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
+
+		// Load all persistent data on client load if enabled
+		if (config.getPersistDataToggle())
+		{
+			clientThread.invokeLater(() ->
+			{
+				switch (client.getGameState())
+				{
+					case STARTING:
+					case UNKNOWN:
+						return false;
+				}
+
+				initalizePersistentData();
+				SwingUtilities.invokeLater(() -> panel.addRecords(records.values()));
+				log.debug("Config Name: {}", keyName);
+				return true;
+			});
+		}
 	}
 
 	@Override
@@ -183,22 +228,32 @@ public class LootTrackerPlugin extends Plugin
 	public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
 	{
 		final NPC npc = npcLootReceived.getNpc();
-		final Collection<ItemStack> items = npcLootReceived.getItems();
+		final Collection<GameItem> items = stack(npcLootReceived.getItems());
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
-		final LootTrackerItem[] entries = buildEntries(stack(items));
+		final LootTrackerItem[] entries = buildEntries(items);
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
+
+		if (config.getPersistDataToggle())
+		{
+			persistData(new LootTrackerData(name, items));
+		}
 	}
 
 	@Subscribe
 	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
 		final Player player = playerLootReceived.getPlayer();
-		final Collection<ItemStack> items = playerLootReceived.getItems();
+		final Collection<GameItem> items = stack(playerLootReceived.getItems());
 		final String name = player.getName();
 		final int combat = player.getCombatLevel();
-		final LootTrackerItem[] entries = buildEntries(stack(items));
+		final LootTrackerItem[] entries = buildEntries(items);
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
+
+		if (config.getPersistDataToggle())
+		{
+			persistData(new LootTrackerData(name, items));
+		}
 	}
 
 	@Subscribe
@@ -246,8 +301,14 @@ public class LootTrackerPlugin extends Plugin
 
 		if (!items.isEmpty())
 		{
-			final LootTrackerItem[] entries = buildEntries(stack(items));
+			final Collection<GameItem> stacked = stack(items);
+			final LootTrackerItem[] entries = buildEntries(stacked);
 			SwingUtilities.invokeLater(() -> panel.add(eventType, -1, entries));
+
+			if (config.getPersistDataToggle())
+			{
+				persistData(new LootTrackerData(eventType, stacked));
+			}
 		}
 		else
 		{
@@ -311,21 +372,126 @@ public class LootTrackerPlugin extends Plugin
 		return ignoredItems.contains(name);
 	}
 
-	private LootTrackerItem[] buildEntries(final Collection<ItemStack> itemStacks)
+	private LootTrackerItem[] buildEntries(final Collection<GameItem> itemStacks)
 	{
 		return itemStacks.stream().map(itemStack ->
 		{
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemStack.getId());
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemStack.getId();
-			final long price = (long) itemManager.getItemPrice(realItemId) * (long) itemStack.getQuantity();
+			final long price = (long) itemManager.getItemPrice(realItemId) * (long) itemStack.getQty();
 			final boolean ignored = ignoredItems.contains(itemComposition.getName());
 
 			return new LootTrackerItem(
 				itemStack.getId(),
 				itemComposition.getName(),
-				itemStack.getQuantity(),
+				itemStack.getQty(),
 				price,
 				ignored);
 		}).toArray(LootTrackerItem[]::new);
+	}
+
+	// Loads all persistent data from config and adds it to the records multimap
+	private void initalizePersistentData()
+	{
+		records.clear();
+		Collection<LootTrackerData> storedData = getAllPersistentData();
+		log.debug("Loaded Stored Data: {}", storedData);
+		records.putAll(consolidate(storedData));
+		log.debug("Consolidated Records: {}", records);
+	}
+
+	/**
+	 * Persists the LootTrackerData via the ConfigManager
+	 * @param data data to store
+	 */
+	private void persistData(LootTrackerData data)
+	{
+		log.debug("Persisting data: {}", data);
+		String stored = getConfig(keyName);
+		log.debug("Existing data: {}", stored);
+		if (stored.length() > 0)
+		{
+			stored += ",";
+		}
+
+		stored += data.asJson();
+
+		if (stored.length() >= MAX_CONFIG_LENGTH)
+		{
+			log.warn("Unable to persist data, max storage length reached. Attempting to create addition daily storage");
+			keyIncrement++;
+			keyName = KEY_PREFIX + DATE_FORMAT.format(new Date()) + "_" + keyIncrement;
+			persistData(data);
+			log.warn("Created additional storage: {}", keyName);
+			return;
+		}
+
+		configManager.setConfiguration(GROUP_NAME, keyName, stored);
+		records.put(data.getN(), createLootTrackerRecord(data));
+		log.debug("Updated data: {}", getConfig(keyName));
+	}
+
+	private List<LootTrackerData> getAllPersistentData()
+	{
+		List<LootTrackerData> data = new ArrayList<>();
+
+		List<String> keys = configManager.getConfigurationKeys(GROUP_NAME);
+		for (String k : keys)
+		{
+			String key = k.split("\\.")[1];
+			if (key.contains(KEY_PREFIX))
+			{
+				data.addAll(getConfigKeyAsData(key));
+			}
+		}
+
+		return data;
+	}
+
+	// TODO add toggle to UI to trigger this method.
+	private void clearPeristentData()
+	{
+		List<String> keys = configManager.getConfigurationKeys(GROUP_NAME);
+		for (String key : keys)
+		{
+			if (key.contains(KEY_PREFIX))
+			{
+				configManager.unsetConfiguration(GROUP_NAME, key);
+			}
+		}
+	}
+
+	private Collection<LootTrackerData> getConfigKeyAsData(String key)
+	{
+		String result = "[" + getConfig(key) + "]";
+		return LootTrackerData.fromJson(result);
+	}
+
+	private String getConfig(String key)
+	{
+		String con = configManager.getConfiguration(GROUP_NAME, key);
+		con = con == null ? "" : con;
+		return con;
+	}
+
+	/**
+	 * @param data Collection of LootTrackerData
+	 * @return Multimap of LootTrackerData by name
+	 */
+	private Multimap<String, LootTrackerRecord> consolidate(Collection<LootTrackerData> data)
+	{
+		Multimap<String, LootTrackerRecord> recs = ArrayListMultimap.create();
+
+		for (LootTrackerData d : data)
+		{
+			recs.put(d.getN(), createLootTrackerRecord(d));
+		}
+
+		return recs;
+	}
+
+	private LootTrackerRecord createLootTrackerRecord(LootTrackerData d)
+	{
+		return new LootTrackerRecord(d.getN(), "", buildEntries(d.getI()), System.currentTimeMillis());
 	}
 }
