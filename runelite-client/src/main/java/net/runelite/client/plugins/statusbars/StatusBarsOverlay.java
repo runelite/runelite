@@ -37,8 +37,10 @@ import net.runelite.api.Point;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.itemstats.Effect;
 import net.runelite.client.plugins.itemstats.ItemStatChangesService;
@@ -84,6 +86,10 @@ class StatusBarsOverlay extends Overlay
 	private final TextComponent textComponent = new TextComponent();
 	private final ItemStatChangesService itemStatService;
 
+	private boolean enableRestorationBars;
+	private boolean enableSkillIcon;
+	private boolean enableCounter;
+
 	@Inject
 	private StatusBarsOverlay(Client client, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice)
 	{
@@ -93,6 +99,21 @@ class StatusBarsOverlay extends Overlay
 		this.config = config;
 		this.skillIconManager = skillIconManager;
 		this.itemStatService = itemstatservice;
+		updateConfig();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("statusbars"))
+			updateConfig();
+	}
+
+	public void updateConfig()
+	{
+		this.enableRestorationBars = config.enableRestorationBars();
+		this.enableSkillIcon = config.enableSkillIcon();
+		this.enableCounter = config.enableCounter();
 	}
 
 	@Override
@@ -174,7 +195,7 @@ class StatusBarsOverlay extends Overlay
 		renderBar(g, offsetPrayerX, offsetPrayerY,
 			maxPrayer, currentPrayer, height, prayerBar);
 
-		if (config.enableRestorationBars())
+		if (enableRestorationBars)
 		{
 			final MenuEntry[] menu = client.getMenuEntries();
 			final int menuSize = menu.length;
@@ -229,7 +250,7 @@ class StatusBarsOverlay extends Overlay
 				prayerHealValue, PRAYER_HEAL_COLOR);
 		}
 
-		if (config.enableSkillIcon() || config.enableCounter())
+		if (enableSkillIcon || enableCounter)
 		{
 			final Image healthImage = skillIconManager.getSkillImage(Skill.HITPOINTS, true);
 			final Image prayerImage = ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE);
@@ -306,7 +327,7 @@ class StatusBarsOverlay extends Overlay
 		final int widthOfCounter = graphics.getFontMetrics().stringWidth(counterText);
 		final int centerText = (WIDTH - PADDING) / 2 - (widthOfCounter / 2);
 
-		if (config.enableCounter())
+		if (enableCounter)
 		{
 			graphics.setFont(FontManager.getRunescapeSmallFont());
 			textComponent.setColor(Color.WHITE);
@@ -318,7 +339,7 @@ class StatusBarsOverlay extends Overlay
 			textComponent.setText("");
 		}
 
-		if (config.enableSkillIcon())
+		if (enableSkillIcon)
 		{
 			graphics.drawImage(image, x + ICON_AND_COUNTER_OFFSET_X + PADDING, y + ICON_AND_COUNTER_OFFSET_Y - image.getWidth(null), null);
 			textComponent.setPosition(new java.awt.Point(x + centerText + counterPadding, y + SKILL_ICON_HEIGHT));
