@@ -334,30 +334,9 @@ public class IdleNotifierPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		skullNotifier();
+
 		final Player local = client.getLocalPlayer();
-		SkullIcon currentTickSkull = local.getSkullIcon();
-		EnumSet worldTypes = client.getWorldType();
-		if (!(worldTypes.contains(WorldType.DEADMAN) || worldTypes.contains(WorldType.SEASONAL_DEADMAN)))
-		{
-			if (!isFirstTick)
-			{
-				if (config.showSkullNotification() && lastTickSkull == null && currentTickSkull == SkullIcon.SKULL)
-				{
-					notifier.notify("[" + local.getName() + "] is now skulled!");
-				}
-				else if (config.showUnskullNotification() && lastTickSkull == SkullIcon.SKULL && currentTickSkull == null)
-				{
-					notifier.notify("[" + local.getName() + "] is now unskulled!");
-				}
-			}
-			else
-			{
-				isFirstTick = false;
-			}
-
-			lastTickSkull = currentTickSkull;
-		}
-
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
 		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
@@ -640,6 +619,33 @@ public class IdleNotifierPlugin extends Plugin
 		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
 		{
 			lastInteract = null;
+		}
+	}
+
+	private void skullNotifier()
+	{
+		final Player local = client.getLocalPlayer();
+		SkullIcon currentTickSkull = local.getSkullIcon();
+		EnumSet worldTypes = client.getWorldType();
+		if (!(worldTypes.contains(WorldType.DEADMAN) || worldTypes.contains(WorldType.SEASONAL_DEADMAN)))
+		{
+			if (!isFirstTick)
+			{
+				if (config.showSkullNotification() && lastTickSkull == null && currentTickSkull == SkullIcon.SKULL)
+				{
+					notifier.notify("[" + local.getName() + "] is now skulled!");
+				}
+				else if (config.showUnskullNotification() && lastTickSkull == SkullIcon.SKULL && currentTickSkull == null)
+				{
+					notifier.notify("[" + local.getName() + "] is now unskulled!");
+				}
+			}
+			else
+			{
+				isFirstTick = false;
+			}
+
+			lastTickSkull = currentTickSkull;
 		}
 	}
 }

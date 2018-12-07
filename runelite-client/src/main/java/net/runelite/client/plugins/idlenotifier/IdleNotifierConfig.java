@@ -65,10 +65,10 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 4,
-			keyName = "skullNotification",
-			name = "Skull Notification",
-			description = "Receive a notification when you skull."
+		position = 4,
+		keyName = "skullNotification",
+		name = "Skull Notification",
+		description = "Receive a notification when you skull."
 	)
 	default boolean showSkullNotification()
 	{
@@ -76,10 +76,10 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
-			keyName = "unskullNotification",
-			name = "Unskull Notification",
-			description = "Receive a notification when you unskull."
+		position = 5,
+		keyName = "unskullNotification",
+		name = "Unskull Notification",
+		description = "Receive a notification when you unskull."
 	)
 	default boolean showUnskullNotification()
 	{
