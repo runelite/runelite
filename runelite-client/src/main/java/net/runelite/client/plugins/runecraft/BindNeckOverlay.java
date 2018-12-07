@@ -34,7 +34,11 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import net.runelite.api.Query;
 import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
@@ -53,6 +57,9 @@ public class BindNeckOverlay extends Overlay
 	private final RunecraftConfig config;
 	int bindingCharges;
 
+	private final Supplier<Collection<WidgetItem>> memorizedNecklaceWidgetQuery;
+
+
 	@Inject
 	BindNeckOverlay(QueryRunner queryRunner, RunecraftConfig config)
 	{
@@ -60,6 +67,7 @@ public class BindNeckOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.queryRunner = queryRunner;
 		this.config = config;
+		this.memorizedNecklaceWidgetQuery = Suppliers.memoizeWithExpiration(this::getNecklaceWidgetItems, 600, TimeUnit.MILLISECONDS);
 	}
 
 	@Override
@@ -72,8 +80,11 @@ public class BindNeckOverlay extends Overlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem necklace : getNecklaceWidgetItems())
+		for (WidgetItem necklace : memorizedNecklaceWidgetQuery.get())
 		{
+			if(necklace == null)
+				continue;
+
 			final Color color = bindingCharges == 1 ? Color.RED : Color.WHITE;
 			final Rectangle bounds = necklace.getCanvasBounds();
 			final String text = bindingCharges <= 0 ? "?" : bindingCharges + "";
