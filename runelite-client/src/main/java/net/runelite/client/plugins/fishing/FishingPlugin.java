@@ -314,7 +314,7 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (!config.trawlerNotification() || client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -322,6 +322,7 @@ public class FishingPlugin extends Plugin
 		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 
 		if ((regionID == TRAWLER_SHIP_REGION_NORMAL || regionID == TRAWLER_SHIP_REGION_SINKING)
+		    && config.trawlerNotification()
 			&& client.getVar(Varbits.FISHING_TRAWLER_ACTIVITY) <= TRAWLER_ACTIVITY_THRESHOLD)
 		{
 			if (!trawlerNotificationSent)
