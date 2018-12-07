@@ -75,9 +75,12 @@ public class KingdomPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		favor = client.getVar(Varbits.KINGDOM_FAVOR);
-		coffer = client.getVar(Varbits.KINGDOM_COFFER);
-		processInfobox();
+		if(isInKingdom())
+		{
+			favor = client.getVar(Varbits.KINGDOM_FAVOR);
+			coffer = client.getVar(Varbits.KINGDOM_COFFER);
+			processInfobox();
+		}
 	}
 
 	@Subscribe
