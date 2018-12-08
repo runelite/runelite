@@ -44,8 +44,9 @@ public interface ZoomConfig extends Config
 
 	@ConfigItem(
 		keyName = "outerLimit",
-		name = "Expand outer zoom limit",
-		description = "Configures how much the outer zoom limit is increased, 0 is off",
+		name = "Adjust outer zoom limit",
+		description = "Configures how much the outer zoom limit is adjusted",
+		minimumInt = -400,
 		position = 2
 	)
 	default int outerLimit()
