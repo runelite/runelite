@@ -78,11 +78,14 @@ class StatusBarsOverlay extends Overlay
 	private static final int SKILL_ICON_HEIGHT = 35;
 	private static final int COUNTER_ICON_HEIGHT = 18;
 	private static final int OFFSET = 2;
+
 	private final Client client;
 	private final StatusBarsConfig config;
 	private final SkillIconManager skillIconManager;
 	private final TextComponent textComponent = new TextComponent();
 	private final ItemStatChangesService itemStatService;
+
+	private final Image prayerImage;
 
 	@Inject
 	private StatusBarsOverlay(Client client, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice)
@@ -93,6 +96,8 @@ class StatusBarsOverlay extends Overlay
 		this.config = config;
 		this.skillIconManager = skillIconManager;
 		this.itemStatService = itemstatservice;
+
+		prayerImage = ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE);
 	}
 
 	@Override
@@ -232,7 +237,6 @@ class StatusBarsOverlay extends Overlay
 		if (config.enableSkillIcon() || config.enableCounter())
 		{
 			final Image healthImage = skillIconManager.getSkillImage(Skill.HITPOINTS, true);
-			final Image prayerImage = ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE);
 			final int counterHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
 			final int counterPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
 			final String counterHealthText = Integer.toString(counterHealth);
