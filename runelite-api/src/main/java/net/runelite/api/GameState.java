@@ -24,7 +24,6 @@
  */
 package net.runelite.api;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
