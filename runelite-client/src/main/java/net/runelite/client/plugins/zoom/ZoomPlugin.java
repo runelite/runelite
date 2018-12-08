@@ -28,7 +28,6 @@ package net.runelite.client.plugins.zoom;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
@@ -46,7 +45,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"limit", "vertical"},
 	enabledByDefault = false
 )
-@Slf4j
 public class ZoomPlugin extends Plugin implements KeyListener
 {
 	/**
