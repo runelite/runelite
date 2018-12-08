@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,12 +24,21 @@
  */
 package net.runelite.client.config;
 
-import lombok.Value;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Value
-public class ConfigItemDescriptor
+/**
+ * Used with ConfigItem, describes valid int range for a config item.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@Documented
+public @interface Range
 {
-	private final ConfigItem item;
-	private final Class<?> type;
-	private final Range range;
+	int min() default Integer.MIN_VALUE;
+
+	int max() default Integer.MAX_VALUE;
 }

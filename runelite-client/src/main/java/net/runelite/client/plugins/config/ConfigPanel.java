@@ -77,6 +77,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
+import net.runelite.client.config.Range;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -341,7 +342,15 @@ public class ConfigPanel extends PluginPanel
 			{
 				int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
 
-				SpinnerModel model = new SpinnerNumberModel(value, 0, Integer.MAX_VALUE, 1);
+				Range range = cid.getRange();
+				int min = 0, max = Integer.MAX_VALUE;
+				if (range != null)
+				{
+					min = range.min();
+					max = range.max();
+				}
+
+				SpinnerModel model = new SpinnerNumberModel(value, min, max, 1);
 				JSpinner spinner = new JSpinner(model);
 				Component editor = spinner.getEditor();
 				JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();

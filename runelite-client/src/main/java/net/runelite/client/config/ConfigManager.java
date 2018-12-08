@@ -379,7 +379,8 @@ public class ConfigManager
 			.filter(m -> m.getParameterCount() == 0)
 			.map(m -> new ConfigItemDescriptor(
 				m.getDeclaredAnnotation(ConfigItem.class),
-				m.getReturnType()
+				m.getReturnType(),
+				m.getDeclaredAnnotation(Range.class)
 			))
 			.sorted((a, b) -> ComparisonChain.start()
 				.compare(a.getItem().position(), b.getItem().position())
