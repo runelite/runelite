@@ -39,16 +39,22 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Point;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 class BlastFurnaceClickBoxOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
+	private static final int BLAST_FURNACE_REGION = 7757;
 
 	private final Client client;
 	private final BlastFurnacePlugin plugin;
 	private final BlastFurnaceConfig config;
+
+	private boolean showConveyorBelt;
+	private boolean showBarDispenser;
 
 	@Inject
 	private BlastFurnaceClickBoxOverlay(Client client, BlastFurnacePlugin plugin, BlastFurnaceConfig config)
@@ -57,20 +63,37 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		updateConfig();
+	}
+
+	private void updateConfig()
+	{
+		this.showConveyorBelt = config.showConveyorBelt();
+		this.showBarDispenser = config.showBarDispenser();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("blastfurnace"))
+			updateConfig();
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if(client.getLocalPlayer().getWorldLocation().getRegionID() != BLAST_FURNACE_REGION)
+			return null;
+
 		int dispenserState = client.getVar(Varbits.BAR_DISPENSER);
 
-		if (config.showConveyorBelt() && plugin.getConveyorBelt() != null)
+		if (showConveyorBelt && plugin.getConveyorBelt() != null)
 		{
 			Color color = dispenserState == 1 ? Color.RED : Color.GREEN;
 			renderObject(plugin.getConveyorBelt(), graphics, color);
 		}
 
-		if (config.showBarDispenser() && plugin.getBarDispenser() != null)
+		if (showBarDispenser && plugin.getBarDispenser() != null)
 		{
 			boolean hasIceGloves = hasIceGloves();
 			Color color = dispenserState == 2 && hasIceGloves ? Color.GREEN : (dispenserState == 3 ? Color.GREEN : Color.RED);
