@@ -30,39 +30,29 @@
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.classic.sift.SiftingAppender">
-        <!-- discriminator is used for setting up the log file from code -->
-        <discriminator>
-            <key>logFileName</key>
-            <defaultValue>${user.home}/.runelite/logs/application</defaultValue>
-        </discriminator>
-        <sift>
-            <appender name="FILE-${logFileName}" class="ch.qos.logback.core.rolling.RollingFileAppender">
-                <!-- default file to log to -->
-                <file>${logFileName}.log</file>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${user.home}/.runelite/logs/client.log</file>
 
-                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                    <!-- daily rollover -->
-                    <fileNamePattern>${logFileName}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>client_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
 
-                    <!-- when file size is larger than defined, roll to new file -->
-                    <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                        <maxFileSize>10MB</maxFileSize>
-                    </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- when file size is larger than defined, roll to new file -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
 
-                    <!-- keep 30 days' worth of history -->
-                    <maxHistory>30</maxHistory>
-                </rollingPolicy>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
 
-                <encoder>
-                    <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</Pattern>
-                </encoder>
-            </appender>
-        </sift>
+        <encoder>
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </encoder>
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </root>
 </configuration>
