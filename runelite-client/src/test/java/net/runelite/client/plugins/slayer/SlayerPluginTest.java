@@ -29,9 +29,19 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.SERVER;
+
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.Model;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.Node;
 import net.runelite.api.Player;
+import net.runelite.api.Point;
+import net.runelite.api.SpritePixels;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
@@ -41,6 +51,8 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,6 +63,11 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SlayerPluginTest
@@ -451,4 +468,284 @@ public class SlayerPluginTest
 		slayerPlugin.killedOne();
 		assertEquals(30, slayerPlugin.getAmount());
 	}
+
+	private static NPC newNPC(String name, int combatLevel)
+	{
+		return new NPC() {
+			@Override
+			public int getId() {
+				return 0;
+			}
+
+			@Override
+			public String getName() {
+				return name;
+			}
+
+			@Override
+			public int getCombatLevel() {
+				return combatLevel;
+			}
+
+			@Override
+			public int getIndex() {
+				return 0;
+			}
+
+			@Override
+			public NPCComposition getComposition() {
+				return null;
+			}
+
+			@Override
+			public NPCComposition getTransformedComposition() {
+				return null;
+			}
+
+			@Override
+			public boolean isDead() {
+				return false;
+			}
+
+			@Override
+			public Actor getInteracting() {
+				return null;
+			}
+
+			@Override
+			public int getHealthRatio() {
+				return 0;
+			}
+
+			@Override
+			public int getHealth() {
+				return 0;
+			}
+
+			@Override
+			public WorldPoint getWorldLocation() {
+				return null;
+			}
+
+			@Override
+			public LocalPoint getLocalLocation() {
+				return null;
+			}
+
+			@Override
+			public void setIdlePoseAnimation(int animation) {
+
+			}
+
+			@Override
+			public void setPoseAnimation(int animation) {
+
+			}
+
+			@Override
+			public int getOrientation() {
+				return 0;
+			}
+
+			@Override
+			public int getAnimation() {
+				return 0;
+			}
+
+			@Override
+			public void setAnimation(int animation) {
+
+			}
+
+			@Override
+			public void setActionFrame(int actionFrame) {
+
+			}
+
+			@Override
+			public int getGraphic() {
+				return 0;
+			}
+
+			@Override
+			public void setGraphic(int graphic) {
+
+			}
+
+			@Override
+			public void setSpotAnimFrame(int spotAnimFrame) {
+
+			}
+
+			@Override
+			public int getModelHeight() {
+				return 0;
+			}
+
+			@Override
+			public Polygon getCanvasTilePoly() {
+				return null;
+			}
+
+			@Override
+			public Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset) {
+				return null;
+			}
+
+			@Override
+			public Point getCanvasImageLocation(BufferedImage image, int zOffset) {
+				return null;
+			}
+
+			@Override
+			public Point getCanvasSpriteLocation(SpritePixels sprite, int zOffset) {
+				return null;
+			}
+
+			@Override
+			public Point getMinimapLocation() {
+				return null;
+			}
+
+			@Override
+			public int getLogicalHeight() {
+				return 0;
+			}
+
+			@Override
+			public Polygon getConvexHull() {
+				return null;
+			}
+
+			@Override
+			public WorldArea getWorldArea() {
+				return null;
+			}
+
+			@Override
+			public String getOverhead() {
+				return null;
+			}
+
+			@Override
+			public Model getModel() {
+				return null;
+			}
+
+			@Override
+			public void setModelHeight(int modelHeight) {
+
+			}
+
+			@Override
+			public void draw(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash) {
+
+			}
+
+			@Override
+			public Node getNext() {
+				return null;
+			}
+
+			@Override
+			public Node getPrevious() {
+				return null;
+			}
+
+			@Override
+			public long getHash() {
+				return 0;
+			}
+		};
+	}
+
+	@Test
+	public void testSackMulti() throws Exception
+	{
+		slayerPlugin.startUp();
+
+		List<NPC> died = new ArrayList<>();
+		NPC npc0 = newNPC("Dust devil", 93);
+		NPC npc1 = newNPC("Dust devil", 110);
+		died.add(npc1);
+		died.add(npc0);
+		died.add(npc0);
+		died.add(npc0);
+		died.add(npc1);
+		died.add(npc0);
+		died.add(npc0);
+		died.add(npc0);
+		died.add(npc0);
+		died.add(npc0);
+		died.add(npc1);
+		// 5 93s and 2 110s
+		// = 5 * 105 + 2 * 130 = 785
+		int estimatedCount = slayerPlugin.estimateKillCount(died, 785);
+		Assert.assertEquals(7, estimatedCount);
+	}
+
+	@Test
+	public void testSackSingle() throws Exception
+	{
+		slayerPlugin.startUp();
+
+		List<NPC> died0 = new ArrayList<>();
+		NPC npc0 = newNPC("Dust devil", 93);
+		died0.add(npc0);
+		died0.add(npc0);
+		// 1 93
+		// = 1 * 105 = 105
+		int estimatedCount0 = slayerPlugin.estimateKillCount(died0, 105);
+		Assert.assertEquals(1, estimatedCount0);
+
+		List<NPC> died1 = new ArrayList<>();
+		NPC npc1 = newNPC("Dust devil", 110);
+		died1.add(npc1);
+		died1.add(npc1);
+		died1.add(npc1);
+		// 1 110
+		// = 1 * 130 = 130
+		int estimatedCount1 = slayerPlugin.estimateKillCount(died1, 130);
+		Assert.assertEquals(1, estimatedCount1);
+	}
+
+	@Test
+	public void testSackAmbiguous() throws Exception
+	{
+		slayerPlugin.startUp();
+
+		List<NPC> died = new ArrayList<>();
+		NPC npc0 = newNPC("Desert Lizard", 42);
+		NPC npc1 = newNPC("Desert Lizard", 24);
+		NPC npc2 = newNPC("Desert Lizard", 12);
+		died.add(npc0);
+		died.add(npc0);
+		died.add(npc1);
+		died.add(npc2);
+		died.add(npc2);
+		// 1 42
+		// = 1 * 40 = 40
+		// but 1 12 and 1 24
+		// = 1 * 15 + 1 * 25 = 40
+		// so expect to go for smallest kill count and return 1 for the lvl 42 kill
+		int estimatedCount = slayerPlugin.estimateKillCount(died, 40);
+		Assert.assertEquals(1, estimatedCount);
+	}
+
+	@Test
+	public void testSackAlwaysOne() throws Exception
+	{
+		slayerPlugin.startUp();
+
+		List<NPC> died = new ArrayList<>();
+		NPC npc = newNPC("Greater demon", 92);
+		died.add(npc);
+		// 1 92 (partial)
+		// 1 * 87 * 0.5 = 43.5 round down to 43
+		// but 87 can't fit into 43.5 any times so knapsack solver gives 0
+		// but we gained xp and 1 enemy died so failsafes give at least 1
+		int estimatedCount = slayerPlugin.estimateKillCount(died, 43);
+		Assert.assertEquals(1, estimatedCount);
+	}
+
 }
