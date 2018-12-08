@@ -340,8 +340,9 @@ public class ConfigPanel extends PluginPanel
 			if (cid.getType() == int.class)
 			{
 				int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
+				int minimumInt = cid.getItem().minimumInt();
 
-				SpinnerModel model = new SpinnerNumberModel(value, 0, Integer.MAX_VALUE, 1);
+				SpinnerModel model = new SpinnerNumberModel(value, minimumInt, Integer.MAX_VALUE, 1);
 				JSpinner spinner = new JSpinner(model);
 				Component editor = spinner.getEditor();
 				JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
