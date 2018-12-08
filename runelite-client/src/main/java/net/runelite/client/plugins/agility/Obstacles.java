@@ -26,13 +26,12 @@ package net.runelite.client.plugins.agility;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import net.runelite.client.util.SparseBitSet;
+import com.zaxxer.sparsebits.SparseBitSet;
+
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toList;
 import static net.runelite.api.NullObjectID.*;
 import static net.runelite.api.ObjectID.*;
 
