@@ -101,6 +101,11 @@ public class BoostsPlugin extends Plugin
 	private boolean preserveBeenActive = false;
 	private long lastTickMillis;
 
+
+	private boolean useRelativeBoost;
+	private boolean displayIndicators;
+	private int boostThreshold;
+
 	@Provides
 	BoostsConfig provideConfig(ConfigManager configManager)
 	{
@@ -116,14 +121,14 @@ public class BoostsPlugin extends Plugin
 		Arrays.fill(lastSkillLevels, -1);
 
 		// Add infoboxes for everything at startup and then determine inside if it will be rendered
-		infoBoxManager.addInfoBox(new StatChangeIndicator(true, ImageUtil.getResourceStreamFromClass(getClass(), "debuffed.png"), this, config));
-		infoBoxManager.addInfoBox(new StatChangeIndicator(false, ImageUtil.getResourceStreamFromClass(getClass(), "buffed.png"), this, config));
+		infoBoxManager.addInfoBox(new StatChangeIndicator(true, ImageUtil.getResourceStreamFromClass(getClass(), "debuffed.png"), this));
+		infoBoxManager.addInfoBox(new StatChangeIndicator(false, ImageUtil.getResourceStreamFromClass(getClass(), "buffed.png"), this));
 
 		for (final Skill skill : Skill.values())
 		{
 			if (skill != Skill.OVERALL)
 			{
-				infoBoxManager.addInfoBox(new BoostIndicator(skill, skillIconManager.getSkillImage(skill), this, client, config));
+				infoBoxManager.addInfoBox(new BoostIndicator(skill, skillIconManager.getSkillImage(skill), this, client));
 			}
 		}
 	}
@@ -162,6 +167,10 @@ public class BoostsPlugin extends Plugin
 		}
 
 		updateShownSkills();
+
+		this.useRelativeBoost = config.useRelativeBoost();
+		this.displayIndicators = config.displayIndicators();
+		this.boostThreshold = config.boostThreshold();
 
 		if (config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER)
 		{
@@ -258,6 +267,10 @@ public class BoostsPlugin extends Plugin
 			}
 		}
 	}
+
+	public boolean useRelativeBoost() { return this.useRelativeBoost; }
+    public boolean displayIndicators() { return this.displayIndicators; }
+    public int getBoostThreshold() { return this.boostThreshold; }
 
 	private void updateShownSkills()
 	{

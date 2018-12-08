@@ -33,14 +33,12 @@ public class StatChangeIndicator extends InfoBox
 {
 	private final boolean up;
 	private final BoostsPlugin plugin;
-	private final BoostsConfig config;
 
-	StatChangeIndicator(boolean up, BufferedImage image, BoostsPlugin plugin, BoostsConfig config)
+	StatChangeIndicator(boolean up, BufferedImage image, BoostsPlugin plugin)
 	{
 		super(image, plugin);
 		this.up = up;
 		this.plugin = plugin;
-		this.config = config;
 		setPriority(InfoBoxPriority.MED);
 		setTooltip(up ? "Next debuff change" : "Next buff change");
 	}
@@ -61,6 +59,6 @@ public class StatChangeIndicator extends InfoBox
 	public boolean render()
 	{
 		final int time = up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks();
-		return config.displayIndicators() && time != -1;
+		return plugin.displayIndicators() && time != -1;
 	}
 }
