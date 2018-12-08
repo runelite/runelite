@@ -361,7 +361,10 @@ public class SlayerPlugin extends Plugin
 		for (NPC dead : died)
 		{
 			double xp = slayerXpDrop.findXpForNpc(dead);
-			potentialXpDrops.add(xp);
+			if (xp > 0)
+			{
+				potentialXpDrops.add(xp);
+			}
 		}
 
 		// we can attempt to determine exactly how many npcs died to give this amount of xp
