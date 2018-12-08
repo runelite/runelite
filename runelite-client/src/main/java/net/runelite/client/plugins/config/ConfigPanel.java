@@ -26,6 +26,7 @@ package net.runelite.client.plugins.config;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.primitives.Ints;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -349,6 +350,9 @@ public class ConfigPanel extends PluginPanel
 					min = range.min();
 					max = range.max();
 				}
+
+				// Config may previously have been out of range
+				value = Ints.constrainToRange(value, min, max);
 
 				SpinnerModel model = new SpinnerNumberModel(value, min, max, 1);
 				JSpinner spinner = new JSpinner(model);
