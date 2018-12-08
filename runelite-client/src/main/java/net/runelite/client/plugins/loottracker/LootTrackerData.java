@@ -24,30 +24,92 @@
  */
 package net.runelite.client.plugins.loottracker;
 
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
+import com.google.common.base.Splitter;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import net.runelite.client.game.GameItem;
-import net.runelite.http.api.RuneLiteAPI;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.http.api.loottracker.GameItem;
+import net.runelite.http.api.loottracker.LootRecord;
+import net.runelite.http.api.loottracker.LootRecordType;
 
-@Data
-class LootTrackerData
+@Slf4j
+class LootTrackerData extends LootRecord
 {
-	// In order to save on space inside the config all variable names will be 1 letter long
-	private final String n;
-	private final Collection<GameItem> i;
+	private static final Splitter COMMA_SPLITTER = Splitter.on(',').trimResults().omitEmptyStrings();
+	private static final Splitter COLON_SPLITTER = Splitter.on(':').trimResults().omitEmptyStrings();
 
-	String asJson()
+	public LootTrackerData(String eventId, LootRecordType type, Collection<GameItem> drops)
 	{
-		return RuneLiteAPI.GSON.toJson(this);
+		super(eventId, type, drops);
 	}
 
-	static Collection<LootTrackerData> fromJson(String json)
+	String asCSV()
 	{
-		Type listType = new TypeToken<Collection<LootTrackerData>>()
+		StringBuilder ids = new StringBuilder();
+		StringBuilder qtys = new StringBuilder();
+
+		boolean delimited = false;
+		for (GameItem item : getDrops())
 		{
-		}.getType();
-		return RuneLiteAPI.GSON.fromJson(json, listType);
+			if (delimited)
+			{
+				ids.append(":");
+				qtys.append(":");
+			}
+			ids.append(item.getId());
+			qtys.append(item.getQty());
+			delimited = true;
+		}
+
+		return getEventId() + "," + getType() + "," + ids.toString() + "," + qtys.toString();
+	}
+
+	static String getCSVHeader()
+	{
+		return "name,type,item ids,item quantities";
+	}
+
+	static LootTrackerData fromCSV(String csv)
+	{
+		if (csv.equals(getCSVHeader()))
+		{
+			return null;
+		}
+
+		List<String> d = COMMA_SPLITTER.splitToList(csv);
+		List<String> ids = COLON_SPLITTER.splitToList(d.get(2));
+		List<String> qtys = COLON_SPLITTER.splitToList(d.get(3));
+		if (ids.size() != qtys.size())
+		{
+			log.warn("Invalid CSV format for line: {}", csv);
+			return null;
+		}
+
+		Collection<GameItem> items = new ArrayList<>();
+		for (int i = 0; i < ids.size(); i++)
+		{
+			items.add(new GameItem(Integer.valueOf(ids.get(i)), Integer.valueOf(qtys.get(i))));
+		}
+
+		return new LootTrackerData(d.get(0), LootRecordType.valueOf(d.get(1).toUpperCase()), items);
+	}
+
+	/**
+	 * Converts LootRecords from the API into LootTrackerData for use inside the plugin
+	 * @param records LootRecords to convert
+	 * @return Converted LootTrackerData
+	 */
+	static Collection<LootTrackerData> convertLootRecords(Collection<LootRecord> records)
+	{
+		Collection<LootTrackerData> data = new ArrayList<>();
+		for (LootRecord r : records)
+		{
+			data.add(new LootTrackerData(r.getEventId(), r.getType(), r.getDrops()));
+		}
+
+		return data;
 	}
 }

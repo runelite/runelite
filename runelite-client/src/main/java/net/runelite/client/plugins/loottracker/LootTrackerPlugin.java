@@ -31,11 +31,9 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,14 +54,16 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.SessionClose;
+import net.runelite.api.events.SessionOpen;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
-import net.runelite.client.game.GameItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
@@ -73,6 +73,8 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.loottracker.GameItem;
+import net.runelite.http.api.loottracker.LootRecordType;
 
 @PluginDescriptor(
 	name = "Loot Tracker",
@@ -94,13 +96,6 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
 
-	// Data Persistence
-	private static final String GROUP_NAME = "loottracker";
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM-dd-YY");
-	private static final String KEY_PREFIX = "persistentData-";
-	private static final int MAX_CONFIG_LENGTH = 65535;
-
-
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -108,10 +103,10 @@ public class LootTrackerPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
-	private ConfigManager configManager;
+	private ItemManager itemManager;
 
 	@Inject
-	private ItemManager itemManager;
+	private SessionManager sessionManager;
 
 	@Inject
 	private SpriteManager spriteManager;
@@ -126,10 +121,11 @@ public class LootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private String eventType;
 
+	private CsvWriter csvWriter;
+	private LootDatabaseClient databaseClient;
+
 	private List<String> ignoredItems = new ArrayList<>();
 	private Multimap<String, LootTrackerRecord> records = ArrayListMultimap.create();
-	private String keyName = KEY_PREFIX + DATE_FORMAT.format(new Date());
-	private int keyIncrement = 0;
 
 	// stacks and converts ItemStack into GameItem since we don't care about the location
 	private static Collection<GameItem> stack(Collection<ItemStack> items)
@@ -198,6 +194,10 @@ public class LootTrackerPlugin extends Plugin
 
 		clientToolbar.addNavigation(navButton);
 
+		// Data persistence helpers
+		csvWriter = new CsvWriter(client);
+		databaseClient = new LootDatabaseClient(sessionManager);
+
 		// Load all persistent data on client load if enabled
 		if (config.getPersistDataToggle())
 		{
@@ -212,7 +212,6 @@ public class LootTrackerPlugin extends Plugin
 
 				initalizePersistentData();
 				SwingUtilities.invokeLater(() -> panel.addRecords(records.values()));
-				log.debug("Config Name: {}", keyName);
 				return true;
 			});
 		}
@@ -236,7 +235,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (config.getPersistDataToggle())
 		{
-			persistData(new LootTrackerData(name, items));
+			persistData(new LootTrackerData(name, LootRecordType.EVENT, items));
 		}
 	}
 
@@ -252,7 +251,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (config.getPersistDataToggle())
 		{
-			persistData(new LootTrackerData(name, items));
+			persistData(new LootTrackerData(name, LootRecordType.PLAYER, items));
 		}
 	}
 
@@ -307,7 +306,7 @@ public class LootTrackerPlugin extends Plugin
 
 			if (config.getPersistDataToggle())
 			{
-				persistData(new LootTrackerData(eventType, stacked));
+				persistData(new LootTrackerData(eventType, LootRecordType.EVENT, stacked));
 			}
 		}
 		else
@@ -374,6 +373,11 @@ public class LootTrackerPlugin extends Plugin
 
 	private LootTrackerItem[] buildEntries(final Collection<GameItem> itemStacks)
 	{
+		if (itemStacks == null)
+		{
+			return new LootTrackerItem[0];
+		}
+
 		return itemStacks.stream().map(itemStack ->
 		{
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemStack.getId());
@@ -407,71 +411,42 @@ public class LootTrackerPlugin extends Plugin
 	private void persistData(LootTrackerData data)
 	{
 		log.debug("Persisting data: {}", data);
-		String stored = getConfig(keyName);
-		log.debug("Existing data: {}", stored);
-		if (stored.length() > 0)
+
+		if (isLoggedIn())
 		{
-			stored += ",";
+			boolean sent = databaseClient.storeData(data, client.getLocalPlayer().getName());
+			log.info("Sent data to api: {}", sent);
+		}
+		else
+		{
+			boolean wrote = csvWriter.storeData(data);
+			log.info("Data written to CSV file?: {}", wrote);
 		}
 
-		stored += data.asJson();
-
-		if (stored.length() >= MAX_CONFIG_LENGTH)
-		{
-			log.warn("Unable to persist data, max storage length reached. Attempting to create addition daily storage");
-			keyIncrement++;
-			keyName = KEY_PREFIX + DATE_FORMAT.format(new Date()) + "_" + keyIncrement;
-			persistData(data);
-			log.warn("Created additional storage: {}", keyName);
-			return;
-		}
-
-		configManager.setConfiguration(GROUP_NAME, keyName, stored);
-		records.put(data.getN(), createLootTrackerRecord(data));
-		log.debug("Updated data: {}", getConfig(keyName));
+		records.put(data.getEventId(), createLootTrackerRecord(data));
 	}
 
 	private List<LootTrackerData> getAllPersistentData()
 	{
 		List<LootTrackerData> data = new ArrayList<>();
 
-		List<String> keys = configManager.getConfigurationKeys(GROUP_NAME);
-		for (String k : keys)
+		if (isLoggedIn())
 		{
-			String key = k.split("\\.")[1];
-			if (key.contains(KEY_PREFIX))
+			Collection<LootTrackerData> d = databaseClient.getData(client.getUsername());
+			log.info("Stored data: {}", d);
+			if (d != null)
 			{
-				data.addAll(getConfigKeyAsData(key));
+				data.addAll(d);
 			}
+		}
+		else
+		{
+			Collection<LootTrackerData> d2 = csvWriter.loadAllData();
+			log.info("Stored csv data: {}", d2);
+			data.addAll(d2);
 		}
 
 		return data;
-	}
-
-	// TODO add toggle to UI to trigger this method.
-	private void clearPeristentData()
-	{
-		List<String> keys = configManager.getConfigurationKeys(GROUP_NAME);
-		for (String key : keys)
-		{
-			if (key.contains(KEY_PREFIX))
-			{
-				configManager.unsetConfiguration(GROUP_NAME, key);
-			}
-		}
-	}
-
-	private Collection<LootTrackerData> getConfigKeyAsData(String key)
-	{
-		String result = "[" + getConfig(key) + "]";
-		return LootTrackerData.fromJson(result);
-	}
-
-	private String getConfig(String key)
-	{
-		String con = configManager.getConfiguration(GROUP_NAME, key);
-		con = con == null ? "" : con;
-		return con;
 	}
 
 	/**
@@ -484,7 +459,7 @@ public class LootTrackerPlugin extends Plugin
 
 		for (LootTrackerData d : data)
 		{
-			recs.put(d.getN(), createLootTrackerRecord(d));
+			recs.put(d.getEventId(), createLootTrackerRecord(d));
 		}
 
 		return recs;
@@ -492,6 +467,23 @@ public class LootTrackerPlugin extends Plugin
 
 	private LootTrackerRecord createLootTrackerRecord(LootTrackerData d)
 	{
-		return new LootTrackerRecord(d.getN(), "", buildEntries(d.getI()), System.currentTimeMillis());
+		return new LootTrackerRecord(d.getEventId(), "", buildEntries(d.getDrops()), System.currentTimeMillis());
+	}
+
+	private boolean isLoggedIn()
+	{
+		return databaseClient.isLoggedIn();
+	}
+
+	@Subscribe
+	private void onSessionOpen(SessionOpen e)
+	{
+		databaseClient.sessionChanged();
+	}
+
+	@Subscribe
+	private void onSessionClose(SessionClose e)
+	{
+		databaseClient.sessionChanged();
 	}
 }
