@@ -30,10 +30,13 @@ import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.inject.Singleton;
@@ -44,6 +47,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
@@ -52,12 +56,13 @@ import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import static net.runelite.client.RuneLite.LOGS_DIR;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
-
+@Slf4j
 @Singleton
 public class InfoPanel extends PluginPanel
 {
@@ -65,6 +70,7 @@ public class InfoPanel extends PluginPanel
 
 	private static final ImageIcon ARROW_RIGHT_ICON;
 	private static final ImageIcon GITHUB_ICON;
+	private static final ImageIcon FOLDER_ICON;
 	private static final ImageIcon DISCORD_ICON;
 	private static final ImageIcon PATREON_ICON;
 	private static final ImageIcon WIKI_ICON;
@@ -98,6 +104,7 @@ public class InfoPanel extends PluginPanel
 	{
 		ARROW_RIGHT_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(InfoPanel.class, "/util/arrow_right.png"));
 		GITHUB_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(InfoPanel.class, "github_icon.png"));
+		FOLDER_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(InfoPanel.class, "folder_icon.png"));
 		DISCORD_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(InfoPanel.class, "discord_icon.png"));
 		PATREON_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(InfoPanel.class, "patreon_icon.png"));
 		WIKI_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(InfoPanel.class, "wiki_icon.png"));
@@ -177,6 +184,7 @@ public class InfoPanel extends PluginPanel
 		});
 
 		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "Report an issue or", "make a suggestion", runeLiteProperties.getGithubLink()));
+		actionsContainer.add(buildLinkPanel(FOLDER_ICON, "Open logs directory", "(for bug reports)", LOGS_DIR));
 		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "discord server", runeLiteProperties.getDiscordInvite()));
 		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Become a patron to", "help support RuneLite", runeLiteProperties.getPatreonLink()));
 		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", runeLiteProperties.getWikiLink()));
@@ -194,6 +202,26 @@ public class InfoPanel extends PluginPanel
 	private static JPanel buildLinkPanel(ImageIcon icon, String topText, String bottomText, String url)
 	{
 		return buildLinkPanel(icon, topText, bottomText, () -> LinkBrowser.browse(url));
+	}
+
+	/**
+	 * Builds a link panel with a given icon, text and directory to redirect to.
+	 */
+	private static JPanel buildLinkPanel(ImageIcon icon, String topText, String bottomText, File dir)
+	{
+		return buildLinkPanel(icon, topText, bottomText, () ->
+		{
+			try
+			{
+				Desktop.getDesktop().open(dir);
+			}
+			catch (IOException ex)
+			{
+				log.warn("Error opening client logs dir", ex);
+			}
+		}
+	);
+
 	}
 
 	/**
