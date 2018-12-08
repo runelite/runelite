@@ -205,7 +205,23 @@ public class SlayerPlugin extends Plugin
 	private boolean loginFlag;
 	private List<String> targetNames = new ArrayList<>();
 
+	/*
+	 * unfortunately xp drops don't correlate exactly to npc death animation ticks
+	 *
+	 * it seems that sometimes we could receive information late or potentially early so
+	 * to mitigate this causing some odd behaviors like seeing a slayer xp drop on a tick
+	 * where no npcs entered death animations when receiving a slayer xp drop we will examine
+	 * the npcs that entered death animations in the current tick, the tick before the xp drop
+	 * and the tick after the xp drop - note that this means we can't validate the kill counter
+	 * the tick we receive the xp drop, we must do it the tick after
+	 */
+	private int gainsTwoTicksAgo = -1;
+	private int gainsOneTickAgo = -1;
 	private int gainsThisTick = -1;
+	private List<NPC> deadFourTicksAgo = new ArrayList<>();
+	private List<NPC> deadThreeTicksAgo = new ArrayList<>();
+	private List<NPC> deadTwoTicksAgo = new ArrayList<>();
+	private List<NPC> deadOneTickAgo = new ArrayList<>();
 	private List<NPC> deadThisTick = new ArrayList<>();
 	private SlayerXpDrop slayerXpDrop = null;
 
@@ -405,10 +421,43 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (gainsThisTick > 0)
+		if (gainsTwoTicksAgo > 0)
 		{
-			int killed = estimateKillCount(deadThisTick, gainsThisTick);
-			System.out.println("gains this tick = " + gainsThisTick + " on this kill count " + killed);
+			List<NPC> deadInTickWindow = new ArrayList<>();
+			deadInTickWindow.addAll(deadFourTicksAgo);
+			deadInTickWindow.addAll(deadThreeTicksAgo);
+			deadInTickWindow.addAll(deadTwoTicksAgo);
+			deadInTickWindow.addAll(deadOneTickAgo);
+			deadInTickWindow.addAll(deadThisTick);
+			int killed = estimateKillCount(deadInTickWindow, gainsTwoTicksAgo);
+			StringBuilder npcsDead = new StringBuilder();
+			npcsDead.append("[");
+			for (NPC npc : deadFourTicksAgo)
+			{
+				npcsDead.append(npc.getName() + " lvl " + npc.getCombatLevel() + ", ");
+			}
+			npcsDead.append("|");
+			for (NPC npc : deadThreeTicksAgo)
+			{
+				npcsDead.append(npc.getName() + " lvl " + npc.getCombatLevel() + ", ");
+			}
+			npcsDead.append("|");
+			for (NPC npc : deadTwoTicksAgo)
+			{
+				npcsDead.append(npc.getName() + " lvl " + npc.getCombatLevel() + ", ");
+			}
+			npcsDead.append("|");
+			for (NPC npc : deadOneTickAgo)
+			{
+				npcsDead.append(npc.getName() + " lvl " + npc.getCombatLevel() + ", ");
+			}
+			npcsDead.append("|");
+			for (NPC npc : deadThisTick)
+			{
+				npcsDead.append(npc.getName() + " lvl " + npc.getCombatLevel() + ", ");
+			}
+			npcsDead.append("]");
+			System.out.println("gains last tick = " + gainsTwoTicksAgo + " on this kill count " + killed + " choosen from these npcs: " + npcsDead.toString());
 			for (int i = 0; i < killed; i++)
 			{
 				killedOne();
@@ -420,7 +469,17 @@ public class SlayerPlugin extends Plugin
 		// get onExperienceChanged and onAnimationChanged - note that this means that if the order of those methods
 		// changes then this will break - therefore we need a test in the slayer plugin that verifies that the runelite
 		// always makes these things go in that order, i.e. (xp change + animation change before game tick)
+		deadFourTicksAgo.clear();
+		deadFourTicksAgo.addAll(deadThreeTicksAgo);
+		deadThreeTicksAgo.clear();
+		deadThreeTicksAgo.addAll(deadTwoTicksAgo);
+		deadTwoTicksAgo.clear();
+		deadTwoTicksAgo.addAll(deadOneTickAgo);
+		deadOneTickAgo.clear();
+		deadOneTickAgo.addAll(deadThisTick);
 		deadThisTick.clear();
+		gainsTwoTicksAgo = gainsOneTickAgo;
+		gainsOneTickAgo = gainsThisTick;
 		gainsThisTick = -1;
 
 		Widget npcDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
