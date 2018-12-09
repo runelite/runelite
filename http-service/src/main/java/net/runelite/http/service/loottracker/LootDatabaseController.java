@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/loottracker")
 public class LootDatabaseController
 {
-	@RequestMapping(value = "/", method = RequestMethod.POST)
+	@RequestMapping(value = {"", "/"}, method = RequestMethod.POST)
 	public HttpStatus storeLootRecord(@RequestBody LootRecord record)
 	{
 		return HttpStatus.OK;

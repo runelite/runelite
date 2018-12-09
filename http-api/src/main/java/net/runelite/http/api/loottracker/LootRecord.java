@@ -25,10 +25,10 @@
 package net.runelite.http.api.loottracker;
 
 import java.util.Collection;
-import lombok.Getter;
+import lombok.Data;
 import net.runelite.http.api.RuneLiteAPI;
 
-@Getter
+@Data
 public class LootRecord
 {
 	private final String eventId;

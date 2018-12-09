@@ -24,9 +24,9 @@
  */
 package net.runelite.http.api.loottracker;
 
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class GameItem
 {
 	private final int id;
