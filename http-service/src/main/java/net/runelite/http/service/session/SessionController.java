@@ -64,26 +64,24 @@ public class SessionController
 	@RequestMapping("/ping")
 	public ResponseEntity ping(@RequestParam("session") UUID uuid)
 	{
-		SessionEntry sessionEntry = sessionService.findSessionByUUID(uuid);
-		if (sessionEntry == null)
+		int updated = sessionService.updateLast(uuid);
+		if (updated == 0)
 		{
 			return ResponseEntity.notFound().build();
 		}
 
-		sessionService.updateLast(uuid);
 		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping
 	public ResponseEntity delete(@RequestParam("session") UUID uuid, HttpServletRequest request)
 	{
-		SessionEntry sessionEntry = sessionService.findSessionByUUID(uuid);
-		if (sessionEntry == null)
+		int deleted = sessionService.deleteSession(uuid);
+		if (deleted == 0)
 		{
 			return ResponseEntity.notFound().build();
 		}
 
-		sessionService.deleteSession(sessionEntry);
 		return ResponseEntity.ok().build();
 	}
 
