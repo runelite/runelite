@@ -76,7 +76,7 @@ public enum WorldType
 		this.mask = mask;
 	}
 
-	private static EnumSet<WorldType> PVP_WORLD_TYPES = EnumSet.of(
+	private static final EnumSet<WorldType> PVP_WORLD_TYPES = EnumSet.of(
 		DEADMAN,
 		PVP,
 		PVP_HIGH_RISK,
