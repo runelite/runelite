@@ -52,8 +52,11 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.SessionClose;
+import net.runelite.api.events.SessionOpen;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
@@ -67,6 +70,9 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.loottracker.GameItem;
+import net.runelite.http.api.loottracker.LootRecord;
+import net.runelite.http.api.loottracker.LootRecordType;
 
 @PluginDescriptor(
 	name = "Loot Tracker",
@@ -103,11 +109,15 @@ public class LootTrackerPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private SessionManager sessionManager;
+
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	private String eventType;
 
 	private List<String> ignoredItems = new ArrayList<>();
+	private LootDatabaseClient databaseClient;
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -171,6 +181,8 @@ public class LootTrackerPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
+
+		databaseClient = new LootDatabaseClient(sessionManager);
 	}
 
 	@Override
@@ -188,6 +200,8 @@ public class LootTrackerPlugin extends Plugin
 		final int combat = npc.getCombatLevel();
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
+
+		databaseClient.storeData(new LootRecord(name, LootRecordType.NPC, toGameItems(items)));
 	}
 
 	@Subscribe
@@ -199,6 +213,8 @@ public class LootTrackerPlugin extends Plugin
 		final int combat = player.getCombatLevel();
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
+
+		databaseClient.storeData(new LootRecord(name, LootRecordType.PLAYER, toGameItems(items)));
 	}
 
 	@Subscribe
@@ -248,6 +264,8 @@ public class LootTrackerPlugin extends Plugin
 		{
 			final LootTrackerItem[] entries = buildEntries(stack(items));
 			SwingUtilities.invokeLater(() -> panel.add(eventType, -1, entries));
+
+			databaseClient.storeData(new LootRecord(eventType, LootRecordType.EVENT, toGameItems(items)));
 		}
 		else
 		{
@@ -327,5 +345,26 @@ public class LootTrackerPlugin extends Plugin
 				price,
 				ignored);
 		}).toArray(LootTrackerItem[]::new);
+	}
+
+	@Subscribe
+	private void onSessionOpen(SessionOpen e)
+	{
+		databaseClient.sessionChanged();
+	}
+	@Subscribe
+	private void onSessionClose(SessionClose e)
+	{
+		databaseClient.sessionChanged();
+	}
+
+	private Collection<GameItem> toGameItems(Collection<ItemStack> items)
+	{
+		Collection<GameItem> r = new ArrayList<>();
+		for (ItemStack i : items)
+		{
+			r.add(new GameItem(i.getId(), i.getQuantity()));
+		}
+		return r;
 	}
 }
