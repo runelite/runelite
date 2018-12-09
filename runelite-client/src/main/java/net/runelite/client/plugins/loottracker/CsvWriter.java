@@ -125,7 +125,7 @@ class CsvWriter
 	synchronized boolean storeData(LootTrackerData data)
 	{
 		// Grab file
-		File lootFile = getOutputFile(data.getName());
+		File lootFile = getOutputFile(data.getEventId());
 
 		boolean addHeader = false;
 		if (!lootFile.exists())
