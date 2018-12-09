@@ -25,12 +25,15 @@
  */
 package net.runelite.client.plugins.virtuallevels;
 
+import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
@@ -47,10 +50,19 @@ public class VirtualLevelsPlugin extends Plugin
 	private static final String TOTAL_LEVEL_TEXT_PREFIX = "Total level:<br>";
 
 	@Inject
+	private VirtualLevelsConfig config;
+
+	@Inject
 	private Client client;
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Provides
+	VirtualLevelsConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(VirtualLevelsConfig.class);
+	}
 
 	@Override
 	protected void shutDown()
@@ -63,6 +75,15 @@ public class VirtualLevelsPlugin extends Plugin
 	{
 		// this is guaranteed to be called after the plugin has been registered by the eventbus. startUp is not.
 		if (pluginChanged.getPlugin() == this)
+		{
+			clientThread.invoke(this::simulateSkillChange);
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getKey().equals("alterTotalLevel"))
 		{
 			clientThread.invoke(this::simulateSkillChange);
 		}
@@ -93,19 +114,22 @@ public class VirtualLevelsPlugin extends Plugin
 				intStack[intStackSize - 1] = Experience.MAX_VIRT_LEVEL;
 				break;
 			case "skillTabTotalLevel":
-				int level = 0;
-
-				for (Skill s : Skill.values())
+				if (config.alterTotalLevel())
 				{
-					if (s == Skill.OVERALL)
+					int level = 0;
+
+					for (Skill s : Skill.values())
 					{
-						continue;
+						if (s == Skill.OVERALL)
+						{
+							continue;
+						}
+
+						level += Experience.getLevelForXp(client.getSkillExperience(s));
 					}
 
-					level += Experience.getLevelForXp(client.getSkillExperience(s));
+					stringStack[stringStackSize - 1] = TOTAL_LEVEL_TEXT_PREFIX + level;
 				}
-
-				stringStack[stringStackSize - 1] = TOTAL_LEVEL_TEXT_PREFIX + level;
 				break;
 		}
 	}
