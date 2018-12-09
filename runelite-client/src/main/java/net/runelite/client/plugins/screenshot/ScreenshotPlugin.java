@@ -555,7 +555,8 @@ public class ScreenshotPlugin extends Plugin
 				final EnumSet<WorldType> worldTypes = client.getWorldType();
 				final boolean dmm = worldTypes.contains(WorldType.DEADMAN);
 				final boolean sdmm = worldTypes.contains(WorldType.SEASONAL_DEADMAN);
-				final boolean isDmmWorld = dmm || sdmm;
+				final boolean dmmt = worldTypes.contains(WorldType.DEADMAN_TOURNAMENT);
+				final boolean isDmmWorld = dmm || sdmm || dmmt;
 
 				String playerDir = client.getLocalPlayer().getName();
 				if (isDmmWorld)
