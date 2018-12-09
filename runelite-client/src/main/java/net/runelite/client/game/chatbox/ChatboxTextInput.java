@@ -42,7 +42,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.FontID;
-import net.runelite.api.WidgetType;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetPositionMode;
