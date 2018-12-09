@@ -439,6 +439,7 @@ public class TimersPlugin extends Plugin
 		if (config.showTeleblock() && event.getMessage().equals(HALF_TELEBLOCK_MESSAGE))
 		{
 			if (client.getWorldType().contains(WorldType.DEADMAN)
+				&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
 				&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
 			{
 				createGameTimer(DMM_FULLTB);
