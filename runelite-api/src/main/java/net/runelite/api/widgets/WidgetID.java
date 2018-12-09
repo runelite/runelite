@@ -709,6 +709,7 @@ public class WidgetID
 
 	static class Pvp
 	{
+		static final int BOUNTY_HUNTER_INFO = 6;
 		static final int KILLDEATH_RATIO = 9;
 		static final int BOUNTY_HUNTER_STATS = 28;
 		static final int PVP_WIDGET_CONTAINER = 54;
