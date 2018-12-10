@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018 TheStonedTurtle <https://github.com/TheStonedTurtle>
  * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Sean Dewar <https://github.com/seandewar>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,5 +68,15 @@ public interface StatusOrbsConfig extends Config
 	default boolean showSpecial()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "replaceOrbText",
+		name = "Replace run orb text with run time left",
+		description = "Show the remaining run time (in seconds) next in the energy orb"
+	)
+	default boolean replaceOrbText()
+	{
+		return false;
 	}
 }
