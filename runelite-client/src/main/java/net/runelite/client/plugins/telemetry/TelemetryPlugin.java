@@ -54,6 +54,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
@@ -247,7 +248,10 @@ public class TelemetryPlugin extends Plugin
 		// Only catch NPC spawns withing a certain range to prevent false triggers by NPCs loading in while running around
 		if (client.getLocalPlayer().getWorldLocation().distanceTo(n.getWorldLocation()) <= MAX_SPAWN_TILE_RANGE)
 		{
-			telemetryManager.submit(new NpcSpawnedTelemetry(n.getId(), n.getWorldLocation()));
+			if (!isIgnoredNpc(n.getId()))
+			{
+				telemetryManager.submit(new NpcSpawnedTelemetry(n.getId(), n.getWorldLocation()));
+			}
 		}
 
 	}
@@ -744,5 +748,168 @@ public class TelemetryPlugin extends Plugin
 		}
 
 		return -1;
+	}
+
+	private boolean isIgnoredNpc(int id)
+	{
+		switch (id)
+		{
+			// Random Events
+			case NpcID.MYSTERIOUS_OLD_MAN_6753:
+			case NpcID.PILLORY_GUARD:
+			case NpcID.FREAKY_FORESTER_6748:
+			case NpcID.BEE_KEEPER_6747:
+			case NpcID.STRANGE_PLANT:
+			case NpcID.DRUNKEN_DWARF:
+			case NpcID.EVIL_BOB:
+			case NpcID.SERGEANT_DAMIEN_6743:
+			case NpcID.SANDWICH_LADY:
+			case NpcID.MILES:
+			// Pets | TODO: Ensure pet IDs are correct for pets with non-unique names. Check if both IDs are needed
+			// Slayer
+			case NpcID.ABYSSAL_ORPHAN:
+			case NpcID.ABYSSAL_ORPHAN_5884:
+			case NpcID.NOON:
+			case NpcID.NOON_7892:
+			case NpcID.KRAKEN_6640:
+			case NpcID.KRAKEN_6656:
+			case NpcID.SKOTOS:
+			case NpcID.SKOTOS_7671:
+			case NpcID.HELLPUPPY:
+			case NpcID.HELLPUPPY_3099:
+			case NpcID.SMOKE_DEVIL_8482:
+			case NpcID.SMOKE_DEVIL_8483:
+			// GWD
+			case NpcID.KREEARRA_JR:
+			case NpcID.KREEARRA_JR_6643:
+			case NpcID.GENERAL_GRAARDOR_JR:
+			case NpcID.GENERAL_GRAARDOR_JR_6644:
+			case NpcID.ZILYANA_JR:
+			case NpcID.ZILYANA_JR_6646:
+			case NpcID.KRIL_TSUTSAROTH_JR:
+			case NpcID.KRIL_TSUTSAROTH_JR_6647:
+			// Wildy
+			case NpcID.CALLISTO_CUB:
+			case NpcID.CALLISTO_CUB_5558:
+			case NpcID.VENENATIS_SPIDERLING:
+			case NpcID.VENENATIS_SPIDERLING_5557:
+			case NpcID.VETION_JR:
+			case NpcID.VETION_JR_5537:
+			case NpcID.VETION_JR_5559:
+			case NpcID.VETION_JR_5560:
+			case NpcID.SCORPIAS_OFFSPRING_5561:
+			case NpcID.SCORPIAS_OFFSPRING_6616:
+			case NpcID.CHAOS_ELEMENTAL_JR:
+			case NpcID.CHAOS_ELEMENTAL_JR_5907:
+			case NpcID.PRINCE_BLACK_DRAGON:
+			case NpcID.PRINCE_BLACK_DRAGON_6652:
+			// Dagannoth kings
+			case NpcID.DAGANNOTH_PRIME_JR:
+			case NpcID.DAGANNOTH_PRIME_JR_6629:
+			case NpcID.DAGANNOTH_REX_JR:
+			case NpcID.DAGANNOTH_REX_JR_6641:
+			case NpcID.DAGANNOTH_SUPREME_JR:
+			case NpcID.DAGANNOTH_SUPREME_JR_6628:
+			// Other PvM
+			case NpcID.VORKI:
+			case NpcID.VORKI_8029:
+			case NpcID.LIL_ZIK:
+			case NpcID.LIL_ZIK_8337:
+			case NpcID.KALPHITE_PRINCESS:
+			case NpcID.KALPHITE_PRINCESS_6638:
+			case NpcID.KALPHITE_PRINCESS_6653:
+			case NpcID.KALPHITE_PRINCESS_6654:
+			case NpcID.PENANCE_PET:
+			case NpcID.PENANCE_PET_6674:
+			case NpcID.OLMLET:
+			case NpcID.OLMLET_7520:
+			case NpcID.TZREKJAD:
+			case NpcID.TZREKJAD_5893:
+			case NpcID.JALNIBREK:
+			case NpcID.JALNIBREK_7675:
+			case NpcID.TZREKZUK:
+			case NpcID.TZREKZUK_8011:
+			case NpcID.BABY_MOLE_6635:
+			case NpcID.BABY_MOLE_6651:
+			case NpcID.SNAKELING_2131:
+			case NpcID.SNAKELING_2132:
+			case NpcID.DARK_CORE:
+			case NpcID.DARK_CORE_388:
+			case NpcID.CORPOREAL_CRITTER:
+			case NpcID.CORPOREAL_CRITTER_8010:
+			// Skilling
+			case NpcID.PHOENIX:
+			case NpcID.PHOENIX_7370:
+			case NpcID.HERON:
+			case NpcID.HERON_6722:
+			case NpcID.BEAVER:
+			case NpcID.BEAVER_6724:
+			case NpcID.BABY_CHINCHOMPA:
+			case NpcID.BABY_CHINCHOMPA_6719:
+			case NpcID.BABY_CHINCHOMPA_6720:
+			case NpcID.BABY_CHINCHOMPA_6721:
+			case NpcID.BABY_CHINCHOMPA_6756:
+			case NpcID.BABY_CHINCHOMPA_6757:
+			case NpcID.BABY_CHINCHOMPA_6758:
+			case NpcID.BABY_CHINCHOMPA_6759:
+			case NpcID.ROCK_GOLEM:
+			case NpcID.ROCK_GOLEM_6725:
+			case NpcID.ROCK_GOLEM_6726:
+			case NpcID.ROCK_GOLEM_6727:
+			case NpcID.ROCK_GOLEM_6728:
+			case NpcID.ROCK_GOLEM_6729:
+			case NpcID.ROCK_GOLEM_6730:
+			case NpcID.ROCK_GOLEM_7439:
+			case NpcID.ROCK_GOLEM_7440:
+			case NpcID.ROCK_GOLEM_7441:
+			case NpcID.ROCK_GOLEM_7442:
+			case NpcID.ROCK_GOLEM_7443:
+			case NpcID.ROCK_GOLEM_7444:
+			case NpcID.ROCK_GOLEM_7445:
+			case NpcID.ROCK_GOLEM_7446:
+			case NpcID.ROCK_GOLEM_7447:
+			case NpcID.ROCK_GOLEM_7448:
+			case NpcID.ROCK_GOLEM_7449:
+			case NpcID.ROCK_GOLEM_7450:
+			case NpcID.ROCK_GOLEM_7451:
+			case NpcID.ROCK_GOLEM_7452:
+			case NpcID.ROCK_GOLEM_7453:
+			case NpcID.ROCK_GOLEM_7454:
+			case NpcID.ROCK_GOLEM_7455:
+			case NpcID.ROCKY:
+			case NpcID.ROCKY_7353:
+			case NpcID.RIFT_GUARDIAN:
+			case NpcID.RIFT_GUARDIAN_7339:
+			case NpcID.RIFT_GUARDIAN_7340:
+			case NpcID.RIFT_GUARDIAN_7341:
+			case NpcID.RIFT_GUARDIAN_7342:
+			case NpcID.RIFT_GUARDIAN_7343:
+			case NpcID.RIFT_GUARDIAN_7344:
+			case NpcID.RIFT_GUARDIAN_7345:
+			case NpcID.RIFT_GUARDIAN_7346:
+			case NpcID.RIFT_GUARDIAN_7347:
+			case NpcID.RIFT_GUARDIAN_7348:
+			case NpcID.RIFT_GUARDIAN_7349:
+			case NpcID.RIFT_GUARDIAN_7350:
+			case NpcID.RIFT_GUARDIAN_7338:
+			case NpcID.RIFT_GUARDIAN_8024:
+			case NpcID.RIFT_GUARDIAN_8028:
+			case NpcID.HERBI:
+			case NpcID.HERBI_7760:
+			case NpcID.GIANT_SQUIRREL:
+			case NpcID.GIANT_SQUIRREL_7351:
+			case NpcID.TANGLEROOT:
+			case NpcID.TANGLEROOT_7352:
+			// Misc
+			case NpcID.PET_ROCK:
+			case NpcID.PET_ROCK_6657:
+			case NpcID.CHOMPY_CHICK:
+			case NpcID.CHOMPY_CHICK_4002:
+			case NpcID.BLOODHOUND:
+			case NpcID.BLOODHOUND_7232:
+				return true;
+		}
+
+		return false;
 	}
 }
