@@ -98,7 +98,7 @@ public class SessionService
 	{
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("delete from session where last + interval 5 minute < current_timestamp()")
+			con.createQuery("delete from session where last + interval 11 minute < current_timestamp()")
 				.executeUpdate();
 		}
 	}
