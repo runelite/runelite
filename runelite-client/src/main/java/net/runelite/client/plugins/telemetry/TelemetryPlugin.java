@@ -44,13 +44,17 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
+import static net.runelite.api.AnimationID.*;
+import static net.runelite.api.AnimationID.COOKING_RANGE;
+import static net.runelite.api.AnimationID.COOKING_WINE;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
+import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
@@ -105,6 +109,8 @@ public class TelemetryPlugin extends Plugin
 	private static final Pattern PERSONAL_DEATH_TEXT = Pattern.compile("You have died. Death count: \\d*");
 	private static final Pattern TEAMMATE_DEATH_TEXT = Pattern.compile(".* has died. Death count: \\d*");
 
+	private static final String FISHING_SPOT = "Fishing spot";
+
 	private String eventType;
 	private WorldPoint posLastTick;
 	private Set<InventoryItem> playerInventory;
@@ -116,6 +122,8 @@ public class TelemetryPlugin extends Plugin
 	private int tickStarted;
 	private int elapsedTicks;
 	private int interactingID = -1;
+	private int skillAnimation = -1;
+	private int lastSkillAnimation = -1;
 
 	// Motherlode Mine
 	private int sackOre;
@@ -157,12 +165,13 @@ public class TelemetryPlugin extends Plugin
 		// Store current values as they will change when checking `isSkilling()`
 		boolean oldSkilling = isSkilling;
 		Skill skill = currentSkill;
+		lastSkillAnimation = skillAnimation;
 		elapsedTicks = client.getTickCount() - tickStarted;
 
 		isSkilling = isSkilling();
 
 		// State changed or doing a new skill
-		if (oldSkilling != isSkilling || skill != currentSkill)
+		if (oldSkilling != isSkilling || skill != currentSkill || lastSkillAnimation != skillAnimation)
 		{
 			tickStarted = isSkilling ? client.getTickCount() : tickStarted;
 			skillStateChanged(skill, isSkilling);
@@ -496,111 +505,71 @@ public class TelemetryPlugin extends Plugin
 	private boolean isSkilling()
 	{
 		currentSkill = null;
+		Player p = client.getLocalPlayer();
+		int anim = p.getAnimation();
+		skillAnimation = anim;
+
 		Actor a = client.getLocalPlayer().getInteracting();
 		if (a instanceof NPC)
 		{
 			NPC n = (NPC) a;
-			interactingID = n.getId();
-			switch (n.getId())
+			if (n.getName().contains(FISHING_SPOT))
 			{
-				case NpcID.FISHING_SPOT:
-				case NpcID.FISHING_SPOT_1497:
-				case NpcID.FISHING_SPOT_1498:
-				case NpcID.FISHING_SPOT_1499:
-				case NpcID.FISHING_SPOT_1500:
-				case NpcID.ROD_FISHING_SPOT:
-				case NpcID.ROD_FISHING_SPOT_1507:
-				case NpcID.ROD_FISHING_SPOT_1508:
-				case NpcID.ROD_FISHING_SPOT_1509:
-				case NpcID.FISHING_SPOT_1510:
-				case NpcID.FISHING_SPOT_1511:
-				case NpcID.ROD_FISHING_SPOT_1512:
-				case NpcID.ROD_FISHING_SPOT_1513:
-				case NpcID.FISHING_SPOT_1514:
-				case NpcID.ROD_FISHING_SPOT_1515:
-				case NpcID.ROD_FISHING_SPOT_1516:
-				case NpcID.FISHING_SPOT_1517:
-				case NpcID.FISHING_SPOT_1518:
-				case NpcID.FISHING_SPOT_1519:
-				case NpcID.FISHING_SPOT_1520:
-				case NpcID.FISHING_SPOT_1521:
-				case NpcID.FISHING_SPOT_1522:
-				case NpcID.FISHING_SPOT_1523:
-				case NpcID.FISHING_SPOT_1524:
-				case NpcID.FISHING_SPOT_1525:
-				case NpcID.ROD_FISHING_SPOT_1526:
-				case NpcID.ROD_FISHING_SPOT_1527:
-				case NpcID.FISHING_SPOT_1528:
-				case NpcID.ROD_FISHING_SPOT_1529:
-				case NpcID.FISHING_SPOT_1530:
-				case NpcID.ROD_FISHING_SPOT_1531:
-				case NpcID.FISHING_SPOT_1532:
-				case NpcID.FISHING_SPOT_1533:
-				case NpcID.FISHING_SPOT_1534:
-				case NpcID.FISHING_SPOT_1535:
-				case NpcID.FISHING_SPOT_1536:
-				case NpcID.FISHING_SPOT_1542:
-				case NpcID.FISHING_SPOT_1544:
-				case NpcID.FISHING_SPOT_2146:
-				case NpcID.FISHING_SPOT_2653:
-				case NpcID.FISHING_SPOT_2654:
-				case NpcID.FISHING_SPOT_2655:
-				case NpcID.FISHING_SPOT_3317:
-				case NpcID.ROD_FISHING_SPOT_3417:
-				case NpcID.ROD_FISHING_SPOT_3418:
-				case NpcID.FISHING_SPOT_3419:
-				case NpcID.FISHING_SPOT_3657:
-				case NpcID.FISHING_SPOT_3913:
-				case NpcID.FISHING_SPOT_3914:
-				case NpcID.FISHING_SPOT_3915:
-				case NpcID.FISHING_SPOT_4079:
-				case NpcID.FISHING_SPOT_4080:
-				case NpcID.FISHING_SPOT_4081:
-				case NpcID.FISHING_SPOT_4082:
-				case NpcID.FISHING_SPOT_4316:
-				case NpcID.FISHING_SPOT_4476:
-				case NpcID.FISHING_SPOT_4477:
-				case NpcID.FISHING_SPOT_4710:
-				case NpcID.FISHING_SPOT_4711:
-				case NpcID.FISHING_SPOT_4712:
-				case NpcID.FISHING_SPOT_4713:
-				case NpcID.FISHING_SPOT_4714:
-				case NpcID.FISHING_SPOT_4928:
-				case NpcID.FISHING_SPOT_5233:
-				case NpcID.FISHING_SPOT_5234:
-				case NpcID.FISHING_SPOT_5820:
-				case NpcID.FISHING_SPOT_5821:
-				case NpcID.FISHING_SPOT_6488:
-				case NpcID.FISHING_SPOT_6731:
-				case NpcID.ROD_FISHING_SPOT_6825:
-				case NpcID.FISHING_SPOT_7155:
-				case NpcID.FISHING_SPOT_7199:
-				case NpcID.FISHING_SPOT_7200:
-				case NpcID.FISHING_SPOT_7323:
-				case NpcID.FISHING_SPOT_7459:
-				case NpcID.FISHING_SPOT_7460:
-				case NpcID.FISHING_SPOT_7461:
-				case NpcID.FISHING_SPOT_7462:
-				case NpcID.ROD_FISHING_SPOT_7463:
-				case NpcID.ROD_FISHING_SPOT_7464:
-				case NpcID.FISHING_SPOT_7465:
-				case NpcID.FISHING_SPOT_7466:
-				case NpcID.FISHING_SPOT_7467:
-				case NpcID.ROD_FISHING_SPOT_7468:
-				case NpcID.FISHING_SPOT_7469:
-				case NpcID.FISHING_SPOT_7470:
-				case NpcID.ROD_FISHING_SPOT_7676:
-				case NpcID.FISHING_SPOT_7730:
-				case NpcID.FISHING_SPOT_7731:
-				case NpcID.FISHING_SPOT_7732:
-				case NpcID.FISHING_SPOT_7733:
-				case NpcID.FISHING_SPOT_7946:
-				case NpcID.FISHING_SPOT_7947:
-					currentSkill = Skill.FISHING;
-					return true;
-				default:
-					return false;
+				currentSkill = Skill.FISHING;
+				interactingID = n.getId();
+				return true;
 			}
+		}
+
+		switch (anim)
+		{
+			/* Woodcutting */
+			case WOODCUTTING_BRONZE:
+			case WOODCUTTING_IRON:
+			case WOODCUTTING_STEEL:
+			case WOODCUTTING_BLACK:
+			case WOODCUTTING_MITHRIL:
+			case WOODCUTTING_ADAMANT:
+			case WOODCUTTING_RUNE:
+			case WOODCUTTING_DRAGON:
+			case WOODCUTTING_INFERNAL:
+			case WOODCUTTING_3A_AXE:
+				currentSkill = Skill.WOODCUTTING;
+				return true;
+			/* Cooking(Fire, Range) */
+			case COOKING_FIRE:
+			case COOKING_RANGE:
+			case COOKING_WINE:
+				currentSkill = Skill.COOKING;
+				return true;
+			/* Mining(Normal) */
+			case MINING_BRONZE_PICKAXE:
+			case MINING_IRON_PICKAXE:
+			case MINING_STEEL_PICKAXE:
+			case MINING_BLACK_PICKAXE:
+			case MINING_MITHRIL_PICKAXE:
+			case MINING_ADAMANT_PICKAXE:
+			case MINING_RUNE_PICKAXE:
+			case MINING_DRAGON_PICKAXE:
+			case MINING_DRAGON_PICKAXE_ORN:
+			case MINING_INFERNAL_PICKAXE:
+			case MINING_3A_PICKAXE:
+				/* Mining(Motherlode) */
+			case MINING_MOTHERLODE_BRONZE:
+			case MINING_MOTHERLODE_IRON:
+			case MINING_MOTHERLODE_STEEL:
+			case MINING_MOTHERLODE_BLACK:
+			case MINING_MOTHERLODE_MITHRIL:
+			case MINING_MOTHERLODE_ADAMANT:
+			case MINING_MOTHERLODE_RUNE:
+			case MINING_MOTHERLODE_DRAGON:
+			case MINING_MOTHERLODE_DRAGON_ORN:
+			case MINING_MOTHERLODE_INFERNAL:
+			case MINING_MOTHERLODE_3A:
+				currentSkill = Skill.MINING;
+				return true;
+			default:
+				skillAnimation = -1;
 		}
 
 		return false;
@@ -614,6 +583,10 @@ public class TelemetryPlugin extends Plugin
 			{
 				// Just started skilling, Ensure the list of items gathered is empty
 				itemsCollectedWhileSkilling.clear();
+
+				// Some skills, such as cooking, have an inventory change at the same time they start skilling
+				Collection<GameItem> addedItems = getInventoryChanges().get(InventoryType.ADDED);
+				itemsCollectedWhileSkilling.addAll(stackGameItems(addedItems));
 			}
 			else
 			{
@@ -665,27 +638,111 @@ public class TelemetryPlugin extends Plugin
 					int[] toolIds = FishingSpots.getSPOTS().get(interactingID).getSkillingTools().getTools();
 					for (int i : toolIds)
 					{
-						if (playerInventoryContainsTool(i))
+						if (playerInventoryContainsTool(i, true, true))
 						{
 							return i;
 						}
 					}
 					return -1;
 				}
+			case MINING:
+			case WOODCUTTING:
+				return getToolIdByAnimation(lastSkillAnimation);
+			case COOKING:
+				boolean wearingCookGaunts = playerInventoryContainsTool(ItemID.COOKING_GAUNTLETS, false, true);
+				return wearingCookGaunts ? ItemID.COOKING_GAUNTLETS : -1;
 		}
 		return -1;
 	}
 
-	private boolean playerInventoryContainsTool(int toolID)
+	private boolean playerInventoryContainsTool(int toolID, boolean checkInventory, boolean checkWornItems)
 	{
-		for (InventoryItem i : playerInventory)
+		if (checkInventory)
 		{
-			if (i.getId() == toolID)
+			for (InventoryItem i : playerInventory)
 			{
-				return true;
+				if (i.getId() == toolID)
+				{
+					return true;
+				}
+			}
+		}
+
+		ItemContainer c = client.getItemContainer(InventoryID.EQUIPMENT);
+		if (c != null && checkWornItems)
+		{
+			for (Item i : c.getItems())
+			{
+				if (i.getId() == toolID)
+				{
+					return true;
+				}
 			}
 		}
 
 		return false;
+	}
+
+	private int getToolIdByAnimation(int animation)
+	{
+		switch (animation)
+		{
+			/* Mining */
+			case MINING_BRONZE_PICKAXE:
+			case MINING_MOTHERLODE_BRONZE:
+				return ItemID.BRONZE_PICKAXE;
+			case MINING_IRON_PICKAXE:
+			case MINING_MOTHERLODE_IRON:
+				return ItemID.IRON_PICKAXE;
+			case MINING_STEEL_PICKAXE:
+			case MINING_MOTHERLODE_STEEL:
+				return ItemID.STEEL_PICKAXE;
+			case MINING_BLACK_PICKAXE:
+			case MINING_MOTHERLODE_BLACK:
+				return ItemID.BLACK_PICKAXE;
+			case MINING_MITHRIL_PICKAXE:
+			case MINING_MOTHERLODE_MITHRIL:
+				return ItemID.MITHRIL_PICKAXE;
+			case MINING_ADAMANT_PICKAXE:
+			case MINING_MOTHERLODE_ADAMANT:
+				return ItemID.ADAMANT_PICKAXE;
+			case MINING_RUNE_PICKAXE:
+			case MINING_MOTHERLODE_RUNE:
+				return ItemID.RUNE_PICKAXE;
+			case MINING_DRAGON_PICKAXE:
+			case MINING_MOTHERLODE_DRAGON:
+			case MINING_MOTHERLODE_DRAGON_ORN:
+			case MINING_DRAGON_PICKAXE_ORN:
+				return ItemID.DRAGON_PICKAXE;
+			case MINING_MOTHERLODE_INFERNAL:
+			case MINING_INFERNAL_PICKAXE:
+				return ItemID.INFERNAL_PICKAXE;
+			case MINING_3A_PICKAXE:
+			case MINING_MOTHERLODE_3A:
+				return ItemID._3RD_AGE_PICKAXE;
+			/* Woodcutting */
+			case WOODCUTTING_BRONZE:
+				return ItemID.BRONZE_AXE;
+			case WOODCUTTING_IRON:
+				return ItemID.IRON_AXE;
+			case WOODCUTTING_STEEL:
+				return ItemID.STEEL_AXE;
+			case WOODCUTTING_BLACK:
+				return ItemID.BLACK_AXE;
+			case WOODCUTTING_MITHRIL:
+				return ItemID.MITHRIL_AXE;
+			case WOODCUTTING_ADAMANT:
+				return ItemID.ADAMANT_AXE;
+			case WOODCUTTING_RUNE:
+				return ItemID.RUNE_AXE;
+			case WOODCUTTING_DRAGON:
+				return ItemID.DRAGON_AXE;
+			case WOODCUTTING_INFERNAL:
+				return ItemID.INFERNAL_AXE;
+			case WOODCUTTING_3A_AXE:
+				return ItemID._3RD_AGE_AXE;
+		}
+
+		return -1;
 	}
 }
