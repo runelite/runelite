@@ -48,13 +48,18 @@ public interface XpTrackerConfig extends Config
 		name = "Pause on Logout",
 		description = "Configures whether skills should pause on logout"
 	)
-	default boolean pauseOnLogout()
-	{
-		return false;
-	}
+	default boolean pauseOnLogout() { return false; }
 
 	@ConfigItem(
-		position = 2,
+			position = 2,
+			keyName = "intermediateLevelMarkers",
+			name = "Show intermediate level markers",
+			description = "Marks intermediate levels on the progressbar"
+	)
+	default boolean showIntermediateLevels() { return false; }
+
+	@ConfigItem(
+		position = 3,
 		keyName = "pauseSkillAfter",
 		name = "Auto pause after",
 		description = "Configures how many minutes passes before pausing a skill while in game and there's no XP, 0 means disabled"
