@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Magic fTail
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +26,6 @@
 
 package net.runelite.client.plugins.cerberus;
 
-import com.google.common.collect.ComparisonChain;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -34,7 +34,6 @@ import lombok.Getter;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
@@ -92,23 +91,5 @@ public class CerberusPlugin extends Plugin
 	public void onNpcDespawned(final NpcDespawned event)
 	{
 		ghosts.remove(event.getNpc());
-	}
-
-	@Subscribe
-	public void onGameTick(GameTick gameTick)
-	{
-		if (ghosts.isEmpty())
-		{
-			return;
-		}
-
-		ghosts.sort((a, b) -> ComparisonChain.start()
-			// First, sort by the southernmost ghost (e.g with lowest y)
-			.compare(a.getLocalLocation().getY(), b.getLocalLocation().getY())
-			// Then, sort by the westernmost ghost (e.g with lowest x)
-			.compare(a.getLocalLocation().getX(), b.getLocalLocation().getX())
-			// This will give use the current wave and order of the ghosts based on
-			// what ghost will attack first
-			.result());
 	}
 }

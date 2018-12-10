@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2018, Magic fTail
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,53 +25,106 @@
  */
 package net.runelite.client.plugins.cerberus;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import javax.inject.Singleton;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.Perspective;
+import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.ImageComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-@Singleton
 public class CerberusOverlay extends Overlay
 {
+	private static final Color COLOR_ICON_BACKGROUND = new Color(0, 0, 0, 128);
+	private static final Color COLOR_ICON_BORDER = Color.BLACK;
+	private static final int OVERLAY_ICON_DISTANCE = 50;
+	private static final int OVERLAY_ICON_MARGIN = 8;
+	private static final int OVERLAY_Z_OFFSET = 100;
+
+	private final Client client;
 	private final CerberusPlugin plugin;
 	private final SkillIconManager iconManager;
-	private final PanelComponent panelComponent = new PanelComponent();
+
+	private BufferedImage icon;
 
 	@Inject
-	CerberusOverlay(final CerberusPlugin plugin, final SkillIconManager iconManager)
+	private CerberusOverlay(Client client, CerberusPlugin plugin, SkillIconManager iconManager)
 	{
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
+		this.client = client;
 		this.plugin = plugin;
 		this.iconManager = iconManager;
-		setPosition(OverlayPosition.BOTTOM_RIGHT);
-		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
 	}
+
+	private void getIcon(NPC ghost)
+	{
+		CerberusGhost.fromNPC(ghost).ifPresent(cerberusGhost ->
+			icon = iconManager.getSkillImage(cerberusGhost.getType()));
+	}
+
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.getGhosts().isEmpty())
+		for (NPC ghost : plugin.getGhosts())
 		{
-			return null;
+			LocalPoint lp = ghost.getLocalLocation();
+			if (lp != null)
+			{
+				Point point = Perspective.localToCanvas(client, lp, client.getPlane(),
+					OVERLAY_Z_OFFSET);
+
+				if (point != null)
+				{
+					point = new Point(point.getX(), point.getY());
+
+					getIcon(ghost);
+
+					if (icon == null)
+					{
+						continue;
+					}
+
+					renderPrayerIndicator(graphics, icon, point);
+				}
+			}
 		}
+		return null;
+	}
 
-		panelComponent.getChildren().clear();
+	private static void renderPrayerIndicator(Graphics2D graphics, BufferedImage icon, Point point)
+	{
+		int width = OVERLAY_ICON_MARGIN + icon.getWidth();
 
-		// Ghosts are already sorted
-		plugin.getGhosts().stream()
-			// Iterate only through the correct amount of ghosts
-			.limit(CerberusGhost.values().length)
-			.forEach(npc -> CerberusGhost
-				.fromNPC(npc)
-				.ifPresent(ghost -> panelComponent
-					.getChildren()
-					.add(new ImageComponent(iconManager.getSkillImage(ghost.getType())))));
+		int bgPadding = 4;
+		graphics.setStroke(new BasicStroke(2));
+		graphics.setColor(COLOR_ICON_BACKGROUND);
+		graphics.fillOval(
+			point.getX() - width / 2 - bgPadding,
+			point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE - bgPadding,
+			icon.getWidth() + bgPadding * 2,
+			icon.getHeight() + bgPadding * 2);
 
+		graphics.setColor(COLOR_ICON_BORDER);
+		graphics.drawOval(
+			point.getX() - width / 2 - bgPadding,
+			point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE - bgPadding,
+			icon.getWidth() + bgPadding * 2,
+			icon.getHeight() + bgPadding * 2);
 
-		return panelComponent.render(graphics);
+		graphics.drawImage(
+			icon,
+			point.getX() - width / 2,
+			point.getY() - icon.getHeight() / 2 - OVERLAY_ICON_DISTANCE,
+			null);
 	}
 }
