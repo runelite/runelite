@@ -48,7 +48,10 @@ public interface XpTrackerConfig extends Config
 		name = "Pause on Logout",
 		description = "Configures whether skills should pause on logout"
 	)
-	default boolean pauseOnLogout() { return false; }
+	default boolean pauseOnLogout()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 			position = 2,
@@ -56,7 +59,10 @@ public interface XpTrackerConfig extends Config
 			name = "Show intermediate level markers",
 			description = "Marks intermediate levels on the progressbar"
 	)
-	default boolean showIntermediateLevels() { return false; }
+	default boolean showIntermediateLevels()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		position = 3,
