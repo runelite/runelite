@@ -29,6 +29,7 @@ import java.util.EnumSet;
 import java.util.List;
 import javax.annotation.Nullable;
 import javax.inject.Named;
+import net.runelite.api.Affliction;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.Friend;
@@ -1380,5 +1381,29 @@ public abstract class RSClientMixin implements RSClient
 		setSpritePixels(null);
 
 		return array;
+	}
+
+	@Inject
+	@Override
+	public EnumSet<Affliction> getCurrentAfflictions()
+	{
+		final EnumSet<Affliction> cur = EnumSet.noneOf(Affliction.class);
+
+		int poison = getVar(VarPlayer.IS_POISONED);
+		if (poison >= 1000000)
+		{
+			cur.add(Affliction.VENOMED);
+		}
+		else if (poison > 0)
+		{
+			cur.add(Affliction.POISONED);
+		}
+
+		if (getVar(VarPlayer.DISEASE_VALUE) > 0)
+		{
+			cur.add(Affliction.DISEASED);
+		}
+
+		return cur;
 	}
 }
