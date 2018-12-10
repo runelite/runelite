@@ -113,6 +113,7 @@ public class BankedCalculator extends JPanel
 	{
 		criticalMap.clear();
 		linkedMap.clear();
+		xpFactor = 1f;
 	}
 
 	/**
@@ -461,7 +462,7 @@ public class BankedCalculator extends JPanel
 		{
 			p.updateLinkedMap(getLinkedTotalMap(i));
 			int amount = limitToActivitySecondaries(a, p.getAmount());
-			p.updateAmount(amount, amount > 0);
+			p.updateAmount(amount, true);
 			p.updateXp(a.getXp() * (i.isIgnoreBonus() ? 1.0f : xpFactor));
 		}
 
@@ -604,9 +605,9 @@ public class BankedCalculator extends JPanel
 	private void renderBonusXpOptions()
 	{
 		SkillDataBonus[] bonuses = skillData.getSkillData(currentCalc.getDataFile()).getBonuses();
-		add(new JLabel("Bonus Experience:"));
 		if (bonuses != null)
 		{
+			add(new JLabel("Bonus Experience:"));
 			for (SkillDataBonus bonus : bonuses)
 			{
 				JPanel checkboxPanel = buildCheckboxPanel(bonus);
