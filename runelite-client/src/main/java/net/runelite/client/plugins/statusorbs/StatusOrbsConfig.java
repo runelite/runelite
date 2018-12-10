@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +38,33 @@ public interface StatusOrbsConfig extends Config
 		description = "Changes the HP heart color to match players current affliction"
 	)
 	default boolean dynamicHpHeart()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showHitpoints",
+		name = "Show hitpoints regen",
+		description = "Show a ring around the hitpoints orb")
+	default boolean showHitpoints()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showWhenNoChange",
+		name = "Show hitpoints regen at full hitpoints",
+		description = "Always show the hitpoints regen orb, even if there will be no stat change")
+	default boolean showWhenNoChange()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showSpecial",
+		name = "Show Spec. Attack regen",
+		description = "Show a ring around the Special Attack orb")
+	default boolean showSpecial()
 	{
 		return true;
 	}
