@@ -46,10 +46,8 @@ public class SessionController
 		this.sessionService = sessionService;
 	}
 
-	@RequestMapping
-	public UUID get(HttpServletRequest request)
+	private void createSession(HttpServletRequest request, UUID uuid)
 	{
-		UUID uuid = UUID.randomUUID();
 		String addr = request.getRemoteAddr();
 		Instant now = Instant.now();
 		SessionEntry sessionEntry = new SessionEntry();
@@ -58,23 +56,32 @@ public class SessionController
 		sessionEntry.setStart(now);
 		sessionEntry.setLast(now);
 		sessionService.createSession(sessionEntry);
+	}
+
+	@RequestMapping
+	public UUID get(HttpServletRequest request)
+	{
+		UUID uuid = UUID.randomUUID();
+		createSession(request, uuid);
 		return uuid;
 	}
 
 	@RequestMapping("/ping")
-	public ResponseEntity ping(@RequestParam("session") UUID uuid)
+	public ResponseEntity ping(HttpServletRequest request, @RequestParam("session") UUID uuid)
 	{
 		int updated = sessionService.updateLast(uuid);
 		if (updated == 0)
 		{
-			return ResponseEntity.notFound().build();
+			// create the session anyway
+			createSession(request, uuid);
+			return ResponseEntity.ok().build();
 		}
 
 		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping
-	public ResponseEntity delete(@RequestParam("session") UUID uuid, HttpServletRequest request)
+	public ResponseEntity delete(@RequestParam("session") UUID uuid)
 	{
 		int deleted = sessionService.deleteSession(uuid);
 		if (deleted == 0)
