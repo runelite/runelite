@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.zoom;
 
+import com.google.common.primitives.Ints;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
@@ -53,9 +54,6 @@ public class ZoomPlugin extends Plugin implements KeyListener
 	 * Larger values trigger an overflow in the engine's fov to scale code.
 	 */
 	private static final int INNER_ZOOM_LIMIT = 1004;
-
-	private static final int OUTER_CONFIG_ZOOM_LIMIT_MIN = 0;
-	private static final int OUTER_CONFIG_ZOOM_LIMIT_MAX = 400;
 
 	private boolean controlDown;
 	
@@ -100,7 +98,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 
 		if ("outerZoomLimit".equals(event.getEventName()))
 		{
-			int outerLimit = Math.max(OUTER_CONFIG_ZOOM_LIMIT_MIN, Math.min(OUTER_CONFIG_ZOOM_LIMIT_MAX, zoomConfig.outerLimit()));
+			int outerLimit = Ints.constrainToRange(zoomConfig.outerLimit(), ZoomConfig.OUTER_LIMIT_MIN, ZoomConfig.OUTER_LIMIT_MAX);
 			int outerZoomLimit = 128 - outerLimit;
 			intStack[intStackSize - 1] = outerZoomLimit;
 			return;
