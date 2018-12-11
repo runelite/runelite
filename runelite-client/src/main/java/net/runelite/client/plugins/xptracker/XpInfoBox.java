@@ -89,9 +89,10 @@ class XpInfoBox extends JPanel
 	private final JLabel actionsLeft = new JLabel();
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
 
+	private final XpTrackerConfig xpTrackerConfig;
+
 	private boolean paused = false;
 
-	private XpTrackerConfig xpTrackerConfig;
 
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, XpTrackerConfig xpTrackerConfig, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
