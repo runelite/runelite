@@ -359,7 +359,14 @@ public class ConfigPanel extends PluginPanel
 				Component editor = spinner.getEditor();
 				JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
 				spinnerTextField.setColumns(SPINNER_FIELD_WIDTH);
-				spinner.addChangeListener(ce -> changeConfiguration(listItem, config, spinner, cd, cid));
+				spinnerTextField.addFocusListener(new FocusAdapter()
+				{
+					@Override
+					public void focusLost(FocusEvent e)
+					{
+						changeConfiguration(listItem, config, spinner, cd, cid);
+					}
+				});
 
 				item.add(spinner, BorderLayout.EAST);
 			}
