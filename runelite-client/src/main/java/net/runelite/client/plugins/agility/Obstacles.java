@@ -224,7 +224,7 @@ class Obstacles
 		STILE,
 		// Asgarnian Ice Dungeon
 		STEPS,
-		// Wyvern Cave
+		// Fossil Island Wyvern Cave
 		STAIRS_31485
 	);
 
