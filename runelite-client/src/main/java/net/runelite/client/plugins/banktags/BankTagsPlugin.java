@@ -90,6 +90,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
 	public static final String ICON_SEARCH = "icon_";
 	public static final String VAR_TAG_SUFFIX = "*";
+	public static final String PRICE_FILTER = "pricefilter";
 
 	private static final String SEARCH_BANK_INPUT_TEXT =
 		"Show items whose names or tags contain the following text:<br>" +
@@ -204,6 +205,21 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 				else if (!tagSearch)
 				{
 					intStack[intStackSize - 2] = itemName.contains(search) ? 1 : 0;
+				}
+
+				if (config.priceFilter()) {
+					if (search.equals(PRICE_FILTER)) {
+						intStack[intStackSize - 2] = 1;
+					}
+					if (intStack[intStackSize - 2] == 1) {
+						ItemContainer container = client.getItemContainer(InventoryID.BANK);
+						if (container != null) {
+							for (Item item : container.getItems()) {
+								if (item.getId() != itemId) continue;
+								intStack[intStackSize - 2] = tagManager.itemWithinPriceRange(item) ? 1 : 0;
+							}
+						}
+					}
 				}
 				break;
 			case "getSearchingTagTab":
@@ -334,6 +350,10 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 			{
 				clientThread.invokeLater(tabInterface::destroy);
 			}
+		}
+		if (configChanged.getGroup().equals("banktags") && configChanged.getKey().equals("priceFilter"))
+		{
+			bankSearch.reset(true);
 		}
 	}
 

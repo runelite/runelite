@@ -32,6 +32,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -52,20 +55,26 @@ import net.runelite.client.util.Text;
 @Singleton
 public class TagManager
 {
+	// Used when getting High Alchemy value - multiplied by general store price.
+	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+
 	private static final String ITEM_KEY_PREFIX = "item_";
 	private final ConfigManager configManager;
 	private final ItemManager itemManager;
 	private final ClueScrollService clueScrollService;
+	private final BankTagsConfig config;
 
 	@Inject
 	private TagManager(
-		final ItemManager itemManager,
-		final ConfigManager configManager,
-		final ClueScrollService clueScrollService)
+			final ItemManager itemManager,
+			final ConfigManager configManager,
+			final ClueScrollService clueScrollService,
+			final BankTagsConfig config)
 	{
 		this.itemManager = itemManager;
 		this.configManager = configManager;
 		this.clueScrollService = clueScrollService;
+		this.config = config;
 	}
 
 	String getTagString(int itemId, boolean variation)
@@ -167,6 +176,35 @@ public class TagManager
 		{
 			setTags(itemId, tags, true);
 		}
+	}
+
+	public boolean itemWithinPriceRange(Item item)
+	{
+		int id = item.getId();
+		int qty = item.getQuantity();
+
+		ItemComposition itemDef = itemManager.getItemComposition(id);
+
+		int gePrice = qty*itemManager.getItemPrice(id);
+		int haPrice = qty*Math.round(itemDef.getPrice() * HIGH_ALCHEMY_CONSTANT);
+
+		if (config.filterGEValue())
+		{
+			if (gePrice >= config.lowValuePrice() && gePrice <= config.highValuePrice())
+			{
+				return true;
+			}
+		}
+
+		if (config.filterHAValue())
+		{
+			if (haPrice >= config.lowValuePrice() && haPrice <= config.highValuePrice())
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private int getItemId(int itemId, boolean variation)

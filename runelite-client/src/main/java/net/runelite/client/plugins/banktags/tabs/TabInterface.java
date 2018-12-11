@@ -80,12 +80,13 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.banktags.BankTagsConfig;
 import net.runelite.client.plugins.banktags.BankTagsPlugin;
+import net.runelite.client.plugins.banktags.TagManager;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.SPLITTER;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.VAR_TAG_SUFFIX;
-import net.runelite.client.plugins.banktags.TagManager;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.PRICE_FILTER;
 import static net.runelite.client.plugins.banktags.tabs.MenuIndexes.NewTab;
 import static net.runelite.client.plugins.banktags.tabs.MenuIndexes.Tab;
 import net.runelite.client.ui.JagexColors;
@@ -445,10 +446,15 @@ public class TabInterface
 		if (bankTitle != null && !bankTitle.isHidden() && !str.startsWith(TAG_SEARCH))
 		{
 			str = bankTitle.getText().replaceFirst("Showing items: ", "");
+			boolean isSearchOpen = client.getVar(VarClientInt.INPUT_TYPE) == InputType.SEARCH.getType();
 
 			if (str.startsWith("Tab "))
 			{
 				str = "";
+			}
+			else if (config.priceFilter() && !isSearchOpen)
+			{
+				str = PRICE_FILTER;
 			}
 		}
 
@@ -461,6 +467,9 @@ public class TabInterface
 		else
 		{
 			activateTab(null);
+			if (str.equals(PRICE_FILTER)) {
+				bankSearch.search(InputType.SEARCH, PRICE_FILTER, false);
+			}
 		}
 
 		updateBounds();

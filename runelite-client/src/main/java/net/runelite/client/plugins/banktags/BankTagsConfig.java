@@ -54,6 +54,61 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "priceFilter",
+		name = "Filter by price",
+		description = "Enable hiding of items not within given price range.",
+		position = 3
+	)
+	default boolean priceFilter()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "highAlchemyPrice",
+		name = "Filter by HA value",
+		description = "Enable filtering by HA value.",
+		position = 4
+	)
+	default boolean filterHAValue()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "rememberTab",
+		name = "Filter by GE value",
+		description = "Enable filtering by GE value.",
+		position = 5
+	)
+	default boolean filterGEValue()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "minimumValue",
+			name = "Minimum price",
+			description = "Configures the minimum value of the bank item to show",
+			position = 6
+	)
+	default int lowValuePrice()
+	{
+		return 20000;
+	}
+
+	@ConfigItem(
+			keyName = "maximumValue",
+			name = "Maximum price",
+			description = "Configures the maximum value of the bank item to show",
+			position = 7
+	)
+	default int highValuePrice()
+	{
+		return 1000000;
+	}
+
+	@ConfigItem(
 		keyName = "position",
 		name = "",
 		description = "",
