@@ -54,10 +54,13 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.queries.BankItemQuery;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -74,6 +77,7 @@ import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Bank Tags",
@@ -87,16 +91,20 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	public static final Joiner JOINER = Joiner.on(",").skipNulls();
 	public static final String CONFIG_GROUP = "banktags";
 	public static final String TAG_SEARCH = "tag:";
+	private static final String HIGH_ALCH_SEARCH = "ha:";
+	private static final String GE_SEARCH = "ge:";
 	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
 	public static final String ICON_SEARCH = "icon_";
 	public static final String VAR_TAG_SUFFIX = "*";
 
 	private static final String SEARCH_BANK_INPUT_TEXT =
 		"Show items whose names or tags contain the following text:<br>" +
-			"(To show only tagged items, start your search with 'tag:')";
+				"(To show only tagged items, start your search with 'tag:')<br>" +
+				"(To show items by GE or High Alch value, start your search with 'ge:' or 'ha:')";
 	private static final String SEARCH_BANK_INPUT_TEXT_FOUND =
 		"Show items whose names or tags contain the following text: (%d found)<br>" +
-			"(To show only tagged items, start your search with 'tag:')";
+				"(To show only tagged items, start your search with 'tag:')<br>" +
+				"(To show items by GE or High Alch value, start your search with 'ge:' or 'ha:')";
 
 	@Inject
 	private ItemManager itemManager;
@@ -128,7 +136,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private QueryRunner queryRunner;
+
 	private boolean shiftPressed = false;
+
+	private WidgetItem[] bankItems;
 
 	@Provides
 	BankTagsConfig getConfig(ConfigManager configManager)
@@ -205,6 +218,106 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 				{
 					intStack[intStackSize - 2] = itemName.contains(search) ? 1 : 0;
 				}
+
+				boolean GESearch = search.toLowerCase().startsWith(GE_SEARCH);
+				boolean HASearch = search.toLowerCase().startsWith(HIGH_ALCH_SEARCH);
+				if (GESearch)
+				{
+					search = search.substring(GE_SEARCH.length()).trim();
+				}
+				if (HASearch)
+				{
+					search = search.substring(HIGH_ALCH_SEARCH.length()).trim();
+				}
+
+				if (search.trim().matches("^(<=|>=|<|>|=)\\d+([.]\\d+)?[kmbKMB]?$"))
+				{
+					String operator;
+					if (search.substring(0, 2).matches("(<=|>=)"))
+					{
+						operator = search.substring(0, 2);
+						search = search.substring(2);
+					}
+					else
+					{
+						operator = search.substring(0, 1);
+						search = search.substring(1);
+					}
+
+					String multiplier = null;
+					if (search.substring(search.length() - 1).matches("[kmbKMB]"))
+					{
+						multiplier = search.substring(search.length() - 1).toLowerCase();
+						search = search.substring(0, search.length() - 1);
+					}
+
+					double value = Double.parseDouble(search);
+					if (multiplier != null)
+					{
+						switch (multiplier)
+						{
+							case "k":
+								value = value * 1000;
+								break;
+							case "m":
+								value = value * 1000000;
+								break;
+							case "b":
+								value = value * 1000000000;
+								break;
+						}
+					}
+
+					ItemComposition itemDef = itemManager.getItemComposition(itemId);
+					if (itemDef.getNote() != -1)
+					{
+						itemId = itemDef.getLinkedNoteId();
+						itemDef = itemManager.getItemComposition(itemId);
+					}
+					int HAitemValue = Math.round(itemDef.getPrice() * 0.6f);
+					int GEitemValue = itemManager.getItemPrice(itemId);
+					for (WidgetItem widgetItem : bankItems)
+					{
+						if (widgetItem.getId() == itemId)
+						{
+							HAitemValue = HAitemValue * widgetItem.getQuantity();
+							GEitemValue = GEitemValue * widgetItem.getQuantity();
+						}
+					}
+					switch (operator)
+					{
+						case ">":
+							if ((GEitemValue > value && GESearch) || (HAitemValue > value && HASearch))
+							{
+								intStack[intStackSize - 2] = 1;
+							}
+							break;
+						case "<":
+							if ((GEitemValue < value && GEitemValue != 0 && GESearch) || (HAitemValue < value && HAitemValue != 0 && HASearch))
+							{
+								intStack[intStackSize - 2] = 1;
+							}
+							break;
+						case ">=":
+							if ((GEitemValue >= value && GESearch) || (HAitemValue >= value && HASearch))
+							{
+								intStack[intStackSize - 2] = 1;
+							}
+							break;
+						case "<=":
+							if ((GEitemValue <= value && GEitemValue != 0 && GESearch) || (HAitemValue <= value && HAitemValue != 0 && HASearch))
+							{
+								intStack[intStackSize - 2] = 1;
+							}
+							break;
+						case "=":
+							if ((GEitemValue == value && GESearch) || (HAitemValue == value && HASearch))
+							{
+								intStack[intStackSize - 2] = 1;
+							}
+							break;
+					}
+				}
 				break;
 			case "getSearchingTagTab":
 				intStack[intStackSize - 1] = tabInterface.isActive() ? 1 : 0;
@@ -244,6 +357,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		}
 
 		tabInterface.handleAdd(event);
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		bankItems = queryRunner.runQuery(new BankItemQuery());
 	}
 
 	@Subscribe
