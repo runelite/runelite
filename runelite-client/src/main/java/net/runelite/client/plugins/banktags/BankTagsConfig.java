@@ -87,10 +87,10 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "minimumValue",
-			name = "Minimum price",
-			description = "Configures the minimum value of the bank item to show",
-			position = 6
+		keyName = "minimumValue",
+		name = "Minimum price",
+		description = "Configures the minimum value of the bank item to show",
+		position = 6
 	)
 	default int lowValuePrice()
 	{
@@ -98,10 +98,10 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "maximumValue",
-			name = "Maximum price",
-			description = "Configures the maximum value of the bank item to show",
-			position = 7
+		keyName = "maximumValue",
+		name = "Maximum price",
+		description = "Configures the maximum value of the bank item to show",
+		position = 7
 	)
 	default int highValuePrice()
 	{

@@ -54,6 +54,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -101,6 +102,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+    private ItemContainer itemContainer;
 
 	@Inject
 	private Client client;
@@ -212,9 +216,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 						intStack[intStackSize - 2] = 1;
 					}
 					if (intStack[intStackSize - 2] == 1) {
-						ItemContainer container = client.getItemContainer(InventoryID.BANK);
-						if (container != null) {
-							for (Item item : container.getItems()) {
+						if (itemContainer != null) {
+							for (Item item : itemContainer.getItems()) {
 								if (item.getId() != itemId) continue;
 								intStack[intStackSize - 2] = tagManager.itemWithinPriceRange(item) ? 1 : 0;
 							}
@@ -385,6 +388,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		{
 			shiftPressed = false;
 		}
+	}
+
+	@Subscribe
+    public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
+    {
+        itemContainer = client.getItemContainer(InventoryID.BANK);
 	}
 
 	@Override

@@ -66,10 +66,10 @@ public class TagManager
 
 	@Inject
 	private TagManager(
-			final ItemManager itemManager,
-			final ConfigManager configManager,
-			final ClueScrollService clueScrollService,
-			final BankTagsConfig config)
+		final ItemManager itemManager,
+		final ConfigManager configManager,
+		final ClueScrollService clueScrollService,
+		final BankTagsConfig config)
 	{
 		this.itemManager = itemManager;
 		this.configManager = configManager;
