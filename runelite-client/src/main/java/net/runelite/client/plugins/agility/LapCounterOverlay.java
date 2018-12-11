@@ -29,6 +29,9 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+
+import net.runelite.api.Skill;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -39,16 +42,18 @@ class LapCounterOverlay extends Overlay
 {
 	private final AgilityPlugin plugin;
 	private final AgilityConfig config;
+	private final XpTrackerService xpTrackerService;
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private LapCounterOverlay(AgilityPlugin plugin, AgilityConfig config)
+	private LapCounterOverlay(AgilityPlugin plugin, AgilityConfig config, XpTrackerService xpTrackerService)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;
 		this.config = config;
+		this.xpTrackerService = xpTrackerService;
 	}
 
 	@Override
@@ -57,34 +62,37 @@ class LapCounterOverlay extends Overlay
 		AgilitySession session = plugin.getSession();
 
 		if (!config.showLapCount() ||
-			session == null ||
-			session.getLastLapCompleted() == null ||
-			session.getCourse() == null)
+			session == null)
 		{
 			return null;
 		}
 
-		Duration lapTimeout = Duration.ofMinutes(config.lapTimeout());
-		Duration sinceLap = Duration.between(session.getLastLapCompleted(), Instant.now());
-
-		if (sinceLap.compareTo(lapTimeout) >= 0)
-		{
-			// timeout session
-			session.setLastLapCompleted(null);
-			return null;
-		}
+//		Duration lapTimeout = Duration.ofMinutes(config.lapTimeout());
+//		Duration sinceLap = Duration.between(session.getLastLapCompleted(), Instant.now());
+//
+//		if (sinceLap.compareTo(lapTimeout) >= 0)
+//		{
+//			// timeout session
+//			session.setLastLapCompleted(null);
+//			return null;
+//		}
 
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Total Laps")
-			.right(Integer.toString(session.getTotalLaps()))
+			.right(Integer.toString(xpTrackerService.getActions(Skill.AGILITY)))
 			.build());
 
-		if (session.getLapsTillLevel() > 0)
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Laps/hr")
+			.right(Integer.toString(xpTrackerService.getActionsHr(Skill.AGILITY)))
+			.build());
+
+		if (xpTrackerService.getActionsLeft(Skill.AGILITY) > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Laps till level")
-				.right(Integer.toString(session.getLapsTillLevel()))
+				.right(Integer.toString(xpTrackerService.getActionsLeft(Skill.AGILITY)))
 				.build());
 		}
 

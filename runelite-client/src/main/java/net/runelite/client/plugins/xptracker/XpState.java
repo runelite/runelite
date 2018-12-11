@@ -24,11 +24,15 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 import lombok.NonNull;
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
+
+import javax.inject.Inject;
 
 /**
  * Internal state for the XpTrackerPlugin
@@ -43,6 +47,16 @@ class XpState
 	private final XpStateTotal xpTotal = new XpStateTotal();
 	private final Map<Skill, XpStateSingle> xpSkills = new EnumMap<>(Skill.class);
 	private NPC interactedNPC;
+	private Courses currentAgilityCourse;
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private XpState(Client client)
+	{
+		this.client = client;
+	}
 
 	/**
 	 * Destroys all internal state, however any XpSnapshotSingle or XpSnapshotTotal remain unaffected.
@@ -195,6 +209,64 @@ class XpState
 		final XpAction xpAction = state.getXpAction(XpActionType.ACTOR_HEALTH);
 		xpAction.setActions(xpAction.getActions() + 1);
 		return xpAction.isActionsHistoryInitialized() ? XpUpdateResult.UPDATED : XpUpdateResult.NO_CHANGE;
+	}
+
+	/**
+	 * Update number of actions performed for skill (e.g amount of kills in this case) if last interacted
+	 * NPC died
+	 * @param skill skill to update actions for
+	 * @return UPDATED in case new kill was successfully added
+	 */
+	XpUpdateResult updateAgilityLaps(Skill skill)
+	{
+		XpStateSingle state = getSkill(skill);
+
+		// Get course
+		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
+		if (course == null
+				|| (course.getCourseEndWorldPoints().length == 0
+				? Math.abs(course.getLastObstacleXp() - state.getXpGained()) > 1
+				: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
+		{
+			return XpUpdateResult.NO_CHANGE;
+		}
+
+		final XpAction action = state.getXpAction(XpActionType.ACTOR_HEALTH);
+
+		if (action.isActionsHistoryInitialized())
+		{
+			action.getActionExps()[action.getActionExpIndex()] = course.getLastObstacleXp();
+
+			if (currentAgilityCourse != course)
+			{
+				action.setActionExpIndex((action.getActionExpIndex() + 1) % action.getActionExps().length);
+			}
+		}
+		else
+		{
+			// So we have a decent average off the bat, lets populate all values with what we see.
+			for (int i = 0; i < action.getActionExps().length; i++)
+			{
+				action.getActionExps()[i] = course.getLastObstacleXp();
+			}
+
+			action.setActionsHistoryInitialized(true);
+		}
+
+		if (currentAgilityCourse != null && currentAgilityCourse == course)
+		{
+			System.out.println("Finished a lap");
+
+			action.setActions(action.getActions() + 1);
+			return action.isActionsHistoryInitialized() ? XpUpdateResult.UPDATED : XpUpdateResult.NO_CHANGE;
+		}
+		else
+		{
+			System.out.println("Doing a course xdd");
+			currentAgilityCourse = course;
+			state.setActionType(XpActionType.ACTOR_HEALTH);
+			return XpUpdateResult.INITIALIZED;
+		}
 	}
 
 	void tick(Skill skill, long delta)

@@ -25,47 +25,30 @@
 package net.runelite.client.plugins.agility;
 
 import com.google.inject.Provides;
+
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.Item;
-import net.runelite.api.ItemID;
+import net.runelite.api.*;
+
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
-import net.runelite.api.Player;
-import static net.runelite.api.Skill.AGILITY;
-import net.runelite.api.Tile;
-import net.runelite.api.TileObject;
+
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.DecorativeObjectChanged;
-import net.runelite.api.events.DecorativeObjectDespawned;
-import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.ExperienceChanged;
-import net.runelite.api.events.GameObjectChanged;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GroundObjectChanged;
-import net.runelite.api.events.GroundObjectDespawned;
-import net.runelite.api.events.GroundObjectSpawned;
-import net.runelite.api.events.ItemDespawned;
-import net.runelite.api.events.ItemSpawned;
-import net.runelite.api.events.WallObjectChanged;
-import net.runelite.api.events.WallObjectDespawned;
-import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.events.*;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
@@ -74,6 +57,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	description = "Show helpful information about agility courses and obstacles",
 	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
 )
+@PluginDependency(XpTrackerPlugin.class)
 @Slf4j
 public class AgilityPlugin extends Plugin
 {
@@ -112,7 +96,6 @@ public class AgilityPlugin extends Plugin
 	@Getter
 	private AgilitySession session;
 
-	private int lastAgilityXp;
 	private WorldPoint lastArenaTicketPosition;
 
 	@Provides
@@ -175,36 +158,9 @@ public class AgilityPlugin extends Plugin
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
-		if (event.getSkill() != AGILITY || !config.showLapCount())
-		{
-			return;
-		}
-
-		// Determine how much EXP was actually gained
-		int agilityXp = client.getSkillExperience(AGILITY);
-		int skillGained = agilityXp - lastAgilityXp;
-		lastAgilityXp = agilityXp;
-
-		// Get course
-		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		if (course == null
-			|| (course.getCourseEndWorldPoints().length == 0
-			? Math.abs(course.getLastObstacleXp() - skillGained) > 1
-			: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
-		{
-			return;
-		}
-
-		if (session != null && session.getCourse() == course)
-		{
-			session.incrementLapCount(client);
-		}
-		else
-		{
-			session = new AgilitySession(course);
-			// New course found, reset lap count and set new course
-			session.resetLapCount();
-			session.incrementLapCount(client);
+		if (session == null && event.getSkill() == Skill.AGILITY) {
+			session = new AgilitySession();
+			session.setLastLapCompleted();
 		}
 	}
 
@@ -258,6 +214,18 @@ public class AgilityPlugin extends Plugin
 					showNewAgilityArenaTimer();
 				}
 			}
+		}
+		if (session == null || session.getLastLapCompleted() == null)
+		{
+			return;
+		}
+
+		Duration statTimeout = Duration.ofMinutes(config.lapTimeout());
+		Duration sinceCut = Duration.between(session.getLastLapCompleted(), Instant.now());
+
+		if (sinceCut.compareTo(statTimeout) >= 0)
+		{
+			session = null;
 		}
 	}
 

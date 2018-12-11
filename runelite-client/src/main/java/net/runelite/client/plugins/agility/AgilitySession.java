@@ -27,45 +27,18 @@ package net.runelite.client.plugins.agility;
 import java.time.Instant;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.Client;
-import net.runelite.api.Experience;
-import net.runelite.api.Skill;
 
-@Getter
-@Setter
 class AgilitySession
 {
-	private final Courses course;
 	private Instant lastLapCompleted;
-	private int totalLaps;
-	private int lapsTillLevel;
 
-	AgilitySession(Courses course)
-	{
-		this.course = course;
-	}
-
-	void incrementLapCount(Client client)
+	public void setLastLapCompleted()
 	{
 		lastLapCompleted = Instant.now();
-		++totalLaps;
-
-		int currentExp = client.getSkillExperience(Skill.AGILITY);
-		int nextLevel = client.getRealSkillLevel(Skill.AGILITY) + 1;
-
-		int remainingXp;
-		do
-		{
-			remainingXp = nextLevel <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(nextLevel) - currentExp : 0;
-			nextLevel++;
-		} while (remainingXp < 0);
-
-		lapsTillLevel = remainingXp > 0 ? (int) Math.ceil(remainingXp / course.getTotalXp()) : 0;
 	}
 
-	void resetLapCount()
+	public Instant getLastLapCompleted()
 	{
-		totalLaps = 0;
-		lapsTillLevel = 0;
+		return lastLapCompleted;
 	}
 }

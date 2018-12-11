@@ -93,6 +93,9 @@ public class XpTrackerPlugin extends Plugin
 	@Inject
 	private NPCManager npcManager;
 
+	@Inject
+	private XpState xpState;
+
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
 	private XpWorldType lastWorldType;
@@ -100,7 +103,6 @@ public class XpTrackerPlugin extends Plugin
 	private long lastTickMillis = 0;
 
 	private final XpClient xpClient = new XpClient();
-	private final XpState xpState = new XpState();
 	private final XpPauseState xpPauseState = new XpPauseState();
 
 	@Provides
@@ -267,6 +269,10 @@ public class XpTrackerPlugin extends Plugin
 		{
 			final NPC npc = (NPC) interacting;
 			xpState.updateNpcExperience(skill, npc, npcManager.getHealth(npc.getName(), npc.getCombatLevel()));
+		}
+
+		if (event.getSkill() == Skill.AGILITY) {
+			final XpUpdateResult updateResult = xpState.updateAgilityLaps(skill);
 		}
 
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
