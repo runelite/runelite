@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
 import lombok.Setter;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
@@ -48,14 +47,14 @@ public class ProgressBar extends DimmableJPanel
 	@Setter
 	private int value;
 
+	@Setter
+	private ArrayList<Double> intermediateProgressPositions = new ArrayList<>();
+
 	private final JLabel leftLabel = new JShadowedLabel();
 	private final JLabel rightLabel = new JShadowedLabel();
 	private final JLabel centerLabel = new JShadowedLabel();
 	private String centerLabelText = "";
 	private String dimmedText = "";
-
-	@Setter
-	private ArrayList<Double> intermediateProgressPositions = new ArrayList<>();
 
 	public ProgressBar()
 	{

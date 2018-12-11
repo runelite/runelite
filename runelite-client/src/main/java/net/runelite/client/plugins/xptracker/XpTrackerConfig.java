@@ -54,10 +54,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 2,
-			keyName = "intermediateLevelMarkers",
-			name = "Show intermediate level markers",
-			description = "Marks intermediate levels on the progressbar"
+		position = 2,
+		keyName = "intermediateLevelMarkers",
+		name = "Show intermediate level markers",
+		description = "Marks intermediate levels on the progressbar"
 	)
 	default boolean showIntermediateLevels()
 	{
