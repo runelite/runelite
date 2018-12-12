@@ -104,6 +104,13 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 	public void render(Graphics2D graphics, final OverlayLayer layer)
 	{
+		if (layer != OverlayLayer.ABOVE_MAP
+			&& client.getWidget(WidgetInfo.FULLSCREEN_MAP_ROOT) != null
+			&& !client.getWidget(WidgetInfo.FULLSCREEN_MAP_ROOT).isHidden())
+		{
+			return;
+		}
+
 		final List<Overlay> overlays = overlayManager.getLayer(layer);
 
 		if (overlays == null
