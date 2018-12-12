@@ -24,11 +24,11 @@
  */
 package net.runelite.http.api.loottracker;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 public class GameItem
 {
-	private final int id;
-	private final int qty;
+	private int id;
+	private int qty;
 }
