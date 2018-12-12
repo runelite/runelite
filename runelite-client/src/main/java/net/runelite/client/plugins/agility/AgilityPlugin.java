@@ -184,7 +184,8 @@ public class AgilityPlugin extends Plugin
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
-		if (session == null && xpTrackerService.getActionType(Skill.AGILITY) == XpActionType.AGILITY_LAPS && xpTrackerService.getActions(Skill.AGILITY) > 0) {
+		if (session == null && xpTrackerService.getActionType(Skill.AGILITY) == XpActionType.AGILITY_LAPS && xpTrackerService.getActions(Skill.AGILITY) > 0)
+		{
 			session = new AgilitySession();
 			session.setLastLapCompleted();
 		}

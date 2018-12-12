@@ -73,7 +73,8 @@ class LapCounterOverlay extends Overlay
 			.right(Integer.toString(xpTrackerService.getActions(Skill.AGILITY)))
 			.build());
 
-		if (xpTrackerService.getActions(Skill.AGILITY) > 2) {
+		if (xpTrackerService.getActions(Skill.AGILITY) > 2)
+		{
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Laps/hr")
 				.right(Integer.toString(xpTrackerService.getActionsHr(Skill.AGILITY)))

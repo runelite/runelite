@@ -25,8 +25,6 @@
 package net.runelite.client.plugins.agility;
 
 import java.time.Instant;
-import lombok.Getter;
-import lombok.Setter;
 
 class AgilitySession
 {

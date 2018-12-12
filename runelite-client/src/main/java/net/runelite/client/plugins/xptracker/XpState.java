@@ -225,12 +225,14 @@ class XpState
 
 		// Get course
 		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		if (course == null) {
+		if (course == null)
+		{
 			// Not near a course, use Actions instead of Laps
 			currentAgilityCourse = null;
 			return;
 		}
-		if (currentAgilityCourse != null) {
+		if (currentAgilityCourse != null)
+		{
 			// Currently doing a course
 			state.setActionType(XpActionType.AGILITY_LAPS);
 		}

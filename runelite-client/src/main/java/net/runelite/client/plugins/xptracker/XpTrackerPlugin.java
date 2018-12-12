@@ -270,7 +270,8 @@ public class XpTrackerPlugin extends Plugin
 			xpState.updateNpcExperience(skill, npc, npcManager.getHealth(npc.getName(), npc.getCombatLevel()));
 		}
 
-		if (event.getSkill() == Skill.AGILITY) {
+		if (event.getSkill() == Skill.AGILITY)
+		{
 			xpState.updateAgilityLaps(skill);
 		}
 
