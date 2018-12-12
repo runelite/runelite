@@ -32,6 +32,7 @@ import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Query;
@@ -157,5 +158,15 @@ public class LootTrackerService
 		}
 
 		return lootRecords;
+	}
+
+	@Scheduled(fixedDelay = 5 * 60 * 1000)
+	public void expire()
+	{
+		try (Connection con = sql2o.open())
+		{
+			con.createQuery("delete from kills where time + interval 30 day < current_timestamp()")
+				.executeUpdate();
+		}
 	}
 }

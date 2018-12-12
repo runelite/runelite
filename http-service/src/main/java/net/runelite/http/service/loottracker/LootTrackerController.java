@@ -28,7 +28,6 @@ package net.runelite.http.service.loottracker;
 import com.google.api.client.http.HttpStatusCodes;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.loottracker.LootRecord;
