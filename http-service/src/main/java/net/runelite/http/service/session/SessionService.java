@@ -70,25 +70,27 @@ public class SessionService
 		}
 	}
 
-	public void deleteSession(SessionEntry session)
+	public int deleteSession(UUID id)
 	{
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("delete from session where uuid = :uuid")
-				.addParameter("uuid", session.getUuid().toString())
-				.executeUpdate();
+			return con.createQuery("delete from session where uuid = :uuid")
+				.addParameter("uuid", id.toString())
+				.executeUpdate()
+				.getResult();
 		}
 	}
 
-	public void updateLast(UUID session)
+	public int updateLast(UUID session)
 	{
 		try (Connection con = sql2o.open())
 		{
 			Instant last = Instant.now();
-			con.createQuery("update session set last = :last where uuid = :uuid")
+			return con.createQuery("update session set last = :last where uuid = :uuid")
 				.addParameter("last", last)
 				.addParameter("uuid", session.toString())
-				.executeUpdate();
+				.executeUpdate()
+				.getResult();
 		}
 	}
 
@@ -96,7 +98,7 @@ public class SessionService
 	{
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("delete from session where last + interval 5 minute < current_timestamp()")
+			con.createQuery("delete from session where last + interval 11 minute < current_timestamp()")
 				.executeUpdate();
 		}
 	}

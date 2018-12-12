@@ -29,6 +29,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
+import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -546,7 +547,7 @@ public class Perspective
 	)
 	{
 		int radius = 5;
-		Area geometry = new Area();
+		Path2D.Double geometry = new Path2D.Double();
 
 		final int tileHeight = getTileHeight(client, point, client.getPlane());
 
@@ -604,10 +605,10 @@ public class Perspective
 				continue;
 			}
 
-			geometry.add(new Area(clickableRect));
+			geometry.append(clickableRect, false);
 		}
 
-		return geometry;
+		return new Area(geometry);
 	}
 
 	private static Area getAABB(

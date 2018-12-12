@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Tyler <https://github.com/tylerthardy>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.worlds;
+package net.runelite.client.plugins.timers;
 
-import net.runelite.http.api.worlds.WorldType;
+import java.awt.Color;
+import java.awt.Image;
+import lombok.Getter;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
+import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 
-enum ServiceWorldType
+public class IndicatorIndicator extends InfoBox
 {
-	MEMBERS(WorldType.MEMBERS, 1),
-	PVP(WorldType.PVP, 1 << 2),
-	BOUNTY(WorldType.BOUNTY, 1 << 5),
-	SKILL_TOTAL(WorldType.SKILL_TOTAL, 1 << 7),
-	PVP_HIGH_RISK(WorldType.PVP_HIGH_RISK, 1 << 10),
-	LAST_MAN_STANDING(WorldType.LAST_MAN_STANDING, 1 << 14),
-	TOURNAMENT(WorldType.TOURNAMENT, 1 << 25),
-	DEADMAN_TOURNAMENT(WorldType.DEADMAN_TOURNAMENT, 1 << 26),
-	DEADMAN(WorldType.DEADMAN, 1 << 29),
-	SEASONAL_DEADMAN(WorldType.SEASONAL_DEADMAN, 1 << 30);
+	@Getter
+	private final GameIndicator indicator;
 
-	private final WorldType apiType;
-	private final int mask;
-
-	ServiceWorldType(WorldType apiType, int mask)
+	IndicatorIndicator(GameIndicator indicator, Image image, Plugin plugin)
 	{
-		this.apiType = apiType;
-		this.mask = mask;
+		super(image, plugin);
+		this.indicator = indicator;
+		setPriority(InfoBoxPriority.MED);
 	}
 
-	public WorldType getApiType()
+	@Override
+	public String getText()
 	{
-		return apiType;
+		return indicator.getText();
 	}
 
-	public int getMask()
+	@Override
+	public Color getTextColor()
 	{
-		return mask;
+		return indicator.getTextColor();
 	}
 }

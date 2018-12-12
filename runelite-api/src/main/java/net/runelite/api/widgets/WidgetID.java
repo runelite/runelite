@@ -123,6 +123,7 @@ public class WidgetID
 	public static final int KOUREND_FAVOUR_GROUP_ID = 246;
 	public static final int LOOTING_BAG_GROUP_ID = 81;
 	public static final int SKOTIZO_GROUP_ID = 308;
+	public static final int ENTERING_HOUSE_GROUP_ID = 71;
 
 	static class WorldMap
 	{
@@ -708,6 +709,7 @@ public class WidgetID
 
 	static class Pvp
 	{
+		static final int BOUNTY_HUNTER_INFO = 6;
 		static final int KILLDEATH_RATIO = 9;
 		static final int BOUNTY_HUNTER_STATS = 28;
 		static final int PVP_WIDGET_CONTAINER = 54;

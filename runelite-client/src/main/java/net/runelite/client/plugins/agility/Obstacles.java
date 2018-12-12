@@ -223,7 +223,9 @@ class Obstacles
 		// Taverley
 		STILE,
 		// Asgarnian Ice Dungeon
-		STEPS
+		STEPS,
+		// Fossil Island Wyvern Cave
+		STAIRS_31485
 	);
 
 	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(

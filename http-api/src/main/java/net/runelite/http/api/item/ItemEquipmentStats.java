@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.worlds;
+package net.runelite.http.api.item;
 
-import net.runelite.http.api.worlds.WorldType;
+import lombok.Builder;
+import lombok.Value;
 
-enum ServiceWorldType
+@Value
+@Builder
+public class ItemEquipmentStats
 {
-	MEMBERS(WorldType.MEMBERS, 1),
-	PVP(WorldType.PVP, 1 << 2),
-	BOUNTY(WorldType.BOUNTY, 1 << 5),
-	SKILL_TOTAL(WorldType.SKILL_TOTAL, 1 << 7),
-	PVP_HIGH_RISK(WorldType.PVP_HIGH_RISK, 1 << 10),
-	LAST_MAN_STANDING(WorldType.LAST_MAN_STANDING, 1 << 14),
-	TOURNAMENT(WorldType.TOURNAMENT, 1 << 25),
-	DEADMAN_TOURNAMENT(WorldType.DEADMAN_TOURNAMENT, 1 << 26),
-	DEADMAN(WorldType.DEADMAN, 1 << 29),
-	SEASONAL_DEADMAN(WorldType.SEASONAL_DEADMAN, 1 << 30);
+	private int slot;
 
-	private final WorldType apiType;
-	private final int mask;
+	private int astab;
+	private int aslash;
+	private int acrush;
+	private int amagic;
+	private int arange;
 
-	ServiceWorldType(WorldType apiType, int mask)
-	{
-		this.apiType = apiType;
-		this.mask = mask;
-	}
+	private int dstab;
+	private int dslash;
+	private int dcrush;
+	private int dmagic;
+	private int drange;
 
-	public WorldType getApiType()
-	{
-		return apiType;
-	}
-
-	public int getMask()
-	{
-		return mask;
-	}
+	private int str;
+	private int rstr;
+	private int mdmg;
+	private int prayer;
+	private int aspeed;
 }
+

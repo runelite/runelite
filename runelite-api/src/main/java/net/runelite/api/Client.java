@@ -47,7 +47,6 @@ public interface Client extends GameEngine
 {
 	/**
 	 * The client invokes these callbacks to communicate to
-	 * @return
 	 */
 	Callbacks getCallbacks();
 
@@ -58,7 +57,6 @@ public interface Client extends GameEngine
 	/**
 	 * Retrieve a global logger for the client.
 	 * This is most useful for mixins which can't have their own.
-	 * @return
 	 */
 	Logger getLogger();
 
@@ -351,7 +349,7 @@ public interface Client extends GameEngine
 	/**
 	 * Loads and creates the sprite images of the passed archive and file IDs.
 	 *
-	 * @param source the sprite database
+	 * @param source the sprite index
 	 * @param archiveId the sprites archive ID
 	 * @param fileId the sprites file ID
 	 * @return the sprite image of the file
@@ -359,16 +357,12 @@ public interface Client extends GameEngine
 	SpritePixels[] getSprites(IndexDataBase source, int archiveId, int fileId);
 
 	/**
-	 * Gets the sprite index database.
-	 *
-	 * @return the sprite database
+	 * Gets the sprite index.
 	 */
 	IndexDataBase getIndexSprites();
 
 	/**
-	 * Gets the script index database.
-	 *
-	 * @return the script database
+	 * Gets the script index.
 	 */
 	IndexDataBase getIndexScripts();
 
@@ -554,8 +548,7 @@ public interface Client extends GameEngine
 	 * Sets the array of open menu entries.
 	 * <p>
 	 * This method should typically be used in the context of the {@link net.runelite.api.events.MenuOpened}
-	 * event, since setting the menu entries will be overwritten the next
-	 * time the menu entries are calculated.
+	 * event, since setting the menu entries will be overwritten the next frame
 	 *
 	 * @param entries new array of open menu entries
 	 */
@@ -603,22 +596,15 @@ public interface Client extends GameEngine
 	 * plane, x and y the x-axis and y-axis coordinates of a tile
 	 * divided by the size of a chunk.
 	 * <p>
-	 * The bits of the int value held by the coordinates are structured
-	 * with the following format:
-	 * <ul>
-	 *     <li>Bits 7 and 8 correspond to the plane</li>
-	 *     <li>Bits 9 to 18 correspond to the x-axis coordinate of the chunk</li>
-	 *     <li>Bits 19 to 29 correspond to the y-axis coordinate of the chunk</li>
-	 *     <li>Bits 30 and 31 correspond to the chunks rotation</li>
-	 * </ul>
-	 * Note: The above positions assume that the left-most bit of an integer
-	 * is bit position 1, and the right-most bit 32.
-	 * ie.
-	 * 0000 0000 0000 0000 0000 0000 0000 0000
-	 *        PP XXXX XXXX XXYY YYYY YYYY YRR
-	 * Where P is the plane, X and Y the x/y axis coordinates, and R the chunks
-	 * rotation.
-	 *
+	 * The bits of the int value held by the coordinates are -1 if there is no data,
+	 * structured in the following format:
+	 * <pre>{@code
+	 *  0                   1                   2                   3
+	 *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	 * | |rot|     y chunk coord     |    x chunk coord    |pln|       |
+	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	 * }</pre>
 	 * @return the array of instance template chunks
 	 * @see Constants#CHUNK_SIZE
 	 * @see InstanceTemplates
@@ -823,6 +809,13 @@ public interface Client extends GameEngine
 	Map<Integer, ChatLineBuffer> getChatLineMap();
 
 	/**
+	 * Map of message node id to message node
+	 *
+	 * @return the map
+	 */
+	IterableHashTable getMessages();
+
+	/**
 	 * Gets the viewport widget.
 	 * <p>
 	 * The viewport is the area of the game above the chatbox
@@ -1010,48 +1003,32 @@ public interface Client extends GameEngine
 	ItemContainer getItemContainer(InventoryID inventory);
 
 	/**
-	 * Gets the index of the last integer added to the
-	 * {@link #getIntStack()} array.
-	 *
-	 * @return the array index
+	 * Gets the length of the cs2 vm's int stack
 	 */
 	int getIntStackSize();
 
 	/**
-	 * Sets the index of the last integer added to the
-	 * {@link #getIntStack()} array.
-	 *
-	 * @param stackSize the array index
+	 * Sets the length of the cs2 vm's int stack
 	 */
 	void setIntStackSize(int stackSize);
 
 	/**
-	 * Gets the integer stack
-	 *
-	 * @return the array
+	 * Gets the cs2 vm's int stack
 	 */
 	int[] getIntStack();
 
 	/**
-	 * Gets the index of the last string added to the
-	 * {@link #getStringStack()} array.
-	 *
-	 * @return the array index
+	 * Gets the length of the cs2 vm's string stack
 	 */
 	int getStringStackSize();
 
 	/**
-	 * Sets the index of the last string added to the
-	 * {@link #getStringStack()} array.
-	 *
-	 * @param stackSize the array index
+	 * Sets the length of the cs2 vm's string stack
 	 */
 	void setStringStackSize(int stackSize);
 
 	/**
-	 * Gets the string stack
-	 *
-	 * @return the string stack
+	 * Gets the cs2 vm's string stack
 	 */
 	String[] getStringStack();
 
@@ -1224,8 +1201,6 @@ public interface Client extends GameEngine
 
 	/**
 	 * Creates a new instance of a world.
-	 *
-	 * @return the created world
 	 */
 	World createWorld();
 
@@ -1238,7 +1213,9 @@ public interface Client extends GameEngine
 	SpritePixels drawInstanceMap(int z);
 
 	/**
-	 * Runs a RuneLite script.
+	 * Executes a client script from the cache
+	 *
+	 * This method must be ran on the client thread and is not reentrant
 	 *
 	 * @param id the script ID
 	 * @param args additional arguments to execute the script with
@@ -1521,8 +1498,6 @@ public interface Client extends GameEngine
 
 	/**
 	 * Gets the enabled state for the Oculus orb mode
-	 *
-	 * @return
 	 */
 	int getOculusOrbState();
 
@@ -1535,8 +1510,6 @@ public interface Client extends GameEngine
 
 	/**
 	 * Sets the normal moving speed when using oculus orb (default value is 12)
-	 *
-	 * @param speed speed
 	 */
 	void setOculusOrbNormalSpeed(int speed);
 

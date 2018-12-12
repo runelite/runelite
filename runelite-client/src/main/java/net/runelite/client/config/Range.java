@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.worlds;
+package net.runelite.client.config;
 
-import net.runelite.http.api.worlds.WorldType;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-enum ServiceWorldType
+/**
+ * Used with ConfigItem, describes valid int range for a config item.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@Documented
+public @interface Range
 {
-	MEMBERS(WorldType.MEMBERS, 1),
-	PVP(WorldType.PVP, 1 << 2),
-	BOUNTY(WorldType.BOUNTY, 1 << 5),
-	SKILL_TOTAL(WorldType.SKILL_TOTAL, 1 << 7),
-	PVP_HIGH_RISK(WorldType.PVP_HIGH_RISK, 1 << 10),
-	LAST_MAN_STANDING(WorldType.LAST_MAN_STANDING, 1 << 14),
-	TOURNAMENT(WorldType.TOURNAMENT, 1 << 25),
-	DEADMAN_TOURNAMENT(WorldType.DEADMAN_TOURNAMENT, 1 << 26),
-	DEADMAN(WorldType.DEADMAN, 1 << 29),
-	SEASONAL_DEADMAN(WorldType.SEASONAL_DEADMAN, 1 << 30);
+	int min() default Integer.MIN_VALUE;
 
-	private final WorldType apiType;
-	private final int mask;
-
-	ServiceWorldType(WorldType apiType, int mask)
-	{
-		this.apiType = apiType;
-		this.mask = mask;
-	}
-
-	public WorldType getApiType()
-	{
-		return apiType;
-	}
-
-	public int getMask()
-	{
-		return mask;
-	}
+	int max() default Integer.MAX_VALUE;
 }

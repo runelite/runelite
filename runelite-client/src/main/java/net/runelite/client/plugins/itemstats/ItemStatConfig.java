@@ -33,11 +33,30 @@ import net.runelite.client.config.ConfigItem;
 public interface ItemStatConfig extends Config
 {
 	@ConfigItem(
+		keyName = "consumableStats",
+		name = "Enable consumable stats",
+		description = "Enables tooltips for consumable items (food, boosts)"
+	)
+	default boolean consumableStats()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "equipmentStats",
+		name = "Enable equipment stats",
+		description = "Enables tooltips for equipment items (combat bonuses, weight, prayer bonuses)"
+	)
+	default boolean equipmentStats()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "relative",
 		name = "Show Relative",
 		description = "Show relative stat change in tooltip"
 	)
-
 	default boolean relative()
 	{
 		return true;
@@ -48,7 +67,6 @@ public interface ItemStatConfig extends Config
 		name = "Show Absolute",
 		description = "Show absolute stat change in tooltip"
 	)
-
 	default boolean absolute()
 	{
 		return true;
@@ -59,7 +77,6 @@ public interface ItemStatConfig extends Config
 		name = "Show Theoretical",
 		description = "Show theoretical stat change in tooltip"
 	)
-
 	default boolean theoretical()
 	{
 		return false;

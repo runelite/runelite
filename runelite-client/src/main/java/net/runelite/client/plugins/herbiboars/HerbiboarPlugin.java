@@ -233,7 +233,10 @@ public class HerbiboarPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		updateTrailData();
+		if (isInHerbiboarArea())
+		{
+			updateTrailData();
+		}
 	}
 
 	@Subscribe

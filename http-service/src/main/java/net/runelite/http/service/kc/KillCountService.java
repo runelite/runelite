@@ -41,7 +41,7 @@ public class KillCountService
 		"  `time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),\n" +
 		"   UNIQUE KEY `name` (`name`, `boss`),\n" +
 		"   KEY `time` (`time`)\n" +
-		") ENGINE=InnoDB;";
+		") ENGINE=MEMORY;";
 
 	private final Sql2o sql2o;
 
