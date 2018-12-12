@@ -48,7 +48,9 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.xptracker.XpActionType;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
@@ -92,6 +94,9 @@ public class AgilityPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private XpTrackerService xpTrackerService;
 
 	@Getter
 	private AgilitySession session;
@@ -158,7 +163,7 @@ public class AgilityPlugin extends Plugin
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
-		if (session == null && event.getSkill() == Skill.AGILITY) {
+		if (session == null && xpTrackerService.getActionType(Skill.AGILITY) == XpActionType.AGILITY_LAPS && xpTrackerService.getActions(Skill.AGILITY) > 0) {
 			session = new AgilitySession();
 			session.setLastLapCompleted();
 		}
@@ -220,10 +225,10 @@ public class AgilityPlugin extends Plugin
 			return;
 		}
 
-		Duration statTimeout = Duration.ofMinutes(config.lapTimeout());
-		Duration sinceCut = Duration.between(session.getLastLapCompleted(), Instant.now());
+		Duration lapTimeout = Duration.ofMinutes(config.lapTimeout());
+		Duration sinceLap = Duration.between(session.getLastLapCompleted(), Instant.now());
 
-		if (sinceCut.compareTo(statTimeout) >= 0)
+		if (sinceLap.compareTo(lapTimeout) >= 0)
 		{
 			session = null;
 		}

@@ -48,8 +48,7 @@ class XpState
 	private final Map<Skill, XpStateSingle> xpSkills = new EnumMap<>(Skill.class);
 	private NPC interactedNPC;
 	private Courses currentAgilityCourse;
-
-	@Inject
+	private int lastAgilityXp;
 	private Client client;
 
 	@Inject
@@ -212,26 +211,38 @@ class XpState
 	}
 
 	/**
-	 * Update number of actions performed for skill (e.g amount of kills in this case) if last interacted
-	 * NPC died
+	 * Update number of actions performed for skill (e.g amount of agility laps in this case) if finished a lap
 	 * @param skill skill to update actions for
-	 * @return UPDATED in case new kill was successfully added
 	 */
-	XpUpdateResult updateAgilityLaps(Skill skill)
+	void updateAgilityLaps(Skill skill)
 	{
 		XpStateSingle state = getSkill(skill);
 
+		// Determine how much EXP was actually gained
+		int agilityXp = client.getSkillExperience(skill);
+		int skillGained = agilityXp - lastAgilityXp;
+		lastAgilityXp = agilityXp;
+
 		// Get course
 		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		if (course == null
-				|| (course.getCourseEndWorldPoints().length == 0
-				? Math.abs(course.getLastObstacleXp() - state.getXpGained()) > 1
-				: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
+		if (course == null) {
+			// Not near a course, use Actions instead of Laps
+			currentAgilityCourse = null;
+			return;
+		}
+		if (currentAgilityCourse != null) {
+			// Currently doing a course
+			state.setActionType(XpActionType.AGILITY_LAPS);
+		}
+		if (course.getCourseEndWorldPoints().length == 0
+				? Math.abs(course.getLastObstacleXp() - skillGained) > 1
+				: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation())))
 		{
-			return XpUpdateResult.NO_CHANGE;
+			// Don't update if not at the end of a course
+			return;
 		}
 
-		final XpAction action = state.getXpAction(XpActionType.ACTOR_HEALTH);
+		final XpAction action = state.getXpAction(XpActionType.AGILITY_LAPS);
 
 		if (action.isActionsHistoryInitialized())
 		{
@@ -244,7 +255,6 @@ class XpState
 		}
 		else
 		{
-			// So we have a decent average off the bat, lets populate all values with what we see.
 			for (int i = 0; i < action.getActionExps().length; i++)
 			{
 				action.getActionExps()[i] = course.getLastObstacleXp();
@@ -255,17 +265,14 @@ class XpState
 
 		if (currentAgilityCourse != null && currentAgilityCourse == course)
 		{
-			System.out.println("Finished a lap");
-
 			action.setActions(action.getActions() + 1);
-			return action.isActionsHistoryInitialized() ? XpUpdateResult.UPDATED : XpUpdateResult.NO_CHANGE;
 		}
 		else
 		{
-			System.out.println("Doing a course xdd");
+			// New course found, reset lap count and set new course
 			currentAgilityCourse = course;
-			state.setActionType(XpActionType.ACTOR_HEALTH);
-			return XpUpdateResult.INITIALIZED;
+			state.setActionType(XpActionType.AGILITY_LAPS);
+			action.setActions(1);
 		}
 	}
 

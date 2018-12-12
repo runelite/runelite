@@ -26,11 +26,10 @@ package net.runelite.client.plugins.agility;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.time.Duration;
-import java.time.Instant;
 import javax.inject.Inject;
 
 import net.runelite.api.Skill;
+import net.runelite.client.plugins.xptracker.XpActionType;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -62,20 +61,11 @@ class LapCounterOverlay extends Overlay
 		AgilitySession session = plugin.getSession();
 
 		if (!config.showLapCount() ||
-			session == null)
+			session == null ||
+			xpTrackerService.getActionType(Skill.AGILITY) != XpActionType.AGILITY_LAPS)
 		{
 			return null;
 		}
-
-//		Duration lapTimeout = Duration.ofMinutes(config.lapTimeout());
-//		Duration sinceLap = Duration.between(session.getLastLapCompleted(), Instant.now());
-//
-//		if (sinceLap.compareTo(lapTimeout) >= 0)
-//		{
-//			// timeout session
-//			session.setLastLapCompleted(null);
-//			return null;
-//		}
 
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(LineComponent.builder()
@@ -83,10 +73,12 @@ class LapCounterOverlay extends Overlay
 			.right(Integer.toString(xpTrackerService.getActions(Skill.AGILITY)))
 			.build());
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Laps/hr")
-			.right(Integer.toString(xpTrackerService.getActionsHr(Skill.AGILITY)))
-			.build());
+		if (xpTrackerService.getActions(Skill.AGILITY) > 2) {
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Laps/hr")
+				.right(Integer.toString(xpTrackerService.getActionsHr(Skill.AGILITY)))
+				.build());
+		}
 
 		if (xpTrackerService.getActionsLeft(Skill.AGILITY) > 0)
 		{

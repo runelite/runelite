@@ -101,7 +101,6 @@ public class XpTrackerPlugin extends Plugin
 	private XpWorldType lastWorldType;
 	private String lastUsername;
 	private long lastTickMillis = 0;
-
 	private final XpClient xpClient = new XpClient();
 	private final XpPauseState xpPauseState = new XpPauseState();
 
@@ -272,7 +271,7 @@ public class XpTrackerPlugin extends Plugin
 		}
 
 		if (event.getSkill() == Skill.AGILITY) {
-			final XpUpdateResult updateResult = xpState.updateAgilityLaps(skill);
+			xpState.updateAgilityLaps(skill);
 		}
 
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
