@@ -66,7 +66,7 @@ public class LootTrackerService
 	private static final String INSERT_KILL_QUERY = "INSERT INTO kills (accountId, type, eventId) VALUES (:accountId, :type, :eventId)";
 	private static final String INSERT_DROP_QUERY = "INSERT INTO drops (killId, itemId, itemQuantity) VALUES (LAST_INSERT_ID(), :itemId, :itemQuantity)";
 
-	private static final String SELECT_LOOT_QUERY = "SELECT killId,time,type,eventId,itemId,itemQuantity FROM kills JOIN drops ON drops.killId = kills.id WHERE accountId = :accountId ORDER BY TIME DESC";
+	private static final String SELECT_LOOT_QUERY = "SELECT killId,time,type,eventId,itemId,itemQuantity FROM kills JOIN drops ON drops.killId = kills.id WHERE accountId = :accountId ORDER BY TIME DESC LIMIT :limit";
 
 	private final Sql2o sql2o;
 
@@ -116,7 +116,7 @@ public class LootTrackerService
 		}
 	}
 
-	public Collection<LootRecord> get(int accountId)
+	public Collection<LootRecord> get(int accountId, int limit)
 	{
 		List<LootResult> lootResults;
 
@@ -124,6 +124,7 @@ public class LootTrackerService
 		{
 			lootResults = con.createQuery(SELECT_LOOT_QUERY)
 				.addParameter("accountId", accountId)
+				.addParameter("limit", limit)
 				.executeAndFetch(LootResult.class);
 		}
 

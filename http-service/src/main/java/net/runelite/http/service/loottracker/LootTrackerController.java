@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -64,7 +65,7 @@ public class LootTrackerController
 	}
 
 	@RequestMapping
-	public Collection<LootRecord> getLootRecords(HttpServletRequest request, HttpServletResponse response) throws IOException
+	public Collection<LootRecord> getLootRecords(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "count", defaultValue = "1024") int count) throws IOException
 	{
 		SessionEntry e = auth.handle(request, response);
 		if (e == null)
@@ -73,6 +74,6 @@ public class LootTrackerController
 			return null;
 		}
 
-		return service.get(e.getUser());
+		return service.get(e.getUser(), count);
 	}
 }
