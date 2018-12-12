@@ -25,6 +25,8 @@
  */
 package net.runelite.http.service.loottracker;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
@@ -45,8 +47,8 @@ public class LootTrackerService
 		+ "  `type` enum('NPC', 'PLAYER', 'EVENT', 'UNKNOWN') NOT NULL,\n"
 		+ "  `eventId` VARCHAR(255) NOT NULL,\n"
 		+ "  PRIMARY KEY (id),\n"
-		+ "  FOREIGN KEY (accountId) REFERENCES sessions(user) ON DELETE CASCADE\n"
-		+ "  INDEX idx_acc (accountId, time)"
+		+ "  FOREIGN KEY (accountId) REFERENCES sessions(user) ON DELETE CASCADE,\n"
+		+ "  INDEX idx_acc (accountId, time),"
 		+ "  INDEX idx_time (time)"
 		+ ") ENGINE=InnoDB";
 
@@ -109,11 +111,47 @@ public class LootTrackerService
 		}
 	}
 
-	public LootRecord get(int accountId) {
-		try (Connection con = sql2o.open()) {
-			List<LootResult> lootResults = con.createQuery(SELECT_LOOT_QUERY)
+	public Collection<LootRecord> get(int accountId)
+	{
+		List<LootResult> lootResults;
+
+		try (Connection con = sql2o.open())
+		{
+			lootResults = con.createQuery(SELECT_LOOT_QUERY)
 				.addParameter("accountId", accountId)
 				.executeAndFetch(LootResult.class);
 		}
+
+		int killId = -1;
+		List<LootRecord> lootRecords = new ArrayList<>();
+		List<GameItem> gameItems = new ArrayList<>();
+
+		for (LootResult lootResult : lootResults)
+		{
+			if (killId != lootResult.getKillId())
+			{
+				killId = lootResult.getKillId();
+
+				if (!gameItems.isEmpty())
+				{
+					LootRecord lootRecord = new LootRecord(lootResult.getEventId(), lootResult.getType(), gameItems);
+					lootRecords.add(lootRecord);
+				}
+
+				gameItems = new ArrayList<>();
+			}
+
+			GameItem gameItem = new GameItem(lootResult.getItemId(), lootResult.getItemQuantity());
+			gameItems.add(gameItem);
+		}
+
+		if (!gameItems.isEmpty())
+		{
+			LootResult lootResult = lootResults.get(lootResults.size() - 1);
+			LootRecord lootRecord = new LootRecord(lootResult.getEventId(), lootResult.getType(), gameItems);
+			lootRecords.add(lootRecord);
+		}
+
+		return lootRecords;
 	}
 }

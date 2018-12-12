@@ -27,6 +27,8 @@ package net.runelite.http.service.loottracker;
 
 import com.google.api.client.http.HttpStatusCodes;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.loottracker.LootRecord;
@@ -60,5 +62,18 @@ public class LootTrackerController
 
 		service.store(record, e.getUser());
 		response.setStatus(HttpStatusCodes.STATUS_CODE_OK);
+	}
+
+	@RequestMapping
+	public Collection<LootRecord> getLootRecords(HttpServletRequest request, HttpServletResponse response) throws IOException
+	{
+		SessionEntry e = auth.handle(request, response);
+		if (e == null)
+		{
+			response.setStatus(HttpStatusCodes.STATUS_CODE_UNAUTHORIZED);
+			return null;
+		}
+
+		return service.get(e.getUser());
 	}
 }
