@@ -82,7 +82,7 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", "Your Corporeal Beast kill count is: <col=ff0000>4</col>.", null);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "corporeal beast", 4);
+		verify(configManager).setUsernameKey("chatcommands", "killcount.corporeal beast", "4");
 	}
 
 	@Test
@@ -93,7 +93,7 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "theatre of blood", 73);
+		verify(configManager).setUsernameKey("chatcommands", "killcount.theatre of blood", "73");
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", "Your subdued Wintertodt count is: <col=ff0000>4</col>.", null);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "wintertodt", 4);
+		verify(configManager).setUsernameKey("chatcommands", "killcount.wintertodt", "4");
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "kree'arra", 4);
+		verify(configManager).setUsernameKey("chatcommands", "killcount.kree'arra", "4");
 	}
 
 	@Test
@@ -126,6 +126,6 @@ public class ChatCommandsPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", "Your Barrows chest count is: <col=ff0000>277</col>.", null);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setConfiguration("killcount.adam", "barrows chests", 277);
+		verify(configManager).setUsernameKey("chatcommands", "killcount.barrows chests", "277");
 	}
 }

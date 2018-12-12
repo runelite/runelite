@@ -52,40 +52,4 @@ public interface BankTagsConfig extends Config
 	{
 		return true;
 	}
-
-	@ConfigItem(
-		keyName = "position",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int position()
-	{
-		return 0;
-	}
-
-	@ConfigItem(
-		keyName = "position",
-		name = "",
-		description = ""
-	)
-	void position(int idx);
-
-	@ConfigItem(
-		keyName = "tab",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default String tab()
-	{
-		return "";
-	}
-
-	@ConfigItem(
-		keyName = "tab",
-		name = "",
-		description = ""
-	)
-	void tab(String tab);
 }

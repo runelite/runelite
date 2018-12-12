@@ -24,9 +24,17 @@
  */
 package net.runelite.client.config;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
+import com.google.common.io.Files;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -37,53 +45,118 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.UsernameChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.http.api.config.ConfigClient;
 import net.runelite.http.api.config.ConfigEntry;
+import net.runelite.http.api.config.ConfigKey;
 import net.runelite.http.api.config.Configuration;
 
 @Singleton
 @Slf4j
 public class ConfigManager
 {
+	public static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
+	public static final ConfigKey PROFILE_KEY = new ConfigKey("", "", RUNELITE_GROUP_NAME, "profile");
+	public static final ConfigKey PROFILES_KEY = new ConfigKey("", "", RUNELITE_GROUP_NAME, "profiles");
+
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
+	private static final String JSON_SETTINGS_FILE_NAME = "settings.json";
+	private static final Splitter SPLITTER = Splitter.on(',').omitEmptyStrings().trimResults();
+	private static final Joiner JOINER = Joiner.on(',').skipNulls();
+	private static final Gson GSON = new GsonBuilder().enableComplexMapKeySerialization().disableHtmlEscaping().setPrettyPrinting().create();
+	private static final ConfigKey MIGRATED_KEY = new ConfigKey("", "", RUNELITE_GROUP_NAME, "migrated");
 
-	@Inject
-	EventBus eventBus;
+	private final EventBus eventBus;
+	private final ScheduledExecutorService executor;
+	private final Client RLClient;
 
-	@Inject
-	ScheduledExecutorService executor;
+	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
+	private final Properties properties = new Properties();
+	private final ConcurrentMap<ConfigKey, String> settings = new ConcurrentHashMap<>();
+	private final Set<String> accountSpecificGroups = new HashSet<>();
 
 	private AccountSession session;
 	private ConfigClient client;
 	private File propertiesFile;
+	private File settingsFile;
 
-	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
-	private final Properties properties = new Properties();
+	private String username = "";
+	private String profile = "";
 
-	public ConfigManager()
+	private boolean usernameChanged = false;
+
+	@Getter
+	private boolean showTagsWarning = false;
+
+	@Inject
+	public ConfigManager(final Client RLClient, final EventBus eventBus, final ScheduledExecutorService executor)
 	{
+		this.eventBus = eventBus;
+		this.executor = executor;
 		this.propertiesFile = getPropertiesFile();
+		this.settingsFile = getSettingsFile();
+		this.RLClient = RLClient;
+	}
+
+	@Subscribe
+	public void onUsernameChanged(final UsernameChanged event)
+	{
+		final String username = RLClient.getUsername();
+		if (this.username.equals(username))
+		{
+			return;
+		}
+
+		usernameChanged = true;
+		this.username = username;
+		loadAccountSpecificGroups();
+	}
+
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGING_IN)
+		{
+			if (usernameChanged)
+			{
+				usernameChanged = false;
+				postConfigEvents(true);
+			}
+		}
 	}
 
 	public final void switchSession(AccountSession session)
@@ -100,10 +173,26 @@ public class ConfigManager
 		}
 
 		this.propertiesFile = getPropertiesFile();
+		this.settingsFile = getSettingsFile();
 
 		load(); // load profile specific config
 	}
 
+	private File getSettingsFile()
+	{
+		// Sessions that aren't logged in have no username
+		if (session == null || session.getUsername() == null)
+		{
+			return new File(RuneLite.RUNELITE_DIR, JSON_SETTINGS_FILE_NAME);
+		}
+		else
+		{
+			File profileDir = new File(RuneLite.PROFILES_DIR, session.getUsername().toLowerCase());
+			return new File(profileDir, JSON_SETTINGS_FILE_NAME);
+		}
+	}
+
+	// TODO: Remove later
 	private File getPropertiesFile()
 	{
 		// Sessions that aren't logged in have no username
@@ -147,23 +236,23 @@ public class ConfigManager
 		}
 
 		properties.clear();
+		settings.clear();
+		accountSpecificGroups.clear();
 
 		for (ConfigEntry entry : configuration.getConfig())
 		{
-			log.debug("Loading configuration value from client {}: {}", entry.getKey(), entry.getValue());
-			final String[] split = entry.getKey().split("\\.");
-			final String groupName = split[0];
-			final String key = split[1];
-			final String value = entry.getValue();
-			final String oldValue = (String) properties.setProperty(entry.getKey(), value);
+			migrateConfigEntry(entry);
 
-			ConfigChanged configChanged = new ConfigChanged();
-			configChanged.setGroup(groupName);
-			configChanged.setKey(key);
-			configChanged.setOldValue(oldValue);
-			configChanged.setNewValue(value);
-			eventBus.post(configChanged);
+			ConfigKey holder = new ConfigKey(entry.getProfile(), entry.getAccount(), entry.getGroupName(), entry.getKey());
+			log.debug("Loading configuration value from client {}: {}", holder, entry.getValue());
+
+			settings.put(holder, entry.getValue());
 		}
+
+		this.profile = getProfile();
+
+		loadAccountSpecificGroups();
+		postConfigEvents(false);
 
 		try
 		{
@@ -180,6 +269,30 @@ public class ConfigManager
 	private synchronized void loadFromFile()
 	{
 		properties.clear();
+		settings.clear();
+		accountSpecificGroups.clear();
+
+		try
+		{
+			Type type = new TypeToken<HashMap<ConfigKey, String>>()
+			{
+			}.getType();
+
+			byte[] bytes = Files.toByteArray(settingsFile);
+			final Map<ConfigKey, String> map = GSON.fromJson(new String(bytes), type);
+			if (map != null)
+			{
+				settings.putAll(map);
+			}
+		}
+		catch (FileNotFoundException ex)
+		{
+			log.debug("Unable to load settings.json - no such file");
+		}
+		catch (IllegalArgumentException | IOException ex)
+		{
+			log.warn("Unable to load settings.json", ex);
+		}
 
 		try (FileInputStream in = new FileInputStream(propertiesFile))
 		{
@@ -194,53 +307,125 @@ public class ConfigManager
 			log.warn("Unable to load settings", ex);
 		}
 
+		showTagsWarning = getConfiguration(MIGRATED_KEY) == null;
+		migrateLocalProperties();
+		this.profile = getProfile();
+		loadAccountSpecificGroups();
+		postConfigEvents(false);
+	}
+
+
+	// TODO: Remove later
+	private static List<Pattern> MIGRATE_PATTERNS = ImmutableList.of(
+		Pattern.compile("^(timetracking)\\.(.+)\\.(birdhouse\\.[0-9]+)$"),
+		Pattern.compile("^(timetracking)\\.(.+)\\.([0-9]+\\.[0-9]+)$"),
+		Pattern.compile("^(timetracking)\\.(.+)\\.(autoweed)$"),
+		Pattern.compile("^(killcount)\\.(.+)\\.([^.]+)$"),
+		Pattern.compile("^([^.]+)\\.(.+)$"));
+
+	// TODO: Remove later
+	private void migrateConfigEntry(ConfigEntry entry)
+	{
+		if (!Strings.isNullOrEmpty(entry.getGroupName()))
+		{
+			return;
+		}
+
+		String key = entry.getKey();
+
+		ConfigKey newKey = migrateProperty(key);
+
+		if (newKey == null)
+		{
+			return;
+		}
+
+		entry.setAccount(newKey.getAccount());
+		entry.setKey(newKey.getKey());
+		entry.setGroupName(newKey.getGroupName());
+
+		log.debug("Migrating {} to {}", key, newKey);
+
+		if (client != null)
+		{
+			client.unset(new ConfigKey("", "", "", key));
+			client.set(newKey, entry.getValue());
+		}
+	}
+
+	// TODO: Remove later
+	private void migrateLocalProperties()
+	{
+		String migrated = settings.get(MIGRATED_KEY);
+		if (!Strings.isNullOrEmpty(migrated))
+		{
+			return;
+		}
+
 		try
 		{
 			Map<String, String> copy = (Map) ImmutableMap.copyOf(properties);
 			copy.forEach((groupAndKey, value) ->
 			{
-				final String[] split = groupAndKey.split("\\.", 2);
-				if (split.length != 2)
+				ConfigKey newKey = migrateProperty(groupAndKey);
+
+				if (newKey == null)
 				{
-					log.debug("Properties key malformed!: {}", groupAndKey);
-					properties.remove(groupAndKey);
 					return;
 				}
 
-				final String groupName = split[0];
-				final String key = split[1];
-
-				ConfigChanged configChanged = new ConfigChanged();
-				configChanged.setGroup(groupName);
-				configChanged.setKey(key);
-				configChanged.setOldValue(null);
-				configChanged.setNewValue(value);
-				eventBus.post(configChanged);
+				settings.put(newKey, value);
+				log.debug("Migrating {} to {}", groupAndKey, newKey);
 			});
+
+			settings.put(MIGRATED_KEY, "true");
+			saveToFile();
 		}
-		catch (Exception ex)
+		catch (Exception e)
 		{
-			log.warn("Error posting config events", ex);
+			log.error("Problem migrating local properties {}", e);
 		}
 	}
 
-	private synchronized void saveToFile() throws IOException
+	// TODO: Remove later
+	private ConfigKey migrateProperty(String groupAndKey)
 	{
-		propertiesFile.getParentFile().mkdirs();
+		Matcher matcher = MIGRATE_PATTERNS.stream()
+			.map(pattern -> pattern.matcher(groupAndKey))
+			.filter(Matcher::matches)
+			.findFirst()
+			.orElse(null);
 
-		try (FileOutputStream out = new FileOutputStream(propertiesFile))
+		if (matcher == null)
 		{
-			final FileLock lock = out.getChannel().lock();
-
-			try
-			{
-				properties.store(new OutputStreamWriter(out, Charset.forName("UTF-8")), "RuneLite configuration");
-			}
-			finally
-			{
-				lock.release();
-			}
+			return null;
 		}
+
+		String newKey = matcher.group(2);
+		String group = matcher.group(1);
+		String username = "";
+
+		if (matcher.groupCount() == 3)
+		{
+			username = matcher.group(2);
+			newKey = matcher.group(3);
+		}
+
+		return new ConfigKey("", username, group, newKey);
+	}
+
+	private void loadAccountSpecificGroups()
+	{
+		accountSpecificGroups.clear();
+		settings.forEach((configKey, value) ->
+		{
+			if (!configKey.getKey().equals("accountSpecific") || !configKey.getProfile().equals(this.profile))
+			{
+				return;
+			}
+
+			accountSpecificGroups.add(configKey.getGroupName());
+		});
 	}
 
 	public <T> T getConfig(Class<T> clazz)
@@ -258,14 +443,123 @@ public class ConfigManager
 		return t;
 	}
 
-	public List<String> getConfigurationKeys(String prefix)
+	public boolean isAccountSpecific(String plugin)
 	{
-		return properties.keySet().stream().filter(v -> ((String) v).startsWith(prefix)).map(String.class::cast).collect(Collectors.toList());
+		return accountSpecificGroups.contains(plugin);
+	}
+
+	private String getAccountStr(String plugin)
+	{
+		if (isAccountSpecific(plugin))
+		{
+			return username;
+		}
+
+		return "";
+	}
+
+	public String getProfile()
+	{
+		String profile = settings.get(PROFILE_KEY);
+		return profile == null ? "" : profile;
+	}
+
+	public List<String> getProfiles()
+	{
+		String s = settings.get(PROFILES_KEY);
+		if (s == null)
+		{
+			s = "";
+		}
+
+		return SPLITTER.splitToList(s);
+	}
+
+	public void setProfile(String profile)
+	{
+		if (profile != null)
+		{
+			this.profile = profile;
+			loadAccountSpecificGroups();
+			setConfiguration(PROFILE_KEY, profile);
+			postConfigEvents(false);
+		}
+	}
+
+	public void addProfile(String profile)
+	{
+		Set<String> profiles = Sets.newHashSet(getProfiles());
+		if (profiles.add(profile))
+		{
+			setConfiguration(PROFILES_KEY, JOINER.join(profiles));
+		}
+	}
+
+	public void removeProfile(String profile)
+	{
+		if (Strings.isNullOrEmpty(profile))
+		{
+			return;
+		}
+
+		Set<String> profiles = Sets.newHashSet(getProfiles());
+		profiles.remove(profile);
+
+		List<ConfigKey> keys = getConfigurationKeys(c -> profile.equals(c.getProfile()));
+		keys.forEach(settings::remove);
+
+		if (client != null)
+		{
+			client.unsetProfile(profile);
+		}
+
+		if (profiles.size() == 0)
+		{
+			unsetConfiguration(PROFILES_KEY);
+		}
+		else
+		{
+			setConfiguration(PROFILES_KEY, JOINER.join(profiles));
+		}
+	}
+
+
+	public String getUsernameKey(final String groupName, final String key)
+	{
+		return getConfiguration(new ConfigKey("", this.username, groupName, key));
+	}
+
+	public void setUsernameKey(final String groupName, final String key, Object value)
+	{
+		setConfiguration(new ConfigKey("", this.username, groupName, key), objectToString(value));
+	}
+
+	private ConfigKey getConfigKey(String groupName, String key)
+	{
+		return new ConfigKey(getProfile(), getAccountStr(groupName), groupName, key);
+	}
+
+	public List<ConfigKey> getConfigurationKeys(Predicate<ConfigKey> fn)
+	{
+		return settings.keySet().stream().filter(fn).collect(Collectors.toList());
+	}
+
+	public String getConfiguration(final ConfigKey configKey)
+	{
+		return settings.get(configKey);
 	}
 
 	public String getConfiguration(String groupName, String key)
 	{
-		return properties.getProperty(groupName + "." + key);
+		ConfigKey holder = getConfigKey(groupName, key);
+		String value = settings.get(holder);
+		if (!Strings.isNullOrEmpty(value))
+		{
+			return value;
+		}
+
+		holder.setProfile("");
+		return settings.get(holder);
 	}
 
 	public <T> T getConfiguration(String groupName, String key, Class<T> clazz)
@@ -287,9 +581,19 @@ public class ConfigManager
 
 	public void setConfiguration(String groupName, String key, String value)
 	{
-		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
+		setConfiguration(getConfigKey(groupName, key), value);
+	}
 
-		String oldValue = (String) properties.setProperty(groupName + "." + key, value);
+	public void setConfiguration(String groupName, String key, Object value)
+	{
+		setConfiguration(groupName, key, objectToString(value));
+	}
+
+	public void setConfiguration(final ConfigKey configKey, String value)
+	{
+		log.debug("Setting configuration value for {} to {}", configKey, value);
+
+		String oldValue = settings.put(configKey, value);
 
 		if (Objects.equals(oldValue, value))
 		{
@@ -298,41 +602,30 @@ public class ConfigManager
 
 		if (client != null)
 		{
-			client.set(groupName + "." + key, value);
+			client.set(configKey, value);
 		}
 
-		Runnable task = () ->
-		{
-			try
-			{
-				saveToFile();
-			}
-			catch (IOException ex)
-			{
-				log.warn("unable to save configuration file", ex);
-			}
-		};
-		executor.execute(task);
+		saveFile();
 
 		ConfigChanged configChanged = new ConfigChanged();
-		configChanged.setGroup(groupName);
-		configChanged.setKey(key);
+		configChanged.setGroup(configKey.getGroupName());
+		configChanged.setKey(configKey.getKey());
 		configChanged.setOldValue(oldValue);
 		configChanged.setNewValue(value);
 
 		eventBus.post(configChanged);
 	}
 
-	public void setConfiguration(String groupName, String key, Object value)
-	{
-		setConfiguration(groupName, key, objectToString(value));
-	}
-
 	public void unsetConfiguration(String groupName, String key)
 	{
-		log.debug("Unsetting configuration value for {}.{}", groupName, key);
+		unsetConfiguration(getConfigKey(groupName, key));
+	}
 
-		String oldValue = (String) properties.remove(groupName + "." + key);
+	public void unsetConfiguration(final ConfigKey configKey)
+	{
+		log.debug("Unsetting configuration value for {}", configKey);
+
+		String oldValue = settings.remove(configKey);
 
 		if (oldValue == null)
 		{
@@ -341,25 +634,14 @@ public class ConfigManager
 
 		if (client != null)
 		{
-			client.unset(groupName + "." + key);
+			client.unset(configKey);
 		}
 
-		Runnable task = () ->
-		{
-			try
-			{
-				saveToFile();
-			}
-			catch (IOException ex)
-			{
-				log.warn("unable to save configuration file", ex);
-			}
-		};
-		executor.execute(task);
+		saveFile();
 
 		ConfigChanged configChanged = new ConfigChanged();
-		configChanged.setGroup(groupName);
-		configChanged.setKey(key);
+		configChanged.setGroup(configKey.getGroupName());
+		configChanged.setKey(configKey.getKey());
 		configChanged.setOldValue(oldValue);
 
 		eventBus.post(configChanged);
@@ -461,6 +743,65 @@ public class ConfigManager
 
 			setConfiguration(group.value(), item.keyName(), valueString);
 		}
+	}
+
+	private void saveFile()
+	{
+		Runnable task = () ->
+		{
+			try
+			{
+				saveToFile();
+			}
+			catch (IOException ex)
+			{
+				log.warn("unable to save configuration file", ex);
+			}
+		};
+		executor.execute(task);
+	}
+
+	private synchronized void saveToFile() throws IOException
+	{
+		settingsFile.getParentFile().mkdirs();
+
+		try (FileOutputStream out = new FileOutputStream(settingsFile))
+		{
+			final FileLock lock = out.getChannel().lock();
+
+			try
+			{
+				out.write(GSON.toJson(settings).getBytes());
+			}
+			finally
+			{
+				lock.release();
+			}
+		}
+	}
+
+	private void postConfigEvents(boolean usernameOnly)
+	{
+		if (usernameOnly && Strings.isNullOrEmpty(this.username))
+		{
+			return;
+		}
+
+		settings.forEach((configKey, value) ->
+		{
+			if (!configKey.getProfile().equals(this.profile) ||
+				(usernameOnly && !configKey.getAccount().equals(this.username) && !Strings.isNullOrEmpty(this.profile)))
+			{
+				return;
+			}
+
+			final ConfigChanged configChanged = new ConfigChanged();
+			configChanged.setGroup(configKey.getGroupName());
+			configChanged.setKey(configKey.getKey());
+			configChanged.setOldValue(null);
+			configChanged.setNewValue(value);
+			eventBus.post(configChanged);
+		});
 	}
 
 	static Object stringToObject(String str, Class<?> type)

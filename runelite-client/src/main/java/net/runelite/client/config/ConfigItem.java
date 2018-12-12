@@ -46,4 +46,6 @@ public @interface ConfigItem
 	String warning() default "";
 
 	boolean secret() default false;
+
+	boolean accountSpecific() default false;
 }

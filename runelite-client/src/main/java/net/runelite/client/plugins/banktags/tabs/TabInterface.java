@@ -64,7 +64,6 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
-import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.vars.InputType;
@@ -73,6 +72,7 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -91,6 +91,7 @@ import static net.runelite.client.plugins.banktags.tabs.MenuIndexes.Tab;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.math.NumberUtils;
 
 @Singleton
 public class TabInterface
@@ -181,7 +182,7 @@ public class TabInterface
 			return;
 		}
 
-		currentTabIndex = config.position();
+		currentTabIndex = position();
 		parent = client.getWidget(WidgetInfo.BANK_CONTENT_CONTAINER);
 
 		updateBounds();
@@ -210,10 +211,31 @@ public class TabInterface
 		activateTab(null);
 		scrollTab(0);
 
-		if (config.rememberTab() && !Strings.isNullOrEmpty(config.tab()))
+		if (config.rememberTab() && !Strings.isNullOrEmpty(tab()))
 		{
-			openTag(TAG_SEARCH + config.tab());
+			openTag(TAG_SEARCH + tab());
 		}
+	}
+
+	private String tab()
+	{
+		return configManager.getUsernameKey(CONFIG_GROUP, BankTagsPlugin.TAB_KEY);
+	}
+
+	private int position()
+	{
+		String value = configManager.getUsernameKey(CONFIG_GROUP, BankTagsPlugin.POSITION_KEY);
+		return NumberUtils.toInt(value, 0);
+	}
+
+	private void tab(String s)
+	{
+		configManager.setUsernameKey(CONFIG_GROUP, BankTagsPlugin.TAB_KEY, s);
+	}
+
+	private void position(int i)
+	{
+		configManager.setUsernameKey(CONFIG_GROUP, BankTagsPlugin.TAB_KEY, i + "");
 	}
 
 	private void handleDeposit(MenuOptionClicked event, Boolean inventory)
@@ -401,26 +423,26 @@ public class TabInterface
 			parent = null;
 
 			// If bank window was just hidden, update last active tab position
-			if (currentTabIndex != config.position())
+			if (currentTabIndex != position())
 			{
-				config.position(currentTabIndex);
+				position(currentTabIndex);
 			}
 
 			// Do the same for last active tab
 			if (config.rememberTab())
 			{
-				if (activeTab == null && !Strings.isNullOrEmpty(config.tab()))
+				if (activeTab == null && !Strings.isNullOrEmpty(tab()))
 				{
-					config.tab("");
+					tab("");
 				}
-				else if (activeTab != null && !activeTab.getTag().equals(config.tab()))
+				else if (activeTab != null && !activeTab.getTag().equals(tab()))
 				{
-					config.tab(activeTab.getTag());
+					tab(activeTab.getTag());
 				}
 			}
-			else if (!Strings.isNullOrEmpty(config.tab()))
+			else if (!Strings.isNullOrEmpty(tab()))
 			{
-				config.tab("");
+				tab("");
 			}
 
 			return;

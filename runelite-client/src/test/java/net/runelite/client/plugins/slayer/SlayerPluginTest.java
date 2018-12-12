@@ -27,6 +27,7 @@ package net.runelite.client.plugins.slayer;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.SERVER;
 import net.runelite.api.Client;
@@ -125,6 +126,10 @@ public class SlayerPluginTest
 	@Mock
 	@Bind
 	Notifier notifier;
+
+	@Mock
+	@Bind
+	ScheduledExecutorService scheduledExecutorService;
 
 	@Inject
 	SlayerPlugin slayerPlugin;

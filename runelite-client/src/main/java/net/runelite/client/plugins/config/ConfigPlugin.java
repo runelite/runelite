@@ -28,8 +28,13 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import net.runelite.api.GameState;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
+import static net.runelite.client.config.ConfigManager.PROFILES_KEY;
+import static net.runelite.client.config.ConfigManager.PROFILE_KEY;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
@@ -89,6 +94,31 @@ public class ConfigPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		clientToolbar.removeNavigation(navButton);
+	}
+
+	@Subscribe
+	public void onConfigChanged(final ConfigChanged event)
+	{
+		if (PROFILE_KEY.getGroupName().equals(event.getGroup()))
+		{
+			if (PROFILE_KEY.getKey().equals(event.getKey()))
+			{
+				SwingUtilities.invokeLater(configPanel::refreshPluginList);
+			}
+			else if (PROFILES_KEY.getKey().equals(event.getKey()))
+			{
+				SwingUtilities.invokeLater(configPanel::refreshProfiles);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGING_IN)
+		{
+			SwingUtilities.invokeLater(configPanel::refreshPluginList);
+		}
 	}
 
 	@Subscribe

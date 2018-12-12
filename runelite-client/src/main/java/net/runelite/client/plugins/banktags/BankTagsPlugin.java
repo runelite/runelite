@@ -28,16 +28,19 @@ package net.runelite.client.plugins.banktags;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -49,6 +52,7 @@ import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
@@ -74,6 +78,7 @@ import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import net.runelite.http.api.config.ConfigKey;
 
 @PluginDescriptor(
 	name = "Bank Tags",
@@ -87,16 +92,27 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	public static final Joiner JOINER = Joiner.on(",").skipNulls();
 	public static final String CONFIG_GROUP = "banktags";
 	public static final String TAG_SEARCH = "tag:";
-	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
+	public static final String TAG_TABS_CONFIG = "tagtabs";
 	public static final String ICON_SEARCH = "icon_";
 	public static final String VAR_TAG_SUFFIX = "*";
+	public static final String TAB_KEY = "tag";
+	public static final String POSITION_KEY = "position";
 
+	static final String ITEM_KEY_PREFIX = "item_";
+
+	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
 	private static final String SEARCH_BANK_INPUT_TEXT =
 		"Show items whose names or tags contain the following text:<br>" +
 			"(To show only tagged items, start your search with 'tag:')";
 	private static final String SEARCH_BANK_INPUT_TEXT_FOUND =
 		"Show items whose names or tags contain the following text: (%d found)<br>" +
 			"(To show only tagged items, start your search with 'tag:')";
+
+	private static final List<ConfigKey> BANK_CONFIGS = ImmutableList.of(
+		new ConfigKey("", "", CONFIG_GROUP, POSITION_KEY),
+		new ConfigKey("", "", CONFIG_GROUP, TAB_KEY),
+		new ConfigKey("", "", CONFIG_GROUP, TAG_TABS_CONFIG)
+	);
 
 	@Inject
 	private ItemManager itemManager;
@@ -128,6 +144,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private ConfigManager configManager;
+
 	private boolean shiftPressed = false;
 
 	@Provides
@@ -158,6 +177,51 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		}
 
 		shiftPressed = false;
+	}
+
+	public void resetConfig()
+	{
+		String username = client.getUsername();
+		List<ConfigKey> keys = configManager.getConfigurationKeys(c ->
+			c.getGroupName().equals(CONFIG_GROUP) &&
+				c.getAccount().equals(username) &&
+				(c.getKey().startsWith(ICON_SEARCH) ||
+					c.getKey().startsWith(ITEM_KEY_PREFIX) ||
+					c.getKey().equals(TAG_TABS_CONFIG) ||
+					c.getKey().equals(POSITION_KEY) ||
+					c.getKey().equals(TAB_KEY)));
+
+		keys.forEach(configManager::unsetConfiguration);
+	}
+
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		// TODO: Remove later
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			final String username = client.getUsername();
+			List<ConfigKey> tags = configManager.getConfigurationKeys(c -> c.getGroupName().equals("banktags") &&
+				c.getAccount().isEmpty() && (c.getKey().startsWith("item_") || c.getKey().startsWith("icon_")));
+			for (ConfigKey tag : tags)
+			{
+				final String value = configManager.getConfiguration(tag);
+				configManager.unsetConfiguration(tag);
+				ConfigKey newTag = new ConfigKey("", username, tag.getGroupName(), tag.getKey());
+				configManager.setConfiguration(newTag, value);
+			}
+
+			for (ConfigKey configKey : BANK_CONFIGS)
+			{
+				String value = configManager.getConfiguration(configKey);
+				if (value != null)
+				{
+					ConfigKey newKey = new ConfigKey("", username, configKey.getGroupName(), configKey.getKey());
+					configManager.unsetConfiguration(configKey);
+					configManager.setConfiguration(newKey, value);
+				}
+			}
+		}
 	}
 
 	@Subscribe

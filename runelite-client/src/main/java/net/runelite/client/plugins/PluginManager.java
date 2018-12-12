@@ -57,12 +57,14 @@ import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.SessionClose;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
+import static net.runelite.client.config.ConfigManager.PROFILE_KEY;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -114,6 +116,15 @@ public class PluginManager
 	}
 
 	@Subscribe
+	public void onConfigChanged(final ConfigChanged event)
+	{
+		if (PROFILE_KEY.getGroupName().equals(event.getGroup()) && PROFILE_KEY.getKey().equals(event.getKey()))
+		{
+			refreshPlugins();
+		}
+	}
+
+	@Subscribe
 	public void onSessionOpen(SessionOpen event)
 	{
 		refreshPlugins();
@@ -125,7 +136,7 @@ public class PluginManager
 		refreshPlugins();
 	}
 
-	private void refreshPlugins()
+	public void refreshPlugins()
 	{
 		loadDefaultPluginConfiguration();
 		getPlugins()
@@ -235,7 +246,7 @@ public class PluginManager
 				if (clazz.getSuperclass() == Plugin.class)
 				{
 					log.warn("Class {} is a plugin, but has no plugin descriptor",
-							clazz);
+						clazz);
 				}
 				continue;
 			}
@@ -243,7 +254,7 @@ public class PluginManager
 			if (clazz.getSuperclass() != Plugin.class)
 			{
 				log.warn("Class {} has plugin descriptor, but is not a plugin",
-						clazz);
+					clazz);
 				continue;
 			}
 
@@ -508,6 +519,7 @@ public class PluginManager
 
 	/**
 	 * Topologically sort a graph. Uses Kahn's algorithm.
+	 *
 	 * @param graph
 	 * @param <T>
 	 * @return

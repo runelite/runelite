@@ -163,7 +163,14 @@ public class ClientUI
 			return;
 		}
 
-		SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
+		if (event.getKey().equals("profile"))
+		{
+			SwingUtilities.invokeLater(this::moveWindow);
+		}
+		else
+		{
+			SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
+		}
 	}
 
 	@Subscribe
@@ -456,50 +463,7 @@ public class ClientUI
 			trayIcon = SwingUtil.createTrayIcon(ICON, properties.getTitle(), frame);
 
 			// Move frame around (needs to be done after frame is packed)
-			if (config.rememberScreenBounds())
-			{
-				try
-				{
-					Rectangle clientBounds = configManager.getConfiguration(
-						CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, Rectangle.class);
-					if (clientBounds != null)
-					{
-						frame.setBounds(clientBounds);
-						frame.revalidateMinimumSize();
-					}
-					else
-					{
-						frame.setLocationRelativeTo(frame.getOwner());
-					}
-
-					if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED) != null)
-					{
-						frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-					}
-				}
-				catch (Exception ex)
-				{
-					log.warn("Failed to set window bounds", ex);
-					frame.setLocationRelativeTo(frame.getOwner());
-				}
-			}
-			else
-			{
-				frame.setLocationRelativeTo(frame.getOwner());
-			}
-
-			// If the frame is well hidden (e.g. unplugged 2nd screen),
-			// we want to move it back to default position as it can be
-			// hard for the user to reposition it themselves otherwise.
-			Rectangle clientBounds = frame.getBounds();
-			Rectangle screenBounds = frame.getGraphicsConfiguration().getBounds();
-			if (clientBounds.x + clientBounds.width - CLIENT_WELL_HIDDEN_MARGIN < screenBounds.getX() ||
-				clientBounds.x + CLIENT_WELL_HIDDEN_MARGIN > screenBounds.getX() + screenBounds.getWidth() ||
-				clientBounds.y + CLIENT_WELL_HIDDEN_MARGIN_TOP < screenBounds.getY() ||
-				clientBounds.y + CLIENT_WELL_HIDDEN_MARGIN > screenBounds.getY() + screenBounds.getHeight())
-			{
-				frame.setLocationRelativeTo(frame.getOwner());
-			}
+			moveWindow();
 
 			// Show frame
 			frame.setVisible(true);
@@ -509,6 +473,16 @@ public class ClientUI
 			log.info("Showing frame {}", frame);
 		});
 
+		// TODO: Remove later
+		if (configManager.isShowTagsWarning())
+		{
+			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
+				"Runelite has been updated to use a new config format.\n" +
+					"Bank tags are now always account specific and be will assigned to the first account logged in.\n" +
+					"You can utilize the export/import functionality to transfer them between accounts.\n",
+				"Warning", INFORMATION_MESSAGE));
+		}
+
 		// Show out of date dialog if needed
 		final boolean isOutdated = !(client instanceof Client);
 		if (isOutdated)
@@ -517,6 +491,63 @@ public class ClientUI
 				"RuneLite has not yet been updated to work with the latest\n"
 					+ "game update, it will work with reduced functionality until then.",
 				"RuneLite is outdated", INFORMATION_MESSAGE));
+		}
+	}
+
+	private void moveWindow()
+	{
+		if (config.rememberScreenBounds())
+		{
+			try
+			{
+				Rectangle clientBounds = configManager.getConfiguration(
+					CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, Rectangle.class);
+				if (clientBounds != null)
+				{
+					if (sidebarOpen && pluginPanel != null && config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE)
+					{
+						int width = pluginPanel.getWrappedPanel().getPreferredSize().width;
+						clientBounds.setSize(clientBounds.width + width, clientBounds.height);
+					}
+					frame.setBounds(clientBounds);
+					frame.revalidateMinimumSize();
+				}
+				else
+				{
+					frame.setLocationRelativeTo(frame.getOwner());
+				}
+
+				if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED) != null)
+				{
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				}
+				else
+				{
+					frame.setExtendedState(JFrame.NORMAL);
+				}
+			}
+			catch (Exception ex)
+			{
+				log.warn("Failed to set window bounds", ex);
+				frame.setLocationRelativeTo(frame.getOwner());
+			}
+		}
+		else
+		{
+			frame.setLocationRelativeTo(frame.getOwner());
+		}
+
+		// If the frame is well hidden (e.g. unplugged 2nd screen),
+		// we want to move it back to default position as it can be
+		// hard for the user to reposition it themselves otherwise.
+		Rectangle clientBounds = frame.getBounds();
+		Rectangle screenBounds = frame.getGraphicsConfiguration().getBounds();
+		if (clientBounds.x + clientBounds.width - CLIENT_WELL_HIDDEN_MARGIN < screenBounds.getX() ||
+			clientBounds.x + CLIENT_WELL_HIDDEN_MARGIN > screenBounds.getX() + screenBounds.getWidth() ||
+			clientBounds.y + CLIENT_WELL_HIDDEN_MARGIN_TOP < screenBounds.getY() ||
+			clientBounds.y + CLIENT_WELL_HIDDEN_MARGIN > screenBounds.getY() + screenBounds.getHeight())
+		{
+			frame.setLocationRelativeTo(frame.getOwner());
 		}
 	}
 

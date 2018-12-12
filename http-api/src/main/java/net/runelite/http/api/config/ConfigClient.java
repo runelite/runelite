@@ -24,6 +24,7 @@
  */
 package net.runelite.http.api.config;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +45,9 @@ public class ConfigClient
 {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigClient.class);
 
-	private static final MediaType TEXT_PLAIN = MediaType.parse("text/plain");
+	private static final MediaType JSON = MediaType.parse("application/json");
+
+	private static final Gson GSON = new Gson();
 
 	private final UUID uuid;
 
@@ -77,17 +80,18 @@ public class ConfigClient
 		}
 	}
 
-	public void set(String key, String value)
+	public void set(final ConfigKey configKey, String value)
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("config")
-			.addPathSegment(key)
 			.build();
 
 		logger.debug("Built URI: {}", url);
 
+		final ConfigEntry entry = new ConfigEntry(configKey, value);
+
 		Request request = new Request.Builder()
-			.put(RequestBody.create(TEXT_PLAIN, value))
+			.put(RequestBody.create(JSON, GSON.toJson(entry)))
 			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 			.url(url)
 			.build();
@@ -104,16 +108,48 @@ public class ConfigClient
 			public void onResponse(Call call, Response response)
 			{
 				response.close();
-				logger.debug("Synchronized configuration value '{}' to '{}'", key, value);
+				logger.debug("Synchronized configuration value {} to '{}'", configKey, value);
 			}
 		});
 	}
 
-	public void unset(String key)
+	public void unset(final ConfigKey configKey)
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("config")
-			.addPathSegment(key)
+			.build();
+
+		logger.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+			.delete(RequestBody.create(JSON, GSON.toJson(configKey)))
+			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
+			.url(url)
+			.build();
+
+		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		{
+			@Override
+			public void onFailure(Call call, IOException e)
+			{
+				logger.warn("Unable to unset configuration item", e);
+			}
+
+			@Override
+			public void onResponse(Call call, Response response)
+			{
+				response.close();
+				logger.debug("Unset configuration value {} to '{}'", configKey);
+			}
+		});
+	}
+
+	public void unsetProfile(String profile)
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("config")
+			.addPathSegment("profile")
+			.addPathSegment(profile)
 			.build();
 
 		logger.debug("Built URI: {}", url);
@@ -136,7 +172,7 @@ public class ConfigClient
 			public void onResponse(Call call, Response response)
 			{
 				response.close();
-				logger.debug("Unset configuration value '{}'", key);
+				logger.debug("Unset configuration value '{}'", profile);
 			}
 		});
 	}

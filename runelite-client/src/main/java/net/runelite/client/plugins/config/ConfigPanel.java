@@ -73,10 +73,10 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
-import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
+import static net.runelite.client.config.ConfigManager.RUNELITE_GROUP_NAME;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.RuneLiteConfig;
@@ -101,7 +101,6 @@ public class ConfigPanel extends PluginPanel
 	private static final ImageIcon BACK_ICON;
 	private static final ImageIcon BACK_ICON_HOVER;
 
-	private static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
 	private static final String RUNELITE_PLUGIN = "RuneLite";
 	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
@@ -115,6 +114,7 @@ public class ConfigPanel extends PluginPanel
 	private final List<PluginListItem> pluginList = new ArrayList<>();
 
 	private final IconTextField searchBar = new IconTextField();
+	private final ProfilePanel profilePanel;
 	private final JPanel topPanel;
 	private final JPanel mainPanel;
 	private final JScrollPane scrollPane;
@@ -130,7 +130,7 @@ public class ConfigPanel extends PluginPanel
 	}
 
 	ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService,
-		RuneLiteConfig runeLiteConfig, ChatColorConfig chatColorConfig)
+				RuneLiteConfig runeLiteConfig, ChatColorConfig chatColorConfig)
 	{
 		super(false);
 		this.pluginManager = pluginManager;
@@ -138,6 +138,8 @@ public class ConfigPanel extends PluginPanel
 		this.executorService = executorService;
 		this.runeLiteConfig = runeLiteConfig;
 		this.chatColorConfig = chatColorConfig;
+
+		profilePanel = new ProfilePanel(configManager);
 
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 20, 30));
@@ -232,6 +234,7 @@ public class ConfigPanel extends PluginPanel
 			if (plugin != null)
 			{
 				listItem.setPluginEnabled(pluginManager.isPluginEnabled(plugin));
+				listItem.setPinned(getPinnedPluginNames().contains(listItem.getName()));
 			}
 		});
 
@@ -253,6 +256,7 @@ public class ConfigPanel extends PluginPanel
 		topPanel.removeAll();
 		mainPanel.removeAll();
 		topPanel.add(searchBar, BorderLayout.CENTER);
+		topPanel.add(profilePanel, BorderLayout.NORTH);
 
 		onSearchBarChanged();
 		searchBar.requestFocusInWindow();
@@ -260,7 +264,7 @@ public class ConfigPanel extends PluginPanel
 		scrollPane.getVerticalScrollBar().setValue(scrollBarPosition);
 	}
 
-	private void onSearchBarChanged()
+	void onSearchBarChanged()
 	{
 		final String text = searchBar.getText();
 
@@ -620,6 +624,11 @@ public class ConfigPanel extends PluginPanel
 
 			listItem.setPluginEnabled(true);
 		});
+	}
+
+	void refreshProfiles()
+	{
+		profilePanel.refreshProfiles();
 	}
 
 	void stopPlugin(Plugin plugin, PluginListItem listItem)

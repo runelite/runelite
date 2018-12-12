@@ -71,6 +71,7 @@ import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.kc.KillCountClient;
+import org.apache.commons.lang3.math.NumberUtils;
 
 @PluginDescriptor(
 	name = "Chat Commands",
@@ -91,6 +92,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final String CLUES_COMMAND_STRING = "!clues";
 	private static final String KILLCOUNT_COMMAND_STRING = "!kc";
 	private static final String CMB_COMMAND_STRING = "!cmb";
+	private static final String KILLCOUNT_CONFIG_GROUP = "killcount";
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final KillCountClient killCountClient = new KillCountClient();
@@ -146,15 +148,12 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 
 	private void setKc(String boss, int killcount)
 	{
-		configManager.setConfiguration("killcount." + client.getUsername().toLowerCase(),
-			boss.toLowerCase(), killcount);
+		configManager.setUsernameKey(KILLCOUNT_CONFIG_GROUP, boss.toLowerCase(), killcount + "");
 	}
 
 	private int getKc(String boss)
 	{
-		Integer killCount = configManager.getConfiguration("killcount." + client.getUsername().toLowerCase(),
-			boss.toLowerCase(), int.class);
-		return killCount == null ? 0 : killCount;
+		return NumberUtils.toInt(configManager.getUsernameKey(KILLCOUNT_CONFIG_GROUP, boss.toLowerCase()), 0);
 	}
 
 	/**

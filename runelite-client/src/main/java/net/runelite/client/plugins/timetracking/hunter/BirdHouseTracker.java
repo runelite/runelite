@@ -91,12 +91,10 @@ public class BirdHouseTracker
 	{
 		birdHouseData.clear();
 
-		final String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + TimeTrackingConfig.BIRD_HOUSE;
-
 		for (BirdHouseSpace space : BirdHouseSpace.values())
 		{
-			String key = Integer.toString(space.getVarp().getId());
-			String storedValue = configManager.getConfiguration(group, key);
+			String key = TimeTrackingConfig.BIRD_HOUSE + "." + Integer.toString(space.getVarp().getId());
+			String storedValue = configManager.getUsernameKey(TimeTrackingConfig.CONFIG_GROUP, key);
 
 			if (storedValue != null)
 			{
@@ -242,12 +240,10 @@ public class BirdHouseTracker
 
 	private void saveToConfig(Map<BirdHouseSpace, BirdHouseData> updatedData)
 	{
-		final String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + TimeTrackingConfig.BIRD_HOUSE;
-
 		for (BirdHouseData data : updatedData.values())
 		{
-			String key = Integer.toString(data.getSpace().getVarp().getId());
-			configManager.setConfiguration(group, key, data.getVarp() + ":" + data.getTimestamp());
+			String key = TimeTrackingConfig.BIRD_HOUSE + "." + Integer.toString(data.getSpace().getVarp().getId());
+			configManager.setUsernameKey(TimeTrackingConfig.CONFIG_GROUP, key, data.getVarp() + ":" + data.getTimestamp());
 		}
 	}
 }

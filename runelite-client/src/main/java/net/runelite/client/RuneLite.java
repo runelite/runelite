@@ -258,6 +258,7 @@ public class RuneLite
 		discordService.init();
 
 		// Register event listeners
+		eventBus.register(configManager);
 		eventBus.register(clientUI);
 		eventBus.register(pluginManager);
 		eventBus.register(overlayManager);

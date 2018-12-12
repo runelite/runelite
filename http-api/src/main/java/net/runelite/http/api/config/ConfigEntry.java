@@ -24,28 +24,23 @@
  */
 package net.runelite.http.api.config;
 
+import lombok.Data;
+
+@Data
 public class ConfigEntry
 {
 	private String key;
 	private String value;
+	private String profile;
+	private String account;
+	private String groupName;
 
-	public String getKey()
+	public ConfigEntry(final ConfigKey configKey, final String value)
 	{
-		return key;
-	}
-
-	public void setKey(String key)
-	{
-		this.key = key;
-	}
-
-	public String getValue()
-	{
-		return value;
-	}
-
-	public void setValue(String value)
-	{
-		this.value = value;
+		this.key = configKey.getKey();
+		this.value = value != null ? value : "";
+		this.profile = configKey.getProfile();
+		this.account = configKey.getAccount();
+		this.groupName = configKey.getGroupName();
 	}
 }

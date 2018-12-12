@@ -49,6 +49,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class TitheFarmPlugin extends Plugin
 {
+	static final String CONFIG_GROUP = "tithefarm";
+
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -80,7 +82,7 @@ public class TitheFarmPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("tithefarmplugin"))
+		if (event.getGroup().equals(CONFIG_GROUP))
 		{
 			titheFarmOverlay.updateConfig();
 		}

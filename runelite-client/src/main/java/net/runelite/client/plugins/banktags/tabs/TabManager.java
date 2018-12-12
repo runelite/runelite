@@ -36,6 +36,7 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.banktags.BankTagsPlugin;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.JOINER;
@@ -46,8 +47,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 @Singleton
 class TabManager
 {
-	private static final String TAG_TABS_CONFIG = "tagtabs";
-
 	@Getter
 	private final List<TagTab> tabs = new ArrayList<>();
 	private final ConfigManager configManager;
@@ -80,7 +79,7 @@ class TabManager
 
 	List<String> getAllTabs()
 	{
-		return SPLITTER.splitToList(MoreObjects.firstNonNull(configManager.getConfiguration(CONFIG_GROUP, TAG_TABS_CONFIG), ""));
+		return SPLITTER.splitToList(MoreObjects.firstNonNull(configManager.getUsernameKey(CONFIG_GROUP, BankTagsPlugin.TAG_TABS_CONFIG), ""));
 	}
 
 	TagTab load(String tag)
@@ -90,7 +89,7 @@ class TabManager
 		if (tagTab == null)
 		{
 			tag = Text.standardize(tag);
-			String item = configManager.getConfiguration(CONFIG_GROUP, ICON_SEARCH + tag);
+			String item = configManager.getUsernameKey(CONFIG_GROUP, ICON_SEARCH + tag);
 			int itemid = NumberUtils.toInt(item, ItemID.SPADE);
 			tagTab = new TagTab(itemid, tag);
 		}
@@ -123,7 +122,7 @@ class TabManager
 	void save()
 	{
 		String tags = JOINER.join(tabs.stream().map(TagTab::getTag).collect(Collectors.toList()));
-		configManager.setConfiguration(CONFIG_GROUP, TAG_TABS_CONFIG, tags);
+		configManager.setUsernameKey(CONFIG_GROUP, BankTagsPlugin.TAG_TABS_CONFIG, tags);
 	}
 
 	int size()

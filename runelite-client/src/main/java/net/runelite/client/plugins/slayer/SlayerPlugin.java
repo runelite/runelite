@@ -71,6 +71,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.math.NumberUtils;
 
 @PluginDescriptor(
 	name = "Slayer",
@@ -80,6 +81,16 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class SlayerPlugin extends Plugin
 {
+	// Config keys
+	static final String CONFIG_GROUP = "slayer";
+	private static final String TASK_KEY = "taskName";
+	private static final String AMOUNT_KEY = "amount";
+	private static final String STREAK_KEY = "streak";
+	private static final String POINTS_KEY = "points";
+	private static final String EXPEDITIOUS_KEY = "expeditious";
+	private static final String SLAUGHTER_KEY = "slaughter";
+	private static final String INITIAL_KEY = "initialAmount";
+
 	//Chat messages
 	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("^(?:You're assigned to kill|You have received a new Slayer assignment from .*:) (?:the )?(.*?)(?: in the Wilderness)?(?:; only | \\()(\\d*)(?: more to go\\.|\\))$");
 	private static final String CHAT_GEM_COMPLETE_MESSAGE = "You need something new to hunt.";
@@ -141,6 +152,9 @@ public class SlayerPlugin extends Plugin
 	@Inject
 	private TargetMinimapOverlay targetMinimapOverlay;
 
+	@Inject
+	private ConfigManager configManager;
+
 	@Getter(AccessLevel.PACKAGE)
 	private List<NPC> highlightedTargets = new ArrayList<>();
 
@@ -184,14 +198,14 @@ public class SlayerPlugin extends Plugin
 		overlayManager.add(targetMinimapOverlay);
 
 		if (client.getGameState() == GameState.LOGGED_IN
-			&& config.amount() != -1
-			&& !config.taskName().isEmpty())
+			&& getInt(AMOUNT_KEY) != -1
+			&& !Strings.isNullOrEmpty(getStr(TASK_KEY)))
 		{
-			points = config.points();
-			streak = config.streak();
-			setExpeditiousChargeCount(config.expeditious());
-			setSlaughterChargeCount(config.slaughter());
-			clientThread.invoke(() -> setTask(config.taskName(), config.amount(), config.initialAmount()));
+			points = getInt(POINTS_KEY);
+			streak = getInt(STREAK_KEY);
+			setExpeditiousChargeCount(getInt(EXPEDITIOUS_KEY));
+			setSlaughterChargeCount(getInt(SLAUGHTER_KEY));
+			clientThread.invoke(() -> setTask(getStr(TASK_KEY), getInt(AMOUNT_KEY), getInt(INITIAL_KEY)));
 		}
 	}
 
@@ -203,6 +217,22 @@ public class SlayerPlugin extends Plugin
 		overlayManager.remove(targetMinimapOverlay);
 		removeCounter();
 		highlightedTargets.clear();
+	}
+
+	private String getStr(final String key)
+	{
+		return configManager.getUsernameKey(CONFIG_GROUP, key);
+	}
+
+	private int getInt(final String key)
+	{
+		String value = configManager.getUsernameKey(CONFIG_GROUP, key);
+		return NumberUtils.toInt(value, -1);
+	}
+
+	private void setKey(final String key, Object value)
+	{
+		configManager.setUsernameKey(CONFIG_GROUP, key, value + "");
 	}
 
 	@Provides
@@ -225,15 +255,15 @@ public class SlayerPlugin extends Plugin
 				highlightedTargets.clear();
 				break;
 			case LOGGED_IN:
-				if (config.amount() != -1
-					&& !config.taskName().isEmpty()
+				if (getInt(AMOUNT_KEY) != -1
+					&& !Strings.isNullOrEmpty(getStr(TASK_KEY))
 					&& loginFlag)
 				{
-					points = config.points();
-					streak = config.streak();
-					setExpeditiousChargeCount(config.expeditious());
-					setSlaughterChargeCount(config.slaughter());
-					setTask(config.taskName(), config.amount(), config.initialAmount());
+					points = getInt(POINTS_KEY);
+					streak = getInt(STREAK_KEY);
+					setExpeditiousChargeCount(getInt(EXPEDITIOUS_KEY));
+					setSlaughterChargeCount(getInt(SLAUGHTER_KEY));
+					setTask(getStr(TASK_KEY), getInt(AMOUNT_KEY), getInt(INITIAL_KEY));
 					loginFlag = false;
 				}
 				break;
@@ -242,13 +272,13 @@ public class SlayerPlugin extends Plugin
 
 	private void save()
 	{
-		config.amount(amount);
-		config.initialAmount(initialAmount);
-		config.taskName(taskName);
-		config.points(points);
-		config.streak(streak);
-		config.expeditious(expeditiousChargeCount);
-		config.slaughter(slaughterChargeCount);
+		setKey(AMOUNT_KEY, amount);
+		setKey(INITIAL_KEY, initialAmount);
+		setKey(TASK_KEY, taskName);
+		setKey(POINTS_KEY, points);
+		setKey(STREAK_KEY, streak);
+		setKey(EXPEDITIOUS_KEY, expeditiousChargeCount);
+		setKey(SLAUGHTER_KEY, slaughterChargeCount);
 	}
 
 	@Subscribe
@@ -310,12 +340,12 @@ public class SlayerPlugin extends Plugin
 			if (braceletText.contains("bracelet of slaughter"))
 			{
 				slaughterChargeCount = SLAUGHTER_CHARGE;
-				config.slaughter(slaughterChargeCount);
+				setKey(SLAUGHTER_KEY, slaughterChargeCount);
 			}
 			else if (braceletText.contains("expeditious bracelet"))
 			{
 				expeditiousChargeCount = EXPEDITIOUS_CHARGE;
-				config.expeditious(expeditiousChargeCount);
+				setKey(EXPEDITIOUS_KEY, expeditiousChargeCount);
 			}
 		}
 
@@ -361,7 +391,7 @@ public class SlayerPlugin extends Plugin
 
 			amount++;
 			slaughterChargeCount = mSlaughter.find() ? Integer.parseInt(mSlaughter.group(1)) : SLAUGHTER_CHARGE;
-			config.slaughter(slaughterChargeCount);
+			setKey(SLAUGHTER_KEY, slaughterChargeCount);
 		}
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS))
@@ -370,7 +400,7 @@ public class SlayerPlugin extends Plugin
 
 			amount--;
 			expeditiousChargeCount = mExpeditious.find() ? Integer.parseInt(mExpeditious.group(1)) : EXPEDITIOUS_CHARGE;
-			config.expeditious(expeditiousChargeCount);
+			setKey(EXPEDITIOUS_KEY, expeditiousChargeCount);
 		}
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS_CHARGE))
@@ -383,7 +413,7 @@ public class SlayerPlugin extends Plugin
 			}
 
 			expeditiousChargeCount = Integer.parseInt(mExpeditious.group(1));
-			config.expeditious(expeditiousChargeCount);
+			setKey(EXPEDITIOUS_KEY, expeditiousChargeCount);
 		}
 		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER_CHARGE))
 		{
@@ -394,7 +424,7 @@ public class SlayerPlugin extends Plugin
 			}
 
 			slaughterChargeCount = Integer.parseInt(mSlaughter.group(1));
-			config.slaughter(slaughterChargeCount);
+			setKey(SLAUGHTER_KEY, slaughterChargeCount);
 		}
 
 		if (chatMsg.endsWith("; return to a Slayer master."))
@@ -518,7 +548,7 @@ public class SlayerPlugin extends Plugin
 			amount--;
 		}
 
-		config.amount(amount); // save changed value
+		setKey(AMOUNT_KEY, amount); // save changed value
 
 		if (!config.showInfobox())
 		{
@@ -534,7 +564,7 @@ public class SlayerPlugin extends Plugin
 	private boolean doubleTroubleExtraKill()
 	{
 		return WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID() == GROTESQUE_GUARDIANS_REGION &&
-				SlayerUnlock.GROTESQUE_GARDIAN_DOUBLE_COUNT.isEnabled(client);
+			SlayerUnlock.GROTESQUE_GARDIAN_DOUBLE_COUNT.isEnabled(client);
 	}
 
 	private boolean isTarget(NPC npc)

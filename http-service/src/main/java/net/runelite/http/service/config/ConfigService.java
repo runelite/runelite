@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import org.springframework.web.bind.annotation.RestController;
 import org.sql2o.Connection;
@@ -54,6 +55,15 @@ public class ConfigService
 		+ "  `value` text NOT NULL,\n"
 		+ "  UNIQUE KEY `user_key` (`user`,`key`(64))\n"
 		+ ") ENGINE=InnoDB;";
+
+	private static final String CONFIG_ADD_PROFILE_ACCOUNT = "ALTER TABLE config\n" +
+		" ADD COLUMN profile VARCHAR(64) NOT NULL DEFAULT '',\n" +
+		" ADD COLUMN account VARCHAR(255) NOT NULL DEFAULT ''," +
+		" ADD COLUMN groupName VARCHAR(64) NOT NULL DEFAULT '';";
+
+	private static final String CONFIG_UK = "ALTER TABLE config\n" +
+		"DROP INDEX user_key, \n" +
+		"ADD UNIQUE KEY `user_key` (`user`, groupName, `key`(64),`profile`,`account`(64);";
 
 	private static final String CONFIG_FK = "ALTER TABLE `config`\n"
 		+ "  ADD CONSTRAINT `user_fk` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
@@ -72,8 +82,16 @@ public class ConfigService
 
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery(CREATE_CONFIG)
-				.executeUpdate();
+			try
+			{
+				con.createQuery(CREATE_CONFIG)
+					.executeUpdate();
+			}
+			catch (Sql2oException ex)
+			{
+				// Ignore, happens when index already exists
+			}
+
 
 			try
 			{
@@ -84,10 +102,22 @@ public class ConfigService
 			{
 				// Ignore, happens when index already exists
 			}
+
+			try
+			{
+				con.createQuery(CONFIG_ADD_PROFILE_ACCOUNT)
+					.executeUpdate();
+				con.createQuery(CONFIG_UK)
+					.executeUpdate();
+			}
+			catch (Sql2oException ex)
+			{
+				// Ignore
+			}
 		}
 	}
 
-	@RequestMapping
+	@RequestMapping(method = GET)
 	public Configuration get(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		SessionEntry session = auth.handle(request, response);
@@ -101,12 +131,41 @@ public class ConfigService
 
 		try (Connection con = sql2o.open())
 		{
-			config = con.createQuery("select `key`, value from config where user = :user")
+			config = con.createQuery("select `key`, value, profile, account, groupName from config where user = :user")
 				.addParameter("user", session.getUser())
 				.executeAndFetch(ConfigEntry.class);
 		}
 
 		return new Configuration(config);
+	}
+
+	@RequestMapping(method = PUT)
+	public void set(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		@RequestBody ConfigEntry entry
+	) throws IOException
+	{
+		SessionEntry session = auth.handle(request, response);
+
+		if (session == null)
+		{
+			return;
+		}
+
+		try (Connection con = sql2o.open())
+		{
+			con.createQuery("insert into config (user, `key`, value, profile, account, groupName) " +
+				"values (:user, :key, :value, :profile, :account, :groupName) " +
+				"on duplicate key update `key` = :key, value = :value, profile = :profile, account = :account, groupName = :groupName")
+				.addParameter("user", session.getUser())
+				.addParameter("key", entry.getKey())
+				.addParameter("value", entry.getValue())
+				.addParameter("groupName", entry.getGroupName())
+				.addParameter("profile", entry.getProfile())
+				.addParameter("account", entry.getAccount())
+				.executeUpdate();
+		}
 	}
 
 	@RequestMapping(path = "/{key:.+}", method = PUT)
@@ -126,10 +185,61 @@ public class ConfigService
 
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("insert into config (user, `key`, value) values (:user, :key, :value) on duplicate key update `key` = :key, value = :value")
+			con.createQuery("insert into config (user, `key`, value, profile, account, groupName) " +
+				"values (:user, :key, :value, '', '', '') " +
+				"on duplicate key update `key` = :key, value = :value, profile = '', account = '', groupName = ''")
 				.addParameter("user", session.getUser())
 				.addParameter("key", key)
 				.addParameter("value", value != null ? value : "")
+				.executeUpdate();
+		}
+	}
+
+	@RequestMapping(path = "/profile/{profile}", method = DELETE)
+	public void unsetProfile(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		@PathVariable String profile
+	) throws IOException
+	{
+		SessionEntry session = auth.handle(request, response);
+
+		if (session == null)
+		{
+			return;
+		}
+
+		try (Connection con = sql2o.open())
+		{
+			con.createQuery("delete from config where user = :user and profile = :profile")
+				.addParameter("user", session.getUser())
+				.addParameter("profile", profile)
+				.executeUpdate();
+		}
+	}
+
+	@RequestMapping(method = DELETE)
+	public void unset(
+		HttpServletRequest request,
+		HttpServletResponse response,
+		@RequestBody ConfigEntry entry
+	) throws IOException
+	{
+		SessionEntry session = auth.handle(request, response);
+
+		if (session == null)
+		{
+			return;
+		}
+
+		try (Connection con = sql2o.open())
+		{
+			con.createQuery("delete from config where user = :user and `key` = :key and profile = :profile and account = :account and groupName = :groupName")
+				.addParameter("user", session.getUser())
+				.addParameter("key", entry.getKey())
+				.addParameter("groupName", entry.getGroupName())
+				.addParameter("profile", entry.getProfile())
+				.addParameter("account", entry.getAccount())
 				.executeUpdate();
 		}
 	}
@@ -150,7 +260,7 @@ public class ConfigService
 
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("delete from config where user = :user and `key` = :key")
+			con.createQuery("delete from config where user = :user and `key` = :key and profile = '' and account = '' and groupName = ''")
 				.addParameter("user", session.getUser())
 				.addParameter("key", key)
 				.executeUpdate();

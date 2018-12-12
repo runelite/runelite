@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.banktags;
 
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -48,31 +50,34 @@ import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
 import net.runelite.client.plugins.cluescrolls.clues.MapClue;
 import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.config.ConfigKey;
 
 @Singleton
 public class TagManager
 {
-	private static final String ITEM_KEY_PREFIX = "item_";
 	private final ConfigManager configManager;
 	private final ItemManager itemManager;
 	private final ClueScrollService clueScrollService;
+	private final Client client;
 
 	@Inject
 	private TagManager(
 		final ItemManager itemManager,
 		final ConfigManager configManager,
-		final ClueScrollService clueScrollService)
+		final ClueScrollService clueScrollService,
+		final Client client)
 	{
 		this.itemManager = itemManager;
 		this.configManager = configManager;
 		this.clueScrollService = clueScrollService;
+		this.client = client;
 	}
 
 	String getTagString(int itemId, boolean variation)
 	{
 		itemId = getItemId(itemId, variation);
 
-		String config = configManager.getConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
+		String config = configManager.getUsernameKey(CONFIG_GROUP, BankTagsPlugin.ITEM_KEY_PREFIX + itemId);
 		if (config == null)
 		{
 			return "";
@@ -92,11 +97,11 @@ public class TagManager
 
 		if (Strings.isNullOrEmpty(tags))
 		{
-			configManager.unsetConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
+			configManager.getUsernameKey(CONFIG_GROUP, BankTagsPlugin.ITEM_KEY_PREFIX + itemId);
 		}
 		else
 		{
-			configManager.setConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId, tags);
+			configManager.setUsernameKey(CONFIG_GROUP, BankTagsPlugin.ITEM_KEY_PREFIX + itemId, tags);
 		}
 	}
 
@@ -137,19 +142,22 @@ public class TagManager
 
 	public List<Integer> getItemsForTag(String tag)
 	{
-		final String prefix = CONFIG_GROUP + "." + ITEM_KEY_PREFIX;
-		return configManager.getConfigurationKeys(prefix).stream()
-			.map(item -> Integer.parseInt(item.replace(prefix, "")))
+		String username = client.getUsername();
+		Predicate<ConfigKey> fn = c -> c.getAccount().equals(username) && c.getGroupName().equals(CONFIG_GROUP) && c.getKey().startsWith(BankTagsPlugin.ITEM_KEY_PREFIX);
+		return configManager.getConfigurationKeys(fn)
+			.stream()
+			.map(item -> Integer.parseInt(item.getKey().replace(BankTagsPlugin.ITEM_KEY_PREFIX, "")))
 			.filter(item -> getTags(item, false).contains(tag) || getTags(item, true).contains(tag))
 			.collect(Collectors.toList());
 	}
 
 	public void removeTag(String tag)
 	{
-		final String prefix = CONFIG_GROUP + "." + ITEM_KEY_PREFIX;
-		configManager.getConfigurationKeys(prefix).forEach(item ->
+		String username = client.getUsername();
+		Predicate<ConfigKey> fn = c -> c.getAccount().equals(username) && c.getGroupName().equals(CONFIG_GROUP) && c.getKey().startsWith(BankTagsPlugin.ITEM_KEY_PREFIX);
+		configManager.getConfigurationKeys(fn).forEach(item ->
 		{
-			int id = Integer.parseInt(item.replace(prefix, ""));
+			int id = Integer.parseInt(item.getKey().replace(BankTagsPlugin.ITEM_KEY_PREFIX, ""));
 			removeTag(id, tag);
 		});
 	}
