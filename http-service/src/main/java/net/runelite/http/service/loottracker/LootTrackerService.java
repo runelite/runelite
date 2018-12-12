@@ -25,6 +25,7 @@
  */
 package net.runelite.http.service.loottracker;
 
+import java.util.List;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +35,19 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
 @Service
-public class LootDatabaseService
+public class LootTrackerService
 {
 	// Table for storing individual LootRecords
 	private static final String CREATE_KILLS = "CREATE TABLE IF NOT EXISTS `kills` (\n"
 		+ "  `id` INT AUTO_INCREMENT UNIQUE,\n"
+		+ "  `time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),\n"
 		+ "  `accountId` INT NOT NULL,\n"
-		+ "  `type` VARCHAR(255) NOT NULL,\n"
+		+ "  `type` enum('NPC', 'PLAYER', 'EVENT', 'UNKNOWN') NOT NULL,\n"
 		+ "  `eventId` VARCHAR(255) NOT NULL,\n"
 		+ "  PRIMARY KEY (id),\n"
 		+ "  FOREIGN KEY (accountId) REFERENCES sessions(user) ON DELETE CASCADE\n"
+		+ "  INDEX idx_acc (accountId, time)"
+		+ "  INDEX idx_time (time)"
 		+ ") ENGINE=InnoDB";
 
 	// Table for storing Items received as loot for individual LootRecords
@@ -58,10 +62,12 @@ public class LootDatabaseService
 	private static final String INSERT_KILL_QUERY = "INSERT INTO kills (accountId, type, eventId) VALUES (:accountId, :type, :eventId)";
 	private static final String INSERT_DROP_QUERY = "INSERT INTO drops (killId, itemId, itemQuantity) VALUES (LAST_INSERT_ID(), :itemId, :itemQuantity)";
 
+	private static final String SELECT_LOOT_QUERY = "SELECT killId,time,type,eventId,itemId,itemQuantity FROM kills JOIN drops ON drops.killId = kills.id WHERE accountId = :accountId ORDER BY TIME DESC";
+
 	private final Sql2o sql2o;
 
 	@Autowired
-	public LootDatabaseService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
+	public LootTrackerService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
 	{
 		this.sql2o = sql2o;
 
@@ -74,12 +80,12 @@ public class LootDatabaseService
 	}
 
 	/**
-	 * Store LootRecord in MySql database
+	 * Store LootRecord
 	 *
 	 * @param record    LootRecord to store
 	 * @param accountId runelite account id to tie data too
 	 */
-	void storeLootRecord(LootRecord record, int accountId)
+	public void store(LootRecord record, int accountId)
 	{
 		try (Connection con = sql2o.beginTransaction())
 		{
@@ -100,6 +106,14 @@ public class LootDatabaseService
 			}
 
 			con.commit();
+		}
+	}
+
+	public LootRecord get(int accountId) {
+		try (Connection con = sql2o.open()) {
+			List<LootResult> lootResults = con.createQuery(SELECT_LOOT_QUERY)
+				.addParameter("accountId", accountId)
+				.executeAndFetch(LootResult.class);
 		}
 	}
 }

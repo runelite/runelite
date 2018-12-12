@@ -40,10 +40,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/loottracker")
-public class LootDatabaseController
+public class LootTrackerController
 {
 	@Autowired
-	private LootDatabaseService service;
+	private LootTrackerService service;
 
 	@Autowired
 	private AuthFilter auth;
@@ -58,7 +58,7 @@ public class LootDatabaseController
 			return;
 		}
 
-		service.storeLootRecord(record, e.getUser());
+		service.store(record, e.getUser());
 		response.setStatus(HttpStatusCodes.STATUS_CODE_OK);
 	}
 }

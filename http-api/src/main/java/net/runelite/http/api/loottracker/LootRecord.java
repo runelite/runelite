@@ -26,9 +26,7 @@ package net.runelite.http.api.loottracker;
 
 import java.util.Collection;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Value;
-import net.runelite.http.api.RuneLiteAPI;
 
 @Value
 @AllArgsConstructor
