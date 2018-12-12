@@ -38,7 +38,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
-
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
