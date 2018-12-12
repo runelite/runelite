@@ -809,6 +809,13 @@ public interface Client extends GameEngine
 	Map<Integer, ChatLineBuffer> getChatLineMap();
 
 	/**
+	 * Map of message node id to message node
+	 *
+	 * @return the map
+	 */
+	IterableHashTable getMessages();
+
+	/**
 	 * Gets the viewport widget.
 	 * <p>
 	 * The viewport is the area of the game above the chatbox

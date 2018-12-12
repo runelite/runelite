@@ -454,6 +454,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	Map getChatLineMap();
 
+	@Import("messages")
+	@Override
+	RSIterableHashTable getMessages();
+
 	@Import("revision")
 	@Override
 	int getRevision();
