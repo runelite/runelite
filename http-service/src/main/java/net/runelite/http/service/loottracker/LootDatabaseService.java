@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,13 +25,8 @@
  */
 package net.runelite.http.service.loottracker;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
-import net.runelite.http.service.account.AuthFilter;
-import net.runelite.http.service.account.beans.SessionEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -40,27 +36,47 @@ import org.sql2o.Sql2o;
 @Service
 public class LootDatabaseService
 {
-	// MySql queries
+	// Table for storing individual LootRecords
+	private static final String CREATE_KILLS = "CREATE TABLE IF NOT EXISTS `kills` (\n"
+		+ "  `id` INT AUTO_INCREMENT UNIQUE,\n"
+		+ "  `accountId` INT NOT NULL,\n"
+		+ "  `type` VARCHAR(255) NOT NULL,\n"
+		+ "  `eventId` VARCHAR(255) NOT NULL,\n"
+		+ "  PRIMARY KEY (id),\n"
+		+ "  FOREIGN KEY (accountId) REFERENCES sessions(user) ON DELETE CASCADE\n"
+		+ ") ENGINE=InnoDB";
+
+	// Table for storing Items received as loot for individual LootRecords
+	private static final String CREATE_DROPS = "CREATE TABLE IF NOT EXISTS `drops` (\n"
+		+ "  `killId` INT NOT NULL,\n"
+		+ "  `itemId` INT NOT NULL,\n"
+		+ "  `itemQuantity` INT NOT NULL,\n"
+		+ "  FOREIGN KEY (killId) REFERENCES kills(id) ON DELETE CASCADE\n"
+		+ ") ENGINE=InnoDB";
+
+	// Queries for inserting kills
 	private static final String INSERT_KILL_QUERY = "INSERT INTO kills (accountId, type, eventId) VALUES (:accountId, :type, :eventId)";
 	private static final String INSERT_DROP_QUERY = "INSERT INTO drops (killId, itemId, itemQuantity) VALUES (LAST_INSERT_ID(), :itemId, :itemQuantity)";
 
 	private final Sql2o sql2o;
 
-	private final AuthFilter auth;
-
 	@Autowired
-	public LootDatabaseService(
-		@Qualifier("Runelite SQL2O") Sql2o sql2o,
-		AuthFilter auth
-	)
+	public LootDatabaseService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
 	{
 		this.sql2o = sql2o;
-		this.auth = auth;
+
+		// Ensure necessary tables exist
+		try (Connection con = sql2o.open())
+		{
+			con.createQuery(CREATE_KILLS).executeUpdate();
+			con.createQuery(CREATE_DROPS).executeUpdate();
+		}
 	}
 
 	/**
 	 * Store LootRecord in MySql database
-	 * @param record LootRecord to store
+	 *
+	 * @param record    LootRecord to store
 	 * @param accountId runelite account id to tie data too
 	 */
 	void storeLootRecord(LootRecord record, int accountId)
@@ -73,6 +89,7 @@ public class LootDatabaseService
 				.addParameter("type", record.getType())
 				.addParameter("eventId", record.getEventId())
 				.executeUpdate();
+
 			// Append all queries for inserting drops
 			for (GameItem drop : record.getDrops())
 			{
@@ -81,12 +98,8 @@ public class LootDatabaseService
 					.addParameter("itemQuantity", drop.getQty())
 					.executeUpdate();
 			}
+
 			con.commit();
 		}
-	}
-
-	SessionEntry handleAuth(HttpServletRequest request, HttpServletResponse response) throws IOException
-	{
-		return auth.handle(request, response);
 	}
 }

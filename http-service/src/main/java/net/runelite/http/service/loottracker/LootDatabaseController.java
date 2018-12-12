@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,64 +30,35 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.loottracker.LootRecord;
+import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.sql2o.Connection;
-import org.sql2o.Sql2o;
 
 @RestController
 @RequestMapping("/loottracker")
 public class LootDatabaseController
 {
-	// Table for storing individual LootRecords
-	private static final String CREATE_KILLS = "CREATE TABLE IF NOT EXISTS `kills` (\n"
-		+ "  `id` INT AUTO_INCREMENT UNIQUE,\n"
-		+ "  `accountId` INT NOT NULL,\n"
-		+ "  `type` VARCHAR(255) NOT NULL,\n"
-		+ "  `eventId` VARCHAR(255) NOT NULL,\n"
-		+ "  PRIMARY KEY (id),\n"
-		+ "  FOREIGN KEY (accountId) REFERENCES sessions(user) ON DELETE CASCADE\n"
-		+ ") ENGINE=InnoDB";
-
-	// Table for storing Items received as loot for individual LootRecords
-	private static final String CREATE_DROPS = "CREATE TABLE IF NOT EXISTS `drops` (\n"
-		+ "  `killId` INT NOT NULL,\n"
-		+ "  `itemId` INT NOT NULL,\n"
-		+ "  `itemQuantity` INT NOT NULL,\n"
-		+ "  FOREIGN KEY (killId) REFERENCES kills(id) ON DELETE CASCADE\n"
-		+ ") ENGINE=InnoDB";
-
-	@Autowired
-	public LootDatabaseController(@Qualifier("Runelite SQL2O") Sql2o sql2o)
-	{
-		// Ensure necessary tables exist
-		try (Connection con = sql2o.open())
-		{
-			con.createQuery(CREATE_KILLS).executeUpdate();
-			con.createQuery(CREATE_DROPS).executeUpdate();
-		}
-	}
-
 	@Autowired
 	private LootDatabaseService service;
 
-	@RequestMapping(value = {"", "/"}, method = RequestMethod.POST)
+	@Autowired
+	private AuthFilter auth;
+
+	@RequestMapping(method = RequestMethod.POST)
 	public void storeLootRecord(HttpServletRequest request, HttpServletResponse response, @RequestBody LootRecord record) throws IOException
 	{
-		SessionEntry e = service.handleAuth(request, response);
+		SessionEntry e = auth.handle(request, response);
 		if (e == null)
 		{
 			response.setStatus(HttpStatusCodes.STATUS_CODE_UNAUTHORIZED);
+			return;
 		}
-		else
-		{
-			service.storeLootRecord(record, e.getUser());
-			response.setStatus(HttpStatusCodes.STATUS_CODE_OK);
-		}
+
+		service.storeLootRecord(record, e.getUser());
+		response.setStatus(HttpStatusCodes.STATUS_CODE_OK);
 	}
 }
