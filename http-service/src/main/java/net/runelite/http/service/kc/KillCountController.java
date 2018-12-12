@@ -29,6 +29,8 @@ import com.google.common.cache.CacheBuilder;
 import java.util.concurrent.TimeUnit;
 import net.runelite.http.service.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,7 +62,7 @@ public class KillCountController
 	}
 
 	@GetMapping
-	public int get(@RequestParam String name, @RequestParam String boss)
+	public ResponseEntity<Integer> get(@RequestParam String name, @RequestParam String boss)
 	{
 		Integer kc = cache.getIfPresent(new KillCountKey(name, boss));
 		if (kc == null)
@@ -76,6 +78,8 @@ public class KillCountController
 		{
 			throw new NotFoundException();
 		}
-		return kc;
+		return ResponseEntity.ok()
+			.cacheControl(CacheControl.maxAge(2, TimeUnit.MINUTES).cachePublic())
+			.body(kc);
 	}
 }
