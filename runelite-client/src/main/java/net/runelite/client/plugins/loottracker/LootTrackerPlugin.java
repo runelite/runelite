@@ -386,7 +386,7 @@ public class LootTrackerPlugin extends Plugin
 		}).toArray(LootTrackerItem[]::new);
 	}
 
-	private Collection<GameItem> toGameItems(Collection<ItemStack> items)
+	private static Collection<GameItem> toGameItems(Collection<ItemStack> items)
 	{
 		return items.stream()
 			.map(item -> new GameItem(item.getId(), item.getQuantity()))
