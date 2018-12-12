@@ -380,6 +380,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("assignment", option, target, true);
 			}
 
+			if (config.swapPlank())
+			{
+				swap("buy-plank", option, target, true);
+			}
+
 			if (config.swapTrade())
 			{
 				swap("trade", option, target, true);

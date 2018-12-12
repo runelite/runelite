@@ -202,6 +202,16 @@ public interface MenuEntrySwapperConfig extends Config
 		return false;
 	}
 
+    @ConfigItem(
+            keyName = "swapPlank",
+            name = "Planks",
+            description = "Swap Talk-to with Buy-planks at the Lumber Yard."
+    )
+    default boolean swapPlank()
+    {
+        return true;
+    }
+
 	@ConfigItem(
 		keyName = "swapQuick",
 		name = "Quick Pass/Start/Travel",
