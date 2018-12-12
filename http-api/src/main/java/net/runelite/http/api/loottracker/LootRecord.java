@@ -26,13 +26,15 @@ package net.runelite.http.api.loottracker;
 
 import java.util.Collection;
 import lombok.AllArgsConstructor;
-import lombok.Value;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class LootRecord
 {
-	private final String eventId;
-	private final LootRecordType type;
-	private final Collection<GameItem> drops;
+	private String eventId;
+	private LootRecordType type;
+	private Collection<GameItem> drops;
 }

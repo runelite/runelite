@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
+import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
 @Service
@@ -92,22 +93,25 @@ public class LootTrackerService
 		try (Connection con = sql2o.beginTransaction())
 		{
 			// Kill Entry Query
-			con.createQuery(INSERT_KILL_QUERY)
+			con.createQuery(INSERT_KILL_QUERY, true)
 				.addParameter("accountId", accountId)
 				.addParameter("type", record.getType())
 				.addParameter("eventId", record.getEventId())
 				.executeUpdate();
 
+			Query insertDrop = con.createQuery(INSERT_DROP_QUERY);
+
 			// Append all queries for inserting drops
 			for (GameItem drop : record.getDrops())
 			{
-				con.createQuery(INSERT_DROP_QUERY)
+				insertDrop
 					.addParameter("itemId", drop.getId())
 					.addParameter("itemQuantity", drop.getQty())
-					.executeUpdate();
+					.addToBatch();
 			}
 
-			con.commit();
+			insertDrop.executeBatch();
+			con.commit(false);
 		}
 	}
 
