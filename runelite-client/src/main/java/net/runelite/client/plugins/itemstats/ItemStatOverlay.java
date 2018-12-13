@@ -31,6 +31,7 @@ import java.awt.Graphics2D;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -186,9 +187,10 @@ public class ItemStatOverlay extends Overlay
 		ItemStats other = null;
 		final ItemEquipmentStats currentEquipment = s.getEquipment();
 
-		if (s.isEquipable() && currentEquipment != null)
+		ItemContainer c = client.getItemContainer(InventoryID.EQUIPMENT);
+		if (s.isEquipable() && currentEquipment != null && c != null)
 		{
-			final Item[] items = client.getItemContainer(InventoryID.EQUIPMENT).getItems();
+			final Item[] items = c.getItems();
 
 			if (currentEquipment.getSlot() != -1 && currentEquipment.getSlot() < items.length)
 			{
