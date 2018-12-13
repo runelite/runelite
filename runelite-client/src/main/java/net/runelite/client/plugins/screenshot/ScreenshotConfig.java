@@ -133,21 +133,10 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "usernameFileName",
-			name = "Include Username In File Name",
-			description = "Configures whether or not the username is included in the file name of PvP kill screenshots",
-			position = 9
-	)
-	default boolean usernameFileName()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "boss",
 		name = "Screenshot Boss Kills",
 		description = "Configures whether or not screenshots are automatically taken of boss kills",
-		position = 10
+		position = 9
 	)
 	default boolean screenshotBossKills()
 	{
@@ -158,7 +147,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "playerDeath",
 		name = "Screenshot Deaths",
 		description = "Configures whether or not screenshots are automatically taken when you die.",
-		position = 11
+		position = 10
 	)
 	default boolean screenshotPlayerDeath()
 	{
@@ -169,7 +158,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "valuableDrop",
 		name = "Screenshot Valuable drops",
 		description = "Configures whether or not screenshots are automatically taken when you receive a valuable/untradeable drop.",
-		position = 12
+		position = 11
 	)
 	default boolean screenshotValuableDrop()
 	{
@@ -180,7 +169,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
-		position = 13
+		position = 12
 	)
 	default Keybind hotkey()
 	{

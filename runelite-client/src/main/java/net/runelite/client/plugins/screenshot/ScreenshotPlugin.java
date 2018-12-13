@@ -291,12 +291,8 @@ public class ScreenshotPlugin extends Plugin
 		{
 			final Player player = playerLootReceived.getPlayer();
 			final String name = player.getName();
-			String fileName = "Kill ";
-			if (config.usernameFileName())
-			{
-				fileName += name;
-			}
-			takeScreenshot(fileName + " " + format(new Date()));
+			String fileName = "Kill " + name + " " + format(new Date());
+			takeScreenshot(fileName);
 		}
 	}
 
