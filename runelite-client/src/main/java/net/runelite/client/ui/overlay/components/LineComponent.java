@@ -48,18 +48,22 @@ public class LineComponent implements LayoutableRenderableEntity
 	private Color rightColor = Color.WHITE;
 
 	@Builder.Default
+	private Point preferredLocation = new Point();
+
+	@Builder.Default
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		graphics.translate(preferredLocation.x, preferredLocation.y);
 		// Prevent NPEs
 		final String left = MoreObjects.firstNonNull(this.left, "");
 		final String right = MoreObjects.firstNonNull(this.right, "");
 
 		final FontMetrics metrics = graphics.getFontMetrics();
 		int x = 0;
-		int y = 0;
+		int y = metrics.getHeight();
 		final int leftFullWidth = getLineWidth(left, metrics);
 		final int rightFullWidth = getLineWidth(right, metrics);
 
@@ -101,14 +105,15 @@ public class LineComponent implements LayoutableRenderableEntity
 				leftLineComponent.render(graphics);
 
 				final TextComponent rightLineComponent = new TextComponent();
-				rightLineComponent.setPosition(new Point(x + leftSmallWidth + rightFullWidth - getLineWidth(rightText, metrics), y));
+				rightLineComponent.setPosition(new Point(x + leftSmallWidth + rightSmallWidth - getLineWidth(rightText, metrics), y));
 				rightLineComponent.setText(rightText);
 				rightLineComponent.setColor(rightColor);
 				rightLineComponent.render(graphics);
 				y += metrics.getHeight();
 			}
 
-			return new Dimension(preferredSize.width, y);
+			graphics.translate(-preferredLocation.x, -preferredLocation.y);
+			return new Dimension(preferredSize.width, y - metrics.getHeight());
 		}
 
 		final TextComponent leftLineComponent = new TextComponent();
@@ -124,7 +129,8 @@ public class LineComponent implements LayoutableRenderableEntity
 		rightLineComponent.render(graphics);
 		y += metrics.getHeight();
 
-		return new Dimension(preferredSize.width, y);
+		graphics.translate(-preferredLocation.x, -preferredLocation.y);
+		return new Dimension(preferredSize.width, y - metrics.getHeight());
 	}
 
 	private static int getLineWidth(final String line, final FontMetrics metrics)

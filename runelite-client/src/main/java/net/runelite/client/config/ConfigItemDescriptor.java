@@ -24,24 +24,12 @@
  */
 package net.runelite.client.config;
 
+import lombok.Value;
+
+@Value
 public class ConfigItemDescriptor
 {
 	private final ConfigItem item;
 	private final Class<?> type;
-
-	public ConfigItemDescriptor(ConfigItem item, Class<?> type)
-	{
-		this.item = item;
-		this.type = type;
-	}
-
-	public ConfigItem getItem()
-	{
-		return item;
-	}
-
-	public Class<?> getType()
-	{
-		return type;
-	}
+	private final Range range;
 }

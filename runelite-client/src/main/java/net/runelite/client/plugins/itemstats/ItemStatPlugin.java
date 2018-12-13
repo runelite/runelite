@@ -24,18 +24,24 @@
  */
 package net.runelite.client.plugins.itemstats;
 
+import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Item Stats"
+	name = "Item Stats",
+	description = "Show information about food and potion effects",
+	tags = {"food", "inventory", "overlay", "potion"}
 )
 public class ItemStatPlugin extends Plugin
 {
+	@Inject
+	private OverlayManager overlayManager;
+
 	@Inject
 	private ItemStatOverlay overlay;
 
@@ -46,8 +52,20 @@ public class ItemStatPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	public void configure(Binder binder)
 	{
-		return overlay;
+		binder.bind(ItemStatChangesService.class).to(ItemStatChangesServiceImpl.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 	}
 }

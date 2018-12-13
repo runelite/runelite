@@ -50,15 +50,17 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 	private Color foregroundColor = new Color(82, 161, 82);
 	private Color backgroundColor = new Color(255, 255, 255, 127);
 	private Color fontColor = Color.WHITE;
+	private Point preferredLocation = new Point();
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 16);
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		graphics.translate(preferredLocation.x, preferredLocation.y);
 		final FontMetrics metrics = graphics.getFontMetrics();
 
 		final int barX = 0;
-		final int barY = -metrics.getHeight();
+		final int barY = 0;
 
 		final long span = maximum - minimum;
 		final double currentValue = value - minimum;
@@ -92,6 +94,7 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 		textComponent.setText(textToWrite);
 		textComponent.render(graphics);
 
+		graphics.translate(-preferredLocation.x, -preferredLocation.y);
 		return new Dimension(width, height);
 	}
 }

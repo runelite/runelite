@@ -24,23 +24,18 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
-import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "chatcommands",
-	name = "Chat Commands",
-	description = "Configuration for chat commands"
-)
+@ConfigGroup("chatcommands")
 public interface ChatCommandsConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
 		keyName = "price",
 		name = "Price Command",
-		description = "Configures whether the Price command is enabled"
+		description = "Configures whether the Price command is enabled<br> !price [item]"
 	)
 	default boolean price()
 	{
@@ -51,7 +46,7 @@ public interface ChatCommandsConfig extends Config
 		position = 1,
 		keyName = "lvl",
 		name = "Level Command",
-		description = "Configures whether the Level command is enabled"
+		description = "Configures whether the Level command is enabled<br> !lvl [skill]"
 	)
 	default boolean lvl()
 	{
@@ -60,133 +55,34 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "hexColorPublic",
-		name = "Public chat",
-		description = "Color of Public chat"
+		keyName = "clue",
+		name = "Clue Command",
+		description = "Configures whether the Clue command is enabled<br> !clues"
 	)
-	default Color getPublicRecolor()
+	default boolean clue()
 	{
-		return Color.decode("#0000FF");
+		return true;
 	}
 
 	@ConfigItem(
 		position = 3,
-		keyName = "hexColorPublicH",
-		name = "Public chat highlight",
-		description = "Color of Public chat highlight"
+		keyName = "killcount",
+		name = "Killcount Command",
+		description = "Configures whether the Killcount command is enabled<br> !kc [boss]"
 	)
-	default Color getPublicHRecolor()
+	default boolean killcount()
 	{
-		return Color.decode("#000000");
+		return true;
 	}
 
 	@ConfigItem(
 		position = 4,
-		keyName = "hexColorPrivate",
-		name = "Private chat",
-		description = "Color of Private chat"
+		keyName = "clearShortcuts",
+		name = "Clear shortcuts",
+		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
 	)
-	default Color getPrivateRecolor()
+	default boolean clearShortcuts()
 	{
-		return Color.decode("#0088FF");
-	}
-
-	@ConfigItem(
-		position = 5,
-		keyName = "hexColorPrivateH",
-		name = "Private chat highlight",
-		description = "Color of Private chat highlight"
-	)
-	default Color getPrivateHRecolor()
-	{
-		return Color.decode("#002783");
-	}
-
-	@ConfigItem(
-		position = 6,
-		keyName = "hexColorCc",
-		name = "Clan chat",
-		description = "Color of Clan chat"
-	)
-	default Color getCcRecolor()
-	{
-		return Color.decode("#7f0000");
-	}
-
-	@ConfigItem(
-		position = 7,
-		keyName = "hexColorCcH",
-		name = "Clan chat Highlight",
-		description = "Color of Clan chat highlight"
-	)
-	default Color getCcHRecolor()
-	{
-		return Color.decode("#000000");
-	}
-
-	@ConfigItem(
-		position = 8,
-		keyName = "transparentHexColorPublic",
-		name = "Transparent public chat",
-		description = "Color of Public chat"
-	)
-	default Color getTransparentPublicRecolor()
-	{
-		return Color.decode("#9090FF");
-	}
-
-	@ConfigItem(
-		position = 9,
-		keyName = "transparentHexColorPublicH",
-		name = "Transparent public chat highlight",
-		description = "Color of Public chat highlight"
-	)
-	default Color getTransparentPublicHRecolor()
-	{
-		return Color.decode("#FFFFFF");
-	}
-
-	@ConfigItem(
-		position = 10,
-		keyName = "transparentHexColorPrivate",
-		name = "Transparent private chat",
-		description = "Color of Private chat"
-	)
-	default Color getTransparentPrivateRecolor()
-	{
-		return Color.decode("#FFFFFF");
-	}
-
-	@ConfigItem(
-		position = 11,
-		keyName = "transparentHexColorPrivateH",
-		name = "Transparent private chat highlight",
-		description = "Color of Private chat highlight"
-	)
-	default Color getTransparentPrivateHRecolor()
-	{
-		return Color.decode("#00FFFF");
-	}
-
-	@ConfigItem(
-		position = 12,
-		keyName = "transparentHexColorCc",
-		name = "Transparent clan chat",
-		description = "Color of Clan chat"
-	)
-	default Color getTransparentCcRecolor()
-	{
-		return Color.decode("#Ef5050");
-	}
-
-	@ConfigItem(
-		position = 13,
-		keyName = "transparentHexColorCcH",
-		name = "Transparent clan chat Highlight",
-		description = "Color of Clan chat highlight"
-	)
-	default Color getTransparentCcHRecolor()
-	{
-		return Color.decode("#FFFFFF");
+		return true;
 	}
 }

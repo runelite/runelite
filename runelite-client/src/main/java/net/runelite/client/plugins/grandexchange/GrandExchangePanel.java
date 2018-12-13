@@ -27,23 +27,19 @@
 package net.runelite.client.plugins.grandexchange;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 
-@Slf4j
 class GrandExchangePanel extends PluginPanel
 {
 
@@ -59,7 +55,7 @@ class GrandExchangePanel extends PluginPanel
 	private GrandExchangeOffersPanel offersPanel;
 
 	@Inject
-	GrandExchangePanel(Client client, ItemManager itemManager, ScheduledExecutorService executor)
+	private GrandExchangePanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor)
 	{
 		super(false);
 
@@ -67,36 +63,13 @@ class GrandExchangePanel extends PluginPanel
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		// Search Panel
-		searchPanel = new GrandExchangeSearchPanel(client, itemManager, executor);
+		searchPanel = new GrandExchangeSearchPanel(clientThread, itemManager, executor);
 
 		//Offers Panel
-		offersPanel = new GrandExchangeOffersPanel(client, itemManager, executor);
+		offersPanel = new GrandExchangeOffersPanel();
 
 		MaterialTab offersTab = new MaterialTab("Offers", tabGroup, offersPanel);
 		searchTab = new MaterialTab("Search", tabGroup, searchPanel);
-
-		MouseAdapter materialTabMouseAdapter = new MouseAdapter()
-		{
-			@Override
-			public void mouseEntered(MouseEvent e)
-			{
-				MaterialTab tab = (MaterialTab)e.getSource();
-				tab.setForeground(Color.WHITE);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e)
-			{
-				MaterialTab tab = (MaterialTab)e.getSource();
-				if (!tab.isSelected())
-				{
-					tab.setForeground(Color.GRAY);
-				}
-			}
-		};
-
-		searchTab.addMouseListener(materialTabMouseAdapter);
-		offersTab.addMouseListener(materialTabMouseAdapter);
 
 		tabGroup.setBorder(new EmptyBorder(5, 0, 0, 0));
 		tabGroup.addTab(offersTab);
@@ -116,5 +89,10 @@ class GrandExchangePanel extends PluginPanel
 
 		tabGroup.select(searchTab);
 		revalidate();
+	}
+
+	void setGELimits(Map<Integer, Integer> itemGELimits)
+	{
+		searchPanel.setItemGELimits(itemGELimits);
 	}
 }

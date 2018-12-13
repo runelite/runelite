@@ -32,11 +32,7 @@ import net.runelite.client.config.ConfigItem;
 
 import java.awt.Color;
 
-@ConfigGroup(
-	keyName = "groundMarker",
-	name = "Ground Marker",
-	description = "Mark ground tiles"
-)
+@ConfigGroup("groundMarker")
 public interface GroundMarkerConfig extends Config
 {
 	@ConfigItem(

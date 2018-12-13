@@ -33,7 +33,10 @@ public enum TeleportType
 	NORMAL_MAGIC(""),
 	ANCIENT_MAGICKS("Ancient - "),
 	LUNAR_MAGIC("Lunar - "),
-	ARCEUUS_MAGIC("Arceuus - ");
+	ARCEUUS_MAGIC("Arceuus - "),
+	JEWELLERY("Jewellery - "),
+	SCROLL(""),
+	OTHER("");
 
 	private String prefix;
 

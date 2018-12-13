@@ -122,13 +122,21 @@ public class ClueScrollEmoteOverlay extends Overlay
 		// Don't draw outside the emotes window
 		net.runelite.api.Point windowLocation = window.getCanvasLocation();
 
-		if (windowLocation.getY() > canvasLocation.getY()
-			|| windowLocation.getY() + window.getHeight() < canvasLocation.getY() + widget.getHeight())
+		if (windowLocation.getY() > canvasLocation.getY() + widget.getHeight()
+			|| windowLocation.getY() + window.getHeight() < canvasLocation.getY())
 		{
 			return;
 		}
 
-		Area widgetArea = new Area(new Rectangle(canvasLocation.getX(), canvasLocation.getY(), widget.getWidth(), widget.getHeight()));
+		// Visible area of emote widget
+		Area widgetArea = new Area(
+			new Rectangle(
+				canvasLocation.getX(),
+				Math.max(canvasLocation.getY(), windowLocation.getY()),
+				widget.getWidth(),
+				Math.min(
+					Math.min(windowLocation.getY() + window.getHeight() - canvasLocation.getY(), widget.getHeight()),
+					Math.min(canvasLocation.getY() + widget.getHeight() - windowLocation.getY(), widget.getHeight()))));
 
 		OverlayUtil.renderHoverableArea(graphics, widgetArea, client.getMouseCanvasPosition(),
 				HIGHLIGHT_FILL_COLOR, HIGHLIGHT_BORDER_COLOR, HIGHLIGHT_HOVER_BORDER_COLOR);

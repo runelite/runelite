@@ -25,17 +25,23 @@
  */
 package net.runelite.client.plugins.entityhider;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.Player;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
 	name = "Entity Hider",
+	description = "Hide players, NPCs, and/or projectiles",
+	tags = {"npcs", "players", "projectiles"},
 	enabledByDefault = false
 )
 public class EntityHiderPlugin extends Plugin
@@ -64,9 +70,18 @@ public class EntityHiderPlugin extends Plugin
 		updateConfig();
 	}
 
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			client.setIsHidingEntities(isPlayerRegionAllowed());
+		}
+	}
+
 	private void updateConfig()
 	{
-		client.setIsHidingEntities(true);
+		client.setIsHidingEntities(isPlayerRegionAllowed());
 
 		client.setPlayersHidden(config.hidePlayers());
 		client.setPlayersHidden2D(config.hidePlayers2D());
@@ -105,5 +120,20 @@ public class EntityHiderPlugin extends Plugin
 		client.setAttackersHidden(false);
 
 		client.setProjectilesHidden(false);
+	}
+
+	private boolean isPlayerRegionAllowed()
+	{
+		final Player localPlayer = client.getLocalPlayer();
+
+		if (localPlayer == null)
+		{
+			return true;
+		}
+
+		final int playerRegionID = WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation()).getRegionID();
+
+		// 9520 = Castle Wars
+		return playerRegionID != 9520;
 	}
 }

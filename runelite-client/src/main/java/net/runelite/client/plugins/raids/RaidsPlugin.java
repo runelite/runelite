@@ -24,20 +24,14 @@
  */
 package net.runelite.client.plugins.raids;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -45,35 +39,40 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
-import net.runelite.api.ObjectID;
-import net.runelite.api.Point;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Tile;
-import net.runelite.api.Varbits;
+import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
+import net.runelite.api.Point;
+import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
+import net.runelite.api.Tile;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.chat.ChatColor;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Chambers Of Xeric"
+	name = "Chambers Of Xeric",
+	description = "Show helpful information for the Chambers of Xeric raid",
+	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses"}
 )
 @Slf4j
 public class RaidsPlugin extends Plugin
@@ -83,15 +82,9 @@ public class RaidsPlugin extends Plugin
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
-	public static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
+	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
-	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)\\]");
-
-	private BufferedImage raidsIcon;
-	private RaidsTimer timer;
-
-	@Getter
-	private boolean inRaidChambers;
+	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -106,6 +99,9 @@ public class RaidsPlugin extends Plugin
 	private RaidsConfig config;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private RaidsOverlay overlay;
 
 	@Inject
@@ -114,20 +110,31 @@ public class RaidsPlugin extends Plugin
 	@Inject
 	private LayoutSolver layoutSolver;
 
+	@Inject
+	private SpriteManager spriteManager;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Getter
+	private final ArrayList<String> roomWhitelist = new ArrayList<>();
+
+	@Getter
+	private final ArrayList<String> roomBlacklist = new ArrayList<>();
+
+	@Getter
+	private final ArrayList<String> rotationWhitelist = new ArrayList<>();
+
+	@Getter
+	private final ArrayList<String> layoutWhitelist = new ArrayList<>();
+
 	@Getter
 	private Raid raid;
 
 	@Getter
-	private ArrayList<String> roomWhitelist = new ArrayList<>();
+	private boolean inRaidChambers;
 
-	@Getter
-	private ArrayList<String> roomBlacklist = new ArrayList<>();
-
-	@Getter
-	private ArrayList<String> rotationWhitelist = new ArrayList<>();
-
-	@Getter
-	private ArrayList<String> layoutWhitelist = new ArrayList<>();
+	private RaidsTimer timer;
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -142,69 +149,41 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Override
-	public List<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, pointsOverlay);
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			inRaidChambers = client.getVar(Varbits.IN_RAID) == 1;
-			updateInfoBoxState();
-		}
-
-		if (config.pointsMessage())
-		{
-			cacheColors();
-		}
-
+		overlayManager.add(overlay);
+		overlayManager.add(pointsOverlay);
 		updateLists();
+		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		if (timer != null)
-		{
-			infoBoxManager.removeInfoBox(timer);
-		}
+		overlayManager.remove(overlay);
+		overlayManager.remove(pointsOverlay);
+		infoBoxManager.removeInfoBox(timer);
+		inRaidChambers = false;
+		raid = null;
+		timer = null;
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (config.pointsMessage())
+		if (!event.getGroup().equals("raids"))
 		{
-			cacheColors();
+			return;
 		}
 
 		if (event.getKey().equals("raidsTimer"))
 		{
 			updateInfoBoxState();
+			return;
 		}
 
-		if (event.getKey().equals("whitelistedRooms"))
-		{
-			updateList(roomWhitelist, config.whitelistedRooms());
-		}
-
-		if (event.getKey().equals("blacklistedRooms"))
-		{
-			updateList(roomBlacklist, config.blacklistedRooms());
-		}
-
-		if (event.getKey().equals("whitelistedRotations"))
-		{
-			updateList(rotationWhitelist, config.whitelistedRotations());
-		}
-
-		if (event.getKey().equals("whitelistedLayouts"))
-		{
-			updateList(layoutWhitelist, config.whitelistedLayouts());
-		}
+		updateLists();
+		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
 
 	@Subscribe
@@ -224,49 +203,9 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChange(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
-		boolean setting = client.getVar(Varbits.IN_RAID) == 1;
-
-		if (inRaidChambers != setting)
-		{
-			inRaidChambers = setting;
-			updateInfoBoxState();
-
-			if (inRaidChambers)
-			{
-				raid = buildRaid();
-
-				if (raid == null)
-				{
-					log.debug("Failed to build raid");
-					return;
-				}
-
-				Layout layout = layoutSolver.findLayout(raid.toCode());
-
-				if (layout == null)
-				{
-					log.debug("Could not find layout match");
-					return;
-				}
-
-				raid.updateLayout(layout);
-				RotationSolver.solve(raid.getCombatRooms());
-				overlay.setScoutOverlayShown(true);
-			}
-			else if (!config.scoutOverlayAtBank())
-			{
-				overlay.setScoutOverlayShown(false);
-				raid = null;
-			}
-		}
-
-		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1)
-		{
-			overlay.setScoutOverlayShown(false);
-			raid = null;
-		}
+		checkRaidPresence(false);
 	}
 
 	@Subscribe
@@ -278,7 +217,7 @@ public class RaidsPlugin extends Plugin
 
 			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
 			{
-				timer = new RaidsTimer(getRaidsIcon(), this, Instant.now());
+				timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
 				infoBoxManager.addInfoBox(timer);
 			}
 
@@ -328,23 +267,77 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
+	private void checkRaidPresence(boolean force)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		boolean setting = client.getVar(Varbits.IN_RAID) == 1;
+
+		if (force || inRaidChambers != setting)
+		{
+			inRaidChambers = setting;
+			updateInfoBoxState();
+
+			if (inRaidChambers)
+			{
+				raid = buildRaid();
+
+				if (raid == null)
+				{
+					log.debug("Failed to build raid");
+					return;
+				}
+
+				Layout layout = layoutSolver.findLayout(raid.toCode());
+
+				if (layout == null)
+				{
+					log.debug("Could not find layout match");
+					return;
+				}
+
+				raid.updateLayout(layout);
+				RotationSolver.solve(raid.getCombatRooms());
+				overlay.setScoutOverlayShown(true);
+			}
+			else if (!config.scoutOverlayAtBank())
+			{
+				overlay.setScoutOverlayShown(false);
+			}
+		}
+
+		// If we left party raid was started or we left raid
+		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 && (!inRaidChambers || !config.scoutOverlayInRaid()))
+		{
+			overlay.setScoutOverlayShown(false);
+		}
+	}
+
 	private void updateInfoBoxState()
 	{
-		if (timer != null)
+		if (timer == null)
 		{
-			if (inRaidChambers && config.raidsTimer())
+			return;
+		}
+
+		if (inRaidChambers && config.raidsTimer())
+		{
+			if (!infoBoxManager.getInfoBoxes().contains(timer))
 			{
 				infoBoxManager.addInfoBox(timer);
 			}
-			else
-			{
-				infoBoxManager.removeInfoBox(timer);
-			}
+		}
+		else
+		{
+			infoBoxManager.removeInfoBox(timer);
+		}
 
-			if (!inRaidChambers)
-			{
-				timer = null;
-			}
+		if (!inRaidChambers)
+		{
+			timer = null;
 		}
 	}
 
@@ -379,16 +372,7 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	private void cacheColors()
-	{
-		chatMessageManager.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.BLACK, false), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.NORMAL, Color.WHITE, true), ChatMessageType.CLANCHAT_INFO)
-				.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, true), ChatMessageType.CLANCHAT_INFO)
-				.refreshAll();
-	}
-
-	public int getRotationMatches()
+	int getRotationMatches()
 	{
 		String rotation = raid.getRotationString().toLowerCase();
 		String[] bosses = rotation.split(SPLIT_REGEX);
@@ -427,7 +411,7 @@ public class RaidsPlugin extends Plugin
 
 	private Point findLobbyBase()
 	{
-		Tile[][] tiles = client.getRegion().getTiles()[LOBBY_PLANE];
+		Tile[][] tiles = client.getScene().getTiles()[LOBBY_PLANE];
 
 		for (int x = 0; x < SCENE_SIZE; x++)
 		{
@@ -438,9 +422,9 @@ public class RaidsPlugin extends Plugin
 					continue;
 				}
 
-				if (tiles[x][y].getWallObject().getId() == ObjectID.NULL_12231)
+				if (tiles[x][y].getWallObject().getId() == NullObjectID.NULL_12231)
 				{
-					return tiles[x][y].getRegionLocation();
+					return tiles[x][y].getSceneLocation();
 				}
 			}
 		}
@@ -464,7 +448,7 @@ public class RaidsPlugin extends Plugin
 
 		for (int plane = 3; plane > 1; plane--)
 		{
-			tiles = client.getRegion().getTiles()[plane];
+			tiles = client.getScene().getTiles()[plane];
 
 			if (tiles[gridBase.getX() + RaidRoom.ROOM_MAX_SIZE][gridBase.getY()] == null)
 			{
@@ -527,7 +511,7 @@ public class RaidsPlugin extends Plugin
 	private RaidRoom determineRoom(Tile base)
 	{
 		RaidRoom room = new RaidRoom(base, RaidRoom.Type.EMPTY);
-		int chunkData = client.getInstanceTemplateChunks()[base.getPlane()][(base.getRegionLocation().getX()) / 8][base.getRegionLocation().getY() / 8];
+		int chunkData = client.getInstanceTemplateChunks()[base.getPlane()][(base.getSceneLocation().getX()) / 8][base.getSceneLocation().getY() / 8];
 		InstanceTemplates template = InstanceTemplates.findMatch(chunkData);
 
 		if (template == null)
@@ -618,26 +602,5 @@ public class RaidsPlugin extends Plugin
 		}
 
 		return room;
-	}
-
-	private BufferedImage getRaidsIcon()
-	{
-		if (raidsIcon != null)
-		{
-			return raidsIcon;
-		}
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				raidsIcon = ImageIO.read(RaidsPlugin.class.getResourceAsStream("raids_icon.png"));
-			}
-		}
-		catch (IOException ex)
-		{
-			log.warn("Unable to load image", ex);
-		}
-
-		return raidsIcon;
 	}
 }

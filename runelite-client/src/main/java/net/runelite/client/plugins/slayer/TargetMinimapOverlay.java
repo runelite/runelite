@@ -55,6 +55,11 @@ public class TargetMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (!config.highlightTargets())
+		{
+			return null;
+		}
+
 		List<NPC> targets = plugin.getHighlightedTargets();
 		for (NPC target : targets)
 		{

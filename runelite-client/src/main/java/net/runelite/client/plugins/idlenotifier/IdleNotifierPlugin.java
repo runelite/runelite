@@ -25,33 +25,52 @@
  */
 package net.runelite.client.plugins.idlenotifier;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
 import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.GraphicID;
+import net.runelite.api.Hitsplat;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Idle Notifier"
+	name = "Idle Notifier",
+	description = "Send a notification when going idle, or when HP/Prayer reaches a threshold",
+	tags = {"health", "hitpoints", "notifications", "prayer"}
 )
 public class IdleNotifierPlugin extends Plugin
 {
-	private static final int LOGOUT_WARNING_AFTER_TICKS = 14000; // 4 minutes and 40 seconds
+	// This must be more than 500 client ticks (10 seconds) before you get AFK kicked
+	private static final int LOGOUT_WARNING_CLIENT_TICKS = ((4 * 60) + 40) * 50;// 4 minutes and 40 seconds
+	private static final int COMBAT_WARNING_MILLIS = 19 * 60 * 1000; // 19 minutes
+	private static final int COMBAT_WARNING_CLIENT_TICKS = COMBAT_WARNING_MILLIS / 20;
+
+	private static final int HIGHEST_MONSTER_ATTACK_SPEED = 8; // Except Scarab Mage, but they are with other monsters
 	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
+
+	private static final String FISHING_SPOT = "Fishing spot";
 
 	@Inject
 	private Notifier notifier;
@@ -62,17 +81,20 @@ public class IdleNotifierPlugin extends Plugin
 	@Inject
 	private IdleNotifierConfig config;
 
-	private Actor lastOpponent;
 	private Instant lastAnimating;
+	private int lastAnimation = AnimationID.IDLE;
 	private Instant lastInteracting;
-	private boolean notifyIdle = false;
+	private Actor lastInteract;
 	private boolean notifyHitpoints = true;
 	private boolean notifyPrayer = true;
+	private boolean notifyOxygen = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
-
+	private int lastSpecEnergy = 1000;
+	private int lastCombatCountdown = 0;
 	private Instant sixHourWarningTime;
 	private boolean ready;
+	private boolean lastInteractWasCombat;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -94,6 +116,7 @@ public class IdleNotifierPlugin extends Plugin
 			return;
 		}
 
+		int graphic = localPlayer.getGraphic();
 		int animation = localPlayer.getAnimation();
 		switch (animation)
 		{
@@ -111,7 +134,8 @@ public class IdleNotifierPlugin extends Plugin
 			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
-			/* Crafting(Gem Cutting, Glassblowing, Spinning) */
+			case COOKING_WINE:
+			/* Crafting(Gem Cutting, Glassblowing, Spinning, Battlestaves) */
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:
 			case GEM_CUTTING_REDTOPAZ:
@@ -121,6 +145,8 @@ public class IdleNotifierPlugin extends Plugin
 			case GEM_CUTTING_DIAMOND:
 			case CRAFTING_GLASSBLOWING:
 			case CRAFTING_SPINNING:
+			case CRAFTING_BATTLESTAVES:
+			case CRAFTING_LEATHER:
 			/* Fletching(Cutting, Stringing) */
 			case FLETCHING_BOW_CUTTING:
 			case FLETCHING_STRING_NORMAL_SHORTBOW:
@@ -140,18 +166,8 @@ public class IdleNotifierPlugin extends Plugin
 			case SMITHING_SMELTING:
 			case SMITHING_CANNONBALL:
 			/* Fishing */
-			case FISHING_NET:
-			case FISHING_BIG_NET:
-			case FISHING_HARPOON:
-			case FISHING_BARBTAIL_HARPOON:
-			case FISHING_DRAGON_HARPOON:
-			case FISHING_CAGE:
-			case FISHING_POLE_CAST:
-			case FISHING_INFERNAL_HARPOON:
-			case FISHING_OILY_ROD:
-			case FISHING_KARAMBWAN:
 			case FISHING_CRUSHING_INFERNAL_EELS:
-			case FISHING_BAREHAND:
+			case FISHING_CUTTING_SACRED_EELS:
 			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
@@ -164,6 +180,8 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_DRAGON_PICKAXE_ORN:
 			case MINING_INFERNAL_PICKAXE:
 			case MINING_3A_PICKAXE:
+			case DENSE_ESSENCE_CHIPPING:
+			case DENSE_ESSENCE_CHISELING:
 			/* Mining(Motherlode) */
 			case MINING_MOTHERLODE_BRONZE:
 			case MINING_MOTHERLODE_IRON:
@@ -181,9 +199,84 @@ public class IdleNotifierPlugin extends Plugin
 			case HERBLORE_MAKE_TAR:
 			/* Magic */
 			case MAGIC_CHARGING_ORBS:
+			case MAGIC_LUNAR_STRING_JEWELRY:
+			case MAGIC_MAKE_TABLET:
+			/* Prayer */
+			case USING_GILDED_ALTAR:
+			/* Farming */
+			case FARMING_MIX_ULTRACOMPOST:
+			/* Misc */
+			case SAND_COLLECTION:
 				resetTimers();
-				notifyIdle = true;
+				lastAnimation = animation;
+				lastAnimating = Instant.now();
 				break;
+			case MAGIC_LUNAR_SHARED:
+				if (graphic == GraphicID.BAKE_PIE)
+				{
+					resetTimers();
+					lastAnimation = animation;
+					lastAnimating = Instant.now();
+					break;
+				}
+			case IDLE:
+				lastAnimating = Instant.now();
+				break;
+			default:
+				// On unknown animation simply assume the animation is invalid and dont throw notification
+				lastAnimation = IDLE;
+				lastAnimating = null;
+		}
+	}
+
+	@Subscribe
+	public void onInteractingChanged(InteractingChanged event)
+	{
+		final Actor source = event.getSource();
+		if (source != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		final Actor target = event.getTarget();
+
+		// Reset last interact
+		if (target != null)
+		{
+			lastInteract = null;
+		}
+		else
+		{
+			lastInteracting = Instant.now();
+		}
+
+		final boolean isNpc = target instanceof NPC;
+
+		// If this is not NPC, do not process as we are not interested in other entities
+		if (!isNpc)
+		{
+			return;
+		}
+
+		final NPC npc = (NPC) target;
+		final NPCComposition npcComposition = npc.getComposition();
+		final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
+
+		if (npcMenuActions.contains("Attack"))
+		{
+			// Player is most likely in combat with attack-able NPC
+			resetTimers();
+			lastInteract = target;
+			lastInteracting = Instant.now();
+			lastInteractWasCombat = true;
+		}
+		else if (target.getName() != null && target.getName().contains(FISHING_SPOT))
+		{
+			// Player is fishing
+			resetTimers();
+			lastInteract = target;
+			lastInteracting = Instant.now();
+			lastInteractWasCombat = false;
 		}
 	}
 
@@ -196,6 +289,9 @@ public class IdleNotifierPlugin extends Plugin
 
 		switch (state)
 		{
+			case LOGIN_SCREEN:
+				resetTimers();
+				break;
 			case LOGGING_IN:
 			case HOPPING:
 			case CONNECTION_LOST:
@@ -206,8 +302,27 @@ public class IdleNotifierPlugin extends Plugin
 				{
 					sixHourWarningTime = Instant.now().plus(SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION);
 					ready = false;
+					resetTimers();
 				}
+
 				break;
+		}
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied event)
+	{
+		if (event.getActor() != client.getLocalPlayer())
+		{
+			return;
+		}
+
+		final Hitsplat hitsplat = event.getHitsplat();
+
+		if (hitsplat.getHitsplatType() == Hitsplat.HitsplatType.DAMAGE
+			|| hitsplat.getHitsplatType() == Hitsplat.HitsplatType.BLOCK)
+		{
+			lastCombatCountdown = HIGHEST_MONSTER_ATTACK_SPEED;
 		}
 	}
 
@@ -216,13 +331,19 @@ public class IdleNotifierPlugin extends Plugin
 	{
 		final Player local = client.getLocalPlayer();
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
+		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
-		if (client.getGameState() != GameState.LOGGED_IN || local == null)
+		if (client.getGameState() != GameState.LOGGED_IN
+			|| local == null
+			// If user has clicked in the last second then they're not idle so don't send idle notification
+			|| System.currentTimeMillis() - client.getMouseLastPressedMillis() < 1000
+			|| client.getKeyboardIdleTicks() < 10)
 		{
+			resetTimers();
 			return;
 		}
 
-		if (checkIdleLogout())
+		if (config.logoutIdle() && checkIdleLogout())
 		{
 			notifier.notify("[" + local.getName() + "] is about to log out from idling too long!");
 		}
@@ -237,9 +358,16 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("[" + local.getName() + "] is now idle!");
 		}
 
-		if (config.combatIdle() && checkOutOfCombat(waitDuration, local))
+		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))
 		{
-			notifier.notify("[" + local.getName() + "] is now out of combat!");
+			if (lastInteractWasCombat)
+			{
+				notifier.notify("[" + local.getName() + "] is now out of combat!");
+			}
+			else
+			{
+				notifier.notify("[" + local.getName() + "] is now idle!");
+			}
 		}
 
 		if (checkLowHitpoints())
@@ -251,6 +379,56 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			notifier.notify("[" + local.getName() + "] has low prayer!");
 		}
+
+		if (checkLowOxygen())
+		{
+			notifier.notify("[" + local.getName() + "] has low oxygen!");
+		}
+
+		if (checkFullSpecEnergy())
+		{
+			notifier.notify("[" + local.getName() + "] has restored spec energy!");;
+		}
+	}
+
+	private boolean checkFullSpecEnergy()
+	{
+		int currentSpecEnergy = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT);
+
+		int threshold = config.getSpecEnergyThreshold() * 10;
+		if (threshold == 0)
+		{
+			lastSpecEnergy = currentSpecEnergy;
+			return false;
+		}
+
+		// Check if we have regenerated over the threshold, and that the
+		// regen was small enough.
+		boolean notify = lastSpecEnergy < threshold && currentSpecEnergy >= threshold
+			&& currentSpecEnergy - lastSpecEnergy <= 100;
+		lastSpecEnergy = currentSpecEnergy;
+		return notify;
+	}
+
+	private boolean checkLowOxygen()
+	{
+		if (config.getOxygenThreshold() == 0)
+		{
+			return false;
+		}
+		if (config.getOxygenThreshold() >= client.getVar(Varbits.OXYGEN_LEVEL) * 0.1)
+		{
+			if (!notifyOxygen)
+			{
+				notifyOxygen = true;
+				return true;
+			}
+		}
+		else
+		{
+			notifyOxygen = false;
+		}
+		return false;
 	}
 
 	private boolean checkLowHitpoints()
@@ -303,32 +481,29 @@ public class IdleNotifierPlugin extends Plugin
 		return false;
 	}
 
-	private boolean checkOutOfCombat(Duration waitDuration, Player local)
+	private boolean checkInteractionIdle(Duration waitDuration, Player local)
 	{
-		Actor opponent = local.getInteracting();
-		boolean isPlayer = opponent instanceof Player;
-
-		if (opponent != null
-			&& !isPlayer
-			&& opponent.getCombatLevel() > 0)
+		if (lastInteract == null)
 		{
-			resetTimers();
-			lastOpponent = opponent;
-		}
-		else if (opponent == null)
-		{
-			lastOpponent = null;
+			return false;
 		}
 
-		if (lastOpponent != null && opponent == lastOpponent)
+		final Actor interact = local.getInteracting();
+
+		if (interact == null)
+		{
+			if (lastInteracting != null
+				&& Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0
+				&& lastCombatCountdown == 0)
+			{
+				lastInteract = null;
+				lastInteracting = null;
+				return true;
+			}
+		}
+		else
 		{
 			lastInteracting = Instant.now();
-		}
-
-		if (lastInteracting != null && Instant.now().compareTo(lastInteracting.plus(waitDuration)) >= 0)
-		{
-			lastInteracting = null;
-			return true;
 		}
 
 		return false;
@@ -336,21 +511,40 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkIdleLogout()
 	{
-		if (client.getMouseIdleTicks() > LOGOUT_WARNING_AFTER_TICKS
-			&& client.getKeyboardIdleTicks() > LOGOUT_WARNING_AFTER_TICKS)
+		// Check clientside AFK first, because this is required for the server to disconnect you for being first
+		int idleClientTicks = client.getKeyboardIdleTicks();
+		if (client.getMouseIdleTicks() < idleClientTicks)
 		{
-			if (notifyIdleLogout)
-			{
-				notifyIdleLogout = false;
-				return true;
-			}
-		}
-		else
-		{
-			notifyIdleLogout = true;
+			idleClientTicks = client.getMouseIdleTicks();
 		}
 
-		return false;
+		if (idleClientTicks < LOGOUT_WARNING_CLIENT_TICKS)
+		{
+			notifyIdleLogout = true;
+			return false;
+		}
+
+		// If we are not receiving hitsplats then we can be afk kicked
+		if (lastCombatCountdown <= 0)
+		{
+			boolean warn = notifyIdleLogout;
+			notifyIdleLogout = false;
+			return warn;
+		}
+
+		// We are in combat, so now we have to check for the timer that knocks you out of combat
+		// I think there are other conditions that I don't know about, because during testing I just didn't
+		// get removed from combat sometimes.
+		final long lastInteractionAgo = System.currentTimeMillis() - client.getMouseLastPressedMillis();
+		if (lastInteractionAgo < COMBAT_WARNING_MILLIS || client.getKeyboardIdleTicks() < COMBAT_WARNING_CLIENT_TICKS)
+		{
+			notifyIdleLogout = true;
+			return false;
+		}
+
+		boolean warn = notifyIdleLogout;
+		notifyIdleLogout = false;
+		return warn;
 	}
 
 	private boolean check6hrLogout()
@@ -378,21 +572,25 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean checkAnimationIdle(Duration waitDuration, Player local)
 	{
-		if (notifyIdle)
+		if (lastAnimation == IDLE)
 		{
-			if (lastAnimating != null)
+			return false;
+		}
+
+		final int animation = local.getAnimation();
+
+		if (animation == IDLE)
+		{
+			if (lastAnimating != null && Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
 			{
-				if (Instant.now().compareTo(lastAnimating.plus(waitDuration)) >= 0)
-				{
-					notifyIdle = false;
-					lastAnimating = null;
-					return true;
-				}
+				lastAnimation = IDLE;
+				lastAnimating = null;
+				return true;
 			}
-			else if (local.getAnimation() == IDLE)
-			{
-				lastAnimating = Instant.now();
-			}
+		}
+		else
+		{
+			lastAnimating = Instant.now();
 		}
 
 		return false;
@@ -400,12 +598,20 @@ public class IdleNotifierPlugin extends Plugin
 
 	private void resetTimers()
 	{
-		// Reset animation idle timer
-		notifyIdle = false;
-		lastAnimating = null;
+		final Player local = client.getLocalPlayer();
 
-		// Reset combat idle timer
-		lastOpponent = null;
+		// Reset animation idle timer
+		lastAnimating = null;
+		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getAnimation() != lastAnimation)
+		{
+			lastAnimation = IDLE;
+		}
+
+		// Reset interaction idle timer
 		lastInteracting = null;
+		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
+		{
+			lastInteract = null;
+		}
 	}
 }

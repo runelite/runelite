@@ -28,19 +28,49 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "grandexchange",
-	name = "Grand Exchange",
-	description = "Configuration for the Grand Exchange"
-)
+@ConfigGroup("grandexchange")
 public interface GrandExchangeConfig extends Config
 {
 	@ConfigItem(
+		position = 1,
 		keyName = "quickLookup",
 		name = "Hotkey lookup (Alt + Left click)",
 		description = "Configures whether to enable the hotkey lookup for ge searches"
 	)
 	default boolean quickLookup()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "enableNotifications",
+		name = "Enable Notifications",
+		description = "Configures whether to enable notifications when an offer updates"
+	)
+	default boolean enableNotifications()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "enableOsbPrices",
+		name = "Enable OSB actively traded prices",
+		description = "Shows the OSBuddy actively traded price at the GE"
+	)
+	default boolean enableOsbPrices()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "enableGeLimits",
+		name = "Enable GE Limits on GE",
+		description = "Shows the GE Limits on the GE"
+	)
+	default boolean enableGELimits()
 	{
 		return true;
 	}

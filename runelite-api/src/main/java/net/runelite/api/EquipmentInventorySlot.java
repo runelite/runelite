@@ -24,6 +24,16 @@
  */
 package net.runelite.api;
 
+/**
+ * An enumeration of equipment slots in the inventory {@link ItemContainer}.
+ * <p>
+ * These values are intended for use with the local players equipment
+ * {@link ItemContainer} corresponding. For obtaining information about equipment
+ * in the {@link PlayerComposition}, use {@link net.runelite.api.kit.KitType}.
+ *
+ * @see Client#getItemContainer(InventoryID)
+ * @see InventoryID#EQUIPMENT
+ */
 public enum EquipmentInventorySlot
 {
 	HEAD(0),
@@ -35,7 +45,8 @@ public enum EquipmentInventorySlot
 	LEGS(7),
 	GLOVES(9),
 	BOOTS(10),
-	RING(12);
+	RING(12),
+	AMMO(13);
 
 	private final int slotIdx;
 
@@ -44,6 +55,12 @@ public enum EquipmentInventorySlot
 		this.slotIdx = slotIdx;
 	}
 
+	/**
+	 * Gets the index into the item array obtained from
+	 * {@link ItemContainer#getItems()}.
+	 *
+	 * @return the raw index
+	 */
 	public int getSlotIdx()
 	{
 		return slotIdx;

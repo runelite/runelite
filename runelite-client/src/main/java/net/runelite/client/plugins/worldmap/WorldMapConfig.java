@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = WorldMapPlugin.CONFIG_KEY,
-	name = "World Map",
-	description = "Various World Map enhancements"
-)
+@ConfigGroup(WorldMapPlugin.CONFIG_KEY)
 public interface WorldMapConfig extends Config
 {
 	@ConfigItem(
@@ -82,8 +78,8 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_NORMAL_TELEPORT_ICON,
-		name = "Show standard spellbook destionations",
-		description = "Show icons at the destinations for teleports in the standard spellbook",
+		name = "Show Standard Spellbook destinations",
+		description = "Show icons at the destinations for teleports in the Standard Spellbook",
 		position = 5
 	)
 	default boolean normalTeleportIcon()
@@ -92,10 +88,21 @@ public interface WorldMapConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = WorldMapPlugin.CONFIG_KEY_ANCIENT_TELEPORT_ICON,
-		name = "Show ancient magicks destionations",
-		description = "Show icons at the destinations for teleports in the ancient spellbook",
+		keyName = WorldMapPlugin.CONFIG_KEY_MINIGAME_TOOLTIP,
+		name = "Show minigame name in tooltip",
+		description = "Display the name of the minigame in the icon tooltip",
 		position = 6
+	)
+	default boolean minigameTooltip()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_ANCIENT_TELEPORT_ICON,
+		name = "Show Ancient Magicks destinations",
+		description = "Show icons at the destinations for teleports in the Ancient Spellbook",
+		position = 7
 	)
 	default boolean ancientTeleportIcon()
 	{
@@ -104,9 +111,9 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_LUNAR_TELEPORT_ICON,
-		name = "Show lunar spellbook destionations",
-		description = "Show icons at the destinations for teleports in the lunar spellbook",
-		position = 7
+		name = "Show Lunar Spellbook destinations",
+		description = "Show icons at the destinations for teleports in the Lunar Spellbook",
+		position = 8
 	)
 	default boolean lunarTeleportIcon()
 	{
@@ -115,9 +122,9 @@ public interface WorldMapConfig extends Config
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_ARCEUUS_TELEPORT_ICON,
-		name = "Show arceuus spellbook destionations",
-		description = "Show icons at the destinations for teleports in the arceuus spellbook",
-		position = 8
+		name = "Show Arceuus Spellbook destinations",
+		description = "Show icons at the destinations for teleports in the Arceuus Spellbook",
+		position = 9
 	)
 	default boolean arceuusTeleportIcon()
 	{
@@ -128,9 +135,42 @@ public interface WorldMapConfig extends Config
 		keyName = WorldMapPlugin.CONFIG_KEY_JEWELLERY_TELEPORT_ICON,
 		name = "Show jewellery teleport locations",
 		description = "Show icons at the destinations for teleports from jewellery",
-		position = 9
+		position = 10
 	)
 	default boolean jewelleryTeleportIcon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_SCROLL_TELEPORT_ICON,
+		name = "Show teleport scroll locations",
+		description = "Show icons at the destinations for teleports from scrolls",
+		position = 11
+	)
+	default boolean scrollTeleportIcon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_MISC_TELEPORT_ICON,
+		name = "Show misc teleport locations",
+		description = "Show icons at the destinations for miscellaneous teleport items",
+		position = 12
+	)
+	default boolean miscellaneousTeleportIcon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_QUEST_START_TOOLTIPS,
+		name = "Show quest names",
+		description = "Indicates the names of quests and highlights incomplete ones",
+		position = 13
+	)
+	default boolean questStartTooltips()
 	{
 		return true;
 	}

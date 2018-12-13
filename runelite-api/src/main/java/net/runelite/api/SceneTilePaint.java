@@ -24,7 +24,34 @@
  */
 package net.runelite.api;
 
+/**
+ * Represents the paint of a tile in the current scene.
+ */
 public interface SceneTilePaint
 {
+	/**
+	 * Gets the RGB value of the paint.
+	 *
+	 * @return the paint RGB
+	 */
 	int getRBG();
+
+	int getSwColor();
+
+	int getSeColor();
+
+	int getNwColor();
+
+	int getNeColor();
+
+	int getTexture();
+
+	int getBufferOffset();
+	void setBufferOffset(int bufferOffset);
+
+	int getUvBufferOffset();
+	void setUvBufferOffset(int bufferOffset);
+
+	int getBufferLen();
+	void setBufferLen(int bufferLen);
 }

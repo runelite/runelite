@@ -26,7 +26,6 @@ package net.runelite.client.plugins.chathistory;
 
 import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.Sets;
-import com.google.common.eventbus.Subscribe;
 import java.util.Queue;
 import java.util.Set;
 import javax.inject.Inject;
@@ -35,15 +34,22 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
-@PluginDescriptor(name = "Chat History")
+@PluginDescriptor(
+	name = "Chat History",
+	description = "Retain your chat history when logging in/out or world hopping"
+)
 public class ChatHistoryPlugin extends Plugin
 {
-	private static final String WELCOME_MESSAGE = "Welcome to RuneScape.";
+	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape.";
+	private static final String CLEAR_HISTORY = "Clear history";
+	private static final String CLEAR_PRIVATE = "<col=ffff00>Private:";
 	private static final Set<ChatMessageType> ALLOWED_HISTORY = Sets.newHashSet(
 		ChatMessageType.PUBLIC,
+		ChatMessageType.PUBLIC_MOD,
 		ChatMessageType.CLANCHAT,
 		ChatMessageType.PRIVATE_MESSAGE_RECEIVED,
 		ChatMessageType.PRIVATE_MESSAGE_SENT,
@@ -106,10 +112,19 @@ public class ChatHistoryPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuOption().contains("Clear history"))
+		String menuOption = event.getMenuOption();
+
+		if (menuOption.contains(CLEAR_HISTORY))
 		{
-			messageQueue.removeIf(e -> e.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED ||
+			if (menuOption.startsWith(CLEAR_PRIVATE))
+			{
+				messageQueue.removeIf(e -> e.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED ||
 					e.getType() == ChatMessageType.PRIVATE_MESSAGE_SENT || e.getType() == ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
+			}
+			else
+			{
+				messageQueue.removeIf(e -> e.getType() == ChatMessageType.PUBLIC || e.getType() == ChatMessageType.PUBLIC_MOD);
+			}
 		}
 	}
 

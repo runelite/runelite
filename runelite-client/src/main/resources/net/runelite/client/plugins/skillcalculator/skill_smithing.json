@@ -320,15 +320,9 @@
     },
     {
       "level": 30,
-      "icon": 2353,
-      "name": "Steel Bar (Blast Furnace)",
-      "xp": 17.5
-    },
-    {
-      "level": 30,
       "icon": 1207,
       "name": "Steel Dagger",
-      "xp": 27
+      "xp": 37.5
     },
     {
       "level": 30,
@@ -352,13 +346,13 @@
       "level": 31,
       "icon": 1353,
       "name": "Steel Axe",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 32,
       "icon": 1424,
       "name": "Steel Mace",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 33,
@@ -370,31 +364,31 @@
       "level": 33,
       "icon": 1141,
       "name": "Steel Med Helm",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 33,
       "icon": 9378,
       "name": "Steel Bolts (Unf)",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 34,
       "icon": 821,
       "name": "Steel Dart Tip",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 34,
       "icon": 1539,
       "name": "Steel Nails",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 34,
       "icon": 1281,
       "name": "Steel Sword",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 35,
@@ -412,19 +406,19 @@
       "level": 35,
       "icon": 41,
       "name": "Steel Arrowtips",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 36,
       "icon": 9425,
       "name": "Steel Limbs",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 36,
       "icon": 2370,
       "name": "Steel Studs",
-      "xp": 37
+      "xp": 37.5
     },
     {
       "level": 36,
@@ -460,13 +454,13 @@
       "level": 39,
       "icon": 1339,
       "name": "Steel Warhammer",
-      "xp": 112
+      "xp": 112.5
     },
     {
       "level": 40,
       "icon": 1365,
       "name": "Steel Battleaxe",
-      "xp": 112
+      "xp": 112.5
     },
     {
       "level": 40,
@@ -484,13 +478,13 @@
       "level": 41,
       "icon": 1105,
       "name": "Steel Chainbody",
-      "xp": 112
+      "xp": 112.5
     },
     {
       "level": 42,
       "icon": 1193,
       "name": "Steel Kiteshield",
-      "xp": 112
+      "xp": 112.5
     },
     {
       "level": 43,
@@ -502,19 +496,19 @@
       "level": 44,
       "icon": 1311,
       "name": "Steel 2h Sword",
-      "xp": 112
+      "xp": 112.5
     },
     {
       "level": 46,
       "icon": 1069,
       "name": "Steel Platelegs",
-      "xp": 112
+      "xp": 112.5
     },
     {
       "level": 46,
       "icon": 1083,
       "name": "Steel Plateskirt",
-      "xp": 112
+      "xp": 112.5
     },
     {
       "level": 48,
@@ -533,12 +527,6 @@
       "icon": 1209,
       "name": "Mithril Dagger",
       "xp": 50
-    },
-    {
-      "level": 50,
-      "icon": 2359,
-      "name": "Mithril Bar (Blast Furnace)",
-      "xp": 30
     },
     {
       "level": 50,
@@ -704,12 +692,6 @@
     },
     {
       "level": 70,
-      "icon": 2361,
-      "name": "Adamantite Bar (Blast Furnace)",
-      "xp": 37.5
-    },
-    {
-      "level": 70,
       "icon": 1211,
       "name": "Adamant Dagger",
       "xp": 62.5
@@ -854,12 +836,6 @@
     },
     {
       "level": 85,
-      "icon": 2363,
-      "name": "Runite Bar (Blast Furnace)",
-      "xp": 50
-    },
-    {
-      "level": 85,
       "icon": 1213,
       "name": "Rune Dagger",
       "xp": 75
@@ -904,7 +880,7 @@
       "level": 88,
       "icon": 1123,
       "name": "Adamant Platebody",
-      "xp": 312
+      "xp": 312.5
     },
     {
       "level": 89,

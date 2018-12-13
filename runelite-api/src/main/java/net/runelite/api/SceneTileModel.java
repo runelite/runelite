@@ -24,13 +24,65 @@
  */
 package net.runelite.api;
 
+/**
+ * Represents the model of a tile in the current scene.
+ */
 public interface SceneTileModel
 {
+	/**
+	 * Gets the underlay color of the tile.
+	 *
+	 * @return the underlay color
+	 */
 	int getModelUnderlay();
 
+	/**
+	 * Gets the overlay color of the tile.
+	 *
+	 * @return the overlay color
+	 */
 	int getModelOverlay();
 
+	/**
+	 * Gets the shape mask type.
+	 *
+	 * @return the shape mask
+	 */
 	int getShape();
 
+	/**
+	 * Gets the rotation of the tile.
+	 *
+	 * @return the rotation
+	 */
 	int getRotation();
+
+	int[] getFaceX();
+
+	int[] getFaceY();
+
+	int[] getFaceZ();
+
+	int[] getVertexX();
+
+	int[] getVertexY();
+
+	int[] getVertexZ();
+
+	int[] getTriangleColorA();
+
+	int[] getTriangleColorB();
+
+	int[] getTriangleColorC();
+
+	int[] getTriangleTextureId();
+
+	int getBufferOffset();
+	void setBufferOffset(int bufferOffset);
+
+	int getUvBufferOffset();
+	void setUvBufferOffset(int bufferOffset);
+
+	int getBufferLen();
+	void setBufferLen(int bufferLen);
 }

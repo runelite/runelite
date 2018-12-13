@@ -29,19 +29,32 @@ import net.runelite.mapping.Import;
 
 public interface RSWidget extends Widget
 {
-	@Import("dynamicValues")
-	int[][] getDynamicValues();
-
 	@Import("children")
 	@Override
 	RSWidget[] getChildren();
+
+	@Import("children")
+	@Override
+	void setChildren(Widget[] children);
 
 	@Import("id")
 	@Override
 	int getId();
 
+	void setRenderParentId(int parentId);
+
+	void setRenderX(int x);
+
+	void setRenderY(int y);
+
+	@Import("id")
+	void setId(int id);
+
 	@Import("parentId")
 	int getRSParentId();
+
+	@Import("parentId")
+	void setParentId(int id);
 
 	@Import("clickMask")
 	int getClickMask();
@@ -72,10 +85,10 @@ public interface RSWidget extends Widget
 	@Import("text")
 	String getRSText();
 
-	@Import("opBase")
+	@Import("name")
 	String getRSName();
 
-	@Import("opBase")
+	@Import("name")
 	void setRSName(String name);
 
 	@Import("text")
@@ -91,7 +104,12 @@ public interface RSWidget extends Widget
 	void setTextColor(int textColor);
 
 	@Import("opacity")
+	@Override
 	int getOpacity();
+
+	@Import("opacity")
+	@Override
+	void setOpacity(int opacity);
 
 	@Import("relativeX")
 	@Override
@@ -135,6 +153,9 @@ public interface RSWidget extends Widget
 	@Import("index")
 	int getIndex();
 
+	@Import("index")
+	void setIndex(int index);
+
 	@Import("rotationX")
 	int getRotationX();
 
@@ -176,6 +197,22 @@ public interface RSWidget extends Widget
 	@Override
 	void setScrollY(int scrollY);
 
+	@Import("scrollWidth")
+	@Override
+	int getScrollWidth();
+
+	@Import("scrollWidth")
+	@Override
+	void setScrollWidth(int width);
+
+	@Import("scrollHeight")
+	@Override
+	int getScrollHeight();
+
+	@Import("scrollHeight")
+	@Override
+	void setScrollHeight(int height);
+
 	@Import("spriteId")
 	@Override
 	int getSpriteId();
@@ -184,16 +221,29 @@ public interface RSWidget extends Widget
 	@Override
 	void setSpriteId(int spriteId);
 
-	@Import("borderThickness")
-	int getBorderThickness();
+	@Import("borderType")
+	@Override
+	int getBorderType();
+
+	@Import("borderType")
+	@Override
+	void setBorderType(int type);
 
 	@Import("itemId")
 	@Override
 	int getItemId();
 
+	@Import("itemId")
+	@Override
+	void setItemId(int itemId);
+
 	@Import("itemQuantity")
 	@Override
 	int getItemQuantity();
+
+	@Import("itemQuantity")
+	@Override
+	void setItemQuantity(int quantity);
 
 	@Import("originalX")
 	@Override
@@ -227,21 +277,162 @@ public interface RSWidget extends Widget
 	@Override
 	void setOriginalWidth(int originalWidth);
 
-	@Import("paddingX")
-	@Override
-	int getPaddingX();
+	@Import("xPitch")
+	int getXPitch();
 
-	@Import("paddingX")
-	@Override
-	void setPaddingX(int paddingX);
-
-	@Import("paddingY")
-	@Override
-	int getPaddingY();
-
-	@Import("paddingY")
-	@Override
-	void setPaddingY(int paddingY);
+	@Import("yPitch")
+	int getYPitch();
 
 	void broadcastHidden(boolean hidden);
+
+	@Import("onOpListener")
+	@Override
+	void setOnOpListener(Object... args);
+
+	@Import("setAction")
+	@Override
+	void setAction(int idx, String action);
+
+	@Import("isIf3")
+	@Override
+	boolean isIf3();
+
+	@Import("isIf3")
+	void setIsIf3(boolean isIf3);
+
+	@Import("hasListener")
+	@Override
+	boolean hasListener();
+
+	@Import("hasListener")
+	@Override
+	void setHasListener(boolean hasListener);
+
+	@Import("onKeyListener")
+	@Override
+	Object[] getOnKeyListener();
+
+	@Import("onLoadListener")
+	@Override
+	Object[] getOnLoadListener();
+
+	@Import("onDialogAbortListener")
+	@Override
+	void setOnDialogAbortListener(Object... args);
+
+	@Import("onKeyListener")
+	@Override
+	void setOnKeyListener(Object... args);
+
+	@Import("onMouseOverListener")
+	@Override
+	void setOnMouseOverListener(Object... args);
+
+	@Import("onMouseLeaveListener")
+	@Override
+	void setOnMouseLeaveListener(Object... args);
+
+	@Import("onTimerListener")
+	@Override
+	void setOnTimerListener(Object... args);
+
+	@Import("fontId")
+	@Override
+	int getFontId();
+
+	@Import("fontId")
+	@Override
+	void setFontId(int id);
+
+	@Import("textShadowed")
+	@Override
+	boolean getTextShadowed();
+
+	@Import("textShadowed")
+	@Override
+	void setTextShadowed(boolean shadowed);
+
+	@Import("dragDeadZone")
+	@Override
+	int getDragDeadZone();
+
+	@Import("dragDeadZone")
+	@Override
+	void setDragDeadZone(int deadZone);
+
+	@Import("dragDeadTime")
+	@Override
+	int getDragDeadTime();
+
+	@Import("dragDeadTime")
+	@Override
+	void setDragDeadTime(int deadTime);
+
+	@Import("itemQuantityMode")
+	@Override
+	int getItemQuantityMode();
+
+	@Import("itemQuantityMode")
+	@Override
+	void setItemQuantityMode(int itemQuantityMode);
+
+	@Import("xPositionMode")
+	@Override
+	int getXPositionMode();
+
+	@Import("xPositionMode")
+	@Override
+	void setXPositionMode(int xpm);
+
+	@Import("yPositionMode")
+	@Override
+	int getYPositionMode();
+
+	@Import("yPositionMode")
+	@Override
+	void setYPositionMode(int ypm);
+
+	@Import("xTextAlignment")
+	@Override
+	int getXTextAlignment();
+
+	@Import("xTextAlignment")
+	@Override
+	void setXTextAlignment(int xta);
+
+	@Import("yTextAlignment")
+	@Override
+	int getYTextAlignment();
+
+	@Import("yTextAlignment")
+	@Override
+	void setYTextAlignment(int yta);
+
+	@Import("widthMode")
+	@Override
+	int getWidthMode();
+
+	@Import("widthMode")
+	@Override
+	void setWidthMode(int widthMode);
+	
+	@Import("heightMode")
+	@Override
+	int getHeightMode();
+
+	@Import("heightMode")
+	@Override
+	void setHeightMode(int heightMode);
+
+	@Import("getFont")
+	@Override
+	RSFontTypeFace getFont();
+
+	@Import("filled")
+	@Override
+	boolean isFilled();
+
+	@Import("filled")
+	@Override
+	void setFilled(boolean filled);
 }

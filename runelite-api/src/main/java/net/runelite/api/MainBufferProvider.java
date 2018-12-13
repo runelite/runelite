@@ -26,7 +26,15 @@ package net.runelite.api;
 
 import java.awt.Image;
 
+/**
+ * Represents the clients primary image buffer.
+ */
 public interface MainBufferProvider
 {
+	/**
+	 * Gets the image currently loaded in the buffer.
+	 *
+	 * @return the loaded image
+	 */
 	Image getImage();
 }

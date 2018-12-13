@@ -63,6 +63,7 @@ public class RaidsPointsOverlay extends Overlay
 
 		int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
 		int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
+		int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
 
 		panel.getChildren().clear();
 		panel.getChildren().add(LineComponent.builder()
@@ -75,10 +76,13 @@ public class RaidsPointsOverlay extends Overlay
 			.right(POINTS_FORMAT.format(personalPoints))
 			.build());
 
-		panel.getChildren().add(LineComponent.builder()
-			.left("Party size:")
-			.right(String.valueOf(client.getVar(Varbits.RAID_PARTY_SIZE)))
-			.build());
+		if (partySize > 1)
+		{
+			panel.getChildren().add(LineComponent.builder()
+				.left("Party size:")
+				.right(String.valueOf(partySize))
+				.build());
+		}
 
 		return panel.render(graphics);
 	}

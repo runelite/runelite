@@ -24,12 +24,9 @@
  */
 package net.runelite.client.plugins.implings;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -40,21 +37,26 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.util.QueryRunner;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 /**
  * @author robin
  */
 @PluginDescriptor(
-	name = "Implings"
+	name = "Implings",
+	description = "Highlight nearby implings on the minimap and on-screen",
+	tags = {"hunter", "minimap", "overlay"}
 )
 public class ImplingsPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> implings = new ArrayList<>();
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private ImplingsOverlay overlay;
@@ -65,19 +67,25 @@ public class ImplingsPlugin extends Plugin
 	@Inject
 	private ImplingsConfig config;
 
-	@Inject
-	private QueryRunner queryRunner;
-
 	@Provides
 	ImplingsConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ImplingsConfig.class);
 	}
 
+
 	@Override
-	public Collection<Overlay> getOverlays()
+	protected void startUp() throws Exception
 	{
-		return Arrays.asList(overlay, minimapOverlay);
+		overlayManager.add(overlay);
+		overlayManager.add(minimapOverlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(minimapOverlay);
 	}
 
 	@Subscribe
@@ -93,7 +101,7 @@ public class ImplingsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
 		{

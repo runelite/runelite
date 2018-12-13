@@ -28,18 +28,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.COINS_995;
 import static net.runelite.api.ItemID.PLATINUM_TOKEN;
 import net.runelite.api.queries.BankItemQuery;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.util.QueryRunner;
-import net.runelite.http.api.item.ItemPrice;
 
 @Slf4j
 class BankCalculation
@@ -58,9 +57,6 @@ class BankCalculation
 
 	@Getter
 	private long haPrice;
-
-	@Getter
-	private boolean finished;
 
 	@Inject
 	BankCalculation(QueryRunner queryRunner, ItemManager itemManager, BankValueConfig config)
@@ -85,102 +81,67 @@ class BankCalculation
 		log.debug("Calculating new bank value...");
 
 		gePrice = haPrice = 0;
-		finished = false;
 
-		List<ItemComposition> itemCompositions = new ArrayList<>();
-		Map<Integer, WidgetItem> itemMap = new HashMap<>();
 		List<Integer> itemIds = new ArrayList<>();
 
 		// Generate our lists (and do some quick price additions)
 		for (WidgetItem widgetItem : widgetItems)
 		{
-			if (widgetItem.getId() <= 0 || widgetItem.getQuantity() == 0)
+			int quantity = widgetItem.getQuantity();
+
+			if (widgetItem.getId() <= 0 || quantity == 0)
 			{
 				continue;
 			}
 
 			if (widgetItem.getId() == COINS_995)
 			{
-				gePrice += widgetItem.getQuantity();
-				haPrice += widgetItem.getQuantity();
+				gePrice += quantity;
+				haPrice += quantity;
 				continue;
 			}
 
 			if (widgetItem.getId() == PLATINUM_TOKEN)
 			{
-				gePrice += widgetItem.getQuantity() * 1000L;
-				haPrice += widgetItem.getQuantity() * 1000L;
+				gePrice += quantity * 1000L;
+				haPrice += quantity * 1000L;
 				continue;
 			}
 
 			final ItemComposition itemComposition = itemManager.getItemComposition(widgetItem.getId());
-			itemCompositions.add(itemComposition);
-			itemMap.put(widgetItem.getId(), widgetItem);
 
 			if (config.showGE())
 			{
 				itemIds.add(widgetItem.getId());
 			}
-		}
 
-		// Now do the calculations
-		if (config.showGE() && !itemIds.isEmpty())
-		{
-			CompletableFuture<ItemPrice[]> future = itemManager.getItemPriceBatch(itemIds);
-			future.whenComplete((ItemPrice[] itemPrices, Throwable ex) ->
-			{
-				if (ex != null)
-				{
-					log.debug("Error looking up item prices", ex);
-					return;
-				}
-
-				if (itemPrices == null)
-				{
-					log.debug("Error looking up item prices");
-					return;
-				}
-
-				log.debug("Price lookup is complete. {} prices.", itemPrices.length);
-
-				try
-				{
-					for (ItemPrice itemPrice : itemPrices)
-					{
-						if (itemPrice.getItem() == null)
-						{
-							continue; // cached no price
-						}
-
-						gePrice += (long) itemPrice.getPrice() * (long) itemMap.get(itemPrice.getItem().getId()).getQuantity();
-					}
-				}
-				catch (Exception ex2)
-				{
-					log.warn("error calculating price", ex2);
-				}
-				finally
-				{
-					finished = true;
-				}
-			});
-		}
-		else
-		{
-			finished = true;
-		}
-
-		if (config.showHA())
-		{
-			for (ItemComposition itemComposition : itemCompositions)
+			if (config.showHA())
 			{
 				int price = itemComposition.getPrice();
 
 				if (price > 0)
 				{
 					haPrice += (long) Math.round(price * HIGH_ALCHEMY_CONSTANT) *
-						(long) itemMap.get(itemComposition.getId()).getQuantity();
+						(long) quantity;
 				}
+			}
+		}
+
+		// Now do the calculations
+		if (config.showGE() && !itemIds.isEmpty())
+		{
+			for (WidgetItem widgetItem : widgetItems)
+			{
+				int itemId = widgetItem.getId();
+				int quantity = widgetItem.getQuantity();
+
+				if (itemId <= 0 || quantity == 0
+					|| itemId == ItemID.COINS_995 || itemId == ItemID.PLATINUM_TOKEN)
+				{
+					continue;
+				}
+
+				gePrice += (long) itemManager.getItemPrice(itemId) * quantity;
 			}
 		}
 	}

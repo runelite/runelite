@@ -27,7 +27,6 @@ package net.runelite.client.plugins.hunter;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.Iterator;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -99,10 +98,8 @@ public class TrapOverlay extends Overlay
 	 */
 	private void drawTraps(Graphics2D graphics)
 	{
-		Iterator<Map.Entry<WorldPoint, HunterTrap>> it = plugin.getTraps().entrySet().iterator();
-		while (it.hasNext())
+		for (Map.Entry<WorldPoint, HunterTrap> entry : plugin.getTraps().entrySet())
 		{
-			Map.Entry<WorldPoint, HunterTrap> entry = it.next();
 			HunterTrap trap = entry.getValue();
 
 			switch (trap.getState())
@@ -144,7 +141,7 @@ public class TrapOverlay extends Overlay
 		{
 			return;
 		}
-		net.runelite.api.Point loc = Perspective.worldToCanvas(client, localLoc.getX(), localLoc.getY(), trap.getWorldLocation().getPlane());
+		net.runelite.api.Point loc = Perspective.localToCanvas(client, localLoc, client.getPlane());
 
 		double timeLeft = 1 - trap.getTrapTimeRelative();
 
@@ -175,7 +172,7 @@ public class TrapOverlay extends Overlay
 		{
 			return;
 		}
-		net.runelite.api.Point loc = Perspective.worldToCanvas(client, localLoc.getX(), localLoc.getY(), trap.getWorldLocation().getPlane());
+		net.runelite.api.Point loc = Perspective.localToCanvas(client, localLoc, client.getPlane());
 
 		ProgressPieComponent pie = new ProgressPieComponent();
 		pie.setFill(fill);

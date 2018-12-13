@@ -26,16 +26,15 @@ package net.runelite.client.plugins.agility;
 
 import java.util.HashMap;
 import java.util.Map;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.coords.WorldPoint;
 
-@AllArgsConstructor
-public enum Courses
+enum Courses
 {
 	GNOME(86.5, 46, 9781),
 	DRAYNOR(120.0, 79, 12338),
-	AL_KARID(180.0, 30, 13105),
-	PYRAMID(722.0, 300, 13356),
+	AL_KHARID(180.0, 30, 13105, new WorldPoint(3299, 3194, 0)),
+	PYRAMID(722.0, 300, 13356, new WorldPoint(3364, 2830, 0)),
 	VARROCK(238.0, 125, 12853),
 	PENGUIN(540.0, 65, 10559),
 	BARBARIAN(139.5, 60, 10039),
@@ -43,8 +42,9 @@ public enum Courses
 	APE_ATOLL(580.0, 300, 11050),
 	FALADOR(440, 180, 12084),
 	WILDERNESS(571.0, 499, 11837),
+	WEREWOLF(730.0, 380, 14234),
 	SEERS(570.0, 435, 10806),
-	POLLNIVEACH(890.0, 540, 13358),
+	POLLNIVNEACH(890.0, 540, 13358),
 	RELLEKA(780.0, 475, 10553),
 	ARDOUGNE(793.0, 529, 10547);
 
@@ -59,6 +59,9 @@ public enum Courses
 	@Getter
 	private final int regionId;
 
+	@Getter
+	private final WorldPoint[] courseEndWorldPoints;
+
 	static
 	{
 		for (Courses course : values())
@@ -67,7 +70,15 @@ public enum Courses
 		}
 	}
 
-	public static Courses getCourse(int regionId)
+	Courses(double totalXp, int lastObstacleXp, int regionId, WorldPoint... courseEndWorldPoints)
+	{
+		this.totalXp = totalXp;
+		this.lastObstacleXp = lastObstacleXp;
+		this.regionId = regionId;
+		this.courseEndWorldPoints = courseEndWorldPoints;
+	}
+
+	static Courses getCourse(int regionId)
 	{
 		return coursesByRegion.get(regionId);
 	}

@@ -25,18 +25,14 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import java.awt.Color;
 import java.awt.GridLayout;
 import javax.inject.Inject;
-import javax.swing.JButton;
 import javax.swing.JPanel;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
-@Slf4j
-public class DevToolsPanel extends PluginPanel
+class DevToolsPanel extends PluginPanel
 {
 	private final Client client;
 	private final DevToolsPlugin plugin;
@@ -45,7 +41,7 @@ public class DevToolsPanel extends PluginPanel
 	private final VarInspector varInspector;
 
 	@Inject
-	public DevToolsPanel(Client client, DevToolsPlugin plugin, WidgetInspector widgetInspector, VarInspector varInspector)
+	private DevToolsPanel(Client client, DevToolsPlugin plugin, WidgetInspector widgetInspector, VarInspector varInspector)
 	{
 		super();
 		this.client = client;
@@ -64,154 +60,65 @@ public class DevToolsPanel extends PluginPanel
 		container.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		container.setLayout(new GridLayout(0, 2, 3, 3));
 
-		final JButton renderPlayersBtn = new JButton("Players");
-		renderPlayersBtn.addActionListener(e ->
-		{
-			highlightButton(renderPlayersBtn);
-			plugin.togglePlayers();
-		});
-		container.add(renderPlayersBtn);
+		container.add(plugin.getPlayers());
+		container.add(plugin.getNpcs());
 
-		final JButton renderNpcsBtn = new JButton("NPCs");
-		renderNpcsBtn.addActionListener(e ->
-		{
-			highlightButton(renderNpcsBtn);
-			plugin.toggleNpcs();
-		});
-		container.add(renderNpcsBtn);
+		container.add(plugin.getGroundItems());
+		container.add(plugin.getGroundObjects());
+		container.add(plugin.getGameObjects());
+		container.add(plugin.getGraphicsObjects());
+		container.add(plugin.getWalls());
+		container.add(plugin.getDecorations());
 
-		final JButton renderGroundItemsBtn = new JButton("Ground Items");
-		renderGroundItemsBtn.addActionListener(e ->
-		{
-			highlightButton(renderGroundItemsBtn);
-			plugin.toggleGroundItems();
-		});
-		container.add(renderGroundItemsBtn);
+		container.add(plugin.getInventory());
+		container.add(plugin.getProjectiles());
 
-		final JButton renderGroundObjectsBtn = new JButton("Ground Objects");
-		renderGroundObjectsBtn.addActionListener(e ->
-		{
-			highlightButton(renderGroundObjectsBtn);
-			plugin.toggleGroundObjects();
-		});
-		container.add(renderGroundObjectsBtn);
+		container.add(plugin.getLocation());
+		container.add(plugin.getWorldMapLocation());
+		container.add(plugin.getTileLocation());
+		container.add(plugin.getCameraPosition());
 
-		final JButton renderGameObjectsBtn = new JButton("Game Objects");
-		renderGameObjectsBtn.addActionListener(e ->
-		{
-			highlightButton(renderGameObjectsBtn);
-			plugin.toggleGameObjects();
-		});
-		container.add(renderGameObjectsBtn);
+		container.add(plugin.getChunkBorders());
+		container.add(plugin.getMapSquares());
 
-		final JButton renderWallsBtn = new JButton("Walls");
-		renderWallsBtn.addActionListener(e ->
-		{
-			highlightButton(renderWallsBtn);
-			plugin.toggleWalls();
-		});
-		container.add(renderWallsBtn);
+		container.add(plugin.getLineOfSight());
+		container.add(plugin.getValidMovement());
+		container.add(plugin.getInteracting());
+		container.add(plugin.getExamine());
 
-		final JButton renderDecorBtn = new JButton("Decorations");
-		renderDecorBtn.addActionListener(e ->
+		container.add(plugin.getDetachedCamera());
+		plugin.getDetachedCamera().addActionListener((ev) ->
 		{
-			highlightButton(renderDecorBtn);
-			plugin.toggleDecor();
+			client.setOculusOrbState(!plugin.getDetachedCamera().isActive() ? 1 : 0);
+			client.setOculusOrbNormalSpeed(!plugin.getDetachedCamera().isActive() ? 36 : 12);
 		});
-		container.add(renderDecorBtn);
 
-		final JButton renderInventoryBtn = new JButton("Inventory");
-		renderInventoryBtn.addActionListener(e ->
+		container.add(plugin.getWidgetInspector());
+		plugin.getWidgetInspector().addActionListener((ev) ->
 		{
-			highlightButton(renderInventoryBtn);
-			plugin.toggleInventory();
+			if (plugin.getWidgetInspector().isActive())
+			{
+				widgetInspector.close();
+			}
+			else
+			{
+				widgetInspector.open();
+			}
 		});
-		container.add(renderInventoryBtn);
 
-		final JButton renderProjectilesBtn = new JButton("Projectiles");
-		renderProjectilesBtn.addActionListener(e ->
+		container.add(plugin.getVarInspector());
+		plugin.getVarInspector().addActionListener((ev) ->
 		{
-			highlightButton(renderProjectilesBtn);
-			plugin.toggleProjectiles();
+			if (plugin.getVarInspector().isActive())
+			{
+				varInspector.close();
+			}
+			else
+			{
+				varInspector.open();
+			}
 		});
-		container.add(renderProjectilesBtn);
-
-		final JButton renderLocationBtn = new JButton("Location");
-		renderLocationBtn.addActionListener(e ->
-		{
-			highlightButton(renderLocationBtn);
-			plugin.toggleLocation();
-		});
-		container.add(renderLocationBtn);
-
-		final JButton widgetInspectorBtn = new JButton("Widget Tools");
-		widgetInspectorBtn.addActionListener(e ->
-		{
-			widgetInspector.setVisible(true);
-			widgetInspector.toFront();
-			widgetInspector.repaint();
-		});
-		container.add(widgetInspectorBtn);
-
-		final JButton varInspectorBtn = new JButton("Var Tools");
-		varInspectorBtn.addActionListener(e ->
-		{
-			varInspector.open();
-		});
-		container.add(varInspectorBtn);
-
-		final JButton chunkBordersBtn = new JButton("Chunk borders");
-		chunkBordersBtn.addActionListener(e ->
-		{
-			highlightButton(chunkBordersBtn);
-			plugin.toggleChunkBorders();
-		});
-		container.add(chunkBordersBtn);
-
-		final JButton mapSquaresBtn = new JButton("Map squares");
-		mapSquaresBtn.addActionListener(e ->
-		{
-			highlightButton(mapSquaresBtn);
-			plugin.toggleMapSquares();
-		});
-		container.add(mapSquaresBtn);
-
-		final JButton validMovementBtn = new JButton("Valid Moves");
-		validMovementBtn.addActionListener(e ->
-		{
-			highlightButton(validMovementBtn);
-			plugin.toggleValidMovement();
-		});
-		container.add(validMovementBtn);
-
-		final JButton lineOfSightBtn = new JButton("Line of Sight");
-		lineOfSightBtn.addActionListener(e ->
-		{
-			highlightButton(lineOfSightBtn);
-			plugin.toggleLineOfSight();
-		});
-		container.add(lineOfSightBtn);
-
-		final JButton graphicsObjectsBtn = new JButton("Graphics objects");
-		graphicsObjectsBtn.addActionListener(e ->
-		{
-			highlightButton(graphicsObjectsBtn);
-			plugin.toggleGraphicsObjects();
-		});
-		container.add(graphicsObjectsBtn);
 
 		return container;
-	}
-
-	private void highlightButton(JButton button)
-	{
-		if (button.getBackground().equals(Color.GREEN))
-		{
-			button.setBackground(null);
-		}
-		else
-		{
-			button.setBackground(Color.GREEN);
-		}
 	}
 }

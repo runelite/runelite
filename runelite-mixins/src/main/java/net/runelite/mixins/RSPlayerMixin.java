@@ -37,6 +37,15 @@ import static net.runelite.api.HeadIcon.SMITE;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.SkullIcon;
+import static net.runelite.api.SkullIcon.DEAD_MAN_FIVE;
+import static net.runelite.api.SkullIcon.DEAD_MAN_FOUR;
+import static net.runelite.api.SkullIcon.DEAD_MAN_ONE;
+import static net.runelite.api.SkullIcon.DEAD_MAN_THREE;
+import static net.runelite.api.SkullIcon.DEAD_MAN_TWO;
+import static net.runelite.api.SkullIcon.SKULL;
+import static net.runelite.api.SkullIcon.SKULL_FIGHT_PIT;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -54,9 +63,6 @@ public abstract class RSPlayerMixin implements RSPlayer
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
-
-	@Inject
-	private int playerIndex;
 
 	@Inject
 	@Override
@@ -104,6 +110,37 @@ public abstract class RSPlayerMixin implements RSPlayer
 
 	@Inject
 	@Override
+	public SkullIcon getSkullIcon()
+	{
+		if (this != client.getLocalPlayer())
+		{
+			// prevent seeing skulls of other players.
+			return null;
+		}
+
+		switch (getRsSkullIcon())
+		{
+			case 0:
+				return SKULL;
+			case 1:
+				return SKULL_FIGHT_PIT;
+			case 8:
+				return DEAD_MAN_FIVE;
+			case 9:
+				return DEAD_MAN_FOUR;
+			case 10:
+				return DEAD_MAN_THREE;
+			case 11:
+				return DEAD_MAN_TWO;
+			case 12:
+				return DEAD_MAN_ONE;
+			default:
+				return null;
+		}
+	}
+
+	@Inject
+	@Override
 	public Polygon[] getPolygons()
 	{
 		Model model = getModel();
@@ -129,19 +166,19 @@ public abstract class RSPlayerMixin implements RSPlayer
 			Vertex vy = triangle.getB();
 			Vertex vz = triangle.getC();
 
-			Point x = Perspective.worldToCanvas(client,
-				localX - vx.getX(),
-				localY - vx.getZ(),
+			Point x = Perspective.localToCanvas(client,
+				new LocalPoint(localX - vx.getX(), localY - vx.getZ()),
+				client.getPlane(),
 				-vx.getY());
 
-			Point y = Perspective.worldToCanvas(client,
-				localX - vy.getX(),
-				localY - vy.getZ(),
+			Point y = Perspective.localToCanvas(client,
+				new LocalPoint(localX - vy.getX(), localY - vy.getZ()),
+				client.getPlane(),
 				-vy.getY());
 
-			Point z = Perspective.worldToCanvas(client,
-				localX - vz.getX(),
-				localY - vz.getZ(),
+			Point z = Perspective.localToCanvas(client,
+				new LocalPoint(localX - vz.getX(), localY - vz.getZ()),
+				client.getPlane(),
 				-vz.getY());
 
 			int xx[] =

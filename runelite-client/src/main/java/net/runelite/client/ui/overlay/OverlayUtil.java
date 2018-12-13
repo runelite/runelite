@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui.overlay;
 
+import com.google.common.base.Strings;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -46,6 +47,8 @@ import net.runelite.api.coords.LocalPoint;
  */
 public class OverlayUtil
 {
+	private static final int MINIMAP_DOT_RADIUS = 4;
+
 	public static void renderPolygon(Graphics2D graphics, Polygon poly, Color color)
 	{
 		graphics.setColor(color);
@@ -60,13 +63,18 @@ public class OverlayUtil
 	public static void renderMinimapLocation(Graphics2D graphics, Point mini, Color color)
 	{
 		graphics.setColor(Color.BLACK);
-		graphics.fillOval(mini.getX(), mini.getY() + 1, 5, 5);
+		graphics.fillOval(mini.getX() - MINIMAP_DOT_RADIUS / 2, mini.getY() - MINIMAP_DOT_RADIUS / 2 + 1, MINIMAP_DOT_RADIUS, MINIMAP_DOT_RADIUS);
 		graphics.setColor(color);
-		graphics.fillOval(mini.getX(), mini.getY(), 5, 5);
+		graphics.fillOval(mini.getX() - MINIMAP_DOT_RADIUS / 2, mini.getY() - MINIMAP_DOT_RADIUS / 2, MINIMAP_DOT_RADIUS, MINIMAP_DOT_RADIUS);
 	}
 
 	public static void renderTextLocation(Graphics2D graphics, Point txtLoc, String text, Color color)
 	{
+		if (Strings.isNullOrEmpty(text))
+		{
+			return;
+		}
+
 		int x = txtLoc.getX();
 		int y = txtLoc.getY();
 
@@ -79,7 +87,7 @@ public class OverlayUtil
 
 	public static void renderImageLocation(Client client, Graphics2D graphics, LocalPoint localPoint, BufferedImage image, int zOffset)
 	{
-		net.runelite.api.Point imageLocation = Perspective.getCanvasImageLocation(client, graphics, localPoint, image, zOffset);
+		net.runelite.api.Point imageLocation = Perspective.getCanvasImageLocation(client, localPoint, image, zOffset);
 		if (imageLocation != null)
 		{
 			renderImageLocation(graphics, imageLocation, image);
@@ -117,7 +125,7 @@ public class OverlayUtil
 			renderPolygon(graphics, poly, color);
 		}
 
-		Point imageLocation = actor.getCanvasImageLocation(graphics, image, zOffset);
+		Point imageLocation = actor.getCanvasImageLocation(image, zOffset);
 		if (imageLocation != null)
 		{
 			renderImageLocation(graphics, imageLocation, image);
@@ -196,8 +204,10 @@ public class OverlayUtil
 				result.x -= dimension.width + (dimension.width == 0 ? 0 : padding);
 				break;
 			case TOP_LEFT:
+			case TOP_CENTER:
 				result.y += dimension.height + (dimension.height == 0 ? 0 : padding);
 				break;
+			case CANVAS_TOP_RIGHT:
 			case TOP_RIGHT:
 				result.y += dimension.height + (dimension.height == 0 ? 0 : padding);
 				break;
@@ -219,12 +229,17 @@ public class OverlayUtil
 			case TOOLTIP:
 			case TOP_LEFT:
 				break;
+			case TOP_CENTER:
+				result.x = result.x - dimension.width / 2;
+				break;
 			case BOTTOM_LEFT:
 				result.y = result.y - dimension.height;
 				break;
 			case BOTTOM_RIGHT:
 			case ABOVE_CHATBOX_RIGHT:
 				result.y = result.y - dimension.height;
+				// FALLTHROUGH
+			case CANVAS_TOP_RIGHT:
 			case TOP_RIGHT:
 				result.x = result.x - dimension.width;
 				break;

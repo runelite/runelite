@@ -133,7 +133,7 @@ public final class Store implements Closeable
 
 	public Index getIndex(IndexType type)
 	{
-		return indexes.get(type.getNumber());
+		return findIndex(type.getNumber());
 	}
 
 	public Index findIndex(int id)

@@ -38,6 +38,7 @@ public class ScriptLoader
 	public ScriptDefinition load(int id, byte[] b)
 	{
 		ScriptDefinition def = new ScriptDefinition();
+		def.setId(id);
 		InputStream in = new InputStream(b);
 
 		in.setOffset(in.getLength() - 2);

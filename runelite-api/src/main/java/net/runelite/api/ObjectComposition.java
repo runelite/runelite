@@ -24,17 +24,59 @@
  */
 package net.runelite.api;
 
+/**
+ * Represents the template of a specific object.
+ */
 public interface ObjectComposition
 {
+	/**
+	 * Gets ID for the object.
+	 *
+	 * @return the object ID
+	 */
+	int getId();
+
+	/**
+	 * Gets the name of the object.
+	 *
+	 * @return the object name
+	 */
 	String getName();
 
+	/**
+	 * Gets an array of possible right-click menu actions that can be
+	 * performed on the object.
+	 *
+	 * @return the menu actions
+	 */
 	String[] getActions();
 
+	/**
+	 * Gets the map scene ID for the object.
+	 *
+	 * @return the scene ID
+	 */
 	int getMapSceneId();
 
+	/**
+	 * Gets the map icon ID for the object.
+	 *
+	 * @return the map icon ID
+	 */
 	int getMapIconId();
 
+	/**
+	 * Gets IDs for objects that are considered fakes of this object,
+	 * such as barrows walls.
+	 *
+	 * @return the impostor IDs
+	 */
 	int[] getImpostorIds();
 
+	/**
+	 * Gets the impostor composition for this object.
+	 *
+	 * @return the impostor
+	 */
 	ObjectComposition getImpostor();
 }

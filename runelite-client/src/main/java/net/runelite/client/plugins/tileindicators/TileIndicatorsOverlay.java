@@ -24,11 +24,14 @@
  */
 package net.runelite.client.plugins.tileindicators;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -38,10 +41,12 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class TileIndicatorsOverlay extends Overlay
 {
+	private static final Color EMPTY = new Color(0, 0, 0, 0);
 	private final Client client;
 	private final TileIndicatorsConfig config;
 
-	TileIndicatorsOverlay(Client client, TileIndicatorsConfig config)
+	@Inject
+	private TileIndicatorsOverlay(Client client, TileIndicatorsConfig config)
 	{
 		this.client = client;
 		this.config = config;
@@ -53,20 +58,49 @@ public class TileIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		LocalPoint dest = client.getLocalDestinationLocation();
-		if (dest == null)
+		if (config.highlightHoveredTile())
 		{
-			return null;
+			// Update selected scene tile
+			if (!client.isMenuOpen())
+			{
+				Point p = client.getMouseCanvasPosition();
+				p = new Point(
+					p.getX() - client.getViewportXOffset(),
+					p.getY() - client.getViewportYOffset());
+
+				client.setCheckClick(true);
+				client.setMouseCanvasHoverPosition(p);
+			}
+
+			// If we have tile "selected" render it
+			if (client.getSelectedSceneTile() != null)
+			{
+				renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), EMPTY);
+			}
 		}
 
-		Polygon poly = Perspective.getCanvasTilePoly(client, dest);
-		if (poly == null)
+		if (config.highlightDestinationTile())
 		{
-			return null;
+			renderTile(graphics, client.getLocalDestinationLocation(), config.highlightDestinationColor());
 		}
-		
-		OverlayUtil.renderPolygon(graphics, poly, config.highlightDestinationColor());
 
 		return null;
+	}
+
+	private void renderTile(final Graphics2D graphics, final LocalPoint dest, final Color color)
+	{
+		if (dest == null)
+		{
+			return;
+		}
+
+		final Polygon poly = Perspective.getCanvasTilePoly(client, dest);
+
+		if (poly == null)
+		{
+			return;
+		}
+
+		OverlayUtil.renderPolygon(graphics, poly, color);
 	}
 }

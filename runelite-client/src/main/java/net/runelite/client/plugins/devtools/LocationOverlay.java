@@ -55,7 +55,7 @@ public class LocationOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isToggleLocation())
+		if (!plugin.getLocation().isActive())
 		{
 			return null;
 		}
@@ -74,17 +74,32 @@ public class LocationOverlay extends Overlay
 
 			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
 			int z = client.getPlane();
-			int chunkData = instanceTemplateChunks[z][localPoint.getRegionX() / CHUNK_SIZE][localPoint.getRegionY() / CHUNK_SIZE];
+			int chunkData = instanceTemplateChunks[z][localPoint.getSceneX() / CHUNK_SIZE][localPoint.getSceneY() / CHUNK_SIZE];
 
 			int rotation = chunkData >> 1 & 0x3;
 			int chunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
 			int chunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
 
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Chunk " + localPoint.getRegionX() / CHUNK_SIZE + "," + localPoint.getRegionY() / CHUNK_SIZE)
+				.left("Chunk " + localPoint.getSceneX() / CHUNK_SIZE + "," + localPoint.getSceneY() / CHUNK_SIZE)
 				.right(rotation + " " + chunkX + " " + chunkY)
 				.build());
 		}
+
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Base")
+				.right(client.getBaseX() + ", " + client.getBaseY())
+				.build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Local")
+				.right(localPoint.getX() + ", " + localPoint.getY())
+				.build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Scene")
+				.right(localPoint.getSceneX() + ", " + localPoint.getSceneY())
+				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Tile")

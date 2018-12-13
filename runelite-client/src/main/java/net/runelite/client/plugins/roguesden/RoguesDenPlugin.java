@@ -24,13 +24,11 @@
  */
 package net.runelite.client.plugins.roguesden;
 
-import com.google.common.eventbus.Subscribe;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
@@ -46,14 +44,17 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Rogues' Den"
+	name = "Rogues' Den",
+	description = "Mark tiles and clickboxes to help traverse the maze",
+	tags = {"agility", "maze", "minigame", "overlay", "thieving"}
 )
-@Slf4j
 public class RoguesDenPlugin extends Plugin
 {
 	@Getter(AccessLevel.PACKAGE)
@@ -69,12 +70,21 @@ public class RoguesDenPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	@Getter
+	private OverlayManager overlayManager;
+
+	@Inject
 	private RoguesDenOverlay overlay;
 
 	@Override
-	protected void shutDown()
+	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 		obstaclesHull.clear();
 		obstaclesTile.clear();
 		hasGem = false;
@@ -106,37 +116,37 @@ public class RoguesDenPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void GameObjectSpawned(GameObjectSpawned event)
+	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGameObject());
 	}
 
 	@Subscribe
-	public void GameObjectChanged(GameObjectChanged event)
+	public void onGameObjectChanged(GameObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGameObject());
 	}
 
 	@Subscribe
-	public void GameObjectDespawned(GameObjectDespawned event)
+	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGameObject(), null);
 	}
 
 	@Subscribe
-	public void GroundObjectSpawned(GroundObjectSpawned event)
+	public void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGroundObject());
 	}
 
 	@Subscribe
-	public void GroundObjectChanged(GroundObjectChanged event)
+	public void onGroundObjectChanged(GroundObjectChanged event)
 	{
 		onTileObject(event.getTile(), event.getPrevious(), event.getGroundObject());
 	}
 
 	@Subscribe
-	public void GroundObjectDespawned(GroundObjectDespawned event)
+	public void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGroundObject(), null);
 	}

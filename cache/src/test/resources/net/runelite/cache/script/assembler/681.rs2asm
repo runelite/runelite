@@ -1,0 +1,275 @@
+.id                 681
+.int_stack_count    0
+.string_stack_count 0
+.int_var_count      2
+.string_var_count   1
+   get_varc               5
+   load_int               14
+   if_icmpeq              LABEL4
+   jump                   LABEL7
+LABEL4:
+   load_int               1
+   put_varc               66
+   return                
+LABEL7:
+   load_int               -1
+   istore                 0
+   load_string            ""
+   sstore                 0
+   get_varc_string        22
+   string_length         
+   istore                 1
+   iload                  1
+   load_int               0
+   if_icmpgt              LABEL18
+   jump                   LABEL193
+LABEL18:
+   get_varc               5
+   switch                
+      1: LABEL21
+      2: LABEL44
+      3: LABEL44
+      4: LABEL23
+      5: LABEL23
+      6: LABEL44
+      7: LABEL110
+      8: LABEL114
+      9: LABEL120
+      10: LABEL123
+      11: LABEL185
+      12: LABEL142
+      13: LABEL160
+      15: LABEL120
+      16: LABEL190
+   jump                   LABEL192
+LABEL21:
+   return                
+   jump                   LABEL192
+LABEL23:
+   get_ignorecount       
+   load_int               0
+   if_icmplt              LABEL27
+   jump                   LABEL30
+LABEL27:
+   load_string            "Unable to update ignore list - system busy."
+   send_game_message     
+   jump                   LABEL43
+LABEL30:
+   get_varc               5
+   load_int               4
+   if_icmpeq              LABEL34
+   jump                   LABEL37
+LABEL34:
+   get_varc_string        22
+   add_ignore            
+   jump                   LABEL43
+LABEL37:
+   get_varc               5
+   load_int               5
+   if_icmpeq              LABEL41
+   jump                   LABEL43
+LABEL41:
+   get_varc_string        22
+   remove_ignore         
+LABEL43:
+   jump                   LABEL192
+LABEL44:
+   get_friendcount       
+   load_int               0
+   if_icmplt              LABEL48
+   jump                   LABEL51
+LABEL48:
+   load_string            "Unable to complete action - system busy."
+   send_game_message     
+   jump                   LABEL109
+LABEL51:
+   get_varc               5
+   load_int               2
+   if_icmpeq              LABEL55
+   jump                   LABEL58
+LABEL55:
+   get_varc_string        22
+   add_friend            
+   jump                   LABEL109
+LABEL58:
+   get_varc               5
+   load_int               3
+   if_icmpeq              LABEL62
+   jump                   LABEL65
+LABEL62:
+   get_varc_string        22
+   remove_friend         
+   jump                   LABEL109
+LABEL65:
+   get_varc               5
+   load_int               6
+   if_icmpeq              LABEL69
+   jump                   LABEL109
+LABEL69:
+   get_varc               203
+   load_int               0
+   if_icmpeq              LABEL76
+   get_varc               203
+   load_int               -1
+   if_icmpeq              LABEL76
+   jump                   LABEL82
+LABEL76:
+   load_int               1
+   load_int               1
+   invoke                 299
+   load_string            "You must set a name before you can chat."
+   send_game_message     
+   return                
+LABEL82:
+   5005                  
+   load_int               2
+   if_icmpeq              LABEL86
+   jump                   LABEL97
+LABEL86:
+   5000                  
+   load_int               1
+   5016                  
+   chatfilter_update     
+   invoke                 178
+   invoke                 553
+   istore                 0
+   iload                  0
+   invoke                 84
+   iload                  0
+   invoke                 89
+LABEL97:
+   get_varbit             4394
+   load_int               1
+   if_icmpeq              LABEL101
+   jump                   LABEL104
+LABEL101:
+   get_varc_string        23
+   remove_friend         
+   jump                   LABEL107
+LABEL104:
+   get_varc_string        23
+   get_varc_string        22
+   privmsg               
+LABEL107:
+   get_gamecycle         
+   put_varc               61
+LABEL109:
+   jump                   LABEL192
+LABEL110:
+   get_varc_string        22
+   invoke                 212
+   numeric_input         
+   jump                   LABEL192
+LABEL114:
+   get_varc_string        22
+   string_remove_html    
+   put_varc_string        128
+   get_varc_string        22
+   string_input_1        
+   jump                   LABEL192
+LABEL120:
+   get_varc_string        22
+   string_input_2        
+   jump                   LABEL192
+LABEL123:
+   get_varc               203
+   load_int               0
+   if_icmpeq              LABEL130
+   get_varc               203
+   load_int               -1
+   if_icmpeq              LABEL130
+   jump                   LABEL136
+LABEL130:
+   load_int               1
+   load_int               1
+   invoke                 299
+   load_string            "You must set a name before you can chat."
+   send_game_message     
+   return                
+LABEL136:
+   get_varc_string        22
+   string_remove_html    
+   put_varc_string        129
+   get_varc_string        22
+   join_clanchat         
+   jump                   LABEL192
+LABEL142:
+   iload                  1
+   load_int               10
+   if_icmpgt              LABEL146
+   jump                   LABEL152
+LABEL146:
+   get_varc_string        22
+   load_int               0
+   load_int               9
+   string_substring      
+   sstore                 0
+   jump                   LABEL154
+LABEL152:
+   get_varc_string        22
+   sstore                 0
+LABEL154:
+   sload                  0
+   tolowercase           
+   5021                  
+   invoke                 553
+   invoke                 84
+   jump                   LABEL192
+LABEL160:
+   get_varc               203
+   load_int               0
+   if_icmpeq              LABEL167
+   get_varc               203
+   load_int               -1
+   if_icmpeq              LABEL167
+   jump                   LABEL173
+LABEL167:
+   load_int               1
+   load_int               1
+   invoke                 299
+   load_string            "You must set a name before you can chat."
+   send_game_message     
+   return                
+LABEL173:
+   get_varc_string        22
+   load_int               0
+   put_varc               62
+   put_varc_string        28
+   invoke                 95
+   load_int               552
+   load_int               -2147483645
+   load_int               1
+   load_string            "I1"
+   load_int               10616843
+   widget_put_render_listener_widget
+   jump                   LABEL192
+LABEL185:
+   load_int               0
+   load_int               1
+   invoke                 299
+   return                
+   jump                   LABEL192
+LABEL190:
+   get_varc_string        22
+   invoke                 2061
+LABEL192:
+   jump                   LABEL199
+LABEL193:
+   get_varc               5
+   switch                
+      16: LABEL198
+      7: LABEL196
+      8: LABEL196
+      9: LABEL196
+      15: LABEL196
+   jump                   LABEL199
+LABEL196:
+   return                
+   jump                   LABEL199
+LABEL198:
+   return                
+LABEL199:
+   load_int               1
+   load_int               1
+   invoke                 299
+   return                

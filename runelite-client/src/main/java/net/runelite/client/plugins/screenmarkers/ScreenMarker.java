@@ -35,6 +35,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ScreenMarker
 {
+	private long id;
 	private String name;
 	private int borderThickness;
 	private Color color;

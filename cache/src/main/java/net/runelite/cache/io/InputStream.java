@@ -30,14 +30,14 @@ import java.nio.ByteBuffer;
 public class InputStream extends java.io.InputStream
 {
 	private static final char[] CHARACTERS = new char[]
-	{
-		'\u20ac', '\u0000', '\u201a', '\u0192', '\u201e', '\u2026',
-		'\u2020', '\u2021', '\u02c6', '\u2030', '\u0160', '\u2039',
-		'\u0152', '\u0000', '\u017d', '\u0000', '\u0000', '\u2018',
-		'\u2019', '\u201c', '\u201d', '\u2022', '\u2013', '\u2014',
-		'\u02dc', '\u2122', '\u0161', '\u203a', '\u0153', '\u0000',
-		'\u017e', '\u0178'
-	};
+		{
+			'\u20ac', '\u0000', '\u201a', '\u0192', '\u201e', '\u2026',
+			'\u2020', '\u2021', '\u02c6', '\u2030', '\u0160', '\u2039',
+			'\u0152', '\u0000', '\u017d', '\u0000', '\u0000', '\u2018',
+			'\u2019', '\u201c', '\u201d', '\u2022', '\u2013', '\u2014',
+			'\u02dc', '\u2122', '\u0161', '\u203a', '\u0153', '\u0000',
+			'\u017e', '\u0178'
+		};
 
 	private final ByteBuffer buffer;
 
@@ -157,11 +157,25 @@ public class InputStream extends java.io.InputStream
 		return peek < 128 ? this.readUnsignedByte() : this.readUnsignedShort() - 0x8000;
 	}
 
+	public int readUnsignedIntSmartShortCompat()
+	{
+		int var1 = 0;
+
+		int var2;
+		for (var2 = this.readUnsignedShortSmart(); var2 == 32767; var2 = this.readUnsignedShortSmart())
+		{
+			var1 += 32767;
+		}
+
+		var1 += var2;
+		return var1;
+	}
+
 	public String readString()
 	{
 		StringBuilder sb = new StringBuilder();
 
-		for (;;)
+		for (; ; )
 		{
 			int ch = this.readUnsignedByte();
 
