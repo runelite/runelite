@@ -31,7 +31,6 @@ import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,12 +40,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import static net.runelite.api.AnimationID.*;
-import static net.runelite.api.AnimationID.COOKING_RANGE;
-import static net.runelite.api.AnimationID.COOKING_WINE;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -69,7 +65,6 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
-import net.runelite.client.game.ItemStack;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.telemetry.data.BarrowsLootTelemetry;
@@ -101,7 +96,7 @@ public class TelemetryPlugin extends Plugin
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
 	private static final int PEST_CONTROL_REGION = 10536;
 	private static final int MAX_SPAWN_TILE_RANGE = 10;
-	// 5 Minute in Milliseconds
+	// 5 Minutes in Milliseconds
 	private static final int TIME_EXPIRE_PERIOD = 5 * 60 * 1000;
 
 	private static final int INVENTORY_SIZE = 28;
@@ -112,11 +107,14 @@ public class TelemetryPlugin extends Plugin
 
 	private static final String FISHING_SPOT = "Fishing spot";
 
-	private String eventType;
 	private WorldPoint posLastTick;
 	private Set<InventoryItem> playerInventory;
 	private Set<InventoryItem> oldPlayerInventory;
 
+	// Used mainly for determining clue Scroll Type
+	private String eventType;
+
+	// Skilling
 	private List<GameItem> itemsCollectedWhileSkilling = new ArrayList<>();
 	private boolean isSkilling = false;
 	private Skill currentSkill;
@@ -184,12 +182,7 @@ public class TelemetryPlugin extends Plugin
 	{
 		int oldOre = sackOre;
 		sackOre = client.getVar(Varbits.SACK_NUMBER);
-		if (oldOre == -1)
-		{
-			return;
-		}
-
-		if (oldOre != sackOre)
+		if (oldOre != -1 && oldOre != sackOre)
 		{
 			int removed = oldOre - sackOre;
 			if (removed > 0)
@@ -198,7 +191,7 @@ public class TelemetryPlugin extends Plugin
 			}
 		}
 
-		// Theatre of Blood Varbit
+		// Theatre of Blood
 		int oldTobVarbit = tobVarbit;
 		tobVarbit = client.getVar(Varbits.THEATRE_OF_BLOOD);
 		if (oldTobVarbit != tobVarbit)
@@ -215,7 +208,7 @@ public class TelemetryPlugin extends Plugin
 	@Subscribe
 	public void onNpcLootReceived(final NpcLootReceived e)
 	{
-		telemetryManager.submit(new NpcLootTelemetry(e.getNpc().getId(), e.getItems()));
+		telemetryManager.submit(new NpcLootTelemetry(e.getNpc().getId(), GameItem.fromItemStackCollection(e.getItems())));
 	}
 
 	@Subscribe
@@ -294,10 +287,7 @@ public class TelemetryPlugin extends Plugin
 		}
 
 		// Convert container items to array of ItemStack
-		final Collection<ItemStack> items = Arrays.stream(container.getItems())
-			.filter(item -> item.getId() > 0)
-			.map(item -> new ItemStack(item.getId(), item.getQuantity(), client.getLocalPlayer().getLocalLocation()))
-			.collect(Collectors.toList());
+		final Collection<GameItem> items = GameItem.fromItemArray(container.getItems());
 
 		if (!items.isEmpty())
 		{
@@ -445,9 +435,11 @@ public class TelemetryPlugin extends Plugin
 
 	private Multimap<String, GameItem> getInventoryChanges()
 	{
+		// Consolidate inventory entries into a single map of item IDs and quantities
 		Map<Integer, Integer> inventory = new HashMap<>();
 		for (InventoryItem item : oldPlayerInventory)
 		{
+			// Assume all items in old inventory were removed.
 			int qty = item.getQuantity() * -1;
 			if (inventory.containsKey(item.getId()))
 			{
@@ -465,16 +457,18 @@ public class TelemetryPlugin extends Plugin
 			inventory.put(item.getId(), qty);
 		}
 
+		// Convert map to Added/Removed
 		Multimap<String, GameItem> items = ArrayListMultimap.create();
 		for (Map.Entry<Integer, Integer> e : inventory.entrySet())
 		{
-			GameItem item = new GameItem(e.getKey(), e.getValue());
-			int qty = item.getQuantity();
+			int qty = e.getValue();
 			if (qty == 0)
 			{
 				continue;
 			}
 			String type = qty < 0 ? InventoryType.REMOVED : InventoryType.ADDED;
+			// Ensure qty is positive now that we have the type
+			GameItem item = new GameItem(e.getKey(), Math.abs(qty));
 			items.put(type, item);
 		}
 

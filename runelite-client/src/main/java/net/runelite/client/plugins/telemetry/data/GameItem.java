@@ -24,11 +24,32 @@
  */
 package net.runelite.client.plugins.telemetry.data;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import lombok.Value;
+import net.runelite.api.Item;
+import net.runelite.client.game.ItemStack;
 
 @Value
 public class GameItem
 {
 	private final int id;
 	private final int quantity;
+
+	public static Collection<GameItem> fromItemArray(Item[] itemArray)
+	{
+		return Arrays.stream(itemArray)
+			.filter(item -> item.getId() > 0)
+			.map(item -> new GameItem(item.getId(), item.getQuantity()))
+			.collect(Collectors.toList());
+	}
+
+	public static Collection<GameItem> fromItemStackCollection(Collection<ItemStack> itemArray)
+	{
+		return itemArray.stream()
+			.filter(item -> item.getId() > 0)
+			.map(item -> new GameItem(item.getId(), item.getQuantity()))
+			.collect(Collectors.toList());
+	}
 }

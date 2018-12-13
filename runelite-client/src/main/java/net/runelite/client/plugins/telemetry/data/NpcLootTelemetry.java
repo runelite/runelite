@@ -26,11 +26,10 @@ package net.runelite.client.plugins.telemetry.data;
 
 import java.util.Collection;
 import lombok.Value;
-import net.runelite.client.game.ItemStack;
 
 @Value
 public class NpcLootTelemetry
 {
 	private final int npcID;
-	private final Collection<ItemStack> items;
+	private final Collection<GameItem> items;
 }

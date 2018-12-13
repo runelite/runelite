@@ -26,11 +26,10 @@ package net.runelite.client.plugins.telemetry.data;
 
 import java.util.Collection;
 import lombok.Data;
-import net.runelite.client.game.ItemStack;
 
 @Data
 public class EventLootTelemetry
 {
 	private final String eventName;
-	private final Collection<ItemStack> items;
+	private final Collection<GameItem> items;
 }

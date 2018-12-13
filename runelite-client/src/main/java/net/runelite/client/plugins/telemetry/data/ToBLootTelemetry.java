@@ -27,7 +27,6 @@ package net.runelite.client.plugins.telemetry.data;
 import java.util.Collection;
 import lombok.Getter;
 import lombok.ToString;
-import net.runelite.client.game.ItemStack;
 
 @Getter
 @ToString(callSuper = true)
@@ -36,7 +35,7 @@ public class ToBLootTelemetry extends EventLootTelemetry
 	private final int personalDeaths;
 	private final int totalDeaths;
 
-	public ToBLootTelemetry(Collection<ItemStack> items, int personalDeaths, int totalDeaths)
+	public ToBLootTelemetry(Collection<GameItem> items, int personalDeaths, int totalDeaths)
 	{
 		super(null, items);
 		this.personalDeaths = personalDeaths;

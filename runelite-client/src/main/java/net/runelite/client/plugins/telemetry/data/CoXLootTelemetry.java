@@ -27,7 +27,6 @@ package net.runelite.client.plugins.telemetry.data;
 import java.util.Collection;
 import lombok.Getter;
 import lombok.ToString;
-import net.runelite.client.game.ItemStack;
 
 @Getter
 @ToString(callSuper = true)
@@ -37,7 +36,7 @@ public class CoXLootTelemetry extends EventLootTelemetry
 	private final int personalPoints;
 	private final int partySize;
 
-	public CoXLootTelemetry(Collection<ItemStack> items, int personalPoints, int totalPoints, int partySize)
+	public CoXLootTelemetry(Collection<GameItem> items, int personalPoints, int totalPoints, int partySize)
 	{
 		super(null, items);
 		this.totalPoints = totalPoints;

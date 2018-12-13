@@ -27,14 +27,11 @@ package net.runelite.client.plugins.telemetry.data;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import lombok.Getter;
 import lombok.ToString;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
-import net.runelite.client.game.ItemStack;
 import net.runelite.client.plugins.barrows.BarrowsBrothers;
 
-@Getter
 @ToString(callSuper = true)
 public class BarrowsLootTelemetry extends EventLootTelemetry
 {
@@ -42,7 +39,7 @@ public class BarrowsLootTelemetry extends EventLootTelemetry
 	private final boolean diaryCompleted;
 	private final List<String> killedBrothers = new ArrayList<>();
 
-	public BarrowsLootTelemetry(Collection<ItemStack> items, Client client)
+	public BarrowsLootTelemetry(Collection<GameItem> items, Client client)
 	{
 		super(null, items);
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
