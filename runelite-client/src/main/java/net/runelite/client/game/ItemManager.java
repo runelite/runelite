@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Value;
@@ -55,6 +56,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
+import net.runelite.http.api.item.ItemStats;
 
 @Singleton
 @Slf4j
@@ -82,6 +84,7 @@ public class ItemManager
 
 	private final ItemClient itemClient = new ItemClient();
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
+	private Map<String, ItemStats> itemStats = Collections.emptyMap();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
 	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
@@ -157,6 +160,7 @@ public class ItemManager
 		this.clientThread = clientThread;
 
 		scheduledExecutorService.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);
+		scheduledExecutorService.submit(this::loadStats);
 
 		itemImages = CacheBuilder.newBuilder()
 			.maximumSize(128L)
@@ -218,6 +222,25 @@ public class ItemManager
 		}
 	}
 
+	private void loadStats()
+	{
+		try
+		{
+			final Map<String, ItemStats> stats = itemClient.getStats();
+			if (stats != null)
+			{
+				itemStats = ImmutableMap.copyOf(stats);
+			}
+
+			log.debug("Loaded {} stats", itemStats.size());
+		}
+		catch (IOException e)
+		{
+			log.warn("error loading stats!", e);
+		}
+	}
+
+
 	@Subscribe
 	public void onGameStateChanged(final GameStateChanged event)
 	{
@@ -267,6 +290,24 @@ public class ItemManager
 		}
 
 		return price;
+	}
+
+	/**
+	 * Look up an item's stats
+	 * @param itemId item id
+	 * @return item stats
+	 */
+	@Nullable
+	public ItemStats getItemStats(int itemId)
+	{
+		ItemComposition itemComposition = getItemComposition(itemId);
+
+		if (itemComposition == null || itemComposition.getName() == null)
+		{
+			return null;
+		}
+
+		return itemStats.get(itemComposition.getName());
 	}
 
 	/**

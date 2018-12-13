@@ -28,7 +28,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.4-SNAPSHOT</version>
+		<version>1.5.5-SNAPSHOT</version>
 	</parent>
 
 	<name>Web API</name>

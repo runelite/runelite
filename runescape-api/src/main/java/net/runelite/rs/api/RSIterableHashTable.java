@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.rs.api;
 
-import java.awt.Canvas;
+import net.runelite.api.IterableHashTable;
+import net.runelite.mapping.Import;
 
-/**
- * Represents the client game engine.
- */
-public interface GameEngine
+public interface RSIterableHashTable extends IterableHashTable
 {
-	/**
-	 * Gets the canvas that contains everything.
-	 *
-	 * @return the game canvas
-	 */
-	Canvas getCanvas();
-
-	/**
-	 * Gets the client main thread.
-	 *
-	 * @return the main thread
-	 */
-	Thread getClientThread();
-
-	/**
-	 * Checks whether this code is executing on the client main thread.
-	 *
-	 * @return true if on the main thread, false otherwise
-	 */
-	boolean isClientThread();
-
-	void resizeCanvas();
-
-	void setReplaceCanvasNextFrame(boolean replace);
+	@Import("get")
+	@Override
+	RSNode get(long hash);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,35 +24,7 @@
  */
 package net.runelite.api;
 
-import java.awt.Canvas;
-
-/**
- * Represents the client game engine.
- */
-public interface GameEngine
+public interface IterableHashTable extends Iterable
 {
-	/**
-	 * Gets the canvas that contains everything.
-	 *
-	 * @return the game canvas
-	 */
-	Canvas getCanvas();
-
-	/**
-	 * Gets the client main thread.
-	 *
-	 * @return the main thread
-	 */
-	Thread getClientThread();
-
-	/**
-	 * Checks whether this code is executing on the client main thread.
-	 *
-	 * @return true if on the main thread, false otherwise
-	 */
-	boolean isClientThread();
-
-	void resizeCanvas();
-
-	void setReplaceCanvasNextFrame(boolean replace);
+	Node get(long hash);
 }

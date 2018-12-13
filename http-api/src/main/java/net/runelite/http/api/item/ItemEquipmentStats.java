@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.http.api.item;
 
-import java.awt.Canvas;
+import lombok.Builder;
+import lombok.Value;
 
-/**
- * Represents the client game engine.
- */
-public interface GameEngine
+@Value
+@Builder
+public class ItemEquipmentStats
 {
-	/**
-	 * Gets the canvas that contains everything.
-	 *
-	 * @return the game canvas
-	 */
-	Canvas getCanvas();
+	private int slot;
 
-	/**
-	 * Gets the client main thread.
-	 *
-	 * @return the main thread
-	 */
-	Thread getClientThread();
+	private int astab;
+	private int aslash;
+	private int acrush;
+	private int amagic;
+	private int arange;
 
-	/**
-	 * Checks whether this code is executing on the client main thread.
-	 *
-	 * @return true if on the main thread, false otherwise
-	 */
-	boolean isClientThread();
+	private int dstab;
+	private int dslash;
+	private int dcrush;
+	private int dmagic;
+	private int drange;
 
-	void resizeCanvas();
-
-	void setReplaceCanvasNextFrame(boolean replace);
+	private int str;
+	private int rstr;
+	private int mdmg;
+	private int prayer;
+	private int aspeed;
 }
+
