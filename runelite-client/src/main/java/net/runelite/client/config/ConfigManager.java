@@ -347,7 +347,7 @@ public class ConfigManager
 
 		synchronized (pendingChanges)
 		{
-			pendingChanges.remove(groupName + "." + key);
+			pendingChanges.put(groupName + "." + key, null);
 		}
 
 		Runnable task = () ->
