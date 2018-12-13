@@ -72,6 +72,7 @@ import javax.swing.text.JTextComponent;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigButton;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -524,6 +525,17 @@ public class ConfigPanel extends PluginPanel
 				});
 
 				item.add(button, BorderLayout.EAST);
+			}
+
+			if (cid.getType() == ConfigButton.class)
+			{
+				JButton configButton = new JButton(cid.getItem().name());
+				configButton.setFocusable(false);
+				configButton.addActionListener((e) ->
+					configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), new ConfigButton()));
+				configButton.setToolTipText(cid.getItem().description());
+
+				item.add(configButton, BorderLayout.CENTER);
 			}
 
 			mainPanel.add(item);
