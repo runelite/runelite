@@ -88,6 +88,17 @@ public interface GpuPluginConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "fogCircularity",
+		name = "Fog Roundness",
+		description = "Fog circularity in %",
+		position = 8
+	)
+	default int fogCircularity()
+	{
+		return 30;
+	}
+
+	@ConfigItem(
 		keyName = "fogDensity",
 		name = "Fog Density",
 		description = "Relative fog thickness",

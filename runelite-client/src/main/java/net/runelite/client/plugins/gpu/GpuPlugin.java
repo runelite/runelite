@@ -223,6 +223,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniUseFog;
 	private int uniFogColor;
 	private int uniFogDepth;
+	private int uniFogCornerRadius;
 	private int uniFogDensity;
 	private int uniDrawDistance;
 	private int uniProjectionMatrix;
@@ -503,6 +504,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniBrightness = gl.glGetUniformLocation(glProgram, "brightness");
 		uniSmoothBanding = gl.glGetUniformLocation(glProgram, "smoothBanding");
 		uniFogDepth = gl.glGetUniformLocation(glProgram, "fogDepth");
+		uniFogCornerRadius = gl.glGetUniformLocation(glProgram, "fogCornerRadius");
 		uniFogDensity = gl.glGetUniformLocation(glProgram, "fogDensity");
 		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 		uniFogColor = gl.glGetUniformLocation(glProgram, "fogColor");
@@ -1064,9 +1066,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			gl.glUseProgram(glProgram);
 
+			float effectiveDrawDistance = Perspective.LOCAL_TILE_SIZE * Math.min(Constants.SCENE_SIZE / 2, drawDistance);
 			gl.glUniform1i(uniUseFog, config.enableFog() ? 1 : 0);
 			gl.glUniform3f(uniFogColor, 0, 0, 0);
-			gl.glUniform1f(uniFogDepth, config.fogDepth() * Perspective.LOCAL_TILE_SIZE * Math.min(Constants.SCENE_SIZE / 2, drawDistance) / 100.0f);
+			gl.glUniform1f(uniFogDepth, config.fogDepth() * 0.01f * effectiveDrawDistance);
+			gl.glUniform1f(uniFogCornerRadius, config.fogCircularity() * 0.01f * effectiveDrawDistance);
 			gl.glUniform1f(uniFogDensity, config.fogDensity() * 0.1f);
 			gl.glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
 

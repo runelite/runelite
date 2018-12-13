@@ -49,6 +49,7 @@ uniform float brightness;
 uniform int useFog;
 uniform int drawDistance;
 uniform float fogDepth;
+uniform float fogCornerRadius;
 uniform float fogDensity;
 
 out ivec3 vPosition;
@@ -69,15 +70,17 @@ float minEdgeDistance(vec3 v1, vec4 bounds){
     return min(min(v1.x - bounds.x, bounds.y - v1.x), min(v1.z - bounds.z, bounds.w - v1.z));
 }
 
-// Corner truncating function
-float averageEdgeDistance(vec3 v1, vec4 bounds){
-    return (min(v1.x - bounds.x, bounds.y - v1.x) + min(v1.z - bounds.z, bounds.w - v1.z)) / 2;
-}
-
-float truncatedRectangleFunction(vec3 v1, vec4 bounds){
+float roundedRectangleFunction(vec3 v1, vec4 bounds, float cornerRadius){
 	float minXDistance = min(v1.x - bounds.x, bounds.y - v1.x);
 	float minZDistance = min(v1.z - bounds.z, bounds.w - v1.z);
-	return min( min(minXDistance, minZDistance), (minXDistance + minZDistance) / 4 ); // = min(minEdgeDistance(v1, bounds), averageEdgeDistance(v1, bounds) / 2)
+	if (minXDistance < cornerRadius && minZDistance < cornerRadius)
+	{
+		return cornerRadius - sqrt( pow(minXDistance - cornerRadius, 2) + pow(minZDistance - cornerRadius, 2) );
+	}
+	else
+	{
+		return min(minXDistance, minZDistance);
+	}
 }
 
 void main()
@@ -100,6 +103,6 @@ void main()
   int fogNorth = min(FOG_SCENE_EDGE_MAX, cameraZ + drawDistance - TILE_SIZE);
 
   // Calculate a fog blend value
-  float fogDistance = truncatedRectangleFunction(vPosition, vec4(fogWest, fogEast, fogSouth, fogNorth));
+  float fogDistance = roundedRectangleFunction(vPosition, vec4(fogWest, fogEast, fogSouth, fogNorth), fogCornerRadius);
   vFogAmount = fogFactorCurved(fogDistance, 0, fogDepth, fogDensity) * useFog;
 }
