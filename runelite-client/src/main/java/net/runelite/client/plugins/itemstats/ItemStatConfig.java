@@ -49,7 +49,7 @@ public interface ItemStatConfig extends Config
 	)
 	default boolean equipmentStats()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
