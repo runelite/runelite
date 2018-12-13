@@ -1,15 +1,21 @@
 package net.runelite.client.plugins.ccupdate;
 
 import com.google.common.collect.Sets;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.client.eventbus.Subscribe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import lombok.extern.slf4j.Slf4j;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.RuneLiteAPI;
@@ -19,6 +25,11 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -27,9 +38,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @PluginDescriptor(
-		name = "CC Update"
+		name = " Queue Helper",
+		description = "Ba Services' Queue Helper created by Ryan"
 )
-@Slf4j
 public class ccUpdatePlugin extends Plugin
 {
 	public static final MediaType JSON  = MediaType.parse("application/json; charset=utf-8");
@@ -38,14 +49,38 @@ public class ccUpdatePlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private ChatMessageManager chatMessageManager;
+
 	private HashSet<ClanMember> previousMembersInClan;
 
 	private String clanChannelName;
+
+	private Socket socket;
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		previousMembersInClan = null;
+        socket = IO.socket("https://baservicesserver.now.sh");
+        socket.on("new", objects -> {
+			JSONArray newRows = (JSONArray)objects[0];
+			for (int i = 0; i < newRows.length(); i++) {
+				try {
+					JSONObject obj = newRows.getJSONObject(i);
+					String value = obj.getString("premium");
+					postChatMessage(value);
+				} catch (JSONException exception) {
+
+				}
+			}
+        });
+        socket.connect();
+	}
+
+	@Override
+	protected void shutDown() throws Exception {
+        socket.disconnect();
 	}
 
 	@Subscribe
@@ -93,14 +128,14 @@ public class ccUpdatePlugin extends Plugin
 			@Override
 			public void onFailure(Call call, IOException ex)
 			{
-				log.warn("error posting clan member update", ex);
+				//log.warn("error posting clan member update", ex);
 			}
 
 			@Override
 			public void onResponse(Call call, Response response) throws IOException
 			{
 				response.body().close();
-				log.debug("request update for clan chat members");
+				//log.debug("request update for clan chat members");
 			}
 		});
 	}
@@ -137,5 +172,18 @@ public class ccUpdatePlugin extends Plugin
 		json.add("members", members);
 
 		return json;
+	}
+
+	private void postChatMessage(String value) {
+		String message = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append(value)
+				.append(" has been added to the premium queue P+?")
+				.build();
+
+		chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.GAME)
+				.runeLiteFormattedMessage(message)
+				.build());
 	}
 }
