@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.telemetry.data;
+package net.runelite.client.plugins.telemetry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,71 +33,70 @@ import static net.runelite.api.NpcID.*;
 @Getter
 public enum FishingSpots
 {
-	SHRIMP("Shrimp, Anchovies", ItemID.RAW_SHRIMPS, SkillingTools.FISHING_SMALL_NET,
+	SHRIMP("Shrimp, Anchovies", ItemID.RAW_SHRIMPS, FishingTools.FISHING_SMALL_NET,
 		FISHING_SPOT_1518, FISHING_SPOT_1521, FISHING_SPOT_1523,
 		FISHING_SPOT_1524, FISHING_SPOT_1525, FISHING_SPOT_1528,
 		FISHING_SPOT_1530, FISHING_SPOT_1544, FISHING_SPOT_3913,
 		FISHING_SPOT_7155, FISHING_SPOT_7459, FISHING_SPOT_7462,
 		FISHING_SPOT_7467, FISHING_SPOT_7469, FISHING_SPOT_7947
 	),
-	LOBSTER("Lobster, Swordfish, Tuna", ItemID.RAW_LOBSTER, SkillingTools.FISHING_LOBSTER_POT,
+	LOBSTER("Lobster, Swordfish, Tuna", ItemID.RAW_LOBSTER, FishingTools.FISHING_LOBSTER_POT,
 		FISHING_SPOT_1510, FISHING_SPOT_1519, FISHING_SPOT_1522,
 		FISHING_SPOT_3914, FISHING_SPOT_5820, FISHING_SPOT_7199,
 		FISHING_SPOT_7460, FISHING_SPOT_7465, FISHING_SPOT_7470,
 		FISHING_SPOT_7946
 	),
-	SHARK("Shark, Bass", ItemID.RAW_SHARK, SkillingTools.FISHING_HARPOON,
+	SHARK("Shark, Bass", ItemID.RAW_SHARK, FishingTools.FISHING_HARPOON,
 		FISHING_SPOT_1511, FISHING_SPOT_1520, FISHING_SPOT_3915,
 		FISHING_SPOT_4476, FISHING_SPOT_4477, FISHING_SPOT_5233,
 		FISHING_SPOT_5234, FISHING_SPOT_5821, FISHING_SPOT_7200,
 		FISHING_SPOT_7461, FISHING_SPOT_7466
 	),
-	MONKFISH("Monkfish", ItemID.RAW_MONKFISH, SkillingTools.FISHING_SMALL_NET,
+	MONKFISH("Monkfish", ItemID.RAW_MONKFISH, FishingTools.FISHING_SMALL_NET,
 		FISHING_SPOT_4316
 	),
-	SALMON("Salmon, Trout", ItemID.RAW_SALMON, SkillingTools.FISHING_FLY_ROD,
+	SALMON("Salmon, Trout", ItemID.RAW_SALMON, FishingTools.FISHING_FLY_ROD,
 		ROD_FISHING_SPOT, ROD_FISHING_SPOT_1508, ROD_FISHING_SPOT_1509,
 		ROD_FISHING_SPOT_1513, ROD_FISHING_SPOT_1515, ROD_FISHING_SPOT_1526,
 		ROD_FISHING_SPOT_1527, ROD_FISHING_SPOT_7463, ROD_FISHING_SPOT_7464,
 		ROD_FISHING_SPOT_7468
 	),
-	BARB_FISH("Sturgeon, Salmon, Trout", ItemID.LEAPING_STURGEON, SkillingTools.FISHING_BARB_ROD,
+	BARB_FISH("Sturgeon, Salmon, Trout", ItemID.LEAPING_STURGEON, FishingTools.FISHING_BARB_ROD,
 		FISHING_SPOT_1542, FISHING_SPOT_7323
 	),
-	ANGLERFISH("Anglerfish", ItemID.RAW_ANGLERFISH, SkillingTools.FISHING_ROD,
+	ANGLERFISH("Anglerfish", ItemID.RAW_ANGLERFISH, FishingTools.FISHING_ROD,
 		ROD_FISHING_SPOT_6825
 	),
-	MINNOW("Minnow", ItemID.MINNOW, SkillingTools.FISHING_SMALL_NET,
+	MINNOW("Minnow", ItemID.MINNOW, FishingTools.FISHING_SMALL_NET,
 		FISHING_SPOT_7730, FISHING_SPOT_7731, FISHING_SPOT_7732, FISHING_SPOT_7733
 	),
-	INFERNAL_EEL("Infernal Eel", ItemID.INFERNAL_EEL,  SkillingTools.FISHING_OILY_ROD,
+	INFERNAL_EEL("Infernal Eel", ItemID.INFERNAL_EEL,  FishingTools.FISHING_OILY_ROD,
 		ROD_FISHING_SPOT_7676
 	),
-	KARAMBWAN("Karambwan", ItemID.RAW_KARAMBWAN, SkillingTools.FISHING_KARAMBWAN_VESSEL,
+	KARAMBWAN("Karambwan", ItemID.RAW_KARAMBWAN, FishingTools.FISHING_KARAMBWAN_VESSEL,
 		FISHING_SPOT_4712, FISHING_SPOT_4713
 	),
-	KARAMBWANJI("Karambwanji, Shrimp", ItemID.KARAMBWANJI, SkillingTools.FISHING_SMALL_NET,
+	KARAMBWANJI("Karambwanji, Shrimp", ItemID.KARAMBWANJI, FishingTools.FISHING_SMALL_NET,
 		FISHING_SPOT_4710
 	),
-	SACRED_EEL("Sacred eel", ItemID.SACRED_EEL, SkillingTools.FISHING_ROD,
+	SACRED_EEL("Sacred eel", ItemID.SACRED_EEL, FishingTools.FISHING_ROD,
 		FISHING_SPOT_6488
 	),
-	CAVE_EEL("Cave eel", ItemID.RAW_CAVE_EEL, SkillingTools.FISHING_ROD,
+	CAVE_EEL("Cave eel", ItemID.RAW_CAVE_EEL, FishingTools.FISHING_ROD,
 		FISHING_SPOT_1497, FISHING_SPOT_1498
 	),
-	SLIMY_EEL("Slimy eel", ItemID.RAW_SLIMY_EEL, SkillingTools.FISHING_ROD,
+	SLIMY_EEL("Slimy eel", ItemID.RAW_SLIMY_EEL, FishingTools.FISHING_ROD,
 		FISHING_SPOT_2653, FISHING_SPOT_2654, FISHING_SPOT_2655
 	),
-	DARK_CRAB("Dark Crab", ItemID.RAW_DARK_CRAB, SkillingTools.FISHING_ROD,
+	DARK_CRAB("Dark Crab", ItemID.RAW_DARK_CRAB, FishingTools.FISHING_ROD,
 		FISHING_SPOT_1536
 	);
 
-	@Getter
-	private static final Map<Integer, FishingSpots> SPOTS = new HashMap<>();
+	public static final Map<Integer, FishingSpots> map = new HashMap<>();
 
 	private final String name;
 	private final int fishSpriteId;
-	private final SkillingTools skillingTools;
+	private final int[] fishingTools;
 	private final int[] ids;
 
 	static
@@ -108,16 +107,16 @@ public enum FishingSpots
 		{
 			for (int spotId : spot.getIds())
 			{
-				SPOTS.put(spotId, spot);
+				map.put(spotId, spot);
 			}
 		}
 	}
 
-	FishingSpots(String spot, int fishSpriteId, SkillingTools skillingTools, int... ids)
+	FishingSpots(String spot, int fishSpriteId, FishingTools fishingTools, int... ids)
 	{
 		this.name = spot;
 		this.fishSpriteId = fishSpriteId;
-		this.skillingTools = skillingTools;
+		this.fishingTools = fishingTools.getTools();
 		this.ids = ids;
 	}
 }

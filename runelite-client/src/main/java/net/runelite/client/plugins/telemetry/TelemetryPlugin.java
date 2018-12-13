@@ -70,13 +70,12 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.telemetry.data.BarrowsLootTelemetry;
 import net.runelite.client.plugins.telemetry.data.CoXLootTelemetry;
 import net.runelite.client.plugins.telemetry.data.EventLootTelemetry;
-import net.runelite.client.plugins.telemetry.data.FishingSpots;
 import net.runelite.client.plugins.telemetry.data.GameItem;
 import net.runelite.client.plugins.telemetry.data.InventoryItem;
 import net.runelite.client.plugins.telemetry.data.MotherlodeMineTelemetry;
 import net.runelite.client.plugins.telemetry.data.NpcLootTelemetry;
 import net.runelite.client.plugins.telemetry.data.NpcSpawnedTelemetry;
-import net.runelite.client.plugins.telemetry.data.SkillingData;
+import net.runelite.client.plugins.telemetry.data.SkillingTelemetry;
 import net.runelite.client.plugins.telemetry.data.ToBLootTelemetry;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.util.Text;
@@ -605,7 +604,7 @@ public class TelemetryPlugin extends Plugin
 			return;
 		}
 		
-		telemetryManager.submit(new SkillingData(skill, client.getRealSkillLevel(skill), stackGameItems(itemsCollectedWhileSkilling), getToolId(skill), elapsedTicks));
+		telemetryManager.submit(new SkillingTelemetry(skill, client.getRealSkillLevel(skill), stackGameItems(itemsCollectedWhileSkilling), getToolId(skill), elapsedTicks));
 	}
 
 	private Collection<GameItem> stackGameItems(Collection<GameItem> items)
@@ -630,10 +629,10 @@ public class TelemetryPlugin extends Plugin
 		switch (skill)
 		{
 			case FISHING:
-				if (interactingID != -1 && FishingSpots.getSPOTS().containsKey(interactingID))
+				if (interactingID != -1 && FishingSpots.map.containsKey(interactingID))
 				{
 					// Check for a tool in their inventory
-					int[] toolIds = FishingSpots.getSPOTS().get(interactingID).getSkillingTools().getTools();
+					int[] toolIds = FishingSpots.map.get(interactingID).getFishingTools();
 					for (int i : toolIds)
 					{
 						if (playerInventoryContainsTool(i, true, true))

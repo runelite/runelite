@@ -32,10 +32,4 @@ public class InventoryItem
 	private final int id;
 	private final int quantity;
 	private final int slot;
-
-	@Override
-	public String toString()
-	{
-		return "InventoryItem(id=" + id + ",quantity=" + quantity + ",slot=" + slot + ")";
-	}
 }

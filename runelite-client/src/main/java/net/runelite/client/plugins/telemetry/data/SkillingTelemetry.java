@@ -24,43 +24,16 @@
  */
 package net.runelite.client.plugins.telemetry.data;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-import lombok.Getter;
-import net.runelite.api.ItemID;
+import java.util.Collection;
+import lombok.Value;
 import net.runelite.api.Skill;
 
-@Getter
-public enum SkillingTools
+@Value
+public class SkillingTelemetry
 {
-	FISHING_HARPOON(Skill.FISHING,
-		ItemID.DRAGON_HARPOON, ItemID.INFERNAL_HARPOON, ItemID.INFERNAL_HARPOON_UNCHARGED, ItemID.HARPOON, ItemID.BARBTAIL_HARPOON),
-	FISHING_BIG_NET(Skill.FISHING, ItemID.BIG_FISHING_NET),
-	FISHING_SMALL_NET(Skill.FISHING, ItemID.SMALL_FISHING_NET, ItemID.SMALL_FISHING_NET_6209),
-	FISHING_ROD(Skill.FISHING, ItemID.FISHING_ROD),
-	FISHING_FLY_ROD(Skill.FISHING, ItemID.FLY_FISHING_ROD),
-	FISHING_BARB_ROD(Skill.FISHING, ItemID.BARBARIAN_ROD),
-	FISHING_OILY_ROD(Skill.FISHING, ItemID.OILY_FISHING_ROD),
-	// Lobster pot also include HARPOON
-	FISHING_LOBSTER_POT(Skill.FISHING, ItemID.LOBSTER_POT, ItemID.DRAGON_HARPOON, ItemID.INFERNAL_HARPOON, ItemID.INFERNAL_HARPOON_UNCHARGED, ItemID.HARPOON, ItemID.BARBTAIL_HARPOON),
-	FISHING_KARAMBWAN_VESSEL(Skill.FISHING, ItemID.KARAMBWAN_VESSEL, ItemID.KARAMBWAN_VESSEL_3159);
-
-	private static final Multimap<Skill, SkillingTools> TOOLS = ArrayListMultimap.create();
-
-	static
-	{
-		for (SkillingTools s : values())
-		{
-			TOOLS.put(s.getSkill(), s);
-		}
-	}
-
 	private final Skill skill;
-	private final int[] tools;
-
-	SkillingTools(Skill skill, int... tools)
-	{
-		this.skill = skill;
-		this.tools = tools;
-	}
+	private final int level;
+	private final Collection<GameItem> items;
+	private final int toolID;
+	private final int ticksElapsed;
 }
