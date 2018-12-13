@@ -30,6 +30,7 @@ import com.google.common.cache.LoadingCache;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,6 +68,6 @@ public class SpriteController
 			return ResponseEntity.notFound().build();
 		}
 
-		return ResponseEntity.ok(data);
+		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(8, TimeUnit.HOURS).cachePublic()).body(data);
 	}
 }
