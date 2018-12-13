@@ -70,7 +70,7 @@ public class HiscoreController
 		}
 
 		return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(2, TimeUnit.MINUTES).cachePublic())
+				.cacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePublic())
 				.body(result);
 	}
 
@@ -91,7 +91,7 @@ public class HiscoreController
 		skillResult.setSkill(requested);
 
 		return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(2, TimeUnit.MINUTES).cachePublic())
+				.cacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePublic())
 				.body(skillResult);
 	}
 
