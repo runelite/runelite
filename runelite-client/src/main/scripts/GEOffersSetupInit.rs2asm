@@ -389,4 +389,6 @@ LABEL315:
    iload                  13
    invoke                 780
 LABEL319:
-   return                
+   sconst                 "geBuilt"   ;
+   runelite_callback                  ;
+   return
