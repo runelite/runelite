@@ -38,6 +38,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.RuneLiteProperties;
@@ -79,6 +80,9 @@ public class ChatNotificationsPlugin extends Plugin
 	private String usernameReplacer = "";
 	private Pattern highlightMatcher = null;
 
+	//How many ticks the plugin will wait before sending notifications.
+	private int tickBuffer = 2;
+
 	@Provides
 	ChatNotificationsConfig provideConfig(ConfigManager configManager)
 	{
@@ -99,6 +103,7 @@ public class ChatNotificationsPlugin extends Plugin
 			case LOGIN_SCREEN:
 			case HOPPING:
 				usernameMatcher = null;
+				tickBuffer = 2;
 				break;
 		}
 	}
@@ -210,8 +215,22 @@ public class ChatNotificationsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (tickBuffer != 0)
+		{
+			tickBuffer--;
+		}
+	}
+
 	private void sendNotification(SetMessage message)
 	{
+		if (tickBuffer != 0)
+		{
+			return;
+		}
+
 		String name = Text.removeTags(message.getName());
 		String sender = message.getSender();
 		StringBuilder stringBuilder = new StringBuilder();
