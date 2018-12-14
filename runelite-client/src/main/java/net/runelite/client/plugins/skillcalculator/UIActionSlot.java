@@ -39,6 +39,9 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.client.plugins.skillcalculator.beans.SkillDataEntry;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -54,17 +57,32 @@ class UIActionSlot extends JPanel
 		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_ERROR_COLOR).darker()),
 		BorderFactory.createEmptyBorder(7, 12, 7, 7));
 
-	SkillDataEntry action;
-	private JShadowedLabel uiLabelActions;
+	private static final Border ORANGE_BORDER = new CompoundBorder(
+		BorderFactory.createMatteBorder(0, 4, 0, 0, (ColorScheme.PROGRESS_INPROGRESS_COLOR).darker()),
+		BorderFactory.createEmptyBorder(7, 12, 7, 7));
+
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
+
+	@Getter(AccessLevel.PACKAGE)
+	private final SkillDataEntry action;
+	private final JShadowedLabel uiLabelActions;
+
 	private final JPanel uiInfo;
 
-	boolean isAvailable = false;
-	boolean isSelected = false;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean isAvailable;
 
-	double value = 0;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean isSelected;
 
-	UIActionSlot(SkillDataEntry action)
+	@Getter(AccessLevel.PACKAGE)
+	private boolean isOverlapping;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private double value = 0;
+
+	UIActionSlot(SkillDataEntry action, JLabel uiIcon)
 	{
 		this.action = action;
 
@@ -94,14 +112,6 @@ class UIActionSlot extends JPanel
 		};
 
 		addMouseListener(hoverListener);
-
-		JLabel uiIcon = new JLabel();
-
-		if (action.getIcon() != null)
-			SkillCalculator.itemManager.getImage(action.getIcon()).addTo(uiIcon);
-		else if (action.getSprite() != null)
-			SkillCalculator.spriteManager.addSpriteTo(uiIcon, action.getSprite(), 0);
-
 		uiIcon.setMinimumSize(ICON_SIZE);
 		uiIcon.setMaximumSize(ICON_SIZE);
 		uiIcon.setPreferredSize(ICON_SIZE);
@@ -128,13 +138,19 @@ class UIActionSlot extends JPanel
 	void setSelected(boolean selected)
 	{
 		isSelected = selected;
-		updateBackground();
+		this.updateBackground();
 	}
 
 	void setAvailable(boolean available)
 	{
 		isAvailable = available;
-		updateBackground();
+		this.updateBackground();
+	}
+
+	void setOverlapping(boolean overlapping)
+	{
+		isOverlapping = overlapping;
+		this.updateBackground();
 	}
 
 	void setText(String text)
@@ -144,8 +160,20 @@ class UIActionSlot extends JPanel
 
 	private void updateBackground()
 	{
-		setBorder(isAvailable ? GREEN_BORDER : RED_BORDER);
-		setBackground(isSelected ? ColorScheme.DARKER_GRAY_HOVER_COLOR.brighter() : ColorScheme.DARKER_GRAY_COLOR);
+		if (isAvailable)
+		{
+			this.setBorder(GREEN_BORDER);
+		}
+		else if (isOverlapping)
+		{
+			this.setBorder(ORANGE_BORDER);
+		}
+		else
+		{
+			this.setBorder(RED_BORDER);
+		}
+
+		setBackground(this.isSelected() ? ColorScheme.DARKER_GRAY_HOVER_COLOR.brighter() : ColorScheme.DARKER_GRAY_COLOR);
 	}
 
 	@Override

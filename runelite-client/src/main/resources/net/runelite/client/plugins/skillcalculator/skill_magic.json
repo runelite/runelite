@@ -637,6 +637,12 @@
       "xp": 67
     },
     {
+      "level": 71, 
+      "sprite": 586,
+      "name": "Ourania Teleport",
+      "xp": 69
+    },
+    {
       "level": 71,
       "sprite": 1305,
       "name": "Cemetery Teleport",
@@ -1046,7 +1052,7 @@
     },
     {
       "level": 95,
-      "sprite": 361,
+      "sprite": 365,
       "name": "Fire Surge",
       "xp": 51
     },

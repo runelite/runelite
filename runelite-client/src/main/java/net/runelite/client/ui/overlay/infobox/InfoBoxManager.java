@@ -26,13 +26,20 @@ package net.runelite.client.ui.overlay.infobox;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ComparisonChain;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @Singleton
@@ -40,13 +47,30 @@ import net.runelite.client.plugins.PluginDescriptor;
 public class InfoBoxManager
 {
 	private final List<InfoBox> infoBoxes = new ArrayList<>();
+	private final RuneLiteConfig runeLiteConfig;
+
+	@Inject
+	private InfoBoxManager(final RuneLiteConfig runeLiteConfig)
+	{
+		this.runeLiteConfig = runeLiteConfig;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("runelite") && event.getKey().equals("infoBoxSize"))
+		{
+			infoBoxes.forEach(this::updateInfoBoxImage);
+		}
+	}
 
 	public void addInfoBox(InfoBox infoBox)
 	{
 		Preconditions.checkNotNull(infoBox);
 		log.debug("Adding InfoBox {}", infoBox);
-		infoBoxes.add(infoBox);
 
+		updateInfoBoxImage(infoBox);
+		infoBoxes.add(infoBox);
 		refreshInfoBoxes();
 	}
 
@@ -92,9 +116,46 @@ public class InfoBoxManager
 		}
 	}
 
+	private void updateInfoBoxImage(final InfoBox infoBox)
+	{
+		if (infoBox.getImage() == null)
+		{
+			return;
+		}
+
+		// Set scaled InfoBox image
+		final Image image = infoBox.getImage();
+		Image resultImage = image;
+		final double width = image.getWidth(null);
+		final double height = image.getHeight(null);
+		final double size = Math.max(2, runeLiteConfig.infoBoxSize()); // Limit size to 2 as that is minimum size not causing breakage
+
+		if (size < width || size < height)
+		{
+			final double scalex = size / width;
+			final double scaley = size / height;
+
+			if (scalex == 1 && scaley == 1)
+			{
+				return;
+			}
+
+			final double scale = Math.min(scalex, scaley);
+			final int newWidth = (int) (width * scale);
+			final int newHeight = (int) (height * scale);
+			final BufferedImage scaledImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+			final Graphics g = scaledImage.createGraphics();
+			g.drawImage(image, 0, 0, newWidth, newHeight, null);
+			g.dispose();
+			resultImage = scaledImage;
+		}
+
+		infoBox.setScaledImage(resultImage);
+	}
+
 	private void refreshInfoBoxes()
 	{
-		Collections.sort(infoBoxes, (b1, b2) -> ComparisonChain
+		infoBoxes.sort((b1, b2) -> ComparisonChain
 			.start()
 			.compare(b1.getPriority(), b2.getPriority())
 			.compare(b1.getPlugin().getClass().getAnnotation(PluginDescriptor.class).name(), b2.getPlugin().getClass().getAnnotation(PluginDescriptor.class).name())

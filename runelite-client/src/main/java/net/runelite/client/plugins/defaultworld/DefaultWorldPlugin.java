@@ -24,25 +24,27 @@
  */
 package net.runelite.client.plugins.defaultworld;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.io.IOException;
-import java.util.EnumSet;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.WorldUtil;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldResult;
 
-@PluginDescriptor(name = "Default World")
+@PluginDescriptor(
+	name = "Default World",
+	description = "Enable a default world to be selected when launching the client"
+)
 @Slf4j
 public class DefaultWorldPlugin extends Plugin
 {
@@ -84,7 +86,7 @@ public class DefaultWorldPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		applyWorld();
 	}
@@ -119,7 +121,7 @@ public class DefaultWorldPlugin extends Plugin
 				rsWorld.setId(world.getId());
 				rsWorld.setPlayerCount(world.getPlayers());
 				rsWorld.setLocation(world.getLocation());
-				rsWorld.setTypes(toWorldTypes(world.getTypes()));
+				rsWorld.setTypes(WorldUtil.toWorldTypes(world.getTypes()));
 
 				client.changeWorld(rsWorld);
 				log.debug("Applied new world {}", correctedWorld);
@@ -133,18 +135,6 @@ public class DefaultWorldPlugin extends Plugin
 		{
 			log.warn("Error looking up world {}. Error: {}", correctedWorld, e);
 		}
-	}
-
-	private static EnumSet<WorldType> toWorldTypes(final EnumSet<net.runelite.http.api.worlds.WorldType> apiTypes)
-	{
-		final EnumSet<WorldType> types = EnumSet.noneOf(WorldType.class);
-
-		for (net.runelite.http.api.worlds.WorldType apiType : apiTypes)
-		{
-			types.add(WorldType.valueOf(apiType.name()));
-		}
-
-		return types;
 	}
 
 	private void applyWorld()

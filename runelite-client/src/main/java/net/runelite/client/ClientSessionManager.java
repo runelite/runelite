@@ -63,7 +63,7 @@ public class ClientSessionManager
 			log.warn("error opening session", ex);
 		}
 
-		scheduledFuture = executorService.scheduleWithFixedDelay(this::ping, 1, 4, TimeUnit.MINUTES);
+		scheduledFuture = executorService.scheduleWithFixedDelay(this::ping, 1, 10, TimeUnit.MINUTES);
 	}
 
 	public void shutdown()

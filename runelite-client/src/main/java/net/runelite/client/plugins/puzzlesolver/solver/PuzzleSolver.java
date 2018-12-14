@@ -25,18 +25,24 @@
  */
 package net.runelite.client.plugins.puzzlesolver.solver;
 
+import com.google.common.base.Stopwatch;
+import java.time.Duration;
 import java.util.List;
 import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.Pathfinder;
 
 public class PuzzleSolver implements Runnable
 {
 	public static final int DIMENSION = 5;
+	public static final int BLANK_TILE_VALUE = -1;
+
+	private static final Duration MAX_WAIT_DURATION = Duration.ofMillis(1500);
 
 	private Pathfinder pathfinder;
 	private PuzzleState startState;
 
 	private List<PuzzleState> solution;
 	private int position;
+	private Stopwatch stopwatch;
 	private boolean failed = false;
 
 	public PuzzleSolver(Pathfinder pathfinder, PuzzleState startState)
@@ -70,6 +76,11 @@ public class PuzzleSolver implements Runnable
 		this.position = position;
 	}
 
+	public boolean hasExceededWaitDuration()
+	{
+		return stopwatch.elapsed().compareTo(MAX_WAIT_DURATION) > 0;
+	}
+
 	public boolean hasFailed()
 	{
 		return failed;
@@ -78,6 +89,7 @@ public class PuzzleSolver implements Runnable
 	@Override
 	public void run()
 	{
+		stopwatch = Stopwatch.createStarted();
 		solution = pathfinder.computePath(startState);
 		failed = solution == null;
 	}

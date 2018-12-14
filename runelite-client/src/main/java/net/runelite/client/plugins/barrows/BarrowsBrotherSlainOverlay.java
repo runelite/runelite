@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
@@ -54,30 +55,39 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		// Do not display overlay if potential is null/hidden
-		Widget potential = client.getWidget(WidgetInfo.BARROWS_POTENTIAL);
+		final Widget potential = client.getWidget(WidgetInfo.BARROWS_POTENTIAL);
 		if (potential == null || potential.isHidden())
 		{
 			return null;
 		}
 
 		// Hide original overlay
-		Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
+		final Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
 		if (barrowsBrothers != null)
 		{
 			barrowsBrothers.setHidden(true);
+			potential.setHidden(true);
 		}
 
 		panelComponent.getChildren().clear();
 
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
-			String slain = client.getVar(brother.getKilledVarbit()) > 0 ? "✓" : "";
+			final boolean brotherSlain = client.getVar(brother.getKilledVarbit()) > 0;
+			String slain = brotherSlain ? "\u2713" : "\u2717";
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left(brother.getName())
 				.right(slain)
-				.rightColor(slain.isEmpty() ? Color.WHITE : Color.GREEN)
+				.rightColor(brotherSlain ? Color.GREEN : Color.RED)
 				.build());
 		}
+
+		float rewardPercent = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) / 10.0f;
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("Potential")
+				.right(rewardPercent != 0 ? rewardPercent + "%" : "0%")
+				.rightColor(rewardPercent >= 73.0f && rewardPercent <= 88.0f ? Color.GREEN : rewardPercent < 65.6f ? Color.WHITE : Color.YELLOW)
+				.build());
 
 		return panelComponent.render(graphics);
 	}

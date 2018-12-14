@@ -24,19 +24,13 @@
  */
 package net.runelite.client.plugins.screenmarkers;
 
-import java.awt.Point;
 import java.awt.event.MouseEvent;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 import javax.swing.SwingUtilities;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.input.MouseListener;
+import net.runelite.client.input.MouseAdapter;
 
-@Slf4j
-public class ScreenMarkerMouseListener extends MouseListener
+public class ScreenMarkerMouseListener extends MouseAdapter
 {
 	private final ScreenMarkerPlugin plugin;
-	private Point lastMousePoint = null;
 
 	ScreenMarkerMouseListener(ScreenMarkerPlugin plugin)
 	{
@@ -65,13 +59,11 @@ public class ScreenMarkerMouseListener extends MouseListener
 
 		if (SwingUtilities.isLeftMouseButton(event))
 		{
-			lastMousePoint = event.getPoint();
 			plugin.startCreation(event.getPoint());
 		}
 		else if (plugin.isCreatingScreenMarker())
 		{
 			plugin.finishCreation(true);
-			lastMousePoint = null;
 		}
 
 		event.consume();
@@ -106,29 +98,7 @@ public class ScreenMarkerMouseListener extends MouseListener
 
 		if (SwingUtilities.isLeftMouseButton(event))
 		{
-			Point currentPoint = event.getPoint();
-			int dx = currentPoint.x - lastMousePoint.x;
-			int dy = currentPoint.y - lastMousePoint.y;
-
-			//if shift is down, constrain proportions
-			if (event.isShiftDown() && dx != dy)
-			{
-				int x = dx;
-
-				if (dx > 0 || dy > 0)
-				{
-					dx = max(dx, dy);
-					dy = max(dy, x);
-				}
-				else
-				{
-					dx = min(dx, dy);
-					dy = min(dy, x);
-				}
-			}
-
-			plugin.resizeMarker(dx, dy);
-			lastMousePoint = currentPoint;
+			plugin.resizeMarker(event.getPoint());
 		}
 
 		return event;

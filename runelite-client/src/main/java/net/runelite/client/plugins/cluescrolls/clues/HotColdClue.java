@@ -29,7 +29,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -42,13 +41,10 @@ import java.util.regex.Pattern;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.NPC;
-import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.CLUE_SCROLL_IMAGE;
-import static net.runelite.client.plugins.cluescrolls.ClueScrollPlugin.SPADE_IMAGE;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdLocation;
@@ -88,9 +84,9 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	}
 
 	@Override
-	public List<WorldPoint> getLocations()
+	public WorldPoint[] getLocations()
 	{
-		return Lists.transform(digLocations, HotColdLocation::getWorldPoint);
+		return Lists.transform(digLocations, HotColdLocation::getWorldPoint).toArray(new WorldPoint[0]);
 	}
 
 	@Override
@@ -104,14 +100,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		// strange device has not been tested yet, show how to get it
 		if (lastWorldPoint == null && location == null)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Clue:")
-				.build());
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left(getText())
-				.leftColor(TITLED_CONTENT_COLOR)
-				.build());
-
 			if (getNpc() != null)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
@@ -141,7 +129,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 
 			for (HotColdLocation hotColdLocation : digLocations)
 			{
-				Rectangle2D r = hotColdLocation.getRect();
 				HotColdArea hotColdArea = hotColdLocation.getHotColdArea();
 
 				if (locationCounts.containsKey(hotColdArea))
@@ -198,7 +185,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 
 			if (localLocation != null)
 			{
-				OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, SPADE_IMAGE, Color.ORANGE);
+				OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getSpadeImage(), Color.ORANGE);
 			}
 
 			return;
@@ -212,42 +199,30 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 			{
 				for (NPC npc : plugin.getNpcsToMark())
 				{
-					OverlayUtil.renderActorOverlayImage(graphics, npc, CLUE_SCROLL_IMAGE, Color.ORANGE, IMAGE_Z_OFFSET);
+					OverlayUtil.renderActorOverlayImage(graphics, npc, plugin.getClueScrollImage(), Color.ORANGE, IMAGE_Z_OFFSET);
 				}
 			}
 		}
 
-		// once the number of possible dig locations is below 10, highlight their ground areas
+		// once the number of possible dig locations is below 10, show the dig spots
 		if (digLocations.size() < 10)
 		{
 			// Mark potential dig locations
 			for (HotColdLocation hotColdLocation : digLocations)
 			{
-				Rectangle2D r = hotColdLocation.getRect();
+				WorldPoint wp = hotColdLocation.getWorldPoint();
+				LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), wp.getX(), wp.getY());
 
-				for (int i = (int) r.getMinX(); i <= r.getMaxX(); i++)
+				if (localLocation == null)
 				{
-					for (int j = (int) r.getMinY(); j <= r.getMaxY(); j++)
-					{
-						LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), new WorldPoint(i, j, 0));
-
-						if (localLocation != null)
-						{
-							Polygon poly = Perspective.getCanvasTilePoly(plugin.getClient(), localLocation);
-							graphics.setColor(new Color(Color.BLUE.getRed(), Color.BLUE.getGreen(), Color.BLUE.getBlue(), 50));
-
-							if (poly != null)
-							{
-								graphics.fillPolygon(poly);
-							}
-						}
-					}
+					return;
 				}
+
+				OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getSpadeImage(), Color.ORANGE);
 			}
 		}
 	}
 
-	@Override
 	public boolean update(final String message, final ClueScrollPlugin plugin)
 	{
 		if (!message.startsWith("The device is"))
@@ -421,5 +396,10 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	{
 		this.location = wp;
 		reset();
+	}
+
+	public String[] getNpcs()
+	{
+		return new String[] {npc};
 	}
 }

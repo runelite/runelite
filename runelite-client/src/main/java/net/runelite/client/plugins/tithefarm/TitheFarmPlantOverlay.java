@@ -24,28 +24,29 @@
  */
 package net.runelite.client.plugins.tithefarm;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.geom.Arc2D;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
 public class TitheFarmPlantOverlay extends Overlay
 {
-	private static final int TIMER_SIZE = 25;
-	private static final int TIMER_BORDER_WIDTH = 1;
-
 	private final Client client;
 	private final TitheFarmPlugin plugin;
 	private final TitheFarmPluginConfig config;
+	private final Map<TitheFarmPlantState, Color> borders = new HashMap<>();
+	private final Map<TitheFarmPlantState, Color> fills = new HashMap<>();
 
 	@Inject
 	TitheFarmPlantOverlay(Client client, TitheFarmPlugin plugin, TitheFarmPluginConfig config)
@@ -57,53 +58,62 @@ public class TitheFarmPlantOverlay extends Overlay
 		this.client = client;
 	}
 
+	/**
+	 * Updates the timer colors.
+	 */
+	public void updateConfig()
+	{
+		borders.clear();
+		fills.clear();
+
+		final Color colorUnwateredBorder = config.getColorUnwatered();
+		final Color colorUnwatered = new Color(colorUnwateredBorder.getRed(), colorUnwateredBorder.getGreen(), colorUnwateredBorder.getBlue(), 100);
+		borders.put(TitheFarmPlantState.UNWATERED, colorUnwateredBorder);
+		fills.put(TitheFarmPlantState.UNWATERED, colorUnwatered);
+
+		final Color colorWateredBorder = config.getColorWatered();
+		final Color colorWatered = new Color(colorWateredBorder.getRed(), colorWateredBorder.getGreen(), colorWateredBorder.getBlue(), 100);
+		borders.put(TitheFarmPlantState.WATERED, colorWateredBorder);
+		fills.put(TitheFarmPlantState.WATERED, colorWatered);
+
+		final Color colorGrownBorder = config.getColorGrown();
+		final Color colorGrown = new Color(colorGrownBorder.getRed(), colorGrownBorder.getGreen(), colorGrownBorder.getBlue(), 100);
+		borders.put(TitheFarmPlantState.GROWN, colorGrownBorder);
+		fills.put(TitheFarmPlantState.GROWN, colorGrown);
+	}
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Widget viewport = client.getViewportWidget();
+		final Widget viewport = client.getViewportWidget();
+
 		for (TitheFarmPlant plant : plugin.getPlants())
 		{
-			LocalPoint localLocation = LocalPoint.fromWorld(client, plant.getWorldLocation());
+			if (plant.getState() == TitheFarmPlantState.DEAD)
+			{
+				continue;
+			}
+
+			final LocalPoint localLocation = LocalPoint.fromWorld(client, plant.getWorldLocation());
+
 			if (localLocation == null)
 			{
 				continue;
 			}
-			net.runelite.api.Point canvasLocation = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), client.getPlane());
+
+			final Point canvasLocation = Perspective.localToCanvas(client, localLocation, client.getPlane());
+
 			if (viewport != null && canvasLocation != null)
 			{
-				switch (plant.getState())
-				{
-					case UNWATERED:
-						drawTimerOnPlant(graphics, plant, canvasLocation, config.getColorUnwatered());
-						break;
-					case WATERED:
-						drawTimerOnPlant(graphics, plant, canvasLocation, config.getColorWatered());
-						break;
-					case GROWN:
-						drawTimerOnPlant(graphics, plant, canvasLocation, config.getColorGrown());
-						break;
-				}
+				final ProgressPieComponent progressPieComponent = new ProgressPieComponent();
+				progressPieComponent.setPosition(canvasLocation);
+				progressPieComponent.setProgress(1 - plant.getPlantTimeRelative());
+				progressPieComponent.setBorderColor(borders.get(plant.getState()));
+				progressPieComponent.setFill(fills.get(plant.getState()));
+				progressPieComponent.render(graphics);
 			}
 		}
 
 		return null;
-	}
-
-	private void drawTimerOnPlant(Graphics2D graphics, TitheFarmPlant plant, net.runelite.api.Point loc, Color color)
-	{
-		//Construct the arc
-		Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
-		arc.setAngleStart(90);
-		double timeLeft = 1 - plant.getPlantTimeRelative();
-		arc.setAngleExtent(timeLeft * 360);
-		arc.setFrame(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
-
-		//Draw the inside of the arc
-		graphics.setColor(color);
-		graphics.fill(arc);
-
-		//Draw the outlines of the arc
-		graphics.setStroke(new BasicStroke(TIMER_BORDER_WIDTH));
-		graphics.drawOval(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
 	}
 }

@@ -30,6 +30,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.UUID;
 import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -75,7 +77,7 @@ public class ConfigClient
 		}
 	}
 
-	public void set(String key, String value) throws IOException
+	public void set(String key, String value)
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("config")
@@ -90,13 +92,24 @@ public class ConfigClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
 		{
-			logger.debug("Set configuration value '{}' to '{}'", key, value);
-		}
+			@Override
+			public void onFailure(Call call, IOException e)
+			{
+				logger.warn("Unable to synchronize configuration item", e);
+			}
+
+			@Override
+			public void onResponse(Call call, Response response)
+			{
+				response.close();
+				logger.debug("Synchronized configuration value '{}' to '{}'", key, value);
+			}
+		});
 	}
 
-	public void unset(String key) throws IOException
+	public void unset(String key)
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("config")
@@ -111,9 +124,20 @@ public class ConfigClient
 			.url(url)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
 		{
-			logger.debug("Unset configuration value '{}'", key);
-		}
+			@Override
+			public void onFailure(Call call, IOException e)
+			{
+				logger.warn("Unable to unset configuration item", e);
+			}
+
+			@Override
+			public void onResponse(Call call, Response response)
+			{
+				response.close();
+				logger.debug("Unset configuration value '{}'", key);
+			}
+		});
 	}
 }

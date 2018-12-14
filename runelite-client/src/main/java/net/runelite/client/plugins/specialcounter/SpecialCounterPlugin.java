@@ -24,7 +24,8 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
-import com.google.common.eventbus.Subscribe;
+import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -37,10 +38,11 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
-import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -48,6 +50,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
+	description = "Track DWH, Arclight, Darklight, and BGS special attacks used on NPCs",
+	tags = {"combat", "npcs", "overlay"},
 	enabledByDefault = false
 )
 public class SpecialCounterPlugin extends Plugin
@@ -59,7 +63,7 @@ public class SpecialCounterPlugin extends Plugin
 	private double modifier = 1d;
 
 	private SpecialWeapon specialWeapon;
-	private int interactedNpcId;
+	private final Set<Integer> interactedNpcIds = new HashSet<>();
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
 
 	@Inject
@@ -95,7 +99,7 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSpecialChanged(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		int specialPercentage = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT);
 
@@ -150,23 +154,29 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			int interactingId = ((NPC) interacting).getId();
 
-			if (interactedNpcId != interactingId)
+			if (!interactedNpcIds.contains(interactingId))
 			{
-				interactedNpcId = interactingId;
 				removeCounters();
+				modifier = 1d;
+				interactedNpcIds.add(interactingId);
 
-				Boss boss = Boss.getBoss(interacting.getName());
-				modifier = boss != null ? boss.getModifier() : 1d;
+				final Boss boss = Boss.getBoss(interactingId);
+				if (boss != null)
+				{
+					modifier = boss.getModifier();
+					interactedNpcIds.addAll(boss.getIds());
+				}
+
 			}
 		}
 	}
 
 	@Subscribe
-	public void onActorDeath(ActorDeath death)
+	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
-		Actor actor = death.getActor();
+		NPC actor = npcDespawned.getNpc();
 
-		if (actor instanceof NPC && ((NPC) actor).getId() == interactedNpcId)
+		if (actor.isDead() && interactedNpcIds.contains(actor.getId()))
 		{
 			removeCounters();
 		}
@@ -220,6 +230,8 @@ public class SpecialCounterPlugin extends Plugin
 
 	private void removeCounters()
 	{
+		interactedNpcIds.clear();
+
 		for (int i = 0; i < specialCounter.length; ++i)
 		{
 			SpecialCounter counter = specialCounter[i];

@@ -24,10 +24,8 @@
  */
 package net.runelite.client.plugins.herbiboars;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +34,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.ObjectID.DRIFTWOOD_30523;
 import static net.runelite.api.ObjectID.MUSHROOM_30520;
@@ -56,13 +53,15 @@ import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
-@Slf4j
 @PluginDescriptor(
-	name = "Herbiboar"
+	name = "Herbiboar",
+	description = "Highlight starting rocks, trails, and the objects to search at the end of each trail",
+	tags = {"herblore", "hunter", "skilling", "overlay"}
 )
 public class HerbiboarPlugin extends Plugin
 {
@@ -97,22 +96,13 @@ public class HerbiboarPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private HerbiboarOverlay overlay;
 
 	@Inject
 	private HerbiboarMinimapOverlay minimapOverlay;
-
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, minimapOverlay);
-	}
-
-	@Provides
-	HerbiboarConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(HerbiboarConfig.class);
-	}
 
 	@Getter
 	private boolean inHerbiboarArea;
@@ -145,10 +135,25 @@ public class HerbiboarPlugin extends Plugin
 	@Setter
 	private int finishId;
 
+	@Provides
+	HerbiboarConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(HerbiboarConfig.class);
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
+		overlayManager.add(minimapOverlay);
 		inHerbiboarArea = checkArea();
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(minimapOverlay);
 	}
 
 	private void updateTrailData()
@@ -208,7 +213,7 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -228,7 +233,10 @@ public class HerbiboarPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		updateTrailData();
+		if (isInHerbiboarArea())
+		{
+			updateTrailData();
+		}
 	}
 
 	@Subscribe
@@ -244,7 +252,7 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectDeSpawned(GameObjectDespawned event)
+	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onGameObject(event.getTile(), event.getGameObject(), null);
 	}
@@ -262,7 +270,7 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGroundObjectDeSpawned(GroundObjectDespawned event)
+	public void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		onGroundObject(event.getTile(), event.getGroundObject(), null);
 	}

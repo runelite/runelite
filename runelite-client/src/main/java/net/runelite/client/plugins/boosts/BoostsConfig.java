@@ -28,13 +28,16 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "boosts",
-	name = "Boosts Information",
-	description = "Configuration for the Boosts plugin"
-)
+@ConfigGroup("boosts")
 public interface BoostsConfig extends Config
 {
+	enum DisplayChangeMode
+	{
+		ALWAYS,
+		BOOSTED,
+		NEVER
+	}
+
 	@ConfigItem(
 		keyName = "enableSkill",
 		name = "Enable Skill Boosts",
@@ -69,13 +72,35 @@ public interface BoostsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "displayNextChange",
-		name = "Display next change",
-		description = "Configures whether or not to display when the next stat change will be",
+		keyName = "displayNextBuffChange",
+		name = "Display next buff change",
+		description = "Configures whether or not to display when the next buffed stat change will be",
 		position = 4
 	)
-	default boolean displayNextChange()
+	default DisplayChangeMode displayNextBuffChange()
 	{
-		return true;
+		return DisplayChangeMode.BOOSTED;
+	}
+
+	@ConfigItem(
+		keyName = "displayNextDebuffChange",
+		name = "Display next debuff change",
+		description = "Configures whether or not to display when the next debuffed stat change will be",
+		position = 5
+	)
+	default DisplayChangeMode displayNextDebuffChange()
+	{
+		return DisplayChangeMode.NEVER;
+	}
+
+	@ConfigItem(
+		keyName = "boostThreshold",
+		name = "Boost Amount Threshold",
+		description = "The amount of levels boosted to send a notification at. A value of 0 will disable notification.",
+		position = 6
+	)
+	default int boostThreshold()
+	{
+		return 0;
 	}
 }

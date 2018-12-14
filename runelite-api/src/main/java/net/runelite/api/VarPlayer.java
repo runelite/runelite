@@ -27,21 +27,36 @@ package net.runelite.api;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * An enumeration of local player variables.
+ */
 @AllArgsConstructor
 @Getter
 public enum VarPlayer
 {
 	ATTACK_STYLE(43),
+	IS_POISONED(102),
 
 	BANK_TAB(115),
+
+	MEMBERSHIP_DAYS(1780),
 
 	SPECIAL_ATTACK_PERCENT(300),
 	SPECIAL_ATTACK_ENABLED(301),
 
 	IN_RAID_PARTY(1427),
 
+	NMZ_REWARD_POINTS(1060),
+
 	/**
-	 * Experience tracker goal start
+	 * 0 : not started
+	 * greater than 0 : in progress
+	 * greater than 99 : completed
+	 */
+	THRONE_OF_MISCELLANIA(359),
+
+	/**
+	 * Experience tracker goal start.
 	 */
 	ATTACK_GOAL_START(1229),
 	STRENGTH_GOAL_START(1230),
@@ -68,7 +83,7 @@ public enum VarPlayer
 	HUNTER_GOAL_START(1251),
 
 	/**
-	 * Experience tracker goal end
+	 * Experience tracker goal end.
 	 */
 	ATTACK_GOAL_END(1253),
 	STRENGTH_GOAL_END(1254),
@@ -92,7 +107,21 @@ public enum VarPlayer
 	SLAYER_GOAL_END(1272),
 	FARMING_GOAL_END(1273),
 	CONSTRUCTION_GOAL_END(1274),
-	HUNTER_GOAL_END(1275);
+	HUNTER_GOAL_END(1275),
+
+	/**
+	 * Bird house states
+	 */
+	BIRD_HOUSE_MEADOW_NORTH(1626),
+	BIRD_HOUSE_MEADOW_SOUTH(1627),
+	BIRD_HOUSE_VALLEY_NORTH(1628),
+	BIRD_HOUSE_VALLEY_SOUTH(1629),
+
+	/**
+	 * Slayer unlock bitfields
+	 */
+	SLAYER_UNLOCK_1(1076),
+	SLAYER_UNLOCK_2(1344);
 
 	private final int id;
 }

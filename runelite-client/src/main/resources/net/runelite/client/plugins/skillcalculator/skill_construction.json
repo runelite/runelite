@@ -14,15 +14,15 @@
     },
     {
       "level": 1,
-      "icon": 8780,
-      "name": "Teak Plank",
-      "xp": 90
+      "icon": 8778,
+      "name": "Oak Plank",
+      "xp": 60
     },
     {
       "level": 1,
-      "icon": 8180,
-      "name": "Plant",
-      "xp": 31
+      "icon": 8780,
+      "name": "Teak Plank",
+      "xp": 90
     },
     {
       "level": 1,
@@ -32,9 +32,9 @@
     },
     {
       "level": 1,
-      "icon": 8778,
-      "name": "Oak Plank",
-      "xp": 60
+      "icon": 8180,
+      "name": "Plant",
+      "xp": 31
     },
     {
       "level": 1,
@@ -331,12 +331,6 @@
       "xp": 147
     },
     {
-      "level": 23,
-      "icon": 8313,
-      "name": "Oak Armchair",
-      "xp": 180
-    },
-    {
       "level": 24,
       "icon": 8219,
       "name": "Small Oven",
@@ -353,6 +347,12 @@
       "icon": 1909,
       "name": "Greenman's Ale",
       "xp": 184
+    },
+    {
+      "level": 26,
+      "icon": 8313,
+      "name": "Oak Armchair",
+      "xp": 180
     },
     {
       "level": 26,
@@ -643,6 +643,12 @@
       "xp": 120
     },
     {
+      "level": 47,
+      "icon": 21913,
+      "name": "Mounted Mythical Cape",
+      "xp": 370
+    },
+    {
       "level": 48,
       "icon": 5755,
       "name": "Chef's Delight",
@@ -687,7 +693,7 @@
     {
       "level": 52,
       "icon": 8118,
-      "name": "Teak Table",
+      "name": "Teak Kitchen Table",
       "xp": 270
     },
     {
@@ -755,6 +761,12 @@
       "icon": 8338,
       "name": "Teak Demon Lectern",
       "xp": 180
+    },
+    {
+      "level": 59,
+      "icon": 8154,
+      "name": "Limestone attack stone",
+      "xp": 200
     },
     {
       "level": 59,

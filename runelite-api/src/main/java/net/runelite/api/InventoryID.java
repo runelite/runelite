@@ -24,13 +24,39 @@
  */
 package net.runelite.api;
 
+/**
+ * An enumeration of possible inventory types.
+ */
 public enum InventoryID
 {
+	/**
+	 * Standard player inventory.
+	 */
 	INVENTORY(93),
+	/**
+	 * Equipment inventory.
+	 */
 	EQUIPMENT(94),
+	/**
+	 * Bank inventory.
+	 */
 	BANK(95),
+	/**
+	 * A puzzle box inventory.
+	 */
 	PUZZLE_BOX(140),
-	BARROWS_REWARD(141);
+	/**
+	 * Barrows reward chest inventory.
+	 */
+	BARROWS_REWARD(141),
+	/**
+	 * Chambers of Xeric chest inventory.
+	 */
+	CHAMBERS_OF_XERIC_CHEST(581),
+	/**
+	 * Theater of Blood reward chest inventory (Raids 2)
+	 */
+	THEATRE_OF_BLOOD_CHEST(612);
 
 	private final int id;
 
@@ -39,6 +65,11 @@ public enum InventoryID
 		this.id = id;
 	}
 
+	/**
+	 * Gets the raw inventory type ID.
+	 *
+	 * @return inventory type
+	 */
 	public int getId()
 	{
 		return id;

@@ -28,9 +28,79 @@ import java.util.List;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
 
+/**
+ * Represents the model of an object.
+ */
 public interface Model extends Renderable
 {
+	/**
+	 * Gets a list of all vertices of the model.
+	 *
+	 * @return the vertices
+	 */
 	List<Vertex> getVertices();
 
+	/**
+	 * Gets a list of all triangles of the model.
+	 *
+	 * @return the triangle
+	 */
 	List<Triangle> getTriangles();
+
+	int getVerticesCount();
+
+	int[] getVerticesX();
+
+	int[] getVerticesY();
+
+	int[] getVerticesZ();
+
+	int getTrianglesCount();
+
+	int[] getTrianglesX();
+
+	int[] getTrianglesY();
+
+	int[] getTrianglesZ();
+
+	int[] getFaceColors1();
+
+	int[] getFaceColors2();
+
+	int[] getFaceColors3();
+
+	byte[] getTriangleTransparencies();
+
+	int getSceneId();
+	void setSceneId(int sceneId);
+
+	int getBufferOffset();
+	void setBufferOffset(int bufferOffset);
+
+	int getUvBufferOffset();
+	void setUvBufferOffset(int bufferOffset);
+
+	int getModelHeight();
+
+	void calculateBoundsCylinder();
+
+	byte[] getFaceRenderPriorities();
+
+	int getRadius();
+
+	short[] getFaceTextures();
+
+	float[][] getFaceTextureUCoordinates();
+	float[][] getFaceTextureVCoordinates();
+
+	void calculateExtreme(int orientation);
+
+	int getCenterX();
+	int getCenterY();
+	int getCenterZ();
+	int getExtremeX();
+	int getExtremeY();
+	int getExtremeZ();
+
+	int getXYZMag();
 }

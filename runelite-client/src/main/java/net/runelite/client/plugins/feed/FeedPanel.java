@@ -46,7 +46,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
@@ -54,8 +53,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
-import net.runelite.client.util.SwingUtil;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.feed.FeedItem;
 import net.runelite.http.api.feed.FeedItemType;
@@ -71,8 +70,6 @@ class FeedPanel extends PluginPanel
 {
 	private static final ImageIcon RUNELITE_ICON;
 	private static final ImageIcon OSRS_ICON;
-	private static final ImageIcon RESET_ICON;
-	private static final ImageIcon RESET_ICON_CLICK; //used as a click effect (darker version of the reset icon)
 
 	private static final Color TWEET_BACKGROUND = new Color(15, 15, 15);
 	private static final Color OSRS_NEWS_BACKGROUND = new Color(36, 30, 19);
@@ -81,11 +78,6 @@ class FeedPanel extends PluginPanel
 	private static final int MAX_CONTENT_LINES = 3;
 	private static final int CONTENT_WIDTH = 148;
 	private static final int TIME_WIDTH = 20;
-
-	/**
-	 * Holds all feed items.
-	 */
-	private final JPanel feedContainer = new JPanel();
 
 	private static final Comparator<FeedItem> FEED_ITEM_COMPARATOR = (o1, o2) ->
 	{
@@ -106,21 +98,8 @@ class FeedPanel extends PluginPanel
 
 	static
 	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				BufferedImage reset = ImageIO.read(FeedPanel.class.getResourceAsStream("reset.png"));
-				RUNELITE_ICON = new ImageIcon(ImageIO.read(FeedPanel.class.getResourceAsStream("runelite.png")));
-				OSRS_ICON = new ImageIcon(ImageIO.read(FeedPanel.class.getResourceAsStream("osrs.png")));
-				RESET_ICON = new ImageIcon(reset);
-				RESET_ICON_CLICK = new ImageIcon(SwingUtil.grayscaleOffset(reset, -100));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		RUNELITE_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(FeedPanel.class, "runelite.png"));
+		OSRS_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(FeedPanel.class, "osrs.png"));
 	}
 
 	private final FeedConfig config;
@@ -128,58 +107,13 @@ class FeedPanel extends PluginPanel
 
 	FeedPanel(FeedConfig config, Supplier<FeedResult> feedSupplier)
 	{
+		super(true);
 		this.config = config;
 		this.feedSupplier = feedSupplier;
 
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
-		setLayout(new BorderLayout());
-
-		feedContainer.setLayout(new GridLayout(0, 1, 0, 4));
-		feedContainer.setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-		/**
-		 * This header contains the "News Feed" title and a refresh icon button.
-		 */
-		JPanel header = new JPanel();
-		header.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		header.setLayout(new BorderLayout());
-		header.setBorder(new EmptyBorder(0, 0, 9, 0));
-
-		/**
-		 * A refresh icon button, when clicked, it will swap icons for feedback effect and then call
-		 * the rebuildFeed method.
-		 */
-		JLabel reset = new JLabel();
-		reset.setIcon(RESET_ICON);
-		reset.setVerticalAlignment(SwingConstants.CENTER);
-		reset.setHorizontalAlignment(SwingConstants.CENTER);
-		reset.setToolTipText("Refresh");
-
-		reset.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mousePressed(MouseEvent mouseEvent)
-			{
-				reset.setIcon(RESET_ICON_CLICK);
-				rebuildFeed();
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent mouseEvent)
-			{
-				reset.setIcon(RESET_ICON);
-			}
-		});
-
-		JLabel title = new JLabel("News feed");
-		title.setForeground(Color.WHITE);
-
-		header.add(title, BorderLayout.WEST);
-		header.add(reset, BorderLayout.EAST);
-
-		add(header, BorderLayout.NORTH);
-		add(feedContainer, BorderLayout.CENTER);
+		setLayout(new GridLayout(0, 1, 0, 4));
 	}
 
 	void rebuildFeed()
@@ -193,7 +127,7 @@ class FeedPanel extends PluginPanel
 
 		SwingUtilities.invokeLater(() ->
 		{
-			feedContainer.removeAll();
+			removeAll();
 
 			feed.getItems()
 				.stream()
@@ -353,7 +287,7 @@ class FeedPanel extends PluginPanel
 			}
 		});
 
-		feedContainer.add(avatarAndRight);
+		add(avatarAndRight);
 	}
 
 	private String durationToString(Duration duration)

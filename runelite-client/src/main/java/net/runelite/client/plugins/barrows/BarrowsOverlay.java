@@ -50,7 +50,7 @@ class BarrowsOverlay extends Overlay
 	private final BarrowsConfig config;
 
 	@Inject
-	BarrowsOverlay(Client client, BarrowsPlugin plugin, BarrowsConfig config)
+	private BarrowsOverlay(Client client, BarrowsPlugin plugin, BarrowsConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -63,27 +63,41 @@ class BarrowsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		Player local = client.getLocalPlayer();
+		final Color npcColor = getMinimapDotColor(1);
+		final Color playerColor = getMinimapDotColor(2);
 
 		// tunnels are only on z=0
 		if (!plugin.getWalls().isEmpty() && client.getPlane() == 0 && config.showMinimap())
 		{
-			//NPC yellow dot
-			List<NPC> npcs = client.getNpcs();
+			// NPC dots
+			graphics.setColor(npcColor);
+			final List<NPC> npcs = client.getNpcs();
 			for (NPC npc : npcs)
 			{
 				net.runelite.api.Point minimapLocation = npc.getMinimapLocation();
 				if (minimapLocation != null)
 				{
-					graphics.setColor(Color.yellow);
 					graphics.fillOval(minimapLocation.getX(), minimapLocation.getY(), 4, 4);
 				}
 			}
 
-			//Render barrows walls/doors
+			// Player dots
+			graphics.setColor(npcColor);
+			final List<Player> players = client.getPlayers();
+			for (Player player : players)
+			{
+				net.runelite.api.Point minimapLocation = player.getMinimapLocation();
+				if (minimapLocation != null)
+				{
+					graphics.fillOval(minimapLocation.getX(), minimapLocation.getY(), 4, 4);
+				}
+			}
+
+			// Render barrows walls/doors
 			renderObjects(graphics, local);
 
-			//Player white dot
-			graphics.setColor(Color.white);
+			// Local player square
+			graphics.setColor(playerColor);
 			graphics.fillRect(local.getMinimapLocation().getX(), local.getMinimapLocation().getY(), 3, 3);
 		}
 		else if (config.showBrotherLoc())
@@ -138,6 +152,17 @@ class BarrowsOverlay extends Overlay
 		}
 
 		graphics.fillRect(minimapLocation.getX(), minimapLocation.getY(), 3, 3);
+	}
+
+	/**
+	 * Get minimap dot color from client
+	 * @param typeIndex index of minimap dot type (1 npcs, 2 players)
+	 * @return color
+	 */
+	private Color getMinimapDotColor(int typeIndex)
+	{
+		final int pixel = client.getMapDots()[typeIndex].getPixels()[1];
+		return new Color(pixel);
 	}
 
 	private void renderLadders(Graphics2D graphics, GameObject ladder)

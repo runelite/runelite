@@ -32,6 +32,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
@@ -55,6 +57,7 @@ public class PestControlOverlay extends Overlay
 	private final Client client;
 
 	// Pest control game
+	@Getter(AccessLevel.PACKAGE)
 	private Game game;
 
 	@Inject
@@ -106,38 +109,10 @@ public class PestControlOverlay extends Overlay
 		PortalContext yellow = game.getYellow();
 		PortalContext red = game.getRed();
 
-		Widget purpleShield = client.getWidget(PURPLE.getShield());
-		Widget blueShield = client.getWidget(BLUE.getShield());
-		Widget yellowShield = client.getWidget(YELLOW.getShield());
-		Widget redShield = client.getWidget(RED.getShield());
-
 		Widget purpleHealth = client.getWidget(PURPLE.getHitpoints());
 		Widget blueHealth = client.getWidget(BLUE.getHitpoints());
 		Widget yellowHealth = client.getWidget(YELLOW.getHitpoints());
 		Widget redHealth = client.getWidget(RED.getHitpoints());
-
-		assert purpleShield != null;
-		assert blueShield != null;
-		assert yellowShield != null;
-		assert redShield != null;
-
-		// Check for fallen portals
-		if (purpleShield.isHidden())
-		{
-			game.fall(purple);
-		}
-		if (blueShield.isHidden())
-		{
-			game.fall(blue);
-		}
-		if (yellowShield.isHidden())
-		{
-			game.fall(yellow);
-		}
-		if (redShield.isHidden())
-		{
-			game.fall(red);
-		}
 
 		// Check for dead portals
 		if (isZero(purpleHealth))
@@ -222,9 +197,9 @@ public class PestControlOverlay extends Overlay
 		int y = (int) (bounds.getY() + bounds.getHeight() + textBounds.getHeight() + barBounds.getHeight());
 
 		graphics.setColor(Color.BLACK);
-		graphics.drawString(text, x + 1, y + 1);
+		graphics.drawString(text, x + 1, y + 5);
 		graphics.setColor(color);
-		graphics.drawString(text, x, y);
+		graphics.drawString(text, x, y + 4);
 	}
 
 	private static Rectangle2D union(Rectangle2D src1, Rectangle2D src2)
@@ -242,7 +217,7 @@ public class PestControlOverlay extends Overlay
 
 	private void renderAttack(Graphics2D graphics, PortalContext portal)
 	{
-		if (portal.isShielded() || portal.isIsDead())
+		if (portal.isShielded() || portal.isDead())
 		{
 			return;
 		}

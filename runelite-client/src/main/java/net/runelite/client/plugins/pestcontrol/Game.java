@@ -27,6 +27,7 @@ package net.runelite.client.plugins.pestcontrol;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.client.plugins.pestcontrol.Portal.BLUE;
 import static net.runelite.client.plugins.pestcontrol.Portal.PURPLE;
@@ -34,19 +35,42 @@ import static net.runelite.client.plugins.pestcontrol.Portal.RED;
 import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 
 @Slf4j
-public class Game
+class Game
 {
 	// Game starts with all possible rotations
 	private Rotation[] possibleRotations = Rotation.values();
 	// Number of shields dropped
 	private int shieldsDropped;
 
+	@Getter
 	private final PortalContext purple = new PortalContext(PURPLE);
+	@Getter
 	private final PortalContext blue = new PortalContext(BLUE);
+	@Getter
 	private final PortalContext yellow = new PortalContext(YELLOW);
+	@Getter
 	private final PortalContext red = new PortalContext(RED);
 
-	public void fall(PortalContext portal)
+	void fall(String color)
+	{
+		switch (color.toLowerCase())
+		{
+			case "purple":
+				fall(purple);
+				break;
+			case "red":
+				fall(red);
+				break;
+			case "yellow":
+				fall(yellow);
+				break;
+			case "blue":
+				fall(blue);
+				break;
+		}
+	}
+
+	private void fall(PortalContext portal)
 	{
 		if (!portal.isShielded())
 		{
@@ -55,7 +79,7 @@ public class Game
 
 		log.debug("Shield dropped for {}", portal.getPortal());
 
-		portal.setIsShielded(false);
+		portal.setShielded(false);
 		int shieldDrop = shieldsDropped++;
 
 		// Remove impossible rotations
@@ -72,19 +96,19 @@ public class Game
 		possibleRotations = rotations.toArray(new Rotation[rotations.size()]);
 	}
 
-	public void die(PortalContext portal)
+	void die(PortalContext portal)
 	{
-		if (portal.isIsDead())
+		if (portal.isDead())
 		{
 			return;
 		}
 
 		log.debug("Portal {} died", portal.getPortal());
 
-		portal.setIsDead(true);
+		portal.setDead(true);
 	}
 
-	public Collection<Portal> getNextPortals()
+	Collection<Portal> getNextPortals()
 	{
 		List<Portal> portals = new ArrayList<>();
 
@@ -99,25 +123,5 @@ public class Game
 		}
 
 		return portals;
-	}
-
-	public PortalContext getPurple()
-	{
-		return purple;
-	}
-
-	public PortalContext getBlue()
-	{
-		return blue;
-	}
-
-	public PortalContext getYellow()
-	{
-		return yellow;
-	}
-
-	public PortalContext getRed()
-	{
-		return red;
 	}
 }

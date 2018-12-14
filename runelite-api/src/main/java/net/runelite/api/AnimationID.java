@@ -24,8 +24,12 @@
  */
 package net.runelite.api;
 
-// Note: This class is not complete: these animations were manually gathered
-// through getAnimation(). Please add animations as you happen to use them.
+/**
+ * Utility class used for mapping animation IDs.
+ * <p>
+ * Note: This class is not complete and may not contain a specific animation
+ * required.
+ */
 public final class AnimationID
 {
 	public static final int IDLE = -1;
@@ -41,8 +45,10 @@ public final class AnimationID
 	public static final int WOODCUTTING_3A_AXE = 7264;
 	public static final int CONSUMING = 829; // consuming consumables
 	public static final int FIREMAKING = 733;
+	public static final int DEATH = 836;
 	public static final int COOKING_FIRE = 897;
 	public static final int COOKING_RANGE = 896;
+	public static final int COOKING_WINE = 7529;
 	public static final int FLETCHING_BOW_CUTTING = 1248;
 	public static final int HUNTER_LAY_BOXTRAP_BIRDSNARE = 5208; //same for laying bird snares and box traps
 	public static final int HUNTER_LAY_DEADFALLTRAP = 5212; //setting up deadfall trap
@@ -70,7 +76,7 @@ public final class AnimationID
 	public static final int GEM_CUTTING_EMERALD = 889;
 	public static final int GEM_CUTTING_RUBY = 887;
 	public static final int GEM_CUTTING_DIAMOND = 886;
-	public static final int CRAFTING_LEATHER = 1249; // unknown if the anim is the same for all leathers
+	public static final int CRAFTING_LEATHER = 1249;
 	public static final int CRAFTING_GLASSBLOWING = 884;
 	public static final int CRAFTING_SPINNING = 894;
 	public static final int SMITHING_SMELTING = 899;
@@ -87,6 +93,7 @@ public final class AnimationID
 	public static final int FISHING_OILY_ROD = 622;
 	public static final int FISHING_KARAMBWAN = 1193;
 	public static final int FISHING_CRUSHING_INFERNAL_EELS = 7553;
+	public static final int FISHING_CUTTING_SACRED_EELS = 7151;
 	public static final int FISHING_BAREHAND = 6709;
 	public static final int MINING_BRONZE_PICKAXE = 625;
 	public static final int MINING_IRON_PICKAXE = 626;
@@ -110,22 +117,39 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_DRAGON_ORN = 335;
 	public static final int MINING_MOTHERLODE_INFERNAL = 4481;
 	public static final int MINING_MOTHERLODE_3A = 7282;
+	public static final int DENSE_ESSENCE_CHIPPING = 7201;
+	public static final int DENSE_ESSENCE_CHISELING = 7202;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
+	public static final int MAGIC_MAKE_TABLET = 4068;
 	public static final int BURYING_BONES = 827;
+	public static final int USING_GILDED_ALTAR = 3705;
 	public static final int LOOKING_INTO = 832;
 	public static final int DIG = 830;
-	public static final int VENGEANCE_OTHER = 4411;
 	public static final int DEMONIC_GORILLA_MAGIC_ATTACK = 7225;
 	public static final int DEMONIC_GORILLA_MELEE_ATTACK = 7226;
 	public static final int DEMONIC_GORILLA_RANGED_ATTACK = 7227;
 	public static final int DEMONIC_GORILLA_AOE_ATTACK = 7228;
 	public static final int DEMONIC_GORILLA_PRAYER_SWITCH = 7228;
 	public static final int DEMONIC_GORILLA_DEFEND = 7224;
+	public static final int BOOK_HOME_TELEPORT_1 = 4847;
+	public static final int BOOK_HOME_TELEPORT_2 = 4850;
+	public static final int BOOK_HOME_TELEPORT_3 = 4853;
+	public static final int BOOK_HOME_TELEPORT_4 = 4855;
+	public static final int BOOK_HOME_TELEPORT_5 = 4857;
+	public static final int COW_HOME_TELEPORT_1 = 1696;
+	public static final int COW_HOME_TELEPORT_2 = 1697;
+	public static final int COW_HOME_TELEPORT_3 = 1698;
+	public static final int COW_HOME_TELEPORT_4 = 1699;
+	public static final int COW_HOME_TELEPORT_5 = 1700;
+	public static final int COW_HOME_TELEPORT_6 = 1701;
+	public static final int CONSTRUCTION = 3676;
+	public static final int SAND_COLLECTION = 895;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
+	public static final int HELLHOUND_DEFENCE = 6566;
 
 	// Farming
 	public static final int FARMING_HARVEST_FRUIT_TREE = 2280;
@@ -135,12 +159,31 @@ public final class AnimationID
 	public static final int FARMING_CURE_WITH_POTION = 2288;
 	public static final int FARMING_PLANT_SEED = 2291;
 	public static final int FARMING_HARVEST_FLOWER = 2292;
+	public static final int FARMING_MIX_ULTRACOMPOST = 7699;
 
 	// Lunar spellbook
-	public static final int MAGIC_LUNAR_FERTILE_SOIL = 4413;
+	public static final int ENERGY_TRANSFER_VENGEANCE_OTHER = 4411;
+	public static final int MAGIC_LUNAR_SHARED = 4413; // Utilized by Fertile Soil, Boost/Stat Potion Share, NPC Contact, Bake Pie
 	public static final int MAGIC_LUNAR_CURE_PLANT = 4432;
 	public static final int MAGIC_LUNAR_GEOMANCY = 7118;
+	public static final int MAGIC_LUNAR_STRING_JEWELRY = 4412;
 
 	// Arceuus spellbook
 	public static final int MAGIC_ARCEUUS_RESURRECT_CROPS = 7118;
+
+	// Battlestaff Crafting
+	public static final int CRAFTING_BATTLESTAVES = 7531;
+
+	// Death Animations
+	public static final int CAVE_KRAKEN_DEATH = 3993;
+	public static final int WIZARD_DEATH = 2553;
+	public static final int GARGOYLE_DEATH = 1520;
+	public static final int MARBLE_GARGOYLE_DEATH = 7813;
+	public static final int LIZARD_DEATH = 2778;
+	public static final int ROCKSLUG_DEATH = 1568;
+	public static final int ZYGOMITE_DEATH = 3327;
+	public static final int IMP_DEATH = 172;
+
+	// POH Animations
+	public static final int INCENSE_BURNER = 3687;
 }

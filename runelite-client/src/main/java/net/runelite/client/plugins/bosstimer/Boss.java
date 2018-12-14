@@ -29,37 +29,38 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
+import net.runelite.api.NpcID;
 
-@Slf4j
 enum Boss
 {
-	GENERAL_GRAARDOR("General Graardor", 90, ChronoUnit.SECONDS, ItemID.PET_GENERAL_GRAARDOR),
-	KRIL_TSUTSAROTH("K'ril Tsutsaroth", 90, ChronoUnit.SECONDS, ItemID.PET_KRIL_TSUTSAROTH),
-	KREEARRA("Kree'arra", 90, ChronoUnit.SECONDS, ItemID.PET_KREEARRA),
-	COMMANDER_ZILYANA("Commander Zilyana", 90, ChronoUnit.SECONDS, ItemID.PET_ZILYANA),
-	CALLISTO("Callisto", 30, ChronoUnit.SECONDS, ItemID.CALLISTO_CUB),
-	CHAOS_ELEMENTAL("Chaos Elemental", 150, ChronoUnit.SECONDS, ItemID.PET_CHAOS_ELEMENTAL),
-	CHAOS_FANATIC("Chaos fanatic", 30, ChronoUnit.SECONDS, ItemID.ANCIENT_STAFF),
-	CRAZY_ARCHAEOLOGIST("Crazy archaeologist", 30, ChronoUnit.SECONDS, ItemID.FEDORA),
-	KING_BLACK_DRAGON("King Black Dragon", 10, ChronoUnit.SECONDS, ItemID.PRINCE_BLACK_DRAGON),
-	SCORPIA("Scorpia", 10, ChronoUnit.SECONDS, ItemID.SCORPIAS_OFFSPRING),
-	VENENATIS("Venenatis", 30, ChronoUnit.SECONDS, ItemID.VENENATIS_SPIDERLING),
-	VETION("Vet'ion", 30, ChronoUnit.SECONDS, ItemID.VETION_JR),
-	DAGANNOTH_PRIME("Dagannoth Prime", 90, ChronoUnit.SECONDS, ItemID.PET_DAGANNOTH_PRIME),
-	DAGANNOTH_REX("Dagannoth Rex", 90, ChronoUnit.SECONDS, ItemID.PET_DAGANNOTH_REX),
-	DAGANNOTH_SUPREME("Dagannoth Supreme", 90, ChronoUnit.SECONDS, ItemID.PET_DAGANNOTH_SUPREME),
-	CORPOREAL_BEAST("Corporeal Beast", 30, ChronoUnit.SECONDS, ItemID.PET_DARK_CORE),
-	GIANT_MOLE("Giant Mole", 10, ChronoUnit.SECONDS, ItemID.BABY_MOLE),
-	DERANGED_ARCHAEOLOGIST("Deranged archaeologist", 30, ChronoUnit.SECONDS, ItemID.UNIDENTIFIED_LARGE_FOSSIL),
-	CERBERUS("Cerberus", 10800, ChronoUnit.MILLIS, ItemID.HELLPUPPY),
-	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear smoke devil", 12, ChronoUnit.SECONDS, ItemID.PET_SMOKE_DEVIL),
-	KRAKEN("Kraken", 10800, ChronoUnit.MILLIS, ItemID.PET_KRAKEN);
+	GENERAL_GRAARDOR(NpcID.GENERAL_GRAARDOR, 90, ChronoUnit.SECONDS, ItemID.PET_GENERAL_GRAARDOR),
+	KRIL_TSUTSAROTH(NpcID.KRIL_TSUTSAROTH, 90, ChronoUnit.SECONDS, ItemID.PET_KRIL_TSUTSAROTH),
+	KREEARRA(NpcID.KREEARRA, 90, ChronoUnit.SECONDS, ItemID.PET_KREEARRA),
+	COMMANDER_ZILYANA(NpcID.COMMANDER_ZILYANA, 90, ChronoUnit.SECONDS, ItemID.PET_ZILYANA),
+	CALLISTO(NpcID.CALLISTO_6609, 30, ChronoUnit.SECONDS, ItemID.CALLISTO_CUB),
+	CHAOS_ELEMENTAL(NpcID.CHAOS_ELEMENTAL, 150, ChronoUnit.SECONDS, ItemID.PET_CHAOS_ELEMENTAL),
+	CHAOS_FANATIC(NpcID.CHAOS_FANATIC, 30, ChronoUnit.SECONDS, ItemID.ANCIENT_STAFF),
+	CRAZY_ARCHAEOLOGIST(NpcID.CRAZY_ARCHAEOLOGIST, 30, ChronoUnit.SECONDS, ItemID.FEDORA),
+	KING_BLACK_DRAGON(NpcID.KING_BLACK_DRAGON, 9, ChronoUnit.SECONDS, ItemID.PRINCE_BLACK_DRAGON),
+	SCORPIA(NpcID.SCORPIA, 10, ChronoUnit.SECONDS, ItemID.SCORPIAS_OFFSPRING),
+	VENENATIS(NpcID.VENENATIS_6610, 30, ChronoUnit.SECONDS, ItemID.VENENATIS_SPIDERLING),
+	VETION(NpcID.VETION_REBORN, 30, ChronoUnit.SECONDS, ItemID.VETION_JR),
+	DAGANNOTH_PRIME(NpcID.DAGANNOTH_PRIME, 90, ChronoUnit.SECONDS, ItemID.PET_DAGANNOTH_PRIME),
+	DAGANNOTH_REX(NpcID.DAGANNOTH_REX, 90, ChronoUnit.SECONDS, ItemID.PET_DAGANNOTH_REX),
+	DAGANNOTH_SUPREME(NpcID.DAGANNOTH_SUPREME, 90, ChronoUnit.SECONDS, ItemID.PET_DAGANNOTH_SUPREME),
+	CORPOREAL_BEAST(NpcID.CORPOREAL_BEAST, 30, ChronoUnit.SECONDS, ItemID.PET_DARK_CORE),
+	GIANT_MOLE(NpcID.GIANT_MOLE, 9000, ChronoUnit.MILLIS, ItemID.BABY_MOLE),
+	DERANGED_ARCHAEOLOGIST(NpcID.DERANGED_ARCHAEOLOGIST, 29400, ChronoUnit.MILLIS, ItemID.UNIDENTIFIED_LARGE_FOSSIL),
+	CERBERUS(NpcID.CERBERUS, 8400, ChronoUnit.MILLIS, ItemID.HELLPUPPY),
+	THERMONUCLEAR_SMOKE_DEVIL(NpcID.THERMONUCLEAR_SMOKE_DEVIL, 8400, ChronoUnit.MILLIS, ItemID.PET_SMOKE_DEVIL),
+	KRAKEN(NpcID.KRAKEN, 8400, ChronoUnit.MILLIS, ItemID.PET_KRAKEN),
+	KALPHITE_QUEEN(NpcID.KALPHITE_QUEEN_965, 30, ChronoUnit.SECONDS, ItemID.KALPHITE_PRINCESS),
+	DUSK(NpcID.DUSK_7889, 2, ChronoUnit.MINUTES, ItemID.NOON);
 
-	private static final Map<String, Boss> bosses = new HashMap<>();
+	private static final Map<Integer, Boss> bosses = new HashMap<>();
 
-	private final String name;
+	private final int id;
 	private final Duration spawnTime;
 	private final int itemSpriteId;
 
@@ -67,20 +68,20 @@ enum Boss
 	{
 		for (Boss boss : values())
 		{
-			bosses.put(boss.getName(), boss);
+			bosses.put(boss.getId(), boss);
 		}
 	}
 
-	private Boss(String name, long period, ChronoUnit unit, int itemSpriteId)
+	private Boss(int id, long period, ChronoUnit unit, int itemSpriteId)
 	{
-		this.name = name;
+		this.id = id;
 		this.spawnTime = Duration.of(period, unit);
 		this.itemSpriteId = itemSpriteId;
 	}
 
-	public String getName()
+	public int getId()
 	{
-		return name;
+		return id;
 	}
 
 	public Duration getSpawnTime()
@@ -93,8 +94,8 @@ enum Boss
 		return itemSpriteId;
 	}
 
-	public static Boss find(String name)
+	public static Boss find(int id)
 	{
-		return bosses.get(name);
+		return bosses.get(id);
 	}
 }

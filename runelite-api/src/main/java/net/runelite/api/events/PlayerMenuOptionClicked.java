@@ -26,9 +26,19 @@ package net.runelite.api.events;
 
 import lombok.Data;
 
+/**
+ * An event where a player menu option that was added by RuneLite has
+ * been clicked (ie. HiScore Lookup).
+ */
 @Data
 public class PlayerMenuOptionClicked
 {
+	/**
+	 * The menu option clicked.
+	 */
 	private String menuOption;
+	/**
+	 * The target player.
+	 */
 	private String menuTarget;
 }

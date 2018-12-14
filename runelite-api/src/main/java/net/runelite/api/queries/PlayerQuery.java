@@ -27,6 +27,13 @@ package net.runelite.api.queries;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 
+/**
+ * Used for getting players in view,deprecated as of existence of Player spawn events
+ *
+ * @see net.runelite.api.events.PlayerSpawned
+ * @see net.runelite.api.events.PlayerDespawned
+ */
+@Deprecated
 public class PlayerQuery extends ActorQuery<Player, PlayerQuery>
 {
 	@Override

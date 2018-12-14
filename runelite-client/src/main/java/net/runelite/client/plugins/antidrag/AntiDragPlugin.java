@@ -28,13 +28,19 @@ import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
-@PluginDescriptor(name = "Shift Anti Drag")
+@PluginDescriptor(
+	name = "Shift Anti Drag",
+	description = "Prevent dragging an item for a specified delay",
+	tags = {"antidrag", "delay", "inventory", "items"}
+)
 public class AntiDragPlugin extends Plugin implements KeyListener
 {
 	private static final int DEFAULT_DELAY = 5;
@@ -86,6 +92,15 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	public void keyReleased(KeyEvent e)
 	{
 		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		{
+			client.setInventoryDragDelay(DEFAULT_DELAY);
+		}
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged focusChanged)
+	{
+		if (!focusChanged.isFocused())
 		{
 			client.setInventoryDragDelay(DEFAULT_DELAY);
 		}

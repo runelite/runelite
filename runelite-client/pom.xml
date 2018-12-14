@@ -29,16 +29,15 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.4.1-SNAPSHOT</version>
+		<version>1.5.5-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
 	<name>RuneLite Client</name>
 
 	<properties>
-		<slf4j.version>1.7.12</slf4j.version>
-		<logback.version>1.2.3</logback.version>
 		<guice.version>4.1.0</guice.version>
+		<jogl.version>2.3.2</jogl.version>
 
 		<jarsigner.skip>true</jarsigner.skip>
 	</properties>
@@ -47,12 +46,10 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>${logback.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jopt-simple</groupId>
@@ -72,7 +69,6 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.4</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.pushingpixels</groupId>
@@ -95,6 +91,94 @@
 			<artifactId>commons-text</artifactId>
 			<version>1.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.jogamp.jogl</groupId>
+			<artifactId>jogl-all</artifactId>
+			<version>${jogl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.jogl</groupId>
+			<artifactId>jogl-all</artifactId>
+			<version>${jogl.version}</version>
+			<classifier>natives-windows-amd64</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.jogl</groupId>
+			<artifactId>jogl-all</artifactId>
+			<version>${jogl.version}</version>
+			<classifier>natives-windows-i586</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.jogl</groupId>
+			<artifactId>jogl-all</artifactId>
+			<version>${jogl.version}</version>
+			<classifier>natives-linux-amd64</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.jogl</groupId>
+			<artifactId>jogl-all</artifactId>
+			<version>${jogl.version}</version>
+			<classifier>natives-linux-i586</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.gluegen</groupId>
+			<artifactId>gluegen-rt</artifactId>
+			<version>${jogl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.gluegen</groupId>
+			<artifactId>gluegen-rt</artifactId>
+			<version>${jogl.version}</version>
+			<classifier>natives-windows-amd64</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.gluegen</groupId>
+			<artifactId>gluegen-rt</artifactId>
+			<version>${jogl.version}</version>
+			<classifier>natives-windows-i586</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.gluegen</groupId>
+			<artifactId>gluegen-rt</artifactId>
+			<version>${jogl.version}</version>
+			<classifier>natives-linux-amd64</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.gluegen</groupId>
+			<artifactId>gluegen-rt</artifactId>
+			<version>${jogl.version}</version>
+			<classifier>natives-linux-i586</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.sigpipe</groupId>
+			<artifactId>jbsdiff</artifactId>
+			<version>1.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.tukaani</groupId>
+					<artifactId>xz</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- net.runelite:discord also has this -->
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>4.5.1</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna-platform</artifactId>
+			<version>4.5.1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>net.runelite</groupId>
@@ -109,13 +193,7 @@
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
-			<artifactId>injected-client</artifactId>
-			<version>${project.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite</groupId>
-			<artifactId>scripts</artifactId>
+			<artifactId>client-patch</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
@@ -211,7 +289,7 @@
 							<filters>
 								<!-- include runtime apis -->
 								<filter>
-									<!-- net.runelite:injected-client and net.runelite:api -->
+									<!-- net.runelite:client-patch and net.runelite:api -->
 									<artifact>net.runelite:*</artifact>
 									<includes>
 										<include>**</include>
@@ -237,6 +315,18 @@
 								</filter>
 								<filter>
 									<artifact>ch.qos.logback:*</artifact>
+									<includes>
+										<include>**</include>
+									</includes>
+								</filter>
+								<filter>
+									<artifact>org.jogamp.jogl:*</artifact>
+									<includes>
+										<include>**</include>
+									</includes>
+								</filter>
+								<filter>
+									<artifact>org.jogamp.gluegen:*</artifact>
 									<includes>
 										<include>**</include>
 									</includes>
@@ -272,15 +362,31 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>de.jutzig</groupId>
-				<artifactId>github-release-plugin</artifactId>
-				<version>1.1.1</version>
-				<configuration>
-					<releaseName>${project.version} Release</releaseName>
-					<tag>runelite-parent-${project.version}</tag>
-					<repositoryId>runelite/runelite</repositoryId>
-					<artifact>${project.build.directory}/${project.artifactId}-${project.version}-shaded.${project.packaging}</artifact>
-				</configuration>
+				<groupId>net.runelite</groupId>
+				<artifactId>script-assembler-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<id>assemble</id>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
+						<configuration>
+							<scriptDirectory>src/main/scripts</scriptDirectory>
+							<outputDirectory>${project.build.outputDirectory}/runelite</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>build-index</id>
+						<goals>
+							<goal>build-index</goal>
+						</goals>
+						<configuration>
+							<archiveOverlayDirectory>${project.build.outputDirectory}/runelite</archiveOverlayDirectory>
+							<indexFile>${project.build.outputDirectory}/runelite/index</indexFile>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

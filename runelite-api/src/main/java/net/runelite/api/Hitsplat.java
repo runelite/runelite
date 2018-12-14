@@ -26,17 +26,48 @@ package net.runelite.api;
 
 import lombok.Getter;
 
+/**
+ * A hitsplat that has been applied to an {@link Actor}.
+ */
 public class Hitsplat
 {
+	/**
+	 * An enumeration of hitsplat types.
+	 */
 	public enum HitsplatType
 	{
-		BLOCK, // Blue
-		DAMAGE, // Red
-		POISON, // Green
-		VENOM, // Darkgreen
-		DISEASE, // Yellow
-		HEAL; // Purple
+		/**
+		 * Blocking damage (blue).
+		 */
+		BLOCK,
+		/**
+		 * Taking damage (red).
+		 */
+		DAMAGE,
+		/**
+		 * Damage from poison (green).
+		 */
+		POISON,
+		/**
+		 * Damage from venom (teal).
+		 */
+		VENOM,
+		/**
+		 * Damage from disease (orange).
+		 */
+		DISEASE,
+		/**
+		 * Healing (purple).
+		 */
+		HEAL;
 
+		/**
+		 * Utility method that maps the type value to its respective
+		 * {@link Hitsplat} value.
+		 *
+		 * @param type the type value
+		 * @return hitsplat type
+		 */
 		public static HitsplatType fromInteger(int type)
 		{
 			switch (type)
@@ -52,12 +83,21 @@ public class Hitsplat
 		}
 	}
 
+	/**
+	 * The type of hitsplat.
+	 */
 	@Getter
 	private HitsplatType hitsplatType;
 
+	/**
+	 * The value displayed by the hitsplat.
+	 */
 	@Getter
 	private int amount;
 
+	/**
+	 * When the hitsplat will disappear.
+	 */
 	@Getter
 	private int disappearsOnGameCycle;
 

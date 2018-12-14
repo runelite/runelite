@@ -26,7 +26,7 @@
 package net.runelite.api;
 
 /**
- * Describes the state of a Grand Exchange offer
+ * Describes the state of a Grand Exchange offer.
  */
 public enum GrandExchangeOfferState
 {
@@ -35,11 +35,11 @@ public enum GrandExchangeOfferState
 	 */
 	EMPTY,
 	/**
-	 * A cancelled buy offer
+	 * A cancelled buy offer.
 	 */
 	CANCELLED_BUY,
 	/**
-	 * A cancelled sell offer
+	 * A cancelled sell offer.
 	 */
 	CANCELLED_SELL,
 	/**

@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "poh",
-	name = "Player-owned House",
-	description = "Configuration for the POH plugin"
-)
+@ConfigGroup("poh")
 public interface PohConfig extends Config
 {
 	@ConfigItem(
@@ -97,7 +93,7 @@ public interface PohConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBurner",
-		name = "Show Unlit/Lit burner",
+		name = "Show Incense Burner timers",
 		description = "Configures whether or not unlit/lit burners are displayed"
 	)
 	default boolean showBurner()
@@ -131,6 +127,36 @@ public interface PohConfig extends Config
 		description = "Configures whether or not the Fairy ring, Spirit tree or Obelisk is displayed"
 	)
 	default boolean showMagicTravel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showPortalNexus",
+		name = "Show Portal Nexus",
+		description = "Configures whether or not the Portal Nexus is displayed"
+	)
+	default boolean showPortalNexus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showDigsitePendant",
+		name = "Show Digsite Pendant",
+		description = "Configures whether or not the Digsite Pendant is displayed"
+	)
+	default boolean showDigsitePendant()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showXericsTalisman",
+		name = "Show Xeric's Talisman",
+		description = "Configures whether or not the Xeric's Talisman is displayed"
+	)
+	default boolean showXericsTalisman()
 	{
 		return true;
 	}

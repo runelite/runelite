@@ -57,7 +57,7 @@ public final class ComboBoxListRenderer extends JLabel implements ListCellRender
 
 		setBorder(new EmptyBorder(5, 5, 5, 0));
 
-		String text = (String) o.toString();
+		String text = o.toString();
 		setText(text);
 
 		return this;

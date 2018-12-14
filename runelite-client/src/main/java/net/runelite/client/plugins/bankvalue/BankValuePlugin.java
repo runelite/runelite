@@ -25,22 +25,30 @@
  */
 package net.runelite.client.plugins.bankvalue;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
-@PluginDescriptor(name = "Bank Value")
+@PluginDescriptor(
+	name = "Bank Value",
+	description = "Show the value of your bank and/or current tab",
+	tags = {"grand", "exchange", "high", "alchemy", "prices"}
+)
 public class BankValuePlugin extends Plugin
 {
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private BankCalculation bankCalculation;
@@ -57,7 +65,7 @@ public class BankValuePlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		bankTitle.reset();
+		clientThread.invokeLater(bankTitle::reset);
 	}
 
 	@Subscribe
@@ -72,10 +80,7 @@ public class BankValuePlugin extends Plugin
 
 		bankTitle.save();
 		calculate(widgetBankTitleBar);
-		if (bankCalculation.isFinished())
-		{
-			bankTitle.update(bankCalculation.getGePrice(), bankCalculation.getHaPrice());
-		}
+		bankTitle.update(bankCalculation.getGePrice(), bankCalculation.getHaPrice());
 	}
 
 	private void calculate(Widget bankTitleBar)

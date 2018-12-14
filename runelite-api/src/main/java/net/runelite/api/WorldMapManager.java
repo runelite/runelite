@@ -24,7 +24,15 @@
  */
 package net.runelite.api;
 
+/**
+ * Manages the world map.
+ */
 public interface WorldMapManager
 {
+	/**
+	 * Checks whether the world map is currently loaded.
+	 *
+	 * @return true if the map is loaded, false otherwise
+	 */
 	boolean isLoaded();
 }

@@ -24,11 +24,11 @@
  */
 package net.runelite.client.config;
 
-import com.google.common.base.Objects;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -64,13 +64,13 @@ class ConfigInvocationHandler implements InvocationHandler
 		if (args == null)
 		{
 			// Getting configuration item
-			String value = manager.getConfiguration(group.keyName(), item.keyName());
+			String value = manager.getConfiguration(group.value(), item.keyName());
 
 			if (value == null)
 			{
 				if (method.isDefault())
 				{
-					return callDefaultMethod(proxy, method, args);
+					return callDefaultMethod(proxy, method, null);
 				}
 
 				return null;
@@ -78,16 +78,20 @@ class ConfigInvocationHandler implements InvocationHandler
 
 			// Convert value to return type
 			Class<?> returnType = method.getReturnType();
-			Object objectValue = ConfigManager.stringToObject(value, returnType);
-
-			// objectValue automatically gets unboxed
-//			if (!objectValue.getClass().equals(returnType))
-//			{
-//				log.warn("Unable to convert return type for configuration item {}.{}: {}", group.keyName(), item.keyName(), returnType);
-//				return null;
-//			}
-
-			return objectValue;
+			
+			try
+			{
+				return ConfigManager.stringToObject(value, returnType);
+			}
+			catch (Exception e)
+			{
+				log.warn("Unable to unmarshal {}.{} ", group.value(), item.keyName(), e);
+				if (method.isDefault())
+				{
+					return callDefaultMethod(proxy, method, null);
+				}
+				return null;
+			}
 		}
 		else
 		{
@@ -100,19 +104,36 @@ class ConfigInvocationHandler implements InvocationHandler
 
 			Object newValue = args[0];
 
+			Class<?> type = method.getParameterTypes()[0];
+			Object oldValue = manager.getConfiguration(group.value(), item.keyName(), type);
+
+			if (Objects.equals(oldValue, newValue))
+			{
+				// nothing to do
+				return null;
+			}
+
 			if (method.isDefault())
 			{
 				Object defaultValue = callDefaultMethod(proxy, method, args);
 
-				if (Objects.equal(newValue, defaultValue))
+				if (Objects.equals(newValue, defaultValue))
 				{
 					// Just unset if it goes back to the default
-					manager.unsetConfiguration(group.keyName(), item.keyName());
+					manager.unsetConfiguration(group.value(), item.keyName());
 					return null;
 				}
 			}
 
-			manager.setConfiguration(group.keyName(), item.keyName(), args[0].toString());
+			if (newValue == null)
+			{
+				manager.unsetConfiguration(group.value(), item.keyName());
+			}
+			else
+			{
+				String newValueStr = ConfigManager.objectToString(newValue);
+				manager.setConfiguration(group.value(), item.keyName(), newValueStr);
+			}
 			return null;
 		}
 	}

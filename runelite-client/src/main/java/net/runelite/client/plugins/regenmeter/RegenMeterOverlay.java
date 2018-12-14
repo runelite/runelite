@@ -34,6 +34,7 @@ import java.awt.Stroke;
 import java.awt.geom.Arc2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
@@ -44,7 +45,9 @@ public class RegenMeterOverlay extends Overlay
 {
 	private static final Color HITPOINTS_COLOR = brighter(0x9B0703);
 	private static final Color SPECIAL_COLOR = brighter(0x1E95B0);
-	private static final double DIAMETER = 25D;
+	private static final Color OVERLAY_COLOR = new Color(255, 255, 255, 60);
+	private static final double DIAMETER = 26D;
+	private static final int OFFSET = 27;
 
 	private final Client client;
 	private RegenMeterPlugin plugin;
@@ -79,6 +82,21 @@ public class RegenMeterOverlay extends Overlay
 
 		if (config.showSpecial())
 		{
+			if (client.getVar(VarPlayer.SPECIAL_ATTACK_ENABLED) == 1)
+			{
+				final Widget widget = client.getWidget(WidgetInfo.MINIMAP_SPEC_ORB);
+
+				if (widget != null && !widget.isHidden())
+				{
+					final Rectangle bounds = widget.getBounds();
+					g.setColor(RegenMeterOverlay.OVERLAY_COLOR);
+					g.fillOval(
+						bounds.x + OFFSET,
+						bounds.y + (int) (bounds.height / 2 - (DIAMETER) / 2),
+						(int) DIAMETER, (int) DIAMETER);
+				}
+			}
+
 			renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
 		}
 
@@ -88,14 +106,14 @@ public class RegenMeterOverlay extends Overlay
 	private void renderRegen(Graphics2D g, WidgetInfo widgetInfo, double percent, Color color)
 	{
 		Widget widget = client.getWidget(widgetInfo);
-		if (widget == null)
+		if (widget == null || widget.isHidden())
 		{
 			return;
 		}
 		Rectangle bounds = widget.getBounds();
 
-		Arc2D.Double arc = new Arc2D.Double(bounds.x + 28d, bounds.y + (bounds.height / 2 - DIAMETER / 2), DIAMETER, DIAMETER, 88.d, -360.d * percent, Arc2D.OPEN);
-		final Stroke STROKE = new BasicStroke(2f);
+		Arc2D.Double arc = new Arc2D.Double(bounds.x + OFFSET, bounds.y + (bounds.height / 2 - DIAMETER / 2), DIAMETER, DIAMETER, 90.d, -360.d * percent, Arc2D.OPEN);
+		final Stroke STROKE = new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
 		g.setStroke(STROKE);
 		g.setColor(color);
 		g.draw(arc);

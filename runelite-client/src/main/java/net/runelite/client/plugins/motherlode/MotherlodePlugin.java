@@ -27,13 +27,10 @@
 package net.runelite.client.plugins.motherlode;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -62,19 +59,24 @@ import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.MapRegionChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Motherlode Mine",
+	description = "Show helpful information inside the Motherload Mine",
+	tags = {"pay", "dirt", "mining", "mlm", "skilling", "overlay"},
 	enabledByDefault = false
 )
 public class MotherlodePlugin extends Plugin
@@ -85,10 +87,15 @@ public class MotherlodePlugin extends Plugin
 			ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
 	private static final Set<Integer> ROCK_OBSTACLES = ImmutableSet.of(ROCKFALL, ROCKFALL_26680);
 
+	private static final int MAX_INVENTORY_SIZE = 28;
+
 	private static final int SACK_LARGE_SIZE = 162;
 	private static final int SACK_SIZE = 81;
 
 	private static final int UPPER_FLOOR_HEIGHT = -500;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private MotherlodeOverlay overlay;
@@ -108,6 +115,9 @@ public class MotherlodePlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private ClientThread clientThread;
+
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inMlm;
 
@@ -118,7 +128,7 @@ public class MotherlodePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Integer depositsLeft;
 
-	private final MotherlodeSession session = new MotherlodeSession();
+	private MotherlodeSession session;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> veins = new HashSet<>();
@@ -132,22 +142,42 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		return Arrays.asList(overlay, rocksOverlay, motherlodeSackOverlay, motherlodeGemOverlay);
-	}
-
-	@Override
 	protected void startUp()
 	{
+		overlayManager.add(overlay);
+		overlayManager.add(rocksOverlay);
+		overlayManager.add(motherlodeGemOverlay);
+		overlayManager.add(motherlodeSackOverlay);
+
+		session = new MotherlodeSession();
 		inMlm = checkInMlm();
+
+		if (inMlm)
+		{
+			clientThread.invokeLater(this::refreshSackValues);
+		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(rocksOverlay);
+		overlayManager.remove(motherlodeGemOverlay);
+		overlayManager.remove(motherlodeSackOverlay);
+		session = null;
 		veins.clear();
 		rocks.clear();
+
+		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
+
+		clientThread.invokeLater(() ->
+		{
+			if (sack != null && sack.isHidden())
+			{
+				sack.setHidden(false);
+			}
+		});
 	}
 
 	public MotherlodeSession getSession()
@@ -160,9 +190,7 @@ public class MotherlodePlugin extends Plugin
 	{
 		if (inMlm)
 		{
-			curSackSize = client.getVar(Varbits.SACK_NUMBER);
-			boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
-			maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
+			refreshSackValues();
 		}
 	}
 
@@ -321,12 +349,6 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onRegionChanged(MapRegionChanged event)
-	{
-		inMlm = checkInMlm();
-	}
-
-	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
@@ -339,13 +361,18 @@ public class MotherlodePlugin extends Plugin
 		{
 			inMlm = checkInMlm();
 		}
+		else if (event.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			// Prevent code from running while logged out.
+			inMlm = false;
+		}
 	}
 
 	private Integer calculateDepositsLeft()
 	{
 		if (maxSackSize == 0) // check if maxSackSize has been initialized
 		{
-			return null;
+			refreshSackValues();
 		}
 
 		double depositsLeft = 0;
@@ -360,8 +387,6 @@ public class MotherlodePlugin extends Plugin
 		Item[] result = inventory.getItems();
 		assert result != null;
 
-		int inventorySize = result.length;
-
 		for (Item item : result)
 		{
 			// Assume that MLM ores are being banked and exclude them from the check,
@@ -374,7 +399,7 @@ public class MotherlodePlugin extends Plugin
 			}
 		}
 
-		double inventorySpace = inventorySize - nonPayDirtItems;
+		double inventorySpace = MAX_INVENTORY_SIZE - nonPayDirtItems;
 		double sackSizeRemaining = maxSackSize - curSackSize;
 
 		if (inventorySpace > 0 && sackSizeRemaining > 0)
@@ -410,6 +435,13 @@ public class MotherlodePlugin extends Plugin
 		return true;
 	}
 
+	private void refreshSackValues()
+	{
+		curSackSize = client.getVar(Varbits.SACK_NUMBER);
+		boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
+		maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
+	}
+
 	/**
 	 * Checks if the given point is "upstairs" in the mlm.
 	 * The upper floor is actually on z=0.
@@ -418,6 +450,6 @@ public class MotherlodePlugin extends Plugin
 	 */
 	boolean isUpstairs(LocalPoint localPoint)
 	{
-		return Perspective.getTileHeight(client, localPoint.getX(), localPoint.getY(), 0) < UPPER_FLOOR_HEIGHT;
+		return Perspective.getTileHeight(client, localPoint, 0) < UPPER_FLOOR_HEIGHT;
 	}
 }

@@ -34,13 +34,15 @@ enum ServiceWorldType
 	SKILL_TOTAL(WorldType.SKILL_TOTAL, 1 << 7),
 	PVP_HIGH_RISK(WorldType.PVP_HIGH_RISK, 1 << 10),
 	LAST_MAN_STANDING(WorldType.LAST_MAN_STANDING, 1 << 14),
+	TOURNAMENT(WorldType.TOURNAMENT, 1 << 25),
+	DEADMAN_TOURNAMENT(WorldType.DEADMAN_TOURNAMENT, 1 << 26),
 	DEADMAN(WorldType.DEADMAN, 1 << 29),
 	SEASONAL_DEADMAN(WorldType.SEASONAL_DEADMAN, 1 << 30);
 
 	private final WorldType apiType;
 	private final int mask;
 
-	private ServiceWorldType(WorldType apiType, int mask)
+	ServiceWorldType(WorldType apiType, int mask)
 	{
 		this.apiType = apiType;
 		this.mask = mask;

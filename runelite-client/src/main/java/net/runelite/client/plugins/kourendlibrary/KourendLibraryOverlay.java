@@ -29,15 +29,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-
 import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.AccessLevel;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import static net.runelite.api.Perspective.getCanvasTilePoly;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
@@ -47,19 +49,17 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-import static net.runelite.api.Perspective.getCanvasTilePoly;
-
-public class KourendLibraryOverlay extends Overlay
+class KourendLibraryOverlay extends Overlay
 {
-	private final static WorldPoint LIBRARY_CENTER = new WorldPoint(1632, 3807, 1);
 	private final static int MAXIMUM_DISTANCE = 24;
-	private final static int ROUGH_ENABLE_DISTANCE = 45;
-
 	private final Library library;
 	private final Client client;
 
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hidden;
+
 	@Inject
-	KourendLibraryOverlay(Library library, Client client)
+	private KourendLibraryOverlay(Library library, Client client)
 	{
 		this.library = library;
 		this.client = client;
@@ -71,6 +71,11 @@ public class KourendLibraryOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D g)
 	{
+		if (hidden)
+		{
+			return null;
+		}
+
 		Player player = client.getLocalPlayer();
 		if (player == null)
 		{
@@ -79,17 +84,12 @@ public class KourendLibraryOverlay extends Overlay
 
 		WorldPoint playerLoc = player.getWorldLocation();
 
-		if (playerLoc.distanceTo2D(LIBRARY_CENTER) > ROUGH_ENABLE_DISTANCE)
+		if (playerLoc.getRegionID() != KourendLibraryPlugin.REGION)
 		{
 			return null;
 		}
 
 		List<Bookcase> allBookcases = library.getBookcasesOnLevel(client.getPlane());
-
-		if (allBookcases == null)
-		{
-			return null;
-		}
 
 		for (Bookcase bookcase : allBookcases)
 		{
@@ -106,7 +106,7 @@ public class KourendLibraryOverlay extends Overlay
 			{
 				continue;
 			}
-			Point screenBookcase = Perspective.worldToCanvas(client, localBookcase.getX(), localBookcase.getY(), caseLoc.getPlane(), 25);
+			Point screenBookcase = Perspective.localToCanvas(client, localBookcase, caseLoc.getPlane(), 25);
 
 			if (screenBookcase != null)
 			{
@@ -219,7 +219,7 @@ public class KourendLibraryOverlay extends Overlay
 					LocalPoint local = n.getLocalLocation();
 					Polygon poly = getCanvasTilePoly(client, local);
 					OverlayUtil.renderPolygon(g, poly, Color.WHITE);
-					Point screen = Perspective.worldToCanvas(client, local.getX(), local.getY(), client.getPlane(), n.getLogicalHeight());
+					Point screen = Perspective.localToCanvas(client, local, client.getPlane(), n.getLogicalHeight());
 					if (screen != null)
 					{
 						g.drawImage(b.getIcon(), screen.getX() - (b.getIcon().getWidth() / 2), screen.getY() - b.getIcon().getHeight(), null);

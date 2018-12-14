@@ -24,12 +24,16 @@
  */
 package net.runelite.client.ui.components.materialtabs;
 
+import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.function.BooleanSupplier;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import lombok.Getter;
@@ -62,7 +66,7 @@ public class MaterialTab extends JLabel
 
 	/* To be execuded when the tab is selected */
 	@Setter
-	private Runnable onSelectEvent;
+	private BooleanSupplier onSelectEvent;
 
 	@Getter
 	private boolean selected;
@@ -91,17 +95,72 @@ public class MaterialTab extends JLabel
 				group.select(MaterialTab.this);
 			}
 		});
+
+		if (!Strings.isNullOrEmpty(string))
+		{
+			addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mouseEntered(MouseEvent e)
+				{
+					MaterialTab tab = (MaterialTab) e.getSource();
+					tab.setForeground(Color.WHITE);
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e)
+				{
+					MaterialTab tab = (MaterialTab) e.getSource();
+					if (!tab.isSelected())
+					{
+						tab.setForeground(Color.GRAY);
+					}
+				}
+			});
+		}
 	}
 
-	public void select()
+	public MaterialTab(ImageIcon icon, MaterialTabGroup group, JComponent content)
 	{
-		setBorder(SELECTED_BORDER);
-		setForeground(Color.WHITE);
-		selected = true;
+		this("", group, content);
+		setIcon(icon);
+		setOpaque(true);
+		setVerticalAlignment(SwingConstants.CENTER);
+		setHorizontalAlignment(SwingConstants.CENTER);
+		setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				MaterialTab tab = (MaterialTab) e.getSource();
+				tab.setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				MaterialTab tab = (MaterialTab) e.getSource();
+				tab.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+			}
+		});
+
+	}
+
+	public boolean select()
+	{
 		if (onSelectEvent != null)
 		{
-			onSelectEvent.run();
+			if (!onSelectEvent.getAsBoolean())
+			{
+				return false;
+			}
 		}
+
+		setBorder(SELECTED_BORDER);
+		setForeground(Color.WHITE);
+		return selected = true;
 	}
 
 	public void unselect()

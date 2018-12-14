@@ -27,6 +27,9 @@ package net.runelite.api.widgets;
 import java.awt.Rectangle;
 import net.runelite.api.Point;
 
+/**
+ * An item that is being represented in a {@link Widget}.
+ */
 public class WidgetItem
 {
 	private final int id;
@@ -48,26 +51,55 @@ public class WidgetItem
 		return "WidgetItem{" + "id=" + id + ", quantity=" + quantity + ", index=" + index + ", canvasBounds=" + canvasBounds + '}';
 	}
 
+	/**
+	 * Gets the ID of the item represented.
+	 *
+	 * @return the items ID
+	 * @see net.runelite.api.ItemID
+	 */
 	public int getId()
 	{
 		return id;
 	}
 
+	/**
+	 * Gets the quantity of the represented item.
+	 *
+	 * @return the items quantity
+	 */
 	public int getQuantity()
 	{
 		return quantity;
 	}
 
+	/**
+	 * Gets the index position of this WidgetItem inside its parents
+	 * WidgetItem array.
+	 *
+	 * @return the index in the parent widget
+	 * @see Widget#getWidgetItems()
+	 */
 	public int getIndex()
 	{
 		return index;
 	}
 
+	/**
+	 * Gets the area where the widget is drawn on the canvas.
+	 *
+	 * @return the occupied area of the widget
+	 */
 	public Rectangle getCanvasBounds()
 	{
 		return canvasBounds;
 	}
 
+	/**
+	 * Gets the upper-left coordinate of where the widget is being drawn
+	 * on the canvas.
+	 *
+	 * @return the upper-left coordinate of where this widget is drawn
+	 */
 	public Point getCanvasLocation()
 	{
 		return new Point((int) canvasBounds.getX(), (int) canvasBounds.getY());

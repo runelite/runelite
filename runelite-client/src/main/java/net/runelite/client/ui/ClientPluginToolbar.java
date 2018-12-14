@@ -25,10 +25,11 @@
  */
 package net.runelite.client.ui;
 
+import com.google.common.collect.ComparisonChain;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.swing.JToolBar;
 
 /**
@@ -37,7 +38,13 @@ import javax.swing.JToolBar;
 public class ClientPluginToolbar extends JToolBar
 {
 	private static final int TOOLBAR_WIDTH = 36, TOOLBAR_HEIGHT = 503;
-	private final Map<NavigationButton, Component> componentMap = new HashMap<>();
+	private final Map<NavigationButton, Component> componentMap = new TreeMap<>((a, b) ->
+		ComparisonChain
+			.start()
+			.compareTrueFirst(a.isTab(), b.isTab())
+			.compare(a.getPriority(), b.getPriority())
+			.compare(a.getTooltip(), b.getTooltip())
+			.result());
 
 	/**
 	 * Instantiates a new Client plugin toolbar.
@@ -53,33 +60,38 @@ public class ClientPluginToolbar extends JToolBar
 		addSeparator();
 	}
 
-	public void addComponent(final int index, final NavigationButton button, final Component component)
+	void addComponent(final NavigationButton button, final Component c)
 	{
-		if (componentMap.put(button, component) == null)
+		if (componentMap.put(button, c) == null)
 		{
-			if (index < 0)
-			{
-				add(component);
-			}
-			else
-			{
-				add(component, index);
-			}
-
-			revalidate();
-			repaint();
+			update();
 		}
 	}
 
-	public void removeComponent(final NavigationButton button)
+	void removeComponent(final NavigationButton button)
 	{
-		final Component component = componentMap.remove(button);
-
-		if (component != null)
+		if (componentMap.remove(button) != null)
 		{
-			remove(component);
-			revalidate();
-			repaint();
+			update();
 		}
+	}
+
+	private void update()
+	{
+		removeAll();
+		boolean isDelimited = false;
+
+		for (final Map.Entry<NavigationButton, Component> entry : componentMap.entrySet())
+		{
+			if (!entry.getKey().isTab() && !isDelimited)
+			{
+				isDelimited = true;
+				addSeparator();
+			}
+
+			add(entry.getValue());
+		}
+
+		repaint();
 	}
 }

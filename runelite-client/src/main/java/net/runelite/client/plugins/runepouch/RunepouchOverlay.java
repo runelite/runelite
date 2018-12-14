@@ -46,6 +46,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QueryRunner;
 
 public class RunepouchOverlay extends Overlay
@@ -123,9 +124,9 @@ public class RunepouchOverlay extends Overlay
 
 			tooltipBuilder
 				.append(amount)
-				.append(" <col=ffff00>")
-				.append(rune.getName())
-				.append("</col></br>");
+				.append(" ")
+				.append(ColorUtil.wrapWithColorTag(rune.getName(), Color.YELLOW))
+				.append("</br>");
 
 			if (config.runePouchOverlayMode() == MOUSE_HOVER)
 			{

@@ -30,9 +30,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 import javax.inject.Inject;
-import javax.inject.Provider;
 import javax.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -41,21 +39,20 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.TooltipComponent;
 
 @Singleton
-@Slf4j
 public class TooltipOverlay extends Overlay
 {
 	private static final int OFFSET = 24;
 	private static final int PADDING = 2;
 	private final TooltipManager tooltipManager;
-	private final Provider<Client> clientProvider;
+	private final Client client;
 
 	@Inject
-	public TooltipOverlay(Provider<Client> clientProvider, TooltipManager tooltipManager)
+	private TooltipOverlay(Client client, TooltipManager tooltipManager)
 	{
-		this.clientProvider = clientProvider;
+		this.client = client;
 		this.tooltipManager = tooltipManager;
 		setPosition(OverlayPosition.TOOLTIP);
-		setPriority(OverlayPriority.HIGH);
+		setPriority(OverlayPriority.HIGHEST);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 	}
 
@@ -69,7 +66,6 @@ public class TooltipOverlay extends Overlay
 			return null;
 		}
 
-		final Client client = clientProvider.get();
 		final Rectangle clientCanvasBounds = new Rectangle(client.getRealDimensions());
 		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
 		final Point mousePosition = new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY() + OFFSET);

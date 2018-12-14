@@ -24,22 +24,17 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import java.awt.Rectangle;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Map;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Point;
+import javax.swing.SwingUtilities;
 import net.runelite.client.input.KeyListener;
-import net.runelite.client.input.MouseListener;
+import net.runelite.client.input.MouseAdapter;
 
-public class GroundItemInputListener extends MouseListener implements KeyListener
+public class GroundItemInputListener extends MouseAdapter implements KeyListener
 {
 	private static final int HOTKEY = KeyEvent.VK_ALT;
-
-	@Inject
-	private Client client;
 
 	@Inject
 	private GroundItemsPlugin plugin;
@@ -65,39 +60,51 @@ public class GroundItemInputListener extends MouseListener implements KeyListene
 		if (e.getKeyCode() == HOTKEY)
 		{
 			plugin.setHotKeyPressed(false);
-			plugin.getHighlightBoxes().clear();
-			plugin.getHiddenBoxes().clear();
+			plugin.setTextBoxBounds(null);
+			plugin.setHiddenBoxBounds(null);
+			plugin.setHighlightBoxBounds(null);
 		}
 	}
 
 	@Override
 	public MouseEvent mousePressed(MouseEvent e)
 	{
+		final Point mousePos = e.getPoint();
+
 		if (plugin.isHotKeyPressed())
 		{
-			// Check if left click
-			if (e.getButton() == MouseEvent.BUTTON1)
+			if (SwingUtilities.isLeftMouseButton(e))
 			{
-				Point mousePos = client.getMouseCanvasPosition();
-
-				for (Map.Entry<Rectangle, String> entry : plugin.getHiddenBoxes().entrySet())
+				// Process both click boxes for hidden and highlighted items
+				if (plugin.getHiddenBoxBounds() != null && plugin.getHiddenBoxBounds().getKey().contains(mousePos))
 				{
-					if (entry.getKey().contains(mousePos.getX(), mousePos.getY()))
-					{
-						plugin.updateList(entry.getValue(), true);
-						e.consume();
-						return e;
-					}
+					plugin.updateList(plugin.getHiddenBoxBounds().getValue().getName(), true);
+					e.consume();
+					return e;
 				}
 
-				for (Map.Entry<Rectangle, String> entry : plugin.getHighlightBoxes().entrySet())
+				if (plugin.getHighlightBoxBounds() != null && plugin.getHighlightBoxBounds().getKey().contains(mousePos))
 				{
-					if (entry.getKey().contains(mousePos.getX(), mousePos.getY()))
-					{
-						plugin.updateList(entry.getValue(), false);
-						e.consume();
-						return e;
-					}
+					plugin.updateList(plugin.getHighlightBoxBounds().getValue().getName(), false);
+					e.consume();
+					return e;
+				}
+
+				// There is one name click box for left click and one for right click
+				if (plugin.getTextBoxBounds() != null && plugin.getTextBoxBounds().getKey().contains(mousePos))
+				{
+					plugin.updateList(plugin.getTextBoxBounds().getValue().getName(), false);
+					e.consume();
+					return e;
+				}
+			}
+			else if (SwingUtilities.isRightMouseButton(e))
+			{
+				if (plugin.getTextBoxBounds() != null && plugin.getTextBoxBounds().getKey().contains(mousePos))
+				{
+					plugin.updateList(plugin.getTextBoxBounds().getValue().getName(), true);
+					e.consume();
+					return e;
 				}
 			}
 		}

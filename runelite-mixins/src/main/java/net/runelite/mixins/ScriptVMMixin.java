@@ -33,7 +33,7 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
-import net.runelite.client.callback.Hooks;
+import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSScript;
 import net.runelite.rs.api.RSScriptEvent;
@@ -91,7 +91,7 @@ public abstract class ScriptVMMixin implements RSClient
 				}
 				m.appendTail(out);
 
-				Hooks.log.debug(out.toString());
+				client.getLogger().debug(out.toString());
 
 				client.setStringStackSize(stringStackSize);
 				client.setIntStackSize(intStackSize);
@@ -101,7 +101,7 @@ public abstract class ScriptVMMixin implements RSClient
 			ScriptCallbackEvent event = new ScriptCallbackEvent();
 			event.setScript(currentScript);
 			event.setEventName(stringOp);
-			Hooks.eventBus.post(event);
+			client.getCallbacks().post(event);
 			return true;
 		}
 		return false;
@@ -116,6 +116,20 @@ public abstract class ScriptVMMixin implements RSClient
 	@Replace("runScript")
 	static void rl$runScript(RSScriptEvent event, int maxExecutionTime)
 	{
+		Object[] arguments = event.getArguments();
+		if (arguments != null && arguments.length > 0 && arguments[0] instanceof JavaScriptCallback)
+		{
+			try
+			{
+				((JavaScriptCallback) arguments[0]).run(event);
+			}
+			catch (Exception e)
+			{
+				client.getLogger().error("Error in JavaScriptCallback", e);
+			}
+			return;
+		}
+
 		try
 		{
 			rs$runScript(event, maxExecutionTime);
@@ -131,6 +145,7 @@ public abstract class ScriptVMMixin implements RSClient
 	public void runScript(int id, Object... args)
 	{
 		assert isClientThread();
+		assert currentScript == null;
 		Object[] cargs = new Object[args.length + 1];
 		cargs[0] = id;
 		System.arraycopy(args, 0, cargs, 1, args.length);

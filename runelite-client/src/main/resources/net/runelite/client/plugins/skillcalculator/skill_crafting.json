@@ -265,6 +265,12 @@
       "xp": 75
     },
     {
+      "level": 41,
+      "icon": 22269,
+      "name": "Hard leather shield",
+      "xp": 70
+    },
+    {
       "level": 42,
       "icon": 11085,
       "name": "Ruby Bracelet",
@@ -331,6 +337,12 @@
       "xp": 90
     },
     {
+      "level": 56,
+      "icon": 22272,
+      "name": "Snakeskin shield",
+      "xp": 100
+    },
+    {
       "level": 57,
       "icon": 1065,
       "name": "Green D'hide Vamb",
@@ -361,6 +373,12 @@
       "xp": 125
     },
     {
+      "level": 62,
+      "icon": 22275,
+      "name": "Green D'hide Shield",
+      "xp": 124
+    },
+    {
       "level": 63,
       "icon": 1135,
       "name": "Green D'hide Body",
@@ -380,7 +398,7 @@
     },
     {
       "level": 67,
-      "icon": 6564,
+      "icon": 6575,
       "name": "Onyx Ring",
       "xp": 115
     },
@@ -394,6 +412,12 @@
       "level": 68,
       "icon": 2493,
       "name": "Blue D'hide Chaps",
+      "xp": 140
+    },
+    {
+      "level": 69,
+      "icon": 22278,
+      "name": "Blue D'hide Shield",
       "xp": 140
     },
     {
@@ -411,7 +435,7 @@
     {
       "level": 72,
       "icon": 1664,
-      "name": "Dragon Necklace",
+      "name": "Dragonstone Necklace",
       "xp": 105
     },
     {
@@ -430,6 +454,12 @@
       "level": 75,
       "icon": 2495,
       "name": "Red D'hide Chaps",
+      "xp": 156
+    },
+    {
+      "level": 76,
+      "icon": 22281,
+      "name": "Red D'hide Shield",
       "xp": 156
     },
     {
@@ -469,6 +499,12 @@
       "xp": 60
     },
     {
+      "level": 83,
+      "icon": 22284,
+      "name": "Black D'hide Shield",
+      "xp": 172
+    },
+    {
       "level": 84,
       "icon": 2503,
       "name": "Black D'hide Body",
@@ -500,7 +536,7 @@
     },
     {
       "level": 89,
-      "icon": 19499,
+      "icon": 19538,
       "name": "Zenyte Ring",
       "xp": 150
     },
@@ -518,7 +554,7 @@
     },
     {
       "level": 92,
-      "icon": 19500,
+      "icon": 19535,
       "name": "Zenyte Necklace",
       "xp": 165
     },

@@ -29,6 +29,11 @@ import net.runelite.api.Actor;
 import net.runelite.api.Query;
 import net.runelite.api.coords.LocalPoint;
 
+/**
+ * Used for getting players in view,deprecated as of existence of Actor spawn events
+ *
+ */
+@Deprecated
 public abstract class ActorQuery<EntityType extends Actor, QueryType> extends Query<EntityType, QueryType>
 {
 	@SuppressWarnings("unchecked")
@@ -91,7 +96,7 @@ public abstract class ActorQuery<EntityType extends Actor, QueryType> extends Qu
 	@SuppressWarnings("unchecked")
 	public QueryType isInteractingWith(Actor actor)
 	{
-		predicate = and(a -> a.getInteracting().equals(a));
+		predicate = and(a -> a.getInteracting().equals(actor));
 		return (QueryType) this;
 	}
 

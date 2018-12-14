@@ -26,8 +26,14 @@ package net.runelite.api.events;
 
 import lombok.Value;
 
+/**
+ * An event where the client has joined or left a clan chat.
+ */
 @Value
 public class ClanChanged
 {
+	/**
+	 * Whether or not the client is now in a clan chat.
+	 */
 	private boolean joined;
 }
