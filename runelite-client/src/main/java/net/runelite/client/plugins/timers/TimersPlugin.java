@@ -556,6 +556,11 @@ public class TimersPlugin extends Plugin
 			freezeTimer = createGameTimer(ICEBARRAGE);
 			freezeTime = client.getTickCount();
 		}
+
+		if (!config.showSkull())
+		{
+			removeGameTimer(SKULL);
+		}
 	}
 
 	@Subscribe
