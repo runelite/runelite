@@ -187,7 +187,6 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 
 		if (!matcher.matches())
 		{
-			System.out.println("no matches");
 			return;
 		}
 
