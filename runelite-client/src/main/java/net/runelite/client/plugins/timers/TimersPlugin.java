@@ -699,7 +699,7 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
-		if (actor instanceof Player	&& interacting == local)
+		if (actor instanceof Player	&& interacting == local && !actor.getName().equals("null"))
 		{
 			cantSkullOn.put(Text.toJagexName(actor.getName()), time);
 		}
