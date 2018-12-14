@@ -22,28 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.http.service.util;
 
+import org.springframework.core.MethodParameter;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import org.springframework.web.filter.OncePerRequestFilter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+@ControllerAdvice
+public class CacheControlFilter implements ResponseBodyAdvice<Object>
+{
 
-public class CacheControlFilter extends OncePerRequestFilter {
+	@Override
+	public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType)
+	{
+		return true;
+	}
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response, FilterChain filterChain)  throws ServletException, IOException {
-
-        if (!response.containsHeader("Cache-Control"))
-        {
-            response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-            response.addHeader("pragma", "no-cache");
-        }
-
-        filterChain.doFilter(request, response);
-    }
+	@Override
+	public Object beforeBodyWrite(
+			Object body,
+			MethodParameter returnType,
+			MediaType selectedContentType,
+			Class<? extends HttpMessageConverter<?>> selectedConverterType,
+			ServerHttpRequest request,
+			ServerHttpResponse response
+	)
+	{
+		if (!response.getHeaders().containsKey("Cache-Control"))
+		{
+			response.getHeaders().add("Cache-Control", "no-cache, no-store, must-revalidate");
+			response.getHeaders().add("pragma", "no-cache");
+		}
+		return body;
+	}
 }
