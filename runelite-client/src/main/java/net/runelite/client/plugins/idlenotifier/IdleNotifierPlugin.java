@@ -296,9 +296,13 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			case LOGIN_SCREEN:
 				resetTimers();
+				isFirstTick = true;
+				break;
+			case HOPPING:
+				isFirstTick = true;
+				ready = true;
 				break;
 			case LOGGING_IN:
-			case HOPPING:
 			case CONNECTION_LOST:
 				ready = true;
 				break;
