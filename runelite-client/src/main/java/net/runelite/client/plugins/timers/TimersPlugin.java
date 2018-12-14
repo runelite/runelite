@@ -30,7 +30,9 @@ import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
@@ -131,6 +133,7 @@ public class TimersPlugin extends Plugin
 	private boolean avariceLastTick = false;
 	private boolean loggedInRace;
 	private boolean widgetHiddenChangedOnPvpWorld;
+	private Map<String, Long> cantSkullOn = new HashMap<>();
 
 	@Inject
 	private ItemManager itemManager;
@@ -302,6 +305,26 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
+		if (config.showSkull() && event.getMenuOption().equals("Continue"))
+		{
+			Widget widget = client.getWidget(219, 1);
+			if (widget != null)
+			{
+				Widget[] widgets = widget.getDynamicChildren();
+				if (widgets != null)
+				{
+					if (!widget.isHidden()
+							&& widgets.length > 2
+							&& widgets[0].getText().equals("Extend your PK skull duration?")
+							&& event.getActionParam() == 1)
+					{
+						createGameTimer(SKULL);
+
+					}
+				}
+			}
+		}
+
 		if (config.showAntiPoison()
 			&& event.getMenuOption().contains("Drink")
 			&& (event.getId() == ItemID.ANTIDOTE1_5958
@@ -629,6 +652,7 @@ public class TimersPlugin extends Plugin
 			case LOGIN_SCREEN:
 				removeGameIndicator(VENGEANCE_ACTIVE);
 				removeTbTimers();
+				cantSkullOn.clear();
 				break;
 			case LOGGED_IN:
 				loggedInRace = true;
@@ -640,6 +664,9 @@ public class TimersPlugin extends Plugin
 	public void onAnimationChanged(AnimationChanged event)
 	{
 		Actor actor = event.getActor();
+		Player local = client.getLocalPlayer();
+		Actor interacting = actor.getInteracting();
+		long time = System.currentTimeMillis();
 
 		if (config.showAbyssalSireStun()
 			&& actor instanceof NPC)
@@ -667,9 +694,32 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
-		if (actor != client.getLocalPlayer())
+		if (actor instanceof Player	&& interacting == local)
+		{
+			cantSkullOn.put(Text.toJagexName(actor.getName()), time);
+		}
+
+		if (actor != local)
 		{
 			return;
+		}
+
+		if (local.getSkullIcon() == SkullIcon.SKULL
+				&& interacting != null
+				&& interacting instanceof Player)
+		{
+			for (Map.Entry<String, Long> entry : cantSkullOn.entrySet())
+			{
+				if (((time - entry.getValue()) / 1000.0) > 1200)
+				{
+					cantSkullOn.remove(entry.getKey());
+				}
+			}
+
+			if (config.showSkull() && !cantSkullOn.containsKey(Text.toJagexName(interacting.getName())))
+			{
+				createGameTimer(SKULL);
+			}
 		}
 
 		if (config.showVengeance()
@@ -694,7 +744,7 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
-		lastAnimation = client.getLocalPlayer().getAnimation();
+		lastAnimation = local.getAnimation();
 	}
 
 	@Subscribe
