@@ -26,11 +26,17 @@ package net.runelite.client.plugins.experiencedrop;
 
 import com.google.inject.Provides;
 import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.stream.IntStream;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import static net.runelite.api.ScriptID.XPDROP_DISABLED;
+import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -43,7 +49,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 @PluginDescriptor(
 	name = "XP Drop",
 	description = "Enable customization of the way XP drops are displayed",
-	tags = {"experience", "levels"}
+	tags = {"experience", "levels", "tick"}
 )
 public class XpDropPlugin extends Plugin
 {
@@ -54,6 +60,12 @@ public class XpDropPlugin extends Plugin
 
 	@Inject
 	private XpDropConfig config;
+
+	private int tickCounter = 0;
+	private int previousExpGained;
+	private boolean hasDropped = false;
+	private Skill lastSkill = null;
+	private Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
 
 	@Provides
 	XpDropConfig provideConfig(ConfigManager configManager)
@@ -183,4 +195,47 @@ public class XpDropPlugin extends Plugin
 		}
 		return null;
 	}
+
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		final int fakeTickDelay = config.fakeXpDropDelay();
+
+		if (fakeTickDelay == 0 || lastSkill == null)
+		{
+			return;
+		}
+
+		// If an xp drop was created this tick, reset the counter
+		if (hasDropped)
+		{
+			hasDropped = false;
+			tickCounter = 0;
+			return;
+		}
+
+		if (++tickCounter % fakeTickDelay != 0)
+		{
+			return;
+		}
+
+		client.runScript(XPDROP_DISABLED, lastSkill.ordinal(), previousExpGained);
+	}
+
+	@Subscribe
+	public void onExperienceChanged(ExperienceChanged event)
+	{
+		final Skill skill = event.getSkill();
+		final int xp = client.getSkillExperience(skill);
+
+		lastSkill = skill;
+
+		Integer previous = previousSkillExpTable.put(skill, xp);
+		if (previous != null)
+		{
+			previousExpGained = xp - previous;
+			hasDropped = true;
+		}
+	}
+
 }

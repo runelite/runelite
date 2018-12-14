@@ -216,9 +216,14 @@ LABEL183:
       91: LABEL207
    jump                   LABEL426
 LABEL186:
+   iload                  9                 ; The id of the messageNode of the message being built
+   load_string            ""
+   load_string            "addTimestamp"
+   runelite_callback
+   pop_int
    sload                  9
    load_string            ":"
-   string_append          2
+   string_append          3                 ; We need to append an extra string since we added the timestamp
    sload                  1
    sload                  11
    load_string            "</col>"
@@ -238,9 +243,14 @@ LABEL186:
    istore                 6
    jump                   LABEL440
 LABEL207:
+   iload                  9                 ; The id of the messageNode of the message being built
+   load_string            ""
+   load_string            "addTimestamp"
+   runelite_callback
+   pop_int
    sload                  9
    load_string            ":"
-   string_append          2
+   string_append          3                 ; We need to append an extra string since we added the timestamp
    sload                  3
    sload                  11
    load_string            "</col>"
@@ -260,12 +270,17 @@ LABEL207:
    istore                 6
    jump                   LABEL440
 LABEL228:
+   iload                  9                 ; The id of the messageNode of the message being built
+   load_string            ""
+   load_string            "addTimestamp"
+   runelite_callback
+   pop_int
    load_string            "From "
    sload                  9
    load_string            ":"
    load_string            "privateChatFrom"
    runelite_callback
-   string_append          3
+   string_append          4                 ; We need to append an extra string since we added the timestamp
    sload                  2
    sload                  11
    load_string            "</col>"
@@ -285,10 +300,15 @@ LABEL228:
    istore                 6
    jump                   LABEL440
 LABEL250:
+   iload                  9                 ; The id of the messageNode of the message being built
+   load_string            ""
+   load_string            "addTimestamp"
+   runelite_callback
+   pop_int
    sload                  7
    sload                  11
    load_string            "</col>"
-   string_append          3
+   string_append          4                 ; We need to append an extra string since we added the timestamp
    iload                  7
    iload                  8
    load_int               10616890
@@ -304,10 +324,15 @@ LABEL250:
    istore                 6
    jump                   LABEL440
 LABEL268:
+   iload                  9                 ; The id of the messageNode of the message being built
+   load_string            ""
+   load_string            "addTimestamp"
+   runelite_callback
+   pop_int
    sload                  2
    sload                  11
    load_string            "</col>"
-   string_append          3
+   string_append          4                 ; We need to append an extra string since we added the timestamp
    iload                  7
    iload                  8
    load_int               10616890
@@ -340,12 +365,17 @@ LABEL289:
 LABEL300:
    jump                   LABEL440
 LABEL301:
+   iload                  9                 ; The id of the messageNode of the message being built
+   load_string            ""
+   load_string            "addTimestamp"
+   runelite_callback
+   pop_int
    load_string            "To "
    sload                  9
    load_string            ":"
    load_string            "privateChatTo"
    runelite_callback
-   string_append          3
+   string_append          4                 ; We need to append an extra string since we added the timestamp
    sload                  2
    sload                  11
    load_string            "</col>"
@@ -365,10 +395,15 @@ LABEL301:
    istore                 6
    jump                   LABEL440
 LABEL323:
+   iload                  9                 ; The id of the messageNode of the message being built
+   load_string            ""
+   load_string            "addTimestamp"
+   runelite_callback
+   pop_int
    sload                  8
    sload                  11
    load_string            "</col>"
-   string_append          3
+   string_append          4                 ; We need to append an extra string since we added the timestamp
    iload                  7
    iload                  8
    load_int               10616890
@@ -384,6 +419,11 @@ LABEL323:
    istore                 6
    jump                   LABEL440
 LABEL341:
+   iload                  9                 ; The id of the messageNode of the message being built
+   load_string            ""
+   load_string            "addTimestamp"
+   runelite_callback
+   pop_int
    load_string            "["
    sload                  5
    sload                  10
@@ -391,7 +431,7 @@ LABEL341:
    load_string            "] "
    sload                  9
    load_string            ":"
-   string_append          7
+   string_append          8                 ; We need to append an extra string since we added the timestamp
    sload                  6
    sload                  11
    load_string            "</col>"

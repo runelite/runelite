@@ -97,4 +97,14 @@ public final class ScriptID
 	 * Send a private message.
 	 */
 	public static final int PRIVMSG = 10004;
+
+	/**
+	 * Creates a disabled experience drop
+	 *
+	 * <ul>
+	 * <li>int (Skill ordinal) Sets what icon to use</li>
+	 * <li>int Amount of exp to drop</li>
+	 * </ul>
+	 */
+	public static final int XPDROP_DISABLED = 2091;
 }
