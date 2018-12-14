@@ -104,4 +104,26 @@ public interface ClanChatConfig extends Config
 	{
 		return ClanMemberRank.UNRANKED;
 	}
+
+	@ConfigItem(
+		keyName = "privateMessageIcons",
+		name = "Private Message Icons",
+		description = "Add clan chat rank icons to private messages received from clan mates.",
+		position = 6
+	)
+	default boolean privateMessageIcons()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "publicChatIcons",
+		name = "Public Chat Icons",
+		description = "Add clan chat rank icons to public chat messages from clan mates.",
+		position = 7
+	)
+	default boolean publicChatIcons()
+	{
+		return false;
+	}
 }
