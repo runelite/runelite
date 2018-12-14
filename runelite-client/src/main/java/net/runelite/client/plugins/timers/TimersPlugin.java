@@ -123,6 +123,7 @@ public class TimersPlugin extends Plugin
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
 
+	private boolean firstTick = true;
 	private int lastRaidVarb;
 	private int lastWildernessVarb;
 	private WorldPoint lastPoint;
@@ -567,6 +568,7 @@ public class TimersPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		loggedInRace = false;
+		firstTick = false;
 
 		Player player = client.getLocalPlayer();
 		WorldPoint currentWorldPoint = player.getWorldLocation();
@@ -658,6 +660,7 @@ public class TimersPlugin extends Plugin
 				removeGameIndicator(VENGEANCE_ACTIVE);
 				removeTbTimers();
 				cantSkullOn.clear();
+				firstTick = true;
 				break;
 			case LOGGED_IN:
 				loggedInRace = true;
@@ -699,7 +702,9 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
-		if (actor instanceof Player	&& interacting == local && !actor.getName().equals("null"))
+		if (!firstTick
+				&& actor instanceof Player
+				&& interacting == local)
 		{
 			cantSkullOn.put(Text.toJagexName(actor.getName()), time);
 		}
