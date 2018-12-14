@@ -395,4 +395,9 @@ public class CriticalItemPanel extends JPanel
 			createInfoPanel();
 		}
 	}
+
+	public void recalculate()
+	{
+		updateXp(xp);
+	}
 }

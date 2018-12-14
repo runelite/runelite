@@ -358,14 +358,15 @@ public class BankedCalculator extends JPanel
 				amount += num;
 			}
 
+			// Actually create the panel displaying banked experience for this item
+			CriticalItemPanel panel = new CriticalItemPanel(this, itemManager, item, xp, amount, links);
+
 			// Limit to Banked Secondaries
 			if (config.limitedBankedSecondaries() && a != null)
 			{
-				amount = limitToActivitySecondaries(a, amount);
+				panel.updateAmount(limitToActivitySecondaries(a, amount), true);
+				panel.recalculate();
 			}
-
-			// Actually create the panel displaying banked experience for this item
-			CriticalItemPanel panel = new CriticalItemPanel(this, itemManager, item, xp, amount, links);
 			panelMap.put(item, panel);
 			detailContainer.add(panel);
 		}
@@ -451,7 +452,9 @@ public class BankedCalculator extends JPanel
 				if (l != null)
 				{
 					l.updateLinkedMap(getLinkedTotalMap(linked));
-					l.updateAmount(limitToActivitySecondaries(a, l.getAmount()) , false);
+					int amount = config.limitedBankedSecondaries() ? limitToActivitySecondaries(a, l.getAmount()) : l.getAmount();
+					l.updateAmount(amount, false);
+					l.recalculate();
 				}
 			}
 		}
@@ -461,7 +464,7 @@ public class BankedCalculator extends JPanel
 		if (p != null)
 		{
 			p.updateLinkedMap(getLinkedTotalMap(i));
-			int amount = limitToActivitySecondaries(a, p.getAmount());
+			int amount = config.limitedBankedSecondaries() ? limitToActivitySecondaries(a, p.getAmount()) : p.getAmount();
 			p.updateAmount(amount, true);
 			p.updateXp(a.getXp() * (i.isIgnoreBonus() ? 1.0f : xpFactor));
 		}
