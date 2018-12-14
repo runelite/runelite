@@ -53,6 +53,16 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "geStats",
+		name = "Enable GE item information",
+		description = "Shows an item information panel when buying items in the GE"
+	)
+	default boolean geStats()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "relative",
 		name = "Show Relative",
 		description = "Show relative stat change in tooltip"

@@ -468,7 +468,14 @@ public enum Varbits
 	BANK_TAB_SIX_COUNT(4176),
 	BANK_TAB_SEVEN_COUNT(4177),
 	BANK_TAB_EIGHT_COUNT(4178),
-	BANK_TAB_NINE_COUNT(4179);
+	BANK_TAB_NINE_COUNT(4179),
+
+	/**
+	 * Type of GE offer currently being created
+	 * 0 = buy
+	 * 1 = sell
+	 */
+	GE_OFFER_CREATION_TYPE(4397);
 
 	/**
 	 * The raw varbit ID.
