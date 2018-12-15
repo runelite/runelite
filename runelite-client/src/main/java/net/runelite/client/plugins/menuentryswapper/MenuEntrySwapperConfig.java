@@ -151,7 +151,7 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return FairyRingMode.LAST_DESTINATION;
 	}
-
+	
 	@ConfigItem(
 		keyName = "swapHarpoon",
 		name = "Harpoon",
