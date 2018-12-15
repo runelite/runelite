@@ -85,13 +85,14 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern WINTERTODT_PATTERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern BARROWS_PATTERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>.");
-	private static final Pattern COMMAND_PATTERN = Pattern.compile("^[!.]((?<lvl>Lvl|Level)|" +
+	private static final Pattern COMMAND_PATTERN = Pattern.compile("^[!.]" +
+																			"((?<lvl>Lvl|Level)|" +
 																			"(?<ge>Ge|Price|Value)|" +
 																			"(?<cmb>Cmb|Combat|Cbt)|" +
 																			"(?<total>Total|Overall|Totallvl|Totallevel)|" +
 																			"(?<clues>Clues|Clue)|" +
-																			"(?<kc>Kc|Kills|Killcount)) " +
-																			"?(?<txt>.+)?", Pattern.CASE_INSENSITIVE);
+																			"(?<kc>Kc|Kills|Killcount))" +
+																			" ?(?<txt>.+)?", Pattern.CASE_INSENSITIVE);
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final KillCountClient killCountClient = new KillCountClient();
 
