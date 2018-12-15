@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import net.runelite.api.Client;
-import net.runelite.client.RuneLite;
+import net.runelite.client.plugins.boosts.RuneLite;
 import net.runelite.client.RuneLiteModule;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import static org.junit.Assert.assertEquals;
