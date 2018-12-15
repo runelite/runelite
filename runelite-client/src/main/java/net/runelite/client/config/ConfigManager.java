@@ -57,7 +57,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.client.RuneLite;
+import net.runelite.client.plugins.boosts.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.http.api.config.ConfigClient;

@@ -50,6 +50,7 @@ import net.runelite.api.GameState;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.plugins.boosts.RuneLite;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.OSType;

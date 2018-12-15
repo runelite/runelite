@@ -334,7 +334,7 @@
 							</filters>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>net.runelite.client.RuneLite</mainClass>
+									<mainClass>net.runelite.client.plugins.boosts.RuneLite</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>

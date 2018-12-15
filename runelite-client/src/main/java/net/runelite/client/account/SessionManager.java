@@ -38,7 +38,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.SessionClose;
 import net.runelite.api.events.SessionOpen;
-import net.runelite.client.RuneLite;
+import net.runelite.client.plugins.boosts.RuneLite;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;

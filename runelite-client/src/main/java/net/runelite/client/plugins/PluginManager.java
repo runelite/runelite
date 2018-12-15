@@ -59,7 +59,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.SessionClose;
 import net.runelite.api.events.SessionOpen;
-import net.runelite.client.RuneLite;
+import net.runelite.client.plugins.boosts.RuneLite;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;

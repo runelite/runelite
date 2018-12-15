@@ -52,7 +52,7 @@ import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
 import net.runelite.client.Notifier;
-import net.runelite.client.RuneLite;
+import net.runelite.client.plugins.boosts.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
