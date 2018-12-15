@@ -151,7 +151,7 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return FairyRingMode.LAST_DESTINATION;
 	}
-	
+
 	@ConfigItem(
 		keyName = "swapHarpoon",
 		name = "Harpoon",
@@ -267,6 +267,9 @@ public interface MenuEntrySwapperConfig extends Config
 			name = "Dismiss",
 			description = "Swaps the talk-to option to dismiss on all random events apart from the Genie and Dunce."
 	)
-	default boolean swapDismiss() {return false;}
+	default boolean swapDismiss()
+	{
+		return false;
+	}
 
 }
