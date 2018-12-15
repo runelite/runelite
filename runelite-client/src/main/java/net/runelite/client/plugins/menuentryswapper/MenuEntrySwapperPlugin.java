@@ -349,9 +349,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (option.equals("talk-to"))
 		{
-			if (config.swapPickpocket() && target.contains("h.a.m."))
-			{
+			if (config.swapPickpocket() && target.contains("h.a.m.")) {
 				swap("pickpocket", option, target, true);
+			}
+
+			if (config.swapDismiss() && target.contains("dunce") || target.contains("genie"))
+			{
+				return;
+			}
+			else
+			{
+				swap("dismiss", option, target, true);
 			}
 
 			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
