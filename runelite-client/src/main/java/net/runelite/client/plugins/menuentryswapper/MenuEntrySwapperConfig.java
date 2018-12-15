@@ -261,4 +261,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "swapDismiss",
+		name = "Dismiss",
+		description = "Swap Talk-to with Dismiss on all random events apart from the Genie and Dunce."
+	)
+	default boolean swapDismiss()
+	{
+		return false;
+	}
 }
