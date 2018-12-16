@@ -114,7 +114,6 @@
 	<modules>
 		<module>cache</module>
 		<module>cache-client</module>
-		<module>cache-server</module>
 		<module>cache-updater</module>
 		<module>runelite-api</module>
 		<module>runelite-client</module>
