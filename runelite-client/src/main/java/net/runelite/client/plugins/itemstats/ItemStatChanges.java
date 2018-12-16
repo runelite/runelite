@@ -103,6 +103,7 @@ public class ItemStatChanges
 
 		// Alcoholic Beverages
 		add(combo(food(11), dec(ATTACK, 2)), JUG_OF_WINE);
+		add(combo(food(14), dec(ATTACK, 3)), BOTTLE_OF_WINE);
 		add(combo(2, food(5), boost(STRENGTH, 6), heal(ATTACK, -4)), PREMADE_WIZ_BLZD, WIZARD_BLIZZARD);
 		add(combo(2, food(5), boost(STRENGTH, 4), heal(ATTACK, -3)), PREMADE_SGG, SHORT_GREEN_GUY);
 		add(combo(2, food(5), boost(STRENGTH, 7), heal(ATTACK, -4)), PREMADE_DR_DRAGON, DRUNK_DRAGON);
