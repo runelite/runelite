@@ -84,4 +84,14 @@ public class Constants
 	 * the maximum framerate of 50 fps.
 	 */
 	public static final int CLIENT_TICK_LENGTH = 20;
+
+	/**
+	 * Base draw distance used in Vanilla.
+	 */
+	public static final int BASE_DRAW_DISTANCE = 25;
+
+	/**
+	 * Max distance player can interact with.
+	 */
+	public static final int MAX_INTERACT_DISTANCE = 45;
 }

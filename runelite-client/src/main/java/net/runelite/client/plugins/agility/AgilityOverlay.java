@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.agility;
 
+import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -33,6 +34,8 @@ import java.awt.geom.Area;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
@@ -43,8 +46,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class AgilityOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE = 2350;
-
 	private final Client client;
 	private final AgilityPlugin plugin;
 	private final AgilityConfig config;
@@ -65,6 +66,11 @@ class AgilityOverlay extends Overlay
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 		Point mousePosition = client.getMouseCanvasPosition();
 		final List<Tile> marksOfGrace = plugin.getMarksOfGrace();
+		final int maxDistance = Ints.constrainToRange(
+			client.getScene().getDrawDistance(),
+			Constants.BASE_DRAW_DISTANCE,
+			Constants.MAX_INTERACT_DISTANCE);
+
 		plugin.getObstacles().forEach((object, tile) ->
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.contains(object.getId()) && !config.highlightShortcuts() ||
@@ -74,7 +80,7 @@ class AgilityOverlay extends Overlay
 			}
 
 			if (tile.getPlane() == client.getPlane()
-				&& object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+				&& object.getLocalLocation().distanceTo(playerLocation) < maxDistance)
 			{
 				// This assumes that the obstacle is not clickable.
 				if (Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()))
@@ -118,7 +124,7 @@ class AgilityOverlay extends Overlay
 			for (Tile markOfGraceTile : marksOfGrace)
 			{
 				if (markOfGraceTile.getPlane() == client.getPlane() && markOfGraceTile.getItemLayer() != null
-						&& markOfGraceTile.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+						&& markOfGraceTile.getLocalLocation().distanceTo(playerLocation) < maxDistance)
 				{
 					final Polygon poly = markOfGraceTile.getItemLayer().getCanvasTilePoly();
 
