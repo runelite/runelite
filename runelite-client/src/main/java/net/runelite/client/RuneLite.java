@@ -75,6 +75,13 @@ public class RuneLite
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
+	
+	public static String[] client_files = new String[] {
+		"http-api-",
+		"runelite-api-",
+		"runescape-api-",
+		"client-"
+	};
 
 	@Getter
 	private static Injector injector;
@@ -287,6 +294,18 @@ public class RuneLite
 
 		// Start plugins
 		pluginManager.startCorePlugins();
+		
+		File subFolder = new File(RUNELITE_DIR, "repository2");
+		File[] dir = subFolder.listFiles();
+
+		if (dir != null) {
+			for (File child : dir) {
+				for (String files : client_files) {
+					if(child.toString().contains(files) && !child.toString().endsWith(new RuneLiteProperties().getVersion() + ".jar"))
+						child.delete();
+				}
+			}
+		}
 	}
 
 	public void shutdown()
