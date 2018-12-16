@@ -123,7 +123,7 @@ public class ExamineService
 			if (entry != null)
 			{
 				return ResponseEntity.ok()
-					.cacheControl(CacheControl.maxAge(10, TimeUnit.DAYS).cachePublic())
+					.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
 					.body(entry.getText());
 			}
 		}

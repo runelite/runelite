@@ -100,7 +100,7 @@ public class ItemController
 		if (item != null && item.getIcon() != null)
 		{
 			return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS).cachePublic())
+				.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
 				.body(item.getIcon());
 		}
 
@@ -115,7 +115,7 @@ public class ItemController
 		if (item != null && item.getIcon_large() != null)
 		{
 			return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS).cachePublic())
+				.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
 				.body(item.getIcon_large());
 		}
 
