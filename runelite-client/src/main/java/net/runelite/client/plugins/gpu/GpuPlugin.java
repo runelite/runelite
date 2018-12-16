@@ -422,6 +422,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// force main buffer provider rebuild to turn off alpha channel
 			client.resizeCanvas();
 		});
+
+		// Prevents canvas from freezing in place when disabling gpu plugin on some clients
+		client.setReplaceCanvasNextFrame(true);
 	}
 
 	@Provides
