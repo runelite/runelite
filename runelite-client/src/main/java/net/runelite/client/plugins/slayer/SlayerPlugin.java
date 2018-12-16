@@ -562,7 +562,8 @@ public class SlayerPlugin extends Plugin
 			if (name.contains(target))
 			{
 				NPCComposition composition = npc.getTransformedComposition();
-				if (composition != null && Arrays.asList(composition.getActions()).contains("Attack"))
+				List actions = Arrays.asList(composition.getActions());
+				if (composition != null && (actions.contains("Attack") || actions.contains("Pick"))) //Pick action is for zygomite-fungi
 				{
 					return true;
 				}
