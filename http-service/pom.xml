@@ -160,16 +160,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${spring.boot.version}</version>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<url>${runelite.tomcat.url}</url>
-					<server>runelite-tomcat</server>
-					<path>/runelite-${project.version}</path>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 </project>
