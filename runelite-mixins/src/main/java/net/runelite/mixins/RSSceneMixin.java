@@ -24,6 +24,7 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.Constants;
 import net.runelite.api.Perspective;
 import net.runelite.api.Renderable;
 import net.runelite.api.SceneTileModel;
@@ -48,13 +49,13 @@ import net.runelite.rs.api.RSWallObject;
 @Mixin(RSScene.class)
 public abstract class RSSceneMixin implements RSScene
 {
-	private static final int DEFAULT_DISTANCE = 25;
+	private static final int DEFAULT_DISTANCE = Constants.BASE_DRAW_DISTANCE;
 	private static final int MAX_DISTANCE = 90;
 
 	private static final int PITCH_LOWER_LIMIT = 128;
 	private static final int PITCH_UPPER_LIMIT = 383;
 
-	private static final int MAX_TARGET_DISTANCE = 45;
+	private static final int MAX_TARGET_DISTANCE = Constants.MAX_INTERACT_DISTANCE;
 
 	@Shadow("clientInstance")
 	static RSClient client;
