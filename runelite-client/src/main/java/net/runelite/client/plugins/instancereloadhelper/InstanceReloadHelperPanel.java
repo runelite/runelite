@@ -77,7 +77,8 @@ public class InstanceReloadHelperPanel extends PluginPanel
 					config.doReload(true);
 					//TODO: Since this is mainly for raids i'd like to reload the raids scouting plugin after the dc is finished
 
-				} catch (ReflectiveOperationException f)
+				}
+				catch (ReflectiveOperationException f)
 				{
 					throw new RuntimeException(f);
 				}
