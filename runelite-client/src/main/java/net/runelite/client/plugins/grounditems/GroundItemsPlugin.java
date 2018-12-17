@@ -61,10 +61,12 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -158,6 +160,7 @@ public class GroundItemsPlugin extends Plugin
 	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
 	private LoadingCache<String, Boolean> highlightedItems;
 	private LoadingCache<String, Boolean> hiddenItems;
+	private int ticksSinceDropped;
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -172,6 +175,7 @@ public class GroundItemsPlugin extends Plugin
 		reset();
 		mouseManager.registerMouseListener(inputListener);
 		keyManager.registerKeyListener(inputListener);
+		ticksSinceDropped = 0;
 	}
 
 	@Override
@@ -187,6 +191,25 @@ public class GroundItemsPlugin extends Plugin
 		hiddenItemList = null;
 		highlightedItemsList = null;
 		collectedGroundItems.clear();
+		ticksSinceDropped = 0;
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (event.getMenuOption().equals("Drop"))
+		{
+			ticksSinceDropped = 2;
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (ticksSinceDropped != 0)
+		{
+			ticksSinceDropped--;
+		}
 	}
 
 	@Subscribe
@@ -214,6 +237,13 @@ public class GroundItemsPlugin extends Plugin
 		Tile tile = itemSpawned.getTile();
 
 		GroundItem groundItem = buildGroundItem(tile, item);
+		WorldPoint itemLocation = tile.getWorldLocation();
+		WorldPoint localLocation = client.getLocalPlayer().getWorldLocation();
+
+		if (ticksSinceDropped != 0 && itemLocation.getX() == localLocation.getX() && itemLocation.getY() == localLocation.getY())
+		{
+			groundItem.setMine(true);
+		}
 
 		GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(item.getId(), tile.getWorldLocation());
 		GroundItem existing = collectedGroundItems.putIfAbsent(groundItemKey, groundItem);
