@@ -25,8 +25,6 @@
 package net.runelite.client.plugins.instancereloadhelper;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.lang.reflect.Method;
 import javax.inject.Inject;
 import javax.swing.JLabel;
@@ -39,58 +37,58 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
 public class InstanceReloadHelperPanel extends PluginPanel{
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    private JButton reloadButton = new JButton("Reload Instance");
-    private JLabel reloadMessage = new JLabel("<html><center><h3>Instance Reload Helper </h3>Reloading an instance will cause your client to disconnect temporarily.<br></center></html>");
-    void init(InstanceReloadHelperConfig config)
-    {
+	private JButton reloadButton = new JButton("Reload Instance");
+	private JLabel reloadMessage = new JLabel("<html><center><h3>Instance Reload Helper </h3>Reloading an instance will cause your client to disconnect temporarily.<br></center></html>");
+	void init(InstanceReloadHelperConfig config)
+	{
 
-        // this may or may not qualify as a hack
-        // but this lets the editor pane expand to fill the whole parent panel
-        getParent().setLayout(new BorderLayout());
-        getParent().add(this, BorderLayout.CENTER);
+		// this may or may not qualify as a hack
+		// but this lets the editor pane expand to fill the whole parent panel
+		getParent().setLayout(new BorderLayout());
+		getParent().add(this, BorderLayout.CENTER);
 
-        setLayout(new BorderLayout());
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        setBackground(ColorScheme.DARK_GRAY_COLOR);
+		setLayout(new BorderLayout());
+		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
-        JPanel reloadContainer = new JPanel();
-        reloadContainer.setLayout(new BorderLayout());
-        reloadContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		JPanel reloadContainer = new JPanel();
+		reloadContainer.setLayout(new BorderLayout());
+		reloadContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-        JPanel reloadFrame = new JPanel();
-        reloadButton.addActionListener(e ->
-        {
-            if((client.getGameState() == GameState.LOGGED_IN) && config.doReload())
-            {
-                try
-                {
-                    Method m = client.getClass().getClassLoader().loadClass("t").getDeclaredMethod("fp", int.class);
-                    m.setAccessible(true);
-                    m.invoke(null, -904767418);
-                    config.doReload(false);
-                    while(client.getGameState() != GameState.CONNECTION_LOST)
-                    {
-                        //probably not the best way to do this...
-                    }
-                    config.doReload(true);
-                    //TODO: Since this is mainly for raids i'd like to reload the raids scouting plugin after the dc is finished
+		JPanel reloadFrame = new JPanel();
+		reloadButton.addActionListener(e ->
+		{
+			if((client.getGameState() == GameState.LOGGED_IN) && config.doReload())
+			{
+				try
+				{
+					Method m = client.getClass().getClassLoader().loadClass("t").getDeclaredMethod("fp", int.class);
+					m.setAccessible(true);
+					m.invoke(null, -904767418);
+					config.doReload(false);
+					while(client.getGameState() != GameState.CONNECTION_LOST)
+					{
+						//probably not the best way to do this...
+					}
+					config.doReload(true);
+					//TODO: Since this is mainly for raids i'd like to reload the raids scouting plugin after the dc is finished
 
-                } catch (ReflectiveOperationException f)
-                {
-                    throw new RuntimeException(f);
-                }
+				} catch (ReflectiveOperationException f)
+				{
+					throw new RuntimeException(f);
+				}
 
-            }else
-                {
-                //TODO: User is still in a dc, or not logged in. Possibly provide a meaningful message somewhere.
-                }
-        });
-        reloadFrame.add(reloadButton);
-        reloadContainer.add(reloadFrame, BorderLayout.CENTER);
-        add(reloadMessage, BorderLayout.PAGE_START);
-        add(reloadContainer, BorderLayout.CENTER);
-    }
+			}else
+				{
+				//TODO: User is still in a dc, or not logged in. Possibly provide a meaningful message somewhere.
+				}
+		});
+		reloadFrame.add(reloadButton);
+		reloadContainer.add(reloadFrame, BorderLayout.CENTER);
+		add(reloadMessage, BorderLayout.PAGE_START);
+		add(reloadContainer, BorderLayout.CENTER);
+	}
 }

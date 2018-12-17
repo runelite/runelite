@@ -30,22 +30,22 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("instrancereloadhelper")
 public interface InstanceReloadHelperConfig extends Config{
-    @ConfigItem(
-            keyName = "doReload",
-            name = "Can Reload",
-            description = "Config for seeing if it's time to reload",
-            hidden = true
-    )
-    default boolean doReload()
-    {
-        return true;
-    }
+	@ConfigItem(
+			keyName = "doReload",
+			name = "Can Reload",
+			description = "Config for seeing if it's time to reload",
+			hidden = true
+	)
+	default boolean doReload()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "doReload",
-            name = "Can Reload",
-            description = "Config for seeing if it's time to reload",
-            hidden = true
-    )
-    void doReload(boolean doReload);
+	@ConfigItem(
+			keyName = "doReload",
+			name = "Can Reload",
+			description = "Config for seeing if it's time to reload",
+			hidden = true
+	)
+	void doReload(boolean doReload);
 }

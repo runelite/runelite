@@ -36,49 +36,48 @@ import net.runelite.client.util.ImageUtil;
 
 import java.awt.image.BufferedImage;
 @PluginDescriptor(
-        name = "Instance Reload Helper",
-        description = "Helps reload instances"
+		name = "Instance Reload Helper",
+		description = "Helps reload instances"
 )
 public class InstanceReloadHelperPlugin extends Plugin
 {
-    @Inject
-    private ClientToolbar clientToolbar;
+	@Inject
+	private ClientToolbar clientToolbar;
 
-    @Inject
-    private InstanceReloadHelperConfig config;
+	@Inject
+	private InstanceReloadHelperConfig config;
 
-    private InstanceReloadHelperPanel panel;
-    private NavigationButton navButton;
+	private InstanceReloadHelperPanel panel;
+	private NavigationButton navButton;
 
-    @Provides
-    InstanceReloadHelperConfig provideConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(InstanceReloadHelperConfig.class);
-    }
-
-
-    @Override
-    protected void startUp() throws Exception
-    {
-        panel = injector.getInstance(InstanceReloadHelperPanel.class);
-        panel.init(config);
-        config.doReload(true);
+	@Provides
+	InstanceReloadHelperConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(InstanceReloadHelperConfig.class);
+	}
 
 
-        final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "instancereloadhelper.png");
+	@Override
+	protected void startUp() throws Exception
+	{
+		panel = injector.getInstance(InstanceReloadHelperPanel.class);
+		panel.init(config);
+		config.doReload(true);
 
-        navButton = NavigationButton.builder()
-                .tooltip("Instance Reload Helper")
-                .icon(icon)
-                .priority(7)
-                .panel(panel)
-                .build();
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "instancereloadhelper.png");
 
-        clientToolbar.addNavigation(navButton);
-    }
-    @Override
-    protected void shutDown() throws Exception
-    {
-        clientToolbar.removeNavigation(navButton);
-    }
+		navButton = NavigationButton.builder()
+				.tooltip("Instance Reload Helper")
+				.icon(icon)
+				.priority(7)
+				.panel(panel)
+				.build();
+
+		clientToolbar.addNavigation(navButton);
+	}
+	@Override
+	protected void shutDown() throws Exception
+	{
+		clientToolbar.removeNavigation(navButton);
+	}
 }
