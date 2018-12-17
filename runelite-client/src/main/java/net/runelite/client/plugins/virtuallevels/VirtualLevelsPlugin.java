@@ -43,8 +43,10 @@ import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
@@ -354,6 +356,9 @@ public class VirtualLevelsPlugin extends Plugin implements KeyListener
 
 		clientThread.invoke(() -> client.runScript(ScriptID.CLEAR_CHATBOX_PANEL));
 		clientThread.invoke(() -> buildVirtualLevelUp(skill));
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(WidgetID.CHATBOX_GROUP_ID);
+		eventBus.post(widgetLoaded);
 	}
 
 	@Override

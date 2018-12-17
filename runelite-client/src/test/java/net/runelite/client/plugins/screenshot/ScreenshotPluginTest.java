@@ -167,12 +167,12 @@ public class ScreenshotPluginTest
 		Widget widget = mock(Widget.class);
 		when(widget.getId()).thenReturn(PACK(LEVEL_UP_GROUP_ID, 0));
 
-		Widget levelChild = mock(Widget.class);
-		when(client.getWidget(Matchers.eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
+		Widget levelUpWidget = mock(Widget.class);
+		when(client.getWidget(Matchers.eq(LEVEL_UP_LEVEL))).thenReturn(levelUpWidget);
 
-		when(levelChild.getText()).thenReturn("Your Hitpoints are now 99.");
+		when(levelUpWidget.getText()).thenReturn("Your Hitpoints are now 99.");
 
-		assertEquals("Hitpoints(99)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
+		assertEquals("Hitpoints(99)", screenshotPlugin.parseLevelUpWidget(levelUpWidget));
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(LEVEL_UP_GROUP_ID);
@@ -190,12 +190,12 @@ public class ScreenshotPluginTest
 		Widget widget = mock(Widget.class);
 		when(widget.getId()).thenReturn(PACK(LEVEL_UP_GROUP_ID, 0));
 
-		Widget levelChild = mock(Widget.class);
-		when(client.getWidget(Matchers.eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
+		Widget levelUpWidget = mock(Widget.class);
+		when(client.getWidget(Matchers.eq(LEVEL_UP_LEVEL))).thenReturn(levelUpWidget);
 
-		when(levelChild.getText()).thenReturn("Your Firemaking level is now 9.");
+		when(levelUpWidget.getText()).thenReturn("Your Firemaking level is now 9.");
 
-		assertEquals("Firemaking(9)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
+		assertEquals("Firemaking(9)", screenshotPlugin.parseLevelUpWidget(levelUpWidget));
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(LEVEL_UP_GROUP_ID);
@@ -213,12 +213,12 @@ public class ScreenshotPluginTest
 		Widget widget = mock(Widget.class);
 		when(widget.getId()).thenReturn(PACK(LEVEL_UP_GROUP_ID, 0));
 
-		Widget levelChild = mock(Widget.class);
-		when(client.getWidget(Matchers.eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
+		Widget levelUpWidget = mock(Widget.class);
+		when(client.getWidget(Matchers.eq(LEVEL_UP_LEVEL))).thenReturn(levelUpWidget);
 
-		when(levelChild.getText()).thenReturn("Your Attack level is now 70.");
+		when(levelUpWidget.getText()).thenReturn("Your Attack level is now 70.");
 
-		assertEquals("Attack(70)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
+		assertEquals("Attack(70)", screenshotPlugin.parseLevelUpWidget(levelUpWidget));
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(LEVEL_UP_GROUP_ID);
@@ -236,12 +236,12 @@ public class ScreenshotPluginTest
 		Widget widget = mock(Widget.class);
 		when(widget.getId()).thenReturn(PACK(DIALOG_SPRITE_GROUP_ID, 0));
 
-		Widget levelChild = mock(Widget.class);
-		when(client.getWidget(Matchers.eq(DIALOG_SPRITE_TEXT))).thenReturn(levelChild);
+		Widget levelUpWidget = mock(Widget.class);
+		when(client.getWidget(Matchers.eq(DIALOG_SPRITE_TEXT))).thenReturn(levelUpWidget);
 
-		when(levelChild.getText()).thenReturn("<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000><br><br>Your Hunter level is now 2.");
+		when(levelUpWidget.getText()).thenReturn("<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000><br><br>Your Hunter level is now 2.");
 
-		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(DIALOG_SPRITE_TEXT));
+		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(levelUpWidget));
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(DIALOG_SPRITE_GROUP_ID);

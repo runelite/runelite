@@ -68,6 +68,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.CHATBOX_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.CLUE_SCROLL_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
@@ -265,17 +266,21 @@ public class ScreenshotPlugin extends Plugin
 		String fileName = null;
 		if (client.getWidget(WidgetInfo.LEVEL_UP_LEVEL) != null)
 		{
-			fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
+			fileName = parseLevelUpWidget(client.getWidget(WidgetInfo.LEVEL_UP_LEVEL));
 		}
 		else if (client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT) != null)
 		{
-			fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+			fileName = parseLevelUpWidget(client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT));
 		}
 		else if (client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT) != null)
 		{
 			// "You have completed The Corsair Curse!"
 			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
 			fileName = "Quest(" + text.substring(19, text.length() - 1) + ")";
+		}
+		else if (client.getWidget(WidgetInfo.CHATBOX_CONTAINER).getChild(1) != null)
+		{
+			fileName = parseLevelUpWidget(client.getWidget(WidgetInfo.CHATBOX_CONTAINER).getChild(1));
 		}
 
 		if (fileName != null)
@@ -401,6 +406,7 @@ public class ScreenshotPlugin extends Plugin
 				break;
 			case LEVEL_UP_GROUP_ID:
 			case DIALOG_SPRITE_GROUP_ID:
+			case CHATBOX_GROUP_ID:
 				if (!config.screenshotLevels())
 				{
 					return;
@@ -458,6 +464,7 @@ public class ScreenshotPlugin extends Plugin
 			case LEVEL_UP_GROUP_ID:
 			case DIALOG_SPRITE_GROUP_ID:
 			case QUEST_COMPLETED_GROUP_ID:
+			case CHATBOX_GROUP_ID:
 			{
 				// level up widget gets loaded prior to the text being set, so wait until the next tick
 				shouldTakeScreenshot = true;
@@ -483,22 +490,21 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	/**
-	 * Receives a WidgetInfo pointing to the middle widget of the level-up dialog,
+	 * Receives a Widget containing the level-up dialog,
 	 * and parses it into a shortened string for filename usage.
 	 *
-	 * @param levelUpLevel WidgetInfo pointing to the required text widget,
+	 * @param levelUpWidget Widget containing the level-up text,
 	 *                     with the format "Your Skill (level is/are) now 99."
 	 * @return Shortened string in the format "Skill(99)"
 	 */
-	String parseLevelUpWidget(WidgetInfo levelUpLevel)
+	String parseLevelUpWidget(Widget levelUpWidget)
 	{
-		Widget levelChild = client.getWidget(levelUpLevel);
-		if (levelChild == null)
+		if (levelUpWidget == null)
 		{
 			return null;
 		}
 
-		Matcher m = LEVEL_UP_PATTERN.matcher(levelChild.getText());
+		Matcher m = LEVEL_UP_PATTERN.matcher(levelUpWidget.getText());
 		if (!m.matches())
 		{
 			return null;
