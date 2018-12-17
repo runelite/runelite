@@ -79,7 +79,7 @@ public class TimestampPlugin extends Plugin
 		final String dateFormat = time.get(ChronoField.HOUR_OF_DAY) + ":" +
 			String.format("%02d", time.get(ChronoField.MINUTE_OF_HOUR));
 
-		String timestamp = "[" + dateFormat + "]";
+		String timestamp = "[" + dateFormat + "] ";
 
 		Color timestampColour = getTimestampColour();
 		if (timestampColour != null)
