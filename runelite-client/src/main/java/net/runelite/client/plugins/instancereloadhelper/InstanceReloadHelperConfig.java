@@ -29,7 +29,8 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("instrancereloadhelper")
-public interface InstanceReloadHelperConfig extends Config{
+public interface InstanceReloadHelperConfig extends Config
+{
 	@ConfigItem(
 			keyName = "doReload",
 			name = "Can Reload",

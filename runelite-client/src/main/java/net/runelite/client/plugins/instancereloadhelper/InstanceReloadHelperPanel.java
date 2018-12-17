@@ -36,7 +36,8 @@ import net.runelite.api.GameState;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 
-public class InstanceReloadHelperPanel extends PluginPanel{
+public class InstanceReloadHelperPanel extends PluginPanel
+{
 	@Inject
 	private Client client;
 
@@ -61,7 +62,7 @@ public class InstanceReloadHelperPanel extends PluginPanel{
 		JPanel reloadFrame = new JPanel();
 		reloadButton.addActionListener(e ->
 		{
-			if((client.getGameState() == GameState.LOGGED_IN) && config.doReload())
+			if ((client.getGameState() == GameState.LOGGED_IN) && config.doReload())
 			{
 				try
 				{
@@ -69,7 +70,7 @@ public class InstanceReloadHelperPanel extends PluginPanel{
 					m.setAccessible(true);
 					m.invoke(null, -904767418);
 					config.doReload(false);
-					while(client.getGameState() != GameState.CONNECTION_LOST)
+					while (client.getGameState() != GameState.CONNECTION_LOST)
 					{
 						//probably not the best way to do this...
 					}
@@ -80,11 +81,11 @@ public class InstanceReloadHelperPanel extends PluginPanel{
 				{
 					throw new RuntimeException(f);
 				}
-
-			}else
-				{
+			}
+			else
+			{
 				//TODO: User is still in a dc, or not logged in. Possibly provide a meaningful message somewhere.
-				}
+			}
 		});
 		reloadFrame.add(reloadButton);
 		reloadContainer.add(reloadFrame, BorderLayout.CENTER);
