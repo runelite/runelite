@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Lyzrds
+ * Copyright (c) 2018, Lyzrds
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
