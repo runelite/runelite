@@ -70,51 +70,50 @@ class TargetWeaknessOverlay extends Overlay
 			return null;
 		}
 
-		Task curTask = Task.getTask(plugin.getTaskName());
+		final Task curTask = Task.getTask(plugin.getTaskName());
 		if (curTask == null || curTask.getWeaknessThreshold() < 0 || curTask.getWeaknessItem() < 0)
 		{
 			return null;
 		}
 
-		int threshold = curTask.getWeaknessThreshold();
-		BufferedImage image = itemManager.getImage(curTask.getWeaknessItem());
+		final int threshold = curTask.getWeaknessThreshold();
+		final BufferedImage image = itemManager.getImage(curTask.getWeaknessItem());
 
 		if (image == null)
 		{
 			return null;
 		}
 
-		List<NPC> targets = plugin.getHighlightedTargets();
+		final List<NPC> targets = plugin.getHighlightedTargets();
 		for (NPC target : targets)
 		{
-			int currentHealth = calculateHealth(target);
+			final int currentHealth = calculateHealth(target);
 
 			if (currentHealth >= 0 && currentHealth <= threshold)
 			{
 				renderTargetItem(graphics, target, image);
 			}
 		}
+
 		return null;
 	}
 
-
-	/**
-	 * Based on how health is calculated in OpponentInfoOverlay
-	 */
 	private int calculateHealth(NPC target)
 	{
-		if (target == null || target.getName() == null || target.getHealth() <= 0)
+		// Based on OpponentInfoOverlay HP calculation
+		if (target == null || target.getName() == null)
 		{
 			return -1;
 		}
 
-		int healthRatio = target.getHealthRatio();
-		int healthScale = target.getHealth();
-		String targetName = Text.removeTags(target.getName());
-		Integer maxHealth = npcManager.getHealth(targetName, target.getCombatLevel());
-		if (healthRatio <= 0 || healthScale <= 0 || maxHealth == null)
+		final int healthScale = target.getHealth();
+		final int healthRatio = target.getHealthRatio();
+		final String targetName = Text.removeTags(target.getName());
+		final Integer maxHealth = npcManager.getHealth(targetName, target.getCombatLevel());
+
+		if (healthRatio < 0 || healthScale <= 0 || maxHealth == null)
 		{
-			return 0;
+			return -1;
 		}
 
 		return (int)((maxHealth * healthRatio / healthScale) + 0.5f);
@@ -122,16 +121,19 @@ class TargetWeaknessOverlay extends Overlay
 
 	private void renderTargetItem(Graphics2D graphics, NPC actor, BufferedImage image)
 	{
-		LocalPoint actorPosition = actor.getLocalLocation();
-		int offset = actor.getLogicalHeight() + 40;
+		final LocalPoint actorPosition = actor.getLocalLocation();
+		final int offset = actor.getLogicalHeight() + 40;
 
-		if (actorPosition != null && image != null)
+		if (actorPosition == null || image == null)
 		{
-			Point imageLoc = Perspective.getCanvasImageLocation(client, actorPosition, image, offset);
-			if (imageLoc != null)
-			{
-				OverlayUtil.renderImageLocation(graphics, imageLoc, image);
-			}
+			return;
+		}
+
+		final Point imageLoc = Perspective.getCanvasImageLocation(client, actorPosition, image, offset);
+
+		if (imageLoc != null)
+		{
+			OverlayUtil.renderImageLocation(graphics, imageLoc, image);
 		}
 	}
 }
