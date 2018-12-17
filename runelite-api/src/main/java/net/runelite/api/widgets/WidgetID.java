@@ -124,6 +124,7 @@ public class WidgetID
 	public static final int LOOTING_BAG_GROUP_ID = 81;
 	public static final int SKOTIZO_GROUP_ID = 308;
 	public static final int ENTERING_HOUSE_GROUP_ID = 71;
+	public static final int FULLSCREEN_MAP_GROUP_ID = 165;
 
 	static class WorldMap
 	{
@@ -739,5 +740,10 @@ public class WidgetID
 	static class Skotizo
 	{
 		static final int CONTAINER = 3;
+	}
+
+	static class FullScreenMap
+	{
+		static final int ROOT = 25;
 	}
 }
