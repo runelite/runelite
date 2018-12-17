@@ -302,6 +302,7 @@ public interface GroundItemsConfig extends Config
 	{
 		return Color.decode("#FF66B2");
 	}
+
 	@ConfigItem(
 		keyName = "insaneValuePrice",
 		name = "Insane value price",
