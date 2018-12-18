@@ -34,8 +34,11 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -83,6 +86,9 @@ public class ItemChargePlugin extends Plugin
 
 	@Inject
 	private ItemChargeConfig config;
+
+	@Inject
+	private Client client;
 
 	@Getter(AccessLevel.PACKAGE)
 	private int dodgyCharges;
@@ -185,7 +191,7 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer().getItems().length > 14)
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT))
 		{
 			return;
 		}
@@ -239,10 +245,10 @@ public class ItemChargePlugin extends Plugin
 				ItemWithCharge amuletCharges = ItemWithCharge.findItem(amulet);
 				if (amuletCharges != null)
 				{
-				createJewelleryInfobox(amulet, amuletCharges.getCharges(), EquipmentInventorySlot.AMULET);
-			}
-			else
-			{
+					createJewelleryInfobox(amulet, amuletCharges.getCharges(), EquipmentInventorySlot.AMULET);
+				}
+				else
+				{
 					removeJewelleryInfobox(EquipmentInventorySlot.AMULET);
 				}
 			}
