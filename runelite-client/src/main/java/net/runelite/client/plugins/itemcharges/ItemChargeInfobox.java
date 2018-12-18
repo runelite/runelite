@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Mitchell <https://github.com/Mitchell-Kovacs>
+ * Copyright (c) 2018, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,14 +24,37 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
-enum ItemChargeType
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import lombok.Getter;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.client.ui.overlay.infobox.Counter;
+
+@Getter
+class ItemChargeInfobox extends Counter
 {
-	ABYSSAL_BRACELET,
-	BELLOWS,
-	FUNGICIDE_SPRAY,
-	IMPBOX,
-	TELEPORT,
-	WATERCAN,
-	WATERSKIN,
-	DODGY_NECKLACE
+	private final ItemChargePlugin plugin;
+	private final ItemWithSlot item;
+	private final EquipmentInventorySlot slot;
+
+	ItemChargeInfobox(
+		ItemChargePlugin plugin,
+		BufferedImage image,
+		String name,
+		int charges,
+		ItemWithSlot item,
+		EquipmentInventorySlot slot)
+	{
+		super(image, plugin, charges);
+		setTooltip(name);
+		this.plugin = plugin;
+		this.item = item;
+		this.slot = slot;
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		return getPlugin().getColor(getCount());
+	}
 }

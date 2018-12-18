@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Mitchell <https://github.com/Mitchell-Kovacs>
+ * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,14 +24,24 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
-enum ItemChargeType
+import com.google.common.collect.Sets;
+import java.util.Set;
+import lombok.Getter;
+import net.runelite.api.EquipmentInventorySlot;
+
+@Getter
+enum ItemWithSlot
 {
-	ABYSSAL_BRACELET,
-	BELLOWS,
-	FUNGICIDE_SPRAY,
-	IMPBOX,
-	TELEPORT,
-	WATERCAN,
-	WATERSKIN,
-	DODGY_NECKLACE
+	ABYSSAL_BRACELET(ItemChargeType.ABYSSAL_BRACELET, EquipmentInventorySlot.GLOVES),
+	DODGY_NECKLACE(ItemChargeType.DODGY_NECKLACE, EquipmentInventorySlot.AMULET),
+	TELEPORT(ItemChargeType.TELEPORT, EquipmentInventorySlot.WEAPON, EquipmentInventorySlot.AMULET, EquipmentInventorySlot.GLOVES, EquipmentInventorySlot.RING);
+
+	private final ItemChargeType type;
+	private final Set<EquipmentInventorySlot> slots;
+
+	ItemWithSlot(final ItemChargeType type, final EquipmentInventorySlot... slots)
+	{
+		this.type = type;
+		this.slots = Sets.newHashSet(slots);
+	}
 }

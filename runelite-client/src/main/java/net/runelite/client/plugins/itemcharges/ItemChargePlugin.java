@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,17 +26,29 @@
 package net.runelite.client.plugins.itemcharges;
 
 import com.google.inject.Provides;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Item Charges",
@@ -55,10 +68,19 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_DODGY_CHARGES = 10;
 
 	@Inject
+	private Client client;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
 	private ItemChargeOverlay overlay;
+
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
 
 	@Inject
 	private Notifier notifier;
@@ -82,6 +104,37 @@ public class ItemChargePlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		infoBoxManager.removeIf(ItemChargeInfobox.class::isInstance);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("itemCharge"))
+		{
+			return;
+		}
+
+		if (!config.showInfoboxes())
+		{
+			infoBoxManager.removeIf(ItemChargeInfobox.class::isInstance);
+			return;
+		}
+
+		if (!config.showTeleportCharges())
+		{
+			removeInfobox(ItemWithSlot.TELEPORT);
+		}
+
+		if (!config.showAbyssalBraceletCharges())
+		{
+			removeInfobox(ItemWithSlot.ABYSSAL_BRACELET);
+		}
+
+		if (!config.showDodgyCount())
+		{
+			removeInfobox(ItemWithSlot.DODGY_NECKLACE);
+		}
 	}
 
 	@Subscribe
@@ -117,8 +170,128 @@ public class ItemChargePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT) || !config.showInfoboxes())
+		{
+			return;
+		}
+
+		final Item[] items = event.getItemContainer().getItems();
+
+		if (config.showTeleportCharges())
+		{
+			updateJewelleryInfobox(ItemWithSlot.TELEPORT, items);
+		}
+
+		if (config.showDodgyCount())
+		{
+			updateJewelleryInfobox(ItemWithSlot.DODGY_NECKLACE, items);
+		}
+
+		if (config.showAbyssalBraceletCharges())
+		{
+			updateJewelleryInfobox(ItemWithSlot.ABYSSAL_BRACELET, items);
+		}
+	}
+
 	private void updateDodgyNecklaceCharges(final int value)
 	{
 		config.dodgyNecklace(value);
+
+		if (config.showInfoboxes() && config.showDodgyCount())
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.DODGY_NECKLACE, itemContainer.getItems());
+		}
+	}
+
+	private void updateJewelleryInfobox(ItemWithSlot item, Item[] items)
+	{
+		for (final EquipmentInventorySlot equipmentInventorySlot : item.getSlots())
+		{
+			updateJewelleryInfobox(item, items, equipmentInventorySlot);
+		}
+	}
+
+	private void updateJewelleryInfobox(ItemWithSlot type, Item[] items, EquipmentInventorySlot slot)
+	{
+		removeInfobox(type, slot);
+
+		if (slot.getSlotIdx() >= items.length)
+		{
+			return;
+		}
+
+		final int id = items[slot.getSlotIdx()].getId();
+		if (id < 0)
+		{
+			return;
+		}
+
+		final ItemWithCharge itemWithCharge = ItemWithCharge.findItem(id);
+		int charges = -1;
+
+		if (itemWithCharge == null)
+		{
+			if (id == ItemID.DODGY_NECKLACE && type == ItemWithSlot.DODGY_NECKLACE)
+			{
+				charges = config.dodgyNecklace();
+			}
+		}
+		else if (itemWithCharge.getType() == type.getType())
+		{
+			charges = itemWithCharge.getCharges();
+		}
+
+		if (charges <= 0)
+		{
+			return;
+		}
+
+		final String name = itemManager.getItemComposition(id).getName();
+		final BufferedImage image = itemManager.getImage(id);
+		final ItemChargeInfobox infobox = new ItemChargeInfobox(this, image, name, charges, type, slot);
+		infoBoxManager.addInfoBox(infobox);
+	}
+
+	private void removeInfobox(final ItemWithSlot item)
+	{
+		infoBoxManager.removeIf(t -> t instanceof ItemChargeInfobox && ((ItemChargeInfobox) t).getItem() == item);
+	}
+
+	private void removeInfobox(final ItemWithSlot item, final EquipmentInventorySlot slot)
+	{
+		infoBoxManager.removeIf(t ->
+		{
+			if (!(t instanceof ItemChargeInfobox))
+			{
+				return false;
+			}
+
+			final ItemChargeInfobox i = (ItemChargeInfobox)t;
+			return i.getItem() == item && i.getSlot() == slot;
+		});
+	}
+
+	Color getColor(int charges)
+	{
+		Color color = Color.WHITE;
+		if (charges <= config.veryLowWarning())
+		{
+			color = config.veryLowWarningColor();
+		}
+		else if (charges <= config.lowWarning())
+		{
+			color = config.lowWarningolor();
+		}
+		return color;
 	}
 }
