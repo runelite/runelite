@@ -31,6 +31,7 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,6 +51,8 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.http.api.item.ItemPrice;
+import net.runelite.http.api.osbuddy.GrandExchangeClient;
+import net.runelite.http.api.osbuddy.GrandExchangeResult;
 
 /**
  * This panel holds the search section of the Grand Exchange Plugin.
@@ -61,6 +64,7 @@ class GrandExchangeSearchPanel extends JPanel
 	private static final String ERROR_PANEL = "ERROR_PANEL";
 	private static final String RESULTS_PANEL = "RESULTS_PANEL";
 	private static final int MAX_SEARCH_ITEMS = 100;
+	private static final GrandExchangeClient GECLIENT = new GrandExchangeClient();
 
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	private final CardLayout cardLayout = new CardLayout();
@@ -68,6 +72,8 @@ class GrandExchangeSearchPanel extends JPanel
 	private final ClientThread clientThread;
 	private final ItemManager itemManager;
 	private final ScheduledExecutorService executor;
+
+	private final GrandExchangeConfig config;
 
 	private final IconTextField searchBar = new IconTextField();
 
@@ -85,11 +91,12 @@ class GrandExchangeSearchPanel extends JPanel
 	@Setter
 	private Map<Integer, Integer> itemGELimits = Collections.emptyMap();
 
-	GrandExchangeSearchPanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor)
+	GrandExchangeSearchPanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor, GrandExchangeConfig config)
 	{
 		this.clientThread = clientThread;
 		this.itemManager = itemManager;
 		this.executor = executor;
+		this.config = config;
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -224,8 +231,22 @@ class GrandExchangeSearchPanel extends JPanel
 			int index = 0;
 			for (GrandExchangeItems item : itemsList)
 			{
+				int itemOsbPrice = 0;
+				if (config.enableOsbPrices())
+				{
+					try
+					{
+						final GrandExchangeResult OsbResult = GECLIENT.lookupItem(item.getItemId());
+						itemOsbPrice = OsbResult.getOverall_average();
+					}
+					catch (IOException e)
+					{
+						log.debug("Error getting price of item {}", item.getItemId(), e);
+					}
+				}
+
 				GrandExchangeItemPanel panel = new GrandExchangeItemPanel(item.getIcon(), item.getName(),
-					item.getItemId(), item.getGePrice(), item.getHaPrice(), item.getGeItemLimit());
+					item.getItemId(), item.getGePrice(), itemOsbPrice, item.getHaPrice(), item.getGeItemLimit());
 
 				/*
 				Add the first item directly, wrap the rest with margin. This margin hack is because
