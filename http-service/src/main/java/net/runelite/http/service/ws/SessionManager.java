@@ -59,4 +59,9 @@ public class SessionManager
 	{
 		return sessions.get(uuid);
 	}
+
+	public static int getCount()
+	{
+		return sessions.size();
+	}
 }

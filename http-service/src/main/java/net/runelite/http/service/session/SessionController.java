@@ -27,6 +27,7 @@ package net.runelite.http.service.session;
 import java.time.Instant;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
+import net.runelite.http.service.ws.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -96,5 +97,11 @@ public class SessionController
 	public int count()
 	{
 		return sessionService.getCount();
+	}
+
+	@RequestMapping("/wscount")
+	public int wscount()
+	{
+		return SessionManager.getCount();
 	}
 }
