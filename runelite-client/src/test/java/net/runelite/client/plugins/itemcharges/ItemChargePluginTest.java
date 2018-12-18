@@ -32,6 +32,8 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
+import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -62,7 +64,15 @@ public class ItemChargePluginTest
 
 	@Mock
 	@Bind
+	private ItemManager itemManager;
+
+	@Mock
+	@Bind
 	private ItemChargeConfig config;
+
+	@Mock
+	@Bind
+	private RuneLiteConfig runeLiteConfig;
 
 	@Inject
 	private ItemChargePlugin itemChargePlugin;
@@ -71,6 +81,7 @@ public class ItemChargePluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		itemChargePlugin.startUp();
 	}
 
 	@Test
