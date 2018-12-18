@@ -26,6 +26,8 @@
 package net.runelite.client.plugins.itemcharges;
 
 import com.google.inject.Provides;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -34,6 +36,7 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Item;
+import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
@@ -84,6 +87,8 @@ public class ItemChargePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private int dodgyCharges;
 
+	private Map<EquipmentInventorySlot, Integer> currentInfoBoxIDs = new HashMap<>();
+
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
 	{
@@ -95,6 +100,10 @@ public class ItemChargePlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		dodgyCharges = config.dodgyNecklace();
+
+		currentInfoBoxIDs.put(EquipmentInventorySlot.AMULET, -1);
+		currentInfoBoxIDs.put(EquipmentInventorySlot.RING, -1);
+		currentInfoBoxIDs.put(EquipmentInventorySlot.GLOVES, -1);
 	}
 
 	@Override
@@ -160,8 +169,18 @@ public class ItemChargePlugin extends Plugin
 	{
 		this.dodgyCharges = dodgyCharges;
 		config.dodgyNecklace(dodgyCharges);
+		if (currentInfoBoxIDs.get(EquipmentInventorySlot.AMULET) == ItemID.DODGY_NECKLACE)
+		{
+			if (dodgyCharges > 0)
+			{
+				createJewelleryInfobox(ItemID.DODGY_NECKLACE, dodgyCharges, EquipmentInventorySlot.AMULET);
+			}
+			else
+			{
+				removeJewelleryInfobox(EquipmentInventorySlot.AMULET);
+			}
+		}
 	}
-}
 
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
@@ -204,14 +223,28 @@ public class ItemChargePlugin extends Plugin
 
 		if (amulet > 0)
 		{
-			ItemWithCharge amuletCharges = ItemWithCharge.findItem(amulet);
-			if (amuletCharges != null)
+			if (amulet == ItemID.DODGY_NECKLACE)
 			{
+				if (dodgyCharges > 0)
+				{
+					createJewelleryInfobox(amulet, dodgyCharges, EquipmentInventorySlot.AMULET);
+				}
+				else
+				{
+					removeJewelleryInfobox(EquipmentInventorySlot.AMULET);
+				}
+			}
+			else
+			{
+				ItemWithCharge amuletCharges = ItemWithCharge.findItem(amulet);
+				if (amuletCharges != null)
+				{
 				createJewelleryInfobox(amulet, amuletCharges.getCharges(), EquipmentInventorySlot.AMULET);
 			}
 			else
 			{
-				removeJewelleryInfobox(EquipmentInventorySlot.AMULET);
+					removeJewelleryInfobox(EquipmentInventorySlot.AMULET);
+				}
 			}
 		}
 		else
@@ -259,10 +292,12 @@ public class ItemChargePlugin extends Plugin
 		removeJewelleryInfobox(slotID);
 		ItemChargeInfobox i = new ItemChargeInfobox(itemManager.getItemComposition(id).getName(), itemManager.getImage(id), this, charges, slotID);
 		infoBoxManager.addInfoBox(i);
+		currentInfoBoxIDs.put(slotID, id);
 	}
 
 	private void removeJewelleryInfobox(EquipmentInventorySlot slotID)
 	{
 		infoBoxManager.removeIf(t -> t instanceof ItemChargeInfobox && ((ItemChargeInfobox) t).getSlotID() == slotID);
+		currentInfoBoxIDs.remove(slotID);
 	}
 }
