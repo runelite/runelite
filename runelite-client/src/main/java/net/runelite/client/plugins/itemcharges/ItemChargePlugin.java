@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2018, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,13 +32,19 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.Item;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
 	name = "Item Charges",
@@ -61,6 +68,12 @@ public class ItemChargePlugin extends Plugin
 
 	@Inject
 	private ItemChargeOverlay overlay;
+
+	@Inject
+	private ItemManager itemManager;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
 
 	@Inject
 	private Notifier notifier;
@@ -88,6 +101,26 @@ public class ItemChargePlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("itemCharge"))
+		{
+			if (event.getKey().equals("showAmuletInfobox") && event.getNewValue().equals("false"))
+			{
+				removeJewelleryInfobox(EquipmentInventorySlot.AMULET);
+			}
+			else if (event.getKey().equals("showBraceletInfobox") && event.getNewValue().equals("false"))
+			{
+				removeJewelleryInfobox(EquipmentInventorySlot.GLOVES);
+			}
+			else if (event.getKey().equals("showRingInfobox") && event.getNewValue().equals("false"))
+			{
+				removeJewelleryInfobox(EquipmentInventorySlot.RING);
+			}
+		}
 	}
 
 	@Subscribe
@@ -127,5 +160,109 @@ public class ItemChargePlugin extends Plugin
 	{
 		this.dodgyCharges = dodgyCharges;
 		config.dodgyNecklace(dodgyCharges);
+	}
+}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getItemContainer().getItems().length > 14)
+		{
+			return;
+		}
+
+		Item[] items = event.getItemContainer().getItems();
+
+		int amulet = -2;
+		int bracelet = -2;
+		int ring = -2;
+		if (items.length >= 3)
+		{
+			if (config.showAmuletInfobox())
+			{
+				amulet = items[EquipmentInventorySlot.AMULET.getSlotIdx()].getId();
+			}
+			if (items.length >= 10)
+			{
+				if (config.showBraceletInfobox())
+				{
+					bracelet = items[EquipmentInventorySlot.GLOVES.getSlotIdx()].getId();
+				}
+				if (items.length >= 13)
+				{
+					if (config.showRingInfobox())
+					{
+						ring = items[EquipmentInventorySlot.RING.getSlotIdx()].getId();
+					}
+				}
+			}
+		}
+		else
+		{
+			return;
+		}
+
+		if (amulet > 0)
+		{
+			ItemWithCharge amuletCharges = ItemWithCharge.findItem(amulet);
+			if (amuletCharges != null)
+			{
+				createJewelleryInfobox(amulet, amuletCharges.getCharges(), EquipmentInventorySlot.AMULET);
+			}
+			else
+			{
+				removeJewelleryInfobox(EquipmentInventorySlot.AMULET);
+			}
+		}
+		else
+		{
+			removeJewelleryInfobox(EquipmentInventorySlot.AMULET);
+		}
+
+		if (bracelet > 0)
+		{
+			ItemWithCharge braceletCharges = ItemWithCharge.findItem(bracelet);
+			if (braceletCharges != null)
+			{
+				createJewelleryInfobox(bracelet, braceletCharges.getCharges(), EquipmentInventorySlot.GLOVES);
+			}
+			else
+			{
+				removeJewelleryInfobox(EquipmentInventorySlot.GLOVES);
+			}
+		}
+		else
+		{
+			removeJewelleryInfobox(EquipmentInventorySlot.GLOVES);
+		}
+
+		if (ring > 0)
+		{
+			ItemWithCharge ringCharges = ItemWithCharge.findItem(ring);
+			if (ringCharges != null)
+			{
+				createJewelleryInfobox(ring, ringCharges.getCharges(), EquipmentInventorySlot.RING);
+			}
+			else
+			{
+				removeJewelleryInfobox(EquipmentInventorySlot.RING);
+			}
+		}
+		else
+		{
+			removeJewelleryInfobox(EquipmentInventorySlot.RING);
+		}
+	}
+
+	private void createJewelleryInfobox(int id, int charges, EquipmentInventorySlot slotID)
+	{
+		removeJewelleryInfobox(slotID);
+		ItemChargeInfobox i = new ItemChargeInfobox(itemManager.getItemComposition(id).getName(), itemManager.getImage(id), this, charges, slotID);
+		infoBoxManager.addInfoBox(i);
+	}
+
+	private void removeJewelleryInfobox(EquipmentInventorySlot slotID)
+	{
+		infoBoxManager.removeIf(t -> t instanceof ItemChargeInfobox && ((ItemChargeInfobox) t).getSlotID() == slotID);
 	}
 }

@@ -203,4 +203,37 @@ public interface ItemChargeConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showAmuletInfobox",
+		name = "Show Amulet/Necklace Infobox",
+		description = "Configures whether to show an infobox for teleport amulets and necklaces",
+		position = 15
+	)
+	default boolean showAmuletInfobox()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showBraceletInfobox",
+		name = "Show Bracelet Infobox",
+		description = "Configures whether to show an infobox for teleport bracelets",
+		position = 16
+	)
+	default boolean showBraceletInfobox()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showRingInfobox",
+		name = "Show Ring Infobox",
+		description = "Configures whether to show an infobox for teleport rings",
+		position = 17
+	)
+	default boolean showRingInfobox()
+	{
+		return true;
+	}
 }
