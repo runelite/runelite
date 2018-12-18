@@ -320,6 +320,7 @@ public class ClientUI
 				() ->
 				{
 					saveClientBoundsConfig();
+					configManager.sendConfig();
 					runelite.shutdown();
 				},
 				this::showWarningOnExit
