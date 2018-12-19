@@ -359,6 +359,12 @@ public enum Varbits
 	DAILY_ESSENCE_COLLECTED(4547),
 	DAILY_RUNES_COLLECTED(4540),
 	DAILY_SAND_COLLECTED(4549),
+	DAILY_FLAX_STATE(4559),
+	/**
+	 * This varbit tracks how much bonemeal has been redeemed from Robin
+	 * The player gets 13 for each diary completed above and including Medium, for a maxiumum of 39
+ 	*/
+	DAILY_BONEMEAL_STATE(4543),
 
 	/**
 	 * Fairy Ring
