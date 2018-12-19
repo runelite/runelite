@@ -65,7 +65,9 @@ class TargetWeaknessOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.weaknessPrompt())
+		final List<NPC> targets = plugin.getHighlightedTargets();
+
+		if (targets.isEmpty() || !config.weaknessPrompt())
 		{
 			return null;
 		}
@@ -84,7 +86,6 @@ class TargetWeaknessOverlay extends Overlay
 			return null;
 		}
 
-		final List<NPC> targets = plugin.getHighlightedTargets();
 		for (NPC target : targets)
 		{
 			final int currentHealth = calculateHealth(target);
