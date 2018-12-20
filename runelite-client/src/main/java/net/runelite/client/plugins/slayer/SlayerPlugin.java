@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -34,6 +35,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -42,6 +44,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -55,6 +58,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.vars.SlayerUnlock;
@@ -110,6 +114,9 @@ public class SlayerPlugin extends Plugin
 
 	private static final int EXPEDITIOUS_CHARGE = 30;
 	private static final int SLAUGHTER_CHARGE = 30;
+
+	private static final Set<Task> weaknessTasks = ImmutableSet.of(Task.DESERT_LIZARDS, Task.GARGOYLES,
+		Task.GROTESQUE_GUARDIANS, Task.GROTESQUE_GUARDIANS, Task.MUTATED_ZYGOMITES, Task.ROCKSLUGS);
 
 	@Inject
 	private Client client;
@@ -172,6 +179,9 @@ public class SlayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private int points;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Task weaknessTask = null;
 
 	private TaskCounter counter;
 	private int cachedXp;
@@ -489,6 +499,29 @@ public class SlayerPlugin extends Plugin
 
 		killedOne();
 		cachedXp = slayerExp;
+	}
+
+	@Subscribe
+	public void onInteractingChanged(InteractingChanged event)
+	{
+		final Actor interacting = client.getLocalPlayer().getInteracting();
+
+		if (interacting == null || !(interacting instanceof NPC))
+		{
+			weaknessTask = null;
+			return;
+		}
+
+		final NPC npc = (NPC) interacting;
+
+		for (Task task : weaknessTasks)
+		{
+			if (isInTask(task, npc))
+			{
+				weaknessTask = task;
+				return;
+			}
+		}
 	}
 
 	@Subscribe

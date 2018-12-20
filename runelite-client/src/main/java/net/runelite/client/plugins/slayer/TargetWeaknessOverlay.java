@@ -24,13 +24,10 @@
  */
 package net.runelite.client.plugins.slayer;
 
-import com.google.common.collect.ImmutableSet;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.Set;
 import javax.inject.Inject;
-import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
@@ -51,8 +48,6 @@ class TargetWeaknessOverlay extends Overlay
 	private final SlayerPlugin plugin;
 	private final ItemManager itemManager;
 	private final NPCManager npcManager;
-	private final Set<Task> tasks = ImmutableSet.of(Task.DESERT_LIZARDS, Task.GARGOYLES, Task.GROTESQUE_GUARDIANS,
-		Task.GROTESQUE_GUARDIANS, Task.MUTATED_ZYGOMITES, Task.ROCKSLUGS);
 
 	@Inject
 	private TargetWeaknessOverlay(Client client, SlayerConfig config, SlayerPlugin plugin, ItemManager itemManager, NPCManager npcManager)
@@ -74,30 +69,14 @@ class TargetWeaknessOverlay extends Overlay
 			return null;
 		}
 
-		final Actor interacting = client.getLocalPlayer().getInteracting();
-
-		if (interacting == null || !(interacting instanceof NPC))
-		{
-			return null;
-		}
-
-		final NPC npc = (NPC) interacting;
-		Task npcTask = null;
-
-		for (Task task : tasks)
-		{
-			if (plugin.isInTask(task, npc))
-			{
-				npcTask = task;
-				break;
-			}
-		}
+		final Task npcTask = plugin.getWeaknessTask();
 
 		if (npcTask == null)
 		{
 			return null;
 		}
 
+		final NPC npc = (NPC) client.getLocalPlayer().getInteracting();
 		final int threshold = npcTask.getWeaknessThreshold();
 		final BufferedImage image = itemManager.getImage(npcTask.getWeaknessItem());
 		final int currentHealth = calculateHealth(npc);
