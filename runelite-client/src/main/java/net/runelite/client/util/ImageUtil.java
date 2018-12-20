@@ -376,7 +376,7 @@ public class ImageUtil
 	 * @return              The given image with all pixels fulfilling the fill condition predicate
 	 *                      set to the given color.
 	 */
-	public static BufferedImage fillImage(final BufferedImage image, final Color color, final Predicate<Color> fillCondition)
+	static BufferedImage fillImage(final BufferedImage image, final Color color, final Predicate<Color> fillCondition)
 	{
 		final BufferedImage filledImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		for (int x = 0; x < filledImage.getWidth(); x++)
