@@ -141,17 +141,17 @@ public abstract class RSSpritePixelsMixin implements RSSpritePixels
 		img.setRGB(0, 0, width, height, newPixels, 0, width);
 	}
 
-	@Copy("drawAsCircleAt")
-	abstract void rs$drawAsCircleAt(int x, int y, int width, int height, int xOffset, int yOffset,
+	@Copy("drawRotatedAndAlphaMapped")
+	abstract void rs$drawAlphaMapped(int x, int y, int width, int height, int xOffset, int yOffset,
 							int rotation, int zoom, int[] xOffsets, int[] yOffsets);
 
-	@Replace("drawAsCircleAt")
-	public void rl$drawAsCircleAt(int x, int y, int width, int height, int xOffset, int yOffset, int rotation,
+	@Replace("drawRotatedAndAlphaMapped")
+	public void rl$drawAlphaMapped(int x, int y, int width, int height, int xOffset, int yOffset, int rotation,
 							int zoom, int[] xOffsets, int[] yOffsets)
 	{
 		if (!client.isHdMinimapEnabled())
 		{
-			rs$drawAsCircleAt(x, y, width, height, xOffset, yOffset, rotation, zoom, xOffsets, yOffsets);
+			rs$drawAlphaMapped(x, y, width, height, xOffset, yOffset, rotation, zoom, xOffsets, yOffsets);
 			return;
 		}
 		try
@@ -181,6 +181,7 @@ public abstract class RSSpritePixelsMixin implements RSSpritePixels
 				for (x = -yOffsets[y]; x < 0; ++x)
 				{
 					// bilinear interpolation
+					// Thanks to Bubletan
 					int x1 = spriteX >> 16;
 					int y1 = spriteY >> 16;
 					int x2 = x1 + 1;
@@ -197,12 +198,12 @@ public abstract class RSSpritePixelsMixin implements RSSpritePixels
 					int a2 = u1 * v2;
 					int a3 = u2 * v1;
 					int a4 = u1 * v1;
-					int r = (c1 >> 16 & 0xff) * a1 + (c2 >> 16 & 0xff) * a2 +
-							(c3 >> 16 & 0xff) * a3 + (c4 >> 16 & 0xff) * a4 & 0xff0000;
-					int g = (c1 >> 8 & 0xff) * a1 + (c2 >> 8 & 0xff) * a2 +
-							(c3 >> 8 & 0xff) * a3 + (c4 >> 8 & 0xff) * a4 >> 8 & 0xff00;
-					int b = (c1 & 0xff) * a1 + (c2 & 0xff) * a2 +
-							(c3 & 0xff) * a3 + (c4 & 0xff) * a4 >> 16;
+					int r = (c1 >> 16 & 0xFF) * a1 + (c2 >> 16 & 0xFF) * a2 +
+							(c3 >> 16 & 0xFF) * a3 + (c4 >> 16 & 0xFF) * a4 & 0xFF0000;
+					int g = (c1 >> 8 & 0xFF) * a1 + (c2 >> 8 & 0xFF) * a2 +
+							(c3 >> 8 & 0xFF) * a3 + (c4 >> 8 & 0xFF) * a4 >> 8 & 0xFF00;
+					int b = (c1 & 0xFF) * a1 + (c2 & 0xFF) * a2 +
+							(c3 & 0xFF) * a3 + (c4 & 0xFF) * a4 >> 16;
 					graphicsPixels[graphicsPixelIndex++] = r | g | b;
 					spriteX += rotCos;
 					spriteY -= rotSin;
