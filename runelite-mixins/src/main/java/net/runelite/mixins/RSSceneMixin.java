@@ -634,15 +634,15 @@ public abstract class RSSceneMixin implements RSScene
 				return;
 			}
 
-			RSTileModel TileModel = (RSTileModel) tile;
+			RSTileModel tileModel = (RSTileModel) tile;
 
-			final int[] faceX = TileModel.getFaceX();
-			final int[] faceY = TileModel.getFaceY();
-			final int[] faceZ = TileModel.getFaceZ();
+			final int[] faceX = tileModel.getFaceX();
+			final int[] faceY = tileModel.getFaceY();
+			final int[] faceZ = tileModel.getFaceZ();
 
-			final int[] vertexX = TileModel.getVertexX();
-			final int[] vertexY = TileModel.getVertexY();
-			final int[] vertexZ = TileModel.getVertexZ();
+			final int[] vertexX = tileModel.getVertexX();
+			final int[] vertexY = tileModel.getVertexY();
+			final int[] vertexZ = tileModel.getVertexZ();
 
 			final int vertexCount = vertexX.length;
 			final int faceCount = faceX.length;
@@ -794,25 +794,25 @@ public abstract class RSSceneMixin implements RSScene
 
 	@MethodHook(value = "addTile", end = true)
 	@Inject
-	public void rl$addTile(int z, int x, int y, int shape, int rotation, int texture, int heightSw, int heightSe,
-					int heightNe, int heightNw, int underlaySwColor, int underlaySeColor, int underlayNeColor,
-					int underlayNwColor, int overlaySwColor, int overlaySeColor, int overlayNeColor,
-					int overlayNwColor, int underlayRgb, int overlayRgb)
+	public void rl$addTile(int z, int x, int y, int shape, int rotation, int texture, int heightSw, int heightNw,
+					int heightNe, int heightSe, int underlaySwColor, int underlayNwColor, int underlayNeColor,
+					int underlaySeColor, int overlaySwColor, int overlayNwColor, int overlayNeColor,
+					int overlaySeColor, int underlayRgb, int overlayRgb)
 	{
 		if (shape != 0 && shape != 1)
 		{
 			Tile tile = getTiles()[z][x][y];
-			TileModel TileModel = tile.getTileModel();
+			TileModel tileModel = tile.getTileModel();
 
-			TileModel.setUnderlaySwColor(underlaySwColor);
-			TileModel.setUnderlaySeColor(underlaySeColor);
-			TileModel.setUnderlayNeColor(underlayNeColor);
-			TileModel.setUnderlayNwColor(underlayNwColor);
+			tileModel.setUnderlaySwColor(underlaySwColor);
+			tileModel.setUnderlayNwColor(underlayNwColor);
+			tileModel.setUnderlayNeColor(underlayNeColor);
+			tileModel.setUnderlaySeColor(underlaySeColor);
 
-			TileModel.setOverlaySwColor(overlaySwColor);
-			TileModel.setOverlaySeColor(overlaySeColor);
-			TileModel.setOverlayNeColor(overlayNeColor);
-			TileModel.setOverlayNwColor(overlayNwColor);
+			tileModel.setOverlaySwColor(overlaySwColor);
+			tileModel.setOverlayNwColor(overlayNwColor);
+			tileModel.setOverlayNeColor(overlayNeColor);
+			tileModel.setOverlaySeColor(overlaySeColor);
 		}
 	}
 
@@ -830,42 +830,42 @@ public abstract class RSSceneMixin implements RSScene
 		Tile tile = getTiles()[z][x][y];
 		if (tile != null)
 		{
-			TilePaint TilePaint = tile.getTilePaint();
-			if (TilePaint != null)
+			TilePaint tilePaint = tile.getTilePaint();
+			if (tilePaint != null)
 			{
-				int rgb = TilePaint.getRBG();
-				if (TilePaint.getSwColor() != INVALID_HSL_COLOR)
+				int rgb = tilePaint.getRBG();
+				if (tilePaint.getSwColor() != INVALID_HSL_COLOR)
 				{
 					// hue and saturation
-					int hs = TilePaint.getSwColor() & ~0x7f;
-					int nwLightness = TilePaint.getNwColor() & 0x7f;
-					int neLightness = TilePaint.getNeColor() & 0x7f;
-					int deltaSwLightness = (TilePaint.getSwColor() & 0x7f) - nwLightness;
-					int deltaSeLightness = (TilePaint.getSeColor() & 0x7f) - neLightness;
-					nwLightness <<= 2;
+					int hs = tilePaint.getSwColor() & ~0x7F;
+					int seLightness = tilePaint.getSeColor() & 0x7F;
+					int neLightness = tilePaint.getNeColor() & 0x7F;
+					int southDeltaLightness = (tilePaint.getSwColor() & 0x7F) - seLightness;
+					int northDeltaLightness = (tilePaint.getNwColor() & 0x7F) - neLightness;
+					seLightness <<= 2;
 					neLightness <<= 2;
 					for (int i = 0; i < 4; i++)
 					{
-						if (TilePaint.getTexture() == -1)
+						if (tilePaint.getTexture() == -1)
 						{
-							pixels[pixelOffset] = colorPalette[hs | nwLightness >> 2];
-							pixels[pixelOffset + 1] = colorPalette[hs | nwLightness * 3 + neLightness >> 4];
-							pixels[pixelOffset + 2] = colorPalette[hs | nwLightness + neLightness >> 3];
-							pixels[pixelOffset + 3] = colorPalette[hs | nwLightness + neLightness * 3 >> 4];
+							pixels[pixelOffset] = colorPalette[hs | seLightness >> 2];
+							pixels[pixelOffset + 1] = colorPalette[hs | seLightness * 3 + neLightness >> 4];
+							pixels[pixelOffset + 2] = colorPalette[hs | seLightness + neLightness >> 3];
+							pixels[pixelOffset + 3] = colorPalette[hs | seLightness + neLightness * 3 >> 4];
 						}
 						else
 						{
-							int lig = 0xff - ((nwLightness >> 1) * (nwLightness >> 1) >> 8);
-							pixels[pixelOffset] = ((rgb & 0xff00ff) * lig & ~0xff00ff) + ((rgb & 0xff00) * lig & 0xff0000) >> 8;
-							lig = 0xff - ((nwLightness * 3 + neLightness >> 3) * (nwLightness * 3 + neLightness >> 3) >> 8);
-							pixels[pixelOffset + 1] = ((rgb & 0xff00ff) * lig & ~0xff00ff) + ((rgb & 0xff00) * lig & 0xff0000) >> 8;
-							lig = 0xff - ((nwLightness + neLightness >> 2) * (nwLightness + neLightness >> 2) >> 8);
-							pixels[pixelOffset + 2] = ((rgb & 0xff00ff) * lig & ~0xff00ff) + ((rgb & 0xff00) * lig & 0xff0000) >> 8;
-							lig = 0xff - ((nwLightness + neLightness * 3 >> 3) * (nwLightness + neLightness * 3 >> 3) >> 8);
-							pixels[pixelOffset + 3] = ((rgb & 0xff00ff) * lig & ~0xff00ff) + ((rgb & 0xff00) * lig & 0xff0000) >> 8;
+							int lig = 0xFF - ((seLightness >> 1) * (seLightness >> 1) >> 8);
+							pixels[pixelOffset] = ((rgb & 0xFF00FF) * lig & ~0xFF00FF) + ((rgb & 0xFF00) * lig & 0xFF0000) >> 8;
+							lig = 0xFF - ((seLightness * 3 + neLightness >> 3) * (seLightness * 3 + neLightness >> 3) >> 8);
+							pixels[pixelOffset + 1] = ((rgb & 0xFF00FF) * lig & ~0xFF00FF) + ((rgb & 0xFF00) * lig & 0xFF0000) >> 8;
+							lig = 0xFF - ((seLightness + neLightness >> 2) * (seLightness + neLightness >> 2) >> 8);
+							pixels[pixelOffset + 2] = ((rgb & 0xFF00FF) * lig & ~0xFF00FF) + ((rgb & 0xFF00) * lig & 0xFF0000) >> 8;
+							lig = 0xFF - ((seLightness + neLightness * 3 >> 3) * (seLightness + neLightness * 3 >> 3) >> 8);
+							pixels[pixelOffset + 3] = ((rgb & 0xFF00FF) * lig & ~0xFF00FF) + ((rgb & 0xFF00) * lig & 0xFF0000) >> 8;
 						}
-						nwLightness += deltaSwLightness;
-						neLightness += deltaSeLightness;
+						seLightness += southDeltaLightness;
+						neLightness += northDeltaLightness;
 
 						pixelOffset += width;
 					}
@@ -884,115 +884,115 @@ public abstract class RSSceneMixin implements RSScene
 			}
 			else
 			{
-				TileModel TileModel = tile.getTileModel();
-				if (TileModel != null)
+				TileModel tileModel = tile.getTileModel();
+				if (tileModel != null)
 				{
-					int shape = TileModel.getShape();
-					int rotation = TileModel.getRotation();
-					int overlayRgb = TileModel.getModelOverlay();
-					int underlayRgb = TileModel.getModelUnderlay();
+					int shape = tileModel.getShape();
+					int rotation = tileModel.getRotation();
+					int overlayRgb = tileModel.getModelOverlay();
+					int underlayRgb = tileModel.getModelUnderlay();
 					int[] points = getTileShape2D()[shape];
 					int[] indices = getTileRotation2D()[rotation];
 
 					int shapeOffset = 0;
 
-					if (TileModel.getOverlaySwColor() != INVALID_HSL_COLOR)
+					if (tileModel.getOverlaySwColor() != INVALID_HSL_COLOR)
 					{
 						// hue and saturation
-						int hs = TileModel.getOverlaySwColor() & ~0x7f;
-						int nwLightness = TileModel.getOverlayNwColor() & 0x7f;
-						int neLightness = TileModel.getOverlayNeColor() & 0x7f;
-						int deltaSwLightness = (TileModel.getOverlaySwColor() & 0x7f) - nwLightness;
-						int deltaSeLightness = (TileModel.getOverlaySeColor() & 0x7f) - neLightness;
-						nwLightness <<= 2;
+						int hs = tileModel.getOverlaySwColor() & ~0x7F;
+						int seLightness = tileModel.getOverlaySeColor() & 0x7F;
+						int neLightness = tileModel.getOverlayNeColor() & 0x7F;
+						int southDeltaLightness = (tileModel.getOverlaySwColor() & 0x7F) - seLightness;
+						int northDeltaLightness = (tileModel.getOverlayNwColor() & 0x7F) - neLightness;
+						seLightness <<= 2;
 						neLightness <<= 2;
 						for (int i = 0; i < 4; i++)
 						{
-							if (TileModel.getTriangleTextureId() == null)
+							if (tileModel.getTriangleTextureId() == null)
 							{
 								if (points[indices[shapeOffset++]] != 0)
 								{
-									pixels[pixelOffset] = colorPalette[hs | (nwLightness >> 2)];
+									pixels[pixelOffset] = colorPalette[hs | (seLightness >> 2)];
 								}
 								if (points[indices[shapeOffset++]] != 0)
 								{
-									pixels[pixelOffset + 1] = colorPalette[hs | (nwLightness * 3 + neLightness >> 4)];
+									pixels[pixelOffset + 1] = colorPalette[hs | (seLightness * 3 + neLightness >> 4)];
 								}
 								if (points[indices[shapeOffset++]] != 0)
 								{
-									pixels[pixelOffset + 2] = colorPalette[hs | (nwLightness + neLightness >> 3)];
+									pixels[pixelOffset + 2] = colorPalette[hs | (seLightness + neLightness >> 3)];
 								}
 								if (points[indices[shapeOffset++]] != 0)
 								{
-									pixels[pixelOffset + 3] = colorPalette[hs | (nwLightness + neLightness * 3 >> 4)];
+									pixels[pixelOffset + 3] = colorPalette[hs | (seLightness + neLightness * 3 >> 4)];
 								}
 							}
 							else
 							{
 								if (points[indices[shapeOffset++]] != 0)
 								{
-									int lig = 0xff - ((nwLightness >> 1) * (nwLightness >> 1) >> 8);
-									pixels[pixelOffset] = ((overlayRgb & 0xff00ff) * lig & ~0xff00ff) +
-											((overlayRgb & 0xff00) * lig & 0xff0000) >> 8;
+									int lig = 0xFF - ((seLightness >> 1) * (seLightness >> 1) >> 8);
+									pixels[pixelOffset] = ((overlayRgb & 0xFF00FF) * lig & ~0xFF00FF) +
+											((overlayRgb & 0xFF00) * lig & 0xFF0000) >> 8;
 								}
 								if (points[indices[shapeOffset++]] != 0)
 								{
-									int lig = 0xff - ((nwLightness * 3 + neLightness >> 3) *
-											(nwLightness * 3 + neLightness >> 3) >> 8);
-									pixels[pixelOffset + 1] = ((overlayRgb & 0xff00ff) * lig & ~0xff00ff) +
-											((overlayRgb & 0xff00) * lig & 0xff0000) >> 8;
+									int lig = 0xFF - ((seLightness * 3 + neLightness >> 3) *
+											(seLightness * 3 + neLightness >> 3) >> 8);
+									pixels[pixelOffset + 1] = ((overlayRgb & 0xFF00FF) * lig & ~0xFF00FF) +
+											((overlayRgb & 0xFF00) * lig & 0xFF0000) >> 8;
 								}
 								if (points[indices[shapeOffset++]] != 0)
 								{
-									int lig = 0xff - ((nwLightness + neLightness >> 2) *
-											(nwLightness + neLightness >> 2) >> 8);
-									pixels[pixelOffset + 2] = ((overlayRgb & 0xff00ff) * lig & ~0xff00ff) +
-											((overlayRgb & 0xff00) * lig & 0xff0000) >> 8;
+									int lig = 0xFF - ((seLightness + neLightness >> 2) *
+											(seLightness + neLightness >> 2) >> 8);
+									pixels[pixelOffset + 2] = ((overlayRgb & 0xFF00FF) * lig & ~0xFF00FF) +
+											((overlayRgb & 0xFF00) * lig & 0xFF0000) >> 8;
 								}
 								if (points[indices[shapeOffset++]] != 0)
 								{
-									int lig = 0xff - ((nwLightness + neLightness * 3 >> 3) *
-											(nwLightness + neLightness * 3 >> 3) >> 8);
-									pixels[pixelOffset + 3] = ((overlayRgb & 0xff00ff) * lig & ~0xff00ff) +
-											((overlayRgb & 0xff00) * lig & 0xff0000) >> 8;
+									int lig = 0xFF - ((seLightness + neLightness * 3 >> 3) *
+											(seLightness + neLightness * 3 >> 3) >> 8);
+									pixels[pixelOffset + 3] = ((overlayRgb & 0xFF00FF) * lig & ~0xFF00FF) +
+											((overlayRgb & 0xFF00) * lig & 0xFF0000) >> 8;
 								}
 							}
-							nwLightness += deltaSwLightness;
-							neLightness += deltaSeLightness;
+							seLightness += southDeltaLightness;
+							neLightness += northDeltaLightness;
 
 							pixelOffset += width;
 						}
-						if (underlayRgb != 0 && TileModel.getUnderlaySwColor() != INVALID_HSL_COLOR)
+						if (underlayRgb != 0 && tileModel.getUnderlaySwColor() != INVALID_HSL_COLOR)
 						{
 							pixelOffset -= width << 2;
 							shapeOffset -= 16;
-							hs = TileModel.getUnderlaySwColor() & ~0x7f;
-							nwLightness = TileModel.getUnderlayNwColor() & 0x7f;
-							neLightness = TileModel.getUnderlayNeColor() & 0x7f;
-							deltaSwLightness = (TileModel.getUnderlaySwColor() & 0x7f) - nwLightness;
-							deltaSeLightness = (TileModel.getUnderlaySeColor() & 0x7f) - neLightness;
-							nwLightness <<= 2;
+							hs = tileModel.getUnderlaySwColor() & ~0x7F;
+							seLightness = tileModel.getUnderlaySeColor() & 0x7F;
+							neLightness = tileModel.getUnderlayNeColor() & 0x7F;
+							southDeltaLightness = (tileModel.getUnderlaySwColor() & 0x7F) - seLightness;
+							northDeltaLightness = (tileModel.getUnderlayNwColor() & 0x7F) - neLightness;
+							seLightness <<= 2;
 							neLightness <<= 2;
 							for (int i = 0; i < 4; i++)
 							{
 								if (points[indices[shapeOffset++]] == 0)
 								{
-									pixels[pixelOffset] = colorPalette[hs | (nwLightness >> 2)];
+									pixels[pixelOffset] = colorPalette[hs | (seLightness >> 2)];
 								}
 								if (points[indices[shapeOffset++]] == 0)
 								{
-									pixels[pixelOffset + 1] = colorPalette[hs | (nwLightness * 3 + neLightness >> 4)];
+									pixels[pixelOffset + 1] = colorPalette[hs | (seLightness * 3 + neLightness >> 4)];
 								}
 								if (points[indices[shapeOffset++]] == 0)
 								{
-									pixels[pixelOffset + 2] = colorPalette[hs | (nwLightness + neLightness >> 3)];
+									pixels[pixelOffset + 2] = colorPalette[hs | (seLightness + neLightness >> 3)];
 								}
 								if (points[indices[shapeOffset++]] == 0)
 								{
-									pixels[pixelOffset + 3] = colorPalette[hs | (nwLightness + neLightness * 3 >> 4)];
+									pixels[pixelOffset + 3] = colorPalette[hs | (seLightness + neLightness * 3 >> 4)];
 								}
-								nwLightness += deltaSwLightness;
-								neLightness += deltaSeLightness;
+								seLightness += southDeltaLightness;
+								neLightness += northDeltaLightness;
 
 								pixelOffset += width;
 							}
