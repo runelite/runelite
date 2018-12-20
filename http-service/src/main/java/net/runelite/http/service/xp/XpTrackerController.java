@@ -42,9 +42,9 @@ public class XpTrackerController
 	private XpTrackerService xpTrackerService;
 
 	@RequestMapping("/update")
-	public void update(@RequestParam String username) throws ExecutionException
+	public void update(@RequestParam String username)
 	{
-		xpTrackerService.update(username);
+		xpTrackerService.tryUpdate(username);
 	}
 
 	@RequestMapping("/get")
