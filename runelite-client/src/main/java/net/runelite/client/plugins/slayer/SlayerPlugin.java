@@ -663,6 +663,25 @@ public class SlayerPlugin extends Plugin
 		counter = null;
 	}
 
+	public boolean isInTask(Task task, NPC npc)
+	{
+		String npcName = npc.getName().toLowerCase();
+
+		if (npcName.contains(task.getName().toLowerCase().replaceAll("s$", "")))
+		{
+			return true;
+		}
+
+		for (String taskName : task.getTargetNames())
+		{
+			if (npcName.contains(taskName.toLowerCase()))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	//Utils
 	private String capsString(String str)
 	{
