@@ -152,6 +152,21 @@ public abstract class RSSpritePixelsMixin implements RSSpritePixels
 		if (!client.isHdMinimapEnabled())
 		{
 			rs$drawAlphaMapped(x, y, width, height, xOffset, yOffset, rotation, zoom, xOffsets, yOffsets);
+
+			// hack required for this to work with gpu mode because
+			// the alpha injector does not inject the copied method
+			int[] graphicsPixels = client.getGraphicsPixels();
+			int pixelOffset = x + y * client.getGraphicsPixelsWidth();
+			for (int h = 0; h < height; h++)
+			{
+				int offset = xOffsets[h];
+				int pixelIndex = pixelOffset + offset;
+				for (int w = -yOffsets[h]; w < 0; w++)
+				{
+					graphicsPixels[pixelIndex++] |= 0xFF000000;
+				}
+				pixelOffset += client.getGraphicsPixelsWidth();
+			}
 			return;
 		}
 		try
