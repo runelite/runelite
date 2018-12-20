@@ -238,5 +238,5 @@ public interface Actor extends Renderable
 	 *
 	 * @return the overhead text
 	 */
-	String getOverhead();
+	String getOverheadText();
 }
