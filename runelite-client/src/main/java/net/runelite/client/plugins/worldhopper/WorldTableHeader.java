@@ -46,13 +46,11 @@ import net.runelite.client.util.ImageUtil;
 class WorldTableHeader extends JPanel
 {
 	private static final ImageIcon ARROW_UP;
-
-	private static final Color ARROW_COLOR = ColorScheme.LIGHT_GRAY_COLOR;
-
 	private static final ImageIcon HIGHLIGHT_ARROW_DOWN;
 	private static final ImageIcon HIGHLIGHT_ARROW_UP;
 
-	private static final Color HIGHLIGHT_COLOR = new Color(210, 193, 53);
+	private static final Color ARROW_COLOR = ColorScheme.LIGHT_GRAY_COLOR;
+	private static final Color HIGHLIGHT_COLOR = ColorScheme.BRAND_ORANGE;
 
 	static
 	{
