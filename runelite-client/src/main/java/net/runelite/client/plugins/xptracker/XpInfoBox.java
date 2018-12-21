@@ -31,6 +31,7 @@ import java.awt.Dimension;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -212,7 +213,7 @@ class XpInfoBox extends JPanel
 				: "Lvl. " + xpSnapshotSingle.getEndLevel());
 
 			// Add intermediate level positions to progressBar
-			final List<Double> positions = new ArrayList<>()
+			final List<Double> positions = new ArrayList<>();
 			if (xpTrackerConfig.showIntermediateLevels() && xpSnapshotSingle.getEndLevel() - xpSnapshotSingle.getStartLevel() > 1)
 			{
 				for (int level = xpSnapshotSingle.getStartLevel() + 1; level < xpSnapshotSingle.getEndLevel(); level++)
