@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -22,86 +23,57 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.session;
+package net.runelite.http.service.loottracker;
 
-import java.time.Instant;
-import java.util.UUID;
+import com.google.api.client.http.HttpStatusCodes;
+import java.io.IOException;
+import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
-import net.runelite.http.service.ws.SessionManager;
+import javax.servlet.http.HttpServletResponse;
+import net.runelite.http.api.loottracker.LootRecord;
+import net.runelite.http.service.account.AuthFilter;
+import net.runelite.http.service.account.beans.SessionEntry;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/session")
-public class SessionController
+@RequestMapping("/loottracker")
+public class LootTrackerController
 {
-	private final SessionService sessionService;
+	@Autowired
+	private LootTrackerService service;
 
 	@Autowired
-	public SessionController(SessionService sessionService)
-	{
-		this.sessionService = sessionService;
-	}
+	private AuthFilter auth;
 
-	private void createSession(HttpServletRequest request, UUID uuid)
+	@RequestMapping(method = RequestMethod.POST)
+	public void storeLootRecord(HttpServletRequest request, HttpServletResponse response, @RequestBody LootRecord record) throws IOException
 	{
-		String addr = request.getRemoteAddr();
-		Instant now = Instant.now();
-		SessionEntry sessionEntry = new SessionEntry();
-		sessionEntry.setUuid(uuid);
-		sessionEntry.setIp(addr);
-		sessionEntry.setStart(now);
-		sessionEntry.setLast(now);
-		sessionService.createSession(sessionEntry);
+		SessionEntry e = auth.handle(request, response);
+		if (e == null)
+		{
+			response.setStatus(HttpStatusCodes.STATUS_CODE_UNAUTHORIZED);
+			return;
+		}
+
+		service.store(record, e.getUser());
+		response.setStatus(HttpStatusCodes.STATUS_CODE_OK);
 	}
 
 	@RequestMapping
-	public UUID get(HttpServletRequest request)
+	public Collection<LootRecord> getLootRecords(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "count", defaultValue = "1024") int count) throws IOException
 	{
-		UUID uuid = UUID.randomUUID();
-		createSession(request, uuid);
-		return uuid;
-	}
-
-	@RequestMapping("/ping")
-	public ResponseEntity ping(HttpServletRequest request, @RequestParam("session") UUID uuid)
-	{
-		int updated = sessionService.updateLast(uuid);
-		if (updated == 0)
+		SessionEntry e = auth.handle(request, response);
+		if (e == null)
 		{
-			// create the session anyway
-			createSession(request, uuid);
-			return ResponseEntity.ok().build();
+			response.setStatus(HttpStatusCodes.STATUS_CODE_UNAUTHORIZED);
+			return null;
 		}
 
-		return ResponseEntity.ok().build();
-	}
-
-	@DeleteMapping
-	public ResponseEntity delete(@RequestParam("session") UUID uuid)
-	{
-		int deleted = sessionService.deleteSession(uuid);
-		if (deleted == 0)
-		{
-			return ResponseEntity.notFound().build();
-		}
-
-		return ResponseEntity.ok().build();
-	}
-
-	@RequestMapping("/count")
-	public int count()
-	{
-		return sessionService.getCount();
-	}
-
-	@RequestMapping("/wscount")
-	public int wscount()
-	{
-		return SessionManager.getCount();
+		return service.get(e.getUser(), count);
 	}
 }

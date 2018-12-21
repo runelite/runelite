@@ -145,7 +145,7 @@ public enum HotColdLocation
 	WILDERNESS_20(new WorldPoint(3225, 3676, 0), WILDERNESS, "East of the Corporeal Beast's lair, level 20 Wilderness."),
 	WILDERNESS_28(new WorldPoint(3374, 3734, 0), WILDERNESS, "East of Venenatis' nest, level 28 Wilderness."),
 	WILDERNESS_35(new WorldPoint(3153, 3795, 0), WILDERNESS, "East of the Wilderness canoe exit, level 35 Wilderness."),
-	WILDERNESS_37(new WorldPoint(2975, 3809, 0), WILDERNESS, "South-east of the Chaos Temple, level 37 Wilderness."),
+	WILDERNESS_37(new WorldPoint(2975, 3811, 0), WILDERNESS, "South-east of the Chaos Temple, level 37 Wilderness."),
 	WILDERNESS_38(new WorldPoint(3294, 3817, 0), WILDERNESS, "South of Callisto, level 38 Wilderness."),
 	WILDERNESS_49(new WorldPoint(3140, 3910, 0), WILDERNESS, "South-west of the Deserted Keep, level 49 Wilderness."),
 	WILDERNESS_54(new WorldPoint(2983, 3946, 0), WILDERNESS, "West of the Wilderness Agility Course, level 54 Wilderness."),

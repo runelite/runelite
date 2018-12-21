@@ -460,7 +460,9 @@ public enum WidgetInfo
 
 	LOOTING_BAG_CONTAINER(WidgetID.LOOTING_BAG_GROUP_ID, WidgetID.LootingBag.LOOTING_BAG_INVENTORY),
 
-	SKOTIZO_CONTAINER(WidgetID.SKOTIZO_GROUP_ID, WidgetID.Skotizo.CONTAINER);
+	SKOTIZO_CONTAINER(WidgetID.SKOTIZO_GROUP_ID, WidgetID.Skotizo.CONTAINER),
+
+	FULLSCREEN_MAP_ROOT(WidgetID.FULLSCREEN_MAP_GROUP_ID, WidgetID.FullScreenMap.ROOT);
 
 	private final int groupId;
 	private final int childId;

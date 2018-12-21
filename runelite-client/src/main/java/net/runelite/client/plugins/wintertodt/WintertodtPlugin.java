@@ -71,8 +71,8 @@ import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "Wintertodt",
-	description = "Wintertodt",
-	tags = {"minigame", "firemaking"}
+	description = "Show helpful information for the Wintertodt boss",
+	tags = {"minigame", "firemaking", "boss"}
 )
 @Slf4j
 public class WintertodtPlugin extends Plugin

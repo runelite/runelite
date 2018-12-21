@@ -75,7 +75,7 @@ enum Task
 	DARK_BEASTS("Dark beasts", ItemID.DARK_BEAST, "Night beast"),
 	DARK_WARRIORS("Dark warriors", ItemID.BLACK_MED_HELM, "Dark warrior"),
 	DERANGED_ARCHAEOLOGIST("Deranged Archaeologist", ItemID.ARCHAEOLOGISTS_DIARY),
-	DESERT_LIZARDS("Desert lizards", ItemID.DESERT_LIZARD, "Small lizard", "Lizard"),
+	DESERT_LIZARDS("Desert lizards", ItemID.DESERT_LIZARD, 4, ItemID.ICE_COOLER, "Small lizard", "Lizard"),
 	DOGS("Dogs", ItemID.GUARD_DOG, "Jackal"),
 	DUST_DEVILS("Dust devils", ItemID.DUST_DEVIL, "Choke devil"),
 	DWARVES("Dwarves", ItemID.DWARVEN_HELMET, "Dwarf"),
@@ -86,7 +86,7 @@ enum Task
 	REVENANTS("Revenants", ItemID.REVENANT_ETHER, "Revenant imp", "Revenant goblin", "Revenant pyrefiend", "Revenant hobgoblin", "Revenant cyclops", "Revenant hellhound", "Revenant demon", "Revenant ork", "Revenant dark beast", "Revenant knight", "Revenant dragon"),
 	FLESH_CRAWLERS("Flesh crawlers", ItemID.ENSOULED_SCORPION_HEAD),
 	FOSSIL_ISLAND_WYVERNS("Fossil island wyverns", ItemID.FOSSIL_ISLAND_WYVERN, "Ancient wyvern", "Long-tailed wyvern", "Spitting wyvern", "Taloned wyvern"),
-	GARGOYLES("Gargoyles", ItemID.GARGOYLE),
+	GARGOYLES("Gargoyles", ItemID.GARGOYLE, 9, ItemID.ROCK_HAMMER),
 	GENERAL_GRAARDOR("General Graardor", ItemID.PET_GENERAL_GRAARDOR),
 	GHOSTS("Ghosts", ItemID.GHOSTSPEAK_AMULET, "Tortured soul"),
 	GIANT_MOLE("Giant Mole", ItemID.BABY_MOLE),
@@ -94,7 +94,7 @@ enum Task
 	GOBLINS("Goblins", ItemID.ENSOULED_GOBLIN_HEAD),
 	GREATER_DEMONS("Greater demons", ItemID.GREATER_DEMON_MASK),
 	GREEN_DRAGONS("Green dragons", ItemID.GREEN_DRAGON_MASK),
-	GROTESQUE_GUARDIANS("Grotesque Guardians", ItemID.MIDNIGHT),
+	GROTESQUE_GUARDIANS("Grotesque Guardians", ItemID.MIDNIGHT, 0, ItemID.ROCK_HAMMER, "Dusk", "Dawn"),
 	HARPIE_BUG_SWARMS("Harpie bug swarms", ItemID.SWARM),
 	HELLHOUNDS("Hellhounds", ItemID.HELLHOUND),
 	HILL_GIANTS("Hill giants", ItemID.ENSOULED_GIANT_HEAD),
@@ -126,14 +126,14 @@ enum Task
 	MOLANISKS("Molanisks", ItemID.MOLANISK),
 	MONKEYS("Monkeys", ItemID.ENSOULED_MONKEY_HEAD),
 	MOSS_GIANTS("Moss giants", ItemID.HILL_GIANT_CLUB),
-	MUTATED_ZYGOMITES("Mutated zygomites", ItemID.MUTATED_ZYGOMITE),
+	MUTATED_ZYGOMITES("Mutated zygomites", ItemID.MUTATED_ZYGOMITE, 0, ItemID.FUNGICIDE_SPRAY_0, "Zygomite", "Fungi"),
 	NECHRYAEL("Nechryael", ItemID.NECHRYAEL, "Nechryarch"),
 	OGRES("Ogres", ItemID.ENSOULED_OGRE_HEAD),
 	OTHERWORLDLY_BEING("Otherworldly beings", ItemID.GHOSTLY_HOOD),
 	PYREFIENDS("Pyrefiends", ItemID.PYREFIEND, "Flaming pyrelord"),
 	RATS("Rats", ItemID.RATS_TAIL),
 	RED_DRAGONS("Red dragons", ItemID.BABY_RED_DRAGON),
-	ROCKSLUGS("Rockslugs", ItemID.ROCKSLUG),
+	ROCKSLUGS("Rockslugs", ItemID.ROCKSLUG, 4, ItemID.BAG_OF_SALT),
 	RUNE_DRAGONS("Rune dragons", ItemID.RUNITE_BAR),
 	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING),
 	CHAOS_DRUIDS("Chaos druids", ItemID.ELDER_CHAOS_HOOD, "Elder Chaos druid", "Chaos druid"),
@@ -174,6 +174,8 @@ enum Task
 	private final String name;
 	private final int itemSpriteId;
 	private final String[] targetNames;
+	private final int weaknessThreshold;
+	private final int weaknessItem;
 
 	static
 	{
@@ -188,6 +190,18 @@ enum Task
 		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;
 		this.itemSpriteId = itemSpriteId;
+		this.weaknessThreshold = -1;
+		this.weaknessItem = -1;
+		this.targetNames = targetNames;
+	}
+
+	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, String... targetNames)
+	{
+		Preconditions.checkArgument(itemSpriteId >= 0);
+		this.name = name;
+		this.itemSpriteId = itemSpriteId;
+		this.weaknessThreshold = weaknessThreshold;
+		this.weaknessItem = weaknessItem;
 		this.targetNames = targetNames;
 	}
 

@@ -36,6 +36,7 @@ import net.runelite.http.service.xp.beans.PlayerEntity;
 import net.runelite.http.service.xp.beans.XpEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -53,10 +54,17 @@ public class XpTrackerService
 	@Autowired
 	private HiscoreService hiscoreService;
 
+	private String nextUsername;
+
 	public void update(String username) throws ExecutionException
 	{
 		HiscoreResult hiscoreResult = hiscoreService.lookupUsername(username, HiscoreEndpoint.NORMAL);
 		update(username, hiscoreResult);
+	}
+
+	public void tryUpdate(String username)
+	{
+		nextUsername = username;
 	}
 
 	public void update(String username, HiscoreResult hiscoreResult)
@@ -188,5 +196,20 @@ public class XpTrackerService
 		{
 			return findXpAtTime(con, username, time);
 		}
+	}
+
+	@Scheduled(fixedDelay = 3000)
+	public void update() throws ExecutionException
+	{
+		String next = nextUsername;
+		nextUsername = null;
+
+		if (next == null)
+		{
+			return;
+		}
+
+		HiscoreResult hiscoreResult = hiscoreService.lookupUsername(next, HiscoreEndpoint.NORMAL);
+		update(next, hiscoreResult);
 	}
 }
