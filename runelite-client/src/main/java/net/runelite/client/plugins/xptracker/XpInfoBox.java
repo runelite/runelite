@@ -212,7 +212,7 @@ class XpInfoBox extends JPanel
 				: "Lvl. " + xpSnapshotSingle.getEndLevel());
 
 			// Add intermediate level positions to progressBar
-			ArrayList<Double> positions = new ArrayList<>();
+			final List<Double> positions = new ArrayList<>()
 			if (xpTrackerConfig.showIntermediateLevels() && xpSnapshotSingle.getEndLevel() - xpSnapshotSingle.getStartLevel() > 1)
 			{
 				for (int level = xpSnapshotSingle.getStartLevel() + 1; level < xpSnapshotSingle.getEndLevel(); level++)
@@ -221,11 +221,12 @@ class XpInfoBox extends JPanel
 					double relativeEndExperience = xpSnapshotSingle.getEndGoalXp() - xpSnapshotSingle.getStartGoalXp();
 					positions.add(relativeStartExperience / relativeEndExperience);
 				}
-				progressBar.setIntermediateProgressPositions(positions);
+
+				progressBar.setPositions(positions);
 			}
 			else
 			{
-				progressBar.setIntermediateProgressPositions(positions);
+				progressBar.setPositions(positions);
 			}
 
 			progressBar.setToolTipText(String.format(
