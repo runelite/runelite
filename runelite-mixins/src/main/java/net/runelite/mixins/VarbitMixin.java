@@ -72,6 +72,8 @@ public abstract class VarbitMixin implements RSClient
 	@Override
 	public int getVarbitValue(int[] varps, int varbitId)
 	{
+		assert client.isClientThread();
+
 		RSVarbit v = varbitCache.getIfPresent(varbitId);
 		if (v == null)
 		{
@@ -124,6 +126,22 @@ public abstract class VarbitMixin implements RSClient
 	public String getVar(VarClientStr varClientStr)
 	{
 		return getStrVarcs()[varClientStr.getIndex()];
+	}
+
+	@Inject
+	@Override
+	public void setVar(VarClientStr varClientStr, String value)
+	{
+		String[] vars = getStrVarcs();
+		vars[varClientStr.getIndex()] = value;
+	}
+
+	@Inject
+	@Override
+	public void setVar(VarClientInt varClientInt, int value)
+	{
+		int[] vars = getIntVarcs();
+		vars[varClientInt.getIndex()] = value;
 	}
 
 	@Inject

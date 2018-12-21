@@ -29,37 +29,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "tithefarmplugin",
-	name = "Tithe Farm",
-	description = "Configuration for the Tithe Farm plugin"
-)
+@ConfigGroup("tithefarmplugin")
 public interface TitheFarmPluginConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
-		keyName = "showWateringCanOverlay",
-		name = "Show watering can doses",
-		description = "Configures whether or not the watering can doses are displayed"
-	)
-	default boolean showWateringCanOverlay()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		position = 1,
-		keyName = "showSack",
-		name = "Show fruit sack",
-		description = "Configures whether or not the fruit sack is displayed"
-	)
-	default boolean showSack()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 2,
 		keyName = "hexColorUnwatered",
 		name = "Unwatered plant",
 		description = "Color of unwatered plant timer"
@@ -70,7 +44,7 @@ public interface TitheFarmPluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 2,
 		keyName = "hexColorWatered",
 		name = "Watered plant",
 		description = "Color of watered plant timer"
@@ -81,7 +55,7 @@ public interface TitheFarmPluginConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 3,
 		keyName = "hexColorGrown",
 		name = "Grown plant",
 		description = "Color of grown plant timer"

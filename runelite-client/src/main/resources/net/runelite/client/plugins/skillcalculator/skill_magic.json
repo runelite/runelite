@@ -382,7 +382,7 @@
       "level": 56,
       "sprite": 42,
       "name": "Charge Water Orb",
-      "xp": 56
+      "xp": 66
     },
     {
       "level": 56,
@@ -635,6 +635,12 @@
       "sprite": 569,
       "name": "Tele Group Moonclan",
       "xp": 67
+    },
+    {
+      "level": 71, 
+      "sprite": 586,
+      "name": "Ourania Teleport",
+      "xp": 69
     },
     {
       "level": 71,
@@ -1046,7 +1052,7 @@
     },
     {
       "level": 95,
-      "sprite": 361,
+      "sprite": 365,
       "name": "Fire Surge",
       "xp": 51
     },

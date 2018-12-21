@@ -29,7 +29,7 @@ package net.runelite.client.plugins.friendnotes;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ObjectArrays;
-import com.google.common.eventbus.Subscribe;
+import java.awt.Color;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -45,14 +45,19 @@ import net.runelite.api.events.NameableNameChanged;
 import net.runelite.api.events.RemovedFriend;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ChatboxInputManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @Slf4j
-@PluginDescriptor(name = "Friend Notes")
+@PluginDescriptor(
+	name = "Friend Notes",
+	description = "Store notes about your friends"
+)
 public class FriendNotesPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "friendNotes";
@@ -61,7 +66,7 @@ public class FriendNotesPlugin extends Plugin
 	private static final String ADD_NOTE = "Add Note";
 	private static final String EDIT_NOTE = "Edit Note";
 	private static final String NOTE_PROMPT_FORMAT = "%s's Notes<br>" +
-		"<col=0000AA>(Limit %s Characters)";
+		ColorUtil.prependColorTag("(Limit %s Characters)", new Color(0, 0, 170));
 
 	@Inject
 	private Client client;
@@ -70,18 +75,27 @@ public class FriendNotesPlugin extends Plugin
 	private ConfigManager configManager;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private FriendNoteOverlay overlay;
 
 	@Inject
-	private ChatboxInputManager chatboxInputManager;
+	private ChatboxPanelManager chatboxPanelManager;
 
 	@Getter
 	private HoveredFriend hoveredFriend = null;
 
 	@Override
-	public Overlay getOverlay()
+	protected void startUp() throws Exception
 	{
-		return overlay;
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
 	}
 
 	/**
@@ -190,29 +204,29 @@ public class FriendNotesPlugin extends Plugin
 			if (event.getMenuOption().equals(ADD_NOTE) || event.getMenuOption().equals(EDIT_NOTE))
 			{
 				event.consume();
-
 				final String note = getFriendNote(sanitizedTarget);
 
-				// Open the chatbox input dialog
-				chatboxInputManager.openInputWindow(String.format(NOTE_PROMPT_FORMAT, sanitizedTarget,
-					CHARACTER_LIMIT), Strings.nullToEmpty(note), CHARACTER_LIMIT, (content) ->
-				{
-					if (content == null)
+				// Open the new chatbox input dialog
+				chatboxPanelManager.openTextInput(String.format(NOTE_PROMPT_FORMAT, sanitizedTarget, CHARACTER_LIMIT))
+					.value(Strings.nullToEmpty(note))
+					.onDone((content) ->
 					{
-						return;
-					}
+						if (content == null)
+						{
+							return;
+						}
 
-					content = Text.removeTags(content).trim();
-					log.debug("Set note for '{}': '{}'", sanitizedTarget, content);
-					setFriendNote(sanitizedTarget, content);
-				});
+						content = Text.removeTags(content).trim();
+						log.debug("Set note for '{}': '{}'", sanitizedTarget, content);
+						setFriendNote(sanitizedTarget, content);
+					}).build();
 			}
 		}
 
 	}
 
 	@Subscribe
-	public void onNameableNameChange(NameableNameChanged event)
+	public void onNameableNameChanged(NameableNameChanged event)
 	{
 		final Nameable nameable = event.getNameable();
 
@@ -225,7 +239,7 @@ public class FriendNotesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onRemoveFriend(RemovedFriend event)
+	public void onRemovedFriend(RemovedFriend event)
 	{
 		// Delete a friend's note if they are removed
 		final String displayName = event.getName();

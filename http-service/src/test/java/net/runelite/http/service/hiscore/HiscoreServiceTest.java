@@ -61,14 +61,14 @@ public class HiscoreServiceTest
 			+ "516239,9,1000\n"
 			+ "492790,1,0\n"
 			+ "-1,-1\n"
-			+ "-1,-1\n"
+			+ "73,1738\n"
 			+ "531,1432\n"
-			+ "-1,-1\n"
-			+ "-1,-1\n"
-			+ "-1,-1\n"
-			+ "-1,-1\n"
-			+ "-1,-1\n"
-			+ "254,92";
+			+ "8008,131\n"
+			+ "1337,911\n"
+			+ "42,14113\n"
+			+ "1,777\n"
+			+ "254,92\n"
+			+ "-1,-1";
 
 	private final MockWebServer server = new MockWebServer();
 
@@ -91,13 +91,18 @@ public class HiscoreServiceTest
 	{
 		HiscoreTestService hiscores = new HiscoreTestService(server.url("/"));
 
-		HiscoreResult result = hiscores.lookupUsername("zezima", HiscoreEndpoint.NORMAL).build();
+		HiscoreResult result = hiscores.lookupUsername("zezima", HiscoreEndpoint.NORMAL.getHiscoreURL());
 
 		Assert.assertEquals(50, result.getAttack().getLevel());
 		Assert.assertEquals(159727L, result.getFishing().getExperience());
 		Assert.assertEquals(492790, result.getConstruction().getRank());
 		Assert.assertEquals(1432, result.getClueScrollAll().getLevel());
+		Assert.assertEquals(8008, result.getClueScrollEasy().getRank());
+		Assert.assertEquals(911, result.getClueScrollMedium().getLevel());
+		Assert.assertEquals(42, result.getClueScrollHard().getRank());
+		Assert.assertEquals(777, result.getClueScrollElite().getLevel());
 		Assert.assertEquals(254, result.getClueScrollMaster().getRank());
+		Assert.assertEquals(-1, result.getLastManStanding().getLevel());
 	}
 
 }

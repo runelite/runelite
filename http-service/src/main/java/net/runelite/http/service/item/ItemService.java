@@ -33,11 +33,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.cache.definitions.ItemDefinition;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.item.ItemType;
+import net.runelite.http.service.cache.CacheService;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -48,7 +51,6 @@ import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
-import org.sql2o.Sql2oException;
 
 @Service
 @Slf4j
@@ -80,18 +82,21 @@ public class ItemService
 		+ "  KEY `item_fetched_time` (`item`,`fetched_time`)\n"
 		+ ") ENGINE=InnoDB";
 
-	private static final String CREATE_PRICES_FK = "ALTER TABLE `prices`\n"
-		+ "  ADD CONSTRAINT `item` FOREIGN KEY (`item`) REFERENCES `items` (`id`);";
-
 	private static final int MAX_PENDING = 512;
 
 	private final Sql2o sql2o;
+	private final CacheService cacheService;
+
 	private final ConcurrentLinkedQueue<PendingLookup> pendingLookups = new ConcurrentLinkedQueue<PendingLookup>();
+	private int[] tradeableItems;
+	private final Random random = new Random();
 
 	@Autowired
-	public ItemService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
+	public ItemService(@Qualifier("Runelite SQL2O") Sql2o sql2o,
+		CacheService cacheService)
 	{
 		this.sql2o = sql2o;
+		this.cacheService = cacheService;
 
 		try (Connection con = sql2o.open())
 		{
@@ -100,16 +105,6 @@ public class ItemService
 
 			con.createQuery(CREATE_PRICES)
 				.executeUpdate();
-
-			try
-			{
-				con.createQuery(CREATE_PRICES_FK)
-					.executeUpdate();
-			}
-			catch (Sql2oException ex)
-			{
-				// Ignore, happens when index already exists
-			}
 		}
 	}
 
@@ -129,14 +124,14 @@ public class ItemService
 	{
 		if (time != null)
 		{
-			return con.createQuery("select item, price, time, fetched_time from prices where item = :item and time <= :time order by time desc limit 1")
+			return con.createQuery("select item, name, price, time, fetched_time from prices t1 join items t2 on t1.item=t2.id where item = :item and time <= :time order by time desc limit 1")
 				.addParameter("item", itemId)
 				.addParameter("time", time.toString())
 				.executeAndFetchFirst(PriceEntry.class);
 		}
 		else
 		{
-			return con.createQuery("select item, price, time, fetched_time from prices where item = :item order by time desc limit 1")
+			return con.createQuery("select item, name, price, time, fetched_time from prices t1 join items t2 on t1.item=t2.id where item = :item order by time desc limit 1")
 				.addParameter("item", itemId)
 				.executeAndFetchFirst(PriceEntry.class);
 		}
@@ -248,9 +243,19 @@ public class ItemService
 
 	public List<PriceEntry> fetchPrice(int itemId)
 	{
+		RSPrices rsprice;
+		try
+		{
+			rsprice = fetchRSPrices(itemId);
+		}
+		catch (IOException ex)
+		{
+			log.warn("unable to fetch price for item {}", itemId, ex);
+			return null;
+		}
+
 		try (Connection con = sql2o.beginTransaction())
 		{
-			RSPrices rsprice = fetchRSPrices(itemId);
 			List<PriceEntry> entries = new ArrayList<>();
 			Instant now = Instant.now();
 
@@ -284,10 +289,16 @@ public class ItemService
 
 			return entries;
 		}
-		catch (IOException ex)
+	}
+
+	public List<PriceEntry> fetchPrices()
+	{
+		try (Connection con = sql2o.beginTransaction())
 		{
-			log.warn("unable to fetch price for item {}", itemId, ex);
-			return null;
+			Query query = con.createQuery("select t2.item, t3.name, t2.time, prices.price, prices.fetched_time from (select t1.item as item, max(t1.time) as time from prices t1 group by item) t2 " +
+					" join prices on t2.item=prices.item and t2.time=prices.time" +
+					" join items t3 on t2.item=t3.id");
+			return query.executeAndFetch(PriceEntry.class);
 		}
 	}
 
@@ -397,18 +408,6 @@ public class ItemService
 		}
 	}
 
-	public void queuePriceLookup(int itemId)
-	{
-		if (pendingLookups.size() < MAX_PENDING)
-		{
-			pendingLookups.add(new PendingLookup(itemId, PendingLookup.Type.PRICE));
-		}
-		else
-		{
-			log.debug("Dropping pending price lookup for {}", itemId);
-		}
-	}
-
 	public void queueSearch(String search)
 	{
 		if (pendingLookups.size() < MAX_PENDING)
@@ -444,9 +443,6 @@ public class ItemService
 
 		switch (pendingLookup.getType())
 		{
-			case PRICE:
-				fetchPrice(pendingLookup.getItemId());
-				break;
 			case SEARCH:
 				try
 				{
@@ -463,6 +459,33 @@ public class ItemService
 				fetchItem(pendingLookup.getItemId());
 				break;
 		}
+	}
+
+	@Scheduled(fixedDelay = 20_000)
+	public void crawlPrices()
+	{
+		if (tradeableItems == null || tradeableItems.length == 0)
+		{
+			return;
+		}
+
+		int idx = random.nextInt(tradeableItems.length);
+		int id = tradeableItems[idx];
+
+		log.debug("Fetching price for {}", id);
+
+		fetchPrice(id);
+	}
+
+	@Scheduled(fixedDelay = 1_8000_000) // 30 minutes
+	public void reloadItems() throws IOException
+	{
+		List<ItemDefinition> items = cacheService.getItems();
+		tradeableItems = items.stream()
+			.filter(item -> item.isTradeable)
+			.mapToInt(item -> item.id)
+			.toArray();
+		log.debug("Loaded {} tradeable items", tradeableItems.length);
 	}
 
 }

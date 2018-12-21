@@ -29,17 +29,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "xpdrop",
-	name = "XP Drop",
-	description = "Configuration for XP drop customization"
-)
+@ConfigGroup("xpdrop")
 public interface XpDropConfig extends Config
 {
 	@ConfigItem(
 		keyName = "hideSkillIcons",
 		name = "Hide skill icons",
-		description = "Configure if XP drops will show their respective skill icons"
+		description = "Configure if XP drops will show their respective skill icons",
+		position = 0
 	)
 	default boolean hideSkillIcons()
 	{
@@ -49,7 +46,8 @@ public interface XpDropConfig extends Config
 	@ConfigItem(
 		keyName = "meleePrayerColor",
 		name = "Melee Prayer Color",
-		description = "XP drop color when a melee prayer is active"
+		description = "XP drop color when a melee prayer is active",
+		position = 1
 	)
 	default Color getMeleePrayerColor()
 	{
@@ -59,7 +57,8 @@ public interface XpDropConfig extends Config
 	@ConfigItem(
 		keyName = "rangePrayerColor",
 		name = "Range Prayer Color",
-		description = "XP drop color when a range prayer is active"
+		description = "XP drop color when a range prayer is active",
+		position = 2
 	)
 	default Color getRangePrayerColor()
 	{
@@ -69,10 +68,23 @@ public interface XpDropConfig extends Config
 	@ConfigItem(
 		keyName = "magePrayerColor",
 		name = "Mage Prayer Color",
-		description = "XP drop color when a mage prayer is active"
+		description = "XP drop color when a mage prayer is active",
+		position = 3
 	)
 	default Color getMagePrayerColor()
 	{
 		return new Color(0x15, 0x80, 0xAD);
 	}
+
+	@ConfigItem(
+		keyName = "fakeXpDropDelay",
+		name = "Fake Xp Drop delay",
+		description = "Configures how many ticks should pass between fake XP drops, 0 to disable",
+		position = 4
+	)
+	default int fakeXpDropDelay()
+	{
+		return 0;
+	}
+
 }

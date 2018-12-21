@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "defaultworld",
-	name = "Default World",
-	description = "Sets the default world and remembers it"
-)
+@ConfigGroup("defaultworld")
 public interface DefaultWorldConfig extends Config
 {
 	@ConfigItem(

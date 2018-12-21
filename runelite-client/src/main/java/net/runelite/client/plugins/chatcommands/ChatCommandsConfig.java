@@ -28,18 +28,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "chatcommands",
-	name = "Chat Commands",
-	description = "Configuration for chat commands"
-)
+@ConfigGroup("chatcommands")
 public interface ChatCommandsConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
 		keyName = "price",
 		name = "Price Command",
-		description = "Configures whether the Price command is enabled"
+		description = "Configures whether the Price command is enabled<br> !price [item]"
 	)
 	default boolean price()
 	{
@@ -50,9 +46,42 @@ public interface ChatCommandsConfig extends Config
 		position = 1,
 		keyName = "lvl",
 		name = "Level Command",
-		description = "Configures whether the Level command is enabled"
+		description = "Configures whether the Level command is enabled<br> !lvl [skill]"
 	)
 	default boolean lvl()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "clue",
+		name = "Clue Command",
+		description = "Configures whether the Clue command is enabled<br> !clues"
+	)
+	default boolean clue()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "killcount",
+		name = "Killcount Command",
+		description = "Configures whether the Killcount command is enabled<br> !kc [boss]"
+	)
+	default boolean killcount()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "clearShortcuts",
+		name = "Clear shortcuts",
+		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
+	)
+	default boolean clearShortcuts()
 	{
 		return true;
 	}

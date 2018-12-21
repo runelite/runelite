@@ -29,8 +29,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -53,6 +55,7 @@ public class SceneOverlay extends Overlay
 	private static final Color LOCAL_VALID_MOVEMENT_COLOR = new Color(141, 220, 26);
 	private static final Color VALID_MOVEMENT_COLOR = new Color(73, 122, 18);
 	private static final Color LINE_OF_SIGHT_COLOR = new Color(204, 42, 219);
+	private static final Color INTERACTING_COLOR = Color.CYAN;
 
 	private static final int LOCAL_TILE_SIZE = Perspective.LOCAL_TILE_SIZE;
 	private static final int CHUNK_SIZE = 8;
@@ -60,6 +63,14 @@ public class SceneOverlay extends Overlay
 	private static final int CULL_CHUNK_BORDERS_RANGE = 16;
 	private static final int STROKE_WIDTH = 4;
 	private static final int CULL_LINE_OF_SIGHT_RANGE = 10;
+	private static final int INTERACTING_SHIFT = -16;
+
+	private static final Polygon ARROW_HEAD = new Polygon(
+		new int[]{0, -3, 3},
+		new int[]{0, -5, -5},
+		3
+	);
+
 
 	private final Client client;
 	private final DevToolsPlugin plugin;
@@ -76,24 +87,29 @@ public class SceneOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.isToggleChunkBorders())
+		if (plugin.getChunkBorders().isActive())
 		{
 			renderChunkBorders(graphics);
 		}
 
-		if (plugin.isToggleMapSquares())
+		if (plugin.getMapSquares().isActive())
 		{
 			renderMapSquares(graphics);
 		}
 
-		if (plugin.isToggleLineOfSight())
+		if (plugin.getLineOfSight().isActive())
 		{
 			renderLineOfSight(graphics);
 		}
 
-		if (plugin.isToggleValidMovement())
+		if (plugin.getValidMovement().isActive())
 		{
 			renderValidMovement(graphics);
+		}
+
+		if (plugin.getInteracting().isActive())
+		{
+			renderInteracting(graphics);
 		}
 
 		return null;
@@ -119,9 +135,8 @@ public class SceneOverlay extends Overlay
 			boolean first = true;
 			for (int y = lp1.getY(); y <= lp2.getY(); y += LOCAL_TILE_SIZE)
 			{
-				Point p = Perspective.worldToCanvas(client,
-					lp1.getX() - LOCAL_TILE_SIZE / 2,
-					y - LOCAL_TILE_SIZE / 2,
+				Point p = Perspective.localToCanvas(client,
+					new LocalPoint(lp1.getX() - LOCAL_TILE_SIZE / 2, y - LOCAL_TILE_SIZE / 2),
 					client.getPlane());
 				if (p != null)
 				{
@@ -145,9 +160,8 @@ public class SceneOverlay extends Overlay
 			boolean first = true;
 			for (int x = lp1.getX(); x <= lp2.getX(); x += LOCAL_TILE_SIZE)
 			{
-				Point p = Perspective.worldToCanvas(client,
-					x - LOCAL_TILE_SIZE / 2,
-					lp1.getY() - LOCAL_TILE_SIZE / 2,
+				Point p = Perspective.localToCanvas(client,
+					new LocalPoint(x - LOCAL_TILE_SIZE / 2, lp1.getY() - LOCAL_TILE_SIZE / 2),
 					client.getPlane());
 				if (p != null)
 				{
@@ -186,9 +200,8 @@ public class SceneOverlay extends Overlay
 			boolean first = true;
 			for (int y = lp1.getY(); y <= lp2.getY(); y += LOCAL_TILE_SIZE)
 			{
-				Point p = Perspective.worldToCanvas(client,
-					lp1.getX() - LOCAL_TILE_SIZE / 2,
-					y - LOCAL_TILE_SIZE / 2,
+				Point p = Perspective.localToCanvas(client,
+					new LocalPoint(lp1.getX() - LOCAL_TILE_SIZE / 2, y - LOCAL_TILE_SIZE / 2),
 					client.getPlane());
 				if (p != null)
 				{
@@ -212,9 +225,8 @@ public class SceneOverlay extends Overlay
 			boolean first = true;
 			for (int x = lp1.getX(); x <= lp2.getX(); x += LOCAL_TILE_SIZE)
 			{
-				Point p = Perspective.worldToCanvas(client,
-					x - LOCAL_TILE_SIZE / 2,
-					lp1.getY() - LOCAL_TILE_SIZE / 2,
+				Point p = Perspective.localToCanvas(client,
+					new LocalPoint(x - LOCAL_TILE_SIZE / 2, lp1.getY() - LOCAL_TILE_SIZE / 2),
 					client.getPlane());
 				if (p != null)
 				{
@@ -252,10 +264,6 @@ public class SceneOverlay extends Overlay
 			lp = new LocalPoint(
 				lp.getX() + dx * Perspective.LOCAL_TILE_SIZE + dx * Perspective.LOCAL_TILE_SIZE * (area.getWidth() - 1) / 2,
 				lp.getY() + dy * Perspective.LOCAL_TILE_SIZE + dy * Perspective.LOCAL_TILE_SIZE * (area.getHeight() - 1) / 2);
-			if (lp == null)
-			{
-				return;
-			}
 
 			Polygon poly = Perspective.getCanvasTilePoly(client, lp);
 			if (poly == null)
@@ -313,10 +321,6 @@ public class SceneOverlay extends Overlay
 	private void renderTileIfHasLineOfSight(Graphics2D graphics, WorldArea start, int targetX, int targetY)
 	{
 		WorldPoint targetLocation = new WorldPoint(targetX, targetY, start.getPlane());
-		if (targetLocation == null)
-		{
-			return;
-		}
 
 		// Running the line of sight algorithm 100 times per frame doesn't
 		// seem to use much CPU time, however rendering 100 tiles does
@@ -354,4 +358,49 @@ public class SceneOverlay extends Overlay
 		}
 	}
 
+	private void renderInteracting(Graphics2D graphics)
+	{
+		Stream.concat(
+			client.getPlayers().stream(),
+			client.getNpcs().stream()
+		).forEach(fa ->
+		{
+			Actor ta = fa.getInteracting();
+			if (ta == null)
+			{
+				return;
+			}
+
+			LocalPoint fl = fa.getLocalLocation();
+			Point fs = Perspective.localToCanvas(client, fl, client.getPlane(), fa.getLogicalHeight() / 2);
+			if (fs == null)
+			{
+				return;
+			}
+			int fsx = fs.getX();
+			int fsy = fs.getY() - INTERACTING_SHIFT;
+
+			LocalPoint tl = ta.getLocalLocation();
+			Point ts = Perspective.localToCanvas(client, tl, client.getPlane(), ta.getLogicalHeight() / 2);
+			if (ts == null)
+			{
+				return;
+			}
+			int tsx = ts.getX();
+			int tsy = ts.getY() - INTERACTING_SHIFT;
+
+			graphics.setColor(INTERACTING_COLOR);
+			graphics.drawLine(fsx, fsy, tsx, tsy);
+
+			AffineTransform t = new AffineTransform();
+			t.translate(tsx, tsy);
+			t.rotate(tsx - fsx, tsy - fsy);
+			t.rotate(Math.PI / -2);
+			AffineTransform ot = graphics.getTransform();
+			graphics.setTransform(t);
+			graphics.fill(ARROW_HEAD);
+			graphics.setTransform(ot);
+
+		});
+	}
 }

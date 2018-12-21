@@ -26,8 +26,6 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -36,7 +34,6 @@ import java.awt.event.WindowEvent;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -45,7 +42,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
-import javax.swing.SwingWorker;
+import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import lombok.extern.slf4j.Slf4j;
@@ -54,14 +51,19 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.ClientUI;
 
 @Slf4j
 class WidgetInspector extends JFrame
 {
 	private final Client client;
-	private final DevToolsPlugin plugin;
+	private final ClientThread clientThread;
 	private final DevToolsConfig config;
+	private final DevToolsOverlay overlay;
+	private final DevToolsPlugin plugin;
 
 	private final JTree widgetTree;
 	private final WidgetInfoTableModel infoTableModel;
@@ -70,12 +72,21 @@ class WidgetInspector extends JFrame
 	private static final Map<Integer, WidgetInfo> widgetIdMap = new HashMap<>();
 
 	@Inject
-	WidgetInspector(DevToolsPlugin plugin, Client client, WidgetInfoTableModel infoTableModel, DevToolsConfig config, EventBus eventBus)
+	private WidgetInspector(
+		Client client,
+		ClientThread clientThread,
+		WidgetInfoTableModel infoTableModel,
+		DevToolsConfig config,
+		EventBus eventBus,
+		DevToolsOverlay overlay,
+		DevToolsPlugin plugin)
 	{
-		this.plugin = plugin;
 		this.client = client;
+		this.clientThread = clientThread;
 		this.infoTableModel = infoTableModel;
 		this.config = config;
+		this.overlay = overlay;
+		this.plugin = plugin;
 
 		eventBus.register(this);
 
@@ -88,8 +99,8 @@ class WidgetInspector extends JFrame
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
-				plugin.currentWidget = null;
-				plugin.itemIndex = -1;
+				close();
+				plugin.getWidgetInspector().setActive(false);
 			}
 		});
 
@@ -105,16 +116,16 @@ class WidgetInspector extends JFrame
 			{
 				WidgetTreeNode node = (WidgetTreeNode) selected;
 				Widget widget = node.getWidget();
-				plugin.currentWidget = widget;
-				plugin.itemIndex = widget.getItemId();
+				overlay.setWidget(widget);
+				overlay.setItemIndex(widget.getItemId());
 				refreshInfo();
 				log.debug("Set widget to {} and item index to {}", widget, widget.getItemId());
 			}
 			else if (selected instanceof WidgetItemNode)
 			{
 				WidgetItemNode node = (WidgetItemNode) selected;
-				plugin.itemIndex = node.getWidgetItem().getIndex();
-				log.debug("Set item index to {}", plugin.itemIndex);
+				overlay.setItemIndex(node.getWidgetItem().getIndex());
+				log.debug("Set item index to {}", node.getWidgetItem().getIndex());
 			}
 		});
 
@@ -140,6 +151,17 @@ class WidgetInspector extends JFrame
 		onConfigChanged(null);
 		bottomPanel.add(alwaysOnTop);
 
+		final JButton revalidateWidget = new JButton("Revalidate");
+		revalidateWidget.addActionListener(ev -> clientThread.invokeLater(() ->
+		{
+			if (overlay.getWidget() == null)
+			{
+				return;
+			}
+
+			overlay.getWidget().revalidate();
+		}));
+		bottomPanel.add(revalidateWidget);
 
 		final JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, treeScrollPane, infoScrollPane);
 		add(split, BorderLayout.CENTER);
@@ -157,45 +179,31 @@ class WidgetInspector extends JFrame
 
 	private void refreshWidgets()
 	{
-		new SwingWorker<DefaultMutableTreeNode, Void>()
+		clientThread.invokeLater(() ->
 		{
-			@Override
-			protected DefaultMutableTreeNode doInBackground() throws Exception
+			Widget[] rootWidgets = client.getWidgetRoots();
+			DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+
+			overlay.setWidget(null);
+			overlay.setItemIndex(-1);
+
+			for (Widget widget : rootWidgets)
 			{
-				Widget[] rootWidgets = client.getWidgetRoots();
-				DefaultMutableTreeNode root = new DefaultMutableTreeNode();
-
-				plugin.currentWidget = null;
-				plugin.itemIndex = -1;
-
-				for (Widget widget : rootWidgets)
+				DefaultMutableTreeNode childNode = addWidget("R", widget);
+				if (childNode != null)
 				{
-					DefaultMutableTreeNode childNode = addWidget("R", widget);
-					if (childNode != null)
-					{
-						root.add(childNode);
-					}
+					root.add(childNode);
 				}
-
-				return root;
 			}
 
-			@Override
-			protected void done()
+			SwingUtilities.invokeLater(() ->
 			{
-				try
-				{
-					plugin.currentWidget = null;
-					plugin.itemIndex = -1;
-					refreshInfo();
-					widgetTree.setModel(new DefaultTreeModel(get()));
-				}
-				catch (InterruptedException | ExecutionException ex)
-				{
-					throw new RuntimeException(ex);
-				}
-			}
-		}.execute();
+				overlay.setWidget(null);
+				overlay.setItemIndex(-1);
+				refreshInfo();
+				widgetTree.setModel(new DefaultTreeModel(root));
+			});
+		});
 	}
 
 	private DefaultMutableTreeNode addWidget(String type, Widget widget)
@@ -265,10 +273,10 @@ class WidgetInspector extends JFrame
 
 	private void refreshInfo()
 	{
-		infoTableModel.setWidget(plugin.currentWidget);
+		infoTableModel.setWidget(overlay.getWidget());
 	}
 
-	public static WidgetInfo getWidgetInfo(int packedId)
+	static WidgetInfo getWidgetInfo(int packedId)
 	{
 		if (widgetIdMap.size() == 0)
 		{
@@ -282,5 +290,19 @@ class WidgetInspector extends JFrame
 		}
 
 		return widgetIdMap.get(packedId);
+	}
+
+	public void open()
+	{
+		setVisible(true);
+		toFront();
+		repaint();
+	}
+
+	public void close()
+	{
+		overlay.setWidget(null);
+		overlay.setItemIndex(-1);
+		setVisible(false);
 	}
 }

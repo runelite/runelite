@@ -47,17 +47,8 @@ public class XteaClient
 
 	private static final Logger logger = LoggerFactory.getLogger(XteaClient.class);
 
-	public void submit(int revision, int region, int[] keys)
+	public void submit(XteaRequest xteaRequest)
 	{
-		XteaRequest xteaRequest = new XteaRequest();
-		xteaRequest.setRevision(revision);
-
-		XteaKey xteaKey = new XteaKey();
-		xteaKey.setRegion(region);
-		xteaKey.setKeys(keys);
-
-		xteaRequest.addKey(xteaKey);
-
 		String json = RuneLiteAPI.GSON.toJson(xteaRequest);
 
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Joshua Filby <joshua@filby.me>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,42 +25,93 @@
  */
 package net.runelite.client.util;
 
+import com.google.common.base.CharMatcher;
+import java.util.regex.Pattern;
+
 /**
  * A set of utilities to use when dealing with text.
  */
 public class Text
 {
+	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
 
 	/**
-	 * Removes all tags from the given `str`.
+	 * Removes all tags from the given string.
 	 *
 	 * @param str The string to remove tags from.
-	 * @return The given `str` with all tags removed from it.
+	 * @return The given string with all tags removed from it.
 	 */
 	public static String removeTags(String str)
 	{
-		StringBuilder builder = new StringBuilder(str.length());
-		boolean inTag = false;
+		return TAG_REGEXP.matcher(str).replaceAll("");
+	}
+
+	/**
+	 * In addition to removing all tags, replaces nbsp with space, trims string and lowercases it
+	 * @param str The string to standardize
+	 *
+	 * @return The given `str` that is standardized
+	 */
+	public static String standardize(String str)
+	{
+		return removeTags(str).replace('\u00A0', ' ').trim().toLowerCase();
+	}
+
+	/**
+	 * Convert a string into Jagex username format
+	 * Remove all non-ascii characters, replace nbsp with space, replace _- with spaces, and trim
+	 *
+	 * @param str The string to standardize
+	 * @return The given `str` that is in Jagex name format
+	 */
+	public static String toJagexName(String str)
+	{
+		return CharMatcher.ascii().retainFrom(str.replace('\u00A0', ' ')).replaceAll("[_-]+", " ").trim();
+	}
+
+	/**
+	 * In addition to removing all tags, replaces all &lt;br&gt; delimited text with spaces and all multiple continuous
+	 * spaces with single space
+	 *
+	 * @param str The string to sanitize
+	 * @return sanitized string
+	 */
+	public static String sanitizeMultilineText(String str)
+	{
+		return removeTags(str
+			.replaceAll("-<br>", "-")
+			.replaceAll("<br>", " ")
+			.replaceAll("[ ]+", " "));
+	}
+
+	/**
+	 * Escapes a string for widgets, replacing &lt; and &gt; with their escaped counterparts
+	 */
+	public static String escapeJagex(String str)
+	{
+		StringBuilder out = new StringBuilder(str.length());
 
 		for (int i = 0; i < str.length(); i++)
 		{
-			char currentChar = str.charAt(i);
-
-			if (currentChar == '<')
+			char c = str.charAt(i);
+			if (c == '<')
 			{
-				inTag = true;
+				out.append("<lt>");
 			}
-			else if (currentChar == '>')
+			else if (c == '>')
 			{
-				inTag = false;
+				out.append("<gt>");
 			}
-			else if (!inTag)
+			else if (c == '\n')
 			{
-				builder.append(currentChar);
+				out.append("<br>");
+			}
+			else if (c != '\r')
+			{
+				out.append(c);
 			}
 		}
 
-		return builder.toString();
+		return out.toString();
 	}
-
 }

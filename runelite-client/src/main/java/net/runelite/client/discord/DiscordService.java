@@ -25,7 +25,6 @@
 package net.runelite.client.discord;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.EventBus;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
@@ -38,6 +37,7 @@ import net.runelite.client.discord.events.DiscordJoinGame;
 import net.runelite.client.discord.events.DiscordJoinRequest;
 import net.runelite.client.discord.events.DiscordReady;
 import net.runelite.client.discord.events.DiscordSpectateGame;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.discord.DiscordEventHandlers;
 import net.runelite.discord.DiscordRPC;
 import net.runelite.discord.DiscordRichPresence;
@@ -138,6 +138,8 @@ public class DiscordService implements AutoCloseable
 		discordRichPresence.joinSecret = discordPresence.getJoinSecret();
 		discordRichPresence.spectateSecret = discordPresence.getSpectateSecret();
 		discordRichPresence.instance = (byte) (discordPresence.isInstance() ? 1 : 0);
+
+		log.debug("Sending presence update {}", discordPresence);
 		discordRPC.Discord_UpdatePresence(discordRichPresence);
 	}
 

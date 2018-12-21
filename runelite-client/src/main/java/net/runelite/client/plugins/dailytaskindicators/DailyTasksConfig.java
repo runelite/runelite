@@ -1,5 +1,7 @@
 /*
  * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
+ * Copyright (c) 2018, Shaun Dreclin <https://github.com/ShaunDreclin>
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,19 +30,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "dailytaskindicators",
-	name = "Daily Task Indicators",
-	description = "Configuration for Daily Task Indicators plugin"
-)
+@ConfigGroup("dailytaskindicators")
 public interface DailyTasksConfig extends Config
 {
 	@ConfigItem(
+		position = 1,
 		keyName = "showHerbBoxes",
 		name = "Show Herb Boxes",
-		description = "Configures whether or not to show a message when you can" +
-			" collect your daily herb boxes at NMZ",
-		position = 1
+		description = "Show a message when you can collect your daily herb boxes at NMZ."
 	)
 	default boolean showHerbBoxes()
 	{
@@ -48,11 +45,10 @@ public interface DailyTasksConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 2,
 		keyName = "showStaves",
 		name = "Show Claimable Staves",
-		description = "Configures whether or not to show a message when you can" +
-			" collect your daily staves from Zaff",
-		position = 2
+		description = "Show a message when you can collect your daily battlestaves from Zaff."
 	)
 	default boolean showStaves()
 	{
@@ -60,13 +56,34 @@ public interface DailyTasksConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
 		keyName = "showEssence",
 		name = "Show Claimable Essence",
-		description = "Configures whether or not to show a message when you can" +
-			" collect your daily pure essence from Wizard Cromperty",
-		position = 3
+		description = "Show a message when you can collect your daily pure essence from Wizard Cromperty."
 	)
 	default boolean showEssence()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "showRunes",
+		name = "Show Claimable Random Runes",
+		description = "Show a message when you can collect your daily random runes from Lundail."
+	)
+	default boolean showRunes()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "showSand",
+		name = "Show Claimable Sand",
+		description = "Show a message when you can collect your daily sand from Bert."
+	)
+	default boolean showSand()
 	{
 		return true;
 	}

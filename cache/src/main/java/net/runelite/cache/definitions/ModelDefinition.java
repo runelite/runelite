@@ -1,5 +1,6 @@
 package net.runelite.cache.definitions;
 
+import java.util.Arrays;
 import net.runelite.cache.models.CircularAngle;
 import net.runelite.cache.models.FaceNormal;
 import net.runelite.cache.models.VertexNormal;
@@ -46,6 +47,16 @@ public class ModelDefinition
 	public short[] aShortArray2578;
 	public byte[] aByteArray2580;
 	public short[] aShortArray2586;
+
+	private transient int[][] vertexGroups;
+
+	private transient int[] origVX;
+	private transient int[] origVY;
+	private transient int[] origVZ;
+
+	public transient int maxPriority;
+
+	public static transient int animOffsetX, animOffsetY, animOffsetZ;
 
 	public void computeNormals()
 	{
@@ -259,6 +270,43 @@ public class ModelDefinition
 		}
 	}
 
+	public void computeAnimationTables()
+	{
+		if (this.vertexSkins != null)
+		{
+			int[] groupCounts = new int[256];
+			int numGroups = 0;
+			int var3, var4;
+
+			for (var3 = 0; var3 < this.vertexCount; ++var3)
+			{
+				var4 = this.vertexSkins[var3];
+				++groupCounts[var4];
+				if (var4 > numGroups)
+				{
+					numGroups = var4;
+				}
+			}
+
+			this.vertexGroups = new int[numGroups + 1][];
+
+			for (var3 = 0; var3 <= numGroups; ++var3)
+			{
+				this.vertexGroups[var3] = new int[groupCounts[var3]];
+				groupCounts[var3] = 0;
+			}
+
+			for (var3 = 0; var3 < this.vertexCount; this.vertexGroups[var4][groupCounts[var4]++] = var3++)
+			{
+				var4 = this.vertexSkins[var3];
+			}
+
+			this.vertexSkins = null;
+		}
+
+		// triangleSkinValues is here
+	}
+
 	public void rotate(int orientation)
 	{
 		int sin = CircularAngle.SINE[orientation];
@@ -274,6 +322,187 @@ public class ModelDefinition
 		}
 
 		reset();
+	}
+
+	public void resetAnim()
+	{
+		if (origVX == null)
+		{
+			return;
+		}
+
+		System.arraycopy(origVX, 0, vertexPositionsX, 0, origVX.length);
+		System.arraycopy(origVY, 0, vertexPositionsY, 0, origVY.length);
+		System.arraycopy(origVZ, 0, vertexPositionsZ, 0, origVZ.length);
+	}
+
+	public void animate(int type, int[] frameMap, int dx, int dy, int dz)
+	{
+		if (origVX == null)
+		{
+			origVX = Arrays.copyOf(vertexPositionsX, vertexPositionsX.length);
+			origVY = Arrays.copyOf(vertexPositionsY, vertexPositionsY.length);
+			origVZ = Arrays.copyOf(vertexPositionsZ, vertexPositionsZ.length);
+		}
+
+		final int[] verticesX = vertexPositionsX;
+		final int[] verticesY = vertexPositionsY;
+		final int[] verticesZ = vertexPositionsZ;
+		int var6 = frameMap.length;
+		int var7;
+		int var8;
+		int var11;
+		int var12;
+		if (type == 0)
+		{
+			var7 = 0;
+			animOffsetX = 0;
+			animOffsetY = 0;
+			animOffsetZ = 0;
+
+			for (var8 = 0; var8 < var6; ++var8)
+			{
+				int var9 = frameMap[var8];
+				if (var9 < this.vertexGroups.length)
+				{
+					int[] var10 = this.vertexGroups[var9];
+
+					for (var11 = 0; var11 < var10.length; ++var11)
+					{
+						var12 = var10[var11];
+						animOffsetX += verticesX[var12];
+						animOffsetY += verticesY[var12];
+						animOffsetZ += verticesZ[var12];
+						++var7;
+					}
+				}
+			}
+
+			if (var7 > 0)
+			{
+				animOffsetX = dx + animOffsetX / var7;
+				animOffsetY = dy + animOffsetY / var7;
+				animOffsetZ = dz + animOffsetZ / var7;
+			}
+			else
+			{
+				animOffsetX = dx;
+				animOffsetY = dy;
+				animOffsetZ = dz;
+			}
+
+		}
+		else
+		{
+			int[] var18;
+			int var19;
+			if (type == 1)
+			{
+				for (var7 = 0; var7 < var6; ++var7)
+				{
+					var8 = frameMap[var7];
+					if (var8 < this.vertexGroups.length)
+					{
+						var18 = this.vertexGroups[var8];
+
+						for (var19 = 0; var19 < var18.length; ++var19)
+						{
+							var11 = var18[var19];
+							verticesX[var11] += dx;
+							verticesY[var11] += dy;
+							verticesZ[var11] += dz;
+						}
+					}
+				}
+
+			}
+			else if (type == 2)
+			{
+				for (var7 = 0; var7 < var6; ++var7)
+				{
+					var8 = frameMap[var7];
+					if (var8 < this.vertexGroups.length)
+					{
+						var18 = this.vertexGroups[var8];
+
+						for (var19 = 0; var19 < var18.length; ++var19)
+						{
+							var11 = var18[var19];
+							verticesX[var11] -= animOffsetX;
+							verticesY[var11] -= animOffsetY;
+							verticesZ[var11] -= animOffsetZ;
+							var12 = (dx & 255) * 8;
+							int var13 = (dy & 255) * 8;
+							int var14 = (dz & 255) * 8;
+							int var15;
+							int var16;
+							int var17;
+							if (var14 != 0)
+							{
+								var15 = CircularAngle.SINE[var14];
+								var16 = CircularAngle.COSINE[var14];
+								var17 = var15 * verticesY[var11] + var16 * verticesX[var11] >> 16;
+								verticesY[var11] = var16 * verticesY[var11] - var15 * verticesX[var11] >> 16;
+								verticesX[var11] = var17;
+							}
+
+							if (var12 != 0)
+							{
+								var15 = CircularAngle.SINE[var12];
+								var16 = CircularAngle.COSINE[var12];
+								var17 = var16 * verticesY[var11] - var15 * verticesZ[var11] >> 16;
+								verticesZ[var11] = var15 * verticesY[var11] + var16 * verticesZ[var11] >> 16;
+								verticesY[var11] = var17;
+							}
+
+							if (var13 != 0)
+							{
+								var15 = CircularAngle.SINE[var13];
+								var16 = CircularAngle.COSINE[var13];
+								var17 = var15 * verticesZ[var11] + var16 * verticesX[var11] >> 16;
+								verticesZ[var11] = var16 * verticesZ[var11] - var15 * verticesX[var11] >> 16;
+								verticesX[var11] = var17;
+							}
+
+							verticesX[var11] += animOffsetX;
+							verticesY[var11] += animOffsetY;
+							verticesZ[var11] += animOffsetZ;
+						}
+					}
+				}
+
+			}
+			else if (type == 3)
+			{
+				for (var7 = 0; var7 < var6; ++var7)
+				{
+					var8 = frameMap[var7];
+					if (var8 < this.vertexGroups.length)
+					{
+						var18 = this.vertexGroups[var8];
+
+						for (var19 = 0; var19 < var18.length; ++var19)
+						{
+							var11 = var18[var19];
+							verticesX[var11] -= animOffsetX;
+							verticesY[var11] -= animOffsetY;
+							verticesZ[var11] -= animOffsetZ;
+							verticesX[var11] = dx * verticesX[var11] / 128;
+							verticesY[var11] = dy * verticesY[var11] / 128;
+							verticesZ[var11] = dz * verticesZ[var11] / 128;
+							verticesX[var11] += animOffsetX;
+							verticesY[var11] += animOffsetY;
+							verticesZ[var11] += animOffsetZ;
+						}
+					}
+				}
+
+			}
+			else if (type == 5)
+			{
+				// alpha animation
+			}
+		}
 	}
 
 	public void method1493()
@@ -372,6 +601,33 @@ public class ModelDefinition
 				}
 			}
 
+		}
+	}
+
+	public void move(int xOffset, int yOffset, int zOffset)
+	{
+		for (int i = 0; i < this.vertexCount; i++)
+		{
+			this.vertexPositionsX[i] += xOffset;
+			this.vertexPositionsY[i] += yOffset;
+			this.vertexPositionsZ[i] += zOffset;
+		}
+		this.reset();
+	}
+
+	public void computeMaxPriority()
+	{
+		if (faceRenderPriorities == null)
+		{
+			return;
+		}
+
+		for (int i = 0; i < faceCount; ++i)
+		{
+			if (faceRenderPriorities[i] > maxPriority)
+			{
+				maxPriority = faceRenderPriorities[i];
+			}
 		}
 	}
 }

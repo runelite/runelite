@@ -26,14 +26,22 @@ package net.runelite.mixins;
 
 import java.awt.event.MouseEvent;
 import net.runelite.api.mixins.Copy;
+import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
-import net.runelite.client.callback.Hooks;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSMouseInput;
 
 @Mixin(RSMouseInput.class)
 public abstract class RSMouseInputMixin implements RSMouseInput
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
+	@Inject
+	private int isInEvent;
+
 	@Copy("mousePressed")
 	abstract void rs$mousePressed(MouseEvent mouseEvent);
 
@@ -59,10 +67,21 @@ public abstract class RSMouseInputMixin implements RSMouseInput
 	@Replace("mousePressed")
 	public synchronized void mousePressed(MouseEvent mouseEvent)
 	{
-		mouseEvent = Hooks.mousePressed(mouseEvent);
+		if (isInEvent == 0)
+		{
+			mouseEvent = client.getCallbacks().mousePressed(mouseEvent);
+		}
 		if (!mouseEvent.isConsumed())
 		{
-			rs$mousePressed(mouseEvent);
+			isInEvent++;
+			try
+			{
+				rs$mousePressed(mouseEvent);
+			}
+			finally
+			{
+				isInEvent--;
+			}
 		}
 	}
 
@@ -70,10 +89,21 @@ public abstract class RSMouseInputMixin implements RSMouseInput
 	@Replace("mouseReleased")
 	public synchronized void mouseReleased(MouseEvent mouseEvent)
 	{
-		mouseEvent = Hooks.mouseReleased(mouseEvent);
+		if (isInEvent == 0)
+		{
+			mouseEvent = client.getCallbacks().mouseReleased(mouseEvent);
+		}
 		if (!mouseEvent.isConsumed())
 		{
-			rs$mouseReleased(mouseEvent);
+			isInEvent++;
+			try
+			{
+				rs$mouseReleased(mouseEvent);
+			}
+			finally
+			{
+				isInEvent--;
+			}
 		}
 	}
 
@@ -81,7 +111,7 @@ public abstract class RSMouseInputMixin implements RSMouseInput
 	@Replace("mouseClicked")
 	public void mouseClicked(MouseEvent event)
 	{
-		event = Hooks.mouseClicked(event);
+		event = client.getCallbacks().mouseClicked(event);
 		if (!event.isConsumed())
 		{
 			rs$mouseClicked(event);
@@ -92,10 +122,21 @@ public abstract class RSMouseInputMixin implements RSMouseInput
 	@Replace("mouseEntered")
 	public synchronized void mouseEntered(MouseEvent mouseEvent)
 	{
-		mouseEvent = Hooks.mouseEntered(mouseEvent);
+		if (isInEvent == 0)
+		{
+			mouseEvent = client.getCallbacks().mouseEntered(mouseEvent);
+		}
 		if (!mouseEvent.isConsumed())
 		{
-			rs$mouseEntered(mouseEvent);
+			isInEvent++;
+			try
+			{
+				rs$mouseEntered(mouseEvent);
+			}
+			finally
+			{
+				isInEvent--;
+			}
 		}
 	}
 
@@ -104,10 +145,21 @@ public abstract class RSMouseInputMixin implements RSMouseInput
 	@Replace("mouseExited")
 	public synchronized void mouseExited(MouseEvent mouseEvent)
 	{
-		mouseEvent = Hooks.mouseExited(mouseEvent);
+		if (isInEvent == 0)
+		{
+			mouseEvent = client.getCallbacks().mouseExited(mouseEvent);
+		}
 		if (!mouseEvent.isConsumed())
 		{
-			rs$mouseExited(mouseEvent);
+			isInEvent++;
+			try
+			{
+				rs$mouseExited(mouseEvent);
+			}
+			finally
+			{
+				isInEvent--;
+			}
 		}
 	}
 
@@ -115,10 +167,21 @@ public abstract class RSMouseInputMixin implements RSMouseInput
 	@Replace("mouseDragged")
 	public synchronized void mouseDragged(MouseEvent mouseEvent)
 	{
-		mouseEvent = Hooks.mouseDragged(mouseEvent);
+		if (isInEvent == 0)
+		{
+			mouseEvent = client.getCallbacks().mouseDragged(mouseEvent);
+		}
 		if (!mouseEvent.isConsumed())
 		{
-			rs$mouseDragged(mouseEvent);
+			isInEvent++;
+			try
+			{
+				rs$mouseDragged(mouseEvent);
+			}
+			finally
+			{
+				isInEvent--;
+			}
 		}
 	}
 
@@ -126,10 +189,21 @@ public abstract class RSMouseInputMixin implements RSMouseInput
 	@Replace("mouseMoved")
 	public synchronized void mouseMoved(MouseEvent mouseEvent)
 	{
-		mouseEvent = Hooks.mouseMoved(mouseEvent);
+		if (isInEvent == 0)
+		{
+			mouseEvent = client.getCallbacks().mouseMoved(mouseEvent);
+		}
 		if (!mouseEvent.isConsumed())
 		{
-			rs$mouseMoved(mouseEvent);
+			isInEvent++;
+			try
+			{
+				rs$mouseMoved(mouseEvent);
+			}
+			finally
+			{
+				isInEvent--;
+			}
 		}
 	}
 }

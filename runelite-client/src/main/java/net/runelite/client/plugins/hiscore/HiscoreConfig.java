@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "hiscore",
-	name = "HiScore",
-	description = "Configuration for the hiscore plugin"
-)
+@ConfigGroup("hiscore")
 public interface HiscoreConfig extends Config
 {
 	@ConfigItem(
@@ -77,5 +73,16 @@ public interface HiscoreConfig extends Config
 	default boolean autocomplete()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "bountylookup",
+		name = "Bounty lookup",
+		description = "Automatically lookup the stats of your bounty hunter target"
+	)
+	default boolean bountylookup()
+	{
+		return false;
 	}
 }

@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.cerberus;
 
 import com.google.inject.Guice;
+import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.Arrays;
 import java.util.List;
@@ -32,10 +33,12 @@ import javax.inject.Inject;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.GameTick;
+import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -43,6 +46,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class CerberusPluginTest
 {
+	@Mock
+	@Bind
+	OverlayManager overlayManager;
+
 	@Inject
 	CerberusPlugin cerberusPlugin;
 

@@ -24,7 +24,6 @@
  */
 package net.runelite.http.service.xp;
 
-import java.io.IOException;
 import java.time.Instant;
 import net.runelite.http.api.xp.XpData;
 import net.runelite.http.service.xp.beans.XpEntity;
@@ -41,13 +40,13 @@ public class XpTrackerController
 	private XpTrackerService xpTrackerService;
 
 	@RequestMapping("/update")
-	public void update(@RequestParam String username) throws IOException
+	public void update(@RequestParam String username)
 	{
-		xpTrackerService.update(username);
+		xpTrackerService.tryUpdate(username);
 	}
 
 	@RequestMapping("/get")
-	public XpData get(@RequestParam String username, @RequestParam(required = false) Instant time) throws IOException
+	public XpData get(@RequestParam String username, @RequestParam(required = false) Instant time)
 	{
 		if (time == null)
 		{

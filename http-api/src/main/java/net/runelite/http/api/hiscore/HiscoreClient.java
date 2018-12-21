@@ -24,45 +24,34 @@
  */
 package net.runelite.http.api.hiscore;
 
-import com.google.gson.JsonParseException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
+@Slf4j
 public class HiscoreClient
 {
-	private static final Logger logger = LoggerFactory.getLogger(HiscoreClient.class);
-
 	public HiscoreResult lookup(String username, HiscoreEndpoint endpoint) throws IOException
 	{
-		HttpUrl.Builder builder = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("hiscore")
-			.addPathSegment(endpoint.name().toLowerCase())
-			.addQueryParameter("username", username);
+		return lookup(username, endpoint.getHiscoreURL());
+	}
 
-		HttpUrl url = builder.build();
+	public HiscoreResult lookup(String username, HttpUrl endpoint) throws IOException
+	{
+		HiscoreResultBuilder resultBuilder = lookupUsername(username, endpoint);
 
-		logger.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		if (resultBuilder == null)
 		{
-			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), HiscoreResult.class);
+			return null;
 		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
+
+		return resultBuilder.build();
 	}
 
 	public HiscoreResult lookup(String username) throws IOException
@@ -72,33 +61,88 @@ public class HiscoreClient
 
 	public SingleHiscoreSkillResult lookup(String username, HiscoreSkill skill, HiscoreEndpoint endpoint) throws IOException
 	{
-		HttpUrl.Builder builder = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("hiscore")
-			.addPathSegment(endpoint.name())
-			.addPathSegment(skill.toString().toLowerCase())
-			.addQueryParameter("username", username);
+		HiscoreResultBuilder resultBuilder = lookupUsername(username, endpoint.getHiscoreURL());
 
-		HttpUrl url = builder.build();
-
-		logger.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		if (resultBuilder == null)
 		{
-			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), SingleHiscoreSkillResult.class);
+			return null;
 		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
+
+		HiscoreResult result = resultBuilder.build();
+
+		Skill requested = result.getSkill(skill);
+		SingleHiscoreSkillResult skillResult = new SingleHiscoreSkillResult();
+		skillResult.setPlayer(username);
+		skillResult.setSkillName(skill.getName());
+		skillResult.setSkill(requested);
+		return skillResult;
 	}
 
 	public SingleHiscoreSkillResult lookup(String username, HiscoreSkill skill) throws IOException
 	{
 		return lookup(username, skill, HiscoreEndpoint.NORMAL);
+	}
+
+	private HiscoreResultBuilder lookupUsername(String username, HttpUrl hiscoreUrl) throws IOException
+	{
+		HttpUrl url = hiscoreUrl.newBuilder()
+			.addQueryParameter("player", username)
+			.build();
+
+		log.debug("Built URL {}", url);
+
+		Request okrequest = new Request.Builder()
+			.url(url)
+			.build();
+
+		String responseStr;
+
+		try (Response okresponse = RuneLiteAPI.CLIENT.newCall(okrequest).execute())
+		{
+			if (!okresponse.isSuccessful())
+			{
+				switch (okresponse.code())
+				{
+					case 404:
+						return null;
+					default:
+						throw new IOException("Error retrieving data from Jagex Hiscores: " + okresponse.message());
+				}
+			}
+
+			responseStr = okresponse.body().string();
+		}
+
+		CSVParser parser = CSVParser.parse(responseStr, CSVFormat.DEFAULT);
+
+		HiscoreResultBuilder hiscoreBuilder = new HiscoreResultBuilder();
+		hiscoreBuilder.setPlayer(username);
+
+		int count = 0;
+
+		for (CSVRecord record : parser.getRecords())
+		{
+			if (count++ >= HiscoreSkill.values().length)
+			{
+				log.warn("Jagex Hiscore API returned unexpected data");
+				break; // rest is other things?
+			}
+
+			// rank, level, experience
+			int rank = Integer.parseInt(record.get(0));
+			int level = Integer.parseInt(record.get(1));
+
+			// items that are not skills do not have an experience parameter
+			long experience = -1;
+			if (record.size() == 3)
+			{
+				experience = Long.parseLong(record.get(2));
+			}
+
+			Skill skill = new Skill(rank, level, experience);
+			hiscoreBuilder.setNextSkill(skill);
+		}
+
+		return hiscoreBuilder;
 	}
 }

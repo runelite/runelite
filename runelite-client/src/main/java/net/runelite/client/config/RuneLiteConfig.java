@@ -27,11 +27,7 @@ package net.runelite.client.config;
 import java.awt.Dimension;
 import net.runelite.api.Constants;
 
-@ConfigGroup(
-	keyName = "runelite",
-	name = "RuneLite",
-	description = "Configuration for RuneLite client options"
-)
+@ConfigGroup("runelite")
 public interface RuneLiteConfig extends Config
 {
 	@ConfigItem(
@@ -113,6 +109,28 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "warningOnExit",
+		name = "Display warning on exit",
+		description = "Toggles a warning popup when trying to exit the client",
+		position = 17
+	)
+	default WarningOnExit warningOnExit()
+	{
+		return WarningOnExit.LOGGED_IN;
+	}
+
+	@ConfigItem(
+		keyName = "usernameInTitle",
+		name = "Show display name in title",
+		description = "Toggles displaying of local player's display name in client title",
+		position = 18
+	)
+	default boolean usernameInTitle()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "notificationTray",
 		name = "Enable tray notifications",
 		description = "Enables tray notifications",
@@ -170,7 +188,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationFocused",
 		name = "Send notifications when focused",
-		description = "Toggles idle notifications for when the client is focused",
+		description = "Toggles all notifications for when the client is focused",
 		position = 25
 	)
 	default boolean sendNotificationsWhenFocused()
@@ -201,10 +219,21 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "interfaceFontType",
+		name = "Interface Overlay Font",
+		description = "Configures what font type is used for in-game interface overlays such as panels, opponent info, clue scrolls etc.",
+		position = 32
+	)
+	default FontType interfaceFontType()
+	{
+		return FontType.REGULAR;
+	}
+
+	@ConfigItem(
 		keyName = "infoBoxVertical",
 		name = "Display infoboxes vertically",
 		description = "Toggles the infoboxes to display vertically",
-		position = 32
+		position = 33
 	)
 	default boolean infoBoxVertical()
 	{
@@ -215,10 +244,21 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxWrap",
 		name = "Infobox wrap count",
 		description = "Configures the amount of infoboxes shown before wrapping",
-		position = 33
+		position = 34
 	)
 	default int infoBoxWrap()
 	{
 		return 4;
+	}
+
+	@ConfigItem(
+		keyName = "infoBoxSize",
+		name = "Infobox size (px)",
+		description = "Configures the size of each infobox in pixels",
+		position = 35
+	)
+	default int infoBoxSize()
+	{
+		return 35;
 	}
 }

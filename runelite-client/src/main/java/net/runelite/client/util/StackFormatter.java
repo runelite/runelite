@@ -24,8 +24,11 @@
  */
 package net.runelite.client.util;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,7 +51,15 @@ public class StackFormatter
 	/**
 	 * A number formatter
 	 */
-	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance();
+	private static final NumberFormat NUMBER_FORMATTER = NumberFormat.getInstance(Locale.ENGLISH);
+
+	/**
+	 * A decimal number formatter
+	 */
+	private static final NumberFormat DECIMAL_FORMATTER = new DecimalFormat(
+		"#,###.#",
+		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
+	);
 
 	/**
 	 * Convert a quantity to a nicely formatted stack size.
@@ -133,10 +144,8 @@ public class StackFormatter
 	 * appear in RuneScape. (with decimals)
 	 * <p>
 	 * This differs from quantityToRSStack in that it displays
-	 * decimals. Ex: 27100 is 27,1k (not 27k)
+	 * decimals. Ex: 27100 is 27.1k (not 27k)
 	 * <p>
-	 * This uses the NumberFormat singleton instead of the
-	 * NUMBER_FORMATTER variable to ensure the UK locale.
 	 *
 	 * @param quantity The quantity to convert.
 	 * @return The stack size as it would appear in RS, with decimals,
@@ -144,43 +153,14 @@ public class StackFormatter
 	 */
 	public static String quantityToRSDecimalStack(int quantity)
 	{
+		String quantityStr = String.valueOf(quantity);
+		if (quantityStr.length() <= 4)
+		{
+			return quantityStr;
+		}
 
-		if (quantity < 10_000)
-		{
-			return Integer.toString(quantity);
-		}
-		else if (quantity < 1_000_000)
-		{
-			if (quantity % 1000 == 0)
-			{
-				return quantity / 1000 + "K";
-			}
-			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 1) + "K";
-		}
-		else if (quantity < 10_000_000)
-		{
-			if (quantity % 1_000_000 == 0)
-			{
-				return quantity / 1_000_000 + "M";
-			}
-			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 4) + "M";
-		}
-		else if (quantity < 1_000_000_000)
-		{
-			if (quantity % 1_000_000 == 0)
-			{
-				return quantity / 1_000_000 + "M";
-			}
-			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 4) + "M";
-		}
-		else
-		{
-			if (quantity % 1_000_000_000 == 0)
-			{
-				return quantity / 1_000_000_000 + "B";
-			}
-			return NUMBER_FORMATTER.format(quantity).substring(0, Integer.toString(quantity).length() - 7) + "B";
-		}
+		int power = (int) Math.log10(quantity);
+		return DECIMAL_FORMATTER.format(quantity / (Math.pow(10, (power / 3) * 3))) + SUFFIXES[power / 3];
 	}
 
 	/**

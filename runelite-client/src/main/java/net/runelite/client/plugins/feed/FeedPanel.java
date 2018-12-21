@@ -53,6 +53,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.feed.FeedItem;
@@ -78,11 +79,6 @@ class FeedPanel extends PluginPanel
 	private static final int CONTENT_WIDTH = 148;
 	private static final int TIME_WIDTH = 20;
 
-	/**
-	 * Holds all feed items.
-	 */
-	private final JPanel feedContainer = new JPanel();
-
 	private static final Comparator<FeedItem> FEED_ITEM_COMPARATOR = (o1, o2) ->
 	{
 		if (o1.getType() != o2.getType())
@@ -102,18 +98,8 @@ class FeedPanel extends PluginPanel
 
 	static
 	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				RUNELITE_ICON = new ImageIcon(ImageIO.read(FeedPanel.class.getResourceAsStream("runelite.png")));
-				OSRS_ICON = new ImageIcon(ImageIO.read(FeedPanel.class.getResourceAsStream("osrs.png")));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		RUNELITE_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(FeedPanel.class, "runelite.png"));
+		OSRS_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(FeedPanel.class, "osrs.png"));
 	}
 
 	private final FeedConfig config;
@@ -121,22 +107,13 @@ class FeedPanel extends PluginPanel
 
 	FeedPanel(FeedConfig config, Supplier<FeedResult> feedSupplier)
 	{
+		super(true);
 		this.config = config;
 		this.feedSupplier = feedSupplier;
 
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
-		setLayout(new BorderLayout());
-
-		feedContainer.setLayout(new GridLayout(0, 1, 0, 4));
-		feedContainer.setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-		JLabel title = new JLabel("News feed");
-		title.setBorder(new EmptyBorder(0, 0, 9, 0));
-		title.setForeground(Color.WHITE);
-
-		add(title, BorderLayout.NORTH);
-		add(feedContainer, BorderLayout.CENTER);
+		setLayout(new GridLayout(0, 1, 0, 4));
 	}
 
 	void rebuildFeed()
@@ -150,7 +127,7 @@ class FeedPanel extends PluginPanel
 
 		SwingUtilities.invokeLater(() ->
 		{
-			feedContainer.removeAll();
+			removeAll();
 
 			feed.getItems()
 				.stream()
@@ -310,7 +287,7 @@ class FeedPanel extends PluginPanel
 			}
 		});
 
-		feedContainer.add(avatarAndRight);
+		add(avatarAndRight);
 	}
 
 	private String durationToString(Duration duration)

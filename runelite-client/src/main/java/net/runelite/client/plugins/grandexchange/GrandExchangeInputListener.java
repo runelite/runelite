@@ -29,32 +29,22 @@ import java.awt.event.MouseEvent;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.Point;
-import net.runelite.api.queries.BankItemQuery;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.game.ItemManager;
+import net.runelite.api.MenuEntry;
 import net.runelite.client.input.KeyListener;
-import net.runelite.client.input.MouseListener;
-import net.runelite.client.util.QueryRunner;
+import net.runelite.client.input.MouseAdapter;
+import static net.runelite.client.plugins.grandexchange.GrandExchangePlugin.SEARCH_GRAND_EXCHANGE;
+import net.runelite.client.util.Text;
 
-public class GrandExchangeInputListener extends MouseListener implements KeyListener
+public class GrandExchangeInputListener extends MouseAdapter implements KeyListener
 {
 	private final Client client;
 	private final GrandExchangePlugin plugin;
-	private final ItemManager itemManager;
-	private final QueryRunner queryRunner;
 
 	@Inject
-	GrandExchangeInputListener(Client client, GrandExchangePlugin plugin, ItemManager itemManager,
-		QueryRunner queryRunner)
+	private GrandExchangeInputListener(Client client, GrandExchangePlugin plugin)
 	{
 		this.client = client;
 		this.plugin = plugin;
-		this.itemManager = itemManager;
-		this.queryRunner = queryRunner;
 	}
 
 	@Override
@@ -63,36 +53,14 @@ public class GrandExchangeInputListener extends MouseListener implements KeyList
 		// Check if left click + alt
 		if (e.getButton() == MouseEvent.BUTTON1 && e.isAltDown())
 		{
-			Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-			if (inventoryWidget != null && !inventoryWidget.isHidden())
+			final MenuEntry[] menuEntries = client.getMenuEntries();
+			for (final MenuEntry menuEntry : menuEntries)
 			{
-				if (findAndSearch(inventoryWidget.getWidgetItems().toArray(new WidgetItem[0])))
+				if (menuEntry.getOption().equals(SEARCH_GRAND_EXCHANGE))
 				{
+					search(Text.removeTags(menuEntry.getTarget()));
 					e.consume();
-					return super.mouseClicked(e);
-				}
-			}
-
-			// Check the inventory when the bank is open aswell
-			Widget bankInventoryWidget = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
-			if (bankInventoryWidget != null && !bankInventoryWidget.isHidden())
-			{
-				if (findAndSearch(bankInventoryWidget.getDynamicChildren()))
-				{
-					e.consume();
-					return super.mouseClicked(e);
-				}
-			}
-
-			Widget bankWidget = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-			if (bankWidget != null && !bankWidget.isHidden())
-			{
-				// Use bank item query for only checking the active tab
-				WidgetItem[] items = queryRunner.runQuery(new BankItemQuery());
-				if (findAndSearch(items))
-				{
-					e.consume();
-					return super.mouseClicked(e);
+					break;
 				}
 			}
 		}
@@ -100,42 +68,7 @@ public class GrandExchangeInputListener extends MouseListener implements KeyList
 		return super.mouseClicked(e);
 	}
 
-	private boolean findAndSearch(Widget[] widgets)
-	{
-		Point mousePosition = client.getMouseCanvasPosition();
-		for (Widget widget : widgets)
-		{
-			if (widget.getBounds().contains(mousePosition.getX(), mousePosition.getY()))
-			{
-				ItemComposition itemComposition = itemManager.getItemComposition(widget.getItemId());
-				search(itemComposition);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Finds the item clicked based on the mouse location
-	 * @param items
-	 * @return true if an item is found, false otherwise
-	 */
-	private boolean findAndSearch(WidgetItem[] items)
-	{
-		Point mousePosition = client.getMouseCanvasPosition();
-		for (WidgetItem item : items)
-		{
-			if (item.getCanvasBounds().contains(mousePosition.getX(), mousePosition.getY()))
-			{
-				ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
-				search(itemComposition);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private void search(ItemComposition itemComposition)
+	private void search(final String itemName)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
@@ -146,7 +79,7 @@ public class GrandExchangeInputListener extends MouseListener implements KeyList
 				plugin.getButton().getOnSelect().run();
 			}
 
-			plugin.getPanel().getSearchPanel().priceLookup(itemComposition.getName());
+			plugin.getPanel().getSearchPanel().priceLookup(itemName);
 		});
 	}
 

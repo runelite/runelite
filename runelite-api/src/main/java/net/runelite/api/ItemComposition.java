@@ -105,6 +105,11 @@ public interface ItemComposition
 	boolean isStackable();
 
 	/**
+	 * Returns whether or not the item can be sold on the grand exchange.
+	 */
+	boolean isTradeable();
+
+	/**
 	 * Gets an array of possible right-click menu actions the item
 	 * has in a player inventory.
 	 *

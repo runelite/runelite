@@ -8,63 +8,9 @@
     },
     {
       "level": 1,
-      "icon": 5541,
-      "name": "Nature Tiara",
-      "xp": 45
-    },
-    {
-      "level": 1,
       "icon": 5529,
       "name": "Mind Tiara",
       "xp": 27.5
-    },
-    {
-      "level": 1,
-      "icon": 556,
-      "name": "Air Rune",
-      "xp": 5
-    },
-    {
-      "level": 1,
-      "icon": 5547,
-      "name": "Death Tiara",
-      "xp": 50
-    },
-    {
-      "level": 1,
-      "icon": 5545,
-      "name": "Law Tiara",
-      "xp": 47.5
-    },
-    {
-      "level": 1,
-      "icon": 22121,
-      "name": "Wrath Tiara",
-      "xp": 52.5
-    },
-    {
-      "level": 1,
-      "icon": 5543,
-      "name": "Chaos Tiara",
-      "xp": 42.5
-    },
-    {
-      "level": 1,
-      "icon": 5533,
-      "name": "Body Tiara",
-      "xp": 37.5
-    },
-    {
-      "level": 1,
-      "icon": 5537,
-      "name": "Fire Tiara",
-      "xp": 35
-    },
-    {
-      "level": 1,
-      "icon": 5535,
-      "name": "Earth Tiara",
-      "xp": 32.5
     },
     {
       "level": 1,
@@ -74,9 +20,63 @@
     },
     {
       "level": 1,
+      "icon": 5535,
+      "name": "Earth Tiara",
+      "xp": 32.5
+    },
+    {
+      "level": 1,
+      "icon": 5537,
+      "name": "Fire Tiara",
+      "xp": 35
+    },
+    {
+      "level": 1,
+      "icon": 5533,
+      "name": "Body Tiara",
+      "xp": 37.5
+    },
+    {
+      "level": 1,
       "icon": 5539,
       "name": "Cosmic Tiara",
       "xp": 40
+    },
+    {
+      "level": 1,
+      "icon": 5543,
+      "name": "Chaos Tiara",
+      "xp": 42.5
+    },
+    {
+      "level": 1,
+      "icon": 5541,
+      "name": "Nature Tiara",
+      "xp": 45
+    },
+    {
+      "level": 1,
+      "icon": 5545,
+      "name": "Law Tiara",
+      "xp": 47.5
+    },
+    {
+      "level": 1,
+      "icon": 5547,
+      "name": "Death Tiara",
+      "xp": 50
+    },
+    {
+      "level": 1,
+      "icon": 22121,
+      "name": "Wrath Tiara",
+      "xp": 52.5
+    },
+    {
+      "level": 1,
+      "icon": 556,
+      "name": "Air Rune",
+      "xp": 5
     },
     {
       "level": 2,
@@ -89,12 +89,6 @@
       "icon": 555,
       "name": "Water Rune",
       "xp": 6
-    },
-    {
-      "level": 5,
-      "icon": 4697,
-      "name": "Smoke Rune",
-      "xp": 9.5
     },
     {
       "level": 6,
@@ -125,6 +119,12 @@
       "icon": 554,
       "name": "Fire Rune",
       "xp": 7
+    },
+    {
+      "level": 15,
+      "icon": 4697,
+      "name": "Smoke Rune",
+      "xp": 9.5
     },
     {
       "level": 19,

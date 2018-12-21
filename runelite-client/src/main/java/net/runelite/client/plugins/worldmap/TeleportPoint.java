@@ -25,30 +25,15 @@
  */
 package net.runelite.client.plugins.worldmap;
 
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import lombok.Getter;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
+import net.runelite.client.util.ImageUtil;
 
 class TeleportPoint extends WorldMapPoint
 {
-	@Getter
-	private final TeleportLocationData data;
-
 	TeleportPoint(TeleportLocationData data)
 	{
 		super(data.getLocation(), WorldMapPlugin.BLANK_ICON);
-
-		this.data = data;
 		setTooltip(data.getTooltip());
-
-		try
-		{
-			setImage(ImageIO.read(WorldMapPlugin.class.getResourceAsStream(data.getIconPath())));
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		setImage(ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, data.getIconPath()));
 	}
 }

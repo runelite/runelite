@@ -25,6 +25,7 @@
 package net.runelite.api;
 
 import java.awt.Polygon;
+import javax.annotation.Nullable;
 
 /**
  * Represents a player entity in the game.
@@ -76,4 +77,13 @@ public interface Player extends Actor
 	 * @return the overhead icon
 	 */
 	HeadIcon getOverheadIcon();
+
+	/**
+	 * Gets the displayed skull icon of the player.
+	 * Only works on the local player.
+	 *
+	 * @return the skull icon
+	 */
+	@Nullable
+	SkullIcon getSkullIcon();
 }
