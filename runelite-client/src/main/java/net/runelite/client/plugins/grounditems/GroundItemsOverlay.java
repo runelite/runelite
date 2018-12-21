@@ -41,6 +41,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
@@ -258,6 +259,13 @@ public class GroundItemsOverlay extends Overlay
 
 			final String itemString = itemStringBuilder.toString();
 			itemStringBuilder.setLength(0);
+
+			if (item.getHeight() == -1)
+			{
+				final Tile[][][] sceneTiles = client.getScene().getTiles();
+				final Tile itemTile = sceneTiles[client.getPlane()][groundPoint.getSceneX()][groundPoint.getSceneY()];
+				item.setHeight(itemTile.getItemLayer().getHeight());
+			}
 
 			final Point textPoint = Perspective.getCanvasTextLocation(client,
 				graphics,
