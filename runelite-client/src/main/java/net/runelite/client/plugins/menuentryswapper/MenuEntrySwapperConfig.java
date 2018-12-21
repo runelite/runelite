@@ -261,4 +261,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+    @ConfigItem(
+            keyName = "swapSmithing",
+            name = "Smithing",
+            description = "Swap 'Smith All' to be the default left-click option when smithing."
+    )
+    default boolean swapSmithing()
+    {
+        return false;
+    }
 }
