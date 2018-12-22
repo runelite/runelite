@@ -44,6 +44,9 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
+	private BarrowsConfig config;
+
+	@Inject
 	private BarrowsBrotherSlainOverlay(Client client)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
@@ -60,7 +63,6 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 		{
 			return null;
 		}
-
 		// Hide original overlay
 		final Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
 		if (barrowsBrothers != null)
@@ -89,6 +91,10 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 				.rightColor(rewardPercent >= 73.0f && rewardPercent <= 88.0f ? Color.GREEN : rewardPercent < 65.6f ? Color.WHITE : Color.YELLOW)
 				.build());
 
-		return panelComponent.render(graphics);
+		// Toggle for barrows overlay
+		if (config.showBarrowsOverlay())
+			return panelComponent.render(graphics);
+		else
+			return null;
 	}
 }

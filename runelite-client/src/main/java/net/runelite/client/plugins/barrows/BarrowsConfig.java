@@ -66,10 +66,21 @@ public interface BarrowsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "toggleSlainOverlay",
+		name = "Toggle Barrows Overlay",
+		description = "Toggle between default and RuneLite Barrows overlay",
+		position = 3
+	)
+	default boolean showBarrowsOverlay()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "brotherLocColor",
 		name = "Brother location color",
 		description = "Change the color of the name displayed on the minimap",
-		position = 3
+		position = 4
 	)
 	default Color brotherLocColor()
 	{
@@ -80,7 +91,7 @@ public interface BarrowsConfig extends Config
 		keyName = "deadBrotherLocColor",
 		name = "Dead Brother loc. color",
 		description = "Change the color of the name displayed on the minimap for a dead brother",
-		position = 4
+		position = 5
 	)
 	default Color deadBrotherLocColor()
 	{
