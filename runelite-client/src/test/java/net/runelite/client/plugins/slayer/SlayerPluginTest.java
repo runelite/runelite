@@ -468,7 +468,7 @@ public class SlayerPluginTest
 		slayerPlugin.killedOne();
 		assertEquals(30, slayerPlugin.getAmount());
 	}
-
+	
 	private static NPC newNPC(String name, int combatLevel)
 	{
 		return new NPC() {
@@ -733,8 +733,7 @@ public class SlayerPluginTest
 	}
 
 	@Test
-	public void testSackAlwaysOne() throws Exception
-	{
+	public void testSackAlwaysOne() throws Exception {
 		slayerPlugin.startUp();
 
 		List<NPC> died = new ArrayList<>();
@@ -746,6 +745,41 @@ public class SlayerPluginTest
 		// but we gained xp and 1 enemy died so failsafes give at least 1
 		int estimatedCount = slayerPlugin.estimateKillCount(died, 43);
 		Assert.assertEquals(1, estimatedCount);
+
+	}
+
+	@Test
+	public void testSubsequenceMatches()
+	{
+		String name0 = "Brutal Black Dragon".toLowerCase();
+		String target0 = "Black Dragon".toLowerCase();
+
+		String[] name0A = name0.split(" ");
+		assertEquals(true, slayerPlugin.contiguousSubsequenceMatches(name0A, target0));
+
+		String name1 = "Green Dragon".toLowerCase();
+		String target1 = "Black Dragon".toLowerCase();
+
+		String[] name1A = name1.split(" ");
+		assertEquals(false, slayerPlugin.contiguousSubsequenceMatches(name1A, target1));
+
+		String name2 = "Pirate".toLowerCase();
+		String target2 = "Rat".toLowerCase();
+
+		String[] name2A = name2.split(" ");
+		assertEquals(false, slayerPlugin.contiguousSubsequenceMatches(name2A, target2));
+
+		String name3 = "Giant Bat".toLowerCase();
+		String target3 = "Bat".toLowerCase();
+
+		String[] name3A = name3.split(" ");
+		assertEquals(true, slayerPlugin.contiguousSubsequenceMatches(name3A, target3));
+
+		String name4 = "Nechryael";
+		String target4 = "Nechryael";
+
+		String[] name4A = name4.split(" ");
+		assertEquals(true, slayerPlugin.contiguousSubsequenceMatches(name4A, target4));
 	}
 
 }
