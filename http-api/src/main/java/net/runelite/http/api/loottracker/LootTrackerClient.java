@@ -68,9 +68,10 @@ public class LootTrackerClient
 			}
 
 			@Override
-			public void onResponse(Call call, Response response) throws IOException
+			public void onResponse(Call call, Response response)
 			{
 				log.debug("Submitted loot");
+				response.close();
 			}
 		});
 	}
