@@ -451,4 +451,39 @@ public class SlayerPluginTest
 		slayerPlugin.killedOne();
 		assertEquals(30, slayerPlugin.getAmount());
 	}
+
+	@Test
+	public void testSubsequenceMatches()
+	{
+		String name0 = "Brutal Black Dragon".toLowerCase();
+		String target0 = "Black Dragon".toLowerCase();
+
+		String[] name0A = name0.split(" ");
+		assertEquals(true, slayerPlugin.contiguousSubsequenceMatches(name0A, target0));
+
+		String name1 = "Green Dragon".toLowerCase();
+		String target1 = "Black Dragon".toLowerCase();
+
+		String[] name1A = name1.split(" ");
+		assertEquals(false, slayerPlugin.contiguousSubsequenceMatches(name1A, target1));
+
+		String name2 = "Pirate".toLowerCase();
+		String target2 = "Rat".toLowerCase();
+
+		String[] name2A = name2.split(" ");
+		assertEquals(false, slayerPlugin.contiguousSubsequenceMatches(name2A, target2));
+
+		String name3 = "Giant Bat".toLowerCase();
+		String target3 = "Bat".toLowerCase();
+
+		String[] name3A = name3.split(" ");
+		assertEquals(true, slayerPlugin.contiguousSubsequenceMatches(name3A, target3));
+
+		String name4 = "Nechryael";
+		String target4 = "Nechryael";
+
+		String[] name4A = name4.split(" ");
+		assertEquals(true, slayerPlugin.contiguousSubsequenceMatches(name4A, target4));
+	}
+
 }

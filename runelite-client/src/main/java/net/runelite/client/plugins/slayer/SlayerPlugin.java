@@ -175,6 +175,8 @@ public class SlayerPlugin extends Plugin
 	private Instant infoTimer;
 	private boolean loginFlag;
 	private List<String> targetNames = new ArrayList<>();
+	private List<Integer> targetIds = new ArrayList<>();
+	private boolean checkAsTokens = true;
 
 	@Override
 	protected void startUp() throws Exception
@@ -537,9 +539,30 @@ public class SlayerPlugin extends Plugin
 				SlayerUnlock.GROTESQUE_GARDIAN_DOUBLE_COUNT.isEnabled(client);
 	}
 
+	boolean contiguousSubsequenceMatches(String[] seq0, String toMatch)
+	{
+		for (int i = 0; i < seq0.length; i++)
+		{
+			for (int j = i; j < seq0.length; j++)
+			{
+				String sub0 = "";
+				for (int k = i; k <= j; k++)
+				{
+					sub0 += seq0[k] + " ";
+				}
+				sub0 = sub0.substring(0, sub0.length() - 1); // remove extra space
+				if (sub0.equals(toMatch))
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	private boolean isTarget(NPC npc)
 	{
-		if (targetNames.isEmpty())
+		if (targetNames.isEmpty() && targetIds.isEmpty())
 		{
 			return false;
 		}
@@ -552,9 +575,52 @@ public class SlayerPlugin extends Plugin
 
 		name = name.toLowerCase();
 
+		// in order to avoid issues like pirates being highlighted on a rats task
+		// rather than checking if the name contains any of the targets we do a complete
+		// token check which is where we tokenize the name and the targets on the space charachter
+		// then we check if any contiguous subsequence (of at least length 1) from the name matches
+		// any contiguous subsequence (of at least length 1) from the target.
+
+		// we have a boolean flag that also allows the behavior of just doing a contains check to happen
+		// this is done specifically for the tzhaar task because it's much easier to just check if the enemy
+		// contains "Tz-" then listing the many many many types of tzhaar.
+
 		for (String target : targetNames)
 		{
-			if (name.contains(target))
+			if (!checkAsTokens)
+			{
+				if (name.contains(target))
+				{
+					NPCComposition composition = npc.getTransformedComposition();
+					if (composition != null && Arrays.asList(composition.getActions()).contains("Attack"))
+					{
+						return true;
+					}
+				}
+			}
+			else
+			{
+				String[] nameTokens = name.split(" ");
+				if (contiguousSubsequenceMatches(nameTokens, target))
+				{
+					NPCComposition composition = npc.getTransformedComposition();
+					if (composition != null && Arrays.asList(composition.getActions()).contains("Attack"))
+					{
+						return true;
+					}
+				}
+			}
+		}
+
+		int id = npc.getId();
+		if (id <= 0)
+		{
+			return false;
+		}
+
+		for (int target : targetIds)
+		{
+			if (id == target)
 			{
 				NPCComposition composition = npc.getTransformedComposition();
 				if (composition != null && Arrays.asList(composition.getActions()).contains("Attack"))
@@ -563,6 +629,7 @@ public class SlayerPlugin extends Plugin
 				}
 			}
 		}
+
 		return false;
 	}
 
@@ -572,11 +639,30 @@ public class SlayerPlugin extends Plugin
 
 		if (task != null)
 		{
-			Arrays.stream(task.getTargetNames())
+			task.getTargetNames().stream()
 				.map(String::toLowerCase)
 				.forEach(targetNames::add);
 
 			targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
+		}
+	}
+
+	private void rebuildTargetIds(Task task)
+	{
+		targetIds.clear();
+
+		if (task != null)
+		{
+			task.getNpcIds().stream()
+				.forEach(targetIds::add);
+		}
+	}
+
+	private void rebuildCheckAsTokens(Task task)
+	{
+		if (task != null)
+		{
+			checkAsTokens = task.isCheckAsTokens();
 		}
 	}
 
@@ -605,6 +691,8 @@ public class SlayerPlugin extends Plugin
 
 		Task task = Task.getTask(name);
 		rebuildTargetNames(task);
+		rebuildTargetIds(task);
+		rebuildCheckAsTokens(task);
 		rebuildTargetList();
 	}
 
