@@ -24,6 +24,8 @@
  */
 package net.runelite.http.service.xtea;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,6 +74,10 @@ public class XteaService
 	private final Sql2o sql2o;
 	private final CacheService cacheService;
 
+	private final Cache<Integer, XteaCache> keyCache = CacheBuilder.newBuilder()
+		.maximumSize(1024)
+		.build();
+
 	@Autowired
 	public XteaService(
 		@Qualifier("Runelite SQL2O") Sql2o sql2o,
@@ -101,6 +107,29 @@ public class XteaService
 	@RequestMapping(method = POST)
 	public void submit(@RequestBody XteaRequest xteaRequest)
 	{
+		boolean cached = true;
+		for (XteaKey key : xteaRequest.getKeys())
+		{
+			int region = key.getRegion();
+			int[] keys = key.getKeys();
+
+			XteaCache xteaCache = keyCache.getIfPresent(region);
+			if (xteaCache == null
+				|| xteaCache.getKey1() != keys[0]
+				|| xteaCache.getKey2() != keys[1]
+				|| xteaCache.getKey3() != keys[2]
+				|| xteaCache.getKey4() != keys[3])
+			{
+				cached = false;
+				keyCache.put(region, new XteaCache(region, keys[0], keys[1], keys[2], keys[3]));
+			}
+		}
+
+		if (cached)
+		{
+			return;
+		}
+
 		try (Connection con = sql2o.beginTransaction())
 		{
 			CacheEntry cache = cacheService.findMostRecent();
@@ -110,8 +139,7 @@ public class XteaService
 				throw new InternalServerErrorException("No most recent cache");
 			}
 
-			Query query = con.createQuery("insert into xtea (region, rev, key1, key2, key3, key4) "
-				+ "values (:region, :rev, :key1, :key2, :key3, :key4)");
+			Query query = null;
 
 			for (XteaKey key : xteaRequest.getKeys())
 			{
@@ -140,6 +168,12 @@ public class XteaService
 					continue;
 				}
 
+				if (query == null)
+				{
+					query = con.createQuery("insert into xtea (region, rev, key1, key2, key3, key4) "
+						+ "values (:region, :rev, :key1, :key2, :key3, :key4)");
+				}
+
 				query.addParameter("region", region)
 					.addParameter("rev", xteaRequest.getRevision())
 					.addParameter("key1", keys[0])
@@ -149,8 +183,11 @@ public class XteaService
 					.addToBatch();
 			}
 
-			query.executeBatch();
-			con.commit(false);
+			if (query != null)
+			{
+				query.executeBatch();
+				con.commit(false);
+			}
 		}
 	}
 
