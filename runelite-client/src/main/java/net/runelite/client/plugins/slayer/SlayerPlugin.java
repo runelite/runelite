@@ -270,7 +270,7 @@ public class SlayerPlugin extends Plugin
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
-		if (isTarget(npc))
+		if (isTarget(npc, targetNames))
 		{
 			highlightedTargets.add(npc);
 		}
@@ -505,10 +505,10 @@ public class SlayerPlugin extends Plugin
 	public void onInteractingChanged(InteractingChanged event)
 	{
 		final Actor interacting = client.getLocalPlayer().getInteracting();
+		weaknessTask = null;
 
 		if (interacting == null || !(interacting instanceof NPC))
 		{
-			weaknessTask = null;
 			return;
 		}
 
@@ -516,9 +516,10 @@ public class SlayerPlugin extends Plugin
 
 		for (Task task : weaknessTasks)
 		{
-			if (isInTask(task, npc))
+			if (isTarget(npc, buildTargetNames(task)))
 			{
 				weaknessTask = task;
+				System.out.println("Target is in task: " + task.getName());
 				return;
 			}
 		}
@@ -575,9 +576,9 @@ public class SlayerPlugin extends Plugin
 				SlayerUnlock.GROTESQUE_GARDIAN_DOUBLE_COUNT.isEnabled(client);
 	}
 
-	private boolean isTarget(NPC npc)
+	private boolean isTarget(NPC npc, List<String> names)
 	{
-		if (targetNames.isEmpty())
+		if (names.isEmpty())
 		{
 			return false;
 		}
@@ -590,7 +591,7 @@ public class SlayerPlugin extends Plugin
 
 		name = name.toLowerCase();
 
-		for (String target : targetNames)
+		for (String target : names)
 		{
 			if (name.contains(target))
 			{
@@ -609,18 +610,20 @@ public class SlayerPlugin extends Plugin
 		return false;
 	}
 
-	private void rebuildTargetNames(Task task)
+	private List<String> buildTargetNames(Task task)
 	{
-		targetNames.clear();
+		List<String> names = new ArrayList<>();
 
 		if (task != null)
 		{
 			Arrays.stream(task.getTargetNames())
 				.map(String::toLowerCase)
-				.forEach(targetNames::add);
+				.forEach(names::add);
 
-			targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
+			names.add(task.getName().toLowerCase().replaceAll("s$", ""));
 		}
+
+		return names;
 	}
 
 	private void rebuildTargetList()
@@ -629,7 +632,7 @@ public class SlayerPlugin extends Plugin
 
 		for (NPC npc : client.getNpcs())
 		{
-			if (isTarget(npc))
+			if (isTarget(npc, targetNames))
 			{
 				highlightedTargets.add(npc);
 			}
@@ -647,7 +650,8 @@ public class SlayerPlugin extends Plugin
 		infoTimer = Instant.now();
 
 		Task task = Task.getTask(name);
-		rebuildTargetNames(task);
+		targetNames.clear();
+		targetNames = buildTargetNames(task);
 		rebuildTargetList();
 	}
 
@@ -694,25 +698,6 @@ public class SlayerPlugin extends Plugin
 
 		infoBoxManager.removeInfoBox(counter);
 		counter = null;
-	}
-
-	public boolean isInTask(Task task, NPC npc)
-	{
-		String npcName = npc.getName().toLowerCase();
-
-		if (npcName.contains(task.getName().toLowerCase().replaceAll("s$", "")))
-		{
-			return true;
-		}
-
-		for (String taskName : task.getTargetNames())
-		{
-			if (npcName.contains(taskName.toLowerCase()))
-			{
-				return true;
-			}
-		}
-		return false;
 	}
 
 	//Utils
