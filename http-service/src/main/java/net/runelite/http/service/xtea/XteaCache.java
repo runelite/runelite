@@ -22,18 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.session;
+package net.runelite.http.service.xtea;
 
-import java.time.Instant;
-import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class SessionEntry
+@AllArgsConstructor
+class XteaCache
 {
-	private int id;
-	private UUID uuid;
-	private String ip;
-	private Instant start;
-	private Instant last;
+	private int region;
+	private int key1;
+	private int key2;
+	private int key3;
+	private int key4;
 }

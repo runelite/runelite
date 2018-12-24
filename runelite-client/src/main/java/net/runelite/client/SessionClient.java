@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.session;
+package net.runelite.client;
 
 import com.google.gson.JsonParseException;
 import java.io.IOException;
@@ -35,11 +35,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-public class SessionClient
+class SessionClient
 {
-	public UUID open() throws IOException
+	UUID open() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiRoot().newBuilder()
 			.addPathSegment("session")
 			.build();
 
@@ -60,9 +60,9 @@ public class SessionClient
 		}
 	}
 
-	public void ping(UUID uuid) throws IOException
+	void ping(UUID uuid) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiRoot().newBuilder()
 			.addPathSegment("session")
 			.addPathSegment("ping")
 			.addQueryParameter("session", uuid.toString())
@@ -81,9 +81,9 @@ public class SessionClient
 		}
 	}
 
-	public void delete(UUID uuid) throws IOException
+	void delete(UUID uuid) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = RuneLiteAPI.getApiRoot().newBuilder()
 			.addPathSegment("session")
 			.addQueryParameter("session", uuid.toString())
 			.build();

@@ -32,7 +32,6 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.session.SessionClient;
 
 @Singleton
 @Slf4j

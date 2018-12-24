@@ -128,23 +128,23 @@ public class LootTrackerService
 				.executeAndFetch(LootResult.class);
 		}
 
-		int killId = -1;
+		LootResult current = null;
 		List<LootRecord> lootRecords = new ArrayList<>();
 		List<GameItem> gameItems = new ArrayList<>();
 
 		for (LootResult lootResult : lootResults)
 		{
-			if (killId != lootResult.getKillId())
+			if (current == null || current.getKillId() != lootResult.getKillId())
 			{
-				killId = lootResult.getKillId();
-
 				if (!gameItems.isEmpty())
 				{
-					LootRecord lootRecord = new LootRecord(lootResult.getEventId(), lootResult.getType(), gameItems);
+					LootRecord lootRecord = new LootRecord(current.getEventId(), current.getType(), gameItems);
 					lootRecords.add(lootRecord);
+
+					gameItems = new ArrayList<>();
 				}
 
-				gameItems = new ArrayList<>();
+				current = lootResult;
 			}
 
 			GameItem gameItem = new GameItem(lootResult.getItemId(), lootResult.getItemQuantity());
@@ -153,8 +153,7 @@ public class LootTrackerService
 
 		if (!gameItems.isEmpty())
 		{
-			LootResult lootResult = lootResults.get(lootResults.size() - 1);
-			LootRecord lootRecord = new LootRecord(lootResult.getEventId(), lootResult.getType(), gameItems);
+			LootRecord lootRecord = new LootRecord(current.getEventId(), current.getType(), gameItems);
 			lootRecords.add(lootRecord);
 		}
 

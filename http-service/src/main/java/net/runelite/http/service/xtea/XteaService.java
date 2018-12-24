@@ -24,9 +24,10 @@
  */
 package net.runelite.http.service.xtea;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.fs.Container;
 import net.runelite.cache.util.Djb2;
@@ -36,26 +37,16 @@ import net.runelite.http.service.cache.CacheService;
 import net.runelite.http.service.cache.beans.ArchiveEntry;
 import net.runelite.http.service.cache.beans.CacheEntry;
 import net.runelite.http.service.util.exception.InternalServerErrorException;
-import net.runelite.http.service.util.exception.NotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
-@RestController
-@RequestMapping("/xtea")
+@Service
 public class XteaService
 {
-	private static final Logger logger = LoggerFactory.getLogger(XteaService.class);
-
 	private static final String CREATE_SQL = "CREATE TABLE IF NOT EXISTS `xtea` (\n"
 		+ "  `id` int(11) NOT NULL AUTO_INCREMENT,\n"
 		+ "  `region` int(11) NOT NULL,\n"
@@ -71,6 +62,10 @@ public class XteaService
 
 	private final Sql2o sql2o;
 	private final CacheService cacheService;
+
+	private final Cache<Integer, XteaCache> keyCache = CacheBuilder.newBuilder()
+		.maximumSize(1024)
+		.build();
 
 	@Autowired
 	public XteaService(
@@ -98,9 +93,31 @@ public class XteaService
 			.executeAndFetchFirst(XteaEntry.class);
 	}
 
-	@RequestMapping(method = POST)
-	public void submit(@RequestBody XteaRequest xteaRequest)
+	public void submit(XteaRequest xteaRequest)
 	{
+		boolean cached = true;
+		for (XteaKey key : xteaRequest.getKeys())
+		{
+			int region = key.getRegion();
+			int[] keys = key.getKeys();
+
+			XteaCache xteaCache = keyCache.getIfPresent(region);
+			if (xteaCache == null
+				|| xteaCache.getKey1() != keys[0]
+				|| xteaCache.getKey2() != keys[1]
+				|| xteaCache.getKey3() != keys[2]
+				|| xteaCache.getKey4() != keys[3])
+			{
+				cached = false;
+				keyCache.put(region, new XteaCache(region, keys[0], keys[1], keys[2], keys[3]));
+			}
+		}
+
+		if (cached)
+		{
+			return;
+		}
+
 		try (Connection con = sql2o.beginTransaction())
 		{
 			CacheEntry cache = cacheService.findMostRecent();
@@ -110,8 +127,7 @@ public class XteaService
 				throw new InternalServerErrorException("No most recent cache");
 			}
 
-			Query query = con.createQuery("insert into xtea (region, rev, key1, key2, key3, key4) "
-				+ "values (:region, :rev, :key1, :key2, :key3, :key4)");
+			Query query = null;
 
 			for (XteaKey key : xteaRequest.getKeys())
 			{
@@ -140,6 +156,12 @@ public class XteaService
 					continue;
 				}
 
+				if (query == null)
+				{
+					query = con.createQuery("insert into xtea (region, rev, key1, key2, key3, key4) "
+						+ "values (:region, :rev, :key1, :key2, :key3, :key4)");
+				}
+
 				query.addParameter("region", region)
 					.addParameter("rev", xteaRequest.getRevision())
 					.addParameter("key1", keys[0])
@@ -149,47 +171,35 @@ public class XteaService
 					.addToBatch();
 			}
 
-			query.executeBatch();
-			con.commit(false);
+			if (query != null)
+			{
+				query.executeBatch();
+				con.commit(false);
+			}
 		}
 	}
 
-	@RequestMapping
-	public List<XteaKey> get()
+	public List<XteaEntry> get()
 	{
 		try (Connection con = sql2o.open())
 		{
-			List<XteaEntry> entries = con.createQuery(
+			return con.createQuery(
 				"select t1.region, t1.time, t2.rev, t2.key1, t2.key2, t2.key3, t2.key4 from " +
 					"(select region,max(time) as time from xtea group by region) t1 " +
 					"join xtea t2 on t1.region = t2.region and t1.time = t2.time")
 				.executeAndFetch(XteaEntry.class);
-
-			return entries.stream()
-				.map(XteaService::entryToKey)
-				.collect(Collectors.toList());
 		}
 	}
 
-	@RequestMapping("/{region}")
-	public XteaKey getRegion(@PathVariable int region)
+	public XteaEntry getRegion(int region)
 	{
-		XteaEntry entry;
-
 		try (Connection con = sql2o.open())
 		{
-			entry = con.createQuery("select region, time, rev, key1, key2, key3, key4 from xtea "
+			return con.createQuery("select region, time, rev, key1, key2, key3, key4 from xtea "
 				+ "where region = :region order by time desc limit 1")
 				.addParameter("region", region)
 				.executeAndFetchFirst(XteaEntry.class);
 		}
-
-		if (entry == null)
-		{
-			throw new NotFoundException();
-		}
-
-		return entryToKey(entry);
 	}
 
 	private boolean checkKeys(CacheEntry cache, int regionId, int[] keys)
@@ -226,19 +236,5 @@ public class XteaService
 		{
 			return false;
 		}
-	}
-
-	private static XteaKey entryToKey(XteaEntry xe)
-	{
-		XteaKey xteaKey = new XteaKey();
-		xteaKey.setRegion(xe.getRegion());
-		xteaKey.setKeys(new int[]
-		{
-			xe.getKey1(),
-			xe.getKey2(),
-			xe.getKey3(),
-			xe.getKey4()
-		});
-		return xteaKey;
 	}
 }

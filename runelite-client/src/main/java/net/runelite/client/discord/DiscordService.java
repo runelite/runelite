@@ -41,6 +41,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.discord.DiscordEventHandlers;
 import net.runelite.discord.DiscordRPC;
 import net.runelite.discord.DiscordRichPresence;
+import net.runelite.discord.DiscordUser;
 
 @Singleton
 @Slf4j
@@ -168,10 +169,14 @@ public class DiscordService implements AutoCloseable
 		}
 	}
 
-	private void ready()
+	private void ready(DiscordUser user)
 	{
-		log.info("Discord RPC service is ready.");
-		eventBus.post(new DiscordReady());
+		log.info("Discord RPC service is ready with user {}.", user.username);
+		eventBus.post(new DiscordReady(
+			user.userId,
+			user.username,
+			user.discriminator,
+			user.avatar));
 	}
 
 	private void disconnected(int errorCode, String message)
@@ -194,12 +199,12 @@ public class DiscordService implements AutoCloseable
 		eventBus.post(new DiscordSpectateGame(spectateSecret));
 	}
 
-	private void joinRequest(net.runelite.discord.DiscordJoinRequest joinRequest)
+	private void joinRequest(DiscordUser user)
 	{
 		eventBus.post(new DiscordJoinRequest(
-			joinRequest.userId,
-			joinRequest.username,
-			joinRequest.discriminator,
-			joinRequest.avatar));
+			user.userId,
+			user.username,
+			user.discriminator,
+			user.avatar));
 	}
 }
