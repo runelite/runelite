@@ -39,13 +39,16 @@ public class DiscordSession
 	private final String partyId = UUID.randomUUID().toString();
 
 	private String currentJoinSecret = joinSecret;
-	private String currentPartyId = partyId;
 	private int partySize = 1;
+
+	public boolean isOwner()
+	{
+		return joinSecret.equals(currentJoinSecret);
+	}
 
 	public void reset()
 	{
 		currentJoinSecret = joinSecret;
-		currentPartyId = partyId;
 		partySize = 1;
 	}
 }

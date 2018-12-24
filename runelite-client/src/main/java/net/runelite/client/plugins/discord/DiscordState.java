@@ -138,16 +138,22 @@ class DiscordState
 			}
 		}
 
-		final DiscordPresence presence = DiscordPresence.builder()
+		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
 			.state(MoreObjects.firstNonNull(state, "Idle"))
 			.details(MoreObjects.firstNonNull(details, ""))
 			.startTimestamp(event.getStart())
 			.smallImageKey(MoreObjects.firstNonNull(imageKey, "default"))
 			.partyMax(15)
-			.partySize(session.getPartySize())
-			.partyId(session.getCurrentPartyId())
-			.joinSecret(session.getCurrentJoinSecret())
-			.build();
+			.partySize(session.getPartySize());
+
+		if (session.isOwner())
+		{
+			presenceBuilder.partyId(session.getPartyId());
+			presenceBuilder.joinSecret(session.getCurrentJoinSecret());
+
+		}
+
+		final DiscordPresence presence = presenceBuilder.build();
 
 		// This is to reduce amount of RPC calls
 		if (!presence.equals(lastPresence))
