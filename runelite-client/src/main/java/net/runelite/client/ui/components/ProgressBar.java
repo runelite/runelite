@@ -28,7 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -49,7 +49,7 @@ public class ProgressBar extends DimmableJPanel
 	private int value;
 
 	@Setter
-	private List<Double> positions = new ArrayList<>();
+	private List<Double> positions = Collections.emptyList();
 
 	private final JLabel leftLabel = new JShadowedLabel();
 	private final JLabel rightLabel = new JShadowedLabel();
@@ -88,8 +88,8 @@ public class ProgressBar extends DimmableJPanel
 	@Override
 	public void paint(Graphics g)
 	{
-		double percentage = getPercentage();
-		int topWidth = (int) (getSize().width * (percentage / 100));
+		int percentage = getPercentage();
+		int topWidth = (int) (getSize().width * (percentage / 100f));
 
 		super.paint(g);
 		g.setColor(getForeground());
@@ -98,7 +98,7 @@ public class ProgressBar extends DimmableJPanel
 
 		for (final Double position : positions)
 		{
-			final int xCord = (int) (getSize().width * (position));
+			final int xCord = (int) (getSize().width * position);
 			if (xCord > topWidth)
 			{
 				g.fillRect(xCord, 0, 1, 16);
@@ -149,7 +149,7 @@ public class ProgressBar extends DimmableJPanel
 		centerLabel.setText(isDimmed() ? txt : centerLabelText);
 	}
 
-	public double getPercentage()
+	public int getPercentage()
 	{
 		if (value == 0)
 		{

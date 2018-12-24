@@ -31,6 +31,7 @@ import java.awt.Dimension;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -213,9 +214,10 @@ class XpInfoBox extends JPanel
 				: "Lvl. " + xpSnapshotSingle.getEndLevel());
 
 			// Add intermediate level positions to progressBar
-			final List<Double> positions = new ArrayList<>();
 			if (xpTrackerConfig.showIntermediateLevels() && xpSnapshotSingle.getEndLevel() - xpSnapshotSingle.getStartLevel() > 1)
 			{
+				final List<Double> positions = new ArrayList<>();
+
 				for (int level = xpSnapshotSingle.getStartLevel() + 1; level < xpSnapshotSingle.getEndLevel(); level++)
 				{
 					double relativeStartExperience = Experience.getXpForLevel(level) - xpSnapshotSingle.getStartGoalXp();
@@ -227,7 +229,7 @@ class XpInfoBox extends JPanel
 			}
 			else
 			{
-				progressBar.setPositions(positions);
+				progressBar.setPositions(Collections.emptyList());
 			}
 
 			progressBar.setToolTipText(String.format(
