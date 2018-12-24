@@ -26,6 +26,7 @@ package net.runelite.client.plugins.discord.party;
 
 import java.util.UUID;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.http.api.RuneLiteAPI;
@@ -36,6 +37,7 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 @Slf4j
+@Singleton
 public class DiscordParty extends WebSocketListener
 {
 	private static final String WSS_PARTY = "https://discord-rooms.herokuapp.com/";

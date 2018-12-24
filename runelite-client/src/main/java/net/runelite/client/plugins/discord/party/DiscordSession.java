@@ -25,11 +25,13 @@
 package net.runelite.client.plugins.discord.party;
 
 import java.util.UUID;
+import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Singleton
 public class DiscordSession
 {
 	private final String uuid = UUID.randomUUID().toString();

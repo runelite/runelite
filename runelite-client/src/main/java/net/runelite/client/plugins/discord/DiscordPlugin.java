@@ -117,8 +117,6 @@ public class DiscordPlugin extends Plugin
 
 		clientToolbar.addNavigation(discordButton);
 		checkForGameStateUpdate();
-
-		discordParty.join(discordSession.getCurrentJoinSecret());
 	}
 
 	@Override
@@ -134,6 +132,7 @@ public class DiscordPlugin extends Plugin
 		switch (event.getGameState())
 		{
 			case LOGIN_SCREEN:
+				discordParty.join(discordSession.getCurrentJoinSecret());
 				discordParty.send(DiscordPartyMessageType.LOGOUT, client.getUsername());
 				checkForGameStateUpdate();
 				return;
