@@ -27,7 +27,6 @@
 package net.runelite.client.plugins.motherlode;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -66,7 +65,9 @@ import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -85,6 +86,8 @@ public class MotherlodePlugin extends Plugin
 	private static final Set<Integer> MLM_ORE_TYPES = ImmutableSet.of(ItemID.RUNITE_ORE, ItemID.ADAMANTITE_ORE,
 			ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
 	private static final Set<Integer> ROCK_OBSTACLES = ImmutableSet.of(ROCKFALL, ROCKFALL_26680);
+
+	private static final int MAX_INVENTORY_SIZE = 28;
 
 	private static final int SACK_LARGE_SIZE = 162;
 	private static final int SACK_SIZE = 81;
@@ -111,6 +114,9 @@ public class MotherlodePlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inMlm;
@@ -148,7 +154,7 @@ public class MotherlodePlugin extends Plugin
 
 		if (inMlm)
 		{
-			refreshSackValues();
+			clientThread.invokeLater(this::refreshSackValues);
 		}
 	}
 
@@ -165,10 +171,13 @@ public class MotherlodePlugin extends Plugin
 
 		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
 
-		if (sack != null && sack.isHidden())
+		clientThread.invokeLater(() ->
 		{
-			sack.setHidden(false);
-		}
+			if (sack != null && sack.isHidden())
+			{
+				sack.setHidden(false);
+			}
+		});
 	}
 
 	public MotherlodeSession getSession()
@@ -352,13 +361,18 @@ public class MotherlodePlugin extends Plugin
 		{
 			inMlm = checkInMlm();
 		}
+		else if (event.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			// Prevent code from running while logged out.
+			inMlm = false;
+		}
 	}
 
 	private Integer calculateDepositsLeft()
 	{
 		if (maxSackSize == 0) // check if maxSackSize has been initialized
 		{
-			return null;
+			refreshSackValues();
 		}
 
 		double depositsLeft = 0;
@@ -373,8 +387,6 @@ public class MotherlodePlugin extends Plugin
 		Item[] result = inventory.getItems();
 		assert result != null;
 
-		int inventorySize = result.length;
-
 		for (Item item : result)
 		{
 			// Assume that MLM ores are being banked and exclude them from the check,
@@ -387,7 +399,7 @@ public class MotherlodePlugin extends Plugin
 			}
 		}
 
-		double inventorySpace = inventorySize - nonPayDirtItems;
+		double inventorySpace = MAX_INVENTORY_SIZE - nonPayDirtItems;
 		double sackSizeRemaining = maxSackSize - curSackSize;
 
 		if (inventorySpace > 0 && sackSizeRemaining > 0)
@@ -438,6 +450,6 @@ public class MotherlodePlugin extends Plugin
 	 */
 	boolean isUpstairs(LocalPoint localPoint)
 	{
-		return Perspective.getTileHeight(client, localPoint.getX(), localPoint.getY(), 0) < UPPER_FLOOR_HEIGHT;
+		return Perspective.getTileHeight(client, localPoint, 0) < UPPER_FLOOR_HEIGHT;
 	}
 }

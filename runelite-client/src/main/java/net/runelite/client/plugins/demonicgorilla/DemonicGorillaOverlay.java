@@ -90,13 +90,11 @@ public class DemonicGorillaOverlay extends Overlay
 			LocalPoint lp = gorilla.getNpc().getLocalLocation();
 			if (lp != null)
 			{
-				Point point = Perspective.worldToCanvas(client, lp.getX(), lp.getY(), client.getPlane(),
+				Point point = Perspective.localToCanvas(client, lp, client.getPlane(),
 					gorilla.getNpc().getLogicalHeight() + 16);
 				if (point != null)
 				{
-					point = new Point(
-						client.getViewportXOffset() + point.getX(),
-						client.getViewportYOffset() + point.getY());
+					point = new Point(point.getX(), point.getY());
 
 					List<DemonicGorilla.AttackStyle> attackStyles = gorilla.getNextPosibleAttackStyles();
 					List<BufferedImage> icons = new ArrayList<>();

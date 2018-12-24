@@ -26,6 +26,7 @@ package net.runelite.mixins;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import net.runelite.api.HashTable;
@@ -113,6 +114,8 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public int getParentId()
 	{
+		assert client.isClientThread();
+
 		int rsParentId = getRSParentId();
 		if (rsParentId != -1)
 		{
@@ -198,6 +201,8 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public boolean isHidden()
 	{
+		assert client.isClientThread();
+
 		if (isSelfHidden())
 		{
 			return true;
@@ -359,6 +364,8 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public Widget[] getNestedChildren()
 	{
+		assert client.isClientThread();
+
 		if (getRSParentId() == getId())
 		{
 			// This is a dynamic widget, so it can't have nested children
@@ -494,6 +501,8 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public Widget createChild(int index, int type)
 	{
+		assert client.isClientThread();
+
 		RSWidget w = client.createWidget();
 		w.setType(type);
 		w.setParentId(getId());
@@ -537,6 +546,8 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public void revalidate()
 	{
+		assert client.isClientThread();
+
 		client.revalidateWidget(this);
 	}
 
@@ -544,7 +555,19 @@ public abstract class RSWidgetMixin implements RSWidget
 	@Override
 	public void revalidateScroll()
 	{
+		assert client.isClientThread();
+
 		client.revalidateWidget(this);
 		client.revalidateWidgetScroll(client.getWidgets()[TO_GROUP(this.getId())], this, false);
+	}
+
+	@Inject
+	@Override
+	public void deleteAllChildren()
+	{
+		if (getChildren() != null)
+		{
+			Arrays.fill(getChildren(), null);
+		}
 	}
 }

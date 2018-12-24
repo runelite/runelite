@@ -24,6 +24,7 @@
  */
 package net.runelite.http.service.xp;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ExecutionException;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ import net.runelite.http.service.xp.beans.PlayerEntity;
 import net.runelite.http.service.xp.beans.XpEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -43,6 +45,8 @@ import org.sql2o.Sql2o;
 @Slf4j
 public class XpTrackerService
 {
+	private static final Duration UPDATE_TIME = Duration.ofMinutes(5);
+
 	@Autowired
 	@Qualifier("Runelite XP Tracker SQL2O")
 	private Sql2o sql2o;
@@ -50,10 +54,17 @@ public class XpTrackerService
 	@Autowired
 	private HiscoreService hiscoreService;
 
+	private String nextUsername;
+
 	public void update(String username) throws ExecutionException
 	{
 		HiscoreResult hiscoreResult = hiscoreService.lookupUsername(username, HiscoreEndpoint.NORMAL);
 		update(username, hiscoreResult);
+	}
+
+	public void tryUpdate(String username)
+	{
+		nextUsername = username;
 	}
 
 	public void update(String username, HiscoreResult hiscoreResult)
@@ -62,7 +73,8 @@ public class XpTrackerService
 		{
 			PlayerEntity playerEntity = findOrCreatePlayer(con, username);
 
-			XpEntity currentXp = findXpAtTime(con, username, Instant.now());
+			Instant now = Instant.now();
+			XpEntity currentXp = findXpAtTime(con, username, now);
 			if (currentXp != null)
 			{
 				XpData hiscoreData = XpMapper.INSTANCE.hiscoreResultToXpData(hiscoreResult);
@@ -71,6 +83,13 @@ public class XpTrackerService
 				if (hiscoreData.equals(existingData))
 				{
 					log.debug("Hiscore for {} already up to date", username);
+					return;
+				}
+
+				Duration difference = Duration.between(currentXp.getTime(), now);
+				if (difference.compareTo(UPDATE_TIME) <= 0)
+				{
+					log.debug("Updated {} too recently", username);
 					return;
 				}
 			}
@@ -177,5 +196,20 @@ public class XpTrackerService
 		{
 			return findXpAtTime(con, username, time);
 		}
+	}
+
+	@Scheduled(fixedDelay = 3000)
+	public void update() throws ExecutionException
+	{
+		String next = nextUsername;
+		nextUsername = null;
+
+		if (next == null)
+		{
+			return;
+		}
+
+		HiscoreResult hiscoreResult = hiscoreService.lookupUsername(next, HiscoreEndpoint.NORMAL);
+		update(next, hiscoreResult);
 	}
 }

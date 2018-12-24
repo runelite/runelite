@@ -21,16 +21,16 @@ LABEL10:
    istore                 0
    sstore                 0
    load_int               1
-   load_int               10616882
+   load_int               10616889
    widget_put_text_shadowed_widget
    jump                   LABEL23
 LABEL20:
    load_int               0
-   load_int               10616882
+   load_int               10616889
    widget_put_text_shadowed_widget
 LABEL23:
    iload                  0
-   load_int               10616882
+   load_int               10616889
    widget_put_textcolor_widget
    get_varc_string        1
    string_length         
@@ -78,7 +78,7 @@ LABEL63:
    get_max_line_width    
    istore                 3
    iload                  3
-   load_int               10616882
+   load_int               10616889
    widget_get_width_widget
    if_icmpgt              LABEL73
    jump                   LABEL79
@@ -86,29 +86,29 @@ LABEL73:
    load_int               2
    load_int               2
    load_int               0
-   load_int               10616882
+   load_int               10616889
    widget_put_text_alignment_widget
    jump                   LABEL84
 LABEL79:
    load_int               0
    load_int               2
    load_int               0
-   load_int               10616882
+   load_int               10616889
    widget_put_text_alignment_widget
 LABEL84:
-   load_int               10616882
+   load_int               10616889
    widget_put_actions_null_widget
    load_int               -1
    load_string            ""
-   load_int               10616882
+   load_int               10616889
    widget_put_mouse_hover_listener_widget
    load_int               -1
    load_string            ""
-   load_int               10616882
+   load_int               10616889
    widget_put_mouse_exit_listener_widget
    load_int               -1
    load_string            ""
-   load_int               10616882
+   load_int               10616889
    widget_put_option_click_listener_widget
    jump                   LABEL140
 LABEL99:
@@ -123,46 +123,46 @@ LABEL99:
    load_int               1
    load_int               2
    load_int               0
-   load_int               10616882
+   load_int               10616889
    widget_put_text_alignment_widget
    load_int               10
    load_string            "Configure"
-   load_int               10616882
+   load_int               10616889
    widget_put_action_widget
    load_string            "<col=ff9040>"
    load_string            "Display name"
    load_string            "</col>"
    string_append          3
-   load_int               10616882
+   load_int               10616889
    widget_put_name_widget
    load_int               45
    load_int               -2147483645
    iload                  1
    load_string            "Ii"
-   load_int               10616882
+   load_int               10616889
    widget_put_mouse_hover_listener_widget
    load_int               45
    load_int               -2147483645
    iload                  0
    load_string            "Ii"
-   load_int               10616882
+   load_int               10616889
    widget_put_mouse_exit_listener_widget
    load_int               489
    load_int               -2147483644
    load_int               1024
    load_string            "ii"
-   load_int               10616882
+   load_int               10616889
    widget_put_option_click_listener_widget
 LABEL140:
    sload                  2
-   load_int               10616882
+   load_int               10616889
    widget_put_text_widget
    load_string            "setChatboxInput"
-   runelite_callback
+   runelite_callback     
    load_int               3
    load_int               16
    load_int               1
    load_int               0
-   load_int               10616882
+   load_int               10616889
    widget_put_size_widget
    return                

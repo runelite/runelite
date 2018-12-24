@@ -25,8 +25,8 @@
 package net.runelite.client.config;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.eventbus.EventBus;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -36,17 +36,22 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.nio.channels.FileLock;
+import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -54,6 +59,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.http.api.config.ConfigClient;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
@@ -67,8 +73,7 @@ public class ConfigManager
 	@Inject
 	EventBus eventBus;
 
-	@Inject
-	ScheduledExecutorService executor;
+	private final ScheduledExecutorService executor;
 
 	private AccountSession session;
 	private ConfigClient client;
@@ -76,10 +81,15 @@ public class ConfigManager
 
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
+	private final Map<String, String> pendingChanges = new HashMap<>();
 
-	public ConfigManager()
+	@Inject
+	public ConfigManager(ScheduledExecutorService scheduledExecutorService)
 	{
+		this.executor = scheduledExecutorService;
 		this.propertiesFile = getPropertiesFile();
+
+		executor.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
 	}
 
 	public final void switchSession(AccountSession session)
@@ -179,7 +189,7 @@ public class ConfigManager
 
 		try (FileInputStream in = new FileInputStream(propertiesFile))
 		{
-			properties.load(in);
+			properties.load(new InputStreamReader(in, Charset.forName("UTF-8")));
 		}
 		catch (FileNotFoundException ex)
 		{
@@ -199,6 +209,7 @@ public class ConfigManager
 				if (split.length != 2)
 				{
 					log.debug("Properties key malformed!: {}", groupAndKey);
+					properties.remove(groupAndKey);
 					return;
 				}
 
@@ -225,7 +236,16 @@ public class ConfigManager
 
 		try (FileOutputStream out = new FileOutputStream(propertiesFile))
 		{
-			properties.store(out, "RuneLite configuration");
+			final FileLock lock = out.getChannel().lock();
+
+			try
+			{
+				properties.store(new OutputStreamWriter(out, Charset.forName("UTF-8")), "RuneLite configuration");
+			}
+			finally
+			{
+				lock.release();
+			}
 		}
 	}
 
@@ -237,11 +257,16 @@ public class ConfigManager
 		}
 
 		T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]
-		{
-			clazz
-		}, handler);
+			{
+				clazz
+			}, handler);
 
 		return t;
+	}
+
+	public List<String> getConfigurationKeys(String prefix)
+	{
+		return properties.keySet().stream().filter(v -> ((String) v).startsWith(prefix)).map(String.class::cast).collect(Collectors.toList());
 	}
 
 	public String getConfiguration(String groupName, String key)
@@ -272,9 +297,14 @@ public class ConfigManager
 
 		String oldValue = (String) properties.setProperty(groupName + "." + key, value);
 
-		if (client != null)
+		if (Objects.equals(oldValue, value))
 		{
-			client.set(groupName + "." + key, value);
+			return;
+		}
+
+		synchronized (pendingChanges)
+		{
+			pendingChanges.put(groupName + "." + key, value);
 		}
 
 		Runnable task = () ->
@@ -310,9 +340,14 @@ public class ConfigManager
 
 		String oldValue = (String) properties.remove(groupName + "." + key);
 
-		if (client != null)
+		if (oldValue == null)
 		{
-			client.unset(groupName + "." + key);
+			return;
+		}
+
+		synchronized (pendingChanges)
+		{
+			pendingChanges.put(groupName + "." + key, null);
 		}
 
 		Runnable task = () ->
@@ -346,14 +381,19 @@ public class ConfigManager
 			throw new IllegalArgumentException("Not a config group");
 		}
 
-		List<ConfigItemDescriptor> items = Arrays.stream(inter.getMethods())
+		final List<ConfigItemDescriptor> items = Arrays.stream(inter.getMethods())
 			.filter(m -> m.getParameterCount() == 0)
-			.sorted(Comparator.comparingInt(m -> m.getDeclaredAnnotation(ConfigItem.class).position()))
 			.map(m -> new ConfigItemDescriptor(
 				m.getDeclaredAnnotation(ConfigItem.class),
-				m.getReturnType()
+				m.getReturnType(),
+				m.getDeclaredAnnotation(Range.class)
 			))
+			.sorted((a, b) -> ComparisonChain.start()
+				.compare(a.getItem().position(), b.getItem().position())
+				.compare(a.getItem().name(), b.getItem().name())
+				.result())
 			.collect(Collectors.toList());
+
 		return new ConfigDescriptor(group, items);
 	}
 
@@ -519,5 +559,30 @@ public class ConfigManager
 			return k.getKeyCode() + ":" + k.getModifiers();
 		}
 		return object.toString();
+	}
+
+	public void sendConfig()
+	{
+		synchronized (pendingChanges)
+		{
+			if (client != null)
+			{
+				for (Map.Entry<String, String> entry : pendingChanges.entrySet())
+				{
+					String key = entry.getKey();
+					String value = entry.getValue();
+
+					if (Strings.isNullOrEmpty(value))
+					{
+						client.unset(key);
+					}
+					else
+					{
+						client.set(key, value);
+					}
+				}
+			}
+			pendingChanges.clear();
+		}
 	}
 }

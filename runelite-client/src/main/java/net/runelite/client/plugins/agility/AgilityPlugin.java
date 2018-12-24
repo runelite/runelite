@@ -24,10 +24,11 @@
  */
 package net.runelite.client.plugins.agility;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -61,6 +62,7 @@ import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -81,7 +83,7 @@ public class AgilityPlugin extends Plugin
 	private final Map<TileObject, Tile> obstacles = new HashMap<>();
 
 	@Getter
-	private Tile markOfGrace;
+	private final List<Tile> marksOfGrace = new ArrayList<>();
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -131,13 +133,13 @@ public class AgilityPlugin extends Plugin
 	{
 		overlayManager.remove(agilityOverlay);
 		overlayManager.remove(lapCounterOverlay);
-		markOfGrace = null;
+		marksOfGrace.clear();
 		obstacles.clear();
 		session = null;
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -148,7 +150,7 @@ public class AgilityPlugin extends Plugin
 				removeAgilityArenaTimer();
 				break;
 			case LOADING:
-				markOfGrace = null;
+				marksOfGrace.clear();
 				obstacles.clear();
 				break;
 			case LOGGED_IN:
@@ -219,19 +221,15 @@ public class AgilityPlugin extends Plugin
 
 		if (item.getId() == ItemID.MARK_OF_GRACE)
 		{
-			markOfGrace = tile;
+			marksOfGrace.add(tile);
 		}
 	}
 
 	@Subscribe
 	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
-		final Item item = itemDespawned.getItem();
-
-		if (item.getId() == ItemID.MARK_OF_GRACE)
-		{
-			markOfGrace = null;
-		}
+		final Tile tile = itemDespawned.getTile();
+		marksOfGrace.remove(tile);
 	}
 
 	@Subscribe
@@ -299,7 +297,7 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectDeSpawned(GameObjectDespawned event)
+	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGameObject(), null);
 	}
@@ -317,7 +315,7 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGroundObjectDeSpawned(GroundObjectDespawned event)
+	public void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getGroundObject(), null);
 	}
@@ -335,7 +333,7 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWallObjectDeSpawned(WallObjectDespawned event)
+	public void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getWallObject(), null);
 	}
@@ -353,7 +351,7 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onDecorativeObjectDeSpawned(DecorativeObjectDespawned event)
+	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		onTileObject(event.getTile(), event.getDecorativeObject(), null);
 	}

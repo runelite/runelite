@@ -27,7 +27,6 @@ package net.runelite.client;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -50,9 +49,11 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.LootManager;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientUpdateCheckMode;
@@ -66,7 +67,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 @Singleton
 @Slf4j
@@ -75,8 +75,6 @@ public class RuneLite
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
-	private static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
-	private static final File LOGS_FILE_NAME = new File(LOGS_DIR, "application");
 
 	@Getter
 	private static Injector injector;
@@ -142,6 +140,9 @@ public class RuneLite
 	private Provider<LootManager> lootManager;
 
 	@Inject
+	private Provider<ChatboxPanelManager> chatboxPanelManager;
+
+	@Inject
 	@Nullable
 	private Client client;
 
@@ -189,9 +190,6 @@ public class RuneLite
 		}
 
 		PROFILES_DIR.mkdirs();
-
-		// Setup logger
-		MDC.put("logFileName", LOGS_FILE_NAME.getAbsolutePath());
 
 		if (options.has("debug"))
 		{
@@ -278,6 +276,7 @@ public class RuneLite
 			eventBus.register(chatMessageManager.get());
 			eventBus.register(commandManager.get());
 			eventBus.register(lootManager.get());
+			eventBus.register(chatboxPanelManager.get());
 
 			// Add core overlays
 			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);

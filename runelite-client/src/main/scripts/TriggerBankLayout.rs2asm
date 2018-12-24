@@ -1,0 +1,42 @@
+.id                 276
+.int_stack_count    13
+.string_stack_count 0
+.int_var_count      13
+.string_var_count   0
+
+; Check if we should allow server to relayout bank
+   load_int               1                      ; true
+   load_int               0                      ; load active boolean
+   load_string            "getSearchingTagTab"   ; push event name
+   runelite_callback                             ; invoke callback
+   if_icmpne              LABEL2
+
+; Let layout continue if current bank tab is 0
+   get_varbit             4150
+   load_int               0
+   if_icmpeq              LABEL2
+
+; Reset the current bank tab to 0 otherwise
+   load_int               0
+   set_varbit             4150
+
+   load_string "Server attempted to reset bank tab."
+   load_string "debug"
+   runelite_callback
+
+LABEL2:
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   iload                  7
+   iload                  8
+   iload                  9
+   iload                  10
+   iload                  11
+   iload                  12
+   invoke                 277
+   return

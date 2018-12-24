@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.account;
 
-import com.google.common.eventbus.Subscribe;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
@@ -34,12 +33,12 @@ import net.runelite.api.events.SessionClose;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.RunnableExceptionLogger;
 
 @PluginDescriptor(
 	name = "Account",
@@ -108,7 +107,7 @@ public class AccountPlugin extends Plugin
 
 	private void loginClick()
 	{
-		executor.execute(RunnableExceptionLogger.wrap(sessionManager::login));
+		executor.execute(sessionManager::login);
 	}
 
 	private void logoutClick()

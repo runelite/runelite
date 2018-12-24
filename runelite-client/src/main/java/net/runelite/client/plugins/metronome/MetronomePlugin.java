@@ -25,13 +25,13 @@
  */
 package net.runelite.client.plugins.metronome;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -59,7 +59,7 @@ public class MetronomePlugin extends Plugin
 	}
 
 	@Subscribe
-	void onTick(GameTick tick)
+	public void onGameTick(GameTick tick)
 	{
 		if (config.tickCount() == 0)
 		{

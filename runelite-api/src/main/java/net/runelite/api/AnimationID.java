@@ -118,10 +118,9 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_INFERNAL = 4481;
 	public static final int MINING_MOTHERLODE_3A = 7282;
 	public static final int DENSE_ESSENCE_CHIPPING = 7201;
+	public static final int DENSE_ESSENCE_CHISELING = 7202;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
-	public static final int MAGIC_LUNAR_STRING_JEWELRY = 4412;
-	public static final int MAGIC_LUNAR_BAKE_PIE = 4413;
 	public static final int MAGIC_MAKE_TABLET = 4068;
 	public static final int BURYING_BONES = 827;
 	public static final int USING_GILDED_ALTAR = 3705;
@@ -145,6 +144,7 @@ public final class AnimationID
 	public static final int COW_HOME_TELEPORT_5 = 1700;
 	public static final int COW_HOME_TELEPORT_6 = 1701;
 	public static final int CONSTRUCTION = 3676;
+	public static final int SAND_COLLECTION = 895;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
@@ -159,12 +159,14 @@ public final class AnimationID
 	public static final int FARMING_CURE_WITH_POTION = 2288;
 	public static final int FARMING_PLANT_SEED = 2291;
 	public static final int FARMING_HARVEST_FLOWER = 2292;
+	public static final int FARMING_MIX_ULTRACOMPOST = 7699;
 
 	// Lunar spellbook
 	public static final int ENERGY_TRANSFER_VENGEANCE_OTHER = 4411;
-	public static final int MAGIC_LUNAR_FERTILE_SOIL = 4413;
+	public static final int MAGIC_LUNAR_SHARED = 4413; // Utilized by Fertile Soil, Boost/Stat Potion Share, NPC Contact, Bake Pie
 	public static final int MAGIC_LUNAR_CURE_PLANT = 4432;
 	public static final int MAGIC_LUNAR_GEOMANCY = 7118;
+	public static final int MAGIC_LUNAR_STRING_JEWELRY = 4412;
 
 	// Arceuus spellbook
 	public static final int MAGIC_ARCEUUS_RESURRECT_CROPS = 7118;
@@ -181,4 +183,7 @@ public final class AnimationID
 	public static final int ROCKSLUG_DEATH = 1568;
 	public static final int ZYGOMITE_DEATH = 3327;
 	public static final int IMP_DEATH = 172;
+
+	// POH Animations
+	public static final int INCENSE_BURNER = 3687;
 }

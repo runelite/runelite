@@ -30,12 +30,22 @@ import net.runelite.api.Skill;
 public class Requirement
 {
 	private final Skill skill;
+	private final String customRequirement;
 	private final int levelRequirement;
 	private final Requirement[] altRequirements;
 
 	public Requirement(Skill skill, int levelRequirement, Requirement... altRequirements)
 	{
 		this.skill = skill;
+		this.customRequirement = null;
+		this.levelRequirement = levelRequirement;
+		this.altRequirements = altRequirements;
+	}
+
+	public Requirement(String customRequirement, int levelRequirement, Requirement... altRequirements)
+	{
+		this.skill = null;
+		this.customRequirement = customRequirement;
 		this.levelRequirement = levelRequirement;
 		this.altRequirements = altRequirements;
 	}

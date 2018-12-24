@@ -131,6 +131,9 @@ enum TeleportLocationData
 	KHAREDSTS_MEMOIRS_HOSIDIUS(TeleportType.OTHER, "Kharedst's Memoirs", "Lunch by the Lancalliums (Hosidius)", new WorldPoint(1713, 3612, 0), "kharedsts_memoirs_teleport_icon.png"),
 	KHAREDSTS_MEMOIRS_PISCARILIUS(TeleportType.OTHER, "Kharedst's Memoirs", "The Fisher's Flute (Piscarilius)", new WorldPoint(1802, 3748, 0), "kharedsts_memoirs_teleport_icon.png"),
 	KHAREDSTS_MEMOIRS_SHAYZIEN(TeleportType.OTHER, "Kharedst's Memoirs", "Hearsay and History (Shayzien)", new WorldPoint(1476, 3580, 0), "kharedsts_memoirs_teleport_icon.png"),
+	PHARAOHS_SCEPTRE_JALSAVRAH(TeleportType.OTHER, "Pharaoh's Sceptre", "Jalsavrah (Pyramid Plunder)", new WorldPoint(3288, 2795, 0), "pharaohs_sceptre_teleport_icon.png"),
+	PHARAOHS_SCEPTRE_JALEUSTROPHOS(TeleportType.OTHER, "Pharaoh's Sceptre", "Jaleustrophos (Agility Pyramid)", new WorldPoint(3341, 2827, 0), "pharaohs_sceptre_teleport_icon.png"),
+	PHARAOHS_SCEPTRE_JALDRAOCHT(TeleportType.OTHER, "Pharaoh's Sceptre", "Jaldraocht (Desert Treasure Pyramid)", new WorldPoint(3232, 2897, 0), "pharaohs_sceptre_teleport_icon.png"),
 
 	// Wilderness
 	OBELISK_13(TeleportType.OTHER, "Obelisk", "13", new WorldPoint(3156, 3620, 0), "obelisk_icon.png"),
@@ -160,7 +163,7 @@ enum TeleportLocationData
 	ELF_CAMP_SCROLL(TeleportType.SCROLL, "Elf Camp Teleport", new WorldPoint(2193, 3257, 0), "scroll_teleport_icon.png"),
 	FELDIP_HILLS_SCROLL(TeleportType.SCROLL, "Feldip Hills Teleport", new WorldPoint(2542, 2925, 0), "scroll_teleport_icon.png"),
 	LUMBERYARD_SCROLL(TeleportType.SCROLL, "Lumberyard Teleport", new WorldPoint(3303, 3487, 0), "scroll_teleport_icon.png"),
-	LUNAR_ISLE_SCROLL(TeleportType.SCROLL, "Lunar Aisle Teleport", new WorldPoint(2093, 3912, 0), "scroll_teleport_icon.png"),
+	LUNAR_ISLE_SCROLL(TeleportType.SCROLL, "Lunar Isle Teleport", new WorldPoint(2093, 3912, 0), "scroll_teleport_icon.png"),
 	MORTTON_SCROLL(TeleportType.SCROLL, "Mort'ton", new WorldPoint(3489, 3288, 0), "scroll_teleport_icon.png"),
 	MOS_LEHARMLESS_SCROLL(TeleportType.SCROLL, "Mos Le'Harmless Teleport", new WorldPoint(3701, 2996, 0), "scroll_teleport_icon.png"),
 	NARDAH_SCROLL(TeleportType.SCROLL, "Nardah Teleport", new WorldPoint(3421, 2917, 0), "scroll_teleport_icon.png"),

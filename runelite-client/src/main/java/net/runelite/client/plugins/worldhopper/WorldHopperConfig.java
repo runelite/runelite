@@ -79,4 +79,15 @@ public interface WorldHopperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "ping",
+		name = "Show world ping",
+		description = "Shows ping to each game world",
+		position = 4
+	)
+	default boolean ping()
+	{
+		return true;
+	}
 }

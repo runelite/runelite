@@ -268,4 +268,10 @@ public class AccountService
 	{
 		auth.handle(request, response);
 	}
+
+	@RequestMapping("/wscount")
+	public int wscount()
+	{
+		return SessionManager.getCount();
+	}
 }

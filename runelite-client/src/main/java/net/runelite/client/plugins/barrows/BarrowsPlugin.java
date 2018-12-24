@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.barrows;
 
 import com.google.common.collect.Sets;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;
@@ -56,6 +55,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -65,7 +65,7 @@ import net.runelite.client.util.StackFormatter;
 @PluginDescriptor(
 	name = "Barrows Brothers",
 	description = "Show helpful information for the Barrows minigame",
-	tags = {"combat", "minigame", "minimap"}
+	tags = {"combat", "minigame", "minimap", "bosses", "pve", "pvm"}
 )
 public class BarrowsPlugin extends Plugin
 {

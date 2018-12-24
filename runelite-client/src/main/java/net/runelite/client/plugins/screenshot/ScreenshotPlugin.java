@@ -27,7 +27,6 @@ package net.runelite.client.plugins.screenshot;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Desktop;
 import java.awt.Graphics;
@@ -64,6 +63,7 @@ import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
@@ -78,6 +78,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -118,6 +119,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*(Valuable|Untradeable) drop: ([^<>]+)(?:</col>)?");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
@@ -283,6 +285,15 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onLocalPlayerDeath(LocalPlayerDeath death)
+	{
+		if (config.screenshotPlayerDeath())
+		{
+			takeScreenshot("Death " + format(new Date()));
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
@@ -353,6 +364,18 @@ public class ScreenshotPlugin extends Plugin
 				String bossName = m.group(1);
 				String bossKillcount = m.group(2);
 				String fileName = bossName + "(" + bossKillcount + ")";
+				takeScreenshot(fileName);
+			}
+		}
+
+		if (config.screenshotValuableDrop())
+		{
+			Matcher m = VALUABLE_DROP_PATTERN.matcher(chatMessage);
+			if (m.matches())
+			{
+				String valuableDropType = m.group(1);
+				String valuableDropName = m.group(2);
+				String fileName = valuableDropType + " drop " + valuableDropName + " " + format(new Date());
 				takeScreenshot(fileName);
 			}
 		}
@@ -492,7 +515,7 @@ public class ScreenshotPlugin extends Plugin
 	 *
 	 * @param fileName    Filename to use, without file extension.
 	 */
-	void takeScreenshot(String fileName)
+	private void takeScreenshot(String fileName)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -532,7 +555,8 @@ public class ScreenshotPlugin extends Plugin
 				final EnumSet<WorldType> worldTypes = client.getWorldType();
 				final boolean dmm = worldTypes.contains(WorldType.DEADMAN);
 				final boolean sdmm = worldTypes.contains(WorldType.SEASONAL_DEADMAN);
-				final boolean isDmmWorld = dmm || sdmm;
+				final boolean dmmt = worldTypes.contains(WorldType.DEADMAN_TOURNAMENT);
+				final boolean isDmmWorld = dmm || sdmm || dmmt;
 
 				String playerDir = client.getLocalPlayer().getName();
 				if (isDmmWorld)

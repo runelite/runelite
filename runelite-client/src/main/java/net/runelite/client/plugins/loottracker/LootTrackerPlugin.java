@@ -25,12 +25,16 @@
  */
 package net.runelite.client.plugins.loottracker;
 
-import com.google.common.eventbus.Subscribe;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -47,8 +51,15 @@ import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.SessionClose;
+import net.runelite.api.events.SessionOpen;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.account.AccountSession;
+import net.runelite.client.account.SessionManager;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.ItemManager;
@@ -60,6 +71,10 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.loottracker.GameItem;
+import net.runelite.http.api.loottracker.LootRecord;
+import net.runelite.http.api.loottracker.LootRecordType;
+import net.runelite.http.api.loottracker.LootTrackerClient;
 
 @PluginDescriptor(
 	name = "Loot Tracker",
@@ -74,6 +89,13 @@ public class LootTrackerPlugin extends Plugin
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails.");
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
 
+	private static final Splitter COMMA_SPLITTER = Splitter
+		.on(",")
+		.omitEmptyStrings()
+		.trimResults();
+
+	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -84,11 +106,21 @@ public class LootTrackerPlugin extends Plugin
 	private SpriteManager spriteManager;
 
 	@Inject
+	private LootTrackerConfig config;
+
+	@Inject
 	private Client client;
+
+	@Inject
+	private SessionManager sessionManager;
 
 	private LootTrackerPanel panel;
 	private NavigationButton navButton;
 	private String eventType;
+
+	private List<String> ignoredItems = new ArrayList<>();
+
+	private LootTrackerClient lootTrackerClient;
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -108,7 +140,7 @@ public class LootTrackerPlugin extends Plugin
 			}
 			if (quantity > 0)
 			{
-				list.add(new ItemStack(item.getId(), item.getQuantity() + quantity));
+				list.add(new ItemStack(item.getId(), item.getQuantity() + quantity, item.getLocation()));
 			}
 			else
 			{
@@ -119,10 +151,47 @@ public class LootTrackerPlugin extends Plugin
 		return list;
 	}
 
+	@Provides
+	LootTrackerConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(LootTrackerConfig.class);
+	}
+
+	@Subscribe
+	public void onSessionOpen(SessionOpen sessionOpen)
+	{
+		AccountSession accountSession = sessionManager.getAccountSession();
+		if (accountSession.getUuid() != null)
+		{
+			lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
+		}
+		else
+		{
+			lootTrackerClient = null;
+		}
+	}
+
+	@Subscribe
+	public void onSessionClose(SessionClose sessionClose)
+	{
+		lootTrackerClient = null;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("loottracker"))
+		{
+			ignoredItems = COMMA_SPLITTER.splitToList(config.getIgnoredItems());
+			panel.updateIgnoredRecords();
+		}
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
-		panel = new LootTrackerPanel(itemManager);
+		ignoredItems = COMMA_SPLITTER.splitToList(config.getIgnoredItems());
+		panel = new LootTrackerPanel(this, itemManager);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
@@ -135,12 +204,19 @@ public class LootTrackerPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
+
+		AccountSession accountSession = sessionManager.getAccountSession();
+		if (accountSession != null)
+		{
+			lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
+		}
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		clientToolbar.removeNavigation(navButton);
+		lootTrackerClient = null;
 	}
 
 	@Subscribe
@@ -152,6 +228,12 @@ public class LootTrackerPlugin extends Plugin
 		final int combat = npc.getCombatLevel();
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
+
+		if (lootTrackerClient != null)
+		{
+			LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items));
+			lootTrackerClient.submit(lootRecord);
+		}
 	}
 
 	@Subscribe
@@ -163,6 +245,12 @@ public class LootTrackerPlugin extends Plugin
 		final int combat = player.getCombatLevel();
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
+
+		if (lootTrackerClient != null)
+		{
+			LootRecord lootRecord = new LootRecord(name, LootRecordType.PLAYER, toGameItems(items));
+			lootTrackerClient.submit(lootRecord);
+		}
 	}
 
 	@Subscribe
@@ -204,17 +292,23 @@ public class LootTrackerPlugin extends Plugin
 
 		// Convert container items to array of ItemStack
 		final Collection<ItemStack> items = Arrays.stream(container.getItems())
-			.map(item -> new ItemStack(item.getId(), item.getQuantity()))
+			.filter(item -> item.getId() > 0)
+			.map(item -> new ItemStack(item.getId(), item.getQuantity(), client.getLocalPlayer().getLocalLocation()))
 			.collect(Collectors.toList());
 
-		if (!items.isEmpty())
-		{
-			final LootTrackerItem[] entries = buildEntries(stack(items));
-			SwingUtilities.invokeLater(() -> panel.add(eventType, -1, entries));
-		}
-		else
+		if (items.isEmpty())
 		{
 			log.debug("No items to find for Event: {} | Container: {}", eventType, container);
+			return;
+		}
+
+		final LootTrackerItem[] entries = buildEntries(stack(items));
+		SwingUtilities.invokeLater(() -> panel.add(eventType, -1, entries));
+
+		if (lootTrackerClient != null)
+		{
+			LootRecord lootRecord = new LootRecord(eventType, LootRecordType.EVENT, toGameItems(items));
+			lootTrackerClient.submit(lootRecord);
 		}
 	}
 
@@ -252,6 +346,28 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	void toggleItem(String name, boolean ignore)
+	{
+		final Set<String> ignoredItemSet = new HashSet<>(ignoredItems);
+
+		if (ignore)
+		{
+			ignoredItemSet.add(name);
+		}
+		else
+		{
+			ignoredItemSet.remove(name);
+		}
+
+		config.setIgnoredItems(COMMA_JOINER.join(ignoredItemSet));
+		panel.updateIgnoredRecords();
+	}
+
+	boolean isIgnored(String name)
+	{
+		return ignoredItems.contains(name);
+	}
+
 	private LootTrackerItem[] buildEntries(final Collection<ItemStack> itemStacks)
 	{
 		return itemStacks.stream().map(itemStack ->
@@ -259,12 +375,21 @@ public class LootTrackerPlugin extends Plugin
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemStack.getId());
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemStack.getId();
 			final long price = (long) itemManager.getItemPrice(realItemId) * (long) itemStack.getQuantity();
+			final boolean ignored = ignoredItems.contains(itemComposition.getName());
 
 			return new LootTrackerItem(
 				itemStack.getId(),
 				itemComposition.getName(),
 				itemStack.getQuantity(),
-				price);
+				price,
+				ignored);
 		}).toArray(LootTrackerItem[]::new);
+	}
+
+	private static Collection<GameItem> toGameItems(Collection<ItemStack> items)
+	{
+		return items.stream()
+			.map(item -> new GameItem(item.getId(), item.getQuantity()))
+			.collect(Collectors.toList());
 	}
 }

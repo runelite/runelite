@@ -35,4 +35,7 @@ public interface Scene
 	 * @return the tiles in [plane][x][y]
 	 */
 	Tile[][][] getTiles();
+
+	int getDrawDistance();
+	void setDrawDistance(int drawDistance);
 }

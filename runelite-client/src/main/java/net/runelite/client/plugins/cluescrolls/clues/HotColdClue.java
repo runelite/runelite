@@ -84,9 +84,9 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	}
 
 	@Override
-	public List<WorldPoint> getLocations()
+	public WorldPoint[] getLocations()
 	{
-		return Lists.transform(digLocations, HotColdLocation::getWorldPoint);
+		return Lists.transform(digLocations, HotColdLocation::getWorldPoint).toArray(new WorldPoint[0]);
 	}
 
 	@Override
@@ -100,14 +100,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		// strange device has not been tested yet, show how to get it
 		if (lastWorldPoint == null && location == null)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Clue:")
-				.build());
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left(getText())
-				.leftColor(TITLED_CONTENT_COLOR)
-				.build());
-
 			if (getNpc() != null)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
@@ -137,7 +129,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 
 			for (HotColdLocation hotColdLocation : digLocations)
 			{
-				Rectangle2D r = hotColdLocation.getRect();
 				HotColdArea hotColdArea = hotColdLocation.getHotColdArea();
 
 				if (locationCounts.containsKey(hotColdArea))
@@ -232,7 +223,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		}
 	}
 
-	@Override
 	public boolean update(final String message, final ClueScrollPlugin plugin)
 	{
 		if (!message.startsWith("The device is"))
@@ -406,5 +396,10 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	{
 		this.location = wp;
 		reset();
+	}
+
+	public String[] getNpcs()
+	{
+		return new String[] {npc};
 	}
 }

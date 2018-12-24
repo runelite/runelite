@@ -24,7 +24,6 @@
  */
 package net.runelite.client.callback;
 
-import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -41,17 +40,21 @@ import java.awt.image.VolatileImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.RenderOverview;
+import net.runelite.api.Renderable;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.hooks.Callbacks;
+import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
 import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
@@ -283,6 +286,7 @@ public class Hooks implements Callbacks
 		}
 
 		Image image = mainBufferProvider.getImage();
+		final Image finalImage;
 		final Graphics2D graphics2d = (Graphics2D) image.getGraphics();
 
 		try
@@ -296,8 +300,20 @@ public class Hooks implements Callbacks
 
 		notifier.processFlash(graphics2d);
 
+		// Draw clientUI overlays
+		clientUi.paintOverlays(graphics2d);
+
+		graphics2d.dispose();
+
+		if (client.isGpu())
+		{
+			// processDrawComplete gets called on GPU by the gpu plugin at the end of its
+			// drawing cycle, which is later on.
+			return;
+		}
+
 		// Stretch the game image if the user has that enabled
-		if (!client.isResized() && client.isStretchedEnabled())
+		if (client.isStretchedEnabled())
 		{
 			GraphicsConfiguration gc = clientUi.getGraphicsConfiguration();
 			Dimension stretchedDimensions = client.getStretchedDimensions();
@@ -331,13 +347,17 @@ public class Hooks implements Callbacks
 					: RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			stretchedGraphics.drawImage(image, 0, 0, stretchedDimensions.width, stretchedDimensions.height, null);
 
-			image = stretchedImage;
+			finalImage = image = stretchedImage;
+		}
+		else
+		{
+			finalImage = image;
 		}
 
 		// Draw the image onto the game canvas
 		graphics.drawImage(image, 0, 0, client.getCanvas());
 
-		drawManager.processDrawComplete(image);
+		drawManager.processDrawComplete(() -> finalImage);
 	}
 
 	@Override
@@ -391,6 +411,7 @@ public class Hooks implements Callbacks
 		try
 		{
 			renderer.render(graphics2d, OverlayLayer.ABOVE_WIDGETS);
+			renderer.render(graphics2d, OverlayLayer.ABOVE_MAP);
 		}
 		catch (Exception ex)
 		{
@@ -409,5 +430,37 @@ public class Hooks implements Callbacks
 		// but having the game tick event after all packets
 		// have been processed is typically more useful.
 		shouldProcessGameTick = true;
+	}
+
+	public static void renderDraw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)
+	{
+		DrawCallbacks drawCallbacks = client.getDrawCallbacks();
+		if (drawCallbacks != null)
+		{
+			drawCallbacks.draw(renderable, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+		}
+		else
+		{
+			renderable.draw(orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+		}
+	}
+
+	public static void clearColorBuffer(int x, int y, int width, int height, int color)
+	{
+		BufferProvider bp = client.getBufferProvider();
+		int canvasWidth = bp.getWidth();
+		int[] pixels = bp.getPixels();
+
+		int pixelPos = y * canvasWidth + x;
+		int pixelJump = canvasWidth - width;
+
+		for (int cy = y; cy < y + height; cy++)
+		{
+			for (int cx = x; cx < x + width; cx++)
+			{
+				pixels[pixelPos++] = 0;
+			}
+			pixelPos += pixelJump;
+		}
 	}
 }

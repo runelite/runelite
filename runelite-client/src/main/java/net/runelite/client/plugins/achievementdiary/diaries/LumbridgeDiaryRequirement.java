@@ -63,6 +63,8 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 			new Requirement(Skill.FISHING, 30));
 		add("Craft a coif in the Lumbridge cow pen.",
 			new Requirement(Skill.CRAFTING, 38));
+		add("Get a slayer task from Chaeldar.",
+			new Requirement("Combat", 70));
 		add("Chop some willow logs in Draynor Village.",
 			new Requirement(Skill.WOODCUTTING, 30));
 		add("Pickpocket Martin the Master Gardener.",

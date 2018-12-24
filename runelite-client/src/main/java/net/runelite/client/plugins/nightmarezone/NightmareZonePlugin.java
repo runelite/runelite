@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.nightmarezone;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import javax.inject.Inject;
@@ -36,6 +35,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -84,7 +84,7 @@ public class NightmareZonePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void updateConfig(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		overlay.updateConfig();
 	}
@@ -149,6 +149,13 @@ public class NightmareZonePlugin extends Plugin
 			else if (msg.contains("Zapper"))
 			{
 				if (config.zapperNotification())
+				{
+					notifier.notify(msg);
+				}
+			}
+			else if (msg.contains("Ultimate force"))
+			{
+				if (config.ultimateForceNotification())
 				{
 					notifier.notify(msg);
 				}

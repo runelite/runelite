@@ -30,7 +30,7 @@ import net.runelite.http.api.item.Item;
 import net.runelite.http.api.item.ItemType;
 
 @Data
-public class ItemEntry
+class ItemEntry
 {
 	private int id;
 	private String name;

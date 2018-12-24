@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.demonicgorilla;
 
-import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -55,6 +54,7 @@ import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -62,7 +62,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Demonic Gorillas",
 	description = "Count demonic gorilla attacks and display their next possible attack styles",
-	tags = {"combat", "overlay"}
+	tags = {"combat", "overlay", "pve", "pvm"}
 )
 public class DemonicGorillaPlugin extends Plugin
 {
@@ -527,7 +527,7 @@ public class DemonicGorillaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onProjectile(ProjectileMoved event)
+	public void onProjectileMoved(ProjectileMoved event)
 	{
 		Projectile projectile = event.getProjectile();
 		int projectileId = projectile.getId();
@@ -616,7 +616,7 @@ public class DemonicGorillaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onHitsplat(HitsplatApplied event)
+	public void onHitsplatApplied(HitsplatApplied event)
 	{
 		if (gorillas.isEmpty())
 		{
@@ -645,7 +645,7 @@ public class DemonicGorillaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameState(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		GameState gs = event.getGameState();
 		if (gs == GameState.LOGGING_IN ||

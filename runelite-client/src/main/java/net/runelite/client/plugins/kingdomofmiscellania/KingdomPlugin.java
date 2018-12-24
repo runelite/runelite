@@ -25,16 +25,17 @@
 package net.runelite.client.plugins.kingdomofmiscellania;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.eventbus.Subscribe;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import static net.runelite.api.ItemID.TEAK_CHEST;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -123,12 +124,13 @@ public class KingdomPlugin extends Plugin
 
 	private boolean isInKingdom()
 	{
-		return KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
+		return client.getLocalPlayer() != null
+			&& KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
 	}
 
 	private boolean hasCompletedQuest()
 	{
-		return client.getVar(Varbits.THRONE_OF_MISCELLANIA_QUEST) == 1;
+		return client.getVar(VarPlayer.THRONE_OF_MISCELLANIA) > 0;
 	}
 
 	static int getFavorPercent(int favor)

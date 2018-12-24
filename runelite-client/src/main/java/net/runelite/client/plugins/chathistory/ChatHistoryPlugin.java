@@ -26,7 +26,6 @@ package net.runelite.client.plugins.chathistory;
 
 import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.Sets;
-import com.google.common.eventbus.Subscribe;
 import java.util.Queue;
 import java.util.Set;
 import javax.inject.Inject;
@@ -35,6 +34,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -44,7 +44,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class ChatHistoryPlugin extends Plugin
 {
-	private static final String WELCOME_MESSAGE = "Welcome to RuneScape.";
+	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape.";
 	private static final String CLEAR_HISTORY = "Clear history";
 	private static final String CLEAR_PRIVATE = "<col=ffff00>Private:";
 	private static final Set<ChatMessageType> ALLOWED_HISTORY = Sets.newHashSet(
@@ -100,6 +100,7 @@ public class ChatHistoryPlugin extends Plugin
 				.sender(message.getSender())
 				.value(nbsp(message.getValue()))
 				.runeLiteFormattedMessage(nbsp(message.getMessageNode().getRuneLiteFormatMessage()))
+				.timestamp(message.getTimestamp())
 				.build();
 
 			if (!messageQueue.contains(queuedMessage))

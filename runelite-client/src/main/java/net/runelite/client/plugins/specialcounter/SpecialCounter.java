@@ -27,19 +27,19 @@ package net.runelite.client.plugins.specialcounter;
 import java.awt.image.BufferedImage;
 import net.runelite.client.ui.overlay.infobox.Counter;
 
-public class SpecialCounter extends Counter
+class SpecialCounter extends Counter
 {
 	private int hitValue;
 	private SpecialWeapon weapon;
 
-	public SpecialCounter(BufferedImage image, SpecialCounterPlugin plugin, int hitValue, SpecialWeapon weapon)
+	SpecialCounter(BufferedImage image, SpecialCounterPlugin plugin, int hitValue, SpecialWeapon weapon)
 	{
 		super(image, plugin, null);
 		this.weapon = weapon;
 		this.hitValue = hitValue;
 	}
 
-	public void addHits(double hit)
+	void addHits(double hit)
 	{
 		this.hitValue += hit;
 	}

@@ -25,13 +25,12 @@
 package net.runelite.client.ui.overlay;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.eventbus.Subscribe;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -42,6 +41,7 @@ import lombok.Getter;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
 
 /**
@@ -90,7 +90,7 @@ public class OverlayManager
 	@Getter(AccessLevel.PACKAGE)
 	private final List<Overlay> overlays = new ArrayList<>();
 
-	private final Map<OverlayLayer, List<Overlay>> overlayLayers = new HashMap<>();
+	private final Map<OverlayLayer, List<Overlay>> overlayLayers = new EnumMap<>(OverlayLayer.class);
 
 	private final ConfigManager configManager;
 
@@ -224,7 +224,7 @@ public class OverlayManager
 			{
 				// When UNDER_WIDGET overlays are in preferred locations, move to
 				// ABOVE_WIDGETS so that it can draw over interfaces
-				if (layer == OverlayLayer.UNDER_WIDGETS)
+				if (layer == OverlayLayer.UNDER_WIDGETS && !(overlay instanceof WidgetOverlay))
 				{
 					layer = OverlayLayer.ABOVE_WIDGETS;
 				}

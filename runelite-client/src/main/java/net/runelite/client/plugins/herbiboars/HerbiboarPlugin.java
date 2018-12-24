@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.herbiboars;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,6 +53,7 @@ import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -213,7 +213,7 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -233,7 +233,10 @@ public class HerbiboarPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		updateTrailData();
+		if (isInHerbiboarArea())
+		{
+			updateTrailData();
+		}
 	}
 
 	@Subscribe
@@ -249,7 +252,7 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectDeSpawned(GameObjectDespawned event)
+	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onGameObject(event.getTile(), event.getGameObject(), null);
 	}
@@ -267,7 +270,7 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGroundObjectDeSpawned(GroundObjectDespawned event)
+	public void onGroundObjectDespawned(GroundObjectDespawned event)
 	{
 		onGroundObject(event.getTile(), event.getGroundObject(), null);
 	}

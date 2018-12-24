@@ -93,14 +93,14 @@ public class AttackStylesPluginTest
 		when(client.getVar(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.ACCURATE.ordinal());
 
 		// verify that earning xp in a warned skill will display red text on the widget
-		attackPlugin.onAttackStyleChange(new VarbitChanged());
+		attackPlugin.onVarbitChanged(new VarbitChanged());
 		assertTrue(attackPlugin.isWarnedSkillSelected());
 
 		// Switch to attack style that doesn't give attack xp
 		when(client.getVar(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.AGGRESSIVE.ordinal());
 
 		// Verify the widget will now display white text
-		attackPlugin.onAttackStyleChange(new VarbitChanged());
+		attackPlugin.onVarbitChanged(new VarbitChanged());
 		warnedSkills = attackPlugin.getWarnedSkills();
 		assertTrue(warnedSkills.contains(Skill.ATTACK));
 		assertFalse(attackPlugin.isWarnedSkillSelected());
@@ -129,7 +129,7 @@ public class AttackStylesPluginTest
 
 		// equip type_4 weapon type on player
 		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_4.ordinal());
-		attackPlugin.onEquippedWeaponTypeChange(new VarbitChanged());
+		attackPlugin.onVarbitChanged(new VarbitChanged());
 
 		// Verify there is a warned skill
 		Set<Skill> warnedSkills = attackPlugin.getWarnedSkills();

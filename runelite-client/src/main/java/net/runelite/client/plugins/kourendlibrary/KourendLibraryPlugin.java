@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.kourendlibrary;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
@@ -46,6 +45,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -201,7 +201,7 @@ public class KourendLibraryPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onTick(GameTick tick)
+	public void onGameTick(GameTick tick)
 	{
 		boolean inRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == REGION;
 		if (config.hideButton() && inRegion != buttonAttached)
