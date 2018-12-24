@@ -139,7 +139,7 @@ class DiscordState
 		}
 
 		final DiscordPresence presence = DiscordPresence.builder()
-			.state(MoreObjects.firstNonNull(state, ""))
+			.state(MoreObjects.firstNonNull(state, "Idle"))
 			.details(MoreObjects.firstNonNull(details, ""))
 			.startTimestamp(event.getStart())
 			.smallImageKey(MoreObjects.firstNonNull(imageKey, "default"))

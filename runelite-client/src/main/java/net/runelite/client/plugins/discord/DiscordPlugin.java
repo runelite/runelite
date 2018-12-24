@@ -213,6 +213,9 @@ public class DiscordPlugin extends Plugin
 
 		discordParty.join(joinGame.getJoinSecret());
 		discordParty.send(DiscordPartyMessageType.HELLO, client.getUsername());
+		discordState.triggerEvent(client.getGameState() == GameState.LOGGED_IN
+			? DiscordGameEventType.IN_GAME
+			: DiscordGameEventType.IN_MENU);
 	}
 
 	@Subscribe
