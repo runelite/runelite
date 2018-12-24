@@ -186,6 +186,7 @@ public class DiscordService implements AutoCloseable
 
 	private void errored(int errorCode, String message)
 	{
+		log.warn("Discord error: {} - {}", errorCode, message);
 		eventBus.post(new DiscordErrored(errorCode, message));
 	}
 
