@@ -99,7 +99,6 @@ public class DiscordParty extends WebSocketListener
 	public void onFailure(WebSocket webSocket, Throwable t, Response response)
 	{
 		log.warn("Error in websocket", t);
-		secret = null;
-		socket = null;
+		join(secret);
 	}
 }
