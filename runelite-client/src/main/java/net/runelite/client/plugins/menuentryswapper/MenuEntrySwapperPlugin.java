@@ -37,6 +37,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -97,6 +98,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		MenuAction.NPC_FOURTH_OPTION,
 		MenuAction.NPC_FIFTH_OPTION,
 		MenuAction.EXAMINE_NPC);
+
+	private static final Set<Integer> npcKeepSwapping = ImmutableSet.of(
+		NpcID.MONK_OF_ENTRANA,
+		NpcID.MONK_OF_ENTRANA_1166,
+		NpcID.MONK_OF_ENTRANA_1167);
 
 	@Inject
 	private Client client;
@@ -342,7 +348,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (hintArrowNpc != null
 			&& hintArrowNpc.getIndex() == eventId
-			&& NPC_MENU_TYPES.contains(MenuAction.of(event.getType())))
+			&& NPC_MENU_TYPES.contains(MenuAction.of(event.getType()))
+			&& !npcKeepSwapping.contains(hintArrowNpc.getId()))
 		{
 			return;
 		}
