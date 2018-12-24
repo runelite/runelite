@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import lombok.Data;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
+import net.runelite.client.plugins.discord.party.DiscordSession;
 
 /**
  * This class contains data about currently active discord state.
@@ -52,13 +53,15 @@ class DiscordState
 	private final List<EventWithTime> events = new ArrayList<>();
 	private final DiscordService discordService;
 	private final DiscordConfig config;
+	private DiscordSession session;
 	private DiscordPresence lastPresence;
 
 	@Inject
-	private DiscordState(final DiscordService discordService, final DiscordConfig config)
+	private DiscordState(final DiscordService discordService, final DiscordConfig config, final DiscordSession session)
 	{
 		this.discordService = discordService;
 		this.config = config;
+		this.session = session;
 	}
 
 	/**
@@ -140,6 +143,10 @@ class DiscordState
 			.details(MoreObjects.firstNonNull(details, ""))
 			.startTimestamp(event.getStart())
 			.smallImageKey(MoreObjects.firstNonNull(imageKey, "default"))
+			.partyMax(15)
+			.partySize(session.getPartySize())
+			.partyId(session.getCurrentPartyId())
+			.joinSecret(session.getCurrentJoinSecret())
 			.build();
 
 		// This is to reduce amount of RPC calls

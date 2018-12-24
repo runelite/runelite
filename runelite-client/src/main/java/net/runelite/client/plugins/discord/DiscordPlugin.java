@@ -32,6 +32,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
@@ -43,9 +44,17 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.discord.DiscordReplyType;
+import net.runelite.client.discord.DiscordService;
+import net.runelite.client.discord.events.DiscordJoinGame;
+import net.runelite.client.discord.events.DiscordJoinRequest;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.discord.party.DiscordParty;
+import net.runelite.client.plugins.discord.party.DiscordPartyMessage;
+import net.runelite.client.plugins.discord.party.DiscordPartyMessageType;
+import net.runelite.client.plugins.discord.party.DiscordSession;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
@@ -57,6 +66,7 @@ import net.runelite.client.util.LinkBrowser;
 	description = "Show your status and activity in the Discord user panel",
 	tags = {"action", "activity", "external", "integration", "status"}
 )
+@Slf4j
 public class DiscordPlugin extends Plugin
 {
 	@Inject
@@ -73,6 +83,15 @@ public class DiscordPlugin extends Plugin
 
 	@Inject
 	private DiscordState discordState;
+
+	@Inject
+	private DiscordService discordService;
+
+	@Inject
+	private DiscordParty discordParty;
+
+	@Inject
+	private DiscordSession discordSession;
 
 	private Map<Skill, Integer> skillExp = new HashMap<>();
 	private NavigationButton discordButton;
@@ -98,6 +117,8 @@ public class DiscordPlugin extends Plugin
 
 		clientToolbar.addNavigation(discordButton);
 		checkForGameStateUpdate();
+
+		discordParty.join(discordSession.getCurrentJoinSecret());
 	}
 
 	@Override
@@ -113,6 +134,7 @@ public class DiscordPlugin extends Plugin
 		switch (event.getGameState())
 		{
 			case LOGIN_SCREEN:
+				discordParty.send(DiscordPartyMessageType.LOGOUT, client.getUsername());
 				checkForGameStateUpdate();
 				return;
 			case LOGGING_IN:
@@ -122,6 +144,7 @@ public class DiscordPlugin extends Plugin
 				if (loginFlag)
 				{
 					loginFlag = false;
+					discordParty.send(DiscordPartyMessageType.LOGIN, client.getUsername());
 					checkForGameStateUpdate();
 				}
 
@@ -173,6 +196,43 @@ public class DiscordPlugin extends Plugin
 		if (discordGameEventType != null)
 		{
 			discordState.triggerEvent(discordGameEventType);
+		}
+	}
+
+	@Subscribe
+	public void onDiscordJoinRequest(DiscordJoinRequest request)
+	{
+		log.info("Got discord join request {}", request);
+		discordService.respondToRequest(request.getUserId(), DiscordReplyType.YES);
+	}
+
+	@Subscribe
+	public void onDiscordJoinGame(DiscordJoinGame joinGame)
+	{
+		log.info("Got discord join game {}", joinGame);
+		discordSession.setCurrentJoinSecret(joinGame.getJoinSecret());
+
+		discordParty.join(joinGame.getJoinSecret());
+		discordParty.send(DiscordPartyMessageType.HELLO, client.getUsername());
+	}
+
+	@Subscribe
+	public void onDiscordPartyMessage(DiscordPartyMessage message)
+	{
+		switch (message.getType())
+		{
+			case COUNT:
+				discordSession.setPartySize(Integer.parseInt(message.getMessage()));
+				break;
+			case HELLO:
+				log.info("{} joined!", message.getMessage());
+				break;
+			case LOGIN:
+				log.info("{} logged in!", message.getMessage());
+				break;
+			case LOGOUT:
+				log.info("{} logged out!", message.getMessage());
+				break;
 		}
 	}
 
