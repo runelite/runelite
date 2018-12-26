@@ -77,6 +77,7 @@ import static net.runelite.client.plugins.gpu.GLUtil.glDeleteRenderbuffers;
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteTexture;
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteVertexArrays;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenBuffers;
+import static net.runelite.client.plugins.gpu.GLUtil.glGetInteger;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenFrameBuffer;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenRenderbuffer;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenTexture;
@@ -898,7 +899,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				|| lastAntiAliasingMode != antiAliasingMode)
 			{
 				shutdownSceneFbo();
-				initSceneFbo(stretchedCanvasWidth, stretchedCanvasHeight, antiAliasingMode.getSamples());
+
+				final int maxSamples = glGetInteger(gl, gl.GL_MAX_SAMPLES);
+				final int samples = Math.min(antiAliasingMode.getSamples(), maxSamples);
+
+				initSceneFbo(stretchedCanvasWidth, stretchedCanvasHeight, samples);
 
 				lastStretchedCanvasWidth = stretchedCanvasWidth;
 				lastStretchedCanvasHeight = stretchedCanvasHeight;
