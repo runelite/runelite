@@ -40,6 +40,7 @@ import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
+import net.runelite.client.game.ItemChargeManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -50,17 +51,17 @@ import net.runelite.client.util.QueryRunner;
 class ItemChargeOverlay extends Overlay
 {
 	private final QueryRunner queryRunner;
-	private final ItemChargePlugin itemChargePlugin;
 	private final ItemChargeConfig config;
+	private final ItemChargeManager itemChargeManager;
 
 	@Inject
-	ItemChargeOverlay(QueryRunner queryRunner, ItemChargePlugin itemChargePlugin, ItemChargeConfig config)
+	ItemChargeOverlay(QueryRunner queryRunner, ItemChargeConfig config, ItemChargeManager itemChargeManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.queryRunner = queryRunner;
-		this.itemChargePlugin = itemChargePlugin;
 		this.config = config;
+		this.itemChargeManager = itemChargeManager;
 	}
 
 	@Override
@@ -83,7 +84,16 @@ class ItemChargeOverlay extends Overlay
 					continue;
 				}
 
-				charges = itemChargePlugin.getDodgyCharges();
+				charges = itemChargeManager.getCharge(ItemChargeManager.SharedChargeItem.DODGY_NECKLACE);
+			}
+			else if (item.getId() == ItemID.AMULET_OF_CHEMISTRY)
+			{
+				if (!config.showChemistryCount())
+				{
+					continue;
+				}
+
+				charges = itemChargeManager.getCharge(ItemChargeManager.SharedChargeItem.AMULET_OF_CHEMISTRY);
 			}
 			else
 			{

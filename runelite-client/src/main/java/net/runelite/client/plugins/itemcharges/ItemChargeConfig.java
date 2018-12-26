@@ -110,24 +110,6 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "dodgyNecklace",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int dodgyNecklace()
-	{
-		return -1;
-	}
-
-	@ConfigItem(
-		keyName = "dodgyNecklace",
-		name = "",
-		description = ""
-	)
-	void dodgyNecklace(int dodgyNecklace);
-
-	@ConfigItem(
 		keyName = "showImpCharges",
 		name = "Show Imp-in-a-box charges",
 		description = "Configures if imp-in-a-box item charges is shown",
@@ -202,5 +184,27 @@ public interface ItemChargeConfig extends Config
 	default boolean recoilNotification()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showChemistryCount",
+		name = "Amulet of Chemistry Count",
+		description = "Configures if Amulet of Chemistry charge count is shown",
+		position = 15
+	)
+	default boolean showChemistryCount()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "chemistryNotification",
+		name = "Amulet of Chemistry Notification",
+		description = "Configures if the amulet of chemistry breaking notification is shown",
+		position = 16
+	)
+	default boolean chemistryNotification()
+	{
+		return true;
 	}
 }
