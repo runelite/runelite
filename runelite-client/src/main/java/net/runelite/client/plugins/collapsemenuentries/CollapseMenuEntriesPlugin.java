@@ -203,7 +203,7 @@ public class CollapseMenuEntriesPlugin extends Plugin
 	private boolean isGroundItemOption(MenuEntry entry)
 	{
 		int type = entry.getType();
-		return type == GROUND_ITEM_OPTION_1 || type == GROUND_ITEM_OPTION_2 || type <= GROUND_ITEM_OPTION_3 || type == GROUND_ITEM_EXAMINE;
+		return type == GROUND_ITEM_OPTION_1 || type == GROUND_ITEM_OPTION_2 || type == GROUND_ITEM_OPTION_3 || type == GROUND_ITEM_EXAMINE;
 	}
 
 	@Provides
