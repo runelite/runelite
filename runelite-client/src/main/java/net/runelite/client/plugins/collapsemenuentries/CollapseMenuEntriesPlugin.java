@@ -115,13 +115,10 @@ public class CollapseMenuEntriesPlugin extends Plugin
 			if (optionMap.containsKey(itemID))
 			{
 				ArrayList<ItemOption> itemOptions = optionMap.get(itemID);
-				Iterator<ItemOption> optionIterator = itemOptions.iterator();
 				boolean bFoundOption = false;
 
-				while (optionIterator.hasNext())
+				for (ItemOption itemOption : itemOptions)
 				{
-					ItemOption itemOption = optionIterator.next();
-
 					if (entry.getOption().equals(itemOption.option))
 					{
 						itemOption.numOccurrences++;
@@ -172,12 +169,9 @@ public class CollapseMenuEntriesPlugin extends Plugin
 			{
 				int itemID = entry.getIdentifier();
 				ArrayList<ItemOption> itemOptions = optionMap.get(itemID);
-				Iterator<ItemOption> optionIterator = itemOptions.iterator();
 
-				while (optionIterator.hasNext())
+				for (ItemOption itemOption : itemOptions)
 				{
-					ItemOption itemOption = optionIterator.next();
-
 					if (entry.getOption().equals(itemOption.option))
 					{
 						if (itemOption.bProcessedInRebuild == false)
