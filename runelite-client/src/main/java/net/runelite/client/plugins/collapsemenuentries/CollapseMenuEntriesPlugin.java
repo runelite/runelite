@@ -37,7 +37,6 @@ import net.runelite.client.util.ColorUtil;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 @Slf4j
 @PluginDescriptor(
