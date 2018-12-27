@@ -49,7 +49,7 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.ZEAH_MESS_HALL_COOKING_DISPLAY, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.PVP_BOUNTY_HUNTER_INFO, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, WidgetInfo.PVP_KILLDEATH_CONTAINER, OverlayPosition.TOP_LEFT, WidgetInfo.PVP_KILLDEATH_COUNTER),
 			new WidgetOverlay(client, WidgetInfo.SKOTIZO_CONTAINER, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.KOUREND_FAVOUR_OVERLAY, OverlayPosition.TOP_CENTER),
 			new WidgetOverlay(client, WidgetInfo.PYRAMID_PLUNDER_DATA, OverlayPosition.TOP_CENTER));
