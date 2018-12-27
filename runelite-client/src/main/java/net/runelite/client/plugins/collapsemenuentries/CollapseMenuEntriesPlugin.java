@@ -88,11 +88,6 @@ public class CollapseMenuEntriesPlugin extends Plugin
 		}
 	}
 
-	/**
-	 * Populates the option map with data from the current context menu.
-	 * @param menuEntries - The client's array of menu entries.
-	 * @return the number of duplicate options that'll be culled from the final menu.
-	 **/
 	private int buildOptionMap(MenuEntry[] menuEntries)
 	{
 		optionMap.clear();
@@ -117,7 +112,7 @@ public class CollapseMenuEntriesPlugin extends Plugin
 
 				for (ItemOption itemOption : itemOptions)
 				{
-					if (entriesAreEqual(entry, itemOption.baseEntry))
+					if (areEntriesEqual(entry, itemOption.baseEntry))
 					{
 						itemOption.numOccurrences++;
 						numOptionsCulled++;
@@ -142,11 +137,6 @@ public class CollapseMenuEntriesPlugin extends Plugin
 		return numOptionsCulled;
 	}
 
-	/**
-	 * Creates the new slimmed-down context menu based on the option map.
-	 * @param menuEntries - The client's array of menu entries.
-	 * @param numOptionsCulled - The number of duplicate options that'll be culled from the final menu.
-	 **/
 	private void rebuildContextMenu(MenuEntry[] menuEntries, int numOptionsCulled)
 	{
 		MenuEntry[] newMenuEntries = new MenuEntry[menuEntries.length - numOptionsCulled];
@@ -163,7 +153,7 @@ public class CollapseMenuEntriesPlugin extends Plugin
 
 				for (ItemOption itemOption : itemOptions)
 				{
-					if (entriesAreEqual(entry, itemOption.baseEntry))
+					if (areEntriesEqual(entry, itemOption.baseEntry))
 					{
 						if (itemOption.bProcessedInRebuild == false)
 						{
@@ -189,21 +179,10 @@ public class CollapseMenuEntriesPlugin extends Plugin
 		client.setMenuEntries(newMenuEntries);
 	}
 
-	/**
-	 * Compares the option and target of two menu entries. Returns true if they're the same.
-	 * @param a - the first menu entry
-	 * @param b - the second menu entry
-	 * @return true if the specified menu entries are essentially equal.
-	 **/
-	private boolean entriesAreEqual(MenuEntry a, MenuEntry b) {
+	private boolean areEntriesEqual(MenuEntry a, MenuEntry b) {
 		return a.getOption().equals(b.getOption()) && a.getTarget().equals(b.getTarget());
 	}
 
-	/**
-	 * Creates an instance of ItemOption based on the specified MenuEntry.
-	 * @param baseEntry - The menu entry.
-	 * @return the new ItemOption instance.
-	 **/
 	private ItemOption createItemOption(MenuEntry baseEntry)
 	{
 		ItemOption newOption = new ItemOption();
@@ -211,11 +190,6 @@ public class CollapseMenuEntriesPlugin extends Plugin
 		return newOption;
 	}
 
-	/**
-	 * Returns true if the provided MenuEntry regards an item. Checks the entry's type - this should equal 20, 21, 22, or 1004 for ground items.
-	 * These are declared as named constants.
-	 * @param entry - The menu entry.
-	 **/
 	private boolean isGroundItemOption(MenuEntry entry)
 	{
 		int type = entry.getType();
