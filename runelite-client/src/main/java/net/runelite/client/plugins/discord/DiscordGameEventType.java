@@ -291,7 +291,7 @@ enum DiscordGameEventType
 
 	DiscordGameEventType(Skill skill, int priority)
 	{
-		this.state = training(skill);
+		this.details = training(skill);
 		this.priority = priority;
 		this.imageKey = imageKeyOf(skill);
 		this.priority = priority;
@@ -300,7 +300,7 @@ enum DiscordGameEventType
 
 	DiscordGameEventType(String areaName, DiscordAreaType areaType, int... regionIds)
 	{
-		this.details = exploring(areaType, areaName);
+		this.state = exploring(areaType, areaName);
 		this.priority = -2;
 		this.discordAreaType = areaType;
 		this.regionIds = regionIds;
@@ -309,14 +309,14 @@ enum DiscordGameEventType
 
 	DiscordGameEventType(String state, int priority)
 	{
-		this.details = state;
+		this.state = state;
 		this.priority = priority;
 		this.shouldClear = true;
 	}
 
 	DiscordGameEventType(String areaName, DiscordAreaType areaType, Varbits varbits)
 	{
-		this.details = exploring(areaType, areaName);
+		this.state = exploring(areaType, areaName);
 		this.priority = -2;
 		this.discordAreaType = areaType;
 		this.varbits = varbits;
