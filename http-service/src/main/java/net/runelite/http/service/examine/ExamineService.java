@@ -26,6 +26,8 @@ package net.runelite.http.service.examine;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.concurrent.TimeUnit;
+
 import static net.runelite.http.service.examine.ExamineType.ITEM;
 import static net.runelite.http.service.examine.ExamineType.NPC;
 import static net.runelite.http.service.examine.ExamineType.OBJECT;
@@ -33,6 +35,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,19 +75,19 @@ public class ExamineService
 	}
 
 	@RequestMapping("/npc/{id}")
-	public String getNpc(@PathVariable int id)
+	public ResponseEntity<String> getNpc(@PathVariable int id)
 	{
 		return get(NPC, id);
 	}
 
 	@RequestMapping("/object/{id}")
-	public String getObject(@PathVariable int id)
+	public ResponseEntity<String> getObject(@PathVariable int id)
 	{
 		return get(OBJECT, id);
 	}
 
 	@RequestMapping("/item/{id}")
-	public String getItem(@PathVariable int id)
+	public ResponseEntity<String> getItem(@PathVariable int id)
 	{
 		return get(ITEM, id);
 	}
@@ -106,7 +110,7 @@ public class ExamineService
 		insert(ITEM, id, examine);
 	}
 
-	private String get(ExamineType type, int id)
+	private ResponseEntity<String> get(ExamineType type, int id)
 	{
 		try (Connection con = sql2o.open())
 		{
@@ -118,11 +122,13 @@ public class ExamineService
 
 			if (entry != null)
 			{
-				return entry.getText();
+				return ResponseEntity.ok()
+					.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
+					.body(entry.getText());
 			}
 		}
 
-		return null;
+		return ResponseEntity.notFound().build();
 	}
 
 	private void insert(ExamineType type, int id, String examine)

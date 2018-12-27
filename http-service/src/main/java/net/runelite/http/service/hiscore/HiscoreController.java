@@ -25,6 +25,8 @@
 package net.runelite.http.service.hiscore;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
 import net.runelite.http.api.hiscore.HiscoreSkill;
@@ -33,6 +35,8 @@ import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.service.util.HiscoreEndpointEditor;
 import net.runelite.http.service.xp.XpTrackerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,7 +55,7 @@ public class HiscoreController
 	private XpTrackerService xpTrackerService;
 
 	@RequestMapping("/{endpoint}")
-	public HiscoreResult lookup(@PathVariable HiscoreEndpoint endpoint, @RequestParam String username) throws ExecutionException
+	public ResponseEntity<HiscoreResult> lookup(@PathVariable HiscoreEndpoint endpoint, @RequestParam String username) throws ExecutionException
 	{
 		HiscoreResult result = hiscoreService.lookupUsername(username, endpoint);
 
@@ -65,11 +69,13 @@ public class HiscoreController
 				xpTrackerService.update(username, result);
 		}
 
-		return result;
+		return ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePublic())
+				.body(result);
 	}
 
 	@RequestMapping("/{endpoint}/{skillName}")
-	public SingleHiscoreSkillResult singleSkillLookup(@PathVariable HiscoreEndpoint endpoint, @PathVariable String skillName, @RequestParam String username) throws ExecutionException
+	public ResponseEntity<SingleHiscoreSkillResult> singleSkillLookup(@PathVariable HiscoreEndpoint endpoint, @PathVariable String skillName, @RequestParam String username) throws ExecutionException
 	{
 		HiscoreSkill skill = HiscoreSkill.valueOf(skillName.toUpperCase());
 
@@ -84,7 +90,9 @@ public class HiscoreController
 		skillResult.setSkillName(skillName);
 		skillResult.setSkill(requested);
 
-		return skillResult;
+		return ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(10, TimeUnit.MINUTES).cachePublic())
+				.body(skillResult);
 	}
 
 	@InitBinder

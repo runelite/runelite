@@ -79,12 +79,14 @@ public class ItemController
 	}
 
 	@RequestMapping("/{itemId}")
-	public Item getItem(HttpServletResponse response, @PathVariable int itemId)
+	public ResponseEntity<Item> getItem(HttpServletResponse response, @PathVariable int itemId)
 	{
 		ItemEntry item = itemService.getItem(itemId);
 		if (item != null)
 		{
-			return item.toItem();
+			return ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
+				.body(item.toItem());
 		}
 
 		itemService.queueItem(itemId);
@@ -97,7 +99,9 @@ public class ItemController
 		ItemEntry item = itemService.getItem(itemId);
 		if (item != null && item.getIcon() != null)
 		{
-			return ResponseEntity.ok(item.getIcon());
+			return ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
+				.body(item.getIcon());
 		}
 
 		itemService.queueItem(itemId);
@@ -110,7 +114,9 @@ public class ItemController
 		ItemEntry item = itemService.getItem(itemId);
 		if (item != null && item.getIcon_large() != null)
 		{
-			return ResponseEntity.ok(item.getIcon_large());
+			return ResponseEntity.ok()
+				.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
+				.body(item.getIcon_large());
 		}
 
 		itemService.queueItem(itemId);
