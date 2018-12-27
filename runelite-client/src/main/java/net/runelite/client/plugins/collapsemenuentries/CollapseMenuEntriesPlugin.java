@@ -92,7 +92,7 @@ public class CollapseMenuEntriesPlugin extends Plugin
 	/**
 	 * Populates the option map with data from the current context menu.
 	 * @param menuEntries - The client's array of menu entries.
-	 * @return The number of duplicate options that'll be culled from the final menu.
+	 * @return the number of duplicate options that'll be culled from the final menu.
 	 **/
 	private int buildOptionMap(MenuEntry[] menuEntries)
 	{
@@ -129,21 +129,14 @@ public class CollapseMenuEntriesPlugin extends Plugin
 
 				if (bFoundOption == false)
 				{
-					ItemOption newOption = new ItemOption();
-					newOption.option = entry.getOption();
-					newOption.target = entry.getTarget();
-					itemOptions.add(newOption);
+					itemOptions.add(createItemOption(entry));
 				}
 			}
 			else
 			{
 				ArrayList<ItemOption> newOptionList = new ArrayList<>();
 
-				ItemOption newOption = new ItemOption();
-				newOption.option = entry.getOption();
-				newOption.target = entry.getTarget();
-
-				newOptionList.add(newOption);
+				newOptionList.add(createItemOption(entry));
 				optionMap.put(itemID, newOptionList);
 			}
 		}
@@ -192,6 +185,19 @@ public class CollapseMenuEntriesPlugin extends Plugin
 		}
 
 		client.setMenuEntries(newMenuEntries);
+	}
+
+	/**
+	 * Creates an instance of ItemOption based on the specified MenuEntry.
+	 * @param entry - The menu entry.
+	 * @return the new ItemOption instance.
+	 **/
+	private ItemOption createItemOption(MenuEntry entry)
+	{
+		ItemOption newOption = new ItemOption();
+		newOption.option = entry.getOption();
+		newOption.target = entry.getTarget();
+		return newOption;
 	}
 
 	/**
