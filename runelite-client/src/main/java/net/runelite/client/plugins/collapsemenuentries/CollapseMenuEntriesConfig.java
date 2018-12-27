@@ -20,8 +20,8 @@ public interface CollapseMenuEntriesConfig extends Config {
 	@ConfigItem(
 			position = 2,
 			keyName = "collapsedColour",
-			name = "Duplicates colour",
-			description = "The colour of the duplicate count string (if enabled)."
+			name = "Counted duplicates colour",
+			description = "The colour of the above string (if it's enabled)."
 	)
 	default Color collapsedColour() { return new Color(255, 255, 255); }
 }
