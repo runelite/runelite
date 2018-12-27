@@ -49,8 +49,7 @@ public class CollapseMenuEntriesPlugin extends Plugin
 
 	static class ItemOption
 	{
-		protected String option = "";
-		protected String target = "";
+		protected MenuEntry baseEntry = null;
 		protected int numOccurrences = 1;
 		protected boolean bProcessedInRebuild = false;
 	}
@@ -118,7 +117,7 @@ public class CollapseMenuEntriesPlugin extends Plugin
 
 				for (ItemOption itemOption : itemOptions)
 				{
-					if (entry.getOption().equals(itemOption.option))
+					if (entriesAreEqual(entry, itemOption.baseEntry))
 					{
 						itemOption.numOccurrences++;
 						numOptionsCulled++;
@@ -164,13 +163,16 @@ public class CollapseMenuEntriesPlugin extends Plugin
 
 				for (ItemOption itemOption : itemOptions)
 				{
-					if (entry.getOption().equals(itemOption.option))
+					if (entriesAreEqual(entry, itemOption.baseEntry))
 					{
 						if (itemOption.bProcessedInRebuild == false)
 						{
 							if (itemOption.numOccurrences > 1 && config.showNumber())
 							{
-								entry.setTarget(itemOption.target + "</col>" + ColorUtil.wrapWithColorTag(COUNT_PREFIX + itemOption.numOccurrences + COUNT_SUFFIX, config.collapsedColour()));
+								String target = itemOption.baseEntry.getTarget();
+								String duplicateCountString = ColorUtil.wrapWithColorTag(COUNT_PREFIX + itemOption.numOccurrences + COUNT_SUFFIX, config.collapsedColour());
+
+								entry.setTarget(target + "</col>" + duplicateCountString);
 							}
 							itemOption.bProcessedInRebuild = true;
 							newMenuEntries[newEntryIndex++] = entry;
@@ -188,15 +190,24 @@ public class CollapseMenuEntriesPlugin extends Plugin
 	}
 
 	/**
+	 * Compares the option and target of two menu entries. Returns true if they're the same.
+	 * @param a - the first menu entry
+	 * @param b - the second menu entry
+	 * @return true if the specified menu entries are essentially equal.
+	 **/
+	private boolean entriesAreEqual(MenuEntry a, MenuEntry b) {
+		return a.getOption().equals(b.getOption()) && a.getTarget().equals(b.getTarget());
+	}
+
+	/**
 	 * Creates an instance of ItemOption based on the specified MenuEntry.
-	 * @param entry - The menu entry.
+	 * @param baseEntry - The menu entry.
 	 * @return the new ItemOption instance.
 	 **/
-	private ItemOption createItemOption(MenuEntry entry)
+	private ItemOption createItemOption(MenuEntry baseEntry)
 	{
 		ItemOption newOption = new ItemOption();
-		newOption.option = entry.getOption();
-		newOption.target = entry.getTarget();
+		newOption.baseEntry = baseEntry;
 		return newOption;
 	}
 
