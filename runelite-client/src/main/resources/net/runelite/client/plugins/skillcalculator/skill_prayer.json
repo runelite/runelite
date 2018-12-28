@@ -1,6 +1,10 @@
 {
   "bonuses": [
     {
+      "name": "Chaos Altar (200%)",
+      "value": 1
+    },
+    {
       "name": "Lit Gilded Altar (350%)",
       "value": 2.5
     },
