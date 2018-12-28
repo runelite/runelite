@@ -1,16 +1,16 @@
 {
   "bonuses": [
     {
-      "name": "Chaos Altar (200%)",
-      "value": 1
-    },
-    {
       "name": "Lit Gilded Altar (350%)",
       "value": 2.5
     },
     {
       "name": "Ectofuntus (400%)",
       "value": 3
+    },
+    {
+      "name": "Chaos Altar (700%)",
+      "value": 6
     }
   ],
   "actions": [
