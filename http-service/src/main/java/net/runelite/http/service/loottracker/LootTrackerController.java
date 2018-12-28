@@ -31,7 +31,6 @@ import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.loottracker.LootRecord;
-import net.runelite.http.api.loottracker.LootRecordType;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +80,7 @@ public class LootTrackerController
 
 	@DeleteMapping
 	public void deleteLoot(HttpServletRequest request, HttpServletResponse response,
-						   @RequestParam(required = false) LootRecordType type,  @RequestParam(required = false) String eventId) throws IOException
+		@RequestParam(required = false) String eventId) throws IOException
 	{
 		SessionEntry e = auth.handle(request, response);
 		if (e == null)
@@ -90,6 +89,6 @@ public class LootTrackerController
 			return;
 		}
 
-		service.delete(e.getUser(), type, eventId);
+		service.delete(e.getUser(), eventId);
 	}
 }
