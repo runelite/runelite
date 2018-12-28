@@ -31,9 +31,11 @@ import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.loottracker.LootRecord;
+import net.runelite.http.api.loottracker.LootRecordType;
 import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -75,5 +77,19 @@ public class LootTrackerController
 		}
 
 		return service.get(e.getUser(), count);
+	}
+
+	@DeleteMapping
+	public void deleteLoot(HttpServletRequest request, HttpServletResponse response,
+						   @RequestParam(required = false) LootRecordType type,  @RequestParam(required = false) String eventId) throws IOException
+	{
+		SessionEntry e = auth.handle(request, response);
+		if (e == null)
+		{
+			response.setStatus(HttpStatusCodes.STATUS_CODE_UNAUTHORIZED);
+			return;
+		}
+
+		service.delete(e.getUser(), type, eventId);
 	}
 }
