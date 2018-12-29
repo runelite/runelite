@@ -33,6 +33,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -50,6 +51,7 @@ import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.http.api.loottracker.LootTrackerClient;
 
 class LootTrackerPanel extends PluginPanel
 {
@@ -292,6 +294,13 @@ class LootTrackerPanel extends PluginPanel
 			updateOverall();
 			logsContainer.removeAll();
 			logsContainer.repaint();
+
+			// Delete all loot, or loot matching the current view
+			LootTrackerClient client = plugin.getLootTrackerClient();
+			if (client != null)
+			{
+				client.delete(currentView);
+			}
 		});
 
 		// Create popup menu
@@ -333,6 +342,23 @@ class LootTrackerPanel extends PluginPanel
 			box.rebuild();
 			updateOverall();
 		}
+	}
+
+	/**
+	 * Adds a Collection of records to the panel
+	 */
+	void addRecords(Collection<LootTrackerRecord> recs)
+	{
+		for (LootTrackerRecord r : recs)
+		{
+			records.add(r);
+			LootTrackerBox box = buildBox(r);
+			if (box != null)
+			{
+				box.rebuild();
+			}
+		}
+		updateOverall();
 	}
 
 	/**
@@ -451,6 +477,13 @@ class LootTrackerPanel extends PluginPanel
 			updateOverall();
 			logsContainer.remove(box);
 			logsContainer.repaint();
+
+			LootTrackerClient client = plugin.getLootTrackerClient();
+			// Without loot being grouped we have no way to identify single kills to be deleted
+			if (client != null && groupLoot)
+			{
+				client.delete(box.getId());
+			}
 		});
 
 		popupMenu.add(reset);

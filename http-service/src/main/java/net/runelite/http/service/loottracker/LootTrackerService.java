@@ -30,7 +30,6 @@ import java.util.Collection;
 import java.util.List;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
-import net.runelite.http.api.loottracker.LootRecordType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -70,7 +69,7 @@ public class LootTrackerService
 	private static final String SELECT_LOOT_QUERY = "SELECT killId,time,type,eventId,itemId,itemQuantity FROM kills JOIN drops ON drops.killId = kills.id WHERE accountId = :accountId ORDER BY TIME DESC LIMIT :limit";
 
 	private static final String DELETE_LOOT_ACCOUNT = "DELETE FROM kills WHERE accountId = :accountId";
-	private static final String DELETE_LOOT_ACCOUNT_TYPE = "DELETE FROM kills WHERE accountId = :accountId AND type = :type AND eventId = :eventId";
+	private static final String DELETE_LOOT_ACCOUNT_EVENTID = "DELETE FROM kills WHERE accountId = :accountId AND eventId = :eventId";
 
 	private final Sql2o sql2o;
 
@@ -164,21 +163,20 @@ public class LootTrackerService
 		return lootRecords;
 	}
 
-	public void delete(int accountId, LootRecordType type, String eventId)
+	public void delete(int accountId, String eventId)
 	{
 		try (Connection con = sql2o.open())
 		{
-			if (eventId == null && type == null)
+			if (eventId == null)
 			{
 				con.createQuery(DELETE_LOOT_ACCOUNT)
 					.addParameter("accountId", accountId)
 					.executeUpdate();
 			}
-			else if (eventId != null && type != null)
+			else
 			{
-				con.createQuery(DELETE_LOOT_ACCOUNT_TYPE)
+				con.createQuery(DELETE_LOOT_ACCOUNT_EVENTID)
 					.addParameter("accountId", accountId)
-					.addParameter("type", type)
 					.addParameter("eventId", eventId)
 					.executeUpdate();
 			}
