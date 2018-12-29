@@ -27,9 +27,14 @@ package net.runelite.client.plugins.itemstats;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.grounditems.GroundItemInputListener;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -39,6 +44,16 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class ItemStatPlugin extends Plugin
 {
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hotKeyPressed;
+
+	@Inject
+	private KeyManager keyManager;
+
+	@Inject
+	private ItemStatInputListener inputListener;
+
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -61,11 +76,13 @@ public class ItemStatPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		keyManager.registerKeyListener(inputListener);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		keyManager.unregisterKeyListener(inputListener);
 	}
 }
