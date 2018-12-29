@@ -76,7 +76,6 @@ public interface WorldMapConfig extends Config
 		return true;
 	}
 
-
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_NORMAL_TELEPORT_ICON,
 		name = "Show Standard Spellbook destinations",

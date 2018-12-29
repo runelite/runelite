@@ -197,7 +197,6 @@ public class WorldMapPlugin extends Plugin
 				.forEach(worldMapPointManager::add);
 		}
 
-
 		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
 		Arrays.stream(TeleportLocationData.values())
 			.filter(data ->
