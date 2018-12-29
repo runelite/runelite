@@ -44,7 +44,7 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "World Map",
 	description = "Enhance the world map to display additional information",
-	tags = {"agility", "fairy", "rings", "teleports", "farming"}
+	tags = {"agility", "fairy", "farming", "rings", "teleports"}
 )
 public class WorldMapPlugin extends Plugin
 {
@@ -192,9 +192,11 @@ public class WorldMapPlugin extends Plugin
 		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);
 		if (config.farmingPatchTooltips())
 		{
-			Arrays.stream(FarmingPatchLocation.values())
-				.map(value -> new FarmingPatchPoint(value, BLANK_ICON))
-				.forEach(worldMapPointManager::add);
+			Arrays.stream(FarmingPatchLocation.values()).forEach(location ->
+				Arrays.stream(location.getLocations())
+					.map(point -> new FarmingPatchPoint(point, location.getTooltip(), BLANK_ICON))
+					.forEach(worldMapPointManager::add)
+			);
 		}
 
 		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
