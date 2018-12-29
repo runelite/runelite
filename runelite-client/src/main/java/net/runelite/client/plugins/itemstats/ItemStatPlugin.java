@@ -34,7 +34,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.grounditems.GroundItemInputListener;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(

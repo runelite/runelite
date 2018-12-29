@@ -135,14 +135,17 @@ public class ItemStatOverlay extends Overlay
 
 		if (config.equipmentStats())
 		{
-		    if (!config.equipmentToggle() || (config.equipmentToggle() && plugin.isHotKeyPressed())) {
-		    	plugin.setHotKeyPressed(false);
+			if (!config.equipmentToggle() || (config.equipmentToggle() && plugin.isHotKeyPressed()))
+			{
+				plugin.setHotKeyPressed(false);
 				final ItemStats stats = itemManager.getItemStats(itemId);
 
-				if (stats != null) {
+				if (stats != null)
+				{
 					final String tooltip = buildStatBonusString(stats);
 
-					if (!tooltip.isEmpty()) {
+					if (!tooltip.isEmpty())
+					{
 						tooltipManager.add(new Tooltip(tooltip));
 					}
 				}

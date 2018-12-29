@@ -82,7 +82,7 @@ public interface ItemStatConfig extends Config
 		return false;
 	}
 
-    @ConfigItem(
+	@ConfigItem(
 		keyName = "equipmentToggle",
 		name = "Equipment Inventory Toggle",
 		description = "Toggle viewing equipment stats with ALT"

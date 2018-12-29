@@ -29,31 +29,37 @@ import net.runelite.client.input.KeyListener;
 import javax.inject.Inject;
 import java.awt.event.KeyEvent;
 
-public class ItemStatInputListener implements KeyListener {
-    private static final int HOTKEY = KeyEvent.VK_ALT;
+public class ItemStatInputListener implements KeyListener
+{
+	private static final int HOTKEY = KeyEvent.VK_ALT;
 
-    @Inject
-    private ItemStatPlugin plugin;
+	@Inject
+	private ItemStatPlugin plugin;
 
-    @Inject
-    private ItemStatConfig config;
+	@Inject
+	private ItemStatConfig config;
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
+	@Override
+	public void keyTyped(KeyEvent e)
+	{
+	}
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (config.equipmentToggle() && (e.getKeyCode() == HOTKEY)) {
-            plugin.setHotKeyPressed(true);
-        }
-    }
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (config.equipmentToggle() && (e.getKeyCode() == HOTKEY))
+		{
+			plugin.setHotKeyPressed(true);
+		}
+	}
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if (config.equipmentToggle() && (e.getKeyCode() == HOTKEY)) {
-                plugin.setHotKeyPressed(false);
-        }
-    }
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if (config.equipmentToggle() && (e.getKeyCode() == HOTKEY))
+		{
+			plugin.setHotKeyPressed(false);
+		}
+	}
 }
 
