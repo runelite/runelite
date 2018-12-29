@@ -76,6 +76,7 @@ public interface WorldMapConfig extends Config
 		return true;
 	}
 
+
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_NORMAL_TELEPORT_ICON,
 		name = "Show Standard Spellbook destinations",
@@ -171,6 +172,17 @@ public interface WorldMapConfig extends Config
 		position = 13
 	)
 	default boolean questStartTooltips()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_FARMING_PATCH_TOOLTIPS,
+		name = "Show farming patch type",
+		description = "Display the type of farming patches in the icon tooltip",
+		position = 14
+	)
+	default boolean farmingPatchTooltips()
 	{
 		return true;
 	}
