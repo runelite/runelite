@@ -306,7 +306,9 @@ public class TimersPlugin extends Plugin
 			&& (event.getId() == ItemID.ANTIDOTE1
 			|| event.getId() == ItemID.ANTIDOTE2
 			|| event.getId() == ItemID.ANTIDOTE3
-			|| event.getId() == ItemID.ANTIDOTE4))
+			|| event.getId() == ItemID.ANTIDOTE4
+			|| event.getId() == ItemID.ANTIDOTE_MIX1
+			|| event.getId() == ItemID.ANTIDOTE_MIX2))
 		{
 			// Needs menu option hook because drink message is intercepting with antipoison message
 			createGameTimer(ANTIDOTEPLUS);
@@ -318,7 +320,9 @@ public class TimersPlugin extends Plugin
 			&& (event.getId() == ItemID.ANTIPOISON1
 			|| event.getId() == ItemID.ANTIPOISON2
 			|| event.getId() == ItemID.ANTIPOISON3
-			|| event.getId() == ItemID.ANTIPOISON4))
+			|| event.getId() == ItemID.ANTIPOISON4
+			|| event.getId() == ItemID.ANTIPOISON_MIX1
+			|| event.getId() == ItemID.ANTIPOISON_MIX2))
 		{
 			createGameTimer(ANTIPOISON);
 			return;
@@ -329,7 +333,9 @@ public class TimersPlugin extends Plugin
 			&& (event.getId() == ItemID.SUPERANTIPOISON1
 			|| event.getId() == ItemID.SUPERANTIPOISON2
 			|| event.getId() == ItemID.SUPERANTIPOISON3
-			|| event.getId() == ItemID.SUPERANTIPOISON4))
+			|| event.getId() == ItemID.SUPERANTIPOISON4
+			|| event.getId() == ItemID.ANTIPOISON_SUPERMIX1
+			|| event.getId() == ItemID.ANTIPOISON_SUPERMIX2))
 		{
 			createGameTimer(SUPERANTIPOISON);
 			return;
@@ -342,6 +348,46 @@ public class TimersPlugin extends Plugin
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(STAMINA);
+			return;
+		}
+
+		if (config.showAntiFire()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.ANTIFIRE_MIX1
+			|| event.getId() == ItemID.ANTIFIRE_MIX2))
+		{
+			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+			createGameTimer(ANTIFIRE);
+			return;
+		}
+
+		if (config.showAntiFire()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.EXTENDED_ANTIFIRE_MIX1
+			|| event.getId() == ItemID.EXTENDED_ANTIFIRE_MIX2))
+		{
+			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+			createGameTimer(EXANTIFIRE);
+			return;
+		}
+
+		if (config.showAntiFire()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.SUPER_ANTIFIRE_MIX1
+			|| event.getId() == ItemID.SUPER_ANTIFIRE_MIX2))
+		{
+			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+			createGameTimer(SUPERANTIFIRE);
+			return;
+		}
+
+		if (config.showAntiFire()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX1
+			|| event.getId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX2))
+		{
+			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+			createGameTimer(EXSUPERANTIFIRE);
 			return;
 		}
 
