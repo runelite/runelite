@@ -31,7 +31,6 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
 class FarmingPatchPoint extends WorldMapPoint
 {
-
 	FarmingPatchPoint(WorldPoint point, String tooltip, BufferedImage icon)
 	{
 		super(point, icon);
