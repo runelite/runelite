@@ -24,8 +24,11 @@
  */
 package net.runelite.client.plugins.bankvalue;
 
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
