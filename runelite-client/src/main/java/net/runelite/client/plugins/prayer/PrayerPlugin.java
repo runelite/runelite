@@ -136,6 +136,7 @@ public class PrayerPlugin extends Plugin
 			doseOverlay.setHasHolyWrench(false);
 			doseOverlay.setHasPrayerPotion(false);
 			doseOverlay.setHasRestorePotion(false);
+			doseOverlay.setHasSanfewPotion(false);
 
 			if (inventory != null)
 			{
@@ -233,6 +234,9 @@ public class PrayerPlugin extends Plugin
 						break;
 					case RESTOREPOT:
 						doseOverlay.setHasRestorePotion(true);
+						break;
+					case SANFEWPOT:
+						doseOverlay.setHasSanfewPotion(true);
 						break;
 				}
 			}

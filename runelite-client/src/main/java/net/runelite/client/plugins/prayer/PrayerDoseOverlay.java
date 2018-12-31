@@ -68,6 +68,8 @@ class PrayerDoseOverlay extends Overlay
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hasRestorePotion;
 	@Setter(AccessLevel.PACKAGE)
+	private boolean hasSanfewPotion;
+	@Setter(AccessLevel.PACKAGE)
 	private boolean hasHolyWrench;
 
 	@Inject
@@ -120,7 +122,7 @@ class PrayerDoseOverlay extends Overlay
 			tooltipManager.add(new Tooltip(tooltip));
 		}
 
-		if (!config.showPrayerDoseIndicator() || (!hasPrayerPotion && !hasRestorePotion))
+		if (!config.showPrayerDoseIndicator() || (!hasPrayerPotion && !hasRestorePotion && !hasSanfewPotion))
 		{
 			return null;
 		}
