@@ -29,26 +29,32 @@ import net.runelite.client.input.KeyListener;
 import javax.inject.Inject;
 import java.awt.event.KeyEvent;
 
-public class ShiftWalkerInputListener implements KeyListener {
+public class ShiftWalkerInputListener implements KeyListener
+{
 
 	@Inject
 	private ShiftWalkerPlugin plugin;
 
 	@Override
-	public void keyTyped(KeyEvent event) {
+	public void keyTyped(KeyEvent event)
+	{
 
 	}
 
 	@Override
-	public void keyPressed(KeyEvent event) {
-		if (event.getKeyCode() == KeyEvent.VK_SHIFT) {
+	public void keyPressed(KeyEvent event)
+	{
+		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
+		{
 			plugin.setHotKeyPressed(true);
 		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent event) {
-		if (event.getKeyCode() == KeyEvent.VK_SHIFT) {
+	public void keyReleased(KeyEvent event)
+	{
+		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
+		{
 			plugin.setHotKeyPressed(false);
 		}
 	}
