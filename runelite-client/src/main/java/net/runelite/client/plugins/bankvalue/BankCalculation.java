@@ -56,7 +56,11 @@ class BankCalculation
 	// Used to avoid extra calculation if the bank has not changed
 	private int itemsHash;
 
+	// Used to track most valuable items
 	Pair[] PairList;
+
+	//used to reduce function calls
+	private boolean showGE, showHA, showHV;
 
 	@Getter
 	private long gePrice;
@@ -77,6 +81,10 @@ class BankCalculation
 	 */
 	void calculate()
 	{
+
+		showGE = config.showGE();
+		showHA = config.showHA();
+		showHV = config.showHV();
 
 		WidgetItem[] widgetItems = queryRunner.runQuery(new BankItemQuery());
 
@@ -118,12 +126,12 @@ class BankCalculation
 
 			final ItemComposition itemComposition = itemManager.getItemComposition(widgetItem.getId());
 
-			if (config.showGE())
+			if (showGE)
 			{
 				itemIds.add(widgetItem.getId());
 			}
 
-			if (config.showHA())
+			if (showHA)
 			{
 				int price = itemComposition.getPrice();
 
@@ -134,14 +142,14 @@ class BankCalculation
 				}
 			}
 
-			if(config.showHV()){
+			if(showHV){
 				PairList = insertToList(PairList, widgetItem);
 			}
 
 		}
 
 		// Now do the calculations
-		if (config.showGE() && !itemIds.isEmpty())
+		if (showGE && !itemIds.isEmpty())
 		{
 			for (WidgetItem widgetItem : widgetItems)
 			{
