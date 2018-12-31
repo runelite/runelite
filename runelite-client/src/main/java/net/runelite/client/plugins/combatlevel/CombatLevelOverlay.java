@@ -43,9 +43,9 @@ import java.awt.Rectangle;
 class CombatLevelOverlay extends Overlay
 {
 	private static final Color COMBAT_LEVEL_COLOUR = new Color(0xff981f);
+	private static final double PRAY_MULT = 0.125;
 	static final double ATT_STR_MULT = 0.325;
 	static final double DEF_HP_MULT = 0.25;
-	static final double PRAY_MULT = 0.125;
 	static final double RANGE_MAGIC_LEVEL_MULT = 1.5;
 	static final double RANGE_MAGIC_MULT = 0.325;
 
@@ -109,12 +109,9 @@ class CombatLevelOverlay extends Overlay
 		int next = client.getLocalPlayer().getCombatLevel() + 1;
 		int meleeNeed = calcLevels(base + melee, next, ATT_STR_MULT);
 		int hpdefNeed = calcLevels(base + max, next, DEF_HP_MULT);
-		int prayNeed = calcLevels(base + max, next, PRAY_MULT);
+		int prayNeed = calcLevelsPray(base + max, next, prayerLevel);
 		int rangeNeed = calcLevelsRM(rangedLevel, next, base);
 		int magicNeed = calcLevelsRM(magicLevel, next, base);
-
-		// prayer is a special case, increasing combat every even level. need to correct its value
-		prayNeed = correctPrayer(prayerLevel, prayNeed);
 
 		// create tooltip string
 		StringBuilder sb = new StringBuilder();
@@ -145,7 +142,7 @@ class CombatLevelOverlay extends Overlay
 
 	/**
 	 * Calculate skill levels required for increasing combat level, meant
-	 * for all combat skills besides ranged and magic.
+	 * for all combat skills besides prayer, ranged, and magic.
 	 * @param start	initial value
 	 * @param end	ending value (combat level + 1)
 	 * @param multiple	how much adding one skill level will change combat
@@ -154,7 +151,35 @@ class CombatLevelOverlay extends Overlay
 	@VisibleForTesting
 	static int calcLevels(double start, int end, double multiple)
 	{
-		return (int) Math.ceil((end - start) / multiple);
+		return (int) Math.ceil(calcMultipliedLevels(start, end, multiple));
+	}
+
+	/**
+	 * Calculate skill levels for increasing combat level, meant ONLY for the Prayer skill.
+	 * <p>
+	 * Note: Prayer is a special case, only leveling up upon even level numbers. This is accounted
+	 *       for in this function.
+	 * </p>
+	 * @param start       current combat level
+	 * @param end         ending value (combat level + 1)
+	 * @param prayerLevel the player's current prayer level
+	 * @return Prayer levels required to level up combat
+	 */
+	@VisibleForTesting
+	static int calcLevelsPray(double start, int end, int prayerLevel)
+	{
+		final int neededLevels = (int) Math.floor(calcMultipliedLevels(start, end, PRAY_MULT));
+
+		if ((prayerLevel + neededLevels) % 2 != 0)
+		{
+			return neededLevels + 1;
+		}
+		return neededLevels;
+	}
+
+	private static double calcMultipliedLevels(double start, int end, double multiple)
+	{
+		return (end - start) / multiple;
 	}
 
 	/**
@@ -170,21 +195,5 @@ class CombatLevelOverlay extends Overlay
 	{
 		start = Math.floor(start * RANGE_MAGIC_LEVEL_MULT) * RANGE_MAGIC_MULT;
 		return (int) Math.ceil((end - dhp - start) / (RANGE_MAGIC_MULT * RANGE_MAGIC_LEVEL_MULT));
-	}
-
-	/**
-	 * Corrects how many levels you need to level up combat through prayer.
-	 * @param level	current prayer level
-	 * @param need	needed prayer level calculated by calcLevels(...)
-	 * @return	a corrected number to increase combat through prayer only
-	 */
-	@VisibleForTesting
-	static int correctPrayer(int level, int need)
-	{
-		if ((level + need) % 2 != 0)
-		{
-			need++;
-		}
-		return need;
 	}
 }
