@@ -64,11 +64,6 @@ public class MotherlodeSession
 	@Getter(AccessLevel.PACKAGE)
 	private HashMap<MotherloadeOre, Integer> collectedOres;
 
-	public int getCollectedOre(MotherloadeOre ore)
-	{
-		return collectedOres.get(ore);
-	}
-
 	public void setupCollectedOres()
 	{
 		collectedOres = new HashMap<>();

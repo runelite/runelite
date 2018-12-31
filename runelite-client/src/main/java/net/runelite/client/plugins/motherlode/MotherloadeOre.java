@@ -52,11 +52,6 @@ public enum MotherloadeOre
 		this.id = itemID;
 	}
 
-	public static boolean isOre(int id)
-	{
-		return Arrays.stream(values()).anyMatch(o -> o.getId() == id);
-	}
-
 	public static MotherloadeOre getFromItem(int itemid)
 	{
 		return Arrays.stream(values()).filter(o -> o.getId() == itemid).findFirst().orElse(null);

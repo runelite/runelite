@@ -35,7 +35,6 @@ import net.runelite.client.util.StackFormatter;
 import javax.inject.Inject;
 import java.awt.*;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 
 public class MotherlodeProfitOverlay extends Overlay
@@ -69,19 +68,24 @@ public class MotherlodeProfitOverlay extends Overlay
 		panelComponent.getChildren().add(TitleComponent.builder().color(Color.YELLOW).text("Profit").build());
 
 		HashMap<MotherloadeOre, Integer> profits = new HashMap<>();
-		Arrays.stream(MotherloadeOre.values()).filter(o -> session.getCollectedOre(o) > 0 && o != MotherloadeOre.GOLDEN_NUGGET).forEach(o -> profits.put(o, session.getCollectedOre(o) * itemManager.getItemPrice(o.getId())));
+		Arrays.stream(MotherloadeOre.values()).filter(o -> session.getCollectedOres().get(o) > 0 && o != MotherloadeOre.GOLDEN_NUGGET).forEach(o -> profits.put(o, session.getCollectedOres().get(o) * itemManager.getItemPrice(o.getId())));
 
 		if (showOre)
 		{
-
-			profits.keySet().stream()
-				.sorted(Comparator.comparing(MotherloadeOre::getName))
-				.forEach(o ->
-					panelComponent.getChildren().add(LineComponent.builder().left(o.getName() + ":")
-					.right(StackFormatter.formatNumber(profits.get(o)))
-					.build())
-				);
-
+			for (MotherloadeOre ore : MotherloadeOre.values())
+			{
+				if (profits.containsKey(ore))
+				{
+					int profit = profits.get(ore);
+					if (profit > 0)
+					{
+						panelComponent.getChildren().add(LineComponent.builder()
+								.left(ore.getName() + ":")
+								.right(StackFormatter.formatNumber(profit))
+								.build());
+					}
+				}
+			}
 		}
 
 		if (showTotal)
@@ -90,13 +94,13 @@ public class MotherlodeProfitOverlay extends Overlay
 			if (showOre)
 				panelComponent.getChildren().add(LineComponent.builder().build());
 
-			int total = 0;
+			int total = profits.values().stream().mapToInt(o -> o.intValue()).sum();
 
 			panelComponent.getChildren().add(LineComponent.builder()
-					.leftColor(Color.CYAN)
-					.left("Total:")
-					.right(StackFormatter.formatNumber(profits.values().stream().mapToInt(o -> o.intValue()).sum()))
-					.build());
+				.leftColor(Color.CYAN)
+				.left("Total:")
+				.right(StackFormatter.formatNumber(total))
+				.build());
 
 		}
 

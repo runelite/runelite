@@ -479,15 +479,12 @@ public class MotherlodePlugin extends Plugin
 
 		if (inventory != null)
 		{
-
 			Item[] items = inventory.getItems();
 
 			for (Item item : items)
 			{
-
 				int id = item.getId();
-
-				if (MotherloadeOre.isOre(id))
+				if (MLM_ORE_TYPES.contains(id))
 				{
 
 					// This builds an 'ignore' list for the following ore amount calculation
@@ -497,11 +494,8 @@ public class MotherlodePlugin extends Plugin
 					inventorySnapshop.put(id, amount);
 
 				}
-
 			}
-
 		}
-
 	}
 
 	@Schedule(
@@ -526,7 +520,7 @@ public class MotherlodePlugin extends Plugin
 
 				int id = item.getId();
 
-				if (MotherloadeOre.isOre(id))
+				if (MLM_ORE_TYPES.contains(id))
 				{
 
 					int amount = item.getQuantity();
@@ -558,9 +552,7 @@ public class MotherlodePlugin extends Plugin
 						session.incrementCollectedOre(item.getId(), item.getQuantity());
 
 				}
-
 			}
-
 		}
 
 		inventorySnapshop.clear();

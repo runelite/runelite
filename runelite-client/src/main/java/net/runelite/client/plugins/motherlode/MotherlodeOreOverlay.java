@@ -32,8 +32,6 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 import javax.inject.Inject;
 import java.awt.*;
-import java.util.Arrays;
-import java.util.Comparator;
 
 public class MotherlodeOreOverlay extends Overlay
 {
@@ -60,14 +58,17 @@ public class MotherlodeOreOverlay extends Overlay
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(TitleComponent.builder().color(Color.ORANGE).text("Ores found").build());
 
-		Arrays.stream(MotherloadeOre.values()).filter(o -> session.getCollectedOre(o) > 0)
-			.sorted(Comparator.comparing(MotherloadeOre::getName))
-			.forEach(o ->
+		for (MotherloadeOre ore : MotherloadeOre.values())
+		{
+			int mined = session.getCollectedOres().get(ore);
+			if (mined > 0)
+			{
 				panelComponent.getChildren().add(LineComponent.builder()
-				.left(o.getName() + ":")
-				.right(Integer.toString(session.getCollectedOre(o)))
-				.build())
-			);
+					.left(ore.getName() + ":")
+					.right(Integer.toString(mined))
+					.build());
+			}
+		}
 
 		return panelComponent.render(graphics);
 
