@@ -182,29 +182,17 @@ class BankCalculation
 
 	private Pair[] insertToList(Pair[] list, WidgetItem item){
 		long price = (long) itemManager.getItemPrice(item.getId()) * item.getQuantity();
-		int i = findMinValueInList(list);
-		if(list[i]==null || price > list[i].value) {
-			list[i] = new Pair(item, price);
+		int i, j;
+		for(i = 0;i<list.length ; i++){
+			if(list[i]==null || price > list[i].value){
+				for(j = list.length - 1 ;j>i ; j--){
+					list[j] = list[j - 1];
+				}
+				list[i] = new Pair(item, price);
+				i = list.length;
+			}
 		}
 		return list;
-	}
-
-	private int findMinValueInList(Pair[] list) {
-		if(list[0]==null){
-			return 0;
-		}
-		long min = list[0].value;
-		int mindex = 0;
-		for(int i = 1;i<list.length ; i++){
-			if(list[i]==null){
-				return i;
-			}
-			if(list[i].value < min){
-				min = list[i].value;
-				mindex = i;
-			}
-		}
-		return mindex;
 	}
 
 	final class Pair {
