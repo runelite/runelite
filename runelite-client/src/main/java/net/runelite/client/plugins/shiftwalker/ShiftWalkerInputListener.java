@@ -24,19 +24,12 @@
  */
 package net.runelite.client.plugins.shiftwalker;
 
-import net.runelite.api.Client;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 
 import javax.inject.Inject;
 import java.awt.event.KeyEvent;
 
-public class ShiftClickInputListener implements KeyListener {
-	@Inject
-	private ClientThread clientThread;
-
-	@Inject
-	private Client client;
+public class ShiftWalkerInputListener implements KeyListener {
 
 	@Inject
 	private ShiftWalkerPlugin plugin;
@@ -49,16 +42,14 @@ public class ShiftClickInputListener implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent event) {
 		if (event.getKeyCode() == KeyEvent.VK_SHIFT) {
-			plugin.setShiftModifier(true);
+			plugin.setHotKeyPressed(true);
 		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent event)
-	{
-		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
-		{
-			plugin.setShiftModifier(false);
+	public void keyReleased(KeyEvent event) {
+		if (event.getKeyCode() == KeyEvent.VK_SHIFT) {
+			plugin.setHotKeyPressed(false);
 		}
 	}
 }

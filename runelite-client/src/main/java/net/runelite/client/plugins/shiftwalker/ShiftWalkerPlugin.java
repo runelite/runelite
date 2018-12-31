@@ -26,51 +26,39 @@ package net.runelite.client.plugins.shiftwalker;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
-import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.input.KeyManager;
-import net.runelite.client.menus.MenuManager;
-import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
-import org.apache.commons.lang3.ArrayUtils;
 
 import javax.inject.Inject;
 import java.util.Set;
 
+/**
+ * Shift Walker Plugin. Credit to MenuEntrySwapperPlugin for code some code structure used here.
+ */
 @PluginDescriptor(
-	name = "Shift Walker Plugin",
-	description = "Walk here by clicking shift",
+	name = "Shift To Walk Here",
+	description = "Use Shift to toggle the Walk Here menu option. While pressed you will Walk rather than interact with objects.",
 	tags = {"npcs", "items", "objects"},
 	enabledByDefault = false
 )
-public class ShiftWalkerPlugin extends Plugin
-{
-	private static final String CONFIGURE = "Configure";
-	private static final String SAVE = "Save";
-	private static final String RESET = "Reset";
-	private static final String MENU_TARGET = "Shift-click";
+public class ShiftWalkerPlugin extends Plugin {
 
-	private static final String CONFIG_GROUP = "shiftclick";
-	private static final String ITEM_KEY_PREFIX = "item_";
 	private static final String WALK_HERE = "WALK HERE";
 	private static final String CANCEL = "CANCEL";
-
 
 	private static final Set<MenuAction> NPC_MENU_TYPES = ImmutableSet.of(
 		MenuAction.NPC_FIRST_OPTION,
 		MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION,
 		MenuAction.NPC_FOURTH_OPTION,
-		MenuAction.NPC_FIFTH_OPTION,
-		MenuAction.EXAMINE_NPC);
+		MenuAction.NPC_FIFTH_OPTION);
 
 	@Inject
 	private Client client;
@@ -79,7 +67,7 @@ public class ShiftWalkerPlugin extends Plugin
 	private ShiftWalkerConfig config;
 
 	@Inject
-	private ShiftClickInputListener inputListener;
+	private ShiftWalkerInputListener inputListener;
 
 	@Inject
 	private ConfigManager configManager;
@@ -87,137 +75,101 @@ public class ShiftWalkerPlugin extends Plugin
 	@Inject
 	private KeyManager keyManager;
 
-	@Inject
-	private MenuManager menuManager;
-
-	@Getter
-	private boolean configuringShiftClick = false;
-
 	@Setter
-	private boolean shiftModifier = false;
+	private boolean hotKeyPressed = false;
 
 	@Provides
-	ShiftWalkerConfig provideConfig(ConfigManager configManager)
-	{
+	ShiftWalkerConfig provideConfig(ConfigManager configManager) {
 		return configManager.getConfig(ShiftWalkerConfig.class);
 	}
 
 	@Override
-	public void startUp()
-	{
-		enableCustomization();
-	}
-
-	@Override
-	public void shutDown()
-	{
-		disableCustomization();
-	}
-
-	private Integer getSwapConfig(int itemId)
-	{
-		itemId = ItemVariationMapping.map(itemId);
-		String config = configManager.getConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
-		if (config == null || config.isEmpty())
-		{
-			return null;
-		}
-
-		return Integer.parseInt(config);
-	}
-
-	private void setSwapConfig(int itemId, int index)
-	{
-		itemId = ItemVariationMapping.map(itemId);
-		configManager.setConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId, index);
-	}
-
-	private void unsetSwapConfig(int itemId)
-	{
-		configManager.unsetConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
-	}
-
-	private void enableCustomization()
-	{
+	public void startUp() {
 		keyManager.registerKeyListener(inputListener);
 	}
 
-	private void disableCustomization()
-	{
+	@Override
+	public void shutDown() {
 		keyManager.unregisterKeyListener(inputListener);
-		configuringShiftClick = false;
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
-	{
-		if (client.getGameState() != GameState.LOGGED_IN
-			|| !shiftModifier)
-		{
+	public void onFocusChanged(FocusChanged event) {
+		if (!event.isFocused()) {
+			hotKeyPressed = false;
+		}
+	}
+
+	/**
+	 * Event when a new menu entry was added.
+	 * @param event {@link MenuEntryAdded}.
+	 */
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event) {
+		if (client.getGameState() != GameState.LOGGED_IN || !hotKeyPressed
+				|| !NPC_MENU_TYPES.contains(MenuAction.of(event.getType()))) {
 			return;
 		}
 
-		final int eventId = event.getIdentifier();
 		final String pOptionToReplace = Text.removeTags(event.getOption()).toUpperCase();
-		final NPC hintArrowNpc  = client.getHintArrowNpc();
 
-		if (hintArrowNpc != null
-			&& hintArrowNpc.getIndex() == eventId
-			&& NPC_MENU_TYPES.contains(MenuAction.of(event.getType()))
-		 || (pOptionToReplace.equals(CANCEL) || pOptionToReplace.equals(WALK_HERE)))
-		{
+		//If the option is already to walk there, or cancel we don't need to swap it with anything
+		if (pOptionToReplace.equals(CANCEL) || pOptionToReplace.equals(WALK_HERE)) {
 			return;
 		}
 
-	if (config.shiftWalkEverything()) { //This should be the last entry?
-		swap(pOptionToReplace);
-	} else if (config.shiftWalkBoxTraps() && ShiftWalkerGroups.BOX_TRAPS.contains(pOptionToReplace)) {
-		swap(pOptionToReplace);
-	} else if (config.shiftWalkAttackOption() && ShiftWalkerGroups.ATTACK_OPTIONS.contains(pOptionToReplace)) {
-		swap(pOptionToReplace);
-	}
+		String target = Text.removeTags(event.getTarget().toUpperCase());
 
-	}
-
-	@Subscribe
-	public void onFocusChanged(FocusChanged event)
-	{
-		if (!event.isFocused())
-		{
-			shiftModifier = false;
+		if (config.shiftWalkEverything()) {
+			swap(pOptionToReplace); //Swap everything with walk here
+		} else if (config.shiftWalkBoxTraps() && target.equals(ShiftWalkerGroups.BOX_TRAP)
+				&& ShiftWalkerGroups.BOX_TRAP_KEYWORDS.contains(pOptionToReplace)) {
+			swap(pOptionToReplace); //Swap only on box traps
+		} else if (config.shiftWalkAttackOption() && ShiftWalkerGroups.ATTACK_OPTIONS_KEYWORDS.contains(pOptionToReplace)) {
+			swap(pOptionToReplace); //Swap on everything that has an attack keyword as the first option
 		}
 	}
 
-	private int searchIndex(MenuEntry[] entries, String option)
-	{
-		for (int i = entries.length - 1; i >= 0; i--)
-		{
-			MenuEntry entry = entries[i];
-			String entryOption = Text.removeTags(entry.getOption()).toUpperCase();
-			if (entryOption.equals(option))
-			{
-				return i;
-			}
-		}
-
-		return -1;
-	}
-
-	private void swap(String pOptionToReplace)
-	{
+	/**
+	 * Swaps menu entries if the entries could be found. This places Walk Here where the top level menu option was.
+	 * @param pOptionToReplace The String containing the Menu Option that needs to be replaced. IE: "Attack", "Chop Down".
+	 */
+	private void swap(String pOptionToReplace) {
 		MenuEntry[] entries = client.getMenuEntries();
 
-		int idxA = searchIndex(entries, WALK_HERE);
-		int idxB = searchIndex(entries, pOptionToReplace);
+		Integer walkHereEntry = searchIndex(entries, WALK_HERE);
+		Integer entryToReplace = searchIndex(entries, pOptionToReplace);
 
-		if (idxA >= 0 && idxB >= 0)
-		{
-			MenuEntry entry = entries[idxA];
-			entries[idxA] = entries[idxB];
-			entries[idxB] = entry;
+		if (walkHereEntry != null
+			&& entryToReplace != null) {
+			MenuEntry walkHereMenuEntry = entries[walkHereEntry];
+			entries[walkHereEntry] = entries[entryToReplace];
+			entries[entryToReplace] = walkHereMenuEntry;
 
 			client.setMenuEntries(entries);
 		}
+	}
+
+	/**
+	 * Finds the index of the menu that contains the verbiage we are looking for.
+	 * @param pMenuEntries The list of {@link MenuEntry}s.
+	 * @param pMenuEntryToSearchFor The Option in the menu to search for.
+	 * @return The index location or null if it was not found.
+	 */
+	private Integer searchIndex(MenuEntry[] pMenuEntries, String pMenuEntryToSearchFor) {
+		Integer indexLocation = 0;
+
+		for (MenuEntry menuEntry : pMenuEntries) {
+			String entryOption = Text.removeTags(menuEntry.getOption()).toUpperCase();
+
+			if (entryOption.equals(pMenuEntryToSearchFor)) {
+				return indexLocation;
+			}
+
+			indexLocation++;
+		}
+
+		return null;
 	}
 
 }
