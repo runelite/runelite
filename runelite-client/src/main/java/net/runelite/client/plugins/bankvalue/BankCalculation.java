@@ -24,20 +24,24 @@
  */
 package net.runelite.client.plugins.bankvalue;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.COINS_995;
 import static net.runelite.api.ItemID.PLATINUM_TOKEN;
 import net.runelite.api.queries.BankItemQuery;
+import net.runelite.api.queries.WidgetItemQuery;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.QueryRunner;
 
 @Slf4j
@@ -51,6 +55,8 @@ class BankCalculation
 
 	// Used to avoid extra calculation if the bank has not changed
 	private int itemsHash;
+
+	Pair[] PairList;
 
 	@Getter
 	private long gePrice;
@@ -71,6 +77,7 @@ class BankCalculation
 	 */
 	void calculate()
 	{
+
 		WidgetItem[] widgetItems = queryRunner.runQuery(new BankItemQuery());
 
 		if (widgetItems.length == 0 || !isBankDifferent(widgetItems))
@@ -79,6 +86,7 @@ class BankCalculation
 		}
 
 		log.debug("Calculating new bank value...");
+		PairList = new Pair[config.NumberOfItemsToHighlight()];
 
 		gePrice = haPrice = 0;
 
@@ -125,6 +133,11 @@ class BankCalculation
 						(long) quantity;
 				}
 			}
+
+			if(config.showHV()){
+				PairList = insertToList(PairList, widgetItem);
+			}
+
 		}
 
 		// Now do the calculations
@@ -144,6 +157,7 @@ class BankCalculation
 				gePrice += (long) itemManager.getItemPrice(itemId) * quantity;
 			}
 		}
+
 	}
 
 	private boolean isBankDifferent(WidgetItem[] widgetItems)
@@ -164,5 +178,50 @@ class BankCalculation
 		}
 
 		return false;
+	}
+
+	private Pair[] insertToList(Pair[] list, WidgetItem item){
+		long price = (long) itemManager.getItemPrice(item.getId()) * item.getQuantity();
+		int i = findMinValueInList(list);
+		if(list[i]==null || price > list[i].value) {
+			list[i] = new Pair(item, price);
+		}
+		return list;
+	}
+
+	private int findMinValueInList(Pair[] list) {
+		if(list[0]==null){
+			return 0;
+		}
+		long min = list[0].value;
+		int mindex = 0;
+		for(int i = 1;i<list.length ; i++){
+			if(list[i]==null){
+				return i;
+			}
+			if(list[i].value < min){
+				min = list[i].value;
+				mindex = i;
+			}
+		}
+		return mindex;
+	}
+
+	final class Pair {
+		private WidgetItem key;
+		private Long value;
+
+		Pair(WidgetItem key, Long value) {
+			this.key = key;
+			this.value = value;
+		}
+
+		public WidgetItem getKey() {
+			return key;
+		}
+
+		public Long getValue() {
+			return value;
+		}
 	}
 }

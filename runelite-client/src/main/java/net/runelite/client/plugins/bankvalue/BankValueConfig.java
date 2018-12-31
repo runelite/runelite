@@ -29,11 +29,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
+import java.awt.*;
+
 @ConfigGroup("bankvalue")
 public interface BankValueConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showGE",
+		keyName = "showGE ",
 		name = "Show Grand Exchange price",
 		description = "Show grand exchange price total (GE)",
 		position = 1
@@ -44,24 +46,49 @@ public interface BankValueConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showHA",
+		keyName = "showHA ",
 		name = "Show high alchemy price",
 		description = "Show high alchemy price total (HA)",
 		position = 2
 	)
 	default boolean showHA()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
-		keyName = "showExact",
-		name = "Show exact bank value",
-		description = "Show exact bank value",
-		position = 3
+			keyName = "showExact ",
+			name = "Show exact bank value",
+			description = "Show exact bank value",
+			position = 3
 	)
-	default boolean showExact()
+	default boolean showExact() { return false; }
+
+	@ConfigItem(
+			keyName = "ShowValueableItems ",
+			name = "Show Valuable Items",
+			description = "Highlights valuable items",
+			position = 4
+	)
+	default boolean showHV() { return true; }
+
+	@ConfigItem(
+			keyName = "HighValueColour ",
+			name = "High value Colour",
+			description = "Configures the colour for most valuable items",
+			position = 5
+	)
+	default Color HighValueColour()
 	{
-		return false;
+		return Color.decode("#AA00FF");
 	}
+
+	@ConfigItem(
+			keyName = "NumberOfItemsToHighlight ",
+			name = "Number Of Items To Highlight",
+			description = "Configures the Number Of Items To Highlight",
+			position = 6
+	)
+	default int NumberOfItemsToHighlight() { return 3; }
+
 }
