@@ -66,6 +66,7 @@ public class XpDropPlugin extends Plugin
 	private boolean hasDropped = false;
 	private Skill lastSkill = null;
 	private Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
+	private PrayerType currentTickPrayer;
 
 	@Provides
 	XpDropConfig provideConfig(ConfigManager configManager)
@@ -133,7 +134,7 @@ public class XpDropPlugin extends Plugin
 			}
 		}
 
-		PrayerType prayer = getActivePrayerType();
+		PrayerType prayer = currentTickPrayer;
 		if (prayer == null)
 		{
 			resetTextColor(widget);
@@ -199,6 +200,8 @@ public class XpDropPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
+		currentTickPrayer = getActivePrayerType();
+
 		final int fakeTickDelay = config.fakeXpDropDelay();
 
 		if (fakeTickDelay == 0 || lastSkill == null)
