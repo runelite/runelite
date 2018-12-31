@@ -56,7 +56,6 @@ import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.NpcActionChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
