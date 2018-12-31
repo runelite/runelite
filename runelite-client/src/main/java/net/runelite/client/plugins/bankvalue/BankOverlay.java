@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.geom.Area;
 
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 class BankOverlay extends Overlay {
 
@@ -72,8 +73,8 @@ class BankOverlay extends Overlay {
         // Don't draw outside the bank window
         net.runelite.api.Point windowLocation = bankContainer.getCanvasLocation();
 
-        if (canvasLocation.getY() > windowLocation.getY() + bankContainer.getHeight()||
-                canvasLocation.getY() + w.getHeight() < windowLocation.getY())
+        if (canvasLocation.getY() >= windowLocation.getY() + bankContainer.getHeight()||
+                canvasLocation.getY() + w.getHeight() <= windowLocation.getY())
         {
             return;
         }
@@ -83,6 +84,7 @@ class BankOverlay extends Overlay {
                         canvasLocation.getX() - 1,
                         max(canvasLocation.getY() - 1,windowLocation.getY()) - 1,
                         w.getWidth() + 1,
+                        //includes padding
                         getWidgetHeight(windowLocation.getY() - 1, bankContainer.getHeight() + 2, canvasLocation.getY() - 1, w.getHeight() + 2)));
 
         OverlayUtil.renderHoverableArea(graphics, widgetArea, client.getMouseCanvasPosition(),
@@ -90,20 +92,8 @@ class BankOverlay extends Overlay {
 
     }
 
-    private int getWidgetHeight(int y, int height, int y1, int height1) {
-        //outside of window
-        if((y1 >= (y + height) )||((y1 + height1 )<= y)){
-            return 0;
-        }
-        //intersect with top
-        else if (y1 < y && (y1 + height1)> y) {
-            return height1 - (y - y1);
-        }
-        //intersect with bottom
-        else if(y1 < (y + height) &&( y1 + height1 )>( y + height)){
-            return (y + height) - y1;
-        }
-        return height1;
+    private int getWidgetHeight(int y, int h, int y1, int h1) {
+        return min(h1 - y + y1, min(h1, y + h - y1));
     }
 
 }
