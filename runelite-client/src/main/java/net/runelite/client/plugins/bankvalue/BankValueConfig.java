@@ -58,26 +58,32 @@ public interface BankValueConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showExact ",
-			name = "Show exact bank value",
-			description = "Show exact bank value",
-			position = 3
+		keyName = "showExact ",
+		name = "Show exact bank value",
+		description = "Show exact bank value",
+		position = 3
 	)
-	default boolean showExact() { return false; }
+	default boolean showExact()
+	{
+		return false;
+	}
 
 	@ConfigItem(
-			keyName = "ShowValueableItems ",
-			name = "Show Valuable Items",
-			description = "Highlights valuable items",
-			position = 4
+		keyName = "ShowValueableItems ",
+		name = "Show Valuable Items",
+		description = "Highlights valuable items",
+		position = 4
 	)
-	default boolean showHV() { return false; }
+	default boolean showHV()
+	{
+		return false;
+	}
 
 	@ConfigItem(
-			keyName = "HighValueColour ",
-			name = "High value Colour",
-			description = "Configures the colour for most valuable items",
-			position = 5
+		keyName = "HighValueColour ",
+		name = "High value Colour",
+		description = "Configures the colour for most valuable items",
+		position = 5
 	)
 	default Color HighValueColour()
 	{
@@ -85,11 +91,14 @@ public interface BankValueConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "NumberOfItemsToHighlight ",
-			name = "Number Of Items To Highlight",
-			description = "Configures the Number Of Items To Highlight",
-			position = 6
+		keyName = "NumberOfItemsToHighlight ",
+		name = "Number Of Items To Highlight",
+		description = "Configures the Number Of Items To Highlight",
+		position = 6
 	)
-	default int NumberOfItemsToHighlight() { return 3; }
+	default int NumberOfItemsToHighlight()
+	{
+		return 3;
+	}
 
 }
