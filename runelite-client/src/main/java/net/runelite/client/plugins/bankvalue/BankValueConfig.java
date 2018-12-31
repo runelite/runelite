@@ -70,7 +70,7 @@ public interface BankValueConfig extends Config
 			description = "Highlights valuable items",
 			position = 4
 	)
-	default boolean showHV() { return true; }
+	default boolean showHV() { return false; }
 
 	@ConfigItem(
 			keyName = "HighValueColour ",
