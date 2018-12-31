@@ -56,6 +56,7 @@ import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.NpcActionChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -340,8 +341,23 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		removeOldHighlightedRespawns();
 		validateSpawnedNpcs();
+		removeDeadChompyBirds();
 		lastTickUpdate = Instant.now();
 		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
+	}
+
+	/**
+	 * Removes dead chompy birds from highlighted npcs.
+	 */
+	private void removeDeadChompyBirds() {
+		List<NPC> npcsToRemove = new ArrayList<>();
+		final int DEAD_CHOMPY = 1476;
+		for(NPC npc : highlightedNpcs) {
+			if (npc.getId() == DEAD_CHOMPY) {
+				npcsToRemove.add(npc);
+			}
+		}
+		highlightedNpcs.removeAll(npcsToRemove);
 	}
 
 	private static boolean isInViewRange(WorldPoint wp1, WorldPoint wp2)
