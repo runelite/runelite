@@ -33,6 +33,11 @@ import net.runelite.api.Skill;
 import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.calcLevels;
 import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.calcLevelsRM;
 import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.correctPrayer;
+import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.ATT_STR_MULT;
+import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.DEF_HP_MULT;
+import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.PRAY_MULT;
+import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.RANGE_MAGIC_LEVEL_MULT;
+import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.RANGE_MAGIC_MULT;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,10 +78,10 @@ public class CombatLevelPluginTest
 		int rangedLevel = client.getRealSkillLevel(Skill.RANGED);
 		int prayerLevel = client.getRealSkillLevel(Skill.PRAYER);
 
-		double base = 0.25 * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2));
-		double melee = 0.325 * (attackLevel + strengthLevel);
-		double range = 0.325 * Math.floor(rangedLevel * 1.5);
-		double mage = 0.325 * Math.floor(magicLevel * 1.5);
+		double base = DEF_HP_MULT * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2));
+		double melee = ATT_STR_MULT * (attackLevel + strengthLevel);
+		double range = RANGE_MAGIC_MULT * Math.floor(rangedLevel * RANGE_MAGIC_LEVEL_MULT);
+		double mage = RANGE_MAGIC_MULT * Math.floor(magicLevel * RANGE_MAGIC_LEVEL_MULT);
 		double max = Math.max(melee, Math.max(range, mage));
 
 		HashMap<String, Double> result = new HashMap<>();
@@ -102,11 +107,11 @@ public class CombatLevelPluginTest
 
 		// test attack/strength
 		assertEquals(2, calcLevels(baseValues.get("base") + baseValues.get("melee"),
-				player.getCombatLevel() + 1, ATT_STR_MULT));
+			player.getCombatLevel() + 1, ATT_STR_MULT));
 
 		// test defence/hitpoints
 		assertEquals(3, calcLevels(baseValues.get("base") + baseValues.get("max"),
-				player.getCombatLevel() + 1, DEF_HP_MULT));
+			player.getCombatLevel() + 1, DEF_HP_MULT));
 
 		// test prayer
 		int prayNeed = calcLevels(baseValues.get("base") + baseValues.get("max"),
