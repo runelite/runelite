@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.shiftwalker;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import lombok.Setter;
 import net.runelite.api.*;
@@ -37,7 +36,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
-import java.util.Set;
 
 /**
  * Shift Walker Plugin. Credit to MenuEntrySwapperPlugin for code some code structure used here.
@@ -53,13 +51,6 @@ public class ShiftWalkerPlugin extends Plugin
 
 	private static final String WALK_HERE = "WALK HERE";
 	private static final String CANCEL = "CANCEL";
-
-	private static final Set<MenuAction> NPC_MENU_TYPES = ImmutableSet.of(
-		MenuAction.NPC_FIRST_OPTION,
-		MenuAction.NPC_SECOND_OPTION,
-		MenuAction.NPC_THIRD_OPTION,
-		MenuAction.NPC_FOURTH_OPTION,
-		MenuAction.NPC_FIFTH_OPTION);
 
 	@Inject
 	private Client client;
@@ -113,8 +104,7 @@ public class ShiftWalkerPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !hotKeyPressed
-				|| !NPC_MENU_TYPES.contains(MenuAction.of(event.getType())))
+		if (client.getGameState() != GameState.LOGGED_IN || !hotKeyPressed)
 		{
 			return;
 		}
