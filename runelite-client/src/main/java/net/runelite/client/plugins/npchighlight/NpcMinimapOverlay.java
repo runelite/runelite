@@ -58,6 +58,16 @@ public class NpcMinimapOverlay extends Overlay
 	{
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
+			// CHOMPY BIRD FIX
+			String[] actions = npc.getComposition().getActions();
+			if (npc.getName().equals("Chompy bird")
+					&& actions != null
+					&& actions.length == 5
+					&& actions[3] != null
+					&& actions[3].equals("Pluck")) {
+				continue;
+			}
+
 			renderNpcOverlay(graphics, npc, npc.getName(), config.getHighlightColor());
 		}
 
