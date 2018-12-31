@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
  * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
+ * Copyright (c) 2018, Robin Withes <https://github.com/robinwithes>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -95,6 +96,8 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX = Pattern.compile("Your bracelet of slaughter has (\\d{1,2}) charge[s]? left.");
 	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has ";
 	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX = Pattern.compile("Your expeditious bracelet has (\\d{1,2}) charge[s]? left.");
+	private static final String CHAT_SLAYER_TASKDONE_NOTIFICATION = "You have completed your slayer task.";
+	private static final String CHAT_SLAYER_STREAK_NOTIFICATION = "Your next task will earn you more points, it is recommended to do it with the highest level slayer master you can access.";
 	private static final Pattern COMBAT_BRACELET_TASK_UPDATE_MESSAGE = Pattern.compile("^You still need to kill (\\d+) monsters to complete your current Slayer assignment");
 
 	//NPC messages
@@ -428,6 +431,17 @@ public class SlayerPlugin extends Plugin
 					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
 			}
 			setTask("", 0, 0);
+
+			if (config.maximumPointsNotification() && streak % 10 == 9)
+			{
+				notifier.notify(CHAT_SLAYER_STREAK_NOTIFICATION);
+			}
+
+			if (config.taskDoneNotification())
+			{
+				notifier.notify(CHAT_SLAYER_TASKDONE_NOTIFICATION);
+			}
+
 			return;
 		}
 

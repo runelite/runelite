@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
+ * Copyright (c) 2018, Robin Withes <https://github.com/robinwithes>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -108,6 +109,30 @@ public interface SlayerConfig extends Config
 	default boolean weaknessPrompt()
 	{
 		return true;
+	}
+
+
+	@ConfigItem(
+		position = 8,
+		keyName = "taskDoneNotification",
+		name = "Task completed notification",
+		description = "Gives you a notification when you complete a task."
+	)
+	default boolean taskDoneNotification()
+	{
+		return false;
+	}
+
+
+	@ConfigItem(
+		position = 9,
+		keyName = "maximumPointsNotification",
+		name = "Slayer Streak Notification",
+		description = "Gives you a warning when you should do a task with your highest level slayer master for the most points."
+	)
+	default boolean maximumPointsNotification()
+	{
+		return false;
 	}
 
 	// Stored data
