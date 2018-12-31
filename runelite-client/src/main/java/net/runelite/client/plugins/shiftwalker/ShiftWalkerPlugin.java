@@ -123,7 +123,7 @@ public class ShiftWalkerPlugin extends Plugin
 		{
 			swap(pOptionToReplace); //Swap everything with walk here
 		}
-		else if (config.shiftWalkBoxTraps() && target.equals(ShiftWalkerGroups.BOX_TRAP)
+		else if (config.shiftWalkBoxTraps() && ShiftWalkerGroups.BOX_TRAP_TARGETS.contains(target)
 				&& ShiftWalkerGroups.BOX_TRAP_KEYWORDS.contains(pOptionToReplace))
 		{
 			swap(pOptionToReplace); //Swap only on box traps
