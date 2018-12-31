@@ -30,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashMap;
 
 @Slf4j
 public class MotherlodeSession
@@ -58,6 +60,20 @@ public class MotherlodeSession
 
 	@Getter(AccessLevel.PACKAGE)
 	private int sapphiresFound;
+
+	@Getter(AccessLevel.PACKAGE)
+	private HashMap<MotherloadeOre, Integer> collectedOres;
+
+	public int getCollectedOre(MotherloadeOre ore)
+	{
+		return collectedOres.get(ore);
+	}
+
+	public void setupCollectedOres()
+	{
+		collectedOres = new HashMap<>();
+		Arrays.stream(MotherloadeOre.values()).forEach(o -> collectedOres.put(o, 0));
+	}
 
 	public void incrementGemFound(int gemID)
 	{
@@ -106,6 +122,16 @@ public class MotherlodeSession
 		}
 	}
 
+	public void incrementCollectedOre(int itemID, int amount)
+	{
+
+		MotherloadeOre ore = MotherloadeOre.getFromItem(itemID);
+
+		if (ore != null)
+			collectedOres.put(ore, collectedOres.get(ore) + amount);
+
+	}
+
 	public void resetRecent()
 	{
 		recentPayDirtMined = null;
@@ -136,4 +162,10 @@ public class MotherlodeSession
 	{
 		return recentMined;
 	}
+
+	public boolean showOres()
+	{
+		return collectedOres.values().stream().mapToInt(o -> o.intValue()).sum() > 0;
+	}
+
 }
