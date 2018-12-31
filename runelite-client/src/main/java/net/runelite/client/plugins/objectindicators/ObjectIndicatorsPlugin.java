@@ -257,6 +257,11 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 
 	private TileObject findTileObject(Tile tile, int id)
 	{
+		if (tile == null)
+		{
+			return null;
+		}
+
 		final GameObject[] tileGameObjects = tile.getGameObjects();
 
 		for (GameObject object : tileGameObjects)
