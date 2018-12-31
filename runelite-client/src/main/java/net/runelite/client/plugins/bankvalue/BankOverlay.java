@@ -15,8 +15,8 @@ import java.awt.geom.Area;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-class BankOverlay extends Overlay {
-
+class BankOverlay extends Overlay
+{
 
     private final Client client;
     private final BankValuePlugin plugin;
@@ -51,17 +51,22 @@ class BankOverlay extends Overlay {
         }
         return null;
     }
-    private boolean Listcontains(BankCalculation.Pair[] pairs, Widget w){
-        for(BankCalculation.Pair p: pairs){
-            if(p!=null) {
-                if (p.getKey().getId() == w.getItemId()) {
+    private boolean Listcontains(BankCalculation.Pair[] pairs, Widget w)
+    {
+        for(BankCalculation.Pair p: pairs)
+        {
+            if(p!=null)
+            {
+                if (p.getKey().getId() == w.getItemId())
+                {
                     return true;
                 }
             }
         }
         return false;
     }
-    private void highlightItem(Graphics2D graphics, Widget bankContainer, Widget w) {
+    private void highlightItem(Graphics2D graphics, Widget bankContainer, Widget w)
+    {
 
         net.runelite.api.Point canvasLocation = w.getCanvasLocation();
 
@@ -92,7 +97,8 @@ class BankOverlay extends Overlay {
 
     }
 
-    private int getWidgetHeight(int y, int h, int y1, int h1) {
+    private int getWidgetHeight(int y, int h, int y1, int h1)
+    {
         return min(h1 - y + y1, min(h1, y + h - y1));
     }
 

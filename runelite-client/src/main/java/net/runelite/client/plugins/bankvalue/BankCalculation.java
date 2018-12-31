@@ -94,6 +94,7 @@ class BankCalculation
 		}
 
 		log.debug("Calculating new bank value...");
+
 		PairList = new Pair[config.NumberOfItemsToHighlight()];
 
 		gePrice = haPrice = 0;
@@ -188,16 +189,24 @@ class BankCalculation
 		return false;
 	}
 
-	private Pair[] insertToList(Pair[] list, WidgetItem item){
+	private Pair[] insertToList(Pair[] list, WidgetItem item)
+	{
+
 		long price = (long) itemManager.getItemPrice(item.getId()) * item.getQuantity();
 		int i, j;
-		for(i = 0;i<list.length ; i++){
-			if(list[i]==null || price > list[i].value){
-				for(j = list.length - 1 ;j>i ; j--){
+
+		for(i = 0;i<list.length ; i++)
+		{
+			if(list[i]==null || price > list[i].value)
+			{
+				for(j = list.length - 1 ;j>i ; j--)
+				{
 					list[j] = list[j - 1];
 				}
+
 				list[i] = new Pair(item, price);
 				i = list.length;
+
 			}
 		}
 		return list;
@@ -207,16 +216,19 @@ class BankCalculation
 		private WidgetItem key;
 		private Long value;
 
-		Pair(WidgetItem key, Long value) {
+		Pair(WidgetItem key, Long value)
+		{
 			this.key = key;
 			this.value = value;
 		}
 
-		public WidgetItem getKey() {
+		public WidgetItem getKey()
+		{
 			return key;
 		}
 
-		public Long getValue() {
+		public Long getValue()
+		{
 			return value;
 		}
 	}
