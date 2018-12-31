@@ -43,7 +43,7 @@ class BankOverlay extends Overlay
                 return null;
             }
             for (Widget w : BankContainer.getDynamicChildren()) {
-                if (Listcontains(plugin.bankCalculation.PairList, w)) {
+                if (listContains(plugin.bankCalculation.PairList, w)) {
                     highlightItem(graphics, BankContainer, w);
                 }
             }
@@ -51,7 +51,7 @@ class BankOverlay extends Overlay
         }
         return null;
     }
-    private boolean Listcontains(BankCalculation.Pair[] pairs, Widget w)
+    private boolean listContains(BankCalculation.Pair[] pairs, Widget w)
     {
         for(BankCalculation.Pair p: pairs)
         {
