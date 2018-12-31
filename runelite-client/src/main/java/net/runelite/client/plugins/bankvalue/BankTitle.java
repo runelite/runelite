@@ -89,7 +89,6 @@ class BankTitle
 		}
 
 		String strCurrentTab = "";
-
 		if (config.showGE() && gePrice != 0)
 		{
 			strCurrentTab += " (EX: ";
