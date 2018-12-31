@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.motherlode;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.ItemID;
 
 import java.util.Arrays;
@@ -38,7 +40,10 @@ public enum MotherloadeOre
 	MITHRIL_ORE("Mithril", ItemID.MITHRIL_ORE),
 	RUNITE_ORE("Runite", ItemID.RUNITE_ORE);
 
+	@Getter(AccessLevel.PACKAGE)
 	private final String name;
+
+	@Getter(AccessLevel.PACKAGE)
 	private final int id;
 
 	MotherloadeOre(String name, int itemID)
@@ -47,24 +52,14 @@ public enum MotherloadeOre
 		this.id = itemID;
 	}
 
-	public String getName()
-	{
-		return name;
-	}
-
-	public int getItemID()
-	{
-		return id;
-	}
-
 	public static boolean isOre(int id)
 	{
-		return Arrays.stream(values()).anyMatch(o -> o.getItemID() == id);
+		return Arrays.stream(values()).anyMatch(o -> o.getId() == id);
 	}
 
 	public static MotherloadeOre getFromItem(int itemid)
 	{
-		return Arrays.stream(values()).filter(o -> o.getItemID() == itemid).findFirst().orElse(null);
+		return Arrays.stream(values()).filter(o -> o.getId() == itemid).findFirst().orElse(null);
 	}
 
 }

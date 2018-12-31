@@ -69,7 +69,7 @@ public class MotherlodeProfitOverlay extends Overlay
 		panelComponent.getChildren().add(TitleComponent.builder().color(Color.YELLOW).text("Profit").build());
 
 		HashMap<MotherloadeOre, Integer> profits = new HashMap<>();
-		Arrays.stream(MotherloadeOre.values()).filter(o -> session.getCollectedOre(o) > 0 && o != MotherloadeOre.GOLDEN_NUGGET).forEach(o -> profits.put(o, session.getCollectedOre(o) * itemManager.getItemPrice(o.getItemID())));
+		Arrays.stream(MotherloadeOre.values()).filter(o -> session.getCollectedOre(o) > 0 && o != MotherloadeOre.GOLDEN_NUGGET).forEach(o -> profits.put(o, session.getCollectedOre(o) * itemManager.getItemPrice(o.getId())));
 
 		if (showOre)
 		{
