@@ -65,9 +65,9 @@ class BankTitle
 		// Only save if the title hasn't been modified
 		// Don't update on a search because rs seems to constantly update the title
 		if (widgetBankTitleBar == null ||
-				widgetBankTitleBar.isHidden() ||
-				widgetBankTitleBar.getText().contains("(") ||
-				widgetBankTitleBar.getText().contains("Showing"))
+			widgetBankTitleBar.isHidden() ||
+			widgetBankTitleBar.getText().contains("(") ||
+			widgetBankTitleBar.getText().contains("Showing"))
 		{
 			return;
 		}
@@ -81,9 +81,9 @@ class BankTitle
 
 		// Don't update on a search because rs seems to constantly update the title
 		if (widgetBankTitleBar == null ||
-				widgetBankTitleBar.isHidden() ||
-				widgetBankTitleBar.getText().contains("Showing") ||
-				widgetBankTitleBar.getText().contains("("))
+			widgetBankTitleBar.isHidden() ||
+			widgetBankTitleBar.getText().contains("Showing") ||
+			widgetBankTitleBar.getText().contains("("))
 		{
 			return;
 		}

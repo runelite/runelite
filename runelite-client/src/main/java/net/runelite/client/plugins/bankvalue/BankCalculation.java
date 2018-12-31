@@ -143,7 +143,8 @@ class BankCalculation
 				}
 			}
 
-			if(showHV){
+			if (showHV)
+			{
 				PairList = insertToList(PairList, widgetItem);
 			}
 
@@ -195,11 +196,11 @@ class BankCalculation
 		long price = (long) itemManager.getItemPrice(item.getId()) * item.getQuantity();
 		int i, j;
 
-		for(i = 0;i<list.length ; i++)
+		for (i = 0; i < list.length; i++)
 		{
-			if(list[i]==null || price > list[i].value)
+			if (list[i] == null || price > list[i].value)
 			{
-				for(j = list.length - 1 ;j>i ; j--)
+				for (j = list.length - 1; j > i; j--)
 				{
 					list[j] = list[j - 1];
 				}
@@ -212,7 +213,8 @@ class BankCalculation
 		return list;
 	}
 
-	final class Pair {
+	final class Pair
+	{
 		private WidgetItem key;
 		private Long value;
 
