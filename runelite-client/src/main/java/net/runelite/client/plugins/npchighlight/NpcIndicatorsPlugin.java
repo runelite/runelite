@@ -41,12 +41,7 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.GraphicID;
-import net.runelite.api.GraphicsObject;
-import net.runelite.api.MenuAction;
-import net.runelite.api.NPC;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
@@ -348,11 +343,13 @@ public class NpcIndicatorsPlugin extends Plugin
 	/**
 	 * Removes dead chompy birds from highlighted npcs.
 	 */
-	private void removeDeadChompyBirds() {
+	private void removeDeadChompyBirds()
+	{
 		List<NPC> npcsToRemove = new ArrayList<>();
-		final int DEAD_CHOMPY = 1476;
-		for(NPC npc : highlightedNpcs) {
-			if (npc.getId() == DEAD_CHOMPY) {
+		for (NPC npc : highlightedNpcs)
+		{
+			if (npc.getId() == NpcID.CHOMPY_BIRD_1476)
+			{
 				npcsToRemove.add(npc);
 			}
 		}
