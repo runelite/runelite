@@ -57,6 +57,8 @@ public class DiscordService implements AutoCloseable
 	private ScheduledExecutorService executorService;
 
 	private DiscordRPC discordRPC;
+	// Hold a reference to the event handlers to prevent the garbage collector from deleting them
+	private final DiscordEventHandlers discordEventHandlers = new DiscordEventHandlers();
 
 	/**
 	 * Initializes the Discord service, sets up the event handlers and starts worker thread that will poll discord
@@ -77,7 +79,6 @@ public class DiscordService implements AutoCloseable
 			return;
 		}
 
-		final DiscordEventHandlers discordEventHandlers = new DiscordEventHandlers();
 		discordEventHandlers.ready = this::ready;
 		discordEventHandlers.disconnected = this::disconnected;
 		discordEventHandlers.errored = this::errored;
