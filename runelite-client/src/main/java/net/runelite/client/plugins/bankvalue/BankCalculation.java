@@ -57,7 +57,9 @@ class BankCalculation
 	Pair[] PairList;
 
 	//used to reduce function calls
-	private boolean showGE, showHA, showHV;
+	private boolean showGE;
+	private boolean showHA;
+	boolean showHV;
 
 	@Getter
 	private long gePrice;

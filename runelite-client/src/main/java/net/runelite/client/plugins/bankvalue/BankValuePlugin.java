@@ -101,12 +101,14 @@ public class BankValuePlugin extends Plugin
 	{
 		// Don't update on a search because rs seems to constantly update the title
 		if (bankTitleBar == null ||
-			bankTitleBar.isHidden() ||
-			bankTitleBar.getText().contains("Showing"))
+			bankTitleBar.isHidden())
 		{
 			return;
 		}
-
+		if (bankTitleBar.getText().contains("Showing") && !bankCalculation.showHV)
+		{
+			return;
+		}
 		bankCalculation.calculate();
 	}
 }
