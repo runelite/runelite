@@ -134,9 +134,7 @@ public class PrayerPlugin extends Plugin
 		if (container == inventory || container == equipment)
 		{
 			doseOverlay.setHasHolyWrench(false);
-			doseOverlay.setHasPrayerPotion(false);
-			doseOverlay.setHasRestorePotion(false);
-			doseOverlay.setHasSanfewPotion(false);
+			doseOverlay.setHasPrayerRestore(false);
 
 			if (inventory != null)
 			{
@@ -227,16 +225,12 @@ public class PrayerPlugin extends Plugin
 				switch (type)
 				{
 					case PRAYERPOT:
-						doseOverlay.setHasPrayerPotion(true);
+					case RESTOREPOT:
+					case SANFEWPOT:
+						doseOverlay.setHasPrayerRestore(true);
 						break;
 					case HOLYWRENCH:
 						doseOverlay.setHasHolyWrench(true);
-						break;
-					case RESTOREPOT:
-						doseOverlay.setHasRestorePotion(true);
-						break;
-					case SANFEWPOT:
-						doseOverlay.setHasSanfewPotion(true);
 						break;
 				}
 			}
