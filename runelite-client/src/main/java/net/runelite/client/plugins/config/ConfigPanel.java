@@ -77,6 +77,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.ConfigPanelItem;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.RuneLiteConfig;
@@ -313,17 +314,88 @@ public class ConfigPanel extends PluginPanel
 		title.setToolTipText("<html>" + name + ":<br>" + listItem.getDescription() + "</html>");
 		topPanel.add(title);
 
+		ConfigPanelItem mainParent = new ConfigPanelItem(null, null);
+		List<ConfigPanelItem> parents = new ArrayList<>();
+		List<ConfigItemDescriptor> allItems = new ArrayList<>();
+
 		for (ConfigItemDescriptor cid : cd.getItems())
 		{
+			allItems.add(cid);
+		}
+
+		int maxDepth = 10;
+		do
+		{
+
+			for (ConfigItemDescriptor cid : new ArrayList<>(allItems))
+			{
+
+				String parent = cid.getItem().parent();
+
+				if (parent.equals(""))
+				{
+					mainParent.getChildren().add(new ConfigPanelItem(mainParent, cid));
+					allItems.remove(cid);
+				}
+				else
+				{
+					if (mainParent.addChildIfMatchParent(cid))
+					{
+						allItems.remove(cid);
+					}
+				}
+
+			}
+
+			maxDepth--;
+
+		} while (allItems.size() > 0 && maxDepth > 0);
+
+		List<ConfigPanelItem> orderedList = mainParent.getItemsAsList();
+
+		for (ConfigPanelItem cpi : orderedList)
+		{
+
+			ConfigItemDescriptor cid = cpi.getItem();
+
+			if (cid == null)
+				continue; // Ignore main 'parent'
+
 			if (cid.getItem().hidden())
 			{
-				continue;
+
+				boolean show = false;
+				String unhideat = cid.getItem().unhide();
+
+				for (ConfigItemDescriptor cid2 : cd.getItems())
+				{
+
+					if (cid2.getItem().keyName().equals(unhideat))
+					{
+						if (cid2.getType() == boolean.class)
+						{
+							show = Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().value(), cid2.getItem().keyName()));
+						}
+					}
+				}
+
+				if (!show)
+					continue;
+
 			}
 
 			JPanel item = new JPanel();
 			item.setLayout(new BorderLayout());
 			item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
+
 			name = cid.getItem().name();
+
+			String depthOffset = "";
+			for (int depth = 1; depth < cpi.getDepth(); depth++)
+				depthOffset += "        ";
+
+			name = depthOffset + name;
+
 			JLabel configEntryName = new JLabel(name);
 			configEntryName.setForeground(Color.WHITE);
 			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
@@ -566,8 +638,22 @@ public class ConfigPanel extends PluginPanel
 
 		if (component instanceof JCheckBox)
 		{
+
 			JCheckBox checkbox = (JCheckBox) component;
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), "" + checkbox.isSelected());
+
+			for (ConfigItemDescriptor cid2 : cd.getItems())
+			{
+				if (cid2.getItem().hidden())
+				{
+					if (cid2.getItem().unhide().equals(cid.getItem().keyName()))
+					{ // If another options visibility changes depending on the value of this checkbox, then render the entire menu again
+						openGroupConfigPanel(listItem, config, cd);
+						return;
+					}
+				}
+			}
+
 		}
 		else if (component instanceof JSpinner)
 		{
