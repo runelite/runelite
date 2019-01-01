@@ -66,7 +66,9 @@ public class LootTrackerService
 	private static final String INSERT_KILL_QUERY = "INSERT INTO kills (accountId, type, eventId) VALUES (:accountId, :type, :eventId)";
 	private static final String INSERT_DROP_QUERY = "INSERT INTO drops (killId, itemId, itemQuantity) VALUES (LAST_INSERT_ID(), :itemId, :itemQuantity)";
 
-	private static final String SELECT_LOOT_QUERY = "SELECT killId,time,type,eventId,itemId,itemQuantity FROM kills JOIN drops ON drops.killId = kills.id WHERE accountId = :accountId ORDER BY TIME DESC LIMIT :limit";
+	private static final String SELECT_LOOT_QUERY = "SELECT id,time,type,eventId,itemId,itemQuantity FROM\n" +
+		" (SELECT * FROM kills WHERE accountId = :accountId ORDER BY TIME DESC LIMIT :limit) as killsq\n" +
+		" JOIN drops ON drops.killId = killsq.id;";
 
 	private static final String DELETE_LOOT_ACCOUNT = "DELETE FROM kills WHERE accountId = :accountId";
 	private static final String DELETE_LOOT_ACCOUNT_EVENTID = "DELETE FROM kills WHERE accountId = :accountId AND eventId = :eventId";
