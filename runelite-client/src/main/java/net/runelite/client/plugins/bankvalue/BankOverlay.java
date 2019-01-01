@@ -47,7 +47,6 @@ class BankOverlay extends Overlay
 			{
 				return null;
 			}
-			ArrayList<Widget> list = new ArrayList<>();
 			for (Widget w : BankContainer.getDynamicChildren())
 			{
 				if (listContains(plugin.bankCalculation.PairList, w) && !w.isHidden())
