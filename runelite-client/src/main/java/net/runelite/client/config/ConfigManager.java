@@ -44,7 +44,9 @@ import java.lang.reflect.Proxy;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -394,7 +396,35 @@ public class ConfigManager
 				.result())
 			.collect(Collectors.toList());
 
-		return new ConfigDescriptor(group, items);
+		Collection<ConfigItemsGroup> itemGroups = new ArrayList<>();
+
+		for (ConfigItemDescriptor item : items)
+		{
+			String groupName = item.getItem().group();
+			boolean found = false;
+			for (ConfigItemsGroup g : itemGroups)
+			{
+				if (g.getGroup().equals(groupName))
+				{
+					g.addItem(item);
+					found = true;
+					break;
+				}
+			}
+			if (!found)
+			{
+				ConfigItemsGroup newGroup = new ConfigItemsGroup(groupName);
+				newGroup.addItem(item);
+				itemGroups.add(newGroup);
+			}
+		}
+
+		itemGroups = itemGroups.stream().sorted((a, b) -> ComparisonChain.start()
+						.compare(a.getGroup(), b.getGroup())
+						.result())
+						.collect(Collectors.toList());
+
+		return new ConfigDescriptor(group, itemGroups);
 	}
 
 	/**
@@ -412,12 +442,12 @@ public class ConfigManager
 			return;
 		}
 
-		for (Method method : clazz.getDeclaredMethods())
+		for (Method method : Arrays.stream(clazz.getDeclaredMethods()).filter(m -> m.getAnnotation(ConfigItem.class) != null).collect(Collectors.toList()))
 		{
 			ConfigItem item = method.getAnnotation(ConfigItem.class);
 
 			// only apply default configuration for methods which read configuration (0 args)
-			if (item == null || method.getParameterCount() != 0)
+			if (method.getParameterCount() != 0)
 			{
 				continue;
 			}
