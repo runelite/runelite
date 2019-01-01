@@ -442,12 +442,12 @@ public class ConfigManager
 			return;
 		}
 
-		for (Method method : Arrays.stream(clazz.getDeclaredMethods()).filter(m -> m.getAnnotation(ConfigItem.class) != null).collect(Collectors.toList()))
+		for (Method method : clazz.getDeclaredMethods())
 		{
 			ConfigItem item = method.getAnnotation(ConfigItem.class);
 
 			// only apply default configuration for methods which read configuration (0 args)
-			if (method.getParameterCount() != 0)
+			if (item == null || method.getParameterCount() != 0)
 			{
 				continue;
 			}
