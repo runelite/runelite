@@ -349,16 +349,8 @@ class LootTrackerPanel extends PluginPanel
 	 */
 	void addRecords(Collection<LootTrackerRecord> recs)
 	{
-		for (LootTrackerRecord r : recs)
-		{
-			records.add(r);
-			LootTrackerBox box = buildBox(r);
-			if (box != null)
-			{
-				box.rebuild();
-			}
-		}
-		updateOverall();
+		records.addAll(recs);
+		rebuild();
 	}
 
 	/**
