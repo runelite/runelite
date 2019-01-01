@@ -47,9 +47,10 @@ class BankOverlay extends Overlay
 			{
 				return null;
 			}
+			ArrayList<Widget> list = new ArrayList<>();
 			for (Widget w : BankContainer.getDynamicChildren())
 			{
-				if (listContains(plugin.bankCalculation.PairList, w))
+				if (listContains(plugin.bankCalculation.PairList, w) && !w.isHidden())
 				{
 					highlightItem(graphics, BankContainer, w);
 				}
@@ -58,6 +59,7 @@ class BankOverlay extends Overlay
 		}
 		return null;
 	}
+
 
 	private boolean listContains(BankCalculation.Pair[] pairs, Widget w)
 	{
