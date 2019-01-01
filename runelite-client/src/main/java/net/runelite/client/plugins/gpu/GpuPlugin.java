@@ -1199,7 +1199,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		interfaceBuffer.put(pixels);
 		vertexBuffer.flip();
 
-		gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(gl.GL_ONE, gl.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
 
 		if (canvasWidth != lastCanvasWidth || canvasHeight != lastCanvasHeight)

@@ -38,7 +38,7 @@ public abstract class Rasterizer2DMixin implements RSClient
 	private static RSClient client;
 
 	@Inject
-	private static void drawAlpha(int[] pixels, int index, int value, int color, int alpha)
+	private static void drawAlpha(int[] pixels, int index, int value, int alpha)
 	{
 		if (!client.isGpu() || pixels != client.getBufferProvider().getPixels())
 		{
@@ -46,44 +46,9 @@ public abstract class Rasterizer2DMixin implements RSClient
 			return;
 		}
 
-		if (alpha == 0)
-		{
-			return;
-		}
-
-		int prevColor = pixels[index];
-
-		if ((prevColor & 0xFF000000) == 0 || alpha == 255)
-		{
-			// No transparency, so we can cheat to save CPU resources
-			pixels[index] = (color & 0xFFFFFF) | (alpha << 24);
-			return;
-		}
-
-		if ((prevColor & 0xFF000000) == 0xFF000000)
-		{
-			// When the background is opaque, the result will also be opaque,
-			// so we can simply use the value calculated by Jagex.
-			pixels[index] = value | 0xFF000000;
-			return;
-		}
-
-		int prevAlpha = (prevColor >>> 24) * (255 - alpha) >>> 8;
-		int finalAlpha = alpha + prevAlpha;
-
-		// Scale alphas so (relativeAlpha >>> 8) is approximately equal to (alpha / finalAlpha).
-		// Avoiding extra divisions increase performance by quite a bit.
-		// And with divisions we get a problems if dividing a number where
-		// the last bit is 1 (as it will become negative).
-		int relativeAlpha1 = (alpha << 8) / finalAlpha;
-		int relativeAlpha2 = (prevAlpha << 8) / finalAlpha;
-
-		// Red and blue are calculated at the same time to save CPU cycles
-		int finalColor =
-			(((color & 0xFF00FF) * relativeAlpha1 + (prevColor & 0xFF00FF) * relativeAlpha2 & 0xFF00FF00) |
-			((color & 0x00FF00) * relativeAlpha1 + (prevColor & 0x00FF00) * relativeAlpha2 & 0x00FF0000)) >>> 8;
-
-		pixels[index] = finalColor | (finalAlpha << 24);
+		// (int) x * 0x8081 >>> 23 is equivalent to (short) x / 255
+		int outAlpha = alpha + ((pixels[index] >>> 24) * (255 - alpha) * 0x8081 >>> 23);
+		pixels[index] = value & 0x00FFFFFF | outAlpha << 24;
 	}
 
 	@Copy("drawGradientAlpha")
@@ -158,7 +123,7 @@ public abstract class Rasterizer2DMixin implements RSClient
 					{
 						int var20 = pixels[var11];
 						var20 = ((var20 & 16711935) * var17 >> 8 & 16711935) + (var17 * (var20 & 65280) >> 8 & 65280);
-						drawAlpha(pixels, var11++, var18 + var20, var16, var15);
+						drawAlpha(pixels, var11++, var18 + var20, var15);
 					}
 
 					var11 += var10;
@@ -267,7 +232,7 @@ public abstract class Rasterizer2DMixin implements RSClient
 							int var21 = 255 - var20;
 							int var22 = pixels[var14];
 							int var23 = ((var19 & 16711935) * var20 + (var22 & 16711935) * var21 & -16711936) + (var20 * (var19 & 65280) + var21 * (var22 & 65280) & 16711680) >> 8;
-							drawAlpha(pixels, var14++, var23, var19, var20);
+							drawAlpha(pixels, var14++, var23, var20);
 						}
 
 						var14 += var11;
