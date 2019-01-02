@@ -12,5 +12,8 @@ public interface InventoryViewerConfig extends Config
 			name = "Hide when inventory is open",
 			description = "Hide the inventory viewer when the player's inventory is open"
 	)
-	default boolean hideWhenInvOpen() { return false; }
+	default boolean hideWhenInvOpen()
+	{
+		return false;
+	}
 }
