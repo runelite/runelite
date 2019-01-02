@@ -48,7 +48,7 @@ public interface LoginScreenConfig extends Config
 	)
 	default boolean pasteEnabled()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
