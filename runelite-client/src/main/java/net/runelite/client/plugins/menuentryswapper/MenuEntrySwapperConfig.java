@@ -261,4 +261,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "swapStory",
+			name = "Story",
+			description = "Swap Talk-to with Story for Juna at Tears of Guthix"
+	)
+	default boolean swapStory()
+	{
+		return true;
+	}
 }
