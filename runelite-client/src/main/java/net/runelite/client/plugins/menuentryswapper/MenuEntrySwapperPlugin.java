@@ -471,6 +471,23 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("zanaris", option, target, false);
 		}
+		else if (config.swapOccultAltar() != OccultAltarMode.VENERATE && option.equals("venerate"))
+		{
+			switch (config.swapOccultAltar())
+			{
+				case ANCIENT:
+					swap("ancient", option, target, true);
+					break;
+				case LUNAR:
+					swap("lunar", option, target, true);
+					break;
+				case ARCEUUS:
+					swap("arceuus", option, target, true);
+					break;
+			}
+			// Hacky way to swap back to standard if not already on it.
+			swap("standard", option, target, true);
+		}
 		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
 		{
 			swap("reset", option, target, true);

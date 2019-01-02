@@ -173,6 +173,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapOccultAltar",
+			name = "Occult Altar",
+			description = "Swap Venerate with Ancient, Lunar, or Arceuus on an Altar of the Occult"
+	)
+	default OccultAltarMode swapOccultAltar()
+	{
+		return OccultAltarMode.VENERATE;
+	}
+
+	@ConfigItem(
 		keyName = "swapPickpocket",
 		name = "Pickpocket on H.A.M.",
 		description = "Swap Talk-to with Pickpocket on H.A.M members"
