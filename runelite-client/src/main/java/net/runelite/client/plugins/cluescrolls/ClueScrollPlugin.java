@@ -608,7 +608,7 @@ public class ClueScrollPlugin extends Plugin
 
 				// Check impostors
 				final ObjectComposition comp = client.getObjectDefinition(object.getId());
-				final ObjectComposition impostor = comp.getImpostor();
+				final ObjectComposition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
 
 				if (impostor != null && impostor.getId() == id)
 				{
