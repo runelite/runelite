@@ -158,11 +158,6 @@ public class ReportButtonPlugin extends Plugin
 		}
 	}
 
-	private String getLocalTime()
-	{
-		return LocalTime.now().format(DATE_TIME_FORMAT);
-	}
-
 	private String getLoginTime()
 	{
 		if (loginTime == null)
@@ -175,13 +170,18 @@ public class ReportButtonPlugin extends Plugin
 		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 
-	private String getUTCTime()
+	private static String getLocalTime()
+	{
+		return LocalTime.now().format(DATE_TIME_FORMAT);
+	}
+
+	private static String getUTCTime()
 	{
 		LocalTime time = LocalTime.now(UTC);
 		return time.format(DATE_TIME_FORMAT);
 	}
 
-	private String getJagexTime()
+	private static String getJagexTime()
 	{
 		LocalTime time = LocalTime.now(JAGEX);
 		return time.format(DATE_TIME_FORMAT);
