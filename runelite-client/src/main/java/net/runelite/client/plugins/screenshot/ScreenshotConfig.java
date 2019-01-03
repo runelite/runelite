@@ -166,10 +166,10 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "untradeableDrop",
-			name = "Screenshot Untradeable drops",
-			description = "Configures whether or not screenshots are automatically taken when you receive an untradeable drop.",
-			position = 12
+		keyName = "untradeableDrop",
+		name = "Screenshot Untradeable drops",
+		description = "Configures whether or not screenshots are automatically taken when you receive an untradeable drop.",
+		position = 12
 	)
 	default boolean screenshotUntradeableDrop()
 	{
