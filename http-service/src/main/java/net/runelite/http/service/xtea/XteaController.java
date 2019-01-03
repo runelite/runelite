@@ -22,37 +22,64 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.xp;
+package net.runelite.http.service.xtea;
 
-import java.time.Instant;
-import net.runelite.http.api.xp.XpData;
-import net.runelite.http.service.xp.beans.XpEntity;
+import java.util.List;
+import java.util.stream.Collectors;
+import net.runelite.http.api.xtea.XteaKey;
+import net.runelite.http.api.xtea.XteaRequest;
+import net.runelite.http.service.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/xp")
-public class XpTrackerController
+@RequestMapping("/xtea")
+public class XteaController
 {
 	@Autowired
-	private XpTrackerService xpTrackerService;
+	private XteaService xteaService;
 
-	@RequestMapping("/update")
-	public void update(@RequestParam String username)
+	@RequestMapping(method = POST)
+	public void submit(@RequestBody XteaRequest xteaRequest)
 	{
-		xpTrackerService.tryUpdate(username);
+		xteaService.submit(xteaRequest);
 	}
 
-	@RequestMapping("/get")
-	public XpData get(@RequestParam String username, @RequestParam(required = false) Instant time)
+	@RequestMapping
+	public List<XteaKey> get()
 	{
-		if (time == null)
+		return xteaService.get().stream()
+			.map(XteaController::entryToKey)
+			.collect(Collectors.toList());
+	}
+
+	@RequestMapping("/{region}")
+	public XteaKey getRegion(@PathVariable int region)
+	{
+		XteaEntry xteaRegion = xteaService.getRegion(region);
+		if (xteaRegion == null)
 		{
-			time = Instant.now();
+			throw new NotFoundException();
 		}
-		XpEntity xpEntity = xpTrackerService.findXpAtTime(username, time);
-		return XpMapper.INSTANCE.xpEntityToXpData(xpEntity);
+
+		return entryToKey(xteaRegion);
+	}
+
+	private static XteaKey entryToKey(XteaEntry xe)
+	{
+		XteaKey xteaKey = new XteaKey();
+		xteaKey.setRegion(xe.getRegion());
+		xteaKey.setKeys(new int[]
+		{
+			xe.getKey1(),
+			xe.getKey2(),
+			xe.getKey3(),
+			xe.getKey4()
+		});
+		return xteaKey;
 	}
 }

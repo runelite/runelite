@@ -44,7 +44,7 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "World Map",
 	description = "Enhance the world map to display additional information",
-	tags = {"agility", "fairy", "rings", "teleports"}
+	tags = {"agility", "fairy", "farming", "rings", "teleports"}
 )
 public class WorldMapPlugin extends Plugin
 {
@@ -66,6 +66,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_MISC_TELEPORT_ICON = "miscellaneousTeleportIcon";
 	static final String CONFIG_KEY_QUEST_START_TOOLTIPS = "questStartTooltips";
 	static final String CONFIG_KEY_MINIGAME_TOOLTIP = "minigameTooltip";
+	static final String CONFIG_KEY_FARMING_PATCH_TOOLTIPS = "farmingpatchTooltips";
 
 	static
 	{
@@ -115,6 +116,7 @@ public class WorldMapPlugin extends Plugin
 		worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
 		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
 		worldMapPointManager.removeIf(MinigamePoint.class::isInstance);
+		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);
 		agilityLevel = 0;
 	}
 
@@ -185,6 +187,16 @@ public class WorldMapPlugin extends Plugin
 			Arrays.stream(QuestStartLocation.values())
 				.map(value -> new QuestStartPoint(value, BLANK_ICON))
 				.forEach(worldMapPointManager::add);
+		}
+
+		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);
+		if (config.farmingPatchTooltips())
+		{
+			Arrays.stream(FarmingPatchLocation.values()).forEach(location ->
+				Arrays.stream(location.getLocations())
+					.map(point -> new FarmingPatchPoint(point, location.getTooltip(), BLANK_ICON))
+					.forEach(worldMapPointManager::add)
+			);
 		}
 
 		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);

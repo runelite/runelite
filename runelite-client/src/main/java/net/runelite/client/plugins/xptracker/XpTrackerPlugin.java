@@ -118,7 +118,7 @@ public class XpTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		xpPanel = new XpPanel(this, client, skillIconManager);
+		xpPanel = new XpPanel(this, xpTrackerConfig, client, skillIconManager);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons/overall.png");
 

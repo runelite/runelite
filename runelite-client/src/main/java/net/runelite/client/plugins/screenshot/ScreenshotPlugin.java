@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -51,6 +52,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -524,85 +526,95 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		Consumer<Image> screenshotConsumer = image ->
+		Consumer<Image> imageCallback = (img) ->
 		{
-			BufferedImage screenshot = config.includeFrame()
-				? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
-				: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-			Graphics graphics = screenshot.getGraphics();
-
-			int gameOffsetX = 0;
-			int gameOffsetY = 0;
-
-			if (config.includeFrame())
-			{
-				// Draw the client frame onto the screenshot
-				clientUi.paint(graphics);
-
-				// Evaluate the position of the game inside the frame
-				final Point canvasOffset = clientUi.getCanvasOffset();
-				gameOffsetX = canvasOffset.getX();
-				gameOffsetY = canvasOffset.getY();
-			}
-
-			// Draw the game onto the screenshot
-			graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
-
-			File playerFolder;
-			if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
-			{
-				final EnumSet<WorldType> worldTypes = client.getWorldType();
-				final boolean dmm = worldTypes.contains(WorldType.DEADMAN);
-				final boolean sdmm = worldTypes.contains(WorldType.SEASONAL_DEADMAN);
-				final boolean dmmt = worldTypes.contains(WorldType.DEADMAN_TOURNAMENT);
-				final boolean isDmmWorld = dmm || sdmm || dmmt;
-
-				String playerDir = client.getLocalPlayer().getName();
-				if (isDmmWorld)
-				{
-					playerDir += "-Deadman";
-				}
-				playerFolder = new File(SCREENSHOT_DIR, playerDir);
-			}
-			else
-			{
-				playerFolder = SCREENSHOT_DIR;
-			}
-
-			playerFolder.mkdirs();
-
-			executor.execute(() ->
-			{
-				try
-				{
-					File screenshotFile = new File(playerFolder, fileName + ".png");
-
-					ImageIO.write(screenshot, "PNG", screenshotFile);
-
-					if (config.uploadScreenshot())
-					{
-						uploadScreenshot(screenshotFile);
-					}
-					else if (config.notifyWhenTaken())
-					{
-						notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
-					}
-				}
-				catch (IOException ex)
-				{
-					log.warn("error writing screenshot", ex);
-				}
-			});
+			// This callback is on the game thread, move to executor thread
+			executor.submit(() -> takeScreenshot(fileName, img));
 		};
 
 		if (config.displayDate())
 		{
-			screenshotOverlay.queueForTimestamp(screenshotConsumer);
+			screenshotOverlay.queueForTimestamp(imageCallback);
 		}
 		else
 		{
-			drawManager.requestNextFrameListener(screenshotConsumer);
+			drawManager.requestNextFrameListener(imageCallback);
+		}
+	}
+
+	private void takeScreenshot(String fileName, Image image)
+	{
+		BufferedImage screenshot = config.includeFrame()
+			? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
+			: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+		Graphics graphics = screenshot.getGraphics();
+
+		int gameOffsetX = 0;
+		int gameOffsetY = 0;
+
+		if (config.includeFrame())
+		{
+			// Draw the client frame onto the screenshot
+			try
+			{
+				SwingUtilities.invokeAndWait(() -> clientUi.paint(graphics));
+			}
+			catch (InterruptedException | InvocationTargetException e)
+			{
+				log.warn("unable to paint client UI on screenshot", e);
+			}
+
+			// Evaluate the position of the game inside the frame
+			final Point canvasOffset = clientUi.getCanvasOffset();
+			gameOffsetX = canvasOffset.getX();
+			gameOffsetY = canvasOffset.getY();
+		}
+
+		// Draw the game onto the screenshot
+		graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
+
+		File playerFolder;
+		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
+		{
+			final EnumSet<WorldType> worldTypes = client.getWorldType();
+			final boolean dmm = worldTypes.contains(WorldType.DEADMAN);
+			final boolean sdmm = worldTypes.contains(WorldType.SEASONAL_DEADMAN);
+			final boolean dmmt = worldTypes.contains(WorldType.DEADMAN_TOURNAMENT);
+			final boolean isDmmWorld = dmm || sdmm || dmmt;
+
+			String playerDir = client.getLocalPlayer().getName();
+			if (isDmmWorld)
+			{
+				playerDir += "-Deadman";
+			}
+			playerFolder = new File(SCREENSHOT_DIR, playerDir);
+		}
+		else
+		{
+			playerFolder = SCREENSHOT_DIR;
+		}
+
+		playerFolder.mkdirs();
+
+		try
+		{
+			File screenshotFile = new File(playerFolder, fileName + ".png");
+
+			ImageIO.write(screenshot, "PNG", screenshotFile);
+
+			if (config.uploadScreenshot())
+			{
+				uploadScreenshot(screenshotFile);
+			}
+			else if (config.notifyWhenTaken())
+			{
+				notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
+			}
+		}
+		catch (IOException ex)
+		{
+			log.warn("error writing screenshot", ex);
 		}
 	}
 

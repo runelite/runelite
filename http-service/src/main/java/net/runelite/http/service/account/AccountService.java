@@ -39,6 +39,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.account.OAuthResponse;
+import net.runelite.http.api.ws.WebsocketGsonFactory;
+import net.runelite.http.api.ws.WebsocketMessage;
 import net.runelite.http.api.ws.messages.LoginResponse;
 import net.runelite.http.service.account.beans.SessionEntry;
 import net.runelite.http.service.account.beans.UserEntry;
@@ -55,6 +57,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
+import redis.clients.jedis.Jedis;
 
 @RestController
 @RequestMapping("/account")
@@ -88,24 +91,28 @@ public class AccountService
 	private static final String RL_REDIR = "http://runelite.net/logged-in";
 
 	private final Gson gson = RuneLiteAPI.GSON;
+	private final Gson websocketGson = WebsocketGsonFactory.build();
 
 	private final Sql2o sql2o;
 	private final String oauthClientId;
 	private final String oauthClientSecret;
 	private final AuthFilter auth;
+	private final Jedis jedis;
 
 	@Autowired
 	public AccountService(
 		@Qualifier("Runelite SQL2O") Sql2o sql2o,
 		@Value("${oauth.client-id}") String oauthClientId,
 		@Value("${oauth.client-secret}") String oauthClientSecret,
-		AuthFilter auth
+		AuthFilter auth,
+		Jedis jedis
 	)
 	{
 		this.sql2o = sql2o;
 		this.oauthClientId = oauthClientId;
 		this.oauthClientSecret = oauthClientSecret;
 		this.auth = auth;
+		this.jedis = jedis;
 
 		try (Connection con = sql2o.open())
 		{
@@ -232,17 +239,16 @@ public class AccountService
 
 	private void notifySession(UUID uuid, String username)
 	{
-		WSService service = SessionManager.findSession(uuid);
-		if (service == null)
-		{
-			logger.info("Session {} logged in - but no websocket session", uuid);
-			return;
-		}
-
 		LoginResponse response = new LoginResponse();
 		response.setUsername(username);
 
-		service.send(response);
+		WSService service = SessionManager.findSession(uuid);
+		if (service != null)
+		{
+			service.send(response);
+		}
+
+		jedis.publish("session." + uuid, websocketGson.toJson(response, WebsocketMessage.class));
 	}
 
 	@RequestMapping("/logout")
@@ -267,5 +273,11 @@ public class AccountService
 	public void sessionCheck(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		auth.handle(request, response);
+	}
+
+	@RequestMapping("/wscount")
+	public int wscount()
+	{
+		return SessionManager.getCount();
 	}
 }

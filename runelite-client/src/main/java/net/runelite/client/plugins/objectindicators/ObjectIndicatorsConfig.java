@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#version 330
 
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec2 aTexCoord;
+package net.runelite.client.plugins.objectindicators;
 
-out vec2 TexCoord;
+import java.awt.Color;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-void main()
+@ConfigGroup("objectindicators")
+public interface ObjectIndicatorsConfig extends Config
 {
-	gl_Position = vec4(aPos, 1.0);
-
-	// Flip the UV because it's pre-flipped in the ui texture buffer, but we don't need it to be flipped here.
-	TexCoord = vec2(aTexCoord.x, 1 - aTexCoord.y);
+	@ConfigItem(
+		keyName = "markerColor",
+		name = "Marker color",
+		description = "Configures the color of object marker"
+	)
+	default Color markerColor()
+	{
+		return Color.YELLOW;
+	}
 }

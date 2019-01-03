@@ -28,7 +28,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.6-SNAPSHOT</version>
+		<version>1.5.7-SNAPSHOT</version>
 	</parent>
 	
 	<name>Cache Updater</name>

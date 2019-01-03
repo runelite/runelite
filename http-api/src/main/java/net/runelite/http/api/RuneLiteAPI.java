@@ -42,7 +42,7 @@ public class RuneLiteAPI
 	public static final OkHttpClient CLIENT = new OkHttpClient();
 	public static final Gson GSON = new Gson();
 
-	private static final String BASE = "https://api.runelite.net/runelite-";
+	private static final String BASE = "https://api.runelite.net";
 	private static final String WSBASE = "wss://api.runelite.net/runelite-";
 	private static final String STATICBASE = "https://static.runelite.net";
 	private static final Properties properties = new Properties();
@@ -69,9 +69,14 @@ public class RuneLiteAPI
 		}
 	}
 
+	public static HttpUrl getApiRoot()
+	{
+		return HttpUrl.parse(BASE);
+	}
+
 	public static HttpUrl getApiBase()
 	{
-		return HttpUrl.parse(BASE + getVersion());
+		return HttpUrl.parse(BASE + "/runelite-" + getVersion());
 	}
 
 	public static HttpUrl getStaticBase()

@@ -68,6 +68,9 @@ public class LootTrackerService
 
 	private static final String SELECT_LOOT_QUERY = "SELECT killId,time,type,eventId,itemId,itemQuantity FROM kills JOIN drops ON drops.killId = kills.id WHERE accountId = :accountId ORDER BY TIME DESC LIMIT :limit";
 
+	private static final String DELETE_LOOT_ACCOUNT = "DELETE FROM kills WHERE accountId = :accountId";
+	private static final String DELETE_LOOT_ACCOUNT_EVENTID = "DELETE FROM kills WHERE accountId = :accountId AND eventId = :eventId";
+
 	private final Sql2o sql2o;
 
 	@Autowired
@@ -128,23 +131,23 @@ public class LootTrackerService
 				.executeAndFetch(LootResult.class);
 		}
 
-		int killId = -1;
+		LootResult current = null;
 		List<LootRecord> lootRecords = new ArrayList<>();
 		List<GameItem> gameItems = new ArrayList<>();
 
 		for (LootResult lootResult : lootResults)
 		{
-			if (killId != lootResult.getKillId())
+			if (current == null || current.getKillId() != lootResult.getKillId())
 			{
-				killId = lootResult.getKillId();
-
 				if (!gameItems.isEmpty())
 				{
-					LootRecord lootRecord = new LootRecord(lootResult.getEventId(), lootResult.getType(), gameItems);
+					LootRecord lootRecord = new LootRecord(current.getEventId(), current.getType(), gameItems);
 					lootRecords.add(lootRecord);
+
+					gameItems = new ArrayList<>();
 				}
 
-				gameItems = new ArrayList<>();
+				current = lootResult;
 			}
 
 			GameItem gameItem = new GameItem(lootResult.getItemId(), lootResult.getItemQuantity());
@@ -153,12 +156,31 @@ public class LootTrackerService
 
 		if (!gameItems.isEmpty())
 		{
-			LootResult lootResult = lootResults.get(lootResults.size() - 1);
-			LootRecord lootRecord = new LootRecord(lootResult.getEventId(), lootResult.getType(), gameItems);
+			LootRecord lootRecord = new LootRecord(current.getEventId(), current.getType(), gameItems);
 			lootRecords.add(lootRecord);
 		}
 
 		return lootRecords;
+	}
+
+	public void delete(int accountId, String eventId)
+	{
+		try (Connection con = sql2o.open())
+		{
+			if (eventId == null)
+			{
+				con.createQuery(DELETE_LOOT_ACCOUNT)
+					.addParameter("accountId", accountId)
+					.executeUpdate();
+			}
+			else
+			{
+				con.createQuery(DELETE_LOOT_ACCOUNT_EVENTID)
+					.addParameter("accountId", accountId)
+					.addParameter("eventId", eventId)
+					.executeUpdate();
+			}
+		}
 	}
 
 	@Scheduled(fixedDelay = 15 * 60 * 1000)

@@ -543,6 +543,7 @@ public class ClientUI
 	 */
 	public void paint(final Graphics graphics)
 	{
+		assert SwingUtilities.isEventDispatchThread() : "paint must be called on EDT";
 		frame.paint(graphics);
 	}
 

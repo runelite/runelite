@@ -108,16 +108,16 @@ public class HerbiboarPlugin extends Plugin
 	private boolean inHerbiboarArea;
 
 	@Getter
-	private Map<TileObject, Tile> trails = new HashMap<>();
+	private Map<WorldPoint, TileObject> trails = new HashMap<>();
 
 	@Getter
-	private Map<TileObject, Tile> tunnels = new HashMap<>();
+	private Map<WorldPoint, TileObject> tunnels = new HashMap<>();
 
 	@Getter
-	private Map<TileObject, Tile> starts = new HashMap<>();
+	private Map<WorldPoint, TileObject> starts = new HashMap<>();
 
 	@Getter
-	private Map<TileObject, Tile> trailObjects = new HashMap<>();
+	private Map<WorldPoint, TileObject> trailObjects = new HashMap<>();
 
 	@Getter
 	@Setter
@@ -278,9 +278,13 @@ public class HerbiboarPlugin extends Plugin
 	// Store relevant GameObjects (starts, objects used to trigger next trails, and some tunnels)
 	private void onGameObject(Tile tile, TileObject oldObject, TileObject newObject)
 	{
-		trailObjects.remove(oldObject);
-		tunnels.remove(oldObject);
-		starts.remove(oldObject);
+		if (oldObject != null)
+		{
+			WorldPoint oldLocation = oldObject.getWorldLocation();
+			trailObjects.remove(oldLocation);
+			tunnels.remove(oldLocation);
+			starts.remove(oldLocation);
+		}
 
 		if (newObject == null)
 		{
@@ -290,29 +294,33 @@ public class HerbiboarPlugin extends Plugin
 		// Starts
 		if (START_OBJECT_IDS.contains(newObject.getId()))
 		{
-			starts.put(newObject, tile);
+			starts.put(newObject.getWorldLocation(), newObject);
 			return;
 		}
 
 		// GameObject to trigger next trail (mushrooms, mud, seaweed, etc)
 		if (HerbiboarTrail.getAllObjectLocs().contains(newObject.getWorldLocation()))
 		{
-			trailObjects.put(newObject, tile);
+			trailObjects.put(newObject.getWorldLocation(), newObject);
 			return;
 		}
 
 		// Herbiboar tunnel
 		if (END_LOCATIONS.contains(newObject.getWorldLocation()))
 		{
-			tunnels.put(newObject, tile);
+			tunnels.put(newObject.getWorldLocation(), newObject);
 		}
 	}
 
 	// Store relevant GroundObjects (tracks on trails, and some tunnels)
 	private void onGroundObject(Tile tile, TileObject oldObject, TileObject newObject)
 	{
-		trails.remove(oldObject);
-		tunnels.remove(oldObject);
+		if (oldObject != null)
+		{
+			WorldPoint oldLocation = oldObject.getWorldLocation();
+			trails.remove(oldLocation);
+			tunnels.remove(oldLocation);
+		}
 
 		if (newObject == null)
 		{
@@ -322,14 +330,14 @@ public class HerbiboarPlugin extends Plugin
 		//Trails
 		if (HerbiboarTrail.getTrailIds().contains(newObject.getId()))
 		{
-			trails.put(newObject, tile);
+			trails.put(newObject.getWorldLocation(), newObject);
 			return;
 		}
 
 		//Herbiboar tunnel
 		if (END_LOCATIONS.contains(newObject.getWorldLocation()))
 		{
-			tunnels.put(newObject, tile);
+			tunnels.put(newObject.getWorldLocation(), newObject);
 		}
 	}
 

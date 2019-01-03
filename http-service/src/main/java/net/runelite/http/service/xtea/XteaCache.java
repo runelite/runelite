@@ -22,16 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#version 330
+package net.runelite.http.service.xtea;
 
-layout (location = 0) out vec4 color;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-uniform sampler2D tex;
-
-in vec2 TexCoord;
-
-void main()
+@Data
+@AllArgsConstructor
+class XteaCache
 {
-	vec4 c = texture(tex, TexCoord);
-	color = vec4(c.rgb * c.a, c.a);
+	private int region;
+	private int key1;
+	private int key2;
+	private int key3;
+	private int key4;
 }

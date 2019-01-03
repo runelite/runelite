@@ -29,7 +29,6 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
-import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -500,7 +499,7 @@ public class Perspective
 	 * @param point the coordinate of the tile
 	 * @return the clickable area of the model
 	 */
-	public static Area getClickbox(@Nonnull Client client, Model model, int orientation, @Nonnull LocalPoint point)
+	public static @Nullable Area getClickbox(@Nonnull Client client, Model model, int orientation, @Nonnull LocalPoint point)
 	{
 		if (model == null)
 		{
@@ -518,7 +517,7 @@ public class Perspective
 		Area clickBox = get2DGeometry(client, triangles, point);
 		Area visibleAABB = getAABB(client, vertices, point);
 
-		if (visibleAABB == null || clickBox == null)
+		if (visibleAABB == null)
 		{
 			return null;
 		}
@@ -540,14 +539,14 @@ public class Perspective
 			&& (point.getY() < 0 || point.getY() >= client.getViewportHeight());
 	}
 
-	private static Area get2DGeometry(
+	private static @Nonnull Area get2DGeometry(
 		@Nonnull Client client,
 		@Nonnull List<Triangle> triangles,
 		@Nonnull LocalPoint point
 	)
 	{
 		int radius = 5;
-		Path2D.Double geometry = new Path2D.Double();
+		Area geometry = new Area();
 
 		final int tileHeight = getTileHeight(client, point, client.getPlane());
 
@@ -605,10 +604,10 @@ public class Perspective
 				continue;
 			}
 
-			geometry.append(clickableRect, false);
+			geometry.add(new Area(clickableRect));
 		}
 
-		return new Area(geometry);
+		return geometry;
 	}
 
 	private static Area getAABB(

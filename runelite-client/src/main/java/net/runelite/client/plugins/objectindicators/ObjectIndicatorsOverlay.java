@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,57 +22,65 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.herbiboars;
+package net.runelite.client.plugins.objectindicators;
 
-import com.google.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.Set;
-import net.runelite.api.Point;
+import java.awt.Polygon;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.TileObject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-public class HerbiboarMinimapOverlay extends Overlay
+class ObjectIndicatorsOverlay extends Overlay
 {
-	private final HerbiboarPlugin plugin;
-	private final HerbiboarConfig config;
+	private final Client client;
+	private final ObjectIndicatorsConfig config;
+	private final ObjectIndicatorsPlugin plugin;
 
 	@Inject
-	public HerbiboarMinimapOverlay(HerbiboarPlugin plugin, HerbiboarConfig config)
+	private ObjectIndicatorsOverlay(Client client, ObjectIndicatorsConfig config, ObjectIndicatorsPlugin plugin)
 	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		this.plugin = plugin;
+		this.client = client;
 		this.config = config;
+		this.plugin = plugin;
+		setPosition(OverlayPosition.DYNAMIC);
+		setPriority(OverlayPriority.LOW);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.isTrailShown() && plugin.isInHerbiboarArea())
+		for (TileObject object : plugin.getObjects())
 		{
-			HerbiboarTrail currentTrail = plugin.getCurrentTrail();
-			int finishId = plugin.getFinishId();
-			Set<Integer> shownTrailIds = plugin.getShownTrails();
-
-			for (TileObject tileObject : plugin.getTrails().values())
+			if (object.getPlane() != client.getPlane())
 			{
-				int id = tileObject.getId();
-				Point minimapLocation = tileObject.getMinimapLocation();
-
-				if (minimapLocation == null)
-				{
-					continue;
-				}
-
-				if (shownTrailIds.contains(id) && (finishId > 0 || (currentTrail != null && currentTrail.getTrailId() != id && currentTrail.getTrailId() + 1 != id)))
-				{
-					OverlayUtil.renderMinimapLocation(graphics, minimapLocation, config.getTrailColor());
-				}
+				continue;
 			}
+
+			final Polygon polygon;
+
+			if (object instanceof GameObject)
+			{
+				polygon = ((GameObject) object).getConvexHull();
+			}
+			else
+			{
+				polygon = object.getCanvasTilePoly();
+			}
+
+			if (polygon == null)
+			{
+				continue;
+			}
+
+			OverlayUtil.renderPolygon(graphics, polygon, config.markerColor());
 		}
 
 		return null;
