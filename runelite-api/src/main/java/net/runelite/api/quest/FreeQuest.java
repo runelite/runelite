@@ -1,6 +1,6 @@
 package net.runelite.api.quest;
 
-public enum Free
+public enum FreeQuest
 {
 	BLACK_KNIGHTS_FORTRESS(0),
 	COOKS_ASSISTANT(1),
@@ -27,7 +27,7 @@ public enum Free
 
 	private final int id;
 
-	Free(int id)
+	FreeQuest(int id)
 	{
 		this.id = id;
 	}

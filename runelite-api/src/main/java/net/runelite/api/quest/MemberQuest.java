@@ -1,6 +1,6 @@
 package net.runelite.api.quest;
 
-public enum Members
+public enum MemberQuest
 {
 	ANIMAL_MAGNETISM(0),
 	BETWEEN_A_ROCK(1),
@@ -126,7 +126,7 @@ public enum Members
 
 	private final int id;
 
-	Members(int id)
+	MemberQuest(int id)
 	{
 		this.id = id;
 	}
