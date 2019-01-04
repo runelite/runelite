@@ -84,6 +84,7 @@ public class CrystalMathLabs extends Plugin
 			.build();
 
 		Request request = new Request.Builder()
+			.header("User-Agent", "RuneLite")
 			.url(httpUrl)
 			.build();
 
