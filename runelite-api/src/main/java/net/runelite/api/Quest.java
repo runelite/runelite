@@ -75,7 +75,7 @@ public enum Quest
 	ENLIGHTENED_JOURNEY(22, 1358, "Enlightened Journey"),
 	THE_EYES_OF_GLOUPHRIE(23, 1358, "The Eyes of Glouphrie"),
 	FAIRYTALE_I(24, 1358, "Fairytale I - Growing Pains"),
-	FAIRYTALE_II(25, 1358, "Fairytale II - "),
+	FAIRYTALE_II(25, 1358, "Fairytale II - Cure a Queen"),
 	FAMILY_CREST(26, 1358, "Family Crest"),
 	THE_FEUD(27, 1358, "The Feud"),
 	FIGHT_ARENA(28, 1358, "Fight Arena"),
