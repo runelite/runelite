@@ -1,4 +1,39 @@
 package net.runelite.api.quest;
 
-public enum Free {
+public enum Free
+{
+	BLACK_KNIGHTS_FORTRESS(0),
+	COOKS_ASSISTANT(1),
+	DEMON_SLAYER(2),
+	DORICS_QUEST(3),
+	DRAGON_SLAYER(4),
+	ERNEST_THE_CHICKEN(5),
+	GOBLIN_DIPLOMACY(6),
+	IMP_CATCHER(7),
+	THE_KNIGHTS_SWORD(8),
+	PIRATES_TREASURE(9),
+	PRINCE_ALI_RESCUE(10),
+	THE_RESTLESS_GHOST(11),
+	ROMEO_AND_JULIET(12),
+	RUNE_MYSTERIES(13),
+	SHEEP_SHEARER(14),
+	SHIELD_OF_ARRAV(15),
+	VAMPIRE_SLAYER(16),
+	WITCHS_POTION(17),
+	MISTHALIN_MYSTERY(18),
+	THE_CORSAIR_CURSE(19);
+
+	public static final int SCRIPT = 1357;
+
+	private final int id;
+
+	Free(int id)
+	{
+		this.id = id;
+	}
+
+	public int getID()
+	{
+		return id;
+	}
 }
