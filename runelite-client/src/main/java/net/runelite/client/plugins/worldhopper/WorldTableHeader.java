@@ -45,18 +45,24 @@ import net.runelite.client.util.ImageUtil;
 
 class WorldTableHeader extends JPanel
 {
-	private static final ImageIcon ARROW_DOWN;
 	private static final ImageIcon ARROW_UP;
-	private static final ImageIcon ARROW_UP_FADED;
+	private static final ImageIcon HIGHLIGHT_ARROW_DOWN;
+	private static final ImageIcon HIGHLIGHT_ARROW_UP;
+
+	private static final Color ARROW_COLOR = ColorScheme.LIGHT_GRAY_COLOR;
+	private static final Color HIGHLIGHT_COLOR = ColorScheme.BRAND_ORANGE;
 
 	static
 	{
 		final BufferedImage arrowDown = ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "arrow_down.png");
 		final BufferedImage arrowUp = ImageUtil.rotateImage(arrowDown, Math.PI);
 		final BufferedImage arrowUpFaded = ImageUtil.grayscaleOffset(arrowUp, -80);
-		ARROW_DOWN = new ImageIcon(arrowDown);
-		ARROW_UP = new ImageIcon(arrowUp);
-		ARROW_UP_FADED = new ImageIcon(arrowUpFaded);
+		ARROW_UP = new ImageIcon(arrowUpFaded);
+
+		final BufferedImage highlightArrowDown = ImageUtil.fillImage(arrowDown, HIGHLIGHT_COLOR);
+		final BufferedImage highlightArrowUp = ImageUtil.fillImage(arrowUp, HIGHLIGHT_COLOR);
+		HIGHLIGHT_ARROW_DOWN = new ImageIcon(highlightArrowDown);
+		HIGHLIGHT_ARROW_UP = new ImageIcon(highlightArrowUp);
 	}
 
 	private final JLabel textLabel = new JLabel();
@@ -77,19 +83,21 @@ class WorldTableHeader extends JPanel
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				textLabel.setForeground(Color.WHITE);
+				textLabel.setForeground(HIGHLIGHT_COLOR);
+				if (!ordering)
+				{
+					arrowLabel.setIcon(HIGHLIGHT_ARROW_UP);
+				}
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
-				if (ordering)
+				if (!ordering)
 				{
-					textLabel.setForeground(Color.WHITE);
-					return;
+					textLabel.setForeground(ARROW_COLOR);
+					arrowLabel.setIcon(ARROW_UP);
 				}
-
-				textLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 			}
 		});
 
@@ -133,7 +141,8 @@ class WorldTableHeader extends JPanel
 	public void highlight(boolean on, boolean ascending)
 	{
 		ordering = on;
-		arrowLabel.setIcon(on ? (ascending ? ARROW_DOWN : ARROW_UP) : ARROW_UP_FADED);
-		textLabel.setForeground(on ? Color.WHITE : ColorScheme.LIGHT_GRAY_COLOR);
+		arrowLabel.setIcon(on ? (ascending ? HIGHLIGHT_ARROW_DOWN : HIGHLIGHT_ARROW_UP) : ARROW_UP);
+		textLabel.setForeground(on ? HIGHLIGHT_COLOR : ARROW_COLOR);
 	}
+
 }
