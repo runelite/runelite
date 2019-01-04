@@ -38,6 +38,7 @@ import net.runelite.api.FontTypeFace;
 import net.runelite.api.QuestState;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -52,6 +53,7 @@ import net.runelite.client.plugins.achievementdiary.diaries.FaladorDiaryRequirem
 import net.runelite.client.plugins.achievementdiary.diaries.FremennikDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.KandarinDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.KaramjaDiaryRequirement;
+import net.runelite.client.plugins.achievementdiary.diaries.KourendDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.LumbridgeDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.MorytaniaDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.VarrockDiaryRequirement;
@@ -240,6 +242,9 @@ public class DiaryRequirementsPlugin extends Plugin
 			case "KARAMJA_AREA_TASKS":
 				diaryRequirementContainer = new KaramjaDiaryRequirement();
 				break;
+			case "KOUREND_&_KEBOS_TASKS":
+				diaryRequirementContainer = new KourendDiaryRequirement();
+				break;
 			case "LUMBRIDGE_&_DRAYNOR_TASKS":
 				diaryRequirementContainer = new LumbridgeDiaryRequirement();
 				break;
@@ -319,6 +324,34 @@ public class DiaryRequirementsPlugin extends Plugin
 		if (r instanceof QuestPointRequirement)
 		{
 			return client.getVar(VarPlayer.QUEST_POINTS) >= ((QuestPointRequirement) r).getQp();
+		}
+		if (r instanceof FavourRequirement)
+		{
+			FavourRequirement f = (FavourRequirement) r;
+			int realFavour;
+			switch (f.getHouse())
+			{
+				case ARCEUUS:
+					realFavour = client.getVar(Varbits.KOUREND_FAVOR_ARCEUUS);
+					break;
+				case HOSIDIUS:
+					realFavour = client.getVar(Varbits.KOUREND_FAVOR_HOSIDIUS);
+					break;
+				case LOVAKENGJ:
+					realFavour = client.getVar(Varbits.KOUREND_FAVOR_LOVAKENGJ);
+					break;
+				case PISCARILIUS:
+					realFavour = client.getVar(Varbits.KOUREND_FAVOR_PISCARILIUS);
+					break;
+				case SHAYZIEN:
+					realFavour = client.getVar(Varbits.KOUREND_FAVOR_SHAYZIEN);
+					break;
+				default:
+					realFavour = -1;
+					log.warn("Unknown house {}", f.getHouse());
+					break;
+			}
+			return (realFavour / 10) >= f.getPercent();
 		}
 		log.warn("Unknown requirement {}", r);
 		return false;
