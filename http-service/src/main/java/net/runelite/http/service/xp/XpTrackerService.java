@@ -208,7 +208,7 @@ public class XpTrackerService
 		}
 	}
 
-	@Scheduled(fixedDelay = 3000)
+	@Scheduled(fixedDelay = 1000)
 	public void update() throws ExecutionException
 	{
 		String next = nextUsername;
