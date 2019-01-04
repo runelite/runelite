@@ -35,8 +35,9 @@ import lombok.Getter;
 public enum VarPlayer
 {
 	ATTACK_STYLE(43),
-	IS_POISONED(102),
 
+	QUEST_POINTS(101),
+	IS_POISONED(102),
 	BANK_TAB(115),
 
 	MEMBERSHIP_DAYS(1780),

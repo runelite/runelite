@@ -77,6 +77,17 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 4,
+		keyName = "questPoints",
+		name = "Quest Points Command",
+		description = "Configures whether the Quest Points command is enabled<br> !qp"
+	)
+	default boolean questPoints()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "clearShortcuts",
 		name = "Clear shortcuts",
 		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"

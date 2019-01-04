@@ -41,6 +41,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.IconID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.SetMessage;
@@ -91,6 +92,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final String CLUES_COMMAND_STRING = "!clues";
 	private static final String KILLCOUNT_COMMAND_STRING = "!kc";
 	private static final String CMB_COMMAND_STRING = "!cmb";
+	private static final String QUEST_POINTS_COMMAND_STRING = "!qp";
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final KillCountClient killCountClient = new KillCountClient();
@@ -217,7 +219,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		else if (config.clue() && message.toLowerCase().equals(CLUES_COMMAND_STRING))
 		{
 			log.debug("Running lookup for overall clues");
-			executor.submit(() -> playerClueLookup(setMessage, localEndpoint,  "total"));
+			executor.submit(() -> playerClueLookup(setMessage, localEndpoint, "total"));
 		}
 		else if (config.clue() && message.toLowerCase().startsWith(CLUES_COMMAND_STRING + " "))
 		{
@@ -233,6 +235,31 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Running killcount lookup for {}", search);
 			executor.submit(() -> killCountLookup(setMessage.getType(), setMessage, search));
 		}
+		else if (config.questPoints() && message.toLowerCase().startsWith(QUEST_POINTS_COMMAND_STRING))
+		{
+			log.debug("Running quest points lookup");
+			executor.submit(() -> questPointsLookup(setMessage.getMessageNode()));
+		}
+	}
+
+	private void questPointsLookup(MessageNode messageNode)
+	{
+		int questPointsAmount = client.getVar(VarPlayer.QUEST_POINTS);
+
+		ChatMessageBuilder messageBuilder = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Quest Points: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.valueOf(questPointsAmount));
+
+		messageNode.setRuneLiteFormatMessage(messageBuilder.build());
+		updateMessageAndRefresh(messageNode);
+	}
+
+	private void updateMessageAndRefresh(final MessageNode messageNode)
+	{
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
 	}
 
 	@Subscribe
@@ -444,8 +471,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = setMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
-		chatMessageManager.update(messageNode);
-		client.refreshChat();
+		updateMessageAndRefresh(messageNode);
 	}
 
 	/**
@@ -491,8 +517,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 
 			log.debug("Setting response {}", response);
 			messageNode.setRuneLiteFormatMessage(response);
-			chatMessageManager.update(messageNode);
-			client.refreshChat();
+			updateMessageAndRefresh(messageNode);
 		}
 	}
 
@@ -549,8 +574,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Setting response {}", response);
 			final MessageNode messageNode = setMessage.getMessageNode();
 			messageNode.setRuneLiteFormatMessage(response);
-			chatMessageManager.update(messageNode);
-			client.refreshChat();
+			updateMessageAndRefresh(messageNode);
 		}
 		catch (IOException ex)
 		{
@@ -627,8 +651,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Setting response {}", response);
 			final MessageNode messageNode = setMessage.getMessageNode();
 			messageNode.setRuneLiteFormatMessage(response);
-			chatMessageManager.update(messageNode);
-			client.refreshChat();
+			updateMessageAndRefresh(messageNode);
 		}
 		catch (IOException ex)
 		{
@@ -707,8 +730,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			log.debug("Setting response {}", response);
 			final MessageNode messageNode = setMessage.getMessageNode();
 			messageNode.setRuneLiteFormatMessage(response);
-			chatMessageManager.update(messageNode);
-			client.refreshChat();
+			updateMessageAndRefresh(messageNode);
 		}
 		catch (IOException ex)
 		{
@@ -720,7 +742,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	 * Gets correct lookup data for message
 	 *
 	 * @param setMessage chat message
-	 * @param local HiscoreEndpoint for local player, needs to be sent in advance to avoid threading bugs
+	 * @param local      HiscoreEndpoint for local player, needs to be sent in advance to avoid threading bugs
 	 * @return hiscore lookup data
 	 */
 	private HiscoreLookup getCorrectLookupFor(final SetMessage setMessage, final HiscoreEndpoint local)
