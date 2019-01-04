@@ -52,6 +52,7 @@ import net.runelite.client.plugins.achievementdiary.diaries.FaladorDiaryRequirem
 import net.runelite.client.plugins.achievementdiary.diaries.FremennikDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.KandarinDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.KaramjaDiaryRequirement;
+import net.runelite.client.plugins.achievementdiary.diaries.KourendDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.LumbridgeDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.MorytaniaDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.VarrockDiaryRequirement;
@@ -239,6 +240,9 @@ public class DiaryRequirementsPlugin extends Plugin
 				break;
 			case "KARAMJA_AREA_TASKS":
 				diaryRequirementContainer = new KaramjaDiaryRequirement();
+				break;
+			case "KOUREND_&_KEBOS_TASKS":
+				diaryRequirementContainer = new KourendDiaryRequirement();
 				break;
 			case "LUMBRIDGE_&_DRAYNOR_TASKS":
 				diaryRequirementContainer = new LumbridgeDiaryRequirement();
