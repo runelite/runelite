@@ -30,6 +30,7 @@ import com.google.common.base.Splitter;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -72,6 +73,7 @@ import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
@@ -396,6 +398,15 @@ public class LootTrackerPlugin extends Plugin
 					break;
 			}
 		}
+	}
+
+	@Schedule(
+		period = 5,
+		unit = ChronoUnit.SECONDS
+	)
+	public void tickSkillTimes()
+	{
+		panel.updateOverall();
 	}
 
 	void toggleItem(String name, boolean ignore)

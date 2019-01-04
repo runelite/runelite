@@ -83,6 +83,7 @@ class LootTrackerPanel extends PluginPanel
 	private final JPanel overallPanel = new JPanel();
 	private final JLabel overallKillsLabel = new JLabel();
 	private final JLabel overallGpLabel = new JLabel();
+	private final JLabel killsHourLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
 
 	// Details and navigation
@@ -275,12 +276,14 @@ class LootTrackerPanel extends PluginPanel
 		// Add icon and contents
 		final JPanel overallInfo = new JPanel();
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		overallInfo.setLayout(new GridLayout(2, 1));
+		overallInfo.setLayout(new GridLayout(3, 1));
 		overallInfo.setBorder(new EmptyBorder(2, 10, 2, 0));
 		overallKillsLabel.setFont(FontManager.getRunescapeSmallFont());
 		overallGpLabel.setFont(FontManager.getRunescapeSmallFont());
+		killsHourLabel.setFont(FontManager.getRunescapeSmallFont());
 		overallInfo.add(overallKillsLabel);
 		overallInfo.add(overallGpLabel);
+		overallInfo.add(killsHourLabel);
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
@@ -303,10 +306,26 @@ class LootTrackerPanel extends PluginPanel
 			}
 		});
 
+		// Create reset kills/hour menu
+		final JMenuItem resetKillsHour = new JMenuItem("Reset Kills/Hour");
+		resetKillsHour.addActionListener(e ->
+		{
+			for (LootTrackerRecord record : records)
+			{
+				if (record.matches(currentView))
+				{
+					record.setTimestamp(-1);
+				}
+			}
+
+			updateOverall();
+		});
+
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(reset);
+		popupMenu.add(resetKillsHour);
 		overallPanel.setComponentPopupMenu(popupMenu);
 
 		// Create loot boxes wrapper
@@ -504,16 +523,30 @@ class LootTrackerPanel extends PluginPanel
 		return box;
 	}
 
-	private void updateOverall()
+	void updateOverall()
 	{
 		long overallKills = 0;
 		long overallGp = 0;
+		long sessionKills = 0;
+		long killsPerHour = 0;
+		long firstTimestamp = -1;
 
 		for (LootTrackerRecord record : records)
 		{
 			if (!record.matches(currentView))
 			{
 				continue;
+			}
+
+			// Records imported from previous sessions and reset records have a timestamp of -1
+			if (record.getTimestamp() != -1)
+			{
+				sessionKills++;
+
+				if (firstTimestamp == -1 || firstTimestamp > record.getTimestamp())
+				{
+					firstTimestamp = record.getTimestamp();
+				}
 			}
 
 			int present = record.getItems().length;
@@ -535,8 +568,16 @@ class LootTrackerPanel extends PluginPanel
 			}
 		}
 
+		if (sessionKills != 0 && firstTimestamp != -1)
+		{
+			double timeSinceFirstKill = Math.max(10, (System.currentTimeMillis() - firstTimestamp) / 1000);
+
+			killsPerHour = (long) ((3600 / timeSinceFirstKill) * sessionKills);
+		}
+
 		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
 		overallGpLabel.setText(htmlLabel("Total value: ", overallGp));
+		killsHourLabel.setText(htmlLabel("Kills/Hour: ", killsPerHour));
 	}
 
 	private static String htmlLabel(String key, long value)
