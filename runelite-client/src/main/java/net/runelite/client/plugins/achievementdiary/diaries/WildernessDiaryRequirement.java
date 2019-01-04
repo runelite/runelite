@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.achievementdiary.diaries;
 
+import net.runelite.api.Quest;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.Requirement;
@@ -40,6 +41,8 @@ public class WildernessDiaryRequirement extends GenericDiaryRequirement
 			new Requirement(Skill.AGILITY, 15));
 		add("Mine some Iron ore in the Wilderness.",
 			new Requirement(Skill.MINING, 15));
+		add("Have the Mage of Zamorak teleport you to the Abyss.",
+			new Requirement(Quest.ENTER_THE_ABYSS));
 
 		// MEDIUM
 		add("Mine some Mithril ore in the wilderness.",
@@ -57,11 +60,13 @@ public class WildernessDiaryRequirement extends GenericDiaryRequirement
 		add("Kill a Bloodveld in the Wilderness Godwars Dungeon.",
 			new Requirement(Skill.SLAYER, 50));
 		add("Smith a Golden helmet in the Resource Area.",
-			new Requirement(Skill.SMITHING, 50));
+			new Requirement(Skill.SMITHING, 50),
+			new Requirement(Quest.BETWEEN_A_ROCK, true));
 
 		// HARD
 		add("Cast one of the 3 God spells against another player in the Wilderness.",
-			new Requirement(Skill.MAGIC, 60));
+			new Requirement(Skill.MAGIC, 60),
+			new Requirement(Quest.THE_MAGE_ARENA));
 		add("Charge an Air Orb.",
 			new Requirement(Skill.MAGIC, 66));
 		add("Catch a Black Salamander in the Wilderness.",
@@ -69,7 +74,8 @@ public class WildernessDiaryRequirement extends GenericDiaryRequirement
 		add("Smith an Adamant scimitar in the Resource Area.",
 			new Requirement(Skill.SMITHING, 75));
 		add("Take the agility shortcut from Trollheim into the Wilderness.",
-			new Requirement(Skill.AGILITY, 64));
+			new Requirement(Skill.AGILITY, 64),
+			new Requirement(Quest.DEATH_PLATEAU));
 		add("Kill a Spiritual warrior in the Wilderness Godwars Dungeon.",
 			new Requirement(Skill.SLAYER, 68));
 		add("Fish some Raw Lava Eel in the Wilderness.",
@@ -77,7 +83,8 @@ public class WildernessDiaryRequirement extends GenericDiaryRequirement
 
 		// ELITE
 		add("Teleport to Ghorrock.",
-			new Requirement(Skill.MAGIC, 96));
+			new Requirement(Skill.MAGIC, 96),
+			new Requirement(Quest.DESERT_TREASURE));
 		add("Fish and Cook a Dark Crab in the Resource Area.",
 			new Requirement(Skill.FISHING, 85),
 			new Requirement(Skill.COOKING, 90));

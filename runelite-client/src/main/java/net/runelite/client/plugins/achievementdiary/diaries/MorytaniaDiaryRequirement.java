@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.achievementdiary.diaries;
 
+import net.runelite.api.Quest;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.Requirement;
@@ -44,6 +45,8 @@ public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 			new Requirement(Skill.SLAYER, 15));
 		add("Place a Scarecrow in the Morytania flower patch.",
 			new Requirement(Skill.FARMING, 23));
+		add("Restore your prayer points at the nature altar.",
+			new Requirement(Quest.NATURE_SPIRIT));
 
 		// MEDIUM
 		add("Catch a swamp lizard.",
@@ -53,47 +56,67 @@ public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 		add("Obtain some Bark from a Hollow tree.",
 			new Requirement(Skill.WOODCUTTING, 45));
 		add("Kill a Terror Dog.",
-			new Requirement(Skill.SLAYER, 40));
+			new Requirement(Skill.SLAYER, 40),
+			new Requirement(Quest.LAIR_OF_TARN_RAZORLOR));
 		add("Complete a game of trouble brewing.",
-			new Requirement(Skill.COOKING, 40));
+			new Requirement(Skill.COOKING, 40),
+			new Requirement(Quest.CABIN_FEVER));
 		add("Make a batch of cannonballs at the Port Phasmatys furnace.",
-			new Requirement(Skill.SMITHING, 35));
+			new Requirement(Skill.SMITHING, 35),
+			new Requirement(Quest.DWARF_CANNON),
+			new Requirement(Quest.GHOSTS_AHOY, true));
 		add("Kill a Fever Spider on Braindeath Island.",
-			new Requirement(Skill.SLAYER, 42));
+			new Requirement(Skill.SLAYER, 42),
+			new Requirement(Quest.RUM_DEAL));
+		add("Use an ectophial to return to Port Phasmatys.",
+			new Requirement(Quest.GHOSTS_AHOY));
 		add("Mix a Guthix Balance potion while in Morytania.",
-			new Requirement(Skill.HERBLORE, 36));
+			new Requirement(Skill.HERBLORE, 36),
+			new Requirement(Quest.IN_AID_OF_THE_MYREQUE, true));
 
 		// HARD
 		add("Enter the Kharyrll portal in your POH.",
 			new Requirement(Skill.MAGIC, 66),
-			new Requirement(Skill.CONSTRUCTION, 50));
+			new Requirement(Skill.CONSTRUCTION, 50),
+			new Requirement(Quest.DESERT_TREASURE));
 		add("Climb the advanced spike chain within Slayer Tower.",
 			new Requirement(Skill.AGILITY, 71));
 		add("Harvest some Watermelon from the Allotment patch on Harmony Island.",
-			new Requirement(Skill.FARMING, 47));
+			new Requirement(Skill.FARMING, 47),
+			new Requirement(Quest.THE_GREAT_BRAIN_ROBBERY, true));
 		add("Chop and burn some mahogany logs on Mos Le'Harmless.",
 			new Requirement(Skill.WOODCUTTING, 50),
-			new Requirement(Skill.FIREMAKING, 50));
+			new Requirement(Skill.FIREMAKING, 50),
+			new Requirement(Quest.CABIN_FEVER));
+		add("Complete a temple trek with a hard companion.",
+			new Requirement(Quest.IN_AID_OF_THE_MYREQUE));
 		add("Kill a Cave Horror.",
-			new Requirement(Skill.SLAYER, 58));
+			new Requirement(Skill.SLAYER, 58),
+			new Requirement(Quest.CABIN_FEVER));
 		add("Harvest some Bittercap Mushrooms from the patch in Canifis.",
 			new Requirement(Skill.FARMING, 53));
 		add("Pray at the Altar of Nature with Piety activated.",
 			new Requirement(Skill.PRAYER, 70),
-			new Requirement(Skill.DEFENCE, 70));
+			new Requirement(Skill.DEFENCE, 70),
+			new Requirement(Quest.NATURE_SPIRIT),
+			new Requirement(Quest.KINGS_RANSOM));
 		add("Use the shortcut to get to the bridge over the Salve.",
 			new Requirement(Skill.AGILITY, 65));
 		add("Mine some Mithril ore in the Abandoned Mine.",
-			new Requirement(Skill.MINING, 55));
+			new Requirement(Skill.MINING, 55),
+			new Requirement(Quest.HAUNTED_MINE));
 
 		// ELITE
 		add("Catch a shark in Burgh de Rott with your bare hands.",
 			new Requirement(Skill.FISHING, 96),
-			new Requirement(Skill.STRENGTH, 76));
+			new Requirement(Skill.STRENGTH, 76),
+			new Requirement(Quest.IN_AID_OF_THE_MYREQUE));
 		add("Cremate any Shade remains on a Magic or Redwood pyre.",
-			new Requirement(Skill.FIREMAKING, 80));
+			new Requirement(Skill.FIREMAKING, 80),
+			new Requirement(Quest.SHADES_OF_MORTTON));
 		add("Fertilize the Morytania herb patch using Lunar Magic.",
-			new Requirement(Skill.MAGIC, 83));
+			new Requirement(Skill.MAGIC, 83),
+			new Requirement(Quest.LUNAR_DIPLOMACY));
 		add("Craft a Black dragonhide body in Canifis bank.",
 			new Requirement(Skill.CRAFTING, 84));
 		add("Kill an Abyssal demon in the Slayer Tower.",

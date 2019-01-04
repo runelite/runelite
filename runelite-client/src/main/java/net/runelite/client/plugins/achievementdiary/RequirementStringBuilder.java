@@ -27,12 +27,21 @@ package net.runelite.client.plugins.achievementdiary;
 
 import java.awt.Color;
 import java.util.List;
+
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Quest;
 import net.runelite.api.Skill;
 import net.runelite.client.util.ColorUtil;
 
+import javax.inject.Inject;
+
+@Slf4j
 class RequirementStringBuilder
 {
+	@Inject
+	DiaryRequirementsConfig config;
+
 	private final Requirement requirement;
 	@Getter
 	private String requirementString;
@@ -43,19 +52,39 @@ class RequirementStringBuilder
 
 		int levelRequirement = requirement.getLevelRequirement();
 		Skill skill = requirement.getSkill();
+		Quest quest = requirement.getQuest();
+		boolean started = requirement.isStarted();
 		Requirement[] altRequirements = requirement.getAltRequirements();
 
-		StringBuilder requirementStringBuilder = new StringBuilder()
-			.append(levelRequirement)
-			.append(" ")
-			.append(skill != null ? skill.getName() : requirement.getCustomRequirement());
-		for (Requirement i : altRequirements)
+		StringBuilder requirementStringBuilder = new StringBuilder();
+
+		if (skill != null || requirement.getCustomRequirement() != null)
 		{
-			requirementStringBuilder.append(" or ")
-				.append(i.getLevelRequirement())
-				.append(" ")
-				.append(i.getSkill().getName());
+			requirementStringBuilder.append(levelRequirement)
+					.append(" ")
+					.append(skill != null ? skill.getName() : requirement.getCustomRequirement());
+			for (Requirement i : altRequirements)
+			{
+				requirementStringBuilder.append(" or ")
+						.append(i.getLevelRequirement())
+						.append(" ")
+						.append(i.getSkill().getName());
+			}
 		}
+		else if (quest != null /*&& config.showQuestReqs()*/)
+		{
+			if (started)
+			{
+				requirementStringBuilder.append("Started ");
+			}
+			requirementStringBuilder.append(quest.getName());
+			for (Requirement i : altRequirements)
+			{
+				requirementStringBuilder.append(" or ")
+						.append(i.getQuest().getName());
+			}
+		}
+
 		this.requirementString = requirementStringBuilder.toString();
 	}
 

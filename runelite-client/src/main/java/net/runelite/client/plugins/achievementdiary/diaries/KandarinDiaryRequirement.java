@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.achievementdiary.diaries;
 
+import net.runelite.api.Quest;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.Requirement;
@@ -38,12 +39,15 @@ public class KandarinDiaryRequirement extends GenericDiaryRequirement
 			new Requirement(Skill.FISHING, 16));
 		add("Plant some Jute seeds in the patch north of McGrubor's Wood.",
 			new Requirement(Skill.FARMING, 13));
+		add("Defeat on of each elemental in the workshop.",
+			new Requirement(Quest.ELEMENTAL_WORKSHOP_I, true));
 		add("Cross the Coal truck log shortcut.",
 			new Requirement(Skill.AGILITY, 20));
 
 		// MEDIUM
 		add("Complete a lap of the Barbarian agility course.",
-			new Requirement(Skill.AGILITY, 35));
+			new Requirement(Skill.AGILITY, 35),
+			new Requirement(Quest.ALFRED_GRIMHANDS_BARCRAWL));
 		add("Create a Super Antipoison potion from scratch in the Seers/Catherby Area.",
 			new Requirement(Skill.HERBLORE, 48));
 		add("Enter the Ranging guild.",
@@ -61,8 +65,14 @@ public class KandarinDiaryRequirement extends GenericDiaryRequirement
 			new Requirement(Skill.FLETCHING, 50));
 		add("Pick some Limpwurt root from the farming patch in Catherby.",
 			new Requirement(Skill.FARMING, 26));
+		add("Create a Mind helmet.",
+			new Requirement(Quest.ELEMENTAL_WORKSHOP_II));
+		add("Kill a Fire Giant inside Baxtorian Waterfall.",
+			new Requirement(Quest.WATERFALL_QUEST, true));
 		add("Steal from the chest in Hemenster.",
 			new Requirement(Skill.THIEVING, 47));
+		add("Travel to McGrubor's Wood by Fairy Ring.",
+			new Requirement(Quest.FAIRYTALE_II, true));
 		add("Mine some coal near the coal trucks.",
 			new Requirement(Skill.MINING, 30));
 
@@ -79,7 +89,8 @@ public class KandarinDiaryRequirement extends GenericDiaryRequirement
 			new Requirement(Skill.CRAFTING, 10));
 		add("Enter the Seers' Village courthouse with piety turned on.",
 			new Requirement(Skill.PRAYER, 70),
-			new Requirement(Skill.DEFENCE, 70));
+			new Requirement(Skill.DEFENCE, 70),
+			new Requirement(Quest.KINGS_RANSOM));
 		add("Charge a Water Orb.",
 			new Requirement(Skill.MAGIC, 56));
 		add("Burn some Maple logs with a bow in Seers' Village.",
@@ -90,14 +101,16 @@ public class KandarinDiaryRequirement extends GenericDiaryRequirement
 		add("Have the Seers' estate agent decorate your house with Fancy Stone.",
 			new Requirement(Skill.CONSTRUCTION, 50));
 		add("Smith an Adamant spear at Otto's Grotto.",
-			new Requirement(Skill.SMITHING, 75));
+			new Requirement(Skill.SMITHING, 75),
+			new Requirement(Quest.TAI_BWO_WANNAI_TRIO));
 
 		// ELITE
 		add("Pick some Dwarf weed from the herb patch at Catherby.",
 			new Requirement(Skill.FARMING, 79));
 		add("Fish and Cook 5 Sharks in Catherby using the Cooking gauntlets.",
 			new Requirement(Skill.FISHING, 76),
-			new Requirement(Skill.COOKING, 80));
+			new Requirement(Skill.COOKING, 80),
+			new Requirement(Quest.FAMILY_CREST));
 		add("Mix a Stamina Mix on top of the Seers' Village bank.",
 			new Requirement(Skill.HERBLORE, 86),
 			new Requirement(Skill.AGILITY, 60));
@@ -107,6 +120,7 @@ public class KandarinDiaryRequirement extends GenericDiaryRequirement
 			new Requirement(Skill.FIREMAKING, 85),
 			new Requirement(Skill.CRAFTING, 85));
 		add("Teleport to Catherby.",
-			new Requirement(Skill.MAGIC, 87));
+			new Requirement(Skill.MAGIC, 87),
+			new Requirement(Quest.LUNAR_DIPLOMACY));
 	}
 }

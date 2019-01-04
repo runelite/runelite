@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.achievementdiary.diaries;
 
+import net.runelite.api.Quest;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.Requirement;
@@ -34,6 +35,8 @@ public class VarrockDiaryRequirement extends GenericDiaryRequirement
 	public VarrockDiaryRequirement()
 	{
 		// EASY
+		add("Have Aubury teleport you to the Essence mine.",
+			new Requirement(Quest.RUNE_MYSTERIES));
 		add("Mine some Iron in the south east mining patch near Varrock.",
 			new Requirement(Skill.MINING, 15));
 		add("Jump over the fence south of Varrock.",
@@ -48,14 +51,27 @@ public class VarrockDiaryRequirement extends GenericDiaryRequirement
 			new Requirement(Skill.THIEVING, 5));
 
 		// MEDIUM
+		add("Enter the Champions' Guild.",
+			new Requirement("Quest Points", 32));
+		add("Select a colour for your kitten.",
+			new Requirement(Quest.GARDEN_OF_TRANQUILLITY, true),
+			new Requirement(Quest.GERTRUDES_CAT));
+		add("Use the spirit tree north of Varrock.",
+			new Requirement(Quest.TREE_GNOME_VILLAGE));
+		add("Enter the Tolna dungeon after completing A Soul's Bane.",
+			new Requirement(Quest.A_SOULS_BANE));
+		add("Teleport to the digsite using a Digsite pendant.",
+			new Requirement(Quest.THE_DIG_SITE));
 		add("Cast the teleport to Varrock spell.",
 			new Requirement(Skill.MAGIC, 25));
 		add("Get a Slayer task from Vannaka.",
 			new Requirement("Combat", 40));
 		add("Pick a White tree fruit.",
-			new Requirement(Skill.FARMING, 25));
+			new Requirement(Skill.FARMING, 25),
+			new Requirement(Quest.GARDEN_OF_TRANQUILLITY));
 		add("Use the balloon to travel from Varrock.",
-			new Requirement(Skill.FIREMAKING, 40));
+			new Requirement(Skill.FIREMAKING, 40),
+			new Requirement(Quest.ENLIGHTENED_JOURNEY));
 		add("Complete a lap of the Varrock Agility course.",
 			new Requirement(Skill.AGILITY, 30));
 
@@ -65,7 +81,8 @@ public class VarrockDiaryRequirement extends GenericDiaryRequirement
 		add("Make a Waka Canoe near Edgeville.",
 			new Requirement(Skill.WOODCUTTING, 57));
 		add("Teleport to Paddewwa.",
-			new Requirement(Skill.MAGIC, 54));
+			new Requirement(Skill.MAGIC, 54),
+			new Requirement(Quest.DESERT_TREASURE));
 		add("Chop some yew logs in Varrock and burn them at the top of the Varrock church.",
 			new Requirement(Skill.WOODCUTTING, 60),
 			new Requirement(Skill.FIREMAKING, 60));
@@ -81,15 +98,19 @@ public class VarrockDiaryRequirement extends GenericDiaryRequirement
 
 		// ELITE
 		add("Create a super combat potion in Varrock west bank.",
-			new Requirement(Skill.HERBLORE, 90));
+			new Requirement(Skill.HERBLORE, 90),
+			new Requirement(Quest.DRUIDIC_RITUAL));
 		add("Use Lunar magic to make 20 mahogany planks at the Lumberyard.",
-			new Requirement(Skill.MAGIC, 86));
+			new Requirement(Skill.MAGIC, 86),
+			new Requirement(Quest.DREAM_MENTOR));
 		add("Bake a summer pie in the Cooking Guild.",
 			new Requirement(Skill.COOKING, 95));
 		add("Smith and fletch ten rune darts within Varrock.",
 			new Requirement(Skill.SMITHING, 89),
-			new Requirement(Skill.FLETCHING, 81));
+			new Requirement(Skill.FLETCHING, 81),
+			new Requirement(Quest.THE_TOURIST_TRAP));
 		add("Craft 100 or more earth runes simultaneously.",
-			new Requirement(Skill.RUNECRAFT, 78));
+			new Requirement(Skill.RUNECRAFT, 78),
+			new Requirement(Quest.RUNE_MYSTERIES));
 	}
 }

@@ -32,8 +32,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+
+import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Quest;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.events.WidgetLoaded;
@@ -41,6 +44,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -71,6 +75,12 @@ public class DiaryRequirementsPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Provides
+	DiaryRequirementsConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(DiaryRequirementsConfig.class);
+	}
 
 	@Subscribe
 	public void onWidgetLoaded(final WidgetLoaded event)
@@ -243,33 +253,49 @@ public class DiaryRequirementsPlugin extends Plugin
 			{
 				RequirementStringBuilder requirementStringBuilder = new RequirementStringBuilder(i);
 
-				Skill skill = i.getSkill();
-				int realSkillLevel;
-				if (skill == null && i.getCustomRequirement().equals("Combat"))
+				Quest quest = i.getQuest();
+				if (quest != null)
 				{
-					realSkillLevel = client.getLocalPlayer().getCombatLevel();
-				}
-				else
-				{
-					realSkillLevel = client.getRealSkillLevel(skill);
-				}
-				List<Integer> altRealSkillLevels = null;
-				if (i.getAltRequirements() != null)
-				{
-					altRealSkillLevels = new ArrayList<>();
-					for (Requirement j : i.getAltRequirements())
+					client.runScript(quest.getType(), quest.getID());
+					int completion = client.getIntStack()[0];
+					if (completion == 2 || (i.isStarted() && completion == 1))
 					{
-						altRealSkillLevels.add(client.getRealSkillLevel(j.getSkill()));
+						requirementStringBuilder.strikeThroughRequirement();
+					}
+					else
+					{
+						requirementStringBuilder.colorRedRequirement();
 					}
 				}
-
-				if (requirementStringBuilder.hasLevelRequirement(realSkillLevel, altRealSkillLevels))
-				{
-					requirementStringBuilder.strikeThroughRequirement();
-				}
 				else
 				{
-					requirementStringBuilder.colorRedRequirement();
+					Skill skill = i.getSkill();
+					int realSkillLevel;
+					if (skill == null && (i.getCustomRequirement().equals("Combat") || i.getCustomRequirement().equals("Quest Points")))
+					{
+						realSkillLevel = client.getLocalPlayer().getCombatLevel();
+					}
+					else
+					{
+						realSkillLevel = client.getRealSkillLevel(skill);
+					}
+					List<Integer> altRealSkillLevels = null;
+					if (i.getAltRequirements() != null)
+					{
+						altRealSkillLevels = new ArrayList<>();
+						for (Requirement j : i.getAltRequirements())
+						{
+							altRealSkillLevels.add(client.getRealSkillLevel(j.getSkill()));
+						}
+					}
+					if (requirementStringBuilder.hasLevelRequirement(realSkillLevel, altRealSkillLevels))
+					{
+						requirementStringBuilder.strikeThroughRequirement();
+					}
+					else
+					{
+						requirementStringBuilder.colorRedRequirement();
+					}
 				}
 				requirementBuilders .add(requirementStringBuilder);
 			}

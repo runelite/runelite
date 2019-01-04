@@ -25,28 +25,55 @@
 
 import lombok.Getter;
 import net.runelite.api.Skill;
+import net.runelite.api.Quest;
 
 @Getter
 public class Requirement
 {
 	private final Skill skill;
+	private final Quest quest;
 	private final String customRequirement;
 	private final int levelRequirement;
+	private final boolean started;
 	private final Requirement[] altRequirements;
 
 	public Requirement(Skill skill, int levelRequirement, Requirement... altRequirements)
 	{
 		this.skill = skill;
+		this.quest = null;
 		this.customRequirement = null;
 		this.levelRequirement = levelRequirement;
+		this.started = false;
+		this.altRequirements = altRequirements;
+	}
+
+	public Requirement(Quest quest, Requirement... altRequirements)
+	{
+		this.skill = null;
+		this.quest = quest;
+		this.customRequirement = null;
+		this.levelRequirement = 0;
+		this.started = false;
+		this.altRequirements = altRequirements;
+	}
+
+	public Requirement(Quest quest, boolean started, Requirement... altRequirements)
+	{
+		this.skill = null;
+		this.quest = quest;
+		this.customRequirement = null;
+		this.levelRequirement = 0;
+		this.started = started;
 		this.altRequirements = altRequirements;
 	}
 
 	public Requirement(String customRequirement, int levelRequirement, Requirement... altRequirements)
 	{
 		this.skill = null;
+		this.quest = null;
 		this.customRequirement = customRequirement;
 		this.levelRequirement = levelRequirement;
+		this.started = false;
 		this.altRequirements = altRequirements;
 	}
 }
