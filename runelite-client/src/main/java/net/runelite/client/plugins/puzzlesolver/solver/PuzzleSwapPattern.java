@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Steffen Hauge <steffen.oerum.hauge@hotmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,60 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.puzzlesolver.solver;
 
-/**
- * An enumeration of possible inventory types.
- */
-public enum InventoryID
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Getter
+public enum PuzzleSwapPattern
 {
-	/**
-	 * Standard player inventory.
-	 */
-	INVENTORY(93),
-	/**
-	 * Equipment inventory.
-	 */
-	EQUIPMENT(94),
-	/**
-	 * Bank inventory.
-	 */
-	BANK(95),
-	/**
-	 * A puzzle box inventory.
-	 */
-	PUZZLE_BOX(140),
-	/**
-	 * Barrows reward chest inventory.
-	 */
-	BARROWS_REWARD(141),
-	/**
-	 * Monkey madness puzzle box inventory.
-	 */
-	MONKEY_MADNESS_PUZZLE_BOX(221),
-	/**
-	 * Chambers of Xeric chest inventory.
-	 */
-	CHAMBERS_OF_XERIC_CHEST(581),
-	/**
-	 * Theater of Blood reward chest inventory (Raids 2)
-	 */
-	THEATRE_OF_BLOOD_CHEST(612);
+	ROTATE_LEFT_UP(new int[]{1, -1, 0, -1, -1, -1, -1, 0}, 1, 1), //Reference point
+	ROTATE_LEFT_DOWN(1, -1),
+	ROTATE_RIGHT_UP(-1, 1),
+	ROTATE_RIGHT_DOWN(-1, -1),
+	ROTATE_UP_LEFT(new int[]{-1, 1, -1, 0, -1, -1, 0, -1}, 1 , 1), //Reference point
+	ROTATE_UP_RIGHT(-1, 1),
+	ROTATE_DOWN_LEFT(1, -1),
+	ROTATE_DOWN_RIGHT(-1, -1),
+	LAST_PIECE_ROW(new int[]{-1, -1, 0, -1, -1, 0, -1, 1}, 1, 1),
+	LAST_PIECE_COLUMN(new int[]{-1, -1, -1, 0, 0, -1, 1, -1}, 1, 1),
+	SHUFFLE_UP_RIGHT(new int[]{1, -1, 0, -1}, 1, 1),
+	SHUFFLE_UP_LEFT(new int[]{-1, -1, 0, -1}, 1, 1),
+	SHUFFLE_UP_BELOW(new int[]{-1, 1, -1, 0}, 1, 1),
+	SHUFFLE_UP_ABOVE(new int[]{-1, -1, -1, 0}, 1, 1);
 
-	private final int id;
+	/**
+	 * Points used for swaps relative to locVal
+	 */
+	private final int[] points;
+	/**
+	 * Modifier for X coordinate
+	 */
+	private final int modX;
+	/**
+	 * Modifier for Y coordinate
+	 */
+	private final int modY;
 
-	InventoryID(int id)
+	PuzzleSwapPattern(int modX, int modY)
 	{
-		this.id = id;
-	}
-
-	/**
-	 * Gets the raw inventory type ID.
-	 *
-	 * @return inventory type
-	 */
-	public int getId()
-	{
-		return id;
+		this(null, modX, modY);
 	}
 }
