@@ -145,7 +145,7 @@ public enum Quest
 	TREE_GNOME_VILLAGE(92, 1358, "Tree Gnome Village"),
 	TRIBAL_TOTEM(93, 1358, "Tribal Totem"),
 	TROLL_ROMANCE(94, 1358, "Troll Romance"),
-	TROLL_STRONHOLD(95, 1358, "Troll Stronghold"),
+	TROLL_STRONGHOLD(95, 1358, "Troll Stronghold"),
 	UNDERGROUND_PASS(96, 1358, "Underground Pass"),
 	WANTED(97, 1358, "Wanted!"),
 	WATCHTOWER(98, 1358, "Watchtower"),
