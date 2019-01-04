@@ -116,7 +116,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	 * NPCs to highlight
 	 */
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<NPC> highlightedNpcs = new HashSet<>();
+	private final Set<NPC> highlightedNpcs = Collections.synchronizedSet(new HashSet<>()); // Prevent multiple threads modifying and using this at the same time, which was causing a Concurrent-Modification Exception
 
 	/**
 	 * Dead NPCs that should be displayed with a respawn indicator if the config is on.
@@ -298,15 +298,35 @@ public class NpcIndicatorsPlugin extends Plugin
 				return;
 			}
 
+			List<String> excludes = new ArrayList<>();
+			boolean match = false;
 			for (String highlight : highlights)
 			{
+				if (highlight.length() > 0 && highlight.charAt(0) == '-')
+				{
+					excludes.add(highlight.substring(1));
+					continue;
+				}
+
 				if (WildcardMatcher.matches(highlight, npcName))
 				{
-					memorizeNpc(npc);
-					highlightedNpcs.add(npc);
-					spawnedNpcsThisTick.add(npc);
-					break;
+					match = true;
+					continue; // Continue loop as might be more excludes after this
 				}
+			}
+
+			if (match)
+			{
+				for (String exclude : excludes)
+				{
+					if (WildcardMatcher.matches(exclude, npcName))
+					{
+						return; // Exclude this npc
+					}
+				}
+				memorizeNpc(npc);
+				highlightedNpcs.add(npc);
+				spawnedNpcsThisTick.add(npc);
 			}
 		}
 	}
@@ -462,18 +482,41 @@ public class NpcIndicatorsPlugin extends Plugin
 				continue;
 			}
 
+			List<String> excludes = new ArrayList<>();
+			boolean match = false;
 			for (String highlight : highlights)
 			{
+				if (highlight.length() > 0 && highlight.charAt(0) == '-')
+				{
+					excludes.add(highlight.substring(1));
+					continue;
+				}
 				if (WildcardMatcher.matches(highlight, npcName))
 				{
-					memorizeNpc(npc);
-					highlightedNpcs.add(npc);
-					continue outer;
+					match = true;
+					continue; // Continue loop as might be more excludes after this
 				}
 			}
 
-			// NPC is not highlighted
-			memorizedNpcs.remove(npc.getIndex());
+			if (match)
+			{
+				for (String exclude : excludes)
+				{ // Check if the name matches any of the excludes
+					if (WildcardMatcher.matches(exclude, npcName))
+					{
+						memorizedNpcs.remove(npc.getIndex());
+						continue outer; // Exclude this npc
+					}
+				}
+				memorizeNpc(npc);
+				highlightedNpcs.add(npc);
+				continue outer;
+			}
+			else
+			{
+				// NPC is not highlighted
+				memorizedNpcs.remove(npc.getIndex());
+			}
 		}
 	}
 
