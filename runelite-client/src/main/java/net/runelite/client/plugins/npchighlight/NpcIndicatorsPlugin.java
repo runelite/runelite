@@ -116,7 +116,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	 * NPCs to highlight
 	 */
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<NPC> highlightedNpcs = Collections.synchronizedSet(new HashSet<>()); // Prevent multiple threads modifying and using this at the same time, which was causing a Concurrent-Modification Exception
+	private final Set<NPC> highlightedNpcs = Collections.synchronizedSet(new HashSet<>());
 
 	/**
 	 * Dead NPCs that should be displayed with a respawn indicator if the config is on.
@@ -140,6 +140,11 @@ public class NpcIndicatorsPlugin extends Plugin
 	 * Highlight strings from the configuration
 	 */
 	private List<String> highlights = new ArrayList<>();
+
+	/**
+	 * Excluded strings from the configuration
+	 */
+	private List<String> excludes = new ArrayList<>();
 
 	/**
 	 * NPC ids marked with the Tag option
@@ -190,6 +195,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		overlayManager.add(npcMinimapOverlay);
 		keyManager.registerKeyListener(inputListener);
 		highlights = getHighlights();
+		excludes = getExcludes();
 		clientThread.invoke(() ->
 		{
 			skipNextSpawnCheck = true;
@@ -235,6 +241,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		highlights = getHighlights();
+		excludes = getExcludes();
 		rebuildAllNpcs();
 	}
 
@@ -298,35 +305,23 @@ public class NpcIndicatorsPlugin extends Plugin
 				return;
 			}
 
-			List<String> excludes = new ArrayList<>();
-			boolean match = false;
 			for (String highlight : highlights)
-			{
-				if (highlight.length() > 0 && highlight.charAt(0) == '-')
-				{
-					excludes.add(highlight.substring(1));
-					continue;
-				}
-
-				if (WildcardMatcher.matches(highlight, npcName))
-				{
-					match = true;
-					continue; // Continue loop as might be more excludes after this
-				}
-			}
-
-			if (match)
 			{
 				for (String exclude : excludes)
 				{
 					if (WildcardMatcher.matches(exclude, npcName))
 					{
-						return; // Exclude this npc
+						memorizedNpcs.remove(npc.getIndex());
+						return;
 					}
 				}
-				memorizeNpc(npc);
-				highlightedNpcs.add(npc);
-				spawnedNpcsThisTick.add(npc);
+				if (WildcardMatcher.matches(highlight, npcName))
+				{
+					memorizeNpc(npc);
+					highlightedNpcs.add(npc);
+					spawnedNpcsThisTick.add(npc);
+					break;
+				}
 			}
 		}
 	}
@@ -454,6 +449,18 @@ public class NpcIndicatorsPlugin extends Plugin
 		return COMMA_SPLITTER.splitToList(configNpcs);
 	}
 
+	List<String> getExcludes()
+	{
+		final String configNpcs = config.getNpcExcludeList().toLowerCase();
+
+		if (configNpcs.isEmpty())
+		{
+			return Collections.emptyList();
+		}
+
+		return COMMA_SPLITTER.splitToList(configNpcs);
+	}
+
 	private void rebuildAllNpcs()
 	{
 		highlightedNpcs.clear();
@@ -482,41 +489,25 @@ public class NpcIndicatorsPlugin extends Plugin
 				continue;
 			}
 
-			List<String> excludes = new ArrayList<>();
-			boolean match = false;
 			for (String highlight : highlights)
 			{
-				if (highlight.length() > 0 && highlight.charAt(0) == '-')
-				{
-					excludes.add(highlight.substring(1));
-					continue;
-				}
-				if (WildcardMatcher.matches(highlight, npcName))
-				{
-					match = true;
-					continue; // Continue loop as might be more excludes after this
-				}
-			}
-
-			if (match)
-			{
 				for (String exclude : excludes)
-				{ // Check if the name matches any of the excludes
+				{
 					if (WildcardMatcher.matches(exclude, npcName))
 					{
 						memorizedNpcs.remove(npc.getIndex());
-						continue outer; // Exclude this npc
+						continue outer;
 					}
 				}
-				memorizeNpc(npc);
-				highlightedNpcs.add(npc);
-				continue outer;
+				if (WildcardMatcher.matches(highlight, npcName))
+				{
+					memorizeNpc(npc);
+					highlightedNpcs.add(npc);
+					continue outer;
+				}
 			}
-			else
-			{
-				// NPC is not highlighted
-				memorizedNpcs.remove(npc.getIndex());
-			}
+			// NPC is not highlighted
+			memorizedNpcs.remove(npc.getIndex());
 		}
 	}
 
