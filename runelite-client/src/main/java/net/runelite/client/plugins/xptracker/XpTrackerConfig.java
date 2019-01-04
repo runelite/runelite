@@ -32,10 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface XpTrackerConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
-		keyName = "hideMaxed",
-		name = "Hide maxed skills",
-		description = "Stop globes from showing up for level 99 skills "
+			position = 0,
+			keyName = "hideMaxed",
+			name = "Hide maxed skills",
+			description = "Stop globes from showing up for level 99 skills "
 	)
 	default boolean hideMaxed()
 	{
@@ -43,10 +43,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
-		keyName = "logoutPausing",
-		name = "Pause on Logout",
-		description = "Configures whether skills should pause on logout"
+			position = 1,
+			keyName = "logoutPausing",
+			name = "Pause on Logout",
+			description = "Configures whether skills should pause on logout"
 	)
 	default boolean pauseOnLogout()
 	{
@@ -54,10 +54,10 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
-		keyName = "intermediateLevelMarkers",
-		name = "Show intermediate level markers",
-		description = "Marks intermediate levels on the progressbar"
+			position = 2,
+			keyName = "intermediateLevelMarkers",
+			name = "Show intermediate level markers",
+			description = "Marks intermediate levels on the progressbar"
 	)
 	default boolean showIntermediateLevels()
 	{
@@ -65,13 +65,24 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
-		keyName = "pauseSkillAfter",
-		name = "Auto pause after",
-		description = "Configures how many minutes passes before pausing a skill while in game and there's no XP, 0 means disabled"
+			position = 3,
+			keyName = "pauseSkillAfter",
+			name = "Auto pause after",
+			description = "Configures how many minutes passes before pausing a skill while in game and there's no XP, 0 means disabled"
 	)
 	default int pauseSkillAfter()
 	{
 		return 0;
+	}
+
+	@ConfigItem(
+			position = 4,
+			keyName = "showTimeToGoal",
+			name = "Time to goal",
+			description = "Replaces Actions Left with Time Left (to goal)."
+	)
+	default boolean timeToGoal()
+	{
+		return false;
 	}
 }

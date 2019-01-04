@@ -25,22 +25,6 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -56,17 +40,26 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.StackFormatter;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 class XpInfoBox extends JPanel
 {
 	private static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("0.00");
 
 	// Templates
 	private static final String HTML_TOOL_TIP_TEMPLATE =
-		"<html>%s %s done<br/>"
-			+ "%s %s/hr<br/>"
-			+ "%s till goal lvl</html>";
+			"<html>%s %s done<br/>"
+					+ "%s %s/hr<br/>"
+					+ "%s till goal lvl</html>";
 	private static final String HTML_LABEL_TEMPLATE =
-		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
+			"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
 	// Instance members
 	private final JPanel panel;
@@ -203,15 +196,18 @@ class XpInfoBox extends JPanel
 			// Update information labels
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
 			expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
-			actionsLeft.setText(htmlLabel(xpSnapshotSingle.getActionType().getLabel() + ": ", xpSnapshotSingle.getActionsRemainingToGoal()));
+			if (!xpTrackerConfig.timeToGoal())
+			{
+				actionsLeft.setText(htmlLabel(xpSnapshotSingle.getActionType().getLabel() + ": ", xpSnapshotSingle.getActionsRemainingToGoal()));
+			}
 
 			// Update progress bar
 			progressBar.setValue((int) xpSnapshotSingle.getSkillProgressToGoal());
 			progressBar.setCenterLabel(TWO_DECIMAL_FORMAT.format(xpSnapshotSingle.getSkillProgressToGoal()) + "%");
 			progressBar.setLeftLabel("Lvl. " + xpSnapshotSingle.getStartLevel());
 			progressBar.setRightLabel(xpSnapshotSingle.getEndGoalXp() == Experience.MAX_SKILL_XP
-				? "200M"
-				: "Lvl. " + xpSnapshotSingle.getEndLevel());
+					? "200M"
+					: "Lvl. " + xpSnapshotSingle.getEndLevel());
 
 			// Add intermediate level positions to progressBar
 			if (xpTrackerConfig.showIntermediateLevels() && xpSnapshotSingle.getEndLevel() - xpSnapshotSingle.getStartLevel() > 1)
@@ -233,12 +229,12 @@ class XpInfoBox extends JPanel
 			}
 
 			progressBar.setToolTipText(String.format(
-				HTML_TOOL_TIP_TEMPLATE,
-				xpSnapshotSingle.getActionsInSession(),
-				xpSnapshotSingle.getActionType().getLabel(),
-				xpSnapshotSingle.getActionsPerHour(),
-				xpSnapshotSingle.getActionType().getLabel(),
-				xpSnapshotSingle.getTimeTillGoal()));
+					HTML_TOOL_TIP_TEMPLATE,
+					xpSnapshotSingle.getActionsInSession(),
+					xpSnapshotSingle.getActionType().getLabel(),
+					xpSnapshotSingle.getActionsPerHour(),
+					xpSnapshotSingle.getActionType().getLabel(),
+					xpSnapshotSingle.getTimeTillGoal()));
 
 			progressBar.setDimmed(skillPaused);
 
@@ -261,13 +257,23 @@ class XpInfoBox extends JPanel
 			pauseSkill.setText("Pause");
 		}
 
-		// Update exp per hour separately, every time (not only when there's an update)
+		// Update exp per hour and TTL separately, every time (not only when there's an update)
 		expHour.setText(htmlLabel("XP/Hour: ", xpSnapshotSingle.getXpPerHour()));
+
+		if (xpTrackerConfig.timeToGoal())
+		{
+			actionsLeft.setText(htmlLabel("Time Left: ", xpSnapshotSingle.getTimeTillGoal()));
+		}
 	}
 
 	static String htmlLabel(String key, int value)
 	{
-		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
-		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
+		final String valueStr = StackFormatter.quantityToRSDecimalStack(value);
+		return htmlLabel(key, valueStr);
+	}
+
+	static String htmlLabel(String key, String value)
+	{
+		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, value);
 	}
 }

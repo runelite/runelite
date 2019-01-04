@@ -25,14 +25,15 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import java.util.HashMap;
-import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -226,8 +227,8 @@ class XpStateSingle
 		{
 			int currentLevel = Experience.getLevelForXp(currentXp);
 			endLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL
-				? Experience.getXpForLevel(currentLevel + 1)
-				: Experience.MAX_SKILL_XP;
+					? Experience.getXpForLevel(currentLevel + 1)
+					: Experience.MAX_SKILL_XP;
 		}
 		else
 		{
@@ -250,19 +251,19 @@ class XpStateSingle
 	XpSnapshotSingle snapshot()
 	{
 		return XpSnapshotSingle.builder()
-			.startLevel(Experience.getLevelForXp(startLevelExp))
-			.endLevel(Experience.getLevelForXp(endLevelExp))
-			.xpGainedInSession(xpGained)
-			.xpRemainingToGoal(getXpRemaining())
-			.xpPerHour(getXpHr())
-			.skillProgressToGoal(getSkillProgress())
-			.actionType(actionType)
-			.actionsInSession(getXpAction(actionType).getActions())
-			.actionsRemainingToGoal(getActionsRemaining())
-			.actionsPerHour(getActionsHr())
-			.timeTillGoal(getTimeTillLevel())
-			.startGoalXp(startLevelExp)
-			.endGoalXp(endLevelExp)
-			.build();
+				.startLevel(Experience.getLevelForXp(startLevelExp))
+				.endLevel(Experience.getLevelForXp(endLevelExp))
+				.xpGainedInSession(xpGained)
+				.xpRemainingToGoal(getXpRemaining())
+				.xpPerHour(getXpHr())
+				.skillProgressToGoal(getSkillProgress())
+				.actionType(actionType)
+				.actionsInSession(getXpAction(actionType).getActions())
+				.actionsRemainingToGoal(getActionsRemaining())
+				.actionsPerHour(getActionsHr())
+				.timeTillGoal(getTimeTillLevel())
+				.startGoalXp(startLevelExp)
+				.endGoalXp(endLevelExp)
+				.build();
 	}
 }
