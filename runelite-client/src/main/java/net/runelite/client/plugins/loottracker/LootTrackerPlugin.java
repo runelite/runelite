@@ -47,6 +47,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
@@ -56,6 +57,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.SessionClose;
 import net.runelite.api.events.SessionOpen;
 import net.runelite.api.events.WidgetLoaded;
@@ -133,6 +135,8 @@ public class LootTrackerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
+
+	private LootRecordWriter writer;
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -262,6 +266,8 @@ public class LootTrackerPlugin extends Plugin
 				return true;
 			});
 		}
+
+		writer = new LootRecordWriter();
 	}
 
 	@Override
@@ -281,10 +287,15 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
 
+		LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items));
 		if (lootTrackerClient != null && config.saveLoot())
 		{
-			LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items));
 			lootTrackerClient.submit(lootRecord);
+		}
+
+		if (config.saveLocalLoot())
+		{
+			writer.addLootTrackerRecord(lootRecord);
 		}
 	}
 
@@ -298,10 +309,15 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
 
+		LootRecord lootRecord = new LootRecord(name, LootRecordType.PLAYER, toGameItems(items));
 		if (lootTrackerClient != null && config.saveLoot())
 		{
-			LootRecord lootRecord = new LootRecord(name, LootRecordType.PLAYER, toGameItems(items));
 			lootTrackerClient.submit(lootRecord);
+		}
+
+		if (config.saveLocalLoot())
+		{
+			writer.addLootTrackerRecord(lootRecord);
 		}
 	}
 
@@ -357,10 +373,15 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(eventType, -1, entries));
 
+		LootRecord lootRecord = new LootRecord(eventType, LootRecordType.EVENT, toGameItems(items));
 		if (lootTrackerClient != null && config.saveLoot())
 		{
-			LootRecord lootRecord = new LootRecord(eventType, LootRecordType.EVENT, toGameItems(items));
 			lootTrackerClient.submit(lootRecord);
+		}
+
+		if (config.saveLocalLoot())
+		{
+			writer.addLootTrackerRecord(lootRecord);
 		}
 	}
 
@@ -462,5 +483,39 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		return trackerRecords;
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged c)
+	{
+		// Check for players in-game name every time they login
+		if (c.getGameState().equals(GameState.LOGGING_IN))
+		{
+			clientThread.invokeLater(() ->
+			{
+				switch (client.getGameState())
+				{
+					case LOGGED_IN:
+						break;
+					case LOGGING_IN:
+					case LOADING:
+						return false;
+					default:
+						// Quit running if any other state
+						return true;
+				}
+
+				String name = client.getLocalPlayer().getName();
+				if (name != null)
+				{
+					writer.setPlayerUsername(name);
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			});
+		}
 	}
 }
