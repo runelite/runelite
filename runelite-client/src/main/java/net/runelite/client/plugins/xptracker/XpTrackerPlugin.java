@@ -70,6 +70,11 @@ import net.runelite.http.api.xp.XpClient;
 @Slf4j
 public class XpTrackerPlugin extends Plugin
 {
+	/**
+	 * Amount of EXP that must be gained for an update to be submitted.
+	 */
+	private static final int XP_THRESHOLD = 1000;
+
 	static final List<Skill> COMBAT = ImmutableList.of(
 		Skill.ATTACK,
 		Skill.STRENGTH,
@@ -98,6 +103,7 @@ public class XpTrackerPlugin extends Plugin
 	private XpWorldType lastWorldType;
 	private String lastUsername;
 	private long lastTickMillis = 0;
+	private long lastXp = 0;
 
 	private final XpClient xpClient = new XpClient();
 	private final XpState xpState = new XpState();
@@ -139,10 +145,21 @@ public class XpTrackerPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
+	private long getTotalXp()
+	{
+		long total = 0;
+		for (Skill skill : Skill.values())
+		{
+			total += client.getSkillExperience(skill);
+		}
+		return total;
+	}
+
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGGED_IN)
+		GameState state = event.getGameState();
+		if (state == GameState.LOGGED_IN)
 		{
 			// LOGGED_IN is triggered between region changes too.
 			// Check that the username changed or the world type changed.
@@ -157,15 +174,28 @@ public class XpTrackerPlugin extends Plugin
 					firstNonNull(type, "<unknown>"));
 
 				lastUsername = client.getUsername();
+				lastXp = getTotalXp();
 				lastWorldType = type;
 				resetState();
 			}
 		}
-		else if (event.getGameState() == GameState.LOGIN_SCREEN)
+		else if (state == GameState.LOGIN_SCREEN)
 		{
 			Player local = client.getLocalPlayer();
-			String username = local != null ? local.getName() : null;
-			if (username != null)
+			if (local == null)
+			{
+				return;
+			}
+
+			String username = local.getName();
+			if (username == null)
+			{
+				return;
+			}
+
+			long totalXp = getTotalXp();
+			// Don't submit xptrack unless xp threshold is reached
+			if (Math.abs(totalXp - lastXp) > XP_THRESHOLD)
 			{
 				xpClient.update(username);
 			}
