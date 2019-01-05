@@ -40,6 +40,7 @@ import net.runelite.api.Experience;
 import net.runelite.api.IconID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.SetMessage;
@@ -89,6 +90,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String CLUES_COMMAND_STRING = "!clues";
 	private static final String KILLCOUNT_COMMAND_STRING = "!kc";
 	private static final String CMB_COMMAND_STRING = "!cmb";
+	private static final String QP_COMMAND_STRING = "!qp";
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final ChatClient chatClient = new ChatClient();
@@ -134,6 +136,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(LEVEL_COMMAND_STRING, this::playerSkillLookup);
 		chatCommandManager.registerCommandAsync(CLUES_COMMAND_STRING, this::clueLookup);
 		chatCommandManager.registerCommandAsync(KILLCOUNT_COMMAND_STRING, this::killCountLookup, this::killCountSubmit);
+		chatCommandManager.registerCommand(QP_COMMAND_STRING, this::questPointsLookup, this::questPointsSubmit);
 	}
 
 	@Override
@@ -147,6 +150,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(LEVEL_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(CLUES_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(KILLCOUNT_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(QP_COMMAND_STRING);
 	}
 
 	@Provides
@@ -347,6 +351,74 @@ public class ChatCommandsPlugin extends Plugin
 		messageNode.setRuneLiteFormatMessage(response);
 		chatMessageManager.update(messageNode);
 		client.refreshChat();
+	}
+
+	private void questPointsLookup(SetMessage setMessage, String message)
+	{
+		if (!config.qp())
+		{
+			return;
+		}
+
+		ChatMessageType type = setMessage.getType();
+
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = sanitize(setMessage.getName());
+		}
+
+		int qp;
+		try
+		{
+			qp = chatClient.getQp(player);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup quest points", ex);
+			return;
+		}
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Quest points: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(qp))
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = setMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
+	}
+
+	private boolean questPointsSubmit(ChatInput chatInput, String value)
+	{
+		final int qp = client.getVar(VarPlayer.QUEST_POINTS);
+		final String playerName = client.getLocalPlayer().getName();
+
+		executor.execute(() ->
+		{
+			try
+			{
+				chatClient.submitQp(playerName, qp);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit quest poinits", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
 	}
 
 	/**
