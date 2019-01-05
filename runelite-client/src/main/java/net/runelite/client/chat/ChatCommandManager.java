@@ -47,15 +47,14 @@ public class ChatCommandManager implements ChatboxInputListener
 {
 	private final Map<String, ChatCommand> commands = new HashMap<>();
 
-	@Inject
-	private Client client;
+	private final Client client;
+	private final ScheduledExecutorService scheduledExecutorService;
 
 	@Inject
-	private ScheduledExecutorService scheduledExecutorService;
-
-	@Inject
-	public ChatCommandManager(EventBus eventBus, CommandManager commandManager)
+	private ChatCommandManager(EventBus eventBus, CommandManager commandManager, Client client, ScheduledExecutorService scheduledExecutorService)
 	{
+		this.client = client;
+		this.scheduledExecutorService = scheduledExecutorService;
 		eventBus.register(this);
 		commandManager.register(this);
 	}
@@ -187,12 +186,12 @@ public class ChatCommandManager implements ChatboxInputListener
 
 	private static String extractCommand(String message)
 	{
-		String[] s = message.split(" ");
-		if (s.length == 0)
+		int idx = message.indexOf(' ');
+		if (idx == -1)
 		{
-			return null;
+			return message;
 		}
 
-		return s[0];
+		return message.substring(0, idx);
 	}
 }
