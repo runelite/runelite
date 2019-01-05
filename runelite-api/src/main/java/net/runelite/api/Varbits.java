@@ -427,7 +427,17 @@ public enum Varbits
 	CURRENT_BANK_TAB(4150),
 
 	WORLDHOPPER_FAVROITE_1(4597),
-	WORLDHOPPER_FAVROITE_2(4598);
+	WORLDHOPPER_FAVROITE_2(4598),
+
+	/**
+	 * Vengeance is active
+	 */
+	VENGEANCE_ACTIVE(2450),
+
+	/**
+	 * Spell cooldowns
+	 */
+	VENGEANCE_COOLDOWN(2451);
 
 	/**
 	 * The raw varbit ID.

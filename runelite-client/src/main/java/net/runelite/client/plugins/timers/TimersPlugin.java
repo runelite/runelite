@@ -58,9 +58,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
-import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
 import net.runelite.client.config.ConfigManager;
@@ -72,7 +70,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameIndicator.VENGEANCE_ACTIVE;
 import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Timers",
@@ -109,13 +106,14 @@ public class TimersPlugin extends Plugin
 	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
-	private static final String VENGEANCE_USED_MESSAGE = "Taste vengeance!";
 
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
 
 	private int lastRaidVarb;
 	private int lastWildernessVarb;
+	private int lastVengCooldownVarb;
+	private int lastIsVengeancedVarb;
 	private WorldPoint lastPoint;
 	private TeleportWidget lastTeleportClicked;
 	private int lastAnimation;
@@ -159,11 +157,42 @@ public class TimersPlugin extends Plugin
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		int raidVarb = client.getVar(Varbits.IN_RAID);
+		int vengCooldownVarb = client.getVar(Varbits.VENGEANCE_COOLDOWN);
+		int isVengeancedVarb = client.getVar(Varbits.VENGEANCE_ACTIVE);
+
 		if (lastRaidVarb != raidVarb)
 		{
 			removeGameTimer(OVERLOAD_RAID);
 			removeGameTimer(PRAYER_ENHANCE);
 			lastRaidVarb = raidVarb;
+		}
+
+		if (lastVengCooldownVarb != vengCooldownVarb && config.showVengeance())
+		{
+			if (vengCooldownVarb == 1)
+			{
+				createGameTimer(VENGEANCE);
+			}
+			else
+			{
+				removeGameTimer(VENGEANCE);
+			}
+
+			lastVengCooldownVarb = vengCooldownVarb;
+		}
+
+		if (lastIsVengeancedVarb != isVengeancedVarb && config.showVengeanceActive())
+		{
+			if (isVengeancedVarb == 1)
+			{
+				createGameIndicator(VENGEANCE_ACTIVE);
+			}
+			else
+			{
+				removeGameIndicator(VENGEANCE_ACTIVE);
+			}
+
+			lastIsVengeancedVarb = isVengeancedVarb;
 		}
 
 		int inWilderness = client.getVar(Varbits.IN_WILDERNESS);
@@ -263,7 +292,11 @@ public class TimersPlugin extends Plugin
 		if (!config.showVengeance())
 		{
 			removeGameTimer(VENGEANCE);
-			removeGameTimer(VENGEANCEOTHER);
+		}
+
+		if (!config.showVengeanceActive())
+		{
+			removeGameIndicator(VENGEANCE_ACTIVE);
 		}
 
 		if (!config.showTeleblock())
@@ -401,12 +434,6 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (config.showVengeanceActive() && event.getMessage().equals(VENGEANCE_USED_MESSAGE) && event.getType() == ChatMessageType.PUBLIC
-			&& Text.toJagexName(event.getName()).equals(client.getLocalPlayer().getName()))
-		{
-			removeGameIndicator(VENGEANCE_ACTIVE);
-		}
-
 		if (event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.SERVER)
 		{
 			return;
@@ -612,7 +639,6 @@ public class TimersPlugin extends Plugin
 		{
 			case HOPPING:
 			case LOGIN_SCREEN:
-				removeGameIndicator(VENGEANCE_ACTIVE);
 				removeTbTimers();
 				break;
 			case LOGGED_IN:
@@ -657,13 +683,6 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showVengeance()
-			&& actor.getAnimation() == AnimationID.ENERGY_TRANSFER_VENGEANCE_OTHER
-			&& actor.getInteracting().getGraphic() == VENGEANCEOTHER.getGraphicId())
-		{
-			createGameTimer(VENGEANCEOTHER);
-		}
-
 		if (config.showHomeMinigameTeleports()
 			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
 			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
@@ -683,15 +702,6 @@ public class TimersPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
-	{
-		if (config.showVengeanceActive() && event.getGroupId() == WidgetID.ENTERING_HOUSE_GROUP_ID)
-		{
-			removeGameIndicator(VENGEANCE_ACTIVE);
-		}
-	}
-
-	@Subscribe
 	public void onGraphicChanged(GraphicChanged event)
 	{
 		Actor actor = event.getActor();
@@ -704,16 +714,6 @@ public class TimersPlugin extends Plugin
 		if (config.showImbuedHeart() && actor.getGraphic() == IMBUEDHEART.getGraphicId())
 		{
 			createGameTimer(IMBUEDHEART);
-		}
-
-		if (config.showVengeance() && actor.getGraphic() == VENGEANCE.getGraphicId())
-		{
-			createGameTimer(VENGEANCE);
-		}
-
-		if (config.showVengeanceActive() && actor.getGraphic() == VENGEANCE_ACTIVE.getGraphicId())
-		{
-			createGameIndicator(VENGEANCE_ACTIVE);
 		}
 
 		if (config.showFreezes())

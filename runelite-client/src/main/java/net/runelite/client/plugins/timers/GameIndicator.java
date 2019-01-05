@@ -28,14 +28,13 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.GraphicID;
 import net.runelite.api.SpriteID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 
 enum GameIndicator
 {
-	VENGEANCE_ACTIVE(SpriteID.SPELL_VENGEANCE_OTHER, GameTimerImageType.SPRITE, GraphicID.VENGEANCE, "Vengeance active");
+	VENGEANCE_ACTIVE(SpriteID.SPELL_VENGEANCE_OTHER, GameTimerImageType.SPRITE, "Vengeance active");
 
 	@Getter(AccessLevel.PACKAGE)
 	private final String description;
@@ -43,24 +42,21 @@ enum GameIndicator
 	private String text;
 	@Getter(AccessLevel.PACKAGE)
 	private Color textColor;
-	@Getter(AccessLevel.PACKAGE)
-	private final int graphicId;
 	private final int imageId;
 	private final GameTimerImageType imageType;
 
-	GameIndicator(int imageId, GameTimerImageType idType, int graphicId, String description, String text, Color textColor)
+	GameIndicator(int imageId, GameTimerImageType idType, String description, String text, Color textColor)
 	{
 		this.imageId = imageId;
 		this.imageType = idType;
-		this.graphicId = graphicId;
 		this.description = description;
 		this.text = text;
 		this.textColor = textColor;
 	}
 
-	GameIndicator(int imageId, GameTimerImageType idType, int graphicId, String description) // No text
+	GameIndicator(int imageId, GameTimerImageType idType, String description)
 	{
-		this(imageId, idType, graphicId, description, "", null);
+		this(imageId, idType, description, "", null);
 	}
 
 	BufferedImage getImage(ItemManager itemManager, SpriteManager spriteManager)
