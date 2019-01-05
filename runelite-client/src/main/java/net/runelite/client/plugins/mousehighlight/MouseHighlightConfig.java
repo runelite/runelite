@@ -52,4 +52,15 @@ public interface MouseHighlightConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "followRuneScape",
+		name = "Follow RuneScape's Tooltip Options",
+		description = "Show RuneLite tooltips based on the RuneScape advanced options"
+	)
+	default boolean followRuneScape()
+	{
+		return false;
+	}
 }
