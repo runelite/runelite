@@ -62,6 +62,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
+import static net.runelite.client.util.Text.sanitize;
 import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
@@ -790,19 +791,6 @@ public class ChatCommandsPlugin extends Plugin
 
 		// Take a guess
 		return shortest;
-	}
-
-	/**
-	 * Cleans the ironman status icon from playername string if present and
-	 * corrects spaces.
-	 *
-	 * @param lookup Playername to lookup.
-	 * @return Cleaned playername.
-	 */
-	private static String sanitize(String lookup)
-	{
-		String cleaned = lookup.contains("<img") ? lookup.substring(lookup.lastIndexOf('>') + 1) : lookup;
-		return cleaned.replace('\u00A0', ' ');
 	}
 
 	/**
