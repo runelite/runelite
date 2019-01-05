@@ -34,13 +34,9 @@ import net.runelite.api.Quest;
 import net.runelite.api.Skill;
 import net.runelite.client.util.ColorUtil;
 
-import javax.inject.Inject;
-
 @Slf4j
 class RequirementStringBuilder
 {
-	@Inject
-	DiaryRequirementsConfig config;
 
 	private final Requirement requirement;
 	@Getter
@@ -71,7 +67,7 @@ class RequirementStringBuilder
 						.append(i.getSkill().getName());
 			}
 		}
-		else if (quest != null /*&& config.showQuestReqs()*/)
+		else if (quest != null)
 		{
 			if (started)
 			{

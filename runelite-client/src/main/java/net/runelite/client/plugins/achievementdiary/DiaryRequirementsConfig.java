@@ -39,6 +39,6 @@ public interface DiaryRequirementsConfig extends Config
 	)
 	default boolean showQuestReqs()
 	{
-		return false;
+		return true;
 	}
 }

@@ -77,6 +77,9 @@ public class DiaryRequirementsPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	DiaryRequirementsConfig config;
+
 	@Provides
 	DiaryRequirementsConfig provideConfig(ConfigManager configManager)
 	{
@@ -252,9 +255,13 @@ public class DiaryRequirementsPlugin extends Plugin
 
 			for (Requirement i : req.getSkillRequirements())
 			{
+				Quest quest = i.getQuest();
+				if (quest != null && !config.showQuestReqs())
+				{
+					continue;
+				}
 				RequirementStringBuilder requirementStringBuilder = new RequirementStringBuilder(i);
 
-				Quest quest = i.getQuest();
 				if (quest != null)
 				{
 					QuestState state = quest.getState(client);
@@ -297,10 +304,12 @@ public class DiaryRequirementsPlugin extends Plugin
 						requirementStringBuilder.colorRedRequirement();
 					}
 				}
-				requirementBuilders .add(requirementStringBuilder);
+				requirementBuilders.add(requirementStringBuilder);
 			}
-
-			lineIndexRequirementMap.put(reqTask, combine(requirementBuilders ));
+			if (requirementBuilders.size() > 0)
+			{
+				lineIndexRequirementMap.put(reqTask, combine(requirementBuilders));
+			}
 		}
 		return lineIndexRequirementMap;
 	}
