@@ -146,4 +146,17 @@ public class Text
 
 		return out.toString();
 	}
+
+	/**
+	 * Cleans the ironman status icon from playername string if present and
+	 * corrects spaces.
+	 *
+	 * @param name Playername to lookup.
+	 * @return Cleaned playername.
+	 */
+	public static String sanitize(String name)
+	{
+		String cleaned = name.contains("<img") ? name.substring(name.lastIndexOf('>') + 1) : name;
+		return cleaned.replace('\u00A0', ' ');
+	}
 }
