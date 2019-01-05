@@ -25,6 +25,7 @@
 package net.runelite.http.service.chat;
 
 import java.time.Duration;
+import net.runelite.http.api.chat.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
@@ -34,8 +35,8 @@ import redis.clients.jedis.JedisPool;
 public class ChatService
 {
 	private static final Duration EXPIRE = Duration.ofMinutes(2);
-
 	private final JedisPool jedisPool;
+	private final ChatClient chatClient = new ChatClient();
 
 	@Autowired
 	public ChatService(JedisPool jedisPool)
@@ -76,6 +77,29 @@ public class ChatService
 		try (Jedis jedis = jedisPool.getResource())
 		{
 			jedis.setex("qp." + name, (int) EXPIRE.getSeconds(), Integer.toString(qp));
+		}
+	}
+
+	public String getLayout(String name)
+	{
+		String value;
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			value = jedis.get("layout." + name);
+		}
+		return value;
+	}
+
+	public void setLayout(String name, String layout)
+	{
+		if (!chatClient.testLayout(layout))
+		{
+			throw new IllegalArgumentException(layout);
+		}
+
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.setex("layout." + name, (int) EXPIRE.getSeconds(), layout);
 		}
 	}
 }

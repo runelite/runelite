@@ -24,6 +24,7 @@
  */
 package net.runelite.http.service.chat;
 
+import com.google.common.base.Strings;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.util.concurrent.TimeUnit;
@@ -99,5 +100,27 @@ public class ChatController
 			throw new NotFoundException();
 		}
 		return kc;
+	}
+
+	@PostMapping("/layout")
+	public void submitLayout(@RequestParam String name, @RequestParam String layout)
+	{
+		if (Strings.isNullOrEmpty(layout))
+		{
+			return;
+		}
+
+		chatService.setLayout(name, layout);
+	}
+
+	@GetMapping("/layout")
+	public String getLayout(@RequestParam String name)
+	{
+		String layout = chatService.getLayout(name);
+		if (layout == null)
+		{
+			throw new NotFoundException();
+		}
+		return layout;
 	}
 }
