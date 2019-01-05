@@ -60,4 +60,22 @@ public class ChatService
 			jedis.setex("kc." + name + "." + boss, (int) EXPIRE.getSeconds(), Integer.toString(kc));
 		}
 	}
+
+	public Integer getQp(String name)
+	{
+		String value;
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			value = jedis.get("qp." + name);
+		}
+		return value == null ? null : Integer.parseInt(value);
+	}
+
+	public void setQp(String name, int qp)
+	{
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.setex("qp." + name, (int) EXPIRE.getSeconds(), Integer.toString(qp));
+		}
+	}
 }

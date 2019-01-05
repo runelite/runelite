@@ -33,7 +33,7 @@ import okhttp3.Response;
 
 public class ChatClient
 {
-	public boolean submit(String username, String boss, int kc) throws IOException
+	public boolean submitKc(String username, String boss, int kc) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("chat")
@@ -54,7 +54,7 @@ public class ChatClient
 		}
 	}
 
-	public int get(String username, String boss) throws IOException
+	public int getKc(String username, String boss) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("chat")
@@ -72,6 +72,48 @@ public class ChatClient
 			if (!response.isSuccessful())
 			{
 				throw new IOException("Unable to look up killcount!");
+			}
+			return Integer.parseInt(response.body().string());
+		}
+	}
+
+	public boolean submitQp(String username, int qp) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("qp")
+			.addQueryParameter("name", username)
+			.addQueryParameter("qp", Integer.toString(qp))
+			.build();
+
+		Request request = new Request.Builder()
+			.post(RequestBody.create(null, new byte[0]))
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			return response.isSuccessful();
+		}
+	}
+
+	public int getQp(String username) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("qp")
+			.addQueryParameter("name", username)
+			.build();
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unable to look up quest points!");
 			}
 			return Integer.parseInt(response.body().string());
 		}

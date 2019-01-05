@@ -48,7 +48,7 @@ public class ChatController
 	private ChatService chatService;
 
 	@PostMapping("/kc")
-	public void submit(@RequestParam String name, @RequestParam String boss, @RequestParam int kc)
+	public void submitKc(@RequestParam String name, @RequestParam String boss, @RequestParam int kc)
 	{
 		if (kc <= 0)
 		{
@@ -60,7 +60,7 @@ public class ChatController
 	}
 
 	@GetMapping("/kc")
-	public int get(@RequestParam String name, @RequestParam String boss)
+	public int getKc(@RequestParam String name, @RequestParam String boss)
 	{
 		Integer kc = killCountCache.getIfPresent(new KillCountKey(name, boss));
 		if (kc == null)
@@ -72,6 +72,28 @@ public class ChatController
 			}
 		}
 
+		if (kc == null)
+		{
+			throw new NotFoundException();
+		}
+		return kc;
+	}
+
+	@PostMapping("/qp")
+	public void submitQp(@RequestParam String name, @RequestParam int qp)
+	{
+		if (qp < 0)
+		{
+			return;
+		}
+
+		chatService.setQp(name, qp);
+	}
+
+	@GetMapping("/qp")
+	public int getKc(@RequestParam String name)
+	{
+		Integer kc = chatService.getQp(name);
 		if (kc == null)
 		{
 			throw new NotFoundException();

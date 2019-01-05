@@ -285,7 +285,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			try
 			{
-				chatClient.submit(playerName, boss, kc);
+				chatClient.submitKc(playerName, boss, kc);
 			}
 			catch (Exception ex)
 			{
@@ -325,7 +325,7 @@ public class ChatCommandsPlugin extends Plugin
 		final int kc;
 		try
 		{
-			kc = chatClient.get(player, search);
+			kc = chatClient.getKc(player, search);
 		}
 		catch (IOException ex)
 		{
