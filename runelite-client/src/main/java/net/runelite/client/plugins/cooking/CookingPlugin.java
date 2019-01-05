@@ -109,7 +109,12 @@ public class CookingPlugin extends Plugin
 
 		final String message = event.getMessage();
 
-		if (message.startsWith("You successfully cook") || message.startsWith("You successfully bake") || message.startsWith("You manage to cook") || message.startsWith("You roast a"))
+		if (message.startsWith("You successfully cook")
+			|| message.startsWith("You successfully bake")
+			|| message.startsWith("You manage to cook")
+			|| message.startsWith("You roast a")
+			|| message.startsWith("You cook")
+			|| message.startsWith("You squeeze the grapes into the jug"))
 		{
 			if (session == null)
 			{
