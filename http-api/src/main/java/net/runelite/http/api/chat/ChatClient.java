@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.kc;
+package net.runelite.http.api.chat;
 
 import java.io.IOException;
 import net.runelite.http.api.RuneLiteAPI;
@@ -31,11 +31,12 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class KillCountClient
+public class ChatClient
 {
 	public boolean submit(String username, String boss, int kc) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("chat")
 			.addPathSegment("kc")
 			.addQueryParameter("name", username)
 			.addQueryParameter("boss", boss)
@@ -56,6 +57,7 @@ public class KillCountClient
 	public int get(String username, String boss) throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("chat")
 			.addPathSegment("kc")
 			.addQueryParameter("name", username)
 			.addQueryParameter("boss", boss)

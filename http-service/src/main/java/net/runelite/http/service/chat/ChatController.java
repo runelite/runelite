@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.kc;
+package net.runelite.http.service.chat;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -36,18 +36,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/kc")
-public class KillCountController
+@RequestMapping("/chat")
+public class ChatController
 {
-	private final Cache<KillCountKey, Integer> cache = CacheBuilder.newBuilder()
+	private final Cache<KillCountKey, Integer> killCountCache = CacheBuilder.newBuilder()
 		.expireAfterWrite(2, TimeUnit.MINUTES)
 		.maximumSize(128L)
 		.build();
 
 	@Autowired
-	private KillCountService killCountService;
+	private ChatService chatService;
 
-	@PostMapping
+	@PostMapping("/kc")
 	public void submit(@RequestParam String name, @RequestParam String boss, @RequestParam int kc)
 	{
 		if (kc <= 0)
@@ -55,20 +55,20 @@ public class KillCountController
 			return;
 		}
 
-		killCountService.setKc(name, boss, kc);
-		cache.put(new KillCountKey(name, boss), kc);
+		chatService.setKc(name, boss, kc);
+		killCountCache.put(new KillCountKey(name, boss), kc);
 	}
 
-	@GetMapping
+	@GetMapping("/kc")
 	public int get(@RequestParam String name, @RequestParam String boss)
 	{
-		Integer kc = cache.getIfPresent(new KillCountKey(name, boss));
+		Integer kc = killCountCache.getIfPresent(new KillCountKey(name, boss));
 		if (kc == null)
 		{
-			kc = killCountService.getKc(name, boss);
+			kc = chatService.getKc(name, boss);
 			if (kc != null)
 			{
-				cache.put(new KillCountKey(name, boss), kc);
+				killCountCache.put(new KillCountKey(name, boss), kc);
 			}
 		}
 

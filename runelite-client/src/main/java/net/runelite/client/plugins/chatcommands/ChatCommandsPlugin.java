@@ -61,6 +61,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -68,7 +69,6 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.ItemPrice;
-import net.runelite.http.api.kc.KillCountClient;
 
 @PluginDescriptor(
 	name = "Chat Commands",
@@ -91,7 +91,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String CMB_COMMAND_STRING = "!cmb";
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
-	private final KillCountClient killCountClient = new KillCountClient();
+	private final ChatClient chatClient = new ChatClient();
 
 	private boolean logKills;
 	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
@@ -285,7 +285,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			try
 			{
-				killCountClient.submit(playerName, boss, kc);
+				chatClient.submit(playerName, boss, kc);
 			}
 			catch (Exception ex)
 			{
@@ -325,7 +325,7 @@ public class ChatCommandsPlugin extends Plugin
 		final int kc;
 		try
 		{
-			kc = killCountClient.get(player, search);
+			kc = chatClient.get(player, search);
 		}
 		catch (IOException ex)
 		{

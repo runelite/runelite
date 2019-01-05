@@ -22,13 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.kc;
+package net.runelite.http.service.chat;
 
-import lombok.Value;
+import java.time.Duration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
-@Value
-class KillCountKey
+@Service
+public class ChatService
 {
-	private String username;
-	private String boss;
+	private static final Duration EXPIRE = Duration.ofMinutes(2);
+
+	private final JedisPool jedisPool;
+
+	@Autowired
+	public ChatService(JedisPool jedisPool)
+	{
+		this.jedisPool = jedisPool;
+	}
+
+	public Integer getKc(String name, String boss)
+	{
+		String value;
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			value = jedis.get("kc." + name + "." + boss);
+		}
+		return value == null ? null : Integer.parseInt(value);
+	}
+
+	public void setKc(String name, String boss, int kc)
+	{
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.setex("kc." + name + "." + boss, (int) EXPIRE.getSeconds(), Integer.toString(kc));
+		}
+	}
 }
