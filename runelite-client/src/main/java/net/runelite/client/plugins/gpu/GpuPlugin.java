@@ -83,6 +83,7 @@ import static net.runelite.client.plugins.gpu.GLUtil.glGenRenderbuffer;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenTexture;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenVertexArrays;
 import static net.runelite.client.plugins.gpu.GLUtil.inputStreamToString;
+import net.runelite.client.plugins.gpu.config.AnisotropicFilteringMode;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.DrawManager;
@@ -210,6 +211,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int lastStretchedCanvasWidth;
 	private int lastStretchedCanvasHeight;
 	private AntiAliasingMode lastAntiAliasingMode;
+    private AnisotropicFilteringMode lastAnisotropicFilteringMode;
 
 	private int centerX;
 	private int centerY;
@@ -989,6 +991,44 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			int renderCanvasHeight = canvasHeight;
 			int renderViewportHeight = viewportHeight;
 			int renderViewportWidth = viewportWidth;
+
+		    // Setup anisotropic filtering
+			final AnisotropicFilteringMode anisotropicFilteringMode = config.anisotropicFilteringMode();
+			final boolean afEnabled = anisotropicFilteringMode != anisotropicFilteringMode.DISABLED;
+
+			if(afEnabled && lastAnisotropicFilteringMode != anisotropicFilteringMode)
+			{
+				switch(anisotropicFilteringMode)
+				{
+					case DISABLED:
+						gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
+						log.info("Disabing mipmapping.");
+						break;
+					case BILINEAR:
+						gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_NEAREST);
+						log.info("Enabling bilinear filtering.");
+						break;
+					case TRILINEAR:
+						gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_LINEAR);
+						log.info("Enabling trilinear filtering.");
+						break;
+					default:
+						final float maxSamples[] = new float[1];
+						gl.glGetFloatv(gl.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, maxSamples, 0);
+						final float samples = Math.min(anisotropicFilteringMode.getSamples(), maxSamples[0]);
+						log.info("Enabling anisotropic filtering x{}.", samples);
+						gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_LINEAR);
+						gl.glTexParameterf(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, samples);
+						break;
+				}
+				gl.glGenerateMipmap(gl.GL_TEXTURE_2D);
+			}
+			else if(!afEnabled)
+			{
+				gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
+			}
+
+			lastAnisotropicFilteringMode = anisotropicFilteringMode;
 
 			if (client.isStretchedEnabled())
 			{

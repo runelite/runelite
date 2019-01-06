@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, pacf531 <https://github.com/pacf531>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,58 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.gpu;
+package net.runelite.client.plugins.gpu.config;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.plugins.gpu.config.AnisotropicFilteringMode;
-import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@ConfigGroup("gpu")
-public interface GpuPluginConfig extends Config
+@Getter
+@RequiredArgsConstructor
+public enum AnisotropicFilteringMode
 {
-	@ConfigItem(
-		keyName = "drawDistance",
-		name = "Draw Distance",
-		description = "Draw distance",
-		position = 1
-	)
-	default int drawDistance()
-	{
-		return 25;
-	}
+	DISABLED("Disabled", 0f),
+	BILINEAR("Bilinear", 0.5f),
+	TRILINEAR("Trilinear", 1f),
+	AF_2("x2", 2f),
+	AF_4("x4", 4f),
+	AF_8("x8", 8f),
+	AF_16("x16", 16f);
 
-	@ConfigItem(
-		keyName = "smoothBanding",
-		name = "Remove Color Banding",
-		description = "Smooths out the color banding that is present in the CPU renderer",
-		position = 2
-	)
-	default boolean smoothBanding()
-	{
-		return false;
-	}
+	private final String name;
+	private final float samples;
 
-	@ConfigItem(
-		keyName = "antiAliasingMode",
-		name = "Anti Aliasing",
-		description = "Configures the anti-aliasing mode",
-		position = 3
-	)
-	default AntiAliasingMode antiAliasingMode()
+	@Override
+	public String toString()
 	{
-		return AntiAliasingMode.DISABLED;
-	}
-
-	@ConfigItem(
-		keyName = "anisotropicFilteringMode",
-		name = "Anisotropic Filtering",
-		description = "Configures the anisotropic filtering mode",
-		position = 4
-	)
-	default AnisotropicFilteringMode anisotropicFilteringMode()
-	{
-		return AnisotropicFilteringMode.DISABLED;
+		return name;
 	}
 }
