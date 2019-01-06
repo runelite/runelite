@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Quest;
@@ -250,8 +249,21 @@ public class DiaryRequirementsPlugin extends Plugin
 				Quest quest = i.getQuest();
 				if (quest != null)
 				{
+					List<Requirement> altQuestsReqs = null;
+					if (i.getAltRequirements() != null)
+					{
+						altQuestsReqs = new ArrayList<>();
+						for (Requirement j : i.getAltRequirements())
+						{
+							if (j.getQuest() != null)
+							{
+								// Currently no instances of quest/skill alternatives
+								altQuestsReqs.add(j);
+							}
+						}
+					}
 					QuestState state = quest.getState(client);
-					if (state == QuestState.FINISHED || (i.isStarted() && state == QuestState.IN_PROGRESS))
+					if (requirementStringBuilder.hasQuestRequirement(state, altQuestsReqs, client))
 					{
 						requirementStringBuilder.strikeThroughRequirement();
 					}

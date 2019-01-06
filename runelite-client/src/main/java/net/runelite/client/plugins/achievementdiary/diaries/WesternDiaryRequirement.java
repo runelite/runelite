@@ -59,7 +59,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new Requirement(Skill.HUNTER, 31));
 		add("Fish some Bass on Ape Atoll.",
 			new Requirement(Skill.FISHING, 46),
-			new Requirement(Quest.MONKEY_MADNESS_I));
+			new Requirement(Quest.MONKEY_MADNESS_I, true));
 		add("Chop and burn some teak logs on Ape Atoll.",
 			new Requirement(Skill.WOODCUTTING, 35),
 			new Requirement(Skill.FIREMAKING, 35),

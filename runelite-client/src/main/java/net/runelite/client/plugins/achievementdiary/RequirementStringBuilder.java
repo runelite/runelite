@@ -27,17 +27,17 @@ package net.runelite.client.plugins.achievementdiary;
 
 import java.awt.Color;
 import java.util.List;
-
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.client.util.ColorUtil;
 
 @Slf4j
 class RequirementStringBuilder
 {
-
 	private final Requirement requirement;
 	@Getter
 	private String requirementString;
@@ -62,9 +62,9 @@ class RequirementStringBuilder
 			for (Requirement i : altRequirements)
 			{
 				requirementStringBuilder.append(" or ")
-						.append(i.getLevelRequirement())
-						.append(" ")
-						.append(i.getSkill().getName());
+					.append(i.getLevelRequirement())
+					.append(" ")
+					.append(i.getSkill().getName());
 			}
 		}
 		else if (quest != null)
@@ -77,7 +77,7 @@ class RequirementStringBuilder
 			for (Requirement i : altRequirements)
 			{
 				requirementStringBuilder.append(" or ")
-						.append(i.getQuest().getName());
+					.append(i.getQuest().getName());
 			}
 		}
 
@@ -115,5 +115,28 @@ class RequirementStringBuilder
 			}
 		}
 		return hasReq;
+	}
+
+	boolean hasQuestRequirement(QuestState questState, List<Requirement> altQuests, Client client)
+	{
+		return hasQuestRequirement(requirement, questState, altQuests, client);
+	}
+
+	private static boolean hasQuestRequirement(Requirement requirement, QuestState questState, List<Requirement> altQuests, Client client)
+	{
+		if (questState == QuestState.FINISHED || (requirement.isStarted() && questState == QuestState.IN_PROGRESS))
+		{
+			return true;
+		}
+		for (Requirement i : altQuests)
+		{
+			Quest quest = i.getQuest();
+			QuestState state = quest.getState(client);
+			if (state == QuestState.FINISHED || (i.isStarted() && state == QuestState.IN_PROGRESS))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

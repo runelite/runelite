@@ -64,8 +64,8 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 		add("Purchase an upgraded device from Ava.",
 			new Requirement(Skill.RANGED, 50),
 			new Requirement(Quest.ANIMAL_MAGNETISM));
-		add("Ttravel to the Wizards' Tower by Fairy ring.",
-			new Requirement(Quest.FAMILY_CREST, true));
+		add("Travel to the Wizards' Tower by Fairy ring.",
+			new Requirement(Quest.FAIRYTALE_II__CURE_A_QUEEN, true));
 		add("Cast the teleport to Lumbridge spell.",
 			new Requirement(Skill.MAGIC, 31));
 		add("Catch some Salmon in Lumbridge.",
