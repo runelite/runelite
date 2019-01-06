@@ -35,7 +35,6 @@ import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_DISTANCE;
 public interface GpuPluginConfig extends Config
 {
 	@Range(
-		min = 0,
 		max = MAX_DISTANCE
 	)
 	@ConfigItem(
