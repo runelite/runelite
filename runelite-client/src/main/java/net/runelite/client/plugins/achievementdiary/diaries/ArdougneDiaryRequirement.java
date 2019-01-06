@@ -44,7 +44,7 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 
 		// MEDIUM
 		add("Enter the Unicorn pen in Ardougne zoo using Fairy rings.",
-			new Requirement(Quest.FAIRYTALE_II, true));
+			new Requirement(Quest.FAIRYTALE_II__CURE_A_QUEEN, true));
 		add("Grapple over Yanille's south wall.",
 			new Requirement(Skill.AGILITY, 39),
 			new Requirement(Skill.STRENGTH, 38),
@@ -73,7 +73,7 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 			new Requirement(Skill.ATTACK, 50),
 			new Requirement(Quest.UNDERGROUND_PASS));
 		add("Visit the Island East of the Necromancer's tower.",
-			new Requirement(Quest.FAIRYTALE_II, true));
+			new Requirement(Quest.FAIRYTALE_II__CURE_A_QUEEN, true));
 
 		// HARD
 		add("Recharge some Jewellery at Totem in the Legends Guild.",

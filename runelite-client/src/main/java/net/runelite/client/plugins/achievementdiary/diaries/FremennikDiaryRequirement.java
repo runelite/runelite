@@ -70,7 +70,7 @@ public class FremennikDiaryRequirement extends GenericDiaryRequirement
 			new Requirement(Quest.THE_FREMENNIK_TRIALS));
 		add("Travel to Miscellania by Fairy ring.",
 			new Requirement(Quest.THE_FREMENNIK_TRIALS),
-			new Requirement(Quest.FAIRYTALE_II, true));
+			new Requirement(Quest.FAIRYTALE_II__CURE_A_QUEEN, true));
 		add("Catch a Snowy knight.",
 			new Requirement(Skill.HUNTER, 35));
 		add("Pick up your Pet Rock from your POH Menagerie.",

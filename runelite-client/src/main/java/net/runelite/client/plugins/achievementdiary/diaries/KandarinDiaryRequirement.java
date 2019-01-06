@@ -72,7 +72,7 @@ public class KandarinDiaryRequirement extends GenericDiaryRequirement
 		add("Steal from the chest in Hemenster.",
 			new Requirement(Skill.THIEVING, 47));
 		add("Travel to McGrubor's Wood by Fairy Ring.",
-			new Requirement(Quest.FAIRYTALE_II, true));
+			new Requirement(Quest.FAIRYTALE_II__CURE_A_QUEEN, true));
 		add("Mine some coal near the coal trucks.",
 			new Requirement(Skill.MINING, 30));
 
