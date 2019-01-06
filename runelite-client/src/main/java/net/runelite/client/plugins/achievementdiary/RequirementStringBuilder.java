@@ -57,8 +57,8 @@ class RequirementStringBuilder
 		if (skill != null || requirement.getCustomRequirement() != null)
 		{
 			requirementStringBuilder.append(levelRequirement)
-					.append(" ")
-					.append(skill != null ? skill.getName() : requirement.getCustomRequirement());
+				.append(" ")
+				.append(skill != null ? skill.getName() : requirement.getCustomRequirement());
 			for (Requirement i : altRequirements)
 			{
 				requirementStringBuilder.append(" or ")
