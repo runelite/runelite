@@ -32,6 +32,7 @@ import net.runelite.api.Skill;
 
 /**
  * Internal state for the XpTrackerPlugin
+ *
  * Note: This class's operations are not currently synchronized.
  * It is intended to be called by the XpTrackerPlugin on the client thread.
  */
