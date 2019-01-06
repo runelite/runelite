@@ -35,11 +35,7 @@ import javax.inject.Inject;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.Quest;
-import net.runelite.api.QuestState;
-import net.runelite.api.ScriptID;
-import net.runelite.api.Skill;
+import net.runelite.api.*;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -277,10 +273,17 @@ public class DiaryRequirementsPlugin extends Plugin
 				else
 				{
 					Skill skill = i.getSkill();
-					int realSkillLevel;
-					if (skill == null && (i.getCustomRequirement().equals("Combat") || i.getCustomRequirement().equals("Quest Points")))
+					int realSkillLevel = 0;
+					if (skill == null)
 					{
-						realSkillLevel = client.getLocalPlayer().getCombatLevel();
+						if (i.getCustomRequirement().equals("Combat"))
+						{
+							realSkillLevel = client.getLocalPlayer().getCombatLevel();
+						}
+						else if (i.getCustomRequirement().equals("Quest Points"))
+						{
+							realSkillLevel = client.getVar(VarPlayer.QUEST_POINTS);
+						}
 					}
 					else
 					{
