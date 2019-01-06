@@ -25,6 +25,22 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -40,34 +56,17 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.StackFormatter;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 class XpInfoBox extends JPanel
 {
 	private static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("0.00");
 
 	// Templates
 	private static final String HTML_TOOL_TIP_TEMPLATE =
-			"<html>%s %s done<br/>"
+		"<html>%s %s done<br/>"
 			+ "%s %s/hr<br/>"
 			+ "%s till goal lvl</html>";
 	private static final String HTML_LABEL_TEMPLATE =
-			"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
+		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
 	// Instance members
 	private final JPanel panel;
@@ -214,8 +213,8 @@ class XpInfoBox extends JPanel
 			progressBar.setCenterLabel(TWO_DECIMAL_FORMAT.format(xpSnapshotSingle.getSkillProgressToGoal()) + "%");
 			progressBar.setLeftLabel("Lvl. " + xpSnapshotSingle.getStartLevel());
 			progressBar.setRightLabel(xpSnapshotSingle.getEndGoalXp() == Experience.MAX_SKILL_XP
-					? "200M"
-					: "Lvl. " + xpSnapshotSingle.getEndLevel());
+				? "200M"
+				: "Lvl. " + xpSnapshotSingle.getEndLevel());
 
 			// Add intermediate level positions to progressBar
 			if (xpTrackerConfig.showIntermediateLevels() && xpSnapshotSingle.getEndLevel() - xpSnapshotSingle.getStartLevel() > 1)
@@ -237,12 +236,12 @@ class XpInfoBox extends JPanel
 			}
 
 			progressBar.setToolTipText(String.format(
-					HTML_TOOL_TIP_TEMPLATE,
-					xpSnapshotSingle.getActionsInSession(),
-					xpSnapshotSingle.getActionType().getLabel(),
-					xpSnapshotSingle.getActionsPerHour(),
-					xpSnapshotSingle.getActionType().getLabel(),
-					xpSnapshotSingle.getTimeTillGoal()));
+				HTML_TOOL_TIP_TEMPLATE,
+				xpSnapshotSingle.getActionsInSession(),
+				xpSnapshotSingle.getActionType().getLabel(),
+				xpSnapshotSingle.getActionsPerHour(),
+				xpSnapshotSingle.getActionType().getLabel(),
+				xpSnapshotSingle.getTimeTillGoal()));
 
 			progressBar.setDimmed(skillPaused);
 
