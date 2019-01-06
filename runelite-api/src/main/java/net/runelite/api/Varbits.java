@@ -437,7 +437,20 @@ public enum Varbits
 	/**
 	 * Spell cooldowns
 	 */
-	VENGEANCE_COOLDOWN(2451);
+	VENGEANCE_COOLDOWN(2451),
+
+	/**
+	 * Amount of items in each bank tab
+	 */
+	BANK_TAB_ONE_COUNT(4171),
+	BANK_TAB_TWO_COUNT(4172),
+	BANK_TAB_THREE_COUNT(4173),
+	BANK_TAB_FOUR_COUNT(4174),
+	BANK_TAB_FIVE_COUNT(4175),
+	BANK_TAB_SIX_COUNT(4176),
+	BANK_TAB_SEVEN_COUNT(4177),
+	BANK_TAB_EIGHT_COUNT(4178),
+	BANK_TAB_NINE_COUNT(4179);
 
 	/**
 	 * The raw varbit ID.
