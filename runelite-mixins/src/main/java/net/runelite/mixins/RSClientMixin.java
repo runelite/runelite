@@ -170,6 +170,9 @@ public abstract class RSClientMixin implements RSClient
 	private static boolean oldIsResized;
 
 	@Inject
+	static int skyboxColor;
+
+	@Inject
 	@Override
 	public Callbacks getCallbacks()
 	{
@@ -1380,5 +1383,19 @@ public abstract class RSClientMixin implements RSClient
 		setSpritePixels(null);
 
 		return array;
+	}
+
+	@Inject
+	@Override
+	public void setSkyboxColor(int newSkyboxColor)
+	{
+		skyboxColor = newSkyboxColor;
+	}
+
+	@Inject
+	@Override
+	public int getSkyboxColor()
+	{
+		return skyboxColor;
 	}
 }
