@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 
-import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Quest;
@@ -46,7 +45,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -77,15 +75,6 @@ public class DiaryRequirementsPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
-
-	@Inject
-	DiaryRequirementsConfig config;
-
-	@Provides
-	DiaryRequirementsConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(DiaryRequirementsConfig.class);
-	}
 
 	@Subscribe
 	public void onWidgetLoaded(final WidgetLoaded event)
@@ -256,13 +245,9 @@ public class DiaryRequirementsPlugin extends Plugin
 
 			for (Requirement i : req.getSkillRequirements())
 			{
-				Quest quest = i.getQuest();
-				if (quest != null && !config.showQuestReqs())
-				{
-					continue;
-				}
 				RequirementStringBuilder requirementStringBuilder = new RequirementStringBuilder(i);
 
+				Quest quest = i.getQuest();
 				if (quest != null)
 				{
 					QuestState state = quest.getState(client);
