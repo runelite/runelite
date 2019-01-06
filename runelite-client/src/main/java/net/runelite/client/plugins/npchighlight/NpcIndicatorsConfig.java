@@ -55,10 +55,10 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 2,
-			keyName = "hiddenNPCs",
-			name = "Excluded NPCs",
-			description = "List of NPC names to hide"
+		position = 2,
+		keyName = "hiddenNPCs",
+		name = "Excluded NPCs",
+		description = "List of NPC names to hide"
 	)
 	default String getNpcExcludeList()
 	{
