@@ -40,9 +40,17 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.StackFormatter;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -56,8 +64,8 @@ class XpInfoBox extends JPanel
 	// Templates
 	private static final String HTML_TOOL_TIP_TEMPLATE =
 			"<html>%s %s done<br/>"
-					+ "%s %s/hr<br/>"
-					+ "%s till goal lvl</html>";
+			+ "%s %s/hr<br/>"
+			+ "%s till goal lvl</html>";
 	private static final String HTML_LABEL_TEMPLATE =
 			"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 

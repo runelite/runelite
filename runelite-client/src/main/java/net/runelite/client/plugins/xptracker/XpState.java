@@ -24,15 +24,16 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import java.util.EnumMap;
-import java.util.Map;
 import lombok.NonNull;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 /**
  * Internal state for the XpTrackerPlugin
- *
+ * <p>
  * Note: This class's operations are not currently synchronized.
  * It is intended to be called by the XpTrackerPlugin on the client thread.
  */
@@ -55,7 +56,8 @@ class XpState
 
 	/**
 	 * Resets a single skill
-	 * @param skill Skill to reset
+	 *
+	 * @param skill     Skill to reset
 	 * @param currentXp Current XP to set to, if unknown set to -1
 	 */
 	void resetSkill(Skill skill, int currentXp)
@@ -84,10 +86,11 @@ class XpState
 	 * When the result of this operation is XpUpdateResult.UPDATED, the UI should be updated accordingly.
 	 * This is to distinguish events that reload all the skill's current values (such as world hopping)
 	 * and also first-login when the skills are not initialized (the start XP will be -1 in this case).
-	 * @param skill Skill to update
-	 * @param currentXp Current known XP for this skill
+	 *
+	 * @param skill       Skill to update
+	 * @param currentXp   Current known XP for this skill
 	 * @param goalStartXp Possible XP start goal
-	 * @param goalEndXp Possible XP end goal
+	 * @param goalEndXp   Possible XP end goal
 	 * @return Whether or not the skill has been initialized, there was no change, or it has been updated
 	 */
 	XpUpdateResult updateSkill(Skill skill, int currentXp, int goalStartXp, int goalEndXp)
@@ -136,8 +139,9 @@ class XpState
 
 	/**
 	 * Updates skill with average actions based on currently interacted NPC.
-	 * @param skill experience gained skill
-	 * @param npc currently interacted NPC
+	 *
+	 * @param skill     experience gained skill
+	 * @param npc       currently interacted NPC
 	 * @param npcHealth health of currently interacted NPC
 	 */
 	void updateNpcExperience(Skill skill, NPC npc, Integer npcHealth)
@@ -178,8 +182,9 @@ class XpState
 	/**
 	 * Update number of actions performed for skill (e.g amount of kills in this case) if last interacted
 	 * NPC died
-	 * @param skill skill to update actions for
-	 * @param npc npc that just died
+	 *
+	 * @param skill     skill to update actions for
+	 * @param npc       npc that just died
 	 * @param npcHealth max health of npc that just died
 	 * @return UPDATED in case new kill was successfully added
 	 */
@@ -205,7 +210,8 @@ class XpState
 	/**
 	 * Forcefully initialize a skill with a known start XP from the current XP.
 	 * This is used in resetAndInitState by the plugin. It should not result in showing the XP in the UI.
-	 * @param skill Skill to initialize
+	 *
+	 * @param skill     Skill to initialize
 	 * @param currentXp Current known XP for the skill
 	 */
 	void initializeSkill(Skill skill, int currentXp)
@@ -222,6 +228,7 @@ class XpState
 	/**
 	 * Obtain an immutable snapshot of the provided skill
 	 * intended for use with the UI which operates on another thread
+	 *
 	 * @param skill Skill to obtain the snapshot for
 	 * @return An immutable snapshot of the specified skill for this session since first login or last reset
 	 */
@@ -234,6 +241,7 @@ class XpState
 	/**
 	 * Obtain an immutable snapshot of the provided skill
 	 * intended for use with the UI which operates on another thread
+	 *
 	 * @return An immutable snapshot of total information for this session since first login or last reset
 	 */
 	@NonNull
