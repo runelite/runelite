@@ -33,7 +33,9 @@ import java.util.Map;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.QuestState;
 import net.runelite.api.ScriptID;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -273,6 +275,20 @@ public class DiaryRequirementsPlugin extends Plugin
 		if (r instanceof CombatLevelRequirement)
 		{
 			return client.getLocalPlayer().getCombatLevel() >= ((CombatLevelRequirement) r).getLevel();
+		}
+		if (r instanceof QuestRequirement)
+		{
+			QuestRequirement q = (QuestRequirement) r;
+			QuestState state = q.getQuest().getState(client);
+			if (q.isStarted())
+			{
+				return state != QuestState.NOT_STARTED;
+			}
+			return state == QuestState.FINISHED;
+		}
+		if (r instanceof QuestPointRequirement)
+		{
+			return client.getVar(VarPlayer.QUEST_POINTS) >= ((QuestPointRequirement) r).getQp();
 		}
 		log.warn("Unknown requirement {}", r);
 		return false;
