@@ -18,7 +18,7 @@ public class GroupedItem {
      */
     GroupedItem(MenuEntry entry) {
         this.entry = entry;
-        this.count = 0;
+        this.count = 1;
     }
 
     /**
@@ -59,6 +59,9 @@ public class GroupedItem {
                 break;
             case PARENTHESES:
                 quantity = "(" + count + ")";
+                break;
+            case CURLY:
+                quantity = "{" + count + "}";
                 break;
         }
 
