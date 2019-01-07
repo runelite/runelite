@@ -1000,30 +1000,23 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			{
 				switch(anisotropicFilteringMode)
 				{
-					case DISABLED:
-						gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
-						log.info("Disabing mipmapping.");
-						break;
 					case BILINEAR:
 						gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_NEAREST);
-						log.info("Enabling bilinear filtering.");
 						break;
 					case TRILINEAR:
 						gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_LINEAR);
-						log.info("Enabling trilinear filtering.");
 						break;
 					default:
 						final float maxSamples[] = new float[1];
 						gl.glGetFloatv(gl.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, maxSamples, 0);
 						final float samples = Math.min(anisotropicFilteringMode.getSamples(), maxSamples[0]);
-						log.info("Enabling anisotropic filtering x{}.", samples);
 						gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_LINEAR);
 						gl.glTexParameterf(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, samples);
 						break;
 				}
 				gl.glGenerateMipmap(gl.GL_TEXTURE_2D);
 			}
-			else if(!afEnabled)
+			else if(!afEnabled && lastAnisotropicFilteringMode != anisotropicFilteringMode)
 			{
 				gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
 			}
