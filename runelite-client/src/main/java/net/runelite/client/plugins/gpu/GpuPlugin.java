@@ -211,7 +211,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int lastStretchedCanvasWidth;
 	private int lastStretchedCanvasHeight;
 	private AntiAliasingMode lastAntiAliasingMode;
-    private AnisotropicFilteringMode lastAnisotropicFilteringMode;
+	private AnisotropicFilteringMode lastAnisotropicFilteringMode;
 
 	private int centerX;
 	private int centerY;
@@ -992,13 +992,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			int renderViewportHeight = viewportHeight;
 			int renderViewportWidth = viewportWidth;
 
-		    // Setup anisotropic filtering
+			// Setup anisotropic filtering
 			final AnisotropicFilteringMode anisotropicFilteringMode = config.anisotropicFilteringMode();
 			final boolean afEnabled = anisotropicFilteringMode != anisotropicFilteringMode.DISABLED;
 
-			if(afEnabled && lastAnisotropicFilteringMode != anisotropicFilteringMode)
+			if (afEnabled && lastAnisotropicFilteringMode != anisotropicFilteringMode)
 			{
-				switch(anisotropicFilteringMode)
+				switch (anisotropicFilteringMode)
 				{
 					case BILINEAR:
 						gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_NEAREST);
@@ -1016,7 +1016,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				}
 				gl.glGenerateMipmap(gl.GL_TEXTURE_2D);
 			}
-			else if(!afEnabled && lastAnisotropicFilteringMode != anisotropicFilteringMode)
+			else if (!afEnabled && lastAnisotropicFilteringMode != anisotropicFilteringMode)
 			{
 				gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
 			}
