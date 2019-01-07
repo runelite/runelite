@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.achievementdiary;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -35,7 +34,6 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
-import net.runelite.api.Skill;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -55,7 +53,6 @@ import net.runelite.client.plugins.achievementdiary.diaries.MorytaniaDiaryRequir
 import net.runelite.client.plugins.achievementdiary.diaries.VarrockDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.WesternDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.WildernessDiaryRequirement;
-import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @Slf4j
@@ -66,6 +63,8 @@ import net.runelite.client.util.Text;
 )
 public class DiaryRequirementsPlugin extends Plugin
 {
+	private static final String AND_JOINER = ", ";
+
 	@Inject
 	private Client client;
 
@@ -233,66 +232,49 @@ public class DiaryRequirementsPlugin extends Plugin
 	// returns a map of task -> level requirements
 	private Map<String, String> buildRequirements(Collection<DiaryRequirement> requirements)
 	{
-		Map<String, String> lineIndexRequirementMap = new HashMap<>();
+		Map<String, String> reqs = new HashMap<>();
 		for (DiaryRequirement req : requirements)
 		{
-			String reqTask = req.getTask();
-			List<RequirementStringBuilder> requirementBuilders = new ArrayList<>();
+			StringBuilder b = new StringBuilder();
+			b.append("<col=ffffff>(");
 
-			for (Requirement i : req.getSkillRequirements())
+			assert req.getRequirements().size() > 0;
+			for (Requirement ireq : req.getRequirements())
 			{
-				RequirementStringBuilder requirementStringBuilder = new RequirementStringBuilder(i);
-
-				Skill skill = i.getSkill();
-				int realSkillLevel;
-				if (skill == null && i.getCustomRequirement().equals("Combat"))
-				{
-					realSkillLevel = client.getLocalPlayer().getCombatLevel();
-				}
-				else
-				{
-					realSkillLevel = client.getRealSkillLevel(skill);
-				}
-				List<Integer> altRealSkillLevels = null;
-				if (i.getAltRequirements() != null)
-				{
-					altRealSkillLevels = new ArrayList<>();
-					for (Requirement j : i.getAltRequirements())
-					{
-						altRealSkillLevels.add(client.getRealSkillLevel(j.getSkill()));
-					}
-				}
-
-				if (requirementStringBuilder.hasLevelRequirement(realSkillLevel, altRealSkillLevels))
-				{
-					requirementStringBuilder.strikeThroughRequirement();
-				}
-				else
-				{
-					requirementStringBuilder.colorRedRequirement();
-				}
-				requirementBuilders .add(requirementStringBuilder);
+				boolean satifisfied = satisfiesRequirement(ireq);
+				b.append(satifisfied ? "<col=000080><str>" : "<col=800000>");
+				b.append(ireq.toString());
+				b.append(satifisfied ? "</str>" : "<col=000080>");
+				b.append(AND_JOINER);
 			}
 
-			lineIndexRequirementMap.put(reqTask, combine(requirementBuilders ));
+			b.delete(b.length() - AND_JOINER.length(), b.length());
+
+			b.append("<col=ffffff>)");
+
+			reqs.put(req.getTask(), b.toString());
 		}
-		return lineIndexRequirementMap;
+		return reqs;
 	}
 
-	private String combine(List<RequirementStringBuilder> list)
+	private boolean satisfiesRequirement(Requirement r)
 	{
-		StringBuilder requirementsString = new StringBuilder();
-		requirementsString.append(ColorUtil.prependColorTag(" (", Color.WHITE));
-		for (RequirementStringBuilder req : list)
+		if (r instanceof OrRequirement)
 		{
-			requirementsString.append(ColorUtil.colorTag(new Color(0x80)))
-				.append(req.getRequirementString())
-				.append(", ");
+			return ((OrRequirement) r).getRequirements()
+				.stream()
+				.anyMatch(this::satisfiesRequirement);
 		}
-		requirementsString.deleteCharAt(requirementsString.length() - 1);
-		requirementsString.deleteCharAt(requirementsString.length() - 2);
-		requirementsString.append(ColorUtil.prependColorTag(")", Color.WHITE));
-
-		return requirementsString.toString();
+		if (r instanceof SkillRequirement)
+		{
+			SkillRequirement s = (SkillRequirement) r;
+			return client.getRealSkillLevel(s.getSkill()) >= s.getLevel();
+		}
+		if (r instanceof CombatLevelRequirement)
+		{
+			return client.getLocalPlayer().getCombatLevel() >= ((CombatLevelRequirement) r).getLevel();
+		}
+		log.warn("Unknown requirement {}", r);
+		return false;
 	}
 }
