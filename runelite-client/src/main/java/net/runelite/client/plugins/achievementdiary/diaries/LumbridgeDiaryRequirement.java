@@ -26,8 +26,9 @@
 package net.runelite.client.plugins.achievementdiary.diaries;
 
 import net.runelite.api.Skill;
+import net.runelite.client.plugins.achievementdiary.CombatLevelRequirement;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
-import net.runelite.client.plugins.achievementdiary.Requirement;
+import net.runelite.client.plugins.achievementdiary.SkillRequirement;
 
 public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 {
@@ -35,76 +36,76 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 	{
 		// EASY
 		add("Complete a lap of the Draynor Village agility course.",
-			new Requirement(Skill.AGILITY, 10));
+			new SkillRequirement(Skill.AGILITY, 10));
 		add("Slay a Cave bug beneath Lumbridge Swamp.",
-			new Requirement(Skill.SLAYER, 7));
+			new SkillRequirement(Skill.SLAYER, 7));
 		add("Craft some water runes.",
-			new Requirement(Skill.RUNECRAFT, 5));
+			new SkillRequirement(Skill.RUNECRAFT, 5));
 		add("Chop and burn some oak logs in Lumbridge.",
-			new Requirement(Skill.WOODCUTTING, 15),
-			new Requirement(Skill.FIREMAKING, 15));
+			new SkillRequirement(Skill.WOODCUTTING, 15),
+			new SkillRequirement(Skill.FIREMAKING, 15));
 		add("Catch some Anchovies in Al Kharid.",
-			new Requirement(Skill.FISHING, 15));
+			new SkillRequirement(Skill.FISHING, 15));
 		add("Mine some Iron ore at the Al Kharid mine.",
-			new Requirement(Skill.MINING, 15));
+			new SkillRequirement(Skill.MINING, 15));
 
 		// MEDIUM
 		add("Complete a lap of the Al Kharid agility course.",
-			new Requirement(Skill.AGILITY, 20));
+			new SkillRequirement(Skill.AGILITY, 20));
 		add("Grapple across the River Lum.",
-			new Requirement(Skill.AGILITY, 8),
-			new Requirement(Skill.STRENGTH, 19),
-			new Requirement(Skill.RANGED, 37));
+			new SkillRequirement(Skill.AGILITY, 8),
+			new SkillRequirement(Skill.STRENGTH, 19),
+			new SkillRequirement(Skill.RANGED, 37));
 		add("Purchase an upgraded device from Ava.",
-			new Requirement(Skill.RANGED, 50));
+			new SkillRequirement(Skill.RANGED, 50));
 		add("Cast the teleport to Lumbridge spell.",
-			new Requirement(Skill.MAGIC, 31));
+			new SkillRequirement(Skill.MAGIC, 31));
 		add("Catch some Salmon in Lumbridge.",
-			new Requirement(Skill.FISHING, 30));
+			new SkillRequirement(Skill.FISHING, 30));
 		add("Craft a coif in the Lumbridge cow pen.",
-			new Requirement(Skill.CRAFTING, 38));
+			new SkillRequirement(Skill.CRAFTING, 38));
 		add("Get a slayer task from Chaeldar.",
-			new Requirement("Combat", 70));
+			new CombatLevelRequirement(70));
 		add("Chop some willow logs in Draynor Village.",
-			new Requirement(Skill.WOODCUTTING, 30));
+			new SkillRequirement(Skill.WOODCUTTING, 30));
 		add("Pickpocket Martin the Master Gardener.",
-			new Requirement(Skill.THIEVING, 38));
+			new SkillRequirement(Skill.THIEVING, 38));
 		add("Catch an Essence or Eclectic impling in Puro-Puro.",
-			new Requirement(Skill.HUNTER, 42));
+			new SkillRequirement(Skill.HUNTER, 42));
 		add("Craft some Lava runes at the fire altar in Al Kharid.",
-			new Requirement(Skill.RUNECRAFT, 23));
+			new SkillRequirement(Skill.RUNECRAFT, 23));
 
 		// HARD
 		add("Cast Bones to Peaches in Al Kharid palace.",
-			new Requirement(Skill.MAGIC, 60));
+			new SkillRequirement(Skill.MAGIC, 60));
 		add("Squeeze past the jutting wall on your way to the cosmic altar.",
-			new Requirement(Skill.AGILITY, 46));
+			new SkillRequirement(Skill.AGILITY, 46));
 		add("Craft 56 Cosmic runes simultaneously.",
-			new Requirement(Skill.RUNECRAFT, 59));
+			new SkillRequirement(Skill.RUNECRAFT, 59));
 		add("Travel from Lumbridge to Edgeville on a Waka Canoe.",
-			new Requirement(Skill.WOODCUTTING, 57));
+			new SkillRequirement(Skill.WOODCUTTING, 57));
 		add("Pick some Belladonna from the farming patch at Draynor Manor.",
-			new Requirement(Skill.FARMING, 63));
+			new SkillRequirement(Skill.FARMING, 63));
 		add("Light your mining helmet in the Lumbridge castle basement.",
-			new Requirement(Skill.FIREMAKING, 65));
+			new SkillRequirement(Skill.FIREMAKING, 65));
 		add("Recharge your prayer at Clan Wars with Smite activated.",
-			new Requirement(Skill.PRAYER, 52));
+			new SkillRequirement(Skill.PRAYER, 52));
 		add("Craft, string and enchant an Amulet of Power in Lumbridge.",
-			new Requirement(Skill.CRAFTING, 70),
-			new Requirement(Skill.MAGIC, 57));
+			new SkillRequirement(Skill.CRAFTING, 70),
+			new SkillRequirement(Skill.MAGIC, 57));
 
 		// ELITE
 		add("Steal from a Dorgesh-Kaan rich chest.",
-			new Requirement(Skill.THIEVING, 78));
+			new SkillRequirement(Skill.THIEVING, 78));
 		add("Pickpocket Movario on the Dorgesh-Kaan Agility course.",
-			new Requirement(Skill.AGILITY, 70),
-			new Requirement(Skill.RANGED, 70),
-			new Requirement(Skill.STRENGTH, 70));
+			new SkillRequirement(Skill.AGILITY, 70),
+			new SkillRequirement(Skill.RANGED, 70),
+			new SkillRequirement(Skill.STRENGTH, 70));
 		add("Chop some magic logs at the Mage Training Arena.",
-			new Requirement(Skill.WOODCUTTING, 75));
+			new SkillRequirement(Skill.WOODCUTTING, 75));
 		add("Smith an Adamant platebody down Draynor sewer.",
-			new Requirement(Skill.SMITHING, 88));
+			new SkillRequirement(Skill.SMITHING, 88));
 		add("Craft 140 or more Water runes at once.",
-			new Requirement(Skill.RUNECRAFT, 76));
+			new SkillRequirement(Skill.RUNECRAFT, 76));
 	}
 }
