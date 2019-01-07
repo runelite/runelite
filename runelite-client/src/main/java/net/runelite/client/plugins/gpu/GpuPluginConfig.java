@@ -27,11 +27,16 @@ package net.runelite.client.plugins.gpu;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
+import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_DISTANCE;
 
 @ConfigGroup("gpu")
 public interface GpuPluginConfig extends Config
 {
+	@Range(
+		max = MAX_DISTANCE
+	)
 	@ConfigItem(
 		keyName = "drawDistance",
 		name = "Draw Distance",
