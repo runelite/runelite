@@ -49,7 +49,7 @@ public class GroupedItem {
     }
 
     /**
-     * Updates the target of the menu entry to contain the quantity found.
+     * Updates the target of the menu entry to contain the quantity found in the desired style.
      */
     private void updateTarget() {
         String target = entry.getTarget();
