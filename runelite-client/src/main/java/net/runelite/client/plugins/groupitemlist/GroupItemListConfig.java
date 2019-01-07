@@ -39,13 +39,13 @@ public interface GroupItemListConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "positionConfig",
+		keyName = "quantityPosition",
 		name = "Quantity position",
 		description = "Configures where to place the item's quantity",
 		position = 0
 	)
 
-	default positionOption getPositionConfig()
+	default positionOption getQuantityPosition()
 	{
 		return positionOption.APPEND;
 	}
@@ -59,13 +59,13 @@ public interface GroupItemListConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "styleConfig",
+		keyName = "quantityStyle",
 		name = "Quantity style",
 		description = "Configures how the quantity will be styled",
 		position = 1
 	)
 
-	default styleOption getStyleConfig()
+	default styleOption getQuantityStyle()
 	{
 		return styleOption.SQUARE;
 	}

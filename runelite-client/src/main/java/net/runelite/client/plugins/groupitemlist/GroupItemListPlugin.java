@@ -89,7 +89,7 @@ public class GroupItemListPlugin extends Plugin
 			else
 			{
 				entryCount.put(e,
-					new GroupedItem(e, config.getPositionConfig(), config.getStyleConfig(), config.includeX())
+					new GroupedItem(e, config.getQuantityPosition(), config.getQuantityStyle(), config.includeX())
 				);
 			}
 		}
