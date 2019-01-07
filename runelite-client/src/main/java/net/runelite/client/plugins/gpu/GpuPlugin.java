@@ -849,6 +849,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		lastAntiAliasingMode = antiAliasingMode;
 
 		// Clear scene
+		int sky = client.getSkyboxColor();
+		gl.glClearColor((sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
 		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
 
 		// Upload buffers
