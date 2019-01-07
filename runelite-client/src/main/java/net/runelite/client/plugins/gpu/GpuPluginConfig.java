@@ -64,4 +64,15 @@ public interface GpuPluginConfig extends Config
 	{
 		return AntiAliasingMode.DISABLED;
 	}
+
+	@ConfigItem(
+		keyName = "fogDepth",
+		name = "Fog depth",
+		description = "Distance from the scene edge the fog starts",
+		position = 4
+	)
+	default int fogDepth()
+	{
+		return 0;
+	}
 }

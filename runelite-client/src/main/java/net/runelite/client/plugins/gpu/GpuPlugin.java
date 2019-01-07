@@ -215,6 +215,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int centerY;
 
 	// Uniforms
+	private int uniUseFog;
+	private int uniFogColor;
+	private int uniFogDepth;
+	private int uniDrawDistance;
 	private int uniProjectionMatrix;
 	private int uniBrightness;
 	private int uniTex;
@@ -506,6 +510,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniProjectionMatrix = gl.glGetUniformLocation(glProgram, "projectionMatrix");
 		uniBrightness = gl.glGetUniformLocation(glProgram, "brightness");
 		uniSmoothBanding = gl.glGetUniformLocation(glProgram, "smoothBanding");
+		uniUseFog = gl.glGetUniformLocation(glProgram, "useFog");
+		uniFogColor = gl.glGetUniformLocation(glProgram, "fogColor");
+		uniFogDepth = gl.glGetUniformLocation(glProgram, "fogDepth");
+		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
 		uniTextures = gl.glGetUniformLocation(glProgram, "textures");
@@ -722,7 +730,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
 		scene.setDrawDistance(drawDistance);
 	}
-
 
 	public void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
 							SceneTilePaint paint, int tileZ, int tileX, int tileY,
@@ -1015,6 +1022,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glViewport(renderWidthOff, renderCanvasHeight - renderViewportHeight - renderHeightOff, renderViewportWidth, renderViewportHeight);
 
 			gl.glUseProgram(glProgram);
+
+			final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
+			final int fogDepth = config.fogDepth();
+			gl.glUniform1i(uniUseFog, fogDepth > 0 ? 1 : 0);
+			gl.glUniform4f(uniFogColor, (sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
+			gl.glUniform1i(uniFogDepth, fogDepth);
+			gl.glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
 
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
