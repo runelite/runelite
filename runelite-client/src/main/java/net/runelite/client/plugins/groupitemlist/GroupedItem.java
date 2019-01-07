@@ -57,7 +57,7 @@ public class GroupedItem {
             case SQUARE:
                 quantity = "[" + count + "]";
                 break;
-            case PARENTHESIS:
+            case PARENTHESES:
                 quantity = "(" + count + ")";
                 break;
         }
