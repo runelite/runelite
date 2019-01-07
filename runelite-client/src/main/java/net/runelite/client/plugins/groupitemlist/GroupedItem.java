@@ -55,16 +55,6 @@ public class GroupedItem
 	}
 
 	/**
-	 * Getter for the count.
-	 *
-	 * @return count
-	 */
-	public int getCount()
-	{
-		return count;
-	}
-
-	/**
 	 * Getter for the menu entry, updates the target to reflect the quantity if more than 1
 	 * was found.
 	 *
