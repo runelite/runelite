@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.groupitemlist;
 
 import net.runelite.api.MenuEntry;
+import net.runelite.client.plugins.groupitemlist.GroupItemListConfig.*;
 
 /**
  * Object used to store a MenuEntry and the quantity. Updates the entry target if necessary
@@ -10,14 +11,18 @@ public class GroupedItem {
 
     private int count;
     private MenuEntry entry;
+    private styleOption style;
+    private positionOption pos;
 
     /**
      * Constructor for GroupedItem.
      *
      * @param entry The menu entry to be tracked for duplicates
      */
-    GroupedItem(MenuEntry entry) {
+    GroupedItem(MenuEntry entry, positionOption pos, styleOption style) {
         this.entry = entry;
+        this.pos = pos;
+        this.style = style;
         this.count = 1;
     }
 
@@ -36,9 +41,9 @@ public class GroupedItem {
      *
      * @return Updated MenuEntry containing quantity
      */
-    MenuEntry getEntry(GroupItemListConfig.positionOption pos, GroupItemListConfig.styleOption style) {
+    MenuEntry getEntry() {
         if (count > 1) {
-            updateTarget(pos, style);
+            updateTarget();
         }
         return entry;
     }
@@ -46,7 +51,7 @@ public class GroupedItem {
     /**
      * Updates the target of the menu entry to contain the quantity found.
      */
-    private void updateTarget(GroupItemListConfig.positionOption pos, GroupItemListConfig.styleOption style) {
+    private void updateTarget() {
         String target = entry.getTarget();
         String quantity = null;
 
