@@ -25,9 +25,11 @@
  */
 package net.runelite.client.plugins.achievementdiary.diaries;
 
+import net.runelite.api.Quest;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.OrRequirement;
+import net.runelite.client.plugins.achievementdiary.QuestRequirement;
 import net.runelite.client.plugins.achievementdiary.SkillRequirement;
 
 public class WildernessDiaryRequirement extends GenericDiaryRequirement
@@ -41,6 +43,8 @@ public class WildernessDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.AGILITY, 15));
 		add("Mine some Iron ore in the Wilderness.",
 			new SkillRequirement(Skill.MINING, 15));
+		add("Have the Mage of Zamorak teleport you to the Abyss.",
+			new QuestRequirement(Quest.ENTER_THE_ABYSS));
 
 		// MEDIUM
 		add("Mine some Mithril ore in the wilderness.",
@@ -60,11 +64,13 @@ public class WildernessDiaryRequirement extends GenericDiaryRequirement
 		add("Kill a Bloodveld in the Wilderness Godwars Dungeon.",
 			new SkillRequirement(Skill.SLAYER, 50));
 		add("Smith a Golden helmet in the Resource Area.",
-			new SkillRequirement(Skill.SMITHING, 50));
+			new SkillRequirement(Skill.SMITHING, 50),
+			new QuestRequirement(Quest.BETWEEN_A_ROCK, true));
 
 		// HARD
 		add("Cast one of the 3 God spells against another player in the Wilderness.",
-			new SkillRequirement(Skill.MAGIC, 60));
+			new SkillRequirement(Skill.MAGIC, 60),
+			new QuestRequirement(Quest.THE_MAGE_ARENA));
 		add("Charge an Air Orb.",
 			new SkillRequirement(Skill.MAGIC, 66));
 		add("Catch a Black Salamander in the Wilderness.",
@@ -72,7 +78,8 @@ public class WildernessDiaryRequirement extends GenericDiaryRequirement
 		add("Smith an Adamant scimitar in the Resource Area.",
 			new SkillRequirement(Skill.SMITHING, 75));
 		add("Take the agility shortcut from Trollheim into the Wilderness.",
-			new SkillRequirement(Skill.AGILITY, 64));
+			new SkillRequirement(Skill.AGILITY, 64),
+			new QuestRequirement(Quest.DEATH_PLATEAU));
 		add("Kill a Spiritual warrior in the Wilderness Godwars Dungeon.",
 			new SkillRequirement(Skill.SLAYER, 68));
 		add("Fish some Raw Lava Eel in the Wilderness.",
@@ -80,7 +87,8 @@ public class WildernessDiaryRequirement extends GenericDiaryRequirement
 
 		// ELITE
 		add("Teleport to Ghorrock.",
-			new SkillRequirement(Skill.MAGIC, 96));
+			new SkillRequirement(Skill.MAGIC, 96),
+			new QuestRequirement(Quest.DESERT_TREASURE));
 		add("Fish and Cook a Dark Crab in the Resource Area.",
 			new SkillRequirement(Skill.FISHING, 85),
 			new SkillRequirement(Skill.COOKING, 90));

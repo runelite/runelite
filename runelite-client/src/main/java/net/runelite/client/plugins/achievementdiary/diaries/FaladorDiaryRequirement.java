@@ -25,8 +25,10 @@
  */
 package net.runelite.client.plugins.achievementdiary.diaries;
 
+import net.runelite.api.Quest;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
+import net.runelite.client.plugins.achievementdiary.QuestRequirement;
 import net.runelite.client.plugins.achievementdiary.SkillRequirement;
 
 public class FaladorDiaryRequirement extends GenericDiaryRequirement
@@ -38,9 +40,13 @@ public class FaladorDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.CONSTRUCTION, 16));
 		add("Climb over the western Falador wall.",
 			new SkillRequirement(Skill.AGILITY, 5));
+		add("Make a mind tiara.",
+			new QuestRequirement(Quest.RUNE_MYSTERIES));
 		add("Smith some Blurite Limbs on Doric's Anvil.",
 			new SkillRequirement(Skill.MINING, 10),
-			new SkillRequirement(Skill.SMITHING, 13));
+			new SkillRequirement(Skill.SMITHING, 13),
+			new QuestRequirement(Quest.THE_KNIGHTS_SWORD),
+			new QuestRequirement(Quest.DORICS_QUEST));
 
 		// MEDIUM
 		add("Light a Bullseye lantern at the Chemist's in Rimmington.",
@@ -50,7 +56,10 @@ public class FaladorDiaryRequirement extends GenericDiaryRequirement
 		add("Place a Scarecrow in the Falador farming patch.",
 			new SkillRequirement(Skill.FARMING, 23));
 		add("Kill a Mogre at Mudskipper Point.",
-			new SkillRequirement(Skill.SLAYER, 32));
+			new SkillRequirement(Skill.SLAYER, 32),
+			new QuestRequirement(Quest.SKIPPY_AND_THE_MOGRES));
+		add("Visit the Port Sarim Rat Pits.",
+			new QuestRequirement(Quest.RATCATCHERS, true));
 		add("Grapple up and then jump off the north Falador wall.",
 			new SkillRequirement(Skill.AGILITY, 11),
 			new SkillRequirement(Skill.STRENGTH, 37),
@@ -59,7 +68,8 @@ public class FaladorDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.THIEVING, 40));
 		add("Pray at the Altar of Guthix in Taverley whilst wearing full Initiate.",
 			new SkillRequirement(Skill.PRAYER, 10),
-			new SkillRequirement(Skill.DEFENCE, 20));
+			new SkillRequirement(Skill.DEFENCE, 20),
+			new QuestRequirement(Quest.RECRUITMENT_DRIVE));
 		add("Mine some Gold ore at the Crafting Guild.",
 			new SkillRequirement(Skill.CRAFTING, 40),
 			new SkillRequirement(Skill.MINING, 40));
@@ -87,13 +97,17 @@ public class FaladorDiaryRequirement extends GenericDiaryRequirement
 		add("Crack a wall safe within Rogues Den.",
 			new SkillRequirement(Skill.THIEVING, 50));
 		add("Recharge your prayer in the Port Sarim church while wearing full Proselyte.",
-			new SkillRequirement(Skill.DEFENCE, 30));
+			new SkillRequirement(Skill.DEFENCE, 30),
+			new QuestRequirement(Quest.THE_SLUG_MENACE));
 		add("Equip a dwarven helmet within the dwarven mines.",
-			new SkillRequirement(Skill.DEFENCE, 50));
+			new SkillRequirement(Skill.DEFENCE, 50),
+			new QuestRequirement(Quest.GRIM_TALES));
 
 		// ELITE
 		add("Craft 252 Air Runes simultaneously.",
 			new SkillRequirement(Skill.RUNECRAFT, 88));
+		add("Purchase a White 2h Sword from Sir Vyvin.",
+			new QuestRequirement(Quest.WANTED));
 		add("Find at least 3 magic roots at once when digging up your magic tree in Falador.",
 			new SkillRequirement(Skill.FARMING, 91),
 			new SkillRequirement(Skill.WOODCUTTING, 75));
