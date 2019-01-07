@@ -30,9 +30,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.FontTypeFace;
 import net.runelite.api.QuestState;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarPlayer;
@@ -66,6 +68,7 @@ import net.runelite.client.util.Text;
 public class DiaryRequirementsPlugin extends Plugin
 {
 	private static final String AND_JOINER = ", ";
+	private static final Pattern AND_JOINER_PATTERN = Pattern.compile("(?<=, )");
 
 	@Inject
 	private Client client;
@@ -101,6 +104,9 @@ public class DiaryRequirementsPlugin extends Plugin
 		{
 			return;
 		}
+
+		FontTypeFace font = titleWidget.getFont();
+		int maxWidth = titleWidget.getWidth();
 
 		List<String> originalAchievements = getOriginalAchievements(children);
 
@@ -138,21 +144,45 @@ public class DiaryRequirementsPlugin extends Plugin
 			{
 				String levelRequirement = skillRequirements.get(taskBuffer);
 				String task = originalAchievements.get(i);
-				if (Text.removeTags(task).length() + Text.removeTags(levelRequirement).length() <= 50)
+
+				int taskWidth = font.getTextWidth(task);
+				int ourWidth = font.getTextWidth(levelRequirement);
+				String strike = task.startsWith("<str>") ? "<str>" : "";
+
+				if (ourWidth + taskWidth < maxWidth)
 				{
+					// Merge onto 1 line
 					newRequirements.set(i + offset, task + levelRequirement);
+				}
+				else if (ourWidth < maxWidth)
+				{
+					// 2 line split
+					newRequirements.add(i + (++offset), strike + levelRequirement);
 				}
 				else
 				{
-					offset++;
-					if (task.startsWith("<str>"))
+					// Full text layout
+					StringBuilder b = new StringBuilder();
+					b.append(task);
+					int runningWidth = font.getTextWidth(b.toString());
+					for (String word : AND_JOINER_PATTERN.split(levelRequirement))
 					{
-						newRequirements.add(i + offset, "<str>" + levelRequirement);
+						int wordWidth = font.getTextWidth(word);
+						if (runningWidth == 0 || wordWidth + runningWidth < maxWidth)
+						{
+							runningWidth += wordWidth;
+							b.append(word);
+						}
+						else
+						{
+							newRequirements.add(i + (offset++), b.toString());
+							b.delete(0, b.length());
+							runningWidth = wordWidth;
+							b.append(strike);
+							b.append(word);
+						}
 					}
-					else
-					{
-						newRequirements.add(i + offset, levelRequirement);
-					}
+					newRequirements.add(i + offset, b.toString());
 				}
 			}
 		}
