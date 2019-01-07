@@ -25,7 +25,7 @@ public interface GroupItemListConfig extends Config {
 
     enum styleOption{
         SQUARE,
-        PARENTHESIS,
+        PARENTHESES,
         X_NUM
     }
 
