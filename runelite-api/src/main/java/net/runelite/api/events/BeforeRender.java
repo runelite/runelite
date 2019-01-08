@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#version 330
+package net.runelite.api.events;
 
-uniform sampler2DArray textures;
-uniform vec2 textureOffsets[64];
-uniform float brightness;
-uniform float smoothBanding;
-uniform vec4 fogColor;
-
-in vec4 Color;
-in float fHsl;
-in vec4 fUv;
-in float fogAmount;
-
-out vec4 FragColor;
-
-#include hsl_to_rgb.glsl
-
-void main() {
-  float n = fUv.x;
-
-  int hsl = int(fHsl);
-  vec3 rgb = hslToRgb(hsl) * smoothBanding + Color.rgb * (1.f - smoothBanding);
-  vec4 smoothColor = vec4(rgb, Color.a);
-
-  if (n > 0.0) {
-    n -= 1.0;
-    int textureIdx = int(n);
-
-    vec2 uv = fUv.yz;
-    vec2 animatedUv = uv + textureOffsets[textureIdx];
-
-    vec4 textureColor = texture(textures, vec3(animatedUv, n));
-    vec4 textureColorBrightness = pow(textureColor, vec4(brightness, brightness, brightness, 1.0f));
-
-    smoothColor = textureColorBrightness * smoothColor;
-  }
-
-  vec3 mixedColor = mix(smoothColor.rgb, fogColor.rgb, fogAmount);
-  FragColor = vec4(mixedColor, smoothColor.a);
+/**
+ * Posted at the start of every frame
+ */
+public class BeforeRender
+{
 }
