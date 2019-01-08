@@ -68,4 +68,14 @@ public interface StatusOrbsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "dynamicHpHeart",
+		name = "Dynamic hitpoints heart",
+		description = "Changes the HP heart color to match players current affliction"
+	)
+	default boolean dynamicHpHeart()
+	{
+		return true;
+	}
 }

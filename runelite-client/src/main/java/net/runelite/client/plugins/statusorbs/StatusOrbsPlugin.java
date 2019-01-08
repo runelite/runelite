@@ -28,6 +28,7 @@ package net.runelite.client.plugins.statusorbs;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -37,10 +38,9 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import static net.runelite.api.ItemID.*;
-import static net.runelite.api.ItemID.AGILITY_CAPET;
-import static net.runelite.api.ItemID.MAX_CAPE;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
+import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
@@ -50,11 +50,13 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
 import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
@@ -103,11 +105,24 @@ public class StatusOrbsPlugin extends Plugin
 		AGILITY_CAPE, AGILITY_CAPET, MAX_CAPE
 	);
 
+	private static final BufferedImage HEART_DISEASE;
+	private static final BufferedImage HEART_POISON;
+	private static final BufferedImage HEART_VENOM;
+	static
+	{
+		HEART_DISEASE = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-DISEASE.png"), 26, 26);
+		HEART_POISON = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-POISON.png"), 26, 26);
+		HEART_VENOM = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(StatusOrbsPlugin.class, "1067-VENOM.png"), 26, 26);
+	}
+
 	private static final int SPEC_REGEN_TICKS = 50;
 	private static final int NORMAL_HP_REGEN_TICKS = 100;
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ConfigManager configManager;
@@ -134,6 +149,8 @@ public class StatusOrbsPlugin extends Plugin
 	private boolean localPlayerRunningToDestination;
 	private WorldPoint prevLocalPlayerLocation;
 
+	private BufferedImage heart;
+
 	@Provides
 	StatusOrbsConfig provideConfig(ConfigManager configManager)
 	{
@@ -145,6 +162,10 @@ public class StatusOrbsPlugin extends Plugin
 	{
 		migrateConfigs();
 		overlayManager.add(overlay);
+		if (config.dynamicHpHeart() && client.getGameState().equals(GameState.LOGGED_IN))
+		{
+			clientThread.invoke(this::checkHealthIcon);
+		}
 	}
 
 	@Override
@@ -154,20 +175,47 @@ public class StatusOrbsPlugin extends Plugin
 		localPlayerRunningToDestination = false;
 		prevLocalPlayerLocation = null;
 		resetRunOrbText();
+		if (config.dynamicHpHeart())
+		{
+			clientThread.invoke(this::resetHealthIcon);
+		}
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("statusorbs") && !config.replaceOrbText())
+		if (event.getGroup().equals("statusorbs"))
 		{
-			resetRunOrbText();
+			switch (event.getKey())
+			{
+				case "replaceOrbText":
+					if (!config.replaceOrbText())
+					{
+						resetRunOrbText();
+					}
+					break;
+				case "dynamicHpHeart":
+					if (config.dynamicHpHeart())
+					{
+						checkHealthIcon();
+					}
+					else
+					{
+						resetHealthIcon();
+					}
+					break;
+			}
 		}
 	}
 
 	@Subscribe
 	private void onVarbitChanged(VarbitChanged e)
 	{
+		if (config.dynamicHpHeart())
+		{
+			checkHealthIcon();
+		}
+
 		boolean isRapidHeal = client.isPrayerActive(Prayer.RAPID_HEAL);
 		if (wasRapidHeal != isRapidHeal)
 		{
@@ -323,6 +371,50 @@ public class StatusOrbsPlugin extends Plugin
 		// Calculate the number of seconds left
 		final double secondsLeft = (100 - client.getEnergy()) / recoverRate;
 		return (int) secondsLeft;
+	}
+
+	/**
+	 * Check player afflictions to determine health icon
+	 */
+	private void checkHealthIcon()
+	{
+		BufferedImage newHeart;
+
+		int poison = client.getVar(VarPlayer.IS_POISONED);
+		if (poison >= 1000000)
+		{
+			newHeart = HEART_VENOM;
+		}
+		else if (poison > 0)
+		{
+			newHeart = HEART_POISON;
+		}
+		else if (client.getVar(VarPlayer.DISEASE_VALUE) > 0)
+		{
+			newHeart = HEART_DISEASE;
+		}
+		else
+		{
+			heart = null;
+			resetHealthIcon();
+			return;
+		}
+
+		// Only update sprites when the heart icon actually changes
+		if (newHeart != heart)
+		{
+			client.getWidgetSpriteCache().reset();
+			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, ImageUtil.getImageSpritePixels(heart, client));
+		}
+	}
+
+	/**
+	 * Ensure the HP Heart is the default Sprite
+	 */
+	private void resetHealthIcon()
+	{
+		client.getWidgetSpriteCache().reset();
+		client.getSpriteOverrides().remove(SpriteID.MINIMAP_ORB_HITPOINTS_ICON);
 	}
 
 	/**

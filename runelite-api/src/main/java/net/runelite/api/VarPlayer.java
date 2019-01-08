@@ -37,6 +37,10 @@ public enum VarPlayer
 	ATTACK_STYLE(43),
 	QUEST_POINTS(101),
 	IS_POISONED(102),
+	/**
+	 * Seems to start at 50(10 splash) and goes down by 1 every 30 seconds
+	 */
+	DISEASE_VALUE(456),
 
 	BANK_TAB(115),
 
