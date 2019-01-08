@@ -38,6 +38,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
@@ -50,6 +51,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Player;
+import net.runelite.api.WorldType;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
@@ -632,7 +634,29 @@ public class HiscorePanel extends PluginPanel
 
 	private void resetEndpoints()
 	{
-		// Select the first tab (NORMAL hiscores)
-		tabGroup.select(tabGroup.getTab(0));
+		// Select the correct tab based on the world type.
+		tabGroup.select(tabGroup.getTab(selectWorldEndpoint().ordinal()));
+	}
+
+	private HiscoreEndpoint selectWorldEndpoint()
+	{
+		if (client != null)
+		{
+			EnumSet<WorldType> wTypes = client.getWorldType();
+
+			if (wTypes.contains(WorldType.DEADMAN_TOURNAMENT))
+			{
+				return HiscoreEndpoint.DEADMAN_TOURNAMENT;
+			}
+			else if (wTypes.contains(WorldType.SEASONAL_DEADMAN))
+			{
+				return HiscoreEndpoint.SEASONAL_DEADMAN;
+			}
+			else if (wTypes.contains(WorldType.DEADMAN))
+			{
+				return HiscoreEndpoint.DEADMAN;
+			}
+		}
+		return HiscoreEndpoint.NORMAL;
 	}
 }
