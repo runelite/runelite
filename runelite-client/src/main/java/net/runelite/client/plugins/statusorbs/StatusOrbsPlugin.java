@@ -24,7 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.regenmeter;
+package net.runelite.client.plugins.statusorbs;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
@@ -44,11 +44,11 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Regeneration Meter",
-	description = "Track and show the hitpoints and special attack regeneration timers",
-	tags = {"combat", "health", "hitpoints", "special", "attack", "overlay"}
+	name = "Status Orbs",
+	description = "Configure settings for the Minimap orbs",
+	tags = {"minimap", "orb", "regen", "energy", "special"}
 )
-public class RegenMeterPlugin extends Plugin
+public class StatusOrbsPlugin extends Plugin
 {
 	private static final int SPEC_REGEN_TICKS = 50;
 	private static final int NORMAL_HP_REGEN_TICKS = 100;
@@ -57,13 +57,16 @@ public class RegenMeterPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ConfigManager configManager;
+
+	@Inject
+	private StatusOrbsConfig config;
+
+	@Inject
+	private StatusOrbsOverlay overlay;
+
+	@Inject
 	private OverlayManager overlayManager;
-
-	@Inject
-	private RegenMeterOverlay overlay;
-
-	@Inject
-	private RegenMeterConfig config;
 
 	@Getter
 	private double hitpointsPercentage;
@@ -76,14 +79,15 @@ public class RegenMeterPlugin extends Plugin
 	private boolean wasRapidHeal;
 
 	@Provides
-	RegenMeterConfig provideConfig(ConfigManager configManager)
+	StatusOrbsConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(RegenMeterConfig.class);
+		return configManager.getConfig(StatusOrbsConfig.class);
 	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		migrateConfigs();
 		overlayManager.add(overlay);
 	}
 
@@ -94,17 +98,7 @@ public class RegenMeterPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onGameStateChanged(GameStateChanged ev)
-	{
-		if (ev.getGameState() == GameState.HOPPING || ev.getGameState() == GameState.LOGIN_SCREEN)
-		{
-			ticksSinceHPRegen = -2; // For some reason this makes this accurate
-			ticksSinceSpecRegen = 0;
-		}
-	}
-
-	@Subscribe
-	private void onVarbitChanged(VarbitChanged ev)
+	private void onVarbitChanged(VarbitChanged e)
 	{
 		boolean isRapidHeal = client.isPrayerActive(Prayer.RAPID_HEAL);
 		if (wasRapidHeal != isRapidHeal)
@@ -112,6 +106,16 @@ public class RegenMeterPlugin extends Plugin
 			ticksSinceHPRegen = 0;
 		}
 		wasRapidHeal = isRapidHeal;
+	}
+
+	@Subscribe
+	private void onGameStateChanged(GameStateChanged ev)
+	{
+		if (ev.getGameState() == GameState.HOPPING || ev.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			ticksSinceHPRegen = -2; // For some reason this makes this accurate
+			ticksSinceSpecRegen = 0;
+		}
 	}
 
 	@Subscribe
@@ -148,6 +152,36 @@ public class RegenMeterPlugin extends Plugin
 		{
 			// Show it going down
 			hitpointsPercentage = 1 - hitpointsPercentage;
+		}
+	}
+
+	/**
+	 * Migrates configs from runenergy and regenmeter to this plugin and deletes the old config values.
+	 * This method should be removed after a reasonable amount of time.
+	 */
+	@Deprecated
+	private void migrateConfigs()
+	{
+		migrateConfig("regenmeter", "showHitpoints");
+		migrateConfig("regenmeter", "showSpecial");
+		migrateConfig("regenmeter", "showWhenNoChange");
+	}
+
+	/**
+	 * Wrapper for migrating individual config options
+	 * This method should be removed after a reasonable amount of time.
+	 *
+	 * @param group old group name
+	 * @param key key name to migrate
+	 */
+	@Deprecated
+	private void migrateConfig(String group, String key)
+	{
+		String value = configManager.getConfiguration(group, key);
+		if (value != null)
+		{
+			configManager.setConfiguration("statusorbs", key, value);
+			configManager.unsetConfiguration(group, key);
 		}
 	}
 }
