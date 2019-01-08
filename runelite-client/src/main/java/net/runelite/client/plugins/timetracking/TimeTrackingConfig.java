@@ -76,7 +76,8 @@ public interface TimeTrackingConfig extends Config
 			description = "The default time for the timer in minutes",
 			position = 4
 	)
-	default int defaultTimerMinutes() {
+	default int defaultTimerMinutes()
+	{
 		return 5;
 	}
 
