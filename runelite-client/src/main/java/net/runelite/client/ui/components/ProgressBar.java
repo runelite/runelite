@@ -52,7 +52,7 @@ public class ProgressBar extends DimmableJPanel
 	private List<Double> positions = Collections.emptyList();
 
 	@Setter
-	private int positionWidth;
+	private int positionWidth = 1;
 
 	private final JLabel leftLabel = new JShadowedLabel();
 	private final JLabel rightLabel = new JShadowedLabel();
