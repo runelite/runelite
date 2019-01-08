@@ -966,6 +966,16 @@ public class ChatCommandsPlugin extends Plugin
 			case "raids":
 				return "Chambers of Xeric";
 
+			case "cox:cm":
+			case "chambers:cm":
+			case "olm:cm":
+			case "raids:cm":
+			case "cm":
+			case "cm cox":
+			case "cm raids":
+			case "challenge mode":
+				return "Chambers of Xeric:Challenge";
+
 			case "tob":
 			case "theatre":
 			case "verzik":
