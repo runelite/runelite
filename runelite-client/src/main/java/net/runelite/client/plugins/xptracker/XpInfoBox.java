@@ -226,6 +226,7 @@ class XpInfoBox extends JPanel
 				}
 
 				progressBar.setPositions(positions);
+				progressBar.setPositionWidth(xpTrackerConfig.levelMarkerWidth());
 			}
 			else
 			{

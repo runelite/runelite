@@ -27,6 +27,7 @@ package net.runelite.client.plugins.xptracker;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("xpTracker")
 public interface XpTrackerConfig extends Config
@@ -64,8 +65,23 @@ public interface XpTrackerConfig extends Config
 		return false;
 	}
 
+	@Range(
+		min = 1,
+		max = 5
+	)
 	@ConfigItem(
 		position = 3,
+		keyName = "levelMarkerWidth",
+		name = "Level marker width",
+		description = "Alters the width of the intermediate level markers"
+	)
+	default int levelMarkerWidth()
+	{
+		return 1;
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "pauseSkillAfter",
 		name = "Auto pause after",
 		description = "Configures how many minutes passes before pausing a skill while in game and there's no XP, 0 means disabled"

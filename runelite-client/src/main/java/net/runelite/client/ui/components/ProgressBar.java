@@ -51,6 +51,9 @@ public class ProgressBar extends DimmableJPanel
 	@Setter
 	private List<Double> positions = Collections.emptyList();
 
+	@Setter
+	private int positionWidth;
+
 	private final JLabel leftLabel = new JShadowedLabel();
 	private final JLabel rightLabel = new JShadowedLabel();
 	private final JLabel centerLabel = new JShadowedLabel();
@@ -101,7 +104,7 @@ public class ProgressBar extends DimmableJPanel
 			final int xCord = (int) (getSize().width * position);
 			if (xCord > topWidth)
 			{
-				g.fillRect(xCord, 0, 1, 16);
+				g.fillRect(xCord, 0, positionWidth, 16);
 			}
 		}
 
