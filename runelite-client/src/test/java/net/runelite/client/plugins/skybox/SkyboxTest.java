@@ -41,8 +41,10 @@ public class SkyboxTest
 	public void testLoadSimple() throws IOException
 	{
 		Skybox skybox = new Skybox(CharSource.wrap("bounds 0 0 100 100 #00F // R 0 0 100 100\r\nr 99 99").openStream(), "simple");
-		Assert.assertEquals(0, skybox.getColorForPoint(0, 0, 0, 1, null));
-		Assert.assertEquals(0x0000FF, skybox.getColorForPoint((99 * 64) + 32, (99 * 64) + 32, 0, 1, null));
+		Assert.assertEquals(0, skybox.getColorForPoint(0, 0, 0, 0, 0, 1, null));
+		int x = (99 * 64) + 32;
+		int y = (99 * 64) + 32;
+		Assert.assertEquals(0x0000FF, skybox.getColorForPoint(x, y, x, y, 0, 1, null));
 	}
 
 	@Test
@@ -63,6 +65,6 @@ public class SkyboxTest
 			ImageIO.write(img, "png", new File(skyboxFile));
 		}
 
-		Assert.assertNotEquals(skybox.getColorForPoint(3232, 3232, 0, .9, null), 0); // Lumbridge will never be black
+		Assert.assertNotEquals(skybox.getColorForPoint(3232, 3232, 3232, 3232, 0, .9, null), 0); // Lumbridge will never be black
 	}
 }
