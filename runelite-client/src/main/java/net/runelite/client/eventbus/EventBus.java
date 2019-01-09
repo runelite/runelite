@@ -38,6 +38,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Comparator;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
@@ -62,6 +63,7 @@ public class EventBus
 	{
 		private final Object object;
 		private final Method method;
+		private final float priority;
 		@EqualsAndHashCode.Exclude
 		private final SubscriberMethod lamda;
 
@@ -104,6 +106,9 @@ public class EventBus
 		{
 			builder.putAll(subscribers);
 		}
+
+		builder.orderValuesBy(Comparator.comparing(Subscriber::getPriority)
+			.thenComparing(s -> s.object.getClass().getName()));
 
 		for (Class<?> clazz = object.getClass(); clazz != null; clazz = clazz.getSuperclass())
 		{
@@ -160,7 +165,7 @@ public class EventBus
 					log.warn("Unable to create lambda for method {}", method, e);
 				}
 
-				final Subscriber subscriber = new Subscriber(object, method, lambda);
+				final Subscriber subscriber = new Subscriber(object, method, sub.priority(), lambda);
 				builder.put(parameterClazz, subscriber);
 				log.debug("Registering {} - {}", parameterClazz, subscriber);
 			}
@@ -196,7 +201,7 @@ public class EventBus
 				}
 
 				final Class<?> parameterClazz = method.getParameterTypes()[0];
-				map.remove(parameterClazz, new Subscriber(object, method, null));
+				map.remove(parameterClazz, new Subscriber(object, method, sub.priority(), null));
 			}
 		}
 
@@ -204,8 +209,8 @@ public class EventBus
 	}
 
 	/**
-	 * Posts provided event to all registered subscribers. Subscriber calls are invoked immediately and in order
-	 * in which subscribers were registered.
+	 * Posts provided event to all registered subscribers. Subscriber calls are invoked immediately,
+	 * ordered by priority then their declaring class' name.
 	 *
 	 * @param event event to post
 	 */
