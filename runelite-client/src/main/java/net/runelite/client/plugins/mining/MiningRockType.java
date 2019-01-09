@@ -118,6 +118,7 @@ public enum MiningRockType
 
 	/**
 	 * Attempts to find the Type based on a TileObject ID
+	 *
 	 * @param id		TileObject id
 	 * @return			Matching type, else null
 	 */
@@ -133,6 +134,7 @@ public enum MiningRockType
 
 	/**
 	 * Attempts to find the Type based on the rocks name
+	 * 
 	 * @param name		Rocks name (case insensitive)
 	 * @return			Matching type, else null
 	 */

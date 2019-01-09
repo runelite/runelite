@@ -38,7 +38,7 @@ public class MiningWorld
 {
 
 	@Getter(AccessLevel.PACKAGE)
-	private int world; // World ID
+	private int world;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final HashMap<TileObject, MinedRock> rocks = new HashMap<>();
@@ -66,6 +66,7 @@ public class MiningWorld
 
 	/**
 	 * Gets the lowest time left on a rock respawn for this world
+	 *
 	 * @return		Seconds left on the rock that respawns first
 	 */
 	public int asSeconds()

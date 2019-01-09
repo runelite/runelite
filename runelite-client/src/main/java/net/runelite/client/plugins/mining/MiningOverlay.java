@@ -60,7 +60,7 @@ import java.time.Instant;
 import java.util.Set;
 
 /**
- * Displays information about the players current mining state & rocks mined
+ * Displays information about the players current mining state and rocks mined
  */
 public class MiningOverlay extends Overlay
 {
@@ -93,23 +93,26 @@ public class MiningOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		if (config.disableInMLM() && plugin.checkInMlm())
-		{ // If player is in the motherloade mine & they have it disabled in the config, then exit out here
+		{
+			// If player is in the motherloade mine & they have it disabled in the config, then exit out here
 			return null;
 		}
 
 		panelComponent.getChildren().clear();
 
 		if (config.showMiningState())
-		{ // Check if player wishes to see their current mining state (Mining/Not Mining)
+		{
 			if (MINING_ANIMATION_IDS.contains(client.getLocalPlayer().getAnimation()))
-			{ // Player is actively mining
+			{
+				// Player is actively mining
 				panelComponent.getChildren().add(TitleComponent.builder()
 					.text("Mining")
 					.color(Color.GREEN)
 					.build());
 			}
 			else
-			{ // Player is not mining
+			{
+				// Player is not mining
 				panelComponent.getChildren().add(TitleComponent.builder()
 					.text("NOT mining")
 					.color(Color.RED)
@@ -119,11 +122,12 @@ public class MiningOverlay extends Overlay
 
 		MiningSession session = plugin.getSession();
 		if (session.getLastMined() != null)
-		{ // Checks if the player has a session yet
+		{
 			Duration statTimeout = Duration.ofMinutes(config.statTimeout());
 			Duration sinceCut = Duration.between(session.getLastMined(), Instant.now());
 			if (sinceCut.compareTo(statTimeout) >= 0)
-			{ // Checks if player has not mined within the config controlled timeout
+			{
+				// Checks if player has not mined within the config controlled timeout
 				return null;
 			}
 		}
@@ -133,23 +137,27 @@ public class MiningOverlay extends Overlay
 		}
 
 		if (!config.showMiningStats())
-		{ // Exit here if player does not want to see mining stats
+		{
 			return null;
 		}
 
 		for (MiningRockType rock : MiningRockType.values())
-		{ // Goes through every rock the player could have mined
+		{
+			// Goes through every rock the player could have mined
 			if (session.showOreRespawns(rock))
-			{ // Check if they have mined this rock within the current session. Each rock has it's own 'session timeout' - which is configured by the user
+			{
+				// Check if they have mined this rock within the current session. Each rock has it's own 'session timeout' - which is configured by the user
 				int index = rock.getIndex();
+				// Show the total amount mined (not just during this session)
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left(rock.getName() + " mined:")
 					.right(Integer.toString(session.getTotalMined()[index]))
-					.build()); // Show the total amount mined (not just during this session)
+					.build());
+				// Show the estimated amount mined per hour, based on the amount mined this session
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left(rock.getName() + "/hr:")
 					.right(session.getRecentMined()[index] > 2 ? Integer.toString(session.getPerHour()[index]) : "")
-					.build()); // Show the estimated amount mined per hour, based on the amount mined this session
+					.build());
 			}
 		}
 		return panelComponent.render(graphics);

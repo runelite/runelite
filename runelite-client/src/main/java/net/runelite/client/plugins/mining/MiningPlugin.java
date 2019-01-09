@@ -112,7 +112,8 @@ public class MiningPlugin extends Plugin
 		overlayManager.add(worldHopperOverlay);
 		session = new MiningSession();
 		if (config.trackWorldRock() !=  MiningRockType.WorldRock.None)
-		{ // Setup world mining tracker for a certain type of rock
+		{
+			// Setup world mining tracker for a certain type of rock
 			miningTracker = new MiningWorldTracker(config.trackWorldRock());
 		}
 		else
@@ -144,7 +145,8 @@ public class MiningPlugin extends Plugin
 				miningTracker = null;
 			}
 			else
-			{ // Setup world mining tracker for a certain type of rock
+			{
+				// Setup world mining tracker for a certain type of rock
 				miningTracker = new MiningWorldTracker(config.trackWorldRock());
 			}
 		}
@@ -160,7 +162,8 @@ public class MiningPlugin extends Plugin
 			for (TileObject o : ores.keySet())
 			{
 				if (o.getX() == object.getX() && o.getY() == object.getY())
-				{ // Remove ground rock as it has respawned
+				{
+					// Remove ground rock as it has respawned
 					ores.remove(o);
 					break;
 				}
@@ -173,13 +176,15 @@ public class MiningPlugin extends Plugin
 	{
 		Duration timeSinceStart = Duration.between(session.getIgnoreSpawn(), Instant.now());
 		if (timeSinceStart.getSeconds() > 1)
-		{ // Ignore anything spawned within 1 second of logging in or changing regions (prevents timers appearing on already mined rocks)
+		{
+			// Ignore anything spawned within 1 second of logging in or changing regions (prevents timers appearing on already mined rocks)
 			GameObject object = event.getGameObject();
 			MiningRockType rock = MiningRockType.getTypeFromID(object.getId());
 			if (rock != null && miningLevel >= rock.getRequiredLevel())
-			{ // Only display if player can actually mine the rock
+			{
+				// Only display if player can actually mine the rock
 				if (!ores.containsKey(object))
-				{ // Add timer for ground rock
+				{
 					ores.put(object, new MinedRock(rock));
 				}
 			}
@@ -191,13 +196,15 @@ public class MiningPlugin extends Plugin
 	{
 		Duration timeSinceStart = Duration.between(session.getIgnoreSpawn(), Instant.now());
 		if (timeSinceStart.getSeconds() > 1)
-		{ // Ignore anything spawned within 1 second of logging in or changing regions (prevents timers appearing on already mined rocks)
+		{
+			// Ignore anything spawned within 1 second of logging in or changing regions (prevents timers appearing on already mined rocks)
 			WallObject object = event.getWallObject();
 			MiningRockType rock = MiningRockType.getTypeFromID(object.getId());
 			if (rock != null && miningLevel >= rock.getRequiredLevel())
-			{ // Only display if player can actually mine the rock
+			{
+				// Only display if player can actually mine the rock
 				if (!ores.containsKey(object))
-				{ // Add timer for wall rock
+				{
 					ores.put(object, new MinedRock(rock));
 				}
 			}
@@ -214,7 +221,8 @@ public class MiningPlugin extends Plugin
 			for (TileObject o : ores.keySet())
 			{
 				if (o.getX() == object.getX() && o.getY() == object.getY())
-				{ // Remove wall rock as it has respawned
+				{
+					// Remove wall rock as it has respawned
 					ores.remove(o);
 					break;
 				}
@@ -227,22 +235,25 @@ public class MiningPlugin extends Plugin
 	{
 		GameState state = event.getGameState();
 		if (state == GameState.HOPPING)
-		{ // Check if player is hopping worlds
+		{
 			MiningRockType.WorldRock worldRock = config.trackWorldRock();
 			if (worldRock != MiningRockType.WorldRock.None)
-			{ // Check if player wants to track a rock respawn between worlds
+			{
 				int world = client.getWorld();
 				for (TileObject rock : ores.keySet())
-				{ // Go through every tracked rock
+				{
+					// Go through every tracked rock
 					if (worldRock.getRockType() == ores.get(rock).getType())
-					{ // If the type matches the multi-world rock then add to the mining tracker
+					{
+						// If the type matches the multi-world rock then add to the mining tracker
 						miningTracker.addTracked(world, rock, ores.get(rock));
 					}
 				}
 			}
 		}
 		else if (state == GameState.LOADING)
-		{ // Clear all ores when logging in or switching regions
+		{
+			// Clear all ores when logging in or switching regions
 			ores.clear();
 			session.setIgnoreSpawn(Instant.now());
 		}
@@ -250,21 +261,25 @@ public class MiningPlugin extends Plugin
 		{
 			int world = client.getWorld();
 			if (miningTracker != null && miningTracker.getTrackedWorlds().containsKey(world))
-			{ // Check if the current world exists in the tracked worlds
+			{
+				// Check if the current world exists in the tracked worlds
 				MiningWorld track = miningTracker.getTrackedWorlds().get(world);
 				track.clearNegatives();
 				for (TileObject o : track.getRocks().keySet())
-				{ // Load all the tracked ores into the to-render hashmap
+				{
+					// Load all the tracked ores into the to-render hashmap
 					ores.put(o, track.getRocks().get(o));
 				}
-				miningTracker.getTrackedWorlds().remove(world); // We're on this world now, so don't track it in the world tracker anymore
+				// We're on this world now, so don't track it in the world tracker anymore
+				miningTracker.getTrackedWorlds().remove(world);
 			}
 		}
 	}
 
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
-	{ // Keeps the players mining level up to date
+	{
+		// Keeps the players mining level up to date
 		if (event.getSkill() == Skill.MINING)
 		{
 			miningLevel = Experience.getLevelForXp(client.getSkillExperience(Skill.MINING));
@@ -279,11 +294,13 @@ public class MiningPlugin extends Plugin
 			return;
 		}
 		if (event.getMessage().startsWith("You manage to mine some"))
-		{ // Check for when ever the player mines a rock
+		{
+			// Check for when ever the player mines a rock
 			String oreName = event.getMessage().substring(24).replace(".", "");
 			MiningRockType rock = MiningRockType.getTypeFromName(oreName);
 			if (rock != null)
-			{ // If the rock exists then increase the amount mined
+			{
+				// If the rock exists then increase the amount mined
 				session.increaseRockMine(rock);
 			}
 
@@ -315,6 +332,7 @@ public class MiningPlugin extends Plugin
 
 	/**
 	 * Taken from the MLM plugin, checks if the player is currently in the motherloade mine
+	 *
 	 * @return 		If player is in the motherloade mine
 	 */
 	public boolean checkInMlm()

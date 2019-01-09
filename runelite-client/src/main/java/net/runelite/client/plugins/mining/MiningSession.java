@@ -95,6 +95,7 @@ public class MiningSession
 	/**
 	 * Checks if the respawn times for a certain rock should be displayed
 	 * This is achieved by checking if the player recently mined that ore
+	 *
 	 * @param rock		Rock to display
 	 * @return 			If player should see respawn times for the rock
 	 */
@@ -105,6 +106,7 @@ public class MiningSession
 
 	/**
 	 * Clear the session values (excluding totals) for a certain rock
+	 *
 	 * @param rock 		Rock to clear session values for
 	 */
 	public void clearSessionFor(MiningRockType rock)
@@ -117,6 +119,7 @@ public class MiningSession
 
 	/**
 	 * Increases the amount of a rock mined during this session by 1
+	 *
 	 * @param rock		The rock type mined by the player
 	 */
 	public void increaseRockMine(MiningRockType rock)

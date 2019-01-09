@@ -46,6 +46,7 @@ public class MinedRock
 
 	/**
 	 * Gets the time until a rock respawns in seconds
+	 *
 	 * @return 		Seconds until the rock respawns. Minimum return value is 1, unless the rock has a respawn range, in which case can return 0
 	 */
 	public int asSeconds()
@@ -63,6 +64,7 @@ public class MinedRock
 
 	/**
 	 * Gets the maximum time a ore can take to respawn
+	 *
 	 * @return 		-1 if the ore does not have a respawn range, else the max of the respawn range
 	 */
 	public int asSecondsMax()
@@ -92,6 +94,7 @@ public class MinedRock
 
 	/**
 	 * Gets the seconds left until a respawn based on the minumum respawn time. Can return negative if rock should have respawned by now
+	 *
 	 * @return 		Time in seconds until a rock respawns.
 	 */
 	public int asSecondsNegative()

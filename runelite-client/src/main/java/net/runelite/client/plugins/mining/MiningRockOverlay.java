@@ -64,7 +64,7 @@ public class MiningRockOverlay extends Overlay
 	{
 		Player local = client.getLocalPlayer();
 		if (config.showRespawnTimer())
-		{ // Check if respawn timers are enabled in the config
+		{
 			renderRespawnTimers(graphics, local);
 		}
 		return null;
@@ -77,10 +77,12 @@ public class MiningRockOverlay extends Overlay
 	{
 		LocalPoint localLocation = local.getLocalLocation();
 		for (TileObject ore : plugin.getOres().keySet())
-		{ // Go through every rock that currently has a stored respawn timer
+		{
+			// Go through every rock that currently has a stored respawn timer
 			MinedRock rock = plugin.getOres().get(ore);
 			if ((config.showAllRespawnTimers() || plugin.getSession().showOreRespawns(rock.getType())) && localLocation.distanceTo(ore.getLocalLocation()) <= MAX_DISTANCE)
-			{ // Check if we should display this rock to the user. Checks if the user has mined the rock within this session (or has all on within config) & is within range
+			{
+				// Check if we should display this rock to the user. Checks if the user has mined the rock within this session (or has all on within config) & is within range
 				renderRespawnTimerRock(graphics, ore, rock.asSeconds(), rock.asSecondsMax(), rock.getType().isGround());
 			}
 		}
@@ -100,20 +102,24 @@ public class MiningRockOverlay extends Overlay
 		{
 			String timeMessage = "" + time;
 			if (max != -1)
-			{ // Check if this rock has a respawn time range
+			{
+				// Check if this rock has a respawn time range
 				if (time <= 0)
-				{ // Check if the rock has reached the minimum respawn time
+				{
+					// Check if the rock has reached the minimum respawn time
 					timeMessage = "~" + max; // Display the maximum possible time
 					graphics.setColor(Color.CYAN);
 				}
 				else
-				{ // Rock has not yet reached the minimum respawn time
+				{
+					// Rock has not yet reached the minimum respawn time
 					timeMessage += "~";
 				}
 
 			}
 			graphics.drawString(timeMessage, canvasLoc.getX(), canvasLoc.getY());
-			graphics.setColor(Color.WHITE); // Restore colour
+			// Restore colour
+			graphics.setColor(Color.WHITE);
 		}
 	}
 
