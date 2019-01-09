@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Marshall <https://github.com/marshdevs>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,19 +24,18 @@
  */
 package net.runelite.client.plugins.achievementdiary;
 
-import com.google.common.collect.ImmutableList;
-import java.util.List;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Getter
-class DiaryRequirement
+public class CombatLevelRequirement implements Requirement
 {
-	private final String task;
-	private final List<Requirement> requirements;
+	private final int level;
 
-	DiaryRequirement(String task, Requirement[] requirements)
+	@Override
+	public String toString()
 	{
-		this.task = task;
-		this.requirements = ImmutableList.copyOf(requirements);
+		return level + " " + "Combat";
 	}
 }

@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Marshall <https://github.com/marshdevs>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,21 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.achievementdiary;
+package net.runelite.api;
 
-import com.google.common.collect.ImmutableList;
-import java.util.List;
-import lombok.Getter;
-
-@Getter
-class DiaryRequirement
+public enum QuestState
 {
-	private final String task;
-	private final List<Requirement> requirements;
-
-	DiaryRequirement(String task, Requirement[] requirements)
-	{
-		this.task = task;
-		this.requirements = ImmutableList.copyOf(requirements);
-	}
+	IN_PROGRESS,
+	NOT_STARTED,
+	FINISHED
 }

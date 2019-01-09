@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Marshall <https://github.com/marshdevs>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,19 +24,24 @@
  */
 package net.runelite.client.plugins.achievementdiary;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 import lombok.Getter;
 
-@Getter
-class DiaryRequirement
+public class OrRequirement implements Requirement
 {
-	private final String task;
+	@Getter
 	private final List<Requirement> requirements;
 
-	DiaryRequirement(String task, Requirement[] requirements)
+	public OrRequirement(Requirement... reqs)
 	{
-		this.task = task;
-		this.requirements = ImmutableList.copyOf(requirements);
+		this.requirements = ImmutableList.copyOf(reqs);
+	}
+
+	@Override
+	public String toString()
+	{
+		return Joiner.on(" or ").join(requirements);
 	}
 }

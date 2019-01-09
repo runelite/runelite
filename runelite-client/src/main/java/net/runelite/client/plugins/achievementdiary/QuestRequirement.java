@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Marshall <https://github.com/marshdevs>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,19 +24,30 @@
  */
 package net.runelite.client.plugins.achievementdiary;
 
-import com.google.common.collect.ImmutableList;
-import java.util.List;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.Quest;
 
 @Getter
-class DiaryRequirement
+@RequiredArgsConstructor
+public class QuestRequirement implements Requirement
 {
-	private final String task;
-	private final List<Requirement> requirements;
+	private final Quest quest;
+	private final boolean started;
 
-	DiaryRequirement(String task, Requirement[] requirements)
+	public QuestRequirement(Quest quest)
 	{
-		this.task = task;
-		this.requirements = ImmutableList.copyOf(requirements);
+		this(quest, false);
+	}
+
+	@Override
+	public String toString()
+	{
+		if (started)
+		{
+			return "Started " + quest.getName();
+		}
+
+		return quest.getName();
 	}
 }
