@@ -70,7 +70,7 @@ public class AccountService
 		+ "  `user` int(11) NOT NULL PRIMARY KEY,\n"
 		+ "  `uuid` varchar(36) NOT NULL,\n"
 		+ "  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
-		+ "  `last_used` timestamp NOT NULL,\n"
+		+ "  `last_used` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
 		+ "  UNIQUE KEY `uuid` (`uuid`),\n"
 		+ "  KEY `user` (`user`)\n"
 		+ ") ENGINE=InnoDB";
