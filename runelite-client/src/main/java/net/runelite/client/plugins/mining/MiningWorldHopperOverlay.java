@@ -32,9 +32,9 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-
 import javax.inject.Inject;
 import java.awt.*;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Collectors;
@@ -75,7 +75,7 @@ public class MiningWorldHopperOverlay extends Overlay
 			{
 				MinedRock rock = world.getRocks().get(o);
 				// If this rock has respawned & we've passed the config defined timeout, then remove this rock
-				if (rock.asSecondsNegative() < 0 - config.trackTimeout())
+				if (rock.getMinSecondsUntilRespawn(true) < 0 - config.trackTimeout())
 				{
 					world.getRocks().remove(o);
 				}
@@ -93,16 +93,19 @@ public class MiningWorldHopperOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().clear();
-
 		panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Respawn Tracker")
 				.build());
 
-		for (MiningWorld world : tracker.getTrackedWorlds().values().stream().sorted(Comparator.comparing(MiningWorld::asSeconds)).collect(Collectors.toList()))
+		List<MiningWorld> worlds = tracker.getTrackedWorlds().values()
+				.stream()
+				.sorted(Comparator.comparing(MiningWorld::getFirstSecondsUntilRespawn))
+				.collect(Collectors.toList());
+		for (MiningWorld world : worlds)
 		{
 			// Go through every remaining world, if they're here it means they have a rock that has not yet respawned (or timeout not yet passed)
 			int id = world.getWorld();
-			int seconds = world.asSeconds();
+			int seconds = world.getFirstSecondsUntilRespawn();
 			if (seconds < 0)
 			{
 				// If the time left until the rock respawns is less than zero, then it means it has respawned.
@@ -115,7 +118,6 @@ public class MiningWorldHopperOverlay extends Overlay
 				.rightColor(seconds == 0 ? Color.GREEN : Color.ORANGE)
 				.build());
 		}
-
 		return panelComponent.render(graphics);
 	}
 

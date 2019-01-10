@@ -260,7 +260,7 @@ public class MiningPlugin extends Plugin
 			if (miningTracker != null && miningTracker.getTrackedWorlds().containsKey(world))
 			{
 				MiningWorld track = miningTracker.getTrackedWorlds().get(world);
-				track.clearNegatives();
+				track.clearNegativeRespawnTimes();
 				// Load all the tracked ores in this world into the current session. Causing their respawn times to be rendered
 				for (TileObject o : track.getRocks().keySet())
 				{
@@ -275,7 +275,6 @@ public class MiningPlugin extends Plugin
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
-		// Keeps the players mining level up to date
 		if (event.getSkill() == Skill.MINING)
 		{
 			miningLevel = Experience.getLevelForXp(client.getSkillExperience(Skill.MINING));
@@ -301,21 +300,18 @@ public class MiningPlugin extends Plugin
 		}
 	}
 
-	/**
-	 * Checks if the player has mined recently (within config controlled session timeout)
-	 */
 	@Schedule(
 		period = 1,
 		unit = ChronoUnit.SECONDS
 	)
-	public void checkMining()
+	public void checkIsMining()
 	{
 		for (MiningRockType rock : MiningRockType.values())
 		{
-			if (session.getLastOreMined()[rock.ordinal()] != null)
+			if (session.getSessionStats().get(rock).getLastOreMined() != null)
 			{
 				Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-				Duration sinceMined = Duration.between(session.getLastOreMined()[rock.ordinal()], Instant.now());
+				Duration sinceMined = Duration.between(session.getSessionStats().get(rock).getLastOreMined(), Instant.now());
 				if (sinceMined.compareTo(statTimeout) >= 0)
 				{
 					session.clearSessionFor(rock);
@@ -324,11 +320,6 @@ public class MiningPlugin extends Plugin
 		}
 	}
 
-	/**
-	 * Taken from the MLM plugin, checks if the player is currently in the motherloade mine
-	 *
-	 * @return 		If player is in the motherloade mine
-	 */
 	public boolean isInMlm()
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -337,7 +328,6 @@ public class MiningPlugin extends Plugin
 		}
 
 		int[] currentMapRegions = client.getMapRegions();
-
 		// Verify that all regions exist in MOTHERLODE_MAP_REGIONS
 		for (int region : currentMapRegions)
 		{
@@ -350,11 +340,6 @@ public class MiningPlugin extends Plugin
 		return true;
 	}
 
-	/**
-	 * Checks if a point in the world is within the pay to play area of the mining guild
-	 * @param point		The world point to check
-	 * @return			True if within, else false if outside
-	 */
 	public boolean isInMiningGuildPay2Play(WorldPoint point)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)

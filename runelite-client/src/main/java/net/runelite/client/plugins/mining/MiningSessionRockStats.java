@@ -26,43 +26,62 @@ package net.runelite.client.plugins.mining;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.TileObject;
 
-import java.util.HashMap;
+import java.time.Duration;
+import java.time.Instant;
 
-/**
- * Holds each world currently being tracked for respawn timers
- */
-public class MiningWorldTracker
+public class MiningSessionRockStats
 {
 
-	@Getter(AccessLevel.PACKAGE)
-	private MiningRockType.WorldRock trackingRock;
+	private static final Duration HOUR = Duration.ofHours(1);
 
 	@Getter(AccessLevel.PACKAGE)
-	private HashMap<Integer, MiningWorld> trackedWorlds = new HashMap<>();
+	private Instant lastOreMined;
 
-	public MiningWorldTracker(MiningRockType.WorldRock trackingRock)
+	@Getter(AccessLevel.PACKAGE)
+	private Instant recentOreMined;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int totalMined;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int perHour;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int recentMined;
+
+	public MiningSessionRockStats()
 	{
-		this.trackingRock = trackingRock;
+		lastOreMined = null;
+		recentOreMined = null;
+		totalMined = 0;
+		perHour = 0;
+		recentMined = 0;
 	}
 
-	/**
-	 * Adds a tracked rock to a world.
-	 *
-	 * @param world			World ID
-	 * @param object		The TileObject of the rock to track
-	 * @param mined			The MinedRock of the rock, containing the Type and respawn time
-	 */
-	public void addTracked(int world, TileObject object, MinedRock mined)
+	public void clearSession()
 	{
-		if (!trackedWorlds.containsKey(world))
+		recentOreMined = null;
+		perHour = 0;
+		recentMined = 0;
+	}
+
+	public void increaseMined()
+	{
+		Instant now = Instant.now();
+		lastOreMined = now;
+		totalMined++;
+		if (recentOreMined == null)
 		{
-			trackedWorlds.put(world, new MiningWorld(world));
+			recentOreMined = now;
 		}
-		// Clear any rocks which have respawned, no point knowing about them if we are on this world & mining again
-		trackedWorlds.get(world).clearNegativeRespawnTimes();
-		trackedWorlds.get(world).getRocks().put(object, mined);
+		recentMined++;
+
+		Duration timeSinceStart = Duration.between(recentOreMined, now);
+		if (!timeSinceStart.isZero())
+		{
+			perHour = (int) ((double) recentMined * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+		}
 	}
 
 }

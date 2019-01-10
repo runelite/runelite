@@ -70,19 +70,16 @@ public class MiningRockOverlay extends Overlay
 		return null;
 	}
 
-	/**
-	 * Renders the respawn times for the rocks
-	 */
 	private void renderRespawnTimers(Graphics2D graphics, Player local)
 	{
 		LocalPoint localLocation = local.getLocalLocation();
 		for (TileObject ore : plugin.getOres().keySet())
 		{
 			MinedRock rock = plugin.getOres().get(ore);
-			if ((config.showAllRespawnTimers() || plugin.getSession().showOreRespawns(rock.getType())) && localLocation.distanceTo(ore.getLocalLocation()) <= MAX_DISTANCE)
+			if ((config.showAllRespawnTimers() || plugin.getSession().showRockRespawnTimes(rock.getType())) && localLocation.distanceTo(ore.getLocalLocation()) <= MAX_DISTANCE)
 			{
 				// Check if we should display this rock to the user. Checks if the user has mined the rock within this session (or has all on within config) & is within range
-				renderRespawnTimerRock(graphics, ore, rock.asSeconds(), rock.asSecondsMax(), rock.getType().isGround());
+				renderRespawnTimerRock(graphics, ore, rock.getMinSecondsUntilRespawn(false), rock.getMaxSecondsUntilRespawn(), rock.getType().isGround());
 			}
 		}
 	}

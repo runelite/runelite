@@ -143,16 +143,15 @@ public class MiningOverlay extends Overlay
 		{
 			for (MiningRockType rock : MiningRockType.values())
 			{
-				if (session.showOreRespawns(rock))
+				if (session.showRockRespawnTimes(rock))
 				{
-					int index = rock.ordinal();
 					panelComponent.getChildren().add(LineComponent.builder()
 							.left(rock.getName() + " mined:")
-							.right(Integer.toString(session.getTotalMined()[index]))
+							.right(Integer.toString(session.getSessionStats().get(rock).getTotalMined()))
 							.build());
 					panelComponent.getChildren().add(LineComponent.builder()
 							.left(rock.getName() + "/hr:")
-							.right(session.getRecentMined()[index] > 2 ? Integer.toString(session.getPerHour()[index]) : "")
+							.right(session.getSessionStats().get(rock).getRecentMined() > 2 ? Integer.toString(session.getSessionStats().get(rock).getPerHour()) : "")
 							.build());
 				}
 			}

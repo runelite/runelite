@@ -81,7 +81,7 @@ public enum MiningRockType
 	// The minimum respawn time for this rock
 	// The maximum respawn for this rock (-1 if no range)
 	@Getter(AccessLevel.PACKAGE)
-	private final double respawnTime, maxRespawnTime;
+	private final double minRespawnTime, maxRespawnTime;
 
 	// If the rock can only be mined by members
 	@Getter(AccessLevel.PACKAGE)
@@ -94,12 +94,6 @@ public enum MiningRockType
 	// The RS IDs for the rocks. (Wall rocks uses the blank ID)
 	private final int[] rocks;
 
-	/**
-	 * Attempts to find the Type based on a TileObject ID
-	 *
-	 * @param id		TileObject id
-	 * @return			Matching type, else null
-	 */
 	public static MiningRockType getTypeFromID(int id)
 	{
 		for (MiningRockType type : values())
@@ -111,12 +105,6 @@ public enum MiningRockType
 		return null;
 	}
 
-	/**
-	 * Attempts to find the Type based on the rocks name
-	 *
-	 * @param name		Rocks name (case insensitive)
-	 * @return			Matching type, else null
-	 */
 	public static MiningRockType getTypeFromName(String name)
 	{
 		for (MiningRockType type : values())

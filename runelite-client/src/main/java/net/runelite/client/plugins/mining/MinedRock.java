@@ -33,74 +33,46 @@ public class MinedRock
 	@Getter(AccessLevel.PACKAGE)
 	private final MiningRockType type;
 
-	private final long respawnTime;
+	private final long minRespawnTime;
 
 	private final long maxRespawnTime;
 
 	public MinedRock(MiningRockType type, boolean halve)
 	{
 		this.type = type;
-		this.respawnTime = System.currentTimeMillis() + (int)((halve ? type.getRespawnTime() / 2 : type.getRespawnTime()) * 1000);
+		this.minRespawnTime = System.currentTimeMillis() + (int)((halve ? type.getMinRespawnTime() / 2 : type.getMinRespawnTime()) * 1000);
 		this.maxRespawnTime = type.getMaxRespawnTime() == -1 ? -1 : System.currentTimeMillis() + (int)((halve ? type.getMaxRespawnTime() / 2 : type.getMaxRespawnTime()) * 1000);
 	}
 
-	/**
-	 * Gets the time until a rock respawns in seconds
-	 *
-	 * @return 		Seconds until the rock respawns. Minimum return value is 1, unless the rock has a respawn range, in which case can return 0
-	 */
-	public int asSeconds()
+	public int getMinSecondsUntilRespawn(boolean allowNegative)
 	{
-		long remaining = respawnTime - System.currentTimeMillis();
-		if (remaining > 0)
+		long remaining = minRespawnTime - System.currentTimeMillis();
+		if (remaining > 0 || allowNegative)
 		{
 			return (int) (remaining / 1000) + (remaining % 1000 > 0 ? 1 : 0);
 		}
 		else
 		{
-			return hasMax() ? 0 : 1;
+			return (maxRespawnTime > minRespawnTime) ? 0 : 1;
 		}
 	}
 
-	/**
-	 * Gets the maximum time a ore can take to respawn
-	 *
-	 * @return 		-1 if the ore does not have a respawn range, else the max of the respawn range
-	 */
-	public int asSecondsMax()
+	public int getMaxSecondsUntilRespawn()
 	{
 		if (maxRespawnTime == -1)
 		{
 			return -1;
 		}
 		long remaining = maxRespawnTime - System.currentTimeMillis();
-		if (remaining > 0)
+		if (remaining > 0 && maxRespawnTime > minRespawnTime)
 		{
 			return (int) (remaining / 1000) + (remaining % 1000 > 0 ? 1 : 0);
 		}
 		else
 		{
+			// Return -1 if the ore does not have a maximum respawn time (no range)
 			return 1;
 		}
-	}
-
-	/**
-	 * @return 		If the rock has a respawn range
-	 */
-	public boolean hasMax()
-	{
-		return maxRespawnTime != -1;
-	}
-
-	/**
-	 * Gets the seconds left until a respawn based on the minumum respawn time. Can return negative if rock should have respawned by now
-	 *
-	 * @return 		Time in seconds until a rock respawns.
-	 */
-	public int asSecondsNegative()
-	{
-		long remaining = respawnTime - System.currentTimeMillis();
-		return (int) (remaining / 1000) + (remaining % 1000 > 0 ? 1 : 0);
 	}
 
 }
