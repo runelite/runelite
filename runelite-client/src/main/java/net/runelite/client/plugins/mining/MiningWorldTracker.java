@@ -36,10 +36,10 @@ import java.util.HashMap;
 public class MiningWorldTracker
 {
 
-	@Getter(AccessLevel.PUBLIC)
+	@Getter(AccessLevel.PACKAGE)
 	private MiningRockType.WorldRock trackingRock;
 
-	@Getter(AccessLevel.PUBLIC)
+	@Getter(AccessLevel.PACKAGE)
 	private HashMap<Integer, MiningWorld> trackedWorlds = new HashMap<>();
 
 	public MiningWorldTracker(MiningRockType.WorldRock trackingRock)
