@@ -60,7 +60,7 @@ public class MiningWorldTracker
 		{
 			trackedWorlds.put(world, new MiningWorld(world));
 		}
-		// Clear any negative rocks as a new rock is being added
+		// Clear any rocks which have respawned, no point knowing about them if we are on this world & mining again
 		trackedWorlds.get(world).clearNegatives();
 		trackedWorlds.get(world).getRocks().put(object, mined);
 	}

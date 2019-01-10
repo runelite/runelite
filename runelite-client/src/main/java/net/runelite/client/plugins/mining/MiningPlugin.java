@@ -182,7 +182,6 @@ public class MiningPlugin extends Plugin
 			MiningRockType rock = MiningRockType.getTypeFromID(object.getId());
 			if (rock != null && miningLevel >= rock.getRequiredLevel())
 			{
-				// Only display if player can actually mine the rock
 				if (!ores.containsKey(object))
 				{
 					ores.put(object, new MinedRock(rock, checkInMiningGuildPay2Play(object.getWorldLocation())));
@@ -202,7 +201,6 @@ public class MiningPlugin extends Plugin
 			MiningRockType rock = MiningRockType.getTypeFromID(object.getId());
 			if (rock != null && miningLevel >= rock.getRequiredLevel())
 			{
-				// Only display if player can actually mine the rock
 				if (!ores.containsKey(object))
 				{
 					ores.put(object, new MinedRock(rock, checkInMiningGuildPay2Play(object.getWorldLocation())));
@@ -260,7 +258,6 @@ public class MiningPlugin extends Plugin
 			int world = client.getWorld();
 			if (miningTracker != null && miningTracker.getTrackedWorlds().containsKey(world))
 			{
-				// Check if the current world exists in the tracked worlds
 				MiningWorld track = miningTracker.getTrackedWorlds().get(world);
 				track.clearNegatives();
 				for (TileObject o : track.getRocks().keySet())

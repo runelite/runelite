@@ -94,7 +94,7 @@ public class MiningOverlay extends Overlay
 	{
 		if (config.disableInMLM() && plugin.checkInMlm())
 		{
-			// If player is in the motherloade mine & they have it disabled in the config, then exit out here - this prevents conflicts
+			// Prevents conflicts with the motherloade plugin
 			return null;
 		}
 
@@ -104,7 +104,6 @@ public class MiningOverlay extends Overlay
 		{
 			if (MINING_ANIMATION_IDS.contains(client.getLocalPlayer().getAnimation()))
 			{
-				// Player is actively mining
 				panelComponent.getChildren().add(TitleComponent.builder()
 					.text("Mining")
 					.color(Color.GREEN)
@@ -112,7 +111,6 @@ public class MiningOverlay extends Overlay
 			}
 			else
 			{
-				// Player is not mining
 				panelComponent.getChildren().add(TitleComponent.builder()
 					.text("NOT mining")
 					.color(Color.RED)
@@ -147,14 +145,11 @@ public class MiningOverlay extends Overlay
 			{
 				if (session.showOreRespawns(rock))
 				{
-					// Check if they have mined this rock within the current session. Each rock has it's own 'session timeout' - which is configured by the user
 					int index = rock.ordinal();
-					// Show the total amount mined (not just during this session)
 					panelComponent.getChildren().add(LineComponent.builder()
 							.left(rock.getName() + " mined:")
 							.right(Integer.toString(session.getTotalMined()[index]))
 							.build());
-					// Show the estimated amount mined per hour, based on the amount mined this session
 					panelComponent.getChildren().add(LineComponent.builder()
 							.left(rock.getName() + "/hr:")
 							.right(session.getRecentMined()[index] > 2 ? Integer.toString(session.getPerHour()[index]) : "")

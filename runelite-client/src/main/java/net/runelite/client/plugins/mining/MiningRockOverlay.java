@@ -78,7 +78,6 @@ public class MiningRockOverlay extends Overlay
 		LocalPoint localLocation = local.getLocalLocation();
 		for (TileObject ore : plugin.getOres().keySet())
 		{
-			// Go through every rock that currently has a stored respawn timer
 			MinedRock rock = plugin.getOres().get(ore);
 			if ((config.showAllRespawnTimers() || plugin.getSession().showOreRespawns(rock.getType())) && localLocation.distanceTo(ore.getLocalLocation()) <= MAX_DISTANCE)
 			{
