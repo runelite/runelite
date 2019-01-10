@@ -33,9 +33,7 @@ public class MinedRock
 	@Getter(AccessLevel.PACKAGE)
 	private final MiningRockType type;
 
-	private final long minRespawnTime;
-
-	private final long maxRespawnTime;
+	private final long minRespawnTime, maxRespawnTime;
 
 	public MinedRock(MiningRockType type, boolean halve)
 	{

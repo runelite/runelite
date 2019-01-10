@@ -34,7 +34,9 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import javax.inject.Inject;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
 /**
@@ -79,7 +81,7 @@ public class MiningRockOverlay extends Overlay
 			if ((config.showAllRespawnTimers() || plugin.getSession().showRockRespawnTimes(rock.getType())) && localLocation.distanceTo(ore.getLocalLocation()) <= MAX_DISTANCE)
 			{
 				// Check if we should display this rock to the user. Checks if the user has mined the rock within this session (or has all on within config) & is within range
-				renderRespawnTimerRock(graphics, ore, rock.getMinSecondsUntilRespawn(false), rock.getMaxSecondsUntilRespawn(), rock.getType().isGround());
+				renderRespawnTimerRock(graphics, ore, rock.getMinSecondsUntilRespawn(false), rock.getMaxSecondsUntilRespawn(), rock.getType().isGroundObject());
 			}
 		}
 	}

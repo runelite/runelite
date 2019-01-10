@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.mining;
 
 import net.runelite.api.Client;
-import net.runelite.api.TileObject;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -33,7 +32,9 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import javax.inject.Inject;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -71,13 +72,12 @@ public class MiningWorldHopperOverlay extends Overlay
 		for (int worldID : new ArrayList<>(tracker.getTrackedWorlds().keySet()))
 		{
 			MiningWorld world = tracker.getTrackedWorlds().get(worldID);
-			for (TileObject o : new ArrayList<>(world.getRocks().keySet()))
+			for (MinedRock rock : new ArrayList<>(world.getRocks().values()))
 			{
-				MinedRock rock = world.getRocks().get(o);
 				// If this rock has respawned & we've passed the config defined timeout, then remove this rock
 				if (rock.getMinSecondsUntilRespawn(true) < 0 - config.trackTimeout())
 				{
-					world.getRocks().remove(o);
+					world.getRocks().inverse().remove(rock);
 				}
 			}
 			// If every rock mined has respawned & the timeout passed, remove this world from the overlay

@@ -181,7 +181,7 @@ public class MiningPlugin extends Plugin
 		{
 			GameObject object = event.getGameObject();
 			MiningRockType rock = MiningRockType.getTypeFromID(object.getId());
-			if (rock != null && miningLevel >= rock.getRequiredLevel())
+			if (rock != null && miningLevel >= rock.getRequiredMiningLevel())
 			{
 				if (!ores.containsKey(object))
 				{
@@ -200,7 +200,7 @@ public class MiningPlugin extends Plugin
 		{
 			WallObject object = event.getWallObject();
 			MiningRockType rock = MiningRockType.getTypeFromID(object.getId());
-			if (rock != null && miningLevel >= rock.getRequiredLevel())
+			if (rock != null && miningLevel >= rock.getRequiredMiningLevel())
 			{
 				if (!ores.containsKey(object))
 				{

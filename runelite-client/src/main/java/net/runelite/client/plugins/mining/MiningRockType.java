@@ -70,37 +70,34 @@ public enum MiningRockType
 	AMETHYST("Amethyst", 92, 150, -1, true, false, new int[] {EMPTY_WALL}),
 	PAY_DIRT("Pay-Dirt", 30, 95, 125, true, false, new int[] {DEPLETED_VEIN_26665, DEPLETED_VEIN_26666, DEPLETED_VEIN_26667, DEPLETED_VEIN_26668});
 
-	// Name to check for in chat & to display to player
 	@Getter(AccessLevel.PACKAGE)
 	private final String name;
 
-	// The mining level required to mine this rock
 	@Getter(AccessLevel.PACKAGE)
-	private final int requiredLevel;
+	private final int requiredMiningLevel;
 
-	// The minimum respawn time for this rock
-	// The maximum respawn for this rock (-1 if no range)
 	@Getter(AccessLevel.PACKAGE)
 	private final double minRespawnTime, maxRespawnTime;
 
-	// If the rock can only be mined by members
 	@Getter(AccessLevel.PACKAGE)
 	private final boolean memberOnly;
 
-	// If the rock spawns on the ground or on a wall (true for ground, false for wall)
 	@Getter(AccessLevel.PACKAGE)
-	private final boolean ground;
+	private final boolean groundObject;
 
-	// The RS IDs for the rocks. (Wall rocks uses the blank ID)
-	private final int[] rocks;
+	private final int[] rockIDs;
 
 	public static MiningRockType getTypeFromID(int id)
 	{
 		for (MiningRockType type : values())
 		{
-			for (int i : type.rocks)
+			for (int i : type.rockIDs)
+			{
 				if (i == id)
+				{
 					return type;
+				}
+			}
 		}
 		return null;
 	}
@@ -110,7 +107,9 @@ public enum MiningRockType
 		for (MiningRockType type : values())
 		{
 			if (type.getName().equalsIgnoreCase(name))
+			{
 				return type;
+			}
 		}
 		return null;
 	}

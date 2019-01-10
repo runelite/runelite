@@ -24,12 +24,13 @@
  */
 package net.runelite.client.plugins.mining;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.TileObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Holds rocks mined in a certain world
@@ -41,7 +42,7 @@ public class MiningWorld
 	private int world;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final HashMap<TileObject, MinedRock> rocks = new HashMap<>();
+	private final BiMap<TileObject, MinedRock> rocks = HashBiMap.create();
 
 	public MiningWorld(int world)
 	{
@@ -50,22 +51,26 @@ public class MiningWorld
 
 	public void clearNegativeRespawnTimes()
 	{
-		for (TileObject o : new ArrayList<>(rocks.keySet()))
+		// Create a new array list, cause sometimes a concurrent modification occurs
+		for (MinedRock rock : new ArrayList<>(rocks.values()))
 		{
-			MinedRock rock = rocks.get(o);
 			if (rock.getMinSecondsUntilRespawn(true) < 0)
-				rocks.remove(o);
+			{
+				rocks.inverse().remove(rock);
+			}
 		}
 	}
 
 	public int getFirstSecondsUntilRespawn()
 	{
 		int least = Integer.MAX_VALUE;
-		for (MinedRock rock : new ArrayList<>(rocks.values()))
+		for (MinedRock rock : rocks.values())
 		{
 			int seconds = rock.getMinSecondsUntilRespawn(true);
 			if (seconds < least)
+			{
 				least = seconds;
+			}
 		}
 		return least;
 	}
