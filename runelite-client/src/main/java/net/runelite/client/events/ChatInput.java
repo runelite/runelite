@@ -22,56 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.kc;
+package net.runelite.client.events;
 
-import java.io.IOException;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
-public class KillCountClient
+public abstract class ChatInput
 {
-	public boolean submit(String username, String boss, int kc) throws IOException
-	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("kc")
-			.addQueryParameter("name", username)
-			.addQueryParameter("boss", boss)
-			.addQueryParameter("kc", Integer.toString(kc))
-			.build();
-
-		Request request = new Request.Builder()
-			.post(RequestBody.create(null, new byte[0]))
-			.url(url)
-			.build();
-
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
-		{
-			return response.isSuccessful();
-		}
-	}
-
-	public int get(String username, String boss) throws IOException
-	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("kc")
-			.addQueryParameter("name", username)
-			.addQueryParameter("boss", boss)
-			.build();
-
-		Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
-		{
-			if (!response.isSuccessful())
-			{
-				throw new IOException("Unable to look up killcount!");
-			}
-			return Integer.parseInt(response.body().string());
-		}
-	}
+	public abstract void resume();
 }

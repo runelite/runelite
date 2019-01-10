@@ -31,8 +31,12 @@ import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.calcLevels;
+import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.calcLevelsPray;
 import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.calcLevelsRM;
-import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.correctPrayer;
+import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.ATT_STR_MULT;
+import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.DEF_HP_MULT;
+import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.RANGE_MAGIC_LEVEL_MULT;
+import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.RANGE_MAGIC_MULT;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,10 +49,6 @@ import java.util.HashMap;
 @RunWith(MockitoJUnitRunner.class)
 public class CombatLevelPluginTest
 {
-	private static final double ATT_STR_MULT = 0.325;
-	private static final double DEF_HP_MULT = 0.25;
-	private static final double PRAY_MULT = 0.125;
-
 	@Mock
 	@Bind
 	private Client client;
@@ -73,10 +73,10 @@ public class CombatLevelPluginTest
 		int rangedLevel = client.getRealSkillLevel(Skill.RANGED);
 		int prayerLevel = client.getRealSkillLevel(Skill.PRAYER);
 
-		double base = 0.25 * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2));
-		double melee = 0.325 * (attackLevel + strengthLevel);
-		double range = 0.325 * Math.floor(rangedLevel * 1.5);
-		double mage = 0.325 * Math.floor(magicLevel * 1.5);
+		double base = DEF_HP_MULT * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2));
+		double melee = ATT_STR_MULT * (attackLevel + strengthLevel);
+		double range = RANGE_MAGIC_MULT * Math.floor(rangedLevel * RANGE_MAGIC_LEVEL_MULT);
+		double mage = RANGE_MAGIC_MULT * Math.floor(magicLevel * RANGE_MAGIC_LEVEL_MULT);
 		double max = Math.max(melee, Math.max(range, mage));
 
 		HashMap<String, Double> result = new HashMap<>();
@@ -102,16 +102,15 @@ public class CombatLevelPluginTest
 
 		// test attack/strength
 		assertEquals(2, calcLevels(baseValues.get("base") + baseValues.get("melee"),
-				player.getCombatLevel() + 1, ATT_STR_MULT));
+			player.getCombatLevel() + 1, ATT_STR_MULT));
 
 		// test defence/hitpoints
 		assertEquals(3, calcLevels(baseValues.get("base") + baseValues.get("max"),
-				player.getCombatLevel() + 1, DEF_HP_MULT));
+			player.getCombatLevel() + 1, DEF_HP_MULT));
 
 		// test prayer
-		int prayNeed = calcLevels(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, PRAY_MULT);
-		assertEquals(5, correctPrayer(client.getRealSkillLevel(Skill.PRAYER), prayNeed));
+		assertEquals(5, calcLevelsPray(baseValues.get("base") + baseValues.get("max"),
+			player.getCombatLevel() + 1, client.getRealSkillLevel(Skill.PRAYER)));
 
 		// test ranged
 		assertEquals(2, calcLevelsRM(client.getRealSkillLevel(Skill.RANGED),
@@ -145,9 +144,8 @@ public class CombatLevelPluginTest
 			player.getCombatLevel() + 1, DEF_HP_MULT));
 
 		// test prayer
-		int prayNeed = calcLevels(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, PRAY_MULT);
-		assertEquals(2, correctPrayer(client.getRealSkillLevel(Skill.PRAYER), prayNeed));
+		assertEquals(2, calcLevelsPray(baseValues.get("base") + baseValues.get("max"),
+			player.getCombatLevel() + 1, client.getRealSkillLevel(Skill.PRAYER)));
 
 		// test ranged
 		assertEquals(4, calcLevelsRM(client.getRealSkillLevel(Skill.RANGED),
@@ -182,9 +180,8 @@ public class CombatLevelPluginTest
 			player.getCombatLevel() + 1, DEF_HP_MULT));
 
 		// test prayer
-		int prayNeed = calcLevels(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, PRAY_MULT);
-		assertEquals(4, correctPrayer(client.getRealSkillLevel(Skill.PRAYER), prayNeed));
+		assertEquals(4, calcLevelsPray(baseValues.get("base") + baseValues.get("max"),
+			player.getCombatLevel() + 1, client.getRealSkillLevel(Skill.PRAYER)));
 
 		// test ranged
 		assertEquals(17, calcLevelsRM(client.getRealSkillLevel(Skill.RANGED),
@@ -219,9 +216,8 @@ public class CombatLevelPluginTest
 			player.getCombatLevel() + 1, DEF_HP_MULT));
 
 		// test prayer
-		int prayNeed = calcLevels(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, PRAY_MULT);
-		assertEquals(3, correctPrayer(client.getRealSkillLevel(Skill.PRAYER), prayNeed));
+		assertEquals(3, calcLevelsPray(baseValues.get("base") + baseValues.get("max"),
+			player.getCombatLevel() + 1, client.getRealSkillLevel(Skill.PRAYER)));
 
 		// test ranged
 		assertEquals(14, calcLevelsRM(client.getRealSkillLevel(Skill.RANGED),
@@ -257,8 +253,26 @@ public class CombatLevelPluginTest
 			player.getCombatLevel() + 1, DEF_HP_MULT));
 
 		// test prayer
-		int prayNeed = calcLevels(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, PRAY_MULT);
-		assertEquals(4, correctPrayer(client.getRealSkillLevel(Skill.PRAYER), prayNeed));
+		assertEquals(4, calcLevelsPray(baseValues.get("base") + baseValues.get("max"),
+			player.getCombatLevel() + 1, client.getRealSkillLevel(Skill.PRAYER)));
+	}
+
+	@Test
+	public void testPrayerLevelsNeeded()
+	{
+		when(player.getCombatLevel()).thenReturn(124);
+		when(client.getRealSkillLevel(Skill.ATTACK)).thenReturn(99);
+		when(client.getRealSkillLevel(Skill.STRENGTH)).thenReturn(99);
+		when(client.getRealSkillLevel(Skill.DEFENCE)).thenReturn(99);
+		when(client.getRealSkillLevel(Skill.PRAYER)).thenReturn(89);
+		when(client.getRealSkillLevel(Skill.RANGED)).thenReturn(99);
+		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(99);
+		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(99);
+
+		HashMap<String, Double> baseValues = getBaseValues();
+
+		// test prayer
+		assertEquals(1, calcLevelsPray(baseValues.get("base") + baseValues.get("max"),
+			player.getCombatLevel() + 1, client.getRealSkillLevel(Skill.PRAYER)));
 	}
 }

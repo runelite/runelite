@@ -28,14 +28,14 @@ package net.runelite.client.plugins.bankvalue;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.banktags.tabs.BankSearch;
+import net.runelite.client.util.StackFormatter;
 
 @PluginDescriptor(
 	name = "Bank Value",
@@ -54,7 +54,10 @@ public class BankValuePlugin extends Plugin
 	private BankCalculation bankCalculation;
 
 	@Inject
-	private BankTitle bankTitle;
+	private BankValueConfig config;
+
+	@Inject
+	private BankSearch bankSearch;
 
 	@Provides
 	BankValueConfig getConfig(ConfigManager configManager)
@@ -65,34 +68,53 @@ public class BankValuePlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		clientThread.invokeLater(bankTitle::reset);
+		clientThread.invokeLater(() -> bankSearch.reset(false));
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
-		Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-
-		if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden())
+		if (!event.getEventName().equals("setBankTitle"))
 		{
 			return;
 		}
 
-		bankTitle.save();
-		calculate(widgetBankTitleBar);
-		bankTitle.update(bankCalculation.getGePrice(), bankCalculation.getHaPrice());
-	}
-
-	private void calculate(Widget bankTitleBar)
-	{
-		// Don't update on a search because rs seems to constantly update the title
-		if (bankTitleBar == null ||
-			bankTitleBar.isHidden() ||
-			bankTitleBar.getText().contains("Showing"))
-		{
-			return;
-		}
-
+		String strCurrentTab = "";
 		bankCalculation.calculate();
+		long gePrice = bankCalculation.getGePrice();
+		long haPrice = bankCalculation.getHaPrice();
+
+		if (config.showGE() && gePrice != 0)
+		{
+			strCurrentTab += " (EX: ";
+
+			if (config.showExact())
+			{
+				strCurrentTab += StackFormatter.formatNumber(gePrice) + ")";
+			}
+			else
+			{
+				strCurrentTab += StackFormatter.quantityToStackSize(gePrice) + ")";
+			}
+		}
+
+		if (config.showHA() && haPrice != 0)
+		{
+			strCurrentTab += " (HA: ";
+
+			if (config.showExact())
+			{
+				strCurrentTab += StackFormatter.formatNumber(haPrice) + ")";
+			}
+			else
+			{
+				strCurrentTab += StackFormatter.quantityToStackSize(haPrice) + ")";
+			}
+		}
+
+		String[] stringStack = client.getStringStack();
+		int stringStackSize = client.getStringStackSize();
+
+		stringStack[stringStackSize - 1] += strCurrentTab;
 	}
 }

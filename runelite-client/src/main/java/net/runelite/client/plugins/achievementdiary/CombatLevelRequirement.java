@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#version 330
+package net.runelite.client.plugins.achievementdiary;
 
-layout (location = 0) out vec4 color;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-uniform sampler2D tex;
-
-in vec2 TexCoord;
-
-void main()
+@RequiredArgsConstructor
+@Getter
+public class CombatLevelRequirement implements Requirement
 {
-	vec4 c = texture(tex, TexCoord);
-	color = vec4(c.rgb * c.a, c.a);
+	private final int level;
+
+	@Override
+	public String toString()
+	{
+		return level + " " + "Combat";
+	}
 }

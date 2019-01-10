@@ -24,6 +24,9 @@
  */
 package net.runelite.http.service.xp;
 
+import com.google.common.hash.BloomFilter;
+import com.google.common.hash.Funnels;
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ExecutionException;
@@ -36,6 +39,7 @@ import net.runelite.http.service.xp.beans.PlayerEntity;
 import net.runelite.http.service.xp.beans.XpEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -53,10 +57,24 @@ public class XpTrackerService
 	@Autowired
 	private HiscoreService hiscoreService;
 
+	private BloomFilter<String> usernameFilter = createFilter();
+	private String nextUsername;
+
 	public void update(String username) throws ExecutionException
 	{
 		HiscoreResult hiscoreResult = hiscoreService.lookupUsername(username, HiscoreEndpoint.NORMAL);
 		update(username, hiscoreResult);
+	}
+
+	public void tryUpdate(String username)
+	{
+		if (nextUsername != null || usernameFilter.mightContain(username))
+		{
+			return;
+		}
+
+		nextUsername = username;
+		usernameFilter.put(username);
 	}
 
 	public void update(String username, HiscoreResult hiscoreResult)
@@ -188,5 +206,34 @@ public class XpTrackerService
 		{
 			return findXpAtTime(con, username, time);
 		}
+	}
+
+	@Scheduled(fixedDelay = 1000)
+	public void update() throws ExecutionException
+	{
+		String next = nextUsername;
+		nextUsername = null;
+
+		if (next == null)
+		{
+			return;
+		}
+
+		HiscoreResult hiscoreResult = hiscoreService.lookupUsername(next, HiscoreEndpoint.NORMAL);
+		update(next, hiscoreResult);
+	}
+
+	@Scheduled(fixedDelay = 60 * 60 * 1000) // one hour
+	public void clearFilter()
+	{
+		usernameFilter = createFilter();
+	}
+
+	private static BloomFilter<String> createFilter()
+	{
+		return BloomFilter.create(
+			Funnels.stringFunnel(Charset.defaultCharset()),
+			100_000
+		);
 	}
 }

@@ -77,6 +77,7 @@ import static net.runelite.client.plugins.gpu.GLUtil.glDeleteRenderbuffers;
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteTexture;
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteVertexArrays;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenBuffers;
+import static net.runelite.client.plugins.gpu.GLUtil.glGetInteger;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenFrameBuffer;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenRenderbuffer;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenTexture;
@@ -99,7 +100,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private static final int MAX_TRIANGLE = 4096;
 	private static final int SMALL_TRIANGLE_COUNT = 512;
 	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
-	private static final int MAX_DISTANCE = 90;
+	static final int MAX_DISTANCE = 90;
 
 	@Inject
 	private Client client;
@@ -150,19 +151,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int glUiVertexShader;
 	private int glUiFragmentShader;
 
-	private int glUiPremulProgram;
-	private int glUiPremulVertexShader;
-	private int glUiPremulFragmentShader;
-
 	private int vaoUiHandle;
 	private int vboUiHandle;
 
 	private int fboSceneHandle;
 	private int texSceneHandle;
 	private int rboSceneHandle;
-
-	private int fboUiHandle;
-	private int texUiHandle;
 
 	// scene vertex buffer id
 	private int bufferId;
@@ -221,10 +215,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int centerY;
 
 	// Uniforms
+	private int uniUseFog;
+	private int uniFogColor;
+	private int uniFogDepth;
+	private int uniDrawDistance;
 	private int uniProjectionMatrix;
 	private int uniBrightness;
 	private int uniTex;
-	private int uniTexPremul;
 	private int uniTextures;
 	private int uniTextureOffsets;
 	private int uniBlockSmall;
@@ -388,7 +385,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				shutdownInterfaceTexture();
 				shutdownProgram();
 				shutdownVao();
-				shutdownUiFBO();
 				shutdownSceneFbo();
 			}
 
@@ -506,14 +502,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			null,
 			inputStreamToString(getClass().getResourceAsStream("fragui.glsl")));
 
-		glUiPremulProgram = gl.glCreateProgram();
-		glUiPremulVertexShader = gl.glCreateShader(gl.GL_VERTEX_SHADER);
-		glUiPremulFragmentShader = gl.glCreateShader(gl.GL_FRAGMENT_SHADER);
-		GLUtil.loadShaders(gl, glUiPremulProgram, glUiPremulVertexShader, -1, glUiPremulFragmentShader,
-				inputStreamToString(getClass().getResourceAsStream("vertuipremul.glsl")),
-				null,
-				inputStreamToString(getClass().getResourceAsStream("fraguipremul.glsl")));
-
 		initUniforms();
 	}
 
@@ -522,9 +510,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniProjectionMatrix = gl.glGetUniformLocation(glProgram, "projectionMatrix");
 		uniBrightness = gl.glGetUniformLocation(glProgram, "brightness");
 		uniSmoothBanding = gl.glGetUniformLocation(glProgram, "smoothBanding");
+		uniUseFog = gl.glGetUniformLocation(glProgram, "useFog");
+		uniFogColor = gl.glGetUniformLocation(glProgram, "fogColor");
+		uniFogDepth = gl.glGetUniformLocation(glProgram, "fogDepth");
+		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
-		uniTexPremul = gl.glGetUniformLocation(glUiPremulProgram, "tex");
 		uniTextures = gl.glGetUniformLocation(glProgram, "textures");
 		uniTextureOffsets = gl.glGetUniformLocation(glProgram, "textureOffsets");
 
@@ -577,17 +568,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		gl.glDeleteProgram(glUiProgram);
 		glUiProgram = -1;
-
-		///
-
-		gl.glDeleteShader(glUiPremulVertexShader);
-		glUiPremulVertexShader = -1;
-
-		gl.glDeleteShader(glUiPremulFragmentShader);
-		glUiPremulFragmentShader = -1;
-
-		gl.glDeleteProgram(glUiPremulProgram);
-		glUiPremulProgram = -1;
 	}
 
 	private void initVao()
@@ -720,48 +700,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 	}
 
-	private void initUiFBO(int width, int height)
-	{
-		// Create and bind the FBO
-		fboUiHandle = glGenFrameBuffer(gl);
-		gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, fboUiHandle);
-
-		// Create the texture to render to
-		texUiHandle = glGenTexture(gl);
-		gl.glBindTexture(gl.GL_TEXTURE_2D, texUiHandle);
-		gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, width, height, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, null);
-
-		// Since this is an intermediate the same size as the input, just use nearest neighbors
-		gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST);
-		gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
-
-		// Attach the texture to the framebuffer
-		gl.glFramebufferTexture(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, texUiHandle, 0);
-
-		// Specify that we're going to draw onto color attachment 0
-		int drawLocations[] = { gl.GL_COLOR_ATTACHMENT0 };
-		gl.glDrawBuffers(1, drawLocations, 0);
-
-		// Reset
-		gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0);
-		gl.glBindTexture(gl.GL_TEXTURE_2D, 0);
-	}
-
-	private void shutdownUiFBO()
-	{
-		if (fboUiHandle != -1)
-		{
-			glDeleteFrameBuffer(gl, fboUiHandle);
-			fboUiHandle = -1;
-		}
-
-		if (texUiHandle != -1)
-		{
-			glDeleteTexture(gl, texUiHandle);
-			texUiHandle = -1;
-		}
-	}
-
 	private void createProjectionMatrix(float left, float right, float bottom, float top, float near, float far)
 	{
 		// create a standard orthographic projection
@@ -792,7 +730,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
 		scene.setDrawDistance(drawDistance);
 	}
-
 
 	public void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
 							SceneTilePaint paint, int tileZ, int tileX, int tileY,
@@ -898,7 +835,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				|| lastAntiAliasingMode != antiAliasingMode)
 			{
 				shutdownSceneFbo();
-				initSceneFbo(stretchedCanvasWidth, stretchedCanvasHeight, antiAliasingMode.getSamples());
+
+				final int maxSamples = glGetInteger(gl, gl.GL_MAX_SAMPLES);
+				final int samples = Math.min(antiAliasingMode.getSamples(), maxSamples);
+
+				initSceneFbo(stretchedCanvasWidth, stretchedCanvasHeight, samples);
 
 				lastStretchedCanvasWidth = stretchedCanvasWidth;
 				lastStretchedCanvasHeight = stretchedCanvasHeight;
@@ -915,6 +856,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		lastAntiAliasingMode = antiAliasingMode;
 
 		// Clear scene
+		int sky = client.getSkyboxColor();
+		gl.glClearColor((sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
 		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
 
 		// Upload buffers
@@ -1080,6 +1023,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			gl.glUseProgram(glProgram);
 
+			final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
+			final int fogDepth = config.fogDepth();
+			gl.glUniform1i(uniUseFog, fogDepth > 0 ? 1 : 0);
+			gl.glUniform4f(uniFogColor, (sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
+			gl.glUniform1i(uniFogDepth, fogDepth);
+			gl.glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
+
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
 			gl.glUniform1f(uniSmoothBanding, config.smoothBanding() ? 0f : 1f);
@@ -1176,16 +1126,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int width = bufferProvider.getWidth();
 		final int height = bufferProvider.getHeight();
 
-		// Don't blend on the login screen because the fires overflow their alphas.
-		final GameState gameState = client.getGameState();
-		if (gameState == GameState.LOGGED_IN)
-		{
-			gl.glEnable(gl.GL_BLEND);
-		}
-		else
-		{
-			gl.glDisable(gl.GL_BLEND);
-		}
+		gl.glEnable(gl.GL_BLEND);
 
 		vertexBuffer.clear(); // reuse vertex buffer for interface
 		vertexBuffer.ensureCapacity(pixels.length);
@@ -1194,7 +1135,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		interfaceBuffer.put(pixels);
 		vertexBuffer.flip();
 
-		gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(gl.GL_ONE, gl.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
 
 		if (canvasWidth != lastCanvasWidth || canvasHeight != lastCanvasHeight)
@@ -1202,49 +1143,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, width, height, 0, gl.GL_BGRA, gl.GL_UNSIGNED_INT_8_8_8_8_REV, interfaceBuffer);
 			lastCanvasWidth = canvasWidth;
 			lastCanvasHeight = canvasHeight;
-
-			shutdownUiFBO();
-			initUiFBO(width, height);
 		}
 		else
 		{
 			gl.glTexSubImage2D(gl.GL_TEXTURE_2D, 0, 0, 0, width, height, gl.GL_BGRA, gl.GL_UNSIGNED_INT_8_8_8_8_REV, interfaceBuffer);
 		}
 
-		// First pass: pre-multiply alpha. But only do it if we're blending.
-		if (gameState == GameState.LOGGED_IN && client.isStretchedEnabled() && !client.isStretchedFast())
-		{
-			// Setup
-			gl.glDisable(gl.GL_BLEND);
-			gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, fboUiHandle);
-			gl.glViewport(0, 0, width, height);
-			gl.glClear(gl.GL_COLOR_BUFFER_BIT);
+		gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
 
-			// Set up uniforms
-			gl.glUseProgram(glUiPremulProgram);
-			gl.glUniform1i(uniTexPremul, 0);
-
-			// Do render call
-			gl.glBindVertexArray(vaoUiHandle);
-			gl.glDrawArrays(gl.GL_TRIANGLE_FAN, 0, 4);
-
-			// Cleanup
-			gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0);
-			gl.glEnable(gl.GL_BLEND);
-
-			// Bind the texture we just drew to for use in pass 2
-			gl.glBindTexture(gl.GL_TEXTURE_2D, texUiHandle);
-
-			// Change the blend function to use pre-multiplied alpha
-			gl.glBlendFunc(gl.GL_ONE, gl.GL_ONE_MINUS_SRC_ALPHA);
-		}
-		else
-		{
-			gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
-		}
-
-
-		// Second pass: render onto the screen
 		if (client.isStretchedEnabled())
 		{
 			Dimension dim = client.getStretchedDimensions();

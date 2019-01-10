@@ -22,76 +22,60 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.kc;
+package net.runelite.http.service.chat;
 
+import java.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.sql2o.Connection;
-import org.sql2o.Sql2o;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @Service
-public class KillCountService
+public class ChatService
 {
-	private static final String CREATE = "CREATE TABLE IF NOT EXISTS `kc` (\n" +
-		"  `name` varchar(32) NOT NULL,\n" +
-		"  `boss` varchar(32) NOT NULL,\n" +
-		"  `kc` int(11) NOT NULL,\n" +
-		"  `time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),\n" +
-		"   UNIQUE KEY `name` (`name`, `boss`),\n" +
-		"   KEY `time` (`time`)\n" +
-		") ENGINE=MEMORY;";
+	private static final Duration EXPIRE = Duration.ofMinutes(2);
 
-	private final Sql2o sql2o;
+	private final JedisPool jedisPool;
 
 	@Autowired
-	public KillCountService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
+	public ChatService(JedisPool jedisPool)
 	{
-		this.sql2o = sql2o;
-
-		try (Connection con = sql2o.open())
-		{
-			con.createQuery(CREATE)
-				.executeUpdate();
-		}
+		this.jedisPool = jedisPool;
 	}
 
 	public Integer getKc(String name, String boss)
 	{
-		try (Connection con = sql2o.open())
+		String value;
+		try (Jedis jedis = jedisPool.getResource())
 		{
-			return con.createQuery("select kc from kc where name = :name and boss = :boss")
-				.addParameter("name", name)
-				.addParameter("boss", boss)
-				.executeScalar(Integer.class);
+			value = jedis.get("kc." + name + "." + boss);
 		}
+		return value == null ? null : Integer.parseInt(value);
 	}
 
 	public void setKc(String name, String boss, int kc)
 	{
-		try (Connection con = sql2o.open())
+		try (Jedis jedis = jedisPool.getResource())
 		{
-			con.createQuery("insert into kc (name, boss, kc) values (:name, :boss, :kc) on duplicate key update kc = VALUES(kc)")
-				.addParameter("name", name)
-				.addParameter("boss", boss)
-				.addParameter("kc", kc)
-				.executeUpdate();
+			jedis.setex("kc." + name + "." + boss, (int) EXPIRE.getSeconds(), Integer.toString(kc));
 		}
 	}
 
-	public void purge()
+	public Integer getQp(String name)
 	{
-		try (Connection con = sql2o.open())
+		String value;
+		try (Jedis jedis = jedisPool.getResource())
 		{
-			con.createQuery("delete from kc where time < (now() - interval 2 minute);")
-				.executeUpdate();
+			value = jedis.get("qp." + name);
 		}
+		return value == null ? null : Integer.parseInt(value);
 	}
 
-	@Scheduled(fixedDelay = 60_000)
-	public void schedPurge()
+	public void setQp(String name, int qp)
 	{
-		purge();
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.setex("qp." + name, (int) EXPIRE.getSeconds(), Integer.toString(qp));
+		}
 	}
 }

@@ -35,7 +35,7 @@ public class ItemStats
 
 	private ItemEquipmentStats equipment;
 
-	public ItemStats substract(ItemStats other)
+	public ItemStats subtract(ItemStats other)
 	{
 		if (other == null)
 		{

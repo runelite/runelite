@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 William <https://github.com/monsterxsync>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#version 330
+package net.runelite.api;
 
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec2 aTexCoord;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-out vec2 TexCoord;
-
-void main()
+/**
+ * An enumeration of Kourend house favour the player can earn.
+ */
+@RequiredArgsConstructor
+@Getter
+public enum Favour
 {
-	gl_Position = vec4(aPos, 1.0);
+	ARCEUUS("Arceuus", Varbits.KOUREND_FAVOR_ARCEUUS),
+	HOSIDIUS("Hosidius", Varbits.KOUREND_FAVOR_HOSIDIUS),
+	LOVAKENGJ("Lovakengj", Varbits.KOUREND_FAVOR_LOVAKENGJ),
+	PISCARILIUS("Piscarilius", Varbits.KOUREND_FAVOR_PISCARILIUS),
+	SHAYZIEN("Shayzien", Varbits.KOUREND_FAVOR_SHAYZIEN);
 
-	// Flip the UV because it's pre-flipped in the ui texture buffer, but we don't need it to be flipped here.
-	TexCoord = vec2(aTexCoord.x, 1 - aTexCoord.y);
+	private final String name;
+	private final Varbits varbit;
 }

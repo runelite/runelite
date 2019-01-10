@@ -1518,6 +1518,16 @@ public interface Client extends GameEngine
 	void setOculusOrbNormalSpeed(int speed);
 
 	/**
+	 * Gets local X coord where the camera is pointing when the Oculus orb is active
+	 */
+	int getOculusOrbFocalPointX();
+
+	/**
+	 * Gets local Y coord where the camera is pointing when the Oculus orb is active
+	 */
+	int getOculusOrbFocalPointY();
+
+	/**
 	 * Opens in-game world hopper interface
 	 */
 	void openWorldHopper();
@@ -1527,6 +1537,16 @@ public interface Client extends GameEngine
 	 * @param world target world to hop to
 	 */
 	void hopToWorld(World world);
+
+	/**
+	 * Sets the RGB color of the skybox
+	 */
+	void setSkyboxColor(int skyboxColor);
+
+	/**
+	 * Gets the RGB color of the skybox
+	 */
+	int getSkyboxColor();
 
 	boolean isGpu();
 

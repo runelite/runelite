@@ -22,60 +22,64 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.kc;
+package net.runelite.http.service.xtea;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
+import java.util.stream.Collectors;
+import net.runelite.http.api.xtea.XteaKey;
+import net.runelite.http.api.xtea.XteaRequest;
 import net.runelite.http.service.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/kc")
-public class KillCountController
+@RequestMapping("/xtea")
+public class XteaController
 {
-	private final Cache<KillCountKey, Integer> cache = CacheBuilder.newBuilder()
-		.expireAfterWrite(2, TimeUnit.MINUTES)
-		.maximumSize(128L)
-		.build();
-
 	@Autowired
-	private KillCountService killCountService;
+	private XteaService xteaService;
 
-	@PostMapping
-	public void submit(@RequestParam String name, @RequestParam String boss, @RequestParam int kc)
+	@RequestMapping(method = POST)
+	public void submit(@RequestBody XteaRequest xteaRequest)
 	{
-		if (kc <= 0)
-		{
-			return;
-		}
-
-		killCountService.setKc(name, boss, kc);
-		cache.put(new KillCountKey(name, boss), kc);
+		xteaService.submit(xteaRequest);
 	}
 
-	@GetMapping
-	public int get(@RequestParam String name, @RequestParam String boss)
+	@RequestMapping
+	public List<XteaKey> get()
 	{
-		Integer kc = cache.getIfPresent(new KillCountKey(name, boss));
-		if (kc == null)
-		{
-			kc = killCountService.getKc(name, boss);
-			if (kc != null)
-			{
-				cache.put(new KillCountKey(name, boss), kc);
-			}
-		}
+		return xteaService.get().stream()
+			.map(XteaController::entryToKey)
+			.collect(Collectors.toList());
+	}
 
-		if (kc == null)
+	@RequestMapping("/{region}")
+	public XteaKey getRegion(@PathVariable int region)
+	{
+		XteaEntry xteaRegion = xteaService.getRegion(region);
+		if (xteaRegion == null)
 		{
 			throw new NotFoundException();
 		}
-		return kc;
+
+		return entryToKey(xteaRegion);
+	}
+
+	private static XteaKey entryToKey(XteaEntry xe)
+	{
+		XteaKey xteaKey = new XteaKey();
+		xteaKey.setRegion(xe.getRegion());
+		xteaKey.setKeys(new int[]
+		{
+			xe.getKey1(),
+			xe.getKey2(),
+			xe.getKey3(),
+			xe.getKey4()
+		});
+		return xteaKey;
 	}
 }

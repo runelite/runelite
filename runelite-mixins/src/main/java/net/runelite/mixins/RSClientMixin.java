@@ -172,6 +172,9 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	private static boolean hdMinimapEnabled;
 
+  @Inject
+	static int skyboxColor;
+
 	@Inject
 	@Override
 	public Callbacks getCallbacks()
@@ -1397,5 +1400,19 @@ public abstract class RSClientMixin implements RSClient
 		setSpritePixels(null);
 
 		return array;
+	}
+
+	@Inject
+	@Override
+	public void setSkyboxColor(int newSkyboxColor)
+	{
+		skyboxColor = newSkyboxColor;
+	}
+
+	@Inject
+	@Override
+	public int getSkyboxColor()
+	{
+		return skyboxColor;
 	}
 }
