@@ -172,6 +172,8 @@ public enum Quest
 	WHAT_LIES_BELOW(447, "What Lies Below"),
 	WITCHS_HOUSE(448, "Witch's House"),
 	ZOGRE_FLESH_EATERS(449, "Zogre Flesh Eaters"),
+	THE_ASCENT_OF_ARCEUUS(542, "The Ascent of Arceuus"),
+	THE_FORSAKEN_TOWER(543, "The Forsaken Tower"),
 
 	//Miniquests
 	ENTER_THE_ABYSS(319, "Enter the Abyss"),
