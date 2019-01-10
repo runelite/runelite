@@ -30,11 +30,12 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.util.ArrayList;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Arrays;
-import java.util.List;
 import javax.inject.Inject;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -46,7 +47,7 @@ import net.runelite.client.ui.PluginPanel;
 @Slf4j
 class ProfilesPanel extends PluginPanel
 {
-	private static final String ACCOUNT_USERNAME = "Account username";
+	private static final String ACCOUNT_USERNAME = "Account Username";
 	private static final String ACCOUNT_LABEL = "Account Label";
 	private static final Dimension PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 20, 30);
 	private static final Dimension MINIMUM_SIZE = new Dimension(0, 30);
@@ -56,7 +57,7 @@ class ProfilesPanel extends PluginPanel
 
 	private final JTextField txtAccountLabel = new JTextField(ACCOUNT_LABEL);
 	private final JPasswordField txtAccountLogin = new JPasswordField(ACCOUNT_USERNAME);
-	private final List<ProfilePanel> profiles = new ArrayList<>();
+	private final JPanel profilesPanel = new JPanel();
 	private GridBagConstraints c;
 
 	@Inject
@@ -152,46 +153,61 @@ class ProfilesPanel extends PluginPanel
 		btnAddAccount.setMinimumSize(MINIMUM_SIZE);
 		btnAddAccount.addActionListener(e ->
 		{
-			String data = txtAccountLabel.getText() + ":" + String.valueOf(txtAccountLogin.getPassword());
+			String labelText = txtAccountLabel.getText();
+			String loginText = String.valueOf(txtAccountLogin.getPassword());
+			if (labelText.equals(ACCOUNT_LABEL) || loginText.equals(ACCOUNT_USERNAME))
+			{
+				return;
+			}
+			String data = labelText + ":" + loginText;
 			log.info(data);
 			this.addAccount(data);
 
 			addProfile(data);
 
 			txtAccountLabel.setText(ACCOUNT_LABEL);
-			txtAccountLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+			txtAccountLabel.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
 
 			txtAccountLogin.setText(ACCOUNT_USERNAME);
 			txtAccountLogin.setEchoChar((char) 0);
-			txtAccountLogin.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+			txtAccountLogin.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
+		});
+
+		txtAccountLogin.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					btnAddAccount.doClick();
+					btnAddAccount.requestFocus();
+				}
+			}
 		});
 
 		add(btnAddAccount, c);
+		c.gridy++;
+
+		profilesPanel.setLayout(new GridBagLayout());
+		add(profilesPanel, c);
+		c.gridy = 0;
+		c.insets = new Insets(0, 0, 5, 0);
 
 		addAccounts(config.profilesData());
 	}
 
-	void remove(ProfilePanel panel)
-	{
-		super.remove(panel);
-		revalidate();
-		repaint();
-	}
-
 	void redrawProfiles()
 	{
-		profiles.forEach(this::remove);
+		Arrays.stream(profilesPanel.getComponents()).forEach(profilesPanel::remove);
 		addAccounts(profilesConfig.profilesData());
 	}
 
 	private void addAccount(String data)
 	{
-		c.gridy++;
-		c.insets = new Insets(0, 0, 5, 0);
-		log.info(data);
 		ProfilePanel profile = new ProfilePanel(client, data, profilesConfig);
-		add(profile, c);
-		profiles.add(profile);
+		c.gridy++;
+		profilesPanel.add(profile, c);
 
 		revalidate();
 		repaint();

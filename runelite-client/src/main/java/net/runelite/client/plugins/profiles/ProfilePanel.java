@@ -88,7 +88,7 @@ class ProfilePanel extends JPanel
 			public void mousePressed(MouseEvent e)
 			{
 				panel.getParent().remove(panel);
-				ProfilesPanel.removeProfile(String.join(":", parts));
+				ProfilesPanel.removeProfile(data);
 			}
 
 			@Override
@@ -121,13 +121,9 @@ class ProfilePanel extends JPanel
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				log.info("label", e);
-				if (SwingUtilities.isLeftMouseButton(e))
+				if (SwingUtilities.isLeftMouseButton(e) && client.getGameState() == GameState.LOGIN_SCREEN)
 				{
-					if (client.getGameState() == GameState.LOGIN_SCREEN)
-					{
-						client.setUsername(loginText);
-					}
+					client.setUsername(loginText);
 				}
 			}
 		});
@@ -140,13 +136,9 @@ class ProfilePanel extends JPanel
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				log.info("profilePanel", e);
-				if (SwingUtilities.isLeftMouseButton(e))
+				if (SwingUtilities.isLeftMouseButton(e) && client.getGameState() == GameState.LOGIN_SCREEN)
 				{
-					if (client.getGameState() == GameState.LOGIN_SCREEN)
-					{
-						client.setUsername(loginText);
-					}
+					client.setUsername(loginText);
 				}
 			}
 		});
@@ -154,7 +146,6 @@ class ProfilePanel extends JPanel
 		JLabel login = new JLabel();
 		login.setText(config.isStreamerMode() ? "Hidden email" : loginText);
 		login.setBorder(null);
-		//login.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		login.setPreferredSize(new Dimension(0, 24));
 		login.setForeground(Color.WHITE);
 		login.setBorder(new EmptyBorder(0, 8, 0, 0));
