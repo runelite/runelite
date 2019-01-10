@@ -24,14 +24,27 @@
  */
 package net.runelite.client.plugins.worldhopper;
 
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import java.awt.Color;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.*;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.stream.Collectors;
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JTabbedPane;
 import javax.swing.border.Border;
+import javax.swing.BorderFactory;
+import javax.swing.SwingUtilities;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
@@ -92,10 +105,11 @@ class WorldSwitcherPanel extends PluginPanel
 
 		// Border so that the scrollbar doesn't go over ping
 		Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 5);
-		
+
 		// Clear history button
 		JButton resetBtn = new JButton("Clear History");
-		resetBtn.addActionListener(e -> {
+		resetBtn.addActionListener(e ->
+		{
 			plugin.clearHistory();
 			plugin.addToHistory();
 			updateList();
@@ -121,18 +135,21 @@ class WorldSwitcherPanel extends PluginPanel
 		worldTabs.addTab("History", histPanel);
 
 		// This is a fix for preventing stretching of WorldTableRows
-		worldTabs.addChangeListener(e -> {
+		worldTabs.addChangeListener(e ->
+		{
 			switch (worldTabs.getSelectedIndex())
 			{
 				case 0:
 					histPanel.remove(histContainer);
-					if (worldPanel.getComponentCount() < 2) {
+					if (worldPanel.getComponentCount() < 2)
+					{
 						worldPanel.add(listContainer, listConst);
 					}
 					break;
 				case 1:
 					worldPanel.remove(listContainer);
-					if (histPanel.getComponentCount() < 3) {
+					if (histPanel.getComponentCount() < 3)
+					{
 						histPanel.add(histContainer, listConst);
 					}
 					break;
@@ -318,7 +335,8 @@ class WorldSwitcherPanel extends PluginPanel
 		// Add matched rows to history list
 		Iterator it = matchedHist.entrySet().iterator();
 		int histRowCount = 0;
-		while (it.hasNext()) {
+		while (it.hasNext())
+		{
 			Map.Entry pair = (Map.Entry)it.next();
 			for (WorldTableRow r : rows)
 			{

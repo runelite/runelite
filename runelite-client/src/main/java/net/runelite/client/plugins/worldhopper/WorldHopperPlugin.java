@@ -268,11 +268,13 @@ public class WorldHopperPlugin extends Plugin
 		configManager.setConfiguration(WorldHopperConfig.GROUP, "history", history);
 	}
 
-	void addToHistory() {
+	void addToHistory()
+	{
 		addToHistory(client.getWorld());
 	}
 
-	void addToHistory(int world) {
+	void addToHistory(int world)
+	{
 		long unixTime = System.currentTimeMillis() / 1000L;
 		Map<String, String> history = getHistory();
 		history.put(String.valueOf(world), String.valueOf(unixTime));
@@ -426,7 +428,7 @@ public class WorldHopperPlugin extends Plugin
 			}
 		}
 
-		if(gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
 		{
 			addToHistory(client.getWorld());
 			panel.updateList();
