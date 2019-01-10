@@ -64,7 +64,7 @@ public class MiningWorldHopperOverlay extends Overlay
 	{
 		if (config.trackWorldRock() == MiningRockType.WorldRock.None)
 		{
-			// Check if user is tracking a rock across worlds
+			// Check if user is tracking a rock across worlds, if none selected then exit here
 			return null;
 		}
 		MiningWorldTracker tracker = plugin.getMiningTracker();
@@ -74,7 +74,7 @@ public class MiningWorldHopperOverlay extends Overlay
 			MiningWorld world = tracker.getTrackedWorlds().get(worldID);
 			for (TileObject o : new ArrayList<>(world.getRocks().keySet()))
 			{
-				// Go through every rock stored in this world
+				// Go through every rock stored in this specific world
 				MinedRock rock = world.getRocks().get(o);
 				if (rock.asSecondsNegative() < 0 - config.trackTimeout())
 				{
@@ -91,7 +91,7 @@ public class MiningWorldHopperOverlay extends Overlay
 
 		if (tracker.getTrackedWorlds().size() == 0)
 		{
-			// Exit here if there are no worlds to display
+			// Exit here if there are no worlds left to display
 			return null;
 		}
 
@@ -105,14 +105,14 @@ public class MiningWorldHopperOverlay extends Overlay
 		{
 			// Go through every remaining world, if they're here it means they have a rock that has not yet respawned (or timeout not yet passed)
 			int id = world.getWorld();
-			// Gets the time left until the first rock respawns in this world
+			// Gets the time left until the *first* tracked rock respawns in this world
 			int seconds = world.asSeconds();
 			if (seconds < 0)
 			{
 				// If it's less than zero, but not been cleared yet, we'll display 0. Default Clear time(timeout) is at -60
 				seconds = 0;
 			}
-			// Display the world & the time left until the first rock respawns
+			// Display the world & the time left until the *first* rock respawns
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("World " + id)
 				.right(Integer.toString(seconds))

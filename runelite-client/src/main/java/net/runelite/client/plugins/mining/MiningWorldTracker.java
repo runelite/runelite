@@ -58,7 +58,6 @@ public class MiningWorldTracker
 	{
 		if (!trackedWorlds.containsKey(world))
 		{
-			// Create the world if it does not exist yet
 			trackedWorlds.put(world, new MiningWorld(world));
 		}
 		// Clear any negative rocks as a new rock is being added

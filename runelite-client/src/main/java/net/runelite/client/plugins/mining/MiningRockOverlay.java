@@ -107,18 +107,18 @@ public class MiningRockOverlay extends Overlay
 				if (time <= 0)
 				{
 					// Check if the rock has reached the minimum respawn time
-					timeMessage = "~" + max; // Display the maximum possible time
+					// Display the maximum possible time remaining
+					timeMessage = "~" + max;
 					graphics.setColor(Color.CYAN);
 				}
 				else
 				{
-					// Rock has not yet reached the minimum respawn time
+					// Rock has not yet reached the minimum respawn time of the range
 					timeMessage += "~";
 				}
 
 			}
 			graphics.drawString(timeMessage, canvasLoc.getX(), canvasLoc.getY());
-			// Restore colour
 			graphics.setColor(Color.WHITE);
 		}
 	}

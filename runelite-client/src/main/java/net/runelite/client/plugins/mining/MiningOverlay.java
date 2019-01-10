@@ -94,7 +94,7 @@ public class MiningOverlay extends Overlay
 	{
 		if (config.disableInMLM() && plugin.checkInMlm())
 		{
-			// If player is in the motherloade mine & they have it disabled in the config, then exit out here
+			// If player is in the motherloade mine & they have it disabled in the config, then exit out here - this prevents conflicts
 			return null;
 		}
 
@@ -121,46 +121,49 @@ public class MiningOverlay extends Overlay
 		}
 
 		MiningSession session = plugin.getSession();
+		boolean hasSession = false;
 		if (session.getLastMined() != null)
 		{
 			Duration statTimeout = Duration.ofMinutes(config.statTimeout());
 			Duration sinceCut = Duration.between(session.getLastMined(), Instant.now());
-			if (sinceCut.compareTo(statTimeout) >= 0)
+			if (sinceCut.compareTo(statTimeout) < 0)
 			{
-				// Checks if player has not mined within the config controlled timeout
-				return null;
+				hasSession = true;
 			}
 		}
 		else
 		{
-			return null;
+			return (config.showMiningState() && hasSession) ? panelComponent.render(graphics) : null;
 		}
 
 		if (!config.showMiningStats())
 		{
-			return null;
+			return (config.showMiningState() && hasSession) ? panelComponent.render(graphics) : null;
 		}
 
-		for (MiningRockType rock : MiningRockType.values())
+		if (hasSession)
 		{
-			// Goes through every rock the player could have mined
-			if (session.showOreRespawns(rock))
+			for (MiningRockType rock : MiningRockType.values())
 			{
-				// Check if they have mined this rock within the current session. Each rock has it's own 'session timeout' - which is configured by the user
-				int index = rock.getIndex();
-				// Show the total amount mined (not just during this session)
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left(rock.getName() + " mined:")
-					.right(Integer.toString(session.getTotalMined()[index]))
-					.build());
-				// Show the estimated amount mined per hour, based on the amount mined this session
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left(rock.getName() + "/hr:")
-					.right(session.getRecentMined()[index] > 2 ? Integer.toString(session.getPerHour()[index]) : "")
-					.build());
+				if (session.showOreRespawns(rock))
+				{
+					// Check if they have mined this rock within the current session. Each rock has it's own 'session timeout' - which is configured by the user
+					int index = rock.ordinal();
+					// Show the total amount mined (not just during this session)
+					panelComponent.getChildren().add(LineComponent.builder()
+							.left(rock.getName() + " mined:")
+							.right(Integer.toString(session.getTotalMined()[index]))
+							.build());
+					// Show the estimated amount mined per hour, based on the amount mined this session
+					panelComponent.getChildren().add(LineComponent.builder()
+							.left(rock.getName() + "/hr:")
+							.right(session.getRecentMined()[index] > 2 ? Integer.toString(session.getPerHour()[index]) : "")
+							.build());
+				}
 			}
+			return panelComponent.render(graphics);
 		}
-		return panelComponent.render(graphics);
+		return null;
 	}
 
 }

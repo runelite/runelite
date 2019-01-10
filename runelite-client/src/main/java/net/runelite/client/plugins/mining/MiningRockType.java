@@ -24,10 +24,8 @@
  */
 package net.runelite.client.plugins.mining;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import static net.runelite.api.ObjectID.EMPTY_WALL;
 import static net.runelite.api.ObjectID.ROCKS_7453;
@@ -56,65 +54,45 @@ import static net.runelite.api.ObjectID.DEPLETED_VEIN_26668;
 /**
  * All the possible rock types the user can mine.
  */
+@AllArgsConstructor
 public enum MiningRockType
 {
 
-	COPPER(0, "Copper", 1, 2.5, -1, false, true, ROCKS_7453, ROCKS_7484),
-	TIN(1, "Tin", 1, 2.5, -1, false, true, ROCKS_7485, ROCKS_7486),
-	IRON(2, "Iron", 15, 5.5, -1, false, true, ROCKS_7455, ROCKS_7488),
-	SILVER(3, "Silver", 15, 60, -1, false, true, ROCKS_7457, ROCKS_7490),
-	COAL(4, "Coal", 30, 29.5, -1, false, true, ROCKS_7456, ROCKS_7489),
-	GOLD(5, "Gold", 40, 59.5, -1, false, true, ROCKS_7458, ROCKS_7491),
-	MITHRIL(6, "Mithril", 55, 119.5, -1, false, true, ROCKS_7459, ROCKS_7492),
-	ADAMANTITE(7, "Adamantite", 70, 239.5, -1, false, true, ROCKS_7460, ROCKS_7493),
-	RUNITE(8, "Runite", 85, 720, -1, false, true, ROCKS_7461, ROCKS_7494),
-	AMETHYST(9, "Amethyst", 92, 75, -1, true, false, EMPTY_WALL),
-	PAY_DIRT(10, "Pay-Dirt", 30, 95, 125, true, false, DEPLETED_VEIN_26665, DEPLETED_VEIN_26666, DEPLETED_VEIN_26667, DEPLETED_VEIN_26668);
+	COPPER("Copper", 1, 2.5, -1, false, true, new int[] {ROCKS_7453, ROCKS_7484}),
+	TIN("Tin", 1, 2.5, -1, false, true, new int[] {ROCKS_7485, ROCKS_7486}),
+	IRON( "Iron", 15, 5.5, -1, false, true, new int[] {ROCKS_7455, ROCKS_7488}),
+	SILVER("Silver", 15, 60, -1, false, true, new int[] {ROCKS_7457, ROCKS_7490}),
+	COAL("Coal", 30, 29.5, -1, false, true, new int[] {ROCKS_7456, ROCKS_7489}),
+	GOLD("Gold", 40, 59.5, -1, false, true, new int[] {ROCKS_7458, ROCKS_7491}),
+	MITHRIL("Mithril", 55, 119.5, -1, false, true, new int[] {ROCKS_7459, ROCKS_7492}),
+	ADAMANTITE("Adamantite", 70, 239.5, -1, false, true, new int[] {ROCKS_7460, ROCKS_7493}),
+	RUNITE("Runite", 85, 720, -1, false, true, new int[] {ROCKS_7461, ROCKS_7494}),
+	AMETHYST("Amethyst", 92, 75, -1, true, false, new int[] {EMPTY_WALL}),
+	PAY_DIRT("Pay-Dirt", 30, 95, 125, true, false, new int[] {DEPLETED_VEIN_26665, DEPLETED_VEIN_26666, DEPLETED_VEIN_26667, DEPLETED_VEIN_26668});
 
-	@Getter(AccessLevel.PACKAGE)
-	private final int index;
-
+	// Name to check for in chat & to display to player
 	@Getter(AccessLevel.PACKAGE)
 	private final String name;
 
+	// The mining level required to mine this rock
 	@Getter(AccessLevel.PACKAGE)
 	private final int requiredLevel;
 
-	@Getter(AccessLevel.PACKAGE)
-	private final boolean memberOnly;
-
-	@Getter(AccessLevel.PACKAGE)
-	private final boolean ground;
-
-	private final List<Integer> rocks;
-
+	// The minimum respawn time for this rock
+	// The maximum respawn for this rock (-1 if no range)
 	@Getter(AccessLevel.PACKAGE)
 	private final double respawnTime, maxRespawnTime;
 
-	/**
-	 * @param index					Index, used to programmatically access element from an array.
-	 * @param name					Name to check for in chat & to display to player
-	 * @param level					The mining level required to mine this rock
-	 * @param respawnTime			The minimum respawn time for this rock
-	 * @param maxRespawnTime		The maximum respawn for this rock (-1 if no range)
-	 * @param memberOnly			If the rock can only be mined by members
-	 * @param ground				If the rock spawns on the ground or on a wall (true for ground, false for wall)
-	 * @param rocks					The RS IDs for the rocks. (Wall rocks uses the blank ID)
-	 */
-	MiningRockType(int index, String name, int level, double respawnTime, double maxRespawnTime, boolean memberOnly, boolean ground, int... rocks)
-	{
-		this.index = index;
-		this.name = name;
-		this.requiredLevel = level;
-		this.respawnTime = respawnTime;
-		this.maxRespawnTime = maxRespawnTime;
-		this.memberOnly = memberOnly;
-		this.ground = ground;
-		this.rocks = new ArrayList<>();
+	// If the rock can only be mined by members
+	@Getter(AccessLevel.PACKAGE)
+	private final boolean memberOnly;
 
-		for (int rock : rocks)
-			this.rocks.add(rock);
-	}
+	// If the rock spawns on the ground or on a wall (true for ground, false for wall)
+	@Getter(AccessLevel.PACKAGE)
+	private final boolean ground;
+
+	// The RS IDs for the rocks. (Wall rocks uses the blank ID)
+	private final int[] rocks;
 
 	/**
 	 * Attempts to find the Type based on a TileObject ID
@@ -126,15 +104,16 @@ public enum MiningRockType
 	{
 		for (MiningRockType type : values())
 		{
-			if (type.rocks.contains(id))
-				return type;
+			for (int i : type.rocks)
+				if (i == id)
+					return type;
 		}
 		return null;
 	}
 
 	/**
 	 * Attempts to find the Type based on the rocks name
-	 * 
+	 *
 	 * @param name		Rocks name (case insensitive)
 	 * @return			Matching type, else null
 	 */
@@ -151,6 +130,7 @@ public enum MiningRockType
 	/**
 	 * The rocks which can be tracked across worlds
 	 */
+	@AllArgsConstructor
 	public enum WorldRock
 	{
 		None(null),
@@ -162,13 +142,6 @@ public enum MiningRockType
 		@Getter(AccessLevel.PACKAGE)
 		private final MiningRockType rockType;
 
-		/**
-		 * @param type		The associated MiningRockType
-		 */
-		WorldRock(MiningRockType type)
-		{
-			rockType = type;
-		}
 	}
 
 }

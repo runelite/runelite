@@ -113,7 +113,6 @@ public class MiningPlugin extends Plugin
 		session = new MiningSession();
 		if (config.trackWorldRock() !=  MiningRockType.WorldRock.None)
 		{
-			// Setup world mining tracker for a certain type of rock
 			miningTracker = new MiningWorldTracker(config.trackWorldRock());
 		}
 		else
@@ -146,7 +145,6 @@ public class MiningPlugin extends Plugin
 			}
 			else
 			{
-				// Setup world mining tracker for a certain type of rock
 				miningTracker = new MiningWorldTracker(config.trackWorldRock());
 			}
 		}
@@ -242,10 +240,9 @@ public class MiningPlugin extends Plugin
 				int world = client.getWorld();
 				for (TileObject rock : ores.keySet())
 				{
-					// Go through every tracked rock
 					if (worldRock.getRockType() == ores.get(rock).getType())
 					{
-						// If the type matches the multi-world rock then add to the mining tracker
+						// If the type matches the multi-world rock then add to the mining tracker for this world
 						miningTracker.addTracked(world, rock, ores.get(rock));
 					}
 				}
@@ -253,7 +250,6 @@ public class MiningPlugin extends Plugin
 		}
 		else if (state == GameState.LOADING)
 		{
-			// Clear all ores when logging in or switching regions
 			ores.clear();
 			session.setIgnoreSpawn(Instant.now());
 		}
@@ -267,7 +263,7 @@ public class MiningPlugin extends Plugin
 				track.clearNegatives();
 				for (TileObject o : track.getRocks().keySet())
 				{
-					// Load all the tracked ores into the to-render hashmap
+					// Load all the tracked ores in this world into the current session. Causing their respawn times to be rendered
 					ores.put(o, track.getRocks().get(o));
 				}
 				// We're on this world now, so don't track it in the world tracker anymore
@@ -295,12 +291,10 @@ public class MiningPlugin extends Plugin
 		}
 		if (event.getMessage().startsWith("You manage to mine some"))
 		{
-			// Check for when ever the player mines a rock
 			String oreName = event.getMessage().substring(24).replace(".", "");
 			MiningRockType rock = MiningRockType.getTypeFromName(oreName);
 			if (rock != null)
 			{
-				// If the rock exists then increase the amount mined
 				session.increaseRockMine(rock);
 			}
 
@@ -318,10 +312,10 @@ public class MiningPlugin extends Plugin
 	{
 		for (MiningRockType rock : MiningRockType.values())
 		{
-			if (session.getLastOreMined()[rock.getIndex()] != null)
+			if (session.getLastOreMined()[rock.ordinal()] != null)
 			{
 				Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-				Duration sinceMined = Duration.between(session.getLastOreMined()[rock.getIndex()], Instant.now());
+				Duration sinceMined = Duration.between(session.getLastOreMined()[rock.ordinal()], Instant.now());
 				if (sinceMined.compareTo(statTimeout) >= 0)
 				{
 					session.clearSessionFor(rock);

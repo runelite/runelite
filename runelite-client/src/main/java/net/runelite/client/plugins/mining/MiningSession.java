@@ -101,7 +101,7 @@ public class MiningSession
 	 */
 	public boolean showOreRespawns(MiningRockType rock)
 	{
-		return recentOreMined[rock.getIndex()] != null;
+		return recentOreMined[rock.ordinal()] != null;
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class MiningSession
 	 */
 	public void clearSessionFor(MiningRockType rock)
 	{
-		int index = rock.getIndex();
+		int index = rock.ordinal();
 		recentOreMined[index] = null;
 		perHour[index] = 0;
 		recentMined[index] = 0;
@@ -125,7 +125,7 @@ public class MiningSession
 	public void increaseRockMine(MiningRockType rock)
 	{
 		Instant now = Instant.now();
-		int index = rock.getIndex();
+		int index = rock.ordinal();
 
 		lastMined = now;
 		lastOreMined[index] = now;
