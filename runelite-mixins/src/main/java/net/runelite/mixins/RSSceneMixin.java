@@ -65,6 +65,9 @@ public abstract class RSSceneMixin implements RSScene
 	@Inject
 	private static int[] tmpX = new int[6];
 
+	@Shadow("skyboxColor")
+	static int skyboxColor;
+
 	@Inject
 	private static int[] tmpY = new int[6];
 
@@ -80,6 +83,22 @@ public abstract class RSSceneMixin implements RSScene
 			drawCallbacks.drawScene(cameraX, cameraY, cameraZ, cameraPitch, cameraYaw, plane);
 		}
 
+		final boolean isGpu = client.isGpu();
+
+		if (!isGpu)
+		{
+			if (skyboxColor != 0)
+			{
+				client.RasterizerFillRectangle(
+					client.getViewportXOffset(),
+					client.getViewportYOffset(),
+					client.getViewportWidth(),
+					client.getViewportHeight(),
+					skyboxColor
+				);
+			}
+		}
+
 		final int maxX = getMaxX();
 		final int maxY = getMaxY();
 		final int maxZ = getMaxZ();
@@ -87,7 +106,6 @@ public abstract class RSSceneMixin implements RSScene
 		final int minLevel = getMinLevel();
 
 		final RSTile[][][] tiles = getTiles();
-		final boolean isGpu = client.isGpu();
 		final int distance = isGpu ? rl$drawDistance : DEFAULT_DISTANCE;
 
 		if (cameraX < 0)
@@ -269,6 +287,10 @@ public abstract class RSSceneMixin implements RSScene
 
 						if (client.getTileUpdateCount() == 0)
 						{
+							if (!isGpu && client.getOculusOrbState() != 0)
+							{
+								client.setEntitiesAtMouseCount(0);
+							}
 							client.setCheckClick(false);
 							client.getCallbacks().drawScene();
 							return;
@@ -336,6 +358,10 @@ public abstract class RSSceneMixin implements RSScene
 
 						if (client.getTileUpdateCount() == 0)
 						{
+							if (!isGpu && client.getOculusOrbState() != 0)
+							{
+								client.setEntitiesAtMouseCount(0);
+							}
 							client.setCheckClick(false);
 							client.getCallbacks().drawScene();
 							return;
@@ -345,6 +371,10 @@ public abstract class RSSceneMixin implements RSScene
 			}
 		}
 
+		if (!isGpu && client.getOculusOrbState() != 0)
+		{
+			client.setEntitiesAtMouseCount(0);
+		}
 		client.setCheckClick(false);
 		client.getCallbacks().drawScene();
 	}

@@ -24,6 +24,9 @@
  */
 package net.runelite.http.service.xp;
 
+import com.google.common.hash.BloomFilter;
+import com.google.common.hash.Funnels;
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ExecutionException;
@@ -54,6 +57,7 @@ public class XpTrackerService
 	@Autowired
 	private HiscoreService hiscoreService;
 
+	private BloomFilter<String> usernameFilter = createFilter();
 	private String nextUsername;
 
 	public void update(String username) throws ExecutionException
@@ -64,7 +68,13 @@ public class XpTrackerService
 
 	public void tryUpdate(String username)
 	{
+		if (nextUsername != null || usernameFilter.mightContain(username))
+		{
+			return;
+		}
+
 		nextUsername = username;
+		usernameFilter.put(username);
 	}
 
 	public void update(String username, HiscoreResult hiscoreResult)
@@ -198,7 +208,7 @@ public class XpTrackerService
 		}
 	}
 
-	@Scheduled(fixedDelay = 3000)
+	@Scheduled(fixedDelay = 1000)
 	public void update() throws ExecutionException
 	{
 		String next = nextUsername;
@@ -211,5 +221,19 @@ public class XpTrackerService
 
 		HiscoreResult hiscoreResult = hiscoreService.lookupUsername(next, HiscoreEndpoint.NORMAL);
 		update(next, hiscoreResult);
+	}
+
+	@Scheduled(fixedDelay = 60 * 60 * 1000) // one hour
+	public void clearFilter()
+	{
+		usernameFilter = createFilter();
+	}
+
+	private static BloomFilter<String> createFilter()
+	{
+		return BloomFilter.create(
+			Funnels.stringFunnel(Charset.defaultCharset()),
+			100_000
+		);
 	}
 }

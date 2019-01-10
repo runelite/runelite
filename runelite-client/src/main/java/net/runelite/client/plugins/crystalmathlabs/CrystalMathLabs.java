@@ -25,11 +25,13 @@
 package net.runelite.client.plugins.crystalmathlabs;
 
 import java.io.IOException;
+import java.util.Objects;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -51,22 +53,55 @@ import okhttp3.Response;
 @Slf4j
 public class CrystalMathLabs extends Plugin
 {
+	/**
+	 * Amount of EXP that must be gained for an update to be submitted.
+	 */
+	private static final int XP_THRESHOLD = 1000;
+
 	@Inject
 	private Client client;
+
+	private String lastUsername;
+	private long lastXp;
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		GameState state = gameStateChanged.getGameState();
-		if (state == GameState.LOGIN_SCREEN)
+		if (state == GameState.LOGGED_IN)
+		{
+			if (!Objects.equals(client.getUsername(), lastUsername))
+			{
+				lastUsername = client.getUsername();
+				lastXp = getTotalXp();
+			}
+		}
+		else if (state == GameState.LOGIN_SCREEN)
 		{
 			Player local = client.getLocalPlayer();
-			if (local != null)
+			if (local == null)
+			{
+				return;
+			}
+
+			long totalXp = getTotalXp();
+			// Don't submit update unless xp threshold is reached
+			if (Math.abs(totalXp - lastXp) > XP_THRESHOLD)
 			{
 				log.debug("Submitting update for {}", local.getName());
 				sendUpdateRequest(local.getName());
 			}
 		}
+	}
+
+	private long getTotalXp()
+	{
+		long total = 0;
+		for (Skill skill : Skill.values())
+		{
+			total += client.getSkillExperience(skill);
+		}
+		return total;
 	}
 
 	private void sendUpdateRequest(String username)
@@ -84,6 +119,7 @@ public class CrystalMathLabs extends Plugin
 			.build();
 
 		Request request = new Request.Builder()
+			.header("User-Agent", "RuneLite")
 			.url(httpUrl)
 			.build();
 

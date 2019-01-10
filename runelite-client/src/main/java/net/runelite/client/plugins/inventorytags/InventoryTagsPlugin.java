@@ -212,8 +212,11 @@ public class InventoryTagsPlugin extends Plugin
 				return;
 			}
 
-			MenuEntry[] menuList = new MenuEntry[GROUPS.size()];
+			MenuEntry[] menuList = new MenuEntry[GROUPS.size() + 1];
 			int num = 0;
+
+			// preserve the 'Cancel' option as the client will reuse the first entry for Cancel and only resets option/action
+			menuList[num++] = event.getMenuEntries()[0];
 
 			for (final String groupName : GROUPS)
 			{

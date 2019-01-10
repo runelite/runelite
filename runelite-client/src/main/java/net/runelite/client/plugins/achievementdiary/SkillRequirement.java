@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.kc;
+package net.runelite.client.plugins.achievementdiary;
 
-import lombok.Value;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.Skill;
 
-@Value
-class KillCountKey
+@RequiredArgsConstructor
+@Getter
+public class SkillRequirement implements Requirement
 {
-	private String username;
-	private String boss;
+	private final Skill skill;
+	private final int level;
+
+	@Override
+	public String toString()
+	{
+		return level + " " + skill.getName();
+	}
 }

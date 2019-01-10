@@ -58,6 +58,7 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 @RestController
 @RequestMapping("/account")
@@ -97,7 +98,7 @@ public class AccountService
 	private final String oauthClientId;
 	private final String oauthClientSecret;
 	private final AuthFilter auth;
-	private final Jedis jedis;
+	private final JedisPool jedisPool;
 
 	@Autowired
 	public AccountService(
@@ -105,14 +106,14 @@ public class AccountService
 		@Value("${oauth.client-id}") String oauthClientId,
 		@Value("${oauth.client-secret}") String oauthClientSecret,
 		AuthFilter auth,
-		Jedis jedis
+		JedisPool jedisPool
 	)
 	{
 		this.sql2o = sql2o;
 		this.oauthClientId = oauthClientId;
 		this.oauthClientSecret = oauthClientSecret;
 		this.auth = auth;
-		this.jedis = jedis;
+		this.jedisPool = jedisPool;
 
 		try (Connection con = sql2o.open())
 		{
@@ -248,7 +249,10 @@ public class AccountService
 			service.send(response);
 		}
 
-		jedis.publish("session." + uuid, websocketGson.toJson(response, WebsocketMessage.class));
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.publish("session." + uuid, websocketGson.toJson(response, WebsocketMessage.class));
+		}
 	}
 
 	@RequestMapping("/logout")

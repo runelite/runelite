@@ -64,6 +64,7 @@ public class XpDropPlugin extends Plugin
 	private int tickCounter = 0;
 	private int previousExpGained;
 	private boolean hasDropped = false;
+	private boolean correctPrayer;
 	private Skill lastSkill = null;
 	private Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
 	private PrayerType currentTickPrayer;
@@ -154,22 +155,24 @@ public class XpDropPlugin extends Plugin
 				case MELEE:
 					if (spriteIDs.anyMatch(id ->
 							id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE
-								|| id == SpriteID.SKILL_HITPOINTS))
+								|| correctPrayer))
 					{
 						color = config.getMeleePrayerColor().getRGB();
+						correctPrayer = true;
 					}
 					break;
-
 				case RANGE:
-					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_RANGED || id == SpriteID.SKILL_HITPOINTS))
+					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_RANGED || correctPrayer))
 					{
 						color = config.getRangePrayerColor().getRGB();
+						correctPrayer = true;
 					}
 					break;
 				case MAGIC:
-					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_MAGIC || id == SpriteID.SKILL_HITPOINTS))
+					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_MAGIC || correctPrayer))
 					{
 						color = config.getMagePrayerColor().getRGB();
+						correctPrayer = true;
 					}
 					break;
 			}
@@ -201,6 +204,7 @@ public class XpDropPlugin extends Plugin
 	public void onGameTick(GameTick tick)
 	{
 		currentTickPrayer = getActivePrayerType();
+		correctPrayer = false;
 
 		final int fakeTickDelay = config.fakeXpDropDelay();
 

@@ -48,6 +48,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ObjectComposition;
+import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
@@ -227,19 +228,26 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		menuEntry.setParam0(event.getActionParam0());
 		menuEntry.setParam1(event.getActionParam1());
 		menuEntry.setIdentifier(event.getIdentifier());
-		menuEntry.setType(MenuAction.CANCEL.getId());
+		menuEntry.setType(MenuAction.RUNELITE.getId());
 		client.setMenuEntries(menuEntries);
 	}
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().equals(MARK))
+		if (event.getMenuAction() != MenuAction.RUNELITE || !event.getMenuOption().equals(MARK))
 		{
 			return;
 		}
 
-		TileObject object = findTileObject(client.getSelectedSceneTile(), event.getId());
+		Scene scene = client.getScene();
+		Tile[][][] tiles = scene.getTiles();
+		final int x = event.getActionParam();
+		final int y = event.getWidgetId();
+		final int z = client.getPlane();
+		final Tile tile = tiles[z][x][y];
+
+		TileObject object = findTileObject(tile, event.getId());
 		if (object == null)
 		{
 			return;

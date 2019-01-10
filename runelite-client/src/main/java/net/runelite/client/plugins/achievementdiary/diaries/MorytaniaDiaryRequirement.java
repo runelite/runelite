@@ -25,9 +25,13 @@
  */
 package net.runelite.client.plugins.achievementdiary.diaries;
 
+import net.runelite.api.Quest;
 import net.runelite.api.Skill;
+import net.runelite.client.plugins.achievementdiary.CombatLevelRequirement;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
-import net.runelite.client.plugins.achievementdiary.Requirement;
+import net.runelite.client.plugins.achievementdiary.OrRequirement;
+import net.runelite.client.plugins.achievementdiary.QuestRequirement;
+import net.runelite.client.plugins.achievementdiary.SkillRequirement;
 
 public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 {
@@ -35,75 +39,99 @@ public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 	{
 		// EASY
 		add("Craft any Snelm from scratch in Morytania.",
-			new Requirement(Skill.CRAFTING, 15));
+			new SkillRequirement(Skill.CRAFTING, 15));
 		add("Cook a thin Snail on the Port Phasmatys range.",
-			new Requirement(Skill.COOKING, 12));
+			new SkillRequirement(Skill.COOKING, 12));
 		add("Get a slayer task from Mazchna.",
-			new Requirement("Combat", 20));
+			new CombatLevelRequirement(20));
 		add("Kill a Banshee in the Slayer Tower.",
-			new Requirement(Skill.SLAYER, 15));
+			new SkillRequirement(Skill.SLAYER, 15));
 		add("Place a Scarecrow in the Morytania flower patch.",
-			new Requirement(Skill.FARMING, 23));
+			new SkillRequirement(Skill.FARMING, 23));
+		add("Restore your prayer points at the nature altar.",
+			new QuestRequirement(Quest.NATURE_SPIRIT));
 
 		// MEDIUM
 		add("Catch a swamp lizard.",
-			new Requirement(Skill.HUNTER, 29));
+			new SkillRequirement(Skill.HUNTER, 29));
 		add("Complete a lap of the Canifis agility course.",
-			new Requirement(Skill.AGILITY, 40));
+			new SkillRequirement(Skill.AGILITY, 40));
 		add("Obtain some Bark from a Hollow tree.",
-			new Requirement(Skill.WOODCUTTING, 45));
+			new SkillRequirement(Skill.WOODCUTTING, 45));
 		add("Kill a Terror Dog.",
-			new Requirement(Skill.SLAYER, 40));
+			new SkillRequirement(Skill.SLAYER, 40),
+			new QuestRequirement(Quest.LAIR_OF_TARN_RAZORLOR));
 		add("Complete a game of trouble brewing.",
-			new Requirement(Skill.COOKING, 40));
+			new SkillRequirement(Skill.COOKING, 40),
+			new QuestRequirement(Quest.CABIN_FEVER));
 		add("Make a batch of cannonballs at the Port Phasmatys furnace.",
-			new Requirement(Skill.SMITHING, 35));
+			new SkillRequirement(Skill.SMITHING, 35),
+			new QuestRequirement(Quest.DWARF_CANNON),
+			new QuestRequirement(Quest.GHOSTS_AHOY, true));
 		add("Kill a Fever Spider on Braindeath Island.",
-			new Requirement(Skill.SLAYER, 42));
+			new SkillRequirement(Skill.SLAYER, 42),
+			new QuestRequirement(Quest.RUM_DEAL));
+		add("Use an ectophial to return to Port Phasmatys.",
+			new QuestRequirement(Quest.GHOSTS_AHOY));
 		add("Mix a Guthix Balance potion while in Morytania.",
-			new Requirement(Skill.HERBLORE, 36));
+			new SkillRequirement(Skill.HERBLORE, 36),
+			new QuestRequirement(Quest.IN_AID_OF_THE_MYREQUE, true));
 
 		// HARD
 		add("Enter the Kharyrll portal in your POH.",
-			new Requirement(Skill.MAGIC, 66),
-			new Requirement(Skill.CONSTRUCTION, 50));
+			new SkillRequirement(Skill.MAGIC, 66),
+			new SkillRequirement(Skill.CONSTRUCTION, 50),
+			new QuestRequirement(Quest.DESERT_TREASURE));
 		add("Climb the advanced spike chain within Slayer Tower.",
-			new Requirement(Skill.AGILITY, 71));
+			new SkillRequirement(Skill.AGILITY, 71));
 		add("Harvest some Watermelon from the Allotment patch on Harmony Island.",
-			new Requirement(Skill.FARMING, 47));
+			new SkillRequirement(Skill.FARMING, 47),
+			new QuestRequirement(Quest.THE_GREAT_BRAIN_ROBBERY, true));
 		add("Chop and burn some mahogany logs on Mos Le'Harmless.",
-			new Requirement(Skill.WOODCUTTING, 50),
-			new Requirement(Skill.FIREMAKING, 50));
+			new SkillRequirement(Skill.WOODCUTTING, 50),
+			new SkillRequirement(Skill.FIREMAKING, 50),
+			new QuestRequirement(Quest.CABIN_FEVER));
+		add("Complete a temple trek with a hard companion.",
+			new QuestRequirement(Quest.IN_AID_OF_THE_MYREQUE));
 		add("Kill a Cave Horror.",
-			new Requirement(Skill.SLAYER, 58));
+			new SkillRequirement(Skill.SLAYER, 58),
+			new QuestRequirement(Quest.CABIN_FEVER));
 		add("Harvest some Bittercap Mushrooms from the patch in Canifis.",
-			new Requirement(Skill.FARMING, 53));
+			new SkillRequirement(Skill.FARMING, 53));
 		add("Pray at the Altar of Nature with Piety activated.",
-			new Requirement(Skill.PRAYER, 70),
-			new Requirement(Skill.DEFENCE, 70));
+			new SkillRequirement(Skill.PRAYER, 70),
+			new SkillRequirement(Skill.DEFENCE, 70),
+			new QuestRequirement(Quest.NATURE_SPIRIT),
+			new QuestRequirement(Quest.KINGS_RANSOM));
 		add("Use the shortcut to get to the bridge over the Salve.",
-			new Requirement(Skill.AGILITY, 65));
+			new SkillRequirement(Skill.AGILITY, 65));
 		add("Mine some Mithril ore in the Abandoned Mine.",
-			new Requirement(Skill.MINING, 55));
+			new SkillRequirement(Skill.MINING, 55),
+			new QuestRequirement(Quest.HAUNTED_MINE));
 
 		// ELITE
 		add("Catch a shark in Burgh de Rott with your bare hands.",
-			new Requirement(Skill.FISHING, 96),
-			new Requirement(Skill.STRENGTH, 76));
+			new SkillRequirement(Skill.FISHING, 96),
+			new SkillRequirement(Skill.STRENGTH, 76),
+			new QuestRequirement(Quest.IN_AID_OF_THE_MYREQUE));
 		add("Cremate any Shade remains on a Magic or Redwood pyre.",
-			new Requirement(Skill.FIREMAKING, 80));
+			new SkillRequirement(Skill.FIREMAKING, 80),
+			new QuestRequirement(Quest.SHADES_OF_MORTTON));
 		add("Fertilize the Morytania herb patch using Lunar Magic.",
-			new Requirement(Skill.MAGIC, 83));
+			new SkillRequirement(Skill.MAGIC, 83),
+			new QuestRequirement(Quest.LUNAR_DIPLOMACY));
 		add("Craft a Black dragonhide body in Canifis bank.",
-			new Requirement(Skill.CRAFTING, 84));
+			new SkillRequirement(Skill.CRAFTING, 84));
 		add("Kill an Abyssal demon in the Slayer Tower.",
-			new Requirement(Skill.SLAYER, 85));
+			new SkillRequirement(Skill.SLAYER, 85));
 		add("Loot the Barrows chest while wearing any complete barrows set.",
-			new Requirement(Skill.DEFENCE, 70),
-			new Requirement(Skill.ATTACK, 70,
-				new Requirement(Skill.STRENGTH, 70),
-				new Requirement(Skill.RANGED, 70),
-				new Requirement(Skill.MAGIC, 70))
+			new SkillRequirement(Skill.DEFENCE, 70),
+			new OrRequirement(
+				new SkillRequirement(Skill.ATTACK, 70),
+				new SkillRequirement(Skill.STRENGTH, 70),
+				new SkillRequirement(Skill.RANGED, 70),
+				new SkillRequirement(Skill.MAGIC, 70)
+			)
 		);
 	}
 }

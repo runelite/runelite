@@ -37,32 +37,32 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
-import net.runelite.api.GameState;
 import net.runelite.api.IconID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.SetMessage;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.ChatboxInputListener;
-import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ChatboxInput;
-import net.runelite.client.events.PrivateMessageInput;
+import net.runelite.client.events.ChatInput;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.http.api.chat.ChatClient;
 import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
@@ -70,7 +70,6 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.ItemPrice;
-import net.runelite.http.api.kc.KillCountClient;
 
 @PluginDescriptor(
 	name = "Chat Commands",
@@ -78,7 +77,7 @@ import net.runelite.http.api.kc.KillCountClient;
 	tags = {"grand", "exchange", "level", "prices"}
 )
 @Slf4j
-public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
+public class ChatCommandsPlugin extends Plugin
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
@@ -91,11 +90,13 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private static final String CLUES_COMMAND_STRING = "!clues";
 	private static final String KILLCOUNT_COMMAND_STRING = "!kc";
 	private static final String CMB_COMMAND_STRING = "!cmb";
+	private static final String QP_COMMAND_STRING = "!qp";
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
-	private final KillCountClient killCountClient = new KillCountClient();
+	private final ChatClient chatClient = new ChatClient();
 
 	private boolean logKills;
+	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
 
 	@Inject
 	private Client client;
@@ -113,6 +114,9 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	private ChatMessageManager chatMessageManager;
 
 	@Inject
+	private ChatCommandManager chatCommandManager;
+
+	@Inject
 	private ScheduledExecutorService executor;
 
 	@Inject
@@ -121,21 +125,32 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	@Inject
 	private ChatKeyboardListener chatKeyboardListener;
 
-	@Inject
-	private CommandManager commandManager;
-
 	@Override
 	public void startUp()
 	{
 		keyManager.registerKeyListener(chatKeyboardListener);
-		commandManager.register(this);
+
+		chatCommandManager.registerCommandAsync(TOTAL_LEVEL_COMMAND_STRING, this::playerSkillLookup);
+		chatCommandManager.registerCommandAsync(CMB_COMMAND_STRING, this::combatLevelLookup);
+		chatCommandManager.registerCommand(PRICE_COMMAND_STRING, this::itemPriceLookup);
+		chatCommandManager.registerCommandAsync(LEVEL_COMMAND_STRING, this::playerSkillLookup);
+		chatCommandManager.registerCommandAsync(CLUES_COMMAND_STRING, this::clueLookup);
+		chatCommandManager.registerCommandAsync(KILLCOUNT_COMMAND_STRING, this::killCountLookup, this::killCountSubmit);
+		chatCommandManager.registerCommand(QP_COMMAND_STRING, this::questPointsLookup, this::questPointsSubmit);
 	}
 
 	@Override
 	public void shutDown()
 	{
 		keyManager.unregisterKeyListener(chatKeyboardListener);
-		commandManager.unregister(this);
+
+		chatCommandManager.unregisterCommand(TOTAL_LEVEL_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(CMB_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(PRICE_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(LEVEL_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(CLUES_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(KILLCOUNT_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(QP_COMMAND_STRING);
 	}
 
 	@Provides
@@ -155,84 +170,6 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		Integer killCount = configManager.getConfiguration("killcount." + client.getUsername().toLowerCase(),
 			boss.toLowerCase(), int.class);
 		return killCount == null ? 0 : killCount;
-	}
-
-	/**
-	 * Checks if the chat message is a command.
-	 *
-	 * @param setMessage The chat message.
-	 */
-	@Subscribe
-	public void onSetMessage(SetMessage setMessage)
-	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
-
-		switch (setMessage.getType())
-		{
-			case PUBLIC:
-			case PUBLIC_MOD:
-			case CLANCHAT:
-			case PRIVATE_MESSAGE_RECEIVED:
-			case PRIVATE_MESSAGE_SENT:
-				break;
-			default:
-				return;
-		}
-
-		String message = setMessage.getValue();
-		MessageNode messageNode = setMessage.getMessageNode();
-		HiscoreEndpoint localEndpoint = getHiscoreEndpointType();
-
-		// clear RuneLite formatted message as the message node is
-		// being reused
-		messageNode.setRuneLiteFormatMessage(null);
-
-		if (config.lvl() && message.toLowerCase().equals(TOTAL_LEVEL_COMMAND_STRING))
-		{
-			log.debug("Running total level lookup");
-			executor.submit(() -> playerSkillLookup(setMessage, localEndpoint, "total"));
-		}
-		else if (config.lvl() && message.toLowerCase().equals(CMB_COMMAND_STRING))
-		{
-			log.debug("Running combat level lookup");
-			executor.submit(() -> combatLevelLookup(setMessage.getType(), setMessage));
-		}
-		else if (config.price() && message.toLowerCase().startsWith(PRICE_COMMAND_STRING + " "))
-		{
-			String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
-
-			log.debug("Running price lookup for {}", search);
-			itemPriceLookup(setMessage.getMessageNode(), search);
-		}
-		else if (config.lvl() && message.toLowerCase().startsWith(LEVEL_COMMAND_STRING + " "))
-		{
-			String search = message.substring(LEVEL_COMMAND_STRING.length() + 1);
-
-			log.debug("Running level lookup for {}", search);
-			executor.submit(() -> playerSkillLookup(setMessage, localEndpoint, search));
-		}
-		else if (config.clue() && message.toLowerCase().equals(CLUES_COMMAND_STRING))
-		{
-			log.debug("Running lookup for overall clues");
-			executor.submit(() -> playerClueLookup(setMessage, localEndpoint,  "total"));
-		}
-		else if (config.clue() && message.toLowerCase().startsWith(CLUES_COMMAND_STRING + " "))
-		{
-			String search = message.substring(CLUES_COMMAND_STRING.length() + 1);
-
-			log.debug("Running clue lookup for {}", search);
-			executor.submit(() -> playerClueLookup(setMessage, localEndpoint, search));
-		}
-		else if (config.killcount() && message.toLowerCase().startsWith(KILLCOUNT_COMMAND_STRING + " "))
-		{
-			String search = message.substring(KILLCOUNT_COMMAND_STRING.length() + 1);
-
-			log.debug("Running killcount lookup for {}", search);
-			executor.submit(() -> killCountLookup(setMessage.getType(), setMessage, search));
-		}
 	}
 
 	@Subscribe
@@ -329,15 +266,14 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		logKills = true;
 	}
 
-	@Override
-	public boolean onChatboxInput(ChatboxInput chatboxInput)
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		final String value = chatboxInput.getValue();
-		if (!config.killcount() || !value.startsWith("!kc ") && !value.startsWith("/!kc "))
-		{
-			return false;
-		}
+		hiscoreEndpoint = getLocalHiscoreEndpointType();
+	}
 
+	private boolean killCountSubmit(ChatInput chatInput, String value)
+	{
 		int idx = value.indexOf(' ');
 		final String boss = longBossName(value.substring(idx + 1));
 
@@ -353,7 +289,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		{
 			try
 			{
-				killCountClient.submit(playerName, boss, kc);
+				chatClient.submitKc(playerName, boss, kc);
 			}
 			catch (Exception ex)
 			{
@@ -361,54 +297,23 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			}
 			finally
 			{
-				chatboxInput.resume();
+				chatInput.resume();
 			}
 		});
 
 		return true;
 	}
 
-	@Override
-	public boolean onPrivateMessageInput(PrivateMessageInput privateMessageInput)
+	private void killCountLookup(SetMessage setMessage, String message)
 	{
-		final String message = privateMessageInput.getMessage();
-		if (!config.killcount() || !message.startsWith("!kc "))
+		if (!config.killcount())
 		{
-			return false;
+			return;
 		}
 
-		int idx = message.indexOf(' ');
-		final String boss = longBossName(message.substring(idx + 1));
+		ChatMessageType type = setMessage.getType();
+		String search = message.substring(KILLCOUNT_COMMAND_STRING.length() + 1);
 
-		final int kc = getKc(boss);
-		if (kc <= 0)
-		{
-			return false;
-		}
-
-		final String playerName = client.getLocalPlayer().getName();
-
-		executor.execute(() ->
-		{
-			try
-			{
-				killCountClient.submit(playerName, boss, kc);
-			}
-			catch (Exception ex)
-			{
-				log.warn("unable to submit killcount", ex);
-			}
-			finally
-			{
-				privateMessageInput.resume();
-			}
-		});
-
-		return true;
-	}
-
-	private void killCountLookup(ChatMessageType type, SetMessage setMessage, String search)
-	{
 		final String player;
 		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
 		{
@@ -424,7 +329,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		final int kc;
 		try
 		{
-			kc = killCountClient.get(player, search);
+			kc = chatClient.getKc(player, search);
 		}
 		catch (IOException ex)
 		{
@@ -448,15 +353,91 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		client.refreshChat();
 	}
 
+	private void questPointsLookup(SetMessage setMessage, String message)
+	{
+		if (!config.qp())
+		{
+			return;
+		}
+
+		ChatMessageType type = setMessage.getType();
+
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = sanitize(setMessage.getName());
+		}
+
+		int qp;
+		try
+		{
+			qp = chatClient.getQp(player);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup quest points", ex);
+			return;
+		}
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Quest points: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(qp))
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = setMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
+	}
+
+	private boolean questPointsSubmit(ChatInput chatInput, String value)
+	{
+		final int qp = client.getVar(VarPlayer.QUEST_POINTS);
+		final String playerName = client.getLocalPlayer().getName();
+
+		executor.execute(() ->
+		{
+			try
+			{
+				chatClient.submitQp(playerName, qp);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit quest poinits", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
+	}
+
 	/**
 	 * Looks up the item price and changes the original message to the
 	 * response.
 	 *
-	 * @param messageNode The chat message containing the command.
-	 * @param search      The item given with the command.
+	 * @param setMessage The chat message containing the command.
+	 * @param message    The chat message
 	 */
-	private void itemPriceLookup(MessageNode messageNode, String search)
+	private void itemPriceLookup(SetMessage setMessage, String message)
 	{
+		if (!config.price())
+		{
+			return;
+		}
+
+		MessageNode messageNode = setMessage.getMessageNode();
+		String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
+
 		List<ItemPrice> results = itemManager.search(search);
 
 		if (!results.isEmpty())
@@ -501,11 +482,25 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	 * response.
 	 *
 	 * @param setMessage The chat message containing the command.
-	 * @param local      HiscoreEndpoint for local player, needs to be sent in advance to avoid threading bugs
-	 * @param search     The item given with the command.
+	 * @param message    The chat message
 	 */
-	private void playerSkillLookup(SetMessage setMessage, HiscoreEndpoint local, String search)
+	private void playerSkillLookup(SetMessage setMessage, String message)
 	{
+		if (!config.lvl())
+		{
+			return;
+		}
+
+		String search;
+		if (message.equalsIgnoreCase(TOTAL_LEVEL_COMMAND_STRING))
+		{
+			search = "total";
+		}
+		else
+		{
+			search = message.substring(LEVEL_COMMAND_STRING.length() + 1);
+		}
+
 		search = SkillAbbreviations.getFullName(search);
 		final HiscoreSkill skill;
 		try
@@ -517,7 +512,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			return;
 		}
 
-		final HiscoreLookup lookup = getCorrectLookupFor(setMessage, local);
+		final HiscoreLookup lookup = getCorrectLookupFor(setMessage);
 
 		try
 		{
@@ -558,8 +553,15 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		}
 	}
 
-	private void combatLevelLookup(ChatMessageType type, SetMessage setMessage)
+	private void combatLevelLookup(SetMessage setMessage, String message)
 	{
+		if (!config.lvl())
+		{
+			return;
+		}
+
+		ChatMessageType type = setMessage.getType();
+
 		String player;
 		if (type == ChatMessageType.PRIVATE_MESSAGE_SENT)
 		{
@@ -636,18 +638,28 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		}
 	}
 
-	/**
-	 * Looks up the quantities of clues completed
-	 * for the requested clue-level (no arg if requesting total)
-	 * easy, medium, hard, elite, master
-	 */
-	private void playerClueLookup(SetMessage setMessage, HiscoreEndpoint local, String search)
+	private void clueLookup(SetMessage setMessage, String message)
 	{
-		final HiscoreLookup lookup = getCorrectLookupFor(setMessage, local);
+		if (!config.clue())
+		{
+			return;
+		}
+
+		String search;
+
+		if (message.equalsIgnoreCase(CLUES_COMMAND_STRING))
+		{
+			search = "total";
+		}
+		else
+		{
+			search = message.substring(CLUES_COMMAND_STRING.length() + 1);
+		}
 
 		try
 		{
 			final Skill hiscoreSkill;
+			final HiscoreLookup lookup = getCorrectLookupFor(setMessage);
 			final HiscoreResult result = hiscoreClient.lookup(lookup.getName(), lookup.getEndpoint());
 
 			if (result == null)
@@ -720,10 +732,9 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	 * Gets correct lookup data for message
 	 *
 	 * @param setMessage chat message
-	 * @param local HiscoreEndpoint for local player, needs to be sent in advance to avoid threading bugs
 	 * @return hiscore lookup data
 	 */
-	private HiscoreLookup getCorrectLookupFor(final SetMessage setMessage, final HiscoreEndpoint local)
+	private HiscoreLookup getCorrectLookupFor(final SetMessage setMessage)
 	{
 		final String player;
 		final HiscoreEndpoint ironmanStatus;
@@ -731,7 +742,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 		if (setMessage.getType().equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
 		{
 			player = client.getLocalPlayer().getName();
-			ironmanStatus = local;
+			ironmanStatus = hiscoreEndpoint;
 		}
 		else
 		{
@@ -740,7 +751,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 			if (player.equals(client.getLocalPlayer().getName()))
 			{
 				// Get ironman status from for the local player
-				ironmanStatus = getHiscoreEndpointType();
+				ironmanStatus = hiscoreEndpoint;
 			}
 			else
 			{
@@ -799,7 +810,7 @@ public class ChatCommandsPlugin extends Plugin implements ChatboxInputListener
 	 *
 	 * @return hiscore endpoint
 	 */
-	private HiscoreEndpoint getHiscoreEndpointType()
+	private HiscoreEndpoint getLocalHiscoreEndpointType()
 	{
 		return toEndPoint(client.getAccountType());
 	}

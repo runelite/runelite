@@ -49,7 +49,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.Converter;
 import org.sql2o.quirks.NoQuirks;
-import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 @SpringBootApplication
 @EnableScheduling
@@ -130,9 +131,9 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 	}
 
 	@Bean
-	Jedis jedis()
+	JedisPool jedis()
 	{
-		return new Jedis(redisHost);
+		return new JedisPool(new JedisPoolConfig(), redisHost);
 	}
 
 	@Override
