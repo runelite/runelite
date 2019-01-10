@@ -182,7 +182,7 @@ public class DiaryRequirementsPlugin extends Plugin
 							b.append(word);
 						}
 					}
-					newRequirements.add(i + offset, b.toString());
+					newRequirements.set(i + offset, b.toString());
 				}
 			}
 		}
