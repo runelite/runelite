@@ -172,7 +172,7 @@ public abstract class RSClientMixin implements RSClient
 	@Inject
 	private static boolean hdMinimapEnabled;
 
-  @Inject
+	@Inject
 	static int skyboxColor;
 
 	@Inject
