@@ -283,7 +283,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (lootTrackerClient != null && config.saveLoot())
 		{
-			LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items));
+			LootRecord lootRecord = new LootRecord(name, client.getUsername(), LootRecordType.NPC, toGameItems(items));
 			lootTrackerClient.submit(lootRecord);
 		}
 	}
@@ -300,7 +300,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (lootTrackerClient != null && config.saveLoot())
 		{
-			LootRecord lootRecord = new LootRecord(name, LootRecordType.PLAYER, toGameItems(items));
+			LootRecord lootRecord = new LootRecord(name, client.getUsername(), LootRecordType.PLAYER, toGameItems(items));
 			lootTrackerClient.submit(lootRecord);
 		}
 	}
@@ -359,7 +359,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (lootTrackerClient != null && config.saveLoot())
 		{
-			LootRecord lootRecord = new LootRecord(eventType, LootRecordType.EVENT, toGameItems(items));
+			LootRecord lootRecord = new LootRecord(eventType, client.getUsername(), LootRecordType.EVENT, toGameItems(items));
 			lootTrackerClient.submit(lootRecord);
 		}
 	}

@@ -35,6 +35,7 @@ import lombok.NoArgsConstructor;
 public class LootRecord
 {
 	private String eventId;
+	private String username;
 	private LootRecordType type;
 	private Collection<GameItem> drops;
 }
