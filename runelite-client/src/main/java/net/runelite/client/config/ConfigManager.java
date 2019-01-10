@@ -521,6 +521,22 @@ public class ConfigManager
 			int mods = Integer.parseInt(splitStr[1]);
 			return new Keybind(code, mods);
 		}
+		if (type == Map.class)
+		{
+			Map<String, String> output = new HashMap<>();
+			str = str.substring(1, str.length() - 1);
+			String[] splitStr = str.split(", ");
+			for (String s : splitStr)
+			{
+				String[] keyVal = s.split("=");
+				if (keyVal.length > 1)
+				{
+					output.put(keyVal[0], keyVal[1]);
+				}
+			}
+
+			return output;
+		}
 		return str;
 	}
 

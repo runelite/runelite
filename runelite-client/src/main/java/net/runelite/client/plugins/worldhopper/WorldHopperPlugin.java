@@ -33,11 +33,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -254,6 +250,35 @@ public class WorldHopperPlugin extends Plugin
 		}
 	}
 
+	Map<String, String> getHistory()
+	{
+		Map<String, String> history = configManager.getConfiguration(WorldHopperConfig.GROUP, "history", Map.class);
+		if (history == null)
+		{
+			history = new HashMap<String, String>();
+		}
+
+		return history;
+	}
+
+	void clearHistory()
+	{
+		Map<String, String> history = getHistory();
+		history.clear();
+		configManager.setConfiguration(WorldHopperConfig.GROUP, "history", history);
+	}
+
+	void addToHistory() {
+		addToHistory(client.getWorld());
+	}
+
+	void addToHistory(int world) {
+		long unixTime = System.currentTimeMillis() / 1000L;
+		Map<String, String> history = getHistory();
+		history.put(String.valueOf(world), String.valueOf(unixTime));
+		configManager.setConfiguration(WorldHopperConfig.GROUP, "history", history);
+	}
+
 	private void setFavoriteConfig(int world)
 	{
 		configManager.setConfiguration(WorldHopperConfig.GROUP, "favorite_" + world, true);
@@ -399,6 +424,12 @@ public class WorldHopperPlugin extends Plugin
 				panel.switchCurrentHighlight(newWorld, lastWorld);
 				lastWorld = newWorld;
 			}
+		}
+
+		if(gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		{
+			addToHistory(client.getWorld());
+			panel.updateList();
 		}
 	}
 
@@ -633,6 +664,8 @@ public class WorldHopperPlugin extends Plugin
 
 		quickHopTargetWorld = rsWorld;
 		displaySwitcherAttempts = 0;
+
+		addToHistory(worldId);
 	}
 
 	@Subscribe

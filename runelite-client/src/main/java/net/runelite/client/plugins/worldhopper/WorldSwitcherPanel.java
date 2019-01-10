@@ -24,17 +24,15 @@
  */
 package net.runelite.client.plugins.worldhopper;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import java.util.stream.Collectors;
+import javax.swing.*;
+import javax.swing.border.Border;
+
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -51,6 +49,7 @@ class WorldSwitcherPanel extends PluginPanel
 	private static final int PING_COLUMN_WIDTH = 47;
 
 	private final JPanel listContainer = new JPanel();
+	private final JPanel histContainer = new JPanel();
 
 	private WorldTableHeader worldHeader;
 	private WorldTableHeader playersHeader;
@@ -61,6 +60,7 @@ class WorldSwitcherPanel extends PluginPanel
 	private boolean ascendingOrder = true;
 
 	private ArrayList<WorldTableRow> rows = new ArrayList<>();
+	private ArrayList<WorldTableRow> histRows = new ArrayList<>();
 	private WorldHopperPlugin plugin;
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
@@ -71,11 +71,75 @@ class WorldSwitcherPanel extends PluginPanel
 		setLayout(new DynamicGridLayout(0, 1));
 
 		JPanel headerContainer = buildHeader();
+		JPanel headerContainer2 = buildHistoryHeader();
 
 		listContainer.setLayout(new GridLayout(0, 1));
+		histContainer.setLayout(new GridLayout(0, 1));
 
-		add(headerContainer);
-		add(listContainer);
+		// Constraints for GB Layout
+		GridBagConstraints listConst = new GridBagConstraints();
+		listConst.gridx = 0;
+		listConst.gridy = 1;
+		listConst.fill = GridBagConstraints.HORIZONTAL;
+		GridBagConstraints headConst = new GridBagConstraints();
+		headConst.gridx = 0;
+		headConst.gridy = 0;
+		headConst.fill = GridBagConstraints.HORIZONTAL;
+		GridBagConstraints resetConst = new GridBagConstraints();
+		resetConst.gridx = 0;
+		resetConst.gridy = 2;
+		resetConst.fill = GridBagConstraints.HORIZONTAL;
+
+		// Border so that the scrollbar doesn't go over ping
+		Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 5);
+		
+		// Clear history button
+		JButton resetBtn = new JButton("Clear History");
+		resetBtn.addActionListener(e -> {
+			plugin.clearHistory();
+			plugin.addToHistory();
+			updateList();
+		});
+
+		// World Selector page
+		JPanel worldPanel = new JPanel();
+		worldPanel.setBorder(paddingBorder);
+		worldPanel.setLayout(new GridBagLayout());
+		worldPanel.add(headerContainer, headConst);
+		worldPanel.add(listContainer, listConst);
+
+		// History page
+		JPanel histPanel = new JPanel();
+		histPanel.setBorder(paddingBorder);
+		histPanel.setLayout(new GridBagLayout());
+		histPanel.add(headerContainer2, headConst);
+		histPanel.add(histContainer, listConst);
+		histPanel.add(resetBtn, resetConst);
+
+		JTabbedPane worldTabs = new JTabbedPane();
+		worldTabs.addTab("Worlds", worldPanel);
+		worldTabs.addTab("History", histPanel);
+
+		// This is a fix for preventing stretching of WorldTableRows
+		worldTabs.addChangeListener(e -> {
+			switch (worldTabs.getSelectedIndex())
+			{
+				case 0:
+					histPanel.remove(histContainer);
+					if (worldPanel.getComponentCount() < 2) {
+						worldPanel.add(listContainer, listConst);
+					}
+					break;
+				case 1:
+					worldPanel.remove(listContainer);
+					if (histPanel.getComponentCount() < 3) {
+						histPanel.add(histContainer, listConst);
+					}
+					break;
+			}
+		});
+
+		add(worldTabs);
 	}
 
 	void switchCurrentHighlight(int newWorld, int lastWorld)
@@ -91,11 +155,33 @@ class WorldSwitcherPanel extends PluginPanel
 				row.recolour(false);
 			}
 		}
+
+		for (WorldTableRow row : histRows)
+		{
+			if (row.getWorld().getId() == newWorld)
+			{
+				row.recolour(true);
+			}
+			else if (row.getWorld().getId() == lastWorld)
+			{
+				row.recolour(false);
+			}
+		}
 	}
 
 	void updateListData(Map<Integer, Integer> worldData)
 	{
 		for (WorldTableRow worldTableRow : rows)
+		{
+			World world = worldTableRow.getWorld();
+			Integer playerCount = worldData.get(world.getId());
+			if (playerCount != null)
+			{
+				worldTableRow.updatePlayerCount(playerCount);
+			}
+		}
+
+		for (WorldTableRow worldTableRow : histRows)
 		{
 			World world = worldTableRow.getWorld();
 			Integer playerCount = worldData.get(world.getId());
@@ -129,6 +215,21 @@ class WorldSwitcherPanel extends PluginPanel
 				break;
 			}
 		}
+
+		for (WorldTableRow worldTableRow : histRows)
+		{
+			if (worldTableRow.getWorld().getId() == world)
+			{
+				worldTableRow.setPing(ping);
+
+				// If the panel is sorted by ping, re-sort it
+				if (orderIndex == WorldOrder.PING)
+				{
+					updateList();
+				}
+				break;
+			}
+		}
 	}
 
 	void hidePing()
@@ -137,11 +238,21 @@ class WorldSwitcherPanel extends PluginPanel
 		{
 			worldTableRow.hidePing();
 		}
+
+		for (WorldTableRow worldTableRow : histRows)
+		{
+			worldTableRow.hidePing();
+		}
 	}
 
 	void showPing()
 	{
 		for (WorldTableRow worldTableRow : rows)
+		{
+			worldTableRow.showPing();
+		}
+
+		for (WorldTableRow worldTableRow : histRows)
 		{
 			worldTableRow.showPing();
 		}
@@ -180,21 +291,66 @@ class WorldSwitcherPanel extends PluginPanel
 		});
 
 		listContainer.removeAll();
+		histContainer.removeAll();
 
+		Map<String, String> history = plugin.getHistory();
+		Map<String, String> matchedHist = new HashMap<>();
 		for (int i = 0; i < rows.size(); i++)
 		{
 			WorldTableRow row = rows.get(i);
 			row.setBackground(i % 2 == 0 ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 			listContainer.add(row);
+
+			String worldNum = String.valueOf(row.getWorld().getId());
+			if (history.containsKey(worldNum))
+			{
+				// Add toa  list that we can sort later
+				matchedHist.put(worldNum, history.get(worldNum));
+			}
+		}
+
+		// Sort by ascending
+		matchedHist = matchedHist.entrySet().stream()
+				.sorted(Map.Entry.<String, String>comparingByValue().reversed())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+						(e1, e2) -> e1, LinkedHashMap::new));
+
+		// Add matched rows to history list
+		Iterator it = matchedHist.entrySet().iterator();
+		int histRowCount = 0;
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry)it.next();
+			for (WorldTableRow r : rows)
+			{
+				WorldTableRow histRow = r;
+				histRow.setBackground(histRowCount % 2 == 0 ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
+				if (String.valueOf(r.getWorld().getId()).equals(pair.getKey()))
+				{
+					histContainer.add(r);
+					histRowCount++;
+					break;
+				}
+			}
+			it.remove();
 		}
 
 		listContainer.revalidate();
 		listContainer.repaint();
+		histContainer.revalidate();
+		histContainer.repaint();
 	}
 
 	void updateFavoriteMenu(int world, boolean favorite)
 	{
 		for (WorldTableRow row : rows)
+		{
+			if (row.getWorld().getId() == world)
+			{
+				row.setFavoriteMenu(favorite);
+			}
+		}
+
+		for (WorldTableRow row : histRows)
 		{
 			if (row.getWorld().getId() == world)
 			{
@@ -210,6 +366,10 @@ class WorldSwitcherPanel extends PluginPanel
 			row.setFavoriteMenu(false);
 		}
 
+		for (WorldTableRow row : histRows)
+		{
+			row.setFavoriteMenu(false);
+		}
 	}
 
 	void populate(List<World> worlds)
@@ -255,6 +415,35 @@ class WorldSwitcherPanel extends PluginPanel
 	/**
 	 * Builds the entire table header.
 	 */
+	private JPanel buildHistoryHeader()
+	{
+		JPanel header = new JPanel(new BorderLayout());
+		JPanel leftSide = new JPanel(new BorderLayout());
+		JPanel rightSide = new JPanel(new BorderLayout());
+
+		WorldTableHeader pingHeader = new WorldTableHeader("Ping", false, ascendingOrder, plugin::refresh);
+		pingHeader.setPreferredSize(new Dimension(PING_COLUMN_WIDTH, 0));
+
+		WorldTableHeader worldHeader = new WorldTableHeader("World", false, ascendingOrder, plugin::refresh);
+		worldHeader.setPreferredSize(new Dimension(WORLD_COLUMN_WIDTH, 0));
+
+		WorldTableHeader playersHeader = new WorldTableHeader("#", false, ascendingOrder, plugin::refresh);
+		playersHeader.setPreferredSize(new Dimension(PLAYERS_COLUMN_WIDTH, 0));
+
+		WorldTableHeader activityHeader = new WorldTableHeader("Activity", false, ascendingOrder, plugin::refresh);
+
+		leftSide.add(worldHeader, BorderLayout.WEST);
+		leftSide.add(playersHeader, BorderLayout.CENTER);
+
+		rightSide.add(activityHeader, BorderLayout.CENTER);
+		rightSide.add(pingHeader, BorderLayout.EAST);
+
+		header.add(leftSide, BorderLayout.WEST);
+		header.add(rightSide, BorderLayout.CENTER);
+
+		return header;
+	}
+
 	private JPanel buildHeader()
 	{
 		JPanel header = new JPanel(new BorderLayout());
@@ -342,23 +531,23 @@ class WorldSwitcherPanel extends PluginPanel
 	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite)
 	{
 		WorldTableRow row = new WorldTableRow(world, current, favorite,
-			world1 ->
-			{
-				plugin.hopTo(world1);
-			},
-			(world12, add) ->
-			{
-				if (add)
+				world1 ->
 				{
-					plugin.addToFavorites(world12);
-				}
-				else
+					plugin.hopTo(world1);
+				},
+				(world12, add) ->
 				{
-					plugin.removeFromFavorites(world12);
-				}
+					if (add)
+					{
+						plugin.addToFavorites(world12);
+					}
+					else
+					{
+						plugin.removeFromFavorites(world12);
+					}
 
-				updateList();
-			}
+					updateList();
+				}
 		);
 		row.setBackground(stripe ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 		return row;
