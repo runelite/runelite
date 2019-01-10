@@ -73,17 +73,16 @@ public class MiningWorldHopperOverlay extends Overlay
 			MiningWorld world = tracker.getTrackedWorlds().get(worldID);
 			for (TileObject o : new ArrayList<>(world.getRocks().keySet()))
 			{
-				// Go through every rock stored in this specific world
 				MinedRock rock = world.getRocks().get(o);
+				// If this rock has respawned & we've passed the config defined timeout, then remove this rock
 				if (rock.asSecondsNegative() < 0 - config.trackTimeout())
 				{
-					// If this rock has respawned & we've passed the config defined timeout, then remove this rock
 					world.getRocks().remove(o);
 				}
 			}
+			// If every rock mined has respawned & the timeout passed, remove this world from the overlay
 			if (world.getRocks().size() == 0)
 			{
-				// If every rock mined has respawned & the timeout passed, remove this world from the overlay
 				tracker.getTrackedWorlds().remove(worldID);
 			}
 		}

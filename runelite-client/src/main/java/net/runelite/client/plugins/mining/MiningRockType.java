@@ -141,7 +141,5 @@ public enum MiningRockType
 
 		@Getter(AccessLevel.PACKAGE)
 		private final MiningRockType rockType;
-
 	}
-
 }

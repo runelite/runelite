@@ -105,6 +105,7 @@ public class MiningPlugin extends Plugin
 
 	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
 	private static final int P2P_MINING_GUILD_REGION = 12183;
+	private final static int MINING_GUILD_RESPAWN_RATE_HALVE_Y = 9727;
 
 	@Override
 	protected void startUp()
@@ -175,16 +176,16 @@ public class MiningPlugin extends Plugin
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		Duration timeSinceStart = Duration.between(session.getIgnoreSpawn(), Instant.now());
+		// Ignore anything spawned within 1 second of logging in or changing regions (prevents timers appearing on already mined rocks)
 		if (timeSinceStart.getSeconds() > 1)
 		{
-			// Ignore anything spawned within 1 second of logging in or changing regions (prevents timers appearing on already mined rocks)
 			GameObject object = event.getGameObject();
 			MiningRockType rock = MiningRockType.getTypeFromID(object.getId());
 			if (rock != null && miningLevel >= rock.getRequiredLevel())
 			{
 				if (!ores.containsKey(object))
 				{
-					ores.put(object, new MinedRock(rock, checkInMiningGuildPay2Play(object.getWorldLocation())));
+					ores.put(object, new MinedRock(rock, isInMiningGuildPay2Play(object.getWorldLocation())));
 				}
 			}
 		}
@@ -194,16 +195,16 @@ public class MiningPlugin extends Plugin
 	public void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		Duration timeSinceStart = Duration.between(session.getIgnoreSpawn(), Instant.now());
+		// Ignore anything spawned within 1 second of logging in or changing regions (prevents timers appearing on already mined rocks)
 		if (timeSinceStart.getSeconds() > 1)
 		{
-			// Ignore anything spawned within 1 second of logging in or changing regions (prevents timers appearing on already mined rocks)
 			WallObject object = event.getWallObject();
 			MiningRockType rock = MiningRockType.getTypeFromID(object.getId());
 			if (rock != null && miningLevel >= rock.getRequiredLevel())
 			{
 				if (!ores.containsKey(object))
 				{
-					ores.put(object, new MinedRock(rock, checkInMiningGuildPay2Play(object.getWorldLocation())));
+					ores.put(object, new MinedRock(rock, isInMiningGuildPay2Play(object.getWorldLocation())));
 				}
 			}
 		}
@@ -260,9 +261,9 @@ public class MiningPlugin extends Plugin
 			{
 				MiningWorld track = miningTracker.getTrackedWorlds().get(world);
 				track.clearNegatives();
+				// Load all the tracked ores in this world into the current session. Causing their respawn times to be rendered
 				for (TileObject o : track.getRocks().keySet())
 				{
-					// Load all the tracked ores in this world into the current session. Causing their respawn times to be rendered
 					ores.put(o, track.getRocks().get(o));
 				}
 				// We're on this world now, so don't track it in the world tracker anymore
@@ -328,7 +329,7 @@ public class MiningPlugin extends Plugin
 	 *
 	 * @return 		If player is in the motherloade mine
 	 */
-	public boolean checkInMlm()
+	public boolean isInMlm()
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -354,7 +355,7 @@ public class MiningPlugin extends Plugin
 	 * @param point		The world point to check
 	 * @return			True if within, else false if outside
 	 */
-	public boolean checkInMiningGuildPay2Play(WorldPoint point)
+	public boolean isInMiningGuildPay2Play(WorldPoint point)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -366,8 +367,7 @@ public class MiningPlugin extends Plugin
 		{
 			if (region == P2P_MINING_GUILD_REGION)
 			{
-				// 9727 = World location at which rocks respawn twice as fast
-				return (point.getY() <= 9727);
+				return (point.getY() <= MINING_GUILD_RESPAWN_RATE_HALVE_Y);
 			}
 		}
 		return false;

@@ -92,9 +92,9 @@ public class MiningOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.disableInMLM() && plugin.checkInMlm())
+		// Prevents conflicts with the motherloade plugin
+		if (config.disableInMLM() && plugin.isInMlm())
 		{
-			// Prevents conflicts with the motherloade plugin
 			return null;
 		}
 
