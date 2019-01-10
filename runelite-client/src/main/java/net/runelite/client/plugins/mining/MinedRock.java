@@ -37,11 +37,11 @@ public class MinedRock
 
 	private final long maxRespawnTime;
 
-	public MinedRock(MiningRockType type)
+	public MinedRock(MiningRockType type, boolean halve)
 	{
 		this.type = type;
-		this.respawnTime = System.currentTimeMillis() + (int)(type.getRespawnTime() * 1000);
-		this.maxRespawnTime = type.getMaxRespawnTime() == -1 ? -1 : System.currentTimeMillis() + (int)(type.getMaxRespawnTime() * 1000);
+		this.respawnTime = System.currentTimeMillis() + (int)((halve ? type.getRespawnTime() / 2 : type.getRespawnTime()) * 1000);
+		this.maxRespawnTime = type.getMaxRespawnTime() == -1 ? -1 : System.currentTimeMillis() + (int)((halve ? type.getMaxRespawnTime() / 2 : type.getMaxRespawnTime()) * 1000);
 	}
 
 	/**

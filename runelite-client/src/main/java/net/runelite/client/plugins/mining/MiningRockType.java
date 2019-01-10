@@ -67,7 +67,7 @@ public enum MiningRockType
 	MITHRIL("Mithril", 55, 119.5, -1, false, true, new int[] {ROCKS_7459, ROCKS_7492}),
 	ADAMANTITE("Adamantite", 70, 239.5, -1, false, true, new int[] {ROCKS_7460, ROCKS_7493}),
 	RUNITE("Runite", 85, 720, -1, false, true, new int[] {ROCKS_7461, ROCKS_7494}),
-	AMETHYST("Amethyst", 92, 75, -1, true, false, new int[] {EMPTY_WALL}),
+	AMETHYST("Amethyst", 92, 150, -1, true, false, new int[] {EMPTY_WALL}),
 	PAY_DIRT("Pay-Dirt", 30, 95, 125, true, false, new int[] {DEPLETED_VEIN_26665, DEPLETED_VEIN_26666, DEPLETED_VEIN_26667, DEPLETED_VEIN_26668});
 
 	// Name to check for in chat & to display to player

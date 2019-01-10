@@ -36,6 +36,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
@@ -103,6 +104,7 @@ public class MiningPlugin extends Plugin
 	private MiningWorldTracker miningTracker;
 
 	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
+	private static final int P2P_MINING_GUILD_REGION = 12183;
 
 	@Override
 	protected void startUp()
@@ -183,7 +185,7 @@ public class MiningPlugin extends Plugin
 				// Only display if player can actually mine the rock
 				if (!ores.containsKey(object))
 				{
-					ores.put(object, new MinedRock(rock));
+					ores.put(object, new MinedRock(rock, checkInMiningGuildPay2Play(object.getWorldLocation())));
 				}
 			}
 		}
@@ -203,7 +205,7 @@ public class MiningPlugin extends Plugin
 				// Only display if player can actually mine the rock
 				if (!ores.containsKey(object))
 				{
-					ores.put(object, new MinedRock(rock));
+					ores.put(object, new MinedRock(rock, checkInMiningGuildPay2Play(object.getWorldLocation())));
 				}
 			}
 		}
@@ -348,6 +350,30 @@ public class MiningPlugin extends Plugin
 		}
 
 		return true;
+	}
+
+	/**
+	 * Checks if a point in the world is within the pay to play area of the mining guild
+	 * @param point		The world point to check
+	 * @return			True if within, else false if outside
+	 */
+	public boolean checkInMiningGuildPay2Play(WorldPoint point)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return false;
+		}
+
+		int[] currentMapRegions = client.getMapRegions();
+		for (int region : currentMapRegions)
+		{
+			if (region == P2P_MINING_GUILD_REGION)
+			{
+				// 9727 = World location at which rocks respawn twice as fast
+				return (point.getY() <= 9727);
+			}
+		}
+		return false;
 	}
 
 }
