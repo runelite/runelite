@@ -347,7 +347,7 @@ public class Hooks implements Callbacks
 					: RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			stretchedGraphics.drawImage(image, 0, 0, stretchedDimensions.width, stretchedDimensions.height, null);
 
-			finalImage = image = stretchedImage;
+			finalImage = stretchedImage;
 		}
 		else
 		{
@@ -355,9 +355,27 @@ public class Hooks implements Callbacks
 		}
 
 		// Draw the image onto the game canvas
-		graphics.drawImage(image, 0, 0, client.getCanvas());
+		graphics.drawImage(finalImage, 0, 0, client.getCanvas());
 
-		drawManager.processDrawComplete(() -> finalImage);
+		// finalImage is backed by the client buffer which will change soon. make a copy
+		// so that callbacks can safely use it later from threads.
+		drawManager.processDrawComplete(() -> copy(finalImage));
+	}
+
+	/**
+	 * Copy an image
+	 * @param src
+	 * @return
+	 */
+	private static Image copy(Image src)
+	{
+		final int width = src.getWidth(null);
+		final int height = src.getHeight(null);
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		Graphics graphics = image.getGraphics();
+		graphics.drawImage(src, 0, 0, width, height, null);
+		graphics.dispose();
+		return image;
 	}
 
 	@Override

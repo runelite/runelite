@@ -361,7 +361,7 @@ public class ImageUtil
 	 * @param color The color with which to fill pixels.
 	 * @return      The given image with all non-transparent pixels set to the given color.
 	 */
-	static BufferedImage fillImage(final BufferedImage image, final Color color)
+	public static BufferedImage fillImage(final BufferedImage image, final Color color)
 	{
 		return fillImage(image, color, ColorUtil::isNotFullyTransparent);
 	}

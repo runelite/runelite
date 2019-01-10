@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#version 330
 
-layout (location = 0) out vec4 color;
+package net.runelite.client.plugins.objectindicators;
 
-uniform sampler2D tex;
+import java.awt.Color;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-in vec2 TexCoord;
-
-void main()
+@ConfigGroup("objectindicators")
+public interface ObjectIndicatorsConfig extends Config
 {
-	vec4 c = texture(tex, TexCoord);
-	color = vec4(c.rgb * c.a, c.a);
+	@ConfigItem(
+		keyName = "markerColor",
+		name = "Marker color",
+		description = "Configures the color of object marker"
+	)
+	default Color markerColor()
+	{
+		return Color.YELLOW;
+	}
 }

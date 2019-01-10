@@ -57,16 +57,14 @@ public class DailyTasksPlugin extends Plugin
 	private static final String HERB_BOX_MESSAGE = "You have herb boxes waiting to be collected at NMZ.";
 	private static final int HERB_BOX_MAX = 15;
 	private static final int HERB_BOX_COST = 9500;
-
 	private static final String STAVES_MESSAGE = "You have battlestaves waiting to be collected from Zaff.";
-
 	private static final String ESSENCE_MESSAGE = "You have essence waiting to be collected from Wizard Cromperty.";
-
 	private static final String RUNES_MESSAGE = "You have random runes waiting to be collected from Lundail.";
-
 	private static final String SAND_MESSAGE = "You have sand waiting to be collected from Bert.";
 	private static final int SAND_QUEST_COMPLETE = 160;
-
+	private static final String FLAX_MESSAGE = "You have bowstrings waiting to be converted from flax from the Flax keeper.";
+	private static final String BONEMEAL_MESSAGE = "You have bonemeal and slime waiting to be collected from Robin.";
+	private static final int BONEMEAL_PER_DIARY = 13;
 	private static final String RELOG_MESSAGE = " (Requires relog)";
 
 	@Inject
@@ -140,6 +138,16 @@ public class DailyTasksPlugin extends Plugin
 			if (config.showSand())
 			{
 				checkSand(dailyReset);
+			}
+
+			if (config.showFlax())
+			{
+				checkFlax(dailyReset);
+			}
+
+			if (config.showBonemeal())
+			{
+				checkBonemeal(dailyReset);
 			}
 		}
 	}
@@ -216,6 +224,46 @@ public class DailyTasksPlugin extends Plugin
 			else if (dailyReset)
 			{
 				sendChatMessage(SAND_MESSAGE + RELOG_MESSAGE);
+			}
+		}
+	}
+
+	private void checkFlax(boolean dailyReset)
+	{
+		if (client.getVar(Varbits.DIARY_KANDARIN_EASY) == 1)
+		{
+			if (client.getVar(Varbits.DAILY_FLAX_STATE) == 0)
+			{
+				sendChatMessage(FLAX_MESSAGE);
+			}
+			else if (dailyReset)
+			{
+				sendChatMessage(FLAX_MESSAGE + RELOG_MESSAGE);
+			}
+		}
+	}
+
+	private void checkBonemeal(boolean dailyReset)
+	{
+		if (client.getVar(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
+		{
+			int collected = client.getVar(Varbits.DAILY_BONEMEAL_STATE);
+			int max = BONEMEAL_PER_DIARY;
+			if (client.getVar(Varbits.DIARY_MORYTANIA_HARD) == 1)
+			{
+				max += BONEMEAL_PER_DIARY;
+				if (client.getVar(Varbits.DIARY_MORYTANIA_ELITE) == 1)
+				{
+					max += BONEMEAL_PER_DIARY;
+				}
+			}
+			if (collected < max)
+			{
+				sendChatMessage(BONEMEAL_MESSAGE);
+			}
+			else if (dailyReset)
+			{
+				sendChatMessage(BONEMEAL_MESSAGE + RELOG_MESSAGE);
 			}
 		}
 	}

@@ -104,6 +104,7 @@ public class ScreenshotPluginTest
 		when(screenshotConfig.screenshotRewards()).thenReturn(true);
 		when(screenshotConfig.screenshotLevels()).thenReturn(true);
 		when(screenshotConfig.screenshotValuableDrop()).thenReturn(true);
+		when(screenshotConfig.screenshotUntradeableDrop()).thenReturn(true);
 	}
 
 	@Test

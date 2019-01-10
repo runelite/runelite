@@ -151,19 +151,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int glUiVertexShader;
 	private int glUiFragmentShader;
 
-	private int glUiPremulProgram;
-	private int glUiPremulVertexShader;
-	private int glUiPremulFragmentShader;
-
 	private int vaoUiHandle;
 	private int vboUiHandle;
 
 	private int fboSceneHandle;
 	private int texSceneHandle;
 	private int rboSceneHandle;
-
-	private int fboUiHandle;
-	private int texUiHandle;
 
 	// scene vertex buffer id
 	private int bufferId;
@@ -225,7 +218,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniProjectionMatrix;
 	private int uniBrightness;
 	private int uniTex;
-	private int uniTexPremul;
 	private int uniTextures;
 	private int uniTextureOffsets;
 	private int uniBlockSmall;
@@ -389,7 +381,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				shutdownInterfaceTexture();
 				shutdownProgram();
 				shutdownVao();
-				shutdownUiFBO();
 				shutdownSceneFbo();
 			}
 
@@ -507,14 +498,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			null,
 			inputStreamToString(getClass().getResourceAsStream("fragui.glsl")));
 
-		glUiPremulProgram = gl.glCreateProgram();
-		glUiPremulVertexShader = gl.glCreateShader(gl.GL_VERTEX_SHADER);
-		glUiPremulFragmentShader = gl.glCreateShader(gl.GL_FRAGMENT_SHADER);
-		GLUtil.loadShaders(gl, glUiPremulProgram, glUiPremulVertexShader, -1, glUiPremulFragmentShader,
-				inputStreamToString(getClass().getResourceAsStream("vertuipremul.glsl")),
-				null,
-				inputStreamToString(getClass().getResourceAsStream("fraguipremul.glsl")));
-
 		initUniforms();
 	}
 
@@ -525,7 +508,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniSmoothBanding = gl.glGetUniformLocation(glProgram, "smoothBanding");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
-		uniTexPremul = gl.glGetUniformLocation(glUiPremulProgram, "tex");
 		uniTextures = gl.glGetUniformLocation(glProgram, "textures");
 		uniTextureOffsets = gl.glGetUniformLocation(glProgram, "textureOffsets");
 
@@ -578,17 +560,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		gl.glDeleteProgram(glUiProgram);
 		glUiProgram = -1;
-
-		///
-
-		gl.glDeleteShader(glUiPremulVertexShader);
-		glUiPremulVertexShader = -1;
-
-		gl.glDeleteShader(glUiPremulFragmentShader);
-		glUiPremulFragmentShader = -1;
-
-		gl.glDeleteProgram(glUiPremulProgram);
-		glUiPremulProgram = -1;
 	}
 
 	private void initVao()
@@ -718,48 +689,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			glDeleteRenderbuffers(gl, rboSceneHandle);
 			rboSceneHandle = -1;
-		}
-	}
-
-	private void initUiFBO(int width, int height)
-	{
-		// Create and bind the FBO
-		fboUiHandle = glGenFrameBuffer(gl);
-		gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, fboUiHandle);
-
-		// Create the texture to render to
-		texUiHandle = glGenTexture(gl);
-		gl.glBindTexture(gl.GL_TEXTURE_2D, texUiHandle);
-		gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, width, height, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, null);
-
-		// Since this is an intermediate the same size as the input, just use nearest neighbors
-		gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST);
-		gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
-
-		// Attach the texture to the framebuffer
-		gl.glFramebufferTexture(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, texUiHandle, 0);
-
-		// Specify that we're going to draw onto color attachment 0
-		int drawLocations[] = { gl.GL_COLOR_ATTACHMENT0 };
-		gl.glDrawBuffers(1, drawLocations, 0);
-
-		// Reset
-		gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0);
-		gl.glBindTexture(gl.GL_TEXTURE_2D, 0);
-	}
-
-	private void shutdownUiFBO()
-	{
-		if (fboUiHandle != -1)
-		{
-			glDeleteFrameBuffer(gl, fboUiHandle);
-			fboUiHandle = -1;
-		}
-
-		if (texUiHandle != -1)
-		{
-			glDeleteTexture(gl, texUiHandle);
-			texUiHandle = -1;
 		}
 	}
 
@@ -1181,16 +1110,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int width = bufferProvider.getWidth();
 		final int height = bufferProvider.getHeight();
 
-		// Don't blend on the login screen because the fires overflow their alphas.
-		final GameState gameState = client.getGameState();
-		if (gameState == GameState.LOGGED_IN)
-		{
-			gl.glEnable(gl.GL_BLEND);
-		}
-		else
-		{
-			gl.glDisable(gl.GL_BLEND);
-		}
+		gl.glEnable(gl.GL_BLEND);
 
 		vertexBuffer.clear(); // reuse vertex buffer for interface
 		vertexBuffer.ensureCapacity(pixels.length);
@@ -1199,7 +1119,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		interfaceBuffer.put(pixels);
 		vertexBuffer.flip();
 
-		gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(gl.GL_ONE, gl.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
 
 		if (canvasWidth != lastCanvasWidth || canvasHeight != lastCanvasHeight)
@@ -1207,49 +1127,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, width, height, 0, gl.GL_BGRA, gl.GL_UNSIGNED_INT_8_8_8_8_REV, interfaceBuffer);
 			lastCanvasWidth = canvasWidth;
 			lastCanvasHeight = canvasHeight;
-
-			shutdownUiFBO();
-			initUiFBO(width, height);
 		}
 		else
 		{
 			gl.glTexSubImage2D(gl.GL_TEXTURE_2D, 0, 0, 0, width, height, gl.GL_BGRA, gl.GL_UNSIGNED_INT_8_8_8_8_REV, interfaceBuffer);
 		}
 
-		// First pass: pre-multiply alpha. But only do it if we're blending.
-		if (gameState == GameState.LOGGED_IN && client.isStretchedEnabled() && !client.isStretchedFast())
-		{
-			// Setup
-			gl.glDisable(gl.GL_BLEND);
-			gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, fboUiHandle);
-			gl.glViewport(0, 0, width, height);
-			gl.glClear(gl.GL_COLOR_BUFFER_BIT);
+		gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
 
-			// Set up uniforms
-			gl.glUseProgram(glUiPremulProgram);
-			gl.glUniform1i(uniTexPremul, 0);
-
-			// Do render call
-			gl.glBindVertexArray(vaoUiHandle);
-			gl.glDrawArrays(gl.GL_TRIANGLE_FAN, 0, 4);
-
-			// Cleanup
-			gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0);
-			gl.glEnable(gl.GL_BLEND);
-
-			// Bind the texture we just drew to for use in pass 2
-			gl.glBindTexture(gl.GL_TEXTURE_2D, texUiHandle);
-
-			// Change the blend function to use pre-multiplied alpha
-			gl.glBlendFunc(gl.GL_ONE, gl.GL_ONE_MINUS_SRC_ALPHA);
-		}
-		else
-		{
-			gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
-		}
-
-
-		// Second pass: render onto the screen
 		if (client.isStretchedEnabled())
 		{
 			Dimension dim = client.getStretchedDimensions();
