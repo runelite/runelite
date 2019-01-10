@@ -199,7 +199,8 @@ class ProfilesPanel extends PluginPanel
 
 	void redrawProfiles()
 	{
-		Arrays.stream(profilesPanel.getComponents()).forEach(profilesPanel::remove);
+		profilesPanel.removeAll();
+		c.gridy = 0;
 		addAccounts(profilesConfig.profilesData());
 	}
 
