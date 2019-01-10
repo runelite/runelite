@@ -222,9 +222,12 @@ public class GroundItemsPlugin extends Plugin
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
 		}
 
-		boolean isHighlighted = config.highlightedColor().equals(getHighlighted(groundItem.getName(),
-				groundItem.getGePrice(), groundItem.getHaPrice()));
-		if (config.notifyHighlightedDrops() && isHighlighted)
+		boolean shouldNotify = !config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
+			groundItem.getName(),
+			groundItem.getGePrice(),
+			groundItem.getHaPrice()));
+
+		if (config.notifyHighlightedDrops() && shouldNotify)
 		{
 			notifyHighlightedItem(groundItem);
 		}
@@ -294,6 +297,16 @@ public class GroundItemsPlugin extends Plugin
 			if (groundItem != null)
 			{
 				groundItem.setMine(true);
+
+				boolean shouldNotify = config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
+					groundItem.getName(),
+					groundItem.getGePrice(),
+					groundItem.getHaPrice()));
+
+				if (config.notifyHighlightedDrops() && shouldNotify)
+				{
+					notifyHighlightedItem(groundItem);
+				}
 			}
 		}
 	}
