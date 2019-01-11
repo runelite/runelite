@@ -121,43 +121,34 @@ public class MiningOverlay extends Overlay
 		}
 
 		MiningSession session = plugin.getSession();
-		boolean hasSession = false;
 		if (session.getLastMined() != null)
 		{
 			Duration statTimeout = Duration.ofMinutes(config.statTimeout());
 			Duration sinceCut = Duration.between(session.getLastMined(), Instant.now());
 			if (sinceCut.compareTo(statTimeout) < 0)
 			{
-				hasSession = true;
-			}
-		}
-		else
-		{
-			return (config.showMiningState() && hasSession) ? panelComponent.render(graphics) : null;
-		}
-
-		if (!config.showMiningStats())
-		{
-			return (config.showMiningState() && hasSession) ? panelComponent.render(graphics) : null;
-		}
-
-		if (hasSession)
-		{
-			for (MiningRockType rock : MiningRockType.values())
-			{
-				if (session.showRockRespawnTimes(rock))
+				if (config.showMiningStats())
 				{
-					panelComponent.getChildren().add(LineComponent.builder()
-							.left(rock.getName() + " mined:")
-							.right(Integer.toString(session.getSessionStats().get(rock).getTotalMined()))
-							.build());
-					panelComponent.getChildren().add(LineComponent.builder()
-							.left(rock.getName() + "/hr:")
-							.right(session.getSessionStats().get(rock).getRecentMined() > 2 ? Integer.toString(session.getSessionStats().get(rock).getPerHour()) : "")
-							.build());
+					for (MiningRockType rock : MiningRockType.values())
+					{
+						if (session.showRockRespawnTimes(rock))
+						{
+							panelComponent.getChildren().add(LineComponent.builder()
+									.left(rock.getName() + " mined:")
+									.right(Integer.toString(session.getSessionStats().get(rock).getTotalMined()))
+									.build());
+							panelComponent.getChildren().add(LineComponent.builder()
+									.left(rock.getName() + "/hr:")
+									.right(session.getSessionStats().get(rock).getRecentMined() > 2 ? Integer.toString(session.getSessionStats().get(rock).getPerHour()) : "")
+									.build());
+						}
+					}
+				}
+				if (panelComponent.getChildren().size() > 0)
+				{
+					return panelComponent.render(graphics);
 				}
 			}
-			return panelComponent.render(graphics);
 		}
 		return null;
 	}

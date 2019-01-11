@@ -65,9 +65,9 @@ public class MiningWorldHopperOverlay extends Overlay
 	{
 		if (config.trackWorldRock() == MiningRockType.WorldRock.None)
 		{
-			// Check if user is tracking a rock across worlds, if none selected then exit here
 			return null;
 		}
+
 		MiningWorldTracker tracker = plugin.getMiningTracker();
 		for (int worldID : new ArrayList<>(tracker.getTrackedWorlds().keySet()))
 		{
@@ -80,13 +80,11 @@ public class MiningWorldHopperOverlay extends Overlay
 					world.getRocks().inverse().remove(rock);
 				}
 			}
-			// If every rock mined has respawned & the timeout passed, remove this world from the overlay
 			if (world.getRocks().size() == 0)
 			{
 				tracker.getTrackedWorlds().remove(worldID);
 			}
 		}
-
 		if (tracker.getTrackedWorlds().size() == 0)
 		{
 			return null;
