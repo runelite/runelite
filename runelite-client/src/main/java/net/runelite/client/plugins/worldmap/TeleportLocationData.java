@@ -162,6 +162,7 @@ enum TeleportLocationData
 	WESTERN_BANNER(TeleportType.OTHER, "Western Banner",  new WorldPoint(2329, 3685, 0), "western_banner_icon.png"),
 	RADAS_BLESSING_MOUNT_KARUULM(TeleportType.OTHER, "Rada's Blessing",  new WorldPoint(1311, 3795, 0), "radas_blessing_icon.png"),
 	RADAS_BLESSING_WOODLANG(TeleportType.OTHER, "Rada's Blessing",  new WorldPoint(1553, 3454, 0), "radas_blessing_icon.png"),
+
 	// Scrolls
 	DIGSITE_SCROLL(TeleportType.SCROLL, "Digsite Teleport", new WorldPoint(3324, 3412, 0), "scroll_teleport_icon.png"),
 	ELF_CAMP_SCROLL(TeleportType.SCROLL, "Elf Camp Teleport", new WorldPoint(2193, 3257, 0), "scroll_teleport_icon.png"),
