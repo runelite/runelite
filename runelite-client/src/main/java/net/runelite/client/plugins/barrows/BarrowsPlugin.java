@@ -26,8 +26,13 @@ package net.runelite.client.plugins.barrows;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
+
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -41,14 +46,18 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.WorldArea;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -61,6 +70,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.StackFormatter;
+
+import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 
 @PluginDescriptor(
 	name = "Barrows Brothers",
@@ -81,11 +92,55 @@ public class BarrowsPlugin extends Plugin
 
 	private static final Set<Integer> BARROWS_LADDERS = Sets.newHashSet(NullObjectID.NULL_20675, NullObjectID.NULL_20676, NullObjectID.NULL_20677);
 
+	private static final int TUNNEL_WIDGET_GROUP_ID = 229;
+	private static final String TUNNEL_MESSAGE = "You've found a hidden tunnel, do you want to enter?";
+
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> walls = new HashSet<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> ladders = new HashSet<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	@Nullable
+	private BarrowsBrothers tunnelBrother;
+
+	private static final Map<BarrowsBrothers, WorldArea> BARROWS_ROOMS = new HashMap<BarrowsBrothers, WorldArea>()
+	{
+		{
+			put(
+				BarrowsBrothers.AHRIM,
+				new WorldArea(3549, 9693, 13, 11, 3)
+			);
+			put(
+				BarrowsBrothers.DHAROK,
+				new WorldArea(3547, 9709, 13, 10, 3)
+			);
+			put(
+				BarrowsBrothers.GUTHAN,
+				new WorldArea(3533, 9699, 12, 9, 3)
+			);
+			put(
+				BarrowsBrothers.KARIL,
+				new WorldArea(3545, 9678, 12, 10, 3)
+			);
+			put(
+				BarrowsBrothers.TORAG,
+				new WorldArea(3564, 9682, 11, 10, 3)
+			);
+			put(
+				BarrowsBrothers.VERAC,
+				new WorldArea(3568, 9702, 11, 8, 3)
+			);
+		}
+	};
+
+	/**
+	 * When clicking on the sarcophagos and it says it's a tunnel, a widget with the message is loaded.
+	 * The text is set on the next game tick, this indicates that it needs to be checked on the next game tick.
+	 */
+	@Getter(AccessLevel.PRIVATE)
+	private boolean checkTunnel = false;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -202,10 +257,52 @@ public class BarrowsPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (!checkTunnel)
+		{
+			return;
+		}
+		checkTunnel = false;
+
+		Widget confirmationWidget = client.getWidget(TUNNEL_WIDGET_GROUP_ID, 0);
+		Widget[] staticChildren = confirmationWidget.getStaticChildren();
+
+		if (staticChildren.length == 0)
+		{
+			return;
+		}
+
+		Widget hiddenTunnel = staticChildren[0];
+
+		if (!hiddenTunnel.getText().equals(TUNNEL_MESSAGE))
+		{
+			return;
+		}
+
+		WorldPoint location = client.getLocalPlayer().getWorldLocation();
+		BARROWS_ROOMS.entrySet().stream().anyMatch((entry) ->
+			{
+				BarrowsBrothers brother = entry.getKey();
+				WorldArea worldArea = entry.getValue();
+
+				if (location.distanceTo(worldArea) == 0)
+				{
+					tunnelBrother = brother;
+					return true;
+				}
+				return false;
+			}
+		);
+	}
+
+	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && config.showChestValue())
 		{
+			tunnelBrother = null;
+
 			ItemContainer barrowsRewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
 			Item[] items = barrowsRewardContainer.getItems();
 			long chestPrice = 0;
@@ -227,6 +324,13 @@ public class BarrowsPlugin extends Plugin
 				.type(ChatMessageType.EXAMINE_ITEM)
 				.runeLiteFormattedMessage(message.build())
 				.build());
+		}
+		else if (event.getGroupId() == TUNNEL_WIDGET_GROUP_ID)
+		{
+			Widget confirmationWidget = client.getWidget(TUNNEL_WIDGET_GROUP_ID, 0);
+			Widget[] staticChildren = confirmationWidget.getStaticChildren();
+
+			checkTunnel = staticChildren.length > 0;
 		}
 	}
 }

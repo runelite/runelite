@@ -41,14 +41,16 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 public class BarrowsBrotherSlainOverlay extends Overlay
 {
 	private final Client client;
+	private final BarrowsPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private BarrowsBrotherSlainOverlay(Client client)
+	private BarrowsBrotherSlainOverlay(Client client, BarrowsPlugin plugin)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.client = client;
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -71,14 +73,41 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 
+		final BarrowsBrothers tunnelBrother = plugin.getTunnelBrother();
+
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
 			final boolean brotherSlain = client.getVar(brother.getKilledVarbit()) > 0;
-			String slain = brotherSlain ? "\u2713" : "\u2717";
+			final boolean isTunnel = brother == tunnelBrother;
+
+			final String icon;
+			final Color color;
+
+			if (brotherSlain)
+			{
+				icon = "\u2713";
+				color = Color.GREEN;
+			}
+			else
+			{
+				if (isTunnel)
+				{
+
+					icon = "\u26A0";
+					color = Color.ORANGE;
+				}
+				else
+				{
+
+					icon = "\u2717";
+					color = Color.RED;
+				}
+			}
+
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left(brother.getName())
-				.right(slain)
-				.rightColor(brotherSlain ? Color.GREEN : Color.RED)
+				.right(icon)
+				.rightColor(color)
 				.build());
 		}
 
