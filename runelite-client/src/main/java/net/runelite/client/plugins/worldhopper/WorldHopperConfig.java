@@ -99,6 +99,6 @@ public interface WorldHopperConfig extends Config
 	)
 	default boolean showHistory()
 	{
-		return true;
+		return false;
 	}
 }
