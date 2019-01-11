@@ -24,7 +24,13 @@
  */
 package net.runelite.mixins;
 
+import com.google.common.collect.ImmutableList;
 import net.runelite.api.Actor;
+import static net.runelite.api.ProjectileID.CANNONBALL;
+import static net.runelite.api.ProjectileID.DEMONIC_GORILLA_BOULDER;
+import static net.runelite.api.ProjectileID.DEMONIC_GORILLA_MAGIC;
+import static net.runelite.api.ProjectileID.DEMONIC_GORILLA_RANGED;
+import static net.runelite.api.ProjectileID.GRANITE_CANNONBALL;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.api.mixins.Inject;
@@ -39,6 +45,10 @@ import net.runelite.rs.api.RSProjectile;
 @Mixin(RSProjectile.class)
 public abstract class RSProjectileMixin implements RSProjectile
 {
+	private static final ImmutableList<Integer> graphicIDs = ImmutableList.of(
+		DEMONIC_GORILLA_RANGED, DEMONIC_GORILLA_MAGIC, DEMONIC_GORILLA_BOULDER,
+		CANNONBALL, GRANITE_CANNONBALL);
+
 	@Shadow("clientInstance")
 	private static RSClient client;
 
@@ -95,6 +105,12 @@ public abstract class RSProjectileMixin implements RSProjectile
 	@MethodHook("moveProjectile")
 	public void projectileMoved(int targetX, int targetY, int targetZ, int cycle)
 	{
+		// Don't send an event if the projectile id isn't used by a RuneLite plugin
+		if (!graphicIDs.contains(this.getId()))
+		{
+			return;
+		}
+
 		final LocalPoint position = new LocalPoint(targetX, targetY);
 		final ProjectileMoved projectileMoved = new ProjectileMoved();
 		projectileMoved.setProjectile(this);
