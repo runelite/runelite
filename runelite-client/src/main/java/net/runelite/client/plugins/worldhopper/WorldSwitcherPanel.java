@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.worldhopper;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
@@ -61,6 +62,8 @@ class WorldSwitcherPanel extends PluginPanel
 	private static final int PLAYERS_COLUMN_WIDTH = 40;
 	private static final int PING_COLUMN_WIDTH = 47;
 
+	private final JPanel headerContainer;
+	private final JPanel headerHistContainer;
 	private final JPanel listContainer = new JPanel();
 	private final JPanel histContainer = new JPanel();
 
@@ -83,80 +86,35 @@ class WorldSwitcherPanel extends PluginPanel
 		setBorder(null);
 		setLayout(new DynamicGridLayout(0, 1));
 
-		JPanel headerContainer = buildHeader();
-		JPanel headerContainer2 = buildHistoryHeader();
+		headerContainer = buildHeader();
+		headerHistContainer = buildHistoryHeader();
 
 		listContainer.setLayout(new GridLayout(0, 1));
 		histContainer.setLayout(new GridLayout(0, 1));
 
-		// Constraints for GB Layout
-		GridBagConstraints listConst = new GridBagConstraints();
-		listConst.gridx = 0;
-		listConst.gridy = 1;
-		listConst.fill = GridBagConstraints.HORIZONTAL;
-		GridBagConstraints headConst = new GridBagConstraints();
-		headConst.gridx = 0;
-		headConst.gridy = 0;
-		headConst.fill = GridBagConstraints.HORIZONTAL;
-		GridBagConstraints resetConst = new GridBagConstraints();
-		resetConst.gridx = 0;
-		resetConst.gridy = 2;
-		resetConst.fill = GridBagConstraints.HORIZONTAL;
+		updateLayout();
+	}
 
-		// Border so that the scrollbar doesn't go over ping
-		Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 5);
-
-		// Clear history button
-		JButton resetBtn = new JButton("Clear History");
-		resetBtn.addActionListener(e ->
+	void updateLayout()
+	{
+		if (this.getComponentCount() > 0)
 		{
-			plugin.clearHistory();
-			plugin.addToHistory();
-			updateList();
-		});
-
-		// World Selector page
-		JPanel worldPanel = new JPanel();
-		worldPanel.setBorder(paddingBorder);
-		worldPanel.setLayout(new GridBagLayout());
-		worldPanel.add(headerContainer, headConst);
-		worldPanel.add(listContainer, listConst);
-
-		// History page
-		JPanel histPanel = new JPanel();
-		histPanel.setBorder(paddingBorder);
-		histPanel.setLayout(new GridBagLayout());
-		histPanel.add(headerContainer2, headConst);
-		histPanel.add(histContainer, listConst);
-		histPanel.add(resetBtn, resetConst);
-
-		JTabbedPane worldTabs = new JTabbedPane();
-		worldTabs.addTab("Worlds", worldPanel);
-		worldTabs.addTab("History", histPanel);
-
-		// This is a fix for preventing stretching of WorldTableRows
-		worldTabs.addChangeListener(e ->
-		{
-			switch (worldTabs.getSelectedIndex())
+			for (Component c : this.getComponents())
 			{
-				case 0:
-					histPanel.remove(histContainer);
-					if (worldPanel.getComponentCount() < 2)
-					{
-						worldPanel.add(listContainer, listConst);
-					}
-					break;
-				case 1:
-					worldPanel.remove(listContainer);
-					if (histPanel.getComponentCount() < 3)
-					{
-						histPanel.add(histContainer, listConst);
-					}
-					break;
+				this.remove(c);
 			}
-		});
+		}
 
-		add(worldTabs);
+		if (plugin.showHistory())
+		{
+			Component tabs = createTabs();
+			add(tabs);
+		}
+		else
+		{
+			add(headerContainer);
+			add(listContainer);
+		}
 	}
 
 	void switchCurrentHighlight(int newWorld, int lastWorld)
@@ -356,6 +314,79 @@ class WorldSwitcherPanel extends PluginPanel
 		listContainer.repaint();
 		histContainer.revalidate();
 		histContainer.repaint();
+	}
+	
+	Component createTabs()
+	{
+		// Constraints for GB Layout
+		GridBagConstraints listConst = new GridBagConstraints();
+		listConst.gridx = 0;
+		listConst.gridy = 1;
+		listConst.fill = GridBagConstraints.HORIZONTAL;
+		GridBagConstraints headConst = new GridBagConstraints();
+		headConst.gridx = 0;
+		headConst.gridy = 0;
+		headConst.fill = GridBagConstraints.HORIZONTAL;
+		GridBagConstraints resetConst = new GridBagConstraints();
+		resetConst.gridx = 0;
+		resetConst.gridy = 2;
+		resetConst.fill = GridBagConstraints.HORIZONTAL;
+
+		// Border so that the scrollbar doesn't go over ping
+		Border paddingBorder = BorderFactory.createEmptyBorder(0, 0, 0, 5);
+
+		// Clear history button
+		JButton resetBtn = new JButton("Clear History");
+		resetBtn.addActionListener(e ->
+		{
+			plugin.clearHistory();
+			plugin.addToHistory();
+			updateList();
+		});
+
+		// World Selector page
+		JPanel worldPanel = new JPanel();
+		worldPanel.setBorder(paddingBorder);
+		worldPanel.setLayout(new GridBagLayout());
+		worldPanel.add(headerContainer, headConst);
+		worldPanel.add(listContainer, listConst);
+
+		// History page
+		JPanel histPanel = new JPanel();
+		histPanel.setBorder(paddingBorder);
+		histPanel.setLayout(new GridBagLayout());
+		histPanel.add(headerHistContainer, headConst);
+		histPanel.add(histContainer, listConst);
+		histPanel.add(resetBtn, resetConst);
+
+		JTabbedPane worldTabs = new JTabbedPane();
+		worldTabs.setName("tabs");
+		worldTabs.addTab("Worlds", worldPanel);
+		worldTabs.addTab("History", histPanel);
+
+		// This is a fix for preventing stretching of WorldTableRows
+		worldTabs.addChangeListener(e ->
+		{
+			switch (worldTabs.getSelectedIndex())
+			{
+				case 0:
+					histPanel.remove(histContainer);
+					if (worldPanel.getComponentCount() < 2)
+					{
+						worldPanel.add(listContainer, listConst);
+					}
+					break;
+				case 1:
+					worldPanel.remove(listContainer);
+					if (histPanel.getComponentCount() < 3)
+					{
+						histPanel.add(histContainer, listConst);
+					}
+					break;
+			}
+		});
+		
+		return worldTabs;
 	}
 
 	void updateFavoriteMenu(int world, boolean favorite)

@@ -250,8 +250,16 @@ public class WorldHopperPlugin extends Plugin
 						SwingUtilities.invokeLater(() -> panel.hidePing());
 					}
 					break;
+				case "showHistory":
+					panel.updateLayout();
+					break;
 			}
 		}
+	}
+
+	boolean showHistory()
+	{
+		return config.showHistory();
 	}
 
 	Map<String, String> getHistory()
