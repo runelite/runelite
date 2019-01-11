@@ -408,10 +408,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapPay())
 			{
 				swap("pay", option, target, true);
-				swap("pay (tree patch)", option, target, true);
-				swap("pay (celastrus tree)", option, target, true);
-				swap("pay (spirit tree)", option, target, true);
-				swap("pay (fruit tree)", option, target, true);
+				swap("pay (", option, target, false);
 			}
 
 			if (config.swapDecant())
