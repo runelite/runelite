@@ -100,7 +100,7 @@ public enum HotColdLocation
 	KANDARIN_WITCHHAVEN(new WorldPoint(2708, 3304, 0), KANDARIN, "Outside Witchaven, west of Jeb, Holgart, and Caroline."),
 	KANDARIN_NECRO_TOWER(new WorldPoint(2669, 3242, 0), KANDARIN, "Ground floor inside the Necromancer Tower. Easily accessed by using fairy ring code djp."),
 	KANDARIN_FIGHT_ARENA(new WorldPoint(2587, 3134, 0), KANDARIN, "South of the Fight Arena, north-west of the Nightmare Zone."),
-	KANDARIN_TREE_GNOME_VILLAGE(new WorldPoint(2526, 3160, 0), KANDARIN, "Tree Gnome Village, near the icon."),
+	KANDARIN_TREE_GNOME_VILLAGE(new WorldPoint(2526, 3160, 0), KANDARIN, "Tree Gnome Village, near the general store icon."),
 	KANDARIN_GRAVE_OF_SCORPIUS(new WorldPoint(2464, 3228, 0), KANDARIN, "Grave of Scorpius"),
 	KANDARIN_KHAZARD_BATTLEFIELD(new WorldPoint(2518, 3249, 0), KANDARIN, "Khazard Battlefield, in the small ruins south of tracker gnome 2."),
 	KANDARIN_WEST_ARDY(new WorldPoint(2533, 3320, 0), KANDARIN, "West Ardougne, near the staircase outside the Civic Office."),
@@ -169,7 +169,8 @@ public enum HotColdLocation
 	ZEAH_GOLDEN_FIELD_TAVERN(new WorldPoint(1718, 3647, 0), ZEAH, "South of The Golden Field tavern in the northern area of Great Kourend's Hosidius House."),
 	ZEAH_MESS_HALL(new WorldPoint(1658, 3621, 0), ZEAH, "East of Mess hall."),
 	ZEAH_WATSONS_HOUSE(new WorldPoint(1653, 3573, 0), ZEAH, "East of Watson's house."),
-	ZEAH_VANNAHS_FARM_STORE(new WorldPoint(1806, 3521, 0), ZEAH, "North of Vannah's Farm Store, between the chicken coop and willow trees.");
+	ZEAH_VANNAHS_FARM_STORE(new WorldPoint(1806, 3521, 0), ZEAH, "North of Vannah's Farm Store, between the chicken coop and willow trees."),
+	ZEAH_FARMING_GUILD(new WorldPoint(1227, 3712, 0), ZEAH, "South-west of the Farming Guild.");
 
 	private final WorldPoint worldPoint;
 	private final HotColdArea hotColdArea;
