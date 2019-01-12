@@ -24,17 +24,10 @@
  */
 package net.runelite.client.plugins.barrows;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import lombok.AccessLevel;
-import lombok.Getter;
+
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -70,6 +63,15 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.StackFormatter;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+
+import lombok.AccessLevel;
+import lombok.Getter;
+
 @PluginDescriptor(
 	name = "Barrows Brothers",
 	description = "Show helpful information for the Barrows minigame",
@@ -89,35 +91,14 @@ public class BarrowsPlugin extends Plugin
 
 	private static final Set<Integer> BARROWS_LADDERS = Sets.newHashSet(NullObjectID.NULL_20675, NullObjectID.NULL_20676, NullObjectID.NULL_20677);
 
-	private static final Map<BarrowsBrothers, Integer> BARROWS_SARCOPHAGUS = new HashMap<BarrowsBrothers, Integer>()
-	{
-		{
-			put(
-				BarrowsBrothers.AHRIM,
-				20770
-			);
-			put(
-				BarrowsBrothers.DHAROK,
-				20720
-			);
-			put(
-				BarrowsBrothers.GUTHAN,
-				20722
-			);
-			put(
-				BarrowsBrothers.KARIL,
-				20771
-			);
-			put(
-				BarrowsBrothers.TORAG,
-				20721
-			);
-			put(
-				BarrowsBrothers.VERAC,
-				20772
-			);
-		}
-	};
+	private static final ImmutableMap<Integer, BarrowsBrothers> BARROWS_SARCOPHAGUS = new ImmutableMap.Builder<Integer, BarrowsBrothers>()
+		.put(20770, BarrowsBrothers.AHRIM)
+		.put(20720, BarrowsBrothers.DHAROK)
+		.put(20722, BarrowsBrothers.GUTHAN)
+		.put(20771, BarrowsBrothers.KARIL)
+		.put(20721, BarrowsBrothers.TORAG)
+		.put(20772, BarrowsBrothers.VERAC)
+		.build();
 
 	private static final int TUNNEL_WIDGET_GROUP_ID = 229;
 	private static final String TUNNEL_MESSAGE = "You've found a hidden tunnel, do you want to enter?";
@@ -132,7 +113,6 @@ public class BarrowsPlugin extends Plugin
 	@Nullable
 	private BarrowsBrothers tunnelBrother;
 
-	@Getter(AccessLevel.PRIVATE)
 	@Nullable
 	private BarrowsBrothers lastBrother;
 
@@ -140,7 +120,6 @@ public class BarrowsPlugin extends Plugin
 	 * When clicking on the sarcophagos and it says it's a tunnel, a widget with the message is loaded.
 	 * The text is set on the next game tick, this indicates that it needs to be checked on the next game tick.
 	 */
-	@Getter(AccessLevel.PRIVATE)
 	private boolean checkTunnel = false;
 
 	@Inject
@@ -289,12 +268,7 @@ public class BarrowsPlugin extends Plugin
 	{
 		if (event.getMenuAction().getId() == MenuAction.GAME_OBJECT_FIRST_OPTION.getId() && event.getMenuOption().equals("Search"))
 		{
-			Optional<BarrowsBrothers> brother = BARROWS_SARCOPHAGUS.entrySet().stream()
-				.filter((entrySet) -> entrySet.getValue() == event.getId())
-				.map(Map.Entry::getKey)
-				.findFirst();
-
-			brother.ifPresent(barrowsBrothers -> lastBrother = barrowsBrothers);
+			lastBrother = BARROWS_SARCOPHAGUS.getOrDefault(event.getId(), null);
 		}
 	}
 
