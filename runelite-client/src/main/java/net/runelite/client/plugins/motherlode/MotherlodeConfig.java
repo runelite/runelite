@@ -111,4 +111,36 @@ public interface MotherlodeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showNuggetBank",
+		name = "Show nuggets in bank",
+		description = "Show the amount of nuggets currently in your bank/inventory"
+	)
+	default boolean showNuggetCount()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showNuggetFound",
+		name = "Show nuggets found",
+		description = "Show the amount of nuggets currently in your bank/inventory"
+	)
+	default boolean showNuggetFound()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showNuggetPerHour",
+		name = "Show nuggets per hour",
+		description = "Show the amount of nuggets currently in your bank/inventory"
+	)
+	default boolean showNuggetPerHour()
+	{
+		return true;
+	}
+
+
 }

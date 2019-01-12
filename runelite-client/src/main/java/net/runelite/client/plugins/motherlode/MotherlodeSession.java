@@ -24,19 +24,21 @@
  */
 package net.runelite.client.plugins.motherlode;
 
+import java.time.Duration;
+import java.time.Instant;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
-import java.time.Duration;
-import java.time.Instant;
 
 @Slf4j
 public class MotherlodeSession
 {
 	private static final Duration HOUR = Duration.ofHours(1);
 
-	private int perHour;
+	private int nuggetsPerHour;
+
+	private int payDirtPerHour;
 
 	private Instant lastPayDirtMined;
 	private int totalMined;
@@ -58,6 +60,21 @@ public class MotherlodeSession
 
 	@Getter(AccessLevel.PACKAGE)
 	private int sapphiresFound;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int nuggetsBankStart;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int nuggetsBankCurrent;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int nuggetsFound;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean nuggetBankCheck = false;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int nuggetInventoryCheck = 0;
 
 	public void incrementGemFound(int gemID)
 	{
@@ -102,19 +119,42 @@ public class MotherlodeSession
 		Duration timeSinceStart = Duration.between(recentPayDirtMined, now);
 		if (!timeSinceStart.isZero())
 		{
-			perHour = (int) ((double) recentMined * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+			payDirtPerHour = (int) ((double) recentMined * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+			nuggetsPerHour = (int) ((double) nuggetsFound * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
 		}
+	}
+
+	public void incrementNuggetsFound(int amount)
+	{
+		nuggetsFound += amount;
+	}
+
+	public void setNuggetInventoryCheck(int amount)
+	{
+		nuggetInventoryCheck = amount;
 	}
 
 	public void resetRecent()
 	{
 		recentPayDirtMined = null;
 		recentMined = 0;
+		nuggetsFound = 0;
 	}
 
-	public int getPerHour()
+	public void setNuggetsBankStart(int amount)
 	{
-		return perHour;
+		nuggetsBankStart = amount;
+		nuggetBankCheck = true;
+	}
+
+	public void setNuggetBankCurrent(int amount)
+	{
+		nuggetsBankCurrent = amount;
+	}
+
+	public int getPayDirtPerHour()
+	{
+		return payDirtPerHour;
 	}
 
 	public Instant getLastPayDirtMined()
@@ -136,4 +176,10 @@ public class MotherlodeSession
 	{
 		return recentMined;
 	}
+
+	public int getNuggetsPerHour()
+	{
+		return nuggetsPerHour;
+	}
+
 }

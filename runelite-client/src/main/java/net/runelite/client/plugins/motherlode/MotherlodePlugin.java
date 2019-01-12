@@ -59,10 +59,13 @@ import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
@@ -84,7 +87,7 @@ public class MotherlodePlugin extends Plugin
 	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
 	private static final Set<Integer> MINE_SPOTS = ImmutableSet.of(ORE_VEIN_26661, ORE_VEIN_26662, ORE_VEIN_26663, ORE_VEIN_26664);
 	private static final Set<Integer> MLM_ORE_TYPES = ImmutableSet.of(ItemID.RUNITE_ORE, ItemID.ADAMANTITE_ORE,
-			ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
+		ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
 	private static final Set<Integer> ROCK_OBSTACLES = ImmutableSet.of(ROCKFALL, ROCKFALL_26680);
 
 	private static final int MAX_INVENTORY_SIZE = 28;
@@ -94,46 +97,39 @@ public class MotherlodePlugin extends Plugin
 
 	private static final int UPPER_FLOOR_HEIGHT = -500;
 
+	private static final String SACK_COLLECTION = "You collect your ore from the sack.";
+	private static final String SACK_COLLECTION_EMPTY = "You collect your ore from the sack.<br>The sack is now empty.";
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<WallObject> veins = new HashSet<>();
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<GameObject> rocks = new HashSet<>();
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private MotherlodeOverlay overlay;
-
 	@Inject
 	private MotherlodeRocksOverlay rocksOverlay;
-
 	@Inject
 	private MotherlodeSackOverlay motherlodeSackOverlay;
-
 	@Inject
 	private MotherlodeGemOverlay motherlodeGemOverlay;
-
+	@Inject
+	private MotherlodeNuggetOverlay motherlodeNuggetOverlay;
 	@Inject
 	private MotherlodeConfig config;
-
 	@Inject
 	private Client client;
-
 	@Inject
 	private ClientThread clientThread;
-
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inMlm;
-
 	@Getter(AccessLevel.PACKAGE)
 	private int curSackSize;
 	@Getter(AccessLevel.PACKAGE)
 	private int maxSackSize;
 	@Getter(AccessLevel.PACKAGE)
 	private Integer depositsLeft;
-
 	private MotherlodeSession session;
-
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<WallObject> veins = new HashSet<>();
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<GameObject> rocks = new HashSet<>();
 
 	@Provides
 	MotherlodeConfig getConfig(ConfigManager configManager)
@@ -148,6 +144,7 @@ public class MotherlodePlugin extends Plugin
 		overlayManager.add(rocksOverlay);
 		overlayManager.add(motherlodeGemOverlay);
 		overlayManager.add(motherlodeSackOverlay);
+		overlayManager.add(motherlodeNuggetOverlay);
 
 		session = new MotherlodeSession();
 		inMlm = checkInMlm();
@@ -368,6 +365,137 @@ public class MotherlodePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		ItemContainer bankInventory = client.getItemContainer(InventoryID.BANK);
+
+		if (bankInventory == null)
+		{
+			return;
+		}
+
+		Item[] items = bankInventory.getItems();
+
+		if (items != null)
+		{
+			for (Item item : items)
+			{
+				if (item == null)
+				{
+					continue;
+				}
+
+				int id = item.getId();
+				if (id == 12012)
+				{
+					if (!session.isNuggetBankCheck())
+					{
+						session.setNuggetsBankStart(item.getQuantity());
+					}
+					else
+					{
+						session.setNuggetBankCurrent(item.getQuantity());
+					}
+				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onWidgetPositioned(WidgetPositioned event)
+	{
+
+		Widget widget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+
+		if (widget != null)
+		{
+			if (widget.getId() == 12648450)
+			{
+				widget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+				String chatText = widget.getText();
+
+				if (chatText != null)
+				{
+					if (chatText.equalsIgnoreCase(SACK_COLLECTION))
+					{
+						calculateNuggetsInInventory();
+					}
+					else if (chatText.equals(SACK_COLLECTION_EMPTY))
+					{
+						calculateNuggetsInInventory();
+					}
+				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(final ItemContainerChanged event)
+	{
+		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+
+		if (inventory != null)
+		{
+			Item[] items = inventory.getItems();
+			if (items != null)
+			{
+				for (Item item : items)
+				{
+					if (item == null)
+					{
+						continue;
+					}
+
+					int id = item.getId();
+					if (id == 12012)
+					{
+
+						if (session.getNuggetInventoryCheck() == item.getQuantity())
+						{
+							return;
+						}
+						session.setNuggetInventoryCheck(item.getQuantity());
+
+					}
+				}
+				session.setNuggetInventoryCheck(0);
+
+			}
+		}
+	}
+
+	private void calculateNuggetsInInventory()
+	{
+		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		if (inventory != null)
+		{
+			Item[] items = inventory.getItems();
+			if (items != null)
+			{
+				for (Item item : items)
+				{
+					if (item == null)
+					{
+						continue;
+					}
+
+					int id = item.getId();
+					if (id == 12012)
+					{
+						if (session.getNuggetInventoryCheck() == item.getQuantity())
+						{
+							return;
+						}
+						session.incrementNuggetsFound(item.getQuantity());
+						session.setNuggetInventoryCheck(item.getQuantity());
+					}
+				}
+
+			}
+		}
+	}
+
 	private Integer calculateDepositsLeft()
 	{
 		if (maxSackSize == 0) // check if maxSackSize has been initialized
@@ -441,10 +569,24 @@ public class MotherlodePlugin extends Plugin
 		boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
 		maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
 	}
+/*
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	{
+        if (!event.getEventName().equals("setBankTitle"))
+        {
+            return;
+        }
+
+
+		session.incrementNuggetFound(150);
+	}
+*/
 
 	/**
 	 * Checks if the given point is "upstairs" in the mlm.
 	 * The upper floor is actually on z=0.
+	 *
 	 * @param localPoint
 	 * @return
 	 */
