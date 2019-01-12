@@ -91,7 +91,8 @@ import net.runelite.client.util.OSType;
 @PluginDescriptor(
 	name = "GPU",
 	description = "Utilizes the GPU",
-	enabledByDefault = false
+	enabledByDefault = false,
+	tags = {"fog", "draw distance"}
 )
 @Slf4j
 public class GpuPlugin extends Plugin implements DrawCallbacks
