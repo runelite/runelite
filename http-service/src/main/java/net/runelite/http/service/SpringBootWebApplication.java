@@ -150,6 +150,7 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException
 	{
+		super.onStartup(servletContext);
 		ILoggerFactory loggerFactory = StaticLoggerBinder.getSingleton().getLoggerFactory();
 		if (loggerFactory instanceof LoggerContext)
 		{
