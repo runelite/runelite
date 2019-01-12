@@ -86,4 +86,15 @@ public interface BarrowsConfig extends Config
 	{
 		return Color.RED;
 	}
+
+	@ConfigItem(
+		keyName = "tunnelBrotherLocColor",
+		name = "Tunnel location color",
+		description = "Change the color of the name displayed on the minimap where the tunnel is located",
+		position = 5
+	)
+	default Color tunnelBrotherLocColor()
+	{
+		return Color.ORANGE;
+	}
 }

@@ -207,6 +207,10 @@ class BarrowsOverlay extends Overlay
 				{
 					graphics.setColor(config.deadBrotherLocColor());
 				}
+				else if (brother.equals(plugin.getTunnelBrother()))
+				{
+					graphics.setColor(config.tunnelBrotherLocColor());
+				}
 				else
 				{
 					graphics.setColor(config.brotherLocColor());

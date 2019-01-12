@@ -27,7 +27,12 @@ package net.runelite.client.plugins.barrows;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
-
+import java.util.HashSet;
+import java.util.Set;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -62,15 +67,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.StackFormatter;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-
-import lombok.AccessLevel;
-import lombok.Getter;
 
 @PluginDescriptor(
 	name = "Barrows Brothers",

@@ -78,33 +78,17 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
 			final boolean brotherSlain = client.getVar(brother.getKilledVarbit()) > 0;
-			final boolean isTunnel = brother == tunnelBrother;
+			final boolean isTunnel = brother.equals(tunnelBrother);
 
-			final String icon;
-			final Color color;
-
-			if (brotherSlain)
-			{
-				icon = "\u2713";
-				color = Color.GREEN;
-			}
-			else if (isTunnel)
-			{
-
-				icon = "\u26A0";
-				color = Color.ORANGE;
-			}
-			else
-			{
-
-				icon = "\u2717";
-				color = Color.RED;
-			}
+			final String icon = brotherSlain ? "\u2713" : "\u2717";
+			final Color iconColor = brotherSlain ? Color.GREEN : Color.RED;
+			final Color brotherColor = isTunnel ? Color.ORANGE : Color.WHITE;
 
 			panelComponent.getChildren().add(LineComponent.builder()
+				.leftColor(brotherColor)
 				.left(brother.getName())
 				.right(icon)
-				.rightColor(color)
+				.rightColor(iconColor)
 				.build());
 		}
 
