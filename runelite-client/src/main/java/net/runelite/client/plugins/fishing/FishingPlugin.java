@@ -176,7 +176,8 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some"))
+		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some") ||
+			event.getMessage().equals("Your cormorant returns with its catch."))
 		{
 			session.setLastFishCaught(Instant.now());
 			spotOverlay.setHidden(false);
@@ -240,6 +241,8 @@ public class FishingPlugin extends Plugin
 				case ItemID.LOBSTER_POT:
 				case ItemID.KARAMBWAN_VESSEL:
 				case ItemID.KARAMBWAN_VESSEL_3159:
+				case ItemID.CORMORANTS_GLOVE:
+				case ItemID.CORMORANTS_GLOVE_22817:
 					return true;
 			}
 		}
