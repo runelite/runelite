@@ -24,9 +24,9 @@
  */
 package net.runelite.client.plugins.barrows;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nullable;
@@ -87,15 +87,6 @@ public class BarrowsPlugin extends Plugin
 
 	private static final Set<Integer> BARROWS_LADDERS = Sets.newHashSet(NullObjectID.NULL_20675, NullObjectID.NULL_20676, NullObjectID.NULL_20677);
 
-	private static final ImmutableMap<Integer, BarrowsBrothers> BARROWS_SARCOPHAGUS = new ImmutableMap.Builder<Integer, BarrowsBrothers>()
-		.put(20770, BarrowsBrothers.AHRIM)
-		.put(20720, BarrowsBrothers.DHAROK)
-		.put(20722, BarrowsBrothers.GUTHAN)
-		.put(20771, BarrowsBrothers.KARIL)
-		.put(20721, BarrowsBrothers.TORAG)
-		.put(20772, BarrowsBrothers.VERAC)
-		.build();
-
 	private static final int TUNNEL_WIDGET_GROUP_ID = 229;
 	private static final String TUNNEL_MESSAGE = "You've found a hidden tunnel, do you want to enter?";
 
@@ -105,12 +96,18 @@ public class BarrowsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> ladders = new HashSet<>();
 
+	/**
+	 * Brother where the tunnel is.
+	 */
 	@Getter(AccessLevel.PACKAGE)
 	@Nullable
 	private BarrowsBrothers tunnelBrother;
 
+	/**
+	 * Last brother whose sarcophagus was searched.
+	 */
 	@Nullable
-	private BarrowsBrothers lastBrother;
+	private BarrowsBrothers lastSearchedBrother;
 
 	/**
 	 * When clicking on the sarcophagos and it says it's a tunnel, a widget with the message is loaded.
@@ -235,7 +232,7 @@ public class BarrowsPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!checkTunnel || lastBrother == null)
+		if (!checkTunnel || lastSearchedBrother == null)
 		{
 			return;
 		}
@@ -256,7 +253,7 @@ public class BarrowsPlugin extends Plugin
 			return;
 		}
 
-		tunnelBrother = lastBrother;
+		tunnelBrother = lastSearchedBrother;
 	}
 
 	@Subscribe
@@ -264,14 +261,17 @@ public class BarrowsPlugin extends Plugin
 	{
 		if (event.getMenuAction().getId() == MenuAction.GAME_OBJECT_FIRST_OPTION.getId() && event.getMenuOption().equals("Search"))
 		{
-			lastBrother = BARROWS_SARCOPHAGUS.getOrDefault(event.getId(), null);
+			Arrays.stream(BarrowsBrothers.values())
+				.filter(brother -> brother.getSarcophagus() == event.getId())
+				.findFirst()
+				.ifPresent(brother -> lastSearchedBrother = brother);
 		}
 	}
 
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (lastBrother != null && event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && config.showChestValue())
+		if (lastSearchedBrother != null && event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && config.showChestValue())
 		{
 			tunnelBrother = null;
 
