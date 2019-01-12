@@ -26,12 +26,11 @@ package net.runelite.client.plugins.barrows;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -43,16 +42,16 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
+import net.runelite.api.MenuAction;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.WallObject;
-import net.runelite.api.coords.WorldArea;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -70,8 +69,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.StackFormatter;
-
-import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 
 @PluginDescriptor(
 	name = "Barrows Brothers",
@@ -92,6 +89,36 @@ public class BarrowsPlugin extends Plugin
 
 	private static final Set<Integer> BARROWS_LADDERS = Sets.newHashSet(NullObjectID.NULL_20675, NullObjectID.NULL_20676, NullObjectID.NULL_20677);
 
+	private static final Map<BarrowsBrothers, Integer> BARROWS_SARCOPHAGUS = new HashMap<BarrowsBrothers, Integer>()
+	{
+		{
+			put(
+				BarrowsBrothers.AHRIM,
+				20770
+			);
+			put(
+				BarrowsBrothers.DHAROK,
+				20720
+			);
+			put(
+				BarrowsBrothers.GUTHAN,
+				20722
+			);
+			put(
+				BarrowsBrothers.KARIL,
+				20771
+			);
+			put(
+				BarrowsBrothers.TORAG,
+				20721
+			);
+			put(
+				BarrowsBrothers.VERAC,
+				20772
+			);
+		}
+	};
+
 	private static final int TUNNEL_WIDGET_GROUP_ID = 229;
 	private static final String TUNNEL_MESSAGE = "You've found a hidden tunnel, do you want to enter?";
 
@@ -105,35 +132,9 @@ public class BarrowsPlugin extends Plugin
 	@Nullable
 	private BarrowsBrothers tunnelBrother;
 
-	private static final Map<BarrowsBrothers, WorldArea> BARROWS_ROOMS = new HashMap<BarrowsBrothers, WorldArea>()
-	{
-		{
-			put(
-				BarrowsBrothers.AHRIM,
-				new WorldArea(3549, 9693, 13, 11, 3)
-			);
-			put(
-				BarrowsBrothers.DHAROK,
-				new WorldArea(3547, 9709, 13, 10, 3)
-			);
-			put(
-				BarrowsBrothers.GUTHAN,
-				new WorldArea(3533, 9699, 12, 9, 3)
-			);
-			put(
-				BarrowsBrothers.KARIL,
-				new WorldArea(3545, 9678, 12, 10, 3)
-			);
-			put(
-				BarrowsBrothers.TORAG,
-				new WorldArea(3564, 9682, 11, 10, 3)
-			);
-			put(
-				BarrowsBrothers.VERAC,
-				new WorldArea(3568, 9702, 11, 8, 3)
-			);
-		}
-	};
+	@Getter(AccessLevel.PRIVATE)
+	@Nullable
+	private BarrowsBrothers lastBrother;
 
 	/**
 	 * When clicking on the sarcophagos and it says it's a tunnel, a widget with the message is loaded.
@@ -259,7 +260,7 @@ public class BarrowsPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!checkTunnel)
+		if (!checkTunnel || lastBrother == null)
 		{
 			return;
 		}
@@ -280,26 +281,27 @@ public class BarrowsPlugin extends Plugin
 			return;
 		}
 
-		WorldPoint location = client.getLocalPlayer().getWorldLocation();
-		BARROWS_ROOMS.entrySet().stream().anyMatch((entry) ->
-			{
-				BarrowsBrothers brother = entry.getKey();
-				WorldArea worldArea = entry.getValue();
+		tunnelBrother = lastBrother;
+	}
 
-				if (location.distanceTo(worldArea) == 0)
-				{
-					tunnelBrother = brother;
-					return true;
-				}
-				return false;
-			}
-		);
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (event.getMenuAction().getId() == MenuAction.GAME_OBJECT_FIRST_OPTION.getId() && event.getMenuOption().equals("Search"))
+		{
+			Optional<BarrowsBrothers> brother = BARROWS_SARCOPHAGUS.entrySet().stream()
+				.filter((entrySet) -> entrySet.getValue() == event.getId())
+				.map(Map.Entry::getKey)
+				.findFirst();
+
+			brother.ifPresent(barrowsBrothers -> lastBrother = barrowsBrothers);
+		}
 	}
 
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && config.showChestValue())
+		if (lastBrother != null && event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && config.showChestValue())
 		{
 			tunnelBrother = null;
 

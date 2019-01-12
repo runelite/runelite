@@ -88,20 +88,17 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 				icon = "\u2713";
 				color = Color.GREEN;
 			}
+			else if (isTunnel)
+			{
+
+				icon = "\u26A0";
+				color = Color.ORANGE;
+			}
 			else
 			{
-				if (isTunnel)
-				{
 
-					icon = "\u26A0";
-					color = Color.ORANGE;
-				}
-				else
-				{
-
-					icon = "\u2717";
-					color = Color.RED;
-				}
+				icon = "\u2717";
+				color = Color.RED;
 			}
 
 			panelComponent.getChildren().add(LineComponent.builder()
