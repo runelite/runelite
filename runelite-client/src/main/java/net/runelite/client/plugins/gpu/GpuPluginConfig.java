@@ -28,6 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
+import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_FOG_DEPTH;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_DISTANCE;
 
@@ -70,6 +71,9 @@ public interface GpuPluginConfig extends Config
 		return AntiAliasingMode.DISABLED;
 	}
 
+	@Range(
+		max = MAX_FOG_DEPTH
+	)
 	@ConfigItem(
 		keyName = "fogDepth",
 		name = "Fog depth",
