@@ -105,22 +105,31 @@ public class MotherlodePlugin extends Plugin
 	private final Set<GameObject> rocks = new HashSet<>();
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private MotherlodeOverlay overlay;
+
 	@Inject
 	private MotherlodeRocksOverlay rocksOverlay;
+
 	@Inject
 	private MotherlodeSackOverlay motherlodeSackOverlay;
+
 	@Inject
 	private MotherlodeGemOverlay motherlodeGemOverlay;
+
 	@Inject
 	private MotherlodeNuggetOverlay motherlodeNuggetOverlay;
+
 	@Inject
 	private MotherlodeConfig config;
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private ClientThread clientThread;
+
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inMlm;
 	@Getter(AccessLevel.PACKAGE)
@@ -450,17 +459,14 @@ public class MotherlodePlugin extends Plugin
 					int id = item.getId();
 					if (id == 12012)
 					{
-
 						if (session.getNuggetInventoryCheck() == item.getQuantity())
 						{
 							return;
 						}
 						session.setNuggetInventoryCheck(item.getQuantity());
-
 					}
 				}
 				session.setNuggetInventoryCheck(0);
-
 			}
 		}
 	}
@@ -491,7 +497,6 @@ public class MotherlodePlugin extends Plugin
 						session.setNuggetInventoryCheck(item.getQuantity());
 					}
 				}
-
 			}
 		}
 	}
