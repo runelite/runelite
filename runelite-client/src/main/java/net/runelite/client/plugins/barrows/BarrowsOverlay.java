@@ -185,7 +185,7 @@ class BarrowsOverlay extends Overlay
 
 	private void renderBarrowsBrothers(Graphics2D graphics)
 	{
-		for (BarrowsBrothers brother : BarrowsBrothers.values())
+		for (BarrowsBrother brother : BarrowsBrother.values())
 		{
 			LocalPoint localLocation = LocalPoint.fromWorld(client, brother.getLocation());
 

@@ -73,9 +73,9 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 
-		final BarrowsBrothers tunnelBrother = plugin.getTunnelBrother();
+		final BarrowsBrother tunnelBrother = plugin.getTunnelBrother();
 
-		for (BarrowsBrothers brother : BarrowsBrothers.values())
+		for (BarrowsBrother brother : BarrowsBrother.values())
 		{
 			final boolean brotherSlain = client.getVar(brother.getKilledVarbit()) > 0;
 			final boolean isTunnel = brother.equals(tunnelBrother);

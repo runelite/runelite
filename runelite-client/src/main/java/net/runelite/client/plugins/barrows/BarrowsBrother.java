@@ -31,7 +31,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 
 @RequiredArgsConstructor
-public enum BarrowsBrothers
+public enum BarrowsBrother
 {
 	AHRIM("Ahrim", new WorldPoint(3566, 3289, 0), Varbits.BARROWS_KILLED_AHRIM, ObjectID.SARCOPHAGUS_20770),
 	DHAROK("Dharok", new WorldPoint(3575, 3298, 0), Varbits.BARROWS_KILLED_DHAROK, ObjectID.SARCOPHAGUS_20720),

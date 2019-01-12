@@ -101,13 +101,13 @@ public class BarrowsPlugin extends Plugin
 	 */
 	@Getter(AccessLevel.PACKAGE)
 	@Nullable
-	private BarrowsBrothers tunnelBrother;
+	private BarrowsBrother tunnelBrother;
 
 	/**
 	 * Last brother whose sarcophagus was searched.
 	 */
 	@Nullable
-	private BarrowsBrothers lastSearchedBrother;
+	private BarrowsBrother lastSearchedBrother;
 
 	/**
 	 * When clicking on the sarcophagos and it says it's a tunnel, a widget with the message is loaded.
@@ -261,7 +261,7 @@ public class BarrowsPlugin extends Plugin
 	{
 		if (event.getMenuAction().getId() == MenuAction.GAME_OBJECT_FIRST_OPTION.getId() && event.getMenuOption().equals("Search"))
 		{
-			Arrays.stream(BarrowsBrothers.values())
+			Arrays.stream(BarrowsBrother.values())
 				.filter(brother -> brother.getSarcophagus() == event.getId())
 				.findFirst()
 				.ifPresent(brother -> lastSearchedBrother = brother);
