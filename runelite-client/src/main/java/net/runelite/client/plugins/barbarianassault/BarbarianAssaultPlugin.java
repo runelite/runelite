@@ -25,16 +25,15 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.util.Map;
 import javax.inject.Inject;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.inject.Provides;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
