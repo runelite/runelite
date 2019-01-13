@@ -224,8 +224,11 @@ public class GroundItemsPlugin extends Plugin
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
 		}
 
-		boolean isHighlighted = config.highlightedColor().equals(getHighlighted(groundItem.getName(),
-			groundItem.getGePrice(), groundItem.getHaPrice()));
+		boolean isHighlighted = config.highlightedColor().equals(getHighlighted(
+			groundItem.getName(),
+			groundItem.getGePrice(),
+			groundItem.getHaPrice()));
+
 		if (config.notifyHighlightedDrops() && isHighlighted)
 		{
 			notifyHighlightedItem(groundItem);
