@@ -66,6 +66,40 @@ Before you submit your pull request consider the following guidelines:
 * Create your patch and run appropriate tests.
 * Follow our [Coding Format](#format).
 * Commit your changes using a descriptive commit message that uses the imperative, present tense: "change" not "changed" nor "changes".
+  Make sure the commit message is formatted correctly. [Read this if you have no idea how to write proper commit message](https://chris.beams.io/posts/git-commit/)
+  (read it even if you think you do). Here is quick cheat-sheet on how proper commit message should look like:
+ 
+```$xslt
+Summarize changes in around 50 characters or less
+
+More detailed explanatory text, if necessary. Wrap it to about 72
+characters or so. In some contexts, the first line is treated as the
+subject of the commit and the rest of the text as the body. The
+blank line separating the summary from the body is critical (unless
+you omit the body entirely); various tools like `log`, `shortlog`
+and `rebase` can get confused if you run the two together.
+
+Explain the problem that this commit is solving. Focus on why you
+are making this change as opposed to how (the code explains that).
+Are there side effects or other unintuitive consequences of this
+change? Here's the place to explain them.
+
+Further paragraphs come after blank lines.
+
+ - Bullet points are okay, too
+
+ - Typically a hyphen or asterisk is used for the bullet, preceded
+   by a single space, with blank lines in between, but conventions
+   vary here
+
+If you use an issue tracker, put references to them at the bottom,
+like this
+
+Resolves: #123
+See also: #456, #789
+```
+
+* Now commit the changes:
 
     ```shell
     git commit -a
