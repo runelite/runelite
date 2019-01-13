@@ -174,8 +174,8 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapPickpocket",
-		name = "Pickpocket on H.A.M.",
-		description = "Swap Talk-to with Pickpocket on H.A.M members"
+		name = "Pickpocket",
+		description = "Swap Talk-to with Pickpocket on all Pickpocket-able NPCs"
 	)
 	default boolean swapPickpocket()
 	{
