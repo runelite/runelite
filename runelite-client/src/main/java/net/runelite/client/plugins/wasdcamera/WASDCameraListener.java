@@ -66,7 +66,7 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 			return;
 		}
 
-		if(config.ignoreModifiers())
+		if (config.ignoreModifiers())
 		{
 			e.setModifiers(0);
 		}
@@ -148,7 +148,7 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 			return;
 		}
 
-		if(config.ignoreModifiers())
+		if (config.ignoreModifiers())
 		{
 			e.setModifiers(0);
 		}
