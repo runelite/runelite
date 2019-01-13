@@ -168,12 +168,12 @@ class FarmingWorld
 			new FarmingPatch("North East", Varbits.FARMING_4773, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("South East", Varbits.FARMING_4774, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("", Varbits.FARMING_4775, PatchImplementation.HERB),
-			new FarmingPatch("", Varbits.FARMING_7909, PatchImplementation.FRUIT_TREE),
 			new FarmingPatch("", Varbits.FARMING_7904, PatchImplementation.CACTUS),
 			new FarmingPatch("", Varbits.FARMING_7905, PatchImplementation.TREE),
 			new FarmingPatch("", Varbits.FARMING_7906, PatchImplementation.FLOWER),
+			new FarmingPatch("", Varbits.FARMING_7907, PatchImplementation.REDWOOD),
+			new FarmingPatch("", Varbits.FARMING_7908, PatchImplementation.HESPORI),
 			new FarmingPatch("", Varbits.FARMING_7909, PatchImplementation.FRUIT_TREE),
-			new FarmingPatch("", Varbits.FARMING_7909, PatchImplementation.HESPORI),
 			new FarmingPatch("", Varbits.FARMING_7910, PatchImplementation.CELASTRUS)
 			// Anima patch needs to be implemented varbit is 7911
 		));

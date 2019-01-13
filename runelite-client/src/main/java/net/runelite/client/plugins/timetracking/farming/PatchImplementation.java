@@ -2298,32 +2298,25 @@ public enum PatchImplementation
 			@Override
 			PatchState forVarbitValue(int value)
 			{
-				if (value >= 0 && value <= 150) {
-					return new PatchState(Produce.HESPORI, CropState.GROWING, 3 - value);
-				}
 				return null;
-		}
-	},
-	DRAGONFRUIT(Tab.FRUIT_TREE, "") {
-		@Override
-		PatchState forVarbitValue(int value) {
-			if (value >= 0 && value <= 150) {
-				return new PatchState(Produce.DRAGONFRUIT, CropState.GROWING, 3 - value);
-			}
-			return null;
-		}
-	},
+		    }
+	    },
 	CELASTRUS(Tab.SPECIAL, "Celastrus")
-	{
-		@Override
-		PatchState forVarbitValue(int value)
-		{
-			if (value >= 0 && value <= 150) {
-				return new PatchState(Produce.CELASTRUS, CropState.GROWING, 3 - value);
-			}
-			return null;
-		}
-	};
+	    {
+            @Override
+            PatchState forVarbitValue(int value)
+            {
+                return null;
+            }
+	    },
+    REDWOOD(Tab.TREE, "Redwood")
+        {
+            @Override
+            PatchState forVarbitValue(int value)
+            {
+                return null;
+            }
+        };
 	// Anima patch needs to be added
 
 	abstract PatchState forVarbitValue(int value);
