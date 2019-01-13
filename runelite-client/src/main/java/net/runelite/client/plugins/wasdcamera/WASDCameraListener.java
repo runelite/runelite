@@ -182,7 +182,6 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 			{
 				modified.remove(e.getKeyCode());
 				e.setKeyCode(m);
-				
 			}
 		}
 	}
