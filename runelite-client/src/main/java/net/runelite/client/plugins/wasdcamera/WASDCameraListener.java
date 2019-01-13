@@ -66,8 +66,14 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 			return;
 		}
 
+		if(config.ignoreModifiers())
+		{
+			e.setModifiers(0);
+		}
+
 		if (!plugin.isTyping())
 		{
+
 			if (config.up().matches(e))
 			{
 				modified.put(e.getKeyCode(), KeyEvent.VK_UP);
@@ -142,6 +148,11 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 			return;
 		}
 
+		if(config.ignoreModifiers())
+		{
+			e.setModifiers(0);
+		}
+
 		if (plugin.chatboxFocused() && !plugin.isTyping())
 		{
 			modified.remove(e.getKeyCode());
@@ -171,6 +182,7 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 			{
 				modified.remove(e.getKeyCode());
 				e.setKeyCode(m);
+				
 			}
 		}
 	}
