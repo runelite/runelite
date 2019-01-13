@@ -8,9 +8,9 @@ import net.runelite.client.config.ConfigItem;
 public interface InventoryViewerConfig extends Config
 {
 	@ConfigItem(
-			keyName = "hideWhenInvOpen",
-			name = "Hide when inventory is open",
-			description = "Hide the inventory viewer when the player's inventory is open"
+		keyName = "hideWhenInvOpen",
+		name = "Hide when inventory is open",
+		description = "Hide the inventory viewer when the player's inventory is open"
 	)
 	default boolean hideWhenInvOpen()
 	{
