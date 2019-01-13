@@ -97,7 +97,7 @@ public interface MenuEntrySwapperConfig extends Config
 		name = "Contract",
 		description = "Swap Talk-to with Contract on Guildmaster Jane"
 	)
-	default boolean swapContract() {return true;}
+	default boolean swapContract() { return true; }
 
 	@ConfigItem(
 		keyName = "swapChase",
