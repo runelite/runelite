@@ -33,6 +33,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -65,6 +66,7 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -223,7 +225,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 
 		boolean isHighlighted = config.highlightedColor().equals(getHighlighted(groundItem.getName(),
-				groundItem.getGePrice(), groundItem.getHaPrice()));
+			groundItem.getGePrice(), groundItem.getHaPrice()));
 		if (config.notifyHighlightedDrops() && isHighlighted)
 		{
 			notifyHighlightedItem(groundItem);
@@ -563,5 +565,66 @@ public class GroundItemsPlugin extends Plugin
 
 		notificationStringBuilder.append("!");
 		notifier.notify(notificationStringBuilder.toString());
+	}
+
+	/**
+	 * Fired on a right click menu opening. Count all menu entries and build a new list of entries
+	 * displaying item quantities.
+	 *
+	 * @param menu Right click menu opened
+	 */
+	@Subscribe
+	public void onMenuOpened(MenuOpened menu)
+	{
+		if (!config.collapseMenu())
+		{
+			return;
+		}
+
+		LinkedHashMap<MenuEntry, GroupedItem> entryCount = new LinkedHashMap<>();
+		ArrayList<MenuEntry> temp = new ArrayList<>();
+		MenuEntry[] updatedMenuEntries;
+
+		// Iterate over menu entries
+		for (MenuEntry e : menu.getMenuEntries())
+		{
+
+			// Increment the count if entry has been seen before and refers to an item
+			if (entryCount.containsKey(e) && isItem(e))
+			{
+				entryCount.get(e).incrementCount();
+			}
+
+			// Store in map if entry has not been seen before
+			else
+			{
+				entryCount.put(e,
+					new GroupedItem(e, config.getQuantityPosition(), config.getQuantityStyle(), config.includeX())
+				);
+			}
+		}
+
+		// Create a list of updated menu entries from the map of GroupedItem
+		for (MenuEntry e : entryCount.keySet())
+		{
+			MenuEntry entry = entryCount.get(e).getEntry();
+			temp.add(entry);
+		}
+
+		// Parse to an array and set the new menu entries
+		updatedMenuEntries = temp.toArray(new MenuEntry[0]);
+		client.setMenuEntries(updatedMenuEntries);
+	}
+
+	/**
+	 * Tests whether a menu entry refers to an item.
+	 *
+	 * @param e MenuEntry to be tested
+	 * @return boolean result
+	 */
+	private boolean isItem(MenuEntry e)
+	{
+		String option = e.getOption();
+		return option.equals("Take") || option.equals("Examine");
 	}
 }

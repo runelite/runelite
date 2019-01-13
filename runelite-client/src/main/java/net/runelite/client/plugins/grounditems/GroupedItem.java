@@ -22,16 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.groupitemlist;
+package net.runelite.client.plugins.grounditems;
 
 import net.runelite.api.MenuEntry;
-import net.runelite.client.plugins.groupitemlist.GroupItemListConfig.*;
+import net.runelite.client.plugins.grounditems.GroundItemsConfig.*;
 
 /**
  * Object used to store a MenuEntry and the quantity. Updates the entry target if necessary
  * e.g Shark to Shark [4].
  */
-public class GroupedItem
+class GroupedItem
 {
 
 	private int count;

@@ -115,16 +115,16 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		keyName = "highlightTiles",
 		name = "Highlight Tiles",
 		description = "Configures whether or not to highlight tiles containing ground items",
 		position = 6
 	)
-	default boolean highlightTiles() 
-	{ 
-		return false; 
+	default boolean highlightTiles()
+	{
+		return false;
 	}
 
 	@ConfigItem(
@@ -336,4 +336,59 @@ public interface GroundItemsConfig extends Config
 		return 250;
 	}
 
+	@ConfigItem(
+		keyName = "collapseMenu",
+		name = "Collapse menu options",
+		description = "Configures whether or not to collapse menu options and include a quantity",
+		position = 26
+	)
+	default boolean collapseMenu()
+	{
+		return false;
+	}
+
+	enum positionOption
+	{
+		PREPEND,
+		APPEND
+	}
+	@ConfigItem(
+		keyName = "quantityPosition",
+		name = "Quantity position",
+		description = "Configures where to place the item's quantity",
+		position = 27
+	)
+	default positionOption getQuantityPosition()
+	{
+		return positionOption.APPEND;
+	}
+
+	enum styleOption
+	{
+		SQUARE,
+		PARENTHESES,
+		CURLY,
+		NONE
+	}
+	@ConfigItem(
+		keyName = "quantityStyle",
+		name = "Quantity style",
+		description = "Configures how the quantity will be styled",
+		position = 28
+	)
+	default styleOption getQuantityStyle()
+	{
+		return styleOption.SQUARE;
+	}
+
+	@ConfigItem(
+		keyName = "includeX",
+		name = "Include x",
+		description = "Configures whether to include an x before the quantity: 'Shark x32'",
+		position = 29
+	)
+	default boolean includeX()
+	{
+		return false;
+	}
 }
