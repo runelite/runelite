@@ -93,6 +93,7 @@ public enum Produce
 	MAPLE("Maple", ItemID.MAPLE_TREE, 40, 9),
 	YEW("Yew", ItemID.YEW_TREE, 40, 11),
 	MAGIC("Magic", ItemID.MAGIC_LOGS, 40, 13),
+	REDWOOD("Redwood", ItemID.REDWOOD_LOGS, 640, 11),
 
 	// Fruit tree crops
 	APPLE("Apple", ItemID.COOKING_APPLE, 160, 7, 45, 7),
@@ -102,6 +103,7 @@ public enum Produce
 	PINEAPPLE("Pineapple", ItemID.PINEAPPLE, 160, 7, 45, 7),
 	PAPAYA("Papaya", ItemID.PAPAYA_FRUIT, 160, 7, 45, 7),
 	PALM("Palm", ItemID.COCONUT, 160, 7, 45, 7),
+	DRAGONFRUIT("Dragonfruit", ItemID.DRAGONFRUIT_TREE_SEED, 160, 7),
 
 	// Special crops
 	SEAWEED("Seaweed", ItemID.GIANT_SEAWEED, 10, 5, 0, 4),
@@ -112,7 +114,10 @@ public enum Produce
 	CACTUS("Cactus", ItemID.POTATO_CACTUS, 80, 8, 20, 4),
 	BELLADONNA("Belladonna", ItemID.CAVE_NIGHTSHADE, 80, 5),
 	CALQUAT("Calquat", ItemID.CALQUAT_FRUIT, 160, 9, 0, 7),
-	SPIRIT_TREE("Spirit Tree", ItemID.SPIRIT_TREE, 320, 13);
+	SPIRIT_TREE("Spirit Tree", ItemID.SPIRIT_TREE, 320, 13),
+	HESPORI("Hespori", ItemID.HESPORI_SEED, 640, 4),
+	CELASTRUS("Celastrus", ItemID.CELASTRUS_SEED, 160, 6);
+	// Anima seeds needs to be added
 
 	/**
 	 * User-visible name

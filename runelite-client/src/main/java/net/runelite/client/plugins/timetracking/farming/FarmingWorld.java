@@ -162,6 +162,21 @@ class FarmingWorld
 			new FarmingPatch("East 5", Varbits.GRAPES_4963, PatchImplementation.GRAPES),
 			new FarmingPatch("East 6", Varbits.GRAPES_4964, PatchImplementation.GRAPES)
 		));
+		add(new FarmingRegion("Kebos Lowlands", 4922,
+			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.SPIRIT_TREE),
+			new FarmingPatch("", Varbits.FARMING_4772, PatchImplementation.BUSH),
+			new FarmingPatch("North East", Varbits.FARMING_4773, PatchImplementation.ALLOTMENT),
+			new FarmingPatch("South East", Varbits.FARMING_4774, PatchImplementation.ALLOTMENT),
+			new FarmingPatch("", Varbits.FARMING_4775, PatchImplementation.HERB),
+			new FarmingPatch("", Varbits.FARMING_7909, PatchImplementation.FRUIT_TREE),
+			new FarmingPatch("", Varbits.FARMING_7904, PatchImplementation.CACTUS),
+			new FarmingPatch("", Varbits.FARMING_7905, PatchImplementation.TREE),
+			new FarmingPatch("", Varbits.FARMING_7906, PatchImplementation.FLOWER),
+			new FarmingPatch("", Varbits.FARMING_7909, PatchImplementation.FRUIT_TREE),
+			new FarmingPatch("", Varbits.FARMING_7909, PatchImplementation.HESPORI),
+			new FarmingPatch("", Varbits.FARMING_7910, PatchImplementation.CELASTRUS)
+			// Anima patch needs to be implemented varbit is 7911
+		));
 
 		add(new FarmingRegion("Lletya", 9265,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.FRUIT_TREE)
