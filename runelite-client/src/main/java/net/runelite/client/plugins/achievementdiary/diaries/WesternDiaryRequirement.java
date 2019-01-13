@@ -120,6 +120,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.REGICIDE, true));
 		add("Teleport to Ape Atoll.",
 			new SkillRequirement(Skill.MAGIC, 64),
+			new QuestRequirement(Quest.MONKEY_MADNESS_I),
 			new QuestRequirement(Quest.RECIPE_FOR_DISASTER, true));
 		add("Pickpocket a Gnome.",
 			new SkillRequirement(Skill.THIEVING, 75),
