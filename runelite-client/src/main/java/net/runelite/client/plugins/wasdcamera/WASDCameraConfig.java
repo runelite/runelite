@@ -76,4 +76,14 @@ public interface WASDCameraConfig extends Config
 	{
 		return new Keybind(KeyEvent.VK_D, 0);
 	}
+	@ConfigItem(
+			keyName = "ignoreModifiers",
+			name = "Ignore Modifier Keys",
+			description = "Ignore modifier keys like SHIFT & CTRL.",
+			position = 5
+	)
+	default boolean ignoreModifiers()
+	{
+		return true;
+	}
 }
