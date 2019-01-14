@@ -230,21 +230,10 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "overlayRightClick",
-		name = "Require Shift for overlay menu options",
-		description = "Toggles whether the overlay right-click menu requires holding down the shift key",
-		position = 33
-	)
-	default boolean overlayRightClick()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "infoBoxVertical",
 		name = "Display infoboxes vertically",
 		description = "Toggles the infoboxes to display vertically",
-		position = 34
+		position = 33
 	)
 	default boolean infoBoxVertical()
 	{
@@ -255,7 +244,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxWrap",
 		name = "Infobox wrap count",
 		description = "Configures the amount of infoboxes shown before wrapping",
-		position = 35
+		position = 34
 	)
 	default int infoBoxWrap()
 	{
@@ -266,7 +255,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxSize",
 		name = "Infobox size (px)",
 		description = "Configures the size of each infobox in pixels",
-		position = 36
+		position = 35
 	)
 	default int infoBoxSize()
 	{
