@@ -27,6 +27,7 @@ package net.runelite.client.ui.overlay;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.LinkedHashMap;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
@@ -42,6 +43,7 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	private OverlayPosition position = OverlayPosition.TOP_LEFT;
 	private OverlayPriority priority = OverlayPriority.NONE;
 	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
+	private final LinkedHashMap<String, Runnable> menuOptions = new LinkedHashMap<>();
 
 	/**
 	 * Overlay name, used for saving the overlay, needs to be unique

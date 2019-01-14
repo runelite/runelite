@@ -260,6 +260,10 @@ public enum MenuAction
 	 * Menu action injected by runelite for its menu items.
 	 */
 	RUNELITE(1500),
+	/**
+	 * Menu action injected by runelite for overlay menu items.
+	 */
+	RUNELITE_OVERLAY(1501),
 
 	FOLLOW(2046),
 	TRADE(2047),
