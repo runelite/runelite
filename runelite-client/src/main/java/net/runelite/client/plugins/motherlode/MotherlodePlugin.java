@@ -171,6 +171,7 @@ public class MotherlodePlugin extends Plugin
 		overlayManager.remove(rocksOverlay);
 		overlayManager.remove(motherlodeGemOverlay);
 		overlayManager.remove(motherlodeSackOverlay);
+		overlayManager.remove(motherlodeNuggetOverlay);
 		session = null;
 		veins.clear();
 		rocks.clear();
