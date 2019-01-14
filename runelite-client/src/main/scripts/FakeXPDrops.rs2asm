@@ -1,0 +1,254 @@
+.id                 2091
+.int_stack_count    2
+.string_stack_count 0
+.int_var_count      2
+.string_var_count   0
+   iload                  0
+   iload                  1
+   load_string            "fakeXpDrop"
+   runelite_callback
+   load_int               105
+   load_int               83
+   load_int               681
+   get_varc               207
+   divide_by_16384
+   get_enum_value
+   iload                  0
+   if_icmpeq              LABEL9
+   jump                   LABEL16
+LABEL9:
+   get_varc               207
+   load_int               0
+   load_int               0
+   iload                  1
+   pack_location
+   put_varc               207
+   jump                   LABEL216
+LABEL16:
+   load_int               105
+   load_int               83
+   load_int               681
+   get_varc               208
+   divide_by_16384
+   get_enum_value
+   iload                  0
+   if_icmpeq              LABEL25
+   jump                   LABEL32
+LABEL25:
+   get_varc               208
+   load_int               0
+   load_int               0
+   iload                  1
+   pack_location
+   put_varc               208
+   jump                   LABEL216
+LABEL32:
+   load_int               105
+   load_int               83
+   load_int               681
+   get_varc               209
+   divide_by_16384
+   get_enum_value
+   iload                  0
+   if_icmpeq              LABEL41
+   jump                   LABEL48
+LABEL41:
+   get_varc               209
+   load_int               0
+   load_int               0
+   iload                  1
+   pack_location
+   put_varc               209
+   jump                   LABEL216
+LABEL48:
+   load_int               105
+   load_int               83
+   load_int               681
+   get_varc               210
+   divide_by_16384
+   get_enum_value
+   iload                  0
+   if_icmpeq              LABEL57
+   jump                   LABEL64
+LABEL57:
+   get_varc               210
+   load_int               0
+   load_int               0
+   iload                  1
+   pack_location
+   put_varc               210
+   jump                   LABEL216
+LABEL64:
+   load_int               105
+   load_int               83
+   load_int               681
+   get_varc               211
+   divide_by_16384
+   get_enum_value
+   iload                  0
+   if_icmpeq              LABEL73
+   jump                   LABEL80
+LABEL73:
+   get_varc               211
+   load_int               0
+   load_int               0
+   iload                  1
+   pack_location
+   put_varc               211
+   jump                   LABEL216
+LABEL80:
+   load_int               105
+   load_int               83
+   load_int               681
+   get_varc               212
+   divide_by_16384
+   get_enum_value
+   iload                  0
+   if_icmpeq              LABEL89
+   jump                   LABEL96
+LABEL89:
+   get_varc               212
+   load_int               0
+   load_int               0
+   iload                  1
+   pack_location
+   put_varc               212
+   jump                   LABEL216
+LABEL96:
+   load_int               105
+   load_int               83
+   load_int               681
+   get_varc               213
+   divide_by_16384
+   get_enum_value
+   iload                  0
+   if_icmpeq              LABEL105
+   jump                   LABEL112
+LABEL105:
+   get_varc               213
+   load_int               0
+   load_int               0
+   iload                  1
+   pack_location
+   put_varc               213
+   jump                   LABEL216
+LABEL112:
+   get_varc               207
+   load_int               -1
+   if_icmpeq              LABEL116
+   jump                   LABEL127
+LABEL116:
+   load_int               0
+   load_int               83
+   load_int               105
+   load_int               81
+   iload                  0
+   get_enum_value
+   load_int               0
+   iload                  1
+   pack_location
+   put_varc               207
+   jump                   LABEL216
+LABEL127:
+   get_varc               208
+   load_int               -1
+   if_icmpeq              LABEL131
+   jump                   LABEL142
+LABEL131:
+   load_int               0
+   load_int               83
+   load_int               105
+   load_int               81
+   iload                  0
+   get_enum_value
+   load_int               0
+   iload                  1
+   pack_location
+   put_varc               208
+   jump                   LABEL216
+LABEL142:
+   get_varc               209
+   load_int               -1
+   if_icmpeq              LABEL146
+   jump                   LABEL157
+LABEL146:
+   load_int               0
+   load_int               83
+   load_int               105
+   load_int               81
+   iload                  0
+   get_enum_value
+   load_int               0
+   iload                  1
+   pack_location
+   put_varc               209
+   jump                   LABEL216
+LABEL157:
+   get_varc               210
+   load_int               -1
+   if_icmpeq              LABEL161
+   jump                   LABEL172
+LABEL161:
+   load_int               0
+   load_int               83
+   load_int               105
+   load_int               81
+   iload                  0
+   get_enum_value
+   load_int               0
+   iload                  1
+   pack_location
+   put_varc               210
+   jump                   LABEL216
+LABEL172:
+   get_varc               211
+   load_int               -1
+   if_icmpeq              LABEL176
+   jump                   LABEL187
+LABEL176:
+   load_int               0
+   load_int               83
+   load_int               105
+   load_int               81
+   iload                  0
+   get_enum_value
+   load_int               0
+   iload                  1
+   pack_location
+   put_varc               211
+   jump                   LABEL216
+LABEL187:
+   get_varc               212
+   load_int               -1
+   if_icmpeq              LABEL191
+   jump                   LABEL202
+LABEL191:
+   load_int               0
+   load_int               83
+   load_int               105
+   load_int               81
+   iload                  0
+   get_enum_value
+   load_int               0
+   iload                  1
+   pack_location
+   put_varc               212
+   jump                   LABEL216
+LABEL202:
+   get_varc               213
+   load_int               -1
+   if_icmpeq              LABEL206
+   jump                   LABEL216
+LABEL206:
+   load_int               0
+   load_int               83
+   load_int               105
+   load_int               81
+   iload                  0
+   get_enum_value
+   load_int               0
+   iload                  1
+   pack_location
+   put_varc               213
+LABEL216:
+   return
