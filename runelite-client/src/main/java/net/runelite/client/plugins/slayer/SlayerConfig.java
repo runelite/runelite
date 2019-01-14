@@ -141,6 +141,13 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "amount",
+		name = "",
+		description = ""
+	)
+	void amount(int amt);
+
+	@ConfigItem(
 		keyName = "initialAmount",
 		name = "",
 		description = "",
@@ -156,13 +163,6 @@ public interface SlayerConfig extends Config
 		description = ""
 	)
 	void initialAmount(int initialAmount);
-
-	@ConfigItem(
-		keyName = "amount",
-		name = "",
-		description = ""
-	)
-	void amount(int amt);
 
 	@ConfigItem(
 		keyName = "streak",
