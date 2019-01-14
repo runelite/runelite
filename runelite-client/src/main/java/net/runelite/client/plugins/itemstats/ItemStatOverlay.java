@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -46,6 +47,12 @@ import net.runelite.http.api.item.ItemStats;
 
 public class ItemStatOverlay extends Overlay
 {
+	// Unarmed attack speed is 6
+	private static final ItemStats UNARMED = new ItemStats(false, true, 0,
+		ItemEquipmentStats.builder()
+			.aspeed(6)
+			.build());
+
 	@Inject
 	private Client client;
 
@@ -191,14 +198,21 @@ public class ItemStatOverlay extends Overlay
 		if (s.isEquipable() && currentEquipment != null && c != null)
 		{
 			final Item[] items = c.getItems();
+			final int slot = currentEquipment.getSlot();
 
-			if (currentEquipment.getSlot() != -1 && currentEquipment.getSlot() < items.length)
+			if (slot != -1 && slot < items.length)
 			{
-				final Item item = items[currentEquipment.getSlot()];
+				final Item item = items[slot];
 				if (item != null)
 				{
 					other = itemManager.getItemStats(item.getId());
 				}
+			}
+
+			if (other == null && slot == EquipmentInventorySlot.WEAPON.getSlotIdx())
+			{
+				// Unarmed
+				other = UNARMED;
 			}
 		}
 
@@ -208,7 +222,7 @@ public class ItemStatOverlay extends Overlay
 		if (subtracted.isEquipable() && e != null)
 		{
 			b.append(getChangeString("Prayer", e.getPrayer(), false, false));
-			b.append(getChangeString("Speed", e.getAspeed(), false, false));
+			b.append(getChangeString("Speed", e.getAspeed(), true, false));
 			b.append(getChangeString("Melee Str", e.getStr(), false, false));
 			b.append(getChangeString("Range Str", e.getRstr(), false, false));
 			b.append(getChangeString("Magic Dmg", e.getMdmg(), false, true));
