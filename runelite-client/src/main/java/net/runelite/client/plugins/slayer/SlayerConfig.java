@@ -165,6 +165,24 @@ public interface SlayerConfig extends Config
 	void initialAmount(int initialAmount);
 
 	@ConfigItem(
+		keyName = "taskLocation",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String taskLocation()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "taskLocation",
+		name = "",
+		description = ""
+	)
+	void taskLocation(String key);
+
+	@ConfigItem(
 		keyName = "streak",
 		name = "",
 		description = "",
