@@ -26,19 +26,21 @@ package net.runelite.client.plugins.agility;
 
 import com.google.inject.Provides;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import static net.runelite.api.GameState.HOPPING;
+import static net.runelite.api.GameState.LOGIN_SCREEN;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
 import net.runelite.api.Player;
-import static net.runelite.api.Skill.AGILITY;
+import net.runelite.api.Skill;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
@@ -46,7 +48,6 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -65,19 +66,22 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Agility",
-	description = "Show helpful information about agility courses and obstacles",
-	tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
+		name = "Agility",
+		description = "Show helpful information about agility courses and obstacles",
+		tags = {"grace", "marks", "overlay", "shortcuts", "skilling", "traps"}
 )
+@PluginDependency(XpTrackerPlugin.class)
 @Slf4j
 public class AgilityPlugin extends Plugin
 {
-	private static final int AGILITY_ARENA_REGION_ID = 11157;
 
 	@Getter
 	private final Map<TileObject, Tile> obstacles = new HashMap<>();
@@ -109,10 +113,12 @@ public class AgilityPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private XpTrackerService xpTrackerService;
+
 	@Getter
 	private AgilitySession session;
 
-	private int lastAgilityXp;
 	private WorldPoint lastArenaTicketPosition;
 
 	@Provides
@@ -161,6 +167,7 @@ public class AgilityPlugin extends Plugin
 				}
 				break;
 		}
+
 	}
 
 	@Subscribe
@@ -169,42 +176,6 @@ public class AgilityPlugin extends Plugin
 		if (!config.showAgilityArenaTimer())
 		{
 			removeAgilityArenaTimer();
-		}
-	}
-
-	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
-	{
-		if (event.getSkill() != AGILITY || !config.showLapCount())
-		{
-			return;
-		}
-
-		// Determine how much EXP was actually gained
-		int agilityXp = client.getSkillExperience(AGILITY);
-		int skillGained = agilityXp - lastAgilityXp;
-		lastAgilityXp = agilityXp;
-
-		// Get course
-		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		if (course == null
-			|| (course.getCourseEndWorldPoints().length == 0
-			? Math.abs(course.getLastObstacleXp() - skillGained) > 1
-			: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
-		{
-			return;
-		}
-
-		if (session != null && session.getCourse() == course)
-		{
-			session.incrementLapCount(client);
-		}
-		else
-		{
-			session = new AgilitySession(course);
-			// New course found, reset lap count and set new course
-			session.resetLapCount();
-			session.incrementLapCount(client);
 		}
 	}
 
@@ -237,6 +208,7 @@ public class AgilityPlugin extends Plugin
 	{
 		if (isInAgilityArena())
 		{
+
 			// Hint arrow has no plane, and always returns the current plane
 			WorldPoint newTicketPosition = client.getHintArrowPoint();
 			WorldPoint oldTickPosition = lastArenaTicketPosition;
@@ -244,7 +216,7 @@ public class AgilityPlugin extends Plugin
 			lastArenaTicketPosition = newTicketPosition;
 
 			if (oldTickPosition != null && newTicketPosition != null
-				&& (oldTickPosition.getX() != newTicketPosition.getX() || oldTickPosition.getY() != newTicketPosition.getY()))
+					&& (oldTickPosition.getX() != newTicketPosition.getX() || oldTickPosition.getY() != newTicketPosition.getY()))
 			{
 				log.debug("Ticked position moved from {} to {}", oldTickPosition, newTicketPosition);
 
@@ -258,6 +230,14 @@ public class AgilityPlugin extends Plugin
 					showNewAgilityArenaTimer();
 				}
 			}
+			// Get course
+			Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
+			if (session == null || session.getCourse() != course)
+			{
+				session = new AgilitySession(course, xpTrackerService);
+			}
+			final int currentXp = client.getSkillExperience(Skill.AGILITY);
+			session.updateLapCounts(client, currentXp, client.getLocalPlayer().getWorldLocation());
 		}
 	}
 
@@ -270,7 +250,7 @@ public class AgilityPlugin extends Plugin
 		}
 
 		WorldPoint location = local.getWorldLocation();
-		return location.getRegionID() == AGILITY_ARENA_REGION_ID;
+		return Courses.getCourse(location.getRegionID()) != null;
 	}
 
 	private void removeAgilityArenaTimer()
@@ -366,9 +346,9 @@ public class AgilityPlugin extends Plugin
 		}
 
 		if (Obstacles.COURSE_OBSTACLE_IDS.contains(newObject.getId()) ||
-			Obstacles.SHORTCUT_OBSTACLE_IDS.contains(newObject.getId()) ||
-			(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
-				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
+				Obstacles.SHORTCUT_OBSTACLE_IDS.contains(newObject.getId()) ||
+				(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
+						&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
 		{
 			obstacles.put(newObject, tile);
 		}

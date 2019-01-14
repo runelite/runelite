@@ -25,11 +25,15 @@
 package net.runelite.client.plugins.agility;
 
 import java.time.Instant;
+
+import java.util.Arrays;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.xptracker.XpTrackerService;
 
 @Getter
 @Setter
@@ -39,33 +43,36 @@ class AgilitySession
 	private Instant lastLapCompleted;
 	private int totalLaps;
 	private int lapsTillLevel;
+	private int latestXp;
+	private XpTrackerService xpTrackerService;
 
-	AgilitySession(Courses course)
+	AgilitySession(Courses course, XpTrackerService xpTrackerService)
+
 	{
 		this.course = course;
+		this.xpTrackerService = xpTrackerService;
 	}
 
-	void incrementLapCount(Client client)
+	void updateLapCounts(Client client, int currentXp, WorldPoint playerLocation)
 	{
-		lastLapCompleted = Instant.now();
-		++totalLaps;
+		int lastGainedExp = currentXp - latestXp;
+		final boolean hasCompletedCourse = !(course.getCourseEndWorldPoints().length == 0
+				? Math.abs(course.getLastObstacleXp() - lastGainedExp) > 1
+				: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(playerLocation)));
+		final boolean isLevelledUp = Experience.getLevelForXp(latestXp) < Experience.getLevelForXp(currentXp);
+		latestXp = currentXp;
 
-		int currentExp = client.getSkillExperience(Skill.AGILITY);
-		int nextLevel = client.getRealSkillLevel(Skill.AGILITY) + 1;
-
-		int remainingXp;
-		do
+		int totalLapsNew = xpTrackerService.getActions(Skill.AGILITY);
+		if (totalLapsNew > totalLaps)
 		{
-			remainingXp = nextLevel <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(nextLevel) - currentExp : 0;
-			nextLevel++;
-		} while (remainingXp < 0);
-
-		lapsTillLevel = remainingXp > 0 ? (int) Math.ceil(remainingXp / course.getTotalXp()) : 0;
+			lastLapCompleted = Instant.now();
+		}
+		// Only update laps if levelled up or completed the course
+		if (isLevelledUp || hasCompletedCourse)
+		{
+			totalLaps = totalLapsNew;
+			lapsTillLevel = xpTrackerService.getActionsLeft(Skill.AGILITY);
+		}
 	}
 
-	void resetLapCount()
-	{
-		totalLaps = 0;
-		lapsTillLevel = 0;
-	}
 }

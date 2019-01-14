@@ -29,6 +29,7 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -39,7 +40,6 @@ class LapCounterOverlay extends Overlay
 {
 	private final AgilityPlugin plugin;
 	private final AgilityConfig config;
-
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
@@ -57,9 +57,9 @@ class LapCounterOverlay extends Overlay
 		AgilitySession session = plugin.getSession();
 
 		if (!config.showLapCount() ||
-			session == null ||
-			session.getLastLapCompleted() == null ||
-			session.getCourse() == null)
+				session == null ||
+				session.getLastLapCompleted() == null ||
+				session.getCourse() == null)
 		{
 			return null;
 		}
@@ -76,16 +76,16 @@ class LapCounterOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Total Laps")
-			.right(Integer.toString(session.getTotalLaps()))
-			.build());
+				.left("Total Laps")
+				.right(Integer.toString(session.getTotalLaps()))
+				.build());
 
 		if (session.getLapsTillLevel() > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Laps till level")
-				.right(Integer.toString(session.getLapsTillLevel()))
-				.build());
+					.left("Laps till level")
+					.right(Integer.toString(session.getLapsTillLevel()))
+					.build());
 		}
 
 		return panelComponent.render(graphics);
