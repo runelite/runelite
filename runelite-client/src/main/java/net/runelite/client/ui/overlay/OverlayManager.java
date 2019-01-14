@@ -38,11 +38,14 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.MenuAction;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
+import net.runelite.client.util.Text;
 
 /**
  * Manages state of all game overlays
@@ -105,6 +108,39 @@ public class OverlayManager
 	{
 		overlays.forEach(this::loadOverlay);
 		rebuildOverlayLayers();
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (!MenuAction.RUNELITE_OVERLAY.equals(event.getMenuAction()))
+		{
+			return;
+		}
+
+		event.consume();
+
+		final String overlayName = Text.removeTags(event.getMenuTarget());
+		Overlay overlay = null;
+		for (Overlay o : overlays)
+		{
+			if (o.getName().equals(overlayName))
+			{
+				overlay = o;
+				break;
+			}
+		}
+
+		if (overlay == null)
+		{
+			return;
+		}
+
+		final Runnable r = overlay.getMenuOptions().get(event.getMenuOption());
+		if (r != null)
+		{
+			r.run();
+		}
 	}
 
 	/**
