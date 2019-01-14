@@ -163,6 +163,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapHeal",
+		name = "Heal",
+		description = "Swap Talk-to with Heal for Dr. Ford at Clan Wars"
+	)
+	default boolean swapHeal()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "swapHomePortal",
 		name = "Home",
 		description = "Swap Enter with Home or Build or Friend's house on Portal"
