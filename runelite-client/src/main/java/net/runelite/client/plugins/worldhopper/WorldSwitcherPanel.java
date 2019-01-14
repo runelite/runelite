@@ -31,6 +31,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JPanel;
@@ -62,6 +63,8 @@ class WorldSwitcherPanel extends PluginPanel
 
 	private ArrayList<WorldTableRow> rows = new ArrayList<>();
 	private WorldHopperPlugin plugin;
+
+	private Map<World, Integer> pingHistory = new HashMap<>();
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
@@ -214,12 +217,33 @@ class WorldSwitcherPanel extends PluginPanel
 
 	void populate(List<World> worlds)
 	{
+		if (!rows.isEmpty())
+		{
+			pingHistory.clear();
+
+			for (WorldTableRow row : rows)
+			{
+				pingHistory.put(row.getWorld(), row.getPing());
+			}
+		}
+
 		rows.clear();
 
 		for (int i = 0; i < worlds.size(); i++)
 		{
 			World world = worlds.get(i);
-			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));
+			Integer ping;
+
+			if (!pingHistory.containsKey(world))
+			{
+				ping = 0;
+			}
+			else
+			{
+				ping = pingHistory.get(world);
+			}
+
+			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world), ping));
 		}
 
 		updateList();
@@ -339,7 +363,7 @@ class WorldSwitcherPanel extends PluginPanel
 	/**
 	 * Builds a table row, that displays the world's information.
 	 */
-	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite)
+	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite, Integer ping)
 	{
 		WorldTableRow row = new WorldTableRow(world, current, favorite,
 			world1 ->
@@ -360,6 +384,7 @@ class WorldSwitcherPanel extends PluginPanel
 				updateList();
 			}
 		);
+		row.setPing(ping);
 		row.setBackground(stripe ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 		return row;
 	}
