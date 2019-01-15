@@ -64,7 +64,6 @@ class WorldSwitcherPanel extends PluginPanel
 	private ArrayList<WorldTableRow> rows = new ArrayList<>();
 	private WorldHopperPlugin plugin;
 
-	private Map<World, Integer> pingHistory = new HashMap<>();
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
@@ -217,13 +216,13 @@ class WorldSwitcherPanel extends PluginPanel
 
 	void populate(List<World> worlds)
 	{
+		Map<Integer, Integer> pingHistory = new HashMap<>();
+
 		if (!rows.isEmpty())
 		{
-			pingHistory.clear();
-
 			for (WorldTableRow row : rows)
 			{
-				pingHistory.put(row.getWorld(), row.getPing());
+				pingHistory.put(row.getWorld().getId(), row.getPing());
 			}
 		}
 
@@ -232,16 +231,7 @@ class WorldSwitcherPanel extends PluginPanel
 		for (int i = 0; i < worlds.size(); i++)
 		{
 			World world = worlds.get(i);
-			Integer ping;
-
-			if (!pingHistory.containsKey(world))
-			{
-				ping = 0;
-			}
-			else
-			{
-				ping = pingHistory.get(world);
-			}
+			Integer ping = pingHistory.getOrDefault(world.getId(), 0);
 
 			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world), ping));
 		}
