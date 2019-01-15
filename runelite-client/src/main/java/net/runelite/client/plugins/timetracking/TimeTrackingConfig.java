@@ -28,8 +28,6 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-import java.awt.Color;
-
 @ConfigGroup("timetracking")
 public interface TimeTrackingConfig extends Config
 {
@@ -38,7 +36,6 @@ public interface TimeTrackingConfig extends Config
 	String BIRD_HOUSE = "birdhouse";
 	String TIMERS = "timers";
 	String STOPWATCHES = "stopwatches";
-	String TIMER_WARNING_COLOR = "timerWarningColor";
 
 	@ConfigItem(
 		keyName = "estimateRelative",
@@ -104,17 +101,6 @@ public interface TimeTrackingConfig extends Config
 	default int timerWarningSeconds()
 	{
 		return 10;
-	}
-
-	@ConfigItem(
-		keyName = TIMER_WARNING_COLOR,
-		name = "Timer Warning Color",
-		description = "The timer warning color",
-		position = 7
-	)
-	default Color timerWarningColor()
-	{
-		return Color.ORANGE;
 	}
 
 	@ConfigItem(

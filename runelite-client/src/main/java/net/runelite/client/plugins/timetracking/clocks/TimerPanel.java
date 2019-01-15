@@ -26,17 +26,22 @@ package net.runelite.client.plugins.timetracking.clocks;
 
 import java.awt.*;
 
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconButton;
 
 class TimerPanel extends ClockPanel
 {
-	private Color warningColor = Color.ORANGE;
+	private static final Color warningColor;
 
-	TimerPanel(ClockManager clockManager, Timer timer, Color warningColor)
+	static
+	{
+		warningColor = ColorScheme.BRAND_ORANGE;
+	}
+
+	TimerPanel(ClockManager clockManager, Timer timer)
 	{
 		super(clockManager, timer, "timer", true);
 
-		this.warningColor = warningColor;
 		IconButton deleteButton = new IconButton(ClockTabPanel.DELETE_ICON, ClockTabPanel.DELETE_ICON_HOVER);
 		deleteButton.setPreferredSize(new Dimension(16, 14));
 		deleteButton.setToolTipText("Delete timer");

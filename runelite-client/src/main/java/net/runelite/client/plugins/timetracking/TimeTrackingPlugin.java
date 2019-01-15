@@ -107,7 +107,6 @@ public class TimeTrackingPlugin extends Plugin
 	{
 		clockManager.loadTimers();
 		clockManager.loadStopwatches();
-		clockManager.changeTimerWarningColor(config.timerWarningColor());
 		birdHouseTracker.loadFromConfig();
 		farmingTracker.loadCompletionTimes();
 
@@ -157,10 +156,6 @@ public class TimeTrackingPlugin extends Plugin
 		else if (clockManager.getStopwatches().isEmpty() && e.getKey().equals(STOPWATCHES))
 		{
 			clockManager.loadStopwatches();
-		}
-		else if (e.getKey().equals(TIMER_WARNING_COLOR))
-		{
-			clockManager.changeTimerWarningColor(config.timerWarningColor());
 		}
 	}
 

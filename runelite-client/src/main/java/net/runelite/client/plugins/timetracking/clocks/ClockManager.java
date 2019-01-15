@@ -28,7 +28,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Singleton;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -244,16 +243,6 @@ public class ClockManager
 		final Gson gson = new Gson();
 		final String json = gson.toJson(stopwatches);
 		configManager.setConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.STOPWATCHES, json);
-	}
-
-	/**
-	 * Change the timer warning color and rebuild
-	 * @param color the new timer warning color
-	 */
-	public void changeTimerWarningColor(Color color)
-	{
-		clockTabPanel.setTimerWarningColor(color);
-		SwingUtilities.invokeLater(clockTabPanel::rebuild);
 	}
 
 }
