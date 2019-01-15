@@ -68,22 +68,22 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 
 		if (!plugin.isTyping())
 		{
-			if (config.up().matches(e))
+			if (config.up().matches(e, true))
 			{
 				modified.put(e.getKeyCode(), KeyEvent.VK_UP);
 				e.setKeyCode(KeyEvent.VK_UP);
 			}
-			else if (config.down().matches(e))
+			else if (config.down().matches(e, true))
 			{
 				modified.put(e.getKeyCode(), KeyEvent.VK_DOWN);
 				e.setKeyCode(KeyEvent.VK_DOWN);
 			}
-			else if (config.left().matches(e))
+			else if (config.left().matches(e, true))
 			{
 				modified.put(e.getKeyCode(), KeyEvent.VK_LEFT);
 				e.setKeyCode(KeyEvent.VK_LEFT);
 			}
-			else if (config.right().matches(e))
+			else if (config.right().matches(e, true))
 			{
 				modified.put(e.getKeyCode(), KeyEvent.VK_RIGHT);
 				e.setKeyCode(KeyEvent.VK_RIGHT);
@@ -146,19 +146,19 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 		{
 			modified.remove(e.getKeyCode());
 
-			if (config.up().matches(e))
+			if (config.up().matches(e, true))
 			{
 				e.setKeyCode(KeyEvent.VK_UP);
 			}
-			else if (config.down().matches(e))
+			else if (config.down().matches(e, true))
 			{
 				e.setKeyCode(KeyEvent.VK_DOWN);
 			}
-			else if (config.left().matches(e))
+			else if (config.left().matches(e, true))
 			{
 				e.setKeyCode(KeyEvent.VK_LEFT);
 			}
-			else if (config.right().matches(e))
+			else if (config.right().matches(e, true))
 			{
 				e.setKeyCode(KeyEvent.VK_RIGHT);
 			}

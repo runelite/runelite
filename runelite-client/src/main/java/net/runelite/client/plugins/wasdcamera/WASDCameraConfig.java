@@ -37,7 +37,7 @@ public interface WASDCameraConfig extends Config
 		position = 1,
 		keyName = "up",
 		name = "Up key",
-		description = "The key which will replace up."
+		description = "The key which will replace up (modifiers are ignored)."
 	)
 	default Keybind up()
 	{
@@ -48,7 +48,7 @@ public interface WASDCameraConfig extends Config
 		position = 2,
 		keyName = "down",
 		name = "Down key",
-		description = "The key which will replace down."
+		description = "The key which will replace down (modifiers are ignored)."
 	)
 	default Keybind down()
 	{
@@ -59,7 +59,7 @@ public interface WASDCameraConfig extends Config
 		position = 3,
 		keyName = "left",
 		name = "Left key",
-		description = "The key which will replace left."
+		description = "The key which will replace left (modifiers are ignored)."
 	)
 	default Keybind left()
 	{
@@ -70,7 +70,7 @@ public interface WASDCameraConfig extends Config
 		position = 4,
 		keyName = "right",
 		name = "Right key",
-		description = "The key which will replace right."
+		description = "The key which will replace right (modifiers are ignored)."
 	)
 	default Keybind right()
 	{
