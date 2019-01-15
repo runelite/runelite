@@ -75,9 +75,9 @@ public class PlayerIndicatorsOverlay extends Overlay
 			return;
 		}
 
-		if(config.limitLevel())
+		if (config.limitLevel())
 		{
-			if(!(client.getLocalPlayer().getCombatLevel() >= actor.getCombatLevel() - config.intLevel() && client.getLocalPlayer().getCombatLevel() <= actor.getCombatLevel() + config.intLevel()))
+			if (!(client.getLocalPlayer().getCombatLevel() >= actor.getCombatLevel() - config.intLevel() && client.getLocalPlayer().getCombatLevel() <= actor.getCombatLevel() + config.intLevel()))
 			{
 				return;
 			}
