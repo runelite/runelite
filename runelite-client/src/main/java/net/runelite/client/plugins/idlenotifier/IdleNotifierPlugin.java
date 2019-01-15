@@ -584,7 +584,7 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean makeTabletFinished()
 	{
-        if (notifyTabletFinished)
+		if (notifyTabletFinished)
 		{
 			notifyTabletFinished = false;
 			return true;
@@ -593,6 +593,7 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			notifyTabletFinished = true;
 		}
+
 		return false;
 	}
 
