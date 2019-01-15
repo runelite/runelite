@@ -35,6 +35,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.client.plugins.timetracking.TabContentPanel;
 import net.runelite.client.plugins.timetracking.TimeTrackingPlugin;
 import net.runelite.client.ui.ColorScheme;
@@ -63,6 +66,9 @@ public class ClockTabPanel extends TabContentPanel
 	private final ClockManager clockManager;
 
 	private final List<ClockPanel> clockPanels = new ArrayList<>();
+
+	@Setter
+	private Color timerWarningColor;
 
 	static
 	{
@@ -110,10 +116,16 @@ public class ClockTabPanel extends TabContentPanel
 
 		for (Timer timer : clockManager.getTimers())
 		{
-			TimerPanel panel = new TimerPanel(clockManager, timer);
+			TimerPanel panel = new TimerPanel(clockManager, timer, timerWarningColor);
 
 			clockPanels.add(panel);
 			add(panel);
+
+			// set the warning color right at init
+			if (timer.isWarning())
+			{
+				panel.updateDisplayInput();
+			}
 		}
 
 		if (clockManager.getTimers().isEmpty())

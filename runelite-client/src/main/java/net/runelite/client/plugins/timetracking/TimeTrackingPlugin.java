@@ -46,9 +46,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.CONFIG_GROUP;
-import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.STOPWATCHES;
-import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.TIMERS;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
@@ -56,6 +53,8 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
+
+import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.*;
 
 @PluginDescriptor(
 	name = "Time Tracking",
@@ -108,6 +107,7 @@ public class TimeTrackingPlugin extends Plugin
 	{
 		clockManager.loadTimers();
 		clockManager.loadStopwatches();
+		clockManager.changeTimerWarningColor(config.timerWarningColor());
 		birdHouseTracker.loadFromConfig();
 		farmingTracker.loadCompletionTimes();
 
@@ -157,6 +157,10 @@ public class TimeTrackingPlugin extends Plugin
 		else if (clockManager.getStopwatches().isEmpty() && e.getKey().equals(STOPWATCHES))
 		{
 			clockManager.loadStopwatches();
+		}
+		else if (e.getKey().equals(TIMER_WARNING_COLOR))
+		{
+			clockManager.changeTimerWarningColor(config.timerWarningColor());
 		}
 	}
 
@@ -217,6 +221,24 @@ public class TimeTrackingPlugin extends Plugin
 		{
 			panel.update();
 		}
+	}
+
+	@Schedule(period = 500, unit = ChronoUnit.MILLIS)
+	public void checkTimerOrder()
+	{
+		boolean timerOrderChanged = clockManager.checkTimerOrder();
+
+		if (timerOrderChanged)
+		{
+			panel.update();
+		}
+	}
+
+	@Schedule(period = 500, unit = ChronoUnit.MILLIS)
+	public void checkTimerWarning()
+	{
+	    clockManager.checkForWarnings();
+	    panel.update();
 	}
 
 	private void updatePanel()

@@ -24,19 +24,48 @@
  */
 package net.runelite.client.plugins.timetracking.clocks;
 
-import java.awt.Dimension;
+import java.awt.*;
+
 import net.runelite.client.ui.components.IconButton;
 
 class TimerPanel extends ClockPanel
 {
-	TimerPanel(ClockManager clockManager, Timer timer)
+	private Color warningColor = Color.ORANGE;
+
+	TimerPanel(ClockManager clockManager, Timer timer, Color warningColor)
 	{
 		super(clockManager, timer, "timer", true);
 
+		this.warningColor = warningColor;
 		IconButton deleteButton = new IconButton(ClockTabPanel.DELETE_ICON, ClockTabPanel.DELETE_ICON_HOVER);
 		deleteButton.setPreferredSize(new Dimension(16, 14));
 		deleteButton.setToolTipText("Delete timer");
 		deleteButton.addActionListener(e -> clockManager.removeTimer(timer));
 		rightActions.add(deleteButton);
+	}
+
+	@Override
+	void updateDisplayInput()
+	{
+		super.updateDisplayInput();
+
+		Timer timer = (Timer) getClock();
+		if (timer.isWarning())
+		{
+			displayInput.getTextField().setForeground(getColor());
+		}
+	}
+
+	@Override
+	protected Color getColor()
+	{
+		Color color = super.getColor();
+		Timer timer = (Timer) getClock();
+		if (timer.isWarning())
+		{
+			color = warningColor;
+		}
+
+		return color;
 	}
 }
