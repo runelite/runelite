@@ -217,12 +217,9 @@ class WorldSwitcherPanel extends PluginPanel
 	{
 		Map<Integer, Integer> pingHistory = new HashMap<>();
 
-		if (!rows.isEmpty())
+		for (WorldTableRow row : rows)
 		{
-			for (WorldTableRow row : rows)
-			{
-				pingHistory.put(row.getWorld().getId(), row.getPing());
-			}
+			pingHistory.put(row.getWorld().getId(), row.getPing());
 		}
 
 		rows.clear();
