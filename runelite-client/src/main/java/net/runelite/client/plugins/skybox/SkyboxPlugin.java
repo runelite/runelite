@@ -105,12 +105,17 @@ public class SkyboxPlugin extends Plugin
 		}
 
 		// Inverse of camera location / 2
-		int spx = px - ((client.getCameraX() - px) >> 1);
-		int spy = py - ((client.getCameraY() - py) >> 1);
+		int spx = -((client.getCameraX() - px) >> 1);
+		int spy = -((client.getCameraY() - py) >> 1);
+
+		int baseX = client.getBaseX();
+		int baseY = client.getBaseY();
 
 		client.setSkyboxColor(skybox.getColorForPoint(
-			client.getBaseX() + (spx / 128.f),
-			client.getBaseY() + (spy / 128.f),
+			baseX + ((px + spx) / 128.f),
+			baseY + ((py + spy) / 128.f),
+			baseX + (px / 128),
+			baseY + (py / 128),
 			client.getPlane(),
 			client.getTextureProvider().getBrightness(),
 			client.isInInstancedRegion() ? this::mapChunk : null

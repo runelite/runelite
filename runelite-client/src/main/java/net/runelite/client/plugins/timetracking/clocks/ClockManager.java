@@ -41,8 +41,6 @@ import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 @Singleton
 public class ClockManager
 {
-	private static final long DEFAULT_TIMER_DURATION = 60 * 5; // 5 minutes
-
 	@Inject
 	private ConfigManager configManager;
 
@@ -63,7 +61,7 @@ public class ClockManager
 
 	void addTimer()
 	{
-		timers.add(new Timer("Timer " + (timers.size() + 1), DEFAULT_TIMER_DURATION));
+		timers.add(new Timer("Timer " + (timers.size() + 1), config.defaultTimerMinutes() * 60));
 		saveTimers();
 
 		SwingUtilities.invokeLater(clockTabPanel::rebuild);

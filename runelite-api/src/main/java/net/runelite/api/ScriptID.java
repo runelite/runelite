@@ -68,6 +68,18 @@ public final class ScriptID
 	public static final int CLEAR_CHATBOX_PANEL = 677;
 
 	/**
+	 * Queries the completion state of a quest by its struct id
+	 * <ul>
+	 * <li> int (struct) The id of the quest
+	 * </ul>
+	 * Returns
+	 * <ul>
+	 * <li> int (QuestState) the normalized state of the quest
+	 * </ul>
+	 */
+	public static final int QUESTLIST_PROGRESS = 2267;
+
+	/**
 	 * Updates the Diary/Quest interface's scrollbar
 	 * <ul>
 	 * <li> int (boolean) Reset scroll position </li>

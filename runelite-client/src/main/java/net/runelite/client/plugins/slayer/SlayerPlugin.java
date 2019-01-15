@@ -81,7 +81,7 @@ import net.runelite.client.util.Text;
 public class SlayerPlugin extends Plugin
 {
 	//Chat messages
-	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("^(?:You're assigned to kill|You have received a new Slayer assignment from .*:) (?:the )?(.*?)(?: in the Wilderness)?(?:; only | \\()(\\d*)(?: more to go\\.|\\))$");
+	private static final Pattern CHAT_GEM_PROGRESS_MESSAGE = Pattern.compile("^(?:You're assigned to kill|You have received a new Slayer assignment from .*:) (?:[Tt]he )?(?<name>.+?)(?: (?:in|on) (?:the )?(?<location>[^;]+))?(?:; only | \\()(?<amount>\\d+)(?: more to go\\.|\\))$");
 	private static final String CHAT_GEM_COMPLETE_MESSAGE = "You need something new to hunt.";
 	private static final Pattern CHAT_COMPLETE_MESSAGE = Pattern.compile("(?:\\d+,)*\\d+");
 	private static final String CHAT_CANCEL_MESSAGE = "Your task has been cancelled.";
@@ -98,10 +98,10 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern COMBAT_BRACELET_TASK_UPDATE_MESSAGE = Pattern.compile("^You still need to kill (\\d+) monsters to complete your current Slayer assignment");
 
 	//NPC messages
-	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*Your new task is to kill\\s*(\\d*) (.*)\\.");
+	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*(?:Your new task is to kill|You are to bring balance to)\\s*(?<amount>\\d+) (?<name>.+?)(?: (?:in|on) (?:the )?(?<location>.+))?\\.");
 	private static final Pattern NPC_ASSIGN_BOSS_MESSAGE = Pattern.compile("^Excellent. You're now assigned to kill (?:the )?(.*) (\\d+) times.*Your reward point tally is (.*)\\.$");
 	private static final Pattern NPC_ASSIGN_FIRST_MESSAGE = Pattern.compile("^We'll start you off hunting (.*), you'll need to kill (\\d*) of them.");
-	private static final Pattern NPC_CURRENT_MESSAGE = Pattern.compile("You're still hunting (.*); you have (\\d*) to go\\..*");
+	private static final Pattern NPC_CURRENT_MESSAGE = Pattern.compile("^You're still (?:hunting|bringing balance to) (?<name>.+)(?: (?:in|on) (?:the )?(?<location>.+), with|; you have) (?<amount>\\d+) to go\\..*");
 
 	//Reward UI
 	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: ((?:\\d+,)*\\d+)");
@@ -157,6 +157,10 @@ public class SlayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
+	private String taskLocation;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int expeditiousChargeCount;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -195,7 +199,7 @@ public class SlayerPlugin extends Plugin
 			streak = config.streak();
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
-			clientThread.invoke(() -> setTask(config.taskName(), config.amount(), config.initialAmount()));
+			clientThread.invoke(() -> setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation()));
 		}
 	}
 
@@ -238,7 +242,7 @@ public class SlayerPlugin extends Plugin
 					streak = config.streak();
 					setExpeditiousChargeCount(config.expeditious());
 					setSlaughterChargeCount(config.slaughter());
-					setTask(config.taskName(), config.amount(), config.initialAmount());
+					setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation());
 					loginFlag = false;
 				}
 				break;
@@ -250,6 +254,7 @@ public class SlayerPlugin extends Plugin
 		config.amount(amount);
 		config.initialAmount(initialAmount);
 		config.taskName(taskName);
+		config.taskLocation(taskLocation);
 		config.points(points);
 		config.streak(streak);
 		config.expeditious(expeditiousChargeCount);
@@ -280,15 +285,17 @@ public class SlayerPlugin extends Plugin
 		if (npcDialog != null)
 		{
 			String npcText = Text.sanitizeMultilineText(npcDialog.getText()); //remove color and linebreaks
-			final Matcher mAssign = NPC_ASSIGN_MESSAGE.matcher(npcText); //number, name
-			final Matcher mAssignFirst = NPC_ASSIGN_FIRST_MESSAGE.matcher(npcText); //name, number
+			final Matcher mAssign = NPC_ASSIGN_MESSAGE.matcher(npcText); // amount, name, (location)
+			final Matcher mAssignFirst = NPC_ASSIGN_FIRST_MESSAGE.matcher(npcText); // name, number
 			final Matcher mAssignBoss = NPC_ASSIGN_BOSS_MESSAGE.matcher(npcText); // name, number, points
-			final Matcher mCurrent = NPC_CURRENT_MESSAGE.matcher(npcText); //name, number
+			final Matcher mCurrent = NPC_CURRENT_MESSAGE.matcher(npcText); // name, (location), amount
 
 			if (mAssign.find())
 			{
-				int amount = Integer.parseInt(mAssign.group(1));
-				setTask(mAssign.group(2), amount, amount);
+				String name = mAssign.group("name");
+				int amount = Integer.parseInt(mAssign.group("amount"));
+				String location = mAssign.group("location");
+				setTask(name, amount, amount, location);
 			}
 			else if (mAssignFirst.find())
 			{
@@ -303,8 +310,10 @@ public class SlayerPlugin extends Plugin
 			}
 			else if (mCurrent.find())
 			{
-				int amount = Integer.parseInt(mCurrent.group(2));
-				setTask(mCurrent.group(1), amount, amount);
+				String name = mCurrent.group("name");
+				int amount = Integer.parseInt(mCurrent.group("amount"));
+				String location = mCurrent.group("location");
+				setTask(name, amount, initialAmount, location);
 			}
 		}
 
@@ -447,9 +456,10 @@ public class SlayerPlugin extends Plugin
 
 		if (mProgress.find())
 		{
-			String gemTaskName = mProgress.group(1);
-			int gemAmount = Integer.parseInt(mProgress.group(2));
-			setTask(gemTaskName, gemAmount, initialAmount);
+			String name = mProgress.group("name");
+			int gemAmount = Integer.parseInt(mProgress.group("amount"));
+			String location = mProgress.group("location");
+			setTask(name, gemAmount, initialAmount, location);
 			return;
 		}
 
@@ -605,9 +615,15 @@ public class SlayerPlugin extends Plugin
 
 	private void setTask(String name, int amt, int initAmt)
 	{
+		setTask(name, amt, initAmt, null);
+	}
+
+	private void setTask(String name, int amt, int initAmt, String location)
+	{
 		taskName = name;
 		amount = amt;
 		initialAmount = initAmt;
+		taskLocation = location;
 		save();
 		removeCounter();
 		addCounter();
@@ -633,8 +649,14 @@ public class SlayerPlugin extends Plugin
 		}
 
 		BufferedImage taskImg = itemManager.getImage(itemSpriteId);
-		String taskTooltip = ColorUtil.prependColorTag("%s</br>", new Color(255, 119, 0))
-			+ ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
+		String taskTooltip = ColorUtil.wrapWithColorTag("%s", new Color(255, 119, 0)) + "</br>";
+
+		if (taskLocation != null && !taskLocation.isEmpty())
+		{
+			taskTooltip += taskLocation + "</br>";
+		}
+
+		taskTooltip += ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
 			+ " %s</br>"
 			+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
 			+ " %s";

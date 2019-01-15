@@ -188,7 +188,7 @@ public class LootTrackerService
 	{
 		try (Connection con = sql2o.open())
 		{
-			con.createQuery("delete from kills where time + interval 30 day < current_timestamp()")
+			con.createQuery("delete from kills where time < current_timestamp() - interval 30 day")
 				.executeUpdate();
 		}
 	}
