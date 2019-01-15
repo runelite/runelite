@@ -208,10 +208,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FARMING_MIX_ULTRACOMPOST:
 			/* Construction */
 			case HOME_MAKE_TABLET:
-				resetTimers();
 				lastAnimation = animation;
-				lastAnimating = Instant.now();
-				break;
 			/* Misc */
 			case PISCARILIUS_CRANE_REPAIR:
 			case SAND_COLLECTION:
@@ -363,7 +360,14 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
 		{
-				notifier.notify("[" + local.getName() + "] is now idle!");
+            if (makeTabletFinished())
+            {
+                notifier.notify("[" + local.getName() + "] is finished making tablets!");
+            }
+            else
+            {
+                notifier.notify("[" + local.getName() + "] is now idle!");
+            }
 		}
 
 		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))
@@ -396,11 +400,6 @@ public class IdleNotifierPlugin extends Plugin
 		if (checkFullSpecEnergy())
 		{
 			notifier.notify("[" + local.getName() + "] has restored spec energy!");;
-		}
-
-		if (config.animationIdle() && makeTabletFinished())
-		{
-			notifier.notify("[" + local.getName() + "] is finished making tablets!");
 		}
 	}
 
@@ -585,7 +584,7 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean makeTabletFinished()
 	{
-		if (notifyTabletFinished && lastAnimation == 4067)
+        if (notifyTabletFinished)
 		{
 			notifyTabletFinished = false;
 			return true;
