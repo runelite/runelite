@@ -54,17 +54,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.Converter;
 import org.sql2o.quirks.NoQuirks;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 
 @SpringBootApplication
 @EnableScheduling
 @Slf4j
 public class SpringBootWebApplication extends SpringBootServletInitializer
 {
-	@Value("${redis.host:localhost}")
-	private String redisHost;
-
 	@Bean
 	protected ServletContextListener listener()
 	{
@@ -133,12 +128,6 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 		Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
 		return new Sql2o(dataSource, new NoQuirks(converters));
-	}
-
-	@Bean
-	JedisPool jedis()
-	{
-		return new JedisPool(new JedisPoolConfig(), redisHost);
 	}
 
 	@Override

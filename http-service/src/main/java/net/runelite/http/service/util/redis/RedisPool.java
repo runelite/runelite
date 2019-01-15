@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,60 +22,59 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.chat;
+package net.runelite.http.service.util.redis;
 
-import java.time.Duration;
-import net.runelite.http.service.util.redis.RedisPool;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
-@Service
-public class ChatService
+@Component
+public class RedisPool
 {
-	private static final Duration EXPIRE = Duration.ofMinutes(2);
+	private final BlockingQueue<Jedis> queue;
 
-	private final RedisPool jedisPool;
-
-	@Autowired
-	public ChatService(RedisPool jedisPool)
+	RedisPool(@Value("${redis.pool.size:10}") int queueSize, @Value("${redis.host:localhost}") String redisHost)
 	{
-		this.jedisPool = jedisPool;
-	}
-
-	public Integer getKc(String name, String boss)
-	{
-		String value;
-		try (Jedis jedis = jedisPool.getResource())
+		queue = new ArrayBlockingQueue<>(queueSize);
+		for (int i = 0; i < queueSize; ++i)
 		{
-			value = jedis.get("kc." + name + "." + boss);
-		}
-		return value == null ? null : Integer.parseInt(value);
-	}
-
-	public void setKc(String name, String boss, int kc)
-	{
-		try (Jedis jedis = jedisPool.getResource())
-		{
-			jedis.setex("kc." + name + "." + boss, (int) EXPIRE.getSeconds(), Integer.toString(kc));
+			Jedis jedis = new PooledJedis(redisHost);
+			queue.offer(jedis);
 		}
 	}
 
-	public Integer getQp(String name)
+	public Jedis getResource()
 	{
-		String value;
-		try (Jedis jedis = jedisPool.getResource())
+		Jedis jedis;
+		try
 		{
-			value = jedis.get("qp." + name);
+			jedis = queue.poll(1, TimeUnit.SECONDS);
 		}
-		return value == null ? null : Integer.parseInt(value);
+		catch (InterruptedException e)
+		{
+			throw new RuntimeException(e);
+		}
+		if (jedis == null)
+		{
+			throw new RuntimeException("Unable to acquire connection from pool, timeout");
+		}
+		return jedis;
 	}
 
-	public void setQp(String name, int qp)
+	class PooledJedis extends Jedis
 	{
-		try (Jedis jedis = jedisPool.getResource())
+		PooledJedis(String host)
 		{
-			jedis.setex("qp." + name, (int) EXPIRE.getSeconds(), Integer.toString(qp));
+			super(host);
+		}
+
+		@Override
+		public void close()
+		{
+			queue.offer(this);
 		}
 	}
 }
