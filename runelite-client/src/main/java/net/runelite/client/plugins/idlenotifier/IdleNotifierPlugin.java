@@ -90,7 +90,6 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean notifyOxygen = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
-	private boolean notifyTabletFinished = true;
 	private int lastSpecEnergy = 1000;
 	private int lastCombatCountdown = 0;
 	private Instant sixHourWarningTime;
@@ -360,14 +359,7 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
 		{
-			if (makeTabletFinished())
-			{
-				notifier.notify("[" + local.getName() + "] is finished making tablets!");
-			}
-			else
-			{
 				notifier.notify("[" + local.getName() + "] is now idle!");
-			}
 		}
 
 		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))
@@ -577,21 +569,6 @@ public class IdleNotifierPlugin extends Plugin
 		else
 		{
 			notify6HourLogout = true;
-		}
-
-		return false;
-	}
-
-	private boolean makeTabletFinished()
-	{
-		if (notifyTabletFinished)
-		{
-			notifyTabletFinished = false;
-			return true;
-		}
-		else
-		{
-			notifyTabletFinished = true;
 		}
 
 		return false;
