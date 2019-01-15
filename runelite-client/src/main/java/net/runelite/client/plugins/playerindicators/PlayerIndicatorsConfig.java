@@ -196,4 +196,26 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 15,
+			keyName = "limitLevel",
+			name = "Limit Level",
+			description = "Limit the players to show +-x your level. Useful for BH"
+	)
+	default boolean limitLevel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			position = 16,
+			keyName = "level",
+			name = "Level",
+			description = "The level to limit players shown +-x"
+	)
+	default int intLevel()
+	{
+		return 5;
+	}
 }

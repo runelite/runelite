@@ -31,6 +31,7 @@ import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.ClanMemberRank;
+import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.client.game.ClanManager;
@@ -45,6 +46,9 @@ public class PlayerIndicatorsOverlay extends Overlay
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
 	private final ClanManager clanManager;
+
+	@Inject
+	private Client client;
 
 	@Inject
 	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService,
@@ -71,7 +75,15 @@ public class PlayerIndicatorsOverlay extends Overlay
 			return;
 		}
 
-		String name = actor.getName().replace('\u00A0', ' ');
+		if(config.limitLevel())
+		{
+			if(!(client.getLocalPlayer().getCombatLevel() >= actor.getCombatLevel() - config.intLevel() && client.getLocalPlayer().getCombatLevel() <= actor.getCombatLevel() + config.intLevel()))
+			{
+				return;
+			}
+		}
+
+		String name = actor.getName().replace('\u00A0', ' ') + (config.limitLevel() ? " Lvl: " + actor.getCombatLevel() : "");
 		int offset = actor.getLogicalHeight() + 40;
 		Point textLocation = actor.getCanvasTextLocation(graphics, name, offset);
 
