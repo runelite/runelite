@@ -360,14 +360,14 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
 		{
-		    if (makeTabletFinished())
-            {
-                notifier.notify("[" + local.getName() + "] is finished making tablets!");
-            }
-		    else
-            {
-                notifier.notify("[" + local.getName() + "] is now idle!");
-            }
+			if (makeTabletFinished())
+			{
+				notifier.notify("[" + local.getName() + "] is finished making tablets!");
+			}
+			else
+			{
+				notifier.notify("[" + local.getName() + "] is now idle!");
+			}
 		}
 
 		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))
