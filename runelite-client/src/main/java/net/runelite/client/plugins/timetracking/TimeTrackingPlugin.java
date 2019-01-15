@@ -237,8 +237,8 @@ public class TimeTrackingPlugin extends Plugin
 	@Schedule(period = 500, unit = ChronoUnit.MILLIS)
 	public void checkTimerWarning()
 	{
-	    clockManager.checkForWarnings();
-	    panel.update();
+		clockManager.checkForWarnings();
+		panel.update();
 	}
 
 	private void updatePanel()
