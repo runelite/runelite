@@ -46,6 +46,9 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.CONFIG_GROUP;
+import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.STOPWATCHES;
+import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.TIMERS;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
@@ -53,8 +56,6 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
-
-import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.*;
 
 @PluginDescriptor(
 	name = "Time Tracking",
@@ -218,36 +219,21 @@ public class TimeTrackingPlugin extends Plugin
 		}
 	}
 
-	@Schedule(period = 500, unit = ChronoUnit.MILLIS)
-	public void checkTimerOrder()
-	{
-		boolean timerOrderChanged = clockManager.checkTimerOrder();
-
-		if (timerOrderChanged)
-		{
-			panel.update();
-		}
-	}
-
-	@Schedule(period = 500, unit = ChronoUnit.MILLIS)
-	public void checkTimerWarning()
-	{
-		clockManager.checkForWarnings();
-		panel.update();
-	}
-
 	private void updatePanel()
 	{
 		long unitTime = Instant.now().toEpochMilli() / 200;
 
 		boolean clockDataChanged = false;
+		boolean timerOrderChanged = false;
 
 		if (unitTime % 5 == 0)
 		{
 			clockDataChanged = clockManager.checkCompletion();
+			timerOrderChanged = clockManager.checkTimerOrder();
+			clockManager.checkForWarnings();
 		}
 
-		if (unitTime % panel.getUpdateInterval() == 0 || clockDataChanged)
+		if (unitTime % panel.getUpdateInterval() == 0 || clockDataChanged || timerOrderChanged)
 		{
 			panel.update();
 		}

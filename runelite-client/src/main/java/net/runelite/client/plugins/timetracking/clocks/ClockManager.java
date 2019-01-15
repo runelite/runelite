@@ -27,7 +27,6 @@ package net.runelite.client.plugins.timetracking.clocks;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Singleton;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -244,5 +243,4 @@ public class ClockManager
 		final String json = gson.toJson(stopwatches);
 		configManager.setConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.STOPWATCHES, json);
 	}
-
 }

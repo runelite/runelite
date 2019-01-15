@@ -24,8 +24,8 @@
  */
 package net.runelite.client.plugins.timetracking.clocks;
 
-import java.awt.*;
-
+import java.awt.Color;
+import java.awt.Dimension;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.IconButton;
 
