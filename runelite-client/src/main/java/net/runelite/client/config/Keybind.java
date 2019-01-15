@@ -88,12 +88,23 @@ public class Keybind
 	}
 
 	/**
+	 * @see Keybind#matches(KeyEvent, boolean)
+	 */
+	public boolean matches(KeyEvent e)
+	{
+		return matches(e, false);
+	}
+
+	/**
 	 * If the KeyEvent is from a KeyPressed event this returns if the
 	 * Event is this hotkey being pressed. If the KeyEvent is a
 	 * KeyReleased event this returns if the event is this hotkey being
 	 * released
+	 *
+	 * @param e AWT key event
+	 * @param ignoreModifiers if true ignores any key modifiers (ctrl, shift etc)
 	 */
-	public boolean matches(KeyEvent e)
+	public boolean matches(KeyEvent e, boolean ignoreModifiers)
 	{
 		if (NOT_SET.equals(this))
 		{
@@ -115,7 +126,7 @@ public class Keybind
 			return this.keyCode == keyCode;
 		}
 
-		return this.keyCode == keyCode && this.modifiers == modifiers;
+		return this.keyCode == keyCode && (ignoreModifiers || this.modifiers == modifiers);
 	}
 
 	@Override
