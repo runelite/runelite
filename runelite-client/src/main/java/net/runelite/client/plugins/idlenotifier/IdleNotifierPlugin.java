@@ -90,6 +90,7 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean notifyOxygen = true;
 	private boolean notifyIdleLogout = true;
 	private boolean notify6HourLogout = true;
+	private boolean notifyTabletFinished = true;
 	private int lastSpecEnergy = 1000;
 	private int lastCombatCountdown = 0;
 	private Instant sixHourWarningTime;
@@ -205,6 +206,12 @@ public class IdleNotifierPlugin extends Plugin
 			case USING_GILDED_ALTAR:
 			/* Farming */
 			case FARMING_MIX_ULTRACOMPOST:
+			/* Construction */
+			case HOME_MAKE_TABLET:
+				resetTimers();
+				lastAnimation = animation;
+				lastAnimating = Instant.now();
+				break;
 			/* Misc */
 			case PISCARILIUS_CRANE_REPAIR:
 			case SAND_COLLECTION:
@@ -356,7 +363,7 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
 		{
-			notifier.notify("[" + local.getName() + "] is now idle!");
+				notifier.notify("[" + local.getName() + "] is now idle!");
 		}
 
 		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))
@@ -389,6 +396,11 @@ public class IdleNotifierPlugin extends Plugin
 		if (checkFullSpecEnergy())
 		{
 			notifier.notify("[" + local.getName() + "] has restored spec energy!");;
+		}
+
+		if (config.animationIdle() && makeTabletFinished())
+		{
+			notifier.notify("[" + local.getName() + "] is finished making tablets!");
 		}
 	}
 
@@ -568,6 +580,20 @@ public class IdleNotifierPlugin extends Plugin
 			notify6HourLogout = true;
 		}
 
+		return false;
+	}
+
+	private boolean makeTabletFinished()
+	{
+		if (notifyTabletFinished && lastAnimation == 4067)
+		{
+			notifyTabletFinished = false;
+			return true;
+		}
+		else
+		{
+			notifyTabletFinished = true;
+		}
 		return false;
 	}
 
