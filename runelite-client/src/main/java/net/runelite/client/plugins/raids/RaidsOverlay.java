@@ -53,6 +53,7 @@ public class RaidsOverlay extends Overlay
 	@Inject
 	private RaidsOverlay(Client client, RaidsPlugin plugin, RaidsConfig config)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.client = client;

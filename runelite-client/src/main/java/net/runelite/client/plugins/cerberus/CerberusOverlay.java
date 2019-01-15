@@ -44,6 +44,7 @@ public class CerberusOverlay extends Overlay
 	@Inject
 	CerberusOverlay(final CerberusPlugin plugin, final SkillIconManager iconManager)
 	{
+		super(plugin);
 		this.plugin = plugin;
 		this.iconManager = iconManager;
 		setPosition(OverlayPosition.BOTTOM_RIGHT);

@@ -54,6 +54,7 @@ class CorpDamageOverlay extends Overlay
 	@Inject
 	private CorpDamageOverlay(Client client, CorpPlugin corpPlugin, CorpConfig config)
 	{
+		super(corpPlugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 		setPriority(OverlayPriority.LOW);

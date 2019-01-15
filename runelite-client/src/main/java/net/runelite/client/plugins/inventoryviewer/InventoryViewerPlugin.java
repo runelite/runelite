@@ -24,10 +24,12 @@
  */
 package net.runelite.client.plugins.inventoryviewer;
 
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
 @PluginDescriptor(
 	name = "Inventory Viewer",
@@ -47,11 +49,13 @@ public class InventoryViewerPlugin extends Plugin
 	public void startUp()
 	{
 		overlayManager.add(overlay);
+		overlayManager.addMenu(overlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Inventory viewer overlay");
 	}
 
 	@Override
 	public void shutDown()
 	{
+		overlayManager.removeMenu(overlay, OPTION_CONFIGURE);
 		overlayManager.remove(overlay);
 	}
 }

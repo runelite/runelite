@@ -60,6 +60,7 @@ class NightmareZoneOverlay extends Overlay
 			InfoBoxManager infoBoxManager,
 			ItemManager itemManager)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.client = client;

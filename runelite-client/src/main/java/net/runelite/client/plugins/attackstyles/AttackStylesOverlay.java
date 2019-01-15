@@ -42,6 +42,7 @@ class AttackStylesOverlay extends Overlay
 	@Inject
 	private AttackStylesOverlay(AttackStylesPlugin plugin, AttackStylesConfig config)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
 		this.plugin = plugin;
 		this.config = config;
