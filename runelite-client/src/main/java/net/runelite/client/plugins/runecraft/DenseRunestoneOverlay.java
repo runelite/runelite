@@ -45,7 +45,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 @Slf4j
 public class DenseRunestoneOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE = 2600;
 	private static final int Z_OFFSET = 200;
 
 	private static final Color CLICKBOX_BORDER_COLOR = Color.GREEN;
@@ -94,24 +93,20 @@ public class DenseRunestoneOverlay extends Overlay
 
 	private void renderStone(Graphics2D graphics, GameObject gameObject)
 	{
-		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
-		LocalPoint gameObjectLocation = gameObject.getLocalLocation();
-		if (gameObjectLocation.distanceTo(playerLocation) < MAX_DISTANCE)
+		if (config.showDenseRunestoneClickbox())
 		{
-			if (config.showDenseRunestoneClickbox())
-			{
-				Area clickbox = gameObject.getClickbox();
-				Point mousePosition = client.getMouseCanvasPosition();
-				OverlayUtil.renderHoverableArea(
-					graphics, clickbox, mousePosition,
-					CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_BORDER_HOVER_COLOR);
-			}
-			if (config.showDenseRunestoneIndicator())
-			{
-				OverlayUtil.renderImageLocation(
-					client, graphics, gameObjectLocation,
-					skillIconManager.getSkillImage(Skill.MINING, false), Z_OFFSET);
-			}
+			Area clickbox = gameObject.getClickbox();
+			Point mousePosition = client.getMouseCanvasPosition();
+			OverlayUtil.renderHoverableArea(
+				graphics, clickbox, mousePosition,
+				CLICKBOX_FILL_COLOR, CLICKBOX_BORDER_COLOR, CLICKBOX_BORDER_HOVER_COLOR);
+		}
+		if (config.showDenseRunestoneIndicator())
+		{
+			LocalPoint gameObjectLocation = gameObject.getLocalLocation();
+			OverlayUtil.renderImageLocation(
+				client, graphics, gameObjectLocation,
+				skillIconManager.getSkillImage(Skill.MINING, false), Z_OFFSET);
 		}
 	}
 }
