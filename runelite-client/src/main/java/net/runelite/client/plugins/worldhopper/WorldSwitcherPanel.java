@@ -64,7 +64,6 @@ class WorldSwitcherPanel extends PluginPanel
 	private ArrayList<WorldTableRow> rows = new ArrayList<>();
 	private WorldHopperPlugin plugin;
 
-
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
 		this.plugin = plugin;
