@@ -219,6 +219,8 @@ public class IdleNotifierPlugin extends Plugin
 					lastAnimating = Instant.now();
 					break;
 				}
+			case PISCARILIUS_CRANE_REPAIR:
+				lastAnimation = animation;
 			case IDLE:
 				lastAnimating = Instant.now();
 				break;
