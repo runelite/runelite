@@ -482,7 +482,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			bottomLeftPoint.y) : bottomRightPoint;
 
 		final Point canvasTopRightPoint = isResizeable ? new Point(
-			client.getCanvas().getWidth(),
+			(int)client.getRealDimensions().getWidth(),
 			0) : topRightPoint;
 
 		return new OverlayBounds(
