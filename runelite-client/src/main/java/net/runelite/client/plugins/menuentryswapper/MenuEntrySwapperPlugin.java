@@ -374,6 +374,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("repairs", option, target, true);
 			}
 
+			if (config.swapContract())
+			{
+				swap("contract", option, target, true);
+			}
+
 			// make sure assignment swap is higher priority than trade swap for slayer masters
 			if (config.swapAssignment())
 			{

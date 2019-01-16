@@ -261,4 +261,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "swapContract",
+		name = "Contract",
+		description = "Swap Talk-to with Contract on Farming Guildmaster"
+	)
+	default boolean swapContract()
+	{
+		return true;
+	}
 }
