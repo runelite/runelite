@@ -207,7 +207,6 @@ public class IdleNotifierPlugin extends Plugin
 			case FARMING_MIX_ULTRACOMPOST:
 			/* Construction */
 			case HOME_MAKE_TABLET:
-				lastAnimation = animation;
 			/* Misc */
 			case PISCARILIUS_CRANE_REPAIR:
 			case SAND_COLLECTION:
@@ -359,7 +358,7 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
 		{
-				notifier.notify("[" + local.getName() + "] is now idle!");
+			notifier.notify("[" + local.getName() + "] is now idle!");
 		}
 
 		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))
