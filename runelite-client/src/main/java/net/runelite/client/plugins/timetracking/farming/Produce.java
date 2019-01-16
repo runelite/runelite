@@ -28,6 +28,7 @@ package net.runelite.client.plugins.timetracking.farming;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.ItemID;
+import net.runelite.api.NullItemID;
 
 @RequiredArgsConstructor
 @Getter
@@ -44,6 +45,7 @@ public enum Produce
 	SWEETCORN("Sweetcorn", ItemID.SWEETCORN, 10, 6, 0, 3),
 	STRAWBERRY("Strawberry", ItemID.STRAWBERRY, 10, 7, 0, 3),
 	WATERMELON("Watermelon", ItemID.WATERMELON, 10, 8, 0, 3),
+	SNAPE_GRASS("Snape grass", ItemID.SNAPE_GRASS, 10, 8, 0, 3),
 
 	// Flower crops
 	MARIGOLD("Marigold", ItemID.MARIGOLDS, 5, 5),
@@ -51,6 +53,7 @@ public enum Produce
 	NASTURTIUM("Nasturtium", ItemID.NASTURTIUMS, 5, 5),
 	WOAD("Woad", ItemID.WOAD_LEAF, 5, 5),
 	LIMPWURT("Limpwurt", ItemID.LIMPWURT_ROOT, 5, 5),
+	WHITE_LILY("While lily", ItemID.WHITE_LILY, 5, 5),
 
 	// Bush crops
 	REDBERRIES("Redberry", ItemID.REDBERRIES, 20, 6, 20, 5),
@@ -85,7 +88,7 @@ public enum Produce
 	DWARF_WEED("Dwarf Weed", ItemID.DWARF_WEED, 20, 5, 0, 3),
 	TORSTOL("Torstol", ItemID.TORSTOL, 20, 5, 0, 3),
 	GOUTWEED("Goutweed", ItemID.GOUTWEED, 20, 5, 0, 2),
-	ANYHERB("Any Herb", ItemID.GUAM_LEAF, 20, 5, 0, 3),
+	ANYHERB("Any herb", ItemID.GUAM_LEAF, 20, 5, 0, 3),
 
 	// Tree crops
 	OAK("Oak", ItemID.OAK_LOGS, 40, 5),
@@ -102,17 +105,31 @@ public enum Produce
 	PINEAPPLE("Pineapple", ItemID.PINEAPPLE, 160, 7, 45, 7),
 	PAPAYA("Papaya", ItemID.PAPAYA_FRUIT, 160, 7, 45, 7),
 	PALM("Palm", ItemID.COCONUT, 160, 7, 45, 7),
+	DRAGONFRUIT("Dragonfruit", ItemID.DRAGONFRUIT, 160, 7, 45, 7),
+
+	// Cactus
+	CACTUS("Cactus", ItemID.CACTUS_SPINE, 80, 8, 20, 4),
+	POTATO_CACTUS("Potato cactus", ItemID.POTATO_CACTUS, 10, 8, 5, 7),
+
+	// Hardwood
+	TEAK("Teak", ItemID.TEAK_LOGS, 560, 8),
+	MAHOGANY("Mahogany", ItemID.MAHOGANY_LOGS, 640, 9),
+
+	// Anima
+	ATTAS("Attas", NullItemID.NULL_22940, 640, 9),
+	IASOR("Iasro", NullItemID.NULL_22939, 640, 9),
+	KRONOS("Kronos", NullItemID.NULL_22938, 640, 9),
 
 	// Special crops
 	SEAWEED("Seaweed", ItemID.GIANT_SEAWEED, 10, 5, 0, 4),
-	TEAK("Teak", ItemID.TEAK_LOGS, 560, 8),
 	GRAPE("Grape", ItemID.GRAPES, 5, 8, 0, 5),
 	MUSHROOM("Mushroom", ItemID.MUSHROOM, 40, 7, 0, 7),
-	MAHOGANY("Mahogany", ItemID.MAHOGANY_LOGS, 640, 9),
-	CACTUS("Cactus", ItemID.POTATO_CACTUS, 80, 8, 20, 4),
 	BELLADONNA("Belladonna", ItemID.CAVE_NIGHTSHADE, 80, 5),
 	CALQUAT("Calquat", ItemID.CALQUAT_FRUIT, 160, 9, 0, 7),
-	SPIRIT_TREE("Spirit Tree", ItemID.SPIRIT_TREE, 320, 13);
+	SPIRIT_TREE("Spirit tree", ItemID.SPIRIT_TREE, 320, 13),
+	CELASTRUS("Celastrus", ItemID.BATTLESTAFF, 160, 6, 0, 4),
+	REDWOOD("Redwood", ItemID.REDWOOD_LOGS, 640, 11),
+	HESPORI("Hespori", NullItemID.NULL_23044, 640, 4, 0, 2);
 
 	/**
 	 * User-visible name
