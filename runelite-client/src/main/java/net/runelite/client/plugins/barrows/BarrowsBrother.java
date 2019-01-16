@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.barrows;
 
+import com.google.common.collect.ImmutableMap;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.ObjectID;
@@ -48,4 +51,17 @@ public enum BarrowsBrother
 	private final Varbits killedVarbit;
 	@Getter
 	private final int sarcophagus;
+
+	private final static ImmutableMap<Integer, BarrowsBrother> brothersBySarcophagus = ImmutableMap.copyOf(
+		Arrays.stream(BarrowsBrother.values())
+			.collect(Collectors.toMap(
+				BarrowsBrother::getSarcophagus,
+				brother -> brother
+			))
+	);
+
+	public static BarrowsBrother findBySarcophagus(int sarcophagus)
+	{
+		return brothersBySarcophagus.get(sarcophagus);
+	}
 }

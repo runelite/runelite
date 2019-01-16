@@ -26,7 +26,6 @@ package net.runelite.client.plugins.barrows;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Nullable;
@@ -56,6 +55,7 @@ import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -87,7 +87,6 @@ public class BarrowsPlugin extends Plugin
 
 	private static final Set<Integer> BARROWS_LADDERS = Sets.newHashSet(NullObjectID.NULL_20675, NullObjectID.NULL_20676, NullObjectID.NULL_20677);
 
-	private static final int TUNNEL_WIDGET_GROUP_ID = 229;
 	private static final String TUNNEL_MESSAGE = "You've found a hidden tunnel, do you want to enter?";
 
 	@Getter(AccessLevel.PACKAGE)
@@ -108,12 +107,6 @@ public class BarrowsPlugin extends Plugin
 	 */
 	@Nullable
 	private BarrowsBrother lastSearchedBrother;
-
-	/**
-	 * When clicking on the sarcophagos and it says it's a tunnel, a widget with the message is loaded.
-	 * The text is set on the next game tick, this indicates that it needs to be checked on the next game tick.
-	 */
-	private boolean checkTunnel = false;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -232,28 +225,25 @@ public class BarrowsPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!checkTunnel || lastSearchedBrother == null)
-		{
-			return;
-		}
-		checkTunnel = false;
-
-		Widget confirmationWidget = client.getWidget(TUNNEL_WIDGET_GROUP_ID, 0);
-		Widget[] staticChildren = confirmationWidget.getStaticChildren();
-
-		if (staticChildren.length == 0)
+		if (lastSearchedBrother == null)
 		{
 			return;
 		}
 
-		Widget hiddenTunnel = staticChildren[0];
+		Widget confirmationMessage = client.getWidget(WidgetInfo.CONFIRMATION_MESSAGE);
 
-		if (!hiddenTunnel.getText().equals(TUNNEL_MESSAGE))
+		if (confirmationMessage == null)
+		{
+			return;
+		}
+
+		if (!confirmationMessage.getText().equals(TUNNEL_MESSAGE))
 		{
 			return;
 		}
 
 		tunnelBrother = lastSearchedBrother;
+		lastSearchedBrother = null;
 	}
 
 	@Subscribe
@@ -261,19 +251,21 @@ public class BarrowsPlugin extends Plugin
 	{
 		if (event.getMenuAction().getId() == MenuAction.GAME_OBJECT_FIRST_OPTION.getId() && event.getMenuOption().equals("Search"))
 		{
-			Arrays.stream(BarrowsBrother.values())
-				.filter(brother -> brother.getSarcophagus() == event.getId())
-				.findFirst()
-				.ifPresent(brother -> lastSearchedBrother = brother);
+			lastSearchedBrother = BarrowsBrother.findBySarcophagus(event.getId());
 		}
 	}
 
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (lastSearchedBrother != null && event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && config.showChestValue())
+		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID)
 		{
 			tunnelBrother = null;
+
+			if (!config.showChestValue())
+			{
+				return;
+			}
 
 			ItemContainer barrowsRewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
 			Item[] items = barrowsRewardContainer.getItems();
@@ -296,13 +288,6 @@ public class BarrowsPlugin extends Plugin
 				.type(ChatMessageType.EXAMINE_ITEM)
 				.runeLiteFormattedMessage(message.build())
 				.build());
-		}
-		else if (event.getGroupId() == TUNNEL_WIDGET_GROUP_ID)
-		{
-			Widget confirmationWidget = client.getWidget(TUNNEL_WIDGET_GROUP_ID, 0);
-			Widget[] staticChildren = confirmationWidget.getStaticChildren();
-
-			checkTunnel = staticChildren.length > 0;
 		}
 	}
 }
