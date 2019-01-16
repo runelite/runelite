@@ -12,6 +12,11 @@ Again, go read the [Runelite readme](https://github.com/runelite/runelite/runeli
 
 Please use a basic level of discretion when using this client, since it does not have Jagex's approval. Don't post links to this page on reddit.
 
+## Current differences with RuneLite
+
+- Fight Caves & Jad Plugin
+- Antidrag Plugin: Can be toggled to be always on or always off, as opposed to only when shift-clicking.
+
 ### License
 
 RuneLite is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
