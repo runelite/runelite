@@ -35,6 +35,7 @@ import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -68,6 +69,7 @@ import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.Notifier;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
@@ -512,6 +514,48 @@ public class GroundItemsPlugin extends Plugin
 
 			client.setMenuEntries(menuEntries);
 		}
+	}
+
+	@Subscribe
+	public void onMenuOpened(MenuOpened event)
+	{
+		if (!config.isMenuGroupingEnabled())
+		{
+			return;
+		}
+
+		HashMap<String, HashMap<String, MenuGroupingEntry>> repeated = new HashMap<>();
+
+		int count = 0;
+		for (MenuEntry menuEntry : event.getMenuEntries())
+		{
+			if (!repeated.containsKey(menuEntry.getTarget()))
+			{
+				repeated.put(menuEntry.getTarget(), new HashMap<>());
+			}
+
+			if (!repeated.get(menuEntry.getTarget()).containsKey(menuEntry.getOption()))
+			{
+				repeated.get(menuEntry.getTarget()).put(menuEntry.getOption(), new MenuGroupingEntry(menuEntry, count, 0));
+				count++;
+			}
+
+			int curCount = repeated.get(menuEntry.getTarget()).get(menuEntry.getOption()).getCount();
+			repeated.get(menuEntry.getTarget()).get(menuEntry.getOption()).setCount(curCount + 1);
+		}
+
+		MenuEntry[] toShow = new MenuEntry[count];
+
+		repeated.forEach((target, options) -> options.forEach((option, menuGroupingEntry) ->
+		{
+			MenuEntry showEntry = menuGroupingEntry.getOriginalEntry();
+			if (menuGroupingEntry.getCount() > 1)
+			{
+				showEntry.setTarget(showEntry.getTarget() + " x" + menuGroupingEntry.getCount());
+			}
+			toShow[menuGroupingEntry.getPosition()] = showEntry;
+		}));
+		client.setMenuEntries(toShow);
 	}
 
 	void updateList(String item, boolean hiddenList)
