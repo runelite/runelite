@@ -149,7 +149,7 @@ public enum HotColdLocation
 	WILDERNESS_38(new WorldPoint(3294, 3817, 0), WILDERNESS, "South of Callisto, level 38 Wilderness."),
 	WILDERNESS_49(new WorldPoint(3140, 3910, 0), WILDERNESS, "South-west of the Deserted Keep, level 49 Wilderness."),
 	WILDERNESS_54(new WorldPoint(2983, 3946, 0), WILDERNESS, "West of the Wilderness Agility Course, level 54 Wilderness."),
-	ZEAH_BLASTMINE_BANK(new WorldPoint(1507, 3856, 0), ZEAH, "Next to the bank in the Lovakengj Houseblast mine."),
+	ZEAH_BLASTMINE_BANK(new WorldPoint(1507, 3856, 0), ZEAH, "Next to the bank in the Lovakengj House blast mine."),
 	ZEAH_BLASTMINE_NORTH(new WorldPoint(1490, 3883, 0), ZEAH, "Northern part of the Lovakengj House blast mine."),
 	ZEAH_LOVAKITE_FURNACE(new WorldPoint(1505, 3814, 0), ZEAH, "Next to the lovakite furnace in the Lovakengj House."),
 	ZEAH_LOVAKENGJ_MINE(new WorldPoint(1477, 3779, 0), ZEAH, "Next to mithril rock in the Lovakengj mine."),
