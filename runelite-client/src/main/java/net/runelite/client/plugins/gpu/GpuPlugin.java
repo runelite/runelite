@@ -102,6 +102,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private static final int SMALL_TRIANGLE_COUNT = 512;
 	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
 	static final int MAX_DISTANCE = 90;
+	static final int MAX_FOG_DEPTH = 100;
 
 	@Inject
 	private Client client;
