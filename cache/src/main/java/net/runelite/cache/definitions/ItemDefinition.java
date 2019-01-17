@@ -25,9 +25,11 @@
 package net.runelite.cache.definitions;
 
 import java.util.Map;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@EqualsAndHashCode
 public class ItemDefinition
 {
 	public final int id;

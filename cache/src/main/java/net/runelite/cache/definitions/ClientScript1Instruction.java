@@ -24,8 +24,10 @@
  */
 package net.runelite.cache.definitions;
 
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
+@EqualsAndHashCode
 public class ClientScript1Instruction
 {
 	@RequiredArgsConstructor
