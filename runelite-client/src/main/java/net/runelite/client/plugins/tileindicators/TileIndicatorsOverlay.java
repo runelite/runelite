@@ -52,7 +52,7 @@ public class TileIndicatorsOverlay extends Overlay
 		this.config = config;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
-		setPriority(OverlayPriority.LOW);
+		setPriority(OverlayPriority.MED);
 	}
 
 	@Override

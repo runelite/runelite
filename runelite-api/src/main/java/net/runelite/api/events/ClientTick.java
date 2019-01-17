@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
- * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
+ * Copyright (c) 2018 Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,46 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.banktags.tabs;
+package net.runelite.api.events;
 
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.SpritePixels;
-import net.runelite.client.util.ImageUtil;
-
-@Slf4j
-public enum TabSprites
+/**
+ * Posted every client tick
+ */
+public class ClientTick
 {
-	INCINERATOR(-200, "incinerator.png"),
-	TAB_BACKGROUND(-201, "tag-tab.png"),
-	TAB_BACKGROUND_ACTIVE(-202, "tag-tab-active.png"),
-	UP_ARROW(-203, "up-arrow.png"),
-	DOWN_ARROW(-204, "down-arrow.png"),
-	NEW_TAB(-205, "new-tab.png");
-
-	@Getter
-	private final int spriteId;
-	private final BufferedImage image;
-
-	TabSprites(final int spriteId, final String imageName)
-	{
-		this.spriteId = spriteId;
-		this.image = ImageUtil.getResourceStreamFromClass(this.getClass(), imageName);
-	}
-
-	public static Map<Integer, SpritePixels> toMap(Client client)
-	{
-		final Map<Integer, SpritePixels> map = new HashMap<>();
-
-		for (TabSprites value : values())
-		{
-			map.put(value.spriteId, ImageUtil.getImageSpritePixels(value.image, client));
-		}
-
-		return map;
-	}
 }

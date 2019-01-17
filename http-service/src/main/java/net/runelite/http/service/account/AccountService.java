@@ -44,6 +44,7 @@ import net.runelite.http.api.ws.WebsocketMessage;
 import net.runelite.http.api.ws.messages.LoginResponse;
 import net.runelite.http.service.account.beans.SessionEntry;
 import net.runelite.http.service.account.beans.UserEntry;
+import net.runelite.http.service.util.redis.RedisPool;
 import net.runelite.http.service.ws.SessionManager;
 import net.runelite.http.service.ws.WSService;
 import org.slf4j.Logger;
@@ -58,7 +59,6 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 
 @RestController
 @RequestMapping("/account")
@@ -70,7 +70,7 @@ public class AccountService
 		+ "  `user` int(11) NOT NULL PRIMARY KEY,\n"
 		+ "  `uuid` varchar(36) NOT NULL,\n"
 		+ "  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
-		+ "  `last_used` timestamp NOT NULL,\n"
+		+ "  `last_used` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
 		+ "  UNIQUE KEY `uuid` (`uuid`),\n"
 		+ "  KEY `user` (`user`)\n"
 		+ ") ENGINE=InnoDB";
@@ -98,7 +98,7 @@ public class AccountService
 	private final String oauthClientId;
 	private final String oauthClientSecret;
 	private final AuthFilter auth;
-	private final JedisPool jedisPool;
+	private final RedisPool jedisPool;
 
 	@Autowired
 	public AccountService(
@@ -106,7 +106,7 @@ public class AccountService
 		@Value("${oauth.client-id}") String oauthClientId,
 		@Value("${oauth.client-secret}") String oauthClientSecret,
 		AuthFilter auth,
-		JedisPool jedisPool
+		RedisPool jedisPool
 	)
 	{
 		this.sql2o = sql2o;

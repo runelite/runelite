@@ -141,6 +141,13 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "amount",
+		name = "",
+		description = ""
+	)
+	void amount(int amt);
+
+	@ConfigItem(
 		keyName = "initialAmount",
 		name = "",
 		description = "",
@@ -158,11 +165,22 @@ public interface SlayerConfig extends Config
 	void initialAmount(int initialAmount);
 
 	@ConfigItem(
-		keyName = "amount",
+		keyName = "taskLocation",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String taskLocation()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "taskLocation",
 		name = "",
 		description = ""
 	)
-	void amount(int amt);
+	void taskLocation(String key);
 
 	@ConfigItem(
 		keyName = "streak",

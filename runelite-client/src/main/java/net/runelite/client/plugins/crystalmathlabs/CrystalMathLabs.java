@@ -128,7 +128,7 @@ public class CrystalMathLabs extends Plugin
 			@Override
 			public void onFailure(Call call, IOException e)
 			{
-				log.warn("error submitting CML update", e);
+				log.warn("Error submitting CML update, caused by {}.", e.getMessage());
 			}
 
 			@Override

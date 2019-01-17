@@ -226,7 +226,6 @@ public class GrandExchangeOfferSlot extends JPanel
 			progressBar.setForeground(getProgressColor(newOffer));
 			progressBar.setMaximumValue(newOffer.getTotalQuantity());
 			progressBar.setValue(newOffer.getQuantitySold());
-			progressBar.update();
 
 			/* Couldn't set the tooltip for the container panel as the children override it, so I'm setting
 			 * the tooltips on the children instead. */

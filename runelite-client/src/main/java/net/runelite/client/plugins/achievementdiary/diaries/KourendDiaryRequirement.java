@@ -68,9 +68,6 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 			new FavourRequirement(Favour.ARCEUUS, 60));
 		add("Repair a Piscarilius crane.",
 			new SkillRequirement(Skill.CRAFTING, 30));
-		//will be removed once jagex fix the spelling mistake made.
-		add("Repair a Piscarillius crane.",
-			new SkillRequirement(Skill.CRAFTING, 30));
 		add("Deliver some intelligence to Captain Ginea.",
 			new FavourRequirement(Favour.SHAYZIEN, 40));
 		add("Catch a Bluegill on Molch Island.",
@@ -91,7 +88,8 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.WOODCUTTING, 60),
 			new FavourRequirement(Favour.HOSIDIUS, 75));
 		add("Smelt an Adamantite bar in The Forsaken Tower.",
-			new SkillRequirement(Skill.SMITHING, 70));
+			new SkillRequirement(Skill.SMITHING, 70),
+			new QuestRequirement(Quest.THE_FORSAKEN_TOWER, true));
 		add("Kill a Lizardman Shaman in Molch.",
 			new FavourRequirement(Favour.SHAYZIEN, 100));
 		add("Mine some Lovakite.",

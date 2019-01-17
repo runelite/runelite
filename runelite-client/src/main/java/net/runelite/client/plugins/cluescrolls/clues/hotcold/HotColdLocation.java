@@ -74,7 +74,7 @@ public enum HotColdLocation
 	FELDIP_HILLS_GNOME_GLITER(new WorldPoint(2553, 2972, 0), FELDIP_HILLS, "East of the gnome glider (Lemantolly Undri)."),
 	FELDIP_HILLS_RANTZ(new WorldPoint(2611, 2946, 0), FELDIP_HILLS, "South of Rantz, six steps west of the empty glass bottles."),
 	FELDIP_HILLS_SOUTH(new WorldPoint(2487, 3005, 0), FELDIP_HILLS, "South of Jiggig."),
-	FELDIP_HILLS_RED_CHIN(new WorldPoint(2532, 2900, 0), FELDIP_HILLS, "Outside the red chinchompa hunting groundentrance, south of the Hunting expert's hut."),
+	FELDIP_HILLS_RED_CHIN(new WorldPoint(2532, 2900, 0), FELDIP_HILLS, "Outside the red chinchompa hunting ground entrance, south of the Hunting expert's hut."),
 	FELDIP_HILLS_SE(new WorldPoint(2567, 2916, 0), FELDIP_HILLS, "South-east of the ∩-shaped lake, near the icon."),
 	FELDIP_HILLS_CW_BALLOON(new WorldPoint(2452, 3108, 0), FELDIP_HILLS, "Directly west of the Castle Wars balloon."),
 	FREMENNIK_PROVINCE_MTN_CAMP(new WorldPoint(2804, 3672, 0), FREMENNIK_PROVINCE, "At the Mountain Camp."),
@@ -100,7 +100,7 @@ public enum HotColdLocation
 	KANDARIN_WITCHHAVEN(new WorldPoint(2708, 3304, 0), KANDARIN, "Outside Witchaven, west of Jeb, Holgart, and Caroline."),
 	KANDARIN_NECRO_TOWER(new WorldPoint(2669, 3242, 0), KANDARIN, "Ground floor inside the Necromancer Tower. Easily accessed by using fairy ring code djp."),
 	KANDARIN_FIGHT_ARENA(new WorldPoint(2587, 3134, 0), KANDARIN, "South of the Fight Arena, north-west of the Nightmare Zone."),
-	KANDARIN_TREE_GNOME_VILLAGE(new WorldPoint(2526, 3160, 0), KANDARIN, "Tree Gnome Village, near the icon."),
+	KANDARIN_TREE_GNOME_VILLAGE(new WorldPoint(2526, 3160, 0), KANDARIN, "Tree Gnome Village, near the general store icon."),
 	KANDARIN_GRAVE_OF_SCORPIUS(new WorldPoint(2464, 3228, 0), KANDARIN, "Grave of Scorpius"),
 	KANDARIN_KHAZARD_BATTLEFIELD(new WorldPoint(2518, 3249, 0), KANDARIN, "Khazard Battlefield, in the small ruins south of tracker gnome 2."),
 	KANDARIN_WEST_ARDY(new WorldPoint(2533, 3320, 0), KANDARIN, "West Ardougne, near the staircase outside the Civic Office."),
@@ -149,7 +149,7 @@ public enum HotColdLocation
 	WILDERNESS_38(new WorldPoint(3294, 3817, 0), WILDERNESS, "South of Callisto, level 38 Wilderness."),
 	WILDERNESS_49(new WorldPoint(3140, 3910, 0), WILDERNESS, "South-west of the Deserted Keep, level 49 Wilderness."),
 	WILDERNESS_54(new WorldPoint(2983, 3946, 0), WILDERNESS, "West of the Wilderness Agility Course, level 54 Wilderness."),
-	ZEAH_BLASTMINE_BANK(new WorldPoint(1507, 3856, 0), ZEAH, "Next to the bank in the Lovakengj Houseblast mine."),
+	ZEAH_BLASTMINE_BANK(new WorldPoint(1507, 3856, 0), ZEAH, "Next to the bank in the Lovakengj House blast mine."),
 	ZEAH_BLASTMINE_NORTH(new WorldPoint(1490, 3883, 0), ZEAH, "Northern part of the Lovakengj House blast mine."),
 	ZEAH_LOVAKITE_FURNACE(new WorldPoint(1505, 3814, 0), ZEAH, "Next to the lovakite furnace in the Lovakengj House."),
 	ZEAH_LOVAKENGJ_MINE(new WorldPoint(1477, 3779, 0), ZEAH, "Next to mithril rock in the Lovakengj mine."),
@@ -169,7 +169,8 @@ public enum HotColdLocation
 	ZEAH_GOLDEN_FIELD_TAVERN(new WorldPoint(1718, 3647, 0), ZEAH, "South of The Golden Field tavern in the northern area of Great Kourend's Hosidius House."),
 	ZEAH_MESS_HALL(new WorldPoint(1658, 3621, 0), ZEAH, "East of Mess hall."),
 	ZEAH_WATSONS_HOUSE(new WorldPoint(1653, 3573, 0), ZEAH, "East of Watson's house."),
-	ZEAH_VANNAHS_FARM_STORE(new WorldPoint(1806, 3521, 0), ZEAH, "North of Vannah's Farm Store, between the chicken coop and willow trees.");
+	ZEAH_VANNAHS_FARM_STORE(new WorldPoint(1806, 3521, 0), ZEAH, "North of Vannah's Farm Store, between the chicken coop and willow trees."),
+	ZEAH_FARMING_GUILD(new WorldPoint(1227, 3712, 0), ZEAH, "South-west of the Farming Guild.");
 
 	private final WorldPoint worldPoint;
 	private final HotColdArea hotColdArea;

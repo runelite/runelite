@@ -136,7 +136,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(LEVEL_COMMAND_STRING, this::playerSkillLookup);
 		chatCommandManager.registerCommandAsync(CLUES_COMMAND_STRING, this::clueLookup);
 		chatCommandManager.registerCommandAsync(KILLCOUNT_COMMAND_STRING, this::killCountLookup, this::killCountSubmit);
-		chatCommandManager.registerCommand(QP_COMMAND_STRING, this::questPointsLookup, this::questPointsSubmit);
+		chatCommandManager.registerCommandAsync(QP_COMMAND_STRING, this::questPointsLookup, this::questPointsSubmit);
 	}
 
 	@Override
@@ -924,6 +924,9 @@ public class ChatCommandsPlugin extends Plugin
 			case "zuk":
 			case "inferno":
 				return "TzKal-Zuk";
+
+			case "hydra":
+				return "Alchemical Hydra";
 
 			// gwd
 			case "sara":

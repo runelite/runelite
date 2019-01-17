@@ -22,60 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.chat;
+package net.runelite.http.api;
 
-import java.time.Duration;
-import net.runelite.http.service.util.redis.RedisPool;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
+import java.io.IOException;
+import okhttp3.Request;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
 
-@Service
-public class ChatService
+public class RuneLiteAPITest
 {
-	private static final Duration EXPIRE = Duration.ofMinutes(2);
+	private final MockWebServer server = new MockWebServer();
 
-	private final RedisPool jedisPool;
-
-	@Autowired
-	public ChatService(RedisPool jedisPool)
+	@Before
+	public void before() throws IOException
 	{
-		this.jedisPool = jedisPool;
+		server.enqueue(new MockResponse().setBody("OK"));
+
+		server.start();
 	}
 
-	public Integer getKc(String name, String boss)
+	@After
+	public void after() throws IOException
 	{
-		String value;
-		try (Jedis jedis = jedisPool.getResource())
-		{
-			value = jedis.get("kc." + name + "." + boss);
-		}
-		return value == null ? null : Integer.parseInt(value);
+		server.shutdown();
 	}
 
-	public void setKc(String name, String boss, int kc)
+	@Test
+	public void testUserAgent() throws IOException, InterruptedException
 	{
-		try (Jedis jedis = jedisPool.getResource())
-		{
-			jedis.setex("kc." + name + "." + boss, (int) EXPIRE.getSeconds(), Integer.toString(kc));
-		}
-	}
+		Request request = new Request.Builder()
+			.url(server.url("/").url())
+			.build();
+		RuneLiteAPI.CLIENT.newCall(request).execute().close();
 
-	public Integer getQp(String name)
-	{
-		String value;
-		try (Jedis jedis = jedisPool.getResource())
-		{
-			value = jedis.get("qp." + name);
-		}
-		return value == null ? null : Integer.parseInt(value);
-	}
-
-	public void setQp(String name, int qp)
-	{
-		try (Jedis jedis = jedisPool.getResource())
-		{
-			jedis.setex("qp." + name, (int) EXPIRE.getSeconds(), Integer.toString(qp));
-		}
+		assertEquals("RuneLite/" + RuneLiteAPI.getVersion(), server.takeRequest().getHeader("User-Agent"));
 	}
 }

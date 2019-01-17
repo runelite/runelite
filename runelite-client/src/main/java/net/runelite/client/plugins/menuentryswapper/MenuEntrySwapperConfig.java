@@ -204,8 +204,8 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapQuick",
-		name = "Quick Pass/Start/Travel",
-		description = "Swap Pass with Quick-Pass, Ring with Quick-Start and Talk-to with Quick-Travel"
+		name = "Quick Pass/Open/Start/Travel",
+		description = "Swap Pass with Quick-Pass, Open with Quick-Open, Ring with Quick-Start and Talk-to with Quick-Travel"
 	)
 	default boolean swapQuick()
 	{
