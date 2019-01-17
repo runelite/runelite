@@ -111,12 +111,17 @@ public class ConfigManager
 		load(); // load profile specific config
 	}
 
+	private File getLocalPropertiesFile()
+	{
+		return new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME);
+	}
+
 	private File getPropertiesFile()
 	{
 		// Sessions that aren't logged in have no username
 		if (session == null || session.getUsername() == null)
 		{
-			return new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME);
+			return getLocalPropertiesFile();
 		}
 		else
 		{
@@ -182,6 +187,57 @@ public class ConfigManager
 		{
 			log.warn("Unable to update configuration on disk", ex);
 		}
+	}
+
+	private synchronized void syncPropertiesFromFile(File propertiesFile)
+	{
+		final Properties properties = new Properties();
+		try (FileInputStream in = new FileInputStream(propertiesFile))
+		{
+			properties.load(new InputStreamReader(in, Charset.forName("UTF-8")));
+		}
+		catch (Exception e)
+		{
+			log.debug("Malformed properties, skipping update");
+			return;
+		}
+
+		final Map<String, String> copy = (Map) ImmutableMap.copyOf(this.properties);
+		copy.forEach((groupAndKey, value) ->
+		{
+			if (!properties.containsKey(groupAndKey))
+			{
+				final String[] split = groupAndKey.split("\\.", 2);
+				if (split.length != 2)
+				{
+					return;
+				}
+
+				final String groupName = split[0];
+				final String key = split[1];
+				unsetConfiguration(groupName, key);
+			}
+		});
+
+		properties.forEach((objGroupAndKey, objValue) ->
+		{
+			final String groupAndKey = String.valueOf(objGroupAndKey);
+			final String[] split = groupAndKey.split("\\.", 2);
+			if (split.length != 2)
+			{
+				return;
+			}
+
+			final String groupName = split[0];
+			final String key = split[1];
+			final String value = String.valueOf(objValue);
+			setConfiguration(groupName, key, value);
+		});
+	}
+
+	public void importLocal()
+	{
+		syncPropertiesFromFile(getLocalPropertiesFile());
 	}
 
 	private synchronized void loadFromFile()
