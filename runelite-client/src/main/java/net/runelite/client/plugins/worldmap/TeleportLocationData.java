@@ -31,44 +31,44 @@ import net.runelite.api.coords.WorldPoint;
 @Getter
 enum TeleportLocationData
 {
-	VARROCK(TeleportType.NORMAL_MAGIC, "Varrock", 25, new WorldPoint(3213, 3424, 0), "varrock_teleport_icon.png"),
-	VARROCK_GE(TeleportType.NORMAL_MAGIC, "Varrock GE", 25, new WorldPoint(3164, 3478, 0), "varrock_teleport_icon.png"),
-	LUMBRIDGE(TeleportType.NORMAL_MAGIC, "Lumbridge", 31, new WorldPoint(3222, 3218, 0), "lumbridge_teleport_icon.png"),
-	FALADOR(TeleportType.NORMAL_MAGIC, "Falador", 37, new WorldPoint(2965, 3381, 0), "falador_teleport_icon.png"),
-	CAMELOT(TeleportType.NORMAL_MAGIC, "Camelot", 45, new WorldPoint(2757, 3477, 0), "camelot_teleport_icon.png"),
-	CAMELOT_BANK(TeleportType.NORMAL_MAGIC, "Camelot Bank", 45, new WorldPoint(2726, 3485, 0), "camelot_teleport_icon.png"),
-	ARDOUGNE(TeleportType.NORMAL_MAGIC, "Ardougne", 51, new WorldPoint(2664, 3306, 0), "ardougne_teleport_icon.png"),
-	WATCHTOWER(TeleportType.NORMAL_MAGIC, "Watchtower", 58, new WorldPoint(2547, 3114, 0), "watchtower_teleport_icon.png"),
-	WATCHTOWER_YANILLE(TeleportType.NORMAL_MAGIC, "Watchtower Yanille", 58, new WorldPoint(2584, 3097, 0), "watchtower_teleport_icon.png"),
-	TROLLHEIM(TeleportType.NORMAL_MAGIC, "Trollheim", 61, new WorldPoint(2891, 3678, 0), "trollheim_teleport_icon.png"),
-	APE_ATOLL(TeleportType.NORMAL_MAGIC, "Ape Atoll", 64, new WorldPoint(2796, 2791, 0), "ape_atoll_teleport_icon.png"),
-	KOUREND(TeleportType.NORMAL_MAGIC, "Kourend", 69, new WorldPoint(1643, 3672, 0), "kourend_teleport_icon.png"),
-	PADDEWWA(TeleportType.ANCIENT_MAGICKS, "Paddewwa", 54, new WorldPoint(3097, 9880, 0), "paddewwa_teleport_icon.png"),
-	SENNTISTEN(TeleportType.ANCIENT_MAGICKS, "Senntisten", 60, new WorldPoint(3319, 3336, 0), "senntisten_teleport_icon.png"),
-	KHARYRLL(TeleportType.ANCIENT_MAGICKS, "Kharyrll", 66, new WorldPoint(3494, 3473, 0), "kharyrll_teleport_icon.png"),
-	LASSAR(TeleportType.ANCIENT_MAGICKS, "Lassar", 72, new WorldPoint(3002, 3472, 0), "lassar_teleport_icon.png"),
-	DAREEYAK(TeleportType.ANCIENT_MAGICKS, "Dareeyak", 78, new WorldPoint(2969, 3695, 0), "dareeyak_teleport_icon.png"),
-	CARRALLANGAR(TeleportType.ANCIENT_MAGICKS, "Carrallangar", 84, new WorldPoint(3157, 3667, 0), "carrallangar_teleport_icon.png"),
-	ANNAKARL(TeleportType.ANCIENT_MAGICKS, "Annakarl", 90, new WorldPoint(3288, 3888, 0), "annakarl_teleport_icon.png"),
-	GHORROCK(TeleportType.ANCIENT_MAGICKS, "Ghorrock", 96, new WorldPoint(2977, 3872, 0), "ghorrock_teleport_icon.png"),
-	MOONCLAN(TeleportType.LUNAR_MAGIC, "Moonclan", 69, new WorldPoint(2113, 3915, 0), "moonclan_teleport_icon.png"),
-	OURANIA(TeleportType.LUNAR_MAGIC, "Ourania", 71, new WorldPoint(2468, 3246, 0), "ourania_teleport_icon.png"),
-	WATERBIRTH(TeleportType.LUNAR_MAGIC, "Waterbirth", 72, new WorldPoint(2546, 3755, 0), "waterbirth_teleport_icon.png"),
-	BARBARIAN(TeleportType.LUNAR_MAGIC, "Barbarian", 75, new WorldPoint(2543, 3568, 0), "barbarian_teleport_icon.png"),
-	KHAZARD(TeleportType.LUNAR_MAGIC, "Khazard", 78, new WorldPoint(2636, 3167, 0), "khazard_teleport_icon.png"),
-	FISHING_GUILD(TeleportType.LUNAR_MAGIC, "Fishing Guild", 85, new WorldPoint(2612, 3391, 0), "fishing_guild_teleport_icon.png"),
-	CATHERBY(TeleportType.LUNAR_MAGIC, "Catherby", 87, new WorldPoint(2802, 3449, 0), "catherby_teleport_icon.png"),
-	ICE_PLATEAU(TeleportType.LUNAR_MAGIC, "Ice Plateau", 89, new WorldPoint(2973, 3939, 0), "ice_plateau_teleport_icon.png"),
-	LUMBRIDGE_GRAVEYARD(TeleportType.ARCEUUS_MAGIC, "Lumbridge Graveyard", 6, new WorldPoint(3241, 3194, 0), "lumbridge_graveyard_teleport_icon.png"),
-	DRAYNOR_MANOR(TeleportType.ARCEUUS_MAGIC, "Draynor Manor", 17, new WorldPoint(3108, 3352, 0), "draynor_manor_teleport_icon.png"),
-	MIND_ALTAR(TeleportType.ARCEUUS_MAGIC, "Mind Altar", 28, new WorldPoint(2979, 3509, 0), "mind_altar_teleport_icon.png"),
-	SALVE_GRAVEYARD(TeleportType.ARCEUUS_MAGIC, "Salve Graveyard", 40, new WorldPoint(3433, 3461, 0), "salve_graveyard_teleport_icon.png"),
-	FENKENSTRAINS_CASTLE(TeleportType.ARCEUUS_MAGIC, "Fenkenstrain's Castle", 48, new WorldPoint(3548, 3528, 0), "fenkenstrains_castle_teleport_icon.png"),
-	WEST_ARDOUGNE(TeleportType.ARCEUUS_MAGIC, "West Ardougne", 61, new WorldPoint(2500, 3291, 0), "west_ardougne_teleport_icon.png"),
-	HARMONY_ISLAND(TeleportType.ARCEUUS_MAGIC, "Harmony Island", 65, new WorldPoint(3797, 2866, 0), "harmony_island_teleport_icon.png"),
-	CEMETERY(TeleportType.ARCEUUS_MAGIC, "Cemetery", 71, new WorldPoint(2978, 3763, 0), "cemetery_teleport_icon.png"),
-	BARROWS(TeleportType.ARCEUUS_MAGIC, "Barrows", 83, new WorldPoint(3565, 3315, 0), "barrows_teleport_icon.png"),
-	APE_ATOLL_ARCEUUS(TeleportType.ARCEUUS_MAGIC, "Ape Atoll", 90, new WorldPoint(2770, 2703, 0), "ape_atoll_teleport_icon_arceuus.png"),
+	VARROCK(TeleportType.NORMAL_MAGIC, "Varrock", "1x Law, 1x Fire, 3x Air", 25, new WorldPoint(3213, 3424, 0), "varrock_teleport_icon.png"),
+	VARROCK_GE(TeleportType.NORMAL_MAGIC, "Varrock GE", "1x Law, 1x Fire, 3x Air", 25, new WorldPoint(3164, 3478, 0), "varrock_teleport_icon.png"),
+	LUMBRIDGE(TeleportType.NORMAL_MAGIC, "Lumbridge", "1x Law, 1x Earth, 3x Air", 31, new WorldPoint(3222, 3218, 0), "lumbridge_teleport_icon.png"),
+	FALADOR(TeleportType.NORMAL_MAGIC, "Falador", "1x Law, 1x Water, 3x Air", 37, new WorldPoint(2965, 3381, 0), "falador_teleport_icon.png"),
+	CAMELOT(TeleportType.NORMAL_MAGIC, "Camelot", "1x Law, 5x Air", 45, new WorldPoint(2757, 3477, 0), "camelot_teleport_icon.png"),
+	CAMELOT_BANK(TeleportType.NORMAL_MAGIC, "Camelot Bank", "1x Law, 5x Air", 45, new WorldPoint(2726, 3485, 0), "camelot_teleport_icon.png"),
+	ARDOUGNE(TeleportType.NORMAL_MAGIC, "Ardougne", "2x Law, 2x Water", 51, new WorldPoint(2664, 3306, 0), "ardougne_teleport_icon.png"),
+	WATCHTOWER(TeleportType.NORMAL_MAGIC, "Watchtower", "2x Law, 2x Earth", 58, new WorldPoint(2547, 3114, 0), "watchtower_teleport_icon.png"),
+	WATCHTOWER_YANILLE(TeleportType.NORMAL_MAGIC, "Watchtower Yanille", "2x Law, 2x Earth", 58, new WorldPoint(2584, 3097, 0), "watchtower_teleport_icon.png"),
+	TROLLHEIM(TeleportType.NORMAL_MAGIC, "Trollheim", "2x Law, 2x Fire", 61, new WorldPoint(2891, 3678, 0), "trollheim_teleport_icon.png"),
+	APE_ATOLL(TeleportType.NORMAL_MAGIC, "Ape Atoll", "2x Law, 2x Fire, 2x Water, 1x Banana", 64, new WorldPoint(2796, 2791, 0), "ape_atoll_teleport_icon.png"),
+	KOUREND(TeleportType.NORMAL_MAGIC, "Kourend", "2x Soul, 2x Law, 5x Fire, 4x Water", 69, new WorldPoint(1643, 3672, 0), "kourend_teleport_icon.png"),
+	PADDEWWA(TeleportType.ANCIENT_MAGICKS, "Paddewwa", "2x Law, 1x Fire, 1x Air", 54, new WorldPoint(3097, 9880, 0), "paddewwa_teleport_icon.png"),
+	SENNTISTEN(TeleportType.ANCIENT_MAGICKS, "Senntisten", "1x Soul, 2x Law", 60, new WorldPoint(3319, 3336, 0), "senntisten_teleport_icon.png"),
+	KHARYRLL(TeleportType.ANCIENT_MAGICKS, "Kharyrll", "1x Blood, 2x Law", 66, new WorldPoint(3494, 3473, 0), "kharyrll_teleport_icon.png"),
+	LASSAR(TeleportType.ANCIENT_MAGICKS, "Lassar", "2x Law, 4x Water", 72, new WorldPoint(3002, 3472, 0), "lassar_teleport_icon.png"),
+	DAREEYAK(TeleportType.ANCIENT_MAGICKS, "Dareeyak", "2x Law, 3x Fire, 2x Air", 78, new WorldPoint(2969, 3695, 0), "dareeyak_teleport_icon.png"),
+	CARRALLANGAR(TeleportType.ANCIENT_MAGICKS, "Carrallangar", "2x Soul, 2x Law", 84, new WorldPoint(3157, 3667, 0), "carrallangar_teleport_icon.png"),
+	ANNAKARL(TeleportType.ANCIENT_MAGICKS, "Annakarl", "2x Blood, 2x Law", 90, new WorldPoint(3288, 3888, 0), "annakarl_teleport_icon.png"),
+	GHORROCK(TeleportType.ANCIENT_MAGICKS, "Ghorrock", "2x Law, 8x Water", 96, new WorldPoint(2977, 3872, 0), "ghorrock_teleport_icon.png"),
+	MOONCLAN(TeleportType.LUNAR_MAGIC, "Moonclan", "1x Law, 2x Astral, 2x Earth ", 69, new WorldPoint(2113, 3915, 0), "moonclan_teleport_icon.png"),
+	OURANIA(TeleportType.LUNAR_MAGIC, "Ourania", "1x Law, 2x Astral, 6x Earth", 71, new WorldPoint(2468, 3246, 0), "ourania_teleport_icon.png"),
+	WATERBIRTH(TeleportType.LUNAR_MAGIC, "Waterbirth", "1x Law, 2x Astral, 1x Water", 72, new WorldPoint(2546, 3755, 0), "waterbirth_teleport_icon.png"),
+	BARBARIAN(TeleportType.LUNAR_MAGIC, "Barbarian", "2x Law, 2x Astral, 3x Fire", 75, new WorldPoint(2543, 3568, 0), "barbarian_teleport_icon.png"),
+	KHAZARD(TeleportType.LUNAR_MAGIC, "Khazard", "2x Law, 2x Astral, 4x Water", 78, new WorldPoint(2636, 3167, 0), "khazard_teleport_icon.png"),
+	FISHING_GUILD(TeleportType.LUNAR_MAGIC, "Fishing Guild", "3x Law, 3x Astral, 10x Water", 85, new WorldPoint(2612, 3391, 0), "fishing_guild_teleport_icon.png"),
+	CATHERBY(TeleportType.LUNAR_MAGIC, "Catherby", "3x Law, 3x Astral, 10x Water", 87, new WorldPoint(2802, 3449, 0), "catherby_teleport_icon.png"),
+	ICE_PLATEAU(TeleportType.LUNAR_MAGIC, "Ice Plateau", "3x Law, 3x Astral, 8x Water", 89, new WorldPoint(2973, 3939, 0), "ice_plateau_teleport_icon.png"),
+	LUMBRIDGE_GRAVEYARD(TeleportType.ARCEUUS_MAGIC, "Lumbridge Graveyard", "1x Law, 2x Earth", 6, new WorldPoint(3241, 3194, 0), "lumbridge_graveyard_teleport_icon.png"),
+	DRAYNOR_MANOR(TeleportType.ARCEUUS_MAGIC, "Draynor Manor", "1x Law, 1x Earth, 1x Water", 17, new WorldPoint(3108, 3352, 0), "draynor_manor_teleport_icon.png"),
+	MIND_ALTAR(TeleportType.ARCEUUS_MAGIC, "Mind Altar", "1x Law, 2x Mind", 28, new WorldPoint(2979, 3509, 0), "mind_altar_teleport_icon.png"),
+	SALVE_GRAVEYARD(TeleportType.ARCEUUS_MAGIC, "Salve Graveyard", "2x Soul, 1x Law", 40, new WorldPoint(3433, 3461, 0), "salve_graveyard_teleport_icon.png"),
+	FENKENSTRAINS_CASTLE(TeleportType.ARCEUUS_MAGIC, "Fenkenstrain's Castle", "1x Soul, 1x Law, 1x Earth", 48, new WorldPoint(3548, 3528, 0), "fenkenstrains_castle_teleport_icon.png"),
+	WEST_ARDOUGNE(TeleportType.ARCEUUS_MAGIC, "West Ardougne", "2x Soul, 2x Law", 61, new WorldPoint(2500, 3291, 0), "west_ardougne_teleport_icon.png"),
+	HARMONY_ISLAND(TeleportType.ARCEUUS_MAGIC, "Harmony Island", "1x Soul, 1x Law, 1x Nature", 65, new WorldPoint(3797, 2866, 0), "harmony_island_teleport_icon.png"),
+	CEMETERY(TeleportType.ARCEUUS_MAGIC, "Cemetery", "1x Soul, 1x Blood, 1x Law", 71, new WorldPoint(2978, 3763, 0), "cemetery_teleport_icon.png"),
+	BARROWS(TeleportType.ARCEUUS_MAGIC, "Barrows", "2x Soul, 1x Blood, 2x Law", 83, new WorldPoint(3565, 3315, 0), "barrows_teleport_icon.png"),
+	APE_ATOLL_ARCEUUS(TeleportType.ARCEUUS_MAGIC, "Ape Atoll", "2x Soul, 2x Blood, 2x Law", 90, new WorldPoint(2770, 2703, 0), "ape_atoll_teleport_icon_arceuus.png"),
 
 	// Jewellery
 	BARBARIAN_ASSAULT(TeleportType.JEWELLERY, "Games Necklace" , "Barbarian Assault", new WorldPoint(2520, 3571, 0), "games_necklace_teleport_icon.png"),
@@ -184,10 +184,10 @@ enum TeleportLocationData
 	private final WorldPoint location;
 	private final String iconPath;
 
-	TeleportLocationData(TeleportType type, String destination, int magicLevel, WorldPoint location, String iconPath)
+	TeleportLocationData(TeleportType type, String destination, String runes, int magicLevel, WorldPoint location, String iconPath)
 	{
 		this.type = type;
-		this.tooltip = type.getPrefix() + " " + destination + " - lvl " + magicLevel;
+		this.tooltip = type.getPrefix() + " " + destination + " - " + runes + " - lvl " + magicLevel;
 		this.location = location;
 		this.iconPath = iconPath;
 	}
