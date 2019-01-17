@@ -116,7 +116,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	 * NPCs to highlight
 	 */
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<NPC> highlightedNpcs = new HashSet<>();
+	private final Set<NPC> highlightedNpcs = Collections.synchronizedSet(new HashSet<>());
 
 	/**
 	 * Dead NPCs that should be displayed with a respawn indicator if the config is on.
@@ -140,6 +140,11 @@ public class NpcIndicatorsPlugin extends Plugin
 	 * Highlight strings from the configuration
 	 */
 	private List<String> highlights = new ArrayList<>();
+
+	/**
+	 * Excluded strings from the configuration
+	 */
+	private List<String> excludes = new ArrayList<>();
 
 	/**
 	 * NPC ids marked with the Tag option
@@ -190,6 +195,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		overlayManager.add(npcMinimapOverlay);
 		keyManager.registerKeyListener(inputListener);
 		highlights = getHighlights();
+		excludes = getExcludes();
 		clientThread.invoke(() ->
 		{
 			skipNextSpawnCheck = true;
@@ -235,6 +241,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		highlights = getHighlights();
+		excludes = getExcludes();
 		rebuildAllNpcs();
 	}
 
@@ -300,6 +307,14 @@ public class NpcIndicatorsPlugin extends Plugin
 
 			for (String highlight : highlights)
 			{
+				for (String exclude : excludes)
+				{
+					if (WildcardMatcher.matches(exclude, npcName))
+					{
+						memorizedNpcs.remove(npc.getIndex());
+						return;
+					}
+				}
 				if (WildcardMatcher.matches(highlight, npcName))
 				{
 					memorizeNpc(npc);
@@ -434,6 +449,18 @@ public class NpcIndicatorsPlugin extends Plugin
 		return COMMA_SPLITTER.splitToList(configNpcs);
 	}
 
+	List<String> getExcludes()
+	{
+		final String configNpcs = config.getNpcExcludeList().toLowerCase();
+
+		if (configNpcs.isEmpty())
+		{
+			return Collections.emptyList();
+		}
+
+		return COMMA_SPLITTER.splitToList(configNpcs);
+	}
+
 	private void rebuildAllNpcs()
 	{
 		highlightedNpcs.clear();
@@ -464,6 +491,14 @@ public class NpcIndicatorsPlugin extends Plugin
 
 			for (String highlight : highlights)
 			{
+				for (String exclude : excludes)
+				{
+					if (WildcardMatcher.matches(exclude, npcName))
+					{
+						memorizedNpcs.remove(npc.getIndex());
+						continue outer;
+					}
+				}
 				if (WildcardMatcher.matches(highlight, npcName))
 				{
 					memorizeNpc(npc);
@@ -471,7 +506,6 @@ public class NpcIndicatorsPlugin extends Plugin
 					continue outer;
 				}
 			}
-
 			// NPC is not highlighted
 			memorizedNpcs.remove(npc.getIndex());
 		}

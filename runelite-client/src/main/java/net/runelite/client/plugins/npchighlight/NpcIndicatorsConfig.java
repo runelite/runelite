@@ -56,6 +56,17 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
+		keyName = "hiddenNPCs",
+		name = "Excluded NPCs",
+		description = "List of NPC names to hide"
+	)
+	default String getNpcExcludeList()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		position = 3,
 		keyName = "npcColor",
 		name = "Highlight Color",
 		description = "Color of the NPC highlight"
@@ -66,7 +77,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 4,
 		keyName = "enableTag",
 		name = "Enable Tag Option",
 		description = "Enable the NPC tag menu option"
@@ -77,7 +88,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 5,
 		keyName = "drawNames",
 		name = "Draw names above NPC",
 		description = "Configures whether or not NPC names should be drawn above the NPC"
@@ -88,7 +99,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not NPC names should be drawn on the minimap"
@@ -99,7 +110,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "showRespawnTimer",
 		name = "Show respawn timer",
 		description = "Show respawn timer of tagged NPCs")
