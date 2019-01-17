@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.inventoryviewer;
 
+import com.google.inject.Provides;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import javax.inject.Inject;
@@ -42,6 +44,12 @@ public class InventoryViewerPlugin extends Plugin
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Provides
+	InventoryViewerConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(InventoryViewerConfig.class);
+	}
 
 	@Override
 	public void startUp()
