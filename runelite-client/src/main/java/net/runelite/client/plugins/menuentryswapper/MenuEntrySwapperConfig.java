@@ -173,6 +173,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapStartMiniGame",
+			name = "Start-minigame",
+			description = "Swap Talk-to with Start-minigame for Guardian mummy in Pyramid Plunder"
+	)
+	default boolean swapStartMiniGame()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "swapPickpocket",
 		name = "Pickpocket on H.A.M.",
 		description = "Swap Talk-to with Pickpocket on H.A.M members"

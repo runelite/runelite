@@ -380,6 +380,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("assignment", option, target, true);
 			}
 
+			if (config.swapStartMiniGame())
+			{
+				swap("start-minigame", option, target, true);
+			}
+
 			if (config.swapTrade())
 			{
 				swap("trade", option, target, true);
