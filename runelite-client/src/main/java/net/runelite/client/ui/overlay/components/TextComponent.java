@@ -94,16 +94,20 @@ public class TextComponent implements RenderableEntity
 		return new Dimension(fontMetrics.stringWidth(text), fontMetrics.getHeight());
 	}
 
-	public static int ShiftNorth(int p, int distance) {
+	public static int ShiftNorth(int p, int distance)
+	{
 		return (p - distance);
 	}
-	public static int ShiftSouth(int p, int distance) {
+	public static int ShiftSouth(int p, int distance)
+	{
 		return (p + distance);
 	}
-	public static int ShiftEast(int p, int distance) {
+	public static int ShiftEast(int p, int distance)
+	{
 		return (p + distance);
 	}
-	public static int ShiftWest(int p, int distance) {
+	public static int ShiftWest(int p, int distance)
+	{
 		return (p - distance);
 	}
 }
