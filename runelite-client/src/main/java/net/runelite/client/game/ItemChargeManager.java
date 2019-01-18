@@ -59,7 +59,11 @@ public class ItemChargeManager
 		DODGY_NECKLACE(ItemID.DODGY_NECKLACE, 10, true, Pattern.compile(
 			"Your dodgy necklace.*(?:(?:has (?<v>\\d{1,2}) charges?)|(?<z>crumbles))")),
 		BINDING_NECKLACE(ItemID.BINDING_NECKLACE, 16, true, Pattern.compile(
-			"(?:(?:(?<v>\\d{1,2}|one) charges?.*|Your) Binding necklace.*disintegrate(?:d|s)|into (?<d>mud|lava|steam|dust|smoke|mist) runes?)"));
+			"(?:(?:(?<v>\\d{1,2}|one) charges?.*|Your) Binding necklace.*disintegrate(?:d|s)|into (?<d>mud|lava|steam|dust|smoke|mist) runes?)")),
+		BRACELET_OF_SLAUGHTER(ItemID.BRACELET_OF_SLAUGHTER, 30, true, Pattern.compile(
+			"bracelet of slaughter.*has (?<v>\\d{1,2}) charges?")),
+		EXPEDITIOUS_BRACELET(ItemID.EXPEDITIOUS_BRACELET, 30, true, Pattern.compile(
+			"expeditious bracelet.*has (?<v>\\d{1,2}) charges?"));
 		
 		private final int itemID;
 		private final int maxCharges;

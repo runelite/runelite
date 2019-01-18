@@ -73,6 +73,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
+import net.runelite.client.events.ItemChargeChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -97,14 +98,6 @@ public class SlayerPlugin extends Plugin
 	private static final String CHAT_CANCEL_MESSAGE = "Your task has been cancelled.";
 	private static final String CHAT_CANCEL_MESSAGE_JAD = "You no longer have a slayer task as you left the fight cave.";
 	private static final String CHAT_SUPERIOR_MESSAGE = "A superior foe has appeared...";
-	private static final String CHAT_BRACELET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer";
-	private static final Pattern CHAT_BRACELET_SLAUGHTER_REGEX = Pattern.compile("Your bracelet of slaughter prevents your slayer count decreasing. It has (\\d{1,2}) charge[s]? left.");
-	private static final String CHAT_BRACELET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your";
-	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_REGEX = Pattern.compile("Your expeditious bracelet helps you progress your slayer (?:task )?faster. It has (\\d{1,2}) charge[s]? left.");
-	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has ";
-	private static final Pattern CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX = Pattern.compile("Your bracelet of slaughter has (\\d{1,2}) charge[s]? left.");
-	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has ";
-	private static final Pattern CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX = Pattern.compile("Your expeditious bracelet has (\\d{1,2}) charge[s]? left.");
 	private static final Pattern COMBAT_BRACELET_TASK_UPDATE_MESSAGE = Pattern.compile("^You still need to kill (\\d+) monsters to complete your current Slayer assignment");
 
 	//NPC messages
@@ -391,6 +384,19 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onItemChargeChanged(ItemChargeChanged event)
+	{
+		if (event.getItemID() == ItemID.BRACELET_OF_SLAUGHTER)
+		{
+			amount++;
+		}
+		else if (event.getItemID() == ItemID.EXPEDITIOUS_BRACELET)
+		{
+			amount--;
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
@@ -399,48 +405,6 @@ public class SlayerPlugin extends Plugin
 		}
 
 		String chatMsg = Text.removeTags(event.getMessage()); //remove color and linebreaks
-
-		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER))
-		{
-			Matcher mSlaughter = CHAT_BRACELET_SLAUGHTER_REGEX.matcher(chatMsg);
-
-			amount++;
-			slaughterChargeCount = mSlaughter.find() ? Integer.parseInt(mSlaughter.group(1)) : SLAUGHTER_CHARGE;
-			config.slaughter(slaughterChargeCount);
-		}
-
-		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS))
-		{
-			Matcher mExpeditious = CHAT_BRACELET_EXPEDITIOUS_REGEX.matcher(chatMsg);
-
-			amount--;
-			expeditiousChargeCount = mExpeditious.find() ? Integer.parseInt(mExpeditious.group(1)) : EXPEDITIOUS_CHARGE;
-			config.expeditious(expeditiousChargeCount);
-		}
-
-		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS_CHARGE))
-		{
-			Matcher mExpeditious = CHAT_BRACELET_EXPEDITIOUS_CHARGE_REGEX.matcher(chatMsg);
-
-			if (!mExpeditious.find())
-			{
-				return;
-			}
-
-			expeditiousChargeCount = Integer.parseInt(mExpeditious.group(1));
-			config.expeditious(expeditiousChargeCount);
-		}
-		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER_CHARGE))
-		{
-			Matcher mSlaughter = CHAT_BRACELET_SLAUGHTER_CHARGE_REGEX.matcher(chatMsg);
-			if (!mSlaughter.find())
-			{
-				return;
-			}
-
-			slaughterChargeCount = Integer.parseInt(mSlaughter.group(1));
-			config.slaughter(slaughterChargeCount);
-		}
 
 		if (chatMsg.endsWith("; return to a Slayer master."))
 		{
