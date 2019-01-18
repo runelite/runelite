@@ -185,7 +185,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapHelp",
 		name = "Help Arceuus Librarians",
-		description = "Swap Talk-to with Help on Arceuus Librarians"
+		description = "Swap Talk-to with Help on Kourend Library customers"
 	)
 	default boolean swapHelp()
 	{
