@@ -346,4 +346,26 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "toggleOutline",
+		name = "Text Outline",
+		description = "Toggles the Text Outline",
+		position = 27
+	)
+	default boolean toggleOutline()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "outlineColor",
+		name = "Outline Color",
+		description = "Changes the Color of the Outline",
+		position = 28
+	)
+	default Color outlineColor()
+	{
+		return Color.decode("#00000");
+	}
 }
