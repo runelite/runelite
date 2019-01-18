@@ -333,10 +333,9 @@ public class GroundItemsOverlay extends Overlay
 				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted != null, false);
 			}
 
-			// Draw outline if option toggled
 			if (config.toggleOutline())
 			{
-				graphics.setColor(config.outlineColor());
+				graphics.setColor(Color.BLACK);
 				graphics.drawString(itemString,  textX + 1, textY + 1);
 				graphics.drawString(itemString,  textX - 1, textY - 1);
 				graphics.drawString(itemString,  textX - 1, textY + 1);
