@@ -139,9 +139,9 @@ public class DevToolsPlugin extends Plugin
 		npcs = new DevToolsButton("NPCs");
 
 		groundItems = new DevToolsButton("Ground Items");
-		groundObjects = new DevToolsButton("Ground Objects");
+		groundObjects = new DevToolsButton("Ground Objs");
 		gameObjects = new DevToolsButton("Game Objects");
-		graphicsObjects = new DevToolsButton("Graphics Objects");
+		graphicsObjects = new DevToolsButton("Graphics Objs");
 		walls = new DevToolsButton("Walls");
 		decorations = new DevToolsButton("Decorations");
 
@@ -149,20 +149,20 @@ public class DevToolsPlugin extends Plugin
 		projectiles = new DevToolsButton("Projectiles");
 
 		location = new DevToolsButton("Location");
-		worldMapLocation = new DevToolsButton("World Map Location");
+		worldMapLocation = new DevToolsButton("World Map Loc");
 		tileLocation = new DevToolsButton("Tile Location");
-		cameraPosition = new DevToolsButton("Camera Position");
+		cameraPosition = new DevToolsButton("Camera Pos");
 
 		chunkBorders = new DevToolsButton("Chunk Borders");
 		mapSquares = new DevToolsButton("Map Squares");
 
 		lineOfSight = new DevToolsButton("Line Of Sight");
-		validMovement = new DevToolsButton("Valid Movement");
+		validMovement = new DevToolsButton("Valid Moves");
 		interacting = new DevToolsButton("Interacting");
 		examine = new DevToolsButton("Examine");
 
-		detachedCamera = new DevToolsButton("Detached Camera");
-		widgetInspector = new DevToolsButton("Widget Inspector");
+		detachedCamera = new DevToolsButton("Detached Cam");
+		widgetInspector = new DevToolsButton("Widget Inspect");
 		varInspector = new DevToolsButton("Var Inspector");
 
 		overlayManager.add(overlay);
