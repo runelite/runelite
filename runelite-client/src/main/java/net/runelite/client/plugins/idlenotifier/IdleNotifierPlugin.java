@@ -389,7 +389,7 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (checkFullSpecEnergy())
 		{
-			notifier.notify("[" + local.getName() + "] has restored spec energy!");;
+			notifier.notify("[" + local.getName() + "] has restored spec energy!");
 		}
 	}
 
