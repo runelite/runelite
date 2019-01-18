@@ -24,7 +24,6 @@
  */
 package net.runelite.client.ui.overlay.components;
 
-import java.awt.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
