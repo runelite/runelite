@@ -40,6 +40,7 @@ import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.game.ItemChargeManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -51,15 +52,16 @@ public class BindNeckOverlay extends Overlay
 {
 	private final QueryRunner queryRunner;
 	private final RunecraftConfig config;
-	int bindingCharges;
+	private final ItemChargeManager itemChargeManager;
 
 	@Inject
-	BindNeckOverlay(QueryRunner queryRunner, RunecraftConfig config)
+	BindNeckOverlay(QueryRunner queryRunner, RunecraftConfig config, ItemChargeManager itemChargeManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.queryRunner = queryRunner;
 		this.config = config;
+		this.itemChargeManager = itemChargeManager;
 	}
 
 	@Override
@@ -72,11 +74,13 @@ public class BindNeckOverlay extends Overlay
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
+		final int bindingCharges = itemChargeManager.getCharge(ItemChargeManager.SharedChargeItem.BINDING_NECKLACE);
+		final Color color = bindingCharges == 1 ? Color.RED : Color.WHITE;
+		final String text = bindingCharges <= 0 ? "?" : bindingCharges + "";
+
 		for (WidgetItem necklace : getNecklaceWidgetItems())
 		{
-			final Color color = bindingCharges == 1 ? Color.RED : Color.WHITE;
 			final Rectangle bounds = necklace.getCanvasBounds();
-			final String text = bindingCharges <= 0 ? "?" : bindingCharges + "";
 
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));

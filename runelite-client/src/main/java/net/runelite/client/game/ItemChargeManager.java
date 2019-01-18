@@ -35,8 +35,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -53,7 +57,9 @@ public class ItemChargeManager
 		AMULET_OF_CHEMISTRY(ItemID.AMULET_OF_CHEMISTRY, 5, true, Pattern.compile(
 			"Your amulet of chemistry .*(?:(?:has (?<v>\\d{1,2}|one) charges?)|(?<z>crumbles))")),
 		DODGY_NECKLACE(ItemID.DODGY_NECKLACE, 10, true, Pattern.compile(
-			"Your dodgy necklace.*(?:(?:has (?<v>\\d{1,2}) charges?)|(?<z>crumbles))"));
+			"Your dodgy necklace.*(?:(?:has (?<v>\\d{1,2}) charges?)|(?<z>crumbles))")),
+		BINDING_NECKLACE(ItemID.BINDING_NECKLACE, 16, true, Pattern.compile(
+			"(?:(?:(?<v>\\d{1,2}|one) charges?.*|Your) Binding necklace.*disintegrate(?:d|s)|into (?<d>mud|lava|steam|dust|smoke|mist) runes?)"));
 		
 		private final int itemID;
 		private final int maxCharges;
@@ -77,15 +83,18 @@ public class ItemChargeManager
 		}
 	}
 	
+	private final Client client;
 	private final ConfigManager configManager;
 	private final EventBus eventBus;
 	private Map<SharedChargeItem, Integer> charges = new HashMap<>();
 	private final String CONFIG_GROUP = "charges";
 	private final String PREFIX = "item_";
+	private static final int DESTROY_ITEM_WIDGET_ID = WidgetInfo.DESTROY_ITEM_YES.getId();
 
 	@Inject
-	public ItemChargeManager(ConfigManager configManager, EventBus eventBus)
+	public ItemChargeManager(Client client, ConfigManager configManager, EventBus eventBus)
 	{
+		this.client = client;
 		this.configManager = configManager;
 		this.eventBus = eventBus;
 	}
@@ -128,7 +137,27 @@ public class ItemChargeManager
 			}
 		}
 	}
-	
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (event.getWidgetId() != DESTROY_ITEM_WIDGET_ID)
+		{
+			return;
+		}
+
+		Widget widgetDestroyItemName = client.getWidget(WidgetInfo.DESTROY_ITEM_NAME);
+		if (widgetDestroyItemName != null)
+		{
+			switch (widgetDestroyItemName.getText())
+			{
+				case "Binding necklace":
+					setCharge(SharedChargeItem.BINDING_NECKLACE, SharedChargeItem.BINDING_NECKLACE.maxCharges);
+					break;
+			}
+		}
+	}
+
 	private void setCharge(SharedChargeItem item, int charge)
 	{
 		log.debug("{} -> {}", item.name(), charge);
