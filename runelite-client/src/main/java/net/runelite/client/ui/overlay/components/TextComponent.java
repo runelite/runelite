@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui.overlay.components;
 
+import java.awt.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -64,9 +65,12 @@ public class TextComponent implements RenderableEntity
 				final String textWithoutCol = textWithoutColTags(textSplitOnCol);
 				final String colColor = textSplitOnCol.substring(textSplitOnCol.indexOf("=") + 1, textSplitOnCol.indexOf(">"));
 
-				// shadow
+				// outline
 				graphics.setColor(Color.BLACK);
-				graphics.drawString(textWithoutCol, x + 1, position.y + 1);
+				graphics.drawString(textWithoutCol, ShiftWest(position.x, 1), ShiftNorth(position.y, 1));
+				graphics.drawString(textWithoutCol, ShiftWest(position.x, 1), ShiftSouth(position.y, 1));
+				graphics.drawString(textWithoutCol, ShiftEast(position.x, 1), ShiftNorth(position.y, 1));
+				graphics.drawString(textWithoutCol, ShiftEast(position.x, 1), ShiftSouth(position.y, 1));
 
 				// actual text
 				graphics.setColor(Color.decode("#" + colColor));
@@ -77,15 +81,30 @@ public class TextComponent implements RenderableEntity
 		}
 		else
 		{
-			// shadow
+			// outline
 			graphics.setColor(Color.BLACK);
-			graphics.drawString(text, position.x + 1, position.y + 1);
+			graphics.drawString(text, ShiftWest(position.x, 1), ShiftNorth(position.y, 1));
+			graphics.drawString(text, ShiftWest(position.x, 1), ShiftSouth(position.y, 1));
+			graphics.drawString(text, ShiftEast(position.x, 1), ShiftNorth(position.y, 1));
+			graphics.drawString(text, ShiftEast(position.x, 1), ShiftSouth(position.y, 1));
 
 			// actual text
 			graphics.setColor(color);
 			graphics.drawString(text, position.x, position.y);
 		}
-
 		return new Dimension(fontMetrics.stringWidth(text), fontMetrics.getHeight());
+	}
+
+	public static int ShiftNorth(int p, int distance) {
+		return (p - distance);
+	}
+	public static int ShiftSouth(int p, int distance) {
+		return (p + distance);
+	}
+	public static int ShiftEast(int p, int distance) {
+		return (p + distance);
+	}
+	public static int ShiftWest(int p, int distance) {
+		return (p - distance);
 	}
 }
