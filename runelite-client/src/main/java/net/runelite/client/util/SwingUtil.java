@@ -216,9 +216,15 @@ public class SwingUtil
 
 				if (result == JOptionPane.OK_OPTION)
 				{
-					callback.run();
-					System.exit(0);
+					frame.dispose();
 				}
+			}
+
+			@Override
+			public void windowClosed(WindowEvent event)
+			{
+				callback.run();
+				System.exit(0);
 			}
 		});
 	}
