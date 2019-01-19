@@ -33,6 +33,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import static org.junit.Assert.assertEquals;
+
+import net.runelite.client.Notifier;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,6 +56,10 @@ public class NpcIndicatorsPluginTest
 	@Mock
 	@Bind
 	private NpcIndicatorsConfig npcIndicatorsConfig;
+
+	@Mock
+	@Bind
+	private Notifier notifier;
 
 	@Inject
 	private NpcIndicatorsPlugin npcIndicatorsPlugin;

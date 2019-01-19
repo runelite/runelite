@@ -29,14 +29,11 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -56,6 +53,7 @@ import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -76,6 +74,11 @@ public class NpcIndicatorsPlugin extends Plugin
 {
 	private static final int MAX_ACTOR_VIEW_RANGE = 15;
 
+	public static final NumberFormat TIME_LEFT_FORMATTER = DecimalFormat.getInstance(Locale.US);
+
+	// Estimated time of a game tick in seconds
+	public static final double ESTIMATED_TICK_LENGTH = 0.6;
+
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
 
@@ -84,6 +87,11 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	// Regex for splitting the hidden items in the config.
 	private static final Splitter COMMA_SPLITTER = Splitter.on(",").omitEmptyStrings().trimResults();
+
+	static
+	{
+		((DecimalFormat)TIME_LEFT_FORMATTER).applyPattern("#0.0");
+	}
 
 	@Inject
 	private Client client;
@@ -112,11 +120,20 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private Notifier notifier;
+
 	/**
 	 * NPCs to highlight
 	 */
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<NPC> highlightedNpcs = new HashSet<>();
+
+	/**
+	 * NPCs to notify when close to spawning
+	 */
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<MemorizedNpc> pendingNotificationNpcs = new HashSet<>();
 
 	/**
 	 * Dead NPCs that should be displayed with a respawn indicator if the config is on.
@@ -203,6 +220,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		overlayManager.remove(npcSceneOverlay);
 		overlayManager.remove(npcMinimapOverlay);
 		deadNpcsToDisplay.clear();
+		pendingNotificationNpcs.clear();
 		memorizedNpcs.clear();
 		spawnedNpcsThisTick.clear();
 		despawnedNpcsThisTick.clear();
@@ -220,6 +238,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			highlightedNpcs.clear();
 			deadNpcsToDisplay.clear();
+			pendingNotificationNpcs.clear();
 			memorizedNpcs.forEach((id, npc) -> npc.setDiedOnTick(-1));
 			lastPlayerLocation = null;
 			skipNextSpawnCheck = true;
@@ -319,6 +338,12 @@ public class NpcIndicatorsPlugin extends Plugin
 		if (memorizedNpcs.containsKey(npc.getIndex()))
 		{
 			despawnedNpcsThisTick.add(npc);
+			MemorizedNpc mn = memorizedNpcs.get(npc.getIndex());
+
+			if (!mn.getPossibleRespawnLocations().isEmpty())
+			{
+				pendingNotificationNpcs.add(mn);
+			}
 		}
 
 		highlightedNpcs.remove(npc);
@@ -340,6 +365,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		removeOldHighlightedRespawns();
 		validateSpawnedNpcs();
+		checkNotifyNpcs();
 		lastTickUpdate = Instant.now();
 		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
 	}
@@ -477,6 +503,29 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 	}
 
+	private void checkNotifyNpcs()
+	{
+		if (!config.getNotifyOnRespawn())
+		{
+			return;
+		}
+
+		final double notifyDelay = ((double)config.getNotifyOnRespawnDelay()) / 1000;
+		final int tickCount = client.getTickCount();
+		final String notifyDelayStr = notifyDelay > 0
+				? " is less than " + TIME_LEFT_FORMATTER.format(notifyDelay) + " seconds from respawn"
+				: " respawned.";
+
+		for (MemorizedNpc npc : pendingNotificationNpcs)
+		{
+			if (npc.getSecondsFromRespawn(tickCount, lastTickUpdate) <= notifyDelay)
+			{
+				pendingNotificationNpcs.remove(npc);
+				notifier.notify(npc.getNpcName() + notifyDelayStr);
+			}
+		}
+	}
+
 	private void validateSpawnedNpcs()
 	{
 		if (skipNextSpawnCheck)
@@ -485,6 +534,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 		else
 		{
+
 			for (NPC npc : despawnedNpcsThisTick)
 			{
 				if (!teleportGraphicsObjectSpawnedThisTick.isEmpty())
