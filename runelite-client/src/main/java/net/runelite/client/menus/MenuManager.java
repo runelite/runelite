@@ -78,30 +78,6 @@ public class MenuManager
 		this.eventBus = eventBus;
 	}
 
-	public void addNpcMenuOption(String option)
-	{
-		npcMenuOptions.add(option);
-
-		// add to surrounding npcs
-		for (NPC npc : client.getNpcs())
-		{
-			NPCComposition composition = npc.getComposition();
-			addNpcOption(composition, option);
-		}
-	}
-
-	public void removeNpcMenuOption(String option)
-	{
-		npcMenuOptions.remove(option);
-
-		// remove this option from all npc compositions
-		for (NPC npc : client.getNpcs())
-		{
-			NPCComposition composition = npc.getComposition();
-			removeNpcOption(composition, option);
-		}
-	}
-
 	/**
 	 * Adds a CustomMenuOption to the list of managed menu options.
 	 *
