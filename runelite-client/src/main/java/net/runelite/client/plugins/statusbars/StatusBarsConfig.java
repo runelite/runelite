@@ -80,5 +80,4 @@ public interface StatusBarsConfig extends Config
 	{
 		return true;
 	}
-
 }
