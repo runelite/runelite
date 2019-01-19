@@ -29,17 +29,22 @@ import com.google.common.cache.CacheBuilder;
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.api.widgets.WidgetInfo.CHATBOX;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
@@ -74,6 +79,27 @@ public class ExaminePlugin extends Plugin
 	private final Cache<CacheKey, Boolean> cache = CacheBuilder.newBuilder()
 		.maximumSize(128L)
 		.build();
+
+	private static final HashMap<String, Integer> herbs = new HashMap<String, Integer>()
+	{{
+		put("guam leaf", ItemID.GRIMY_GUAM_LEAF);
+		put("tarromin", ItemID.GRIMY_TARROMIN);
+		put("ranarr weed", ItemID.GRIMY_RANARR_WEED);
+		put("avantoe", ItemID.GRIMY_AVANTOE);
+		put("snapdragon", ItemID.GRIMY_SNAPDRAGON);
+		put("marrentil", ItemID.GRIMY_MARRENTILL);
+		put("harralander", ItemID.GRIMY_HARRALANDER);
+		put("kwuarm", ItemID.GRIMY_KWUARM);
+		put("toadflax", ItemID.GRIMY_TOADFLAX);
+		put("cadantine", ItemID.GRIMY_CADANTINE);
+		put("lantadyme", ItemID.GRIMY_LANTADYME);
+		put("dwarf weed", ItemID.GRIMY_DWARF_WEED);
+		put("torstol", ItemID.GRIMY_TORSTOL);
+		put("irit leaf", ItemID.GRIMY_IRIT_LEAF);
+	}};
+	
+	private final Pattern herbPattern = Pattern.compile("\\d+ x grimy (.*)");
+	private final Pattern herbCount = Pattern.compile("(\\d+) x grimy .*");
 
 	@Inject
 	private Client client;
@@ -138,6 +164,32 @@ public class ExaminePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
+		if (event.getType() == ChatMessageType.SERVER && event.getMessage().contains("Grimy"))
+		{
+			Matcher match = herbPattern.matcher(event.getMessage().toLowerCase());
+			
+			if (match.matches())
+			{
+				String name = match.group(1);
+				
+				if (herbs.containsKey(name))
+				{
+					match = herbCount.matcher(event.getMessage().toLowerCase());
+					
+					if (match.matches())
+					{
+						PendingExamine pendingExamine = new PendingExamine();
+						pendingExamine.setWidgetId(CHATBOX.getId());
+						pendingExamine.setActionParam(Integer.parseInt(match.group(1)));
+						pendingExamine.setType(ExamineType.ITEM_BANK_EQ);
+						pendingExamine.setId(herbs.get(name));
+						pendingExamine.setCreated(Instant.now());
+						pending.push(pendingExamine);
+					}
+				}
+			}
+		}
+
 		ExamineType type;
 		switch (event.getType())
 		{
@@ -191,81 +243,89 @@ public class ExaminePlugin extends Plugin
 		int quantity = 1;
 		int itemId = -1;
 
-		// Get widget
-		int widgetId = pendingExamine.getWidgetId();
-		int widgetGroup = TO_GROUP(widgetId);
-		int widgetChild = TO_CHILD(widgetId);
-		Widget widget = client.getWidget(widgetGroup, widgetChild);
-
-		if (widget == null)
+		if (pendingExamine.getWidgetId() == CHATBOX.getId())
 		{
-			return;
-		}
-
-		if (pendingExamine.getType() == ExamineType.ITEM)
-		{
-			WidgetItem widgetItem = widget.getWidgetItem(pendingExamine.getActionParam());
-			quantity = widgetItem != null ? widgetItem.getQuantity() : 1;
+			quantity = pendingExamine.getActionParam();
 			itemId = pendingExamine.getId();
 		}
-		else if (pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
+		else
 		{
-			if (WidgetInfo.EQUIPMENT.getGroupId() == widgetGroup)
+			// Get widget
+			int widgetId = pendingExamine.getWidgetId();
+			int widgetGroup = TO_GROUP(widgetId);
+			int widgetChild = TO_CHILD(widgetId);
+			Widget widget = client.getWidget(widgetGroup, widgetChild);
+
+			if (widget == null)
 			{
-				Widget widgetItem = widget.getChild(1);
-				if (widgetItem != null)
-				{
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
+				return;
 			}
-			else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
+
+			if (pendingExamine.getType() == ExamineType.ITEM)
 			{
-				Widget widgetItem = widget.getChild(2);
-				if (widgetItem != null)
-				{
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
+				WidgetItem widgetItem = widget.getWidgetItem(pendingExamine.getActionParam());
+				quantity = widgetItem != null ? widgetItem.getQuantity() : 1;
+				itemId = pendingExamine.getId();
 			}
-			else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
-					|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup)
+			else if (pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
 			{
-				Widget widgetItem = widget.getChild(pendingExamine.getActionParam());
-				if (widgetItem != null)
+				if (WidgetInfo.EQUIPMENT.getGroupId() == widgetGroup)
 				{
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
+					Widget widgetItem = widget.getChild(1);
+					if (widgetItem != null)
+					{
+						quantity = widgetItem.getItemQuantity();
+						itemId = widgetItem.getItemId();
+					}
 				}
-			}
-			else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget[] children = widget.getDynamicChildren();
-				if (pendingExamine.getActionParam() < children.length)
+				else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
 				{
-					Widget widgetItem = children[pendingExamine.getActionParam()];
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
+					Widget widgetItem = widget.getChild(2);
+					if (widgetItem != null)
+					{
+						quantity = widgetItem.getItemQuantity();
+						itemId = widgetItem.getItemId();
+					}
 				}
-			}
-			else if (WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget[] children = widget.getDynamicChildren();
-				if (pendingExamine.getActionParam() < children.length)
+				else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
+						|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup)
 				{
-					Widget widgetItem = children[pendingExamine.getActionParam()];
-					quantity = 1;
-					itemId = widgetItem.getItemId();
+					Widget widgetItem = widget.getChild(pendingExamine.getActionParam());
+					if (widgetItem != null)
+					{
+						quantity = widgetItem.getItemQuantity();
+						itemId = widgetItem.getItemId();
+					}
 				}
-			}
-			else if (WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget[] children = widget.getDynamicChildren();
-				if (pendingExamine.getActionParam() < children.length)
+				else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup)
 				{
-					Widget widgetItem = children[pendingExamine.getActionParam()];
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
+					Widget[] children = widget.getDynamicChildren();
+					if (pendingExamine.getActionParam() < children.length)
+					{
+						Widget widgetItem = children[pendingExamine.getActionParam()];
+						quantity = widgetItem.getItemQuantity();
+						itemId = widgetItem.getItemId();
+					}
+				}
+				else if (WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup)
+				{
+					Widget[] children = widget.getDynamicChildren();
+					if (pendingExamine.getActionParam() < children.length)
+					{
+						Widget widgetItem = children[pendingExamine.getActionParam()];
+						quantity = 1;
+						itemId = widgetItem.getItemId();
+					}
+				}
+				else if (WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup)
+				{
+					Widget[] children = widget.getDynamicChildren();
+					if (pendingExamine.getActionParam() < children.length)
+					{
+						Widget widgetItem = children[pendingExamine.getActionParam()];
+						quantity = widgetItem.getItemQuantity();
+						itemId = widgetItem.getItemId();
+					}
 				}
 			}
 			else if (WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup)
