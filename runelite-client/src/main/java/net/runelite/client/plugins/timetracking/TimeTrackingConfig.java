@@ -49,6 +49,17 @@ public interface TimeTrackingConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "twelveHourClock",
+			name = "12 hour clock",
+			description = "Completion time in 12 hour clock format",
+			position = 1
+	)
+	default boolean useTwelveHourClock()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "timerNotification",
 		name = "Timer notification",
 		description = "Notify you whenever a timer has finished counting down",

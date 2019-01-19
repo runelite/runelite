@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.timetracking;
 
 import java.awt.Dimension;
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
@@ -48,7 +50,7 @@ public abstract class TabContentPanel extends JPanel
 		return super.getPreferredSize();
 	}
 
-	protected static String getFormattedEstimate(long remainingSeconds, boolean useRelativeTime)
+	protected static String getFormattedEstimate(long remainingSeconds, boolean useRelativeTime, boolean useTwelveHourClock)
 	{
 		if (useRelativeTime)
 		{
@@ -80,7 +82,21 @@ public abstract class TabContentPanel extends JPanel
 			{
 				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
 			}
-			sb.append(String.format("at %d:%02d", endTime.getHour(), endTime.getMinute()));
+
+			SimpleDateFormat dateFormat;
+			if (useTwelveHourClock)
+			{
+				dateFormat = new SimpleDateFormat("h:mm aa");
+			}
+			else
+			{
+				dateFormat = new SimpleDateFormat("H:mm");
+			}
+			DateFormatSymbols symbols = new DateFormatSymbols(Locale.getDefault());
+			symbols.setAmPmStrings(new String[] { "am", "pm" }); // Lowercase am/pm symbols
+			dateFormat.setDateFormatSymbols(symbols);
+
+			sb.append(dateFormat.format(java.sql.Timestamp.valueOf(endTime)));
 			return sb.toString();
 		}
 	}
