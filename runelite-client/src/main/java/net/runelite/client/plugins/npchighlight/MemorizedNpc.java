@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.npchighlight;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -76,13 +75,5 @@ class MemorizedNpc
 		{
 			this.npcSize = composition.getSize();
 		}
-	}
-
-	public double getSecondsFromRespawn(int tickCount, Instant lastTickUpdate)
-	{
-		final Instant now = Instant.now();
-		final double baseTick = NpcIndicatorsPlugin.ESTIMATED_TICK_LENGTH * (diedOnTick + respawnTime - tickCount);
-		final double sinceLast = (now.toEpochMilli() - lastTickUpdate.toEpochMilli()) / 1000.0;
-		return Math.max(0.0, baseTick - sinceLast);
 	}
 }

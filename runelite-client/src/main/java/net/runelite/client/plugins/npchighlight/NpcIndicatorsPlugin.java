@@ -74,10 +74,15 @@ public class NpcIndicatorsPlugin extends Plugin
 {
 	private static final int MAX_ACTOR_VIEW_RANGE = 15;
 
-	public static final NumberFormat TIME_LEFT_FORMATTER = DecimalFormat.getInstance(Locale.US);
-
 	// Estimated time of a game tick in seconds
-	public static final double ESTIMATED_TICK_LENGTH = 0.6;
+	private static final double ESTIMATED_TICK_LENGTH = 0.6;
+
+	private static final NumberFormat TIME_LEFT_FORMATTER = DecimalFormat.getInstance(Locale.getDefault());
+
+	static
+	{
+		((DecimalFormat)TIME_LEFT_FORMATTER).applyPattern("#0.0");
+	}
 
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
@@ -87,11 +92,6 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	// Regex for splitting the hidden items in the config.
 	private static final Splitter COMMA_SPLITTER = Splitter.on(",").omitEmptyStrings().trimResults();
-
-	static
-	{
-		((DecimalFormat)TIME_LEFT_FORMATTER).applyPattern("#0.0");
-	}
 
 	@Inject
 	private Client client;
@@ -417,6 +417,16 @@ public class NpcIndicatorsPlugin extends Plugin
 		return new WorldPoint(currWP.getX() - dx, currWP.getY() - dy, currWP.getPlane());
 	}
 
+	public double getTimeLeftForNpc(MemorizedNpc npc)
+	{
+		final Instant now = Instant.now();
+		final double baseTick = NpcIndicatorsPlugin.ESTIMATED_TICK_LENGTH * (
+				npc.getDiedOnTick() + npc.getRespawnTime() - client.getTickCount()
+		);
+		final double sinceLast = (now.toEpochMilli() - lastTickUpdate.toEpochMilli()) / 1000.0;
+		return Math.max(0.0, baseTick - sinceLast);
+	}
+
 	private void memorizeNpc(NPC npc)
 	{
 		final int npcIndex = npc.getIndex();
@@ -503,6 +513,11 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 	}
 
+	public String formatTime(double time)
+	{
+		return TIME_LEFT_FORMATTER.format(time);
+	}
+
 	private void checkNotifyNpcs()
 	{
 		if (!config.getNotifyOnRespawn())
@@ -511,14 +526,13 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		final double notifyDelay = ((double)config.getNotifyOnRespawnDelay()) / 1000;
-		final int tickCount = client.getTickCount();
 		final String notifyDelayStr = notifyDelay > 0
-				? " is less than " + TIME_LEFT_FORMATTER.format(notifyDelay) + " seconds from respawn"
+				? " is less than " + formatTime(notifyDelay) + " seconds from respawn"
 				: " respawned.";
 
 		for (MemorizedNpc npc : pendingNotificationNpcs)
 		{
-			if (npc.getSecondsFromRespawn(tickCount, lastTickUpdate) <= notifyDelay)
+			if (getTimeLeftForNpc(npc) <= notifyDelay)
 			{
 				pendingNotificationNpcs.remove(npc);
 				notifier.notify(npc.getNpcName() + notifyDelayStr);

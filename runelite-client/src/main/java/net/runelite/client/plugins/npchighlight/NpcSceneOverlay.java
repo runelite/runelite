@@ -107,10 +107,7 @@ public class NpcSceneOverlay extends Overlay
 			OverlayUtil.renderPolygon(graphics, poly, color);
 		}
 
-		final String timeLeftStr = NpcIndicatorsPlugin.TIME_LEFT_FORMATTER.format(npc.getSecondsFromRespawn(
-			client.getTickCount(),
-			plugin.getLastTickUpdate()
-		));
+		final String timeLeftStr = plugin.formatTime(plugin.getTimeLeftForNpc(npc));
 
 		final int textWidth = graphics.getFontMetrics().stringWidth(timeLeftStr);
 		final int textHeight = graphics.getFontMetrics().getAscent();
