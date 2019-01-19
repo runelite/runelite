@@ -537,6 +537,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, true);
 		}
+		if (config.swapStairs() && shiftModifier && option.equals("climb"))
+		{
+			swap("climb-down", option, target, true);
+
+		}
+		if (config.swapStairs() && !shiftModifier && option.equals("climb"))
+		{
+			swap("climb-up", option, target, true);
+		}
 	}
 
 	@Subscribe
