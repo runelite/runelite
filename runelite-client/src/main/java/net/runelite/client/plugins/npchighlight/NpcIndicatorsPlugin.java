@@ -63,7 +63,6 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
-import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -109,6 +108,9 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hotKeyPressed = false;
 
 	/**
 	 * NPCs to highlight
@@ -172,9 +174,6 @@ public class NpcIndicatorsPlugin extends Plugin
 	 * so we would not want to mark it as a real spawn in those cases.
 	 */
 	private boolean skipNextSpawnCheck = false;
-
-	@Setter(AccessLevel.PACKAGE)
-	private boolean hotKeyPressed = false;
 
 	@Provides
 	NpcIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -274,30 +273,29 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		if (click.getMenuOption().equals(TAG) && click.getMenuAction() == MenuAction.RUNELITE)
+		final int id = click.getId();
+		final boolean removed = npcTags.remove(id);
+		final NPC[] cachedNPCs = client.getCachedNPCs();
+		final NPC npc = cachedNPCs[id];
+
+		if (npc == null || npc.getName() == null)
 		{
-			final int id = click.getId();
-			final boolean removed = npcTags.remove(id);
-			final NPC[] cachedNPCs = client.getCachedNPCs();
-			final NPC npc = cachedNPCs[id];
-
-			if (npc != null && npc.getName() != null)
-			{
-				if (removed)
-				{
-					highlightedNpcs.remove(npc);
-					memorizedNpcs.remove(npc.getIndex());
-				}
-				else
-				{
-					memorizeNpc(npc);
-					npcTags.add(id);
-					highlightedNpcs.add(npc);
-				}
-
-				click.consume();
-			}
+			return;
 		}
+
+		if (removed)
+		{
+			highlightedNpcs.remove(npc);
+			memorizedNpcs.remove(npc.getIndex());
+		}
+		else
+		{
+			memorizeNpc(npc);
+			npcTags.add(id);
+			highlightedNpcs.add(npc);
+		}
+
+		click.consume();
 	}
 
 	@Subscribe
@@ -306,25 +304,27 @@ public class NpcIndicatorsPlugin extends Plugin
 		final NPC npc = npcSpawned.getNpc();
 		final String npcName = npc.getName();
 
-		if (npcName != null)
+		if (npcName == null)
 		{
-			if (npcTags.contains(npc.getIndex()))
+			return;
+		}
+
+		if (npcTags.contains(npc.getIndex()))
+		{
+			memorizeNpc(npc);
+			highlightedNpcs.add(npc);
+			spawnedNpcsThisTick.add(npc);
+			return;
+		}
+
+		for (String highlight : highlights)
+		{
+			if (WildcardMatcher.matches(highlight, npcName))
 			{
 				memorizeNpc(npc);
 				highlightedNpcs.add(npc);
 				spawnedNpcsThisTick.add(npc);
-				return;
-			}
-
-			for (String highlight : highlights)
-			{
-				if (WildcardMatcher.matches(highlight, npcName))
-				{
-					memorizeNpc(npc);
-					highlightedNpcs.add(npc);
-					spawnedNpcsThisTick.add(npc);
-					break;
-				}
+				break;
 			}
 		}
 	}
