@@ -60,4 +60,25 @@ public interface StatusBarsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "hideStatusBarDelay",
+		name = "Delay (seconds)",
+		description = "Number of seconds after combat to hide the status bars."
+	)
+	default int hideStatusBarDelay()
+	{
+		return 3;
+	}
+
+	@ConfigItem(
+		keyName = "toggleRestorationBars",
+		name = "Toggle to Hide when not in Combat",
+		description = "Visually hides the Status Bars when player is out of combat."
+	)
+	default boolean toggleRestorationBars()
+	{
+		return true;
+	}
+
 }

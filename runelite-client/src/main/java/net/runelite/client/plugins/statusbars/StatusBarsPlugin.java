@@ -24,9 +24,21 @@
  */
 package net.runelite.client.plugins.statusbars;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import com.google.inject.Provides;
+import lombok.AccessLevel;
+import lombok.Getter;
+import net.runelite.api.Actor;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -47,10 +59,56 @@ public class StatusBarsPlugin extends Plugin
 	@Inject
 	private OverlayManager overlayManager;
 
+	@Inject
+	private Client client;
+
+	@Inject
+	private StatusBarsConfig config;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Instant lastCombatAction;
+
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(overlay);
+	}
+
+	void updateLastCombatAction()
+	{
+		this.lastCombatAction = Instant.now();
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		final Actor interacting = client.getLocalPlayer().getInteracting();
+		final boolean isNpc = interacting instanceof NPC;
+		final int COMBAT_TIMEOUT = config.hideStatusBarDelay();
+
+		if (!config.toggleRestorationBars())
+		{
+			overlayManager.add(overlay);
+			return;
+		}
+
+		if (isNpc)
+		{
+			final NPC npc = (NPC) interacting;
+			final NPCComposition npcComposition = npc.getComposition();
+			final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
+			if (npcMenuActions.contains("Attack"))
+				{
+					updateLastCombatAction();
+					overlayManager.add(overlay);
+				}
+		}
+		else if (lastCombatAction != null)
+		{
+			if (Duration.between(getLastCombatAction(), Instant.now()).getSeconds() > COMBAT_TIMEOUT)
+			{
+				overlayManager.remove(overlay);
+			}
+		}
 	}
 
 	@Override
