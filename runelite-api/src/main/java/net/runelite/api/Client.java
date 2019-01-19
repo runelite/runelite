@@ -1425,6 +1425,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the collision data
 	 */
+	@Nullable
 	CollisionData[] getCollisionMaps();
 
 	@VisibleForDevtools
