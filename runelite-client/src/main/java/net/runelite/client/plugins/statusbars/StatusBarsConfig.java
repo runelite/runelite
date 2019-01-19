@@ -67,7 +67,7 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		position = 4,
 		keyName = "toggleRestorationBars",
-		name = "Toggle to Hide when not in Combat",
+		name = "Toggle to hide when not in combat",
 		description = "Visually hides the Status Bars when player is out of combat."
 	)
 	default boolean toggleRestorationBars()

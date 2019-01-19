@@ -88,27 +88,32 @@ public class StatusBarsPlugin extends Plugin
 		}
 		else
 		{
-			final Actor interacting = client.getLocalPlayer().getInteracting();
-			final boolean isNpc = interacting instanceof NPC;
-			final int COMBAT_TIMEOUT = config.hideStatusBarDelay();
+			hideStatusBar();
+		}
+	}
 
-			if (isNpc)
+	private void hideStatusBar()
+	{
+		final Actor interacting = client.getLocalPlayer().getInteracting();
+		final boolean isNpc = interacting instanceof NPC;
+		final int combatTimeout = config.hideStatusBarDelay();
+
+		if (isNpc)
+		{
+			final NPC npc = (NPC) interacting;
+			final NPCComposition npcComposition = npc.getComposition();
+			final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
+			if (npcMenuActions.contains("Attack") && config.toggleRestorationBars())
 			{
-				final NPC npc = (NPC) interacting;
-				final NPCComposition npcComposition = npc.getComposition();
-				final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
-				if (npcMenuActions.contains("Attack") && config.toggleRestorationBars())
-				{
-					updateLastCombatAction();
-					overlayManager.add(overlay);
-				}
+				updateLastCombatAction();
+				overlayManager.add(overlay);
 			}
-			else if (lastCombatAction != null)
+		}
+		else if (lastCombatAction != null)
+		{
+			if (Duration.between(getLastCombatAction(), Instant.now()).getSeconds() > combatTimeout)
 			{
-				if (Duration.between(getLastCombatAction(), Instant.now()).getSeconds() > COMBAT_TIMEOUT)
-				{
-					overlayManager.remove(overlay);
-				}
+				overlayManager.remove(overlay);
 			}
 		}
 	}
