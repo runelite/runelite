@@ -126,7 +126,7 @@ public class OverlayManager
 
 		event.consume();
 
-		Optional<Overlay> optionalOverlay = overlays.stream().filter(o -> overlayId(o) == event.getId()).findAny();
+		Optional<Overlay> optionalOverlay = overlays.stream().filter(o -> overlays.indexOf(o) == event.getId()).findAny();
 		if (optionalOverlay.isPresent())
 		{
 			Overlay overlay = optionalOverlay.get();
@@ -139,11 +139,6 @@ public class OverlayManager
 				eventBus.post(new OverlayMenuClicked(optionalOverlayMenuEntry.get(), overlay));
 			}
 		}
-	}
-
-	int overlayId(Overlay overlay)
-	{
-		return overlays.indexOf(overlay);
 	}
 
 	/**

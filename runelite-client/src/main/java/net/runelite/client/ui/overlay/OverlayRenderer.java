@@ -550,7 +550,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			entry.setOption(overlayMenuEntry.getOption());
 			entry.setTarget(ColorUtil.wrapWithColorTag(overlayMenuEntry.getTarget(), JagexColors.MENU_TARGET));
 			entry.setType(MenuAction.RUNELITE_OVERLAY.getId());
-			entry.setIdentifier(overlayManager.overlayId(overlay)); // overlay id
+			entry.setIdentifier(overlayManager.getOverlays().indexOf(overlay)); // overlay id
 
 			entries[i] = entry;
 		}
