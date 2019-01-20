@@ -33,7 +33,6 @@ import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -126,19 +125,16 @@ public class OverlayManager
 
 		event.consume();
 
-		Optional<Overlay> optionalOverlay = overlays.stream().filter(o -> overlayId(o) == event.getId()).findAny();
-		if (optionalOverlay.isPresent())
-		{
-			Overlay overlay = optionalOverlay.get();
-			List<OverlayMenuEntry> menuEntries = overlay.getMenuEntries();
-			Optional<OverlayMenuEntry> optionalOverlayMenuEntry = menuEntries.stream()
+		overlays
+			.stream()
+			.filter(o -> overlayId(o) == event.getId())
+			.findAny()
+			.ifPresent(o -> o
+				.getMenuEntries()
+				.stream()
 				.filter(me -> me.getOption().equals(event.getMenuOption()))
-				.findAny();
-			if (optionalOverlayMenuEntry.isPresent())
-			{
-				eventBus.post(new OverlayMenuClicked(optionalOverlayMenuEntry.get(), overlay));
-			}
-		}
+				.findAny()
+				.ifPresent(e -> eventBus.post(new OverlayMenuClicked(e, o))));
 	}
 
 	int overlayId(Overlay overlay)
