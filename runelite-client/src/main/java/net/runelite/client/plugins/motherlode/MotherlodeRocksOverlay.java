@@ -110,6 +110,7 @@ class MotherlodeRocksOverlay extends Overlay
 				LocalPoint location = rock.getLocalLocation();
 				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 				{
+					plugin.checkMining();
 					renderRock(graphics, rock);
 				}
 			}

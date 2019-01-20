@@ -30,7 +30,7 @@ import net.runelite.api.Point;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.SkillIconManager;
-import net.runelite.client.plugins.motherlode.MotherlodeConfig;
+import net.runelite.client.plugins.mining.MiningConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -46,12 +46,12 @@ class MiningRocksOverlay extends Overlay
 
 	private final Client client;
 	private final MiningPlugin plugin;
-	private final MotherlodeConfig config;
+	private final MiningConfig config;
 
 	private final BufferedImage miningIcon;
 
 	@Inject
-	MiningRocksOverlay(Client client, MiningPlugin plugin, MotherlodeConfig config, SkillIconManager iconManager)
+	MiningRocksOverlay(Client client, MiningPlugin plugin, MiningConfig config, SkillIconManager iconManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -65,11 +65,6 @@ class MiningRocksOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if ((!config.showVeins() && !config.showRockFalls()) || !plugin.isInMlm())
-		{
-			return null;
-		}
-
 		Player local = client.getLocalPlayer();
 
 		renderTiles(graphics, local);
@@ -81,39 +76,25 @@ class MiningRocksOverlay extends Overlay
 	{
 		LocalPoint localLocation = local.getLocalLocation();
 
-//		if (config.showVeins())
-//		{
-//			for (WallObject vein : plugin.getVeins())
-//			{
-//				LocalPoint location = vein.getLocalLocation();
-//				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
-//				{
-//					// Only draw veins on the same level
+		if (config.showMiningRocks()) {
+			for (GameObject rock : plugin.getRocks()) {
+				LocalPoint location = rock.getLocalLocation();
+				if (localLocation.distanceTo(location) <= MAX_DISTANCE) {
+					// Only draw veins on the same level
 //					if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(vein.getLocalLocation()))
 //					{
-//						renderVein(graphics, vein);
+					renderMiningRock(graphics, rock);
+					renderMiningRockSquare(graphics, rock);
 //					}
-//				}
-//			}
-//		}
-
-		if (config.showRockFalls())
-		{
-			for (GameObject rock : plugin.getRocks())
-			{
-				LocalPoint location = rock.getLocalLocation();
-				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
-				{
-					renderRock(graphics, rock);
 				}
 			}
 		}
 
 	}
 
-	private void renderVein(Graphics2D graphics, WallObject vein)
+	private void renderMiningRock(Graphics2D graphics, GameObject rock)
 	{
-		Point canvasLoc = Perspective.getCanvasImageLocation(client, vein.getLocalLocation(), miningIcon, 150);
+		Point canvasLoc = Perspective.getCanvasImageLocation(client, rock.getLocalLocation(), miningIcon, 0);
 
 		if (canvasLoc != null)
 		{
@@ -121,7 +102,7 @@ class MiningRocksOverlay extends Overlay
 		}
 	}
 
-	private void renderRock(Graphics2D graphics, GameObject rock)
+	private void renderMiningRockSquare(Graphics2D graphics, GameObject rock)
 	{
 		Polygon poly = Perspective.getCanvasTilePoly(client, rock.getLocalLocation());
 

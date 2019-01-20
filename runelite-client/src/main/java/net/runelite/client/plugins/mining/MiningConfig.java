@@ -29,28 +29,19 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("motherlode")
-public interface MotherlodeConfig extends Config
+@ConfigGroup("mining")
+public interface MiningConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showVeins",
-		name = "Show pay-dirt mining spots",
-		description = "Configures whether or not the pay-dirt mining spots are displayed."
+		keyName = "showMiningRocks",
+		name = "Show rock mining spots",
+		description = "Configures whether or not the mining spots are displayed."
 	)
-	default boolean showVeins()
+	default boolean showMiningRocks()
 	{
 		return true;
 	}
 
-	@ConfigItem(
-		keyName = "showRocks",
-		name = "Show rocks obstacles",
-		description = "Configures whether or not the fallen rocks obstacles are displayed."
-	)
-	default boolean showRockFalls()
-	{
-		return true;
-	}
 
 	@ConfigItem(
 		keyName = "statTimeout",
@@ -63,16 +54,6 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showSack",
-		name = "Show pay-dirt sack",
-		description = "Configures whether the pay-dirt sack is displayed or not."
-	)
-	default boolean showSack()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showMiningStats",
 		name = "Show mining session stats",
 		description = "Configures whether to display mining session stats"
@@ -82,15 +63,6 @@ public interface MotherlodeConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(
-		keyName = "showDepositsLeft",
-		name = "Show deposits left",
-		description = "Displays deposits left before sack is full"
-	)
-	default boolean showDepositsLeft()
-	{
-		return true;
-	}
 
 	@ConfigItem(
 		keyName = "showMiningState",
@@ -98,16 +70,6 @@ public interface MotherlodeConfig extends Config
 		description = "Shows current mining state. 'You are currently mining' / 'You are currently NOT mining'"
 	)
 	default boolean showMiningState()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showGemsFound",
-		name = "Show gems found",
-		description = "Shows gems found during current mining session"
-	)
-	default boolean showGemsFound()
 	{
 		return true;
 	}

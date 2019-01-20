@@ -26,7 +26,7 @@ package net.runelite.client.plugins.mining;
 
 import com.google.common.collect.ImmutableSet;
 import net.runelite.api.Client;
-import net.runelite.client.plugins.motherlode.MotherlodeConfig;
+import net.runelite.client.plugins.mining.MiningConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -41,7 +41,7 @@ import java.util.Set;
 
 import static net.runelite.api.AnimationID.*;
 
-class MotherlodeOverlay extends Overlay
+class MiningOverlay extends Overlay
 {
 	private static final Set<Integer> MINING_ANIMATION_IDS = ImmutableSet.of(
 		MINING_MOTHERLODE_BRONZE, MINING_MOTHERLODE_IRON, MINING_MOTHERLODE_STEEL,
@@ -52,11 +52,11 @@ class MotherlodeOverlay extends Overlay
 
 	private final Client client;
 	private final MiningPlugin plugin;
-	private final MotherlodeConfig config;
+	private final MiningConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	MotherlodeOverlay(Client client, MiningPlugin plugin, MotherlodeConfig config)
+	MiningOverlay(Client client, MiningPlugin plugin, MiningConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;

@@ -31,22 +31,17 @@ import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.*;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.*;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.motherlode.MotherlodeConfig;
+import net.runelite.client.plugins.mining.MiningConfig;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
-import java.time.Duration;
-import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
@@ -54,9 +49,9 @@ import java.util.Set;
 import static net.runelite.api.ObjectID.*;
 
 @PluginDescriptor(
-	name = "Motherlode Mine",
-	description = "Show helpful information inside the Motherload Mine",
-	tags = {"pay", "dirt", "mining", "mlm", "skilling", "overlay"},
+	name = "Mining",
+	description = "Show helpful information about Mining",
+	tags = {"mining", "skilling", "overlay"},
 	enabledByDefault = false
 )
 public class MiningPlugin extends Plugin
@@ -65,8 +60,14 @@ public class MiningPlugin extends Plugin
 	private static final Set<Integer> MINE_SPOTS = ImmutableSet.of(ORE_VEIN_26661, ORE_VEIN_26662, ORE_VEIN_26663, ORE_VEIN_26664);
 	private static final Set<Integer> MLM_ORE_TYPES = ImmutableSet.of(ItemID.RUNITE_ORE, ItemID.ADAMANTITE_ORE,
 			ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
-	private static final Set<Integer> ROCK_OBSTACLES = ImmutableSet.of(ROCKFALL, ROCKFALL_26680);
-
+	private static final Set<Integer> MINING_ROCKS = ImmutableSet.of(968,
+			1480,
+			1855,
+			4043,
+			4487,
+			7533,
+			9716,
+			21250, 1997, 2581, 2582, 2694, 2695, 2696, 2697, 2835, 2836, 2837, 2901, 2965, 3339, 3364, 4526, 4552, 4553, 4554, 4555, 4556, 4557, 4558, 4887, 5604, 5605, 5606, 5844, 5845, 5896, 5985, 5987, 6622, 6623, 6707, 6708, 6709, 7466, 8725, 8726, 8950, 8951, 8952, 9031, 9032, 10036, 10782, 10783, 10784, 10785, 10786, 10787, 10788, 11097, 11098, 11182, 11183, 11424, 11425, 12564, 12565, 12566, 12567, 12588, 12589, 12774, 14814, 14815, 14816, 14817, 15198, 15199, 15217, 15218, 15219, 15410, 15536, 15537, 16077, 16078, 16079, 16080, 16115, 16136, 16284, 16303, 17350, 17351, 17352, 17353, 17354, 17355, 17356, 17357, 17358, 17364, 17365, 17366, 17679, 17958, 17959, 17960, 17970, 17971, 17972, 18871, 18872, 18873, 19131, 21571, 21572, 21573, 22549, 22550, 22551, 23124, 23125, 23126, 23127, 23165, 23976, 23977, 23978, 23979, 23980, 23981, 24693, 24694, 24695, 24696, 24697, 24698, 24699, 24700, 24701, 24781, 25158, 25159, 25160, 25422, 25423, 26372, 26373, 26376, 26377, 26850, 26856, 28580, 29102, 29883, 29884, 29885, 30344, 30519, 30521, 30522, 30857, 30858, 31045, 31781, 31782, 31783, 31784, 31785, 31786, 31787, 31788, 31789);
 	private static final int MAX_INVENTORY_SIZE = 28;
 
 //	private static final int SACK_LARGE_SIZE = 162;
@@ -78,13 +79,13 @@ public class MiningPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private MotherlodeOverlay overlay;
+	private MiningOverlay overlay;
 
 	@Inject
 	private MiningRocksOverlay rocksOverlay;
 
 	@Inject
-	private MotherlodeConfig config;
+	private MiningConfig config;
 
 	@Inject
 	private Client client;
@@ -110,9 +111,9 @@ public class MiningPlugin extends Plugin
 	private final Set<GameObject> rocks = new HashSet<>();
 
 	@Provides
-	MotherlodeConfig getConfig(ConfigManager configManager)
+	MiningConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(MotherlodeConfig.class);
+		return configManager.getConfig(MiningConfig.class);
 	}
 
 	@Override
@@ -246,50 +247,35 @@ public class MiningPlugin extends Plugin
 //		}
 //	}
 //
-//	@Subscribe
-//	public void onWallObjectChanged(WallObjectChanged event)
-//	{
-//		if (!inMlm)
-//		{
-//			return;
-//		}
-//
-//		WallObject previous = event.getPrevious();
-//		WallObject wallObject = event.getWallObject();
-//
-//		veins.remove(previous);
-//		if (MINE_SPOTS.contains(wallObject.getId()))
-//		{
-//			veins.add(wallObject);
-//		}
-//	}
-//
-//	@Subscribe
-//	public void onWallObjectDespawned(WallObjectDespawned event)
-//	{
-//		if (!inMlm)
-//		{
-//			return;
-//		}
-//
-//		WallObject wallObject = event.getWallObject();
-//		veins.remove(wallObject);
-//	}
-
 	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	public void onGameObjectChanged(GameObjectChanged event)
 	{
-		if (!inMlm)
-		{
-			return;
-		}
-
+		GameObject previous = event.getPrevious();
 		GameObject gameObject = event.getGameObject();
-		if (ROCK_OBSTACLES.contains(gameObject.getId()))
+
+		rocks.remove(previous);
+		if (MINING_ROCKS.contains(gameObject.getId()))
 		{
 			rocks.add(gameObject);
 		}
 	}
+
+	@Subscribe
+	public void onGameObjectDespawned(GameObjectChanged event)
+	{
+		GameObject gameObject = event.getGameObject();
+		rocks.remove(gameObject);
+	}
+
+//	@Subscribe
+//	public void onGameObjectSpawned(GameObjectSpawned event)
+//	{
+//		GameObject gameObject = event.getGameObject();
+//		if (MINING_ROCKS.contains(gameObject.getId()))
+//		{
+//			rocks.add(gameObject);
+//		}
+//	}
 
 //	@Subscribe
 //	public void onGameObjectChanged(GameObjectChanged event)
