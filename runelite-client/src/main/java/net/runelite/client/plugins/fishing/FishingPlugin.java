@@ -46,6 +46,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
@@ -64,6 +65,7 @@ import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
@@ -131,6 +133,7 @@ public class FishingPlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(spotOverlay);
 		overlayManager.add(fishingSpotMinimapOverlay);
+		overlayManager.addMenu(overlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Fishing overlay");
 	}
 
 	@Override
@@ -138,6 +141,7 @@ public class FishingPlugin extends Plugin
 	{
 		spotOverlay.setHidden(true);
 		fishingSpotMinimapOverlay.setHidden(true);
+		overlayManager.removeMenu(overlay, OPTION_CONFIGURE);
 		overlayManager.remove(overlay);
 		overlayManager.remove(spotOverlay);
 		overlayManager.remove(fishingSpotMinimapOverlay);

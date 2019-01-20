@@ -51,6 +51,7 @@ class BarbarianAssaultOverlay extends Overlay
 	@Inject
 	private BarbarianAssaultOverlay(Client client, BarbarianAssaultPlugin plugin, BarbarianAssaultConfig config)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;

@@ -83,6 +83,7 @@ class PlayerComparisonOverlay extends Overlay
 	@Inject
 	private PlayerComparisonOverlay(Client client, OpponentInfoPlugin opponentInfoPlugin, OpponentInfoConfig config, HiscoreManager hiscoreManager)
 	{
+		super(opponentInfoPlugin);
 		this.client = client;
 		this.opponentInfoPlugin = opponentInfoPlugin;
 		this.config = config;

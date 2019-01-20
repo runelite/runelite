@@ -52,6 +52,7 @@ class MotherlodeSackOverlay extends Overlay
 	@Inject
 	MotherlodeSackOverlay(Client client, MotherlodeConfig config, MotherlodePlugin plugin)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.config = config;

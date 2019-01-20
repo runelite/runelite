@@ -76,6 +76,7 @@ class OpponentInfoOverlay extends Overlay
 		HiscoreManager hiscoreManager,
 		NPCManager npcManager)
 	{
+		super(opponentInfoPlugin);
 		this.client = client;
 		this.opponentInfoPlugin = opponentInfoPlugin;
 		this.opponentInfoConfig = opponentInfoConfig;

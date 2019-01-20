@@ -44,8 +44,9 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private BarrowsBrotherSlainOverlay(Client client)
+	private BarrowsBrotherSlainOverlay(BarrowsPlugin plugin, Client client)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.client = client;

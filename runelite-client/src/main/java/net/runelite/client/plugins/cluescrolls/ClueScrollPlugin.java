@@ -46,6 +46,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Scene;
@@ -84,6 +85,7 @@ import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ThreeStepCrypticClue;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
@@ -161,11 +163,13 @@ public class ClueScrollPlugin extends Plugin
 		overlayManager.add(clueScrollOverlay);
 		overlayManager.add(clueScrollEmoteOverlay);
 		overlayManager.add(clueScrollWorldOverlay);
+		overlayManager.addMenu(clueScrollOverlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Cluescroll overlay");
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.removeMenu(clueScrollOverlay, OPTION_CONFIGURE);
 		overlayManager.remove(clueScrollOverlay);
 		overlayManager.remove(clueScrollEmoteOverlay);
 		overlayManager.remove(clueScrollWorldOverlay);

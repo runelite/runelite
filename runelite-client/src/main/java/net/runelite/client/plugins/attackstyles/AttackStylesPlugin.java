@@ -33,6 +33,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
@@ -54,6 +55,7 @@ import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
 @PluginDescriptor(
 	name = "Attack Styles",
@@ -96,6 +98,8 @@ public class AttackStylesPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 
+		overlayManager.addMenu(overlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Attack style overlay");
+
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			clientThread.invoke(this::start);
@@ -123,6 +127,7 @@ public class AttackStylesPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		overlayManager.removeMenu(overlay, OPTION_CONFIGURE);
 		overlayManager.remove(overlay);
 		hideWarnedStyles(false);
 		processWidgets();

@@ -54,6 +54,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import static net.runelite.api.ItemID.BRUMA_KINDLING;
 import static net.runelite.api.ItemID.BRUMA_ROOT;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
@@ -67,6 +68,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
@@ -128,11 +130,13 @@ public class WintertodtPlugin extends Plugin
 	{
 		reset();
 		overlayManager.add(overlay);
+		overlayManager.addMenu(overlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Wintertodt overlay");
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.removeMenu(overlay, OPTION_CONFIGURE);
 		overlayManager.remove(overlay);
 		reset();
 	}

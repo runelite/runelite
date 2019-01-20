@@ -35,6 +35,7 @@ import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -44,6 +45,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 
 @PluginDescriptor(
@@ -89,11 +91,15 @@ public class OpponentInfoPlugin extends Plugin
 	{
 		overlayManager.add(opponentInfoOverlay);
 		overlayManager.add(playerComparisonOverlay);
+		overlayManager.addMenu(opponentInfoOverlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Opponent info overlay");
+		overlayManager.addMenu(playerComparisonOverlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Opponent info overlay");
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.removeMenu(opponentInfoOverlay, OPTION_CONFIGURE);
+		overlayManager.removeMenu(playerComparisonOverlay, OPTION_CONFIGURE);
 		lastOpponent = null;
 		lastTime = null;
 		overlayManager.remove(opponentInfoOverlay);

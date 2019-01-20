@@ -35,6 +35,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
@@ -51,6 +52,7 @@ import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
 @PluginDescriptor(
 	name = "Woodcutting",
@@ -98,11 +100,15 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(treesOverlay);
+
+		overlayManager.addMenu(overlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Woodcutting overlay");
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.removeMenu(overlay, OPTION_CONFIGURE);
+
 		overlayManager.remove(overlay);
 		overlayManager.remove(treesOverlay);
 		treeObjects.clear();

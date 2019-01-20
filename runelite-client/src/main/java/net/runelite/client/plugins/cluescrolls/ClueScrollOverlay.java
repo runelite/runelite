@@ -46,6 +46,7 @@ public class ClueScrollOverlay extends Overlay
 	@Inject
 	public ClueScrollOverlay(ClueScrollPlugin plugin)
 	{
+		super(plugin);
 		this.plugin = plugin;
 		setPriority(OverlayPriority.LOW);
 	}

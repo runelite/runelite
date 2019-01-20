@@ -52,8 +52,9 @@ class InventoryViewerOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private InventoryViewerOverlay(Client client, ItemManager itemManager)
+	private InventoryViewerOverlay(InventoryViewerPlugin plugin, Client client, ItemManager itemManager)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		panelComponent.setWrapping(4);
 		panelComponent.setGap(new Point(6, 4));

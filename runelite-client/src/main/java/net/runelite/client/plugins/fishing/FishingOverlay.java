@@ -51,6 +51,7 @@ class FishingOverlay extends Overlay
 	@Inject
 	public FishingOverlay(Client client, FishingPlugin plugin, FishingConfig config, XpTrackerService xpTrackerService)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;

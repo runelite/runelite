@@ -74,6 +74,7 @@ public class XpGlobesOverlay extends Overlay
 		XpTrackerService xpTrackerService,
 		SkillIconManager iconManager)
 	{
+		super(plugin);
 		this.iconManager = iconManager;
 		this.client = client;
 		this.plugin = plugin;

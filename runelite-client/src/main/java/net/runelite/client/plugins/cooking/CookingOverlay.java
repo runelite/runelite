@@ -57,6 +57,7 @@ class CookingOverlay extends Overlay
 	@Inject
 	private CookingOverlay(Client client, CookingPlugin plugin, CookingConfig config, XpTrackerService xpTrackerService)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;

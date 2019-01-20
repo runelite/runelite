@@ -656,6 +656,18 @@ public class ConfigPanel extends PluginPanel
 		configManager.setConfiguration(RUNELITE_GROUP_NAME, PINNED_PLUGINS_CONFIG_KEY, value);
 	}
 
+	void openConfigurationPanel(String configGroup)
+	{
+		for (PluginListItem pluginListItem : pluginList)
+		{
+			if (pluginListItem.getName().equals(configGroup))
+			{
+				openGroupConfigPanel(pluginListItem, pluginListItem.getConfig(), pluginListItem.getConfigDescriptor());
+				break;
+			}
+		}
+	}
+
 	@Override
 	public void onActivate()
 	{

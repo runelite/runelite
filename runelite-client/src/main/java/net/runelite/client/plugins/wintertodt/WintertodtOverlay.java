@@ -43,6 +43,7 @@ class WintertodtOverlay extends Overlay
 	@Inject
 	private WintertodtOverlay(WintertodtPlugin plugin)
 	{
+		super(plugin);
 		this.plugin = plugin;
 		setPosition(OverlayPosition.BOTTOM_LEFT);
 	}

@@ -47,6 +47,7 @@ class BoostsOverlay extends Overlay
 	@Inject
 	private BoostsOverlay(Client client, BoostsConfig config, BoostsPlugin plugin)
 	{
+		super(plugin);
 		this.plugin = plugin;
 		this.client = client;
 		this.config = config;

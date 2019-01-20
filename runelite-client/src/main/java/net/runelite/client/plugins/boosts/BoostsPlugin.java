@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.BoostedLevelChanged;
@@ -46,6 +47,7 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
 
@@ -111,6 +113,8 @@ public class BoostsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(boostsOverlay);
+		overlayManager.addMenu(boostsOverlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Boosts overlay");
+
 		updateShownSkills();
 		updateBoostedStats();
 		Arrays.fill(lastSkillLevels, -1);
@@ -131,6 +135,7 @@ public class BoostsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.removeMenu(boostsOverlay, OPTION_CONFIGURE);
 		overlayManager.remove(boostsOverlay);
 		infoBoxManager.removeIf(t -> t instanceof BoostIndicator || t instanceof StatChangeIndicator);
 		preserveBeenActive = false;

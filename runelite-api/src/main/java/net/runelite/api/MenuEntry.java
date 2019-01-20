@@ -60,10 +60,4 @@ public class MenuEntry
 	 */
 	private int param1;
 
-	@Override
-	public String toString()
-	{
-		return "MenuEntry{" + "option=" + option + ", target=" + target + ", identifier=" + identifier + ", type=" + type + ", param0=" + param0 + ", param1=" + param1 + '}';
-	}
-
 }
