@@ -78,14 +78,10 @@ class MiningRocksOverlay extends Overlay
 
 		if (config.showMiningRocks()) {
 			for (GameObject rock : plugin.getRocks()) {
+
 				LocalPoint location = rock.getLocalLocation();
 				if (localLocation.distanceTo(location) <= MAX_DISTANCE) {
-					// Only draw veins on the same level
-//					if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(vein.getLocalLocation()))
-//					{
 					renderMiningRock(graphics, rock);
-					renderMiningRockSquare(graphics, rock);
-//					}
 				}
 			}
 		}
@@ -95,20 +91,20 @@ class MiningRocksOverlay extends Overlay
 	private void renderMiningRock(Graphics2D graphics, GameObject rock)
 	{
 		Point canvasLoc = Perspective.getCanvasImageLocation(client, rock.getLocalLocation(), miningIcon, 0);
-
 		if (canvasLoc != null)
 		{
 			graphics.drawImage(miningIcon, canvasLoc.getX(), canvasLoc.getY(), null);
 		}
 	}
 
-	private void renderMiningRockSquare(Graphics2D graphics, GameObject rock)
-	{
-		Polygon poly = Perspective.getCanvasTilePoly(client, rock.getLocalLocation());
+//	private void renderMiningRockSquare(Graphics2D graphics, GameObject rock)
+//	{
+//		Polygon poly = Perspective.getCanvasTilePoly(client, rock.getLocalLocation());
+//
+//		if (poly != null)
+//		{
+//			OverlayUtil.renderPolygon(graphics, poly, Color.red);
+//		}
+//	}
 
-		if (poly != null)
-		{
-			OverlayUtil.renderPolygon(graphics, poly, Color.red);
-		}
-	}
 }
