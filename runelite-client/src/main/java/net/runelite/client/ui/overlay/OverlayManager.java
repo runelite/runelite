@@ -146,26 +146,6 @@ public class OverlayManager
 		return overlays.indexOf(overlay);
 	}
 
-	public void addMenu(Overlay overlay, MenuAction menuAction, String option, String target)
-	{
-		OverlayMenuEntry overlayMenuEntry = new OverlayMenuEntry(menuAction, option, target);
-		List<OverlayMenuEntry> menuEntries = overlay.getMenuEntries();
-		menuEntries.add(overlayMenuEntry);
-	}
-
-	public void removeMenu(Overlay overlay, String option)
-	{
-		List<OverlayMenuEntry> menuEntries = overlay.getMenuEntries();
-		for (OverlayMenuEntry overlayMenuEntry : menuEntries)
-		{
-			if (overlayMenuEntry.getOption().equals(option))
-			{
-				menuEntries.remove(overlayMenuEntry);
-				break;
-			}
-		}
-	}
-
 	/**
 	 * Gets all of the overlays on a layer sorted by priority and position
 	 *
