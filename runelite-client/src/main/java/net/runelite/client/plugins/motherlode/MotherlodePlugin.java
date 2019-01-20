@@ -44,7 +44,6 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import static net.runelite.api.ObjectID.ORE_VEIN_26661;
 import static net.runelite.api.ObjectID.ORE_VEIN_26662;
 import static net.runelite.api.ObjectID.ORE_VEIN_26663;
@@ -73,7 +72,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
 @PluginDescriptor(
 	name = "Motherlode Mine",
@@ -151,9 +149,6 @@ public class MotherlodePlugin extends Plugin
 		overlayManager.add(motherlodeGemOverlay);
 		overlayManager.add(motherlodeSackOverlay);
 
-		overlayManager.addMenu(motherlodeGemOverlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Gem overlay");
-		overlayManager.addMenu(motherlodeSackOverlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Sack overlay");
-
 		session = new MotherlodeSession();
 		inMlm = checkInMlm();
 
@@ -166,8 +161,6 @@ public class MotherlodePlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.removeMenu(motherlodeGemOverlay, OPTION_CONFIGURE);
-		overlayManager.removeMenu(motherlodeSackOverlay, OPTION_CONFIGURE);
 		overlayManager.remove(overlay);
 		overlayManager.remove(rocksOverlay);
 		overlayManager.remove(motherlodeGemOverlay);

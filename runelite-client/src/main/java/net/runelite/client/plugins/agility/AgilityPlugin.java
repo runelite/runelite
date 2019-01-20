@@ -37,7 +37,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Player;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
@@ -68,7 +67,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -128,15 +126,11 @@ public class AgilityPlugin extends Plugin
 	{
 		overlayManager.add(agilityOverlay);
 		overlayManager.add(lapCounterOverlay);
-
-		overlayManager.addMenu(lapCounterOverlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Agility overlay");
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.removeMenu(lapCounterOverlay, OPTION_CONFIGURE);
-
 		overlayManager.remove(agilityOverlay);
 		overlayManager.remove(lapCounterOverlay);
 		marksOfGrace.clear();
