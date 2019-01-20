@@ -30,6 +30,7 @@ import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -68,12 +69,15 @@ import net.runelite.http.api.examine.ExamineClient;
 public class ExaminePlugin extends Plugin
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+	private static final Pattern X_PATTERN = Pattern.compile("^\\d+ x ");
 
-	private final ExamineClient examineClient = new ExamineClient();
 	private final Deque<PendingExamine> pending = new ArrayDeque<>();
 	private final Cache<CacheKey, Boolean> cache = CacheBuilder.newBuilder()
 		.maximumSize(128L)
 		.build();
+
+	@Inject
+	private ExamineClient examineClient;
 
 	@Inject
 	private Client client;
@@ -192,17 +196,34 @@ public class ExaminePlugin extends Plugin
 		log.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
 
 		// If it is an item, show the price of it
+		final ItemComposition itemComposition;
 		if (pendingExamine.getType() == ExamineType.ITEM || pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
 		{
 			final int itemId = pendingExamine.getId();
 			final int itemQuantity = pendingExamine.getQuantity();
-			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+			itemComposition = itemManager.getItemComposition(itemId);
 
 			if (itemComposition != null)
 			{
 				final int id = itemManager.canonicalize(itemComposition.getId());
 				executor.submit(() -> getItemPrice(id, itemComposition, itemQuantity));
 			}
+		}
+		else
+		{
+			itemComposition = null;
+		}
+
+		// Don't submit examine info for tradeable items, which we already have from the RS item api
+		if (itemComposition != null && itemComposition.isTradeable())
+		{
+			return;
+		}
+
+		// Large quantities of items show eg. 100000 x Coins
+		if (type == ExamineType.ITEM && X_PATTERN.matcher(event.getMessage()).lookingAt())
+		{
+			return;
 		}
 
 		CacheKey key = new CacheKey(type, pendingExamine.getId());
