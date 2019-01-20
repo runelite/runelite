@@ -231,7 +231,7 @@ public class XpTrackerService
 		update(next, hiscoreResult);
 	}
 
-	@Scheduled(fixedDelay = 60 * 60 * 1000) // one hour
+	@Scheduled(fixedDelay = 3 * 60 * 60 * 1000) // 3 hours
 	public void clearFilter()
 	{
 		usernameFilter = createFilter();
