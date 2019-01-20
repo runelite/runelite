@@ -27,6 +27,8 @@ package net.runelite.http.service.examine;
 import static net.runelite.http.service.examine.ExamineType.ITEM;
 import static net.runelite.http.service.examine.ExamineType.NPC;
 import static net.runelite.http.service.examine.ExamineType.OBJECT;
+import net.runelite.http.service.item.ItemEntry;
+import net.runelite.http.service.item.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,11 +41,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExamineController
 {
 	private final ExamineService examineService;
+	private final ItemService itemService;
 
 	@Autowired
-	public ExamineController(ExamineService examineService)
+	public ExamineController(ExamineService examineService, ItemService itemService)
 	{
 		this.examineService = examineService;
+		this.itemService = itemService;
 	}
 
 	@RequestMapping("/npc/{id}")
@@ -61,6 +65,13 @@ public class ExamineController
 	@RequestMapping("/item/{id}")
 	public String getItem(@PathVariable int id)
 	{
+		// Tradeable item examine info is available from the Jagex item API
+		ItemEntry item = itemService.getItem(id);
+		if (item != null)
+		{
+			return item.getDescription();
+		}
+
 		return examineService.get(ITEM, id);
 	}
 
