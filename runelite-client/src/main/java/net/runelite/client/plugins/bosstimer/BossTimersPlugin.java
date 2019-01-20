@@ -104,16 +104,26 @@ public class BossTimersPlugin extends Plugin
 		timer.setTooltip(name);
 		infoBoxManager.addInfoBox(timer);
 
-		if (config.enableNotifications())
+		final int delay = config.respawnDelay();
+		// -1 disabled, 0 for instant, greater than 0 to notify before respawn, and don't notify if the delay is longer
+		// than it takes for the boss to respawn.
+		if (delay >= 0 && delay < boss.getSpawnTime().getSeconds())
 		{
 			notificationTimer.schedule(new TimerTask()
 			{
 				@Override
 				public void run()
 				{
-					notifier.notify(name + " is about to respawn");
+					if (delay == 0)
+					{
+						notifier.notify(name + " has respawned");
+					}
+					else
+					{
+						notifier.notify(name + " will respawn in " + delay + " second(s)");
+					}
 				}
-			}, boss.getSpawnTime().toMillis() - 5_000);
+			}, (boss.getSpawnTime().getSeconds() - delay) * 1_000);
 		}
 	}
 }

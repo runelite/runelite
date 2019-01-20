@@ -27,18 +27,22 @@ package net.runelite.client.plugins.bosstimer;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("bosstimers")
 public interface BossTimersConfig extends Config
 {
+	@Range(
+		min = -1
+	)
 	@ConfigItem(
-		keyName = "enableNotifications",
-		name = "Enable respawn notifications",
-		description = "Configures whether or not to show notifications when a boss respawns",
+		keyName = "respawnDelay",
+		name = "Respawn notification delay",
+		description = "Notify how many seconds before a boss respawns. Set to -1 to disable.",
 		position = 1
 	)
-	default boolean enableNotifications()
+	default int respawnDelay()
 	{
-		return false;
+		return -1;
 	}
 }
