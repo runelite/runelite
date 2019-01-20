@@ -35,7 +35,8 @@ public interface CannonConfig extends Config
 	@ConfigItem(
 		keyName = "showEmptyCannonNotification",
 		name = "Empty cannon notification",
-		description = "Configures whether to notify you that the cannon is empty"
+		description = "Configures whether to notify you that the cannon is empty",
+		position = 1
 	)
 	default boolean showEmptyCannonNotification()
 	{
@@ -45,7 +46,8 @@ public interface CannonConfig extends Config
 	@ConfigItem(
 		keyName = "showInfobox",
 		name = "Show Cannonball infobox",
-		description = "Configures whether to show the cannonballs in an infobox"
+		description = "Configures whether to show the cannonballs in an infobox",
+		position = 2
 	)
 	default boolean showInfobox()
 	{
@@ -55,7 +57,8 @@ public interface CannonConfig extends Config
 	@ConfigItem(
 		keyName = "showDoubleHitSpot",
 		name = "Show double hit spots",
-		description = "Configures whether to show the NPC double hit spot"
+		description = "Configures whether to show the NPC double hit spot",
+		position = 3
 	)
 	default boolean showDoubleHitSpot()
 	{
@@ -65,7 +68,8 @@ public interface CannonConfig extends Config
 	@ConfigItem(
 		keyName = "highlightDoubleHitColor",
 		name = "Color of double hit spots",
-		description = "Configures the highlight color of double hit spots"
+		description = "Configures the highlight color of double hit spots",
+		position = 4
 	)
 	default Color highlightDoubleHitColor()
 	{
@@ -75,9 +79,32 @@ public interface CannonConfig extends Config
 	@ConfigItem(
 		keyName = "showCannonSpots",
 		name = "Show common cannon spots",
-		description = "Configures whether to show common cannon spots or not"
+		description = "Configures whether to show common cannon spots or not",
+		position = 5
 	)
 	default boolean showCannonSpots()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "ammoAmount",
+		name = "Ammo left notification",
+		description = "Configure to set the amount of ammo left to receive low ammo notification",
+		position = 6
+	)
+	default int ammoAmount()
+	{
+		return 5;
+	}
+
+	@ConfigItem(
+		keyName = "notifyAmmoLeft",
+		name = "Show amount left notification",
+		description = "Sends a notification when cannon ammo is under the specified amount",
+		position = 7
+	)
+	default boolean notifyAmmoLeft()
 	{
 		return true;
 	}
