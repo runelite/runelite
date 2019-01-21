@@ -32,28 +32,28 @@ public class KittenNotifierPlugin extends Plugin{
 	}
 	@Subscribe
 	public void onChatMessage(ChatMessage event) {
-	if (event.getType() == ChatMessageType.SERVER && !config.catOwned())
-	{
-		if (!config.absolutelyNeeded())
+		if (event.getType() == ChatMessageType.SERVER && !config.catOwned())
 		{
-			if (event.getMessage().contentEquals("<col=ef1020>Your kitten is hungry.</col>"))
+			if (!config.absolutelyNeeded())
 			{
-				notifier.notify("Your kitten is hungry.");
+				if (event.getMessage().contentEquals("<col=ef1020>Your kitten is hungry.</col>"))
+				{
+					notifier.notify("Your kitten is hungry.");
+				}
+				if (event.getMessage().contentEquals("<col=ef1020>Your kitten wants attention.</col>"))
+				{
+					notifier.notify("Your kitten wants attention.");
+				}
 			}
-			if (event.getMessage().contentEquals("<col=ef1020>Your kitten wants attention.</col>"))
+			if (event.getMessage().contentEquals("<col=ef1020>Your kitten is very hungry.</col>"))
 			{
-				notifier.notify("Your kitten wants attention.");
+				notifier.notify("Your kitten is very hungry.");
+			}
+			if (event.getMessage().contentEquals("<col=ef1020>Your kitten really wants attention.</col>"))
+			{
+				notifier.notify("Your kitten really wants attention.");
 			}
 		}
-		if (event.getMessage().contentEquals("<col=ef1020>Your kitten is very hungry.</col>"))
-		{
-			notifier.notify("Your kitten is very hungry.");
-		}
-		if (event.getMessage().contentEquals("<col=ef1020>Your kitten really wants attention.</col>"))
-		{
-			notifier.notify("Your kitten really wants attention.");
-		}
-	}
 	}
 	@Subscribe
 	public void onNpcActionChanged(NpcActionChanged event) {
