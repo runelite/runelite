@@ -6,10 +6,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *	list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *	this list of conditions and the following disclaimer in the documentation
+ *	and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -41,84 +41,83 @@ import net.runelite.client.plugins.PluginDescriptor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @PluginDescriptor(
-    name = "Combat Indicator",
-    description = "Show an indicator on entities that are interacting with the player",
-    tags = { "combat", "tooltips" },
-    enabledByDefault = true
+	name = "Combat Indicator",
+	description = "Show an indicator on entities that are interacting with the player",
+	tags = { "combat", "tooltips" },
+	enabledByDefault = true
 )
 @Slf4j
 public class CombatIndicatorPlugin extends Plugin
 {
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private CombatIndicatorConfig config;
+	@Inject
+	private CombatIndicatorConfig config;
 
-    private List<Integer> interactingList;
+	private List<Integer> interactingList;
 
-    @Provides
-    CombatIndicatorConfig provideConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(CombatIndicatorConfig.class);
-    }
+	@Provides
+	CombatIndicatorConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(CombatIndicatorConfig.class);
+	}
 
-    @Subscribe
-    public void onGameStateChanged(final GameStateChanged event)
-    {
-        if (event.getGameState() == GameState.LOADING)
-        {
-            interactingList.clear();
-        }
-    }
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOADING)
+		{
+			interactingList.clear();
+		}
+	}
 
-    @Override
-    protected void startUp()
-    {
-        interactingList = new ArrayList<>();
-    }
+	@Override
+	protected void startUp()
+	{
+		interactingList = new ArrayList<>();
+	}
 
-    @Override
-    protected void shutDown() throws Exception
-    {
-        interactingList = null;
-    }
+	@Override
+	protected void shutDown() throws Exception
+	{
+		interactingList = null;
+	}
 
-    @Subscribe
-    public void onInteractingChanged(final InteractingChanged event)
-    {
-        final Actor player = client.getLocalPlayer();
-        interactingList = client.getNpcs()
-                .stream()
-                .filter(npc -> player.equals(npc.getInteracting()))
-                .map(npc -> npc.getIndex())
-                .collect(Collectors.toList());
-    }
+	@Subscribe
+	public void onInteractingChanged(final InteractingChanged event)
+	{
+		final Actor player = client.getLocalPlayer();
+		interactingList = client.getNpcs()
+				.stream()
+				.filter(npc -> player.equals(npc.getInteracting()))
+				.map(npc -> npc.getIndex())
+				.collect(Collectors.toList());
+	}
 
-    @Subscribe
-    public void onMenuEntryAdded(final MenuEntryAdded event)
-    {
-        if (interactingList.isEmpty())
-        {
-            return;
-        }
+	@Subscribe
+	public void onMenuEntryAdded(final MenuEntryAdded event)
+	{
+		if (interactingList.isEmpty())
+		{
+			return;
+		}
 
-        final String interactionString = "<col=" + Integer.toHexString(config.getIndicatorColour().getRGB()).substring(2) + ">* ";
-        final MenuEntry[] menuEntries = client.getMenuEntries();
+		final String interactionString = "<col=" + Integer.toHexString(config.getIndicatorColour().getRGB()).substring(2) + ">* ";
+		final MenuEntry[] menuEntries = client.getMenuEntries();
 
-        for (MenuEntry menuEntry : menuEntries)
-        {
-            final String target = menuEntry.getTarget();
-            if (!target.startsWith(interactionString) && interactingList.contains(menuEntry.getIdentifier()))
-            {
-                // TODO: Allow configuring if the indicator is a prefix or suffix?
-                menuEntry.setTarget(interactionString + target);
-            }
-        }
+		for (MenuEntry menuEntry : menuEntries)
+		{
+			final String target = menuEntry.getTarget();
+			if (!target.startsWith(interactionString) && interactingList.contains(menuEntry.getIdentifier()))
+			{
+				// TODO: Allow configuring if the indicator is a prefix or suffix?
+				menuEntry.setTarget(interactionString + target);
+			}
+		}
 
-        client.setMenuEntries(menuEntries);
-    }
+		client.setMenuEntries(menuEntries);
+	}
 }

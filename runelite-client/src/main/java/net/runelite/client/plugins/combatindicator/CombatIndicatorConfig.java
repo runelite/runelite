@@ -7,10 +7,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *	list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *	this list of conditions and the following disclaimer in the documentation
+ *	and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -33,14 +33,14 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("combatindicator")
 public interface CombatIndicatorConfig extends Config
 {
-    @ConfigItem(
-            keyName = "indicatorColour",
-            name = "Indicator Colour",
-            description = "Configures the colour of the indicator",
-            position = 0
-    )
-    default Color getIndicatorColour()
-    {
-        return Color.decode("#FF0000");
-    }
+	@ConfigItem(
+			keyName = "indicatorColour",
+			name = "Indicator Colour",
+			description = "Configures the colour of the indicator",
+			position = 0
+	)
+	default Color getIndicatorColour()
+	{
+		return Color.decode("#FF0000");
+	}
 }
