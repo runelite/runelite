@@ -535,10 +535,17 @@ public class ConfigPanel extends PluginPanel
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener((e) ->
 		{
-			configManager.setDefaultConfiguration(config, true);
+			final int result = JOptionPane.showOptionDialog(resetButton, "Are you sure you want to reset this plugin's configuration?",
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"Yes", "No"}, "No");
 
-			// Reload configuration panel
-			openGroupConfigPanel(listItem, config, cd);
+			if (result == JOptionPane.YES_OPTION)
+			{
+				configManager.setDefaultConfiguration(config, true);
+
+				// Reload configuration panel
+				openGroupConfigPanel(listItem, config, cd);
+			}
 		});
 		mainPanel.add(resetButton);
 
