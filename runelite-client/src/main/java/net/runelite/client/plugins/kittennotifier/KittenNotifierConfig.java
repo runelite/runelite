@@ -4,7 +4,8 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("kittennotifier")
-public interface KittenNotifierConfig extends Config{
+public interface KittenNotifierConfig extends Config
+{
 	@ConfigItem
 	(
 		keyName = "absolutelyNeeded",
