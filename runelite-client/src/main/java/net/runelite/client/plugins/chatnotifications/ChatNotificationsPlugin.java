@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.chatnotifications;
 
-import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
 import java.util.List;
@@ -57,8 +56,6 @@ import net.runelite.client.util.Text;
 )
 public class ChatNotificationsPlugin extends Plugin
 {
-	private static final Splitter SPLITTER = Splitter.on(",").trimResults().omitEmptyStrings();
-
 	@Inject
 	private Client client;
 
@@ -118,7 +115,7 @@ public class ChatNotificationsPlugin extends Plugin
 
 		if (!config.highlightWordsString().trim().equals(""))
 		{
-			List<String> items = SPLITTER.splitToList(config.highlightWordsString());
+			List<String> items = Text.fromCSV(config.highlightWordsString());
 			String joined = items.stream()
 				.map(Pattern::quote)
 				.collect(Collectors.joining("|"));

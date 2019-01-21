@@ -24,8 +24,6 @@
  */
 package net.runelite.client.plugins.clanchat;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.inject.Provides;
@@ -61,8 +59,6 @@ public class ClanChatPlugin extends Plugin
 	private static final int MAX_CHATS = 10;
 	private static final String CLAN_CHAT_TITLE = "Clan Chat";
 	private static final String RECENT_TITLE = "Recent Clan Chats";
-	private static final Joiner JOINER = Joiner.on(',').skipNulls();
-	private static final Splitter SPLITTER = Splitter.on(',').trimResults().omitEmptyStrings();
 
 	@Inject
 	private Client client;
@@ -84,7 +80,7 @@ public class ClanChatPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		chats = new ArrayList<>(SPLITTER.splitToList(config.chatsData()));
+		chats = new ArrayList<>(Text.fromCSV(config.chatsData()));
 	}
 
 	@Override
@@ -225,6 +221,6 @@ public class ClanChatPlugin extends Plugin
 			chats.remove(0);
 		}
 
-		config.chatsData(JOINER.join(chats));
+		config.chatsData(Text.toCSV(chats));
 	}
 }

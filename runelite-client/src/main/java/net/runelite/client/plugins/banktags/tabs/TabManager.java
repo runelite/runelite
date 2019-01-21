@@ -38,8 +38,6 @@ import net.runelite.api.ItemID;
 import net.runelite.client.config.ConfigManager;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
-import static net.runelite.client.plugins.banktags.BankTagsPlugin.JOINER;
-import static net.runelite.client.plugins.banktags.BankTagsPlugin.SPLITTER;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -80,7 +78,7 @@ class TabManager
 
 	List<String> getAllTabs()
 	{
-		return SPLITTER.splitToList(MoreObjects.firstNonNull(configManager.getConfiguration(CONFIG_GROUP, TAG_TABS_CONFIG), ""));
+		return Text.fromCSV(MoreObjects.firstNonNull(configManager.getConfiguration(CONFIG_GROUP, TAG_TABS_CONFIG), ""));
 	}
 
 	TagTab load(String tag)
@@ -122,7 +120,7 @@ class TabManager
 
 	void save()
 	{
-		String tags = JOINER.join(tabs.stream().map(TagTab::getTag).collect(Collectors.toList()));
+		String tags = Text.toCSV(tabs.stream().map(TagTab::getTag).collect(Collectors.toList()));
 		configManager.setConfiguration(CONFIG_GROUP, TAG_TABS_CONFIG, tags);
 	}
 

@@ -26,8 +26,6 @@
  */
 package net.runelite.client.plugins.banktags;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
@@ -74,6 +72,7 @@ import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Bank Tags",
@@ -83,8 +82,6 @@ import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 @PluginDependency(ClueScrollPlugin.class)
 public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyListener
 {
-	public static final Splitter SPLITTER = Splitter.on(",").omitEmptyStrings().trimResults();
-	public static final Joiner JOINER = Joiner.on(",").skipNulls();
 	public static final String CONFIG_GROUP = "banktags";
 	public static final String TAG_SEARCH = "tag:";
 	private static final String EDIT_TAGS_MENU_OPTION = "Edit-tags";
@@ -283,7 +280,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 			boolean isSearchOpen = client.getVar(VarClientInt.INPUT_TYPE) == InputType.SEARCH.getType();
 			String searchText = client.getVar(VarClientStr.INPUT_TEXT);
-			String initialValue = JOINER.join(tags);
+			String initialValue = Text.toCSV(tags);
 
 			chatboxPanelManager.openTextInput(name + " tags:<br>(append " + VAR_TAG_SUFFIX + " for variation tag)")
 				.value(initialValue)
@@ -291,7 +288,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 					clientThread.invoke(() ->
 					{
 						// Split inputted tags to vartags (ending with *) and regular tags
-						final Collection<String> newTags = new ArrayList<>(SPLITTER.splitToList(newValue.toLowerCase()));
+						final Collection<String> newTags = new ArrayList<>(Text.fromCSV(newValue.toLowerCase()));
 						final Collection<String> newVarTags = new ArrayList<>(newTags).stream().filter(s -> s.endsWith(VAR_TAG_SUFFIX)).map(s ->
 						{
 							newTags.remove(s);
@@ -299,13 +296,13 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 						}).collect(Collectors.toList());
 
 						// And save them
-						tagManager.setTagString(itemId, JOINER.join(newTags), false);
-						tagManager.setTagString(itemId, JOINER.join(newVarTags), true);
+						tagManager.setTagString(itemId, Text.toCSV(newTags), false);
+						tagManager.setTagString(itemId, Text.toCSV(newVarTags), true);
 
 						// Check both previous and current tags in case the tag got removed in new tags or in case
 						// the tag got added in new tags
-						tabInterface.updateTabIfActive(SPLITTER.splitToList(initialValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
-						tabInterface.updateTabIfActive(SPLITTER.splitToList(newValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
+						tabInterface.updateTabIfActive(Text.fromCSV(initialValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
+						tabInterface.updateTabIfActive(Text.fromCSV(newValue.toLowerCase().replaceAll(Pattern.quote(VAR_TAG_SUFFIX), "")));
 					}))
 				.build();
 
