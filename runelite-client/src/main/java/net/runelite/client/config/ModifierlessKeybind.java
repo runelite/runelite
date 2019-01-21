@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2019 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.config;
+package net.runelite.client.config;
 
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.JButton;
-import lombok.Getter;
-import net.runelite.client.config.Keybind;
-import net.runelite.client.config.ModifierlessKeybind;
 
-public class HotkeyButton extends JButton
+public class ModifierlessKeybind extends Keybind
 {
-	@Getter
-	private Keybind value;
-
-	public HotkeyButton(Keybind value, boolean modifierless)
+	public ModifierlessKeybind(int keyCode, int modifiers)
 	{
-		setValue(value);
-		addActionListener(e ->
-		{
-			setValue(Keybind.NOT_SET);
-		});
-		addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if (modifierless)
-				{
-					setValue(new ModifierlessKeybind(e));
-				}
-				else
-				{
-					setValue(new Keybind(e));
-				}
-			}
-		});
+		super(keyCode, modifiers, true);
 	}
 
-	public void setValue(Keybind value)
+	/**
+	 * Constructs a keybind with that matches the passed KeyEvent
+	 */
+	public ModifierlessKeybind(KeyEvent e)
 	{
-		if (value == null)
-		{
-			value = Keybind.NOT_SET;
-		}
+		this(e.getExtendedKeyCode(), e.getModifiersEx());
 
-		this.value = value;
-		setText(value.toString());
+		assert matches(e);
+	}
+
+	/**
+	 * If the KeyEvent is from a KeyPressed event this returns if the
+	 * Event is this hotkey being pressed. If the KeyEvent is a
+	 * KeyReleased event this returns if the event is this hotkey being
+	 * released
+	 */
+	public boolean matches(KeyEvent e)
+	{
+		return matches(e, true);
 	}
 }

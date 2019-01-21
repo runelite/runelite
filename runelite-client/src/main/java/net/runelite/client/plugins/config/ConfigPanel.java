@@ -78,6 +78,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
+import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.plugins.Plugin;
@@ -508,11 +509,13 @@ public class ConfigPanel extends PluginPanel
 				item.add(box, BorderLayout.EAST);
 			}
 
-			if (cid.getType() == Keybind.class)
+			if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
 			{
-				Keybind startingValue = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), Keybind.class);
+				Keybind startingValue = configManager.getConfiguration(cd.getGroup().value(),
+					cid.getItem().keyName(),
+					(Class<? extends Keybind>) cid.getType());
 
-				HotkeyButton button = new HotkeyButton(startingValue);
+				HotkeyButton button = new HotkeyButton(startingValue, cid.getType() == ModifierlessKeybind.class);
 
 				button.addFocusListener(new FocusAdapter()
 				{
