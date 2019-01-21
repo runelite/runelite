@@ -25,8 +25,6 @@
  */
 package net.runelite.client.plugins.grounditems;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
 import com.google.inject.Provides;
@@ -87,6 +85,7 @@ import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.O
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Ground Items",
@@ -95,12 +94,6 @@ import net.runelite.client.util.StackFormatter;
 )
 public class GroundItemsPlugin extends Plugin
 {
-	private static final Splitter COMMA_SPLITTER = Splitter
-		.on(",")
-		.omitEmptyStrings()
-		.trimResults();
-
-	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
 	// Used when getting High Alchemy value - multiplied by general store price.
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// ItemID for coins
@@ -406,10 +399,10 @@ public class GroundItemsPlugin extends Plugin
 	private void reset()
 	{
 		// gets the hidden items from the text box in the config
-		hiddenItemList = COMMA_SPLITTER.splitToList(config.getHiddenItems());
+		hiddenItemList = Text.fromCSV(config.getHiddenItems());
 
 		// gets the highlighted items from the text box in the config
-		highlightedItemsList = COMMA_SPLITTER.splitToList(config.getHighlightItems());
+		highlightedItemsList = Text.fromCSV(config.getHighlightItems());
 
 		highlightedItems = CacheBuilder.newBuilder()
 			.maximumSize(512L)
@@ -540,8 +533,8 @@ public class GroundItemsPlugin extends Plugin
 			items.add(item);
 		}
 
-		config.setHiddenItems(COMMA_JOINER.join(hiddenItemSet));
-		config.setHighlightedItem(COMMA_JOINER.join(highlightedItemSet));
+		config.setHiddenItems(Text.toCSV(hiddenItemSet));
+		config.setHighlightedItem(Text.toCSV(highlightedItemSet));
 	}
 
 	Color getHighlighted(String item, int gePrice, int haPrice)
