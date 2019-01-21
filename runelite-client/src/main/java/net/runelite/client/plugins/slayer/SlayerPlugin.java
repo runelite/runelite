@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -34,6 +35,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -42,6 +44,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -55,6 +58,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.vars.SlayerUnlock;
@@ -110,6 +114,9 @@ public class SlayerPlugin extends Plugin
 
 	private static final int EXPEDITIOUS_CHARGE = 30;
 	private static final int SLAUGHTER_CHARGE = 30;
+
+	private static final Set<Task> weaknessTasks = ImmutableSet.of(Task.DESERT_LIZARDS, Task.GARGOYLES,
+		Task.GROTESQUE_GUARDIANS, Task.GROTESQUE_GUARDIANS, Task.MUTATED_ZYGOMITES, Task.ROCKSLUGS);
 
 	@Inject
 	private Client client;
@@ -176,6 +183,9 @@ public class SlayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private int points;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Task weaknessTask = null;
 
 	private TaskCounter counter;
 	private int cachedXp;
@@ -265,7 +275,7 @@ public class SlayerPlugin extends Plugin
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
-		if (isTarget(npc))
+		if (isTarget(npc, targetNames))
 		{
 			highlightedTargets.add(npc);
 		}
@@ -502,6 +512,30 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onInteractingChanged(InteractingChanged event)
+	{
+		final Actor interacting = client.getLocalPlayer().getInteracting();
+		weaknessTask = null;
+
+		if (interacting == null || !(interacting instanceof NPC))
+		{
+			return;
+		}
+
+		final NPC npc = (NPC) interacting;
+
+		for (Task task : weaknessTasks)
+		{
+			if (isTarget(npc, buildTargetNames(task)))
+			{
+				weaknessTask = task;
+				System.out.println("Target is in task: " + task.getName());
+				return;
+			}
+		}
+	}
+
+	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("slayer"))
@@ -552,9 +586,9 @@ public class SlayerPlugin extends Plugin
 				SlayerUnlock.GROTESQUE_GARDIAN_DOUBLE_COUNT.isEnabled(client);
 	}
 
-	private boolean isTarget(NPC npc)
+	private boolean isTarget(NPC npc, List<String> names)
 	{
-		if (targetNames.isEmpty())
+		if (names.isEmpty())
 		{
 			return false;
 		}
@@ -567,7 +601,7 @@ public class SlayerPlugin extends Plugin
 
 		name = name.toLowerCase();
 
-		for (String target : targetNames)
+		for (String target : names)
 		{
 			if (name.contains(target))
 			{
@@ -586,18 +620,20 @@ public class SlayerPlugin extends Plugin
 		return false;
 	}
 
-	private void rebuildTargetNames(Task task)
+	private List<String> buildTargetNames(Task task)
 	{
-		targetNames.clear();
+		List<String> names = new ArrayList<>();
 
 		if (task != null)
 		{
 			Arrays.stream(task.getTargetNames())
 				.map(String::toLowerCase)
-				.forEach(targetNames::add);
+				.forEach(names::add);
 
-			targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
+			names.add(task.getName().toLowerCase().replaceAll("s$", ""));
 		}
+
+		return names;
 	}
 
 	private void rebuildTargetList()
@@ -606,7 +642,7 @@ public class SlayerPlugin extends Plugin
 
 		for (NPC npc : client.getNpcs())
 		{
-			if (isTarget(npc))
+			if (isTarget(npc, targetNames))
 			{
 				highlightedTargets.add(npc);
 			}
@@ -630,7 +666,8 @@ public class SlayerPlugin extends Plugin
 		infoTimer = Instant.now();
 
 		Task task = Task.getTask(name);
-		rebuildTargetNames(task);
+		targetNames.clear();
+		targetNames = buildTargetNames(task);
 		rebuildTargetList();
 	}
 
