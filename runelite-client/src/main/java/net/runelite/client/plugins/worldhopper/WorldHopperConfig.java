@@ -90,4 +90,15 @@ public interface WorldHopperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showMessage",
+		name = "Show world hop message in chat",
+		description = "Shows what world is being hopped to in the chat",
+		position = 5
+	)
+	default boolean showWorldHopMessage()
+	{
+		return true;
+	}
 }
