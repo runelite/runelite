@@ -201,11 +201,11 @@ public class FarmingTracker
 		long doneEstimate = 0;
 		if (tickrate > 0)
 		{
-			long tickNow = unixNow / tickrate;
-			long tickTime = unixTime / tickrate;
+			long tickNow = (unixNow + (5 * 60)) / tickrate;
+			long tickTime = (unixTime + (5 * 60)) / tickrate;
 			int delta = (int) (tickNow - tickTime);
 
-			doneEstimate = ((stages - 1 - stage) + tickTime) * tickrate;
+			doneEstimate = ((stages - 1 - stage) + tickTime) * tickrate + (5 * 60);
 
 			stage += delta;
 			if (stage >= stages)
