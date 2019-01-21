@@ -17,7 +17,7 @@ import javax.inject.Inject;
 (
 	name = "Kitten Notifier",
 	description = "Sends a notification when your kitten needs food, attention, or is grown.",
-	tags = {"kitten, notifications"}
+	tags = {"kitten", "cat", "notifications"}
 )
 public class KittenNotifierPlugin extends Plugin
 {
