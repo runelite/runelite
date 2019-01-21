@@ -148,6 +148,7 @@ public class WidgetID
 		static final int CONTINUE = 3;
 		static final int TEXT = 4;
 	}
+
 	static class LogoutPanel
 	{
 		static final int WORLD_SWITCHER_BUTTON = 3;
