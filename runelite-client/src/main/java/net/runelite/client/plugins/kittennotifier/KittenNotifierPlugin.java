@@ -13,25 +13,32 @@ import net.runelite.api.NPC;
 import net.runelite.api.Client;
 import javax.inject.Inject;
 
-@PluginDescriptor(
+@PluginDescriptor
+(
 	name = "Kitten Notifier",
 	description = "Sends a notification when your kitten needs food, attention, or is grown.",
 	tags = {"kitten, notifications"}
 )
-public class KittenNotifierPlugin extends Plugin{
+public class KittenNotifierPlugin extends Plugin
+{
 	@Inject
 	private Notifier notifier;
+
 	@Inject
 	private KittenNotifierConfig config;
+
 	@Inject
 	private Client client;
+
 	@Provides
 	KittenNotifierConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(KittenNotifierConfig.class);
 	}
+
 	@Subscribe
-	public void onChatMessage(ChatMessage event) {
+	public void onChatMessage(ChatMessage event)
+	{
 		if (event.getType() == ChatMessageType.SERVER && !config.catOwned())
 		{
 			if (!config.absolutelyNeeded())
@@ -55,8 +62,10 @@ public class KittenNotifierPlugin extends Plugin{
 			}
 		}
 	}
+
 	@Subscribe
-	public void onNpcActionChanged(NpcActionChanged event) {
+	public void onNpcActionChanged(NpcActionChanged event)
+	{
 		if (!config.catOwned())
 		{
 			for (NPC npc : client.getNpcs())
@@ -69,8 +78,10 @@ public class KittenNotifierPlugin extends Plugin{
 			}
 		}
 	}
+
 	@Subscribe
-	public void onNpcSpawned(NpcSpawned event) {
+	public void onNpcSpawned(NpcSpawned event)
+	{
 		if (event.getNpc().getName().contentEquals("Kitten") && event.getNpc().getInteracting().getName().contentEquals(client.getLocalPlayer().getName()))
 		{
 			config.catOwned(false);
