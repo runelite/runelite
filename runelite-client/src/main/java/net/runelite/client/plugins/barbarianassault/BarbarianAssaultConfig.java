@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -35,7 +36,8 @@ public interface BarbarianAssaultConfig extends Config
 	@ConfigItem(
 		keyName = "showTimer",
 		name = "Show call change timer",
-		description = "Show time to next call change"
+		description = "Show time to next call change",
+		position = 0
 	)
 	default boolean showTimer()
 	{
@@ -45,10 +47,33 @@ public interface BarbarianAssaultConfig extends Config
 	@ConfigItem(
 		keyName = "waveTimes",
 		name = "Show wave and game duration",
-		description = "Displays wave and game duration"
+		description = "Displays wave and game duration",
+		position = 1
 	)
 	default boolean waveTimes()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			keyName = "highlightItems",
+			name = "Highlight called poison/bait",
+			description = "Highlights the poison or bait that was called by your teammate",
+			position = 2
+	)
+	default boolean highlightItems()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "highlightColor",
+			name = "Highlight color",
+			description = "Configures the color to highlight the called poison/bait",
+			position = 3
+	)
+	default Color highlightColor()
+	{
+		return Color.GREEN;
 	}
 }

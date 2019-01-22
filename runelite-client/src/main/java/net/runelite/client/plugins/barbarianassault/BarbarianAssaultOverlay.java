@@ -24,22 +24,30 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.ImageUtil;
 
 class BarbarianAssaultOverlay extends Overlay
 {
 	private final Client client;
+	private final ItemManager itemManager;
 	private final BarbarianAssaultPlugin plugin;
 	private final BarbarianAssaultConfig config;
 
@@ -49,12 +57,13 @@ class BarbarianAssaultOverlay extends Overlay
 
 
 	@Inject
-	private BarbarianAssaultOverlay(Client client, BarbarianAssaultPlugin plugin, BarbarianAssaultConfig config)
+	private BarbarianAssaultOverlay(Client client, ItemManager itemManager, BarbarianAssaultPlugin plugin, BarbarianAssaultConfig config)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
+		this.itemManager = itemManager;
 		this.plugin = plugin;
 		this.config = config;
 	}
@@ -82,6 +91,27 @@ class BarbarianAssaultOverlay extends Overlay
 			Rectangle spriteBounds = roleSprite.getBounds();
 			roleSprite.setHidden(true);
 			graphics.drawImage(plugin.getClockImage(), spriteBounds.x, spriteBounds.y, null);
+		}
+
+		Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
+
+		if (config.highlightItems() && inventory != null && !inventory.isHidden() && (role == Role.DEFENDER || role == Role.HEALER))
+		{
+			int listenItemId = plugin.getListenItemId(role.getListen());
+
+			if (listenItemId != -1)
+			{
+				Color color = config.highlightColor();
+				BufferedImage highlight = ImageUtil.fillImage(itemManager.getImage(listenItemId), new Color(color.getRed(), color.getGreen(), color.getBlue(), 150));
+
+				for (WidgetItem item : inventory.getWidgetItems())
+				{
+					if (item.getId() == listenItemId)
+					{
+						OverlayUtil.renderImageLocation(graphics, item.getCanvasLocation(), highlight);
+					}
+				}
+			}
 		}
 
 		return null;
