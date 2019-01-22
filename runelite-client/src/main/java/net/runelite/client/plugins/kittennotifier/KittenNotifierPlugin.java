@@ -70,7 +70,7 @@ public class KittenNotifierPlugin extends Plugin
 		{
 			for (NPC npc : client.getNpcs())
 			{
-				if (npc.getName() != null && npc.getInteracting() != null && npc.getName().contentEquals("Cat") && !config.catOwned() && npc.getInteracting().getName().contentEquals(client.getLocalPlayer().getName()))
+				if (npc != null && npc.getInteracting() != null && npc.getName().contentEquals("Cat") && npc.getInteracting().getName().contentEquals(client.getLocalPlayer().getName()))
 				{
 					config.catOwned(true);
 					notifier.notify("Your kitten has grown into a cat.");
@@ -82,11 +82,11 @@ public class KittenNotifierPlugin extends Plugin
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		if (event.getNpc().getName().contentEquals("Kitten") && event.getNpc().getInteracting().getName().contentEquals(client.getLocalPlayer().getName()))
+		if (event.getNpc().getInteracting() != null && event.getNpc().getName().contentEquals("Kitten") && event.getNpc().getInteracting().getName().contentEquals(client.getLocalPlayer().getName()))
 		{
 			config.catOwned(false);
 		}
-		else if (event.getNpc().getName().contentEquals("Cat") && event.getNpc().getInteracting().getName().contentEquals(client.getLocalPlayer().getName()))
+		else if (event.getNpc().getInteracting() != null && event.getNpc().getName().contentEquals("Cat") && event.getNpc().getInteracting().getName().contentEquals(client.getLocalPlayer().getName()))
 		{
 			config.catOwned(true);
 		}
