@@ -441,6 +441,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("harpoon", option, target, true);
 		}
+		else if (config.swapLeave() && option.equals("leave tomb"))
+		{
+			swap("quick-leave", option, target, true);
+		}
 		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter"))
 		{
 			switch (config.swapHomePortal())

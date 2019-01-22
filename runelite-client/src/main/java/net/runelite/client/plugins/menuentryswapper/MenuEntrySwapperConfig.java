@@ -261,4 +261,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+	
+	@ConfigItem(
+			keyName ="swapLeave",
+			name = "Quick Leave",
+			description = "Swap Tomb Leave with Quick Leave in Pyramid Plunder"
+	)
+	default boolean swapLeave() 
+	{ 
+		return false; 
+	}
 }
