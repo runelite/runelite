@@ -70,7 +70,7 @@ public class KittenNotifierPlugin extends Plugin
 		{
 			for (NPC npc : client.getNpcs())
 			{
-				if (npc.getInteracting() != null && npc.getName().contentEquals("Cat") && !config.catOwned() && npc.getInteracting().getName().contentEquals(client.getLocalPlayer().getName()))
+				if (npc.getName() != null && npc.getInteracting() != null && npc.getName().contentEquals("Cat") && !config.catOwned() && npc.getInteracting().getName().contentEquals(client.getLocalPlayer().getName()))
 				{
 					config.catOwned(true);
 					notifier.notify("Your kitten has grown into a cat.");
