@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins.kingdomofmiscellania;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.ColorUtil;
 
 public class KingdomCounter extends Counter
 {
@@ -47,7 +49,17 @@ public class KingdomCounter extends Counter
 	@Override
 	public String getTooltip()
 	{
-		return "Favor: " + plugin.getFavor() + "/127" + "</br>"
-			+ "Coffer: " + StackFormatter.quantityToRSStackSize(plugin.getCoffer());
+		return ColorUtil.wrapWithColorTag("Favor: ", Color.YELLOW)
+				+ plugin.getFavor() + "/127" + "</br>"
+				+ ColorUtil.wrapWithColorTag("Coffer: ", Color.YELLOW)
+				+ StackFormatter.quantityToRSStackSize(plugin.getCoffer()) + "</br>"
+				+ ColorUtil.wrapWithColorTag("Primary: ", Color.YELLOW)
+				+ ColorUtil.wrapWithColorTag(plugin.getPrimaryResource(), Color.CYAN)
+				+ " (" + StackFormatter.formatNumber(plugin.getPrimaryProfit()) + ")</br>"
+				+ ColorUtil.wrapWithColorTag("Secondary: ", Color.YELLOW)
+				+ ColorUtil.wrapWithColorTag(plugin.getSecondaryResource(), Color.CYAN)
+				+ " (" + StackFormatter.formatNumber(plugin.getSecondaryProfit()) + ")</br>"
+				+ ColorUtil.wrapWithColorTag("Net Profit: ", Color.YELLOW)
+				+ StackFormatter.formatNumber(plugin.getEstimatedNetProfit());
 	}
 }

@@ -41,11 +41,12 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
+
 @PluginDescriptor(
-	name = "Kingdom of Miscellania",
-	description = "Show amount of favor when inside Miscellania",
-	tags = {"favor", "favour", "managing", "overlay"},
-	enabledByDefault = false
+		name = "Kingdom of Miscellania",
+		description = "Show amount of favor when inside Miscellania and calculate most profitable rewards",
+		tags = {"favor", "favour", "managing", "overlay"},
+		enabledByDefault = false
 )
 @Slf4j
 public class KingdomPlugin extends Plugin
@@ -62,7 +63,10 @@ public class KingdomPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Getter
-	private int favor = 0, coffer = 0;
+	private int favor = 0, coffer = 0, primaryProfit = 0, secondaryProfit = 0, estimatedNetProfit = 0;
+
+	@Getter
+	private String primaryResource = "None", secondaryResource = "None";
 
 	private KingdomCounter counter;
 
@@ -94,12 +98,46 @@ public class KingdomPlugin extends Plugin
 		if (client.getGameState() == GameState.LOGGED_IN && hasCompletedQuest() && isInKingdom())
 		{
 			addKingdomInfobox();
+			calculateRewards();
 		}
 		else
 		{
 			removeKingdomInfobox();
 		}
 
+	}
+
+	private void calculateRewards()
+	{
+		for (ResourceType type : ResourceType.values())
+		{
+			int amount = 0;
+			log.debug("Resource: " + type.name());
+			for (Reward reward : Reward.values())
+			{
+				if (reward.getType() == type)
+				{
+					log.debug("Reward: " + reward.getName());
+					amount += reward.getQuantity() * itemManager.getItemPrice(reward.getRewardId());
+				}
+
+			}
+			if (amount > primaryProfit)
+			{
+				primaryProfit = amount;
+				primaryResource = type.getType();
+			}
+			else if (amount > secondaryProfit && type.getType() != primaryResource)
+			{
+				secondaryProfit = amount;
+				secondaryResource = type.getType();
+			}
+		}
+		// 10 workers
+		primaryProfit -= 50000;
+		// 5 workers
+		secondaryProfit = secondaryProfit/2 - 25000;
+		estimatedNetProfit = primaryProfit + secondaryProfit;
 	}
 
 	private void addKingdomInfobox()
@@ -125,7 +163,7 @@ public class KingdomPlugin extends Plugin
 	private boolean isInKingdom()
 	{
 		return client.getLocalPlayer() != null
-			&& KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
+				&& KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
 	}
 
 	private boolean hasCompletedQuest()
