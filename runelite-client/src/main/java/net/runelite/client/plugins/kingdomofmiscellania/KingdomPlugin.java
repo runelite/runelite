@@ -136,7 +136,7 @@ public class KingdomPlugin extends Plugin
 		// 10 workers
 		primaryProfit -= 50000;
 		// 5 workers
-		secondaryProfit = secondaryProfit/2 - 25000;
+		secondaryProfit = secondaryProfit / 2 - 25000;
 		estimatedNetProfit = primaryProfit + secondaryProfit;
 	}
 

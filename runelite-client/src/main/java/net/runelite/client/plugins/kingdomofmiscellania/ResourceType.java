@@ -29,17 +29,20 @@ import lombok.Getter;
 @Getter
 public enum ResourceType
 {
-    MINING("Mining"),
-    HERBS("Herbs"),
-    FLAX("Flax"),
-    WOOD("Wood"),
-    COOKED_FISH("Cooked Fish"),
-    RAW_FISH("Raw Fish"),
-    HARDWOOD_MAHOGANY("Mahogany"),
-    HARDWOOD_TEAK("Teak"),
-    HARDWOOD_BOTH("Teak and Mahogany"),
-    FARM("Farm");
+	MINING("Mining"),
+	HERBS("Herbs"),
+	FLAX("Flax"),
+	WOOD("Wood"),
+	COOKED_FISH("Cooked Fish"),
+	RAW_FISH("Raw Fish"),
+	HARDWOOD_MAHOGANY("Mahogany"),
+	HARDWOOD_TEAK("Teak"),
+	HARDWOOD_BOTH("Teak and Mahogany"),
+	FARM("Farm");
 
-    private String type;
-    ResourceType(String type) { this.type = type; }
+	private String type;
+	ResourceType(String type)
+	{
+		this.type = type;
+	}
 }
