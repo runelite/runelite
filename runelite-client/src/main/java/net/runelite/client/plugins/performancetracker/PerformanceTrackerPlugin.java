@@ -47,6 +47,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -385,5 +386,22 @@ public class PerformanceTrackerPlugin extends Plugin
 			.append(ChatColorType.NORMAL)
 			.append(")")
 			.build();
+	}
+
+	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked c)
+	{
+		if (!c.getOverlay().equals(performanceTrackerOverlay))
+		{
+			return;
+		}
+
+		switch (c.getEntry().getOption())
+		{
+			case "Pause":
+				togglePaused();
+			case "Reset":
+				resetTracker();
+		}
 	}
 }
