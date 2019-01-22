@@ -38,7 +38,7 @@ public class ArchiveResponseHandler extends SimpleChannelInboundHandler<ArchiveR
 	}
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, ArchiveResponsePacket archiveResponse) throws Exception
+	protected void messageReceived(ChannelHandlerContext ctx, ArchiveResponsePacket archiveResponse) throws Exception
 	{
 		client.onFileFinish(archiveResponse.getIndex(),
 			archiveResponse.getArchive(),

@@ -26,9 +26,11 @@ package net.runelite.client.plugins.timetracking.farming;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.hamcrest.junit.ErrorCollector;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ErrorCollector;
+
 import static org.hamcrest.Matchers.*;
 
 public class PatchImplementationTest

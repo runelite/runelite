@@ -144,8 +144,7 @@ public class AccountService
 		state.setUuid(uuid);
 		state.setApiVersion(RuneLiteAPI.getVersion());
 
-		OAuth20Service service = new ServiceBuilder()
-			.apiKey(oauthClientId)
+		OAuth20Service service = new ServiceBuilder(oauthClientId)
 			.apiSecret(oauthClientSecret)
 			.scope(SCOPE)
 			.callback(RL_OAUTH_URL)
@@ -180,8 +179,7 @@ public class AccountService
 
 		logger.info("Got authorization code {} for uuid {}", code, state.getUuid());
 
-		OAuth20Service service = new ServiceBuilder()
-			.apiKey(oauthClientId)
+		OAuth20Service service = new ServiceBuilder(oauthClientId)
 			.apiSecret(oauthClientSecret)
 			.scope(SCOPE)
 			.callback(RL_OAUTH_URL)
