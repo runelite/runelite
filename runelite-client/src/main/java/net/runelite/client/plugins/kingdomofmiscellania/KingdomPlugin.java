@@ -41,7 +41,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
-
 @PluginDescriptor(
 		name = "Kingdom of Miscellania",
 		description = "Show amount of favor when inside Miscellania and calculate most profitable rewards",
@@ -109,19 +108,18 @@ public class KingdomPlugin extends Plugin
 
 	private void calculateRewards()
 	{
-		for (ResourceType type : ResourceType.values())
+		ResourceType type = ResourceType.FARM;
+		int amount = 0;
+		for (Reward reward : Reward.values())
 		{
-			int amount = 0;
-			log.debug("Resource: " + type.name());
-			for (Reward reward : Reward.values())
+			log.debug("Reward: " + reward.getName());
+			if (reward.getType() != type)
 			{
-				if (reward.getType() == type)
-				{
-					log.debug("Reward: " + reward.getName());
-					amount += reward.getQuantity() * itemManager.getItemPrice(reward.getRewardId());
-				}
-
+				// reset amount
+				amount = 0;
+				type = reward.getType();
 			}
+			amount += reward.getQuantity() * itemManager.getItemPrice(reward.getRewardId());
 			if (amount > primaryProfit)
 			{
 				primaryProfit = amount;
@@ -133,6 +131,7 @@ public class KingdomPlugin extends Plugin
 				secondaryResource = type.getType();
 			}
 		}
+
 		// 10 workers
 		primaryProfit -= 50000;
 		// 5 workers

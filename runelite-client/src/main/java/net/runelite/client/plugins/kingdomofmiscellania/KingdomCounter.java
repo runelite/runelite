@@ -53,13 +53,13 @@ public class KingdomCounter extends Counter
 				+ plugin.getFavor() + "/127" + "</br>"
 				+ ColorUtil.wrapWithColorTag("Coffer: ", Color.YELLOW)
 				+ StackFormatter.quantityToRSStackSize(plugin.getCoffer()) + "</br>"
-				+ ColorUtil.wrapWithColorTag("Primary: ", Color.YELLOW)
+				+ ColorUtil.wrapWithColorTag("Highest Profit: ", Color.YELLOW)
 				+ ColorUtil.wrapWithColorTag(plugin.getPrimaryResource(), Color.CYAN)
 				+ " (" + StackFormatter.formatNumber(plugin.getPrimaryProfit()) + ")</br>"
-				+ ColorUtil.wrapWithColorTag("Secondary: ", Color.YELLOW)
+				+ ColorUtil.wrapWithColorTag("Second Highest: ", Color.YELLOW)
 				+ ColorUtil.wrapWithColorTag(plugin.getSecondaryResource(), Color.CYAN)
 				+ " (" + StackFormatter.formatNumber(plugin.getSecondaryProfit()) + ")</br>"
-				+ ColorUtil.wrapWithColorTag("Net Profit: ", Color.YELLOW)
+				+ ColorUtil.wrapWithColorTag("Net: ", Color.YELLOW)
 				+ StackFormatter.formatNumber(plugin.getEstimatedNetProfit());
 	}
 }

@@ -41,6 +41,7 @@ public enum ResourceType
 	FARM("Farm");
 
 	private String type;
+
 	ResourceType(String type)
 	{
 		this.type = type;
