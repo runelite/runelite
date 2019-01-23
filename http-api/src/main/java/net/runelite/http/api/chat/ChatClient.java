@@ -24,7 +24,10 @@
  */
 package net.runelite.http.api.chat;
 
+import com.google.gson.JsonParseException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
@@ -116,6 +119,57 @@ public class ChatClient
 				throw new IOException("Unable to look up quest points!");
 			}
 			return Integer.parseInt(response.body().string());
+		}
+	}
+
+	public boolean submitTask(String username, String task, int amount, int initialAmount, String location) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("task")
+			.addQueryParameter("name", username)
+			.addQueryParameter("task", task)
+			.addQueryParameter("amount", Integer.toString(amount))
+			.addQueryParameter("initialAmount", Integer.toString(initialAmount))
+			.addQueryParameter("location", location)
+			.build();
+
+		Request request = new Request.Builder()
+			.post(RequestBody.create(null, new byte[0]))
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			return response.isSuccessful();
+		}
+	}
+
+	public Task getTask(String username) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("task")
+			.addQueryParameter("name", username)
+			.build();
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unable to look up task!");
+			}
+
+			InputStream in = response.body().byteStream();
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), Task.class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
 		}
 	}
 }
