@@ -37,27 +37,27 @@ public enum Reward
 	COOKED_TUNA("Tuna", ResourceType.COOKED_FISH, 440, ItemID.TUNA),
 	COOKED_SWORDFISH("Swordfish", ResourceType.COOKED_FISH, 131, ItemID.SWORDFISH),
 	MAPLE("Maple", ResourceType.WOOD, 892, ItemID.MAPLE_LOGS),
-	BIRD_NEST("Bird nests", ResourceType.WOOD, 8, ItemID.BIRD_NEST),
+	BIRD_NEST("Bird nests", ResourceType.WOOD, 8, ItemID.CRUSHED_NEST),
 	TEAK("Teak", ResourceType.HARDWOOD_TEAK, 301, ItemID.TEAK_LOGS),
 	MAHOGANY("Mahogany", ResourceType.HARDWOOD_MAHOGANY, 204, ItemID.MAHOGANY_LOGS),
 	TEAK_BOTH("Teak", ResourceType.HARDWOOD_BOTH, 121, ItemID.TEAK_LOGS),
 	MAHOGANY_BOTH("Mahogany", ResourceType.HARDWOOD_BOTH, 121, ItemID.MAHOGANY_LOGS),
-	TARROMIN("Tarromin", ResourceType.HERBS, 13, ItemID.GRIMY_TARROMIN),
-	HARRALANDER("Harralander", ResourceType.HERBS, 12, ItemID.GRIMY_HARRALANDER),
-	RANARR("Ranarr", ResourceType.HERBS, 4, ItemID.GRIMY_RANARR_WEED),
+	TARROMIN("Tarromin", ResourceType.HERBS, 13.2, ItemID.GRIMY_TARROMIN),
+	HARRALANDER("Harralander", ResourceType.HERBS, 11.9, ItemID.GRIMY_HARRALANDER),
+	RANARR("Ranarr", ResourceType.HERBS, 3.6, ItemID.GRIMY_RANARR_WEED),
 	IRIT("Irit", ResourceType.HERBS, 8, ItemID.GRIMY_IRIT_LEAF),
-	AVANTOE("Avantoe", ResourceType.HERBS, 8, ItemID.GRIMY_AVANTOE),
-	KWUARM("Kwuarm", ResourceType.HERBS, 4, ItemID.GRIMY_KWUARM),
+	AVANTOE("Avantoe", ResourceType.HERBS, 8.3, ItemID.GRIMY_AVANTOE),
+	KWUARM("Kwuarm", ResourceType.HERBS, 3.9, ItemID.GRIMY_KWUARM),
 	CADANTINE("Cadantine", ResourceType.HERBS, 4, ItemID.GRIMY_CADANTINE),
-	LANTADYME("Lantadyme", ResourceType.HERBS, 4, ItemID.GRIMY_LANTADYME),
-	DWARF_WEED("Dwarf weed", ResourceType.HERBS, 4, ItemID.GRIMY_DWARF_WEED);
+	LANTADYME("Lantadyme", ResourceType.HERBS, 3.9, ItemID.GRIMY_LANTADYME),
+	DWARF_WEED("Dwarf weed", ResourceType.HERBS, 4.1, ItemID.GRIMY_DWARF_WEED);
 
 	private final ResourceType type;
 	private final String name;
-	private final int quantity;
+	private final double quantity;
 	private final int rewardId;
 
-	Reward(String name, ResourceType type, int quantity, int rewardId)
+	Reward(String name, ResourceType type, double quantity, int rewardId)
 	{
 		this.name = name;
 		this.type = type;

@@ -109,7 +109,7 @@ public class KingdomPlugin extends Plugin
 	private void calculateRewards()
 	{
 		ResourceType type = ResourceType.FARM;
-		int amount = 0;
+		double amount = 0;
 		for (Reward reward : Reward.values())
 		{
 			log.debug("Reward: " + reward.getName());
@@ -120,14 +120,15 @@ public class KingdomPlugin extends Plugin
 				type = reward.getType();
 			}
 			amount += reward.getQuantity() * itemManager.getItemPrice(reward.getRewardId());
+			log.debug("amonunt: " + amount);
 			if (amount > primaryProfit)
 			{
-				primaryProfit = amount;
+				primaryProfit = (int) Math.round(amount);
 				primaryResource = type.getType();
 			}
 			else if (amount > secondaryProfit && type.getType() != primaryResource)
 			{
-				secondaryProfit = amount;
+				secondaryProfit = (int) Math.round(amount);
 				secondaryResource = type.getType();
 			}
 		}
