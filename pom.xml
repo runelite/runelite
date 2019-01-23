@@ -168,7 +168,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<!-- newer versions seem to not show stacktraces in Netbeans -->
 				<version>3.0.0-M2</version>
 				<configuration>
 					<enableAssertions>true</enableAssertions>
