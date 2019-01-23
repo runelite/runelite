@@ -421,7 +421,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("quick-travel", option, target, true);
 			}
 		}
-		else if (config.swapWildernessLever() && option.equals("ardougne") && target.equals("lever"))
+		else if (config.swapWildernessLever() && target.equals("lever"))
 		{
 			swap("edgeville", option, target, true);
 		}
