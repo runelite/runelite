@@ -62,6 +62,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class IdleNotifierPlugin extends Plugin
 {
+	// In order for animation idle notifications to work correctly the delay needs to be at least 1 game tick
+	static final int ANIMATION_IDLE_MINIMUM = 601;
+
 	// This must be more than 500 client ticks (10 seconds) before you get AFK kicked
 	private static final int LOGOUT_WARNING_CLIENT_TICKS = ((4 * 60) + 40) * 50;// 4 minutes and 40 seconds
 	private static final int COMBAT_WARNING_MILLIS = 19 * 60 * 1000; // 19 minutes
@@ -332,7 +335,9 @@ public class IdleNotifierPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		final Player local = client.getLocalPlayer();
-		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
+		int idleNotificationDelay = config.getIdleNotificationDelay();
+		final Duration interactionWaitDuration = Duration.ofMillis(idleNotificationDelay);
+		final Duration animWaitDuration = Duration.ofMillis(Math.max(ANIMATION_IDLE_MINIMUM, idleNotificationDelay));
 		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
 
 		if (client.getGameState() != GameState.LOGGED_IN
@@ -355,12 +360,12 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("[" + local.getName() + "] is about to log out from being online for 6 hours!");
 		}
 
-		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
+		if (config.animationIdle() && checkAnimationIdle(animWaitDuration, local))
 		{
 			notifier.notify("[" + local.getName() + "] is now idle!");
 		}
 
-		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))
+		if (config.interactionIdle() && checkInteractionIdle(interactionWaitDuration, local))
 		{
 			if (lastInteractWasCombat)
 			{

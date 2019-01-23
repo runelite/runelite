@@ -27,6 +27,8 @@ package net.runelite.client.plugins.idlenotifier;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
+import static net.runelite.client.plugins.idlenotifier.IdleNotifierPlugin.ANIMATION_IDLE_MINIMUM;
 
 @ConfigGroup("idlenotifier")
 public interface IdleNotifierConfig extends Config
@@ -70,6 +72,7 @@ public interface IdleNotifierConfig extends Config
 		description = "The notification delay after the player is idle",
 		position = 4
 	)
+	@Range(min = ANIMATION_IDLE_MINIMUM)
 	default int getIdleNotificationDelay()
 	{
 		return 5000;

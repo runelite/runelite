@@ -121,44 +121,44 @@ public class IdleNotifierPluginTest
 	}
 
 	@Test
-	public void checkAnimationIdle()
+	public void checkAnimationIdle() throws InterruptedException
 	{
 		when(player.getAnimation()).thenReturn(AnimationID.WOODCUTTING_BRONZE);
 		AnimationChanged animationChanged = new AnimationChanged();
 		animationChanged.setActor(player);
 		plugin.onAnimationChanged(animationChanged);
-		plugin.onGameTick(new GameTick());
+		gameTick();
 		when(player.getAnimation()).thenReturn(AnimationID.IDLE);
 		plugin.onAnimationChanged(animationChanged);
-		plugin.onGameTick(new GameTick());
+		gameTick();
 		verify(notifier).notify("[" + PLAYER_NAME + "] is now idle!");
 	}
 
 	@Test
-	public void checkAnimationReset()
+	public void checkAnimationReset() throws InterruptedException
 	{
 		when(player.getAnimation()).thenReturn(AnimationID.WOODCUTTING_BRONZE);
 		AnimationChanged animationChanged = new AnimationChanged();
 		animationChanged.setActor(player);
 		plugin.onAnimationChanged(animationChanged);
-		plugin.onGameTick(new GameTick());
+		gameTick();
 		when(player.getAnimation()).thenReturn(AnimationID.LOOKING_INTO);
 		plugin.onAnimationChanged(animationChanged);
-		plugin.onGameTick(new GameTick());
+		gameTick();
 		when(player.getAnimation()).thenReturn(AnimationID.IDLE);
 		plugin.onAnimationChanged(animationChanged);
-		plugin.onGameTick(new GameTick());
+		gameTick();
 		verify(notifier, times(0)).notify(any());
 	}
 
 	@Test
-	public void checkAnimationLogout()
+	public void checkAnimationLogout() throws InterruptedException
 	{
 		when(player.getAnimation()).thenReturn(AnimationID.WOODCUTTING_BRONZE);
 		AnimationChanged animationChanged = new AnimationChanged();
 		animationChanged.setActor(player);
 		plugin.onAnimationChanged(animationChanged);
-		plugin.onGameTick(new GameTick());
+		gameTick();
 
 		// Logout
 		when(client.getGameState()).thenReturn(GameState.LOGIN_SCREEN);
@@ -174,43 +174,43 @@ public class IdleNotifierPluginTest
 		// Tick
 		when(player.getAnimation()).thenReturn(AnimationID.IDLE);
 		plugin.onAnimationChanged(animationChanged);
-		plugin.onGameTick(new GameTick());
+		gameTick();
 		verify(notifier, times(0)).notify(any());
 	}
 
 	@Test
-	public void checkCombatIdle()
+	public void checkCombatIdle() throws InterruptedException
 	{
 		when(player.getInteracting()).thenReturn(monster);
 		plugin.onInteractingChanged(new InteractingChanged(player, monster));
-		plugin.onGameTick(new GameTick());
+		gameTick();
 		when(player.getInteracting()).thenReturn(null);
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
-		plugin.onGameTick(new GameTick());
+		gameTick();
 		verify(notifier).notify("[" + PLAYER_NAME + "] is now out of combat!");
 	}
 
 	@Test
-	public void checkCombatReset()
+	public void checkCombatReset() throws InterruptedException
 	{
 		when(player.getInteracting()).thenReturn(monster);
 		plugin.onInteractingChanged(new InteractingChanged(player, monster));
-		plugin.onGameTick(new GameTick());
+		gameTick();
 		when(player.getInteracting()).thenReturn(randomEvent);
 		plugin.onInteractingChanged(new InteractingChanged(player, randomEvent));
-		plugin.onGameTick(new GameTick());
+		gameTick();
 		when(player.getInteracting()).thenReturn(null);
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
-		plugin.onGameTick(new GameTick());
+		gameTick();
 		verify(notifier, times(0)).notify(any());
 	}
 
 	@Test
-	public void checkCombatLogout()
+	public void checkCombatLogout() throws InterruptedException
 	{
 		plugin.onInteractingChanged(new InteractingChanged(player, monster));
 		when(player.getInteracting()).thenReturn(monster);
-		plugin.onGameTick(new GameTick());
+		gameTick();
 
 		// Logout
 		when(client.getGameState()).thenReturn(GameState.LOGIN_SCREEN);
@@ -226,12 +226,12 @@ public class IdleNotifierPluginTest
 		// Tick
 		when(player.getInteracting()).thenReturn(null);
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
-		plugin.onGameTick(new GameTick());
+		gameTick();
 		verify(notifier, times(0)).notify(any());
 	}
 
 	@Test
-	public void checkCombatLogoutIdle()
+	public void checkCombatLogoutIdle() throws InterruptedException
 	{
 		// Player is idle
 		when(client.getMouseIdleTicks()).thenReturn(80_000);
@@ -241,12 +241,12 @@ public class IdleNotifierPluginTest
 		hitsplatApplied.setActor(player);
 		hitsplatApplied.setHitsplat(new Hitsplat(Hitsplat.HitsplatType.DAMAGE, 0, 0));
 		plugin.onHitsplatApplied(hitsplatApplied);
-		plugin.onGameTick(new GameTick());
+		gameTick();
 		verify(notifier, times(0)).notify(any());
 	}
 
 	@Test
-	public void doubleNotifyOnMouseReset()
+	public void doubleNotifyOnMouseReset() throws InterruptedException
 	{
 		// Player is idle, but in combat so the idle packet is getting set repeatedly
 		// make sure we are not notifying
@@ -254,22 +254,28 @@ public class IdleNotifierPluginTest
 		when(client.getKeyboardIdleTicks()).thenReturn(80_000);
 		when(client.getMouseIdleTicks()).thenReturn(14_500);
 
-		plugin.onGameTick(new GameTick());
-		plugin.onGameTick(new GameTick());
+		gameTick();
+		gameTick();
 		verify(notifier, times(1)).notify(any());
 	}
 
 	@Test
-	public void testSpecRegen()
+	public void testSpecRegen() throws InterruptedException
 	{
 		when(config.getSpecEnergyThreshold()).thenReturn(50);
 
 		when(client.getVar(Matchers.eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(400); // 40%
-		plugin.onGameTick(new GameTick()); // once to set lastSpecEnergy to 400
+		gameTick(); // once to set lastSpecEnergy to 400
 		verify(notifier, never()).notify(any());
 
 		when(client.getVar(Matchers.eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
-		plugin.onGameTick(new GameTick());
+		gameTick();
 		verify(notifier).notify(Matchers.eq("[" + PLAYER_NAME + "] has restored spec energy!"));
+	}
+
+	private void gameTick() throws InterruptedException
+	{
+		Thread.sleep(600);
+		plugin.onGameTick(new GameTick());
 	}
 }
