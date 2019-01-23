@@ -30,7 +30,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import net.runelite.client.util.WildcardMatcher;
 
-class WildcardMatchLoader extends CacheLoader<String, Boolean>
+class WildcardMatchLoader extends CacheLoader<String, MatchType>
 {
 	private final List<String> nameFilters;
 
@@ -40,11 +40,11 @@ class WildcardMatchLoader extends CacheLoader<String, Boolean>
 	}
 
 	@Override
-	public Boolean load(@Nonnull final String key)
+	public MatchType load(@Nonnull final String key)
 	{
 		if (Strings.isNullOrEmpty(key))
 		{
-			return false;
+			return MatchType.NULL;
 		}
 
 		final String filteredName = key.trim();
@@ -53,10 +53,10 @@ class WildcardMatchLoader extends CacheLoader<String, Boolean>
 		{
 			if (WildcardMatcher.matches(filter, filteredName))
 			{
-				return true;
+				return filter.contains("*") ? MatchType.WILDCARD : MatchType.EXPLICIT;
 			}
 		}
 
-		return false;
+		return MatchType.NULL;
 	}
 }

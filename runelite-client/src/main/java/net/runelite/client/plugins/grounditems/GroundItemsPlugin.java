@@ -30,7 +30,6 @@ import com.google.common.cache.LoadingCache;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
-import static java.lang.Boolean.TRUE;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -160,8 +159,8 @@ public class GroundItemsPlugin extends Plugin
 	@Getter
 	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
 	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
-	private LoadingCache<String, Boolean> highlightedItems;
-	private LoadingCache<String, Boolean> hiddenItems;
+	private LoadingCache<String, MatchType> highlightedItems;
+	private LoadingCache<String, MatchType> hiddenItems;
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -540,13 +539,25 @@ public class GroundItemsPlugin extends Plugin
 
 	Color getHighlighted(String item, int gePrice, int haPrice)
 	{
-		if (TRUE.equals(highlightedItems.getUnchecked(item)))
+		final MatchType highlighted = highlightedItems.getUnchecked(item);
+		if (highlighted == MatchType.EXPLICIT)
 		{
 			return config.highlightedColor();
 		}
 
 		// Explicit hide takes priority over implicit highlight
-		if (TRUE.equals(hiddenItems.getUnchecked(item)))
+		final MatchType hidden = hiddenItems.getUnchecked(item);
+		if (hidden == MatchType.EXPLICIT)
+		{
+			return null;
+		}
+
+		if (highlighted == MatchType.WILDCARD)
+		{
+			return config.highlightedColor();
+		}
+
+		if (hidden == MatchType.WILDCARD)
 		{
 			return null;
 		}
@@ -582,8 +593,8 @@ public class GroundItemsPlugin extends Plugin
 
 	Color getHidden(String item, int gePrice, int haPrice, boolean isTradeable)
 	{
-		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(item));
-		final boolean isExplicitHighlight = TRUE.equals(highlightedItems.getUnchecked(item));
+		final boolean isExplicitHidden = MatchType.NULL != hiddenItems.getUnchecked(item);
+		final boolean isExplicitHighlight = MatchType.NULL != highlightedItems.getUnchecked(item);
 		final boolean canBeHidden = gePrice > 0 || isTradeable || !config.dontHideUntradeables();
 		final boolean underGe = gePrice < config.getHideUnderValue();
 		final boolean underHa = haPrice < config.getHideUnderValue();
