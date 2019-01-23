@@ -25,8 +25,7 @@
 package net.runelite.client.plugins.grounditems;
 
 import java.util.Arrays;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class WildcardMatchLoaderTest
@@ -35,11 +34,11 @@ public class WildcardMatchLoaderTest
 	public void testLoad()
 	{
 		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("rune*", "Abyssal whip"));
-		assertTrue(loader.load("rune pouch"));
-		assertTrue(loader.load("Rune pouch"));
-		assertFalse(loader.load("Adamant dagger"));
-		assertTrue(loader.load("Runeite Ore"));
-		assertTrue(loader.load("Abyssal whip"));
-		assertFalse(loader.load("Abyssal dagger"));
+		assertEquals(MatchType.WILDCARD, loader.load("rune pouch"));
+		assertEquals(MatchType.WILDCARD, loader.load("Rune pouch"));
+		assertEquals(MatchType.NULL, loader.load("Adamant dagger"));
+		assertEquals(MatchType.WILDCARD, loader.load("Runeite Ore"));
+		assertEquals(MatchType.EXPLICIT, loader.load("Abyssal whip"));
+		assertEquals(MatchType.NULL, loader.load("Abyssal dagger"));
 	}
 }
