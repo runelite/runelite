@@ -82,7 +82,17 @@ public interface MenuEntrySwapperConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(
+    @ConfigItem(
+        keyName = "swapBloomItem",
+        name = "Cast Bloom",
+        description = "Swap Wield with Cast Bloom for Silver sickle (b) and Ivandis flail"
+    )
+    default boolean swapBloomItem()
+    {
+        return false;
+    }
+
+    @ConfigItem(
 		keyName = "swapBones",
 		name = "Bury",
 		description = "Swap Bury with Use on Bones"

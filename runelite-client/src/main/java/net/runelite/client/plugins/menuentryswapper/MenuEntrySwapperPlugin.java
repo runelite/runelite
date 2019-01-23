@@ -532,6 +532,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("teleport", option, target, true);
 			}
+			if (config.swapBloomItem())
+            {
+                swap("bloom", option, target, true);
+                swap("cast bloom", option, target, true);
+            }
 		}
 		else if (config.swapBones() && option.equals("bury"))
 		{
