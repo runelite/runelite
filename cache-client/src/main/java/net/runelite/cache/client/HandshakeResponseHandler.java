@@ -48,7 +48,7 @@ public class HandshakeResponseHandler extends SimpleChannelInboundHandler<Handsh
 	}
 
 	@Override
-	protected void messageReceived(ChannelHandlerContext ctx, HandshakeResponsePacket handshakeResponse) throws Exception
+	protected void channelRead0(ChannelHandlerContext ctx, HandshakeResponsePacket handshakeResponse) throws Exception
 	{
 		Channel channel = ctx.channel();
 		ChannelPipeline p = ctx.pipeline();
