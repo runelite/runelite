@@ -243,6 +243,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapPlank",
+			name = "Buy-Plank",
+			description = "Swap Talk-to with Buy-Plank on Sawmill Operator<br>Note: Takes priority over Trade"
+	)
+	default boolean swapPlank()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "swapTrade",
 		name = "Trade",
 		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant"
