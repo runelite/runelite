@@ -243,9 +243,9 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "swapWildernessLever",
-			name = "Wilderness Lever to Edgeville",
-			description = "Swap Edgeville Lever as default for wilderness lever"
+		keyName = "swapWildernessLever",
+		name = "Wilderness Lever to Edgeville",
+		description = "Swap Edgeville Lever as default for wilderness lever"
 	)
 	default boolean swapWildernessLever()
 	{
