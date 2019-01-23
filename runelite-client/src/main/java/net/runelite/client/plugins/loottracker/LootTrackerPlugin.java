@@ -186,7 +186,7 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getGroup().equals("loottracker"))
 		{
 			ignoredItems = Text.fromCSV(config.getIgnoredItems());
-			panel.updateIgnoredRecords();
+			SwingUtilities.invokeLater(panel::updateIgnoredRecords);
 		}
 	}
 

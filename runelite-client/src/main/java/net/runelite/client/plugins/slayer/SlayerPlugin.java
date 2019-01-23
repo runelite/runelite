@@ -29,11 +29,13 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -46,6 +48,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
+import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
@@ -57,13 +60,19 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.SetMessage;
 import net.runelite.api.vars.SlayerUnlock;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatCommandManager;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ChatInput;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -71,6 +80,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.chat.ChatClient;
 
 @PluginDescriptor(
 	name = "Slayer",
@@ -111,6 +121,11 @@ public class SlayerPlugin extends Plugin
 	private static final int EXPEDITIOUS_CHARGE = 30;
 	private static final int SLAUGHTER_CHARGE = 30;
 
+	// Chat Command
+	private static final String TASK_COMMAND_STRING = "!task";
+	private static final Pattern TASK_STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
+	private static final int TASK_STRING_MAX_LENGTH = 50;
+
 	@Inject
 	private Client client;
 
@@ -143,6 +158,18 @@ public class SlayerPlugin extends Plugin
 
 	@Inject
 	private TargetMinimapOverlay targetMinimapOverlay;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
+
+	@Inject
+	private ChatCommandManager chatCommandManager;
+
+	@Inject
+	private ScheduledExecutorService executor;
+
+	@Inject
+	private ChatClient chatClient;
 
 	@Getter(AccessLevel.PACKAGE)
 	private List<NPC> highlightedTargets = new ArrayList<>();
@@ -201,6 +228,8 @@ public class SlayerPlugin extends Plugin
 			setSlaughterChargeCount(config.slaughter());
 			clientThread.invoke(() -> setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation()));
 		}
+
+		chatCommandManager.registerCommandAsync(TASK_COMMAND_STRING, this::taskLookup, this::taskSubmit);
 	}
 
 	@Override
@@ -212,6 +241,8 @@ public class SlayerPlugin extends Plugin
 		overlayManager.remove(targetMinimapOverlay);
 		removeCounter();
 		highlightedTargets.clear();
+
+		chatCommandManager.unregisterCommand(TASK_COMMAND_STRING);
 	}
 
 	@Provides
@@ -683,6 +714,103 @@ public class SlayerPlugin extends Plugin
 
 		infoBoxManager.removeInfoBox(counter);
 		counter = null;
+	}
+
+	void taskLookup(SetMessage setMessage, String message)
+	{
+		if (!config.taskCommand())
+		{
+			return;
+		}
+
+		ChatMessageType type = setMessage.getType();
+
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = Text.removeTags(setMessage.getName())
+				.replace('\u00A0', ' ');
+		}
+
+		net.runelite.http.api.chat.Task task;
+		try
+		{
+			task = chatClient.getTask(player);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup slayer task", ex);
+			return;
+		}
+
+		if (TASK_STRING_VALIDATION.matcher(task.getTask()).find() || task.getTask().length() > TASK_STRING_MAX_LENGTH ||
+			TASK_STRING_VALIDATION.matcher(task.getLocation()).find() || task.getLocation().length() > TASK_STRING_MAX_LENGTH)
+		{
+			log.debug("Validation failed for task name or location: {}", task);
+			return;
+		}
+
+		int killed = task.getInitialAmount() - task.getAmount();
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(task.getTask());
+		if (!Strings.isNullOrEmpty(task.getLocation()))
+		{
+			sb.append(" (").append(task.getLocation()).append(")");
+		}
+		sb.append(": ");
+		if (killed < 0)
+		{
+			sb.append(task.getAmount()).append(" left");
+		}
+		else
+		{
+			sb.append(killed).append('/').append(task.getInitialAmount()).append(" killed");
+		}
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Slayer Task: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(sb.toString())
+			.build();
+
+		final MessageNode messageNode = setMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
+	}
+
+	private boolean taskSubmit(ChatInput chatInput, String value)
+	{
+		if (Strings.isNullOrEmpty(taskName))
+		{
+			return false;
+		}
+
+		final String playerName = client.getLocalPlayer().getName();
+
+		executor.execute(() ->
+		{
+			try
+			{
+				chatClient.submitTask(playerName, capsString(taskName), amount, initialAmount, taskLocation);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit slayer task", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
 	}
 
 	//Utils
