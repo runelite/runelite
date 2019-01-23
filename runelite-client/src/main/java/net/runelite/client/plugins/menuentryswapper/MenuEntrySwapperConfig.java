@@ -247,7 +247,10 @@ public interface MenuEntrySwapperConfig extends Config
 		name = "Buy-Plank",
 		description = "Swap Talk-to with Buy-Plank on Sawmill Operator<br>Note: Takes priority over Trade"
 	)
-	default boolean swapPlank() { return true; }
+	default boolean swapPlank()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "swapTrade",
