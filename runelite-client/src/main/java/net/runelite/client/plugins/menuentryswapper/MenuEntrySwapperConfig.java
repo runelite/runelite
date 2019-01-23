@@ -250,13 +250,6 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapPlank() { return true; }
 
 	@ConfigItem(
-		keyName = "swapWildernessLever",
-		name = "Wilderness Lever to Edgeville",
-		description = "Swap Edgeville Lever as default for wilderness lever"
-	)
-	default boolean swapWildernessLever() { return true; }
-
-	@ConfigItem(
 		keyName = "swapTrade",
 		name = "Trade",
 		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant"
