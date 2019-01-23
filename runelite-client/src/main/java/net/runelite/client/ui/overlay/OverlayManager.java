@@ -126,7 +126,7 @@ public class OverlayManager
 
 		event.consume();
 
-		Optional<Overlay> optionalOverlay = overlays.stream().filter(o -> overlayId(o) == event.getId()).findAny();
+		Optional<Overlay> optionalOverlay = overlays.stream().filter(o -> overlays.indexOf(o) == event.getId()).findAny();
 		if (optionalOverlay.isPresent())
 		{
 			Overlay overlay = optionalOverlay.get();
@@ -137,31 +137,6 @@ public class OverlayManager
 			if (optionalOverlayMenuEntry.isPresent())
 			{
 				eventBus.post(new OverlayMenuClicked(optionalOverlayMenuEntry.get(), overlay));
-			}
-		}
-	}
-
-	int overlayId(Overlay overlay)
-	{
-		return overlays.indexOf(overlay);
-	}
-
-	public void addMenu(Overlay overlay, MenuAction menuAction, String option, String target)
-	{
-		OverlayMenuEntry overlayMenuEntry = new OverlayMenuEntry(menuAction, option, target);
-		List<OverlayMenuEntry> menuEntries = overlay.getMenuEntries();
-		menuEntries.add(overlayMenuEntry);
-	}
-
-	public void removeMenu(Overlay overlay, String option)
-	{
-		List<OverlayMenuEntry> menuEntries = overlay.getMenuEntries();
-		for (OverlayMenuEntry overlayMenuEntry : menuEntries)
-		{
-			if (overlayMenuEntry.getOption().equals(option))
-			{
-				menuEntries.remove(overlayMenuEntry);
-				break;
 			}
 		}
 	}

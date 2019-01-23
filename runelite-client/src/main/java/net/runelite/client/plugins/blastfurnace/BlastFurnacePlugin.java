@@ -30,7 +30,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import static net.runelite.api.NullObjectID.NULL_9092;
 import static net.runelite.api.ObjectID.CONVEYOR_BELT;
 import net.runelite.api.events.GameObjectDespawned;
@@ -41,7 +40,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
 @PluginDescriptor(
 	name = "Blast Furnace",
@@ -76,15 +74,11 @@ public class BlastFurnacePlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(cofferOverlay);
 		overlayManager.add(clickBoxOverlay);
-		overlayManager.addMenu(overlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Blast furnace overlay");
-		overlayManager.addMenu(cofferOverlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Coffer overlay");
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		overlayManager.removeMenu(overlay, OPTION_CONFIGURE);
-		overlayManager.removeMenu(cofferOverlay, OPTION_CONFIGURE);
 		overlayManager.remove(overlay);
 		overlayManager.remove(cofferOverlay);
 		overlayManager.remove(clickBoxOverlay);

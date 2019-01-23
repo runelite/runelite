@@ -38,7 +38,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.WallObject;
@@ -61,7 +60,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.util.StackFormatter;
 
 @PluginDescriptor(
@@ -121,14 +119,11 @@ public class BarrowsPlugin extends Plugin
 	{
 		overlayManager.add(barrowsOverlay);
 		overlayManager.add(brotherOverlay);
-
-		overlayManager.addMenu(brotherOverlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Barrows overlay");
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		overlayManager.removeMenu(brotherOverlay, OPTION_CONFIGURE);
 		overlayManager.remove(barrowsOverlay);
 		overlayManager.remove(brotherOverlay);
 		walls.clear();
