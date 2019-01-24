@@ -25,9 +25,11 @@
  */
 package net.runelite.client.plugins.achievementdiary.diaries;
 
+import net.runelite.api.Quest;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
-import net.runelite.client.plugins.achievementdiary.Requirement;
+import net.runelite.client.plugins.achievementdiary.QuestRequirement;
+import net.runelite.client.plugins.achievementdiary.SkillRequirement;
 
 public class KandarinDiaryRequirement extends GenericDiaryRequirement
 {
@@ -35,78 +37,91 @@ public class KandarinDiaryRequirement extends GenericDiaryRequirement
 	{
 		// EASY
 		add("Catch a Mackerel at Catherby.",
-			new Requirement(Skill.FISHING, 16));
+			new SkillRequirement(Skill.FISHING, 16));
 		add("Plant some Jute seeds in the patch north of McGrubor's Wood.",
-			new Requirement(Skill.FARMING, 13));
+			new SkillRequirement(Skill.FARMING, 13));
+		add("Defeat on of each elemental in the workshop.",
+			new QuestRequirement(Quest.ELEMENTAL_WORKSHOP_I, true));
 		add("Cross the Coal truck log shortcut.",
-			new Requirement(Skill.AGILITY, 20));
+			new SkillRequirement(Skill.AGILITY, 20));
 
 		// MEDIUM
 		add("Complete a lap of the Barbarian agility course.",
-			new Requirement(Skill.AGILITY, 35));
+			new SkillRequirement(Skill.AGILITY, 35),
+			new QuestRequirement(Quest.ALFRED_GRIMHANDS_BARCRAWL));
 		add("Create a Super Antipoison potion from scratch in the Seers/Catherby Area.",
-			new Requirement(Skill.HERBLORE, 48));
+			new SkillRequirement(Skill.HERBLORE, 48));
 		add("Enter the Ranging guild.",
-			new Requirement(Skill.RANGED, 40));
+			new SkillRequirement(Skill.RANGED, 40));
 		add("Use the grapple shortcut to get from the water obelisk to Catherby shore.",
-			new Requirement(Skill.AGILITY, 36),
-			new Requirement(Skill.STRENGTH, 22),
-			new Requirement(Skill.RANGED, 39));
+			new SkillRequirement(Skill.AGILITY, 36),
+			new SkillRequirement(Skill.STRENGTH, 22),
+			new SkillRequirement(Skill.RANGED, 39));
 		add("Catch and cook a Bass in Catherby.",
-			new Requirement(Skill.FISHING, 46),
-			new Requirement(Skill.COOKING, 43));
+			new SkillRequirement(Skill.FISHING, 46),
+			new SkillRequirement(Skill.COOKING, 43));
 		add("Teleport to Camelot.",
-			new Requirement(Skill.MAGIC, 45));
+			new SkillRequirement(Skill.MAGIC, 45));
 		add("String a Maple shortbow in Seers' Village bank.",
-			new Requirement(Skill.FLETCHING, 50));
+			new SkillRequirement(Skill.FLETCHING, 50));
 		add("Pick some Limpwurt root from the farming patch in Catherby.",
-			new Requirement(Skill.FARMING, 26));
+			new SkillRequirement(Skill.FARMING, 26));
+		add("Create a Mind helmet.",
+			new QuestRequirement(Quest.ELEMENTAL_WORKSHOP_II));
+		add("Kill a Fire Giant inside Baxtorian Waterfall.",
+			new QuestRequirement(Quest.WATERFALL_QUEST, true));
 		add("Steal from the chest in Hemenster.",
-			new Requirement(Skill.THIEVING, 47));
+			new SkillRequirement(Skill.THIEVING, 47));
+		add("Travel to McGrubor's Wood by Fairy Ring.",
+			new QuestRequirement(Quest.FAIRYTALE_II__CURE_A_QUEEN, true));
 		add("Mine some coal near the coal trucks.",
-			new Requirement(Skill.MINING, 30));
+			new SkillRequirement(Skill.MINING, 30));
 
 		// HARD
 		add("Catch a Leaping Sturgeon.",
-			new Requirement(Skill.FISHING, 70),
-			new Requirement(Skill.AGILITY, 45),
-			new Requirement(Skill.STRENGTH, 45));
+			new SkillRequirement(Skill.FISHING, 70),
+			new SkillRequirement(Skill.AGILITY, 45),
+			new SkillRequirement(Skill.STRENGTH, 45));
 		add("Complete a lap of the Seers' Village agility course.",
-			new Requirement(Skill.AGILITY, 60));
+			new SkillRequirement(Skill.AGILITY, 60));
 		add("Create a Yew Longbow from scratch around Seers' Village.",
-			new Requirement(Skill.WOODCUTTING, 60),
-			new Requirement(Skill.FLETCHING, 70),
-			new Requirement(Skill.CRAFTING, 10));
+			new SkillRequirement(Skill.WOODCUTTING, 60),
+			new SkillRequirement(Skill.FLETCHING, 70),
+			new SkillRequirement(Skill.CRAFTING, 10));
 		add("Enter the Seers' Village courthouse with piety turned on.",
-			new Requirement(Skill.PRAYER, 70),
-			new Requirement(Skill.DEFENCE, 70));
+			new SkillRequirement(Skill.PRAYER, 70),
+			new SkillRequirement(Skill.DEFENCE, 70),
+			new QuestRequirement(Quest.KINGS_RANSOM));
 		add("Charge a Water Orb.",
-			new Requirement(Skill.MAGIC, 56));
+			new SkillRequirement(Skill.MAGIC, 56));
 		add("Burn some Maple logs with a bow in Seers' Village.",
-			new Requirement(Skill.FIREMAKING, 65));
+			new SkillRequirement(Skill.FIREMAKING, 65));
 		add("Purchase and equip a granite body from Barbarian Assault.",
-			new Requirement(Skill.STRENGTH, 50),
-			new Requirement(Skill.DEFENCE, 50));
+			new SkillRequirement(Skill.STRENGTH, 50),
+			new SkillRequirement(Skill.DEFENCE, 50));
 		add("Have the Seers' estate agent decorate your house with Fancy Stone.",
-			new Requirement(Skill.CONSTRUCTION, 50));
+			new SkillRequirement(Skill.CONSTRUCTION, 50));
 		add("Smith an Adamant spear at Otto's Grotto.",
-			new Requirement(Skill.SMITHING, 75));
+			new SkillRequirement(Skill.SMITHING, 75),
+			new QuestRequirement(Quest.TAI_BWO_WANNAI_TRIO));
 
 		// ELITE
 		add("Pick some Dwarf weed from the herb patch at Catherby.",
-			new Requirement(Skill.FARMING, 79));
+			new SkillRequirement(Skill.FARMING, 79));
 		add("Fish and Cook 5 Sharks in Catherby using the Cooking gauntlets.",
-			new Requirement(Skill.FISHING, 76),
-			new Requirement(Skill.COOKING, 80));
+			new SkillRequirement(Skill.FISHING, 76),
+			new SkillRequirement(Skill.COOKING, 80),
+			new QuestRequirement(Quest.FAMILY_CREST));
 		add("Mix a Stamina Mix on top of the Seers' Village bank.",
-			new Requirement(Skill.HERBLORE, 86),
-			new Requirement(Skill.AGILITY, 60));
+			new SkillRequirement(Skill.HERBLORE, 86),
+			new SkillRequirement(Skill.AGILITY, 60));
 		add("Smith a Rune Hasta at Otto's Grotto.",
-			new Requirement(Skill.SMITHING, 90));
+			new SkillRequirement(Skill.SMITHING, 90));
 		add("Construct a Pyre ship from Magic Logs.(Requires Chewed Bones.)",
-			new Requirement(Skill.FIREMAKING, 85),
-			new Requirement(Skill.CRAFTING, 85));
+			new SkillRequirement(Skill.FIREMAKING, 85),
+			new SkillRequirement(Skill.CRAFTING, 85));
 		add("Teleport to Catherby.",
-			new Requirement(Skill.MAGIC, 87));
+			new SkillRequirement(Skill.MAGIC, 87),
+			new QuestRequirement(Quest.LUNAR_DIPLOMACY));
 	}
 }

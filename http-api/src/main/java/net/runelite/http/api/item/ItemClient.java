@@ -25,11 +25,14 @@
 package net.runelite.http.api.item;
 
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.Map;
 import javax.imageio.ImageIO;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
@@ -194,6 +197,40 @@ public class ItemClient
 
 			InputStream in = response.body().byteStream();
 			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), ItemPrice[].class);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
+	}
+
+	public Map<String, ItemStats> getStats() throws IOException
+	{
+		HttpUrl.Builder urlBuilder = RuneLiteAPI.getStaticBase().newBuilder()
+			.addPathSegment("item")
+			.addPathSegment("stats.min.json");
+
+		HttpUrl url = urlBuilder.build();
+
+		logger.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				logger.warn("Error looking up item stats: {}", response.message());
+				return null;
+			}
+
+			InputStream in = response.body().byteStream();
+			final Type typeToken = new TypeToken<Map<String, ItemStats>>()
+			{
+			}.getType();
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), typeToken);
 		}
 		catch (JsonParseException ex)
 		{

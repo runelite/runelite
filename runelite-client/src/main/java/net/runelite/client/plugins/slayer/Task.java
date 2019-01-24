@@ -56,6 +56,7 @@ enum Task
 		asList("Ayssal Sire"), asList()),
 	ABYSSAL_SIRE("Abyssal Sire", ItemID.ABYSSAL_ORPHAN),
 	ADAMANT_DRAGONS("Adamant dragons", ItemID.ADAMANTITE_BAR),
+	ALCHEMICAL_HYDRA("Alchemical Hydra", ItemID.IKKLE_HYDRA),
 	ANKOU("Ankou", ItemID.ANKOU_MASK),
 	AVIANSIES("Aviansies", ItemID.ENSOULED_AVIANSIE_HEAD,
 		asList("Kree'arra"), asList()),
@@ -110,8 +111,9 @@ enum Task
 	DARK_WARRIORS("Dark warriors", ItemID.BLACK_MED_HELM),
 	DERANGED_ARCHAEOLOGIST("Deranged Archaeologist", ItemID.ARCHAEOLOGISTS_DIARY),
 	DESERT_LIZARDS("Desert lizards", ItemID.DESERT_LIZARD,
-		asList("Small lizard", "Lizard"), asList()),
+		asList("Small lizard", "Lizard"), asList(), 4, ItemID.ICE_COOLER),
 	DOGS("Dogs", ItemID.GUARD_DOG, asList("Jackal"), asList()),
+	DRAKES("Drakes", ItemID.DRAKE),
 	DUST_DEVILS("Dust devils", ItemID.DUST_DEVIL,
 		asList("Choke devil"), asList()),
 	DWARVES("Dwarves", ItemID.DWARVEN_HELMET,
@@ -127,7 +129,7 @@ enum Task
 	FOSSIL_ISLAND_WYVERNS("Fossil island wyverns", ItemID.FOSSIL_ISLAND_WYVERN,
 		asList("Ancient wyvern", "Long-tailed wyvern", "Spitting wyvern", "Taloned wyvern"), asList()),
 	GARGOYLES("Gargoyles", ItemID.GARGOYLE,
-		asList("Dusk", "Dawn"), asList()),
+		asList("Dusk", "Dawn"), asList(), 9, ItemID.ROCK_HAMMER),
 	GENERAL_GRAARDOR("General Graardor", ItemID.PET_GENERAL_GRAARDOR),
 	GHOSTS("Ghosts", ItemID.GHOSTSPEAK_AMULET,
 		asList("Tortured soul"), asList()),
@@ -139,13 +141,14 @@ enum Task
 	GREEN_DRAGONS("Green dragons", ItemID.GREEN_DRAGON_MASK,
 		asList(), asList(NpcID.BABY_DRAGON_5194, NpcID.BABY_DRAGON_5872, NpcID.BABY_DRAGON_5873)),
 	GROTESQUE_GUARDIANS("Grotesque Guardians", ItemID.MIDNIGHT,
-		asList("Dusk", "Dawn"), asList()),
+		asList("Dusk", "Dawn"), asList(), 0, ItemID.ROCK_HAMMER),
 	HARPIE_BUG_SWARMS("Harpie bug swarms", ItemID.SWARM),
 	HELLHOUNDS("Hellhounds", ItemID.HELLHOUND,
 		asList("Cerberus"), asList()),
 	HILL_GIANTS("Hill giants", ItemID.ENSOULED_GIANT_HEAD,
 		asList("Cyclops"), asList()),
 	HOBGOBLINS("Hobgoblins", ItemID.HOBGOBLIN_GUARD),
+	HYDRAS("Hydras", ItemID.HYDRA),
 	ICEFIENDS("Icefiends", ItemID.ICE_DIAMOND),
 	ICE_GIANTS("Ice giants", ItemID.ICE_DIAMOND),
 	ICE_WARRIORS("Ice warriors", ItemID.MITHRIL_FULL_HELM_T),
@@ -182,7 +185,7 @@ enum Task
 	MOSS_GIANTS("Moss giants", ItemID.HILL_GIANT_CLUB,
 		asList("Bryophyta"), asList()),
 	MUTATED_ZYGOMITES("Mutated zygomites", ItemID.MUTATED_ZYGOMITE,
-		asList("Zygomite"), asList()),
+		asList("Zygomite"), asList(), 0, ItemID.FUNGICIDE_SPRAY_0),
 	NECHRYAEL("Nechryael", ItemID.NECHRYAEL,
 		asList("Nechryarch"), asList()),
 	OGRES("Ogres", ItemID.ENSOULED_OGRE_HEAD,
@@ -193,7 +196,7 @@ enum Task
 	RATS("Rats", ItemID.RATS_TAIL),
 	RED_DRAGONS("Red dragons", ItemID.BABY_RED_DRAGON,
 		asList(), asList(NpcID.BABY_DRAGON_244, NpcID.BABY_DRAGON_245, NpcID.BABY_DRAGON_246)),
-	ROCKSLUGS("Rockslugs", ItemID.ROCKSLUG),
+	ROCKSLUGS("Rockslugs", ItemID.ROCKSLUG, 4, ItemID.BAG_OF_SALT),
 	RUNE_DRAGONS("Rune dragons", ItemID.RUNITE_BAR),
 	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING),
 	SCORPIONS("Scorpions", ItemID.ENSOULED_SCORPION_HEAD,
@@ -210,6 +213,7 @@ enum Task
 	SPIRITUAL_CREATURES("Spiritual creatures", ItemID.DRAGON_BOOTS,
 		asList("Spiritual ranger", "Spiritual mage", "Spiritual warrior"), asList()),
 	STEEL_DRAGONS("Steel dragons", ItemID.STEEL_DRAGON),
+	SULPHUR_LIZARDS("Sulphur Lizards", ItemID.SULPHUR_LIZARD),
 	SUQAHS("Suqahs", ItemID.SUQAH_TOOTH),
 	TERROR_DOGS("Terror dogs", ItemID.TERROR_DOG),
 	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear Smoke Devil", ItemID.PET_SMOKE_DEVIL),
@@ -228,6 +232,7 @@ enum Task
 		asList("Werewolf"), asList()),
 	WOLVES("Wolves", ItemID.GREY_WOLF_FUR,
 		asList("Wolf"), asList()),
+	WYRMS("Wyrms", ItemID.WYRM),
 	ZILYANA("Zilyana", ItemID.PET_ZILYANA),
 	ZOMBIES("Zombies", ItemID.ZOMBIE_HEAD,
 		asList("Undead"), asList()),
@@ -239,9 +244,12 @@ enum Task
 
 	private final String name;
 	private final int itemSpriteId;
+
 	private final List<String> targetNames;
 	private final List<Integer> npcIds;
 	private final boolean checkAsTokens;
+	private final int weaknessThreshold;
+	private final int weaknessItem;
 
 	static
 	{
@@ -256,6 +264,20 @@ enum Task
 		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;
 		this.itemSpriteId = itemSpriteId;
+		this.weaknessThreshold = -1;
+		this.weaknessItem = -1;
+		this.targetNames = new ArrayList<>();
+		this.npcIds = new ArrayList<>();
+		this.checkAsTokens = true;
+	}
+
+	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem)
+	{
+		Preconditions.checkArgument(itemSpriteId >= 0);
+		this.name = name;
+		this.itemSpriteId = itemSpriteId;
+		this.weaknessThreshold = weaknessThreshold;
+		this.weaknessItem = weaknessItem;
 		this.targetNames = new ArrayList<>();
 		this.npcIds = new ArrayList<>();
 		this.checkAsTokens = true;
@@ -266,6 +288,8 @@ enum Task
 		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;
 		this.itemSpriteId = itemSpriteId;
+		this.weaknessThreshold = -1;
+		this.weaknessItem = -1;
 		this.targetNames = new ArrayList<>();
 		this.npcIds = new ArrayList<>();
 		this.checkAsTokens = checkAsTokens;
@@ -276,6 +300,20 @@ enum Task
 		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;
 		this.itemSpriteId = itemSpriteId;
+		this.weaknessThreshold = -1;
+		this.weaknessItem = -1;
+		this.targetNames = targetNames;
+		this.npcIds = npcIds;
+		this.checkAsTokens = true;
+	}
+
+	Task(String name, int itemSpriteId, List<String> targetNames, List<Integer> npcIds,  int weaknessThreshold, int weaknessItem)
+	{
+		Preconditions.checkArgument(itemSpriteId >= 0);
+		this.name = name;
+		this.itemSpriteId = itemSpriteId;
+		this.weaknessThreshold = weaknessThreshold;
+		this.weaknessItem = weaknessItem;
 		this.targetNames = targetNames;
 		this.npcIds = npcIds;
 		this.checkAsTokens = true;
@@ -286,6 +324,8 @@ enum Task
 		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;
 		this.itemSpriteId = itemSpriteId;
+		this.weaknessThreshold = -1;
+		this.weaknessItem = -1;
 		this.targetNames = targetNames;
 		this.npcIds = npcIds;
 		this.checkAsTokens = checkAsTokens;

@@ -324,4 +324,26 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "doubleTapDelay",
+		name = "Delay for double-tap ALT to hide",
+		description = "Decrease this number if you accidentally hide ground items often. (0 = Disabled)",
+		position = 25
+	)
+	default int doubleTapDelay()
+	{
+		return 250;
+	}
+
+	@ConfigItem(
+		keyName = "collapseEntries",
+		name = "Collapse ground item menu entries",
+		description = "Collapses ground item menu entries together and appends count",
+		position = 26
+	)
+	default boolean collapseEntries()
+	{
+		return false;
+	}
 }

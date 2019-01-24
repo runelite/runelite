@@ -100,6 +100,7 @@ public class ChatHistoryPlugin extends Plugin
 				.sender(message.getSender())
 				.value(nbsp(message.getValue()))
 				.runeLiteFormattedMessage(nbsp(message.getMessageNode().getRuneLiteFormatMessage()))
+				.timestamp(message.getTimestamp())
 				.build();
 
 			if (!messageQueue.contains(queuedMessage))

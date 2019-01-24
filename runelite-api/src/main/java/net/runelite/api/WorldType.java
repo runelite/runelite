@@ -61,6 +61,10 @@ public enum WorldType
 	 */
 	TOURNAMENT(1 << 25),
 	/**
+	 * Deadman Tournament world type.
+	 */
+	DEADMAN_TOURNAMENT(1 << 26),
+	/**
 	 * Deadman world type.
 	 */
 	DEADMAN(1 << 29),
@@ -76,8 +80,9 @@ public enum WorldType
 		this.mask = mask;
 	}
 
-	private static EnumSet<WorldType> PVP_WORLD_TYPES = EnumSet.of(
+	private static final EnumSet<WorldType> PVP_WORLD_TYPES = EnumSet.of(
 		DEADMAN,
+		DEADMAN_TOURNAMENT,
 		PVP,
 		PVP_HIGH_RISK,
 		SEASONAL_DEADMAN

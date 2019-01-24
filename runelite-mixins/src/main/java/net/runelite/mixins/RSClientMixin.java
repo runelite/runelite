@@ -74,6 +74,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -168,6 +169,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static boolean oldIsResized;
+
+	@Inject
+	static int skyboxColor;
 
 	@Inject
 	@Override
@@ -1380,5 +1384,26 @@ public abstract class RSClientMixin implements RSClient
 		setSpritePixels(null);
 
 		return array;
+	}
+
+	@Inject
+	@Override
+	public void setSkyboxColor(int newSkyboxColor)
+	{
+		skyboxColor = newSkyboxColor;
+	}
+
+	@Inject
+	@Override
+	public int getSkyboxColor()
+	{
+		return skyboxColor;
+	}
+
+	@Inject
+	@FieldHook("cycleCntr")
+	public static void onCycleCntrChanged(int idx)
+	{
+		client.getCallbacks().post(new ClientTick());
 	}
 }

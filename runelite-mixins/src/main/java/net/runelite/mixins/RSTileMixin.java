@@ -27,6 +27,7 @@ package net.runelite.mixins;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.Actor;
+import net.runelite.api.CollisionData;
 import net.runelite.api.CollisionDataFlag;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
@@ -59,7 +60,6 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSCollisionData;
 import net.runelite.rs.api.RSDeque;
 import net.runelite.rs.api.RSGameObject;
 import net.runelite.rs.api.RSItem;
@@ -394,7 +394,12 @@ public abstract class RSTileMixin implements RSTile
 			return false;
 		}
 
-		RSCollisionData[] collisionData = client.getCollisionMaps();
+		CollisionData[] collisionData = client.getCollisionMaps();
+		if (collisionData == null)
+		{
+			return false;
+		}
+
 		int z = this.getPlane();
 		int[][] collisionDataFlags = collisionData[z].getFlags();
 

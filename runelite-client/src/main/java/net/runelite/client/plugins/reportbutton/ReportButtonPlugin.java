@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.reportbutton;
 
 import com.google.inject.Provides;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
@@ -32,6 +34,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -56,6 +59,7 @@ public class ReportButtonPlugin extends Plugin
 	private static final ZoneId JAGEX = ZoneId.of("Europe/London");
 
 	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy");
 
 	private Instant loginTime;
 	private boolean ready;
@@ -152,15 +156,13 @@ public class ReportButtonPlugin extends Plugin
 			case LOGIN_TIME:
 				reportButton.setText(getLoginTime());
 				break;
+			case DATE:
+				reportButton.setText(getDate());
+				break;
 			case OFF:
 				reportButton.setText("Report");
 				break;
 		}
-	}
-
-	private String getLocalTime()
-	{
-		return LocalTime.now().format(DATE_TIME_FORMAT);
 	}
 
 	private String getLoginTime()
@@ -175,15 +177,25 @@ public class ReportButtonPlugin extends Plugin
 		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 
-	private String getUTCTime()
+	private static String getLocalTime()
+	{
+		return LocalTime.now().format(DATE_TIME_FORMAT);
+	}
+
+	private static String getUTCTime()
 	{
 		LocalTime time = LocalTime.now(UTC);
 		return time.format(DATE_TIME_FORMAT);
 	}
 
-	private String getJagexTime()
+	private static String getJagexTime()
 	{
 		LocalTime time = LocalTime.now(JAGEX);
 		return time.format(DATE_TIME_FORMAT);
+	}
+
+	private static String getDate()
+	{
+		return DATE_FORMAT.format(new Date());
 	}
 }

@@ -55,6 +55,8 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.LootManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.menus.MenuManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
@@ -67,7 +69,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 @Singleton
 @Slf4j
@@ -76,8 +77,6 @@ public class RuneLite
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
-	private static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
-	private static final File LOGS_FILE_NAME = new File(LOGS_DIR, "application");
 
 	@Getter
 	private static Injector injector;
@@ -194,9 +193,6 @@ public class RuneLite
 
 		PROFILES_DIR.mkdirs();
 
-		// Setup logger
-		MDC.put("logFileName", LOGS_FILE_NAME.getAbsolutePath());
-
 		if (options.has("debug"))
 		{
 			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
@@ -297,8 +293,21 @@ public class RuneLite
 
 	public void shutdown()
 	{
+		configManager.sendConfig();
 		clientSessionManager.shutdown();
 		discordService.close();
+
+		for (final Plugin plugin : pluginManager.getPlugins())
+		{
+			try
+			{
+				pluginManager.stopPlugin(plugin);
+			}
+			catch (PluginInstantiationException e)
+			{
+				log.warn("Failed to gracefully close plugin", e);
+			}
+		}
 	}
 
 	@VisibleForTesting

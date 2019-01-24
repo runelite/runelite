@@ -157,7 +157,7 @@ public interface ScreenshotConfig extends Config
 	@ConfigItem(
 		keyName = "valuableDrop",
 		name = "Screenshot Valuable drops",
-		description = "Configures whether or not screenshots are automatically taken when you receive a valuable/untradeable drop.",
+		description = "Configures whether or not screenshots are automatically taken when you receive a valuable drop.",
 		position = 11
 	)
 	default boolean screenshotValuableDrop()
@@ -166,10 +166,21 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "untradeableDrop",
+		name = "Screenshot Untradeable drops",
+		description = "Configures whether or not screenshots are automatically taken when you receive an untradeable drop.",
+		position = 12
+	)
+	default boolean screenshotUntradeableDrop()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
-		position = 12
+		position = 13
 	)
 	default Keybind hotkey()
 	{

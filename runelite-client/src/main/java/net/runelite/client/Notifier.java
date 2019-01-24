@@ -47,11 +47,12 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.OSType;
 
 @Singleton
@@ -68,7 +69,6 @@ public class Notifier
 	// Notifier properties
 	private static final Color FLASH_COLOR = new Color(255, 0, 0, 70);
 	private static final int FLASH_DURATION = 2000;
-	private static final Color MESSAGE_COLOR = Color.RED;
 
 	private final Client client;
 	private final String appName;
@@ -134,10 +134,15 @@ public class Notifier
 
 		if (runeLiteConfig.enableGameMessageNotification() && client.getGameState() == GameState.LOGGED_IN)
 		{
+			final String formattedMessage = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append(message)
+				.build();
+
 			chatMessageManager.queue(QueuedMessage.builder()
 				.type(ChatMessageType.GAME)
 				.name(appName)
-				.value(ColorUtil.wrapWithColorTag(message, MESSAGE_COLOR))
+				.runeLiteFormattedMessage(formattedMessage)
 				.build());
 		}
 

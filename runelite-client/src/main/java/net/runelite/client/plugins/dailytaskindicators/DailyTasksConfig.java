@@ -87,4 +87,26 @@ public interface DailyTasksConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "showFlax",
+		name = "Show Claimable Bow Strings",
+		description = "Show a message when you can convert noted flax to bow strings with the Flax keeper."
+	)
+	default boolean showFlax()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "showBonemeal",
+		name = "Show Claimable Bonemeal & Slime",
+		description = "Show a message when you can collect bonemeal & slime from Robin."
+	)
+	default boolean showBonemeal()
+	{
+		return true;
+	}
 }

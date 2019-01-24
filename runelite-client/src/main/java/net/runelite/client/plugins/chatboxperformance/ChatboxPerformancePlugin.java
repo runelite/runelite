@@ -26,7 +26,7 @@ package net.runelite.client.plugins.chatboxperformance;
 
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.WidgetType;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;

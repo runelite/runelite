@@ -24,9 +24,9 @@
  */
 package net.runelite.client.plugins.inventoryviewer;
 
+import javax.inject.Inject;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import javax.inject.Inject;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(

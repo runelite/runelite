@@ -58,7 +58,7 @@ public class HerbiboarMinimapOverlay extends Overlay
 			int finishId = plugin.getFinishId();
 			Set<Integer> shownTrailIds = plugin.getShownTrails();
 
-			for (TileObject tileObject : plugin.getTrails().keySet())
+			for (TileObject tileObject : plugin.getTrails().values())
 			{
 				int id = tileObject.getId();
 				Point minimapLocation = tileObject.getMinimapLocation();

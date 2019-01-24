@@ -88,6 +88,7 @@ enum TeleportLocationData
 	CRAFTING_GUILD(TeleportType.JEWELLERY, "Skills Necklace" , "Crafting Guild", new WorldPoint(2934, 3294, 0), "skills_necklace_teleport_icon.png"),
 	COOKING_GUILD(TeleportType.JEWELLERY, "Skills Necklace" , "Cooking Guild", new WorldPoint(3145, 3438, 0), "skills_necklace_teleport_icon.png"),
 	WOODCUTTING_GUILD(TeleportType.JEWELLERY, "Skills Necklace" , "Woodcutting Guild", new WorldPoint(1662, 3505, 0), "skills_necklace_teleport_icon.png"),
+	FARMING_GUILD(TeleportType.JEWELLERY, "Skills Necklace" , "Farming Guild", new WorldPoint(1249, 3717, 0), "skills_necklace_teleport_icon.png"),
 	EDGEVILLE(TeleportType.JEWELLERY, "Amulet of Glory" , "Edgeville", new WorldPoint(3087, 3496, 0), "amulet_of_glory_teleport_icon.png"),
 	KARAMJA(TeleportType.JEWELLERY, "Amulet of Glory" , "Karamja", new WorldPoint(2918, 3176, 0), "amulet_of_glory_teleport_icon.png"),
 	DRAYNOR_VILLAGE(TeleportType.JEWELLERY, "Amulet of Glory" , "Draynor Village", new WorldPoint(3105, 3251, 0), "amulet_of_glory_teleport_icon.png"),
@@ -131,6 +132,8 @@ enum TeleportLocationData
 	KHAREDSTS_MEMOIRS_HOSIDIUS(TeleportType.OTHER, "Kharedst's Memoirs", "Lunch by the Lancalliums (Hosidius)", new WorldPoint(1713, 3612, 0), "kharedsts_memoirs_teleport_icon.png"),
 	KHAREDSTS_MEMOIRS_PISCARILIUS(TeleportType.OTHER, "Kharedst's Memoirs", "The Fisher's Flute (Piscarilius)", new WorldPoint(1802, 3748, 0), "kharedsts_memoirs_teleport_icon.png"),
 	KHAREDSTS_MEMOIRS_SHAYZIEN(TeleportType.OTHER, "Kharedst's Memoirs", "Hearsay and History (Shayzien)", new WorldPoint(1476, 3580, 0), "kharedsts_memoirs_teleport_icon.png"),
+	KHAREDSTS_MEMOIRS_LOVAKENGJ(TeleportType.OTHER, "Kharedst's Memoirs", "Jewelry of Jubilation (Lovakengj)", new WorldPoint(1544, 3762, 0), "kharedsts_memoirs_teleport_icon.png"),
+	KHAREDSTS_MEMOIRS_ARCEUUS(TeleportType.OTHER, "Kharedst's Memoirs", "A Dark Disposition (Arceuus)", new WorldPoint(1680, 3746, 0), "kharedsts_memoirs_teleport_icon.png"),
 	PHARAOHS_SCEPTRE_JALSAVRAH(TeleportType.OTHER, "Pharaoh's Sceptre", "Jalsavrah (Pyramid Plunder)", new WorldPoint(3288, 2795, 0), "pharaohs_sceptre_teleport_icon.png"),
 	PHARAOHS_SCEPTRE_JALEUSTROPHOS(TeleportType.OTHER, "Pharaoh's Sceptre", "Jaleustrophos (Agility Pyramid)", new WorldPoint(3341, 2827, 0), "pharaohs_sceptre_teleport_icon.png"),
 	PHARAOHS_SCEPTRE_JALDRAOCHT(TeleportType.OTHER, "Pharaoh's Sceptre", "Jaldraocht (Desert Treasure Pyramid)", new WorldPoint(3232, 2897, 0), "pharaohs_sceptre_teleport_icon.png"),
@@ -157,6 +160,8 @@ enum TeleportLocationData
 	KANDARIN_HEADGEAR(TeleportType.OTHER, "Kandarin Headgear",  new WorldPoint(2729, 3411, 0), "kandarin_headgear_icon.png"),
 	WILDERNESS_SWORD(TeleportType.OTHER, "Wilderness Sword", new WorldPoint(3377, 3891, 0), "wilderness_sword_icon.png"),
 	WESTERN_BANNER(TeleportType.OTHER, "Western Banner",  new WorldPoint(2329, 3685, 0), "western_banner_icon.png"),
+	RADAS_BLESSING_MOUNT_KARUULM(TeleportType.OTHER, "Rada's Blessing",  new WorldPoint(1311, 3795, 0), "radas_blessing_icon.png"),
+	RADAS_BLESSING_WOODLANG(TeleportType.OTHER, "Rada's Blessing",  new WorldPoint(1553, 3454, 0), "radas_blessing_icon.png"),
 
 	// Scrolls
 	DIGSITE_SCROLL(TeleportType.SCROLL, "Digsite Teleport", new WorldPoint(3324, 3412, 0), "scroll_teleport_icon.png"),

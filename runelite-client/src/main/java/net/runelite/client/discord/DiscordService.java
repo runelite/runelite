@@ -41,21 +41,47 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.discord.DiscordEventHandlers;
 import net.runelite.discord.DiscordRPC;
 import net.runelite.discord.DiscordRichPresence;
+import net.runelite.discord.DiscordUser;
 
 @Singleton
 @Slf4j
 public class DiscordService implements AutoCloseable
 {
-	@Inject
-	private EventBus eventBus;
+	private final EventBus eventBus;
+	private final RuneLiteProperties runeLiteProperties;
+	private final ScheduledExecutorService executorService;
+	private final DiscordRPC discordRPC;
+
+	// Hold a reference to the event handlers to prevent the garbage collector from deleting them
+	private final DiscordEventHandlers discordEventHandlers;
 
 	@Inject
-	private RuneLiteProperties runeLiteProperties;
+	private DiscordService(
+		final EventBus eventBus,
+		final RuneLiteProperties runeLiteProperties,
+		final ScheduledExecutorService executorService)
+	{
 
-	@Inject
-	private ScheduledExecutorService executorService;
+		this.eventBus = eventBus;
+		this.runeLiteProperties = runeLiteProperties;
+		this.executorService = executorService;
 
-	private DiscordRPC discordRPC;
+		DiscordRPC discordRPC = null;
+		DiscordEventHandlers discordEventHandlers = null;
+
+		try
+		{
+			discordRPC = DiscordRPC.INSTANCE;
+			discordEventHandlers = new DiscordEventHandlers();
+		}
+		catch (UnsatisfiedLinkError e)
+		{
+			log.warn("Failed to load Discord library, Discord support will be disabled.");
+		}
+
+		this.discordRPC = discordRPC;
+		this.discordEventHandlers = discordEventHandlers;
+	}
 
 	/**
 	 * Initializes the Discord service, sets up the event handlers and starts worker thread that will poll discord
@@ -64,19 +90,12 @@ public class DiscordService implements AutoCloseable
 	 */
 	public void init()
 	{
-		log.info("Initializing Discord RPC service.");
-
-		try
+		if (discordEventHandlers == null)
 		{
-			discordRPC = DiscordRPC.INSTANCE;
-		}
-		catch (UnsatisfiedLinkError e)
-		{
-			log.warn("Failed to load Discord library, Discord support will be disabled.");
 			return;
 		}
 
-		final DiscordEventHandlers discordEventHandlers = new DiscordEventHandlers();
+		log.info("Initializing Discord RPC service.");
 		discordEventHandlers.ready = this::ready;
 		discordEventHandlers.disconnected = this::disconnected;
 		discordEventHandlers.errored = this::errored;
@@ -168,10 +187,14 @@ public class DiscordService implements AutoCloseable
 		}
 	}
 
-	private void ready()
+	private void ready(DiscordUser user)
 	{
-		log.info("Discord RPC service is ready.");
-		eventBus.post(new DiscordReady());
+		log.info("Discord RPC service is ready with user {}.", user.username);
+		eventBus.post(new DiscordReady(
+			user.userId,
+			user.username,
+			user.discriminator,
+			user.avatar));
 	}
 
 	private void disconnected(int errorCode, String message)
@@ -194,12 +217,12 @@ public class DiscordService implements AutoCloseable
 		eventBus.post(new DiscordSpectateGame(spectateSecret));
 	}
 
-	private void joinRequest(net.runelite.discord.DiscordJoinRequest joinRequest)
+	private void joinRequest(DiscordUser user)
 	{
 		eventBus.post(new DiscordJoinRequest(
-			joinRequest.userId,
-			joinRequest.username,
-			joinRequest.discriminator,
-			joinRequest.avatar));
+			user.userId,
+			user.username,
+			user.discriminator,
+			user.avatar));
 	}
 }

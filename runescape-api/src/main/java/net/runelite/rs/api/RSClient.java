@@ -454,6 +454,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	Map getChatLineMap();
 
+	@Import("messages")
+	@Override
+	RSIterableHashTable getMessages();
+
 	@Import("revision")
 	@Override
 	int getRevision();
@@ -493,9 +497,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("widgetRoot")
 	int getWidgetRoot();
 
-	@Import("mapAreaType")
+	@Import("mapElementConfigs")
 	@Override
-	RSArea[] getMapAreas();
+	RSMapElementConfig[] getMapElementConfigs();
 
 	@Import("mapscene")
 	@Override
@@ -790,6 +794,14 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	void setOculusOrbNormalSpeed(int state);
 
+	@Import("lookingAtX")
+	@Override
+	int getOculusOrbFocalPointX();
+
+	@Import("lookingAtY")
+	@Override
+	int getOculusOrbFocalPointY();
+
 	RSItem getLastItemDespawn();
 
 	void setLastItemDespawn(RSItem lastItemDespawn);
@@ -891,6 +903,9 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("graphicsPixelsHeight")
 	int getGraphicsPixelsHeight();
+
+	@Import("fillRectangle")
+	void RasterizerFillRectangle(int x, int y, int w, int h, int rgb);
 
 	@Import("startX")
 	int getStartX();

@@ -286,6 +286,10 @@ public class GroundMarkerPlugin extends Plugin
 		}
 
 		Tile target = client.getSelectedSceneTile();
+		if (target == null)
+		{
+			return;
+		}
 		markTile(target.getLocalLocation());
 	}
 

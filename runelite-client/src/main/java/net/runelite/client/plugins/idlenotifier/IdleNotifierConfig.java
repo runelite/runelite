@@ -107,4 +107,15 @@ public interface IdleNotifierConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "spec",
+		name = "Special Attack Energy Notification Threshold",
+		position = 8,
+		description = "The amount of spec energy reached to send a notification at. A value of 0 will disable notification."
+	)
+	default int getSpecEnergyThreshold()
+	{
+		return 0;
+	}
 }

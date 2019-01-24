@@ -250,7 +250,6 @@ public class FarmingTabPanel extends TabContentPanel
 					panel.getProgress().setForeground(state.getCropState().getColor().darker());
 					panel.getProgress().setMaximumValue(stages - 1);
 					panel.getProgress().setValue(stage);
-					panel.getProgress().update();
 				}
 				else
 				{

@@ -45,11 +45,13 @@ import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -71,8 +73,7 @@ public class ConfigManager
 	@Inject
 	EventBus eventBus;
 
-	@Inject
-	ScheduledExecutorService executor;
+	private final ScheduledExecutorService executor;
 
 	private AccountSession session;
 	private ConfigClient client;
@@ -80,10 +81,15 @@ public class ConfigManager
 
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
+	private final Map<String, String> pendingChanges = new HashMap<>();
 
-	public ConfigManager()
+	@Inject
+	public ConfigManager(ScheduledExecutorService scheduledExecutorService)
 	{
+		this.executor = scheduledExecutorService;
 		this.propertiesFile = getPropertiesFile();
+
+		executor.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
 	}
 
 	public final void switchSession(AccountSession session)
@@ -296,9 +302,9 @@ public class ConfigManager
 			return;
 		}
 
-		if (client != null)
+		synchronized (pendingChanges)
 		{
-			client.set(groupName + "." + key, value);
+			pendingChanges.put(groupName + "." + key, value);
 		}
 
 		Runnable task = () ->
@@ -339,9 +345,9 @@ public class ConfigManager
 			return;
 		}
 
-		if (client != null)
+		synchronized (pendingChanges)
 		{
-			client.unset(groupName + "." + key);
+			pendingChanges.put(groupName + "." + key, null);
 		}
 
 		Runnable task = () ->
@@ -379,7 +385,8 @@ public class ConfigManager
 			.filter(m -> m.getParameterCount() == 0)
 			.map(m -> new ConfigItemDescriptor(
 				m.getDeclaredAnnotation(ConfigItem.class),
-				m.getReturnType()
+				m.getReturnType(),
+				m.getDeclaredAnnotation(Range.class)
 			))
 			.sorted((a, b) -> ComparisonChain.start()
 				.compare(a.getItem().position(), b.getItem().position())
@@ -507,11 +514,15 @@ public class ConfigManager
 		{
 			return Instant.parse(str);
 		}
-		if (type == Keybind.class)
+		if (type == Keybind.class || type == ModifierlessKeybind.class)
 		{
 			String[] splitStr = str.split(":");
 			int code = Integer.parseInt(splitStr[0]);
 			int mods = Integer.parseInt(splitStr[1]);
+			if (type == ModifierlessKeybind.class)
+			{
+				return new ModifierlessKeybind(code, mods);
+			}
 			return new Keybind(code, mods);
 		}
 		return str;
@@ -552,5 +563,30 @@ public class ConfigManager
 			return k.getKeyCode() + ":" + k.getModifiers();
 		}
 		return object.toString();
+	}
+
+	public void sendConfig()
+	{
+		synchronized (pendingChanges)
+		{
+			if (client != null)
+			{
+				for (Map.Entry<String, String> entry : pendingChanges.entrySet())
+				{
+					String key = entry.getKey();
+					String value = entry.getValue();
+
+					if (Strings.isNullOrEmpty(value))
+					{
+						client.unset(key);
+					}
+					else
+					{
+						client.set(key, value);
+					}
+				}
+			}
+			pendingChanges.clear();
+		}
 	}
 }

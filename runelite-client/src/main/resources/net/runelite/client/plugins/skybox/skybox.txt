@@ -1,0 +1,944 @@
+// Copyright (c) 2019, Abex
+// Copyright (c) 2019, Psikoi <https://github.com/psikoi>
+// Copyright (c) 2019, Ron Young <https://github.com/raiyni>
+//
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// 1. Redistributions of source code must retain the above copyright notice, this
+//    list of conditions and the following disclaimer.
+// 2. Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+// ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+// Skybox format
+//
+// Comments are c-style; Starts with // and ends with the next newline
+//
+// The first expression must be
+// 		bounds rx1 ry1 rx2 ry2
+// which sets the bounds of the image
+//
+// Color is set with #RRGGBB or #RGB and persists until set again
+// Blending is set with b<blend radius>. It persists until set again. The number is in tiles, up to 13
+//
+//    p <0> <1> <2> <3>
+//    p all
+// Sets a mask for the planes to be altered by the next operation
+//
+// 		m <region X> <region Y>
+// Moves the cursor to the specified region. This does not change any chunks
+//
+// The following operations commit chunks to the map:
+//
+// 		r <region X> <region Y>
+// Sets all of the chunks in a region to the current color and blending
+//
+// 		R <region X 1> <region Y 1> <region X 2> <region Y 2>
+// Sets all of the chunks in [x1,x2] [y1,y2] are set to the current color and blending
+//
+// 		c <chunk X> <chunk Y>
+// Sets the chunk relative to the last region/region1 to the current color and blending
+//
+// 		C <chunk X 1> <chunk Y 1> <chunk X 2> <chunk Y 2>
+// Sets the chunks relative to the last region/region1 to the current color and blending
+
+bounds 18 39 60 162
+
+b 8
+
+#8AD2DF
+R 18 39 60 64
+
+#0f0f0f
+r 34 75
+
+#161616
+R 47 61 53 62
+
+#181818
+R 37 79 39 80
+
+#1a1a1a
+R 47 60 53 60
+
+#202020
+R 46 59 53 59
+
+#242424
+r 29 81
+
+#242e2c
+r 56 160
+
+#262626
+R 46 58 53 58
+r 24 79
+
+#271010
+R 46 74 48 75
+r 47 76
+
+#2a2f42
+r 38 75
+
+#2b2b2b
+R 46 57 53 57
+R 55 62 56 62
+r 45 151
+
+#2e2e2e
+R 36 147 37 147
+
+#323232
+R 46 56 52 56
+R 51 74 52 75
+R 54 75 55 76
+R 58 58 59 58
+r 59 59
+
+#332a15
+R 26 73 27 73
+R 27 80 27 81
+R 27 158 28 158
+R 29 84 29 85
+R 30 72 31 72
+R 36 153 36 154
+R 37 150 41 154
+R 39 147 42 149
+R 40 69 40 70
+R 40 81 40 82
+R 41 70 41 71
+R 41 79 42 79
+R 42 142 43 142
+R 42 150 42 152
+R 44 148 44 150
+R 44 152 49 153
+R 45 150 46 150
+R 46 161 47 161
+R 47 151 48 151
+R 48 150 49 150
+R 48 154 50 155
+R 49 77 49 79
+R 52 152 52 153
+r 20 155
+r 22 157
+r 24 154
+r 28 66
+r 30 80
+r 31 81
+r 34 77
+r 34 85
+r 35 73
+r 35 75
+r 35 156
+r 36 79
+r 36 146
+r 36 150
+r 37 73
+r 37 148
+r 38 147
+r 39 145
+r 41 75
+r 41 146
+r 42 154
+r 43 146
+r 43 149
+r 45 79
+r 45 148
+r 45 154
+r 46 149
+r 47 85
+r 47 87
+r 47 160
+r 48 148
+r 50 151
+r 51 147
+r 54 151
+r 54 153
+r 58 88
+
+#342b29
+R 50 144 51 144
+
+#353535
+R 42 81 42 83
+
+#383838
+R 46 55 52 55
+
+#393326
+R 51 77 51 79
+
+#3c3c3c
+r 30 73
+r 39 73
+r 49 81
+
+#3e3e3e
+r 48 52
+
+#3f384a
+R 25 156 26 157
+
+#40645d
+r 49 49
+
+#406e8c
+R 37 68 38 69
+r 26 154
+r 36 69
+
+#413d2d
+r 50 145
+
+#424242
+r 50 150
+
+#424940
+R 29 68 30 68
+R 38 158 39 158
+R 42 69 43 71
+R 45 68 45 69
+R 49 149 50 149
+R 55 151 56 151
+R 58 151 58 152
+r 39 72
+r 39 156
+r 51 150
+r 53 150
+r 53 154
+r 55 154
+r 56 150
+
+#474747
+R 50 146 51 146
+r 25 83
+r 27 83
+
+#49432a
+R 25 152 26 153
+R 51 148 52 149
+r 42 76
+r 46 148
+r 53 149
+r 54 148
+
+#496e53
+r 33 82
+
+#4a706a
+R 18 54 19 54
+R 20 54 21 56
+R 31 78 38 78
+R 34 47 34 48
+R 42 73 43 74
+R 54 50 56 50
+R 54 51 57 55
+R 56 58 56 59
+R 56 141 57 142
+R 57 57 57 58
+R 58 51 58 53
+r 43 72
+r 44 71
+r 53 55
+r 53 77
+
+#4a718f
+R 25 58 25 59
+r 26 58
+
+#4c463a
+R 58 146 58 147
+r 59 147
+
+#4f4f4f
+r 48 81
+
+#51649c
+r 37 59
+r 39 58
+
+#543232
+r 32 76
+r 36 75
+r 36 81
+r 46 81
+r 47 83
+
+#553d75
+R 26 60 28 60
+
+#57493e
+r 35 83
+
+#575757
+R 49 157 50 159
+R 52 150 52 151
+
+#576f6f
+r 56 159
+
+#606060
+r 43 75
+
+#64554b
+R 22 59 22 60
+R 23 58 23 59
+r 24 58
+
+#665742
+r 40 75
+
+#697387
+R 40 57 41 57
+r 36 57
+r 41 58
+
+#6a5151
+r 39 75
+
+#6d758e
+R 44 55 45 57
+r 43 56
+
+#707b98
+R 32 60 32 61
+r 33 61
+r 34 59
+
+#7fc7d9
+R 27 53 28 53
+R 27 58 28 58
+R 29 54 29 55
+R 38 44 40 44
+R 42 42 43 43
+R 42 49 43 50
+R 43 45 46 48
+R 44 49 45 49
+R 49 45 49 47
+R 50 43 51 44
+R 50 45 53 48
+R 51 49 52 51
+R 57 46 59 47
+r 28 57
+r 45 42
+r 52 44
+r 53 49
+r 54 48
+r 57 60
+
+#817843
+R 58 160 59 160
+
+#85857a
+R 45 70 46 71
+r 25 77
+r 27 77
+r 47 68
+
+#89a4ab
+r 44 51
+r 59 44
+
+#a4d3df
+R 25 75 26 75
+R 28 75 31 75
+r 28 74
+r 37 75
+r 38 71
+r 42 75
+r 47 73
+r 49 75
+
+#a5996a
+r 29 72
+
+#a5d5e1
+R 25 86 26 89
+R 28 76 31 76
+R 30 86 31 87
+R 32 86 33 86
+R 33 76 33 77
+R 40 73 41 74
+R 53 90 54 92
+R 54 74 55 74
+R 54 89 55 89
+r 26 66
+r 28 70
+r 30 83
+r 32 84
+r 36 71
+r 38 84
+r 40 71
+r 44 75
+r 44 79
+r 45 73
+r 45 85
+r 47 70
+r 53 78
+r 55 90
+r 57 154
+
+#b2b595
+r 40 67
+
+#b6cbd8
+R 22 61 28 62
+R 36 60 37 60
+R 42 59 42 61
+R 42 159 43 159
+R 43 58 45 61
+r 24 60
+r 29 60
+r 32 75
+r 44 155
+r 47 158
+r 53 76
+
+#dbd9db
+r 45 75
+
+// RegionID 4663
+m 18 55
+#4a706a
+C 0 0 5 7
+#527874
+C 6 0 7 1
+#668d8d
+C 6 2 7 7
+
+// RegionID 4664
+m 18 56
+#4a706a
+C 0 0 5 7
+C 6 2 7 7
+#608786
+C 6 0 7 1
+
+// RegionID 4919
+m 19 55
+C 6 0 7 1
+#668d8d
+C 0 0 5 1
+#8dbac1
+C 6 2 7 7
+#9dccd6
+C 0 2 5 7
+
+// RegionID 4920
+m 19 56
+#4a706a
+C 0 2 7 7
+#80aab0
+C 6 0 7 1
+#8dbac1
+C 0 0 5 1
+
+// RegionID 5689
+m 22 57
+#4a706a
+C 0 4 7 7
+
+// RegionID 5690
+m 22 58
+C 0 0 7 1
+#64554b
+C 0 2 7 7
+
+// RegionID 5945
+m 23 57
+#4a706a
+C 0 4 7 7
+
+// RegionID 5948
+m 23 60
+#64554b
+C 0 0 5 5
+C 0 6 3 7
+C 6 0 7 3
+#b6cbd8
+C 4 6 7 7
+C 6 4 7 5
+
+// RegionID 6201
+m 24 57
+#4a706a
+C 0 4 3 7
+
+// RegionID 6203
+m 24 59
+#4a718f
+C 4 2 7 7
+C 6 0 7 1
+#64554b
+C 0 0 3 7
+C 4 0 5 1
+
+// RegionID 6460
+m 25 60
+#4a718f
+C 0 0 5 1
+#553d75
+C 0 2 7 5
+C 4 6 7 7
+C 6 0 7 1
+#adc0cf
+C 2 6 3 7
+#b6cbd8
+C 0 6 1 7
+
+// RegionID 6710
+m 26 54
+#7fc7d9
+C 0 0 7 3
+
+// RegionID 6715
+m 26 59
+#4a718f
+C 0 0 5 7
+C 6 0 7 5
+b 5
+#4d020a
+C 5 5 8 8
+b 8
+
+// RegionID 6966
+m 27 54
+#7fc7d9
+C 0 0 7 3
+
+// RegionID 6971
+m 27 59
+#553d75
+C 2 6 7 7
+#5e2423
+C 0 6 1 7
+#7fc7d9
+C 0 0 7 3
+
+// RegionID 7222
+m 28 54
+C 0 0 7 3
+C 6 4 7 7
+
+// RegionID 7223
+m 28 55
+C 6 0 7 7
+
+// RegionID 7224
+m 28 56
+C 4 0 7 7
+
+// RegionID 7227
+m 28 59
+#553d75
+C 0 6 7 7
+#7fc7d9
+C 0 0 7 3
+C 4 4 7 5
+
+// RegionID 8508
+m 33 60
+#707b98
+C 0 0 1 3
+C 0 4 7 7
+#838aa1
+C 2 0 7 3
+
+// RegionID 9007
+m 35 47
+#3b4f4d
+C 2 6 5 7
+#4a706a
+C 0 0 7 5
+C 0 6 1 7
+C 6 6 7 7
+
+// RegionID 9008
+m 35 48
+#384947
+C 2 0 5 1
+#4a706a
+C 0 2 7 7
+C 0 0 1 1
+C 6 0 7 1
+
+// RegionID 10029
+m 39 45
+#7fc7d9
+C 0 0 7 1
+
+// RegionID 10040
+m 39 56
+#6d758e
+C 0 4 3 7
+
+// RegionID 10044
+m 39 60
+#b6cbd8
+C 0 6 7 7
+
+// RegionID 10055
+m 39 71
+#a4d3df
+C 0 0 1 7
+#a5d5e1
+C 2 0 7 7
+
+// RegionID 10285
+m 40 45
+#7fc7d9
+C 2 0 7 3
+C 4 4 7 5
+C 0 0 1 1
+C 6 6 7 7
+
+// RegionID 10555
+m 41 59
+#b6cbd8
+C 6 0 7 7
+
+// RegionID 10556
+m 41 60
+C 6 0 7 7
+
+// RegionID 10810
+m 42 58
+#869dcc
+C 0 0 3 3
+#b6cbd8
+C 0 4 7 7
+C 4 0 7 3
+
+// RegionID 10905
+m 42 153
+#332a15
+C 2 0 5 5
+C 6 0 7 1
+#a9bbc6
+C 6 2 7 3
+#b3c7d3
+C 0 2 1 5
+C 2 6 5 7
+C 6 4 7 5
+#b6cbd8
+C 0 0 1 1
+C 0 6 1 7
+C 6 6 7 7
+
+// RegionID 11062
+m 43 54
+C 6 6 7 7
+
+// RegionID 11065
+m 43 57
+#6d758e
+C 0 0 7 3
+#b6cbd8
+C 0 4 7 7
+
+// RegionID 11314
+m 44 50
+#89a4ab
+C 0 4 7 7
+
+// RegionID 11317
+m 44 53
+#b6cbd8
+C 4 6 7 7
+
+// RegionID 11318
+m 44 54
+C 0 4 1 7
+C 2 2 7 7
+C 4 0 7 1
+
+// RegionID 11418
+m 44 154
+#332a15
+C 0 0 7 3
+#acbfcb
+C 0 4 7 5
+#b6cbd8
+C 0 6 7 7
+
+// RegionID 11675
+m 45 155
+C 0 0 1 7
+
+// RegionID 11825
+m 46 49
+#7fc7d9
+C 0 0 7 3
+C 6 4 7 5
+
+// RegionID 11830
+m 46 54
+#b6cbd8
+C 6 0 7 5
+
+// RegionID 11836
+m 46 60
+#1a1a1a
+C 2 0 3 3
+C 4 0 7 7
+#b4c9d6
+C 2 4 3 5
+#b6cbd8
+C 0 0 1 7
+C 2 6 3 7
+
+// RegionID 11837
+m 46 61
+#161616
+C 6 0 7 9
+#b6cbd8
+C 0 0 5 9
+
+// RegionID 12081
+m 47 49
+#7fc7d9
+C 0 0 3 5
+
+// RegionID 12086
+m 47 54
+#b6cbd8
+C 0 0 1 5
+
+// RegionID 12113
+m 47 81
+#4f4f4f
+C 0 0 3 3
+C 4 4 7 7
+#543232
+C 0 4 3 7
+C 4 0 7 3
+
+// RegionID 12181
+m 47 149
+#332a15
+C 0 0 1 7
+#b6cbd8
+C 2 0 7 7
+
+// RegionID 12339
+m 48 51
+#3e3e3e
+C 0 6 7 7
+
+// RegionID 12437
+m 48 149
+#332a15
+C 2 0 7 7
+#b6cbd8
+C 0 0 1 7
+
+// RegionID 12444
+m 48 156
+#332a15
+C 0 0 7 3
+
+// RegionID 12595
+m 49 51
+#3e3e3e
+C 0 6 1 7
+
+// RegionID 12596
+m 49 52
+C 0 0 1 5
+
+// RegionID 12849
+m 50 49
+#40645d
+C 0 0 5 7
+#426660
+C 6 0 7 7
+
+// RegionID 13209
+m 51 153
+#3b3535
+C 0 0 3 3
+C 4 4 7 7
+#543232
+C 0 4 3 7
+C 4 0 7 3
+
+// RegionID 13210
+m 51 154
+#332a15
+C 0 0 3 7
+
+// RegionID 13618
+m 53 50
+#4a706a
+C 4 0 7 7
+#7fc7d9
+C 0 0 3 7
+
+// RegionID 13619
+m 53 51
+#4a706a
+C 4 0 7 7
+#7fc7d9
+C 0 0 3 7
+
+// RegionID 13620
+m 53 52
+#4a706a
+C 2 0 7 7
+
+// RegionID 13621
+m 53 53
+C 2 0 7 7
+
+// RegionID 13622
+m 53 54
+C 4 0 7 7
+
+// RegionID 13873
+m 54 49
+C 0 4 7 7
+#7fc7d9
+C 0 0 7 3
+
+// RegionID 14129
+m 55 49
+#4a706a
+C 0 4 7 7
+
+// RegionID 14385
+m 56 49
+C 0 4 7 7
+
+// RegionID 14641
+m 57 49
+#543232
+C 0 4 7 7
+
+// RegionID 14642
+m 57 50
+#4a706a
+C 0 6 7 7
+#543232
+C 0 0 7 5
+
+// RegionID 14651
+m 57 59
+#4a706a
+C 0 0 7 3
+#7fc7d9
+C 0 4 7 7
+
+// RegionID 14907
+m 58 59
+#323232
+C 0 0 7 3
+
+// RegionID 14908
+m 58 60
+#7fc7d9
+C 0 0 3 7
+
+// Demonic Gorillas
+#1A2B2B
+R 32 88 33 88
+
+// Kebos Mainland
+m 19 59
+#443C35
+C 4 0 16 12
+
+m 21 57
+C 0 4 8 24
+
+m 20 58
+C 0 6 8 8
+C 6 0 8 2
+C 6 4 8 6
+
+m 20 57
+C 4 6 8 8
+
+m 18 57
+#4A706A
+C 4 0 24 4
+
+// POH
+b 12
+m29 89
+
+// 29 89 p0 Basic wood
+// 29 89 p1 Basic stone
+// 29 89 p3 Fremennik-style wood
+p 0 1 3
+#8AD2DF
+C 0 0 7 15
+p 0
+#251B09
+c 3 0
+c 0 3
+c 2 3
+c 4 3
+c 6 3
+c 7 4
+p 1
+#484840
+c 3 0
+c 0 3
+c 2 3
+c 4 3
+c 6 3
+c 7 4
+
+// 29 89 p2 Whitewashed stone
+p 2
+#7fc7d9
+C 0 0 7 15
+p 2 3
+#2C2C29
+c 3 0
+c 0 3
+c 2 3
+c 4 3
+c 6 3
+c 7 4
+
+m30 89
+
+// 30 89 p0 Tropical wood
+p 0
+#7fc7d9
+C 0 0 7 15
+
+// 30 89 p1 Fancy stone
+// 30 89 p2 Deathly mansion
+p 1 2
+#8AD2DF
+C 0 0 7 15
+
+p 2
+#8AD2DF
+C 0 0 7 15
+
+p all
+#2C2C29
+c 3 0
+c 0 3
+c 2 3
+c 4 3
+c 6 3
+c 7 4

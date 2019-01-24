@@ -101,7 +101,7 @@ public class SessionManager
 			return;
 		}
 
-		openSession(session);
+		openSession(session, false);
 	}
 
 	private void saveSession()
@@ -134,18 +134,21 @@ public class SessionManager
 	 *
 	 * @param session session
 	 */
-	private void openSession(AccountSession session)
+	private void openSession(AccountSession session, boolean openSocket)
 	{
 		// If the ws session already exists, don't need to do anything
-		if (wsclient == null || !wsclient.checkSession(session))
+		if (openSocket)
 		{
-			if (wsclient != null)
+			if (wsclient == null || !wsclient.checkSession(session))
 			{
-				wsclient.close();
-			}
+				if (wsclient != null)
+				{
+					wsclient.close();
+				}
 
-			wsclient = new WSClient(eventBus, executor, session);
-			wsclient.connect();
+				wsclient = new WSClient(eventBus, executor, session);
+				wsclient.connect();
+			}
 		}
 
 		accountSession = session;
@@ -208,7 +211,7 @@ public class SessionManager
 		}
 
 		// Create new session
-		openSession(new AccountSession(login.getUid(), Instant.now()));
+		openSession(new AccountSession(login.getUid(), Instant.now()), true);
 
 		// Navigate to login link
 		LinkBrowser.browse(login.getOauthUrl());
@@ -224,7 +227,8 @@ public class SessionManager
 
 		// Open session, again, now that we have a username
 		// This triggers onSessionOpen
-		openSession(session);
+		// The socket is already opened here anyway so we pass true for openSocket
+		openSession(session, true);
 
 		// Save session to disk
 		saveSession();

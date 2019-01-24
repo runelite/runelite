@@ -30,6 +30,7 @@ import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -68,12 +69,15 @@ import net.runelite.http.api.examine.ExamineClient;
 public class ExaminePlugin extends Plugin
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+	private static final Pattern X_PATTERN = Pattern.compile("^\\d+ x ");
 
-	private final ExamineClient examineClient = new ExamineClient();
 	private final Deque<PendingExamine> pending = new ArrayDeque<>();
 	private final Cache<CacheKey, Boolean> cache = CacheBuilder.newBuilder()
 		.maximumSize(128L)
 		.build();
+
+	@Inject
+	private ExamineClient examineClient;
 
 	@Inject
 	private Client client;
@@ -103,17 +107,35 @@ public class ExaminePlugin extends Plugin
 		}
 
 		ExamineType type;
-		int id;
+		int id, quantity = -1;
 		switch (event.getMenuAction())
 		{
 			case EXAMINE_ITEM:
+			{
 				type = ExamineType.ITEM;
 				id = event.getId();
+
+				int widgetId = event.getWidgetId();
+				int widgetGroup = TO_GROUP(widgetId);
+				int widgetChild = TO_CHILD(widgetId);
+				Widget widget = client.getWidget(widgetGroup, widgetChild);
+				WidgetItem widgetItem = widget.getWidgetItem(event.getActionParam());
+				quantity = widgetItem != null ? widgetItem.getQuantity() : 1;
 				break;
+			}
 			case EXAMINE_ITEM_BANK_EQ:
+			{
 				type = ExamineType.ITEM_BANK_EQ;
-				id = event.getId();
+				int[] qi = findItemFromWidget(event.getWidgetId(), event.getActionParam());
+				if (qi == null)
+				{
+					log.debug("Examine for item with unknown widget: {}", event);
+					return;
+				}
+				quantity = qi[0];
+				id = qi[1];
 				break;
+			}
 			case EXAMINE_OBJECT:
 				type = ExamineType.OBJECT;
 				id = event.getId();
@@ -127,10 +149,9 @@ public class ExaminePlugin extends Plugin
 		}
 
 		PendingExamine pendingExamine = new PendingExamine();
-		pendingExamine.setWidgetId(event.getWidgetId());
-		pendingExamine.setActionParam(event.getActionParam());
 		pendingExamine.setType(type);
 		pendingExamine.setId(id);
+		pendingExamine.setQuantity(quantity);
 		pendingExamine.setCreated(Instant.now());
 		pending.push(pendingExamine);
 	}
@@ -174,7 +195,37 @@ public class ExaminePlugin extends Plugin
 
 		log.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
 
-		findExamineItem(pendingExamine);
+		// If it is an item, show the price of it
+		final ItemComposition itemComposition;
+		if (pendingExamine.getType() == ExamineType.ITEM || pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
+		{
+			final int itemId = pendingExamine.getId();
+			final int itemQuantity = pendingExamine.getQuantity();
+			itemComposition = itemManager.getItemComposition(itemId);
+
+			if (itemComposition != null)
+			{
+				final int id = itemManager.canonicalize(itemComposition.getId());
+				executor.submit(() -> getItemPrice(id, itemComposition, itemQuantity));
+			}
+		}
+		else
+		{
+			itemComposition = null;
+		}
+
+		// Don't submit examine info for tradeable items, which we already have from the RS item api
+		if (itemComposition != null && itemComposition.isTradeable())
+		{
+			return;
+		}
+
+		// Large quantities of items show eg. 100000 x Coins
+		if (type == ExamineType.ITEM && X_PATTERN.matcher(event.getMessage()).lookingAt())
+		{
+			return;
+		}
+
 		CacheKey key = new CacheKey(type, pendingExamine.getId());
 		Boolean cached = cache.getIfPresent(key);
 		if (cached != null)
@@ -186,113 +237,80 @@ public class ExaminePlugin extends Plugin
 		submitExamine(pendingExamine, event.getMessage());
 	}
 
-	private void findExamineItem(PendingExamine pendingExamine)
+	private int[] findItemFromWidget(int widgetId, int actionParam)
 	{
-		int quantity = 1;
-		int itemId = -1;
-
-		// Get widget
-		int widgetId = pendingExamine.getWidgetId();
 		int widgetGroup = TO_GROUP(widgetId);
 		int widgetChild = TO_CHILD(widgetId);
 		Widget widget = client.getWidget(widgetGroup, widgetChild);
 
 		if (widget == null)
 		{
-			return;
+			return null;
 		}
 
-		if (pendingExamine.getType() == ExamineType.ITEM)
+		if (WidgetInfo.EQUIPMENT.getGroupId() == widgetGroup)
 		{
-			WidgetItem widgetItem = widget.getWidgetItem(pendingExamine.getActionParam());
-			quantity = widgetItem != null ? widgetItem.getQuantity() : 1;
-			itemId = pendingExamine.getId();
+			Widget widgetItem = widget.getChild(1);
+			if (widgetItem != null)
+			{
+				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
+			}
 		}
-		else if (pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
+		else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
 		{
-			if (WidgetInfo.EQUIPMENT.getGroupId() == widgetGroup)
+			Widget widgetItem = widget.getChild(2);
+			if (widgetItem != null)
 			{
-				Widget widgetItem = widget.getChild(1);
-				if (widgetItem != null)
-				{
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
+				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
-			else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
+		}
+		else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
+			|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup)
+		{
+			Widget widgetItem = widget.getChild(actionParam);
+			if (widgetItem != null)
 			{
-				Widget widgetItem = widget.getChild(2);
-				if (widgetItem != null)
-				{
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
+				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
-			else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
-					|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup)
+		}
+		else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup)
+		{
+			Widget[] children = widget.getDynamicChildren();
+			if (actionParam < children.length)
 			{
-				Widget widgetItem = widget.getChild(pendingExamine.getActionParam());
-				if (widgetItem != null)
-				{
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
+				Widget widgetItem = children[actionParam];
+				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
-			else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup)
+		}
+		else if (WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup)
+		{
+			Widget[] children = widget.getDynamicChildren();
+			if (actionParam < children.length)
 			{
-				Widget[] children = widget.getDynamicChildren();
-				if (pendingExamine.getActionParam() < children.length)
-				{
-					Widget widgetItem = children[pendingExamine.getActionParam()];
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
+				Widget widgetItem = children[actionParam];
+				return new int[]{1, widgetItem.getItemId()};
 			}
-			else if (WidgetInfo.SHOP_ITEMS_CONTAINER.getGroupId() == widgetGroup)
+		}
+		else if (WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup)
+		{
+			Widget[] children = widget.getDynamicChildren();
+			if (actionParam < children.length)
 			{
-				Widget[] children = widget.getDynamicChildren();
-				if (pendingExamine.getActionParam() < children.length)
-				{
-					Widget widgetItem = children[pendingExamine.getActionParam()];
-					quantity = 1;
-					itemId = widgetItem.getItemId();
-				}
+				Widget widgetItem = children[actionParam];
+				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
-			else if (WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup)
+		}
+		else if (WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup)
+		{
+			Widget[] children = widget.getDynamicChildren();
+			if (actionParam < children.length)
 			{
-				Widget[] children = widget.getDynamicChildren();
-				if (pendingExamine.getActionParam() < children.length)
-				{
-					Widget widgetItem = children[pendingExamine.getActionParam()];
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
-			}
-			else if (WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup)
-			{
-				Widget[] children = widget.getDynamicChildren();
-				if (pendingExamine.getActionParam() < children.length)
-				{
-					Widget widgetItem = children[pendingExamine.getActionParam()];
-					quantity = widgetItem.getItemQuantity();
-					itemId = widgetItem.getItemId();
-				}
+				Widget widgetItem = children[actionParam];
+				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
 
-		if (itemId == -1)
-		{
-			return;
-		}
-
-		final int itemQuantity = quantity;
-		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-
-		if (itemComposition != null)
-		{
-			final int id = itemManager.canonicalize(itemComposition.getId());
-			executor.submit(() -> getItemPrice(id, itemComposition, itemQuantity));
-		}
+		return null;
 	}
 
 	private void getItemPrice(int id, ItemComposition itemComposition, int quantity)

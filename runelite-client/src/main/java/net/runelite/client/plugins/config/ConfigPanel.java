@@ -24,8 +24,8 @@
  */
 package net.runelite.client.plugins.config;
 
-import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.primitives.Ints;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -77,6 +77,8 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
+import net.runelite.client.config.ModifierlessKeybind;
+import net.runelite.client.config.Range;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -89,6 +91,7 @@ import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.Text;
 
 @Slf4j
 public class ConfigPanel extends PluginPanel
@@ -103,7 +106,6 @@ public class ConfigPanel extends PluginPanel
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
 	private static final String RUNELITE_PLUGIN = "RuneLite";
 	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
-	private static final Splitter COMMA_SPLITTER = Splitter.on(',');
 
 	private final PluginManager pluginManager;
 	private final ConfigManager configManager;
@@ -341,7 +343,18 @@ public class ConfigPanel extends PluginPanel
 			{
 				int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
 
-				SpinnerModel model = new SpinnerNumberModel(value, 0, Integer.MAX_VALUE, 1);
+				Range range = cid.getRange();
+				int min = 0, max = Integer.MAX_VALUE;
+				if (range != null)
+				{
+					min = range.min();
+					max = range.max();
+				}
+
+				// Config may previously have been out of range
+				value = Ints.constrainToRange(value, min, max);
+
+				SpinnerModel model = new SpinnerNumberModel(value, min, max, 1);
 				JSpinner spinner = new JSpinner(model);
 				Component editor = spinner.getEditor();
 				JFormattedTextField spinnerTextField = ((JSpinner.DefaultEditor) editor).getTextField();
@@ -495,11 +508,13 @@ public class ConfigPanel extends PluginPanel
 				item.add(box, BorderLayout.EAST);
 			}
 
-			if (cid.getType() == Keybind.class)
+			if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
 			{
-				Keybind startingValue = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), Keybind.class);
+				Keybind startingValue = configManager.getConfiguration(cd.getGroup().value(),
+					cid.getItem().keyName(),
+					(Class<? extends Keybind>) cid.getType());
 
-				HotkeyButton button = new HotkeyButton(startingValue);
+				HotkeyButton button = new HotkeyButton(startingValue, cid.getType() == ModifierlessKeybind.class);
 
 				button.addFocusListener(new FocusAdapter()
 				{
@@ -519,10 +534,17 @@ public class ConfigPanel extends PluginPanel
 		JButton resetButton = new JButton("Reset");
 		resetButton.addActionListener((e) ->
 		{
-			configManager.setDefaultConfiguration(config, true);
+			final int result = JOptionPane.showOptionDialog(resetButton, "Are you sure you want to reset this plugin's configuration?",
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"Yes", "No"}, "No");
 
-			// Reload configuration panel
-			openGroupConfigPanel(listItem, config, cd);
+			if (result == JOptionPane.YES_OPTION)
+			{
+				configManager.setDefaultConfiguration(config, true);
+
+				// Reload configuration panel
+				openGroupConfigPanel(listItem, config, cd);
+			}
 		});
 		mainPanel.add(resetButton);
 
@@ -630,7 +652,7 @@ public class ConfigPanel extends PluginPanel
 			return Collections.emptyList();
 		}
 
-		return COMMA_SPLITTER.splitToList(config);
+		return Text.fromCSV(config);
 	}
 
 	void savePinnedPlugins()
@@ -641,6 +663,18 @@ public class ConfigPanel extends PluginPanel
 			.collect(Collectors.joining(","));
 
 		configManager.setConfiguration(RUNELITE_GROUP_NAME, PINNED_PLUGINS_CONFIG_KEY, value);
+	}
+
+	void openConfigurationPanel(String configGroup)
+	{
+		for (PluginListItem pluginListItem : pluginList)
+		{
+			if (pluginListItem.getName().equals(configGroup))
+			{
+				openGroupConfigPanel(pluginListItem, pluginListItem.getConfig(), pluginListItem.getConfigDescriptor());
+				break;
+			}
+		}
 	}
 
 	@Override
