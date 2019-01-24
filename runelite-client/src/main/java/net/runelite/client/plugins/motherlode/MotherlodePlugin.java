@@ -31,6 +31,7 @@ import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -94,6 +95,8 @@ public class MotherlodePlugin extends Plugin
 
 	private static final int UPPER_FLOOR_HEIGHT = -500;
 
+	private static HashMap<Integer, Integer> inventorySnapshop = null;
+
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -108,6 +111,12 @@ public class MotherlodePlugin extends Plugin
 
 	@Inject
 	private MotherlodeGemOverlay motherlodeGemOverlay;
+
+	@Inject
+	private MotherlodeOreOverlay motherlodeOreOverlay;
+
+	@Inject
+	private MotherlodeProfitOverlay motherlodeProfitOverlay;
 
 	@Inject
 	private MotherlodeConfig config;
@@ -147,9 +156,13 @@ public class MotherlodePlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(rocksOverlay);
 		overlayManager.add(motherlodeGemOverlay);
+		overlayManager.add(motherlodeOreOverlay);
+		overlayManager.add(motherlodeProfitOverlay);
 		overlayManager.add(motherlodeSackOverlay);
 
 		session = new MotherlodeSession();
+		session.setupCollectedOres();
+
 		inMlm = checkInMlm();
 
 		if (inMlm)
@@ -164,6 +177,8 @@ public class MotherlodePlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlayManager.remove(rocksOverlay);
 		overlayManager.remove(motherlodeGemOverlay);
+		overlayManager.remove(motherlodeOreOverlay);
+		overlayManager.remove(motherlodeProfitOverlay);
 		overlayManager.remove(motherlodeSackOverlay);
 		session = null;
 		veins.clear();
@@ -437,9 +452,112 @@ public class MotherlodePlugin extends Plugin
 
 	private void refreshSackValues()
 	{
-		curSackSize = client.getVar(Varbits.SACK_NUMBER);
+
+		int newSackSize = client.getVar(Varbits.SACK_NUMBER);
+
+		if (newSackSize < curSackSize) // Checks if ores were removed from the sack
+		{
+			takeInventorySnapShot();
+		}
+
+		curSackSize = newSackSize;
+
 		boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
 		maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
+
+	}
+
+	private void takeInventorySnapShot()
+	{
+
+		if (inventorySnapshop != null)
+			inventorySnapshop.clear();
+		else
+			inventorySnapshop  = new HashMap<>(); // Reset the ignore list
+
+		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+
+		if (inventory != null)
+		{
+			Item[] items = inventory.getItems();
+
+			for (Item item : items)
+			{
+				int id = item.getId();
+				if (MLM_ORE_TYPES.contains(id))
+				{
+
+					// This builds an 'ignore' list for the following ore amount calculation
+					// Allowing any ores in the players inventory before they empty the sack to be ignored from the totals
+
+					int amount = item.getQuantity() + (inventorySnapshop.containsKey(id) ? inventorySnapshop.get(id) : 0);
+					inventorySnapshop.put(id, amount);
+
+				}
+			}
+		}
+	}
+
+	@Schedule(
+			period = 1,
+			unit = ChronoUnit.SECONDS
+	)
+	public void calculateOresCollected()
+	{
+
+		if (!inMlm || inventorySnapshop == null)
+			return;
+
+		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+
+		if (inventory != null)
+		{
+
+			Item[] items = inventory.getItems();
+
+			for (Item item : items)
+			{
+
+				int id = item.getId();
+
+				if (MLM_ORE_TYPES.contains(id))
+				{
+
+					int amount = item.getQuantity();
+
+					if (inventorySnapshop.containsKey(id))
+					{
+
+						int ignoreCount = inventorySnapshop.get(id);
+
+						if (ignoreCount >= amount)
+						{
+							ignoreCount -= amount;
+							amount = 0;
+						}
+						else if (ignoreCount > 0)
+						{
+							amount -= ignoreCount;
+							ignoreCount = 0;
+						}
+
+						if (ignoreCount > 0)
+							inventorySnapshop.put(id, ignoreCount);
+						else
+							inventorySnapshop.remove(id);
+
+					}
+
+					if (amount > 0)
+						session.incrementCollectedOre(item.getId(), item.getQuantity());
+
+				}
+			}
+		}
+
+		inventorySnapshop.clear();
+		inventorySnapshop = null; // We're done, so reset the ignore list
+
 	}
 
 	/**

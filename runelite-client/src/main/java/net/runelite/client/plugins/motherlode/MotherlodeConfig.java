@@ -111,4 +111,35 @@ public interface MotherlodeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "showCollectedOres",
+			name = "Show ores mined",
+			description = "Shows ores found during current mining session"
+	)
+	default boolean showOresFound()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showProfit1",
+			name = "Show total profit gained",
+			description = "Shows total profit from collected ores at GE prices"
+	)
+	default boolean showTotalProfit()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showProfit2",
+			name = "Show profit gained for each ore",
+			description = "Shows profit from collected ores at GE prices"
+	)
+	default boolean showOreProfit()
+	{
+		return true;
+	}
+
 }
