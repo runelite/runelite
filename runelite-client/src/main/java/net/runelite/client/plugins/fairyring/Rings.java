@@ -6,6 +6,6 @@ import static net.runelite.api.ObjectID.*;
 
 public class Rings
 {
-    static final Set<Integer> FAIRY_RING_IDS = ImmutableSet.of(FAIRY_RING_OUTSIDE_ZANARIS, FAIRY_RING_ZANARIS);
+	static final Set<Integer> FAIRY_RING_IDS = ImmutableSet.of(FAIRY_RING_OUTSIDE_ZANARIS, FAIRY_RING_ZANARIS);
 
 }
