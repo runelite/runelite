@@ -8,32 +8,13 @@ public interface KittenNotifierConfig extends Config
 {
 	@ConfigItem
 	(
-		keyName = "absolutelyNeeded",
-		name = "Notify only on Absolute Need",
-		description = "Only notify when kitten absolutely needs food or attention."
+		keyName = "kittenNeeds",
+		name = "Notify on Kitten Needs",
+		description = "Notify when your kitten needs attention or food."
 	)
-	default boolean absolutelyNeeded()
+	default boolean kittenNeeds()
 	{
-		return false;
+		return true;
 	}
 
-	@ConfigItem
-	(
-		keyName = "catOwned",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default boolean catOwned()
-	{
-		return false;
-	}
-
-	@ConfigItem
-	(
-		keyName = "catOwned",
-		name = "",
-		description = ""
-	)
-	void catOwned(Boolean bool);
 }
