@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.fairyring;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -39,5 +40,23 @@ public interface FairyRingConfig extends Config
 	default boolean autoOpen()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			keyName = "highlightRings",
+			name = "Highlight fairy ring hitboxes",
+			description = "Highlights the hitbox for the player to click on fairy rings"
+	)
+	default boolean highlightRings() { return true; }
+
+	@ConfigItem(
+			keyName = "overlayColor",
+			name = "Overlay Color",
+			description = "Color of Fairy ring overlay",
+			position = 3
+	)
+	default Color getOverlayColor()
+	{
+		return new Color(255, 110, 231);
 	}
 }

@@ -31,18 +31,35 @@ package net.runelite.client.plugins.fairyring;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.Data;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.DecorativeObjectChanged;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
+import net.runelite.api.events.GameObjectChanged;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GroundObjectChanged;
+import net.runelite.api.events.GroundObjectDespawned;
+import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.WallObjectChanged;
+import net.runelite.api.events.WallObjectDespawned;
+import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
@@ -58,6 +75,7 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
 @Slf4j
@@ -93,6 +111,15 @@ public class FairyRingPlugin extends Plugin
 	private Widget searchBtn;
 	private Collection<CodeWidgets> codes = null;
 
+	@Getter
+	private final Map<TileObject, Tile> rings = new HashMap<>();
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private FairyRingOverlay fairyRingOverlay;
+
 	@Data
 	private static class CodeWidgets
 	{
@@ -110,6 +137,35 @@ public class FairyRingPlugin extends Plugin
 	FairyRingConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(FairyRingConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(fairyRingOverlay);
+	}
+
+	@Override
+	protected  void shutDown() throws Exception
+	{
+		overlayManager.remove(fairyRingOverlay);
+		rings.clear();
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case HOPPING:
+			case LOGIN_SCREEN:
+			case LOGGED_IN:
+				break;
+			case LOADING:
+				rings.clear();
+				break;
+
+		}
 	}
 
 	@Subscribe
@@ -362,5 +418,92 @@ public class FairyRingPlugin extends Plugin
 			WidgetInfo.FAIRY_RING_LIST.getId(),
 			newHeight
 		);
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		onTileObject(event.getTile(), null, event.getGameObject());
+	}
+
+	@Subscribe
+	public void onGameObjectChanged(GameObjectChanged event)
+	{
+		onTileObject(event.getTile(), event.getPrevious(), event.getGameObject());
+	}
+
+	@Subscribe
+	public void onGameObjectDespawned(GameObjectDespawned event)
+	{
+		onTileObject(event.getTile(), event.getGameObject(), null);
+	}
+
+	@Subscribe
+	public void onGroundObjectSpawned(GroundObjectSpawned event)
+	{
+		onTileObject(event.getTile(), null, event.getGroundObject());
+	}
+
+	@Subscribe
+	public void onGroundObjectChanged(GroundObjectChanged event)
+	{
+		onTileObject(event.getTile(), event.getPrevious(), event.getGroundObject());
+	}
+
+	@Subscribe
+	public void onGroundObjectDespawned(GroundObjectDespawned event)
+	{
+		onTileObject(event.getTile(), event.getGroundObject(), null);
+	}
+
+	@Subscribe
+	public void onWallObjectSpawned(WallObjectSpawned event)
+	{
+		onTileObject(event.getTile(), null, event.getWallObject());
+	}
+
+	@Subscribe
+	public void onWallObjectChanged(WallObjectChanged event)
+	{
+		onTileObject(event.getTile(), event.getPrevious(), event.getWallObject());
+	}
+
+	@Subscribe
+	public void onWallObjectDespawned(WallObjectDespawned event)
+	{
+		onTileObject(event.getTile(), event.getWallObject(), null);
+	}
+
+	@Subscribe
+	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
+	{
+		onTileObject(event.getTile(), null, event.getDecorativeObject());
+	}
+
+	@Subscribe
+	public void onDecorativeObjectChanged(DecorativeObjectChanged event)
+	{
+		onTileObject(event.getTile(), event.getPrevious(), event.getDecorativeObject());
+	}
+
+	@Subscribe
+	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
+	{
+		onTileObject(event.getTile(), event.getDecorativeObject(), null);
+	}
+
+	private void onTileObject(Tile tile, TileObject oldObject, TileObject newObject)
+	{
+		rings.remove(oldObject);
+
+		if (newObject == null)
+		{
+			return;
+		}
+
+		if (Rings.FAIRY_RING_IDS.contains(newObject.getId()))
+		{
+			rings.put(newObject, tile);
+		}
 	}
 }

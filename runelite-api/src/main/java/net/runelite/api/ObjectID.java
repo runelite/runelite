@@ -15723,6 +15723,7 @@ public final class ObjectID
 	public static final int CORPSE_29492 = 29492;
 	public static final int CORPSE_29493 = 29493;
 	public static final int SKELETON_29494 = 29494;
+	public static final int FAIRY_RING_OUTSIDE_ZANARIS = 29495;
 	public static final int FAIRY_RING_29496 = 29496;
 	public static final int FAIRY_RING_29497 = 29497;
 	public static final int FAIRY_RING_29498 = 29498;
@@ -15787,6 +15788,7 @@ public final class ObjectID
 	public static final int FAIRY_RING_29557 = 29557;
 	public static final int FAIRY_RING_29558 = 29558;
 	public static final int FAIRY_RING_29559 = 29559;
+	public static final int FAIRY_RING_ZANARIS = 29560;
 	public static final int FAIRY_RING_29561 = 29561;
 	public static final int FAIRY_RING_29562 = 29562;
 	public static final int FAIRY_RING_29563 = 29563;
