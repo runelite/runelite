@@ -25,13 +25,17 @@
 package net.runelite.client.plugins.kingdomofmiscellania;
 
 import com.google.common.collect.ImmutableSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import static net.runelite.api.ItemID.TEAK_CHEST;
-import net.runelite.api.VarPlayer;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -67,6 +71,12 @@ public class KingdomPlugin extends Plugin
 	private int favor = 0, coffer = 0, primaryProfit = 0, secondaryProfit = 0, estimatedNetProfit = 0;
 
 	@Getter
+	private int workers = 10;
+
+	@Getter
+	private HashMap <ResourceType, Integer> workerDistribution = new HashMap();
+
+	@Getter
 	private String primaryResource = "None", secondaryResource = "None";
 
 	private KingdomCounter counter;
@@ -96,10 +106,11 @@ public class KingdomPlugin extends Plugin
 
 	private void processInfobox()
 	{
-		if (client.getGameState() == GameState.LOGGED_IN && hasCompletedQuest() && isInKingdom())
+		if (client.getGameState() == GameState.LOGGED_IN && hasCompletedQuests() && isInKingdom())
 		{
 			addKingdomInfobox();
-			calculateRewards();
+			calculateMaxRewards();
+			//getWorkerDistribution();
 		}
 		else
 		{
@@ -108,13 +119,80 @@ public class KingdomPlugin extends Plugin
 
 	}
 
-	private void calculateRewards()
+	private void getWorkerDistribution()
+	{
+		int hardwoodButton = client.getVar(Varbits.KINGDOM_WORKERS_HARDWOOD_BUTTON);
+		int cookedFishButton = client.getVar(Varbits.KINGDOM_WORKERS_FISH_COOKED_BUTTON);
+		int herbsButton = client.getVar(Varbits.KINGDOM_WORKERS_HERBS_BUTTON);
+
+		ResourceType herbsOrFlax = herbsButton == 0 ? ResourceType.HERBS : ResourceType.FLAX;
+		ResourceType cookedOrRaw = cookedFishButton == 0 ? ResourceType.RAW_FISH : ResourceType.COOKED_FISH;
+		ResourceType hardwoodType = hardwoodButton == 0 ? ResourceType.HARDWOOD_MAHOGANY
+			: hardwoodButton == 1 ? ResourceType.HARDWOOD_TEAK : ResourceType.HARDWOOD_BOTH;
+
+		// Clear to ignore inactive resources
+		workerDistribution.clear();
+		workerDistribution.put(herbsOrFlax, client.getVar(Varbits.KINGDOM_WORKERS_HERBS));
+		workerDistribution.put(cookedOrRaw, client.getVar(Varbits.KINGDOM_WORKERS_FISHING));
+		workerDistribution.put(hardwoodType, client.getVar(Varbits.KINGDOM_WORKERS_HARDWOOD));
+		workerDistribution.put(ResourceType.MINING, client.getVar(Varbits.KINGDOM_WORKERS_MINING));
+		workerDistribution.put(ResourceType.WOOD, client.getVar(Varbits.KINGDOM_WORKERS_WOOD));
+		workerDistribution.put(ResourceType.FARM, client.getVar(Varbits.KINGDOM_WORKERS_FARM));
+
+		calculateCurrentRewards();
+	}
+
+	private void calculateCurrentRewards()
+	{
+		int workersPerResource, amount = 0;
+		double salary, rewardQuantity;
+
+		if (workers == 10)
+		{
+			salary = coffer >= 500000 ? 50000 : (double) coffer / 10;
+			log.debug("salary: " + salary);
+		}
+		else
+		{
+			salary = coffer >= 750000 ? 75000 : (double) coffer / 10;
+			log.debug("salary: " + salary);
+		}
+
+		// Salary after favor cut
+		log.debug("salary: " + salary);
+		salary = (double) getFavorPercent(favor) / 100 * salary;
+		// Salary per employee
+		salary = salary / workers;
+		log.debug("salary: " + salary);
+
+		Iterator it = workerDistribution.entrySet().iterator();
+		while (it.hasNext())
+		{
+			Map.Entry pairs = (Map.Entry) it.next();
+			log.debug(pairs.getKey() + " = " + pairs.getValue());
+
+			workersPerResource = (int) pairs.getValue();
+			log.debug("workers: " + workersPerResource);
+			for (Reward reward : Reward.values())
+			{
+				if (reward.getType() == pairs.getKey())
+				{
+					// number of workers multiplied by their salary divided by the cost of the rewards
+					rewardQuantity = workersPerResource * salary / reward.getCost();
+					log.debug("Reward: " + reward.getName() + ", Quantity: " + rewardQuantity);
+					amount += rewardQuantity * itemManager.getItemPrice(reward.getRewardId());
+				}
+			}
+		}
+
+	}
+
+	private void calculateMaxRewards()
 	{
 		ResourceType type = ResourceType.FARM;
 		double amount = 0;
 		for (Reward reward : Reward.values())
 		{
-			log.debug("Reward: " + reward.getName());
 			if (reward.getType() != type)
 			{
 				// reset amount
@@ -122,7 +200,8 @@ public class KingdomPlugin extends Plugin
 				type = reward.getType();
 			}
 			amount += reward.getQuantity() * itemManager.getItemPrice(reward.getRewardId());
-			log.debug("amount: " + amount);
+			log.debug("Reward: " + reward.getName() + ", Quantity: " + reward.getQuantity() + ", Amount: " + amount);
+			log.debug("RID: " + reward.getRewardId() + ", Item Price: " + itemManager.getItemPrice(reward.getRewardId()));
 			if (amount > primaryProfit)
 			{
 				primaryProfit = (int) Math.round(amount);
@@ -168,9 +247,15 @@ public class KingdomPlugin extends Plugin
 				&& KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
 	}
 
-	private boolean hasCompletedQuest()
+	private boolean hasCompletedQuests()
 	{
-		return client.getVar(VarPlayer.THRONE_OF_MISCELLANIA) > 0;
+		if (Quest.ROYAL_TROUBLE.getState(client) == QuestState.FINISHED)
+		{
+			workers = 15;
+		}
+
+		log.debug("Number of available workers: " + workers);
+		return Quest.THRONE_OF_MISCELLANIA.getState(client) == QuestState.FINISHED;
 	}
 
 	static int getFavorPercent(int favor)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, RyBo <https://github.com/RyBo>
+ * Copyright (c) 2019, RyBo <https://github.com/RyBo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,4 +43,5 @@ enum ResourceType
 	FARM("Farm");
 
 	private String type;
+
 }
