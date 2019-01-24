@@ -127,7 +127,7 @@ class Skybox
 					{
 						if (!expr.startsWith("bounds"))
 						{
-							throw new IllegalArgumentException("Expceted bounds (" + filename + ":" + lineNo + ")");
+							throw new IllegalArgumentException("Expected bounds (" + filename + ":" + lineNo + ")");
 						}
 						x1 = Integer.parseInt(m.group("bx1")) * 8;
 						y1 = Integer.parseInt(m.group("by1")) * 8;
