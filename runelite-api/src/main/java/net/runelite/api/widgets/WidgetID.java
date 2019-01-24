@@ -675,7 +675,7 @@ public class WidgetID
 
 	static class WorldSwitcher
 	{
-		static final int WORLD_LIST = 15;
+		static final int WORLD_LIST = 16;
 	}
 
 	static class FossilOxygen
