@@ -53,6 +53,13 @@ public class Experience
 	public static final int MAX_COMBAT_LEVEL = 126;
 
 	/**
+	 * Multipliers used in calculating combat level.
+	 */
+	public static final double ATT_STR_MULT = 0.325;
+	public static final double DEF_HP_MULT = 0.25;
+	public static final double RANGE_MAGIC_MULT = 0.325;
+
+	/**
 	 * The total experience required for each skill level.
 	 */
 	private static final int[] XP_FOR_LEVEL = new int[MAX_VIRT_LEVEL];
@@ -146,11 +153,11 @@ public class Experience
 		int defenceLevel, int hitpointsLevel, int magicLevel,
 		int rangeLevel, int prayerLevel)
 	{
-		double base = 0.25 * (defenceLevel + hitpointsLevel + floor(prayerLevel / 2));
+		double base = DEF_HP_MULT * (defenceLevel + hitpointsLevel + floor(prayerLevel / 2));
 
-		double melee = 0.325 * (attackLevel + strengthLevel);
-		double range = 0.325 * (floor(rangeLevel / 2) + rangeLevel);
-		double magic = 0.325 * (floor(magicLevel / 2) + magicLevel);
+		double melee = ATT_STR_MULT * (attackLevel + strengthLevel);
+		double range = RANGE_MAGIC_MULT * (floor(rangeLevel / 2) + rangeLevel);
+		double magic = RANGE_MAGIC_MULT * (floor(magicLevel / 2) + magicLevel);
 
 		return base + max(melee, max(range, magic));
 	}

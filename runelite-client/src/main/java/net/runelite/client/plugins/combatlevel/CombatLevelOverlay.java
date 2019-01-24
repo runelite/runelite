@@ -27,6 +27,9 @@ package net.runelite.client.plugins.combatlevel;
 import com.google.common.annotations.VisibleForTesting;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import static net.runelite.api.Experience.ATT_STR_MULT;
+import static net.runelite.api.Experience.DEF_HP_MULT;
+import static net.runelite.api.Experience.RANGE_MAGIC_MULT;
 import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -44,10 +47,7 @@ class CombatLevelOverlay extends Overlay
 {
 	private static final Color COMBAT_LEVEL_COLOUR = new Color(0xff981f);
 	private static final double PRAY_MULT = 0.125;
-	static final double ATT_STR_MULT = 0.325;
-	static final double DEF_HP_MULT = 0.25;
 	static final double RANGE_MAGIC_LEVEL_MULT = 1.5;
-	static final double RANGE_MAGIC_MULT = 0.325;
 
 	private final Client client;
 	private final CombatLevelConfig config;
