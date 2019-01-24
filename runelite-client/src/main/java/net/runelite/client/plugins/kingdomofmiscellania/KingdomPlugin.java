@@ -41,12 +41,14 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
+
 @PluginDescriptor(
-		name = "Kingdom of Miscellania",
-		description = "Show amount of favor when inside Miscellania and calculate most profitable rewards",
-		tags = {"favor", "favour", "managing", "overlay"},
-		enabledByDefault = false
+	name = "Kingdom of Miscellania",
+	description = "Show amount of favor when inside Miscellania and calculate most profitable rewards",
+	tags = {"favor", "favour", "managing", "overlay"},
+	enabledByDefault = false
 )
+
 @Slf4j
 public class KingdomPlugin extends Plugin
 {
@@ -120,7 +122,7 @@ public class KingdomPlugin extends Plugin
 				type = reward.getType();
 			}
 			amount += reward.getQuantity() * itemManager.getItemPrice(reward.getRewardId());
-			log.debug("amonunt: " + amount);
+			log.debug("amount: " + amount);
 			if (amount > primaryProfit)
 			{
 				primaryProfit = (int) Math.round(amount);

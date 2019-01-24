@@ -25,10 +25,12 @@
 package net.runelite.client.plugins.kingdomofmiscellania;
 
 import lombok.Getter;
+import lombok.AllArgsConstructor;
 import net.runelite.api.ItemID;
 
 @Getter
-public enum Reward
+@AllArgsConstructor
+enum Reward
 {
 	COAL("Coal", ResourceType.MINING, 546, ItemID.COAL),
 	FLAX("Flax", ResourceType.FLAX, 1250, ItemID.FLAX),
@@ -52,17 +54,9 @@ public enum Reward
 	LANTADYME("Lantadyme", ResourceType.HERBS, 3.9, ItemID.GRIMY_LANTADYME),
 	DWARF_WEED("Dwarf weed", ResourceType.HERBS, 4.1, ItemID.GRIMY_DWARF_WEED);
 
-	private final ResourceType type;
 	private final String name;
+	private final ResourceType type;
 	private final double quantity;
 	private final int rewardId;
-
-	Reward(String name, ResourceType type, double quantity, int rewardId)
-	{
-		this.name = name;
-		this.type = type;
-		this.quantity = quantity;
-		this.rewardId = rewardId;
-	}
 
 }

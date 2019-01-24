@@ -25,9 +25,11 @@
 package net.runelite.client.plugins.kingdomofmiscellania;
 
 import lombok.Getter;
+import lombok.AllArgsConstructor;
 
 @Getter
-public enum ResourceType
+@AllArgsConstructor
+enum ResourceType
 {
 	MINING("Mining"),
 	HERBS("Herbs"),
@@ -41,9 +43,4 @@ public enum ResourceType
 	FARM("Farm");
 
 	private String type;
-
-	ResourceType(String type)
-	{
-		this.type = type;
-	}
 }
