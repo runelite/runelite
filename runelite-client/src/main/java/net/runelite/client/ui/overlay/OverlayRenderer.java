@@ -41,6 +41,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.widgets.Widget;
@@ -119,7 +120,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 		if (client.isMenuOpen())
 		{
-			menuEntries = null;
 			return;
 		}
 
@@ -130,7 +130,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		System.arraycopy(menuEntries, 0, newEntries, 1, menuEntries.length); // Add overlay menu entries
 		System.arraycopy(clientMenuEntries, 1, newEntries, menuEntries.length + 1, clientMenuEntries.length - 1); // Add remaining menu entries
 		client.setMenuEntries(newEntries);
+	}
 
+	@Subscribe
+	public void onBeforeRender(BeforeRender event)
+	{
 		menuEntries = null;
 	}
 
