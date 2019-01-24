@@ -26,8 +26,10 @@
 package net.runelite.cache.definitions;
 
 import java.util.Map;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
+@EqualsAndHashCode
 @RequiredArgsConstructor
 public class NpcDefinition
 {

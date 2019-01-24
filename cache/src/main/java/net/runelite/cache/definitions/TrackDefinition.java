@@ -24,6 +24,9 @@
  */
 package net.runelite.cache.definitions;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode
 public class TrackDefinition
 {
 	public byte[] midi; // midi file contents

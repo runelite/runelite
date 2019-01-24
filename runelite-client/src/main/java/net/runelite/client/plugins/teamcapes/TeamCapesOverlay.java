@@ -29,8 +29,11 @@ import java.awt.Graphics2D;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ImageComponent;
@@ -46,6 +49,7 @@ public class TeamCapesOverlay extends Overlay
 	@Inject
 	private TeamCapesOverlay(TeamCapesPlugin plugin, TeamCapesConfig config, ItemManager manager)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;
@@ -53,6 +57,7 @@ public class TeamCapesOverlay extends Overlay
 		this.manager = manager;
 		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
 		panelComponent.setWrapping(4);
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Teamcapes overlay"));
 	}
 
 	@Override

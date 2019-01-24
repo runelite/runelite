@@ -24,6 +24,9 @@
  */
 package net.runelite.cache.definitions;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode
 public class FramemapDefinition
 {
 	public int id;

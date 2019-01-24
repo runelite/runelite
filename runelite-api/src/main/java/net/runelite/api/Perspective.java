@@ -79,6 +79,7 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
+	@Nullable
 	public static Point localToCanvas(@Nonnull Client client, @Nonnull LocalPoint point, int plane)
 	{
 		return localToCanvas(client, point, plane, 0);
@@ -95,6 +96,7 @@ public class Perspective
 	 * @return a {@link Point} on screen corresponding to the position in
 	 * 3D-space
 	 */
+	@Nullable
 	public static Point localToCanvas(@Nonnull Client client, @Nonnull LocalPoint point, int plane, int zOffset)
 	{
 		final int tileHeight = getTileHeight(client, point, plane);

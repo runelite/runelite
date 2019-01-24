@@ -29,13 +29,14 @@ import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import lombok.Getter;
 import net.runelite.client.config.Keybind;
+import net.runelite.client.config.ModifierlessKeybind;
 
 public class HotkeyButton extends JButton
 {
 	@Getter
 	private Keybind value;
 
-	public HotkeyButton(Keybind value)
+	public HotkeyButton(Keybind value, boolean modifierless)
 	{
 		setValue(value);
 		addActionListener(e ->
@@ -47,7 +48,14 @@ public class HotkeyButton extends JButton
 			@Override
 			public void keyPressed(KeyEvent e)
 			{
-				setValue(new Keybind(e));
+				if (modifierless)
+				{
+					setValue(new ModifierlessKeybind(e));
+				}
+				else
+				{
+					setValue(new Keybind(e));
+				}
 			}
 		});
 	}

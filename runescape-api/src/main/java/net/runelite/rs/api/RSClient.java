@@ -497,9 +497,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("widgetRoot")
 	int getWidgetRoot();
 
-	@Import("mapAreaType")
+	@Import("mapElementConfigs")
 	@Override
-	RSArea[] getMapAreas();
+	RSMapElementConfig[] getMapElementConfigs();
 
 	@Import("mapscene")
 	@Override

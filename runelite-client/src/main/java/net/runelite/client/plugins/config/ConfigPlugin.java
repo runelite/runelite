@@ -28,16 +28,21 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import net.runelite.api.MenuAction;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
@@ -47,6 +52,9 @@ import net.runelite.client.util.ImageUtil;
 )
 public class ConfigPlugin extends Plugin
 {
+	@Inject
+	private ClientUI clientUI;
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -95,5 +103,31 @@ public class ConfigPlugin extends Plugin
 	public void onPluginChanged(PluginChanged event)
 	{
 		SwingUtilities.invokeLater(configPanel::refreshPluginList);
+	}
+
+	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
+	{
+		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
+		if (overlayMenuEntry.getMenuAction() == MenuAction.RUNELITE_OVERLAY_CONFIG)
+		{
+			Overlay overlay = overlayMenuClicked.getOverlay();
+			Plugin plugin = overlay.getPlugin();
+			if (plugin == null)
+			{
+				return;
+			}
+
+			// Expand config panel for plugin
+			PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
+			SwingUtilities.invokeLater(() ->
+			{
+				if (!navButton.isSelected())
+				{
+					navButton.getOnSelect().run();
+				}
+				configPanel.openConfigurationPanel(descriptor.name());
+			});
+		}
 	}
 }
