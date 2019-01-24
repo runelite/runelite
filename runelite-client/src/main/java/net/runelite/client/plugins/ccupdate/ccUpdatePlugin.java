@@ -20,7 +20,6 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.barbarianassault.BarbarianAssaultConfig;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -70,27 +69,27 @@ public class ccUpdatePlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		previousMembersInClan = null;
-			socket = IO.socket("https://baservicesserver.now.sh");
-			socket.on("new", objects -> {
-				JSONArray newRows = (JSONArray) objects[0];
-				for (int i = 0; i < newRows.length(); i++) {
-					try {
-						JSONObject obj = newRows.getJSONObject(i);
-						String value = obj.getString("premium");
-							if (config.premNotifier()) {
-								postChatMessage(value);
-							}
-					} catch (JSONException exception) {
-
+		socket = IO.socket("https://baservicesserver.now.sh");
+		socket.on("new", objects -> {
+			JSONArray newRows = (JSONArray) objects[0];
+			for (int i = 0; i < newRows.length(); i++) {
+				try {
+					JSONObject obj = newRows.getJSONObject(i);
+					String value = obj.getString("premium");
+					if (config.premNotifier()) {
+						postChatMessage(value);
 					}
+				} catch (JSONException exception) {
+
 				}
-			});
-			socket.connect();
+			}
+		});
+		socket.connect();
 	}
 
 	@Override
 	protected void shutDown() throws Exception {
-        socket.disconnect();
+		socket.disconnect();
 	}
 
 	@Subscribe
