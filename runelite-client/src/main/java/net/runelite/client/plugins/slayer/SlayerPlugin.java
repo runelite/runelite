@@ -182,6 +182,10 @@ public class SlayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
+	private int lastCertainAmount;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int initialAmount;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -245,7 +249,7 @@ public class SlayerPlugin extends Plugin
 			streak = config.streak();
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
-			clientThread.invoke(() -> setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation()));
+			clientThread.invoke(() -> setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation(), config.lastCertainAmount()));
 		}
 
 		chatCommandManager.registerCommandAsync(TASK_COMMAND_STRING, this::taskLookup, this::taskSubmit);
@@ -280,6 +284,7 @@ public class SlayerPlugin extends Plugin
 				cachedXp = 0;
 				taskName = "";
 				amount = 0;
+				lastCertainAmount = 0;
 				loginFlag = true;
 				clearTrackedNPCs();
 				break;
@@ -292,7 +297,7 @@ public class SlayerPlugin extends Plugin
 					streak = config.streak();
 					setExpeditiousChargeCount(config.expeditious());
 					setSlaughterChargeCount(config.slaughter());
-					setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation());
+					setTask(config.taskName(), config.amount(), config.initialAmount(), config.taskLocation(), config.lastCertainAmount());
 					loginFlag = false;
 				}
 				break;
@@ -305,6 +310,7 @@ public class SlayerPlugin extends Plugin
 		config.initialAmount(initialAmount);
 		config.taskName(taskName);
 		config.taskLocation(taskLocation);
+		config.lastCertainAmount(lastCertainAmount);
 		config.points(points);
 		config.streak(streak);
 		config.expeditious(expeditiousChargeCount);
@@ -445,17 +451,17 @@ public class SlayerPlugin extends Plugin
 				String name = mAssign.group("name");
 				int amount = Integer.parseInt(mAssign.group("amount"));
 				String location = mAssign.group("location");
-				setTask(name, amount, amount, location);
+				setTask(name, amount, amount, location, lastCertainAmount);
 			}
 			else if (mAssignFirst.find())
 			{
 				int amount = Integer.parseInt(mAssignFirst.group(2));
-				setTask(mAssignFirst.group(1), amount, amount);
+				setTask(mAssignFirst.group(1), amount, amount, lastCertainAmount);
 			}
 			else if (mAssignBoss.find())
 			{
 				int amount = Integer.parseInt(mAssignBoss.group(2));
-				setTask(mAssignBoss.group(1), amount, amount);
+				setTask(mAssignBoss.group(1), amount, amount, lastCertainAmount);
 				points = Integer.parseInt(mAssignBoss.group(3).replaceAll(",", ""));
 			}
 			else if (mCurrent.find())
@@ -463,7 +469,7 @@ public class SlayerPlugin extends Plugin
 				String name = mCurrent.group("name");
 				int amount = Integer.parseInt(mCurrent.group("amount"));
 				String location = mCurrent.group("location");
-				setTask(name, amount, initialAmount, location);
+				setTask(name, amount, initialAmount, location, lastCertainAmount);
 			}
 		}
 
@@ -586,13 +592,18 @@ public class SlayerPlugin extends Plugin
 				default:
 					log.warn("Unreachable default case for message ending in '; return to Slayer master'");
 			}
-			setTask("", 0, 0);
+
+			log.debug("Slayer task completed with " + amount + " remaining");
+			log.debug("Last certain amount was " + lastCertainAmount +
+				" so error rate is " + amount + " in " + lastCertainAmount);
+
+			setTask("", 0, 0, 0);
 			return;
 		}
 
 		if (chatMsg.equals(CHAT_GEM_COMPLETE_MESSAGE) || chatMsg.equals(CHAT_CANCEL_MESSAGE) || chatMsg.equals(CHAT_CANCEL_MESSAGE_JAD))
 		{
-			setTask("", 0, 0);
+			setTask("", 0, 0, 0);
 			return;
 		}
 
@@ -609,7 +620,7 @@ public class SlayerPlugin extends Plugin
 			String name = mProgress.group("name");
 			int gemAmount = Integer.parseInt(mProgress.group("amount"));
 			String location = mProgress.group("location");
-			setTask(name, gemAmount, initialAmount, location);
+			setTask(name, gemAmount, initialAmount, location, gemAmount);
 			return;
 		}
 
@@ -618,7 +629,7 @@ public class SlayerPlugin extends Plugin
 		if (bracerProgress.find())
 		{
 			final int taskAmount = Integer.parseInt(bracerProgress.group(1));
-			setTask(taskName, taskAmount, initialAmount);
+			setTask(taskName, taskAmount, initialAmount, taskAmount);
 
 			// Avoid race condition (combat brace message goes through first before XP drop)
 			amount++;
@@ -872,17 +883,18 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	private void setTask(String name, int amt, int initAmt)
+	private void setTask(String name, int amt, int initAmt, int lastCertainAmt)
 	{
-		setTask(name, amt, initAmt, null);
+		setTask(name, amt, initAmt, null, lastCertainAmt);
 	}
 
-	private void setTask(String name, int amt, int initAmt, String location)
+	private void setTask(String name, int amt, int initAmt, String location, int lastCertainAmt)
 	{
 		taskName = name;
 		amount = amt;
 		initialAmount = initAmt;
 		taskLocation = location;
+		lastCertainAmount = lastCertainAmt;
 		save();
 		removeCounter();
 		addCounter();
