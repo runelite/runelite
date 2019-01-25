@@ -393,6 +393,7 @@ public class SlayerPlugin extends Plugin
 				" b/c there were not " + estimatedCount + " nearby potential kills");
 			estimatedCount = potentialXpDrops.size();
 		}
+		log.debug("Expecting kill count to be changed by " + estimatedCount);
 		return estimatedCount;
 	}
 

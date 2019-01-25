@@ -536,196 +536,6 @@ public class SlayerPluginTest
 		slayerPlugin.killedOne();
 		assertEquals(30, slayerPlugin.getAmount());
 	}
-	
-	private static NPC newNPC(String name, int combatLevel)
-	{
-		return new NPC() {
-			@Override
-			public int getId() {
-				return 0;
-			}
-
-			@Override
-			public String getName() {
-				return name;
-			}
-
-			@Override
-			public int getCombatLevel() {
-				return combatLevel;
-			}
-
-			@Override
-			public int getIndex() {
-				return 0;
-			}
-
-			@Override
-			public NPCComposition getComposition() {
-				return null;
-			}
-
-			@Override
-			public NPCComposition getTransformedComposition() {
-				return null;
-			}
-
-			@Override
-			public boolean isDead() {
-				return false;
-			}
-
-			@Override
-			public Actor getInteracting() {
-				return null;
-			}
-
-			@Override
-			public int getHealthRatio() {
-				return 0;
-			}
-
-			@Override
-			public int getHealth() {
-				return 0;
-			}
-
-			@Override
-			public WorldPoint getWorldLocation() {
-				return null;
-			}
-
-			@Override
-			public LocalPoint getLocalLocation() {
-				return null;
-			}
-
-			@Override
-			public void setIdlePoseAnimation(int animation) {
-
-			}
-
-			@Override
-			public void setPoseAnimation(int animation) {
-
-			}
-
-			@Override
-			public int getOrientation() {
-				return 0;
-			}
-
-			@Override
-			public int getAnimation() {
-				return 0;
-			}
-
-			@Override
-			public void setAnimation(int animation) {
-
-			}
-
-			@Override
-			public void setActionFrame(int actionFrame) {
-
-			}
-
-			@Override
-			public int getGraphic() {
-				return 0;
-			}
-
-			@Override
-			public void setGraphic(int graphic) {
-
-			}
-
-			@Override
-			public void setSpotAnimFrame(int spotAnimFrame) {
-
-			}
-
-			@Override
-			public int getModelHeight() {
-				return 0;
-			}
-
-			@Override
-			public Polygon getCanvasTilePoly() {
-				return null;
-			}
-
-			@Override
-			public Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset) {
-				return null;
-			}
-
-			@Override
-			public Point getCanvasImageLocation(BufferedImage image, int zOffset) {
-				return null;
-			}
-
-			@Override
-			public Point getCanvasSpriteLocation(SpritePixels sprite, int zOffset) {
-				return null;
-			}
-
-			@Override
-			public Point getMinimapLocation() {
-				return null;
-			}
-
-			@Override
-			public int getLogicalHeight() {
-				return 0;
-			}
-
-			@Override
-			public Polygon getConvexHull() {
-				return null;
-			}
-
-			@Override
-			public WorldArea getWorldArea() {
-				return null;
-			}
-
-			@Override
-			public String getOverhead() {
-				return null;
-			}
-
-			@Override
-			public Model getModel() {
-				return null;
-			}
-
-			@Override
-			public void setModelHeight(int modelHeight) {
-
-			}
-
-			@Override
-			public void draw(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash) {
-
-			}
-
-			@Override
-			public Node getNext() {
-				return null;
-			}
-
-			@Override
-			public Node getPrevious() {
-				return null;
-			}
-
-			@Override
-			public long getHash() {
-				return 0;
-			}
-		};
-	}
 
 	@Test
 	public void testSackMulti() throws Exception
@@ -733,8 +543,8 @@ public class SlayerPluginTest
 		slayerPlugin.startUp();
 
 		List<NPCPresence> died = new ArrayList<>();
-		NPC npc0 = newNPC("Dust devil", 93);
-		NPC npc1 = newNPC("Dust devil", 110);
+		NPC npc0 = NPCHelper.newNPC("Dust devil", 93);
+		NPC npc1 = NPCHelper.newNPC("Dust devil", 110);
 		died.add(NPCPresence.buildPresence(npc1));
 		died.add(NPCPresence.buildPresence(npc0));
 		died.add(NPCPresence.buildPresence(npc0));
@@ -758,7 +568,7 @@ public class SlayerPluginTest
 		slayerPlugin.startUp();
 
 		List<NPCPresence> died0 = new ArrayList<>();
-		NPC npc0 = newNPC("Dust devil", 93);
+		NPC npc0 = NPCHelper.newNPC("Dust devil", 93);
 		died0.add(NPCPresence.buildPresence(npc0));
 		died0.add(NPCPresence.buildPresence(npc0));
 		// 1 93
@@ -767,7 +577,7 @@ public class SlayerPluginTest
 		Assert.assertEquals(1, estimatedCount0);
 
 		List<NPCPresence> died1 = new ArrayList<>();
-		NPC npc1 = newNPC("Dust devil", 110);
+		NPC npc1 = NPCHelper.newNPC("Dust devil", 110);
 		died1.add(NPCPresence.buildPresence(npc1));
 		died1.add(NPCPresence.buildPresence(npc1));
 		died1.add(NPCPresence.buildPresence(npc1));
@@ -783,9 +593,9 @@ public class SlayerPluginTest
 		slayerPlugin.startUp();
 
 		List<NPCPresence> died = new ArrayList<>();
-		NPC npc0 = newNPC("Desert Lizard", 42);
-		NPC npc1 = newNPC("Desert Lizard", 24);
-		NPC npc2 = newNPC("Desert Lizard", 12);
+		NPC npc0 = NPCHelper.newNPC("Desert Lizard", 42);
+		NPC npc1 = NPCHelper.newNPC("Desert Lizard", 24);
+		NPC npc2 = NPCHelper.newNPC("Desert Lizard", 12);
 		died.add(NPCPresence.buildPresence(npc0));
 		died.add(NPCPresence.buildPresence(npc0));
 		died.add(NPCPresence.buildPresence(npc1));
@@ -805,7 +615,7 @@ public class SlayerPluginTest
 		slayerPlugin.startUp();
 
 		List<NPCPresence> died = new ArrayList<>();
-		NPC npc = newNPC("Greater demon", 92);
+		NPC npc = NPCHelper.newNPC("Greater demon", 92);
 		died.add(NPCPresence.buildPresence(npc));
 		// 1 92 (partial)
 		// 1 * 87 * 0.5 = 43.5 round down to 43
