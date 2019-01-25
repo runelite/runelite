@@ -237,11 +237,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 					{
 						location.setLocation(preferredLocation);
 					}
-				}
 
-				final Dimension realDimensions = client.getRealDimensions();
-				location.x = Ints.constrainToRange(location.x, 0, realDimensions.width - dimension.width);
-				location.y = Ints.constrainToRange(location.y, 0, realDimensions.height - dimension.height);
+					final Dimension realDimensions = client.getRealDimensions();
+					location.x = Ints.constrainToRange(location.x, 0, realDimensions.width - dimension.width);
+					location.y = Ints.constrainToRange(location.y, 0, realDimensions.height - dimension.height);
+				}
 
 				if (overlay.getPreferredSize() != null)
 				{
