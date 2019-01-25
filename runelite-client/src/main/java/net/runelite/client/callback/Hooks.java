@@ -81,9 +81,6 @@ public class Hooks implements Callbacks
 	private static final Client client = injector.getInstance(Client.class);
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
 
-	private static final GameTick GAME_TICK = new GameTick();
-	private static final BeforeRender BEFORE_RENDER = new BeforeRender();
-
 	@Inject
 	private EventBus eventBus;
 
@@ -145,13 +142,13 @@ public class Hooks implements Callbacks
 
 			deferredEventBus.replay();
 
-			eventBus.post(GAME_TICK);
+			eventBus.post(GameTick.INSTANCE);
 
 			int tick = client.getTickCount();
 			client.setTickCount(tick + 1);
 		}
 
-		eventBus.post(BEFORE_RENDER);
+		eventBus.post(BeforeRender.INSTANCE);
 
 		clientThread.invoke();
 

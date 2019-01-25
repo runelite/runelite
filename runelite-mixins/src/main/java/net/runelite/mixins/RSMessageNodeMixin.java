@@ -50,7 +50,7 @@ public abstract class RSMessageNodeMixin implements RSMessageNode
 	{
 		rl$timestamp = (int) (System.currentTimeMillis() / 1000L);
 
-		final SetMessage setMessage = new SetMessage();
+		final SetMessage setMessage = SetMessage.INSTANCE;
 		setMessage.setMessageNode(this);
 		setMessage.setType(getType());
 		setMessage.setName(getName());
@@ -104,7 +104,7 @@ public abstract class RSMessageNodeMixin implements RSMessageNode
 		runeLiteFormatMessage = null;
 		rl$timestamp = (int) (System.currentTimeMillis() / 1000L);
 
-		final SetMessage setMessage = new SetMessage();
+		final SetMessage setMessage = SetMessage.INSTANCE;
 		setMessage.setMessageNode(this);
 		setMessage.setType(ChatMessageType.of(type));
 		setMessage.setName(name);

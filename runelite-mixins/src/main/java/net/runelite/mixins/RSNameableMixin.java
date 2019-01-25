@@ -42,7 +42,8 @@ public abstract class RSNameableMixin implements RSNameable
 	@Inject
 	public void onPrevNameChanged(int idx)
 	{
-		NameableNameChanged nameableNameChanged = new NameableNameChanged(this);
+		NameableNameChanged nameableNameChanged = NameableNameChanged.INSTANCE;
+		nameableNameChanged.setNameable(this);
 		client.getCallbacks().post(nameableNameChanged);
 	}
 }

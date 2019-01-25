@@ -88,7 +88,7 @@ public class ExaminePluginTest
 	{
 		when(client.getWidget(anyInt(), anyInt())).thenReturn(mock(Widget.class));
 
-		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
+		MenuOptionClicked menuOptionClicked = MenuOptionClicked.INSTANCE;
 		menuOptionClicked.setMenuOption("Examine");
 		menuOptionClicked.setMenuAction(MenuAction.EXAMINE_ITEM);
 		menuOptionClicked.setId(ItemID.ABYSSAL_WHIP);
@@ -106,7 +106,7 @@ public class ExaminePluginTest
 	{
 		when(client.getWidget(anyInt(), anyInt())).thenReturn(mock(Widget.class));
 
-		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
+		MenuOptionClicked menuOptionClicked = MenuOptionClicked.INSTANCE;
 		menuOptionClicked.setMenuOption("Examine");
 		menuOptionClicked.setMenuAction(MenuAction.EXAMINE_ITEM);
 		menuOptionClicked.setId(ItemID.ABYSSAL_WHIP);

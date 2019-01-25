@@ -160,7 +160,7 @@ public class SessionManager
 			configManager.switchSession(session);
 		}
 
-		eventBus.post(new SessionOpen());
+		eventBus.post(SessionOpen.INSTANCE);
 	}
 
 	private void closeSession()
@@ -193,7 +193,7 @@ public class SessionManager
 		// Restore config
 		configManager.switchSession(null);
 
-		eventBus.post(new SessionClose());
+		eventBus.post(SessionClose.INSTANCE);
 	}
 
 	public void login()

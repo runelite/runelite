@@ -238,7 +238,7 @@ public class DevToolsPlugin extends Plugin
 				int value = Integer.parseInt(args[1]);
 				client.setVarpValue(client.getVarps(), varp, value);
 				client.addChatMessage(ChatMessageType.SERVER, "", "Set VarPlayer " + varp + " to " + value, null);
-				eventBus.post(new VarbitChanged()); // fake event
+				eventBus.post(VarbitChanged.INSTANCE); // fake event
 				break;
 			}
 			case "getvarb":
@@ -254,7 +254,7 @@ public class DevToolsPlugin extends Plugin
 				int value = Integer.parseInt(args[1]);
 				client.setVarbitValue(client.getVarps(), varbit, value);
 				client.addChatMessage(ChatMessageType.SERVER, "", "Set varbit " + varbit + " to " + value, null);
-				eventBus.post(new VarbitChanged()); // fake event
+				eventBus.post(VarbitChanged.INSTANCE); // fake event
 				break;
 			}
 			case "addxp":
@@ -271,7 +271,7 @@ public class DevToolsPlugin extends Plugin
 
 				client.queueChangedSkill(skill);
 
-				ExperienceChanged experienceChanged = new ExperienceChanged();
+				ExperienceChanged experienceChanged = ExperienceChanged.INSTANCE;
 				experienceChanged.setSkill(skill);
 				eventBus.post(experienceChanged);
 				break;

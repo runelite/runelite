@@ -66,7 +66,7 @@ public abstract class RSNpcCompositionMixin implements RSNPCComposition
 	@Inject
 	public void actionsHook(int idx)
 	{
-		NpcActionChanged npcActionChanged = new NpcActionChanged();
+		NpcActionChanged npcActionChanged = NpcActionChanged.INSTANCE;
 		npcActionChanged.setNpcComposition(this);
 		npcActionChanged.setIdx(idx);
 		client.getCallbacks().post(npcActionChanged);

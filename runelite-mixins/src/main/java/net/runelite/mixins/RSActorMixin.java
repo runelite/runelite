@@ -186,7 +186,7 @@ public abstract class RSActorMixin implements RSActor
 	@Inject
 	public void animationChanged(int idx)
 	{
-		AnimationChanged animationChange = new AnimationChanged();
+		AnimationChanged animationChange = AnimationChanged.INSTANCE;
 		animationChange.setActor(this);
 		client.getCallbacks().post(animationChange);
 	}
@@ -195,7 +195,7 @@ public abstract class RSActorMixin implements RSActor
 	@Inject
 	public void graphicChanged(int idx)
 	{
-		GraphicChanged graphicChanged = new GraphicChanged();
+		GraphicChanged graphicChanged = GraphicChanged.INSTANCE;
 		graphicChanged.setActor(this);
 		client.getCallbacks().post(graphicChanged);
 	}
@@ -204,7 +204,9 @@ public abstract class RSActorMixin implements RSActor
 	@Inject
 	public void interactingChanged(int idx)
 	{
-		InteractingChanged interactingChanged = new InteractingChanged(this, getInteracting());
+		InteractingChanged interactingChanged = InteractingChanged.INSTANCE;
+		interactingChanged.setSource(this);
+		interactingChanged.setTarget(getInteracting());
 		client.getCallbacks().post(interactingChanged);
 	}
 
@@ -251,7 +253,7 @@ public abstract class RSActorMixin implements RSActor
 			{
 				client.getLogger().debug("You died!");
 
-				LocalPlayerDeath event = new LocalPlayerDeath();
+				LocalPlayerDeath event = LocalPlayerDeath.INSTANCE;
 				client.getCallbacks().post(event);
 			}
 			else if (this instanceof RSNPC)
@@ -278,7 +280,7 @@ public abstract class RSActorMixin implements RSActor
 	public void applyActorHitsplat(int type, int value, int var3, int var4, int gameCycle, int duration)
 	{
 		final Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.fromInteger(type), value, gameCycle + duration);
-		final HitsplatApplied event = new HitsplatApplied();
+		final HitsplatApplied event = HitsplatApplied.INSTANCE;
 		event.setActor(this);
 		event.setHitsplat(hitsplat);
 		client.getCallbacks().post(event);

@@ -90,7 +90,11 @@ public abstract class RSItemMixin implements RSItem
 		{
 			client.getLogger().debug("Item quantity changed: {} ({} -> {})", getId(), getQuantity(), quantity);
 
-			ItemQuantityChanged itemQuantityChanged = new ItemQuantityChanged(this, getTile(), getQuantity(), quantity);
+			ItemQuantityChanged itemQuantityChanged = ItemQuantityChanged.INSTANCE;
+			itemQuantityChanged.setItem(this);
+			itemQuantityChanged.setTile(getTile());
+			itemQuantityChanged.setOldQuantity(getQuantity());
+			itemQuantityChanged.setNewQuantity(quantity);
 			client.getCallbacks().post(itemQuantityChanged);
 		}
 	}
