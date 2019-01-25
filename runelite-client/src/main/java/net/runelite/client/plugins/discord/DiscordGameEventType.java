@@ -85,7 +85,6 @@ enum DiscordGameEventType
 	BOSS_WINTERTODT("Wintertodt", DiscordAreaType.BOSSES, 6462),
 	BOSS_ZULRAH("Zulrah", DiscordAreaType.BOSSES, 9007),
 
-
 	// Cities
 	CITY_AL_KHARID("Al Kharid" , DiscordAreaType.CITIES, 13105, 13106),
 	CITY_APE_ATOLL("Ape Atoll" , DiscordAreaType.CITIES, 10795, 11051, 10974, 11050),
