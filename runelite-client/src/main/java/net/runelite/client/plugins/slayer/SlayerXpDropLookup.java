@@ -26,7 +26,6 @@ package net.runelite.client.plugins.slayer;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import net.runelite.api.NPC;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
