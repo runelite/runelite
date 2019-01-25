@@ -338,6 +338,18 @@ public class SlayerPlugin extends Plugin
 
 	int estimateKillCount(List<NPCPresence> potentialKills, int gains)
 	{
+		// failsafe to avoid calculating kill count if there were no slayer monsters around that could be killed on task
+		// this failsafe *WILL FAIL* if someone decides to lamp their slayer in the middle of a task next to on task creatures
+		// but will prevent any other kind of slayer xp from triggering the kill count going down
+		// the main problem this causes is a genie random event during a slayer task and the player pops the lamp
+		// this will think that some of the monsters around were slain - e.g. lvl 50 slayer pops lamp for 500 xp around a
+		// 70 xp per kill slayer monster and now the slayer plugin thinks that 7 more kill count were completed (at 99 slayer
+		// the 990 xp drop would really mess with the kc tracker in a noticeable way)
+		if (potentialKills.size() < 1)
+		{
+			return 0;
+		}
+
 		StringBuilder debugString = new StringBuilder();
 		for (NPCPresence presence : potentialKills)
 		{
@@ -392,6 +404,12 @@ public class SlayerPlugin extends Plugin
 			log.info("capping estimatedCount at " + potentialXpDrops.size() +
 				" b/c there were not " + estimatedCount + " nearby potential kills");
 			estimatedCount = potentialXpDrops.size();
+		}
+		if (estimatedCount < 1)
+		{
+			log.info("capping estimatedCount at a minimum of 1 since player was nearby slayer monsters on task; " +
+					"potentially had 50% xp drop due to shared slayer kill");
+			estimatedCount = 1;
 		}
 		log.debug("Expecting kill count to be changed by " + estimatedCount);
 		return estimatedCount;
@@ -711,6 +729,7 @@ public class SlayerPlugin extends Plugin
 				SlayerUnlock.GROTESQUE_GARDIAN_DOUBLE_COUNT.isEnabled(client);
 	}
 
+	// checks if any contiguous subsequence of seq0 exactly matches the String toMatch
 	boolean contiguousSubsequenceMatches(String[] seq0, String toMatch)
 	{
 		for (int i = 0; i < seq0.length; i++)
@@ -732,6 +751,20 @@ public class SlayerPlugin extends Plugin
 		return false;
 	}
 
+	private boolean isValidComposition(NPCComposition composition)
+	{
+		if (composition != null)
+		{
+			List<String> actions = Arrays.asList(composition.getActions());
+			if (actions.contains("Attack") || actions.contains("Pick")) //Pick action is for zygomite-fungi
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private boolean isTarget(NPC npc)
 	{
 		if (targetNames.isEmpty() && targetIds.isEmpty())
@@ -749,9 +782,9 @@ public class SlayerPlugin extends Plugin
 
 		// in order to avoid issues like pirates being highlighted on a rats task
 		// rather than checking if the name contains any of the targets we do a complete
-		// token check which is where we tokenize the name and the targets on the space charachter
+		// token check which is where we tokenize the name on the space character
 		// then we check if any contiguous subsequence (of at least length 1) from the name matches
-		// any contiguous subsequence (of at least length 1) from the target.
+		// the target.
 
 		// we have a boolean flag that also allows the behavior of just doing a contains check to happen
 		// this is done specifically for the tzhaar task because it's much easier to just check if the enemy
@@ -761,25 +794,17 @@ public class SlayerPlugin extends Plugin
 		{
 			if (!checkAsTokens)
 			{
-				if (name.contains(target))
+				if (name.contains(target) && isValidComposition(npc.getTransformedComposition()))
 				{
-					NPCComposition composition = npc.getTransformedComposition();
-					if (composition != null && Arrays.asList(composition.getActions()).contains("Attack"))
-					{
-						return true;
-					}
+					return true;
 				}
 			}
 			else
 			{
 				String[] nameTokens = name.split(" ");
-				if (contiguousSubsequenceMatches(nameTokens, target))
+				if (contiguousSubsequenceMatches(nameTokens, target) && isValidComposition(npc.getTransformedComposition()))
 				{
-					NPCComposition composition = npc.getTransformedComposition();
-					if (composition != null && Arrays.asList(composition.getActions()).contains("Attack"))
-					{
-						return true;
-					}
+					return true;
 				}
 			}
 		}
@@ -792,18 +817,9 @@ public class SlayerPlugin extends Plugin
 
 		for (int target : targetIds)
 		{
-			if (id == target)
+			if (id == target && isValidComposition(npc.getTransformedComposition()))
 			{
-				NPCComposition composition = npc.getTransformedComposition();
-
-				if (composition != null)
-				{
-					List<String> actions = Arrays.asList(composition.getActions());
-					if (actions.contains("Attack") || actions.contains("Pick")) //Pick action is for zygomite-fungi
-					{
-						return true;
-					}
-				}
+				return true;
 			}
 		}
 

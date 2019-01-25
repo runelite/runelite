@@ -623,7 +623,16 @@ public class SlayerPluginTest
 		// but we gained xp and 1 enemy died so failsafes give at least 1
 		int estimatedCount = slayerPlugin.estimateKillCount(died, 43);
 		Assert.assertEquals(1, estimatedCount);
+	}
 
+	@Test
+	public void testSackNothingNearby() throws Exception {
+		slayerPlugin.startUp();
+
+		List<NPCPresence> died = new ArrayList<>();
+		// we gained 500 xp but not next to any enemies so it was probably an xp reward rather than slayer kill
+		int estimatedCount = slayerPlugin.estimateKillCount(died, 500);
+		Assert.assertEquals(0, estimatedCount);
 	}
 
 	@Test
