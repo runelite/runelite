@@ -82,6 +82,12 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 
 	private void ping()
 	{
+		if (webSocket == null)
+		{
+			// Don't open a socket just for ping.
+			return;
+		}
+
 		Ping ping = new Ping();
 		ping.setTime(Instant.now());
 		send(ping);

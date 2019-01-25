@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.9-SNAPSHOT</version>
+		<version>1.5.10-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>script-assembler-plugin</artifactId>

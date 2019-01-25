@@ -848,7 +848,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the world areas
 	 */
-	Area[] getMapAreas();
+	MapElementConfig[] getMapElementConfigs();
 
 	/**
 	 * Gets a sprite of the map scene
@@ -1425,6 +1425,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the collision data
 	 */
+	@Nullable
 	CollisionData[] getCollisionMaps();
 
 	@VisibleForDevtools

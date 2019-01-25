@@ -22,14 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.api.Area;
-import net.runelite.mapping.Import;
-
-public interface RSArea extends RSCacheableNode, Area
+/**
+ * Represents an area in the world.
+ */
+public interface MapElementConfig
 {
-	@Import("getMapIcon")
-	@Override
-	RSSpritePixels getMapIcon(boolean var1);
+	/**
+	 * Gets the sprite icon to display on the world map.
+	 *
+	 * @param unused unused value
+	 * @return the sprite icon to display on the world map
+	 */
+	SpritePixels getMapIcon(boolean unused);
 }

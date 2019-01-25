@@ -110,6 +110,17 @@ public interface SlayerConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		position = 8,
+		keyName = "taskCommand",
+		name = "Task Command",
+		description = "Configures whether the slayer task command is enabled<br> !task"
+	)
+	default boolean taskCommand()
+	{
+		return true;
+	}
+
 	// Stored data
 	@ConfigItem(
 		keyName = "taskName",

@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.npchighlight;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.time.Instant;
@@ -64,6 +63,7 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.Text;
 import net.runelite.client.util.WildcardMatcher;
 
 @PluginDescriptor(
@@ -81,9 +81,6 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	private static final List<MenuAction> NPC_MENU_ACTIONS = ImmutableList.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
-
-	// Regex for splitting the hidden items in the config.
-	private static final Splitter COMMA_SPLITTER = Splitter.on(",").omitEmptyStrings().trimResults();
 
 	@Inject
 	private Client client;
@@ -431,7 +428,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			return Collections.emptyList();
 		}
 
-		return COMMA_SPLITTER.splitToList(configNpcs);
+		return Text.fromCSV(configNpcs);
 	}
 
 	private void rebuildAllNpcs()
