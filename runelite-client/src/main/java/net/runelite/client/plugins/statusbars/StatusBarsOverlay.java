@@ -183,8 +183,8 @@ class StatusBarsOverlay extends Overlay
 		{
 			final MenuEntry[] menu = client.getMenuEntries();
 			final int menuSize = menu.length;
-			final MenuEntry entry = menu[menuSize - 1];
-			final Effect change = itemStatService.getItemStatChanges(entry.getIdentifier());
+			final MenuEntry entry = menuSize > 0 ? menu[menuSize - 1] : null;
+			final Effect change = entry != null ? itemStatService.getItemStatChanges(entry.getIdentifier()) : null;
 			int prayerHealValue = 0;
 			int foodHealValue = 0;
 
