@@ -43,6 +43,13 @@ import net.runelite.api.Actor;
 @Data
 public class AnimationChanged
 {
+	public static final AnimationChanged INSTANCE = new AnimationChanged();
+
+	private AnimationChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * The actor that has entered a new animation.
 	 */

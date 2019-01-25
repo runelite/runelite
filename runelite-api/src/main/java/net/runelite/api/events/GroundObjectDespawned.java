@@ -34,6 +34,13 @@ import net.runelite.api.Tile;
 @Data
 public class GroundObjectDespawned
 {
+	public static final GroundObjectDespawned INSTANCE = new GroundObjectDespawned();
+
+	private GroundObjectDespawned()
+	{
+		// noop
+	}
+
 	/**
 	 * The affected tile.
 	 */

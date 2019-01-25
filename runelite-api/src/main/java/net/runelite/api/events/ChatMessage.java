@@ -40,6 +40,13 @@ import net.runelite.api.ChatMessageType;
 @AllArgsConstructor
 public class ChatMessage
 {
+	public static final ChatMessage INSTANCE = new ChatMessage();
+
+	private ChatMessage()
+	{
+		// noop
+	}
+
 	/**
 	 * The type of message received.
 	 */

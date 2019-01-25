@@ -44,6 +44,13 @@ import net.runelite.api.GrandExchangeOfferState;
 @Data
 public class GrandExchangeOfferChanged
 {
+	public static final GrandExchangeOfferChanged INSTANCE = new GrandExchangeOfferChanged();
+
+	private GrandExchangeOfferChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * The offer that has been modified.
 	 */

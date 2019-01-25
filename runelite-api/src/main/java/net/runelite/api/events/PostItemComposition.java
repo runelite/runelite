@@ -34,6 +34,13 @@ import net.runelite.api.ItemComposition;
 @Data
 public class PostItemComposition
 {
+	public static final PostItemComposition INSTANCE = new PostItemComposition();
+
+	private PostItemComposition()
+	{
+		// noop
+	}
+
 	/**
 	 * The newly created item.
 	 */

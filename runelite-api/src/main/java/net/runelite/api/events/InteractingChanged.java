@@ -24,19 +24,26 @@
  */
 package net.runelite.api.events;
 
-import lombok.Value;
+import lombok.Data;
 import net.runelite.api.Actor;
 
 /**
  * An event called when the actor an actor is interacting with changes
  */
-@Value
+@Data
 public class InteractingChanged
 {
-	private final Actor source;
+	public static final InteractingChanged INSTANCE = new InteractingChanged();
+
+	private InteractingChanged()
+	{
+		// noop
+	}
+
+	private Actor source;
 
 	/**
 	 * Target actor, may be null
 	 */
-	private final Actor target;
+	private Actor target;
 }

@@ -29,4 +29,11 @@ package net.runelite.api.events;
  */
 public class ClientTick
 {
+	public static final ClientTick INSTANCE = new ClientTick();
+
+	private ClientTick()
+	{
+		// noop
+	}
+
 }

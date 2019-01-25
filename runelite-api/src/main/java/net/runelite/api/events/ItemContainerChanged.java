@@ -24,7 +24,7 @@
  */
 package net.runelite.api.events;
 
-import lombok.Value;
+import lombok.Data;
 import net.runelite.api.ItemContainer;
 
 /**
@@ -38,11 +38,18 @@ import net.runelite.api.ItemContainer;
  *     <li>Dropping an item</li>
  * </ul>
  */
-@Value
+@Data
 public class ItemContainerChanged
 {
+	public static final ItemContainerChanged INSTANCE = new ItemContainerChanged();
+
+	private ItemContainerChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * The modified item container.
 	 */
-	private final ItemContainer itemContainer;
+	private ItemContainer itemContainer;
 }

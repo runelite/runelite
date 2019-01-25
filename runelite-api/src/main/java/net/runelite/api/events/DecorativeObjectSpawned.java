@@ -34,6 +34,13 @@ import net.runelite.api.Tile;
 @Data
 public class DecorativeObjectSpawned
 {
+	public static final DecorativeObjectSpawned INSTANCE = new DecorativeObjectSpawned();
+
+	private DecorativeObjectSpawned()
+	{
+		// noop
+	}
+
 	/**
 	 * The affected tile.
 	 */

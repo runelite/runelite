@@ -24,7 +24,7 @@
  */
 package net.runelite.api.events;
 
-import lombok.Value;
+import lombok.Data;
 import net.runelite.api.Actor;
 import net.runelite.api.Player;
 
@@ -33,13 +33,20 @@ import net.runelite.api.Player;
  * <p>
  * Note: This event does not get called for the local player.
  */
-@Value
+@Data
 public class PlayerDespawned
 {
+	public static final PlayerDespawned INSTANCE = new PlayerDespawned();
+
+	private PlayerDespawned()
+	{
+		// noop
+	}
+
 	/**
 	 * The despawned player.
 	 */
-	private final Player player;
+	private Player player;
 
 	public Actor getActor()
 	{

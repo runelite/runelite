@@ -33,6 +33,13 @@ import net.runelite.api.widgets.Widget;
 @Data
 public class WidgetHiddenChanged
 {
+	public static final WidgetHiddenChanged INSTANCE = new WidgetHiddenChanged();
+
+	private WidgetHiddenChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * The affected widget.
 	 */

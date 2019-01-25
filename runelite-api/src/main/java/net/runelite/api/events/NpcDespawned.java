@@ -24,20 +24,27 @@
  */
 package net.runelite.api.events;
 
-import lombok.Value;
+import lombok.Data;
 import net.runelite.api.Actor;
 import net.runelite.api.NPC;
 
 /**
  * An event where an {@link NPC} has despawned.
  */
-@Value
+@Data
 public class NpcDespawned
 {
+	public static final NpcDespawned INSTANCE = new NpcDespawned();
+
+	private NpcDespawned()
+	{
+		// noop
+	}
+
 	/**
 	 * The despawned NPC.
 	 */
-	private final NPC npc;
+	private NPC npc;
 
 	public Actor getActor()
 	{

@@ -24,7 +24,7 @@
  */
 package net.runelite.api.events;
 
-import lombok.Value;
+import lombok.Data;
 
 /**
  * An event where a command has been used in the chat.
@@ -41,9 +41,16 @@ import lombok.Value;
  * set the command field to an empty string. For example, the message ":: hello world!"
  * will set command to "" and arguments to ["hello", "world!"].
  */
-@Value
+@Data
 public class CommandExecuted
 {
+	public static final CommandExecuted INSTANCE = new CommandExecuted();
+
+	private CommandExecuted()
+	{
+		// noop
+	}
+
 	/**
 	 * The name of the command entered.
 	 */

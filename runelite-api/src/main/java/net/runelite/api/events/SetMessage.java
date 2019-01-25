@@ -16,6 +16,13 @@ import net.runelite.api.MessageNode;
 @Data
 public class SetMessage
 {
+	public static final SetMessage INSTANCE = new SetMessage();
+
+	private SetMessage()
+	{
+		// noop
+	}
+
 	/**
 	 * The updated message node.
 	 */

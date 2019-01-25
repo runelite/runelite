@@ -26,12 +26,16 @@
 
 package net.runelite.api.events;
 
-import lombok.Data;
-
 /**
  * An event where a varbit has changed.
  */
-@Data
 public class VarbitChanged
 {
+	public static final VarbitChanged INSTANCE = new VarbitChanged();
+
+	private VarbitChanged()
+	{
+		// noop
+	}
+
 }

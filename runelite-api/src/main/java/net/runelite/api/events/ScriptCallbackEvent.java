@@ -33,6 +33,13 @@ import net.runelite.api.Script;
 @Data
 public class ScriptCallbackEvent
 {
+	public static final ScriptCallbackEvent INSTANCE = new ScriptCallbackEvent();
+
+	private ScriptCallbackEvent()
+	{
+		// noop
+	}
+
 	/**
 	 * The script being called.
 	 */

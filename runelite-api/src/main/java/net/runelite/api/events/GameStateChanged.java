@@ -33,6 +33,13 @@ import net.runelite.api.GameState;
 @Data
 public class GameStateChanged
 {
+	public static final GameStateChanged INSTANCE = new GameStateChanged();
+
+	private GameStateChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * The new game state.
 	 */

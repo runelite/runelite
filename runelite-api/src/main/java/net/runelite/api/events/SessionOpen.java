@@ -24,8 +24,6 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
-
 /**
  * An event where a new RuneLite account session has been opened
  * with the server.
@@ -33,8 +31,13 @@ import lombok.Data;
  * Note: This event is not to be confused with a RuneScape session,
  * it has nothing to do with whether an account is being logged in.
  */
-@Data
 public class SessionOpen
 {
+	public static final SessionOpen INSTANCE = new SessionOpen();
+
+	private SessionOpen()
+	{
+		// noop
+	}
 
 }

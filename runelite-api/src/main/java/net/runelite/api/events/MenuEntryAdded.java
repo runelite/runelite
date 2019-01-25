@@ -34,31 +34,38 @@ import lombok.Data;
 @AllArgsConstructor
 public class MenuEntryAdded
 {
+	public static final MenuEntryAdded INSTANCE = new MenuEntryAdded();
+
+	private MenuEntryAdded()
+	{
+		// noop
+	}
+
 	/**
 	 * The option text added to the menu (ie. "Walk here", "Use").
 	 */
-	private final String option;
+	private String option;
 	/**
 	 * The target of the action (ie. Item or Actor name).
 	 * <p>
 	 * If the option does not apply to any target, this field
 	 * will be set to empty string.
 	 */
-	private final String target;
+	private String target;
 	/**
 	 * The action type that will be triggered.
 	 */
-	private final int type;
+	private int type;
 	/**
 	 * An identifier value for the target of the action
 	 */
-	private final int identifier;
+	private int identifier;
 	/**
 	 * An additional parameter for the action.
 	 */
-	private final int actionParam0;
+	private int actionParam0;
 	/**
 	 * A second additional parameter for the action.
 	 */
-	private final int actionParam1;
+	private int actionParam1;
 }

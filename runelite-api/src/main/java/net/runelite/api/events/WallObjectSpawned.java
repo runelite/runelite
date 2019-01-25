@@ -34,6 +34,13 @@ import net.runelite.api.WallObject;
 @Data
 public class WallObjectSpawned
 {
+	public static final WallObjectSpawned INSTANCE = new WallObjectSpawned();
+
+	private WallObjectSpawned()
+	{
+		// noop
+	}
+
 	/**
 	 * The affected tile.
 	 */

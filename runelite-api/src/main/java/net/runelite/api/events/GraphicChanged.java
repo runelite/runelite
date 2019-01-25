@@ -45,6 +45,13 @@ import net.runelite.api.Actor;
 @Data
 public class GraphicChanged
 {
+	public static final GraphicChanged INSTANCE = new GraphicChanged();
+
+	private GraphicChanged()
+	{
+		// noop
+	}
+
 	/**
 	 * The actor that has had their graphic changed.
 	 */

@@ -41,6 +41,13 @@ import net.runelite.api.MenuAction;
 @Data
 public class MenuOptionClicked
 {
+	public static final MenuOptionClicked INSTANCE = new MenuOptionClicked();
+
+	private MenuOptionClicked()
+	{
+		// noop
+	}
+
 	/**
 	 * The action parameter used in the click.
 	 */
