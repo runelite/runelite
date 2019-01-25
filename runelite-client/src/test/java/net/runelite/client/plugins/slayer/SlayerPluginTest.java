@@ -732,20 +732,20 @@ public class SlayerPluginTest
 	{
 		slayerPlugin.startUp();
 
-		List<NPC> died = new ArrayList<>();
+		List<NPCPresence> died = new ArrayList<>();
 		NPC npc0 = newNPC("Dust devil", 93);
 		NPC npc1 = newNPC("Dust devil", 110);
-		died.add(npc1);
-		died.add(npc0);
-		died.add(npc0);
-		died.add(npc0);
-		died.add(npc1);
-		died.add(npc0);
-		died.add(npc0);
-		died.add(npc0);
-		died.add(npc0);
-		died.add(npc0);
-		died.add(npc1);
+		died.add(NPCPresence.buildPresence(npc1));
+		died.add(NPCPresence.buildPresence(npc0));
+		died.add(NPCPresence.buildPresence(npc0));
+		died.add(NPCPresence.buildPresence(npc0));
+		died.add(NPCPresence.buildPresence(npc1));
+		died.add(NPCPresence.buildPresence(npc0));
+		died.add(NPCPresence.buildPresence(npc0));
+		died.add(NPCPresence.buildPresence(npc0));
+		died.add(NPCPresence.buildPresence(npc0));
+		died.add(NPCPresence.buildPresence(npc0));
+		died.add(NPCPresence.buildPresence(npc1));
 		// 5 93s and 2 110s
 		// = 5 * 105 + 2 * 130 = 785
 		int estimatedCount = slayerPlugin.estimateKillCount(died, 785);
@@ -757,20 +757,20 @@ public class SlayerPluginTest
 	{
 		slayerPlugin.startUp();
 
-		List<NPC> died0 = new ArrayList<>();
+		List<NPCPresence> died0 = new ArrayList<>();
 		NPC npc0 = newNPC("Dust devil", 93);
-		died0.add(npc0);
-		died0.add(npc0);
+		died0.add(NPCPresence.buildPresence(npc0));
+		died0.add(NPCPresence.buildPresence(npc0));
 		// 1 93
 		// = 1 * 105 = 105
 		int estimatedCount0 = slayerPlugin.estimateKillCount(died0, 105);
 		Assert.assertEquals(1, estimatedCount0);
 
-		List<NPC> died1 = new ArrayList<>();
+		List<NPCPresence> died1 = new ArrayList<>();
 		NPC npc1 = newNPC("Dust devil", 110);
-		died1.add(npc1);
-		died1.add(npc1);
-		died1.add(npc1);
+		died1.add(NPCPresence.buildPresence(npc1));
+		died1.add(NPCPresence.buildPresence(npc1));
+		died1.add(NPCPresence.buildPresence(npc1));
 		// 1 110
 		// = 1 * 130 = 130
 		int estimatedCount1 = slayerPlugin.estimateKillCount(died1, 130);
@@ -782,15 +782,15 @@ public class SlayerPluginTest
 	{
 		slayerPlugin.startUp();
 
-		List<NPC> died = new ArrayList<>();
+		List<NPCPresence> died = new ArrayList<>();
 		NPC npc0 = newNPC("Desert Lizard", 42);
 		NPC npc1 = newNPC("Desert Lizard", 24);
 		NPC npc2 = newNPC("Desert Lizard", 12);
-		died.add(npc0);
-		died.add(npc0);
-		died.add(npc1);
-		died.add(npc2);
-		died.add(npc2);
+		died.add(NPCPresence.buildPresence(npc0));
+		died.add(NPCPresence.buildPresence(npc0));
+		died.add(NPCPresence.buildPresence(npc1));
+		died.add(NPCPresence.buildPresence(npc2));
+		died.add(NPCPresence.buildPresence(npc2));
 		// 1 42
 		// = 1 * 40 = 40
 		// but 1 12 and 1 24
@@ -804,9 +804,9 @@ public class SlayerPluginTest
 	public void testSackAlwaysOne() throws Exception {
 		slayerPlugin.startUp();
 
-		List<NPC> died = new ArrayList<>();
+		List<NPCPresence> died = new ArrayList<>();
 		NPC npc = newNPC("Greater demon", 92);
-		died.add(npc);
+		died.add(NPCPresence.buildPresence(npc));
 		// 1 92 (partial)
 		// 1 * 87 * 0.5 = 43.5 round down to 43
 		// but 87 can't fit into 43.5 any times so knapsack solver gives 0

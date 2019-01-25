@@ -327,10 +327,13 @@ public class SlayerPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
-		highlightedTargets.remove(npc);
-		NPCPresence lingeringPresence = NPCPresence.buildPresence(npc);
-		lingeringPresences.add(lingeringPresence);
-		log.debug("Presence of " + lingeringPresence.toString() + " now lingering");
+		boolean contained = highlightedTargets.remove(npc);
+		if (contained)
+		{
+			NPCPresence lingeringPresence = NPCPresence.buildPresence(npc);
+			lingeringPresences.add(lingeringPresence);
+			log.debug("Presence of " + lingeringPresence.toString() + " now lingering");
+		}
 	}
 
 	int estimateKillCount(List<NPCPresence> potentialKills, int gains)
