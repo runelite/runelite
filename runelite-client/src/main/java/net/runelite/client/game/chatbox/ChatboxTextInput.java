@@ -40,14 +40,14 @@ import java.util.function.ToIntFunction;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.FontTypeFace;
 import net.runelite.api.FontID;
-import net.runelite.api.widgets.WidgetType;
+import net.runelite.api.FontTypeFace;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetTextAlignment;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
@@ -72,7 +72,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	private StringBuffer value = new StringBuffer();
 
 	@Getter
-	private int cursor = 0;
+	private int cursorStart = 0;
 
 	@Getter
 	private int cursorEnd = 0;
@@ -158,7 +158,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			end = v;
 		}
 
-		this.cursor = start;
+		this.cursorStart = start;
 		this.cursorEnd = end;
 
 		if (built)
@@ -234,8 +234,8 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	{
 		Widget container = chatboxPanelManager.getContainerWidget();
 
-		String lt = Text.escapeJagex(value.substring(0, this.cursor));
-		String mt = Text.escapeJagex(value.substring(this.cursor, this.cursorEnd));
+		String lt = Text.escapeJagex(value.substring(0, this.cursorStart));
+		String mt = Text.escapeJagex(value.substring(this.cursorStart, this.cursorEnd));
 		String rt = Text.escapeJagex(value.substring(this.cursorEnd));
 
 		Widget leftText = container.createChild(-1, WidgetType.TEXT);
@@ -399,12 +399,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		char c = e.getKeyChar();
 		if (charValidator.test(c))
 		{
-			if (cursor != cursorEnd)
+			if (cursorStart != cursorEnd)
 			{
-				value.delete(cursor, cursorEnd);
+				value.delete(cursorStart, cursorEnd);
 			}
-			value.insert(cursor, c);
-			cursorAt(cursor + 1);
+			value.insert(cursorStart, c);
+			cursorAt(cursorStart + 1);
 			if (onChanged != null)
 			{
 				onChanged.accept(getValue());
@@ -422,13 +422,13 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			{
 				case KeyEvent.VK_X:
 				case KeyEvent.VK_C:
-					if (cursor != cursorEnd)
+					if (cursorStart != cursorEnd)
 					{
-						String s = value.substring(cursor, cursorEnd);
+						String s = value.substring(cursorStart, cursorEnd);
 						if (code == KeyEvent.VK_X)
 						{
-							value.delete(cursor, cursorEnd);
-							cursorAt(cursor);
+							value.delete(cursorStart, cursorEnd);
+							cursorAt(cursorStart);
 						}
 						Toolkit.getDefaultToolkit()
 							.getSystemClipboard()
@@ -442,20 +442,20 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 							.getSystemClipboard()
 							.getData(DataFlavor.stringFlavor)
 							.toString();
-						if (cursor != cursorEnd)
+						if (cursorStart != cursorEnd)
 						{
-							value.delete(cursor, cursorEnd);
+							value.delete(cursorStart, cursorEnd);
 						}
 						for (int i = 0; i < s.length(); i++)
 						{
 							char ch = s.charAt(i);
 							if (charValidator.test(ch))
 							{
-								value.insert(cursor, ch);
-								cursor++;
+								value.insert(cursorStart, ch);
+								cursorStart++;
 							}
 						}
-						cursorAt(cursor);
+						cursorAt(cursorStart);
 						if (onChanged != null)
 						{
 							onChanged.accept(getValue());
@@ -469,13 +469,13 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			}
 			return;
 		}
-		int newPos = cursor;
+		int newPos = cursorStart;
 		if (ev.isShiftDown())
 		{
 			if (selectionEnd == -1 || selectionStart == -1)
 			{
-				selectionStart = cursor;
-				selectionEnd = cursor;
+				selectionStart = cursorStart;
+				selectionEnd = cursorStart;
 			}
 			newPos = selectionEnd;
 		}
@@ -487,20 +487,20 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		switch (code)
 		{
 			case KeyEvent.VK_DELETE:
-				if (cursor != cursorEnd)
+				if (cursorStart != cursorEnd)
 				{
-					value.delete(cursor, cursorEnd);
-					cursorAt(cursor);
+					value.delete(cursorStart, cursorEnd);
+					cursorAt(cursorStart);
 					if (onChanged != null)
 					{
 						onChanged.accept(getValue());
 					}
 					return;
 				}
-				if (cursor < value.length())
+				if (cursorStart < value.length())
 				{
-					value.deleteCharAt(cursor);
-					cursorAt(cursor);
+					value.deleteCharAt(cursorStart);
+					cursorAt(cursorStart);
 					if (onChanged != null)
 					{
 						onChanged.accept(getValue());
@@ -508,20 +508,20 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				}
 				return;
 			case KeyEvent.VK_BACK_SPACE:
-				if (cursor != cursorEnd)
+				if (cursorStart != cursorEnd)
 				{
-					value.delete(cursor, cursorEnd);
-					cursorAt(cursor);
+					value.delete(cursorStart, cursorEnd);
+					cursorAt(cursorStart);
 					if (onChanged != null)
 					{
 						onChanged.accept(getValue());
 					}
 					return;
 				}
-				if (cursor > 0)
+				if (cursorStart > 0)
 				{
-					value.deleteCharAt(cursor - 1);
-					cursorAt(cursor - 1);
+					value.deleteCharAt(cursorStart - 1);
+					cursorAt(cursorStart - 1);
 					if (onChanged != null)
 					{
 						onChanged.accept(getValue());
@@ -554,9 +554,9 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				return;
 			case KeyEvent.VK_ESCAPE:
 				ev.consume();
-				if (cursor != cursorEnd)
+				if (cursorStart != cursorEnd)
 				{
-					cursorAt(cursor);
+					cursorAt(cursorStart);
 					return;
 				}
 				chatboxPanelManager.close();
@@ -603,7 +603,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		}
 		if (isInBounds == null || !isInBounds.test(mouseEvent))
 		{
-			if (cursor != cursorEnd)
+			if (cursorStart != cursorEnd)
 			{
 				selectionStart = -1;
 				selectionEnd = -1;
