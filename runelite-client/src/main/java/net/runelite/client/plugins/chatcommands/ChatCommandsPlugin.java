@@ -71,6 +71,7 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.ItemPrice;
+import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
 	name = "Chat Commands",
@@ -1103,7 +1104,7 @@ public class ChatCommandsPlugin extends Plugin
 				return "Theatre of Blood";
 
 			default:
-				return boss;
+				return WordUtils.capitalize(boss);
 		}
 	}
 }
