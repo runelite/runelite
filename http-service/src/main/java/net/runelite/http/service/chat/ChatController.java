@@ -97,7 +97,7 @@ public class ChatController
 	}
 
 	@GetMapping("/qp")
-	public int getKc(@RequestParam String name)
+	public int getQp(@RequestParam String name)
 	{
 		Integer kc = chatService.getQp(name);
 		if (kc == null)
