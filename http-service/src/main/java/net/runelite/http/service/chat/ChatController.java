@@ -133,4 +133,26 @@ public class ChatController
 	{
 		return chatService.getTask(name);
 	}
+
+	@PostMapping("/pb")
+	public void submitPb(@RequestParam String name, @RequestParam int pb)
+	{
+		if (pb < 0)
+		{
+			return;
+		}
+
+		chatService.setPb(name, pb);
+	}
+
+	@GetMapping("/pb")
+	public int getPb(@RequestParam String name)
+	{
+		Integer pb = chatService.getPb(name);
+		if (pb == null)
+		{
+			throw new NotFoundException();
+		}
+		return pb;
+	}
 }
