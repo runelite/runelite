@@ -119,7 +119,8 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 
 	// These are lambdas for atomic updates
 	private Predicate<MouseEvent> isInBounds = null;
-	private ToIntFunction<MouseEvent> getCharOffset = null;
+	private ToIntFunction<Integer> getLineOffset = null;
+	private ToIntFunction<Point> getPointCharOffset = null;
 
 	@Inject
 	protected ChatboxTextInput(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread)
@@ -441,15 +442,15 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		net.runelite.api.Point ccl = container.getCanvasLocation();
 
 		isInBounds = ev -> bounds.contains(new Point(ev.getX() - ccl.getX(), ev.getY() - ccl.getY()));
-		getCharOffset = ev ->
+		getPointCharOffset = p ->
 		{
 			if (bounds.width <= 0)
 			{
 				return 0;
 			}
 
-			int cx = ev.getX() - ccl.getX() - ox;
-			int cy = ev.getY() - ccl.getY() - oy;
+			int cx = p.x - ccl.getX() - ox;
+			int cy = p.y - ccl.getY() - oy;
 
 			int currentLine = Ints.constrainToRange(cy / oh, 0, editLines.size() - 1);
 
@@ -491,11 +492,63 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			charIndex = Ints.constrainToRange(charIndex, 0, tsValue.length());
 			return line.start + charIndex;
 		};
+
+		getLineOffset = code ->
+		{
+			if (editLines.size() < 2)
+			{
+				return cursorStart;
+			}
+
+			int currentLine = -1;
+			for (int i = 0; i < editLines.size(); i++)
+			{
+				Line l = editLines.get(i);
+				if (cursorOnLine(cursorStart, l.start, l.end)
+					|| (cursorOnLine(cursorStart, l.start, l.end + 1) && i == editLines.size() - 1))
+				{
+					currentLine = i;
+					break;
+				}
+			}
+
+			if (currentLine == -1
+				|| (code == KeyEvent.VK_UP && currentLine == 0)
+				|| (code == KeyEvent.VK_DOWN && currentLine == editLines.size() - 1))
+			{
+				return cursorStart;
+			}
+
+			final Line line = editLines.get(currentLine);
+			final int direction = code == KeyEvent.VK_UP ? -1 : 1;
+			final Point dest = new Point(cursor.getCanvasLocation().getX(), cursor.getCanvasLocation().getY() + (direction * oh));
+			final int charOffset = getPointCharOffset.applyAsInt(dest);
+
+			// Place cursor on right line if whitespace keep it on the same line or skip a line
+			final Line nextLine = editLines.get(currentLine + direction);
+			if ((direction == -1 && charOffset >= line.start)
+				|| (direction == 1 && (charOffset > nextLine.end && (currentLine + direction != editLines.size() - 1))))
+			{
+				return nextLine.end;
+			}
+
+			return charOffset;
+		};
 	}
 
 	private boolean cursorOnLine(final int cursor, final int start, final int end)
 	{
 		return (cursor >= start) && (cursor <= end);
+	}
+
+	private int getCharOffset(MouseEvent ev)
+	{
+		if (getPointCharOffset == null)
+		{
+			return 0;
+		}
+
+		return getPointCharOffset.applyAsInt(ev.getPoint());
 	}
 
 	@Override
@@ -668,6 +721,14 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				ev.consume();
 				newPos++;
 				break;
+			case KeyEvent.VK_UP:
+				ev.consume();
+				newPos = getLineOffset.applyAsInt(code);
+				break;
+			case KeyEvent.VK_DOWN:
+				ev.consume();
+				newPos = getLineOffset.applyAsInt(code);
+				break;
 			case KeyEvent.VK_HOME:
 				ev.consume();
 				newPos = 0;
@@ -739,12 +800,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			{
 				selectionStart = -1;
 				selectionEnd = -1;
-				cursorAt(getCharOffset.applyAsInt(mouseEvent));
+				cursorAt(getCharOffset(mouseEvent));
 			}
 			return mouseEvent;
 		}
 
-		int nco = getCharOffset.applyAsInt(mouseEvent);
+		int nco = getCharOffset(mouseEvent);
 
 		if (mouseEvent.isShiftDown() && selectionEnd != -1)
 		{
@@ -786,7 +847,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			return mouseEvent;
 		}
 
-		int nco = getCharOffset.applyAsInt(mouseEvent);
+		int nco = getCharOffset(mouseEvent);
 		if (selectionStart != -1)
 		{
 			selectionEnd = nco;
