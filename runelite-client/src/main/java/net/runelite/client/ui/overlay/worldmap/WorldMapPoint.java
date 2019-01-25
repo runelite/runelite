@@ -59,6 +59,8 @@ public class WorldMapPoint
 
 	private String tooltip;
 
+	private String tooltipRunes;
+
 	public WorldMapPoint(WorldPoint worldPoint, BufferedImage image)
 	{
 		this.worldPoint = worldPoint;

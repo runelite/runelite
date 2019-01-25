@@ -255,7 +255,9 @@ public class WorldMapOverlay extends Overlay
 
 	private void drawTooltip(Graphics2D graphics, WorldMapPoint worldPoint)
 	{
+		int newLine = 1;
 		String tooltip = worldPoint.getTooltip();
+		String tooltipRunes = worldPoint.getTooltipRunes();
 		Point drawPoint = mapWorldPointToGraphicsPoint(worldPoint.getWorldPoint());
 		if (tooltip == null || tooltip.length() <= 0 || drawPoint == null)
 		{
@@ -271,13 +273,24 @@ public class WorldMapOverlay extends Overlay
 		int width = fm.stringWidth(tooltip);
 		int height = fm.getHeight();
 
+		if (tooltipRunes != null)
+		{
+			newLine = 2;
+			width = fm.stringWidth(tooltipRunes);
+		}
+
 		Rectangle tooltipRect = new Rectangle(drawPoint.getX() - TOOLTIP_PADDING_WIDTH, drawPoint.getY() - TOOLTIP_PADDING_HEIGHT, width + TOOLTIP_PADDING_WIDTH * 2, height + TOOLTIP_PADDING_HEIGHT * 2);
-		graphics.fillRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight());
+		graphics.fillRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight() * newLine);
 
 		graphics.setColor(JagexColors.TOOLTIP_BORDER);
-		graphics.drawRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight());
+		graphics.drawRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight() * newLine);
 		graphics.setColor(JagexColors.TOOLTIP_TEXT);
 		graphics.drawString(tooltip, drawPoint.getX(), drawPoint.getY() + height);
+
+		if (tooltipRunes != null)
+		{
+			graphics.drawString(tooltipRunes, drawPoint.getX(), drawPoint.getY() + height * newLine);
+		}
 	}
 
 	private Point clipToRectangle(Point drawPoint, Rectangle mapDisplayRectangle)
