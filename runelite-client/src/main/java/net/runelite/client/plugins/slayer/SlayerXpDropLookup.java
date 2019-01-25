@@ -33,7 +33,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
-public class SlayerXpDrop
+public class SlayerXpDropLookup
 {
 	private Map<String, List<Double>> xpMap;
 
@@ -78,7 +78,7 @@ public class SlayerXpDrop
 	 * @param npc the npc we are estimating slayer xp for
 	 * @return our best guess for the slayer xp for this npc
 	 */
-	public double findXpForNpc(NPC npc)
+	public double findXpForNpc(NPCPresence npc)
 	{
 		List<Double> xpCombatLevel = xpMap.get(npc.getName());
 		if (xpCombatLevel == null)
@@ -129,7 +129,7 @@ public class SlayerXpDrop
 		return -1;
 	}
 
-	public SlayerXpDrop()
+	public SlayerXpDropLookup()
 	{
 		loadXpJson();
 	}

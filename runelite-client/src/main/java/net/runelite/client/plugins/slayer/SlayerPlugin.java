@@ -34,9 +34,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,7 +46,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -57,7 +55,6 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
@@ -209,30 +206,6 @@ public class SlayerPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private int points;
 
-	private static final Map<String, Integer> NPC_DEATH_ANIMATIONS = new HashMap<>();
-
-	static
-	{
-		NPC_DEATH_ANIMATIONS.put("Gargoyle".toLowerCase(), AnimationID.GARGOYLE_DEATH);
-		NPC_DEATH_ANIMATIONS.put("Marble gargoyle".toLowerCase(), AnimationID.MARBLE_GARGOYLE_DEATH);
-		NPC_DEATH_ANIMATIONS.put("Rockslug".toLowerCase(), AnimationID.ROCKSLUG_DEATH);
-		NPC_DEATH_ANIMATIONS.put("Lizard".toLowerCase(), AnimationID.LIZARD_DEATH);
-		NPC_DEATH_ANIMATIONS.put("Zygmoite".toLowerCase(), AnimationID.ZYGOMITE_DEATH);
-		// TODO: DUSK_7888 DUSK_7889
-
-		// TODO: GIANT_ROCKSLUG
-		// TODO: SMALL_LIZARD
-		// TODO: DESERT_LIZARD
-
-		// TODO: ANCIENT_ZYGOMITE
-
-		// Does ZYOGMITE_DEATH work for ANCIENT_ZYGOMITE?
-		// Does ROCKSLUG_DEATAH work for GIANT_ROCKSLUG?
-		// Does GARGOYLE_DEATH work for DUSK?
-		// Does LIZARD_DEATH work for SMALL_LIZARD and DESERT_LIZARD
-		// TODO: must be filled in with death animations of npcs that die with hp > 0
-	}
-
 	private TaskCounter counter;
 	private int cachedXp;
 	private Instant infoTimer;
@@ -241,25 +214,14 @@ public class SlayerPlugin extends Plugin
 	private List<Integer> targetIds = new ArrayList<>();
 	private boolean checkAsTokens = true;
 
-	/*
-	 * unfortunately xp drops don't correlate exactly to npc death animation ticks
-	 *
-	 * it seems that sometimes we could receive information late or potentially early so
-	 * to mitigate this causing some odd behaviors like seeing a slayer xp drop on a tick
-	 * where no npcs entered death animations when receiving a slayer xp drop we will examine
-	 * the npcs that entered death animations in the current tick, the tick before the xp drop
-	 * and the tick after the xp drop - note that this means we can't validate the kill counter
-	 * the tick we receive the xp drop, we must do it the tick after
-	 */
-	private int gainsTwoTicksAgo = -1;
-	private int gainsOneTickAgo = -1;
-	private int gainsThisTick = -1;
-	private List<NPC> deadFourTicksAgo = new ArrayList<>();
-	private List<NPC> deadThreeTicksAgo = new ArrayList<>();
-	private List<NPC> deadTwoTicksAgo = new ArrayList<>();
-	private List<NPC> deadOneTickAgo = new ArrayList<>();
-	private List<NPC> deadThisTick = new ArrayList<>();
-	private SlayerXpDrop slayerXpDrop = null;
+	private List<NPCPresence> lingeringPresences = new ArrayList<>();
+	private SlayerXpDropLookup slayerXpDropLookup = null;
+
+	private void clearTrackedNPCs()
+	{
+		highlightedTargets.clear();
+		lingeringPresences.clear();
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -269,10 +231,10 @@ public class SlayerPlugin extends Plugin
 		overlayManager.add(targetWeaknessOverlay);
 		overlayManager.add(targetMinimapOverlay);
 
-		if (slayerXpDrop == null)
+		if (slayerXpDropLookup == null)
 		{
 			// create this in startup since it needs to pull files during creation
-			slayerXpDrop = new SlayerXpDrop();
+			slayerXpDropLookup = new SlayerXpDropLookup();
 		}
 
 		if (client.getGameState() == GameState.LOGGED_IN
@@ -297,7 +259,7 @@ public class SlayerPlugin extends Plugin
 		overlayManager.remove(targetWeaknessOverlay);
 		overlayManager.remove(targetMinimapOverlay);
 		removeCounter();
-		highlightedTargets.clear();
+		clearTrackedNPCs();
 
 		chatCommandManager.unregisterCommand(TASK_COMMAND_STRING);
 	}
@@ -319,7 +281,7 @@ public class SlayerPlugin extends Plugin
 				taskName = "";
 				amount = 0;
 				loginFlag = true;
-				highlightedTargets.clear();
+				clearTrackedNPCs();
 				break;
 			case LOGGED_IN:
 				if (config.amount() != -1
@@ -356,6 +318,8 @@ public class SlayerPlugin extends Plugin
 		if (isTarget(npc))
 		{
 			highlightedTargets.add(npc);
+			NPCPresence newPresence = NPCPresence.buildPresence(npc);
+			log.debug("New presence of " + newPresence.toString());
 		}
 	}
 
@@ -364,67 +328,42 @@ public class SlayerPlugin extends Plugin
 	{
 		NPC npc = npcDespawned.getNpc();
 		highlightedTargets.remove(npc);
+		NPCPresence lingeringPresence = NPCPresence.buildPresence(npc);
+		lingeringPresences.add(lingeringPresence);
+		log.debug("Presence of " + lingeringPresence.toString() + " now lingering");
 	}
 
-	@Subscribe
-	/**
-	 * Xp drops happen on the tick an npc dies which IS NOT the tick it despawns
-	 * so detecting death can be done on the animation change plus the isDead()
-	 * method on the NPC
-	 */
-	public void onAnimationChanged(AnimationChanged e)
+	int estimateKillCount(List<NPCPresence> potentialKills, int gains)
 	{
-		if (!(e.getActor() instanceof NPC))
+		StringBuilder debugString = new StringBuilder();
+		for (NPCPresence presence : potentialKills)
 		{
-			return;
+			debugString.append(presence.toString());
+			debugString.append(", ");
 		}
+		log.debug("Estimating kc of xp drop " + gains + " for presences {" +
+				debugString.toString() + "}");
 
-		final NPC npc = (NPC) e.getActor();
-		String name = npc.getName();
-		if (name == null || name.isEmpty())
-		{
-			// npc w/o name wouldn't be giving slayer xp drop (also prevents an npe)
-			return;
-		}
-		final Integer deathAnim = NPC_DEATH_ANIMATIONS.get(name.toLowerCase());
-		// note that the reason for the below code checking explicit death animations is because there are some odd
-		// cases in the game that could throw us off - most notably desert lizards and rock slugs that can be not dead
-		// yet even when npc.isDead() returns true (b/c 0 hp != dead for them) and also the fact that they can be dead
-		// at greater than 0 hp (for example desert lizards can be killed at 4 or less hp with the ice thing) so they
-		// could throw an animation change and be dying but not trigger the npc.isDead() check.
-
-		// when we aren't special casing the death animation we can just do a simple isDead check
-		if (deathAnim == null)
-		{
-			if (npc.isDead())
-			{
-				deadThisTick.add(npc);
-			}
-		}
-		// otherwise when we are checking for the death animation explicitly we only add to deadThisTick if
-		// the animation matches the expected death animation
-		else
-		{
-			if (deathAnim == npc.getAnimation())
-			{
-				deadThisTick.add(npc);
-			}
-		}
-	}
-
-	int estimateKillCount(List<NPC> died, int gains)
-	{
 		// first determine potential xp drops given by all npcs that died this tick by grabbing the slayer xp
 		// info from the map made out of the data in slayer_xp.json
 		List<Double> potentialXpDrops = new ArrayList<>();
-		for (NPC dead : died)
+		for (NPCPresence potentialDead : potentialKills)
 		{
-			double xp = slayerXpDrop.findXpForNpc(dead);
+			double xp = slayerXpDropLookup.findXpForNpc(potentialDead);
 			if (xp > 0)
 			{
 				potentialXpDrops.add(xp);
 			}
 		}
+
+		debugString = new StringBuilder();
+		for (Double drop : potentialXpDrops)
+		{
+			debugString.append(drop);
+			debugString.append(", ");
+		}
+		log.debug("Determined xp drop " + gains + " can be made of {" + debugString.toString()
+				+ "}");
 
 		// we can attempt to determine exactly how many npcs died to give this amount of xp
 		// by using a solver for the knapsack problem
@@ -445,18 +384,11 @@ public class SlayerPlugin extends Plugin
 
 		int estimatedCount = solver.howMuchFitsInSack(potentialXpDropsAsInts, tenFudgedGains);
 
-		// if the knapsack solver gets 0 we want to make sure that we think at least 1 enemy died
-		// if xp was gained
-		if (estimatedCount <= 0 && gains > 0)
+		if (estimatedCount > potentialXpDrops.size())
 		{
-			estimatedCount = 1;
-		}
-		// cannot have an estimate larger than the number of enemies that died this tick - note
-		// that this may happen if the player gets slayer xp from a quest while a task is running
-		// this should make sure that the quest xp (hopefully) does not get registered as a kill
-		if (estimatedCount > died.size())
-		{
-			estimatedCount = died.size();
+			log.info("capping estimatedCount at " + potentialXpDrops.size() +
+				" b/c there were not " + estimatedCount + " nearby potential kills");
+			estimatedCount = potentialXpDrops.size();
 		}
 		return estimatedCount;
 	}
@@ -464,66 +396,18 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (gainsTwoTicksAgo > 0)
+		// update the lingering presence of npcs in the slayer xp consideration list
+		Iterator<NPCPresence> presenceIterator = lingeringPresences.iterator();
+		while (presenceIterator.hasNext())
 		{
-			List<NPC> deadInTickWindow = new ArrayList<>();
-			deadInTickWindow.addAll(deadFourTicksAgo);
-			deadInTickWindow.addAll(deadThreeTicksAgo);
-			deadInTickWindow.addAll(deadTwoTicksAgo);
-			deadInTickWindow.addAll(deadOneTickAgo);
-			deadInTickWindow.addAll(deadThisTick);
-			int killed = estimateKillCount(deadInTickWindow, gainsTwoTicksAgo);
-			StringBuilder npcsDead = new StringBuilder();
-			npcsDead.append("[");
-			for (NPC npc : deadFourTicksAgo)
+			NPCPresence presence = presenceIterator.next();
+			presence.tickExistence();
+			if (!presence.shouldExist())
 			{
-				npcsDead.append(npc.getName() + " lvl " + npc.getCombatLevel() + ", ");
-			}
-			npcsDead.append("|");
-			for (NPC npc : deadThreeTicksAgo)
-			{
-				npcsDead.append(npc.getName() + " lvl " + npc.getCombatLevel() + ", ");
-			}
-			npcsDead.append("|");
-			for (NPC npc : deadTwoTicksAgo)
-			{
-				npcsDead.append(npc.getName() + " lvl " + npc.getCombatLevel() + ", ");
-			}
-			npcsDead.append("|");
-			for (NPC npc : deadOneTickAgo)
-			{
-				npcsDead.append(npc.getName() + " lvl " + npc.getCombatLevel() + ", ");
-			}
-			npcsDead.append("|");
-			for (NPC npc : deadThisTick)
-			{
-				npcsDead.append(npc.getName() + " lvl " + npc.getCombatLevel() + ", ");
-			}
-			npcsDead.append("]");
-			System.out.println("gains last tick = " + gainsTwoTicksAgo + " on this kill count " + killed + " choosen from these npcs: " + npcsDead.toString());
-			for (int i = 0; i < killed; i++)
-			{
-				killedOne();
+				log.debug("Lingering presence of " + presence.toString() + " expired");
+				presenceIterator.remove();
 			}
 		}
-
-		// we only need to track the npcs that died and xp gains on a tick by tick basis so when we receive the game
-		// tick we reset both of these - this is viable because the onGameTick method will be called after we
-		// get onExperienceChanged and onAnimationChanged - note that this means that if the order of those methods
-		// changes then this will break - therefore we need a test in the slayer plugin that verifies that the runelite
-		// always makes these things go in that order, i.e. (xp change + animation change before game tick)
-		deadFourTicksAgo.clear();
-		deadFourTicksAgo.addAll(deadThreeTicksAgo);
-		deadThreeTicksAgo.clear();
-		deadThreeTicksAgo.addAll(deadTwoTicksAgo);
-		deadTwoTicksAgo.clear();
-		deadTwoTicksAgo.addAll(deadOneTickAgo);
-		deadOneTickAgo.clear();
-		deadOneTickAgo.addAll(deadThisTick);
-		deadThisTick.clear();
-		gainsTwoTicksAgo = gainsOneTickAgo;
-		gainsOneTickAgo = gainsThisTick;
-		gainsThisTick = -1;
 
 		Widget npcDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 		if (npcDialog != null)
@@ -736,8 +620,38 @@ public class SlayerPlugin extends Plugin
 
 		if (cachedXp != 0)
 		{
-			// this is not the initial xp sent on login
-			gainsThisTick = slayerExp - cachedXp;
+			// this is not the initial xp sent on login so these are new xp gains
+			int gains = slayerExp - cachedXp;
+
+			log.debug("Slayer xp drop received");
+
+			StringBuilder debugString = new StringBuilder();
+
+			// potential npcs to give xp drop are current highlighted npcs and the lingering presences
+			List<NPCPresence> potentialNPCs = new ArrayList<>();
+			debugString.append("Lingering presences {");
+			for (NPCPresence presence : lingeringPresences)
+			{
+				potentialNPCs.add(presence);
+				debugString.append(presence.toString());
+				debugString.append(", ");
+			}
+			debugString.append("}\nCurrent presences {");
+			for (NPC npc : highlightedTargets)
+			{
+				NPCPresence currentPresence = NPCPresence.buildPresence(npc);
+				potentialNPCs.add(currentPresence);
+				debugString.append(currentPresence.toString());
+				debugString.append(", ");
+			}
+			debugString.append("}");
+			log.debug(debugString.toString());
+
+			int killCount = estimateKillCount(potentialNPCs, gains);
+			for (int i = 0; i < killCount; i++)
+			{
+				killedOne();
+			}
 		}
 		cachedXp = slayerExp;
 	}
