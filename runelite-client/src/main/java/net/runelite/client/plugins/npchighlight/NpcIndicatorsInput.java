@@ -46,7 +46,7 @@ public class NpcIndicatorsInput implements KeyListener
 	{
 		if (e.getKeyCode() == HOTKEY)
 		{
-			plugin.updateNpcMenuOptions(true);
+			plugin.setHotKeyPressed(true);
 		}
 	}
 
@@ -55,7 +55,7 @@ public class NpcIndicatorsInput implements KeyListener
 	{
 		if (e.getKeyCode() == HOTKEY)
 		{
-			plugin.updateNpcMenuOptions(false);
+			plugin.setHotKeyPressed(false);
 		}
 	}
 }
