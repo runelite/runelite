@@ -203,9 +203,9 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "swapPick",
-			name = "Pick",
-			description = "Swap Pick with Pick-lots of the Gourd tree in the Chambers of Xeric"
+		keyName = "swapPick",
+		name = "Pick",
+		description = "Swap Pick with Pick-lots of the Gourd tree in the Chambers of Xeric"
 	)
 	default boolean swapPick()
 	{
