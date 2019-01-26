@@ -271,5 +271,4 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
-
 }
