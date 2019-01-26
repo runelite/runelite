@@ -59,6 +59,7 @@ import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
@@ -84,7 +85,7 @@ public class MotherlodePlugin extends Plugin
 	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
 	private static final Set<Integer> MINE_SPOTS = ImmutableSet.of(ORE_VEIN_26661, ORE_VEIN_26662, ORE_VEIN_26663, ORE_VEIN_26664);
 	private static final Set<Integer> MLM_ORE_TYPES = ImmutableSet.of(ItemID.RUNITE_ORE, ItemID.ADAMANTITE_ORE,
-			ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
+		ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
 	private static final Set<Integer> ROCK_OBSTACLES = ImmutableSet.of(ROCKFALL, ROCKFALL_26680);
 
 	private static final int MAX_INVENTORY_SIZE = 28;
@@ -110,6 +111,9 @@ public class MotherlodePlugin extends Plugin
 	private MotherlodeGemOverlay motherlodeGemOverlay;
 
 	@Inject
+	private MotherlodeOreOverlay motherlodeOreOverlay;
+
+	@Inject
 	private MotherlodeConfig config;
 
 	@Inject
@@ -129,6 +133,7 @@ public class MotherlodePlugin extends Plugin
 	private Integer depositsLeft;
 
 	private MotherlodeSession session;
+	private boolean shouldUpdateOres;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> veins = new HashSet<>();
@@ -147,6 +152,7 @@ public class MotherlodePlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(rocksOverlay);
 		overlayManager.add(motherlodeGemOverlay);
+		overlayManager.add(motherlodeOreOverlay);
 		overlayManager.add(motherlodeSackOverlay);
 
 		session = new MotherlodeSession();
@@ -164,6 +170,7 @@ public class MotherlodePlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlayManager.remove(rocksOverlay);
 		overlayManager.remove(motherlodeGemOverlay);
+		overlayManager.remove(motherlodeOreOverlay);
 		overlayManager.remove(motherlodeSackOverlay);
 		session = null;
 		veins.clear();
@@ -190,7 +197,9 @@ public class MotherlodePlugin extends Plugin
 	{
 		if (inMlm)
 		{
+			int lastSackValue = curSackSize;
 			refreshSackValues();
+			shouldUpdateOres = curSackSize != lastSackValue;
 		}
 	}
 
@@ -368,6 +377,29 @@ public class MotherlodePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		final ItemContainer container = event.getItemContainer();
+
+		if (!inMlm || container != client.getItemContainer(InventoryID.INVENTORY) || !shouldUpdateOres)
+		{
+			return;
+		}
+
+		final Item[] inv = container.getItems();
+
+		for (Item item : inv)
+		{
+			if (MLM_ORE_TYPES.contains(item.getId()))
+			{
+				session.updateOreFound(item);
+			}
+		}
+
+		shouldUpdateOres = false;
+	}
+
 	private Integer calculateDepositsLeft()
 	{
 		if (maxSackSize == 0) // check if maxSackSize has been initialized
@@ -445,6 +477,7 @@ public class MotherlodePlugin extends Plugin
 	/**
 	 * Checks if the given point is "upstairs" in the mlm.
 	 * The upper floor is actually on z=0.
+	 *
 	 * @param localPoint
 	 * @return
 	 */
