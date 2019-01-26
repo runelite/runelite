@@ -1406,4 +1406,28 @@ public abstract class RSClientMixin implements RSClient
 	{
 		client.getCallbacks().post(new ClientTick());
 	}
+
+	@Copy("shouldLeftClickOpenMenu")
+	boolean rs$shouldLeftClickOpenMenu()
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("shouldLeftClickOpenMenu")
+	boolean rl$shouldLeftClickOpenMenu()
+	{
+		if (rs$shouldLeftClickOpenMenu())
+		{
+			return true;
+		}
+
+		int len = getMenuOptionCount();
+		if (len > 0)
+		{
+			int type = getMenuTypes()[len - 1];
+			return type == MenuAction.RUNELITE_OVERLAY.getId();
+		}
+
+		return false;
+	}
 }
