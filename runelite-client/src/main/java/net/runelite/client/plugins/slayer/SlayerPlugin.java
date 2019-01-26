@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import joptsimple.internal.Strings;
 import lombok.AccessLevel;
@@ -126,6 +127,8 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern TASK_STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
 	private static final int TASK_STRING_MAX_LENGTH = 50;
 
+	private static Pattern targetPattern = null;
+
 	@Inject
 	private Client client;
 
@@ -208,7 +211,6 @@ public class SlayerPlugin extends Plugin
 	private int cachedXp;
 	private Instant infoTimer;
 	private boolean loginFlag;
-	private List<String> targetNames = new ArrayList<>();
 
 	@Override
 	protected void startUp() throws Exception
@@ -585,7 +587,7 @@ public class SlayerPlugin extends Plugin
 
 	private boolean isTarget(NPC npc)
 	{
-		if (targetNames.isEmpty())
+		if (targetPattern == null)
 		{
 			return false;
 		}
@@ -598,36 +600,37 @@ public class SlayerPlugin extends Plugin
 
 		name = name.toLowerCase();
 
-		for (String target : targetNames)
+		Matcher nameMatcher = targetPattern.matcher(name);
+		if (nameMatcher.matches())
 		{
-			if (name.contains(target))
-			{
-				NPCComposition composition = npc.getTransformedComposition();
+			NPCComposition composition = npc.getTransformedComposition();
 
-				if (composition != null)
-				{
-					List<String> actions = Arrays.asList(composition.getActions());
-					if (actions.contains("Attack") || actions.contains("Pick")) //Pick action is for zygomite-fungi
-					{
-						return true;
-					}
-				}
+			if (composition != null)
+			{
+				List<String> actions = Arrays.asList(composition.getActions());
+				return actions.contains("Attack") || actions.contains("Pick"); //Pick action is for zygomite-fungi
 			}
 		}
+
 		return false;
 	}
 
-	private void rebuildTargetNames(Task task)
+	private void rebuildTargetPattern(Task task)
 	{
-		targetNames.clear();
+		targetPattern = null;
 
 		if (task != null)
 		{
-			Arrays.stream(task.getTargetNames())
-				.map(String::toLowerCase)
-				.forEach(targetNames::add);
+			String targetNames = taskName.toLowerCase().replaceAll("s$", "");
 
-			targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
+			if (task.getTargetNames().length > 0)
+			{
+				targetNames = targetNames.concat(Arrays.stream(task.getTargetNames())
+					.map(String::toLowerCase)
+					.collect(Collectors.joining("|", "|", "")));
+			}
+
+			targetPattern = Pattern.compile(".*\\b(?:" + targetNames + ")\\b.*");
 		}
 	}
 
@@ -661,7 +664,7 @@ public class SlayerPlugin extends Plugin
 		infoTimer = Instant.now();
 
 		Task task = Task.getTask(name);
-		rebuildTargetNames(task);
+		rebuildTargetPattern(task);
 		rebuildTargetList();
 	}
 
