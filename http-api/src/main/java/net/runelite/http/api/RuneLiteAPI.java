@@ -47,7 +47,7 @@ public class RuneLiteAPI
 	public static String userAgent;
 
 	private static final String BASE = "https://api.runelite.net";
-	private static final String WSBASE = "wss://api.runelite.net/runelite-";
+	private static final String WSBASE = "https://api.runelite.net/ws";
 	private static final String STATICBASE = "https://static.runelite.net";
 	private static final Properties properties = new Properties();
 	private static String version;
@@ -108,9 +108,9 @@ public class RuneLiteAPI
 		return HttpUrl.parse(STATICBASE);
 	}
 
-	public static String getWsEndpoint()
+	public static HttpUrl getWsEndpoint()
 	{
-		return WSBASE + getVersion() + "/ws";
+		return HttpUrl.parse(WSBASE);
 	}
 
 	public static String getVersion()
