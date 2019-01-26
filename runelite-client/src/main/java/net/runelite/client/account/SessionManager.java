@@ -31,7 +31,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.Instant;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
@@ -43,6 +42,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.ws.WSClient;
 import net.runelite.http.api.account.AccountClient;
 import net.runelite.http.api.account.OAuthResponse;
 import net.runelite.http.api.ws.messages.LoginResponse;
@@ -52,22 +52,21 @@ import net.runelite.http.api.ws.messages.LoginResponse;
 public class SessionManager
 {
 	private static final File SESSION_FILE = new File(RuneLite.RUNELITE_DIR, "session");
-	private WSClient wsclient;
 
 	@Getter
 	private AccountSession accountSession;
 
 	private final EventBus eventBus;
-	private ConfigManager configManager;
-	private ScheduledExecutorService executor;
+	private final ConfigManager configManager;
+	private final WSClient wsClient;
 	private final AccountClient loginClient = new AccountClient();
 
 	@Inject
-	public SessionManager(ConfigManager configManager, EventBus eventBus, ScheduledExecutorService executor)
+	private SessionManager(ConfigManager configManager, EventBus eventBus, WSClient wsClient)
 	{
 		this.configManager = configManager;
 		this.eventBus = eventBus;
-		this.executor = executor;
+		this.wsClient = wsClient;
 		eventBus.register(this);
 	}
 
@@ -136,19 +135,10 @@ public class SessionManager
 	 */
 	private void openSession(AccountSession session, boolean openSocket)
 	{
-		// If the ws session already exists, don't need to do anything
+		// Change session on the websocket
 		if (openSocket)
 		{
-			if (wsclient == null || !wsclient.checkSession(session))
-			{
-				if (wsclient != null)
-				{
-					wsclient.close();
-				}
-
-				wsclient = new WSClient(eventBus, executor, session);
-				wsclient.connect();
-			}
+			wsClient.changeSession(session.getUuid());
 		}
 
 		accountSession = session;
@@ -165,11 +155,7 @@ public class SessionManager
 
 	private void closeSession()
 	{
-		if (wsclient != null)
-		{
-			wsclient.close();
-			wsclient = null;
-		}
+		wsClient.close();
 
 		if (accountSession == null)
 		{
