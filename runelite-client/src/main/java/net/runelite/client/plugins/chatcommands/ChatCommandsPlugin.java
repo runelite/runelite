@@ -71,6 +71,7 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.ItemPrice;
+import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
 	name = "Chat Commands",
@@ -85,6 +86,8 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern WINTERTODT_PATTERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern BARROWS_PATTERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("Fight duration: <col=ff0000>[0-9:]+</col>. Personal best: ([0-9:]+).");
+	private static final Pattern NEW_PB_PATTERN = Pattern.compile("Fight duration: <col=ff0000>([0-9:]+)</col> \\(new personal best\\).");
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
 	private static final String LEVEL_COMMAND_STRING = "!lvl";
@@ -92,12 +95,14 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String KILLCOUNT_COMMAND_STRING = "!kc";
 	private static final String CMB_COMMAND_STRING = "!cmb";
 	private static final String QP_COMMAND_STRING = "!qp";
+	private static final String PB_COMMAND = "!pb";
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final ChatClient chatClient = new ChatClient();
 
 	private boolean logKills;
 	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
+	private String lastBossKill;
 
 	@Inject
 	private Client client;
@@ -138,11 +143,14 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(CLUES_COMMAND_STRING, this::clueLookup);
 		chatCommandManager.registerCommandAsync(KILLCOUNT_COMMAND_STRING, this::killCountLookup, this::killCountSubmit);
 		chatCommandManager.registerCommandAsync(QP_COMMAND_STRING, this::questPointsLookup, this::questPointsSubmit);
+		chatCommandManager.registerCommandAsync(PB_COMMAND, this::personalBestLookup, this::personalBestSubmit);
 	}
 
 	@Override
 	public void shutDown()
 	{
+		lastBossKill = null;
+
 		keyManager.unregisterKeyListener(chatKeyboardListener);
 
 		chatCommandManager.unregisterCommand(TOTAL_LEVEL_COMMAND_STRING);
@@ -152,6 +160,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(CLUES_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(KILLCOUNT_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(QP_COMMAND_STRING);
+		chatCommandManager.unregisterCommand(PB_COMMAND);
 	}
 
 	@Provides
@@ -173,6 +182,19 @@ public class ChatCommandsPlugin extends Plugin
 		return killCount == null ? 0 : killCount;
 	}
 
+	private void setPb(String boss, int seconds)
+	{
+		configManager.setConfiguration("personalbest." + client.getUsername().toLowerCase(),
+			boss.toLowerCase(), seconds);
+	}
+
+	private int getPb(String boss)
+	{
+		Integer personalBest = configManager.getConfiguration("personalbest." + client.getUsername().toLowerCase(),
+			boss.toLowerCase(), int.class);
+		return personalBest == null ? 0 : personalBest;
+	}
+
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
@@ -189,6 +211,8 @@ public class ChatCommandsPlugin extends Plugin
 			int kc = Integer.parseInt(matcher.group(2));
 
 			setKc(boss, kc);
+			lastBossKill = boss;
+			return;
 		}
 
 		matcher = WINTERTODT_PATTERN.matcher(message);
@@ -206,6 +230,8 @@ public class ChatCommandsPlugin extends Plugin
 			int kc = Integer.parseInt(matcher.group(2));
 
 			setKc(boss, kc);
+			lastBossKill = boss;
+			return;
 		}
 
 		matcher = BARROWS_PATTERN.matcher(message);
@@ -214,6 +240,35 @@ public class ChatCommandsPlugin extends Plugin
 			int kc = Integer.parseInt(matcher.group(1));
 
 			setKc("Barrows Chests", kc);
+		}
+
+		if (lastBossKill != null)
+		{
+			matcher = KILL_DURATION_PATTERN.matcher(message);
+			if (matcher.find())
+			{
+				matchPb(matcher);
+			}
+
+			matcher = NEW_PB_PATTERN.matcher(message);
+			if (matcher.find())
+			{
+				matchPb(matcher);
+			}
+		}
+
+		lastBossKill = null;
+	}
+
+	private void matchPb(Matcher matcher)
+	{
+		String personalBest = matcher.group(1);
+		String[] s = personalBest.split(":");
+		if (s.length == 2)
+		{
+			int seconds = Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]);
+			log.debug("Got personal best for {}: {}", lastBossKill, seconds);
+			setPb(lastBossKill, seconds);
 		}
 	}
 
@@ -411,7 +466,91 @@ public class ChatCommandsPlugin extends Plugin
 			}
 			catch (Exception ex)
 			{
-				log.warn("unable to submit quest poinits", ex);
+				log.warn("unable to submit quest points", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
+	}
+
+	private void personalBestLookup(SetMessage setMessage, String message)
+	{
+		if (!config.pb())
+		{
+			return;
+		}
+
+		ChatMessageType type = setMessage.getType();
+		String search = message.substring(PB_COMMAND.length() + 1);
+
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = sanitize(setMessage.getName());
+		}
+
+		search = longBossName(search);
+
+		final int pb;
+		try
+		{
+			pb = chatClient.getPb(player, search);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup personal best", ex);
+			return;
+		}
+
+		int minutes = pb / 60;
+		int seconds = pb % 60;
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append(search)
+			.append(ChatColorType.NORMAL)
+			.append(" personal best: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(String.format("%d:%02d", minutes, seconds))
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = setMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
+	}
+
+	private boolean personalBestSubmit(ChatInput chatInput, String value)
+	{
+		int idx = value.indexOf(' ');
+		final String boss = longBossName(value.substring(idx + 1));
+
+		final int pb = getPb(boss);
+		if (pb <= 0)
+		{
+			return false;
+		}
+
+		final String playerName = client.getLocalPlayer().getName();
+
+		executor.execute(() ->
+		{
+			try
+			{
+				chatClient.submitPb(playerName, boss, pb);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit personal best", ex);
 			}
 			finally
 			{
@@ -965,7 +1104,7 @@ public class ChatCommandsPlugin extends Plugin
 				return "Theatre of Blood";
 
 			default:
-				return boss;
+				return WordUtils.capitalize(boss);
 		}
 	}
 }

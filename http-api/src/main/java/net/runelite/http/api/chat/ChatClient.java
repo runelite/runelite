@@ -172,4 +172,48 @@ public class ChatClient
 			throw new IOException(ex);
 		}
 	}
+
+	public boolean submitPb(String username, String boss, int pb) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("pb")
+			.addQueryParameter("name", username)
+			.addQueryParameter("boss", boss)
+			.addQueryParameter("pb", Integer.toString(pb))
+			.build();
+
+		Request request = new Request.Builder()
+			.post(RequestBody.create(null, new byte[0]))
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			return response.isSuccessful();
+		}
+	}
+
+	public int getPb(String username, String boss) throws IOException
+	{
+		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+			.addPathSegment("chat")
+			.addPathSegment("pb")
+			.addQueryParameter("name", username)
+			.addQueryParameter("boss", boss)
+			.build();
+
+		Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unable to look up personal best!");
+			}
+			return Integer.parseInt(response.body().string());
+		}
+	}
 }
