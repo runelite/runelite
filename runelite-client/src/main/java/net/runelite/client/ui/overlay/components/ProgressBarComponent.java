@@ -80,7 +80,7 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 		final int height = Math.max(preferredSize.height, 16);
 		final int progressTextX = barX + (width - metrics.stringWidth(textToWrite)) / 2;
 		final int progressTextY = barY + ((height - metrics.getHeight()) / 2) + metrics.getHeight();
-		final int progressFill = (int) (width * pc);
+		final int progressFill = (int) (width * Math.min(1, pc));
 
 		//Draw bar
 		graphics.setColor(backgroundColor);
