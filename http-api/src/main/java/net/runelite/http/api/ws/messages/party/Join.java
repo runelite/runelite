@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,14 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.ws;
+package net.runelite.http.api.ws.messages.party;
 
-public class WebsocketMessage
+import java.util.UUID;
+import lombok.Value;
+import net.runelite.http.api.ws.WebsocketMessage;
+
+@Value
+public class Join extends WebsocketMessage
 {
-	protected boolean _party;
-
-	public boolean isParty()
-	{
-		return _party;
-	}
+	private final UUID partyId;
+	private final String name;
 }
