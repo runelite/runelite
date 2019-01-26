@@ -86,7 +86,12 @@ public class BankValuePlugin extends Plugin
 
 		if (config.showGE() && gePrice != 0)
 		{
-			strCurrentTab += " (EX: ";
+			strCurrentTab += " (";
+
+			if (config.showHA())
+			{
+				strCurrentTab += "EX: ";
+			}
 
 			if (config.showExact())
 			{
@@ -100,7 +105,12 @@ public class BankValuePlugin extends Plugin
 
 		if (config.showHA() && haPrice != 0)
 		{
-			strCurrentTab += " (HA: ";
+			strCurrentTab += " (";
+
+			if (config.showGE())
+			{
+				strCurrentTab += "HA: ";
+			}
 
 			if (config.showExact())
 			{
