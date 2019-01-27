@@ -32,7 +32,6 @@ import java.util.Collections;
 import java.util.List;
 import net.runelite.http.api.ws.messages.Handshake;
 import net.runelite.http.api.ws.messages.LoginResponse;
-import net.runelite.http.api.ws.messages.Ping;
 import net.runelite.http.api.ws.messages.party.Join;
 import net.runelite.http.api.ws.messages.party.Part;
 import net.runelite.http.api.ws.messages.party.UserJoin;
@@ -48,7 +47,6 @@ public class WebsocketGsonFactory
 		final List<Class<? extends WebsocketMessage>> messages = new ArrayList<>();
 		messages.add(Handshake.class);
 		messages.add(LoginResponse.class);
-		messages.add(Ping.class);
 		messages.add(Join.class);
 		messages.add(Part.class);
 		messages.add(UserJoin.class);

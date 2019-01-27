@@ -26,14 +26,10 @@ package net.runelite.client.ws;
 
 import com.google.gson.Gson;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -42,9 +38,7 @@ import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ws.WebsocketGsonFactory;
 import net.runelite.http.api.ws.WebsocketMessage;
 import net.runelite.http.api.ws.messages.Handshake;
-import net.runelite.http.api.ws.messages.Ping;
 import net.runelite.http.api.ws.messages.party.PartyMessage;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
@@ -54,11 +48,7 @@ import okhttp3.WebSocketListener;
 @Singleton
 public class WSClient extends WebSocketListener implements AutoCloseable
 {
-	private static final Duration PING_TIME = Duration.ofSeconds(30);
-
-	private final OkHttpClient client = new OkHttpClient();
 	private final EventBus eventBus;
-	private final ScheduledFuture pingFuture;
 	private final Collection<Class<? extends WebsocketMessage>> messages = new HashSet<>();
 
 	private volatile Gson gson;
@@ -66,10 +56,9 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	private WebSocket webSocket;
 
 	@Inject
-	private WSClient(EventBus eventBus, ScheduledExecutorService executor)
+	private WSClient(EventBus eventBus)
 	{
 		this.eventBus = eventBus;
-		this.pingFuture = executor.scheduleWithFixedDelay(this::ping, PING_TIME.getSeconds(), PING_TIME.getSeconds(), TimeUnit.SECONDS);
 		this.gson = WebsocketGsonFactory.build(WebsocketGsonFactory.factory(messages));
 	}
 
@@ -110,24 +99,11 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 			.url(RuneLiteAPI.getWsEndpoint())
 			.build();
 
-		webSocket = client.newWebSocket(request, this);
+		webSocket = RuneLiteAPI.CLIENT.newWebSocket(request, this);
 
 		Handshake handshake = new Handshake();
 		handshake.setSession(sessionId);
 		send(handshake);
-	}
-
-	private void ping()
-	{
-		if (webSocket == null)
-		{
-			// Don't open a socket just for ping.
-			return;
-		}
-
-		Ping ping = new Ping();
-		ping.setTime(Instant.now());
-		send(ping);
 	}
 
 	public void registerMessage(final Class<? extends WebsocketMessage> message)
