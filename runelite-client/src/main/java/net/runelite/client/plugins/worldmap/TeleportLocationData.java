@@ -183,13 +183,11 @@ enum TeleportLocationData
 	private final String tooltip;
 	private final WorldPoint location;
 	private final String iconPath;
-	private String tooltipRunes;
 
 	TeleportLocationData(TeleportType type, String destination, String runes, int magicLevel, WorldPoint location, String iconPath)
 	{
 		this.type = type;
-		this.tooltip = type.getPrefix() + " " + destination + " - lvl " + magicLevel;
-		tooltipRunes = runes;
+		this.tooltip = type.getPrefix() + " " + destination + " - lvl " + magicLevel + "\n" + runes;
 		this.location = location;
 		this.iconPath = iconPath;
 	}

@@ -257,11 +257,20 @@ public class WorldMapOverlay extends Overlay
 	{
 		int newLine = 1;
 		String tooltip = worldPoint.getTooltip();
-		String tooltipRunes = worldPoint.getTooltipRunes();
+		String tooltipRunes = null;
 		Point drawPoint = mapWorldPointToGraphicsPoint(worldPoint.getWorldPoint());
 		if (tooltip == null || tooltip.length() <= 0 || drawPoint == null)
 		{
 			return;
+		}
+
+		if (tooltip.contains("Law"))
+		{
+			String tooltipSplit[] = null;
+			tooltipSplit = tooltip.split("[\\r\\n]+");
+
+			tooltipRunes = tooltipSplit[1];
+			tooltip = tooltipSplit[0];
 		}
 
 		drawPoint = new Point(drawPoint.getX() + TOOLTIP_OFFSET_WIDTH, drawPoint.getY() + TOOLTIP_OFFSET_HEIGHT);
