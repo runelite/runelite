@@ -25,17 +25,17 @@
 package net.runelite.client.plugins.kingdomofmiscellania;
 
 import com.google.common.collect.ImmutableSet;
+
+
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Iterator;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import static net.runelite.api.ItemID.TEAK_CHEST;
-import net.runelite.api.Quest;
-import net.runelite.api.QuestState;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -43,6 +43,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.StackFormatter;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 
@@ -68,18 +69,31 @@ public class KingdomPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Getter
-	private int favor = 0, coffer = 0, primaryProfit = 0, secondaryProfit = 0, estimatedNetProfit = 0;
+	private int favor = 0, coffer = 0, hardwoodButton = 0, cookedFishButton = 0, herbsButton = 0;
 
 	@Getter
-	private int workers = 10;
+	private int miningWorkers = 0, herbsWorkers = 0, farmWorkers = 0;
 
 	@Getter
-	private HashMap <ResourceType, Integer> workerDistribution = new HashMap();
+	private int fishingWorkers = 0, woodWorkers = 0, hardwoodWorkers = 0;
 
-	@Getter
-	private String primaryResource = "None", secondaryResource = "None";
+	private int workers = 15;
 
 	private KingdomCounter counter;
+
+	@Getter
+	private Kingdom max = new Kingdom(15);
+
+	@Getter
+	private Kingdom personal = new Kingdom(workers);
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		max.getSalary(750000, getFavorPercent(127));
+		maxWorkerDistributions();
+		calculateRewards(max);
+	}
 
 	@Override
 	protected void shutDown() throws Exception
@@ -90,135 +104,133 @@ public class KingdomPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		favor = client.getVar(Varbits.KINGDOM_FAVOR);
-		coffer = client.getVar(Varbits.KINGDOM_COFFER);
-		processInfobox();
+		if (isInKingdom() && hasCompletedQuests())
+		{
+			favor = client.getVar(Varbits.KINGDOM_FAVOR);
+			coffer = client.getVar(Varbits.KINGDOM_COFFER);
+
+			miningWorkers = client.getVar(Varbits.KINGDOM_WORKERS_MINING);
+			herbsWorkers = client.getVar(Varbits.KINGDOM_WORKERS_HERBS);
+			farmWorkers = client.getVar(Varbits.KINGDOM_WORKERS_FARM);
+			fishingWorkers = client.getVar(Varbits.KINGDOM_WORKERS_FISHING);
+			woodWorkers = client.getVar(Varbits.KINGDOM_WORKERS_WOOD);
+			hardwoodWorkers = client.getVar(Varbits.KINGDOM_WORKERS_HARDWOOD);
+
+			hardwoodButton = client.getVar(Varbits.KINGDOM_WORKERS_HARDWOOD_BUTTON);
+			cookedFishButton = client.getVar(Varbits.KINGDOM_WORKERS_FISH_COOKED_BUTTON);
+			herbsButton = client.getVar(Varbits.KINGDOM_WORKERS_HERBS_BUTTON);
+
+			personal.getSalary(coffer, getFavorPercent(favor));
+			log.debug("Effective salary: " + personal.getEffectiveSalary());
+			log.debug("Individual worker salary: " + personal.getIndividualWorkerSalary());
+
+			getPersonalWorkerDistribution();
+			calculateRewards(personal);
+			processInfobox();
+		}
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGGED_IN)
-		{
-			processInfobox();
-		}
+		processInfobox();
 	}
 
 	private void processInfobox()
 	{
-		if (client.getGameState() == GameState.LOGGED_IN && hasCompletedQuests() && isInKingdom())
+		if (client.getGameState() == GameState.LOGGED_IN && isInKingdom() && hasCompletedQuests())
 		{
 			addKingdomInfobox();
-			calculateMaxRewards();
-			//getWorkerDistribution();
 		}
 		else
 		{
 			removeKingdomInfobox();
 		}
-
 	}
 
-	private void getWorkerDistribution()
+	private void maxWorkerDistributions()
 	{
-		int hardwoodButton = client.getVar(Varbits.KINGDOM_WORKERS_HARDWOOD_BUTTON);
-		int cookedFishButton = client.getVar(Varbits.KINGDOM_WORKERS_FISH_COOKED_BUTTON);
-		int herbsButton = client.getVar(Varbits.KINGDOM_WORKERS_HERBS_BUTTON);
+		max.resourceDistribution = new HashMap<>();
+		for (ResourceType resource : ResourceType.values())
+		{
+			// Put 10 workers on each resource
+			max.resourceDistribution.put(resource, 10);
+		}
+	}
 
+	private void getPersonalWorkerDistribution()
+	{
 		ResourceType herbsOrFlax = herbsButton == 0 ? ResourceType.HERBS : ResourceType.FLAX;
 		ResourceType cookedOrRaw = cookedFishButton == 0 ? ResourceType.RAW_FISH : ResourceType.COOKED_FISH;
 		ResourceType hardwoodType = hardwoodButton == 0 ? ResourceType.HARDWOOD_MAHOGANY
 			: hardwoodButton == 1 ? ResourceType.HARDWOOD_TEAK : ResourceType.HARDWOOD_BOTH;
 
-		// Clear to ignore inactive resources
-		workerDistribution.clear();
-		workerDistribution.put(herbsOrFlax, client.getVar(Varbits.KINGDOM_WORKERS_HERBS));
-		workerDistribution.put(cookedOrRaw, client.getVar(Varbits.KINGDOM_WORKERS_FISHING));
-		workerDistribution.put(hardwoodType, client.getVar(Varbits.KINGDOM_WORKERS_HARDWOOD));
-		workerDistribution.put(ResourceType.MINING, client.getVar(Varbits.KINGDOM_WORKERS_MINING));
-		workerDistribution.put(ResourceType.WOOD, client.getVar(Varbits.KINGDOM_WORKERS_WOOD));
-		workerDistribution.put(ResourceType.FARM, client.getVar(Varbits.KINGDOM_WORKERS_FARM));
-
-		calculateCurrentRewards();
+		personal.resourceDistribution = new HashMap<>();
+		personal.resourceDistribution.put(herbsOrFlax, herbsWorkers);
+		personal.resourceDistribution.put(cookedOrRaw, fishingWorkers);
+		personal.resourceDistribution.put(hardwoodType, hardwoodWorkers);
+		personal.resourceDistribution.put(ResourceType.MINING, miningWorkers);
+		personal.resourceDistribution.put(ResourceType.WOOD, woodWorkers);
+		personal.resourceDistribution.put(ResourceType.FARM, farmWorkers);
 	}
 
-	private void calculateCurrentRewards()
+	private void calculateRewards(Kingdom kingdom)
 	{
-		int workersPerResource, amount = 0;
-		double salary, rewardQuantity;
+		int workersOnResource;
+		int rewardQuantity;
+		int rewardAmount;
+		int resourceAmount;
+		int totalAmount = 0;
 
-		if (workers == 10)
-		{
-			salary = coffer >= 500000 ? 50000 : (double) coffer / 10;
-			log.debug("salary: " + salary);
-		}
-		else
-		{
-			salary = coffer >= 750000 ? 75000 : (double) coffer / 10;
-			log.debug("salary: " + salary);
-		}
+		kingdom.rewardSummary = new HashMap<>();
+		Iterator it = kingdom.resourceDistribution.entrySet().iterator();
 
-		// Salary after favor cut
-		log.debug("salary: " + salary);
-		salary = (double) getFavorPercent(favor) / 100 * salary;
-		// Salary per employee
-		salary = salary / workers;
-		log.debug("salary: " + salary);
-
-		Iterator it = workerDistribution.entrySet().iterator();
 		while (it.hasNext())
 		{
 			Map.Entry pairs = (Map.Entry) it.next();
-			log.debug(pairs.getKey() + " = " + pairs.getValue());
+			workersOnResource = (int) pairs.getValue();
+			resourceAmount = 0;
+			log.debug(workersOnResource + " workers on resource: " + pairs.getKey());
 
-			workersPerResource = (int) pairs.getValue();
-			log.debug("workers: " + workersPerResource);
 			for (Reward reward : Reward.values())
 			{
-				if (reward.getType() == pairs.getKey())
+				if (reward.getType() == pairs.getKey() && workersOnResource != 0)
 				{
-					// number of workers multiplied by their salary divided by the cost of the rewards
-					rewardQuantity = workersPerResource * salary / reward.getCost();
-					log.debug("Reward: " + reward.getName() + ", Quantity: " + rewardQuantity);
-					amount += rewardQuantity * itemManager.getItemPrice(reward.getRewardId());
+					// Calculate the quantity of the specific reward
+					rewardQuantity = (int) (reward.getQuantity() * workersOnResource
+						* kingdom.getIndividualWorkerSalary()) / 50000;
+
+					// Get the amount in gp from the quantity and price
+					rewardAmount = rewardQuantity * itemManager.getItemPrice(reward.getRewardId());
+
+					// Add to total resource accumulator
+					resourceAmount += rewardAmount;
+
+					String summary = reward.getName() + " x " + rewardQuantity + " : "
+						+ StackFormatter.formatNumber(rewardAmount);
+
+					// Populate the rewards summary hashMap
+					kingdom.getRewardSummary().put(reward.getName(), summary);
+
+					log.debug(reward.getName() + " Workers: " + workersOnResource + ", Salary: "
+						+ kingdom.getIndividualWorkerSalary()
+						+ ", Quantity: " + rewardQuantity + ", GP: " + rewardAmount);
 				}
 			}
-		}
+			totalAmount += resourceAmount;
 
-	}
-
-	private void calculateMaxRewards()
-	{
-		ResourceType type = ResourceType.FARM;
-		double amount = 0;
-		for (Reward reward : Reward.values())
-		{
-			if (reward.getType() != type)
+			if (resourceAmount > kingdom.getPrimaryAmount())
 			{
-				// reset amount
-				amount = 0;
-				type = reward.getType();
+				kingdom.primaryAmount = resourceAmount;
+				kingdom.primaryResource = (ResourceType) pairs.getKey();
 			}
-			amount += reward.getQuantity() * itemManager.getItemPrice(reward.getRewardId());
-			log.debug("Reward: " + reward.getName() + ", Quantity: " + reward.getQuantity() + ", Amount: " + amount);
-			log.debug("RID: " + reward.getRewardId() + ", Item Price: " + itemManager.getItemPrice(reward.getRewardId()));
-			if (amount > primaryProfit)
+			else if (resourceAmount > kingdom.getSecondaryAmount() && pairs.getKey() != kingdom.primaryResource)
 			{
-				primaryProfit = (int) Math.round(amount);
-				primaryResource = type.getType();
-			}
-			else if (amount > secondaryProfit && type.getType() != primaryResource)
-			{
-				secondaryProfit = (int) Math.round(amount);
-				secondaryResource = type.getType();
+				kingdom.secondaryAmount = resourceAmount;
+				kingdom.secondaryResource = (ResourceType) pairs.getKey();
 			}
 		}
-
-		// 10 workers
-		primaryProfit -= 50000;
-		// 5 workers
-		secondaryProfit = secondaryProfit / 2 - 25000;
-		estimatedNetProfit = primaryProfit + secondaryProfit;
+		kingdom.netProfit = totalAmount - kingdom.getBaseSalary();
 	}
 
 	private void addKingdomInfobox()
@@ -249,15 +261,19 @@ public class KingdomPlugin extends Plugin
 
 	private boolean hasCompletedQuests()
 	{
-		if (Quest.ROYAL_TROUBLE.getState(client) == QuestState.FINISHED)
+	/*	if (Quest.ROYAL_TROUBLE.getState(client).toString() == "FINISHED")
 		{
 			workers = 15;
+			return true;
 		}
-
-		log.debug("Number of available workers: " + workers);
-		return Quest.THRONE_OF_MISCELLANIA.getState(client) == QuestState.FINISHED;
+		if (Quest.THRONE_OF_MISCELLANIA.getState(client).toString() == "FINISHED")
+		{
+			return true;
+		}
+	*/
+		return true;
 	}
-
+	
 	static int getFavorPercent(int favor)
 	{
 		return (favor * 100) / 127;

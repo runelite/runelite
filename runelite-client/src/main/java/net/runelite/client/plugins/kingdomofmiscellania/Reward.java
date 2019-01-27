@@ -34,8 +34,8 @@ enum Reward
 {
 	COAL("Coal", ResourceType.MINING, 545.85, 91.6, ItemID.COAL),
 	FLAX("Flax", ResourceType.FLAX, 1250, 40, ItemID.FLAX),
-	RAW_TUNA("Tuna", ResourceType.RAW_FISH, 440, 56.3, ItemID.RAW_TUNA),
-	RAW_SWORDFISH("Swordfish", ResourceType.RAW_FISH, 131, 189.4, ItemID.RAW_SWORDFISH),
+	RAW_TUNA("Raw Tuna", ResourceType.RAW_FISH, 440, 56.3, ItemID.RAW_TUNA),
+	RAW_SWORDFISH("Raw Swordfish", ResourceType.RAW_FISH, 131, 189.4, ItemID.RAW_SWORDFISH),
 	COOKED_TUNA("Tuna", ResourceType.COOKED_FISH, 440, 56.3, ItemID.TUNA),
 	COOKED_SWORDFISH("Swordfish", ResourceType.COOKED_FISH, 131, 189.4, ItemID.SWORDFISH),
 	MAPLE("Maple", ResourceType.WOOD, 892, 56.1, ItemID.MAPLE_LOGS),

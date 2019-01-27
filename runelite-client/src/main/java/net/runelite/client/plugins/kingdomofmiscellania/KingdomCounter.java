@@ -29,6 +29,9 @@ import java.awt.image.BufferedImage;
 import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.ColorUtil;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
 
 public class KingdomCounter extends Counter
 {
@@ -49,17 +52,33 @@ public class KingdomCounter extends Counter
 	@Override
 	public String getTooltip()
 	{
+
+		String currentRewards = ColorUtil.wrapWithColorTag("Personal Profit: ", Color.YELLOW)
+			+ StackFormatter.formatNumber(plugin.getPersonal().getNetProfit()) + "</br>";
+
+		HashMap <String, String> rewardSummary = plugin.getPersonal().getRewardSummary();
+
+
+		if (rewardSummary != null)
+		{
+			Iterator it = plugin.getPersonal().getRewardSummary().entrySet().iterator();
+			while (it.hasNext())
+			{
+				Map.Entry pairs = (Map.Entry) it.next();
+				currentRewards += pairs.getValue() + "</br>";
+			}
+		}
+
 		return ColorUtil.wrapWithColorTag("Favor: ", Color.YELLOW)
 				+ plugin.getFavor() + "/127" + "</br>"
 				+ ColorUtil.wrapWithColorTag("Coffer: ", Color.YELLOW)
 				+ StackFormatter.quantityToRSStackSize(plugin.getCoffer()) + "</br>"
-				+ ColorUtil.wrapWithColorTag("Highest Profit: ", Color.YELLOW)
-				+ ColorUtil.wrapWithColorTag(plugin.getPrimaryResource(), Color.CYAN)
-				+ " (" + StackFormatter.formatNumber(plugin.getPrimaryProfit()) + ")</br>"
-				+ ColorUtil.wrapWithColorTag("Second Highest: ", Color.YELLOW)
-				+ ColorUtil.wrapWithColorTag(plugin.getSecondaryResource(), Color.CYAN)
-				+ " (" + StackFormatter.formatNumber(plugin.getSecondaryProfit()) + ")</br>"
-				+ ColorUtil.wrapWithColorTag("Net: ", Color.YELLOW)
-				+ StackFormatter.formatNumber(plugin.getEstimatedNetProfit());
+				+ ColorUtil.wrapWithColorTag("Highest Profit:  ", Color.YELLOW)
+				+ ColorUtil.wrapWithColorTag(plugin.getMax().getPrimaryResource().getType(), Color.CYAN)
+				+ "  " + StackFormatter.formatNumber(plugin.getMax().getPrimaryAmount()) + "</br>"
+				+ ColorUtil.wrapWithColorTag("Second Highest:  ", Color.YELLOW)
+				+ ColorUtil.wrapWithColorTag(plugin.getMax().getSecondaryResource().getType(), Color.CYAN)
+				+ "  " + StackFormatter.formatNumber(plugin.getMax().getSecondaryAmount()) + "</br>"
+				+ currentRewards;
 	}
 }
