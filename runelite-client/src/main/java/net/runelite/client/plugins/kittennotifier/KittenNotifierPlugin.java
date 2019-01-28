@@ -88,7 +88,6 @@ public class KittenNotifierPlugin extends Plugin
 		}
 		else
 		{
-			System.out.println(catName.getName());
 			if (catNameWas.equals("Kitten") && catName.getName().equals("Cat"))
 			{
 				notifier.notify("Your kitten has grown into a cat.");
