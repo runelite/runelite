@@ -60,8 +60,8 @@ public class KittenNotifierPlugin extends Plugin
 		return configManager.getConfig(KittenNotifierConfig.class);
 	}
 
-	private NPC catName;
-	private String catNameWas;
+	private NPC kittenOrCatNpc;
+	private String kittenOrCatNpcNameWas;
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
@@ -82,17 +82,17 @@ public class KittenNotifierPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (catName == null || catName.getName() == null)
+		if (kittenOrCatNpc == null || kittenOrCatNpc.getName() == null)
 		{
-			catName = null;
+			kittenOrCatNpc = null;
 		}
 		else
 		{
-			if (catNameWas.equals("Kitten") && catName.getName().equals("Cat"))
+			if (kittenOrCatNpcNameWas.equals("Kitten") && kittenOrCatNpc.getName().equals("Cat"))
 			{
 				notifier.notify("Your kitten has grown into a cat.");
 			}
-			catNameWas = catName.getName();
+			kittenOrCatNpcNameWas = kittenOrCatNpc.getName();
 
 		}
 	}
@@ -104,8 +104,8 @@ public class KittenNotifierPlugin extends Plugin
 		{
 			if (event.getNpc().getName().equals("Kitten") || event.getNpc().getName().equals("Cat"))
 			{
-				catName = event.getNpc();
-				catNameWas = event.getNpc().getName();
+				kittenOrCatNpc = event.getNpc();
+				kittenOrCatNpcNameWas = event.getNpc().getName();
 			}
 		}
 	}
