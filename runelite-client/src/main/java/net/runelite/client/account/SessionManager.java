@@ -31,6 +31,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.Instant;
+import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
@@ -59,7 +60,6 @@ public class SessionManager
 	private final EventBus eventBus;
 	private final ConfigManager configManager;
 	private final WSClient wsClient;
-	private final AccountClient loginClient = new AccountClient();
 
 	@Inject
 	private SessionManager(ConfigManager configManager, EventBus eventBus, WSClient wsClient)
@@ -184,6 +184,10 @@ public class SessionManager
 
 	public void login()
 	{
+		// If a session is already open, use that id. Otherwise generate a new id.
+		UUID uuid = wsClient.getSessionId() != null ? wsClient.getSessionId() : UUID.randomUUID();
+		AccountClient loginClient = new AccountClient(uuid);
+
 		final OAuthResponse login;
 
 		try

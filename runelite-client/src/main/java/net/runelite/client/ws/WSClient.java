@@ -25,13 +25,13 @@
 package net.runelite.client.ws;
 
 import com.google.gson.Gson;
-import java.time.Duration;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.http.api.RuneLiteAPI;
@@ -52,6 +52,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	private final Collection<Class<? extends WebsocketMessage>> messages = new HashSet<>();
 
 	private volatile Gson gson;
+	@Getter
 	private UUID sessionId;
 	private WebSocket webSocket;
 
