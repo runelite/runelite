@@ -24,15 +24,11 @@
  */
 package net.runelite.cache.definitions;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 
-@EqualsAndHashCode
-@RequiredArgsConstructor
+@Data
 public class KitDefinition
 {
-	@Getter
 	private final int id;
 	public short[] recolorToReplace;
 	public short[] recolorToFind;

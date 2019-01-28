@@ -25,11 +25,9 @@
 package net.runelite.cache.definitions;
 
 import java.util.Map;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 
-@EqualsAndHashCode
-@RequiredArgsConstructor
+@Data
 public class StructDefinition
 {
 	public Map<Integer, Object> params = null;
