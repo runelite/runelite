@@ -255,22 +255,11 @@ public class WorldMapOverlay extends Overlay
 
 	private void drawTooltip(Graphics2D graphics, WorldMapPoint worldPoint)
 	{
-		int newLine = 1;
 		String tooltip = worldPoint.getTooltip();
-		String tooltipRunes = null;
 		Point drawPoint = mapWorldPointToGraphicsPoint(worldPoint.getWorldPoint());
 		if (tooltip == null || tooltip.length() <= 0 || drawPoint == null)
 		{
 			return;
-		}
-
-		if (tooltip.contains("Law"))
-		{
-			String tooltipSplit[] = null;
-			tooltipSplit = tooltip.split("[\\r\\n]+");
-
-			tooltipRunes = tooltipSplit[1];
-			tooltip = tooltipSplit[0];
 		}
 
 		drawPoint = new Point(drawPoint.getX() + TOOLTIP_OFFSET_WIDTH, drawPoint.getY() + TOOLTIP_OFFSET_HEIGHT);
@@ -282,24 +271,13 @@ public class WorldMapOverlay extends Overlay
 		int width = fm.stringWidth(tooltip);
 		int height = fm.getHeight();
 
-		if (tooltipRunes != null)
-		{
-			newLine = 2;
-			width = fm.stringWidth(tooltipRunes);
-		}
-
 		Rectangle tooltipRect = new Rectangle(drawPoint.getX() - TOOLTIP_PADDING_WIDTH, drawPoint.getY() - TOOLTIP_PADDING_HEIGHT, width + TOOLTIP_PADDING_WIDTH * 2, height + TOOLTIP_PADDING_HEIGHT * 2);
-		graphics.fillRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight() * newLine);
+		graphics.fillRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight());
 
 		graphics.setColor(JagexColors.TOOLTIP_BORDER);
-		graphics.drawRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight() * newLine);
+		graphics.drawRect((int) tooltipRect.getX(), (int) tooltipRect.getY(), (int) tooltipRect.getWidth(), (int) tooltipRect.getHeight());
 		graphics.setColor(JagexColors.TOOLTIP_TEXT);
 		graphics.drawString(tooltip, drawPoint.getX(), drawPoint.getY() + height);
-
-		if (tooltipRunes != null)
-		{
-			graphics.drawString(tooltipRunes, drawPoint.getX(), drawPoint.getY() + height * newLine);
-		}
 	}
 
 	private Point clipToRectangle(Point drawPoint, Rectangle mapDisplayRectangle)
