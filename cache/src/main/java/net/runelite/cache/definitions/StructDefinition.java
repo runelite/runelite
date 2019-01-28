@@ -30,5 +30,6 @@ import lombok.Data;
 @Data
 public class StructDefinition
 {
+	public final int id;
 	public Map<Integer, Object> params = null;
 }
