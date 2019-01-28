@@ -75,6 +75,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private final Point mousePosition = new Point();
 	private Overlay movedOverlay;
 	private boolean inOverlayDraggingMode;
+	private boolean inMenuEntryMode;
 	private MenuEntry[] menuEntries;
 
 	// Overlay state validation
@@ -106,6 +107,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		if (!event.isFocused())
 		{
 			inOverlayDraggingMode = false;
+			inMenuEntryMode = false;
 			menuEntries = null;
 		}
 	}
@@ -114,6 +116,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	protected void onClientTick(ClientTick t)
 	{
 		if (menuEntries == null)
+		{
+			return;
+		}
+
+		if (!inMenuEntryMode && runeLiteConfig.menuEntryShift())
 		{
 			return;
 		}
@@ -401,6 +408,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		{
 			inOverlayDraggingMode = true;
 		}
+
+		if (e.isShiftDown() && runeLiteConfig.menuEntryShift())
+		{
+			inMenuEntryMode = true;
+		}
 	}
 
 	@Override
@@ -409,6 +421,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		if (!e.isAltDown())
 		{
 			inOverlayDraggingMode = false;
+		}
+
+		if (!e.isShiftDown())
+		{
+			inMenuEntryMode = false;
 		}
 	}
 
