@@ -348,21 +348,7 @@ enum DiscordGameEventType
 
 	private static String exploring(DiscordAreaType areaType, String areaName)
 	{
-		switch (areaType)
-		{
-			case BOSSES:
-				return "Fighting: " + areaName;
-			case DUNGEONS:
-				return "Exploring: " + areaName;
-			case CITIES:
-				return "Location: " + areaName;
-			case MINIGAMES:
-				return "Playing: " + areaName;
-			case RAIDS:
-				return "Raiding: " + areaName;
-		}
-
-		return "";
+		return areaName;
 	}
 
 	public static DiscordGameEventType fromSkill(final Skill skill)
