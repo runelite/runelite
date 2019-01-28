@@ -73,7 +73,9 @@ public class KingdomCounter extends Counter
 				+ plugin.getFavor() + "/127" + "</br>"
 				+ ColorUtil.wrapWithColorTag("Coffer: ", Color.YELLOW)
 				+ StackFormatter.quantityToRSStackSize(plugin.getCoffer()) + "</br>"
-				+ ColorUtil.wrapWithColorTag("Highest Profit:  ", Color.YELLOW)
+				+ ColorUtil.wrapWithColorTag("Effective Salary: ", Color.YELLOW)
+				+ StackFormatter.formatNumber((int) plugin.getPersonal().getEffectiveSalary()) + "</br>"
+				+ ColorUtil.wrapWithColorTag("Highest Profit:    ", Color.YELLOW)
 				+ ColorUtil.wrapWithColorTag(plugin.getMax().getPrimaryResource().getType(), Color.CYAN)
 				+ "  " + StackFormatter.formatNumber(plugin.getMax().getPrimaryAmount()) + "</br>"
 				+ ColorUtil.wrapWithColorTag("Second Highest:  ", Color.YELLOW)

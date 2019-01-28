@@ -56,7 +56,7 @@ enum Reward
 
 	private final String name;
 	private final ResourceType type;
-	private final double quantity;
+	private final double maxQuantity;
 	private final double cost;
 	private final int rewardId;
 

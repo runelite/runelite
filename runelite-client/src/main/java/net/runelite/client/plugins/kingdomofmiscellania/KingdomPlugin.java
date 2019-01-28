@@ -36,6 +36,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import static net.runelite.api.ItemID.TEAK_CHEST;
+import net.runelite.api.Quest;
+import net.runelite.api.QuestState;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -44,6 +46,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 
@@ -63,6 +66,9 @@ public class KingdomPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private InfoBoxManager infoBoxManager;
 
 	@Inject
@@ -77,7 +83,10 @@ public class KingdomPlugin extends Plugin
 	@Getter
 	private int fishingWorkers = 0, woodWorkers = 0, hardwoodWorkers = 0;
 
-	private int workers = 15;
+	private int workers;
+
+	private boolean throneOfMiscellania = false;
+	private boolean royalTrouble = false;
 
 	private KingdomCounter counter;
 
@@ -85,15 +94,7 @@ public class KingdomPlugin extends Plugin
 	private Kingdom max = new Kingdom(15);
 
 	@Getter
-	private Kingdom personal = new Kingdom(workers);
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		max.getSalary(750000, getFavorPercent(127));
-		maxWorkerDistributions();
-		calculateRewards(max);
-	}
+	private Kingdom personal;
 
 	@Override
 	protected void shutDown() throws Exception
@@ -104,7 +105,26 @@ public class KingdomPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (isInKingdom() && hasCompletedQuests())
+		if  (client.getGameState() == GameState.LOGGED_IN)
+		{
+			getVarbits();
+			processInfobox();
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			getVarbits();
+			processInfobox();
+		}
+	}
+
+	private void getVarbits()
+	{
+		if (isInKingdom())
 		{
 			favor = client.getVar(Varbits.KINGDOM_FAVOR);
 			coffer = client.getVar(Varbits.KINGDOM_COFFER);
@@ -119,28 +139,23 @@ public class KingdomPlugin extends Plugin
 			hardwoodButton = client.getVar(Varbits.KINGDOM_WORKERS_HARDWOOD_BUTTON);
 			cookedFishButton = client.getVar(Varbits.KINGDOM_WORKERS_FISH_COOKED_BUTTON);
 			herbsButton = client.getVar(Varbits.KINGDOM_WORKERS_HERBS_BUTTON);
-
-			personal.getSalary(coffer, getFavorPercent(favor));
-			log.debug("Effective salary: " + personal.getEffectiveSalary());
-			log.debug("Individual worker salary: " + personal.getIndividualWorkerSalary());
-
-			getPersonalWorkerDistribution();
-			calculateRewards(personal);
-			processInfobox();
 		}
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		processInfobox();
 	}
 
 	private void processInfobox()
 	{
-		if (client.getGameState() == GameState.LOGGED_IN && isInKingdom() && hasCompletedQuests())
+		if (client.getGameState() == GameState.LOGGED_IN && isInKingdom())
 		{
-			addKingdomInfobox();
+			if (!throneOfMiscellania || !royalTrouble)
+			{
+				clientThread.invokeLater(() -> hasCompletedQuests());
+			}
+			else
+			{
+				createMaxKingdom();
+				createPersonalKingdom();
+				addKingdomInfobox();
+			}
 		}
 		else
 		{
@@ -148,7 +163,27 @@ public class KingdomPlugin extends Plugin
 		}
 	}
 
-	private void maxWorkerDistributions()
+	private void createMaxKingdom()
+	{
+		max.getSalary(750000, getFavorPercent(127));
+		getMaxWorkerDistribution();
+		calculateRewards(max);
+	}
+
+	private void createPersonalKingdom()
+	{
+		personal = new Kingdom(workers);
+		personal.getSalary(coffer, getFavorPercent(favor));
+
+		log.debug("Number of workers in Kingdom " + personal.getTotalWorkers());
+		log.debug("Effective salary: " + personal.getEffectiveSalary());
+		log.debug("Individual worker salary: " + personal.getIndividualWorkerSalary());
+
+		getPersonalWorkerDistribution();
+		calculateRewards(personal);
+	}
+
+	private void getMaxWorkerDistribution()
 	{
 		max.resourceDistribution = new HashMap<>();
 		for (ResourceType resource : ResourceType.values())
@@ -181,6 +216,7 @@ public class KingdomPlugin extends Plugin
 		int rewardAmount;
 		int resourceAmount;
 		int totalAmount = 0;
+		int leftOver = kingdom.getBaseSalary();
 
 		kingdom.rewardSummary = new HashMap<>();
 		Iterator it = kingdom.resourceDistribution.entrySet().iterator();
@@ -197,10 +233,10 @@ public class KingdomPlugin extends Plugin
 				if (reward.getType() == pairs.getKey() && workersOnResource != 0)
 				{
 					// Calculate the quantity of the specific reward
-					rewardQuantity = (int) (reward.getQuantity() * workersOnResource
+					rewardQuantity = (int) (reward.getMaxQuantity() * workersOnResource
 						* kingdom.getIndividualWorkerSalary()) / 50000;
 
-					// Get the amount in gp from the quantity and price
+					// Get the amount in gp from the quantity and cost
 					rewardAmount = rewardQuantity * itemManager.getItemPrice(reward.getRewardId());
 
 					// Add to total resource accumulator
@@ -259,19 +295,29 @@ public class KingdomPlugin extends Plugin
 				&& KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
 	}
 
-	private boolean hasCompletedQuests()
+	private void hasCompletedQuests()
 	{
-	/*	if (Quest.ROYAL_TROUBLE.getState(client).toString() == "FINISHED")
+		if (Quest.ROYAL_TROUBLE.getState(client) == QuestState.FINISHED)
 		{
 			workers = 15;
-			return true;
+			royalTrouble = true;
+			throneOfMiscellania = true;
+			createMaxKingdom();
+			createPersonalKingdom();
+			addKingdomInfobox();
+
+			log.debug("Royal Trouble quest check");
 		}
-		if (Quest.THRONE_OF_MISCELLANIA.getState(client).toString() == "FINISHED")
+		else if (Quest.THRONE_OF_MISCELLANIA.getState(client) == QuestState.FINISHED)
 		{
-			return true;
+			workers = 10;
+			throneOfMiscellania = true;
+			createMaxKingdom();
+			createPersonalKingdom();
+			addKingdomInfobox();
+
+			log.debug("Throne of Miscellania quest check");
 		}
-	*/
-		return true;
 	}
 	
 	static int getFavorPercent(int favor)
