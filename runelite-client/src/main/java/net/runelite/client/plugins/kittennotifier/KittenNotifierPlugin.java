@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.kittennotifier;
 import com.google.inject.Provides;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.NPC;
 import net.runelite.api.events.ChatMessage;
@@ -68,13 +70,10 @@ public class KittenNotifierPlugin extends Plugin
 	{
 		if (config.kittenNeeds() && event.getType() == ChatMessageType.SERVER)
 		{
-			if (event.getMessage().matches(".+Your kitten is.+hungry.+"))
+			Matcher matcher = Pattern.compile("(Your kitten.+?\\.)").matcher(event.getMessage());
+			if (matcher.find())
 			{
-				notifier.notify("Your kitten is hungry.");
-			}
-			if (event.getMessage().matches(".+Your kitten.+wants attention.+"))
-			{
-				notifier.notify("Your kitten wants attention.");
+				notifier.notify(matcher.group(1));
 			}
 		}
 	}
