@@ -86,7 +86,7 @@ public class RaidsOverlay extends Overlay
 		}
 
 		Color color = Color.WHITE;
-		String layout = plugin.getRaid().getLayout().toCode().replaceAll("#", "").replaceAll("¤", "");
+		String layout = plugin.getRaid().getLayout().toCodeString();
 
 		if (config.enableLayoutWhitelist() && !plugin.getLayoutWhitelist().contains(layout.toLowerCase()))
 		{

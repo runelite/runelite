@@ -30,9 +30,11 @@ import java.time.Instant;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.Nullable;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.vars.Autoweed;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
@@ -70,7 +72,7 @@ public class FarmingTracker
 
 	public FarmingTabPanel createTabPanel(Tab tab)
 	{
-		return new FarmingTabPanel(client, itemManager, configManager, config, farmingWorld.getTabs().get(tab));
+		return new FarmingTabPanel(this, itemManager, config, farmingWorld.getTabs().get(tab));
 	}
 
 	/**
@@ -140,6 +142,87 @@ public class FarmingTracker
 		return changed;
 	}
 
+	@Nullable
+	public PatchPrediction predictPatch(FarmingPatch patch)
+	{
+		long unixNow = Instant.now().getEpochSecond();
+
+		boolean autoweed;
+		{
+			String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername();
+			autoweed = Integer.toString(Autoweed.ON.ordinal())
+				.equals(configManager.getConfiguration(group, TimeTrackingConfig.AUTOWEED));
+		}
+
+		String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + patch.getRegion().getRegionID();
+		String key = Integer.toString(patch.getVarbit().getId());
+		String storedValue = configManager.getConfiguration(group, key);
+
+		if (storedValue == null)
+		{
+			return null;
+		}
+
+		long unixTime = 0;
+		int value = 0;
+		{
+			String[] parts = storedValue.split(":");
+			if (parts.length == 2)
+			{
+				try
+				{
+					value = Integer.parseInt(parts[0]);
+					unixTime = Long.parseLong(parts[1]);
+				}
+				catch (NumberFormatException e)
+				{
+				}
+			}
+		}
+
+		if (unixTime <= 0)
+		{
+			return null;
+		}
+
+		PatchState state = patch.getImplementation().forVarbitValue(value);
+
+		int stage = state.getStage();
+		int stages = state.getStages();
+		int tickrate = state.getTickRate() * 60;
+
+		if (autoweed && state.getProduce() == Produce.WEEDS)
+		{
+			stage = 0;
+			stages = 1;
+			tickrate = 0;
+		}
+
+		long doneEstimate = 0;
+		if (tickrate > 0)
+		{
+			long tickNow = (unixNow + (5 * 60)) / tickrate;
+			long tickTime = (unixTime + (5 * 60)) / tickrate;
+			int delta = (int) (tickNow - tickTime);
+
+			doneEstimate = ((stages - 1 - stage) + tickTime) * tickrate + (5 * 60);
+
+			stage += delta;
+			if (stage >= stages)
+			{
+				stage = stages - 1;
+			}
+		}
+
+		return new PatchPrediction(
+			state.getProduce(),
+			state.getCropState(),
+			doneEstimate,
+			stage,
+			stages
+		);
+	}
+
 	public void loadCompletionTimes()
 	{
 		summaries.clear();
@@ -179,57 +262,21 @@ public class FarmingTracker
 
 			for (FarmingPatch patch : tab.getValue())
 			{
-				String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + patch.getRegion().getRegionID();
-				String key = Integer.toString(patch.getVarbit().getId());
-				String storedValue = configManager.getConfiguration(group, key);
-				long unixTime = 0;
-				int value = 0;
-
-				if (storedValue != null)
-				{
-					String[] parts = storedValue.split(":");
-					if (parts.length == 2)
-					{
-						try
-						{
-							value = Integer.parseInt(parts[0]);
-							unixTime = Long.parseLong(parts[1]);
-						}
-						catch (NumberFormatException e)
-						{
-							// ignored
-						}
-					}
-				}
-
-				PatchState state = unixTime <= 0 ? null : patch.getImplementation().forVarbitValue(value);
-				if (state == null || state.getProduce().getItemID() < 0)
+				PatchPrediction prediction = predictPatch(patch);
+				if (prediction == null || prediction.getProduce().getItemID() < 0)
 				{
 					continue; // unknown state
 				}
 
-				int tickrate = state.getTickRate() * 60;
-				int stage = state.getStage();
-				int stages = state.getStages();
+				allUnknown = false;
 
-				if (state.getProduce() != Produce.WEEDS && state.getProduce() != Produce.SCARECROW)
+				if (prediction.getProduce() != Produce.WEEDS && prediction.getProduce() != Produce.SCARECROW)
 				{
 					allEmpty = false;
 
 					// update max duration if this patch takes longer to grow
-					if (tickrate > 0)
-					{
-						long tickTime = unixTime / tickrate;
-						long doneEstimate = ((stages - 1 - stage) + tickTime) * tickrate;
-						maxCompletionTime = Math.max(maxCompletionTime, doneEstimate);
-					}
-					else if (state.getCropState() == CropState.GROWING && stage != stages - 1)
-					{
-						continue; // unknown state
-					}
+					maxCompletionTime = Math.max(maxCompletionTime, prediction.getDoneEstimate());
 				}
-
-				allUnknown = false;
 			}
 
 			final SummaryState state;
