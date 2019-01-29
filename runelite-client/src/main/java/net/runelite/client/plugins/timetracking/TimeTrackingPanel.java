@@ -38,8 +38,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-
-import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
@@ -65,8 +63,8 @@ class TimeTrackingPanel extends PluginPanel
 	@Nullable
 	private TabContentPanel activeTabPanel = null;
 
-	TimeTrackingPanel(ItemManager itemManager, TimeTrackingConfig config, FarmingTracker farmingTracker,
-		BirdHouseTracker birdHouseTracker, ClockManager clockManager)
+	TimeTrackingPanel(ItemManager itemManager, TimeTrackingConfig config,
+		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager)
 	{
 		super(false);
 

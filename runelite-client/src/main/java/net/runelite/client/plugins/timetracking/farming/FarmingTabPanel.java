@@ -35,7 +35,6 @@ import java.util.Set;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.TabContentPanel;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
@@ -49,13 +48,11 @@ public class FarmingTabPanel extends TabContentPanel
 	private final FarmingTracker farmingTracker;
 	private final ItemManager itemManager;
 	private final TimeTrackingConfig config;
-	private final RuneLiteConfig runeLiteConfig;
 	private final List<TimeablePanel<FarmingPatch>> patchPanels;
 
 	FarmingTabPanel(
 		FarmingTracker farmingTracker,
 		ItemManager itemManager,
-		RuneLiteConfig runeLiteConfig,
 		TimeTrackingConfig config,
 		Set<FarmingPatch> patches
 	)
@@ -64,7 +61,6 @@ public class FarmingTabPanel extends TabContentPanel
 		this.itemManager = itemManager;
 		this.config = config;
 		this.patchPanels = new ArrayList<>();
-		this.runeLiteConfig = runeLiteConfig;
 
 		setLayout(new GridBagLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);

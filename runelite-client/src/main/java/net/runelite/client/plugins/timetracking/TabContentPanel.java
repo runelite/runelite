@@ -39,8 +39,6 @@ import javax.swing.JPanel;
 
 public abstract class TabContentPanel extends JPanel
 {
-	private static final DateFormat DATE_FORMAT = DateFormat.getTimeInstance(DateFormat.DEFAULT, Locale.getDefault());
-
 	/**
 	 * Gets the update interval of this panel, in units of 200 milliseconds
 	 * (the plugin panel checks if its contents should be updated every 200 ms;
