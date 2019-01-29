@@ -127,6 +127,7 @@ public class ChatNotificationsPlugin extends Plugin
 	public void onSetMessage(SetMessage event)
 	{
 		MessageNode messageNode = event.getMessageNode();
+		String nodeValue = Text.removeTags(messageNode.getValue());
 		boolean update = false;
 
 		switch (event.getType())
@@ -176,7 +177,8 @@ public class ChatNotificationsPlugin extends Plugin
 
 		if (highlightMatcher != null)
 		{
-			Matcher matcher = highlightMatcher.matcher(Text.removeTags(messageNode.getValue()));
+
+			Matcher matcher = highlightMatcher.matcher(nodeValue);
 			boolean found = false;
 			StringBuffer stringBuffer = new StringBuffer();
 
@@ -221,7 +223,7 @@ public class ChatNotificationsPlugin extends Plugin
 		{
 			stringBuilder.append(name).append(": ");
 		}
-		stringBuilder.append(message.getValue());
+		stringBuilder.append(Text.removeTags(message.getValue()));
 
 		String notification = stringBuilder.toString();
 		notifier.notify(notification);
