@@ -24,8 +24,6 @@
  */
 package net.runelite.client.util;
 
-import net.runelite.client.RuneLite;
-
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -35,6 +33,7 @@ import java.time.format.FormatStyle;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.runelite.client.RuneLite;
 
 /**
  * A set of utility functions to use when

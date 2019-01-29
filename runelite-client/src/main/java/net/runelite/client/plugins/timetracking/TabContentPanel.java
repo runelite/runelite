@@ -24,15 +24,14 @@
  */
 package net.runelite.client.plugins.timetracking;
 
-import net.runelite.client.RuneLite;
-import net.runelite.client.util.StackFormatter;
-
+import java.util.Locale;
 import java.awt.Dimension;
 import java.time.LocalDateTime;
 import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import javax.swing.JPanel;
+import net.runelite.client.util.StackFormatter;
 
 public abstract class TabContentPanel extends JPanel
 {
@@ -81,7 +80,7 @@ public abstract class TabContentPanel extends JPanel
 			LocalDateTime currentTime = LocalDateTime.now();
 			if (endTime.getDayOfWeek() != currentTime.getDayOfWeek())
 			{
-				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, RuneLite.SYSTEM_LOCALE)).append(" ");
+				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH)).append(" ");
 			}
 
 			sb.append("at ").append(StackFormatter.getLocalizedDatePattern(FormatStyle.SHORT).format(endTime.toLocalTime()));
