@@ -31,7 +31,6 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
-
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -489,29 +488,28 @@ public class GroundItemsPlugin extends Plugin
 			final Color color = getItemColor(highlighted, hidden);
 			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
 
-			if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
+			if (hidden != null && config.removeHidden())
 			{
-				final MenuHighlightMode mode = config.menuHighlightMode();
-
-				if (mode == BOTH || mode == OPTION)
-				{
-					lastEntry.setOption(ColorUtil.prependColorTag("Take", color));
-				}
-
-				if (mode == BOTH || mode == NAME)
-				{
-					String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
-					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
-				}
-			}
-
-			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
-			{
-				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
-			}
-
-			if (hidden != null && config.removeHidden()) {
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length - 1);
+			}
+			else
+			{
+				if (color != null && canBeRecolored && !color.equals(config.defaultColor())) {
+					final MenuHighlightMode mode = config.menuHighlightMode();
+
+					if (mode == BOTH || mode == OPTION) {
+						lastEntry.setOption(ColorUtil.prependColorTag("Take", color));
+					}
+
+					if (mode == BOTH || mode == NAME) {
+						String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
+						lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
+					}
+				}
+
+				if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1) {
+					lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+				}
 			}
 
 			client.setMenuEntries(menuEntries);
