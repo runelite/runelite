@@ -35,20 +35,26 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
+import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.Query;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.queries.InventoryItemQuery;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.api.widgets.Widget;
@@ -73,6 +79,9 @@ public class RunecraftPlugin extends Plugin
 	private static final String POUCH_DECAYED_MESSAGE = "Your pouch has decayed through use.";
 	private static final int DESTROY_ITEM_WIDGET_ID = WidgetInfo.DESTROY_ITEM_YES.getId();
 
+	private static final int DENSE_RUNESTONE_SOUTH_ID = NullObjectID.NULL_10796;
+	private static final int DENSE_RUNESTONE_NORTH_ID = NullObjectID.NULL_8981;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<DecorativeObject> abyssObjects = new HashSet<>();
 
@@ -81,6 +90,18 @@ public class RunecraftPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private NPC darkMage;
+
+	@Getter(AccessLevel.PACKAGE)
+	private GameObject denseRunestoneSouth;
+
+	@Getter(AccessLevel.PACKAGE)
+	private GameObject denseRunestoneNorth;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean denseRunestoneSouthMineable;
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean denseRunestoneNorthMineable;
 
 	@Inject
 	private Client client;
@@ -93,6 +114,9 @@ public class RunecraftPlugin extends Plugin
 
 	@Inject
 	private AbyssOverlay abyssOverlay;
+
+	@Inject
+	private DenseRunestoneOverlay denseRunestoneOverlay;
 
 	@Inject
 	private QueryRunner queryRunner;
@@ -114,7 +138,13 @@ public class RunecraftPlugin extends Plugin
 	{
 		overlayManager.add(bindNeckOverlay);
 		overlayManager.add(abyssOverlay);
+		overlayManager.add(denseRunestoneOverlay);
 		abyssOverlay.updateConfig();
+
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			updateDenseRunestoneState();
+		}
 	}
 
 	@Override
@@ -122,8 +152,13 @@ public class RunecraftPlugin extends Plugin
 	{
 		overlayManager.remove(bindNeckOverlay);
 		overlayManager.remove(abyssOverlay);
+		overlayManager.remove(denseRunestoneOverlay);
+
 		abyssObjects.clear();
 		darkMage = null;
+		denseRunestoneNorth = null;
+		denseRunestoneSouth = null;
+
 		degradedPouchInInventory = false;
 	}
 
@@ -229,6 +264,8 @@ public class RunecraftPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			abyssObjects.clear();
+			denseRunestoneNorth = null;
+			denseRunestoneSouth = null;
 		}
 	}
 
@@ -257,5 +294,48 @@ public class RunecraftPlugin extends Plugin
 			NPC[] result = queryRunner.runQuery(darkMageQuery);
 			darkMage = result.length >= 1 ? result[0] : null;
 		}
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		GameObject obj = event.getGameObject();
+		int id = obj.getId();
+
+		switch (id)
+		{
+			case DENSE_RUNESTONE_SOUTH_ID:
+				denseRunestoneSouth = obj;
+				break;
+			case DENSE_RUNESTONE_NORTH_ID:
+				denseRunestoneNorth = obj;
+				break;
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectDespawned(GameObjectDespawned event)
+	{
+		switch (event.getGameObject().getId())
+		{
+			case DENSE_RUNESTONE_SOUTH_ID:
+				denseRunestoneSouth = null;
+				break;
+			case DENSE_RUNESTONE_NORTH_ID:
+				denseRunestoneNorth = null;
+				break;
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		updateDenseRunestoneState();
+	}
+
+	private void updateDenseRunestoneState()
+	{
+		denseRunestoneSouthMineable = client.getVar(Varbits.DENSE_RUNESTONE_SOUTH_DEPLETED) == 0;
+		denseRunestoneNorthMineable = client.getVar(Varbits.DENSE_RUNESTONE_NORTH_DEPLETED) == 0;
 	}
 }
