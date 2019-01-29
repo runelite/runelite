@@ -26,7 +26,10 @@ package net.runelite.client.util;
 
 import net.runelite.client.RuneLite;
 
-import java.text.*;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Locale;
