@@ -31,20 +31,15 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
@@ -506,6 +501,10 @@ public class GroundItemsPlugin extends Plugin
 			if (config.showMenuItemQuantities() && itemComposition.isStackable() && quantity > 1)
 			{
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+			}
+
+			if (hidden != null && config.removeHidden()) {
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length - 1);
 			}
 
 			client.setMenuEntries(menuEntries);
