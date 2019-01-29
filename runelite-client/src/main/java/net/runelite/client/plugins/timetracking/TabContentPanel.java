@@ -24,12 +24,12 @@
  */
 package net.runelite.client.plugins.timetracking;
 
-import java.util.Locale;
 import java.awt.Dimension;
 import java.time.LocalDateTime;
 import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
+import java.util.Locale;
 import javax.swing.JPanel;
 import net.runelite.client.util.StackFormatter;
 
