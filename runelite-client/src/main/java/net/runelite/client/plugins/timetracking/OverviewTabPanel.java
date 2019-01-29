@@ -53,8 +53,8 @@ class OverviewTabPanel extends TabContentPanel
 	private final OverviewItemPanel birdHouseOverview;
 
 	OverviewTabPanel(ItemManager itemManager, RuneLiteConfig runeLiteConfig, TimeTrackingConfig config,
-	 	TimeTrackingPanel pluginPanel, FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker,
-	 	ClockManager clockManager)
+		TimeTrackingPanel pluginPanel, FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker,
+		ClockManager clockManager)
 	{
 		this.config = config;
 		this.runeLiteConfig = runeLiteConfig;

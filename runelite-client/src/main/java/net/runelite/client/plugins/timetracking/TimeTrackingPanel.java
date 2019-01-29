@@ -66,7 +66,7 @@ class TimeTrackingPanel extends PluginPanel
 	private TabContentPanel activeTabPanel = null;
 
 	TimeTrackingPanel(ItemManager itemManager, RuneLiteConfig runeLiteConfig, TimeTrackingConfig config,
-    	FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager)
+		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager)
 	{
 		super(false);
 
