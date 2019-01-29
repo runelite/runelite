@@ -80,7 +80,7 @@ public abstract class TabContentPanel extends JPanel
 			LocalDateTime currentTime = LocalDateTime.now();
 			if (endTime.getDayOfWeek() != currentTime.getDayOfWeek())
 			{
-				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH)).append(" ");
+				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
 			}
 
 			sb.append("at ").append(StackFormatter.getLocalizedDatePattern(FormatStyle.SHORT).format(endTime.toLocalTime()));
