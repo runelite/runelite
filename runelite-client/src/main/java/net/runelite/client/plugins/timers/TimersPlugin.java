@@ -97,6 +97,7 @@ public class TimersPlugin extends Plugin
 	private static final String GOD_WARS_ALTAR_MESSAGE = "you recharge your prayer.";
 	private static final String HALF_TELEBLOCK_MESSAGE = "<col=4f006f>A teleblock spell has been cast on you. It will expire in 2 minutes, 30 seconds.</col>";
 	private static final String IMBUED_HEART_READY_MESSAGE = "<col=ef1020>Your imbued heart has regained its magical power.</col>";
+	private static final String IMBUED_HEART_NOTREADY_MESSAGE = "The heart is still drained of its power.";
 	private static final String MAGIC_IMBUE_EXPIRED_MESSAGE = "Your Magic Imbue charge has ended.";
 	private static final String MAGIC_IMBUE_MESSAGE = "You are charged to combine runes!";
 	private static final String SANFEW_SERUM_DRINK_MESSAGE = "You drink some of your Sanfew Serum.";
@@ -121,6 +122,7 @@ public class TimersPlugin extends Plugin
 	private int lastAnimation;
 	private boolean loggedInRace;
 	private boolean widgetHiddenChangedOnPvpWorld;
+	private boolean imbuedHeartClicked;
 
 	@Inject
 	private ItemManager itemManager;
@@ -153,6 +155,7 @@ public class TimersPlugin extends Plugin
 		lastAnimation = -1;
 		loggedInRace = false;
 		widgetHiddenChangedOnPvpWorld = false;
+		imbuedHeartClicked = false;
 	}
 
 	@Subscribe
@@ -326,6 +329,7 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
+
 		if (config.showAntiPoison()
 			&& event.getMenuOption().contains("Drink")
 			&& (event.getId() == ItemID.ANTIDOTE1_5958
@@ -432,6 +436,13 @@ public class TimersPlugin extends Plugin
 		if (teleportWidget != null)
 		{
 			lastTeleportClicked = teleportWidget;
+		}
+
+		if (config.showImbuedHeart()
+			&& event.getMenuOption().contains("Invigorate"))
+		{
+			// Needs a hook as there's a few cases where potions boost the same amount as the heart
+			imbuedHeartClicked = true;
 		}
 	}
 
@@ -551,6 +562,12 @@ public class TimersPlugin extends Plugin
 		if (config.showAntiFire() && event.getMessage().equals(SUPER_ANTIFIRE_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(SUPERANTIFIRE);
+		}
+
+		if (config.showImbuedHeart() && event.getMessage().contains(IMBUED_HEART_NOTREADY_MESSAGE))
+		{
+			imbuedHeartClicked = false;
+			return;
 		}
 
 		if (config.showImbuedHeart() && event.getMessage().equals(IMBUED_HEART_READY_MESSAGE))
@@ -717,6 +734,11 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
+		if (config.showImbuedHeart() && actor.getGraphic() == IMBUEDHEART.getGraphicId())
+		{
+			createGameTimer(IMBUEDHEART);
+		}
+
 		if (config.showFreezes())
 		{
 			if (actor.getGraphic() == BIND.getGraphicId())
@@ -851,11 +873,11 @@ public class TimersPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onBoostedLevelChanged(BoostedLevelChanged boostedLevelChanged)
+	public void onBoostedLevelChanged(BoostedLevelChanged event)
 	{
-		Skill skill = boostedLevelChanged.getSkill();
+		Skill skill = event.getSkill();
 
-		if (skill != Skill.MAGIC || !config.showImbuedHeart())
+		if (skill != Skill.MAGIC || !config.showImbuedHeart() || !imbuedHeartClicked)
 		{
 			return;
 		}
@@ -869,6 +891,7 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
+		imbuedHeartClicked = false;
 		createGameTimer(IMBUEDHEART);
 	}
 
