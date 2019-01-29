@@ -41,7 +41,7 @@ public interface TimeTrackingConfig extends Config
 		keyName = "estimateRelative",
 		name = "Show relative time",
 		description = "Show amount of time remaining instead of completion time",
-		position = 2
+		position = 1
 	)
 	default boolean estimateRelative()
 	{
@@ -52,7 +52,7 @@ public interface TimeTrackingConfig extends Config
 		keyName = "timerNotification",
 		name = "Timer notification",
 		description = "Notify you whenever a timer has finished counting down",
-		position = 3
+		position = 2
 	)
 	default boolean timerNotification()
 	{
@@ -63,7 +63,7 @@ public interface TimeTrackingConfig extends Config
 		keyName = "birdHouseNotification",
 		name = "Bird house notification",
 		description = "Notify you when all bird houses are full",
-		position = 4
+		position = 3
 	)
 	default boolean birdHouseNotification()
 	{
@@ -74,7 +74,7 @@ public interface TimeTrackingConfig extends Config
 		keyName = "defaultTimerMinutes",
 		name = "Default Time (Minutes)",
 		description = "The default time for the timer in minutes",
-		position = 5
+		position = 4
 	)
 	default int defaultTimerMinutes()
 	{
