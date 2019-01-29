@@ -177,7 +177,6 @@ public class ChatNotificationsPlugin extends Plugin
 
 		if (highlightMatcher != null)
 		{
-
 			Matcher matcher = highlightMatcher.matcher(nodeValue);
 			boolean found = false;
 			StringBuffer stringBuffer = new StringBuffer();
@@ -219,12 +218,13 @@ public class ChatNotificationsPlugin extends Plugin
 		{
 			stringBuilder.append('[').append(sender).append("] ");
 		}
+		
 		if (!Strings.isNullOrEmpty(name))
 		{
 			stringBuilder.append(name).append(": ");
 		}
-		stringBuilder.append(Text.removeTags(message.getValue()));
 
+		stringBuilder.append(Text.removeTags(message.getValue()));
 		String notification = stringBuilder.toString();
 		notifier.notify(notification);
 	}
