@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
@@ -45,19 +44,16 @@ class OverviewTabPanel extends TabContentPanel
 	private final FarmingTracker farmingTracker;
 	private final BirdHouseTracker birdHouseTracker;
 	private final ClockManager clockManager;
-	private final RuneLiteConfig runeLiteConfig;
 
 	private final OverviewItemPanel timerOverview;
 	private final OverviewItemPanel stopwatchOverview;
 	private final Map<Tab, OverviewItemPanel> farmingOverviews;
 	private final OverviewItemPanel birdHouseOverview;
 
-	OverviewTabPanel(ItemManager itemManager, RuneLiteConfig runeLiteConfig, TimeTrackingConfig config,
-		TimeTrackingPanel pluginPanel, FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker,
-		ClockManager clockManager)
+	OverviewTabPanel(ItemManager itemManager, TimeTrackingConfig config, TimeTrackingPanel pluginPanel,
+		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager)
 	{
 		this.config = config;
-		this.runeLiteConfig = runeLiteConfig;
 		this.farmingTracker = farmingTracker;
 		this.birdHouseTracker = birdHouseTracker;
 		this.clockManager = clockManager;
@@ -138,7 +134,7 @@ class OverviewTabPanel extends TabContentPanel
 				}
 				else
 				{
-					panel.updateStatus("Ready " + getFormattedEstimate(duration, config.estimateRelative(), runeLiteConfig.amPmTime()), Color.GRAY);
+					panel.updateStatus("Ready " + getFormattedEstimate(duration, config.estimateRelative()), Color.GRAY);
 				}
 
 				break;

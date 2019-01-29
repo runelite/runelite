@@ -24,9 +24,14 @@
  */
 package net.runelite.client.plugins.timetracking;
 
+import net.runelite.client.RuneLite;
+import net.runelite.client.util.StackFormatter;
+
 import java.awt.Dimension;
+import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
@@ -34,6 +39,8 @@ import javax.swing.JPanel;
 
 public abstract class TabContentPanel extends JPanel
 {
+	private static final DateFormat DATE_FORMAT = DateFormat.getTimeInstance(DateFormat.DEFAULT, Locale.getDefault());
+
 	/**
 	 * Gets the update interval of this panel, in units of 200 milliseconds
 	 * (the plugin panel checks if its contents should be updated every 200 ms;
@@ -49,7 +56,7 @@ public abstract class TabContentPanel extends JPanel
 		return super.getPreferredSize();
 	}
 
-	protected static String getFormattedEstimate(long remainingSeconds, boolean useRelativeTime, boolean use12HourTime)
+	protected static String getFormattedEstimate(long remainingSeconds, boolean useRelativeTime)
 	{
 		if (useRelativeTime)
 		{
@@ -79,15 +86,10 @@ public abstract class TabContentPanel extends JPanel
 			LocalDateTime currentTime = LocalDateTime.now();
 			if (endTime.getDayOfWeek() != currentTime.getDayOfWeek())
 			{
-				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
+				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, RuneLite.SYSTEM_LOCALE)).append(" ");
 			}
-			String timeFormat = "HH:mm";
-			if (use12HourTime)
-			{
-				timeFormat = "hh:mm a";
-			}
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(timeFormat);
-			sb.append("at " + endTime.format(formatter));
+
+			sb.append("at ").append(StackFormatter.getLocalizedDatePattern(FormatStyle.SHORT).format(endTime.toLocalTime()));
 			return sb.toString();
 		}
 	}

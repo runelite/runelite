@@ -77,6 +77,7 @@ public class RuneLite
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
+	public static final Locale SYSTEM_LOCALE = Locale.getDefault();
 
 	@Getter
 	private static Injector injector;

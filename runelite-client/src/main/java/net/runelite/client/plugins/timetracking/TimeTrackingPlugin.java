@@ -87,9 +87,6 @@ public class TimeTrackingPlugin extends Plugin
 	private TimeTrackingConfig config;
 
 	@Inject
-	private RuneLiteConfig runeLiteConfig;
-
-	@Inject
 	private ScheduledExecutorService executorService;
 
 	private ScheduledFuture panelUpdateFuture;
@@ -117,7 +114,7 @@ public class TimeTrackingPlugin extends Plugin
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "watch.png");
 
-		panel = new TimeTrackingPanel(itemManager, runeLiteConfig, config, farmingTracker, birdHouseTracker, clockManager);
+		panel = new TimeTrackingPanel(itemManager, config, farmingTracker, birdHouseTracker, clockManager);
 
 		navButton = NavigationButton.builder()
 			.tooltip("Time Tracking")

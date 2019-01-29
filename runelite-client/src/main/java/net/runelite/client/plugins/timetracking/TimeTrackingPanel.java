@@ -65,8 +65,8 @@ class TimeTrackingPanel extends PluginPanel
 	@Nullable
 	private TabContentPanel activeTabPanel = null;
 
-	TimeTrackingPanel(ItemManager itemManager, RuneLiteConfig runeLiteConfig, TimeTrackingConfig config,
-		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager)
+	TimeTrackingPanel(ItemManager itemManager, TimeTrackingConfig config, FarmingTracker farmingTracker,
+		BirdHouseTracker birdHouseTracker, ClockManager clockManager)
 	{
 		super(false);
 
@@ -84,7 +84,7 @@ class TimeTrackingPanel extends PluginPanel
 		add(tabGroup, BorderLayout.NORTH);
 		add(display, BorderLayout.CENTER);
 
-		addTab(Tab.OVERVIEW, new OverviewTabPanel(itemManager, runeLiteConfig, config, this, farmingTracker, birdHouseTracker, clockManager));
+		addTab(Tab.OVERVIEW, new OverviewTabPanel(itemManager, config, this, farmingTracker, birdHouseTracker, clockManager));
 		addTab(Tab.CLOCK, clockManager.getClockTabPanel());
 		addTab(Tab.BIRD_HOUSE, birdHouseTracker.createBirdHouseTabPanel());
 

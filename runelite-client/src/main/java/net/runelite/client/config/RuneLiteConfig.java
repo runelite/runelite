@@ -273,15 +273,5 @@ public interface RuneLiteConfig extends Config
 		return 35;
 	}
 
-	@ConfigItem(
-		keyName = "amPmTime",
-		name = "Use 12-hour time format",
-		description = "Show times in 12-hour time format instead of 24-hour time format",
-		position = 50
-	)
-	default boolean amPmTime()
-	{
-		return true;
-	}
 
 }

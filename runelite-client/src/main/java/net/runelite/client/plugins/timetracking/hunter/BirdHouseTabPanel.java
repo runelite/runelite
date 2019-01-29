@@ -31,7 +31,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.ItemID;
-import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.TabContentPanel;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
@@ -47,14 +46,12 @@ public class BirdHouseTabPanel extends TabContentPanel
 	private final BirdHouseTracker birdHouseTracker;
 	private final TimeTrackingConfig config;
 	private final List<TimeablePanel<BirdHouseSpace>> spacePanels;
-	private final RuneLiteConfig runeLiteConfig;
 
-	BirdHouseTabPanel(ItemManager itemManager, BirdHouseTracker birdHouseTracker, RuneLiteConfig runeLiteConfig, TimeTrackingConfig config)
+	BirdHouseTabPanel(ItemManager itemManager, BirdHouseTracker birdHouseTracker, TimeTrackingConfig config)
 	{
 		this.itemManager = itemManager;
 		this.birdHouseTracker = birdHouseTracker;
 		this.config = config;
-		this.runeLiteConfig = runeLiteConfig;
 		this.spacePanels = new ArrayList<>();
 
 		setLayout(new DynamicGridLayout(0, 1, 0, 0));
@@ -139,7 +136,7 @@ public class BirdHouseTabPanel extends TabContentPanel
 					else
 					{
 						panel.getProgress().setValue((int) (BirdHouseTracker.BIRD_HOUSE_DURATION - remainingTime));
-						panel.getEstimate().setText("Done " + getFormattedEstimate(remainingTime, config.estimateRelative(), runeLiteConfig.amPmTime()));
+						panel.getEstimate().setText("Done " + getFormattedEstimate(remainingTime, config.estimateRelative()));
 					}
 					break;
 				default:

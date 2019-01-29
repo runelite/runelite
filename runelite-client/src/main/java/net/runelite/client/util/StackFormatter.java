@@ -24,10 +24,11 @@
  */
 package net.runelite.client.util;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.text.ParseException;
+import net.runelite.client.RuneLite;
+
+import java.text.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,6 +61,17 @@ public class StackFormatter
 		"#,###.#",
 		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
 	);
+
+	/**
+	 * Get a localized DateTimeFormatter for use.
+	 *
+	 * @param formatStyle The format style to ues for the formatter
+	 * @return The localized DateTimeFormatter
+	 */
+	public static DateTimeFormatter getLocalizedDatePattern(FormatStyle formatStyle)
+	{
+		return DateTimeFormatter.ofLocalizedTime(formatStyle).withLocale(RuneLite.SYSTEM_LOCALE);
+	}
 
 	/**
 	 * Convert a quantity to a nicely formatted stack size.

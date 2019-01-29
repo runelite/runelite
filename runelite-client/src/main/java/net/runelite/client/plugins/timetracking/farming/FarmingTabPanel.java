@@ -170,7 +170,7 @@ public class FarmingTabPanel extends TabContentPanel
 						}
 						else
 						{
-							panel.getEstimate().setText("Done " + getFormattedEstimate(prediction.getDoneEstimate() - unixNow, config.estimateRelative(), runeLiteConfig.amPmTime()));
+							panel.getEstimate().setText("Done " + getFormattedEstimate(prediction.getDoneEstimate() - unixNow, config.estimateRelative()));
 						}
 						break;
 					case DISEASED:

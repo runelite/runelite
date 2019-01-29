@@ -40,7 +40,6 @@ import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
@@ -85,7 +84,7 @@ public class BirdHouseTracker
 
 	public BirdHouseTabPanel createBirdHouseTabPanel()
 	{
-		return new BirdHouseTabPanel(itemManager, this, this.configManager.getConfig(RuneLiteConfig.class), config);
+		return new BirdHouseTabPanel(itemManager, this, config);
 	}
 
 	public void loadFromConfig()
