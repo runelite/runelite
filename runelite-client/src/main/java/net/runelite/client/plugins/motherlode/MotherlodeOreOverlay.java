@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2019, Sir Girion <https://github.com/sirgirion>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,77 +22,105 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.barrows;
+package net.runelite.client.plugins.motherlode;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import net.runelite.api.Varbits;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
-public class BarrowsBrotherSlainOverlay extends Overlay
+public class MotherlodeOreOverlay extends Overlay
 {
-	private final Client client;
+	private final MotherlodePlugin plugin;
+	private final MotherlodeConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private BarrowsBrotherSlainOverlay(BarrowsPlugin plugin, Client client)
+	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeConfig config)
 	{
-		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
-		setPriority(OverlayPriority.LOW);
-		this.client = client;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Barrows overlay"));
+		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		// Do not display overlay if potential is null/hidden
-		final Widget potential = client.getWidget(WidgetInfo.BARROWS_POTENTIAL);
-		if (potential == null || potential.isHidden())
+		if (!plugin.isInMlm() || !config.showOresFound())
 		{
 			return null;
 		}
 
-		// Hide original overlay
-		final Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
-		if (barrowsBrothers != null)
+		MotherlodeSession session = plugin.getSession();
+
+		int nuggetsFound = session.getNuggetsFound();
+		int coalFound = session.getCoalFound();
+		int goldFound = session.getGoldFound();
+		int mithrilFound = session.getMithrilFound();
+		int adamantiteFound = session.getAdamantiteFound();
+		int runiteFound = session.getRuniteFound();
+
+		// If no ores have even been collected, don't bother showing anything
+		if (nuggetsFound == 0 && coalFound == 0 && goldFound == 0 && mithrilFound == 0
+			&& adamantiteFound == 0 && runiteFound == 0)
 		{
-			barrowsBrothers.setHidden(true);
-			potential.setHidden(true);
+			return null;
 		}
 
 		panelComponent.getChildren().clear();
+		panelComponent.getChildren().add(TitleComponent.builder().text("Ores found").build());
 
-		for (BarrowsBrothers brother : BarrowsBrothers.values())
+		if (nuggetsFound > 0)
 		{
-			final boolean brotherSlain = client.getVar(brother.getKilledVarbit()) > 0;
-			String slain = brotherSlain ? "\u2713" : "\u2717";
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left(brother.getName())
-				.right(slain)
-				.rightColor(brotherSlain ? Color.GREEN : Color.RED)
+				.left("Nuggets:")
+				.right(Integer.toString(nuggetsFound))
 				.build());
 		}
 
-		float rewardPercent = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) / 10.0f;
-		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Potential")
-				.right(rewardPercent != 0 ? rewardPercent + "%" : "0%")
-				.rightColor(rewardPercent >= 73.0f && rewardPercent <= 88.0f ? Color.GREEN : rewardPercent < 65.6f ? Color.WHITE : Color.YELLOW)
+		if (coalFound > 0)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Coal:")
+				.right(Integer.toString(coalFound))
 				.build());
+		}
+
+		if (goldFound > 0)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Gold:")
+				.right(Integer.toString(goldFound))
+				.build());
+		}
+
+		if (mithrilFound > 0)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Mithril:")
+				.right(Integer.toString(mithrilFound))
+				.build());
+		}
+
+		if (adamantiteFound > 0)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Adamantite:")
+				.right(Integer.toString(adamantiteFound))
+				.build());
+		}
+
+		if (runiteFound > 0)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Runite:")
+				.right(Integer.toString(runiteFound))
+				.build());
+		}
 
 		return panelComponent.render(graphics);
 	}

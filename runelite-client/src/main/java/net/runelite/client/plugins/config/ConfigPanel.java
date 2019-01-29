@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.config;
 
-import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.primitives.Ints;
 import java.awt.BorderLayout;
@@ -92,6 +91,7 @@ import net.runelite.client.ui.components.ComboBoxListRenderer;
 import net.runelite.client.ui.components.IconButton;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.Text;
 
 @Slf4j
 public class ConfigPanel extends PluginPanel
@@ -106,7 +106,6 @@ public class ConfigPanel extends PluginPanel
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
 	private static final String RUNELITE_PLUGIN = "RuneLite";
 	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
-	private static final Splitter COMMA_SPLITTER = Splitter.on(',');
 
 	private final PluginManager pluginManager;
 	private final ConfigManager configManager;
@@ -653,7 +652,7 @@ public class ConfigPanel extends PluginPanel
 			return Collections.emptyList();
 		}
 
-		return COMMA_SPLITTER.splitToList(config);
+		return Text.fromCSV(config);
 	}
 
 	void savePinnedPlugins()

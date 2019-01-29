@@ -117,7 +117,7 @@ public enum Produce
 
 	// Anima
 	ATTAS("Attas", NullItemID.NULL_22940, 640, 9),
-	IASOR("Iasro", NullItemID.NULL_22939, 640, 9),
+	IASOR("Iasor", NullItemID.NULL_22939, 640, 9),
 	KRONOS("Kronos", NullItemID.NULL_22938, 640, 9),
 
 	// Special crops

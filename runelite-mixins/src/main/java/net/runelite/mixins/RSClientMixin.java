@@ -546,6 +546,7 @@ public abstract class RSClientMixin implements RSClient
 		int[] menuTypes = getMenuTypes();
 		int[] params0 = getMenuActionParams0();
 		int[] params1 = getMenuActionParams1();
+		boolean[] leftClick = getMenuForceLeftClick();
 
 		MenuEntry[] entries = new MenuEntry[count];
 		for (int i = 0; i < count; ++i)
@@ -557,6 +558,7 @@ public abstract class RSClientMixin implements RSClient
 			entry.setType(menuTypes[i]);
 			entry.setParam0(params0[i]);
 			entry.setParam1(params1[i]);
+			entry.setForceLeftClick(leftClick[i]);
 		}
 		return entries;
 	}
@@ -572,6 +574,7 @@ public abstract class RSClientMixin implements RSClient
 		int[] menuTypes = getMenuTypes();
 		int[] params0 = getMenuActionParams0();
 		int[] params1 = getMenuActionParams1();
+		boolean[] leftClick = getMenuForceLeftClick();
 
 		for (MenuEntry entry : entries)
 		{
@@ -581,6 +584,7 @@ public abstract class RSClientMixin implements RSClient
 			menuTypes[count] = entry.getType();
 			params0[count] = entry.getParam0();
 			params1[count] = entry.getParam1();
+			leftClick[count] = entry.isForceLeftClick();
 			++count;
 		}
 
@@ -1405,5 +1409,29 @@ public abstract class RSClientMixin implements RSClient
 	public static void onCycleCntrChanged(int idx)
 	{
 		client.getCallbacks().post(new ClientTick());
+	}
+
+	@Copy("shouldLeftClickOpenMenu")
+	boolean rs$shouldLeftClickOpenMenu()
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("shouldLeftClickOpenMenu")
+	boolean rl$shouldLeftClickOpenMenu()
+	{
+		if (rs$shouldLeftClickOpenMenu())
+		{
+			return true;
+		}
+
+		int len = getMenuOptionCount();
+		if (len > 0)
+		{
+			int type = getMenuTypes()[len - 1];
+			return type == MenuAction.RUNELITE_OVERLAY.getId();
+		}
+
+		return false;
 	}
 }

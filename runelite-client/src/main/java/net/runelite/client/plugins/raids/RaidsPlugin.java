@@ -39,7 +39,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
@@ -67,7 +66,6 @@ import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
@@ -155,8 +153,6 @@ public class RaidsPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(pointsOverlay);
-		overlayManager.addMenu(overlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay");
-		overlayManager.addMenu(pointsOverlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay");
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
@@ -166,8 +162,6 @@ public class RaidsPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(pointsOverlay);
-		overlayManager.removeMenu(overlay, OPTION_CONFIGURE);
-		overlayManager.removeMenu(pointsOverlay, OPTION_CONFIGURE);
 		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
 		raid = null;
@@ -248,21 +242,21 @@ public class RaidsPlugin extends Plugin
 					double percentage = personalPoints / (totalPoints / 100.0);
 
 					String chatMessage = new ChatMessageBuilder()
-							.append(ChatColorType.NORMAL)
-							.append("Total points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(totalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(", Personal points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(personalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(" (")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(DECIMAL_FORMAT.format(percentage))
-							.append(ChatColorType.NORMAL)
-							.append("%)")
-							.build();
+						.append(ChatColorType.NORMAL)
+						.append("Total points: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(POINTS_FORMAT.format(totalPoints))
+						.append(ChatColorType.NORMAL)
+						.append(", Personal points: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(POINTS_FORMAT.format(personalPoints))
+						.append(ChatColorType.NORMAL)
+						.append(" (")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(DECIMAL_FORMAT.format(percentage))
+						.append(ChatColorType.NORMAL)
+						.append("%)")
+						.build();
 
 					chatMessageManager.queue(QueuedMessage.builder()
 						.type(ChatMessageType.CLANCHAT_INFO)
@@ -308,6 +302,7 @@ public class RaidsPlugin extends Plugin
 				raid.updateLayout(layout);
 				RotationSolver.solve(raid.getCombatRooms());
 				overlay.setScoutOverlayShown(true);
+				sendRaidLayoutMessage();
 			}
 			else if (!config.scoutOverlayAtBank())
 			{
@@ -320,6 +315,28 @@ public class RaidsPlugin extends Plugin
 		{
 			overlay.setScoutOverlayShown(false);
 		}
+	}
+
+	private void sendRaidLayoutMessage()
+	{
+		if (!config.layoutMessage())
+		{
+			return;
+		}
+
+		final String layout = getRaid().getLayout().toCodeString();
+		final String rooms = getRaid().toRoomString();
+		final String raidData = "[" + layout + "]: " + rooms;
+
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.CLANCHAT_INFO)
+			.runeLiteFormattedMessage(new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append("Layout: ")
+				.append(ChatColorType.NORMAL)
+				.append(raidData)
+				.build())
+			.build());
 	}
 
 	private void updateInfoBoxState()

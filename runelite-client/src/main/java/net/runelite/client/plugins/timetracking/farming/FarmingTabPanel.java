@@ -35,9 +35,6 @@ import java.util.Set;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.vars.Autoweed;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.TabContentPanel;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
@@ -48,18 +45,20 @@ import net.runelite.client.ui.FontManager;
 @Slf4j
 public class FarmingTabPanel extends TabContentPanel
 {
-	private final Client client;
+	private final FarmingTracker farmingTracker;
 	private final ItemManager itemManager;
-	private final ConfigManager configManager;
 	private final TimeTrackingConfig config;
 	private final List<TimeablePanel<FarmingPatch>> patchPanels;
 
-	FarmingTabPanel(Client client, ItemManager itemManager, ConfigManager configManager,
-		TimeTrackingConfig config, Set<FarmingPatch> patches)
+	FarmingTabPanel(
+		FarmingTracker farmingTracker,
+		ItemManager itemManager,
+		TimeTrackingConfig config,
+		Set<FarmingPatch> patches
+	)
 	{
-		this.client = client;
+		this.farmingTracker = farmingTracker;
 		this.itemManager = itemManager;
-		this.configManager = configManager;
 		this.config = config;
 		this.patchPanels = new ArrayList<>();
 
@@ -126,41 +125,13 @@ public class FarmingTabPanel extends TabContentPanel
 	public void update()
 	{
 		long unixNow = Instant.now().getEpochSecond();
-		log.debug("Updating panel with username {}", client.getUsername());
-
-		boolean autoweed;
-		{
-			String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername();
-			autoweed = Integer.toString(Autoweed.ON.ordinal())
-				.equals(configManager.getConfiguration(group, TimeTrackingConfig.AUTOWEED));
-		}
 
 		for (TimeablePanel<FarmingPatch> panel : patchPanels)
 		{
 			FarmingPatch patch = panel.getTimeable();
-			String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + patch.getRegion().getRegionID();
-			String key = Integer.toString(patch.getVarbit().getId());
-			String storedValue = configManager.getConfiguration(group, key);
-			long unixTime = 0;
-			int value = 0;
-			if (storedValue != null)
-			{
-				String[] parts = storedValue.split(":");
-				if (parts.length == 2)
-				{
-					try
-					{
-						value = Integer.parseInt(parts[0]);
-						unixTime = Long.parseLong(parts[1]);
-					}
-					catch (NumberFormatException e)
-					{
-					}
-				}
-			}
+			PatchPrediction prediction = farmingTracker.predictPatch(patch);
 
-			PatchState state = unixTime <= 0 ? null : patch.getImplementation().forVarbitValue(value);
-			if (state == null)
+			if (prediction == null)
 			{
 				itemManager.getImage(Produce.WEEDS.getItemID()).addTo(panel.getIcon());
 				panel.getIcon().setToolTipText("Unknown state");
@@ -172,84 +143,47 @@ public class FarmingTabPanel extends TabContentPanel
 			}
 			else
 			{
-				if (state.getProduce().getItemID() < 0)
+				if (prediction.getProduce().getItemID() < 0)
 				{
 					panel.getIcon().setIcon(null);
 					panel.getIcon().setToolTipText("Unknown state");
 				}
 				else
 				{
-					itemManager.getImage(state.getProduce().getItemID()).addTo(panel.getIcon());
-					panel.getIcon().setToolTipText(state.getProduce().getName());
+					itemManager.getImage(prediction.getProduce().getItemID()).addTo(panel.getIcon());
+					panel.getIcon().setToolTipText(prediction.getProduce().getName());
 				}
 
-				int stage = state.getStage();
-				int stages = state.getStages();
-				int tickrate = state.getTickRate() * 60;
-
-				if (autoweed && state.getProduce() == Produce.WEEDS)
+				switch (prediction.getCropState())
 				{
-					stage = 0;
-					stages = 1;
-					tickrate = 0;
-				}
-				if (tickrate > 0)
-				{
-					long tickNow = unixNow / tickrate;
-					long tickTime = unixTime / tickrate;
-					int delta = (int) (tickNow - tickTime);
-
-					long doneEstimate = ((stages - 1 - stage) + tickTime) * tickrate;
-
-					stage += delta;
-					if (stage >= stages)
-					{
-						stage = stages - 1;
-					}
-
-					if (doneEstimate < unixNow)
-					{
+					case HARVESTABLE:
 						panel.getEstimate().setText("Done");
-					}
-					else
-					{
-						panel.getEstimate().setText("Done " + getFormattedEstimate(doneEstimate - unixNow, config.estimateRelative()));
-					}
-				}
-				else
-				{
-					switch (state.getCropState())
-					{
-						case HARVESTABLE:
+						break;
+					case GROWING:
+						if (prediction.getDoneEstimate() < unixNow)
+						{
 							panel.getEstimate().setText("Done");
-							break;
-						case GROWING:
-							if (stage == stages - 1)
-							{
-								panel.getEstimate().setText("Done");
-							}
-							else
-							{
-								panel.getEstimate().setText("Unknown");
-							}
-							break;
-						case DISEASED:
-							panel.getEstimate().setText("Diseased");
-							break;
-						case DEAD:
-							panel.getEstimate().setText("Dead");
-							break;
-					}
+						}
+						else
+						{
+							panel.getEstimate().setText("Done " + getFormattedEstimate(prediction.getDoneEstimate() - unixNow, config.estimateRelative()));
+						}
+						break;
+					case DISEASED:
+						panel.getEstimate().setText("Diseased");
+						break;
+					case DEAD:
+						panel.getEstimate().setText("Dead");
+						break;
 				}
 
 				/* Hide any fully grown weeds' progress bar. */
-				if (state.getProduce() != Produce.WEEDS
-					|| (state.getProduce() == Produce.WEEDS && !autoweed && stage < stages - 1))
+				if (prediction.getProduce() != Produce.WEEDS || prediction.getStage() < prediction.getStages() - 1)
 				{
 					panel.getProgress().setVisible(true);
-					panel.getProgress().setForeground(state.getCropState().getColor().darker());
-					panel.getProgress().setMaximumValue(stages - 1);
-					panel.getProgress().setValue(stage);
+					panel.getProgress().setForeground(prediction.getCropState().getColor().darker());
+					panel.getProgress().setMaximumValue(prediction.getStages() - 1);
+					panel.getProgress().setValue(prediction.getStage());
 				}
 				else
 				{

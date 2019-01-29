@@ -511,6 +511,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("private", option, target, true);
 		}
+		else if (config.swapPick() && option.equals("pick"))
+		{
+			swap("pick-lots", option, target, true);
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(eventId);

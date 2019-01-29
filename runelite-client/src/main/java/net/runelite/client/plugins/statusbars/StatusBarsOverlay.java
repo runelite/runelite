@@ -183,44 +183,47 @@ class StatusBarsOverlay extends Overlay
 		{
 			final MenuEntry[] menu = client.getMenuEntries();
 			final int menuSize = menu.length;
-			final MenuEntry entry = menu[menuSize - 1];
-			final Effect change = itemStatService.getItemStatChanges(entry.getIdentifier());
+			final MenuEntry entry = menuSize > 0 ? menu[menuSize - 1] : null;
 			int prayerHealValue = 0;
 			int foodHealValue = 0;
-
-			if (change != null & entry.getParam1() == WidgetInfo.INVENTORY.getId())
+			if (entry != null && entry.getParam1() == WidgetInfo.INVENTORY.getId())
 			{
-				final StatsChanges statsChanges = change.calculate(client);
+				final Effect change = itemStatService.getItemStatChanges(entry.getIdentifier());
 
-				for (final StatChange c : statsChanges.getStatChanges())
+				if (change != null)
 				{
-					final String strVar = c.getTheoretical();
+					final StatsChanges statsChanges = change.calculate(client);
 
-					if (Strings.isNullOrEmpty(strVar))
+					for (final StatChange c : statsChanges.getStatChanges())
 					{
-						continue;
-					}
+						final String strVar = c.getTheoretical();
 
-					final Integer value = Ints.tryParse(strVar.startsWith("+") ? strVar.substring(1) : strVar);
+						if (Strings.isNullOrEmpty(strVar))
+						{
+							continue;
+						}
 
-					if (value == null)
-					{
-						continue;
-					}
+						final Integer value = Ints.tryParse(strVar.startsWith("+") ? strVar.substring(1) : strVar);
 
-					if (c.getStat().getName().equals(Skill.HITPOINTS.getName()))
-					{
-						foodHealValue = value;
-					}
+						if (value == null)
+						{
+							continue;
+						}
 
-					if (c.getStat().getName().equals(Skill.PRAYER.getName()))
-					{
-						prayerHealValue = value;
-					}
+						if (c.getStat().getName().equals(Skill.HITPOINTS.getName()))
+						{
+							foodHealValue = value;
+						}
 
-					if (foodHealValue != 0 && prayerHealValue != 0)
-					{
-						break;
+						if (c.getStat().getName().equals(Skill.PRAYER.getName()))
+						{
+							prayerHealValue = value;
+						}
+
+						if (foodHealValue != 0 && prayerHealValue != 0)
+						{
+							break;
+						}
 					}
 				}
 			}

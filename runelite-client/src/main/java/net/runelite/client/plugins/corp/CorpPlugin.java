@@ -37,7 +37,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
@@ -57,7 +56,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
 @PluginDescriptor(
 	name = "Corporeal Beast",
@@ -114,13 +112,11 @@ public class CorpPlugin extends Plugin
 	{
 		overlayManager.add(corpOverlay);
 		overlayManager.add(coreOverlay);
-		overlayManager.addMenu(corpOverlay, RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Corp overlay");
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.removeMenu(corpOverlay, OPTION_CONFIGURE);
 		overlayManager.remove(corpOverlay);
 		overlayManager.remove(coreOverlay);
 
