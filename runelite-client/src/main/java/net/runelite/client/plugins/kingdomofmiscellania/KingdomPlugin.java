@@ -85,6 +85,8 @@ public class KingdomPlugin extends Plugin
 
 	private int workers;
 
+
+
 	private boolean throneOfMiscellania = false;
 	private boolean royalTrouble = false;
 
@@ -216,7 +218,6 @@ public class KingdomPlugin extends Plugin
 		int rewardAmount;
 		int resourceAmount;
 		int totalAmount = 0;
-		int leftOver = kingdom.getBaseSalary();
 
 		kingdom.rewardSummary = new HashMap<>();
 		Iterator it = kingdom.resourceDistribution.entrySet().iterator();
