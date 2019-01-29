@@ -75,6 +75,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private final Point mousePosition = new Point();
 	private Overlay movedOverlay;
 	private boolean inOverlayDraggingMode;
+	private boolean inMenuEntryMode;
 	private MenuEntry[] menuEntries;
 
 	// Overlay state validation
@@ -106,6 +107,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		if (!event.isFocused())
 		{
 			inOverlayDraggingMode = false;
+			inMenuEntryMode = false;
 			menuEntries = null;
 		}
 	}
@@ -114,6 +116,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	protected void onClientTick(ClientTick t)
 	{
 		if (menuEntries == null)
+		{
+			return;
+		}
+
+		if (!inMenuEntryMode && runeLiteConfig.menuEntryShift())
 		{
 			return;
 		}
@@ -241,11 +248,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 					{
 						location.setLocation(preferredLocation);
 					}
-				}
 
-				final Dimension realDimensions = client.getRealDimensions();
-				location.x = Ints.constrainToRange(location.x, 0, realDimensions.width - dimension.width);
-				location.y = Ints.constrainToRange(location.y, 0, realDimensions.height - dimension.height);
+					final Dimension realDimensions = client.getRealDimensions();
+					location.x = Ints.constrainToRange(location.x, 0, realDimensions.width - dimension.width);
+					location.y = Ints.constrainToRange(location.y, 0, realDimensions.height - dimension.height);
+				}
 
 				if (overlay.getPreferredSize() != null)
 				{
@@ -401,6 +408,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		{
 			inOverlayDraggingMode = true;
 		}
+
+		if (e.isShiftDown() && runeLiteConfig.menuEntryShift())
+		{
+			inMenuEntryMode = true;
+		}
 	}
 
 	@Override
@@ -409,6 +421,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		if (!e.isAltDown())
 		{
 			inOverlayDraggingMode = false;
+		}
+
+		if (!e.isShiftDown())
+		{
+			inMenuEntryMode = false;
 		}
 	}
 
