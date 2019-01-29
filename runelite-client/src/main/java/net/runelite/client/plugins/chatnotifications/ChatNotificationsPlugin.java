@@ -176,7 +176,7 @@ public class ChatNotificationsPlugin extends Plugin
 
 		if (highlightMatcher != null)
 		{
-			Matcher matcher = highlightMatcher.matcher(messageNode.getValue());
+			Matcher matcher = highlightMatcher.matcher(Text.removeTags(messageNode.getValue()));
 			boolean found = false;
 			StringBuffer stringBuffer = new StringBuffer();
 
