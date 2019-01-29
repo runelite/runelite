@@ -40,7 +40,7 @@ public interface TimeTrackingConfig extends Config
 	@ConfigItem(
 		keyName = "amPmTime",
 		name = "Use 12-hour time format",
-		description = "Use 12 hour clock instead of 24 hour clock",
+		description = "Show remaining time in 12-hour time format instead of 24-hour time format",
 		position = 1
 	)
 	default boolean amPmTime()
