@@ -38,10 +38,21 @@ public interface TimeTrackingConfig extends Config
 	String STOPWATCHES = "stopwatches";
 
 	@ConfigItem(
+		keyName = "amPmTime",
+		name = "12 hour clock",
+		description = "Use 12 hour clock instead of 24 hour clock",
+		position = 1
+	)
+	default boolean amPmTime()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "estimateRelative",
 		name = "Show relative time",
 		description = "Show amount of time remaining instead of completion time",
-		position = 1
+		position = 2
 	)
 	default boolean estimateRelative()
 	{
@@ -52,7 +63,7 @@ public interface TimeTrackingConfig extends Config
 		keyName = "timerNotification",
 		name = "Timer notification",
 		description = "Notify you whenever a timer has finished counting down",
-		position = 2
+		position = 3
 	)
 	default boolean timerNotification()
 	{
@@ -63,7 +74,7 @@ public interface TimeTrackingConfig extends Config
 		keyName = "birdHouseNotification",
 		name = "Bird house notification",
 		description = "Notify you when all bird houses are full",
-		position = 3
+		position = 4
 	)
 	default boolean birdHouseNotification()
 	{
@@ -74,7 +85,7 @@ public interface TimeTrackingConfig extends Config
 		keyName = "defaultTimerMinutes",
 		name = "Default Time (Minutes)",
 		description = "The default time for the timer in minutes",
-		position = 4
+		position = 5
 	)
 	default int defaultTimerMinutes()
 	{

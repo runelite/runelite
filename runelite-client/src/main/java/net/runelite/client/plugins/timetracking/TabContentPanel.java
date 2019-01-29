@@ -26,6 +26,7 @@ package net.runelite.client.plugins.timetracking;
 
 import java.awt.Dimension;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
@@ -48,7 +49,7 @@ public abstract class TabContentPanel extends JPanel
 		return super.getPreferredSize();
 	}
 
-	protected static String getFormattedEstimate(long remainingSeconds, boolean useRelativeTime)
+	protected static String getFormattedEstimate(long remainingSeconds, boolean useRelativeTime, boolean use12HourTime)
 	{
 		if (useRelativeTime)
 		{
@@ -80,7 +81,13 @@ public abstract class TabContentPanel extends JPanel
 			{
 				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
 			}
-			sb.append(String.format("at %d:%02d", endTime.getHour(), endTime.getMinute()));
+			String timeFormat = "HH:mm";
+			if (use12HourTime)
+			{
+				timeFormat = "hh:mm a";
+			}
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(timeFormat);
+			sb.append("at " + endTime.format(formatter));
 			return sb.toString();
 		}
 	}

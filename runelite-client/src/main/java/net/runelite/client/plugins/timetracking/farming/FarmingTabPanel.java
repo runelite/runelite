@@ -166,7 +166,7 @@ public class FarmingTabPanel extends TabContentPanel
 						}
 						else
 						{
-							panel.getEstimate().setText("Done " + getFormattedEstimate(prediction.getDoneEstimate() - unixNow, config.estimateRelative()));
+							panel.getEstimate().setText("Done " + getFormattedEstimate(prediction.getDoneEstimate() - unixNow, config.estimateRelative(), config.amPmTime()));
 						}
 						break;
 					case DISEASED:
