@@ -126,7 +126,8 @@ public class CombatIndicatorPlugin extends Plugin
 		final boolean isTargeted = config.getTargetedIndicatorEnabled() && interactingList.contains(targetIdent);
 		final boolean isTarget = config.getTargetIndicatorEnabled() && targetedNPC == targetIdent;
 
-		if (isTarget || isTargeted) {
+		if (isTarget || isTargeted)
+		{
 			final Color color = isTarget && isTargeted
 					? config.getCombinedColour()
 					: (isTarget ? config.getTargetIndicatorColour() : config.getTargetedIndicatorColour());
