@@ -70,7 +70,7 @@ public class StackFormatter
 	 * @param formatStyle The format style to ues for the formatter
 	 * @return The localized DateTimeFormatter
 	 */
-	public static DateTimeFormatter getLocalizedDatePattern(FormatStyle formatStyle)
+	public static DateTimeFormatter getLocalizedDateTimeFormatter(FormatStyle formatStyle)
 	{
 		return DateTimeFormatter.ofLocalizedTime(formatStyle).withLocale(RuneLite.SYSTEM_LOCALE);
 	}
