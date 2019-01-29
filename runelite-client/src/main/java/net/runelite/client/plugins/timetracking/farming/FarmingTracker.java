@@ -36,6 +36,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.vars.Autoweed;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.Tab;
@@ -72,7 +73,7 @@ public class FarmingTracker
 
 	public FarmingTabPanel createTabPanel(Tab tab)
 	{
-		return new FarmingTabPanel(this, itemManager, config, farmingWorld.getTabs().get(tab));
+		return new FarmingTabPanel(this, itemManager, this.configManager.getConfig(RuneLiteConfig.class), config, farmingWorld.getTabs().get(tab));
 	}
 
 	/**

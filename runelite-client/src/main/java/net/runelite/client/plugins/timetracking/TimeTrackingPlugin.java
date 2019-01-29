@@ -42,6 +42,7 @@ import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -86,6 +87,9 @@ public class TimeTrackingPlugin extends Plugin
 	private TimeTrackingConfig config;
 
 	@Inject
+	private RuneLiteConfig runeLiteConfig;
+
+	@Inject
 	private ScheduledExecutorService executorService;
 
 	private ScheduledFuture panelUpdateFuture;
@@ -113,7 +117,7 @@ public class TimeTrackingPlugin extends Plugin
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "watch.png");
 
-		panel = new TimeTrackingPanel(itemManager, config, farmingTracker, birdHouseTracker, clockManager);
+		panel = new TimeTrackingPanel(itemManager, runeLiteConfig, config, farmingTracker, birdHouseTracker, clockManager);
 
 		navButton = NavigationButton.builder()
 			.tooltip("Time Tracking")

@@ -38,17 +38,6 @@ public interface TimeTrackingConfig extends Config
 	String STOPWATCHES = "stopwatches";
 
 	@ConfigItem(
-		keyName = "amPmTime",
-		name = "Use 12-hour time format",
-		description = "Show remaining time in 12-hour time format instead of 24-hour time format",
-		position = 1
-	)
-	default boolean amPmTime()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "estimateRelative",
 		name = "Show relative time",
 		description = "Show amount of time remaining instead of completion time",
