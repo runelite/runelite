@@ -28,13 +28,10 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.util.StackFormatter;
 
 import java.awt.Dimension;
-import java.text.DateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
-import java.util.Locale;
 import javax.swing.JPanel;
 
 public abstract class TabContentPanel extends JPanel
