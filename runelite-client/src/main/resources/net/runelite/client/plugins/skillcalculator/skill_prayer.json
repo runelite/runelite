@@ -237,16 +237,16 @@
     },
     {
       "level": 1,
-      "icon": 22780,
-      "name": "Wyrm Bones",
-      "xp": 30
-    },
-    {
-      "level": 1,
       "icon": 3398,
       "name": "Phrin Remains",
       "xp": 46.5,
       "ignoreBonus": true
+    },
+    {
+      "level": 1,
+      "icon": 22780,
+      "name": "Wyrm Bones",
+      "xp": 50
     },
     {
       "level": 1,
@@ -263,12 +263,6 @@
     },
     {
       "level": 1,
-      "icon": 22783,
-      "name": "Drake Bones",
-      "xp": 60
-    },
-    {
-      "level": 1,
       "icon": 6812,
       "name": "Wyvern Bones",
       "xp": 72
@@ -278,6 +272,12 @@
       "icon": 536,
       "name": "Dragon Bones",
       "xp": 72
+    },
+    {
+      "level": 1,
+      "icon": 22783,
+      "name": "Drake Bones",
+      "xp": 80
     },
     {
       "level": 1,
@@ -307,15 +307,15 @@
     },
     {
       "level": 1,
-      "icon": 22786,
-      "name": "Hydra Bones",
-      "xp": 90
-    },
-    {
-      "level": 1,
       "icon": 4832,
       "name": "Raurg Bones",
       "xp": 96
+    },
+    {
+      "level": 1,
+      "icon": 22786,
+      "name": "Hydra Bones",
+      "xp": 110
     },
     {
       "level": 1,
