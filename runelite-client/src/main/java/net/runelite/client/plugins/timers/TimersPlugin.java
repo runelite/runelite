@@ -43,10 +43,12 @@ import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Prayer;
+import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -715,11 +717,6 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showImbuedHeart() && actor.getGraphic() == IMBUEDHEART.getGraphicId())
-		{
-			createGameTimer(IMBUEDHEART);
-		}
-
 		if (config.showFreezes())
 		{
 			if (actor.getGraphic() == BIND.getGraphicId())
@@ -851,6 +848,28 @@ public class TimersPlugin extends Plugin
 	public void onLocalPlayerDeath(LocalPlayerDeath event)
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer().isRemovedOnDeath());
+	}
+
+	@Subscribe
+	public void onBoostedLevelChanged(BoostedLevelChanged boostedLevelChanged)
+	{
+		Skill skill = boostedLevelChanged.getSkill();
+
+		if (skill != Skill.MAGIC || !config.showImbuedHeart())
+		{
+			return;
+		}
+
+		int magicLvl = client.getRealSkillLevel(skill);
+		int magicBoost = client.getBoostedSkillLevel(skill);
+		int heartBoost = 1 + (int) (magicLvl * 0.1);
+
+		if (magicBoost - magicLvl != heartBoost)
+		{
+			return;
+		}
+
+		createGameTimer(IMBUEDHEART);
 	}
 
 	private TimerTimer createGameTimer(final GameTimer timer)
