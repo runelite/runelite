@@ -31,7 +31,6 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
-
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;

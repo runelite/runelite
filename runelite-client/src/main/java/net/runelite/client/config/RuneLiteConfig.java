@@ -272,6 +272,4 @@ public interface RuneLiteConfig extends Config
 	{
 		return 35;
 	}
-
-
 }
