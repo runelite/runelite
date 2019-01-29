@@ -27,10 +27,7 @@ package net.runelite.client.plugins.combatindicator;
 import javax.inject.Inject;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.MenuEntry;
+import net.runelite.api.*;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -38,6 +35,9 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.ColorUtil;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,6 +58,7 @@ public class CombatIndicatorPlugin extends Plugin
 	private CombatIndicatorConfig config;
 
 	private List<Integer> interactingList;
+	private int targetedNPC;
 
 	@Provides
 	CombatIndicatorConfig provideConfig(ConfigManager configManager)
@@ -81,7 +82,7 @@ public class CombatIndicatorPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		interactingList = null;
 	}
@@ -90,11 +91,24 @@ public class CombatIndicatorPlugin extends Plugin
 	public void onInteractingChanged(final InteractingChanged event)
 	{
 		final Actor player = client.getLocalPlayer();
-		interactingList = client.getNpcs()
-				.stream()
-				.filter(npc -> player.equals(npc.getInteracting()))
-				.map(npc -> npc.getIndex())
-				.collect(Collectors.toList());
+		if (player != null)
+		{
+			interactingList = client.getNpcs()
+					.stream()
+					.filter(npc -> player.equals(npc.getInteracting()))
+					.map(npc -> npc.getIndex())
+					.collect(Collectors.toList());
+
+			final Actor target = player.getInteracting();
+			if (target == null || !(target instanceof NPC))
+			{
+				targetedNPC = -1;
+			}
+			else
+			{
+				targetedNPC = ((NPC)target).getIndex();
+			}
+		}
 	}
 
 	@Subscribe
@@ -105,19 +119,23 @@ public class CombatIndicatorPlugin extends Plugin
 			return;
 		}
 
-		final String interactionString = "<col=" + Integer.toHexString(config.getIndicatorColour().getRGB()).substring(2) + ">* ";
 		final MenuEntry[] menuEntries = client.getMenuEntries();
+		final MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+		final String target = lastEntry.getTarget();
+		final int targetIdent = lastEntry.getIdentifier();
+		final boolean isTargeted = config.getTargetedIndicatorEnabled() && interactingList.contains(targetIdent);
+		final boolean isTarget = config.getTargetIndicatorEnabled() && targetedNPC == targetIdent;
 
-		for (MenuEntry menuEntry : menuEntries)
-		{
-			final String target = menuEntry.getTarget();
-			if (!target.startsWith(interactionString) && interactingList.contains(menuEntry.getIdentifier()))
-			{
-				// TODO: Allow configuring if the indicator is a prefix or suffix?
-				menuEntry.setTarget(interactionString + target);
-			}
+		if (isTarget || isTargeted) {
+			final Color color = isTarget && isTargeted
+					? config.getCombinedColour()
+					: (isTarget ? config.getTargetIndicatorColour() : config.getTargetedIndicatorColour());
+
+			lastEntry.setTarget(
+					ColorUtil.prependColorTag("* ", color) + lastEntry.getTarget()
+			);
+
+			client.setMenuEntries(menuEntries);
 		}
-
-		client.setMenuEntries(menuEntries);
 	}
 }

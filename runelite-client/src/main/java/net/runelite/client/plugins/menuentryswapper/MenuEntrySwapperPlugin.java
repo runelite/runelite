@@ -27,10 +27,13 @@ package net.runelite.client.plugins.menuentryswapper;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+
+import java.util.Arrays;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
@@ -62,6 +65,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	tags = {"npcs", "inventory", "items", "objects"},
 	enabledByDefault = false
 )
+@Slf4j
 public class MenuEntrySwapperPlugin extends Plugin
 {
 	private static final String CONFIGURE = "Configure";
@@ -570,7 +574,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			MenuEntry entry = entries[i];
 			String entryOption = Text.removeTags(entry.getOption()).toLowerCase();
-			String entryTarget = Text.removeTags(entry.getTarget()).toLowerCase();
+			String entryTarget = Text.removeTags(entry.getTarget()).toLowerCase().replaceAll("^\\* *", "");
 
 			if (strict)
 			{

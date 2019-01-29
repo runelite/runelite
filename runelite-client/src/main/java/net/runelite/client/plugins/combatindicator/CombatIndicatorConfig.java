@@ -34,13 +34,57 @@ import net.runelite.client.config.ConfigItem;
 public interface CombatIndicatorConfig extends Config
 {
 	@ConfigItem(
-			keyName = "indicatorColour",
-			name = "Indicator Colour",
-			description = "Configures the colour of the indicator",
+			keyName = "targetedIndicatorEnabled",
+			name = "NPC -> Player",
+			description = "Configures an indicator when an entity has targeted you",
 			position = 0
 	)
-	default Color getIndicatorColour()
+	default boolean getTargetedIndicatorEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "targetedIndicatorColour",
+			name = "NPC -> Player Color",
+			description = "Configures the color of the indicator when entity has targeted you",
+			position = 1
+	)
+	default Color getTargetedIndicatorColour()
 	{
 		return Color.decode("#FF0000");
+	}
+
+	@ConfigItem(
+			keyName = "targetIndicatorEnabled",
+			name = "Player -> NPC",
+			description = "Configures an indicator when you target an entity",
+			position = 2
+	)
+	default boolean getTargetIndicatorEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "targetIndicatorColour",
+			name = "Player -> NPC Color",
+			description = "Configures the color of the indicator when you target an entity",
+			position = 3
+	)
+	default Color getTargetIndicatorColour()
+	{
+		return Color.decode("#00FF00");
+	}
+
+	@ConfigItem(
+			keyName = "combinedColour",
+			name = "Combined Color",
+			description = "Configures the color when both cases are true",
+			position = 4
+	)
+	default Color getCombinedColour()
+	{
+		return Color.decode("#0000FF");
 	}
 }
