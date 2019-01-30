@@ -88,7 +88,7 @@ enum Task
 	REVENANTS("Revenants", ItemID.BRACELET_OF_ETHEREUM, "Revenant imp", "Revenant goblin", "Revenant pyrefiend", "Revenant hobgoblin", "Revenant cyclops", "Revenant hellhound", "Revenant demon", "Revenant ork", "Revenant dark beast", "Revenant knight", "Revenant dragon"),
 	FLESH_CRAWLERS("Flesh crawlers", ItemID.ENSOULED_SCORPION_HEAD),
 	FOSSIL_ISLAND_WYVERNS("Fossil island wyverns", ItemID.FOSSIL_ISLAND_WYVERN, "Ancient wyvern", "Long-tailed wyvern", "Spitting wyvern", "Taloned wyvern"),
-	GARGOYLES("Gargoyles", ItemID.GARGOYLE, 9, ItemID.ROCK_HAMMER),
+	GARGOYLES("Gargoyles", ItemID.GARGOYLE, 9, ItemID.ROCK_HAMMER, "Marble gargoyle"),
 	GENERAL_GRAARDOR("General Graardor", ItemID.PET_GENERAL_GRAARDOR),
 	GHOSTS("Ghosts", ItemID.GHOSTSPEAK_AMULET, "Tortured soul"),
 	GIANT_MOLE("Giant Mole", ItemID.BABY_MOLE),
@@ -190,6 +190,13 @@ enum Task
 		}
 	}
 
+	/**
+	 * Construction of task for slayer plugins ONLY for monsters WITHOUT weakness threshold
+	 * @param name - Name of Hunted Monster
+	 * @param itemSpriteId - Image Displayed to represent Hunted Monster
+	 * @param targetNames - The names of different NPCs that may be killed to complete task
+	 */
+	
 	Task(String name, int itemSpriteId, String... targetNames)
 	{
 		Preconditions.checkArgument(itemSpriteId >= 0);
@@ -200,6 +207,15 @@ enum Task
 		this.targetNames = targetNames;
 	}
 
+	/**
+	 * Construction of task for slayer plugins ONLY for monsters WITH weakness threshold
+	 * @param name - Name of Hunted Monster
+	 * @param itemSpriteId - Image displayed to represent Hunted Monster
+	 * @param weaknessThreshold - HP at which weak item may be used on hunted monster
+	 * @param weaknessItem - Item which is used on the monster to destroy it
+	 * @param targetNames - The names of different NPCs that may be killed to complete task
+	 */
+	
 	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, String... targetNames)
 	{
 		Preconditions.checkArgument(itemSpriteId >= 0);
