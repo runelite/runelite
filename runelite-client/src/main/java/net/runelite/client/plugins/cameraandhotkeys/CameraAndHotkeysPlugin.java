@@ -136,14 +136,13 @@ public class CameraAndHotkeysPlugin extends Plugin
 	{
 		//disable function rebinds when an Dialog Option widget is open
 		//so that 0-9 keys can be used for remapping
-
 		Widget optionDialog = client.getWidget(WidgetInfo.DIALOG_OPTION);
 		if (optionDialog == null)
 		{
-			return true;
+			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	@Subscribe

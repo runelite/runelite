@@ -61,7 +61,7 @@ class CameraAndHotkeysListener extends MouseAdapter implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !plugin.chatboxFocused() || !plugin.dialogOpen())
+		if (client.getGameState() != GameState.LOGGED_IN || !plugin.chatboxFocused() || plugin.dialogOpen())
 		{
 			return;
 		}
