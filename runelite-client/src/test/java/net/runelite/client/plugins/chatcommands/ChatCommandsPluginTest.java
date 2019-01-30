@@ -148,6 +148,23 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testPersonalBestNoTrailingPeriod()
+	{
+		final String FIGHT_DURATION = "Fight duration: <col=ff0000>0:59</col>. Personal best: 0:55";
+
+		when(client.getUsername()).thenReturn("Adam");
+
+		// This sets lastBoss
+		ChatMessage chatMessage = new ChatMessage(SERVER, "", "Your Zulrah kill count is: <col=ff0000>4</col>.", null);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(SERVER, "", FIGHT_DURATION, null);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("zulrah"), eq(55));
+	}
+
+	@Test
 	public void testNewPersonalBest()
 	{
 		final String NEW_PB = "Fight duration: <col=ff0000>3:01</col> (new personal best).";
