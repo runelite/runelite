@@ -27,6 +27,7 @@ package net.runelite.api;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import javax.annotation.Nullable;
 import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
@@ -175,6 +176,7 @@ public interface Actor extends Renderable
 	 * @param zOffset the z-axis offset
 	 * @return the text drawing location
 	 */
+	@Nullable
 	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
 
 	/**
