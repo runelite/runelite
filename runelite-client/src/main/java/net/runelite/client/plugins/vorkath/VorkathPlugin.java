@@ -10,7 +10,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
-import java.util.List;
 
 @PluginDescriptor(
         name = "Vorkath",
@@ -18,8 +17,6 @@ import java.util.List;
         tags = {"combat", "overlay", "pve", "pvm"}
 )
 public class VorkathPlugin extends Plugin {
-
-    private static final int VORKATH_REGION = 9023;
 
     @Inject
     private Client client;
@@ -29,6 +26,9 @@ public class VorkathPlugin extends Plugin {
 
     @Inject
     private VorkathOverlay overlay;
+
+    @Inject
+    private ZombifiedSpawnOverlay SpawnOverlay;
 
     @Inject
     private ClientThread clientThread;
@@ -43,23 +43,23 @@ public class VorkathPlugin extends Plugin {
     @Override
     protected void startUp() {
         overlayManager.add(overlay);
+        overlayManager.add(SpawnOverlay);
         clientThread.invoke(this::reset);
     }
 
     @Override
     protected void shutDown() {
         overlayManager.remove(overlay);
+        overlayManager.remove(SpawnOverlay);
     }
 
     private void reset() {
-        resetVorkath();
-    }
-
-    private void resetVorkath() {
         this.vorkath = null;
         for (NPC npc : client.getNpcs()) {
             if (isNpcVorkath(npc.getId())) {
                 this.vorkath = new Vorkath(npc);
+            } else if (isNpcZombifiedSpawn(npc.getId())) {
+                this.spawn = new ZombifiedSpawn(npc);
             }
         }
     }
@@ -76,30 +76,28 @@ public class VorkathPlugin extends Plugin {
         return id == NpcID.ZOMBIFIED_SPAWN || id == NpcID.ZOMBIFIED_SPAWN_8063;
     }
 
-
-
     @Subscribe
     public void onNpcSpawned(NpcSpawned event) {
         NPC npc = event.getNpc();
         if (isNpcVorkath(npc.getId())) {
             this.vorkath = new Vorkath(npc);
-        } else if (isNpcZombifiedSpawn(npc.getId())){
+        } else if (isNpcZombifiedSpawn(npc.getId())) {
             this.spawn = new ZombifiedSpawn(npc);
         }
     }
 
     @Subscribe
-    public void onNpcDespawned(NpcDespawned event) {
-        if (vorkath != null) {
-            if (event.getNpc().equals(vorkath.getNpc())) {
+    public void onNpcDespawned(NpcDespawned npcDespawned) {
+        final NPC npc = npcDespawned.getNpc();
+        if(this.vorkath != null || this.spawn != null){
+            if (npc.getId() == this.vorkath.getNpc().getId()) {
                 this.vorkath = null;
-            }
-        }else if (spawn != null) {
-            if (event.getNpc().equals(spawn.getNpc())) {
+            } else if (npc.getId() == this.spawn.getNpc().getId()) {
                 this.spawn = null;
             }
         }
     }
+
 
     @Subscribe
     public void onGameStateChanged(GameStateChanged event) {
@@ -134,7 +132,7 @@ public class VorkathPlugin extends Plugin {
 
                 } else if (animationId == AnimationID.VORKATH_ATTACK || animationId == AnimationID.VORKATH_FIRE_BOMB_ATTACK) {
 
-                    if(vorkath.isIcePhaseAttack()){
+                    if (vorkath.isIcePhaseAttack()) {
                         vorkath.setIcePhaseAttack(false);
                     } else {
                         vorkath.setAttacksUntilSwitch(vorkath.getAttacksUntilSwitch() - 1);

@@ -53,11 +53,6 @@ public class VorkathOverlay extends Overlay {
     @Override
     public Dimension render(Graphics2D graphics) {
 
-        if (plugin.getSpawn() != null) {
-            ZombifiedSpawn spawn = plugin.getSpawn();
-            OverlayUtil.renderTileOverlay(client, graphics, spawn.getNpc().getLocalLocation(), getIcon(Vorkath.AttackStyle.ICE), Color.green);
-        }
-
         if(plugin.getVorkath() != null){
             Vorkath vorkath = plugin.getVorkath();
 
