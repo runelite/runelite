@@ -842,6 +842,7 @@ public class ChatCommandsPlugin extends Plugin
 			}
 
 			ChatMessageBuilder chatMessageBuilder = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
 				.append("Clue scroll (" + level + ")").append(": ")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(Integer.toString(quantity));
