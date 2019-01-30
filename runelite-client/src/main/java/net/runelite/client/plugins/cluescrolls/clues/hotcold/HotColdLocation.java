@@ -69,7 +69,7 @@ public enum HotColdLocation
 	DESERT_POLLNIVNEACH(new WorldPoint(3287, 2975, 0), DESERT, "West of Pollnivneach."),
 	DESERT_MTA(new WorldPoint(3350, 3293, 0), DESERT, "Next to Mage Training Arena."),
 	DESERT_SHANTY(new WorldPoint(3294, 3106, 0), DESERT, "South-west of Shantay Pass."),
-	FELDIP_HILLS_JIGGIG(new WorldPoint(2414, 3047, 0), FELDIP_HILLS, "West of Jiggig, east of the fairy ring bkp."),
+	FELDIP_HILLS_JIGGIG(new WorldPoint(2413, 3055, 0), FELDIP_HILLS, "West of Jiggig, east of the fairy ring bkp."),
 	FELDIP_HILLS_SW(new WorldPoint(2582, 2895, 0), FELDIP_HILLS, "West of the southeasternmost lake in Feldip Hills."),
 	FELDIP_HILLS_GNOME_GLITER(new WorldPoint(2553, 2972, 0), FELDIP_HILLS, "East of the gnome glider (Lemantolly Undri)."),
 	FELDIP_HILLS_RANTZ(new WorldPoint(2611, 2946, 0), FELDIP_HILLS, "South of Rantz, six steps west of the empty glass bottles."),
