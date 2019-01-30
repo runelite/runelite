@@ -129,7 +129,7 @@ enum Task
 	MOLANISKS("Molanisks", ItemID.MOLANISK),
 	MONKEYS("Monkeys", ItemID.ENSOULED_MONKEY_HEAD),
 	MOSS_GIANTS("Moss giants", ItemID.HILL_GIANT_CLUB),
-	MUTATED_ZYGOMITES("Mutated zygomites", ItemID.MUTATED_ZYGOMITE, 0, ItemID.FUNGICIDE_SPRAY_0, "Zygomite", "Fungi"),
+	MUTATED_ZYGOMITES("Zygomite", ItemID.MUTATED_ZYGOMITE, 0, ItemID.FUNGICIDE_SPRAY_0, "Fungi"),
 	NECHRYAEL("Nechryael", ItemID.NECHRYAEL, "Nechryarch"),
 	OGRES("Ogres", ItemID.ENSOULED_OGRE_HEAD),
 	OTHERWORLDLY_BEING("Otherworldly beings", ItemID.GHOSTLY_HOOD),
@@ -190,6 +190,12 @@ enum Task
 		}
 	}
 
+	/**
+	 * Creates task object for slayer plugins ONLY with monsters WITHOUT weakness threshold
+	 * @param name name of hunted monster
+	 * @param itemSpriteId image used to represent monster for tracker plugin
+	 * @param targetNames names of monsters (variants) that may also be killed to complete task
+	 */
 	Task(String name, int itemSpriteId, String... targetNames)
 	{
 		Preconditions.checkArgument(itemSpriteId >= 0);
@@ -200,6 +206,14 @@ enum Task
 		this.targetNames = targetNames;
 	}
 
+	/**
+	 * Creates task object for slayer plugins ONLY with monsters WITH weakness threshold
+	 * @param name name of hunted monster
+	 * @param itemSpriteId image used to represent monster for tracker plugin
+	 * @param weaknessThreshold HP at which weakness item may be used to kill monster
+	 * @param weaknessItem item which needs to be used at a certain HP to kill monster
+	 * @param targetNames names of monsters (variants) that may also be killed to complete task
+	 */
 	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, String... targetNames)
 	{
 		Preconditions.checkArgument(itemSpriteId >= 0);
@@ -210,6 +224,11 @@ enum Task
 		this.targetNames = targetNames;
 	}
 
+	/**
+	 * 
+	 * @param taskName name of the task monster
+	 * @return task name of the task monster in lowercase
+	 */
 	static Task getTask(String taskName)
 	{
 		return tasks.get(taskName.toLowerCase());
