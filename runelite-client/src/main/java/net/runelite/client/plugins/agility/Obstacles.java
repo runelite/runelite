@@ -227,7 +227,9 @@ class Obstacles
 		// Fossil Island Wyvern Cave
 		STAIRS_31485,
 		// Mount Karuulm
-		ROCKS_34397, ROCKS_34396
+		ROCKS_34397, ROCKS_34396,
+		// Karuulm Slayer Dungeon
+		ROCKS_34544, ROCKS_34548, STEPS_34530, STEPS_34531, LAVA_GAP, TUNNEL_34516
 	);
 
 	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
