@@ -24,13 +24,19 @@
  */
 package net.runelite.client.util;
 
+import com.google.common.primitives.Ints;
 import java.awt.Color;
+import java.util.regex.Pattern;
 
 public class ColorUtil
 {
+	public static final int MAX_RGB_VALUE = 255;
+	public static final int MIN_RGB_VALUE = 0;
 	private static final String OPENING_COLOR_TAG_START = "<col=";
 	private static final String OPENING_COLOR_TAG_END = ">";
 	private static final String CLOSING_COLOR_TAG = "</col>";
+	private final static Pattern ALPHA_HEX_PATTERN = Pattern.compile("^(#|0x)?[0-9a-fA-F]{7,8}");
+	private final static Pattern HEX_PATTERN = Pattern.compile("^(#|0x)?[0-9a-fA-F]{1,8}");
 
 	/**
 	 * Creates a color tag from the given color.
@@ -108,9 +114,20 @@ public class ColorUtil
 	 * @param color The color to get a hex code from.
 	 * @return      A lower-cased string of the RGB hex code of color.
 	 */
-	static String colorToHexCode(final Color color)
+	public static String colorToHexCode(final Color color)
 	{
 		return String.format("%06x", color.getRGB() & 0xFFFFFF);
+	}
+
+	/**
+	 * Gets the ARGB hex color code of the passed color.
+	 *
+	 * @param color The color to get a hex code from.
+	 * @return      A lower-cased string of the ARGB hex code of color.
+	 */
+	public static String colorToAlphaHexCode(final Color color)
+	{
+		return String.format("%08x", color.getRGB());
 	}
 
 	static boolean isFullyTransparent(final Color color)
@@ -121,5 +138,92 @@ public class ColorUtil
 	static boolean isNotFullyTransparent(final Color color)
 	{
 		return !isFullyTransparent(color);
+	}
+
+	/**
+	 * Determines if the passed hex string is an alpha hex color.
+	 *
+	 * @param hex The hex to test.
+	 * @return    boolean
+	 */
+	public static boolean isAlphaHex(String hex)
+	{
+		return ALPHA_HEX_PATTERN.matcher(hex).matches();
+	}
+
+	/**
+	 * Determines if the passed hex string is a hex color.
+	 *
+	 * @param hex The hex to test.
+	 * @return    boolean
+	 */
+	public static boolean isHex(String hex)
+	{
+		return HEX_PATTERN.matcher(hex).matches();
+	}
+
+	/**
+	 * Limits an int to the rgba value range (0-255)
+	 *
+	 * @param value The value for the r, g, b, or a.
+	 * @return      An int between 0 - 255.
+	 */
+	public static int constrainValue(int value)
+	{
+		return Ints.constrainToRange(value, MIN_RGB_VALUE, MAX_RGB_VALUE);
+	}
+
+	/**
+	 * Gets the Color from the passed int string.
+	 *
+	 * @param string The int to get a Color object from.
+	 * @return       A Color of the int of color.
+	 */
+	public static Color fromString(String string)
+	{
+		try
+		{
+			int i = Integer.decode(string);
+			return new Color(i, true);
+		}
+		catch (NumberFormatException e)
+		{
+			return null;
+		}
+	}
+
+	/**
+	 * Gets the Color from the passed hex string.
+	 *
+	 * @param hex The hex to get a Color object from.
+	 * @return    A Color of the hex code of color.
+	 */
+	public static Color fromHex(String hex)
+	{
+		if (!hex.startsWith("#") && !hex.startsWith("0x"))
+		{
+			hex = "#" + hex;
+		}
+
+		if ((hex.length() <= 7 && hex.startsWith("#")) || (hex.length() <= 8 && hex.startsWith("0x")))
+		{
+			try
+			{
+				return Color.decode(hex);
+			}
+			catch (NumberFormatException e)
+			{
+				return null;
+			}
+		}
+
+		try
+		{
+			return new Color(Long.decode(hex).intValue(), true);
+		}
+		catch (NumberFormatException e)
+		{
+			return null;
+		}
 	}
 }

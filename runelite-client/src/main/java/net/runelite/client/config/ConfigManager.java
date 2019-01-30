@@ -60,6 +60,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.config.ConfigClient;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
@@ -386,7 +387,8 @@ public class ConfigManager
 			.map(m -> new ConfigItemDescriptor(
 				m.getDeclaredAnnotation(ConfigItem.class),
 				m.getReturnType(),
-				m.getDeclaredAnnotation(Range.class)
+				m.getDeclaredAnnotation(Range.class),
+				m.getDeclaredAnnotation(Alpha.class)
 			))
 			.sorted((a, b) -> ComparisonChain.start()
 				.compare(a.getItem().position(), b.getItem().position())
@@ -481,7 +483,7 @@ public class ConfigManager
 		}
 		if (type == Color.class)
 		{
-			return Color.decode(str);
+			return ColorUtil.fromString(str);
 		}
 		if (type == Dimension.class)
 		{
