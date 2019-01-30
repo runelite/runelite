@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.wasdcamera;
+package net.runelite.client.plugins.cameraandhotkeys;
 
 import com.google.common.base.Strings;
 import java.awt.event.KeyEvent;
@@ -37,13 +37,13 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 
-class WASDCameraListener extends MouseAdapter implements KeyListener
+class CameraAndHotkeysListener extends MouseAdapter implements KeyListener
 {
 	@Inject
-	private WASDCameraPlugin plugin;
+	private CameraAndHotkeysPlugin plugin;
 
 	@Inject
-	private WASDCameraConfig config;
+	private CameraAndHotkeysConfig config;
 
 	@Inject
 	private Client client;
@@ -61,7 +61,7 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !plugin.chatboxFocused())
+		if (client.getGameState() != GameState.LOGGED_IN || !plugin.chatboxFocused() || !plugin.dialogOpen())
 		{
 			return;
 		}
@@ -87,6 +87,56 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 			{
 				modified.put(e.getKeyCode(), KeyEvent.VK_RIGHT);
 				e.setKeyCode(KeyEvent.VK_RIGHT);
+			}
+			else if (config.f1().matches(e))
+			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_F1);
+				e.setKeyCode(KeyEvent.VK_F1);
+			}
+			else if (config.f2().matches(e))
+			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_F2);
+				e.setKeyCode(KeyEvent.VK_F2);
+			}
+			else if (config.f3().matches(e))
+			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_F3);
+				e.setKeyCode(KeyEvent.VK_F3);
+			}
+			else if (config.f4().matches(e))
+			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_F4);
+				e.setKeyCode(KeyEvent.VK_F4);
+			}
+			else if (config.f5().matches(e))
+			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_F5);
+				e.setKeyCode(KeyEvent.VK_F5);
+			}
+			else if (config.f6().matches(e))
+			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_F6);
+				e.setKeyCode(KeyEvent.VK_F6);
+			}
+			else if (config.f7().matches(e))
+			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_F7);
+				e.setKeyCode(KeyEvent.VK_F7);
+			}
+			else if (config.f8().matches(e))
+			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_F8);
+				e.setKeyCode(KeyEvent.VK_F8);
+			}
+			else if (config.f9().matches(e))
+			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_F9);
+				e.setKeyCode(KeyEvent.VK_F9);
+			}
+			else if (config.f10().matches(e))
+			{
+				modified.put(e.getKeyCode(), KeyEvent.VK_F10);
+				e.setKeyCode(KeyEvent.VK_F10);
 			}
 			else
 			{
@@ -161,6 +211,46 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 			else if (config.right().matches(e))
 			{
 				e.setKeyCode(KeyEvent.VK_RIGHT);
+			}
+			else if (config.f1().matches(e))
+			{
+				e.setKeyCode(KeyEvent.VK_F1);
+			}
+			else if (config.f2().matches(e))
+			{
+				e.setKeyCode(KeyEvent.VK_F2);
+			}
+			else if (config.f3().matches(e))
+			{
+				e.setKeyCode(KeyEvent.VK_F3);
+			}
+			else if (config.f4().matches(e))
+			{
+				e.setKeyCode(KeyEvent.VK_F4);
+			}
+			else if (config.f5().matches(e))
+			{
+				e.setKeyCode(KeyEvent.VK_F5);
+			}
+			else if (config.f6().matches(e))
+			{
+				e.setKeyCode(KeyEvent.VK_F6);
+			}
+			else if (config.f7().matches(e))
+			{
+				e.setKeyCode(KeyEvent.VK_F7);
+			}
+			else if (config.f8().matches(e))
+			{
+				e.setKeyCode(KeyEvent.VK_F8);
+			}
+			else if (config.f9().matches(e))
+			{
+				e.setKeyCode(KeyEvent.VK_F9);
+			}
+			else if (config.f10().matches(e))
+			{
+				e.setKeyCode(KeyEvent.VK_F10);
 			}
 		}
 		else

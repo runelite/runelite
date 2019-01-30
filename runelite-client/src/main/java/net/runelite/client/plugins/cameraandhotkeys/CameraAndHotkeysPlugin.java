@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.wasdcamera;
+package net.runelite.client.plugins.cameraandhotkeys;
 
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -50,12 +50,13 @@ import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
-	name = "WASD Camera",
-	description = "Allows use of WASD keys for camera movement with 'Press Enter to Chat'",
+	name = "Camera and Hotkeys",
+	description = "Allows use of WASD keys for camera movement and rebinding F Keys with 'Press Enter to Chat'",
 	tags = {"enter", "chat"},
 	enabledByDefault = false
 )
-public class WASDCameraPlugin extends Plugin
+
+public class CameraAndHotkeysPlugin extends Plugin
 {
 	private static final String PRESS_ENTER_TO_CHAT = "Press Enter to Chat...";
 	private static final String SCRIPT_EVENT_SET_CHATBOX_INPUT = "setChatboxInput";
@@ -71,7 +72,7 @@ public class WASDCameraPlugin extends Plugin
 	private KeyManager keyManager;
 
 	@Inject
-	private WASDCameraListener inputListener;
+	private CameraAndHotkeysListener inputListener;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -107,9 +108,9 @@ public class WASDCameraPlugin extends Plugin
 	}
 
 	@Provides
-	WASDCameraConfig getConfig(ConfigManager configManager)
+	CameraAndHotkeysConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(WASDCameraConfig.class);
+		return configManager.getConfig(CameraAndHotkeysConfig.class);
 	}
 
 	boolean chatboxFocused()
@@ -129,6 +130,21 @@ public class WASDCameraPlugin extends Plugin
 		}
 
 		return true;
+	}
+
+	boolean dialogOpen()
+	{
+		//disable function rebinds when NPC Dialog or an Dialog Option widget is open
+		//so that 0-9 keys can be used for remapping
+
+		Widget npcDialog = client.getWidget(WidgetInfo.DIALOG_NPC);
+		Widget optionDialog = client.getWidget(WidgetInfo.DIALOG_OPTION);
+		if (npcDialog == null && optionDialog == null)
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	@Subscribe

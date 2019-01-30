@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.wasdcamera;
+package net.runelite.client.plugins.cameraandhotkeys;
 
 import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
@@ -30,8 +30,8 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ModifierlessKeybind;
 
-@ConfigGroup("wasdcamera")
-public interface WASDCameraConfig extends Config
+@ConfigGroup("cameraandhotkeys")
+public interface CameraAndHotkeysConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
@@ -75,5 +75,115 @@ public interface WASDCameraConfig extends Config
 	default ModifierlessKeybind right()
 	{
 		return new ModifierlessKeybind(KeyEvent.VK_D, 0);
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "F1",
+		name = "F1 key",
+		description = "The key which will replace F1."
+	)
+	default ModifierlessKeybind f1()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_1, 0);
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "F2",
+		name = "F2 key",
+		description = "The key which will replace F2."
+	)
+	default ModifierlessKeybind f2()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_2, 0);
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "F3",
+		name = "F3 key",
+		description = "The key which will replace F3."
+	)
+	default ModifierlessKeybind f3()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_3, 0);
+	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "F4",
+		name = "F4 key",
+		description = "The key which will replace F4."
+	)
+	default ModifierlessKeybind f4()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_4, 0);
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "F5",
+		name = "F5 key",
+		description = "The key which will replace F5."
+	)
+	default ModifierlessKeybind f5()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_5, 0);
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "F6",
+		name = "F6 key",
+		description = "The key which will replace F6."
+	)
+	default ModifierlessKeybind f6()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_6, 0);
+	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "F7",
+		name = "F7 key",
+		description = "The key which will replace F7."
+	)
+	default ModifierlessKeybind f7()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_7, 0);
+	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "F8",
+		name = "F8 key",
+		description = "The key which will replace F8."
+	)
+	default ModifierlessKeybind f8()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_8, 0);
+	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "F9",
+		name = "F9 key",
+		description = "The key which will replace F9."
+	)
+	default ModifierlessKeybind f9()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_9, 0);
+	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "F10",
+		name = "F10 key",
+		description = "The key which will replace F10."
+	)
+	default ModifierlessKeybind f10()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_0, 0);
 	}
 }
