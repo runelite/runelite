@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,10 +39,14 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.Text;
 
 @Singleton
 public class PlayerIndicatorsOverlay extends Overlay
 {
+	private static final int ACTOR_OVERHEAD_TEXT_MARGIN = 40;
+	private static final int ACTOR_HORIZONTAL_TEXT_MARGIN = 10;
+
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
 	private final ClanManager clanManager;
@@ -66,39 +71,78 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		if (!config.drawOverheadPlayerNames())
+		final PlayerNameLocation drawPlayerNamesConfig = config.playerNamePosition();
+		if (drawPlayerNamesConfig == PlayerNameLocation.DISABLED)
 		{
 			return;
 		}
 
-		String name = actor.getName().replace('\u00A0', ' ');
-		int offset = actor.getLogicalHeight() + 40;
-		Point textLocation = actor.getCanvasTextLocation(graphics, name, offset);
-
-		if (textLocation != null)
+		final int zOffset;
+		switch (drawPlayerNamesConfig)
 		{
-			if (config.showClanRanks() && actor.isClanMember())
+			case MODEL_CENTER:
+			case MODEL_RIGHT:
+				zOffset = actor.getLogicalHeight() / 2;
+				break;
+			default:
+				zOffset = actor.getLogicalHeight() + ACTOR_OVERHEAD_TEXT_MARGIN;
+		}
+
+		final String name = Text.sanitize(actor.getName());
+		Point textLocation = actor.getCanvasTextLocation(graphics, name, zOffset);
+
+		if (drawPlayerNamesConfig == PlayerNameLocation.MODEL_RIGHT)
+		{
+			textLocation = actor.getCanvasTextLocation(graphics, "", zOffset);
+
+			if (textLocation == null)
 			{
-				ClanMemberRank rank = clanManager.getRank(name);
-
-				if (rank != ClanMemberRank.UNRANKED)
-				{
-					BufferedImage clanchatImage = clanManager.getClanImage(rank);
-
-					if (clanchatImage != null)
-					{
-						int width = clanchatImage.getWidth();
-						int textHeight = graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getMaxDescent();
-						Point imageLocation = new Point(textLocation.getX() - width / 2 - 1, textLocation.getY() - textHeight / 2 - clanchatImage.getHeight() / 2);
-						OverlayUtil.renderImageLocation(graphics, imageLocation, clanchatImage);
-
-						// move text
-						textLocation = new Point(textLocation.getX() + width / 2, textLocation.getY());
-					}
-				}
+				return;
 			}
 
-			OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+			textLocation = new Point(textLocation.getX() + ACTOR_HORIZONTAL_TEXT_MARGIN, textLocation.getY());
 		}
+
+		if (textLocation == null)
+		{
+			return;
+		}
+
+		if (config.showClanRanks() && actor.isClanMember())
+		{
+			final ClanMemberRank rank = clanManager.getRank(name);
+
+			if (rank != ClanMemberRank.UNRANKED)
+			{
+				final BufferedImage clanchatImage = clanManager.getClanImage(rank);
+
+				if (clanchatImage != null)
+				{
+					final int clanImageWidth = clanchatImage.getWidth();
+					final int clanImageTextMargin;
+					final int clanImageNegativeMargin;
+
+					if (drawPlayerNamesConfig == PlayerNameLocation.MODEL_RIGHT)
+					{
+						clanImageTextMargin = clanImageWidth;
+						clanImageNegativeMargin = 0;
+					}
+					else
+					{
+						clanImageTextMargin = clanImageWidth / 2;
+						clanImageNegativeMargin = clanImageWidth / 2;
+					}
+
+					final int textHeight = graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getMaxDescent();
+					final Point imageLocation = new Point(textLocation.getX() - clanImageNegativeMargin - 1, textLocation.getY() - textHeight / 2 - clanchatImage.getHeight() / 2);
+					OverlayUtil.renderImageLocation(graphics, imageLocation, clanchatImage);
+
+					// move text
+					textLocation = new Point(textLocation.getX() + clanImageTextMargin, textLocation.getY());
+				}
+			}
+		}
+
+		OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
 	}
 }
