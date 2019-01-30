@@ -51,8 +51,8 @@ import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "Camera and Hotkeys",
-	description = "Allows use of WASD keys for camera movement and rebinding F Keys with 'Press Enter to Chat'",
-	tags = {"enter", "chat"},
+	description = "Allows remapping of the Camera and Function Keys",
+	tags = {"camera", "hotkeys"},
 	enabledByDefault = false
 )
 
