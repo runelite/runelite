@@ -52,7 +52,7 @@ import net.runelite.client.util.ColorUtil;
 @PluginDescriptor(
 	name = "Camera and Hotkeys",
 	description = "Allows remapping of the Camera and Function Keys",
-	tags = {"camera", "hotkeys"},
+	tags = {"wasd", "camera", "hotkeys"},
 	enabledByDefault = false
 )
 
@@ -134,12 +134,11 @@ public class CameraAndHotkeysPlugin extends Plugin
 
 	boolean dialogOpen()
 	{
-		//disable function rebinds when NPC Dialog or an Dialog Option widget is open
+		//disable function rebinds when an Dialog Option widget is open
 		//so that 0-9 keys can be used for remapping
 
-		Widget npcDialog = client.getWidget(WidgetInfo.DIALOG_NPC);
 		Widget optionDialog = client.getWidget(WidgetInfo.DIALOG_OPTION);
-		if (npcDialog == null && optionDialog == null)
+		if (optionDialog == null)
 		{
 			return true;
 		}
