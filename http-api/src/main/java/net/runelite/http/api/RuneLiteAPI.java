@@ -44,6 +44,7 @@ public class RuneLiteAPI
 
 	public static final OkHttpClient CLIENT;
 	public static final Gson GSON = new Gson();
+	public static String userAgent;
 
 	private static final String BASE = "https://api.runelite.net";
 	private static final String WSBASE = "wss://api.runelite.net/runelite-";
@@ -61,6 +62,10 @@ public class RuneLiteAPI
 
 			version = properties.getProperty("runelite.version");
 			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
+			String commit = properties.getProperty("runelite.commit");
+			boolean dirty = Boolean.parseBoolean(properties.getProperty("runelite.dirty"));
+
+			userAgent = "RuneLite/" + version + "-" + commit + (dirty ? "+" : "");
 		}
 		catch (NumberFormatException e)
 		{
@@ -74,14 +79,13 @@ public class RuneLiteAPI
 		CLIENT = new OkHttpClient.Builder()
 			.addNetworkInterceptor(new Interceptor()
 			{
-				private final String USER_AGENT = "RuneLite/" + version;
 
 				@Override
 				public Response intercept(Chain chain) throws IOException
 				{
 					Request userAgentRequest = chain.request()
 						.newBuilder()
-						.header("User-Agent", USER_AGENT)
+						.header("User-Agent", userAgent)
 						.build();
 					return chain.proceed(userAgentRequest);
 				}
