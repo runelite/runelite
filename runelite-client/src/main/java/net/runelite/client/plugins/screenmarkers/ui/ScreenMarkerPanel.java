@@ -36,14 +36,13 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JColorChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -53,6 +52,7 @@ import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.FlatTextField;
+import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.util.ImageUtil;
 
 class ScreenMarkerPanel extends JPanel
@@ -489,17 +489,16 @@ class ScreenMarkerPanel extends JPanel
 
 	private void openFillColorPicker()
 	{
-		final JFrame parent = new JFrame();
-		JColorChooser jColorChooser = new JColorChooser(marker.getMarker().getFill());
-
-		jColorChooser.getSelectionModel().addChangeListener(e1 ->
+		RuneliteColorPicker colorPicker = new RuneliteColorPicker(SwingUtilities.windowForComponent(this),
+			marker.getMarker().getFill(), marker.getMarker().getName() + " Fill", false);
+		colorPicker.setLocation(getLocationOnScreen());
+		colorPicker.setOnColorChange(c ->
 		{
-			Color chosen = jColorChooser.getColor();
-			marker.getMarker().setFill(new Color(chosen.getRed(), chosen.getGreen(), chosen.getBlue(), DEFAULT_FILL_OPACITY));
+			marker.getMarker().setFill(c);
 			updateFill();
 		});
 
-		parent.addWindowListener(new WindowAdapter()
+		colorPicker.addWindowListener(new WindowAdapter()
 		{
 			@Override
 			public void windowClosing(WindowEvent e)
@@ -507,25 +506,21 @@ class ScreenMarkerPanel extends JPanel
 				plugin.updateConfig();
 			}
 		});
-
-		parent.add(jColorChooser);
-		parent.pack();
-		parent.setLocationRelativeTo(null);
-		parent.setVisible(true);
+		colorPicker.setVisible(true);
 	}
 
 	private void openBorderColorPicker()
 	{
-		final JFrame parent = new JFrame();
-		JColorChooser jColorChooser = new JColorChooser(marker.getMarker().getColor());
-
-		jColorChooser.getSelectionModel().addChangeListener(e1 ->
+		RuneliteColorPicker colorPicker = new RuneliteColorPicker(SwingUtilities.windowForComponent(this),
+			marker.getMarker().getColor(), marker.getMarker().getName() + " Border", false);
+		colorPicker.setLocation(getLocationOnScreen());
+		colorPicker.setOnColorChange(c ->
 		{
-			marker.getMarker().setColor(jColorChooser.getColor());
+			marker.getMarker().setColor(c);
 			updateBorder();
 		});
 
-		parent.addWindowListener(new WindowAdapter()
+		colorPicker.addWindowListener(new WindowAdapter()
 		{
 			@Override
 			public void windowClosing(WindowEvent e)
@@ -533,10 +528,6 @@ class ScreenMarkerPanel extends JPanel
 				plugin.updateConfig();
 			}
 		});
-
-		parent.add(jColorChooser);
-		parent.pack();
-		parent.setLocationRelativeTo(null);
-		parent.setVisible(true);
+		colorPicker.setVisible(true);
 	}
 }

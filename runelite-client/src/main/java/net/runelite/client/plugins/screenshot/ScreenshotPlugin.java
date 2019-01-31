@@ -123,6 +123,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: ([^<>]+)(?:</col>)?");
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
+	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9]+) duels?\\.");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
@@ -299,7 +300,7 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
+		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.TRANSACTION_COMPLETE)
 		{
 			return;
 		}
@@ -389,6 +390,18 @@ public class ScreenshotPlugin extends Plugin
 			{
 				String untradeableDropName = m.group(1);
 				String fileName = "Untradeable drop " + untradeableDropName + " " + format(new Date());
+				takeScreenshot(fileName);
+			}
+		}
+
+		if (config.screenshotDuels())
+		{
+			Matcher m = DUEL_END_PATTERN.matcher(chatMessage);
+			if (m.find())
+			{
+				String result = m.group(1);
+				String count = m.group(2);
+				String fileName = "Duel " + result + " (" + count + ")";
 				takeScreenshot(fileName);
 			}
 		}

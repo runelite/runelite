@@ -117,6 +117,10 @@ public enum ChatMessageType
 	 */
 	TRADE(101),
 	/**
+	 * A message received when completing a trade or a duel
+	 */
+	TRANSACTION_COMPLETE(102),
+	/**
 	 * A message received when somebody sends a duel offer.
 	 */
 	DUEL(103),
