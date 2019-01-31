@@ -270,7 +270,7 @@ class ScreenMarkerPanel extends JPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				openBorderColorPicker(borderColorIndicator);
+				openBorderColorPicker();
 			}
 
 			@Override
@@ -292,7 +292,7 @@ class ScreenMarkerPanel extends JPanel
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
-				openFillColorPicker(fillColorIndicator);
+				openFillColorPicker();
 			}
 
 			@Override
@@ -488,12 +488,11 @@ class ScreenMarkerPanel extends JPanel
 		borderColorIndicator.setIcon(marker.getMarker().getBorderThickness() == 0 ? NO_BORDER_COLOR_ICON : BORDER_COLOR_ICON);
 	}
 
-	private void openFillColorPicker(Component parent)
+	private void openFillColorPicker()
 	{
 		RuneliteColorPicker colorPicker = new RuneliteColorPicker(SwingUtilities.windowForComponent(this),
 			marker.getMarker().getFill(), marker.getMarker().getName() + " Fill", false);
-		colorPicker.pack();
-		colorPicker.setLocationRelativeTo(parent);
+		colorPicker.setLocationRelativeTo(this);
 		colorPicker.setOnColorChange(c ->
 		{
 			marker.getMarker().setFill(c);
@@ -511,12 +510,11 @@ class ScreenMarkerPanel extends JPanel
 		colorPicker.setVisible(true);
 	}
 
-	private void openBorderColorPicker(Component parent)
+	private void openBorderColorPicker()
 	{
 		RuneliteColorPicker colorPicker = new RuneliteColorPicker(SwingUtilities.windowForComponent(this),
 			marker.getMarker().getColor(), marker.getMarker().getName() + " Border", false);
-		colorPicker.pack();
-		colorPicker.setLocationRelativeTo(parent);
+		colorPicker.setLocationRelativeTo(this);
 		colorPicker.setOnColorChange(c ->
 		{
 			marker.getMarker().setColor(c);

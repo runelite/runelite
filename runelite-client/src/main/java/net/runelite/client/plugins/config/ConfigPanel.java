@@ -422,7 +422,6 @@ public class ConfigPanel extends PluginPanel
 					{
 						RuneliteColorPicker colorPicker = new RuneliteColorPicker(SwingUtilities.windowForComponent(ConfigPanel.this),
 							colorPickerBtn.getBackground(), cid.getItem().name(), cid.getAlpha() == null);
-						colorPicker.pack();
 						colorPicker.setLocationRelativeTo(colorPickerBtn);
 						colorPicker.setOnColorChange(c ->
 						{
