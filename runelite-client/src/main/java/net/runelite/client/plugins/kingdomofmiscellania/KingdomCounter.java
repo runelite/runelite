@@ -36,6 +36,7 @@ import java.util.Iterator;
 public class KingdomCounter extends Counter
 {
 	private final KingdomPlugin plugin;
+	String maxRewards = "";
 
 	public KingdomCounter(BufferedImage image, KingdomPlugin plugin)
 	{
@@ -52,11 +53,15 @@ public class KingdomCounter extends Counter
 	@Override
 	public String getTooltip()
 	{
+		HashMap <String, Integer> rewardSummary = plugin.getPersonal().getRewardSummary();
+
+		String kingdomSummary = ColorUtil.wrapWithColorTag("Favor:  ", Color.YELLOW)
+			+ plugin.getFavor() + " / 127" + "</br>"
+			+ ColorUtil.wrapWithColorTag("Coffer: ", Color.YELLOW)
+			+ StackFormatter.quantityToRSStackSize(plugin.getCoffer()) + "</br>";
 
 		String currentRewards = ColorUtil.wrapWithColorTag("Current Rewards: ", Color.YELLOW)
 			+ StackFormatter.formatNumber(plugin.getPersonal().getNetProfit()) + "</br>";
-
-		HashMap <String, Integer> rewardSummary = plugin.getPersonal().getRewardSummary();
 
 		if (rewardSummary != null)
 		{
@@ -68,18 +73,15 @@ public class KingdomCounter extends Counter
 
 				currentRewards += pairs.getKey() + "  x  " + pairs.getValue() + "</br>";
 			}
-		}
-
-		return ColorUtil.wrapWithColorTag("Favor:  ", Color.YELLOW)
-				+ plugin.getFavor() + " / 127" + "</br>"
-				+ ColorUtil.wrapWithColorTag("Coffer: ", Color.YELLOW)
-				+ StackFormatter.quantityToRSStackSize(plugin.getCoffer()) + "</br>"
-				+ ColorUtil.wrapWithColorTag("Most profitable:  ", Color.YELLOW)
+			maxRewards = ColorUtil.wrapWithColorTag("Most profitable:  ", Color.YELLOW)
 				+ ColorUtil.wrapWithColorTag(plugin.getMax().getPrimaryResource().getType(), Color.CYAN)
 				+ "  " + StackFormatter.formatNumber(plugin.getMax().getPrimaryAmount()) + "</br>"
 				+ ColorUtil.wrapWithColorTag("Second highest:  ", Color.YELLOW)
 				+ ColorUtil.wrapWithColorTag(plugin.getMax().getSecondaryResource().getType(), Color.CYAN)
-				+ "  " + StackFormatter.formatNumber(plugin.getMax().getSecondaryAmount()) + "</br>"
-				+ currentRewards;
+				+ "  " + StackFormatter.formatNumber(plugin.getMax().getSecondaryAmount()) + "</br>";
+		}
+
+
+		return kingdomSummary + maxRewards + currentRewards;
 	}
 }
