@@ -32,29 +32,38 @@ public class Kingdom
 {
 	@Getter
 	private int totalWorkers;
+
 	// How much money is withdrawn from the coffer for that day
 	@Getter
 	private int baseSalary;
 	// How much of that money is used towards gathering resources
 	@Getter
-	private double effectiveSalary;
+	private int effectiveSalary;
+
 	// Highest is 5000 per worker minus the effectiveSalary / totalWorkers
 	@Getter
 	private int individualWorkerSalary;
+
 	@Getter
 	int netProfit;
+
 	@Getter
 	ResourceType primaryResource;
+
 	@Getter
 	ResourceType secondaryResource;
+
 	@Getter
 	int primaryAmount = 0;
+
 	@Getter
 	int secondaryAmount = 0;
+
 	@Getter
 	HashMap <ResourceType, Integer> resourceDistribution;
+
 	@Getter
-	HashMap <String, String> rewardSummary;
+	HashMap <String, Integer> rewardSummary;
 
 
 	Kingdom(int workers)
@@ -74,7 +83,7 @@ public class Kingdom
 		}
 
 		// take favour percentage into account
-		effectiveSalary = baseSalary * ((double) favor / 100);
-		individualWorkerSalary = (int) effectiveSalary / totalWorkers;
+		effectiveSalary = (int) (baseSalary * ((double) favor / 100));
+		individualWorkerSalary = effectiveSalary / totalWorkers;
 	}
 }

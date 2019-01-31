@@ -53,32 +53,31 @@ public class KingdomCounter extends Counter
 	public String getTooltip()
 	{
 
-		String currentRewards = ColorUtil.wrapWithColorTag("Personal Profit: ", Color.YELLOW)
+		String currentRewards = ColorUtil.wrapWithColorTag("Current Rewards: ", Color.YELLOW)
 			+ StackFormatter.formatNumber(plugin.getPersonal().getNetProfit()) + "</br>";
 
-		HashMap <String, String> rewardSummary = plugin.getPersonal().getRewardSummary();
-
+		HashMap <String, Integer> rewardSummary = plugin.getPersonal().getRewardSummary();
 
 		if (rewardSummary != null)
 		{
-			Iterator it = plugin.getPersonal().getRewardSummary().entrySet().iterator();
+			Iterator it = rewardSummary.entrySet().iterator();
 			while (it.hasNext())
 			{
 				Map.Entry pairs = (Map.Entry) it.next();
-				currentRewards += pairs.getValue() + "</br>";
+
+
+				currentRewards += pairs.getKey() + "  x  " + pairs.getValue() + "</br>";
 			}
 		}
 
-		return ColorUtil.wrapWithColorTag("Favor: ", Color.YELLOW)
-				+ plugin.getFavor() + "/127" + "</br>"
+		return ColorUtil.wrapWithColorTag("Favor:  ", Color.YELLOW)
+				+ plugin.getFavor() + " / 127" + "</br>"
 				+ ColorUtil.wrapWithColorTag("Coffer: ", Color.YELLOW)
 				+ StackFormatter.quantityToRSStackSize(plugin.getCoffer()) + "</br>"
-				+ ColorUtil.wrapWithColorTag("Effective Salary: ", Color.YELLOW)
-				+ StackFormatter.formatNumber((int) plugin.getPersonal().getEffectiveSalary()) + "</br>"
-				+ ColorUtil.wrapWithColorTag("Highest Profit:    ", Color.YELLOW)
+				+ ColorUtil.wrapWithColorTag("Most profitable:  ", Color.YELLOW)
 				+ ColorUtil.wrapWithColorTag(plugin.getMax().getPrimaryResource().getType(), Color.CYAN)
 				+ "  " + StackFormatter.formatNumber(plugin.getMax().getPrimaryAmount()) + "</br>"
-				+ ColorUtil.wrapWithColorTag("Second Highest:  ", Color.YELLOW)
+				+ ColorUtil.wrapWithColorTag("Second highest:  ", Color.YELLOW)
 				+ ColorUtil.wrapWithColorTag(plugin.getMax().getSecondaryResource().getType(), Color.CYAN)
 				+ "  " + StackFormatter.formatNumber(plugin.getMax().getSecondaryAmount()) + "</br>"
 				+ currentRewards;

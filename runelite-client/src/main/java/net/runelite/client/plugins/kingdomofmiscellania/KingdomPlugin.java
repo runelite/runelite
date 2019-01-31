@@ -45,7 +45,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.util.StackFormatter;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
@@ -85,9 +84,8 @@ public class KingdomPlugin extends Plugin
 
 	private int workers;
 
-
-
 	private boolean throneOfMiscellania = false;
+
 	private boolean royalTrouble = false;
 
 	private KingdomCounter counter;
@@ -211,7 +209,7 @@ public class KingdomPlugin extends Plugin
 		personal.resourceDistribution.put(ResourceType.FARM, farmWorkers);
 	}
 
-	private void calculateRewards(Kingdom kingdom)
+	public void calculateRewards(Kingdom kingdom)
 	{
 		int workersOnResource;
 		int rewardQuantity;
@@ -243,11 +241,11 @@ public class KingdomPlugin extends Plugin
 					// Add to total resource accumulator
 					resourceAmount += rewardAmount;
 
-					String summary = reward.getName() + " x " + rewardQuantity + " : "
-						+ StackFormatter.formatNumber(rewardAmount);
+					//String summary = reward.getName() + " x " + rewardQuantity + " : "
+					//	+ StackFormatter.formatNumber(rewardAmount);
 
 					// Populate the rewards summary hashMap
-					kingdom.getRewardSummary().put(reward.getName(), summary);
+					kingdom.getRewardSummary().put(reward.getName(), rewardQuantity);
 
 					log.debug(reward.getName() + " Workers: " + workersOnResource + ", Salary: "
 						+ kingdom.getIndividualWorkerSalary()
@@ -296,7 +294,7 @@ public class KingdomPlugin extends Plugin
 				&& KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
 	}
 
-	private void hasCompletedQuests()
+	public void hasCompletedQuests()
 	{
 		if (Quest.ROYAL_TROUBLE.getState(client) == QuestState.FINISHED)
 		{
