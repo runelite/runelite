@@ -121,4 +121,22 @@ public class ChatService
 			jedis.expire(key, (int) EXPIRE.getSeconds());
 		}
 	}
+
+	public Integer getPb(String name)
+	{
+		String value;
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			value = jedis.get("pb." + name);
+		}
+		return value == null ? null : Integer.parseInt(value);
+	}
+
+	public void setPb(String name, int pb)
+	{
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.setex("pb." + name, (int) EXPIRE.getSeconds(), Integer.toString(pb));
+		}
+	}
 }

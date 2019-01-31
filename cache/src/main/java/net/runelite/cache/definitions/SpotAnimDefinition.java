@@ -24,9 +24,9 @@
  */
 package net.runelite.cache.definitions;
 
-import lombok.EqualsAndHashCode;
+import lombok.Data;
 
-@EqualsAndHashCode
+@Data
 public class SpotAnimDefinition
 {
 	public int rotaton = 0;

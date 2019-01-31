@@ -24,15 +24,11 @@
  */
 package net.runelite.cache.definitions;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 
-@EqualsAndHashCode
-@RequiredArgsConstructor
+@Data
 public class SequenceDefinition
 {
-	@Getter
 	private final int id;
 	public int[] frameIDs; // top 16 bits are FrameDefinition ids
 	public int[] field3048;

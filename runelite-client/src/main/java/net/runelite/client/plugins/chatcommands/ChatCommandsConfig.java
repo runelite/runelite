@@ -88,6 +88,17 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 		position = 5,
+		keyName = "pb",
+		name = "PB Command",
+		description = "Configures whether the personal best command is enabled<br> !pb"
+	)
+	default boolean pb()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 6,
 		keyName = "clearShortcuts",
 		name = "Clear shortcuts",
 		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"

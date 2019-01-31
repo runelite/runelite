@@ -30,10 +30,9 @@ import net.runelite.cache.io.InputStream;
 
 public class StructLoader
 {
-
 	public StructDefinition load(int id, byte[] b)
 	{
-		StructDefinition def = new StructDefinition();
+		StructDefinition def = new StructDefinition(id);
 		InputStream is = new InputStream(b);
 
 		while (true)

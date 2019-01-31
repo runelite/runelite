@@ -307,6 +307,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("menuActionParams1")
 	int[] getMenuActionParams1();
 
+	@Import("menuForceLeftClick")
+	boolean[] getMenuForceLeftClick();
+
 	@Import("worldList")
 	@Override
 	RSWorld[] getWorldList();
