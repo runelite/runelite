@@ -49,6 +49,7 @@ enum GameTimer
 	DMM_FULLTB(SpriteID.SPELL_TELE_BLOCK, GameTimerImageType.SPRITE, "Deadman Mode Full Teleblock", 150, ChronoUnit.SECONDS, true),
 	DMM_HALFTB(SpriteID.SPELL_TELE_BLOCK, GameTimerImageType.SPRITE, "Deadman Mode Half Teleblock", 75, ChronoUnit.SECONDS, true),
 	ANTIVENOMPLUS(ItemID.ANTIVENOM4_12913, GameTimerImageType.ITEM, "Anti-venom+", 3, ChronoUnit.MINUTES, true),
+	ANTIVENOMPLUS_ANTIPOSION(ItemID.SUPERANTIPOISON4, GameTimerImageType.ITEM, "Anti-venom+ Antipoison", 15, ChronoUnit.MINUTES, 3),
 	SUPERANTIFIRE(ItemID.SUPER_ANTIFIRE_POTION4, GameTimerImageType.ITEM, "Super antifire", 3, ChronoUnit.MINUTES),
 	ANTIDOTEPLUSPLUS(ItemID.ANTIDOTE4_5952, GameTimerImageType.ITEM, "Antidote++", 12, ChronoUnit.MINUTES),
 	BIND(SpriteID.SPELL_BIND, GameTimerImageType.SPRITE, "Bind", GraphicID.BIND, 5, ChronoUnit.SECONDS, true),
@@ -65,6 +66,7 @@ enum GameTimer
 	VENGEANCE(SpriteID.SPELL_VENGEANCE, GameTimerImageType.SPRITE, "Vengeance", 30, ChronoUnit.SECONDS),
 	ANTIDOTEPLUS(ItemID.ANTIDOTE4, GameTimerImageType.ITEM, "Antidote+", 518, ChronoUnit.SECONDS),
 	ANTIVENOM(ItemID.ANTIVENOM4, GameTimerImageType.ITEM, "Anti-venom", 1, ChronoUnit.MINUTES, true),
+	ANTIVENOM_ANTIPOISON(ItemID.ANTIPOISON4, GameTimerImageType.ITEM, "Anti-venom Antipoison", 12, ChronoUnit.MINUTES, 1),
 	EXSUPERANTIFIRE(ItemID.EXTENDED_SUPER_ANTIFIRE4, GameTimerImageType.ITEM, "Extended Super AntiFire", 6, ChronoUnit.MINUTES),
 	SANFEW(ItemID.SANFEW_SERUM4, GameTimerImageType.ITEM, "Sanfew serum", 6, ChronoUnit.MINUTES, true),
 	OVERLOAD_RAID(ItemID.OVERLOAD_4_20996, GameTimerImageType.ITEM, "Overload", 5, ChronoUnit.MINUTES, true),
@@ -86,10 +88,12 @@ enum GameTimer
 	private final String description;
 	@Getter
 	private final boolean removedOnDeath;
+	@Getter
+	private final Duration initialDelay;
 	private final int imageId;
 	private final GameTimerImageType imageType;
 
-	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, ChronoUnit unit, boolean removedOnDeath)
+	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, ChronoUnit unit, long delay, boolean removedOnDeath)
 	{
 		this.description = description;
 		this.graphicId = graphicId;
@@ -97,6 +101,12 @@ enum GameTimer
 		this.imageId = imageId;
 		this.imageType = idType;
 		this.removedOnDeath = removedOnDeath;
+		this.initialDelay = Duration.of(delay, unit);
+	}
+
+	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, ChronoUnit unit, boolean removedOnDeath)
+	{
+		this(imageId, idType, description, graphicId, time, unit, 0, removedOnDeath);
 	}
 
 	GameTimer(int imageId, GameTimerImageType idType, String description, long time, ChronoUnit unit, boolean removeOnDeath)
@@ -112,6 +122,11 @@ enum GameTimer
 	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, ChronoUnit unit)
 	{
 		this(imageId, idType, description, graphicId, time, unit, false);
+	}
+
+	GameTimer(int imageId, GameTimerImageType idType, String description, long time, ChronoUnit unit, long delay)
+	{
+		this(imageId, idType, description, null, time, unit, delay, false);
 	}
 
 	BufferedImage getImage(ItemManager itemManager, SpriteManager spriteManager)

@@ -41,6 +41,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.widgets.Widget;
@@ -74,6 +75,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private final Point mousePosition = new Point();
 	private Overlay movedOverlay;
 	private boolean inOverlayDraggingMode;
+	private boolean inMenuEntryMode;
 	private MenuEntry[] menuEntries;
 
 	// Overlay state validation
@@ -105,6 +107,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		if (!event.isFocused())
 		{
 			inOverlayDraggingMode = false;
+			inMenuEntryMode = false;
 			menuEntries = null;
 		}
 	}
@@ -117,9 +120,13 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			return;
 		}
 
+		if (!inMenuEntryMode && runeLiteConfig.menuEntryShift())
+		{
+			return;
+		}
+
 		if (client.isMenuOpen())
 		{
-			menuEntries = null;
 			return;
 		}
 
@@ -130,7 +137,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		System.arraycopy(menuEntries, 0, newEntries, 1, menuEntries.length); // Add overlay menu entries
 		System.arraycopy(clientMenuEntries, 1, newEntries, menuEntries.length + 1, clientMenuEntries.length - 1); // Add remaining menu entries
 		client.setMenuEntries(newEntries);
+	}
 
+	@Subscribe
+	public void onBeforeRender(BeforeRender event)
+	{
 		menuEntries = null;
 	}
 
@@ -237,11 +248,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 					{
 						location.setLocation(preferredLocation);
 					}
-				}
 
-				final Dimension realDimensions = client.getRealDimensions();
-				location.x = Ints.constrainToRange(location.x, 0, realDimensions.width - dimension.width);
-				location.y = Ints.constrainToRange(location.y, 0, realDimensions.height - dimension.height);
+					final Dimension realDimensions = client.getRealDimensions();
+					location.x = Ints.constrainToRange(location.x, 0, realDimensions.width - dimension.width);
+					location.y = Ints.constrainToRange(location.y, 0, realDimensions.height - dimension.height);
+				}
 
 				if (overlay.getPreferredSize() != null)
 				{
@@ -397,6 +408,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		{
 			inOverlayDraggingMode = true;
 		}
+
+		if (e.isShiftDown() && runeLiteConfig.menuEntryShift())
+		{
+			inMenuEntryMode = true;
+		}
 	}
 
 	@Override
@@ -405,6 +421,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		if (!e.isAltDown())
 		{
 			inOverlayDraggingMode = false;
+		}
+
+		if (!e.isShiftDown())
+		{
+			inMenuEntryMode = false;
 		}
 	}
 

@@ -372,7 +372,15 @@ public class SlayerPlugin extends Plugin
 				Matcher mPoints = REWARD_POINTS.matcher(w.getText());
 				if (mPoints.find())
 				{
+					final int prevPoints = points;
 					points = Integer.parseInt(mPoints.group(1).replaceAll(",", ""));
+
+					if (prevPoints != points)
+					{
+						removeCounter();
+						addCounter();
+					}
+
 					break;
 				}
 			}

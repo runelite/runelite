@@ -175,6 +175,11 @@ public class XpGlobesOverlay extends Overlay
 
 	private void drawProgressLabel(Graphics2D graphics, XpGlobe globe, int startXp, int goalXp, int x, int y)
 	{
+		if (goalXp <= globe.getCurrentXp())
+		{
+			return;
+		}
+
 		// Convert to int just to limit the decimal cases
 		String progress = (int) (getSkillProgress(startXp, globe.getCurrentXp(), goalXp)) + "%";
 
@@ -254,7 +259,7 @@ public class XpGlobesOverlay extends Overlay
 			.right(skillCurrentXp)
 			.build());
 
-		if (goalXp != -1)
+		if (goalXp > mouseOverSkill.getCurrentXp())
 		{
 			XpActionType xpActionType = xpTrackerService.getActionType(mouseOverSkill.getSkill());
 

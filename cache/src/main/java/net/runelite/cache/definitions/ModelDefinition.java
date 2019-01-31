@@ -1,12 +1,12 @@
 package net.runelite.cache.definitions;
 
 import java.util.Arrays;
-import lombok.EqualsAndHashCode;
+import lombok.Data;
 import net.runelite.cache.models.CircularAngle;
 import net.runelite.cache.models.FaceNormal;
 import net.runelite.cache.models.VertexNormal;
 
-@EqualsAndHashCode
+@Data
 public class ModelDefinition
 {
 	public int id;
