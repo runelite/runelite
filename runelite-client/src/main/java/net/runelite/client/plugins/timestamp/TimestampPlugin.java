@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.timestamp;
 
+import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -35,7 +36,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.client.config.ChatColorConfig;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -53,7 +54,13 @@ public class TimestampPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ChatColorConfig chatColorConfig;
+	private TimestampConfig config;
+
+	@Provides
+	public TimestampConfig provideConfig(final ConfigManager configManager)
+	{
+		return configManager.getConfig(TimestampConfig.class);
+	}
 
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
@@ -94,6 +101,6 @@ public class TimestampPlugin extends Plugin
 	{
 		boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
 
-		return isChatboxTransparent ? chatColorConfig.transparentTimestamp() : chatColorConfig.opaqueTimestamp();
+		return isChatboxTransparent ? config.transparentTimestamp() : config.opaqueTimestamp();
 	}
 }
