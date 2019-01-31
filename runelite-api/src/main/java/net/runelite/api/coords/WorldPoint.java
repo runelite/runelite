@@ -288,4 +288,45 @@ public class WorldPoint
 	{
 		return ((x >> 6) << 8) | (y >> 6);
 	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 3;
+		hash = 23 * hash + this.x;
+		hash = 23 * hash + this.y;
+		hash = 23 * hash + this.plane;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final WorldPoint other = (WorldPoint) obj;
+		if (this.x != other.getX())
+		{
+			return false;
+		}
+		if (this.y != other.getY())
+		{
+			return false;
+		}
+		if (this.plane != other.getPlane())
+		{
+			return false;
+		}
+		return true;
+	}
 }
