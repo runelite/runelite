@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.fishing;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -43,7 +44,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
@@ -64,6 +64,7 @@ import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ItemUtil;
 
 @PluginDescriptor(
 	name = "Fishing",
@@ -79,6 +80,14 @@ public class FishingPlugin extends Plugin
 	private static final int TRAWLER_SHIP_REGION_SINKING = 8011;
 
 	private static final int TRAWLER_ACTIVITY_THRESHOLD = Math.round(0.15f * 255);
+
+	private static final ImmutableSet<Integer> FISHING_TOOLS = ImmutableSet.of(
+		ItemID.DRAGON_HARPOON, ItemID.INFERNAL_HARPOON, ItemID.INFERNAL_HARPOON_UNCHARGED, ItemID.HARPOON,
+		ItemID.BARBTAIL_HARPOON, ItemID.BIG_FISHING_NET, ItemID.SMALL_FISHING_NET, ItemID.SMALL_FISHING_NET_6209,
+		ItemID.FISHING_ROD, ItemID.FLY_FISHING_ROD, ItemID.BARBARIAN_ROD, ItemID.OILY_FISHING_ROD,
+		ItemID.LOBSTER_POT, ItemID.KARAMBWAN_VESSEL, ItemID.KARAMBWAN_VESSEL_3159,
+		ItemID.CORMORANTS_GLOVE, ItemID.CORMORANTS_GLOVE_22817
+	);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final FishingSession session = new FishingSession();
@@ -215,36 +224,7 @@ public class FishingPlugin extends Plugin
 			return false;
 		}
 
-		for (Item item : itemContainer.getItems())
-		{
-			if (item == null)
-			{
-				continue;
-			}
-			switch (item.getId())
-			{
-				case ItemID.DRAGON_HARPOON:
-				case ItemID.INFERNAL_HARPOON:
-				case ItemID.INFERNAL_HARPOON_UNCHARGED:
-				case ItemID.HARPOON:
-				case ItemID.BARBTAIL_HARPOON:
-				case ItemID.BIG_FISHING_NET:
-				case ItemID.SMALL_FISHING_NET:
-				case ItemID.SMALL_FISHING_NET_6209:
-				case ItemID.FISHING_ROD:
-				case ItemID.FLY_FISHING_ROD:
-				case ItemID.BARBARIAN_ROD:
-				case ItemID.OILY_FISHING_ROD:
-				case ItemID.LOBSTER_POT:
-				case ItemID.KARAMBWAN_VESSEL:
-				case ItemID.KARAMBWAN_VESSEL_3159:
-				case ItemID.CORMORANTS_GLOVE:
-				case ItemID.CORMORANTS_GLOVE_22817:
-					return true;
-			}
-		}
-
-		return false;
+		return ItemUtil.containsAnyItemId(itemContainer.getItems(), FISHING_TOOLS);
 	}
 
 	@Subscribe

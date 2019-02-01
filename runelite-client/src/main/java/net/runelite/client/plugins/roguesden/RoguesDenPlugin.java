@@ -32,7 +32,6 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import static net.runelite.api.ItemID.MYSTIC_JEWEL;
 import net.runelite.api.Tile;
@@ -49,6 +48,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ItemUtil;
 
 @PluginDescriptor(
 	name = "Rogues' Den",
@@ -104,15 +104,7 @@ public class RoguesDenPlugin extends Plugin
 			return false;
 		}
 
-		for (Item item : container.getItems())
-		{
-			if (item.getId() == MYSTIC_JEWEL)
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return ItemUtil.containsItemId(container.getItems(), MYSTIC_JEWEL);
 	}
 
 	@Subscribe

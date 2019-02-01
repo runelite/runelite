@@ -31,10 +31,8 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -86,6 +84,7 @@ import net.runelite.client.plugins.cluescrolls.clues.ThreeStepCrypticClue;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.ItemUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -234,10 +233,8 @@ public class ClueScrollPlugin extends Plugin
 		// Check if item was removed from inventory
 		if (clue != null && clueItemId != null)
 		{
-			final Stream<Item> items = Arrays.stream(event.getItemContainer().getItems());
-
 			// Check if clue was removed from inventory
-			if (items.noneMatch(item -> itemManager.getItemComposition(item.getId()).getId() == clueItemId))
+			if (!ItemUtil.containsItemId(event.getItemContainer().getItems(), clueItemId))
 			{
 				resetClue(true);
 			}
