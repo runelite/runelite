@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.wasdcamera;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import javax.inject.Inject;
@@ -34,6 +33,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.IconID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
@@ -42,6 +42,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -141,7 +142,7 @@ public class WASDCameraPlugin extends Plugin
 				{
 					if (chatboxFocused() && !typing)
 					{
-						chatboxInput.setText(client.getLocalPlayer().getName() + ": " + PRESS_ENTER_TO_CHAT);
+						chatboxInput.setText(getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT);
 					}
 				}
 				break;
@@ -164,7 +165,7 @@ public class WASDCameraPlugin extends Plugin
 			Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 			if (chatboxInput != null)
 			{
-				chatboxInput.setText(client.getLocalPlayer().getName() + ": " + PRESS_ENTER_TO_CHAT);
+				chatboxInput.setText(getPlayerNameWithIcon() + ": " + PRESS_ENTER_TO_CHAT);
 			}
 		}
 	}
@@ -181,9 +182,29 @@ public class WASDCameraPlugin extends Plugin
 				{
 					final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
 					final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
-					chatboxInput.setText(client.getLocalPlayer().getName() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
+					chatboxInput.setText(getPlayerNameWithIcon() + ": " + ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 				}
 			}
 		}
+	}
+
+	private String getPlayerNameWithIcon()
+	{
+		IconID icon;
+		switch (client.getAccountType())
+		{
+			case IRONMAN:
+				icon = IconID.IRONMAN;
+				break;
+			case ULTIMATE_IRONMAN:
+				icon = IconID.ULTIMATE_IRONMAN;
+				break;
+			case HARDCORE_IRONMAN:
+				icon = IconID.HARDCORE_IRONMAN;
+				break;
+			default:
+				return client.getLocalPlayer().getName();
+		}
+		return icon + client.getLocalPlayer().getName();
 	}
 }

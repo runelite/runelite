@@ -331,12 +331,6 @@
       "xp": 147
     },
     {
-      "level": 23,
-      "icon": 8313,
-      "name": "Oak Armchair",
-      "xp": 180
-    },
-    {
       "level": 24,
       "icon": 8219,
       "name": "Small Oven",
@@ -353,6 +347,12 @@
       "icon": 1909,
       "name": "Greenman's Ale",
       "xp": 184
+    },
+    {
+      "level": 26,
+      "icon": 8313,
+      "name": "Oak Armchair",
+      "xp": 180
     },
     {
       "level": 26,

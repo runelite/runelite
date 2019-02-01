@@ -59,11 +59,11 @@ public class MenuEntry
 	 * A second additional parameter for the action.
 	 */
 	private int param1;
-
-	@Override
-	public String toString()
-	{
-		return "MenuEntry{" + "option=" + option + ", target=" + target + ", identifier=" + identifier + ", type=" + type + ", param0=" + param0 + ", param1=" + param1 + '}';
-	}
-
+	/**
+	 * If this field is true and you have single mouse button on and this entry is
+	 * the top entry the right click menu will not be opened when you left click
+	 *
+	 * This is used  for shift click
+	 */
+	private boolean forceLeftClick;
 }

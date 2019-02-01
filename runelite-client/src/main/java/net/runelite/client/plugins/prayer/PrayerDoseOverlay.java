@@ -64,9 +64,7 @@ class PrayerDoseOverlay extends Overlay
 	@Setter(AccessLevel.PACKAGE)
 	private int prayerBonus;
 	@Setter(AccessLevel.PACKAGE)
-	private boolean hasPrayerPotion;
-	@Setter(AccessLevel.PACKAGE)
-	private boolean hasRestorePotion;
+	private boolean hasPrayerRestore;
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hasHolyWrench;
 
@@ -120,7 +118,7 @@ class PrayerDoseOverlay extends Overlay
 			tooltipManager.add(new Tooltip(tooltip));
 		}
 
-		if (!config.showPrayerDoseIndicator() || (!hasPrayerPotion && !hasRestorePotion))
+		if (!config.showPrayerDoseIndicator() || !hasPrayerRestore)
 		{
 			return null;
 		}

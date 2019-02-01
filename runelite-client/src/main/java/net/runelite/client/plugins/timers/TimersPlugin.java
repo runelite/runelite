@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.timers;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
@@ -63,10 +62,12 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.timers.GameIndicator.VENGEANCE_ACTIVE;
 import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
@@ -111,6 +112,8 @@ public class TimersPlugin extends Plugin
 
 	private int lastRaidVarb;
 	private int lastWildernessVarb;
+	private int lastVengCooldownVarb;
+	private int lastIsVengeancedVarb;
 	private WorldPoint lastPoint;
 	private TeleportWidget lastTeleportClicked;
 	private int lastAnimation;
@@ -154,11 +157,42 @@ public class TimersPlugin extends Plugin
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		int raidVarb = client.getVar(Varbits.IN_RAID);
+		int vengCooldownVarb = client.getVar(Varbits.VENGEANCE_COOLDOWN);
+		int isVengeancedVarb = client.getVar(Varbits.VENGEANCE_ACTIVE);
+
 		if (lastRaidVarb != raidVarb)
 		{
 			removeGameTimer(OVERLOAD_RAID);
 			removeGameTimer(PRAYER_ENHANCE);
 			lastRaidVarb = raidVarb;
+		}
+
+		if (lastVengCooldownVarb != vengCooldownVarb && config.showVengeance())
+		{
+			if (vengCooldownVarb == 1)
+			{
+				createGameTimer(VENGEANCE);
+			}
+			else
+			{
+				removeGameTimer(VENGEANCE);
+			}
+
+			lastVengCooldownVarb = vengCooldownVarb;
+		}
+
+		if (lastIsVengeancedVarb != isVengeancedVarb && config.showVengeanceActive())
+		{
+			if (isVengeancedVarb == 1)
+			{
+				createGameIndicator(VENGEANCE_ACTIVE);
+			}
+			else
+			{
+				removeGameIndicator(VENGEANCE_ACTIVE);
+			}
+
+			lastIsVengeancedVarb = isVengeancedVarb;
 		}
 
 		int inWilderness = client.getVar(Varbits.IN_WILDERNESS);
@@ -205,6 +239,8 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(SANFEW);
 			removeGameTimer(ANTIVENOM);
 			removeGameTimer(ANTIVENOMPLUS);
+			removeGameTimer(ANTIVENOM_ANTIPOISON);
+			removeGameTimer(ANTIVENOMPLUS_ANTIPOSION);
 		}
 
 		if (!config.showAntiFire())
@@ -258,7 +294,11 @@ public class TimersPlugin extends Plugin
 		if (!config.showVengeance())
 		{
 			removeGameTimer(VENGEANCE);
-			removeGameTimer(VENGEANCEOTHER);
+		}
+
+		if (!config.showVengeanceActive())
+		{
+			removeGameIndicator(VENGEANCE_ACTIVE);
 		}
 
 		if (!config.showTeleblock())
@@ -301,7 +341,9 @@ public class TimersPlugin extends Plugin
 			&& (event.getId() == ItemID.ANTIDOTE1
 			|| event.getId() == ItemID.ANTIDOTE2
 			|| event.getId() == ItemID.ANTIDOTE3
-			|| event.getId() == ItemID.ANTIDOTE4))
+			|| event.getId() == ItemID.ANTIDOTE4
+			|| event.getId() == ItemID.ANTIDOTE_MIX1
+			|| event.getId() == ItemID.ANTIDOTE_MIX2))
 		{
 			// Needs menu option hook because drink message is intercepting with antipoison message
 			createGameTimer(ANTIDOTEPLUS);
@@ -313,7 +355,9 @@ public class TimersPlugin extends Plugin
 			&& (event.getId() == ItemID.ANTIPOISON1
 			|| event.getId() == ItemID.ANTIPOISON2
 			|| event.getId() == ItemID.ANTIPOISON3
-			|| event.getId() == ItemID.ANTIPOISON4))
+			|| event.getId() == ItemID.ANTIPOISON4
+			|| event.getId() == ItemID.ANTIPOISON_MIX1
+			|| event.getId() == ItemID.ANTIPOISON_MIX2))
 		{
 			createGameTimer(ANTIPOISON);
 			return;
@@ -324,7 +368,9 @@ public class TimersPlugin extends Plugin
 			&& (event.getId() == ItemID.SUPERANTIPOISON1
 			|| event.getId() == ItemID.SUPERANTIPOISON2
 			|| event.getId() == ItemID.SUPERANTIPOISON3
-			|| event.getId() == ItemID.SUPERANTIPOISON4))
+			|| event.getId() == ItemID.SUPERANTIPOISON4
+			|| event.getId() == ItemID.ANTIPOISON_SUPERMIX1
+			|| event.getId() == ItemID.ANTIPOISON_SUPERMIX2))
 		{
 			createGameTimer(SUPERANTIPOISON);
 			return;
@@ -340,6 +386,46 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
+		if (config.showAntiFire()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.ANTIFIRE_MIX1
+			|| event.getId() == ItemID.ANTIFIRE_MIX2))
+		{
+			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+			createGameTimer(ANTIFIRE);
+			return;
+		}
+
+		if (config.showAntiFire()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.EXTENDED_ANTIFIRE_MIX1
+			|| event.getId() == ItemID.EXTENDED_ANTIFIRE_MIX2))
+		{
+			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+			createGameTimer(EXANTIFIRE);
+			return;
+		}
+
+		if (config.showAntiFire()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.SUPER_ANTIFIRE_MIX1
+			|| event.getId() == ItemID.SUPER_ANTIFIRE_MIX2))
+		{
+			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+			createGameTimer(SUPERANTIFIRE);
+			return;
+		}
+
+		if (config.showAntiFire()
+			&& event.getMenuOption().contains("Drink")
+			&& (event.getId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX1
+			|| event.getId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX2))
+		{
+			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+			createGameTimer(EXSUPERANTIFIRE);
+			return;
+		}
+
 		TeleportWidget teleportWidget = TeleportWidget.of(event.getWidgetId());
 		if (teleportWidget != null)
 		{
@@ -350,7 +436,6 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-
 		if (event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.SERVER)
 		{
 			return;
@@ -419,6 +504,7 @@ public class TimersPlugin extends Plugin
 		if (config.showAntiPoison() && event.getMessage().contains(SUPER_ANTIVENOM_DRINK_MESSAGE))
 		{
 			createGameTimer(ANTIVENOMPLUS);
+			createGameTimer(ANTIVENOMPLUS_ANTIPOSION);
 		}
 
 		if (config.showMagicImbue() && event.getMessage().equals(MAGIC_IMBUE_MESSAGE))
@@ -438,7 +524,9 @@ public class TimersPlugin extends Plugin
 
 		if (config.showTeleblock() && event.getMessage().equals(HALF_TELEBLOCK_MESSAGE))
 		{
-			if (client.getWorldType().contains(WorldType.DEADMAN))
+			if (client.getWorldType().contains(WorldType.DEADMAN)
+				&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
+				&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
 			{
 				createGameTimer(DMM_FULLTB);
 			}
@@ -471,6 +559,7 @@ public class TimersPlugin extends Plugin
 		if (config.showAntiPoison() && event.getMessage().contains(ANTIVENOM_DRINK_MESSAGE))
 		{
 			createGameTimer(ANTIVENOM);
+			createGameTimer(ANTIVENOM_ANTIPOISON);
 		}
 
 		if (config.showAntiPoison() && event.getMessage().contains(SANFEW_SERUM_DRINK_MESSAGE))
@@ -521,7 +610,8 @@ public class TimersPlugin extends Plugin
 		if (freezeTimer != null)
 		{
 			// assume movement means unfrozen
-			if (!currentWorldPoint.equals(lastPoint))
+			if (freezeTime != client.getTickCount()
+				&& !currentWorldPoint.equals(lastPoint))
 			{
 				removeGameTimer(freezeTimer.getTimer());
 				freezeTimer = null;
@@ -597,13 +687,6 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showVengeance()
-			&& actor.getAnimation() == AnimationID.ENERGY_TRANSFER_VENGEANCE_OTHER
-			&& actor.getInteracting().getGraphic() == VENGEANCEOTHER.getGraphicId())
-		{
-			createGameTimer(VENGEANCEOTHER);
-		}
-
 		if (config.showHomeMinigameTeleports()
 			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
 			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
@@ -622,7 +705,6 @@ public class TimersPlugin extends Plugin
 		lastAnimation = client.getLocalPlayer().getAnimation();
 	}
 
-
 	@Subscribe
 	public void onGraphicChanged(GraphicChanged event)
 	{
@@ -638,17 +720,13 @@ public class TimersPlugin extends Plugin
 			createGameTimer(IMBUEDHEART);
 		}
 
-		if (config.showVengeance() && actor.getGraphic() == VENGEANCE.getGraphicId())
-		{
-			createGameTimer(VENGEANCE);
-		}
-
 		if (config.showFreezes())
 		{
 			if (actor.getGraphic() == BIND.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
+					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
 				{
 					createGameTimer(HALFBIND);
 				}
@@ -661,7 +739,8 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == SNARE.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
+					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
 				{
 					createGameTimer(HALFSNARE);
 				}
@@ -674,7 +753,8 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == ENTANGLE.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
+					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
 				{
 					createGameTimer(HALFENTANGLE);
 				}
@@ -787,6 +867,23 @@ public class TimersPlugin extends Plugin
 	private void removeGameTimer(GameTimer timer)
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
+	}
+
+	private IndicatorIndicator createGameIndicator(GameIndicator gameIndicator)
+	{
+		removeGameIndicator(gameIndicator);
+
+		BufferedImage image = gameIndicator.getImage(itemManager, spriteManager);
+		IndicatorIndicator indicator = new IndicatorIndicator(gameIndicator, image, this);
+		indicator.setTooltip(gameIndicator.getDescription());
+		infoBoxManager.addInfoBox(indicator);
+
+		return indicator;
+	}
+
+	private void removeGameIndicator(GameIndicator indicator)
+	{
+		infoBoxManager.removeIf(t -> t instanceof IndicatorIndicator && ((IndicatorIndicator) t).getIndicator() == indicator);
 	}
 
 	private void removeTbTimers()

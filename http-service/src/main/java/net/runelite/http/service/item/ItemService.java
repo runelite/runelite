@@ -472,6 +472,14 @@ public class ItemService
 		int idx = random.nextInt(tradeableItems.length);
 		int id = tradeableItems[idx];
 
+		if (getItem(id) == null)
+		{
+			// This is a new item..
+			log.debug("Fetching new item {}", id);
+			queueItem(id);
+			return;
+		}
+
 		log.debug("Fetching price for {}", id);
 
 		fetchPrice(id);

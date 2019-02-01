@@ -25,9 +25,9 @@
 package net.runelite.cache.definitions;
 
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 
-@RequiredArgsConstructor
+@Data
 public class ItemDefinition
 {
 	public final int id;

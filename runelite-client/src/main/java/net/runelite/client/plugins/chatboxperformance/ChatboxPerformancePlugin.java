@@ -24,15 +24,15 @@
  */
 package net.runelite.client.plugins.chatboxperformance;
 
-import com.google.common.eventbus.Subscribe;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.WidgetType;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -61,9 +61,16 @@ public class ChatboxPerformancePlugin extends Plugin
 		{
 			return true;
 		}
-		
+
 		Widget[] widgets = widget.getChildren();
-		return widgets.length > 0 && widgets[widgets.length - 1].getOpacity() < 254;
+
+		if (widgets != null && widgets.length > 0)
+		{
+			Widget last = widgets[widgets.length - 1];
+			return last != null && last.getOpacity() < 254;
+		}
+
+		return false;
 	}
 
 	private void fixChatbox()

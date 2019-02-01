@@ -120,14 +120,18 @@ public class WidgetID
 	public static final int SPELLBOOK_GROUP_ID = 218;
 	public static final int PVP_GROUP_ID = 90;
 	public static final int ZEAH_MESS_HALL_GROUP_ID = 235;
+	public static final int KOUREND_FAVOUR_GROUP_ID = 246;
 	public static final int LOOTING_BAG_GROUP_ID = 81;
+	public static final int SKOTIZO_GROUP_ID = 308;
+	public static final int ENTERING_HOUSE_GROUP_ID = 71;
+	public static final int FULLSCREEN_MAP_GROUP_ID = 165;
 
 	static class WorldMap
 	{
 		static final int MAPVIEW = 6;
 		static final int OVERVIEW_MAP = 9;
 		static final int SEARCH = 24;
-		static final int SURFACE_SELECTOR = 25;
+		static final int SURFACE_SELECTOR = 32;
 		static final int TOOLTIP = 38;
 		static final int OPTION = 42;
 	}
@@ -202,13 +206,13 @@ public class WidgetID
 		static final int BANK_CONTAINER = 1;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
 		static final int BANK_TITLE_BAR = 4;
-		static final int CONTENT_CONTAINER = 9;
-		static final int ITEM_CONTAINER = 12;
-		static final int SEARCH_BUTTON_BACKGROUND = 39;
-		static final int DEPOSIT_INVENTORY = 41;
-		static final int DEPOSIT_EQUIPMENT = 43;
-		static final int INCINERATOR = 45;
-		static final int INCINERATOR_CONFIRM = 46;
+		static final int CONTENT_CONTAINER = 10;
+		static final int ITEM_CONTAINER = 13;
+		static final int SEARCH_BUTTON_BACKGROUND = 40;
+		static final int DEPOSIT_INVENTORY = 42;
+		static final int DEPOSIT_EQUIPMENT = 44;
+		static final int INCINERATOR = 46;
+		static final int INCINERATOR_CONFIRM = 47;
 	}
 
 	static class GrandExchange
@@ -427,35 +431,35 @@ public class WidgetID
 
 	static class Prayer
 	{
-		static final int THICK_SKIN = 4;
-		static final int BURST_OF_STRENGTH = 5;
-		static final int CLARITY_OF_THOUGHT = 6;
-		static final int SHARP_EYE = 22;
-		static final int MYSTIC_WILL = 23;
-		static final int ROCK_SKIN = 7;
-		static final int SUPERHUMAN_STRENGTH = 8;
-		static final int IMPROVED_REFLEXES = 9;
-		static final int RAPID_RESTORE = 10;
-		static final int RAPID_HEAL = 11;
-		static final int PROTECT_ITEM = 12;
-		static final int HAWK_EYE = 24;
-		static final int MYSTIC_LORE = 25;
-		static final int STEEL_SKIN = 13;
-		static final int ULTIMATE_STRENGTH = 14;
-		static final int INCREDIBLE_REFLEXES = 15;
-		static final int PROTECT_FROM_MAGIC = 16;
-		static final int PROTECT_FROM_MISSILES = 17;
-		static final int PROTECT_FROM_MELEE = 18;
-		static final int EAGLE_EYE = 26;
-		static final int MYSTIC_MIGHT = 27;
-		static final int RETRIBUTION = 19;
-		static final int REDEMPTION = 20;
-		static final int SMITE = 21;
-		static final int PRESERVE = 32;
-		static final int CHIVALRY = 28;
-		static final int PIETY = 29;
-		static final int RIGOUR = 30;
-		static final int AUGURY = 31;
+		static final int THICK_SKIN = 5;
+		static final int BURST_OF_STRENGTH = 6;
+		static final int CLARITY_OF_THOUGHT = 7;
+		static final int SHARP_EYE = 23;
+		static final int MYSTIC_WILL = 24;
+		static final int ROCK_SKIN = 8;
+		static final int SUPERHUMAN_STRENGTH = 9;
+		static final int IMPROVED_REFLEXES = 10;
+		static final int RAPID_RESTORE = 11;
+		static final int RAPID_HEAL = 12;
+		static final int PROTECT_ITEM = 13;
+		static final int HAWK_EYE = 25;
+		static final int MYSTIC_LORE = 26;
+		static final int STEEL_SKIN = 14;
+		static final int ULTIMATE_STRENGTH = 15;
+		static final int INCREDIBLE_REFLEXES = 16;
+		static final int PROTECT_FROM_MAGIC = 17;
+		static final int PROTECT_FROM_MISSILES = 18;
+		static final int PROTECT_FROM_MELEE = 19;
+		static final int EAGLE_EYE = 27;
+		static final int MYSTIC_MIGHT = 28;
+		static final int RETRIBUTION = 20;
+		static final int REDEMPTION = 21;
+		static final int SMITE = 22;
+		static final int PRESERVE = 33;
+		static final int CHIVALRY = 29;
+		static final int PIETY = 30;
+		static final int RIGOUR = 31;
+		static final int AUGURY = 32;
 	}
 
 	public static class QuickPrayer
@@ -671,7 +675,7 @@ public class WidgetID
 
 	static class WorldSwitcher
 	{
-		static final int WORLD_LIST = 15;
+		static final int WORLD_LIST = 16;
 	}
 
 	static class FossilOxygen
@@ -706,15 +710,21 @@ public class WidgetID
 
 	static class Pvp
 	{
-		static final int KILLDEATH_RATIO = 6;
-		static final int BOUNTY_HUNTER_STATS = 25;
-		static final int PVP_WIDGET_CONTAINER = 50;
-		static final int SKULL_CONTAINER = 51;
-		static final int SKULL = 52;
-		static final int SAFE_ZONE = 53;
-		static final int ATTACK_RANGE = 55;
-		static final int WILDERNESS_LEVEL = 56; // this can also be the Deadman Mode "Protection" text
-		static final int DEADMAN_PROTECTION_TIME = 57;
+		static final int BOUNTY_HUNTER_INFO = 6;
+		static final int KILLDEATH_RATIO = 9;
+		static final int BOUNTY_HUNTER_STATS = 28;
+		static final int PVP_WIDGET_CONTAINER = 54;
+		static final int SKULL_CONTAINER = 55;
+		static final int SKULL = 56;
+		static final int SAFE_ZONE = 57;
+		static final int ATTACK_RANGE = 59;
+		static final int WILDERNESS_LEVEL = 60; // this can also be the Deadman Mode "Protection" text
+		static final int DEADMAN_PROTECTION_TIME = 61;
+	}
+
+	static class KourendFavour
+	{
+		static final int KOUREND_FAVOUR_OVERLAY = 1;
 	}
 
 	static class Zeah
@@ -725,5 +735,15 @@ public class WidgetID
 	static class LootingBag
 	{
 		static final int LOOTING_BAG_INVENTORY = 5;
+	}
+
+	static class Skotizo
+	{
+		static final int CONTAINER = 3;
+	}
+
+	static class FullScreenMap
+	{
+		static final int ROOT = 25;
 	}
 }

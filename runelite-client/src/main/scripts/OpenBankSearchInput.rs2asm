@@ -10,14 +10,13 @@
 LABEL4:
    close_window          
 LABEL5:
+   load_int               11
    invoke                 677
    load_string            "Show items whose names contain the following text:"
    load_string            "setSearchBankInputText"  ; load event name
    runelite_callback     ; invoke callback
    load_int               10616876
    widget_put_text_widget
-   load_int               11
-   put_varc               5
    load_string            ""
    invoke                 222
    load_string            ""
@@ -35,11 +34,11 @@ LABEL5:
    widget_put_dialog_abort_listener_widget
    invoke                 1972
    load_int               1
-   if_icmpeq              LABEL30
-   jump                   LABEL33
-LABEL30:
+   if_icmpeq              LABEL29
+   jump                   LABEL32
+LABEL29:
    load_int               0
    load_int               80
    invoke                 1983
-LABEL33:
+LABEL32:
    return                

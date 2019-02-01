@@ -174,4 +174,37 @@ public interface WorldMapConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_FARMING_PATCH_TOOLTIPS,
+		name = "Show farming patch type",
+		description = "Display the type of farming patches in the icon tooltip",
+		position = 14
+	)
+	default boolean farmingPatchTooltips()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_RARE_TREE_TOOLTIPS,
+		name = "Show rare tree type",
+		description = "Display the type of rare tree in the icon tooltip",
+		position = 15
+	)
+	default boolean rareTreeTooltips()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_RARE_TREE_LEVEL_ICON,
+		name = "Indicate unavailable trees",
+		description = "Indicate rare trees you do not have the level to cut on the icon",
+		position = 16
+	)
+	default boolean rareTreeLevelIcon()
+	{
+		return true;
+	}
 }

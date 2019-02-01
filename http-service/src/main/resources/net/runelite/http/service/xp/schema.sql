@@ -116,6 +116,7 @@ CREATE TABLE `xp` (
   `overall_rank` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `player_time` (`player`,`time`),
+  INDEX `idx_time` (`time`),
   CONSTRAINT `fk_player` FOREIGN KEY (`player`) REFERENCES `player` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

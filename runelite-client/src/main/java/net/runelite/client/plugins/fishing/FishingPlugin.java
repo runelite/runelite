@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.fishing;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.time.Duration;
@@ -59,6 +58,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.queries.NPCQuery;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -176,7 +176,8 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some"))
+		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some") ||
+			event.getMessage().equals("Your cormorant returns with its catch."))
 		{
 			session.setLastFishCaught(Instant.now());
 			spotOverlay.setHidden(false);
@@ -240,6 +241,8 @@ public class FishingPlugin extends Plugin
 				case ItemID.LOBSTER_POT:
 				case ItemID.KARAMBWAN_VESSEL:
 				case ItemID.KARAMBWAN_VESSEL_3159:
+				case ItemID.CORMORANTS_GLOVE:
+				case ItemID.CORMORANTS_GLOVE_22817:
 					return true;
 			}
 		}

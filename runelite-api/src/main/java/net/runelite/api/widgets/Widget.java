@@ -32,8 +32,8 @@ import net.runelite.api.Point;
 /**
  * Represents an on-screen UI element that is drawn on the canvas.
  * <p>
- * It should be noted that unique RuneLite elements are note widgets
- * themselves, and that Widgets are primarily RuneScape elements.
+ * It should be noted that most RuneLite-added elements are not Widgets, but are
+ * an Overlay. Notable exceptions include bank tag tabs and chatbox inputs
  * <p>
  * Examples of Widgets include:
  * <ul>
@@ -49,7 +49,6 @@ public interface Widget
 	/**
 	 * Gets the widgets ID.
 	 *
-	 * @return the widget ID
 	 * @see WidgetID
 	 */
 	int getId();
@@ -57,42 +56,38 @@ public interface Widget
 	/**
 	 * Gets the type of the widget.
 	 *
-	 * @return the widget type
+	 * @see WidgetType
 	 */
 	int getType();
 
 	/**
 	 * Sets the type of the widget.
 	 *
-	 * @param type the new widget type
+	 * @see WidgetType
 	 */
 	void setType(int type);
 
 	/**
 	 * Gets the type of content displayed by the widget.
-	 *
-	 * @return the content type
 	 */
 	int getContentType();
 
 	/**
 	 * Sets the type of content displayed by the widget.
-	 *
-	 * @param contentType the new content type
 	 */
 	void setContentType(int contentType);
 
 	/**
 	 * Gets the current click configuration of the widget.
 	 *
-	 * @return the click configuration
+	 * @see WidgetConfig
 	 */
 	int getClickMask();
 
 	/**
 	 * Sets the click configuration of the widget.
 	 *
-	 * @param mask the new configuration
+	 * @see WidgetConfig
 	 */
 	void setClickMask(int mask);
 
@@ -111,22 +106,19 @@ public interface Widget
 	int getParentId();
 
 	/**
-	 * Safely gets a child widget at a specific index from {@link #getChildren}.
+	 * Gets a dynamic child by index
 	 *
-	 * @param index the raw index into the array
-	 * @return child widget, or null if the index does not exist
+	 * @throws IndexOutOfBoundsException if the index is outside of the child array
 	 */
 	Widget getChild(int index);
 
 	/**
-	 * Gets all children of this widget.
-	 *
-	 * @return the widgets children
+	 * Gets the dynamic children of this widget in a sparse array
 	 */
 	Widget[] getChildren();
 
 	/**
-	 * Sets the widget children
+	 * Sets the dynamic children sparse array
 	 */
 	void setChildren(Widget[] children);
 
@@ -161,8 +153,11 @@ public interface Widget
 	/**
 	 * Sets the relative x-axis coordinate to the widgets parent.
 	 *
-	 * @param x the new relative coordinate
+	 * You do not want to use this. Use {@link #setOriginalX(int)}, {@link #setXPositionMode(int)}
+	 * and {@link #revalidate()}. Almost any interaction with this widget from a clientscript will
+	 * recalculate this value.
 	 */
+	@Deprecated
 	void setRelativeX(int x);
 
 	/**
@@ -175,8 +170,11 @@ public interface Widget
 	/**
 	 * Sets the relative y-axis coordinate to the widgets parent.
 	 *
-	 * @param y the new relative coordinate
+	 * You do not want to use this. Use {@link #setOriginalY(int)}, {@link #setYPositionMode(int)}
+	 * and {@link #revalidate()}. Almost any interaction with this widget from a clientscript will
+	 * recalculate this value.
 	 */
+	@Deprecated
 	void setRelativeY(int y);
 
 	/**
@@ -194,9 +192,9 @@ public interface Widget
 	void setText(String text);
 
 	/**
-	 * Gets the text color as an RGB value.
+	 * Gets the color as an RGB value.
 	 *
-	 * @return the text color
+	 * @return RGB24 color
 	 * @see java.awt.Color#getRGB()
 	 */
 	int getTextColor();
@@ -204,22 +202,27 @@ public interface Widget
 	/**
 	 * Sets the RGB color of the displayed text or rectangle.
 	 *
-	 * @param textColor the new text color
+	 * @param textColor RGB24 color
 	 * @see java.awt.Color#getRGB()
 	 */
 	void setTextColor(int textColor);
 
 	/**
-	 * Sets the opacity of the rectangle
+	 * Gets the transparency of the rectangle
+	 *
+	 * @return 0 = fully opaque, 255 = fully transparent
 	 */
 	int getOpacity();
-	/**
-	 * Gets the opacity of the rectangle
-	 */
-	void setOpacity(int opacity);
 
 	/**
-	 * Gets the name of the widget.
+	 * Sets the transparency of the rectangle
+	 *
+	 * @param transparency 0 = fully opaque, 255 = fully transparent
+	 */
+	void setOpacity(int transparency);
+
+	/**
+	 * Gets the name "op base" of the widget.
 	 * <p>
 	 * The name of the widget is used in the tooltip when an action is
 	 * available. For example, the widget that activates quick prayers
@@ -263,6 +266,8 @@ public interface Widget
 	/**
 	 * Checks whether this widget or any of its parents are hidden.
 	 *
+	 * This must be ran on the client thread
+	 *
 	 * @return true if this widget or any parent is hidden, false otherwise
 	 */
 	boolean isHidden();
@@ -276,7 +281,7 @@ public interface Widget
 	boolean isSelfHidden();
 
 	/**
-	 * Sets the hidden state of this widget.
+	 * Sets the self-hidden state of this widget.
 	 *
 	 * @param hidden new hidden state
 	 */
@@ -310,8 +315,11 @@ public interface Widget
 	/**
 	 * Sets the width of the widget.
 	 *
-	 * @param width the new width
+	 * You do not want to use this. Use {@link #setOriginalWidth(int)}, {@link #setWidthMode(int)}
+	 * and {@link #revalidate()}. Almost any interaction with this widget from a clientscript will
+	 * recalculate this value.
 	 */
+	@Deprecated
 	void setWidth(int width);
 
 	/**
@@ -324,8 +332,11 @@ public interface Widget
 	/**
 	 * Sets the height of the widget.
 	 *
-	 * @param height the new height
+	 * You do not want to use this. Use {@link #setOriginalHeight(int)}, {@link #setHeightMode(int)}
+	 * and {@link #revalidate()}. Almost any interaction with this widget from a clientscript will
+	 * recalculate this value.
 	 */
+	@Deprecated
 	void setHeight(int height);
 
 	/**
@@ -348,6 +359,7 @@ public interface Widget
 	 * @param index index of the item
 	 * @return the widget item at index, or null if an item at index
 	 * does not exist
+	 * @throws IndexOutOfBoundsException if the index is out of bounds
 	 */
 	WidgetItem getWidgetItem(int index);
 
@@ -380,8 +392,8 @@ public interface Widget
 	void setItemQuantity(int quantity);
 
 	/**
-	 * Checks whether or not the drawn area of this widget contains
-	 * a point on the canvas.
+	 * Checks if the passed canvas points is inside of this widget's
+	 * {@link #getBounds() bounds}
 	 *
 	 * @param point the canvas point
 	 * @return true if this widget contains the point, false otherwise
@@ -429,65 +441,63 @@ public interface Widget
 	void setScrollHeight(int height);
 
 	/**
-	 * Gets the original x-axis coordinate.
-	 *
-	 * @return the original coordinate
+	 * Gets the X coordinate of this widget before being adjusted by
+	 * {@link #getXPositionMode()}}.
 	 */
 	int getOriginalX();
 
 	/**
-	 * Sets the original x-axis coordinate.
+	 * Sets the X input to the {@link WidgetPositionMode}. {@link #revalidate()} must be
+	 * called for the new values to take effect.
 	 *
-	 * @param originalX the new coordinate
+	 * @see #setXPositionMode(int)
 	 */
 	void setOriginalX(int originalX);
 
 	/**
-	 * Gets the original y-axis coordinate.
-	 *
-	 * @return the original coordinate
+	 * Gets the Y coordinate of this widget before being adjusted by
+	 * {@link #getYPositionMode()}}
 	 */
 	int getOriginalY();
 
 	/**
-	 * Sets the original y-axis coordinate.
+	 * Sets the Y input to the {@link WidgetPositionMode}. {@link #revalidate()} must be
+	 * called for the new values to take effect.
 	 *
-	 * @param originalY the new coordinate
+	 * @see #setYPositionMode(int)
 	 */
 	void setOriginalY(int originalY);
 
 	/**
-	 * Gets the original height of the widget.
-	 *
-	 * @return the original height
+	 * Gets the height coordinate of this widget before being adjusted by
+	 * {@link #getHeightMode()}
 	 */
 	int getOriginalHeight();
 
 	/**
-	 * Sets the original height of the widget.
+	 * Sets the height input to the {@link WidgetSizeMode}. {@link #revalidate()} must be
+	 * called for the new values to take effect.
 	 *
-	 * @param originalHeight the original height
+	 * @see #setHeightMode(int)
 	 */
 	void setOriginalHeight(int originalHeight);
 
 	/**
-	 * Gets the original width of the widget.
-	 *
-	 * @return the original width
+	 * Gets the width coordinate of this widget before being adjusted by
+	 * {@link #getWidthMode()}
 	 */
 	int getOriginalWidth();
 
 	/**
-	 * Sets the original width of the widget.
+	 * Sets the width input to the {@link WidgetSizeMode}. {@link #revalidate()} must be
+	 * called for the new values to take effect.
 	 *
-	 * @param originalWidth the original width
+	 * @see #setWidthMode(int)
 	 */
 	void setOriginalWidth(int originalWidth);
 
 	/**
-	 * Gets the actions available on the widget.
-	 *
-	 * @return the actions
+	 * Gets the menu options available on the widget as a sparse array.
 	 */
 	String[] getActions();
 
@@ -505,10 +515,10 @@ public interface Widget
 	void deleteAllChildren();
 
 	/**
-	 * Creates a menu action on the widget
+	 * Creates a menu option on the widget
 	 *
 	 * @param index  The index of the menu
-	 * @param action The string to be displayed next to the widget's name in the context menu
+	 * @param action The verb to be displayed next to the widget's name in the context menu
 	 */
 	void setAction(int index, String action);
 
@@ -592,11 +602,15 @@ public interface Widget
 
 	/**
 	 * Returns the archive id of the font used
+	 *
+	 * @see net.runelite.api.FontID
 	 */
 	int getFontId();
 
 	/**
 	 * Sets the archive id of the font
+	 *
+	 * @see net.runelite.api.FontID
 	 */
 	void setFontId(int id);
 
@@ -661,7 +675,8 @@ public interface Widget
 	int getXPositionMode();
 
 	/**
-	 * Sets the mode that the X position is calculated from the original X position
+	 * Sets the mode that the X position is calculated from the original X position.
+	 * {@link #revalidate()} must be called for new values to take effect.
 	 *
 	 * @see WidgetPositionMode
 	 */
@@ -675,7 +690,8 @@ public interface Widget
 	int getYPositionMode();
 
 	/**
-	 * Sets the mode that the Y position is calculated from the original Y position
+	 * Sets the mode that the Y position is calculated from the original Y position.
+	 * {@link #revalidate()} must be called for new values to take effect.
 	 *
 	 * @see WidgetPositionMode
 	 */
@@ -717,7 +733,8 @@ public interface Widget
 	int getWidthMode();
 
 	/**
-	 * Sets the mode controlling widget width
+	 * Sets the mode controlling widget width.
+	 * {@link #revalidate()} must be called for new values to take effect.
 	 *
 	 * @see WidgetSizeMode
 	 */
@@ -731,7 +748,8 @@ public interface Widget
 	int getHeightMode();
 
 	/**
-	 * Sets the mode controlling widget width
+	 * Sets the mode controlling widget width.
+	 * {@link #revalidate()} must be called for new values to take effect.
 	 *
 	 * @see WidgetSizeMode
 	 */

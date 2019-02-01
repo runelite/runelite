@@ -26,7 +26,6 @@
  */
 package net.runelite.client.plugins.cluescrolls;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
@@ -65,6 +64,7 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -608,7 +608,7 @@ public class ClueScrollPlugin extends Plugin
 
 				// Check impostors
 				final ObjectComposition comp = client.getObjectDefinition(object.getId());
-				final ObjectComposition impostor = comp.getImpostor();
+				final ObjectComposition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
 
 				if (impostor != null && impostor.getId() == id)
 				{

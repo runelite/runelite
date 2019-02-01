@@ -64,7 +64,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
-import net.runelite.api.WidgetType;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.vars.InputType;
@@ -82,7 +82,6 @@ import net.runelite.client.plugins.banktags.BankTagsConfig;
 import net.runelite.client.plugins.banktags.BankTagsPlugin;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
-import static net.runelite.client.plugins.banktags.BankTagsPlugin.SPLITTER;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.VAR_TAG_SUFFIX;
 import net.runelite.client.plugins.banktags.TagManager;
@@ -250,7 +249,7 @@ public class TabInterface
 			.onDone((newTags) ->
 				clientThread.invoke(() ->
 				{
-					final List<String> tags = SPLITTER.splitToList(newTags.toLowerCase());
+					final List<String> tags = Text.fromCSV(newTags.toLowerCase());
 
 					for (Integer item : items)
 					{
@@ -290,7 +289,7 @@ public class TabInterface
 						.toString()
 						.trim();
 
-					final Iterator<String> dataIter = BankTagsPlugin.SPLITTER.split(dataString).iterator();
+					final Iterator<String> dataIter = Text.fromCSV(dataString).iterator();
 					final String name = dataIter.next();
 					final String icon = dataIter.next();
 					configManager.setConfiguration(CONFIG_GROUP, ICON_SEARCH + name, icon);
@@ -370,7 +369,7 @@ public class TabInterface
 					data.add(String.valueOf(item));
 				}
 
-				final StringSelection stringSelection = new StringSelection(BankTagsPlugin.JOINER.join(data));
+				final StringSelection stringSelection = new StringSelection(Text.toCSV(data));
 				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
 				notifier.notify("Tag tab " + tagTab.getTag() + " has been copied to your clipboard!");
 				break;

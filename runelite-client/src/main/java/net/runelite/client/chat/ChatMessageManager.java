@@ -28,7 +28,6 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collection;
@@ -50,6 +49,7 @@ import net.runelite.api.events.SetMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
@@ -564,6 +564,8 @@ public class ChatMessageManager
 
 		// Update the message with RuneLite additions
 		line.setRuneLiteFormatMessage(message.getRuneLiteFormattedMessage());
+		line.setTimestamp(message.getTimestamp());
+
 		update(line);
 	}
 

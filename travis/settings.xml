@@ -137,11 +137,6 @@ under the License.
       <username>repo</username>
       <password>${env.REPO_PASSWORD}</password>
     </server>
-    <server>
-      <id>runelite-tomcat</id>
-      <username>runelite</username>
-      <password>${env.TOMCAT_PASSWORD}</password>
-    </server>
 
   </servers>
 
@@ -262,7 +257,6 @@ under the License.
       <id>runelite</id>
 
       <properties>
-        <runelite.tomcat.url>http://api.runelite.net/manager/text</runelite.tomcat.url>
         <maven.javadoc.skip>false</maven.javadoc.skip>
         <checkstyle.skip>false</checkstyle.skip>
       </properties>

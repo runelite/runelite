@@ -11,12 +11,16 @@
    load_string            "innerZoomLimit"
    runelite_callback     
    load_int               128
+   load_string            "outerZoomLimit"
+   runelite_callback
    isub                  
    istore                 0
    load_int               896
    load_string            "innerZoomLimit"
    runelite_callback     
    load_int               128
+   load_string            "outerZoomLimit"
+   runelite_callback
    isub                  
    istore                 1
    load_int               17104910
@@ -41,6 +45,8 @@
 LABEL27:
    get_varc               74
    load_int               128
+   load_string            "outerZoomLimit"
+   runelite_callback
    isub                  
    iload                  0
    load_string            "zoomExpToLin"
@@ -55,6 +61,8 @@ LABEL27:
 LABEL36:
    get_varc               73
    load_int               128
+   load_string            "outerZoomLimit"
+   runelite_callback
    isub                  
    iload                  0
    load_string            "zoomExpToLin"

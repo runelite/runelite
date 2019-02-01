@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.timers;
 
 import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
@@ -41,9 +43,22 @@ class TimerTimer extends Timer
 		setPriority(InfoBoxPriority.MED);
 	}
 
+	@Override
+	public boolean render()
+	{
+		final boolean rendered = super.render();
+
+		if (rendered)
+		{
+			final Duration fromStart = Duration.between(getStartTime(), Instant.now());
+			return !fromStart.minus(timer.getInitialDelay()).isNegative();
+		}
+
+		return false;
+	}
+
 	public GameTimer getTimer()
 	{
 		return timer;
 	}
-
 }

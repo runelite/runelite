@@ -57,7 +57,7 @@ class FarmingWorld
 		// Some of these patches get updated in multiple regions.
 		// It may be worth it to add a specialization for these patches
 		add(new FarmingRegion("Al Kharid", 13106,
-			new FarmingPatch("Cactus", Varbits.FARMING_4771, PatchImplementation.CACTUS)
+			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.CACTUS)
 		));
 
 		add(new FarmingRegion("Ardougne", 10290,
@@ -223,6 +223,25 @@ class FarmingWorld
 
 		add(new FarmingRegion("Weiss", 11325,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.HERB)
+		));
+
+		add(new FarmingRegion("Farming Guild", 5021,
+			new FarmingPatch("Hespori", Varbits.FARMING_7908, PatchImplementation.HESPORI)
+		));
+
+		add(new FarmingRegion("Farming Guild", 4922,
+			new FarmingPatch("", Varbits.FARMING_7905, PatchImplementation.TREE),
+			new FarmingPatch("", Varbits.FARMING_4775, PatchImplementation.HERB),
+			new FarmingPatch("", Varbits.FARMING_4772, PatchImplementation.BUSH),
+			new FarmingPatch("", Varbits.FARMING_7906, PatchImplementation.FLOWER),
+			new FarmingPatch("North", Varbits.FARMING_4773, PatchImplementation.ALLOTMENT),
+			new FarmingPatch("South", Varbits.FARMING_4774, PatchImplementation.ALLOTMENT),
+			new FarmingPatch("", Varbits.FARMING_7904, PatchImplementation.CACTUS),
+			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.SPIRIT_TREE),
+			new FarmingPatch("", Varbits.FARMING_7909, PatchImplementation.FRUIT_TREE),
+			new FarmingPatch("Anima", Varbits.FARMING_7911, PatchImplementation.ANIMA),
+			new FarmingPatch("", Varbits.FARMING_7910, PatchImplementation.CELASTRUS),
+			new FarmingPatch("", Varbits.FARMING_7907, PatchImplementation.REDWOOD)
 		));
 
 		// Finalize

@@ -195,7 +195,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapPrivate",
 		name = "Private",
-		description = "Swap Shared with Private on the Chamber of Xeric storage units."
+		description = "Swap Shared with Private on the Chambers of Xeric storage units."
 	)
 	default boolean swapPrivate()
 	{
@@ -203,9 +203,19 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapPick",
+		name = "Pick",
+		description = "Swap Pick with Pick-lots of the Gourd tree in the Chambers of Xeric"
+	)
+	default boolean swapPick()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapQuick",
-		name = "Quick Pass/Start/Travel",
-		description = "Swap Pass with Quick-Pass, Ring with Quick-Start and Talk-to with Quick-Travel"
+		name = "Quick Pass/Open/Start/Travel",
+		description = "Swap Pass with Quick-Pass, Open with Quick-Open, Ring with Quick-Start and Talk-to with Quick-Travel"
 	)
 	default boolean swapQuick()
 	{

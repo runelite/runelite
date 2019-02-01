@@ -42,7 +42,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.FontID;
-import net.runelite.api.WidgetType;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetPositionMode;
@@ -51,6 +51,7 @@ import net.runelite.api.widgets.WidgetTextAlignment;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
+import net.runelite.client.util.Text;
 
 @Slf4j
 public class ChatboxTextInput extends ChatboxInput implements KeyListener, MouseListener
@@ -233,9 +234,9 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	{
 		Widget container = chatboxPanelManager.getContainerWidget();
 
-		String lt = value.substring(0, this.cursor);
-		String mt = value.substring(this.cursor, this.cursorEnd);
-		String rt = value.substring(this.cursorEnd);
+		String lt = Text.escapeJagex(value.substring(0, this.cursor));
+		String mt = Text.escapeJagex(value.substring(this.cursor, this.cursorEnd));
+		String rt = Text.escapeJagex(value.substring(this.cursorEnd));
 
 		Widget leftText = container.createChild(-1, WidgetType.TEXT);
 		Widget cursor = container.createChild(-1, WidgetType.RECTANGLE);
@@ -332,9 +333,9 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			// `i` is used to track max execution time incase there is a font with ligature width data that causes this to fail
 			for (int i = tsValue.length(); i >= 0 && charIndex >= 0 && charIndex <= tsValue.length(); i--)
 			{
-				int lcx = charIndex > 0 ? font.getTextWidth(tsValue.substring(0, charIndex - 1)) : 0;
-				int mcx = font.getTextWidth(tsValue.substring(0, charIndex));
-				int rcx = charIndex + 1 <= tsValue.length() ? font.getTextWidth(tsValue.substring(0, charIndex + 1)) : mcx;
+				int lcx = charIndex > 0 ? font.getTextWidth(Text.escapeJagex(tsValue.substring(0, charIndex - 1))) : 0;
+				int mcx = font.getTextWidth(Text.escapeJagex(tsValue.substring(0, charIndex)));
+				int rcx = charIndex + 1 <= tsValue.length() ? font.getTextWidth(Text.escapeJagex(tsValue.substring(0, charIndex + 1))) : mcx;
 
 				int leftBound = (lcx + mcx) / 2;
 				int rightBound = (mcx + rcx) / 2;
