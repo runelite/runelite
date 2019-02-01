@@ -31,7 +31,6 @@ import java.util.Map;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -47,7 +46,6 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_C
 
 @Getter
 @AllArgsConstructor
-@Slf4j
 public class CoordinateClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
 	public static final Map<WorldPoint, String> DESCRIPTIONS = new HashMap<WorldPoint, String>()
