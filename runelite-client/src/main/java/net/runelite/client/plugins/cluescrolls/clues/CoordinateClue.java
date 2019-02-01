@@ -202,6 +202,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 	private String text;
 	private WorldPoint location;
 	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(ItemID.SPADE);
+
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
