@@ -64,7 +64,6 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
-import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.vars.InputType;
@@ -73,6 +72,8 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetSizeMode;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -111,6 +112,8 @@ public class TabInterface
 	private static final int BUTTON_HEIGHT = 20;
 	private static final int MARGIN = 1;
 	private static final int SCROLL_TICK = 500;
+	private static final int INCINERATOR_WIDTH = 48;
+	private static final int INCINERATOR_HEIGHT = 39;
 
 	private final Client client;
 	private final ClientThread clientThread;
@@ -805,17 +808,18 @@ public class TabInterface
 
 		if (incinerator != null && !incinerator.isHidden())
 		{
-			// This is the required way to move incinerator, don't change it!
-			incinerator.setOriginalHeight(39);
-			incinerator.setOriginalWidth(48);
-			incinerator.setRelativeY(itemContainer.getHeight());
-			incinerator.revalidate();
+			incinerator.setOriginalHeight(INCINERATOR_HEIGHT);
+			incinerator.setOriginalWidth(INCINERATOR_WIDTH);
+			incinerator.setOriginalY(INCINERATOR_HEIGHT);
 
 			Widget child = incinerator.getDynamicChildren()[0];
-			child.setHeight(39);
-			child.setWidth(48);
+			child.setOriginalHeight(INCINERATOR_HEIGHT);
+			child.setOriginalWidth(INCINERATOR_WIDTH);
+			child.setWidthMode(WidgetSizeMode.ABSOLUTE);
+			child.setHeightMode(WidgetSizeMode.ABSOLUTE);
 			child.setType(WidgetType.GRAPHIC);
 			child.setSpriteId(TabSprites.INCINERATOR.getSpriteId());
+			incinerator.revalidate();
 
 			bounds.setSize(TAB_WIDTH + MARGIN * 2, height - incinerator.getHeight());
 		}
@@ -900,7 +904,6 @@ public class TabInterface
 	private void updateWidget(Widget t, int y)
 	{
 		t.setOriginalY(y);
-		t.setRelativeY(y);
 		t.setHidden(y < (bounds.y + BUTTON_HEIGHT + MARGIN) || y > (bounds.y + bounds.height - TAB_HEIGHT - MARGIN - BUTTON_HEIGHT));
 		t.revalidate();
 	}
