@@ -30,5 +30,5 @@ import lombok.Value;
 @Value
 public class PartyChanged
 {
-    private final UUID partyId;
+	private final UUID partyId;
 }
