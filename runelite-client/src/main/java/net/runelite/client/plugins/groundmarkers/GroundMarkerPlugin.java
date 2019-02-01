@@ -68,6 +68,7 @@ public class GroundMarkerPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "groundMarker";
 	private static final String MARK = "Mark tile";
+	private static final String UNMARK = "Unmark tile";
 	private static final String WALK_HERE = "Walk here";
 
 	private static final Gson gson = new Gson();
@@ -269,7 +270,13 @@ public class GroundMarkerPlugin extends Plugin
 
 			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 
-			menuEntry.setOption(MARK);
+			final Tile tile = client.getSelectedSceneTile();
+			final WorldPoint loc = WorldPoint.fromLocalInstance(client, tile.getLocalLocation());
+			final int regionId = loc.getRegionID();
+			final GroundMarkerPoint point = new GroundMarkerPoint(regionId, loc.getX() & 0x3f, loc.getY() & 0x3f, client.getPlane());
+			final String option = getPoints(regionId).contains(point) ? UNMARK : MARK;
+
+			menuEntry.setOption(option);
 			menuEntry.setTarget(event.getTarget());
 			menuEntry.setType(MenuAction.CANCEL.getId());
 
@@ -280,16 +287,17 @@ public class GroundMarkerPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!event.getMenuOption().equals(MARK))
+		if (!event.getMenuOption().equals(MARK) && !event.getMenuOption().equals(UNMARK))
 		{
 			return;
 		}
 
-		Tile target = client.getSelectedSceneTile();
+		final Tile target = client.getSelectedSceneTile();
 		if (target == null)
 		{
 			return;
 		}
+
 		markTile(target.getLocalLocation());
 	}
 
@@ -307,8 +315,7 @@ public class GroundMarkerPlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
-
-	protected void markTile(LocalPoint localPoint)
+	private void markTile(LocalPoint localPoint)
 	{
 		if (localPoint == null)
 		{
