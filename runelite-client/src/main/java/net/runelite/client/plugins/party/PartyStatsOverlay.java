@@ -80,54 +80,57 @@ public class PartyStatsOverlay extends Overlay
 
 		boolean only1 = plugin.getPartyDataMap().size() == 1;
 
-		partyDataMap.forEach((k, v) ->
+		synchronized (plugin.getPartyDataMap())
 		{
-			if (party.getLocalMember() != null && party.getLocalMember().getMemberId().equals(k))
+			partyDataMap.forEach((k, v) ->
 			{
-				if (only1)
+				if (party.getLocalMember() != null && party.getLocalMember().getMemberId().equals(k))
 				{
-					body.getChildren().add(TitleComponent.builder()
-						.text("No other party members")
-						.color(Color.RED)
-						.build());
+					if (only1)
+					{
+						body.getChildren().add(TitleComponent.builder()
+							.text("No other party members")
+							.color(Color.RED)
+							.build());
+					}
+
+					return;
 				}
 
-				return;
-			}
+				final PanelComponent panel = v.getPanel();
+				panel.getChildren().clear();
 
-			final PanelComponent panel = v.getPanel();
-			panel.getChildren().clear();
+				final TitleComponent name = TitleComponent.builder()
+					.text(v.getName())
+					.build();
 
-			final TitleComponent name = TitleComponent.builder()
-				.text(v.getName())
-				.build();
+				panel.getChildren().add(name);
 
-			panel.getChildren().add(name);
+				if (v.getHitpoints() > 0)
+				{
+					final ProgressBarComponent hpBar = new ProgressBarComponent();
+					hpBar.setBackgroundColor(HP_BG);
+					hpBar.setForegroundColor(HP_FG);
+					hpBar.setMaximum(v.getMaxHitpoints());
+					hpBar.setValue(v.getHitpoints());
+					hpBar.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
+					panel.getChildren().add(hpBar);
+				}
 
-			if (v.getHitpoints() > 0)
-			{
-				final ProgressBarComponent hpBar = new ProgressBarComponent();
-				hpBar.setBackgroundColor(HP_BG);
-				hpBar.setForegroundColor(HP_FG);
-				hpBar.setMaximum(v.getMaxHitpoints());
-				hpBar.setValue(v.getHitpoints());
-				hpBar.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
-				panel.getChildren().add(hpBar);
-			}
+				if (v.getPrayer() > 0)
+				{
+					final ProgressBarComponent prayBar = new ProgressBarComponent();
+					prayBar.setBackgroundColor(PRAY_BG);
+					prayBar.setForegroundColor(PRAY_FG);
+					prayBar.setMaximum(v.getMaxPrayer());
+					prayBar.setValue(v.getPrayer());
+					prayBar.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
+					panel.getChildren().add(prayBar);
+				}
 
-			if (v.getPrayer() > 0)
-			{
-				final ProgressBarComponent prayBar = new ProgressBarComponent();
-				prayBar.setBackgroundColor(PRAY_BG);
-				prayBar.setForegroundColor(PRAY_FG);
-				prayBar.setMaximum(v.getMaxPrayer());
-				prayBar.setValue(v.getPrayer());
-				prayBar.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
-				panel.getChildren().add(prayBar);
-			}
-
-			body.getChildren().add(panel);
-		});
+				body.getChildren().add(panel);
+			});
+		}
 
 		return body.render(graphics);
 	}
