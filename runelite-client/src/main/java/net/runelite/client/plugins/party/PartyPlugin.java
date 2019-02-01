@@ -354,7 +354,9 @@ public class PartyPlugin extends Plugin implements KeyListener
 			.runeLiteFormattedMessage(joinMessage)
 			.build());
 
-		if (partyData.getMemberId().equals(party.getLocalMember().getMemberId()))
+		final PartyMember localMember = party.getLocalMember();
+
+		if (localMember != null && partyData.getMemberId().equals(localMember.getMemberId()))
 		{
 			final String helpMessage = new ChatMessageBuilder()
 				.append(ChatColorType.HIGHLIGHT)
