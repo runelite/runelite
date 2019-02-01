@@ -29,7 +29,7 @@ import okhttp3.Request;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.After;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -59,6 +59,7 @@ public class RuneLiteAPITest
 			.build();
 		RuneLiteAPI.CLIENT.newCall(request).execute().close();
 
-		assertEquals("RuneLite/" + RuneLiteAPI.getVersion(), server.takeRequest().getHeader("User-Agent"));
+		// rest of UA depends on if git is found
+		assertTrue(server.takeRequest().getHeader("User-Agent").startsWith("RuneLite/" + RuneLiteAPI.getVersion()));
 	}
 }
