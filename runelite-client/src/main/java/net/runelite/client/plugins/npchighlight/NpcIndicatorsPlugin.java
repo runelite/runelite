@@ -248,7 +248,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!hotKeyPressed || !config.isTagEnabled() || event.getType() != MenuAction.EXAMINE_NPC.getId())
+		if (!hotKeyPressed || event.getType() != MenuAction.EXAMINE_NPC.getId())
 		{
 			return;
 		}
