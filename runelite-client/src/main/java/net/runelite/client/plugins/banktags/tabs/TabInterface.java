@@ -76,13 +76,10 @@ import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.banktags.BankTagsConfig;
 import net.runelite.client.plugins.banktags.BankTagsPlugin;
-import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
-import static net.runelite.client.plugins.banktags.BankTagsPlugin.ICON_SEARCH;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.VAR_TAG_SUFFIX;
 import net.runelite.client.plugins.banktags.TagManager;
@@ -118,7 +115,6 @@ public class TabInterface
 	private final Client client;
 	private final ClientThread clientThread;
 	private final ItemManager itemManager;
-	private final ConfigManager configManager;
 	private final TagManager tagManager;
 	private final TabManager tabManager;
 	private final ChatboxPanelManager chatboxPanelManager;
@@ -151,7 +147,6 @@ public class TabInterface
 		final Client client,
 		final ClientThread clientThread,
 		final ItemManager itemManager,
-		final ConfigManager configManager,
 		final TagManager tagManager,
 		final TabManager tabManager,
 		final ChatboxPanelManager chatboxPanelManager,
@@ -162,7 +157,6 @@ public class TabInterface
 		this.client = client;
 		this.clientThread = clientThread;
 		this.itemManager = itemManager;
-		this.configManager = configManager;
 		this.tagManager = tagManager;
 		this.tabManager = tabManager;
 		this.chatboxPanelManager = chatboxPanelManager;
@@ -214,7 +208,7 @@ public class TabInterface
 
 		if (config.rememberTab() && !Strings.isNullOrEmpty(config.tab()))
 		{
-			openTag(TAG_SEARCH + config.tab());
+			openTag(config.tab());
 		}
 	}
 
@@ -242,7 +236,7 @@ public class TabInterface
 					tagManager.addTag(item, activeTab.getTag(), false);
 				}
 
-				openTag(TAG_SEARCH + activeTab.getTag());
+				openTag(activeTab.getTag());
 			}
 
 			return;
@@ -295,7 +289,7 @@ public class TabInterface
 					final Iterator<String> dataIter = Text.fromCSV(dataString).iterator();
 					final String name = dataIter.next();
 					final String icon = dataIter.next();
-					configManager.setConfiguration(CONFIG_GROUP, ICON_SEARCH + name, icon);
+					tabManager.setIcon(name, icon);
 
 					while (dataIter.hasNext())
 					{
@@ -553,7 +547,7 @@ public class TabInterface
 				int itemId = itemManager.canonicalize(item.getId());
 				iconToSet.setIconItemId(itemId);
 				iconToSet.getIcon().setItemId(itemId);
-				configManager.setConfiguration(CONFIG_GROUP, ICON_SEARCH + iconToSet.getTag(), itemId + "");
+				tabManager.setIcon(iconToSet.getTag(), itemId + "");
 				event.consume();
 			}
 
@@ -600,7 +594,7 @@ public class TabInterface
 	{
 		if (activeTab != null && tags.contains(activeTab.getTag()))
 		{
-			openTag(TAG_SEARCH + activeTab.getTag());
+			openTag(activeTab.getTag());
 		}
 	}
 
@@ -715,7 +709,6 @@ public class TabInterface
 		}
 
 		tabManager.remove(tag);
-		configManager.unsetConfiguration(CONFIG_GROUP, ICON_SEARCH + tag);
 		tabManager.save();
 
 		updateBounds();
@@ -916,10 +909,10 @@ public class TabInterface
 		return itemManager.getItemComposition(item.getId());
 	}
 
-	private void openTag(String tag)
+	private void openTag(final String tag)
 	{
-		bankSearch.search(InputType.SEARCH, tag, true);
-		activateTab(tabManager.find(tag.substring(TAG_SEARCH.length())));
+		bankSearch.search(InputType.SEARCH, TAG_SEARCH + tag, true);
+		activateTab(tabManager.find(tag));
 
 		// When tab is selected with search window open, the search window closes but the search button
 		// stays highlighted, this solves that issue
