@@ -28,10 +28,12 @@ package net.runelite.client.ui.components.colorpicker;
 import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -340,6 +342,15 @@ public class RuneliteColorPicker extends JDialog
 
 		colorChange(color);
 		updatePanels();
+	}
+
+	public void fitInWindowBounds()
+	{
+		Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+		if (this.getHeight() + this.getY() > winSize.height)
+		{
+			this.setLocation(this.getX(), winSize.height - this.getHeight());
+		}
 	}
 
 	/**
