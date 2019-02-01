@@ -174,6 +174,11 @@ public class PartyPlugin extends Plugin implements KeyListener
 		{
 			party.changeParty(null);
 
+			if (!config.messages())
+			{
+				return;
+			}
+
 			final String leaveMessage = new ChatMessageBuilder()
 				.append(ChatColorType.HIGHLIGHT)
 				.append("You have left the party.")
