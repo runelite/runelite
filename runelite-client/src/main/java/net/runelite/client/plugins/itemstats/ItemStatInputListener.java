@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Kevin <https://github.com/kblicharski>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,64 +24,42 @@
  */
 package net.runelite.client.plugins.itemstats;
 
-import com.google.inject.Binder;
-import com.google.inject.Inject;
-import com.google.inject.Provides;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.input.KeyManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.input.KeyListener;
 
-@PluginDescriptor(
-	name = "Item Stats",
-	description = "Show information about food and potion effects",
-	tags = {"food", "inventory", "overlay", "potion"}
-)
-public class ItemStatPlugin extends Plugin
+import javax.inject.Inject;
+import java.awt.event.KeyEvent;
+
+public class ItemStatInputListener implements KeyListener
 {
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private boolean hotKeyPressed;
+	private static final int HOTKEY = KeyEvent.VK_ALT;
 
 	@Inject
-	private KeyManager keyManager;
+	private ItemStatPlugin plugin;
 
 	@Inject
-	private ItemStatInputListener inputListener;
+	private ItemStatConfig config;
 
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private ItemStatOverlay overlay;
-
-	@Provides
-	ItemStatConfig getConfig(ConfigManager configManager)
+	@Override
+	public void keyTyped(KeyEvent e)
 	{
-		return configManager.getConfig(ItemStatConfig.class);
 	}
 
 	@Override
-	public void configure(Binder binder)
+	public void keyPressed(KeyEvent e)
 	{
-		binder.bind(ItemStatChangesService.class).to(ItemStatChangesServiceImpl.class);
+		if (config.equipmentToggle() && (e.getKeyCode() == HOTKEY))
+		{
+			plugin.setHotKeyPressed(true);
+		}
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	public void keyReleased(KeyEvent e)
 	{
-		overlayManager.add(overlay);
-		keyManager.registerKeyListener(inputListener);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		overlayManager.remove(overlay);
-		keyManager.unregisterKeyListener(inputListener);
+		if (config.equipmentToggle() && (e.getKeyCode() == HOTKEY))
+		{
+			plugin.setHotKeyPressed(false);
+		}
 	}
 }
+

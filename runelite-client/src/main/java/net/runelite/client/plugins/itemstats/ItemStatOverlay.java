@@ -68,6 +68,9 @@ public class ItemStatOverlay extends Overlay
 	@Inject
 	private ItemStatConfig config;
 
+	@Inject
+	private ItemStatPlugin plugin;
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -139,15 +142,19 @@ public class ItemStatOverlay extends Overlay
 
 		if (config.equipmentStats())
 		{
-			final ItemStats stats = itemManager.getItemStats(itemId);
-
-			if (stats != null)
+			if (!config.equipmentToggle() || (config.equipmentToggle() && plugin.isHotKeyPressed()))
 			{
-				final String tooltip = buildStatBonusString(stats);
+				plugin.setHotKeyPressed(false);
+				final ItemStats stats = itemManager.getItemStats(itemId);
 
-				if (!tooltip.isEmpty())
+				if (stats != null)
 				{
-					tooltipManager.add(new Tooltip(tooltip));
+					final String tooltip = buildStatBonusString(stats);
+
+					if (!tooltip.isEmpty())
+					{
+						tooltipManager.add(new Tooltip(tooltip));
+					}
 				}
 			}
 		}

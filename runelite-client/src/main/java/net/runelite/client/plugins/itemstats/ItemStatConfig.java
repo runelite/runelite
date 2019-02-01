@@ -83,6 +83,16 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "equipmentToggle",
+		name = "Equipment Inventory Toggle",
+		description = "Toggle viewing equipment stats with ALT"
+	)
+	default boolean equipmentToggle()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "colorBetterUncapped",
 		name = "Better (Uncapped)",
 		description = "Color to show when the stat change is fully consumed",
