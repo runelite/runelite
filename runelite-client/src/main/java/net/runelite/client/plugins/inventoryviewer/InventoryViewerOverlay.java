@@ -29,7 +29,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemContainer;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -99,7 +103,6 @@ class InventoryViewerOverlay extends Overlay
 	private BufferedImage getImage(Item item)
 	{
 		ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
-		
 		return itemManager.getImage(item.getId(), item.getQuantity(), itemComposition.isStackable());
 	}
 }
