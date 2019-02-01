@@ -39,5 +39,6 @@ class MenuIndexes
 		static final int CHANGE_ICON = 3;
 		static final int DELETE_TAB = 4;
 		static final int EXPORT_TAB = 5;
+		static final int RENAME_TAB = 6;
 	}
 }

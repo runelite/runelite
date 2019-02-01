@@ -33,7 +33,7 @@ import net.runelite.api.widgets.Widget;
 @EqualsAndHashCode(of = "tag")
 class TagTab
 {
-	private final String tag;
+	private String tag;
 	private int iconItemId;
 	private Widget background;
 	private Widget icon;
