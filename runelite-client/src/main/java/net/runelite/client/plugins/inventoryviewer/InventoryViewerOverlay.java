@@ -100,13 +100,6 @@ class InventoryViewerOverlay extends Overlay
 	{
 		ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
 		
-		if (itemComposition.isStackable())
-		{
-			return itemManager.getImage(item.getId(), item.getQuantity(), true);
-		}
-		else
-		{
-			return itemManager.getImage(item.getId(), item.getQuantity(), false);
-		}
+		return itemManager.getImage(item.getId(), item.getQuantity(), itemComposition.isStackable());
 	}
 }
