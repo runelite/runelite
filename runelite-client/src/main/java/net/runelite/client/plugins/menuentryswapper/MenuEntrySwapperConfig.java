@@ -63,11 +63,11 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapBanker",
-		name = "Bank",
-		description = "Swap Talk-to with Bank on Bank NPC<br>Example: Banker"
+		keyName = "swapBankExchange",
+		name = "Bank/Exchange",
+		description = "Swap Talk-to with Bank or Exchange on NPC<br>Example: Banker, Grand Exchange Clerk, Tool Leprechaun, Void Knight"
 	)
-	default boolean swapBank()
+	default boolean swapBankExchange()
 	{
 		return true;
 	}
@@ -130,16 +130,6 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapDecant()
 	{
 		return false;
-	}
-
-	@ConfigItem(
-		keyName = "swapExchange",
-		name = "Exchange",
-		description = "Swap Talk-to with Exchange on NPC<br>Example: Grand Exchange Clerk, Tool Leprechaun, Void Knight"
-	)
-	default boolean swapExchange()
-	{
-		return true;
 	}
 
 	@ConfigItem(

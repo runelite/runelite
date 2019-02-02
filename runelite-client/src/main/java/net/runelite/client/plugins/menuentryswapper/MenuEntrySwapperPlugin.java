@@ -354,13 +354,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 				makeFirst("pickpocket", target, true);
 			}
 
-			if (config.swapBank())
+			if (config.swapBankExchange())
 			{
 				makeFirst("bank", target, true);
-			}
-
-			if (config.swapExchange())
-			{
 				makeFirst("exchange", target, true);
 			}
 
