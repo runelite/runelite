@@ -278,7 +278,7 @@ class WidgetInspector extends JFrame
 
 	static WidgetInfo getWidgetInfo(int packedId)
 	{
-		if (widgetIdMap.size() == 0)
+		if (widgetIdMap.isEmpty())
 		{
 			//Initialize map here so it doesn't create the index
 			//until it's actually needed.

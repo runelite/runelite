@@ -274,7 +274,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		leftText.setOriginalHeight(h);
 		leftText.revalidate();
 
-		if (mt.length() > 0)
+		if (!mt.isEmpty())
 		{
 			cursor.setTextColor(0x113399);
 		}
