@@ -513,17 +513,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 		}
 		// Put all item-related swapping after shift-click
-		else if (config.swapTeleportItem() && option.equals("wear"))
+		else if (config.swapTeleportItem() && (option.equals("wear") || option.equals("wield")))
 		{
 			makeFirst("teleport", target, true);
 			makeFirst("rub", target, true);
-		}
-		else if (option.equals("wield"))
-		{
-			if (config.swapTeleportItem())
-			{
-				makeFirst("teleport", target, true);
-			}
 		}
 		else if (config.swapBones() && option.equals("bury"))
 		{
