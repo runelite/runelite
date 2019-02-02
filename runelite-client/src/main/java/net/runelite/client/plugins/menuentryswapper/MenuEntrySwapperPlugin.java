@@ -354,11 +354,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 				makeFirst("pickpocket", target, true);
 			}
 
-			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
-			{
-				makeFirst("teleport", target, true);
-			}
-
 			if (config.swapBank())
 			{
 				makeFirst("bank", target, true);
@@ -403,6 +398,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				makeFirst("charter", target, true);
 				makeFirst("pay-fare", target, true);
 				makeFirst("travel", target, true);
+
+				if (target.contains("mage of zamorak"))
+				{
+					makeFirst("teleport", target, true);
+				}
 			}
 
 			if (config.swapPay())
