@@ -159,7 +159,7 @@ public class DemonicGorillaPlugin extends Plugin
 		final DemonicGorilla.AttackStyle... protectedStyles)
 	{
 		if (gorilla.getAttacksUntilSwitch() <= 0 ||
-			gorilla.getNextPosibleAttackStyles().size() == 0)
+			gorilla.getNextPosibleAttackStyles().isEmpty())
 		{
 			gorilla.setNextPosibleAttackStyles(Arrays
 				.stream(DemonicGorilla.ALL_REGULAR_ATTACK_STYLES)
@@ -259,7 +259,7 @@ public class DemonicGorillaPlugin extends Plugin
 				.filter(x -> x == attackStyle)
 				.collect(Collectors.toList()));
 
-			if (gorilla.getNextPosibleAttackStyles().size() == 0)
+			if (gorilla.getNextPosibleAttackStyles().isEmpty())
 			{
 				// Sometimes the gorilla can switch attack style before it's supposed to
 				// if someone was fighting it earlier and then left, so we just
@@ -381,7 +381,7 @@ public class DemonicGorillaPlugin extends Plugin
 									// so we assume it was the gorilla who shot it
 									onGorillaAttack(gorilla, DemonicGorilla.AttackStyle.BOULDER);
 								}
-								else if (mp.getRecentHitsplats().size() > 0)
+								else if (!mp.getRecentHitsplats().isEmpty())
 								{
 									// It wasn't any of the three other attacks,
 									// but the player took damage, so we assume
@@ -581,7 +581,7 @@ public class DemonicGorillaPlugin extends Plugin
 					// Player went out of memory, so assume the hit was a 0
 					shouldDecreaseCounter = true;
 				}
-				else if (target.getRecentHitsplats().size() == 0)
+				else if (target.getRecentHitsplats().isEmpty())
 				{
 					// No hitsplats was applied. This may happen in some cases
 					// where the player was out of memory while the

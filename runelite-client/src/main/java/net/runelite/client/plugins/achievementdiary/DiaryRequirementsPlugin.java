@@ -274,7 +274,7 @@ public class DiaryRequirementsPlugin extends Plugin
 			StringBuilder b = new StringBuilder();
 			b.append("<col=ffffff>(");
 
-			assert req.getRequirements().size() > 0;
+			assert !req.getRequirements().isEmpty();
 			for (Requirement ireq : req.getRequirements())
 			{
 				boolean satifisfied = satisfiesRequirement(ireq);
