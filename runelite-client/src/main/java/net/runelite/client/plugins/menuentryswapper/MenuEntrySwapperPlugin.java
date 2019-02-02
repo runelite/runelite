@@ -351,108 +351,104 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			if (config.swapPickpocket() && target.contains("h.a.m."))
 			{
-				swap("pickpocket", option, target, true);
+				makeFirst("pickpocket", target, true);
 			}
 
 			if (config.swapAbyssTeleport() && target.contains("mage of zamorak"))
 			{
-				swap("teleport", option, target, true);
+				makeFirst("teleport", target, true);
 			}
 
 			if (config.swapBank())
 			{
-				swap("bank", option, target, true);
+				makeFirst("bank", target, true);
 			}
 
 			if (config.swapExchange())
 			{
-				swap("exchange", option, target, true);
+				makeFirst("exchange", target, true);
 			}
 
 			if (config.swapDarkMage())
 			{
-				swap("repairs", option, target, true);
+				makeFirst("repairs", target, true);
 			}
 
 			// make sure assignment swap is higher priority than trade swap for slayer masters
 			if (config.swapAssignment())
 			{
-				swap("assignment", option, target, true);
+				makeFirst("assignment", target, true);
 			}
 
 			if (config.swapTrade())
 			{
-				swap("trade", option, target, true);
-				swap("trade-with", option, target, true);
+				makeFirst("trade-with", target, true);
+				makeFirst("trade", target, true);
 			}
 
 			if (config.claimSlime() && target.equals("robin"))
 			{
-				swap("claim-slime", option, target, true);
+				makeFirst("claim-slime", target, true);
 			}
 
 			if (config.swapTravel())
 			{
-				swap("travel", option, target, true);
-				swap("pay-fare", option, target, true);
-				swap("charter", option, target, true);
-				swap("take-boat", option, target, true);
-				swap("fly", option, target, true);
-				swap("jatizso", option, target, true);
-				swap("neitiznot", option, target, true);
-				swap("rellekka", option, target, true);
-				swap("follow", option, target, true);
-				swap("transport", option, target, true);
+				makeFirst("transport", target, true);
+				makeFirst("follow", target, true);
+				makeFirst("rellekka", target, true);
+				makeFirst("neitiznot", target, true);
+				makeFirst("jatizso", target, true);
+				makeFirst("fly", target, true);
+				makeFirst("take-boat", target, true);
+				makeFirst("charter", target, true);
+				makeFirst("pay-fare", target, true);
+				makeFirst("travel", target, true);
 			}
 
 			if (config.swapPay())
 			{
-				swap("pay", option, target, true);
-				swap("pay (", option, target, false);
+				makeFirst("pay", target, true);
+				makeFirst("pay (", target, false);
 			}
 
 			if (config.swapDecant())
 			{
-				swap("decant", option, target, true);
+				makeFirst("decant", target, true);
 			}
 
 			if (config.swapQuick())
 			{
-				swap("quick-travel", option, target, true);
+				makeFirst("quick-travel", target, true);
 			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
-			swap("pay-toll(2-ecto)", option, target, true);
+			makeFirst("pay-toll(2-ecto)", target, true);
 		}
 		else if (config.swapTravel() && option.equals("open") && target.equals("gate"))
 		{
-			swap("pay-toll(10gp)", option, target, true);
+			makeFirst("pay-toll(10gp)", target, true);
 		}
 		else if (config.swapTravel() && option.equals("inspect") && target.equals("trapdoor"))
 		{
-			swap("travel", option, target, true);
+			makeFirst("travel", target, true);
 		}
-		else if (config.swapHarpoon() && option.equals("cage"))
+		else if (config.swapHarpoon() && (option.equals("cage") || option.contains("net")))
 		{
-			swap("harpoon", option, target, true);
-		}
-		else if (config.swapHarpoon() && (option.equals("big net") || option.equals("net")))
-		{
-			swap("harpoon", option, target, true);
+			makeFirst("harpoon", target, true);
 		}
 		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter"))
 		{
 			switch (config.swapHomePortal())
 			{
 				case HOME:
-					swap("home", option, target, true);
+					makeFirst("home", target, true);
 					break;
 				case BUILD_MODE:
-					swap("build mode", option, target, true);
+					makeFirst("build mode", target, true);
 					break;
 				case FRIENDS_HOUSE:
-					swap("friend's house", option, target, true);
+					makeFirst("friend's house", target, true);
 					break;
 			}
 		}
@@ -461,59 +457,59 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			if (config.swapFairyRing() == FairyRingMode.LAST_DESTINATION)
 			{
-				swap("last-destination", option, target, false);
+				makeFirst("last-destination", target, false);
 			}
 			else if (config.swapFairyRing() == FairyRingMode.CONFIGURE)
 			{
-				swap("configure", option, target, false);
+				makeFirst("configure", target, false);
 			}
 		}
 		else if (config.swapFairyRing() == FairyRingMode.ZANARIS && option.equals("tree"))
 		{
-			swap("zanaris", option, target, false);
+			makeFirst("zanaris", target, false);
 		}
 		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
 		{
-			swap("reset", option, target, true);
+			makeFirst("reset", target, true);
 		}
 		else if (config.swapBoxTrap() && option.equals("take"))
 		{
-			swap("lay", option, target, true);
+			makeFirst("lay", target, true);
 		}
 		else if (config.swapChase() && option.equals("pick-up"))
 		{
-			swap("chase", option, target, true);
+			makeFirst("chase", target, true);
 		}
 		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
 		{
-			swap("empty", option, target, true);
+			makeFirst("empty", target, true);
 		}
 		else if (config.swapQuick() && option.equals("ring"))
 		{
-			swap("quick-start", option, target, true);
+			makeFirst("quick-start", target, true);
 		}
 		else if (config.swapQuick() && option.equals("pass"))
 		{
-			swap("quick-pass", option, target, true);
-			swap("quick pass", option, target, true);
+			makeFirst("quick-pass", target, true);
+			makeFirst("quick pass", target, true);
 		}
 		else if (config.swapQuick() && option.equals("open"))
 		{
-			swap("quick-open", option, target, true);
+			makeFirst("quick-open", target, true);
 		}
 		else if (config.swapAdmire() && option.equals("admire"))
 		{
-			swap("teleport", option, target, true);
-			swap("spellbook", option, target, true);
-			swap("perks", option, target, true);
+			makeFirst("perks", target, true);
+			makeFirst("spellbook", target, true);
+			makeFirst("teleport", target, true);
 		}
 		else if (config.swapPrivate() && option.equals("shared"))
 		{
-			swap("private", option, target, true);
+			makeFirst("private", target, true);
 		}
 		else if (config.swapPick() && option.equals("pick"))
 		{
-			swap("pick-lots", option, target, true);
+			makeFirst("pick-lots", target, true);
 		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
@@ -521,25 +517,25 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 			if (customOption != null && customOption == -1)
 			{
-				swap("use", option, target, true);
+				makeFirst("use", target, true);
 			}
 		}
 		// Put all item-related swapping after shift-click
 		else if (config.swapTeleportItem() && option.equals("wear"))
 		{
-			swap("rub", option, target, true);
-			swap("teleport", option, target, true);
+			makeFirst("teleport", target, true);
+			makeFirst("rub", target, true);
 		}
 		else if (option.equals("wield"))
 		{
 			if (config.swapTeleportItem())
 			{
-				swap("teleport", option, target, true);
+				makeFirst("teleport", target, true);
 			}
 		}
 		else if (config.swapBones() && option.equals("bury"))
 		{
-			swap("use", option, target, true);
+			makeFirst("use", target, true);
 		}
 	}
 
@@ -591,21 +587,22 @@ public class MenuEntrySwapperPlugin extends Plugin
 		return -1;
 	}
 
-	private void swap(String optionA, String optionB, String target, boolean strict)
+	private void makeFirst(String option, String target, boolean strict)
 	{
 		MenuEntry[] entries = client.getMenuEntries();
 
-		int idxA = searchIndex(entries, optionA, target, strict);
-		int idxB = searchIndex(entries, optionB, target, strict);
-
-		if (idxA >= 0 && idxB >= 0)
+		int index = searchIndex(entries, option, target, strict);
+		if (index == -1)
 		{
-			MenuEntry entry = entries[idxA];
-			entries[idxA] = entries[idxB];
-			entries[idxB] = entry;
-
-			client.setMenuEntries(entries);
+			return;
 		}
+		MenuEntry temp = entries[index];
+
+		System.arraycopy(entries, index + 1, entries, index, entries.length - index - 1);
+
+		entries[entries.length - 1] = temp;
+
+		client.setMenuEntries(entries);
 	}
 
 	private void removeShiftClickCustomizationMenus()
