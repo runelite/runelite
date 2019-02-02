@@ -421,13 +421,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 				makeFirst("quick-travel", target, true);
 			}
 		}
-		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
+		else if (config.swapTravel() && (option.equals("pass") || option.equals("open")))
 		{
-			makeFirst("pay-toll(2-ecto)", target, true);
-		}
-		else if (config.swapTravel() && option.equals("open") && target.equals("gate"))
-		{
-			makeFirst("pay-toll(10gp)", target, true);
+			makeFirst("pay-toll", target, false);
 		}
 		else if (config.swapTravel() && option.equals("inspect") && target.equals("trapdoor"))
 		{
