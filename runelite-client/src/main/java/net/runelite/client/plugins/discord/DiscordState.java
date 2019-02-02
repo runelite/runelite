@@ -78,6 +78,19 @@ class DiscordState
 	}
 
 	/**
+	 * Force refresh discord presence
+	 */
+	void refresh()
+	{
+		if (lastPresence == null)
+		{
+			return;
+		}
+
+		discordService.updatePresence(lastPresence);
+	}
+
+	/**
 	 * Trigger new discord state update.
 	 *
 	 * @param eventType discord event type

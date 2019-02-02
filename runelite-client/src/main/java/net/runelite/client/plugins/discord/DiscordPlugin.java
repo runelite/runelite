@@ -352,9 +352,7 @@ public class DiscordPlugin extends Plugin
 
 	private void updatePresence()
 	{
-		discordState.triggerEvent(client.getGameState() == GameState.LOGGED_IN
-			? DiscordGameEventType.IN_GAME
-			: DiscordGameEventType.IN_MENU);
+		discordState.refresh();
 	}
 
 	private void checkForGameStateUpdate()
