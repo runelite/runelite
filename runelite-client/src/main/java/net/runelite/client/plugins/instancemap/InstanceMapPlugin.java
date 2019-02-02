@@ -108,7 +108,7 @@ public class InstanceMapPlugin extends Plugin
 		overlay.onGameStateChange(event);
 	}
 
-	private boolean clickedOptionEquals(WidgetMenuOptionClicked event, WidgetMenuOption widgetMenuOption)
+	private static boolean clickedOptionEquals(WidgetMenuOptionClicked event, WidgetMenuOption widgetMenuOption)
 	{
 		return event.getMenuOption().equals(widgetMenuOption.getMenuOption()) && event.getMenuTarget().equals(widgetMenuOption.getMenuTarget());
 	}

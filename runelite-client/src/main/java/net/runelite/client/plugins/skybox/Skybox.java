@@ -466,7 +466,7 @@ class Skybox
 	 * This is used to simulate a large kernel gaussian blur without having
 	 * to sample the same chunk multiple times.
 	 */
-	private double erf(double x)
+	private static double erf(double x)
 	{
 		double ax = Math.abs(x);
 		double t = 1.d / (1.d + (ax * .3275911d));

@@ -199,7 +199,7 @@ public class MenuManager
 		}
 	}
 
-	private void addNpcOption(NPCComposition composition, String npcOption)
+	private static void addNpcOption(NPCComposition composition, String npcOption)
 	{
 		String[] actions = composition.getActions();
 		int unused = -1;
@@ -221,7 +221,7 @@ public class MenuManager
 		actions[unused] = npcOption;
 	}
 
-	private void removeNpcOption(NPCComposition composition, String npcOption)
+	private static void removeNpcOption(NPCComposition composition, String npcOption)
 	{
 		String[] actions = composition.getActions();
 

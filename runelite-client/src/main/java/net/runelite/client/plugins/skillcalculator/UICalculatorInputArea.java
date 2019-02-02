@@ -94,7 +94,7 @@ class UICalculatorInputArea extends JPanel
 		setInput(uiFieldTargetXP, value);
 	}
 
-	private int getInput(JTextField field)
+	private static int getInput(JTextField field)
 	{
 		try
 		{
@@ -106,7 +106,7 @@ class UICalculatorInputArea extends JPanel
 		}
 	}
 
-	private void setInput(JTextField field, Object value)
+	private static void setInput(JTextField field, Object value)
 	{
 		field.setText(String.valueOf(value));
 	}

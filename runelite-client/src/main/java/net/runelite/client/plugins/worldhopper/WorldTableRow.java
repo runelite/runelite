@@ -325,7 +325,7 @@ class WorldTableRow extends JPanel
 		return column;
 	}
 
-	private ImageIcon getFlag(int locationId)
+	private static ImageIcon getFlag(int locationId)
 	{
 		switch (locationId)
 		{

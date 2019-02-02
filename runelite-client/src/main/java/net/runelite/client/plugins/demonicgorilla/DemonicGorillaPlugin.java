@@ -155,7 +155,7 @@ public class DemonicGorillaPlugin extends Plugin
 			npcId == NpcID.DEMONIC_GORILLA_7149;
 	}
 
-	private void checkGorillaAttackStyleSwitch(DemonicGorilla gorilla,
+	private static void checkGorillaAttackStyleSwitch(DemonicGorilla gorilla,
 		final DemonicGorilla.AttackStyle... protectedStyles)
 	{
 		if (gorilla.getAttacksUntilSwitch() <= 0 ||
@@ -170,7 +170,7 @@ public class DemonicGorillaPlugin extends Plugin
 		}
 	}
 
-	private DemonicGorilla.AttackStyle getProtectedStyle(Player player)
+	private static DemonicGorilla.AttackStyle getProtectedStyle(Player player)
 	{
 		HeadIcon headIcon = player.getOverheadIcon();
 		if (headIcon == null)

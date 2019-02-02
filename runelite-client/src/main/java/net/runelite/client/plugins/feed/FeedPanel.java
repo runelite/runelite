@@ -290,7 +290,7 @@ class FeedPanel extends PluginPanel
 		add(avatarAndRight);
 	}
 
-	private String durationToString(Duration duration)
+	private static String durationToString(Duration duration)
 	{
 		if (duration.getSeconds() >= 60 * 60 * 24)
 		{
@@ -303,7 +303,7 @@ class FeedPanel extends PluginPanel
 		return (int) (duration.getSeconds() / 60) + "m";
 	}
 
-	private String lineBreakText(String text, Font font)
+	private static String lineBreakText(String text, Font font)
 	{
 		StringBuilder newText = new StringBuilder("<html>");
 

@@ -458,7 +458,7 @@ public class HiscorePanel extends PluginPanel
 	/*
 		Returns a hiscore skill based on it's display order.
 	 */
-	private HiscoreSkill find(int index)
+	private static HiscoreSkill find(int index)
 	{
 		if (index < SKILLS.size())
 		{
@@ -487,7 +487,7 @@ public class HiscorePanel extends PluginPanel
 	/*
 		Builds a html string to display on tooltip (when hovering a skill).
 	 */
-	private String detailsHtml(HiscoreResult result, HiscoreSkill skill)
+	private static String detailsHtml(HiscoreResult result, HiscoreSkill skill)
 	{
 		String openingTags = "<html><body style = 'padding: 5px;color:#989898'>";
 		String closingTags = "</html><body>";

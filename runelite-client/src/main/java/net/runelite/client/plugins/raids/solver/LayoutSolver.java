@@ -126,7 +126,7 @@ public class LayoutSolver
 		return null;
 	}
 
-	private int calcStart(String directions)
+	private static int calcStart(String directions)
 	{
 		int startPos = 0;
 		int position = 0;
@@ -147,7 +147,7 @@ public class LayoutSolver
 		return startPos;
 	}
 
-	private int dirToPosDelta(char direction)
+	private static int dirToPosDelta(char direction)
 	{
 		switch (String.valueOf(direction))
 		{
@@ -168,7 +168,7 @@ public class LayoutSolver
 		}
 	}
 
-	private void build()
+	private static void build()
 	{
 		for (String code : codes)
 		{

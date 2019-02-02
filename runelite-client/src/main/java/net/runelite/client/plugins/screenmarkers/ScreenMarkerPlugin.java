@@ -237,7 +237,7 @@ public class ScreenMarkerPlugin extends Plugin
 		configManager.setConfiguration(CONFIG_GROUP, CONFIG_KEY, json);
 	}
 
-	private Stream<ScreenMarkerOverlay> loadConfig(String json)
+	private static Stream<ScreenMarkerOverlay> loadConfig(String json)
 	{
 		if (Strings.isNullOrEmpty(json))
 		{

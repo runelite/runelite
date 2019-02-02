@@ -122,7 +122,7 @@ public class SessionManager
 		}
 	}
 
-	private void deleteSession()
+	private static void deleteSession()
 	{
 		SESSION_FILE.delete();
 	}

@@ -190,7 +190,7 @@ public class Hooks implements Callbacks
 	 * data to be garbage collecged, and causes the map data from disk each time
 	 * is it opened.
 	 */
-	private void checkWorldMap()
+	private static void checkWorldMap()
 	{
 		Widget widget = client.getWidget(WORLD_MAP_VIEW);
 

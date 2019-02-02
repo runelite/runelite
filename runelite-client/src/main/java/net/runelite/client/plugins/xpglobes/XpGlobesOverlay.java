@@ -113,7 +113,7 @@ public class XpGlobesOverlay extends Overlay
 		return new Dimension(markersLength, config.xpOrbSize());
 	}
 
-	private double getSkillProgress(int startXp, int currentXp, int goalXp)
+	private static double getSkillProgress(int startXp, int currentXp, int goalXp)
 	{
 		double xpGained = currentXp - startXp;
 		double xpGoal = goalXp - startXp;
@@ -121,7 +121,7 @@ public class XpGlobesOverlay extends Overlay
 		return ((xpGained / xpGoal) * 100);
 	}
 
-	private double getSkillProgressRadius(int startXp, int currentXp, int goalXp)
+	private static double getSkillProgressRadius(int startXp, int currentXp, int goalXp)
 	{
 		return -(3.6 * getSkillProgress(startXp, currentXp, goalXp)); //arc goes backwards
 	}
@@ -190,7 +190,7 @@ public class XpGlobesOverlay extends Overlay
 		OverlayUtil.renderTextLocation(graphics, new Point(drawX, drawY), progress, Color.WHITE);
 	}
 
-	private void drawProgressArc(Graphics2D graphics, int x, int y, int w, int h, double radiusStart, double radiusEnd, int strokeWidth, Color color)
+	private static void drawProgressArc(Graphics2D graphics, int x, int y, int w, int h, double radiusStart, double radiusEnd, int strokeWidth, Color color)
 	{
 		Stroke stroke = graphics.getStroke();
 		graphics.setStroke(new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));

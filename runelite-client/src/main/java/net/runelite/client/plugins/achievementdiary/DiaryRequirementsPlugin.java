@@ -204,7 +204,7 @@ public class DiaryRequirementsPlugin extends Plugin
 		clientThread.invokeLater(() -> client.runScript(ScriptID.DIARY_QUEST_UPDATE_LINECOUNT, 1, numLines));
 	}
 
-	private List<String> getOriginalAchievements(Widget[] children)
+	private static List<String> getOriginalAchievements(Widget[] children)
 	{
 		List<String> preloadedRequirements = new ArrayList<>(children.length);
 		for (Widget requirementWidget : children)
@@ -214,7 +214,7 @@ public class DiaryRequirementsPlugin extends Plugin
 		return preloadedRequirements;
 	}
 
-	private GenericDiaryRequirement getRequirementsForTitle(String title)
+	private static GenericDiaryRequirement getRequirementsForTitle(String title)
 	{
 		String diaryName = Text.removeTags(title
 			.replaceAll(" ", "_")

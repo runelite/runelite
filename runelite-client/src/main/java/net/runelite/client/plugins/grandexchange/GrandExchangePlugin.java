@@ -330,7 +330,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
-	private boolean shouldUpdate(SavedOffer savedOffer, GrandExchangeOffer grandExchangeOffer)
+	private static boolean shouldUpdate(SavedOffer savedOffer, GrandExchangeOffer grandExchangeOffer)
 	{
 		if (savedOffer == null)
 		{

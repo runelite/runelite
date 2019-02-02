@@ -90,7 +90,7 @@ class SceneUploader
 		}
 	}
 
-	private void reset(Tile tile)
+	private static void reset(Tile tile)
 	{
 		Tile bridge = tile.getBridge();
 		if (bridge != null)
@@ -337,7 +337,7 @@ class SceneUploader
 		return 6;
 	}
 
-	private int upload(SceneTileModel sceneTileModel, int tileX, int tileY, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	private static int upload(SceneTileModel sceneTileModel, int tileX, int tileY, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
 		final int[] faceX = sceneTileModel.getFaceX();
 		final int[] faceY = sceneTileModel.getFaceY();

@@ -114,7 +114,7 @@ public class GraveyardRoom extends MTARoom
 		}
 	}
 
-	private int score(Item[] items)
+	private static int score(Item[] items)
 	{
 		int score = 0;
 
@@ -131,7 +131,7 @@ public class GraveyardRoom extends MTARoom
 		return score;
 	}
 
-	private int getPoints(int id)
+	private static int getPoints(int id)
 	{
 		switch (id)
 		{

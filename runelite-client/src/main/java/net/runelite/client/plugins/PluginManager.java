@@ -404,7 +404,7 @@ public class PluginManager
 		return pluginDescriptor == null || pluginDescriptor.enabledByDefault();
 	}
 
-	private Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz) throws PluginInstantiationException
+	private static Plugin instantiate(List<Plugin> scannedPlugins, Class<Plugin> clazz) throws PluginInstantiationException
 	{
 		PluginDependency[] pluginDependencies = clazz.getAnnotationsByType(PluginDependency.class);
 		List<Plugin> deps = new ArrayList<>();
@@ -512,7 +512,7 @@ public class PluginManager
 	 * @param <T>
 	 * @return
 	 */
-	private <T> List<T> topologicalSort(Graph<T> graph)
+	private static <T> List<T> topologicalSort(Graph<T> graph)
 	{
 		MutableGraph<T> graphCopy = Graphs.copyOf(graph);
 		List<T> l = new ArrayList<>();

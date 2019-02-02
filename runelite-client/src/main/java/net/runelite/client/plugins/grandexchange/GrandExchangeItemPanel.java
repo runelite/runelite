@@ -156,7 +156,7 @@ class GrandExchangeItemPanel extends JPanel
 		add(rightPanel, BorderLayout.CENTER);
 	}
 
-	private void matchComponentBackground(JPanel panel, Color color)
+	private static void matchComponentBackground(JPanel panel, Color color)
 	{
 		panel.setBackground(color);
 		for (Component c : panel.getComponents())

@@ -536,7 +536,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		};
 	}
 
-	private boolean cursorOnLine(final int cursor, final int start, final int end)
+	private static boolean cursorOnLine(final int cursor, final int start, final int end)
 	{
 		return (cursor >= start) && (cursor <= end);
 	}

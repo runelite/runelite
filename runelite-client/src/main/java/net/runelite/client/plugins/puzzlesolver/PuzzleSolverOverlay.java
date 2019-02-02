@@ -355,7 +355,7 @@ public class PuzzleSolverOverlay extends Overlay
 		return null;
 	}
 
-	private int[] getItemIds(ItemContainer container, boolean useNormalSolver)
+	private static int[] getItemIds(ItemContainer container, boolean useNormalSolver)
 	{
 		int[] itemIds = new int[DIMENSION * DIMENSION];
 
@@ -375,7 +375,7 @@ public class PuzzleSolverOverlay extends Overlay
 		return convertToSolverFormat(itemIds, useNormalSolver);
 	}
 
-	private int[] convertToSolverFormat(int[] items, boolean useNormalSolver)
+	private static int[] convertToSolverFormat(int[] items, boolean useNormalSolver)
 	{
 		int lowestId = Integer.MAX_VALUE;
 

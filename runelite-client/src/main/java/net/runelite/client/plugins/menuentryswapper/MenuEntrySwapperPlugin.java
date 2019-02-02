@@ -588,7 +588,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	private int searchIndex(MenuEntry[] entries, String option, String target, boolean strict)
+	private static int searchIndex(MenuEntry[] entries, String option, String target, boolean strict)
 	{
 		for (int i = entries.length - 1; i >= 0; i--)
 		{

@@ -264,7 +264,7 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
-	private void renderGroundItems(Graphics2D graphics, Tile tile, Player player)
+	private static void renderGroundItems(Graphics2D graphics, Tile tile, Player player)
 	{
 		ItemLayer itemLayer = tile.getItemLayer();
 		if (itemLayer != null)
@@ -282,7 +282,7 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
-	private void renderGameObjects(Graphics2D graphics, Tile tile, Player player)
+	private static void renderGameObjects(Graphics2D graphics, Tile tile, Player player)
 	{
 		GameObject[] gameObjects = tile.getGameObjects();
 		if (gameObjects != null)
@@ -308,7 +308,7 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
-	private void renderGroundObject(Graphics2D graphics, Tile tile, Player player)
+	private static void renderGroundObject(Graphics2D graphics, Tile tile, Player player)
 	{
 		GroundObject groundObject = tile.getGroundObject();
 		if (groundObject != null)
@@ -320,7 +320,7 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
-	private void renderWallObject(Graphics2D graphics, Tile tile, Player player)
+	private static void renderWallObject(Graphics2D graphics, Tile tile, Player player)
 	{
 		WallObject wallObject = tile.getWallObject();
 		if (wallObject != null)
@@ -332,7 +332,7 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
-	private void renderDecorObject(Graphics2D graphics, Tile tile, Player player)
+	private static void renderDecorObject(Graphics2D graphics, Tile tile, Player player)
 	{
 		DecorativeObject decorObject = tile.getDecorativeObject();
 		if (decorObject != null)
@@ -471,7 +471,7 @@ class DevToolsOverlay extends Overlay
 		renderWidgetText(graphics, itemBounds, widgetItem.getId(), YELLOW);
 	}
 
-	private void renderWidgetText(Graphics2D graphics, Rectangle bounds, int itemId, Color color)
+	private static void renderWidgetText(Graphics2D graphics, Rectangle bounds, int itemId, Color color)
 	{
 		if (itemId == -1)
 		{
@@ -491,7 +491,7 @@ class DevToolsOverlay extends Overlay
 		graphics.drawString(text, textX, textY);
 	}
 
-	private void renderPlayerWireframe(Graphics2D graphics, Player player, Color color)
+	private static void renderPlayerWireframe(Graphics2D graphics, Player player, Color color)
 	{
 		Polygon[] polys = player.getPolygons();
 

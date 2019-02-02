@@ -358,7 +358,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		lastWorldPoint = currentWp;
 	}
 
-	private boolean isFirstPointCloserRect(WorldPoint firstWp, WorldPoint secondWp, Rectangle2D r)
+	private static boolean isFirstPointCloserRect(WorldPoint firstWp, WorldPoint secondWp, Rectangle2D r)
 	{
 		WorldPoint p1 = new WorldPoint((int) r.getMaxX(), (int) r.getMaxY(), 0);
 
@@ -385,7 +385,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		return (isFirstPointCloser(firstWp, secondWp, p4));
 	}
 
-	private boolean isFirstPointCloser(WorldPoint firstWp, WorldPoint secondWp, WorldPoint wp)
+	private static boolean isFirstPointCloser(WorldPoint firstWp, WorldPoint secondWp, WorldPoint wp)
 	{
 		int firstDistance = firstWp.distanceTo2D(wp);
 		int secondDistance = secondWp.distanceTo2D(wp);

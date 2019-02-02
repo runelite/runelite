@@ -59,7 +59,7 @@ public class MinimapPlugin extends Plugin
 	private SpritePixels[] originalDotSprites;
 
 	@Provides
-	private MinimapConfig provideConfig(ConfigManager configManager)
+	private static MinimapConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(MinimapConfig.class);
 	}

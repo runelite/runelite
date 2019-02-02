@@ -912,7 +912,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param originalInput String with the original input.
 	 * @return Item which has a name equal to the original input.
 	 */
-	private ItemPrice retrieveFromList(List<ItemPrice> items, String originalInput)
+	private static ItemPrice retrieveFromList(List<ItemPrice> items, String originalInput)
 	{
 		ItemPrice shortest = null;
 		for (ItemPrice item : items)

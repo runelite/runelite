@@ -46,7 +46,7 @@ import static net.runelite.client.ws.PartyService.PARTY_MAX;
 class DiscordState
 {
 	@Data
-	private class EventWithTime
+	private static class EventWithTime
 	{
 		private final DiscordGameEventType type;
 		private final Instant start;
