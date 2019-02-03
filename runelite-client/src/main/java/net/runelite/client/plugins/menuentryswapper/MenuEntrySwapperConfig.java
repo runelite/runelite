@@ -63,16 +63,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapBankExchange",
-		name = "Bank/Exchange",
-		description = "Swap Talk-to with Bank or Exchange on NPC<br>Example: Banker, Grand Exchange Clerk, Tool Leprechaun, Void Knight"
-	)
-	default boolean swapBankExchange()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "swapBirdhouseEmpty",
 		name = "Birdhouse",
 		description = "Swap Interact with Empty for birdhouses on Fossil Island"
@@ -130,6 +120,16 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapDecant()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapExchange",
+		name = "Bank/Exchange",
+		description = "Swap Talk-to with Bank or Exchange on NPC<br>Example: Banker, Grand Exchange Clerk, Tool Leprechaun, Void Knight"
+	)
+	default boolean swapExchange()
+	{
+		return true;
 	}
 
 	@ConfigItem(
