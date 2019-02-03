@@ -243,6 +243,13 @@ public class PartyPlugin extends Plugin implements KeyListener
 
 		if (config.sounds())
 		{
+			WorldPoint point = event.getPoint();
+
+			if (point.getPlane() != client.getPlane() || !WorldPoint.isInScene(client, point.getX(), point.getY()))
+			{
+				return;
+			}
+
 			client.playSoundEffect(SoundEffectID.SMITH_ANVIL_TINK);
 		}
 	}
