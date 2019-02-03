@@ -42,6 +42,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 public class PerformanceTrackerOverlay extends Overlay
 {
 	private static final Color PAUSED_COLOR = new Color(100, 0, 0, 125);
+	private static final String TARGET = "Performance Tracker";
 
 	private final PerformanceTrackerPlugin tracker;
 	private final PanelComponent panelComponent = new PanelComponent();
@@ -54,14 +55,14 @@ public class PerformanceTrackerOverlay extends Overlay
 		setPriority(OverlayPriority.LOW);
 		this.tracker = tracker;
 
-		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, "Pause", "Performance Tracker"));
-		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, "Reset", "Performance Tracker"));
+		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, "Pause", TARGET));
+		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, "Reset", TARGET));
 	}
 
 	@Override
 	public String getName()
 	{
-		return "Performance Tracker";
+		return TARGET;
 	}
 
 	@Override
