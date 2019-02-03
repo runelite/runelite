@@ -181,10 +181,10 @@ enum RareTreeLocation
 		new WorldPoint(1389, 3821, 0),
 		new WorldPoint(1610, 3443, 0),
 		new WorldPoint(1578, 3488, 0),
-		new WorldPoint(1772, 3530, 0),
+		new WorldPoint(1772, 3510, 0),
 		new WorldPoint(1685, 3740, 0),
 
-		// Isfadar
+		// Isafdar
 		new WorldPoint(2284, 3141, 0),
 
 		// Kandarin
