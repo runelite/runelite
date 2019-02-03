@@ -80,4 +80,14 @@ public interface PartyConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "playerNames",
+		name = "Player names",
+		description = "Use in-game player names when available"
+	)
+	default boolean playerNames()
+	{
+		return false;
+	}
 }

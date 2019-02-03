@@ -49,6 +49,7 @@ import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.chat.ChatColorType;
@@ -66,6 +67,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.party.data.PartyData;
 import net.runelite.client.plugins.party.data.PartyTilePingData;
 import net.runelite.client.plugins.party.messages.LocationUpdate;
+import net.runelite.client.plugins.party.messages.PlayerNameUpdate;
 import net.runelite.client.plugins.party.messages.SkillUpdate;
 import net.runelite.client.plugins.party.messages.TilePing;
 import net.runelite.client.task.Schedule;
@@ -127,8 +129,9 @@ public class PartyPlugin extends Plugin implements KeyListener
 	private final List<PartyTilePingData> pendingTilePings = Collections.synchronizedList(new ArrayList<>());
 
 	private int lastHp, lastPray;
-	private boolean hotkeyDown, doSync;
+	private boolean hotkeyDown, doSync, fetchPlayerName;
 	private boolean sendAlert;
+	private String playerName;
 
 	@Override
 	public void configure(Binder binder)
@@ -144,6 +147,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 		wsClient.registerMessage(SkillUpdate.class);
 		wsClient.registerMessage(TilePing.class);
 		wsClient.registerMessage(LocationUpdate.class);
+		wsClient.registerMessage(PlayerNameUpdate.class);
 		keyManager.registerKeyListener(this);
 		doSync = true; // Delay sync so eventbus can process correctly.
 	}
@@ -159,6 +163,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 		wsClient.unregisterMessage(SkillUpdate.class);
 		wsClient.unregisterMessage(TilePing.class);
 		wsClient.unregisterMessage(LocationUpdate.class);
+		wsClient.unregisterMessage(PlayerNameUpdate.class);
 		keyManager.unregisterKeyListener(this);
 		hotkeyDown = false;
 		doSync = false;
@@ -323,10 +328,36 @@ public class PartyPlugin extends Plugin implements KeyListener
 				update.setMemberId(localMember.getMemberId());
 				ws.send(update);
 			}
+
+			if (fetchPlayerName)
+			{
+				final String currentPlayerName = client.getLocalPlayer().getName();
+				if (currentPlayerName != null)
+				{
+					if (!currentPlayerName.equals(playerName))
+					{
+						final PlayerNameUpdate playerNameUpdate = new PlayerNameUpdate(playerName);
+						playerNameUpdate.setMemberId(localMember.getMemberId());
+						ws.send(playerNameUpdate);
+					}
+
+					playerName = currentPlayerName;
+					fetchPlayerName = false;
+				}
+			}
 		}
 
 		lastHp = currentHealth;
 		lastPray = currentPrayer;
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged c)
+	{
+		if (c.getGameState() == GameState.LOGGING_IN)
+		{
+			fetchPlayerName = true;
+		}
 	}
 
 	@Subscribe
@@ -362,6 +393,19 @@ public class PartyPlugin extends Plugin implements KeyListener
 		}
 
 		partyData.getWorldMapPoint().setWorldPoint(event.getWorldPoint());
+	}
+
+	@Subscribe
+	public void onPlayerNameUpdate(final PlayerNameUpdate event)
+	{
+		final PartyData partyData = getPartyData(event.getMemberId());
+
+		if (partyData == null)
+		{
+			return;
+		}
+
+		partyData.setPlayerName(event.getPlayerName());
 	}
 
 	@Subscribe
@@ -411,6 +455,13 @@ public class PartyPlugin extends Plugin implements KeyListener
 			final SkillUpdate prayUpdate = new SkillUpdate(Skill.PRAYER, currentPrayer, realPrayer);
 			prayUpdate.setMemberId(localMember.getMemberId());
 			ws.send(prayUpdate);
+
+			if (playerName != null)
+			{
+				final PlayerNameUpdate playerNameUpdate = new PlayerNameUpdate(playerName);
+				playerNameUpdate.setMemberId(localMember.getMemberId());
+				ws.send(playerNameUpdate);
+			}
 		}
 	}
 
@@ -423,9 +474,11 @@ public class PartyPlugin extends Plugin implements KeyListener
 		{
 			if (config.messages())
 			{
+				final String username = removed.getPlayerName() == null ? "" : " (" + removed.getPlayerName() + ")";
 				final String joinMessage = new ChatMessageBuilder()
 					.append(ChatColorType.HIGHLIGHT)
 					.append(removed.getName())
+					.append(username)
 					.append(" has left the party!")
 					.build();
 
