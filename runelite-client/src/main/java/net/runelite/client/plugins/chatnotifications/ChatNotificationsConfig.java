@@ -97,4 +97,15 @@ public interface ChatNotificationsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			position = 6,
+			keyName = "notifyOnPrivateMessage",
+			name = "Notify on private message",
+			description = "Notifies you whenever you receive a private message"
+	)
+	default boolean notifyOnPrivateMessage()
+	{
+		return false;
+	}
 }

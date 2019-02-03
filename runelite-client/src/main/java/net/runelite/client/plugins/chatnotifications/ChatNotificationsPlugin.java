@@ -144,6 +144,11 @@ public class ChatNotificationsPlugin extends Plugin
 					notifier.notify(event.getValue());
 				}
 				break;
+			case PRIVATE_MESSAGE_RECEIVED:
+				if(config.notifyOnPrivateMessage()){
+					notifier.notify(event.getName().replaceAll("[<img=*>]", "").replaceAll("\\d", "") + ": " + event.getValue());
+				}
+				break;
 			case GAME:
 				// Don't notify for notification messages
 				if (event.getName().equals(runeLiteProperties.getTitle()))
