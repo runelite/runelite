@@ -233,6 +233,9 @@ public class FishingPlugin extends Plugin
 				case ItemID.SMALL_FISHING_NET_6209:
 				case ItemID.FISHING_ROD:
 				case ItemID.FLY_FISHING_ROD:
+				case ItemID.PEARL_BARBARIAN_ROD:
+				case ItemID.PEARL_FISHING_ROD:
+				case ItemID.PEARL_FLY_FISHING_ROD:
 				case ItemID.BARBARIAN_ROD:
 				case ItemID.OILY_FISHING_ROD:
 				case ItemID.LOBSTER_POT:
