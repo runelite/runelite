@@ -74,6 +74,7 @@ enum DiscordGameEventType
 	BOSS_GENERAL_GRAARDOR("General Graardor", DiscordAreaType.BOSSES, 11347),
 	BOSS_GIANT_MOLE("Giant Mole", DiscordAreaType.BOSSES, 6993, 6992),
 	BOSS_GROTESQUE_GUARDIANS("Grotesque Guardians", DiscordAreaType.BOSSES, 6727),
+	BOSS_HYDRA("Alchemical Hydra", DiscordAreaType.BOSSES, 5536),
 	BOSS_KQ("Kalphite Queen", DiscordAreaType.BOSSES, 13972),
 	BOSS_KRAKEN("Kraken", DiscordAreaType.BOSSES, 9116),
 	BOSS_KREEARRA("Kree'arra", DiscordAreaType.BOSSES, 11346),
@@ -119,6 +120,7 @@ enum DiscordGameEventType
 	CITY_MOS_LE_HARMLESS("Mos Le'Harmless" , DiscordAreaType.CITIES, 14638),
 	CITY_MORTTON("Mort'ton" , DiscordAreaType.CITIES, 13875),
 	CITY_MOR_UI_REK("Mor UI Rek" , DiscordAreaType.CITIES, 9808, 9807, 10064, 10063),
+	CITY_MOUNT_KARUULM("Mount Karuulm", DiscordAreaType.CITIES, 5179, 4923, 5180),
 	CITY_NARDAH("Nardah" , DiscordAreaType.CITIES, 13613),
 	CITY_NEITIZNOT("Neitiznot" , DiscordAreaType.CITIES, 9275),
 	CITY_PISCATORIS("Piscatoris" , DiscordAreaType.CITIES, 9273),
@@ -181,6 +183,7 @@ enum DiscordGameEventType
 	DUNGEON_JIGGIG_BURIAL_TOMB("Jiggig Burial Tomb", DiscordAreaType.DUNGEONS, 9875, 9874),
 	DUNGEON_JOGRE("Jogre Dungeon", DiscordAreaType.DUNGEONS, 11412),
 	DUNGEON_KARAMJA_VOLCANO("Karamja Volcano", DiscordAreaType.DUNGEONS, 11413, 11414),
+	DUNGEON_KARUULM("Karuulm Slayer Dungeon", DiscordAreaType.DUNGEONS, 5280, 5279, 5023, 5535, 5022, 4766, 4510, 4511, 4767, 4768, 4512),
 	DUNGEON_KHARAZI("Khazari Dungeon", DiscordAreaType.DUNGEONS, 11153),
 	DUNGEON_LIGHTHOUSE("Lighthouse", DiscordAreaType.DUNGEONS, 10140),
 	DUNGEON_LIZARDMAN_CAVES("Lizardman Caves", DiscordAreaType.DUNGEONS, 5275),
@@ -345,21 +348,7 @@ enum DiscordGameEventType
 
 	private static String exploring(DiscordAreaType areaType, String areaName)
 	{
-		switch (areaType)
-		{
-			case BOSSES:
-				return "Fighting: " + areaName;
-			case DUNGEONS:
-				return "Exploring: " + areaName;
-			case CITIES:
-				return "Location: " + areaName;
-			case MINIGAMES:
-				return "Playing: " + areaName;
-			case RAIDS:
-				return "Raiding: " + areaName;
-		}
-
-		return "";
+		return areaName;
 	}
 
 	public static DiscordGameEventType fromSkill(final Skill skill)

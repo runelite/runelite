@@ -39,6 +39,10 @@ import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.events.BeforeRender;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -48,6 +52,8 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseManager;
+import net.runelite.client.ui.JagexColors;
+import net.runelite.client.util.ColorUtil;
 
 @Singleton
 public class OverlayRenderer extends MouseAdapter implements KeyListener
@@ -69,6 +75,8 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private final Point mousePosition = new Point();
 	private Overlay movedOverlay;
 	private boolean inOverlayDraggingMode;
+	private boolean inMenuEntryMode;
+	private MenuEntry[] menuEntries;
 
 	// Overlay state validation
 	private Rectangle viewportBounds;
@@ -99,7 +107,42 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		if (!event.isFocused())
 		{
 			inOverlayDraggingMode = false;
+			inMenuEntryMode = false;
+			menuEntries = null;
 		}
+	}
+
+	@Subscribe
+	protected void onClientTick(ClientTick t)
+	{
+		if (menuEntries == null)
+		{
+			return;
+		}
+
+		if (!inMenuEntryMode && runeLiteConfig.menuEntryShift())
+		{
+			return;
+		}
+
+		if (client.isMenuOpen())
+		{
+			return;
+		}
+
+		MenuEntry[] clientMenuEntries = client.getMenuEntries();
+		MenuEntry[] newEntries = new MenuEntry[clientMenuEntries.length + menuEntries.length];
+
+		newEntries[0] = clientMenuEntries[0]; // Keep cancel at 0
+		System.arraycopy(menuEntries, 0, newEntries, 1, menuEntries.length); // Add overlay menu entries
+		System.arraycopy(clientMenuEntries, 1, newEntries, menuEntries.length + 1, clientMenuEntries.length - 1); // Add remaining menu entries
+		client.setMenuEntries(newEntries);
+	}
+
+	@Subscribe
+	public void onBeforeRender(BeforeRender event)
+	{
+		menuEntries = null;
 	}
 
 	public void render(Graphics2D graphics, final OverlayLayer layer)
@@ -148,6 +191,10 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 			graphics.setColor(previous);
 		}
+
+		// Get mouse position
+		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
+		final Point mouse = new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
 
 		for (Overlay overlay : overlays)
 		{
@@ -201,11 +248,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 					{
 						location.setLocation(preferredLocation);
 					}
-				}
 
-				final Dimension realDimensions = client.getRealDimensions();
-				location.x = Ints.constrainToRange(location.x, 0, realDimensions.width - dimension.width);
-				location.y = Ints.constrainToRange(location.y, 0, realDimensions.height - dimension.height);
+					final Dimension realDimensions = client.getRealDimensions();
+					location.x = Ints.constrainToRange(location.x, 0, realDimensions.width - dimension.width);
+					location.y = Ints.constrainToRange(location.y, 0, realDimensions.height - dimension.height);
+				}
 
 				if (overlay.getPreferredSize() != null)
 				{
@@ -226,6 +273,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 					graphics.setColor(movedOverlay == overlay ? MOVING_OVERLAY_ACTIVE_COLOR : MOVING_OVERLAY_COLOR);
 					graphics.draw(bounds);
 					graphics.setColor(previous);
+				}
+
+				if (menuEntries == null && !client.isMenuOpen() && bounds.contains(mouse))
+				{
+					menuEntries = createRightClickMenuEntries(overlay);
 				}
 			}
 		}
@@ -356,6 +408,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		{
 			inOverlayDraggingMode = true;
 		}
+
+		if (e.isShiftDown() && runeLiteConfig.menuEntryShift())
+		{
+			inMenuEntryMode = true;
+		}
 	}
 
 	@Override
@@ -364,6 +421,11 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		if (!e.isAltDown())
 		{
 			inOverlayDraggingMode = false;
+		}
+
+		if (!e.isShiftDown())
+		{
+			inMenuEntryMode = false;
 		}
 	}
 
@@ -482,7 +544,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			bottomLeftPoint.y) : bottomRightPoint;
 
 		final Point canvasTopRightPoint = isResizeable ? new Point(
-			client.getCanvas().getWidth(),
+			(int)client.getRealDimensions().getWidth(),
 			0) : topRightPoint;
 
 		return new OverlayBounds(
@@ -493,5 +555,27 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			new Rectangle(bottomRightPoint, SNAP_CORNER_SIZE),
 			new Rectangle(rightChatboxPoint, SNAP_CORNER_SIZE),
 			new Rectangle(canvasTopRightPoint, SNAP_CORNER_SIZE));
+	}
+
+	private MenuEntry[] createRightClickMenuEntries(Overlay overlay)
+	{
+		List<OverlayMenuEntry> menuEntries = overlay.getMenuEntries();
+		final MenuEntry[] entries = new MenuEntry[menuEntries.size()];
+
+		// Add in reverse order so they display correctly in the right-click menu
+		for (int i = menuEntries.size() - 1; i >= 0; --i)
+		{
+			OverlayMenuEntry overlayMenuEntry = menuEntries.get(i);
+
+			final MenuEntry entry = new MenuEntry();
+			entry.setOption(overlayMenuEntry.getOption());
+			entry.setTarget(ColorUtil.wrapWithColorTag(overlayMenuEntry.getTarget(), JagexColors.MENU_TARGET));
+			entry.setType(MenuAction.RUNELITE_OVERLAY.getId());
+			entry.setIdentifier(overlayManager.getOverlays().indexOf(overlay)); // overlay id
+
+			entries[i] = entry;
+		}
+
+		return entries;
 	}
 }

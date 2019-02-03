@@ -408,6 +408,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapPay())
 			{
 				swap("pay", option, target, true);
+				swap("pay (", option, target, false);
 			}
 
 			if (config.swapDecant())
@@ -496,6 +497,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap("quick-pass", option, target, true);
 			swap("quick pass", option, target, true);
 		}
+		else if (config.swapQuick() && option.equals("open"))
+		{
+			swap("quick-open", option, target, true);
+		}
 		else if (config.swapAdmire() && option.equals("admire"))
 		{
 			swap("teleport", option, target, true);
@@ -505,6 +510,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapPrivate() && option.equals("shared"))
 		{
 			swap("private", option, target, true);
+		}
+		else if (config.swapPick() && option.equals("pick"))
+		{
+			swap("pick-lots", option, target, true);
 		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{

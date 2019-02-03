@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.objectindicators;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -33,6 +34,7 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("objectindicators")
 public interface ObjectIndicatorsConfig extends Config
 {
+	@Alpha
 	@ConfigItem(
 		keyName = "markerColor",
 		name = "Marker color",

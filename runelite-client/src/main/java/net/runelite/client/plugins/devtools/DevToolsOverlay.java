@@ -38,7 +38,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
@@ -386,36 +385,15 @@ class DevToolsOverlay extends Overlay
 
 		for (Projectile projectile : projectiles)
 		{
-			int originX = projectile.getX1();
-			int originY = projectile.getY1();
-
-			LocalPoint tilePoint = new LocalPoint(originX, originY);
-			Polygon poly = Perspective.getCanvasTilePoly(client, tilePoint);
-
-			if (poly != null)
-			{
-				OverlayUtil.renderPolygon(graphics, poly, Color.RED);
-			}
-
 			int projectileId = projectile.getId();
-			Actor projectileInteracting = projectile.getInteracting();
-
-			String infoString = "";
-
-			if (projectileInteracting == null)
+			String text = "(ID: " + projectileId + ")";
+			int x = (int) projectile.getX();
+			int y = (int) projectile.getY();
+			LocalPoint projectilePoint = new LocalPoint(x, y);
+			Point textLocation = Perspective.getCanvasTextLocation(client, graphics, projectilePoint, text, 0);
+			if (textLocation != null)
 			{
-				infoString += "AoE";
-			}
-			else
-			{
-				infoString += "Targeted (T: " + projectileInteracting.getName() + ")";
-			}
-
-			infoString += " (ID: " + projectileId + ")";
-
-			if (projectileInteracting != null)
-			{
-				OverlayUtil.renderActorOverlay(graphics, projectile.getInteracting(), infoString, Color.RED);
+				OverlayUtil.renderTextLocation(graphics, textLocation, text, Color.RED);
 			}
 		}
 	}

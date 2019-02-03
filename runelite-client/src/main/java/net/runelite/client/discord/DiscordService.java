@@ -29,6 +29,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.discord.events.DiscordDisconnected;
@@ -47,18 +48,44 @@ import net.runelite.discord.DiscordUser;
 @Slf4j
 public class DiscordService implements AutoCloseable
 {
-	@Inject
-	private EventBus eventBus;
+	private final EventBus eventBus;
+	private final RuneLiteProperties runeLiteProperties;
+	private final ScheduledExecutorService executorService;
+	private final DiscordRPC discordRPC;
 
-	@Inject
-	private RuneLiteProperties runeLiteProperties;
-
-	@Inject
-	private ScheduledExecutorService executorService;
-
-	private DiscordRPC discordRPC;
 	// Hold a reference to the event handlers to prevent the garbage collector from deleting them
-	private final DiscordEventHandlers discordEventHandlers = new DiscordEventHandlers();
+	private final DiscordEventHandlers discordEventHandlers;
+
+	@Getter
+	private DiscordUser currentUser;
+
+	@Inject
+	private DiscordService(
+		final EventBus eventBus,
+		final RuneLiteProperties runeLiteProperties,
+		final ScheduledExecutorService executorService)
+	{
+
+		this.eventBus = eventBus;
+		this.runeLiteProperties = runeLiteProperties;
+		this.executorService = executorService;
+
+		DiscordRPC discordRPC = null;
+		DiscordEventHandlers discordEventHandlers = null;
+
+		try
+		{
+			discordRPC = DiscordRPC.INSTANCE;
+			discordEventHandlers = new DiscordEventHandlers();
+		}
+		catch (UnsatisfiedLinkError e)
+		{
+			log.warn("Failed to load Discord library, Discord support will be disabled.");
+		}
+
+		this.discordRPC = discordRPC;
+		this.discordEventHandlers = discordEventHandlers;
+	}
 
 	/**
 	 * Initializes the Discord service, sets up the event handlers and starts worker thread that will poll discord
@@ -67,18 +94,12 @@ public class DiscordService implements AutoCloseable
 	 */
 	public void init()
 	{
-		log.info("Initializing Discord RPC service.");
-
-		try
+		if (discordEventHandlers == null)
 		{
-			discordRPC = DiscordRPC.INSTANCE;
-		}
-		catch (UnsatisfiedLinkError e)
-		{
-			log.warn("Failed to load Discord library, Discord support will be disabled.");
 			return;
 		}
 
+		log.info("Initializing Discord RPC service.");
 		discordEventHandlers.ready = this::ready;
 		discordEventHandlers.disconnected = this::disconnected;
 		discordEventHandlers.errored = this::errored;
@@ -173,6 +194,7 @@ public class DiscordService implements AutoCloseable
 	private void ready(DiscordUser user)
 	{
 		log.info("Discord RPC service is ready with user {}.", user.username);
+		currentUser = user;
 		eventBus.post(new DiscordReady(
 			user.userId,
 			user.username,
@@ -187,6 +209,7 @@ public class DiscordService implements AutoCloseable
 
 	private void errored(int errorCode, String message)
 	{
+		log.warn("Discord error: {} - {}", errorCode, message);
 		eventBus.post(new DiscordErrored(errorCode, message));
 	}
 

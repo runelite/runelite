@@ -155,10 +155,21 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "duels",
+		name = "Screenshot Duels",
+		description = "Configures whether or not screenshots are automatically taken of the duel end screen.",
+		position = 11
+	)
+	default boolean screenshotDuels()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "valuableDrop",
 		name = "Screenshot Valuable drops",
 		description = "Configures whether or not screenshots are automatically taken when you receive a valuable drop.",
-		position = 11
+		position = 12
 	)
 	default boolean screenshotValuableDrop()
 	{
@@ -169,7 +180,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "untradeableDrop",
 		name = "Screenshot Untradeable drops",
 		description = "Configures whether or not screenshots are automatically taken when you receive an untradeable drop.",
-		position = 12
+		position = 13
 	)
 	default boolean screenshotUntradeableDrop()
 	{
@@ -180,7 +191,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "hotkey",
 		name = "Screenshot hotkey",
 		description = "When you press this key a screenshot will be taken",
-		position = 13
+		position = 14
 	)
 	default Keybind hotkey()
 	{

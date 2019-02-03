@@ -29,7 +29,6 @@ import lombok.Value;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.Perspective;
-import net.runelite.api.Point;
 
 /**
  * A three-dimensional point representing the coordinate of a Tile.
@@ -271,12 +270,6 @@ public class WorldPoint
 			y + client.getBaseY(),
 			plane
 		);
-	}
-
-	@Deprecated
-	public Point toPoint()
-	{
-		return new Point(x, y);
 	}
 
 	/**

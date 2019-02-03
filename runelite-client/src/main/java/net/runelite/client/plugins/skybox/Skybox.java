@@ -127,7 +127,7 @@ class Skybox
 					{
 						if (!expr.startsWith("bounds"))
 						{
-							throw new IllegalArgumentException("Expceted bounds (" + filename + ":" + lineNo + ")");
+							throw new IllegalArgumentException("Expected bounds (" + filename + ":" + lineNo + ")");
 						}
 						x1 = Integer.parseInt(m.group("bx1")) * 8;
 						y1 = Integer.parseInt(m.group("by1")) * 8;
@@ -327,7 +327,7 @@ class Skybox
 			{
 				return -1;
 			}
-			
+
 			cy = itp >> 3 & 0x7FF;
 			cx = itp >> 14 & 0x3FF;
 			plane = itp >> 24 & 0x3;
@@ -365,11 +365,13 @@ class Skybox
 	/**
 	 * Calculates the RGB color for a specific world coordinate. Arguments are floats for sub-tile accuracy.
 	 *
-	 * @param x           X coordinate in tiles
-	 * @param y           Y coordinate in tiles
+	 * @param x           Sample X coordinate in tiles
+	 * @param y           Samlpe Y coordinate in tiles
+	 * @param x           Player X coordinate in tiles
+	 * @param y           Player Y coordinate in tiles
 	 * @param chunkMapper maps chunks to their instance templates, or null if not in an instance
 	 */
-	public int getColorForPoint(double x, double y, int plane, double brightness, ChunkMapper chunkMapper)
+	public int getColorForPoint(double x, double y, int px, int py, int plane, double brightness, ChunkMapper chunkMapper)
 	{
 		x /= 8.d;
 		y /= 8.d;
@@ -377,7 +379,7 @@ class Skybox
 		int cx = (int) x;
 		int cy = (int) y;
 
-		int centerChunkData = chunkData(cx, cy, plane, chunkMapper);
+		int centerChunkData = chunkData(px / 8, py / 8, plane, chunkMapper);
 		if (centerChunkData == -1)
 		{
 			// No data in the center chunk?
@@ -477,7 +479,7 @@ class Skybox
 	 *
 	 * @param resolution The number of pixels per tile
 	 * @param line       How many tiles to put a line
-	 * @param plane     the plane (0-4) to render
+	 * @param plane      the plane (0-4) to render
 	 */
 	BufferedImage render(double resolution, int line, int plane, ChunkMapper chunkMapper)
 	{
@@ -499,7 +501,7 @@ class Skybox
 				{
 					double fx = (x1 * 8) + (x / resolution);
 					double fy = (y1 * 8) + (y / resolution);
-					color = getColorForPoint(fx, fy, plane, .8, chunkMapper);
+					color = getColorForPoint(fx, fy, (int) fx, (int) fy, plane, .8, chunkMapper);
 				}
 				img.setRGB(x, h - 1 - y, color | 0xFF000000);
 			}

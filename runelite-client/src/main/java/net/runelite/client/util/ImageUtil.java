@@ -30,16 +30,21 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
 import java.awt.image.RescaleOp;
 import java.io.IOException;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.GrayFilter;
 import java.util.function.Predicate;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.SpritePixels;
 
 /**
  * Various Image/BufferedImage utilities.
  */
+@Slf4j
 public class ImageUtil
 {
 	/**
@@ -406,5 +411,29 @@ public class ImageUtil
 	private static BufferedImage offset(final BufferedImage image, final float[] scales, final float[] offsets)
 	{
 		return new RescaleOp(scales, offsets, null).filter(image, null);
+	}
+
+
+	/**
+	 * Converts the buffered image into a sprite image and returns it
+	 * @param image  The image to be converted
+	 * @param client Current client instance
+	 * @return       The buffered image as a sprite image
+	 */
+	public static SpritePixels getImageSpritePixels(BufferedImage image, Client client)
+	{
+		int[] pixels = new int[image.getWidth() * image.getHeight()];
+
+		try
+		{
+			new PixelGrabber(image, 0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth())
+				.grabPixels();
+		}
+		catch (InterruptedException ex)
+		{
+			log.debug("PixelGrabber was interrupted: ", ex);
+		}
+
+		return client.createSpritePixels(pixels, image.getWidth(), image.getHeight());
 	}
 }

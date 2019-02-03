@@ -25,9 +25,13 @@
  */
 package net.runelite.client.plugins.achievementdiary.diaries;
 
+import net.runelite.api.Quest;
 import net.runelite.api.Skill;
+import net.runelite.client.plugins.achievementdiary.CombatLevelRequirement;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
-import net.runelite.client.plugins.achievementdiary.Requirement;
+import net.runelite.client.plugins.achievementdiary.OrRequirement;
+import net.runelite.client.plugins.achievementdiary.QuestRequirement;
+import net.runelite.client.plugins.achievementdiary.SkillRequirement;
 
 public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 {
@@ -36,70 +40,98 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 		// EASY
 		add("Use the rope swing to travel to the small island north-west of Karamja, where the " +
 				"moss giants are.",
-			new Requirement(Skill.AGILITY, 10));
+			new SkillRequirement(Skill.AGILITY, 10));
 		add("Mine some gold from the rocks on the north-west peninsula of Karamja.",
-			new Requirement(Skill.MINING, 40));
+			new SkillRequirement(Skill.MINING, 40));
 		add("Explore Cairn Island to the west of Karamja.",
-			new Requirement(Skill.AGILITY, 15));
+			new SkillRequirement(Skill.AGILITY, 15));
 
 		// MEDIUM
 		add("Claim a ticket from the Agility Arena in Brimhaven.",
-			new Requirement(Skill.AGILITY, 30));
+			new SkillRequirement(Skill.AGILITY, 30));
+		add("Discover hidden wall in the dungeon below the volcano.",
+			new QuestRequirement(Quest.DRAGON_SLAYER, true));
+		add("Visit the Isle of Crandor via the dungeon below the volcano.",
+			new QuestRequirement(Quest.DRAGON_SLAYER, true));
+		add("Use Vigroy and Hajedy's cart service.",
+			new QuestRequirement(Quest.SHILO_VILLAGE));
 		add("Earn 100% favour in the village of Tai Bwo Wannai.",
-			new Requirement(Skill.WOODCUTTING, 10));
+			new SkillRequirement(Skill.WOODCUTTING, 10),
+			new QuestRequirement(Quest.JUNGLE_POTION));
 		add("Cook a spider on a stick.",
-			new Requirement(Skill.COOKING, 16));
+			new SkillRequirement(Skill.COOKING, 16));
+		add("Charter the Lady of the Waves from Cairn Isle to Port Khazard.",
+			new QuestRequirement(Quest.SHILO_VILLAGE));
 		add("Cut a log from a teak tree.",
-			new Requirement(Skill.WOODCUTTING, 35));
+			new SkillRequirement(Skill.WOODCUTTING, 35),
+			new QuestRequirement(Quest.JUNGLE_POTION));
 		add("Cut a log from a mahogany tree.",
-			new Requirement(Skill.WOODCUTTING, 50));
+			new SkillRequirement(Skill.WOODCUTTING, 50),
+			new QuestRequirement(Quest.JUNGLE_POTION));
 		add("Catch a karambwan.",
-			new Requirement(Skill.FISHING, 65));
+			new SkillRequirement(Skill.FISHING, 65),
+			new QuestRequirement(Quest.TAI_BWO_WANNAI_TRIO, true));
+		add("Exchange gems for a machete.",
+			new QuestRequirement(Quest.JUNGLE_POTION));
+		add("Use the gnome glider to travel to Karamja.",
+			new QuestRequirement(Quest.THE_GRAND_TREE));
 		add("Grow a healthy fruit tree in the patch near Brimhaven.",
-			new Requirement(Skill.FARMING, 27));
+			new SkillRequirement(Skill.FARMING, 27));
 		add("Trap a horned graahk.",
-			new Requirement(Skill.HUNTER, 41));
+			new SkillRequirement(Skill.HUNTER, 41));
 		add("Chop the vines to gain deeper access to Brimhaven Dungeon.",
-			new Requirement(Skill.WOODCUTTING, 10));
+			new SkillRequirement(Skill.WOODCUTTING, 10));
 		add("Cross the lava using the stepping stones within Brimhaven Dungeon.",
-			new Requirement(Skill.AGILITY, 12));
+			new SkillRequirement(Skill.AGILITY, 12));
 		add("Climb the stairs within Brimhaven Dungeon.",
-			new Requirement(Skill.WOODCUTTING, 10));
+			new SkillRequirement(Skill.WOODCUTTING, 10));
+		add("Charter a ship from the shipyard in the far east of Karamja.",
+			new QuestRequirement(Quest.THE_GRAND_TREE));
 		add("Mine a red topaz from a gem rock.",
-			new Requirement(Skill.MINING, 40));
+			new SkillRequirement(Skill.MINING, 40),
+			new OrRequirement(
+				new QuestRequirement(Quest.SHILO_VILLAGE),
+				new QuestRequirement(Quest.JUNGLE_POTION)
+			)
+		);
 
 		// HARD
 		add("Craft some nature runes.",
-			new Requirement(Skill.RUNECRAFT, 44));
+			new SkillRequirement(Skill.RUNECRAFT, 44),
+			new QuestRequirement(Quest.RUNE_MYSTERIES));
 		add("Cook a karambwan thoroughly.",
-			new Requirement(Skill.COOKING, 30));
+			new SkillRequirement(Skill.COOKING, 30),
+			new QuestRequirement(Quest.TAI_BWO_WANNAI_TRIO));
 		add("Kill a deathwing in the dungeon under the Kharazi Jungle.",
-			new Requirement(Skill.WOODCUTTING, 15),
-			new Requirement(Skill.STRENGTH, 50),
-			new Requirement(Skill.AGILITY, 50),
-			new Requirement(Skill.THIEVING, 50),
-			new Requirement(Skill.MINING, 52));
+			new SkillRequirement(Skill.WOODCUTTING, 15),
+			new SkillRequirement(Skill.STRENGTH, 50),
+			new SkillRequirement(Skill.AGILITY, 50),
+			new SkillRequirement(Skill.THIEVING, 50),
+			new SkillRequirement(Skill.MINING, 52),
+			new QuestRequirement(Quest.LEGENDS_QUEST));
 		add("Use the crossbow short cut south of the volcano.",
-			new Requirement(Skill.AGILITY, 53),
-			new Requirement(Skill.RANGED, 42),
-			new Requirement(Skill.STRENGTH, 21));
+			new SkillRequirement(Skill.AGILITY, 53),
+			new SkillRequirement(Skill.RANGED, 42),
+			new SkillRequirement(Skill.STRENGTH, 21));
 		add("Collect 5 palm leaves.",
-			new Requirement(Skill.WOODCUTTING, 15));
+			new SkillRequirement(Skill.WOODCUTTING, 15),
+			new QuestRequirement(Quest.LEGENDS_QUEST));
 		add("Be assigned a Slayer task by Duradel north of Shilo Village.",
-			new Requirement("Combat", 100),
-			new Requirement(Skill.SLAYER, 50));
+			new CombatLevelRequirement(100),
+			new SkillRequirement(Skill.SLAYER, 50),
+			new QuestRequirement(Quest.SHILO_VILLAGE));
 		add("Kill a metal dragon in Brimhaven Dungeon.",
-			new Requirement(Skill.AGILITY, 12),
-			new Requirement(Skill.WOODCUTTING, 34));
+			new SkillRequirement(Skill.AGILITY, 12),
+			new SkillRequirement(Skill.WOODCUTTING, 34));
 
 		// ELITE
 		add("Craft 56 Nature runes at once.",
-			new Requirement(Skill.RUNECRAFT, 91));
+			new SkillRequirement(Skill.RUNECRAFT, 91));
 		add("Check the health of a palm tree in Brimhaven.",
-			new Requirement(Skill.FARMING, 68));
+			new SkillRequirement(Skill.FARMING, 68));
 		add("Create an antivenom potion whilst standing in the horse shoe mine.",
-			new Requirement(Skill.HERBLORE, 87));
+			new SkillRequirement(Skill.HERBLORE, 87));
 		add("Check the health of your Calquat tree patch.",
-			new Requirement(Skill.FARMING, 72));
+			new SkillRequirement(Skill.FARMING, 72));
 	}
 }

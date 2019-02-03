@@ -26,11 +26,16 @@ package net.runelite.client.plugins.timetracking.farming;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
+import static org.hamcrest.Matchers.*;
 
 public class PatchImplementationTest
 {
+	@Rule
+	public ErrorCollector collector = new ErrorCollector();
+
 	@Test
 	public void testRange()
 	{
@@ -43,20 +48,20 @@ public class PatchImplementationTest
 				if (s != null)
 				{
 					String pfx = impl.name() + "[" + i + "]";
-					Assert.assertNotNull(pfx + ": null cropState", s.getCropState());
-					Assert.assertNotNull(pfx + ": null produce", s.getProduce());
-					Assert.assertTrue(pfx + ": " + s.getStage() + " < 0", s.getStage() >= 0);
+					collector.checkThat(pfx + ": cropState", s.getCropState(), notNullValue());
+					collector.checkThat(pfx + ": produce", s.getProduce(), notNullValue());
+					collector.checkThat(pfx + ": negative stage", s.getStage(), greaterThanOrEqualTo(0));
 					int stages = s.getProduce().getStages();
 					if (s.getCropState() == CropState.HARVESTABLE)
 					{
 						stages = s.getProduce().getHarvestStages();
 					}
-					Assert.assertTrue(pfx + ": " + s.getStage() + " >= " + stages, s.getStage() < stages);
+					collector.checkThat(pfx + ": out of bounds stage", s.getStage(), lessThan(stages));
 					if (s.getCropState() == CropState.DEAD || s.getCropState() == CropState.DISEASED)
 					{
-						Assert.assertTrue(pfx + ": dead seed", s.getStage() > 0);
+						collector.checkThat(pfx + ": dead seed", s.getStage(), greaterThan(0));
 					}
-					if (s.getCropState() == CropState.GROWING && s.getProduce() != Produce.WEEDS)
+					if (s.getCropState() == CropState.GROWING && s.getProduce() != Produce.WEEDS && s.getStage() < stages)
 					{
 						harvestStages.computeIfAbsent(s.getProduce(), k -> new boolean[s.getProduce().getStages()])[s.getStage()] = true;
 					}
@@ -69,7 +74,7 @@ public class PatchImplementationTest
 				// Alot of time the final stage is not hit, because some plants do not have a "Check-health" stage
 				for (int i = 0; i < states.length - 1; i++)
 				{
-					Assert.assertTrue(produce.getKey().getName() + " stage " + i + " never found by varbit", states[i]);
+					collector.checkThat(produce.getKey().getName() + " stage " + i + " never found by varbit", states[i], is(true));
 				}
 			}
 		}

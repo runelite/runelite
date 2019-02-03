@@ -29,6 +29,8 @@ import com.google.common.hash.Funnels;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ExecutionException;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
@@ -48,6 +50,7 @@ import org.sql2o.Sql2o;
 @Slf4j
 public class XpTrackerService
 {
+	private static final int QUEUE_LIMIT = 100_000;
 	private static final Duration UPDATE_TIME = Duration.ofMinutes(5);
 
 	@Autowired
@@ -57,8 +60,8 @@ public class XpTrackerService
 	@Autowired
 	private HiscoreService hiscoreService;
 
+	private final Queue<String> usernameUpdateQueue = new ConcurrentLinkedDeque<>();
 	private BloomFilter<String> usernameFilter = createFilter();
-	private String nextUsername;
 
 	public void update(String username) throws ExecutionException
 	{
@@ -68,12 +71,18 @@ public class XpTrackerService
 
 	public void tryUpdate(String username)
 	{
-		if (nextUsername != null || usernameFilter.mightContain(username))
+		if (usernameFilter.mightContain(username))
 		{
 			return;
 		}
 
-		nextUsername = username;
+		if (usernameUpdateQueue.size() >= QUEUE_LIMIT)
+		{
+			log.warn("Username update queue is full ({})", QUEUE_LIMIT);
+			return;
+		}
+
+		usernameUpdateQueue.add(username);
 		usernameFilter.put(username);
 	}
 
@@ -211,8 +220,7 @@ public class XpTrackerService
 	@Scheduled(fixedDelay = 1000)
 	public void update() throws ExecutionException
 	{
-		String next = nextUsername;
-		nextUsername = null;
+		String next = usernameUpdateQueue.poll();
 
 		if (next == null)
 		{
@@ -223,17 +231,24 @@ public class XpTrackerService
 		update(next, hiscoreResult);
 	}
 
-	@Scheduled(fixedDelay = 60 * 60 * 1000) // one hour
+	@Scheduled(fixedDelay = 3 * 60 * 60 * 1000) // 3 hours
 	public void clearFilter()
 	{
 		usernameFilter = createFilter();
 	}
 
-	private static BloomFilter<String> createFilter()
+	private BloomFilter<String> createFilter()
 	{
-		return BloomFilter.create(
+		final BloomFilter<String> filter = BloomFilter.create(
 			Funnels.stringFunnel(Charset.defaultCharset()),
 			100_000
 		);
+
+		for (String toUpdate : usernameUpdateQueue)
+		{
+			filter.put(toUpdate);
+		}
+
+		return filter;
 	}
 }

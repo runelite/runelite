@@ -33,6 +33,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -62,6 +63,7 @@ public class CrystalMathLabs extends Plugin
 	private Client client;
 
 	private String lastUsername;
+	private boolean fetchXp;
 	private long lastXp;
 
 	@Subscribe
@@ -91,6 +93,16 @@ public class CrystalMathLabs extends Plugin
 				log.debug("Submitting update for {}", local.getName());
 				sendUpdateRequest(local.getName());
 			}
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (fetchXp)
+		{
+			lastXp = getTotalXp();
+			fetchXp = false;
 		}
 	}
 
@@ -128,7 +140,7 @@ public class CrystalMathLabs extends Plugin
 			@Override
 			public void onFailure(Call call, IOException e)
 			{
-				log.warn("error submitting CML update", e);
+				log.warn("Error submitting CML update, caused by {}.", e.getMessage());
 			}
 
 			@Override

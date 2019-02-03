@@ -131,4 +131,5 @@ public final class STASHUnit
 	public static final int DEATH_ALTAR = NullObjectID.NULL_29058;
 	public static final int BEHIND_MISS_SCHISM_IN_DRAYNOR_VILLAGE = NullObjectID.NULL_29059;
 	public static final int NORTHWESTERN_CORNER_OF_THE_ENCHANTED_VALLEY = NullObjectID.NULL_29060;
+	public static final int NORTH_OF_MOUNT_KARUULM = NullObjectID.NULL_34647;
 }

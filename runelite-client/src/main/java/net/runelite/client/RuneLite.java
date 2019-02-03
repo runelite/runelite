@@ -55,6 +55,8 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.LootManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.menus.MenuManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
@@ -66,6 +68,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
+import net.runelite.client.ws.PartyService;
 import org.slf4j.LoggerFactory;
 
 @Singleton
@@ -108,6 +111,9 @@ public class RuneLite
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private PartyService partyService;
 
 	@Inject
 	private Provider<ItemManager> itemManager;
@@ -263,6 +269,7 @@ public class RuneLite
 		eventBus.register(overlayManager);
 		eventBus.register(drawManager);
 		eventBus.register(infoBoxManager);
+		eventBus.register(partyService);
 
 		if (!isOutdated)
 		{
@@ -291,8 +298,21 @@ public class RuneLite
 
 	public void shutdown()
 	{
+		configManager.sendConfig();
 		clientSessionManager.shutdown();
 		discordService.close();
+
+		for (final Plugin plugin : pluginManager.getPlugins())
+		{
+			try
+			{
+				pluginManager.stopPlugin(plugin);
+			}
+			catch (PluginInstantiationException e)
+			{
+				log.warn("Failed to gracefully close plugin", e);
+			}
+		}
 	}
 
 	@VisibleForTesting

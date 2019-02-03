@@ -307,6 +307,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("menuActionParams1")
 	int[] getMenuActionParams1();
 
+	@Import("menuForceLeftClick")
+	boolean[] getMenuForceLeftClick();
+
 	@Import("worldList")
 	@Override
 	RSWorld[] getWorldList();
@@ -497,9 +500,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("widgetRoot")
 	int getWidgetRoot();
 
-	@Import("mapAreaType")
+	@Import("mapElementConfigs")
 	@Override
-	RSArea[] getMapAreas();
+	RSMapElementConfig[] getMapElementConfigs();
 
 	@Import("mapscene")
 	@Override

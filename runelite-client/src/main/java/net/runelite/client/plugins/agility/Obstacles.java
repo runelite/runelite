@@ -225,7 +225,9 @@ class Obstacles
 		// Asgarnian Ice Dungeon
 		STEPS,
 		// Fossil Island Wyvern Cave
-		STAIRS_31485
+		STAIRS_31485,
+		// Mount Karuulm
+		ROCKS_34397, ROCKS_34396
 	);
 
 	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(

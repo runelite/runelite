@@ -81,6 +81,7 @@ import static net.runelite.api.NpcID.FISHING_SPOT_7732;
 import static net.runelite.api.NpcID.FISHING_SPOT_7733;
 import static net.runelite.api.NpcID.FISHING_SPOT_7946;
 import static net.runelite.api.NpcID.FISHING_SPOT_7947;
+import static net.runelite.api.NpcID.FISHING_SPOT_8523;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1508;
 import static net.runelite.api.NpcID.ROD_FISHING_SPOT_1509;
@@ -154,7 +155,9 @@ enum FishingSpot
 	),
 	DARK_CRAB("Dark Crab", ItemID.RAW_DARK_CRAB,
 		FISHING_SPOT_1536
-	);
+	),
+	COMMON_TENCH("Common tench, Bluegill, Greater siren, Mottled eel", ItemID.COMMON_TENCH,
+		FISHING_SPOT_8523);
 
 	@Getter
 	private static final Map<Integer, FishingSpot> SPOTS = new HashMap<>();

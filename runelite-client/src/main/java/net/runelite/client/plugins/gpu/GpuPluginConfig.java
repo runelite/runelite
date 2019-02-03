@@ -31,6 +31,7 @@ import net.runelite.client.config.Range;
 import net.runelite.client.plugins.gpu.config.AnisotropicFilteringMode;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_DISTANCE;
+import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_FOG_DEPTH;
 
 @ConfigGroup("gpu")
 public interface GpuPluginConfig extends Config
@@ -71,6 +72,9 @@ public interface GpuPluginConfig extends Config
 		return AntiAliasingMode.DISABLED;
 	}
 
+	@Range(
+		max = MAX_FOG_DEPTH
+	)
 	@ConfigItem(
 		keyName = "anisotropicFilteringMode",
 		name = "Anisotropic Filtering",

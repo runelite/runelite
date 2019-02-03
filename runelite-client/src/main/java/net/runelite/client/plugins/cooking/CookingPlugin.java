@@ -25,12 +25,12 @@
  */
 package net.runelite.client.plugins.cooking;
 
+import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import com.google.inject.Provides;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;

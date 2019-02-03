@@ -27,6 +27,9 @@ package net.runelite.http.service.chat;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import net.runelite.http.api.chat.Task;
 import net.runelite.http.service.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +42,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/chat")
 public class ChatController
 {
+	private static final Pattern STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
+	private static final int STRING_MAX_LENGTH = 50;
+
 	private final Cache<KillCountKey, Integer> killCountCache = CacheBuilder.newBuilder()
 		.expireAfterWrite(2, TimeUnit.MINUTES)
 		.maximumSize(128L)
@@ -91,7 +97,7 @@ public class ChatController
 	}
 
 	@GetMapping("/qp")
-	public int getKc(@RequestParam String name)
+	public int getQp(@RequestParam String name)
 	{
 		Integer kc = chatService.getQp(name);
 		if (kc == null)
@@ -99,5 +105,54 @@ public class ChatController
 			throw new NotFoundException();
 		}
 		return kc;
+	}
+
+	@PostMapping("/task")
+	public void submitTask(@RequestParam String name, @RequestParam("task") String taskName, @RequestParam int amount,
+		@RequestParam int initialAmount, @RequestParam String location)
+	{
+		Matcher mTask = STRING_VALIDATION.matcher(taskName);
+		Matcher mLocation = STRING_VALIDATION.matcher(location);
+		if (mTask.find() || taskName.length() > STRING_MAX_LENGTH ||
+			mLocation.find() || location.length() > STRING_MAX_LENGTH)
+		{
+			return;
+		}
+
+		Task task = new Task();
+		task.setTask(taskName);
+		task.setAmount(amount);
+		task.setInitialAmount(initialAmount);
+		task.setLocation(location);
+
+		chatService.setTask(name, task);
+	}
+
+	@GetMapping("/task")
+	public Task getTask(@RequestParam String name)
+	{
+		return chatService.getTask(name);
+	}
+
+	@PostMapping("/pb")
+	public void submitPb(@RequestParam String name, @RequestParam String boss, @RequestParam int pb)
+	{
+		if (pb < 0)
+		{
+			return;
+		}
+
+		chatService.setPb(name, boss, pb);
+	}
+
+	@GetMapping("/pb")
+	public int getPb(@RequestParam String name, @RequestParam String boss)
+	{
+		Integer pb = chatService.getPb(name, boss);
+		if (pb == null)
+		{
+			throw new NotFoundException();
+		}
+		return pb;
 	}
 }

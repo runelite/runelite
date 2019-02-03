@@ -24,6 +24,7 @@
  */
 package net.runelite.http.service;
 
+import ch.qos.logback.classic.LoggerContext;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.HashMap;
@@ -31,15 +32,18 @@ import java.util.Map;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.ServletException;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.service.util.InstantConverter;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.ILoggerFactory;
+import org.slf4j.impl.StaticLoggerBinder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -49,17 +53,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.Converter;
 import org.sql2o.quirks.NoQuirks;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 
 @SpringBootApplication
 @EnableScheduling
 @Slf4j
 public class SpringBootWebApplication extends SpringBootServletInitializer
 {
-	@Value("${redis.host:localhost}")
-	private String redisHost;
-
 	@Bean
 	protected ServletContextListener listener()
 	{
@@ -130,16 +129,23 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 		return new Sql2o(dataSource, new NoQuirks(converters));
 	}
 
-	@Bean
-	JedisPool jedis()
-	{
-		return new JedisPool(new JedisPoolConfig(), redisHost);
-	}
-
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application)
 	{
 		return application.sources(SpringBootWebApplication.class);
+	}
+
+	@Override
+	public void onStartup(ServletContext servletContext) throws ServletException
+	{
+		super.onStartup(servletContext);
+		ILoggerFactory loggerFactory = StaticLoggerBinder.getSingleton().getLoggerFactory();
+		if (loggerFactory instanceof LoggerContext)
+		{
+			LoggerContext loggerContext = (LoggerContext) loggerFactory;
+			loggerContext.setPackagingDataEnabled(false);
+			log.debug("Disabling logback packaging data");
+		}
 	}
 
 	public static void main(String[] args)

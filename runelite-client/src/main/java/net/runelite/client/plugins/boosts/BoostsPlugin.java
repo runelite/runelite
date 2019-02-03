@@ -111,6 +111,7 @@ public class BoostsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(boostsOverlay);
+
 		updateShownSkills();
 		updateBoostedStats();
 		Arrays.fill(lastSkillLevels, -1);

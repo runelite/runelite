@@ -37,6 +37,7 @@ import net.runelite.client.config.ConfigManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mockito.Matchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -127,5 +128,56 @@ public class ChatCommandsPluginTest
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
 		verify(configManager).setConfiguration("killcount.adam", "barrows chests", 277);
+	}
+
+	@Test
+	public void testPersonalBest()
+	{
+		final String FIGHT_DURATION = "Fight duration: <col=ff0000>2:06</col>. Personal best: 1:19.";
+
+		when(client.getUsername()).thenReturn("Adam");
+
+		// This sets lastBoss
+		ChatMessage chatMessage = new ChatMessage(SERVER, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(SERVER, "", FIGHT_DURATION, null);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("kree'arra"), eq(79));
+	}
+
+	@Test
+	public void testPersonalBestNoTrailingPeriod()
+	{
+		final String FIGHT_DURATION = "Fight duration: <col=ff0000>0:59</col>. Personal best: 0:55";
+
+		when(client.getUsername()).thenReturn("Adam");
+
+		// This sets lastBoss
+		ChatMessage chatMessage = new ChatMessage(SERVER, "", "Your Zulrah kill count is: <col=ff0000>4</col>.", null);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(SERVER, "", FIGHT_DURATION, null);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("zulrah"), eq(55));
+	}
+
+	@Test
+	public void testNewPersonalBest()
+	{
+		final String NEW_PB = "Fight duration: <col=ff0000>3:01</col> (new personal best).";
+
+		when(client.getUsername()).thenReturn("Adam");
+
+		// This sets lastBoss
+		ChatMessage chatMessage = new ChatMessage(SERVER, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(SERVER, "", NEW_PB, null);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("kree'arra"), eq(181));
 	}
 }
