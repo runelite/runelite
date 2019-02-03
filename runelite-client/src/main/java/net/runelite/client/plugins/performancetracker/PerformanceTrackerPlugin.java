@@ -110,25 +110,6 @@ public class PerformanceTrackerPlugin extends Plugin
 		currentPTRegion = null;
 	}
 
-	public boolean isEnabled()
-	{
-		return tracking && !paused;
-	}
-
-	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
-	)
-	public void secondTick()
-	{
-		if (!isEnabled())
-		{
-			return;
-		}
-
-		current.incrementSeconds();
-	}
-
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
@@ -239,6 +220,37 @@ public class PerformanceTrackerPlugin extends Plugin
 		}
 	}
 
+	@Schedule(
+		period = 1,
+		unit = ChronoUnit.SECONDS
+	)
+	public void secondTick()
+	{
+		if (!isEnabled())
+		{
+			return;
+		}
+
+		current.incrementSeconds();
+	}
+
+	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked c)
+	{
+		if (!c.getOverlay().equals(performanceTrackerOverlay))
+		{
+			return;
+		}
+
+		switch (c.getEntry().getOption())
+		{
+			case "Pause":
+				togglePaused();
+			case "Reset":
+				resetTracker();
+		}
+	}
+
 	/**
 	 * Calculates damage dealt based on HP xp gained
 	 * @param diff HP xp gained
@@ -271,34 +283,36 @@ public class PerformanceTrackerPlugin extends Plugin
 		return damageDealt / NpcExpModifier.getByNpcId(target.getId());
 	}
 
+	/**
+	 * Tracking is enabled/disabled based on region change
+	 */
 	private void handleRegionChange()
 	{
 		final PTRegion oldRegion = currentPTRegion;
 		currentPTRegion = PTRegion.map.get(region);
 
-		if (currentPTRegion == null)
+		// Either entered, left, or changed tracked region
+		if (oldRegion != currentPTRegion)
 		{
 			if (oldRegion != null)
 			{
 				submitPerformance();
 			}
 
-			disableTracking();
-			return;
+			if (currentPTRegion != null)
+			{
+				enableTracking();
+			}
+			else
+			{
+				disableTracking();
+			}
 		}
+	}
 
-		// Changed between region, submit and repause the performance.
-		if (oldRegion != currentPTRegion)
-		{
-			submitPerformance();
-			enableTracking();
-			return;
-		}
-
-		if (!tracking)
-		{
-			enableTracking();
-		}
+	public boolean isEnabled()
+	{
+		return tracking && !paused;
 	}
 
 	private void submitPerformance()
@@ -316,7 +330,7 @@ public class PerformanceTrackerPlugin extends Plugin
 	private void enableTracking()
 	{
 		tracking = true;
-		// Start paused
+		// Start paused?
 		paused = true;
 
 		if (current == null)
@@ -386,22 +400,5 @@ public class PerformanceTrackerPlugin extends Plugin
 			.append(ChatColorType.NORMAL)
 			.append(")")
 			.build();
-	}
-
-	@Subscribe
-	public void onOverlayMenuClicked(OverlayMenuClicked c)
-	{
-		if (!c.getOverlay().equals(performanceTrackerOverlay))
-		{
-			return;
-		}
-
-		switch (c.getEntry().getOption())
-		{
-			case "Pause":
-				togglePaused();
-			case "Reset":
-				resetTracker();
-		}
 	}
 }
