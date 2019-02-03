@@ -107,6 +107,13 @@ class WoodcuttingOverlay extends Overlay
 					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.WOODCUTTING)))
 					.build());
 			}
+			if (actions > 0)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+						.left("Logs/lvl:")
+						.right(Integer.toString(xpTrackerService.getActionsLeft(Skill.WOODCUTTING)))
+						.build());
+			}
 		}
 
 		return panelComponent.render(graphics);
