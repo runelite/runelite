@@ -103,6 +103,13 @@ class FishingOverlay extends Overlay
 					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.FISHING)))
 					.build());
 			}
+			if (actions > 0)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+						.left("Fish/lvl:")
+						.right(Integer.toString(xpTrackerService.getActionsLeft(Skill.FISHING)))
+						.build());
+			}
 		}
 
 		return panelComponent.render(graphics);
