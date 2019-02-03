@@ -27,6 +27,7 @@ package net.runelite.client.plugins.menuentryswapper;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -545,8 +546,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	private int searchIndex(MenuEntry[] entries, String option, String target, boolean strict)
+	private Integer[] searchIndices(MenuEntry[] entries, String option, String target, boolean strict)
 	{
+		Set<Integer> indices = new HashSet<>();
 		for (int i = entries.length - 1; i >= 0; i--)
 		{
 			MenuEntry entry = entries[i];
@@ -557,35 +559,40 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				if (entryOption.equals(option) && entryTarget.equals(target))
 				{
-					return i;
+					indices.add(i);
 				}
 			}
 			else
 			{
 				if (entryOption.contains(option.toLowerCase()) && entryTarget.equals(target))
 				{
-					return i;
+					indices.add(i);
 				}
 			}
 		}
 
-		return -1;
+		return indices.toArray(new Integer[0]);
 	}
 
 	private void makeFirst(String option, String target, boolean strict)
 	{
 		MenuEntry[] entries = client.getMenuEntries();
 
-		int index = searchIndex(entries, option, target, strict);
-		if (index == -1)
+		Integer[] indices = searchIndices(entries, option, target, strict);
+		if (indices.length == 0)
 		{
 			return;
 		}
-		MenuEntry temp = entries[index];
 
-		System.arraycopy(entries, index + 1, entries, index, entries.length - index - 1);
+		for (int i = indices.length - 1; i >= 0; i--)
+		{
+			int index = indices[i];
+			MenuEntry temp = entries[index];
 
-		entries[entries.length - 1] = temp;
+			System.arraycopy(entries, index + 1, entries, index, entries.length - index - 1);
+
+			entries[entries.length - 1] = temp;
+		}
 
 		client.setMenuEntries(entries);
 	}
