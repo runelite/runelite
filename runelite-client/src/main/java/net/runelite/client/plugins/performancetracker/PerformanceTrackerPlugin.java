@@ -52,6 +52,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ws.WSClient;
 
 @PluginDescriptor(
 	name = "Performance Tracker",
@@ -78,6 +79,9 @@ public class PerformanceTrackerPlugin extends Plugin
 	@Inject
 	private OverlayManager overlayManager;
 
+	@Inject
+	private WSClient wsClient;
+
 	private double hpExp = 0;
 	private int region = -1;
 	private boolean loginTick = false;
@@ -95,6 +99,7 @@ public class PerformanceTrackerPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(performanceTrackerOverlay);
+		wsClient.registerMessage(Performance.class);
 		if (client.getGameState().equals(GameState.LOGGED_IN))
 		{
 			region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
@@ -106,6 +111,7 @@ public class PerformanceTrackerPlugin extends Plugin
 	protected void shutDown()
 	{
 		overlayManager.remove(performanceTrackerOverlay);
+		wsClient.unregisterMessage(Performance.class);
 		disableTracking();
 		currentPTRegion = null;
 	}
@@ -232,6 +238,7 @@ public class PerformanceTrackerPlugin extends Plugin
 		}
 
 		current.incrementSeconds();
+		wsClient.send(current);
 	}
 
 	@Subscribe
@@ -249,6 +256,12 @@ public class PerformanceTrackerPlugin extends Plugin
 			case "Reset":
 				resetTracker();
 		}
+	}
+
+	@Subscribe
+	public void onPerformance(Performance p)
+	{
+		log.info("Received performance: {}", p);
 	}
 
 	/**

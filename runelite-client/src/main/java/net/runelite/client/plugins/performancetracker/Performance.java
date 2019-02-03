@@ -25,9 +25,10 @@
 package net.runelite.client.plugins.performancetracker;
 
 import lombok.Data;
+import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 
 @Data
-class Performance
+class Performance extends PartyMemberMessage
 {
 	private boolean started = false;
 	
