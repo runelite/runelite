@@ -29,7 +29,6 @@ import java.time.Instant;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 
 @Slf4j
@@ -105,27 +104,27 @@ public class MotherlodeSession
 		}
 	}
 
-	void updateOreFound(Item ore)
+	void updateOreFound(int id, int amount)
 	{
-		switch (ore.getId())
+		switch (id)
 		{
 			case ItemID.GOLDEN_NUGGET:
-				nuggetsFound += ore.getQuantity();
+				nuggetsFound += amount;
 				break;
 			case ItemID.COAL:
-				coalFound++;
+				coalFound += amount;
 				break;
 			case ItemID.GOLD_ORE:
-				goldFound++;
+				goldFound += amount;
 				break;
 			case ItemID.MITHRIL_ORE:
-				mithrilFound++;
+				mithrilFound += amount;
 				break;
 			case ItemID.ADAMANTITE_ORE:
-				adamantiteFound++;
+				adamantiteFound += amount;
 				break;
 			case ItemID.RUNITE_ORE:
-				runiteFound++;
+				runiteFound += amount;
 				break;
 			default:
 				log.debug("Invalid ore specified. The ore count will not be updated.");

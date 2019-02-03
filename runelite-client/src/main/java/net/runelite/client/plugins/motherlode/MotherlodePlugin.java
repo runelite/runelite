@@ -26,7 +26,10 @@
  */
 package net.runelite.client.plugins.motherlode;
 
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Multisets;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -134,6 +137,7 @@ public class MotherlodePlugin extends Plugin
 
 	private MotherlodeSession session;
 	private boolean shouldUpdateOres;
+	private HashMultiset<Integer> previousSnapshot = HashMultiset.create();
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> veins = new HashSet<>();
@@ -199,7 +203,7 @@ public class MotherlodePlugin extends Plugin
 		{
 			int lastSackValue = curSackSize;
 			refreshSackValues();
-			shouldUpdateOres = curSackSize != lastSackValue;
+			shouldUpdateOres = curSackSize < lastSackValue;
 		}
 	}
 
@@ -387,17 +391,28 @@ public class MotherlodePlugin extends Plugin
 			return;
 		}
 
-		final Item[] inv = container.getItems();
+		final HashMultiset<Integer> currentSnapshot = generateInventorySnapshot(container.getItems());
+		final Multiset<Integer> delta = Multisets.difference(currentSnapshot, previousSnapshot);
 
-		for (Item item : inv)
+		delta.forEachEntry((id, count) -> session.updateOreFound(id, count));
+
+		shouldUpdateOres = false;
+		previousSnapshot = currentSnapshot;
+	}
+
+	private HashMultiset<Integer> generateInventorySnapshot(Item[] inventory)
+	{
+		HashMultiset<Integer> snapshot = HashMultiset.create();
+
+		for (Item item : inventory)
 		{
 			if (MLM_ORE_TYPES.contains(item.getId()))
 			{
-				session.updateOreFound(item);
+				snapshot.add(item.getId(), item.getQuantity());
 			}
 		}
 
-		shouldUpdateOres = false;
+		return snapshot;
 	}
 
 	private Integer calculateDepositsLeft()
