@@ -26,6 +26,9 @@ package net.runelite.client.plugins.performancetracker;
 
 import java.text.DecimalFormat;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -48,10 +51,12 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
+import net.runelite.client.events.PartyChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ws.PartyService;
 import net.runelite.client.ws.WSClient;
 
 @PluginDescriptor(
@@ -80,6 +85,9 @@ public class PerformanceTrackerPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
+	private PartyService party;
+
+	@Inject
 	private WSClient wsClient;
 
 	private double hpExp = 0;
@@ -94,6 +102,9 @@ public class PerformanceTrackerPlugin extends Plugin
 	private boolean paused = false;
 	@Getter
 	private boolean tracking = false;
+
+	@Getter
+	private Map<String, Performance> partyPerformances = new HashMap<>();
 
 	@Override
 	protected void startUp()
@@ -238,7 +249,11 @@ public class PerformanceTrackerPlugin extends Plugin
 		}
 
 		current.incrementSeconds();
-		wsClient.send(current);
+		if (!party.getMembers().isEmpty())
+		{
+			current.setMemberId(party.getLocalMember().getMemberId());
+			wsClient.send(current);
+		}
 	}
 
 	@Subscribe
@@ -259,9 +274,17 @@ public class PerformanceTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onPartyChanged(final PartyChanged event)
+	{
+		// Reset party
+		partyPerformances.clear();
+	}
+
+	@Subscribe
 	public void onPerformance(Performance p)
 	{
 		log.info("Received performance: {}", p);
+		partyPerformances.put(party.getMemberById(p.getMemberId()).getName(), p);
 	}
 
 	/**

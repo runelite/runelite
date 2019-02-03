@@ -25,10 +25,11 @@
 package net.runelite.client.plugins.performancetracker;
 
 import lombok.Data;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 
 @Data
-class Performance extends PartyMemberMessage
+public class Performance extends PartyMemberMessage
 {
 	private boolean started = false;
 	
@@ -79,5 +80,12 @@ class Performance extends PartyMemberMessage
 		final double h = Math.floor(secondsSpent / 3600);
 
 		return h < 1 ? String.format("%2.0f:%02.0f", m, s) : String.format("%2.0f:%02.0f:%02.0f", h, m, s);
+	}
+
+	String singleLineData()
+	{
+		return String.valueOf(Math.round(damageDealt)) +
+			" | " + Math.round(damageTaken) +
+			" | " + getDPS();
 	}
 }

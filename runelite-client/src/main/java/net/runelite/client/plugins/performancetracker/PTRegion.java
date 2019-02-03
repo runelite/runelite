@@ -56,7 +56,8 @@ public enum PTRegion
 	NYLOCAS(13122),
 	SOTETSEG(13123, 13379),
 	XARPUS(12612),
-	VERZIK(12611);
+	VERZIK(12611),
+	TEST(12342, 12343);
 
 	private final int[] regionIDs;
 
