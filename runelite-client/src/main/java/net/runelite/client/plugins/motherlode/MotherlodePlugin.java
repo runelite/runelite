@@ -132,6 +132,7 @@ public class MotherlodePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Integer depositsLeft;
 
+	@Inject
 	private MotherlodeSession session;
 	private boolean shouldUpdateOres;
 
@@ -155,7 +156,6 @@ public class MotherlodePlugin extends Plugin
 		overlayManager.add(motherlodeOreOverlay);
 		overlayManager.add(motherlodeSackOverlay);
 
-		session = new MotherlodeSession();
 		inMlm = checkInMlm();
 
 		if (inMlm)
@@ -165,14 +165,13 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(rocksOverlay);
 		overlayManager.remove(motherlodeGemOverlay);
 		overlayManager.remove(motherlodeOreOverlay);
 		overlayManager.remove(motherlodeSackOverlay);
-		session = null;
 		veins.clear();
 		rocks.clear();
 
@@ -185,11 +184,6 @@ public class MotherlodePlugin extends Plugin
 				sack.setHidden(false);
 			}
 		});
-	}
-
-	public MotherlodeSession getSession()
-	{
-		return session;
 	}
 
 	@Subscribe

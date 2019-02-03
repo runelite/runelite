@@ -26,6 +26,7 @@ package net.runelite.client.plugins.motherlode;
 
 import java.time.Duration;
 import java.time.Instant;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 
 @Slf4j
+@Singleton
 public class MotherlodeSession
 {
 	private static final Duration HOUR = Duration.ofHours(1);

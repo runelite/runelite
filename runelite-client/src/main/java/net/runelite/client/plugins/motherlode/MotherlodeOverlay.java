@@ -51,16 +51,18 @@ class MotherlodeOverlay extends Overlay
 
 	private final Client client;
 	private final MotherlodePlugin plugin;
+	private final MotherlodeSession motherlodeSession;
 	private final MotherlodeConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	MotherlodeOverlay(Client client, MotherlodePlugin plugin, MotherlodeConfig config)
+	MotherlodeOverlay(Client client, MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;
+		this.motherlodeSession = motherlodeSession;
 		this.config = config;
 	}
 
@@ -72,7 +74,7 @@ class MotherlodeOverlay extends Overlay
 			return null;
 		}
 
-		MotherlodeSession session = plugin.getSession();
+		MotherlodeSession session = motherlodeSession;
 
 		if (session.getLastPayDirtMined() == null)
 		{
