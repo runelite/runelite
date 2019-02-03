@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Robin Withes <www.github.com/robinwithes>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,5 +55,16 @@ public interface WintertodtConfig extends Config
 	default Color damageNotificationColor()
 	{
 		return Color.CYAN;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "notifyFallingSnow",
+		name = "Notify when in a spot where snow is about to fall",
+		description = "Gives you a notification when in a falling snow spot"
+	)
+	default boolean notifyFallingSnow()
+	{
+		return true;
 	}
 }
