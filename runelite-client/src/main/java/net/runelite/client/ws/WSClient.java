@@ -25,6 +25,7 @@
 package net.runelite.client.ws;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -154,7 +155,18 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	@Override
 	public void onMessage(WebSocket webSocket, String text)
 	{
-		final WebsocketMessage message = gson.fromJson(text, WebsocketMessage.class);
+		final WebsocketMessage message;
+
+		try
+		{
+			message = gson.fromJson(text, WebsocketMessage.class);
+		}
+		catch (JsonParseException e)
+		{
+			log.debug("Failed to deserialize message", e);
+			return;
+		}
+
 		if (message.isParty() && !(message instanceof PartyMessage))
 		{
 			// spoofed message?
