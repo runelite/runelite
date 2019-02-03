@@ -115,7 +115,8 @@ public class PartyService
 	public void onUserJoin(final UserJoin message)
 	{
 		log.debug("User {} joined", message);
-		final PartyMember partyMember = new PartyMember(message.getMemberId(), message.getName());
+		final String name =  message.getName();
+		final PartyMember partyMember = new PartyMember(message.getMemberId(), name.substring(0, name.lastIndexOf('#')));
 		members.add(partyMember);
 
 		final PartyMember localMember = getLocalMember();
