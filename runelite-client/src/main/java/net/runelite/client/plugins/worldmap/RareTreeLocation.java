@@ -100,7 +100,7 @@ enum RareTreeLocation
 		// Mos Le'Harmless
 		new WorldPoint(3810, 3058, 0),
 
-		// Tai Bwo Wannai
+		// Karamja
 		new WorldPoint(2821, 3084, 0)),
 
 	YEW("Yew tree", 60,
