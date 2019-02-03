@@ -67,6 +67,7 @@ enum RareTreeLocation
 		new WorldPoint(1293, 3756, 0),
 		new WorldPoint(1640, 3496, 0),
 		new WorldPoint(1613, 3494, 0),
+		new WorldPoint(1560, 3636, 0),
 
 		// Miscellania
 		new WorldPoint(2550, 3869, 0),
@@ -97,7 +98,10 @@ enum RareTreeLocation
 		new WorldPoint(2602, 3895, 0),
 
 		// Mos Le'Harmless
-		new WorldPoint(3810, 3058, 0)),
+		new WorldPoint(3810, 3058, 0),
+
+		// Karamja
+		new WorldPoint(2821, 3084, 0)),
 
 	YEW("Yew tree", 60,
 		// Zeah
@@ -116,7 +120,7 @@ enum RareTreeLocation
 		new WorldPoint(1642, 3683, 0),
 		new WorldPoint(1642, 3663, 0),
 
-		// Isfadar
+		// Tirannwn
 		new WorldPoint(2217, 3141, 0),
 
 		// Kandarin
@@ -136,6 +140,7 @@ enum RareTreeLocation
 		new WorldPoint(3018, 3316, 0),
 		new WorldPoint(3041, 3320, 0),
 		new WorldPoint(3052, 3272, 0),
+		new WorldPoint(2933, 3234, 0),
 
 		// Misthalin
 		new WorldPoint(3085, 3481, 0),
@@ -152,6 +157,7 @@ enum RareTreeLocation
 		new WorldPoint(3266, 3494, 0),
 		new WorldPoint(3270, 3471, 0),
 		new WorldPoint(3304, 3470, 0),
+		new WorldPoint(3249, 3202, 0),
 
 		// Morytania
 		new WorldPoint(3674, 3447, 0),
@@ -181,10 +187,14 @@ enum RareTreeLocation
 		new WorldPoint(1389, 3821, 0),
 		new WorldPoint(1610, 3443, 0),
 		new WorldPoint(1578, 3488, 0),
-		new WorldPoint(1772, 3530, 0),
+		new WorldPoint(1772, 3510, 0),
 		new WorldPoint(1685, 3740, 0),
 
-		// Isfadar
+		// Misthalin
+		new WorldPoint(3355, 3312, 0),
+		new WorldPoint(3368, 3312, 0),
+
+		// Tirannwn
 		new WorldPoint(2284, 3141, 0),
 
 		// Kandarin
