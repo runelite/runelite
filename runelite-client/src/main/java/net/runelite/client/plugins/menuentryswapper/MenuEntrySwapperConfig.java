@@ -93,33 +93,13 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "claimSlime",
-		name = "Claim Slime",
-		description = "Swap Talk-to with Claim Slime from Morytania diaries"
+		keyName = "swapInteract",
+		name = "Interact",
+		description = "Swap options for generic interactions on NPCs<br>Example: Decant for Bob Barter, Repairs for Dark Mage, Claim Slime for Robin"
 	)
-	default boolean claimSlime()
+	default boolean swapInteract()
 	{
 		return true;
-	}
-
-	@ConfigItem(		
-		keyName = "swapDarkMage",
-		name = "Repairs",
-		description = "Swap Talk-to with Repairs for Dark Mage"
-	)
-	default boolean swapDarkMage()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "swapDecant",
-		name = "Decant",
-		description = "Swap Talk-to with Decant for Bob Barter and Murky Matt at the Grand Exchange."
-	)
-	default boolean swapDecant()
-	{
-		return false;
 	}
 
 	@ConfigItem(

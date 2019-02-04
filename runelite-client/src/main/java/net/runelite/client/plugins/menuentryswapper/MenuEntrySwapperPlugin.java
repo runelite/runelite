@@ -361,11 +361,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 				makeFirst("exchange", target, true);
 			}
 
-			if (config.swapDarkMage())
-			{
-				makeFirst("repairs", target, true);
-			}
-
 			if (config.swapTrade())
 			{
 				makeFirst("trade-with", target, true);
@@ -376,11 +371,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapAssignment())
 			{
 				makeFirst("assignment", target, true);
-			}
-
-			if (config.claimSlime() && target.equals("robin"))
-			{
-				makeFirst("claim-slime", target, true);
 			}
 
 			if (config.swapTravel())
@@ -408,8 +398,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 				makeFirst("pay (", target, false);
 			}
 
-			if (config.swapDecant())
+			if (config.swapInteract())
 			{
+				makeFirst("repairs", target, true);
+				makeFirst("claim-slime", target, true);
 				makeFirst("decant", target, true);
 			}
 
