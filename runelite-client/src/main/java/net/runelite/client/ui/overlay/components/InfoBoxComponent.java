@@ -45,14 +45,10 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 	private String tooltip;
 
 	@Getter
-	private Point preferredLocation = new Point();
-
-	@Setter
-	private Dimension preferredSize = new Dimension(DEFAULT_SIZE, DEFAULT_SIZE);
-
-	@Getter
 	private final Rectangle bounds = new Rectangle();
 
+	private Point preferredLocation = new Point();
+	private Dimension preferredSize = new Dimension(DEFAULT_SIZE, DEFAULT_SIZE);
 	private String text;
 	private Color color = Color.WHITE;
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
@@ -98,11 +94,6 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 
 		this.bounds.setBounds(bounds);
 		return bounds.getSize();
-	}
-
-	public Dimension getPreferredSize()
-	{
-		return new Dimension(getSize(), getSize());
 	}
 
 	private int getSize()
