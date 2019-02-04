@@ -232,6 +232,7 @@ public class RunecraftPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			abyssObjects.clear();
+			darkMage = null;
 		}
 	}
 

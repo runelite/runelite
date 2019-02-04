@@ -50,6 +50,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.ItemContainerChanged;
@@ -141,6 +142,16 @@ public class FishingPlugin extends Plugin
 		minnowSpots.clear();
 		trawlerNotificationSent = false;
 		currentSpot = null;
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		if (gameStateChanged.getGameState() == GameState.LOADING)
+		{
+			fishingSpots.clear();
+			minnowSpots.clear();
+		}
 	}
 
 	@Subscribe
