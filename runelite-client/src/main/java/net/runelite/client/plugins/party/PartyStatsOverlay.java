@@ -102,6 +102,7 @@ public class PartyStatsOverlay extends Overlay
 
 				final TitleComponent name = TitleComponent.builder()
 					.text(v.getName())
+					.color(config.recolorNames() ? v.getColor() : Color.WHITE)
 					.build();
 
 				panel.getChildren().add(name);

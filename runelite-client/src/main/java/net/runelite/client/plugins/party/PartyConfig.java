@@ -61,13 +61,22 @@ public interface PartyConfig extends Config
 		return true;
 	}
 
-
 	@ConfigItem(
 		keyName = "messages",
 		name = "Join messages",
 		description = "Enables join/leave game messages"
 	)
 	default boolean messages()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "recolorNames",
+		name = "Recolor names",
+		description = "Recolor stats overlay names based on unique color hash"
+	)
+	default boolean recolorNames()
 	{
 		return true;
 	}
