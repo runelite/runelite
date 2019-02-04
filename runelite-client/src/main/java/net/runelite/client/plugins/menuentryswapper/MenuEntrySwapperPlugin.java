@@ -366,16 +366,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 				makeFirst("repairs", target, true);
 			}
 
-			// make sure assignment swap is higher priority than trade swap for slayer masters
-			if (config.swapAssignment())
-			{
-				makeFirst("assignment", target, true);
-			}
-
 			if (config.swapTrade())
 			{
 				makeFirst("trade-with", target, true);
 				makeFirst("trade", target, true);
+			}
+
+			// make sure assignment swap is higher priority than trade swap for slayer masters
+			if (config.swapAssignment())
+			{
+				makeFirst("assignment", target, true);
 			}
 
 			if (config.claimSlime() && target.equals("robin"))
