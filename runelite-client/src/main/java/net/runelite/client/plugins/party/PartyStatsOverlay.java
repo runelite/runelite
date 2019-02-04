@@ -106,7 +106,7 @@ public class PartyStatsOverlay extends Overlay
 
 				panel.getChildren().add(name);
 
-				if (v.getHitpoints() > 0)
+				if (v.getMaxHitpoints() > 0)
 				{
 					final ProgressBarComponent hpBar = new ProgressBarComponent();
 					hpBar.setBackgroundColor(HP_BG);
@@ -117,7 +117,7 @@ public class PartyStatsOverlay extends Overlay
 					panel.getChildren().add(hpBar);
 				}
 
-				if (v.getPrayer() > 0)
+				if (v.getMaxPrayer() > 0)
 				{
 					final ProgressBarComponent prayBar = new ProgressBarComponent();
 					prayBar.setBackgroundColor(PRAY_BG);
