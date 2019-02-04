@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.client.plugins.party.messages;
 
-import net.runelite.api.Client;
-import net.runelite.api.Player;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.Skill;
+import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 
-/**
- * Used for getting players in view,deprecated as of existence of Player spawn events
- *
- * @see net.runelite.api.events.PlayerSpawned
- * @see net.runelite.api.events.PlayerDespawned
- */
-@Deprecated
-public class PlayerQuery extends ActorQuery<Player, PlayerQuery>
+@AllArgsConstructor
+@Getter
+public class SkillUpdate extends PartyMemberMessage
 {
-	@Override
-	public Player[] result(Client client)
-	{
-		return client.getPlayers().stream()
-			.filter(predicate)
-			.toArray(Player[]::new);
-	}
+	private final Skill skill;
+	private final int value;
+	private final int max;
 }

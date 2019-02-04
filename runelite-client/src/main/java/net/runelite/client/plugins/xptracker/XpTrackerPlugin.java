@@ -103,6 +103,7 @@ public class XpTrackerPlugin extends Plugin
 	private XpWorldType lastWorldType;
 	private String lastUsername;
 	private long lastTickMillis = 0;
+	private boolean fetchXp;
 	private long lastXp = 0;
 
 	private final XpClient xpClient = new XpClient();
@@ -174,7 +175,8 @@ public class XpTrackerPlugin extends Plugin
 					firstNonNull(type, "<unknown>"));
 
 				lastUsername = client.getUsername();
-				lastXp = getTotalXp();
+				// xp is not available until after login is finished, so fetch it on the next gametick
+				fetchXp = true;
 				lastWorldType = type;
 				resetState();
 			}
@@ -331,6 +333,11 @@ public class XpTrackerPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		rebuildSkills();
+		if (fetchXp)
+		{
+			lastXp = getTotalXp();
+			fetchXp = false;
+		}
 	}
 
 	XpSnapshotSingle getSkillSnapshot(Skill skill)

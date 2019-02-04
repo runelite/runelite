@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.client.plugins.party;
 
-import java.util.Arrays;
-import java.util.Objects;
-import lombok.RequiredArgsConstructor;
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.Query;
+import java.util.UUID;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.client.plugins.party.data.PartyData;
 
-/**
- * Used for getting inventory items,deprecated as of existence of item container changed events
- *
- * @see net.runelite.api.events.ItemContainerChanged
- */
-@Deprecated
-@RequiredArgsConstructor
-public class InventoryItemQuery extends Query<Item, InventoryItemQuery>
+@Singleton
+public class PartyPluginServiceImpl implements PartyPluginService
 {
-	private final InventoryID inventory;
+	private final PartyPlugin plugin;
+
+	@Inject
+	private PartyPluginServiceImpl(final PartyPlugin plugin)
+	{
+
+		this.plugin = plugin;
+	}
 
 	@Override
-	public Item[] result(Client client)
+	public PartyData getPartyData(UUID memberId)
 	{
-		ItemContainer container = client.getItemContainer(inventory);
-		if (container == null)
-		{
-			return null;
-		}
-		return Arrays.stream(container.getItems())
-				.filter(Objects::nonNull)
-				.filter(predicate)
-				.toArray(Item[]::new);
+		return plugin.getPartyData(memberId);
 	}
-
-	public InventoryItemQuery idEquals(int... ids)
-	{
-		predicate = and(item ->
-		{
-			for (int id : ids)
-			{
-				if (item.getId() == id)
-				{
-					return true;
-				}
-			}
-			return false;
-		});
-		return this;
-	}
-
 }

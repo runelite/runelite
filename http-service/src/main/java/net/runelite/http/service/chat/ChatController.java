@@ -135,20 +135,20 @@ public class ChatController
 	}
 
 	@PostMapping("/pb")
-	public void submitPb(@RequestParam String name, @RequestParam int pb)
+	public void submitPb(@RequestParam String name, @RequestParam String boss, @RequestParam int pb)
 	{
 		if (pb < 0)
 		{
 			return;
 		}
 
-		chatService.setPb(name, pb);
+		chatService.setPb(name, boss, pb);
 	}
 
 	@GetMapping("/pb")
-	public int getPb(@RequestParam String name)
+	public int getPb(@RequestParam String name, @RequestParam String boss)
 	{
-		Integer pb = chatService.getPb(name);
+		Integer pb = chatService.getPb(name, boss);
 		if (pb == null)
 		{
 			throw new NotFoundException();

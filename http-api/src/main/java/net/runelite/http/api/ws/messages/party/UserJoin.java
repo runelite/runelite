@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,48 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.http.api.ws.messages.party;
 
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.Tile;
+import java.util.UUID;
+import lombok.Value;
+import net.runelite.http.api.ws.WebsocketMessage;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Objects;
-
-/**
- * Used for getting game objects in view,deprecated as of existence of GameObject spawn events
- *
- * @see net.runelite.api.events.GameObjectSpawned
- * @see net.runelite.api.events.GameObjectDespawned
- * @see net.runelite.api.events.GameObjectChanged
- */
-@Deprecated
-public class GameObjectQuery extends TileObjectQuery<GameObject, GameObjectQuery>
+@Value
+public class UserJoin extends WebsocketMessage
 {
-	@Override
-	public GameObject[] result(Client client)
-	{
-		return getGameObjects(client).stream()
-			.filter(Objects::nonNull)
-			.filter(predicate)
-			.distinct()
-			.toArray(GameObject[]::new);
-	}
-
-	private Collection<GameObject> getGameObjects(Client client)
-	{
-		Collection<GameObject> objects = new ArrayList<>();
-		for (Tile tile : getTiles(client))
-		{
-			GameObject[] gameObjects = tile.getGameObjects();
-			if (gameObjects != null)
-			{
-				objects.addAll(Arrays.asList(gameObjects));
-			}
-		}
-		return objects;
-	}
+	private final UUID memberId;
+	private final String name;
 }

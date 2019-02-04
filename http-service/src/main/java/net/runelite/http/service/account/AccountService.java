@@ -136,10 +136,8 @@ public class AccountService
 	}
 
 	@RequestMapping("/login")
-	public OAuthResponse login()
+	public OAuthResponse login(@RequestParam UUID uuid)
 	{
-		UUID uuid = UUID.randomUUID();
-
 		State state = new State();
 		state.setUuid(uuid);
 		state.setApiVersion(RuneLiteAPI.getVersion());

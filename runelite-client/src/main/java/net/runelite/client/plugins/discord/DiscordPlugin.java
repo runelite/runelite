@@ -25,13 +25,19 @@
  */
 package net.runelite.client.plugins.discord;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import javax.imageio.ImageIO;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
@@ -43,7 +49,12 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.discord.DiscordService;
+import net.runelite.client.discord.events.DiscordJoinGame;
+import net.runelite.client.discord.events.DiscordJoinRequest;
+import net.runelite.client.discord.events.DiscordReady;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.PartyChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
@@ -51,12 +62,24 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.ws.PartyMember;
+import net.runelite.client.ws.PartyService;
+import net.runelite.client.ws.WSClient;
+import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.ws.messages.party.UserJoin;
+import net.runelite.http.api.ws.messages.party.UserPart;
+import net.runelite.http.api.ws.messages.party.UserSync;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Request;
+import okhttp3.Response;
 
 @PluginDescriptor(
 	name = "Discord",
 	description = "Show your status and activity in the Discord user panel",
 	tags = {"action", "activity", "external", "integration", "status"}
 )
+@Slf4j
 public class DiscordPlugin extends Plugin
 {
 	@Inject
@@ -73,6 +96,15 @@ public class DiscordPlugin extends Plugin
 
 	@Inject
 	private DiscordState discordState;
+
+	@Inject
+	private PartyService partyService;
+
+	@Inject
+	private DiscordService discordService;
+
+	@Inject
+	private WSClient wsClient;
 
 	private Map<Skill, Integer> skillExp = new HashMap<>();
 	private NavigationButton discordButton;
@@ -98,6 +130,13 @@ public class DiscordPlugin extends Plugin
 
 		clientToolbar.addNavigation(discordButton);
 		checkForGameStateUpdate();
+
+		if (discordService.getCurrentUser() != null)
+		{
+			partyService.setUsername(discordService.getCurrentUser().username + "#" + discordService.getCurrentUser().discriminator);
+		}
+
+		wsClient.registerMessage(DiscordUserInfo.class);
 	}
 
 	@Override
@@ -105,6 +144,8 @@ public class DiscordPlugin extends Plugin
 	{
 		clientToolbar.removeNavigation(discordButton);
 		discordState.reset();
+		partyService.changeParty(null);
+		wsClient.unregisterMessage(DiscordUserInfo.class);
 	}
 
 	@Subscribe
@@ -176,6 +217,130 @@ public class DiscordPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onDiscordReady(DiscordReady event)
+	{
+		partyService.setUsername(event.getUsername() + "#" + event.getDiscriminator());
+	}
+
+	@Subscribe
+	public void onDiscordJoinRequest(DiscordJoinRequest request)
+	{
+		log.debug("Got discord join request {}", request);
+		if (partyService.isOwner() && partyService.getMembers().isEmpty())
+		{
+			// First join, join also yourself
+			partyService.changeParty(partyService.getLocalPartyId());
+			updatePresence();
+		}
+	}
+
+	@Subscribe
+	public void onDiscordJoinGame(DiscordJoinGame joinGame)
+	{
+		log.debug("Got discord join game {}", joinGame);
+		UUID partyId = UUID.fromString(joinGame.getJoinSecret());
+		partyService.changeParty(partyId);
+		updatePresence();
+	}
+
+	@Subscribe
+	public void onDiscordUserInfo(final DiscordUserInfo event)
+	{
+		final PartyMember memberById = partyService.getMemberById(event.getMemberId());
+
+		if (memberById == null || memberById.getAvatar() != null)
+		{
+			return;
+		}
+
+		String url = "https://cdn.discordapp.com/avatars/" + event.getUserId() + "/" + event.getAvatarId() + ".png";
+
+		if (Strings.isNullOrEmpty(event.getAvatarId()))
+		{
+			final String[] split = memberById.getName().split("#", 2);
+
+			if (split.length == 2)
+			{
+				int disc = Integer.valueOf(split[1]);
+				int avatarId = disc % 5;
+				url = "https://cdn.discordapp.com/embed/avatars/" + avatarId + ".png";
+			}
+		}
+
+		log.debug("Got user avatar {}", url);
+
+		final Request request = new Request.Builder()
+			.url(url)
+			.build();
+
+		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		{
+			@Override
+			public void onFailure(Call call, IOException e)
+			{
+
+			}
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException
+			{
+				try
+				{
+					if (!response.isSuccessful())
+					{
+						throw new IOException("Unexpected code " + response);
+					}
+
+					final InputStream inputStream = response.body().byteStream();
+					final BufferedImage image = ImageIO.read(inputStream);
+					memberById.setAvatar(image);
+				}
+				finally
+				{
+					response.close();
+				}
+			}
+		});
+	}
+
+	@Subscribe
+	public void onUserJoin(final UserJoin event)
+	{
+		updatePresence();
+	}
+
+	@Subscribe
+	public void onUserSync(final UserSync event)
+	{
+		final PartyMember localMember = partyService.getLocalMember();
+
+		if (localMember != null)
+		{
+			if (discordService.getCurrentUser() != null)
+			{
+				final DiscordUserInfo userInfo = new DiscordUserInfo(
+					discordService.getCurrentUser().userId,
+					discordService.getCurrentUser().avatar);
+
+				userInfo.setMemberId(localMember.getMemberId());
+				wsClient.send(userInfo);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onUserPart(final UserPart event)
+	{
+		updatePresence();
+	}
+
+	@Subscribe
+	public void onPartyChanged(final PartyChanged event)
+	{
+		updatePresence();
+	}
+
 	@Schedule(
 		period = 1,
 		unit = ChronoUnit.MINUTES
@@ -183,6 +348,11 @@ public class DiscordPlugin extends Plugin
 	public void checkForValidStatus()
 	{
 		discordState.checkForTimeout();
+	}
+
+	private void updatePresence()
+	{
+		discordState.refresh();
 	}
 
 	private void checkForGameStateUpdate()

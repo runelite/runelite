@@ -101,6 +101,8 @@ public class MTAPlugin extends Plugin
 		{
 			eventBus.unregister(room);
 		}
+
+		telekineticRoom.resetRoom();
 	}
 
 }

@@ -36,14 +36,16 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 public class MotherlodeOreOverlay extends Overlay
 {
 	private final MotherlodePlugin plugin;
+	private final MotherlodeSession motherlodeSession;
 	private final MotherlodeConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeConfig config)
+	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.plugin = plugin;
+		this.motherlodeSession = motherlodeSession;
 		this.config = config;
 	}
 
@@ -55,7 +57,7 @@ public class MotherlodeOreOverlay extends Overlay
 			return null;
 		}
 
-		MotherlodeSession session = plugin.getSession();
+		MotherlodeSession session = motherlodeSession;
 
 		int nuggetsFound = session.getNuggetsFound();
 		int coalFound = session.getCoalFound();

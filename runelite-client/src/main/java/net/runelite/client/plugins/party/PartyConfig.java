@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.client.plugins.party;
 
-import net.runelite.api.Client;
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.Tile;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
-
-/**
- * Used for getting decorative objects in view, deprecated as of existence of DecorativeObject spawn events
- *
- * @see net.runelite.api.events.DecorativeObjectSpawned
- * @see net.runelite.api.events.DecorativeObjectDespawned
- * @see net.runelite.api.events.DecorativeObjectChanged
- */
-@Deprecated
-public class DecorativeObjectQuery extends TileObjectQuery<DecorativeObject, DecorativeObjectQuery>
+@ConfigGroup("party")
+public interface PartyConfig extends Config
 {
-	@Override
-	public DecorativeObject[] result(Client client)
+	@ConfigItem(
+		keyName = "stats",
+		name = "Stats",
+		description = "Enables party stats overlay showing HP, prayer and player name"
+	)
+	default boolean stats()
 	{
-		return getDecorativeObjects(client).stream()
-			.filter(Objects::nonNull)
-			.filter(predicate)
-			.distinct()
-			.toArray(DecorativeObject[]::new);
+		return true;
 	}
 
-	private Collection<DecorativeObject> getDecorativeObjects(Client client)
+	@ConfigItem(
+		keyName = "pings",
+		name = "Pings",
+		description = "Enables party pings (shift + left-click)"
+	)
+	default boolean pings()
 	{
-		Collection<DecorativeObject> objects = new ArrayList<>();
-		for (Tile tile : getTiles(client))
-		{
-			objects.add(tile.getDecorativeObject());
-		}
-		return objects;
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "sounds",
+		name = "Sound on ping",
+		description = "Enables sound notification on party ping"
+	)
+	default boolean sounds()
+	{
+		return true;
+	}
+
+
+	@ConfigItem(
+		keyName = "messages",
+		name = "Join messages",
+		description = "Enables join/leave game messages"
+	)
+	default boolean messages()
+	{
+		return true;
 	}
 }

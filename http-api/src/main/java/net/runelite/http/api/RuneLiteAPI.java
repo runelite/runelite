@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -44,9 +45,10 @@ public class RuneLiteAPI
 
 	public static final OkHttpClient CLIENT;
 	public static final Gson GSON = new Gson();
+	public static String userAgent;
 
 	private static final String BASE = "https://api.runelite.net";
-	private static final String WSBASE = "wss://api.runelite.net/runelite-";
+	private static final String WSBASE = "https://api.runelite.net/ws";
 	private static final String STATICBASE = "https://static.runelite.net";
 	private static final Properties properties = new Properties();
 	private static String version;
@@ -61,6 +63,10 @@ public class RuneLiteAPI
 
 			version = properties.getProperty("runelite.version");
 			rsVersion = Integer.parseInt(properties.getProperty("rs.version"));
+			String commit = properties.getProperty("runelite.commit");
+			boolean dirty = Boolean.parseBoolean(properties.getProperty("runelite.dirty"));
+
+			userAgent = "RuneLite/" + version + "-" + commit + (dirty ? "+" : "");
 		}
 		catch (NumberFormatException e)
 		{
@@ -72,16 +78,16 @@ public class RuneLiteAPI
 		}
 
 		CLIENT = new OkHttpClient.Builder()
+			.pingInterval(30, TimeUnit.SECONDS)
 			.addNetworkInterceptor(new Interceptor()
 			{
-				private final String USER_AGENT = "RuneLite/" + version;
 
 				@Override
 				public Response intercept(Chain chain) throws IOException
 				{
 					Request userAgentRequest = chain.request()
 						.newBuilder()
-						.header("User-Agent", USER_AGENT)
+						.header("User-Agent", userAgent)
 						.build();
 					return chain.proceed(userAgentRequest);
 				}
@@ -104,9 +110,9 @@ public class RuneLiteAPI
 		return HttpUrl.parse(STATICBASE);
 	}
 
-	public static String getWsEndpoint()
+	public static HttpUrl getWsEndpoint()
 	{
-		return WSBASE + getVersion() + "/ws";
+		return HttpUrl.parse(WSBASE);
 	}
 
 	public static String getVersion()
