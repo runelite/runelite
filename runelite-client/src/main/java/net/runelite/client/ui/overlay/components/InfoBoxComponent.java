@@ -50,6 +50,9 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 	@Setter
 	private Dimension preferredSize = new Dimension(DEFAULT_SIZE, DEFAULT_SIZE);
 
+	@Getter
+	private final Rectangle bounds = new Rectangle();
+
 	private String text;
 	private Color color = Color.WHITE;
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
@@ -64,12 +67,14 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 		}
 
 		graphics.setFont(getSize() < DEFAULT_SIZE ? FontManager.getRunescapeSmallFont() : FontManager.getRunescapeFont());
-		graphics.translate(preferredLocation.x, preferredLocation.y);
+
+		final int baseX = preferredLocation.x;
+		final int baseY = preferredLocation.y;
 
 		// Calculate dimensions
 		final FontMetrics metrics = graphics.getFontMetrics();
 		final int size = getSize();
-		final Rectangle bounds = new Rectangle(size, size);
+		final Rectangle bounds = new Rectangle(baseX, baseY, size, size);
 
 		// Render background
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
@@ -80,18 +85,18 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 		// Render image
 		graphics.drawImage(
 			image,
-			(size - image.getWidth(null)) / 2,
-			(size - image.getHeight(null)) / 2,
+			baseX + (size - image.getWidth(null)) / 2,
+			baseY + (size - image.getHeight(null)) / 2,
 			null);
 
 		// Render caption
 		final TextComponent textComponent = new TextComponent();
 		textComponent.setColor(color);
 		textComponent.setText(text);
-		textComponent.setPosition(new Point(((size - metrics.stringWidth(text)) / 2), size - SEPARATOR));
+		textComponent.setPosition(new Point(baseX + ((size - metrics.stringWidth(text)) / 2), baseY + size - SEPARATOR));
 		textComponent.render(graphics);
 
-		graphics.translate(-preferredLocation.x, -preferredLocation.y);
+		this.bounds.setBounds(bounds);
 		return bounds.getSize();
 	}
 
