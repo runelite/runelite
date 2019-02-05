@@ -26,7 +26,10 @@ package net.runelite.http.service.chat;
 
 import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
+import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.chat.House;
 import net.runelite.http.api.chat.Task;
 import net.runelite.http.service.util.redis.RedisPool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,6 +140,52 @@ public class ChatService
 		try (Jedis jedis = jedisPool.getResource())
 		{
 			jedis.setex("pb." + boss + "." + name, (int) EXPIRE.getSeconds(), Integer.toString(pb));
+		}
+	}
+
+	public void addHost(int world, String location, House house)
+	{
+		String houseJSON = house.toString();
+
+		String key = "hosts.w" + Integer.toString(world) + "." + location;
+
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.rpush(key, houseJSON);
+		}
+	}
+
+	public House[] getHosts(int world, String location)
+	{
+		List<String> json;
+		String key = "hosts.w" + Integer.toString(world) + "." + location;
+
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			json = jedis.lrange(key, 0, 25);
+		}
+
+		if (json.isEmpty())
+		{
+			return null;
+		}
+
+		House[] hosts = new House[json.size()];
+		for (int i = 0; i < json.size(); i++)
+		{
+			hosts[i] = RuneLiteAPI.GSON.fromJson(json.get(i), House.class);
+		}
+		return hosts;
+	}
+
+	public void removeHost(int world, String location, House house)
+	{
+		String json = house.toString();
+		String key = "hosts.w" + Integer.toString(world) + "." + location;
+
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.lrem(key, 0, json);
 		}
 	}
 }

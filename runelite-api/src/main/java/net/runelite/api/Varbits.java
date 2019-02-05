@@ -468,7 +468,18 @@ public enum Varbits
 	BANK_TAB_SIX_COUNT(4176),
 	BANK_TAB_SEVEN_COUNT(4177),
 	BANK_TAB_EIGHT_COUNT(4178),
-	BANK_TAB_NINE_COUNT(4179);
+	BANK_TAB_NINE_COUNT(4179),
+
+	/**
+	 * Loading screen when entering a player owned house
+	 * 0 = Not on loading screen
+	 * 2 = On loading screen
+	 */
+	HOUSE_LOADING_SCREEN(6719),
+	/**
+	 * 1 in building mode, otherwise 0
+	 */
+	HOUSE_BUILDING_MODE(2176);
 
 	/**
 	 * The raw varbit ID.

@@ -29,6 +29,7 @@ import com.google.common.cache.CacheBuilder;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.runelite.http.api.chat.House;
 import net.runelite.http.api.chat.Task;
 import net.runelite.http.service.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,5 +155,44 @@ public class ChatController
 			throw new NotFoundException();
 		}
 		return pb;
+	}
+
+	@PostMapping("/hosts")
+	public void submitHost(@RequestParam int world, @RequestParam String location, @RequestParam String owner,
+		@RequestParam boolean guildedAltar, @RequestParam boolean occultAltar,
+		@RequestParam boolean spiritTree, @RequestParam boolean fairyRing,
+		@RequestParam boolean wildernessObelisk, @RequestParam boolean repairStand,
+		@RequestParam boolean combatDummy,
+		@RequestParam(required = false, defaultValue = "false") boolean remove)
+	{
+		if (!location.equals("Rimmington") && !location.equals("Yanille"))
+		{
+			return;
+		}
+
+		House house = new House();
+		house.setOwner(owner);
+		house.setGuildedAltarPresent(guildedAltar);
+		house.setOccultAltarPresent(occultAltar);
+		house.setSpiritTreePresent(spiritTree);
+		house.setFairyRingPresent(fairyRing);
+		house.setWildernessObeliskPresent(wildernessObelisk);
+		house.setRepairStandPresent(repairStand);
+		house.setCombatDummyPresent(combatDummy);
+
+		if (remove)
+		{
+			chatService.removeHost(world, location, house);
+		}
+		else
+		{
+			chatService.addHost(world, location, house);
+		}
+	}
+
+	@GetMapping("/hosts")
+	public House[] getHosts(@RequestParam int world, @RequestParam String location)
+	{
+		return chatService.getHosts(world, location);
 	}
 }
