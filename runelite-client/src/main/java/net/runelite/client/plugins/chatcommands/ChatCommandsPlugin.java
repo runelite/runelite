@@ -43,7 +43,6 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.SetMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
@@ -360,14 +359,14 @@ public class ChatCommandsPlugin extends Plugin
 		return true;
 	}
 
-	private void killCountLookup(SetMessage setMessage, String message)
+	private void killCountLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.killcount())
 		{
 			return;
 		}
 
-		ChatMessageType type = setMessage.getType();
+		ChatMessageType type = chatMessage.getType();
 		String search = message.substring(KILLCOUNT_COMMAND_STRING.length() + 1);
 
 		final String player;
@@ -377,7 +376,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(setMessage.getName());
+			player = sanitize(chatMessage.getName());
 		}
 
 		search = longBossName(search);
@@ -403,20 +402,20 @@ public class ChatCommandsPlugin extends Plugin
 			.build();
 
 		log.debug("Setting response {}", response);
-		final MessageNode messageNode = setMessage.getMessageNode();
+		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
 		chatMessageManager.update(messageNode);
 		client.refreshChat();
 	}
 
-	private void questPointsLookup(SetMessage setMessage, String message)
+	private void questPointsLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.qp())
 		{
 			return;
 		}
 
-		ChatMessageType type = setMessage.getType();
+		ChatMessageType type = chatMessage.getType();
 
 		final String player;
 		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
@@ -425,7 +424,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(setMessage.getName());
+			player = sanitize(chatMessage.getName());
 		}
 
 		int qp;
@@ -447,7 +446,7 @@ public class ChatCommandsPlugin extends Plugin
 			.build();
 
 		log.debug("Setting response {}", response);
-		final MessageNode messageNode = setMessage.getMessageNode();
+		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
 		chatMessageManager.update(messageNode);
 		client.refreshChat();
@@ -477,14 +476,14 @@ public class ChatCommandsPlugin extends Plugin
 		return true;
 	}
 
-	private void personalBestLookup(SetMessage setMessage, String message)
+	private void personalBestLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.pb())
 		{
 			return;
 		}
 
-		ChatMessageType type = setMessage.getType();
+		ChatMessageType type = chatMessage.getType();
 		String search = message.substring(PB_COMMAND.length() + 1);
 
 		final String player;
@@ -494,7 +493,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(setMessage.getName());
+			player = sanitize(chatMessage.getName());
 		}
 
 		search = longBossName(search);
@@ -523,7 +522,7 @@ public class ChatCommandsPlugin extends Plugin
 			.build();
 
 		log.debug("Setting response {}", response);
-		final MessageNode messageNode = setMessage.getMessageNode();
+		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
 		chatMessageManager.update(messageNode);
 		client.refreshChat();
@@ -565,17 +564,17 @@ public class ChatCommandsPlugin extends Plugin
 	 * Looks up the item price and changes the original message to the
 	 * response.
 	 *
-	 * @param setMessage The chat message containing the command.
+	 * @param chatMessage The chat message containing the command.
 	 * @param message    The chat message
 	 */
-	private void itemPriceLookup(SetMessage setMessage, String message)
+	private void itemPriceLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.price())
 		{
 			return;
 		}
 
-		MessageNode messageNode = setMessage.getMessageNode();
+		MessageNode messageNode = chatMessage.getMessageNode();
 		String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
 
 		List<ItemPrice> results = itemManager.search(search);
@@ -621,10 +620,10 @@ public class ChatCommandsPlugin extends Plugin
 	 * Looks up the player skill and changes the original message to the
 	 * response.
 	 *
-	 * @param setMessage The chat message containing the command.
+	 * @param chatMessage The chat message containing the command.
 	 * @param message    The chat message
 	 */
-	private void playerSkillLookup(SetMessage setMessage, String message)
+	private void playerSkillLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.lvl())
 		{
@@ -652,7 +651,7 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		final HiscoreLookup lookup = getCorrectLookupFor(setMessage);
+		final HiscoreLookup lookup = getCorrectLookupFor(chatMessage);
 
 		try
 		{
@@ -682,7 +681,7 @@ public class ChatCommandsPlugin extends Plugin
 				.build();
 
 			log.debug("Setting response {}", response);
-			final MessageNode messageNode = setMessage.getMessageNode();
+			final MessageNode messageNode = chatMessage.getMessageNode();
 			messageNode.setRuneLiteFormatMessage(response);
 			chatMessageManager.update(messageNode);
 			client.refreshChat();
@@ -693,14 +692,14 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
-	private void combatLevelLookup(SetMessage setMessage, String message)
+	private void combatLevelLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.lvl())
 		{
 			return;
 		}
 
-		ChatMessageType type = setMessage.getType();
+		ChatMessageType type = chatMessage.getType();
 
 		String player;
 		if (type == ChatMessageType.PRIVATE_MESSAGE_SENT)
@@ -709,7 +708,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
-			player = sanitize(setMessage.getName());
+			player = sanitize(chatMessage.getName());
 		}
 
 		try
@@ -767,7 +766,7 @@ public class ChatCommandsPlugin extends Plugin
 				.build();
 
 			log.debug("Setting response {}", response);
-			final MessageNode messageNode = setMessage.getMessageNode();
+			final MessageNode messageNode = chatMessage.getMessageNode();
 			messageNode.setRuneLiteFormatMessage(response);
 			chatMessageManager.update(messageNode);
 			client.refreshChat();
@@ -778,7 +777,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
-	private void clueLookup(SetMessage setMessage, String message)
+	private void clueLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.clue())
 		{
@@ -799,7 +798,7 @@ public class ChatCommandsPlugin extends Plugin
 		try
 		{
 			final Skill hiscoreSkill;
-			final HiscoreLookup lookup = getCorrectLookupFor(setMessage);
+			final HiscoreLookup lookup = getCorrectLookupFor(chatMessage);
 			final HiscoreResult result = hiscoreClient.lookup(lookup.getName(), lookup.getEndpoint());
 
 			if (result == null)
@@ -858,7 +857,7 @@ public class ChatCommandsPlugin extends Plugin
 			String response = chatMessageBuilder.build();
 
 			log.debug("Setting response {}", response);
-			final MessageNode messageNode = setMessage.getMessageNode();
+			final MessageNode messageNode = chatMessage.getMessageNode();
 			messageNode.setRuneLiteFormatMessage(response);
 			chatMessageManager.update(messageNode);
 			client.refreshChat();
@@ -872,22 +871,22 @@ public class ChatCommandsPlugin extends Plugin
 	/**
 	 * Gets correct lookup data for message
 	 *
-	 * @param setMessage chat message
+	 * @param chatMessage chat message
 	 * @return hiscore lookup data
 	 */
-	private HiscoreLookup getCorrectLookupFor(final SetMessage setMessage)
+	private HiscoreLookup getCorrectLookupFor(final ChatMessage chatMessage)
 	{
 		final String player;
 		final HiscoreEndpoint ironmanStatus;
 
-		if (setMessage.getType().equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
+		if (chatMessage.getType().equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
 		{
 			player = client.getLocalPlayer().getName();
 			ironmanStatus = hiscoreEndpoint;
 		}
 		else
 		{
-			player = sanitize(setMessage.getName());
+			player = sanitize(chatMessage.getName());
 
 			if (player.equals(client.getLocalPlayer().getName()))
 			{
@@ -897,7 +896,7 @@ public class ChatCommandsPlugin extends Plugin
 			else
 			{
 				// Get ironman status from their icon in chat
-				ironmanStatus = getHiscoreEndpointByName(setMessage.getName());
+				ironmanStatus = getHiscoreEndpointByName(chatMessage.getName());
 			}
 		}
 

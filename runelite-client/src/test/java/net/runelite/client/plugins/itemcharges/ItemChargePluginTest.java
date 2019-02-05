@@ -76,19 +76,19 @@ public class ItemChargePluginTest
 	@Test
 	public void testOnChatMessage()
 	{
-		ChatMessage chatMessage = new ChatMessage(ChatMessageType.SERVER, "", CHECK, "");
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SERVER, "", CHECK, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		assertEquals(10, itemChargePlugin.getDodgyCharges());
 
-		chatMessage = new ChatMessage(ChatMessageType.SERVER, "", PROTECT, "");
+		chatMessage = new ChatMessage(null, ChatMessageType.SERVER, "", PROTECT, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		assertEquals(9, itemChargePlugin.getDodgyCharges());
 
-		chatMessage = new ChatMessage(ChatMessageType.SERVER, "", PROTECT_1, "");
+		chatMessage = new ChatMessage(null, ChatMessageType.SERVER, "", PROTECT_1, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		assertEquals(1, itemChargePlugin.getDodgyCharges());
 
-		chatMessage = new ChatMessage(ChatMessageType.SERVER, "", BREAK, "");
+		chatMessage = new ChatMessage(null, ChatMessageType.SERVER, "", BREAK, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		assertEquals(10, itemChargePlugin.getDodgyCharges());
 	}

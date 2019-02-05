@@ -42,10 +42,10 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.events.SetMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
@@ -103,10 +103,10 @@ public class ChatMessageManager
 	}
 
 	@Subscribe
-	public void onSetMessage(SetMessage setMessage)
+	public void onChatMessage(ChatMessage chatMessage)
 	{
-		MessageNode messageNode = setMessage.getMessageNode();
-		ChatMessageType chatMessageType = setMessage.getType();
+		MessageNode messageNode = chatMessage.getMessageNode();
+		ChatMessageType chatMessageType = chatMessage.getType();
 
 		boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
 		Color usernameColor = null;
@@ -125,7 +125,7 @@ public class ChatMessageManager
 			case PUBLIC:
 			case PUBLIC_MOD:
 			{
-				boolean isFriend = client.isFriended(setMessage.getName(), true) && !client.getLocalPlayer().getName().equals(setMessage.getName());
+				boolean isFriend = client.isFriended(chatMessage.getName(), true) && !client.getLocalPlayer().getName().equals(chatMessage.getName());
 
 				if (isFriend)
 				{
@@ -149,7 +149,7 @@ public class ChatMessageManager
 			messageNode.setName(ColorUtil.wrapWithColorTag(messageNode.getName(), usernameColor));
 		}
 
-		String sender = setMessage.getSender();
+		String sender = chatMessage.getSender();
 		if (senderColor != null && !Strings.isNullOrEmpty(sender))
 		{
 			messageNode.setSender(ColorUtil.wrapWithColorTag(sender, senderColor));
