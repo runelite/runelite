@@ -33,9 +33,9 @@ import net.runelite.client.config.ConfigItem;
 public interface BAToolsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "defTimer",
-		name = "Defender Tick Timer",
-		description = "Shows the current cycle tick of runners."
+			keyName = "defTimer",
+			name = "Defender Tick Timer",
+			description = "Shows the current cycle tick of runners."
 	)
 	default boolean defTimer()
 	{
@@ -43,9 +43,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "calls",
-		name = "Remove Incorrect Calls",
-		description = "Remove incorrect calls."
+			keyName = "calls",
+			name = "Remove Incorrect Calls",
+			description = "Remove incorrect calls."
 	)
 	default boolean calls()
 	{
@@ -53,9 +53,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapLadder",
-		name = "Swap ladder option",
-		description = "Swap Climb-down with Quick-start in the wave lobbies"
+			keyName = "swapLadder",
+			name = "Swap ladder option",
+			description = "Swap Climb-down with Quick-start in the wave lobbies"
 	)
 	default boolean swapLadder()
 	{
@@ -63,9 +63,29 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "antiDrag",
-		name = "Anti Drag",
-		description = "asd"
+			keyName = "healerCodes",
+			name = "Healer Codes",
+			description = "Overlay to show healer codes"
+	)
+	default boolean healerCodes()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "healerMenuOption",
+			name = "Healer menu options",
+			description = "asd"
+	)
+	default boolean healerMenuOption()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "antiDrag",
+			name = "Anti Drag",
+			description = "asd"
 	)
 	default boolean antiDrag()
 	{
@@ -73,9 +93,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "antiDragDelay",
-		name = "Anti Drag Delay",
-		description = "asd"
+			keyName = "antiDragDelay",
+			name = "Anti Drag Delay",
+			description = "asd"
 	)
 	default int antiDragDelay()
 	{
@@ -83,9 +103,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "eggBoi",
-		name = "Collector helper",
-		description = "asd"
+			keyName = "eggBoi",
+			name = "Collector helper",
+			description = "asd"
 	)
 	default boolean eggBoi()
 	{
@@ -93,9 +113,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "osHelp",
-		name = "Shift OS",
-		description = "asd"
+			keyName = "osHelp",
+			name = "Shift OS",
+			description = "asd"
 	)
 	default boolean osHelp()
 	{

@@ -269,41 +269,6 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
-	{
-		NPC npc = event.getNpc();
-
-		if (isNpcHealer(npc.getId()))
-		{
-			if (checkNewSpawn(npc) || Duration.between(wave_start, Instant.now()).getSeconds() < 16)
-			{
-				int spawnNumber = healers.size();
-				healers.put(npc, new Healer(npc, spawnNumber, currentWave));
-				log.info("spawn number: " + spawnNumber + " on wave " + currentWave);
-			}
-		}
-	}
-
-	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
-	{
-		Actor actor = hitsplatApplied.getActor();
-
-		if (healers.isEmpty() && !(actor instanceof NPC) && lastInteracted == null)
-		{
-			return;
-		}
-
-		for (Healer healer : healers.values())
-		{
-			if (healer.getNpc() == actor && actor == lastInteracted)
-			{
-				healer.setFoodRemaining(healer.getFoodRemaining() - 1);
-			}
-		}
-	}
-
-	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
 	{
 		if (healers.remove(event.getNpc()) != null && healers.isEmpty())
@@ -381,29 +346,6 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 			swap("quick-start", option, target, true);
 		}
 
-		if (inGameBit == 1 && config.healerMenuOption() && event.getTarget().contains("Penance Healer"))
-		{
-
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
-			String targett = lastEntry.getTarget();
-
-			if (foodPressed.containsKey(lastEntry.getIdentifier()))
-			{
-				lastEntry.setTarget(lastEntry.getTarget().split("\\(")[0] + "(" + Duration.between(foodPressed.get(lastEntry.getIdentifier()), Instant.now()).getSeconds() + ")");
-				if (Duration.between(foodPressed.get(lastEntry.getIdentifier()), Instant.now()).getSeconds() > 20)
-				{
-					lastEntry.setTarget(lastEntry.getTarget().replace("<col=ffff00>", "<col=2bff63>"));
-				}
-			}
-			else
-			{
-				lastEntry.setTarget(targett.replace("<col=ffff00>", "<col=2bff63>"));
-
-			}
-
-			client.setMenuEntries(menuEntries);
-		}
 
 		if (client.getWidget(WidgetInfo.BA_COLL_LISTEN_TEXT) != null && inGameBit == 1 && config.eggBoi() && event.getTarget().endsWith("egg") && shiftDown)
 		{
