@@ -98,10 +98,10 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hideAutoRetaliate",
-			name = "Hide auto retaliate",
-			description = "Hide auto retaliate from the combat options tab",
-			position = 7
+		keyName = "hideAutoRetaliate",
+		name = "Hide auto retaliate",
+		description = "Hide auto retaliate from the combat options tab",
+		position = 7
 	)
 	default boolean hideAutoRetaliate() { return false; }
 

@@ -126,8 +126,6 @@ public class AttackStylesPlugin extends Plugin
 		overlayManager.remove(overlay);
 		hideWarnedStyles(false);
 		processWidgets();
-
-		//unhides auto retaliate on plugin shutdown
 		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), false);
 	}
 
@@ -177,8 +175,6 @@ public class AttackStylesPlugin extends Plugin
 				hideWidget(client.getWidget(widgetKey), widgetsToHide.get(equippedWeaponType, widgetKey));
 			}
 		}
-
-		//hides or reveals auto retaliate when config option for it is toggled
 		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), config.hideAutoRetaliate());
 	}
 
