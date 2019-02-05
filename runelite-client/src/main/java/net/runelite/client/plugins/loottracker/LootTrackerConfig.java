@@ -48,4 +48,14 @@ public interface LootTrackerConfig extends Config
 		description = ""
 	)
 	void setIgnoredItems(String key);
+
+	@ConfigItem(
+		keyName = "saveLoot",
+		name = "Save loot",
+		description = "Save loot between client sessions (requires being logged in)"
+	)
+	default boolean saveLoot()
+	{
+		return true;
+	}
 }

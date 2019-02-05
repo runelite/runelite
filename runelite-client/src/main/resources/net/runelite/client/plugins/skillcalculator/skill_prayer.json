@@ -7,6 +7,10 @@
     {
       "name": "Ectofuntus (400%)",
       "value": 3
+    },
+    {
+      "name": "Chaos Altar (700%)",
+      "value": 6
     }
   ],
   "actions": [
@@ -233,6 +237,12 @@
     },
     {
       "level": 1,
+      "icon": 22780,
+      "name": "Wyrm Bones",
+      "xp": 30
+    },
+    {
+      "level": 1,
       "icon": 3398,
       "name": "Phrin Remains",
       "xp": 46.5,
@@ -250,6 +260,12 @@
       "name": "Riyl Remains",
       "xp": 59.5,
       "ignoreBonus": true
+    },
+    {
+      "level": 1,
+      "icon": 22783,
+      "name": "Drake Bones",
+      "xp": 60
     },
     {
       "level": 1,
@@ -288,6 +304,12 @@
       "icon": 11943,
       "name": "Lava Dragon Bones",
       "xp": 85
+    },
+    {
+      "level": 1,
+      "icon": 22786,
+      "name": "Hydra Bones",
+      "xp": 90
     },
     {
       "level": 1,

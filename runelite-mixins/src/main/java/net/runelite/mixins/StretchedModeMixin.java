@@ -197,23 +197,13 @@ public abstract class StretchedModeMixin implements RSClient
 	@Override
 	public void invalidateStretching(boolean resize)
 	{
-		cachedStretchedDimensions = null;
 		cachedRealDimensions = null;
+		cachedStretchedDimensions = null;
 
 		if (resize && isResized())
 		{
 			/*
 				Tells the game to run resizeCanvas the next frame.
-
-				resizeCanvas in turn calls the method that
-				determines the maximum size of the canvas,
-				AFTER setting the size of the canvas.
-
-				The frame after that, the game sees that
-				the maximum size of the canvas isn't
-				the current size, so it runs resizeCanvas again.
-				This time it uses our new maximum size
-				as the bounds for the canvas size.
 
 				This is useful when resizeCanvas wouldn't usually run,
 				for example when we've only changed the scaling factor

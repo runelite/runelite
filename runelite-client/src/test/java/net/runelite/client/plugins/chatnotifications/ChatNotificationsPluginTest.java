@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.chatnotifications;
 
-import com.google.common.base.Splitter;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
@@ -37,6 +36,7 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.events.SetMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.util.Text;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -97,8 +97,7 @@ public class ChatNotificationsPluginTest
 	public void highlightListTest()
 	{
 		when(config.highlightWordsString()).thenReturn("this,is, a                   , test, ");
-		final Splitter splitter = Splitter.on(",").trimResults().omitEmptyStrings();
-		final List<String> higlights = splitter.splitToList(config.highlightWordsString());
+		final List<String> higlights = Text.fromCSV(config.highlightWordsString());
 		assertEquals(4, higlights.size());
 
 		final Iterator<String> iterator = higlights.iterator();

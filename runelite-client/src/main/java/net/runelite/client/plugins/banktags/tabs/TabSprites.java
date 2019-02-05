@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.banktags.tabs;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
@@ -61,26 +60,9 @@ public enum TabSprites
 
 		for (TabSprites value : values())
 		{
-			map.put(value.spriteId, getSpritePixels(client, value.image));
+			map.put(value.spriteId, ImageUtil.getImageSpritePixels(value.image, client));
 		}
 
 		return map;
-	}
-
-	private static SpritePixels getSpritePixels(Client client, BufferedImage image)
-	{
-		int[] pixels = new int[image.getWidth() * image.getHeight()];
-
-		try
-		{
-			new PixelGrabber(image, 0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth())
-				.grabPixels();
-		}
-		catch (InterruptedException ex)
-		{
-			log.debug("PixelGrabber was interrupted: ", ex);
-		}
-
-		return client.createSpritePixels(pixels, image.getWidth(), image.getHeight());
 	}
 }

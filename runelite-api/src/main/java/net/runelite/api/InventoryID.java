@@ -50,6 +50,10 @@ public enum InventoryID
 	 */
 	BARROWS_REWARD(141),
 	/**
+	 * Monkey madness puzzle box inventory.
+	 */
+	MONKEY_MADNESS_PUZZLE_BOX(221),
+	/**
 	 * Chambers of Xeric chest inventory.
 	 */
 	CHAMBERS_OF_XERIC_CHEST(581),

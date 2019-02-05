@@ -26,7 +26,6 @@ package net.runelite.client.plugins.inventorytags;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.List;
@@ -45,6 +44,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
@@ -212,8 +212,11 @@ public class InventoryTagsPlugin extends Plugin
 				return;
 			}
 
-			MenuEntry[] menuList = new MenuEntry[GROUPS.size()];
+			MenuEntry[] menuList = new MenuEntry[GROUPS.size() + 1];
 			int num = 0;
+
+			// preserve the 'Cancel' option as the client will reuse the first entry for Cancel and only resets option/action
+			menuList[num++] = event.getMenuEntries()[0];
 
 			for (final String groupName : GROUPS)
 			{

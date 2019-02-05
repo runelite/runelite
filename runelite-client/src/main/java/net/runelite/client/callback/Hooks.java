@@ -24,7 +24,6 @@
  */
 package net.runelite.client.callback;
 
-import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -47,6 +46,7 @@ import net.runelite.api.MainBufferProvider;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.Renderable;
 import net.runelite.api.WorldMapManager;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
@@ -55,6 +55,7 @@ import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
 import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
@@ -81,6 +82,7 @@ public class Hooks implements Callbacks
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
 
 	private static final GameTick GAME_TICK = new GameTick();
+	private static final BeforeRender BEFORE_RENDER = new BeforeRender();
 
 	@Inject
 	private EventBus eventBus;
@@ -148,6 +150,8 @@ public class Hooks implements Callbacks
 			int tick = client.getTickCount();
 			client.setTickCount(tick + 1);
 		}
+
+		eventBus.post(BEFORE_RENDER);
 
 		clientThread.invoke();
 
@@ -347,7 +351,7 @@ public class Hooks implements Callbacks
 					: RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			stretchedGraphics.drawImage(image, 0, 0, stretchedDimensions.width, stretchedDimensions.height, null);
 
-			finalImage = image = stretchedImage;
+			finalImage = stretchedImage;
 		}
 		else
 		{
@@ -355,9 +359,27 @@ public class Hooks implements Callbacks
 		}
 
 		// Draw the image onto the game canvas
-		graphics.drawImage(image, 0, 0, client.getCanvas());
+		graphics.drawImage(finalImage, 0, 0, client.getCanvas());
 
-		drawManager.processDrawComplete(() -> finalImage);
+		// finalImage is backed by the client buffer which will change soon. make a copy
+		// so that callbacks can safely use it later from threads.
+		drawManager.processDrawComplete(() -> copy(finalImage));
+	}
+
+	/**
+	 * Copy an image
+	 * @param src
+	 * @return
+	 */
+	private static Image copy(Image src)
+	{
+		final int width = src.getWidth(null);
+		final int height = src.getHeight(null);
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		Graphics graphics = image.getGraphics();
+		graphics.drawImage(src, 0, 0, width, height, null);
+		graphics.dispose();
+		return image;
 	}
 
 	@Override
@@ -411,6 +433,7 @@ public class Hooks implements Callbacks
 		try
 		{
 			renderer.render(graphics2d, OverlayLayer.ABOVE_WIDGETS);
+			renderer.render(graphics2d, OverlayLayer.ABOVE_MAP);
 		}
 		catch (Exception ex)
 		{
@@ -429,6 +452,11 @@ public class Hooks implements Callbacks
 		// but having the game tick event after all packets
 		// have been processed is typically more useful.
 		shouldProcessGameTick = true;
+		// Replay deferred events, otherwise if two npc
+		// update packets get processed in one frame, a
+		// despawn event could be published prior to the
+		// spawn event, which is deferred
+		deferredEventBus.replay();
 	}
 
 	public static void renderDraw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)

@@ -188,7 +188,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "notificationFocused",
 		name = "Send notifications when focused",
-		description = "Toggles idle notifications for when the client is focused",
+		description = "Toggles all notifications for when the client is focused",
 		position = 25
 	)
 	default boolean sendNotificationsWhenFocused()
@@ -230,10 +230,21 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "menuEntryShift",
+		name = "Require Shift for overlay menu",
+		description = "Overlay right-click menu will require shift to be added",
+		position = 33
+	)
+	default boolean menuEntryShift()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "infoBoxVertical",
 		name = "Display infoboxes vertically",
 		description = "Toggles the infoboxes to display vertically",
-		position = 33
+		position = 40
 	)
 	default boolean infoBoxVertical()
 	{
@@ -244,7 +255,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxWrap",
 		name = "Infobox wrap count",
 		description = "Configures the amount of infoboxes shown before wrapping",
-		position = 34
+		position = 41
 	)
 	default int infoBoxWrap()
 	{
@@ -255,7 +266,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxSize",
 		name = "Infobox size (px)",
 		description = "Configures the size of each infobox in pixels",
-		position = 35
+		position = 42
 	)
 	default int infoBoxSize()
 	{

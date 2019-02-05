@@ -47,6 +47,7 @@ public class SuperRestore implements Effect
 		CONSTRUCTION
 	};
 
+	private final double percR; //percentage restored
 	private final int delta;
 
 	@Override
@@ -54,7 +55,7 @@ public class SuperRestore implements Effect
 	{
 		StatsChanges changes = new StatsChanges(0);
 
-		SimpleStatBoost calc = new SimpleStatBoost(null, false, perc(.25, delta));
+		SimpleStatBoost calc = new SimpleStatBoost(null, false, perc(percR, delta));
 		PrayerPotion prayer = new PrayerPotion(delta);
 		changes.setStatChanges(Stream.concat(
 			Stream.of(prayer.effect(client)),

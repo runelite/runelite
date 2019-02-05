@@ -126,6 +126,9 @@ class SkillCalculator extends JPanel
 		// Remove all components (action slots) from this panel.
 		removeAll();
 
+		// Clear the search bar
+		searchBar.setText(null);
+
 		// Add in checkboxes for available skill bonuses.
 		renderBonusOptions();
 

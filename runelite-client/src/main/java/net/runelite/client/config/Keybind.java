@@ -60,7 +60,7 @@ public class Keybind
 	private final int keyCode;
 	private final int modifiers;
 
-	public Keybind(int keyCode, int modifiers)
+	protected Keybind(int keyCode, int modifiers, boolean ignoreModifiers)
 	{
 		modifiers &= KEYBOARD_MODIFIER_MASK;
 
@@ -73,8 +73,18 @@ public class Keybind
 			keyCode = KeyEvent.VK_UNDEFINED;
 		}
 
+		if (ignoreModifiers && keyCode != KeyEvent.VK_UNDEFINED)
+		{
+			modifiers = 0;
+		}
+
 		this.keyCode = keyCode;
 		this.modifiers = modifiers;
+	}
+
+	public Keybind(int keyCode, int modifiers)
+	{
+		this(keyCode, modifiers, false);
 	}
 
 	/**
@@ -95,6 +105,11 @@ public class Keybind
 	 */
 	public boolean matches(KeyEvent e)
 	{
+		return matches(e, false);
+	}
+
+	protected boolean matches(KeyEvent e, boolean ignoreModifiers)
+	{
 		if (NOT_SET.equals(this))
 		{
 			return false;
@@ -111,6 +126,11 @@ public class Keybind
 		}
 
 		if (e.getID() == KeyEvent.KEY_RELEASED && keyCode != KeyEvent.VK_UNDEFINED)
+		{
+			return this.keyCode == keyCode;
+		}
+
+		if (ignoreModifiers && keyCode != KeyEvent.VK_UNDEFINED)
 		{
 			return this.keyCode == keyCode;
 		}

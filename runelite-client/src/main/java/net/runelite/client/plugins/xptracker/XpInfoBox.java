@@ -30,6 +30,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -88,10 +91,13 @@ class XpInfoBox extends JPanel
 	private final JLabel actionsLeft = new JLabel();
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
 
+	private final XpTrackerConfig xpTrackerConfig;
+
 	private boolean paused = false;
 
-	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
+	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, XpTrackerConfig xpTrackerConfig, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
 	{
+		this.xpTrackerConfig = xpTrackerConfig;
 		this.panel = panel;
 		this.skill = skill;
 
@@ -206,6 +212,25 @@ class XpInfoBox extends JPanel
 			progressBar.setRightLabel(xpSnapshotSingle.getEndGoalXp() == Experience.MAX_SKILL_XP
 				? "200M"
 				: "Lvl. " + xpSnapshotSingle.getEndLevel());
+
+			// Add intermediate level positions to progressBar
+			if (xpTrackerConfig.showIntermediateLevels() && xpSnapshotSingle.getEndLevel() - xpSnapshotSingle.getStartLevel() > 1)
+			{
+				final List<Double> positions = new ArrayList<>();
+
+				for (int level = xpSnapshotSingle.getStartLevel() + 1; level < xpSnapshotSingle.getEndLevel(); level++)
+				{
+					double relativeStartExperience = Experience.getXpForLevel(level) - xpSnapshotSingle.getStartGoalXp();
+					double relativeEndExperience = xpSnapshotSingle.getEndGoalXp() - xpSnapshotSingle.getStartGoalXp();
+					positions.add(relativeStartExperience / relativeEndExperience);
+				}
+
+				progressBar.setPositions(positions);
+			}
+			else
+			{
+				progressBar.setPositions(Collections.emptyList());
+			}
 
 			progressBar.setToolTipText(String.format(
 				HTML_TOOL_TIP_TEMPLATE,

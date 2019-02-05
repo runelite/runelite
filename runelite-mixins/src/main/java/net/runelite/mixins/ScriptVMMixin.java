@@ -119,7 +119,14 @@ public abstract class ScriptVMMixin implements RSClient
 		Object[] arguments = event.getArguments();
 		if (arguments != null && arguments.length > 0 && arguments[0] instanceof JavaScriptCallback)
 		{
-			((JavaScriptCallback) arguments[0]).run(event);
+			try
+			{
+				((JavaScriptCallback) arguments[0]).run(event);
+			}
+			catch (Exception e)
+			{
+				client.getLogger().error("Error in JavaScriptCallback", e);
+			}
 			return;
 		}
 
@@ -144,6 +151,6 @@ public abstract class ScriptVMMixin implements RSClient
 		System.arraycopy(args, 0, cargs, 1, args.length);
 		RSScriptEvent se = createScriptEvent();
 		se.setArguments(cargs);
-		runScript(se, 200000);
+		runScript(se, 5000000);
 	}
 }

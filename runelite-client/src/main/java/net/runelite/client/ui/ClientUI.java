@@ -25,7 +25,6 @@
 package net.runelite.client.ui;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.CardLayout;
@@ -76,6 +75,7 @@ import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
 import net.runelite.client.input.KeyManager;
@@ -542,6 +542,7 @@ public class ClientUI
 	 */
 	public void paint(final Graphics graphics)
 	{
+		assert SwingUtilities.isEventDispatchThread() : "paint must be called on EDT";
 		frame.paint(graphics);
 	}
 
@@ -629,8 +630,17 @@ public class ClientUI
 			? logoutButton.getHeight() + logoutButton.getRelativeY()
 			: 5;
 
-		final BufferedImage image = sidebarOpen ? sidebarOpenIcon : sidebarClosedIcon;
-		graphics.drawImage(image, x, y, null);
+		final BufferedImage image = sidebarOpen ? sidebarClosedIcon : sidebarOpenIcon;
+
+		final Rectangle sidebarButtonRange = new Rectangle(x - 15, 0, image.getWidth() + 25, client.getRealDimensions().height);
+		final Point mousePosition = new Point(
+			client.getMouseCanvasPosition().getX() + client.getViewportXOffset(),
+			client.getMouseCanvasPosition().getY() + client.getViewportYOffset());
+
+		if (sidebarButtonRange.contains(mousePosition.getX(), mousePosition.getY()))
+		{
+			graphics.drawImage(image, x, y, null);
+		}
 
 		// Update button dimensions
 		sidebarButtonPosition.setBounds(x, y, image.getWidth(), image.getHeight());

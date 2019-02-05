@@ -63,7 +63,7 @@ class XpPanel extends PluginPanel
 	/* This displays the "No exp gained" text */
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
-	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager)
+	XpPanel(XpTrackerPlugin xpTrackerPlugin, XpTrackerConfig xpTrackerConfig, Client client, SkillIconManager iconManager)
 	{
 		super();
 
@@ -91,19 +91,12 @@ class XpPanel extends PluginPanel
 
 		// Create pause all menu
 		final JMenuItem pauseAll = new JMenuItem("Pause All");
-		pauseAll.addActionListener(e ->
-		{
-			if (pauseAll.getText().equals("Pause All"))
-			{
-				xpTrackerPlugin.pauseAllSkills(true);
-				pauseAll.setText("Unpause All");
-			}
-			else
-			{
-				xpTrackerPlugin.pauseAllSkills(false);
-				pauseAll.setText("Pause All");
-			}
-		});
+		pauseAll.addActionListener(e -> xpTrackerPlugin.pauseAllSkills(true));
+
+		// Create unpause all menu
+		final JMenuItem unpauseAll = new JMenuItem("Unpause All");
+		unpauseAll.addActionListener(e -> xpTrackerPlugin.pauseAllSkills(false));
+
 
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
@@ -111,6 +104,7 @@ class XpPanel extends PluginPanel
 		popupMenu.add(openXpTracker);
 		popupMenu.add(reset);
 		popupMenu.add(pauseAll);
+		popupMenu.add(unpauseAll);
 		overallPanel.setComponentPopupMenu(popupMenu);
 
 		final JLabel overallIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(Skill.OVERALL)));
@@ -143,7 +137,7 @@ class XpPanel extends PluginPanel
 				{
 					break;
 				}
-				infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, client, infoBoxPanel, skill, iconManager));
+				infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, xpTrackerConfig, client, infoBoxPanel, skill, iconManager));
 			}
 		}
 		catch (IOException e)

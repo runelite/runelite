@@ -38,6 +38,7 @@ import net.runelite.api.GraphicsObject;
 import net.runelite.api.HashTable;
 import net.runelite.api.HintArrowType;
 import net.runelite.api.Ignore;
+import net.runelite.api.IndexDataBase;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.InventoryID;
 import net.runelite.api.MenuAction;
@@ -73,6 +74,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -105,6 +107,7 @@ import net.runelite.rs.api.RSFriendContainer;
 import net.runelite.rs.api.RSFriendManager;
 import net.runelite.rs.api.RSHashTable;
 import net.runelite.rs.api.RSIgnoreContainer;
+import net.runelite.rs.api.RSIndexDataBase;
 import net.runelite.rs.api.RSIndexedSprite;
 import net.runelite.rs.api.RSItem;
 import net.runelite.rs.api.RSItemContainer;
@@ -112,6 +115,7 @@ import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSName;
 import net.runelite.rs.api.RSNameable;
 import net.runelite.rs.api.RSPlayer;
+import net.runelite.rs.api.RSSpritePixels;
 import net.runelite.rs.api.RSWidget;
 import org.slf4j.Logger;
 
@@ -165,6 +169,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static boolean oldIsResized;
+
+	@Inject
+	static int skyboxColor;
 
 	@Inject
 	@Override
@@ -539,6 +546,7 @@ public abstract class RSClientMixin implements RSClient
 		int[] menuTypes = getMenuTypes();
 		int[] params0 = getMenuActionParams0();
 		int[] params1 = getMenuActionParams1();
+		boolean[] leftClick = getMenuForceLeftClick();
 
 		MenuEntry[] entries = new MenuEntry[count];
 		for (int i = 0; i < count; ++i)
@@ -550,6 +558,7 @@ public abstract class RSClientMixin implements RSClient
 			entry.setType(menuTypes[i]);
 			entry.setParam0(params0[i]);
 			entry.setParam1(params1[i]);
+			entry.setForceLeftClick(leftClick[i]);
 		}
 		return entries;
 	}
@@ -565,6 +574,7 @@ public abstract class RSClientMixin implements RSClient
 		int[] menuTypes = getMenuTypes();
 		int[] params0 = getMenuActionParams0();
 		int[] params1 = getMenuActionParams1();
+		boolean[] leftClick = getMenuForceLeftClick();
 
 		for (MenuEntry entry : entries)
 		{
@@ -574,6 +584,7 @@ public abstract class RSClientMixin implements RSClient
 			menuTypes[count] = entry.getType();
 			params0[count] = entry.getParam0();
 			params1[count] = entry.getParam1();
+			leftClick[count] = entry.isForceLeftClick();
 			++count;
 		}
 
@@ -1320,5 +1331,107 @@ public abstract class RSClientMixin implements RSClient
 		int count = client.getChangedSkillsCount();
 		skills[++count - 1 & 31] = skill.ordinal();
 		client.setChangedSkillsCount(count);
+	}
+
+	@Inject
+	@Override
+	public RSSpritePixels[] getSprites(IndexDataBase source, int archiveId, int fileId)
+	{
+		RSIndexDataBase rsSource = (RSIndexDataBase) source;
+		byte[] configData = rsSource.getConfigData(archiveId, fileId);
+		if (configData == null)
+		{
+			return null;
+		}
+
+		decodeSprite(configData);
+
+		int indexedSpriteCount = getIndexedSpriteCount();
+		int maxWidth = getIndexedSpriteWidth();
+		int maxHeight = getIndexedSpriteHeight();
+		int[] offsetX = getIndexedSpriteOffsetXs();
+		int[] offsetY = getIndexedSpriteOffsetYs();
+		int[] widths = getIndexSpriteWidths();
+		int[] heights = getIndexedSpriteHeights();
+		byte[][] spritePixelsArray = getSpritePixels();
+		int[] indexedSpritePalette = getIndexedSpritePalette();
+
+		RSSpritePixels[] array = new RSSpritePixels[indexedSpriteCount];
+
+		for (int i = 0; i < indexedSpriteCount; ++i)
+		{
+			int width = widths[i];
+			int height = heights[i];
+
+			byte[] pixelArray = spritePixelsArray[i];
+			int[] pixels = new int[width * height];
+
+			RSSpritePixels spritePixels = createSpritePixels(pixels, width, height);
+			spritePixels.setMaxHeight(maxHeight);
+			spritePixels.setMaxWidth(maxWidth);
+			spritePixels.setOffsetX(offsetX[i]);
+			spritePixels.setOffsetY(offsetY[i]);
+
+			for (int j = 0; j < width * height; ++j)
+			{
+				pixels[j] = indexedSpritePalette[pixelArray[j] & 0xff];
+			}
+
+			array[i] = spritePixels;
+		}
+
+		setIndexedSpriteOffsetXs(null);
+		setIndexedSpriteOffsetYs(null);
+		setIndexSpriteWidths(null);
+		setIndexedSpriteHeights(null);
+		setIndexSpritePalette(null);
+		setSpritePixels(null);
+
+		return array;
+	}
+
+	@Inject
+	@Override
+	public void setSkyboxColor(int newSkyboxColor)
+	{
+		skyboxColor = newSkyboxColor;
+	}
+
+	@Inject
+	@Override
+	public int getSkyboxColor()
+	{
+		return skyboxColor;
+	}
+
+	@Inject
+	@FieldHook("cycleCntr")
+	public static void onCycleCntrChanged(int idx)
+	{
+		client.getCallbacks().post(new ClientTick());
+	}
+
+	@Copy("shouldLeftClickOpenMenu")
+	boolean rs$shouldLeftClickOpenMenu()
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("shouldLeftClickOpenMenu")
+	boolean rl$shouldLeftClickOpenMenu()
+	{
+		if (rs$shouldLeftClickOpenMenu())
+		{
+			return true;
+		}
+
+		int len = getMenuOptionCount();
+		if (len > 0)
+		{
+			int type = getMenuTypes()[len - 1];
+			return type == MenuAction.RUNELITE_OVERLAY.getId();
+		}
+
+		return false;
 	}
 }
