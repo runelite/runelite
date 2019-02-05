@@ -27,6 +27,7 @@ package net.runelite.api.events;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.MessageNode;
 
 /**
  * An event where a new chat message is received.
@@ -40,6 +41,10 @@ import net.runelite.api.ChatMessageType;
 @AllArgsConstructor
 public class ChatMessage
 {
+	/**
+	 * The underlying MessageNode for the message.
+	 */
+	private MessageNode messageNode;
 	/**
 	 * The type of message received.
 	 */
@@ -59,4 +64,8 @@ public class ChatMessage
 	 * current name of the clan chat the client is in.
 	 */
 	private String sender;
+	/**
+	 * Timestamp of the message.
+	 */
+	private int timestamp;
 }
