@@ -112,7 +112,7 @@ public class RuneLite
 	private OverlayManager overlayManager;
 
 	@Inject
-	private PartyService partyService;
+	private Provider<PartyService> partyService;
 
 	@Inject
 	private Provider<ItemManager> itemManager;
@@ -276,13 +276,13 @@ public class RuneLite
 		eventBus.register(overlayManager);
 		eventBus.register(drawManager);
 		eventBus.register(infoBoxManager);
-		eventBus.register(partyService);
 
 		if (!isOutdated)
 		{
 			// Initialize chat colors
 			chatMessageManager.get().loadColors();
 
+			eventBus.register(partyService.get());
 			eventBus.register(overlayRenderer.get());
 			eventBus.register(clanManager.get());
 			eventBus.register(itemManager.get());
