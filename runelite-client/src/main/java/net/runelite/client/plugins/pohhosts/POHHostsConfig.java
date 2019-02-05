@@ -29,7 +29,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("pohhosts")
-interface POHHostsConfig extends Config
+public interface POHHostsConfig extends Config
 {
 	@ConfigItem(
 		position = -2,
