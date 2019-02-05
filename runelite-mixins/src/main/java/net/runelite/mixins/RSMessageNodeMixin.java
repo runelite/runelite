@@ -25,7 +25,6 @@
 package net.runelite.mixins;
 
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.events.SetMessage;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
@@ -49,15 +48,6 @@ public abstract class RSMessageNodeMixin implements RSMessageNode
 	RSMessageNodeMixin()
 	{
 		rl$timestamp = (int) (System.currentTimeMillis() / 1000L);
-
-		final SetMessage setMessage = new SetMessage();
-		setMessage.setMessageNode(this);
-		setMessage.setType(getType());
-		setMessage.setName(getName());
-		setMessage.setSender(getSender());
-		setMessage.setValue(getValue());
-		setMessage.setTimestamp(rl$timestamp);
-		client.getCallbacks().post(setMessage);
 	}
 
 	@Inject
@@ -103,14 +93,5 @@ public abstract class RSMessageNodeMixin implements RSMessageNode
 		// Clear the runelite formatted message then.
 		runeLiteFormatMessage = null;
 		rl$timestamp = (int) (System.currentTimeMillis() / 1000L);
-
-		final SetMessage setMessage = new SetMessage();
-		setMessage.setMessageNode(this);
-		setMessage.setType(ChatMessageType.of(type));
-		setMessage.setName(name);
-		setMessage.setSender(sender);
-		setMessage.setValue(value);
-		setMessage.setTimestamp(rl$timestamp);
-		client.getCallbacks().post(setMessage);
 	}
 }
