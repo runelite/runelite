@@ -238,8 +238,11 @@ public class POHHostsPlugin extends Plugin
 
 	private void checkNewHost()
 	{
-		// TODO: Determine if house is player's
 		Widget privateText = client.getWidget(WidgetInfo.CHATBOX_PRIVATE_MODE);
+		if (client.getPlayers().size() > 0)
+		{
+			return;
+		}
 
 		if (client.getVar(Varbits.HOUSE_BUILDING_MODE) == 0 && Text.removeTags(privateText.getText()).equals("On")
 			&& client.getVar(Varbits.ACCOUNT_TYPE) == 0)
@@ -251,6 +254,7 @@ public class POHHostsPlugin extends Plugin
 
 			LocalPoint pos = client.getLocalPlayer().getLocalLocation();
 			house = new House();
+			house.setOwner(client.getUsername());
 			List<GraphicsObject> objects = client.getGraphicsObjects();
 			List<NPC> npcs = client.getNpcs();
 			objects.forEach(obj ->
