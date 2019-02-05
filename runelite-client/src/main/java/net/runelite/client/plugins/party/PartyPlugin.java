@@ -283,7 +283,9 @@ public class PartyPlugin extends Plugin implements KeyListener
 		if (doSync && !party.getMembers().isEmpty())
 		{
 			// Request sync
-			ws.send(new UserSync(party.getLocalMember().getMemberId()));
+			final UserSync userSync = new UserSync();
+			userSync.setMemberId(party.getLocalMember().getMemberId());
+			ws.send(userSync);
 		}
 
 		doSync = false;
