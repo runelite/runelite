@@ -103,7 +103,10 @@ public interface AttackStylesConfig extends Config
 		description = "Hide auto retaliate from the combat options tab",
 		position = 7
 	)
-	default boolean hideAutoRetaliate() { return false; }
+	default boolean hideAutoRetaliate()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "removeWarnedStyles",
