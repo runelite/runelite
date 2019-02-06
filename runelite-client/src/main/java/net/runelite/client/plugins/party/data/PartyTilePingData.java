@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.party.data;
 
+import java.awt.Color;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -35,5 +36,6 @@ import net.runelite.api.coords.WorldPoint;
 public class PartyTilePingData
 {
 	private final WorldPoint point;
+	private final Color color;
 	private int alpha = 255;
 }
