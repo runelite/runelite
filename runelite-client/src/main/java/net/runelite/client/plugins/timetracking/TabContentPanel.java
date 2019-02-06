@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.WinApi;
 
 public abstract class TabContentPanel extends JPanel
 {
@@ -87,7 +88,7 @@ public abstract class TabContentPanel extends JPanel
 
 			switch (OSType.getOSType()) {
 				case Windows:
-
+					sb.append("at ").append(WinApi.getTimeFormatString(endTime));
 					break;
 				default:
 					sb.append("at ").append(StackFormatter.getLocalizedDateTimeFormatter(FormatStyle.SHORT).format(endTime.toLocalTime()));

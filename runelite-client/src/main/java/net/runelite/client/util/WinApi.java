@@ -14,11 +14,13 @@ import java.util.List;
 import java.util.Locale;
 
 interface Kernel32 extends StdCallLibrary {
-    public int getTimeFormatEx(
-            WString lpLocaleName, WinDef.DWORD dwFlags, WinBase.SYSTEMTIME.ByReference lpTime,
+    int TIME_NOSECONDS = 0x00000002;
+
+    public int GetTimeFormatEx(
+            WString lpLocaleName, WinDef.DWORD dwFlags, WinBase.SYSTEMTIME lpTime,
             WString lpFormat, char[] lpTimeStr, int cchTime);
 
-    public int getLastError();
+    public int GetLastError();
 }
 
 public class WinApi {
@@ -26,16 +28,23 @@ public class WinApi {
 
     public static String getTimeFormatString(LocalDateTime localDateTime) {
         char[] lpTimeStr = new char[80];
-        WString lpLocaleName = new WString(Locale.getDefault().toString());
-        WinDef.DWORD dwFlags = new WinDef.DWORD(0);
+        WinDef.DWORD dwFlags = new WinDef.DWORD(Kernel32.TIME_NOSECONDS);
 
         WinBase.SYSTEMTIME time = new WinBase.SYSTEMTIME();
         time.wHour = (short)localDateTime.getHour();
         time.wMinute = (short)localDateTime.getMinute();
         time.wSecond = (short)localDateTime.getSecond();
+        time.wMilliseconds = 0;
 
-        kernel32.getTimeFormatEx(lpLocaleName, dwFlags, (WinBase.SYSTEMTIME.ByReference)time.getPointer(), null, lpTimeStr, 80);
+        kernel32.GetTimeFormatEx(null, dwFlags, time, null, lpTimeStr, 80) == 0)
 
-        return lpTimeStr.toString();
+        int endIndex = 0;
+        for (int i = 0; i < lpTimeStr.length; i++) {
+            if (lpTimeStr[i] == '\u0000') {
+                endIndex = i;
+                break;
+            }
+        }
+        return String.valueOf(lpTimeStr, 0, endIndex);
     }
 }
