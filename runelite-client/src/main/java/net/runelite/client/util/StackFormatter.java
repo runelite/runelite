@@ -28,6 +28,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Locale;
@@ -63,6 +64,15 @@ public class StackFormatter
 		"#,###.#",
 		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
 	);
+
+	public static String getPlatformFormattedDateTime(LocalDateTime localDateTime) {
+		switch (OSType.getOSType()) {
+			case Windows:
+				return WinApi.getTimeFormatString(localDateTime);
+			default:
+				return StackFormatter.getLocalizedDateTimeFormatter(FormatStyle.SHORT).format(localDateTime.toLocalTime());
+		}
+	}
 
 	/**
 	 * Get a localized DateTimeFormatter for use.

@@ -36,7 +36,7 @@ public class WinApi {
         time.wSecond = (short)localDateTime.getSecond();
         time.wMilliseconds = 0;
 
-        kernel32.GetTimeFormatEx(null, dwFlags, time, null, lpTimeStr, 80) == 0)
+        kernel32.GetTimeFormatEx(null, dwFlags, time, null, lpTimeStr, 80);
 
         int endIndex = 0;
         for (int i = 0; i < lpTimeStr.length; i++) {

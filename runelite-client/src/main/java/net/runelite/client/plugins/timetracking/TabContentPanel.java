@@ -86,14 +86,7 @@ public abstract class TabContentPanel extends JPanel
 				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
 			}
 
-			switch (OSType.getOSType()) {
-				case Windows:
-					sb.append("at ").append(WinApi.getTimeFormatString(endTime));
-					break;
-				default:
-					sb.append("at ").append(StackFormatter.getLocalizedDateTimeFormatter(FormatStyle.SHORT).format(endTime.toLocalTime()));
-					break;
-			}
+			sb.append("at ").append(StackFormatter.getPlatformFormattedDateTime(endTime));
 			return sb.toString();
 		}
 	}
