@@ -65,8 +65,18 @@ public class StackFormatter
 		DecimalFormatSymbols.getInstance(Locale.ENGLISH)
 	);
 
-	public static String getPlatformFormattedDateTime(LocalDateTime localDateTime) {
-		switch (OSType.getOSType()) {
+	/**
+	 * Attempts to call the platform to get a localized time string based on
+	 * the users preferences. Falls back on using locale default if it is on a
+	 * platform that has no consistent way of obtaining this information.
+	 *
+	 * @param localDateTime The LocalDateTime object to format as a string
+	 * @return The formatted string.
+	 */
+	public static String getPlatformTimeStringFromLocalDateTime(LocalDateTime localDateTime)
+	{
+		switch (OSType.getOSType())
+		{
 			case Windows:
 				return WinApi.getTimeFormatString(localDateTime);
 			default:

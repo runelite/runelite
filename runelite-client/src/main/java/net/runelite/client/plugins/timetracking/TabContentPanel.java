@@ -26,15 +26,11 @@ package net.runelite.client.plugins.timetracking;
 
 import java.awt.Dimension;
 import java.time.LocalDateTime;
-import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import javax.swing.JPanel;
-
-import net.runelite.client.util.OSType;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.client.util.WinApi;
 
 public abstract class TabContentPanel extends JPanel
 {
@@ -86,7 +82,7 @@ public abstract class TabContentPanel extends JPanel
 				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
 			}
 
-			sb.append("at ").append(StackFormatter.getPlatformFormattedDateTime(endTime));
+			sb.append("at ").append(StackFormatter.getPlatformTimeStringFromLocalDateTime(endTime));
 			return sb.toString();
 		}
 	}
