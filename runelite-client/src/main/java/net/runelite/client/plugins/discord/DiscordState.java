@@ -87,7 +87,21 @@ class DiscordState
 			return;
 		}
 
-		discordService.updatePresence(lastPresence);
+		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
+			.state(lastPresence.getState())
+			.details(lastPresence.getDetails())
+			.startTimestamp(lastPresence.getStartTimestamp())
+			.smallImageKey(lastPresence.getSmallImageKey())
+			.partyMax(lastPresence.getPartyMax())
+			.partySize(party.getMembers().size());
+
+		if (party.isOwner())
+		{
+			presenceBuilder.partyId(partyId.toString());
+			presenceBuilder.joinSecret(party.getPartyId().toString());
+		}
+
+		discordService.updatePresence(presenceBuilder.build());
 	}
 
 	/**
