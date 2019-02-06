@@ -31,6 +31,8 @@ import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import javax.swing.JPanel;
+
+import net.runelite.client.util.OSType;
 import net.runelite.client.util.StackFormatter;
 
 public abstract class TabContentPanel extends JPanel
@@ -83,7 +85,14 @@ public abstract class TabContentPanel extends JPanel
 				sb.append(endTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault())).append(" ");
 			}
 
-			sb.append("at ").append(StackFormatter.getLocalizedDateTimeFormatter(FormatStyle.SHORT).format(endTime.toLocalTime()));
+			switch (OSType.getOSType()) {
+				case Windows:
+
+					break;
+				default:
+					sb.append("at ").append(StackFormatter.getLocalizedDateTimeFormatter(FormatStyle.SHORT).format(endTime.toLocalTime()));
+					break;
+			}
 			return sb.toString();
 		}
 	}

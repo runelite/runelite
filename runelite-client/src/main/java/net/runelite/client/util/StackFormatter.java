@@ -67,7 +67,7 @@ public class StackFormatter
 	/**
 	 * Get a localized DateTimeFormatter for use.
 	 *
-	 * @param formatStyle The format style to ues for the formatter
+	 * @param formatStyle The format style to use for the formatter
 	 * @return The localized DateTimeFormatter
 	 */
 	public static DateTimeFormatter getLocalizedDateTimeFormatter(FormatStyle formatStyle)
