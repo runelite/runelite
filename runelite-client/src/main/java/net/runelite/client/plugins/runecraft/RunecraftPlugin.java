@@ -24,11 +24,14 @@
  */
 package net.runelite.client.plugins.runecraft;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -41,16 +44,15 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
-import net.runelite.api.Query;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.queries.InventoryItemQuery;
-import net.runelite.api.queries.NPCQuery;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
@@ -59,7 +61,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.QueryRunner;
 
 @PluginDescriptor(
 	name = "Runecraft",
@@ -72,6 +73,11 @@ public class RunecraftPlugin extends Plugin
 	private static final String POUCH_DECAYED_NOTIFICATION_MESSAGE = "Your rune pouch has decayed.";
 	private static final String POUCH_DECAYED_MESSAGE = "Your pouch has decayed through use.";
 	private static final int DESTROY_ITEM_WIDGET_ID = WidgetInfo.DESTROY_ITEM_YES.getId();
+	private static final List<Integer> DEGRADED_POUCHES = ImmutableList.of(
+		ItemID.MEDIUM_POUCH_5511,
+		ItemID.LARGE_POUCH_5513,
+		ItemID.GIANT_POUCH_5515
+	);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<DecorativeObject> abyssObjects = new HashSet<>();
@@ -93,9 +99,6 @@ public class RunecraftPlugin extends Plugin
 
 	@Inject
 	private AbyssOverlay abyssOverlay;
-
-	@Inject
-	private QueryRunner queryRunner;
 
 	@Inject
 	private RunecraftConfig config;
@@ -229,33 +232,39 @@ public class RunecraftPlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			abyssObjects.clear();
+			darkMage = null;
 		}
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		darkMage = null;
-
-		if (!config.hightlightDarkMage())
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
 		{
 			return;
 		}
 
-		Query inventoryQuery = new InventoryItemQuery(InventoryID.INVENTORY).idEquals(
-			ItemID.MEDIUM_POUCH_5511,
-			ItemID.LARGE_POUCH_5513,
-			ItemID.GIANT_POUCH_5515
-		);
+		final Item[] items = event.getItemContainer().getItems();
+		degradedPouchInInventory = Stream.of(items).anyMatch(i -> DEGRADED_POUCHES.contains(i.getId()));
+	}
 
-		Item[] items = queryRunner.runQuery(inventoryQuery);
-		degradedPouchInInventory = items != null && items.length > 0;
-
-		if (degradedPouchInInventory)
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		final NPC npc = event.getNpc();
+		if (npc.getId() == NpcID.DARK_MAGE)
 		{
-			Query darkMageQuery = new NPCQuery().idEquals(NpcID.DARK_MAGE);
-			NPC[] result = queryRunner.runQuery(darkMageQuery);
-			darkMage = result.length >= 1 ? result[0] : null;
+			darkMage = npc;
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		final NPC npc = event.getNpc();
+		if (npc == darkMage)
+		{
+			darkMage = null;
 		}
 	}
 }

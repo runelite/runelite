@@ -284,7 +284,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	{
 		this.location = null;
 
-		if (digLocations.size() == 0)
+		if (digLocations.isEmpty())
 		{
 			digLocations.addAll(Arrays.asList(HotColdLocation.values()));
 		}

@@ -133,7 +133,7 @@ class KourendLibraryOverlay extends Overlay
 				Color color = bookIsKnown ? Color.ORANGE : Color.WHITE;
 
 				// Render the poly on the floor
-				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || possible.size() > 0))
+				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || !possible.isEmpty()))
 				{
 					Polygon poly = getCanvasTilePoly(client, localBookcase);
 					if (poly != null)

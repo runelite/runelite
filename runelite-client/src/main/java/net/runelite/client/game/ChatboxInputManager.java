@@ -126,7 +126,7 @@ public class ChatboxInputManager
 					isDone = true;
 					break;
 				case '\b':
-					if (str.length() > 0)
+					if (!str.isEmpty())
 					{
 						str = str.substring(0, str.length() - 1);
 					}

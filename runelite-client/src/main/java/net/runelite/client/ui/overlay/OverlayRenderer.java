@@ -250,8 +250,8 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 					}
 
 					final Dimension realDimensions = client.getRealDimensions();
-					location.x = Ints.constrainToRange(location.x, 0, realDimensions.width - dimension.width);
-					location.y = Ints.constrainToRange(location.y, 0, realDimensions.height - dimension.height);
+					location.x = Ints.constrainToRange(location.x, 0, Math.max(0, realDimensions.width - dimension.width));
+					location.y = Ints.constrainToRange(location.y, 0, Math.max(0, realDimensions.height - dimension.height));
 				}
 
 				if (overlay.getPreferredSize() != null)
@@ -347,8 +347,8 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		{
 			final Dimension realDimension = client.getRealDimensions();
 			mousePoint.translate(-overlayOffset.x, -overlayOffset.y);
-			mousePoint.x = Ints.constrainToRange(mousePoint.x, 0, realDimension.width - movedOverlay.getBounds().width);
-			mousePoint.y = Ints.constrainToRange(mousePoint.y, 0, realDimension.height - movedOverlay.getBounds().height);
+			mousePoint.x = Ints.constrainToRange(mousePoint.x, 0, Math.max(0, realDimension.width - movedOverlay.getBounds().width));
+			mousePoint.y = Ints.constrainToRange(mousePoint.y, 0, Math.max(0, realDimension.height - movedOverlay.getBounds().height));
 			movedOverlay.setPreferredPosition(null);
 			movedOverlay.setPreferredLocation(mousePoint);
 			mouseEvent.consume();

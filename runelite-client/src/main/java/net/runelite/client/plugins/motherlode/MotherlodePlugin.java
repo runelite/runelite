@@ -26,11 +26,15 @@
  */
 package net.runelite.client.plugins.motherlode;
 
+import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Multisets;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -132,8 +136,10 @@ public class MotherlodePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Integer depositsLeft;
 
+	@Inject
 	private MotherlodeSession session;
 	private boolean shouldUpdateOres;
+	private Multiset<Integer> inventorySnapshot;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> veins = new HashSet<>();
@@ -155,7 +161,6 @@ public class MotherlodePlugin extends Plugin
 		overlayManager.add(motherlodeOreOverlay);
 		overlayManager.add(motherlodeSackOverlay);
 
-		session = new MotherlodeSession();
 		inMlm = checkInMlm();
 
 		if (inMlm)
@@ -165,14 +170,13 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(rocksOverlay);
 		overlayManager.remove(motherlodeGemOverlay);
 		overlayManager.remove(motherlodeOreOverlay);
 		overlayManager.remove(motherlodeSackOverlay);
-		session = null;
 		veins.clear();
 		rocks.clear();
 
@@ -187,11 +191,6 @@ public class MotherlodePlugin extends Plugin
 		});
 	}
 
-	public MotherlodeSession getSession()
-	{
-		return session;
-	}
-
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
@@ -199,7 +198,19 @@ public class MotherlodePlugin extends Plugin
 		{
 			int lastSackValue = curSackSize;
 			refreshSackValues();
-			shouldUpdateOres = curSackSize != lastSackValue;
+			shouldUpdateOres = curSackSize < lastSackValue;
+			if (shouldUpdateOres)
+			{
+				// Take a snapshot of the inventory before the new ore is added.
+				ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+				if (itemContainer != null)
+				{
+					inventorySnapshot = HashMultiset.create();
+					Arrays.stream(itemContainer.getItems())
+						.filter(item -> MLM_ORE_TYPES.contains(item.getId()))
+						.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
+				}
+			}
 		}
 	}
 
@@ -382,21 +393,23 @@ public class MotherlodePlugin extends Plugin
 	{
 		final ItemContainer container = event.getItemContainer();
 
-		if (!inMlm || container != client.getItemContainer(InventoryID.INVENTORY) || !shouldUpdateOres)
+		if (!inMlm || !shouldUpdateOres || inventorySnapshot == null || container != client.getItemContainer(InventoryID.INVENTORY))
 		{
 			return;
 		}
 
-		final Item[] inv = container.getItems();
+		// Build set of current inventory
+		Multiset<Integer> current = HashMultiset.create();
+		Arrays.stream(container.getItems())
+			.filter(item -> MLM_ORE_TYPES.contains(item.getId()))
+			.forEach(item -> current.add(item.getId(), item.getQuantity()));
 
-		for (Item item : inv)
-		{
-			if (MLM_ORE_TYPES.contains(item.getId()))
-			{
-				session.updateOreFound(item);
-			}
-		}
+		// Take the difference
+		Multiset<Integer> delta = Multisets.difference(current, inventorySnapshot);
 
+		// Update the session
+		delta.forEachEntry(session::updateOreFound);
+		inventorySnapshot = null;
 		shouldUpdateOres = false;
 	}
 

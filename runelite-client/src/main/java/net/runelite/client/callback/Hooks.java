@@ -452,6 +452,11 @@ public class Hooks implements Callbacks
 		// but having the game tick event after all packets
 		// have been processed is typically more useful.
 		shouldProcessGameTick = true;
+		// Replay deferred events, otherwise if two npc
+		// update packets get processed in one frame, a
+		// despawn event could be published prior to the
+		// spawn event, which is deferred
+		deferredEventBus.replay();
 	}
 
 	public static void renderDraw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)

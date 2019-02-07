@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.http.api.ws.messages.party;
 
-import net.runelite.api.Client;
-import net.runelite.api.Tile;
-import net.runelite.api.WallObject;
+import java.util.UUID;
+import lombok.Value;
+import net.runelite.http.api.ws.WebsocketMessage;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
-
-/**
- * Used for getting wall objects in view,deprecated as of existence of Wall object spawn events
- *
- * @see net.runelite.api.events.WallObjectSpawned
- * @see net.runelite.api.events.WallObjectDespawned
- * @see net.runelite.api.events.WallObjectChanged
- */
-@Deprecated
-public class WallObjectQuery extends TileObjectQuery<WallObject, WallObjectQuery>
+@Value
+public class Join extends WebsocketMessage
 {
-	@Override
-	public WallObject[] result(Client client)
-	{
-		return getWallObjects(client).stream()
-			.filter(Objects::nonNull)
-			.filter(predicate)
-			.distinct()
-			.toArray(WallObject[]::new);
-	}
-
-	private Collection<WallObject> getWallObjects(Client client)
-	{
-		Collection<WallObject> objects = new ArrayList<>();
-		for (Tile tile : getTiles(client))
-		{
-			objects.add(tile.getWallObject());
-		}
-		return objects;
-	}
+	private final UUID partyId;
+	private final String name;
 }

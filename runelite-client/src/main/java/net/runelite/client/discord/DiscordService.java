@@ -29,6 +29,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.discord.events.DiscordDisconnected;
@@ -54,6 +55,9 @@ public class DiscordService implements AutoCloseable
 
 	// Hold a reference to the event handlers to prevent the garbage collector from deleting them
 	private final DiscordEventHandlers discordEventHandlers;
+
+	@Getter
+	private DiscordUser currentUser;
 
 	@Inject
 	private DiscordService(
@@ -190,6 +194,7 @@ public class DiscordService implements AutoCloseable
 	private void ready(DiscordUser user)
 	{
 		log.info("Discord RPC service is ready with user {}.", user.username);
+		currentUser = user;
 		eventBus.post(new DiscordReady(
 			user.userId,
 			user.username,
@@ -204,6 +209,7 @@ public class DiscordService implements AutoCloseable
 
 	private void errored(int errorCode, String message)
 	{
+		log.warn("Discord error: {} - {}", errorCode, message);
 		eventBus.post(new DiscordErrored(errorCode, message));
 	}
 

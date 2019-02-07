@@ -122,21 +122,21 @@ public class ChatService
 		}
 	}
 
-	public Integer getPb(String name)
+	public Integer getPb(String name, String boss)
 	{
 		String value;
 		try (Jedis jedis = jedisPool.getResource())
 		{
-			value = jedis.get("pb." + name);
+			value = jedis.get("pb." + boss + "." + name);
 		}
 		return value == null ? null : Integer.parseInt(value);
 	}
 
-	public void setPb(String name, int pb)
+	public void setPb(String name, String boss, int pb)
 	{
 		try (Jedis jedis = jedisPool.getResource())
 		{
-			jedis.setex("pb." + name, (int) EXPIRE.getSeconds(), Integer.toString(pb));
+			jedis.setex("pb." + boss + "." + name, (int) EXPIRE.getSeconds(), Integer.toString(pb));
 		}
 	}
 }

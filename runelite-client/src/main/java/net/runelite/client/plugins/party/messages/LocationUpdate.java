@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.client.plugins.party.messages;
 
-import net.runelite.api.Client;
-import net.runelite.api.NPC;
+import lombok.Value;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 
-/**
- * Used for getting NPCs in view,deprecated as of existence of NPC spawn events
- *
- * @see net.runelite.api.events.NpcSpawned
- * @see net.runelite.api.events.NpcDespawned
- */
-@Deprecated
-public class NPCQuery extends ActorQuery<NPC, NPCQuery>
+@Value
+public class LocationUpdate extends PartyMemberMessage
 {
-	@Override
-	public NPC[] result(Client client)
-	{
-		return client.getNpcs().stream()
-				.filter(predicate)
-				.toArray(NPC[]::new);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public NPCQuery idEquals(int... ids)
-	{
-		predicate = and(object ->
-		{
-			for (int id : ids)
-			{
-				if (object.getId() == id)
-				{
-					return true;
-				}
-			}
-			return false;
-		});
-		return (NPCQuery) this;
-	}
+	private final WorldPoint worldPoint;
 }

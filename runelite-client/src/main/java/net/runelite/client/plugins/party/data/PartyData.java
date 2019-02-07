@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.client.plugins.party.data;
 
-import net.runelite.api.Client;
-import net.runelite.api.GroundObject;
-import net.runelite.api.Tile;
+import java.awt.Color;
+import java.util.UUID;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
-
-/**
- * Used for getting ground objects in view,deprecated as of existence of Item spawn events
- *
- * @see net.runelite.api.events.ItemSpawned
- * @see net.runelite.api.events.ItemDespawned
- * @see net.runelite.api.events.ItemQuantityChanged
- */
-@Deprecated
-public class GroundObjectQuery extends TileObjectQuery<GroundObject, GroundObjectQuery>
+@Setter
+@Getter
+@RequiredArgsConstructor
+public class PartyData
 {
-	@Override
-	public GroundObject[] result(Client client)
-	{
-		return getGroundObjects(client).stream()
-			.filter(Objects::nonNull)
-			.filter(predicate)
-			.distinct()
-			.toArray(GroundObject[]::new);
-	}
+	private final UUID memberId;
+	private final String name;
+	private final WorldMapPoint worldMapPoint;
+	private final PanelComponent panel = new PanelComponent();
+	private final Color color;
 
-	private Collection<GroundObject> getGroundObjects(Client client)
-	{
-		Collection<GroundObject> objects = new ArrayList<>();
-		for (Tile tile : getTiles(client))
-		{
-			objects.add(tile.getGroundObject());
-		}
-		return objects;
-	}
+	private int hitpoints;
+	private int maxHitpoints;
+	private int prayer;
+	private int maxPrayer;
 }
