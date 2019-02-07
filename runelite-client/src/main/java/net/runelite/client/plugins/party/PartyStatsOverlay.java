@@ -32,6 +32,7 @@ import java.awt.Rectangle;
 import java.util.Map;
 import java.util.UUID;
 import javax.inject.Inject;
+import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.client.plugins.party.data.PartyData;
 import net.runelite.client.ui.overlay.Overlay;
@@ -40,6 +41,8 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.ws.PartyService;
 
 public class PartyStatsOverlay extends Overlay
@@ -52,15 +55,25 @@ public class PartyStatsOverlay extends Overlay
 	private final PartyPlugin plugin;
 	private final PartyService party;
 	private final PartyConfig config;
+	private final Client client;
+	private final TooltipManager tooltipManager;
 	private final PanelComponent body = new PanelComponent();
 
 	@Inject
-	private PartyStatsOverlay(final PartyPlugin plugin, final PartyService party, final PartyConfig config)
+	private PartyStatsOverlay(
+		final PartyPlugin plugin,
+		final PartyService party,
+		final PartyConfig config,
+		final Client client,
+		final TooltipManager toolTipManager)
 	{
 		super(plugin);
 		this.plugin = plugin;
 		this.party = party;
 		this.config = config;
+		this.client = client;
+		this.tooltipManager = toolTipManager;
+
 		body.setBorder(new Rectangle());
 		body.setGap(new Point(0, ComponentConstants.STANDARD_BORDER / 2));
 		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, "Leave", "Party"));
@@ -106,10 +119,13 @@ public class PartyStatsOverlay extends Overlay
 				panel.getChildren().clear();
 
 				String displayName = v.getName();
-				if (config.playerNames() && v.getPlayerName() != null)
+				String tooltipText = v.getPlayerName();
+				if (config.playerNames() && tooltipText != null)
 				{
-					displayName = v.getPlayerName();
+					displayName = tooltipText;
+					tooltipText = v.getName();
 				}
+				
 				final TitleComponent name = TitleComponent.builder()
 					.text(displayName)
 					.color(config.recolorNames() ? v.getColor() : Color.WHITE)
@@ -137,6 +153,16 @@ public class PartyStatsOverlay extends Overlay
 					prayBar.setValue(v.getPrayer());
 					prayBar.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
 					panel.getChildren().add(prayBar);
+				}
+
+				final net.runelite.api.Point mousePosition = client.getMouseCanvasPosition();
+				// Adjust bounds to account for overlay position
+				final Rectangle panelBounds = new Rectangle(panel.getBounds());
+				panelBounds.translate(getBounds().x, getBounds().y);
+
+				if (tooltipText != null && panelBounds.contains(mousePosition.getX(), mousePosition.getY()))
+				{
+					tooltipManager.add(new Tooltip(tooltipText));
 				}
 
 				body.getChildren().add(panel);
