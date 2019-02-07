@@ -114,7 +114,6 @@ public class PartyService
 	@Subscribe
 	public void onUserJoin(final UserJoin message)
 	{
-		log.debug("User {} joined", message);
 		final PartyMember partyMember = new PartyMember(message.getMemberId(), message.getName());
 		members.add(partyMember);
 
@@ -132,7 +131,6 @@ public class PartyService
 	@Subscribe
 	public void onUserPart(final UserPart message)
 	{
-		log.debug("User {} left", message);
 		members.removeIf(member -> member.getMemberId().equals(message.getMemberId()));
 	}
 

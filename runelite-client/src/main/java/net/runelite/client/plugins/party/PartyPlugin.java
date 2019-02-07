@@ -238,8 +238,6 @@ public class PartyPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onTilePing(TilePing event)
 	{
-		log.debug("Got tile ping {}", event);
-
 		if (config.pings())
 		{
 			final PartyData partyData = getPartyData(event.getMemberId());
