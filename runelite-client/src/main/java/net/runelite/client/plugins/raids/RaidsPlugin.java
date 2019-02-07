@@ -166,6 +166,12 @@ public class RaidsPlugin extends Plugin
 		inRaidChambers = false;
 		raid = null;
 		timer = null;
+
+		final Widget widget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX);
+		if (widget != null)
+		{
+			widget.setHidden(false);
+		}
 	}
 
 	@Subscribe
