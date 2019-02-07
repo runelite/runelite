@@ -114,7 +114,6 @@ public class PartyService
 	@Subscribe
 	public void onUserJoin(final UserJoin message)
 	{
-		log.debug("User {} joined", message);
 		final PartyMember partyMember = new PartyMember(message.getMemberId(), message.getName());
 		members.add(partyMember);
 
@@ -123,14 +122,15 @@ public class PartyService
 		// Send info to other clients that this user successfully finished joining party
 		if (localMember != null && message.getMemberId().equals(localMember.getMemberId()))
 		{
-			wsClient.send(new UserSync(message.getMemberId()));
+			final UserSync userSync = new UserSync();
+			userSync.setMemberId(message.getMemberId());
+			wsClient.send(userSync);
 		}
 	}
 
 	@Subscribe
 	public void onUserPart(final UserPart message)
 	{
-		log.debug("User {} left", message);
 		members.removeIf(member -> member.getMemberId().equals(message.getMemberId()));
 	}
 

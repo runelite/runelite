@@ -143,6 +143,7 @@ public class IdleNotifierPlugin extends Plugin
 			case GEM_CUTTING_EMERALD:
 			case GEM_CUTTING_RUBY:
 			case GEM_CUTTING_DIAMOND:
+			case GEM_CUTTING_AMETHYST:
 			case CRAFTING_GLASSBLOWING:
 			case CRAFTING_SPINNING:
 			case CRAFTING_BATTLESTAVES:

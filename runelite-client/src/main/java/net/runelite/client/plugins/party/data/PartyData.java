@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.party.data;
 
+import java.awt.Color;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,7 @@ public class PartyData
 	private final String name;
 	private final WorldMapPoint worldMapPoint;
 	private final PanelComponent panel = new PanelComponent();
+	private final Color color;
 
 	private int hitpoints;
 	private int maxHitpoints;

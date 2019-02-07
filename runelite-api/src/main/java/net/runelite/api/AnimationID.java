@@ -76,6 +76,7 @@ public final class AnimationID
 	public static final int GEM_CUTTING_EMERALD = 889;
 	public static final int GEM_CUTTING_RUBY = 887;
 	public static final int GEM_CUTTING_DIAMOND = 886;
+	public static final int GEM_CUTTING_AMETHYST = 6295;
 	public static final int CRAFTING_LEATHER = 1249;
 	public static final int CRAFTING_GLASSBLOWING = 884;
 	public static final int CRAFTING_SPINNING = 894;

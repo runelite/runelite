@@ -24,11 +24,9 @@
  */
 package net.runelite.http.api.ws.messages.party;
 
-import java.util.UUID;
 import lombok.Value;
 
 @Value
-public class UserSync extends PartyMessage
+public class UserSync extends PartyMemberMessage
 {
-	private final UUID memberId;
 }

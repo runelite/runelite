@@ -110,6 +110,12 @@ class PartyPingOverlay extends Overlay
 			return;
 		}
 
-		OverlayUtil.renderPolygon(graphics, poly, new Color(255, 0, 0, ping.getAlpha()));
+		final Color color = new Color(
+			ping.getColor().getRed(),
+			ping.getColor().getGreen(),
+			ping.getColor().getBlue(),
+			ping.getAlpha());
+
+		OverlayUtil.renderPolygon(graphics, poly, color);
 	}
 }
