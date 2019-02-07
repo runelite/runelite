@@ -29,5 +29,6 @@ public enum RenderStyle
 	OFF,
 	TILE,
 	HULL,
-	SOUTH_WEST_TILE
+	SOUTH_WEST_TILE,
+	TRUE_LOCATIONS
 }

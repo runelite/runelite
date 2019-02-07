@@ -179,6 +179,19 @@ public class NpcSceneOverlay extends Overlay
 
 				renderPoly(graphics, color, objectClickbox);
 				break;
+			case TRUE_LOCATIONS:
+				size = 1;
+				composition = actor.getTransformedComposition();
+				if (composition != null)
+				{
+					size = composition.getSize();
+				}
+				WorldPoint wp = actor.getWorldLocation();
+				lp = new LocalPoint(wp.getX(), wp.getY());
+				tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
+
+				renderPoly(graphics, color, tilePoly);
+				break;
 		}
 
 		if (config.drawNames() && actor.getName() != null)
@@ -203,5 +216,32 @@ public class NpcSceneOverlay extends Overlay
 			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
 			graphics.fill(polygon);
 		}
+	}
+
+	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, int outlineAlpha, int fillAlpha, int strokeWidth)
+	{
+		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+		if (point.distanceTo(playerLocation) >= 32)
+		{
+			return;
+		}
+
+		LocalPoint lp = LocalPoint.fromWorld(client, point);
+		if (lp == null)
+		{
+			return;
+		}
+
+		Polygon poly = Perspective.getCanvasTilePoly(client, lp);
+		if (poly == null)
+		{
+			return;
+		}
+
+		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
+		graphics.setStroke(new BasicStroke(strokeWidth));
+		graphics.draw(poly);
+		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
+		graphics.fill(poly);
 	}
 }
