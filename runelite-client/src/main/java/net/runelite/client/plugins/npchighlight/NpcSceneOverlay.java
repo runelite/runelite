@@ -221,31 +221,4 @@ public class NpcSceneOverlay extends Overlay
 			graphics.fill(polygon);
 		}
 	}
-
-	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, int outlineAlpha, int fillAlpha, int strokeWidth)
-	{
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-		if (point.distanceTo(playerLocation) >= 32)
-		{
-			return;
-		}
-
-		LocalPoint lp = LocalPoint.fromWorld(client, point);
-		if (lp == null)
-		{
-			return;
-		}
-
-		Polygon poly = Perspective.getCanvasTilePoly(client, lp);
-		if (poly == null)
-		{
-			return;
-		}
-
-		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
-		graphics.setStroke(new BasicStroke(strokeWidth));
-		graphics.draw(poly);
-		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
-		graphics.fill(poly);
-	}
 }
