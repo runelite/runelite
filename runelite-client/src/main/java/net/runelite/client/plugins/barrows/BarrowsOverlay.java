@@ -90,7 +90,7 @@ class BarrowsOverlay extends Overlay
 			}
 
 			// Player dots
-			graphics.setColor(npcColor);
+			graphics.setColor(playerColor);
 			final List<Player> players = client.getPlayers();
 			for (Player player : players)
 			{
