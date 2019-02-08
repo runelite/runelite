@@ -76,7 +76,7 @@ public class ChatNotificationsPluginTest
 	}
 
 	@Test
-	public void onSetMessage()
+	public void onChatMessage()
 	{
 		when(config.highlightWordsString()).thenReturn("Deathbeam, Deathbeam OSRS , test");
 
