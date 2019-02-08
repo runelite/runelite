@@ -27,23 +27,12 @@
 package net.runelite.client.plugins.randomeventnotifier;
 
 import com.google.inject.Provides;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-
-import static net.runelite.api.AnimationID.*;
-
-import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -97,7 +86,7 @@ public class RandomEventNotifier extends Plugin{
     {
         final NPC npc = event.getNpc();
         List<String> npcActions = Arrays.asList(npc.getComposition().getActions());
-        if (isRandomEventNPC(npc.getId())) //&& npcActions.contains("Dismiss")
+        if (isRandomEventNPC(npc.getId()) && npcActions.contains("Dismiss"))
         {
             lastRandomEventNpc = npc;
         }
@@ -106,8 +95,6 @@ public class RandomEventNotifier extends Plugin{
     public boolean isRandomEventNPC(int npcId){
         return (npcId == NpcID.DR_JEKYLL && config.drJekyllEnabled()) ||
                 //(npcId == NpcID.DR_JEKYLL_314 ||
-                (npcId == NpcID.DEMON_BUTLER && config.drJekyllEnabled()) ||
-                (npcId == NpcID.DEMON_BUTLER_7331 && config.drJekyllEnabled()) ||
                 (npcId == NpcID.BEE_KEEPER && config.beeKeeperEnabled()) ||
                 //(npcId == NpcID.BEE_KEEPER_6747 && config.beeKeeperEnabled()) ||
                 (npcId == NpcID.CAPT_ARNAV && config.captArnavEnabled()) ||
