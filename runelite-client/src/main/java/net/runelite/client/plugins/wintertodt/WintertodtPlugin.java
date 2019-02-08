@@ -206,7 +206,7 @@ public class WintertodtPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSetMessage(ChatMessage chatMessage)
+	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (!isInWintertodt)
 		{
