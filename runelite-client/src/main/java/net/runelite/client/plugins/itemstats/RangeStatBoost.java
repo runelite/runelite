@@ -42,33 +42,21 @@ public class RangeStatBoost extends SingleEffect
 	@Override
 	public StatChange effect(Client client)
 	{
-		final StatChange a = this.a.effect(client);
-		final StatChange b = this.b.effect(client);
+		final StatChange changeA = this.a.effect(client);
+		final StatChange changeB = this.b.effect(client);
 
-		final StatChange r = new StatChange();
-		r.setAbsolute(concat(a.getAbsolute(), b.getAbsolute()));
-		r.setRelative(concat(a.getRelative(), b.getRelative()));
-		r.setTheoretical(concat(a.getTheoretical(), b.getTheoretical()));
-		r.setStat(a.getStat());
+		final RangeStatChange r = new RangeStatChange();
+		r.setMinAbsolute(Math.min(changeA.getAbsolute(), changeB.getAbsolute()));
+		r.setAbsolute(Math.max(changeA.getAbsolute(), changeB.getAbsolute()));
+		r.setMinRelative(Math.min(changeA.getRelative(), changeB.getRelative()));
+		r.setRelative(Math.max(changeA.getRelative(), changeB.getRelative()));
+		r.setMinTheoretical(Math.min(changeA.getTheoretical(), changeB.getTheoretical()));
+		r.setTheoretical(Math.max(changeA.getTheoretical(), changeB.getTheoretical()));
+		r.setStat(changeA.getStat());
 
-		final int avg = (a.getPositivity().ordinal() + b.getPositivity().ordinal()) / 2;
+		final int avg = (changeA.getPositivity().ordinal() + changeB.getPositivity().ordinal()) / 2;
 		r.setPositivity(Positivity.values()[avg]);
 
 		return r;
-	}
-
-	private String concat(String a, String b)
-	{
-		// If they share a operator, strip b's duplicate
-		if (a.length() > 1 && b.length() > 1)
-		{
-			final char a0 = a.charAt(0);
-			if ((a0 == '+' || a0 == '-' || a0 == '±') && b.charAt(0) == a0)
-			{
-				b = b.substring(1);
-			}
-		}
-
-		return a + "~" + b;
 	}
 }
