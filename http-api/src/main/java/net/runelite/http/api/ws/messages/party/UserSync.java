@@ -25,9 +25,12 @@
 package net.runelite.http.api.ws.messages.party;
 
 import java.util.UUID;
+
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
+@EqualsAndHashCode(callSuper=true)
 public class UserSync extends PartyMessage
 {
 	private final UUID memberId;
