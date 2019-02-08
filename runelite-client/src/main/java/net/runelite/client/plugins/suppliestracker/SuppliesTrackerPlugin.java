@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Daddy Dozer <Whitedylan7@gmail.com>
@@ -492,7 +492,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		price = (long)itemManager.getItemPrice(itemId) * (long)amount;
 		if (itemManager.getItemComposition(itemId).getName().contains("(4)"))
 		{
-			price = price/4;
+			price = price / 4;
 		}
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		String name = itemComposition.getName();

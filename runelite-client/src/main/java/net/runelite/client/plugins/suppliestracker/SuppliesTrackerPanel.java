@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * Copyright (c) 2018, Daddy Dozer <Whitedylan7@gmail.com>
@@ -160,9 +160,12 @@ class SuppliesTrackerPanel extends PluginPanel
 			String[] item = list.split(" - #");
 			ActionListener ActionMenuListener = e -> clientThread.invokeLater(() ->
 			{
-				try {
+				try
+				{
 					processResult(Integer.parseInt(item[1].trim()));
-				} catch (ExecutionException e1) {
+				}
+				catch (ExecutionException e1)
+				{
 					e1.printStackTrace();
 				}
 			});
@@ -178,7 +181,8 @@ class SuppliesTrackerPanel extends PluginPanel
 				{
 					processResult(Integer.parseInt(item[2].trim()));
 				}
-				catch (ExecutionException e1) {
+				catch (ExecutionException e1)
+				{
 					e1.printStackTrace();
 				}
 			});
@@ -189,18 +193,22 @@ class SuppliesTrackerPanel extends PluginPanel
 				temp.add(new JMenuItem(item[1])).addActionListener(ActionMenuListener);
 				menusAdded = item[0];
 			}
-			else {
+			else
+				{
 				temp.add(new JMenuItem(item[1])).addActionListener(ActionMenuListener);
 			}
 		}
 		for (String list: SuppliesEnum.Ammo.MenuItemList())
-	{
+		{
 		String[] item = list.split("#");
 		ActionListener ActionMenuListener = e -> clientThread.invokeLater(() ->
 		{
-			try {
+			try
+			{
 				processResult(Integer.parseInt(item[2].trim()));
-			} catch (ExecutionException e1) {
+			}
+			catch (ExecutionException e1)
+			{
 				e1.printStackTrace();
 			}
 		});
@@ -211,8 +219,9 @@ class SuppliesTrackerPanel extends PluginPanel
 			temp.add(new JMenuItem(item[1])).addActionListener(ActionMenuListener);
 			menusAdded = item[0];
 		}
-		else{
-			temp.add(new JMenuItem(item[1])).addActionListener(ActionMenuListener);
+		else
+			{
+			temp.add( new JMenuItem(item[1])).addActionListener(ActionMenuListener);
 		}
 	}
 		addSupply.add(addAmmo);
@@ -415,7 +424,8 @@ class SuppliesTrackerPanel extends PluginPanel
 		List<ItemPrice> itemList = itemManager.search(name);
 		for (ItemPrice item: itemList)
 		{
-			if (item.getName().equals(name)){
+			if (item.getName().equals(name))
+			{
 				itemId = item.getId();
 			}
 
@@ -428,8 +438,9 @@ class SuppliesTrackerPanel extends PluginPanel
 		overallSuppliesUsedLabel.setText(htmlLabel("Total Supplies: ", overallSuppliesUsed));
 		overallCostLabel.setText(htmlLabel("Total Cost: ", overallCost));
 	}
-	private void processResult(int itemID) throws ExecutionException {
+	private void processResult(int itemID) throws ExecutionException
+	{
 
 		SuppliesTrackerPlugin.getInstance().buildEntries(itemID);
 	}
-}
+	}
