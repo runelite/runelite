@@ -66,14 +66,34 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		if (!config.drawOverheadPlayerNames())
+		if (!config.drawOverheadPlayerNames() && !config.drawOverheadLevels())
 		{
 			return;
 		}
 
 		String name = actor.getName().replace('\u00A0', ' ');
+		String combatLevel = Integer.toString(actor.getCombatLevel());
+		String playerInfo = "";
+
+		if (config.drawOverheadPlayerNames())
+		{
+			playerInfo = name;
+		}
+
+		if (config.drawOverheadLevels())
+		{
+			if (!playerInfo.isEmpty())
+			{
+				playerInfo = playerInfo.concat("(" + combatLevel + ")");
+			}
+			else
+			{
+				playerInfo = combatLevel;
+			}
+		}
+
 		int offset = actor.getLogicalHeight() + 40;
-		Point textLocation = actor.getCanvasTextLocation(graphics, name, offset);
+		Point textLocation = actor.getCanvasTextLocation(graphics, playerInfo, offset);
 
 		if (textLocation != null)
 		{
@@ -98,7 +118,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 				}
 			}
 
-			OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+			OverlayUtil.renderTextLocation(graphics, textLocation, playerInfo, color);
 		}
 	}
 }
