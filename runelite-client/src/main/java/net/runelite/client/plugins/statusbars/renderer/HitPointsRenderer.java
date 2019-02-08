@@ -56,7 +56,7 @@ public class HitPointsRenderer extends BarRenderer
 	{
 		maximumValue = client.getRealSkillLevel(Skill.HITPOINTS);
 		currentValue = client.getBoostedSkillLevel(Skill.HITPOINTS);
-		heal = overlay.getRestoreValue(Skill.HITPOINTS.getName());
+		restore = overlay.getRestoreValue(Skill.HITPOINTS.getName());
 
 		final int poisonState = client.getVar(VarPlayer.IS_POISONED);
 

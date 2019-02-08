@@ -55,6 +55,6 @@ public class SpecialAttackRenderer extends BarRenderer
 	{
 		icon = spriteManager.getSprite(SpriteID.MINIMAP_ORB_SPECIAL_ICON, 0);
 		currentValue = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10;
-		heal = 0;
+		restore = 0;
 	}
 }

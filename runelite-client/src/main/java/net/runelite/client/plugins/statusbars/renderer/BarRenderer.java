@@ -38,6 +38,7 @@ import net.runelite.client.ui.overlay.components.TextComponent;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BarRenderer
@@ -58,7 +59,7 @@ public abstract class BarRenderer
 	protected final StatusBarsConfig config;
 	protected int maximumValue;
 	protected int currentValue;
-	protected int heal;
+	protected int restore;
 	protected Color standardColor;
 	protected Color restoreColor;
 	protected Image icon;
@@ -88,9 +89,8 @@ public abstract class BarRenderer
 		if (config.enableCounter())
 		{
 			graphics.setFont(FontManager.getRunescapeSmallFont());
-			TEXT.setColor(Color.WHITE);
 			TEXT.setText(counterText);
-			TEXT.setPosition(new java.awt.Point(x + centerText + 1, y + COUNTER_ICON_HEIGHT));
+			TEXT.setPosition(new Point(x + centerText + 1, y + COUNTER_ICON_HEIGHT));
 		}
 		else
 		{
@@ -100,7 +100,7 @@ public abstract class BarRenderer
 		if (config.enableSkillIcon())
 		{
 			graphics.drawImage(icon, x + ICON_AND_COUNTER_OFFSET_X + PADDING, y + ICON_AND_COUNTER_OFFSET_Y - icon.getWidth(null), null);
-			TEXT.setPosition(new java.awt.Point(x + centerText + 1, y + SKILL_ICON_HEIGHT));
+			TEXT.setPosition(new Point(x + centerText + 1, y + SKILL_ICON_HEIGHT));
 		}
 
 		TEXT.render(graphics);
@@ -108,13 +108,13 @@ public abstract class BarRenderer
 
 	private void renderRestore(Graphics2D graphics, int x, int y, int height)
 	{
-		if (heal <= 0)
+		if (restore <= 0)
 		{
 			return;
 		}
 
 		final int filledCurrentHeight = getBarHeight(maximumValue, currentValue, height);
-		int filledHeight = getBarHeight(maximumValue, heal, height);
+		int filledHeight = getBarHeight(maximumValue, restore, height);
 		graphics.setColor(restoreColor);
 
 		if (filledHeight + filledCurrentHeight > height)

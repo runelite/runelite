@@ -58,6 +58,6 @@ public class PrayerRenderer extends BarRenderer
 		maximumValue = client.getRealSkillLevel(Skill.PRAYER);
 		currentValue = client.getBoostedSkillLevel(Skill.PRAYER);
 		standardColor = client.getVar(Varbits.QUICK_PRAYER) == 1 ? COLOR_ACTIVE : COLOR_STANDARD;
-		heal = overlay.getRestoreValue(Skill.PRAYER.getName());
+		restore = overlay.getRestoreValue(Skill.PRAYER.getName());
 	}
 }

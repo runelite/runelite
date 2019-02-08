@@ -55,6 +55,6 @@ public class EnergyRenderer extends BarRenderer
 	{
 		icon = spriteManager.getSprite(SpriteID.MINIMAP_ORB_RUN_ICON, 0);
 		currentValue = client.getEnergy();
-		heal = overlay.getRestoreValue("Run Energy");
+		restore = overlay.getRestoreValue("Run Energy");
 	}
 }

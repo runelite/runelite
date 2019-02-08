@@ -117,15 +117,18 @@ public class StatusBarsOverlay extends Overlay
 			offsetRightBarY = (location.getY() - offsetRight.getY());
 		}
 
-
 		BarRenderer left = plugin.getBarRenderers().get(config.leftBarMode());
 		BarRenderer right = plugin.getBarRenderers().get(config.rightBarMode());
 
 		if (left != null)
+		{
 			left.draw(client, this, g, offsetLeftBarX, offsetLeftBarY, height);
+		}
 
 		if (right != null)
+		{
 			right.draw(client, this, g, offsetRightBarX, offsetRightBarY, height);
+		}
 
 		return null;
 	}
