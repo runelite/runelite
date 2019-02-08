@@ -31,7 +31,8 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("randomeventnotifier")
-public interface RandomEventNotifierConfig extends Config {
+public interface RandomEventNotifierConfig extends Config
+{
 
     @ConfigItem(
             keyName = "drJekyllEnabled",
@@ -56,14 +57,14 @@ public interface RandomEventNotifierConfig extends Config {
     }
 
     @ConfigItem(
-            keyName = "captArnavEnabled",
+    		keyName = "captArnavEnabled",
             name = "Capt Arnav",
             description = "Configures if Capt Arnav random event notifications are enabled",
             position = 3
     )
     default boolean captArnavEnabled()
     {
-        return true;
+    	return true;
     }
 
     @ConfigItem(

@@ -47,7 +47,8 @@ import net.runelite.api.events.NpcSpawned;
         tags = {"random", "notifications", "event"}
 )
 @Slf4j
-public class RandomEventNotifier extends Plugin{
+public class RandomEventNotifier extends Plugin
+{
 
     @Inject
     private Notifier notifier;
@@ -76,8 +77,9 @@ public class RandomEventNotifier extends Plugin{
         }
     }
 
-    public boolean randomEventSpawned(){
-        if(lastRandomEventNpc != null) return true;
+    public boolean randomEventSpawned()
+    {
+        if (lastRandomEventNpc != null) return true;
         return false;
     }
 
@@ -92,7 +94,8 @@ public class RandomEventNotifier extends Plugin{
         }
     }
 
-    public boolean isRandomEventNPC(int npcId){
+    public boolean isRandomEventNPC(int npcId)
+    {
         return (npcId == NpcID.DR_JEKYLL && config.drJekyllEnabled()) ||
                 //(npcId == NpcID.DR_JEKYLL_314 ||
                 (npcId == NpcID.BEE_KEEPER && config.beeKeeperEnabled()) ||
