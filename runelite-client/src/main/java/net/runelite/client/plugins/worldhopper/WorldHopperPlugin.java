@@ -131,7 +131,7 @@ public class WorldHopperPlugin extends Plugin
 	@Inject
 	private WorldHopperConfig config;
 
-	private final ScheduledExecutorService hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
+	private ScheduledExecutorService hopperExecutorService;
 
 	private NavigationButton navButton;
 	private WorldSwitcherPanel panel;
@@ -201,6 +201,8 @@ public class WorldHopperPlugin extends Plugin
 		}
 
 		worldResultFuture = executorService.scheduleAtFixedRate(this::tick, 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
+
+		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
 		pingFuture = hopperExecutorService.scheduleAtFixedRate(this::pingWorlds, WORLD_PING_TIMER, WORLD_PING_TIMER, TimeUnit.MINUTES);
 	}
 
@@ -221,6 +223,7 @@ public class WorldHopperPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 
 		hopperExecutorService.shutdown();
+		hopperExecutorService = null;
 	}
 
 	@Subscribe
