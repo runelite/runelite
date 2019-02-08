@@ -250,12 +250,6 @@
     },
     {
       "level": 1,
-      "icon": 4834,
-      "name": "Ourg Bones",
-      "xp": 140
-    },
-    {
-      "level": 1,
       "icon": 3400,
       "name": "Riyl Remains",
       "xp": 59.5,
@@ -322,6 +316,12 @@
       "icon": 6729,
       "name": "Dagannoth Bones",
       "xp": 125
+    },
+    {
+      "level": 1,
+      "icon": 4834,
+      "name": "Ourg Bones",
+      "xp": 140
     },
     {
       "level": 70,
