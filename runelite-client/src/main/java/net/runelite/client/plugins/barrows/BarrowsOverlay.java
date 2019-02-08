@@ -77,7 +77,7 @@ class BarrowsOverlay extends Overlay
 			{
 				final NPCComposition composition = npc.getComposition();
 
-				if (composition != null && !composition.isMinimapVisable())
+				if (composition != null && !composition.isMinimapVisible())
 				{
 					continue;
 				}
