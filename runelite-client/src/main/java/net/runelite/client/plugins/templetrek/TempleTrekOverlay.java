@@ -52,12 +52,19 @@ public class TempleTrekOverlay extends Overlay{
     {
         if (config.pointTrackerActive() && plugin.isInTrek()) {
             int points = plugin.getRewardPoints();
+            double percentage = plugin.getRewardPercentage() * 100;
             panelComponent.getChildren().clear();
             panelComponent.getChildren().add(LineComponent.builder()
                     .left("Trek Points: ")
                     .right(Integer.toString(points))
-                    .rightColor(points < 3000 ? Color.BLUE : points >= 3000 && points < 6000 ? Color.YELLOW :
-                    Color.RED)
+                    .rightColor(percentage < 25 ? Color.RED : percentage >= 25 && percentage < 50 ? Color.YELLOW :
+                    percentage >= 50 && percentage < 75 ? Color.BLUE : Color.GREEN)
+                    .build());
+            panelComponent.getChildren().add(LineComponent.builder()
+                    .left("Reward %: ")
+                    .right(String.format( "%.2f", percentage ) + "%")
+                    .rightColor(percentage < 25 ? Color.RED : percentage >= 25 && percentage < 50 ? Color.YELLOW :
+                            percentage >= 50 && percentage < 75 ? Color.BLUE : Color.GREEN)
                     .build());
             return panelComponent.render(graphics);
         }

@@ -119,4 +119,9 @@ public class TempleTrekPlugin extends Plugin {
         return client.getVar(Varbits.TREK_POINTS);
     }
 
+    protected double getRewardPercentage() {
+        double percentage = 0.000126945 * getRewardPoints() - 0.0357188951;
+        return Math.max(percentage, 0);
+    }
+
 }
