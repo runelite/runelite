@@ -25,7 +25,6 @@
 package net.runelite.mixins;
 
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.events.SetMessage;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
@@ -43,15 +42,12 @@ public abstract class RSMessageNodeMixin implements RSMessageNode
 	private String runeLiteFormatMessage;
 
 	@Inject
+	private int rl$timestamp;
+
+	@Inject
 	RSMessageNodeMixin()
 	{
-		final SetMessage setMessage = new SetMessage();
-		setMessage.setMessageNode(this);
-		setMessage.setType(getType());
-		setMessage.setName(getName());
-		setMessage.setSender(getSender());
-		setMessage.setValue(getValue());
-		client.getCallbacks().post(setMessage);
+		rl$timestamp = (int) (System.currentTimeMillis() / 1000L);
 	}
 
 	@Inject
@@ -76,19 +72,26 @@ public abstract class RSMessageNodeMixin implements RSMessageNode
 	}
 
 	@Inject
+	@Override
+	public int getTimestamp()
+	{
+		return rl$timestamp;
+	}
+
+	@Inject
+	@Override
+	public void setTimestamp(int timestamp)
+	{
+		this.rl$timestamp = timestamp;
+	}
+
+	@Inject
 	@MethodHook(value = "setMessage", end = true)
 	public void setMessage(int type, String name, String sender, String value)
 	{
 		// Message nodes get reused after a time by calling setMessage.
 		// Clear the runelite formatted message then.
 		runeLiteFormatMessage = null;
-
-		final SetMessage setMessage = new SetMessage();
-		setMessage.setMessageNode(this);
-		setMessage.setType(ChatMessageType.of(type));
-		setMessage.setName(name);
-		setMessage.setSender(sender);
-		setMessage.setValue(value);
-		client.getCallbacks().post(setMessage);
+		rl$timestamp = (int) (System.currentTimeMillis() / 1000L);
 	}
 }

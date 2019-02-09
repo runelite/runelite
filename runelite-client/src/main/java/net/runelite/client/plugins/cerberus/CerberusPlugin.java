@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.cerberus;
 
 import com.google.common.collect.ComparisonChain;
-import com.google.common.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -38,6 +37,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -73,7 +73,7 @@ public class CerberusPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
 		{

@@ -26,7 +26,6 @@
  */
 package net.runelite.client.plugins.regenmeter;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -39,6 +38,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -115,7 +115,7 @@ public class RegenMeterPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onTick(GameTick event)
+	public void onGameTick(GameTick event)
 	{
 		if (client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) == 1000)
 		{

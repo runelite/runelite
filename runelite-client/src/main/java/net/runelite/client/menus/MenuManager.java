@@ -27,8 +27,6 @@ package net.runelite.client.menus;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -41,7 +39,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
@@ -50,6 +47,8 @@ import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.Text;
 
 @Singleton
@@ -76,30 +75,6 @@ public class MenuManager
 	{
 		this.client = client;
 		this.eventBus = eventBus;
-	}
-
-	public void addNpcMenuOption(String option)
-	{
-		npcMenuOptions.add(option);
-
-		// add to surrounding npcs
-		for (NPC npc : client.getNpcs())
-		{
-			NPCComposition composition = npc.getComposition();
-			addNpcOption(composition, option);
-		}
-	}
-
-	public void removeNpcMenuOption(String option)
-	{
-		npcMenuOptions.remove(option);
-
-		// remove this option from all npc compositions
-		for (NPC npc : client.getNpcs())
-		{
-			NPCComposition composition = npc.getComposition();
-			removeNpcOption(composition, option);
-		}
 	}
 
 	/**

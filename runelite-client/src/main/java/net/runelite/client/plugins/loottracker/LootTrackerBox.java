@@ -42,6 +42,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
@@ -49,6 +50,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.Text;
 
 class LootTrackerBox extends JPanel
 {
@@ -58,14 +60,13 @@ class LootTrackerBox extends JPanel
 	private final JLabel priceLabel = new JLabel();
 	private final JLabel subTitleLabel = new JLabel();
 	private final ItemManager itemManager;
+	@Getter(AccessLevel.PACKAGE)
 	private final String id;
 
 	@Getter
 	private final List<LootTrackerRecord> records = new ArrayList<>();
 
-	@Getter
 	private long totalPrice;
-
 	private boolean hideIgnoredItems;
 	private BiConsumer<String, Boolean> onItemToggle;
 
@@ -88,7 +89,7 @@ class LootTrackerBox extends JPanel
 		logTitle.setBorder(new EmptyBorder(7, 7, 7, 7));
 		logTitle.setBackground(ColorScheme.DARKER_GRAY_COLOR.darker());
 
-		final JLabel titleLabel = new JLabel(id);
+		final JLabel titleLabel = new JLabel(Text.removeTags(id));
 		titleLabel.setFont(FontManager.getRunescapeSmallFont());
 		titleLabel.setForeground(Color.WHITE);
 
@@ -116,7 +117,7 @@ class LootTrackerBox extends JPanel
 	 *
 	 * @return total amount of kills
 	 */
-	long getTotalKills()
+	private long getTotalKills()
 	{
 		return hideIgnoredItems
 			? records.stream().filter(r -> !Arrays.stream(r.getItems()).allMatch(LootTrackerItem::isIgnored)).count()
@@ -162,14 +163,22 @@ class LootTrackerBox extends JPanel
 		}
 
 		records.add(record);
+	}
+
+	void rebuild()
+	{
 		buildItems();
 
 		priceLabel.setText(StackFormatter.quantityToStackSize(totalPrice) + " gp");
-		if (records.size() > 1)
+		priceLabel.setToolTipText(StackFormatter.formatNumber(totalPrice) + " gp");
+
+		final long kills = getTotalKills();
+		if (kills > 1)
 		{
-			subTitleLabel.setText("x " + records.size());
+			subTitleLabel.setText("x " + kills);
 		}
 
+		validate();
 		repaint();
 	}
 

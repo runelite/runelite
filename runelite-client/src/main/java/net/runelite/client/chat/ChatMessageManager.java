@@ -28,7 +28,6 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,13 +42,15 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.events.SetMessage;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 @Singleton
@@ -86,7 +87,7 @@ public class ChatMessageManager
 	}
 
 	@Subscribe
-	public void onResizableChanged(ResizeableChanged event)
+	public void onResizeableChanged(ResizeableChanged event)
 	{
 		refreshAll();
 	}
@@ -102,10 +103,10 @@ public class ChatMessageManager
 	}
 
 	@Subscribe
-	public void onSetMessage(SetMessage setMessage)
+	public void onChatMessage(ChatMessage chatMessage)
 	{
-		MessageNode messageNode = setMessage.getMessageNode();
-		ChatMessageType chatMessageType = setMessage.getType();
+		MessageNode messageNode = chatMessage.getMessageNode();
+		ChatMessageType chatMessageType = chatMessage.getType();
 
 		boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
 		Color usernameColor = null;
@@ -124,7 +125,7 @@ public class ChatMessageManager
 			case PUBLIC:
 			case PUBLIC_MOD:
 			{
-				boolean isFriend = client.isFriended(setMessage.getName(), true) && !client.getLocalPlayer().getName().equals(setMessage.getName());
+				boolean isFriend = client.isFriended(chatMessage.getName(), true) && !client.getLocalPlayer().getName().equals(chatMessage.getName());
 
 				if (isFriend)
 				{
@@ -148,7 +149,7 @@ public class ChatMessageManager
 			messageNode.setName(ColorUtil.wrapWithColorTag(messageNode.getName(), usernameColor));
 		}
 
-		String sender = setMessage.getSender();
+		String sender = chatMessage.getSender();
 		if (senderColor != null && !Strings.isNullOrEmpty(sender))
 		{
 			messageNode.setSender(ColorUtil.wrapWithColorTag(sender, senderColor));
@@ -206,18 +207,18 @@ public class ChatMessageManager
 			{
 				case PUBLIC:
 				case PUBLIC_MOD:
-					return Color.decode("#0000FF");
+					return JagexColors.CHAT_PUBLIC_TEXT_OPAQUE_BACKGROUND;
 				case PRIVATE_MESSAGE_SENT:
 				case PRIVATE_MESSAGE_RECEIVED_MOD:
 				case PRIVATE_MESSAGE_RECEIVED:
-					return Color.decode("#00FFFF");
+					return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_OPAQUE_BACKGROUND;
 				case CLANCHAT:
-					return Color.decode("#7F0000");
+					return JagexColors.CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
 				case EXAMINE_ITEM:
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
 				case GAME:
-					return Color.decode("#000000");
+					return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
 			}
 		}
 		else
@@ -226,18 +227,18 @@ public class ChatMessageManager
 			{
 				case PUBLIC:
 				case PUBLIC_MOD:
-					return Color.decode("#9090FF");
+					return JagexColors.CHAT_PUBLIC_TEXT_TRANSPARENT_BACKGROUND;
 				case PRIVATE_MESSAGE_SENT:
 				case PRIVATE_MESSAGE_RECEIVED_MOD:
 				case PRIVATE_MESSAGE_RECEIVED:
-					return Color.decode("#00FFFF");
+					return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_TRANSPARENT_BACKGROUND;
 				case CLANCHAT:
-					return Color.decode("#7F0000");
+					return JagexColors.CHAT_CLAN_TEXT_TRANSPARENT_BACKGROUND;
 				case EXAMINE_ITEM:
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
 				case GAME:
-					return Color.decode("#FFFFFF");
+					return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
 			}
 		}
 
@@ -295,11 +296,15 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaquePrivateMessageReceived(), false),
 				ChatMessageType.PRIVATE_MESSAGE_RECEIVED);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaquePrivateMessageReceived(), false),
+				ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
 		if (chatColorConfig.opaquePrivateMessageReceivedHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaquePrivateMessageReceivedHighlight(), false),
 				ChatMessageType.PRIVATE_MESSAGE_RECEIVED);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaquePrivateMessageReceivedHighlight(), false),
+				ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
 		if (chatColorConfig.opaqueClanChatInfo() != null)
 		{
@@ -419,11 +424,15 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentPrivateMessageReceived(), true),
 				ChatMessageType.PRIVATE_MESSAGE_RECEIVED);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentPrivateMessageReceived(), true),
+				ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
 		if (chatColorConfig.transparentPrivateMessageReceivedHighlight() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentPrivateMessageReceivedHighlight(), true),
 				ChatMessageType.PRIVATE_MESSAGE_RECEIVED);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentPrivateMessageReceivedHighlight(), true),
+				ChatMessageType.PRIVATE_MESSAGE_RECEIVED_MOD);
 		}
 		if (chatColorConfig.transparentClanChatInfo() != null)
 		{
@@ -555,6 +564,8 @@ public class ChatMessageManager
 
 		// Update the message with RuneLite additions
 		line.setRuneLiteFormatMessage(message.getRuneLiteFormattedMessage());
+		line.setTimestamp(message.getTimestamp());
+
 		update(line);
 	}
 
@@ -565,7 +576,7 @@ public class ChatMessageManager
 			return;
 		}
 
-		final boolean transparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) != 0;
+		final boolean transparent = client.isResized() && transparencyVarbit != 0;
 		final Collection<ChatColor> chatColors = colorCache.get(target.getType());
 
 		// If we do not have any colors cached, simply set clean message

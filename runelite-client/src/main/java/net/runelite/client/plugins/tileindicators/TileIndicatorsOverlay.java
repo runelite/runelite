@@ -31,6 +31,7 @@ import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -51,7 +52,7 @@ public class TileIndicatorsOverlay extends Overlay
 		this.config = config;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
-		setPriority(OverlayPriority.LOW);
+		setPriority(OverlayPriority.MED);
 	}
 
 	@Override
@@ -62,8 +63,13 @@ public class TileIndicatorsOverlay extends Overlay
 			// Update selected scene tile
 			if (!client.isMenuOpen())
 			{
+				Point p = client.getMouseCanvasPosition();
+				p = new Point(
+					p.getX() - client.getViewportXOffset(),
+					p.getY() - client.getViewportYOffset());
+
 				client.setCheckClick(true);
-				client.setMouseCanvasHoverPosition(client.getMouseCanvasPosition());
+				client.setMouseCanvasHoverPosition(p);
 			}
 
 			// If we have tile "selected" render it

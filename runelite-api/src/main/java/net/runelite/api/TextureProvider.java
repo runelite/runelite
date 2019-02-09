@@ -26,5 +26,25 @@ package net.runelite.api;
 
 public interface TextureProvider
 {
-	void checkTextures(int var1);
+	double getBrightness();
+
+	/**
+	 * Set the brightness for textures, clearing the texture cache.
+	 * @param brightness
+	 */
+	void setBrightness(double brightness);
+
+	/**
+	 * Get all textures
+	 *
+	 * @return
+	 */
+	Texture[] getTextures();
+
+	/**
+	 * Get the pixels for a texture
+	 * @param textureId
+	 * @return
+	 */
+	int[] load(int textureId);
 }

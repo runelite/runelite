@@ -27,10 +27,14 @@ package net.runelite.client.plugins.zoom;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("zoom")
 public interface ZoomConfig extends Config
 {
+	int OUTER_LIMIT_MIN = -400;
+	int OUTER_LIMIT_MAX = 400;
+
 	@ConfigItem(
 		keyName = "inner",
 		name = "Expand inner zoom limit",
@@ -42,11 +46,26 @@ public interface ZoomConfig extends Config
 		return false;
 	}
 
+	@Range(
+		min = OUTER_LIMIT_MIN,
+		max = OUTER_LIMIT_MAX
+	)
+	@ConfigItem(
+		keyName = "outerLimit",
+		name = "Expand outer zoom limit",
+		description = "Configures how much the outer zoom limit is adjusted",
+		position = 2
+	)
+	default int outerLimit()
+	{
+		return 0;
+	}
+
 	@ConfigItem(
 		keyName = "relaxCameraPitch",
 		name = "Vertical camera",
 		description = "Relax the camera's upper pitch limit",
-		position = 2
+		position = 3
 	)
 	default boolean relaxCameraPitch()
 	{
@@ -57,7 +76,7 @@ public interface ZoomConfig extends Config
 		keyName = "requireControlDown",
 		name = "Require control down",
 		description = "Configures if holding control is required for zooming",
-		position = 3
+		position = 4
 	)
 	default boolean requireControlDown()
 	{

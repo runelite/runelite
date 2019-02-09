@@ -40,16 +40,19 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.OSType;
 
 @Singleton
@@ -66,30 +69,32 @@ public class Notifier
 	// Notifier properties
 	private static final Color FLASH_COLOR = new Color(255, 0, 0, 70);
 	private static final int FLASH_DURATION = 2000;
-	private static final Color MESSAGE_COLOR = Color.RED;
 
 	private final Client client;
 	private final String appName;
 	private final RuneLiteConfig runeLiteConfig;
 	private final ClientUI clientUI;
 	private final ScheduledExecutorService executorService;
+	private final ChatMessageManager chatMessageManager;
 	private final Path notifyIconPath;
 	private final boolean terminalNotifierAvailable;
 	private Instant flashStart;
 
 	@Inject
 	private Notifier(
-			final ClientUI clientUI,
-			final Client client,
-			final RuneLiteConfig runeliteConfig,
-			final RuneLiteProperties runeLiteProperties,
-			final ScheduledExecutorService executorService)
+		final ClientUI clientUI,
+		final Client client,
+		final RuneLiteConfig runeliteConfig,
+		final RuneLiteProperties runeLiteProperties,
+		final ScheduledExecutorService executorService,
+		final ChatMessageManager chatMessageManager)
 	{
 		this.client = client;
 		this.appName = runeLiteProperties.getTitle();
 		this.clientUI = clientUI;
 		this.runeLiteConfig = runeliteConfig;
 		this.executorService = executorService;
+		this.chatMessageManager = chatMessageManager;
 		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
 
 		// First check if we are running in launcher
@@ -127,13 +132,18 @@ public class Notifier
 			Toolkit.getDefaultToolkit().beep();
 		}
 
-		if (runeLiteConfig.enableGameMessageNotification())
+		if (runeLiteConfig.enableGameMessageNotification() && client.getGameState() == GameState.LOGGED_IN)
 		{
-			if (client.getGameState() == GameState.LOGGED_IN)
-			{
-				client.addChatMessage(ChatMessageType.GAME, appName,
-					ColorUtil.wrapWithColorTag(message, MESSAGE_COLOR), "");
-			}
+			final String formattedMessage = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append(message)
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.GAME)
+				.name(appName)
+				.runeLiteFormattedMessage(formattedMessage)
+				.build());
 		}
 
 		if (runeLiteConfig.enableFlashNotification())
@@ -215,14 +225,23 @@ public class Notifier
 
 		executorService.submit(() ->
 		{
-			final boolean success = sendCommand(commands)
-					.map(process -> process.exitValue() == 0)
-					.orElse(false);
-
-			if (!success)
+			try
 			{
-				sendTrayNotification(title, message, type);
+				Process notificationProcess = sendCommand(commands);
+
+				boolean exited = notificationProcess.waitFor(500, TimeUnit.MILLISECONDS);
+				if (exited && notificationProcess.exitValue() == 0)
+				{
+					return;
+				}
 			}
+			catch (IOException | InterruptedException ex)
+			{
+				log.debug("error sending notification", ex);
+			}
+
+			// fall back to tray notification
+			sendTrayNotification(title, message, type);
 		});
 	}
 
@@ -258,25 +277,21 @@ public class Notifier
 			commands.add(script);
 		}
 
-		sendCommand(commands);
-	}
-
-	private Optional<Process> sendCommand(final List<String> commands)
-	{
-		log.debug("Sending command {}", commands);
-
 		try
 		{
-			return Optional.of(new ProcessBuilder(commands.toArray(new String[commands.size()]))
-				.redirectErrorStream(true)
-				.start());
+			sendCommand(commands);
 		}
 		catch (IOException ex)
 		{
-			log.warn(null, ex);
+			log.warn("error sending notification", ex);
 		}
+	}
 
-		return Optional.empty();
+	private static Process sendCommand(final List<String> commands) throws IOException
+	{
+		return new ProcessBuilder(commands.toArray(new String[commands.size()]))
+			.redirectErrorStream(true)
+			.start();
 	}
 
 	private void storeIcon()

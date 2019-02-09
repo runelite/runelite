@@ -30,7 +30,7 @@ import net.runelite.api.Skill;
 
 public enum SkillColor
 {
-	ATTACK(105, 32, 7),
+	ATTACK(155, 32, 7),
 	DEFENCE(98, 119, 190),
 	STRENGTH(4, 149, 90),
 	HITPOINTS(131, 126, 126),

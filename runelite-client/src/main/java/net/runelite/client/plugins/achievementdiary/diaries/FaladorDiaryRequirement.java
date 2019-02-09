@@ -25,9 +25,11 @@
  */
 package net.runelite.client.plugins.achievementdiary.diaries;
 
+import net.runelite.api.Quest;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
-import net.runelite.client.plugins.achievementdiary.Requirement;
+import net.runelite.client.plugins.achievementdiary.QuestRequirement;
+import net.runelite.client.plugins.achievementdiary.SkillRequirement;
 
 public class FaladorDiaryRequirement extends GenericDiaryRequirement
 {
@@ -35,71 +37,83 @@ public class FaladorDiaryRequirement extends GenericDiaryRequirement
 	{
 		// EASY
 		add("Find out what your family crest is from Sir Renitee.",
-			new Requirement(Skill.CONSTRUCTION, 16));
+			new SkillRequirement(Skill.CONSTRUCTION, 16));
 		add("Climb over the western Falador wall.",
-			new Requirement(Skill.AGILITY, 5));
+			new SkillRequirement(Skill.AGILITY, 5));
+		add("Make a mind tiara.",
+			new QuestRequirement(Quest.RUNE_MYSTERIES));
 		add("Smith some Blurite Limbs on Doric's Anvil.",
-			new Requirement(Skill.MINING, 10),
-			new Requirement(Skill.SMITHING, 13));
+			new SkillRequirement(Skill.MINING, 10),
+			new SkillRequirement(Skill.SMITHING, 13),
+			new QuestRequirement(Quest.THE_KNIGHTS_SWORD),
+			new QuestRequirement(Quest.DORICS_QUEST));
 
 		// MEDIUM
 		add("Light a Bullseye lantern at the Chemist's in Rimmington.",
-			new Requirement(Skill.FIREMAKING, 49));
+			new SkillRequirement(Skill.FIREMAKING, 49));
 		add("Telegrab some Wine of Zamorak at the Chaos Temple by the Wilderness.",
-			new Requirement(Skill.MAGIC, 33));
+			new SkillRequirement(Skill.MAGIC, 33));
 		add("Place a Scarecrow in the Falador farming patch.",
-			new Requirement(Skill.FARMING, 23));
+			new SkillRequirement(Skill.FARMING, 23));
 		add("Kill a Mogre at Mudskipper Point.",
-			new Requirement(Skill.SLAYER, 32));
+			new SkillRequirement(Skill.SLAYER, 32),
+			new QuestRequirement(Quest.SKIPPY_AND_THE_MOGRES));
+		add("Visit the Port Sarim Rat Pits.",
+			new QuestRequirement(Quest.RATCATCHERS, true));
 		add("Grapple up and then jump off the north Falador wall.",
-			new Requirement(Skill.AGILITY, 11),
-			new Requirement(Skill.STRENGTH, 37),
-			new Requirement(Skill.RANGED, 19));
+			new SkillRequirement(Skill.AGILITY, 11),
+			new SkillRequirement(Skill.STRENGTH, 37),
+			new SkillRequirement(Skill.RANGED, 19));
 		add("Pickpocket a Falador guard.",
-			new Requirement(Skill.THIEVING, 40));
+			new SkillRequirement(Skill.THIEVING, 40));
 		add("Pray at the Altar of Guthix in Taverley whilst wearing full Initiate.",
-			new Requirement(Skill.PRAYER, 10),
-			new Requirement(Skill.DEFENCE, 20));
+			new SkillRequirement(Skill.PRAYER, 10),
+			new SkillRequirement(Skill.DEFENCE, 20),
+			new QuestRequirement(Quest.RECRUITMENT_DRIVE));
 		add("Mine some Gold ore at the Crafting Guild.",
-			new Requirement(Skill.CRAFTING, 40),
-			new Requirement(Skill.MINING, 40));
+			new SkillRequirement(Skill.CRAFTING, 40),
+			new SkillRequirement(Skill.MINING, 40));
 		add("Squeeze through the crevice in the Dwarven mines.",
-			new Requirement(Skill.AGILITY, 42));
+			new SkillRequirement(Skill.AGILITY, 42));
 		add("Chop and burn some Willow logs in Taverley",
-			new Requirement(Skill.WOODCUTTING, 30),
-			new Requirement(Skill.FIREMAKING, 30));
+			new SkillRequirement(Skill.WOODCUTTING, 30),
+			new SkillRequirement(Skill.FIREMAKING, 30));
 		add("Craft a fruit basket on the Falador Farm loom.",
-			new Requirement(Skill.CRAFTING, 36));
+			new SkillRequirement(Skill.CRAFTING, 36));
 		add("Teleport to Falador.",
-			new Requirement(Skill.MAGIC, 37));
+			new SkillRequirement(Skill.MAGIC, 37));
 
 		// HARD
 		add("Craft 140 Mind runes simultaneously.",
-			new Requirement(Skill.RUNECRAFT, 56));
+			new SkillRequirement(Skill.RUNECRAFT, 56));
 		add("Change your family crest to the Saradomin symbol.",
-			new Requirement(Skill.PRAYER, 70));
+			new SkillRequirement(Skill.PRAYER, 70));
 		add("Kill a Skeletal Wyvern in the Asgarnia Ice Dungeon.",
-			new Requirement(Skill.SLAYER, 72));
+			new SkillRequirement(Skill.SLAYER, 72));
 		add("Complete a lap of the Falador rooftop agility course.",
-			new Requirement(Skill.AGILITY, 50));
+			new SkillRequirement(Skill.AGILITY, 50));
 		add("Enter the mining guild wearing full prospector.",
-			new Requirement(Skill.MINING, 60));
+			new SkillRequirement(Skill.MINING, 60));
 		add("Crack a wall safe within Rogues Den.",
-			new Requirement(Skill.THIEVING, 50));
+			new SkillRequirement(Skill.THIEVING, 50));
 		add("Recharge your prayer in the Port Sarim church while wearing full Proselyte.",
-			new Requirement(Skill.DEFENCE, 30));
+			new SkillRequirement(Skill.DEFENCE, 30),
+			new QuestRequirement(Quest.THE_SLUG_MENACE));
 		add("Equip a dwarven helmet within the dwarven mines.",
-			new Requirement(Skill.DEFENCE, 50));
+			new SkillRequirement(Skill.DEFENCE, 50),
+			new QuestRequirement(Quest.GRIM_TALES));
 
 		// ELITE
 		add("Craft 252 Air Runes simultaneously.",
-			new Requirement(Skill.RUNECRAFT, 88));
+			new SkillRequirement(Skill.RUNECRAFT, 88));
+		add("Purchase a White 2h Sword from Sir Vyvin.",
+			new QuestRequirement(Quest.WANTED));
 		add("Find at least 3 magic roots at once when digging up your magic tree in Falador.",
-			new Requirement(Skill.FARMING, 91),
-			new Requirement(Skill.WOODCUTTING, 75));
+			new SkillRequirement(Skill.FARMING, 91),
+			new SkillRequirement(Skill.WOODCUTTING, 75));
 		add("Jump over the strange floor in Taverley dungeon.",
-			new Requirement(Skill.AGILITY, 80));
+			new SkillRequirement(Skill.AGILITY, 80));
 		add("Mix a Saradomin brew in Falador east bank.",
-			new Requirement(Skill.HERBLORE, 81));
+			new SkillRequirement(Skill.HERBLORE, 81));
 	}
 }

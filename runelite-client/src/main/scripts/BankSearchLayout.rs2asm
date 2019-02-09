@@ -702,6 +702,8 @@ LABEL637:
    jump                   LABEL641
 LABEL638:
    load_string            "The Bank of Gielinor"
+   load_string            "setBankTitle"  ;
+   runelite_callback                      ;
    iload                  6
    widget_put_text_widget
 LABEL641:
@@ -853,6 +855,8 @@ LABEL765:
    get_varbit             4150
    get_enum_value        
    string_append          2
+   load_string            "setBankTitle"  ;
+   runelite_callback                      ;
    iload                  6
    widget_put_text_widget
    jump                   LABEL781
@@ -861,6 +865,8 @@ LABEL775:
    get_varbit             4150
    int_to_string         
    string_append          2
+   load_string            "setBankTitle"  ;
+   runelite_callback                      ;
    iload                  6
    widget_put_text_widget
 LABEL781:

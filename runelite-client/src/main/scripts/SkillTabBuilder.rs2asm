@@ -1,207 +1,213 @@
 .id                 395
 .int_stack_count    3
 .string_stack_count 1
-.int_var_count      10
+.int_var_count      11
 .string_var_count   4
+   load_int               83
+   load_int               49
+   load_int               1497
+   iload                  0
+   get_enum_value        
+   istore                 3
    iload                  0
    get_boostedskilllevels
-   int_to_string
-   widget_put_text
+   int_to_string         
+   widget_put_text       
    iload                  0
-   get_realskilllevels
-   istore                 3
+   get_realskilllevels   
+   istore                 4
    iload                  0                   ; load the skill id from arguments
-   iload                  3                   ; load the current real skill level
+   iload                  4                   ; load the current real skill level
    load_string            "skillTabBaseLevel" ; push event name
-   runelite_callback                          ; invoke callback
-   istore                 3                   ; store the (possibly) edited real skill level
-   iload                  3
-   int_to_string
+   runelite_callback     ; invoke callback
+   istore                 4                   ; store the (possibly) edited real skill level
+   iload                  4
+   int_to_string         
    widget_put_text        1
    iload                  0
-   get_skillexperiences
-   istore                 4
+   get_skillexperiences  
+   istore                 5
    load_string            ","
    sstore                 1
    sload                  0
    load_string            " XP:"
    string_append          2
    sstore                 2
-   iload                  4
+   iload                  5
    sload                  1
    invoke                 46
    sstore                 3
    load_int               0
-   istore                 5
+   istore                 6
    get_varbit             4181
    load_int               0
-   if_icmpeq              LABEL29
-   jump                   LABEL60
-LABEL29:
-   iload                  3
+   if_icmpeq              LABEL35
+   jump                   LABEL66
+LABEL35:
+   iload                  4
    load_int               99
    load_string            "skillTabMaxLevel"   ; push event name
-   runelite_callback                           ; invoke callback
-   if_icmplt              LABEL33
-   jump                   LABEL59
-LABEL33:
+   runelite_callback     ; invoke callback
+   if_icmplt              LABEL39
+   jump                   LABEL65
+LABEL39:
    load_int               105
    load_int               105
    load_int               256
-   iload                  3
+   iload                  4
    load_int               1
-   iadd
-   get_enum_value
-   istore                 5
+   iadd                  
+   get_enum_value        
+   istore                 6
    sload                  2
    load_string            "|Next level at:|Remaining XP:"
-   concat_string
+   concat_string         
    sstore                 2
    sload                  3
    load_string            "|"
-   iload                  5
+   iload                  6
    sload                  1
    invoke                 46
    load_string            "|"
+   iload                  6
    iload                  5
-   iload                  4
-   isub
+   isub                  
    sload                  1
    invoke                 46
    string_append          4
-   concat_string
+   concat_string         
    sstore                 3
-LABEL59:
-   jump                   LABEL78
-LABEL60:
+LABEL65:
+   jump                   LABEL84
+LABEL66:
    sload                  2
    load_string            "|Next level at:"
-   concat_string
+   concat_string         
    sstore                 2
    sload                  3
    load_string            "|"
    load_int               105
    load_int               105
    load_int               256
-   iload                  3
+   iload                  4
    load_int               1
-   iadd
-   get_enum_value
+   iadd                  
+   get_enum_value        
    sload                  1
    invoke                 46
    string_append          2
-   concat_string
+   concat_string         
    sstore                 3
-LABEL78:
-   load_int               0
-   istore                 6
+LABEL84:
    load_int               0
    istore                 7
    load_int               0
    istore                 8
    load_int               0
    istore                 9
+   load_int               0
+   istore                 10
    invoke                 1138
    load_int               1
-   if_icmpeq              LABEL90
-   jump                   LABEL227
-LABEL90:
+   if_icmpeq              LABEL96
+   jump                   LABEL278
+LABEL96:
    iload                  0
    invoke                 1936
-   istore                 6
-   iload                  6
+   istore                 7
+   iload                  7
    load_int               -1
-   if_icmpne              LABEL97
-   jump                   LABEL127
-LABEL97:
-   iload                  6
+   if_icmpne              LABEL103
+   jump                   LABEL133
+LABEL103:
+   iload                  7
    load_int               10
-   idiv
-   istore                 6
-   iload                  6
-   iload                  4
-   if_icmpgt              LABEL105
-   jump                   LABEL127
-LABEL105:
+   idiv                  
+   istore                 7
+   iload                  7
+   iload                  5
+   if_icmpgt              LABEL111
+   jump                   LABEL133
+LABEL111:
    sload                  2
    load_string            "|"
    load_string            "<col=7c0808>"
    load_string            "XP to regain:"
    load_string            "</col>"
    string_append          4
-   concat_string
+   concat_string         
    sstore                 2
    sload                  3
    load_string            "|"
    load_string            "<col=7c0808>"
-   iload                  6
-   iload                  4
-   isub
+   iload                  7
+   iload                  5
+   isub                  
    sload                  1
    invoke                 46
    load_string            "</col>"
    string_append          4
-   concat_string
+   concat_string         
    sstore                 3
    load_int               1
-   istore                 7
-LABEL127:
-   iload                  7
+   istore                 8
+LABEL133:
+   iload                  8
    load_int               0
-   if_icmpeq              LABEL131
-   jump                   LABEL227
-LABEL131:
+   if_icmpeq              LABEL137
+   jump                   LABEL278
+LABEL137:
    get_varp               1588
    load_int               0
-   if_icmpgt              LABEL135
-   jump                   LABEL227
-LABEL135:
+   if_icmpgt              LABEL141
+   jump                   LABEL278
+LABEL141:
    iload                  0
-   switch
-      0: LABEL138
-      1: LABEL183
-      2: LABEL138
-      4: LABEL183
-      6: LABEL138
-   jump                   LABEL227
-LABEL138:
+   switch                
+      0: LABEL144
+      1: LABEL234
+      2: LABEL144
+      4: LABEL189
+      6: LABEL144
+   jump                   LABEL278
+LABEL144:
    load_int               20
    invoke                 2031
-   istore                 9
-   iload                  9
+   istore                 10
+   iload                  10
    load_int               0
-   if_icmpgt              LABEL145
-   jump                   LABEL164
-LABEL145:
+   if_icmpgt              LABEL151
+   jump                   LABEL170
+LABEL151:
    sload                  2
    load_string            "|"
    load_string            "<col=7c0808>"
    load_string            "XP permitted:"
    load_string            "</col>"
    string_append          4
-   concat_string
+   concat_string         
    sstore                 2
    sload                  3
    load_string            "|"
    load_string            "<col=7c0808>"
-   iload                  9
+   iload                  10
    sload                  1
    invoke                 46
    load_string            "</col>"
    string_append          4
-   concat_string
+   concat_string         
    sstore                 3
-   jump                   LABEL182
-LABEL164:
+   jump                   LABEL188
+LABEL170:
    load_int               1
-   istore                 8
+   istore                 9
    sload                  2
    load_string            "|"
    load_string            "<col=7c0808>"
    load_string            "XP permitted:"
    load_string            "</col>"
    string_append          4
-   concat_string
+   concat_string         
    sstore                 2
    sload                  3
    load_string            "|"
@@ -209,48 +215,48 @@ LABEL164:
    load_string            "NONE"
    load_string            "</col>"
    string_append          4
-   concat_string
+   concat_string         
    sstore                 3
-LABEL182:
-   jump                   LABEL227
-LABEL183:
+LABEL188:
+   jump                   LABEL278
+LABEL189:
    load_int               30
    invoke                 2031
-   istore                 9
-   iload                  9
+   istore                 10
+   iload                  10
    load_int               0
-   if_icmpgt              LABEL190
-   jump                   LABEL209
-LABEL190:
+   if_icmpgt              LABEL196
+   jump                   LABEL215
+LABEL196:
    sload                  2
    load_string            "|"
    load_string            "<col=7c0808>"
    load_string            "XP permitted:"
    load_string            "</col>"
    string_append          4
-   concat_string
+   concat_string         
    sstore                 2
    sload                  3
    load_string            "|"
    load_string            "<col=7c0808>"
-   iload                  9
+   iload                  10
    sload                  1
    invoke                 46
    load_string            "</col>"
    string_append          4
-   concat_string
+   concat_string         
    sstore                 3
-   jump                   LABEL227
-LABEL209:
+   jump                   LABEL233
+LABEL215:
    load_int               1
-   istore                 8
+   istore                 9
    sload                  2
    load_string            "|"
    load_string            "<col=7c0808>"
    load_string            "XP permitted:"
    load_string            "</col>"
    string_append          4
-   concat_string
+   concat_string         
    sstore                 2
    sload                  3
    load_string            "|"
@@ -258,30 +264,79 @@ LABEL209:
    load_string            "NONE"
    load_string            "</col>"
    string_append          4
-   concat_string
+   concat_string         
    sstore                 3
-LABEL227:
+LABEL233:
+   jump                   LABEL278
+LABEL234:
+   load_int               40
+   invoke                 2031
+   istore                 10
+   iload                  10
+   load_int               0
+   if_icmpgt              LABEL241
+   jump                   LABEL260
+LABEL241:
+   sload                  2
+   load_string            "|"
+   load_string            "<col=7c0808>"
+   load_string            "XP permitted:"
+   load_string            "</col>"
+   string_append          4
+   concat_string         
+   sstore                 2
+   sload                  3
+   load_string            "|"
+   load_string            "<col=7c0808>"
+   iload                  10
+   sload                  1
+   invoke                 46
+   load_string            "</col>"
+   string_append          4
+   concat_string         
+   sstore                 3
+   jump                   LABEL278
+LABEL260:
+   load_int               1
+   istore                 9
+   sload                  2
+   load_string            "|"
+   load_string            "<col=7c0808>"
+   load_string            "XP permitted:"
+   load_string            "</col>"
+   string_append          4
+   concat_string         
+   sstore                 2
+   sload                  3
+   load_string            "|"
+   load_string            "<col=7c0808>"
+   load_string            "NONE"
+   load_string            "</col>"
+   string_append          4
+   concat_string         
+   sstore                 3
+LABEL278:
    iload                  1
    load_int               5
    widget_load_child      1
    load_int               1
-   if_icmpeq              LABEL233
-   jump                   LABEL243
-LABEL233:
-   iload                  8
+   if_icmpeq              LABEL284
+   jump                   LABEL294
+LABEL284:
+   iload                  9
    load_int               1
-   if_icmpeq              LABEL237
-   jump                   LABEL240
-LABEL237:
+   if_icmpeq              LABEL288
+   jump                   LABEL291
+LABEL288:
    load_int               0
    widget_put_hidden      1
-   jump                   LABEL242
-LABEL240:
+   jump                   LABEL293
+LABEL291:
    load_int               1
    widget_put_hidden      1
-LABEL242:
-   jump                   LABEL270
-LABEL243:
+LABEL293:
+   jump                   LABEL321
+LABEL294:
    iload                  1
    load_int               5
    load_int               5
@@ -300,23 +355,50 @@ LABEL243:
    widget_put_spriteid    1
    load_int               65793
    widget_put_sprite2     1
-   iload                  8
+   iload                  9
    load_int               1
-   if_icmpeq              LABEL265
-   jump                   LABEL268
-LABEL265:
+   if_icmpeq              LABEL316
+   jump                   LABEL319
+LABEL316:
    load_int               0
    widget_put_hidden      1
-   jump                   LABEL270
-LABEL268:
+   jump                   LABEL321
+LABEL319:
    load_int               1
    widget_put_hidden      1
-LABEL270:
+LABEL321:
+   iload                  3
+   load_int               1
+   if_icmpeq              LABEL325
+   jump                   LABEL344
+LABEL325:
+   get_ismembers         
+   load_int               0
+   if_icmpeq              LABEL329
+   jump                   LABEL344
+LABEL329:
+   get_varc               103
+   load_int               0
+   if_icmpeq              LABEL333
+   jump                   LABEL344
+LABEL333:
+   load_string            "<col=ff0000>"
+   sload                  0
+   load_string            ":"
+   load_string            "</col>"
+   string_append          4
+   sstore                 2
+   load_string            "<col=ff0000>"
+   load_string            "Members Only"
+   load_string            "</col>"
+   string_append          3
+   sstore                 3
+LABEL344:
    invoke                 1972
    load_int               1
-   if_icmpeq              LABEL274
-   jump                   LABEL301
-LABEL274:
+   if_icmpeq              LABEL348
+   jump                   LABEL375
+LABEL348:
    load_int               2367
    load_int               -2147483644
    load_int               -2147483645
@@ -330,14 +412,14 @@ LABEL274:
    widget_put_option_click_listener_widget
    get_varc               218
    iload                  1
-   if_icmpeq              LABEL289
-   jump                   LABEL300
-LABEL289:
+   if_icmpeq              LABEL363
+   jump                   LABEL374
+LABEL363:
    get_varc               217
    load_int               -1
-   if_icmpeq              LABEL293
-   jump                   LABEL300
-LABEL293:
+   if_icmpeq              LABEL367
+   jump                   LABEL374
+LABEL367:
    iload                  1
    load_int               -1
    iload                  2
@@ -345,9 +427,9 @@ LABEL293:
    sload                  3
    load_int               495
    invoke                 2344
-LABEL300:
-   jump                   LABEL316
-LABEL301:
+LABEL374:
+   jump                   LABEL390
+LABEL375:
    load_int               992
    load_int               -2147483645
    load_int               -1
@@ -357,11 +439,11 @@ LABEL301:
    load_int               495
    load_int               25
    load_int               5
-   idiv
+   idiv                  
    load_string            "IiIssfi"
    iload                  1
    widget_put_mouse_hover_listener_widget
    load_int               0
    put_varc               2
-LABEL316:
-   return
+LABEL390:
+   return                

@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,23 +26,38 @@
  */
 package net.runelite.client.rs;
 
+import com.google.common.hash.Hashing;
+import com.google.common.io.ByteStreams;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import io.sigpipe.jbsdiff.InvalidHeaderException;
+import io.sigpipe.jbsdiff.Patch;
 import java.applet.Applet;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLClassLoader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.updatecheck.UpdateCheckClient;
+import static net.runelite.client.rs.ClientUpdateCheckMode.*;
+import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.apache.commons.compress.compressors.CompressorException;
 
 @Slf4j
 @Singleton
 public class ClientLoader
 {
-	private final UpdateCheckClient updateCheckClient = new UpdateCheckClient();
 	private final ClientConfigLoader clientConfigLoader;
-	private final ClientUpdateCheckMode updateCheckMode;
+	private ClientUpdateCheckMode updateCheckMode;
 
 	@Inject
 	private ClientLoader(
@@ -52,60 +68,145 @@ public class ClientLoader
 		this.clientConfigLoader = clientConfigLoader;
 	}
 
-	private static Applet loadRuneLite(final RSConfig config) throws ClassNotFoundException, InstantiationException, IllegalAccessException
-	{
-		// the injected client is a runtime scoped dependency
-		final Class<?> clientClass = ClientLoader.class.getClassLoader().loadClass(config.getInitialClass());
-		return loadFromClass(config, clientClass);
-	}
-
-	private static Applet loadVanilla(final RSConfig config) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException
-	{
-		final String codebase = config.getCodeBase();
-		final String initialJar = config.getInitialJar();
-		final String initialClass = config.getInitialClass();
-		final URL url = new URL(codebase + initialJar);
-
-		// Must set parent classloader to null, or it will pull from
-		// this class's classloader first
-		final URLClassLoader classloader = new URLClassLoader(new URL[]{url}, null);
-		final Class<?> clientClass = classloader.loadClass(initialClass);
-		return loadFromClass(config, clientClass);
-	}
-
-	private static Applet loadFromClass(final RSConfig config, final Class<?> clientClass) throws IllegalAccessException, InstantiationException
-	{
-		final Applet rs = (Applet) clientClass.newInstance();
-		rs.setStub(new RSAppletStub(config));
-		return rs;
-	}
-
 	public Applet load()
 	{
+		if (updateCheckMode == NONE)
+		{
+			return null;
+		}
+
 		try
 		{
-			final RSConfig config = clientConfigLoader.fetch();
-			final ClientUpdateCheckMode updateMode = updateCheckMode == ClientUpdateCheckMode.AUTO
-				? updateCheckClient.isOutdated() ? ClientUpdateCheckMode.VANILLA : ClientUpdateCheckMode.RUNELITE
-				: updateCheckMode;
+			RSConfig config = clientConfigLoader.fetch();
 
-			switch (updateMode)
+			Map<String, byte[]> zipFile = new HashMap<>();
 			{
-				case RUNELITE:
-					return loadRuneLite(config);
-				default:
-				case VANILLA:
-					return loadVanilla(config);
-				case NONE:
-					return null;
+				String codebase = config.getCodeBase();
+				String initialJar = config.getInitialJar();
+				URL url = new URL(codebase + initialJar);
+				Request request = new Request.Builder()
+					.url(url)
+					.build();
+
+				try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+				{
+					JarInputStream jis = new JarInputStream(response.body().byteStream());
+
+					byte[] tmp = new byte[4096];
+					ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
+					for (; ; )
+					{
+						JarEntry metadata = jis.getNextJarEntry();
+						if (metadata == null)
+						{
+							break;
+						}
+
+						buffer.reset();
+						for (; ; )
+						{
+							int n = jis.read(tmp);
+							if (n <= -1)
+							{
+								break;
+							}
+							buffer.write(tmp, 0, n);
+						}
+
+						zipFile.put(metadata.getName(), buffer.toByteArray());
+					}
+				}
 			}
+
+			if (updateCheckMode == AUTO)
+			{
+				Map<String, String> hashes;
+				try (InputStream is = ClientLoader.class.getResourceAsStream("/patch/hashes.json"))
+				{
+					hashes = new Gson().fromJson(new InputStreamReader(is), new TypeToken<HashMap<String, String>>()
+					{
+					}.getType());
+				}
+
+				for (Map.Entry<String, String> file : hashes.entrySet())
+				{
+					byte[] bytes = zipFile.get(file.getKey());
+
+					String ourHash = null;
+					if (bytes != null)
+					{
+						ourHash = Hashing.sha512().hashBytes(bytes).toString();
+					}
+
+					if (!file.getValue().equals(ourHash))
+					{
+						log.debug("{} had a hash mismatch; falling back to vanilla. {} != {}", file.getKey(), file.getValue(), ourHash);
+						log.info("Client is outdated!");
+						updateCheckMode = VANILLA;
+						break;
+					}
+				}
+			}
+
+			if (updateCheckMode == AUTO)
+			{
+				ByteArrayOutputStream patchOs = new ByteArrayOutputStream(756 * 1024);
+				int patchCount = 0;
+
+				for (Map.Entry<String, byte[]> file : zipFile.entrySet())
+				{
+					byte[] bytes;
+					try (InputStream is = ClientLoader.class.getResourceAsStream("/patch/" + file.getKey() + ".bs"))
+					{
+						if (is == null)
+						{
+							continue;
+						}
+
+						bytes = ByteStreams.toByteArray(is);
+					}
+
+					patchOs.reset();
+					Patch.patch(file.getValue(), bytes, patchOs);
+					file.setValue(patchOs.toByteArray());
+
+					++patchCount;
+				}
+
+				log.debug("Patched {} classes", patchCount);
+			}
+
+			String initialClass = config.getInitialClass();
+
+			ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
+			{
+				@Override
+				protected Class<?> findClass(String name) throws ClassNotFoundException
+				{
+					String path = name.replace('.', '/').concat(".class");
+					byte[] data = zipFile.get(path);
+					if (data == null)
+					{
+						throw new ClassNotFoundException(name);
+					}
+
+					return defineClass(name, data, 0, data.length);
+				}
+			};
+
+			Class<?> clientClass = rsClassLoader.loadClass(initialClass);
+
+			Applet rs = (Applet) clientClass.newInstance();
+			rs.setStub(new RSAppletStub(config));
+			return rs;
 		}
-		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
+		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
+			| CompressorException | InvalidHeaderException e)
 		{
 			if (e instanceof ClassNotFoundException)
 			{
 				log.error("Unable to load client - class not found. This means you"
-					+ " are not running RuneLite with Maven as the injected client"
+					+ " are not running RuneLite with Maven as the client patch"
 					+ " is not in your classpath.");
 			}
 

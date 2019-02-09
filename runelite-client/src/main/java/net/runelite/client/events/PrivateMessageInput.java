@@ -27,10 +27,8 @@ package net.runelite.client.events;
 import lombok.Data;
 
 @Data
-public abstract class PrivateMessageInput
+public abstract class PrivateMessageInput extends ChatInput
 {
 	private final String target;
 	private final String message;
-
-	public abstract void resume();
 }

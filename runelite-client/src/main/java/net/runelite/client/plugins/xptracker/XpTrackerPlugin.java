@@ -26,18 +26,21 @@
 package net.runelite.client.plugins.xptracker;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
-import com.google.common.eventbus.Subscribe;
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
+import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
@@ -45,14 +48,17 @@ import net.runelite.api.WorldType;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.task.Schedule;
-import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.xp.XpClient;
 
@@ -64,6 +70,19 @@ import net.runelite.http.api.xp.XpClient;
 @Slf4j
 public class XpTrackerPlugin extends Plugin
 {
+	/**
+	 * Amount of EXP that must be gained for an update to be submitted.
+	 */
+	private static final int XP_THRESHOLD = 1000;
+
+	static final List<Skill> COMBAT = ImmutableList.of(
+		Skill.ATTACK,
+		Skill.STRENGTH,
+		Skill.DEFENCE,
+		Skill.RANGED,
+		Skill.HITPOINTS,
+		Skill.MAGIC);
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -76,11 +95,16 @@ public class XpTrackerPlugin extends Plugin
 	@Inject
 	private XpTrackerConfig xpTrackerConfig;
 
+	@Inject
+	private NPCManager npcManager;
+
 	private NavigationButton navButton;
 	private XpPanel xpPanel;
 	private XpWorldType lastWorldType;
 	private String lastUsername;
 	private long lastTickMillis = 0;
+	private boolean fetchXp;
+	private long lastXp = 0;
 
 	private final XpClient xpClient = new XpClient();
 	private final XpState xpState = new XpState();
@@ -101,7 +125,7 @@ public class XpTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		xpPanel = new XpPanel(this, client, skillIconManager);
+		xpPanel = new XpPanel(this, xpTrackerConfig, client, skillIconManager);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons/overall.png");
 
@@ -122,10 +146,21 @@ public class XpTrackerPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
+	private long getTotalXp()
+	{
+		long total = 0;
+		for (Skill skill : Skill.values())
+		{
+			total += client.getSkillExperience(skill);
+		}
+		return total;
+	}
+
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGGED_IN)
+		GameState state = event.getGameState();
+		if (state == GameState.LOGGED_IN)
 		{
 			// LOGGED_IN is triggered between region changes too.
 			// Check that the username changed or the world type changed.
@@ -140,15 +175,29 @@ public class XpTrackerPlugin extends Plugin
 					firstNonNull(type, "<unknown>"));
 
 				lastUsername = client.getUsername();
+				// xp is not available until after login is finished, so fetch it on the next gametick
+				fetchXp = true;
 				lastWorldType = type;
 				resetState();
 			}
 		}
-		else if (event.getGameState() == GameState.LOGIN_SCREEN)
+		else if (state == GameState.LOGIN_SCREEN)
 		{
 			Player local = client.getLocalPlayer();
-			String username = local != null ? local.getName() : null;
-			if (username != null)
+			if (local == null)
+			{
+				return;
+			}
+
+			String username = local.getName();
+			if (username == null)
+			{
+				return;
+			}
+
+			long totalXp = getTotalXp();
+			// Don't submit xptrack unless xp threshold is reached
+			if (Math.abs(totalXp - lastXp) > XP_THRESHOLD)
 			{
 				xpClient.update(username);
 			}
@@ -227,7 +276,7 @@ public class XpTrackerPlugin extends Plugin
 
 
 	@Subscribe
-	public void onXpChanged(ExperienceChanged event)
+	public void onExperienceChanged(ExperienceChanged event)
 	{
 		final Skill skill = event.getSkill();
 		final int currentXp = client.getSkillExperience(skill);
@@ -242,10 +291,40 @@ public class XpTrackerPlugin extends Plugin
 			return;
 		}
 
-		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
+		final XpStateSingle state = xpState.getSkill(skill);
+		state.setActionType(XpActionType.EXPERIENCE);
 
+		final Actor interacting = client.getLocalPlayer().getInteracting();
+		if (interacting instanceof NPC && COMBAT.contains(skill))
+		{
+			final NPC npc = (NPC) interacting;
+			xpState.updateNpcExperience(skill, npc, npcManager.getHealth(npc.getName(), npc.getCombatLevel()));
+		}
+
+		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
 		final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
 		xpPanel.updateSkillExperience(updated, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
+		xpState.recalculateTotal();
+		xpPanel.updateTotal(xpState.getTotalSnapshot());
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		final NPC npc = event.getNpc();
+
+		if (!npc.isDead())
+		{
+			return;
+		}
+
+		for (Skill skill : COMBAT)
+		{
+			final XpUpdateResult updateResult = xpState.updateNpcKills(skill, npc, npcManager.getHealth(npc.getName(), npc.getCombatLevel()));
+			final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
+			xpPanel.updateSkillExperience(updated, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
+		}
+
 		xpState.recalculateTotal();
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
@@ -254,6 +333,11 @@ public class XpTrackerPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		rebuildSkills();
+		if (fetchXp)
+		{
+			lastXp = getTotalXp();
+			fetchXp = false;
+		}
 	}
 
 	XpSnapshotSingle getSkillSnapshot(Skill skill)

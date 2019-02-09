@@ -33,6 +33,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -50,9 +51,12 @@ import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.http.api.loottracker.LootTrackerClient;
 
 class LootTrackerPanel extends PluginPanel
 {
+	private static final int MAX_LOOT_BOXES = 500;
+
 	private static final ImageIcon SINGLE_LOOT_VIEW;
 	private static final ImageIcon SINGLE_LOOT_VIEW_FADED;
 	private static final ImageIcon SINGLE_LOOT_VIEW_HOVER;
@@ -290,6 +294,13 @@ class LootTrackerPanel extends PluginPanel
 			updateOverall();
 			logsContainer.removeAll();
 			logsContainer.repaint();
+
+			// Delete all loot, or loot matching the current view
+			LootTrackerClient client = plugin.getLootTrackerClient();
+			if (client != null)
+			{
+				client.delete(currentView);
+			}
 		});
 
 		// Create popup menu
@@ -325,7 +336,21 @@ class LootTrackerPanel extends PluginPanel
 		final String subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
 		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, items, System.currentTimeMillis());
 		records.add(record);
-		buildBox(record);
+		LootTrackerBox box = buildBox(record);
+		if (box != null)
+		{
+			box.rebuild();
+			updateOverall();
+		}
+	}
+
+	/**
+	 * Adds a Collection of records to the panel
+	 */
+	void addRecords(Collection<LootTrackerRecord> recs)
+	{
+		records.addAll(recs);
+		rebuild();
 	}
 
 	/**
@@ -380,7 +405,16 @@ class LootTrackerPanel extends PluginPanel
 	{
 		logsContainer.removeAll();
 		boxes.clear();
-		records.forEach(this::buildBox);
+		int start = 0;
+		if (!groupLoot && records.size() > MAX_LOOT_BOXES)
+		{
+			start = records.size() - MAX_LOOT_BOXES;
+		}
+		for (int i = start; i < records.size(); i++)
+		{
+			buildBox(records.get(i));
+		}
+		boxes.forEach(LootTrackerBox::rebuild);
 		updateOverall();
 		logsContainer.revalidate();
 		logsContainer.repaint();
@@ -391,12 +425,12 @@ class LootTrackerPanel extends PluginPanel
 	 * add its items to it, updating the log's overall price and kills. If not, a new log will be created
 	 * to hold this entry's information.
 	 */
-	private void buildBox(LootTrackerRecord record)
+	private LootTrackerBox buildBox(LootTrackerRecord record)
 	{
 		// If this record is not part of current view, return
 		if (!record.matches(currentView))
 		{
-			return;
+			return null;
 		}
 
 		// Group all similar loot together
@@ -407,8 +441,7 @@ class LootTrackerPanel extends PluginPanel
 				if (box.matches(record))
 				{
 					box.combine(record);
-					updateOverall();
-					return;
+					return box;
 				}
 			}
 		}
@@ -436,6 +469,13 @@ class LootTrackerPanel extends PluginPanel
 			updateOverall();
 			logsContainer.remove(box);
 			logsContainer.repaint();
+
+			LootTrackerClient client = plugin.getLootTrackerClient();
+			// Without loot being grouped we have no way to identify single kills to be deleted
+			if (client != null && groupLoot)
+			{
+				client.delete(box.getId());
+			}
 		});
 
 		popupMenu.add(reset);
@@ -456,14 +496,45 @@ class LootTrackerPanel extends PluginPanel
 		boxes.add(box);
 		logsContainer.add(box, 0);
 
-		// Update overall
-		updateOverall();
+		if (!groupLoot && boxes.size() > MAX_LOOT_BOXES)
+		{
+			logsContainer.remove(boxes.remove(0));
+		}
+
+		return box;
 	}
 
 	private void updateOverall()
 	{
-		final long overallGp = boxes.stream().mapToLong(LootTrackerBox::getTotalPrice).sum();
-		final long overallKills = boxes.stream().mapToLong(LootTrackerBox::getTotalKills).sum();
+		long overallKills = 0;
+		long overallGp = 0;
+
+		for (LootTrackerRecord record : records)
+		{
+			if (!record.matches(currentView))
+			{
+				continue;
+			}
+
+			int present = record.getItems().length;
+
+			for (LootTrackerItem item : record.getItems())
+			{
+				if (hideIgnoredItems && item.isIgnored())
+				{
+					present--;
+					continue;
+				}
+
+				overallGp += item.getPrice();
+			}
+
+			if (present > 0)
+			{
+				overallKills++;
+			}
+		}
+
 		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
 		overallGpLabel.setText(htmlLabel("Total value: ", overallGp));
 	}

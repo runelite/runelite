@@ -9,4 +9,7 @@ jdk:
 install: true
 script: ./travis/build.sh
 notifications:
-  irc: "irc.rizon.net#runelite"
+  irc:
+    channels:
+      # "irc.rizon.net#runelite"
+      - secure: "mWQqHYRviyGWM5qQmQ3wtfUg2kFPNwC3ISbqsZhQiHiMLBxZoONMQVHIFgc09h1EqnM1mOLDAh6TSxsxNW1FR7j70pWc3hPOu8Lk1iu1vzLs/RN4dgKH8eQ0u1CpB5oaqHqC3X2CFGrytd92M7GUzHencY0twsze8m0592XRyK/3cuQwCRHFKN0uI7KNqF6n0M3/335sivB8gfy/zy5nKQmgL+r7Z2p4VrrUrSvdM3hKGhbixHijNB+5LONJpRpc/Z2Hgb5H5zmEcHBPRkHakmn5XtPYaC6eFqENi4lh99HYsN9q+ifarV0uQBdXNtJt0BFPFk0CnsnHD9QHRYOiRxROI7axISXmzA+3uoYuIMkwEcHivMkWXbgRLZaMvkjuIBKaKypTvVm+zWEPAdsNfCrWrqBuAwac6L/D++cri4f+00dKMXSE4TYSUV5mQj2WFBZ3se37UJGns4NHhcDe8SHoy6vnmIwaqGoylMmeTO80EVfFzkZxjH/YrRdwsuyCeQG9Tgv0FIDkhxwpsY/ek/TE/SHgO5U5gtKpFfB0cFc5RWfXxKat7PI31Ln5r5XahizScUi0FcdVD1cbGWug5/2vG0AEkyrgyFRJZuSxjCVidrX6vLitCNLGVvMC+BpZBSiDVZvyeQJ10SIwZnKDF+SlgSNv2+aEWnhunZ6GBb8="

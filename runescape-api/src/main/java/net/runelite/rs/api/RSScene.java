@@ -35,8 +35,29 @@ public interface RSScene extends Scene
 
 	@Import("tiles")
 	@Override
-	Tile[][][] getTiles();
+	RSTile[][][] getTiles();
+
+	@Import("draw")
+	void draw(Tile tile, boolean var2);
+
+	@Import("tileHeights")
+	int[][][] getTileHeights();
 
 	@Import("drawTile")
 	void drawTile(int[] pixels, int pixelOffset, int width, int z, int x, int y);
+
+	@Import("updateOccluders")
+	void updateOccluders();
+
+	@Import("maxX")
+	int getMaxX();
+
+	@Import("maxY")
+	int getMaxY();
+
+	@Import("maxZ")
+	int getMaxZ();
+
+	@Import("minLevel")
+	int getMinLevel();
 }

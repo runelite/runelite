@@ -142,6 +142,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showVengeanceActive",
+		name = "Vengeance active",
+		description = "Configures whether an indicator for vengeance being active is displayed"
+	)
+	default boolean showVengeanceActive()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showTeleblock",
 		name = "Teleblock timer",
 		description = "Configures whether teleblock timer is displayed"
@@ -183,7 +193,7 @@ public interface TimersConfig extends Config
 
 	@ConfigItem(
 		keyName = "showAbyssalSireStun",
-		name = "Abyssal Sire stun Timer",
+		name = "Abyssal Sire stun timer",
 		description = "Configures whether Abyssal Sire stun timer is displayed"
 	)
 	default boolean showAbyssalSireStun()

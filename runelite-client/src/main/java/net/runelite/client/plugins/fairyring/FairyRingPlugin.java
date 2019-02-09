@@ -29,7 +29,6 @@
 package net.runelite.client.plugins.fairyring;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Collection;
 import java.util.Map;
@@ -39,21 +38,24 @@ import javax.inject.Inject;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
-import net.runelite.api.WidgetType;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ChatboxInputManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
+import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
@@ -82,13 +84,13 @@ public class FairyRingPlugin extends Plugin
 	private FairyRingConfig config;
 
 	@Inject
-	private ChatboxInputManager chatboxInputManager;
+	private ChatboxPanelManager chatboxPanelManager;
 
 	@Inject
 	private ClientThread clientThread;
 
+	private ChatboxTextInput searchInput = null;
 	private Widget searchBtn;
-	private boolean chatboxOpenLastTick = false;
 	private Collection<CodeWidgets> codes = null;
 
 	@Data
@@ -132,9 +134,9 @@ public class FairyRingPlugin extends Plugin
 				searchBtn.setOriginalHeight(17);
 				searchBtn.setOriginalX(11);
 				searchBtn.setOriginalY(11);
-				searchBtn.setOnOpListener(ScriptID.NULL);
 				searchBtn.setHasListener(true);
 				searchBtn.setAction(1, MENU_OPEN);
+				searchBtn.setOnOpListener((JavaScriptCallback) this::menuOpen);
 				searchBtn.setName("Search");
 				searchBtn.revalidate();
 
@@ -148,27 +150,17 @@ public class FairyRingPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked ev)
+	private void menuOpen(ScriptEvent e)
 	{
-		if (searchBtn != null && searchBtn.getId() == ev.getWidgetId())
-		{
-			switch (ev.getMenuOption())
-			{
-				case MENU_OPEN:
-					ev.consume();
-					openSearch();
-					client.playSoundEffect(SoundEffectID.UI_BOOP);
-					break;
-				case MENU_CLOSE:
-					ev.consume();
-					updateFilter("");
-					searchBtn.setAction(1, MENU_OPEN);
-					chatboxInputManager.closeInputWindow();
-					client.playSoundEffect(SoundEffectID.UI_BOOP);
-					break;
-			}
-		}
+		openSearch();
+		client.playSoundEffect(SoundEffectID.UI_BOOP);
+	}
+
+	private void menuClose(ScriptEvent e)
+	{
+		updateFilter("");
+		chatboxPanelManager.close();
+		client.playSoundEffect(SoundEffectID.UI_BOOP);
 	}
 
 	private void setWidgetTextToDestination()
@@ -201,13 +193,16 @@ public class FairyRingPlugin extends Plugin
 	{
 		updateFilter("");
 		searchBtn.setAction(1, MENU_CLOSE);
-		chatboxInputManager.openInputWindow("Filter fairy rings", "", ChatboxInputManager.NO_LIMIT,
-			s -> clientThread.invokeLater(() -> updateFilter(s)),
-			s ->
+		searchBtn.setOnOpListener((JavaScriptCallback) this::menuClose);
+		searchInput = chatboxPanelManager.openTextInput("Filter fairy rings")
+			.onChanged(s -> clientThread.invokeLater(() -> updateFilter(s)))
+			.onClose(() ->
 			{
 				clientThread.invokeLater(() -> updateFilter(""));
+				searchBtn.setOnOpListener((JavaScriptCallback) this::menuOpen);
 				searchBtn.setAction(1, MENU_OPEN);
-			});
+			})
+			.build();
 	}
 
 	@Subscribe
@@ -216,15 +211,12 @@ public class FairyRingPlugin extends Plugin
 		// This has to happen because the only widget that gets hidden is the tli one
 		Widget fairyRingTeleportButton = client.getWidget(WidgetInfo.FAIRY_RING_TELEPORT_BUTTON);
 		boolean fairyRingWidgetOpen = fairyRingTeleportButton != null && !fairyRingTeleportButton.isHidden();
-		boolean chatboxOpen = chatboxInputManager.isOpen();
+		boolean chatboxOpen = searchInput != null && chatboxPanelManager.getCurrentInput() == searchInput;
 
-		if (!fairyRingWidgetOpen && chatboxOpen && chatboxOpenLastTick)
+		if (!fairyRingWidgetOpen && chatboxOpen)
 		{
-			searchBtn.setAction(1, MENU_OPEN);
-			chatboxInputManager.closeInputWindow();
+			chatboxPanelManager.close();
 		}
-
-		chatboxOpenLastTick = chatboxOpen && fairyRingWidgetOpen;
 	}
 
 	private void updateFilter(String filter)
@@ -310,7 +302,7 @@ public class FairyRingPlugin extends Plugin
 			String code = Text.removeTags(c.getDescription().getName()).replaceAll(" ", "");
 			String tags = null;
 
-			if (code.length() > 0)
+			if (!code.isEmpty())
 			{
 				try
 				{

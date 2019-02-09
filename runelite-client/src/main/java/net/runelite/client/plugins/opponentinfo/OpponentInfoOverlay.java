@@ -34,11 +34,15 @@ import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.client.game.HiscoreManager;
+import net.runelite.client.game.NPCManager;
 import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
@@ -57,6 +61,7 @@ class OpponentInfoOverlay extends Overlay
 	private final OpponentInfoPlugin opponentInfoPlugin;
 	private final OpponentInfoConfig opponentInfoConfig;
 	private final HiscoreManager hiscoreManager;
+	private final NPCManager npcManager;
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
@@ -67,19 +72,26 @@ class OpponentInfoOverlay extends Overlay
 	private String opponentsOpponentName;
 
 	@Inject
-	private OpponentInfoOverlay(Client client, OpponentInfoPlugin opponentInfoPlugin,
-		OpponentInfoConfig opponentInfoConfig, HiscoreManager hiscoreManager)
+	private OpponentInfoOverlay(
+		Client client,
+		OpponentInfoPlugin opponentInfoPlugin,
+		OpponentInfoConfig opponentInfoConfig,
+		HiscoreManager hiscoreManager,
+		NPCManager npcManager)
 	{
+		super(opponentInfoPlugin);
 		this.client = client;
 		this.opponentInfoPlugin = opponentInfoPlugin;
 		this.opponentInfoConfig = opponentInfoConfig;
 		this.hiscoreManager = hiscoreManager;
+		this.npcManager = npcManager;
 
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.HIGH);
 
 		panelComponent.setBorder(new Rectangle(2, 2, 2, 2));
 		panelComponent.setGap(new Point(0, 2));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Opponent info overlay"));
 	}
 
 	@Override
@@ -102,7 +114,7 @@ class OpponentInfoOverlay extends Overlay
 			lastMaxHealth = null;
 			if (opponent instanceof NPC)
 			{
-				lastMaxHealth = opponentInfoPlugin.getOppInfoHealth().get(opponentName + "_" + opponent.getCombatLevel());
+				lastMaxHealth = npcManager.getHealth(opponentName, opponent.getCombatLevel());
 			}
 			else if (opponent instanceof Player)
 			{
@@ -200,7 +212,7 @@ class OpponentInfoOverlay extends Overlay
 		}
 
 		// Opponents opponent
-		if (opponentsOpponentName != null)
+		if (opponentsOpponentName != null && opponentInfoConfig.showOpponentsOpponent())
 		{
 			textWidth = Math.max(textWidth, fontMetrics.stringWidth(opponentsOpponentName));
 			panelComponent.setPreferredSize(new Dimension(textWidth, 0));

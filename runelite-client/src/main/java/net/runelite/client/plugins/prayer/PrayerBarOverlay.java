@@ -80,8 +80,8 @@ class PrayerBarOverlay extends Overlay
 		final Point canvasPoint = Perspective.localToCanvas(client, localLocation, client.getPlane(), height);
 
 		// Draw bar
-		final int barX = canvasPoint.getX() + client.getViewportXOffset() - 15;
-		final int barY = canvasPoint.getY() + client.getViewportYOffset();
+		final int barX = canvasPoint.getX() - 15;
+		final int barY = canvasPoint.getY();
 		final int barWidth = PRAYER_BAR_SIZE.width;
 		final int barHeight = PRAYER_BAR_SIZE.height;
 		final float ratio = (float) client.getBoostedSkillLevel(Skill.PRAYER) / client.getRealSkillLevel(Skill.PRAYER);

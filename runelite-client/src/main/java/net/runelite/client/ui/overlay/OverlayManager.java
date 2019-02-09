@@ -25,23 +25,28 @@
 package net.runelite.client.ui.overlay;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.eventbus.Subscribe;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.MenuAction;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PluginChanged;
 
 /**
@@ -50,6 +55,8 @@ import net.runelite.client.events.PluginChanged;
 @Singleton
 public class OverlayManager
 {
+	public static final String OPTION_CONFIGURE = "Configure";
+
 	private static final String OVERLAY_CONFIG_PREFERRED_LOCATION = "_preferredLocation";
 	private static final String OVERLAY_CONFIG_PREFERRED_POSITION = "_preferredPosition";
 	private static final String OVERLAY_CONFIG_PREFERRED_SIZE = "_preferredSize";
@@ -90,14 +97,16 @@ public class OverlayManager
 	@Getter(AccessLevel.PACKAGE)
 	private final List<Overlay> overlays = new ArrayList<>();
 
-	private final Map<OverlayLayer, List<Overlay>> overlayLayers = new HashMap<>();
+	private final Map<OverlayLayer, List<Overlay>> overlayLayers = new EnumMap<>(OverlayLayer.class);
 
 	private final ConfigManager configManager;
+	private final EventBus eventBus;
 
 	@Inject
-	private OverlayManager(final ConfigManager configManager)
+	private OverlayManager(final ConfigManager configManager, final EventBus eventBus)
 	{
 		this.configManager = configManager;
+		this.eventBus = eventBus;
 	}
 
 	@Subscribe
@@ -105,6 +114,31 @@ public class OverlayManager
 	{
 		overlays.forEach(this::loadOverlay);
 		rebuildOverlayLayers();
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (event.getMenuAction() != MenuAction.RUNELITE_OVERLAY)
+		{
+			return;
+		}
+
+		event.consume();
+
+		Optional<Overlay> optionalOverlay = overlays.stream().filter(o -> overlays.indexOf(o) == event.getId()).findAny();
+		if (optionalOverlay.isPresent())
+		{
+			Overlay overlay = optionalOverlay.get();
+			List<OverlayMenuEntry> menuEntries = overlay.getMenuEntries();
+			Optional<OverlayMenuEntry> optionalOverlayMenuEntry = menuEntries.stream()
+				.filter(me -> me.getOption().equals(event.getMenuOption()))
+				.findAny();
+			if (optionalOverlayMenuEntry.isPresent())
+			{
+				eventBus.post(new OverlayMenuClicked(optionalOverlayMenuEntry.get(), overlay));
+			}
+		}
 	}
 
 	/**
@@ -224,7 +258,7 @@ public class OverlayManager
 			{
 				// When UNDER_WIDGET overlays are in preferred locations, move to
 				// ABOVE_WIDGETS so that it can draw over interfaces
-				if (layer == OverlayLayer.UNDER_WIDGETS)
+				if (layer == OverlayLayer.UNDER_WIDGETS && !(overlay instanceof WidgetOverlay))
 				{
 					layer = OverlayLayer.ABOVE_WIDGETS;
 				}
