@@ -1,38 +1,65 @@
+/*
+ * Copyright (c) 2018, Frosty Fridge <https://github.com/frostyfridge>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 package net.runelite.client.plugins.templetrek;
 
-import net.runelite.api.Client;
-import net.runelite.api.GroundObject;
 import net.runelite.client.ui.overlay.*;
+import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
 import javax.inject.Inject;
 import java.awt.*;
 
 public class TempleTrekOverlay extends Overlay{
-    private final Client client;
     private final TempleTrekConfig config;
     private final TempleTrekPlugin plugin;
 
-    private static final Color GREEN = new Color(0, 200, 83);
+    private final PanelComponent panelComponent = new PanelComponent();
 
     @Inject
-    private TempleTrekOverlay(Client client, TempleTrekConfig config, TempleTrekPlugin plugin)
+    private TempleTrekOverlay(TempleTrekConfig config, TempleTrekPlugin plugin)
     {
-        this.client = client;
+        super(plugin);
         this.config = config;
         this.plugin = plugin;
-        setPosition(OverlayPosition.DYNAMIC);
+        setPosition(OverlayPosition.TOP_LEFT);
         setPriority(OverlayPriority.LOW);
-        setLayer(OverlayLayer.ABOVE_SCENE);
     }
 
     @Override
     public Dimension render(Graphics2D graphics)
     {
-        if (config.bogMapActive()) {
-            for (GroundObject bog : plugin.getBogList()) {
-                Polygon bogPoly = bog.getCanvasTilePoly();
-                OverlayUtil.renderPolygon(graphics, bogPoly, GREEN);
-            }
+        if (config.pointTrackerActive() && plugin.isInTrek()) {
+            int points = plugin.getRewardPoints();
+            panelComponent.getChildren().clear();
+            panelComponent.getChildren().add(LineComponent.builder()
+                    .left("Trek Points: ")
+                    .right(Integer.toString(points))
+                    .rightColor(points < 3000 ? Color.BLUE : points >= 3000 && points < 6000 ? Color.YELLOW :
+                    Color.RED)
+                    .build());
+            return panelComponent.render(graphics);
         }
         return null;
     }

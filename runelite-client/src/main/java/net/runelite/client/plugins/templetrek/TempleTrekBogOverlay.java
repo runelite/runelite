@@ -24,32 +24,43 @@
  */
 package net.runelite.client.plugins.templetrek;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import net.runelite.api.GroundObject;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
-@ConfigGroup("templetrek")
-public interface TempleTrekConfig extends Config
-{
-    @ConfigItem(
-            keyName = "bogMapActive",
-            name = "Bog Map",
-            description = "Marks out a safe route through the bog event",
-            position = 0
-    )
-    default boolean bogMapActive()
+import javax.inject.Inject;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Polygon;
+import java.awt.Graphics2D;
+
+public class TempleTrekBogOverlay extends Overlay {
+    private final TempleTrekConfig config;
+    private final TempleTrekPlugin plugin;
+
+    private static final Color GREEN = new Color(0, 200, 83);
+
+    @Inject
+    private TempleTrekBogOverlay(TempleTrekConfig config, TempleTrekPlugin plugin)
     {
-        return true;
+        super(plugin);
+        this.config = config;
+        this.plugin = plugin;
+        setPosition(OverlayPosition.DYNAMIC);
+        setPriority(OverlayPriority.LOW);
     }
 
-    @ConfigItem(
-            keyName = "pointTrackerActive",
-            name = "Point Tracker",
-            description = "Track your Temple Trek reward points, which determine the size of your reward.",
-            position = 1
-    )
-    default boolean pointTrackerActive()
+    @Override
+    public Dimension render(Graphics2D graphics)
     {
-        return true;
+        if (config.bogMapActive()) {
+            for (GroundObject bog : plugin.getBogList()) {
+                Polygon bogPoly = bog.getCanvasTilePoly();
+                OverlayUtil.renderPolygon(graphics, bogPoly, GREEN);
+            }
+        }
+    return null;
     }
 }
