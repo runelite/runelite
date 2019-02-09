@@ -73,8 +73,8 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.osbuddy.GrandExchangeClient;
-import net.runelite.http.api.osbuddy.GrandExchangeResult;
+import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
+import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
 
 @PluginDescriptor(
 	name = "Grand Exchange",
@@ -86,7 +86,7 @@ public class GrandExchangePlugin extends Plugin
 {
 	private static final int OFFER_CONTAINER_ITEM = 21;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
-	private static final GrandExchangeClient CLIENT = new GrandExchangeClient();
+	private static final OSBGrandExchangeClient CLIENT = new OSBGrandExchangeClient();
 	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
 
 	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
@@ -346,7 +346,7 @@ public class GrandExchangePlugin extends Plugin
 
 			try
 			{
-				final GrandExchangeResult result = CLIENT.lookupItem(itemId);
+				final OSBGrandExchangeResult result = CLIENT.lookupItem(itemId);
 				final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(result.getOverall_average());
 				geText.setText(text);
 			}

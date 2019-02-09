@@ -35,9 +35,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 @Slf4j
-public class GrandExchangeClient
+public class OSBGrandExchangeClient
 {
-	public GrandExchangeResult lookupItem(int itemId) throws IOException
+	public OSBGrandExchangeResult lookupItem(int itemId) throws IOException
 	{
 		final HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("osb")
@@ -59,7 +59,7 @@ public class GrandExchangeClient
 			}
 
 			final InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), GrandExchangeResult.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), OSBGrandExchangeResult.class);
 		}
 		catch (JsonParseException ex)
 		{

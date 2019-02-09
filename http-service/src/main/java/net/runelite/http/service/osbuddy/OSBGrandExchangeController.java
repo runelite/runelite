@@ -22,17 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.osbuddy;
+package net.runelite.http.service.osbuddy;
 
-import java.time.Instant;
-import lombok.Data;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Data
-public class GrandExchangeResult
+@RestController
+@RequestMapping("/osb/ge")
+public class OSBGrandExchangeController
 {
-	private int item_id;
-	private int buy_average;
-	private int sell_average;
-	private int overall_average;
-	private Instant last_update;
+	private final OSBGrandExchangeService grandExchangeService;
+
+	@Autowired
+	public OSBGrandExchangeController(OSBGrandExchangeService grandExchangeService)
+	{
+		this.grandExchangeService = grandExchangeService;
+	}
+
+	@RequestMapping
+	public ResponseEntity<GrandExchangeEntry> get(@RequestParam("itemId") int itemId) throws ExecutionException
+	{
+		GrandExchangeEntry grandExchangeEntry = grandExchangeService.get(itemId);
+
+		return ResponseEntity.ok()
+			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
+			.body(grandExchangeEntry);
+	}
 }
