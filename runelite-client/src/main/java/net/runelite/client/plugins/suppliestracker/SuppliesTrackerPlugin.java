@@ -386,7 +386,7 @@ public class SuppliesTrackerPlugin extends Plugin
 
 			for (String raidsConsumables: RAIDS_CONSUMABLES)
 			{
-				if (name.contains(raidsConsumables)) return;
+				if (name.toLowerCase().contains(raidsConsumables)) return;
 			}
 
 			//Check if item is potion, pie, or pizza
