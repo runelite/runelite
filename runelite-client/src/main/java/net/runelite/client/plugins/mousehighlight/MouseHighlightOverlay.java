@@ -75,7 +75,7 @@ class MouseHighlightOverlay extends Overlay
 		String option = menuEntry.getOption();
 		int type = menuEntry.getType();
 
-		if (type == MenuAction.RUNELITE_OVERLAY.getId() || type == MenuAction.EXAMINE_ITEM_BANK_EQ.getId())
+		if (!config.isRightClickTooltipEnabled() && isMenuActionRightClickOnly(type))
 		{
 			// These are always right click only
 			return null;
@@ -135,5 +135,10 @@ class MouseHighlightOverlay extends Overlay
 
 		tooltipManager.addFront(new Tooltip(option + (Strings.isNullOrEmpty(target) ? "" : " " + target)));
 		return null;
+	}
+
+	private boolean isMenuActionRightClickOnly(int type) {
+		return type == MenuAction.RUNELITE_OVERLAY.getId()
+				|| type == MenuAction.EXAMINE_ITEM_BANK_EQ.getId();
 	}
 }
