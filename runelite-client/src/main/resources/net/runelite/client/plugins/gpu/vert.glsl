@@ -26,6 +26,7 @@
 #version 330
 
 #define TILE_SIZE 128
+#define LOCKED_REGIONS_SIZE 36
 
 #define FOG_SCENE_EDGE_MIN TILE_SIZE
 #define FOG_SCENE_EDGE_MAX (103 * TILE_SIZE)
@@ -50,11 +51,16 @@ uniform int useFog;
 uniform int fogDepth;
 uniform int drawDistance;
 
+uniform int baseX;
+uniform int baseY;
+uniform ivec4 lockedRegions[LOCKED_REGIONS_SIZE];
+
 out ivec3 vPosition;
 out vec4 vColor;
 out float vHsl;
 out vec4 vUv;
 out float vFogAmount;
+out float vGrayAmount;
 
 #include hsl_to_rgb.glsl
 
@@ -85,4 +91,20 @@ void main()
   float fogDistance = min(min(vertex.x - fogWest, fogEast - vertex.x), min(vertex.z - fogSouth, fogNorth - vertex.z));
 
   vFogAmount = fogFactorLinear(fogDistance, 0, fogDepth * TILE_SIZE) * useFog;
+
+    float gray = 1;
+    for (int i = 0; i < LOCKED_REGIONS_SIZE; i++) {
+      ivec4 region = lockedRegions[i];
+      if (region.x == 0) { continue; }
+      if (baseX < 0 || baseY < 0) {
+          gray = 0;
+          break;
+      }
+      if ((vertex.x + baseX) >= region.x && (vertex.x + baseX) <= region.z && (vertex.z + baseY) >= region.y && (vertex.z + baseY) <= region.w) {
+      //if ((vertex.x + baseX) == region.x || (vertex.x + baseX) == region.z || (vertex.z + baseY) == region.y || (vertex.z + baseY) == region.w) {
+        gray = 0;
+        break;
+      }
+    }
+    vGrayAmount = gray;
 }
