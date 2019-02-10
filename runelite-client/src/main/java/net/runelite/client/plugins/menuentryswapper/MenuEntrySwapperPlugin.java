@@ -461,6 +461,23 @@ public class MenuEntrySwapperPlugin extends Plugin
 				makeFirst("configure", target, false);
 			}
 		}
+		else if (config.swapOccult() != OccultAltarMode.VENERATE && option.equals("venerate"))
+		{
+			makeFirst("standard", target, true);
+			makeFirst(config.swapOccult().getName().toLowerCase(), target, true);
+		}
+		else if (config.swapObelisk() != ObeliskMode.ACTIVATE && target.equals("obelisk"))
+		{
+			switch (config.swapObelisk())
+			{
+				case TELE_TO_DESTINATION:
+					makeFirst("teleport to destination", target, true);
+					break;
+				case SET_DESTINATION:
+					makeFirst("set destination", target, true);
+					break;
+			}
+		}
 		else if (config.swapFairyRing() == FairyRingMode.ZANARIS && option.equals("tree"))
 		{
 			makeFirst("zanaris", target, false);

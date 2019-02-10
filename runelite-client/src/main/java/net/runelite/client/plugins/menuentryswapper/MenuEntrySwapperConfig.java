@@ -121,6 +121,26 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return FairyRingMode.LAST_DESTINATION;
 	}
+	
+	@ConfigItem(
+		keyName = "swapOccult",
+		name = "Occult Altar",
+		description = "Swap Venerate with Ancient, Lunar, or Arceuus on an Altar of the Occult"
+	)
+	default OccultAltarMode swapOccult()
+	{
+		return OccultAltarMode.VENERATE;
+	}
+	
+	@ConfigItem(
+		keyName = "swapObelisk",
+		name = "Obelisk",
+		description = "Swap Activate with Teleport to Destination or Set Destination on an Obelisk"
+	)
+	default ObeliskMode swapObelisk()
+	{
+		return ObeliskMode.ACTIVATE;
+	}
 
 	@ConfigItem(
 		keyName = "swapHarpoon",
