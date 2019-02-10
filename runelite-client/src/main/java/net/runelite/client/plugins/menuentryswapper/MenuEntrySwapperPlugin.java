@@ -404,6 +404,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 				makeFirst("repairs", target, true);
 				makeFirst("claim-slime", target, true);
 				makeFirst("decant", target, true);
+				makeFirst("heal", target, true);
+				makeFirst("help", target, true);
 			}
 
 			if (config.swapQuick())
