@@ -261,4 +261,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "renameTravel",
+			name = "Rename travel",
+			description = "Rename 'Travel' to the destination"
+	)
+	default boolean renameTravel()
+	{
+		return true;
+	}
 }

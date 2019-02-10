@@ -25,8 +25,10 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -71,6 +73,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
+
+	private static final Map<String, String> destinations = new ImmutableMap.Builder<String, String>()
+			.put("monk of entrana", "Entrana")
+			.build();
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
 		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
@@ -537,6 +543,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, true);
 		}
+
+		if (config.renameTravel() && destinations.containsKey(target))
+		{
+			final String destination = destinations.get(target);
+			renameEntry(option, destination, target, true);
+		}
 	}
 
 	@Subscribe
@@ -602,6 +614,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 			client.setMenuEntries(entries);
 		}
+	}
+
+	private void renameEntry(String original, String newString, String target, boolean strict)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+		int index = searchIndex(entries, original, target, strict);
+		entries[index].setOption(newString);
 	}
 
 	private void removeShiftClickCustomizationMenus()
