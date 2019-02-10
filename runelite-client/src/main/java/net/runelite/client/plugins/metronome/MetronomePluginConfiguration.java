@@ -30,7 +30,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
 
-@ConfigGroup("metronomeExtended")
+@ConfigGroup("metronome")
 public interface MetronomePluginConfiguration extends Config
 {
 	@ConfigItem(
@@ -72,7 +72,7 @@ public interface MetronomePluginConfiguration extends Config
 	{
 		return 0;
 	}
-	
+
 	@ConfigItem(
 			keyName = "tickSoundFilePath",
 			name = "Tick .wav file path",
