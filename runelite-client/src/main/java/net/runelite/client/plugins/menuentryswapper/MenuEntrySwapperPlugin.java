@@ -76,6 +76,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private static final Map<String, String> destinations = new ImmutableMap.Builder<String, String>()
 			.put("monk of entrana", "Entrana")
+			.put("captain tobias", "Karamja")
 			.build();
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
@@ -544,10 +545,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap("use", option, target, true);
 		}
 
+		System.out.println(target);
 		if (config.renameTravel() && destinations.containsKey(target))
 		{
 			final String destination = destinations.get(target);
-			renameEntry(option, destination, target, true);
+			renameEntry("travel", destination, target, true);
+			renameEntry("pay-fare", destination, target, true);
+			renameEntry("charter", destination, target, true);
+			renameEntry("take-boat", destination, target, true);
+			renameEntry("fly", destination, target, true);
+			renameEntry("jatizso", destination, target, true);
+			renameEntry("neitiznot", destination, target, true);
+			renameEntry("rellekka", destination, target, true);
+			renameEntry("follow", destination, target, true);
+			renameEntry("transport", destination, target, true);
 		}
 	}
 
@@ -620,7 +631,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		MenuEntry[] entries = client.getMenuEntries();
 		int index = searchIndex(entries, original, target, strict);
-		entries[index].setOption(newString);
+
+		if (index >= 0)
+		{
+			entries[index].setOption(newString);
+			client.setMenuEntries(entries);
+		}
 	}
 
 	private void removeShiftClickCustomizationMenus()
