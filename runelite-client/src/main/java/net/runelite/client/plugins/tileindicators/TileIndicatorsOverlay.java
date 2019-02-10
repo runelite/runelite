@@ -33,6 +33,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -82,6 +83,28 @@ public class TileIndicatorsOverlay extends Overlay
 		if (config.highlightDestinationTile())
 		{
 			renderTile(graphics, client.getLocalDestinationLocation(), config.highlightDestinationColor());
+		}
+
+		if (config.highlightCurrentTile())
+		{
+			final WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
+			if (playerPos == null)
+			{
+				return null;
+			}
+
+			final LocalPoint playerPosLocal = LocalPoint.fromWorld(client, client.getLocalPlayer().getWorldLocation());
+			if (playerPosLocal == null)
+			{
+				return null;
+			}
+
+			Polygon poly = Perspective.getCanvasTilePoly(client, playerPosLocal);
+			if (poly == null)
+			{
+				return null;
+			}
+			renderTile(graphics, client.getLocalDestinationLocation(), config.highlightCurrentColor());
 		}
 
 		return null;
