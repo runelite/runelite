@@ -49,7 +49,7 @@ public class LootTrackerService
 		+ "  `type` enum('NPC', 'PLAYER', 'EVENT', 'UNKNOWN') NOT NULL,\n"
 		+ "  `eventId` VARCHAR(255) NOT NULL,\n"
 		+ "  PRIMARY KEY (id),\n"
-		+ "  FOREIGN KEY (accountId) REFERENCES sessions(user) ON DELETE CASCADE,\n"
+		+ "  FOREIGN KEY (accountId) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,\n"
 		+ "  INDEX idx_acc (accountId, time),"
 		+ "  INDEX idx_time (time)"
 		+ ") ENGINE=InnoDB";
