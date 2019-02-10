@@ -408,6 +408,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapQuick())
 			{
 				makeFirst("quick-travel", target, true);
+
+			}
+
+			if (config.swapMinigame())
+			{
+				makeFirst("start-minigame", target, true);
+				makeFirst("story", target, true);
+				makeFirst("dream", target, true);
+				makeFirst("escort", target, true);
 			}
 		}
 		else if (config.swapTravel() && (option.equals("pass") || option.equals("open")))
@@ -481,6 +490,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapQuick() && option.equals("open"))
 		{
 			makeFirst("quick-open", target, true);
+		}
+		else if (config.swapQuick() && option.equals("leave tomb"))
+		{
+			makeFirst("quick-leave", target, true);
 		}
 		else if (config.swapAdmire() && option.equals("admire"))
 		{

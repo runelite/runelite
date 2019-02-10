@@ -231,4 +231,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "swapMinigame",
+		name = "Minigames",
+		description = "Swap Talk-to with Start-Minigame, Story, Dream on NPC<br>Example: Guardian mummy, Juna, Dominic Onion"
+	)
+	default boolean swapMinigame()
+	{
+		return true;
+	}
 }
