@@ -371,6 +371,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapAssignment())
 			{
 				makeFirst("assignment", target, true);
+				makeFirst("contract", target, true);
 			}
 
 			if (config.swapTravel())

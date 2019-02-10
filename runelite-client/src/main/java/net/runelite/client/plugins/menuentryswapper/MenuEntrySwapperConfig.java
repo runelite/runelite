@@ -55,7 +55,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapAssignment",
 		name = "Assignment",
-		description = "Swap Talk-to with Assignment for Slayer Masters. This will take priority over swapping Trade."
+		description = "Swap Talk-to with Assignment for Slayer Masters or Contract for Guildmaster Jane. This will take priority over swapping Trade."
 	)
 	default boolean swapAssignment()
 	{
