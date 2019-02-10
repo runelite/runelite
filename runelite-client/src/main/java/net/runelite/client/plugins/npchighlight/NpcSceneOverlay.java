@@ -36,6 +36,8 @@ import java.text.NumberFormat;
 import java.time.Instant;
 import java.util.Locale;
 import javax.inject.Inject;
+
+import jdk.vm.ci.meta.Local;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.NPC;
@@ -186,9 +188,13 @@ public class NpcSceneOverlay extends Overlay
 				{
 					size = composition.getSize();
 				}
-				WorldPoint wp = actor.getWorldLocation();
-				lp = LocalPoint.fromWorld(client, wp);
-				tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
+				WorldPoint npcWorldPoint = actor.getWorldLocation();
+				float offsetWorldPoints = ((float)size - 1) / 2;
+				int offsetLocalPoints = (int)(offsetWorldPoints * 128);
+				LocalPoint npcLocalPoint = LocalPoint.fromWorld(client, npcWorldPoint);
+				LocalPoint npcCentreLocalPoints = new LocalPoint(npcLocalPoint.getX() + offsetLocalPoints,
+						npcLocalPoint.getY() + offsetLocalPoints);
+				tilePoly = Perspective.getCanvasTileAreaPoly(client, npcCentreLocalPoints, size);
 
 				renderPoly(graphics, color, tilePoly);
 				break;
