@@ -72,7 +72,7 @@ import net.runelite.client.ws.PartyService;
 import org.slf4j.LoggerFactory;
 
 
-import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
+//import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 
 @Singleton
 @Slf4j

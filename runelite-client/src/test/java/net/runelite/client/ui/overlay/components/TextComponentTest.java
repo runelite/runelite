@@ -85,4 +85,32 @@ public class TextComponentTest
 		verify(graphics, atLeastOnce()).setColor(Color.BLUE);
 		verify(graphics, atLeastOnce()).setColor(Color.GREEN);
 	}
+
+	/* Garrett Foister's Tests */
+
+	@Test
+	public void givenTextWhenSetYellowThenYellowTextSet()
+	{
+		TextComponent textComponent = new TextComponent();
+		textComponent.setText("<col=ffff00>test");
+		textComponent.render(graphics);
+		verify(graphics, atLeastOnce()).drawString(eq("test"), anyInt(), anyInt());
+		verify(graphics, atLeastOnce()).setColor(Color.YELLOW);
+	}
+
+	@Test
+	public void givenTextWhenSetMultipleColorsThenMultipleColorsTextSet()
+	{
+		TextComponent textComponent = new TextComponent();
+		textComponent.setText("<col=ffff00>test yellow<col=0000ff>test blue<col=00ff00>test green<col=ff0000>test red");
+		textComponent.render(graphics);
+		verify(graphics, atLeastOnce()).drawString(eq("test yellow"), anyInt(), anyInt());
+		verify(graphics, atLeastOnce()).drawString(eq("test blue"), anyInt(), anyInt());
+		verify(graphics, atLeastOnce()).drawString(eq("test green"), anyInt(), anyInt());
+		verify(graphics, atLeastOnce()).drawString(eq("test red"), anyInt(), anyInt());
+		verify(graphics, atLeastOnce()).setColor(Color.YELLOW);
+		verify(graphics, atLeastOnce()).setColor(Color.BLUE);
+		verify(graphics, atLeastOnce()).setColor(Color.GREEN);
+		verify(graphics, atLeastOnce()).setColor(Color.RED);
+	}
 }
