@@ -101,6 +101,16 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 7,
+		keyName = "superiorColor",
+		name = "Superior Color",
+		description = "Color of the highlighted superior slayer creatures"
+	)
+	default Color getSuperiorColor() {
+		return Color.MAGENTA;
+	}
+
+	@ConfigItem(
+		position = 8,
 		keyName = "weaknessPrompt",
 		name = "Show Monster Weakness",
 		description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles & Rockslugs)"

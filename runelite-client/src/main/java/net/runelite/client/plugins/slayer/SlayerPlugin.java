@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import joptsimple.internal.Strings;
 import lombok.AccessLevel;
@@ -52,6 +53,7 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
+import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -124,6 +126,36 @@ public class SlayerPlugin extends Plugin
 	private static final String TASK_COMMAND_STRING = "!task";
 	private static final Pattern TASK_STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
 	private static final int TASK_STRING_MAX_LENGTH = 50;
+
+	// Superiors
+	private static List<String> SUPERIOR_SLAYER_MONSTERS = Arrays.asList(
+			"Crushing hand",
+			"Chasm crawler",
+			"Screaming banshee",
+			"Screaming twisted banshee",
+			"Giant rockslug",
+			"Cockathrice",
+			"Flaming pyrelord",
+			"Monstrous basilisk",
+			"Malevolent mage",
+			"Insatiable bloodveld",
+			"Insatiable mutated bloodveld",
+			"Vitreous jelly",
+			"Vitreous warped jelly",
+			"Cave abomination",
+			"Abhorrent spectre",
+			"Repugnant spectre",
+			"Choke devil",
+			"King kurask",
+			"Marble gargoyle",
+			"Nechryarch",
+			"Greater abyssal demon",
+			"Night beast",
+			"Nuclear smoke devil");
+
+	static {
+		SUPERIOR_SLAYER_MONSTERS = SUPERIOR_SLAYER_MONSTERS.stream().map(name -> name.toLowerCase()).collect(Collectors.toList());
+	}
 
 	@Inject
 	private Client client;
@@ -537,6 +569,10 @@ public class SlayerPlugin extends Plugin
 
 		killedOne();
 		cachedXp = slayerExp;
+	}
+
+	boolean isSuperior(String name) {
+		return SUPERIOR_SLAYER_MONSTERS.contains(name.toLowerCase());
 	}
 
 	@Subscribe
