@@ -61,6 +61,6 @@ public interface MouseHighlightConfig extends Config
 	)
 	default boolean isRightClickTooltipEnabled()
 	{
-		return false;
+		return true;
 	}
 }
