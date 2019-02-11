@@ -238,8 +238,6 @@ public class PartyPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onTilePing(TilePing event)
 	{
-		log.debug("Got tile ping {}", event);
-
 		if (config.pings())
 		{
 			final PartyData partyData = getPartyData(event.getMemberId());
@@ -476,7 +474,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 				worldMapManager.add(worldMapPoint);
 			}
 
-			return new PartyData(u, name, worldMapPoint, ColorUtil.fromObject(name, true));
+			return new PartyData(u, name, worldMapPoint, ColorUtil.fromObject(name));
 		});
 	}
 

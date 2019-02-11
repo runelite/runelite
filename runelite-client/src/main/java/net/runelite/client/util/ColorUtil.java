@@ -231,16 +231,12 @@ public class ColorUtil
 	/**
 	 * Creates color from passed object hash code
 	 * @param object object with hashCode
-	 * @param skipAlpha skips alpha
 	 * @return color
 	 */
-	public static Color fromObject(@Nonnull final Object object, boolean skipAlpha)
+	public static Color fromObject(@Nonnull final Object object)
 	{
 		int i = object.hashCode();
-		int r = (i >> 24) & 0xFF;
-		int g = (i >> 16) & 0xFF;
-		int b = (i >> 8) & 0xFF;
-		int a = i & 0xFF;
-		return new Color(r, g, b, skipAlpha ? 255 : a);
+		float h = (i % 360) / 360f;
+		return Color.getHSBColor(h, 1, 1);
 	}
 }

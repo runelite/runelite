@@ -173,7 +173,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 			return;
 		}
 
-		log.debug("Got message: {}", message);
+		log.debug("Got: {}", text);
 		eventBus.post(message);
 	}
 
@@ -187,7 +187,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	@Override
 	public void onFailure(WebSocket webSocket, Throwable t, Response response)
 	{
-		log.warn("Error in websocket", t);
+		log.warn("Error in websocket {}:{}", response, t);
 		this.webSocket = null;
 	}
 }
