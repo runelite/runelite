@@ -29,7 +29,6 @@ package net.runelite.client.plugins.cluescrolls;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -96,8 +95,6 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class ClueScrollPlugin extends Plugin
 {
-	private static final Duration WAIT_DURATION = Duration.ofMinutes(4);
-
 	@Getter
 	private ClueScroll clue;
 
@@ -133,6 +130,7 @@ public class ClueScrollPlugin extends Plugin
 	private ClueScrollWorldOverlay clueScrollWorldOverlay;
 
 	@Inject
+	@Getter
 	private ClueScrollConfig config;
 
 	@Inject
