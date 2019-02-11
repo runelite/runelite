@@ -75,9 +75,8 @@ class MouseHighlightOverlay extends Overlay
 		String option = menuEntry.getOption();
 		int type = menuEntry.getType();
 
-		if (!config.isRightClickTooltipEnabled() && isMenuActionRightClickOnly(type))
+		if (shouldNotRenderMenuAction(type))
 		{
-			// These are always right click only
 			return null;
 		}
 
@@ -137,9 +136,14 @@ class MouseHighlightOverlay extends Overlay
 		return null;
 	}
 
-	private boolean isMenuActionRightClickOnly(int type)
+	private boolean shouldNotRenderMenuAction(int type)
 	{
 		return type == MenuAction.RUNELITE_OVERLAY.getId()
-				|| type == MenuAction.EXAMINE_ITEM_BANK_EQ.getId();
+				|| (!config.isRightClickTooltipEnabled() && isMenuActionRightClickOnly(type));
+	}
+
+	private boolean isMenuActionRightClickOnly(int type)
+	{
+		return type == MenuAction.EXAMINE_ITEM_BANK_EQ.getId();
 	}
 }
