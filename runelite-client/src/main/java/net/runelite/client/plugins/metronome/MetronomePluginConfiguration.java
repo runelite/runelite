@@ -34,9 +34,9 @@ import net.runelite.client.config.Range;
 public interface MetronomePluginConfiguration extends Config
 {
 	@ConfigItem(
-			keyName = "tickCount",
-			name = "Tick count",
-			description = "Configures the number of game ticks between metronome sounds"
+		keyName = "tickCount",
+		name = "Tick count",
+		description = "Configures the number of game ticks between metronome sounds"
 	)
 	default int tickCount()
 	{
@@ -44,9 +44,9 @@ public interface MetronomePluginConfiguration extends Config
 	}
 
 	@ConfigItem(
-			keyName = "enableTock",
-			name = "Enable tock (alternating) sound",
-			description = "Toggles whether to play \"tock\" sounds"
+		keyName = "enableTock",
+		name = "Enable tock (alternating) sound",
+		description = "Toggles whether to play \"tock\" sounds"
 	)
 	default boolean enableTock()
 	{
@@ -54,9 +54,9 @@ public interface MetronomePluginConfiguration extends Config
 	}
 
 	@ConfigItem(
-			keyName = "tockNumber",
-			name = "Tock every nth \"tick\"",
-			description = "Configures how many \"ticks\" between each \"tock\""
+		keyName = "tockNumber",
+		name = "Tock every nth \"tick\"",
+		description = "Configures how many \"ticks\" between each \"tock\""
 	)
 	default int tockNumber()
 	{
@@ -64,9 +64,9 @@ public interface MetronomePluginConfiguration extends Config
 	}
 
 	@ConfigItem(
-			keyName = "tickOffset",
-			name = "Offset",
-			description = "Amount of ticks to offset the metronome (only useful for \"tocks\")"
+		keyName = "tickOffset",
+		name = "Offset",
+		description = "Amount of ticks to offset the metronome (only useful for \"tocks\")"
 	)
 	default int tickOffset()
 	{
@@ -74,9 +74,9 @@ public interface MetronomePluginConfiguration extends Config
 	}
 
 	@ConfigItem(
-			keyName = "tickSoundFilePath",
-			name = "Tick .wav file path",
-			description = "The path to the file to be used for \"tick\" sounds (short .wav only)"
+		keyName = "tickSoundFilePath",
+		name = "Tick .wav file path",
+		description = "The path to the file to be used for \"tick\" sounds (short .wav only)"
 	)
 	default String tickPath()
 	{
@@ -84,9 +84,9 @@ public interface MetronomePluginConfiguration extends Config
 	}
 
 	@ConfigItem(
-			keyName = "tockSoundFilePath",
-			name = "Tock .wav file path",
-			description = "The path to the file to be used for \"tock\" sounds (short .wav only)"
+		keyName = "tockSoundFilePath",
+		name = "Tock .wav file path",
+		description = "The path to the file to be used for \"tock\" sounds (short .wav only)"
 	)
 	default String tockPath()
 	{
@@ -94,13 +94,13 @@ public interface MetronomePluginConfiguration extends Config
 	}
 
 	@Range(
-			min = 0,
-			max = 100
+		min = 0,
+		max = 100
 	)
 	@ConfigItem(
-			keyName = "volume",
-			name = "Volume modification",
-			description = "Configures tick/tock volume; only effects custom sounds."
+		keyName = "volume",
+		name = "Volume modification",
+		description = "Configures tick/tock volume; only effects custom sounds."
 	)
 	default int volume()
 	{

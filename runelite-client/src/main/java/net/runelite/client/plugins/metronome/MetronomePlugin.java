@@ -26,9 +26,14 @@
 package net.runelite.client.plugins.metronome;
 
 import com.google.inject.Provides;
-
 import javax.inject.Inject;
-
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.FloatControl;
+import java.io.File;
 import net.runelite.api.Client;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.events.ConfigChanged;
@@ -38,19 +43,11 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.FloatControl;
-import java.io.File;
-
 @PluginDescriptor(
-		name = "Metronome",
-		description = "Play sounds in a customisable pattern",
-		tags = {"skilling", "tick", "timers"},
-		enabledByDefault = false
+	name = "Metronome",
+	description = "Play sounds in a customisable pattern",
+	tags = {"skilling", "tick", "timers"},
+	enabledByDefault = false
 )
 public class MetronomePlugin extends Plugin
 {
