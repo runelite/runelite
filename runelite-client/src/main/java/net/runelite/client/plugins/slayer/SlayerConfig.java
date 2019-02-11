@@ -33,6 +33,7 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("slayer")
 public interface SlayerConfig extends Config
 {
+
 	@ConfigItem(
 		position = 1,
 		keyName = "infobox",
@@ -105,7 +106,8 @@ public interface SlayerConfig extends Config
 		name = "Superior Color",
 		description = "Color of the highlighted superior slayer creatures"
 	)
-	default Color getSuperiorColor() {
+	default Color getSuperiorColor()
+	{
 		return Color.MAGENTA;
 	}
 

@@ -64,7 +64,8 @@ public class TargetClickboxOverlay extends Overlay
 		for (NPC target : targets)
 		{
 			Color coloration = config.getTargetColor();
-			if (plugin.isSuperior(target.getName())) {
+			if (plugin.isSuperior(target.getName()))
+			{
 				coloration = config.getSuperiorColor();
 			}
 

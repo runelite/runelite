@@ -53,7 +53,6 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import static net.runelite.api.Skill.SLAYER;
-import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -153,7 +152,8 @@ public class SlayerPlugin extends Plugin
 			"Night beast",
 			"Nuclear smoke devil");
 
-	static {
+	static
+	{
 		SUPERIOR_SLAYER_MONSTERS = SUPERIOR_SLAYER_MONSTERS.stream().map(name -> name.toLowerCase()).collect(Collectors.toList());
 	}
 
@@ -571,7 +571,8 @@ public class SlayerPlugin extends Plugin
 		cachedXp = slayerExp;
 	}
 
-	boolean isSuperior(String name) {
+	boolean isSuperior(String name)
+	{
 		return SUPERIOR_SLAYER_MONSTERS.contains(name.toLowerCase());
 	}
 
