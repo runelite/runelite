@@ -66,8 +66,8 @@ public class TileIndicatorsOverlay extends Overlay
 			{
 				Point p = client.getMouseCanvasPosition();
 				p = new Point(
-						p.getX() - client.getViewportXOffset(),
-						p.getY() - client.getViewportYOffset());
+					p.getX() - client.getViewportXOffset(),
+					p.getY() - client.getViewportYOffset());
 
 				client.setCheckClick(true);
 				client.setMouseCanvasHoverPosition(p);
