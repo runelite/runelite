@@ -71,6 +71,9 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.client.ws.PartyService;
 import org.slf4j.LoggerFactory;
 
+
+import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
+
 @Singleton
 @Slf4j
 public class RuneLite
