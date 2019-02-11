@@ -35,7 +35,7 @@ public interface DiscordConfig extends Config
 		keyName = "actionTimeout",
 		name = "Action timeout (minutes)",
 		description = "Configures after how long of not updating status will be reset (in minutes)",
-		position = 1
+		position = 0
 	)
 	default int actionTimeout()
 	{
@@ -46,9 +46,20 @@ public interface DiscordConfig extends Config
 		keyName = "hideElapsedTime",
 		name = "Hide elapsed time",
 		description = "Configures if the elapsed time of your activity should be hidden.",
-		position = 2
+		position = 1
 	)
 	default boolean hideElapsedTime()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "alwaysShowParty",
+		name = "Always show party",
+		description = "Configures if the party counter should be always shown (this also makes party invites always work).",
+		position = 1
+	)
+	default boolean alwaysShowParty()
 	{
 		return false;
 	}

@@ -179,6 +179,7 @@ public class DiscordPlugin extends Plugin
 		{
 			checkForGameStateUpdate();
 			checkForAreaUpdate();
+			updatePresence();
 		}
 	}
 
