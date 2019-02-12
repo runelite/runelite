@@ -67,15 +67,19 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 		if (config.showConveyorBelt() && plugin.getConveyorBelt() != null)
 		{
 			Color color;
-			if(dispenserState == 1){
+			if (dispenserState == 1)
+			{
 				color = Color.RED;
 			}
-			else{
-				if(hasGoldGloves()){
+			else
+			{
+				if (hasGoldGloves())
+				{
 					color = Color.RED;
 				}
-				else{
-					color = Color.GREEN;
+				else
+				{
+					color = Color.RED;
 				}
 			}
 			renderObject(plugin.getConveyorBelt(), graphics, color);
@@ -106,8 +110,11 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 		{
 			return false;
 		}
-		for(Item gloves : items){
-			if(gloves != null && gloves.getId() == ItemID.GOLDSMITH_GAUNTLETS){
+
+		for (Item gloves : items)
+		{
+			if (gloves != null && gloves.getId() == ItemID.GOLDSMITH_GAUNTLETS)
+			{
 				return true;
 			}
 		}
