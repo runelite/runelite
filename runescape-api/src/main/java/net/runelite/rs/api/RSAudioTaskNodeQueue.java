@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, SomeoneWithAnInternetConnection
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,8 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
-public interface RSSoundEffect
+public interface RSAudioTaskNodeQueue
 {
-	@Import("toRawAudioNode")
-	RSRawAudioNode toRawAudioNode();
+	@Import("queueAudioTaskNode")
+	void queueAudioTaskNode(RSTaskDataNode taskDataNode);
 }
