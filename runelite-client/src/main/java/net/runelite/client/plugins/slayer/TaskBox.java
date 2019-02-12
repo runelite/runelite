@@ -14,6 +14,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
@@ -77,35 +78,40 @@ public class TaskBox extends JPanel
 		container.setLayout(new BorderLayout());
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		BufferedImage taskImg = slayerPlugin.getImageForTask(Task.getTask(taskData.getTaskName()));
-		JLabel taskIcon = new JLabel(new ImageIcon(taskImg));
-		taskIcon.setHorizontalAlignment(SwingConstants.CENTER);
-		taskIcon.setVerticalAlignment(SwingConstants.CENTER);
-		taskIcon.setPreferredSize(new Dimension(35, 35));
+		SwingUtilities.invokeLater(() -> {
+			BufferedImage taskImg = slayerPlugin.getImageForTask(Task.getTask(taskData.getTaskName()));
+			JLabel taskIcon = new JLabel(new ImageIcon(taskImg));
+			taskIcon.setHorizontalAlignment(SwingConstants.CENTER);
+			taskIcon.setVerticalAlignment(SwingConstants.CENTER);
+			taskIcon.setPreferredSize(new Dimension(35, 35));
 
-		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		headerPanel.setLayout(new BorderLayout());
+			statsPanel.setLayout(new DynamicGridLayout(3, 2));
+			statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+			statsPanel.setBorder(new EmptyBorder(9, 2, 9, 2));
 
-		statsPanel.setLayout(new DynamicGridLayout(3, 2));
-		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		statsPanel.setBorder(new EmptyBorder(9, 2, 9, 2));
+			currentDuration.setFont(FontManager.getRunescapeSmallFont());
+			remainingDuration.setFont(FontManager.getRunescapeSmallFont());
+			currentKills.setFont(FontManager.getRunescapeSmallFont());
+			remainingKills.setFont(FontManager.getRunescapeSmallFont());
+			currentXp.setFont(FontManager.getRunescapeSmallFont());
+			remainingXp.setFont(FontManager.getRunescapeSmallFont());
 
-		currentDuration.setFont(FontManager.getRunescapeSmallFont());
-		remainingDuration.setFont(FontManager.getRunescapeSmallFont());
-		currentKills.setFont(FontManager.getRunescapeSmallFont());
-		remainingKills.setFont(FontManager.getRunescapeSmallFont());
-		currentXp.setFont(FontManager.getRunescapeSmallFont());
-		remainingXp.setFont(FontManager.getRunescapeSmallFont());
+			statsPanel.add(currentDuration);
+			statsPanel.add(remainingDuration);
+			statsPanel.add(currentKills);
+			statsPanel.add(remainingKills);
+			statsPanel.add(currentXp);
+			statsPanel.add(remainingXp);
 
-		statsPanel.add(currentDuration);
-		statsPanel.add(remainingDuration);
-		statsPanel.add(currentKills);
-		statsPanel.add(remainingKills);
-		statsPanel.add(currentXp);
-		statsPanel.add(remainingXp);
+			headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+			headerPanel.setLayout(new BorderLayout());
 
-		headerPanel.add(taskIcon, BorderLayout.WEST);
-		headerPanel.add(statsPanel, BorderLayout.CENTER);
+			headerPanel.add(statsPanel, BorderLayout.CENTER);
+			headerPanel.add(taskIcon, BorderLayout.WEST);
+		});
+
+
+
 
 		JPanel progressWrapper = new JPanel();
 		progressWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);

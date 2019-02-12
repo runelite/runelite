@@ -40,6 +40,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import joptsimple.internal.Strings;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -75,6 +76,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
+import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
@@ -331,11 +333,19 @@ public class SlayerPlugin extends Plugin
 		highlightedTargets.remove(npc);
 	}
 
+	// b/c dialog can stay up on screen for multiple ticks in a row we want to make sure we only set a task once
+	// for the dialog that appears so we need to basically do a rising edge detection that only allows for a dialog
+	// check to be performed if in the previous ticks there was a period of no dialog
+	// i.e. once a dialog has been matched dialog cannot be matched again until npc dialog goes away for a tick
+	// this will work because in order for a new slayer task to happen the player either has to go complete the assignment
+	// (and close npc dialog) or go into the rewards screen which also closes npc dialog
+	private boolean canMatchDialog = true;
+
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
 		Widget npcDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
-		if (npcDialog != null)
+		if (npcDialog != null && canMatchDialog)
 		{
 			String npcText = Text.sanitizeMultilineText(npcDialog.getText()); //remove color and linebreaks
 			final Matcher mAssign = NPC_ASSIGN_MESSAGE.matcher(npcText); // amount, name, (location)
@@ -349,17 +359,20 @@ public class SlayerPlugin extends Plugin
 				int amount = Integer.parseInt(mAssign.group("amount"));
 				String location = mAssign.group("location");
 				setTask(name, amount, amount, true, location);
+				canMatchDialog = false;
 			}
 			else if (mAssignFirst.find())
 			{
 				int amount = Integer.parseInt(mAssignFirst.group(2));
 				setTask(mAssignFirst.group(1), amount, amount, true);
+				canMatchDialog = false;
 			}
 			else if (mAssignBoss.find())
 			{
 				int amount = Integer.parseInt(mAssignBoss.group(2));
 				setTask(mAssignBoss.group(1), amount, amount, true);
 				points = Integer.parseInt(mAssignBoss.group(3).replaceAll(",", ""));
+				canMatchDialog = false;
 			}
 			else if (mCurrent.find())
 			{
@@ -367,7 +380,10 @@ public class SlayerPlugin extends Plugin
 				int amount = Integer.parseInt(mCurrent.group("amount"));
 				String location = mCurrent.group("location");
 				setTask(name, amount, currentTask.getInitialAmount(), false, location);
+				canMatchDialog = false;
 			}
+		} else if (npcDialog == null) {
+			canMatchDialog = true;
 		}
 
 		Widget braceletBreakWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
@@ -703,16 +719,14 @@ public class SlayerPlugin extends Plugin
 		rebuildTargetList();
 	}
 
-	public BufferedImage getImageForTask(Task task)
+	public AsyncBufferedImage getImageForTask(Task task)
 	{
 		int itemSpriteId = ItemID.ENCHANTED_GEM;
 		if (task != null)
 		{
 			itemSpriteId = task.getItemSpriteId();
 		}
-
-		BufferedImage taskImg = itemManager.getImage(itemSpriteId);
-		return taskImg;
+		return itemManager.getImage(itemSpriteId);
 	}
 
 	private void addCounter()
@@ -723,7 +737,7 @@ public class SlayerPlugin extends Plugin
 		}
 
 		Task task = Task.getTask(currentTask.getTaskName());
-		BufferedImage taskImg = getImageForTask(task);
+		AsyncBufferedImage taskImg = getImageForTask(task);
 		String taskTooltip = ColorUtil.wrapWithColorTag("%s", new Color(255, 119, 0)) + "</br>";
 
 		if (currentTask.getTaskLocation() != null && !currentTask.getTaskLocation().isEmpty())
