@@ -79,7 +79,7 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 				}
 				else
 				{
-					color = Color.RED;
+					color = Color.GREEN;
 				}
 			}
 			renderObject(plugin.getConveyorBelt(), graphics, color);
