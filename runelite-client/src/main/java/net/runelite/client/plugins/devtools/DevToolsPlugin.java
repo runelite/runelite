@@ -27,8 +27,6 @@ package net.runelite.client.plugins.devtools;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
@@ -50,6 +48,8 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
@@ -94,6 +94,9 @@ public class DevToolsPlugin extends Plugin
 
 	@Inject
 	private WorldMapLocationOverlay worldMapLocationOverlay;
+
+	@Inject
+	private WorldMapRegionOverlay mapRegionOverlay;
 
 	@Inject
 	private EventBus eventBus;
@@ -167,6 +170,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.add(sceneOverlay);
 		overlayManager.add(cameraOverlay);
 		overlayManager.add(worldMapLocationOverlay);
+		overlayManager.add(mapRegionOverlay);
 
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
 
@@ -190,6 +194,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.remove(sceneOverlay);
 		overlayManager.remove(cameraOverlay);
 		overlayManager.remove(worldMapLocationOverlay);
+		overlayManager.remove(mapRegionOverlay);
 		clientToolbar.removeNavigation(navButton);
 	}
 

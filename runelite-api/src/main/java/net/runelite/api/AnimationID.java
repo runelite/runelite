@@ -76,6 +76,7 @@ public final class AnimationID
 	public static final int GEM_CUTTING_EMERALD = 889;
 	public static final int GEM_CUTTING_RUBY = 887;
 	public static final int GEM_CUTTING_DIAMOND = 886;
+	public static final int GEM_CUTTING_AMETHYST = 6295;
 	public static final int CRAFTING_LEATHER = 1249;
 	public static final int CRAFTING_GLASSBLOWING = 884;
 	public static final int CRAFTING_SPINNING = 894;
@@ -118,6 +119,7 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_INFERNAL = 4481;
 	public static final int MINING_MOTHERLODE_3A = 7282;
 	public static final int DENSE_ESSENCE_CHIPPING = 7201;
+	public static final int DENSE_ESSENCE_CHISELING = 7202;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int MAGIC_MAKE_TABLET = 4068;
@@ -144,6 +146,8 @@ public final class AnimationID
 	public static final int COW_HOME_TELEPORT_6 = 1701;
 	public static final int CONSTRUCTION = 3676;
 	public static final int SAND_COLLECTION = 895;
+	public static final int PISCARILIUS_CRANE_REPAIR = 7199;
+	public static final int HOME_MAKE_TABLET = 4067;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;

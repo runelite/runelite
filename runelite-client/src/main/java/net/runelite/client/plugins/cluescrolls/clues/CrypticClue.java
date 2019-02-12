@@ -264,7 +264,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("South of a river in a town surrounded by the undead, what lies beneath the furnace?", new WorldPoint(2857, 2966, 0), "Dig in front of the Shilo Village furnace."),
 		new CrypticClue("Talk to the Squire in the White Knights' castle in Falador.", "Squire", new WorldPoint(2977, 3343, 0), "The squire is located in the courtyard of the White Knights' Castle."),
 		new CrypticClue("Thanks, Grandma!", "Tynan", new WorldPoint(1836, 3786, 0), "Tynan can be found in the north-east corner of Piscarilius House in Great Kourend."),
-		new CrypticClue("In a town where everyone has perfect vision, seek some locked drawers in a house that sits opposite a workshop.", "Chicken", DRAWERS_25766, new WorldPoint(2709, 3478, 0), "The drawers is in Seers' Village in the house south of the Elemental Workshop entrance. Kill any Chicken to obtain a key."),
+		new CrypticClue("In a town where everyone has perfect vision, seek some locked drawers in a house that sits opposite a workshop.", "Chicken", DRAWERS_25766, new WorldPoint(2709, 3478, 0), "The Seers' Village house south of the Elemental Workshop entrance. Kill any Chicken to obtain a key."),
 		new CrypticClue("The treasure is buried in a small building full of bones. Here is a hint: it's not near a graveyard.", new WorldPoint(3356, 3507, 0), "In the western building near the Limestone quarry east of Varrock. Dig south of the box of bones in the smaller building."),
 		new CrypticClue("Search the crates in East Ardougne's general store.", CRATE_357, new WorldPoint(2615, 3291, 0), "Located south of the Ardounge church."),
 		new CrypticClue("Come brave adventurer, your sense is on fire. If you talk to me, it's an old god you desire.", "Viggora", null, "Speak to Viggora"),
@@ -301,7 +301,8 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the open crate found in a small farmhouse in Hosidius. Cabbages grow outside.", CRATE_27533, new WorldPoint(1687, 3628, 0), "The house is east of the Mess in Great Kourend."),
 		new CrypticClue("Dig under Ithoi's cabin.", new WorldPoint(2529, 2838, 0), "Dig under Ithoi's cabin in the Corsair Cove."),
 		new CrypticClue("Search the drawers, upstairs in the bank to the East of Varrock.", new WorldPoint(3250, 3420, 1), "Search the drawers upstairs in Varrock east bank"),
-		new CrypticClue("Speak to Hazelmere.", "Hazelmere", new WorldPoint(2677, 3088, 1), "Located upstairs in the house to the north of fairy ring CLS. Answer: 6859")
+		new CrypticClue("Speak to Hazelmere.", "Hazelmere", new WorldPoint(2677, 3088, 1), "Located upstairs in the house to the north of fairy ring CLS. Answer: 6859"),
+		new CrypticClue("The effects of this fire are magnified.", new WorldPoint(1179, 3626, 0), "Dig by the fire beside Ket'sal K'uk in the westernmost part of the Kebos Swamp. ")
 	);
 
 	private String text;

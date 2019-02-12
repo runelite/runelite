@@ -49,6 +49,7 @@ enum FairyRingLocation
 	BLP("BLP", new WorldPoint(2432, 5127, 0)),
 	BLR("BLR", new WorldPoint(2739, 3353, 0)),
 	CIP("CIP", new WorldPoint(2512, 3886, 0)),
+	CIR("CIR", new WorldPoint(1303, 3762, 0)),
 	CIQ("CIQ", new WorldPoint(2527, 3129, 0)),
 	CJR("CJR", new WorldPoint(2704, 3578, 0)),
 	CKR("CKR", new WorldPoint(2800, 3005, 0)),

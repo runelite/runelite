@@ -63,6 +63,11 @@ public class Constants
 	public static final int CHUNK_SIZE = 8;
 
 	/**
+	 * The width and length of a map region (64x64 tiles).
+	 */
+	public static final int REGION_SIZE = 64;
+
+	/**
 	 * The width and length of the scene (13 chunks x 8 tiles).
 	 */
 	public static final int SCENE_SIZE = 104;

@@ -142,6 +142,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showVengeanceActive",
+		name = "Vengeance active",
+		description = "Configures whether an indicator for vengeance being active is displayed"
+	)
+	default boolean showVengeanceActive()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showTeleblock",
 		name = "Teleblock timer",
 		description = "Configures whether teleblock timer is displayed"

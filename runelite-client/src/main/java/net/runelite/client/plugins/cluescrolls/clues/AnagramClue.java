@@ -49,7 +49,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 {
 	private static final Set<AnagramClue> CLUES = ImmutableSet.of(
 		new AnagramClue("A BAKER", "Baraek", new WorldPoint(3217, 3434, 0), "Varrock square", "5"),
-		new AnagramClue("A BASIC ANTI POT", "Captain Tobias", new WorldPoint(3026, 3216, 0), "Port Sarim", "7"),
+		new AnagramClue("A BASIC ANTI POT", "Captain Tobias", new WorldPoint(3026, 3216, 0), "Port Sarim", "6"),
 		new AnagramClue("A HEART", "Aretha", new WorldPoint(1814, 3851, 0), "Soul altar", "2"),
 		new AnagramClue("A ZEN SHE", "Zenesha", new WorldPoint(2652, 3295, 0), "Platebody Southern Ardougne centre square"),
 		new AnagramClue("ACE MATCH ELM", "Cam The Camel", new WorldPoint(3300, 3231, 0), "North of the glider in Al Kharid"),

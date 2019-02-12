@@ -31,10 +31,13 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import javax.inject.Inject;
 import lombok.Data;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
+import net.runelite.client.ws.PartyService;
+import static net.runelite.client.ws.PartyService.PARTY_MAX;
 
 /**
  * This class contains data about currently active discord state.
@@ -49,16 +52,19 @@ class DiscordState
 		private Instant updated;
 	}
 
+	private final UUID partyId = UUID.randomUUID();
 	private final List<EventWithTime> events = new ArrayList<>();
 	private final DiscordService discordService;
 	private final DiscordConfig config;
+	private PartyService party;
 	private DiscordPresence lastPresence;
 
 	@Inject
-	private DiscordState(final DiscordService discordService, final DiscordConfig config)
+	private DiscordState(final DiscordService discordService, final DiscordConfig config, final PartyService party)
 	{
 		this.discordService = discordService;
 		this.config = config;
+		this.party = party;
 	}
 
 	/**
@@ -69,6 +75,33 @@ class DiscordState
 		discordService.clearPresence();
 		events.clear();
 		lastPresence = null;
+	}
+
+	/**
+	 * Force refresh discord presence
+	 */
+	void refresh()
+	{
+		if (lastPresence == null)
+		{
+			return;
+		}
+
+		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
+			.state(lastPresence.getState())
+			.details(lastPresence.getDetails())
+			.startTimestamp(lastPresence.getStartTimestamp())
+			.smallImageKey(lastPresence.getSmallImageKey())
+			.partyMax(lastPresence.getPartyMax())
+			.partySize(party.getMembers().size());
+
+		if (party.isOwner())
+		{
+			presenceBuilder.partyId(partyId.toString());
+			presenceBuilder.joinSecret(party.getPartyId().toString());
+		}
+
+		discordService.updatePresence(presenceBuilder.build());
 	}
 
 	/**
@@ -135,12 +168,21 @@ class DiscordState
 			}
 		}
 
-		final DiscordPresence presence = DiscordPresence.builder()
+		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
 			.state(MoreObjects.firstNonNull(state, ""))
 			.details(MoreObjects.firstNonNull(details, ""))
 			.startTimestamp(event.getStart())
 			.smallImageKey(MoreObjects.firstNonNull(imageKey, "default"))
-			.build();
+			.partyMax(PARTY_MAX)
+			.partySize(party.getMembers().size());
+
+		if (party.isOwner())
+		{
+			presenceBuilder.partyId(partyId.toString());
+			presenceBuilder.joinSecret(party.getPartyId().toString());
+		}
+
+		final DiscordPresence presence = presenceBuilder.build();
 
 		// This is to reduce amount of RPC calls
 		if (!presence.equals(lastPresence))

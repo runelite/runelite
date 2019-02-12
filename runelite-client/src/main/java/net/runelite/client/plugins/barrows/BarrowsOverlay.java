@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
@@ -74,6 +75,13 @@ class BarrowsOverlay extends Overlay
 			final List<NPC> npcs = client.getNpcs();
 			for (NPC npc : npcs)
 			{
+				final NPCComposition composition = npc.getComposition();
+
+				if (composition != null && !composition.isMinimapVisible())
+				{
+					continue;
+				}
+
 				net.runelite.api.Point minimapLocation = npc.getMinimapLocation();
 				if (minimapLocation != null)
 				{
@@ -82,10 +90,16 @@ class BarrowsOverlay extends Overlay
 			}
 
 			// Player dots
-			graphics.setColor(npcColor);
+			graphics.setColor(playerColor);
 			final List<Player> players = client.getPlayers();
 			for (Player player : players)
 			{
+				if (player == local)
+				{
+					// Skip local player as we draw square for it later
+					continue;
+				}
+
 				net.runelite.api.Point minimapLocation = player.getMinimapLocation();
 				if (minimapLocation != null)
 				{

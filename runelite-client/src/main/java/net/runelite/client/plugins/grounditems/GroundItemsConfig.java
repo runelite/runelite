@@ -313,4 +313,37 @@ public interface GroundItemsConfig extends Config
 	{
 		return 10000000;
 	}
+
+	@ConfigItem(
+		keyName = "onlyShowLoot",
+		name = "Only show loot",
+		description = "Only shows drops from NPCs and players",
+		position = 24
+	)
+	default boolean onlyShowLoot()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "doubleTapDelay",
+		name = "Delay for double-tap ALT to hide",
+		description = "Decrease this number if you accidentally hide ground items often. (0 = Disabled)",
+		position = 25
+	)
+	default int doubleTapDelay()
+	{
+		return 250;
+	}
+
+	@ConfigItem(
+		keyName = "collapseEntries",
+		name = "Collapse ground item menu entries",
+		description = "Collapses ground item menu entries together and appends count",
+		position = 26
+	)
+	default boolean collapseEntries()
+	{
+		return false;
+	}
 }

@@ -27,6 +27,7 @@ package net.runelite.mixins;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
@@ -51,6 +52,7 @@ import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.Node;
 import net.runelite.api.PacketBuffer;
@@ -74,6 +76,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -99,6 +102,7 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.rs.api.RSChatLineBuffer;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDeque;
@@ -168,6 +172,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static boolean oldIsResized;
+
+	@Inject
+	static int skyboxColor;
 
 	@Inject
 	@Override
@@ -542,6 +549,7 @@ public abstract class RSClientMixin implements RSClient
 		int[] menuTypes = getMenuTypes();
 		int[] params0 = getMenuActionParams0();
 		int[] params1 = getMenuActionParams1();
+		boolean[] leftClick = getMenuForceLeftClick();
 
 		MenuEntry[] entries = new MenuEntry[count];
 		for (int i = 0; i < count; ++i)
@@ -553,6 +561,7 @@ public abstract class RSClientMixin implements RSClient
 			entry.setType(menuTypes[i]);
 			entry.setParam0(params0[i]);
 			entry.setParam1(params1[i]);
+			entry.setForceLeftClick(leftClick[i]);
 		}
 		return entries;
 	}
@@ -568,6 +577,7 @@ public abstract class RSClientMixin implements RSClient
 		int[] menuTypes = getMenuTypes();
 		int[] params0 = getMenuActionParams0();
 		int[] params1 = getMenuActionParams1();
+		boolean[] leftClick = getMenuForceLeftClick();
 
 		for (MenuEntry entry : entries)
 		{
@@ -577,6 +587,7 @@ public abstract class RSClientMixin implements RSClient
 			menuTypes[count] = entry.getType();
 			params0[count] = entry.getParam0();
 			params1[count] = entry.getParam1();
+			leftClick[count] = entry.isForceLeftClick();
 			++count;
 		}
 
@@ -1228,7 +1239,7 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
-	@MethodHook("addChatMessage")
+	@MethodHook(value = "addChatMessage", end = true)
 	public static void onAddChatMessage(int type, String name, String message, String sender)
 	{
 		Logger logger = client.getLogger();
@@ -1237,8 +1248,13 @@ public abstract class RSClientMixin implements RSClient
 			logger.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
 		}
 
+		// Get the message node which was added
+		Map<Integer, RSChatLineBuffer> chatLineMap = client.getChatLineMap();
+		RSChatLineBuffer chatLineBuffer = chatLineMap.get(type);
+		MessageNode messageNode = chatLineBuffer.getLines()[0];
+
 		final ChatMessageType chatMessageType = ChatMessageType.of(type);
-		final ChatMessage chatMessage = new ChatMessage(chatMessageType, name, message, sender);
+		final ChatMessage chatMessage = new ChatMessage(messageNode, chatMessageType, name, message, sender, messageNode.getTimestamp());
 		client.getCallbacks().post(chatMessage);
 	}
 
@@ -1380,5 +1396,50 @@ public abstract class RSClientMixin implements RSClient
 		setSpritePixels(null);
 
 		return array;
+	}
+
+	@Inject
+	@Override
+	public void setSkyboxColor(int newSkyboxColor)
+	{
+		skyboxColor = newSkyboxColor;
+	}
+
+	@Inject
+	@Override
+	public int getSkyboxColor()
+	{
+		return skyboxColor;
+	}
+
+	@Inject
+	@FieldHook("cycleCntr")
+	public static void onCycleCntrChanged(int idx)
+	{
+		client.getCallbacks().post(new ClientTick());
+	}
+
+	@Copy("shouldLeftClickOpenMenu")
+	boolean rs$shouldLeftClickOpenMenu()
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("shouldLeftClickOpenMenu")
+	boolean rl$shouldLeftClickOpenMenu()
+	{
+		if (rs$shouldLeftClickOpenMenu())
+		{
+			return true;
+		}
+
+		int len = getMenuOptionCount();
+		if (len > 0)
+		{
+			int type = getMenuTypes()[len - 1];
+			return type == MenuAction.RUNELITE_OVERLAY.getId();
+		}
+
+		return false;
 	}
 }

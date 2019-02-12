@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.opponentinfo;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -41,6 +40,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -108,8 +108,12 @@ public class OpponentInfoPlugin extends Plugin
 			return;
 		}
 
-		EnumSet<WorldType> worldType = client.getWorldType();
-		if (worldType.contains(WorldType.SEASONAL_DEADMAN))
+		final EnumSet<WorldType> worldType = client.getWorldType();
+		if (worldType.contains(WorldType.DEADMAN_TOURNAMENT))
+		{
+			hiscoreEndpoint = HiscoreEndpoint.DEADMAN_TOURNAMENT;
+		}
+		else if (worldType.contains(WorldType.SEASONAL_DEADMAN))
 		{
 			hiscoreEndpoint = HiscoreEndpoint.SEASONAL_DEADMAN;
 		}

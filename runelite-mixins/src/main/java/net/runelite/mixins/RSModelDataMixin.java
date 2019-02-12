@@ -52,7 +52,7 @@ public abstract class RSModelDataMixin implements RSModelData
 	@Replace("light")
 	public Model rl$light(int ambient, int contrast, int var3, int var4, int var5)
 	{
-		client.getLogger().debug("Lighting model {}", this);
+		client.getLogger().trace("Lighting model {}", this);
 
 		Model model = rs$light(ambient, contrast, var3, var4, var5);
 		if (model == null)

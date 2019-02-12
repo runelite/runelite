@@ -68,6 +68,23 @@ public final class ScriptID
 	public static final int CLEAR_CHATBOX_PANEL = 677;
 
 	/**
+	 * Builds the chatbox input widget
+	 */
+	public static final int CHAT_PROMPT_INIT = 223;
+
+	/**
+	 * Queries the completion state of a quest by its struct id
+	 * <ul>
+	 * <li> int (struct) The id of the quest
+	 * </ul>
+	 * Returns
+	 * <ul>
+	 * <li> int (QuestState) the normalized state of the quest
+	 * </ul>
+	 */
+	public static final int QUESTLIST_PROGRESS = 2267;
+
+	/**
 	 * Updates the Diary/Quest interface's scrollbar
 	 * <ul>
 	 * <li> int (boolean) Reset scroll position </li>
@@ -97,4 +114,14 @@ public final class ScriptID
 	 * Send a private message.
 	 */
 	public static final int PRIVMSG = 10004;
+
+	/**
+	 * Creates a disabled experience drop
+	 *
+	 * <ul>
+	 * <li>int (Skill ordinal) Sets what icon to use</li>
+	 * <li>int Amount of exp to drop</li>
+	 * </ul>
+	 */
+	public static final int XPDROP_DISABLED = 2091;
 }

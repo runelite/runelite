@@ -25,17 +25,42 @@
 
 #version 330
 
+#define TILE_SIZE 128
+
+#define FOG_SCENE_EDGE_MIN TILE_SIZE
+#define FOG_SCENE_EDGE_MAX (103 * TILE_SIZE)
+
 layout (location = 0) in ivec4 VertexPosition;
 layout (location = 1) in vec4 uv;
 
+layout(std140) uniform uniforms {
+  int cameraYaw;
+  int cameraPitch;
+  int centerX;
+  int centerY;
+  int zoom;
+  int cameraX;
+  int cameraY;
+  int cameraZ;
+  ivec2 sinCosTable[2048];
+};
+
 uniform float brightness;
+uniform int useFog;
+uniform int fogDepth;
+uniform int drawDistance;
 
 out ivec3 vPosition;
 out vec4 vColor;
 out float vHsl;
 out vec4 vUv;
+out float vFogAmount;
 
 #include hsl_to_rgb.glsl
+
+float fogFactorLinear(const float dist, const float start, const float end) {
+  return 1.0 - clamp((dist - start) / (end - start), 0.0, 1.0);
+}
 
 void main()
 {
@@ -50,4 +75,14 @@ void main()
   vColor = vec4(rgb, 1.f - a);
   vHsl = float(hsl);
   vUv = uv;
+
+  int fogWest = max(FOG_SCENE_EDGE_MIN, cameraX - drawDistance);
+  int fogEast = min(FOG_SCENE_EDGE_MAX, cameraX + drawDistance - TILE_SIZE);
+  int fogSouth = max(FOG_SCENE_EDGE_MIN, cameraZ - drawDistance);
+  int fogNorth = min(FOG_SCENE_EDGE_MAX, cameraZ + drawDistance - TILE_SIZE);
+
+  // Calculate distance from the scene edge
+  float fogDistance = min(min(vertex.x - fogWest, fogEast - vertex.x), min(vertex.z - fogSouth, fogNorth - vertex.z));
+
+  vFogAmount = fogFactorLinear(fogDistance, 0, fogDepth * TILE_SIZE) * useFog;
 }

@@ -107,22 +107,21 @@ LABEL84:
    iload                  2
    load_int               1
    if_icmple              LABEL88
-   jump                   LABEL89
+   jump                   LABEL93
 LABEL88:
+   iload                  4
+   load_int               0
+   if_icmpeq              LABEL92
+   jump                   LABEL93
+LABEL92:
    return                
-LABEL89:
+LABEL93:
    get_varbit             4394
    load_int               1
-   if_icmpeq              LABEL93
+   if_icmpeq              LABEL97
    jump                   LABEL99
-LABEL93:
-   get_clanchatcount     
-   load_int               0
-   if_icmpgt              LABEL97
-   jump                   LABEL98
 LABEL97:
    part_clanchat         
-LABEL98:
    jump                   LABEL110
 LABEL99:
    iload                  4

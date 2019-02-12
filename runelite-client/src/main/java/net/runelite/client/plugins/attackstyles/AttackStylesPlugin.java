@@ -27,7 +27,6 @@ package net.runelite.client.plugins.attackstyles;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,6 +47,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
@@ -126,6 +126,7 @@ public class AttackStylesPlugin extends Plugin
 		overlayManager.remove(overlay);
 		hideWarnedStyles(false);
 		processWidgets();
+		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), false);
 	}
 
 	public AttackStyle getAttackStyle()
@@ -174,6 +175,7 @@ public class AttackStylesPlugin extends Plugin
 				hideWidget(client.getWidget(widgetKey), widgetsToHide.get(equippedWeaponType, widgetKey));
 			}
 		}
+		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), config.hideAutoRetaliate());
 	}
 
 	@Subscribe

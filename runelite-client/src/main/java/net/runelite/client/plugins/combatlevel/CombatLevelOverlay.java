@@ -43,6 +43,11 @@ import java.awt.Rectangle;
 class CombatLevelOverlay extends Overlay
 {
 	private static final Color COMBAT_LEVEL_COLOUR = new Color(0xff981f);
+	private static final double PRAY_MULT = 0.125;
+	static final double ATT_STR_MULT = 0.325;
+	static final double DEF_HP_MULT = 0.25;
+	static final double RANGE_MAGIC_LEVEL_MULT = 1.5;
+	static final double RANGE_MAGIC_MULT = 0.325;
 
 	private final Client client;
 	private final CombatLevelConfig config;
@@ -94,53 +99,50 @@ class CombatLevelOverlay extends Overlay
 		int prayerLevel = client.getRealSkillLevel(Skill.PRAYER);
 
 		// calculate initial required numbers
-		double base = 0.25 * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2));
-		double melee = 0.325 * (attackLevel + strengthLevel);
-		double range = 0.325 * Math.floor(rangedLevel * 1.5);
-		double mage = 0.325 * Math.floor(magicLevel * 1.5);
+		double base = DEF_HP_MULT * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2));
+		double melee = ATT_STR_MULT * (attackLevel + strengthLevel);
+		double range = RANGE_MAGIC_MULT * Math.floor(rangedLevel * RANGE_MAGIC_LEVEL_MULT);
+		double mage = RANGE_MAGIC_MULT * Math.floor(magicLevel * RANGE_MAGIC_LEVEL_MULT);
 		double max = Math.max(melee, Math.max(range, mage));
 
 		// find the needed levels until level up
 		int next = client.getLocalPlayer().getCombatLevel() + 1;
-		int meleeNeed = calcLevels(base + melee, next, 0.325);
-		int hpdefNeed = calcLevels(base + max, next, 0.25);
-		int prayNeed = calcLevels(base + max, next, 0.125);
+		int meleeNeed = calcLevels(base + melee, next, ATT_STR_MULT);
+		int hpdefNeed = calcLevels(base + max, next, DEF_HP_MULT);
+		int prayNeed = calcLevelsPray(base + max, next, prayerLevel);
 		int rangeNeed = calcLevelsRM(rangedLevel, next, base);
 		int magicNeed = calcLevelsRM(magicLevel, next, base);
-
-		// prayer is a special case, increasing combat every even level. need to correct its value
-		prayNeed = correctPrayer(prayerLevel, prayNeed);
 
 		// create tooltip string
 		StringBuilder sb = new StringBuilder();
 		sb.append(ColorUtil.wrapWithColorTag("Next combat level:</br>", COMBAT_LEVEL_COLOUR));
 
-		if ((attackLevel + strengthLevel + meleeNeed) <= 198)
+		if ((attackLevel + strengthLevel + meleeNeed) <= Experience.MAX_REAL_LEVEL * 2)
 		{
 			sb.append(meleeNeed).append(" Attack/Strength</br>");
 		}
-		if ((hitpointsLevel + defenceLevel + hpdefNeed) <= 198)
+		if ((hitpointsLevel + defenceLevel + hpdefNeed) <= Experience.MAX_REAL_LEVEL * 2)
 		{
 			sb.append(hpdefNeed).append(" Defence/Hitpoints</br>");
 		}
-		if ((rangedLevel + rangeNeed) <= 99)
+		if ((rangedLevel + rangeNeed) <= Experience.MAX_REAL_LEVEL)
 		{
 			sb.append(rangeNeed).append(" Ranged</br>");
 		}
-		if ((magicLevel + magicNeed) <= 99)
+		if ((magicLevel + magicNeed) <= Experience.MAX_REAL_LEVEL)
 		{
 			sb.append(magicNeed).append(" Magic</br>");
 		}
-		if ((prayerLevel + prayNeed) <= 99)
+		if ((prayerLevel + prayNeed) <= Experience.MAX_REAL_LEVEL)
 		{
 			sb.append(prayNeed).append(" Prayer");
 		}
 		return sb.toString();
 	}
 
-	/***
+	/**
 	 * Calculate skill levels required for increasing combat level, meant
-	 * for all combat skills besides ranged and magic.
+	 * for all combat skills besides prayer, ranged, and magic.
 	 * @param start	initial value
 	 * @param end	ending value (combat level + 1)
 	 * @param multiple	how much adding one skill level will change combat
@@ -149,10 +151,38 @@ class CombatLevelOverlay extends Overlay
 	@VisibleForTesting
 	static int calcLevels(double start, int end, double multiple)
 	{
-		return (int) Math.ceil((end - start) / multiple);
+		return (int) Math.ceil(calcMultipliedLevels(start, end, multiple));
 	}
 
-	/***
+	/**
+	 * Calculate skill levels for increasing combat level, meant ONLY for the Prayer skill.
+	 * <p>
+	 * Note: Prayer is a special case, only leveling up upon even level numbers. This is accounted
+	 *       for in this function.
+	 * </p>
+	 * @param start       current combat level
+	 * @param end         ending value (combat level + 1)
+	 * @param prayerLevel the player's current prayer level
+	 * @return Prayer levels required to level up combat
+	 */
+	@VisibleForTesting
+	static int calcLevelsPray(double start, int end, int prayerLevel)
+	{
+		final int neededLevels = (int) Math.floor(calcMultipliedLevels(start, end, PRAY_MULT));
+
+		if ((prayerLevel + neededLevels) % 2 != 0)
+		{
+			return neededLevels + 1;
+		}
+		return neededLevels;
+	}
+
+	private static double calcMultipliedLevels(double start, int end, double multiple)
+	{
+		return (end - start) / multiple;
+	}
+
+	/**
 	 * Calculate skill levels required for increasing combat level, meant
 	 * ONLY for Ranged and Magic skills.
 	 * @param start	either the current ranged or magic level
@@ -163,23 +193,7 @@ class CombatLevelOverlay extends Overlay
 	@VisibleForTesting
 	static int calcLevelsRM(double start, int end, double dhp)
 	{
-		start = Math.floor(start * 1.5) * 0.325;
-		return (int) Math.ceil((end - dhp - start) / 0.4875);
-	}
-
-	/***
-	 * Corrects how many levels you need to level up combat through prayer.
-	 * @param level	current prayer level
-	 * @param need	needed prayer level calculated by calcLevels(...)
-	 * @return	a corrected number to increase combat through prayer only
-	 */
-	@VisibleForTesting
-	static int correctPrayer(int level, int need)
-	{
-		if ((level + need) % 2 == 1)
-		{
-			need++;
-		}
-		return need;
+		start = Math.floor(start * RANGE_MAGIC_LEVEL_MULT) * RANGE_MAGIC_MULT;
+		return (int) Math.ceil((end - dhp - start) / (RANGE_MAGIC_MULT * RANGE_MAGIC_LEVEL_MULT));
 	}
 }

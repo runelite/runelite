@@ -28,6 +28,7 @@ import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
+import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientStr;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
@@ -82,11 +83,19 @@ public class ChatKeyboardListener implements KeyListener
 						replacement = "";
 					}
 
-					clientThread.invoke(() -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement));
+					clientThread.invoke(() ->
+					{
+						client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, replacement);
+						client.runScript(ScriptID.CHAT_PROMPT_INIT);
+					});
 				}
 				break;
 			case KeyEvent.VK_BACK_SPACE:
-				clientThread.invoke(() -> client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, ""));
+				clientThread.invoke(() ->
+				{
+					client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+					client.runScript(ScriptID.CHAT_PROMPT_INIT);
+				});
 				break;
 		}
 	}

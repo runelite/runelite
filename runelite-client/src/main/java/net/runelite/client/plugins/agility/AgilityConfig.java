@@ -34,7 +34,7 @@ public interface AgilityConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showLapCount",
-		name = "Show Lap count",
+		name = "Show Lap Count",
 		description = "Enable/disable the lap counter",
 		position = 1
 	)

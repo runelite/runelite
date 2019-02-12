@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.roguesden;
 
-import com.google.common.eventbus.Subscribe;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import javax.inject.Inject;
@@ -45,6 +44,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;

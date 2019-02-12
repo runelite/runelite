@@ -215,7 +215,7 @@ class Obstacles
 		// Tree Gnome Village
 		LOOSE_RAILING_2186,
 		// Weiss
-		LITTLE_BOULDER, ROCKSLIDE_33184, ROCKSLIDE_33185, NULL_33327, NULL_33328,
+		LITTLE_BOULDER, ROCKSLIDE_33184, ROCKSLIDE_33185, NULL_33327, NULL_33328, LEDGE_33190, ROCKSLIDE_33191, FALLEN_TREE_33192,
 		// Al-Kharid
 		BROKEN_WALL_33344, BIG_WINDOW,
 		// Burgh de Rott
@@ -223,7 +223,11 @@ class Obstacles
 		// Taverley
 		STILE,
 		// Asgarnian Ice Dungeon
-		STEPS
+		STEPS,
+		// Fossil Island Wyvern Cave
+		STAIRS_31485,
+		// Mount Karuulm
+		ROCKS_34397, ROCKS_34396
 	);
 
 	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(

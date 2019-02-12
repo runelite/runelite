@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.menuentryswapper;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Set;
 import javax.inject.Inject;
@@ -47,6 +46,7 @@ import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
@@ -179,6 +179,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void unsetSwapConfig(int itemId)
 	{
+		itemId = ItemVariationMapping.map(itemId);
 		configManager.unsetConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
 	}
 
@@ -408,6 +409,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.swapPay())
 			{
 				swap("pay", option, target, true);
+				swap("pay (", option, target, false);
 			}
 
 			if (config.swapDecant())
@@ -496,6 +498,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap("quick-pass", option, target, true);
 			swap("quick pass", option, target, true);
 		}
+		else if (config.swapQuick() && option.equals("open"))
+		{
+			swap("quick-open", option, target, true);
+		}
 		else if (config.swapAdmire() && option.equals("admire"))
 		{
 			swap("teleport", option, target, true);
@@ -505,6 +511,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapPrivate() && option.equals("shared"))
 		{
 			swap("private", option, target, true);
+		}
+		else if (config.swapPick() && option.equals("pick"))
+		{
+			swap("pick-lots", option, target, true);
 		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{

@@ -111,4 +111,14 @@ public interface MotherlodeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showOresFound",
+		name = "Show ores found",
+		description = "Shows the ores found during current mining session"
+	)
+	default boolean showOresFound()
+	{
+		return true;
+	}
 }

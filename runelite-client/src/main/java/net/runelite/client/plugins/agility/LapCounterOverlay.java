@@ -29,7 +29,10 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -45,10 +48,12 @@ class LapCounterOverlay extends Overlay
 	@Inject
 	private LapCounterOverlay(AgilityPlugin plugin, AgilityConfig config)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;
 		this.config = config;
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Agility overlay"));
 	}
 
 	@Override

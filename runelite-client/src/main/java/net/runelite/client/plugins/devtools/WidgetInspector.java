@@ -26,8 +26,6 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -54,6 +52,8 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.ClientUI;
 
 @Slf4j
@@ -278,7 +278,7 @@ class WidgetInspector extends JFrame
 
 	static WidgetInfo getWidgetInfo(int packedId)
 	{
-		if (widgetIdMap.size() == 0)
+		if (widgetIdMap.isEmpty())
 		{
 			//Initialize map here so it doesn't create the index
 			//until it's actually needed.

@@ -40,12 +40,15 @@ import java.time.Instant;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Point;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.xptracker.XpActionType;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -74,12 +77,14 @@ public class XpGlobesOverlay extends Overlay
 		XpTrackerService xpTrackerService,
 		SkillIconManager iconManager)
 	{
+		super(plugin);
 		this.iconManager = iconManager;
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
 		this.xpTrackerService = xpTrackerService;
 		setPosition(OverlayPosition.TOP_CENTER);
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "XP Globes overlay"));
 	}
 
 	@Override
@@ -170,6 +175,11 @@ public class XpGlobesOverlay extends Overlay
 
 	private void drawProgressLabel(Graphics2D graphics, XpGlobe globe, int startXp, int goalXp, int x, int y)
 	{
+		if (goalXp <= globe.getCurrentXp())
+		{
+			return;
+		}
+
 		// Convert to int just to limit the decimal cases
 		String progress = (int) (getSkillProgress(startXp, globe.getCurrentXp(), goalXp)) + "%";
 
@@ -249,7 +259,7 @@ public class XpGlobesOverlay extends Overlay
 			.right(skillCurrentXp)
 			.build());
 
-		if (goalXp != -1)
+		if (goalXp > mouseOverSkill.getCurrentXp())
 		{
 			XpActionType xpActionType = xpTrackerService.getActionType(mouseOverSkill.getSkill());
 

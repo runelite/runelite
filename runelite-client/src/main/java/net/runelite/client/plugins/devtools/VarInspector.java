@@ -24,8 +24,6 @@
  */
 package net.runelite.client.plugins.devtools;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -55,6 +53,8 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;

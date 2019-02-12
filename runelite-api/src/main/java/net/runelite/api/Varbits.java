@@ -152,6 +152,15 @@ public enum Varbits
 	DIARY_WILDERNESS_ELITE(4469),
 
 	/**
+	 * Kourend house favours
+	 */
+	KOUREND_FAVOR_ARCEUUS(4896),
+	KOUREND_FAVOR_HOSIDIUS(4895),
+	KOUREND_FAVOR_LOVAKENGJ(4898),
+	KOUREND_FAVOR_PISCARILIUS(4899),
+	KOUREND_FAVOR_SHAYZIEN(4894),
+
+	/**
 	 * Equipped weapon type
 	 */
 	EQUIPPED_WEAPON_TYPE(357),
@@ -359,6 +368,12 @@ public enum Varbits
 	DAILY_ESSENCE_COLLECTED(4547),
 	DAILY_RUNES_COLLECTED(4540),
 	DAILY_SAND_COLLECTED(4549),
+	DAILY_FLAX_STATE(4559),
+	/**
+	 * This varbit tracks how much bonemeal has been redeemed from Robin
+	 * The player gets 13 for each diary completed above and including Medium, for a maxiumum of 39
+ 	*/
+	DAILY_BONEMEAL_STATE(4543),
 
 	/**
 	 * Fairy Ring
@@ -375,6 +390,15 @@ public enum Varbits
 	FARMING_4772(4772),
 	FARMING_4773(4773),
 	FARMING_4774(4774),
+	FARMING_4775(4775),
+	FARMING_7904(7904),
+	FARMING_7905(7905),
+	FARMING_7906(7906),
+	FARMING_7907(7907),
+	FARMING_7908(7908),
+	FARMING_7909(7909),
+	FARMING_7910(7910),
+	FARMING_7911(7911),
 
 	/**
 	 * Transmog controllers for grapes
@@ -421,7 +445,30 @@ public enum Varbits
 	CURRENT_BANK_TAB(4150),
 
 	WORLDHOPPER_FAVROITE_1(4597),
-	WORLDHOPPER_FAVROITE_2(4598);
+	WORLDHOPPER_FAVROITE_2(4598),
+
+	/**
+	 * Vengeance is active
+	 */
+	VENGEANCE_ACTIVE(2450),
+
+	/**
+	 * Spell cooldowns
+	 */
+	VENGEANCE_COOLDOWN(2451),
+
+	/**
+	 * Amount of items in each bank tab
+	 */
+	BANK_TAB_ONE_COUNT(4171),
+	BANK_TAB_TWO_COUNT(4172),
+	BANK_TAB_THREE_COUNT(4173),
+	BANK_TAB_FOUR_COUNT(4174),
+	BANK_TAB_FIVE_COUNT(4175),
+	BANK_TAB_SIX_COUNT(4176),
+	BANK_TAB_SEVEN_COUNT(4177),
+	BANK_TAB_EIGHT_COUNT(4178),
+	BANK_TAB_NINE_COUNT(4179);
 
 	/**
 	 * The raw varbit ID.

@@ -35,6 +35,7 @@ import lombok.Getter;
 public enum VarPlayer
 {
 	ATTACK_STYLE(43),
+	QUEST_POINTS(101),
 	IS_POISONED(102),
 
 	BANK_TAB(115),
@@ -47,6 +48,14 @@ public enum VarPlayer
 	IN_RAID_PARTY(1427),
 
 	NMZ_REWARD_POINTS(1060),
+
+	/**
+	 * -1 : Poison immune
+	 *  Normal poison damage is ceil( this / 5.0f )
+	 *  If this is greater than or equal to 1000000, the player is envenomed.
+	 *  Venom damage is (this - 999997) * 2
+	 */
+	POISON(102),
 
 	/**
 	 * 0 : not started

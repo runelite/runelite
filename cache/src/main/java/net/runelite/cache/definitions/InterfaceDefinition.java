@@ -24,6 +24,9 @@
  */
 package net.runelite.cache.definitions;
 
+import lombok.Data;
+
+@Data
 public class InterfaceDefinition
 {
 	public int id = -1;

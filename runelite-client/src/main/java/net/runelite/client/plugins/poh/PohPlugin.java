@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.poh;
 
 import com.google.common.collect.Sets;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.Comparator;
@@ -56,6 +55,7 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;

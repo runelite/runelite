@@ -49,10 +49,12 @@ in ivec3 vPosition[];
 in vec4 vColor[];
 in float vHsl[];
 in vec4 vUv[];
+in float vFogAmount[];
 
 out vec4 Color;
 out float fHsl;
 out vec4 fUv;
+out float fogAmount;
 
 #include to_screen.glsl
 
@@ -71,6 +73,7 @@ void main() {
   Color = vColor[0];
   fHsl = vHsl[0];
   fUv = vUv[0];
+  fogAmount = vFogAmount[0];
   gl_Position  = projectionMatrix * tmp;
   EmitVertex();
 
@@ -78,6 +81,7 @@ void main() {
   Color = vColor[1];
   fHsl = vHsl[1];
   fUv = vUv[1];
+  fogAmount = vFogAmount[1];
   gl_Position  = projectionMatrix * tmp;
   EmitVertex();
 
@@ -85,6 +89,7 @@ void main() {
   Color = vColor[2];
   fHsl = vHsl[2];
   fUv = vUv[2];
+  fogAmount = vFogAmount[2];
   gl_Position  = projectionMatrix * tmp;
   EmitVertex();
 

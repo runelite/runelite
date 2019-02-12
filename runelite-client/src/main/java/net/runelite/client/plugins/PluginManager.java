@@ -27,8 +27,6 @@ package net.runelite.client.plugins;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.common.graph.Graph;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.Graphs;
@@ -66,6 +64,8 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
@@ -337,7 +337,7 @@ public class PluginManager
 			schedule(plugin);
 			eventBus.post(new PluginChanged(plugin, true));
 		}
-		catch (InterruptedException | InvocationTargetException ex)
+		catch (InterruptedException | InvocationTargetException | IllegalArgumentException ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}

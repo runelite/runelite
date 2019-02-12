@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.combatlevel;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.text.DecimalFormat;
 import javax.inject.Inject;
@@ -36,6 +35,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;

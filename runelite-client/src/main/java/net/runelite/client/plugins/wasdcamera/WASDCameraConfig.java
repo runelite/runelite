@@ -28,7 +28,7 @@ import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Keybind;
+import net.runelite.client.config.ModifierlessKeybind;
 
 @ConfigGroup("wasdcamera")
 public interface WASDCameraConfig extends Config
@@ -39,9 +39,9 @@ public interface WASDCameraConfig extends Config
 		name = "Up key",
 		description = "The key which will replace up."
 	)
-	default Keybind up()
+	default ModifierlessKeybind up()
 	{
-		return new Keybind(KeyEvent.VK_W, 0);
+		return new ModifierlessKeybind(KeyEvent.VK_W, 0);
 	}
 
 	@ConfigItem(
@@ -50,9 +50,9 @@ public interface WASDCameraConfig extends Config
 		name = "Down key",
 		description = "The key which will replace down."
 	)
-	default Keybind down()
+	default ModifierlessKeybind down()
 	{
-		return new Keybind(KeyEvent.VK_S, 0);
+		return new ModifierlessKeybind(KeyEvent.VK_S, 0);
 	}
 
 	@ConfigItem(
@@ -61,9 +61,9 @@ public interface WASDCameraConfig extends Config
 		name = "Left key",
 		description = "The key which will replace left."
 	)
-	default Keybind left()
+	default ModifierlessKeybind left()
 	{
-		return new Keybind(KeyEvent.VK_A, 0);
+		return new ModifierlessKeybind(KeyEvent.VK_A, 0);
 	}
 
 	@ConfigItem(
@@ -72,8 +72,8 @@ public interface WASDCameraConfig extends Config
 		name = "Right key",
 		description = "The key which will replace right."
 	)
-	default Keybind right()
+	default ModifierlessKeybind right()
 	{
-		return new Keybind(KeyEvent.VK_D, 0);
+		return new ModifierlessKeybind(KeyEvent.VK_D, 0);
 	}
 }

@@ -37,4 +37,5 @@ public class QueuedMessage
 	private String name;
 	private String sender;
 	private String runeLiteFormattedMessage;
+	private int timestamp;
 }

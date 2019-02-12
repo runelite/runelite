@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.gpu;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import com.jogamp.nativewindow.awt.AWTGraphicsConfiguration;
 import com.jogamp.nativewindow.awt.JAWTWindow;
@@ -67,26 +66,33 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteFrameBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteRenderbuffers;
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteTexture;
 import static net.runelite.client.plugins.gpu.GLUtil.glDeleteVertexArrays;
-import static net.runelite.client.plugins.gpu.GLUtil.glDeleteFrameBuffer;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenBuffers;
-import static net.runelite.client.plugins.gpu.GLUtil.glGenTexture;
+import static net.runelite.client.plugins.gpu.GLUtil.glGetInteger;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenFrameBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenRenderbuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenTexture;
 import static net.runelite.client.plugins.gpu.GLUtil.glGenVertexArrays;
 import static net.runelite.client.plugins.gpu.GLUtil.inputStreamToString;
+import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.DrawManager;
+import net.runelite.client.util.OSType;
 
 @PluginDescriptor(
 	name = "GPU",
 	description = "Utilizes the GPU",
-	enabledByDefault = false
+	enabledByDefault = false,
+	tags = {"fog", "draw distance"}
 )
 @Slf4j
 public class GpuPlugin extends Plugin implements DrawCallbacks
@@ -95,7 +101,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private static final int MAX_TRIANGLE = 4096;
 	private static final int SMALL_TRIANGLE_COUNT = 512;
 	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
-	private static final int MAX_DISTANCE = 90;
+	static final int MAX_DISTANCE = 90;
+	static final int MAX_FOG_DEPTH = 100;
 
 	@Inject
 	private Client client;
@@ -146,15 +153,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int glUiVertexShader;
 	private int glUiFragmentShader;
 
-	private int glUiPremulProgram;
-	private int glUiPremulVertexShader;
-	private int glUiPremulFragmentShader;
-
 	private int vaoUiHandle;
 	private int vboUiHandle;
 
-	private int fboUiHandle;
-	private int texUiHandle;
+	private int fboSceneHandle;
+	private int texSceneHandle;
+	private int rboSceneHandle;
 
 	// scene vertex buffer id
 	private int bufferId;
@@ -205,15 +209,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int lastViewportHeight;
 	private int lastCanvasWidth;
 	private int lastCanvasHeight;
+	private int lastStretchedCanvasWidth;
+	private int lastStretchedCanvasHeight;
+	private AntiAliasingMode lastAntiAliasingMode;
 
 	private int centerX;
 	private int centerY;
 
 	// Uniforms
+	private int uniUseFog;
+	private int uniFogColor;
+	private int uniFogDepth;
+	private int uniDrawDistance;
 	private int uniProjectionMatrix;
 	private int uniBrightness;
 	private int uniTex;
-	private int uniTexPremul;
 	private int uniTextures;
 	private int uniTextureOffsets;
 	private int uniBlockSmall;
@@ -304,6 +314,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				client.resizeCanvas();
 
 				lastViewportWidth = lastViewportHeight = lastCanvasWidth = lastCanvasHeight = -1;
+				lastStretchedCanvasWidth = lastStretchedCanvasHeight = -1;
+				lastAntiAliasingMode = null;
 
 				textureArrayId = -1;
 
@@ -375,7 +387,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				shutdownInterfaceTexture();
 				shutdownProgram();
 				shutdownVao();
-				shutdownUiFBO();
+				shutdownSceneFbo();
 			}
 
 			if (jawtWindow != null)
@@ -423,7 +435,35 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		glGeomShader = gl.glCreateShader(gl.GL_GEOMETRY_SHADER);
 		glFragmentShader = gl.glCreateShader(gl.GL_FRAGMENT_SHADER);
 
-		Function<String, String> resourceLoader = (s) -> inputStreamToString(getClass().getResourceAsStream(s));
+		final String glVersionHeader;
+
+		if (OSType.getOSType() == OSType.Linux)
+		{
+			glVersionHeader =
+				"#version 420\n" +
+				"#extension GL_ARB_compute_shader : require\n" +
+				"#extension GL_ARB_shader_storage_buffer_object : require\n";
+		}
+		else
+		{
+			glVersionHeader = "#version 430\n";
+		}
+
+		Function<String, String> resourceLoader = (s) ->
+		{
+			if (s.endsWith(".glsl"))
+			{
+				return inputStreamToString(getClass().getResourceAsStream(s));
+			}
+
+			if (s.equals("version_header"))
+			{
+				return glVersionHeader;
+			}
+
+			return "";
+		};
+
 		Template template = new Template(resourceLoader);
 		String source = template.process(resourceLoader.apply("geom.glsl"));
 
@@ -464,14 +504,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			null,
 			inputStreamToString(getClass().getResourceAsStream("fragui.glsl")));
 
-		glUiPremulProgram = gl.glCreateProgram();
-		glUiPremulVertexShader = gl.glCreateShader(gl.GL_VERTEX_SHADER);
-		glUiPremulFragmentShader = gl.glCreateShader(gl.GL_FRAGMENT_SHADER);
-		GLUtil.loadShaders(gl, glUiPremulProgram, glUiPremulVertexShader, -1, glUiPremulFragmentShader,
-				inputStreamToString(getClass().getResourceAsStream("vertuipremul.glsl")),
-				null,
-				inputStreamToString(getClass().getResourceAsStream("fraguipremul.glsl")));
-
 		initUniforms();
 	}
 
@@ -480,9 +512,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniProjectionMatrix = gl.glGetUniformLocation(glProgram, "projectionMatrix");
 		uniBrightness = gl.glGetUniformLocation(glProgram, "brightness");
 		uniSmoothBanding = gl.glGetUniformLocation(glProgram, "smoothBanding");
+		uniUseFog = gl.glGetUniformLocation(glProgram, "useFog");
+		uniFogColor = gl.glGetUniformLocation(glProgram, "fogColor");
+		uniFogDepth = gl.glGetUniformLocation(glProgram, "fogDepth");
+		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
-		uniTexPremul = gl.glGetUniformLocation(glUiPremulProgram, "tex");
 		uniTextures = gl.glGetUniformLocation(glProgram, "textures");
 		uniTextureOffsets = gl.glGetUniformLocation(glProgram, "textureOffsets");
 
@@ -535,17 +570,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		gl.glDeleteProgram(glUiProgram);
 		glUiProgram = -1;
-
-		///
-
-		gl.glDeleteShader(glUiPremulVertexShader);
-		glUiPremulVertexShader = -1;
-
-		gl.glDeleteShader(glUiPremulFragmentShader);
-		glUiPremulFragmentShader = -1;
-
-		gl.glDeleteProgram(glUiPremulProgram);
-		glUiPremulProgram = -1;
 	}
 
 	private void initVao()
@@ -631,45 +655,50 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, 0);
 	}
 
-	private void initUiFBO(int width, int height)
+	private void initSceneFbo(int width, int height, int aaSamples)
 	{
 		// Create and bind the FBO
-		fboUiHandle = glGenFrameBuffer(gl);
-		gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, fboUiHandle);
+		fboSceneHandle = glGenFrameBuffer(gl);
+		gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, fboSceneHandle);
 
-		// Create the texture to render to
-		texUiHandle = glGenTexture(gl);
-		gl.glBindTexture(gl.GL_TEXTURE_2D, texUiHandle);
-		gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, width, height, 0, gl.GL_RGBA, gl.GL_UNSIGNED_BYTE, null);
+		// Create color render buffer
+		rboSceneHandle = glGenRenderbuffer(gl);
+		gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, rboSceneHandle);
+		gl.glRenderbufferStorageMultisample(gl.GL_RENDERBUFFER, aaSamples, gl.GL_RGBA, width, height);
+		gl.glFramebufferRenderbuffer(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, gl.GL_RENDERBUFFER, rboSceneHandle);
 
-		// Since this is an intermediate the same size as the input, just use nearest neighbors
-		gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST);
-		gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
+		// Create texture
+		texSceneHandle = glGenTexture(gl);
+		gl.glBindTexture(gl.GL_TEXTURE_2D_MULTISAMPLE, texSceneHandle);
+		gl.glTexImage2DMultisample(gl.GL_TEXTURE_2D_MULTISAMPLE, aaSamples, gl.GL_RGBA, width, height, true);
 
-		// Attach the texture to the framebuffer
-		gl.glFramebufferTexture(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, texUiHandle, 0);
-
-		// Specify that we're going to draw onto color attachment 0
-		int drawLocations[] = { gl.GL_COLOR_ATTACHMENT0 };
-		gl.glDrawBuffers(1, drawLocations, 0);
+		// Bind texture
+		gl.glFramebufferTexture2D(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, gl.GL_TEXTURE_2D_MULTISAMPLE, texSceneHandle, 0);
 
 		// Reset
+		gl.glBindTexture(gl.GL_TEXTURE_2D_MULTISAMPLE, 0);
 		gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0);
-		gl.glBindTexture(gl.GL_TEXTURE_2D, 0);
+		gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, 0);
 	}
 
-	private void shutdownUiFBO()
+	private void shutdownSceneFbo()
 	{
-		if (fboUiHandle != -1)
+		if (texSceneHandle != -1)
 		{
-			glDeleteFrameBuffer(gl, fboUiHandle);
-			fboUiHandle = -1;
+			glDeleteTexture(gl, texSceneHandle);
+			texSceneHandle = -1;
 		}
 
-		if (texUiHandle != -1)
+		if (fboSceneHandle != -1)
 		{
-			glDeleteTexture(gl, texUiHandle);
-			texUiHandle = -1;
+			glDeleteFrameBuffer(gl, fboSceneHandle);
+			fboSceneHandle = -1;
+		}
+
+		if (rboSceneHandle != -1)
+		{
+			glDeleteRenderbuffers(gl, rboSceneHandle);
+			rboSceneHandle = -1;
 		}
 	}
 
@@ -703,7 +732,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
 		scene.setDrawDistance(drawDistance);
 	}
-
 
 	public void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
 							SceneTilePaint paint, int tileZ, int tileX, int tileY,
@@ -790,7 +818,48 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			lastViewportHeight = viewportHeight;
 		}
 
+		// Setup anti-aliasing
+		final AntiAliasingMode antiAliasingMode = config.antiAliasingMode();
+		final boolean aaEnabled = antiAliasingMode != AntiAliasingMode.DISABLED;
+
+		if (aaEnabled)
+		{
+			gl.glEnable(gl.GL_MULTISAMPLE);
+
+			final Dimension stretchedDimensions = client.getStretchedDimensions();
+
+			final int stretchedCanvasWidth = client.isStretchedEnabled() ? stretchedDimensions.width : canvasWidth;
+			final int stretchedCanvasHeight = client.isStretchedEnabled() ? stretchedDimensions.height : canvasHeight;
+
+			// Re-create fbo
+			if (lastStretchedCanvasWidth != stretchedCanvasWidth
+				|| lastStretchedCanvasHeight != stretchedCanvasHeight
+				|| lastAntiAliasingMode != antiAliasingMode)
+			{
+				shutdownSceneFbo();
+
+				final int maxSamples = glGetInteger(gl, gl.GL_MAX_SAMPLES);
+				final int samples = Math.min(antiAliasingMode.getSamples(), maxSamples);
+
+				initSceneFbo(stretchedCanvasWidth, stretchedCanvasHeight, samples);
+
+				lastStretchedCanvasWidth = stretchedCanvasWidth;
+				lastStretchedCanvasHeight = stretchedCanvasHeight;
+			}
+
+			gl.glBindFramebuffer(gl.GL_DRAW_FRAMEBUFFER, fboSceneHandle);
+		}
+		else
+		{
+			gl.glDisable(gl.GL_MULTISAMPLE);
+			shutdownSceneFbo();
+		}
+
+		lastAntiAliasingMode = antiAliasingMode;
+
 		// Clear scene
+		int sky = client.getSkyboxColor();
+		gl.glClearColor((sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
 		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
 
 		// Upload buffers
@@ -956,6 +1025,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			gl.glUseProgram(glProgram);
 
+			final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
+			final int fogDepth = config.fogDepth();
+			gl.glUniform1i(uniUseFog, fogDepth > 0 ? 1 : 0);
+			gl.glUniform4f(uniFogColor, (sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
+			gl.glUniform1i(uniFogDepth, fogDepth);
+			gl.glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
+
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
 			gl.glUniform1f(uniSmoothBanding, config.smoothBanding() ? 0f : 1f);
@@ -1006,6 +1082,18 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUseProgram(0);
 		}
 
+		if (aaEnabled)
+		{
+			gl.glBindFramebuffer(gl.GL_READ_FRAMEBUFFER, fboSceneHandle);
+			gl.glBindFramebuffer(gl.GL_DRAW_FRAMEBUFFER, 0);
+			gl.glBlitFramebuffer(0, 0, lastStretchedCanvasWidth, lastStretchedCanvasHeight,
+				0, 0, lastStretchedCanvasWidth, lastStretchedCanvasHeight,
+				gl.GL_COLOR_BUFFER_BIT, gl.GL_NEAREST);
+
+			// Reset
+			gl.glBindFramebuffer(gl.GL_READ_FRAMEBUFFER, 0);
+		}
+
 		vertexBuffer.clear();
 		uvBuffer.clear();
 		modelBuffer.clear();
@@ -1040,16 +1128,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int width = bufferProvider.getWidth();
 		final int height = bufferProvider.getHeight();
 
-		// Don't blend on the login screen because the fires overflow their alphas.
-		final GameState gameState = client.getGameState();
-		if (gameState == GameState.LOGGED_IN)
-		{
-			gl.glEnable(gl.GL_BLEND);
-		}
-		else
-		{
-			gl.glDisable(gl.GL_BLEND);
-		}
+		gl.glEnable(gl.GL_BLEND);
 
 		vertexBuffer.clear(); // reuse vertex buffer for interface
 		vertexBuffer.ensureCapacity(pixels.length);
@@ -1058,7 +1137,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		interfaceBuffer.put(pixels);
 		vertexBuffer.flip();
 
-		gl.glBlendFunc(gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glBlendFunc(gl.GL_ONE, gl.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
 
 		if (canvasWidth != lastCanvasWidth || canvasHeight != lastCanvasHeight)
@@ -1066,49 +1145,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, width, height, 0, gl.GL_BGRA, gl.GL_UNSIGNED_INT_8_8_8_8_REV, interfaceBuffer);
 			lastCanvasWidth = canvasWidth;
 			lastCanvasHeight = canvasHeight;
-
-			shutdownUiFBO();
-			initUiFBO(width, height);
 		}
 		else
 		{
 			gl.glTexSubImage2D(gl.GL_TEXTURE_2D, 0, 0, 0, width, height, gl.GL_BGRA, gl.GL_UNSIGNED_INT_8_8_8_8_REV, interfaceBuffer);
 		}
 
-		// First pass: pre-multiply alpha. But only do it if we're blending.
-		if (gameState == GameState.LOGGED_IN && client.isStretchedEnabled() && !client.isStretchedFast())
-		{
-			// Setup
-			gl.glDisable(gl.GL_BLEND);
-			gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, fboUiHandle);
-			gl.glViewport(0, 0, width, height);
-			gl.glClear(gl.GL_COLOR_BUFFER_BIT);
+		gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
 
-			// Set up uniforms
-			gl.glUseProgram(glUiPremulProgram);
-			gl.glUniform1i(uniTexPremul, 0);
-
-			// Do render call
-			gl.glBindVertexArray(vaoUiHandle);
-			gl.glDrawArrays(gl.GL_TRIANGLE_FAN, 0, 4);
-
-			// Cleanup
-			gl.glBindFramebuffer(gl.GL_FRAMEBUFFER, 0);
-			gl.glEnable(gl.GL_BLEND);
-
-			// Bind the texture we just drew to for use in pass 2
-			gl.glBindTexture(gl.GL_TEXTURE_2D, texUiHandle);
-
-			// Change the blend function to use pre-multiplied alpha
-			gl.glBlendFunc(gl.GL_ONE, gl.GL_ONE_MINUS_SRC_ALPHA);
-		}
-		else
-		{
-			gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
-		}
-
-
-		// Second pass: render onto the screen
 		if (client.isStretchedEnabled())
 		{
 			Dimension dim = client.getStretchedDimensions();

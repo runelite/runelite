@@ -151,6 +151,6 @@ public abstract class ScriptVMMixin implements RSClient
 		System.arraycopy(args, 0, cargs, 1, args.length);
 		RSScriptEvent se = createScriptEvent();
 		se.setArguments(cargs);
-		runScript(se, 200000);
+		runScript(se, 5000000);
 	}
 }
