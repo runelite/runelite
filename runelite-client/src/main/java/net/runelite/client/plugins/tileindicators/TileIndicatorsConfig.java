@@ -41,7 +41,7 @@ public interface TileIndicatorsConfig extends Config
 	)
 	default Color highlightDestinationColor()
 	{
-		return Color.GRAY;
+		return new Color(0, 0, 0, 0);
 	}
 
 	@ConfigItem(
@@ -71,6 +71,6 @@ public interface TileIndicatorsConfig extends Config
 	)
 	default Color highlightHoveredColor()
 	{
-		return Color.GRAY;
+		return new Color(0, 0, 0, 0);
 	}
 }
