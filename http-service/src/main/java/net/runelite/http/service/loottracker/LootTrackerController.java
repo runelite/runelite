@@ -66,7 +66,7 @@ public class LootTrackerController
 	}
 
 	@RequestMapping
-	public Collection<LootRecord> getLootRecords(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "count", defaultValue = "1024") int count) throws IOException
+	public Collection<LootRecord> getLootRecords(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "count", defaultValue = "1024") int count, @RequestParam(value = "start", defaultValue = "0") int start) throws IOException
 	{
 		SessionEntry e = auth.handle(request, response);
 		if (e == null)
@@ -75,7 +75,7 @@ public class LootTrackerController
 			return null;
 		}
 
-		return service.get(e.getUser(), count);
+		return service.get(e.getUser(), count, start);
 	}
 
 	@DeleteMapping
