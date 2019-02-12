@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, SomeoneWithAnInternetConnection
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.mapping.Import;
-
-public interface RSSoundEffect
+/**
+ * Volume values for each of the stops on the volume interface
+ */
+public final class SoundEffectVolume
 {
-	@Import("toRawAudioNode")
-	RSRawAudioNode toRawAudioNode();
+	public static final int MUTED = 0;
+	public static final int LOW = 32;
+	public static final int MEDIUM_LOW = 64;
+	public static final int MEDIUM_HIGH = 96;
+	public static final int HIGH = 127;
 }

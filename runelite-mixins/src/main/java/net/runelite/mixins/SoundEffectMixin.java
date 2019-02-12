@@ -24,14 +24,18 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.SoundEffectVolume;
 import net.runelite.api.events.AreaSoundEffectPlayed;
 import net.runelite.api.events.SoundEffectPlayed;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSAudioTaskNode;
 import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSRawAudioNode;
 import net.runelite.rs.api.RSSoundEffect;
+import net.runelite.rs.api.RSTaskDataNode;
 
 @Mixin(RSClient.class)
 public abstract class SoundEffectMixin implements RSClient
@@ -76,6 +80,30 @@ public abstract class SoundEffectMixin implements RSClient
 		soundLocations[queuedSoundEffectCount] = position;
 
 		setQueuedSoundEffectCount(queuedSoundEffectCount + 1);
+	}
+
+	@Inject
+	@Override
+	public void playSoundEffect(int id, int volume)
+	{
+		RSSoundEffect soundEffect = getTrack(getIndexCache4(), id, 0);
+		if (soundEffect == null)
+		{
+			return;
+		}
+
+		// If the current volume is not muted, use it instead
+		final int soundEffectVolume = getSoundEffectVolume();
+		if (soundEffectVolume != SoundEffectVolume.MUTED)
+		{
+			volume = soundEffectVolume;
+		}
+
+		RSRawAudioNode rawAudioNode = soundEffect.toRawAudioNode().applyResampler(getSoundEffectResampler());
+		RSAudioTaskNode audioTaskNode = createSoundEffectAudioTaskNode(rawAudioNode, 100, volume);
+		audioTaskNode.setNumLoops(1);
+
+		getSoundEffectAudioQueue().queueAudioTaskNode((RSTaskDataNode) audioTaskNode);
 	}
 
 	@FieldHook("queuedSoundEffectCount")
