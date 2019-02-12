@@ -1033,13 +1033,12 @@ public interface Client extends GameEngine
 	String[] getStringStack();
 
 	/**
-	 * Checks whether a player is on the friends list.
+	 * Checks whether a player is on the friends list and online.
 	 *
 	 * @param name the name of the player
-	 * @param mustBeLoggedIn if they player is online
 	 * @return true if the player is friends
 	 */
-	boolean isFriended(String name, boolean mustBeLoggedIn);
+	boolean isFriended(String name);
 
 	/**
 	 * Gets the number of players in the clan chat.

@@ -692,10 +692,10 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public boolean isFriended(String name, boolean mustBeLoggedIn)
+	public boolean isFriended(String name)
 	{
 		RSName rsName = createName(name, getLoginType());
-		return getFriendManager().isFriended(rsName, mustBeLoggedIn);
+		return getFriendManager().isFriended(rsName, true);
 	}
 
 	@Inject
