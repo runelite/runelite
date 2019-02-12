@@ -72,7 +72,7 @@ class TargetWeaknessOverlay extends Overlay
 			return null;
 		}
 
-		final Task curTask = Task.getTask(plugin.getTaskName());
+		final Task curTask = Task.getTask(plugin.getCurrentTask().getTaskName());
 		if (curTask == null || curTask.getWeaknessThreshold() < 0 || curTask.getWeaknessItem() < 0)
 		{
 			return null;

@@ -171,8 +171,8 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("Suqahs", slayerPlugin.getTaskName());
-		assertEquals(231, slayerPlugin.getAmount());
+		assertEquals("Suqahs", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(231, slayerPlugin.getCurrentTask().getAmount());
 	}
 
 	@Test
@@ -183,9 +183,9 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("Wyrms", slayerPlugin.getTaskName());
-		assertEquals(147, slayerPlugin.getAmount());
-		assertEquals("Karuulm Slayer Dungeon", slayerPlugin.getTaskLocation());
+		assertEquals("Wyrms", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(147, slayerPlugin.getCurrentTask().getAmount());
+		assertEquals("Karuulm Slayer Dungeon", slayerPlugin.getCurrentTask().getTaskLocation());
 	}
 
 	@Test
@@ -196,9 +196,9 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("Hellhounds", slayerPlugin.getTaskName());
-		assertEquals(142, slayerPlugin.getAmount());
-		assertEquals("Witchhaven Dungeon", slayerPlugin.getTaskLocation());
+		assertEquals("Hellhounds", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(142, slayerPlugin.getCurrentTask().getAmount());
+		assertEquals("Witchhaven Dungeon", slayerPlugin.getCurrentTask().getTaskLocation());
 	}
 
 	@Test
@@ -209,8 +209,8 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("goblins", slayerPlugin.getTaskName());
-		assertEquals(17, slayerPlugin.getAmount());
+		assertEquals("goblins", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(17, slayerPlugin.getCurrentTask().getAmount());
 	}
 
 	@Test
@@ -221,8 +221,8 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("Suqahs", slayerPlugin.getTaskName());
-		assertEquals(211, slayerPlugin.getAmount());
+		assertEquals("Suqahs", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(211, slayerPlugin.getCurrentTask().getAmount());
 	}
 
 	@Test
@@ -233,8 +233,8 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("Vet'ion", slayerPlugin.getTaskName());
-		assertEquals(3, slayerPlugin.getAmount());
+		assertEquals("Vet'ion", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(3, slayerPlugin.getCurrentTask().getAmount());
 		assertEquals(914, slayerPlugin.getPoints());
 	}
 
@@ -246,8 +246,8 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("Chaos Elemental", slayerPlugin.getTaskName());
-		assertEquals(3, slayerPlugin.getAmount());
+		assertEquals("Chaos Elemental", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(3, slayerPlugin.getCurrentTask().getAmount());
 		assertEquals(914, slayerPlugin.getPoints());
 	}
 
@@ -257,8 +257,8 @@ public class SlayerPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "", TASK_NEW_FROM_PARTNER, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals("Dust Devils", slayerPlugin.getTaskName());
-		assertEquals(377, slayerPlugin.getAmount());
+		assertEquals("Dust Devils", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(377, slayerPlugin.getCurrentTask().getAmount());
 	}
 
 	@Test
@@ -266,8 +266,8 @@ public class SlayerPluginTest
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "", TASK_CHECKSLAYERGEM, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
-		assertEquals("Suqahs", slayerPlugin.getTaskName());
-		assertEquals(211, slayerPlugin.getAmount());
+		assertEquals("Suqahs", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(211, slayerPlugin.getCurrentTask().getAmount());
 	}
 
 	@Test
@@ -275,9 +275,9 @@ public class SlayerPluginTest
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "", TASK_CHECKSLAYERGEM_WILDERNESS, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
-		assertEquals("Suqahs", slayerPlugin.getTaskName());
-		assertEquals(211, slayerPlugin.getAmount());
-		assertEquals("Wilderness", slayerPlugin.getTaskLocation());
+		assertEquals("Suqahs", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(211, slayerPlugin.getCurrentTask().getAmount());
+		assertEquals("Wilderness", slayerPlugin.getCurrentTask().getTaskLocation());
 	}
 
 	@Test
@@ -286,9 +286,9 @@ public class SlayerPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "", TASK_CHECKSLAYERGEM_KONAR, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals("Blue dragons", slayerPlugin.getTaskName());
-		assertEquals(122, slayerPlugin.getAmount());
-		assertEquals("Ogre Enclave", slayerPlugin.getTaskLocation());
+		assertEquals("Blue dragons", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(122, slayerPlugin.getCurrentTask().getAmount());
+		assertEquals("Ogre Enclave", slayerPlugin.getCurrentTask().getTaskLocation());
 	}
 
 	@Test
@@ -299,8 +299,8 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
 		slayerPlugin.onGameTick(new GameTick());
 
-		assertEquals("suqahs", slayerPlugin.getTaskName());
-		assertEquals(222, slayerPlugin.getAmount());
+		assertEquals("suqahs", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(222, slayerPlugin.getCurrentTask().getAmount());
 	}
 
 	@Test
@@ -325,8 +325,8 @@ public class SlayerPluginTest
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(1, slayerPlugin.getStreak());
-		assertEquals("", slayerPlugin.getTaskName());
-		assertEquals(0, slayerPlugin.getAmount());
+		assertEquals("", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(0, slayerPlugin.getCurrentTask().getAmount());
 	}
 
 	@Test
@@ -336,8 +336,8 @@ public class SlayerPluginTest
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(3, slayerPlugin.getStreak());
-		assertEquals("", slayerPlugin.getTaskName());
-		assertEquals(0, slayerPlugin.getAmount());
+		assertEquals("", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(0, slayerPlugin.getCurrentTask().getAmount());
 	}
 
 	@Test
@@ -347,8 +347,8 @@ public class SlayerPluginTest
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(9, slayerPlugin.getStreak());
-		assertEquals("", slayerPlugin.getTaskName());
-		assertEquals(0, slayerPlugin.getAmount());
+		assertEquals("", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(0, slayerPlugin.getCurrentTask().getAmount());
 		assertEquals(18_000, slayerPlugin.getPoints());
 	}
 
@@ -359,35 +359,35 @@ public class SlayerPluginTest
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(2465, slayerPlugin.getStreak());
-		assertEquals("", slayerPlugin.getTaskName());
-		assertEquals(0, slayerPlugin.getAmount());
+		assertEquals("", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(0, slayerPlugin.getCurrentTask().getAmount());
 		assertEquals(17_566_000, slayerPlugin.getPoints());
 	}
 
 	@Test
 	public void testComplete()
 	{
-		slayerPlugin.setTaskName("cows");
-		slayerPlugin.setAmount(42);
+		slayerPlugin.getCurrentTask().setTaskName("cows");
+		slayerPlugin.getCurrentTask().setAmount(42);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "Perterter", TASK_COMPLETE, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals("", slayerPlugin.getTaskName());
-		assertEquals(0, slayerPlugin.getAmount());
+		assertEquals("", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(0, slayerPlugin.getCurrentTask().getAmount());
 	}
 
 	@Test
 	public void testCancelled()
 	{
-		slayerPlugin.setTaskName("cows");
-		slayerPlugin.setAmount(42);
+		slayerPlugin.getCurrentTask().setTaskName("cows");
+		slayerPlugin.getCurrentTask().setAmount(42);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "Perterter", TASK_CANCELED, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals("", slayerPlugin.getTaskName());
-		assertEquals(0, slayerPlugin.getAmount());
+		assertEquals("", slayerPlugin.getCurrentTask().getTaskName());
+		assertEquals(0, slayerPlugin.getCurrentTask().getAmount());
 	}
 
 	@Test
@@ -409,13 +409,13 @@ public class SlayerPluginTest
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "", BRACLET_SLAUGHTER, null, 0);
 
-		slayerPlugin.setAmount(42);
+		slayerPlugin.getCurrentTask().setAmount(42);
 		slayerPlugin.setSlaughterChargeCount(10);
 
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(9, slayerPlugin.getSlaughterChargeCount());
-		assertEquals(43, slayerPlugin.getAmount());
+		assertEquals(43, slayerPlugin.getCurrentTask().getAmount());
 
 		chatMessageEvent = new ChatMessage(null, SERVER, "", CHAT_BRACELET_SLAUGHTER_CHARGE, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
@@ -443,13 +443,13 @@ public class SlayerPluginTest
 
 		chatMessageEvent = new ChatMessage(null, SERVER, "", BRACLET_SLAUGHTER_V2, null, 0);
 
-		slayerPlugin.setAmount(42);
+		slayerPlugin.getCurrentTask().setAmount(42);
 		slayerPlugin.setSlaughterChargeCount(2);
 
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(1, slayerPlugin.getSlaughterChargeCount());
-		assertEquals(43, slayerPlugin.getAmount());
+		assertEquals(43, slayerPlugin.getCurrentTask().getAmount());
 	}
 
 	@Test
@@ -457,12 +457,12 @@ public class SlayerPluginTest
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "", BRACLET_EXPEDITIOUS, null, 0);
 
-		slayerPlugin.setAmount(42);
+		slayerPlugin.getCurrentTask().setAmount(42);
 		slayerPlugin.setExpeditiousChargeCount(10);
 
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(41, slayerPlugin.getAmount());
+		assertEquals(41, slayerPlugin.getCurrentTask().getAmount());
 		assertEquals(9, slayerPlugin.getExpeditiousChargeCount());
 
 		chatMessageEvent = new ChatMessage(null, SERVER, "", CHAT_BRACELET_EXPEDITIOUS_CHARGE, null, 0);
@@ -491,12 +491,12 @@ public class SlayerPluginTest
 
 		chatMessageEvent = new ChatMessage(null, SERVER, "", BRACLET_EXPEDITIOUS_V2, null, 0);
 
-		slayerPlugin.setAmount(42);
+		slayerPlugin.getCurrentTask().setAmount(42);
 		slayerPlugin.setExpeditiousChargeCount(2);
 
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(41, slayerPlugin.getAmount());
+		assertEquals(41, slayerPlugin.getCurrentTask().getAmount());
 		assertEquals(1, slayerPlugin.getExpeditiousChargeCount());
 	}
 
@@ -507,15 +507,15 @@ public class SlayerPluginTest
 		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
 
-		slayerPlugin.setTaskName("Suqahs");
-		slayerPlugin.setAmount(231);
+		slayerPlugin.getCurrentTask().setTaskName("Suqahs");
+		slayerPlugin.getCurrentTask().setAmount(231);
 
 		ChatMessage chatMessage = new ChatMessage(null, SERVER, "", TASK_UPDATE_COMBAT_BRACELET, null, 0);
 		slayerPlugin.onChatMessage(chatMessage);
 
-		assertEquals("Suqahs", slayerPlugin.getTaskName());
+		assertEquals("Suqahs", slayerPlugin.getCurrentTask().getTaskName());
 		slayerPlugin.killedOne();
-		assertEquals(30, slayerPlugin.getAmount());
+		assertEquals(30, slayerPlugin.getCurrentTask().getAmount());
 	}
 
 	@Test
