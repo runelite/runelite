@@ -300,6 +300,10 @@ public class XpTrackerPlugin extends Plugin
 			final NPC npc = (NPC) interacting;
 			xpState.updateNpcExperience(skill, npc, npcManager.getHealth(npc.getName(), npc.getCombatLevel()));
 		}
+		else if (Skill.AGILITY == skill)
+		{
+			xpState.updateAgilityExperience(client.getLocalPlayer().getWorldLocation(), currentXp);
+		}
 
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
 		final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);

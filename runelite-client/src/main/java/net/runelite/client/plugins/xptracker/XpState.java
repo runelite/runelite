@@ -24,11 +24,13 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
 import lombok.NonNull;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
 
 /**
  * Internal state for the XpTrackerPlugin
@@ -195,6 +197,59 @@ class XpState
 		final XpAction xpAction = state.getXpAction(XpActionType.ACTOR_HEALTH);
 		xpAction.setActions(xpAction.getActions() + 1);
 		return xpAction.isActionsHistoryInitialized() ? XpUpdateResult.UPDATED : XpUpdateResult.NO_CHANGE;
+	}
+
+	/**
+	 * Updates skill with average actions based on currently completed course.
+	 * @param loaction current player location
+	 * @param currentXp current experience in agility skill
+	 */
+	void updateAgilityExperience(WorldPoint location, int currentXp)
+	{
+		if (location == null)
+		{
+			return;
+		}
+
+		final XpStateSingle state = getSkill(Skill.AGILITY);
+
+		// Determine how much EXP was actually gained
+		final int lastXp = state.getStartXp() + state.getXpGained();
+		final int skillGained = currentXp - lastXp;
+
+		// Find and verify course
+		final AgilityCourse course = AgilityCourse.getCourse(location.getRegionID());
+
+		if (course == null
+			|| (course.getCourseEndWorldPoints().length == 0
+			? Math.abs(course.getLastObstacleXp() - skillGained) > 1
+			: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(location))))
+		{
+			return;
+		}
+
+		// Update action
+		final int actionExp = course.getLastObstacleXp();
+		final XpAction action = state.getXpAction(XpActionType.AGILITY_COURSE);
+		action.setActions(action.getActions() + 1);
+
+		if (action.isActionsHistoryInitialized())
+		{
+			action.getActionExps()[action.getActionExpIndex()] = actionExp;
+			action.setActionExpIndex((action.getActionExpIndex() + 1) % action.getActionExps().length);
+		}
+		else
+		{
+			// So we have a decent average off the bat, lets populate all values with what we see.
+			for (int i = 0; i < action.getActionExps().length; i++)
+			{
+				action.getActionExps()[i] = actionExp;
+			}
+
+			action.setActionsHistoryInitialized(true);
+		}
+
+		state.setActionType(XpActionType.AGILITY_COURSE);
 	}
 
 	void tick(Skill skill, long delta)
