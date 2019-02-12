@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.Set;
@@ -73,6 +74,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
+	private static final String ITEM_KEY_PREFIX_FIXED = "item_fixed_";
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
 		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
@@ -182,26 +184,53 @@ public class MenuEntrySwapperPlugin extends Plugin
 		client.getItemCompositionCache().reset();
 	}
 
-	private Integer getSwapConfig(int itemId)
+	private boolean isSwapConfigFixed(int itemId)
 	{
-		itemId = ItemVariationMapping.map(itemId);
-		String config = configManager.getConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
-		if (config == null || config.isEmpty())
-		{
-			return null;
-		}
-
-		return Integer.parseInt(config);
+		return !Strings.isNullOrEmpty(configManager.getConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX_FIXED + itemId));
 	}
 
-	private void setSwapConfig(int itemId, int index)
+	private Integer getSwapConfig(int itemId)
 	{
+		// Try fixed config first
+		String config = configManager.getConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX_FIXED + itemId);
+		if (!Strings.isNullOrEmpty(config))
+		{
+			return Integer.parseInt(config);
+		}
+
 		itemId = ItemVariationMapping.map(itemId);
-		configManager.setConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId, index);
+		config = configManager.getConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
+		if (!Strings.isNullOrEmpty(config))
+		{
+			return Integer.parseInt(config);
+		}
+
+		return null;
+	}
+
+	private void setSwapConfig(int itemId, int index, boolean toggle)
+	{
+		// Check if config is fixed
+		boolean fixed = toggle && !isSwapConfigFixed(itemId);
+
+		// Unset config first
+		unsetSwapConfig(itemId);
+
+		// Set either fixed or variation based on config
+		if (fixed)
+		{
+			configManager.setConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX_FIXED + itemId, index);
+		}
+		else
+		{
+			itemId = ItemVariationMapping.map(itemId);
+			configManager.setConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId, index);
+		}
 	}
 
 	private void unsetSwapConfig(int itemId)
 	{
+		configManager.unsetConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX_FIXED + itemId);
 		itemId = ItemVariationMapping.map(itemId);
 		configManager.unsetConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
 	}
@@ -280,7 +309,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 				if (option.equals(entry.getOption()))
 				{
-					entry.setOption("* " + option);
+					boolean fixed = isSwapConfigFixed(itemId);
+					entry.setOption((fixed ? "** " : "* ") + option);
 				}
 			}
 		}
@@ -309,9 +339,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		String option = event.getMenuOption();
+		String origOption = event.getMenuOption();
+		String option = origOption.replaceAll("\\*+ ", "");
 		String target = event.getMenuTarget();
 		ItemComposition itemComposition = client.getItemDefinition(itemId);
+		boolean toggle = origOption.startsWith("*");
 
 		if (option.equals(RESET) && target.equals(MENU_TARGET))
 		{
@@ -347,7 +379,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (valid)
 		{
-			setSwapConfig(itemId, index);
+			setSwapConfig(itemId, index, toggle);
 		}
 	}
 
@@ -360,7 +392,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		final int eventId = event.getIdentifier();
-		final String option = Text.removeTags(event.getOption()).toLowerCase();
+		final String option = Text.removeTags(event.getOption()).toLowerCase().replaceAll("\\*+ ", "");
 		final String target = Text.removeTags(event.getTarget()).toLowerCase();
 		final NPC hintArrowNpc  = client.getHintArrowNpc();
 
