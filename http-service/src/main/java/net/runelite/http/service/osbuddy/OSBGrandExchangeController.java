@@ -22,48 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.osbuddy;
+package net.runelite.http.service.osbuddy;
 
-import com.google.gson.JsonParseException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
-public class GrandExchangeClient
+@RestController
+@RequestMapping("/osb/ge")
+public class OSBGrandExchangeController
 {
-	public GrandExchangeResult lookupItem(int itemId) throws IOException
+	private final OSBGrandExchangeService grandExchangeService;
+
+	@Autowired
+	public OSBGrandExchangeController(OSBGrandExchangeService grandExchangeService)
 	{
-		final HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("osb")
-			.addPathSegment("ge")
-			.addQueryParameter("itemId", Integer.toString(itemId))
-			.build();
+		this.grandExchangeService = grandExchangeService;
+	}
 
-		log.debug("Built URI: {}", url);
+	@RequestMapping
+	public ResponseEntity<GrandExchangeEntry> get(@RequestParam("itemId") int itemId) throws ExecutionException
+	{
+		GrandExchangeEntry grandExchangeEntry = grandExchangeService.get(itemId);
 
-		final Request request = new Request.Builder()
-			.url(url)
-			.build();
-
-		try (final Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
-		{
-			if (!response.isSuccessful())
-			{
-				throw new IOException("Error looking up item id: " + response.message());
-			}
-
-			final InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), GrandExchangeResult.class);
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
+		return ResponseEntity.ok()
+			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
+			.body(grandExchangeEntry);
 	}
 }

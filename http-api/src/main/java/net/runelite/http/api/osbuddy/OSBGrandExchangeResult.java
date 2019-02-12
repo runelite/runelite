@@ -22,36 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.osbuddy;
+package net.runelite.http.api.osbuddy;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.CacheControl;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import java.time.Instant;
+import lombok.Data;
 
-@RestController
-@RequestMapping("/osb/ge")
-public class GrandExchangeController
+@Data
+public class OSBGrandExchangeResult
 {
-	private final GrandExchangeService grandExchangeService;
-
-	@Autowired
-	public GrandExchangeController(GrandExchangeService grandExchangeService)
-	{
-		this.grandExchangeService = grandExchangeService;
-	}
-
-	@RequestMapping
-	public ResponseEntity<GrandExchangeEntry> get(@RequestParam("itemId") int itemId) throws ExecutionException
-	{
-		GrandExchangeEntry grandExchangeEntry = grandExchangeService.get(itemId);
-
-		return ResponseEntity.ok()
-			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
-			.body(grandExchangeEntry);
-	}
+	private int item_id;
+	private int buy_average;
+	private int sell_average;
+	private int overall_average;
+	private Instant last_update;
 }

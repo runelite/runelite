@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, AeonLucid <https://github.com/AeonLucid>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.osbuddy;
+package net.runelite.client.plugins.grandexchange;
 
-import java.time.Instant;
 import lombok.Data;
+import net.runelite.api.GrandExchangeOfferState;
 
 @Data
-public class GrandExchangeResult
+class SavedOffer
 {
-	private int item_id;
-	private int buy_average;
-	private int sell_average;
-	private int overall_average;
-	private Instant last_update;
+	private int itemId;
+	private int quantitySold;
+	private int totalQuantity;
+	private int price;
+	private int spent;
+	private GrandExchangeOfferState state;
 }
