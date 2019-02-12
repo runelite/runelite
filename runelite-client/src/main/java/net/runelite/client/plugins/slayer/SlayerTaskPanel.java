@@ -268,10 +268,15 @@ public class SlayerTaskPanel extends PluginPanel
 			// current task has ended even though it should still have 1 amount remaining b/c the ending chat message
 			// pops before the slayer xp drop so we need to force the remaining kc to zero and add the last kc to
 			// the elapsed kc
-			current.getTaskData().setAmount(0);
-			current.getTaskData().setElapsedKills(current.getTaskData().getElapsedKills() + 1);
-			// current task has ended so it should be paused
-			current.update(true, true, current.getTaskData());
+			if (current.getTaskData().getAmount() != 0) // must check not equal zero b/c otherwise this would constantly tick
+			{
+				int amountDelta = current.getTaskData().getAmount();
+				current.getTaskData().setAmount(0);
+				current.getTaskData().setElapsedKills(current.getTaskData().getElapsedKills() + amountDelta);
+				// current task has ended so it should be paused
+				current.update(true, true, current.getTaskData());
+				updateOverall();
+			}
 			return;
 		}
 
