@@ -237,7 +237,7 @@ public class SlayerTaskPanel extends PluginPanel
 
 	private static boolean isEmptyTask(TaskData taskData)
 	{
-		return taskData.getTaskName().equals("") && taskData.getAmount() == 0 && taskData.getInitialAmount() == 0;
+		return (taskData.getTaskName() == null || taskData.getTaskName().equals("")) && taskData.getAmount() == 0 && taskData.getInitialAmount() == 0;
 	}
 
 	private void showMainView()
@@ -253,6 +253,23 @@ public class SlayerTaskPanel extends PluginPanel
 		tasks.add(0, newBox);
 		showMainView();
 		return newBox;
+	}
+
+	private boolean stringsEqualIncludeNull(String str0, String str1)
+	{
+		if (str0 == null && str1 == null)
+		{
+			return true; // both are null
+		}
+		else if (str0 == null || str1 == null)
+		{
+			return false; // only 1 is null
+		}
+		else
+		{
+			// none are null so equals check is safe
+			return str0.equals(str1);
+		}
 	}
 
 	void updateCurrentTask(boolean updated, boolean paused, TaskData newData, boolean isNewAssignment)
@@ -294,9 +311,9 @@ public class SlayerTaskPanel extends PluginPanel
 			// if here there is a current task so check if the current task matches
 			// the update being sent
 			TaskBox current = tasks.get(0);
-			if (!current.getTaskData().getTaskName().equals(newData.getTaskName()) ||
-					!current.getTaskData().getTaskLocation().equals(newData.getTaskLocation()) ||
-					current.getTaskData().getInitialAmount() != newData.getInitialAmount())
+			if (!stringsEqualIncludeNull(current.getTaskData().getTaskName(), newData.getTaskName()) ||
+				!stringsEqualIncludeNull(current.getTaskData().getTaskLocation(), newData.getTaskLocation()) ||
+				current.getTaskData().getInitialAmount() != newData.getInitialAmount())
 			{
 				// current task does not match the update being sent so the current task
 				// must have been outdated - this is necessarily true because if a true

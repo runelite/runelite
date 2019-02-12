@@ -242,8 +242,7 @@ public class SlayerPlugin extends Plugin
 
 		clientToolbar.addNavigation(navButton);
 
-		if (client.getGameState() == GameState.LOGGED_IN
-			&& config.amount() != -1
+		if (config.amount() != -1
 			&& !config.taskName().isEmpty())
 		{
 			points = config.points();
@@ -283,23 +282,7 @@ public class SlayerPlugin extends Plugin
 		{
 			case HOPPING:
 			case LOGGING_IN:
-				cachedXp = 0;
-				currentTask = new TaskData(0, 0, 0,0, 0, "", "", true);
-				loginFlag = true;
 				highlightedTargets.clear();
-				break;
-			case LOGGED_IN:
-				if (config.amount() != -1
-					&& !config.taskName().isEmpty()
-					&& loginFlag)
-				{
-					points = config.points();
-					streak = config.streak();
-					setExpeditiousChargeCount(config.expeditious());
-					setSlaughterChargeCount(config.slaughter());
-					setTask(config.taskName(), config.amount(), config.initialAmount(), true, config.taskLocation());
-					loginFlag = false;
-				}
 				break;
 		}
 	}
@@ -341,6 +324,11 @@ public class SlayerPlugin extends Plugin
 	// (and close npc dialog) or go into the rewards screen which also closes npc dialog
 	private boolean canMatchDialog = true;
 
+	// rising edge detection isn't enough for some reason (don't know why) so in addition to a rising edge rather than
+	// instantly allowing for another assignment we'll do a 2 tick refractory period
+	private static final int FORCED_WAIT = 2;
+	private int forcedWait = -1;
+
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
@@ -360,12 +348,14 @@ public class SlayerPlugin extends Plugin
 				String location = mAssign.group("location");
 				setTask(name, amount, amount, true, location);
 				canMatchDialog = false;
+				forcedWait = FORCED_WAIT;
 			}
 			else if (mAssignFirst.find())
 			{
 				int amount = Integer.parseInt(mAssignFirst.group(2));
 				setTask(mAssignFirst.group(1), amount, amount, true);
 				canMatchDialog = false;
+				forcedWait = FORCED_WAIT;
 			}
 			else if (mAssignBoss.find())
 			{
@@ -373,6 +363,7 @@ public class SlayerPlugin extends Plugin
 				setTask(mAssignBoss.group(1), amount, amount, true);
 				points = Integer.parseInt(mAssignBoss.group(3).replaceAll(",", ""));
 				canMatchDialog = false;
+				forcedWait = FORCED_WAIT;
 			}
 			else if (mCurrent.find())
 			{
@@ -381,9 +372,16 @@ public class SlayerPlugin extends Plugin
 				String location = mCurrent.group("location");
 				setTask(name, amount, currentTask.getInitialAmount(), false, location);
 				canMatchDialog = false;
+				forcedWait = FORCED_WAIT;
 			}
-		} else if (npcDialog == null) {
-			canMatchDialog = true;
+		}
+		else if (npcDialog == null)
+		{
+			if (forcedWait <= 0)
+			{
+				canMatchDialog = true;
+			}
+			forcedWait--;
 		}
 
 		Widget braceletBreakWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
