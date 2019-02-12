@@ -233,7 +233,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		ItemComposition itemComposition = client.getItemDefinition(itemId);
+		ItemComposition itemComposition = client.getItemDefinition(ItemVariationMapping.map(itemId));
 		String itemName = itemComposition.getName();
 		String option = "Use";
 		int shiftClickActionindex = itemComposition.getShiftClickActionIndex();
