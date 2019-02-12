@@ -61,6 +61,8 @@ public class TaskBox extends JPanel
 	private final JLabel remainingDuration = new JLabel();
 	private final JLabel currentKills = new JLabel();
 	private final JLabel remainingKills = new JLabel();
+	private final JLabel currentXp = new JLabel();
+	private final JLabel remainingXp = new JLabel();
 
 	private boolean paused = false;
 
@@ -84,7 +86,7 @@ public class TaskBox extends JPanel
 		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		headerPanel.setLayout(new BorderLayout());
 
-		statsPanel.setLayout(new DynamicGridLayout(2, 2));
+		statsPanel.setLayout(new DynamicGridLayout(3, 2));
 		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		statsPanel.setBorder(new EmptyBorder(9, 2, 9, 2));
 
@@ -92,11 +94,15 @@ public class TaskBox extends JPanel
 		remainingDuration.setFont(FontManager.getRunescapeSmallFont());
 		currentKills.setFont(FontManager.getRunescapeSmallFont());
 		remainingKills.setFont(FontManager.getRunescapeSmallFont());
+		currentXp.setFont(FontManager.getRunescapeSmallFont());
+		remainingXp.setFont(FontManager.getRunescapeSmallFont());
 
 		statsPanel.add(currentDuration);
-		statsPanel.add(currentKills);
 		statsPanel.add(remainingDuration);
+		statsPanel.add(currentKills);
 		statsPanel.add(remainingKills);
+		statsPanel.add(currentXp);
+		statsPanel.add(remainingXp);
 
 		headerPanel.add(taskIcon, BorderLayout.WEST);
 		headerPanel.add(statsPanel, BorderLayout.CENTER);
@@ -159,18 +165,24 @@ public class TaskBox extends JPanel
 		{
 			if (getParent() != panel)
 			{
-				panel.add(this);
+				panel.add(this, 0);
 				panel.revalidate();
 			}
 
 			// Update data
 			taskData.setElapsedKills(newData.getElapsedKills());
 			taskData.setAmount(newData.getAmount());
+			taskData.setElapsedXp(newData.getElapsedXp());
 
 			// Update information labels
 			int kills = taskData.getInitialAmount() - taskData.getAmount();
 			currentKills.setText(htmlLabel("Elapsed Kills: ", taskData.getElapsedKills()));
 			remainingKills.setText(htmlLabel("Remaining Kills: ", taskData.getAmount()));
+
+			currentXp.setText(htmlLabel("Elapsed Xp: ", taskData.getElapsedXp()));
+			double xpPerKill = ((double) taskData.getElapsedXp()) / ((double) taskData.getElapsedKills());
+			double xpLeft = xpPerKill * taskData.getAmount();
+			remainingXp.setText(htmlLabel("Remaining Xp: ", (int) xpLeft));
 
 			// Update progress bar
 			double percentComplete = ((double) kills) / ((double) taskData.getInitialAmount());
@@ -225,8 +237,8 @@ public class TaskBox extends JPanel
 
 		// Update duration separately, every time (not only when there's an update)
 		taskData.setElapsedTime(newData.getElapsedTime());
-		currentDuration.setText(htmlLabel("Elapsed Time: ", taskData.getElapsedTime()));
-		remainingDuration.setText(htmlLabel("Remaining Time: ", estimateRemainingTime(taskData)));
+		currentDuration.setText(htmlLabel("Elapsed Time:<br/>", taskData.getElapsedTime()));
+		remainingDuration.setText(htmlLabel("Remaining Time:<br/>", estimateRemainingTime(taskData)));
 
 		repaint();
 	}

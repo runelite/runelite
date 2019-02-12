@@ -11,6 +11,7 @@ public class TaskData
 {
 	private long elapsedTime;
 	private int elapsedKills;
+	private int elapsedXp;
 	private int amount, initialAmount;
 	private String taskLocation;
 	private String taskName;

@@ -239,8 +239,6 @@ public class SlayerPlugin extends Plugin
 				.build();
 
 		clientToolbar.addNavigation(navButton);
-		System.out.println("=================================");
-		System.out.println("added slayer nav button");
 
 		if (client.getGameState() == GameState.LOGGED_IN
 			&& config.amount() != -1
@@ -284,7 +282,7 @@ public class SlayerPlugin extends Plugin
 			case HOPPING:
 			case LOGGING_IN:
 				cachedXp = 0;
-				currentTask = new TaskData(0, 0,0, 0, "", "", true);
+				currentTask = new TaskData(0, 0, 0,0, 0, "", "", true);
 				loginFlag = true;
 				highlightedTargets.clear();
 				break;
@@ -560,6 +558,8 @@ public class SlayerPlugin extends Plugin
 			return;
 		}
 
+		int delta = slayerExp - cachedXp;
+		currentTask.setElapsedXp(currentTask.getElapsedXp() + delta);
 		killedOne();
 		cachedXp = slayerExp;
 	}
@@ -689,6 +689,7 @@ public class SlayerPlugin extends Plugin
 	{
 		currentTask = new TaskData(isNewAssignment ? 0 : currentTask.getElapsedTime(),
 				isNewAssignment ? 0 : currentTask.getElapsedKills(),
+				isNewAssignment ? 0 : currentTask.getElapsedXp(),
 				amt, initAmt, location, name,
 				isNewAssignment ? true : currentTask.isPaused());
 		panel.updateCurrentTask(true, currentTask.isPaused(), currentTask, isNewAssignment);

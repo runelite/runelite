@@ -22,6 +22,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 
 public class SlayerTaskPanel extends PluginPanel
@@ -36,6 +37,9 @@ public class SlayerTaskPanel extends PluginPanel
 	private static final String HTML_TIME_LABEL_TEMPLATE =
 			"<html><body style='color:%s'>%s<span style='color:white'>%02d:%02d:%02d</span></body></html>";
 
+
+	private static final ImageIcon PAUSE, PAUSE_FADED, PAUSE_HOVER;
+	private static final ImageIcon PLAY, PLAY_FADED, PLAY_HOVER;
 
 	// TODO: set some kind of maximum for the amount of tasks to be tracked in a session
 	private static final int MAX_TASK_BOXES = 50;
@@ -62,6 +66,20 @@ public class SlayerTaskPanel extends PluginPanel
 
 	private SlayerPlugin slayerPlugin;
 
+	static
+	{
+		final BufferedImage pauseImg = ImageUtil.getResourceStreamFromClass(SlayerPlugin.class, "pause_icon.png");
+		final BufferedImage playImg = ImageUtil.getResourceStreamFromClass(SlayerPlugin.class, "play_icon.png");
+
+		PAUSE = new ImageIcon(pauseImg);
+		PAUSE_FADED = new ImageIcon(ImageUtil.alphaOffset(pauseImg, -180));
+		PAUSE_HOVER = new ImageIcon(ImageUtil.alphaOffset(pauseImg, -220));
+
+		PLAY = new ImageIcon(playImg);
+		PLAY_FADED = new ImageIcon(ImageUtil.alphaOffset(playImg, -180));
+		PLAY_HOVER = new ImageIcon(ImageUtil.alphaOffset(playImg, -220));
+	}
+
 	public SlayerTaskPanel(SlayerPlugin slayerPlugin)
 	{
 		this.slayerPlugin = slayerPlugin;
@@ -75,34 +93,93 @@ public class SlayerTaskPanel extends PluginPanel
 		layoutPanel.setLayout(new BoxLayout(layoutPanel, BoxLayout.Y_AXIS));
 		add(layoutPanel, BorderLayout.NORTH);
 
-		actionsContainer.setLayout(new GridLayout(1, 2, 10, 0));
+		actionsContainer.setLayout(new BorderLayout());
 		actionsContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		actionsContainer.setPreferredSize(new Dimension(0, 30));
 		actionsContainer.setBorder(new EmptyBorder(5, 5, 5, 10));
 		actionsContainer.setVisible(false);
 
-		playBtn.setText("->");
+		final JPanel controlsPanel = new JPanel(new GridLayout(1, 2, 10, 0));
+		controlsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
+		playBtn.setIcon(PLAY);
 		playBtn.setToolTipText("Resume the current slayer task");
 		playBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				slayerPlugin.setPaused(false);
+				changePauseState(false);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				boolean paused = true;
+				TaskData currentTask = slayerPlugin.getCurrentTask();
+				if (currentTask != null)
+				{
+					paused = currentTask.isPaused();
+				}
+				playBtn.setIcon(paused ? PLAY_FADED : PLAY);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				boolean paused = true;
+				TaskData currentTask = slayerPlugin.getCurrentTask();
+				if (currentTask != null)
+				{
+					paused = currentTask.isPaused();
+				}
+				playBtn.setIcon(paused ? PLAY_HOVER : PLAY);
 			}
 		});
 
-		pauseBtn.setText("||");
+		pauseBtn.setIcon(PAUSE);
 		pauseBtn.setToolTipText("Pause the current slayer task");
 		pauseBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				slayerPlugin.setPaused(true);
+				changePauseState(true);
+			}
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				boolean paused = true;
+				TaskData currentTask = slayerPlugin.getCurrentTask();
+				if (currentTask != null)
+				{
+					paused = currentTask.isPaused();
+				}
+				pauseBtn.setIcon(paused ? PAUSE : PAUSE_FADED);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				boolean paused = true;
+				TaskData currentTask = slayerPlugin.getCurrentTask();
+				if (currentTask != null)
+				{
+					paused = currentTask.isPaused();
+				}
+				pauseBtn.setIcon(paused ? PAUSE : PAUSE_HOVER);
 			}
 		});
 
-		actionsContainer.add(playBtn);
-		actionsContainer.add(pauseBtn);
+		controlsPanel.add(playBtn);
+		controlsPanel.add(pauseBtn);
+
+		actionsContainer.add(controlsPanel, BorderLayout.EAST);
+		changePauseState(true);
+		if (slayerPlugin.getCurrentTask() != null)
+		{
+			changePauseState(slayerPlugin.getCurrentTask().isPaused());
+		}
 
 		// Create panel that will contain overall data
 		overallPanel.setBorder(new EmptyBorder(8, 10, 8, 10));
@@ -136,6 +213,12 @@ public class SlayerTaskPanel extends PluginPanel
 	void loadHeaderIcon(BufferedImage img)
 	{
 		overallIcon.setIcon(new ImageIcon(img));
+	}
+
+	private void changePauseState(boolean paused)
+	{
+		playBtn.setIcon(paused ? PLAY_FADED : PLAY);
+		pauseBtn.setIcon(paused ? PAUSE : PAUSE_FADED);
 	}
 
 	private void updateOverall()
@@ -181,7 +264,6 @@ public class SlayerTaskPanel extends PluginPanel
 			{
 				return;
 			}
-			System.out.println("empty task sent so ending current task");
 			TaskBox current = tasks.get(0);
 			// current task has ended so it should be paused
 			current.update(true, true, current.getTaskData());
@@ -190,8 +272,6 @@ public class SlayerTaskPanel extends PluginPanel
 
 		if (tasks.isEmpty() || isNewAssignment)
 		{
-			System.out.println("new task is set");
-
 			// new task so append it to the front of the list
 			SwingUtilities.invokeLater(() -> {
 				TaskBox newBox = buildBox(slayerPlugin, tasksContainer, newData);
@@ -204,10 +284,6 @@ public class SlayerTaskPanel extends PluginPanel
 			// if here there is a current task so check if the current task matches
 			// the update being sent
 			TaskBox current = tasks.get(0);
-			System.out.println("current task: " + current.getTaskData().getTaskName() + " " +
-				current.getTaskData().getTaskLocation() + " " + current.getTaskData().getInitialAmount());
-			System.out.println("new task: " + newData.getTaskName() + " " + newData.getTaskLocation() +
-				" " + newData.getInitialAmount());
 			if (!current.getTaskData().getTaskName().equals(newData.getTaskName()) ||
 					!current.getTaskData().getTaskLocation().equals(newData.getTaskLocation()) ||
 					current.getTaskData().getInitialAmount() != newData.getInitialAmount())
@@ -215,7 +291,6 @@ public class SlayerTaskPanel extends PluginPanel
 				// current task does not match the update being sent so the current task
 				// must have been outdated - this is necessarily true because if a true
 				// new task was sent it would have set the isNewAssignment flag
-				System.out.println("task does not match must create new match");
 
 				// so this previous task is invalid so delete it then add in the new actually
 				// correct task
@@ -229,16 +304,13 @@ public class SlayerTaskPanel extends PluginPanel
 			}
 		}
 
-		System.out.println("simply updating task");
-		System.out.println("task panel size = " + tasks.size());
-		System.out.println("task elapsed time " + tasks.get(0).getTaskData().getElapsedTime());
-		System.out.println("task elapsed kills " + tasks.get(0).getTaskData().getElapsedKills());
 		// not an empty assignment or a new assignment so just update the current assignment
 		TaskBox current = tasks.get(0);
 		current.update(updated, paused, newData);
 
 		// update the overall stats once this task stats are updated
 		updateOverall();
+		changePauseState(paused);
 	}
 
 	static String htmlLabel(String key, long timeMillis)
