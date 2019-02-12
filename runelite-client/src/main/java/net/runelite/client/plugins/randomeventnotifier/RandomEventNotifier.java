@@ -61,6 +61,10 @@ public class RandomEventNotifier extends Plugin
 
 	private NPC lastRandomEventNpc;
 
+	private int gameTickCounter = 0;
+
+	private final int maxGameTickWait = 10;
+
 	@Provides
 	RandomEventNotifierConfig provideConfig(ConfigManager configManager)
 	{
@@ -70,16 +74,36 @@ public class RandomEventNotifier extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (randomEventSpawned())
+		if (randomEventSpawned() && gameTickCounter < maxGameTickWait)
 		{
 			notifier.notify("[" + lastRandomEventNpc.getName() + "] has spawned!");
 			lastRandomEventNpc = null;
+			gameTickCounter = 0;
+		}
+		else if (gameTickCounter >= maxGameTickWait)
+		{
+			lastRandomEventNpc = null;
+			gameTickCounter = 0;
+		}
+		else{
+			if (lastRandomEventNpc != null)
+			{
+				if (lastRandomEventNpc.getOverhead() != null) {
+					log.info(lastRandomEventNpc.getOverhead());
+				}
+			}
+			gameTickCounter++;
 		}
 	}
 
 	public boolean randomEventSpawned()
 	{
-		if (lastRandomEventNpc != null) return true;
+		if (lastRandomEventNpc != null)
+		{
+			if (lastRandomEventNpc.getOverhead() != null) {
+				return lastRandomEventNpc.getOverhead().contains(client.getLocalPlayer().getName());
+			}
+		}
 		return false;
 	}
 
@@ -90,6 +114,11 @@ public class RandomEventNotifier extends Plugin
 		List<String> npcActions = Arrays.asList(npc.getComposition().getActions());
 		if (isRandomEventNPC(npc.getId()) && npcActions.contains("Dismiss"))
 		{
+			log.info(npc.getName());
+			if (npc.getInteracting() != null)
+			{
+				log.info(npc.getInteracting().getName());
+			}
 			lastRandomEventNpc = npc;
 		}
 	}
@@ -97,48 +126,48 @@ public class RandomEventNotifier extends Plugin
 	public boolean isRandomEventNPC(int npcId)
 	{
 		return (npcId == NpcID.DR_JEKYLL && config.drJekyllEnabled()) ||
-				//(npcId == NpcID.DR_JEKYLL_314 ||
+				(npcId == NpcID.DR_JEKYLL_314) ||
 				(npcId == NpcID.BEE_KEEPER && config.beeKeeperEnabled()) ||
-				//(npcId == NpcID.BEE_KEEPER_6747 && config.beeKeeperEnabled()) ||
+				(npcId == NpcID.BEE_KEEPER_6747 && config.beeKeeperEnabled()) ||
 				(npcId == NpcID.CAPT_ARNAV && config.captArnavEnabled()) ||
 				(npcId == NpcID.SERGEANT_DAMIEN && config.sergeantDamienEnabled()) ||
-				//(npcId == NpcID.SERGEANT_DAMIEN_6743 && config.sergeantDamienEnabled()) ||
+				(npcId == NpcID.SERGEANT_DAMIEN_6743 && config.sergeantDamienEnabled()) ||
 				(npcId == NpcID.DRUNKEN_DWARF && config.drunkenDwarfEnabled()) ||
 				(npcId == NpcID.FREAKY_FORESTER && config.freakyForesterEnabled()) ||
-				//(npcId == NpcID.FREAKY_FORESTER_6748 && config.freakyForesterEnabled()) ||
+				(npcId == NpcID.FREAKY_FORESTER_6748 && config.freakyForesterEnabled()) ||
 				(npcId == NpcID.FROG_PRINCESS && config.frogPrincessEnabled()) ||
 				(npcId == NpcID.FROG_PRINCE && config.frogPrincessEnabled()) ||
 				(npcId == NpcID.GENIE && config.genieEnabled()) ||
-				//(npcId == NpcID.GENIE_327 && config.genieEnabled()) ||
+				(npcId == NpcID.GENIE_327 && config.genieEnabled()) ||
 				(npcId == NpcID.EVIL_BOB && config.evilBobEnabled()) ||
-				//(npcId == NpcID.EVIL_BOB_391 && config.evilBobEnabled()) ||
+				(npcId == NpcID.EVIL_BOB_391 && config.evilBobEnabled()) ||
 				(npcId == NpcID.POSTIE_PETE && config.postiePeteEnabled()) ||
 				(npcId == NpcID.LEO && config.leoEnabled()) ||
-				//(npcId == NpcID.LEO_6746 && config.leoEnabled()) ||
+				(npcId == NpcID.LEO_6746 && config.leoEnabled()) ||
 				(npcId == NpcID.MYSTERIOUS_OLD_MAN && config.mysteriousOldManEnabled()) ||
-				//(npcId == NpcID.MYSTERIOUS_OLD_MAN_6750 && config.mysteriousOldManEnabled()) ||
-				//(npcId == NpcID.MYSTERIOUS_OLD_MAN_6751 && config.mysteriousOldManEnabled()) ||
-				//(npcId == NpcID.MYSTERIOUS_OLD_MAN_6752 && config.mysteriousOldManEnabled()) ||
-				//(npcId == NpcID.MYSTERIOUS_OLD_MAN_6753 && config.mysteriousOldManEnabled()) ||
+				(npcId == NpcID.MYSTERIOUS_OLD_MAN_6750 && config.mysteriousOldManEnabled()) ||
+				(npcId == NpcID.MYSTERIOUS_OLD_MAN_6751 && config.mysteriousOldManEnabled()) ||
+				(npcId == NpcID.MYSTERIOUS_OLD_MAN_6752 && config.mysteriousOldManEnabled()) ||
+				(npcId == NpcID.MYSTERIOUS_OLD_MAN_6753 && config.mysteriousOldManEnabled()) ||
 				(npcId == NpcID.PILLORY_GUARD && config.pilloryGuardEnabled()) ||
-				//(npcId == NpcID.PILLORY_GUARD_2122 && config.pilloryGuardEnabled()) ||
+				(npcId == NpcID.PILLORY_GUARD_2122 && config.pilloryGuardEnabled()) ||
 				(npcId == NpcID.FLIPPA && config.flippaEnabled()) ||
-				//(npcId == NpcID.FLIPPA_6744 && config.flippaEnabled()) ||
+				(npcId == NpcID.FLIPPA_6744 && config.flippaEnabled()) ||
 				(npcId == NpcID.QUIZ_MASTER && config.quizMasterEnabled()) ||
-				//(npcId == NpcID.QUIZ_MASTER_6755 && config.quizMasterEnabled()) ||
+				(npcId == NpcID.QUIZ_MASTER_6755 && config.quizMasterEnabled()) ||
 				(npcId == NpcID.RICK_TURPENTINE && config.rickTurpentineEnabled()) ||
-				//(npcId == NpcID.RICK_TURPENTINE_376 && config.rickTurpentineEnabled()) ||
+				(npcId == NpcID.RICK_TURPENTINE_376 && config.rickTurpentineEnabled()) ||
 				(npcId == NpcID.SANDWICH_LADY && config.sandwichLadyEnabled()) ||
 				(npcId == NpcID.STRANGE_PLANT && config.strangePlantEnabled()) ||
 				(npcId == NpcID.DUNCE && config.dunceEnabled()) ||
-				//(npcId == NpcID.DUNCE_6749 && config.dunceEnabled()) ||
-				//(npcId == NpcID.DUNCE_7775 && config.dunceEnabled()) ||
+				(npcId == NpcID.DUNCE_6749 && config.dunceEnabled()) ||
+				(npcId == NpcID.DUNCE_7775 && config.dunceEnabled()) ||
 				(npcId == NpcID.NILES && config.nilesMilesGilesEnabled()) ||
-				//(npcId == NpcID.NILES_5439 && config.nilesMilesGilesEnabled()) ||
+				(npcId == NpcID.NILES_5439 && config.nilesMilesGilesEnabled()) ||
 				(npcId == NpcID.MILES && config.nilesMilesGilesEnabled()) ||
-				//(npcId == NpcID.MILES_5440 && config.nilesMilesGilesEnabled()) ||
-				(npcId == NpcID.GILES && config.nilesMilesGilesEnabled());
-				//(npcId == NpcID.GILES_5441 && config.nilesMilesGilesEnabled());
+				(npcId == NpcID.MILES_5440 && config.nilesMilesGilesEnabled()) ||
+				(npcId == NpcID.GILES && config.nilesMilesGilesEnabled()) ||
+				(npcId == NpcID.GILES_5441 && config.nilesMilesGilesEnabled());
 	}
 
 }
