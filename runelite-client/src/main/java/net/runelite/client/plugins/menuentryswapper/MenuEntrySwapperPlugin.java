@@ -391,6 +391,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("claim-slime", option, target, true);
 			}
 
+			if (config.swapBert() && target.equals("bert"))
+			{
+				swap("sand", option, target, true);
+			}
+
 			if (config.swapTravel())
 			{
 				swap("travel", option, target, true);

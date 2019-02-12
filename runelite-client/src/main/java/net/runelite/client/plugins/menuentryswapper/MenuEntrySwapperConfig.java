@@ -73,6 +73,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapBert",
+		name = "Bert",
+		description = "Swap Talk-to with Sand with Bert in Yanille"
+	)
+	default boolean swapBert() 
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapBirdhouseEmpty",
 		name = "Birdhouse",
 		description = "Swap Interact with Empty for birdhouses on Fossil Island"
