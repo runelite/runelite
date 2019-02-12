@@ -127,35 +127,31 @@ public class SlayerPlugin extends Plugin
 	private static final int TASK_STRING_MAX_LENGTH = 50;
 
 	// Superiors
-	private static List<String> SUPERIOR_SLAYER_MONSTERS = Arrays.asList(
-			"Crushing hand",
-			"Chasm crawler",
-			"Screaming banshee",
-			"Screaming twisted banshee",
-			"Giant rockslug",
-			"Cockathrice",
-			"Flaming pyrelord",
-			"Monstrous basilisk",
-			"Malevolent mage",
-			"Insatiable bloodveld",
-			"Insatiable mutated bloodveld",
-			"Vitreous jelly",
-			"Vitreous warped jelly",
-			"Cave abomination",
-			"Abhorrent spectre",
-			"Repugnant spectre",
-			"Choke devil",
-			"King kurask",
-			"Marble gargoyle",
-			"Nechryarch",
-			"Greater abyssal demon",
-			"Night beast",
-			"Nuclear smoke devil");
-
-	static
-	{
-		SUPERIOR_SLAYER_MONSTERS = SUPERIOR_SLAYER_MONSTERS.stream().map(name -> name.toLowerCase()).collect(Collectors.toList());
-	}
+	@VisibleForTesting
+	static List<String> SUPERIOR_SLAYER_MONSTERS = Arrays.asList(
+			"crushing hand",
+			"chasm crawler",
+			"screaming banshee",
+			"screaming twisted banshee",
+			"giant rockslug",
+			"cockathrice",
+			"flaming pyrelord",
+			"monstrous basilisk",
+			"malevolent mage",
+			"insatiable bloodveld",
+			"insatiable mutated bloodveld",
+			"vitreous jelly",
+			"vitreous warped jelly",
+			"cave abomination",
+			"abhorrent spectre",
+			"repugnant spectre",
+			"choke devil",
+			"king kurask",
+			"marble gargoyle",
+			"nechryarch",
+			"greater abyssal demon",
+			"night beast",
+			"nuclear smoke devil");
 
 	@Inject
 	private Client client;

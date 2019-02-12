@@ -561,4 +561,13 @@ public class SlayerPluginTest
 
 		verify(chatMessageManager, never()).update(any(MessageNode.class));
 	}
+
+	@Test
+	public void testSuperiorsLowercase()
+	{
+		for (String name : SlayerPlugin.SUPERIOR_SLAYER_MONSTERS)
+		{
+			assertEquals(name, name.toLowerCase());
+		}
+	}
 }
