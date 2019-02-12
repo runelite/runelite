@@ -258,7 +258,7 @@ public class ItemStatOverlay extends Overlay
 
 		if (config.relative())
 		{
-			b.append(c.getRelative());
+			b.append(c.getFormattedRelative());
 		}
 
 		if (config.theoretical())
@@ -267,7 +267,7 @@ public class ItemStatOverlay extends Overlay
 			{
 				b.append("/");
 			}
-			b.append(c.getTheoretical());
+			b.append(c.getFormattedTheoretical());
 		}
 
 		if (config.absolute() && (config.relative() || config.theoretical()))
