@@ -70,8 +70,11 @@ import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
+import net.runelite.client.events.SlayerAmountChanged;
+import net.runelite.client.events.SlayerTaskChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -169,6 +172,9 @@ public class SlayerPlugin extends Plugin
 
 	@Inject
 	private ChatClient chatClient;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private List<NPC> highlightedTargets = new ArrayList<>();
@@ -560,6 +566,8 @@ public class SlayerPlugin extends Plugin
 	@VisibleForTesting
 	void killedOne()
 	{
+		int oldAmount = amount;
+
 		if (amount == 0)
 		{
 			return;
@@ -572,6 +580,7 @@ public class SlayerPlugin extends Plugin
 		}
 
 		config.amount(amount); // save changed value
+		eventBus.post(new SlayerAmountChanged(oldAmount, amount));
 
 		if (!config.showInfobox())
 		{
@@ -658,6 +667,8 @@ public class SlayerPlugin extends Plugin
 
 	private void setTask(String name, int amt, int initAmt, String location)
 	{
+		String oldName = taskName;
+
 		taskName = name;
 		amount = amt;
 		initialAmount = initAmt;
@@ -666,6 +677,7 @@ public class SlayerPlugin extends Plugin
 		removeCounter();
 		addCounter();
 		infoTimer = Instant.now();
+		eventBus.post(new SlayerTaskChanged(oldName, taskName));
 
 		Task task = Task.getTask(name);
 		rebuildTargetNames(task);
