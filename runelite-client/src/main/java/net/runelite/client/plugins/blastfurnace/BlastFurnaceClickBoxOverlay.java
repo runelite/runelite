@@ -66,7 +66,18 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 
 		if (config.showConveyorBelt() && plugin.getConveyorBelt() != null)
 		{
-			Color color = dispenserState == 1 ? Color.RED : Color.GREEN;
+			Color color;
+			if(dispenserState == 1){
+				color = Color.RED;
+			}
+			else{
+				if(hasGoldGloves()){
+					color = Color.RED;
+				}
+				else{
+					color = Color.GREEN;
+				}
+			}
 			renderObject(plugin.getConveyorBelt(), graphics, color);
 		}
 
@@ -79,6 +90,28 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 		}
 
 		return null;
+	}
+
+	private boolean hasGoldGloves()
+	{
+		ItemContainer inventoryContainer = client.getItemContainer(InventoryID.INVENTORY);
+		if (inventoryContainer == null)
+		{
+			return false;
+		}
+
+		Item[] items = inventoryContainer.getItems();
+
+		if (items == null)
+		{
+			return false;
+		}
+		for(Item gloves : items){
+			if(gloves != null && gloves.getId() == ItemID.GOLDSMITH_GAUNTLETS){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean hasIceGloves()
