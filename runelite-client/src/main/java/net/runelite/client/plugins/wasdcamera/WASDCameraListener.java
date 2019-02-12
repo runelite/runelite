@@ -137,7 +137,9 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() == GameState.LOGIN_SCREEN
+			|| client.getGameState() == GameState.STARTING
+			|| client.getGameState() == GameState.UNKNOWN)
 		{
 			return;
 		}
