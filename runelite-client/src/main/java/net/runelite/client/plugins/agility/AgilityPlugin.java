@@ -26,7 +26,6 @@ package net.runelite.client.plugins.agility;
 
 import com.google.inject.Provides;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +37,6 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
 import net.runelite.api.Player;
-import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
@@ -46,7 +44,6 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -92,9 +89,6 @@ public class AgilityPlugin extends Plugin
 	private AgilityOverlay agilityOverlay;
 
 	@Inject
-	private LapCounterOverlay lapCounterOverlay;
-
-	@Inject
 	private Notifier notifier;
 
 	@Inject
@@ -109,10 +103,6 @@ public class AgilityPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
-	@Getter
-	private AgilitySession session;
-
-	private int lastAgilityXp;
 	private WorldPoint lastArenaTicketPosition;
 
 	@Provides
@@ -125,17 +115,14 @@ public class AgilityPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(agilityOverlay);
-		overlayManager.add(lapCounterOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(agilityOverlay);
-		overlayManager.remove(lapCounterOverlay);
 		marksOfGrace.clear();
 		obstacles.clear();
-		session = null;
 	}
 
 	@Subscribe
@@ -145,7 +132,6 @@ public class AgilityPlugin extends Plugin
 		{
 			case HOPPING:
 			case LOGIN_SCREEN:
-				session = null;
 				lastArenaTicketPosition = null;
 				removeAgilityArenaTimer();
 				break;
@@ -169,42 +155,6 @@ public class AgilityPlugin extends Plugin
 		if (!config.showAgilityArenaTimer())
 		{
 			removeAgilityArenaTimer();
-		}
-	}
-
-	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
-	{
-		if (event.getSkill() != AGILITY || !config.showLapCount())
-		{
-			return;
-		}
-
-		// Determine how much EXP was actually gained
-		int agilityXp = client.getSkillExperience(AGILITY);
-		int skillGained = agilityXp - lastAgilityXp;
-		lastAgilityXp = agilityXp;
-
-		// Get course
-		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		if (course == null
-			|| (course.getCourseEndWorldPoints().length == 0
-			? Math.abs(course.getLastObstacleXp() - skillGained) > 1
-			: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
-		{
-			return;
-		}
-
-		if (session != null && session.getCourse() == course)
-		{
-			session.incrementLapCount(client);
-		}
-		else
-		{
-			session = new AgilitySession(course);
-			// New course found, reset lap count and set new course
-			session.resetLapCount();
-			session.incrementLapCount(client);
 		}
 	}
 
