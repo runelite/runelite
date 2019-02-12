@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
- * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,25 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.banktags.tabs;
+package net.runelite.client.game;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import net.runelite.client.game.SpriteOverride;
+import net.runelite.api.SpriteID;
 
-@RequiredArgsConstructor
-public enum TabSprites implements SpriteOverride
+public interface SpriteOverride
 {
-	INCINERATOR(-200, "incinerator.png"),
-	TAB_BACKGROUND(-201, "tag-tab.png"),
-	TAB_BACKGROUND_ACTIVE(-202, "tag-tab-active.png"),
-	UP_ARROW(-203, "up-arrow.png"),
-	DOWN_ARROW(-204, "down-arrow.png"),
-	NEW_TAB(-205, "new-tab.png");
+	/**
+	 * An ID for a sprite. Negative numbers are used by RuneLite specific sprites
+	 *
+	 * @see SpriteID
+	 */
+	int getSpriteId();
 
-	@Getter
-	private final int spriteId;
-
-	@Getter
-	private final String fileName;
+	/**
+	 * The file name for the resource to be loaded, relative to the implementing class
+	 */
+	String getFileName();
 }

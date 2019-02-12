@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
- * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,21 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.banktags.tabs;
+package net.runelite.client.plugins.wiki;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.SpriteID;
 import net.runelite.client.game.SpriteOverride;
 
 @RequiredArgsConstructor
-public enum TabSprites implements SpriteOverride
+public enum WikiSprite implements SpriteOverride
 {
-	INCINERATOR(-200, "incinerator.png"),
-	TAB_BACKGROUND(-201, "tag-tab.png"),
-	TAB_BACKGROUND_ACTIVE(-202, "tag-tab-active.png"),
-	UP_ARROW(-203, "up-arrow.png"),
-	DOWN_ARROW(-204, "down-arrow.png"),
-	NEW_TAB(-205, "new-tab.png");
+	WIKI_ICON(-300, "wiki.png"),
+	WIKI_SELECTED_ICON(-301, "wiki_selected.png"),
+	FIXED_MODE_MINIMAP_CLICKMASK(SpriteID.MINIMAP_CLICK_MASK, "fixed_mode_minimap_clickmask.png");
 
 	@Getter
 	private final int spriteId;
