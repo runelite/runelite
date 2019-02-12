@@ -24,9 +24,11 @@
  */
 package net.runelite.http.api.ws.messages.party;
 
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
+@EqualsAndHashCode(callSuper = true)
 public class UserSync extends PartyMemberMessage
 {
 }
