@@ -153,6 +153,15 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapGuildMasterJane",
+		name = "Guildmaster Jane",
+		description = "Swap Talk-to with Contract for Guild Master Jane at the Farming Guild"
+	)
+	default boolean swapGuildMasterJane() {
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapHarpoon",
 		name = "Harpoon",
 		description = "Swap Cage, Big Net with Harpoon on Fishing spot"

@@ -420,6 +420,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("quick-travel", option, target, true);
 			}
+
+			if(config.swapGuildMasterJane() && target.equals("guildmaster jane")) {
+				swap("contract", option, target, true);
+			}
 		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
