@@ -118,6 +118,7 @@ enum AgilityShortcutLocation
 	SHILO_VILLAGE_STEPPING_STONES("Stepping Stones", 77, new WorldPoint(2863, 2974, 0)),
 	KHARAZI_JUNGLE_VINE_CLIMB("Vine", 79, new WorldPoint(2897, 2939, 0)),
 	TAVERLEY_DUNGEON_SPIKED_BLADES("Strange Floor", 80, new WorldPoint(2877, 9813, 0)),
+	TAVERLEY_DUNGEON_ROCKS("Rocks", 70, new WorldPoint(2887, 9823, 0)),
 	SLAYER_DUNGEON_CHASM_JUMP("Spiked Blades", 81, new WorldPoint(2770, 10003, 0)),
 	LAVA_MAZE_NORTH_JUMP("Stepping Stone", 82, new WorldPoint(3092, 3880, 0)),
 	BRIMHAVEN_DUNGEON_EAST_STEPPING_NORTH("Stepping Stones", 83, new WorldPoint(2685, 9547, 0)),

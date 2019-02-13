@@ -94,7 +94,6 @@ public class ProgressBar extends DimmableJPanel
 		super.paint(g);
 		g.setColor(getForeground());
 		g.fillRect(0, 0, topWidth, 16);
-		g.setColor(getForeground().darker());
 
 		for (final Double position : positions)
 		{

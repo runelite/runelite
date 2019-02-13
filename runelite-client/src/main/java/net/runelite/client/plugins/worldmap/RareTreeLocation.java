@@ -38,7 +38,6 @@ enum RareTreeLocation
 	TEAK("Teak tree", 35,
 		// Ape Atoll
 		new WorldPoint(2774, 2697, 0),
-		new WorldPoint(2716, 2710, 0),
 
 		// Desert
 		new WorldPoint(3510, 3073, 0),
@@ -85,6 +84,7 @@ enum RareTreeLocation
 		new WorldPoint(1237, 3770, 0),
 
 		// Ape Atoll
+		new WorldPoint(2716, 2710, 0),
 		new WorldPoint(2725, 2735, 0),
 
 		// Mos Le'Harmless

@@ -1,5 +1,5 @@
 /*
- *
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * Copyright (c) 2017, Robbie <https://github.com/rbbi>
  * Copyright (c) 2018, SomeoneWithAnInternetConnection
  * All rights reserved.
@@ -46,6 +46,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
+import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -56,11 +57,15 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.SessionClose;
+import net.runelite.api.events.SessionOpen;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
+import net.runelite.client.account.AccountSession;
+import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -73,8 +78,10 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.osbuddy.GrandExchangeClient;
-import net.runelite.http.api.osbuddy.GrandExchangeResult;
+import net.runelite.http.api.ge.GrandExchangeClient;
+import net.runelite.http.api.ge.GrandExchangeTrade;
+import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
+import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
 
 @PluginDescriptor(
 	name = "Grand Exchange",
@@ -86,7 +93,7 @@ public class GrandExchangePlugin extends Plugin
 {
 	private static final int OFFER_CONTAINER_ITEM = 21;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
-	private static final GrandExchangeClient CLIENT = new GrandExchangeClient();
+	private static final OSBGrandExchangeClient CLIENT = new OSBGrandExchangeClient();
 	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
 
 	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
@@ -134,9 +141,37 @@ public class GrandExchangePlugin extends Plugin
 	@Inject
 	private ScheduledExecutorService executorService;
 
+	@Inject
+	private SessionManager sessionManager;
+
+	@Inject
+	private ConfigManager configManager;
+
 	private Widget grandExchangeText;
 	private Widget grandExchangeItem;
 	private Map<Integer, Integer> itemGELimits;
+
+	private GrandExchangeClient grandExchangeClient;
+
+	private SavedOffer getOffer(int slot)
+	{
+		String offer = configManager.getConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot));
+		if (offer == null)
+		{
+			return null;
+		}
+		return GSON.fromJson(offer, SavedOffer.class);
+	}
+
+	private void setOffer(int slot, SavedOffer offer)
+	{
+		configManager.setConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot), GSON.toJson(offer));
+	}
+
+	private void deleteOffer(int slot)
+	{
+		configManager.unsetConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot));
+	}
 
 	@Provides
 	GrandExchangeConfig provideConfig(ConfigManager configManager)
@@ -167,6 +202,12 @@ public class GrandExchangePlugin extends Plugin
 			mouseManager.registerMouseListener(inputListener);
 			keyManager.registerKeyListener(inputListener);
 		}
+
+		AccountSession accountSession = sessionManager.getAccountSession();
+		if (accountSession != null)
+		{
+			grandExchangeClient = new GrandExchangeClient(accountSession.getUuid());
+		}
 	}
 
 	@Override
@@ -178,6 +219,27 @@ public class GrandExchangePlugin extends Plugin
 		grandExchangeText = null;
 		grandExchangeItem = null;
 		itemGELimits = null;
+		grandExchangeClient = null;
+	}
+
+	@Subscribe
+	public void onSessionOpen(SessionOpen sessionOpen)
+	{
+		AccountSession accountSession = sessionManager.getAccountSession();
+		if (accountSession.getUuid() != null)
+		{
+			grandExchangeClient = new GrandExchangeClient(accountSession.getUuid());
+		}
+		else
+		{
+			grandExchangeClient = null;
+		}
+	}
+
+	@Subscribe
+	public void onSessionClose(SessionClose sessionClose)
+	{
+		grandExchangeClient = null;
 	}
 
 	@Subscribe
@@ -204,11 +266,79 @@ public class GrandExchangePlugin extends Plugin
 	@Subscribe
 	public void onGrandExchangeOfferChanged(GrandExchangeOfferChanged offerEvent)
 	{
-		GrandExchangeOffer offer = offerEvent.getOffer();
+		final int slot = offerEvent.getSlot();
+		final GrandExchangeOffer offer = offerEvent.getOffer();
+
 		ItemComposition offerItem = itemManager.getItemComposition(offer.getItemId());
 		boolean shouldStack = offerItem.isStackable() || offer.getTotalQuantity() > 1;
 		BufferedImage itemImage = itemManager.getImage(offer.getItemId(), offer.getTotalQuantity(), shouldStack);
-		SwingUtilities.invokeLater(() -> panel.getOffersPanel().updateOffer(offerItem, itemImage, offerEvent.getOffer(), offerEvent.getSlot()));
+		SwingUtilities.invokeLater(() -> panel.getOffersPanel().updateOffer(offerItem, itemImage, offer, slot));
+
+		submitTrades(slot, offer);
+
+		updateConfig(slot, offer);
+	}
+
+	private void submitTrades(int slot, GrandExchangeOffer offer)
+	{
+		if (grandExchangeClient == null)
+		{
+			return;
+		}
+
+		// Only interested in offers which are fully bought/sold
+		if (offer.getState() != GrandExchangeOfferState.BOUGHT && offer.getState() != GrandExchangeOfferState.SOLD)
+		{
+			return;
+		}
+
+		SavedOffer savedOffer = getOffer(slot);
+		if (!shouldUpdate(savedOffer, offer))
+		{
+			return;
+		}
+
+		// getPrice() is the price of the offer, not necessarily what the item bought at
+		int priceEach = offer.getSpent() / offer.getTotalQuantity();
+
+		GrandExchangeTrade grandExchangeTrade = new GrandExchangeTrade();
+		grandExchangeTrade.setBuy(offer.getState() == GrandExchangeOfferState.BOUGHT);
+		grandExchangeTrade.setItemId(offer.getItemId());
+		grandExchangeTrade.setQuantity(offer.getTotalQuantity());
+		grandExchangeTrade.setPrice(priceEach);
+
+		log.debug("Submitting trade: {}", grandExchangeTrade);
+		grandExchangeClient.submit(grandExchangeTrade);
+	}
+
+	private void updateConfig(int slot, GrandExchangeOffer offer)
+	{
+		if (offer.getState() == GrandExchangeOfferState.EMPTY)
+		{
+			deleteOffer(slot);
+		}
+		else
+		{
+			SavedOffer savedOffer = new SavedOffer();
+			savedOffer.setItemId(offer.getItemId());
+			savedOffer.setQuantitySold(offer.getQuantitySold());
+			savedOffer.setTotalQuantity(offer.getTotalQuantity());
+			savedOffer.setPrice(offer.getPrice());
+			savedOffer.setSpent(offer.getSpent());
+			savedOffer.setState(offer.getState());
+			setOffer(slot, savedOffer);
+		}
+	}
+
+	private boolean shouldUpdate(SavedOffer savedOffer, GrandExchangeOffer grandExchangeOffer)
+	{
+		if (savedOffer == null)
+		{
+			return false;
+		}
+
+		// Only update offer if state has changed
+		return savedOffer.getState() != grandExchangeOffer.getState();
 	}
 
 	@Subscribe
@@ -346,7 +476,7 @@ public class GrandExchangePlugin extends Plugin
 
 			try
 			{
-				final GrandExchangeResult result = CLIENT.lookupItem(itemId);
+				final OSBGrandExchangeResult result = CLIENT.lookupItem(itemId);
 				final String text = geText.getText() + OSB_GE_TEXT + StackFormatter.formatNumber(result.getOverall_average());
 				geText.setText(text);
 			}

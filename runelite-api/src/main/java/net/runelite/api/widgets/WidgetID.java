@@ -125,6 +125,7 @@ public class WidgetID
 	public static final int SKOTIZO_GROUP_ID = 308;
 	public static final int ENTERING_HOUSE_GROUP_ID = 71;
 	public static final int FULLSCREEN_MAP_GROUP_ID = 165;
+	public static final int QUESTLIST_GROUP_ID = 399;
 
 	static class WorldMap
 	{
@@ -292,6 +293,7 @@ public class WidgetID
 		static final int TOGGLE_RUN_ORB = 22; // Has the "Toggle run" name
 		static final int RUN_ORB_TEXT = 23;
 		static final int SPEC_ORB = 28;
+		static final int WORLDMAP_ORB = 40;
 	}
 
 	static class LoginClickToPlayScreen
@@ -513,6 +515,7 @@ public class WidgetID
 		static final int SPELL_BOX = 25;
 		static final int SPELL_ICON = 27;
 		static final int SPELL_TEXT = 28;
+		static final int AUTO_RETALIATE = 29;
 	}
 
 	static class VolcanicMine
@@ -745,5 +748,12 @@ public class WidgetID
 	static class FullScreenMap
 	{
 		static final int ROOT = 25;
+	}
+
+	static class QuestList
+	{
+		static final int FREE_CONTAINER = 9;
+		static final int MEMBERS_CONTAINER = 10;
+		static final int MINIQUEST_CONTAINER = 11;
 	}
 }
