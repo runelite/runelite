@@ -299,7 +299,7 @@ public class ChatCommandsPlugin extends Plugin
 			Widget boss = bossChildren[i];
 			Widget kill = killsChildren[i];
 
-			String bossName = boss.getText();
+			String bossName = boss.getText().replace(":", "");
 			int kc = Integer.parseInt(kill.getText().replace(",", ""));
 			if (kc != getKc(bossName))
 			{
