@@ -28,18 +28,29 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-/**
- * Configure .js as application/json to trick Cloudflare into caching json responses
- */
 @Configuration
 @EnableWebMvc
-public class SpringContentNegotiationConfigurer extends WebMvcConfigurerAdapter
+public class WebMvcConfiguration extends WebMvcConfigurerAdapter
 {
+	/**
+	 * Configure .js as application/json to trick Cloudflare into caching json responses
+	 */
 	@Override
 	public void configureContentNegotiation(ContentNegotiationConfigurer configurer)
 	{
 		configurer.mediaType("js", MediaType.APPLICATION_JSON);
+	}
+
+	/**
+	 * Add handlers for swagger UI
+	 */
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry)
+	{
+		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 }
