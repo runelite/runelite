@@ -35,9 +35,11 @@ import net.runelite.api.Point;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetPositioned;
+import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
@@ -45,7 +47,10 @@ import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSHashTable;
+import net.runelite.rs.api.RSModel;
 import net.runelite.rs.api.RSNode;
+import net.runelite.rs.api.RSPlayerComposition;
+import net.runelite.rs.api.RSSequence;
 import net.runelite.rs.api.RSWidget;
 
 @Mixin(RSWidget.class)
@@ -569,5 +574,20 @@ public abstract class RSWidgetMixin implements RSWidget
 		{
 			Arrays.fill(getChildren(), null);
 		}
+	}
+
+	@Copy("getModel")
+	public abstract RSModel rs$getModel(RSSequence sequence, int frame, boolean alternate,
+										RSPlayerComposition playerComposition);
+
+	@Replace("getModel")
+	public RSModel rl$getModel(RSSequence sequence, int frame, boolean alternate,
+							RSPlayerComposition playerComposition)
+	{
+		if (frame != -1 && client.isInterpolateWidgetAnimations())
+		{
+			frame = frame | getAnimFrameCycle() << 16 | Integer.MIN_VALUE;
+		}
+		return rs$getModel(sequence, frame, alternate, playerComposition);
 	}
 }

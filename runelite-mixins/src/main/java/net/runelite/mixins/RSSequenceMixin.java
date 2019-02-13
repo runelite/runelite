@@ -240,4 +240,90 @@ public abstract class RSSequenceMixin implements RSSequence
 			return rs$transformSpotAnimModel(model, frame);
 		}
 	}
+
+	@Copy("transformWidgetModel")
+	public abstract RSModel rs$transformWidgetModel(RSModel model, int frame);
+
+	@Replace("transformWidgetModel")
+	public RSModel rl$transformWidgetModel(RSModel model, int frame)
+	{
+		// check if the frame has been modified
+		if (frame < 0)
+		{
+			// remove flag to check if the frame has been modified
+			int packed = frame ^ Integer.MIN_VALUE;
+			int interval = packed >> 16;
+			frame = packed & 0xFFFF;
+
+			int nextFrame = frame + 1;
+			if (nextFrame >= getFrameIDs().length)
+			{
+				// dont interpolate last frame
+				nextFrame = -1;
+			}
+			int[] frameIds = getFrameIDs();
+			int frameId = frameIds[frame];
+			RSFrames frames = client.getFrames(frameId >> 16);
+			int frameIdx = frameId & 0xFFFF;
+
+			int nextFrameIdx = -1;
+			RSFrames nextFrames = null;
+			if (nextFrame != -1)
+			{
+				int nextFrameId = frameIds[nextFrame];
+				nextFrames = client.getFrames(nextFrameId >> 16);
+				nextFrameIdx = nextFrameId & 0xFFFF;
+			}
+
+			if (frames == null)
+			{
+				return model.toSharedModel(true);
+			}
+			else
+			{
+				RSFrames chatFrames = null;
+				int chatFrameIdx = 0;
+				if (getChatFrameIds() != null && frame < getChatFrameIds().length)
+				{
+					int chatFrameId = getChatFrameIds()[frame];
+					chatFrames = client.getFrames(chatFrameId >> 16);
+					chatFrameIdx = chatFrameId & 0xFFFF;
+				}
+				if (chatFrames != null && chatFrameIdx != 0xFFFF)
+				{
+					RSFrames nextChatFrames = null;
+					int nextChatFrameIdx = -1;
+					if (nextFrame != -1 && nextFrame < getChatFrameIds().length)
+					{
+						int chatFrameId = getChatFrameIds()[nextFrame];
+						nextChatFrames = client.getFrames(chatFrameId >> 16);
+						nextChatFrameIdx = chatFrameId & 0xFFFF;
+					}
+					// not sure if this can even happen but the client checks for this so to be safe
+					if (nextChatFrameIdx == 0xFFFF)
+					{
+						nextChatFrames = null;
+					}
+					RSModel animatedModel = model.toSharedModel(!frames.getFrames()[frameIdx].isShowing()
+							& !chatFrames.getFrames()[chatFrameIdx].isShowing());
+					animatedModel.interpolateFrames(frames, frameIdx, nextFrames, nextFrameIdx, interval,
+							getFrameLenths()[frame]);
+					animatedModel.interpolateFrames(chatFrames, chatFrameIdx, nextChatFrames, nextChatFrameIdx,
+							interval, getFrameLenths()[frame]);
+					return animatedModel;
+				}
+				else
+				{
+					RSModel animatedModel = model.toSharedModel(!frames.getFrames()[frameIdx].isShowing());
+					animatedModel.interpolateFrames(frames, frameIdx, nextFrames, nextFrameIdx, interval,
+							getFrameLenths()[frame]);
+					return animatedModel;
+				}
+			}
+		}
+		else
+		{
+			return rs$transformWidgetModel(model, frame);
+		}
+	}
 }

@@ -153,6 +153,9 @@ public abstract class RSClientMixin implements RSClient
 	private static boolean interpolateObjectAnimations;
 
 	@Inject
+	private static boolean interpolateWidgetAnimations;
+
+	@Inject
 	private static RSPlayer[] oldPlayers = new RSPlayer[2048];
 
 	@Inject
@@ -244,6 +247,20 @@ public abstract class RSClientMixin implements RSClient
 	public void setInterpolateObjectAnimations(boolean interpolate)
 	{
 		interpolateObjectAnimations = interpolate;
+	}
+
+	@Inject
+	@Override
+	public boolean isInterpolateWidgetAnimations()
+	{
+		return interpolateWidgetAnimations;
+	}
+
+	@Inject
+	@Override
+	public void setInterpolateWidgetAnimations(boolean interpolate)
+	{
+		interpolateWidgetAnimations = interpolate;
 	}
 
 	@Inject
