@@ -28,6 +28,7 @@ package net.runelite.client.plugins.loottracker;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -274,7 +275,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (lootTrackerClient != null && config.saveLoot())
 		{
-			LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items));
+			LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items), Instant.now());
 			lootTrackerClient.submit(lootRecord);
 		}
 	}
@@ -291,7 +292,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (lootTrackerClient != null && config.saveLoot())
 		{
-			LootRecord lootRecord = new LootRecord(name, LootRecordType.PLAYER, toGameItems(items));
+			LootRecord lootRecord = new LootRecord(name, LootRecordType.PLAYER, toGameItems(items), Instant.now());
 			lootTrackerClient.submit(lootRecord);
 		}
 	}
@@ -350,7 +351,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (lootTrackerClient != null && config.saveLoot())
 		{
-			LootRecord lootRecord = new LootRecord(eventType, LootRecordType.EVENT, toGameItems(items));
+			LootRecord lootRecord = new LootRecord(eventType, LootRecordType.EVENT, toGameItems(items), Instant.now());
 			lootTrackerClient.submit(lootRecord);
 		}
 	}
