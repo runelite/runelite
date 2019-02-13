@@ -52,6 +52,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -135,7 +136,7 @@ public class AccountService
 		}
 	}
 
-	@RequestMapping("/login")
+	@GetMapping("/login")
 	public OAuthResponse login(@RequestParam UUID uuid)
 	{
 		State state = new State();
@@ -162,7 +163,7 @@ public class AccountService
 		return lr;
 	}
 
-	@RequestMapping("/callback")
+	@GetMapping("/callback")
 	public Object callback(
 		HttpServletRequest request,
 		HttpServletResponse response,
@@ -250,7 +251,7 @@ public class AccountService
 		}
 	}
 
-	@RequestMapping("/logout")
+	@GetMapping("/logout")
 	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		SessionEntry session = auth.handle(request, response);
@@ -268,7 +269,7 @@ public class AccountService
 		}
 	}
 
-	@RequestMapping("/session-check")
+	@GetMapping("/session-check")
 	public void sessionCheck(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		auth.handle(request, response);
