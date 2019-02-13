@@ -180,6 +180,48 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${spring.boot.version}</version>
 			</plugin>
+			<plugin>
+				<groupId>com.github.kongchen</groupId>
+				<artifactId>swagger-maven-plugin</artifactId>
+				<version>3.1.8</version>
+				<configuration>
+					<apiSources>
+						<apiSource>
+							<springmvc>true</springmvc>
+							<locations>
+								<location>net.runelite</location>
+							</locations>
+							<schemes>
+								<scheme>https</scheme>
+							</schemes>
+							<host>api.runelite.net</host>
+							<basePath>/runelite-${project.version}</basePath>
+							<info>
+								<title>${project.parent.name} HTTP API</title>
+								<version>${project.version}</version>
+								<description>${project.description}</description>
+								<license>
+									<url>https://tldrlegal.com/license/bsd-2-clause-license-(freebsd)</url>
+									<name>BSD 2-Clause "Simplified"</name>
+								</license>
+							</info>
+							<templatePath>${basedir}/src/main/templates/template.html.hbs</templatePath>
+							<swaggerDirectory>${project.build.directory}/swagger-ui</swaggerDirectory>
+							<outputPath>${project.build.directory}/site/api.html</outputPath>
+							<attachSwaggerArtifact>true</attachSwaggerArtifact>
+							<outputFormats>json</outputFormats>
+						</apiSource>
+					</apiSources>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>
