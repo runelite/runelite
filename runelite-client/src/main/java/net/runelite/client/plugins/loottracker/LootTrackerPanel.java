@@ -82,7 +82,8 @@ class LootTrackerPanel extends PluginPanel
 	// Handle overall session data
 	private final JPanel overallPanel = new JPanel();
 	private final JLabel overallKillsLabel = new JLabel();
-	private final JLabel overallGpLabel = new JLabel();
+	private final JLabel overallGeValueLabel = new JLabel();
+	private final JLabel overallHaValueLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
 
 	// Details and navigation
@@ -275,12 +276,16 @@ class LootTrackerPanel extends PluginPanel
 		// Add icon and contents
 		final JPanel overallInfo = new JPanel();
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		overallInfo.setLayout(new GridLayout(2, 1));
+		overallInfo.setLayout(new BoxLayout(overallInfo, BoxLayout.PAGE_AXIS));
 		overallInfo.setBorder(new EmptyBorder(2, 10, 2, 0));
 		overallKillsLabel.setFont(FontManager.getRunescapeSmallFont());
-		overallGpLabel.setFont(FontManager.getRunescapeSmallFont());
+		overallGeValueLabel.setFont(FontManager.getRunescapeSmallFont());
+		overallGeValueLabel.setVisible(plugin.showGeValue());
+		overallHaValueLabel.setFont(FontManager.getRunescapeSmallFont());
+		overallHaValueLabel.setVisible(plugin.showHaValue());
 		overallInfo.add(overallKillsLabel);
-		overallInfo.add(overallGpLabel);
+		overallInfo.add(overallGeValueLabel);
+		overallInfo.add(overallHaValueLabel);
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
@@ -452,7 +457,15 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(true);
 
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(), hideIgnoredItems, plugin::toggleItem);
+		final LootTrackerBox box = new LootTrackerBox(
+			itemManager,
+			record.getTitle(),
+			record.getSubTitle(),
+			hideIgnoredItems,
+			plugin.showGeValue(),
+			plugin.showHaValue(),
+			plugin::toggleItem
+		);
 		box.combine(record);
 
 		// Create popup menu
@@ -507,7 +520,8 @@ class LootTrackerPanel extends PluginPanel
 	private void updateOverall()
 	{
 		long overallKills = 0;
-		long overallGp = 0;
+		long overallGeValue = 0;
+		long overallHaValue = 0;
 
 		for (LootTrackerRecord record : records)
 		{
@@ -526,7 +540,8 @@ class LootTrackerPanel extends PluginPanel
 					continue;
 				}
 
-				overallGp += item.getPrice();
+				overallGeValue += item.getGePrice();
+				overallHaValue += item.getHaPrice();
 			}
 
 			if (present > 0)
@@ -536,7 +551,12 @@ class LootTrackerPanel extends PluginPanel
 		}
 
 		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
-		overallGpLabel.setText(htmlLabel("Total value: ", overallGp));
+
+		String overallGeValueText = plugin.showHaValue() ? "Total GE value: " : "Total value: ";
+		overallGeValueLabel.setText(htmlLabel(overallGeValueText, overallGeValue));
+
+		String overallHaValueText = plugin.showGeValue() ? "Total HA value: " : "Total value: ";
+		overallHaValueLabel.setText(htmlLabel(overallHaValueText, overallHaValue));
 	}
 
 	private static String htmlLabel(String key, long value)
@@ -544,4 +564,23 @@ class LootTrackerPanel extends PluginPanel
 		final String valueStr = StackFormatter.quantityToStackSize(value);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
+
+	void showGeValue(boolean show) {
+		overallGeValueLabel.setVisible(show);
+
+		for (LootTrackerBox box : boxes)
+		{
+			box.showGeValue(show);
+		}
+	}
+
+	void showHaValue(boolean show) {
+		overallHaValueLabel.setVisible(show);
+
+		for (LootTrackerBox box : boxes)
+		{
+			box.showHaValue(show);
+		}
+	}
+
 }

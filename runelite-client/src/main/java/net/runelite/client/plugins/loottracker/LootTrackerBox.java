@@ -41,6 +41,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
+import javax.swing.BoxLayout;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -57,7 +58,8 @@ class LootTrackerBox extends JPanel
 	private static final int ITEMS_PER_ROW = 5;
 
 	private final JPanel itemContainer = new JPanel();
-	private final JLabel priceLabel = new JLabel();
+	private final JLabel geValueLabel = new JLabel();
+	private final JLabel haValueLabel = new JLabel();
 	private final JLabel subTitleLabel = new JLabel();
 	private final ItemManager itemManager;
 	@Getter(AccessLevel.PACKAGE)
@@ -66,21 +68,28 @@ class LootTrackerBox extends JPanel
 	@Getter
 	private final List<LootTrackerRecord> records = new ArrayList<>();
 
-	private long totalPrice;
+	private long totalGeValue;
+	private long totalHaValue;
 	private boolean hideIgnoredItems;
 	private BiConsumer<String, Boolean> onItemToggle;
+	private boolean showGeValue;
+	private boolean showHaValue;
 
 	LootTrackerBox(
 		final ItemManager itemManager,
 		final String id,
 		@Nullable final String subtitle,
 		final boolean hideIgnoredItems,
+		final boolean showGeValue,
+		final boolean showHaValue,
 		final BiConsumer<String, Boolean> onItemToggle)
 	{
 		this.id = id;
 		this.itemManager = itemManager;
 		this.onItemToggle = onItemToggle;
 		this.hideIgnoredItems = hideIgnoredItems;
+		this.showGeValue = showGeValue;
+		this.showHaValue = showHaValue;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -104,9 +113,21 @@ class LootTrackerBox extends JPanel
 			subTitleLabel.setText(subtitle);
 		}
 
-		priceLabel.setFont(FontManager.getRunescapeSmallFont());
-		priceLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		logTitle.add(priceLabel, BorderLayout.EAST);
+		JPanel valueLabelContainer = new JPanel();
+		valueLabelContainer.setLayout(new BoxLayout(valueLabelContainer, BoxLayout.PAGE_AXIS));
+		valueLabelContainer.setBackground(logTitle.getBackground());
+
+		geValueLabel.setFont(FontManager.getRunescapeSmallFont());
+		geValueLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		geValueLabel.setVisible(showGeValue);
+		valueLabelContainer.add(geValueLabel);
+
+		haValueLabel.setFont(FontManager.getRunescapeSmallFont());
+		haValueLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
+		haValueLabel.setVisible(showHaValue);
+		valueLabelContainer.add(haValueLabel);
+
+		logTitle.add(valueLabelContainer, BorderLayout.EAST);
 
 		add(logTitle, BorderLayout.NORTH);
 		add(itemContainer, BorderLayout.CENTER);
@@ -169,8 +190,11 @@ class LootTrackerBox extends JPanel
 	{
 		buildItems();
 
-		priceLabel.setText(StackFormatter.quantityToStackSize(totalPrice) + " gp");
-		priceLabel.setToolTipText(StackFormatter.formatNumber(totalPrice) + " gp");
+		geValueLabel.setText(((showHaValue) ? "GE: " : "") + StackFormatter.quantityToStackSize(totalGeValue) + " gp");
+		geValueLabel.setToolTipText(StackFormatter.formatNumber(totalGeValue) + " gp");
+
+		haValueLabel.setText(((showGeValue) ? "HA: " : "") + StackFormatter.quantityToStackSize(totalHaValue) + " gp");
+		haValueLabel.setToolTipText(StackFormatter.formatNumber(totalHaValue) + " gp");
 
 		final long kills = getTotalKills();
 		if (kills > 1)
@@ -190,7 +214,8 @@ class LootTrackerBox extends JPanel
 	{
 		final List<LootTrackerItem> allItems = new ArrayList<>();
 		final List<LootTrackerItem> items = new ArrayList<>();
-		totalPrice = 0;
+		totalGeValue = 0;
+		totalHaValue = 0;
 
 		for (LootTrackerRecord record : records)
 		{
@@ -216,7 +241,8 @@ class LootTrackerBox extends JPanel
 				continue;
 			}
 
-			totalPrice += entry.getPrice();
+			totalGeValue += entry.getGePrice();
+			totalHaValue += entry.getHaPrice();
 
 			int quantity = 0;
 			for (final LootTrackerItem i : items)
@@ -232,9 +258,10 @@ class LootTrackerBox extends JPanel
 			if (quantity > 0)
 			{
 				int newQuantity = entry.getQuantity() + quantity;
-				long pricePerItem = entry.getPrice() == 0 ? 0 : (entry.getPrice() / entry.getQuantity());
+				long geValuePerItem = entry.getGePrice() == 0 ? 0 : (entry.getGePrice() / entry.getQuantity());
+				long haValuePerItem = entry.getHaPrice() == 0 ? 0 : (entry.getHaPrice() / entry.getQuantity());
 
-				items.add(new LootTrackerItem(entry.getId(), entry.getName(), newQuantity, pricePerItem * newQuantity, entry.isIgnored()));
+				items.add(new LootTrackerItem(entry.getId(), entry.getName(), newQuantity, geValuePerItem * newQuantity, haValuePerItem * newQuantity, entry.isIgnored()));
 			}
 			else
 			{
@@ -242,7 +269,12 @@ class LootTrackerBox extends JPanel
 			}
 		}
 
-		items.sort((i1, i2) -> Long.compare(i2.getPrice(), i1.getPrice()));
+		//Always sort by GE value unless we are only showing HA value
+		if (showGeValue) {
+			items.sort((i1, i2) -> Long.compare(i2.getGePrice(), i1.getGePrice()));
+		} else if (showHaValue) {
+			items.sort((i1, i2) -> Long.compare(i2.getHaPrice(), i1.getHaPrice()));
+		}
 
 		// Calculates how many rows need to be display to fit all items
 		final int rowSize = ((items.size() % ITEMS_PER_ROW == 0) ? 0 : 1) + items.size() / ITEMS_PER_ROW;
@@ -303,12 +335,78 @@ class LootTrackerBox extends JPanel
 		itemContainer.repaint();
 	}
 
-	private static String buildToolTip(LootTrackerItem item)
+	private String buildToolTip(LootTrackerItem item)
 	{
 		final String name = item.getName();
 		final int quantity = item.getQuantity();
-		final long price = item.getPrice();
-		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
-		return name + " x " + quantity + " (" + StackFormatter.quantityToStackSize(price) + ") " + ignoredLabel;
+		final long geValue = item.getGePrice();
+		final long haValue = item.getHaPrice();
+
+		StringBuilder builder = new StringBuilder();
+		builder
+			.append("<html>")
+			.append(name);
+
+		if (quantity > 1)
+		{
+			builder
+				.append(" x ")
+				.append(StackFormatter.quantityToStackSize(quantity));
+		}
+
+		if (item.isIgnored()) {
+			builder.append(" - Ignored");
+		}
+
+		if (showGeValue && showHaValue)
+		{
+			builder
+				.append("<br/>")
+				.append("GE: ")
+				.append(buildTooltipItemValueText(geValue, quantity))
+				.append("<br/>")
+				.append("HA: ")
+				.append(buildTooltipItemValueText(haValue, quantity));
+		}
+		else if (showGeValue || showHaValue)
+		{
+			long value = (showGeValue) ? geValue : haValue;
+
+			builder
+				.append("<br/>")
+				.append(buildTooltipItemValueText(value,quantity));
+		}
+
+		builder.append("</html>");
+
+		return builder.toString();
 	}
+
+	private String buildTooltipItemValueText(long value, int quantity) {
+		if (quantity > 1) {
+			return new StringBuilder()
+				.append(StackFormatter.quantityToStackSize(value))
+				.append(" gp (")
+				.append(StackFormatter.quantityToStackSize(value / quantity))
+				.append(" ea)")
+				.toString();
+		} else {
+			return StackFormatter.quantityToStackSize(value) + " gp";
+		}
+	}
+
+	void showGeValue(boolean show) {
+		showGeValue = show;
+		geValueLabel.setVisible(show);
+
+		buildItems(); //To rebuild tooltip text and resort items
+	}
+
+	void showHaValue(boolean show) {
+		showHaValue = show;
+		haValueLabel.setVisible(show);
+
+		buildItems(); //To rebuild tooltip text and resort items
+	}
+
 }

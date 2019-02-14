@@ -35,7 +35,8 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "ignoredItems",
 		name = "Ignored items",
-		description = "Configures which items should be ignored when calculating loot prices."
+		description = "Configures which items should be ignored when calculating loot prices.",
+		position = 1
 	)
 	default String getIgnoredItems()
 	{
@@ -45,17 +46,42 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "ignoredItems",
 		name = "",
-		description = ""
+		description = "",
+		position = 2
 	)
 	void setIgnoredItems(String key);
 
 	@ConfigItem(
+		keyName = "showGeValue",
+		name = "Show Grand Exchange Values",
+		description = "Show the Grand Exchange value of loot",
+		position = 3
+	)
+	default boolean showGeValue()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showHaValue",
+		name = "Show High Alchemy Values",
+		description = "Show the High Alchemy value of loot",
+		position = 4
+	)
+	default boolean showHaValue()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "saveLoot",
 		name = "Save loot",
-		description = "Save loot between client sessions (requires being logged in)"
+		description = "Save loot between client sessions (requires being logged in)",
+		position = 5
 	)
 	default boolean saveLoot()
 	{
 		return true;
 	}
+
 }

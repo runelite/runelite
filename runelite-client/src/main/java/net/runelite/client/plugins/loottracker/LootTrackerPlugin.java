@@ -89,6 +89,8 @@ import net.runelite.http.api.loottracker.LootTrackerClient;
 @Slf4j
 public class LootTrackerPlugin extends Plugin
 {
+	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+
 	// Activity/Event loot handling
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails.");
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
@@ -188,6 +190,16 @@ public class LootTrackerPlugin extends Plugin
 		{
 			ignoredItems = Text.fromCSV(config.getIgnoredItems());
 			SwingUtilities.invokeLater(panel::updateIgnoredRecords);
+
+			switch (event.getKey())
+			{
+				case "showGeValue":
+					SwingUtilities.invokeLater(() -> panel.showGeValue(config.showGeValue()));
+					break;
+				case "showHaValue":
+					SwingUtilities.invokeLater(() -> panel.showHaValue(config.showHaValue()));
+					break;
+			}
 		}
 	}
 
@@ -416,15 +428,19 @@ public class LootTrackerPlugin extends Plugin
 	{
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
-		final long price = (long) itemManager.getItemPrice(realItemId) * (long) quantity;
+		final long gePrice = (long) itemManager.getItemPrice(realItemId) * (long) quantity;
 		final boolean ignored = ignoredItems.contains(itemComposition.getName());
+		final int itemCompositionPrice = itemComposition.getPrice() <= 0 ? 0 : itemComposition.getPrice();
+		final long haPrice = Math.round(itemCompositionPrice * HIGH_ALCHEMY_CONSTANT) * (long) quantity;
 
 		return new LootTrackerItem(
 			itemId,
 			itemComposition.getName(),
 			quantity,
-			price,
-			ignored);
+			gePrice,
+			haPrice,
+			ignored
+		);
 	}
 
 	private LootTrackerItem[] buildEntries(final Collection<ItemStack> itemStacks)
@@ -455,4 +471,13 @@ public class LootTrackerPlugin extends Plugin
 
 		return trackerRecords;
 	}
+
+	boolean showGeValue() {
+		return config.showGeValue();
+	}
+
+	boolean showHaValue() {
+		return config.showHaValue();
+	}
+
 }
