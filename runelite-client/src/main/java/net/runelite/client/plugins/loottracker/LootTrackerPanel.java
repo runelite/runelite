@@ -34,6 +34,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -280,9 +281,11 @@ class LootTrackerPanel extends PluginPanel
 		overallInfo.setBorder(new EmptyBorder(2, 10, 2, 0));
 		overallKillsLabel.setFont(FontManager.getRunescapeSmallFont());
 		overallGeValueLabel.setFont(FontManager.getRunescapeSmallFont());
-		overallGeValueLabel.setVisible(plugin.showGeValue());
+		overallGeValueLabel.setVisible(
+			EnumSet.of(LootTrackerValueType.GRAND_EXCHANGE, LootTrackerValueType.BOTH).contains(plugin.getValueType()));
 		overallHaValueLabel.setFont(FontManager.getRunescapeSmallFont());
-		overallHaValueLabel.setVisible(plugin.showHaValue());
+		overallHaValueLabel.setVisible(
+			EnumSet.of(LootTrackerValueType.HIGH_ALCHEMY, LootTrackerValueType.BOTH).contains(plugin.getValueType()));
 		overallInfo.add(overallKillsLabel);
 		overallInfo.add(overallGeValueLabel);
 		overallInfo.add(overallHaValueLabel);
@@ -462,8 +465,7 @@ class LootTrackerPanel extends PluginPanel
 			record.getTitle(),
 			record.getSubTitle(),
 			hideIgnoredItems,
-			plugin.showGeValue(),
-			plugin.showHaValue(),
+			plugin.getValueType(),
 			plugin::toggleItem
 		);
 		box.combine(record);
@@ -552,11 +554,18 @@ class LootTrackerPanel extends PluginPanel
 
 		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
 
-		String overallGeValueText = plugin.showHaValue() ? "Total GE value: " : "Total value: ";
-		overallGeValueLabel.setText(htmlLabel(overallGeValueText, overallGeValue));
-
-		String overallHaValueText = plugin.showGeValue() ? "Total HA value: " : "Total value: ";
-		overallHaValueLabel.setText(htmlLabel(overallHaValueText, overallHaValue));
+		switch (plugin.getValueType())
+		{
+			case GRAND_EXCHANGE:
+				overallGeValueLabel.setText(htmlLabel("Total value: ", overallGeValue));
+				break;
+			case HIGH_ALCHEMY:
+				overallHaValueLabel.setText(htmlLabel("Total value: ", overallHaValue));
+				break;
+			case BOTH:
+				overallGeValueLabel.setText(htmlLabel("Total GE value: ", overallGeValue));
+				overallHaValueLabel.setText(htmlLabel("Total HA value: ", overallHaValue));
+		}
 	}
 
 	private static String htmlLabel(String key, long value)
@@ -565,24 +574,17 @@ class LootTrackerPanel extends PluginPanel
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
-	void showGeValue(boolean show)
+	void setValueType(LootTrackerValueType type)
 	{
-		overallGeValueLabel.setVisible(show);
+		overallGeValueLabel.setVisible(
+			EnumSet.of(LootTrackerValueType.GRAND_EXCHANGE, LootTrackerValueType.BOTH).contains(type));
+
+		overallHaValueLabel.setVisible(
+			EnumSet.of(LootTrackerValueType.HIGH_ALCHEMY, LootTrackerValueType.BOTH).contains(type));
 
 		for (LootTrackerBox box : boxes)
 		{
-			box.showGeValue(show);
+			box.setValueType(type);
 		}
 	}
-
-	void showHaValue(boolean show)
-	{
-		overallHaValueLabel.setVisible(show);
-
-		for (LootTrackerBox box : boxes)
-		{
-			box.showHaValue(show);
-		}
-	}
-
 }

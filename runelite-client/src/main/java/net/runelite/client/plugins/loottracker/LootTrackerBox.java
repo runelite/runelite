@@ -32,6 +32,7 @@ import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
@@ -72,24 +73,21 @@ class LootTrackerBox extends JPanel
 	private long totalHaValue;
 	private boolean hideIgnoredItems;
 	private BiConsumer<String, Boolean> onItemToggle;
-	private boolean showGeValue;
-	private boolean showHaValue;
+	private LootTrackerValueType valueType;
 
 	LootTrackerBox(
 		final ItemManager itemManager,
 		final String id,
 		@Nullable final String subtitle,
 		final boolean hideIgnoredItems,
-		final boolean showGeValue,
-		final boolean showHaValue,
+		final LootTrackerValueType valueType,
 		final BiConsumer<String, Boolean> onItemToggle)
 	{
 		this.id = id;
 		this.itemManager = itemManager;
 		this.onItemToggle = onItemToggle;
 		this.hideIgnoredItems = hideIgnoredItems;
-		this.showGeValue = showGeValue;
-		this.showHaValue = showHaValue;
+		this.valueType = valueType;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -119,12 +117,14 @@ class LootTrackerBox extends JPanel
 
 		geValueLabel.setFont(FontManager.getRunescapeSmallFont());
 		geValueLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		geValueLabel.setVisible(showGeValue);
+		geValueLabel.setVisible(
+			EnumSet.of(LootTrackerValueType.GRAND_EXCHANGE, LootTrackerValueType.BOTH).contains(valueType));
 		valueLabelContainer.add(geValueLabel);
 
 		haValueLabel.setFont(FontManager.getRunescapeSmallFont());
 		haValueLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		haValueLabel.setVisible(showHaValue);
+		haValueLabel.setVisible(
+			EnumSet.of(LootTrackerValueType.HIGH_ALCHEMY, LootTrackerValueType.BOTH).contains(valueType));
 		valueLabelContainer.add(haValueLabel);
 
 		logTitle.add(valueLabelContainer, BorderLayout.EAST);
@@ -190,10 +190,13 @@ class LootTrackerBox extends JPanel
 	{
 		buildItems();
 
-		geValueLabel.setText(((showHaValue) ? "GE: " : "") + StackFormatter.quantityToStackSize(totalGeValue) + " gp");
+		String gePrefix = (valueType == LootTrackerValueType.BOTH) ? "GE: " : "";
+		String haPrefix = (valueType == LootTrackerValueType.BOTH) ? "HA: " : "";
+
+		geValueLabel.setText(gePrefix + StackFormatter.quantityToStackSize(totalGeValue) + " gp");
 		geValueLabel.setToolTipText(StackFormatter.formatNumber(totalGeValue) + " gp");
 
-		haValueLabel.setText(((showGeValue) ? "HA: " : "") + StackFormatter.quantityToStackSize(totalHaValue) + " gp");
+		haValueLabel.setText(haPrefix + StackFormatter.quantityToStackSize(totalHaValue) + " gp");
 		haValueLabel.setToolTipText(StackFormatter.formatNumber(totalHaValue) + " gp");
 
 		final long kills = getTotalKills();
@@ -270,13 +273,13 @@ class LootTrackerBox extends JPanel
 		}
 
 		//Always sort by GE value unless we are only showing HA value
-		if (showGeValue)
-		{
-			items.sort((i1, i2) -> Long.compare(i2.getGePrice(), i1.getGePrice()));
-		}
-		else if (showHaValue)
+		if (valueType == LootTrackerValueType.HIGH_ALCHEMY)
 		{
 			items.sort((i1, i2) -> Long.compare(i2.getHaPrice(), i1.getHaPrice()));
+		}
+		else
+		{
+			items.sort((i1, i2) -> Long.compare(i2.getGePrice(), i1.getGePrice()));
 		}
 
 		// Calculates how many rows need to be display to fit all items
@@ -357,11 +360,12 @@ class LootTrackerBox extends JPanel
 				.append(StackFormatter.quantityToStackSize(quantity));
 		}
 
-		if (item.isIgnored()) {
+		if (item.isIgnored())
+		{
 			builder.append(" - Ignored");
 		}
 
-		if (showGeValue && showHaValue)
+		if (valueType == LootTrackerValueType.BOTH)
 		{
 			builder
 				.append("<br/>")
@@ -371,9 +375,9 @@ class LootTrackerBox extends JPanel
 				.append("HA: ")
 				.append(buildTooltipItemValueText(haValue, quantity));
 		}
-		else if (showGeValue || showHaValue)
+		else
 		{
-			long value = (showGeValue) ? geValue : haValue;
+			long value = (valueType == LootTrackerValueType.GRAND_EXCHANGE) ? geValue : haValue;
 
 			builder
 				.append("<br/>")
@@ -402,20 +406,16 @@ class LootTrackerBox extends JPanel
 		}
 	}
 
-	void showGeValue(boolean show)
+	void setValueType(LootTrackerValueType type)
 	{
-		showGeValue = show;
-		geValueLabel.setVisible(show);
+		valueType = type;
+
+		geValueLabel.setVisible(
+			EnumSet.of(LootTrackerValueType.GRAND_EXCHANGE, LootTrackerValueType.BOTH).contains(valueType));
+
+		haValueLabel.setVisible(
+			EnumSet.of(LootTrackerValueType.HIGH_ALCHEMY, LootTrackerValueType.BOTH).contains(valueType));
 
 		buildItems(); //To rebuild tooltip text and resort items
 	}
-
-	void showHaValue(boolean show)
-	{
-		showHaValue = show;
-		haValueLabel.setVisible(show);
-
-		buildItems(); //To rebuild tooltip text and resort items
-	}
-
 }

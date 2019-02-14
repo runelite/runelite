@@ -191,14 +191,9 @@ public class LootTrackerPlugin extends Plugin
 			ignoredItems = Text.fromCSV(config.getIgnoredItems());
 			SwingUtilities.invokeLater(panel::updateIgnoredRecords);
 
-			switch (event.getKey())
+			if (event.getKey().equals("valueType"))
 			{
-				case "showGeValue":
-					SwingUtilities.invokeLater(() -> panel.showGeValue(config.showGeValue()));
-					break;
-				case "showHaValue":
-					SwingUtilities.invokeLater(() -> panel.showHaValue(config.showHaValue()));
-					break;
+				SwingUtilities.invokeLater(() -> panel.setValueType(config.valueType()));
 			}
 		}
 	}
@@ -472,14 +467,9 @@ public class LootTrackerPlugin extends Plugin
 		return trackerRecords;
 	}
 
-	boolean showGeValue()
+	LootTrackerValueType getValueType()
 	{
-		return config.showGeValue();
-	}
-
-	boolean showHaValue()
-	{
-		return config.showHaValue();
+		return config.valueType();
 	}
 
 }

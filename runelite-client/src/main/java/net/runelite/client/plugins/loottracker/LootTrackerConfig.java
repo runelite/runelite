@@ -52,32 +52,21 @@ public interface LootTrackerConfig extends Config
 	void setIgnoredItems(String key);
 
 	@ConfigItem(
-		keyName = "showGeValue",
-		name = "Show Grand Exchange Values",
-		description = "Show the Grand Exchange value of loot",
+		keyName = "valueType",
+		name = "Loot values",
+		description = "Select which source is used to calculate loot value",
 		position = 3
 	)
-	default boolean showGeValue()
+	default LootTrackerValueType valueType()
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showHaValue",
-		name = "Show High Alchemy Values",
-		description = "Show the High Alchemy value of loot",
-		position = 4
-	)
-	default boolean showHaValue()
-	{
-		return false;
+		return LootTrackerValueType.GRAND_EXCHANGE;
 	}
 
 	@ConfigItem(
 		keyName = "saveLoot",
 		name = "Save loot",
 		description = "Save loot between client sessions (requires being logged in)",
-		position = 5
+		position = 4
 	)
 	default boolean saveLoot()
 	{
