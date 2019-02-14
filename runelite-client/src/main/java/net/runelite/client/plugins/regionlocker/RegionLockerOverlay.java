@@ -6,10 +6,7 @@ import net.runelite.api.Point;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.*;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -63,6 +60,8 @@ class RegionLockerOverlay extends Overlay {
         int yRegionMax = ((worldMapPosition.getY() + heightInTiles / 2) & REGION_TRUNCATE) + REGION_SIZE;
         int regionPixelSize = (int) Math.ceil(REGION_SIZE * pixelsPerTile);
 
+        Point mousePos = client.getMouseCanvasPosition();
+
         for (int x = xRegionMin; x < xRegionMax; x += REGION_SIZE)
         {
             for (int y = yRegionMin; y < yRegionMax; y += REGION_SIZE)
@@ -84,16 +83,24 @@ class RegionLockerOverlay extends Overlay {
                 int labelWidth = (int) textBounds.getWidth() + 2 * LABEL_PADDING;
                 int labelHeight = (int) textBounds.getHeight() + 2 * LABEL_PADDING;
                 //graphics.fillRect(xPos, yPos, labelWidth, labelHeight);
+                Rectangle regionRect = new Rectangle(xPos, yPos, regionPixelSize, regionPixelSize);
+                if (RegionLocker.hasRegion(regionId) ^ config.invertMapOverlay() || RegionLocker.isUnlockable(regionId)) {
 
-                if (UnlockedRegions.hasRegion(regionId) ^ config.invertMapOverlay()) {
-                    Color color = config.mapOverlayColor();
+                    Color color;
+                    if (RegionLocker.isUnlockable(regionId))
+                        color = config.unlockableOverlayColor();
+                    else
+                        color = config.mapOverlayColor();
                     int alpha = Math.max(0, Math.min(255, config.mapOverlayAlpha()));
                     color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+                    if (regionRect.contains(mousePos.getX(), mousePos.getY()))
+                        color = color.brighter();
                     graphics.setColor(color);
                     graphics.fillRect(xPos, yPos, regionPixelSize, regionPixelSize);
                 }
 
                 graphics.setColor(new Color(0, 19, 36, 127));
+
                 if (config.drawMapGrid()) graphics.drawRect(xPos, yPos, regionPixelSize, regionPixelSize);
 
                 graphics.setColor(WHITE_TRANSLUCENT);

@@ -85,7 +85,7 @@ import static net.runelite.client.plugins.gpu.GLUtil.glGenVertexArrays;
 import static net.runelite.client.plugins.gpu.GLUtil.inputStreamToString;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.template.Template;
-import net.runelite.client.plugins.regionlocker.UnlockedRegions;
+import net.runelite.client.plugins.regionlocker.RegionLocker;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.util.OSType;
 
@@ -735,10 +735,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	private boolean instanceRegionUnlocked() {
-		if (!UnlockedRegions.renderLockedRegions) return true;
+		if (!RegionLocker.renderLockedRegions) return true;
 		for (int i = 0; i < client.getMapRegions().length; i++) {
 			int region = client.getMapRegions()[i];
-			if (UnlockedRegions.hasRegion(region)) return true;
+			if (RegionLocker.hasRegion(region)) return true;
 		}
 		return false;
 	}
@@ -749,7 +749,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 
 		int bx, by;
-		if (!UnlockedRegions.renderLockedRegions || (client.isInInstancedRegion() && instanceRegionUnlocked())) {
+		if (!RegionLocker.renderLockedRegions || (client.isInInstancedRegion() && instanceRegionUnlocked())) {
 			bx = -1;
 			by = -1;
 			gl.glUniform1i(uniBaseX, bx);
@@ -765,7 +765,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		for (int i = 0; i < client.getMapRegions().length; i++) {
 			int region = client.getMapRegions()[i];
-			if (UnlockedRegions.hasRegion(region)) {
+			if (RegionLocker.hasRegion(region)) {
 				loadedLockedRegions[i] = region;
 			}
 		}
@@ -773,9 +773,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		for (int i = 0; i < loadedLockedRegions.length; i++) {
 			int region = loadedLockedRegions[i];
 			int j = i*4;
-			regionCoords[j  ] = (region >> 8) << 13;
+			regionCoords[j]   = (region >> 8) << 13;
 			regionCoords[j+1] = (region & 255) << 13;
-			regionCoords[j+2] = regionCoords[j  ] + 8192;
+			regionCoords[j+2] = regionCoords[j]   + 8192;
 			regionCoords[j+3] = regionCoords[j+1] + 8192;
 		}
 
