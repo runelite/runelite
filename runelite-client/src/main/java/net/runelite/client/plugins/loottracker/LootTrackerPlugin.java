@@ -472,11 +472,13 @@ public class LootTrackerPlugin extends Plugin
 		return trackerRecords;
 	}
 
-	boolean showGeValue() {
+	boolean showGeValue()
+	{
 		return config.showGeValue();
 	}
 
-	boolean showHaValue() {
+	boolean showHaValue()
+	{
 		return config.showHaValue();
 	}
 

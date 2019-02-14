@@ -270,9 +270,12 @@ class LootTrackerBox extends JPanel
 		}
 
 		//Always sort by GE value unless we are only showing HA value
-		if (showGeValue) {
+		if (showGeValue)
+		{
 			items.sort((i1, i2) -> Long.compare(i2.getGePrice(), i1.getGePrice()));
-		} else if (showHaValue) {
+		}
+		else if (showHaValue)
+		{
 			items.sort((i1, i2) -> Long.compare(i2.getHaPrice(), i1.getHaPrice()));
 		}
 
@@ -374,7 +377,7 @@ class LootTrackerBox extends JPanel
 
 			builder
 				.append("<br/>")
-				.append(buildTooltipItemValueText(value,quantity));
+				.append(buildTooltipItemValueText(value, quantity));
 		}
 
 		builder.append("</html>");
@@ -382,27 +385,33 @@ class LootTrackerBox extends JPanel
 		return builder.toString();
 	}
 
-	private String buildTooltipItemValueText(long value, int quantity) {
-		if (quantity > 1) {
+	private String buildTooltipItemValueText(long value, int quantity)
+	{
+		if (quantity > 1)
+		{
 			return new StringBuilder()
 				.append(StackFormatter.quantityToStackSize(value))
 				.append(" gp (")
 				.append(StackFormatter.quantityToStackSize(value / quantity))
 				.append(" ea)")
 				.toString();
-		} else {
+		}
+		else
+		{
 			return StackFormatter.quantityToStackSize(value) + " gp";
 		}
 	}
 
-	void showGeValue(boolean show) {
+	void showGeValue(boolean show)
+	{
 		showGeValue = show;
 		geValueLabel.setVisible(show);
 
 		buildItems(); //To rebuild tooltip text and resort items
 	}
 
-	void showHaValue(boolean show) {
+	void showHaValue(boolean show)
+	{
 		showHaValue = show;
 		haValueLabel.setVisible(show);
 

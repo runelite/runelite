@@ -565,7 +565,8 @@ class LootTrackerPanel extends PluginPanel
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
-	void showGeValue(boolean show) {
+	void showGeValue(boolean show)
+	{
 		overallGeValueLabel.setVisible(show);
 
 		for (LootTrackerBox box : boxes)
@@ -574,7 +575,8 @@ class LootTrackerPanel extends PluginPanel
 		}
 	}
 
-	void showHaValue(boolean show) {
+	void showHaValue(boolean show)
+	{
 		overallHaValueLabel.setVisible(show);
 
 		for (LootTrackerBox box : boxes)
