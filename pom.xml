@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.5.12-SNAPSHOT</version>
+	<version>1.5.12</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -59,7 +59,7 @@
 		<url>https://github.com/runelite/runelite</url>
 		<connection>scm:git:git://github.com/runelite/runelite</connection>
 		<developerConnection>scm:git:git@github.com:runelite/runelite</developerConnection>
-		<tag>HEAD</tag>
+		<tag>runelite-parent-1.5.12</tag>
 	</scm>
 
 	<developers>
