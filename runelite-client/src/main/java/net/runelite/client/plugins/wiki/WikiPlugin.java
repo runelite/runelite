@@ -27,6 +27,8 @@ package net.runelite.client.plugins.wiki;
 import com.google.common.primitives.Ints;
 import java.net.URLEncoder;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import lombok.extern.slf4j.Slf4j;
@@ -79,6 +81,9 @@ public class WikiPlugin extends Plugin
 
 	private static final String MENUOP_GUIDE = "Guide";
 	private static final String MENUOP_QUICKGUIDE = "Quick Guide";
+	private static final String MENUOP_WIKI_SKILL = "Wiki";
+
+	private static final Pattern SKILL_REGEX = Pattern.compile("([A-Za-z]+) guide");
 
 	@Inject
 	private SpriteManager spriteManager;
@@ -246,6 +251,13 @@ public class WikiPlugin extends Plugin
 					String quest = Text.removeTags(ev.getMenuTarget());
 					LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(quest.replace(' ', '_')) + quickguide + "?" + UTM_PARAMS);
 					break;
+				case MENUOP_WIKI_SKILL:
+					Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
+
+					if (skillRegex.find())
+					{
+						LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(skillRegex.group(1)) + "?" + UTM_PARAMS);
+					}
 			}
 		}
 	}
@@ -261,29 +273,42 @@ public class WikiPlugin extends Plugin
 	{
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
+		MenuEntry[] menuEntries = client.getMenuEntries();
 
-		if (!Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) || !"Read Journal:".equals(event.getOption()))
+		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read Journal:".equals(event.getOption()))
 		{
-			return;
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+
+			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			menuEntry.setTarget(event.getTarget());
+			menuEntry.setOption(MENUOP_GUIDE);
+			menuEntry.setParam0(widgetIndex);
+			menuEntry.setParam1(widgetID);
+			menuEntry.setType(MenuAction.RUNELITE.getId());
+
+			menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
+			menuEntry.setTarget(event.getTarget());
+			menuEntry.setOption(MENUOP_QUICKGUIDE);
+			menuEntry.setParam0(widgetIndex);
+			menuEntry.setParam1(widgetID);
+			menuEntry.setType(MenuAction.RUNELITE.getId());
+
+			client.setMenuEntries(menuEntries);
 		}
 
-		MenuEntry[] menuEntries = client.getMenuEntries();
-		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+		if ((WidgetInfo.TO_GROUP(widgetID) == WidgetID.SKILLS_GROUP_ID) && event.getOption().startsWith("View"))
+		{
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
-		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-		menuEntry.setTarget(event.getTarget());
-		menuEntry.setOption(MENUOP_GUIDE);
-		menuEntry.setParam0(widgetIndex);
-		menuEntry.setParam1(widgetID);
-		menuEntry.setType(MenuAction.RUNELITE.getId());
+			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			menuEntry.setTarget(event.getOption().replace("View ", ""));
+			menuEntry.setOption(MENUOP_WIKI_SKILL);
+			menuEntry.setParam0(widgetIndex);
+			menuEntry.setParam1(widgetID);
+			menuEntry.setIdentifier(event.getIdentifier());
+			menuEntry.setType(MenuAction.RUNELITE.getId());
 
-		menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
-		menuEntry.setTarget(event.getTarget());
-		menuEntry.setOption(MENUOP_QUICKGUIDE);
-		menuEntry.setParam0(widgetIndex);
-		menuEntry.setParam1(widgetID);
-		menuEntry.setType(MenuAction.RUNELITE.getId());
-
-		client.setMenuEntries(menuEntries);
+			client.setMenuEntries(menuEntries);
+		}
 	}
 }
