@@ -921,4 +921,8 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("endY")
 	int getEndY();
+
+	@Import("spellSelected")
+	@Override
+	void setSpellSelected(boolean selected);
 }

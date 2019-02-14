@@ -27,6 +27,7 @@ package net.runelite.mixins;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
@@ -51,6 +52,7 @@ import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.Node;
 import net.runelite.api.PacketBuffer;
@@ -100,6 +102,7 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.rs.api.RSChatLineBuffer;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDeque;
@@ -1236,7 +1239,7 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 	@Inject
-	@MethodHook("addChatMessage")
+	@MethodHook(value = "addChatMessage", end = true)
 	public static void onAddChatMessage(int type, String name, String message, String sender)
 	{
 		Logger logger = client.getLogger();
@@ -1245,8 +1248,13 @@ public abstract class RSClientMixin implements RSClient
 			logger.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
 		}
 
+		// Get the message node which was added
+		Map<Integer, RSChatLineBuffer> chatLineMap = client.getChatLineMap();
+		RSChatLineBuffer chatLineBuffer = chatLineMap.get(type);
+		MessageNode messageNode = chatLineBuffer.getLines()[0];
+
 		final ChatMessageType chatMessageType = ChatMessageType.of(type);
-		final ChatMessage chatMessage = new ChatMessage(chatMessageType, name, message, sender);
+		final ChatMessage chatMessage = new ChatMessage(messageNode, chatMessageType, name, message, sender, messageNode.getTimestamp());
 		client.getCallbacks().post(chatMessage);
 	}
 

@@ -75,7 +75,7 @@ public class CerberusPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
+		if (event.getGameState() == GameState.LOADING)
 		{
 			ghosts.clear();
 		}

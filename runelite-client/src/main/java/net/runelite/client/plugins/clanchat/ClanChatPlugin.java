@@ -35,13 +35,13 @@ import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.VarClientStr;
-import net.runelite.api.widgets.WidgetType;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.SetMessage;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ClanManager;
@@ -134,20 +134,20 @@ public class ClanChatPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSetMessage(SetMessage setMessage)
+	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
-		if (setMessage.getType() == ChatMessageType.CLANCHAT && client.getClanChatCount() > 0)
+		if (chatMessage.getType() == ChatMessageType.CLANCHAT && client.getClanChatCount() > 0)
 		{
-			insertClanRankIcon(setMessage);
+			insertClanRankIcon(chatMessage);
 		}
 	}
 
-	private void insertClanRankIcon(final SetMessage message)
+	private void insertClanRankIcon(final ChatMessage message)
 	{
 		final ClanMemberRank rank = clanManager.getRank(message.getName());
 

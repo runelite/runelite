@@ -179,6 +179,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void unsetSwapConfig(int itemId)
 	{
+		itemId = ItemVariationMapping.map(itemId);
 		configManager.unsetConfiguration(CONFIG_GROUP, ITEM_KEY_PREFIX + itemId);
 	}
 

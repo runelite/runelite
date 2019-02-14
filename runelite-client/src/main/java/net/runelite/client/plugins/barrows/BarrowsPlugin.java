@@ -49,7 +49,9 @@ import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -128,6 +130,19 @@ public class BarrowsPlugin extends Plugin
 		overlayManager.remove(brotherOverlay);
 		walls.clear();
 		ladders.clear();
+
+		// Restore widgets
+		final Widget potential = client.getWidget(WidgetInfo.BARROWS_POTENTIAL);
+		if (potential != null)
+		{
+			potential.setHidden(false);
+		}
+
+		final Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
+		if (barrowsBrothers != null)
+		{
+			barrowsBrothers.setHidden(false);
+		}
 	}
 
 	@Subscribe

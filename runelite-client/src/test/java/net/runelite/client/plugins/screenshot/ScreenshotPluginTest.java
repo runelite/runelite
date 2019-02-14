@@ -110,7 +110,7 @@ public class ScreenshotPluginTest
 	@Test
 	public void testClueScroll()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Seth", CLUE_SCROLL, null);
+		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "Seth", CLUE_SCROLL, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals("medium", screenshotPlugin.getClueType());
@@ -120,7 +120,7 @@ public class ScreenshotPluginTest
 	@Test
 	public void testBarrowsChest()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Seth", BARROWS_CHEST, null);
+		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "Seth", BARROWS_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(310, screenshotPlugin.getBarrowsNumber());
@@ -129,7 +129,7 @@ public class ScreenshotPluginTest
 	@Test
 	public void testChambersOfXericChest()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Seth", CHAMBERS_OF_XERIC_CHEST, null);
+		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "Seth", CHAMBERS_OF_XERIC_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(489, screenshotPlugin.getChambersOfXericNumber());
@@ -138,7 +138,7 @@ public class ScreenshotPluginTest
 	@Test
 	public void testTheatreOfBloodChest()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "Magic fTail", THEATRE_OF_BLOOD_CHEST, null);
+		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "Magic fTail", THEATRE_OF_BLOOD_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(73, screenshotPlugin.gettheatreOfBloodNumber());
@@ -147,7 +147,7 @@ public class ScreenshotPluginTest
 	@Test
 	public void testValuableDrop()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", VALUABLE_DROP, null);
+		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "", VALUABLE_DROP, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
@@ -156,7 +156,7 @@ public class ScreenshotPluginTest
 	@Test
 	public void testUntradeableDrop()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(SERVER, "", UNTRADEABLE_DROP, null);
+		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "", UNTRADEABLE_DROP, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));

@@ -94,7 +94,7 @@ public class ExaminePluginTest
 		menuOptionClicked.setId(ItemID.ABYSSAL_WHIP);
 		examinePlugin.onMenuOptionClicked(menuOptionClicked);
 
-		ChatMessage chatMessage = new ChatMessage(ChatMessageType.EXAMINE_ITEM, "", "A weapon from the abyss.", "");
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.EXAMINE_ITEM, "", "A weapon from the abyss.", "", 0);
 		examinePlugin.onChatMessage(chatMessage);
 
 		// This passes due to not mocking the ItemComposition for the whip
@@ -112,7 +112,7 @@ public class ExaminePluginTest
 		menuOptionClicked.setId(ItemID.ABYSSAL_WHIP);
 		examinePlugin.onMenuOptionClicked(menuOptionClicked);
 
-		ChatMessage chatMessage = new ChatMessage(ChatMessageType.EXAMINE_ITEM, "", "100000 x Abyssal whip", "");
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.EXAMINE_ITEM, "", "100000 x Abyssal whip", "", 0);
 		examinePlugin.onChatMessage(chatMessage);
 
 		verify(examineClient, never()).submitItem(anyInt(), anyString());

@@ -32,7 +32,21 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import static net.runelite.api.AnimationID.*;
+import static net.runelite.api.AnimationID.CONSTRUCTION;
+import static net.runelite.api.AnimationID.FIREMAKING;
+import static net.runelite.api.AnimationID.FLETCHING_BOW_CUTTING;
+import static net.runelite.api.AnimationID.IDLE;
+import static net.runelite.api.AnimationID.LOOKING_INTO;
+import static net.runelite.api.AnimationID.WOODCUTTING_3A_AXE;
+import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
+import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
+import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
+import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
+import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
+import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
+import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
+import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
+import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -43,9 +57,9 @@ import static net.runelite.api.ItemID.BRUMA_ROOT;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.SetMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -192,21 +206,21 @@ public class WintertodtPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSetMessage(SetMessage setMessage)
+	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (!isInWintertodt)
 		{
 			return;
 		}
 
-		ChatMessageType chatMessageType = setMessage.getType();
+		ChatMessageType chatMessageType = chatMessage.getType();
 
 		if (chatMessageType != ChatMessageType.SERVER && chatMessageType != ChatMessageType.FILTERED)
 		{
 			return;
 		}
 
-		MessageNode messageNode = setMessage.getMessageNode();
+		MessageNode messageNode = chatMessage.getMessageNode();
 		final WintertodtInterruptType interruptType;
 
 		if (messageNode.getValue().startsWith("The cold of"))

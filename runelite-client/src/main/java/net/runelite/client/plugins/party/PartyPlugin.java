@@ -128,6 +128,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 
 	private int lastHp, lastPray;
 	private boolean hotkeyDown, doSync;
+	private boolean sendAlert;
 
 	@Override
 	public void configure(Binder binder)
@@ -161,6 +162,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 		keyManager.unregisterKeyListener(this);
 		hotkeyDown = false;
 		doSync = false;
+		sendAlert = false;
 	}
 
 	@Provides
@@ -189,7 +191,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
+				.type(ChatMessageType.CLANCHAT_INFO)
 				.runeLiteFormattedMessage(leaveMessage)
 				.build());
 		}
@@ -284,6 +286,12 @@ public class PartyPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onGameTick(final GameTick event)
 	{
+		if (sendAlert && client.getGameState() == GameState.LOGGED_IN)
+		{
+			sendAlert = false;
+			sendInstructionMessage();
+		}
+
 		if (doSync && !party.getMembers().isEmpty())
 		{
 			// Request sync
@@ -373,7 +381,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 			.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.GAME)
+			.type(ChatMessageType.CLANCHAT_INFO)
 			.runeLiteFormattedMessage(joinMessage)
 			.build());
 
@@ -381,15 +389,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 
 		if (localMember != null && partyData.getMemberId().equals(localMember.getMemberId()))
 		{
-			final String helpMessage = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("To leave party hold SHIFT and right click party stats overlay.")
-				.build();
-
-			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
-				.runeLiteFormattedMessage(helpMessage)
-				.build());
+			sendAlert = true;
 		}
 	}
 
@@ -430,7 +430,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 					.build();
 
 				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.GAME)
+					.type(ChatMessageType.CLANCHAT_INFO)
 					.runeLiteFormattedMessage(joinMessage)
 					.build());
 			}
@@ -509,5 +509,18 @@ public class PartyPlugin extends Plugin implements KeyListener
 		{
 			hotkeyDown = false;
 		}
+	}
+
+	private void sendInstructionMessage()
+	{
+		final String helpMessage = new ChatMessageBuilder()
+			.append(ChatColorType.HIGHLIGHT)
+			.append("To leave party hold SHIFT and right click party stats overlay.")
+			.build();
+
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.CLANCHAT_INFO)
+			.runeLiteFormattedMessage(helpMessage)
+			.build());
 	}
 }
