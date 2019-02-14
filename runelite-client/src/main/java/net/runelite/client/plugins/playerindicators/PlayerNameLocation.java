@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, AeonLucid <https://github.com/AeonLucid>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.osbuddy;
+package net.runelite.client.plugins.playerindicators;
 
-import java.time.Instant;
-import lombok.Data;
+import lombok.AllArgsConstructor;
 
-@Data
-public class GrandExchangeResult
+@AllArgsConstructor
+public enum PlayerNameLocation
 {
-	private int item_id;
-	private int buy_average;
-	private int sell_average;
-	private int overall_average;
-	private Instant last_update;
+
+	DISABLED("Disabled"),
+	ABOVE_HEAD("Above head"),
+	MODEL_CENTER("Center of model"),
+	MODEL_RIGHT("Right of model");
+
+	private final String name;
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

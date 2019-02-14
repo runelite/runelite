@@ -79,7 +79,7 @@ public class CookingPluginTest
 	{
 		for (String message : COOKING_MESSAGES)
 		{
-			ChatMessage chatMessage = new ChatMessage(ChatMessageType.FILTERED, "", message, "");
+			ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.FILTERED, "", message, "", 0);
 			cookingPlugin.onChatMessage(chatMessage);
 		}
 

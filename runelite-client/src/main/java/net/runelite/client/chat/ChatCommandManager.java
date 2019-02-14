@@ -34,7 +34,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.events.SetMessage;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
@@ -59,22 +59,22 @@ public class ChatCommandManager implements ChatboxInputListener
 		commandManager.register(this);
 	}
 
-	public void registerCommand(String command, BiConsumer<SetMessage, String> execute)
+	public void registerCommand(String command, BiConsumer<ChatMessage, String> execute)
 	{
 		registerCommand(command, execute, null);
 	}
 
-	public void registerCommand(String command, BiConsumer<SetMessage, String> execute, BiPredicate<ChatInput, String> input)
+	public void registerCommand(String command, BiConsumer<ChatMessage, String> execute, BiPredicate<ChatInput, String> input)
 	{
 		commands.put(command.toLowerCase(), new ChatCommand(command, false, execute, input));
 	}
 
-	public void registerCommandAsync(String command, BiConsumer<SetMessage, String> execute)
+	public void registerCommandAsync(String command, BiConsumer<ChatMessage, String> execute)
 	{
 		registerCommandAsync(command, execute, null);
 	}
 
-	public void registerCommandAsync(String command, BiConsumer<SetMessage, String> execute, BiPredicate<ChatInput, String> input)
+	public void registerCommandAsync(String command, BiConsumer<ChatMessage, String> execute, BiPredicate<ChatInput, String> input)
 	{
 		commands.put(command.toLowerCase(), new ChatCommand(command, true, execute, input));
 	}
@@ -85,14 +85,14 @@ public class ChatCommandManager implements ChatboxInputListener
 	}
 
 	@Subscribe
-	public void onSetMessage(SetMessage setMessage)
+	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
-		switch (setMessage.getType())
+		switch (chatMessage.getType())
 		{
 			case PUBLIC:
 			case PUBLIC_MOD:
@@ -104,7 +104,7 @@ public class ChatCommandManager implements ChatboxInputListener
 				return;
 		}
 
-		String message = setMessage.getValue();
+		String message = chatMessage.getMessage();
 
 		String command = extractCommand(message);
 		if (command == null)
@@ -120,11 +120,11 @@ public class ChatCommandManager implements ChatboxInputListener
 
 		if (chatCommand.isAsync())
 		{
-			scheduledExecutorService.execute(() -> chatCommand.getExecute().accept(setMessage, message));
+			scheduledExecutorService.execute(() -> chatCommand.getExecute().accept(chatMessage, message));
 		}
 		else
 		{
-			chatCommand.getExecute().accept(setMessage, message);
+			chatCommand.getExecute().accept(chatMessage, message);
 		}
 	}
 

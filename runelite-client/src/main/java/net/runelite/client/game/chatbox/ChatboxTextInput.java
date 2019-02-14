@@ -95,11 +95,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	@Getter
 	private int fontID = FontID.QUILL_8;
 
+	@Getter
+	private boolean built = false;
+
 	// This is a lambda so I can have atomic updates for it's captures
 	private ToIntFunction<MouseEvent> getCharOffset = null;
 	private Predicate<MouseEvent> isInBounds = null;
-
-	private boolean built = false;
 
 	@Inject
 	protected ChatboxTextInput(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread)
@@ -209,7 +210,6 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 
 	protected void update()
 	{
-		this.built = true;
 		Widget container = chatboxPanelManager.getContainerWidget();
 		container.deleteAllChildren();
 
@@ -369,6 +369,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	@Override
 	protected void open()
 	{
+		this.built = true;
 		update();
 	}
 
