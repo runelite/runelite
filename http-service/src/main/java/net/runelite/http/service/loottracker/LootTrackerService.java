@@ -142,7 +142,7 @@ public class LootTrackerService
 			{
 				if (!gameItems.isEmpty())
 				{
-					LootRecord lootRecord = new LootRecord(current.getEventId(), current.getType(), gameItems);
+					LootRecord lootRecord = new LootRecord(current.getEventId(), current.getType(), gameItems, current.getTime());
 					lootRecords.add(lootRecord);
 
 					gameItems = new ArrayList<>();
@@ -157,7 +157,7 @@ public class LootTrackerService
 
 		if (!gameItems.isEmpty())
 		{
-			LootRecord lootRecord = new LootRecord(current.getEventId(), current.getType(), gameItems);
+			LootRecord lootRecord = new LootRecord(current.getEventId(), current.getType(), gameItems, current.getTime());
 			lootRecords.add(lootRecord);
 		}
 
