@@ -271,4 +271,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "swapNexus",
+		name = "Portal Nexus",
+		description = "Makes the teleport menu have priority over the left click destination on the portal nexus"
+	)
+	default boolean swapNexus()
+	{
+		return true;
+	}
 }
