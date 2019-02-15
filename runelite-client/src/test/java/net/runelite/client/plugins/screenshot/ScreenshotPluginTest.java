@@ -141,7 +141,7 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "Magic fTail", THEATRE_OF_BLOOD_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(73, screenshotPlugin.gettheatreOfBloodNumber());
+		assertEquals(73, screenshotPlugin.getTheatreOfBloodNumber());
 	}
 
 	@Test

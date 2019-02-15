@@ -53,6 +53,8 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+
+import joptsimple.internal.Strings;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -460,7 +462,6 @@ public class ScreenshotPlugin extends Plugin
 			case KINGDOM_GROUP_ID:
 			{
 				fileName = "Kingdom " + LocalDate.now();
-				takeScreenshot(fileName);
 				break;
 			}
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
@@ -621,25 +622,16 @@ public class ScreenshotPlugin extends Plugin
 		// Draw the game onto the screenshot
 		graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
 
-		File playerFolder;
-		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
+		File playerFolder = SCREENSHOT_DIR;
+		if (!Strings.isNullOrEmpty(client.getUsername()))
 		{
-			final EnumSet<WorldType> worldTypes = client.getWorldType();
-			final boolean dmm = worldTypes.contains(WorldType.DEADMAN);
-			final boolean sdmm = worldTypes.contains(WorldType.SEASONAL_DEADMAN);
-			final boolean dmmt = worldTypes.contains(WorldType.DEADMAN_TOURNAMENT);
-			final boolean isDmmWorld = dmm || sdmm || dmmt;
-
-			String playerDir = client.getLocalPlayer().getName();
-			if (isDmmWorld)
+			final String sanitizedUsername = Text.standardize(client.getUsername()).replace(' ', '_');
+			playerFolder = new File(playerFolder, sanitizedUsername);
+			final String worldType = getWorldFolderType();
+			if (!Strings.isNullOrEmpty(worldType))
 			{
-				playerDir += "-Deadman";
+				playerFolder = new File(playerFolder, worldType);
 			}
-			playerFolder = new File(SCREENSHOT_DIR, playerDir);
-		}
-		else
-		{
-			playerFolder = SCREENSHOT_DIR;
 		}
 
 		playerFolder.mkdirs();
@@ -647,6 +639,11 @@ public class ScreenshotPlugin extends Plugin
 		try
 		{
 			File screenshotFile = new File(playerFolder, fileName + ".png");
+
+			for (int offset = 1; screenshotFile.exists(); offset++)
+			{
+				screenshotFile = new File(playerFolder, fileName + "_" + offset + ".png");
+			}
 
 			ImageIO.write(screenshot, "PNG", screenshotFile);
 
@@ -716,6 +713,49 @@ public class ScreenshotPlugin extends Plugin
 		});
 	}
 
+	/**
+	 * Determines the world type folder, if any, to which the
+	 * screenshot should be saved.
+	 *
+	 * @return the world type folder name as a string,
+	 * or {@code null} if the world type is a normal world
+	 * (Free, Members, PVP, High-Risk PVP)
+	 */
+	private String getWorldFolderType()
+	{
+		final EnumSet<WorldType> worldTypes = client.getWorldType();
+
+		if (worldTypes.contains(WorldType.DEADMAN_TOURNAMENT))
+		{
+			return "deadman-tournament";
+		}
+		else if (worldTypes.contains(WorldType.SEASONAL_DEADMAN))
+		{
+			return "deadman-seasonal";
+		}
+		else if (worldTypes.contains(WorldType.DEADMAN))
+		{
+			return "deadman";
+		}
+		else if (worldTypes.contains(WorldType.TOURNAMENT))
+		{
+			return "tournament";
+		}
+		else if (worldTypes.contains(WorldType.LAST_MAN_STANDING))
+		{
+			return "last-man-standing";
+		}
+		else if (worldTypes.contains(WorldType.SKILL_TOTAL))
+		{
+			return "skill-total";
+		}
+		else if (worldTypes.contains(WorldType.BOUNTY))
+		{
+			return "bounty";
+		}
+		return null;
+	}
+
 	@VisibleForTesting
 	int getClueNumber()
 	{
@@ -747,7 +787,7 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@VisibleForTesting
-	int gettheatreOfBloodNumber()
+	int getTheatreOfBloodNumber()
 	{
 		return theatreOfBloodNumber;
 	}
