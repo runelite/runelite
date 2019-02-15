@@ -397,10 +397,7 @@ class LootTrackerBox extends JPanel
 				.append(" ea)")
 				.toString();
 		}
-		else
-		{
-			return StackFormatter.quantityToStackSize(value) + " gp";
-		}
+		return StackFormatter.quantityToStackSize(value) + " gp";
 	}
 
 	void setValueType(LootTrackerValueType type)
