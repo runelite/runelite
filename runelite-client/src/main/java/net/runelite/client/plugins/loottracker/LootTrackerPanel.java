@@ -34,7 +34,6 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumSet;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -279,13 +278,15 @@ class LootTrackerPanel extends PluginPanel
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallInfo.setLayout(new BoxLayout(overallInfo, BoxLayout.PAGE_AXIS));
 		overallInfo.setBorder(new EmptyBorder(2, 10, 2, 0));
+
 		overallKillsLabel.setFont(FontManager.getRunescapeSmallFont());
+
 		overallGeValueLabel.setFont(FontManager.getRunescapeSmallFont());
-		overallGeValueLabel.setVisible(
-			EnumSet.of(LootTrackerValueType.GRAND_EXCHANGE, LootTrackerValueType.BOTH).contains(plugin.getValueType()));
+		overallGeValueLabel.setVisible(LootTrackerValueType.isGrandExchange(plugin.getValueType()));
+
 		overallHaValueLabel.setFont(FontManager.getRunescapeSmallFont());
-		overallHaValueLabel.setVisible(
-			EnumSet.of(LootTrackerValueType.HIGH_ALCHEMY, LootTrackerValueType.BOTH).contains(plugin.getValueType()));
+		overallHaValueLabel.setVisible(LootTrackerValueType.isHighAlchemy(plugin.getValueType()));
+
 		overallInfo.add(overallKillsLabel);
 		overallInfo.add(overallGeValueLabel);
 		overallInfo.add(overallHaValueLabel);
@@ -576,11 +577,11 @@ class LootTrackerPanel extends PluginPanel
 
 	void setValueType(LootTrackerValueType type)
 	{
-		overallGeValueLabel.setVisible(
-			EnumSet.of(LootTrackerValueType.GRAND_EXCHANGE, LootTrackerValueType.BOTH).contains(type));
+		boolean showGeLabel = (type == LootTrackerValueType.BOTH) || (type == LootTrackerValueType.GRAND_EXCHANGE);
+		overallGeValueLabel.setVisible(showGeLabel);
 
-		overallHaValueLabel.setVisible(
-			EnumSet.of(LootTrackerValueType.HIGH_ALCHEMY, LootTrackerValueType.BOTH).contains(type));
+		boolean showHaLabel = (type == LootTrackerValueType.BOTH) || (type == LootTrackerValueType.GRAND_EXCHANGE);
+		overallHaValueLabel.setVisible(showHaLabel);
 
 		for (LootTrackerBox box : boxes)
 		{

@@ -471,5 +471,4 @@ public class LootTrackerPlugin extends Plugin
 	{
 		return config.valueType();
 	}
-
 }

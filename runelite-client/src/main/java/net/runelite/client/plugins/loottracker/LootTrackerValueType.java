@@ -31,7 +31,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum LootTrackerValueType
 {
-
 	GRAND_EXCHANGE("Grand Exchange"),
 	HIGH_ALCHEMY("High Alchemy"),
 	BOTH("Both");
@@ -44,4 +43,18 @@ public enum LootTrackerValueType
 		return name;
 	}
 
+	/**
+	 * Returns true if the value type is HIGH_ALCHEMY or BOTH
+	 */
+	static boolean isHighAlchemy(LootTrackerValueType valueType) {
+		return (valueType == HIGH_ALCHEMY || valueType == BOTH);
+	}
+
+	/**
+	 * Returns true if the value type is GRAND_EXCHANGE or BOTH.
+	 */
+	static boolean isGrandExchange
+		(LootTrackerValueType valueType) {
+		return (valueType == HIGH_ALCHEMY || valueType == BOTH);
+	}
 }

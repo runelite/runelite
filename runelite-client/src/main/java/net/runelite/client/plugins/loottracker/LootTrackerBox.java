@@ -32,7 +32,6 @@ import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
@@ -117,14 +116,12 @@ class LootTrackerBox extends JPanel
 
 		geValueLabel.setFont(FontManager.getRunescapeSmallFont());
 		geValueLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		geValueLabel.setVisible(
-			EnumSet.of(LootTrackerValueType.GRAND_EXCHANGE, LootTrackerValueType.BOTH).contains(valueType));
+		geValueLabel.setVisible(LootTrackerValueType.isGrandExchange(valueType));
 		valueLabelContainer.add(geValueLabel);
 
 		haValueLabel.setFont(FontManager.getRunescapeSmallFont());
 		haValueLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		haValueLabel.setVisible(
-			EnumSet.of(LootTrackerValueType.HIGH_ALCHEMY, LootTrackerValueType.BOTH).contains(valueType));
+		haValueLabel.setVisible(LootTrackerValueType.isHighAlchemy(valueType));
 		valueLabelContainer.add(haValueLabel);
 
 		logTitle.add(valueLabelContainer, BorderLayout.EAST);
@@ -410,11 +407,9 @@ class LootTrackerBox extends JPanel
 	{
 		valueType = type;
 
-		geValueLabel.setVisible(
-			EnumSet.of(LootTrackerValueType.GRAND_EXCHANGE, LootTrackerValueType.BOTH).contains(valueType));
+		geValueLabel.setVisible(LootTrackerValueType.isGrandExchange(valueType));
 
-		haValueLabel.setVisible(
-			EnumSet.of(LootTrackerValueType.HIGH_ALCHEMY, LootTrackerValueType.BOTH).contains(valueType));
+		haValueLabel.setVisible(LootTrackerValueType.isHighAlchemy(valueType));
 
 		buildItems(); //To rebuild tooltip text and resort items
 	}
