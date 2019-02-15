@@ -53,8 +53,8 @@ public interface LootTrackerConfig extends Config
 
 	@ConfigItem(
 		keyName = "valueType",
-		name = "Loot values",
-		description = "Select which source is used to calculate loot value",
+		name = "Price display",
+		description = "Select which source is used to calculate loot prices",
 		position = 3
 	)
 	default LootTrackerValueType valueType()
