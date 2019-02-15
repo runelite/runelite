@@ -46,15 +46,16 @@ public enum LootTrackerValueType
 	/**
 	 * Returns true if the value type is HIGH_ALCHEMY or BOTH
 	 */
-	static boolean isHighAlchemy(LootTrackerValueType valueType) {
+	static boolean isHighAlchemy(LootTrackerValueType valueType)
+	{
 		return (valueType == HIGH_ALCHEMY || valueType == BOTH);
 	}
 
 	/**
 	 * Returns true if the value type is GRAND_EXCHANGE or BOTH.
 	 */
-	static boolean isGrandExchange
-		(LootTrackerValueType valueType) {
+	static boolean isGrandExchange(LootTrackerValueType valueType)
+	{
 		return (valueType == HIGH_ALCHEMY || valueType == BOTH);
 	}
 }
