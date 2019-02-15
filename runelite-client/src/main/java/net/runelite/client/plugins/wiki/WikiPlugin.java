@@ -227,6 +227,8 @@ public class WikiPlugin extends Plugin
 					return;
 			}
 
+			name = Text.removeTags(name);
+
 			HttpUrl url = WIKI_RSLOOKUP.newBuilder()
 				.addQueryParameter("type", type)
 				.addQueryParameter("id", "" + id)
