@@ -27,6 +27,7 @@ package net.runelite.client.util;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
@@ -84,7 +85,23 @@ public class ItemUtil
 	 */
 	public static boolean containsAllItemIds(Item[] itemArray, Set<Integer> ids)
 	{
-		return toGameItemMap(itemArray, ids).size() == ids.size();
+		final Set<Integer> found = new HashSet<>();
+		for (Item i : itemArray)
+		{
+			final int id = i.getId();
+			if (ids.contains(id))
+			{
+				found.add(id);
+				// Early break if possible
+				if (found.size() == ids.size())
+				{
+					return true;
+				}
+			}
+
+		}
+
+		return found.size() == ids.size();
 	}
 
 	/**
