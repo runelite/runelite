@@ -75,7 +75,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	}
 
 	@AllArgsConstructor
-	private class Line
+	private static class Line
 	{
 		private final int start;
 		private final int end;
