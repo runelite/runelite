@@ -60,7 +60,7 @@ class FishingSpotOverlay extends Overlay
 	private final Client client;
 	private final ItemManager itemManager;
 
-	private static HashMap<WorldPoint, ArrayList<FishingSpot>> SPOTS_LIST = new HashMap<>();
+	private static HashMap<WorldPoint, ArrayList<NPC>> SPOTS_LIST = new HashMap<>();
 
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hidden;
@@ -98,72 +98,72 @@ class FishingSpotOverlay extends Overlay
 				continue;
 			}
 
-			ArrayList<FishingSpot> list = SPOTS_LIST.get(npc.getWorldLocation());
-			if (list == NULL)
+			ArrayList<NPC> list = SPOTS_LIST.get(npc.getWorldLocation());
+			if (list == null)
 			{
-				list = new ArrayList<FishingSpot>();
+				list = new ArrayList<NPC>();
 				SPOTS_LIST.put(npc.getWorldLocation(), list);
 			}
-			if (!list.contains(spot))
-				list.add(spot);
+			if (!list.contains(npc))
+				list.add(npc);
+		}
 
-			Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
+		for (HashMap.Entry<WorldPoint, ArrayList<NPC>> entry : SPOTS_LIST.entrySet())
+		{
+			WorldPoint tile = entry.getKey();
+			ArrayList<NPC> fishingSpots = entry.getValue();
 
-			if (spot == FishingSpot.MINNOW && config.showMinnowOverlay())
+			for (NPC npc : fishingSpots)
 			{
-				MinnowSpot minnowSpot = plugin.getMinnowSpots().get(npc.getIndex());
-				if (minnowSpot != null)
-				{
-					long millisLeft = MINNOW_MOVE.toMillis() - Duration.between(minnowSpot.getTime(), Instant.now()).toMillis();
-					if (millisLeft < MINNOW_WARN.toMillis())
-					{
-						color = Color.ORANGE;
-					}
+				FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
+				Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
 
-					LocalPoint localPoint = npc.getLocalLocation();
-					Point location = Perspective.localToCanvas(client, localPoint, client.getPlane());
+				if (spot == FishingSpot.MINNOW && config.showMinnowOverlay()) {
+					MinnowSpot minnowSpot = plugin.getMinnowSpots().get(npc.getIndex());
+					if (minnowSpot != null) {
+						long millisLeft = MINNOW_MOVE.toMillis() - Duration.between(minnowSpot.getTime(), Instant.now()).toMillis();
+						if (millisLeft < MINNOW_WARN.toMillis()) {
+							color = Color.ORANGE;
+						}
 
-					if (location != null)
-					{
-						ProgressPieComponent pie = new ProgressPieComponent();
-						pie.setFill(color);
-						pie.setBorderColor(color);
-						pie.setPosition(location);
-						pie.setProgress((float) millisLeft / MINNOW_MOVE.toMillis());
-						pie.render(graphics);
-					}
-				}
-			}
+						LocalPoint localPoint = npc.getLocalLocation();
+						Point location = Perspective.localToCanvas(client, localPoint, client.getPlane());
 
-			if (config.showSpotTiles())
-			{
-				Polygon poly = npc.getCanvasTilePoly();
-				if (poly != null)
-				{
-					OverlayUtil.renderPolygon(graphics, poly, color.darker());
-				}
-			}
-
-			if (config.showSpotIcons())
-			{
-				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());;
-				if (fishImage != null)
-				{
-					Point imageLocation = npc.getCanvasImageLocation(fishImage, npc.getLogicalHeight());
-					if (imageLocation != null)
-					{
-						OverlayUtil.renderImageLocation(graphics, imageLocation, fishImage);
+						if (location != null) {
+							ProgressPieComponent pie = new ProgressPieComponent();
+							pie.setFill(color);
+							pie.setBorderColor(color);
+							pie.setPosition(location);
+							pie.setProgress((float) millisLeft / MINNOW_MOVE.toMillis());
+							pie.render(graphics);
+						}
 					}
 				}
-			}
 
-			if (config.showSpotNames())
-			{
-				String text = spot.getName();
-				Point textLocation = npc.getCanvasTextLocation(graphics, text, npc.getLogicalHeight() + 40);
-				if (textLocation != null)
-				{
-					OverlayUtil.renderTextLocation(graphics, textLocation, text, color.darker());
+				if (config.showSpotTiles()) {
+					Polygon poly = npc.getCanvasTilePoly();
+					if (poly != null) {
+						OverlayUtil.renderPolygon(graphics, poly, color.darker());
+					}
+				}
+
+				if (config.showSpotIcons()) {
+					BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
+					;
+					if (fishImage != null) {
+						Point imageLocation = npc.getCanvasImageLocation(fishImage, npc.getLogicalHeight());
+						if (imageLocation != null) {
+							OverlayUtil.renderImageLocation(graphics, imageLocation, fishImage);
+						}
+					}
+				}
+
+				if (config.showSpotNames()) {
+					String text = spot.getName();
+					Point textLocation = npc.getCanvasTextLocation(graphics, text, npc.getLogicalHeight() + 40);
+					if (textLocation != null) {
+						OverlayUtil.renderTextLocation(graphics, textLocation, text, color.darker());
+					}
 				}
 			}
 		}
