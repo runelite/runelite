@@ -47,11 +47,11 @@ public interface RSNPCComposition extends NPCComposition
 
 	@Import("isMinimapVisible")
 	@Override
-	boolean isMinimapVisable();
+	boolean isMinimapVisible();
 
 	@Import("isVisible")
 	@Override
-	boolean isVisable();
+	boolean isVisible();
 
 	@Import("id")
 	@Override

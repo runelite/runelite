@@ -30,8 +30,8 @@ import java.util.Queue;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.SetMessage;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.Subscribe;
@@ -76,11 +76,11 @@ public class ChatHistoryPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSetMessage(SetMessage message)
+	public void onChatMessage(ChatMessage chatMessage)
 	{
 		// Start sending old messages right after the welcome message, as that is most reliable source
 		// of information that chat history was reset
-		if (message.getValue().equals(WELCOME_MESSAGE))
+		if (chatMessage.getMessage().equals(WELCOME_MESSAGE))
 		{
 			QueuedMessage queuedMessage;
 
@@ -92,15 +92,15 @@ public class ChatHistoryPlugin extends Plugin
 			return;
 		}
 
-		if (ALLOWED_HISTORY.contains(message.getType()))
+		if (ALLOWED_HISTORY.contains(chatMessage.getType()))
 		{
 			final QueuedMessage queuedMessage = QueuedMessage.builder()
-				.type(message.getType())
-				.name(message.getName())
-				.sender(message.getSender())
-				.value(nbsp(message.getValue()))
-				.runeLiteFormattedMessage(nbsp(message.getMessageNode().getRuneLiteFormatMessage()))
-				.timestamp(message.getTimestamp())
+				.type(chatMessage.getType())
+				.name(chatMessage.getName())
+				.sender(chatMessage.getSender())
+				.value(nbsp(chatMessage.getMessage()))
+				.runeLiteFormattedMessage(nbsp(chatMessage.getMessageNode().getRuneLiteFormatMessage()))
+				.timestamp(chatMessage.getTimestamp())
 				.build();
 
 			if (!messageQueue.contains(queuedMessage))
