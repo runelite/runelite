@@ -42,7 +42,7 @@ import static net.runelite.client.plugins.itemstats.stats.Stats.RUN_ENERGY;
 public class CasteWarsBandage implements Effect
 {
 	private static final ImmutableSet<Integer> BRACELETS = ImmutableSet.of(
-			ItemID.CASTLE_WARS_BRACELET1, ItemID.CASTLE_WARS_BRACELET2, ItemID.CASTLE_WARS_BRACELET3, ItemID.LEATHER_GLOVES
+			ItemID.CASTLE_WARS_BRACELET1, ItemID.CASTLE_WARS_BRACELET2, ItemID.CASTLE_WARS_BRACELET3
 	);
 	private static final int GLOVES_SLOT_ID = EquipmentInventorySlot.GLOVES.getSlotIdx();
 	private static final double BASE_HP_PERC = .10;
