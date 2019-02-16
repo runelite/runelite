@@ -41,10 +41,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.EnumSet;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
@@ -120,7 +118,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.parse("https://api.imgur.com/3/image");
 	private static final MediaType JSON = MediaType.parse("application/json");
 
-	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+	private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
@@ -132,12 +130,9 @@ public class ScreenshotPlugin extends Plugin
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
 
-	static String format(Date date)
+	static String format(LocalDateTime date)
 	{
-		synchronized (TIME_FORMAT)
-		{
-			return TIME_FORMAT.format(date);
-		}
+		return date.format(TIME_FORMAT);
 	}
 
 	private String clueType;
@@ -196,7 +191,7 @@ public class ScreenshotPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
-			takeScreenshot(format(new Date()));
+			takeScreenshot(format(LocalDateTime.now()));
 		}
 	};
 
@@ -219,7 +214,7 @@ public class ScreenshotPlugin extends Plugin
 			.tab(false)
 			.tooltip("Take screenshot")
 			.icon(iconImage)
-			.onClick(() -> takeScreenshot(format(new Date())))
+			.onClick(() -> takeScreenshot(format(LocalDateTime.now())))
 			.popup(ImmutableMap
 				.<String, Runnable>builder()
 				.put("Open screenshot folder...", () ->
@@ -294,7 +289,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		if (config.screenshotPlayerDeath())
 		{
-			takeScreenshot("Death " + format(new Date()));
+			takeScreenshot("Death " + format(LocalDateTime.now()));
 		}
 	}
 
@@ -305,7 +300,7 @@ public class ScreenshotPlugin extends Plugin
 		{
 			final Player player = playerLootReceived.getPlayer();
 			final String name = player.getName();
-			String fileName = "Kill " + name + " " + format(new Date());
+			String fileName = "Kill " + name + " " + format(LocalDateTime.now());
 			takeScreenshot(fileName);
 		}
 	}
@@ -373,7 +368,7 @@ public class ScreenshotPlugin extends Plugin
 
 		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
-			String fileName = "Pet " + format(new Date());
+			String fileName = "Pet " + format(LocalDateTime.now());
 			takeScreenshot(fileName);
 		}
 
@@ -395,7 +390,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.matches())
 			{
 				String valuableDropName = m.group(1);
-				String fileName = "Valuable drop " + valuableDropName + " " + format(new Date());
+				String fileName = "Valuable drop " + valuableDropName + " " + format(LocalDateTime.now());
 				takeScreenshot(fileName);
 			}
 		}
@@ -406,7 +401,7 @@ public class ScreenshotPlugin extends Plugin
 			if (m.matches())
 			{
 				String untradeableDropName = m.group(1);
-				String fileName = "Untradeable drop " + untradeableDropName + " " + format(new Date());
+				String fileName = "Untradeable drop " + untradeableDropName + " " + format(LocalDateTime.now());
 				takeScreenshot(fileName);
 			}
 		}
@@ -461,7 +456,7 @@ public class ScreenshotPlugin extends Plugin
 		{
 			case KINGDOM_GROUP_ID:
 			{
-				fileName = "Kingdom " + LocalDate.now();
+				fileName = "Kingdom " + format(LocalDateTime.now());
 				break;
 			}
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
