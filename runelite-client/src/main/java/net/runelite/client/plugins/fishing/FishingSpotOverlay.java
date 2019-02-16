@@ -31,6 +31,8 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
@@ -40,6 +42,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -56,6 +59,8 @@ class FishingSpotOverlay extends Overlay
 	private final FishingConfig config;
 	private final Client client;
 	private final ItemManager itemManager;
+
+	private static HashMap<WorldPoint, ArrayList<FishingSpot>> SPOTS_LIST = new HashMap<>();
 
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hidden;
@@ -92,6 +97,15 @@ class FishingSpotOverlay extends Overlay
 			{
 				continue;
 			}
+
+			ArrayList<FishingSpot> list = SPOTS_LIST.get(npc.getWorldLocation());
+			if (list == NULL)
+			{
+				list = new ArrayList<FishingSpot>();
+				SPOTS_LIST.put(npc.getWorldLocation(), list);
+			}
+			if (!list.contains(spot))
+				list.add(spot);
 
 			Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
 
