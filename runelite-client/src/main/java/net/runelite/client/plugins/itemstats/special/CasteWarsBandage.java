@@ -24,78 +24,64 @@
  */
 package net.runelite.client.plugins.itemstats.special;
 
+import com.google.common.collect.ImmutableSet;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.*;
 import net.runelite.client.plugins.itemstats.Effect;
 import net.runelite.client.plugins.itemstats.SimpleStatBoost;
+import net.runelite.client.plugins.itemstats.StatChange;
 import net.runelite.client.plugins.itemstats.StatsChanges;
-import net.runelite.client.plugins.itemstats.stats.Stat;
-import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Comparator;
+import java.util.stream.Stream;
+
+import static net.runelite.client.plugins.itemstats.Builders.heal;
 import static net.runelite.client.plugins.itemstats.Builders.perc;
 import static net.runelite.client.plugins.itemstats.stats.Stats.HITPOINTS;
 import static net.runelite.client.plugins.itemstats.stats.Stats.RUN_ENERGY;
 
 @RequiredArgsConstructor
-public class Bandage implements Effect
+public class CasteWarsBandage implements Effect
 {
-	// Stats
-	private final Stat[] bandageStats = new Stat[]
-			{
-					RUN_ENERGY, HITPOINTS
-			};
-
-	// ID's
-	private final int[] braceletIDs =
-			{
-					ItemID.CASTLE_WARS_BRACELET3,
-					ItemID.CASTLE_WARS_BRACELET2,
-					ItemID.CASTLE_WARS_BRACELET1
-			};
-	private final int glovesSlotID = EquipmentInventorySlot.GLOVES.getSlotIdx();
-
-	// Percentages
-	private final double percH = 0.1; // Default healing percentage
-	private final double percHB = 0.5; // Bracelet healing percentage
-	private final double percR = 0.3; // Default run energy percentage
-	private final int delta; // ask what delta does
+	private static final ImmutableSet<Integer> BRACELETS = ImmutableSet.of(
+			ItemID.CASTLE_WARS_BRACELET1, ItemID.CASTLE_WARS_BRACELET2, ItemID.CASTLE_WARS_BRACELET3
+	);
+	private static final int GLOVES_SLOT_ID = EquipmentInventorySlot.GLOVES.getSlotIdx();
+	private static final double BASE_HP_PERC = .10;
+	private static final double BRACELET_HP_PERC = .50;
+	private static final SimpleStatBoost RUN_ENERGY_BOOST = heal(RUN_ENERGY, 30);
 
 	@Override
 	public StatsChanges calculate(Client client)
 	{
-		StatsChanges changes = new StatsChanges(2);
-		SimpleStatBoost hitpoints = new SimpleStatBoost(HITPOINTS, true, perc(percH, delta));
-		SimpleStatBoost runEnergy = new SimpleStatBoost(RUN_ENERGY, false, perc(percR, delta));
-		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		final StatsChanges changes = new StatsChanges(2);
+		final ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		final double percH = hasBracelet(equipmentContainer) ? BRACELET_HP_PERC : BASE_HP_PERC;
+		final SimpleStatBoost hitPoints = heal(HITPOINTS, perc(percH, 0));
 
-		if (equipmentContainer != null)
-		{
-			if (hasBracelet(equipmentContainer))
-			{
-				hitpoints = new SimpleStatBoost(HITPOINTS, true, perc(percHB, delta));
-			}
-		}
+		changes.setStatChanges(
+				Stream.concat(
+				Stream.of(hitPoints.effect(client)),
+				Stream.of(RUN_ENERGY_BOOST.effect(client))
+				).toArray(StatChange[]::new));
+		changes.setPositivity(
+				Stream.of(changes.getStatChanges())
+				.map(sc -> sc.getPositivity())
+				.max(Comparator.comparing(Enum::ordinal)).get());
 
 		return changes;
 	}
 
 	private boolean hasBracelet(ItemContainer equipmentContainer)
 	{
-		boolean hasBracelet = false;
-
 		if (equipmentContainer != null)
 		{
-			Item[] equipment = equipmentContainer.getItems();
-			if (contains(braceletIDs, equipment[glovesSlotID].getId()))
+			final Item[] equipment = equipmentContainer.getItems();
+			if (equipment.length >= GLOVES_SLOT_ID)
 			{
-				return hasBracelet = true;
+				return BRACELETS.contains(equipment[GLOVES_SLOT_ID].getId());
 			}
 		}
-		return hasBracelet;
-	}
-
-	private boolean contains(final int[] array, final int key)
-	{
-		return ArrayUtils.contains(array, key);
+		return false;
 	}
 }
