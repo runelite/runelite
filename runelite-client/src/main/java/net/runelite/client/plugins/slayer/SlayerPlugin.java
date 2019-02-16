@@ -46,7 +46,10 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
@@ -58,6 +61,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.vars.SlayerUnlock;
@@ -76,7 +80,9 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.chat.ChatClient;
@@ -204,9 +210,12 @@ public class SlayerPlugin extends Plugin
 	private int points;
 
 	private TaskCounter counter;
+	private Counter braceletCounter;
 	private int cachedXp;
 	private Instant infoTimer;
 	private boolean loginFlag;
+	private boolean equippedExpeditious;
+	private boolean equippedSlaughter;
 	private List<String> targetNames = new ArrayList<>();
 
 	@Override
@@ -239,6 +248,7 @@ public class SlayerPlugin extends Plugin
 		overlayManager.remove(targetWeaknessOverlay);
 		overlayManager.remove(targetMinimapOverlay);
 		removeCounter();
+		removeBraceletCounter();
 		highlightedTargets.clear();
 
 		chatCommandManager.unregisterCommand(TASK_COMMAND_STRING);
@@ -355,11 +365,21 @@ public class SlayerPlugin extends Plugin
 			{
 				slaughterChargeCount = SLAUGHTER_CHARGE;
 				config.slaughter(slaughterChargeCount);
+
+				if (braceletCounter != null && equippedSlaughter)
+				{
+					braceletCounter.setCount(slaughterChargeCount);
+				}
 			}
 			else if (braceletText.contains("expeditious bracelet"))
 			{
 				expeditiousChargeCount = EXPEDITIOUS_CHARGE;
 				config.expeditious(expeditiousChargeCount);
+
+				if (braceletCounter != null && equippedExpeditious)
+				{
+					braceletCounter.setCount(expeditiousChargeCount);
+				}
 			}
 		}
 
@@ -414,6 +434,11 @@ public class SlayerPlugin extends Plugin
 			amount++;
 			slaughterChargeCount = mSlaughter.find() ? Integer.parseInt(mSlaughter.group(1)) : SLAUGHTER_CHARGE;
 			config.slaughter(slaughterChargeCount);
+
+			if (braceletCounter != null)
+			{
+				braceletCounter.setCount(slaughterChargeCount);
+			}
 		}
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS))
@@ -423,6 +448,11 @@ public class SlayerPlugin extends Plugin
 			amount--;
 			expeditiousChargeCount = mExpeditious.find() ? Integer.parseInt(mExpeditious.group(1)) : EXPEDITIOUS_CHARGE;
 			config.expeditious(expeditiousChargeCount);
+
+			if (braceletCounter != null)
+			{
+				braceletCounter.setCount(expeditiousChargeCount);
+			}
 		}
 
 		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS_CHARGE))
@@ -436,6 +466,11 @@ public class SlayerPlugin extends Plugin
 
 			expeditiousChargeCount = Integer.parseInt(mExpeditious.group(1));
 			config.expeditious(expeditiousChargeCount);
+
+			if (braceletCounter != null && equippedExpeditious)
+			{
+				braceletCounter.setCount(expeditiousChargeCount);
+			}
 		}
 		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER_CHARGE))
 		{
@@ -447,6 +482,11 @@ public class SlayerPlugin extends Plugin
 
 			slaughterChargeCount = Integer.parseInt(mSlaughter.group(1));
 			config.slaughter(slaughterChargeCount);
+
+			if (braceletCounter != null && equippedSlaughter)
+			{
+				braceletCounter.setCount(slaughterChargeCount);
+			}
 		}
 
 		if (chatMsg.endsWith("; return to a Slayer master."))
@@ -555,6 +595,37 @@ public class SlayerPlugin extends Plugin
 		{
 			removeCounter();
 		}
+
+		if (config.showBraceletInfobox())
+		{
+			clientThread.invoke(this::addBraceletCounter);
+		}
+		else
+		{
+			removeBraceletCounter();
+		}
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT))
+		{
+			return;
+		}
+
+		Item[] equipment = event.getItemContainer().getItems();
+		int gloveSlotID = EquipmentInventorySlot.GLOVES.getSlotIdx();
+
+		if (equipment.length <= gloveSlotID)
+		{
+			return;
+		}
+
+		equippedSlaughter = equipment[gloveSlotID].getId() == ItemID.BRACELET_OF_SLAUGHTER;
+		equippedExpeditious = equipment[gloveSlotID].getId() == ItemID.EXPEDITIOUS_BRACELET;
+		removeBraceletCounter();
+		addBraceletCounter();
 	}
 
 	@VisibleForTesting
@@ -721,6 +792,35 @@ public class SlayerPlugin extends Plugin
 
 		infoBoxManager.removeInfoBox(counter);
 		counter = null;
+	}
+
+	private void addBraceletCounter()
+	{
+		if (!config.showBraceletInfobox() || braceletCounter != null
+			|| (!equippedSlaughter && !equippedExpeditious))
+		{
+			return;
+		}
+
+		int braceletID = equippedSlaughter ? ItemID.BRACELET_OF_SLAUGHTER : ItemID.EXPEDITIOUS_BRACELET;
+		int braceletCount = equippedSlaughter ? slaughterChargeCount : expeditiousChargeCount;
+		String braceletTooltip = equippedSlaughter ? "Bracelet of slaughter" : "Expeditious bracelet";
+
+		braceletCounter = new Counter(itemManager.getImage(braceletID), this, braceletCount);
+		braceletCounter.setPriority(InfoBoxPriority.MED);
+		braceletCounter.setTooltip(braceletTooltip);
+		infoBoxManager.addInfoBox(braceletCounter);
+	}
+
+	private void removeBraceletCounter()
+	{
+		if (braceletCounter == null)
+		{
+			return;
+		}
+
+		infoBoxManager.removeInfoBox(braceletCounter);
+		braceletCounter = null;
 	}
 
 	void taskLookup(ChatMessage chatMessage, String message)

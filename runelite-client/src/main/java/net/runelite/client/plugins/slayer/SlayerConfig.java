@@ -46,6 +46,17 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 2,
+		keyName = "braceletInfobox",
+		name = "Bracelet InfoBox",
+		description = "Display slaughter/expeditious bracelet charges in an InfoBox"
+	)
+	default boolean showBraceletInfobox()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
 		keyName = "itemoverlay",
 		name = "Count on Items",
 		description = "Display task count remaining on slayer items"
@@ -56,7 +67,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 4,
 		keyName = "superiornotification",
 		name = "Superior foe notification",
 		description = "Toggles notifications on superior foe encounters"
@@ -67,7 +78,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 5,
 		keyName = "statTimeout",
 		name = "InfoBox Expiry (minutes)",
 		description = "Set the time until the InfoBox expires"
@@ -78,7 +89,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "highlightTargets",
 		name = "Highlight Targets",
 		description = "Highlight monsters you can kill for your current slayer assignment"
@@ -89,7 +100,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "targetColor",
 		name = "Target Color",
 		description = "Color of the highlighted targets"
@@ -100,7 +111,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "weaknessPrompt",
 		name = "Show Monster Weakness",
 		description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles & Rockslugs)"
@@ -111,7 +122,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "taskCommand",
 		name = "Task Command",
 		description = "Configures whether the slayer task command is enabled<br> !task"
