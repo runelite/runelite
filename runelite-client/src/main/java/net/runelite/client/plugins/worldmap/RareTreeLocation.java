@@ -140,7 +140,7 @@ enum RareTreeLocation
 		new WorldPoint(3018, 3316, 0),
 		new WorldPoint(3041, 3320, 0),
 		new WorldPoint(3052, 3272, 0),
-		new WorldPoint(2933, 3234, 0),
+		new WorldPoint(2931, 3231, 0),
 
 		// Misthalin
 		new WorldPoint(3085, 3481, 0),
