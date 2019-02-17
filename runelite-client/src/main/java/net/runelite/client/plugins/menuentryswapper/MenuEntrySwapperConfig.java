@@ -271,4 +271,13 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "swapHopTo",
+		name = "Hop-To",
+		description = "Swap Kick user with Hop-To in the clan chat interface"
+	)
+	default boolean swapHopTo() {
+		return true;
+	}
 }
