@@ -108,13 +108,13 @@ class FishingSpotOverlay extends Overlay
 				SPOTS_LIST.put(npc.getWorldLocation(), map);
 			}
 
-			int spotCount = map.get(npc);
-			if (spotCount == 0)
+			if (map.get(npc) == null)
 			{
 				map.put(npc, 1);
 			}
 			else
 			{
+				int spotCount = map.get(npc);
 				map.replace(npc, spotCount + 1);
 			}
 		}
@@ -162,7 +162,6 @@ class FishingSpotOverlay extends Overlay
 
 			Map.Entry<NPC, Integer> npcArray[] = (Map.Entry<NPC, Integer>[]) fishingSpots.entrySet().toArray();
 			for (int i = 0; i < npcArray.length; i++)
-		//	for (Map.Entry fishingSpot : fishingSpots.entrySet())
 			{
 				Map.Entry<NPC, Integer> fishingSpot = npcArray[i];
 				NPC npc = fishingSpot.getKey();
