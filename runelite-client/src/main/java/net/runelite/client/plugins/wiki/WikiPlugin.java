@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.wiki;
 
 import com.google.common.primitives.Ints;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -70,12 +69,25 @@ public class WikiPlugin extends Plugin
 			WidgetInfo.QUESTLIST_MINIQUEST_CONTAINER.getId(),
 		};
 
-	static final String WIKI_BASE = "https://oldschool.runescape.wiki";
-	static final HttpUrl WIKI_RSLOOKUP = HttpUrl.parse(WIKI_BASE + "/w/Special:Lookup");
-	static final HttpUrl WIKI_API = HttpUrl.parse(WIKI_BASE + "/api.php");
+	static final String WIKI_SCHEME = "https";
+	static final String WIKI_HOST = "oldschool.runescape.wiki";
+	static final HttpUrl WIKI_BASE = new HttpUrl.Builder()
+			.scheme(WIKI_SCHEME)
+			.host(WIKI_HOST)
+			.addPathSegment("w")
+			.build();
+	static final HttpUrl WIKI_SEARCH = WIKI_BASE.newBuilder()
+			.addPathSegment("Special:Search")
+			.build();
+	static final HttpUrl WIKI_RSLOOKUP = WIKI_BASE.newBuilder()
+			.addPathSegment("Special:Lookup")
+			.build();
+	static final HttpUrl WIKI_API = WIKI_BASE.newBuilder()
+			.removePathSegment(0)
+			.addPathSegment("api.php")
+			.build();
 	static final String UTM_SORUCE_KEY = "utm_source";
 	static final String UTM_SORUCE_VALUE = "runelite";
-	static final String UTM_PARAMS = UTM_SORUCE_KEY + "=" + UTM_SORUCE_VALUE;
 
 	private static final String MENUOP_GUIDE = "Guide";
 	private static final String MENUOP_QUICKGUIDE = "Quick Guide";
@@ -224,7 +236,7 @@ public class WikiPlugin extends Plugin
 
 			HttpUrl url = WIKI_RSLOOKUP.newBuilder()
 				.addQueryParameter("type", type)
-				.addQueryParameter("id", "" + id)
+				.addQueryParameter("id", String.valueOf(id))
 				.addQueryParameter("name", name)
 				.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE)
 				.build();
@@ -235,16 +247,24 @@ public class WikiPlugin extends Plugin
 
 		if (ev.getMenuAction() == MenuAction.RUNELITE)
 		{
-			String quickguide = "";
+			boolean quickGuide = false;
 			switch (ev.getMenuOption())
 			{
 				case MENUOP_QUICKGUIDE:
-					quickguide = "/Quick_guide";
+					quickGuide = true;
 					//fallthrough;
 				case MENUOP_GUIDE:
 					ev.consume();
-					String quest = Text.removeTags(ev.getMenuTarget());
-					LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(quest.replace(' ', '_')) + quickguide + "?" + UTM_PARAMS);
+					String quest = Text.removeTags(ev.getMenuTarget())
+							.replace(' ', '_');
+					quest = (quickGuide) ? quest + "/Quick_guide" : quest;
+
+					HttpUrl url = WIKI_BASE.newBuilder()
+							.addPathSegment(quest)
+							.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE)
+							.build();
+
+					LinkBrowser.browse(url.toString().replace("'", "%27"));
 					break;
 			}
 		}
