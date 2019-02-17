@@ -60,7 +60,7 @@ class FishingSpotOverlay extends Overlay
 	private final Client client;
 	private final ItemManager itemManager;
 
-	private static HashMap<WorldPoint, ArrayList<NPC>> SPOTS_LIST = new HashMap<>();
+	private static HashMap<WorldPoint, HashMap<NPC, Integer>> SPOTS_LIST = new HashMap<>();
 
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hidden;
@@ -100,24 +100,32 @@ class FishingSpotOverlay extends Overlay
 				continue;
 			}
 
-			ArrayList<NPC> list = SPOTS_LIST.get(npc.getWorldLocation());
-			if (list == null)
+			HashMap<NPC, Integer> map = SPOTS_LIST.get(npc.getWorldLocation());
+			if (map == null)
 			{
-				list = new ArrayList<NPC>();
-				SPOTS_LIST.put(npc.getWorldLocation(), list);
+				map = new HashMap<NPC, Integer>();
+				SPOTS_LIST.put(npc.getWorldLocation(), map);
 			}
-			if (!list.contains(npc))
-				list.add(npc);
+
+			int spotCount = map.get(npc);
+			if (spotCount == 0)
+			{
+				map.put(npc, 1);
+			}
+			else
+			{
+				map.replace(npc, spotCount + 1);
+			}
 		}
 
-		for (HashMap.Entry<WorldPoint, ArrayList<NPC>> entry : SPOTS_LIST.entrySet())
+		for (HashMap.Entry<WorldPoint, HashMap<NPC, Integer>> entry : SPOTS_LIST.entrySet())
 		{
 			WorldPoint tile = entry.getKey();
-			ArrayList<NPC> fishingSpots = entry.getValue();
+			HashMap<NPC, Integer> fishingSpots = entry.getValue();
 			int spotCount = fishingSpots.size();
 
 			// minnow fishing spots will only ever share tiles with other minnow fishing spots
-			NPC firstSpot = fishingSpots.get(0);
+			NPC firstSpot = (NPC) fishingSpots.keySet().toArray()[0];
 			FishingSpot possibleMinnowSpot = FishingSpot.getSPOTS().get(firstSpot.getId());
 			Color color = firstSpot.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
 
