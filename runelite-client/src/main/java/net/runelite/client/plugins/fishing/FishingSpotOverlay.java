@@ -160,16 +160,26 @@ class FishingSpotOverlay extends Overlay
 				}
 			}
 
-			Map.Entry<NPC, Integer> npcArray[] = (Map.Entry<NPC, Integer>[]) fishingSpots.entrySet().toArray();
+			Object npcArray[] = fishingSpots.entrySet().toArray();
 			for (int i = 0; i < npcArray.length; i++)
 			{
-				Map.Entry<NPC, Integer> fishingSpot = npcArray[i];
+				Map.Entry<NPC, Integer> fishingSpot = (Map.Entry<NPC, Integer>) npcArray[i];
 				NPC npc = fishingSpot.getKey();
 				FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
 
 				if (config.showSpotIcons()) {
-					BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId(), fishingSpot.getValue(), true);
-					;
+					BufferedImage fishImage = null;
+
+					int fishingSpotCount = fishingSpot.getValue();
+					if (fishingSpotCount > 1)
+					{
+						fishImage = itemManager.getImage(spot.getFishSpriteId(), fishingSpot.getValue(), true);
+					}
+					else
+					{
+						fishImage = itemManager.getImage(spot.getFishSpriteId());
+					}
+
 					if (fishImage != null) {
 						Point imageLocation = npc.getCanvasImageLocation(fishImage, npc.getLogicalHeight());
 						if (imageLocation != null) {
