@@ -69,8 +69,9 @@ public class GroundMarkerPlugin extends Plugin
 	private static final String CONFIG_GROUP = "groundMarker";
 	private static final String MARK = "Mark tile";
 	private static final String WALK_HERE = "Walk here";
+	private static final String REGION_PREFIX = "region_";
 
-	private static final Gson gson = new Gson();
+	private static final Gson GSON = new Gson();
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -101,22 +102,22 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		if (points == null || points.isEmpty())
 		{
-			configManager.unsetConfiguration(CONFIG_GROUP, "region_" + regionId);
+			configManager.unsetConfiguration(CONFIG_GROUP, REGION_PREFIX + regionId);
 			return;
 		}
 
-		String json = gson.toJson(points);
-		configManager.setConfiguration(CONFIG_GROUP, "region_" + regionId, json);
+		String json = GSON.toJson(points);
+		configManager.setConfiguration(CONFIG_GROUP, REGION_PREFIX + regionId, json);
 	}
 
 	private Collection<GroundMarkerPoint> getPoints(int regionId)
 	{
-		String json = configManager.getConfiguration(CONFIG_GROUP, "region_" + regionId);
+		String json = configManager.getConfiguration(CONFIG_GROUP, REGION_PREFIX + regionId);
 		if (Strings.isNullOrEmpty(json))
 		{
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
-		return gson.fromJson(json, new TypeToken<List<GroundMarkerPoint>>()
+		return GSON.fromJson(json, new TypeToken<List<GroundMarkerPoint>>()
 		{
 		}.getType());
 	}
@@ -152,7 +153,7 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		if (points.isEmpty())
 		{
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 
 		return points.stream()
@@ -243,8 +244,7 @@ public class GroundMarkerPlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
-
-	protected void markTile(LocalPoint localPoint)
+	private void markTile(LocalPoint localPoint)
 	{
 		if (localPoint == null)
 		{
@@ -257,17 +257,17 @@ public class GroundMarkerPlugin extends Plugin
 		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getX() & 0x3f, worldPoint.getY() & 0x3f, client.getPlane());
 		log.debug("Updating point: {} - {}", point, worldPoint);
 
-		List<GroundMarkerPoint> points = new ArrayList<>(getPoints(regionId));
-		if (points.contains(point))
+		List<GroundMarkerPoint> groundMarkerPoints = new ArrayList<>(getPoints(regionId));
+		if (groundMarkerPoints.contains(point))
 		{
-			points.remove(point);
+			groundMarkerPoints.remove(point);
 		}
 		else
 		{
-			points.add(point);
+			groundMarkerPoints.add(point);
 		}
 
-		savePoints(regionId, points);
+		savePoints(regionId, groundMarkerPoints);
 
 		loadPoints();
 	}
