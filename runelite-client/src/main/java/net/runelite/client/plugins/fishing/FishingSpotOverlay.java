@@ -179,12 +179,13 @@ class FishingSpotOverlay extends Overlay
 				FishingSpot spot = fishingSpot.getKey();
 				NPC npc = fishingSpot.getValue();
 
+				Map.Entry<FishingSpot, Integer> spotCountEntry = (Map.Entry<FishingSpot, Integer>) spotCountArray[i];
+				int spotCount = spotCountEntry.getValue();
+
 				if (config.showSpotIcons())
 				{
 					BufferedImage fishImage = null;
 
-					Map.Entry<FishingSpot, Integer> spotCountEntry = (Map.Entry<FishingSpot, Integer>) spotCountArray[i];
-					int spotCount = spotCountEntry.getValue();
 					if (spotCount > 1)
 					{
 						fishImage = itemManager.getImage(spot.getFishSpriteId(), spotCount, true);
@@ -209,7 +210,11 @@ class FishingSpotOverlay extends Overlay
 				if (config.showSpotNames())
 				{
 					String text = spot.getName();
-					Point textLocation = npc.getCanvasTextLocation(graphics, text, npc.getLogicalHeight() + 40);
+					if (spotCount > 1)
+					{
+						text.concat(" (" +  spotCount + ")");
+					}
+					Point textLocation = npc.getCanvasTextLocation(graphics, text, 74 + (i * 20));
 					if (textLocation != null)
 					{
 						OverlayUtil.renderTextLocation(graphics, textLocation, text, color.darker());
