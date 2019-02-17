@@ -144,7 +144,8 @@ class FishingSpotOverlay extends Overlay
 			}
 
 			if (config.showSpotTiles()) {
-				Polygon poly = npc.getCanvasTilePoly();
+				// each entry in the list corresponds to the same tile
+				Polygon poly = firstSpot.getCanvasTilePoly();
 				if (poly != null) {
 					OverlayUtil.renderPolygon(graphics, poly, color.darker());
 				}
