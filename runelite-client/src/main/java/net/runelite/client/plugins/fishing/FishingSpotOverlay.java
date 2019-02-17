@@ -186,7 +186,7 @@ class FishingSpotOverlay extends Overlay
 				{
 					BufferedImage fishImage = null;
 
-					if (spotCount > 1)
+					if (spotCount > 1 && !(config.showSpotNames()))
 					{
 						fishImage = itemManager.getImage(spot.getFishSpriteId(), spotCount, true);
 					}
@@ -212,7 +212,7 @@ class FishingSpotOverlay extends Overlay
 					String text = spot.getName();
 					if (spotCount > 1)
 					{
-						text.concat(" (" +  spotCount + ")");
+						text += " (" +  spotCount + ")";
 					}
 					Point textLocation = npc.getCanvasTextLocation(graphics, text, 74 + (i * 20));
 					if (textLocation != null)
