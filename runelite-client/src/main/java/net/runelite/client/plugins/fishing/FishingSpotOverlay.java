@@ -84,6 +84,8 @@ class FishingSpotOverlay extends Overlay
 			return null;
 		}
 
+		SPOTS_LIST.clear();
+
 		for (NPC npc : plugin.getFishingSpots())
 		{
 			FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
@@ -112,40 +114,44 @@ class FishingSpotOverlay extends Overlay
 		{
 			WorldPoint tile = entry.getKey();
 			ArrayList<NPC> fishingSpots = entry.getValue();
+			int spotCount = fishingSpots.size();
+
+			// minnow fishing spots will only ever share tiles with other minnow fishing spots
+			NPC firstSpot = fishingSpots.get(0);
+			FishingSpot possibleMinnowSpot = FishingSpot.getSPOTS().get(firstSpot.getId());
+			Color color = firstSpot.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
+
+			if (possibleMinnowSpot == FishingSpot.MINNOW && config.showMinnowOverlay()) {
+				MinnowSpot minnowSpot = plugin.getMinnowSpots().get(firstSpot.getIndex());
+				if (minnowSpot != null) {
+					long millisLeft = MINNOW_MOVE.toMillis() - Duration.between(minnowSpot.getTime(), Instant.now()).toMillis();
+					if (millisLeft < MINNOW_WARN.toMillis()) {
+						color = Color.ORANGE;
+					}
+
+					LocalPoint localPoint = firstSpot.getLocalLocation();
+					Point location = Perspective.localToCanvas(client, localPoint, client.getPlane());
+
+					if (location != null) {
+						ProgressPieComponent pie = new ProgressPieComponent();
+						pie.setFill(color);
+						pie.setBorderColor(color);
+						pie.setPosition(location);
+						pie.setProgress((float) millisLeft / MINNOW_MOVE.toMillis());
+						pie.render(graphics);
+					}
+				}
+			}
+
+			if (config.showSpotTiles()) {
+				Polygon poly = npc.getCanvasTilePoly();
+				if (poly != null) {
+					OverlayUtil.renderPolygon(graphics, poly, color.darker());
+				}
+			}
 
 			for (NPC npc : fishingSpots)
 			{
-				FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
-				Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
-
-				if (spot == FishingSpot.MINNOW && config.showMinnowOverlay()) {
-					MinnowSpot minnowSpot = plugin.getMinnowSpots().get(npc.getIndex());
-					if (minnowSpot != null) {
-						long millisLeft = MINNOW_MOVE.toMillis() - Duration.between(minnowSpot.getTime(), Instant.now()).toMillis();
-						if (millisLeft < MINNOW_WARN.toMillis()) {
-							color = Color.ORANGE;
-						}
-
-						LocalPoint localPoint = npc.getLocalLocation();
-						Point location = Perspective.localToCanvas(client, localPoint, client.getPlane());
-
-						if (location != null) {
-							ProgressPieComponent pie = new ProgressPieComponent();
-							pie.setFill(color);
-							pie.setBorderColor(color);
-							pie.setPosition(location);
-							pie.setProgress((float) millisLeft / MINNOW_MOVE.toMillis());
-							pie.render(graphics);
-						}
-					}
-				}
-
-				if (config.showSpotTiles()) {
-					Polygon poly = npc.getCanvasTilePoly();
-					if (poly != null) {
-						OverlayUtil.renderPolygon(graphics, poly, color.darker());
-					}
-				}
 
 				if (config.showSpotIcons()) {
 					BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
