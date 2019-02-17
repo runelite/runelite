@@ -33,6 +33,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
@@ -159,11 +160,13 @@ class FishingSpotOverlay extends Overlay
 				}
 			}
 
-			for (NPC npc : fishingSpots)
+			for (Map.Entry fishingSpot : fishingSpots.entrySet())
 			{
+				NPC npc = (NPC) fishingSpot.getKey();
+				FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
 
 				if (config.showSpotIcons()) {
-					BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
+					BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId(), (int) fishingSpot.getValue(), true);
 					;
 					if (fishImage != null) {
 						Point imageLocation = npc.getCanvasImageLocation(fishImage, npc.getLogicalHeight());
