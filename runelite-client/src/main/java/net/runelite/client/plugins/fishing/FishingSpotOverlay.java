@@ -31,8 +31,8 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
@@ -60,8 +60,7 @@ class FishingSpotOverlay extends Overlay
 	private final Client client;
 	private final ItemManager itemManager;
 
-	private static HashMap<WorldPoint, HashMap<FishingSpot, NPC>> SPOTS_LIST = new HashMap<>();
-	private static HashMap<WorldPoint, HashMap<FishingSpot, Integer>> SPOTS_COUNT = new HashMap<>();
+	private static HashMap<WorldPoint, FishingSpotInfo> SPOTS_LIST = new HashMap<>();
 
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hidden;
@@ -86,7 +85,6 @@ class FishingSpotOverlay extends Overlay
 		}
 
 		SPOTS_LIST.clear();
-		SPOTS_COUNT.clear();
 
 		for (NPC npc : plugin.getFishingSpots())
 		{
@@ -102,36 +100,34 @@ class FishingSpotOverlay extends Overlay
 				continue;
 			}
 
-			HashMap<FishingSpot, NPC> spotsList = SPOTS_LIST.get(npc.getWorldLocation());
-			HashMap<FishingSpot, Integer> spotsCount = SPOTS_COUNT.get(npc.getWorldLocation());
-			if (spotsList == null)
+			FishingSpotInfo spotsInfo = SPOTS_LIST.get(npc.getWorldLocation());
+			if (spotsInfo == null)
 			{
-				spotsList = new HashMap<>();
-				spotsCount = new HashMap<>();
-				SPOTS_LIST.put(npc.getWorldLocation(), spotsList);
-				SPOTS_COUNT.put(npc.getWorldLocation(), spotsCount);
-			}
-
-			if (spotsList.get(spot) == null)
-			{
-				spotsList.put(spot, npc);
-				spotsCount.put(spot, 1);
+				spotsInfo = new FishingSpotInfo(spot, npc);
+				SPOTS_LIST.put(npc.getWorldLocation(), spotsInfo);
 			}
 			else
 			{
-				int spotCount = spotsCount.get(spot);
-				spotsCount.replace(spot, spotCount + 1);
+				int spotCount = spotsInfo.getCount(spot);
+				if (spotCount >= 1)
+				{
+					spotsInfo.incrementCount(spot);
+				}
+				else
+				{
+					spotsInfo.addSpot(spot, npc);
+				}
 			}
 		}
 
-		for (HashMap.Entry<WorldPoint, HashMap<FishingSpot, NPC>> entry : SPOTS_LIST.entrySet())
+		for (HashMap.Entry<WorldPoint, FishingSpotInfo> entry : SPOTS_LIST.entrySet())
 		{
 			WorldPoint tile = entry.getKey();
-			HashMap<FishingSpot, NPC> fishingSpots = entry.getValue();
+			FishingSpotInfo fishingSpots = entry.getValue();
 
 			// minnow fishing spots will only ever share tiles with other minnow fishing spots
-			FishingSpot possibleMinnowSpot = (FishingSpot) fishingSpots.keySet().toArray()[0];
-			NPC firstSpot  = fishingSpots.get(possibleMinnowSpot);
+			FishingSpot possibleMinnowSpot = fishingSpots.getSpot(0);
+			NPC firstSpot  = fishingSpots.getNpc(0);
 			Color color = firstSpot.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
 
 			if (possibleMinnowSpot == FishingSpot.MINNOW && config.showMinnowOverlay())
@@ -170,17 +166,12 @@ class FishingSpotOverlay extends Overlay
 				}
 			}
 
-			HashMap<FishingSpot, Integer> spotCountMap = SPOTS_COUNT.get(tile);
-			Object spotCountArray[] = spotCountMap.entrySet().toArray();
-			Object spotArray[] = fishingSpots.entrySet().toArray();
-			for (int i = 0; i < spotArray.length; i++)
+			for (int i = 0; i < fishingSpots.getSize(); i++)
 			{
-				Map.Entry<FishingSpot, NPC> fishingSpot = (Map.Entry<FishingSpot, NPC>) spotArray[i];
-				FishingSpot spot = fishingSpot.getKey();
-				NPC npc = fishingSpot.getValue();
+				FishingSpot spot = fishingSpots.getSpot(i);
+				NPC npc = fishingSpots.getNpc(i);
 
-				Map.Entry<FishingSpot, Integer> spotCountEntry = (Map.Entry<FishingSpot, Integer>) spotCountArray[i];
-				int spotCount = spotCountEntry.getValue();
+				int spotCount = fishingSpots.getCount(spot);
 
 				if (config.showSpotIcons())
 				{
@@ -200,7 +191,7 @@ class FishingSpotOverlay extends Overlay
 						Point imageLocation = npc.getCanvasImageLocation(fishImage, 34);
 						if (imageLocation != null)
 						{
-							int offset = (i * 34) - ((34 * (spotCountArray.length - 1)) / 2);
+							int offset = (i * 34) - ((34 * (fishingSpots.getSize() - 1)) / 2);
 							Point shiftedImageLocation = new Point(imageLocation.getX() + offset, imageLocation.getY());
 							OverlayUtil.renderImageLocation(graphics, shiftedImageLocation, fishImage);
 						}
@@ -224,5 +215,82 @@ class FishingSpotOverlay extends Overlay
 		}
 
 		return null;
+	}
+
+	private class FishingSpotInfo
+	{
+		private ArrayList<FishingSpot> spotList;
+		private ArrayList<NPC> npcList;
+		private ArrayList<Integer> countList;
+
+		FishingSpotInfo(FishingSpot spot, NPC npc)
+		{
+			spotList = new ArrayList<>();
+			spotList.add(spot);
+
+			npcList = new ArrayList<>();
+			npcList.add(npc);
+
+			countList = new ArrayList<>();
+			countList.add(1);
+		}
+
+		public FishingSpot getSpot(int i)
+		{
+			return spotList.get(i);
+		}
+
+		public NPC getNpc(int i)
+		{
+			return npcList.get(i);
+		}
+
+		public int getSize()
+		{
+			return spotList.size();
+		}
+
+		public int getCount(FishingSpot spot)
+		{
+			int index = exists(spot);
+			if (index != -1)
+			{
+				return countList.get(index);
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
+		public void incrementCount(FishingSpot spot)
+		{
+			int index = exists(spot);
+			if (index != -1)
+			{
+				int currentVal = countList.get(index);
+				countList.set(index, currentVal + 1);
+			}
+		}
+
+		// Returns index of spot within the ArrayList
+		public int exists(FishingSpot spot)
+		{
+			for (int i = 0; i < spotList.size(); i++)
+			{
+				if (spotList.get(i) == spot)
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
+
+		public void addSpot(FishingSpot spot, NPC npc)
+		{
+			spotList.add(spot);
+			npcList.add(npc);
+			countList.add(1);
+		}
 	}
 }
