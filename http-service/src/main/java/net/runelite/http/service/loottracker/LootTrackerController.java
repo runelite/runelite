@@ -52,7 +52,7 @@ public class LootTrackerController
 	private AuthFilter auth;
 
 	@RequestMapping(method = RequestMethod.POST)
-	public void storeLootRecord(HttpServletRequest request, HttpServletResponse response, @RequestBody LootRecord record) throws IOException
+	public void storeLootRecord(HttpServletRequest request, HttpServletResponse response, @RequestBody LootRequest record) throws IOException
 	{
 		SessionEntry e = auth.handle(request, response);
 		if (e == null)

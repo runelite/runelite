@@ -92,7 +92,7 @@ public class LootTrackerService
 	 * @param record    LootRecord to store
 	 * @param accountId runelite account id to tie data too
 	 */
-	public void store(LootRecord record, int accountId)
+	public void store(LootRequest record, int accountId)
 	{
 		try (Connection con = sql2o.beginTransaction())
 		{
