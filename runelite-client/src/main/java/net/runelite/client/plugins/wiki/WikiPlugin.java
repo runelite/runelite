@@ -302,7 +302,7 @@ public class WikiPlugin extends Plugin
 
 			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 			menuEntry.setTarget(event.getOption().replace("View ", ""));
-			menuEntry.setOption("Wiki");
+			menuEntry.setOption(MENUOP_WIKI_SKILL);
 			menuEntry.setParam0(widgetIndex);
 			menuEntry.setParam1(widgetID);
 			menuEntry.setIdentifier(event.getIdentifier());
