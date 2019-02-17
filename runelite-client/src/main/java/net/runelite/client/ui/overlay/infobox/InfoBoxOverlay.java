@@ -37,7 +37,6 @@ import net.runelite.api.Client;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -116,14 +115,9 @@ public class InfoBoxOverlay extends Overlay
 
 				if (!Strings.isNullOrEmpty(component.getTooltip()))
 				{
-					final Rectangle intersectionRectangle = new Rectangle(component.getPreferredLocation(), component.getPreferredSize());
-
-					// Move the intersection based on overlay position
+					// Create intersection rectangle
+					final Rectangle intersectionRectangle = new Rectangle(component.getBounds());
 					intersectionRectangle.translate(getBounds().x, getBounds().y);
-
-					// Move the intersection based on overlay "orientation"
-					final Point transformed = OverlayUtil.transformPosition(getPosition(), intersectionRectangle.getSize());
-					intersectionRectangle.translate(transformed.x, transformed.y);
 
 					if (intersectionRectangle.contains(mouse))
 					{
