@@ -1,25 +1,3 @@
-oauth:
-  client-id: moo
-  client-secret: cow
-
-minio:
-  endpoint: http://10.96.22.171:9000
-  accesskey: AM54M27O4WZK65N6F8IP
-  secretkey: /PZCxzmsJzwCHYlogcymuprniGCaaLUOET2n6yMP
-  bucket: runelite
-
-runelite:
-  twitter:
-    consumerkey: moo
-    secretkey: cow
-    listid: 968949795153948673
-
-logging:
-  level:
-    net:
-      runelite:
-        DEBUG
-
 datasource:
   runelite:
     driverClassName: org.h2.Driver
