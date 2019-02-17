@@ -31,7 +31,6 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -135,7 +134,8 @@ class FishingSpotOverlay extends Overlay
 			NPC firstSpot  = fishingSpots.get(possibleMinnowSpot);
 			Color color = firstSpot.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
 
-			if (possibleMinnowSpot == FishingSpot.MINNOW && config.showMinnowOverlay()) {
+			if (possibleMinnowSpot == FishingSpot.MINNOW && config.showMinnowOverlay())
+			{
 				MinnowSpot minnowSpot = plugin.getMinnowSpots().get(firstSpot.getIndex());
 				if (minnowSpot != null)
 				{
@@ -200,7 +200,7 @@ class FishingSpotOverlay extends Overlay
 						Point imageLocation = npc.getCanvasImageLocation(fishImage, 34);
 						if (imageLocation != null)
 						{
-							int offset = (i * 34) - ((34*(spotCountArray.length - 1)) / 2);
+							int offset = (i * 34) - ((34 * (spotCountArray.length - 1)) / 2);
 							Point shiftedImageLocation = new Point(imageLocation.getX() + offset, imageLocation.getY());
 							OverlayUtil.renderImageLocation(graphics, shiftedImageLocation, fishImage);
 						}
