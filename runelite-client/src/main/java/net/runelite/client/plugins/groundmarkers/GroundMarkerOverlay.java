@@ -42,6 +42,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class GroundMarkerOverlay extends Overlay
 {
+	private static final int MAX_DRAW_DISTANCE = 32;
+
 	private final Client client;
 	private final GroundMarkerConfig config;
 	private final GroundMarkerPlugin plugin;
@@ -78,7 +80,7 @@ public class GroundMarkerOverlay extends Overlay
 	{
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
-		if (point.distanceTo(playerLocation) >= 32)
+		if (point.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
 		{
 			return;
 		}
