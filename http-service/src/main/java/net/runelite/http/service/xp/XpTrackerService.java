@@ -289,7 +289,7 @@ public class XpTrackerService
 	private static Duration updateFrequency(PlayerEntity playerEntity)
 	{
 		Integer rank = playerEntity.getRank();
-		if (rank == null)
+		if (rank == null || rank == -1)
 		{
 			return Duration.ofDays(7);
 		}
