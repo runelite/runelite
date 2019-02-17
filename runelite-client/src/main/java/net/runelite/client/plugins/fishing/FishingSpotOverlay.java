@@ -173,10 +173,10 @@ class FishingSpotOverlay extends Overlay
 					;
 					if (fishImage != null) {
 						Point imageLocation = npc.getCanvasImageLocation(fishImage, npc.getLogicalHeight());
-						int offset = ((i) * 17) - ((34*(npcArray.length - 1)) / 2);
-						Point shiftedImage = new Point(imageLocation.getX() + offset, imageLocation.getY());
 						if (imageLocation != null) {
-							OverlayUtil.renderImageLocation(graphics, imageLocation, fishImage);
+							int offset = ((i) * 17) - ((34*(npcArray.length - 1)) / 2);
+							Point shiftedImageLocation = new Point(imageLocation.getX() + offset, imageLocation.getY());
+							OverlayUtil.renderImageLocation(graphics, shiftedImageLocation, fishImage);
 						}
 					}
 				}
