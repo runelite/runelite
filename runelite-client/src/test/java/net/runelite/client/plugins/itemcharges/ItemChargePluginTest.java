@@ -33,11 +33,13 @@ import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.ui.overlay.OverlayManager;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mockito.Matchers.eq;
 import org.mockito.Mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -78,18 +80,22 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SERVER, "", CHECK, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		assertEquals(10, itemChargePlugin.getDodgyCharges());
+		verify(config).dodgyNecklace(eq(10));
+		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.SERVER, "", PROTECT, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		assertEquals(9, itemChargePlugin.getDodgyCharges());
+		verify(config).dodgyNecklace(eq(9));
+		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.SERVER, "", PROTECT_1, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		assertEquals(1, itemChargePlugin.getDodgyCharges());
+		verify(config).dodgyNecklace(eq(1));
+		reset(config);
 
 		chatMessage = new ChatMessage(null, ChatMessageType.SERVER, "", BREAK, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		assertEquals(10, itemChargePlugin.getDodgyCharges());
+		verify(config).dodgyNecklace(eq(10));
+		reset(config);
 	}
 }

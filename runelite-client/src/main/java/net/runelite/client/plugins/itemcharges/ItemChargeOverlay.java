@@ -83,7 +83,7 @@ class ItemChargeOverlay extends Overlay
 					continue;
 				}
 
-				charges = itemChargePlugin.getDodgyCharges();
+				charges = config.dodgyNecklace();
 			}
 			else
 			{

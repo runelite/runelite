@@ -28,8 +28,6 @@ import com.google.inject.Provides;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
-import lombok.AccessLevel;
-import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
@@ -68,9 +66,6 @@ public class ItemChargePlugin extends Plugin
 	@Inject
 	private ItemChargeConfig config;
 
-	@Getter(AccessLevel.PACKAGE)
-	private int dodgyCharges;
-
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
 	{
@@ -81,7 +76,6 @@ public class ItemChargePlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		dodgyCharges = config.dodgyNecklace();
 	}
 
 	@Override
@@ -110,22 +104,21 @@ public class ItemChargePlugin extends Plugin
 					notifier.notify("Your dodgy necklace has crumbled to dust.");
 				}
 
-				setDodgyCharges(MAX_DODGY_CHARGES);
+				updateDodgyNecklaceCharges(MAX_DODGY_CHARGES);
 			}
 			else if (dodgyCheckMatcher.find())
 			{
-				setDodgyCharges(Integer.parseInt(dodgyCheckMatcher.group(1)));
+				updateDodgyNecklaceCharges(Integer.parseInt(dodgyCheckMatcher.group(1)));
 			}
 			else if (dodgyProtectMatcher.find())
 			{
-				setDodgyCharges(Integer.parseInt(dodgyProtectMatcher.group(1)));
+				updateDodgyNecklaceCharges(Integer.parseInt(dodgyProtectMatcher.group(1)));
 			}
 		}
 	}
 
-	private void setDodgyCharges(int dodgyCharges)
+	private void updateDodgyNecklaceCharges(final int value)
 	{
-		this.dodgyCharges = dodgyCharges;
-		config.dodgyNecklace(dodgyCharges);
+		config.dodgyNecklace(value);
 	}
 }
