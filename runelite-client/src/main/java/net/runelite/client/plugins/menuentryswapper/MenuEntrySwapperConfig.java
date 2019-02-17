@@ -277,7 +277,8 @@ public interface MenuEntrySwapperConfig extends Config
 		name = "Hop-To",
 		description = "Swap Kick user with Hop-To in the clan chat interface"
 	)
-	default boolean swapHopTo() {
+	default boolean swapHopTo()
+	{
 		return true;
 	}
 }
