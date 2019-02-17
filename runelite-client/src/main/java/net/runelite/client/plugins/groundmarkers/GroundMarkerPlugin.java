@@ -69,8 +69,9 @@ public class GroundMarkerPlugin extends Plugin
 	private static final String CONFIG_GROUP = "groundMarker";
 	private static final String MARK = "Mark tile";
 	private static final String WALK_HERE = "Walk here";
+	private static final String REGION_PREFIX = "region_";
 
-	private static final Gson gson = new Gson();
+	private static final Gson GSON = new Gson();
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -101,24 +102,26 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		if (points == null || points.isEmpty())
 		{
-			configManager.unsetConfiguration(CONFIG_GROUP, "region_" + regionId);
+			configManager.unsetConfiguration(CONFIG_GROUP, REGION_PREFIX + regionId);
 			return;
 		}
 
-		String json = gson.toJson(points);
-		configManager.setConfiguration(CONFIG_GROUP, "region_" + regionId, json);
+		String json = GSON.toJson(points);
+		configManager.setConfiguration(CONFIG_GROUP, REGION_PREFIX + regionId, json);
 	}
 
 	private Collection<GroundMarkerPoint> getPoints(int regionId)
 	{
-		String json = configManager.getConfiguration(CONFIG_GROUP, "region_" + regionId);
+		String json = configManager.getConfiguration(CONFIG_GROUP, REGION_PREFIX + regionId);
 		if (Strings.isNullOrEmpty(json))
 		{
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
-		return gson.fromJson(json, new TypeToken<List<GroundMarkerPoint>>()
-		{
-		}.getType());
+		return GSON.fromJson(json, new GroundMarkerListTypeToken().getType());
+	}
+
+	private static class GroundMarkerListTypeToken extends TypeToken<List<GroundMarkerPoint>>
+	{
 	}
 
 	@Provides
@@ -238,8 +241,7 @@ public class GroundMarkerPlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
-
-	protected void markTile(LocalPoint localPoint)
+	private void markTile(LocalPoint localPoint)
 	{
 		if (localPoint == null)
 		{
