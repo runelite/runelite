@@ -104,7 +104,7 @@ class FishingSpotOverlay extends Overlay
 			HashMap<NPC, Integer> map = SPOTS_LIST.get(npc.getWorldLocation());
 			if (map == null)
 			{
-				map = new HashMap<NPC, Integer>();
+				map = new HashMap<>();
 				SPOTS_LIST.put(npc.getWorldLocation(), map);
 			}
 
@@ -123,25 +123,28 @@ class FishingSpotOverlay extends Overlay
 		{
 			WorldPoint tile = entry.getKey();
 			HashMap<NPC, Integer> fishingSpots = entry.getValue();
-			int spotCount = fishingSpots.size();
 
 			// minnow fishing spots will only ever share tiles with other minnow fishing spots
 			NPC firstSpot = (NPC) fishingSpots.keySet().toArray()[0];
 			FishingSpot possibleMinnowSpot = FishingSpot.getSPOTS().get(firstSpot.getId());
 			Color color = firstSpot.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
 
-			if (possibleMinnowSpot == FishingSpot.MINNOW && config.showMinnowOverlay()) {
+			if (possibleMinnowSpot == FishingSpot.MINNOW && config.showMinnowOverlay())
+			{
 				MinnowSpot minnowSpot = plugin.getMinnowSpots().get(firstSpot.getIndex());
-				if (minnowSpot != null) {
+				if (minnowSpot != null)
+				{
 					long millisLeft = MINNOW_MOVE.toMillis() - Duration.between(minnowSpot.getTime(), Instant.now()).toMillis();
-					if (millisLeft < MINNOW_WARN.toMillis()) {
+					if (millisLeft < MINNOW_WARN.toMillis())
+					{
 						color = Color.ORANGE;
 					}
 
 					LocalPoint localPoint = firstSpot.getLocalLocation();
 					Point location = Perspective.localToCanvas(client, localPoint, client.getPlane());
 
-					if (location != null) {
+					if (location != null)
+					{
 						ProgressPieComponent pie = new ProgressPieComponent();
 						pie.setFill(color);
 						pie.setBorderColor(color);
@@ -152,10 +155,12 @@ class FishingSpotOverlay extends Overlay
 				}
 			}
 
-			if (config.showSpotTiles()) {
+			if (config.showSpotTiles())
+			{
 				// each entry in the list corresponds to the same tile
 				Polygon poly = firstSpot.getCanvasTilePoly();
-				if (poly != null) {
+				if (poly != null)
+				{
 					OverlayUtil.renderPolygon(graphics, poly, color.darker());
 				}
 			}
@@ -186,7 +191,7 @@ class FishingSpotOverlay extends Overlay
 						Point imageLocation = npc.getCanvasImageLocation(fishImage, 34);
 						if (imageLocation != null)
 						{
-							int offset = (i * 17) - ((68*(npcArray.length - 1)) / 2);
+							int offset = (i * 34) - ((34*(npcArray.length - 1)) / 2);
 							Point shiftedImageLocation = new Point(imageLocation.getX() + offset, imageLocation.getY());
 							OverlayUtil.renderImageLocation(graphics, shiftedImageLocation, fishImage);
 						}
