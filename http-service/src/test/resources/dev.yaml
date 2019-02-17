@@ -1,0 +1,19 @@
+datasource:
+  runelite:
+    driverClassName: com.mysql.jdbc.Driver
+    type: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+    url: jdbc:mysql://192.168.1.2/runelite
+    username: runelite
+    password: runelite
+  runelite-cache:
+    driverClassName: com.mysql.jdbc.Driver
+    type: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+    url: jdbc:mysql://192.168.1.2/cache
+    username: runelite
+    password: runelite
+  runelite-tracker:
+    driverClassName: com.mysql.jdbc.Driver
+    type: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+    url: jdbc:mysql://192.168.1.2/xptracker
+    username: runelite
+    password: runelite
