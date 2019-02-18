@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.chathistory;
 
 import com.google.common.collect.EvictingQueue;
+import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -42,6 +43,7 @@ import net.runelite.api.vars.InputType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
@@ -71,10 +73,19 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	private ClientThread clientThread;
 
 	@Inject
+	private ChatHistoryConfig config;
+
+	@Inject
 	private KeyManager keyManager;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
+
+	@Provides
+	ChatHistoryConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ChatHistoryConfig.class);
+	}
 	
 	@Override
 	protected void startUp()
@@ -101,6 +112,11 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		// of information that chat history was reset
 		if (chatMessage.getMessage().equals(WELCOME_MESSAGE))
 		{
+			if (!config.retainChatHistory())
+			{
+				return;
+			}
+
 			QueuedMessage queuedMessage;
 
 			while ((queuedMessage = messageQueue.poll()) != null)
@@ -178,7 +194,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (e.getKeyCode() != CYCLE_HOTKEY)
+		if (e.getKeyCode() != CYCLE_HOTKEY || !config.pmTargetCycling())
 		{
 			return;
 		}
