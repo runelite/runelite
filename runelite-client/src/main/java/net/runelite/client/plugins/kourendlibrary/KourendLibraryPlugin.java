@@ -25,23 +25,17 @@
 package net.runelite.client.plugins.kourendlibrary;
 
 import com.google.inject.Provides;
+
 import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.AnimationID;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.MenuAction;
-import net.runelite.api.Player;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
@@ -64,9 +58,9 @@ public class KourendLibraryPlugin extends Plugin
 {
 	private static final Pattern BOOK_EXTRACTOR = Pattern.compile("'<col=0000ff>(.*)</col>'");
 	private static final Pattern TAG_MATCHER = Pattern.compile("(<[^>]*>)");
-	final static int REGION = 6459;
 
-	final static boolean debug = false;
+	public final static int REGION = 6459;
+	public final static boolean debug = false;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -145,6 +139,11 @@ public class KourendLibraryPlugin extends Plugin
 			return;
 		}
 
+		updateToolbar();
+	}
+
+	private void updateToolbar()
+	{
 		SwingUtilities.invokeLater(() ->
 		{
 			if (!config.hideButton())
@@ -153,8 +152,10 @@ public class KourendLibraryPlugin extends Plugin
 			}
 			else
 			{
-				Player lp = client.getLocalPlayer();
-				boolean inRegion = lp != null && lp.getWorldLocation().getRegionID() == REGION;
+				Player player = client.getLocalPlayer();
+
+				boolean inRegion = player != null && player.getWorldLocation().getRegionID() == REGION;
+
 				if (inRegion)
 				{
 					clientToolbar.addNavigation(navButton);
@@ -170,105 +171,169 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOpt)
 	{
-		if (MenuAction.GAME_OBJECT_FIRST_OPTION == menuOpt.getMenuAction() && menuOpt.getMenuTarget().contains("Bookshelf"))
+		if (MenuAction.GAME_OBJECT_FIRST_OPTION != menuOpt.getMenuAction())
 		{
-			lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
-			overlay.setHidden(false);
+			return;
 		}
+
+		if (!menuOpt.getMenuTarget().contains("Bookshelf"))
+		{
+			return;
+		}
+
+		lastBookcaseClick = WorldPoint.fromScene(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
+		overlay.setHidden(false);
 	}
 
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged anim)
 	{
-		if (anim.getActor() == client.getLocalPlayer() && anim.getActor().getAnimation() == AnimationID.LOOKING_INTO)
+		if (anim.getActor() != client.getLocalPlayer())
 		{
-			lastBookcaseAnimatedOn = lastBookcaseClick;
+			return;
 		}
+
+		if (anim.getActor().getAnimation() != AnimationID.LOOKING_INTO)
+		{
+			return;
+		}
+
+		lastBookcaseAnimatedOn = lastBookcaseClick;
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (lastBookcaseAnimatedOn != null && event.getType() == ChatMessageType.SERVER)
+		if (lastBookcaseAnimatedOn == null)
 		{
-			if (event.getMessage().equals("You don't find anything useful here."))
-			{
-				library.mark(lastBookcaseAnimatedOn, null);
-				panel.update();
-				lastBookcaseAnimatedOn = null;
-			}
+			return;
 		}
+
+		if (event.getType() != ChatMessageType.SERVER)
+		{
+			return;
+		}
+
+		if (!event.getMessage().equals("You don't find anything useful here."))
+		{
+			return;
+		}
+
+		library.mark(lastBookcaseAnimatedOn, null);
+		panel.update();
+		lastBookcaseAnimatedOn = null;
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
 		boolean inRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == REGION;
-		if (config.hideButton() && inRegion != buttonAttached)
-		{
-			SwingUtilities.invokeLater(() ->
-			{
-				if (inRegion)
-				{
-					clientToolbar.addNavigation(navButton);
-				}
-				else
-				{
-					clientToolbar.removeNavigation(navButton);
-				}
-			});
-			buttonAttached = inRegion;
-		}
+
+		updateToolbarNavigation(inRegion);
 
 		if (!inRegion)
 		{
 			return;
 		}
 
-		if (lastBookcaseAnimatedOn != null)
+		updateBookcase();
+
+		updateCustomer();
+	}
+
+	private void updateToolbarNavigation(boolean inRegion)
+	{
+		if (!config.hideButton())
 		{
-			Widget find = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
-			if (find != null)
-			{
-				Book book = Book.byId(find.getItemId());
-				if (book != null)
-				{
-					library.mark(lastBookcaseAnimatedOn, book);
-					panel.update();
-					lastBookcaseAnimatedOn = null;
-				}
-			}
+			return;
 		}
 
-		Widget npcHead = client.getWidget(WidgetInfo.DIALOG_NPC_HEAD_MODEL);
-		if (npcHead != null)
+		if (inRegion == buttonAttached)
 		{
-			LibraryCustomer cust = LibraryCustomer.getById(npcHead.getModelId());
-			if (cust != null)
-			{
-				Widget textw = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
-				String text = textw.getText();
-				Matcher m = BOOK_EXTRACTOR.matcher(text);
-				if (m.find())
-				{
-					String bookName = TAG_MATCHER.matcher(m.group(1).replace("<br>", " ")).replaceAll("");
-					Book book = Book.byName(bookName);
-					if (book == null)
-					{
-						log.warn("Book '{}' is not recognised", bookName);
-						return;
-					}
+			return;
+		}
 
-					overlay.setHidden(false);
-					library.setCustomer(cust, book);
-					panel.update();
-				}
-				else if (text.contains("You can have this other book") || text.contains("please accept a token of my thanks.") || text.contains("Thanks, I'll get on with reading it."))
-				{
-					library.setCustomer(null, null);
-					panel.update();
-				}
+		SwingUtilities.invokeLater(() ->
+		{
+			if (inRegion)
+			{
+				clientToolbar.addNavigation(navButton);
 			}
+			else
+			{
+				clientToolbar.removeNavigation(navButton);
+			}
+		});
+
+		buttonAttached = inRegion;
+	}
+
+	private void updateBookcase()
+	{
+		if (lastBookcaseAnimatedOn == null)
+		{
+			return;
+		}
+
+		Widget find = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
+
+		if (find == null)
+		{
+			return;
+		}
+
+		Book book = Book.byId(find.getItemId());
+
+		if (book == null)
+		{
+			return;
+		}
+
+		library.mark(lastBookcaseAnimatedOn, book);
+		panel.update();
+		lastBookcaseAnimatedOn = null;
+	}
+
+	private void updateCustomer()
+	{
+		Widget npcHead = client.getWidget(WidgetInfo.DIALOG_NPC_HEAD_MODEL);
+
+		if (npcHead == null)
+		{
+			return;
+		}
+
+		LibraryCustomer libraryCustomer = LibraryCustomer.getById(npcHead.getModelId());
+
+		if (libraryCustomer == null)
+		{
+			return;
+		}
+
+		Widget textw = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+		String text = textw.getText();
+		Matcher m = BOOK_EXTRACTOR.matcher(text);
+
+		if (m.find())
+		{
+			String bookName = TAG_MATCHER.matcher(m.group(1).replace("<br>", " ")).replaceAll("");
+			Book book = Book.byName(bookName);
+
+			if (book == null)
+			{
+				log.warn("Book '{}' is not recognised", bookName);
+				return;
+			}
+
+			overlay.setHidden(false);
+			library.setCustomer(libraryCustomer, book);
+			panel.update();
+		}
+		else if (text.contains("You can have this other book") || text.contains("please accept a token of my thanks.") || text.contains("Thanks, I'll get on with reading it."))
+		{
+			library.setCustomer(null, null);
+			panel.update();
+		}
 		}
 	}
 }

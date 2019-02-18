@@ -102,11 +102,12 @@ class Library
 	synchronized void reset()
 	{
 		state = SolvedState.NO_DATA;
-		for (Bookcase b : byIndex)
+		for (Bookcase bookcase : byIndex)
 		{
-			b.clearBook();
-			b.getPossibleBooks().clear();
+			bookcase.clearBook();
+			bookcase.getPossibleBooks().clear();
 		}
+
 		log.info("Library is now reset");
 	}
 
@@ -428,17 +429,17 @@ class Library
 	private void add(int x, int y, int z, int i)
 	{
 		// 'i' is added as a parameter for readability
-		WorldPoint p = new WorldPoint(x, y, z);
-		Bookcase b = byPoint.get(p);
-		if (b == null)
+		WorldPoint worldPoint = new WorldPoint(x, y, z);
+		Bookcase book = byPoint.get(worldPoint);
+		if (book == null)
 		{
-			b = new Bookcase(p);
-			byPoint.put(p, b);
-			byLevel.computeIfAbsent(z, a -> new ArrayList<>()).add(b);
+			book = new Bookcase(worldPoint);
+			byPoint.put(worldPoint, book);
+			byLevel.computeIfAbsent(z, a -> new ArrayList<>()).add(book);
 		}
-		b.getIndex().add(i);
+		book.getIndex().add(i);
 		assert i == byIndex.size();
-		byIndex.add(b);
+		byIndex.add(book);
 	}
 
 	private void populateBooks()

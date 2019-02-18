@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2019 Koekkruimels
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,9 +24,58 @@
  */
 package net.runelite.client.plugins.kourendlibrary;
 
-enum SolvedState
+import lombok.Getter;
+import net.runelite.api.coords.WorldPoint;
+
+import javax.annotation.Nonnull;
+
+public enum LibrarySection
 {
-	NO_DATA,
-	INCOMPLETE,
-	COMPLETE
+	NORTH_WEST("Northwest"),
+	NORTH_EAST("Northeast"),
+	SOUTH_WEST("Southwest"),
+	CENTER("center");
+
+	@Getter
+	private String name;
+
+	LibrarySection(String name)
+	{
+		this.name = name;
+	}
+
+	@Nonnull
+	public static LibrarySection getSection(@Nonnull WorldPoint location)
+	{
+		boolean north;
+		boolean west;
+
+		if (location.getPlane() == 0)
+		{
+			north = location.getY() > 3813;
+			west = location.getX() < 1627;
+		}
+		else
+		{
+			north = location.getY() > 3815;
+			west = location.getX() < 1625;
+		}
+
+		if (north && west)
+		{
+			return NORTH_WEST;
+		}
+		else if (north)
+		{
+			return NORTH_EAST;
+		}
+		else if (west)
+		{
+			return SOUTH_WEST;
+		}
+		else
+		{
+			return CENTER;
+		}
+	}
 }

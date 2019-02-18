@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2019 Koekkruimels
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,9 +24,87 @@
  */
 package net.runelite.client.plugins.kourendlibrary;
 
-enum SolvedState
+import lombok.Getter;
+import net.runelite.api.coords.WorldPoint;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Comparator;
+
+public enum LibraryLevel
 {
-	NO_DATA,
-	INCOMPLETE,
-	COMPLETE
+	GROUND_FLOOR("ground floor"),
+	MIDDLE_FLOOR("middle floor"),
+	TOP_FLOOR("top floor");
+
+	@Getter
+	private String name;
+
+	LibraryLevel(String name)
+	{
+		this.name = name;
+	}
+
+	public boolean canReachOtherSections()
+	{
+		switch (this)
+		{
+			case GROUND_FLOOR:
+				return true;
+			case MIDDLE_FLOOR:
+				return false;
+			case TOP_FLOOR:
+				return true;
+		}
+
+		return false;
+	}
+
+	public int getPlane()
+	{
+		switch (this)
+		{
+			case GROUND_FLOOR:
+				return 0;
+			case MIDDLE_FLOOR:
+				return 1;
+			case TOP_FLOOR:
+				return 2;
+		}
+
+		return -1;
+	}
+
+	@Nullable
+	public static LibraryLevel getLevel(@Nonnull WorldPoint location)
+	{
+		switch (location.getPlane())
+		{
+			case 0:
+				return GROUND_FLOOR;
+			case 1:
+				return MIDDLE_FLOOR;
+			case 2:
+				return TOP_FLOOR;
+			default:
+				return null;
+		}
+	}
+
+	@Nullable
+	public static LibraryLevel maxLevel()
+	{
+		return Arrays.stream(values())
+			.max(Comparator.comparingInt(LibraryLevel::getPlane))
+			.orElse(null);
+	}
+
+	@Nullable
+	public static LibraryLevel minLevel()
+	{
+		return Arrays.stream(values())
+			.min(Comparator.comparingInt(LibraryLevel::getPlane))
+			.orElse(null);
+	}
 }
