@@ -83,11 +83,15 @@ public class KourendLibraryPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private LibraryHintArrow hintArrow;
+
 	private KourendLibraryPanel panel;
 	private NavigationButton navButton;
 	private boolean buttonAttached = false;
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
+	private int lastPlayerPlane = -1;
 
 	@Provides
 	KourendLibraryConfig provideConfig(ConfigManager configManager)
@@ -129,6 +133,8 @@ public class KourendLibraryPlugin extends Plugin
 		buttonAttached = false;
 		lastBookcaseClick = null;
 		lastBookcaseAnimatedOn = null;
+		lastPlayerPlane = -1;
+		hintArrow.clear();
 	}
 
 	@Subscribe
@@ -138,6 +144,8 @@ public class KourendLibraryPlugin extends Plugin
 		{
 			return;
 		}
+
+		hintArrow.update();
 
 		updateToolbar();
 	}
@@ -239,6 +247,8 @@ public class KourendLibraryPlugin extends Plugin
 		updateBookcase();
 
 		updateCustomer();
+
+		updatePlayerPlane();
 	}
 
 	private void updateToolbarNavigation(boolean inRegion)
@@ -328,12 +338,31 @@ public class KourendLibraryPlugin extends Plugin
 			overlay.setHidden(false);
 			library.setCustomer(libraryCustomer, book);
 			panel.update();
+			hintArrow.update();
 		}
 		else if (text.contains("You can have this other book") || text.contains("please accept a token of my thanks.") || text.contains("Thanks, I'll get on with reading it."))
 		{
 			library.setCustomer(null, null);
 			panel.update();
+			hintArrow.clear();
 		}
+	}
+
+	private void updatePlayerPlane()
+	{
+		int playerPlane = client.getLocalPlayer().getWorldLocation().getPlane();
+
+		if (lastPlayerPlane != -1 && lastPlayerPlane != playerPlane)
+		{
+			hintArrow.update();
 		}
+
+		lastPlayerPlane = playerPlane;
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(final ItemContainerChanged event)
+	{
+		hintArrow.update();
 	}
 }

@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -76,6 +77,9 @@ class Library
 	@Getter
 	private LibraryCustomer customer;
 
+	@Inject
+	private LibraryHintArrow hintArrow;
+
 	Library()
 	{
 		populateBooks();
@@ -106,6 +110,11 @@ class Library
 		{
 			bookcase.clearBook();
 			bookcase.getPossibleBooks().clear();
+		}
+
+		if (hintArrow != null)
+		{
+			hintArrow.clear();
 		}
 
 		log.info("Library is now reset");
@@ -253,6 +262,9 @@ class Library
 			{
 				state = SolvedState.COMPLETE;
 			}
+
+			hintArrow.update();
+
 			return;
 		}
 	}

@@ -42,4 +42,15 @@ public interface KourendLibraryConfig extends Config
 	{
 		return true;
 	}
+
+
+	@ConfigItem(
+		keyName = "showHintArrow",
+		name = "Show hint arrow",
+		description = "Shows an hint arrow to the location of te bookcase for the required book"
+	)
+	default boolean showHintArray()
+	{
+		return false;
+	}
 }
