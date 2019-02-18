@@ -326,4 +326,15 @@ public class WorldPoint
 	{
 		return ((x >> 6) << 8) | (y >> 6);
 	}
+
+	/**
+	 * Converts the passed region ID and coordinates to a world coordinate
+	 */
+	public static WorldPoint fromRegion(int regionId, int regionX, int regionY, int plane)
+	{
+		return new WorldPoint(
+			((regionId >>> 8) << 6) + regionX,
+			((regionId & 0xff) << 6) + regionY,
+			plane);
+	}
 }

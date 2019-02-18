@@ -163,12 +163,7 @@ public class GroundMarkerPlugin extends Plugin
 				int regionY = point.getRegionY();
 				int z = point.getZ();
 
-				// world point of the tile marker
-				return new WorldPoint(
-					((regionId >>> 8) << 6) + regionX,
-					((regionId & 0xff) << 6) + regionY,
-					z
-				);
+				return WorldPoint.fromRegion(regionId, regionX, regionY, z);
 			})
 			.flatMap(wp -> WorldPoint.toLocalInstance(client, wp).stream())
 			.collect(Collectors.toList());
