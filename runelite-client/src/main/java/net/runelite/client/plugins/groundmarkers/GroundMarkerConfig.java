@@ -44,4 +44,14 @@ public interface GroundMarkerConfig extends Config
 	{
 		return Color.YELLOW;
 	}
+
+	@ConfigItem(
+		keyName = "rememberTileColors",
+		name = "Remember color per tile",
+		description = "Color tiles using the color from time of placement"
+	)
+	default boolean rememberTileColors()
+	{
+		return false;
+	}
 }

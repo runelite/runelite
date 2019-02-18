@@ -25,10 +25,11 @@
  */
 package net.runelite.client.plugins.groundmarkers;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.util.List;
+import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
@@ -62,21 +63,29 @@ public class GroundMarkerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		List<WorldPoint> points = plugin.getPoints();
-		for (WorldPoint point : points)
+		final Collection<ColorTileMarker> points = plugin.getPoints();
+		for (final ColorTileMarker point : points)
 		{
-			if (point.getPlane() != client.getPlane())
+			WorldPoint worldPoint = point.getWorldPoint();
+			if (worldPoint.getPlane() != client.getPlane())
 			{
 				continue;
 			}
 
-			drawTile(graphics, point);
+			Color tileColor = point.getColor();
+			if (tileColor == null || !config.rememberTileColors())
+			{
+				// If this is an old tile which has no color, or rememberTileColors is off, use marker color
+				tileColor = config.markerColor();
+			}
+
+			drawTile(graphics, worldPoint, tileColor);
 		}
 
 		return null;
 	}
 
-	private void drawTile(Graphics2D graphics, WorldPoint point)
+	private void drawTile(Graphics2D graphics, WorldPoint point, Color color)
 	{
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
@@ -97,6 +106,6 @@ public class GroundMarkerOverlay extends Overlay
 			return;
 		}
 
-		OverlayUtil.renderPolygon(graphics, poly, config.markerColor());
+		OverlayUtil.renderPolygon(graphics, poly, color);
 	}
 }

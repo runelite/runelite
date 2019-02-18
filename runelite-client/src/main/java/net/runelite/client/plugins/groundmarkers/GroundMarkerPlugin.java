@@ -78,10 +78,13 @@ public class GroundMarkerPlugin extends Plugin
 	private boolean hotKeyPressed;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final List<WorldPoint> points = new ArrayList<>();
+	private final List<ColorTileMarker> points = new ArrayList<>();
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private GroundMarkerConfig config;
 
 	@Inject
 	private GroundMarkerInputListener inputListener;
@@ -117,9 +120,10 @@ public class GroundMarkerPlugin extends Plugin
 		{
 			return Collections.emptyList();
 		}
-		return GSON.fromJson(json, new TypeToken<List<GroundMarkerPoint>>()
-		{
-		}.getType());
+
+		// CHECKSTYLE:OFF
+		return GSON.fromJson(json, new TypeToken<List<GroundMarkerPoint>>(){}.getType());
+		// CHECKSTYLE:ON
 	}
 
 	@Provides
@@ -144,18 +148,19 @@ public class GroundMarkerPlugin extends Plugin
 			// load points for region
 			log.debug("Loading points for region {}", regionId);
 			Collection<GroundMarkerPoint> regionPoints = getPoints(regionId);
-			Collection<WorldPoint> worldPoints = translateToWorld(regionPoints);
-			points.addAll(worldPoints);
+			Collection<ColorTileMarker> colorTileMarkers = translateToColorTileMarker(regionPoints);
+			points.addAll(colorTileMarkers);
 		}
 	}
 
 	/**
-	 * Translate a collection of ground marker points to world points, accounting for instances
+	 * Translate a collection of ground marker points to color tile markers, accounting for instances
 	 *
-	 * @param points
-	 * @return
+	 * @param points {@link GroundMarkerPoint}s to be converted to {@link ColorTileMarker}s
+	 * @return A collection of color tile markers, converted from the passed ground marker points, accounting for local
+	 *         instance points. See {@link WorldPoint#toLocalInstance(Client, WorldPoint)}
 	 */
-	private Collection<WorldPoint> translateToWorld(Collection<GroundMarkerPoint> points)
+	private Collection<ColorTileMarker> translateToColorTileMarker(Collection<GroundMarkerPoint> points)
 	{
 		if (points.isEmpty())
 		{
@@ -163,16 +168,14 @@ public class GroundMarkerPlugin extends Plugin
 		}
 
 		return points.stream()
-			.map(point ->
+			.map(point -> new ColorTileMarker(
+				WorldPoint.fromRegion(point.getRegionId(), point.getRegionX(), point.getRegionY(), point.getZ()),
+				point.getColor()))
+			.flatMap(colorTile ->
 			{
-				int regionId = point.getRegionId();
-				int regionX = point.getRegionX();
-				int regionY = point.getRegionY();
-				int z = point.getZ();
-
-				return WorldPoint.fromRegion(regionId, regionX, regionY, z);
+				final Collection<WorldPoint> localWorldPoints = WorldPoint.toLocalInstance(client, colorTile.getWorldPoint());
+				return localWorldPoints.stream().map(wp -> new ColorTileMarker(wp, colorTile.getColor()));
 			})
-			.flatMap(wp -> WorldPoint.toLocalInstance(client, wp).stream())
 			.collect(Collectors.toList());
 	}
 
@@ -257,7 +260,7 @@ public class GroundMarkerPlugin extends Plugin
 		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, localPoint);
 
 		int regionId = worldPoint.getRegionID();
-		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane());
+		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), config.markerColor());
 		log.debug("Updating point: {} - {}", point, worldPoint);
 
 		List<GroundMarkerPoint> groundMarkerPoints = new ArrayList<>(getPoints(regionId));
