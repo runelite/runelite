@@ -97,13 +97,11 @@ public abstract class RSSequenceMixin implements RSSequence
 				// not sure what toSharedModel does but it is needed
 				return model.toSharedModel(true);
 			}
-			else
-			{
-				RSModel animatedModel = model.toSharedModel(!frames.getFrames()[frameIdx].isShowing());
-				animatedModel.interpolateFrames(frames, frameIdx, nextFrames, nextFrameIdx, interval,
-						getFrameLenths()[frame]);
-				return animatedModel;
-			}
+
+			RSModel animatedModel = model.toSharedModel(!frames.getFrames()[frameIdx].isShowing());
+			animatedModel.interpolateFrames(frames, frameIdx, nextFrames, nextFrameIdx, interval,
+					getFrameLenths()[frame]);
+			return animatedModel;
 		}
 		else
 		{
@@ -149,40 +147,38 @@ public abstract class RSSequenceMixin implements RSSequence
 			{
 				return model.toSharedModel(true);
 			}
-			else
+
+			RSModel animatedModel = model.toSharedModel(!frames.getFrames()[frameIdx].isShowing());
+			// reset rotation before animating
+			rotation &= 3;
+			if (rotation == 1)
 			{
-				RSModel animatedModel = model.toSharedModel(!frames.getFrames()[frameIdx].isShowing());
-				// reset rotation before animating
-				rotation &= 3;
-				if (rotation == 1)
-				{
-					animatedModel.rotateY270Ccw();
-				}
-				else if (rotation == 2)
-				{
-					animatedModel.rotateY180Ccw();
-				}
-				else if (rotation == 3)
-				{
-					animatedModel.rotateY90Ccw();
-				}
-				animatedModel.interpolateFrames(frames, frameIdx, nextFrames, nextFrameIdx, interval,
-						getFrameLenths()[frame]);
-				// reapply rotation after animating
-				if (rotation == 1)
-				{
-					animatedModel.rotateY90Ccw();
-				}
-				else if (rotation == 2)
-				{
-					animatedModel.rotateY180Ccw();
-				}
-				else if (rotation == 3)
-				{
-					animatedModel.rotateY270Ccw();
-				}
-				return animatedModel;
+				animatedModel.rotateY270Ccw();
 			}
+			else if (rotation == 2)
+			{
+				animatedModel.rotateY180Ccw();
+			}
+			else if (rotation == 3)
+			{
+				animatedModel.rotateY90Ccw();
+			}
+			animatedModel.interpolateFrames(frames, frameIdx, nextFrames, nextFrameIdx, interval,
+					getFrameLenths()[frame]);
+			// reapply rotation after animating
+			if (rotation == 1)
+			{
+				animatedModel.rotateY90Ccw();
+			}
+			else if (rotation == 2)
+			{
+				animatedModel.rotateY180Ccw();
+			}
+			else if (rotation == 3)
+			{
+				animatedModel.rotateY270Ccw();
+			}
+			return animatedModel;
 		}
 		else
 		{
@@ -227,13 +223,11 @@ public abstract class RSSequenceMixin implements RSSequence
 			{
 				return model.toSharedSpotAnimModel(true);
 			}
-			else
-			{
-				RSModel animatedModel = model.toSharedSpotAnimModel(!frames.getFrames()[frameIdx].isShowing());
-				animatedModel.interpolateFrames(frames, frameIdx, nextFrames, nextFrameIdx, interval,
-						getFrameLenths()[frame]);
-				return animatedModel;
-			}
+
+			RSModel animatedModel = model.toSharedSpotAnimModel(!frames.getFrames()[frameIdx].isShowing());
+			animatedModel.interpolateFrames(frames, frameIdx, nextFrames, nextFrameIdx, interval,
+					getFrameLenths()[frame]);
+			return animatedModel;
 		}
 		else
 		{
@@ -279,47 +273,43 @@ public abstract class RSSequenceMixin implements RSSequence
 			{
 				return model.toSharedModel(true);
 			}
-			else
+
+			RSFrames chatFrames = null;
+			int chatFrameIdx = 0;
+			if (getChatFrameIds() != null && frame < getChatFrameIds().length)
 			{
-				RSFrames chatFrames = null;
-				int chatFrameIdx = 0;
-				if (getChatFrameIds() != null && frame < getChatFrameIds().length)
-				{
-					int chatFrameId = getChatFrameIds()[frame];
-					chatFrames = client.getFrames(chatFrameId >> 16);
-					chatFrameIdx = chatFrameId & 0xFFFF;
-				}
-				if (chatFrames != null && chatFrameIdx != 0xFFFF)
-				{
-					RSFrames nextChatFrames = null;
-					int nextChatFrameIdx = -1;
-					if (nextFrame != -1 && nextFrame < getChatFrameIds().length)
-					{
-						int chatFrameId = getChatFrameIds()[nextFrame];
-						nextChatFrames = client.getFrames(chatFrameId >> 16);
-						nextChatFrameIdx = chatFrameId & 0xFFFF;
-					}
-					// not sure if this can even happen but the client checks for this so to be safe
-					if (nextChatFrameIdx == 0xFFFF)
-					{
-						nextChatFrames = null;
-					}
-					RSModel animatedModel = model.toSharedModel(!frames.getFrames()[frameIdx].isShowing()
-							& !chatFrames.getFrames()[chatFrameIdx].isShowing());
-					animatedModel.interpolateFrames(frames, frameIdx, nextFrames, nextFrameIdx, interval,
-							getFrameLenths()[frame]);
-					animatedModel.interpolateFrames(chatFrames, chatFrameIdx, nextChatFrames, nextChatFrameIdx,
-							interval, getFrameLenths()[frame]);
-					return animatedModel;
-				}
-				else
-				{
-					RSModel animatedModel = model.toSharedModel(!frames.getFrames()[frameIdx].isShowing());
-					animatedModel.interpolateFrames(frames, frameIdx, nextFrames, nextFrameIdx, interval,
-							getFrameLenths()[frame]);
-					return animatedModel;
-				}
+				int chatFrameId = getChatFrameIds()[frame];
+				chatFrames = client.getFrames(chatFrameId >> 16);
+				chatFrameIdx = chatFrameId & 0xFFFF;
 			}
+			if (chatFrames != null && chatFrameIdx != 0xFFFF)
+			{
+				RSFrames nextChatFrames = null;
+				int nextChatFrameIdx = -1;
+				if (nextFrame != -1 && nextFrame < getChatFrameIds().length)
+				{
+					int chatFrameId = getChatFrameIds()[nextFrame];
+					nextChatFrames = client.getFrames(chatFrameId >> 16);
+					nextChatFrameIdx = chatFrameId & 0xFFFF;
+				}
+				// not sure if this can even happen but the client checks for this so to be safe
+				if (nextChatFrameIdx == 0xFFFF)
+				{
+					nextChatFrames = null;
+				}
+				RSModel animatedModel = model.toSharedModel(!frames.getFrames()[frameIdx].isShowing()
+						& !chatFrames.getFrames()[chatFrameIdx].isShowing());
+				animatedModel.interpolateFrames(frames, frameIdx, nextFrames, nextFrameIdx, interval,
+						getFrameLenths()[frame]);
+				animatedModel.interpolateFrames(chatFrames, chatFrameIdx, nextChatFrames, nextChatFrameIdx,
+						interval, getFrameLenths()[frame]);
+				return animatedModel;
+			}
+
+			RSModel animatedModel = model.toSharedModel(!frames.getFrames()[frameIdx].isShowing());
+			animatedModel.interpolateFrames(frames, frameIdx, nextFrames, nextFrameIdx, interval,
+					getFrameLenths()[frame]);
+			return animatedModel;
 		}
 		else
 		{
