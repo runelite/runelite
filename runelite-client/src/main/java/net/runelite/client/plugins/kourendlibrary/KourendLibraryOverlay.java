@@ -181,6 +181,11 @@ class KourendLibraryOverlay extends Overlay
 
 		boolean containsBook = containsBook(book);
 
+		if (config.hideDuplicateBooks() && containsBook)
+		{
+			return;
+		}
+
 		Polygon polygon = getCanvasTilePoly(client, bookcaseLocation);
 
 		if (polygon == null)
@@ -202,6 +207,11 @@ class KourendLibraryOverlay extends Overlay
 	private void renderSingleBook(@Nonnull Graphics2D graphics, @Nonnull Book book, @Nonnull Bookcase bookcase, @Nonnull Point screenBookcase)
 	{
 		if (config.hideDarkManuscript() && book.isDarkManuscript())
+		{
+			return;
+		}
+
+		if (config.hideDuplicateBooks() && containsBook(book))
 		{
 			return;
 		}

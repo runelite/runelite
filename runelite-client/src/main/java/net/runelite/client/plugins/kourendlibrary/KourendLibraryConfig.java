@@ -63,4 +63,14 @@ public interface KourendLibraryConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "hideDuplicateBooks",
+		name = "Hide duplicate books",
+		description = "Hides the bookcases with books you already own in your inventory"
+	)
+	default boolean hideDuplicateBooks()
+	{
+		return false;
+	}
 }
