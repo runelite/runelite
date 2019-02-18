@@ -77,6 +77,9 @@ class Library
 	@Getter
 	private LibraryCustomer customer;
 
+	@Getter
+	private LibraryCustomer lastCustomer;
+
 	@Inject
 	private LibraryHintArrow hintArrow;
 
@@ -99,6 +102,11 @@ class Library
 
 	void setCustomer(LibraryCustomer customer, Book book)
 	{
+		if (this.customer != null)
+		{
+			this.lastCustomer = this.customer;
+		}
+
 		this.customer = customer;
 		this.customerBook = book;
 	}
@@ -106,6 +114,8 @@ class Library
 	synchronized void reset()
 	{
 		state = SolvedState.NO_DATA;
+		lastCustomer = null;
+
 		for (Bookcase bookcase : byIndex)
 		{
 			bookcase.clearBook();
