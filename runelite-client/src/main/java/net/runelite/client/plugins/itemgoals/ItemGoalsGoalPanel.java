@@ -156,7 +156,8 @@ public class ItemGoalsGoalPanel extends JPanel
 
 		// Progress bar
 		ThinProgressBar progressBar = new ThinProgressBar();
-		if(itemGoal.getProgress() == itemGoal.getAmount()){
+		if (itemGoal.getProgress() == itemGoal.getAmount())
+		{
 			progressBar.setForeground(ColorScheme.PROGRESS_COMPLETE_COLOR);
 		}
 		else
@@ -171,7 +172,10 @@ public class ItemGoalsGoalPanel extends JPanel
 		deleteButton.addMouseListener(new MouseAdapter()
 		{
 			@Override
-			public void mousePressed(MouseEvent mouseEvent) { confirmDeletion(); }
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				confirmDeletion();
+			}
 
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
@@ -228,7 +232,10 @@ public class ItemGoalsGoalPanel extends JPanel
 		cancelButton.addMouseListener(new MouseAdapter()
 		{
 			@Override
-			public void mousePressed(MouseEvent mouseEvent) { cancelDeletion(); }
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				cancelDeletion();
+			}
 
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
@@ -248,7 +255,10 @@ public class ItemGoalsGoalPanel extends JPanel
 		confirmButton.addMouseListener(new MouseAdapter()
 		{
 			@Override
-			public void mousePressed(MouseEvent mouseEvent) { delete(); }
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				delete();
+			}
 
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)

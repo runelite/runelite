@@ -37,7 +37,10 @@ public interface ItemGoalsConfig extends Config
 			description = "",
 			hidden = true
 	)
-	default String itemGoalsData() { return ""; }
+	default String itemGoalsData()
+	{
+		return "";
+	}
 
 	@ConfigItem(
 			keyName = "itemGoalsData",

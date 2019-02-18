@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.itemgoals;
 
+import java.util.ArrayList;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -36,8 +37,6 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -181,9 +180,9 @@ public class ItemGoalsResultPanel extends JPanel
 	{
 		ArrayList<ItemGoal> goals = plugin.getUserGoals();
 
-		for(ItemGoal goal : goals)
+		for (ItemGoal goal : goals)
 		{
-			if(goal.getItemID() == itemID)
+			if (goal.getItemID() == itemID)
 			{
 				this.connectedGoal = goal;
 				return;
@@ -198,11 +197,12 @@ public class ItemGoalsResultPanel extends JPanel
 		resultContainer.add(infoContainer, BorderLayout.PAGE_START);
 
 		// Add the progress bar you'd see on the normal goal tracker card if we're currently tracking this item
-		if(hasConnectedGoal())
+		if (hasConnectedGoal())
 		{
 			// Progress bar
 			ThinProgressBar progressBar = new ThinProgressBar();
-			if(connectedGoal.getProgress() == connectedGoal.getAmount()){
+			if (connectedGoal.getProgress() == connectedGoal.getAmount())
+			{
 				progressBar.setForeground(ColorScheme.PROGRESS_COMPLETE_COLOR);
 			}
 			else
@@ -222,7 +222,7 @@ public class ItemGoalsResultPanel extends JPanel
 		amountSpinner = new JSpinner(model);
 		amountSpinner.setPreferredSize(new Dimension(75, 20));
 
-		if(hasConnectedGoal())
+		if (hasConnectedGoal())
 		{
 			amountSpinner.setValue(connectedGoal.getAmount());
 		}
@@ -235,7 +235,10 @@ public class ItemGoalsResultPanel extends JPanel
 		confirmButton.addMouseListener(new MouseAdapter()
 		{
 			@Override
-			public void mousePressed(MouseEvent mouseEvent) { createGoal(); }
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				createGoal();
+			}
 
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
@@ -276,7 +279,7 @@ public class ItemGoalsResultPanel extends JPanel
 	{
 		configOpen = !configOpen;
 
-		if(configOpen)
+		if (configOpen)
 		{
 			resultContainer.add(configPanelWrapper, BorderLayout.CENTER);
 		}
@@ -292,7 +295,7 @@ public class ItemGoalsResultPanel extends JPanel
 	// Creates a new goal and adds it to the list of item goals
 	private void createGoal()
 	{
-		if(hasConnectedGoal())
+		if (hasConnectedGoal())
 		{
 			// Update the goal amount
 			int newGoal = (int)amountSpinner.getValue();
@@ -319,7 +322,7 @@ public class ItemGoalsResultPanel extends JPanel
 
 	protected void rebuild(boolean onlyIfConnected)
 	{
-		if(onlyIfConnected && !hasConnectedGoal())
+		if (onlyIfConnected && !hasConnectedGoal())
 		{
 			return;
 		}
@@ -341,15 +344,15 @@ public class ItemGoalsResultPanel extends JPanel
 	{
 		cont.setBackground(color);
 
-		for(Component c : cont.getComponents())
+		for (Component c : cont.getComponents())
 		{
-			if(c instanceof ThinProgressBar)
+			if (c instanceof ThinProgressBar)
 			{
 				continue;
 			}
 
 			c.setBackground(color);
-			if(c instanceof Container)
+			if (c instanceof Container)
 			{
 				setBackgroundDeep((Container)c, color);
 			}

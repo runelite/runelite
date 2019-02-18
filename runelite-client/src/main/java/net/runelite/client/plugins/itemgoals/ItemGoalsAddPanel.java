@@ -141,7 +141,7 @@ public class ItemGoalsAddPanel extends JPanel
 		final String searchText = searchBar.getText();
 		List<Integer> results = searcher.searchByName(searchText, false);
 
-		if(results.isEmpty())
+		if (results.isEmpty())
 		{
 			searchBar.setIcon(IconTextField.Icon.ERROR);
 			searchFailPanel.setContent("No results found", "No items were found with that name, please try again.");
@@ -153,9 +153,9 @@ public class ItemGoalsAddPanel extends JPanel
 
 		// Move the search results into a new list with no more than 50 items
 		int resultCount = 0;
-		for(int itemID : results)
+		for (int itemID : results)
 		{
-			if(resultCount == MAX_SEARCH_ITEMS)
+			if (resultCount == MAX_SEARCH_ITEMS)
 			{
 				break;
 			}
@@ -172,7 +172,7 @@ public class ItemGoalsAddPanel extends JPanel
 	{
 		final Map<Integer, String> idToNameMap = new HashMap<>();
 
-		for(int itemID : itemIdsList)
+		for (int itemID : itemIdsList)
 		{
 			ItemComposition composition = itemManager.getItemComposition(itemID);
 
@@ -186,7 +186,7 @@ public class ItemGoalsAddPanel extends JPanel
 			cardLayout.show(searchContainer, RESULT_PANEL);
 
 			// Add a result panel for each item we found
-			for(int itemID : itemIdsList)
+			for (int itemID : itemIdsList)
 			{
 				final AsyncBufferedImage icon = itemManager.getImage(itemID);
 				String name = idToNameMap.get(itemID);
@@ -197,7 +197,7 @@ public class ItemGoalsAddPanel extends JPanel
 				 * are actually available to F2Ps! This can be fixed by mapping variations to the proper
 				 * itemIDs in item_variations.json but is a huge undertaking. To-do, maybe?
 				*/
-				if(name == "Members object")
+				if (name == "Members object")
 				{
 					continue;
 				}
@@ -222,7 +222,7 @@ public class ItemGoalsAddPanel extends JPanel
 
 	protected void rebuildResults(boolean onlyIfConnected)
 	{
-		for(ItemGoalsResultPanel panel : activeResults)
+		for (ItemGoalsResultPanel panel : activeResults)
 		{
 			panel.rebuild(onlyIfConnected);
 		}

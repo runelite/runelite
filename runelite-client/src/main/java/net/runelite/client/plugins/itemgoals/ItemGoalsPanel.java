@@ -26,11 +26,10 @@ package net.runelite.client.plugins.itemgoals;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.util.concurrent.ScheduledExecutorService;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.concurrent.ScheduledExecutorService;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -191,7 +190,7 @@ public class ItemGoalsPanel extends PluginPanel
 	{
 		goalListPanel.removeAll();
 
-		for(ItemGoal goal : plugin.getUserGoals())
+		for (ItemGoal goal : plugin.getUserGoals())
 		{
 			ItemGoalsGoalPanel goalPanel = new ItemGoalsGoalPanel(plugin, goal, itemManager);
 			goalListPanel.add(goalPanel);

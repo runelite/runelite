@@ -56,10 +56,10 @@ import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor
 (
-    name = "Item Goals",
-    description = "Keeps track of item goals you've set",
-    tags = {"drops", "achievements"},
-    enabledByDefault = false
+	name = "Item Goals",
+	description = "Keeps track of item goals you've set",
+	tags = {"drops", "achievements"},
+	enabledByDefault = false
 )
 @Singleton
 public class ItemGoalsPlugin extends Plugin
@@ -123,9 +123,9 @@ public class ItemGoalsPlugin extends Plugin
 
 	protected void updateGoal(ItemGoal updatedGoal)
 	{
-		for(ItemGoal goal : userGoals)
+		for (ItemGoal goal : userGoals)
 		{
-			if(goal.getItemID() == updatedGoal.getItemID())
+			if (goal.getItemID() == updatedGoal.getItemID())
 			{
 				// Only bother with updating amount and progress. Doesn't make sense for itemID/name to change
 				goal.setAmount(updatedGoal.getAmount());
@@ -139,9 +139,9 @@ public class ItemGoalsPlugin extends Plugin
 
 	private void progressGoal(int itemId, int amount)
 	{
-		for(ItemGoal goal : userGoals)
+		for (ItemGoal goal : userGoals)
 		{
-			if(goal.getItemID() == itemId)
+			if (goal.getItemID() == itemId)
 			{
 				int newProgress = Math.min(goal.getProgress() + amount, goal.getAmount());
 				goal.setProgress(newProgress);
@@ -155,9 +155,9 @@ public class ItemGoalsPlugin extends Plugin
 
 	protected void removeGoal(ItemGoal goalToDelete)
 	{
-		for(ItemGoal goal : userGoals)
+		for (ItemGoal goal : userGoals)
 		{
-			if(goal.getItemID() == goalToDelete.getItemID())
+			if (goal.getItemID() == goalToDelete.getItemID())
 			{
 				userGoals.remove(goal);
 				break;
@@ -177,7 +177,7 @@ public class ItemGoalsPlugin extends Plugin
 	{
 		Widget widget = client.getWidget(WidgetInfo.BANK_CONTAINER);
 
-		if(widget == null)
+		if (widget == null)
 		{
 			return false;
 		}
@@ -192,11 +192,11 @@ public class ItemGoalsPlugin extends Plugin
 		Map<Integer, Integer> consolidatedInventory = new HashMap<>();
 
 		// First, stack every item to deal with unstackables
-		for(Item invItem : items)
+		for (Item invItem : items)
 		{
 			int baseId = ItemVariationMapping.map(invItem.getId());
 
-			if(consolidatedInventory.containsKey(baseId))
+			if (consolidatedInventory.containsKey(baseId))
 			{
 				consolidatedInventory.put(baseId, consolidatedInventory.get(baseId) + invItem.getQuantity());
 			}
@@ -216,9 +216,9 @@ public class ItemGoalsPlugin extends Plugin
 		previousInventory.keySet().retainAll(consolidatedInventory.keySet());
 
 		// Now we can go through the inventory and find how much each item quantity changed
-		for(Map.Entry<Integer, Integer> item : consolidatedInventory.entrySet())
+		for (Map.Entry<Integer, Integer> item : consolidatedInventory.entrySet())
 		{
-			if(previousInventory.containsKey(item.getKey()))
+			if (previousInventory.containsKey(item.getKey()))
 			{
 				int delta = item.getValue() - previousInventory.get(item.getKey());
 				deltas.put(item.getKey(), delta);
@@ -237,9 +237,9 @@ public class ItemGoalsPlugin extends Plugin
 
 	private boolean hasGoalForItem(int itemId)
 	{
-		for(ItemGoal itemGoal : userGoals)
+		for (ItemGoal itemGoal : userGoals)
 		{
-			if(itemId == itemGoal.getItemID())
+			if (itemId == itemGoal.getItemID())
 			{
 				return true;
 			}
@@ -250,13 +250,13 @@ public class ItemGoalsPlugin extends Plugin
 
 	private void updateGoalProgress(Item[] items)
 	{
-		if(items == null)
+		if (items == null)
 		{
 			return;
 		}
 
 		Map<Integer, Integer> deltas = getInventoryDeltas(items);
-		for(Map.Entry<Integer, Integer> pair : deltas.entrySet())
+		for (Map.Entry<Integer, Integer> pair : deltas.entrySet())
 		{
 			int itemId = pair.getKey();
 			int delta = pair.getValue();
@@ -266,7 +266,7 @@ public class ItemGoalsPlugin extends Plugin
 			 * Don't remove progress for items going out
 			 * Don't progress the goals when banking
 			*/
-			if(!hasGoalForItem(itemId) || delta <= 0 || isBanking())
+			if (!hasGoalForItem(itemId) || delta <= 0 || isBanking())
 			{
 				continue;
 			}
@@ -281,15 +281,16 @@ public class ItemGoalsPlugin extends Plugin
 		String dataJSON = config.itemGoalsData();
 		Map<String, ArrayList<ItemGoal>> goals = gson.fromJson(
 				dataJSON,
-				new TypeToken<Map<String, ArrayList<ItemGoal>>>() {}.getType()
+				new TypeToken<Map<String, ArrayList<ItemGoal>>>()
+				{ }.getType()
 		);
 
-		if(goals == null)
+		if (goals == null)
 		{
 			return;
 		}
 
-		if(goals.containsKey(username))
+		if (goals.containsKey(username))
 		{
 			userGoals = goals.get(username);
 			return;
@@ -303,10 +304,11 @@ public class ItemGoalsPlugin extends Plugin
 		String dataJSON = config.itemGoalsData();
 		Map<String, ArrayList<ItemGoal>> goals = gson.fromJson(
 				dataJSON,
-				new TypeToken<Map<String, ArrayList<ItemGoal>>>() {}.getType()
+				new TypeToken<Map<String, ArrayList<ItemGoal>>>()
+				{ }.getType()
 		);
 
-		if(goals == null || goals.isEmpty())
+		if (goals == null || goals.isEmpty())
 		{
 			goals = new HashMap<>();
 		}
@@ -321,7 +323,7 @@ public class ItemGoalsPlugin extends Plugin
 	{
 		GameState state = gameStateChanged.getGameState();
 
-		if(state == GameState.LOGGED_IN)
+		if (state == GameState.LOGGED_IN)
 		{
 			// Store the username because there's no way to get it when the gamestate changes to LOGIN_SCREEN
 			loggedInAs = client.getUsername();
@@ -329,18 +331,19 @@ public class ItemGoalsPlugin extends Plugin
 			// Retrieve this user's goals from config
 			fetchUserGoals(loggedInAs);
 
-			SwingUtilities.invokeLater(() -> {
+			SwingUtilities.invokeLater(() ->
+			{
 				goalsPanel.rebuildGoals();
 				goalsPanel.setLoggedIn(true);
 			});
 		}
-		else if(state == GameState.LOGIN_SCREEN)
+		else if (state == GameState.LOGIN_SCREEN)
 		{
 			/*
 			 * loggedInAs will only contain a username if the player logged in first,
 			 * so this is to check if the gamestate change was a logout.
 			*/
-			if(loggedInAs.isEmpty())
+			if (loggedInAs.isEmpty())
 			{
 				return;
 			}
@@ -350,7 +353,8 @@ public class ItemGoalsPlugin extends Plugin
 			// Clear the goals
 			userGoals = new ArrayList<>();
 			// Clear the goals panel
-			SwingUtilities.invokeLater(() -> {
+			SwingUtilities.invokeLater(() ->
+			{
 				goalsPanel.fullReset();
 				goalsPanel.setLoggedIn(false);
 			});
@@ -368,7 +372,7 @@ public class ItemGoalsPlugin extends Plugin
 		 * We don't want to track progress on the inventory the player has when they log in,
 		 * since it could lead to counting items twice.
 		 */
-		if(loggedInAs.isEmpty())
+		if (loggedInAs.isEmpty())
 		{
 			return;
 		}
@@ -376,7 +380,7 @@ public class ItemGoalsPlugin extends Plugin
 		final ItemContainer container = event.getItemContainer();
 		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
 
-		if(container == inventory)
+		if (container == inventory)
 		{
 			updateGoalProgress(inventory.getItems());
 		}

@@ -55,7 +55,7 @@ public class ItemGoalFullItemSearch
 	 */
 	public List<Integer> searchByName(String searchStr, boolean giveTrueResult)
 	{
-		if(searchStr.isEmpty())
+		if (searchStr.isEmpty())
 		{
 			return new ArrayList<>();
 		}
@@ -66,28 +66,31 @@ public class ItemGoalFullItemSearch
 
 		Field[] itemIdFields = ItemID.class.getFields();
 
-		for(Field field : itemIdFields)
+		for (Field field : itemIdFields)
 		{
 			String fieldName = field.getName();
 
-			if(fieldName.contains(searchStr))
+			if (fieldName.contains(searchStr))
 			{
 				try
 				{
 					int itemID = field.getInt(null);
 
 					// "True result" as in include every variation of the base item
-					if(!giveTrueResult)
+					if (!giveTrueResult)
 					{
 						itemID = ItemVariationMapping.map(itemID);
 					}
 
-					if(giveTrueResult || !foundItemIDs.contains(itemID))
+					if (giveTrueResult || !foundItemIDs.contains(itemID))
 					{
 						foundItemIDs.add(itemID);
 					}
 				}
-				catch (java.lang.IllegalAccessException e) { }
+				catch (java.lang.IllegalAccessException e)
+				{
+
+				}
 			}
 		}
 
