@@ -25,19 +25,25 @@
 package net.runelite.client.plugins.kourendlibrary;
 
 import com.google.inject.Inject;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.getCanvasTilePoly;
 import net.runelite.api.Player;
@@ -59,6 +65,9 @@ class KourendLibraryOverlay extends Overlay
 	private boolean hidden;
 
 	@Inject
+	private KourendLibraryConfig config;
+
+	@Inject
 	private KourendLibraryOverlay(Library library, Client client)
 	{
 		this.library = library;
@@ -69,7 +78,7 @@ class KourendLibraryOverlay extends Overlay
 	}
 
 	@Override
-	public Dimension render(Graphics2D g)
+	public Dimension render(Graphics2D graphics)
 	{
 		if (hidden)
 		{
@@ -77,156 +86,279 @@ class KourendLibraryOverlay extends Overlay
 		}
 
 		Player player = client.getLocalPlayer();
+
 		if (player == null)
 		{
 			return null;
 		}
 
-		WorldPoint playerLoc = player.getWorldLocation();
+		WorldPoint playerLocation = player.getWorldLocation();
 
-		if (playerLoc.getRegionID() != KourendLibraryPlugin.REGION)
+		if (playerLocation.getRegionID() != KourendLibraryPlugin.REGION)
 		{
 			return null;
 		}
 
+		renderBookcases(graphics, playerLocation);
+
+		renderLibraryCustomer(graphics);
+
+		return null;
+	}
+
+	private void renderBookcases(@Nonnull Graphics2D graphics, @Nonnull WorldPoint playerLocation)
+	{
 		List<Bookcase> allBookcases = library.getBookcasesOnLevel(client.getPlane());
 
 		for (Bookcase bookcase : allBookcases)
 		{
-			// AABB
-			WorldPoint caseLoc = bookcase.getLocation();
-			if (Math.abs(playerLoc.getX() - caseLoc.getX()) > MAXIMUM_DISTANCE
-				|| Math.abs(playerLoc.getY() - caseLoc.getY()) > MAXIMUM_DISTANCE)
+			WorldPoint bookcaseLocation = bookcase.getLocation();
+
+			if (!isBookcaseInRange(playerLocation, bookcaseLocation))
 			{
 				continue;
 			}
 
-			LocalPoint localBookcase = LocalPoint.fromWorld(client, caseLoc);
-			if (localBookcase == null)
+			LocalPoint bookcaseLocal = LocalPoint.fromWorld(client, bookcaseLocation);
+
+			if (bookcaseLocal == null)
 			{
 				continue;
 			}
-			Point screenBookcase = Perspective.localToCanvas(client, localBookcase, caseLoc.getPlane(), 25);
 
-			if (screenBookcase != null)
+			Point screenBookcase = Perspective.localToCanvas(client, bookcaseLocal, bookcaseLocation.getPlane(), 25);
+
+			if (screenBookcase == null)
 			{
-				boolean bookIsKnown = bookcase.isBookSet();
-				Book book = bookcase.getBook();
-				Set<Book> possible = bookcase.getPossibleBooks();
-				if (bookIsKnown && book == null)
-				{
-					for (Book b : possible)
-					{
-						if (b != null && b.isDarkManuscript())
-						{
-							book = b;
-							break;
-						}
-					}
-				}
+				continue;
+			}
 
-				if (!bookIsKnown && possible.size() == 1)
-				{
-					book = possible.iterator().next();
-					bookIsKnown = true;
-				}
-				Color color = bookIsKnown ? Color.ORANGE : Color.WHITE;
+			Book book = bookcase.getPredictedBook();
 
-				// Render the poly on the floor
-				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || !possible.isEmpty()))
-				{
-					Polygon poly = getCanvasTilePoly(client, localBookcase);
-					if (poly != null)
-					{
-						OverlayUtil.renderPolygon(g, poly, color);
-					}
-				}
+			boolean bookIsKnown = bookcase.isBookSet() || bookcase.getPossibleBooks().size() == 1;
 
-				int height = 0;
-				// If the book is singled out, render the text and the book's icon
-				if (bookIsKnown)
+			if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || !bookcase.getPossibleBooks().isEmpty()))
+			{
+				if (book != null)
 				{
-					if (book != null)
-					{
-						FontMetrics fm = g.getFontMetrics();
-						Rectangle2D bounds = fm.getStringBounds(book.getShortName(), g);
-						height = (int) bounds.getHeight() + book.getIcon().getHeight() + 6;
-						Point textLoc = new Point(
-							(int) (screenBookcase.getX() - (bounds.getWidth() / 2)),
-							screenBookcase.getY() - (height / 2) + (int) bounds.getHeight()
-						);
-						OverlayUtil.renderTextLocation(g, textLoc, book.getShortName(), color);
-						g.drawImage(
-							book.getIcon(),
-							screenBookcase.getX() - (book.getIcon().getWidth() / 2),
-							screenBookcase.getY() + (height / 2) - book.getIcon().getHeight(),
-							null
-						);
-					}
+					renderKnownBookTile(graphics, bookcaseLocal, book);
 				}
 				else
 				{
-					// otherwise render up to 9 icons of the possible books in the bookcase in a square
-					final int BOOK_ICON_SIZE = 32;
-					Book[] books = possible.stream()
-						.filter(Objects::nonNull)
-						.limit(9)
-						.toArray(Book[]::new);
-					if (books.length > 1 && books.length <= 9)
-					{
-						int cols = (int) Math.ceil(Math.sqrt(books.length));
-						int rows = (int) Math.ceil((double) books.length / cols);
-						height = rows * BOOK_ICON_SIZE;
-						int xbase = screenBookcase.getX() - ((cols * BOOK_ICON_SIZE) / 2);
-						int ybase = screenBookcase.getY() - rows * BOOK_ICON_SIZE / 2;
-
-						for (int i = 0; i < books.length; i++)
-						{
-							int col = i % cols;
-							int row = i / cols;
-							int x = col * BOOK_ICON_SIZE;
-							int y = row * BOOK_ICON_SIZE;
-							if (row == rows - 1)
-							{
-								x += (BOOK_ICON_SIZE * (books.length % rows)) / 2;
-							}
-							g.drawImage(books[i].getIcon(), xbase + x, ybase + y, null);
-						}
-					}
-				}
-
-				// Draw the bookcase's ID on top
-				if (KourendLibraryPlugin.debug)
-				{
-					FontMetrics fm = g.getFontMetrics();
-					String str = bookcase.getIndex().stream().map(Object::toString).collect(Collectors.joining(", "));
-					Rectangle2D bounds = fm.getStringBounds(str, g);
-					Point textLoc = new Point((int) (screenBookcase.getX() - (bounds.getWidth() / 2)), screenBookcase.getY() - (height / 2));
-					OverlayUtil.renderTextLocation(g, textLoc, str, Color.WHITE);
+					renderUnknownBookTile(graphics, bookcaseLocal);
 				}
 			}
+
+			if (!bookIsKnown)
+			{
+				renderMultipleBooks(graphics, bookcase, screenBookcase);
+			}
+			else if (book != null)
+			{
+				renderSingleBook(graphics, book, bookcase, screenBookcase);
+			}
+		}
+	}
+
+	private void renderUnknownBookTile(@Nonnull Graphics2D graphics, @Nonnull LocalPoint bookcaseLocation)
+	{
+		Polygon polygon = getCanvasTilePoly(client, bookcaseLocation);
+
+		if (polygon == null)
+		{
+			return;
 		}
 
-		// Render the customer's wanted book on their head and a poly under their feet
-		LibraryCustomer customer = library.getCustomer();
-		if (customer != null)
+		OverlayUtil.renderPolygon(graphics, polygon, Color.white);
+	}
+
+	private void renderKnownBookTile(@Nonnull Graphics2D graphics, @Nonnull LocalPoint bookcaseLocation, @Nonnull Book book)
+	{
+		if (config.hideDarkManuscript() && book.isDarkManuscript())
 		{
-			client.getNpcs().stream()
-				.filter(n -> n.getId() == customer.getId())
-				.forEach(n ->
-				{
-					Book b = library.getCustomerBook();
-					LocalPoint local = n.getLocalLocation();
-					Polygon poly = getCanvasTilePoly(client, local);
-					OverlayUtil.renderPolygon(g, poly, Color.WHITE);
-					Point screen = Perspective.localToCanvas(client, local, client.getPlane(), n.getLogicalHeight());
-					if (screen != null)
+			return;
+		}
+
+		boolean containsBook = containsBook(book);
+
+		if (config.hideDuplicateBooks() && containsBook)
+		{
+			return;
+		}
+
+		Polygon polygon = getCanvasTilePoly(client, bookcaseLocation);
+
+		if (polygon == null)
+		{
+			return;
+		}
+
+		Color color = containsBook ? Color.red : (library.getCustomerBook() == book && library.getState() == SolvedState.COMPLETE) ? Color.green : Color.orange;
+
+		OverlayUtil.renderPolygon(graphics, polygon, color);
+	}
+
+	private boolean isBookcaseInRange(@Nonnull WorldPoint playerLocation, @Nonnull WorldPoint bookcaseLocation)
+	{
+		return Math.abs(playerLocation.getX() - bookcaseLocation.getX()) <= MAXIMUM_DISTANCE && Math.abs(playerLocation.getY() - bookcaseLocation.getY()) <= MAXIMUM_DISTANCE;
+	}
+
+	// If the book is singled out, render the text and the book's icon
+	private void renderSingleBook(@Nonnull Graphics2D graphics, @Nonnull Book book, @Nonnull Bookcase bookcase, @Nonnull Point screenBookcase)
+	{
+		if (config.hideDarkManuscript() && book.isDarkManuscript())
+		{
+			return;
+		}
+
+		if (config.hideDuplicateBooks() && containsBook(book))
+		{
+			return;
+		}
+
+		FontMetrics fm = graphics.getFontMetrics();
+		Rectangle2D bounds = fm.getStringBounds(book.getShortName(), graphics);
+		int height = (int) bounds.getHeight() + book.getIcon().getHeight() + 6;
+
+		Point textLoc = new Point(
+			(int) (screenBookcase.getX() - (bounds.getWidth() / 2)),
+			screenBookcase.getY() - (height / 2) + (int) bounds.getHeight()
+		);
+
+		Color color = containsBook(book) ? Color.red : (library.getCustomerBook() == book && library.getState() == SolvedState.COMPLETE) ? Color.green : Color.orange;
+
+		OverlayUtil.renderTextLocation(graphics, textLoc, book.getShortName(), color);
+
+		graphics.drawImage(
+			book.getIcon(),
+			screenBookcase.getX() - (book.getIcon().getWidth() / 2),
+			screenBookcase.getY() + (height / 2) - book.getIcon().getHeight(),
+			null
+		);
+
+		renderBookID(graphics, bookcase, screenBookcase, height);
+	}
+
+	// Render up to 9 icons of the possible books in the bookcase in a square
+	private void renderMultipleBooks(@Nonnull Graphics2D graphics, @Nonnull Bookcase bookcase, @Nonnull Point screenBookcase)
+	{
+		Book[] books = bookcase.getPossibleBooks().stream()
+			.filter(Objects::nonNull)
+			.limit(9)
+			.toArray(Book[]::new);
+
+		if (books.length <= 1 || books.length > 9)
+		{
+			return;
+		}
+
+		final int BOOK_ICON_SIZE = 32;
+
+		int cols = (int) Math.ceil(Math.sqrt(books.length));
+		int rows = (int) Math.ceil((double) books.length / cols);
+		int height = rows * BOOK_ICON_SIZE;
+		int xbase = screenBookcase.getX() - ((cols * BOOK_ICON_SIZE) / 2);
+		int ybase = screenBookcase.getY() - rows * BOOK_ICON_SIZE / 2;
+
+		for (int i = 0; i < books.length; i++)
+		{
+			int col = i % cols;
+			int row = i / cols;
+			int x = col * BOOK_ICON_SIZE;
+			int y = row * BOOK_ICON_SIZE;
+			if (row == rows - 1)
+			{
+				x += (BOOK_ICON_SIZE * (books.length % rows)) / 2;
+			}
+			graphics.drawImage(books[i].getIcon(), xbase + x, ybase + y, null);
+		}
+
+		renderBookID(graphics, bookcase, screenBookcase, height);
+	}
+
+	// Draw the bookcase's ID on top
+	private void renderBookID(@Nonnull Graphics2D graphics, @Nonnull Bookcase bookcase, @Nonnull Point screenBookcase, int height)
+	{
+		if (!KourendLibraryPlugin.debug)
+		{
+			return;
+		}
+
+		FontMetrics fm = graphics.getFontMetrics();
+		String str = bookcase.getIndex().stream().map(Object::toString).collect(Collectors.joining(", "));
+		Rectangle2D bounds = fm.getStringBounds(str, graphics);
+		Point textLoc = new Point((int) (screenBookcase.getX() - (bounds.getWidth() / 2)), screenBookcase.getY() - (height / 2));
+		OverlayUtil.renderTextLocation(graphics, textLoc, str, Color.WHITE);
+	}
+
+	// Render the customer's wanted book on their head and a poly under their feet
+	private void renderLibraryCustomer(@Nonnull Graphics2D graphics)
+	{
+		LibraryCustomer customer = library.getCustomer();
+
+		if (customer == null)
+		{
+			client.getNpcs()
+				.stream()
+				.filter(npc -> Arrays.stream(LibraryCustomer.values()).anyMatch(lc -> lc.getId() == npc.getId() && lc != library.getLastCustomer()))
+				.forEach(npc -> renderNpcHull(graphics, npc, Color.white));
+		}
+		else
+		{
+			client.getNpcs()
+				.stream()
+				.filter(npc -> npc.getId() == customer.getId())
+				.findFirst()
+				.ifPresent(npc -> {
+					Book book = library.getCustomerBook();
+
+					if (book == null)
 					{
-						g.drawImage(b.getIcon(), screen.getX() - (b.getIcon().getWidth() / 2), screen.getY() - b.getIcon().getHeight(), null);
+						return;
 					}
+
+					renderNpcHull(graphics, npc, containsBook(book) ? Color.green : Color.white);
+
+					LocalPoint local = npc.getLocalLocation();
+					Point screen = Perspective.localToCanvas(client, local, client.getPlane(), npc.getLogicalHeight());
+
+					if (screen == null)
+					{
+						return;
+					}
+
+					graphics.drawImage(book.getIcon(), screen.getX() - (book.getIcon().getWidth() / 2), screen.getY() - book.getIcon().getHeight(), null);
 				});
 		}
+	}
 
-		return null;
+	private void renderNpcHull(@Nonnull Graphics2D graphics, @Nonnull NPC npc, @Nonnull Color color)
+	{
+		Polygon polygon = npc.getConvexHull();
+
+		if (polygon == null)
+		{
+			return;
+		}
+
+		graphics.setColor(color);
+		graphics.setStroke(new BasicStroke(2));
+		graphics.draw(polygon);
+		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+		graphics.fill(polygon);
+	}
+
+	private boolean containsBook(@Nonnull Book book)
+	{
+		ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+
+		if (itemContainer == null)
+		{
+			return false;
+		}
+
+		Item[] items = itemContainer.getItems();
+
+		return Arrays.stream(items).anyMatch(item -> book.getItemId() == item.getId());
 	}
 }

@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -76,6 +77,12 @@ class Library
 	@Getter
 	private LibraryCustomer customer;
 
+	@Getter
+	private LibraryCustomer lastCustomer;
+
+	@Inject
+	private LibraryHintArrow hintArrow;
+
 	Library()
 	{
 		populateBooks();
@@ -95,6 +102,11 @@ class Library
 
 	void setCustomer(LibraryCustomer customer, Book book)
 	{
+		if (this.customer != null)
+		{
+			this.lastCustomer = this.customer;
+		}
+
 		this.customer = customer;
 		this.customerBook = book;
 	}
@@ -102,11 +114,19 @@ class Library
 	synchronized void reset()
 	{
 		state = SolvedState.NO_DATA;
-		for (Bookcase b : byIndex)
+		lastCustomer = null;
+
+		for (Bookcase bookcase : byIndex)
 		{
-			b.clearBook();
-			b.getPossibleBooks().clear();
+			bookcase.clearBook();
+			bookcase.getPossibleBooks().clear();
 		}
+
+		if (hintArrow != null)
+		{
+			hintArrow.clear();
+		}
+
 		log.info("Library is now reset");
 	}
 
@@ -252,6 +272,9 @@ class Library
 			{
 				state = SolvedState.COMPLETE;
 			}
+
+			hintArrow.update();
+
 			return;
 		}
 	}
@@ -428,17 +451,17 @@ class Library
 	private void add(int x, int y, int z, int i)
 	{
 		// 'i' is added as a parameter for readability
-		WorldPoint p = new WorldPoint(x, y, z);
-		Bookcase b = byPoint.get(p);
-		if (b == null)
+		WorldPoint worldPoint = new WorldPoint(x, y, z);
+		Bookcase book = byPoint.get(worldPoint);
+		if (book == null)
 		{
-			b = new Bookcase(p);
-			byPoint.put(p, b);
-			byLevel.computeIfAbsent(z, a -> new ArrayList<>()).add(b);
+			book = new Bookcase(worldPoint);
+			byPoint.put(worldPoint, book);
+			byLevel.computeIfAbsent(z, a -> new ArrayList<>()).add(book);
 		}
-		b.getIndex().add(i);
+		book.getIndex().add(i);
 		assert i == byIndex.size();
-		byIndex.add(b);
+		byIndex.add(book);
 	}
 
 	private void populateBooks()

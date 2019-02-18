@@ -42,4 +42,35 @@ public interface KourendLibraryConfig extends Config
 	{
 		return true;
 	}
+
+
+	@ConfigItem(
+		keyName = "showHintArrow",
+		name = "Show hint arrow",
+		description = "Shows an hint arrow to the location of te bookcase for the required book"
+	)
+	default boolean showHintArray()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hideDarkManuscript",
+		name = "Hide dark manuscript",
+		description = "Hides the dark manuscript locations if the book is known for the bookcase"
+	)
+	default boolean hideDarkManuscript()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hideDuplicateBooks",
+		name = "Hide duplicate books",
+		description = "Hides the bookcases with books you already own in your inventory"
+	)
+	default boolean hideDuplicateBooks()
+	{
+		return false;
+	}
 }

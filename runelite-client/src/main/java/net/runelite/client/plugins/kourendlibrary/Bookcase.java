@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
 
@@ -76,55 +77,48 @@ class Bookcase
 
 	String getLocationString()
 	{
-		StringBuilder b = new StringBuilder();
+		LibraryLevel level = LibraryLevel.getLevel(location);
+		LibrarySection section = LibrarySection.getSection(location);
 
-		// Floors 2 and 3
-		boolean north = location.getY() > 3815;
-		boolean west = location.getX() < 1625;
-
-		// Floor 1 has slightly different dimensions
-		if (location.getPlane() == 0)
+		if (level == null)
 		{
-			north = location.getY() > 3813;
-			west = location.getX() < 1627;
+			return "Unknown";
 		}
 
-		if (north && west)
-		{
-			b.append("Northwest");
-		}
-		else if (north)
-		{
-			b.append("Northeast");
-		}
-		else if (west)
-		{
-			b.append("Southwest");
-		}
-		else
-		{
-			b.append("Center");
-		}
+		StringBuilder sb = new StringBuilder();
 
-		b.append(" ");
+		sb.append(section.getName());
 
-		switch (location.getPlane())
-		{
-			case 0:
-				b.append("ground floor");
-				break;
-			case 1:
-				b.append("middle floor");
-				break;
-			case 2:
-				b.append("top floor");
-				break;
-		}
+		sb.append(" ");
+
+		sb.append(level.getName());
 
 		if (KourendLibraryPlugin.debug)
 		{
-			b.append(" ").append(index.stream().map(Object::toString).collect(Collectors.joining(", ")));
+			sb.append(" ").append(index.stream().map(Object::toString).collect(Collectors.joining(", ")));
 		}
-		return b.toString();
+
+		return sb.toString();
+	}
+
+	@Nullable
+	Book getPredictedBook()
+	{
+		if (isBookSet && book == null)
+		{
+			for (Book possibleBook : possibleBooks)
+			{
+				if (possibleBook != null && possibleBook.isDarkManuscript())
+				{
+					return possibleBook;
+				}
+			}
+		}
+		else if (possibleBooks.size() == 1)
+		{
+			return possibleBooks.iterator().next();
+		}
+
+		return book;
 	}
 }

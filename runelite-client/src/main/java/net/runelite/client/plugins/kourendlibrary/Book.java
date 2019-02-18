@@ -24,10 +24,16 @@
  */
 package net.runelite.client.plugins.kourendlibrary;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
@@ -69,9 +75,9 @@ enum Book
 	private static Map<Integer, Book> buildById()
 	{
 		HashMap<Integer, Book> byId = new HashMap<>();
-		for (Book b : Book.values())
+		for (Book book : Book.values())
 		{
-			byId.put(b.item, b);
+			byId.put(book.itemId, book);
 		}
 		return Collections.unmodifiableMap(byId);
 	}
@@ -79,11 +85,11 @@ enum Book
 	private static Map<String, Book> buildByName()
 	{
 		HashMap<String, Book> byName = new HashMap<>();
-		for (Book b : Book.values())
+		for (Book book : Book.values())
 		{
-			if (!b.isDarkManuscript)
+			if (!book.isDarkManuscript)
 			{
-				byName.put(b.name, b);
+				byName.put(book.name, book);
 			}
 		}
 		return Collections.unmodifiableMap(byName);
@@ -100,7 +106,7 @@ enum Book
 	}
 
 	@Getter
-	private final int item;
+	private final int itemId;
 
 	@Getter
 	private final String name;
@@ -114,17 +120,17 @@ enum Book
 	@Getter
 	private final boolean isDarkManuscript;
 
-	Book(int id, String shortName, String name)
+	Book(int itemId, String shortName, String name)
 	{
-		this.item = id;
+		this.itemId = itemId;
 		this.isDarkManuscript = false;
 		this.shortName = shortName;
 		this.name = name;
 	}
 
-	Book(int id)
+	Book(int itemId)
 	{
-		this.item = id;
+		this.itemId = itemId;
 		this.isDarkManuscript = true;
 		this.name = "Dark Manuscript";
 		this.shortName = "Dark Manuscript";
@@ -132,9 +138,9 @@ enum Book
 
 	static void fillImages(ItemManager itemManager)
 	{
-		for (Book b : values())
+		for (Book book : values())
 		{
-			b.icon = itemManager.getImage(b.item);
+			book.icon = itemManager.getImage(book.itemId);
 		}
 	}
 }
