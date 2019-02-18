@@ -475,9 +475,6 @@ public interface RSWidget extends Widget
 	@Import("animFrame")
 	int getAnimFrame();
 
-	@Import("animFrame")
-	void setAnimFrame(int frame);
-
 	@Import("animFrameCycle")
 	int getAnimFrameCycle();
 }
