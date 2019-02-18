@@ -32,6 +32,7 @@ import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
 import org.junit.Assert;
@@ -55,6 +56,10 @@ public class ConfigManagerTest
 	@Mock
 	@Bind
 	RuneLiteConfig runeliteConfig;
+
+	@Bind
+	@Named("noConfigSync")
+	boolean noConfigSync;
 
 	@Inject
 	ConfigManager manager;

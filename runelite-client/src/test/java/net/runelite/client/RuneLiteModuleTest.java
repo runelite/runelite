@@ -33,6 +33,6 @@ public class RuneLiteModuleTest
 	@Test
 	public void testConfigure()
 	{
-		Guice.createInjector(new RuneLiteModule(ClientUpdateCheckMode.AUTO, true));
+		Guice.createInjector(new RuneLiteModule(ClientUpdateCheckMode.AUTO, true, false));
 	}
 }

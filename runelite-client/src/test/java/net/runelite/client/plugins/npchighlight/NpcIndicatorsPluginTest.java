@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.api.Client;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -46,6 +47,10 @@ public class NpcIndicatorsPluginTest
 	@Mock
 	@Bind
 	private Client client;
+
+	@Bind
+	@Named("noConfigSync")
+	boolean noConfigSync;
 
 	@Mock
 	@Bind

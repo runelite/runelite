@@ -159,6 +159,7 @@ public class RuneLite
 		final OptionParser parser = new OptionParser();
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
+		parser.accepts("no-config-sync", "Disable config file change synchronization");
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
@@ -184,6 +185,7 @@ public class RuneLite
 		}
 
 		final boolean developerMode = options.has("developer-mode");
+		final boolean noConfigSync = options.has("no-config-sync");
 
 		if (developerMode && RuneLiteProperties.getLauncherVersion() == null)
 		{
@@ -216,7 +218,8 @@ public class RuneLite
 
 		injector = Guice.createInjector(new RuneLiteModule(
 			options.valueOf(updateMode),
-			developerMode));
+			developerMode,
+			noConfigSync));
 
 		injector.getInstance(RuneLite.class).start();
 

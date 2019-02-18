@@ -30,6 +30,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import javax.inject.Inject;
+import javax.inject.Named;
 import static net.runelite.api.ChatMessageType.SERVER;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
@@ -69,6 +70,10 @@ public class ScreenshotPluginTest
 	@Mock
 	@Bind
 	private Client client;
+
+	@Bind
+	@Named("noConfigSync")
+	boolean noConfigSync;
 
 	@Inject
 	private ScreenshotPlugin screenshotPlugin;
