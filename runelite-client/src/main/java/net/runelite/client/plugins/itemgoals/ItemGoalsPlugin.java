@@ -325,6 +325,12 @@ public class ItemGoalsPlugin extends Plugin
 
 		if (state == GameState.LOGGED_IN)
 		{
+			// We've already loaded the user goals. Prevents loading old goals when e.g. a new chunk loads
+			if (!loggedInAs.isEmpty())
+			{
+				return;
+			}
+
 			// Store the username because there's no way to get it when the gamestate changes to LOGIN_SCREEN
 			loggedInAs = client.getUsername();
 
