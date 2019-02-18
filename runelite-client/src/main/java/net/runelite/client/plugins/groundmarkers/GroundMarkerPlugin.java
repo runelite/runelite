@@ -133,6 +133,12 @@ public class GroundMarkerPlugin extends Plugin
 		points.clear();
 
 		int[] regions = client.getMapRegions();
+
+		if (regions == null)
+		{
+			return;
+		}
+
 		for (int regionId : regions)
 		{
 			// load points for region
@@ -235,6 +241,7 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		keyManager.registerKeyListener(inputListener);
+		loadPoints();
 	}
 
 	@Override
@@ -242,6 +249,7 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		keyManager.unregisterKeyListener(inputListener);
+		points.clear();
 	}
 
 	private void markTile(LocalPoint localPoint)
