@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Robin Weymans <Robin.weymans@gmail.com>
+ * Copyright (c) 2018, Lucas <https://github.com/Lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,13 +26,16 @@
 package net.runelite.client.plugins.hunter;
 
 import com.google.inject.Provides;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectID;
@@ -40,6 +44,7 @@ import net.runelite.api.Tile;
 import net.runelite.api.coords.Direction;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
@@ -47,19 +52,46 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-@Slf4j
 @PluginDescriptor(
 	name = "Hunter",
 	description = "Show the state of your traps",
 	tags = {"overlay", "skilling", "timers"}
 )
+@PluginDependency(XpTrackerPlugin.class)
+@Slf4j
 public class HunterPlugin extends Plugin
 {
+	private static final String GET_CATCH_MESSAGE = "You've caught a"; // Chins, Lizards (filter), Kebbits, Imps (server)
+	private static final String IMPLING_MESSAGE = "You manage to catch the impling"; // filter
+	// TODO: Check falconry, bird trap, maniacal monkey, tracking, butterfly, pitfall messages
+		// find exceptions, figure out what to do with drift net/kebos fishing, probably not make implings start
+		// a new HunterSession
+
+	@Getter(AccessLevel.PACKAGE)
+	private final HunterSession session = new HunterSession();
+
+	@Getter
+	private final Map<WorldPoint, HunterTrap> traps = new HashMap<>();
+
+	@Getter
+	private Instant lastActionTime = Instant.ofEpochMilli(0);
+
 	@Inject
 	private Client client;
+
+	@Inject
+	private HunterConfig config;
+
+	@Inject
+	private HunterOverlay sessionOverlay;
+
+	@Inject
+	private Notifier notifier;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -67,17 +99,6 @@ public class HunterPlugin extends Plugin
 	@Inject
 	private TrapOverlay overlay;
 
-	@Inject
-	private Notifier notifier;
-
-	@Inject
-	private HunterConfig config;
-
-	@Getter
-	private final Map<WorldPoint, HunterTrap> traps = new HashMap<>();
-
-	@Getter
-	private Instant lastActionTime = Instant.ofEpochMilli(0);
 
 	private WorldPoint lastTickLocalPlayerLocation;
 
@@ -91,6 +112,7 @@ public class HunterPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(sessionOverlay);
 		overlay.updateConfig();
 	}
 
@@ -98,8 +120,24 @@ public class HunterPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(sessionOverlay);
 		lastActionTime = Instant.ofEpochMilli(0);
 		traps.clear();
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		ChatMessageType type = event.getType();
+		if (type == ChatMessageType.FILTERED || type == ChatMessageType.SERVER)
+		{
+			if (config.showHunterStats()
+				&& event.getMessage().contains(GET_CATCH_MESSAGE)
+				|| event.getMessage().contains(IMPLING_MESSAGE))
+			{
+				session.setLastHunterCatch(Instant.now());
+			}
+		}
 	}
 
 	@Subscribe
@@ -304,6 +342,17 @@ public class HunterPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		if (session.getLastHunterCatch() != null)
+		{
+			final Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+			final Duration sinceCaught = Duration.between(session.getLastHunterCatch(), Instant.now());
+
+			if (sinceCaught.compareTo(statTimeout) >= 0)
+			{
+				session.setLastHunterCatch(null);
+			}
+		}
+
 		// Check if all traps are still there, and remove the ones that are not.
 		Iterator<Map.Entry<WorldPoint, HunterTrap>> it = traps.entrySet().iterator();
 		Tile[][][] tiles = client.getScene().getTiles();

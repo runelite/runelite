@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Robin Weymans <Robin.weymans@gmail.com>
+ * Copyright (c) 2018, Lucas <https://github.com/Lucwousin/>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -85,5 +86,27 @@ public interface HunterConfig extends Config
 	default boolean maniacalMonkeyNotify()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "showHunterStats",
+		name = "Show hunter session stats",
+		description = "Displays the hunter session stats."
+	)
+	default boolean showHunterStats()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "statTimeout",
+		name = "Reset stats (minutes)",
+		description = "The time until hunter session data is reset in minutes."
+	)
+	default int statTimeout()
+	{
+		return 5;
 	}
 }
