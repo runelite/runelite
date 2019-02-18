@@ -174,6 +174,11 @@ class KourendLibraryOverlay extends Overlay
 
 	private void renderKnownBookTile(@Nonnull Graphics2D graphics, @Nonnull LocalPoint bookcaseLocation, @Nonnull Book book)
 	{
+		if (config.hideDarkManuscript() && book.isDarkManuscript())
+		{
+			return;
+		}
+
 		boolean containsBook = containsBook(book);
 
 		Polygon polygon = getCanvasTilePoly(client, bookcaseLocation);
@@ -196,6 +201,11 @@ class KourendLibraryOverlay extends Overlay
 	// If the book is singled out, render the text and the book's icon
 	private void renderSingleBook(@Nonnull Graphics2D graphics, @Nonnull Book book, @Nonnull Bookcase bookcase, @Nonnull Point screenBookcase)
 	{
+		if (config.hideDarkManuscript() && book.isDarkManuscript())
+		{
+			return;
+		}
+
 		FontMetrics fm = graphics.getFontMetrics();
 		Rectangle2D bounds = fm.getStringBounds(book.getShortName(), graphics);
 		int height = (int) bounds.getHeight() + book.getIcon().getHeight() + 6;

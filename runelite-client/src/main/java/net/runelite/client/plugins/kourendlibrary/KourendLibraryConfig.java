@@ -53,4 +53,14 @@ public interface KourendLibraryConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "hideDarkManuscript",
+		name = "Hide dark manuscript",
+		description = "Hides the dark manuscript locations if the book is known for the bookcase"
+	)
+	default boolean hideDarkManuscript()
+	{
+		return false;
+	}
 }
