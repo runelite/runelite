@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Sir Girion <https://github.com/sirgirion>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.infobox;
+package net.runelite.client.plugins.blowpipetracker;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import lombok.Setter;
-import net.runelite.client.plugins.Plugin;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.ItemID;
 
-public class Counter extends InfoBox
+@AllArgsConstructor
+@Getter
+enum AttractorDefinition
 {
-	private String text;
-	@Setter
-	private Color color;
+	ATTRACTOR(ItemID.AVAS_ATTRACTOR, 0.2f, 0.16f, 0.64f),
+	ACCUMULATOR(ItemID.AVAS_ACCUMULATOR, 0.2f, 0.08f, 0.72f),
+	ACCUMULATOR_MAX_CAPE(ItemID.AVAS_ACCUMULATOR, 0.2f, 0.08f, 0.72f),
+	ACCUMULATOR_RANGE_CAPE(ItemID.RANGING_CAPE, 0.2f, 0.08f, 0.72f),
+	ASSEMBLER(ItemID.AVAS_ASSEMBLER, 0.2f, 0.0f, 0.8f),
+	ASSEMBLER_MAX_CAPE(ItemID.AVAS_ACCUMULATOR, 0.2f, 0.08f, 0.72f);
 
-	public Counter(BufferedImage image, Plugin plugin, String text)
-	{
-		super(image, plugin);
-		this.text = text;
-		this.color = Color.WHITE;
-	}
+	private int itemId;
+	private float breakOnImpactChance;
+	private float dropToFloorChance;
+	private float savedChance;
 
-	@Override
-	public String toString()
+	static AttractorDefinition getAttractorById(int itemId)
 	{
-		return "Counter{" + "text=" + text + '}';
-	}
+		for (AttractorDefinition attractorDefinition : values())
+		{
+			if (attractorDefinition.getItemId() == itemId)
+			{
+				return attractorDefinition;
+			}
+		}
 
-	@Override
-	public String getText()
-	{
-		return text;
-	}
-
-	public void setText(String text)
-	{
-		this.text = text;
-	}
-
-	@Override
-	public Color getTextColor()
-	{
-		return color;
+		return null;
 	}
 }
