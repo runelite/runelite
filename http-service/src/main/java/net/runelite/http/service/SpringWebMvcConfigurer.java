@@ -30,6 +30,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -52,8 +53,11 @@ public class SpringWebMvcConfigurer extends WebMvcConfigurerAdapter
 	 * @param converters
 	 */
 	@Override
-	public void configureMessageConverters(List<HttpMessageConverter<?>> converters)
+	public void extendMessageConverters(List<HttpMessageConverter<?>> converters)
 	{
+		// Could not figure out a better way to force GSON
+		converters.removeIf(MappingJackson2HttpMessageConverter.class::isInstance);
+
 		GsonHttpMessageConverter gsonHttpMessageConverter = new GsonHttpMessageConverter();
 		gsonHttpMessageConverter.setGson(RuneLiteAPI.GSON);
 		converters.add(gsonHttpMessageConverter);
