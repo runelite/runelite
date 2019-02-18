@@ -25,18 +25,17 @@
 package net.runelite.client.plugins.maxhit;
 
 import com.google.inject.Provides;
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
+import net.runelite.api.*;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.maxhit.calculators.MagicMaxHitCalculator;
 import net.runelite.client.plugins.maxhit.calculators.MeleeMaxHitCalculator;
 
 import javax.inject.Inject;
@@ -80,18 +79,27 @@ public class MaxHitPlugin extends Plugin
 		updateMaxHitWidget();
 	}
 
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event) {
+		updateMaxHitWidget();
+	}
+
 	private void updateMaxHitWidget() {
 		Widget equipmentStats = client.getWidget(WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER);
+
 		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
 
 		if (equipmentContainer != null && equipmentStats != null && !equipmentStats.isHidden()) {
 			Item[] equipedItems = equipmentContainer.getItems();
 
-			MeleeMaxHitCalculator meleeMaxHitCalculator = new MeleeMaxHitCalculator(this.client, equipedItems, this.config.prayer());
-//			RangeMaxHitCalculator rangeMaxHitCalculator = new RangeMaxHitCalculator(this.client, equipedItems, this.config.prayer());
-//			MagicMaxHitCalculator magicMaxHitCalculator = new MagicMaxHitCalculator(this.client, equipedItems, this.config.prayer());
+			MeleeMaxHitCalculator meleeMaxHitCalculator = new MeleeMaxHitCalculator(this.client, equipedItems);
+//			RangeMaxHitCalculator rangeMaxHitCalculator = new RangeMaxHitCalculator(this.client, equipedItems);
+			MagicMaxHitCalculator magicMaxHitCalculator = new MagicMaxHitCalculator(this.client, equipedItems);
 
-			MaxHit maxHit = new MaxHit(meleeMaxHitCalculator.calculate(), 0, 0);
+			int autoCastSpell = client.getVar(Varbits.AUTO_CAST_SPELL);
+			System.out.println("AutoCast: " + autoCastSpell);
+
+			MaxHit maxHit = new MaxHit(meleeMaxHitCalculator.calculate(), 0, magicMaxHitCalculator.calculate());
 			this.setWidgetMaxHit(maxHit);
 		}
 	}

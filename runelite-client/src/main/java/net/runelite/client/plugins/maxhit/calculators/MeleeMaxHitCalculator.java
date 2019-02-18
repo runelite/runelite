@@ -5,22 +5,22 @@ import net.runelite.api.Item;
 import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.plugins.maxhit.config.EquipmentBonusConfig;
-import net.runelite.client.plugins.maxhit.config.PrayerBonusConfig;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentCombatBonus;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MeleeMaxHitCalculator extends MaxHitCalculator {
 
-    public MeleeMaxHitCalculator(Client client, Item[] equipedItems, PrayerBonusConfig prayer) {
-        super(client, equipedItems, prayer);
+    public MeleeMaxHitCalculator(Client client, Item[] equipedItems) {
+        super(client, equipedItems);
     }
 
     @Override
-    protected String getSkillStrengthText() {
-        return "Melee strength: ";
+    protected CombatMethod getCombatMethod(){
+        return CombatMethod.MELEE;
+    }
+
+    @Override
+    protected String getSkillStrengthText(String equipmentText) {
+        return equipmentText.replace("Melee strength: ", "");
     }
 
     @Override
@@ -29,32 +29,19 @@ public class MeleeMaxHitCalculator extends MaxHitCalculator {
     }
 
     @Override
-    public double currentSkillPower() {
+    public double getCurrentSkillPower() {
         return this.client.getRealSkillLevel(Skill.STRENGTH);
     }
 
-
     @Override
-    public ArrayList<EquipmentBonusConfig> getBonusItemSets(){
-        return new ArrayList(Arrays.asList(
-                EquipmentBonusConfig.BLACKMASK,
-                EquipmentBonusConfig.BLACKMASKI,
-                EquipmentBonusConfig.SLAYERHELM,
-                EquipmentBonusConfig.SLAYERHELMI,
-                EquipmentBonusConfig.ELITERANGERVOID,
-                EquipmentBonusConfig.MELEEVOID,
-                EquipmentBonusConfig.RANGERVOID,
-                EquipmentBonusConfig.ELITERANGERVOID
-        ));
-    }
+    protected double calculateDefault() {
 
-    @Override
-    public double calculate() {
         double equipmentBonus = this.getBonus(EquipmentCombatBonus::getCombatEquipmentBonus);
-        double effectiveBonus = this.getBonus(equipmentCombatBonus -> equipmentCombatBonus.getCombatEffectiveBonus(CombatMethod.MELEE));
-        double slayerBonus = this.getBonus(equipmentCombatBonus -> equipmentCombatBonus.getCombatSlayerBonus(CombatMethod.MELEE));
+        double effectiveBonus = this.getBonus(equipmentCombatBonus -> equipmentCombatBonus.getCombatEffectiveBonus(this.getCombatMethod()));
+        double slayerBonus = this.getBonus(combatEquipmentBonus -> combatEquipmentBonus.getCombatSlayerBonus(this.getCombatMethod()));
 
-        double effectiveStrength = Math.floor((Math.floor(currentSkillPower() * this.prayerBonus) + 11) * effectiveBonus);
+//         TODO replace 1.000000 with prayer bonus
+        double effectiveStrength = Math.floor((Math.floor(this.getCurrentSkillPower() * 1.000000) + 11) * effectiveBonus);
 
         double maxHit = Math.floor((0.5 + effectiveStrength * (this.getSkillStrength() + 64) / 640) * slayerBonus);
         maxHit = Math.floor(maxHit * equipmentBonus);
@@ -62,12 +49,5 @@ public class MeleeMaxHitCalculator extends MaxHitCalculator {
         return maxHit;
     }
 }
-/*
-
-        if (contains(HELM_SLOT, "dharok", equip) && contains(CHEST_SLOT, "dharok", equip) && contains(LEG_SLOT, "dharok", equip) && contains(WEAPON_SLOT, "dharok", equip))
-        {
-        maxHitText = maxHitText + " - " + maxHit.maxHit(meleeStrength, currentStrength, meleePrayerBonus, 1, dharokSetBoost);
-        }
-*/
 
 

@@ -468,7 +468,12 @@ public enum Varbits
 	BANK_TAB_SIX_COUNT(4176),
 	BANK_TAB_SEVEN_COUNT(4177),
 	BANK_TAB_EIGHT_COUNT(4178),
-	BANK_TAB_NINE_COUNT(4179);
+	BANK_TAB_NINE_COUNT(4179),
+
+	/*
+	* Spells being auto-casted
+	* */
+	AUTO_CAST_SPELL(276);
 
 	/**
 	 * The raw varbit ID.

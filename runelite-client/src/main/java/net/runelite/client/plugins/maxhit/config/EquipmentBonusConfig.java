@@ -5,6 +5,7 @@ import net.runelite.client.plugins.maxhit.equipment.EquipmentItemset;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlotItem;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 
 public enum EquipmentBonusConfig {
@@ -30,11 +31,11 @@ public enum EquipmentBonusConfig {
     /*
      * Slayer bonus items
      * */
-    BLACKMASK( new EquipmentItemset(Arrays.asList(
+    BLACKMASK( new EquipmentItemset(Collections.singletonList(
             new EquipmentSlotItem(EquipmentSlotConfig.HELM_SLOT, "black mask")
     )), new EquipmentCombatBonus(0, 0, 0, 0, 0.17, 0, 0)),
 
-    SLAYERHELM( new EquipmentItemset(Arrays.asList(
+    SLAYERHELM( new EquipmentItemset(Collections.singletonList(
             new EquipmentSlotItem(EquipmentSlotConfig.HELM_SLOT, "slayer")
     )), new EquipmentCombatBonus(0, 0, 0, 0, 0.17, 0, 0)),
 
@@ -75,7 +76,20 @@ public enum EquipmentBonusConfig {
             new EquipmentSlotItem(EquipmentSlotConfig.LEG_SLOT, "void"),
             new EquipmentSlotItem(EquipmentSlotConfig.LEG_SLOT, "elite"),
             new EquipmentSlotItem(EquipmentSlotConfig.GLOVE_SLOT, "void")
-    )), new EquipmentCombatBonus(0, 0.1, 0.125, 0, 0, 0, 0));
+    )), new EquipmentCombatBonus(0, 0.1, 0.125, 0, 0, 0, 0)),
+
+    TRIDENT_OF_SEAS( new EquipmentItemset(Collections.singletonList(
+            new EquipmentSlotItem(EquipmentSlotConfig.WEAPON_SLOT, "Trident of the seas")
+    )), new EquipmentCombatBonus(0, 0, 0, 4, 0, 0, 0)),
+
+    TRIDENT_OF_SWAMP( new EquipmentItemset(Collections.singletonList(
+            new EquipmentSlotItem(EquipmentSlotConfig.WEAPON_SLOT, "Trident of the swamp")
+    )), new EquipmentCombatBonus(0, 0, 0, 1, 0, 0, 0)),
+
+    TOXIC_TRIDENT( new EquipmentItemset(Collections.singletonList(
+            new EquipmentSlotItem(EquipmentSlotConfig.WEAPON_SLOT, "Uncharged toxic trident")
+    )), new EquipmentCombatBonus(0, 0, 0, 1, 0, 0, 0));
+
 
     private final EquipmentItemset itemset;
     private EquipmentCombatBonus equipmentCombatBonus;
