@@ -25,10 +25,11 @@
  */
 package net.runelite.client.plugins.groundmarkers;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.util.List;
+import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
@@ -62,21 +63,22 @@ public class GroundMarkerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		List<WorldPoint> points = plugin.getPoints();
-		for (WorldPoint point : points)
+		final Collection<ColorTileMarker> points = plugin.getPoints();
+		for (final ColorTileMarker point : points)
 		{
-			if (point.getPlane() != client.getPlane())
+			if (point.getWorldPoint().getPlane() != client.getPlane())
 			{
 				continue;
 			}
 
-			drawTile(graphics, point);
+			final Color tileColor = config.rememberTileColors() ? point.getColor() : config.markerColor();
+			drawTile(graphics, point.getWorldPoint(), tileColor);
 		}
 
 		return null;
 	}
 
-	private void drawTile(Graphics2D graphics, WorldPoint point)
+	private void drawTile(Graphics2D graphics, WorldPoint point, Color color)
 	{
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
@@ -97,6 +99,6 @@ public class GroundMarkerOverlay extends Overlay
 			return;
 		}
 
-		OverlayUtil.renderPolygon(graphics, poly, config.markerColor());
+		OverlayUtil.renderPolygon(graphics, poly, color);
 	}
 }

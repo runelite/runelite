@@ -29,11 +29,12 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -78,10 +79,13 @@ public class GroundMarkerPlugin extends Plugin
 	private boolean hotKeyPressed;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final List<WorldPoint> points = new ArrayList<>();
+	private final Set<ColorTileMarker> points = new HashSet<>();
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private GroundMarkerConfig config;
 
 	@Inject
 	private GroundMarkerInputListener inputListener;
@@ -97,6 +101,11 @@ public class GroundMarkerPlugin extends Plugin
 
 	@Inject
 	private KeyManager keyManager;
+
+	private void saveColorTileMarkers(int regionId, Collection<ColorTileMarker> points)
+	{
+		savePoints(regionId, translateFromColorTileMarker(points));
+	}
 
 	private void savePoints(int regionId, Collection<GroundMarkerPoint> points)
 	{
@@ -117,7 +126,25 @@ public class GroundMarkerPlugin extends Plugin
 		{
 			return Collections.emptyList();
 		}
-		return GSON.fromJson(json, new GroundMarkerListTypeToken().getType());
+
+		Collection<GroundMarkerPoint> configPoints = GSON.fromJson(json, new GroundMarkerListTypeToken().getType());
+
+		if (configPoints.stream().anyMatch(point -> point.getColor() == null))
+		{
+			log.debug("Adding color to old ground marker(s) of region " + regionId);
+			configPoints = configPoints.stream()
+				.map(point ->
+				{
+					if (point.getColor() != null)
+					{
+						return point;
+					}
+					return new GroundMarkerPoint(point.getRegionId(), point.getRegionX(), point.getRegionY(), point.getZ(), config.markerColor());
+				})
+				.collect(Collectors.toSet());
+			savePoints(regionId, configPoints);
+		}
+		return configPoints;
 	}
 
 	private static class GroundMarkerListTypeToken extends TypeToken<List<GroundMarkerPoint>>
@@ -145,37 +172,58 @@ public class GroundMarkerPlugin extends Plugin
 		{
 			// load points for region
 			log.debug("Loading points for region {}", regionId);
-			Collection<GroundMarkerPoint> regionPoints = getPoints(regionId);
-			Collection<WorldPoint> worldPoints = translateToWorld(regionPoints);
-			points.addAll(worldPoints);
+			final Collection<GroundMarkerPoint> configPoints = getPoints(regionId);
+			final Collection<ColorTileMarker> colorTileMarkers = translateToColorTileMarker(configPoints);
+			points.addAll(colorTileMarkers);
 		}
 	}
 
 	/**
-	 * Translate a collection of ground marker points to world points, accounting for instances
+	 * Translate a collection of ground marker points to color tile markers, accounting for instances
 	 *
-	 * @param points
-	 * @return
+	 * @param points {@link GroundMarkerPoint}s to be converted to {@link ColorTileMarker}s
+	 * @return A collection of color tile markers, converted from the passed ground marker points, accounting for local
+	 *         instance points. See {@link WorldPoint#toLocalInstance(Client, WorldPoint)}
 	 */
-	private Collection<WorldPoint> translateToWorld(Collection<GroundMarkerPoint> points)
+	private Collection<ColorTileMarker> translateToColorTileMarker(Collection<GroundMarkerPoint> points)
 	{
-		if (points.isEmpty())
+		if (points == null || points.isEmpty())
 		{
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
+		}
+
+		return points.stream()
+			.map(point -> new ColorTileMarker(
+				WorldPoint.fromRegion(point.getRegionId(), point.getRegionX(), point.getRegionY(), point.getZ()),
+				point.getColor()))
+			.flatMap(colorTile ->
+			{
+				final Collection<WorldPoint> localWorldPoints = WorldPoint.toLocalInstance(client, colorTile.getWorldPoint());
+				return localWorldPoints.stream().map(wp -> new ColorTileMarker(wp, colorTile.getColor()));
+			})
+			.collect(Collectors.toSet());
+	}
+
+	/**
+	 * Translate a collection of color tile markers to a set of ground marker points
+	 *
+	 * @param points {@link ColorTileMarker}s to be converted to {@link GroundMarkerPoint}s
+	 * @return A set of ground marker points, converted from the passed color tile markers
+	 */
+	private static Set<GroundMarkerPoint> translateFromColorTileMarker(Collection<ColorTileMarker> points)
+	{
+		if (points == null || points.isEmpty())
+		{
+			return Collections.emptySet();
 		}
 
 		return points.stream()
 			.map(point ->
 			{
-				int regionId = point.getRegionId();
-				int regionX = point.getRegionX();
-				int regionY = point.getRegionY();
-				int z = point.getZ();
-
-				return WorldPoint.fromRegion(regionId, regionX, regionY, z);
+				final WorldPoint worldPoint = point.getWorldPoint();
+				return new GroundMarkerPoint(worldPoint.getRegionID(), worldPoint.getRegionX(), worldPoint.getRegionY(), worldPoint.getPlane(), point.getColor());
 			})
-			.flatMap(wp -> WorldPoint.toLocalInstance(client, wp).stream())
-			.collect(Collectors.toList());
+			.collect(Collectors.toSet());
 	}
 
 	@Subscribe
@@ -256,23 +304,28 @@ public class GroundMarkerPlugin extends Plugin
 			return;
 		}
 
-		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, localPoint);
-
-		int regionId = worldPoint.getRegionID();
-		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane());
+		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, localPoint);
+		final ColorTileMarker point = new ColorTileMarker(worldPoint, config.markerColor());
 		log.debug("Updating point: {} - {}", point, worldPoint);
 
-		List<GroundMarkerPoint> points = new ArrayList<>(getPoints(regionId));
 		if (points.contains(point))
 		{
 			points.remove(point);
 		}
 		else
 		{
-			points.add(point);
+			// Remove any points on the same tile but are of a different color
+			points.removeIf(p -> p.sameTile(point));
+
+			// Add point back only if we are remembering tile colors, otherwise simply remove it
+			if (config.rememberTileColors())
+			{
+				points.add(point);
+			}
 		}
 
-		savePoints(regionId, points);
+		final int regionId = worldPoint.getRegionID();
+		saveColorTileMarkers(regionId, points);
 
 		loadPoints();
 	}

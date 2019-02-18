@@ -25,8 +25,12 @@
  */
 package net.runelite.client.plugins.groundmarkers;
 
+import java.awt.Color;
 import lombok.Value;
 
+/**
+ * Used for serialization of ground marker points.
+ */
 @Value
 class GroundMarkerPoint
 {
@@ -34,4 +38,5 @@ class GroundMarkerPoint
 	private int regionX;
 	private int regionY;
 	private int z;
+	private Color color;
 }

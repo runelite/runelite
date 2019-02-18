@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, TheLonelyDev <https://github.com/TheLonelyDev>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,32 +25,21 @@
 package net.runelite.client.plugins.groundmarkers;
 
 import java.awt.Color;
-import net.runelite.client.config.Alpha;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Value;
+import net.runelite.api.coords.WorldPoint;
 
-@ConfigGroup("groundMarker")
-public interface GroundMarkerConfig extends Config
+/**
+ * Used to denote marked tiles and their colors.
+ * Note: This is not used for serialization of ground markers; see {@link GroundMarkerPoint}
+ */
+@Value
+class ColorTileMarker
 {
-	@Alpha
-	@ConfigItem(
-		keyName = "markerColor",
-		name = "Color of the tile",
-		description = "Configures the color of marked tile"
-	)
-	default Color markerColor()
-	{
-		return Color.YELLOW;
-	}
+	private WorldPoint worldPoint;
+	private Color color;
 
-	@ConfigItem(
-		keyName = "rememberTileColors",
-		name = "Remember color per tile",
-		description = "Color tiles using the color from time of placement"
-	)
-	default boolean rememberTileColors()
+	boolean sameTile(final ColorTileMarker other)
 	{
-		return false;
+		return worldPoint.equals(other.getWorldPoint());
 	}
 }
