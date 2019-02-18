@@ -309,7 +309,8 @@ class KourendLibraryOverlay extends Overlay
 				.stream()
 				.filter(npc -> npc.getId() == customer.getId())
 				.findFirst()
-				.ifPresent(npc -> {
+				.ifPresent(npc ->
+				{
 					Book book = library.getCustomerBook();
 
 					if (book == null)
