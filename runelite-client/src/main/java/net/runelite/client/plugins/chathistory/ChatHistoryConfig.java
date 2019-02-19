@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.chathistory;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-/**
- * An enumeration of string local variables.
- */
-@AllArgsConstructor
-@Getter
-public enum VarClientStr
+@ConfigGroup("chathistory")
+public interface ChatHistoryConfig extends Config
 {
-	CHATBOX_TYPED_TEXT(1),
-	INPUT_TEXT(22),
-	PRIVATE_MESSAGE_TARGET(23),
-	RECENT_CLAN_CHAT(129);
+	@ConfigItem(
+		keyName = "retainChatHistory",
+		name = "Retain Chat History",
+		description = "Retains chat history when logging in/out or world hopping",
+		position = 0
+	)
+	default boolean retainChatHistory()
+	{
+		return true;
+	}
 
-	private final int index;
+	@ConfigItem(
+		keyName = "pmTargetCycling",
+		name = "PM Target Cycling",
+		description = "Pressing Tab while sending a PM will cycle the target username based on PM history",
+		position = 1
+	)
+	default boolean pmTargetCycling()
+	{
+		return true;
+	}
 }
