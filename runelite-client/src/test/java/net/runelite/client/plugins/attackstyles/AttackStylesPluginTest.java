@@ -141,7 +141,7 @@ public class AttackStylesPluginTest
 		hideWidgetEvent.setKey("removeWarnedStyles");
 		hideWidgetEvent.setNewValue("true");
 		attackPlugin.onConfigChanged(hideWidgetEvent);
-		when(attackConfig.removeWarnedStyles()).thenReturn(true);
+		when(attackConfig.warnedStyleHandler() == HandleType.HIDE).thenReturn(true);
 
 		// verify that the accurate attack style widget is hidden
 		assertTrue(atkWidget.isHidden());
@@ -161,7 +161,7 @@ public class AttackStylesPluginTest
 		hideWidgetEvent.setKey("removeWarnedStyles");
 		hideWidgetEvent.setNewValue("false");
 		attackPlugin.onConfigChanged(hideWidgetEvent);
-		when(attackConfig.removeWarnedStyles()).thenReturn(false);
+		when(attackConfig.warnedStyleHandler() == HandleType.HIDE).thenReturn(false);
 
 		// verify that the aggressive and accurate attack style widgets are no longer hidden
 		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4,

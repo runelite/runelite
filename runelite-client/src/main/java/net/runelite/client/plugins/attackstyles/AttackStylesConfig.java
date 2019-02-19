@@ -109,13 +109,13 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "removeWarnedStyles",
-		name = "Remove warned styles",
-		description = "Remove warned styles from the combat options tab",
+		keyName = "warnedStyleHandler",
+		name = "Method of warning",
+		description = "Choose how enabled styles will be handled",
 		position = 8
 	)
-	default boolean removeWarnedStyles()
+	default HandleType warnedStyleHandler()
 	{
-		return false;
+		return HandleType.WARN;
 	}
 }

@@ -38,6 +38,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -68,7 +69,7 @@ public class AttackStylesPlugin extends Plugin
 	private AttackStyle attackStyle;
 	private final Set<Skill> warnedSkills = new HashSet<>();
 	private boolean warnedSkillSelected = false;
-	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
+	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHideOrLock = HashBasedTable.create();
 
 	@Inject
 	private Client client;
@@ -124,7 +125,7 @@ public class AttackStylesPlugin extends Plugin
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
-		hideWarnedStyles(false);
+		setWidgetsToHideOrLock();
 		processWidgets();
 		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), false);
 	}
@@ -136,7 +137,7 @@ public class AttackStylesPlugin extends Plugin
 
 	public boolean isWarnedSkillSelected()
 	{
-		return warnedSkillSelected;
+		return warnedSkillSelected && config.warnedStyleHandler() != HandleType.NONE;
 	}
 
 	@Subscribe
@@ -168,11 +169,19 @@ public class AttackStylesPlugin extends Plugin
 	{
 		WeaponType equippedWeaponType = WeaponType.getWeaponType(equippedWeaponTypeVarbit);
 
-		if (widgetsToHide.containsRow(equippedWeaponType))
+		if (widgetsToHideOrLock.containsRow(equippedWeaponType))
 		{
-			for (WidgetInfo widgetKey : widgetsToHide.row(equippedWeaponType).keySet())
+			for (WidgetInfo widgetKey : widgetsToHideOrLock.row(equippedWeaponType).keySet())
 			{
-				hideWidget(client.getWidget(widgetKey), widgetsToHide.get(equippedWeaponType, widgetKey));
+				if (config.warnedStyleHandler() == HandleType.HIDE)
+				{
+					hideWidget(client.getWidget(widgetKey), widgetsToHideOrLock.get(equippedWeaponType, widgetKey));
+				}
+				else
+				{
+					// Always show widget when not on 'REMOVE' option
+					hideWidget(client.getWidget(widgetKey), false);
+				}
 			}
 		}
 		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), config.hideAutoRetaliate());
@@ -188,6 +197,28 @@ public class AttackStylesPlugin extends Plugin
 			updateWarnedSkills(config.warnForDefence(), Skill.DEFENCE);
 			updateWarnedSkills(config.warnForRanged(), Skill.RANGED);
 			updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
+		}
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		WeaponType equippedWeaponType = WeaponType.getWeaponType(equippedWeaponTypeVarbit);
+
+		if (config.warnedStyleHandler() == HandleType.LOCK && widgetsToHideOrLock.containsRow(equippedWeaponType))
+		{
+			for (WidgetInfo widgetKey : widgetsToHideOrLock.row(equippedWeaponType).keySet())
+			{
+				if (widgetKey.getId() != event.getWidgetId())
+				{
+					continue;
+				}
+
+				if (widgetsToHideOrLock.get(equippedWeaponType, widgetKey))
+				{
+					event.consume();
+				}
+			}
 		}
 	}
 
@@ -242,8 +273,8 @@ public class AttackStylesPlugin extends Plugin
 				case "warnForMagic":
 					updateWarnedSkills(enabled, Skill.MAGIC);
 					break;
-				case "removeWarnedStyles":
-					hideWarnedStyles(enabled);
+				case "warnedStyleHandler":
+					updateWarning(false);
 					break;
 			}
 			processWidgets();
@@ -283,7 +314,7 @@ public class AttackStylesPlugin extends Plugin
 	private void updateWarning(boolean weaponSwitch)
 	{
 		warnedSkillSelected = false;
-		if (attackStyle != null)
+		if (attackStyle != null && config.warnedStyleHandler() != HandleType.NONE)
 		{
 			for (Skill skill : attackStyle.getSkills())
 			{
@@ -298,10 +329,10 @@ public class AttackStylesPlugin extends Plugin
 				}
 			}
 		}
-		hideWarnedStyles(config.removeWarnedStyles());
+		setWidgetsToHideOrLock();
 	}
 
-	private void hideWarnedStyles(boolean enabled)
+	private void setWidgetsToHideOrLock()
 	{
 		WeaponType equippedWeaponType = WeaponType.getWeaponType(equippedWeaponTypeVarbit);
 		if (equippedWeaponType == null)
@@ -309,6 +340,8 @@ public class AttackStylesPlugin extends Plugin
 			return;
 		}
 
+		Boolean enabled = config.warnedStyleHandler() == HandleType.LOCK
+				|| config.warnedStyleHandler() == HandleType.HIDE;
 		AttackStyle[] attackStyles = equippedWeaponType.getAttackStyles();
 
 		// Iterate over attack styles
@@ -333,32 +366,37 @@ public class AttackStylesPlugin extends Plugin
 			// Magic staves defensive casting mode
 			if (attackStyle == AttackStyle.DEFENSIVE_CASTING || !enabled)
 			{
-				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_BOX, enabled && warnedSkill);
-				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_ICON, enabled && warnedSkill);
-				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_SHIELD, enabled && warnedSkill);
-				widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_TEXT, enabled && warnedSkill);
+				widgetsToHideOrLock.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_BOX, enabled && warnedSkill);
+				widgetsToHideOrLock.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_ICON, enabled && warnedSkill);
+				widgetsToHideOrLock.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_SHIELD, enabled && warnedSkill);
+				widgetsToHideOrLock.put(equippedWeaponType, WidgetInfo.COMBAT_DEFENSIVE_SPELL_TEXT, enabled && warnedSkill);
+			}
+
+			// Offensive casting
+			if (attackStyle == AttackStyle.CASTING || !enabled)
+			{
+				widgetsToHideOrLock.put(equippedWeaponType, WidgetInfo.COMBAT_SPELL_BOX, enabled && warnedSkill);
+				widgetsToHideOrLock.put(equippedWeaponType, WidgetInfo.COMBAT_SPELL_ICON, enabled && warnedSkill);
+				widgetsToHideOrLock.put(equippedWeaponType, WidgetInfo.COMBAT_SPELL_TEXT, enabled && warnedSkill);
 			}
 
 			// Remove appropriate combat option
 			switch (i)
 			{
 				case 0:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_ONE, enabled && warnedSkill);
+					widgetsToHideOrLock.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_ONE, enabled && warnedSkill);
 					break;
 				case 1:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_TWO, enabled && warnedSkill);
+					widgetsToHideOrLock.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_TWO, enabled && warnedSkill);
 					break;
 				case 2:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_THREE, enabled && warnedSkill);
+					widgetsToHideOrLock.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_THREE, enabled && warnedSkill);
 					break;
 				case 3:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_FOUR, enabled && warnedSkill);
-					break;
-				case 4:
-					widgetsToHide.put(equippedWeaponType, WidgetInfo.COMBAT_SPELLS, enabled && warnedSkill);
+					widgetsToHideOrLock.put(equippedWeaponType, WidgetInfo.COMBAT_STYLE_FOUR, enabled && warnedSkill);
 					break;
 				default:
-					// 5 can be defensive casting
+					// 4 and 5 are magic related - handled above
 			}
 		}
 	}
@@ -380,6 +418,6 @@ public class AttackStylesPlugin extends Plugin
 	@VisibleForTesting
 	Table<WeaponType, WidgetInfo, Boolean> getHiddenWidgets()
 	{
-		return widgetsToHide;
+		return widgetsToHideOrLock;
 	}
 }
