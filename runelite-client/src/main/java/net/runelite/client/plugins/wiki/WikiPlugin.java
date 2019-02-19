@@ -317,7 +317,6 @@ public class WikiPlugin extends Plugin
 					}
 			}
 		}
-		//System.out.println(ev.getActionParam());
 	}
 
 	private void openSearchInput()
@@ -333,14 +332,17 @@ public class WikiPlugin extends Plugin
 		int widgetID = event.getActionParam1();
 		MenuEntry[] menuEntries = client.getMenuEntries();
 
-		if ((!Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) || !"Read Journal:".equals(event.getOption())) &&
-			(!(Ints.compare(DIARYLIST_WIDGET_ID, widgetID) == 0) && (!"Open Ardougne Journal".equals(event.getOption())
-			|| !"Open Desert Journal".equals(event.getOption()) || !"Open Falador Journal".equals(event.getOption())
-			|| !"Open Falador Journal".equals(event.getOption()) || !"Open Fremennik Journal".equals(event.getOption())
-			|| !"Open Kandarin Journal".equals(event.getOption()) || !"Open Karamja Journal".equals(event.getOption())
-			|| !"Open Kourend & Kebos Journal".equals(event.getOption()) || !"Open Lumbridge & Draynor Journal".equals(event.getOption())
-			|| !"Open Morytania Journal".equals(event.getOption()) || !"Open Varrock Journal".equals(event.getOption())
-			|| !"Open Western Provinces Journal".equals(event.getOption()) || !"Open Wilderness Journal".equals(event.getOption()))))
+		//check to see if mouse is pointing to a quest or a diary
+		boolean isQuest = Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) || "Read Journal:".equals(event.getOption());
+		boolean isDiary = Ints.compare(DIARYLIST_WIDGET_ID, widgetID) == 0 && ("Open Ardougne Journal".equals(event.getOption())
+						|| "Open Desert Journal".equals(event.getOption()) || "Open Falador Journal".equals(event.getOption())
+						|| "Open Falador Journal".equals(event.getOption()) || "Open Fremennik Journal".equals(event.getOption())
+						|| "Open Kandarin Journal".equals(event.getOption()) || "Open Karamja Journal".equals(event.getOption())
+						|| "Open Kourend & Kebos Journal".equals(event.getOption()) || "Open Lumbridge & Draynor Journal".equals(event.getOption())
+						|| "Open Morytania Journal".equals(event.getOption()) || "Open Varrock Journal".equals(event.getOption())
+						|| "Open Western Provinces Journal".equals(event.getOption()) || "Open Wilderness Journal".equals(event.getOption()));
+
+		if (!isQuest && !isDiary)
 		{
 			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
 
@@ -361,20 +363,44 @@ public class WikiPlugin extends Plugin
 			client.setMenuEntries(menuEntries);
 		}
 
-		if ((WidgetInfo.TO_GROUP(widgetID) == WidgetID.SKILLS_GROUP_ID && event.getOption().startsWith("View"))
-			|| (WidgetInfo.TO_GROUP(widgetID) == WidgetID.DIARY_GROUP_ID && event.getOption().startsWith("Open")))
-		{
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+		//number of menus to add
+		int addMenuNum = 2;
 
-			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			menuEntry.setTarget(event.getOption().replace("View ", "").replace("Open ", ""));
-			menuEntry.setOption(MENUOP_WIKI);
+		if (isDiary)
+		{
+			addMenuNum = 1;
+		}
+
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + addMenuNum);
+
+
+		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+		if (isQuest)
+		{
+			menuEntry.setTarget(event.getTarget());
+		}
+		else if (isDiary)
+		{
+			String diaryName = event.getOption().substring(5, (event.getOption().length() - 8));
+			menuEntry.setTarget(diaryName + " Diary");
+		}
+		menuEntry.setOption(MENUOP_GUIDE);
+		menuEntry.setParam0(widgetIndex);
+		menuEntry.setParam1(widgetID);
+		menuEntry.setType(MenuAction.RUNELITE.getId());
+
+		//Diaries don't have a quickguide
+		if (isQuest)
+		{
+			menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
+			menuEntry.setTarget(event.getTarget());
+			menuEntry.setOption(MENUOP_QUICKGUIDE);
 			menuEntry.setParam0(widgetIndex);
 			menuEntry.setParam1(widgetID);
-			menuEntry.setIdentifier(event.getIdentifier());
 			menuEntry.setType(MenuAction.RUNELITE.getId());
-
-			client.setMenuEntries(menuEntries);
 		}
+
+		client.setMenuEntries(menuEntries);
 	}
 }
