@@ -31,13 +31,14 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashMap;
 import javax.inject.Inject;
+
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.api.GraphicID;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -60,7 +61,7 @@ class FishingSpotOverlay extends Overlay
 	private final Client client;
 	private final ItemManager itemManager;
 
-	private static HashMap<WorldPoint, FishingSpotInfo> SPOTS_LIST = new HashMap<>();
+	private static HashMap<WorldPoint, Multiset<NPC>> SPOTS_LIST = new HashMap<>();
 
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hidden;
@@ -100,37 +101,32 @@ class FishingSpotOverlay extends Overlay
 				continue;
 			}
 
-			FishingSpotInfo spotsInfo = SPOTS_LIST.get(npc.getWorldLocation());
-			if (spotsInfo == null)
+			Multiset<NPC> npcList = SPOTS_LIST.get(npc.getWorldLocation());
+			if (npcList == null)
 			{
-				spotsInfo = new FishingSpotInfo(spot, npc);
-				SPOTS_LIST.put(npc.getWorldLocation(), spotsInfo);
+				npcList = HashMultiset.create();
+				SPOTS_LIST.put(npc.getWorldLocation(), npcList);
 			}
-			else
-			{
-				int spotCount = spotsInfo.getCount(spot);
-				if (spotCount >= 1)
-				{
-					spotsInfo.incrementCount(spot);
-				}
-				else
-				{
-					spotsInfo.addSpot(spot, npc);
-				}
-			}
+
+			npcList.add(npc);
 		}
 
-		for (HashMap.Entry<WorldPoint, FishingSpotInfo> entry : SPOTS_LIST.entrySet())
+		for (HashMap.Entry<WorldPoint, Multiset<NPC>> entry : SPOTS_LIST.entrySet())
 		{
-			WorldPoint tile = entry.getKey();
-			FishingSpotInfo fishingSpots = entry.getValue();
+			NPC npcArray[] = entry.getValue().toArray(new NPC[0]);
+
+			Multiset<FishingSpot> spotList = HashMultiset.create();
+			for (NPC npc : npcArray)
+			{
+				FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
+				spotList.add(spot);
+			}
 
 			// minnow fishing spots will only ever share tiles with other minnow fishing spots
-			FishingSpot possibleMinnowSpot = fishingSpots.getSpot(0);
-			NPC firstSpot  = fishingSpots.getNpc(0);
-			Color color = firstSpot.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
+			NPC firstSpot = npcArray[0];
+			Color color = spotList.contains(FishingSpot.MINNOW) ? Color.RED : Color.CYAN;
 
-			if (possibleMinnowSpot == FishingSpot.MINNOW && config.showMinnowOverlay())
+			if (spotList.contains(FishingSpot.MINNOW) && config.showMinnowOverlay())
 			{
 				MinnowSpot minnowSpot = plugin.getMinnowSpots().get(firstSpot.getIndex());
 				if (minnowSpot != null)
@@ -166,17 +162,17 @@ class FishingSpotOverlay extends Overlay
 				}
 			}
 
-			for (int i = 0; i < fishingSpots.getSize(); i++)
+			FishingSpot spotArray[] = spotList.elementSet().toArray(new FishingSpot[0]);
+			for (int i = 0; i < spotArray.length; i++)
 			{
-				FishingSpot spot = fishingSpots.getSpot(i);
-				NPC npc = fishingSpots.getNpc(i);
-
-				int spotCount = fishingSpots.getCount(spot);
+				// Use the first NPC to get the canvas location of the tile
+				NPC firstNPC = npcArray[0];
+				FishingSpot spot = spotArray[i];
+				int spotCount = spotList.count(spotArray[i]);
 
 				if (config.showSpotIcons())
 				{
-					BufferedImage fishImage = null;
-
+					BufferedImage fishImage;
 					if (spotCount > 1 && !(config.showSpotNames()))
 					{
 						fishImage = itemManager.getImage(spot.getFishSpriteId(), spotCount, true);
@@ -188,10 +184,10 @@ class FishingSpotOverlay extends Overlay
 
 					if (fishImage != null)
 					{
-						Point imageLocation = npc.getCanvasImageLocation(fishImage, 34);
+						Point imageLocation = firstNPC.getCanvasImageLocation(fishImage, 34);
 						if (imageLocation != null)
 						{
-							int offset = (i * 34) - ((34 * (fishingSpots.getSize() - 1)) / 2);
+							int offset = (i * 34) - ((34 * (spotArray.length - 1)) / 2);
 							Point shiftedImageLocation = new Point(imageLocation.getX() + offset, imageLocation.getY());
 							OverlayUtil.renderImageLocation(graphics, shiftedImageLocation, fishImage);
 						}
@@ -205,7 +201,7 @@ class FishingSpotOverlay extends Overlay
 					{
 						text += " (" +  spotCount + ")";
 					}
-					Point textLocation = npc.getCanvasTextLocation(graphics, text, 74 + (i * 20));
+					Point textLocation = firstNPC.getCanvasTextLocation(graphics, text, 74 + (i * 20));
 					if (textLocation != null)
 					{
 						OverlayUtil.renderTextLocation(graphics, textLocation, text, color.darker());
@@ -215,82 +211,5 @@ class FishingSpotOverlay extends Overlay
 		}
 
 		return null;
-	}
-
-	private class FishingSpotInfo
-	{
-		private ArrayList<FishingSpot> spotList;
-		private ArrayList<NPC> npcList;
-		private ArrayList<Integer> countList;
-
-		FishingSpotInfo(FishingSpot spot, NPC npc)
-		{
-			spotList = new ArrayList<>();
-			spotList.add(spot);
-
-			npcList = new ArrayList<>();
-			npcList.add(npc);
-
-			countList = new ArrayList<>();
-			countList.add(1);
-		}
-
-		public FishingSpot getSpot(int i)
-		{
-			return spotList.get(i);
-		}
-
-		public NPC getNpc(int i)
-		{
-			return npcList.get(i);
-		}
-
-		public int getSize()
-		{
-			return spotList.size();
-		}
-
-		public int getCount(FishingSpot spot)
-		{
-			int index = exists(spot);
-			if (index != -1)
-			{
-				return countList.get(index);
-			}
-			else
-			{
-				return 0;
-			}
-		}
-
-		public void incrementCount(FishingSpot spot)
-		{
-			int index = exists(spot);
-			if (index != -1)
-			{
-				int currentVal = countList.get(index);
-				countList.set(index, currentVal + 1);
-			}
-		}
-
-		// Returns index of spot within the ArrayList
-		public int exists(FishingSpot spot)
-		{
-			for (int i = 0; i < spotList.size(); i++)
-			{
-				if (spotList.get(i) == spot)
-				{
-					return i;
-				}
-			}
-			return -1;
-		}
-
-		public void addSpot(FishingSpot spot, NPC npc)
-		{
-			spotList.add(spot);
-			npcList.add(npc);
-			countList.add(1);
-		}
 	}
 }
