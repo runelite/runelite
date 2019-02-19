@@ -89,7 +89,6 @@ public class AccountService
 
 	private static final String SCOPE = "https://www.googleapis.com/auth/userinfo.email";
 	private static final String USERINFO = "https://www.googleapis.com/oauth2/v2/userinfo";
-	private static final String RL_OAUTH_URL = "https://api.runelite.net/oauth/";
 	private static final String RL_REDIR = "https://runelite.net/logged-in";
 
 	private final Gson gson = RuneLiteAPI.GSON;
@@ -98,6 +97,7 @@ public class AccountService
 	private final Sql2o sql2o;
 	private final String oauthClientId;
 	private final String oauthClientSecret;
+	private final String oauthCallback;
 	private final AuthFilter auth;
 	private final RedisPool jedisPool;
 
@@ -106,6 +106,7 @@ public class AccountService
 		@Qualifier("Runelite SQL2O") Sql2o sql2o,
 		@Value("${oauth.client-id}") String oauthClientId,
 		@Value("${oauth.client-secret}") String oauthClientSecret,
+		@Value("${oauth.callback}") String oauthCallback,
 		AuthFilter auth,
 		RedisPool jedisPool
 	)
@@ -113,6 +114,7 @@ public class AccountService
 		this.sql2o = sql2o;
 		this.oauthClientId = oauthClientId;
 		this.oauthClientSecret = oauthClientSecret;
+		this.oauthCallback = oauthCallback;
 		this.auth = auth;
 		this.jedisPool = jedisPool;
 
@@ -147,7 +149,7 @@ public class AccountService
 			.apiKey(oauthClientId)
 			.apiSecret(oauthClientSecret)
 			.scope(SCOPE)
-			.callback(RL_OAUTH_URL)
+			.callback(oauthCallback)
 			.state(gson.toJson(state))
 			.build(GoogleApi20.instance());
 
@@ -186,7 +188,7 @@ public class AccountService
 			.apiKey(oauthClientId)
 			.apiSecret(oauthClientSecret)
 			.scope(SCOPE)
-			.callback(RL_OAUTH_URL)
+			.callback(oauthCallback)
 			.state(gson.toJson(state))
 			.build(GoogleApi20.instance());
 
