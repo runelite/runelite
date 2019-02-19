@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.wiki;
 
 import com.google.common.primitives.Ints;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -74,12 +73,10 @@ public class WikiPlugin extends Plugin
 			WidgetInfo.QUESTLIST_MINIQUEST_CONTAINER.getId(),
 		};
 
-	static final String WIKI_BASE = "https://oldschool.runescape.wiki";
-	static final HttpUrl WIKI_RSLOOKUP = HttpUrl.parse(WIKI_BASE + "/w/Special:Lookup");
-	static final HttpUrl WIKI_API = HttpUrl.parse(WIKI_BASE + "/api.php");
+	static final HttpUrl WIKI_BASE = HttpUrl.parse("https://oldschool.runescape.wiki");
+	static final HttpUrl WIKI_API = WIKI_BASE.newBuilder().addPathSegments("api.php").build();
 	static final String UTM_SORUCE_KEY = "utm_source";
 	static final String UTM_SORUCE_VALUE = "runelite";
-	static final String UTM_PARAMS = UTM_SORUCE_KEY + "=" + UTM_SORUCE_VALUE;
 
 	private static final String MENUOP_GUIDE = "Guide";
 	private static final String MENUOP_QUICKGUIDE = "Quick Guide";
@@ -247,8 +244,9 @@ public class WikiPlugin extends Plugin
 			}
 
 			name = Text.removeTags(name);
-			HttpUrl.Builder urlBuilder = WIKI_RSLOOKUP.newBuilder();
-			urlBuilder.addQueryParameter("type", type)
+			HttpUrl.Builder urlBuilder = WIKI_BASE.newBuilder();
+			urlBuilder.addPathSegments("w/Special:Lookup")
+				.addQueryParameter("type", type)
 				.addQueryParameter("id", "" + id)
 				.addQueryParameter("name", name)
 				.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE);
@@ -268,23 +266,35 @@ public class WikiPlugin extends Plugin
 
 		if (ev.getMenuAction() == MenuAction.RUNELITE)
 		{
-			String quickguide = "";
+			boolean quickguide = false;
 			switch (ev.getMenuOption())
 			{
 				case MENUOP_QUICKGUIDE:
-					quickguide = "/Quick_guide";
+					quickguide = true;
 					//fallthrough;
 				case MENUOP_GUIDE:
 					ev.consume();
 					String quest = Text.removeTags(ev.getMenuTarget());
-					LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(quest.replace(' ', '_')) + quickguide + "?" + UTM_PARAMS);
+					HttpUrl.Builder ub = WIKI_BASE.newBuilder()
+						.addPathSegment("w")
+						.addPathSegment(quest)
+						.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE);
+					if (quickguide)
+					{
+						ub.addPathSegment("Quick_guide");
+					}
+					LinkBrowser.browse(ub.build().toString());
 					break;
 				case MENUOP_WIKI_SKILL:
 					Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
 
 					if (skillRegex.find())
 					{
-						LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(skillRegex.group(1)) + "?" + UTM_PARAMS);
+						LinkBrowser.browse(WIKI_BASE.newBuilder()
+							.addPathSegment("w")
+							.addPathSegment(skillRegex.group(1))
+							.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE)
+							.build().toString());
 					}
 			}
 		}
