@@ -124,12 +124,32 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		spriteManager.addSpriteOverrides(WikiSprite.values());
-		clientThread.invokeLater(this::addWidgets);
+		loadWidget();
 	}
 
 	@Override
 	public void shutDown()
+	{
+		unloadWidget();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("wiki"))
+		{
+			unloadWidget();
+			loadWidget();
+		}
+	}
+
+	private void loadWidget()
+	{
+		spriteManager.addSpriteOverrides(WikiSprite.values());
+		clientThread.invokeLater(this::addWidget);
+	}
+
+	private void unloadWidget()
 	{
 		spriteManager.removeSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(() ->
@@ -149,25 +169,15 @@ public class WikiPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals("wiki"))
-		{
-			shutDown();
-			startUp();
-		}
-	}
-
-	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded l)
 	{
 		if (l.getGroupId() == WidgetID.MINIMAP_GROUP_ID)
 		{
-			addWidgets();
+			addWidget();
 		}
 	}
 
-	private void addWidgets()
+	private void addWidget()
 	{
 		Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
 		if (minimapOrbs == null)
