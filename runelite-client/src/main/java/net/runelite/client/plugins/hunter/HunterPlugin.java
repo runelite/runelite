@@ -29,6 +29,7 @@ import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import javax.inject.Inject;
@@ -38,6 +39,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.Item;
+import net.runelite.api.ItemID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
@@ -48,6 +51,8 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.ItemSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -66,6 +71,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class HunterPlugin extends Plugin
 {
+	private static final String TRAP_SET_MESSAGE = "You begin setting up"; // Can either be "a trap" or "the trap"
 	private static final String GET_CATCH_MESSAGE = "You've caught a"; // Chins, Lizards (filter), Kebbits, Imps (server)
 	private static final String IMPLING_MESSAGE = "You manage to catch the impling"; // filter
 	// TODO: Check falconry, bird trap, maniacal monkey, tracking, butterfly, pitfall messages
@@ -99,8 +105,10 @@ public class HunterPlugin extends Plugin
 	@Inject
 	private TrapOverlay overlay;
 
-
+	private int lastChatTick;
 	private WorldPoint lastTickLocalPlayerLocation;
+	private WorldPoint validPoint;
+	private HashSet<WorldPoint> trapItemPoints = new HashSet<>();
 
 	@Provides
 	HunterConfig provideConfig(ConfigManager configManager)
@@ -114,6 +122,7 @@ public class HunterPlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(sessionOverlay);
 		overlay.updateConfig();
+		lastChatTick = -99;
 	}
 
 	@Override
@@ -123,20 +132,80 @@ public class HunterPlugin extends Plugin
 		overlayManager.remove(sessionOverlay);
 		lastActionTime = Instant.ofEpochMilli(0);
 		traps.clear();
+		trapItemPoints.clear();
+		validPoint = null;
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		ChatMessageType type = event.getType();
-		if (type == ChatMessageType.FILTERED || type == ChatMessageType.SERVER)
+		if (type != ChatMessageType.FILTERED && type != ChatMessageType.SERVER)
 		{
-			if (config.showHunterStats()
-				&& event.getMessage().contains(GET_CATCH_MESSAGE)
-				|| event.getMessage().contains(IMPLING_MESSAGE))
+			return;
+		}
+
+		if (event.getMessage().contains(TRAP_SET_MESSAGE))
+		{
+			lastChatTick = client.getTickCount();
+			log.debug("{} a trap on tick {}", TRAP_SET_MESSAGE, lastChatTick);
+		}
+		else if (config.showHunterStats()
+			&& event.getMessage().contains(GET_CATCH_MESSAGE)
+			|| event.getMessage().contains(IMPLING_MESSAGE))
+		{
+			session.setLastHunterCatch(Instant.now());
+		}
+	}
+
+	@Subscribe
+	public void onItemSpawned(ItemSpawned itemSpawned)
+	{
+		final Item item = itemSpawned.getItem();
+		final Tile tile = itemSpawned.getTile();
+
+		// Putting down a box trap/magic box/bird snare always spawns and despawns an item,
+		// even if it immediately spawns the trap object
+		if (item.getId() == ItemID.BOX_TRAP
+			|| item.getId() == ItemID.BIRD_SNARE
+			|| item.getId() == ItemID.MAGIC_BOX)
+		{
+			trapItemPoints.add(tile.getWorldLocation());
+
+			if (client.getTickCount() == lastChatTick
+				&& lastTickLocalPlayerLocation.distanceTo(tile.getWorldLocation()) <= 2)
 			{
-				session.setLastHunterCatch(Instant.now());
+				validPoint = tile.getWorldLocation(); //Which trap we're setting up
 			}
+		}
+	}
+
+	@Subscribe
+	public void onItemDespawned(ItemDespawned itemDespawned)
+	{
+		final Item item = itemDespawned.getItem();
+		final Tile tile = itemDespawned.getTile();
+
+		// The trap object spawns immediately after despawning the item
+		if (trapItemPoints.contains(tile.getWorldLocation())
+			&& item.getId() == ItemID.BOX_TRAP
+			|| item.getId() == ItemID.BIRD_SNARE
+			|| item.getId() == ItemID.MAGIC_BOX)
+		{
+			if (tile.getWorldLocation().equals(validPoint))
+			{
+				log.debug("{} confirmed as player owned trap", validPoint);
+			}
+			// If we don't know which trap we're setting up, but we know we are setting one up,
+			// and we are close to the trap item we can flag the tile as a valid point.
+			else if (validPoint == null
+				&& client.getTickCount() - lastChatTick <= 3
+				&& lastTickLocalPlayerLocation.distanceTo(tile.getWorldLocation()) <= 2)
+			{
+				validPoint = tile.getWorldLocation();
+			}
+
+			trapItemPoints.remove(tile.getWorldLocation());
 		}
 	}
 
@@ -147,6 +216,8 @@ public class HunterPlugin extends Plugin
 		final WorldPoint trapLocation = gameObject.getWorldLocation();
 		final HunterTrap myTrap = traps.get(trapLocation);
 		final Player localPlayer = client.getLocalPlayer();
+		final int trapDistance = localPlayer.getWorldLocation().distanceTo(trapLocation);
+		final int spawnTick = client.getTickCount();
 
 		switch (gameObject.getId())
 		{
@@ -155,8 +226,8 @@ public class HunterPlugin extends Plugin
 			 * Placing traps
 			 * ------------------------------------------------------------------------------
 			 */
-			case ObjectID.DEADFALL: // Deadfall trap placed
-				if (localPlayer.getWorldLocation().distanceTo(trapLocation) <= 2)
+			case ObjectID.DEADFALL: // Deadfall trap placed. We can safely check distance as they're unmoveable
+				if (spawnTick - lastChatTick <= 1 && trapDistance <= 2) // (and we don't hide their entries)
 				{
 					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), trapLocation);
 					traps.put(trapLocation, new HunterTrap(gameObject));
@@ -164,9 +235,8 @@ public class HunterPlugin extends Plugin
 				}
 				break;
 
-			case ObjectID.MONKEY_TRAP: // Maniacal monkey trap placed
-				// If player is right next to "object" trap assume that player placed the trap
-				if (localPlayer.getWorldLocation().distanceTo(trapLocation) <= 2)
+			case ObjectID.MONKEY_TRAP: // Maniacal monkey trap placed. We can safely check distance as they're unmoveable
+				if (spawnTick - lastChatTick <= 2 && trapDistance <= 2) // (and we don't hide their entries)
 				{
 					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), trapLocation);
 					traps.put(trapLocation, new HunterTrap(gameObject));
@@ -177,16 +247,12 @@ public class HunterPlugin extends Plugin
 			case ObjectID.MAGIC_BOX: // Imp box placed
 			case ObjectID.BOX_TRAP_9380: // Box trap placed
 			case ObjectID.BIRD_SNARE_9345: // Bird snare placed
-				// If the player is on that tile, assume he is the one that placed the trap
-				// Note that a player can move and set up a trap in the same tick, and this
-				// event runs after the player movement has been updated, so we need to
-				// compare to the trap location to the last location of the player.
-				if (lastTickLocalPlayerLocation != null
-					&& trapLocation.distanceTo(lastTickLocalPlayerLocation) == 0)
+				if (trapLocation.equals(validPoint))
 				{
 					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), localPlayer.getWorldLocation());
 					traps.put(trapLocation, new HunterTrap(gameObject));
 					lastActionTime = Instant.now();
+					validPoint = null;
 				}
 				break;
 
@@ -195,7 +261,8 @@ public class HunterPlugin extends Plugin
 			case ObjectID.NET_TRAP_8992: // Net trap placed at red sallys
 			case ObjectID.NET_TRAP_9002: // Net trap placed at black sallys
 				if (lastTickLocalPlayerLocation != null
-						&& trapLocation.distanceTo(lastTickLocalPlayerLocation) == 0)
+						&& trapLocation.distanceTo(lastTickLocalPlayerLocation) == 0
+						&& spawnTick - lastChatTick <= 1)
 				{
 					// Net traps facing to the north and east must have their tile translated.
 					// As otherwise, the wrong tile is stored.
@@ -423,6 +490,13 @@ public class HunterPlugin extends Plugin
 					notifier.notify("The monkey escaped.");
 				}
 			}
+		}
+
+		// As putting down a trap should never take longer than 3 ticks we know placing the trap was canceled
+		if (validPoint != null && client.getTickCount() - lastChatTick > 3)
+		{
+			validPoint = null;
+			log.debug("Setting up trap timed out on tick {}", client.getTickCount());
 		}
 
 		lastTickLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
