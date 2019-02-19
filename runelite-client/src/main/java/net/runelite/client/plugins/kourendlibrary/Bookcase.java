@@ -86,11 +86,8 @@ class Bookcase
 		}
 
 		StringBuilder sb = new StringBuilder();
-
 		sb.append(section.getName());
-
 		sb.append(" ");
-
 		sb.append(level.getName());
 
 		if (KourendLibraryPlugin.debug)

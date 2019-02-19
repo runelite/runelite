@@ -42,7 +42,6 @@ import java.util.Comparator;
 @Slf4j
 public class LibraryHintArrow
 {
-
 	@Inject
 	private KourendLibraryConfig config;
 

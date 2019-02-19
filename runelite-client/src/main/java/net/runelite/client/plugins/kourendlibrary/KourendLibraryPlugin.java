@@ -245,9 +245,7 @@ public class KourendLibraryPlugin extends Plugin
 		}
 
 		updateBookcase();
-
 		updateCustomer();
-
 		updatePlayerPlane();
 	}
 
