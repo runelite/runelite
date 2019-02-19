@@ -31,6 +31,7 @@ import com.google.inject.Provides;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
@@ -47,6 +48,10 @@ import static net.runelite.api.widgets.WidgetID.COMBAT_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -63,6 +68,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class AttackStylesPlugin extends Plugin
 {
+	private static final String WEAPON_SWITCH_MESSAGE = "By switching your weapon you are now on a warned attack style.";
+	private static final String LOCK_MESSAGE = "The attack option you selected is locked via the Attack Styles plugin.";
+
 	private int attackStyleVarbit = -1;
 	private int equippedWeaponTypeVarbit = -1;
 	private int castingModeVarbit = -1;
@@ -85,6 +93,9 @@ public class AttackStylesPlugin extends Plugin
 
 	@Inject
 	private AttackStylesOverlay overlay;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	@Provides
 	AttackStylesConfig provideConfig(ConfigManager configManager)
@@ -208,6 +219,7 @@ public class AttackStylesPlugin extends Plugin
 				&& config.warnForAutoRetaliate()
 				&& config.warnedStyleHandler() == HandleType.LOCK)
 		{
+			sendChatMessage(LOCK_MESSAGE);
 			event.consume();
 			return;
 		}
@@ -225,6 +237,7 @@ public class AttackStylesPlugin extends Plugin
 
 				if (widgetsToHideOrLock.get(equippedWeaponType, widgetKey))
 				{
+					sendChatMessage(LOCK_MESSAGE);
 					event.consume();
 				}
 			}
@@ -331,7 +344,7 @@ public class AttackStylesPlugin extends Plugin
 				{
 					if (weaponSwitch)
 					{
-						// TODO : chat message to warn players that their weapon switch also caused an unwanted attack style change
+						sendChatMessage(WEAPON_SWITCH_MESSAGE);
 					}
 					warnedSkillSelected = true;
 					break;
@@ -408,6 +421,20 @@ public class AttackStylesPlugin extends Plugin
 					// 4 and 5 are magic related - handled above
 			}
 		}
+	}
+
+	private void sendChatMessage(String chatMessage)
+	{
+		final String message = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append(chatMessage)
+				.build();
+
+		chatMessageManager.queue(
+				QueuedMessage.builder()
+						.type(ChatMessageType.GAME)
+						.runeLiteFormattedMessage(message)
+						.build());
 	}
 
 	private void hideWidget(Widget widget, boolean hidden)
