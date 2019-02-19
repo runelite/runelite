@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.wiki;
 
 import com.google.common.primitives.Ints;
+import com.google.inject.Provides;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -37,6 +38,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
@@ -48,12 +50,14 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.wiki.config.WikiLeftClickOption;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
 import okhttp3.HttpUrl;
@@ -103,9 +107,18 @@ public class WikiPlugin extends Plugin
 	@Inject
 	private Provider<WikiSearchChatboxTextInput> wikiSearchChatboxTextInputProvider;
 
+	@Inject
+	private WikiConfig config;
+
 	private Widget icon;
 
 	private boolean wikiSelected = false;
+
+	@Provides
+	WikiConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(WikiConfig.class);
+	}
 
 	@Override
 	public void startUp()
@@ -132,6 +145,16 @@ public class WikiPlugin extends Plugin
 			}
 			children[0] = null;
 		});
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("wiki"))
+		{
+			shutDown();
+			startUp();
+		}
 	}
 
 	@Subscribe
@@ -168,18 +191,25 @@ public class WikiPlugin extends Plugin
 			wikiSelected = true;
 			icon.setSpriteId(WikiSprite.WIKI_SELECTED_ICON.getSpriteId());
 		});
-		icon.setAction(5, "Search"); // Start at option 5 so the target op is ontop
+
+		WikiLeftClickOption leftClickOption = config.leftClickOption();
+
+		// Indexes 0-4 are placed above the spell cast (target) option while indexes starting at 5 are placed beneath
+		int searchActionIndex = (leftClickOption == WikiLeftClickOption.SEARCH) ? 0 : 5;
+		icon.setAction(searchActionIndex, "Search");
+
 		icon.setOnOpListener((JavaScriptCallback) ev ->
 		{
-			switch (ev.getOp())
+			int optionIndex = ev.getOp() - 1;
+			if (optionIndex == searchActionIndex)
 			{
-				case 6:
-					openSearchInput();
-					break;
+				openSearchInput();
 			}
 		});
-		// This doesn't always run because we cancel the menuop
+
+		// This doesn't always run because we cancel the menu option
 		icon.setOnTargetLeaveListener((JavaScriptCallback) ev -> onDeselect());
+
 		icon.revalidate();
 	}
 
