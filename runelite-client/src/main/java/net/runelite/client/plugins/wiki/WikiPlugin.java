@@ -73,8 +73,11 @@ public class WikiPlugin extends Plugin
 			WidgetInfo.QUESTLIST_MINIQUEST_CONTAINER.getId(),
 		};
 
-	static final HttpUrl WIKI_BASE = HttpUrl.parse("https://oldschool.runescape.wiki");
-	static final HttpUrl WIKI_API = WIKI_BASE.newBuilder().addPathSegments("api.php").build();
+	private static final int DIARYLIST_WIDGET_ID = WidgetInfo.DIARY_LIST.getId();
+
+	static final String WIKI_BASE = "https://oldschool.runescape.wiki";
+	static final HttpUrl WIKI_RSLOOKUP = HttpUrl.parse(WIKI_BASE + "/w/Special:Lookup");
+	static final HttpUrl WIKI_API = HttpUrl.parse(WIKI_BASE + "/api.php");
 	static final String UTM_SORUCE_KEY = "utm_source";
 	static final String UTM_SORUCE_VALUE = "runelite";
 
@@ -314,6 +317,7 @@ public class WikiPlugin extends Plugin
 					}
 			}
 		}
+		//System.out.println(ev.getActionParam());
 	}
 
 	private void openSearchInput()
@@ -329,7 +333,14 @@ public class WikiPlugin extends Plugin
 		int widgetID = event.getActionParam1();
 		MenuEntry[] menuEntries = client.getMenuEntries();
 
-		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read Journal:".equals(event.getOption()))
+		if ((!Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) || !"Read Journal:".equals(event.getOption())) &&
+			(!(Ints.compare(DIARYLIST_WIDGET_ID, widgetID) == 0) && (!"Open Ardougne Journal".equals(event.getOption())
+			|| !"Open Desert Journal".equals(event.getOption()) || !"Open Falador Journal".equals(event.getOption())
+			|| !"Open Falador Journal".equals(event.getOption()) || !"Open Fremennik Journal".equals(event.getOption())
+			|| !"Open Kandarin Journal".equals(event.getOption()) || !"Open Karamja Journal".equals(event.getOption())
+			|| !"Open Kourend & Kebos Journal".equals(event.getOption()) || !"Open Lumbridge & Draynor Journal".equals(event.getOption())
+			|| !"Open Morytania Journal".equals(event.getOption()) || !"Open Varrock Journal".equals(event.getOption())
+			|| !"Open Western Provinces Journal".equals(event.getOption()) || !"Open Wilderness Journal".equals(event.getOption()))))
 		{
 			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
 
