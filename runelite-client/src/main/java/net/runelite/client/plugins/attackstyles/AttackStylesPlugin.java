@@ -184,7 +184,7 @@ public class AttackStylesPlugin extends Plugin
 				}
 			}
 		}
-		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), config.hideAutoRetaliate());
+		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), config.warnForAutoRetaliate() && config.warnedStyleHandler() == HandleType.HIDE);
 	}
 
 	@Subscribe
@@ -203,6 +203,15 @@ public class AttackStylesPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
+		// Locked auto-retaliate?
+		if (event.getWidgetId() == WidgetInfo.COMBAT_AUTO_RETALIATE.getId()
+				&& config.warnForAutoRetaliate()
+				&& config.warnedStyleHandler() == HandleType.LOCK)
+		{
+			event.consume();
+			return;
+		}
+
 		WeaponType equippedWeaponType = WeaponType.getWeaponType(equippedWeaponTypeVarbit);
 
 		if (config.warnedStyleHandler() == HandleType.LOCK && widgetsToHideOrLock.containsRow(equippedWeaponType))

@@ -98,12 +98,12 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hideAutoRetaliate",
-		name = "Hide auto retaliate",
-		description = "Hide auto retaliate from the combat options tab",
+		keyName = "warnForAutoRetaliate",
+		name = "Warn for auto retaliate",
+		description = "Show warning when auto retaliate is selected",
 		position = 7
 	)
-	default boolean hideAutoRetaliate()
+	default boolean warnForAutoRetaliate()
 	{
 		return false;
 	}
