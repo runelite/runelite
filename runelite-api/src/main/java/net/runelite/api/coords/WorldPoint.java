@@ -337,4 +337,25 @@ public class WorldPoint
 			((regionId & 0xff) << 6) + regionY,
 			plane);
 	}
+
+	/**
+	 * Gets the X-axis coordinate of the region coordinate
+	 */
+	public int getRegionX()
+	{
+		return getRegionOffset(x);
+	}
+
+	/**
+	 * Gets the Y-axis coordinate of the region coordinate
+	 */
+	public int getRegionY()
+	{
+		return getRegionOffset(y);
+	}
+
+	private static int getRegionOffset(final int position)
+	{
+		return position & 0x3f;
+	}
 }
