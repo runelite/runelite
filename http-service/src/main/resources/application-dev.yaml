@@ -25,3 +25,7 @@ datasource:
     url: jdbc:mysql://localhost:3306/runelite-tracker
     username: runelite
     password: runelite
+
+# Development oauth callback (without proxy)
+oauth:
+  callback: http://localhost:8080/account/callback
