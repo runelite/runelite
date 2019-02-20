@@ -87,7 +87,7 @@ public class WikiPlugin extends Plugin
 	private static final String MENUOP_WIKI = "Wiki";
 
 	private static final String DIARY_REGEX = "Open [\\w &]+ Journal";
-
+	private static final Pattern SKILL_REGEX = Pattern.compile("([A-Za-z]+) guide");
 
 	@Inject
 	private SpriteManager spriteManager;
@@ -332,7 +332,7 @@ public class WikiPlugin extends Plugin
 		boolean isDiary = Ints.compare(DIARYLIST_WIDGET_ID, widgetID) == 0 && Pattern.matches(DIARY_REGEX, event.getOption());
 
 		if (isQuest || isDiary)
-    	{
+		{
 			int addMenuNum = 2;
 
 			if (isDiary)
