@@ -220,7 +220,9 @@ class KourendLibraryOverlay extends Overlay
 				{
 					Book b = library.getCustomerBook();
 					ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
-					boolean hasBookInInventory = itemContainer != null && b != null && Arrays.stream(itemContainer.getItems()).anyMatch(item -> item.getId() == b.getItem());
+					boolean hasBookInInventory = itemContainer != null
+						&& b != null
+						&& Arrays.stream(itemContainer.getItems()).anyMatch(item -> item.getId() == b.getItem());
 					LocalPoint local = n.getLocalLocation();
 					Polygon poly = getCanvasTilePoly(client, local);
 					OverlayUtil.renderPolygon(g, poly, hasBookInInventory ? Color.GREEN : Color.WHITE);
