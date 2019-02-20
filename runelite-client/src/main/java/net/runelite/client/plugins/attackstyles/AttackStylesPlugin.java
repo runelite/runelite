@@ -70,6 +70,8 @@ public class AttackStylesPlugin extends Plugin
 {
 	private static final String WEAPON_SWITCH_MESSAGE = "By switching your weapon you are now on a warned attack style.";
 	private static final String LOCK_MESSAGE = "The attack option you selected is locked via the Attack Styles plugin.";
+	private static final String WARN_MESSAGE = "WARNING: Your attack style switched to: ";
+	private static final String WARN_AUTO_RETALIATE_MESSAGE = "WARNING: Your auto retaliate option changed to: ";
 
 	private int attackStyleVarbit = -1;
 	private int equippedWeaponTypeVarbit = -1;
@@ -214,13 +216,25 @@ public class AttackStylesPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		// Locked auto-retaliate?
+		// Warn for auto-retaliate?
 		if (event.getWidgetId() == WidgetInfo.COMBAT_AUTO_RETALIATE.getId()
-				&& config.warnForAutoRetaliate()
-				&& config.warnedStyleHandler() == HandleType.LOCK)
+				&& config.warnForAutoRetaliate())
 		{
-			sendChatMessage(LOCK_MESSAGE);
-			event.consume();
+			if (config.warnedStyleHandler() == HandleType.LOCK)
+			{
+				sendChatMessage(LOCK_MESSAGE);
+				event.consume();
+			}
+			else if (config.warnedStyleHandler() == HandleType.WARN)
+			{
+				int autoRetaliateOn = client.getVar(VarPlayer.AUTO_RETALIATE);
+				String onOffMessage = "OFF";
+				if (autoRetaliateOn == 1)
+				{
+					onOffMessage = "ON";
+				}
+				sendChatMessage(WARN_AUTO_RETALIATE_MESSAGE + onOffMessage + ".");
+			}
 			return;
 		}
 
@@ -345,6 +359,10 @@ public class AttackStylesPlugin extends Plugin
 					if (weaponSwitch)
 					{
 						sendChatMessage(WEAPON_SWITCH_MESSAGE);
+					}
+					else
+					{
+						sendChatMessage(WARN_MESSAGE + skill.getName() + ".");
 					}
 					warnedSkillSelected = true;
 					break;

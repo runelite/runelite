@@ -35,6 +35,7 @@ import lombok.Getter;
 public enum VarPlayer
 {
 	ATTACK_STYLE(43),
+	AUTO_RETALIATE(172),
 	QUEST_POINTS(101),
 	IS_POISONED(102),
 
