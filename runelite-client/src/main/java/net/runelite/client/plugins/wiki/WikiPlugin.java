@@ -202,6 +202,9 @@ public class WikiPlugin extends Plugin
 	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked ev)
 	{
+		//check to see if its a skill menu
+		boolean isSkill = ev.getMenuOption().startsWith("View");
+
 		if (wikiSelected)
 		{
 			onDeselect();
@@ -275,16 +278,21 @@ public class WikiPlugin extends Plugin
 			return;
 		}
 
-		if (ev.getMenuAction() == MenuAction.RUNELITE)
-		{
-			boolean quickguide = false;
-			switch (ev.getMenuOption())
-			{
+		if (ev.getMenuAction() == MenuAction.RUNELITE) {
+			String quickguide = "";
+			switch (ev.getMenuOption()) {
 				case MENUOP_QUICKGUIDE:
 					quickguide = true;
 					//fallthrough;
 				case MENUOP_WIKI:
-					//fallthrough;
+					if (isSkill) {
+						Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
+
+						if (skillRegex.find()) {
+							LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(skillRegex.group(1)) + "?" + UTM_PARAMS);
+						}
+					}
+					//Diaries will fallthrough;
 				case MENUOP_GUIDE:
 					ev.consume();
 					String quest = Text.removeTags(ev.getMenuTarget());
@@ -298,26 +306,6 @@ public class WikiPlugin extends Plugin
 					}
 					LinkBrowser.browse(ub.build().toString());
 					break;
-				case MENUOP_WIKI:
-					Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
-					Matcher diaryRegex = WikiPlugin.DIARY_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
-
-					if (skillRegex.find())
-					{
-						LinkBrowser.browse(WIKI_BASE.newBuilder()
-							.addPathSegment("w")
-							.addPathSegment(skillRegex.group(1))
-							.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE)
-							.build().toString());
-					}
-					else if (diaryRegex.find())
-					{
-						LinkBrowser.browse(WIKI_BASE.newBuilder()
-							.addPathSegment("w")
-							.addPathSegment(diaryRegex.group(1) + " Diary")
-							.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE)
-							.build().toString());
-					}
 			}
 		}
 	}
@@ -339,20 +327,53 @@ public class WikiPlugin extends Plugin
 		boolean isQuest = Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) || "Read Journal:".equals(event.getOption());
 		boolean isDiary = Ints.compare(DIARYLIST_WIDGET_ID, widgetID) == 0 && Pattern.matches(DIARY_REGEX, event.getOption());
 
-		if (!isQuest && !isDiary)
-		{
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+		if (isQuest || isDiary)
+    	{
+			int addMenuNum = 2;
 
+			if (isDiary)
+			{
+				addMenuNum = 1;
+			}
+
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + addMenuNum);
 			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			menuEntry.setTarget(event.getTarget());
-			menuEntry.setOption(MENUOP_GUIDE);
+			if (isQuest)
+			{
+				menuEntry.setTarget(event.getTarget());
+				menuEntry.setOption(MENUOP_GUIDE);
+			}
+			else if (isDiary)
+			{
+				String diaryName = event.getOption().substring(5, (event.getOption().length() - 8));
+				menuEntry.setTarget(diaryName + " Diary");
+				menuEntry.setOption(MENUOP_WIKI);
+			}
 			menuEntry.setParam0(widgetIndex);
 			menuEntry.setParam1(widgetID);
 			menuEntry.setType(MenuAction.RUNELITE.getId());
 
-			menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
-			menuEntry.setTarget(event.getTarget());
-			menuEntry.setOption(MENUOP_QUICKGUIDE);
+			//Diaries don't have a quickguide
+			if (isQuest)
+			{
+				menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
+				menuEntry.setTarget(event.getTarget());
+				menuEntry.setOption(MENUOP_QUICKGUIDE);
+				menuEntry.setParam0(widgetIndex);
+				menuEntry.setParam1(widgetID);
+				menuEntry.setType(MenuAction.RUNELITE.getId());
+			}
+
+			client.setMenuEntries(menuEntries);
+		}
+
+		if ((WidgetInfo.TO_GROUP(widgetID) == WidgetID.SKILLS_GROUP_ID) && event.getOption().startsWith("View"))
+		{
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+
+			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			menuEntry.setTarget(event.getOption().replace("View ", ""));
+			menuEntry.setOption(MENUOP_WIKI);
 			menuEntry.setParam0(widgetIndex);
 			menuEntry.setParam1(widgetID);
 			menuEntry.setType(MenuAction.RUNELITE.getId());
