@@ -196,6 +196,9 @@ public class WikiPlugin extends Plugin
 	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked ev)
 	{
+		//check to see if its a skill menu
+		boolean isSkill = ev.getMenuOption().startsWith("View");
+
 		if (wikiSelected)
 		{
 			onDeselect();
@@ -242,28 +245,26 @@ public class WikiPlugin extends Plugin
 			return;
 		}
 
-		if (ev.getMenuAction() == MenuAction.RUNELITE)
-		{
+		if (ev.getMenuAction() == MenuAction.RUNELITE) {
 			String quickguide = "";
-			switch (ev.getMenuOption())
-			{
+			switch (ev.getMenuOption()) {
 				case MENUOP_QUICKGUIDE:
 					quickguide = "/Quick_guide";
 					//fallthrough;
 				case MENUOP_WIKI:
-					//fallthrough;
+					if (isSkill) {
+						Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
+
+						if (skillRegex.find()) {
+							LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(skillRegex.group(1)) + "?" + UTM_PARAMS);
+						}
+					}
+					//Diaries will fallthrough;
 				case MENUOP_GUIDE:
 					ev.consume();
 					String quest = Text.removeTags(ev.getMenuTarget());
 					LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(quest.replace(' ', '_')) + quickguide + "?" + UTM_PARAMS);
 					break;
-				case MENUOP_WIKI_SKILL:
-					Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
-
-					if (skillRegex.find())
-					{
-						LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(skillRegex.group(1)) + "?" + UTM_PARAMS);
-					}
 			}
 		}
 	}
@@ -286,55 +287,52 @@ public class WikiPlugin extends Plugin
 		boolean isDiary = Ints.compare(DIARYLIST_WIDGET_ID, widgetID) == 0 && Pattern.matches(DIARY_REGEX, event.getOption());
 
 		if (isQuest || isDiary)
-    { 
-      int addMenuNum = 2;
+    	{
+			int addMenuNum = 2;
 
-      if (isDiary)
-      {
-        addMenuNum = 1;
-      }
+			if (isDiary)
+			{
+				addMenuNum = 1;
+			}
 
-      MenuEntry[] menuEntries = client.getMenuEntries();
-      menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + addMenuNum);
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + addMenuNum);
+			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			if (isQuest)
+			{
+				menuEntry.setTarget(event.getTarget());
+				menuEntry.setOption(MENUOP_GUIDE);
+			}
+			else if (isDiary)
+			{
+				String diaryName = event.getOption().substring(5, (event.getOption().length() - 8));
+				menuEntry.setTarget(diaryName + " Diary");
+				menuEntry.setOption(MENUOP_WIKI);
+			}
+			menuEntry.setParam0(widgetIndex);
+			menuEntry.setParam1(widgetID);
+			menuEntry.setType(MenuAction.RUNELITE.getId());
 
+			//Diaries don't have a quickguide
+			if (isQuest)
+			{
+				menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
+				menuEntry.setTarget(event.getTarget());
+				menuEntry.setOption(MENUOP_QUICKGUIDE);
+				menuEntry.setParam0(widgetIndex);
+				menuEntry.setParam1(widgetID);
+				menuEntry.setType(MenuAction.RUNELITE.getId());
+			}
 
-      MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-      if (isQuest)
-      {
-        menuEntry.setTarget(event.getTarget());
-        menuEntry.setOption(MENUOP_GUIDE);
-      }
-      else if (isDiary)
-      {
-        String diaryName = event.getOption().substring(5, (event.getOption().length() - 8));
-        menuEntry.setTarget(diaryName + " Diary");
-        menuEntry.setOption(MENUOP_WIKI);
-      }
-      menuEntry.setParam0(widgetIndex);
-      menuEntry.setParam1(widgetID);
-      menuEntry.setType(MenuAction.RUNELITE.getId());
+			client.setMenuEntries(menuEntries);
+		}
 
-      //Diaries don't have a quickguide
-      if (isQuest)
-      {
-        menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
-        menuEntry.setTarget(event.getTarget());
-        menuEntry.setOption(MENUOP_QUICKGUIDE);
-        menuEntry.setParam0(widgetIndex);
-        menuEntry.setParam1(widgetID);
-        menuEntry.setType(MenuAction.RUNELITE.getId());
-      }
-
-		  client.setMenuEntries(menuEntries);
-    }
-    
 		if ((WidgetInfo.TO_GROUP(widgetID) == WidgetID.SKILLS_GROUP_ID) && event.getOption().startsWith("View"))
 		{
 			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
 			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 			menuEntry.setTarget(event.getOption().replace("View ", ""));
-			menuEntry.setOption(MENUOP_WIKI_SKILL);
+			menuEntry.setOption(MENUOP_WIKI);
 			menuEntry.setParam0(widgetIndex);
 			menuEntry.setParam1(widgetID);
 			menuEntry.setIdentifier(event.getIdentifier());
