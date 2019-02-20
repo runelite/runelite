@@ -309,10 +309,8 @@ public class AttackStylesPlugin extends Plugin
 				case "warnForMagic":
 					updateWarnedSkills(enabled, Skill.MAGIC);
 					break;
-				case "warnedStyleHandler":
-					updateWarning(false);
-					break;
 			}
+			updateWarning(false);
 			processWidgets();
 		}
 	}
@@ -344,7 +342,6 @@ public class AttackStylesPlugin extends Plugin
 		{
 			warnedSkills.remove(skill);
 		}
-		updateWarning(false);
 	}
 
 	private void updateWarning(boolean weaponSwitch)
