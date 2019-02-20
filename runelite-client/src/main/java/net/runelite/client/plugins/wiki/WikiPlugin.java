@@ -278,17 +278,21 @@ public class WikiPlugin extends Plugin
 			return;
 		}
 
-		if (ev.getMenuAction() == MenuAction.RUNELITE) {
+		if (ev.getMenuAction() == MenuAction.RUNELITE)
+		{
 			String quickguide = "";
-			switch (ev.getMenuOption()) {
+			switch (ev.getMenuOption())
+			{
 				case MENUOP_QUICKGUIDE:
 					quickguide = true;
 					//fallthrough;
 				case MENUOP_WIKI:
-					if (isSkill) {
+					if (isSkill)
+					{
 						Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
 
-						if (skillRegex.find()) {
+						if (skillRegex.find())
+						{
 							LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(skillRegex.group(1)) + "?" + UTM_PARAMS);
 						}
 					}
