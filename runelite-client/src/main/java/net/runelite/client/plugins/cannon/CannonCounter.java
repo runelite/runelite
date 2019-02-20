@@ -26,15 +26,15 @@ package net.runelite.client.plugins.cannon;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.infobox.Counter;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-public class CannonCounter extends Counter
+public class CannonCounter extends InfoBox
 {
 	private final CannonPlugin plugin;
 
 	public CannonCounter(BufferedImage img, CannonPlugin plugin)
 	{
-		super(img, plugin, String.valueOf(plugin.getCballsLeft()));
+		super(img, plugin);
 		this.plugin = plugin;
 	}
 

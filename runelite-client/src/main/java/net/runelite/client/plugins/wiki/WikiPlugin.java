@@ -27,6 +27,8 @@ package net.runelite.client.plugins.wiki;
 import com.google.common.primitives.Ints;
 import java.net.URLEncoder;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +57,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
 import okhttp3.HttpUrl;
-import java.util.regex.Pattern;
 
 @Slf4j
 @PluginDescriptor(
@@ -85,6 +86,8 @@ public class WikiPlugin extends Plugin
 	private static final String MENUOP_WIKI = "Wiki";
 
 	private static final String DIARY_REGEX = "Open [\\w &]+ Journal";
+  private static final Pattern SKILL_REGEX = Pattern.compile("([A-Za-z]+) guide");
+
 
 	@Inject
 	private SpriteManager spriteManager;
@@ -254,6 +257,13 @@ public class WikiPlugin extends Plugin
 					String quest = Text.removeTags(ev.getMenuTarget());
 					LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(quest.replace(' ', '_')) + quickguide + "?" + UTM_PARAMS);
 					break;
+				case MENUOP_WIKI_SKILL:
+					Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
+
+					if (skillRegex.find())
+					{
+						LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(skillRegex.group(1)) + "?" + UTM_PARAMS);
+					}
 			}
 		}
 	}
@@ -269,55 +279,68 @@ public class WikiPlugin extends Plugin
 	{
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
-
+		MenuEntry[] menuEntries = client.getMenuEntries();
+    
 		//check to see if mouse is pointing to a quest or a diary
 		boolean isQuest = Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) || "Read Journal:".equals(event.getOption());
 		boolean isDiary = Ints.compare(DIARYLIST_WIDGET_ID, widgetID) == 0 && Pattern.matches(DIARY_REGEX, event.getOption());
 
-		if (!isQuest && !isDiary)
+		if (isQuest || isDiary)
+    { 
+      int addMenuNum = 2;
+
+      if (isDiary)
+      {
+        addMenuNum = 1;
+      }
+
+      MenuEntry[] menuEntries = client.getMenuEntries();
+      menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + addMenuNum);
+
+
+      MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+      if (isQuest)
+      {
+        menuEntry.setTarget(event.getTarget());
+        menuEntry.setOption(MENUOP_GUIDE);
+      }
+      else if (isDiary)
+      {
+        String diaryName = event.getOption().substring(5, (event.getOption().length() - 8));
+        menuEntry.setTarget(diaryName + " Diary");
+        menuEntry.setOption(MENUOP_WIKI);
+      }
+      menuEntry.setParam0(widgetIndex);
+      menuEntry.setParam1(widgetID);
+      menuEntry.setType(MenuAction.RUNELITE.getId());
+
+      //Diaries don't have a quickguide
+      if (isQuest)
+      {
+        menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
+        menuEntry.setTarget(event.getTarget());
+        menuEntry.setOption(MENUOP_QUICKGUIDE);
+        menuEntry.setParam0(widgetIndex);
+        menuEntry.setParam1(widgetID);
+        menuEntry.setType(MenuAction.RUNELITE.getId());
+      }
+
+		  client.setMenuEntries(menuEntries);
+    }
+    
+		if ((WidgetInfo.TO_GROUP(widgetID) == WidgetID.SKILLS_GROUP_ID) && event.getOption().startsWith("View"))
 		{
-			return;
-		}
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
-		//number of menus to add
-		int addMenuNum = 2;
-
-		if (isDiary)
-		{
-			addMenuNum = 1;
-		}
-
-		MenuEntry[] menuEntries = client.getMenuEntries();
-		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + addMenuNum);
-
-
-		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-		if (isQuest)
-		{
-			menuEntry.setTarget(event.getTarget());
-			menuEntry.setOption(MENUOP_GUIDE);
-		}
-		else if (isDiary)
-		{
-			String diaryName = event.getOption().substring(5, (event.getOption().length() - 8));
-			menuEntry.setTarget(diaryName + " Diary");
-			menuEntry.setOption(MENUOP_WIKI);
-		}
-		menuEntry.setParam0(widgetIndex);
-		menuEntry.setParam1(widgetID);
-		menuEntry.setType(MenuAction.RUNELITE.getId());
-
-		//Diaries don't have a quickguide
-		if (isQuest)
-		{
-			menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
-			menuEntry.setTarget(event.getTarget());
-			menuEntry.setOption(MENUOP_QUICKGUIDE);
+			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			menuEntry.setTarget(event.getOption().replace("View ", ""));
+			menuEntry.setOption(MENUOP_WIKI_SKILL);
 			menuEntry.setParam0(widgetIndex);
 			menuEntry.setParam1(widgetID);
+			menuEntry.setIdentifier(event.getIdentifier());
 			menuEntry.setType(MenuAction.RUNELITE.getId());
-		}
 
-		client.setMenuEntries(menuEntries);
+			client.setMenuEntries(menuEntries);
+		}
 	}
 }

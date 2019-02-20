@@ -1,0 +1,7 @@
+datasource:
+  runelite:
+    jndiName: java:comp/env/jdbc/runelite
+  runelite-cache:
+    jndiName: java:comp/env/jdbc/runelite-cache2
+  runelite-tracker:
+    jndiName: java:comp/env/jdbc/runelite-tracker

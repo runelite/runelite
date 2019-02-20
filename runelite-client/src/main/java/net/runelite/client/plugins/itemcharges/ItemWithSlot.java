@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.client.plugins.itemcharges;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import com.google.common.collect.Sets;
+import java.util.Set;
+import lombok.Getter;
+import net.runelite.api.EquipmentInventorySlot;
 
-/**
- * Configure .js as application/json to trick Cloudflare into caching json responses
- */
-@Configuration
-@EnableWebMvc
-public class SpringContentNegotiationConfigurer extends WebMvcConfigurerAdapter
+@Getter
+enum ItemWithSlot
 {
-	@Override
-	public void configureContentNegotiation(ContentNegotiationConfigurer configurer)
+	ABYSSAL_BRACELET(ItemChargeType.ABYSSAL_BRACELET, EquipmentInventorySlot.GLOVES),
+	DODGY_NECKLACE(ItemChargeType.DODGY_NECKLACE, EquipmentInventorySlot.AMULET),
+	TELEPORT(ItemChargeType.TELEPORT, EquipmentInventorySlot.WEAPON, EquipmentInventorySlot.AMULET, EquipmentInventorySlot.GLOVES, EquipmentInventorySlot.RING);
+
+	private final ItemChargeType type;
+	private final Set<EquipmentInventorySlot> slots;
+
+	ItemWithSlot(final ItemChargeType type, final EquipmentInventorySlot... slots)
 	{
-		configurer.mediaType("js", MediaType.APPLICATION_JSON);
+		this.type = type;
+		this.slots = Sets.newHashSet(slots);
 	}
 }

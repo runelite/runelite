@@ -257,6 +257,15 @@ public class ItemManager
 	}
 
 	/**
+	 * Invalidates internal item manager item composition cache (but not client item composition cache)
+	 * @see Client#getItemCompositionCache()
+	 */
+	public void invalidateItemCompositionCache()
+	{
+		itemCompositions.invalidateAll();
+	}
+
+	/**
 	 * Look up an item's price
 	 *
 	 * @param itemID item id

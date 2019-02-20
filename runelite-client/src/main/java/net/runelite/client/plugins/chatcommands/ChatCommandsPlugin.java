@@ -299,7 +299,7 @@ public class ChatCommandsPlugin extends Plugin
 			Widget boss = bossChildren[i];
 			Widget kill = killsChildren[i];
 
-			String bossName = boss.getText();
+			String bossName = boss.getText().replace(":", "");
 			int kc = Integer.parseInt(kill.getText().replace(",", ""));
 			if (kc != getKc(bossName))
 			{
@@ -1089,6 +1089,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "barrows":
 				return "Barrows Chests";
 
+			// cox
 			case "cox":
 			case "xeric":
 			case "chambers":
@@ -1096,6 +1097,15 @@ public class ChatCommandsPlugin extends Plugin
 			case "raids":
 				return "Chambers of Xeric";
 
+			// cox cm
+			case "cox cm":
+			case "xeric cm":
+			case "chambers cm":
+			case "olm cm":
+			case "raids cm":
+				return "Chambers of Xeric Challenge Mode";
+
+			// tob
 			case "tob":
 			case "theatre":
 			case "verzik":
