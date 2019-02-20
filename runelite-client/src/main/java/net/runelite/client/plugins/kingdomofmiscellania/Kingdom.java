@@ -26,64 +26,102 @@
 package net.runelite.client.plugins.kingdomofmiscellania;
 
 import java.util.HashMap;
+import java.util.Map;
 import lombok.Getter;
 
 public class Kingdom
 {
-	@Getter
-	private int totalWorkers;
+	private int numberOfWorkers;
 
 	// How much money is withdrawn from the coffer for that day
-	@Getter
-	private int baseSalary;
+	private int kingdomFunds;
 	// How much of that money is used towards gathering resources
 	@Getter
-	private int effectiveSalary;
+	private int effectiveFunds;
 
-	// Highest is 5000 per worker minus the effectiveSalary / totalWorkers
-	@Getter
-	private int individualWorkerSalary;
+	// Highest is 5000 per worker minus the effectiveFunds / totalWorkers
+	private int workerSalary;
 
-	@Getter
-	int netProfit;
+	int grossProfit;
 
-	@Getter
-	ResourceType primaryResource;
+	boolean isPersonalKingdom;
 
-	@Getter
-	ResourceType secondaryResource;
-
-	@Getter
-	int primaryAmount = 0;
-
-	@Getter
-	int secondaryAmount = 0;
-
-	@Getter
 	HashMap <ResourceType, Integer> resourceDistribution;
 
-	@Getter
-	HashMap <String, Integer> rewardSummary;
+	HashMap <ResourceType, Integer> resourceProfit;
 
+	HashMap <Reward, Integer> rewardQuantity;
 
-	Kingdom(int workers)
+	HashMap <Reward, Integer> rewardProfit;
+
+	Kingdom(int workers, boolean personal)
 	{
-		totalWorkers = workers;
+		numberOfWorkers = workers;
+		isPersonalKingdom = personal;
+		effectiveFunds = 75000;
+		workerSalary = 5000;
+
+		resourceDistribution = new HashMap<>();
+		for (ResourceType resource : ResourceType.values())
+		{
+			// Put 10 workers on each resource
+			resourceDistribution.put(resource, 10);
+		}
+		calculateRewardQuantities();
 	}
 
-	void getSalary(int coffer, int favor)
+	void calculateKingdomFunds(int coffer, int favor)
 	{
-		if (totalWorkers == 10)
+
+		if (numberOfWorkers == 10)
 		{
-			baseSalary = coffer >= 500000 ? 50000 : coffer / 10;
+			kingdomFunds = coffer >= 500000 ? 50000 : coffer / 10;
 		}
 		else
 		{
-			baseSalary = coffer >= 750000 ? 75000 : coffer / 10;
+			kingdomFunds = coffer >= 750000 ? 75000 : coffer / 10;
 		}
 
 		// take favour percentage into account
-		effectiveSalary = (int) (baseSalary * ((double) favor / 100));
-		individualWorkerSalary = effectiveSalary / totalWorkers;
+		effectiveFunds = (int) (kingdomFunds * ((double) favor / 100));
+		workerSalary = effectiveFunds / numberOfWorkers;
+	}
+
+	void calculateRewardQuantities()
+	{
+		if (workerSalary == 0)
+		{
+			return;
+		}
+
+		rewardQuantity = new HashMap<>();
+		for (Map.Entry<ResourceType, Integer> entry : resourceDistribution.entrySet())
+		{
+			int workersOnResource = entry.getValue();
+			for (Reward reward : Reward.values())
+			{
+				if (reward.getType() == entry.getKey() && workersOnResource != 0)
+				{
+					// Calculate quantity of the specific reward
+					int quantity = (int) (reward.getMaxQuantity() * workersOnResource * workerSalary) / 50000;
+					rewardQuantity.put(reward, quantity);
+				}
+			}
+		}
+	}
+
+	void getResourceProfit()
+	{
+		grossProfit = 0;
+		resourceProfit = new HashMap<>();
+
+		for (Map.Entry<Reward, Integer> entry : rewardProfit.entrySet())
+		{
+			Reward reward = entry.getKey();
+			int profit = entry.getValue();
+			ResourceType type = reward.getType();
+			resourceProfit.put(type, resourceProfit.get(type) == null ? profit : resourceProfit.get(type) + profit);
+			grossProfit += profit;
+		}
 	}
 }

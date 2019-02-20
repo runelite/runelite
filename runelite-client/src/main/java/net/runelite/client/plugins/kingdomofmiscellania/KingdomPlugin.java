@@ -28,7 +28,6 @@ import com.google.common.collect.ImmutableSet;
 
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
@@ -74,15 +73,7 @@ public class KingdomPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Getter
-	private int favor = 0, coffer = 0, hardwoodButton = 0, cookedFishButton = 0, herbsButton = 0;
-
-	@Getter
-	private int miningWorkers = 0, herbsWorkers = 0, farmWorkers = 0;
-
-	@Getter
-	private int fishingWorkers = 0, woodWorkers = 0, hardwoodWorkers = 0;
-
-	private int workers;
+	private int favor = 0, coffer = 0;
 
 	private boolean throneOfMiscellania = false;
 
@@ -91,10 +82,10 @@ public class KingdomPlugin extends Plugin
 	private KingdomCounter counter;
 
 	@Getter
-	private Kingdom max = new Kingdom(15);
+	private Kingdom maxKingdom = new Kingdom(15, false);
 
 	@Getter
-	private Kingdom personal;
+	private Kingdom personalKingdom;
 
 	@Override
 	protected void shutDown() throws Exception
@@ -105,10 +96,23 @@ public class KingdomPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if  (client.getGameState() == GameState.LOGGED_IN)
+		if (client.getGameState() == GameState.LOGGED_IN && isInKingdom())
 		{
-			getVarbits();
-			processInfobox();
+			if (!royalTrouble || !throneOfMiscellania)
+			{
+				clientThread.invokeLater(() -> hasCompletedQuests());
+			}
+			if (throneOfMiscellania || royalTrouble)
+			{
+				setKingdomResourceDistribution();
+				kingdomManagement(personalKingdom);
+				kingdomManagement(maxKingdom);
+				addKingdomInfobox();
+			}
+			else
+			{
+				removeKingdomInfobox();
+			}
 		}
 	}
 
@@ -117,155 +121,74 @@ public class KingdomPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			getVarbits();
-			processInfobox();
-		}
-	}
-
-	private void getVarbits()
-	{
-		if (isInKingdom())
-		{
-			favor = client.getVar(Varbits.KINGDOM_FAVOR);
-			coffer = client.getVar(Varbits.KINGDOM_COFFER);
-
-			miningWorkers = client.getVar(Varbits.KINGDOM_WORKERS_MINING);
-			herbsWorkers = client.getVar(Varbits.KINGDOM_WORKERS_HERBS);
-			farmWorkers = client.getVar(Varbits.KINGDOM_WORKERS_FARM);
-			fishingWorkers = client.getVar(Varbits.KINGDOM_WORKERS_FISHING);
-			woodWorkers = client.getVar(Varbits.KINGDOM_WORKERS_WOOD);
-			hardwoodWorkers = client.getVar(Varbits.KINGDOM_WORKERS_HARDWOOD);
-
-			hardwoodButton = client.getVar(Varbits.KINGDOM_WORKERS_HARDWOOD_BUTTON);
-			cookedFishButton = client.getVar(Varbits.KINGDOM_WORKERS_FISH_COOKED_BUTTON);
-			herbsButton = client.getVar(Varbits.KINGDOM_WORKERS_HERBS_BUTTON);
-		}
-	}
-
-	private void processInfobox()
-	{
-		if (client.getGameState() == GameState.LOGGED_IN && isInKingdom())
-		{
-			if (!throneOfMiscellania || !royalTrouble)
+			if (!royalTrouble || !throneOfMiscellania)
 			{
 				clientThread.invokeLater(() -> hasCompletedQuests());
 			}
-			else
+			if ((throneOfMiscellania || royalTrouble) && isInKingdom())
 			{
-				createMaxKingdom();
-				createPersonalKingdom();
+				setKingdomResourceDistribution();
+				kingdomManagement(personalKingdom);
+				kingdomManagement(maxKingdom);
 				addKingdomInfobox();
 			}
-		}
-		else
-		{
-			removeKingdomInfobox();
-		}
-	}
-
-	private void createMaxKingdom()
-	{
-		max.getSalary(750000, getFavorPercent(127));
-		getMaxWorkerDistribution();
-		calculateRewards(max);
-	}
-
-	private void createPersonalKingdom()
-	{
-		personal = new Kingdom(workers);
-		personal.getSalary(coffer, getFavorPercent(favor));
-
-		log.debug("Number of workers in Kingdom " + personal.getTotalWorkers());
-		log.debug("Effective salary: " + personal.getEffectiveSalary());
-		log.debug("Individual worker salary: " + personal.getIndividualWorkerSalary());
-
-		getPersonalWorkerDistribution();
-		calculateRewards(personal);
-	}
-
-	private void getMaxWorkerDistribution()
-	{
-		max.resourceDistribution = new HashMap<>();
-		for (ResourceType resource : ResourceType.values())
-		{
-			// Put 10 workers on each resource
-			max.resourceDistribution.put(resource, 10);
+			else
+			{
+				removeKingdomInfobox();
+			}
 		}
 	}
 
-	private void getPersonalWorkerDistribution()
+	private void setKingdomResourceDistribution()
 	{
+		int hardwoodButton, cookedFishButton, herbsButton;
+
+		favor = client.getVar(Varbits.KINGDOM_FAVOR);
+		coffer = client.getVar(Varbits.KINGDOM_COFFER);
+
+		hardwoodButton = client.getVar(Varbits.KINGDOM_WORKERS_HARDWOOD_BUTTON);
+		cookedFishButton = client.getVar(Varbits.KINGDOM_WORKERS_FISH_COOKED_BUTTON);
+		herbsButton = client.getVar(Varbits.KINGDOM_WORKERS_HERBS_BUTTON);
+
 		ResourceType herbsOrFlax = herbsButton == 0 ? ResourceType.HERBS : ResourceType.FLAX;
 		ResourceType cookedOrRaw = cookedFishButton == 0 ? ResourceType.RAW_FISH : ResourceType.COOKED_FISH;
 		ResourceType hardwoodType = hardwoodButton == 0 ? ResourceType.HARDWOOD_MAHOGANY
 			: hardwoodButton == 1 ? ResourceType.HARDWOOD_TEAK : ResourceType.HARDWOOD_BOTH;
 
-		personal.resourceDistribution = new HashMap<>();
-		personal.resourceDistribution.put(herbsOrFlax, herbsWorkers);
-		personal.resourceDistribution.put(cookedOrRaw, fishingWorkers);
-		personal.resourceDistribution.put(hardwoodType, hardwoodWorkers);
-		personal.resourceDistribution.put(ResourceType.MINING, miningWorkers);
-		personal.resourceDistribution.put(ResourceType.WOOD, woodWorkers);
-		personal.resourceDistribution.put(ResourceType.FARM, farmWorkers);
+		personalKingdom.resourceDistribution = new HashMap<>();
+		personalKingdom.resourceDistribution.put(herbsOrFlax, client.getVar(Varbits.KINGDOM_WORKERS_HERBS));
+		personalKingdom.resourceDistribution.put(cookedOrRaw, client.getVar(Varbits.KINGDOM_WORKERS_FISHING));
+		personalKingdom.resourceDistribution.put(hardwoodType, client.getVar(Varbits.KINGDOM_WORKERS_HARDWOOD));
+		personalKingdom.resourceDistribution.put(ResourceType.MINING, client.getVar(Varbits.KINGDOM_WORKERS_MINING));
+		personalKingdom.resourceDistribution.put(ResourceType.WOOD, client.getVar(Varbits.KINGDOM_WORKERS_WOOD));
+		personalKingdom.resourceDistribution.put(ResourceType.FARM, client.getVar(Varbits.KINGDOM_WORKERS_FARM));
 	}
 
-	public void calculateRewards(Kingdom kingdom)
+	private void kingdomManagement(Kingdom kingdom)
 	{
-		int workersOnResource;
-		int rewardQuantity;
-		int rewardAmount;
-		int resourceAmount;
-		int totalAmount = 0;
-
-		kingdom.rewardSummary = new HashMap<>();
-		Iterator it = kingdom.resourceDistribution.entrySet().iterator();
-
-		while (it.hasNext())
+		if (kingdom.isPersonalKingdom)
 		{
-			Map.Entry pairs = (Map.Entry) it.next();
-			workersOnResource = (int) pairs.getValue();
-			resourceAmount = 0;
-			log.debug(workersOnResource + " workers on resource: " + pairs.getKey());
+			kingdom.calculateKingdomFunds(coffer, getFavorPercent(favor));
+			kingdom.calculateRewardQuantities();
+		}
+		calculateRewards(kingdom);
+		kingdom.getResourceProfit();
+	}
 
-			for (Reward reward : Reward.values())
+	private void calculateRewards(Kingdom kingdom)
+	{
+		kingdom.rewardProfit = new HashMap<>();
+
+		for (Map.Entry<Reward, Integer> entry : kingdom.rewardQuantity.entrySet())
+		{
+			if (entry.getValue() != null)
 			{
-				if (reward.getType() == pairs.getKey() && workersOnResource != 0)
-				{
-					// Calculate the quantity of the specific reward
-					rewardQuantity = (int) (reward.getMaxQuantity() * workersOnResource
-						* kingdom.getIndividualWorkerSalary()) / 50000;
-
-					// Get the amount in gp from the quantity and cost
-					rewardAmount = rewardQuantity * itemManager.getItemPrice(reward.getRewardId());
-
-					// Add to total resource accumulator
-					resourceAmount += rewardAmount;
-
-					//String summary = reward.getName() + " x " + rewardQuantity + " : "
-					//	+ StackFormatter.formatNumber(rewardAmount);
-
-					// Populate the rewards summary hashMap
-					kingdom.getRewardSummary().put(reward.getName(), rewardQuantity);
-
-					log.debug(reward.getName() + " Workers: " + workersOnResource + ", Salary: "
-						+ kingdom.getIndividualWorkerSalary()
-						+ ", Quantity: " + rewardQuantity + ", GP: " + rewardAmount);
-				}
-			}
-			totalAmount += resourceAmount;
-
-			if (resourceAmount > kingdom.getPrimaryAmount())
-			{
-				kingdom.primaryAmount = resourceAmount;
-				kingdom.primaryResource = (ResourceType) pairs.getKey();
-			}
-			else if (resourceAmount > kingdom.getSecondaryAmount() && pairs.getKey() != kingdom.primaryResource)
-			{
-				kingdom.secondaryAmount = resourceAmount;
-				kingdom.secondaryResource = (ResourceType) pairs.getKey();
+				Reward reward = entry.getKey();
+				int quantity = entry.getValue();
+				int total = quantity * itemManager.getItemPrice(reward.getRewardId());
+				kingdom.rewardProfit.put(reward, total);
 			}
 		}
-		kingdom.netProfit = totalAmount - kingdom.getBaseSalary();
 	}
 
 	private void addKingdomInfobox()
@@ -294,28 +217,19 @@ public class KingdomPlugin extends Plugin
 				&& KINGDOM_REGION.contains(client.getLocalPlayer().getWorldLocation().getRegionID());
 	}
 
-	public void hasCompletedQuests()
+	private void hasCompletedQuests()
 	{
 		if (Quest.ROYAL_TROUBLE.getState(client) == QuestState.FINISHED)
 		{
-			workers = 15;
 			royalTrouble = true;
-			throneOfMiscellania = true;
-			createMaxKingdom();
-			createPersonalKingdom();
-			addKingdomInfobox();
-
-			log.debug("Royal Trouble quest check");
+			personalKingdom = new Kingdom(15, true);
+			log.debug("Quest: Royal Trouble Finished");
 		}
 		else if (Quest.THRONE_OF_MISCELLANIA.getState(client) == QuestState.FINISHED)
 		{
-			workers = 10;
 			throneOfMiscellania = true;
-			createMaxKingdom();
-			createPersonalKingdom();
-			addKingdomInfobox();
-
-			log.debug("Throne of Miscellania quest check");
+			personalKingdom = new Kingdom(10, true);
+			log.debug("Quest: Throne of Miscellania Finished");
 		}
 	}
 	
@@ -323,5 +237,4 @@ public class KingdomPlugin extends Plugin
 	{
 		return (favor * 100) / 127;
 	}
-
 }

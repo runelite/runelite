@@ -72,34 +72,13 @@ public class KingdomPluginTest {
 	@Test
 	public void testSalaries()
 	{
-		Kingdom basic = new Kingdom(10);
-		Kingdom expansion = new Kingdom(15);
+		Kingdom basic = new Kingdom(10, false);
+		Kingdom expansion = new Kingdom(15, false);
 
-		basic.getSalary(475000,95);
-		expansion.getSalary(1250000, 50);
+		basic.calculateKingdomFunds(475000,95);
+		expansion.calculateKingdomFunds(1250000, 50);
 
-		assertEquals(45125, basic.getEffectiveSalary());
-		assertEquals(37500, expansion.getEffectiveSalary());
+		assertEquals(45125, basic.getEffectiveFunds());
+		assertEquals(37500, expansion.getEffectiveFunds());
 	}
-
-	@Test
-	public void testCalculateRewards()
-	{
-		Kingdom basic = new Kingdom(10);
-		basic.getSalary(500000,100);
-		basic.resourceDistribution = new HashMap<>();
-		basic.resourceDistribution.put(ResourceType.FLAX, 10);
-
-		Item flax = mock(Item.class);
-		ItemPrice itemPrice = mock(ItemPrice.class);
-
-		when(flax.getId()).thenReturn(ItemID.FLAX);
-		when(itemManager.getItemPrice(flax.getId())).thenReturn(50000);
-		kingdomPlugin.calculateRewards(basic);
-
-		assertEquals(ResourceType.FLAX, basic.getPrimaryResource());
-		assertEquals(1250*50000,basic.getPrimaryAmount());
-
-	}
-
 }

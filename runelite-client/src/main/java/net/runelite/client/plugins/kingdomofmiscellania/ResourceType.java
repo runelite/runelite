@@ -39,7 +39,7 @@ enum ResourceType
 	RAW_FISH("Raw Fish"),
 	HARDWOOD_MAHOGANY("Mahogany"),
 	HARDWOOD_TEAK("Teak"),
-	HARDWOOD_BOTH("Teak and Mahogany"),
+	HARDWOOD_BOTH("Teak & Mahogany"),
 	FARM("Farm");
 
 	private String type;

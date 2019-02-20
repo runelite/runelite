@@ -29,19 +29,56 @@ import java.awt.image.BufferedImage;
 import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.ColorUtil;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Iterator;
 
 public class KingdomCounter extends Counter
 {
 	private final KingdomPlugin plugin;
-	String maxRewards = "";
+
 
 	public KingdomCounter(BufferedImage image, KingdomPlugin plugin)
 	{
 		super(image, plugin, plugin.getFavor());
 		this.plugin = plugin;
+	}
+
+	private String bestResources()
+	{
+		Kingdom maxKingdom = plugin.getMaxKingdom();
+
+		if (maxKingdom.resourceProfit == null)
+		{
+			return ColorUtil.wrapWithColorTag("Calculating resource profits...", Color.ORANGE);
+		}
+
+		String maxRewards = ColorUtil.wrapWithColorTag("Resource Yields </br>", Color.YELLOW);
+
+		for (Map.Entry<ResourceType, Integer> entry : maxKingdom.resourceProfit.entrySet())
+		{
+				maxRewards += entry.getKey().getType() + ": "
+				+ StackFormatter.formatNumber(entry.getValue()) + "</br>";
+		}
+		return maxRewards;
+	}
+
+	private String rewardInfo()
+	{
+		Kingdom personalKingdom = plugin.getPersonalKingdom();
+
+		if (personalKingdom.resourceProfit == null)
+		{
+			return ColorUtil.wrapWithColorTag("Calculating reward info...", Color.ORANGE);
+		}
+
+		String currentRewardSettings = ColorUtil.wrapWithColorTag("Current Rewards: ", Color.YELLOW)
+			+ StackFormatter.formatNumber(personalKingdom.grossProfit) + "</br>";
+
+		for (Map.Entry<Reward, Integer> entry : personalKingdom.rewardQuantity.entrySet())
+		{
+			currentRewardSettings += entry.getKey().getName() + " x " + StackFormatter.formatNumber(entry.getValue())
+				+ "</br>";
+		}
+		return currentRewardSettings;
 	}
 
 	@Override
@@ -53,35 +90,11 @@ public class KingdomCounter extends Counter
 	@Override
 	public String getTooltip()
 	{
-		HashMap <String, Integer> rewardSummary = plugin.getPersonal().getRewardSummary();
-
-		String kingdomSummary = ColorUtil.wrapWithColorTag("Favor:  ", Color.YELLOW)
+		String kingdomSummary = ColorUtil.wrapWithColorTag("Favor: ", Color.YELLOW)
 			+ plugin.getFavor() + " / 127" + "</br>"
 			+ ColorUtil.wrapWithColorTag("Coffer: ", Color.YELLOW)
 			+ StackFormatter.quantityToRSStackSize(plugin.getCoffer()) + "</br>";
 
-		String currentRewards = ColorUtil.wrapWithColorTag("Current Rewards: ", Color.YELLOW)
-			+ StackFormatter.formatNumber(plugin.getPersonal().getNetProfit()) + "</br>";
-
-		if (rewardSummary != null)
-		{
-			Iterator it = rewardSummary.entrySet().iterator();
-			while (it.hasNext())
-			{
-				Map.Entry pairs = (Map.Entry) it.next();
-
-
-				currentRewards += pairs.getKey() + "  x  " + pairs.getValue() + "</br>";
-			}
-			maxRewards = ColorUtil.wrapWithColorTag("Most profitable:  ", Color.YELLOW)
-				+ ColorUtil.wrapWithColorTag(plugin.getMax().getPrimaryResource().getType(), Color.CYAN)
-				+ "  " + StackFormatter.formatNumber(plugin.getMax().getPrimaryAmount()) + "</br>"
-				+ ColorUtil.wrapWithColorTag("Second highest:  ", Color.YELLOW)
-				+ ColorUtil.wrapWithColorTag(plugin.getMax().getSecondaryResource().getType(), Color.CYAN)
-				+ "  " + StackFormatter.formatNumber(plugin.getMax().getSecondaryAmount()) + "</br>";
-		}
-
-
-		return kingdomSummary + maxRewards + currentRewards;
+		return kingdomSummary + bestResources() + rewardInfo();
 	}
 }
