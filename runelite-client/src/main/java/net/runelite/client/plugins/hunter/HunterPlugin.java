@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Robin Weymans <Robin.weymans@gmail.com>
+ * Copyright (c) 2018, Lucas <https://github.com/Lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +38,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
@@ -49,12 +51,14 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.Text;
 
 @Slf4j
 @PluginDescriptor(
@@ -68,6 +72,9 @@ public class HunterPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -87,10 +94,12 @@ public class HunterPlugin extends Plugin
 	@Getter
 	private Instant lastActionTime = Instant.ofEpochMilli(0);
 
+	private final HashSet<WorldPoint> ourTrapLocs = new HashSet<>();
+	private final HashSet<WorldPoint> trapItemPoints = new HashSet<>();
+	private boolean hideTraps;
 	private int lastChatTick;
 	private WorldPoint lastTickLocalPlayerLocation;
 	private WorldPoint validPoint;
-	private HashSet<WorldPoint> trapItemPoints = new HashSet<>();
 
 	@Provides
 	HunterConfig provideConfig(ConfigManager configManager)
@@ -101,6 +110,7 @@ public class HunterPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		hideTraps = Boolean.parseBoolean(configManager.getConfiguration("menuentryswapper", "hidetraps"));
 		overlayManager.add(overlay);
 		overlay.updateConfig();
 		lastChatTick = -99;
@@ -111,6 +121,8 @@ public class HunterPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		lastActionTime = Instant.ofEpochMilli(0);
+		hideTraps = false;
+		ourTrapLocs.clear();
 		traps.clear();
 		trapItemPoints.clear();
 		validPoint = null;
@@ -162,7 +174,10 @@ public class HunterPlugin extends Plugin
 		{
 			if (tile.getWorldLocation().equals(validPoint))
 			{
-				log.debug("{} confirmed as player owned trap", validPoint);
+				if (ourTrapLocs.add(validPoint))
+				{
+					log.debug("{} confirmed as player owned trap location (#{})", validPoint, ourTrapLocs.size());
+				}
 			}
 			// If we don't know which trap we're setting up, but we know we are setting one up,
 			// and we are close to the trap item we can flag the tile as a valid point.
@@ -461,11 +476,62 @@ public class HunterPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded entry)
+	{
+		final String option = Text.removeTags(entry.getOption()).toLowerCase();
+		final String target = Text.removeTags(entry.getTarget()).toLowerCase();
+		final WorldPoint objectLoc = WorldPoint.fromScene(
+				client, entry.getActionParam0(), entry.getActionParam1(), client.getPlane());
+
+		if (hideTraps && !ourTrapLocs.contains(objectLoc) && !option.equals("take")
+				&& target.equals("box trap")
+				|| target.equals("bird snare")
+				|| target.equals("magic box")
+				|| target.equals("shaking box"))
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+
+			int walkIdx = searchEntries(entries, "walk here", "");
+			int hideIdx = searchEntries(entries, option, target);
+
+			if (walkIdx >= 0 && hideIdx >= 0)
+			{
+				MenuEntry menuEntry = entries[walkIdx];
+				entries[walkIdx] = entries[hideIdx];
+				entries[hideIdx] = menuEntry;
+
+				client.setMenuEntries(entries);
+			}
+		}
+	}
+
+	private int searchEntries(MenuEntry[] entries, String option, String target)
+	{
+		for (int i = entries.length - 1; i >= 0; i--)
+		{
+			MenuEntry entry = entries[i];
+			String entryOption = Text.removeTags(entry.getOption()).toLowerCase();
+			String entryTarget = Text.removeTags(entry.getTarget()).toLowerCase();
+
+			if (entryOption.equals(option) && entryTarget.equals(target)
+				|| entryOption.equals(option) && target.equals("")) //If there's a player behind the trap the target changes
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("hunterplugin"))
 		{
 			overlay.updateConfig();
+		}
+		else if (event.getGroup().equals("menuentryswapper") && event.getKey().equals("hidetraps"))
+		{
+			hideTraps = Boolean.parseBoolean(event.getNewValue());
 		}
 	}
 }
