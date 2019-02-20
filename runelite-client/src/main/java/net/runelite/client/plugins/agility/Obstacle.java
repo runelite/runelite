@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
+ * Copyright (c) 2019, MrGroggle
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,21 +23,19 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.worldmap;
+package net.runelite.client.plugins.agility;
 
-import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
+import javax.annotation.Nullable;
+import lombok.AllArgsConstructor;
+import lombok.Value;
+import net.runelite.api.Tile;
 import net.runelite.client.game.AgilityShortcut;
 
-class AgilityShortcutPoint extends WorldMapPoint
+@Value
+@AllArgsConstructor
+class Obstacle
 {
-	AgilityShortcutPoint(AgilityShortcut data, BufferedImage icon, boolean showTooltip)
-	{
-		super(data.getWorldMapLocation(), icon);
-
-		if (showTooltip)
-		{
-			setTooltip(data.getTooltip());
-		}
-	}
+	private final Tile tile;
+	@Nullable
+	private final AgilityShortcut shortcut;
 }
