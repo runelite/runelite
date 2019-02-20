@@ -37,6 +37,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -58,6 +59,10 @@ public class AttackStylesPluginTest
 	@Mock
 	@Bind
 	OverlayManager overlayManager;
+
+	@Mock
+	@Bind
+	ChatMessageManager chatMessageManager;
 
 	@Mock
 	@Bind
@@ -136,12 +141,12 @@ public class AttackStylesPluginTest
 		assertTrue(warnedSkills.contains(Skill.ATTACK));
 
 		// Enable hiding widgets
+		when(attackConfig.warnedStyleHandler()).thenReturn(HandleType.HIDE);
 		ConfigChanged hideWidgetEvent = new ConfigChanged();
 		hideWidgetEvent.setGroup("attackIndicator");
-		hideWidgetEvent.setKey("removeWarnedStyles");
-		hideWidgetEvent.setNewValue("true");
+		hideWidgetEvent.setKey("warnedStyleHandler");
+		hideWidgetEvent.setNewValue("HIDE");
 		attackPlugin.onConfigChanged(hideWidgetEvent);
-		when(attackConfig.warnedStyleHandler() == HandleType.HIDE).thenReturn(true);
 
 		// verify that the accurate attack style widget is hidden
 		assertTrue(atkWidget.isHidden());
@@ -157,11 +162,11 @@ public class AttackStylesPluginTest
 		assertTrue(strWidget.isHidden());
 
 		// disable hiding attack style widgets
+		when(attackConfig.warnedStyleHandler()).thenReturn(HandleType.WARN);
 		hideWidgetEvent.setGroup("attackIndicator");
-		hideWidgetEvent.setKey("removeWarnedStyles");
-		hideWidgetEvent.setNewValue("false");
+		hideWidgetEvent.setKey("warnedStyleHandler");
+		hideWidgetEvent.setNewValue("WARN");
 		attackPlugin.onConfigChanged(hideWidgetEvent);
-		when(attackConfig.warnedStyleHandler() == HandleType.HIDE).thenReturn(false);
 
 		// verify that the aggressive and accurate attack style widgets are no longer hidden
 		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4,
