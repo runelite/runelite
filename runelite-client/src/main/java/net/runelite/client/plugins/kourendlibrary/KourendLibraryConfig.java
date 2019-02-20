@@ -52,4 +52,14 @@ public interface KourendLibraryConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "hideDarkManuscript",
+		name = "Hide dark manuscript",
+		description = "Don't show the dark manuscript locations in the library"
+	)
+	default boolean hideDarkManuscript()
+	{
+		return false;
+	}
 }
