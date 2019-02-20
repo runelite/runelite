@@ -503,6 +503,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBoxTrap() && option.equals("take"))
 		{
 			swap("lay", option, target, true);
+			swap("activate", option, target, true);
 		}
 		else if (config.swapChase() && option.equals("pick-up"))
 		{
