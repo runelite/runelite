@@ -2,6 +2,7 @@
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Lucas <https://github.com/Lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -195,8 +196,19 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 
 				if (tagManager.findTag(itemId, search))
 				{
-					// return true
-					intStack[intStackSize - 2] = 1;
+					if (!config.hidePlaceholders())
+					{
+						// return true
+						intStack[intStackSize - 2] = 1;
+					}
+
+					// not a placeholder
+					else if (itemManager.getItemComposition(itemId).getPlaceholderTemplateId() == -1)
+					{
+						// return true
+						intStack[intStackSize - 2] = 1;
+					}
+					break;
 				}
 				else if (!tagSearch)
 				{

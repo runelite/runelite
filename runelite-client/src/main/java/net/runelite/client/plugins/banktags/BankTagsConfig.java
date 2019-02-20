@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
  * All rights reserved.
- *
+ * Copyright (c) 2018, Lucas <https://github.com/Lucwousin>
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
@@ -51,6 +51,17 @@ public interface BankTagsConfig extends Config
 	default boolean rememberTab()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			keyName = "hidePlaceholders",
+			name = "Hide placeholders",
+			description = "Hide placeholders in tag tabs or tag search.",
+			position = 3
+	)
+	default boolean hidePlaceholders()
+	{
+		return false;
 	}
 
 	@ConfigItem(
