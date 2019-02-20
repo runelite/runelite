@@ -55,6 +55,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
 import okhttp3.HttpUrl;
+import java.util.regex.Pattern;
 
 @Slf4j
 @PluginDescriptor(
@@ -81,6 +82,9 @@ public class WikiPlugin extends Plugin
 
 	private static final String MENUOP_GUIDE = "Guide";
 	private static final String MENUOP_QUICKGUIDE = "Quick Guide";
+	private static final String MENUOP_WIKI = "Wiki";
+
+	private static final String DIARY_REGEX = "Open [\\w &]+ Journal";
 
 	@Inject
 	private SpriteManager spriteManager;
@@ -243,6 +247,8 @@ public class WikiPlugin extends Plugin
 				case MENUOP_QUICKGUIDE:
 					quickguide = "/Quick_guide";
 					//fallthrough;
+				case MENUOP_WIKI:
+					//fallthrough;
 				case MENUOP_GUIDE:
 					ev.consume();
 					String quest = Text.removeTags(ev.getMenuTarget());
@@ -266,13 +272,7 @@ public class WikiPlugin extends Plugin
 
 		//check to see if mouse is pointing to a quest or a diary
 		boolean isQuest = Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) || "Read Journal:".equals(event.getOption());
-		boolean isDiary = Ints.compare(DIARYLIST_WIDGET_ID, widgetID) == 0 && ("Open Ardougne Journal".equals(event.getOption())
-						|| "Open Desert Journal".equals(event.getOption()) || "Open Falador Journal".equals(event.getOption())
-						|| "Open Falador Journal".equals(event.getOption()) || "Open Fremennik Journal".equals(event.getOption())
-						|| "Open Kandarin Journal".equals(event.getOption()) || "Open Karamja Journal".equals(event.getOption())
-						|| "Open Kourend & Kebos Journal".equals(event.getOption()) || "Open Lumbridge & Draynor Journal".equals(event.getOption())
-						|| "Open Morytania Journal".equals(event.getOption()) || "Open Varrock Journal".equals(event.getOption())
-						|| "Open Western Provinces Journal".equals(event.getOption()) || "Open Wilderness Journal".equals(event.getOption()));
+		boolean isDiary = Ints.compare(DIARYLIST_WIDGET_ID, widgetID) == 0 && Pattern.matches(DIARY_REGEX, event.getOption());
 
 		if (!isQuest && !isDiary)
 		{
@@ -295,13 +295,14 @@ public class WikiPlugin extends Plugin
 		if (isQuest)
 		{
 			menuEntry.setTarget(event.getTarget());
+			menuEntry.setOption(MENUOP_GUIDE);
 		}
 		else if (isDiary)
 		{
 			String diaryName = event.getOption().substring(5, (event.getOption().length() - 8));
 			menuEntry.setTarget(diaryName + " Diary");
+			menuEntry.setOption(MENUOP_WIKI);
 		}
-		menuEntry.setOption(MENUOP_GUIDE);
 		menuEntry.setParam0(widgetIndex);
 		menuEntry.setParam1(widgetID);
 		menuEntry.setType(MenuAction.RUNELITE.getId());
