@@ -135,7 +135,8 @@ class KourendLibraryOverlay extends Overlay
 					book = possible.iterator().next();
 					bookIsKnown = true;
 				}
-				Color color = bookIsKnown ? Color.ORANGE : Color.WHITE;
+
+				Color color = getBookCaseColor(bookIsKnown, book);
 
 				// Render the poly on the floor
 				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || !possible.isEmpty()) && !shouldHideOverlayIfDuplicateBook(book))
@@ -242,5 +243,28 @@ class KourendLibraryOverlay extends Overlay
 			&& book != null
 			&& !book.isDarkManuscript()
 			&& plugin.doesPlayerContainBook(book);
+	}
+
+	private Color getBookCaseColor(boolean bookIsKnown, @Nullable Book book)
+	{
+		if (!bookIsKnown)
+		{
+			return Color.WHITE;
+		}
+
+		if (book != null)
+		{
+			if (plugin.doesPlayerContainBook(book))
+			{
+				return Color.RED;
+			}
+
+			if (library.getCustomerBook() == book)
+			{
+				return Color.GREEN;
+			}
+		}
+
+		return Color.ORANGE;
 	}
 }
