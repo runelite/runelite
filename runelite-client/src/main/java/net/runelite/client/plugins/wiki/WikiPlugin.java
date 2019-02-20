@@ -86,7 +86,7 @@ public class WikiPlugin extends Plugin
 	private static final String MENUOP_WIKI = "Wiki";
 
 	private static final String DIARY_REGEX = "Open [\\w &]+ Journal";
-  private static final Pattern SKILL_REGEX = Pattern.compile("([A-Za-z]+) guide");
+	private static final Pattern SKILL_REGEX = Pattern.compile("([A-Za-z]+) guide");
 
 
 	@Inject
@@ -285,13 +285,13 @@ public class WikiPlugin extends Plugin
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
 		MenuEntry[] menuEntries = client.getMenuEntries();
-    
+
 		//check to see if mouse is pointing to a quest or a diary
 		boolean isQuest = Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) || "Read Journal:".equals(event.getOption());
 		boolean isDiary = Ints.compare(DIARYLIST_WIDGET_ID, widgetID) == 0 && Pattern.matches(DIARY_REGEX, event.getOption());
 
 		if (isQuest || isDiary)
-    	{
+		{
 			int addMenuNum = 2;
 
 			if (isDiary)
