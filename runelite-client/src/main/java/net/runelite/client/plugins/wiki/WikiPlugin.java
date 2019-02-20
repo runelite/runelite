@@ -196,9 +196,6 @@ public class WikiPlugin extends Plugin
 	@Subscribe
 	private void onMenuOptionClicked(MenuOptionClicked ev)
 	{
-		//check to see if its a skill menu
-		boolean isSkill = ev.getMenuOption().startsWith("View");
-
 		if (wikiSelected)
 		{
 			onDeselect();
@@ -254,14 +251,12 @@ public class WikiPlugin extends Plugin
 					quickguide = "/Quick_guide";
 					//fallthrough;
 				case MENUOP_WIKI:
-					if (isSkill)
-					{
-						Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
+					Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
 
-						if (skillRegex.find())
-						{
-							LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(skillRegex.group(1)) + "?" + UTM_PARAMS);
-						}
+					if (skillRegex.find())
+					{
+						LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(skillRegex.group(1)) + "?" + UTM_PARAMS);
+						break;
 					}
 					//Diaries will fallthrough;
 				case MENUOP_GUIDE:
@@ -287,7 +282,7 @@ public class WikiPlugin extends Plugin
 		MenuEntry[] menuEntries = client.getMenuEntries();
 
 		//check to see if mouse is pointing to a quest or a diary
-		boolean isQuest = Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) || "Read Journal:".equals(event.getOption());
+		boolean isQuest = Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read Journal:".equals(event.getOption());
 		boolean isDiary = Ints.compare(DIARYLIST_WIDGET_ID, widgetID) == 0 && Pattern.matches(DIARY_REGEX, event.getOption());
 
 		if (isQuest || isDiary)
