@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Hydrox6 <ikada@protonmail.ch>
+ * Copyright (c) 2019, Lucas <https://github.com/Lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
