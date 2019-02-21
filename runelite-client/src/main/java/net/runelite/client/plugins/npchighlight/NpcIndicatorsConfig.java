@@ -102,5 +102,5 @@ public interface NpcIndicatorsConfig extends Config
 			name = "Show All NPCs",
 			description = "Highlight All NPCs")
 	default boolean showAllNPCs() {return false;}
-	
+
 }
