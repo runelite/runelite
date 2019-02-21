@@ -372,14 +372,14 @@ public class ConfigManager
 
 	public void setConfiguration(String groupName, String key, String value)
 	{
-		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
-
 		String oldValue = (String) properties.setProperty(groupName + "." + key, value);
 
 		if (Objects.equals(oldValue, value))
 		{
 			return;
 		}
+
+		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
 
 		synchronized (pendingChanges)
 		{
@@ -415,14 +415,14 @@ public class ConfigManager
 
 	public void unsetConfiguration(String groupName, String key)
 	{
-		log.debug("Unsetting configuration value for {}.{}", groupName, key);
-
 		String oldValue = (String) properties.remove(groupName + "." + key);
 
 		if (oldValue == null)
 		{
 			return;
 		}
+
+		log.debug("Unsetting configuration value for {}.{}", groupName, key);
 
 		synchronized (pendingChanges)
 		{
