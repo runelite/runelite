@@ -167,7 +167,13 @@ public class ConfigManager
 		for (ConfigEntry entry : configuration.getConfig())
 		{
 			log.debug("Loading configuration value from client {}: {}", entry.getKey(), entry.getValue());
-			final String[] split = entry.getKey().split("\\.");
+			final String[] split = entry.getKey().split("\\.", 2);
+
+			if (split.length != 2)
+			{
+				continue;
+			}
+
 			final String groupName = split[0];
 			final String key = split[1];
 			final String value = entry.getValue();
