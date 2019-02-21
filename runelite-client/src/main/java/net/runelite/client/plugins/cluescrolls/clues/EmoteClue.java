@@ -312,15 +312,19 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		{
 			return;
 		}
+		WorldPoint[] worldPoints = stashUnit.getWorldPoints();
 
-		LocalPoint stashUnitLocalPoint = LocalPoint.fromWorld(plugin.getClient(), stashUnit.getWorldPoint());
-
-		if (stashUnitLocalPoint != null)
+		for (WorldPoint worldPoint : worldPoints)
 		{
-			Polygon poly = Perspective.getCanvasTilePoly(plugin.getClient(), stashUnitLocalPoint);
-			if (poly != null)
+			LocalPoint stashUnitLocalPoint = LocalPoint.fromWorld(plugin.getClient(), worldPoint);
+
+			if (stashUnitLocalPoint != null)
 			{
-				OverlayUtil.renderPolygon(graphics, poly, Color.RED);
+				Polygon poly = Perspective.getCanvasTilePoly(plugin.getClient(), stashUnitLocalPoint);
+				if (poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, Color.RED);
+				}
 			}
 		}
 	}
