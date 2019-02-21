@@ -24,50 +24,55 @@
  */
 package net.runelite.client.plugins.templetrek;
 
-import net.runelite.client.ui.overlay.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import javax.inject.Inject;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-import javax.inject.Inject;
-import java.awt.*;
+public class TempleTrekOverlay extends Overlay
+{
+	private final TempleTrekConfig config;
+	private final TempleTrekPlugin plugin;
 
-public class TempleTrekOverlay extends Overlay{
-    private final TempleTrekConfig config;
-    private final TempleTrekPlugin plugin;
+	private final PanelComponent panelComponent = new PanelComponent();
 
-    private final PanelComponent panelComponent = new PanelComponent();
+	@Inject
+	private TempleTrekOverlay(TempleTrekConfig config, TempleTrekPlugin plugin)
+	{
+		super(plugin);
+		this.config = config;
+		this.plugin = plugin;
+		setPosition(OverlayPosition.TOP_LEFT);
+		setPriority(OverlayPriority.LOW);
+	}
 
-    @Inject
-    private TempleTrekOverlay(TempleTrekConfig config, TempleTrekPlugin plugin)
-    {
-        super(plugin);
-        this.config = config;
-        this.plugin = plugin;
-        setPosition(OverlayPosition.TOP_LEFT);
-        setPriority(OverlayPriority.LOW);
-    }
-
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        if (config.pointTrackerActive() && plugin.isInTrek()) {
-            int points = plugin.getRewardPoints();
-            double percentage = plugin.getRewardPercentage() * 100;
-            panelComponent.getChildren().clear();
-            panelComponent.getChildren().add(LineComponent.builder()
-                    .left("Trek Points: ")
-                    .right(Integer.toString(points))
-                    .rightColor(percentage < 25 ? Color.RED : percentage >= 25 && percentage < 50 ? Color.YELLOW :
-                    percentage >= 50 && percentage < 75 ? Color.BLUE : Color.GREEN)
-                    .build());
-            panelComponent.getChildren().add(LineComponent.builder()
-                    .left("Reward %: ")
-                    .right(String.format( "%.2f", percentage ) + "%")
-                    .rightColor(percentage < 25 ? Color.RED : percentage >= 25 && percentage < 50 ? Color.YELLOW :
-                            percentage >= 50 && percentage < 75 ? Color.BLUE : Color.GREEN)
-                    .build());
-            return panelComponent.render(graphics);
-        }
-        return null;
-    }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (config.pointTrackerActive() && plugin.isInTrek())
+		{
+			int points = plugin.getRewardPoints();
+			double percentage = plugin.getRewardPercentage() * 100;
+			panelComponent.getChildren().clear();
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Trek Points: ")
+				.right(Integer.toString(points))
+				.rightColor(percentage < 25 ? Color.RED : percentage >= 25 && percentage < 50 ? Color.YELLOW :
+					percentage >= 50 && percentage < 75 ? Color.BLUE : Color.GREEN)
+				.build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Reward %: ")
+				.right(String.format("%.2f", percentage) + "%")
+				.rightColor(percentage < 25 ? Color.RED : percentage >= 25 && percentage < 50 ? Color.YELLOW :
+					percentage >= 50 && percentage < 75 ? Color.BLUE : Color.GREEN)
+				.build());
+			return panelComponent.render(graphics);
+		}
+		return null;
+	}
 }

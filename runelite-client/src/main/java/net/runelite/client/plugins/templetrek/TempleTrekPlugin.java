@@ -25,6 +25,9 @@
 package net.runelite.client.plugins.templetrek;
 
 import com.google.inject.Provides;
+import java.util.HashSet;
+import java.util.Set;
+import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GroundObject;
@@ -38,90 +41,96 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import javax.inject.Inject;
-import java.util.HashSet;
-import java.util.Set;
-
 @PluginDescriptor(
-        name = "Temple Trekking",
-        description = "Helpers for the Temple Trek minigame",
-        tags = {"minigame", "overlay", "temple trek"}
+	name = "Temple Trekking",
+	description = "Helpers for the Temple Trek minigame",
+	tags = {"minigame", "overlay", "temple trek"}
 )
-public class TempleTrekPlugin extends Plugin {
+public class TempleTrekPlugin extends Plugin
+{
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private OverlayManager overlayManager;
+	@Inject
+	private OverlayManager overlayManager;
 
-    @Inject
-    private TempleTrekOverlay overlay;
+	@Inject
+	private TempleTrekOverlay overlay;
 
-    @Inject
-    private TempleTrekBogOverlay bogOverlay;
+	@Inject
+	private TempleTrekBogOverlay bogOverlay;
 
-    @Inject
-    private TempleTrekConfig config;
+	@Inject
+	private TempleTrekConfig config;
 
-    @Getter
-    private final Set<GroundObject> bogList = new HashSet<GroundObject>();
+	@Getter
+	private final Set<GroundObject> bogList = new HashSet<GroundObject>();
 
-    @Getter
-    private boolean inTrek = false;
+	@Getter
+	private boolean inTrek = false;
 
-    @Provides
-    TempleTrekConfig getConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(TempleTrekConfig.class);
-    }
+	@Provides
+	TempleTrekConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(TempleTrekConfig.class);
+	}
 
-    @Override
-    protected void startUp()
-    {
-        overlayManager.add(overlay);
-        overlayManager.add(bogOverlay);
-    }
+	@Override
+	protected void startUp()
+	{
+		overlayManager.add(overlay);
+		overlayManager.add(bogOverlay);
+	}
 
-    @Override
-    protected void shutDown()
-    {
-        overlayManager.remove(overlay);
-        overlayManager.remove(bogOverlay);
-        bogList.clear();
-    }
+	@Override
+	protected void shutDown()
+	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(bogOverlay);
+		bogList.clear();
+	}
 
-    @Subscribe
-    public void onGroundObjectSpawned(GroundObjectSpawned event)
-    {
-        GroundObject obj = event.getGroundObject();
-        if (obj.getId() == ObjectID.BOG) {
-            bogList.add(obj);
-        }
-    }
+	@Subscribe
+	public void onGroundObjectSpawned(GroundObjectSpawned event)
+	{
+		GroundObject obj = event.getGroundObject();
+		if (obj.getId() == ObjectID.BOG)
+		{
+			bogList.add(obj);
+		}
+	}
 
-    @Subscribe
-    public void onVarbitChanged(VarbitChanged event) {
-        //onGroundObjectDespawned is having issues handling this, so bogmap removal is here instead.
-        if (!bogList.isEmpty() && client.getVar(Varbits.TREK_EVENT) == 0) {
-            bogList.clear();
-        }
-        if (!inTrek && client.getVar(Varbits.TREK_STARTED) == 1) {
-            inTrek = true;
-        } else if (inTrek) {
-            if (client.getVar(Varbits.TREK_STATUS) == 0 && client.getVar(Varbits.TREK_POINTS) == 0) {
-                inTrek = false;
-            }
-        }
-    }
+	//onGroundObjectDespawned is having issues handling this, so bogmap removal is here instead.
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (!bogList.isEmpty() && client.getVar(Varbits.TREK_EVENT) == 0)
+		{
+			bogList.clear();
+		}
+		if (!inTrek && client.getVar(Varbits.TREK_STARTED) == 1)
+		{
+			inTrek = true;
+		}
+		else if (inTrek)
+		{
+			if (client.getVar(Varbits.TREK_STATUS) == 0 && client.getVar(Varbits.TREK_POINTS) == 0)
+			{
+				inTrek = false;
+			}
+		}
+	}
 
-    protected int getRewardPoints() {
-        return client.getVar(Varbits.TREK_POINTS);
-    }
+	protected int getRewardPoints()
+	{
+		return client.getVar(Varbits.TREK_POINTS);
+	}
 
-    protected double getRewardPercentage() {
-        double percentage = 0.000126945 * getRewardPoints() - 0.0357188951;
-        return Math.max(percentage, 0);
-    }
+	protected double getRewardPercentage()
+	{
+		double percentage = 0.000126945 * getRewardPoints() - 0.0357188951;
+		return Math.max(percentage, 0);
+	}
 
 }

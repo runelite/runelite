@@ -24,43 +24,45 @@
  */
 package net.runelite.client.plugins.templetrek;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import javax.inject.Inject;
 import net.runelite.api.GroundObject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-import javax.inject.Inject;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Polygon;
-import java.awt.Graphics2D;
+public class TempleTrekBogOverlay extends Overlay
+{
+	private final TempleTrekConfig config;
+	private final TempleTrekPlugin plugin;
 
-public class TempleTrekBogOverlay extends Overlay {
-    private final TempleTrekConfig config;
-    private final TempleTrekPlugin plugin;
+	private static final Color GREEN = new Color(0, 200, 83);
 
-    private static final Color GREEN = new Color(0, 200, 83);
+	@Inject
+	private TempleTrekBogOverlay(TempleTrekConfig config, TempleTrekPlugin plugin)
+	{
+		super(plugin);
+		this.config = config;
+		this.plugin = plugin;
+		setPosition(OverlayPosition.DYNAMIC);
+		setPriority(OverlayPriority.LOW);
+	}
 
-    @Inject
-    private TempleTrekBogOverlay(TempleTrekConfig config, TempleTrekPlugin plugin)
-    {
-        super(plugin);
-        this.config = config;
-        this.plugin = plugin;
-        setPosition(OverlayPosition.DYNAMIC);
-        setPriority(OverlayPriority.LOW);
-    }
-
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        if (config.bogMapActive()) {
-            for (GroundObject bog : plugin.getBogList()) {
-                Polygon bogPoly = bog.getCanvasTilePoly();
-                OverlayUtil.renderPolygon(graphics, bogPoly, GREEN);
-            }
-        }
-    return null;
-    }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (config.bogMapActive())
+		{
+			for (GroundObject bog : plugin.getBogList())
+			{
+				Polygon bogPoly = bog.getCanvasTilePoly();
+				OverlayUtil.renderPolygon(graphics, bogPoly, GREEN);
+			}
+		}
+		return null;
+	}
 }
