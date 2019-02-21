@@ -319,7 +319,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 		for (String highlight : highlights)
 		{
-			if (WildcardMatcher.matches(highlight, npcName))
+			if (config.showAllNPCs() ^ WildcardMatcher.matches(highlight, npcName))
 			{
 				memorizeNpc(npc);
 				highlightedNpcs.add(npc);
@@ -421,17 +421,21 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@VisibleForTesting
-	List<String> getHighlights()
-	{
+	List<String> getHighlights() {
 		final String configNpcs = config.getNpcToHighlight().toLowerCase();
 
-		if (configNpcs.isEmpty())
-		{
+
+		//This will add the whole list of NPCs to be highlighted.
+
+
+		if (configNpcs.isEmpty()) {
 			return Collections.emptyList();
 		}
 
 		return Text.fromCSV(configNpcs);
 	}
+
+
 
 	private void rebuildAllNpcs()
 	{
@@ -463,7 +467,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 			for (String highlight : highlights)
 			{
-				if (WildcardMatcher.matches(highlight, npcName))
+				if (config.showAllNPCs() ^ WildcardMatcher.matches(highlight, npcName))
 				{
 					memorizeNpc(npc);
 					highlightedNpcs.add(npc);

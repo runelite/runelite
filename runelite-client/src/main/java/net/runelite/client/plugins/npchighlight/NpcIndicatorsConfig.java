@@ -96,4 +96,11 @@ public interface NpcIndicatorsConfig extends Config
 	{
 		return false;
 	}
+	@ConfigItem(
+			position = 6,
+			keyName = "showAllNpcs",
+			name = "Show All NPCs",
+			description = "Highlight All NPCs")
+	default boolean showAllNPCs() {return false;}
+	
 }
