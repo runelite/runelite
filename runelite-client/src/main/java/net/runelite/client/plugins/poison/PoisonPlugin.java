@@ -104,7 +104,6 @@ public class PoisonPlugin extends Plugin
 	private Instant nextPoisonTick;
 	private int lastValue = -1;
 	private int lastDiseaseValue = -1;
-
 	private BufferedImage heart;
 
 	@Provides
@@ -117,6 +116,7 @@ public class PoisonPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(poisonOverlay);
+
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			clientThread.invoke(this::checkHealthIcon);
@@ -201,10 +201,24 @@ public class PoisonPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals(PoisonConfig.GROUP) && !config.showInfoboxes() && infobox != null)
+		if (!event.getGroup().equals(PoisonConfig.GROUP))
+		{
+			return;
+		}
+
+		if (!config.showInfoboxes() && infobox != null)
 		{
 			infoBoxManager.removeInfoBox(infobox);
 			infobox = null;
+		}
+
+		if (config.changeHealthIcon())
+		{
+			clientThread.invoke(this::checkHealthIcon);
+		}
+		else
+		{
+			clientThread.invoke(this::resetHealthIcon);
 		}
 	}
 
@@ -290,8 +304,8 @@ public class PoisonPlugin extends Plugin
 		}
 
 		final BufferedImage newHeart;
-
 		final int poison = client.getVar(VarPlayer.IS_POISONED);
+
 		if (poison >= VENOM_THRESHOLD)
 		{
 			newHeart = HEART_VENOM;
