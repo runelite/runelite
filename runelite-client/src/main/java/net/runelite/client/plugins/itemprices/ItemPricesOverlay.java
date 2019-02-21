@@ -251,7 +251,7 @@ class ItemPricesOverlay extends Overlay
 			}
 		}
 
-		if (haProfit > 0)
+		if (haProfit != 0)
 		{
 			Color haColor = haProfitColor(haProfit);
 
