@@ -44,56 +44,66 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 public class BarrowsBrotherSlainOverlay extends Overlay
 {
 	private final Client client;
+	private final BarrowsConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private BarrowsBrotherSlainOverlay(BarrowsPlugin plugin, Client client)
+	private BarrowsBrotherSlainOverlay(BarrowsPlugin plugin, Client client, BarrowsConfig config)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.client = client;
+		this.config = config;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Barrows overlay"));
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		// Do not display overlay if potential is null/hidden
-		final Widget potential = client.getWidget(WidgetInfo.BARROWS_POTENTIAL);
-		if (potential == null || potential.isHidden())
+		if (config.showBarrowsGUI())
+		{
+
+			// Do not display overlay if potential is null/hidden
+			final Widget potential = client.getWidget(WidgetInfo.BARROWS_POTENTIAL);
+			if (potential == null || potential.isHidden())
+			{
+				return null;
+			}
+
+			// Hide original overlay
+			final Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
+			if (barrowsBrothers != null)
+			{
+				barrowsBrothers.setHidden(true);
+				potential.setHidden(true);
+			}
+
+			panelComponent.getChildren().clear();
+
+			for (BarrowsBrothers brother : BarrowsBrothers.values())
+			{
+				final boolean brotherSlain = client.getVar(brother.getKilledVarbit()) > 0;
+				String slain = brotherSlain ? "\u2713" : "\u2717";
+				panelComponent.getChildren().add(LineComponent.builder()
+						.left(brother.getName())
+						.right(slain)
+						.rightColor(brotherSlain ? Color.GREEN : Color.RED)
+						.build());
+			}
+
+			float rewardPercent = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) / 10.0f;
+			panelComponent.getChildren().add(LineComponent.builder()
+					.left("Potential")
+					.right(rewardPercent != 0 ? rewardPercent + "%" : "0%")
+					.rightColor(rewardPercent >= 73.0f && rewardPercent <= 88.0f ? Color.GREEN : rewardPercent < 65.6f ? Color.WHITE : Color.YELLOW)
+					.build());
+
+			return panelComponent.render(graphics);
+		}
+		else
 		{
 			return null;
 		}
-
-		// Hide original overlay
-		final Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
-		if (barrowsBrothers != null)
-		{
-			barrowsBrothers.setHidden(true);
-			potential.setHidden(true);
-		}
-
-		panelComponent.getChildren().clear();
-
-		for (BarrowsBrothers brother : BarrowsBrothers.values())
-		{
-			final boolean brotherSlain = client.getVar(brother.getKilledVarbit()) > 0;
-			String slain = brotherSlain ? "\u2713" : "\u2717";
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left(brother.getName())
-				.right(slain)
-				.rightColor(brotherSlain ? Color.GREEN : Color.RED)
-				.build());
-		}
-
-		float rewardPercent = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) / 10.0f;
-		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Potential")
-				.right(rewardPercent != 0 ? rewardPercent + "%" : "0%")
-				.rightColor(rewardPercent >= 73.0f && rewardPercent <= 88.0f ? Color.GREEN : rewardPercent < 65.6f ? Color.WHITE : Color.YELLOW)
-				.build());
-
-		return panelComponent.render(graphics);
 	}
 }

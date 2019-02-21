@@ -66,10 +66,21 @@ public interface BarrowsConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "showBarrowsGUI",
+			name = "Show the barrows GUI in a widget",
+			description = "Configure whether to show or hide the barrows widget",
+			position = 3
+	)
+	default boolean showBarrowsGUI()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "brotherLocColor",
 		name = "Brother location color",
 		description = "Change the color of the name displayed on the minimap",
-		position = 3
+		position = 4
 	)
 	default Color brotherLocColor()
 	{
@@ -80,7 +91,7 @@ public interface BarrowsConfig extends Config
 		keyName = "deadBrotherLocColor",
 		name = "Dead Brother loc. color",
 		description = "Change the color of the name displayed on the minimap for a dead brother",
-		position = 4
+		position = 5
 	)
 	default Color deadBrotherLocColor()
 	{
