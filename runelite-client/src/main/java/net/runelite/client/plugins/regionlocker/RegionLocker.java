@@ -50,6 +50,10 @@ public class RegionLocker {
         String unlockableString = config.unlockableRegions();
         List<String> unlockableRegions = StringToList(unlockableString);
         setRegions(unlockableRegions, RegionTypes.UNLOCKABLE);
+
+        String blacklistedString = config.blacklistedRegions();
+        List<String> blacklistedRegions = StringToList(blacklistedString);
+        setRegions(blacklistedRegions, RegionTypes.BLACKLISTED);
     }
 
     private void setRegions(List<String> regs, RegionTypes type) {
@@ -61,10 +65,12 @@ public class RegionLocker {
     private void setConfig() {
         List<String> unlockedRegions = new ArrayList<>();
         List<String> unlockableRegions = new ArrayList<>();
+        List<String> blacklistedRegions = new ArrayList<>();
 
         regions.entrySet().forEach(e -> {
             if (e.getValue() == RegionTypes.UNLOCKED) unlockedRegions.add(e.getKey());
             if (e.getValue() == RegionTypes.UNLOCKABLE) unlockableRegions.add(e.getKey());
+            if (e.getValue() == RegionTypes.BLACKLISTED) blacklistedRegions.add(e.getKey());
         });
 
         String csv = Text.toCSV(unlockedRegions);
@@ -72,6 +78,9 @@ public class RegionLocker {
 
         csv = Text.toCSV(unlockableRegions);
         configManager.setConfiguration(RegionLockerPlugin.CONFIG_KEY, "unlockableRegions", csv);
+
+        csv = Text.toCSV(blacklistedRegions);
+        configManager.setConfiguration(RegionLockerPlugin.CONFIG_KEY, "blacklistedRegions", csv);
     }
 
     public void addRegion(int regionId) {
@@ -86,22 +95,47 @@ public class RegionLocker {
         setConfig();
     }
 
+    public void blockRegion(int regionId) {
+        String id = Integer.toString(regionId);
+        RegionTypes type = regions.get(id);
+        if (type != RegionTypes.BLACKLISTED)
+            if (type == null) regions.put(id, RegionTypes.BLACKLISTED);
+            else regions.replace(id, RegionTypes.BLACKLISTED);
+        else
+            regions.remove(id);
+        setConfig();
+    }
+
+    public static RegionTypes getType(int regionId) {
+        String id = Integer.toString(regionId);
+        if (regions == null) return null;
+        return regions.get(id);
+    }
+
     public static boolean hasRegion(int regionId) {
         int y = getY(regionId);
         if (unlockReamls && y >= 4160 && y < 5952) return true;
         if (unlockUnderground && y >= 8960) return true;
-        String id = Integer.toString(regionId);
-        if (regions == null) return false;
-        RegionTypes type = regions.get(id);
+        RegionTypes type = getType(regionId);
+        if (type == null) return false;
         return type == RegionTypes.UNLOCKED;
     }
 
     public static boolean isUnlockable(int regionId) {
-        String id = Integer.toString(regionId);
-        if (regions == null) return false;
-        RegionTypes type = regions.get(id);
+        RegionTypes type = getType(regionId);
+        if (type == null) return false;
+        if (type == RegionTypes.UNLOCKABLE) {
+            type = type;
+        }
         return type == RegionTypes.UNLOCKABLE;
     }
+
+    public static boolean isBlacklisted(int regionId) {
+        RegionTypes type = getType(regionId);
+        if (type == null) return false;
+        return type == RegionTypes.BLACKLISTED;
+    }
+
 
     public static int getX(int id) {
         return ((id >> 8) << 6);

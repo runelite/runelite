@@ -84,15 +84,19 @@ class RegionLockerOverlay extends Overlay {
                 int labelHeight = (int) textBounds.getHeight() + 2 * LABEL_PADDING;
                 //graphics.fillRect(xPos, yPos, labelWidth, labelHeight);
                 Rectangle regionRect = new Rectangle(xPos, yPos, regionPixelSize, regionPixelSize);
-                if (RegionLocker.hasRegion(regionId) ^ config.invertMapOverlay() || RegionLocker.isUnlockable(regionId)) {
+                if (RegionLocker.hasRegion(regionId) ^ config.invertMapOverlay() || RegionLocker.isUnlockable(regionId) || RegionLocker.isBlacklisted(regionId)) {
 
                     Color color;
-                    if (RegionLocker.isUnlockable(regionId))
-                        color = config.unlockableOverlayColor();
-                    else
-                        color = config.mapOverlayColor();
-                    int alpha = Math.max(0, Math.min(255, config.mapOverlayAlpha()));
-                    color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+                    if (RegionLocker.isBlacklisted(regionId)) {
+                        color = new Color(0, 0, 0, 200);
+                    } else {
+                        if (RegionLocker.isUnlockable(regionId))
+                            color = config.unlockableOverlayColor();
+                        else
+                            color = config.mapOverlayColor();
+                        int alpha = Math.max(0, Math.min(255, config.mapOverlayAlpha()));
+                        color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+                    }
                     if (regionRect.contains(mousePos.getX(), mousePos.getY()))
                         color = color.brighter();
                     graphics.setColor(color);

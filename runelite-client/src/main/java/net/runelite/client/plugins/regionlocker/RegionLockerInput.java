@@ -6,7 +6,8 @@ import javax.inject.Inject;
 import java.awt.event.KeyEvent;
 
 public class RegionLockerInput implements KeyListener {
-    private static final int HOTKEY = KeyEvent.VK_SHIFT;
+    private static final int UNLOCK_KEY = KeyEvent.VK_SHIFT;
+    private static final int BLOCK_KEY = KeyEvent.VK_CONTROL;
 
     @Inject
     private RegionLockerPlugin plugin;
@@ -20,18 +21,26 @@ public class RegionLockerInput implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == HOTKEY)
+        if (e.getKeyCode() == UNLOCK_KEY)
         {
-            plugin.setHotKeyPressed(true);
+            plugin.setUnlockKeyPressed(true);
+        }
+        if (e.getKeyCode() == BLOCK_KEY)
+        {
+            plugin.setBlockKeyPressed(true);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e)
     {
-        if (e.getKeyCode() == HOTKEY)
+        if (e.getKeyCode() == UNLOCK_KEY)
         {
-            plugin.setHotKeyPressed(false);
+            plugin.setUnlockKeyPressed(false);
+        }
+        if (e.getKeyCode() == BLOCK_KEY)
+        {
+            plugin.setBlockKeyPressed(false);
         }
     }
 }

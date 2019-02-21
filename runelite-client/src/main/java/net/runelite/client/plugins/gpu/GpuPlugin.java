@@ -86,6 +86,7 @@ import static net.runelite.client.plugins.gpu.GLUtil.inputStreamToString;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.plugins.regionlocker.RegionLocker;
+import net.runelite.client.plugins.regionlocker.RegionLockerPlugin;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.util.OSType;
 
@@ -744,10 +745,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	private void createLockedRegions() {
-		for (int i = 0; i < loadedLockedRegions.length; i++) {
-			loadedLockedRegions[i] = 0;
-		}
-
 		int bx, by;
 		if (!RegionLocker.renderLockedRegions || (client.isInInstancedRegion() && instanceRegionUnlocked())) {
 			bx = -1;
@@ -762,6 +759,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 		gl.glUniform1i(uniBaseX, bx);
 		gl.glUniform1i(uniBaseY, by);
+
+		for (int i = 0; i < loadedLockedRegions.length; i++) {
+			loadedLockedRegions[i] = 0;
+		}
 
 		for (int i = 0; i < client.getMapRegions().length; i++) {
 			int region = client.getMapRegions()[i];

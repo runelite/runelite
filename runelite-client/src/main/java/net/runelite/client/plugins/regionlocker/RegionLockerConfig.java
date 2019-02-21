@@ -39,6 +39,16 @@ public interface RegionLockerConfig extends Config {
     }
 
     @ConfigItem(
+            keyName = "blacklistedRegions",
+            name = "Blacklisted regions",
+            description = "List of blacklisted regions seperated by a ',' symbol",
+            position = 2
+    )
+    default String blacklistedRegions() {
+        return "";
+    }
+
+    @ConfigItem(
             keyName = "unlockUnderground",
             name = "Unlock underground",
             description = "Unlock all underground areas",

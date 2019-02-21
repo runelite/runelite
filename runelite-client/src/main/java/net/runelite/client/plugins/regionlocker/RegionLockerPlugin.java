@@ -57,7 +57,10 @@ public class RegionLockerPlugin extends Plugin {
     private ConfigManager configManager;
 
     @Setter(AccessLevel.PACKAGE)
-    private boolean hotKeyPressed = false;
+    private boolean unlockKeyPressed = false;
+
+    @Setter(AccessLevel.PACKAGE)
+    private boolean blockKeyPressed = false;
 
     private RegionLocker regionLocker;
 
@@ -78,6 +81,7 @@ public class RegionLockerPlugin extends Plugin {
     protected void shutDown() throws Exception {
         overlayManager.remove(regionLockerOverlay);
         keyManager.unregisterKeyListener(inputListener);
+        RegionLocker.renderLockedRegions = false;
     }
 
     @Subscribe
@@ -96,14 +100,15 @@ public class RegionLockerPlugin extends Plugin {
     {
         if (!focusChanged.isFocused())
         {
-            hotKeyPressed = false;
+            unlockKeyPressed = false;
+            blockKeyPressed = false;
         }
     }
 
     @Subscribe
     public void onMenuOptionClicked(MenuOptionClicked event) {
         Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
-        if (!hotKeyPressed || map == null) return;
+        if (!(unlockKeyPressed || blockKeyPressed) || map == null) return;
 
         RenderOverview ro = client.getRenderOverview();
         Float pixelsPerTile = ro.getWorldMapZoom();
@@ -126,7 +131,7 @@ public class RegionLockerPlugin extends Plugin {
 
         int regionId = ((x >> 6) << 8) | (y >> 6);
 
-        System.out.println(regionId);
-        regionLocker.addRegion(regionId);
+        if (unlockKeyPressed) regionLocker.addRegion(regionId);
+        if (blockKeyPressed) regionLocker.blockRegion(regionId);
     }
 }
