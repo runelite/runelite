@@ -1,12 +1,10 @@
 package net.runelite.client.plugins.maxhit.equipment;
 
-import net.runelite.client.plugins.maxhit.config.EquipmentSlotConfig;
-
 public class EquipmentSlotItem {
-    private final EquipmentSlotConfig equipmentSlot;
+    private final EquipmentSlot equipmentSlot;
     private final String item;
 
-    public EquipmentSlotItem(EquipmentSlotConfig equipmentSlot, String item){
+    public EquipmentSlotItem(EquipmentSlot equipmentSlot, String item){
 
         this.equipmentSlot = equipmentSlot;
         this.item = item;
@@ -16,7 +14,7 @@ public class EquipmentSlotItem {
         return item;
     }
 
-    public EquipmentSlotConfig getEquipmentSlot() {
+    public EquipmentSlot getEquipmentSlot() {
         return equipmentSlot;
     }
 }

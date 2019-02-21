@@ -3,14 +3,16 @@ package net.runelite.client.plugins.maxhit.calculators;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.plugins.maxhit.equipment.EquipmentCombatBonus;
+import net.runelite.client.plugins.maxhit.config.EquipmentBonusConfig;
+import net.runelite.client.plugins.maxhit.config.SpellConfig;
 
 public class MagicMaxHitCalculator extends MaxHitCalculator {
 
     public MagicMaxHitCalculator(Client client, Item[] equipedItems) {
-        super(client, equipedItems);
+        super(client, CombatMethod.MAGIC, equipedItems);
     }
 
     @Override
@@ -28,20 +30,61 @@ public class MagicMaxHitCalculator extends MaxHitCalculator {
         return this.client.getRealSkillLevel(Skill.MAGIC);
     }
 
-    @Override
-    protected CombatMethod getCombatMethod() {
-        return CombatMethod.MAGIC;
-    }
-
+    /*
+    * Damage formula based on:
+    * http://services.runescape.com/m=forum/forums.ws?317,318,712,65587452
+    * Section 4.
+    * */
     @Override
     protected double calculateDefault() {
-        double equipmentBonus = this.getBonus(EquipmentCombatBonus::getCombatEquipmentBonus);
-        double slayerBonus = this.getBonus(combatEquipmentBonus -> combatEquipmentBonus.getCombatSlayerBonus(this.getCombatMethod()));
-        double effectiveBonus = this.getBonus(equipmentCombatBonus -> equipmentCombatBonus.getCombatEffectiveBonus(this.getCombatMethod()));
+        int autoCastSpellId = client.getVar(Varbits.AUTO_CAST_SPELL);
+        if(autoCastSpellId == 0) {
+            return 0.0;
+        }
 
-        double maxHit = Math.floor(((Math.floor(this.getCurrentSkillPower() / 3) - effectiveBonus) * ( 1 + (this.getSkillStrength() / 1000))) * slayerBonus);
-        maxHit = Math.floor(maxHit * equipmentBonus);
+        SpellConfig autoCastSpell = SpellConfig.findSpellById(autoCastSpellId);
+        int spellBaseDamage = autoCastSpell.getBaseDamage();
 
+//      a.Find the base maximum damage a spell can deal.
+//      See CustomFormulaConfig for spells based on magic lvl
+        double maxHit = spellBaseDamage;
+
+//      b. Increase the base damage (God spells and Chaos Gauntlets)
+        maxHit = this.applyBonus(maxHit, autoCastSpell, false);
+
+//      c. The following bonuses stack by adding up. (List of bonus items)
+        maxHit = maxHit * getEquipmentBonus(EquipmentBonusConfig.BonusType.EQUIPMENT);
+
+//      d. Round down to the nearest integer.
+        maxHit = Math.floor(maxHit);
+
+//      e. On a slayer task, multiply by 1.15 (imbued)
+        double slayerBonus = this.getEquipmentBonus(EquipmentBonusConfig.BonusType.SLAYER);
+        maxHit = maxHit * slayerBonus;
+
+//      f. Round down to the nearest integer.
+        maxHit = Math.floor(maxHit);
+
+//      g. If a fire spell is used, multiply by 1.5 (Tome of fire)
+        maxHit = this.applyBonus(maxHit, autoCastSpell, true);
+
+//      h. Round down to the nearest integer.
+        maxHit = Math.floor(maxHit);
+
+//      i, j. Castle Wars will not be included
         return maxHit;
+    }
+
+//    TODO needs to wear tomb
+    private double applyBonus(double inputDamage, SpellConfig autoCastSpell, boolean afterEqupment) {
+        double outputDamage = inputDamage;
+
+        for(SpellConfig.BonusSpellTypes spellBonus: autoCastSpell.getBonusSpellTypes()) {
+            if(spellBonus.getAfterEquipment() == afterEqupment) {
+                outputDamage = spellBonus.applyBonus(outputDamage);
+            }
+        }
+
+        return outputDamage;
     }
 }

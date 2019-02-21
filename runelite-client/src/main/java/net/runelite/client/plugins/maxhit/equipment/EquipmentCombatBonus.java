@@ -4,77 +4,26 @@ import net.runelite.client.plugins.maxhit.calculators.MaxHitCalculator;
 
 public class EquipmentCombatBonus {
 
+    private final double meleeBonus;
+    private final double rangeBonus;
+    private final double magicBonus;
 
-    private final double equipmentBonus;
-    private final double meleeEffectiveBonus;
-    private final double rangeEffectiveBonus;
-    private final double magicEffectiveBonus;
-    private final double meleeSlayerBonus;
-    private final double rangeSlayerBonus;
-    private final double magicSlayerBonus;
-
-    public EquipmentCombatBonus(double equipmentBonus, double meleeEffectiveBonus, double rangeEffectiveBonus, double magicEffectiveBonus, double meleeSlayerBonus, double rangeSlayerBonus, double magicSlayerBonus) {
-        this.equipmentBonus = equipmentBonus;
-        this.meleeEffectiveBonus = meleeEffectiveBonus;
-        this.rangeEffectiveBonus = rangeEffectiveBonus;
-        this.magicEffectiveBonus = magicEffectiveBonus;
-
-        this.meleeSlayerBonus = meleeSlayerBonus;
-        this.rangeSlayerBonus = rangeSlayerBonus;
-        this.magicSlayerBonus = magicSlayerBonus;
+    public EquipmentCombatBonus(double meleeBonus, double rangeBonus, double magicBonus) {
+        this.meleeBonus = meleeBonus;
+        this.rangeBonus = rangeBonus;
+        this.magicBonus = magicBonus;
     }
 
-    public double getCombatEquipmentBonus() {
-        return equipmentBonus;
-    }
-
-    public double getCombatEffectiveBonus(MaxHitCalculator.CombatMethod combatMethod) {
+    public double getCombatBonus(MaxHitCalculator.CombatMethod combatMethod) {
         switch (combatMethod) {
             default:
             case MELEE:
-                return this.getMeleeEffectiveBonus();
+                return this.meleeBonus;
             case RANGE:
-                return this.getRangeEffectiveBonus();
+                return this.rangeBonus;
             case MAGIC:
-                return this.getMagicEffectiveBonus();
+                return this.magicBonus;
         }
-    }
-
-
-    public double getCombatSlayerBonus(MaxHitCalculator.CombatMethod combatMethod) {
-        switch (combatMethod) {
-            default:
-            case MELEE:
-                return this.getMeleeSlayerBonus();
-            case RANGE:
-                return this.getRangeSlayerBonus();
-            case MAGIC:
-                return this.getMagicSlayerBonus();
-        }
-    }
-
-    public double getMeleeSlayerBonus() {
-        return meleeSlayerBonus;
-    }
-
-    public double getRangeSlayerBonus() {
-        return rangeSlayerBonus;
-    }
-
-    public double getMagicSlayerBonus() {
-        return magicSlayerBonus;
-    }
-
-    public double getMeleeEffectiveBonus() {
-        return meleeEffectiveBonus;
-    }
-
-    public double getRangeEffectiveBonus() {
-        return rangeEffectiveBonus;
-    }
-
-    public double getMagicEffectiveBonus() {
-        return magicEffectiveBonus;
     }
 
 }

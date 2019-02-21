@@ -1,6 +1,6 @@
-package net.runelite.client.plugins.maxhit.config;
+package net.runelite.client.plugins.maxhit.equipment;
 
-public enum EquipmentSlotConfig {
+public enum EquipmentSlot {
     HELM_SLOT(0),
     CAPE_SLOT(1),
     NECK_SLOT(2),
@@ -14,7 +14,7 @@ public enum EquipmentSlotConfig {
 
     private int id;
 
-    EquipmentSlotConfig(int id) {
+    EquipmentSlot(int id) {
         this.id = id;
     }
 

@@ -4,6 +4,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.maxhit.calculators.MaxHitCalculator;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentItemset;
+import net.runelite.client.plugins.maxhit.equipment.EquipmentSlot;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlotItem;
 
 import java.util.Arrays;
@@ -15,7 +16,7 @@ public enum CustomFormulaConfig {
     MAGIC_DART(
             MaxHitCalculator.CombatMethod.MAGIC,
             new EquipmentItemset(Collections.singletonList(
-                new EquipmentSlotItem(EquipmentSlotConfig.WEAPON_SLOT, "Slayer's staff")
+                new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "Slayer's staff")
             )),
             Collections.singletonList(SpellConfig.MAGIC_DART),
             client -> {
@@ -27,10 +28,10 @@ public enum CustomFormulaConfig {
     DHAROCK(
             MaxHitCalculator.CombatMethod.MELEE,
             new EquipmentItemset(Arrays.asList(
-                    new EquipmentSlotItem(EquipmentSlotConfig.HELM_SLOT, "dharok"),
-                    new EquipmentSlotItem(EquipmentSlotConfig.CHEST_SLOT, "dharok"),
-                    new EquipmentSlotItem(EquipmentSlotConfig.LEG_SLOT, "dharok"),
-                    new EquipmentSlotItem(EquipmentSlotConfig.WEAPON_SLOT, "dharok")
+                    new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, "dharok"),
+                    new EquipmentSlotItem(EquipmentSlot.CHEST_SLOT, "dharok"),
+                    new EquipmentSlotItem(EquipmentSlot.LEG_SLOT, "dharok"),
+                    new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "dharok")
             )),
             null,
             client -> {

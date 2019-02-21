@@ -1,39 +1,41 @@
 package net.runelite.client.plugins.maxhit.config;
 
+import net.runelite.api.Varbits;
+import net.runelite.client.plugins.maxhit.calculators.MaxHitCalculator;
+
 public enum PrayerBonusConfig
 {
-    DEFAULT("No Prayer", 1),
-    BURST_OF_STRENGTH("Burst of Strength", 1.05),
-    SUPERHUMAN_STRENGTH("Superhuman Strength", 1.1),
-    ULTIMATE_STRENGTH("Ultimate Strength", 1.15),
-    CHIVALRY("Chivalry", 1.18),
-    PIETY("Piety", 1.23),
-    SHARP_EYE("Sharp Eye", 1.05),
-    HAWK_EYE("Hawk Eye", 1.1),
-    EAGLE_EYE("Eagle Eye", 1.15),
-    RIGOUR("Rigour", 1.23);
+    BURST_OF_STRENGTH(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_BURST_OF_STRENGTH, 0.05),
+    SUPERHUMAN_STRENGTH(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_SUPERHUMAN_STRENGTH, 0.1),
+    ULTIMATE_STRENGTH(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_ULTIMATE_STRENGTH, 0.15),
+    CHIVALRY(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_CHIVALRY, 0.18),
 
-    private final String name;
-    private double bonus;
+    PIETY(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_PIETY, 0.23),
+    SHARP_EYE(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_SHARP_EYE, 0.05),
+    HAWK_EYE(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_HAWK_EYE, 0.1),
+    EAGLE_EYE(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_EAGLE_EYE, 0.15),
+    RIGOUR(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_RIGOUR, 0.23);
 
-    PrayerBonusConfig(String name, double bonus)
-    {
-        this.name = name;
-        this.bonus = bonus;
+
+    private final MaxHitCalculator.CombatMethod combatMethod;
+    private final Varbits prayerVarbit;
+    private final double strengthBonus;
+
+    PrayerBonusConfig(MaxHitCalculator.CombatMethod combatMethod, Varbits prayerVarbit, double strengthBonus) {
+        this.combatMethod = combatMethod;
+        this.prayerVarbit = prayerVarbit;
+        this.strengthBonus = strengthBonus;
     }
 
-    @Override
-    public String toString()
-    {
-        return name;
+    public MaxHitCalculator.CombatMethod getCombatMethod() {
+        return combatMethod;
     }
 
-    public boolean isSet()
-    {
-        return this != DEFAULT;
+    public Varbits getPrayerVarbit() {
+        return prayerVarbit;
     }
 
-    public double getBonus() {
-        return bonus;
+    public double getStrengthBonus() {
+        return strengthBonus;
     }
 }

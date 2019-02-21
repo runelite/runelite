@@ -2,24 +2,27 @@ package net.runelite.client.plugins.maxhit.calculators;
 
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
+import net.runelite.client.plugins.maxhit.attackstyle.AttackStyle;
+import net.runelite.client.plugins.maxhit.attackstyle.WeaponType;
 import net.runelite.client.plugins.maxhit.config.CustomFormulaConfig;
 import net.runelite.client.plugins.maxhit.config.EquipmentBonusConfig;
+import net.runelite.client.plugins.maxhit.config.PrayerBonusConfig;
 import net.runelite.client.plugins.maxhit.config.SpellConfig;
-import net.runelite.client.plugins.maxhit.equipment.EquipmentCombatBonus;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentHelper;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentItemset;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
 public abstract class MaxHitCalculator {
 
     Client client;
-    private Item[] equipedItems;
+    CombatMethod combatMethod;
+    Item[] equipedItems;
 
     public enum CombatMethod {
         MELEE,
@@ -27,8 +30,9 @@ public abstract class MaxHitCalculator {
         MAGIC
     }
 
-    public MaxHitCalculator(Client client, Item[] equipedItems) {
+    MaxHitCalculator(Client client, CombatMethod combatMethod, Item[] equipedItems) {
         this.client = client;
+        this.combatMethod = combatMethod;
         this.equipedItems = equipedItems;
     }
 
@@ -38,21 +42,43 @@ public abstract class MaxHitCalculator {
 
     public abstract double getCurrentSkillPower();
 
-    private ArrayList<EquipmentBonusConfig> getBonusItemSets() {
-        return new ArrayList<>(Arrays.asList(EquipmentBonusConfig.values()));
+    AttackStyle getAttackStyle() {
+        int equippedWeaponTypeId = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
+        int attackStyleId = client.getVar(VarPlayer.ATTACK_STYLE);
+
+        AttackStyle[] attackStyles = WeaponType.getWeaponType(equippedWeaponTypeId).getAttackStyles();
+
+        if (attackStyleId < attackStyles.length)
+        {
+            AttackStyle attackStyle = attackStyles[attackStyleId];
+            if (attackStyle != null)
+            {
+                return attackStyle;
+            }
+        }
+
+        return AttackStyle.OTHER;
     }
 
-    public double getBonus(Function<EquipmentCombatBonus, Double> bonusExtractor){
-        ArrayList<EquipmentBonusConfig> itemSets = this.getBonusItemSets();
+    double getPrayerBonus() {
+        for(PrayerBonusConfig prayerBonus : PrayerBonusConfig.values()) {
+            boolean prayerActive = client.getVar(prayerBonus.getPrayerVarbit()) == 1;
+            if(prayerActive) {
+                return prayerBonus.getStrengthBonus();
+            }
+        }
+        return 1;
+    }
+
+    double getEquipmentBonus(EquipmentBonusConfig.BonusType bonusType) {
         double bonus = 1;
-        for(EquipmentBonusConfig itemSetMultiplier: itemSets) {
+        ArrayList<EquipmentBonusConfig> equipmentBonuses = EquipmentBonusConfig.getBonusByType(bonusType);
 
-            EquipmentItemset items = itemSetMultiplier.getItemset();
-
-            boolean wearsSet = EquipmentHelper.wearsItemSet(this.client, this.equipedItems, items);
-
-            if(wearsSet) {
-                bonus += bonusExtractor.apply(itemSetMultiplier.getEquipmentCombatBonus());
+        for(EquipmentBonusConfig equipmentBonus : equipmentBonuses) {
+            EquipmentItemset itemSet = equipmentBonus.getItemset();
+            boolean wearsSet = EquipmentHelper.wearsItemSet(this.client, this.equipedItems, itemSet);
+            if(wearsSet && equipmentBonus.meetsRequirements(this.client)) {
+                bonus += equipmentBonus.getBonus(this.combatMethod);
             }
         }
         return bonus;
@@ -67,11 +93,9 @@ public abstract class MaxHitCalculator {
         return this.calculateDefault();
     }
 
-    protected abstract CombatMethod getCombatMethod();
-
     private Function<Client, Double> getCustomFormula() {
         for(CustomFormulaConfig customFormula: CustomFormulaConfig.values()) {
-            if(this.getCombatMethod() != customFormula.getRequiredCombatMethod()){
+            if(this.combatMethod != customFormula.getRequiredCombatMethod()){
                 continue;
             }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Brett Middle <https://github.com/bmiddle>
+ * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.maxhit;
+package net.runelite.client.plugins.maxhit.attackstyle;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.plugins.maxhit.config.PrayerBonusConfig;
+import net.runelite.api.Skill;
 
-@ConfigGroup("maxhit")
-public interface MaxHitConfig extends Config
+public enum AttackStyle
 {
-    @ConfigItem(
-            position = 1,
-            keyName = "prayer",
-            name = "Prayer",
-            description = "Choose active prayer when calculating max hit"
-    )
-    default PrayerBonusConfig prayer()
-    {
-        return PrayerBonusConfig.DEFAULT;
-    }
+	ACCURATE("Accurate", new Skill[]{Skill.ATTACK}, 0),
+	AGGRESSIVE("Aggressive", new Skill[]{Skill.STRENGTH}, 3),
+	DEFENSIVE("Defensive", new Skill[]{Skill.DEFENCE}, 0),
+	CONTROLLED("Controlled", new Skill[]{Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE}, 1),
+	RANGING("Ranging", new Skill[]{Skill.RANGED}, 3),
+	LONGRANGE("Longrange", new Skill[]{Skill.RANGED, Skill.DEFENCE}, 0),
+	CASTING("Casting", new Skill[]{Skill.MAGIC}, 0),
+	DEFENSIVE_CASTING("Defensive Casting", new Skill[]{Skill.MAGIC, Skill.DEFENCE}, 0),
+	OTHER("Other", new Skill[]{}, 0);
 
-    @ConfigItem(
-            position = 3,
-            keyName = "statBoost",
-            name = "Stat Boost",
-            description = "Simulates drinking a ranging and super strength potion, and using imbued hearth"
-    )
-    default boolean potion()
-    {
-        return false;
-    }
+	private final String name;
+	private final Skill[] skills;
+	private int maxHitBonus;
+
+	AttackStyle(String name, Skill[] skills, int maxHitBonus)
+	{
+		this.name = name;
+		this.skills = skills;
+		this.maxHitBonus = maxHitBonus;
+	}
+
+	public String getName()
+	{
+		return this.name;
+	}
+
+	public Skill[] getSkills()
+	{
+		return this.skills;
+	}
+
+	public double getMaxHitBonus() {
+		return this.maxHitBonus;
+	}
 }

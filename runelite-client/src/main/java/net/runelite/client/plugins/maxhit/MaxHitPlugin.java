@@ -24,14 +24,12 @@
  */
 package net.runelite.client.plugins.maxhit;
 
-import com.google.inject.Provides;
 import net.runelite.api.*;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -57,15 +55,6 @@ public class MaxHitPlugin extends Plugin
 
 	@Inject
 	private Client client;
-
-	@Inject
-	private MaxHitConfig config;
-
-	@Provides
-	MaxHitConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(MaxHitConfig.class);
-	}
 
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
