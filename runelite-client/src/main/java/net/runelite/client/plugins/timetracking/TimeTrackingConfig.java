@@ -71,10 +71,21 @@ public interface TimeTrackingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "diseasedCropNotification",
+		name = "Diseased crop notification",
+		description = "Notify you when one of your crops become diseased",
+		position = 4
+	)
+	default boolean diseasedCropNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "defaultTimerMinutes",
 		name = "Default Time (Minutes)",
 		description = "The default time for the timer in minutes",
-		position = 4
+		position = 5
 	)
 	default int defaultTimerMinutes()
 	{

@@ -37,6 +37,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.vars.Autoweed;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.Notifier;
 import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.Tab;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
@@ -49,6 +50,9 @@ public class FarmingTracker
 	private final ConfigManager configManager;
 	private final TimeTrackingConfig config;
 	private final FarmingWorld farmingWorld;
+	private static final String POUCH_DECAYED_NOTIFICATION_MESSAGE = "Your rune pouch has decayed.";
+	private static final String POUCH_DECAYED_MESSAGE = "Your pouch has decayed through use.";
+	private final Notifier notifier;
 
 	private final Map<Tab, SummaryState> summaries = new EnumMap<>(Tab.class);
 
@@ -60,13 +64,14 @@ public class FarmingTracker
 
 	@Inject
 	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager,
-		TimeTrackingConfig config, FarmingWorld farmingWorld)
+		TimeTrackingConfig config, FarmingWorld farmingWorld, Notifier notifier)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
 		this.configManager = configManager;
 		this.config = config;
 		this.farmingWorld = farmingWorld;
+		this.notifier = notifier;
 	}
 
 
@@ -187,9 +192,15 @@ public class FarmingTracker
 
 		PatchState state = patch.getImplementation().forVarbitValue(value);
 
+
 		int stage = state.getStage();
 		int stages = state.getStages();
 		int tickrate = state.getTickRate() * 60;
+
+		if (config.diseasedCropNotification() && state.getCropState() == CropState.DISEASED)
+		{
+			notifier.notify("You have a diseased crop, cure it quick!");
+		}
 
 		if (autoweed && state.getProduce() == Produce.WEEDS)
 		{
