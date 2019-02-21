@@ -203,4 +203,15 @@ public interface ItemChargeConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showInfoboxes",
+		name = "Show Infoboxes",
+		description = "Configures whether to show an infobox equipped charge items",
+		position = 15
+	)
+	default boolean showInfoboxes()
+	{
+		return false;
+	}
 }
