@@ -82,6 +82,7 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 		super(chatboxPanelManager, clientThread);
 		this.chatboxPanelManager = chatboxPanelManager;
 
+		lines(1);
 		prompt("OSRS Wiki Search");
 		onDone(string ->
 		{

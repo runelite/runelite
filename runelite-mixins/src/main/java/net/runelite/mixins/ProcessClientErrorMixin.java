@@ -55,7 +55,7 @@ public abstract class ProcessClientErrorMixin implements RSClient
 				throwableToScan = ((RSRunException) throwable).getParent();
 			}
 
-			client.getLogger().error("Game crash", throwableToScan);
+			client.getLogger().error("Game crash: {}", string, throwableToScan);
 
 			StackTraceElement[] stackTrace = throwableToScan.getStackTrace();
 

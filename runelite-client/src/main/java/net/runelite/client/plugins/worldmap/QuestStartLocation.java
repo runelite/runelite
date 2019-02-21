@@ -49,6 +49,7 @@ enum QuestStartLocation
 	SHIELD_OF_ARRAV("Shield of Arrav", new WorldPoint(3208, 3495, 0)),
 	VAMPIRE_SLAYER("Vampire Slayer", new WorldPoint(3096, 3266, 0)),
 	WITCHS_POTION("Witch's Potion", new WorldPoint(2967, 3203, 0)),
+	X_MARKS_THE_SPOT("X Marks the Spot", new WorldPoint(3227, 3242, 0)),
 
 	//Members' Quests
 	ANIMAL_MAGNETISM("Animal Magnetism", new WorldPoint(3094, 3360, 0)),

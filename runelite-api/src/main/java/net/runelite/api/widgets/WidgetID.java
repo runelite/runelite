@@ -126,6 +126,7 @@ public class WidgetID
 	public static final int ENTERING_HOUSE_GROUP_ID = 71;
 	public static final int FULLSCREEN_MAP_GROUP_ID = 165;
 	public static final int QUESTLIST_GROUP_ID = 399;
+	public static final int SKILLS_GROUP_ID = 320;
 
 	static class WorldMap
 	{

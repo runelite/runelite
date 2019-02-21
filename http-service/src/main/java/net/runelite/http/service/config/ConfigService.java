@@ -24,28 +24,18 @@
  */
 package net.runelite.http.service.config;
 
-import java.io.IOException;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.annotation.Nullable;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
-import net.runelite.http.service.account.AuthFilter;
-import net.runelite.http.service.account.beans.SessionEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
-@RestController
-@RequestMapping("/config")
+@Service
 public class ConfigService
 {
 	private static final String CREATE_CONFIG = "CREATE TABLE IF NOT EXISTS `config` (\n"
@@ -59,16 +49,13 @@ public class ConfigService
 		+ "  ADD CONSTRAINT `user_fk` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
 
 	private final Sql2o sql2o;
-	private final AuthFilter auth;
 
 	@Autowired
 	public ConfigService(
-		@Qualifier("Runelite SQL2O") Sql2o sql2o,
-		AuthFilter auth
+		@Qualifier("Runelite SQL2O") Sql2o sql2o
 	)
 	{
 		this.sql2o = sql2o;
-		this.auth = auth;
 
 		try (Connection con = sql2o.open())
 		{
@@ -87,71 +74,45 @@ public class ConfigService
 		}
 	}
 
-	@RequestMapping
-	public Configuration get(HttpServletRequest request, HttpServletResponse response) throws IOException
+	public Configuration get(int userId)
 	{
-		SessionEntry session = auth.handle(request, response);
-
-		if (session == null)
-		{
-			return null;
-		}
-
 		List<ConfigEntry> config;
 
 		try (Connection con = sql2o.open())
 		{
 			config = con.createQuery("select `key`, value from config where user = :user")
-				.addParameter("user", session.getUser())
+				.addParameter("user", userId)
 				.executeAndFetch(ConfigEntry.class);
 		}
 
 		return new Configuration(config);
 	}
 
-	@RequestMapping(path = "/{key:.+}", method = PUT)
 	public void setKey(
-		HttpServletRequest request,
-		HttpServletResponse response,
-		@PathVariable String key,
-		@RequestBody(required = false) String value
-	) throws IOException
+		int userId,
+		String key,
+		@Nullable String value
+	)
 	{
-		SessionEntry session = auth.handle(request, response);
-
-		if (session == null)
-		{
-			return;
-		}
-
 		try (Connection con = sql2o.open())
 		{
 			con.createQuery("insert into config (user, `key`, value) values (:user, :key, :value) on duplicate key update `key` = :key, value = :value")
-				.addParameter("user", session.getUser())
+				.addParameter("user", userId)
 				.addParameter("key", key)
 				.addParameter("value", value != null ? value : "")
 				.executeUpdate();
 		}
 	}
 
-	@RequestMapping(path = "/{key:.+}", method = DELETE)
 	public void unsetKey(
-		HttpServletRequest request,
-		HttpServletResponse response,
-		@PathVariable String key
-	) throws IOException
+		int userId,
+		String key
+	)
 	{
-		SessionEntry session = auth.handle(request, response);
-
-		if (session == null)
-		{
-			return;
-		}
-
 		try (Connection con = sql2o.open())
 		{
 			con.createQuery("delete from config where user = :user and `key` = :key")
-				.addParameter("user", session.getUser())
+				.addParameter("user", userId)
 				.addParameter("key", key)
 				.executeUpdate();
 		}
