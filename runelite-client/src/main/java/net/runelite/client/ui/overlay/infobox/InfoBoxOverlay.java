@@ -99,10 +99,7 @@ public class InfoBoxOverlay extends Overlay
 			final Color color = box.getTextColor();
 
 			final InfoBoxComponent infoBoxComponent = new InfoBoxComponent();
-			if (!Strings.isNullOrEmpty(text))
-			{
-				infoBoxComponent.setText(text);
-			}
+			infoBoxComponent.setText(text);
 			if (color != null)
 			{
 				infoBoxComponent.setColor(color);
