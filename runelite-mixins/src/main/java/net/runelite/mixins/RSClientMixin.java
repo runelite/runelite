@@ -1265,9 +1265,9 @@ public abstract class RSClientMixin implements RSClient
 		callbacks.clientMainLoop();
 	}
 
-	@MethodHook("gameDraw")
+	@MethodHook("renderWidgetLayer")
 	@Inject
-	public static void gameDraw(Widget[] widgets, int parentId, int var2, int var3, int var4, int var5, int x, int y, int var8)
+	public static void renderWidgetLayer(Widget[] widgets, int parentId, int var2, int var3, int var4, int var5, int x, int y, int var8)
 	{
 		for (Widget rlWidget : widgets)
 		{

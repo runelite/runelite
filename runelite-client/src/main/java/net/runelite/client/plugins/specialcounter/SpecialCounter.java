@@ -29,30 +29,24 @@ import net.runelite.client.ui.overlay.infobox.Counter;
 
 class SpecialCounter extends Counter
 {
-	private int hitValue;
 	private SpecialWeapon weapon;
 
 	SpecialCounter(BufferedImage image, SpecialCounterPlugin plugin, int hitValue, SpecialWeapon weapon)
 	{
-		super(image, plugin, null);
+		super(image, plugin, hitValue);
 		this.weapon = weapon;
-		this.hitValue = hitValue;
 	}
 
 	void addHits(double hit)
 	{
-		this.hitValue += hit;
-	}
-
-	@Override
-	public String getText()
-	{
-		return Integer.toString(hitValue);
+		int count = getCount();
+		setCount(count + (int) hit);
 	}
 
 	@Override
 	public String getTooltip()
 	{
+		int hitValue = getCount();
 		if (!weapon.isDamage())
 		{
 			if (hitValue == 1)

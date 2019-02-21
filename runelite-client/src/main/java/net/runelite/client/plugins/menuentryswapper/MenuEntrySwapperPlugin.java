@@ -45,8 +45,10 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.MenuManager;
@@ -102,6 +104,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private MenuEntrySwapperConfig config;
 
 	@Inject
@@ -115,6 +120,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	@Inject
 	private MenuManager menuManager;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Getter
 	private boolean configuringShiftClick = false;
@@ -146,6 +154,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+		if (!CONFIG_GROUP.equals(event.getGroup()))
+		{
+			return;
+		}
+
 		if (event.getKey().equals("shiftClickCustomization"))
 		{
 			if (config.shiftClickCustomization())
@@ -157,6 +170,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 				disableCustomization();
 			}
 		}
+		else if (event.getKey().startsWith(ITEM_KEY_PREFIX))
+		{
+			clientThread.invoke(this::resetItemCompositionCache);
+		}
+	}
+
+	private void resetItemCompositionCache()
+	{
+		itemManager.invalidateItemCompositionCache();
+		client.getItemCompositionCache().reset();
 	}
 
 	private Integer getSwapConfig(int itemId)
@@ -187,6 +210,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		keyManager.registerKeyListener(inputListener);
 		refreshShiftClickCustomizationMenus();
+		clientThread.invoke(this::resetItemCompositionCache);
 	}
 
 	private void disableCustomization()
@@ -194,6 +218,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 		removeShiftClickCustomizationMenus();
 		configuringShiftClick = false;
+		clientThread.invoke(this::resetItemCompositionCache);
 	}
 
 	@Subscribe
@@ -291,7 +316,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (option.equals(RESET) && target.equals(MENU_TARGET))
 		{
 			unsetSwapConfig(itemId);
-			itemComposition.resetShiftClickActionIndex();
 			return;
 		}
 
@@ -324,7 +348,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (valid)
 		{
 			setSwapConfig(itemId, index);
-			itemComposition.setShiftClickActionIndex(index);
 		}
 	}
 

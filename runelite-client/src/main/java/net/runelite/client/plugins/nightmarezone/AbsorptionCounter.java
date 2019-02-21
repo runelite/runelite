@@ -33,8 +33,6 @@ import net.runelite.client.ui.overlay.infobox.Counter;
 
 public class AbsorptionCounter extends Counter
 {
-	private int absorption;
-
 	@Getter
 	@Setter
 	private int threshold;
@@ -49,20 +47,19 @@ public class AbsorptionCounter extends Counter
 
 	public AbsorptionCounter(BufferedImage image, Plugin plugin, int absorption, int threshold)
 	{
-		super(image, plugin, "");
+		super(image, plugin,  absorption);
 		this.threshold = threshold;
-		setAbsorption(absorption);
 	}
 
 	public void setAbsorption(int absorption)
 	{
-		this.absorption = absorption;
-		setText(String.valueOf(absorption));
+		setCount(absorption);
 	}
 
 	@Override
 	public Color getTextColor()
 	{
+		int absorption = getCount();
 		if (absorption >= threshold)
 		{
 			return aboveThresholdColor;
@@ -76,6 +73,7 @@ public class AbsorptionCounter extends Counter
 	@Override
 	public String getTooltip()
 	{
+		int absorption = getCount();
 		return "Absorption: " + absorption;
 	}
 }
