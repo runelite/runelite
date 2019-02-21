@@ -43,8 +43,11 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +73,7 @@ import net.runelite.http.api.config.Configuration;
 public class ConfigManager
 {
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
+	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
 	@Inject
 	EventBus eventBus;
@@ -179,7 +183,7 @@ public class ConfigManager
 
 		try
 		{
-			saveToFile();
+			saveToFile(propertiesFile);
 
 			log.debug("Updated configuration on disk with the latest version");
 		}
@@ -237,6 +241,24 @@ public class ConfigManager
 
 	public void importLocal()
 	{
+		if (session == null)
+		{
+			// No session, no import
+			return;
+		}
+
+		final File file = new File(propertiesFile.getParent(), propertiesFile.getName() + "." + TIME_FORMAT.format(new Date()));
+
+		try
+		{
+			saveToFile(file);
+		}
+		catch (IOException e)
+		{
+			log.warn("Backup failed, skipping import", e);
+			return;
+		}
+
 		syncPropertiesFromFile(getLocalPropertiesFile());
 	}
 
@@ -287,7 +309,7 @@ public class ConfigManager
 		}
 	}
 
-	private synchronized void saveToFile() throws IOException
+	private synchronized void saveToFile(final File propertiesFile) throws IOException
 	{
 		propertiesFile.getParentFile().mkdirs();
 
@@ -368,7 +390,7 @@ public class ConfigManager
 		{
 			try
 			{
-				saveToFile();
+				saveToFile(propertiesFile);
 			}
 			catch (IOException ex)
 			{
@@ -411,7 +433,7 @@ public class ConfigManager
 		{
 			try
 			{
-				saveToFile();
+				saveToFile(propertiesFile);
 			}
 			catch (IOException ex)
 			{
