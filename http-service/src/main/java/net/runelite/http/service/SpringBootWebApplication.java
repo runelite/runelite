@@ -25,13 +25,11 @@
 package net.runelite.http.service;
 
 import ch.qos.logback.classic.LoggerContext;
+import com.google.common.base.Strings;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -44,11 +42,17 @@ import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.impl.StaticLoggerBinder;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.Converter;
@@ -56,6 +60,7 @@ import org.sql2o.quirks.NoQuirks;
 
 @SpringBootApplication
 @EnableScheduling
+@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 @Slf4j
 public class SpringBootWebApplication extends SpringBootServletInitializer
 {
@@ -96,35 +101,80 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 		};
 	}
 
-	private Context getContext() throws NamingException
+	@ConfigurationProperties(prefix = "datasource.runelite")
+	@Bean("dataSourceRuneLite")
+	public DataSourceProperties dataSourceProperties()
 	{
-		Context initCtx = new InitialContext();
-		return (Context) initCtx.lookup("java:comp/env");
+		return new DataSourceProperties();
+	}
+
+	@ConfigurationProperties(prefix = "datasource.runelite-cache")
+	@Bean("dataSourceRuneLiteCache")
+	public DataSourceProperties dataSourcePropertiesCache()
+	{
+		return new DataSourceProperties();
+	}
+
+	@ConfigurationProperties(prefix = "datasource.runelite-tracker")
+	@Bean("dataSourceRuneLiteTracker")
+	public DataSourceProperties dataSourcePropertiesTracker()
+	{
+		return new DataSourceProperties();
+	}
+
+	@Bean(value = "runelite", destroyMethod = "")
+	public DataSource runeliteDataSource(@Qualifier("dataSourceRuneLite") DataSourceProperties dataSourceProperties)
+	{
+		return getDataSource(dataSourceProperties);
+	}
+
+	@Bean(value = "runelite-cache", destroyMethod = "")
+	public DataSource runeliteCache2DataSource(@Qualifier("dataSourceRuneLiteCache") DataSourceProperties dataSourceProperties)
+	{
+		return getDataSource(dataSourceProperties);
+	}
+
+	@Bean(value = "runelite-tracker", destroyMethod = "")
+	public DataSource runeliteTrackerDataSource(@Qualifier("dataSourceRuneLiteTracker") DataSourceProperties dataSourceProperties)
+	{
+		return getDataSource(dataSourceProperties);
 	}
 
 	@Bean("Runelite SQL2O")
-	Sql2o sql2o() throws NamingException
+	public Sql2o sql2o(@Qualifier("runelite") DataSource dataSource)
 	{
-		DataSource dataSource = (DataSource) getContext().lookup("jdbc/runelite");
-		Map<Class, Converter> converters = new HashMap<>();
-		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o(dataSource, new NoQuirks(converters));
+		return createSql2oFromDataSource(dataSource);
 	}
 
 	@Bean("Runelite Cache SQL2O")
-	Sql2o cacheSql2o() throws NamingException
+	public Sql2o cacheSql2o(@Qualifier("runelite-cache") DataSource dataSource)
 	{
-		DataSource dataSource = (DataSource) getContext().lookup("jdbc/runelite-cache2");
-		Map<Class, Converter> converters = new HashMap<>();
-		converters.put(Instant.class, new InstantConverter());
-		return new Sql2o(dataSource, new NoQuirks(converters));
+		return createSql2oFromDataSource(dataSource);
 	}
 
 	@Bean("Runelite XP Tracker SQL2O")
-	Sql2o trackerSql2o() throws NamingException
+	public Sql2o trackerSql2o(@Qualifier("runelite-tracker") DataSource dataSource)
 	{
-		DataSource dataSource = (DataSource) getContext().lookup("jdbc/runelite-tracker");
-		Map<Class, Converter> converters = new HashMap<>();
+		return createSql2oFromDataSource(dataSource);
+	}
+
+	private static DataSource getDataSource(DataSourceProperties dataSourceProperties)
+	{
+		if (!Strings.isNullOrEmpty(dataSourceProperties.getJndiName()))
+		{
+			// Use JNDI provided datasource, which is already configured with pooling
+			JndiDataSourceLookup dataSourceLookup = new JndiDataSourceLookup();
+			return dataSourceLookup.getDataSource(dataSourceProperties.getJndiName());
+		}
+		else
+		{
+			return dataSourceProperties.initializeDataSourceBuilder().build();
+		}
+	}
+
+	private static Sql2o createSql2oFromDataSource(final DataSource dataSource)
+	{
+		final Map<Class, Converter> converters = new HashMap<>();
 		converters.put(Instant.class, new InstantConverter());
 		return new Sql2o(dataSource, new NoQuirks(converters));
 	}

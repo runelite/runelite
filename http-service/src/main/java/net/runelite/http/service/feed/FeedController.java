@@ -71,7 +71,7 @@ public class FeedController
 		}
 		catch (IOException e)
 		{
-			log.warn(null, e);
+			log.warn(e.getMessage());
 		}
 
 		try
@@ -80,7 +80,7 @@ public class FeedController
 		}
 		catch (IOException e)
 		{
-			log.warn(null, e);
+			log.warn(e.getMessage());
 		}
 
 		try
@@ -89,7 +89,7 @@ public class FeedController
 		}
 		catch (IOException e)
 		{
-			log.warn(null, e);
+			log.warn(e.getMessage());
 		}
 
 		feedResult = new FeedResult(items);

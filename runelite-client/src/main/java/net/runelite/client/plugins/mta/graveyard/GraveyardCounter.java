@@ -31,22 +31,15 @@ import net.runelite.client.ui.overlay.infobox.Counter;
 
 public class GraveyardCounter extends Counter
 {
-	private int count;
-
 	public GraveyardCounter(BufferedImage image, Plugin plugin)
 	{
-		super(image, plugin, "0");
-	}
-
-	public void setCount(int count)
-	{
-		this.count = count;
-		this.setText(String.valueOf(count));
+		super(image, plugin, 0);
 	}
 
 	@Override
 	public Color getTextColor()
 	{
+		int count = getCount();
 		if (count >= GraveyardRoom.MIN_SCORE)
 		{
 			return Color.GREEN;
