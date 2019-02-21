@@ -131,20 +131,11 @@ public class AlchemyProtectPlugin extends Plugin
 		}
 	}
 
-	/**
-	 * Removes xml tags from a string
-	 * IE: (with [] being arrow brackets) "some [tag]stuff[\tag]" -> "some stuff"
-	 */
-	private String RemoveXMLTags(String somestring)
-	{
-		return somestring.replaceAll("<[^>]+>", "");
-	}
-
 	private String ExplorersRingGetAlchemyTargetItemName(MenuOptionClicked i)
 	{
 		if (i.getMenuOption().contains("Alchemy"))
 		{
-			return RemoveXMLTags(i.getMenuTarget());
+			return Text.removeTags(i.getMenuTarget());
 		}
 		return null;
 	}
@@ -157,7 +148,7 @@ public class AlchemyProtectPlugin extends Plugin
 			if (menutarget.contains("Level Alchemy"))
 			{
 				String targetitem = menutarget.split(" -> ")[1];
-				return RemoveXMLTags((targetitem));
+				return Text.removeTags((targetitem));
 			}
 		}
 		return null;
@@ -178,36 +169,3 @@ public class AlchemyProtectPlugin extends Plugin
 		return null;
 	}
 }
-
-	/*
-	* For future reference, this is what MenuOptionClicked messages look like:
-	*
-	* Low alch through spellbook
-	*
-	Action Parameter: 2
-	Menu Option: Cast
-	Menu Target: <col=00ff00>Low Level Alchemy</col><col=ffffff> -> <col=ff9040>Weeds
-	Menu Action: ITEM_USE_ON_WIDGET
-	Target ID: 6055
-	WidgetID: 9764864
-	*
-	* High alch through spellbook
-	*
-	Action Parameter: 2
-	Menu Option: Cast
-	Menu Target: <col=00ff00>High Level Alchemy</col><col=ffffff> -> <col=ff9040>Weeds
-	Menu Action: ITEM_USE_ON_WIDGET
-	Target ID: 6055
-	WidgetID: 9764864
-	*
-	* Low alch through explorers ring
-	Action Parameter: 3
-	Menu Option: Low-Alchemy
-	Menu Target: <col=ff9040>Weeds</col>
-	Menu Action: WIDGET_DEFAULT
-	Target ID: 1
-	WidgetID: 31653895
-	*
-	*
-	* ironman btw*/
-
