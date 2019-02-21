@@ -33,6 +33,6 @@ public class TaskCounter extends Counter
 {
 	public TaskCounter(BufferedImage img, Plugin plugin, int amount)
 	{
-		super(img, plugin, String.valueOf(amount));
+		super(img, plugin, amount);
 	}
 }

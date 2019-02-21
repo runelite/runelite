@@ -36,6 +36,7 @@ public enum VarClientStr
 {
 	CHATBOX_TYPED_TEXT(1),
 	INPUT_TEXT(22),
+	PRIVATE_MESSAGE_TARGET(23),
 	RECENT_CLAN_CHAT(129);
 
 	private final int index;

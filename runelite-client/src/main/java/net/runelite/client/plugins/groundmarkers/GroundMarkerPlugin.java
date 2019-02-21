@@ -34,13 +34,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -155,87 +155,23 @@ public class GroundMarkerPlugin extends Plugin
 			return Collections.EMPTY_LIST;
 		}
 
-		List<WorldPoint> worldPoints = new ArrayList<>();
-		for (GroundMarkerPoint point : points)
-		{
-			int regionId = point.getRegionId();
-			int regionX = point.getRegionX();
-			int regionY = point.getRegionY();
-			int z = point.getZ();
-
-			// world point of the tile marker
-			WorldPoint worldPoint = new WorldPoint(
-				((regionId >>> 8) << 6) + regionX,
-				((regionId & 0xff) << 6) + regionY,
-				z
-			);
-
-			if (!client.isInInstancedRegion())
+		return points.stream()
+			.map(point ->
 			{
-				worldPoints.add(worldPoint);
-				continue;
-			}
+				int regionId = point.getRegionId();
+				int regionX = point.getRegionX();
+				int regionY = point.getRegionY();
+				int z = point.getZ();
 
-			// find instance chunks using the template point. there might be more than one.
-			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
-			for (int x = 0; x < instanceTemplateChunks[z].length; ++x)
-			{
-				for (int y = 0; y < instanceTemplateChunks[z][x].length; ++y)
-				{
-					int chunkData = instanceTemplateChunks[z][x][y];
-					int rotation = chunkData >> 1 & 0x3;
-					int templateChunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
-					int templateChunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
-					if (worldPoint.getX() >= templateChunkX && worldPoint.getX() < templateChunkX + CHUNK_SIZE
-						&& worldPoint.getY() >= templateChunkY && worldPoint.getY() < templateChunkY + CHUNK_SIZE)
-					{
-						WorldPoint p = new WorldPoint(client.getBaseX() + x * CHUNK_SIZE + (worldPoint.getX() & (CHUNK_SIZE - 1)),
-							client.getBaseY() + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
-							worldPoint.getPlane());
-						p = rotate(p, rotation);
-						worldPoints.add(p);
-					}
-				}
-			}
-		}
-		return worldPoints;
-	}
-
-	/**
-	 * Rotate the chunk containing the given point to rotation 0
-	 *
-	 * @param point point
-	 * @param rotation rotation
-	 * @return world point
-	 */
-	private static WorldPoint rotateInverse(WorldPoint point, int rotation)
-	{
-		return rotate(point, 4 - rotation);
-	}
-
-	/**
-	 * Rotate the coordinates in the chunk according to chunk rotation
-	 *
-	 * @param point point
-	 * @param rotation rotation
-	 * @return world point
-	 */
-	private static WorldPoint rotate(WorldPoint point, int rotation)
-	{
-		int chunkX = point.getX() & ~(CHUNK_SIZE - 1);
-		int chunkY = point.getY() & ~(CHUNK_SIZE - 1);
-		int x = point.getX() & (CHUNK_SIZE - 1);
-		int y = point.getY() & (CHUNK_SIZE - 1);
-		switch (rotation)
-		{
-			case 1:
-				return new WorldPoint(chunkX + y, chunkY + (CHUNK_SIZE - 1 - x), point.getPlane());
-			case 2:
-				return new WorldPoint(chunkX + (CHUNK_SIZE - 1 - x), chunkY + (CHUNK_SIZE - 1 - y), point.getPlane());
-			case 3:
-				return new WorldPoint(chunkX + (CHUNK_SIZE - 1 - y), chunkY + x, point.getPlane());
-		}
-		return point;
+				// world point of the tile marker
+				return new WorldPoint(
+					((regionId >>> 8) << 6) + regionX,
+					((regionId & 0xff) << 6) + regionY,
+					z
+				);
+			})
+			.flatMap(wp -> WorldPoint.toLocalInstance(client, wp).stream())
+			.collect(Collectors.toList());
 	}
 
 	@Subscribe

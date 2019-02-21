@@ -24,7 +24,10 @@
  */
 package net.runelite.client.game.chatbox;
 
+import com.google.common.base.Strings;
+import com.google.common.primitives.Ints;
 import com.google.inject.Inject;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
@@ -33,21 +36,25 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
+import java.util.regex.Pattern;
 import javax.swing.SwingUtilities;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.FontTypeFace;
 import net.runelite.api.FontID;
-import net.runelite.api.widgets.WidgetType;
+import net.runelite.api.FontTypeFace;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetTextAlignment;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
@@ -57,6 +64,7 @@ import net.runelite.client.util.Text;
 public class ChatboxTextInput extends ChatboxInput implements KeyListener, MouseListener
 {
 	private static final int CURSOR_FLASH_RATE_MILLIS = 1000;
+	private static final Pattern BREAK_MATCHER = Pattern.compile("[^a-zA-Z0-9']");
 
 	private final ChatboxPanelManager chatboxPanelManager;
 	private final ClientThread clientThread;
@@ -66,13 +74,24 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		return i -> i >= 32 && i < 127;
 	}
 
+	@AllArgsConstructor
+	private static class Line
+	{
+		private final int start;
+		private final int end;
+		private final String text;
+	}
+
 	@Getter
 	private String prompt;
+
+	@Getter
+	private int lines;
 
 	private StringBuffer value = new StringBuffer();
 
 	@Getter
-	private int cursor = 0;
+	private int cursorStart = 0;
 
 	@Getter
 	private int cursorEnd = 0;
@@ -98,15 +117,26 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 	@Getter
 	private boolean built = false;
 
-	// This is a lambda so I can have atomic updates for it's captures
-	private ToIntFunction<MouseEvent> getCharOffset = null;
+	// These are lambdas for atomic updates
 	private Predicate<MouseEvent> isInBounds = null;
+	private ToIntFunction<Integer> getLineOffset = null;
+	private ToIntFunction<Point> getPointCharOffset = null;
 
 	@Inject
 	protected ChatboxTextInput(ChatboxPanelManager chatboxPanelManager, ClientThread clientThread)
 	{
 		this.chatboxPanelManager = chatboxPanelManager;
 		this.clientThread = clientThread;
+	}
+
+	public ChatboxTextInput lines(int lines)
+	{
+		this.lines = lines;
+		if (built)
+		{
+			clientThread.invoke(this::update);
+		}
+		return this;
 	}
 
 	public ChatboxTextInput prompt(String prompt)
@@ -158,7 +188,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			end = v;
 		}
 
-		this.cursor = start;
+		this.cursorStart = start;
 		this.cursorEnd = end;
 
 		if (built)
@@ -232,103 +262,209 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 
 	protected void buildEdit(int x, int y, int w, int h)
 	{
+		final List<Line> editLines = new ArrayList<>();
+
 		Widget container = chatboxPanelManager.getContainerWidget();
 
-		String lt = Text.escapeJagex(value.substring(0, this.cursor));
-		String mt = Text.escapeJagex(value.substring(this.cursor, this.cursorEnd));
-		String rt = Text.escapeJagex(value.substring(this.cursorEnd));
+		final Widget cursor = container.createChild(-1, WidgetType.RECTANGLE);
+		long start = System.currentTimeMillis();
+		cursor.setOnTimerListener((JavaScriptCallback) ev ->
+		{
+			boolean on = (System.currentTimeMillis() - start) % CURSOR_FLASH_RATE_MILLIS > (CURSOR_FLASH_RATE_MILLIS / 2);
+			cursor.setOpacity(on ? 255 : 0);
+		});
+		cursor.setTextColor(0xFFFFFF);
+		cursor.setHasListener(true);
+		cursor.setFilled(true);
+		cursor.setFontId(fontID);
 
-		Widget leftText = container.createChild(-1, WidgetType.TEXT);
-		Widget cursor = container.createChild(-1, WidgetType.RECTANGLE);
-		Widget middleText = container.createChild(-1, WidgetType.TEXT);
-		Widget rightText = container.createChild(-1, WidgetType.TEXT);
-
-		leftText.setFontId(fontID);
-		FontTypeFace font = leftText.getFont();
-
+		FontTypeFace font = cursor.getFont();
 		if (h <= 0)
 		{
 			h = font.getBaseline();
 		}
 
-		int ltw = font.getTextWidth(lt);
-		int mtw = font.getTextWidth(mt);
-		int rtw = font.getTextWidth(rt);
+		final int oy = y;
+		final int ox = x;
+		final int oh = h;
 
-		int fullWidth = ltw + mtw + rtw;
-
-		int ox = x;
-		if (w > 0)
+		int breakIndex = -1;
+		final StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < value.length(); i++)
 		{
-			x += (w - fullWidth) / 2;
-		}
-
-		int ltx = x;
-		int mtx = ltx + ltw;
-		int rtx = mtx + mtw;
-
-		leftText.setText(lt);
-		leftText.setOriginalX(ltx);
-		leftText.setOriginalY(y);
-		leftText.setOriginalWidth(ltw);
-		leftText.setOriginalHeight(h);
-		leftText.revalidate();
-
-		if (!mt.isEmpty())
-		{
-			cursor.setTextColor(0x113399);
-		}
-		else
-		{
-			cursor.setTextColor(0xFFFFFF);
-			long start = System.currentTimeMillis();
-			cursor.setOnTimerListener((JavaScriptCallback) ev ->
+			int count = i - sb.length();
+			final String c = value.charAt(i) + "";
+			sb.append(c);
+			if (BREAK_MATCHER.matcher(c).matches())
 			{
-				boolean on = (System.currentTimeMillis() - start) % CURSOR_FLASH_RATE_MILLIS > (CURSOR_FLASH_RATE_MILLIS / 2);
-				cursor.setOpacity(on ? 255 : 0);
-			});
-			cursor.setHasListener(true);
+				breakIndex = sb.length();
+			}
+
+			if (i == value.length() - 1)
+			{
+				Line line = new Line(count, count + sb.length() - 1, sb.toString());
+				editLines.add(line);
+				break;
+			}
+
+			if (font.getTextWidth(sb.toString() + value.charAt(i + 1)) < w)
+			{
+				continue;
+			}
+
+			if (editLines.size() < this.lines - 1 || this.lines == 0)
+			{
+				if (breakIndex > 1)
+				{
+					String str = sb.substring(0, breakIndex);
+					Line line = new Line(count, count + str.length() - 1, str);
+					editLines.add(line);
+
+					sb.replace(0, breakIndex, "");
+					breakIndex = -1;
+					continue;
+				}
+
+				Line line = new Line(count, count + sb.length() - 1, sb.toString());
+				editLines.add(line);
+				sb.replace(0, sb.length(), "");
+			}
 		}
-		cursor.setFilled(true);
-		cursor.setOriginalX(mtx - 1);
-		cursor.setOriginalY(y);
-		cursor.setOriginalWidth(2 + mtw);
-		cursor.setOriginalHeight(h);
-		cursor.revalidate();
 
-		middleText.setText(mt);
-		middleText.setFontId(fontID);
-		middleText.setOriginalX(mtx);
-		middleText.setOriginalY(y);
-		middleText.setOriginalWidth(mtw);
-		middleText.setOriginalHeight(h);
-		middleText.setTextColor(0xFFFFFF);
-		middleText.revalidate();
+		Rectangle bounds = new Rectangle(container.getCanvasLocation().getX() + container.getWidth(), y, 0, editLines.size() * oh);
+		for (int i = 0; i < editLines.size() || i == 0; i++)
+		{
+			final Line line = editLines.size() > 0 ? editLines.get(i) : new Line(0, 0, "");
+			final String text = line.text;
+			final int len = text.length();
 
-		rightText.setText(rt);
-		rightText.setFontId(fontID);
-		rightText.setOriginalX(rtx);
-		rightText.setOriginalY(y);
-		rightText.setOriginalWidth(rtw);
-		rightText.setOriginalHeight(h);
-		rightText.revalidate();
+			String lt = Text.escapeJagex(text);
+			String mt = "";
+			String rt = "";
+
+			final boolean isStartLine = cursorOnLine(cursorStart, line.start, line.end)
+				|| (cursorOnLine(cursorStart, line.start, line.end + 1) && i == editLines.size() - 1);
+
+			final boolean isEndLine = cursorOnLine(cursorEnd, line.start, line.end);
+
+			if (isStartLine || isEndLine || (cursorEnd > line.end && cursorStart < line.start))
+			{
+				final int cIdx = Ints.constrainToRange(cursorStart - line.start, 0, len);
+				final int ceIdx = Ints.constrainToRange(cursorEnd - line.start, 0, len);
+
+				lt = Text.escapeJagex(text.substring(0, cIdx));
+				mt = Text.escapeJagex(text.substring(cIdx, ceIdx));
+				rt = Text.escapeJagex(text.substring(ceIdx));
+			}
+
+			final int ltw = font.getTextWidth(lt);
+			final int mtw = font.getTextWidth(mt);
+			final int rtw = font.getTextWidth(rt);
+			final int fullWidth = ltw + mtw + rtw;
+
+			int ltx = ox;
+			if (w > 0)
+			{
+				ltx += (w - fullWidth) / 2;
+			}
+
+			final int mtx = ltx + ltw;
+			final int rtx = mtx + mtw;
+
+			if (ltx < bounds.x)
+			{
+				bounds.setLocation(ltx, bounds.y);
+			}
+
+			if (fullWidth > bounds.width)
+			{
+				bounds.setSize(fullWidth, bounds.height);
+			}
+
+			if (editLines.size() == 0 || isStartLine)
+			{
+				cursor.setOriginalX(mtx - 1);
+				cursor.setOriginalY(y);
+				cursor.setOriginalWidth(2);
+				cursor.setOriginalHeight(h);
+				cursor.revalidate();
+			}
+
+			if (!Strings.isNullOrEmpty(lt))
+			{
+				final Widget leftText = container.createChild(-1, WidgetType.TEXT);
+				leftText.setFontId(fontID);
+				leftText.setText(lt);
+				leftText.setOriginalX(ltx);
+				leftText.setOriginalY(y);
+				leftText.setOriginalWidth(ltw);
+				leftText.setOriginalHeight(h);
+				leftText.revalidate();
+			}
+
+			if (!Strings.isNullOrEmpty(mt))
+			{
+				final Widget background = container.createChild(-1, WidgetType.RECTANGLE);
+				background.setTextColor(0x113399);
+				background.setFilled(true);
+				background.setOriginalX(mtx - 1);
+				background.setOriginalY(y);
+				background.setOriginalWidth(2 + mtw);
+				background.setOriginalHeight(h);
+				background.revalidate();
+
+				final Widget middleText = container.createChild(-1, WidgetType.TEXT);
+				middleText.setText(mt);
+				middleText.setFontId(fontID);
+				middleText.setOriginalX(mtx);
+				middleText.setOriginalY(y);
+				middleText.setOriginalWidth(mtw);
+				middleText.setOriginalHeight(h);
+				middleText.setTextColor(0xFFFFFF);
+				middleText.revalidate();
+			}
+
+			if (!Strings.isNullOrEmpty(rt))
+			{
+				final Widget rightText = container.createChild(-1, WidgetType.TEXT);
+				rightText.setText(rt);
+				rightText.setFontId(fontID);
+				rightText.setOriginalX(rtx);
+				rightText.setOriginalY(y);
+				rightText.setOriginalWidth(rtw);
+				rightText.setOriginalHeight(h);
+				rightText.revalidate();
+			}
+
+			y += h;
+		}
 
 		net.runelite.api.Point ccl = container.getCanvasLocation();
-		int canvasX = ltx + ccl.getX();
-		Rectangle bounds = new Rectangle(ccl.getX() + ox, ccl.getY() + y, w > 0 ? w : fullWidth, h);
 
-		String tsValue = value.toString();
-		isInBounds = ev -> bounds.contains(ev.getPoint());
-		getCharOffset = ev ->
+		isInBounds = ev -> bounds.contains(new Point(ev.getX() - ccl.getX(), ev.getY() - ccl.getY()));
+		getPointCharOffset = p ->
 		{
-			if (fullWidth <= 0)
+			if (bounds.width <= 0)
 			{
 				return 0;
 			}
 
-			int cx = ev.getX() - canvasX;
+			int cx = p.x - ccl.getX() - ox;
+			int cy = p.y - ccl.getY() - oy;
 
-			int charIndex = (tsValue.length() * cx) / fullWidth;
+			int currentLine = Ints.constrainToRange(cy / oh, 0, editLines.size() - 1);
+
+			final Line line = editLines.get(currentLine);
+			final String tsValue = line.text;
+			int charIndex = tsValue.length();
+			int fullWidth = font.getTextWidth(tsValue);
+
+			int tx = ox;
+			if (w > 0)
+			{
+				tx += (w - fullWidth) / 2;
+			}
+			cx -= tx;
 
 			// `i` is used to track max execution time incase there is a font with ligature width data that causes this to fail
 			for (int i = tsValue.length(); i >= 0 && charIndex >= 0 && charIndex <= tsValue.length(); i--)
@@ -353,17 +489,66 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				break;
 			}
 
-			if (charIndex < 0)
+			charIndex = Ints.constrainToRange(charIndex, 0, tsValue.length());
+			return line.start + charIndex;
+		};
+
+		getLineOffset = code ->
+		{
+			if (editLines.size() < 2)
 			{
-				charIndex = 0;
-			}
-			if (charIndex > tsValue.length())
-			{
-				charIndex = tsValue.length();
+				return cursorStart;
 			}
 
-			return charIndex;
+			int currentLine = -1;
+			for (int i = 0; i < editLines.size(); i++)
+			{
+				Line l = editLines.get(i);
+				if (cursorOnLine(cursorStart, l.start, l.end)
+					|| (cursorOnLine(cursorStart, l.start, l.end + 1) && i == editLines.size() - 1))
+				{
+					currentLine = i;
+					break;
+				}
+			}
+
+			if (currentLine == -1
+				|| (code == KeyEvent.VK_UP && currentLine == 0)
+				|| (code == KeyEvent.VK_DOWN && currentLine == editLines.size() - 1))
+			{
+				return cursorStart;
+			}
+
+			final Line line = editLines.get(currentLine);
+			final int direction = code == KeyEvent.VK_UP ? -1 : 1;
+			final Point dest = new Point(cursor.getCanvasLocation().getX(), cursor.getCanvasLocation().getY() + (direction * oh));
+			final int charOffset = getPointCharOffset.applyAsInt(dest);
+
+			// Place cursor on right line if whitespace keep it on the same line or skip a line
+			final Line nextLine = editLines.get(currentLine + direction);
+			if ((direction == -1 && charOffset >= line.start)
+				|| (direction == 1 && (charOffset > nextLine.end && (currentLine + direction != editLines.size() - 1))))
+			{
+				return nextLine.end;
+			}
+
+			return charOffset;
 		};
+	}
+
+	private boolean cursorOnLine(final int cursor, final int start, final int end)
+	{
+		return (cursor >= start) && (cursor <= end);
+	}
+
+	private int getCharOffset(MouseEvent ev)
+	{
+		if (getPointCharOffset == null)
+		{
+			return 0;
+		}
+
+		return getPointCharOffset.applyAsInt(ev.getPoint());
 	}
 
 	@Override
@@ -399,12 +584,12 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		char c = e.getKeyChar();
 		if (charValidator.test(c))
 		{
-			if (cursor != cursorEnd)
+			if (cursorStart != cursorEnd)
 			{
-				value.delete(cursor, cursorEnd);
+				value.delete(cursorStart, cursorEnd);
 			}
-			value.insert(cursor, c);
-			cursorAt(cursor + 1);
+			value.insert(cursorStart, c);
+			cursorAt(cursorStart + 1);
 			if (onChanged != null)
 			{
 				onChanged.accept(getValue());
@@ -422,13 +607,13 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			{
 				case KeyEvent.VK_X:
 				case KeyEvent.VK_C:
-					if (cursor != cursorEnd)
+					if (cursorStart != cursorEnd)
 					{
-						String s = value.substring(cursor, cursorEnd);
+						String s = value.substring(cursorStart, cursorEnd);
 						if (code == KeyEvent.VK_X)
 						{
-							value.delete(cursor, cursorEnd);
-							cursorAt(cursor);
+							value.delete(cursorStart, cursorEnd);
+							cursorAt(cursorStart);
 						}
 						Toolkit.getDefaultToolkit()
 							.getSystemClipboard()
@@ -442,20 +627,20 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 							.getSystemClipboard()
 							.getData(DataFlavor.stringFlavor)
 							.toString();
-						if (cursor != cursorEnd)
+						if (cursorStart != cursorEnd)
 						{
-							value.delete(cursor, cursorEnd);
+							value.delete(cursorStart, cursorEnd);
 						}
 						for (int i = 0; i < s.length(); i++)
 						{
 							char ch = s.charAt(i);
 							if (charValidator.test(ch))
 							{
-								value.insert(cursor, ch);
-								cursor++;
+								value.insert(cursorStart, ch);
+								cursorStart++;
 							}
 						}
-						cursorAt(cursor);
+						cursorAt(cursorStart);
 						if (onChanged != null)
 						{
 							onChanged.accept(getValue());
@@ -469,13 +654,13 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			}
 			return;
 		}
-		int newPos = cursor;
+		int newPos = cursorStart;
 		if (ev.isShiftDown())
 		{
 			if (selectionEnd == -1 || selectionStart == -1)
 			{
-				selectionStart = cursor;
-				selectionEnd = cursor;
+				selectionStart = cursorStart;
+				selectionEnd = cursorStart;
 			}
 			newPos = selectionEnd;
 		}
@@ -487,20 +672,20 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		switch (code)
 		{
 			case KeyEvent.VK_DELETE:
-				if (cursor != cursorEnd)
+				if (cursorStart != cursorEnd)
 				{
-					value.delete(cursor, cursorEnd);
-					cursorAt(cursor);
+					value.delete(cursorStart, cursorEnd);
+					cursorAt(cursorStart);
 					if (onChanged != null)
 					{
 						onChanged.accept(getValue());
 					}
 					return;
 				}
-				if (cursor < value.length())
+				if (cursorStart < value.length())
 				{
-					value.deleteCharAt(cursor);
-					cursorAt(cursor);
+					value.deleteCharAt(cursorStart);
+					cursorAt(cursorStart);
 					if (onChanged != null)
 					{
 						onChanged.accept(getValue());
@@ -508,20 +693,20 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				}
 				return;
 			case KeyEvent.VK_BACK_SPACE:
-				if (cursor != cursorEnd)
+				if (cursorStart != cursorEnd)
 				{
-					value.delete(cursor, cursorEnd);
-					cursorAt(cursor);
+					value.delete(cursorStart, cursorEnd);
+					cursorAt(cursorStart);
 					if (onChanged != null)
 					{
 						onChanged.accept(getValue());
 					}
 					return;
 				}
-				if (cursor > 0)
+				if (cursorStart > 0)
 				{
-					value.deleteCharAt(cursor - 1);
-					cursorAt(cursor - 1);
+					value.deleteCharAt(cursorStart - 1);
+					cursorAt(cursorStart - 1);
 					if (onChanged != null)
 					{
 						onChanged.accept(getValue());
@@ -535,6 +720,14 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			case KeyEvent.VK_RIGHT:
 				ev.consume();
 				newPos++;
+				break;
+			case KeyEvent.VK_UP:
+				ev.consume();
+				newPos = getLineOffset.applyAsInt(code);
+				break;
+			case KeyEvent.VK_DOWN:
+				ev.consume();
+				newPos = getLineOffset.applyAsInt(code);
 				break;
 			case KeyEvent.VK_HOME:
 				ev.consume();
@@ -554,9 +747,9 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				return;
 			case KeyEvent.VK_ESCAPE:
 				ev.consume();
-				if (cursor != cursorEnd)
+				if (cursorStart != cursorEnd)
 				{
-					cursorAt(cursor);
+					cursorAt(cursorStart);
 					return;
 				}
 				chatboxPanelManager.close();
@@ -603,16 +796,16 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 		}
 		if (isInBounds == null || !isInBounds.test(mouseEvent))
 		{
-			if (cursor != cursorEnd)
+			if (cursorStart != cursorEnd)
 			{
 				selectionStart = -1;
 				selectionEnd = -1;
-				cursorAt(getCharOffset.applyAsInt(mouseEvent));
+				cursorAt(getCharOffset(mouseEvent));
 			}
 			return mouseEvent;
 		}
 
-		int nco = getCharOffset.applyAsInt(mouseEvent);
+		int nco = getCharOffset(mouseEvent);
 
 		if (mouseEvent.isShiftDown() && selectionEnd != -1)
 		{
@@ -654,7 +847,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			return mouseEvent;
 		}
 
-		int nco = getCharOffset.applyAsInt(mouseEvent);
+		int nco = getCharOffset(mouseEvent);
 		if (selectionStart != -1)
 		{
 			selectionEnd = nco;
