@@ -421,14 +421,12 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@VisibleForTesting
-	List<String> getHighlights() {
+	List<String> getHighlights()
+	{
 		final String configNpcs = config.getNpcToHighlight().toLowerCase();
 
-
-		//This will add the whole list of NPCs to be highlighted.
-
-
-		if (configNpcs.isEmpty()) {
+		if (configNpcs.isEmpty())
+		{
 			return Collections.emptyList();
 		}
 
