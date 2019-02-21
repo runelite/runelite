@@ -87,4 +87,14 @@ public interface XpDropConfig extends Config
 		return 0;
 	}
 
+	@ConfigItem(
+		keyName = "disableFakeXpDrops",
+		name = "Disable fake xp drops",
+		description = "Disables fake exp drops (such as post-200m or ironman pvp exp)",
+		position = 5
+	)
+	default boolean disableFakeXpDrops()
+	{
+		return false;
+	}
 }

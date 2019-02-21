@@ -92,6 +92,14 @@ public class XpDropPlugin extends Plugin
 			return;
 		}
 
+		if (config.disableFakeXpDrops())
+		{
+			if (widget.getText().contains("img=11")) //fake xp drops always contain this
+			{
+				widget.getParent().setHidden(true);
+			}
+		}
+
 		if (config.hideSkillIcons())
 		{
 			if (widget.getSpriteId() > 0)
