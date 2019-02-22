@@ -28,6 +28,8 @@ import com.google.common.base.Preconditions;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 
 public final class OutputStream extends java.io.OutputStream
 {
@@ -181,6 +183,9 @@ public final class OutputStream extends java.io.OutputStream
 
 	public void writeString(String str)
 	{
+		Charset utf8charset = Charset.forName("UTF-8");
+		Charset iso88591charset = Charset.forName("ISO-8859-1");
+
 		byte[] b;
 		try
 		{
@@ -190,7 +195,15 @@ public final class OutputStream extends java.io.OutputStream
 		{
 			throw new RuntimeException(ex);
 		}
-		writeBytes(b);
+
+		ByteBuffer inputBuffer = ByteBuffer.wrap(b);
+
+		CharBuffer data = utf8charset.decode(inputBuffer);
+
+		ByteBuffer outputBuffer = iso88591charset.encode(data);
+		byte[] outputData = outputBuffer.array();
+
+		writeBytes(outputData);
 		writeByte(0);
 	}
 
