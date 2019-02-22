@@ -170,6 +170,19 @@ class XpStateSingle
 		return toHourly(xpGained);
 	}
 
+	int getXpAction()
+	{
+		int actions = getXpAction(actionType).getActions();
+
+		//No actions performed
+		if (actions == 0)
+		{
+			return 0;
+		}
+
+		return xpGained / actions;
+	}
+
 	boolean update(int currentXp, int goalStartXp, int goalEndXp)
 	{
 		if (startXp == -1)
@@ -260,6 +273,7 @@ class XpStateSingle
 			.actionsInSession(getXpAction(actionType).getActions())
 			.actionsRemainingToGoal(getActionsRemaining())
 			.actionsPerHour(getActionsHr())
+			.xpPerAction(getXpAction())
 			.timeTillGoal(getTimeTillLevel())
 			.startGoalXp(startLevelExp)
 			.endGoalXp(endLevelExp)

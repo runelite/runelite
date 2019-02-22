@@ -39,6 +39,7 @@ class XpSnapshotSingle
 	private int xpGainedInSession;
 	private int xpRemainingToGoal;
 	private int xpPerHour;
+	private int xpPerAction;
 	private double skillProgressToGoal;
 	private int actionsInSession;
 	private int actionsRemainingToGoal;
