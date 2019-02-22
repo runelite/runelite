@@ -31,6 +31,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -38,6 +39,8 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.getCanvasTilePoly;
 import net.runelite.api.Player;
@@ -216,9 +219,13 @@ class KourendLibraryOverlay extends Overlay
 				.forEach(n ->
 				{
 					Book b = library.getCustomerBook();
+					ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+					boolean hasBookInInventory = itemContainer != null
+						&& b != null
+						&& Arrays.stream(itemContainer.getItems()).anyMatch(item -> item.getId() == b.getItem());
 					LocalPoint local = n.getLocalLocation();
 					Polygon poly = getCanvasTilePoly(client, local);
-					OverlayUtil.renderPolygon(g, poly, Color.WHITE);
+					OverlayUtil.renderPolygon(g, poly, hasBookInInventory ? Color.GREEN : Color.WHITE);
 					Point screen = Perspective.localToCanvas(client, local, client.getPlane(), n.getLogicalHeight());
 					if (screen != null)
 					{
