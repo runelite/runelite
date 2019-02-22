@@ -190,14 +190,16 @@ public class FarmingTracker
 
 		PatchState state = patch.getImplementation().forVarbitValue(value);
 
-
 		int stage = state.getStage();
 		int stages = state.getStages();
 		int tickrate = state.getTickRate() * 60;
 
 		if (config.diseasedCropNotification() && state.getCropState() == CropState.DISEASED)
 		{
-			notifier.notify("You have a diseased crop, cure it quick!");
+			String produceName = state.getProduce().getName().toLowerCase();
+			String produceRegion = patch.getRegion().getName();
+			String message = "Your " + produceName + " patch in " + produceRegion + " has become diseased!";
+			notifier.notify(message);
 		}
 
 		if (autoweed && state.getProduce() == Produce.WEEDS)
