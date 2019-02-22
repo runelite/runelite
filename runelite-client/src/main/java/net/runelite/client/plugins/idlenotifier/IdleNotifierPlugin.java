@@ -202,6 +202,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MAGIC_CHARGING_ORBS:
 			case MAGIC_LUNAR_STRING_JEWELRY:
 			case MAGIC_MAKE_TABLET:
+			case MAGIC_ENCHANTING_JEWELRY:
 			/* Prayer */
 			case USING_GILDED_ALTAR:
 			/* Farming */
