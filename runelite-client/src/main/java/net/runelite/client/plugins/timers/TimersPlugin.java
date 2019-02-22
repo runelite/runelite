@@ -56,6 +56,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
@@ -68,13 +69,14 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameIndicator.VENGEANCE_ACTIVE;
+import net.runelite.client.ui.overlay.OverlayManager;
 import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
-	name = "Timers",
-	description = "Show various timers in an infobox",
-	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
+		name = "Timers",
+		description = "Show various timers in an infobox",
+		tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire"}
 )
 @Slf4j
 public class TimersPlugin extends Plugin
@@ -110,6 +112,7 @@ public class TimersPlugin extends Plugin
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
 
+
 	private int lastRaidVarb;
 	private int lastWildernessVarb;
 	private int lastVengCooldownVarb;
@@ -135,10 +138,25 @@ public class TimersPlugin extends Plugin
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
+	//@Inject
+	//private FreezeManager freezeManager;
+
+	//@Inject
+	//private FreezeOverlay freezeOverlay;
+
+	@Inject
+	private OverlayManager overlayManager;
+
 	@Provides
 	TimersConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(TimersConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		//overlayManager.add(freezeOverlay);
 	}
 
 	@Override
@@ -151,6 +169,7 @@ public class TimersPlugin extends Plugin
 		lastAnimation = -1;
 		loggedInRace = false;
 		widgetHiddenChangedOnPvpWorld = false;
+		//overlayManager.remove(freezeOverlay);
 	}
 
 	@Subscribe
@@ -198,11 +217,11 @@ public class TimersPlugin extends Plugin
 		int inWilderness = client.getVar(Varbits.IN_WILDERNESS);
 
 		if (lastWildernessVarb != inWilderness
-			&& client.getGameState() == GameState.LOGGED_IN
-			&& !loggedInRace)
+				&& client.getGameState() == GameState.LOGGED_IN
+				&& !loggedInRace)
 		{
 			if (!WorldType.isPvpWorld(client.getWorldType())
-				&& inWilderness == 0)
+					&& inWilderness == 0)
 			{
 				log.debug("Left wilderness in non-PVP world, clearing Teleblock timer.");
 				removeTbTimers();
@@ -217,7 +236,7 @@ public class TimersPlugin extends Plugin
 	{
 		Widget widget = event.getWidget();
 		if (WorldType.isPvpWorld(client.getWorldType())
-			&& WidgetInfo.TO_GROUP(widget.getId()) == WidgetInfo.PVP_CONTAINER.getGroupId())
+				&& WidgetInfo.TO_GROUP(widget.getId()) == WidgetInfo.PVP_CONTAINER.getGroupId())
 		{
 			widgetHiddenChangedOnPvpWorld = true;
 		}
@@ -325,11 +344,11 @@ public class TimersPlugin extends Plugin
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (config.showAntiPoison()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.ANTIDOTE1_5958
-			|| event.getId() == ItemID.ANTIDOTE2_5956
-			|| event.getId() == ItemID.ANTIDOTE3_5954
-			|| event.getId() == ItemID.ANTIDOTE4_5952))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.ANTIDOTE1_5958
+				|| event.getId() == ItemID.ANTIDOTE2_5956
+				|| event.getId() == ItemID.ANTIDOTE3_5954
+				|| event.getId() == ItemID.ANTIDOTE4_5952))
 		{
 			// Needs menu option hook because drink message is intercepting with antipoison message
 			createGameTimer(ANTIDOTEPLUSPLUS);
@@ -337,13 +356,13 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntiPoison()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.ANTIDOTE1
-			|| event.getId() == ItemID.ANTIDOTE2
-			|| event.getId() == ItemID.ANTIDOTE3
-			|| event.getId() == ItemID.ANTIDOTE4
-			|| event.getId() == ItemID.ANTIDOTE_MIX1
-			|| event.getId() == ItemID.ANTIDOTE_MIX2))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.ANTIDOTE1
+				|| event.getId() == ItemID.ANTIDOTE2
+				|| event.getId() == ItemID.ANTIDOTE3
+				|| event.getId() == ItemID.ANTIDOTE4
+				|| event.getId() == ItemID.ANTIDOTE_MIX1
+				|| event.getId() == ItemID.ANTIDOTE_MIX2))
 		{
 			// Needs menu option hook because drink message is intercepting with antipoison message
 			createGameTimer(ANTIDOTEPLUS);
@@ -351,35 +370,35 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntiPoison()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.ANTIPOISON1
-			|| event.getId() == ItemID.ANTIPOISON2
-			|| event.getId() == ItemID.ANTIPOISON3
-			|| event.getId() == ItemID.ANTIPOISON4
-			|| event.getId() == ItemID.ANTIPOISON_MIX1
-			|| event.getId() == ItemID.ANTIPOISON_MIX2))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.ANTIPOISON1
+				|| event.getId() == ItemID.ANTIPOISON2
+				|| event.getId() == ItemID.ANTIPOISON3
+				|| event.getId() == ItemID.ANTIPOISON4
+				|| event.getId() == ItemID.ANTIPOISON_MIX1
+				|| event.getId() == ItemID.ANTIPOISON_MIX2))
 		{
 			createGameTimer(ANTIPOISON);
 			return;
 		}
 
 		if (config.showAntiPoison()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.SUPERANTIPOISON1
-			|| event.getId() == ItemID.SUPERANTIPOISON2
-			|| event.getId() == ItemID.SUPERANTIPOISON3
-			|| event.getId() == ItemID.SUPERANTIPOISON4
-			|| event.getId() == ItemID.ANTIPOISON_SUPERMIX1
-			|| event.getId() == ItemID.ANTIPOISON_SUPERMIX2))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.SUPERANTIPOISON1
+				|| event.getId() == ItemID.SUPERANTIPOISON2
+				|| event.getId() == ItemID.SUPERANTIPOISON3
+				|| event.getId() == ItemID.SUPERANTIPOISON4
+				|| event.getId() == ItemID.ANTIPOISON_SUPERMIX1
+				|| event.getId() == ItemID.ANTIPOISON_SUPERMIX2))
 		{
 			createGameTimer(SUPERANTIPOISON);
 			return;
 		}
 
 		if (config.showStamina()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.STAMINA_MIX1
-			|| event.getId() == ItemID.STAMINA_MIX2))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.STAMINA_MIX1
+				|| event.getId() == ItemID.STAMINA_MIX2))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(STAMINA);
@@ -387,9 +406,9 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntiFire()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.ANTIFIRE_MIX1
-			|| event.getId() == ItemID.ANTIFIRE_MIX2))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.ANTIFIRE_MIX1
+				|| event.getId() == ItemID.ANTIFIRE_MIX2))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(ANTIFIRE);
@@ -397,9 +416,9 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntiFire()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.EXTENDED_ANTIFIRE_MIX1
-			|| event.getId() == ItemID.EXTENDED_ANTIFIRE_MIX2))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.EXTENDED_ANTIFIRE_MIX1
+				|| event.getId() == ItemID.EXTENDED_ANTIFIRE_MIX2))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(EXANTIFIRE);
@@ -407,9 +426,9 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntiFire()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.SUPER_ANTIFIRE_MIX1
-			|| event.getId() == ItemID.SUPER_ANTIFIRE_MIX2))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.SUPER_ANTIFIRE_MIX1
+				|| event.getId() == ItemID.SUPER_ANTIFIRE_MIX2))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(SUPERANTIFIRE);
@@ -417,9 +436,9 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showAntiFire()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX1
-			|| event.getId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX2))
+				&& event.getMenuOption().contains("Drink")
+				&& (event.getId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX1
+				|| event.getId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX2))
 		{
 			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 			createGameTimer(EXSUPERANTIFIRE);
@@ -525,8 +544,8 @@ public class TimersPlugin extends Plugin
 		if (config.showTeleblock() && event.getMessage().equals(HALF_TELEBLOCK_MESSAGE))
 		{
 			if (client.getWorldType().contains(WorldType.DEADMAN)
-				&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
-				&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
+					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
+					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
 			{
 				createGameTimer(DMM_FULLTB);
 			}
@@ -598,6 +617,19 @@ public class TimersPlugin extends Plugin
 			freezeTime = client.getTickCount();
 		}
 	}
+	@Subscribe
+	public void onPlayerDespawned(PlayerDespawned playerDespawned)
+	{
+		final Player player = playerDespawned.getPlayer();
+		// All despawns ok: death, teleports, log out, runs away from screen
+		if (config.showFreezes())
+		{
+			//freezeManager.remove(player);
+		}
+
+	}
+
+
 
 	@Subscribe
 	public void onGameTick(GameTick event)
@@ -611,7 +643,7 @@ public class TimersPlugin extends Plugin
 		{
 			// assume movement means unfrozen
 			if (freezeTime != client.getTickCount()
-				&& !currentWorldPoint.equals(lastPoint))
+					&& !currentWorldPoint.equals(lastPoint))
 			{
 				removeGameTimer(freezeTimer.getTimer());
 				freezeTimer = null;
@@ -619,6 +651,8 @@ public class TimersPlugin extends Plugin
 		}
 
 		lastPoint = currentWorldPoint;
+
+		//freezeManager.prune();
 
 		if (!widgetHiddenChangedOnPvpWorld)
 		{
@@ -629,7 +663,7 @@ public class TimersPlugin extends Plugin
 
 		Widget widget = client.getWidget(PVP_WORLD_SAFE_ZONE);
 		if (widget != null
-			&& !widget.isSelfHidden())
+				&& !widget.isSelfHidden())
 		{
 			log.debug("Entered safe zone in PVP world, clearing Teleblock timer.");
 			removeTbTimers();
@@ -656,8 +690,71 @@ public class TimersPlugin extends Plugin
 	{
 		Actor actor = event.getActor();
 
+//	if (config.showFreezes())
+//	{
+//	   if (actor.getGraphic() == BIND.getGraphicId())
+//	   {
+//	      if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+//	            && !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+//	      {
+//	         freezeManager.put(actor, HALFBIND);
+//	      }
+//	      else
+//	      {
+//	         freezeManager.put(actor, BIND);
+//	      }
+//	   }
+//
+//	   if (actor.getGraphic() == SNARE.getGraphicId())
+//	   {
+//	      if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+//	            && !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+//	      {
+//	         freezeManager.put(actor, HALFSNARE);
+//	      }
+//	      else
+//	      {
+//	         freezeManager.put(actor, SNARE);
+//	      }
+//	   }
+//
+//	   if (actor.getGraphic() == ENTANGLE.getGraphicId())
+//	   {
+//	      if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
+//	            && !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN))
+//	      {
+//	         freezeManager.put(actor, HALFENTANGLE);
+//	      }
+//	      else
+//	      {
+//	         freezeManager.put(actor, ENTANGLE);
+//	      }
+//	   }
+//
+//	   if (actor.getGraphic() == ICERUSH.getGraphicId())
+//	   {
+//	      freezeManager.put(actor, ICERUSH);
+//	   }
+//
+//	   if (actor.getGraphic() == ICEBURST.getGraphicId())
+//	   {
+//	      freezeManager.put(actor, ICEBURST);
+//	   }
+//
+//	   if (actor.getGraphic() == ICEBLITZ.getGraphicId())
+//	   {
+//	      freezeManager.put(actor, ICEBLITZ);
+//	   }
+//	   if (actor.getGraphic() == ICEBARRAGE.getGraphicId())
+//	   {
+//	      freezeManager.put(actor, ICEBARRAGE);
+//	   }
+//	}
+
+
+
 		if (config.showAbyssalSireStun()
-			&& actor instanceof NPC)
+				&& actor instanceof NPC)
 		{
 			int npcId = ((NPC)actor).getId();
 
@@ -688,9 +785,9 @@ public class TimersPlugin extends Plugin
 		}
 
 		if (config.showHomeMinigameTeleports()
-			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
-			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
-			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6))
+				&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
+				&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
+				|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6))
 		{
 			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
 			{
@@ -725,8 +822,8 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == BIND.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
-					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
+						&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
+						&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
 				{
 					createGameTimer(HALFBIND);
 				}
@@ -739,8 +836,8 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == SNARE.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
-					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
+						&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
+						&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
 				{
 					createGameTimer(HALFSNARE);
 				}
@@ -753,8 +850,8 @@ public class TimersPlugin extends Plugin
 			if (actor.getGraphic() == ENTANGLE.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
-					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
-					&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
+						&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
+						&& !client.getWorldType().contains(WorldType.DEADMAN_TOURNAMENT))
 				{
 					createGameTimer(HALFENTANGLE);
 				}

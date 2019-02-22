@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,59 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.api.queries;
 
-package net.runelite.api;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
 
-/**
- * An enumeration of skills that a player can level.
- */
-public enum Skill
+
+public class NPCQuery extends ActorQuery<NPC, NPCQuery>
 {
-	ATTACK("Attack"),
-	DEFENCE("Defence"),
-	STRENGTH("Strength"),
-	HITPOINTS("Hitpoints"),
-	RANGED("Ranged"),
-	PRAYER("Prayer"),
-	MAGIC("Magic"),
-	COOKING("Cooking"),
-	WOODCUTTING("Woodcutting"),
-	FLETCHING("Fletching"),
-	FISHING("Fishing"),
-	FIREMAKING("Firemaking"),
-	CRAFTING("Crafting"),
-	SMITHING("Smithing"),
-	MINING("Mining"),
-	HERBLORE("Herblore"),
-	AGILITY("Agility"),
-	THIEVING("Thieving"),
-	SLAYER("Slayer"),
-	FARMING("Farming"),
-	RUNECRAFT("Runecraft"),
-	HUNTER("Hunter"),
-	CONSTRUCTION("Construction"),
-	MAGERANGE("magerange"),
-	ACID("acid"),
-	ICE("ice"),
-	/**
-	 * The level of all skills added together.
-	 */
-	OVERALL("Overall");
-
-	private final String name;
-
-	Skill(String name)
+	@Override
+	public NPC[] result(Client client)
 	{
-		this.name = name;
+		return client.getNpcs().stream()
+				.filter(predicate)
+				.toArray(NPC[]::new);
 	}
-
-	/**
-	 * Gets the name of the skill.
-	 *
-	 * @return the skill name
-	 */
-	public String getName()
+	
+	@SuppressWarnings("unchecked")
+	public NPCQuery idEquals(int... ids)
 	{
-		return name;
+		predicate = and(object ->
+		{
+			for (int id : ids)
+			{
+				if (object.getId() == id)
+				{
+					return true;
+				}
+			}
+			return false;
+		});
+		return (NPCQuery) this;
 	}
 }
