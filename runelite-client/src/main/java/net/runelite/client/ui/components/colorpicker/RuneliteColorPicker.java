@@ -39,6 +39,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.function.Consumer;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -83,6 +85,9 @@ public class RuneliteColorPicker extends JDialog
 
 	@Setter
 	private Consumer<Color> onColorChange;
+
+	@Setter
+	private Consumer<Color> onClose;
 
 	public RuneliteColorPicker(Window parent, Color previousColor, String title, boolean alphaHidden)
 	{
@@ -265,6 +270,18 @@ public class RuneliteColorPicker extends JDialog
 
 		updatePanels();
 		updateText();
+
+		addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				if (onClose != null)
+				{
+					onClose.accept(selectedColor);
+				}
+			}
+		});
 	}
 
 	private void updatePanels()
