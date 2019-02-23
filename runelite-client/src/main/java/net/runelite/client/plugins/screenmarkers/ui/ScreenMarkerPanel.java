@@ -553,15 +553,7 @@ class ScreenMarkerPanel extends JPanel
 			marker.getMarker().setFill(c);
 			updateFill();
 		});
-
-		colorPicker.addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				plugin.updateConfig();
-			}
-		});
+		colorPicker.setOnClose(c -> plugin.updateConfig());
 		colorPicker.setVisible(true);
 	}
 
@@ -575,15 +567,7 @@ class ScreenMarkerPanel extends JPanel
 			marker.getMarker().setColor(c);
 			updateBorder();
 		});
-
-		colorPicker.addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				plugin.updateConfig();
-			}
-		});
+		colorPicker.setOnClose(c -> plugin.updateConfig());
 		colorPicker.setVisible(true);
 	}
 }

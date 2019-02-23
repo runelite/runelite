@@ -429,15 +429,7 @@ public class ConfigPanel extends PluginPanel
 							colorPickerBtn.setBackground(c);
 							colorPickerBtn.setText(ColorUtil.toHexColor(c).toUpperCase());
 						});
-
-						colorPicker.addWindowListener(new WindowAdapter()
-						{
-							@Override
-							public void windowClosing(WindowEvent e)
-							{
-								changeConfiguration(listItem, config, colorPicker, cd, cid);
-							}
-						});
+						colorPicker.setOnClose(c -> changeConfiguration(listItem, config, colorPicker, cd, cid));
 						colorPicker.setVisible(true);
 					}
 				});
