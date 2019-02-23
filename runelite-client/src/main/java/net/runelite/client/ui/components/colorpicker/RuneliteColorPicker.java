@@ -63,6 +63,8 @@ import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 public class RuneliteColorPicker extends JDialog
 {
+	static final String CONFIG_GROUP = "colorpicker";
+
 	private final static int FRAME_WIDTH = 400;
 	private final static int FRAME_HEIGHT = 380;
 	private final static int TONE_PANEL_SIZE = 160;
@@ -97,6 +99,9 @@ public class RuneliteColorPicker extends JDialog
 		super(parent, "RuneLite Color Picker - " + title, ModalityType.MODELESS);
 
 		this.selectedColor = previousColor;
+		this.alphaHidden = alphaHidden;
+
+		RecentColors recentColors = new RecentColors(configManager);
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
@@ -117,7 +122,6 @@ public class RuneliteColorPicker extends JDialog
 		JPanel rightPanel = new JPanel();
 		rightPanel.setLayout(new GridBagLayout());
 		GridBagConstraints cx = new GridBagConstraints();
-
 
 		cx.insets = new Insets(0, 0, 0, 0);
 		JLabel old = new JLabel("Previous");
@@ -149,11 +153,26 @@ public class RuneliteColorPicker extends JDialog
 		hexContainer.add(hexInput, cx);
 
 		cx.fill = GridBagConstraints.BOTH;
-		cx.gridwidth = GridBagConstraints.RELATIVE;
 		cx.weightx = 1;
 		cx.weighty = 1;
 		cx.gridy = 0;
 		cx.gridx = 0;
+
+		JPanel recentColorsContainer = recentColors.build(c ->
+		{
+			if (!alphaHidden)
+			{
+				alphaSlider.update(c.getAlpha());
+			}
+
+			colorChange(c);
+			updatePanels();
+		}, alphaHidden);
+
+		rightPanel.add(recentColorsContainer, cx);
+
+		cx.gridwidth = GridBagConstraints.RELATIVE;
+		cx.gridy++;
 		rightPanel.add(old, cx);
 
 		cx.gridx++;
@@ -185,7 +204,6 @@ public class RuneliteColorPicker extends JDialog
 		slidersContainer.add(blueSlider);
 		slidersContainer.add(alphaSlider);
 
-		this.alphaHidden = alphaHidden;
 		if (alphaHidden)
 		{
 			alphaSlider.setVisible(false);
@@ -283,6 +301,11 @@ public class RuneliteColorPicker extends JDialog
 				if (onClose != null)
 				{
 					onClose.accept(selectedColor);
+				}
+
+				if (!Objects.equals(previousColor, selectedColor))
+				{
+					recentColors.add(selectedColor.getRGB() + "");
 				}
 
 				RuneliteColorPicker cp = colorPickerManager.getCurrentPicker();
