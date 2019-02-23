@@ -41,6 +41,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Objects;
 import java.util.function.Consumer;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -55,6 +56,7 @@ import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.ColorUtil;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -89,7 +91,8 @@ public class RuneliteColorPicker extends JDialog
 	@Setter
 	private Consumer<Color> onClose;
 
-	public RuneliteColorPicker(Window parent, Color previousColor, String title, boolean alphaHidden)
+	RuneliteColorPicker(Window parent, Color previousColor, String title, boolean alphaHidden,
+		final ConfigManager configManager, final ColorPickerManager colorPickerManager)
 	{
 		super(parent, "RuneLite Color Picker - " + title, ModalityType.MODELESS);
 
@@ -99,6 +102,7 @@ public class RuneliteColorPicker extends JDialog
 		setResizable(false);
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		setBackground(ColorScheme.PROGRESS_COMPLETE_COLOR);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		JPanel content = new JPanel(new BorderLayout());
 		content.putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
@@ -279,6 +283,12 @@ public class RuneliteColorPicker extends JDialog
 				if (onClose != null)
 				{
 					onClose.accept(selectedColor);
+				}
+
+				RuneliteColorPicker cp = colorPickerManager.getCurrentPicker();
+				if (Objects.equals(cp, RuneliteColorPicker.this))
+				{
+					colorPickerManager.setCurrentPicker(null);
 				}
 			}
 		});
