@@ -149,6 +149,11 @@ public class ClanChatPlugin extends Plugin
 
 	private void insertClanRankIcon(final ChatMessage message)
 	{
+		if (!config.clanChatIcons())
+		{
+			return;
+		}
+
 		final ClanMemberRank rank = clanManager.getRank(message.getName());
 
 		if (rank != null && rank != ClanMemberRank.UNRANKED)

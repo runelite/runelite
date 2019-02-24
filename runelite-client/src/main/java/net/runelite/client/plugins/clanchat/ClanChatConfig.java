@@ -32,10 +32,19 @@ import net.runelite.client.config.ConfigItem;
 public interface ClanChatConfig extends Config
 {
 	@ConfigItem(
+		keyName = "clanChatIcons",
+		name = "Clan Chat Icons",
+		description = "Show clan chat icons next to clan members."
+	)
+	default boolean clanChatIcons()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "recentChats",
 		name = "Recent Chats",
-		description = "Show recent clan chats.",
-		position = 1
+		description = "Show recent clan chats."
 	)
 	default boolean recentChats()
 	{
