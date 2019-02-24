@@ -62,6 +62,7 @@ class LootTrackerBox extends JPanel
 	private final ItemManager itemManager;
 	@Getter(AccessLevel.PACKAGE)
 	private final String id;
+	private final String date;
 
 	@Getter
 	private final List<LootTrackerRecord> records = new ArrayList<>();
@@ -74,10 +75,12 @@ class LootTrackerBox extends JPanel
 		final ItemManager itemManager,
 		final String id,
 		@Nullable final String subtitle,
+		@Nullable final String date,
 		final boolean hideIgnoredItems,
 		final BiConsumer<String, Boolean> onItemToggle)
 	{
 		this.id = id;
+		this.date = date;
 		this.itemManager = itemManager;
 		this.onItemToggle = onItemToggle;
 		this.hideIgnoredItems = hideIgnoredItems;
@@ -133,6 +136,16 @@ class LootTrackerBox extends JPanel
 	boolean matches(final LootTrackerRecord record)
 	{
 		return record.getTitle().equals(id);
+	}
+
+	boolean isSameDate(final String otherDate)
+	{
+		return date == null || otherDate == null || date.equals(otherDate);
+	}
+
+	String getDate()
+	{
+		return date;
 	}
 
 	/**

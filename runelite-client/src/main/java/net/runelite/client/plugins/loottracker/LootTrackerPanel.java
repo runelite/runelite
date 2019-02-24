@@ -27,14 +27,21 @@ package net.runelite.client.plugins.loottracker;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import static java.util.stream.Collectors.groupingBy;
+import javax.annotation.Nullable;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -56,6 +63,7 @@ import net.runelite.http.api.loottracker.LootTrackerClient;
 class LootTrackerPanel extends PluginPanel
 {
 	private static final int MAX_LOOT_BOXES = 500;
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 	private static final ImageIcon SINGLE_LOOT_VIEW;
 	private static final ImageIcon SINGLE_LOOT_VIEW_FADED;
@@ -69,6 +77,9 @@ class LootTrackerPanel extends PluginPanel
 	private static final ImageIcon VISIBLE_ICON_HOVER;
 	private static final ImageIcon INVISIBLE_ICON;
 	private static final ImageIcon INVISIBLE_ICON_HOVER;
+	private static final ImageIcon GROUP_BY_DAY_VIEW;
+	private static final ImageIcon GROUP_BY_DAY_VIEW_FADED;
+	private static final ImageIcon GROUP_BY_DAY_VIEW_HOVER;
 
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
@@ -92,6 +103,7 @@ class LootTrackerPanel extends PluginPanel
 	private final JLabel viewHiddenBtn = new JLabel();
 	private final JLabel singleLootBtn = new JLabel();
 	private final JLabel groupedLootBtn = new JLabel();
+	private final JLabel groupByDayBtn = new JLabel();
 
 	// Log collection
 	private final List<LootTrackerRecord> records = new ArrayList<>();
@@ -101,6 +113,7 @@ class LootTrackerPanel extends PluginPanel
 	private final LootTrackerPlugin plugin;
 
 	private boolean groupLoot;
+	private boolean groupByDay;
 	private boolean hideIgnoredItems;
 	private String currentView;
 
@@ -111,6 +124,7 @@ class LootTrackerPanel extends PluginPanel
 		final BufferedImage backArrowImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "back_icon.png");
 		final BufferedImage visibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "visible_icon.png");
 		final BufferedImage invisibleImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "invisible_icon.png");
+		final BufferedImage groupByDayImg = ImageUtil.getResourceStreamFromClass(LootTrackerPlugin.class, "calendar.png");
 
 		SINGLE_LOOT_VIEW = new ImageIcon(singleLootImg);
 		SINGLE_LOOT_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(singleLootImg, -180));
@@ -128,6 +142,10 @@ class LootTrackerPanel extends PluginPanel
 
 		INVISIBLE_ICON = new ImageIcon(invisibleImg);
 		INVISIBLE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(invisibleImg, -220));
+
+		GROUP_BY_DAY_VIEW = new ImageIcon(groupByDayImg);
+		GROUP_BY_DAY_VIEW_FADED = new ImageIcon(ImageUtil.alphaOffset(groupByDayImg, -180));
+		GROUP_BY_DAY_VIEW_HOVER = new ImageIcon(ImageUtil.alphaOffset(groupByDayImg, -220));
 	}
 
 	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager)
@@ -200,6 +218,29 @@ class LootTrackerPanel extends PluginPanel
 			}
 		});
 
+		groupByDayBtn.setIcon(GROUP_BY_DAY_VIEW_FADED);
+		groupByDayBtn.setToolTipText("Group loot by day");
+		groupByDayBtn.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				changeGroupByDay(!groupByDay);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				groupByDayBtn.setIcon(groupByDay ? GROUP_BY_DAY_VIEW : GROUP_BY_DAY_VIEW_FADED);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				groupByDayBtn.setIcon(GROUP_BY_DAY_VIEW_HOVER);
+			}
+		});
+
 		viewHiddenBtn.setIcon(VISIBLE_ICON);
 		viewHiddenBtn.setToolTipText("Show ignored items");
 		viewHiddenBtn.addMouseListener(new MouseAdapter()
@@ -225,6 +266,7 @@ class LootTrackerPanel extends PluginPanel
 
 		viewControls.add(groupedLootBtn);
 		viewControls.add(singleLootBtn);
+		viewControls.add(groupByDayBtn);
 		viewControls.add(viewHiddenBtn);
 		changeGrouping(true);
 		changeItemHiding(true);
@@ -292,6 +334,7 @@ class LootTrackerPanel extends PluginPanel
 			records.removeIf(r -> r.matches(currentView));
 			boxes.removeIf(b -> b.matches(currentView));
 			updateOverall();
+			updateDateLabels(null);
 			logsContainer.removeAll();
 			logsContainer.repaint();
 
@@ -341,6 +384,7 @@ class LootTrackerPanel extends PluginPanel
 		{
 			box.rebuild();
 			updateOverall();
+			updateDateLabels(box);
 		}
 	}
 
@@ -376,6 +420,18 @@ class LootTrackerPanel extends PluginPanel
 		hideIgnoredItems = hide;
 		rebuild();
 		viewHiddenBtn.setIcon(hideIgnoredItems ? VISIBLE_ICON : INVISIBLE_ICON);
+	}
+
+	/**
+	 * Changes group by day mode of panel
+	 *
+	 * @param group if loot should be grouped by day or not
+	 */
+	private void changeGroupByDay(boolean group)
+	{
+		groupByDay = group;
+		rebuild();
+		groupByDayBtn.setIcon(groupByDay ? GROUP_BY_DAY_VIEW : GROUP_BY_DAY_VIEW_FADED);
 	}
 
 	/**
@@ -416,6 +472,7 @@ class LootTrackerPanel extends PluginPanel
 		}
 		boxes.forEach(LootTrackerBox::rebuild);
 		updateOverall();
+		updateDateLabels(null);
 		logsContainer.revalidate();
 		logsContainer.repaint();
 	}
@@ -433,12 +490,18 @@ class LootTrackerPanel extends PluginPanel
 			return null;
 		}
 
+		String formattedDate = null;
+		if (groupByDay)
+		{
+			formattedDate = DATE_FORMAT.format(record.getTimestamp());
+		}
+
 		// Group all similar loot together
 		if (groupLoot)
 		{
 			for (LootTrackerBox box : boxes)
 			{
-				if (box.matches(record))
+				if (box.matches(record) && box.isSameDate(formattedDate))
 				{
 					box.combine(record);
 					return box;
@@ -452,7 +515,7 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setVisible(true);
 
 		// Create box
-		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(), hideIgnoredItems, plugin::toggleItem);
+		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getSubTitle(), formattedDate, hideIgnoredItems, plugin::toggleItem);
 		box.combine(record);
 
 		// Create popup menu
@@ -467,6 +530,7 @@ class LootTrackerPanel extends PluginPanel
 			records.removeAll(box.getRecords());
 			boxes.remove(box);
 			updateOverall();
+			updateDateLabels(null);
 			logsContainer.remove(box);
 			logsContainer.repaint();
 
@@ -494,7 +558,9 @@ class LootTrackerPanel extends PluginPanel
 
 		// Add box to panel
 		boxes.add(box);
-		logsContainer.add(box, 0);
+
+		// If grouping by day, add to index 1 so date label is be reused.
+		logsContainer.add(box, groupByDay && forSameDateLabel(box) ? 1 : 0);
 
 		if (!groupLoot && boxes.size() > MAX_LOOT_BOXES)
 		{
@@ -502,6 +568,63 @@ class LootTrackerPanel extends PluginPanel
 		}
 
 		return box;
+	}
+
+	/**
+	 * Adds date labels to loot boxes
+	 *
+	 * @param lastAddedBox pass last added box to try to reuse date labels. Only applicable when adding a single entry.
+	 */
+	private void updateDateLabels(@Nullable LootTrackerBox lastAddedBox)
+	{
+		if (groupByDay)
+		{
+			// Last added box has the same date as previous top label, reusing labels.
+			if (forSameDateLabel(lastAddedBox))
+			{
+				return;
+			}
+
+			List<Component> labels = Arrays.stream(logsContainer.getComponents())
+				.filter(component -> component instanceof LootTrackerDateLabel)
+				.collect(Collectors.toList());
+
+			for (Component label : labels)
+			{
+				logsContainer.remove(label);
+			}
+
+			List<List<LootTrackerBox>> boxesByDay = boxes
+				.stream()
+				.collect(groupingBy(LootTrackerBox::getDate))
+				.values()
+				.stream()
+				.sorted((o1, o2) -> o2.get(0).getDate().compareTo(o1.get(0).getDate()))
+				.collect(Collectors.toList());
+
+			int labelIndex = 0;
+			for (List<LootTrackerBox> boxesForDay : boxesByDay)
+			{
+				boolean anyVisible = boxesForDay.stream().anyMatch(Component::isVisible);
+				if (anyVisible)
+				{
+					// All lists should contain at least one item at this point
+					logsContainer.add(new LootTrackerDateLabel(boxesForDay.get(0).getDate()), labelIndex);
+					labelIndex += 1;
+				}
+				labelIndex += boxesForDay.size();
+			}
+		}
+	}
+
+	private boolean forSameDateLabel(LootTrackerBox box)
+	{
+		if (box != null)
+		{
+			Component topComponent = logsContainer.getComponentCount() > 0 ? logsContainer.getComponent(0) : null;
+			return topComponent instanceof LootTrackerDateLabel && ((LootTrackerDateLabel) topComponent).isSameDate(box.getDate());
+		}
+		return false;
 	}
 
 	private void updateOverall()
