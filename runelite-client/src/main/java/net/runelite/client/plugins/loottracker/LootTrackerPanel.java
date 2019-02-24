@@ -99,6 +99,7 @@ class LootTrackerPanel extends PluginPanel
 
 	private final ItemManager itemManager;
 	private final LootTrackerPlugin plugin;
+	private final LootTrackerConfig config;
 
 	private boolean groupLoot;
 	private boolean hideIgnoredItems;
@@ -130,10 +131,11 @@ class LootTrackerPanel extends PluginPanel
 		INVISIBLE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(invisibleImg, -220));
 	}
 
-	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager)
+	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager, final LootTrackerConfig config)
 	{
 		this.itemManager = itemManager;
 		this.plugin = plugin;
+		this.config = config;
 		this.hideIgnoredItems = true;
 
 		setBorder(new EmptyBorder(6, 6, 6, 6));
@@ -297,7 +299,7 @@ class LootTrackerPanel extends PluginPanel
 
 			// Delete all loot, or loot matching the current view
 			LootTrackerClient client = plugin.getLootTrackerClient();
-			if (client != null)
+			if (client != null && config.syncPanel())
 			{
 				client.delete(currentView);
 			}
@@ -472,7 +474,7 @@ class LootTrackerPanel extends PluginPanel
 
 			LootTrackerClient client = plugin.getLootTrackerClient();
 			// Without loot being grouped we have no way to identify single kills to be deleted
-			if (client != null && groupLoot)
+			if (client != null && groupLoot && config.syncPanel())
 			{
 				client.delete(box.getId());
 			}
