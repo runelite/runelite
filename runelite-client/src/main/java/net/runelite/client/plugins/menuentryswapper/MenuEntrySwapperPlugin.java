@@ -465,6 +465,21 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("harpoon", option, target, true);
 		}
+		else if (config.swapObelisk() != ObeliskMode.ACTIVATE && option.equals("activate"))
+		{
+			switch (config.swapObelisk())
+			{
+				case ACTIVATE:
+					swap("activate", option, target, true);
+					break;
+				case SET_DESTINATION:
+					swap("set destination", option, target, true);
+					break;
+				case TELEPORT_TO_DESTINATION:
+					swap("teleport to destination", option, target, true);
+					break;
+			}
+		}
 		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter"))
 		{
 			switch (config.swapHomePortal())

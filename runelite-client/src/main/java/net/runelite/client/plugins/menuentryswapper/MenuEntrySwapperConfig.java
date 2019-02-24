@@ -171,6 +171,16 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return HouseMode.HOME;
 	}
+	
+	@ConfigItem(
+			keyName = "swapObelisk",
+			name = "Obelisk",
+			description = "Swap the options on wilderness obelisks between Activate, Set destination or Teleport to destination"
+	)
+	default ObeliskMode swapObelisk()
+	{
+		return ObeliskMode.ACTIVATE;
+	}
 
 	@ConfigItem(
 		keyName = "swapPickpocket",
