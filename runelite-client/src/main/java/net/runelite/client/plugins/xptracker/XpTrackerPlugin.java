@@ -73,7 +73,7 @@ public class XpTrackerPlugin extends Plugin
 	/**
 	 * Amount of EXP that must be gained for an update to be submitted.
 	 */
-	private static final int XP_THRESHOLD = 1000;
+	private static final int XP_THRESHOLD = 10_000;
 
 	static final List<Skill> COMBAT = ImmutableList.of(
 		Skill.ATTACK,
