@@ -1579,4 +1579,6 @@ public interface Client extends GameEngine
      * Returns client item composition cache
 	 */
 	NodeCache getItemCompositionCache();
+
+	EnumComposition getEnum(int id);
 }
