@@ -45,7 +45,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -298,28 +297,6 @@ public class LootTrackerPlugin extends Plugin
 			lootTrackerClient.submit(lootRecord);
 		}
 	}
-
-	
-	// 		Item[] items = raidsRewardContainer.getItems();
-	// 		long chestPrice = 0;
-	// 		for (Item item : items) {
-	// 			long itemStack = (long) itemManager.getItemPrice(item.getId()) * (long) item.getQuantity();
-	// 			chestPrice += itemStack;
-	// 		}
-
-	// 		final ChatMessageBuilder message = new ChatMessageBuilder()
-	// 				.append(ChatColorType.HIGHLIGHT)
-	// 				.append("Your loot is worth around ")
-	// 				.append(StackFormatter.formatNumber(chestPrice))
-	// 				.append(" coins.")
-	// 				.append(ChatColorType.NORMAL);
-
-	// 		chatMessageManager.queue(QueuedMessage.builder()
-	// 				.type(ChatMessageType.EXAMINE_ITEM)
-	// 				.runeLiteFormattedMessage(message.build())
-	// 				.build());
-	// 	}
-	// }
 
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)

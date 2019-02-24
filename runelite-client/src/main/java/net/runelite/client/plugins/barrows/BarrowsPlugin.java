@@ -92,12 +92,6 @@ public class BarrowsPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ItemManager itemManager;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
-
-	@Inject
 	private BarrowsConfig config;
 
 	@Provides
