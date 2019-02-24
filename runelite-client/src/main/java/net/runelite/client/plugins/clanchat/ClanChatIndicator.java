@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Ron <https://github.com/raiyni>
+ * Copyright (c) 2018 Sebastiaan <https://github.com/SebastiaanVanspauwen>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,58 +24,35 @@
  */
 package net.runelite.client.plugins.clanchat;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-@ConfigGroup("clanchat")
-public interface ClanChatConfig extends Config
+class ClanChatIndicator extends Counter
 {
-	@ConfigItem(
-		keyName = "clanChatIcons",
-		name = "Clan Chat Icons",
-		description = "Show clan chat icons next to clan members."
-	)
-	default boolean clanChatIcons()
+	private final ClanChatPlugin plugin;
+
+	ClanChatIndicator(BufferedImage image, ClanChatPlugin plugin)
 	{
-		return true;
+		super(image, plugin, plugin.getClanAmount());
+		this.plugin = plugin;
 	}
 
-	@ConfigItem(
-		keyName = "recentChats",
-		name = "Recent Chats",
-		description = "Show recent clan chats."
-	)
-	default boolean recentChats()
+	@Override
+	public int getCount()
 	{
-		return true;
+		return plugin.getClanAmount();
 	}
 
-	@ConfigItem(
-		keyName = "clanCounter",
-		name = "Clan Members Counter",
-		description = "Show the amount of clan members near you."
-	)
-	default boolean showClanCounter()
+	@Override
+	public String getTooltip()
 	{
-		return false;
+		return plugin.getClanAmount() + " clan member(s) near you";
 	}
 
-	@ConfigItem(
-		keyName = "chatsData",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default String chatsData()
+	@Override
+	public Color getTextColor()
 	{
-		return "";
+		return Color.WHITE;
 	}
-
-	@ConfigItem(
-		keyName = "chatsData",
-		name = "",
-		description = ""
-	)
-	void chatsData(String str);
 }
