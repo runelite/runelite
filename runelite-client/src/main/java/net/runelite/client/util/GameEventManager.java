@@ -49,6 +49,7 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 
@@ -194,5 +195,13 @@ public class GameEventManager
 
 			eventBus.unregister(subscriber);
 		});
+	}
+
+	public static Boolean shouldClearSpawns(GameStateChanged gameStateChanged)
+	{
+		return (gameStateChanged.getGameState() == GameState.CONNECTION_LOST) ||
+				(gameStateChanged.getGameState() == GameState.HOPPING) ||
+				(gameStateChanged.getGameState() == GameState.LOGIN_SCREEN);
+
 	}
 }

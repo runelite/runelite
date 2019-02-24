@@ -65,6 +65,7 @@ import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.GameEventManager;
 
 @PluginDescriptor(
 	name = "Fishing",
@@ -147,7 +148,7 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOADING)
+		if (GameEventManager.shouldClearSpawns(gameStateChanged))
 		{
 			fishingSpots.clear();
 			minnowSpots.clear();
