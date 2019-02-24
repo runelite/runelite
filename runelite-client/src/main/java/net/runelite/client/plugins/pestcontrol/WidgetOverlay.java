@@ -44,67 +44,50 @@ import static net.runelite.client.plugins.pestcontrol.Portal.RED;
 import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 @Slf4j
-public class PestControlOverlay extends Overlay
+public class WidgetOverlay extends Overlay
 {
-	private final PestControlPlugin plugin;
 	private final Client client;
 
-	// Pest control game
-	@Getter(AccessLevel.PACKAGE)
-	private Game game;
+	private final PestControlPlugin plugin;
+
+	private final PestControlConfig config;
 
 	@Inject
-	public PestControlOverlay(PestControlPlugin plugin, Client client)
+	public WidgetOverlay(Client client, PestControlPlugin plugin, PestControlConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.plugin = plugin;
 		this.client = client;
+		this.config = config;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		// See if we are in a game or not
-		if (client.getWidget(WidgetInfo.PEST_CONTROL_BLUE_SHIELD) == null)
-		{
-			if (game != null)
-			{
-				log.debug("Pest control game has ended");
-				game = null;
-			}
-
-			return null;
+		if(plugin.getGame() != null){
+			renderPortalWidgets(graphics);
 		}
-
-		if (game == null)
-		{
-			log.debug("Pest control game has started");
-			game = new Game();
-		}
-
-		renderSpinners(graphics);
-		renderPortalWidgets(graphics);
 
 		return null;
 	}
 
-	private void renderSpinners(Graphics2D graphics)
+	private void killPortal(PortalContext portal)
 	{
-		for (NPC npc : plugin.getSpinners())
-		{
-			OverlayUtil.renderActorOverlay(graphics, npc, npc.getName(), Color.CYAN);
+		if(config.showHintArrow()){
+			client.clearHintArrow();
 		}
+
+		plugin.getGame().die(portal);
 	}
 
 	private void renderPortalWidgets(Graphics2D graphics)
 	{
-		PortalContext purple = game.getPurple();
-		PortalContext blue = game.getBlue();
-		PortalContext yellow = game.getYellow();
-		PortalContext red = game.getRed();
+		PortalContext purple = plugin.getGame().getPurple();
+		PortalContext blue = plugin.getGame().getBlue();
+		PortalContext yellow = plugin.getGame().getYellow();
+		PortalContext red = plugin.getGame().getRed();
 
 		Widget purpleHealth = client.getWidget(PURPLE.getHitpoints());
 		Widget blueHealth = client.getWidget(BLUE.getHitpoints());
@@ -112,21 +95,21 @@ public class PestControlOverlay extends Overlay
 		Widget redHealth = client.getWidget(RED.getHitpoints());
 
 		// Check for dead portals
-		if (isZero(purpleHealth))
+		if (!purple.isDead() && isZero(purpleHealth))
 		{
-			game.die(purple);
+			killPortal(purple);
 		}
-		if (isZero(blueHealth))
+		if (!blue.isDead() && isZero(blueHealth))
 		{
-			game.die(blue);
+			killPortal(blue);
 		}
-		if (isZero(yellowHealth))
+		if (!yellow.isDead() && isZero(yellowHealth))
 		{
-			game.die(yellow);
+			killPortal(yellow);
 		}
-		if (isZero(redHealth))
+		if (!red.isDead() && isZero(redHealth))
 		{
-			game.die(red);
+			killPortal(red);
 		}
 
 		// display "ATK" overlay on recorded portals without shields
@@ -136,7 +119,7 @@ public class PestControlOverlay extends Overlay
 		renderAttack(graphics, red);
 
 		// display "NEXT" overlay on predicted portals
-		for (Portal portal : game.getNextPortals())
+		for (Portal portal : plugin.getGame().getNextPortals())
 		{
 			renderWidgetOverlay(graphics, portal, "NEXT", Color.ORANGE);
 		}
@@ -217,6 +200,27 @@ public class PestControlOverlay extends Overlay
 		if (portal.isShielded() || portal.isDead())
 		{
 			return;
+		}
+
+		if(config.showHintArrow()){
+
+			if(client.hasHintArrow())
+			{
+				// Update hint arrows to NPC arrows if the portal NPC has been set
+				if(client.getHintArrowNpc() == null && portal.getNpc() != null)
+				{
+					client.setHintArrow(portal.getNpc());
+				}
+			} else {
+
+				// Add hint arrow
+				NPC portalNpc = portal.getNpc();
+				if(portalNpc != null){
+					client.setHintArrow(portalNpc);
+				} else {
+					client.setHintArrow(portal.getLocation());
+				}
+			}
 		}
 
 		renderWidgetOverlay(graphics, portal.getPortal(), "ATK", Color.RED);

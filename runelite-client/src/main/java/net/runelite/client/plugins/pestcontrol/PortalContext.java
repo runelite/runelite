@@ -27,6 +27,8 @@ package net.runelite.client.plugins.pestcontrol;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import net.runelite.api.NPC;
+import net.runelite.api.coords.WorldPoint;
 
 @RequiredArgsConstructor
 @Getter
@@ -34,6 +36,8 @@ import lombok.Setter;
 class PortalContext
 {
 	private final Portal portal;
+	private WorldPoint location;
+	private NPC npc;
 	private boolean isShielded = true;
 	private boolean isDead;
 }

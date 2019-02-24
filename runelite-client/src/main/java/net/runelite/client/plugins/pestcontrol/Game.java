@@ -29,6 +29,9 @@ import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.pestcontrol.Portal.BLUE;
 import static net.runelite.client.plugins.pestcontrol.Portal.PURPLE;
 import static net.runelite.client.plugins.pestcontrol.Portal.RED;
@@ -43,15 +46,121 @@ class Game
 	private int shieldsDropped;
 
 	@Getter
-	private final PortalContext purple = new PortalContext(PURPLE);
-	@Getter
-	private final PortalContext blue = new PortalContext(BLUE);
-	@Getter
-	private final PortalContext yellow = new PortalContext(YELLOW);
-	@Getter
-	private final PortalContext red = new PortalContext(RED);
+	private boolean portalLocationsSet = false;
 
-	void fall(String color)
+	@Getter
+	private PortalContext purple = new PortalContext(PURPLE);
+	@Getter
+	private PortalContext blue = new PortalContext(BLUE);
+	@Getter
+	private PortalContext yellow = new PortalContext(YELLOW);
+	@Getter
+	private PortalContext red = new PortalContext(RED);
+
+	private Client client;
+
+	public Game(Client client)
+	{
+		this.client = client;
+		loadPortalLocations();
+	}
+
+	public void updatePortalNpcs()
+	{
+		boolean searchPurple = !purple.isDead() && purple.getNpc() == null;
+		boolean searchBlue = !blue.isDead() && blue.getNpc() == null;
+		boolean searchYellow = !yellow.isDead() && yellow.getNpc() == null;
+		boolean searchRed = !red.isDead() && red.getNpc() == null;
+
+		if(!searchPurple && !searchBlue && !searchYellow && !searchRed){
+			return;
+		}
+
+		for(NPC npc : client.getNpcs())
+		{
+			if(searchPurple && PestControlPlugin.isPurplePortal(npc.getId()))
+			{
+				purple.setNpc(npc);
+				searchPurple = false;
+				handlePortalHintArrow(purple, npc);
+			}
+			if(searchBlue && PestControlPlugin.isBluePortal(npc.getId()))
+			{
+				blue.setNpc(npc);
+				searchBlue = false;
+				handlePortalHintArrow(blue, npc);
+			}
+			if(searchYellow && PestControlPlugin.isYellowPortal(npc.getId()))
+			{
+				yellow.setNpc(npc);
+				searchYellow = false;
+				handlePortalHintArrow(yellow, npc);
+			}
+			if(searchRed && PestControlPlugin.isRedPortal(npc.getId()))
+			{
+				red.setNpc(npc);
+				searchRed = false;
+				handlePortalHintArrow(red, npc);
+			}
+		}
+	}
+
+	private void handlePortalHintArrow(PortalContext portal, NPC npc)
+	{
+		if(!client.hasHintArrow())
+		{
+			return;
+		}
+
+		WorldPoint worldPoint = client.getHintArrowPoint();
+
+		if(worldPoint != null)
+		{
+			if(worldPoint.equals(npc.getWorldLocation()))
+			{
+				client.setHintArrow(npc);
+			}
+		}
+	}
+
+	public boolean loadPortalLocations()
+	{
+		NPC voidKnight = null;
+
+		for(NPC npc : client.getNpcs())
+		{
+			if(PestControlPlugin.isIngameVoidKnight(npc.getId()))
+			{
+				voidKnight = npc;
+				break;
+			}
+		}
+
+		if(voidKnight != null)
+		{
+			log.debug("Ingame Void Knight found: {}", voidKnight);
+			setPortalLocations(voidKnight.getWorldLocation());
+
+			return true;
+		}
+
+		return false;
+	}
+
+	private void setPortalLocations(WorldPoint voidKnightLocation)
+	{
+		int x = voidKnightLocation.getX();
+		int y = voidKnightLocation.getY();
+
+		purple.setLocation(new WorldPoint(x - 27, y, 0));
+		blue.setLocation(new WorldPoint(x + 25, y - 3, 0));
+		yellow.setLocation(new WorldPoint(x +14, y - 21, 0));
+		red.setLocation(new WorldPoint(x - 10, y - 22, 0));
+
+		portalLocationsSet = true;
+	}
+
+	public void fall(String color)
 	{
 		switch (color.toLowerCase())
 		{
@@ -79,7 +188,9 @@ class Game
 
 		log.debug("Shield dropped for {}", portal.getPortal());
 
+		portal.setNpc(null);
 		portal.setShielded(false);
+
 		int shieldDrop = shieldsDropped++;
 
 		// Remove impossible rotations
@@ -96,7 +207,7 @@ class Game
 		possibleRotations = rotations.toArray(new Rotation[rotations.size()]);
 	}
 
-	void die(PortalContext portal)
+	public void die(PortalContext portal)
 	{
 		if (portal.isDead())
 		{
@@ -105,10 +216,11 @@ class Game
 
 		log.debug("Portal {} died", portal.getPortal());
 
+		portal.setNpc(null);
 		portal.setDead(true);
 	}
 
-	Collection<Portal> getNextPortals()
+	public Collection<Portal> getNextPortals()
 	{
 		List<Portal> portals = new ArrayList<>();
 
