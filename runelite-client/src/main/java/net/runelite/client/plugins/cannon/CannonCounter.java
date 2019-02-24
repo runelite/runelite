@@ -32,7 +32,7 @@ public class CannonCounter extends InfoBox
 {
 	private final CannonPlugin plugin;
 
-	public CannonCounter(BufferedImage img, CannonPlugin plugin)
+	CannonCounter(BufferedImage img, CannonPlugin plugin)
 	{
 		super(img, plugin);
 		this.plugin = plugin;
