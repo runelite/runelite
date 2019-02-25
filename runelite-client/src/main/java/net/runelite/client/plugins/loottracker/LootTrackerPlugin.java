@@ -46,6 +46,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Item;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
@@ -62,6 +63,10 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
@@ -74,6 +79,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
@@ -98,6 +104,9 @@ public class LootTrackerPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private SpriteManager spriteManager;
@@ -332,6 +341,29 @@ public class LootTrackerPlugin extends Plugin
 		if (container == null)
 		{
 			return;
+		}
+
+		if (!(event.getGroupId() == WidgetID.CLUE_SCROLL_REWARD_GROUP_ID) && config.chestLootChat())
+		{
+			Item[] items = container.getItems();
+			long chestPrice = 0;
+			for (Item item : items)
+			{
+				long itemStack = (long) itemManager.getItemPrice(item.getId()) * (long) item.getQuantity();
+				chestPrice += itemStack;
+			}
+
+			final ChatMessageBuilder message = new ChatMessageBuilder()
+					.append(ChatColorType.HIGHLIGHT)
+					.append("Your loot is worth around ")
+					.append(StackFormatter.formatNumber(chestPrice))
+					.append(" coins.")
+					.append(ChatColorType.NORMAL);
+
+			chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.EXAMINE_ITEM)
+					.runeLiteFormattedMessage(message.build())
+					.build());
 		}
 
 		// Convert container items to array of ItemStack
