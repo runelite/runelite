@@ -82,6 +82,9 @@ public class WikiPlugin extends Plugin
 	private static final String MENUOP_GUIDE = "Guide";
 	private static final String MENUOP_QUICKGUIDE = "Quick Guide";
 	private static final String MENUOP_WIKI_SKILL = "Wiki";
+	private static final String MENUOP_REWARDS = "Rewards";
+    private static final String MENUOP_WELCOMETOMYGUIDE = "Hai, and welcome to my guide";
+
 
 	private static final Pattern SKILL_REGEX = Pattern.compile("([A-Za-z]+) guide");
 
@@ -258,6 +261,17 @@ public class WikiPlugin extends Plugin
 					{
 						LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(skillRegex.group(1)) + "?" + UTM_PARAMS);
 					}
+				case MENUOP_REWARDS:
+					ev.consume();
+					String questNA = Text.removeTags(ev.getMenuTarget());
+					LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(questNA.replace(' ', '_')) + quickguide + "?" + UTM_PARAMS + "#Rewards");
+					break;
+
+                case MENUOP_WELCOMETOMYGUIDE:
+                    ev.consume();
+                    String questSM = Text.removeTags(ev.getMenuTarget());
+                    LinkBrowser.browse("https://www.youtube.com/results?search_query=Slayermusiq1+" + URLEncoder.encode(questSM.replace(' ', '+')) );
+                    break;
 			}
 		}
 	}
@@ -277,7 +291,7 @@ public class WikiPlugin extends Plugin
 
 		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read Journal:".equals(event.getOption()))
 		{
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 4);
 
 			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 			menuEntry.setTarget(event.getTarget());
@@ -289,6 +303,20 @@ public class WikiPlugin extends Plugin
 			menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
 			menuEntry.setTarget(event.getTarget());
 			menuEntry.setOption(MENUOP_QUICKGUIDE);
+			menuEntry.setParam0(widgetIndex);
+			menuEntry.setParam1(widgetID);
+			menuEntry.setType(MenuAction.RUNELITE.getId());
+
+			menuEntry = menuEntries[menuEntries.length - 3] = new MenuEntry();
+			menuEntry.setTarget(event.getTarget());
+			menuEntry.setOption(MENUOP_REWARDS);
+			menuEntry.setParam0(widgetIndex);
+			menuEntry.setParam1(widgetID);
+			menuEntry.setType(MenuAction.RUNELITE.getId());
+
+			menuEntry = menuEntries[menuEntries.length - 4] = new MenuEntry();
+			menuEntry.setTarget(event.getTarget());
+			menuEntry.setOption(MENUOP_WELCOMETOMYGUIDE);
 			menuEntry.setParam0(widgetIndex);
 			menuEntry.setParam1(widgetID);
 			menuEntry.setType(MenuAction.RUNELITE.getId());
