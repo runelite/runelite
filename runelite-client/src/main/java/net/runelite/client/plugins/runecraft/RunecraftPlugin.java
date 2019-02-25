@@ -229,9 +229,17 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOADING)
+		GameState gameState = event.getGameState();
+		switch (gameState)
 		{
-			abyssObjects.clear();
+			case LOADING:
+				abyssObjects.clear();
+				break;
+			case CONNECTION_LOST:
+			case HOPPING:
+			case LOGIN_SCREEN:
+				darkMage = null;
+				break;
 		}
 	}
 
