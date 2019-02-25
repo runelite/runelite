@@ -104,12 +104,21 @@ public class HighAlchemyOverlay extends Overlay
 			if (gePrice > 0 && haPrice > 0 && haProfit >= desiredProfit)
 			{
 				Rectangle bankRec = getBankBounds();
+				Rectangle bankInvRec = getBankInventoryBounds();
 				int itemX = item.getCanvasLocation().getX();
 				int itemY = item.getCanvasLocation().getY();
 				//Checks if item is within boundaries of the bank widget
 				if (bankRec != null)
 				{
-					if (itemY >= bankRec.getY() - 10 && itemY < bankRec.getY() + bankRec.getHeight() - 32)
+					if (itemX >= bankRec.getX() && itemX <= bankRec.getX() + bankRec.getWidth() && itemY >= bankRec.getY() - 5 && itemY <= bankRec.getY() + bankRec.getHeight() - 32)
+					{
+						final BufferedImage outline = itemManager.getItemOutline(item.getId(), item.getQuantity(), color);
+						graphics.drawImage(outline, itemX + 1, itemY + 1, null);
+					}
+				}
+				if (bankInvRec != null)
+				{
+					if (itemX >= bankInvRec.getX() && itemX <= bankInvRec.getX() + bankInvRec.getWidth() && itemY >= bankInvRec.getY() && itemY <= bankInvRec.getY() + bankInvRec.getHeight())
 					{
 						final BufferedImage outline = itemManager.getItemOutline(item.getId(), item.getQuantity(), color);
 						graphics.drawImage(outline, itemX + 1, itemY + 1, null);
@@ -175,6 +184,16 @@ public class HighAlchemyOverlay extends Overlay
 		if (bankWidget != null)
 		{
 			return bankWidget.getBounds();
+		}
+		return null;
+	}
+
+	private Rectangle getBankInventoryBounds()
+	{
+		Widget bankInventoryWidget = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
+		if (bankInventoryWidget != null)
+		{
+			return bankInventoryWidget.getBounds();
 		}
 		return null;
 	}
