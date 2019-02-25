@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.client.plugins.grandexchange;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import lombok.Data;
+import net.runelite.api.GrandExchangeOfferState;
 
-/**
- * Configure .js as application/json to trick Cloudflare into caching json responses
- */
-@Configuration
-@EnableWebMvc
-public class SpringContentNegotiationConfigurer extends WebMvcConfigurerAdapter
+@Data
+class SavedOffer
 {
-	@Override
-	public void configureContentNegotiation(ContentNegotiationConfigurer configurer)
-	{
-		configurer.mediaType("js", MediaType.APPLICATION_JSON);
-	}
+	private int itemId;
+	private int quantitySold;
+	private int totalQuantity;
+	private int price;
+	private int spent;
+	private GrandExchangeOfferState state;
 }

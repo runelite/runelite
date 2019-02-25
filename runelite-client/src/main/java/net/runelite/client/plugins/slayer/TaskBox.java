@@ -14,7 +14,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
@@ -78,7 +77,8 @@ public class TaskBox extends JPanel
 		container.setLayout(new BorderLayout());
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		SwingUtilities.invokeLater(() -> {
+		SwingUtilities.invokeLater(() ->
+		{
 			BufferedImage taskImg = slayerPlugin.getImageForTask(Task.getTask(taskData.getTaskName()));
 			JLabel taskIcon = new JLabel(new ImageIcon(taskImg));
 			taskIcon.setHorizontalAlignment(SwingConstants.CENTER);

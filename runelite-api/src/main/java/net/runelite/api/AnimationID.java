@@ -123,6 +123,7 @@ public final class AnimationID
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int MAGIC_MAKE_TABLET = 4068;
+	public static final int MAGIC_ENCHANTING_JEWELRY = 931;
 	public static final int BURYING_BONES = 827;
 	public static final int USING_GILDED_ALTAR = 3705;
 	public static final int LOOKING_INTO = 832;

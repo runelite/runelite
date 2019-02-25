@@ -196,6 +196,7 @@ class ItemPricesOverlay extends Overlay
 
 		int gePrice = 0;
 		int haPrice = 0;
+		int haProfit = 0;
 
 		if (config.showGEPrice())
 		{
@@ -205,16 +206,20 @@ class ItemPricesOverlay extends Overlay
 		{
 			haPrice = Math.round(itemDef.getPrice() * HIGH_ALCHEMY_CONSTANT);
 		}
+		if (gePrice > 0 && haPrice > 0 && config.showAlchProfit())
+		{
+			haProfit = calculateHAProfit(haPrice, gePrice);
+		}
 
 		if (gePrice > 0 || haPrice > 0)
 		{
-			return stackValueText(qty, gePrice, haPrice);
+			return stackValueText(qty, gePrice, haPrice, haProfit);
 		}
 
 		return null;
 	}
 
-	private String stackValueText(int qty, int gePrice, int haValue)
+	private String stackValueText(int qty, int gePrice, int haValue, int haProfit)
 	{
 		if (gePrice > 0)
 		{
@@ -246,9 +251,36 @@ class ItemPricesOverlay extends Overlay
 			}
 		}
 
+		if (haProfit != 0)
+		{
+			Color haColor = haProfitColor(haProfit);
+
+			itemStringBuilder.append("</br>");
+			itemStringBuilder.append("HA Profit: ")
+				.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit * qty), haColor))
+				.append(" gp");
+			if (config.showEA() && qty > 1)
+			{
+				itemStringBuilder.append(" (")
+					.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit), haColor))
+					.append(" ea)");
+			}
+		}
+
 		// Build string and reset builder
 		final String text = itemStringBuilder.toString();
 		itemStringBuilder.setLength(0);
 		return text;
+	}
+
+	private int calculateHAProfit(int haPrice, int gePrice)
+	{
+		int natureRunePrice = itemManager.getItemPrice(ItemID.NATURE_RUNE);
+		return haPrice - gePrice - natureRunePrice;
+	}
+
+	private static Color haProfitColor(int haProfit)
+	{
+		return haProfit >= 0 ? Color.GREEN : Color.RED;
 	}
 }

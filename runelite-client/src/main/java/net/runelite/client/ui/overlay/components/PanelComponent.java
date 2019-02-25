@@ -43,9 +43,8 @@ public class PanelComponent implements LayoutableRenderableEntity
 		VERTICAL;
 	}
 
-	@Setter
-	@Nullable
-	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
+	@Getter
+	private final Rectangle bounds = new Rectangle();
 
 	@Setter
 	private Point preferredLocation = new Point();
@@ -53,8 +52,12 @@ public class PanelComponent implements LayoutableRenderableEntity
 	@Setter
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
+	@Setter
+	@Nullable
+	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
+
 	@Getter
-	private List<LayoutableRenderableEntity> children = new ArrayList<>();
+	private final List<LayoutableRenderableEntity> children = new ArrayList<>();
 
 	@Setter
 	private Orientation orientation = Orientation.VERTICAL;
@@ -82,8 +85,6 @@ public class PanelComponent implements LayoutableRenderableEntity
 			return null;
 		}
 
-		graphics.translate(preferredLocation.x, preferredLocation.y);
-
 		// Calculate panel dimension
 		final Dimension dimension = new Dimension(
 			border.x + childDimensions.width + border.width,
@@ -93,14 +94,14 @@ public class PanelComponent implements LayoutableRenderableEntity
 		if (backgroundColor != null)
 		{
 			final BackgroundComponent backgroundComponent = new BackgroundComponent();
-			backgroundComponent.setRectangle(new Rectangle(dimension));
+			backgroundComponent.setRectangle(new Rectangle(preferredLocation, dimension));
 			backgroundComponent.setBackgroundColor(backgroundColor);
 			backgroundComponent.render(graphics);
 		}
 
 		// Offset children
-		final int baseX = border.x;
-		final int baseY = border.y;
+		final int baseX = preferredLocation.x + border.x;
+		final int baseY = preferredLocation.y + border.y;
 		int width = 0;
 		int height = 0;
 		int x = baseX;
@@ -174,7 +175,9 @@ public class PanelComponent implements LayoutableRenderableEntity
 		// Cache children bounds
 		childDimensions.setSize(totalWidth, totalHeight);
 
-		graphics.translate(-preferredLocation.x, -preferredLocation.y);
+		// Cache bounds
+		bounds.setLocation(preferredLocation);
+		bounds.setSize(dimension);
 		return dimension;
 	}
 }

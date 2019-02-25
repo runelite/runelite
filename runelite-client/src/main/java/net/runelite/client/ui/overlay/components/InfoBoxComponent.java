@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui.overlay.components;
 
+import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -45,11 +46,10 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 	private String tooltip;
 
 	@Getter
+	private final Rectangle bounds = new Rectangle();
+
 	private Point preferredLocation = new Point();
-
-	@Setter
 	private Dimension preferredSize = new Dimension(DEFAULT_SIZE, DEFAULT_SIZE);
-
 	private String text;
 	private Color color = Color.WHITE;
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
@@ -64,12 +64,14 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 		}
 
 		graphics.setFont(getSize() < DEFAULT_SIZE ? FontManager.getRunescapeSmallFont() : FontManager.getRunescapeFont());
-		graphics.translate(preferredLocation.x, preferredLocation.y);
+
+		final int baseX = preferredLocation.x;
+		final int baseY = preferredLocation.y;
 
 		// Calculate dimensions
 		final FontMetrics metrics = graphics.getFontMetrics();
 		final int size = getSize();
-		final Rectangle bounds = new Rectangle(size, size);
+		final Rectangle bounds = new Rectangle(baseX, baseY, size, size);
 
 		// Render background
 		final BackgroundComponent backgroundComponent = new BackgroundComponent();
@@ -80,24 +82,22 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 		// Render image
 		graphics.drawImage(
 			image,
-			(size - image.getWidth(null)) / 2,
-			(size - image.getHeight(null)) / 2,
+			baseX + (size - image.getWidth(null)) / 2,
+			baseY + (size - image.getHeight(null)) / 2,
 			null);
 
 		// Render caption
-		final TextComponent textComponent = new TextComponent();
-		textComponent.setColor(color);
-		textComponent.setText(text);
-		textComponent.setPosition(new Point(((size - metrics.stringWidth(text)) / 2), size - SEPARATOR));
-		textComponent.render(graphics);
+		if (!Strings.isNullOrEmpty(text))
+		{
+			final TextComponent textComponent = new TextComponent();
+			textComponent.setColor(color);
+			textComponent.setText(text);
+			textComponent.setPosition(new Point(baseX + ((size - metrics.stringWidth(text)) / 2), baseY + size - SEPARATOR));
+			textComponent.render(graphics);
+		}
 
-		graphics.translate(-preferredLocation.x, -preferredLocation.y);
+		this.bounds.setBounds(bounds);
 		return bounds.getSize();
-	}
-
-	public Dimension getPreferredSize()
-	{
-		return new Dimension(getSize(), getSize());
 	}
 
 	private int getSize()

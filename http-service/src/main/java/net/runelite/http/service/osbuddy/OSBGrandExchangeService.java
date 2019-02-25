@@ -40,7 +40,7 @@ import org.sql2o.Sql2o;
 
 @Service
 @Slf4j
-public class GrandExchangeService
+public class OSBGrandExchangeService
 {
 	private static final String CREATE_GRAND_EXCHANGE_PRICES = "CREATE TABLE IF NOT EXISTS `osb_ge` (\n"
 		+ "  `item_id` int(11) NOT NULL,\n"
@@ -56,7 +56,7 @@ public class GrandExchangeService
 	private final Sql2o sql2o;
 
 	@Autowired
-	public GrandExchangeService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
+	public OSBGrandExchangeService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
 	{
 		this.sql2o = sql2o;
 

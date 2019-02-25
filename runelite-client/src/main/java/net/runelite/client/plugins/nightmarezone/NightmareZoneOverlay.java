@@ -129,7 +129,7 @@ class NightmareZoneOverlay extends Overlay
 			}
 			else
 			{
-				absorptionCounter.setAbsorption(absorptionPoints);
+				absorptionCounter.setCount(absorptionPoints);
 			}
 		}
 	}

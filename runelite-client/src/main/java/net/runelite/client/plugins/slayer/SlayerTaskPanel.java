@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Box;
@@ -15,7 +14,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -104,7 +102,8 @@ public class SlayerTaskPanel extends PluginPanel
 
 		playBtn.setIcon(PLAY);
 		playBtn.setToolTipText("Resume the current slayer task");
-		playBtn.addMouseListener(new MouseAdapter() {
+		playBtn.addMouseListener(new MouseAdapter()
+		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
@@ -139,7 +138,8 @@ public class SlayerTaskPanel extends PluginPanel
 
 		pauseBtn.setIcon(PAUSE);
 		pauseBtn.setToolTipText("Pause the current slayer task");
-		pauseBtn.addMouseListener(new MouseAdapter() {
+		pauseBtn.addMouseListener(new MouseAdapter()
+		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
@@ -300,7 +300,8 @@ public class SlayerTaskPanel extends PluginPanel
 		if (tasks.isEmpty() || isNewAssignment)
 		{
 			// new task so append it to the front of the list
-			SwingUtilities.invokeLater(() -> {
+			SwingUtilities.invokeLater(() ->
+			{
 				TaskBox newBox = buildBox(slayerPlugin, tasksContainer, newData);
 				newBox.update(true, newData.isPaused(), newData);
 			});
@@ -321,7 +322,8 @@ public class SlayerTaskPanel extends PluginPanel
 
 				// so this previous task is invalid so delete it then add in the new actually
 				// correct task
-				SwingUtilities.invokeLater(() -> {
+				SwingUtilities.invokeLater(() ->
+				{
 					tasksContainer.remove(tasks.get(0));
 					tasks.remove(0);
 					TaskBox newBox = buildBox(slayerPlugin, tasksContainer, newData);

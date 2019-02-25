@@ -1172,7 +1172,7 @@ public final class SpriteID
 	public static final int MINIMAP_ORB_XP_ACTIVATED = 1197;
 	public static final int MINIMAP_ORB_XP_HOVERED = 1198;
 	public static final int MINIMAP_ORB_XP_ACTIVATED_HOVERED = 1199;
-	public static final int UNKNOWN_BLACK_BLOBS = 1200;
+	public static final int MINIMAP_CLICK_MASK = 1200;
 	public static final int OPTIONS_ZOOM_SLIDER_THUMB = 1201;
 	public static final int EMOTE_SIT_UP = 1202;
 	public static final int EMOTE_STAR_JUMP = 1203;

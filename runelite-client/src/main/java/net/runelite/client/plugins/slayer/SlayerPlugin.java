@@ -40,7 +40,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
-import javax.swing.SwingUtilities;
 import joptsimple.internal.Strings;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -48,7 +47,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
@@ -623,7 +621,7 @@ public class SlayerPlugin extends Plugin
 
 		// add and update counter, set timer
 		addCounter();
-		counter.setText(String.valueOf(currentTask.getAmount()));
+		counter.setCount(currentTask.getAmount());
 		infoTimer = Instant.now();
 	}
 
@@ -696,7 +694,7 @@ public class SlayerPlugin extends Plugin
 
 	private void setTask(String name, int amt, int initAmt, boolean isNewAssignment)
 	{
-		setTask(name, amt, initAmt, isNewAssignment,null);
+		setTask(name, amt, initAmt, isNewAssignment, null);
 	}
 
 	private void setTask(String name, int amt, int initAmt, boolean isNewAssignment, String location)
