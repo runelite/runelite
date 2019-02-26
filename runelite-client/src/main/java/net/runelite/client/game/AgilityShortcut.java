@@ -25,10 +25,20 @@
  */
 package net.runelite.client.game;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
 import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.Diary;
 import static net.runelite.api.NullObjectID.*;
 import static net.runelite.api.ObjectID.*;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.game.requirement.AchievementDiaryRequirement;
+import net.runelite.client.game.requirement.Requirement;
+import net.runelite.client.game.requirement.SkillRequirement;
+
+import java.util.List;
 
 @Getter
 public enum AgilityShortcut
@@ -81,7 +91,7 @@ public enum AgilityShortcut
 	FALADOR_GRAPPLE_WALL(11, "Grapple Wall", new WorldPoint(3031, 3391, 0), WALL_17049, WALL_17050),
 	BRIMHAVEN_DUNGEON_STEPPING_STONES(12, "Stepping Stones", null, STEPPING_STONE_21738),
 	VARROCK_SOUTH_FENCE(13, "Fence", new WorldPoint(3239, 3334, 0), FENCE_16518),
-	GOBLIN_VILLAGE_WALL(14, "Wall", new WorldPoint(2925, 3523, 0), TIGHTGAP),
+	GOBLIN_VILLAGE_WALL(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 14), new AchievementDiaryRequirement(Diary.FALADOR_EASY)), "Wall", new WorldPoint(2925, 3523, 0), TIGHTGAP),
 	CORSAIR_COVE_DUNGEON_PILLAR(15, "Pillar Jump", new WorldPoint(1980, 8996, 0), PILLAR_31809),
 	EDGEVILLE_DUNGEON_MONKEYBARS(15, "Monkey Bars", null, MONKEYBARS_23566),
 	TROLLHEIM_ROCKS(15, "Rocks", null, new WorldPoint(2838, 3614, 0), ROCKS_3748),	// No fixed world map location, but rocks near death plateau have a requirement of 15
@@ -113,15 +123,15 @@ public enum AgilityShortcut
 	YANILLE_DUNGEON_BALANCE(40, "Balancing Ledge", null, BALANCING_LEDGE_23548),
 	TROLLHEIM_EASY_CLIFF_SCRAMBLE(41, "Rocks", new WorldPoint(2869, 3670, 0), ROCKS_16521),
 	DWARVEN_MINE_NARROW_CREVICE(42, "Narrow Crevice", new WorldPoint(3034, 9806, 0), CREVICE_16543),
-	DRAYNOR_UNDERWALL_TUNNEL(42, "Underwall Tunnel", new WorldPoint(3068, 3261, 0), UNDERWALL_TUNNEL_19032, UNDERWALL_TUNNEL_19036),
+	DRAYNOR_UNDERWALL_TUNNEL(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 42), new AchievementDiaryRequirement(Diary.LUMBRIDGE_MEDIUM)), "Underwall Tunnel", new WorldPoint(3068, 3261, 0), UNDERWALL_TUNNEL_19032, UNDERWALL_TUNNEL_19036),
 	TROLLHEIM_MEDIUM_CLIFF_SCRAMBLE_NORTH(43, "Rocks", new WorldPoint(2886, 3684, 0), ROCKS_3803, ROCKS_3804, ROCKS_16522),
 	TROLLHEIM_MEDIUM_CLIFF_SCRAMBLE_SOUTH(43, "Rocks", new WorldPoint(2876, 3666, 0), ROCKS_3803, ROCKS_3804, ROCKS_16522),
 	TROLLHEIM_ADVANCED_CLIFF_SCRAMBLE(44, "Rocks", new WorldPoint(2907, 3686, 0), ROCKS_16523, ROCKS_3748),
 	KOUREND_RIVER_STEPPING_STONES(45, "Stepping Stones", new WorldPoint(1721, 3509, 0), STEPPING_STONE_29728),
 	TIRANNWN_LOG_BALANCE(45, "Log Balance", null, LOG_BALANCE_3933, LOG_BALANCE_3931, LOG_BALANCE_3930, LOG_BALANCE_3929, LOG_BALANCE_3932),
 	COSMIC_ALTAR_MEDIUM_WALKWAY(46, "Narrow Walkway", new WorldPoint(2399, 4403, 0), JUTTING_WALL_17002),
-	DEEP_WILDERNESS_DUNGEON_CREVICE_NORTH(46, "Narrow Crevice", new WorldPoint(3047, 10335, 0), CREVICE_19043),
-	DEEP_WILDERNESS_DUNGEON_CREVICE_SOUTH(46, "Narrow Crevice", new WorldPoint(3045, 10327, 0), CREVICE_19043),
+	DEEP_WILDERNESS_DUNGEON_CREVICE_NORTH(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 46), new AchievementDiaryRequirement(Diary.WILDERNESS_MEDIUM)), "Narrow Crevice", new WorldPoint(3047, 10335, 0), CREVICE_19043),
+	DEEP_WILDERNESS_DUNGEON_CREVICE_SOUTH(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 46), new AchievementDiaryRequirement(Diary.WILDERNESS_MEDIUM)), "Narrow Crevice", new WorldPoint(3045, 10327, 0), CREVICE_19043),
 	TROLLHEIM_HARD_CLIFF_SCRAMBLE(47, "Rocks", new WorldPoint(2902, 3680, 0), ROCKS_16524),
 	FREMENNIK_LOG_BALANCE(48, "Log Balance", new WorldPoint(2721, 3591, 0), LOG_BALANCE_16540, LOG_BALANCE_16541, LOG_BALANCE_16542),
 	YANILLE_DUNGEON_PIPE_SQUEEZE(49, "Pipe Squeeze", null,  OBSTACLE_PIPE_23140),
@@ -131,9 +141,9 @@ public enum AgilityShortcut
 	ARCEUUS_ESSENCE_MINE_EAST_SCRAMBLE(52, "Rock Climb", new WorldPoint(1770, 3851, 0), ROCKS_27987, ROCKS_27988),
 	KARAMJA_VOLCANO_GRAPPLE_NORTH(53, "Grapple Rock", new WorldPoint(2873, 3143, 0), STRONG_TREE_17074),
 	KARAMJA_VOLCANO_GRAPPLE_SOUTH(53, "Grapple Rock", new WorldPoint(2874, 3128, 0), STRONG_TREE_17074),
-	MOTHERLODE_MINE_WALL_EAST(54, "Wall", new WorldPoint(3124, 9703, 0), DARK_TUNNEL_10047),
-	MOTHERLODE_MINE_WALL_WEST(54, "Wall", new WorldPoint(3118, 9702, 0), DARK_TUNNEL_10047),
-	MISCELLANIA_DOCK_STEPPING_STONE(55, "Stepping Stone", new WorldPoint(2572, 3862, 0), STEPPING_STONE_11768),
+	MOTHERLODE_MINE_WALL_EAST(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 54), new AchievementDiaryRequirement(Diary.FALADOR_MEDIUM)), "Wall", new WorldPoint(3124, 9703, 0), DARK_TUNNEL_10047),
+	MOTHERLODE_MINE_WALL_WEST(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 54), new AchievementDiaryRequirement(Diary.FALADOR_MEDIUM)), "Wall", new WorldPoint(3118, 9702, 0), DARK_TUNNEL_10047),
+	MISCELLANIA_DOCK_STEPPING_STONE(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 55), new AchievementDiaryRequirement(Diary.FREMENNIK_MEDIUM)), "Stepping Stone", new WorldPoint(2572, 3862, 0), STEPPING_STONE_11768),
 	ISAFDAR_FOREST_OBSTACLES(56, "Trap", null, DENSE_FOREST_3938, DENSE_FOREST_3939, DENSE_FOREST_3998, DENSE_FOREST_3999, DENSE_FOREST, LEAVES, LEAVES_3924, LEAVES_3925, STICKS, TRIPWIRE),
 	RELEKKA_EAST_FENCE(57, "Fence", new WorldPoint(2688, 3697, 0), BROKEN_FENCE),
 	YANILLE_DUNGEON_MONKEY_BARS(57, "Monkey Bars", null, MONKEYBARS_23567),
@@ -141,7 +151,7 @@ public enum AgilityShortcut
 	ELVEN_OVERPASS_CLIFF_SCRAMBLE(59, "Rocks", new WorldPoint(2345, 3300, 0), ROCKS_16514, ROCKS_16515),
 	WILDERNESS_GWD_CLIMB_EAST(60, "Rocks", new WorldPoint(2943, 3770, 0), ROCKY_HANDHOLDS_26400, ROCKY_HANDHOLDS_26401, ROCKY_HANDHOLDS_26402, ROCKY_HANDHOLDS_26404, ROCKY_HANDHOLDS_26405, ROCKY_HANDHOLDS_26406),
 	WILDERNESS_GWD_CLIMB_WEST(60, "Rocks", new WorldPoint(2928, 3760, 0), ROCKY_HANDHOLDS_26400, ROCKY_HANDHOLDS_26401, ROCKY_HANDHOLDS_26402, ROCKY_HANDHOLDS_26404, ROCKY_HANDHOLDS_26405, ROCKY_HANDHOLDS_26406),
-	MOS_LEHARMLESS_STEPPING_STONE(60, "Stepping Stone", new WorldPoint(3710, 2970, 0), STEPPING_STONE_19042),
+	MOS_LEHARMLESS_STEPPING_STONE(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 60), new AchievementDiaryRequirement(Diary.MORYTANIA_HARD)), "Stepping Stone", new WorldPoint(3710, 2970, 0), STEPPING_STONE_19042),
 	WINTERTODT_GAP(60, "Gap", new WorldPoint(1629, 4023, 0), GAP_29326),
 	UNGAEL_ICE(60, "Ice Chunks", null, NULL_25337, NULL_29868, NULL_29869, NULL_29870, ICE_CHUNKS_31822, NULL_31823, ICE_CHUNKS_31990),
 	SLAYER_TOWER_MEDIUM_CHAIN_FIRST(61, "Spiked Chain (Floor 1)", new WorldPoint(3421, 3550, 0), SPIKEY_CHAIN),
@@ -155,9 +165,9 @@ public enum AgilityShortcut
 	MORYTANIA_TEMPLE(65, "Loose Railing", new WorldPoint(3422, 3476, 0), ROCKS_16998, ROCKS_16999, ORNATE_RAILING, ORNATE_RAILING_17000),
 	REVENANT_CAVES_GREEN_DRAGONS(65, "Jump", new WorldPoint(3220, 10086, 0), PILLAR_31561),
 	COSMIC_ALTAR_ADVANCED_WALKWAY(66, "Narrow Walkway", new WorldPoint(2408, 4401, 0), JUTTING_WALL_17002),
-	LUMBRIDGE_DESERT_STEPPING_STONE(66, "Stepping Stone", new WorldPoint(3210, 3135, 0), STEPPING_STONE_16513),
-	HEROES_GUILD_TUNNEL_EAST(67, "Crevice", new WorldPoint(2898, 9901, 0), CREVICE_9739, CREVICE_9740),
-	HEROES_GUILD_TUNNEL_WEST(67, "Crevice", new WorldPoint(2913, 9895, 0), CREVICE_9739, CREVICE_9740),
+	LUMBRIDGE_DESERT_STEPPING_STONE(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 66), new AchievementDiaryRequirement(Diary.LUMBRIDGE_HARD)), "Stepping Stone", new WorldPoint(3210, 3135, 0), STEPPING_STONE_16513),
+	HEROES_GUILD_TUNNEL_EAST(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 67), new AchievementDiaryRequirement(Diary.FALADOR_HARD)), "Crevice", new WorldPoint(2898, 9901, 0), CREVICE_9739, CREVICE_9740),
+	HEROES_GUILD_TUNNEL_WEST(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 67), new AchievementDiaryRequirement(Diary.FALADOR_HARD)), "Crevice", new WorldPoint(2913, 9895, 0), CREVICE_9739, CREVICE_9740),
 	YANILLE_DUNGEON_RUBBLE_CLIMB(67, "Pile of Rubble", null, PILE_OF_RUBBLE_23563, PILE_OF_RUBBLE_23564),
 	ELVEN_OVERPASS_MEDIUM_CLIFF(68, "Rocks", new WorldPoint(2337, 3288, 0), ROCKS_16514, ROCKS_16515),
 	WEISS_OBSTACLES(68, "Shortcut", null, LITTLE_BOULDER, ROCKSLIDE_33184, ROCKSLIDE_33185, NULL_33327, NULL_33328, LEDGE_33190, ROCKSLIDE_33191, FALLEN_TREE_33192),
@@ -173,22 +183,22 @@ public enum AgilityShortcut
 	SLAYER_TOWER_ADVANCED_CHAIN_FIRST(71, "Spiked Chain (Floor 2)", new WorldPoint(3447, 3578, 0), SPIKEY_CHAIN ),
 	SLAYER_TOWER_ADVANCED_CHAIN_SECOND(71, "Spiked Chain (Floor 3)", new WorldPoint(3446, 3576, 0), SPIKEY_CHAIN_16538),
 	STRONGHOLD_SLAYER_CAVE_TUNNEL(72, "Tunnel", new WorldPoint(2431, 9806, 0), TUNNEL_30174, TUNNEL_30175),
-	TROLL_STRONGHOLD_WALL_CLIMB(73, "Rocks", new WorldPoint(2841, 3694, 0), ROCKS_16464),
+	TROLL_STRONGHOLD_WALL_CLIMB(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 73), new AchievementDiaryRequirement(Diary.FREMENNIK_HARD)), "Rocks", new WorldPoint(2841, 3694, 0), ROCKS_16464),
 	ARCEUUS_ESSENSE_MINE_WEST(73, "Rock Climb", new WorldPoint(1742, 3853, 0), ROCKS_27984, ROCKS_27985 ),
-	LAVA_DRAGON_ISLE_JUMP(74, "Stepping Stone", new WorldPoint(3200, 3807, 0), STEPPING_STONE_14918),
+	LAVA_DRAGON_ISLE_JUMP(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 74), new AchievementDiaryRequirement(Diary.WILDERNESS_HARD)), "Stepping Stone", new WorldPoint(3200, 3807, 0), STEPPING_STONE_14918),
 	REVENANT_CAVES_DEMONS_JUMP(75, "Jump", new WorldPoint(3199, 10135, 0), PILLAR_31561),
 	REVENANT_CAVES_ANKOU_EAST(75, "Jump", new WorldPoint(3201, 10195, 0), PILLAR_31561),
 	REVENANT_CAVES_ANKOU_NORTH(75, "Jump", new WorldPoint(3180, 10209, 0), PILLAR_31561),
 	ZUL_ANDRA_ISLAND_CROSSING(76, "Stepping Stone", new WorldPoint(2156, 3073, 0), STEPPING_STONE_10663),
-	SHILO_VILLAGE_STEPPING_STONES( 77, "Stepping Stones", new WorldPoint(2863, 2974, 0), STEPPING_STONE_16466),
+	SHILO_VILLAGE_STEPPING_STONES( ImmutableList.of(new SkillRequirement(Skill.AGILITY, 77), new AchievementDiaryRequirement(Diary.KARAMJA_ELITE)), "Stepping Stones", new WorldPoint(2863, 2974, 0), STEPPING_STONE_16466),
 	KHARAZI_JUNGLE_VINE_CLIMB(79, "Vine", new WorldPoint(2897, 2939, 0), NULL_26884, NULL_26886),
 	TAVERLEY_DUNGEON_SPIKED_BLADES(80, "Strange Floor", new WorldPoint(2877, 9813, 0), STRANGE_FLOOR),
 	SLAYER_DUNGEON_CHASM_JUMP(81, "Spiked Blades", new WorldPoint(2770, 10003, 0), STRANGE_FLOOR_16544),
-	LAVA_MAZE_NORTH_JUMP(82, "Stepping Stone", new WorldPoint(3092, 3880, 0), STEPPING_STONE_14917),
-	BRIMHAVEN_DUNGEON_EAST_STEPPING_STONES_NORTH(83, "Stepping Stones", new WorldPoint(2685, 9547, 0), STEPPING_STONE_19040),
-	BRIMHAVEN_DUNGEON_EAST_STEPPING_STONES_SOUTH(83, "Stepping Stones", new WorldPoint(2693, 9529, 0), STEPPING_STONE_19040),
+	LAVA_MAZE_NORTH_JUMP(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 82), new AchievementDiaryRequirement(Diary.WILDERNESS_HARD)), "Stepping Stone", new WorldPoint(3092, 3880, 0), STEPPING_STONE_14917),
+	BRIMHAVEN_DUNGEON_EAST_STEPPING_STONES_NORTH(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 83), new AchievementDiaryRequirement(Diary.KARAMJA_ELITE)), "Stepping Stones", new WorldPoint(2685, 9547, 0), STEPPING_STONE_19040),
+	BRIMHAVEN_DUNGEON_EAST_STEPPING_STONES_SOUTH(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 83), new AchievementDiaryRequirement(Diary.KARAMJA_ELITE)), "Stepping Stones", new WorldPoint(2693, 9529, 0), STEPPING_STONE_19040),
 	ELVEN_ADVANCED_CLIFF_SCRAMBLE(85, "Rocks", new WorldPoint(2337, 3253, 0), ROCKS_16514, ROCKS_16514),
-	KALPHITE_WALL(86, "Crevice", new WorldPoint(3214, 9508, 0), CREVICE_16465),
+	KALPHITE_WALL(ImmutableList.of(new SkillRequirement(Skill.AGILITY, 86), new AchievementDiaryRequirement(Diary.DESERT_ELITE)), "Crevice", new WorldPoint(3214, 9508, 0), CREVICE_16465),
 	BRIMHAVEN_DUNGEON_VINE_EAST(87, "Vine", new WorldPoint(2672, 9582, 0), VINE_26880, VINE_26882),
 	BRIMHAVEN_DUNGEON_VINE_WEST(87, "Vine", new WorldPoint(2606, 9584, 0), VINE_26880, VINE_26882),
 	REVENANT_CAVES_CHAMBER_JUMP(89, "Jump", new WorldPoint(3240, 10144, 0), PILLAR_31561);
@@ -197,7 +207,7 @@ public enum AgilityShortcut
 	 * The agility level required to pass the shortcut
 	 */
 	@Getter
-	private final int level;
+	private final List<Requirement> requirements;
 	/**
 	 * Brief description of the shortcut (e.g. 'Rocks', 'Stepping Stones', 'Jump')
 	 */
@@ -223,7 +233,16 @@ public enum AgilityShortcut
 
 	AgilityShortcut(int level, String description, WorldPoint mapLocation, WorldPoint worldLocation, int... obstacleIds)
 	{
-		this.level = level;
+		this.requirements = ImmutableList.of(new SkillRequirement(Skill.AGILITY, level));
+		this.description = description;
+		this.worldMapLocation = mapLocation;
+		this.worldLocation = worldLocation;
+		this.obstacleIds = obstacleIds;
+	}
+
+	AgilityShortcut(List<Requirement> requirements, String description, WorldPoint mapLocation, WorldPoint worldLocation, int... obstacleIds)
+	{
+		this.requirements = requirements;
 		this.description = description;
 		this.worldMapLocation = mapLocation;
 		this.worldLocation = worldLocation;
@@ -235,8 +254,23 @@ public enum AgilityShortcut
 		this(level, description, location, location, obstacleIds);
 	}
 
+	AgilityShortcut(List<Requirement> requirements, String description, WorldPoint location, int... obstacleIds)
+	{
+		this(requirements, description, location, location, obstacleIds);
+	}
+
+	public boolean satisfiesAll(Client client)
+	{
+		boolean satisfies = true;
+		for (Requirement requirement : requirements)
+		{
+			satisfies &= requirement.isSatisfied(client);
+		}
+		return satisfies;
+	}
+
 	public String getTooltip()
 	{
-		return description + " - Level " + level;
+		return description + " - " + Joiner.on(", ").join(requirements);
 	}
 }

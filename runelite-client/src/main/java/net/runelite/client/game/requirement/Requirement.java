@@ -21,27 +21,16 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-package net.runelite.client.plugins.achievementdiary;
+ */package net.runelite.client.game.requirement;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableList;
-import java.util.List;
-import lombok.Getter;
+import net.runelite.api.Client;
 
-public class OrRequirement implements Requirement
+public interface Requirement
 {
-	@Getter
-	private final List<Requirement> requirements;
-
-	public OrRequirement(Requirement... reqs)
-	{
-		this.requirements = ImmutableList.copyOf(reqs);
-	}
-
-	@Override
-	public String toString()
-	{
-		return Joiner.on(" or ").join(requirements);
-	}
+	/**
+	 * Check the client to see if the requirement is satisfied
+	 * @param client
+	 * @return Whether the requirement is satisfied by the client
+	 */
+	boolean isSatisfied(Client client);
 }
