@@ -27,11 +27,11 @@ package net.runelite.client.plugins.achievementdiary.diaries;
 
 import net.runelite.api.Quest;
 import net.runelite.api.Skill;
-import net.runelite.client.plugins.achievementdiary.CombatLevelRequirement;
+import net.runelite.client.game.requirement.CombatLevelRequirement;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
-import net.runelite.client.plugins.achievementdiary.OrRequirement;
-import net.runelite.client.plugins.achievementdiary.QuestRequirement;
-import net.runelite.client.plugins.achievementdiary.SkillRequirement;
+import net.runelite.client.game.requirement.OrRequirement;
+import net.runelite.client.game.requirement.QuestRequirement;
+import net.runelite.client.game.requirement.SkillRequirement;
 
 public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 {

@@ -35,15 +35,14 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.FontTypeFace;
-import net.runelite.api.QuestState;
 import net.runelite.api.ScriptID;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.requirement.Requirement;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.achievementdiary.diaries.ArdougneDiaryRequirement;
@@ -277,10 +276,10 @@ public class DiaryRequirementsPlugin extends Plugin
 			assert !req.getRequirements().isEmpty();
 			for (Requirement ireq : req.getRequirements())
 			{
-				boolean satifisfied = satisfiesRequirement(ireq);
-				b.append(satifisfied ? "<col=000080><str>" : "<col=800000>");
+				boolean satisfied = ireq.isSatisfied(client);
+				b.append(satisfied ? "<col=000080><str>" : "<col=800000>");
 				b.append(ireq.toString());
-				b.append(satifisfied ? "</str>" : "<col=000080>");
+				b.append(satisfied ? "</str>" : "<col=000080>");
 				b.append(AND_JOINER);
 			}
 
@@ -291,46 +290,5 @@ public class DiaryRequirementsPlugin extends Plugin
 			reqs.put(req.getTask(), b.toString());
 		}
 		return reqs;
-	}
-
-	private boolean satisfiesRequirement(Requirement r)
-	{
-		if (r instanceof OrRequirement)
-		{
-			return ((OrRequirement) r).getRequirements()
-				.stream()
-				.anyMatch(this::satisfiesRequirement);
-		}
-		if (r instanceof SkillRequirement)
-		{
-			SkillRequirement s = (SkillRequirement) r;
-			return client.getRealSkillLevel(s.getSkill()) >= s.getLevel();
-		}
-		if (r instanceof CombatLevelRequirement)
-		{
-			return client.getLocalPlayer().getCombatLevel() >= ((CombatLevelRequirement) r).getLevel();
-		}
-		if (r instanceof QuestRequirement)
-		{
-			QuestRequirement q = (QuestRequirement) r;
-			QuestState state = q.getQuest().getState(client);
-			if (q.isStarted())
-			{
-				return state != QuestState.NOT_STARTED;
-			}
-			return state == QuestState.FINISHED;
-		}
-		if (r instanceof QuestPointRequirement)
-		{
-			return client.getVar(VarPlayer.QUEST_POINTS) >= ((QuestPointRequirement) r).getQp();
-		}
-		if (r instanceof FavourRequirement)
-		{
-			FavourRequirement f = (FavourRequirement) r;
-			int realFavour = client.getVar(f.getHouse().getVarbit());
-			return (realFavour / 10) >= f.getPercent();
-		}
-		log.warn("Unknown requirement {}", r);
-		return false;
 	}
 }

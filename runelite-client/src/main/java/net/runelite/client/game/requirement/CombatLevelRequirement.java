@@ -22,22 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.achievementdiary;
+package net.runelite.client.game.requirement;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.Skill;
+import net.runelite.api.Client;
 
 @RequiredArgsConstructor
 @Getter
-public class SkillRequirement implements Requirement
+public class CombatLevelRequirement implements Requirement
 {
-	private final Skill skill;
 	private final int level;
 
 	@Override
 	public String toString()
 	{
-		return level + " " + skill.getName();
+		return level + " " + "Combat";
+	}
+
+	@Override
+	public boolean isSatisfied(Client client)
+	{
+		return client.getLocalPlayer().getCombatLevel() >= getLevel();
 	}
 }
