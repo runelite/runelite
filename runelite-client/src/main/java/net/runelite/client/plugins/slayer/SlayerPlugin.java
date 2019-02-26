@@ -192,7 +192,7 @@ public class SlayerPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
-	private TaskData currentTask;
+	private TaskData currentTask = new TaskData(0, 0, 0, 0, 0, null, null, true);
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -214,7 +214,7 @@ public class SlayerPlugin extends Plugin
 	private boolean loginFlag;
 	private List<String> targetNames = new ArrayList<>();
 
-	private SlayerTaskPanel panel;
+	private SlayerTaskPanel panel = new SlayerTaskPanel(this);
 	private NavigationButton navButton;
 	private long lastTickMillis = 0;
 
@@ -226,7 +226,6 @@ public class SlayerPlugin extends Plugin
 		overlayManager.add(targetWeaknessOverlay);
 		overlayManager.add(targetMinimapOverlay);
 
-		panel = new SlayerTaskPanel(this);
 		spriteManager.getSpriteAsync(SpriteID.SKILL_SLAYER, 0, panel::loadHeaderIcon);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
