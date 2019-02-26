@@ -45,6 +45,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -79,8 +80,8 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.banktags.BankTagsConfig;
-import net.runelite.client.plugins.banktags.BankTagsPlugin;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH;
+import static net.runelite.client.plugins.banktags.BankTagsPlugin.TAG_SEARCH_PATTERN;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.VAR_TAG_SUFFIX;
 import net.runelite.client.plugins.banktags.TagManager;
 import static net.runelite.client.plugins.banktags.tabs.MenuIndexes.NewTab;
@@ -442,8 +443,10 @@ public class TabInterface
 			str = "";
 		}
 
+		Matcher tagMatcher = TAG_SEARCH_PATTERN.matcher(str);
+
 		Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-		if (bankTitle != null && !bankTitle.isHidden() && !str.startsWith(TAG_SEARCH))
+		if (bankTitle != null && !bankTitle.isHidden() && !tagMatcher.matches())
 		{
 			str = bankTitle.getText().replaceFirst("Showing items: ", "");
 
@@ -455,9 +458,9 @@ public class TabInterface
 
 		str = Text.standardize(str);
 
-		if (str.startsWith(BankTagsPlugin.TAG_SEARCH))
+		if (tagMatcher.matches())
 		{
-			activateTab(tabManager.find(str.substring(TAG_SEARCH.length())));
+			activateTab(tabManager.find(tagMatcher.replaceAll("$1")));
 		}
 		else
 		{
