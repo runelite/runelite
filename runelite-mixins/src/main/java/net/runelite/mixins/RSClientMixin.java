@@ -186,6 +186,11 @@ public abstract class RSClientMixin implements RSClient
 		.build();
 
 	@Inject
+	public RSClientMixin()
+	{
+	}
+
+	@Inject
 	@Override
 	public Callbacks getCallbacks()
 	{
