@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Giovds <https://github.com/Giovds>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.itemstats.special;
 
 import com.google.common.collect.ImmutableSet;
+import java.util.Comparator;
+import java.util.stream.Stream;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
@@ -39,15 +41,14 @@ import net.runelite.client.plugins.itemstats.StatsChanges;
 import static net.runelite.client.plugins.itemstats.stats.Stats.HITPOINTS;
 import static net.runelite.client.plugins.itemstats.stats.Stats.RUN_ENERGY;
 
-public class CasteWarsBandage implements Effect
+public class CastleWarsBandage implements Effect
 {
 	private static final ImmutableSet<Integer> BRACELETS = ImmutableSet.of(
 			ItemID.CASTLE_WARS_BRACELET1, ItemID.CASTLE_WARS_BRACELET2, ItemID.CASTLE_WARS_BRACELET3
 	);
-	private static final int GLOVES_SLOT_ID = EquipmentInventorySlot.GLOVES.getSlotIdx();
+
 	private static final double BASE_HP_PERC = .10;
 	private static final double BRACELET_HP_PERC = .50;
-	private static final StatsChanges CHANGES = new StatsChanges(2);
 
 	@Override
 	public StatsChanges calculate(Client client)
@@ -56,22 +57,29 @@ public class CasteWarsBandage implements Effect
 		final double percH = hasBracelet(equipmentContainer) ? BRACELET_HP_PERC : BASE_HP_PERC;
 		final StatChange hitPoints = heal(HITPOINTS, perc(percH, 0)).effect(client);
 		final StatChange runEnergy = heal(RUN_ENERGY, 30).effect(client);
+		final StatsChanges changes = new StatsChanges(2);
+		changes.setStatChanges(new StatChange[]{hitPoints, runEnergy});
+		changes.setPositivity(Stream.of(changes.getStatChanges())
+			.map(StatChange::getPositivity)
+			.max(Comparator.comparing(Enum::ordinal)).get());
 
-		CHANGES.setStatChanges(new StatChange[]{hitPoints, runEnergy});
-
-		return CHANGES;
+		return changes;
 	}
 
 	private boolean hasBracelet(ItemContainer equipmentContainer)
 	{
-		if (equipmentContainer != null)
+		if (equipmentContainer == null)
 		{
-			final Item[] equipment = equipmentContainer.getItems();
-			if (equipment.length > GLOVES_SLOT_ID)
-			{
-				return BRACELETS.contains(equipment[GLOVES_SLOT_ID].getId());
-			}
+			return false;
 		}
+
+		final Item[] equipment = equipmentContainer.getItems();
+
+		if (equipment.length > EquipmentInventorySlot.GLOVES.getSlotIdx())
+		{
+			return BRACELETS.contains(equipment[EquipmentInventorySlot.GLOVES.getSlotIdx()].getId());
+		}
+
 		return false;
 	}
 }
