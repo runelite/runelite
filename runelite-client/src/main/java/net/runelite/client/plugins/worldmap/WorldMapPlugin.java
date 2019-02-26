@@ -31,9 +31,11 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.AgilityShortcut;
@@ -90,6 +92,9 @@ public class WorldMapPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private WorldMapConfig config;
@@ -149,7 +154,7 @@ public class WorldMapPlugin extends Plugin
 			if (newAgilityLevel != agilityLevel)
 			{
 				agilityLevel = newAgilityLevel;
-				updateAgilityIcons();
+				clientThread.invokeLater(this::updateAgilityIcons);
 			}
 		}
 
@@ -173,7 +178,7 @@ public class WorldMapPlugin extends Plugin
 			Arrays.stream(AgilityShortcut.values())
 				.filter(value -> value.getWorldMapLocation() != null)
 				.map(value -> new AgilityShortcutPoint(value,
-					agilityLevel > 0 && config.agilityShortcutLevelIcon() && value.getLevel() > agilityLevel ? NOPE_ICON : BLANK_ICON,
+					config.agilityShortcutLevelIcon() && !value.satisfiesAll(client) ? NOPE_ICON : BLANK_ICON,
 					config.agilityShortcutTooltips()))
 				.forEach(worldMapPointManager::add);
 		}
@@ -198,7 +203,7 @@ public class WorldMapPlugin extends Plugin
 
 	private void updateShownIcons()
 	{
-		updateAgilityIcons();
+		clientThread.invokeLater(this::updateAgilityIcons);
 		updateRareTreeIcons();
 
 		worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
