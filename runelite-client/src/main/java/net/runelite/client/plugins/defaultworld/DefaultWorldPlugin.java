@@ -43,7 +43,8 @@ import net.runelite.http.api.worlds.WorldResult;
 
 @PluginDescriptor(
 	name = "Default World",
-	description = "Enable a default world to be selected when launching the client"
+	description = "Enable a default world to be selected when launching the client",
+	tags = {"home"}
 )
 @Slf4j
 public class DefaultWorldPlugin extends Plugin
