@@ -1576,7 +1576,9 @@ public interface Client extends GameEngine
 	void setSpellSelected(boolean selected);
 
 	/**
-     * Returns client item composition cache
+	 * Returns client item composition cache
 	 */
 	NodeCache getItemCompositionCache();
+
+	EnumComposition getEnum(int id);
 }

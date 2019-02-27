@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
- * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,37 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.banktags.tabs;
+package net.runelite.api;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import net.runelite.api.widgets.Widget;
-
-@Data
-@EqualsAndHashCode(of = "tag")
-class TagTab
+public interface EnumComposition
 {
-	private String tag;
-	private int iconItemId;
-	private Widget background;
-	private Widget icon;
+	int[] getIntVals();
 
-	TagTab(int iconItemId, String tag)
-	{
-		this.iconItemId = iconItemId;
-		this.tag = tag;
-	}
+	String[] getStringVals();
 
-	void setHidden(boolean hide)
-	{
-		if (background != null)
-		{
-			background.setHidden(hide);
-		}
+	int getIntValue(int key);
 
-		if (icon != null)
-		{
-			icon.setHidden(hide);
-		}
-	}
+	String getStringValue(int key);
 }

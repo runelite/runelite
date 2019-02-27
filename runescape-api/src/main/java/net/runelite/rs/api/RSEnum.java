@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
- * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,37 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.banktags.tabs;
+package net.runelite.rs.api;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.EnumComposition;
+import net.runelite.mapping.Import;
 
-@Data
-@EqualsAndHashCode(of = "tag")
-class TagTab
+public interface RSEnum extends EnumComposition, RSCacheableNode
 {
-	private String tag;
-	private int iconItemId;
-	private Widget background;
-	private Widget icon;
+	@Import("keys")
+	int[] getKeys();
 
-	TagTab(int iconItemId, String tag)
-	{
-		this.iconItemId = iconItemId;
-		this.tag = tag;
-	}
+	@Import("intVals")
+	@Override
+	int[] getIntVals();
 
-	void setHidden(boolean hide)
-	{
-		if (background != null)
-		{
-			background.setHidden(hide);
-		}
+	@Import("stringVals")
+	@Override
+	String[] getStringVals();
 
-		if (icon != null)
-		{
-			icon.setHidden(hide);
-		}
-	}
+	@Import("defaultInt")
+	int getDefaultInt();
+
+	@Import("defaultString")
+	String getDefaultString();
 }

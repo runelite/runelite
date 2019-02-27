@@ -36,6 +36,7 @@ import net.runelite.client.plugins.itemstats.food.Anglerfish;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
 import net.runelite.client.plugins.itemstats.potions.SaradominBrew;
 import net.runelite.client.plugins.itemstats.potions.SuperRestore;
+import net.runelite.client.plugins.itemstats.special.CastleWarsBandage;
 import net.runelite.client.plugins.itemstats.special.SpicyStew;
 import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 
@@ -137,6 +138,9 @@ public class ItemStatChanges
 		// Regular overload (NMZ)
 		add(combo(5, boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), boost(RANGED, perc(.15, 5)), boost(MAGIC, perc(.15, 5)), heal(HITPOINTS, -50)), OVERLOAD_1, OVERLOAD_2, OVERLOAD_3, OVERLOAD_4);
 
+		// Bandages (Castle Wars)
+		add(new CastleWarsBandage(), BANDAGES);
+
 		// Recovery potions
 		add(combo(5, heal(ATTACK, perc(.30, 10)), heal(STRENGTH, perc(.30, 10)), heal(DEFENCE, perc(.30, 10)), heal(RANGED, perc(.30, 10)), heal(MAGIC, perc(.30, 10))), RESTORE_POTION1, RESTORE_POTION2, RESTORE_POTION3, RESTORE_POTION4);
 		add(heal(RUN_ENERGY, 10), ENERGY_POTION1, ENERGY_POTION2, ENERGY_POTION3, ENERGY_POTION4);
@@ -174,7 +178,7 @@ public class ItemStatChanges
 
 		// Misc/run energy
 		add(heal(RUN_ENERGY, 10), WHITE_TREE_FRUIT);
-		add(heal(RUN_ENERGY, 30), STRANGE_FRUIT, BANDAGES);
+		add(heal(RUN_ENERGY, 30), STRANGE_FRUIT);
 		add(heal(RUN_ENERGY, 50), MINT_CAKE);
 		add(combo(food(12), heal(RUN_ENERGY, 50)), GOUT_TUBER);
 
