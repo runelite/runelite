@@ -31,7 +31,6 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
-import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
