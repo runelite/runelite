@@ -87,16 +87,18 @@ class RegionLockerOverlay extends Overlay {
                 if (RegionLocker.hasRegion(regionId) ^ config.invertMapOverlay() || RegionLocker.isUnlockable(regionId) || RegionLocker.isBlacklisted(regionId)) {
 
                     Color color;
+                    int alpha;
                     if (RegionLocker.isBlacklisted(regionId)) {
                         color = new Color(0, 0, 0, 200);
+                        alpha = Math.max(0, Math.min(255, config.blacklistedOverlayAlpha()));
+                    } else if (RegionLocker.isUnlockable(regionId)) {
+                        color = config.unlockableOverlayColor();
+                        alpha = Math.max(0, Math.min(255, config.unlockableOverlayAlpha()));
                     } else {
-                        if (RegionLocker.isUnlockable(regionId))
-                            color = config.unlockableOverlayColor();
-                        else
-                            color = config.mapOverlayColor();
-                        int alpha = Math.max(0, Math.min(255, config.mapOverlayAlpha()));
-                        color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+                        color = config.mapOverlayColor();
+                        alpha = Math.max(0, Math.min(255, config.mapOverlayAlpha()));
                     }
+                    color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
                     if (regionRect.contains(mousePos.getX(), mousePos.getY()))
                         color = color.brighter();
                     graphics.setColor(color);
