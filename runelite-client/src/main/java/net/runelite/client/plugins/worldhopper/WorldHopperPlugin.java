@@ -480,7 +480,7 @@ public class WorldHopperPlugin extends Plugin
 	/**
 	 * This method ONLY updates the list's UI, not the actual world list and data it displays.
 	 */
-	private void updateList()
+	public void updateList()
 	{
 		SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
 	}

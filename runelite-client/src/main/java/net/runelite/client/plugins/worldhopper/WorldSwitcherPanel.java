@@ -36,6 +36,8 @@ import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.plugins.worldhopper.filter.WorldFilterPanel;
+import net.runelite.client.plugins.worldhopper.filter.WorldFilter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
@@ -51,6 +53,7 @@ class WorldSwitcherPanel extends PluginPanel
 	private static final int PING_COLUMN_WIDTH = 47;
 
 	private final JPanel listContainer = new JPanel();
+	private final WorldFilterPanel worldFilterPanel;
 
 	private WorldTableHeader worldHeader;
 	private WorldTableHeader playersHeader;
@@ -70,10 +73,13 @@ class WorldSwitcherPanel extends PluginPanel
 		setBorder(null);
 		setLayout(new DynamicGridLayout(0, 1));
 
+		worldFilterPanel = new WorldFilterPanel(plugin);
+
 		JPanel headerContainer = buildHeader();
 
 		listContainer.setLayout(new GridLayout(0, 1));
 
+		add(worldFilterPanel);
 		add(headerContainer);
 		add(listContainer);
 	}
@@ -149,6 +155,9 @@ class WorldSwitcherPanel extends PluginPanel
 
 	void updateList()
 	{
+		WorldFilter worldFilter = new WorldFilter(worldFilterPanel.getWorldFilterDefinition());
+		rows.removeIf(row -> worldFilter.hide(row.getWorld().getTypes()));
+
 		rows.sort((r1, r2) ->
 		{
 			switch (orderIndex)
