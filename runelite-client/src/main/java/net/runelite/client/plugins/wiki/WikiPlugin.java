@@ -80,9 +80,10 @@ public class WikiPlugin extends Plugin
 
 	private static final String MENUOP_GUIDE = "Guide";
 	private static final String MENUOP_QUICKGUIDE = "Quick Guide";
-	private static final String MENUOP_WIKI_SKILL = "Wiki";
+	private static final String MENUOP_WIKI = "Wiki";
 
 	private static final Pattern SKILL_REGEX = Pattern.compile("([A-Za-z]+) guide");
+	private static final Pattern DIARY_REGEX = Pattern.compile("([A-Za-z &]+) Journal");
 
 	@Inject
 	private SpriteManager spriteManager;
@@ -285,14 +286,23 @@ public class WikiPlugin extends Plugin
 					}
 					LinkBrowser.browse(ub.build().toString());
 					break;
-				case MENUOP_WIKI_SKILL:
+				case MENUOP_WIKI:
 					Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
+					Matcher diaryRegex = WikiPlugin.DIARY_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
 
 					if (skillRegex.find())
 					{
 						LinkBrowser.browse(WIKI_BASE.newBuilder()
 							.addPathSegment("w")
 							.addPathSegment(skillRegex.group(1))
+							.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE)
+							.build().toString());
+					}
+					else if (diaryRegex.find())
+					{
+						LinkBrowser.browse(WIKI_BASE.newBuilder()
+							.addPathSegment("w")
+							.addPathSegment(diaryRegex.group(1) + " Diary")
 							.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE)
 							.build().toString());
 					}
@@ -334,13 +344,14 @@ public class WikiPlugin extends Plugin
 			client.setMenuEntries(menuEntries);
 		}
 
-		if ((WidgetInfo.TO_GROUP(widgetID) == WidgetID.SKILLS_GROUP_ID) && event.getOption().startsWith("View"))
+		if ((WidgetInfo.TO_GROUP(widgetID) == WidgetID.SKILLS_GROUP_ID && event.getOption().startsWith("View"))
+			|| (WidgetInfo.TO_GROUP(widgetID) == WidgetID.DIARY_GROUP_ID && event.getOption().startsWith("Open")))
 		{
 			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
 			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			menuEntry.setTarget(event.getOption().replace("View ", ""));
-			menuEntry.setOption(MENUOP_WIKI_SKILL);
+			menuEntry.setTarget(event.getOption().replace("View ", "").replace("Open ", ""));
+			menuEntry.setOption(MENUOP_WIKI);
 			menuEntry.setParam0(widgetIndex);
 			menuEntry.setParam1(widgetID);
 			menuEntry.setIdentifier(event.getIdentifier());
