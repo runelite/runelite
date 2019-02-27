@@ -44,7 +44,8 @@ public class WorldFilterPanel extends JPanel
 	private static final ImageIcon ARROW_UP;
 	private static final ImageIcon ARROW_DOWN;
 
-	static {
+	static
+	{
 		final BufferedImage arrowDown = ImageUtil.getResourceStreamFromClass(WorldHopperPlugin.class, "arrow_down.png");
 		final BufferedImage arrowDownFaded = ImageUtil.grayscaleOffset(arrowDown, -80);
 		final BufferedImage arrowUpFaded = ImageUtil.rotateImage(arrowDownFaded, Math.PI);
@@ -129,7 +130,8 @@ public class WorldFilterPanel extends JPanel
 		hideUnrestrictedCheckbox.addActionListener(updateListListener);
 	}
 
-	public WorldFilterDefinition getWorldFilterDefinition(){
+	public WorldFilterDefinition getWorldFilterDefinition()
+	{
 		return new WorldFilterDefinition()
 			.hideF2P(hideF2PCheckbox.getState())
 			.hideP2P(hideP2PCheckbox.getState())
