@@ -130,6 +130,8 @@ public class TabInterface
 	private int currentTabIndex;
 	private TagTab iconToSet = null;
 	private Instant startScroll = Instant.now();
+	private String rememberedSearch;
+	private boolean waitSearchTick;
 
 	@Getter
 	private Widget upButton;
@@ -384,6 +386,8 @@ public class TabInterface
 		currentTabIndex = 0;
 		maxTabs = 0;
 		parent = null;
+		waitSearchTick = false;
+		rememberedSearch = "";
 
 		if (upButton != null)
 		{
@@ -400,6 +404,8 @@ public class TabInterface
 		if (isHidden())
 		{
 			parent = null;
+			waitSearchTick = false;
+			rememberedSearch = "";
 
 			// If bank window was just hidden, update last active tab position
 			if (currentTabIndex != config.position())
@@ -462,6 +468,20 @@ public class TabInterface
 		else
 		{
 			activateTab(null);
+		}
+
+		if (!waitSearchTick
+			&& activeTab == null
+			&& !Strings.isNullOrEmpty(rememberedSearch)
+			&& client.getVar(VarClientInt.INPUT_TYPE) == InputType.NONE.getType())
+		{
+			bankSearch.reset(true);
+			bankSearch.search(InputType.NONE, rememberedSearch, true);
+			rememberedSearch = "";
+		}
+		else if (waitSearchTick)
+		{
+			waitSearchTick = false;
 		}
 
 		updateBounds();
@@ -542,6 +562,15 @@ public class TabInterface
 		if (isHidden())
 		{
 			return;
+		}
+
+		if (event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getMenuAction() == MenuAction.EXAMINE_ITEM_BANK_EQ
+			&& event.getMenuOption().equalsIgnoreCase("withdraw-x"))
+		{
+			waitSearchTick = true;
+			rememberedSearch = client.getVar(VarClientStr.INPUT_TEXT);
+			bankSearch.search(InputType.NONE, rememberedSearch, true);
 		}
 
 		if (iconToSet != null)
