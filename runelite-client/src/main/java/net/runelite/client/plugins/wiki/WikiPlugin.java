@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.wiki;
 
 import com.google.common.primitives.Ints;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,6 +36,8 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.ObjectComposition;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
@@ -72,12 +73,10 @@ public class WikiPlugin extends Plugin
 			WidgetInfo.QUESTLIST_MINIQUEST_CONTAINER.getId(),
 		};
 
-	static final String WIKI_BASE = "https://oldschool.runescape.wiki";
-	static final HttpUrl WIKI_RSLOOKUP = HttpUrl.parse(WIKI_BASE + "/w/Special:Lookup");
-	static final HttpUrl WIKI_API = HttpUrl.parse(WIKI_BASE + "/api.php");
+	static final HttpUrl WIKI_BASE = HttpUrl.parse("https://oldschool.runescape.wiki");
+	static final HttpUrl WIKI_API = WIKI_BASE.newBuilder().addPathSegments("api.php").build();
 	static final String UTM_SORUCE_KEY = "utm_source";
 	static final String UTM_SORUCE_VALUE = "runelite";
-	static final String UTM_PARAMS = UTM_SORUCE_KEY + "=" + UTM_SORUCE_VALUE;
 
 	private static final String MENUOP_GUIDE = "Guide";
 	private static final String MENUOP_QUICKGUIDE = "Quick Guide";
@@ -161,7 +160,7 @@ public class WikiPlugin extends Plugin
 		icon.setOriginalHeight(16);
 		icon.setTargetVerb("Lookup");
 		icon.setName("Wiki");
-		icon.setClickMask(WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_ITEM | WidgetConfig.USE_NPC);
+		icon.setClickMask(WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_ITEM | WidgetConfig.USE_NPC | WidgetConfig.USE_OBJECT);
 		icon.setNoClickThrough(true);
 		icon.setOnTargetEnterListener((JavaScriptCallback) ev ->
 		{
@@ -201,6 +200,8 @@ public class WikiPlugin extends Plugin
 			String type;
 			int id;
 			String name;
+			WorldPoint location;
+
 			switch (ev.getMenuAction())
 			{
 				case CANCEL:
@@ -211,6 +212,7 @@ public class WikiPlugin extends Plugin
 					type = "item";
 					id = itemManager.canonicalize(ev.getId());
 					name = itemManager.getItemComposition(id).getName();
+					location = null;
 					break;
 				}
 				case SPELL_CAST_ON_NPC:
@@ -220,6 +222,20 @@ public class WikiPlugin extends Plugin
 					NPCComposition nc = npc.getTransformedComposition();
 					id = nc.getId();
 					name = nc.getName();
+					location = npc.getWorldLocation();
+					break;
+				}
+				case SPELL_CAST_ON_GAME_OBJECT:
+				{
+					type = "object";
+					ObjectComposition lc = client.getObjectDefinition(ev.getId());
+					if (lc.getImpostorIds() != null)
+					{
+						lc = lc.getImpostor();
+					}
+					id = lc.getId();
+					name = lc.getName();
+					location = WorldPoint.fromScene(client, ev.getActionParam(), ev.getWidgetId(), client.getPlane());
 					break;
 				}
 				default:
@@ -227,12 +243,22 @@ public class WikiPlugin extends Plugin
 					return;
 			}
 
-			HttpUrl url = WIKI_RSLOOKUP.newBuilder()
+			name = Text.removeTags(name);
+			HttpUrl.Builder urlBuilder = WIKI_BASE.newBuilder();
+			urlBuilder.addPathSegments("w/Special:Lookup")
 				.addQueryParameter("type", type)
 				.addQueryParameter("id", "" + id)
 				.addQueryParameter("name", name)
-				.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE)
-				.build();
+				.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE);
+
+			if (location != null)
+			{
+				urlBuilder.addQueryParameter("x", "" + location.getX())
+					.addQueryParameter("y", "" + location.getY())
+					.addQueryParameter("plane", "" + location.getPlane());
+			}
+
+			HttpUrl url = urlBuilder.build();
 
 			LinkBrowser.browse(url.toString());
 			return;
@@ -240,23 +266,35 @@ public class WikiPlugin extends Plugin
 
 		if (ev.getMenuAction() == MenuAction.RUNELITE)
 		{
-			String quickguide = "";
+			boolean quickguide = false;
 			switch (ev.getMenuOption())
 			{
 				case MENUOP_QUICKGUIDE:
-					quickguide = "/Quick_guide";
+					quickguide = true;
 					//fallthrough;
 				case MENUOP_GUIDE:
 					ev.consume();
 					String quest = Text.removeTags(ev.getMenuTarget());
-					LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(quest.replace(' ', '_')) + quickguide + "?" + UTM_PARAMS);
+					HttpUrl.Builder ub = WIKI_BASE.newBuilder()
+						.addPathSegment("w")
+						.addPathSegment(quest)
+						.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE);
+					if (quickguide)
+					{
+						ub.addPathSegment("Quick_guide");
+					}
+					LinkBrowser.browse(ub.build().toString());
 					break;
 				case MENUOP_WIKI_SKILL:
 					Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
 
 					if (skillRegex.find())
 					{
-						LinkBrowser.browse(WIKI_BASE + "/w/" + URLEncoder.encode(skillRegex.group(1)) + "?" + UTM_PARAMS);
+						LinkBrowser.browse(WIKI_BASE.newBuilder()
+							.addPathSegment("w")
+							.addPathSegment(skillRegex.group(1))
+							.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE)
+							.build().toString());
 					}
 			}
 		}
