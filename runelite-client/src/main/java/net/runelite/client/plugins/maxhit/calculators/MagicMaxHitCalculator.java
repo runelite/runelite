@@ -7,7 +7,10 @@ import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.maxhit.config.EquipmentBonusConfig;
+import net.runelite.client.plugins.maxhit.config.SpellBonus;
 import net.runelite.client.plugins.maxhit.config.SpellConfig;
+
+import java.util.ArrayList;
 
 public class MagicMaxHitCalculator extends MaxHitCalculator {
 
@@ -50,7 +53,7 @@ public class MagicMaxHitCalculator extends MaxHitCalculator {
         double maxHit = spellBaseDamage;
 
 //      b. Increase the base damage (God spells and Chaos Gauntlets)
-        maxHit = this.applyBonus(maxHit, autoCastSpell, false);
+        maxHit = this.getSpellBonus(maxHit, false);
 
 //      c. The following bonuses stack by adding up. (List of bonus items)
         maxHit = maxHit * getEquipmentBonus(EquipmentBonusConfig.BonusType.EQUIPMENT);
@@ -66,7 +69,7 @@ public class MagicMaxHitCalculator extends MaxHitCalculator {
         maxHit = Math.floor(maxHit);
 
 //      g. If a fire spell is used, multiply by 1.5 (Tome of fire)
-        maxHit = this.applyBonus(maxHit, autoCastSpell, true);
+        maxHit = this.getSpellBonus(maxHit, true);
 
 //      h. Round down to the nearest integer.
         maxHit = Math.floor(maxHit);
@@ -75,16 +78,14 @@ public class MagicMaxHitCalculator extends MaxHitCalculator {
         return maxHit;
     }
 
-//    TODO needs to wear tomb
-    private double applyBonus(double inputDamage, SpellConfig autoCastSpell, boolean afterEqupment) {
-        double outputDamage = inputDamage;
-
-        for(SpellConfig.BonusSpellTypes spellBonus: autoCastSpell.getBonusSpellTypes()) {
+    private double getSpellBonus(double inputDamage, boolean afterEqupment) {
+        ArrayList<SpellBonus> spellBonusses = SpellBonus.getMeetsRequirements(this.client);
+        for(SpellBonus spellBonus: spellBonusses) {
             if(spellBonus.getAfterEquipment() == afterEqupment) {
-                outputDamage = spellBonus.applyBonus(outputDamage);
+                inputDamage = spellBonus.applyBonus(inputDamage);
             }
         }
 
-        return outputDamage;
+        return inputDamage;
     }
 }

@@ -13,4 +13,8 @@ public class EquipmentHelper {
         return client.getItemDefinition(equipedItems[slot.getId()].getId()).getName().toLowerCase().contains(item.toLowerCase());
     }
 
+    public static boolean wearsItem(Client client, Item[] equipedItems, EquipmentSlotItem equipmentSlotItem){
+        return wearsItem(client, equipedItems, equipmentSlotItem.getEquipmentSlot(), equipmentSlotItem.getItem());
+    }
+
 }

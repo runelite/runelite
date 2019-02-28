@@ -16,6 +16,7 @@ import net.runelite.client.plugins.maxhit.equipment.EquipmentItemset;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public abstract class MaxHitCalculator {
@@ -85,15 +86,15 @@ public abstract class MaxHitCalculator {
     }
 
     public double calculate() {
-        Function<Client, Double> customFormula = this.getCustomFormula();
+        BiFunction<Client, MaxHitCalculator, Double> customFormula = this.getCustomFormula();
         if(customFormula != null){
-            return customFormula.apply(this.client);
+            return customFormula.apply(this.client, this);
         }
 
         return this.calculateDefault();
     }
 
-    private Function<Client, Double> getCustomFormula() {
+    private BiFunction<Client, MaxHitCalculator, Double> getCustomFormula() {
         for(CustomFormulaConfig customFormula: CustomFormulaConfig.values()) {
             if(this.combatMethod != customFormula.getRequiredCombatMethod()){
                 continue;

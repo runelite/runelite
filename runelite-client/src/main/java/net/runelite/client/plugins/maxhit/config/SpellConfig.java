@@ -13,27 +13,27 @@ public enum SpellConfig {
     AIR_STRIKE(SpellBook.NORMAL, 1, 2),
     WATER_STRIKE(SpellBook.NORMAL, 2, 4),
     EARTH_STRIKE(SpellBook.NORMAL, 3, 6),
-    FIRE_STRIKE(SpellBook.NORMAL, 4, 8, Collections.singletonList(BonusSpellTypes.FIRE)),
+    FIRE_STRIKE(SpellBook.NORMAL, 4, 8),
 
-    AIR_BOLT(SpellBook.NORMAL, 5, 9, Collections.singletonList(BonusSpellTypes.BOLT)),
-    WATER_BOLT(SpellBook.NORMAL, 6, 10, Collections.singletonList(BonusSpellTypes.BOLT)),
-    EARTH_BOLT(SpellBook.NORMAL, 7, 11, Collections.singletonList(BonusSpellTypes.BOLT)),
-    FIRE_BOLT(SpellBook.NORMAL, 8, 12, Arrays.asList(BonusSpellTypes.BOLT, BonusSpellTypes.FIRE)),
+    AIR_BOLT(SpellBook.NORMAL, 5, 9),
+    WATER_BOLT(SpellBook.NORMAL, 6, 10),
+    EARTH_BOLT(SpellBook.NORMAL, 7, 11),
+    FIRE_BOLT(SpellBook.NORMAL, 8, 12),
 
     AIR_BLAST(SpellBook.NORMAL, 9, 13),
     WATER_BLAST(SpellBook.NORMAL, 10, 14),
     EARTH_BLAST(SpellBook.NORMAL, 11, 15),
-    FIRE_BLAST(SpellBook.NORMAL, 12, 16, Collections.singletonList(BonusSpellTypes.FIRE)),
+    FIRE_BLAST(SpellBook.NORMAL, 12, 16),
 
     AIR_WAVE(SpellBook.NORMAL, 13, 17),
     WATER_WAVE(SpellBook.NORMAL, 14, 18),
     EARTH_WAVE(SpellBook.NORMAL, 15, 19),
-    FIRE_WAVE(SpellBook.NORMAL, 16, 20, Collections.singletonList(BonusSpellTypes.FIRE)),
+    FIRE_WAVE(SpellBook.NORMAL, 16, 20),
 
     AIR_SURGE(SpellBook.NORMAL, 17, 21),
     WATER_SURGE(SpellBook.NORMAL, 18, 22),
     EARTH_SURGE(SpellBook.NORMAL, 19, 23),
-    FIRE_SURGE(SpellBook.NORMAL, 20, 24, Collections.singletonList(BonusSpellTypes.FIRE)),
+    FIRE_SURGE(SpellBook.NORMAL, 20, 24),
 
     /*
     * Ancient Spellbook
@@ -63,8 +63,9 @@ public enum SpellConfig {
     * */
     CRUMBLE_UNDEAD(SpellBook.OTHER, 17, 15),
     IBAN_BLAST(SpellBook.OTHER, 47, 25),
-    FLAMES_OF_ZAMAROK(SpellBook.OTHER, 18, 20, Collections.singletonList(BonusSpellTypes.GOD)),
-    CLAWS_OF_GUTHIX(SpellBook.OTHER, 19, 20, Collections.singletonList(BonusSpellTypes.GOD)),
+    FLAMES_OF_ZAMAROK(SpellBook.OTHER, 18, 20),
+    CLAWS_OF_GUTHIX(SpellBook.OTHER, 19, 20),
+    SARADOMIN_STRIKE(SpellBook.OTHER, 20, 20),
 
     /*
     * Custom Formula spells
@@ -77,58 +78,9 @@ public enum SpellConfig {
         OTHER
     }
 
-    private enum Operations {
-        ADD,
-        MULTIPLY
-    }
-
-    public enum BonusSpellTypes {
-
-        BOLT(3, Operations.ADD),
-        FIRE(1.5, Operations.MULTIPLY, true),
-        GOD(10, Operations.ADD);
-
-        private final double bonusDamage;
-        private final Operations operation;
-        private boolean afterEquipment = false;
-
-        BonusSpellTypes(double bonusDamage, Operations operation) {
-            this.bonusDamage = bonusDamage;
-            this.operation = operation;
-        }
-
-        BonusSpellTypes(double bonusDamage, Operations operation, boolean afterEquipment) {
-            this.bonusDamage = bonusDamage;
-            this.operation = operation;
-            this.afterEquipment = afterEquipment;
-        }
-
-        public double applyBonus(double inputDamage) {
-            if(this.operation == Operations.ADD) {
-                return inputDamage + this.bonusDamage;
-            } else if(this.operation == Operations.MULTIPLY) {
-                return inputDamage * this.bonusDamage;
-            } else {
-                return inputDamage;
-            }
-        }
-
-        public boolean getAfterEquipment() {
-            return this.afterEquipment;
-        }
-    }
-
     private SpellBook spellBook;
     private int spellID;
     private int baseDamage;
-    private List<BonusSpellTypes> bonusSpellTypes = new ArrayList<>();
-
-    SpellConfig(SpellBook spellBook, int spellID, int baseDamage, List<BonusSpellTypes> bonusSpellTypes) {
-        this.spellBook = spellBook;
-        this.spellID = spellID;
-        this.baseDamage = baseDamage;
-        this.bonusSpellTypes = bonusSpellTypes;
-    }
 
     SpellConfig(SpellBook spellBook, int spellID, int baseDamage) {
         this.spellBook = spellBook;
@@ -142,10 +94,6 @@ public enum SpellConfig {
 
     public int getBaseDamage() {
         return baseDamage;
-    }
-
-    public List<BonusSpellTypes> getBonusSpellTypes() {
-        return bonusSpellTypes;
     }
 
     public SpellBook getSpellBook() {

@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.maxhit.config;
 
 import net.runelite.api.Client;
+import net.runelite.client.plugins.maxhit.bonus.requirements.AutocastSpellRequirement;
 import net.runelite.client.plugins.maxhit.bonus.requirements.BonusRequirement;
 import net.runelite.client.plugins.maxhit.bonus.requirements.SpellBookRequirement;
 import net.runelite.client.plugins.maxhit.calculators.MaxHitCalculator;
@@ -134,7 +135,9 @@ public enum EquipmentBonusConfig {
     )), new EquipmentCombatBonus(0, 0, 0.025)),
     SMOKE_STAFF(BonusType.EQUIPMENT, new EquipmentItemset(Collections.singletonList(
             new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT ,"Smoke Staff")
-    )),  new EquipmentCombatBonus(0, 0, 0.10), Collections.singletonList(new SpellBookRequirement(SpellConfig.SpellBook.NORMAL)))
+    )),  new EquipmentCombatBonus(0, 0, 0.10), Collections.singletonList(new SpellBookRequirement(SpellConfig.SpellBook.NORMAL))),
+
+
 //
 //    /*
 //    * Special Magic Weapons
@@ -151,6 +154,7 @@ public enum EquipmentBonusConfig {
 //            new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "Uncharged toxic trident")
 //    )), new EquipmentCombatBonus(0, 0, 1))
 //
+
 
     ;
 
@@ -183,6 +187,7 @@ public enum EquipmentBonusConfig {
     }
 
     EquipmentBonusConfig(BonusType bonusType, EquipmentItemset itemset, EquipmentCombatBonus equipmentCombatBonus) {
+        this.bonusType = bonusType;
         this.itemset = itemset;
         this.equipmentCombatBonus = equipmentCombatBonus;
     }
@@ -203,6 +208,9 @@ public enum EquipmentBonusConfig {
     }
 
     public static ArrayList<EquipmentBonusConfig> getBonusByType(BonusType bonusType) {
+        if(!bonusTypes.containsKey(bonusType)) {
+            return new ArrayList<>();
+        }
         return bonusTypes.get(bonusType);
     }
 
