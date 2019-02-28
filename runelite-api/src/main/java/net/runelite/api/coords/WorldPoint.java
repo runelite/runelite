@@ -211,7 +211,7 @@ public class WorldPoint
 
 		// find instance chunks using the template point. there might be more than one.
 		List<WorldPoint> worldPoints = new ArrayList<>();
-		final int z = client.getPlane();
+		final int z = worldPoint.getPlane();
 		int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
 		for (int x = 0; x < instanceTemplateChunks[z].length; ++x)
 		{
