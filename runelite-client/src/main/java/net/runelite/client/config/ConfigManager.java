@@ -43,8 +43,11 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +73,7 @@ import net.runelite.http.api.config.Configuration;
 public class ConfigManager
 {
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
+	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
 	@Inject
 	EventBus eventBus;
@@ -111,12 +115,17 @@ public class ConfigManager
 		load(); // load profile specific config
 	}
 
+	private File getLocalPropertiesFile()
+	{
+		return new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME);
+	}
+
 	private File getPropertiesFile()
 	{
 		// Sessions that aren't logged in have no username
 		if (session == null || session.getUsername() == null)
 		{
-			return new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME);
+			return getLocalPropertiesFile();
 		}
 		else
 		{
@@ -158,7 +167,13 @@ public class ConfigManager
 		for (ConfigEntry entry : configuration.getConfig())
 		{
 			log.debug("Loading configuration value from client {}: {}", entry.getKey(), entry.getValue());
-			final String[] split = entry.getKey().split("\\.");
+			final String[] split = entry.getKey().split("\\.", 2);
+
+			if (split.length != 2)
+			{
+				continue;
+			}
+
 			final String groupName = split[0];
 			final String key = split[1];
 			final String value = entry.getValue();
@@ -174,7 +189,7 @@ public class ConfigManager
 
 		try
 		{
-			saveToFile();
+			saveToFile(propertiesFile);
 
 			log.debug("Updated configuration on disk with the latest version");
 		}
@@ -182,6 +197,75 @@ public class ConfigManager
 		{
 			log.warn("Unable to update configuration on disk", ex);
 		}
+	}
+
+	private synchronized void syncPropertiesFromFile(File propertiesFile)
+	{
+		final Properties properties = new Properties();
+		try (FileInputStream in = new FileInputStream(propertiesFile))
+		{
+			properties.load(new InputStreamReader(in, Charset.forName("UTF-8")));
+		}
+		catch (Exception e)
+		{
+			log.debug("Malformed properties, skipping update");
+			return;
+		}
+
+		final Map<String, String> copy = (Map) ImmutableMap.copyOf(this.properties);
+		copy.forEach((groupAndKey, value) ->
+		{
+			if (!properties.containsKey(groupAndKey))
+			{
+				final String[] split = groupAndKey.split("\\.", 2);
+				if (split.length != 2)
+				{
+					return;
+				}
+
+				final String groupName = split[0];
+				final String key = split[1];
+				unsetConfiguration(groupName, key);
+			}
+		});
+
+		properties.forEach((objGroupAndKey, objValue) ->
+		{
+			final String groupAndKey = String.valueOf(objGroupAndKey);
+			final String[] split = groupAndKey.split("\\.", 2);
+			if (split.length != 2)
+			{
+				return;
+			}
+
+			final String groupName = split[0];
+			final String key = split[1];
+			final String value = String.valueOf(objValue);
+			setConfiguration(groupName, key, value);
+		});
+	}
+
+	public void importLocal()
+	{
+		if (session == null)
+		{
+			// No session, no import
+			return;
+		}
+
+		final File file = new File(propertiesFile.getParent(), propertiesFile.getName() + "." + TIME_FORMAT.format(new Date()));
+
+		try
+		{
+			saveToFile(file);
+		}
+		catch (IOException e)
+		{
+			log.warn("Backup failed, skipping import", e);
+			return;
+		}
+
+		syncPropertiesFromFile(getLocalPropertiesFile());
 	}
 
 	private synchronized void loadFromFile()
@@ -231,7 +315,7 @@ public class ConfigManager
 		}
 	}
 
-	private synchronized void saveToFile() throws IOException
+	private synchronized void saveToFile(final File propertiesFile) throws IOException
 	{
 		propertiesFile.getParentFile().mkdirs();
 
@@ -294,14 +378,14 @@ public class ConfigManager
 
 	public void setConfiguration(String groupName, String key, String value)
 	{
-		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
-
 		String oldValue = (String) properties.setProperty(groupName + "." + key, value);
 
 		if (Objects.equals(oldValue, value))
 		{
 			return;
 		}
+
+		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
 
 		synchronized (pendingChanges)
 		{
@@ -312,7 +396,7 @@ public class ConfigManager
 		{
 			try
 			{
-				saveToFile();
+				saveToFile(propertiesFile);
 			}
 			catch (IOException ex)
 			{
@@ -337,14 +421,14 @@ public class ConfigManager
 
 	public void unsetConfiguration(String groupName, String key)
 	{
-		log.debug("Unsetting configuration value for {}.{}", groupName, key);
-
 		String oldValue = (String) properties.remove(groupName + "." + key);
 
 		if (oldValue == null)
 		{
 			return;
 		}
+
+		log.debug("Unsetting configuration value for {}.{}", groupName, key);
 
 		synchronized (pendingChanges)
 		{
@@ -355,7 +439,7 @@ public class ConfigManager
 		{
 			try
 			{
-				saveToFile();
+				saveToFile(propertiesFile);
 			}
 			catch (IOException ex)
 			{

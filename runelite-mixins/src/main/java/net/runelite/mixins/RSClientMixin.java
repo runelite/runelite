@@ -24,6 +24,8 @@
  */
 package net.runelite.mixins;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -32,6 +34,7 @@ import javax.annotation.Nullable;
 import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
+import net.runelite.api.EnumComposition;
 import net.runelite.api.Friend;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
@@ -106,6 +109,7 @@ import net.runelite.rs.api.RSChatLineBuffer;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDeque;
+import net.runelite.rs.api.RSEnum;
 import net.runelite.rs.api.RSFriendContainer;
 import net.runelite.rs.api.RSFriendManager;
 import net.runelite.rs.api.RSHashTable;
@@ -175,6 +179,16 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	static int skyboxColor;
+
+	@Inject
+	private final Cache<Integer, RSEnum> enumCache = CacheBuilder.newBuilder()
+		.maximumSize(64)
+		.build();
+
+	@Inject
+	public RSClientMixin()
+	{
+	}
 
 	@Inject
 	@Override
@@ -1441,5 +1455,22 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		return false;
+	}
+
+	@Inject
+	@Override
+	public EnumComposition getEnum(int id)
+	{
+		assert isClientThread() : "getEnum must be called on client thread";
+
+		RSEnum rsEnum = enumCache.getIfPresent(id);
+		if (rsEnum != null)
+		{
+			return rsEnum;
+		}
+
+		rsEnum = getRsEnum(id);
+		enumCache.put(id, rsEnum);
+		return rsEnum;
 	}
 }

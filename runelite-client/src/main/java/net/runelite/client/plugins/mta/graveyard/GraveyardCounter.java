@@ -31,7 +31,7 @@ import net.runelite.client.ui.overlay.infobox.Counter;
 
 public class GraveyardCounter extends Counter
 {
-	public GraveyardCounter(BufferedImage image, Plugin plugin)
+	GraveyardCounter(BufferedImage image, Plugin plugin)
 	{
 		super(image, plugin, 0);
 	}
