@@ -38,12 +38,12 @@ class RegionLockerOverlay extends Overlay {
     }
 
     private void drawRegionOverlay(Graphics2D graphics) {
-        RenderOverview ro = client.getRenderOverview();
         Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
-        Float pixelsPerTile = ro.getWorldMapZoom();
 
         if (map == null) return;
 
+        RenderOverview ro = client.getRenderOverview();
+        Float pixelsPerTile = ro.getWorldMapZoom();
         Rectangle worldMapRect = map.getBounds();
         graphics.setClip(worldMapRect);
 
@@ -80,24 +80,26 @@ class RegionLockerOverlay extends Overlay {
                 String regionText = String.valueOf(regionId);
                 FontMetrics fm = graphics.getFontMetrics();
                 Rectangle2D textBounds = fm.getStringBounds(regionText, graphics);
-                int labelWidth = (int) textBounds.getWidth() + 2 * LABEL_PADDING;
-                int labelHeight = (int) textBounds.getHeight() + 2 * LABEL_PADDING;
-                //graphics.fillRect(xPos, yPos, labelWidth, labelHeight);
                 Rectangle regionRect = new Rectangle(xPos, yPos, regionPixelSize, regionPixelSize);
-                if (RegionLocker.hasRegion(regionId) ^ config.invertMapOverlay() || RegionLocker.isUnlockable(regionId) || RegionLocker.isBlacklisted(regionId)) {
 
+                RegionTypes regionType = RegionLocker.getType(regionId);
+                boolean containsRegion = (regionType != null) ^ config.invertMapOverlay();
+                boolean unlockable = regionType == RegionTypes.UNLOCKABLE;
+                boolean blacklisted = regionType == RegionTypes.BLACKLISTED;
+                if (containsRegion || unlockable || blacklisted) {
                     Color color;
                     int alpha;
-                    if (RegionLocker.isBlacklisted(regionId)) {
-                        color = new Color(0, 0, 0, 200);
-                        alpha = Math.max(0, Math.min(255, config.blacklistedOverlayAlpha()));
-                    } else if (RegionLocker.isUnlockable(regionId)) {
+                    if (blacklisted) {
+                        color = config.blacklistedOverlayColor();
+                        alpha = config.blacklistedOverlayAlpha();
+                    } else if (unlockable) {
                         color = config.unlockableOverlayColor();
-                        alpha = Math.max(0, Math.min(255, config.unlockableOverlayAlpha()));
+                        alpha = config.unlockableOverlayAlpha();
                     } else {
                         color = config.mapOverlayColor();
-                        alpha = Math.max(0, Math.min(255, config.mapOverlayAlpha()));
+                        alpha = config.mapOverlayAlpha();
                     }
+                    alpha =  Math.max(0, Math.min(255, alpha));
                     color = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
                     if (regionRect.contains(mousePos.getX(), mousePos.getY()))
                         color = color.brighter();
@@ -106,7 +108,6 @@ class RegionLockerOverlay extends Overlay {
                 }
 
                 graphics.setColor(new Color(0, 19, 36, 127));
-
                 if (config.drawMapGrid()) graphics.drawRect(xPos, yPos, regionPixelSize, regionPixelSize);
 
                 graphics.setColor(WHITE_TRANSLUCENT);
