@@ -55,16 +55,16 @@
       "xp": 30
     },
     {
-      "level": 21,
-      "icon": 6472,
-      "name": "Compost Potion (3)",
-      "xp": 60
-    },
-    {
       "level": 20,
       "icon": 255,
       "name": "Harralander",
       "xp": 6.3
+    },
+    {
+      "level": 21,
+      "icon": 6472,
+      "name": "Compost Potion (3)",
+      "xp": 60
     },
     {
       "level": 22,
