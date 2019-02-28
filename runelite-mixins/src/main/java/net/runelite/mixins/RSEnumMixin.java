@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.ws;
+package net.runelite.mixins;
 
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSEnum;
 
-public class SessionManager
+@Mixin(RSEnum.class)
+public abstract class RSEnumMixin implements RSEnum
 {
-	private static final ConcurrentMap<UUID, WSService> sessions = new ConcurrentHashMap<>();
-
-	public static void changeSessionUID(WSService service, UUID uuid)
+	@Inject
+	@Override
+	public int getIntValue(int key)
 	{
-		synchronized (service)
+		final int[] keys = getKeys();
+		if (keys == null)
 		{
-			remove(service);
-			service.setUuid(uuid);
-			sessions.put(uuid, service);
+			return getDefaultInt();
 		}
-	}
 
-	static void remove(WSService service)
-	{
-		synchronized (service)
+		for (int i = 0; i < keys.length; ++i)
 		{
-			UUID current = service.getUuid();
-			if (current != null)
+			if (keys[i] == key)
 			{
-				sessions.remove(current);
-				service.setUuid(null);
+				final int[] values = getIntVals();
+				return values[i];
 			}
 		}
+		return getDefaultInt();
 	}
 
-	public static WSService findSession(UUID uuid)
+	@Inject
+	@Override
+	public String getStringValue(int key)
 	{
-		return sessions.get(uuid);
-	}
+		final int[] keys = getKeys();
+		if (keys == null)
+		{
+			return getDefaultString();
+		}
 
-	public static int getCount()
-	{
-		return sessions.size();
+		for (int i = 0; i < keys.length; ++i)
+		{
+			if (keys[i] == key)
+			{
+				final String[] values = getStringVals();
+				return values[i];
+			}
+		}
+		return getDefaultString();
 	}
 }

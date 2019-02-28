@@ -42,7 +42,7 @@ LABEL23:
    sstore                 2
    load_int               0
    istore                 3
-   get_varc               203
+   get_varbit             8119
    load_int               1
    if_icmpeq              LABEL40
    jump                   LABEL99

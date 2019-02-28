@@ -195,7 +195,7 @@ public class LootTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
-		panel = new LootTrackerPanel(this, itemManager);
+		panel = new LootTrackerPanel(this, itemManager, config);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
@@ -227,9 +227,8 @@ public class LootTrackerPlugin extends Plugin
 				{
 					Collection<LootRecord> lootRecords;
 
-					if (!config.saveLoot())
+					if (!config.syncPanel())
 					{
-						// don't load loot if we're not saving loot
 						return;
 					}
 

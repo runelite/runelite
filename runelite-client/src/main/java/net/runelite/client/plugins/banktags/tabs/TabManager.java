@@ -115,6 +115,7 @@ class TabManager
 		{
 			tagTab.setHidden(true);
 			tabs.remove(tagTab);
+			removeIcon(tag);
 		}
 	}
 
@@ -122,6 +123,16 @@ class TabManager
 	{
 		String tags = Text.toCSV(tabs.stream().map(TagTab::getTag).collect(Collectors.toList()));
 		configManager.setConfiguration(CONFIG_GROUP, TAG_TABS_CONFIG, tags);
+	}
+
+	void removeIcon(final String tag)
+	{
+		configManager.unsetConfiguration(CONFIG_GROUP, ICON_SEARCH + Text.standardize(tag));
+	}
+
+	void setIcon(final String tag, final String icon)
+	{
+		configManager.setConfiguration(CONFIG_GROUP, ICON_SEARCH + Text.standardize(tag), icon);
 	}
 
 	int size()

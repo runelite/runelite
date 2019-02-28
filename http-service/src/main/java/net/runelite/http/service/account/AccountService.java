@@ -33,6 +33,8 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import javax.servlet.http.HttpServletRequest;
@@ -45,8 +47,6 @@ import net.runelite.http.api.ws.messages.LoginResponse;
 import net.runelite.http.service.account.beans.SessionEntry;
 import net.runelite.http.service.account.beans.UserEntry;
 import net.runelite.http.service.util.redis.RedisPool;
-import net.runelite.http.service.ws.SessionManager;
-import net.runelite.http.service.ws.WSService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,7 +150,10 @@ public class AccountService
 			.state(gson.toJson(state))
 			.build(GoogleApi20.instance());
 
-		String authorizationUrl = service.getAuthorizationUrl();
+		final Map<String, String> additionalParams = new HashMap<>();
+		additionalParams.put("prompt", "select_account");
+
+		String authorizationUrl = service.getAuthorizationUrl(additionalParams);
 
 		OAuthResponse lr = new OAuthResponse();
 		lr.setOauthUrl(authorizationUrl);
@@ -241,12 +244,6 @@ public class AccountService
 		LoginResponse response = new LoginResponse();
 		response.setUsername(username);
 
-		WSService service = SessionManager.findSession(uuid);
-		if (service != null)
-		{
-			service.send(response);
-		}
-
 		try (Jedis jedis = jedisPool.getResource())
 		{
 			jedis.publish("session." + uuid, websocketGson.toJson(response, WebsocketMessage.class));
@@ -275,11 +272,5 @@ public class AccountService
 	public void sessionCheck(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		auth.handle(request, response);
-	}
-
-	@RequestMapping("/wscount")
-	public int wscount()
-	{
-		return SessionManager.getCount();
 	}
 }
