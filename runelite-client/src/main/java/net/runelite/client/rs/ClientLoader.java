@@ -37,6 +37,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +46,7 @@ import java.util.jar.JarInputStream;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.client.rs.ClientUpdateCheckMode.*;
 import net.runelite.http.api.RuneLiteAPI;
@@ -203,14 +205,24 @@ public class ClientLoader
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
 			| CompressorException | InvalidHeaderException e)
 		{
+			String message = "Error loading the Old School RuneScape client";
 			if (e instanceof ClassNotFoundException)
 			{
 				log.error("Unable to load client - class not found. This means you"
 					+ " are not running RuneLite with Maven as the client patch"
 					+ " is not in your classpath.");
 			}
+			else if (e instanceof SocketTimeoutException)
+			{
+				log.error("Unable to load client - connection timed out. This is most"
+					+ " likely caused by a Jagex server issue.");
+				message = "Error connecting to the Old School RuneScape servers.";
+			}
 
 			log.error("Error loading RS!", e);
+			JOptionPane.showConfirmDialog(null, message, "Unable to load client",
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
+
 			System.exit(-1);
 			return null;
 		}
