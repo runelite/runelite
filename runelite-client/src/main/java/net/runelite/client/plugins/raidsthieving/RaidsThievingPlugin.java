@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.raidsthieving;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -38,15 +37,16 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.queries.GameObjectQuery;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raidsthieving.BatSolver.BatSolver;
 import net.runelite.client.plugins.raidsthieving.BatSolver.ChestIdentifier;
 import net.runelite.client.plugins.raidsthieving.BatSolver.ThievingRoomType;
 import net.runelite.client.ui.overlay.OverlayManager;
+import org.apache.commons.lang3.ArrayUtils;
 import javax.inject.Inject;
 import java.text.MessageFormat;
 import java.time.Instant;
@@ -95,8 +95,7 @@ public class RaidsThievingPlugin extends Plugin
 	@Getter
 	private ChestIdentifier identifier;
 
-	private WorldPoint originWorldPoint;
-	private LocalPoint originLocalPoint;
+	private WorldPoint thievingStorageLocation = null;
 
 	@Provides
 	RaidsThievingConfig provideConfig(ConfigManager configManager)
@@ -120,11 +119,58 @@ public class RaidsThievingPlugin extends Plugin
 		chests.clear();
 	}
 
+	private int getNumberOfChestsNearStorage(double maxDistance)
+	{
+		int number = 0;
+		for (WorldPoint point : chests.keySet())
+		{
+			if (Math.abs(point.getX() - thievingStorageLocation.getX()) < maxDistance &&
+				Math.abs(point.getY() - thievingStorageLocation.getY()) < maxDistance)
+			{
+				number++;
+			}
+		}
+		return number;
+	}
+
+	private boolean isStorageChestInThievingRoom(GameObject storageChest, WorldPoint location)
+	{
+
+		for (WorldPoint point : chests.keySet())
+		{
+			double distance = Math.pow((point.getX() - location.getX()), 2) +
+				Math.pow((point.getY() - location.getY()), 2);
+			if (distance < 5)
+			{
+				return true;
+			}
+
+		}
+
+		return false;
+	}
+
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject obj = event.getGameObject();
 		WorldPoint loc = obj.getWorldLocation();
+		if (ArrayUtils.indexOf(RaidsThievingConstants.STORAGE, obj.getId()) != -1 && thievingStorageLocation == null)
+		{
+			// Found a storage chest possibly
+			LocalPoint storageChestLocation = event.getTile().getLocalLocation();
+			log.debug(MessageFormat.format("Found storage chest at {0},{1}", storageChestLocation.getX(), storageChestLocation.getY()));
+			if (chests.keySet().size() > 0 && isStorageChestInThievingRoom(obj, loc))
+			{
+				log.debug("found thieving room chest");
+				thievingStorageLocation = loc;
+			}
+			else
+			{
+				log.debug("But it wasn't for thieving...");
+			}
+
+		}
 		switch (obj.getId())
 		{
 
@@ -133,7 +179,7 @@ public class RaidsThievingPlugin extends Plugin
 				if (solver == null || identifier == null)
 				{
 					// Initialise the BatSolver
-					LocalPoint chestLoc = findChestNearTrough(obj.getLocalLocation());
+					WorldPoint chestLoc = findChestNearTrough(obj.getLocalLocation());
 					if (chestLoc != null)
 					{
 						ThievingRoomType roomType = determineRoom();
@@ -177,11 +223,13 @@ public class RaidsThievingPlugin extends Plugin
 					solver.addGrubsChest(getChestId(loc));
 				}
 				break;
+
+
 		}
 	}
 
 	@Subscribe
-	public void onGraphicObjectCreated(GraphicsObjectCreated event)
+	public void onGraphicsObjectCreated(GraphicsObjectCreated event)
 	{
 		GraphicsObject obj = event.getGraphicsObject();
 		if (obj.getId() == 184)
@@ -193,7 +241,7 @@ public class RaidsThievingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChange(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		boolean setting = client.getVar(Varbits.IN_RAID) == 1;
 
@@ -220,6 +268,7 @@ public class RaidsThievingPlugin extends Plugin
 		batsFound = false;
 		solver = null;
 		identifier = null;
+		thievingStorageLocation = null;
 	}
 
 	private void checkForBats()
@@ -242,49 +291,34 @@ public class RaidsThievingPlugin extends Plugin
 		}
 	}
 
-	private LocalPoint findChestNearTrough(LocalPoint point)
+	private WorldPoint findChestNearTrough(LocalPoint point)
 	{
-		GameObjectQuery storageChestQuery = new GameObjectQuery();
-		storageChestQuery = storageChestQuery.idEquals(RaidsThievingConstants.STORAGE).isWithinArea(point, 4 * 128);
-
-		GameObject[] objs = storageChestQuery.result(client);
-
-		if (objs.length > 0)
-		{
-			log.debug("Found storage");
-			originLocalPoint = objs[0].getLocalLocation();
-			originWorldPoint = objs[0].getWorldLocation();
-			return originLocalPoint;
-		}
-		return null;
+		return thievingStorageLocation;
 	}
 
 	private ThievingRoomType determineRoom()
 	{
-		GameObjectQuery query = new GameObjectQuery().isWithinArea(originLocalPoint, 2 * 128);
 
-		GameObject[] objs = query.result(client);
-
-		if (objs.length == 0)
+		if (getNumberOfChestsNearStorage(2) == 0)
 		{
 			return ThievingRoomType.STRAIGHT;
 		}
 
-		query = new GameObjectQuery().isWithinArea(originLocalPoint, 4 * 128)
-			.idEquals(RaidsThievingConstants.CLOSED_CHEST_ID, RaidsThievingConstants.OPEN_EMPTY_CHEST,
-				RaidsThievingConstants.OPEN_FULL_CHEST_1, RaidsThievingConstants.OPEN_FULL_CHEST_2);
-		objs = query.result(client);
+		int numberChests = getNumberOfChestsNearStorage(4);
+		log.debug(MessageFormat.format("Found {0} chests near storage", numberChests));
 
-		if (objs.length == 2)
+		if (numberChests == 2)
 		{
 			return ThievingRoomType.LEFT_TURN;
 		}
-		else if (objs.length == 5)
+
+		if (numberChests == 4)
 		{
 			return ThievingRoomType.RIGHT_TURN;
 		}
 
-		log.debug("Couldn't determine which room..." + objs.length);
+		log.debug("Couldn't determine which room...");
+		log.error(MessageFormat.format("Number of chests: {0}", numberChests));
 		return ThievingRoomType.UNKNOWN;
 	}
 
@@ -313,14 +347,11 @@ public class RaidsThievingPlugin extends Plugin
 		{
 			testLoc = MatrixMultiple2D(currentRot, expectedLoc);
 
-			WorldPoint point = new WorldPoint(originWorldPoint.getX() + testLoc[0][0],
-				originWorldPoint.getY() + testLoc[1][0],
-				originWorldPoint.getPlane());
+			WorldPoint point = new WorldPoint(thievingStorageLocation.getX() + testLoc[0][0],
+				thievingStorageLocation.getY() + testLoc[1][0],
+				thievingStorageLocation.getPlane());
 
-			GameObjectQuery query = new GameObjectQuery().atWorldLocation(point)
-				.idEquals(RaidsThievingConstants.CLOSED_CHEST_ID, RaidsThievingConstants.OPEN_EMPTY_CHEST,
-					RaidsThievingConstants.OPEN_FULL_CHEST_1, RaidsThievingConstants.OPEN_FULL_CHEST_2);
-			if (query.result(client).length > 0)
+			if (chests.containsKey(point))
 			{
 				return currentRot;
 			}
@@ -344,14 +375,14 @@ public class RaidsThievingPlugin extends Plugin
 
 	private int[] getDeltaFromStorage(WorldPoint pos)
 	{
-		int dx = pos.getX() - originWorldPoint.getX();
-		int dy = pos.getY() - originWorldPoint.getY();
+		int dx = pos.getX() - thievingStorageLocation.getX();
+		int dy = pos.getY() - thievingStorageLocation.getY();
 		return new int[]{dx, dy};
 	}
 
 	public int getChestId(WorldPoint pos)
 	{
-		if (originWorldPoint != null)
+		if (thievingStorageLocation != null)
 		{
 			int[] delta = getDeltaFromStorage(pos);
 			return identifier.findChestId(delta[0], delta[1]);

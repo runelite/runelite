@@ -146,7 +146,7 @@ public class ChestOverlay extends Overlay
 		{
 			return;
 		}
-		Point loc = Perspective.worldToCanvas(client, localLoc.getX(), localLoc.getY(), chest.getWorldLocation().getPlane());
+		Point loc = Perspective.localToCanvas(client, localLoc, chest.getWorldLocation().getPlane());
 
 		ProgressPieComponent pie = new ProgressPieComponent();
 		pie.setFill(fill);
