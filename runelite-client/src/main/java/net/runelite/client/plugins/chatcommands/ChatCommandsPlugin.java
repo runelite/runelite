@@ -574,6 +574,10 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
+		if (message.length() <= PRICE_COMMAND_STRING.length() + 1) {
+			return;
+		}
+		
 		MessageNode messageNode = chatMessage.getMessageNode();
 		String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
 
