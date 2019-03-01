@@ -121,4 +121,35 @@ public interface BAToolsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "prayerMetronome",
+			name = "Prayer Metronome",
+			description = "asd"
+	)
+	default boolean prayerMetronome()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "prayerMetronomeVolume",
+			name = "Prayer Metronome Volume",
+			description = "asd"
+	)
+	default int prayerMetronomeVolume()
+	{
+		return 1;
+	}
+
+	@ConfigItem(
+			keyName = "attackStyles",
+			name = "Attack Styles",
+			description = "asd"
+	)
+	default boolean attackStyles()
+	{
+		return false;
+	}
+
 }

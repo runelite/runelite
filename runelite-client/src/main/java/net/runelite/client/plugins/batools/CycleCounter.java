@@ -9,6 +9,6 @@ public class CycleCounter extends Counter
 {
 	public CycleCounter(BufferedImage img, Plugin plugin, int tick)
 	{
-		super(img, plugin, String.valueOf(tick));
+		super(img, plugin, tick);
 	}
 }

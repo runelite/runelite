@@ -25,7 +25,11 @@
  */
 package net.runelite.client.plugins.batools;
 
-import net.runelite.client.eventbus.EventBus;
+import net.runelite.api.Item;
+import net.runelite.api.Prayer;
+import net.runelite.api.SoundEffectID;
+import net.runelite.api.Tile;
+import net.runelite.api.kit.KitType;
 import net.runelite.client.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
@@ -76,9 +80,9 @@ import net.runelite.client.util.Text;
 
 @Slf4j
 @PluginDescriptor(
-	name = "BA Tools",
-	description = "Custom tools for Barbarian Assault",
-	tags = {"minigame", "overlay", "timer"}
+		name = "BA Tools",
+		description = "Custom tools for Barbarian Assault",
+		tags = {"minigame", "overlay", "timer"}
 )
 public class BAToolsPlugin extends Plugin implements KeyListener
 {
@@ -204,10 +208,81 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 			{
 				addCounter();
 			}
-			counter.setText(String.valueOf(tickNum));
+			counter.setCount(tickNum);
 			if (config.defTimer())
 			{
 				log.info("" + tickNum++);
+			}
+		}
+
+		Widget weapon = client.getWidget(593, 1);
+
+		if(config.attackStyles()
+				&& weapon!=null
+				&& inGameBit == 1
+				&& weapon.getText().contains("Crystal halberd") || weapon.getText().contains("Dragon claws")
+				&& client.getWidget(WidgetInfo.BA_ATK_LISTEN_TEXT)!=null)
+		{
+			String style = client.getWidget(WidgetInfo.BA_ATK_LISTEN_TEXT).getText();
+
+			if(style.contains("Defensive"))
+			{
+				client.getWidget(WidgetInfo.COMBAT_STYLE_ONE).setHidden(true);
+				client.getWidget(WidgetInfo.COMBAT_STYLE_TWO).setHidden(true);
+				client.getWidget(WidgetInfo.COMBAT_STYLE_THREE).setHidden(true);
+				client.getWidget(WidgetInfo.COMBAT_STYLE_FOUR).setHidden(false);
+			}
+			else if(style.contains("Aggressive"))
+			{
+				client.getWidget(WidgetInfo.COMBAT_STYLE_ONE).setHidden(true);
+				client.getWidget(WidgetInfo.COMBAT_STYLE_TWO).setHidden(false);
+				client.getWidget(WidgetInfo.COMBAT_STYLE_THREE).setHidden(true);
+				client.getWidget(WidgetInfo.COMBAT_STYLE_FOUR).setHidden(true);
+			}
+			else if(style.contains("Controlled"))
+			{
+				if(weapon.getText().contains("Crystal halberd"))
+				{
+					client.getWidget(WidgetInfo.COMBAT_STYLE_ONE).setHidden(false);
+					client.getWidget(WidgetInfo.COMBAT_STYLE_THREE).setHidden(true);
+				}
+				else
+				{
+					client.getWidget(WidgetInfo.COMBAT_STYLE_ONE).setHidden(true);
+					client.getWidget(WidgetInfo.COMBAT_STYLE_THREE).setHidden(false);
+				}
+				client.getWidget(WidgetInfo.COMBAT_STYLE_TWO).setHidden(true);
+				client.getWidget(WidgetInfo.COMBAT_STYLE_FOUR).setHidden(true);
+			}
+			else if(style.contains("Accurate") && weapon.getText().contains("Dragon claws"))
+			{
+				client.getWidget(WidgetInfo.COMBAT_STYLE_ONE).setHidden(false);
+				client.getWidget(WidgetInfo.COMBAT_STYLE_TWO).setHidden(true);
+				client.getWidget(WidgetInfo.COMBAT_STYLE_THREE).setHidden(true);
+				client.getWidget(WidgetInfo.COMBAT_STYLE_FOUR).setHidden(true);
+			}
+			else
+			{
+				client.getWidget(WidgetInfo.COMBAT_STYLE_ONE).setHidden(false);
+				client.getWidget(WidgetInfo.COMBAT_STYLE_TWO).setHidden(false);
+				client.getWidget(WidgetInfo.COMBAT_STYLE_THREE).setHidden(false);
+				client.getWidget(WidgetInfo.COMBAT_STYLE_FOUR).setHidden(false);
+			}
+
+		}
+		else
+		{
+			client.getWidget(WidgetInfo.COMBAT_STYLE_ONE).setHidden(false);
+			client.getWidget(WidgetInfo.COMBAT_STYLE_TWO).setHidden(false);
+			client.getWidget(WidgetInfo.COMBAT_STYLE_THREE).setHidden(false);
+			client.getWidget(WidgetInfo.COMBAT_STYLE_FOUR).setHidden(false);
+		}
+
+		if(config.prayerMetronome() && isAnyPrayerActive())
+		{
+			for(int i = 0; i < config.prayerMetronomeVolume(); i++)
+			{
+				client.playSoundEffect(SoundEffectID.GE_INCREMENT_PLOP);
 			}
 		}
 	}
@@ -259,12 +334,47 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() == ChatMessageType.SERVER
-			&& event.getMessage().startsWith("---- Wave:"))
+				&& event.getMessage().startsWith("---- Wave:"))
 		{
 			String[] message = event.getMessage().split(" ");
 			currentWave = Integer.parseInt(message[BA_WAVE_NUM_INDEX]);
 			wave_start = Instant.now();
 			healers.clear();
+		}
+	}
+
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		NPC npc = event.getNpc();
+
+		if (isNpcHealer(npc.getId()))
+		{
+			if (checkNewSpawn(npc) || Duration.between(wave_start, Instant.now()).getSeconds() < 16)
+			{
+				int spawnNumber = healers.size();
+				healers.put(npc, new Healer(npc, spawnNumber, currentWave));
+				log.info("spawn number: " + spawnNumber + " on wave " + currentWave);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
+	{
+		Actor actor = hitsplatApplied.getActor();
+
+		if (healers.isEmpty() && !(actor instanceof NPC) && lastInteracted == null)
+		{
+			return;
+		}
+
+		for (Healer healer : healers.values())
+		{
+			if (healer.getNpc() == actor && actor == lastInteracted)
+			{
+				healer.setFoodRemaining(healer.getFoodRemaining() - 1);
+			}
 		}
 	}
 
@@ -291,15 +401,15 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	public static boolean isNpcHealer(int npcId)
 	{
 		return npcId == NpcID.PENANCE_HEALER ||
-			npcId == NpcID.PENANCE_HEALER_5766 ||
-			npcId == NpcID.PENANCE_HEALER_5767 ||
-			npcId == NpcID.PENANCE_HEALER_5768 ||
-			npcId == NpcID.PENANCE_HEALER_5769 ||
-			npcId == NpcID.PENANCE_HEALER_5770 ||
-			npcId == NpcID.PENANCE_HEALER_5771 ||
-			npcId == NpcID.PENANCE_HEALER_5772 ||
-			npcId == NpcID.PENANCE_HEALER_5773 ||
-			npcId == NpcID.PENANCE_HEALER_5774;
+				npcId == NpcID.PENANCE_HEALER_5766 ||
+				npcId == NpcID.PENANCE_HEALER_5767 ||
+				npcId == NpcID.PENANCE_HEALER_5768 ||
+				npcId == NpcID.PENANCE_HEALER_5769 ||
+				npcId == NpcID.PENANCE_HEALER_5770 ||
+				npcId == NpcID.PENANCE_HEALER_5771 ||
+				npcId == NpcID.PENANCE_HEALER_5772 ||
+				npcId == NpcID.PENANCE_HEALER_5773 ||
+				npcId == NpcID.PENANCE_HEALER_5774;
 	}
 
 	@Subscribe
@@ -346,6 +456,29 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 			swap("quick-start", option, target, true);
 		}
 
+		if (inGameBit == 1 && config.healerMenuOption() && event.getTarget().contains("Penance Healer"))
+		{
+
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+			String targett = lastEntry.getTarget();
+
+			if (foodPressed.containsKey(lastEntry.getIdentifier()))
+			{
+				lastEntry.setTarget(lastEntry.getTarget().split("\\(")[0] + "(" + Duration.between(foodPressed.get(lastEntry.getIdentifier()), Instant.now()).getSeconds() + ")");
+				if (Duration.between(foodPressed.get(lastEntry.getIdentifier()), Instant.now()).getSeconds() > 20)
+				{
+					lastEntry.setTarget(lastEntry.getTarget().replace("<col=ffff00>", "<col=2bff63>"));
+				}
+			}
+			else
+			{
+				lastEntry.setTarget(targett.replace("<col=ffff00>", "<col=2bff63>"));
+
+			}
+
+			client.setMenuEntries(menuEntries);
+		}
 
 		if (client.getWidget(WidgetInfo.BA_COLL_LISTEN_TEXT) != null && inGameBit == 1 && config.eggBoi() && event.getTarget().endsWith("egg") && shiftDown)
 		{
@@ -361,12 +494,16 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 				{
 					correctEgg = entry;
 				}
+				else if (!entry.getOption().startsWith("Take"))
+				{
+					entries.add(entry);
+				}
 			}
 			if (correctEgg != null)
 			{
 				entries.add(correctEgg);
-				client.setMenuEntries(entries.toArray(new MenuEntry[entries.size()]));
 			}
+			client.setMenuEntries(entries.toArray(new MenuEntry[entries.size()]));
 		}
 
 		if (client.getWidget(WidgetInfo.BA_HEAL_LISTEN_TEXT) != null && inGameBit == 1 && config.osHelp() && event.getTarget().equals("<col=ffff>Healer item machine") && shiftDown)
@@ -395,6 +532,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 				client.setMenuEntries(entries.toArray(new MenuEntry[entries.size()]));
 			}
 		}
+
 	}
 
 	@Subscribe
@@ -409,8 +547,8 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 		String target = event.getMenuTarget();
 
 		if ((currentCall.equals("Pois. Worms") && (target.contains("Poisoned worms") && target.contains("->") && target.contains("Penance Healer")))
-			|| (currentCall.equals("Pois. Meat") && (target.contains("Poisoned meat") && target.contains("->") && target.contains("Penance Healer")))
-			|| (currentCall.equals("Pois. Tofu") && (target.contains("Poisoned tofu") && target.contains("->") && target.contains("Penance Healer"))))
+				|| (currentCall.equals("Pois. Meat") && (target.contains("Poisoned meat") && target.contains("->") && target.contains("Penance Healer")))
+				|| (currentCall.equals("Pois. Tofu") && (target.contains("Poisoned tofu") && target.contains("->") && target.contains("Penance Healer"))))
 		{
 			foodPressed.put(event.getId(), Instant.now());
 		}
@@ -429,7 +567,6 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 			client.setInventoryDragDelay(config.antiDragDelay());
 		}
 	}
-
 
 	private void addCounter()
 	{
@@ -528,9 +665,9 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 
 		// world point of the tile marker
 		WorldPoint worldPoint = new WorldPoint(
-			((regionId >>> 8) << 6) + regionX,
-			((regionId & 0xff) << 6) + regionY,
-			z
+				((regionId >>> 8) << 6) + regionX,
+				((regionId & 0xff) << 6) + regionY,
+				z
 		);
 
 		int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
@@ -543,11 +680,11 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 				int templateChunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
 				int templateChunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
 				if (worldPoint.getX() >= templateChunkX && worldPoint.getX() < templateChunkX + CHUNK_SIZE
-					&& worldPoint.getY() >= templateChunkY && worldPoint.getY() < templateChunkY + CHUNK_SIZE)
+						&& worldPoint.getY() >= templateChunkY && worldPoint.getY() < templateChunkY + CHUNK_SIZE)
 				{
 					WorldPoint p = new WorldPoint(client.getBaseX() + x * CHUNK_SIZE + (worldPoint.getX() & (CHUNK_SIZE - 1)),
-						client.getBaseY() + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
-						worldPoint.getPlane());
+							client.getBaseY() + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
+							worldPoint.getPlane());
 					p = rotate(p, rotation);
 					if (p.distanceTo(npc.getWorldLocation()) < 5)
 					{
@@ -580,5 +717,18 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 		{
 			shiftDown = false;
 		}
+	}
+
+	private boolean isAnyPrayerActive()
+	{
+		for (Prayer pray : Prayer.values())//Check if any prayers are active
+		{
+			if (client.isPrayerActive(pray))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
