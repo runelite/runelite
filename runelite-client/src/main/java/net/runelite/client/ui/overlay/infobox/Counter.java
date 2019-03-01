@@ -47,7 +47,7 @@ public class Counter extends InfoBox
 	@Override
 	public String getText()
 	{
-		return Integer.toString(count);
+		return Integer.toString(getCount());
 	}
 
 	@Override

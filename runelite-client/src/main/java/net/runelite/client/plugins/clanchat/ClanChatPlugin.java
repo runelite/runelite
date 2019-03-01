@@ -27,6 +27,7 @@ package net.runelite.client.plugins.clanchat;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -34,19 +35,27 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Player;
+import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.PlayerDespawned;
+import net.runelite.api.events.PlayerSpawned;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ClanManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -69,7 +78,18 @@ public class ClanChatPlugin extends Plugin
 	@Inject
 	private ClanChatConfig config;
 
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private SpriteManager spriteManager;
+
+	@Inject
+	private ClientThread clientThread;
+
 	private List<String> chats = new ArrayList<>();
+	private List<Player> clanMembers = new ArrayList<>();
+	private ClanChatIndicator clanMemberCounter;
 
 	@Provides
 	ClanChatConfig getConfig(ConfigManager configManager)
@@ -86,15 +106,29 @@ public class ClanChatPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
+		clanMembers.clear();
+		removeClanCounter();
 		resetClanChats();
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
-		if (configChanged.getGroup().equals("clanchat") && !config.recentChats())
+		if (configChanged.getGroup().equals("clanchat"))
 		{
-			resetClanChats();
+			if (!config.recentChats())
+			{
+				resetClanChats();
+			}
+
+			if (config.showClanCounter())
+			{
+				clientThread.invoke(this::addClanCounter);
+			}
+			else
+			{
+				removeClanCounter();
+			}
 		}
 	}
 
@@ -147,8 +181,51 @@ public class ClanChatPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged state)
+	{
+		if (state.getGameState() == GameState.LOADING)
+		{
+			clanMembers.clear();
+			removeClanCounter();
+		}
+	}
+
+	@Subscribe
+	public void onPlayerSpawned(PlayerSpawned event)
+	{
+		if (event.getPlayer().isClanMember())
+		{
+			clanMembers.add(event.getPlayer());
+
+			if (clanMemberCounter == null)
+			{
+				addClanCounter();
+			}
+		}
+	}
+
+	@Subscribe
+	public void onPlayerDespawned(PlayerDespawned event)
+	{
+		if (clanMembers.remove(event.getPlayer()) && clanMembers.isEmpty())
+		{
+			removeClanCounter();
+		}
+	}
+
+	int getClanAmount()
+	{
+		return clanMembers.size();
+	}
+
 	private void insertClanRankIcon(final ChatMessage message)
 	{
+		if (!config.clanChatIcons())
+		{
+			return;
+		}
+
 		final ClanMemberRank rank = clanManager.getRank(message.getName());
 
 		if (rank != null && rank != ClanMemberRank.UNRANKED)
@@ -222,5 +299,23 @@ public class ClanChatPlugin extends Plugin
 		}
 
 		config.chatsData(Text.toCSV(chats));
+	}
+
+	private void removeClanCounter()
+	{
+		infoBoxManager.removeInfoBox(clanMemberCounter);
+		clanMemberCounter = null;
+	}
+
+	private void addClanCounter()
+	{
+		if (!config.showClanCounter() || clanMemberCounter != null )
+		{
+			return;
+		}
+
+		final BufferedImage image = spriteManager.getSprite(SpriteID.TAB_CLAN_CHAT, 0);
+		clanMemberCounter = new ClanChatIndicator(image, this);
+		infoBoxManager.addInfoBox(clanMemberCounter);
 	}
 }
