@@ -729,6 +729,20 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
+	public String getClanOwner()
+	{
+		return getClanMemberManager().getClanOwner();
+	}
+
+	@Inject
+	@Override
+	public String getClanChatName()
+	{
+		return getClanMemberManager().getClanChatName();
+	}
+
+	@Inject
+	@Override
 	public Friend[] getFriends()
 	{
 		final RSFriendManager friendManager = getFriendManager();

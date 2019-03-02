@@ -24,7 +24,13 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.mapping.Import;
+
 public interface RSClanMemberManager extends RSNameableContainer<RSClanMember>
 {
+	@Import("clanOwner")
+	String getClanOwner();
 
+	@Import("clanChatName")
+	String getClanChatName();
 }
