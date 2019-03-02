@@ -22,19 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.client.events;
 
 import lombok.Data;
 
 /**
- * An event where a new RuneLite account session has been opened
- * with the server.
+ * An event where a new RuneLite account session has been closed,
+ * typically when logging out of the account.
  * <p>
  * Note: This event is not to be confused with a RuneScape session,
- * it has nothing to do with whether an account is being logged in.
+ * it has nothing to do with whether an account is being logged out.
  */
 @Data
-public class SessionOpen
+public class SessionClose
 {
 
 }
