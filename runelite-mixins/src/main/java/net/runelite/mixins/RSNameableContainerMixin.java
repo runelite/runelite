@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +23,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.mixins;
 
-import net.runelite.mapping.Import;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSName;
+import net.runelite.rs.api.RSNameable;
+import net.runelite.rs.api.RSNameableContainer;
 
-public interface RSNameableContainer<T extends RSNameable>
+@Mixin(RSNameableContainer.class)
+public abstract class RSNameableContainerMixin implements RSNameableContainer
 {
-	@Import("count")
-	int getCount();
-
-	@Import("nameables")
-	T[] getNameables();
-
-	@Import("isMember")
-	boolean isMember(RSName var1);
-
 	/**
-	 * Method called by the container when an element is added
+	 * Default implementation of rl$add
 	 * @param name
 	 * @param prevName
 	 */
-	void rl$add(RSName name, RSName prevName);
+	@Inject
+	@Override
+	public void rl$add(RSName name, RSName prevName)
+	{
+	}
 
 	/**
-	 * Method called by the container when an element is removed
+	 * Default implementation of rl$del
 	 * @param nameable
 	 */
-	void rl$remove(RSNameable nameable);
+	@Inject
+	@Override
+	public void rl$remove(RSNameable nameable)
+	{
+	}
+
+	@Inject
+	@MethodHook(value = "add", end = true)
+	public void add(RSName name, RSName prevName)
+	{
+		rl$add(name, prevName);
+	}
+
+	@Inject
+	@MethodHook("remove")
+	public void remove(RSNameable nameable)
+	{
+		rl$remove(nameable);
+	}
 }

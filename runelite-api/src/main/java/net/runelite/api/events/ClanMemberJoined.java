@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api.events;
 
-import net.runelite.mapping.Import;
+import lombok.Value;
 
-public interface RSNameableContainer<T extends RSNameable>
+@Value
+public class ClanMemberJoined
 {
-	@Import("count")
-	int getCount();
-
-	@Import("nameables")
-	T[] getNameables();
-
-	@Import("isMember")
-	boolean isMember(RSName var1);
-
 	/**
-	 * Method called by the container when an element is added
-	 * @param name
-	 * @param prevName
+	 * Name of the player who joined
 	 */
-	void rl$add(RSName name, RSName prevName);
-
-	/**
-	 * Method called by the container when an element is removed
-	 * @param nameable
-	 */
-	void rl$remove(RSNameable nameable);
+	private String name;
 }
