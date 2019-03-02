@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.agility;
 
 import java.time.Instant;
+import java.util.Arrays;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -45,22 +46,33 @@ class AgilitySession
 		this.course = course;
 	}
 
-	void incrementLapCount(Client client)
+	void calculateLapsTillLevel(Client client, int skillGained)
 	{
-		lastLapCompleted = Instant.now();
-		++totalLaps;
-
 		int currentExp = client.getSkillExperience(Skill.AGILITY);
 		int nextLevel = client.getRealSkillLevel(Skill.AGILITY) + 1;
 
 		int remainingXp;
-		do
-		{
+		do {
 			remainingXp = nextLevel <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(nextLevel) - currentExp : 0;
 			nextLevel++;
 		} while (remainingXp < 0);
 
 		lapsTillLevel = remainingXp > 0 ? (int) Math.ceil(remainingXp / course.getTotalXp()) : 0;
+
+		// Identify if this exp gain was due to a completed lap or an intermediate obstacle
+		if (!(course.getCourseEndWorldPoints().length == 0
+				? Math.abs(course.getLastObstacleXp() - skillGained) > 1
+				: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
+		{
+			incrementLapCount();
+		}
+		return;
+	}
+
+	void incrementLapCount()
+	{
+		lastLapCompleted = Instant.now();
+		++totalLaps;
 	}
 
 	void resetLapCount()
