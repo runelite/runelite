@@ -24,7 +24,7 @@
  */
 package net.runelite.rs.api;
 
-public interface RSClanMemberManager extends RSNameableContainer
+public interface RSClanMemberManager extends RSNameableContainer<RSClanMember>
 {
 
 }

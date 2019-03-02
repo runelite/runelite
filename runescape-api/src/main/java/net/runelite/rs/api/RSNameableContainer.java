@@ -26,13 +26,13 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
-public interface RSNameableContainer
+public interface RSNameableContainer<T extends RSNameable>
 {
 	@Import("count")
 	int getCount();
 
 	@Import("nameables")
-	RSNameable[] getNameables();
+	T[] getNameables();
 
 	@Import("isMember")
 	boolean isMember(RSName var1);
