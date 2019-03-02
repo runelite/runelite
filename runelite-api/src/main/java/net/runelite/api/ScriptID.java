@@ -46,6 +46,11 @@ public final class ScriptID
 	public static final int CHATBOX_INPUT = 96;
 
 	/**
+	 * Rebuilds the chatbox
+	 */
+	public static final int BUILD_CHATBOX = 216;
+
+	/**
 	 * Opens the Private Message chat interface
 	 *
 	 * Jagex refers to this script as {@code meslayer_mode6}
