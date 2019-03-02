@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, TheLonelyDev <https://github.com/TheLonelyDev>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,43 +24,22 @@
  */
 package net.runelite.client.plugins.groundmarkers;
 
-import java.awt.event.KeyEvent;
-import javax.inject.Inject;
-import net.runelite.client.input.KeyListener;
+import java.awt.Color;
+import lombok.Value;
+import net.runelite.api.coords.WorldPoint;
 
-public class GroundMarkerInputListener implements KeyListener
+/**
+ * Used to denote marked tiles and their colors.
+ * Note: This is not used for serialization of ground markers; see {@link GroundMarkerPoint}
+ */
+@Value
+class ColorTileMarker
 {
-	private static final int HOTKEY = KeyEvent.VK_SHIFT;
+	private WorldPoint worldPoint;
+	private Color color;
 
-	private final GroundMarkerPlugin plugin;
-
-	@Inject
-	private GroundMarkerInputListener(GroundMarkerPlugin plugin)
+	boolean sameTile(final ColorTileMarker other)
 	{
-		this.plugin = plugin;
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == HOTKEY)
-		{
-			plugin.setHotKeyPressed(true);
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (e.getKeyCode() == HOTKEY)
-		{
-			plugin.setHotKeyPressed(false);
-		}
+		return worldPoint.equals(other.getWorldPoint());
 	}
 }
