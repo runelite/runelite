@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Shaun Dreclin <https://github.com/ShaunDreclin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,15 +24,13 @@
  */
 package net.runelite.api;
 
-public interface EnumComposition
+/**
+ * Utility class used for mapping enum IDs.
+ * <p>
+ * Note: This class is not complete and may be missing mapped IDs.
+ */
+public final class EnumID
 {
-	int[] getKeys();
-
-	int[] getIntVals();
-
-	String[] getStringVals();
-
-	int getIntValue(int key);
-
-	String getStringValue(int key);
+	public static final int MUSIC_TRACK_NAMES = 812;
+	public static final int MUSIC_TRACK_IDS = 819;
 }

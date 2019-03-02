@@ -30,6 +30,7 @@ import net.runelite.mapping.Import;
 public interface RSEnum extends EnumComposition, RSCacheableNode
 {
 	@Import("keys")
+	@Override
 	int[] getKeys();
 
 	@Import("intVals")
