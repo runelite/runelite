@@ -39,6 +39,7 @@ import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -197,11 +198,7 @@ public class ClanChatPlugin extends Plugin
 		if (event.getPlayer().isClanMember())
 		{
 			clanMembers.add(event.getPlayer());
-
-			if (clanMemberCounter == null)
-			{
-				addClanCounter();
-			}
+			addClanCounter();
 		}
 	}
 
@@ -210,6 +207,31 @@ public class ClanChatPlugin extends Plugin
 	{
 		if (clanMembers.remove(event.getPlayer()) && clanMembers.isEmpty())
 		{
+			removeClanCounter();
+		}
+	}
+
+	@Subscribe
+	public void onClanChanged(ClanChanged event)
+	{
+		if (event.isJoined())
+		{
+			clientThread.invokeLater(() ->
+			{
+				for (Player player : client.getPlayers())
+				{
+					if (player.isClanMember() && !clanMembers.contains(player))
+					{
+						clanMembers.add(player);
+					}
+				}
+
+				addClanCounter();
+			});
+		}
+		else
+		{
+			clanMembers.clear();
 			removeClanCounter();
 		}
 	}
@@ -309,7 +331,7 @@ public class ClanChatPlugin extends Plugin
 
 	private void addClanCounter()
 	{
-		if (!config.showClanCounter() || clanMemberCounter != null )
+		if (!config.showClanCounter() || clanMemberCounter != null || clanMembers.isEmpty())
 		{
 			return;
 		}
