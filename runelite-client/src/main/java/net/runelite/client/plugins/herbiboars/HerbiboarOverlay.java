@@ -29,9 +29,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
-import java.util.Map;
 import java.util.Set;
-import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -68,7 +66,7 @@ class HerbiboarOverlay extends Overlay
 		// Draw start objects
 		if (config.isStartShown() && (currentTrail == null && finishId == 0))
 		{
-			plugin.getStarts().keySet().forEach((obj) ->
+			plugin.getStarts().values().forEach((obj) ->
 			{
 				OverlayUtil.renderTileOverlay(graphics, obj, "", config.getStartColor());
 			});
@@ -78,7 +76,7 @@ class HerbiboarOverlay extends Overlay
 		if (config.isTrailShown())
 		{
 			Set<Integer> shownTrailIds = plugin.getShownTrails();
-			plugin.getTrails().keySet().forEach((x) ->
+			plugin.getTrails().values().forEach((x) ->
 			{
 				int id = x.getId();
 				if (shownTrailIds.contains(id) && (finishId > 0 || (currentTrail != null && currentTrail.getTrailId() != id && currentTrail.getTrailId() + 1 != id)))
@@ -92,61 +90,60 @@ class HerbiboarOverlay extends Overlay
 		if (config.isObjectShown() && currentTrail != null)
 		{
 			int currentPath = plugin.getCurrentPath();
-			plugin.getTrailObjects().keySet().forEach((obj) ->
+			WorldPoint[] trailLocs = currentTrail.getObjectLocs(currentPath);
+			for (WorldPoint trailLoc : trailLocs)
 			{
-				WorldPoint loc = obj.getWorldLocation();
-				WorldPoint[] trailLocs = currentTrail.getObjectLocs(currentPath);
-				for (WorldPoint trailLoc : trailLocs)
+				if (trailLoc == null)
 				{
-					if (trailLoc == null)
-					{
-						continue;
-					}
+					continue;
+				}
 
-					if (trailLoc.equals(loc))
+				TileObject object = plugin.getTrailObjects().get(trailLoc);
+				if (object != null)
+				{
+					if (config.showClickBoxes())
 					{
-						if (config.showClickBoxes())
+						Area clickbox = object.getClickbox();
+						if (clickbox != null)
 						{
-							Area clickbox = obj.getClickbox();
 							graphics.setColor(config.getObjectColor());
 							graphics.draw(clickbox);
 							graphics.setColor(new Color(255, 0, 255, 20));
 							graphics.fill(clickbox);
 						}
-						else
-						{
-							OverlayUtil.renderTileOverlay(graphics, obj, "", config.getObjectColor());
-						}
+					}
+					else
+					{
+						OverlayUtil.renderTileOverlay(graphics, object, "", config.getObjectColor());
 					}
 				}
-			});
+			}
 		}
 
 		// Draw finish tunnels
 		if (config.isTunnelShown() && finishId > 0)
 		{
 			WorldPoint finishLoc = plugin.getEndLocations().get(finishId - 1);
-			Map<TileObject, Tile> tunnels = plugin.getTunnels();
-			tunnels.keySet().forEach((obj) ->
+			TileObject object = plugin.getTunnels().get(finishLoc);
+			if (object != null)
 			{
-				WorldPoint loc = obj.getWorldLocation();
-				if (finishLoc.equals(loc))
+				if (config.showClickBoxes())
 				{
-					if (config.showClickBoxes())
+					Area clickbox = object.getClickbox();
+					if (clickbox != null)
 					{
-						Area clickbox = obj.getClickbox();
 						Color col = config.getObjectColor();
 						graphics.setColor(col);
 						graphics.draw(clickbox);
 						graphics.setColor(new Color(col.getRed(), col.getGreen(), col.getBlue(), 20));
 						graphics.fill(clickbox);
 					}
-					else
-					{
-						OverlayUtil.renderTileOverlay(graphics, obj, "", config.getTunnelColor());
-					}
 				}
-			});
+				else
+				{
+					OverlayUtil.renderTileOverlay(graphics, object, "", config.getTunnelColor());
+				}
+			}
 		}
 
 		return null;

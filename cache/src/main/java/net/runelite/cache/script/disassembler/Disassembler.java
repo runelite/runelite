@@ -218,11 +218,13 @@ public class Disassembler
 
 	private void writerHeader(StringBuilder writer, ScriptDefinition script)
 	{
+		int id = script.getId();
 		int intStackCount = script.getIntStackCount();
 		int stringStackCount = script.getStringStackCount();
 		int localIntCount = script.getLocalIntCount();
 		int localStringCount = script.getLocalStringCount();
 
+		writer.append(".id                 ").append(id).append('\n');
 		writer.append(".int_stack_count    ").append(intStackCount).append('\n');
 		writer.append(".string_stack_count ").append(stringStackCount).append('\n');
 		writer.append(".int_var_count      ").append(localIntCount).append('\n');

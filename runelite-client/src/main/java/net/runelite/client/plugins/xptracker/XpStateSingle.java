@@ -25,8 +25,11 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
@@ -36,6 +39,7 @@ import net.runelite.api.Skill;
 class XpStateSingle
 {
 	private final Skill skill;
+	private final Map<XpActionType, XpAction> actions = new HashMap<>();
 
 	@Getter
 	private final int startXp;
@@ -43,13 +47,18 @@ class XpStateSingle
 	@Getter
 	private int xpGained = 0;
 
+	@Setter
+	private XpActionType actionType = XpActionType.EXPERIENCE;
+
 	private long skillTime = 0;
-	private int actions = 0;
 	private int startLevelExp = 0;
 	private int endLevelExp = 0;
-	private boolean actionsHistoryInitialized = false;
-	private int[] actionExps = new int[10];
-	private int actionExpIndex = 0;
+
+	XpAction getXpAction(final XpActionType type)
+	{
+		actions.putIfAbsent(type, new XpAction());
+		return actions.get(type);
+	}
 
 	private int getCurrentXp()
 	{
@@ -58,26 +67,16 @@ class XpStateSingle
 
 	private int getActionsHr()
 	{
-		return toHourly(actions);
+		return toHourly(getXpAction(actionType).getActions());
 	}
 
 	private int toHourly(int value)
 	{
-		if (skillTime == 0)
-		{
-			return 0;
-		}
-
 		return (int) ((1.0 / (getTimeElapsedInSeconds() / 3600.0)) * value);
 	}
 
 	private long getTimeElapsedInSeconds()
 	{
-		if (skillTime == 0)
-		{
-			return 0;
-		}
-
 		// If the skill started just now, we can divide by near zero, this results in odd behavior.
 		// To prevent that, pretend the skill has been active for a minute (60 seconds)
 		// This will create a lower estimate for the first minute,
@@ -92,12 +91,14 @@ class XpStateSingle
 
 	private int getActionsRemaining()
 	{
-		if (actionsHistoryInitialized)
+		final XpAction action = getXpAction(actionType);
+
+		if (action.isActionsHistoryInitialized())
 		{
-			long xpRemaining = getXpRemaining() * actionExps.length;
+			long xpRemaining = getXpRemaining() * action.getActionExps().length;
 			long totalActionXp = 0;
 
-			for (int actionXp : actionExps)
+			for (int actionXp : action.getActionExps())
 			{
 				totalActionXp += actionXp;
 			}
@@ -186,23 +187,27 @@ class XpStateSingle
 			return false;
 		}
 
-		if (actionsHistoryInitialized)
+		// Update EXPERIENCE action
+		final XpAction action = getXpAction(XpActionType.EXPERIENCE);
+
+		if (action.isActionsHistoryInitialized())
 		{
-			actionExps[actionExpIndex] = actionExp;
+			action.getActionExps()[action.getActionExpIndex()] = actionExp;
 		}
 		else
 		{
-			// So we have a decent average off the bat, lets populate all values with what we see.
-			for (int i = 0; i < actionExps.length; i++)
+			// populate all values in our action history array with this first value that we see
+			// so the average value of our action history starts out as this first value we see
+			for (int i = 0; i < action.getActionExps().length; i++)
 			{
-				actionExps[i] = actionExp;
+				action.getActionExps()[i] = actionExp;
 			}
 
-			actionsHistoryInitialized = true;
+			action.setActionsHistoryInitialized(true);
 		}
 
-		actionExpIndex = (actionExpIndex + 1) % actionExps.length;
-		actions++;
+		action.setActionExpIndex((action.getActionExpIndex() + 1) % action.getActionExps().length);
+		action.setActions(action.getActions() + 1);
 
 		// Calculate experience gained
 		xpGained = currentXp - startXp;
@@ -251,7 +256,8 @@ class XpStateSingle
 			.xpRemainingToGoal(getXpRemaining())
 			.xpPerHour(getXpHr())
 			.skillProgressToGoal(getSkillProgress())
-			.actionsInSession(actions)
+			.actionType(actionType)
+			.actionsInSession(getXpAction(actionType).getActions())
 			.actionsRemainingToGoal(getActionsRemaining())
 			.actionsPerHour(getActionsHr())
 			.timeTillGoal(getTimeTillLevel())

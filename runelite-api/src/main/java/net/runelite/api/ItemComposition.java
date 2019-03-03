@@ -105,9 +105,7 @@ public interface ItemComposition
 	boolean isStackable();
 
 	/**
-	 * Returns whether or not the item can be traded to other players.
-	 *
-	 * @return true if tradeable, false otherwise
+	 * Returns whether or not the item can be sold on the grand exchange.
 	 */
 	boolean isTradeable();
 

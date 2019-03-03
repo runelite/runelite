@@ -1,0 +1,12 @@
+datasource:
+  runelite:
+    jndiName: java:comp/env/jdbc/runelite
+  runelite-cache:
+    jndiName: java:comp/env/jdbc/runelite-cache2
+  runelite-tracker:
+    jndiName: java:comp/env/jdbc/runelite-tracker
+# By default Spring tries to register the datasource as an MXBean,
+# so if multiple apis are delpoyed on one web container with
+# shared datasource it tries to register it multiples times and
+# fails when starting the 2nd api
+spring.jmx.enabled: false

@@ -24,8 +24,6 @@
  */
 package net.runelite.client.game;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.util.function.Consumer;
@@ -34,6 +32,8 @@ import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 
 @Singleton
 public class ChatboxInputManager
@@ -98,14 +98,14 @@ public class ChatboxInputManager
 		}
 		this.open = false;
 		clientThread.invoke(() -> client.runScript(
-			ScriptID.CLOSE_CHATBOX_INPUT,
+			ScriptID.RESET_CHATBOX_INPUT,
 			1,
 			1
 		));
 	}
 
 	@Subscribe
-	public void scriptCallback(ScriptCallbackEvent ev)
+	public void onScriptCallbackEvent(ScriptCallbackEvent ev)
 	{
 		// This replaces script 74 and most of 112
 		if ("chatboxInputHandler".equals(ev.getEventName()))
@@ -126,7 +126,7 @@ public class ChatboxInputManager
 					isDone = true;
 					break;
 				case '\b':
-					if (str.length() > 0)
+					if (!str.isEmpty())
 					{
 						str = str.substring(0, str.length() - 1);
 					}

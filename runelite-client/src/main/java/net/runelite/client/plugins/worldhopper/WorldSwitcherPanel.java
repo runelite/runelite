@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -49,12 +48,14 @@ class WorldSwitcherPanel extends PluginPanel
 
 	private static final int WORLD_COLUMN_WIDTH = 60;
 	private static final int PLAYERS_COLUMN_WIDTH = 40;
+	private static final int PING_COLUMN_WIDTH = 47;
 
 	private final JPanel listContainer = new JPanel();
 
 	private WorldTableHeader worldHeader;
 	private WorldTableHeader playersHeader;
 	private WorldTableHeader activityHeader;
+	private WorldTableHeader pingHeader;
 
 	private WorldOrder orderIndex = WorldOrder.WORLD;
 	private boolean ascendingOrder = true;
@@ -112,12 +113,48 @@ class WorldSwitcherPanel extends PluginPanel
 		}
 	}
 
+	void updatePing(int world, int ping)
+	{
+		for (WorldTableRow worldTableRow : rows)
+		{
+			if (worldTableRow.getWorld().getId() == world)
+			{
+				worldTableRow.setPing(ping);
+
+				// If the panel is sorted by ping, re-sort it
+				if (orderIndex == WorldOrder.PING)
+				{
+					updateList();
+				}
+				break;
+			}
+		}
+	}
+
+	void hidePing()
+	{
+		for (WorldTableRow worldTableRow : rows)
+		{
+			worldTableRow.hidePing();
+		}
+	}
+
+	void showPing()
+	{
+		for (WorldTableRow worldTableRow : rows)
+		{
+			worldTableRow.showPing();
+		}
+	}
+
 	void updateList()
 	{
 		rows.sort((r1, r2) ->
 		{
 			switch (orderIndex)
 			{
+				case PING:
+					return Integer.compare(r1.getPing(), r2.getPing()) * (ascendingOrder ? 1 : -1);
 				case WORLD:
 					return Integer.compare(r1.getWorld().getId(), r2.getWorld().getId()) * (ascendingOrder ? 1 : -1);
 				case PLAYERS:
@@ -126,7 +163,6 @@ class WorldSwitcherPanel extends PluginPanel
 					return r1.getWorld().getActivity().compareTo(r2.getWorld().getActivity()) * -1 * (ascendingOrder ? 1 : -1);
 				default:
 					return 0;
-
 			}
 		});
 
@@ -191,12 +227,16 @@ class WorldSwitcherPanel extends PluginPanel
 
 	private void orderBy(WorldOrder order)
 	{
+		pingHeader.highlight(false, ascendingOrder);
 		worldHeader.highlight(false, ascendingOrder);
 		playersHeader.highlight(false, ascendingOrder);
 		activityHeader.highlight(false, ascendingOrder);
 
 		switch (order)
 		{
+			case PING:
+				pingHeader.highlight(true, ascendingOrder);
+				break;
 			case WORLD:
 				worldHeader.highlight(true, ascendingOrder);
 				break;
@@ -219,6 +259,23 @@ class WorldSwitcherPanel extends PluginPanel
 	{
 		JPanel header = new JPanel(new BorderLayout());
 		JPanel leftSide = new JPanel(new BorderLayout());
+		JPanel rightSide = new JPanel(new BorderLayout());
+
+		pingHeader = new WorldTableHeader("Ping", orderIndex == WorldOrder.PING, ascendingOrder, plugin::refresh);
+		pingHeader.setPreferredSize(new Dimension(PING_COLUMN_WIDTH, 0));
+		pingHeader.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				if (SwingUtilities.isRightMouseButton(mouseEvent))
+				{
+					return;
+				}
+				ascendingOrder = orderIndex != WorldOrder.PING || !ascendingOrder;
+				orderBy(WorldOrder.PING);
+			}
+		});
 
 		worldHeader = new WorldTableHeader("World", orderIndex == WorldOrder.WORLD, ascendingOrder, plugin::refresh);
 		worldHeader.setPreferredSize(new Dimension(WORLD_COLUMN_WIDTH, 0));
@@ -253,7 +310,6 @@ class WorldSwitcherPanel extends PluginPanel
 		});
 
 		activityHeader = new WorldTableHeader("Activity", orderIndex == WorldOrder.ACTIVITY, ascendingOrder, plugin::refresh);
-		activityHeader.setBorder(new EmptyBorder(3, 5, 3, 5));
 		activityHeader.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -269,10 +325,13 @@ class WorldSwitcherPanel extends PluginPanel
 		});
 
 		leftSide.add(worldHeader, BorderLayout.WEST);
-		leftSide.add(playersHeader, BorderLayout.EAST);
+		leftSide.add(playersHeader, BorderLayout.CENTER);
+
+		rightSide.add(activityHeader, BorderLayout.CENTER);
+		rightSide.add(pingHeader, BorderLayout.EAST);
 
 		header.add(leftSide, BorderLayout.WEST);
-		header.add(activityHeader, BorderLayout.CENTER);
+		header.add(rightSide, BorderLayout.CENTER);
 
 		return header;
 	}

@@ -43,6 +43,17 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "rememberTab",
+		name = "Remember last Tag Tab",
+		description = "Enable the ability to remember last Tag Tab when closing/opening the bank.",
+		position = 2
+	)
+	default boolean rememberTab()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "position",
 		name = "",
 		description = "",
@@ -59,4 +70,22 @@ public interface BankTagsConfig extends Config
 		description = ""
 	)
 	void position(int idx);
+
+	@ConfigItem(
+		keyName = "tab",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String tab()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "tab",
+		name = "",
+		description = ""
+	)
+	void tab(String tab);
 }

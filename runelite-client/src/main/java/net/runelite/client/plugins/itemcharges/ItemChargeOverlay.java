@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -39,12 +38,7 @@ import net.runelite.api.queries.EquipmentItemQuery;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.FUNGICIDE_SPRAY;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.BELLOWS;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -88,7 +82,7 @@ class ItemChargeOverlay extends Overlay
 					continue;
 				}
 
-				charges = itemChargePlugin.getDodgyCharges();
+				charges = config.dodgyNecklace();
 			}
 			else
 			{
@@ -104,7 +98,8 @@ class ItemChargeOverlay extends Overlay
 					|| (type == IMPBOX && !config.showImpCharges())
 					|| (type == WATERCAN && !config.showWateringCanCharges())
 					|| (type == WATERSKIN && !config.showWaterskinCharges())
-					|| (type == BELLOWS && !config.showBellowCharges()))
+					|| (type == BELLOWS && !config.showBellowCharges())
+					|| (type == ABYSSAL_BRACELET && !config.showAbyssalBraceletCharges()))
 				{
 					continue;
 				}
@@ -116,7 +111,7 @@ class ItemChargeOverlay extends Overlay
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
 			textComponent.setText(charges < 0 ? "?" : String.valueOf(charges));
-			textComponent.setColor(getColor(charges));
+			textComponent.setColor(itemChargePlugin.getColor(charges));
 			textComponent.render(graphics);
 		}
 		return null;
@@ -141,24 +136,10 @@ class ItemChargeOverlay extends Overlay
 		return jewellery;
 	}
 
-	private Color getColor(int charges)
-	{
-		Color color = Color.WHITE;
-		if (charges <= config.veryLowWarning())
-		{
-			color = config.veryLowWarningColor();
-		}
-		else if (charges <= config.lowWarning())
-		{
-			color = config.lowWarningolor();
-		}
-		return color;
-	}
-
 	private boolean displayOverlay()
 	{
 		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
 			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
-			|| config.showBellowCharges();
+			|| config.showBellowCharges() || config.showAbyssalBraceletCharges();
 	}
 }

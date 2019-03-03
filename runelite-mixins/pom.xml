@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.4.22-SNAPSHOT</version>
+		<version>1.5.15-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>mixins</artifactId>
@@ -57,6 +57,19 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.10.19</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

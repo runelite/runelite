@@ -24,8 +24,10 @@
  */
 package net.runelite.cache.definitions;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+@Data
 public class ClientScript1Instruction
 {
 	@RequiredArgsConstructor

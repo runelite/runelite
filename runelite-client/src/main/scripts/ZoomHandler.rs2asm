@@ -17,6 +17,8 @@ LABEL5:
    invoke                 1046
    istore                 0
    load_int               128
+   load_string            "outerZoomLimit"
+   runelite_callback
    iload                  0
    invoke                 1045
    istore                 0
@@ -27,6 +29,8 @@ LABEL5:
    invoke                 1046
    istore                 1
    load_int               128
+   load_string            "outerZoomLimit"
+   runelite_callback
    iload                  1
    invoke                 1045
    istore                 1

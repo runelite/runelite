@@ -35,6 +35,12 @@ import lombok.Getter;
 public enum VarPlayer
 {
 	ATTACK_STYLE(43),
+	QUEST_POINTS(101),
+	IS_POISONED(102),
+	/**
+	 * Seems to start at 50(10 splash) and goes down by 1 every 30 seconds
+	 */
+	DISEASE_VALUE(456),
 
 	BANK_TAB(115),
 
@@ -46,6 +52,14 @@ public enum VarPlayer
 	IN_RAID_PARTY(1427),
 
 	NMZ_REWARD_POINTS(1060),
+
+	/**
+	 * -1 : Poison immune
+	 *  Normal poison damage is ceil( this / 5.0f )
+	 *  If this is greater than or equal to 1000000, the player is envenomed.
+	 *  Venom damage is (this - 999997) * 2
+	 */
+	POISON(102),
 
 	/**
 	 * 0 : not started
@@ -114,7 +128,36 @@ public enum VarPlayer
 	BIRD_HOUSE_MEADOW_NORTH(1626),
 	BIRD_HOUSE_MEADOW_SOUTH(1627),
 	BIRD_HOUSE_VALLEY_NORTH(1628),
-	BIRD_HOUSE_VALLEY_SOUTH(1629);
+	BIRD_HOUSE_VALLEY_SOUTH(1629),
+
+	/**
+	 * Slayer unlock bitfields
+	 */
+	SLAYER_UNLOCK_1(1076),
+	SLAYER_UNLOCK_2(1344),
+
+	/**
+	 * Music track unlock bitfields
+	 */
+	MUSIC_TRACKS_UNLOCKED_1(20),
+	MUSIC_TRACKS_UNLOCKED_2(21),
+	MUSIC_TRACKS_UNLOCKED_3(22),
+	MUSIC_TRACKS_UNLOCKED_4(23),
+	MUSIC_TRACKS_UNLOCKED_5(24),
+	MUSIC_TRACKS_UNLOCKED_6(25),
+	MUSIC_TRACKS_UNLOCKED_7(298),
+	MUSIC_TRACKS_UNLOCKED_8(311),
+	MUSIC_TRACKS_UNLOCKED_9(346),
+	MUSIC_TRACKS_UNLOCKED_10(414),
+	MUSIC_TRACKS_UNLOCKED_11(464),
+	MUSIC_TRACKS_UNLOCKED_12(598),
+	MUSIC_TRACKS_UNLOCKED_13(662),
+	MUSIC_TRACKS_UNLOCKED_14(721),
+	MUSIC_TRACKS_UNLOCKED_15(906),
+	MUSIC_TRACKS_UNLOCKED_16(1009),
+	MUSIC_TRACKS_UNLOCKED_17(1338),
+	MUSIC_TRACKS_UNLOCKED_18(1681),
+	MUSIC_TRACKS_UNLOCKED_19(2065);
 
 	private final int id;
 }

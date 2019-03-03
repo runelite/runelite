@@ -33,6 +33,7 @@ package net.runelite.api;
 public final class AnimationID
 {
 	public static final int IDLE = -1;
+	public static final int HERBLORE_PESTLE_AND_MORTAR = 364;
 	public static final int WOODCUTTING_BRONZE = 879;
 	public static final int WOODCUTTING_IRON = 877;
 	public static final int WOODCUTTING_STEEL = 875;
@@ -76,6 +77,7 @@ public final class AnimationID
 	public static final int GEM_CUTTING_EMERALD = 889;
 	public static final int GEM_CUTTING_RUBY = 887;
 	public static final int GEM_CUTTING_DIAMOND = 886;
+	public static final int GEM_CUTTING_AMETHYST = 6295;
 	public static final int CRAFTING_LEATHER = 1249;
 	public static final int CRAFTING_GLASSBLOWING = 884;
 	public static final int CRAFTING_SPINNING = 894;
@@ -118,9 +120,11 @@ public final class AnimationID
 	public static final int MINING_MOTHERLODE_INFERNAL = 4481;
 	public static final int MINING_MOTHERLODE_3A = 7282;
 	public static final int DENSE_ESSENCE_CHIPPING = 7201;
+	public static final int DENSE_ESSENCE_CHISELING = 7202;
 	public static final int HERBLORE_POTIONMAKING = 363; //used for both herb and secondary
 	public static final int MAGIC_CHARGING_ORBS = 726;
 	public static final int MAGIC_MAKE_TABLET = 4068;
+	public static final int MAGIC_ENCHANTING_JEWELRY = 931;
 	public static final int BURYING_BONES = 827;
 	public static final int USING_GILDED_ALTAR = 3705;
 	public static final int LOOKING_INTO = 832;
@@ -144,6 +148,8 @@ public final class AnimationID
 	public static final int COW_HOME_TELEPORT_6 = 1701;
 	public static final int CONSTRUCTION = 3676;
 	public static final int SAND_COLLECTION = 895;
+	public static final int PISCARILIUS_CRANE_REPAIR = 7199;
+	public static final int HOME_MAKE_TABLET = 4067;
 
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
@@ -158,6 +164,7 @@ public final class AnimationID
 	public static final int FARMING_CURE_WITH_POTION = 2288;
 	public static final int FARMING_PLANT_SEED = 2291;
 	public static final int FARMING_HARVEST_FLOWER = 2292;
+	public static final int FARMING_MIX_ULTRACOMPOST = 7699;
 
 	// Lunar spellbook
 	public static final int ENERGY_TRANSFER_VENGEANCE_OTHER = 4411;
@@ -181,4 +188,7 @@ public final class AnimationID
 	public static final int ROCKSLUG_DEATH = 1568;
 	public static final int ZYGOMITE_DEATH = 3327;
 	public static final int IMP_DEATH = 172;
+
+	// POH Animations
+	public static final int INCENSE_BURNER = 3687;
 }

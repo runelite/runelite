@@ -30,6 +30,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
@@ -37,6 +38,8 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
@@ -54,12 +57,14 @@ class CorpDamageOverlay extends Overlay
 	@Inject
 	private CorpDamageOverlay(Client client, CorpPlugin corpPlugin, CorpConfig config)
 	{
+		super(corpPlugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 		setPriority(OverlayPriority.LOW);
 		this.client = client;
 		this.corpPlugin = corpPlugin;
 		this.config = config;
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Corp overlay"));
 	}
 
 	@Override

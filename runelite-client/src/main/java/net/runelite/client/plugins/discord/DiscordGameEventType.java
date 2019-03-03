@@ -25,11 +25,15 @@
  */
 package net.runelite.client.plugins.discord;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 
 @AllArgsConstructor
 @Getter
@@ -70,6 +74,7 @@ enum DiscordGameEventType
 	BOSS_GENERAL_GRAARDOR("General Graardor", DiscordAreaType.BOSSES, 11347),
 	BOSS_GIANT_MOLE("Giant Mole", DiscordAreaType.BOSSES, 6993, 6992),
 	BOSS_GROTESQUE_GUARDIANS("Grotesque Guardians", DiscordAreaType.BOSSES, 6727),
+	BOSS_HYDRA("Alchemical Hydra", DiscordAreaType.BOSSES, 5536),
 	BOSS_KQ("Kalphite Queen", DiscordAreaType.BOSSES, 13972),
 	BOSS_KRAKEN("Kraken", DiscordAreaType.BOSSES, 9116),
 	BOSS_KREEARRA("Kree'arra", DiscordAreaType.BOSSES, 11346),
@@ -115,6 +120,7 @@ enum DiscordGameEventType
 	CITY_MOS_LE_HARMLESS("Mos Le'Harmless" , DiscordAreaType.CITIES, 14638),
 	CITY_MORTTON("Mort'ton" , DiscordAreaType.CITIES, 13875),
 	CITY_MOR_UI_REK("Mor UI Rek" , DiscordAreaType.CITIES, 9808, 9807, 10064, 10063),
+	CITY_MOUNT_KARUULM("Mount Karuulm", DiscordAreaType.CITIES, 5179, 4923, 5180),
 	CITY_NARDAH("Nardah" , DiscordAreaType.CITIES, 13613),
 	CITY_NEITIZNOT("Neitiznot" , DiscordAreaType.CITIES, 9275),
 	CITY_PISCATORIS("Piscatoris" , DiscordAreaType.CITIES, 9273),
@@ -177,6 +183,7 @@ enum DiscordGameEventType
 	DUNGEON_JIGGIG_BURIAL_TOMB("Jiggig Burial Tomb", DiscordAreaType.DUNGEONS, 9875, 9874),
 	DUNGEON_JOGRE("Jogre Dungeon", DiscordAreaType.DUNGEONS, 11412),
 	DUNGEON_KARAMJA_VOLCANO("Karamja Volcano", DiscordAreaType.DUNGEONS, 11413, 11414),
+	DUNGEON_KARUULM("Karuulm Slayer Dungeon", DiscordAreaType.DUNGEONS, 5280, 5279, 5023, 5535, 5022, 4766, 4510, 4511, 4767, 4768, 4512),
 	DUNGEON_KHARAZI("Khazari Dungeon", DiscordAreaType.DUNGEONS, 11153),
 	DUNGEON_LIGHTHOUSE("Lighthouse", DiscordAreaType.DUNGEONS, 10140),
 	DUNGEON_LIZARDMAN_CAVES("Lizardman Caves", DiscordAreaType.DUNGEONS, 5275),
@@ -212,6 +219,7 @@ enum DiscordGameEventType
 	DUNGEON_WHITE_WOLF_MOUNTAIN_CAVES("White Wolf Mountain Caves", DiscordAreaType.DUNGEONS, 11418, 11419, 11675),
 	DUNGEON_WITCHAVEN_SHRINE("Witchhaven Shrine Dungeon", DiscordAreaType.DUNGEONS, 10903),
 	DUNGEON_YANILLE_AGILITY("Yanile Agility Dungeon", DiscordAreaType.DUNGEONS, 10388),
+	DUNGEON_MOTHERLODE_MINE("Motherlode Mine", DiscordAreaType.DUNGEONS, 14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193),
 
 	// Minigames
 	MG_BARBARIAN_ASSAULT("Barbarian Assault", DiscordAreaType.MINIGAMES, 10332),
@@ -236,14 +244,25 @@ enum DiscordGameEventType
 	MG_TROUBLE_BREWING("Trouble Brewing", DiscordAreaType.MINIGAMES, 15150),
 	MG_TZHAAR_FIGHT_CAVES("Tzhaar Fight Caves", DiscordAreaType.MINIGAMES, 9551),
 	MG_TZHAAR_FIGHT_PITS("Tzhaar Fight Pits", DiscordAreaType.MINIGAMES, 9552),
-	MG_VOLCANIC_MINE("Volcanic Mine", DiscordAreaType.MINIGAMES, 15263, 15262);
+	MG_VOLCANIC_MINE("Volcanic Mine", DiscordAreaType.MINIGAMES, 15263, 15262),
+
+	// Raids
+	RAIDS_CHAMBERS_OF_XERIC("Chambers of Xeric", DiscordAreaType.RAIDS, Varbits.IN_RAID),
+	RAIDS_THEATRE_OF_BLOOD("Theatre of Blood", DiscordAreaType.RAIDS, Varbits.THEATRE_OF_BLOOD);
 
 	private static final Map<Integer, DiscordGameEventType> FROM_REGION = new HashMap<>();
+	private static final List<DiscordGameEventType> FROM_VARBITS = new ArrayList<>();
 
 	static
 	{
 		for (DiscordGameEventType discordGameEventType : DiscordGameEventType.values())
 		{
+			if (discordGameEventType.getVarbits() != null)
+			{
+				FROM_VARBITS.add(discordGameEventType);
+				continue;
+			}
+
 			if (discordGameEventType.getRegionIds() == null)
 			{
 				continue;
@@ -265,6 +284,7 @@ enum DiscordGameEventType
 	private boolean shouldTimeout;
 
 	private DiscordAreaType discordAreaType;
+	private Varbits varbits;
 	private int[] regionIds;
 
 	DiscordGameEventType(Skill skill)
@@ -274,7 +294,7 @@ enum DiscordGameEventType
 
 	DiscordGameEventType(Skill skill, int priority)
 	{
-		this.state = training(skill);
+		this.details = training(skill);
 		this.priority = priority;
 		this.imageKey = imageKeyOf(skill);
 		this.priority = priority;
@@ -283,7 +303,7 @@ enum DiscordGameEventType
 
 	DiscordGameEventType(String areaName, DiscordAreaType areaType, int... regionIds)
 	{
-		this.details = exploring(areaType, areaName);
+		this.state = exploring(areaType, areaName);
 		this.priority = -2;
 		this.discordAreaType = areaType;
 		this.regionIds = regionIds;
@@ -292,8 +312,17 @@ enum DiscordGameEventType
 
 	DiscordGameEventType(String state, int priority)
 	{
-		this.details = state;
+		this.state = state;
 		this.priority = priority;
+		this.shouldClear = true;
+	}
+
+	DiscordGameEventType(String areaName, DiscordAreaType areaType, Varbits varbits)
+	{
+		this.state = exploring(areaType, areaName);
+		this.priority = -2;
+		this.discordAreaType = areaType;
+		this.varbits = varbits;
 		this.shouldClear = true;
 	}
 
@@ -319,19 +348,7 @@ enum DiscordGameEventType
 
 	private static String exploring(DiscordAreaType areaType, String areaName)
 	{
-		switch (areaType)
-		{
-			case BOSSES:
-				return "Fighting: " + areaName;
-			case DUNGEONS:
-				return "Exploring: " + areaName;
-			case CITIES:
-				return "Location: " + areaName;
-			case MINIGAMES:
-				return "Playing: " + areaName;
-		}
-
-		return "";
+		return areaName;
 	}
 
 	public static DiscordGameEventType fromSkill(final Skill skill)
@@ -367,5 +384,18 @@ enum DiscordGameEventType
 	public static DiscordGameEventType fromRegion(final int regionId)
 	{
 		return FROM_REGION.get(regionId);
+	}
+
+	public static DiscordGameEventType fromVarbit(final Client client)
+	{
+		for (DiscordGameEventType fromVarbit : FROM_VARBITS)
+		{
+			if (client.getVar(fromVarbit.getVarbits()) != 0)
+			{
+				return fromVarbit;
+			}
+		}
+
+		return null;
 	}
 }

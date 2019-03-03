@@ -67,7 +67,7 @@ public abstract class RSGameCanvasMixin extends Canvas implements RSGameCanvas
 	@Override
 	public void setSize(int width, int height)
 	{
-		if (!client.isResized() && client.isStretchedEnabled())
+		if (client.isStretchedEnabled())
 		{
 			super.setSize(client.getStretchedDimensions().width, client.getStretchedDimensions().height);
 		}
@@ -81,7 +81,7 @@ public abstract class RSGameCanvasMixin extends Canvas implements RSGameCanvas
 	@Override
 	public void setLocation(int x, int y)
 	{
-		if (!client.isResized() && client.isStretchedEnabled())
+		if (client.isStretchedEnabled())
 		{
 			super.setLocation((getParent().getWidth() - client.getStretchedDimensions().width) / 2, 0);
 		}

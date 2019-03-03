@@ -29,7 +29,25 @@ import net.runelite.mapping.Import;
 
 public interface RSTextureProvider extends TextureProvider
 {
+	@Import("brightness")
 	@Override
-	@Import("checkTextures")
-	void checkTextures(int var1);
+	double getBrightness();
+
+	@Import("setBrightness")
+	@Override
+	void setBrightness(double brightness);
+
+	@Import("maxSize")
+	void setMaxSize(int maxSize);
+
+	@Import("size")
+	void setSize(int size);
+
+	@Import("textures")
+	@Override
+	RSTexture[] getTextures();
+
+	@Import("load")
+	@Override
+	int[] load(int textureId);
 }

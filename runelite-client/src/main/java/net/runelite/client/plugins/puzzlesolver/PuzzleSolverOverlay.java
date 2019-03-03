@@ -43,6 +43,8 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import static net.runelite.api.SpriteID.MINIMAP_DESTINATION_FLAG;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK_TILE_VALUE;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.SpriteManager;
@@ -50,6 +52,7 @@ import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.ManhattanDistance;
 import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStar;
+import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStarMM;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -68,9 +71,6 @@ public class PuzzleSolverOverlay extends Overlay
 
 	private static final int PUZZLE_TILE_SIZE = 39;
 	private static final int DOT_MARKER_SIZE = 16;
-
-	private static final int BLANK_TILE_VALUE = -1;
-	private static final int DIMENSION = 5;
 
 	private final Client client;
 	private final PuzzleSolverConfig config;
@@ -106,11 +106,18 @@ public class PuzzleSolverOverlay extends Overlay
 			return null;
 		}
 
+		boolean useNormalSolver = true;
 		ItemContainer container = client.getItemContainer(InventoryID.PUZZLE_BOX);
 
 		if (container == null)
 		{
-			return null;
+			useNormalSolver = false;
+			container = client.getItemContainer(InventoryID.MONKEY_MADNESS_PUZZLE_BOX);
+
+			if (container == null)
+			{
+				return null;
+			}
 		}
 
 		Widget puzzleBox = client.getWidget(WidgetInfo.PUZZLE_BOX);
@@ -124,7 +131,7 @@ public class PuzzleSolverOverlay extends Overlay
 
 		String infoString = "Solving..";
 
-		int[] itemIds = getItemIds(container);
+		int[] itemIds = getItemIds(container, useNormalSolver);
 		boolean shouldCache = false;
 
 		if (solver != null)
@@ -333,9 +340,10 @@ public class PuzzleSolverOverlay extends Overlay
 		}
 
 		// Solve the puzzle if we don't have an up to date solution
-		if (solver == null || cachedItems == null || (!shouldCache && !Arrays.equals(cachedItems, itemIds)))
+		if (solver == null || cachedItems == null
+			|| (!shouldCache && solver.hasExceededWaitDuration() && !Arrays.equals(cachedItems, itemIds)))
 		{
-			solve(itemIds);
+			solve(itemIds, useNormalSolver);
 			shouldCache = true;
 		}
 
@@ -347,7 +355,7 @@ public class PuzzleSolverOverlay extends Overlay
 		return null;
 	}
 
-	private int[] getItemIds(ItemContainer container)
+	private int[] getItemIds(ItemContainer container, boolean useNormalSolver)
 	{
 		int[] itemIds = new int[DIMENSION * DIMENSION];
 
@@ -364,13 +372,10 @@ public class PuzzleSolverOverlay extends Overlay
 			itemIds[items.length] = BLANK_TILE_VALUE;
 		}
 
-		return convertToSolverFormat(itemIds);
+		return convertToSolverFormat(itemIds, useNormalSolver);
 	}
 
-	/**
-	 * This depends on there being no gaps in between item ids in puzzles.
-	 */
-	private int[] convertToSolverFormat(int[] items)
+	private int[] convertToSolverFormat(int[] items, boolean useNormalSolver)
 	{
 		int lowestId = Integer.MAX_VALUE;
 
@@ -393,7 +398,15 @@ public class PuzzleSolverOverlay extends Overlay
 		{
 			if (items[i] != BLANK_TILE_VALUE)
 			{
-				convertedItems[i] = items[i] - lowestId;
+				int value = items[i] - lowestId;
+
+				// The MM puzzle has gaps
+				if (!useNormalSolver)
+				{
+					value /= 2;
+				}
+
+				convertedItems[i] = value;
 			}
 			else
 			{
@@ -410,7 +423,7 @@ public class PuzzleSolverOverlay extends Overlay
 		System.arraycopy(items, 0, cachedItems, 0, cachedItems.length);
 	}
 
-	private void solve(int[] items)
+	private void solve(int[] items, boolean useNormalSolver)
 	{
 		if (solverFuture != null)
 		{
@@ -419,7 +432,15 @@ public class PuzzleSolverOverlay extends Overlay
 
 		PuzzleState puzzleState = new PuzzleState(items);
 
-		solver = new PuzzleSolver(new IDAStar(new ManhattanDistance()), puzzleState);
+		if (useNormalSolver)
+		{
+			solver = new PuzzleSolver(new IDAStar(new ManhattanDistance()), puzzleState);
+		}
+		else
+		{
+			solver = new PuzzleSolver(new IDAStarMM(new ManhattanDistance()), puzzleState);
+		}
+
 		solverFuture = executorService.submit(solver);
 	}
 

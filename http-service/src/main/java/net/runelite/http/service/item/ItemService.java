@@ -472,6 +472,14 @@ public class ItemService
 		int idx = random.nextInt(tradeableItems.length);
 		int id = tradeableItems[idx];
 
+		if (getItem(id) == null)
+		{
+			// This is a new item..
+			log.debug("Fetching new item {}", id);
+			queueItem(id);
+			return;
+		}
+
 		log.debug("Fetching price for {}", id);
 
 		fetchPrice(id);
@@ -481,10 +489,16 @@ public class ItemService
 	public void reloadItems() throws IOException
 	{
 		List<ItemDefinition> items = cacheService.getItems();
+		if (items.isEmpty())
+		{
+			log.warn("Failed to load any items from cache, item price updating will be disabled");
+		}
+
 		tradeableItems = items.stream()
 			.filter(item -> item.isTradeable)
 			.mapToInt(item -> item.id)
 			.toArray();
+
 		log.debug("Loaded {} tradeable items", tradeableItems.length);
 	}
 

@@ -24,13 +24,22 @@
  */
 package net.runelite.client.plugins.loottracker;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Value
+@AllArgsConstructor
 class LootTrackerItem
 {
+	@Getter
 	private final int id;
+	@Getter
 	private final String name;
+	@Getter
 	private final int quantity;
+	@Getter
 	private final long price;
+	@Getter
+	@Setter
+	private boolean ignored;
 }

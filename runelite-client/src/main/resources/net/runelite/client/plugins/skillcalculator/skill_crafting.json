@@ -20,6 +20,12 @@
     },
     {
       "level": 1,
+      "icon": 21081,
+      "name": "Opal Ring",
+      "xp": 10
+    },
+    {
+      "level": 1,
       "icon": 1775,
       "name": "Molten Glass",
       "xp": 20
@@ -103,6 +109,12 @@
       "xp": 20
     },
     {
+      "level": 13,
+      "icon": 21084,
+      "name": "Jade Ring",
+      "xp": 32
+    },
+    {
       "level": 14,
       "icon": 1129,
       "name": "Leather Body",
@@ -116,10 +128,23 @@
     },
     {
       "level": 16,
+      "icon": 21087,
+      "name": "Topaz Ring",
+      "xp": 35
+    },
+    {
+      "level": 16,
       "icon": 1718,
       "name": "Holy Symbol",
       "xp": 50
     },
+    {
+      "level": 16,
+      "icon": 21090,
+      "name": "Opal Necklace",
+      "xp": 35
+    },
+
     {
       "level": 17,
       "icon": 1724,
@@ -163,6 +188,12 @@
       "xp": 55
     },
     {
+      "level": 22,
+      "icon": 21117,
+      "name": "Opal Bracelet",
+      "xp": 45
+    },
+    {
       "level": 23,
       "icon": 11071,
       "name": "Sapphire Bracelet",
@@ -181,6 +212,12 @@
       "xp": 65
     },
     {
+      "level": 25,
+      "icon": 21093,
+      "name": "Jade Necklace",
+      "xp": 54
+    },
+    {
       "level": 27,
       "icon": 1605,
       "name": "Emerald",
@@ -193,6 +230,12 @@
       "xp": 55
     },
     {
+      "level": 27,
+      "icon": 21099,
+      "name": "Opal Amulet (U)",
+      "xp": 55
+    },
+    {
       "level": 28,
       "icon": 1131,
       "name": "Hardleather Body",
@@ -202,6 +245,12 @@
       "level": 29,
       "icon": 1658,
       "name": "Emerald Necklace",
+      "xp": 60
+    },
+    {
+      "level": 29,
+      "icon": 21120,
+      "name": "Jade Bracelet",
       "xp": 60
     },
     {
@@ -229,6 +278,12 @@
       "xp": 6
     },
     {
+      "level": 32,
+      "icon": 21096,
+      "name": "Topaz Necklace",
+      "xp": 70
+    },
+    {
       "level": 33,
       "icon": 229,
       "name": "Vial",
@@ -247,6 +302,12 @@
       "xp": 70
     },
     {
+      "level": 34,
+      "icon": 21102,
+      "name": "Jade Amulet (U)",
+      "xp": 70
+    },
+    {
       "level": 36,
       "icon": 5376,
       "name": "Basket",
@@ -257,6 +318,12 @@
       "icon": 1169,
       "name": "Coif",
       "xp": 37
+    },
+    {
+      "level": 38,
+      "icon": 21123,
+      "name": "Topaz Bracelet",
+      "xp": 75
     },
     {
       "level": 40,
@@ -293,6 +360,12 @@
       "icon": 1643,
       "name": "Diamond Ring",
       "xp": 85
+    },
+    {
+      "level": 45,
+      "icon": 21105,
+      "name": "Topaz Amulet (U)",
+      "xp": 80
     },
     {
       "level": 46,

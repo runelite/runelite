@@ -238,7 +238,7 @@
       "level": 37,
       "sprite": 33,
       "name": "Falador Teleport",
-      "xp": 47
+      "xp": 48
     },
     {
       "level": 39,
@@ -382,7 +382,7 @@
       "level": 56,
       "sprite": 42,
       "name": "Charge Water Orb",
-      "xp": 56
+      "xp": 66
     },
     {
       "level": 56,

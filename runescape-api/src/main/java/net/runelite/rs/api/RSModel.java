@@ -31,34 +31,74 @@ import net.runelite.mapping.Import;
 public interface RSModel extends RSRenderable, Model
 {
 	@Import("verticesCount")
+	@Override
 	int getVerticesCount();
 
 	@Import("verticesX")
+	@Override
 	int[] getVerticesX();
 
 	@Import("verticesY")
+	@Override
 	int[] getVerticesY();
 
 	@Import("verticesZ")
+	@Override
 	int[] getVerticesZ();
 
 	@Import("indicesCount")
+	@Override
 	int getTrianglesCount();
 
 	@Import("indices1")
+	@Override
 	int[] getTrianglesX();
 
 	@Import("indices2")
+	@Override
 	int[] getTrianglesY();
 
 	@Import("indices3")
+	@Override
 	int[] getTrianglesZ();
+
+	@Import("faceColors1")
+	@Override
+	int[] getFaceColors1();
+
+	@Import("faceColors2")
+	@Override
+	int[] getFaceColors2();
+
+	@Import("faceColors3")
+	@Override
+	int[] getFaceColors3();
+
+	@Import("triangleTransparencies")
+	@Override
+	byte[] getTriangleTransparencies();
+
+	@Import("faceRenderPriorities")
+	@Override
+	byte[] getFaceRenderPriorities();
 
 	@Import("vertexGroups")
 	int[][] getVertexGroups();
 
+	@Import("modelHeight")
+	@Override
+	int getModelHeight();
+
 	@Import("animate")
 	void animate(int type, int[] list, int x, int y, int z);
+
+	@Import("calculateBoundsCylinder")
+	@Override
+	void calculateBoundsCylinder();
+
+	@Import("calculateExtreme")
+	@Override
+	void calculateExtreme(int orientation);
 
 	@Import("resetBounds")
 	void resetBounds();
@@ -78,6 +118,45 @@ public interface RSModel extends RSRenderable, Model
 	@Import("rotateY270Ccw")
 	void rotateY270Ccw();
 
+	@Import("isClickable")
+	boolean isClickable();
+
+	@Import("radius")
+	@Override
+	int getRadius();
+
+	@Import("centerX")
+	@Override
+	int getCenterX();
+
+	@Import("centerY")
+	@Override
+	int getCenterY();
+
+	@Import("centerZ")
+	@Override
+	int getCenterZ();
+
+	@Import("extremeX")
+	@Override
+	int getExtremeX();
+
+	@Import("extremeY")
+	@Override
+	int getExtremeY();
+
+	@Import("extremeZ")
+	@Override
+	int getExtremeZ();
+
+	@Import("faceTextures")
+	@Override
+	short[] getFaceTextures();
+
+	@Import("XYZMag")
+	@Override
+	int getXYZMag();
+
 	void interpolateFrames(RSFrames frames, int frameId, RSFrames nextFrames, int nextFrameId, int interval,
 								int intervalCount);
 
@@ -89,4 +168,10 @@ public interface RSModel extends RSRenderable, Model
 	 * @return
 	 */
 	Polygon getConvexHull(int localX, int localY, int orientation);
+
+	float[][] getFaceTextureUCoordinates();
+	void setFaceTextureUCoordinates(float[][] rl$faceTextureUCoordinates);
+
+	float[][] getFaceTextureVCoordinates();
+	void setFaceTextureVCoordinates(float[][] rl$faceTextureVCoordinates);
 }

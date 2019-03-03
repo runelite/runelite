@@ -25,11 +25,14 @@
  */
 package net.runelite.api.coords;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import lombok.Value;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.Perspective;
-import net.runelite.api.Point;
 
 /**
  * A three-dimensional point representing the coordinate of a Tile.
@@ -151,7 +154,8 @@ public class WorldPoint
 	}
 
 	/**
-	 * Gets the coordinate of the tile that contains the passed local point.
+	 * Gets the coordinate of the tile that contains the passed local point,
+	 * accounting for instances.
 	 *
 	 * @param client the client
 	 * @param localPoint the local coordinate
@@ -189,6 +193,46 @@ public class WorldPoint
 		{
 			return fromLocal(client, localPoint);
 		}
+	}
+
+	/**
+	 * Get occurrences of a tile on the scene, accounting for instances. There may be
+	 * more than one if the same template chunk occurs more than once on the scene.
+	 * @param client
+	 * @param worldPoint
+	 * @return
+	 */
+	public static Collection<WorldPoint> toLocalInstance(Client client, WorldPoint worldPoint)
+	{
+		if (!client.isInInstancedRegion())
+		{
+			return Collections.singleton(worldPoint);
+		}
+
+		// find instance chunks using the template point. there might be more than one.
+		List<WorldPoint> worldPoints = new ArrayList<>();
+		final int z = worldPoint.getPlane();
+		int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
+		for (int x = 0; x < instanceTemplateChunks[z].length; ++x)
+		{
+			for (int y = 0; y < instanceTemplateChunks[z][x].length; ++y)
+			{
+				int chunkData = instanceTemplateChunks[z][x][y];
+				int rotation = chunkData >> 1 & 0x3;
+				int templateChunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
+				int templateChunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
+				if (worldPoint.getX() >= templateChunkX && worldPoint.getX() < templateChunkX + CHUNK_SIZE
+					&& worldPoint.getY() >= templateChunkY && worldPoint.getY() < templateChunkY + CHUNK_SIZE)
+				{
+					WorldPoint p = new WorldPoint(client.getBaseX() + x * CHUNK_SIZE + (worldPoint.getX() & (CHUNK_SIZE - 1)),
+						client.getBaseY() + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
+						worldPoint.getPlane());
+					p = rotate(p, rotation);
+					worldPoints.add(p);
+				}
+			}
+		}
+		return worldPoints;
 	}
 
 	/**
@@ -273,12 +317,6 @@ public class WorldPoint
 		);
 	}
 
-	@Deprecated
-	public Point toPoint()
-	{
-		return new Point(x, y);
-	}
-
 	/**
 	 * Gets the ID of the region containing this tile.
 	 *
@@ -287,5 +325,37 @@ public class WorldPoint
 	public int getRegionID()
 	{
 		return ((x >> 6) << 8) | (y >> 6);
+	}
+
+	/**
+	 * Converts the passed region ID and coordinates to a world coordinate
+	 */
+	public static WorldPoint fromRegion(int regionId, int regionX, int regionY, int plane)
+	{
+		return new WorldPoint(
+			((regionId >>> 8) << 6) + regionX,
+			((regionId & 0xff) << 6) + regionY,
+			plane);
+	}
+
+	/**
+	 * Gets the X-axis coordinate of the region coordinate
+	 */
+	public int getRegionX()
+	{
+		return getRegionOffset(x);
+	}
+
+	/**
+	 * Gets the Y-axis coordinate of the region coordinate
+	 */
+	public int getRegionY()
+	{
+		return getRegionOffset(y);
+	}
+
+	private static int getRegionOffset(final int position)
+	{
+		return position & 0x3f;
 	}
 }

@@ -27,7 +27,6 @@ package net.runelite.client.plugins.screenshot;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Desktop;
 import java.awt.Graphics;
@@ -41,6 +40,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -52,12 +52,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
 import net.runelite.api.WorldType;
@@ -79,6 +81,8 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -119,14 +123,12 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
+	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: ([^<>]+)(?:</col>)?");
+	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
+	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9]+) duels?\\.");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
-
-	private static final ImmutableList<String> KILL_MESSAGES = ImmutableList.of("into tiny pieces and sat on them", "you have obliterated",
-		"falls before your might", "A humiliating defeat for", "With a crushing blow you", "thinking challenging you",
-		"Can anyone defeat you? Certainly", "was no match for you", "You were clearly a better fighter than", "RIP",
-		"You have defeated", "What an embarrassing performance by", "was no match for your awesomeness");
 
 	static String format(Date date)
 	{
@@ -142,6 +144,8 @@ public class ScreenshotPlugin extends Plugin
 	private Integer barrowsNumber;
 
 	private Integer chambersOfXericNumber;
+
+	private Integer chambersOfXericChallengeNumber;
 
 	private Integer theatreOfBloodNumber;
 
@@ -293,9 +297,21 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
+	{
+		if (config.screenshotKills())
+		{
+			final Player player = playerLootReceived.getPlayer();
+			final String name = player.getName();
+			String fileName = "Kill " + name + " " + format(new Date());
+			takeScreenshot(fileName);
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
+		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED && event.getType() != ChatMessageType.TRANSACTION_COMPLETE)
 		{
 			return;
 		}
@@ -333,6 +349,16 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
+		if (chatMessage.startsWith("Your completed Chambers of Xeric Challenge Mode count is:"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (m.find())
+			{
+				chambersOfXericChallengeNumber = Integer.valueOf(m.group());
+				return;
+			}
+		}
+
 		if (chatMessage.startsWith("Your completed Theatre of Blood count is:"))
 		{
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
@@ -349,12 +375,6 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName);
 		}
 
-		if (config.screenshotKills() && KILL_MESSAGES.stream().anyMatch(chatMessage::contains))
-		{
-			String fileName = "Kill " + format(new Date());
-			takeScreenshot(fileName);
-		}
-
 		if (config.screenshotBossKills() )
 		{
 			Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage);
@@ -363,6 +383,40 @@ public class ScreenshotPlugin extends Plugin
 				String bossName = m.group(1);
 				String bossKillcount = m.group(2);
 				String fileName = bossName + "(" + bossKillcount + ")";
+				takeScreenshot(fileName);
+			}
+		}
+
+		if (config.screenshotValuableDrop())
+		{
+			Matcher m = VALUABLE_DROP_PATTERN.matcher(chatMessage);
+			if (m.matches())
+			{
+				String valuableDropName = m.group(1);
+				String fileName = "Valuable drop " + valuableDropName + " " + format(new Date());
+				takeScreenshot(fileName);
+			}
+		}
+
+		if (config.screenshotUntradeableDrop())
+		{
+			Matcher m = UNTRADEABLE_DROP_PATTERN.matcher(chatMessage);
+			if (m.matches())
+			{
+				String untradeableDropName = m.group(1);
+				String fileName = "Untradeable drop " + untradeableDropName + " " + format(new Date());
+				takeScreenshot(fileName);
+			}
+		}
+
+		if (config.screenshotDuels())
+		{
+			Matcher m = DUEL_END_PATTERN.matcher(chatMessage);
+			if (m.find())
+			{
+				String result = m.group(1);
+				String count = m.group(2);
+				String fileName = "Duel " + result + " (" + count + ")";
 				takeScreenshot(fileName);
 			}
 		}
@@ -411,14 +465,22 @@ public class ScreenshotPlugin extends Plugin
 			}
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
 			{
-				if (chambersOfXericNumber == null)
+				if (chambersOfXericNumber != null)
+				{
+					fileName = "Chambers of Xeric(" + chambersOfXericNumber + ")";
+					chambersOfXericNumber = null;
+					break;
+				}
+				else if (chambersOfXericChallengeNumber != null)
+				{
+					fileName = "Chambers of Xeric Challenge Mode(" + chambersOfXericChallengeNumber + ")";
+					chambersOfXericChallengeNumber = null;
+					break;
+				}
+				else
 				{
 					return;
 				}
-
-				fileName = "Chambers of Xeric(" + chambersOfXericNumber + ")";
-				chambersOfXericNumber = null;
-				break;
 			}
 			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
 			{
@@ -511,84 +573,95 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		Consumer<Image> screenshotConsumer = image ->
+		Consumer<Image> imageCallback = (img) ->
 		{
-			BufferedImage screenshot = config.includeFrame()
-				? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
-				: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-			Graphics graphics = screenshot.getGraphics();
-
-			int gameOffsetX = 0;
-			int gameOffsetY = 0;
-
-			if (config.includeFrame())
-			{
-				// Draw the client frame onto the screenshot
-				clientUi.paint(graphics);
-
-				// Evaluate the position of the game inside the frame
-				final Point canvasOffset = clientUi.getCanvasOffset();
-				gameOffsetX = canvasOffset.getX();
-				gameOffsetY = canvasOffset.getY();
-			}
-
-			// Draw the game onto the screenshot
-			graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
-
-			File playerFolder;
-			if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
-			{
-				final EnumSet<WorldType> worldTypes = client.getWorldType();
-				final boolean dmm = worldTypes.contains(WorldType.DEADMAN);
-				final boolean sdmm = worldTypes.contains(WorldType.SEASONAL_DEADMAN);
-				final boolean isDmmWorld = dmm || sdmm;
-
-				String playerDir = client.getLocalPlayer().getName();
-				if (isDmmWorld)
-				{
-					playerDir += "-Deadman";
-				}
-				playerFolder = new File(SCREENSHOT_DIR, playerDir);
-			}
-			else
-			{
-				playerFolder = SCREENSHOT_DIR;
-			}
-
-			playerFolder.mkdirs();
-
-			executor.execute(() ->
-			{
-				try
-				{
-					File screenshotFile = new File(playerFolder, fileName + ".png");
-
-					ImageIO.write(screenshot, "PNG", screenshotFile);
-
-					if (config.uploadScreenshot())
-					{
-						uploadScreenshot(screenshotFile);
-					}
-					else if (config.notifyWhenTaken())
-					{
-						notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
-					}
-				}
-				catch (IOException ex)
-				{
-					log.warn("error writing screenshot", ex);
-				}
-			});
+			// This callback is on the game thread, move to executor thread
+			executor.submit(() -> takeScreenshot(fileName, img));
 		};
 
 		if (config.displayDate())
 		{
-			screenshotOverlay.queueForTimestamp(screenshotConsumer);
+			screenshotOverlay.queueForTimestamp(imageCallback);
 		}
 		else
 		{
-			drawManager.requestNextFrameListener(screenshotConsumer);
+			drawManager.requestNextFrameListener(imageCallback);
+		}
+	}
+
+	private void takeScreenshot(String fileName, Image image)
+	{
+		BufferedImage screenshot = config.includeFrame()
+			? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
+			: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+		Graphics graphics = screenshot.getGraphics();
+
+		int gameOffsetX = 0;
+		int gameOffsetY = 0;
+
+		if (config.includeFrame())
+		{
+			// Draw the client frame onto the screenshot
+			try
+			{
+				SwingUtilities.invokeAndWait(() -> clientUi.paint(graphics));
+			}
+			catch (InterruptedException | InvocationTargetException e)
+			{
+				log.warn("unable to paint client UI on screenshot", e);
+			}
+
+			// Evaluate the position of the game inside the frame
+			final Point canvasOffset = clientUi.getCanvasOffset();
+			gameOffsetX = canvasOffset.getX();
+			gameOffsetY = canvasOffset.getY();
+		}
+
+		// Draw the game onto the screenshot
+		graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
+
+		File playerFolder;
+		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
+		{
+			final EnumSet<WorldType> worldTypes = client.getWorldType();
+			final boolean dmm = worldTypes.contains(WorldType.DEADMAN);
+			final boolean sdmm = worldTypes.contains(WorldType.SEASONAL_DEADMAN);
+			final boolean dmmt = worldTypes.contains(WorldType.DEADMAN_TOURNAMENT);
+			final boolean isDmmWorld = dmm || sdmm || dmmt;
+
+			String playerDir = client.getLocalPlayer().getName();
+			if (isDmmWorld)
+			{
+				playerDir += "-Deadman";
+			}
+			playerFolder = new File(SCREENSHOT_DIR, playerDir);
+		}
+		else
+		{
+			playerFolder = SCREENSHOT_DIR;
+		}
+
+		playerFolder.mkdirs();
+
+		try
+		{
+			File screenshotFile = new File(playerFolder, fileName + ".png");
+
+			ImageIO.write(screenshot, "PNG", screenshotFile);
+
+			if (config.uploadScreenshot())
+			{
+				uploadScreenshot(screenshotFile);
+			}
+			else if (config.notifyWhenTaken())
+			{
+				notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
+			}
+		}
+		catch (IOException ex)
+		{
+			log.warn("error writing screenshot", ex);
 		}
 	}
 
@@ -665,6 +738,12 @@ public class ScreenshotPlugin extends Plugin
 	int getChambersOfXericNumber()
 	{
 		return chambersOfXericNumber;
+	}
+
+	@VisibleForTesting
+	int getChambersOfXericChallengeNumber()
+	{
+		return chambersOfXericChallengeNumber;
 	}
 
 	@VisibleForTesting
