@@ -146,16 +146,6 @@ public class XpTrackerPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
-	private long getTotalXp()
-	{
-		long total = 0;
-		for (Skill skill : Skill.values())
-		{
-			total += client.getSkillExperience(skill);
-		}
-		return total;
-	}
-
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
@@ -195,7 +185,7 @@ public class XpTrackerPlugin extends Plugin
 				return;
 			}
 
-			long totalXp = getTotalXp();
+			long totalXp = client.getOverallExperience();
 			// Don't submit xptrack unless xp threshold is reached
 			if (Math.abs(totalXp - lastXp) > XP_THRESHOLD)
 			{
@@ -229,7 +219,16 @@ public class XpTrackerPlugin extends Plugin
 
 		for (Skill skill : Skill.values())
 		{
-			int currentXp = client.getSkillExperience(skill);
+			long currentXp;
+			if (skill == Skill.OVERALL)
+			{
+				currentXp = client.getOverallExperience();
+			}
+			else
+			{
+				currentXp = client.getSkillExperience(skill);
+			}
+
 			xpState.initializeSkill(skill, currentXp);
 		}
 	}
@@ -306,11 +305,11 @@ public class XpTrackerPlugin extends Plugin
 		if (skill == Skill.CONSTRUCTION && updateResult == XpUpdateResult.INITIALIZED)
 		{
 			// Construction is the last skill initialized on login, now initialize the total experience
-			xpState.initializeSkill(Skill.OVERALL, client.getSkillExperience(Skill.OVERALL));
+			xpState.initializeSkill(Skill.OVERALL, client.getOverallExperience());
 		}
 		else if (xpState.isInitialized(Skill.OVERALL))
 		{
-			xpState.updateSkill(Skill.OVERALL, client.getSkillExperience(Skill.OVERALL), -1, -1);
+			xpState.updateSkill(Skill.OVERALL, client.getOverallExperience(), -1, -1);
 			xpPanel.updateTotal(xpState.getTotalSnapshot());
 		}
 	}
@@ -341,7 +340,7 @@ public class XpTrackerPlugin extends Plugin
 		rebuildSkills();
 		if (fetchXp)
 		{
-			lastXp = getTotalXp();
+			lastXp = client.getOverallExperience();
 			fetchXp = false;
 		}
 	}
@@ -470,7 +469,17 @@ public class XpTrackerPlugin extends Plugin
 		// Adjust unpause states
 		for (Skill skill : Skill.values())
 		{
-			xpPauseState.tickXp(skill, client.getSkillExperience(skill), xpTrackerConfig.pauseSkillAfter());
+			long skillExperience;
+			if (skill == Skill.OVERALL)
+			{
+				skillExperience = client.getOverallExperience();
+			}
+			else
+			{
+				skillExperience = client.getSkillExperience(skill);
+			}
+
+			xpPauseState.tickXp(skill, skillExperience, xpTrackerConfig.pauseSkillAfter());
 		}
 
 		xpPauseState.tickLogout(xpTrackerConfig.pauseOnLogout(), !GameState.LOGIN_SCREEN.equals(client.getGameState()));

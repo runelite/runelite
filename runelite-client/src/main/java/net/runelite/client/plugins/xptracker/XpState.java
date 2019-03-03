@@ -56,7 +56,7 @@ class XpState
 	 * @param skill Skill to reset
 	 * @param currentXp Current XP to set to, if unknown set to -1
 	 */
-	void resetSkill(Skill skill, int currentXp)
+	void resetSkill(Skill skill, long currentXp)
 	{
 		xpSkills.remove(skill);
 		xpSkills.put(skill, new XpStateSingle(skill, currentXp));
@@ -73,7 +73,7 @@ class XpState
 	 * @param goalEndXp Possible XP end goal
 	 * @return Whether or not the skill has been initialized, there was no change, or it has been updated
 	 */
-	XpUpdateResult updateSkill(Skill skill, int currentXp, int goalStartXp, int goalEndXp)
+	XpUpdateResult updateSkill(Skill skill, long currentXp, int goalStartXp, int goalEndXp)
 	{
 		XpStateSingle state = getSkill(skill);
 
@@ -91,7 +91,7 @@ class XpState
 		}
 		else
 		{
-			int startXp = state.getStartXp();
+			long startXp = state.getStartXp();
 			int gainedXp = state.getXpGained();
 
 			if (startXp + gainedXp > currentXp)
@@ -191,7 +191,7 @@ class XpState
 	 * @param skill Skill to initialize
 	 * @param currentXp Current known XP for the skill
 	 */
-	void initializeSkill(Skill skill, int currentXp)
+	void initializeSkill(Skill skill, long currentXp)
 	{
 		xpSkills.put(skill, new XpStateSingle(skill, currentXp));
 	}
