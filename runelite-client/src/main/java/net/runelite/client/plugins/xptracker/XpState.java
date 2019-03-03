@@ -40,7 +40,6 @@ class XpState
 {
 	private static final double DEFAULT_XP_MODIFIER = 4.0;
 	private static final double SHARED_XP_MODIFIER = DEFAULT_XP_MODIFIER / 3.0;
-	private final XpStateTotal xpTotal = new XpStateTotal();
 	private final Map<Skill, XpStateSingle> xpSkills = new EnumMap<>(Skill.class);
 	private NPC interactedNPC;
 
@@ -49,7 +48,6 @@ class XpState
 	 */
 	void reset()
 	{
-		xpTotal.reset();
 		xpSkills.clear();
 	}
 
@@ -62,21 +60,6 @@ class XpState
 	{
 		xpSkills.remove(skill);
 		xpSkills.put(skill, new XpStateSingle(skill, currentXp));
-		recalculateTotal();
-	}
-
-	/**
-	 * Calculates the total skill changes observed in this session or since the last reset
-	 */
-	void recalculateTotal()
-	{
-		xpTotal.reset();
-
-		for (XpStateSingle state : xpSkills.values())
-		{
-			xpTotal.addXpGainedInSession(state.getXpGained());
-			xpTotal.addXpPerHour(state.getXpHr());
-		}
 	}
 
 	/**
@@ -213,6 +196,11 @@ class XpState
 		xpSkills.put(skill, new XpStateSingle(skill, currentXp));
 	}
 
+	boolean isInitialized(Skill skill)
+	{
+		return xpSkills.containsKey(skill);
+	}
+
 	@NonNull
 	XpStateSingle getSkill(Skill skill)
 	{
@@ -237,8 +225,8 @@ class XpState
 	 * @return An immutable snapshot of total information for this session since first login or last reset
 	 */
 	@NonNull
-	XpSnapshotTotal getTotalSnapshot()
+	XpSnapshotSingle getTotalSnapshot()
 	{
-		return xpTotal.snapshot();
+		return getSkill(Skill.OVERALL).snapshot();
 	}
 }

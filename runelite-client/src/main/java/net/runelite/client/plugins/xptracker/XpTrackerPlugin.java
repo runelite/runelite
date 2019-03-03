@@ -242,7 +242,7 @@ public class XpTrackerPlugin extends Plugin
 	{
 		xpState.reset();
 		xpPanel.resetAllInfoBoxes();
-		xpPanel.updateTotal(XpSnapshotTotal.zero());
+		xpPanel.updateTotal(new XpSnapshotSingle.XpSnapshotSingleBuilder().build());
 	}
 
 	/**
@@ -254,7 +254,6 @@ public class XpTrackerPlugin extends Plugin
 	{
 		int currentXp = client.getSkillExperience(skill);
 		xpState.resetSkill(skill, currentXp);
-		xpState.recalculateTotal();
 		xpPanel.resetSkill(skill);
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
@@ -302,10 +301,18 @@ public class XpTrackerPlugin extends Plugin
 		}
 
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
-		final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
-		xpPanel.updateSkillExperience(updated, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
-		xpState.recalculateTotal();
-		xpPanel.updateTotal(xpState.getTotalSnapshot());
+		xpPanel.updateSkillExperience(updateResult == XpUpdateResult.UPDATED, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
+
+		if (skill == Skill.CONSTRUCTION && updateResult == XpUpdateResult.INITIALIZED)
+		{
+			// Construction is the last skill initialized on login, now initialize the total experience
+			xpState.initializeSkill(Skill.OVERALL, client.getSkillExperience(Skill.OVERALL));
+		}
+		else if (xpState.isInitialized(Skill.OVERALL))
+		{
+			xpState.updateSkill(Skill.OVERALL, client.getSkillExperience(Skill.OVERALL), -1, -1);
+			xpPanel.updateTotal(xpState.getTotalSnapshot());
+		}
 	}
 
 	@Subscribe
@@ -325,7 +332,6 @@ public class XpTrackerPlugin extends Plugin
 			xpPanel.updateSkillExperience(updated, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
 		}
 
-		xpState.recalculateTotal();
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
@@ -498,7 +504,6 @@ public class XpTrackerPlugin extends Plugin
 			xpPanel.updateSkillExperience(false, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
 		}
 
-		xpState.recalculateTotal();
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
 	}
 
