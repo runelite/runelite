@@ -37,9 +37,13 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.time.Instant;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Point;
 import net.runelite.client.game.SkillIconManager;
@@ -53,6 +57,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class XpGlobesOverlay extends Overlay
 {
@@ -61,6 +66,7 @@ public class XpGlobesOverlay extends Overlay
 	private static final int PROGRESS_RADIUS_REMAINDER = 0;
 	private static final int TOOLTIP_RECT_SIZE_X = 150;
 	private static final Color DARK_OVERLAY_COLOR = new Color(0, 0, 0, 180);
+	private static final Stroke levelMarkerStroke = new BasicStroke(2);
 
 	private final Client client;
 	private final XpGlobesPlugin plugin;
@@ -68,6 +74,7 @@ public class XpGlobesOverlay extends Overlay
 	private final XpTrackerService xpTrackerService;
 	private final PanelComponent xpTooltip = new PanelComponent();
 	private final SkillIconManager iconManager;
+	private final Map<Pair<Integer, Integer>, Collection<Double>> levelPercentagesCache = new HashMap<>();
 
 	@Inject
 	private XpGlobesOverlay(
@@ -131,7 +138,7 @@ public class XpGlobesOverlay extends Overlay
 		double radiusCurrentXp = getSkillProgressRadius(startXp, skillToDraw.getCurrentXp(), goalXp);
 		double radiusToGoalXp = 360; //draw a circle
 
-		Ellipse2D backgroundCircle = drawEllipse(graphics, x, y);
+		Ellipse2D backgroundCircle = drawCircle(graphics, x, y, config.xpOrbSize());
 
 		drawSkillImage(graphics, skillToDraw, x, y);
 
@@ -161,7 +168,7 @@ public class XpGlobesOverlay extends Overlay
 			x, y,
 			config.xpOrbSize(), config.xpOrbSize(),
 			PROGRESS_RADIUS_REMAINDER, radiusToGoalXp,
-			5,
+			config.progressArcStrokeWidth(),
 			config.progressOrbOutLineColor()
 		);
 		drawProgressArc(
@@ -170,7 +177,13 @@ public class XpGlobesOverlay extends Overlay
 			config.xpOrbSize(), config.xpOrbSize(),
 			PROGRESS_RADIUS_START, radiusCurrentXp,
 			config.progressArcStrokeWidth(),
-			config.enableCustomArcColor() ? config.progressArcColor() : SkillColor.find(skillToDraw.getSkill()).getColor());
+			config.enableCustomArcColor() ? config.progressArcColor() : SkillColor.find(skillToDraw.getSkill()).getColor()
+		);
+
+		if (config.showIntermediateLevels())
+		{
+			drawLevels(graphics, startXp, goalXp, x, y);
+		}
 	}
 
 	private void drawProgressLabel(Graphics2D graphics, XpGlobe globe, int startXp, int goalXp, int x, int y)
@@ -203,10 +216,10 @@ public class XpGlobesOverlay extends Overlay
 		graphics.setStroke(stroke);
 	}
 
-	private Ellipse2D drawEllipse(Graphics2D graphics, int x, int y)
+	private Ellipse2D drawCircle(Graphics2D graphics, int x, int y, int radius)
 	{
 		graphics.setColor(config.progressOrbBackgroundColor());
-		Ellipse2D ellipse = new Ellipse2D.Double(x, y, config.xpOrbSize(), config.xpOrbSize());
+		Ellipse2D ellipse = new Ellipse2D.Double(x, y, radius, radius);
 		graphics.fill(ellipse);
 		graphics.draw(ellipse);
 		return ellipse;
@@ -295,5 +308,54 @@ public class XpGlobesOverlay extends Overlay
 		}
 
 		xpTooltip.render(graphics);
+	}
+
+	private void drawLevels(Graphics2D graphics, int startXp, int goalXp, int x, int y)
+	{
+		final Collection<Double> levelPercentages = levelPercentagesCache.computeIfAbsent(
+			Pair.of(startXp, goalXp),
+			unused -> Experience.levelPercentagesBetweenExperience(startXp, goalXp)
+		);
+
+
+		final Stroke backupStroke = graphics.getStroke();
+
+		graphics.setStroke(levelMarkerStroke);
+		for (final double levelMarker : levelPercentages)
+		{
+			final double angle = levelMarker * 2 * Math.PI;
+			calculateCoordinatesForAngleAndDrawTheLine(angle, x, y, graphics);
+		}
+		graphics.setStroke(backupStroke);
+	}
+
+
+	private void calculateCoordinatesForAngleAndDrawTheLine(double angle, double x, double y, Graphics2D graphics)
+	{
+		final int size = config.xpOrbSize();
+		final double middleX = x + (size / 2f);
+		final double middleY = y + (size / 2f);
+
+		// Start coordinates
+		final double smallCircleRadius = (config.xpOrbSize() - config.progressArcStrokeWidth()) / 2f;
+		final double x1 = smallCircleRadius * Math.sin(angle);
+		final double y1 = smallCircleRadius * -Math.cos(angle);
+
+		// End coordinates
+		final double bigCircleRadius = (config.xpOrbSize() + config.progressArcStrokeWidth()) / 2f;
+		final double x2 = bigCircleRadius * Math.sin(angle);
+		final double y2 = bigCircleRadius * -Math.cos(angle);
+
+		drawLine(graphics, middleX + x1, middleY + y1, middleX + x2, middleY + y2);
+	}
+
+	private void drawLine(Graphics2D graphics, double x1, double y1, double x2, double y2)
+	{
+		graphics.drawLine(
+			(int) Math.round(x1),
+			(int) Math.round(y1),
+			(int) Math.round(x2),
+			(int) Math.round(y2)
+		);
 	}
 }
