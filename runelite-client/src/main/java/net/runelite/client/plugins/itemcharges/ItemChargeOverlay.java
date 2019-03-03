@@ -84,6 +84,24 @@ class ItemChargeOverlay extends Overlay
 
 				charges = config.dodgyNecklace();
 			}
+			else if (item.getId() == ItemID.BRACELET_OF_SLAUGHTER)
+			{
+				if (!config.showSlayerBracelets())
+				{
+					continue;
+				}
+
+				charges = config.slaughter();
+			}
+			else if (item.getId() == ItemID.EXPEDITIOUS_BRACELET)
+			{
+				if (!config.showSlayerBracelets())
+				{
+					continue;
+				}
+
+				charges = config.expeditious();
+			}
 			else
 			{
 				ItemWithCharge chargeItem = ItemWithCharge.findItem(item.getId());

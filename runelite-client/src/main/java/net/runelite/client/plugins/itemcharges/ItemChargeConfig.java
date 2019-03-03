@@ -205,13 +205,60 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showSlayerBracelets",
+		name = "Show Slayer Bracelets Charges",
+		description = "Configures if slayer bracelets' item charges are shown",
+		position = 15
+	)
+	default boolean showSlayerBracelets()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
-		position = 15
+		position = 16
 	)
 	default boolean showInfoboxes()
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "expeditious",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int expeditious()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "expeditious",
+		name = "",
+		description = ""
+	)
+	void expeditious(int expeditious);
+
+	@ConfigItem(
+		keyName = "slaughter",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int slaughter()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "slaughter",
+		name = "",
+		description = ""
+	)
+	void slaughter(int slaughter);
 }
