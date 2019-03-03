@@ -36,4 +36,17 @@ public interface RSNameableContainer<T extends RSNameable>
 
 	@Import("isMember")
 	boolean isMember(RSName var1);
+
+	/**
+	 * Method called by the container when an element is added
+	 * @param name
+	 * @param prevName
+	 */
+	void rl$add(RSName name, RSName prevName);
+
+	/**
+	 * Method called by the container when an element is removed
+	 * @param nameable
+	 */
+	void rl$remove(RSNameable nameable);
 }

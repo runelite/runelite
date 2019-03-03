@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -22,15 +23,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.mixins;
 
-import net.runelite.mapping.Import;
+import net.runelite.api.MessageNode;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSCacheableNode;
+import net.runelite.rs.api.RSChatLineBuffer;
 
-public interface RSClanMemberManager extends RSNameableContainer<RSClanMember>
+@Mixin(RSChatLineBuffer.class)
+public abstract class RSChatLineBufferMixin implements RSChatLineBuffer
 {
-	@Import("clanOwner")
-	String getClanOwner();
+	@Inject
+	@Override
+	public void removeMessageNode(MessageNode node)
+	{
+		MessageNode[] lines = getLines();
+		final int length = getLength();
+		int found = -1;
 
-	@Import("clanChatName")
-	String getClanChatName();
+		// Find the index of the node
+		for (int idx = 0; idx < length; idx++)
+		{
+			if (lines[idx] == node)
+			{
+				found = idx;
+				break;
+			}
+		}
+
+		if (found == -1)
+		{
+			return;
+		}
+
+		// Shift down all other messages
+		for (int i = found; i < length - 1; i++)
+		{
+			lines[i] = lines[i + 1];
+		}
+		lines[length - 1] = null;
+		setLength(length - 1);
+
+		RSCacheableNode rsCacheableNode = (RSCacheableNode) node;
+		rsCacheableNode.unlink();
+		rsCacheableNode.unlinkDual();
+	}
 }
