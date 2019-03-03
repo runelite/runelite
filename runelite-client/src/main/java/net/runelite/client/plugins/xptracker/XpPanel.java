@@ -27,7 +27,6 @@ package net.runelite.client.plugins.xptracker;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.BoxLayout;
@@ -129,20 +128,13 @@ class XpPanel extends PluginPanel
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(infoBoxPanel);
 
-		try
+		for (Skill skill : Skill.values())
 		{
-			for (Skill skill : Skill.values())
+			if (skill == Skill.OVERALL)
 			{
-				if (skill == Skill.OVERALL)
-				{
-					break;
-				}
-				infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, xpTrackerConfig, client, infoBoxPanel, skill, iconManager));
+				break;
 			}
-		}
-		catch (IOException e)
-		{
-			log.warn(null, e);
+			infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, xpTrackerConfig, client, infoBoxPanel, skill, iconManager));
 		}
 
 		errorPanel.setContent("Exp trackers", "You have not gained experience yet.");
