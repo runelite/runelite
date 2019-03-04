@@ -39,6 +39,8 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import org.apache.commons.lang3.ArrayUtils;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class ImageUtilTest
@@ -79,50 +81,50 @@ public class ImageUtilTest
 	public void grayscaleOffset()
 	{
 		// grayscaleOffset(BufferedImage image, int offset)
-		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(BLACK), -255)));
-		assert(bufferedImagesEqual(oneByOne(new Color(50, 50, 50)), ImageUtil.grayscaleOffset(oneByOne(BLACK), 50)));
-		assert(bufferedImagesEqual(oneByOne(GRAY), ImageUtil.grayscaleOffset(oneByOne(BLACK), 128)));
-		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(GRAY), -255)));
-		assert(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(BLACK), 255)));
-		assert(bufferedImagesEqual(oneByOne(new Color(200, 200, 200)), ImageUtil.grayscaleOffset(oneByOne(WHITE), -55)));
-		assert(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(WHITE), 55)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(BLACK), -255)));
+		assertTrue(bufferedImagesEqual(oneByOne(new Color(50, 50, 50)), ImageUtil.grayscaleOffset(oneByOne(BLACK), 50)));
+		assertTrue(bufferedImagesEqual(oneByOne(GRAY), ImageUtil.grayscaleOffset(oneByOne(BLACK), 128)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(GRAY), -255)));
+		assertTrue(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(BLACK), 255)));
+		assertTrue(bufferedImagesEqual(oneByOne(new Color(200, 200, 200)), ImageUtil.grayscaleOffset(oneByOne(WHITE), -55)));
+		assertTrue(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(WHITE), 55)));
 
 		// grayscaleOffset(BufferedImage image, float percentage)
-		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(BLACK), 0f)));
-		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(BLACK), 1f)));
-		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(BLACK), 2f)));
-		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(GRAY), 0f)));
-		assert(bufferedImagesEqual(oneByOne(GRAY), ImageUtil.grayscaleOffset(oneByOne(GRAY), 1f)));
-		assert(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(GRAY), 2f)));
-		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(WHITE), 0f)));
-		assert(bufferedImagesEqual(oneByOne(GRAY), ImageUtil.grayscaleOffset(oneByOne(WHITE), 0.503f))); // grayscaleOffset does Math.floor
-		assert(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(WHITE), 1f)));
-		assert(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(WHITE), 2f)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(BLACK), 0f)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(BLACK), 1f)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(BLACK), 2f)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(GRAY), 0f)));
+		assertTrue(bufferedImagesEqual(oneByOne(GRAY), ImageUtil.grayscaleOffset(oneByOne(GRAY), 1f)));
+		assertTrue(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(GRAY), 2f)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.grayscaleOffset(oneByOne(WHITE), 0f)));
+		assertTrue(bufferedImagesEqual(oneByOne(GRAY), ImageUtil.grayscaleOffset(oneByOne(WHITE), 0.503f))); // grayscaleOffset does Math.floor
+		assertTrue(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(WHITE), 1f)));
+		assertTrue(bufferedImagesEqual(oneByOne(WHITE), ImageUtil.grayscaleOffset(oneByOne(WHITE), 2f)));
 	}
 
 	@Test
 	public void alphaOffset()
 	{
 		// alphaOffset(BufferedImage image, int offset)
-		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), -255)));
-		assert(bufferedImagesEqual(oneByOne(new Color(0, 0, 0, 50)), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 50)));
-		assert(bufferedImagesEqual(oneByOne(BLACK_HALF_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 128)));
-		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_HALF_TRANSPARENT), -255)));
-		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 255)));
-		assert(bufferedImagesEqual(oneByOne(new Color(0, 0, 0, 200)), ImageUtil.alphaOffset(oneByOne(BLACK), -55)));
-		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK), 255)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), -255)));
+		assertTrue(bufferedImagesEqual(oneByOne(new Color(0, 0, 0, 50)), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 50)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK_HALF_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 128)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_HALF_TRANSPARENT), -255)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 255)));
+		assertTrue(bufferedImagesEqual(oneByOne(new Color(0, 0, 0, 200)), ImageUtil.alphaOffset(oneByOne(BLACK), -55)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK), 255)));
 
 		// alphaOffset(BufferedImage image, float offset)
-		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 0f)));
-		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 1f)));
-		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 2f)));
-		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_HALF_TRANSPARENT), 0f)));
-		assert(bufferedImagesEqual(oneByOne(BLACK_HALF_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_HALF_TRANSPARENT), 1f)));
-		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK_HALF_TRANSPARENT), 2f)));
-		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK), 0f)));
-		assert(bufferedImagesEqual(oneByOne(BLACK_HALF_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK), 0.503f))); // opacityOffset does Math.floor
-		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK), 1f)));
-		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK), 2f)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 0f)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 1f)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_TRANSPARENT), 2f)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_HALF_TRANSPARENT), 0f)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK_HALF_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK_HALF_TRANSPARENT), 1f)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK_HALF_TRANSPARENT), 2f)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK), 0f)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK_HALF_TRANSPARENT), ImageUtil.alphaOffset(oneByOne(BLACK), 0.503f))); // opacityOffset does Math.floor
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK), 1f)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.alphaOffset(oneByOne(BLACK), 2f)));
 	}
 
 	@Test
@@ -143,15 +145,15 @@ public class ImageUtilTest
 
 		for (BufferedImage image : grayscaleColors)
 		{
-			assert(isGrayscale(image));
+			assertTrue(isGrayscale(image));
 		}
 		for (BufferedImage image : nonGrayscaleColors)
 		{
-			assert(!isGrayscale(image));
+			assertFalse(isGrayscale(image));
 		}
 		for (BufferedImage image : ArrayUtils.addAll(grayscaleColors, nonGrayscaleColors))
 		{
-			assert(isGrayscale(ImageUtil.grayscaleImage(image)));
+			assertTrue(isGrayscale(ImageUtil.grayscaleImage(image)));
 		}
 	}
 
@@ -190,24 +192,24 @@ public class ImageUtilTest
 		};
 		for (BufferedImage image : assertSameAfterResize)
 		{
-			assert(bufferedImagesEqual(image, ImageUtil.resizeImage(image, image.getWidth(), image.getHeight())));
+			assertTrue(bufferedImagesEqual(image, ImageUtil.resizeImage(image, image.getWidth(), image.getHeight())));
 		}
 	}
 
 	@Test
 	public void resizeCanvas()
 	{
-		assert(bufferedImagesEqual(centeredPixel(BLACK), ImageUtil.resizeCanvas(oneByOne(BLACK), 3, 3)));
-		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.resizeCanvas(oneByOne(BLACK), 1, 1)));
-		assert(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.resizeCanvas(centeredPixel(BLACK), 1, 1)));
+		assertTrue(bufferedImagesEqual(centeredPixel(BLACK), ImageUtil.resizeCanvas(oneByOne(BLACK), 3, 3)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.resizeCanvas(oneByOne(BLACK), 1, 1)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK), ImageUtil.resizeCanvas(centeredPixel(BLACK), 1, 1)));
 
 		BufferedImage expected = new BufferedImage(2, 1, BufferedImage.TYPE_INT_ARGB);
 		expected.setRGB(1, 0, BLACK.getRGB());
-		assert(bufferedImagesEqual(expected, ImageUtil.resizeCanvas(oneByOne(BLACK), 2, 1)));
+		assertTrue(bufferedImagesEqual(expected, ImageUtil.resizeCanvas(oneByOne(BLACK), 2, 1)));
 
 		expected = new BufferedImage(1, 2, BufferedImage.TYPE_INT_ARGB);
 		expected.setRGB(0, 1, BLACK.getRGB());
-		assert(bufferedImagesEqual(expected, ImageUtil.resizeCanvas(oneByOne(BLACK), 1, 2)));
+		assertTrue(bufferedImagesEqual(expected, ImageUtil.resizeCanvas(oneByOne(BLACK), 1, 2)));
 	}
 
 	@Test
@@ -216,10 +218,10 @@ public class ImageUtilTest
 		// TODO: Test more than 90° rotations
 
 		// Evenly-sized images (2x2)
-		assert(bufferedImagesEqual(BLACK_PIXEL_TOP_RIGHT, ImageUtil.rotateImage(BLACK_PIXEL_TOP_LEFT, Math.PI / 2)));
-		assert(bufferedImagesEqual(BLACK_PIXEL_BOTTOM_RIGHT, ImageUtil.rotateImage(BLACK_PIXEL_TOP_LEFT, Math.PI)));
-		assert(bufferedImagesEqual(BLACK_PIXEL_BOTTOM_LEFT, ImageUtil.rotateImage(BLACK_PIXEL_TOP_LEFT, Math.PI * 3 / 2)));
-		assert(bufferedImagesEqual(BLACK_PIXEL_TOP_LEFT, ImageUtil.rotateImage(BLACK_PIXEL_TOP_LEFT, Math.PI * 2)));
+		assertTrue(bufferedImagesEqual(BLACK_PIXEL_TOP_RIGHT, ImageUtil.rotateImage(BLACK_PIXEL_TOP_LEFT, Math.PI / 2)));
+		assertTrue(bufferedImagesEqual(BLACK_PIXEL_BOTTOM_RIGHT, ImageUtil.rotateImage(BLACK_PIXEL_TOP_LEFT, Math.PI)));
+		assertTrue(bufferedImagesEqual(BLACK_PIXEL_BOTTOM_LEFT, ImageUtil.rotateImage(BLACK_PIXEL_TOP_LEFT, Math.PI * 3 / 2)));
+		assertTrue(bufferedImagesEqual(BLACK_PIXEL_TOP_LEFT, ImageUtil.rotateImage(BLACK_PIXEL_TOP_LEFT, Math.PI * 2)));
 
 		// Unevenly-sized images (2x1); when rotated 90° become (2x2) images
 		final BufferedImage twoByOneLeft = new BufferedImage(2, 1, BufferedImage.TYPE_INT_ARGB);
@@ -232,33 +234,33 @@ public class ImageUtilTest
 		oneByTwoBottom.setRGB(0, 0, new Color(0, 0, 0, 127).getRGB());
 		oneByTwoBottom.setRGB(0, 1, BLACK.getRGB());
 
-		assert(bufferedImagesEqual(oneByTwoTop, ImageUtil.rotateImage(twoByOneLeft, Math.PI / 2)));
-		assert(bufferedImagesEqual(twoByTwoRight, ImageUtil.rotateImage(twoByOneLeft, Math.PI)));
-		assert(bufferedImagesEqual(oneByTwoBottom, ImageUtil.rotateImage(twoByOneLeft, Math.PI * 3 / 2)));
-		assert(bufferedImagesEqual(twoByOneLeft, ImageUtil.rotateImage(twoByOneLeft, Math.PI * 2)));
+		assertTrue(bufferedImagesEqual(oneByTwoTop, ImageUtil.rotateImage(twoByOneLeft, Math.PI / 2)));
+		assertTrue(bufferedImagesEqual(twoByTwoRight, ImageUtil.rotateImage(twoByOneLeft, Math.PI)));
+		assertTrue(bufferedImagesEqual(oneByTwoBottom, ImageUtil.rotateImage(twoByOneLeft, Math.PI * 3 / 2)));
+		assertTrue(bufferedImagesEqual(twoByOneLeft, ImageUtil.rotateImage(twoByOneLeft, Math.PI * 2)));
 	}
 
 	@Test
 	public void flipImage()
 	{
-		assert(bufferedImagesEqual(BLACK_PIXEL_TOP_LEFT, ImageUtil.flipImage(BLACK_PIXEL_TOP_LEFT, false, false)));
-		assert(bufferedImagesEqual(BLACK_PIXEL_TOP_RIGHT, ImageUtil.flipImage(BLACK_PIXEL_TOP_LEFT, true, false)));
-		assert(bufferedImagesEqual(BLACK_PIXEL_BOTTOM_LEFT, ImageUtil.flipImage(BLACK_PIXEL_TOP_LEFT, false, true)));
-		assert(bufferedImagesEqual(BLACK_PIXEL_BOTTOM_RIGHT, ImageUtil.flipImage(BLACK_PIXEL_TOP_LEFT, true, true)));
+		assertTrue(bufferedImagesEqual(BLACK_PIXEL_TOP_LEFT, ImageUtil.flipImage(BLACK_PIXEL_TOP_LEFT, false, false)));
+		assertTrue(bufferedImagesEqual(BLACK_PIXEL_TOP_RIGHT, ImageUtil.flipImage(BLACK_PIXEL_TOP_LEFT, true, false)));
+		assertTrue(bufferedImagesEqual(BLACK_PIXEL_BOTTOM_LEFT, ImageUtil.flipImage(BLACK_PIXEL_TOP_LEFT, false, true)));
+		assertTrue(bufferedImagesEqual(BLACK_PIXEL_BOTTOM_RIGHT, ImageUtil.flipImage(BLACK_PIXEL_TOP_LEFT, true, true)));
 	}
 
 	@Test
 	public void fillImage()
 	{
 		// fillImage(BufferedImage image, Color color)
-		assert(bufferedImagesEqual(centeredPixel(GRAY), ImageUtil.fillImage(centeredPixel(BLACK), GRAY)));
-		assert(bufferedImagesEqual(solidColor(3, 3, GREEN), ImageUtil.fillImage(solidColor(3, 3, BLACK), GREEN)));
-		assert(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.fillImage(oneByOne(BLACK_TRANSPARENT), WHITE)));
+		assertTrue(bufferedImagesEqual(centeredPixel(GRAY), ImageUtil.fillImage(centeredPixel(BLACK), GRAY)));
+		assertTrue(bufferedImagesEqual(solidColor(3, 3, GREEN), ImageUtil.fillImage(solidColor(3, 3, BLACK), GREEN)));
+		assertTrue(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.fillImage(oneByOne(BLACK_TRANSPARENT), WHITE)));
 
 		// fillImage(BufferedImage image, Color color, Predicate<Color> fillCondition)
 		BufferedImage expected = solidColor(CORNER_SIZE, CORNER_SIZE, WHITE);
 		expected.setRGB(0, 0, new Color(0, true).getRGB());
-		assert(bufferedImagesEqual(expected, ImageUtil.fillImage(BLACK_PIXEL_TOP_LEFT, WHITE, ColorUtil::isFullyTransparent)));
+		assertTrue(bufferedImagesEqual(expected, ImageUtil.fillImage(BLACK_PIXEL_TOP_LEFT, WHITE, ColorUtil::isFullyTransparent)));
 	}
 
 	@Test
@@ -277,13 +279,13 @@ public class ImageUtilTest
 				expected.setRGB(x, y, BLACK.getRGB());
 			}
 		}
-		assert(bufferedImagesEqual(expected, ImageUtil.outlineImage(centeredPixel(BLACK), BLACK)));
+		assertTrue(bufferedImagesEqual(expected, ImageUtil.outlineImage(centeredPixel(BLACK), BLACK)));
 		expected.setRGB(1, 1, WHITE.getRGB());
-		assert(bufferedImagesEqual(expected, ImageUtil.outlineImage(centeredPixel(WHITE), BLACK)));
+		assertTrue(bufferedImagesEqual(expected, ImageUtil.outlineImage(centeredPixel(WHITE), BLACK)));
 		expected = solidColor(CORNER_SIZE, CORNER_SIZE, WHITE);
 		expected.setRGB(0, 0, BLACK.getRGB());
 		expected.setRGB(1, 1, new Color(0, true).getRGB());
-		assert(bufferedImagesEqual(expected, ImageUtil.outlineImage(BLACK_PIXEL_TOP_LEFT, WHITE)));
+		assertTrue(bufferedImagesEqual(expected, ImageUtil.outlineImage(BLACK_PIXEL_TOP_LEFT, WHITE)));
 
 		// outlineImage(BufferedImage image, Color color, Predicate<Color> fillCondition)
 		BufferedImage test = new BufferedImage(CORNER_SIZE, CORNER_SIZE, BufferedImage.TYPE_INT_ARGB);
@@ -291,13 +293,13 @@ public class ImageUtilTest
 		test.setRGB(1, 0, GRAY.getRGB());
 		expected = test;
 		expected.setRGB(0, 1, BLUE.getRGB());
-		assert(bufferedImagesEqual(expected, ImageUtil.outlineImage(test, BLUE, (color -> color.equals(BLACK)))));
+		assertTrue(bufferedImagesEqual(expected, ImageUtil.outlineImage(test, BLUE, (color -> color.equals(BLACK)))));
 
 		// outlineImage(BufferedImage image, Color color, Boolean outlineCorners)
 		expected = solidColor(CORNER_SIZE, CORNER_SIZE, WHITE);
 		expected.setRGB(0, 0, BLACK.getRGB());
-		assert(bufferedImagesEqual(expected, ImageUtil.outlineImage(BLACK_PIXEL_TOP_LEFT, WHITE, true)));
-		assert(bufferedImagesEqual(solidColor(3, 3, BLACK), ImageUtil.outlineImage(centeredPixel(BLACK), BLACK, true)));
+		assertTrue(bufferedImagesEqual(expected, ImageUtil.outlineImage(BLACK_PIXEL_TOP_LEFT, WHITE, true)));
+		assertTrue(bufferedImagesEqual(solidColor(3, 3, BLACK), ImageUtil.outlineImage(centeredPixel(BLACK), BLACK, true)));
 
 		// outlineImage(BufferedImage image, Color color, Predicate<Color> fillCondition, Boolean outlineCorners)
 		test = new BufferedImage(5, 5, BufferedImage.TYPE_INT_ARGB);
@@ -317,7 +319,7 @@ public class ImageUtilTest
 		expected.setRGB(2, 4, RED.getRGB());
 		expected.setRGB(3, 4, RED.getRGB());
 		Predicate<Color> testPredicate = (color -> ColorUtil.isNotFullyTransparent(color) && color.getRed() > 75 && color.getGreen() > 75 && color.getBlue() > 75);
-		assert(bufferedImagesEqual(expected, ImageUtil.outlineImage(test, RED, testPredicate, true)));
+		assertTrue(bufferedImagesEqual(expected, ImageUtil.outlineImage(test, RED, testPredicate, true)));
 	}
 
 	/**
