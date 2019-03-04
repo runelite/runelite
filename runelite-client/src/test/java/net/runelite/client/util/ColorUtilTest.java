@@ -49,7 +49,8 @@ public class ColorUtilTest
 	@Test
 	public void colorTag()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals("<col=" + hex + ">", ColorUtil.colorTag(color));
 		});
 	}
@@ -57,7 +58,8 @@ public class ColorUtilTest
 	@Test
 	public void prependColorTag()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals("<col=" + hex + ">test", ColorUtil.prependColorTag("test", color));
 			assertEquals("<col=" + hex + ">", ColorUtil.prependColorTag("", color));
 		});
@@ -68,7 +70,8 @@ public class ColorUtilTest
 	@Test
 	public void wrapWithColorTag()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals("<col=" + hex + ">test</col>", ColorUtil.wrapWithColorTag("test", color));
 			assertEquals("<col=" + hex + "></col>", ColorUtil.wrapWithColorTag("", color));
 		});
@@ -77,7 +80,8 @@ public class ColorUtilTest
 	@Test
 	public void toHexColor()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals("#" + hex, ColorUtil.toHexColor(color));
 		});
 	}
@@ -94,7 +98,8 @@ public class ColorUtilTest
 	@Test
 	public void colorToHexCode()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals(hex, ColorUtil.colorToHexCode(color));
 		});
 	}
