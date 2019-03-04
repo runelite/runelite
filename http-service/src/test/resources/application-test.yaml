@@ -1,35 +1,17 @@
-oauth:
-  client-id: moo
-  client-secret: cow
-
-minio:
-  endpoint: http://10.96.22.171:9000
-  accesskey: AM54M27O4WZK65N6F8IP
-  secretkey: /PZCxzmsJzwCHYlogcymuprniGCaaLUOET2n6yMP
-  bucket: runelite
-
-runelite:
-  twitter:
-    consumerkey: moo
-    secretkey: cow
-    listid: 968949795153948673
-
-logging:
-  level:
-    net:
-      runelite:
-        DEBUG
-
+# Use in-memory database for tests
 datasource:
   runelite:
+    jndiName:
     driverClassName: org.h2.Driver
     type: org.h2.jdbcx.JdbcDataSource
     url: jdbc:h2:mem:runelite
   runelite-cache:
+    jndiName:
     driverClassName: org.h2.Driver
     type: org.h2.jdbcx.JdbcDataSource
     url: jdbc:h2:mem:cache
   runelite-tracker:
+    jndiName:
     driverClassName: org.h2.Driver
     type: org.h2.jdbcx.JdbcDataSource
     url: jdbc:h2:mem:xptracker

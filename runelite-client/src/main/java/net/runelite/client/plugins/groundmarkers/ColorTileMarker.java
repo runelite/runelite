@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.groundmarkers;
 
-public interface EnumComposition
+import java.awt.Color;
+import lombok.Value;
+import net.runelite.api.coords.WorldPoint;
+
+/**
+ * Used to denote marked tiles and their colors.
+ * Note: This is not used for serialization of ground markers; see {@link GroundMarkerPoint}
+ */
+@Value
+class ColorTileMarker
 {
-	int[] getKeys();
+	private WorldPoint worldPoint;
+	private Color color;
 
-	int[] getIntVals();
-
-	String[] getStringVals();
-
-	int getIntValue(int key);
-
-	String getStringValue(int key);
+	boolean sameTile(final ColorTileMarker other)
+	{
+		return worldPoint.equals(other.getWorldPoint());
+	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.events;
 
-public interface EnumComposition
+import lombok.Data;
+
+/**
+ * An event where a new RuneLite account session has been closed,
+ * typically when logging out of the account.
+ * <p>
+ * Note: This event is not to be confused with a RuneScape session,
+ * it has nothing to do with whether an account is being logged out.
+ */
+@Data
+public class SessionClose
 {
-	int[] getKeys();
 
-	int[] getIntVals();
-
-	String[] getStringVals();
-
-	int getIntValue(int key);
-
-	String getStringValue(int key);
 }

@@ -89,7 +89,7 @@ public class AccountService
 	private static final String SCOPE = "https://www.googleapis.com/auth/userinfo.email";
 	private static final String USERINFO = "https://www.googleapis.com/oauth2/v2/userinfo";
 	private static final String RL_OAUTH_URL = "https://api.runelite.net/oauth/";
-	private static final String RL_REDIR = "http://runelite.net/logged-in";
+	private static final String RL_REDIR = "https://runelite.net/logged-in";
 
 	private final Gson gson = RuneLiteAPI.GSON;
 	private final Gson websocketGson = WebsocketGsonFactory.build();

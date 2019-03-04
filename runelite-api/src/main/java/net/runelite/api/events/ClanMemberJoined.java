@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.events;
 
-public interface EnumComposition
+import lombok.Value;
+import net.runelite.api.ClanMember;
+
+@Value
+public class ClanMemberJoined
 {
-	int[] getKeys();
-
-	int[] getIntVals();
-
-	String[] getStringVals();
-
-	int getIntValue(int key);
-
-	String getStringValue(int key);
+	/**
+	 * The ClanMember that joined
+	 */
+	private ClanMember member;
 }

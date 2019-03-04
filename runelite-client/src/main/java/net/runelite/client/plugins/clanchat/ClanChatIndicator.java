@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 Sebastiaan <https://github.com/SebastiaanVanspauwen>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.clanchat;
 
-public interface EnumComposition
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.infobox.Counter;
+
+class ClanChatIndicator extends Counter
 {
-	int[] getKeys();
+	private final ClanChatPlugin plugin;
 
-	int[] getIntVals();
+	ClanChatIndicator(BufferedImage image, ClanChatPlugin plugin)
+	{
+		super(image, plugin, plugin.getClanAmount());
+		this.plugin = plugin;
+	}
 
-	String[] getStringVals();
+	@Override
+	public int getCount()
+	{
+		return plugin.getClanAmount();
+	}
 
-	int getIntValue(int key);
+	@Override
+	public String getTooltip()
+	{
+		return plugin.getClanAmount() + " clan member(s) near you";
+	}
 
-	String getStringValue(int key);
+	@Override
+	public Color getTextColor()
+	{
+		return Color.WHITE;
+	}
 }

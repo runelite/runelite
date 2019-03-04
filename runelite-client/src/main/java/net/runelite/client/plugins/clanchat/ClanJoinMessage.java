@@ -22,17 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.clanchat;
 
-public interface EnumComposition
+import lombok.Value;
+import net.runelite.api.MessageNode;
+
+@Value
+class ClanJoinMessage
 {
-	int[] getKeys();
-
-	int[] getIntVals();
-
-	String[] getStringVals();
-
-	int getIntValue(int key);
-
-	String getStringValue(int key);
+	private final MessageNode messageNode;
+	private final int getMessageId;
+	private final int tick;
 }

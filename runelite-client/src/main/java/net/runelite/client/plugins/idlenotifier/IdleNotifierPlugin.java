@@ -197,6 +197,7 @@ public class IdleNotifierPlugin extends Plugin
 			case MINING_MOTHERLODE_INFERNAL:
 			case MINING_MOTHERLODE_3A:
 			/* Herblore */
+			case HERBLORE_PESTLE_AND_MORTAR:
 			case HERBLORE_POTIONMAKING:
 			case HERBLORE_MAKE_TAR:
 			/* Magic */

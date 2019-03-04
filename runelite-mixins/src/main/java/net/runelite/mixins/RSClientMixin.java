@@ -77,9 +77,9 @@ import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.CanvasSizeChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ClanChanged;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.ExperienceChanged;
-import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -120,7 +120,6 @@ import net.runelite.rs.api.RSItem;
 import net.runelite.rs.api.RSItemContainer;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSName;
-import net.runelite.rs.api.RSNameable;
 import net.runelite.rs.api.RSPlayer;
 import net.runelite.rs.api.RSSpritePixels;
 import net.runelite.rs.api.RSWidget;
@@ -725,7 +724,21 @@ public abstract class RSClientMixin implements RSClient
 	public ClanMember[] getClanMembers()
 	{
 		final RSClanMemberManager clanMemberManager = getClanMemberManager();
-		return clanMemberManager != null ? (ClanMember[]) getClanMemberManager().getNameables() : null;
+		return clanMemberManager != null ? getClanMemberManager().getNameables() : null;
+	}
+
+	@Inject
+	@Override
+	public String getClanOwner()
+	{
+		return getClanMemberManager().getClanOwner();
+	}
+
+	@Inject
+	@Override
+	public String getClanChatName()
+	{
+		return getClanMemberManager().getClanChatName();
 	}
 
 	@Inject
@@ -744,8 +757,7 @@ public abstract class RSClientMixin implements RSClient
 			return null;
 		}
 
-		RSNameable[] nameables = friendContainer.getNameables();
-		return (Friend[]) nameables;
+		return friendContainer.getNameables();
 	}
 
 	@Inject
@@ -783,8 +795,7 @@ public abstract class RSClientMixin implements RSClient
 			return null;
 		}
 
-		RSNameable[] nameables = ignoreContainer.getNameables();
-		return (Ignore[]) nameables;
+		return ignoreContainer.getNameables();
 	}
 
 	@Inject
@@ -1013,6 +1024,7 @@ public abstract class RSClientMixin implements RSClient
 	public static void settingsChanged(int idx)
 	{
 		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setIndex(idx);
 		client.getCallbacks().post(varbitChanged);
 	}
 

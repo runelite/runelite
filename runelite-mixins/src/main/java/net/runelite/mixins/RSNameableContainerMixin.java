@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -22,17 +23,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.mixins;
 
-public interface EnumComposition
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSName;
+import net.runelite.rs.api.RSNameable;
+import net.runelite.rs.api.RSNameableContainer;
+
+@Mixin(RSNameableContainer.class)
+public abstract class RSNameableContainerMixin implements RSNameableContainer
 {
-	int[] getKeys();
+	/**
+	 * Default implementation of rl$add
+	 * @param name
+	 * @param prevName
+	 */
+	@Inject
+	@Override
+	public void rl$add(RSName name, RSName prevName)
+	{
+	}
 
-	int[] getIntVals();
+	/**
+	 * Default implementation of rl$del
+	 * @param nameable
+	 */
+	@Inject
+	@Override
+	public void rl$remove(RSNameable nameable)
+	{
+	}
 
-	String[] getStringVals();
+	@Inject
+	@MethodHook(value = "add", end = true)
+	public void add(RSName name, RSName prevName)
+	{
+		rl$add(name, prevName);
+	}
 
-	int getIntValue(int key);
-
-	String getStringValue(int key);
+	@Inject
+	@MethodHook("remove")
+	public void remove(RSNameable nameable)
+	{
+		rl$remove(nameable);
+	}
 }
