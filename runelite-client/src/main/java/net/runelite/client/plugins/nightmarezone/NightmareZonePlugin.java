@@ -72,6 +72,7 @@ public class NightmareZonePlugin extends Plugin
 	// above the threshold before sending notifications
 	private boolean absorptionNotificationSend = true;
 	private boolean hitpointsNotificationSend = true;
+	private int lastTickHitpointsVal = 0;
 
 	@Override
 	protected void startUp() throws Exception
@@ -117,10 +118,9 @@ public class NightmareZonePlugin extends Plugin
 			}
 
 			if (!hitpointsNotificationSend)
-            {
-                hitpointsNotificationSend = true;
-            }
-
+			{
+				hitpointsNotificationSend = true;
+			}
 			return;
 		}
 		if (config.absorptionNotification())
@@ -128,7 +128,8 @@ public class NightmareZonePlugin extends Plugin
 			checkAbsorption();
 		}
 
-		if (config.hitpointsNotification()) {
+		if (config.hitpointsNotification())
+		{
 			checkHitpoints();
 		}
 	}
@@ -208,27 +209,20 @@ public class NightmareZonePlugin extends Plugin
 	{
 		if (!hitpointsNotificationSend)
 		{
-			if (client.getBoostedSkillLevel(Skill.HITPOINTS) > 1)
+			if (lastTickHitpointsVal == 1 && client.getBoostedSkillLevel(Skill.HITPOINTS) == 2)
 			{
-				boolean shouldSend = true;
-			    if (config.overloadNotification()) {
-			        if (client.getBoostedSkillLevel(Skill.HITPOINTS) == 51)
-			        {
-			            shouldSend = false;
-					}
-				}
-			    if (shouldSend) {
-					notifier.notify("Hitpoints went above 1");
-					hitpointsNotificationSend = true;
-				}
+				notifier.notify("Hitpoints went above 1");
+				hitpointsNotificationSend = true;
 			}
 		}
-		else {
+		else
+		{
 			if (client.getBoostedSkillLevel(Skill.HITPOINTS) == 1)
 			{
 				hitpointsNotificationSend = false;
 			}
 		}
+		lastTickHitpointsVal = client.getBoostedSkillLevel(Skill.HITPOINTS);
 	}
 
 	public boolean isInNightmareZone()
