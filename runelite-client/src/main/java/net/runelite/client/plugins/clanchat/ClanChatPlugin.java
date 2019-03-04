@@ -353,10 +353,38 @@ public class ClanChatPlugin extends Plugin
 			return;
 		}
 
-		if (chatMessage.getType() == ChatMessageType.CLANCHAT && client.getClanChatCount() > 0)
+		if (client.getClanChatCount() <= 0)
 		{
-			insertClanRankIcon(chatMessage);
+			return;
 		}
+
+		switch (chatMessage.getType())
+		{
+			case PRIVATE_MESSAGE_RECEIVED:
+			case PRIVATE_MESSAGE_RECEIVED_MOD:
+				if (!config.privateMessageIcons())
+				{
+					return;
+				}
+				break;
+			case PUBLIC:
+			case PUBLIC_MOD:
+				if (!config.publicChatIcons())
+				{
+					return;
+				}
+				break;
+			case CLANCHAT:
+				if (!config.clanChatIcons())
+				{
+					return;
+				}
+				break;
+			default:
+				return;
+		}
+
+		insertClanRankIcon(chatMessage);
 	}
 
 	@Subscribe
@@ -431,18 +459,22 @@ public class ClanChatPlugin extends Plugin
 
 	private void insertClanRankIcon(final ChatMessage message)
 	{
-		if (!config.clanChatIcons())
-		{
-			return;
-		}
-
 		final ClanMemberRank rank = clanManager.getRank(message.getName());
 
 		if (rank != null && rank != ClanMemberRank.UNRANKED)
 		{
 			int iconNumber = clanManager.getIconNumber(rank);
-			message.getMessageNode()
-				.setSender(message.getMessageNode().getSender() + " <img=" + iconNumber + ">");
+			final String img = "<img=" + iconNumber + ">";
+			if (message.getType() == ChatMessageType.CLANCHAT)
+			{
+				message.getMessageNode()
+					.setSender(message.getMessageNode().getSender() + " " + img);
+			}
+			else
+			{
+				message.getMessageNode()
+					.setName(img + message.getMessageNode().getName());
+			}
 			client.refreshChat();
 		}
 	}
