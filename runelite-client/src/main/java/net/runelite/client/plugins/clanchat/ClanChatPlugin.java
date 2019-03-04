@@ -315,7 +315,7 @@ public class ClanChatPlugin extends Plugin
 			channelColor = CHAT_CLAN_NAME_TRANSPARENT_BACKGROUND;
 		}
 
-		if (rank != null && rank != ClanMemberRank.UNRANKED)
+		if (config.clanChatIcons() && rank != null && rank != ClanMemberRank.UNRANKED)
 		{
 			int iconNumber = clanManager.getIconNumber(rank);
 			rankTag = " <img=" + iconNumber + ">";
