@@ -111,43 +111,59 @@ public class PestControlNpc
 	);
 
 	@Getter
-	private static final Set<Integer> shieldedPortalIdSet = ImmutableSet.of(
-		NpcID.PORTAL_1751,
-		NpcID.PORTAL_1752,
-		NpcID.PORTAL_1753,
-		NpcID.PORTAL_1754
+	private static final Set<Integer> activePortalIdSet = ImmutableSet.of(
+		NpcID.PORTAL_1747, // Novice Purple Active
+		NpcID.PORTAL_1748, // Novice Blue Active
+		NpcID.PORTAL_1749, // Novice Yellow Active
+		NpcID.PORTAL_1750, // Novice Red Active
+		NpcID.PORTAL, // Intermediate Purple Active
+		NpcID.PORTAL_1740, // Intermediate Blue Active
+		NpcID.PORTAL_1741, // Intermediate Yellow Active
+		NpcID.PORTAL_1742 // Intermediate Red Active
 	);
 
 	@Getter
-	private static final Set<Integer> activePortalIdSet = ImmutableSet.of(
-		NpcID.PORTAL_1747,
-		NpcID.PORTAL_1748,
-		NpcID.PORTAL_1749,
-		NpcID.PORTAL_1750
+	private static final Set<Integer> shieldedPortalIdSet = ImmutableSet.of(
+		NpcID.PORTAL_1751, // Novice Purple Shielded
+		NpcID.PORTAL_1752, // Novice Blue Shielded
+		NpcID.PORTAL_1753, // Novice Yellow Shielded
+		NpcID.PORTAL_1754, // Novice Red Shielded
+		NpcID.PORTAL_1743, // Intermediate Purple Shielded
+		NpcID.PORTAL_1744, // Intermediate Blue Shielded
+		NpcID.PORTAL_1745, // Intermediate Yellow Shielded
+		NpcID.PORTAL_1746 // Intermediate Red Shielded
 	);
 
 	@Getter
 	private static final Set<Integer> purplePortalIdSet = ImmutableSet.of(
-		NpcID.PORTAL_1747,
-		NpcID.PORTAL_1751
+		NpcID.PORTAL_1747, // Novice Purple Active
+		NpcID.PORTAL_1751, // Novice Purple Shielded
+		NpcID.PORTAL, // Intermediate Purple Active
+		NpcID.PORTAL_1743 // Intermediate Purple Shielded
 	);
 
 	@Getter
 	private static final Set<Integer> bluePortalIdSet = ImmutableSet.of(
-		NpcID.PORTAL_1748,
-		NpcID.PORTAL_1752
+		NpcID.PORTAL_1748, // Novice Blue Active
+		NpcID.PORTAL_1752, // Novice Blue Shielded
+		NpcID.PORTAL_1740, // Intermediate Blue Active
+		NpcID.PORTAL_1744 // Intermediate Blue Shielded
 	);
 
 	@Getter
 	private static final Set<Integer> yellowPortalIdSet = ImmutableSet.of(
-		NpcID.PORTAL_1749,
-		NpcID.PORTAL_1753
+		NpcID.PORTAL_1749, // Novice Yellow Active
+		NpcID.PORTAL_1753, // Novice Yellow Shielded
+		NpcID.PORTAL_1741, // Intermediate Yellow Active
+		NpcID.PORTAL_1745 // Intermediate Yellow Shielded
 	);
 
 	@Getter
 	private static final Set<Integer> redPortalIdSet = ImmutableSet.of(
-		NpcID.PORTAL_1750,
-		NpcID.PORTAL_1754
+		NpcID.PORTAL_1750, // Novice Red Active
+		NpcID.PORTAL_1754, // Novice Red Shielded
+		NpcID.PORTAL_1742, // Intermediate Red Active
+		NpcID.PORTAL_1746 // Intermediate Red Shielded
 	);
 
 	@Getter
