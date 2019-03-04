@@ -24,6 +24,7 @@
  */
 package net.runelite.mixins;
 
+import net.runelite.api.ClanMember;
 import net.runelite.api.events.ClanMemberJoined;
 import net.runelite.api.events.ClanMemberLeft;
 import net.runelite.api.mixins.Inject;
@@ -44,15 +45,27 @@ public abstract class RSClanMemberManagerMixin implements RSClanMemberManager
 	@Override
 	public void rl$add(RSName name, RSName prevName)
 	{
-		ClanMemberJoined event = new ClanMemberJoined(name.getName());
-		client.getCallbacks().post(event);
+		ClanMember member = findByName(name);
+		if (member == null)
+		{
+			return;
+		}
+
+		ClanMemberJoined event = new ClanMemberJoined(member);
+		client.getCallbacks().postDeferred(event);
 	}
 
 	@Inject
 	@Override
 	public void rl$remove(RSNameable nameable)
 	{
-		ClanMemberLeft event = new ClanMemberLeft(nameable.getRsName().getName());
-		client.getCallbacks().post(event);
+		ClanMember member = findByName(nameable.getRsName());
+		if (member == null)
+		{
+			return;
+		}
+
+		ClanMemberLeft event = new ClanMemberLeft(member);
+		client.getCallbacks().postDeferred(event);
 	}
 }

@@ -41,6 +41,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.ClanMember;
 import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -170,38 +171,40 @@ public class ClanChatPlugin extends Plugin
 			return;
 		}
 
+		ClanMember member = event.getMember();
 		if (!config.showJoinLeave() ||
-			clanManager.getRank(event.getName()).getValue() < config.joinLeaveRank().getValue())
+			member.getRank().getValue() < config.joinLeaveRank().getValue())
 		{
 			return;
 		}
 
 		// attempt to filter out world hopping joins
-		if (!activityBuffer.containsKey(event.getName()))
+		if (!activityBuffer.containsKey(member.getUsername()))
 		{
 			ClanMemberActivity joinActivity = new ClanMemberActivity(ClanActivityType.JOINED,
-				event.getName(), client.getTickCount());
-			activityBuffer.put(event.getName(), joinActivity);
+				member, client.getTickCount());
+			activityBuffer.put(member.getUsername(), joinActivity);
 		}
 		else
 		{
-			activityBuffer.remove(event.getName());
+			activityBuffer.remove(member.getUsername());
 		}
 	}
 
 	@Subscribe
 	public void onClanMemberLeft(ClanMemberLeft event)
 	{
+		ClanMember member = event.getMember();
 		if (!config.showJoinLeave() ||
-			clanManager.getRank(event.getName()).getValue() < config.joinLeaveRank().getValue())
+			member.getRank().getValue() < config.joinLeaveRank().getValue())
 		{
 			return;
 		}
 
 		ClanMemberActivity leaveActivity = new ClanMemberActivity(ClanActivityType.LEFT,
-			event.getName(), client.getTickCount());
+			member, client.getTickCount());
 
-		activityBuffer.put(event.getName(), leaveActivity);
+		activityBuffer.put(member.getUsername(), leaveActivity);
 	}
 
 	@Subscribe
@@ -298,10 +301,10 @@ public class ClanChatPlugin extends Plugin
 		}
 	}
 
-	private void addActivityMessage(String memberName, ClanActivityType activityType)
+	private void addActivityMessage(ClanMember member, ClanActivityType activityType)
 	{
 		final String activityMessage = activityType == ClanActivityType.JOINED ? " has joined." : " has left.";
-		final ClanMemberRank rank = clanManager.getRank(memberName);
+		final ClanMemberRank rank = member.getRank();
 		String rankTag = "";
 		Color textColor = CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
 		Color channelColor = CHAT_CLAN_NAME_OPAQUE_BACKGROUND;
@@ -323,7 +326,7 @@ public class ClanChatPlugin extends Plugin
 			.append("[")
 			.append(ColorUtil.wrapWithColorTag(client.getClanChatName(), channelColor) + rankTag)
 			.append("] ")
-			.append(ColorUtil.wrapWithColorTag(memberName + activityMessage, textColor))
+			.append(ColorUtil.wrapWithColorTag(member.getUsername() + activityMessage, textColor))
 			.build();
 
 		client.addChatMessage(ChatMessageType.CLANCHAT_INFO, "", messageString, "");

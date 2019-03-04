@@ -37,6 +37,9 @@ public interface RSNameableContainer<T extends RSNameable>
 	@Import("isMember")
 	boolean isMember(RSName var1);
 
+	@Import("findByName")
+	T findByName(RSName name);
+
 	/**
 	 * Method called by the container when an element is added
 	 * @param name
