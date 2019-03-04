@@ -1,19 +1,27 @@
+# Enable debug logging
+debug: true
+logging.level.net.runelite: DEBUG
+
+# Development data sources
 datasource:
   runelite:
+    jndiName:
     driverClassName: com.mysql.jdbc.Driver
     type: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-    url: jdbc:mysql://192.168.1.2/runelite
+    url: jdbc:mysql://localhost:3306/runelite
     username: runelite
     password: runelite
   runelite-cache:
+    jndiName:
     driverClassName: com.mysql.jdbc.Driver
     type: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-    url: jdbc:mysql://192.168.1.2/cache
+    url: jdbc:mysql://localhost:3306/runelite-cache
     username: runelite
     password: runelite
   runelite-tracker:
+    jndiName:
     driverClassName: com.mysql.jdbc.Driver
     type: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-    url: jdbc:mysql://192.168.1.2/xptracker
+    url: jdbc:mysql://localhost:3306/runelite-tracker
     username: runelite
     password: runelite

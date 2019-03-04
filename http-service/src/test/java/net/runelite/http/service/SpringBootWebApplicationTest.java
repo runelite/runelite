@@ -34,10 +34,9 @@ public class SpringBootWebApplicationTest
 	@Ignore
 	public void run() throws InterruptedException
 	{
-		String[] args = new String[]{
-			"--spring.config.location=classpath:/application.yaml,classpath:/dev.yaml"
-		};
-		SpringApplication.run(SpringBootWebApplication.class, args);
+		System.setProperty("spring.profiles.active", "dev");
+		SpringApplication.run(SpringBootWebApplication.class);
+
 		for (;;)
 		{
 			Thread.sleep(100L);
