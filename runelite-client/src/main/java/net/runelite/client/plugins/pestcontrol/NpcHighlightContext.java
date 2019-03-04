@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2019, Yani <yani@xenokore.com>
  * All rights reserved.
  *
@@ -25,38 +24,18 @@
  */
 package net.runelite.client.plugins.pestcontrol;
 
+import java.awt.Color;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.pestcontrol.config.NpcHighlightStyle;
 
+@AllArgsConstructor
 @Getter
 @Setter
-class Portal
+public class NpcHighlightContext
 {
-	private PortalColor color;
-	private WidgetPortal widget;
-	private WorldPoint location;
-
-	private PortalState portalState = PortalState.SHIELDED;
-
-	public Portal(PortalColor color, WidgetPortal widget)
-	{
-		this.color = color;
-		this.widget = widget;
-	}
-
-	public boolean isShielded()
-	{
-		return portalState == PortalState.SHIELDED;
-	}
-
-	public boolean isDead()
-	{
-		return portalState == PortalState.DEAD;
-	}
-
-	public boolean isActive()
-	{
-		return (!isShielded() && !isDead());
-	}
+	private NpcHighlightStyle npcRenderStyle;
+	private Color color;
+	private boolean showNpcName = false;
 }
