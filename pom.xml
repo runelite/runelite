@@ -219,6 +219,7 @@
 					<configLocation>checkstyle.xml</configLocation>
 					<!-- exclude generated sources from checkstyle https://stackoverflow.com/a/30406454/7189686 -->
 					<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
