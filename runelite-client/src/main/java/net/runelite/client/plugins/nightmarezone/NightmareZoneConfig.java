@@ -111,8 +111,8 @@ public interface NightmareZoneConfig extends Config
 
 	@ConfigItem(
 			keyName = "hitpointsnotification",
-			name = "Hitpoints notification",
-			description = "Toggles notifications when your hitpoints gets above your threshold",
+			name = "1 HP notification",
+			description = "Sends a notification if your hitpoints goes above 1",
 			position = 8
 	)
 	default boolean hitpointsNotification()
@@ -132,21 +132,10 @@ public interface NightmareZoneConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hitpointsthreshold",
-			name = "Hitpoints Threshold",
-			description = "The max amount of hitpoints to send a notification at",
-			position = 10
-	)
-	default int hitpointsThreshold()
-	{
-		return 2;
-	}
-
-	@ConfigItem(
 		keyName = "absorptioncoloroverthreshold",
 		name = "Color above threshold",
 		description = "Configures the color for the absorption widget when above the threshold",
-		position = 11
+		position = 10
 	)
 	default Color absorptionColorAboveThreshold()
 	{
@@ -157,7 +146,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "absorptioncolorbelowthreshold",
 		name = "Color below threshold",
 		description = "Configures the color for the absorption widget when below the threshold",
-		position = 12
+		position = 11
 	)
 	default Color absorptionColorBelowThreshold()
 	{

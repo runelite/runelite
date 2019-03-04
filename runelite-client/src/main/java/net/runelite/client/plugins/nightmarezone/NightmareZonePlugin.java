@@ -116,6 +116,11 @@ public class NightmareZonePlugin extends Plugin
 				absorptionNotificationSend = true;
 			}
 
+			if (!hitpointsNotificationSend)
+            {
+                hitpointsNotificationSend = true;
+            }
+
 			return;
 		}
 		if (config.absorptionNotification())
@@ -203,14 +208,23 @@ public class NightmareZonePlugin extends Plugin
 	{
 		if (!hitpointsNotificationSend)
 		{
-			if (client.getBoostedSkillLevel(Skill.HITPOINTS) >= config.hitpointsThreshold())
+			if (client.getBoostedSkillLevel(Skill.HITPOINTS) > 1)
 			{
-				notifier.notify("Hitpoints above: " + config.hitpointsThreshold());
-				hitpointsNotificationSend = true;
+				boolean shouldSend = true;
+			    if (config.overloadNotification()) {
+			        if (client.getBoostedSkillLevel(Skill.HITPOINTS) == 51)
+			        {
+			            shouldSend = false;
+					}
+				}
+			    if (shouldSend) {
+					notifier.notify("Hitpoints went above 1");
+					hitpointsNotificationSend = true;
+				}
 			}
 		}
 		else {
-			if (client.getBoostedSkillLevel(Skill.HITPOINTS) < config.hitpointsThreshold())
+			if (client.getBoostedSkillLevel(Skill.HITPOINTS) == 1)
 			{
 				hitpointsNotificationSend = false;
 			}
