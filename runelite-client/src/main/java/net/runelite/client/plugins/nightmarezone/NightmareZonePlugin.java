@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Nickolaj <https://github.com/fire-proof>
+ * Copyright (c) 2018, Haashi <https://github.com/Haashi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,6 +26,7 @@
 package net.runelite.client.plugins.nightmarezone;
 
 import com.google.inject.Provides;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
@@ -41,6 +43,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
@@ -73,6 +76,9 @@ public class NightmareZonePlugin extends Plugin
 	private boolean absorptionNotificationSend = true;
 	private boolean hitpointsNotificationSend = true;
 	private int lastTickHitpointsVal = 0;
+	private int pointsPerHour = 0;
+	private int gameTime = 0;
+	private long lastTickMillis = 0;
 
 	@Override
 	protected void startUp() throws Exception
@@ -115,6 +121,9 @@ public class NightmareZonePlugin extends Plugin
 			if (!absorptionNotificationSend)
 			{
 				absorptionNotificationSend = true;
+				lastTickMillis = 0;
+				gameTime = 0;
+				pointsPerHour = 0;
 			}
 
 			if (!hitpointsNotificationSend)
@@ -131,6 +140,27 @@ public class NightmareZonePlugin extends Plugin
 		if (config.hitpointsNotification())
 		{
 			checkHitpoints();
+		}
+	}
+
+	@Schedule(
+		period = 1,
+		unit = ChronoUnit.SECONDS
+	)
+	public void tickSkillTimes()
+	{
+		if (isInNightmareZone())
+		{
+			if (lastTickMillis == 0)
+			{
+				lastTickMillis = System.currentTimeMillis();
+				return;
+			}
+			final long nowMillis = System.currentTimeMillis();
+			final long tickDelta = nowMillis - lastTickMillis;
+			lastTickMillis = nowMillis;
+			gameTime += tickDelta;
+			pointsPerHour = 3600 * client.getVar(Varbits.NMZ_POINTS) / (gameTime / 1000);
 		}
 	}
 
@@ -228,5 +258,10 @@ public class NightmareZonePlugin extends Plugin
 	public boolean isInNightmareZone()
 	{
 		return Arrays.equals(client.getMapRegions(), NMZ_MAP_REGION);
+	}
+
+	public int getPointsPerHour()
+	{
+		return pointsPerHour;
 	}
 }

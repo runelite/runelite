@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Nickolaj <https://github.com/fire-proof>
+ * Copyright (c) 2018, Haashi <https://github.com/Haashi>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,6 +32,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Varbits;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
@@ -106,7 +108,20 @@ class NightmareZoneOverlay extends Overlay
 			.left("Points: ")
 			.right(StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)))
 			.build());
-
+		if (config.totalPoints())
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Total: ")
+				.right(StackFormatter.formatNumber(client.getVar(VarPlayer.NMZ_REWARD_POINTS)))
+				.build());
+		}
+		if (config.pointsPerHour())
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Points/hr: ")
+				.right(StackFormatter.formatNumber(plugin.getPointsPerHour()))
+				.build());
+		}
 		return panelComponent.render(graphics);
 	}
 
