@@ -393,7 +393,9 @@ public class ClanChatPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged state)
 	{
-		if (state.getGameState() == GameState.LOADING)
+		GameState gameState = state.getGameState();
+
+		if (gameState == GameState.LOGIN_SCREEN || gameState == GameState.CONNECTION_LOST || gameState == GameState.HOPPING)
 		{
 			clanMembers.clear();
 			removeClanCounter();
