@@ -158,7 +158,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "pointsperhour",
 		name = "Show points per hour",
 		description = "Toggles weither or not showing points per hour.",
-		position = 11
+		position = 12
 	)
 	default boolean pointsPerHour()
 	{
@@ -169,7 +169,7 @@ public interface NightmareZoneConfig extends Config
 		keyName = "totalpoints",
 		name = "Show total NMZ points",
 		description = "Toggles weither or not showing total NMZ points.",
-		position = 12
+		position = 13
 	)
 	default boolean totalPoints()
 	{
