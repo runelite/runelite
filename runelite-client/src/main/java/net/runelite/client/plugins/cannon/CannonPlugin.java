@@ -139,6 +139,7 @@ public class CannonPlugin extends Plugin
 		overlayManager.remove(cannonSpotOverlay);
 		cannonPlaced = false;
 		cannonPosition = null;
+		cannon = null;
 		cballsLeft = 0;
 		removeCounter();
 		skipProjectileCheckThisTick = false;
@@ -241,17 +242,15 @@ public class CannonPlugin extends Plugin
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		GameObject gameObject = event.getGameObject();
+		final GameObject gameObject = event.getGameObject();
+		final Player localPlayer = client.getLocalPlayer();
 
-		Player localPlayer = client.getLocalPlayer();
-		if (gameObject.getId() == CANNON_BASE && !cannonPlaced)
+		if (gameObject.getId() == CANNON_BASE &&
+			localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2 &&
+			localPlayer.getAnimation() == AnimationID.BURYING_BONES)
 		{
-			if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2
-				&& localPlayer.getAnimation() == AnimationID.BURYING_BONES)
-			{
-				cannonPosition = gameObject.getWorldLocation();
-				cannon = gameObject;
-			}
+			cannonPosition = gameObject.getWorldLocation();
+			cannon = gameObject;
 		}
 	}
 
