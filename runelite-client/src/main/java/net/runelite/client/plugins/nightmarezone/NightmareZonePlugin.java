@@ -29,6 +29,7 @@ import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -70,6 +71,7 @@ public class NightmareZonePlugin extends Plugin
 	// This starts as true since you need to get
 	// above the threshold before sending notifications
 	private boolean absorptionNotificationSend = true;
+	private boolean hitpointsNotificationSend = true;
 
 	@Override
 	protected void startUp() throws Exception
@@ -119,6 +121,10 @@ public class NightmareZonePlugin extends Plugin
 		if (config.absorptionNotification())
 		{
 			checkAbsorption();
+		}
+
+		if (config.hitpointsNotification()) {
+			checkHitpoints();
 		}
 	}
 
@@ -189,6 +195,24 @@ public class NightmareZonePlugin extends Plugin
 			if (absorptionPoints > config.absorptionThreshold())
 			{
 				absorptionNotificationSend = false;
+			}
+		}
+	}
+
+	private void checkHitpoints()
+	{
+		if (!hitpointsNotificationSend)
+		{
+			if (client.getBoostedSkillLevel(Skill.HITPOINTS) >= config.hitpointsThreshold())
+			{
+				notifier.notify("Hitpoints above: " + config.hitpointsThreshold());
+				hitpointsNotificationSend = true;
+			}
+		}
+		else {
+			if (client.getBoostedSkillLevel(Skill.HITPOINTS) < config.hitpointsThreshold())
+			{
+				hitpointsNotificationSend = false;
 			}
 		}
 	}
