@@ -71,13 +71,13 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 
 	public void changeSession(UUID sessionId)
 	{
-		if (Objects.equals(sessionId, this.sessionId))
-		{
-			return;
-		}
-
 		if (webSocket != null)
 		{
+			if (Objects.equals(sessionId, this.sessionId))
+			{
+				return;
+			}
+
 			close();
 			webSocket = null;
 		}
