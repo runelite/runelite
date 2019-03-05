@@ -42,6 +42,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.Notifier;
 
 @PluginDescriptor(
 	name = "Regeneration Meter",
@@ -52,6 +53,9 @@ public class RegenMeterPlugin extends Plugin
 {
 	private static final int SPEC_REGEN_TICKS = 50;
 	private static final int NORMAL_HP_REGEN_TICKS = 100;
+
+	@Inject
+	private Notifier notifier;
 
 	@Inject
 	private Client client;
@@ -74,6 +78,7 @@ public class RegenMeterPlugin extends Plugin
 	private int ticksSinceSpecRegen;
 	private int ticksSinceHPRegen;
 	private boolean wasRapidHeal;
+	private boolean hitpointsNotificationSend = true;
 
 	@Provides
 	RegenMeterConfig provideConfig(ConfigManager configManager)
@@ -137,6 +142,25 @@ public class RegenMeterPlugin extends Plugin
 
 		ticksSinceHPRegen = (ticksSinceHPRegen + 1) % ticksPerHPRegen;
 		hitpointsPercentage = ticksSinceHPRegen / (double) ticksPerHPRegen;
+
+		if (config.notifyHitpointsRegen())
+		{
+			if (!hitpointsNotificationSend)
+			{
+				if (hitpointsPercentage == 0.90 && client.getBoostedSkillLevel(Skill.HITPOINTS) == 1)
+				{
+					notifier.notify("Hitpoints about to regen");
+					hitpointsNotificationSend = true;
+				}
+			}
+			else
+			{
+				if (hitpointsPercentage != 0.90)
+				{
+					hitpointsNotificationSend = false;
+				}
+			}
+		}
 
 		int currentHP = client.getBoostedSkillLevel(Skill.HITPOINTS);
 		int maxHP = client.getRealSkillLevel(Skill.HITPOINTS);
