@@ -67,7 +67,7 @@ public class AmmoPlugin extends Plugin
 			ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
 			if (container != null)
 			{
-				updateInfobox(container.getItems());
+				parseInventory(container.getItems());
 			}
 		});
 	}
@@ -87,18 +87,30 @@ public class AmmoPlugin extends Plugin
 			return;
 		}
 
-		updateInfobox(event.getItemContainer().getItems());
+		parseInventory(event.getItemContainer().getItems());
 	}
 
-	private void updateInfobox(Item[] items)
+	private void parseInventory(Item[] items)
 	{
+		//Check for weapon slot items. This overrides the ammo slot
+		if (items.length >= EquipmentInventorySlot.WEAPON.getSlotIdx() - 1)
+		{
+			final Item weapon = items[EquipmentInventorySlot.WEAPON.getSlotIdx()];
+			final ItemComposition weaponComp = itemManager.getItemComposition(weapon.getId());
+			if (weaponComp.isStackable())
+			{
+				updateInfobox(weapon, weaponComp);
+				return;
+			}
+		}
+
 		if (items.length <= EquipmentInventorySlot.AMMO.getSlotIdx())
 		{
 			return;
 		}
 
-		Item ammo = items[EquipmentInventorySlot.AMMO.getSlotIdx()];
-		ItemComposition comp = itemManager.getItemComposition(ammo.getId());
+		final Item ammo = items[EquipmentInventorySlot.AMMO.getSlotIdx()];
+		final ItemComposition comp = itemManager.getItemComposition(ammo.getId());
 
 		if (!comp.isStackable())
 		{
@@ -107,15 +119,21 @@ public class AmmoPlugin extends Plugin
 			return;
 		}
 
-		if (counterBox != null && counterBox.getItemID() == ammo.getId())
+		updateInfobox(ammo, comp);
+	}
+
+	private void updateInfobox(Item item, ItemComposition comp)
+	{
+
+		if (counterBox != null && counterBox.getItemID() == item.getId())
 		{
-			counterBox.setCount(ammo.getQuantity());
+			counterBox.setCount(item.getQuantity());
 			return;
 		}
 
 		infoBoxManager.removeInfoBox(counterBox);
-		final BufferedImage image = itemManager.getImage(ammo.getId(), 5, false);
-		counterBox = new AmmoCounter(this, ammo.getId(), ammo.getQuantity(), comp.getName(), image);
+		final BufferedImage image = itemManager.getImage(item.getId(), 5, false);
+		counterBox = new AmmoCounter(this, item.getId(), item.getQuantity(), comp.getName(), image);
 		infoBoxManager.addInfoBox(counterBox);
 	}
 }
