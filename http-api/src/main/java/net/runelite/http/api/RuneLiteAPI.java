@@ -97,21 +97,49 @@ public class RuneLiteAPI
 
 	public static HttpUrl getSessionBase()
 	{
+		final String prop = System.getProperty("runelite.session.url");
+
+		if (prop != null && !prop.isEmpty())
+		{
+			return HttpUrl.parse(prop);
+		}
+
 		return HttpUrl.parse(BASE + "/session");
 	}
 
 	public static HttpUrl getApiBase()
 	{
+		final String prop = System.getProperty("runelite.http-service.url");
+
+		if (prop != null && !prop.isEmpty())
+		{
+			return HttpUrl.parse(prop);
+		}
+
 		return HttpUrl.parse(BASE + "/runelite-" + getVersion());
 	}
 
 	public static HttpUrl getStaticBase()
 	{
+		final String prop = System.getProperty("runelite.static.url");
+
+		if (prop != null && !prop.isEmpty())
+		{
+			return HttpUrl.parse(prop);
+		}
+
 		return HttpUrl.parse(STATICBASE);
 	}
 
 	public static HttpUrl getWsEndpoint()
 	{
+		final String prop = System.getProperty("runelite.ws.url");
+
+		if (prop != null && !prop.isEmpty())
+		{
+			return HttpUrl.parse(prop);
+		}
+
 		return HttpUrl.parse(WSBASE);
 	}
 
