@@ -112,7 +112,7 @@ class NightmareZoneOverlay extends Overlay
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Total: ")
-				.right(StackFormatter.formatNumber(client.getVar(VarPlayer.NMZ_REWARD_POINTS)))
+				.right(StackFormatter.formatNumber(client.getVar(VarPlayer.NMZ_REWARD_POINTS) + client.getVar(Varbits.NMZ_POINTS)))
 				.build());
 		}
 		if (config.pointsPerHour())
