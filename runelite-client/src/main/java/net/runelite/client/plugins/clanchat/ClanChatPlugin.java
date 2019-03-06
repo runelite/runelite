@@ -201,10 +201,16 @@ public class ClanChatPlugin extends Plugin
 			return;
 		}
 
-		ClanMemberActivity leaveActivity = new ClanMemberActivity(ClanActivityType.LEFT,
-			member, client.getTickCount());
-
-		activityBuffer.put(member.getUsername(), leaveActivity);
+		if (!activityBuffer.containsKey(member.getUsername()))
+		{
+			ClanMemberActivity leaveActivity = new ClanMemberActivity(ClanActivityType.LEFT,
+				member, client.getTickCount());
+			activityBuffer.put(member.getUsername(), leaveActivity);
+		}
+		else
+		{
+			activityBuffer.remove(member.getUsername());
+		}
 	}
 
 	@Subscribe
