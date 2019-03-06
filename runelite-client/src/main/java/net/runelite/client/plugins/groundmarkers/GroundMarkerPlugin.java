@@ -314,10 +314,11 @@ public class GroundMarkerPlugin extends Plugin
 		}
 		else
 		{
-			// Remove any points on the same tile but are of a different color.
-			// Add a new point if no tile was removed, or if remembering tile colors is enabled, which means the marked
-			// tile was previously of a different color than the new tile marking.
-			if (!points.removeIf(p -> p.sameTile(point)) || config.rememberTileColors())
+			// Remove any points on the same tile but are of a different color
+			points.removeIf(p -> p.sameTile(point));
+
+			// Add point back only if we are remembering tile colors, otherwise simply remove it
+			if (config.rememberTileColors())
 			{
 				points.add(point);
 			}
