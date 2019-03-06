@@ -587,7 +587,7 @@ public class SlayerPlugin extends Plugin
 	private boolean doubleTroubleExtraKill()
 	{
 		return WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID() == GROTESQUE_GUARDIANS_REGION &&
-				SlayerUnlock.GROTESQUE_GARDIAN_DOUBLE_COUNT.isEnabled(client);
+			SlayerUnlock.GROTESQUE_GARDIAN_DOUBLE_COUNT.isEnabled(client);
 	}
 
 	private boolean isTarget(NPC npc)
@@ -751,6 +751,20 @@ public class SlayerPlugin extends Plugin
 		catch (IOException ex)
 		{
 			log.debug("unable to lookup slayer task", ex);
+			return;
+		}
+
+		if (task == null)
+		{
+			String response = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Unable to find current Slayer task. Do you have one? Check your Enchanted gem/Slayer ring/Slayer helmet")
+				.build();
+
+			final MessageNode messageNode = chatMessage.getMessageNode();
+			messageNode.setRuneLiteFormatMessage(response);
+			chatMessageManager.update(messageNode);
+			client.refreshChat();
 			return;
 		}
 
