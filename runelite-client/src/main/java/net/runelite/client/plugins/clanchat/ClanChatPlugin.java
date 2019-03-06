@@ -443,12 +443,7 @@ public class ClanChatPlugin extends Plugin
 		{
 			clanMembers.clear();
 			removeClanCounter();
-		}
 
-		if (state.getGameState() == GameState.LOGIN_SCREEN
-			|| state.getGameState() == GameState.HOPPING
-			|| state.getGameState() == GameState.CONNECTION_LOST)
-		{
 			clanJoinMessages.clear();
 		}
 	}
