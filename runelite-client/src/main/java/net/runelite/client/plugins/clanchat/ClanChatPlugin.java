@@ -165,13 +165,29 @@ public class ClanChatPlugin extends Plugin
 	@Subscribe
 	public void onClanMemberJoined(ClanMemberJoined event)
 	{
+		final ClanMember member = event.getMember();
+
+		if (member.getWorld() == client.getWorld())
+		{
+			final String memberName = Text.toJagexName(member.getUsername());
+
+			for (final Player player : client.getPlayers())
+			{
+				if (player != null && memberName.equals(Text.toJagexName(player.getName())))
+				{
+					clanMembers.add(player);
+					addClanCounter();
+					break;
+				}
+			}
+		}
+
 		// clan members getting initialized isn't relevant
 		if (clanJoinedTick == client.getTickCount())
 		{
 			return;
 		}
 
-		ClanMember member = event.getMember();
 		if (!config.showJoinLeave() ||
 			member.getRank().getValue() < config.joinLeaveRank().getValue())
 		{
@@ -194,7 +210,29 @@ public class ClanChatPlugin extends Plugin
 	@Subscribe
 	public void onClanMemberLeft(ClanMemberLeft event)
 	{
-		ClanMember member = event.getMember();
+		final ClanMember member = event.getMember();
+
+		if (member.getWorld() == client.getWorld())
+		{
+			final String memberName = Text.toJagexName(member.getUsername());
+			final Iterator<Player> each = clanMembers.iterator();
+
+			while (each.hasNext())
+			{
+				if (memberName.equals(Text.toJagexName(each.next().getName())))
+				{
+					each.remove();
+
+					if (clanMembers.isEmpty())
+					{
+						removeClanCounter();
+					}
+
+					break;
+				}
+			}
+		}
+
 		if (!config.showJoinLeave() ||
 			member.getRank().getValue() < config.joinLeaveRank().getValue())
 		{
@@ -440,19 +478,6 @@ public class ClanChatPlugin extends Plugin
 		if (event.isJoined())
 		{
 			clanJoinedTick = client.getTickCount();
-
-			clientThread.invokeLater(() ->
-			{
-				for (Player player : client.getPlayers())
-				{
-					if (player.isClanMember() && !clanMembers.contains(player))
-					{
-						clanMembers.add(player);
-					}
-				}
-
-				addClanCounter();
-			});
 		}
 		else
 		{
