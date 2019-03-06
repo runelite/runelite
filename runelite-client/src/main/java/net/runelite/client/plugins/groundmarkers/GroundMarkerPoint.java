@@ -39,4 +39,12 @@ class GroundMarkerPoint
 	private int regionY;
 	private int z;
 	private Color color;
+
+	boolean sameTile(final GroundMarkerPoint other)
+	{
+		return regionId == other.getRegionId()
+			&& regionX == other.getRegionX()
+			&& regionY == other.getRegionY()
+			&& z == other.getZ();
+	}
 }

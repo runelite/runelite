@@ -37,9 +37,4 @@ class ColorTileMarker
 {
 	private WorldPoint worldPoint;
 	private Color color;
-
-	boolean sameTile(final ColorTileMarker other)
-	{
-		return worldPoint.equals(other.getWorldPoint());
-	}
 }
