@@ -67,7 +67,7 @@ public interface RegenMeterConfig extends Config
 	@ConfigItem(
 			keyName = "notifyBeforeFullRegen",
 			name = "Notify before full HP regen",
-			description = "Send a notification before HP regenerates",
+			description = "Send a notification before HP regenerates from 1 to 2",
 			position = 4
 	)
 	default boolean notifyHitpointsRegen()
