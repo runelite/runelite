@@ -53,6 +53,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.contains;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -109,6 +110,8 @@ public class SlayerPluginTest
 
 	private static final String BREAK_SLAUGHTER = "The bracelet shatters. Your next bracelet of slaughter<br>will start afresh from 30 charges.";
 	private static final String BREAK_EXPEDITIOUS = "The bracelet shatters. Your next expeditious bracelet<br>will start afresh from 30 charges.";
+
+	private static final String NO_TASK_FOUND_MESSAGE = "Unable to find current Slayer task. Do you have one? Check your Enchanted gem/Slayer ring/Slayer helmet";
 
 	@Mock
 	@Bind
@@ -560,5 +563,25 @@ public class SlayerPluginTest
 		slayerPlugin.taskLookup(chatMessage, "!task");
 
 		verify(chatMessageManager, never()).update(any(MessageNode.class));
+	}
+
+	@Test
+	public void testTaskLookupNoCurrentTask() throws IOException
+	{
+		net.runelite.http.api.chat.Task task = null;
+		MessageNode messageNode = mock(MessageNode.class);
+
+		when(slayerConfig.taskCommand()).thenReturn(true);
+		when(chatClient.getTask(anyString())).thenReturn(task);
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLIC);
+		chatMessage.setName("Adam");
+		chatMessage.setMessageNode(messageNode);
+
+		slayerPlugin.taskLookup(chatMessage, "!task");
+
+		verify(chatMessageManager).update(messageNode);
+		verify(messageNode).setRuneLiteFormatMessage(contains(NO_TASK_FOUND_MESSAGE));
 	}
 }
