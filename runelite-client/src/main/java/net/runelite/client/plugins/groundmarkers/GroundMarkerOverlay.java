@@ -25,11 +25,10 @@
  */
 package net.runelite.client.plugins.groundmarkers;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.util.Collection;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
@@ -43,8 +42,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class GroundMarkerOverlay extends Overlay
 {
-	private static final int MAX_DRAW_DISTANCE = 32;
-
 	private final Client client;
 	private final GroundMarkerConfig config;
 	private final GroundMarkerPlugin plugin;
@@ -63,26 +60,25 @@ public class GroundMarkerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Collection<ColorTileMarker> points = plugin.getPoints();
-		for (final ColorTileMarker point : points)
+		List<WorldPoint> points = plugin.getPoints();
+		for (WorldPoint point : points)
 		{
-			if (point.getWorldPoint().getPlane() != client.getPlane())
+			if (point.getPlane() != client.getPlane())
 			{
 				continue;
 			}
 
-			final Color tileColor = config.rememberTileColors() ? point.getColor() : config.markerColor();
-			drawTile(graphics, point.getWorldPoint(), tileColor);
+			drawTile(graphics, point);
 		}
 
 		return null;
 	}
 
-	private void drawTile(Graphics2D graphics, WorldPoint point, Color color)
+	private void drawTile(Graphics2D graphics, WorldPoint point)
 	{
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
-		if (point.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
+		if (point.distanceTo(playerLocation) >= 32)
 		{
 			return;
 		}
@@ -99,6 +95,6 @@ public class GroundMarkerOverlay extends Overlay
 			return;
 		}
 
-		OverlayUtil.renderPolygon(graphics, poly, color);
+		OverlayUtil.renderPolygon(graphics, poly, config.markerColor());
 	}
 }
