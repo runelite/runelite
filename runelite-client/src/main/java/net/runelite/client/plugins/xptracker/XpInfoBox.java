@@ -28,7 +28,6 @@ package net.runelite.client.plugins.xptracker;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,7 +94,7 @@ class XpInfoBox extends JPanel
 
 	private boolean paused = false;
 
-	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, XpTrackerConfig xpTrackerConfig, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
+	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, XpTrackerConfig xpTrackerConfig, Client client, JPanel panel, Skill skill, SkillIconManager iconManager)
 	{
 		this.xpTrackerConfig = xpTrackerConfig;
 		this.panel = panel;
