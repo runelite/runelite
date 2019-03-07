@@ -55,6 +55,8 @@ public class Opcodes
 	public static final int ARRAY_STORE = 46;
 	public static final int GET_VARC_STRING = 47;
 	public static final int PUT_VARC_STRING = 48;
+	public static final int GET_VARC_STRING_2 = 49;
+	public static final int PUT_VARC_STRING_2 = 50;
 	public static final int SWITCH = 60;
 	public static final int WIDGET_CREATE_CHILD = 100;
 	public static final int WIDGET_DESTROY_CHILD = 101;
