@@ -155,7 +155,7 @@ public class SessionManager
 
 	private void closeSession()
 	{
-		wsClient.close();
+		wsClient.changeSession(null);
 
 		if (accountSession == null)
 		{
