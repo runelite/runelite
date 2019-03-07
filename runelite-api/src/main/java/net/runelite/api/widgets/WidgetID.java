@@ -135,7 +135,7 @@ public class WidgetID
 		static final int SEARCH = 24;
 		static final int SURFACE_SELECTOR = 32;
 		static final int TOOLTIP = 38;
-		static final int OPTION = 42;
+		static final int OPTION = 43;
 	}
 
 	static class SlayerRewards
@@ -294,7 +294,7 @@ public class WidgetID
 		static final int TOGGLE_RUN_ORB = 22; // Has the "Toggle run" name
 		static final int RUN_ORB_TEXT = 23;
 		static final int SPEC_ORB = 28;
-		static final int WORLDMAP_ORB = 40;
+		static final int WORLDMAP_ORB = 41;
 	}
 
 	static class LoginClickToPlayScreen

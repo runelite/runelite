@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Shaun Dreclin <shaundreclin@gmail.com>
+ * Copyright (c) 2018-2019, Shaun Dreclin <https://github.com/ShaunDreclin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.roguesden;
 
-import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -33,8 +32,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import static net.runelite.api.ItemID.MYSTIC_JEWEL;
+import net.runelite.api.ItemID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.events.GameObjectChanged;
@@ -44,10 +42,10 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -90,29 +88,24 @@ public class RoguesDenPlugin extends Plugin
 		hasGem = false;
 	}
 
-	@Schedule(period = 600, unit = ChronoUnit.MILLIS)
-	public void checkGem()
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		hasGem = hasGem();
-	}
-
-	private boolean hasGem()
-	{
-		ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
-		if (container == null)
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
 		{
-			return false;
+			return;
 		}
 
-		for (Item item : container.getItems())
+		for (Item item : event.getItemContainer().getItems())
 		{
-			if (item.getId() == MYSTIC_JEWEL)
+			if (item.getId() == ItemID.MYSTIC_JEWEL)
 			{
-				return true;
+				hasGem = true;
+				return;
 			}
 		}
 
-		return false;
+		hasGem = false;
 	}
 
 	@Subscribe

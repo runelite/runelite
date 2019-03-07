@@ -16,7 +16,7 @@ LABEL7:
    istore                 0
    load_string            ""
    sstore                 0
-   get_varc_string        22
+   049                    359
    string_length         
    istore                 1
    iload                  1
@@ -60,7 +60,7 @@ LABEL30:
    if_icmpeq              LABEL34
    jump                   LABEL37
 LABEL34:
-   get_varc_string        22
+   049                    359
    add_ignore            
    jump                   LABEL43
 LABEL37:
@@ -69,7 +69,7 @@ LABEL37:
    if_icmpeq              LABEL41
    jump                   LABEL43
 LABEL41:
-   get_varc_string        22
+   049                    359
    remove_ignore         
 LABEL43:
    jump                   LABEL183
@@ -88,7 +88,7 @@ LABEL51:
    if_icmpeq              LABEL55
    jump                   LABEL58
 LABEL55:
-   get_varc_string        22
+   049                    359
    add_friend            
    jump                   LABEL106
 LABEL58:
@@ -97,7 +97,7 @@ LABEL58:
    if_icmpeq              LABEL62
    jump                   LABEL65
 LABEL62:
-   get_varc_string        22
+   049                    359
    remove_friend         
    jump                   LABEL106
 LABEL65:
@@ -140,12 +140,12 @@ LABEL94:
    if_icmpeq              LABEL98
    jump                   LABEL101
 LABEL98:
-   get_varc_string        23
+   049                    360
    remove_friend         
    jump                   LABEL104
 LABEL101:
-   get_varc_string        23
-   get_varc_string        22
+   049                    360
+   049                    359
    load_string            "privateMessage" ; load event name
    load_int               0                ; whether or not to skip
    runelite_callback     ; invoke callback
@@ -158,19 +158,19 @@ LABEL104:
 LABEL106:
    jump                   LABEL183
 LABEL107:
-   get_varc_string        22
+   049                    359
    invoke                 212
    numeric_input         
    jump                   LABEL183
 LABEL111:
-   get_varc_string        22
+   049                    359
    string_remove_html    
-   put_varc_string        128
-   get_varc_string        22
+   050                    361
+   049                    359
    string_input_1        
    jump                   LABEL183
 LABEL117:
-   get_varc_string        22
+   049                    359
    string_input_2        
    jump                   LABEL183
 LABEL120:
@@ -186,10 +186,10 @@ LABEL124:
    send_game_message     
    return                
 LABEL130:
-   get_varc_string        22
+   049                    359
    string_remove_html    
-   put_varc_string        129
-   get_varc_string        22
+   050                    362
+   049                    359
    join_clanchat         
    jump                   LABEL183
 LABEL136:
@@ -198,14 +198,14 @@ LABEL136:
    if_icmpgt              LABEL140
    jump                   LABEL146
 LABEL140:
-   get_varc_string        22
+   049                    359
    load_int               0
    load_int               9
    string_substring      
    sstore                 0
    jump                   LABEL148
 LABEL146:
-   get_varc_string        22
+   049                    359
    sstore                 0
 LABEL148:
    sload                  0
@@ -227,10 +227,10 @@ LABEL158:
    send_game_message     
    return                
 LABEL164:
-   get_varc_string        22
+   049                    359
    load_int               0
    put_varc               62
-   put_varc_string        28
+   050                    358
    invoke                 95
    load_int               552
    load_int               -2147483645
@@ -246,7 +246,7 @@ LABEL176:
    return                
    jump                   LABEL183
 LABEL181:
-   get_varc_string        22
+   049                    359
    invoke                 2061
 LABEL183:
    jump                   LABEL190

@@ -304,7 +304,7 @@ public class ImageUtilTest
 		// outlineImage(BufferedImage image, Color color, Predicate<Color> fillCondition, Boolean outlineCorners)
 		test = new BufferedImage(5, 5, BufferedImage.TYPE_INT_ARGB);
 		test.setRGB(2, 2, BLACK.getRGB());
-		test.setRGB(1,2, new Color(50, 50, 50).getRGB());
+		test.setRGB(1, 2, new Color(50, 50, 50).getRGB());
 		test.setRGB(3, 2, new Color(100, 100, 100).getRGB());
 		test.setRGB(2, 3, new Color(150, 150, 150).getRGB());
 		expected = test;

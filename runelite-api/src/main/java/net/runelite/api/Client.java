@@ -634,20 +634,10 @@ public interface Client extends GameEngine
 	int[] getVarps();
 
 	/**
-	 * Gets an array of all integer client variables.
-	 *
-	 * @return local variables
+	 * Gets an array of all client variables.
 	 */
 	@VisibleForDevtools
-	int[] getIntVarcs();
-
-	/**
-	 * Gets an array of all string client variables.
-	 *
-	 * @return local variables
-	 */
-	@VisibleForDevtools
-	String[] getStrVarcs();
+	Map<Integer, Object> getVarcMap();
 
 	/**
 	 * Gets the value corresponding to the passed player variable.
@@ -781,6 +771,13 @@ public interface Client extends GameEngine
 	 * @return the experience
 	 */
 	int getSkillExperience(Skill skill);
+
+	/**
+	 * Get the total experience of the player
+	 *
+	 * @return
+	 */
+	long getOverallExperience();
 
 	/**
 	 * Gets the game drawing mode.

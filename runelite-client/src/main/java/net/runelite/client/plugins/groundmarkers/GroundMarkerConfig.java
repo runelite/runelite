@@ -23,6 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.client.plugins.groundmarkers;
 
 import java.awt.Color;
@@ -43,15 +44,5 @@ public interface GroundMarkerConfig extends Config
 	default Color markerColor()
 	{
 		return Color.YELLOW;
-	}
-
-	@ConfigItem(
-		keyName = "rememberTileColors",
-		name = "Remember color per tile",
-		description = "Color tiles using the color from time of placement"
-	)
-	default boolean rememberTileColors()
-	{
-		return false;
 	}
 }

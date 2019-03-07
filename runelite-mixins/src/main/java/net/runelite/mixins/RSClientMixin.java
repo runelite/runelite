@@ -504,14 +504,8 @@ public abstract class RSClientMixin implements RSClient
 
 		if (skill == Skill.OVERALL)
 		{
-			int totalExperience = 0;
-
-			for (int experience : experiences)
-			{
-				totalExperience += experience;
-			}
-
-			return totalExperience;
+			logger.debug("getSkillExperience called for {}!", skill);
+			return (int) getOverallExperience();
 		}
 
 		int idx = skill.ordinal();
@@ -524,6 +518,22 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		return experiences[idx];
+	}
+
+	@Inject
+	@Override
+	public long getOverallExperience()
+	{
+		int[] experiences = getSkillExperiences();
+
+		long totalExperience = 0L;
+
+		for (int experience : experiences)
+		{
+			totalExperience += experience;
+		}
+
+		return totalExperience;
 	}
 
 	@Inject
