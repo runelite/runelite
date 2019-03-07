@@ -34,10 +34,10 @@ import lombok.Getter;
 @Getter
 public enum VarClientStr
 {
-	CHATBOX_TYPED_TEXT(1),
-	INPUT_TEXT(22),
-	PRIVATE_MESSAGE_TARGET(23),
-	RECENT_CLAN_CHAT(129);
+	CHATBOX_TYPED_TEXT(335),
+	INPUT_TEXT(359),
+	PRIVATE_MESSAGE_TARGET(360),
+	RECENT_CLAN_CHAT(362);
 
 	private final int index;
 }
