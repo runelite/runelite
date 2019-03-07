@@ -27,7 +27,7 @@ LABEL10:
 LABEL19:
    return                
 LABEL20:
-   get_varc_string        1
+   049                    335
    string_length         
    istore                 2
    load_int               0
@@ -85,7 +85,7 @@ LABEL62:
    if_icmpgt              LABEL67
    jump                   LABEL178
 LABEL67:
-   get_varc_string        1
+   049                    335
    load_string            "/"
    load_int               0
    string_indexof_from   
@@ -127,23 +127,23 @@ LABEL96:
    jump                   LABEL104
 LABEL100:
    load_string            "/"
-   get_varc_string        1
+   049                    335
    concat_string         
-   put_varc_string        1
+   050                    335
 LABEL104:
-   get_varc_string        1
+   049                    335
    load_int               2
    invoke                 96
 LABEL107:
    jump                   LABEL111
 LABEL108:
-   get_varc_string        1
+   049                    335
    load_int               0
    invoke                 96
 LABEL111:
    jump                   LABEL174
 LABEL112:
-   get_varc_string        1
+   049                    335
    load_string            "::"
    load_int               0
    string_indexof_from   
@@ -156,7 +156,7 @@ LABEL119:
    if_icmpgt              LABEL123
    jump                   LABEL167
 LABEL123:
-   get_varc_string        1
+   049                    335
    load_string            "::toggleroof"
    load_int               0
    string_indexof_from   
@@ -182,7 +182,7 @@ LABEL139:
 LABEL143:
    jump                   LABEL166
 LABEL144:
-   get_varc_string        1
+   049                    335
    load_string            "::bank"
    load_int               0
    string_indexof_from   
@@ -197,13 +197,13 @@ LABEL151:
    invoke                 96
    jump                   LABEL166
 LABEL155:
-   get_varc_string        1
+   049                    335
    invoke                 224
-   put_varc_string        1
-   get_varc_string        1
+   050                    335
+   049                    335
    string_length         
    istore                 2
-   get_varc_string        1
+   049                    335
    load_int               2
    iload                  2
    string_substring      
@@ -211,20 +211,20 @@ LABEL155:
 LABEL166:
    jump                   LABEL170
 LABEL167:
-   get_varc_string        1
+   049                    335
    load_int               0
    invoke                 96
 LABEL170:
    jump                   LABEL174
 LABEL171:
-   get_varc_string        1
+   049                    335
    load_int               0
    invoke                 96
 LABEL174:
-   get_varc_string        1
+   049                    335
    invoke                 77
    load_string            ""
-   put_varc_string        1
+   050                    335
 LABEL178:
    jump                   LABEL247
 LABEL179:
@@ -261,19 +261,19 @@ LABEL199:
    if_icmpeq              LABEL203
    jump                   LABEL241
 LABEL203:
-   get_varc_string       
+   049                    356
    string_length         
    load_int               0
    if_icmpgt              LABEL208
    jump                   LABEL228
 LABEL208:
-   get_varc_string       
+   049                    356
    is_friend             
    load_int               1
    if_icmpeq              LABEL213
    jump                   LABEL216
 LABEL213:
-   get_varc_string       
+   049                    356
    invoke                 107
    return                
 LABEL216:
@@ -308,7 +308,7 @@ LABEL233:
    return                
    jump                   LABEL247
 LABEL241:
-   get_varc_string        1
+   049                    335
    load_int               0
    iload                  0
    iload                  1
@@ -318,7 +318,7 @@ LABEL241:
    load_string            "blockChatInput"  ;
    runelite_callback     ;
    if_icmpeq              LABEL247          ; don't add to input varcstr
-   put_varc_string        1
+   050                    335
 LABEL247:
    invoke                 223
    return                
