@@ -51,6 +51,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mockito.AdditionalMatchers.not;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
@@ -111,7 +112,8 @@ public class SlayerPluginTest
 	private static final String BREAK_SLAUGHTER = "The bracelet shatters. Your next bracelet of slaughter<br>will start afresh from 30 charges.";
 	private static final String BREAK_EXPEDITIOUS = "The bracelet shatters. Your next expeditious bracelet<br>will start afresh from 30 charges.";
 
-	private static final String NO_TASK_FOUND_MESSAGE = "Unable to find current Slayer task. Do you have one? Check your Enchanted gem/Slayer ring/Slayer helmet";
+	private static final String NO_TASK_FOUND_MESSAGE_CURRENT_USER = "Unable to find current Slayer task. Do you have one? Check your Enchanted gem";
+	private static final String NO_TASK_FOUND_MESSAGE_SOMEONE_ELSE = "Unable to find current Slayer task";
 
 	@Mock
 	@Bind
@@ -566,10 +568,13 @@ public class SlayerPluginTest
 	}
 
 	@Test
-	public void testTaskLookupNoCurrentTask() throws IOException
+	public void testTaskLookupNoCurrentTaskCurrentUser() throws IOException
 	{
 		net.runelite.http.api.chat.Task task = null;
 		MessageNode messageNode = mock(MessageNode.class);
+		Player player = mock(Player.class);
+		when(player.getName()).thenReturn("Adam");
+		when(client.getLocalPlayer()).thenReturn(player);
 
 		when(slayerConfig.taskCommand()).thenReturn(true);
 		when(chatClient.getTask(anyString())).thenReturn(task);
@@ -582,6 +587,30 @@ public class SlayerPluginTest
 		slayerPlugin.taskLookup(chatMessage, "!task");
 
 		verify(chatMessageManager).update(messageNode);
-		verify(messageNode).setRuneLiteFormatMessage(contains(NO_TASK_FOUND_MESSAGE));
+		verify(messageNode).setRuneLiteFormatMessage(contains(NO_TASK_FOUND_MESSAGE_CURRENT_USER));
+	}
+
+	@Test
+	public void testTaskLookupNoCurrentTaskSomeoneElse() throws IOException
+	{
+		net.runelite.http.api.chat.Task task = null;
+		MessageNode messageNode = mock(MessageNode.class);
+		Player player = mock(Player.class);
+		when(player.getName()).thenReturn("Adam");
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		when(slayerConfig.taskCommand()).thenReturn(true);
+		when(chatClient.getTask(anyString())).thenReturn(task);
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.PUBLIC);
+		chatMessage.setName("Not Adam");
+		chatMessage.setMessageNode(messageNode);
+
+		slayerPlugin.taskLookup(chatMessage, "!task");
+
+		verify(chatMessageManager).update(messageNode);
+		verify(messageNode).setRuneLiteFormatMessage(contains(NO_TASK_FOUND_MESSAGE_SOMEONE_ELSE));
+		verify(messageNode).setRuneLiteFormatMessage(not(contains(NO_TASK_FOUND_MESSAGE_CURRENT_USER)));
 	}
 }

@@ -756,9 +756,17 @@ public class SlayerPlugin extends Plugin
 
 		if (task == null)
 		{
+			StringBuilder sb = new StringBuilder();
+			sb.append("Unable to find current Slayer task");
+			if (chatMessage.getName().equals(client.getLocalPlayer().getName()))
+			{
+				sb.append(".");
+				sb.append(" ");
+				sb.append("Do you have one? Check your Enchanted gem");
+			}
 			String response = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
-				.append("Unable to find current Slayer task. Do you have one? Check your Enchanted gem/Slayer ring/Slayer helmet")
+				.append(sb.toString())
 				.build();
 
 			final MessageNode messageNode = chatMessage.getMessageNode();
