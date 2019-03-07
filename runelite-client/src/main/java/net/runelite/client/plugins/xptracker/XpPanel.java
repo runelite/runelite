@@ -27,7 +27,6 @@ package net.runelite.client.plugins.xptracker;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.BoxLayout;
@@ -129,20 +128,13 @@ class XpPanel extends PluginPanel
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(infoBoxPanel);
 
-		try
+		for (Skill skill : Skill.values())
 		{
-			for (Skill skill : Skill.values())
+			if (skill == Skill.OVERALL)
 			{
-				if (skill == Skill.OVERALL)
-				{
-					break;
-				}
-				infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, xpTrackerConfig, client, infoBoxPanel, skill, iconManager));
+				break;
 			}
-		}
-		catch (IOException e)
-		{
-			log.warn(null, e);
+			infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, xpTrackerConfig, client, infoBoxPanel, skill, iconManager));
 		}
 
 		errorPanel.setContent("Exp trackers", "You have not gained experience yet.");
@@ -193,7 +185,7 @@ class XpPanel extends PluginPanel
 		}
 	}
 
-	void updateTotal(XpSnapshotTotal xpSnapshotTotal)
+	void updateTotal(XpSnapshotSingle xpSnapshotTotal)
 	{
 		// if player has gained exp and hasn't switched displays yet, hide error panel and show overall info
 		if (xpSnapshotTotal.getXpGainedInSession() > 0 && !overallPanel.isVisible())
@@ -201,11 +193,16 @@ class XpPanel extends PluginPanel
 			overallPanel.setVisible(true);
 			remove(errorPanel);
 		}
+		else if (xpSnapshotTotal.getXpGainedInSession() == 0 && overallPanel.isVisible())
+		{
+			overallPanel.setVisible(false);
+			add(errorPanel);
+		}
 
 		SwingUtilities.invokeLater(() -> rebuildAsync(xpSnapshotTotal));
 	}
 
-	private void rebuildAsync(XpSnapshotTotal xpSnapshotTotal)
+	private void rebuildAsync(XpSnapshotSingle xpSnapshotTotal)
 	{
 		overallExpGained.setText(XpInfoBox.htmlLabel("Gained: ", xpSnapshotTotal.getXpGainedInSession()));
 		overallExpHour.setText(XpInfoBox.htmlLabel("Per hour: ", xpSnapshotTotal.getXpPerHour()));

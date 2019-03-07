@@ -155,7 +155,7 @@ public class ConfigManager
 			return;
 		}
 
-		if (configuration.getConfig().isEmpty())
+		if (configuration.getConfig() == null || configuration.getConfig().isEmpty())
 		{
 			log.debug("No configuration from client, using saved configuration on disk");
 			loadFromFile();

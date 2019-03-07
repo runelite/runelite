@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Shaun Dreclin <https://github.com/ShaunDreclin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
-
-import lombok.Data;
+package net.runelite.api;
 
 /**
- * An event where a new RuneLite account session has been closed,
- * typically when logging out of the account.
+ * Utility class used for mapping enum IDs.
  * <p>
- * Note: This event is not to be confused with a RuneScape session,
- * it has nothing to do with whether an account is being logged out.
+ * Note: This class is not complete and may be missing mapped IDs.
  */
-@Data
-public class SessionClose
+public final class EnumID
 {
-
+	public static final int MUSIC_TRACK_NAMES = 812;
+	public static final int MUSIC_TRACK_IDS = 819;
 }

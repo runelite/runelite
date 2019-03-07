@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Levi <me@levischuck.com>
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.xptracker;
+package net.runelite.mixins;
 
-import lombok.Data;
+import net.runelite.api.ClanMember;
+import net.runelite.api.events.ClanMemberJoined;
+import net.runelite.api.events.ClanMemberLeft;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClanMemberManager;
+import net.runelite.rs.api.RSClient;
+import net.runelite.rs.api.RSName;
+import net.runelite.rs.api.RSNameable;
 
-@Data
-class XpStateTotal
+@Mixin(RSClanMemberManager.class)
+public abstract class RSClanMemberManagerMixin implements RSClanMemberManager
 {
-	private int xpGainedInSession = 0;
-	private int xpPerHour = 0;
+	@Shadow("clientInstance")
+	private static RSClient client;
 
-	void reset()
+	@Inject
+	@Override
+	public void rl$add(RSName name, RSName prevName)
 	{
-		xpGainedInSession = 0;
-		xpPerHour = 0;
+		ClanMember member = findByName(name);
+		if (member == null)
+		{
+			return;
+		}
+
+		ClanMemberJoined event = new ClanMemberJoined(member);
+		client.getCallbacks().postDeferred(event);
 	}
 
-	void addXpGainedInSession(int skillXpGainedInSession)
+	@Inject
+	@Override
+	public void rl$remove(RSNameable nameable)
 	{
-		xpGainedInSession += skillXpGainedInSession;
-	}
+		ClanMember member = findByName(nameable.getRsName());
+		if (member == null)
+		{
+			return;
+		}
 
-	void addXpPerHour(int skillXpGainedPerHour)
-	{
-		xpPerHour += skillXpGainedPerHour;
-	}
-
-	XpSnapshotTotal snapshot()
-	{
-		return new XpSnapshotTotal(xpGainedInSession, xpPerHour);
+		ClanMemberLeft event = new ClanMemberLeft(member);
+		client.getCallbacks().postDeferred(event);
 	}
 }

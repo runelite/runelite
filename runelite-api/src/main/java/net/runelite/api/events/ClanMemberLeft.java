@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,17 +24,14 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
+import lombok.Value;
+import net.runelite.api.ClanMember;
 
-/**
- * An event where a new RuneLite account session has been opened
- * with the server.
- * <p>
- * Note: This event is not to be confused with a RuneScape session,
- * it has nothing to do with whether an account is being logged in.
- */
-@Data
-public class SessionOpen
+@Value
+public class ClanMemberLeft
 {
-
+	/**
+	 * The ClanMember that left
+	 */
+	private ClanMember member;
 }

@@ -32,6 +32,8 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -95,8 +97,7 @@ class VarInspector extends JFrame
 	private int[] oldVarps2 = null;
 	private int numVarbits = 10000;
 
-	private int[] oldIntVarcs = null;
-	private String[] oldStrVarcs = null;
+	private Map<Integer, Object> varcs = null;
 
 	@Inject
 	VarInspector(Client client, EventBus eventBus, DevToolsPlugin plugin)
@@ -279,9 +280,9 @@ class VarInspector extends JFrame
 	public void onVarClientIntChanged(VarClientIntChanged e)
 	{
 		int idx = e.getIndex();
-		int neew = client.getIntVarcs()[idx];
-		int old = oldIntVarcs[idx];
-		oldIntVarcs[idx] = neew;
+		int neew = (Integer) client.getVarcMap().getOrDefault(idx, 0);
+		int old = (Integer) varcs.getOrDefault(idx, 0);
+		varcs.put(idx, neew);
 
 		if (old != neew)
 		{
@@ -302,9 +303,9 @@ class VarInspector extends JFrame
 	public void onVarClientStrChanged(VarClientStrChanged e)
 	{
 		int idx = e.getIndex();
-		String neew = client.getStrVarcs()[idx];
-		String old = oldStrVarcs[idx];
-		oldStrVarcs[idx] = neew;
+		String neew = (String) client.getVarcMap().getOrDefault(idx, "");
+		String old = (String) varcs.getOrDefault(idx, "");
+		varcs.put(idx, neew);
 
 		if (!Objects.equals(old, neew))
 		{
@@ -343,14 +344,11 @@ class VarInspector extends JFrame
 		{
 			oldVarps = new int[client.getVarps().length];
 			oldVarps2 = new int[client.getVarps().length];
-			oldIntVarcs = new int[client.getIntVarcs().length];
-			oldStrVarcs = new String[client.getStrVarcs().length];
 		}
 
 		System.arraycopy(client.getVarps(), 0, oldVarps, 0, oldVarps.length);
 		System.arraycopy(client.getVarps(), 0, oldVarps2, 0, oldVarps2.length);
-		System.arraycopy(client.getIntVarcs(), 0, oldIntVarcs, 0, oldIntVarcs.length);
-		System.arraycopy(client.getStrVarcs(), 0, oldStrVarcs, 0, oldStrVarcs.length);
+		varcs = new HashMap<>(client.getVarcMap());
 
 		eventBus.register(this);
 		setVisible(true);
