@@ -64,6 +64,8 @@ public class Instructions
 		add(ARRAY_STORE, "array_store", 2, 0);
 		add(GET_VARC_STRING, "get_varc_string", 0, 0, 0, 1);
 		add(PUT_VARC_STRING, "put_varc_string", 0, 0, 1, 0);
+		add(GET_VARC_STRING_2, "get_varc_string2", 0, 0, 0, 1);
+		add(PUT_VARC_STRING_2, "put_varc_string2", 0, 0, 1, 0);
 		add(SWITCH, "switch", 1, 0);
 		add(WIDGET_CREATE_CHILD, "widget_create_child", 3, 0);
 		add(WIDGET_DESTROY_CHILD, "widget_destroy_child", 0, 0);
