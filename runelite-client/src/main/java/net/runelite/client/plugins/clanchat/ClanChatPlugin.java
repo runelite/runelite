@@ -29,8 +29,39 @@ package net.runelite.client.plugins.clanchat;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.inject.Provides;
-import net.runelite.api.*;
-import net.runelite.api.events.*;
+
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import net.runelite.api.ChatLineBuffer;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.ClanMember;
+import net.runelite.api.ClanMemberRank;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.MessageNode;
+import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
+import net.runelite.api.SpriteID;
+import net.runelite.api.VarClientStr;
+import net.runelite.api.Varbits;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ClanChanged;
+import net.runelite.api.events.ClanMemberJoined;
+import net.runelite.api.events.ClanMemberLeft;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.PlayerDespawned;
+import net.runelite.api.events.PlayerSpawned;
+import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
@@ -47,10 +78,6 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.List;
-import java.util.*;
 
 import static net.runelite.client.ui.JagexColors.*;
 
@@ -147,8 +174,8 @@ public class ClanChatPlugin extends Plugin
 
 			for (final Player player : client.getPlayers())
 			{
-				if (player != null && memberName.equals(Text.toJagexName(player.getName())) &&
-						player != client.getLocalPlayer())
+				if (player != null && !memberName.equals(Text.toJagexName(client.getLocalPlayer().getName())) &&
+						memberName.equals(Text.toJagexName(player.getName())))
 				{
 					clanMembers.add(player);
 					addClanCounter();
