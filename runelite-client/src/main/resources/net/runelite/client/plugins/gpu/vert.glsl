@@ -51,6 +51,7 @@ uniform int useFog;
 uniform int fogDepth;
 uniform int drawDistance;
 
+uniform int useGray;
 uniform int baseX;
 uniform int baseY;
 uniform ivec4 lockedRegions[LOCKED_REGIONS_SIZE];
@@ -92,16 +93,16 @@ void main()
 
   vFogAmount = fogFactorLinear(fogDistance, 0, fogDepth * TILE_SIZE) * useFog;
 
+    if (useGray == 0) {
+        vGrayAmount = 0;
+        return;
+    }
+
     float gray = 1;
     for (int i = 0; i < LOCKED_REGIONS_SIZE; i++) {
       ivec4 region = lockedRegions[i];
       if (region.x == 0) { continue; }
-      if (baseX < 0 || baseY < 0) {
-          gray = 0;
-          break;
-      }
       if ((vertex.x + baseX) >= region.x && (vertex.x + baseX) <= region.z && (vertex.z + baseY) >= region.y && (vertex.z + baseY) <= region.w) {
-      //if ((vertex.x + baseX) == region.x || (vertex.x + baseX) == region.z || (vertex.z + baseY) == region.y || (vertex.z + baseY) == region.w) {
         gray = 0;
         break;
       }
