@@ -6,8 +6,13 @@
    iconst                 10616890
    if_getwidth           
    istore                 1
+<<<<<<< HEAD
    chat_playername       
    removetags            
+=======
+   get_localplayer_name
+   string_remove_html
+>>>>>>> reset branch.
    sstore                 0
    iconst                 0
    istore                 2
@@ -75,7 +80,11 @@ LABEL58:
    iconst                 73
    iconst                 579
    iload                  7
+<<<<<<< HEAD
    enum                  
+=======
+   get_enum_value
+>>>>>>> reset branch.
    istore                 8
    get_varc_int           41
    iconst                 0
@@ -85,13 +94,20 @@ LABEL58:
    if_icmpeq              LABEL77
    jump                   LABEL133
 LABEL77:
+<<<<<<< HEAD
    chat_getmessagefilter 
    string_length         
    iconst                 0
+=======
+   5022
+   string_length
+   load_int               0
+>>>>>>> reset branch.
    if_icmpgt              LABEL82
    jump                   LABEL133
 LABEL82:
    sload                  1
+<<<<<<< HEAD
    sconst                 "Public chat filtering:"
    sconst                 "</col>"
    sconst                 " "
@@ -101,6 +117,17 @@ LABEL82:
    lowercase             
    sconst                 "<gt>"
    join_string            7
+=======
+   load_string            "Public chat fCP iltering:"
+   load_string            "</col>"
+   load_string            " "
+   load_string            "<lt>"
+   5022
+   appendtags
+   tolowercase
+   load_string            "<gt>"
+   string_append          7
+>>>>>>> reset branch.
    iload                  7
    iload                  8
    iconst                 10616890
@@ -130,17 +157,29 @@ LABEL82:
    if_setonmouseleave    
    iload                  5
    iload                  6
+<<<<<<< HEAD
    sub                   
    istore                 5
    iload                  7
    iconst                 1
    add                   
+=======
+   isub
+   istore                 5
+   iload                  7
+   load_int               1
+   iadd
+>>>>>>> reset branch.
    istore                 7
    iconst                 105
    iconst                 73
    iconst                 579
    iload                  7
+<<<<<<< HEAD
    enum                  
+=======
+   get_enum_value
+>>>>>>> reset branch.
    istore                 8
 LABEL133:
    iload                  0
@@ -171,7 +210,11 @@ LABEL153:
    jump                   LABEL645
 LABEL157:
    iload                  9
+<<<<<<< HEAD
    chat_gethistory_byuid 
+=======
+   get_chat_message
+>>>>>>> reset branch.
    istore                 12
    sstore                 11
    sstore                 10
@@ -210,7 +253,7 @@ LABEL172:
    jump                   LABEL641
 LABEL183:
    iload                  10
-   switch                
+   switch
       1: LABEL186
       2: LABEL186
       3: LABEL228
@@ -225,6 +268,7 @@ LABEL183:
       14: LABEL367
       90: LABEL207
       91: LABEL207
+      108: LABEL341
    jump                   LABEL426
 LABEL186:
    iload                  9                 ; The id of the messageNode of the message being built
@@ -363,6 +407,7 @@ LABEL268:
    jump                   LABEL300
 LABEL289:
    iload                  11
+<<<<<<< HEAD
    iconst                 500
    add                   
    iconst                 1
@@ -373,6 +418,18 @@ LABEL289:
    sconst                 "1"
    iconst                 10616832
    if_setontimer         
+=======
+   load_int               500
+   iadd
+   load_int               1
+   iadd
+   put_varc               65
+   load_int               664
+   load_int               0
+   load_string            "1"
+   load_int               10616832
+   widget_put_render_listener_widget
+>>>>>>> reset branch.
 LABEL300:
    jump                   LABEL440
 LABEL301:
@@ -486,10 +543,17 @@ LABEL367:
    istore                 6
    jump                   LABEL440
 LABEL390:
+<<<<<<< HEAD
    clientclock           
    iload                  11
    sub                   
    iconst                 500
+=======
+   get_gamecycle
+   iload                  11
+   isub
+   load_int               500
+>>>>>>> reset branch.
    if_icmpgt              LABEL396
    jump                   LABEL411
 LABEL396:
@@ -544,7 +608,7 @@ LABEL440:
    iload                  8
    if_clearops           
    iload                  10
-   switch                
+   switch
       1: LABEL445
       2: LABEL445
       3: LABEL445
@@ -582,9 +646,15 @@ LABEL445:
    if_setonmouseleave    
    sload                  0
    sload                  9
+<<<<<<< HEAD
    removetags            
    compare               
    iconst                 0
+=======
+   string_remove_html
+   string_compare
+   load_int               0
+>>>>>>> reset branch.
    if_icmpne              LABEL472
    jump                   LABEL509
 LABEL472:
@@ -617,6 +687,7 @@ LABEL489:
    if_icmpeq              LABEL497
    jump                   LABEL509
 LABEL497:
+<<<<<<< HEAD
    clan_getchatcount     
    iconst                 0
    if_icmpgt              LABEL501
@@ -624,6 +695,15 @@ LABEL497:
 LABEL501:
    clan_getchatrank      
    clan_getchatminkick   
+=======
+   get_clanchatcount
+   load_int               0
+   if_icmpgt              LABEL501
+   jump                   LABEL509
+LABEL501:
+   get_clanchat_rank
+   clanchat_kick_rank
+>>>>>>> reset branch.
    if_icmpge              LABEL505
    jump                   LABEL509
 LABEL505:
@@ -687,8 +767,13 @@ LABEL535:
    jump                   LABEL627
 LABEL560:
    sload                  12
+<<<<<<< HEAD
    string_length         
    iconst                 0
+=======
+   string_length
+   load_int               0
+>>>>>>> reset branch.
    if_icmpgt              LABEL565
    jump                   LABEL590
 LABEL565:
@@ -760,17 +845,29 @@ LABEL615:
 LABEL627:
    iload                  5
    iload                  6
+<<<<<<< HEAD
    sub                   
    istore                 5
    iload                  7
    iconst                 1
    add                   
+=======
+   isub
+   istore                 5
+   iload                  7
+   load_int               1
+   iadd
+>>>>>>> reset branch.
    istore                 7
    iconst                 105
    iconst                 73
    iconst                 579
    iload                  7
+<<<<<<< HEAD
    enum                  
+=======
+   get_enum_value
+>>>>>>> reset branch.
    istore                 8
 LABEL641:
    iload                  9
@@ -808,6 +905,7 @@ LABEL651:
    if_setsize            
    iconst                 10616890
    iload                  7
+<<<<<<< HEAD
    iconst                 2
    multiply              
    cc_find               
@@ -819,9 +917,23 @@ LABEL679:
    cc_settext            
    iconst                 1
    cc_sethide            
+=======
+   load_int               2
+   imul
+   widget_load_child
+   load_int               1
+   if_icmpeq              LABEL679
+   jump                   LABEL683
+LABEL679:
+   load_string            ""
+   widget_put_text
+   load_int               1
+   widget_put_hidden
+>>>>>>> reset branch.
 LABEL683:
    iconst                 10616890
    iload                  7
+<<<<<<< HEAD
    iconst                 2
    multiply              
    iconst                 1
@@ -839,22 +951,54 @@ LABEL697:
    iload                  7
    iconst                 1
    add                   
+=======
+   load_int               2
+   imul
+   load_int               1
+   iadd
+   widget_load_child
+   load_int               1
+   if_icmpeq              LABEL693
+   jump                   LABEL697
+LABEL693:
+   load_string            ""
+   widget_put_text
+   load_int               1
+   widget_put_hidden
+LABEL697:
+   iload                  7
+   load_int               1
+   iadd
+>>>>>>> reset branch.
    istore                 7
    iconst                 105
    iconst                 73
    iconst                 579
    iload                  7
+<<<<<<< HEAD
    enum                  
+=======
+   get_enum_value
+>>>>>>> reset branch.
    istore                 8
    jump                   LABEL647
 LABEL708:
    iload                  5
+<<<<<<< HEAD
    iconst                 2
    sub                   
+=======
+   load_int               2
+   isub
+>>>>>>> reset branch.
    istore                 5
    iconst                 0
    iload                  5
+<<<<<<< HEAD
    sub                   
+=======
+   isub
+>>>>>>> reset branch.
    istore                 5
    iconst                 10616890
    if_getheight          
@@ -876,21 +1020,36 @@ LABEL727:
    jump                   LABEL784
 LABEL731:
    iload                  7
+<<<<<<< HEAD
    iconst                 1
    sub                   
+=======
+   load_int               1
+   isub
+>>>>>>> reset branch.
    istore                 7
    iconst                 105
    iconst                 73
    iconst                 579
    iload                  7
+<<<<<<< HEAD
    enum                  
+=======
+   get_enum_value
+>>>>>>> reset branch.
    istore                 8
    iload                  8
    if_gety               
    iload                  14
+<<<<<<< HEAD
    add                   
    iconst                 2
    sub                   
+=======
+   iadd
+   load_int               2
+   isub
+>>>>>>> reset branch.
    istore                 5
    iload                  8
    if_getx               
@@ -901,6 +1060,7 @@ LABEL731:
    if_setposition        
    iconst                 10616890
    iload                  7
+<<<<<<< HEAD
    iconst                 2
    multiply              
    cc_find               
@@ -913,9 +1073,24 @@ LABEL763:
    iconst                 0
    iconst                 0
    cc_setposition        
+=======
+   load_int               2
+   imul
+   widget_load_child
+   load_int               1
+   if_icmpeq              LABEL763
+   jump                   LABEL768
+LABEL763:
+   widget_get_relativex
+   iload                  5
+   load_int               0
+   load_int               0
+   widget_put_position
+>>>>>>> reset branch.
 LABEL768:
    iconst                 10616890
    iload                  7
+<<<<<<< HEAD
    iconst                 2
    multiply              
    iconst                 1
@@ -930,6 +1105,22 @@ LABEL778:
    iconst                 0
    iconst                 0
    cc_setposition        
+=======
+   load_int               2
+   imul
+   load_int               1
+   iadd
+   widget_load_child
+   load_int               1
+   if_icmpeq              LABEL778
+   jump                   LABEL783
+LABEL778:
+   widget_get_relativex
+   iload                  5
+   load_int               0
+   load_int               0
+   widget_put_position
+>>>>>>> reset branch.
 LABEL783:
    jump                   LABEL727
 LABEL784:
@@ -941,13 +1132,25 @@ LABEL784:
    iconst                 10616890
    get_varc_int           7
    iload                  14
+<<<<<<< HEAD
    get_varc_int           8
    sub                   
    add                   
+=======
+   get_varc               8
+   isub
+   iadd
+>>>>>>> reset branch.
    invoke                 72
    iconst                 10616890
    if_getscrolly         
    iload                  14
+<<<<<<< HEAD
    set_varc_int           8
    set_varc_int           7
    return                
+=======
+   put_varc               8
+   put_varc               7
+   return
+>>>>>>> reset branch.

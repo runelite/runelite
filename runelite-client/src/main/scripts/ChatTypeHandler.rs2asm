@@ -1,0 +1,116 @@
+.id                 553
+.int_stack_count    0
+.string_stack_count 0
+.int_var_count      7
+.string_var_count   3
+   load_int               -1
+   istore                 0
+   load_int               -1
+   istore                 1
+   load_string            ""
+   sstore                 0
+   load_string            ""
+   sstore                 1
+   load_string            ""
+   sstore                 2
+   load_int               -1
+   istore                 2
+   load_int               -2147483648
+   istore                 3
+   load_int               -2147483648
+   istore                 4
+   load_int               0
+   istore                 5
+   load_int               0
+   istore                 6
+LABEL20:
+   iload                  5
+   load_int               108
+   if_icmple              LABEL24
+   jump                   LABEL88
+LABEL24:
+   iload                  5
+   get_chatlinebuffer_length
+   load_int               0
+   if_icmpgt              LABEL29
+   jump                   LABEL83
+LABEL29:
+   iload                  5
+   load_int               0
+   get_chat_message_type 
+   istore                 6
+   sstore                 2
+   sstore                 1
+   sstore                 0
+   istore                 1
+   istore                 0
+   iload                  1
+   iload                  3
+   if_icmpgt              LABEL45
+   iload                  0
+   iload                  2
+   if_icmpgt              LABEL45
+   jump                   LABEL49
+LABEL45:
+   iload                  1
+   istore                 3
+   iload                  0
+   istore                 2
+LABEL49:
+   iload                  5
+   switch                
+      3: LABEL52
+      6: LABEL52
+      7: LABEL52
+      108: LABEL52
+      14: LABEL62
+   jump                   LABEL83
+LABEL52:
+   iload                  1
+   iload                  4
+   if_icmpgt              LABEL56
+   jump                   LABEL61
+LABEL56:
+   iload                  1
+   istore                 4
+   sload                  0
+   string_remove_html    
+   put_varc_string       
+LABEL61:
+   jump                   LABEL83
+LABEL62:
+   iload                  0
+   load_int               -1
+   if_icmpne              LABEL66
+   jump                   LABEL83
+LABEL66:
+   iload                  1
+   get_varc               202
+   if_icmpge              LABEL70
+   jump                   LABEL83
+LABEL70:
+   iload                  1
+   get_gamecycle         
+   load_int               3000
+   isub                  
+   if_icmpgt              LABEL76
+   jump                   LABEL83
+LABEL76:
+   iload                  1
+   put_varc               55
+   load_int               664
+   load_int               0
+   load_string            "1"
+   load_int               10616832
+   widget_put_render_listener_widget
+LABEL83:
+   iload                  5
+   load_int               1
+   iadd                  
+   istore                 5
+   jump                   LABEL20
+LABEL88:
+   iload                  2
+   return                
+   load_int               0
+   return

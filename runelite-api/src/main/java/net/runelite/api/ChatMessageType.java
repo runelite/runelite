@@ -129,9 +129,9 @@ public enum ChatMessageType
 	 */
 	FILTERED(105),
 	/**
-	 * A message about an action.
+	 * A message from a twitch chat.
 	 */
-	ACTION(109),
+	TWITCH(108),
 	/**
 	 * An unknown message type.
 	 */

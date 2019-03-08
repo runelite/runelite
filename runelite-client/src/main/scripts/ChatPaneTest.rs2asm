@@ -1,0 +1,138 @@
+.id                 193
+.int_stack_count    2
+.string_stack_count 1
+.int_var_count      2
+.string_var_count   1
+   get_varc               41
+   load_int               0
+   if_icmpeq              LABEL4
+   jump                   LABEL6
+LABEL4:
+   load_int               1
+   return                
+LABEL6:
+   iload                  0
+   load_int               -1
+   if_icmpeq              LABEL10
+   jump                   LABEL12
+LABEL10:
+   load_int               0
+   return                
+LABEL12:
+   get_varc               41
+   switch                
+      1: LABEL15
+      2: LABEL26
+      3: LABEL42
+      4: LABEL58
+      5: LABEL71
+      6: LABEL93
+   jump                   LABEL92
+LABEL15:
+   load_int               105
+   load_int               49
+   load_int               892
+   iload                  0
+   get_enum_value        
+   load_int               1
+   if_icmpeq              LABEL23
+   jump                   LABEL25
+LABEL23:
+   load_int               1
+   return                
+LABEL25:
+   jump                   LABEL92
+LABEL26:
+   iload                  0
+   load_int               1
+   if_icmpeq              LABEL39
+   iload                  0
+   load_int               2
+   if_icmpeq              LABEL39
+   iload                  0
+   load_int               90
+   if_icmpeq              LABEL39
+   iload                  0
+   load_int               91
+   if_icmpeq              LABEL39
+   jump                   LABEL41
+LABEL39:
+   load_int               1
+   return                
+LABEL41:
+   jump                   LABEL92
+LABEL42:
+   iload                  0
+   load_int               3
+   if_icmpeq              LABEL55
+   iload                  0
+   load_int               5
+   if_icmpeq              LABEL55
+   iload                  0
+   load_int               6
+   if_icmpeq              LABEL55
+   iload                  0
+   load_int               7
+   if_icmpeq              LABEL55
+   jump                   LABEL57
+LABEL55:
+   load_int               1
+   return                
+LABEL57:
+   jump                   LABEL92
+LABEL58:
+   iload                  0
+   load_int               9
+   if_icmpeq              LABEL68
+   iload                  0
+   load_int               11
+   if_icmpeq              LABEL68
+   iload                  0
+   load_int               104
+   if_icmpeq              LABEL68
+   jump                   LABEL70
+LABEL68:
+   load_int               1
+   return                
+LABEL70:
+   jump                   LABEL92
+LABEL71:
+   iload                  0
+   load_int               101
+   if_icmpeq              LABEL81
+   iload                  0
+   load_int               103
+   if_icmpeq              LABEL81
+   iload                  0
+   load_int               102
+   if_icmpeq              LABEL81
+   jump                   LABEL83
+LABEL93:
+   iload                  0
+   load_int               108
+   if_icmpeq              LABEL94
+   jump                   LABEL95
+LABEL81:
+   load_int               1
+   return                
+LABEL83:
+   iload                  0
+   sload                  0
+   iload                  1
+   invoke                 210
+   load_int               1
+   if_icmpeq              LABEL90
+   jump                   LABEL92
+LABEL90:
+   load_int               1
+   return                
+LABEL92:
+   load_int               0
+   return                
+   load_int               -1
+   return                
+LABEL94:
+   load_int               1
+   return
+LABEL95:
+jump                      LABEL92

@@ -33,7 +33,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ScriptID;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -49,6 +55,13 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.twitch.irc.TwitchIRCClient;
 import net.runelite.client.plugins.twitch.irc.TwitchListener;
 import net.runelite.client.task.Schedule;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
+import java.awt.Color;
+import net.runelite.client.callback.ClientThread;
 
 @PluginDescriptor(
 	name = "Twitch",
@@ -58,6 +71,18 @@ import net.runelite.client.task.Schedule;
 @Slf4j
 public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInputListener
 {
+	private static final Color twitchMenuOpColor = new Color(0x800080);
+	private static final Color clanMenuOpColor = new Color(0xFF0000);
+
+	private static final String TWITCH_CHAT_MENUTARGET = ColorUtil.wrapWithColorTag("Twitch chat", twitchMenuOpColor);
+	private static final String CLAN_CHAT_MENUTARGET = ColorUtil.wrapWithColorTag("Clan chat", clanMenuOpColor);
+	private static final String TWITCH_FILTER_MENUOPTION = ColorUtil.wrapWithColorTag("Twitch:", twitchMenuOpColor);
+
+	private boolean twitchChatSelected = false;
+	private boolean twitchChatFilter = false;
+
+	private static final int CLAN_BUTTON_ID = WidgetInfo.CHATBOX_CLAN_BUTTON.getId();
+
 	@Inject
 	private TwitchConfig twitchConfig;
 
@@ -65,28 +90,68 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private CommandManager commandManager;
 
+	@Inject
+	private twitchChatButtonOverlay buttonOverlay;
+
+	@Inject
+	private OverlayManager overlayManager;
+
 	private TwitchIRCClient twitchIRCClient;
+
+	Widget clanChatButtonBackground;
+	Widget clanChatButtonText;
+	Widget clanChatButtonFilterText;
+
+	public boolean getTwitchChatSelected()
+	{
+		return twitchChatSelected;
+	}
+
+	public boolean getTwitchChatFilter()
+	{
+		return twitchChatFilter;
+	}
 
 	@Override
 	protected void startUp()
 	{
 		connect();
 		commandManager.register(this);
+		overlayManager.add(buttonOverlay);
 	}
 
 	@Override
 	protected void shutDown()
 	{
-		if (twitchIRCClient != null)
+		overlayManager.remove(buttonOverlay);
+
+		if (twitchChatSelected)
 		{
-			twitchIRCClient.close();
-			twitchIRCClient = null;
+			twitchChatSelected = false;
+			clanChatButtonText.setText("Clan");
+
+			if (client.getVar(VarClientInt.CHAT_PANEL_SELECTED) == 6)
+			{
+				clientThread.invoke(() -> client.runScript(ScriptID.CHAT_BUTTON_ONOP, 1, 4));
+			}
+			else
+			{
+				clientThread.invoke(() -> client.runScript(178));
+			}
 		}
+
+			if (twitchIRCClient != null) {
+				twitchIRCClient.close();
+				twitchIRCClient = null;
+			}
 
 		commandManager.unregister(this);
 	}
@@ -160,17 +225,20 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 
 	private void addChatMessage(String sender, String message)
 	{
-		String chatMessage = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append(message)
-			.build();
+		if (!twitchChatFilter)
+		{
+			String chatMessage = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append(message)
+				.build();
 
-		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.CLANCHAT)
-			.sender("Twitch")
-			.name(sender)
-			.runeLiteFormattedMessage(chatMessage)
-			.build());
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.TWITCH)
+				.sender("Twitch")
+				.name(sender)
+				.runeLiteFormattedMessage(chatMessage)
+				.build());
+		}
 	}
 
 	@Override
@@ -222,6 +290,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 
 			return true;
 		}
+
 		return false;
 	}
 
@@ -229,5 +298,112 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 	public boolean onPrivateMessageInput(PrivateMessageInput privateMessageInput)
 	{
 		return false;
+	}
+
+
+	@Subscribe
+	private void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (event.getWidgetId() != CLAN_BUTTON_ID)
+		{
+			return;
+		}
+
+		if (!event.getMenuOption().equals("Switch tab") && !event.getMenuOption().equals("Switch:") &&
+			!event.getMenuOption().equals(TWITCH_FILTER_MENUOPTION))
+		{
+			return;
+		}
+
+		event.consume();
+
+		clanChatButtonBackground = client.getWidget(WidgetInfo.CHATBOX_CLAN_BUTTON_BACKGROUND);
+		clanChatButtonText = client.getWidget(WidgetInfo.CHATBOX_CLAN_BUTTON_TEXT);
+		clanChatButtonFilterText = client.getWidget(WidgetInfo.CHATBOX_CLAN_BUTTON_FILTER_TEXT);
+
+		if (event.getMenuOption().equals("Switch tab"))
+		{
+			if (twitchChatSelected)
+			{
+				client.runScript(ScriptID.CHAT_BUTTON_ONOP, 1, 6);
+				clanChatButtonText.setText("Twitch");
+			}
+			else
+			{
+				client.runScript(ScriptID.CHAT_BUTTON_ONOP, 1, 4);
+			}
+		}
+		else if (event.getMenuOption().equals("Switch:"))
+		{
+
+			if (event.getMenuTarget().equals(TWITCH_CHAT_MENUTARGET))
+			{
+				twitchChatSelected = true;
+				client.runScript(ScriptID.CHAT_BUTTON_ONOP, 1, 6);
+				clanChatButtonText.setText("Twitch");
+			}
+			else if (event.getMenuTarget().equals(CLAN_CHAT_MENUTARGET))
+			{
+				twitchChatSelected = false;
+				client.runScript(ScriptID.CHAT_BUTTON_ONOP, 1, 4);
+				clanChatButtonText.setText("Clan");
+			}
+		}
+		else if (event.getMenuOption().equals(TWITCH_FILTER_MENUOPTION))
+		{
+			if (event.getMenuTarget().equals("Show all"))
+			{
+				twitchChatFilter = false;
+			}
+			else
+			{
+				twitchChatFilter = true;
+			}
+		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		int widgetIndex = event.getActionParam0();
+		int widgetID = event.getActionParam1();
+		MenuEntry[] menuEntries = client.getMenuEntries();
+
+		if (widgetID == CLAN_BUTTON_ID && event.getOption().equals("Switch tab"))
+		{
+			MenuEntry [] newMenu = new MenuEntry[menuEntries.length + 3];
+			newMenu[newMenu.length - 1] = menuEntries[menuEntries.length - 1];
+			MenuEntry switchOption = newMenu[newMenu.length - 2] = new MenuEntry();
+			if (!twitchChatSelected)
+			{
+				switchOption.setTarget(TWITCH_CHAT_MENUTARGET);
+			}
+			else
+			{
+				switchOption.setTarget(CLAN_CHAT_MENUTARGET);
+			}
+			switchOption.setOption("Switch:");
+			switchOption.setParam0(widgetIndex);
+			switchOption.setParam1(widgetID);
+			switchOption.setIdentifier(event.getIdentifier());
+			switchOption.setType(MenuAction.RUNELITE_PRIORITY.getId());
+			System.arraycopy(menuEntries, 0, newMenu, 0, 4);
+			MenuEntry twitchChatFilterAll = newMenu[5] = new MenuEntry();
+			twitchChatFilterAll.setTarget("Show all");
+			twitchChatFilterAll.setOption(TWITCH_FILTER_MENUOPTION);
+			twitchChatFilterAll.setParam0(widgetIndex);
+			twitchChatFilterAll.setParam1(widgetID);
+			twitchChatFilterAll.setIdentifier(event.getIdentifier());
+			twitchChatFilterAll.setType(MenuAction.RUNELITE_PRIORITY.getId());
+			MenuEntry twitchChatFilterOff = newMenu[4] = new MenuEntry();
+			twitchChatFilterOff.setTarget("Off");
+			twitchChatFilterOff.setOption(TWITCH_FILTER_MENUOPTION);
+			twitchChatFilterOff.setParam0(widgetIndex);
+			twitchChatFilterOff.setParam1(widgetID);
+			twitchChatFilterOff.setIdentifier(event.getIdentifier());
+			twitchChatFilterOff.setType(MenuAction.RUNELITE_PRIORITY.getId());
+
+			client.setMenuEntries(newMenu);
+		}
 	}
 }

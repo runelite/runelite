@@ -434,6 +434,15 @@ public class WidgetID
 		static final int MESSAGES = 55;
 		static final int TRANSPARENT_BACKGROUND_LINES = 56;
 		static final int INPUT = 57;
+		static final int ALL_BUTTON = 4;
+		static final int GAME_BUTTON = 8;
+		static final int PUBLIC_BUTTON = 13;
+		static final int PRIVATE_BUTTON = 18;
+		static final int CLAN_BUTTON = 23;
+		static final int CLAN_BUTTON_BACKGROUND = 25;
+		static final int CLAN_BUTTON_TEXT = 26;
+		static final int CLAN_BUTTON_FILTER_TEXT = 27;
+		static final int TRADE_BUTTON = 28;
 	}
 
 	static class Prayer
@@ -763,5 +772,11 @@ public class WidgetID
 	static class QuestTab
 	{
 		static final int QUEST_TAB = 3;
+	}
+
+	static class ChatboxButtons
+	{
+		static final int CHATBOX_CLAN_BUTTON = 23;
+		static final int CLAN_BUTTON_TEXT = 27;
 	}
 }

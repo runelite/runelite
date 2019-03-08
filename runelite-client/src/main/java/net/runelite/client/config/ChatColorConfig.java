@@ -509,4 +509,24 @@ public interface ChatColorConfig extends Config
 		description = "Color of Friend Usernames in Public Chat (transparent)"
 	)
 	Color transparentPublicFriendUsernames();
+
+	@ConfigItem(
+			position = 88,
+			keyName = "opaqueTwitchChatMessage",
+			name = "Twitch chat message",
+			description = "Color of Twitch Chat messages"
+	)
+	Color opaqueTwitchChatMessage();
+
+	@ConfigItem(
+			position = 89,
+			keyName = "opaqueTwitchChatMessageHighlight",
+			name = "Twitch chat message highlight",
+			description = "Color of highlights in Twitch Chat Messages"
+	)
+	default Color opaqueTwitchChatMessageHighlight()
+	{
+		return Color.decode("#6441A4");
+	}
+
 }

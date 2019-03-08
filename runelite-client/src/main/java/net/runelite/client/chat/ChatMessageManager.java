@@ -137,9 +137,11 @@ public class ChatMessageManager
 				}
 				break;
 			}
+			case TWITCH:
 			case CLANCHAT:
 				usernameColor = isChatboxTransparent ? chatColorConfig.transparentClanUsernames() : chatColorConfig.opaqueClanUsernames();
 				break;
+
 		}
 
 		senderColor = isChatboxTransparent ? chatColorConfig.transparentClanChannelName() : chatColorConfig.opaqueClanChannelName();
@@ -219,6 +221,8 @@ public class ChatMessageManager
 				case EXAMINE_NPC:
 				case GAME:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
+				case TWITCH:
+					return new Color(100, 65, 164); //Twitch.tv purple
 			}
 		}
 		else
@@ -234,6 +238,8 @@ public class ChatMessageManager
 					return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_TRANSPARENT_BACKGROUND;
 				case CLANCHAT:
 					return JagexColors.CHAT_CLAN_TEXT_TRANSPARENT_BACKGROUND;
+				case TWITCH:
+					return new Color(100, 65, 164); //Twitch.tv purple
 				case EXAMINE_ITEM:
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
@@ -394,6 +400,16 @@ public class ChatMessageManager
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueFilteredHighlight(), false),
 				ChatMessageType.FILTERED);
 		}
+		if (chatColorConfig.opaqueTwitchChatMessage() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueTwitchChatMessage(), false),
+					ChatMessageType.TWITCH);
+		}
+		if (chatColorConfig.opaqueTwitchChatMessageHighlight() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaqueTwitchChatMessageHighlight(), false),
+					ChatMessageType.TWITCH);
+		}
 
 		//Transparent Chat Colours
 		if (chatColorConfig.transparentPublicChat() != null)
@@ -521,6 +537,16 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentFilteredHighlight(), true),
 				ChatMessageType.FILTERED);
+		}
+		if (chatColorConfig.transparentClanChatMessage() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentClanChatMessage(), true),
+					ChatMessageType.CLANCHAT);
+		}
+		if (chatColorConfig.transparentClanChatMessageHighlight() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentClanChatMessageHighlight(), true),
+					ChatMessageType.CLANCHAT);
 		}
 	}
 

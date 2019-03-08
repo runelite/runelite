@@ -40,6 +40,7 @@ import net.runelite.api.Experience;
 import net.runelite.api.IconID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MessageNode;
+import net.runelite.api.ScriptID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
@@ -95,6 +96,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String CMB_COMMAND_STRING = "!cmb";
 	private static final String QP_COMMAND_STRING = "!qp";
 	private static final String PB_COMMAND = "!pb";
+	private static final String TWITCH_CHAT_COMMAND = "::twitch";
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final ChatClient chatClient = new ChatClient();
@@ -143,6 +145,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(KILLCOUNT_COMMAND_STRING, this::killCountLookup, this::killCountSubmit);
 		chatCommandManager.registerCommandAsync(QP_COMMAND_STRING, this::questPointsLookup, this::questPointsSubmit);
 		chatCommandManager.registerCommandAsync(PB_COMMAND, this::personalBestLookup, this::personalBestSubmit);
+		chatCommandManager.registerCommandAsync(TWITCH_CHAT_COMMAND, this::switchToTwitchChat);
 	}
 
 	@Override
@@ -160,6 +163,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(KILLCOUNT_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(QP_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(PB_COMMAND);
+		chatCommandManager.unregisterCommand(TWITCH_CHAT_COMMAND);
 	}
 
 	@Provides
@@ -1138,5 +1142,10 @@ public class ChatCommandsPlugin extends Plugin
 			default:
 				return WordUtils.capitalize(boss);
 		}
+	}
+
+	private void switchToTwitchChat (ChatMessage chatMessage, String Message)
+	{
+		client.runScript(ScriptID.CHAT_BUTTON_ONOP, 1, 6);
 	}
 }
