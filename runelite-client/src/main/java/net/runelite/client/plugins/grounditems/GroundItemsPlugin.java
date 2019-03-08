@@ -90,6 +90,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Ground Items",
@@ -412,9 +413,15 @@ public class GroundItemsPlugin extends Plugin
 		// gets the highlighted items from the text box in the config
 		highlightedItemsList = Text.fromCSV(config.getHighlightItems());
 
-		List<FilterItem> hiddenFilteredItemList = hiddenItemList.stream().map(this::convertToFilterItem).collect(Collectors.toList());
+		List<FilterItem> hiddenFilteredItemList = hiddenItemList.stream()
+				.filter(StringUtils::isNotEmpty)
+				.map(this::convertToFilterItem)
+				.collect(Collectors.toList());
 
-		List<FilterItem> highlightedFilteredItemList = highlightedItemsList.stream().map(this::convertToFilterItem).collect(Collectors.toList());
+		List<FilterItem> highlightedFilteredItemList = highlightedItemsList.stream()
+				.filter(StringUtils::isNotEmpty)
+				.map(this::convertToFilterItem)
+				.collect(Collectors.toList());
 
 		hiddenItems = CacheBuilder.newBuilder()
 			.maximumSize(512L)
