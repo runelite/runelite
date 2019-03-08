@@ -39,7 +39,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "highlightedItems",
 		name = "Highlighted Items",
-		description = "Configures specifically highlighted ground items. Format: (item), (item)",
+		description = "Configures specifically highlighted ground items. Format: (item), (item), (item[<=>]quantity[kmb])",
 		position = 0
 	)
 	default String getHighlightItems()
@@ -57,12 +57,12 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "hiddenItems",
 		name = "Hidden Items",
-		description = "Configures hidden ground items. Format: (item), (item)",
+		description = "Configures hidden ground items. Format: (item), (item), (item[<=>]quantity[kmb])",
 		position = 1
 	)
 	default String getHiddenItems()
 	{
-		return "Vial, Ashes, Coins, Bones, Bucket, Jug, Seaweed";
+		return "Vial, Ashes, Coins<1k, Bones, Bucket, Jug, Seaweed";
 	}
 
 	@ConfigItem(

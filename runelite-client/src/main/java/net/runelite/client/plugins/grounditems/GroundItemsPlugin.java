@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Mikhail <mikhail@huizenvlees.nl>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,6 +42,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -106,6 +110,8 @@ public class GroundItemsPlugin extends Plugin
 	private static final int FIFTH_OPTION = MenuAction.GROUND_ITEM_FIFTH_OPTION.getId();
 	private static final int EXAMINE_ITEM = MenuAction.EXAMINE_ITEM_GROUND.getId();
 
+	private static final Pattern NAME_QUANTITY_REGEX = Pattern.compile("(.+)([<=>])(\\d+)([kKmMbB]?)");
+
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private Map.Entry<Rectangle, GroundItem> textBoxBounds;
@@ -159,8 +165,8 @@ public class GroundItemsPlugin extends Plugin
 	@Getter
 	private final Map<GroundItem.GroundItemKey, GroundItem> collectedGroundItems = new LinkedHashMap<>();
 	private final Map<Integer, Color> priceChecks = new LinkedHashMap<>();
-	private LoadingCache<String, Boolean> highlightedItems;
-	private LoadingCache<String, Boolean> hiddenItems;
+	private LoadingCache<ItemNameWithQuantity, Boolean> highlightedItems;
+	private LoadingCache<ItemNameWithQuantity, Boolean> hiddenItems;
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -227,6 +233,7 @@ public class GroundItemsPlugin extends Plugin
 
 		boolean shouldNotify = !config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
 			groundItem.getName(),
+			groundItem.getQuantity(),
 			groundItem.getGePrice(),
 			groundItem.getHaPrice()));
 
@@ -351,6 +358,7 @@ public class GroundItemsPlugin extends Plugin
 
 				boolean shouldNotify = config.onlyShowLoot() && config.highlightedColor().equals(getHighlighted(
 					groundItem.getName(),
+					groundItem.getQuantity(),
 					groundItem.getGePrice(),
 					groundItem.getHaPrice()));
 
@@ -404,15 +412,19 @@ public class GroundItemsPlugin extends Plugin
 		// gets the highlighted items from the text box in the config
 		highlightedItemsList = Text.fromCSV(config.getHighlightItems());
 
-		highlightedItems = CacheBuilder.newBuilder()
-			.maximumSize(512L)
-			.expireAfterAccess(10, TimeUnit.MINUTES)
-			.build(new WildcardMatchLoader(highlightedItemsList));
+		List<FilterItem> hiddenFilteredItemList = hiddenItemList.stream().map(this::convertToFilterItem).collect(Collectors.toList());
+
+		List<FilterItem> highlightedFilteredItemList = highlightedItemsList.stream().map(this::convertToFilterItem).collect(Collectors.toList());
 
 		hiddenItems = CacheBuilder.newBuilder()
 			.maximumSize(512L)
 			.expireAfterAccess(10, TimeUnit.MINUTES)
-			.build(new WildcardMatchLoader(hiddenItemList));
+			.build(new WildcardMatchLoader(hiddenFilteredItemList));
+
+		highlightedItems = CacheBuilder.newBuilder()
+				.maximumSize(512L)
+				.expireAfterAccess(10, TimeUnit.MINUTES)
+				.build(new WildcardMatchLoader(highlightedFilteredItemList));
 
 		// Cache colors
 		priceChecks.clear();
@@ -440,6 +452,19 @@ public class GroundItemsPlugin extends Plugin
 		if (config.getHighlightOverValue() > 0)
 		{
 			priceChecks.put(config.getHighlightOverValue(), config.highlightedColor());
+		}
+	}
+
+	private FilterItem convertToFilterItem(String item)
+	{
+		Matcher m = NAME_QUANTITY_REGEX.matcher(item);
+		if (m.find())
+		{
+			return new FilterItem(m.group(1), m.group(2), Integer.parseInt(m.group(3)), m.group(4));
+		}
+		else
+		{
+			return new FilterItem(item);
 		}
 	}
 
@@ -482,8 +507,8 @@ public class GroundItemsPlugin extends Plugin
 			final int price = itemPrice <= 0 ? itemComposition.getPrice() : itemPrice;
 			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
 			final int gePrice = quantity * price;
-			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
-			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
+			final Color hidden = getHidden(itemComposition.getName(), quantity, gePrice, haPrice, itemComposition.isTradeable());
+			final Color highlighted = getHighlighted(itemComposition.getName(), quantity, gePrice, haPrice);
 			final Color color = getItemColor(highlighted, hidden);
 			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
 
@@ -537,15 +562,15 @@ public class GroundItemsPlugin extends Plugin
 		config.setHighlightedItem(Text.toCSV(highlightedItemSet));
 	}
 
-	Color getHighlighted(String item, int gePrice, int haPrice)
+	Color getHighlighted(String name, int quantity, int gePrice, int haPrice)
 	{
-		if (TRUE.equals(highlightedItems.getUnchecked(item)))
+		if (TRUE.equals(highlightedItems.getUnchecked(new ItemNameWithQuantity(name, quantity))))
 		{
 			return config.highlightedColor();
 		}
 
 		// Explicit hide takes priority over implicit highlight
-		if (TRUE.equals(hiddenItems.getUnchecked(item)))
+		if (TRUE.equals(hiddenItems.getUnchecked(new ItemNameWithQuantity(name, quantity))))
 		{
 			return null;
 		}
@@ -561,10 +586,10 @@ public class GroundItemsPlugin extends Plugin
 		return null;
 	}
 
-	Color getHidden(String item, int gePrice, int haPrice, boolean isTradeable)
+	Color getHidden(String name, int quantity, int gePrice, int haPrice, boolean isTradeable)
 	{
-		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(item));
-		final boolean isExplicitHighlight = TRUE.equals(highlightedItems.getUnchecked(item));
+		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(new ItemNameWithQuantity(name, quantity)));
+		final boolean isExplicitHighlight = TRUE.equals(highlightedItems.getUnchecked(new ItemNameWithQuantity(name, quantity)));
 		final boolean canBeHidden = gePrice > 0 || isTradeable || !config.dontHideUntradeables();
 		final boolean underGe = gePrice < config.getHideUnderValue();
 		final boolean underHa = haPrice < config.getHideUnderValue();
