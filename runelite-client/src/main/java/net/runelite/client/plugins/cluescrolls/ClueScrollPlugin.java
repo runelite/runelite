@@ -459,7 +459,7 @@ public class ClueScrollPlugin extends Plugin
 
 		if (text.contains("degrees") && text.contains("minutes"))
 		{
-			return CoordinateClue.forText(text);
+			return coordinatesToWorldPoint(text);
 		}
 
 		final CrypticClue crypticClue = CrypticClue.forText(text);
@@ -502,6 +502,63 @@ public class ClueScrollPlugin extends Plugin
 		log.warn("Encountered unhandled clue text: {}", clueScrollText.getText());
 		resetClue(true);
 		return null;
+	}
+
+	/**
+	 * Example input: "00 degrees 00 minutes north 07 degrees 13 minutes west"
+	 * Note: some clues use "1 degree" instead of "01 degrees"
+	 */
+	private CoordinateClue coordinatesToWorldPoint(String text)
+	{
+		String[] splitText = text.split(" ");
+
+		if (splitText.length != 10)
+		{
+			log.warn("Splitting \"" + text + "\" did not result in an array of 10 cells");
+			return null;
+		}
+
+		if (!splitText[1].startsWith("degree") || !splitText[3].startsWith("minute"))
+		{
+			log.warn("\"" + text + "\" is not a well formed coordinate string");
+			return null;
+		}
+
+		int degY = Integer.parseInt(splitText[0]);
+		int minY = Integer.parseInt(splitText[2]);
+
+		if (splitText[4].equals("south"))
+		{
+			degY *= -1;
+			minY *= -1;
+		}
+
+		int degX = Integer.parseInt(splitText[5]);
+		int minX = Integer.parseInt(splitText[7]);
+
+		if (splitText[9].equals("west"))
+		{
+			degX *= -1;
+			minX *= -1;
+		}
+
+		return new CoordinateClue(text, coordinatesToWorldPoint(degX, minX, degY, minY));
+	}
+
+	/**
+	 * This conversion is explained on
+	 * https://oldschool.runescape.wiki/w/Treasure_Trails/Guide/Coordinates
+	 */
+	private WorldPoint coordinatesToWorldPoint(int degX, int minX, int degY, int minY)
+	{
+		// Center of the Observatory
+		int x2 = 2440;
+		int y2 = 3161;
+
+		x2 += degX * 32 + Math.round(minX / 1.875);
+		y2 += degY * 32 + Math.round(minY / 1.875);
+
+		return new WorldPoint(x2, y2, 0);
 	}
 
 	private void addMapPoints(WorldPoint... points)
