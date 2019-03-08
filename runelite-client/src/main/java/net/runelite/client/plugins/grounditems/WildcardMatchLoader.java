@@ -24,11 +24,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package net.runelite.client.plugins.grounditems;
+
 import com.google.common.base.Strings;
 import com.google.common.cache.CacheLoader;
 import java.util.List;
 import javax.annotation.Nonnull;
 import net.runelite.client.util.WildcardMatcher;
+
 class WildcardMatchLoader extends CacheLoader<ItemNameWithQuantity, Boolean>
 {
 	private final List<FilterItem> nameFilters;
@@ -43,6 +45,7 @@ class WildcardMatchLoader extends CacheLoader<ItemNameWithQuantity, Boolean>
 		{
 			return false;
 		}
+
 		for (final FilterItem filter : nameFilters)
 		{
 			if (WildcardMatcher.matches(filter.getPattern(), itemNameWithQuantity.getName()))
@@ -50,6 +53,7 @@ class WildcardMatchLoader extends CacheLoader<ItemNameWithQuantity, Boolean>
 				return filter.checkAmount(itemNameWithQuantity.getQuantity());
 			}
 		}
+
 		return false;
 	}
 }
