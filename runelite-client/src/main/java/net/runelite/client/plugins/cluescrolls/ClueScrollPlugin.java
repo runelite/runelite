@@ -89,9 +89,9 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-		name = "Clue Scroll",
-		description = "Show answers to clue scroll riddles, anagrams, ciphers, and cryptic clues",
-		tags = {"arrow", "hints", "world", "map", "coordinates", "emotes"}
+	name = "Clue Scroll",
+	description = "Show answers to clue scroll riddles, anagrams, ciphers, and cryptic clues",
+	tags = {"arrow", "hints", "world", "map", "coordinates", "emotes"}
 )
 @Slf4j
 public class ClueScrollPlugin extends Plugin
@@ -192,7 +192,7 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		if (!event.getMessage().equals("The strange device cools as you find your treasure.")
-				&& !event.getMessage().equals("Well done, you've completed the Treasure Trail!"))
+			&& !event.getMessage().equals("Well done, you've completed the Treasure Trail!"))
 		{
 			return;
 		}
@@ -344,8 +344,8 @@ public class ClueScrollPlugin extends Plugin
 			{
 				// Only set the location hint arrow if we do not already have more accurate location
 				if (config.displayHintArrows()
-						&& (client.getHintArrowNpc() == null
-						|| !npcsToMark.contains(client.getHintArrowNpc())))
+					&& (client.getHintArrowNpc() == null
+					|| !npcsToMark.contains(client.getHintArrowNpc())))
 				{
 					client.setHintArrow(location);
 				}
