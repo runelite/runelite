@@ -32,10 +32,10 @@ LABEL23:
    iload                  0
    load_int               10616889
    widget_put_textcolor_widget
-   get_varc_string        1
+   049                    335
    string_length         
    istore                 2
-   get_varc_string        1
+   049                    335
    appendtags            
    sstore                 1
    load_string            ""

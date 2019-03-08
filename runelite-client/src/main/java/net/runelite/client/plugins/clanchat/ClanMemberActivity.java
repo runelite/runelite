@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Levi <me@levischuck.com>
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.xptracker;
+package net.runelite.client.plugins.clanchat;
 
+import lombok.AllArgsConstructor;
 import lombok.Value;
+import net.runelite.api.ClanMember;
 
 @Value
-class XpSnapshotTotal
+@AllArgsConstructor
+class ClanMemberActivity
 {
-	private final int xpGainedInSession;
-	private final int xpPerHour;
-
-	static XpSnapshotTotal zero()
-	{
-		return new XpSnapshotTotal(0, 0);
-	}
+	private ClanActivityType activityType;
+	private ClanMember member;
+	private Integer tick;
 }

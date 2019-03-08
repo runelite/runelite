@@ -40,7 +40,6 @@ class XpState
 {
 	private static final double DEFAULT_XP_MODIFIER = 4.0;
 	private static final double SHARED_XP_MODIFIER = DEFAULT_XP_MODIFIER / 3.0;
-	private final XpStateTotal xpTotal = new XpStateTotal();
 	private final Map<Skill, XpStateSingle> xpSkills = new EnumMap<>(Skill.class);
 	private NPC interactedNPC;
 
@@ -49,7 +48,6 @@ class XpState
 	 */
 	void reset()
 	{
-		xpTotal.reset();
 		xpSkills.clear();
 	}
 
@@ -58,25 +56,10 @@ class XpState
 	 * @param skill Skill to reset
 	 * @param currentXp Current XP to set to, if unknown set to -1
 	 */
-	void resetSkill(Skill skill, int currentXp)
+	void resetSkill(Skill skill, long currentXp)
 	{
 		xpSkills.remove(skill);
 		xpSkills.put(skill, new XpStateSingle(skill, currentXp));
-		recalculateTotal();
-	}
-
-	/**
-	 * Calculates the total skill changes observed in this session or since the last reset
-	 */
-	void recalculateTotal()
-	{
-		xpTotal.reset();
-
-		for (XpStateSingle state : xpSkills.values())
-		{
-			xpTotal.addXpGainedInSession(state.getXpGained());
-			xpTotal.addXpPerHour(state.getXpHr());
-		}
 	}
 
 	/**
@@ -90,7 +73,7 @@ class XpState
 	 * @param goalEndXp Possible XP end goal
 	 * @return Whether or not the skill has been initialized, there was no change, or it has been updated
 	 */
-	XpUpdateResult updateSkill(Skill skill, int currentXp, int goalStartXp, int goalEndXp)
+	XpUpdateResult updateSkill(Skill skill, long currentXp, int goalStartXp, int goalEndXp)
 	{
 		XpStateSingle state = getSkill(skill);
 
@@ -108,7 +91,7 @@ class XpState
 		}
 		else
 		{
-			int startXp = state.getStartXp();
+			long startXp = state.getStartXp();
 			int gainedXp = state.getXpGained();
 
 			if (startXp + gainedXp > currentXp)
@@ -208,9 +191,14 @@ class XpState
 	 * @param skill Skill to initialize
 	 * @param currentXp Current known XP for the skill
 	 */
-	void initializeSkill(Skill skill, int currentXp)
+	void initializeSkill(Skill skill, long currentXp)
 	{
 		xpSkills.put(skill, new XpStateSingle(skill, currentXp));
+	}
+
+	boolean isInitialized(Skill skill)
+	{
+		return xpSkills.containsKey(skill);
 	}
 
 	@NonNull
@@ -237,8 +225,8 @@ class XpState
 	 * @return An immutable snapshot of total information for this session since first login or last reset
 	 */
 	@NonNull
-	XpSnapshotTotal getTotalSnapshot()
+	XpSnapshotSingle getTotalSnapshot()
 	{
-		return xpTotal.snapshot();
+		return getSkill(Skill.OVERALL).snapshot();
 	}
 }
