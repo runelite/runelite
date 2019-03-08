@@ -25,13 +25,12 @@
 package net.runelite.client.plugins.grounditems;
 
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 class ItemNameWithQuantity
 {
-	@Getter private String name;
-	@Getter private int quantity;
+	private String name;
+	private int quantity;
 
 	ItemNameWithQuantity(String name, int quantity)
 	{
