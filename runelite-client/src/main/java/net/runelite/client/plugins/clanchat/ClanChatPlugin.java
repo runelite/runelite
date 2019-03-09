@@ -35,9 +35,11 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
@@ -113,6 +115,7 @@ public class ClanChatPlugin extends Plugin
 
 	private List<String> chats = new ArrayList<>();
 	private List<Player> clanMembers = new ArrayList<>();
+	private Set<String> watchList = new HashSet<>();
 	private ClanChatIndicator clanMemberCounter;
 	/**
 	 * queue of temporary messages added to the client
@@ -131,12 +134,14 @@ public class ClanChatPlugin extends Plugin
 	public void startUp()
 	{
 		chats = new ArrayList<>(Text.fromCSV(config.chatsData()));
+		watchList = new HashSet<>(Text.fromCSV(config.watchList()));
 	}
 
 	@Override
 	public void shutDown()
 	{
 		clanMembers.clear();
+		watchList.clear();
 		removeClanCounter();
 		resetClanChats();
 	}
@@ -158,6 +163,11 @@ public class ClanChatPlugin extends Plugin
 			else
 			{
 				removeClanCounter();
+			}
+
+			if (configChanged.getKey().equals("watchList"))
+			{
+				watchList = new HashSet<>(Text.fromCSV(config.watchList()));
 			}
 		}
 	}
@@ -188,8 +198,14 @@ public class ClanChatPlugin extends Plugin
 			return;
 		}
 
-		if (!config.showJoinLeave() ||
-			member.getRank().getValue() < config.joinLeaveRank().getValue())
+		if (!config.showJoinLeave())
+		{
+			return;
+		}
+
+		final boolean rankCheck = member.getRank().getValue() >= config.joinLeaveRank().getValue();
+		final boolean watchCheck = watchList.contains(member.getUsername());
+		if (!rankCheck && !watchCheck)
 		{
 			return;
 		}
@@ -233,8 +249,14 @@ public class ClanChatPlugin extends Plugin
 			}
 		}
 
-		if (!config.showJoinLeave() ||
-			member.getRank().getValue() < config.joinLeaveRank().getValue())
+		if (!config.showJoinLeave())
+		{
+			return;
+		}
+
+		final boolean rankCheck = member.getRank().getValue() >= config.joinLeaveRank().getValue();
+		final boolean watchCheck = watchList.contains(member.getUsername());
+		if (!rankCheck && !watchCheck)
 		{
 			return;
 		}

@@ -126,4 +126,15 @@ public interface ClanChatConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "watchList",
+		name = "Watch List",
+		description = "A list of usernames which should trigger join/leave messages regardless of rank.",
+		position = 8
+	)
+	default String watchList()
+	{
+		return "";
+	}
 }
