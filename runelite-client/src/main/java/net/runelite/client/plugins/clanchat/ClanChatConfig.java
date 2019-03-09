@@ -117,10 +117,54 @@ public interface ClanChatConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "forceF2PMessages",
+		name = "Force F2P Join/Leave messages",
+		description = "Ignores message rank requirement for people in Free-2-Play worlds.",
+		position = 7
+	)
+	default boolean forceF2PMessages()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "forceP2PMessages",
+		name = "Force P2P Join/Leave messages",
+		description = "Ignores message rank requirement for people in Pay-2-Play worlds.",
+		position = 8
+	)
+	default boolean forceP2PMessages()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "forceDeadmanMessages",
+		name = "Force DMM Join/Leave messages",
+		description = "Ignores message rank requirement for people in Deadman related worlds.",
+		position = 9
+	)
+	default boolean forceDeadmanMessages()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "forceRS3Messages",
+		name = "Force RS3 Join/Leave messages",
+		description = "Ignores message rank requirement for people in RS3 worlds/lobbies.",
+		position = 10
+	)
+	default boolean forceRS3Messages()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "privateMessageIcons",
 		name = "Private Message Icons",
 		description = "Add clan chat rank icons to private messages received from clan mates.",
-		position = 7
+		position = 11
 	)
 	default boolean privateMessageIcons()
 	{
@@ -131,7 +175,7 @@ public interface ClanChatConfig extends Config
 		keyName = "publicChatIcons",
 		name = "Public Chat Icons",
 		description = "Add clan chat rank icons to public chat messages from clan mates.",
-		position = 8
+		position = 12
 	)
 	default boolean publicChatIcons()
 	{

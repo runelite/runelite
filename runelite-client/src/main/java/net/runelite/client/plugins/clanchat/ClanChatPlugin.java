@@ -215,8 +215,14 @@ public class ClanChatPlugin extends Plugin
 			return;
 		}
 
-		if (!config.showJoinLeave() ||
-			member.getRank().getValue() < config.joinLeaveRank().getValue())
+		if (!config.showJoinLeave())
+		{
+			return;
+		}
+
+		final boolean rankCheck = member.getRank().getValue() >= config.joinLeaveRank().getValue();
+		final boolean forceCheck = worldForceCheck(member.getWorld());
+		if (!rankCheck && !forceCheck)
 		{
 			return;
 		}
@@ -260,8 +266,14 @@ public class ClanChatPlugin extends Plugin
 			}
 		}
 
-		if (!config.showJoinLeave() ||
-			member.getRank().getValue() < config.joinLeaveRank().getValue())
+		if (!config.showJoinLeave())
+		{
+			return;
+		}
+
+		final boolean rankCheck = member.getRank().getValue() >= config.joinLeaveRank().getValue();
+		final boolean forceCheck = worldForceCheck(member.getWorld());
+		if (!rankCheck && !forceCheck)
 		{
 			return;
 		}
@@ -685,5 +697,26 @@ public class ClanChatPlugin extends Plugin
 
 		final ClanMemberRank rank = worldTypes.contains(WorldType.MEMBERS) ? ClanMemberRank.GENERAL : ClanMemberRank.CAPTAIN;
 		return "<img=" + clanManager.getIconNumber(rank) + "> ";
+	}
+
+	private boolean worldForceCheck(final int worldNumber)
+	{
+		if (worldNumber < OSRS_WORLD_THRESHOLD || worldNumber >= RS3_LOBBY_THRESHOLD)
+		{
+			return config.forceRS3Messages();
+		}
+
+		final EnumSet<WorldType> worldTypes = worldTypeMap.get(worldNumber);
+		if (worldTypes != null)
+		{
+			if (worldTypes.contains(WorldType.DEADMAN) || worldTypes.contains(WorldType.SEASONAL_DEADMAN) || worldTypes.contains(WorldType.DEADMAN_TOURNAMENT))
+			{
+				return config.forceDeadmanMessages();
+			}
+
+			return worldTypes.contains(WorldType.MEMBERS) ? config.forceP2PMessages() : config.forceF2PMessages();
+		}
+
+		return false;
 	}
 }
