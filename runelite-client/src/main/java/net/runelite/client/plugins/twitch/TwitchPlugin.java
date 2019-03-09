@@ -144,11 +144,12 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			}
 			else
 			{
-				clientThread.invoke(() -> client.runScript(178));
+				clientThread.invoke(() -> client.runScript(ScriptID.CHAT_BUTTON_REDRAW));
 			}
 		}
 
-			if (twitchIRCClient != null) {
+			if (twitchIRCClient != null)
+			{
 				twitchIRCClient.close();
 				twitchIRCClient = null;
 			}
