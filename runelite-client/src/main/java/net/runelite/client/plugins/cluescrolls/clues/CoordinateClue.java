@@ -27,8 +27,6 @@ package net.runelite.client.plugins.cluescrolls.clues;
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.awt.Graphics2D;
-//import java.util.HashMap;
-//import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
