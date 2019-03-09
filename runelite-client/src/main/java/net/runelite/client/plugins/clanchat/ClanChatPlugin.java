@@ -31,14 +31,17 @@ import com.google.common.collect.Lists;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
@@ -78,13 +81,20 @@ import static net.runelite.client.ui.JagexColors.CHAT_CLAN_NAME_TRANSPARENT_BACK
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_TEXT_TRANSPARENT_BACKGROUND;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.worlds.World;
+import net.runelite.http.api.worlds.WorldClient;
+import net.runelite.http.api.worlds.WorldResult;
+import net.runelite.http.api.worlds.WorldType;
 
 @PluginDescriptor(
 	name = "Clan Chat",
 	description = "Add rank icons to users talking in clan chat",
 	tags = {"icons", "rank", "recent"}
 )
+@Slf4j
 public class ClanChatPlugin extends Plugin
 {
 	private static final int MAX_CHATS = 10;
@@ -92,6 +102,8 @@ public class ClanChatPlugin extends Plugin
 	private static final String RECENT_TITLE = "Recent CCs";
 	private static final int JOIN_LEAVE_DURATION = 20;
 	private static final int MESSAGE_DELAY = 10;
+	private static final int OSRS_WORLD_THRESHOLD = 300;
+	private static final int RS3_LOBBY_THRESHOLD = 1000;
 
 	@Inject
 	private Client client;
@@ -121,6 +133,8 @@ public class ClanChatPlugin extends Plugin
 	private Map<String, ClanMemberActivity> activityBuffer = new HashMap<>();
 	private int clanJoinedTick;
 
+	private final Map<Integer, EnumSet<WorldType>> worldTypeMap = new HashMap<>();
+
 	@Provides
 	ClanChatConfig getConfig(ConfigManager configManager)
 	{
@@ -131,6 +145,18 @@ public class ClanChatPlugin extends Plugin
 	public void startUp()
 	{
 		chats = new ArrayList<>(Text.fromCSV(config.chatsData()));
+		try
+		{
+			final WorldResult worldResult = new WorldClient(RuneLiteAPI.CLIENT).lookupWorlds();
+			for (World w : worldResult.getWorlds())
+			{
+				worldTypeMap.put(w.getId(), w.getTypes());
+			}
+		}
+		catch (IOException ex)
+		{
+			log.warn("Error looking up worlds", ex);
+		}
 	}
 
 	@Override
@@ -365,6 +391,32 @@ public class ClanChatPlugin extends Plugin
 			rankIcon = clanManager.getIconNumber(rank);
 		}
 
+		String worldInfo = "";
+		if (config.addWorldInfo())
+		{
+			final int world = member.getWorld();
+			if (world < OSRS_WORLD_THRESHOLD)
+			{
+				worldInfo = "RS3 ";
+			}
+			else if (world >= RS3_LOBBY_THRESHOLD)
+			{
+				worldInfo = "RS3 Lobby ";
+			}
+			else
+			{
+				final EnumSet<WorldType> worldTypes = worldTypeMap.get(world);
+				if (worldTypes != null)
+				{
+					worldInfo = getWorldPrefix(worldTypes);
+				}
+			}
+
+			// Add world number & wrap in ()
+			worldInfo += world;
+			worldInfo = " (" + worldInfo + ")";
+		}
+
 		ChatMessageBuilder message = new ChatMessageBuilder()
 			.append("[")
 			.append(channelColor, client.getClanChatName());
@@ -376,7 +428,7 @@ public class ClanChatPlugin extends Plugin
 		}
 		message
 			.append("] ")
-			.append(textColor, member.getUsername() + activityMessage);
+			.append(ColorUtil.wrapWithColorTag(member.getUsername() + activityMessage + worldInfo, textColor));
 
 		final String messageString = message.build();
 		client.addChatMessage(ChatMessageType.FRIENDSCHATNOTIFICATION, "", messageString, "");
@@ -612,5 +664,26 @@ public class ClanChatPlugin extends Plugin
 		final BufferedImage image = spriteManager.getSprite(SpriteID.TAB_CLAN_CHAT, 0);
 		clanMemberCounter = new ClanChatIndicator(image, this);
 		infoBoxManager.addInfoBox(clanMemberCounter);
+	}
+
+	private String getWorldPrefix(final EnumSet<WorldType> worldTypes)
+	{
+		if (worldTypes.contains(WorldType.DEADMAN_TOURNAMENT))
+		{
+			return "DMMT ";
+		}
+
+		if (worldTypes.contains(WorldType.SEASONAL_DEADMAN))
+		{
+			return "SDMM ";
+		}
+
+		if (worldTypes.contains(WorldType.DEADMAN))
+		{
+			return "DMM ";
+		}
+
+		final ClanMemberRank rank = worldTypes.contains(WorldType.MEMBERS) ? ClanMemberRank.GENERAL : ClanMemberRank.CAPTAIN;
+		return "<img=" + clanManager.getIconNumber(rank) + "> ";
 	}
 }

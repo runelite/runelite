@@ -106,10 +106,21 @@ public interface ClanChatConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "addWorldInfo",
+		name = "Join/Leave World info",
+		description = "Adds the players world & type to the join/leave messages.",
+		position = 6
+	)
+	default boolean addWorldInfo()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "privateMessageIcons",
 		name = "Private Message Icons",
 		description = "Add clan chat rank icons to private messages received from clan mates.",
-		position = 6
+		position = 7
 	)
 	default boolean privateMessageIcons()
 	{
@@ -120,7 +131,7 @@ public interface ClanChatConfig extends Config
 		keyName = "publicChatIcons",
 		name = "Public Chat Icons",
 		description = "Add clan chat rank icons to public chat messages from clan mates.",
-		position = 7
+		position = 8
 	)
 	default boolean publicChatIcons()
 	{
