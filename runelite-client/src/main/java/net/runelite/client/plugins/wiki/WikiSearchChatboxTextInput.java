@@ -33,7 +33,6 @@ import com.google.gson.JsonParser;
 import com.google.inject.Inject;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
@@ -82,6 +81,7 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 		super(chatboxPanelManager, clientThread);
 		this.chatboxPanelManager = chatboxPanelManager;
 
+		lines(1);
 		prompt("OSRS Wiki Search");
 		onDone(string ->
 		{
@@ -296,7 +296,11 @@ public class WikiSearchChatboxTextInput extends ChatboxTextInput
 
 	private void search(String search)
 	{
-		LinkBrowser.browse(WikiPlugin.WIKI_BASE + "?search=" + URLEncoder.encode(search) + "&" + WikiPlugin.UTM_PARAMS);
+		LinkBrowser.browse(WikiPlugin.WIKI_BASE.newBuilder()
+			.addQueryParameter("search", search)
+			.addQueryParameter(WikiPlugin.UTM_SORUCE_KEY, WikiPlugin.UTM_SORUCE_VALUE)
+			.build()
+			.toString());
 		chatboxPanelManager.close();
 	}
 }

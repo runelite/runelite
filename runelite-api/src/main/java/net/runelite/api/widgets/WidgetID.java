@@ -126,6 +126,7 @@ public class WidgetID
 	public static final int ENTERING_HOUSE_GROUP_ID = 71;
 	public static final int FULLSCREEN_MAP_GROUP_ID = 165;
 	public static final int QUESTLIST_GROUP_ID = 399;
+	public static final int SKILLS_GROUP_ID = 320;
 
 	static class WorldMap
 	{
@@ -134,7 +135,7 @@ public class WidgetID
 		static final int SEARCH = 24;
 		static final int SURFACE_SELECTOR = 32;
 		static final int TOOLTIP = 38;
-		static final int OPTION = 42;
+		static final int OPTION = 43;
 	}
 
 	static class SlayerRewards
@@ -293,7 +294,7 @@ public class WidgetID
 		static final int TOGGLE_RUN_ORB = 22; // Has the "Toggle run" name
 		static final int RUN_ORB_TEXT = 23;
 		static final int SPEC_ORB = 28;
-		static final int WORLDMAP_ORB = 40;
+		static final int WORLDMAP_ORB = 41;
 	}
 
 	static class LoginClickToPlayScreen
@@ -569,7 +570,7 @@ public class WidgetID
 
 	static class Raids
 	{
-		static final int POINTS_INFOBOX = 3;
+		static final int POINTS_INFOBOX = 6;
 	}
 	
 	static class ExperienceDrop

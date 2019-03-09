@@ -929,4 +929,7 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("spellSelected")
 	@Override
 	void setSpellSelected(boolean selected);
+
+	@Import("getEnum")
+	RSEnum getRsEnum(int id);
 }

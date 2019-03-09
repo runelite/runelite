@@ -130,6 +130,7 @@ public class DiscordPlugin extends Plugin
 
 		clientToolbar.addNavigation(discordButton);
 		checkForGameStateUpdate();
+		checkForAreaUpdate();
 
 		if (discordService.getCurrentUser() != null)
 		{

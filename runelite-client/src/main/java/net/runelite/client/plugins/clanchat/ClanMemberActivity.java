@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.ws;
+package net.runelite.client.plugins.clanchat;
 
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import lombok.AllArgsConstructor;
+import lombok.Value;
+import net.runelite.api.ClanMember;
 
-public class SessionManager
+@Value
+@AllArgsConstructor
+class ClanMemberActivity
 {
-	private static final ConcurrentMap<UUID, WSService> sessions = new ConcurrentHashMap<>();
-
-	public static void changeSessionUID(WSService service, UUID uuid)
-	{
-		synchronized (service)
-		{
-			remove(service);
-			service.setUuid(uuid);
-			sessions.put(uuid, service);
-		}
-	}
-
-	static void remove(WSService service)
-	{
-		synchronized (service)
-		{
-			UUID current = service.getUuid();
-			if (current != null)
-			{
-				sessions.remove(current);
-				service.setUuid(null);
-			}
-		}
-	}
-
-	public static WSService findSession(UUID uuid)
-	{
-		return sessions.get(uuid);
-	}
-
-	public static int getCount()
-	{
-		return sessions.size();
-	}
+	private ClanActivityType activityType;
+	private ClanMember member;
+	private Integer tick;
 }

@@ -139,7 +139,7 @@ public class ItemStatOverlay extends Overlay
 
 		if (config.equipmentStats())
 		{
-			final ItemStats stats = itemManager.getItemStats(itemId);
+			final ItemStats stats = itemManager.getItemStats(itemId, false);
 
 			if (stats != null)
 			{
@@ -205,7 +205,7 @@ public class ItemStatOverlay extends Overlay
 				final Item item = items[slot];
 				if (item != null)
 				{
-					other = itemManager.getItemStats(item.getId());
+					other = itemManager.getItemStats(item.getId(), false);
 				}
 			}
 

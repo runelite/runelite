@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Levi <me@levischuck.com>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.xptracker;
+package net.runelite.mixins;
 
-import lombok.Value;
+import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.Mixin;
+import net.runelite.rs.api.RSEnum;
 
-@Value
-class XpSnapshotTotal
+@Mixin(RSEnum.class)
+public abstract class RSEnumMixin implements RSEnum
 {
-	private final int xpGainedInSession;
-	private final int xpPerHour;
-
-	static XpSnapshotTotal zero()
+	@Inject
+	@Override
+	public int getIntValue(int key)
 	{
-		return new XpSnapshotTotal(0, 0);
+		final int[] keys = getKeys();
+		if (keys == null)
+		{
+			return getDefaultInt();
+		}
+
+		for (int i = 0; i < keys.length; ++i)
+		{
+			if (keys[i] == key)
+			{
+				final int[] values = getIntVals();
+				return values[i];
+			}
+		}
+		return getDefaultInt();
+	}
+
+	@Inject
+	@Override
+	public String getStringValue(int key)
+	{
+		final int[] keys = getKeys();
+		if (keys == null)
+		{
+			return getDefaultString();
+		}
+
+		for (int i = 0; i < keys.length; ++i)
+		{
+			if (keys[i] == key)
+			{
+				final String[] values = getStringVals();
+				return values[i];
+			}
+		}
+		return getDefaultString();
 	}
 }

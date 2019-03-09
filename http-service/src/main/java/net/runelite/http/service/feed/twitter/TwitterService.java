@@ -124,7 +124,7 @@ public class TwitterService
 					i.getUser().getProfileImageUrl(),
 					i.getUser().getScreenName(),
 					i.getText().replace("\n\n", " ").replaceAll("\n", " "),
-					"https://twitter.com/statuses/" + i.getId(),
+					"https://twitter.com/" + i.getUser().getScreenName() + "/status/" + i.getId(),
 					getTimestampFromSnowflake(i.getId())));
 			}
 
