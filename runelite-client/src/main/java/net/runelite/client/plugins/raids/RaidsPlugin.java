@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.raids;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.text.DecimalFormat;
@@ -49,6 +50,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -56,6 +58,7 @@ import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
@@ -129,15 +132,14 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private int startPlayerCount;
 
-	private int storedVarPartySize;
+	@Getter
+	private List<String> partyMembers = new ArrayList<>();
 
 	@Getter
-	private List<String> partyMembers;
-
-	private List<String> startingPartyMembers;
+	private List<String> startingPartyMembers = new ArrayList<>();
 
 	@Getter
-	private Set<String> missingPartyMembers;
+	private Set<String> missingPartyMembers = new HashSet<>();
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -205,7 +207,9 @@ public class RaidsPlugin extends Plugin
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		checkRaidPresence(false);
-		updatePartyMembers();
+		if (config.partyDisplay()) {
+			updatePartyMembers(false);
+		}
 	}
 
 	@Subscribe
@@ -222,13 +226,17 @@ public class RaidsPlugin extends Plugin
 					infoBoxManager.addInfoBox(timer);
 				}
 				if (config.partyDisplay()) {
-					updatePartyMembers();
-					startPlayerCount = client.getVar(Varbits.RAID_PARTY_SIZE);
-					if (partyMembers == null) {
-						startingPartyMembers = new ArrayList<>();
-					} else {
-						startingPartyMembers = new ArrayList<>(partyMembers);
-					}
+				    // Base this on visible players since party size shows people outside the lobby
+                    // and they did not get to come on the raid
+                    List<Player> players = client.getPlayers();
+                    startPlayerCount = players.size();
+
+                    partyMembers.clear();
+                    startingPartyMembers.clear();
+                    missingPartyMembers.clear();
+
+                    partyMembers.addAll(Lists.transform(players, Player::getName));
+                    startingPartyMembers.addAll(partyMembers);
 				}
 			}
 
@@ -278,46 +286,84 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	private void updatePartyMembers() {
+	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked event)
+	{
+		OverlayMenuEntry entry = event.getEntry();
+		if (entry.getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
+				entry.getTarget().equals("Raids party overlay"))
+		{
+			switch (entry.getOption()) {
+				case RaidsPartyOverlay.PARTY_OVERLAY_DEBUG:
+					System.out.println("Starting players: ");
+					getPartyMembers().stream().map(player -> "* " + player).forEach(System.out::println);
+					System.out.println("Current players: ");
+					getPartyMembers().stream().map(player -> "* " + player).forEach(System.out::println);
+					System.out.println("Missing players: ");
+					getMissingPartyMembers().stream().map(player -> "* " + player).forEach(System.out::println);
+					break;
+				case RaidsPartyOverlay.PARTY_OVERLAY_RESET:
+					updatePartyMembers(true);
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	private void updatePartyMembers(boolean force) {
 		int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
 		if (partySize <= 0) {
-			partyMembers = null;
 			return;
 		}
 
-		partyMembers = new ArrayList<>();
-		try {
-			Widget[] widgets = client.getWidget(WidgetInfo.RAIDING_PARTY).getStaticChildren()[2].getStaticChildren()[3].getDynamicChildren();
+		if (force) {
+			partyMembers.clear();
+			startingPartyMembers.clear();
+			missingPartyMembers.clear();
+		}
+
+		if (startingPartyMembers.size() == partySize) {
+			// Skip update if we have a list of starting party members the same size as current party
+			return;
+		}
+
+		// Only update while in raid
+		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 || force) {
+			Widget[] widgets;
+			try {
+				widgets = client.getWidget(WidgetInfo.RAIDING_PARTY).getStaticChildren()[2].getStaticChildren()[3].getDynamicChildren();
+			} catch (NullPointerException e) {
+				return; // Raid widget not (fully) loaded yet
+			}
+
+			partyMembers.clear();
 			for (int i = 0; i < widgets.length; i++) {
 				if (widgets[i] != null) {
+					// Party members names can be found as a color tagged string in every fourth(ish) of these children
 					String name = widgets[i].getName();
 					if (name.length() > 1) {
+						// Clean away tag
 						partyMembers.add(name.substring(name.indexOf('>') + 1, name.indexOf('<', 1)));
 					}
 				}
 			}
-		} catch (NullPointerException e) {
-			// Raid widget not loaded yet
-		}
 
-		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 &&
-				(startingPartyMembers == null || startingPartyMembers.size() < partyMembers.size())) {
-			// If raid started and there are more people now than there were then, update
-			startingPartyMembers = new ArrayList<>(partyMembers);
-		}
+			// If there are more people now than there were, update starting members
+			if (partySize > startingPartyMembers.size()) {
+				missingPartyMembers.clear();
+				startingPartyMembers.clear();
+				startingPartyMembers.addAll(partyMembers);
+			} else {
 
-		if (config.partyDisplay()) {
-			if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1) {
-				// Raid started, check if anyone left
-				if (startingPartyMembers != null && startingPartyMembers.size() < partyMembers.size()) {
-					missingPartyMembers = new HashSet<>(startingPartyMembers);
-					for (String player : partyMembers) {
-						missingPartyMembers.remove(player);
-					}
+				// Check if anyone left
+				if (startingPartyMembers.size() > partyMembers.size()) {
+					missingPartyMembers.clear();
+					missingPartyMembers.addAll(startingPartyMembers);
+					missingPartyMembers.removeAll(partyMembers);
 				}
 			}
 		}
-
 	}
 
 	private void checkRaidPresence(boolean force)

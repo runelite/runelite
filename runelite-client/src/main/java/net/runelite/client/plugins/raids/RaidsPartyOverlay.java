@@ -32,12 +32,13 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
 
-import net.runelite.api.ClanMember;
-import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.api.*;
 
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -48,6 +49,9 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class RaidsPartyOverlay extends Overlay
 {
+    public static final String PARTY_OVERLAY_DEBUG = "Debug";
+    public static final String PARTY_OVERLAY_RESET = "Reset missing";
+
     @Inject
     private Client client;
 
@@ -62,7 +66,9 @@ public class RaidsPartyOverlay extends Overlay
         super(plugin);
         setPosition(OverlayPosition.TOP_RIGHT);
         setPriority(OverlayPriority.HIGH);
-        getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay"));
+        getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids party overlay"));
+        getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, PARTY_OVERLAY_DEBUG, "Raids party overlay"));
+        getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, PARTY_OVERLAY_RESET, "Raids party overlay"));
     }
 
     @Override
@@ -73,11 +79,12 @@ public class RaidsPartyOverlay extends Overlay
             return null;
         }
 
-        // Leaver display doesn't quite work yet
-
+        if (client.getClanChatCount() == 0) {
+            // Player left clan chat
+            return null;
+        }
 
         boolean inLobby = client.getVar(VarPlayer.IN_RAID_PARTY) != -1; // -1 if raid started
-        //boolean inRaid = client.getVar(Varbits.IN_RAID) == 1; // 1 while in raids
 
         int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
 
@@ -88,15 +95,16 @@ public class RaidsPartyOverlay extends Overlay
         Color countColor = Color.WHITE;
         if (inLobby) {
             partyCountString = String.format("%d/%d", playerCount, partySize);
+            // While we are in the lobby compare to players visible on the screen
             if (partySize <= playerCount) {
                 countColor = Color.GREEN;
             } else {
                 countColor = Color.RED;
             }
         } else {
-            // If raid has started then we compare the current party size to what it was whe
+            // If raid has started then we compare the current party size to what it was when we started
             partyCountString = String.format("%d/%d", partySize, plugin.getStartPlayerCount());
-            if (partySize < plugin.getStartPlayerCount()) {
+            if (plugin.getMissingPartyMembers().size() > 0) {
                 countColor = Color.RED; // Somebody is missing
             }
         }
@@ -113,28 +121,27 @@ public class RaidsPartyOverlay extends Overlay
         if (inLobby) {
             int world = client.getWorld();
             int wrongWorldClanMembers = 0;
-            HashSet<String> members = new HashSet<>();
+            int clanMemberCount = 0;
             for (ClanMember clanMember : client.getClanMembers()) {
                 if (clanMember != null) {
                     if (clanMember.getWorld() != world) {
                         wrongWorldClanMembers++;
                     } else {
-                        members.add(clanMember.getUsername());
-                        //System.out.println("Added clanmember: " + clanMember.getUsername());
+                        clanMemberCount++;
                     }
                 }
             }
 
             // Show amount of people on the right world but not at the raids area
             Color notInPartyColor = Color.GREEN;
-            int notInParty = Math.max(members.size() - partySize, 0);
+            int notInParty = clanMemberCount - partySize;
 
             if (notInParty > 0) {
                 notInPartyColor = Color.WHITE;
             }
 
             panel.getChildren().add(LineComponent.builder()
-                    .left("Not in party:")
+                    .left("Not at raids:")
                     .right(String.valueOf(notInParty))
                     .rightColor(notInPartyColor)
                     .build());
@@ -155,7 +162,7 @@ public class RaidsPartyOverlay extends Overlay
 
         } else {
             Set<String> missingPartyMembers = plugin.getMissingPartyMembers();
-            if (missingPartyMembers != null && missingPartyMembers.size() > 0) {
+            if (missingPartyMembers.size() > 0) {
                 panel.getChildren().add(LineComponent.builder()
                         .left("Missing players:")
                         .build());
