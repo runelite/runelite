@@ -29,7 +29,6 @@ package net.runelite.client.plugins.clanchat;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.inject.Provides;
-
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayDeque;
@@ -40,7 +39,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
-
 import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
@@ -74,20 +72,18 @@ import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_NAME_OPAQUE_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_NAME_TRANSPARENT_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_TEXT_TRANSPARENT_BACKGROUND;
-
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-		name = "Clan Chat",
-		description = "Add rank icons to users talking in clan chat",
-		tags = {"icons", "rank", "recent"}
+	name = "Clan Chat",
+	description = "Add rank icons to users talking in clan chat",
+	tags = {"icons", "rank", "recent"}
 )
 public class ClanChatPlugin extends Plugin
 {
@@ -96,25 +92,32 @@ public class ClanChatPlugin extends Plugin
 	private static final String RECENT_TITLE = "Recent Clan Chats";
 	private static final int JOIN_LEAVE_DURATION = 20;
 	private static final int MESSAGE_DELAY = 10;
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private ClanManager clanManager;
+
+	@Inject
+	private ClanChatConfig config;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private SpriteManager spriteManager;
+
+	@Inject
+	private ClientThread clientThread;
+
+	private List<String> chats = new ArrayList<>();
+	private List<Player> clanMembers = new ArrayList<>();
+	private ClanChatIndicator clanMemberCounter;
 	/**
 	 * queue of temporary messages added to the client
 	 */
 	private final Deque<ClanJoinMessage> clanJoinMessages = new ArrayDeque<>();
-	@Inject
-	private Client client;
-	@Inject
-	private ClanManager clanManager;
-	@Inject
-	private ClanChatConfig config;
-	@Inject
-	private InfoBoxManager infoBoxManager;
-	@Inject
-	private SpriteManager spriteManager;
-	@Inject
-	private ClientThread clientThread;
-	private List<String> chats = new ArrayList<>();
-	private List<Player> clanMembers = new ArrayList<>();
-	private ClanChatIndicator clanMemberCounter;
 	private Map<String, ClanMemberActivity> activityBuffer = new HashMap<>();
 	private int clanJoinedTick;
 
@@ -187,7 +190,7 @@ public class ClanChatPlugin extends Plugin
 		}
 
 		if (!config.showJoinLeave() ||
-				member.getRank().getValue() < config.joinLeaveRank().getValue())
+			member.getRank().getValue() < config.joinLeaveRank().getValue())
 		{
 			return;
 		}
@@ -196,7 +199,7 @@ public class ClanChatPlugin extends Plugin
 		if (!activityBuffer.containsKey(member.getUsername()))
 		{
 			ClanMemberActivity joinActivity = new ClanMemberActivity(ClanActivityType.JOINED,
-					member, client.getTickCount());
+				member, client.getTickCount());
 			activityBuffer.put(member.getUsername(), joinActivity);
 		}
 		else
@@ -232,7 +235,7 @@ public class ClanChatPlugin extends Plugin
 		}
 
 		if (!config.showJoinLeave() ||
-				member.getRank().getValue() < config.joinLeaveRank().getValue())
+			member.getRank().getValue() < config.joinLeaveRank().getValue())
 		{
 			return;
 		}
@@ -240,7 +243,7 @@ public class ClanChatPlugin extends Plugin
 		if (!activityBuffer.containsKey(member.getUsername()))
 		{
 			ClanMemberActivity leaveActivity = new ClanMemberActivity(ClanActivityType.LEFT,
-					member, client.getTickCount());
+				member, client.getTickCount());
 			activityBuffer.put(member.getUsername(), leaveActivity);
 		}
 		else
@@ -365,11 +368,11 @@ public class ClanChatPlugin extends Plugin
 
 		ChatMessageBuilder message = new ChatMessageBuilder();
 		String messageString = message
-				.append("[")
-				.append(ColorUtil.wrapWithColorTag(client.getClanChatName(), channelColor) + rankTag)
-				.append("] ")
-				.append(ColorUtil.wrapWithColorTag(member.getUsername() + activityMessage, textColor))
-				.build();
+			.append("[")
+			.append(ColorUtil.wrapWithColorTag(client.getClanChatName(), channelColor) + rankTag)
+			.append("] ")
+			.append(ColorUtil.wrapWithColorTag(member.getUsername() + activityMessage, textColor))
+			.build();
 
 		client.addChatMessage(ChatMessageType.CLANCHAT_INFO, "", messageString, "");
 
@@ -497,11 +500,12 @@ public class ClanChatPlugin extends Plugin
 			if (message.getType() == ChatMessageType.CLANCHAT)
 			{
 				message.getMessageNode()
-						.setSender(message.getMessageNode().getSender() + " " + img);
+					.setSender(message.getMessageNode().getSender() + " " + img);
 			}
 			else
 			{
-				message.getMessageNode().setName(img + message.getMessageNode().getName());
+				message.getMessageNode()
+					.setName(img + message.getMessageNode().getName());
 			}
 			client.refreshChat();
 		}
