@@ -4,7 +4,7 @@
 .int_var_count      3
 .string_var_count   0
    load_string            "resetChatboxInput"
-   runelite_callback
+   runelite_callback     
    load_int               1
    load_int               10616872
    widget_put_hidden_widget
@@ -50,7 +50,7 @@ LABEL32:
    jump                   LABEL40
 LABEL38:
    load_string            ""
-   put_varc_string        22
+   050                    359
 LABEL40:
    load_int               0
    load_int               -8

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, AeonLucid <https://github.com/AeonLucid>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.osbuddy;
+package net.runelite.client.plugins.playerindicators;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.CacheControl;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.AllArgsConstructor;
 
-@RestController
-@RequestMapping("/osb/ge")
-public class GrandExchangeController
+@AllArgsConstructor
+public enum PlayerNameLocation
 {
-	private final GrandExchangeService grandExchangeService;
 
-	@Autowired
-	public GrandExchangeController(GrandExchangeService grandExchangeService)
+	DISABLED("Disabled"),
+	ABOVE_HEAD("Above head"),
+	MODEL_CENTER("Center of model"),
+	MODEL_RIGHT("Right of model");
+
+	private final String name;
+
+	@Override
+	public String toString()
 	{
-		this.grandExchangeService = grandExchangeService;
-	}
-
-	@RequestMapping
-	public ResponseEntity<GrandExchangeEntry> get(@RequestParam("itemId") int itemId) throws ExecutionException
-	{
-		GrandExchangeEntry grandExchangeEntry = grandExchangeService.get(itemId);
-
-		return ResponseEntity.ok()
-			.cacheControl(CacheControl.maxAge(30, TimeUnit.MINUTES).cachePublic())
-			.body(grandExchangeEntry);
+		return name;
 	}
 }

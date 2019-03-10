@@ -34,6 +34,7 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.inject.Inject;
 import lombok.Data;
+import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.ws.PartyService;
@@ -57,14 +58,16 @@ class DiscordState
 	private final DiscordService discordService;
 	private final DiscordConfig config;
 	private PartyService party;
+	private final RuneLiteProperties properties;
 	private DiscordPresence lastPresence;
 
 	@Inject
-	private DiscordState(final DiscordService discordService, final DiscordConfig config, final PartyService party)
+	private DiscordState(final DiscordService discordService, final DiscordConfig config, final PartyService party, final RuneLiteProperties properties)
 	{
 		this.discordService = discordService;
 		this.config = config;
 		this.party = party;
+		this.properties = properties;
 	}
 
 	/**
@@ -90,6 +93,7 @@ class DiscordState
 		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
 			.state(lastPresence.getState())
 			.details(lastPresence.getDetails())
+			.largeImageText(lastPresence.getLargeImageText())
 			.startTimestamp(lastPresence.getStartTimestamp())
 			.smallImageKey(lastPresence.getSmallImageKey())
 			.partyMax(lastPresence.getPartyMax())
@@ -168,11 +172,15 @@ class DiscordState
 			}
 		}
 
+		// Replace snapshot with + to make tooltip shorter (so it will span only 1 line)
+		final String versionShortHand = properties.getVersion().replace("-SNAPSHOT", "+");
+
 		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
 			.state(MoreObjects.firstNonNull(state, ""))
 			.details(MoreObjects.firstNonNull(details, ""))
+			.largeImageText(properties.getTitle() + " v" + versionShortHand)
 			.startTimestamp(event.getStart())
-			.smallImageKey(MoreObjects.firstNonNull(imageKey, "default"))
+			.smallImageKey(imageKey)
 			.partyMax(PARTY_MAX)
 			.partySize(party.getMembers().size());
 

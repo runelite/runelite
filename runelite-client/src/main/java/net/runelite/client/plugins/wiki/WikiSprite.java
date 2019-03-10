@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, AeonLucid <https://github.com/AeonLucid>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.osbuddy;
+package net.runelite.client.plugins.wiki;
 
-import java.time.Instant;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.SpriteID;
+import net.runelite.client.game.SpriteOverride;
 
-@Data
-public class GrandExchangeResult
+@RequiredArgsConstructor
+public enum WikiSprite implements SpriteOverride
 {
-	private int item_id;
-	private int buy_average;
-	private int sell_average;
-	private int overall_average;
-	private Instant last_update;
+	WIKI_ICON(-300, "wiki.png"),
+	WIKI_SELECTED_ICON(-301, "wiki_selected.png"),
+	FIXED_MODE_MINIMAP_CLICKMASK(SpriteID.MINIMAP_CLICK_MASK, "fixed_mode_minimap_clickmask.png");
+
+	@Getter
+	private final int spriteId;
+
+	@Getter
+	private final String fileName;
 }

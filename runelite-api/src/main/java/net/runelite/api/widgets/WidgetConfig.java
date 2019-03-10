@@ -24,6 +24,8 @@
  */
 package net.runelite.api.widgets;
 
+import net.runelite.api.MenuAction;
+
 /**
  * Utility class used for defining options to be used on the click mask
  * of a {@link Widget}.
@@ -36,12 +38,61 @@ public class WidgetConfig
 	 * Enables displaying a ninth option on a menu.
 	 */
 	public static final int SHOW_MENU_OPTION_NINE = 1 << 9;
+
+	/**
+	 * Can this widget be used on a item on the floor
+	 */
+	public static final int USE_GROUND_ITEM = 1 << 11;
+
+	/**
+	 * Can this widget be used on a NPC
+	 */
+	public static final int USE_NPC = 2 << 11;
+
+	/**
+	 * Can this widget be used on a game object
+	 */
+	public static final int USE_OBJECT = 4 << 11;
+
+	/**
+	 * Can this widget be used on a player
+	 */
+	public static final int USE_PLAYER = 8 << 11;
+
+	/**
+	 * Can this widget be used on a item in your inventory
+	 */
+	public static final int USE_ITEM = 16 << 11;
+
+	/**
+	 * Can this widget be used on a widget with the WIDGET_USE_TARGET flag
+	 */
+	public static final int USE_WIDGET = 32 << 11;
+
 	/**
 	 * Controls whether or not a widget can have another dragged onto it.
 	 */
 	public static final int DRAG_ON = 1 << 17;
+
 	/**
 	 * Controls whether or not a widget can be dragged around.
 	 */
 	public static final int DRAG = 1 << 20;
+
+	/**
+	 * Can widgets with USE_WIDGET be used on this widget
+	 */
+	public static final int WIDGET_USE_TARGET = 1 << 21;
+
+	/**
+	 * Is the widget an (inventory?) item
+	 */
+	public static final int ITEM = 1 << 30;
+
+	/**
+	 * Add a USE option
+	 *
+	 * @see MenuAction#ITEM_USE
+	 */
+	public static final int ITEM_USE_OP = 1 << 31;
 }

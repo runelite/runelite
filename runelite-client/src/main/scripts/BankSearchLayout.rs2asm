@@ -646,7 +646,7 @@ LABEL593:
    if_icmpeq              LABEL597
    jump                   LABEL638
 LABEL597:
-   get_varc_string        22                 ; Skip truncating of varcstr 22 by not calling 280
+   049                    359                ; Skip truncating of varcstr 22 by not calling 280
    tolowercase             ; instead get the var directly and lowercase it
    sstore                 0
    sload                  0
