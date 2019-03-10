@@ -42,7 +42,6 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class RaidsPartyOverlay extends Overlay
 {
-    public static final String PARTY_OVERLAY_DEBUG = "Debug";
     public static final String PARTY_OVERLAY_RESET = "Reset missing";
     public static final String PARTY_OVERLAY_REFRESH = "Refresh party";
 
@@ -61,7 +60,6 @@ public class RaidsPartyOverlay extends Overlay
         setPosition(OverlayPosition.TOP_RIGHT);
         setPriority(OverlayPriority.HIGH);
         getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids party overlay"));
-        getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, PARTY_OVERLAY_DEBUG, "Raids party overlay"));
         getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, PARTY_OVERLAY_RESET, "Raids party overlay"));
         getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, PARTY_OVERLAY_REFRESH, "Raids party overlay"));
     }

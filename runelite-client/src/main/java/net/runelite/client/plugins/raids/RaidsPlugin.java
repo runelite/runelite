@@ -294,21 +294,6 @@ public class RaidsPlugin extends Plugin
 				entry.getTarget().equals("Raids party overlay"))
 		{
 			switch (entry.getOption()) {
-				case RaidsPartyOverlay.PARTY_OVERLAY_DEBUG:
-					System.out.println("Starting players: ");
-					getStartingPartyMembers().stream().map(player -> "* " + player).forEach(System.out::println);
-					System.out.println("Current players: ");
-					getPartyMembers().stream().map(player -> "* " + player).forEach(System.out::println);
-					System.out.println("Missing players: ");
-					getMissingPartyMembers().stream().map(player -> "* " + player).forEach(System.out::println);
-                    System.out.println("Clan members: ");
-                    ClanMember[] clan = client.getClanMembers();
-                    for (int i = 0; i < clan.length; i++) {
-                        if (clan[i] != null) {
-                            System.out.println("* " + clan[i].getUsername());
-                        }
-                    }
-					break;
 				case RaidsPartyOverlay.PARTY_OVERLAY_RESET:
 				    startingPartyMembers.clear();
 					updatePartyMembers(true);
