@@ -92,22 +92,30 @@ public class ClanChatPlugin extends Plugin
 	private static final String RECENT_TITLE = "Recent Clan Chats";
 	private static final int JOIN_LEAVE_DURATION = 20;
 	private static final int MESSAGE_DELAY = 10;
+
 	/**
 	 * queue of temporary messages added to the client
 	 */
 	private final Deque<ClanJoinMessage> clanJoinMessages = new ArrayDeque<>();
+
 	@Inject
 	private Client client;
+
 	@Inject
 	private ClanManager clanManager;
+
 	@Inject
 	private ClanChatConfig config;
+
 	@Inject
 	private InfoBoxManager infoBoxManager;
+
 	@Inject
 	private SpriteManager spriteManager;
+
 	@Inject
 	private ClientThread clientThread;
+
 	private List<String> chats = new ArrayList<>();
 	private List<Player> clanMembers = new ArrayList<>();
 	private ClanChatIndicator clanMemberCounter;
