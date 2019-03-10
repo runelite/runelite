@@ -28,27 +28,20 @@ import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.text.DecimalFormat;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.InstanceTemplates;
-import net.runelite.api.NullObjectID;
+import net.runelite.api.*;
+
 import static net.runelite.api.Perspective.SCENE_SIZE;
-import net.runelite.api.Point;
 import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
-import net.runelite.api.Tile;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.VarbitChanged;
+
+import net.runelite.api.events.*;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -102,6 +95,9 @@ public class RaidsPlugin extends Plugin
 	private RaidsOverlay overlay;
 
 	@Inject
+	private RaidsPartyOverlay partyOverlay;
+
+	@Inject
 	private LayoutSolver layoutSolver;
 
 	@Inject
@@ -130,6 +126,19 @@ public class RaidsPlugin extends Plugin
 
 	private RaidsTimer timer;
 
+	@Getter
+	private int startPlayerCount;
+
+	private int storedVarPartySize;
+
+	@Getter
+	private List<String> partyMembers;
+
+	private List<String> startingPartyMembers;
+
+	@Getter
+	private Set<String> missingPartyMembers;
+
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
 	{
@@ -146,6 +155,9 @@ public class RaidsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		if (config.partyDisplay()) {
+			overlayManager.add(partyOverlay);
+		}
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
@@ -154,6 +166,9 @@ public class RaidsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		if (config.partyDisplay()) {
+			overlayManager.remove(partyOverlay);
+		}
 		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
 		raid = null;
@@ -174,6 +189,14 @@ public class RaidsPlugin extends Plugin
 			return;
 		}
 
+		if (event.getKey().equals("partyDisplay")) {
+			if (config.partyDisplay()) {
+				overlayManager.add(partyOverlay);
+			} else {
+				overlayManager.remove(partyOverlay);
+			}
+		}
+
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
@@ -182,6 +205,7 @@ public class RaidsPlugin extends Plugin
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		checkRaidPresence(false);
+		updatePartyMembers();
 	}
 
 	@Subscribe
@@ -191,10 +215,21 @@ public class RaidsPlugin extends Plugin
 		{
 			String message = Text.removeTags(event.getMessage());
 
-			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
+			if (message.startsWith(RAID_START_MESSAGE))
 			{
-				timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
-				infoBoxManager.addInfoBox(timer);
+				if (config.raidsTimer()) {
+					timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
+					infoBoxManager.addInfoBox(timer);
+				}
+				if (config.partyDisplay()) {
+					updatePartyMembers();
+					startPlayerCount = client.getVar(Varbits.RAID_PARTY_SIZE);
+					if (partyMembers == null) {
+						startingPartyMembers = new ArrayList<>();
+					} else {
+						startingPartyMembers = new ArrayList<>(partyMembers);
+					}
+				}
 			}
 
 			if (timer != null && message.contains(LEVEL_COMPLETE_MESSAGE))
@@ -241,6 +276,48 @@ public class RaidsPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	private void updatePartyMembers() {
+		int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
+		if (partySize <= 0) {
+			partyMembers = null;
+			return;
+		}
+
+		partyMembers = new ArrayList<>();
+		try {
+			Widget[] widgets = client.getWidget(WidgetInfo.RAIDING_PARTY).getStaticChildren()[2].getStaticChildren()[3].getDynamicChildren();
+			for (int i = 0; i < widgets.length; i++) {
+				if (widgets[i] != null) {
+					String name = widgets[i].getName();
+					if (name.length() > 1) {
+						partyMembers.add(name.substring(name.indexOf('>') + 1, name.indexOf('<', 1)));
+					}
+				}
+			}
+		} catch (NullPointerException e) {
+			// Raid widget not loaded yet
+		}
+
+		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 &&
+				(startingPartyMembers == null || startingPartyMembers.size() < partyMembers.size())) {
+			// If raid started and there are more people now than there were then, update
+			startingPartyMembers = new ArrayList<>(partyMembers);
+		}
+
+		if (config.partyDisplay()) {
+			if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1) {
+				// Raid started, check if anyone left
+				if (startingPartyMembers != null && startingPartyMembers.size() < partyMembers.size()) {
+					missingPartyMembers = new HashSet<>(startingPartyMembers);
+					for (String player : partyMembers) {
+						missingPartyMembers.remove(player);
+					}
+				}
+			}
+		}
+
 	}
 
 	private void checkRaidPresence(boolean force)
