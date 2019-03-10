@@ -301,11 +301,17 @@ public class RaidsPlugin extends Plugin
 					getPartyMembers().stream().map(player -> "* " + player).forEach(System.out::println);
 					System.out.println("Missing players: ");
 					getMissingPartyMembers().stream().map(player -> "* " + player).forEach(System.out::println);
+                    System.out.println("Clan members: ");
+                    ClanMember[] clan = client.getClanMembers();
+                    for (int i = 0; i < clan.length; i++) {
+                        if (clan[i] != null) {
+                            System.out.println("* " + clan[i].getUsername());
+                        }
+                    }
 					break;
 				case RaidsPartyOverlay.PARTY_OVERLAY_RESET:
 				    startingPartyMembers.clear();
 					updatePartyMembers(true);
-                    startingPartyMembers.addAll(partyMembers);
                     missingPartyMembers.clear();
 					break;
                 case RaidsPartyOverlay.PARTY_OVERLAY_REFRESH:
@@ -325,6 +331,7 @@ public class RaidsPlugin extends Plugin
 
 		if (startingPartyMembers.size() == partySize && !force) {
 			// Skip update if the part is as big as when we started
+            missingPartyMembers.clear(); // Clear missing members in case someone came back
 			return;
 		}
 
