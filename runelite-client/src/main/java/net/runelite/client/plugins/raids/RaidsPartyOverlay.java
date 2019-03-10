@@ -27,18 +27,11 @@ package net.runelite.client.plugins.raids;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Color;
-import java.util.List;
-import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
 
 import net.runelite.api.*;
 
-import net.runelite.client.chat.ChatColorType;
-import net.runelite.client.chat.ChatMessageBuilder;
-import net.runelite.client.chat.QueuedMessage;
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
