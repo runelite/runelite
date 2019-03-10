@@ -33,7 +33,9 @@ import javax.inject.Inject;
 import net.runelite.api.*;
 
 import net.runelite.client.ui.overlay.Overlay;
+
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -42,133 +44,155 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class RaidsPartyOverlay extends Overlay
 {
-    public static final String PARTY_OVERLAY_RESET = "Reset missing";
-    public static final String PARTY_OVERLAY_REFRESH = "Refresh party";
+	public static final String PARTY_OVERLAY_RESET = "Reset missing";
+	public static final String PARTY_OVERLAY_REFRESH = "Refresh party";
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private RaidsPlugin plugin;
+	@Inject
+	private RaidsPlugin plugin;
 
-    private final PanelComponent panel = new PanelComponent();
+	private final PanelComponent panel = new PanelComponent();
 
-    @Inject
-    private RaidsPartyOverlay(RaidsPlugin plugin)
-    {
-        super(plugin);
-        setPosition(OverlayPosition.TOP_RIGHT);
-        setPriority(OverlayPriority.HIGH);
-        getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids party overlay"));
-        getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, PARTY_OVERLAY_RESET, "Raids party overlay"));
-        getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, PARTY_OVERLAY_REFRESH, "Raids party overlay"));
-    }
+	@Inject
+	private RaidsPartyOverlay(RaidsPlugin plugin)
+	{
+		super(plugin);
+		setPosition(OverlayPosition.TOP_RIGHT);
+		setPriority(OverlayPriority.HIGH);
+		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids party overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, PARTY_OVERLAY_RESET, "Raids party overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, PARTY_OVERLAY_REFRESH, "Raids party overlay"));
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        if (!plugin.isInRaidChambers())
-        {
-            return null;
-        }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!plugin.isInRaidChambers())
+		{
+			return null;
+		}
 
-        if (client.getClanChatCount() == 0) {
-            // Player left clan chat
-            return null;
-        }
+		if (client.getClanChatCount() == 0)
+		{
+			// Player left clan chat
+			return null;
+		}
 
-        boolean inLobby = client.getVar(VarPlayer.IN_RAID_PARTY) != -1; // -1 if raid started
+		boolean inLobby = client.getVar(VarPlayer.IN_RAID_PARTY) != -1; // -1 if raid started
 
-        int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
+		int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
 
-        int playerCount = client.getPlayers().size();
+		int playerCount = client.getPlayers().size();
 
-        String partyCountString;
+		String partyCountString;
 
-        Color countColor = Color.WHITE;
-        if (inLobby) {
-            partyCountString = String.format("%d/%d", playerCount, partySize);
-            // While we are in the lobby compare to players visible on the screen
-            if (partySize <= playerCount) {
-                countColor = Color.GREEN;
-            } else {
-                countColor = Color.RED;
-            }
-        } else {
-            // If raid has started then we compare the current party size to what it was when we started
-            partyCountString = String.format("%d/%d", partySize, plugin.getStartPlayerCount());
-            if (plugin.getMissingPartyMembers().size() > 0) {
-                countColor = Color.RED; // Somebody is missing
-            }
-        }
+		Color countColor = Color.WHITE;
+		if (inLobby)
+		{
+			partyCountString = String.format("%d/%d", playerCount, partySize);
+			// While we are in the lobby compare to players visible on the screen
+			if (partySize <= playerCount)
+			{
+				countColor = Color.GREEN;
+			}
+			else
+			{
+				countColor = Color.RED;
+			}
+		}
+		else
+		{
+			// If raid has started then we compare the current party size to what it was when we started
+			partyCountString = String.format("%d/%d", partySize, plugin.getStartPlayerCount());
+			if (plugin.getMissingPartyMembers().size() > 0)
+			{
+				countColor = Color.RED; // Somebody is missing
+			}
+		}
 
-        panel.getChildren().clear();
+		panel.getChildren().clear();
 
-        // Show amount of people currently in raid vs total in the party
-        panel.getChildren().add(LineComponent.builder()
-                .left("Party size:")
-                .right(partyCountString)
-                .rightColor(countColor)
-                .build());
+		// Show amount of people currently in raid vs total in the party
+		panel.getChildren().add(LineComponent.builder()
+				.left("Party size:")
+				.right(partyCountString)
+				.rightColor(countColor)
+				.build());
 
-        if (inLobby) {
-            int world = client.getWorld();
-            int wrongWorldClanMembers = 0;
-            int clanMemberCount = 0;
-            for (ClanMember clanMember : client.getClanMembers()) {
-                if (clanMember != null) {
-                    if (clanMember.getWorld() != world) {
-                        wrongWorldClanMembers++;
-                    } else {
-                        clanMemberCount++;
-                    }
-                }
-            }
+		if (inLobby)
+		{
+			int world = client.getWorld();
+			int wrongWorldClanMembers = 0;
+			int clanMemberCount = 0;
+			for (ClanMember clanMember : client.getClanMembers())
+			{
+				if (clanMember != null)
+				{
+					if (clanMember.getWorld() != world)
+					{
+						wrongWorldClanMembers++;
+					}
+					else
+					{
+						clanMemberCount++;
+					}
+				}
+			}
 
-            // Show amount of people on the right world but not at the raids area
-            Color notInPartyColor = Color.GREEN;
-            int notInParty = clanMemberCount - partySize;
+			// Show amount of people on the right world but not at the raids area
+			Color notInPartyColor = Color.GREEN;
+			int notInParty = clanMemberCount - partySize;
 
-            if (notInParty > 0) {
-                notInPartyColor = Color.WHITE;
-            }
+			if (notInParty > 0)
+			{
+				notInPartyColor = Color.WHITE;
+			}
 
-            panel.getChildren().add(LineComponent.builder()
-                    .left("Not at raids:")
-                    .right(String.valueOf(notInParty))
-                    .rightColor(notInPartyColor)
-                    .build());
+			panel.getChildren().add(LineComponent.builder()
+					.left("Not at raids:")
+					.right(String.valueOf(notInParty))
+					.rightColor(notInPartyColor)
+					.build());
 
-            // Show amount of clan members that are not in the right world.
-            Color wrongWorldColor;
-            if (wrongWorldClanMembers == 0) {
-                wrongWorldColor = Color.GREEN;
-            } else {
-               wrongWorldColor = Color.WHITE;
-            }
+			// Show amount of clan members that are not in the right world.
+			Color wrongWorldColor;
+			if (wrongWorldClanMembers == 0)
+			{
+				wrongWorldColor = Color.GREEN;
+			}
+			else
+			{
+				wrongWorldColor = Color.WHITE;
+			}
 
-            panel.getChildren().add(LineComponent.builder()
-                    .left("Wrong world:")
-                    .right(String.valueOf(wrongWorldClanMembers))
-                    .rightColor(wrongWorldColor)
-                    .build());
+			panel.getChildren().add(LineComponent.builder()
+					.left("Wrong world:")
+					.right(String.valueOf(wrongWorldClanMembers))
+					.rightColor(wrongWorldColor)
+					.build());
 
-        } else {
-            Set<String> missingPartyMembers = plugin.getMissingPartyMembers();
-            if (missingPartyMembers.size() > 0) {
-                panel.getChildren().add(LineComponent.builder()
-                        .left("Missing players:")
-                        .build());
+		}
+		else
+		{
+			Set<String> missingPartyMembers = plugin.getMissingPartyMembers();
+			if (missingPartyMembers.size() > 0)
+			{
+				panel.getChildren().add(LineComponent.builder()
+						.left("Missing players:")
+						.build());
 
-                for (String member : missingPartyMembers) {
-                    panel.getChildren().add(LineComponent.builder()
-                            .left(member)
-                            .leftColor(Color.RED)
-                            .build());
-                }
-            }
-        }
+				for (String member : missingPartyMembers)
+				{
+					panel.getChildren().add(LineComponent.builder()
+							.left(member)
+							.leftColor(Color.RED)
+							.build());
+				}
+			}
+		}
 
-        return panel.render(graphics);
-    }
+		return panel.render(graphics);
+	}
 }
