@@ -212,18 +212,26 @@ public class RuneLite
 			}
 		});
 
-		final long start = System.currentTimeMillis();
+		try
+		{
+			final long start = System.currentTimeMillis();
 
-		injector = Guice.createInjector(new RuneLiteModule(
-			options.valueOf(updateMode),
-			developerMode));
+			injector = Guice.createInjector(new RuneLiteModule(
+				options.valueOf(updateMode),
+				developerMode));
 
-		injector.getInstance(RuneLite.class).start();
+			injector.getInstance(RuneLite.class).start();
 
-		final long end = System.currentTimeMillis();
-		final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
-		final long uptime = rb.getUptime();
-		log.info("Client initialization took {}ms. Uptime: {}ms", end - start, uptime);
+			final long end = System.currentTimeMillis();
+			final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
+			final long uptime = rb.getUptime();
+			log.info("Client initialization took {}ms. Uptime: {}ms", end - start, uptime);
+		}
+		catch (Exception e)
+		{
+			log.error("Error starting RuneLite", e);
+			System.exit(1);
+		}
 	}
 
 	public void start() throws Exception

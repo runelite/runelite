@@ -37,11 +37,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -198,10 +202,16 @@ public class ClientLoader
 
 			Applet rs = (Applet) clientClass.newInstance();
 			rs.setStub(new RSAppletStub(config));
+
+			if (updateCheckMode == AUTO)
+			{
+				assert validateLinkage(rsClassLoader, zipFile.keySet());
+			}
+
 			return rs;
 		}
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
-			| CompressorException | InvalidHeaderException e)
+			| CompressorException | InvalidHeaderException | AssertionError e)
 		{
 			if (e instanceof ClassNotFoundException)
 			{
@@ -211,8 +221,78 @@ public class ClientLoader
 			}
 
 			log.error("Error loading RS!", e);
+
+			if (e instanceof AssertionError)
+			{
+				log.error("{}", e.getMessage());
+			}
+
 			System.exit(-1);
 			return null;
 		}
+	}
+
+	private boolean validateLinkage(ClassLoader cl, Collection<String> files) throws ClassNotFoundException
+	{
+		try
+		{
+			for (String file : files)
+			{
+				if (!file.endsWith(".class"))
+				{
+					continue;
+				}
+
+				file = file.substring(0, file.length() - 6);
+				Class<?> clazz = cl.loadClass(file);
+
+				if (clazz.isInterface() || Modifier.isAbstract(clazz.getModifiers()))
+				{
+					continue;
+				}
+
+				boolean ok = interfacesOf(clazz)
+					.noneMatch(m ->
+					{
+						try
+						{
+							Method im = clazz.getMethod(m.getName(), m.getParameterTypes());
+							if (Modifier.isAbstract(im.getModifiers()))
+							{
+								log.error("{} in {} is abstract", m, clazz);
+								return true;
+							}
+						}
+						catch (NoSuchMethodException e)
+						{
+							log.error("{} in {} is missing", m, clazz, e);
+							return true;
+						}
+						return false;
+					});
+
+				if (!ok)
+				{
+					throw new AssertionError("runelite-api and client-patch are out of sync; Re-run maven with -U");
+				}
+			}
+		}
+		catch (LinkageError e)
+		{
+			throw new AssertionError("runelite-api and client-patch are out of sync. Make sure that your branch is rebased onto master and you have ran maven with -U", e);
+		}
+		return true;
+	}
+
+	/**
+	 * Find all of the runelite-client interfaces. We can't check all interfaces because of @Protect
+	 */
+	private Stream<Method> interfacesOf(Class<?> clazz)
+	{
+		if (clazz.getName().startsWith("net.runelite.api") && !clazz.getName().startsWith("net.runelite.api.rs"))
+		{
+			return Stream.of(clazz.getMethods());
+		}
+		return Stream.of(clazz.getInterfaces()).flatMap(this::interfacesOf);
 	}
 }
