@@ -235,8 +235,8 @@ public class RaidsPlugin extends Plugin
                     startingPartyMembers.clear();
                     missingPartyMembers.clear();
 
-                    partyMembers.addAll(Lists.transform(players, Player::getName));
-                    startingPartyMembers.addAll(partyMembers);
+                    startingPartyMembers.addAll(Lists.transform(players, Player::getName));
+                    partyMembers.addAll(startingPartyMembers);
 				}
 			}
 
@@ -296,15 +296,21 @@ public class RaidsPlugin extends Plugin
 			switch (entry.getOption()) {
 				case RaidsPartyOverlay.PARTY_OVERLAY_DEBUG:
 					System.out.println("Starting players: ");
-					getPartyMembers().stream().map(player -> "* " + player).forEach(System.out::println);
+					getStartingPartyMembers().stream().map(player -> "* " + player).forEach(System.out::println);
 					System.out.println("Current players: ");
 					getPartyMembers().stream().map(player -> "* " + player).forEach(System.out::println);
 					System.out.println("Missing players: ");
 					getMissingPartyMembers().stream().map(player -> "* " + player).forEach(System.out::println);
 					break;
 				case RaidsPartyOverlay.PARTY_OVERLAY_RESET:
+				    startingPartyMembers.clear();
 					updatePartyMembers(true);
+                    startingPartyMembers.addAll(partyMembers);
+                    missingPartyMembers.clear();
 					break;
+                case RaidsPartyOverlay.PARTY_OVERLAY_REFRESH:
+                    updatePartyMembers(true);
+                    break;
 				default:
 					break;
 			}
@@ -317,14 +323,8 @@ public class RaidsPlugin extends Plugin
 			return;
 		}
 
-		if (force) {
-			partyMembers.clear();
-			startingPartyMembers.clear();
-			missingPartyMembers.clear();
-		}
-
-		if (startingPartyMembers.size() == partySize) {
-			// Skip update if we have a list of starting party members the same size as current party
+		if (startingPartyMembers.size() == partySize && !force) {
+			// Skip update if the part is as big as when we started
 			return;
 		}
 
@@ -334,7 +334,7 @@ public class RaidsPlugin extends Plugin
 			try {
 				widgets = client.getWidget(WidgetInfo.RAIDING_PARTY).getStaticChildren()[2].getStaticChildren()[3].getDynamicChildren();
 			} catch (NullPointerException e) {
-				return; // Raid widget not (fully) loaded yet
+				return; // Raid widget not loaded
 			}
 
 			partyMembers.clear();
@@ -349,8 +349,8 @@ public class RaidsPlugin extends Plugin
 				}
 			}
 
-			// If there are more people now than there were, update starting members
-			if (partySize > startingPartyMembers.size()) {
+			// If we don't have any starting members, update starting members
+			if (startingPartyMembers.size() == 0 || force) {
 				missingPartyMembers.clear();
 				startingPartyMembers.clear();
 				startingPartyMembers.addAll(partyMembers);

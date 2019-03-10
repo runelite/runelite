@@ -51,6 +51,7 @@ public class RaidsPartyOverlay extends Overlay
 {
     public static final String PARTY_OVERLAY_DEBUG = "Debug";
     public static final String PARTY_OVERLAY_RESET = "Reset missing";
+    public static final String PARTY_OVERLAY_REFRESH = "Refresh party";
 
     @Inject
     private Client client;
@@ -69,6 +70,7 @@ public class RaidsPartyOverlay extends Overlay
         getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids party overlay"));
         getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, PARTY_OVERLAY_DEBUG, "Raids party overlay"));
         getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, PARTY_OVERLAY_RESET, "Raids party overlay"));
+        getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY, PARTY_OVERLAY_REFRESH, "Raids party overlay"));
     }
 
     @Override
