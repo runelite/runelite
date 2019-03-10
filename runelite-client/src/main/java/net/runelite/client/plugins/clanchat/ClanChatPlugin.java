@@ -93,6 +93,11 @@ public class ClanChatPlugin extends Plugin
 	private static final int JOIN_LEAVE_DURATION = 20;
 	private static final int MESSAGE_DELAY = 10;
 
+	/**
+	 * queue of temporary messages added to the client
+	 */
+	private final Deque<ClanJoinMessage> clanJoinMessages = new ArrayDeque<>();
+
 	@Inject
 	private Client client;
 
@@ -114,10 +119,6 @@ public class ClanChatPlugin extends Plugin
 	private List<String> chats = new ArrayList<>();
 	private List<Player> clanMembers = new ArrayList<>();
 	private ClanChatIndicator clanMemberCounter;
-	/**
-	 * queue of temporary messages added to the client
-	 */
-	private final Deque<ClanJoinMessage> clanJoinMessages = new ArrayDeque<>();
 	private Map<String, ClanMemberActivity> activityBuffer = new HashMap<>();
 	private int clanJoinedTick;
 
@@ -171,10 +172,14 @@ public class ClanChatPlugin extends Plugin
 		{
 			final String memberName = Text.toJagexName(member.getUsername());
 
+			if (memberName.equals(Text.toJagexName(client.getLocalPlayer().getName())))
+			{
+				return;
+			}
+
 			for (final Player player : client.getPlayers())
 			{
-				if (player != null && !memberName.equals(Text.toJagexName(client.getLocalPlayer().getName())) &&
-						memberName.equals(Text.toJagexName(player.getName())))
+				if (player != null && memberName.equals(Text.toJagexName(player.getName())))
 				{
 					clanMembers.add(player);
 					addClanCounter();
@@ -452,7 +457,7 @@ public class ClanChatPlugin extends Plugin
 	@Subscribe
 	public void onPlayerSpawned(PlayerSpawned event)
 	{
-		if (event.getPlayer().isClanMember())
+		if (event.getPlayer().isClanMember() && event.getPlayer() != client.getLocalPlayer())
 		{
 			clanMembers.add(event.getPlayer());
 			addClanCounter();
@@ -504,8 +509,7 @@ public class ClanChatPlugin extends Plugin
 			}
 			else
 			{
-				message.getMessageNode()
-					.setName(img + message.getMessageNode().getName());
+				message.getMessageNode().setName(img + message.getMessageNode().getName());
 			}
 			client.refreshChat();
 		}
