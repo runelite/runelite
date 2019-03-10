@@ -81,9 +81,9 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-		name = "Clan Chat",
-		description = "Add rank icons to users talking in clan chat",
-		tags = {"icons", "rank", "recent"}
+	name = "Clan Chat",
+	description = "Add rank icons to users talking in clan chat",
+	tags = {"icons", "rank", "recent"}
 )
 public class ClanChatPlugin extends Plugin
 {
@@ -172,10 +172,14 @@ public class ClanChatPlugin extends Plugin
 		{
 			final String memberName = Text.toJagexName(member.getUsername());
 
+			if (memberName.equals(Text.toJagexName(client.getLocalPlayer().getName())))
+			{
+				return;
+			}
+
 			for (final Player player : client.getPlayers())
 			{
-				if (player != null && !memberName.equals(Text.toJagexName(client.getLocalPlayer().getName())) &&
-						memberName.equals(Text.toJagexName(player.getName())))
+				if (player != null && memberName.equals(Text.toJagexName(player.getName())))
 				{
 					clanMembers.add(player);
 					addClanCounter();
@@ -191,7 +195,7 @@ public class ClanChatPlugin extends Plugin
 		}
 
 		if (!config.showJoinLeave() ||
-				member.getRank().getValue() < config.joinLeaveRank().getValue())
+			member.getRank().getValue() < config.joinLeaveRank().getValue())
 		{
 			return;
 		}
@@ -200,7 +204,7 @@ public class ClanChatPlugin extends Plugin
 		if (!activityBuffer.containsKey(member.getUsername()))
 		{
 			ClanMemberActivity joinActivity = new ClanMemberActivity(ClanActivityType.JOINED,
-					member, client.getTickCount());
+				member, client.getTickCount());
 			activityBuffer.put(member.getUsername(), joinActivity);
 		}
 		else
@@ -236,7 +240,7 @@ public class ClanChatPlugin extends Plugin
 		}
 
 		if (!config.showJoinLeave() ||
-				member.getRank().getValue() < config.joinLeaveRank().getValue())
+			member.getRank().getValue() < config.joinLeaveRank().getValue())
 		{
 			return;
 		}
@@ -244,7 +248,7 @@ public class ClanChatPlugin extends Plugin
 		if (!activityBuffer.containsKey(member.getUsername()))
 		{
 			ClanMemberActivity leaveActivity = new ClanMemberActivity(ClanActivityType.LEFT,
-					member, client.getTickCount());
+				member, client.getTickCount());
 			activityBuffer.put(member.getUsername(), leaveActivity);
 		}
 		else
@@ -369,11 +373,11 @@ public class ClanChatPlugin extends Plugin
 
 		ChatMessageBuilder message = new ChatMessageBuilder();
 		String messageString = message
-				.append("[")
-				.append(ColorUtil.wrapWithColorTag(client.getClanChatName(), channelColor) + rankTag)
-				.append("] ")
-				.append(ColorUtil.wrapWithColorTag(member.getUsername() + activityMessage, textColor))
-				.build();
+			.append("[")
+			.append(ColorUtil.wrapWithColorTag(client.getClanChatName(), channelColor) + rankTag)
+			.append("] ")
+			.append(ColorUtil.wrapWithColorTag(member.getUsername() + activityMessage, textColor))
+			.build();
 
 		client.addChatMessage(ChatMessageType.CLANCHAT_INFO, "", messageString, "");
 
@@ -453,7 +457,7 @@ public class ClanChatPlugin extends Plugin
 	@Subscribe
 	public void onPlayerSpawned(PlayerSpawned event)
 	{
-		if (event.getPlayer().isClanMember())
+		if (event.getPlayer().isClanMember() && event.getPlayer() != client.getLocalPlayer())
 		{
 			clanMembers.add(event.getPlayer());
 			addClanCounter();
@@ -501,7 +505,7 @@ public class ClanChatPlugin extends Plugin
 			if (message.getType() == ChatMessageType.CLANCHAT)
 			{
 				message.getMessageNode()
-						.setSender(message.getMessageNode().getSender() + " " + img);
+					.setSender(message.getMessageNode().getSender() + " " + img);
 			}
 			else
 			{
