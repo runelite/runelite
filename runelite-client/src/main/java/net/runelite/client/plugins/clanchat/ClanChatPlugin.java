@@ -170,7 +170,8 @@ public class ClanChatPlugin extends Plugin
 
 			for (final Player player : client.getPlayers())
 			{
-				if (player != null && memberName.equals(Text.toJagexName(player.getName())))
+				if (player != null && !memberName.equals(Text.toJagexName(client.getLocalPlayer().getName())) &&
+						memberName.equals(Text.toJagexName(player.getName())))
 				{
 					clanMembers.add(player);
 					addClanCounter();
