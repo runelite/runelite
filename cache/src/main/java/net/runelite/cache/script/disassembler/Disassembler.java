@@ -204,7 +204,7 @@ public class Disassembler
 
 		switch (opcode)
 		{
-			case Opcodes.LOAD_INT:
+			case Opcodes.ICONST:
 			case Opcodes.ILOAD:
 			case Opcodes.SLOAD:
 			case Opcodes.ISTORE:
