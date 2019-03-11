@@ -29,9 +29,16 @@ package net.runelite.client.plugins.friendnotes;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ObjectArrays;
+import java.awt.Color;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.Friend;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.Nameable;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NameableNameChanged;
@@ -45,10 +52,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
-
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import java.awt.*;
 
 @Slf4j
 @PluginDescriptor(
@@ -164,7 +167,7 @@ public class FriendNotesPlugin extends Plugin
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
 		{
 			// Friends have color tags
-			setHoveredFriend(Text.toJagexName(Text.removeTags(event.getTarget())));
+			setHoveredFriend(Text.removeTags(event.getTarget()));
 
 			// Build "Add Note" or "Edit Note" menu entry
 			final MenuEntry addNote = new MenuEntry();
@@ -195,7 +198,7 @@ public class FriendNotesPlugin extends Plugin
 			}
 
 			//Friends have color tags
-			final String sanitizedTarget = Text.toJagexName(Text.removeTags(event.getMenuTarget()));
+			final String sanitizedTarget = Text.removeTags(event.getMenuTarget());
 
 			// Handle clicks on "Add Note" or "Edit Note"
 			if (event.getMenuOption().equals(ADD_NOTE) || event.getMenuOption().equals(EDIT_NOTE))
