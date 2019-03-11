@@ -70,11 +70,14 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.ItemPrice;
+<<<<<<< HEAD
 import org.apache.commons.lang3.StringUtils;
 <<<<<<< HEAD
 =======
 import org.apache.commons.lang3.math.NumberUtils;
 >>>>>>> 817a24d51add42f15c0c3ac279b05fafff2f4a9e
+=======
+>>>>>>> master
 import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
@@ -750,34 +753,6 @@ public class ChatCommandsPlugin extends Plugin
 
 		MessageNode messageNode = chatMessage.getMessageNode();
 		String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
-		String[] amtSearch = search.split(" ");
-		int amt = 1; //Amount of items
-		int place = amtSearch.length - 1;
-
-			if (StringUtils.isNumeric(amtSearch[place])) //Checking if the last String is a number
-			{
-				amt = Integer.parseInt(amtSearch[place]); //amount 
-
-				if (Integer.parseInt(amtSearch[place]) <= 0) //Check if they are trying to use a negative number
-				{
-					amt = 1;
-				}
-
-				String[] searchSplit = search.split(" ");
-				String search2 = "";
-				int samt = 0;
-				for (int i = 0; i < place; i++)
-				{
-					search2 = search2 +  searchSplit[i] + " "; //rebuilding the search
-				}
-				search2 = search2.substring(0 , search2.length() - 1);
-				search = search2;
-
-			}
-
-
-
-
 
 		String[] amtSearch = search.split(" ");
 		int amt = 1; //Amount of items
@@ -824,18 +799,29 @@ public class ChatCommandsPlugin extends Plugin
 
 			int itemId = item.getId();
 			int itemPrice = item.getPrice();
+<<<<<<< HEAD
 			int totalPrice = 0;
 <<<<<<< HEAD
 			String sPrice;
 			totalPrice = itemPrice * amt;
 			sPrice = totalPrice + "";
+=======
+>>>>>>> master
 
-			if (totalPrice < 0)
+			final ChatMessageBuilder builder = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Price of ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(item.getName())
+				.append(ChatColorType.NORMAL)
+				.append(": GE average ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(StackFormatter.formatNumber(itemPrice));
+
+			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+			if (itemComposition != null)
 			{
-				sPrice = "Lots!";
-			}
-			else
-			{
+<<<<<<< HEAD
 				sPrice = StackFormatter.formatNumber(totalPrice);
 =======
 
@@ -875,50 +861,20 @@ public class ChatCommandsPlugin extends Plugin
 					salchPrice = StackFormatter.formatNumber(alchPrice);
 				}
 
+=======
+				int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+>>>>>>> master
 				builder
 					.append(ChatColorType.NORMAL)
 					.append(" HA value ")
 					.append(ChatColorType.HIGHLIGHT)
+<<<<<<< HEAD
 					.append(salchPrice);
 >>>>>>> 817a24d51add42f15c0c3ac279b05fafff2f4a9e
+=======
+					.append(StackFormatter.formatNumber(alchPrice));
+>>>>>>> master
 			}
-
-
-
-
-				final ChatMessageBuilder builder = new ChatMessageBuilder()
-						.append(ChatColorType.NORMAL)
-						.append("Price of " + amt + " ")
-						.append(ChatColorType.HIGHLIGHT)
-						.append(item.getName())
-						.append(ChatColorType.NORMAL)
-						.append(": GE average ")
-						.append(ChatColorType.HIGHLIGHT)
-						.append(sPrice);
-
-				ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-				if (itemComposition != null)
-				{
-					int alchPrice = Math.round((itemComposition.getPrice() * amt ) * HIGH_ALCHEMY_CONSTANT);
-					String salchPrice;
-					if (alchPrice < 0)
-					{
-						salchPrice = "Lots!";
-					}
-					else
-						{
-							salchPrice = StackFormatter.formatNumber(alchPrice);
-						}
-					builder
-							.append(ChatColorType.NORMAL)
-							.append(" HA value ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(salchPrice);
-				}
-
-
-
-
 
 			String response = builder.build();
 
