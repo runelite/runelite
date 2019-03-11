@@ -167,7 +167,7 @@ public class FriendNotesPlugin extends Plugin
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
 		{
 			// Friends have color tags
-			setHoveredFriend(Text.removeTags(event.getTarget()));
+			setHoveredFriend(Text.toJagexName(Text.removeTags(event.getTarget())));
 
 			// Build "Add Note" or "Edit Note" menu entry
 			final MenuEntry addNote = new MenuEntry();
@@ -198,7 +198,7 @@ public class FriendNotesPlugin extends Plugin
 			}
 
 			//Friends have color tags
-			final String sanitizedTarget = Text.removeTags(event.getMenuTarget());
+			final String sanitizedTarget = Text.toJagexName(Text.removeTags(event.getMenuTarget()));
 
 			// Handle clicks on "Add Note" or "Edit Note"
 			if (event.getMenuOption().equals(ADD_NOTE) || event.getMenuOption().equals(EDIT_NOTE))
