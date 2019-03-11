@@ -173,8 +173,22 @@ public class GroundMarkerPlugin extends Plugin
 				point.getColor()))
 			.flatMap(colorTile ->
 			{
+<<<<<<< HEAD
 				final Collection<WorldPoint> localWorldPoints = WorldPoint.toLocalInstance(client, colorTile.getWorldPoint());
 				return localWorldPoints.stream().map(wp -> new ColorTileMarker(wp, colorTile.getColor()));
+=======
+				int regionId = point.getRegionId();
+				int regionX = point.getRegionX();
+				int regionY = point.getRegionY();
+				int z = point.getZ();
+
+				// world point of the tile marker
+				return new WorldPoint(
+					((regionId >>> 8) << 6) + regionX,
+					((regionId & 0xff) << 6) + regionY,
+					z
+				);
+>>>>>>> parent of 7e1320b2c... worldpoint: Add static fromRegion method
 			})
 			.collect(Collectors.toList());
 	}
