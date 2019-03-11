@@ -166,7 +166,8 @@ public class FriendNotesPlugin extends Plugin
 		// Look for "Message" on friends list
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
 		{
-			// Friends have color tags
+			// Friends have color tags, .toJagexName is necessary to save key using only ASCII characters,
+			// preventing config loading issues. This is specifically an issue for names with spaces.
 			setHoveredFriend(Text.toJagexName(Text.removeTags(event.getTarget())));
 
 			// Build "Add Note" or "Edit Note" menu entry
@@ -197,7 +198,8 @@ public class FriendNotesPlugin extends Plugin
 				return;
 			}
 
-			//Friends have color tags
+			//Friends have color tags .toJagexName is necessary to save key using only ASCII characters,
+			// preventing config loading issues. This is specifically and issue for names with spaces.
 			final String sanitizedTarget = Text.toJagexName(Text.removeTags(event.getMenuTarget()));
 
 			// Handle clicks on "Add Note" or "Edit Note"
