@@ -71,6 +71,7 @@ import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.ItemPrice;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import org.apache.commons.lang3.StringUtils;
 <<<<<<< HEAD
 =======
@@ -78,6 +79,10 @@ import org.apache.commons.lang3.math.NumberUtils;
 >>>>>>> 817a24d51add42f15c0c3ac279b05fafff2f4a9e
 =======
 >>>>>>> master
+=======
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+>>>>>>> b94f8fea8e620e22286d9225daa21c774d01ed92
 import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
@@ -800,6 +805,7 @@ public class ChatCommandsPlugin extends Plugin
 			int itemId = item.getId();
 			int itemPrice = item.getPrice();
 <<<<<<< HEAD
+<<<<<<< HEAD
 			int totalPrice = 0;
 <<<<<<< HEAD
 			String sPrice;
@@ -807,20 +813,36 @@ public class ChatCommandsPlugin extends Plugin
 			sPrice = totalPrice + "";
 =======
 >>>>>>> master
+=======
+			int totalPrice = 0;
+
+			totalPrice = itemPrice * amt;
+			String sPrice;
+
+			if (totalPrice >= Integer.MAX_VALUE || totalPrice < 0)
+			{
+				sPrice = "Lots!";
+			}
+			else
+			{
+				sPrice = StackFormatter.formatNumber(totalPrice);
+			}
+>>>>>>> b94f8fea8e620e22286d9225daa21c774d01ed92
 
 			final ChatMessageBuilder builder = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
-				.append("Price of ")
+				.append("Price of " + StackFormatter.formatNumber(amt) + " ")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(item.getName())
 				.append(ChatColorType.NORMAL)
 				.append(": GE average ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(StackFormatter.formatNumber(itemPrice));
+				.append(sPrice);
 
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			if (itemComposition != null)
 			{
+<<<<<<< HEAD
 <<<<<<< HEAD
 				sPrice = StackFormatter.formatNumber(totalPrice);
 =======
@@ -850,6 +872,8 @@ public class ChatCommandsPlugin extends Plugin
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			if (itemComposition != null)
 			{
+=======
+>>>>>>> b94f8fea8e620e22286d9225daa21c774d01ed92
 				int alchPrice = Math.round((itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * amt);
 				String salchPrice;
 				if (alchPrice >= Integer.MAX_VALUE || alchPrice < 0)
@@ -861,19 +885,26 @@ public class ChatCommandsPlugin extends Plugin
 					salchPrice = StackFormatter.formatNumber(alchPrice);
 				}
 
+<<<<<<< HEAD
 =======
 				int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
 >>>>>>> master
+=======
+>>>>>>> b94f8fea8e620e22286d9225daa21c774d01ed92
 				builder
 					.append(ChatColorType.NORMAL)
 					.append(" HA value ")
 					.append(ChatColorType.HIGHLIGHT)
+<<<<<<< HEAD
 <<<<<<< HEAD
 					.append(salchPrice);
 >>>>>>> 817a24d51add42f15c0c3ac279b05fafff2f4a9e
 =======
 					.append(StackFormatter.formatNumber(alchPrice));
 >>>>>>> master
+=======
+					.append(salchPrice);
+>>>>>>> b94f8fea8e620e22286d9225daa21c774d01ed92
 			}
 
 			String response = builder.build();
