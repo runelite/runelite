@@ -326,6 +326,7 @@ public class WorldPoint
 	{
 		return ((x >> 6) << 8) | (y >> 6);
 	}
+<<<<<<< HEAD
 
 	/**
 	 * Converts the passed region ID and coordinates to a world coordinate
@@ -358,4 +359,6 @@ public class WorldPoint
 	{
 		return position & 0x3f;
 	}
+=======
+>>>>>>> parent of 7e1320b2c... worldpoint: Add static fromRegion method
 }
