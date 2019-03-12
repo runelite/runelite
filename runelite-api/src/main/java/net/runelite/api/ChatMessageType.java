@@ -68,6 +68,10 @@ public enum ChatMessageType
 	 * A private message received from a moderator.
 	 */
 	PRIVATE_MESSAGE_RECEIVED_MOD(7),
+    /**
+     * A message set to twitch chat.
+     */
+    TWITCH(8),
 	/**
 	 * A message received in clan chat.
 	 */

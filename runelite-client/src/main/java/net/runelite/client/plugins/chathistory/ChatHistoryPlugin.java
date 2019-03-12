@@ -140,6 +140,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			case PUBLIC:
 			case PUBLIC_MOD:
 			case CLANCHAT:
+			case TWITCH:
 			case GAME:
 				final QueuedMessage queuedMessage = QueuedMessage.builder()
 					.type(chatMessage.getType())

@@ -271,6 +271,14 @@ public interface ChatColorConfig extends Config
 	Color opaquePublicFriendUsernames();
 
 	@ConfigItem(
+			position = 58,
+			keyName = "opaqueTwitchMessages",
+			name = "Twitch chat Messages",
+			description = "Color of Twitch Messages"
+	)
+	Color opaqueTwitchMessages();
+
+	@ConfigItem(
 		position = 61,
 		keyName = "transparentPublicChat",
 		name = "Public chat (transparent)",
