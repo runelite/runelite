@@ -30,10 +30,10 @@ import java.awt.image.BufferedImage;
 
 class QuestStartPoint extends WorldMapPoint
 {
-	QuestStartPoint(QuestStartLocation data, BufferedImage icon, Boolean showTooltip)
+	QuestStartPoint(QuestStartLocation data, BufferedImage icon, String toolTip)
 	{
 		super(data.getLocation(), icon);
 
-		setTooltip(showTooltip ? data.getTooltip() : "Quest start");
+		setTooltip("Quest start" + toolTip);
 	}
 }
