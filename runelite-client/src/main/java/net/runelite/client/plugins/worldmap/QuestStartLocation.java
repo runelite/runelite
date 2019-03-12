@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.worldmap;
 
 import lombok.Getter;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 
 enum QuestStartLocation
@@ -168,9 +169,24 @@ enum QuestStartLocation
 	@Getter
 	private final WorldPoint location;
 
-	QuestStartLocation(String description, WorldPoint location)
+	@Getter
+	private final int questComplete;
+
+	@Getter
+	private final Varbits varbit;
+
+	QuestStartLocation(String description, WorldPoint location, int questComplete, Varbits varbit)
 	{
 		this.tooltip = "Quest Start - " + description;
 		this.location = location;
+		this.questComplete = questComplete;
+		this.varbit = varbit;
+	}
+
+	QuestStartLocation(String description, WorldPoint location) {
+		this.tooltip = "Quest Start - " + description;
+		this.location = location;
+		this.questComplete = 0;
+		this.varbit = null;
 	}
 }
