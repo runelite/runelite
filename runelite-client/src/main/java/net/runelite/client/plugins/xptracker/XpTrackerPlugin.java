@@ -305,7 +305,9 @@ public class XpTrackerPlugin extends Plugin
 		if (skill == Skill.CONSTRUCTION && updateResult == XpUpdateResult.INITIALIZED)
 		{
 			// Construction is the last skill initialized on login, now initialize the total experience
-			xpState.initializeSkill(Skill.OVERALL, client.getOverallExperience());
+			long overallXp = client.getOverallExperience();
+			log.debug("Initializing XP tracker with {} overall exp", overallXp);
+			xpState.initializeSkill(Skill.OVERALL, overallXp);
 		}
 		else if (xpState.isInitialized(Skill.OVERALL))
 		{
