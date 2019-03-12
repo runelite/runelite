@@ -27,6 +27,7 @@ package net.runelite.client.plugins.grounditems;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -94,14 +95,19 @@ public class GroundItemsOverlay extends Overlay
 		{
 			return null;
 		}
-
-		final FontMetrics fm = graphics.getFontMetrics();
 		final Player player = client.getLocalPlayer();
 
 		if (player == null || client.getViewportWidget() == null)
 		{
 			return null;
 		}
+
+		final Font originalFont = graphics.getFont();
+		final Font font = config.fontStyle().getFont();
+
+		graphics.setFont(font);
+
+		final FontMetrics fm = graphics.getFontMetrics();
 
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
@@ -338,6 +344,8 @@ public class GroundItemsOverlay extends Overlay
 			textComponent.setPosition(new java.awt.Point(textX, textY));
 			textComponent.render(graphics);
 		}
+
+		graphics.setFont(originalFont);
 
 		return null;
 	}
