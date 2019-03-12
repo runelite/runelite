@@ -6,77 +6,77 @@
 ; locals
 ; 2 bar size
    get_varbit             4606
-   load_int               0
+   iconst                 0
    if_icmpne              LABEL4
    jump                   LABEL5
 LABEL4:
    return                
 LABEL5:
-   load_int               512
+   iconst                 512
    istore                 3
-   load_int               512
+   iconst                 512
    istore                 4
    iload                  1
-   widget_get_width_widget
+   if_getwidth           
    iload                  0
-   widget_get_width_widget
-   isub                  
+   if_getwidth           
+   sub                   
    istore                 5
-   load_int               0
+   iconst                 0
    iload                  2
    invoke                 1045
    istore                 2
    iload                  1
-   widget_get_width_widget
+   if_getwidth           
    iload                  0
-   widget_get_width_widget
-   isub                  
+   if_getwidth           
+   sub                   
    iload                  2
    invoke                 1046
    istore                 2
-   load_int               896
-   load_string            "innerZoomLimit"
+   iconst                 896
+   sconst                 "innerZoomLimit"
    runelite_callback     
-   load_int               128
-   load_string            "outerZoomLimit"
-   runelite_callback
-   isub                  
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   sub                   
    istore                 6 ; resizable delta
-   load_int               896
-   load_string            "innerZoomLimit"
+   iconst                 896
+   sconst                 "innerZoomLimit"
    runelite_callback     
-   load_int               128
-   load_string            "outerZoomLimit"
-   runelite_callback
-   isub                  
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   sub                   
    istore                 7 ; fixed delta
    iload                  2
    iload                  6
-   imul                  
+   multiply              
    iload                  5
-   idiv                  
+   div                   
    iload                  6
-   load_string            "zoomLinToExp"
-   runelite_callback
-   pop_int
-   load_int               128
-   load_string            "outerZoomLimit"
-   runelite_callback
-   iadd                  
+   sconst                 "zoomLinToExp"
+   runelite_callback     
+   pop_int               
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   add                   
    istore                 3
    iload                  2
    iload                  7
-   imul                  
+   multiply              
    iload                  5
-   idiv                  
+   div                   
    iload                  7
-   load_string            "zoomLinToExp"
-   runelite_callback
-   pop_int
-   load_int               128
-   load_string            "outerZoomLimit"
-   runelite_callback
-   iadd                  
+   sconst                 "zoomLinToExp"
+   runelite_callback     
+   pop_int               
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   add                   
    istore                 4
    iload                  4
    iload                  3

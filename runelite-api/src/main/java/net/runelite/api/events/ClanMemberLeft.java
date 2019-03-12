@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Levi <me@levischuck.com>
+ * Copyright (c) 2018, trimbe <github.com/trimbe>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,34 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.xptracker;
+package net.runelite.api.events;
 
-import lombok.Data;
+import lombok.Value;
+import net.runelite.api.ClanMember;
 
-@Data
-class XpStateTotal
+@Value
+public class ClanMemberLeft
 {
-	private int xpGainedInSession = 0;
-	private int xpPerHour = 0;
-
-	void reset()
-	{
-		xpGainedInSession = 0;
-		xpPerHour = 0;
-	}
-
-	void addXpGainedInSession(int skillXpGainedInSession)
-	{
-		xpGainedInSession += skillXpGainedInSession;
-	}
-
-	void addXpPerHour(int skillXpGainedPerHour)
-	{
-		xpPerHour += skillXpGainedPerHour;
-	}
-
-	XpSnapshotTotal snapshot()
-	{
-		return new XpSnapshotTotal(xpGainedInSession, xpPerHour);
-	}
+	/**
+	 * The ClanMember that left
+	 */
+	private ClanMember member;
 }

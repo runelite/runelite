@@ -78,7 +78,7 @@ public class DiscordService implements AutoCloseable
 			discordRPC = DiscordRPC.INSTANCE;
 			discordEventHandlers = new DiscordEventHandlers();
 		}
-		catch (UnsatisfiedLinkError e)
+		catch (Error e)
 		{
 			log.warn("Failed to load Discord library, Discord support will be disabled.");
 		}

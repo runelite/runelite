@@ -238,7 +238,9 @@ public class DevToolsPlugin extends Plugin
 				int value = Integer.parseInt(args[1]);
 				client.setVarpValue(client.getVarps(), varp, value);
 				client.addChatMessage(ChatMessageType.SERVER, "", "Set VarPlayer " + varp + " to " + value, null);
-				eventBus.post(new VarbitChanged()); // fake event
+				VarbitChanged varbitChanged = new VarbitChanged();
+				varbitChanged.setIndex(varp);
+				eventBus.post(varbitChanged); // fake event
 				break;
 			}
 			case "getvarb":

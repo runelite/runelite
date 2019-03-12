@@ -26,34 +26,21 @@ package net.runelite.client.plugins.nightmarezone;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
 
+@Setter
 public class AbsorptionCounter extends Counter
 {
-	@Getter
-	@Setter
 	private int threshold;
-
-	@Getter
-	@Setter
 	private Color aboveThresholdColor = Color.GREEN;
-
-	@Getter
-	@Setter
 	private Color belowThresholdColor = Color.RED;
 
-	public AbsorptionCounter(BufferedImage image, Plugin plugin, int absorption, int threshold)
+	AbsorptionCounter(BufferedImage image, Plugin plugin, int absorption, int threshold)
 	{
 		super(image, plugin,  absorption);
 		this.threshold = threshold;
-	}
-
-	public void setAbsorption(int absorption)
-	{
-		setCount(absorption);
 	}
 
 	@Override

@@ -24,6 +24,6 @@
  */
 package net.runelite.rs.api;
 
-public interface RSIgnoreContainer extends RSNameableContainer
+public interface RSIgnoreContainer extends RSNameableContainer<RSIgnore>
 {
 }
