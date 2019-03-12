@@ -52,6 +52,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetTextAlignment;
 import net.runelite.api.widgets.WidgetType;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -90,6 +91,9 @@ public class ItemStatPlugin extends Plugin
 	@Inject
 	private ItemStatConfig config;
 
+	@Inject
+	private ClientThread clientThread;
+
 	private Widget itemInformationTitle;
 
 	@Provides
@@ -114,7 +118,7 @@ public class ItemStatPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-		resetGEInventory();
+		clientThread.invokeLater(this::resetGEInventory);
 	}
 
 	@Subscribe
@@ -122,7 +126,7 @@ public class ItemStatPlugin extends Plugin
 	{
 		if (event.getKey().equals("geStats"))
 		{
-			resetGEInventory();
+			clientThread.invokeLater(this::resetGEInventory);
 		}
 	}
 
