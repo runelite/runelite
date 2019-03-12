@@ -44,9 +44,9 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -127,14 +127,10 @@ public class ItemStatPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	public void onGameTick(GameTick event)
 	{
-		if (!config.geStats())
-		{
-			return;
-		}
-
-		if (event.getWidget() == client.getWidget(WidgetInfo.INVENTORY))
+		if (itemInformationTitle != null && config.geStats()
+			&& client.getWidget(WidgetInfo.GRAND_EXCHANGE_WINDOW_CONTAINER) == null)
 		{
 			resetGEInventory();
 		}
