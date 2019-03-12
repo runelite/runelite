@@ -131,6 +131,9 @@ public class WikiPlugin extends Plugin
 				return;
 			}
 			children[0] = null;
+
+			onDeselect();
+			client.setSpellSelected(false);
 		});
 	}
 
@@ -186,7 +189,10 @@ public class WikiPlugin extends Plugin
 	private void onDeselect()
 	{
 		wikiSelected = false;
-		icon.setSpriteId(WikiSprite.WIKI_ICON.getSpriteId());
+		if (icon != null)
+		{
+			icon.setSpriteId(WikiSprite.WIKI_ICON.getSpriteId());
+		}
 	}
 
 	@Subscribe
