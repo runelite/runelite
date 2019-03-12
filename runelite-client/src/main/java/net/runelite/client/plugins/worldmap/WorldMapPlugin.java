@@ -29,18 +29,12 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.AgilityShortcut;
@@ -48,7 +42,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
-import sun.rmi.runtime.Log;
 
 @PluginDescriptor(
 		name = "World Map",
@@ -131,12 +124,6 @@ public class WorldMapPlugin extends Plugin
 		agilityLevel = client.getRealSkillLevel(Skill.AGILITY);
 		woodcuttingLevel = client.getRealSkillLevel(Skill.WOODCUTTING);
 		updateShownIcons();
-	}
-
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
-	{
-		updateQuestStartPointIcons();
 	}
 
 	@Override
@@ -227,8 +214,18 @@ public class WorldMapPlugin extends Plugin
 			Arrays.stream(QuestStartLocation.values())
 					.map(value -> {
 						BufferedImage icon;
-						if(value.getQuestComplete() == 0 || !config.questProgressIcon() || client.getVar(value.getVarbit()) == 0) icon = BLANK_ICON;
-						else icon = client.getVar(value.getVarbit()) == value.getQuestComplete() ? FINISHED_ICON : STARTED_ICON;
+
+						switch (value.getQuest().getState(client)){
+                            case FINISHED:
+                                icon = FINISHED_ICON;
+                                break;
+                            case IN_PROGRESS:
+                                icon = STARTED_ICON;
+                                break;
+                            default:
+                                icon = BLANK_ICON;
+                                break;
+                        }
 
 						return new QuestStartPoint(value, icon, config.questStartTooltips());
 
@@ -241,6 +238,7 @@ public class WorldMapPlugin extends Plugin
 	{
 		updateAgilityIcons();
 		updateRareTreeIcons();
+		updateQuestStartPointIcons();
 
 		worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
 		if (config.fairyRingIcon() || config.fairyRingTooltips())

@@ -26,14 +26,14 @@
 package net.runelite.client.plugins.worldmap;
 
 import lombok.Getter;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.Quest;
 
 enum QuestStartLocation
 {
 	//Free Quests
-	COOKS_ASSISTANT_RFD("Cook's Assistant", new WorldPoint(3211, 3216, 0)),
-	THE_CORSAIR_CURSE("The Corsair Curse", new WorldPoint(3029, 3273, 0)),
+	COOKS_ASSISTANT_RFD(Quest.COOKS_ASSISTANT, new WorldPoint(3211, 3216, 0)),
+	THE_CORSAIR_CURSE(Quest.THE_CORSAIR_CURSE, new WorldPoint(3029, 3273, 0)),
 	DEMON_SLAYER("Demon Slayer", new WorldPoint(3204, 3424, 0)),
 	DORICS_QUEST("Doric's Quest", new WorldPoint(2952, 3450, 0)),
 	DRAGON_SLAYER("Dragon Slayer", new WorldPoint(3190, 3362, 0)),
@@ -170,23 +170,18 @@ enum QuestStartLocation
 	private final WorldPoint location;
 
 	@Getter
-	private final int questComplete;
+	private final Quest quest;
 
-	@Getter
-	private final Varbits varbit;
-
-	QuestStartLocation(String description, WorldPoint location, int questComplete, Varbits varbit)
+	QuestStartLocation(String description, WorldPoint location)
 	{
 		this.tooltip = "Quest Start - " + description;
 		this.location = location;
-		this.questComplete = questComplete;
-		this.varbit = varbit;
+		this.quest = null;
 	}
 
-	QuestStartLocation(String description, WorldPoint location) {
-		this.tooltip = "Quest Start - " + description;
+	QuestStartLocation(Quest quest, WorldPoint location) {
+		this.tooltip = "Quest Start - " + quest.getName();
 		this.location = location;
-		this.questComplete = 0;
-		this.varbit = null;
+		this.quest = quest;
 	}
 }
