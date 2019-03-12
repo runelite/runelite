@@ -64,7 +64,8 @@ public class CombatLevelPluginTest
 		when(client.getLocalPlayer()).thenReturn(player);
 	}
 
-	private HashMap<String, Double> getBaseValues() {
+	private HashMap<String, Double> getBaseValues()
+	{
 		int attackLevel = client.getRealSkillLevel(Skill.ATTACK);
 		int strengthLevel = client.getRealSkillLevel(Skill.STRENGTH);
 		int defenceLevel = client.getRealSkillLevel(Skill.DEFENCE);

@@ -84,7 +84,7 @@ public class ItemManager
 
 	private final ItemClient itemClient = new ItemClient();
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
-	private Map<String, ItemStats> itemStats = Collections.emptyMap();
+	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
 	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
@@ -226,7 +226,7 @@ public class ItemManager
 	{
 		try
 		{
-			final Map<String, ItemStats> stats = itemClient.getStats();
+			final Map<Integer, ItemStats> stats = itemClient.getStats();
 			if (stats != null)
 			{
 				itemStats = ImmutableMap.copyOf(stats);
@@ -307,16 +307,16 @@ public class ItemManager
 	 * @return item stats
 	 */
 	@Nullable
-	public ItemStats getItemStats(int itemId)
+	public ItemStats getItemStats(int itemId, boolean allowNote)
 	{
 		ItemComposition itemComposition = getItemComposition(itemId);
 
-		if (itemComposition == null || itemComposition.getName() == null)
+		if (itemComposition == null || itemComposition.getName() == null || (!allowNote && itemComposition.getNote() != -1))
 		{
 			return null;
 		}
 
-		return itemStats.get(itemComposition.getName());
+		return itemStats.get(canonicalize(itemId));
 	}
 
 	/**

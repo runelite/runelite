@@ -211,7 +211,7 @@ public class WorldPoint
 
 		// find instance chunks using the template point. there might be more than one.
 		List<WorldPoint> worldPoints = new ArrayList<>();
-		final int z = client.getPlane();
+		final int z = worldPoint.getPlane();
 		int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
 		for (int x = 0; x < instanceTemplateChunks[z].length; ++x)
 		{
@@ -325,5 +325,37 @@ public class WorldPoint
 	public int getRegionID()
 	{
 		return ((x >> 6) << 8) | (y >> 6);
+	}
+
+	/**
+	 * Converts the passed region ID and coordinates to a world coordinate
+	 */
+	public static WorldPoint fromRegion(int regionId, int regionX, int regionY, int plane)
+	{
+		return new WorldPoint(
+			((regionId >>> 8) << 6) + regionX,
+			((regionId & 0xff) << 6) + regionY,
+			plane);
+	}
+
+	/**
+	 * Gets the X-axis coordinate of the region coordinate
+	 */
+	public int getRegionX()
+	{
+		return getRegionOffset(x);
+	}
+
+	/**
+	 * Gets the Y-axis coordinate of the region coordinate
+	 */
+	public int getRegionY()
+	{
+		return getRegionOffset(y);
+	}
+
+	private static int getRegionOffset(final int position)
+	{
+		return position & 0x3f;
 	}
 }

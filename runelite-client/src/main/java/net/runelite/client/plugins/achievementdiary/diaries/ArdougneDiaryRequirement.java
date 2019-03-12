@@ -40,7 +40,7 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.RUNE_MYSTERIES));
 		add("Steal a cake from the Ardougne market stalls.",
 			new SkillRequirement(Skill.THIEVING, 5));
-		add("Enter the Combat Training Camp north of W. Ardougne",
+		add("Enter the Combat Training Camp north of W. Ardougne.",
 			new QuestRequirement(Quest.BIOHAZARD));
 
 		// MEDIUM
