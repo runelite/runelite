@@ -27,18 +27,15 @@ package net.runelite.client.plugins.worldmap;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
-import net.runelite.api.GameState;
 import net.runelite.api.Skill;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.ExperienceChanged;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.*;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.AgilityShortcut;
@@ -97,11 +94,11 @@ public class WorldMapPlugin extends Plugin
 
 		STARTED_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage startedIcon = ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, "quest_started_icon.png");
-		STARTED_ICON.getGraphics().drawImage(startedIcon,1,1,null);
+		STARTED_ICON.getGraphics().drawImage(startedIcon, 1, 1, null);
 
 		FINISHED_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage finishedIcon = ImageUtil.getResourceStreamFromClass(WorldMapPlugin.class, "quest_complete_icon.png");
-		FINISHED_ICON.getGraphics().drawImage(finishedIcon,1,1,null);
+		FINISHED_ICON.getGraphics().drawImage(finishedIcon, 1, 1, null);
 	}
 
 	@Inject
@@ -115,8 +112,6 @@ public class WorldMapPlugin extends Plugin
 
 	private int agilityLevel = 0;
 	private int woodcuttingLevel = 0;
-
-	private boolean questsChecked = false;
 
 	@Provides
 	WorldMapConfig provideConfig(ConfigManager configManager)
@@ -132,14 +127,14 @@ public class WorldMapPlugin extends Plugin
 		updateShownIcons();
 	}
 
-    @Subscribe
-    public void onVarbitChanged(VarbitChanged event)
-    {
-        if(!questsChecked) {
-            updateQuestStartPointIcons();
-            questsChecked = true;
-        }
-    }
+	@Subscribe
+	private void onWidgetLoaded(WidgetLoaded l)
+	{
+		if (l.getGroupId() == WidgetID.WORLD_MAP_GROUP_ID)
+		{
+			updateQuestStartPointIcons();
+		}
+	}
 
 	@Override
 	protected void shutDown() throws Exception
@@ -222,36 +217,44 @@ public class WorldMapPlugin extends Plugin
 		}
 	}
 
-	private void updateQuestStartPointIcons(){
+	private void updateQuestStartPointIcons()
+	{
 		worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
 
 		if (config.questStartTooltips() || config.questProgressIcon())
 		{
 			Arrays.stream(QuestStartLocation.values())
-					.map(value -> {
+					.map(value ->
+					{
 						BufferedImage icon;
-                        String tooltip = "";
+						String tooltip = "";
 
-                        if(config.questStartTooltips()) tooltip += " - " + value.getTooltip();
+						if (config.questStartTooltips())
+						{
+							tooltip += " - " + value.getTooltip();
+						}
 
-                        if(config.questProgressIcon() && value.getQuest() != null) {
-                            switch (value.getQuest().getState(client)) {
-                                case FINISHED:
-                                    icon = FINISHED_ICON;
-                                    tooltip += " - Finished";
-                                    break;
-                                case IN_PROGRESS:
-                                    icon = STARTED_ICON;
-                                    tooltip += " - Started";
-                                    break;
-                                default:
-                                    icon = BLANK_ICON;
-                                    break;
-                            }
-                        }
-                        else{
-                            icon = BLANK_ICON;
-                        }
+						if (config.questProgressIcon() && value.getQuest() != null)
+						{
+							switch (value.getQuest().getState(client))
+							{
+								case FINISHED:
+									icon = FINISHED_ICON;
+									tooltip += " - Finished";
+									break;
+								case IN_PROGRESS:
+									icon = STARTED_ICON;
+									tooltip += " - Started";
+									break;
+								default:
+									icon = BLANK_ICON;
+									break;
+							}
+						}
+						else
+						{
+							icon = BLANK_ICON;
+						}
 
 						return new QuestStartPoint(value, icon, tooltip);
 

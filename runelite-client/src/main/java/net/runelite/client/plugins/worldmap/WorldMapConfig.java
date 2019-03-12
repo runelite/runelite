@@ -181,7 +181,10 @@ public interface WorldMapConfig extends Config
 			description = "Indicates your quest progress",
 			position = 14
 	)
-	default boolean questProgressIcon() { return true; }
+	default boolean questProgressIcon()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 			keyName = WorldMapPlugin.CONFIG_KEY_FARMING_PATCH_TOOLTIPS,
