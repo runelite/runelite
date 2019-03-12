@@ -519,7 +519,15 @@ public abstract class RSWidgetMixin implements RSWidget
 			}
 			else
 			{
-				index = siblings.length;
+				index = 0;
+				for (int i = siblings.length - 1; i >= 0; i--)
+				{
+					if (siblings[i] != null)
+					{
+						index = i + 1;
+						break;
+					}
+				}
 			}
 		}
 
