@@ -32,6 +32,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -442,7 +443,7 @@ public class LootTrackerPlugin extends Plugin
 
 	private Collection<LootTrackerRecord> convertToLootTrackerRecord(final Collection<LootRecord> records)
 	{
-		Collection<LootTrackerRecord> trackerRecords = new ArrayList<>();
+		List<LootTrackerRecord> trackerRecords = new ArrayList<>();
 		for (LootRecord record : records)
 		{
 			LootTrackerItem[] drops = record.getDrops().stream().map(itemStack ->
@@ -451,7 +452,7 @@ public class LootTrackerPlugin extends Plugin
 
 			trackerRecords.add(new LootTrackerRecord(record.getEventId(), "", drops, -1));
 		}
-
+		Collections.reverse(trackerRecords);
 		return trackerRecords;
 	}
 }
