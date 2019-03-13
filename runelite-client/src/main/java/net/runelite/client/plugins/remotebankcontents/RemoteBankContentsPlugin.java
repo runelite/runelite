@@ -54,13 +54,14 @@ public class RemoteBankContentsPlugin extends Plugin {
     @Subscribe
     public void onScriptCallbackEvent(ScriptCallbackEvent event) {
 
-        //only run this if the bank is open
-        if (!event.getEventName().equals("setBankTitle")) {
-            return;
+        //only run this if the event is opening the bank.
+        if (event.getEventName().equals("setBankTitle")) {
+
+            //populate the hashmap with all of the items from the bank
+            remoteBankContentsProcess.populateBankItemMap();
+
         }
 
-        //populate the hashmap with all of the items from the bank
-        remoteBankContentsProcess.populateBankItemMap();
 
     }
 

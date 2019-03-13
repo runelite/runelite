@@ -88,11 +88,23 @@ public class RemoteBankContentsProcess {
 
                 final ChatMessageBuilder message = new ChatMessageBuilder();
 
+
+                /*TODO
+
+                Refine message based on quantity and if this necessitates a plural.
+
                 if (quantity == 1) {
                     message.append("<col" + ChatColorType.HIGHLIGHT + ">" + "You currently have " + quantity + " " + name + " in your bank.");
                 } else {
+
+                    //Add s to the end. Need to check if the item ends in S and if it does not add S
+                    //and if the item ends in Y and add "ies". Also need to check exceptions to this rule.
                     message.append("<col" + ChatColorType.HIGHLIGHT + ">" + "You currently have " + quantity + " " + name + "s in your bank.");
                 }
+                */
+
+                message.append("<col" + ChatColorType.HIGHLIGHT + ">" + "You currently have " + quantity + " " + name + " in your bank.");
+
                 chatMessageManager.queue(QueuedMessage.builder()
                         .type(ChatMessageType.EXAMINE_ITEM).runeLiteFormattedMessage(message.build()).build());
             }
