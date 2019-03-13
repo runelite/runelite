@@ -36,7 +36,7 @@ import javax.swing.JPanel;
 /**
  * Client title toolbar component.
  */
-public class ClientTitleToolbar extends JPanel
+class ClientTitleToolbar extends JPanel
 {
 	private static final int TITLEBAR_SIZE = 23;
 	private static final int ITEM_PADDING = 4;
