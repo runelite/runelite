@@ -24,17 +24,15 @@
  */
 package net.runelite.client.plugins.raidsthieving;
 
+import net.runelite.api.Point;
 import net.runelite.client.plugins.raidsthieving.BatSolver.BatSolver;
 import net.runelite.client.plugins.raidsthieving.BatSolver.ThievingRoomType;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import java.util.Arrays;
 import java.util.TreeSet;
-
-import static net.runelite.client.plugins.raidsthieving.BatSolver.Matrix2D.MatrixMultiple2D;
-import static net.runelite.client.plugins.raidsthieving.BatSolver.Matrix2D.Rotate90;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RaidsTheivingTest
@@ -53,11 +51,11 @@ public class RaidsTheivingTest
 		TreeSet<Integer> compareSet1 = new TreeSet<>(Arrays.asList(1, 16, 17, 38, 54, 55));
 		TreeSet<Integer> compareSet2 = new TreeSet<>(Arrays.asList(1, 17, 38, 54));
 
-		assert compare(compareSet1, solver.matchSolutions());
+		Assert.assertTrue(compare(compareSet1, solver.matchSolutions()));
 
 		solver.addGrubsChest(16);
-		assert !compare(compareSet1, solver.matchSolutions());
-		assert compare(compareSet2, solver.matchSolutions());
+		Assert.assertFalse(compare(compareSet1, solver.matchSolutions()));
+		Assert.assertTrue(compare(compareSet2, solver.matchSolutions()));
 	}
 
 	@Test
@@ -70,11 +68,11 @@ public class RaidsTheivingTest
 		TreeSet<Integer> compareSet1 = new TreeSet<>(Arrays.asList(1, 16, 17, 38, 54, 55));
 		TreeSet<Integer> compareSet2 = new TreeSet<>(Arrays.asList(1, 16, 17, 55));
 
-		assert compare(compareSet1, solver.matchSolutions());
+		Assert.assertTrue(compare(compareSet1, solver.matchSolutions()));
 
 		solver.addEmptyChest(16);
-		assert !compare(compareSet1, solver.matchSolutions());
-		assert compare(compareSet2, solver.matchSolutions());
+		Assert.assertFalse(compare(compareSet1, solver.matchSolutions()));
+		Assert.assertTrue(compare(compareSet2, solver.matchSolutions()));
 	}
 
 
@@ -87,10 +85,10 @@ public class RaidsTheivingTest
 
 		TreeSet<Integer> compareSet1 = new TreeSet<>(Arrays.asList(1, 16, 17, 38, 54, 55));
 
-		assert compare(compareSet1, solver.matchSolutions());
+		Assert.assertTrue(compare(compareSet1, solver.matchSolutions()));
 
-		solver.addEmptyChest(17);
-		assert compare(compareSet1, solver.matchSolutions());
+		solver.addGrubsChest(17);
+		Assert.assertFalse(compare(compareSet1, solver.matchSolutions()));
 	}
 
 	@Test
@@ -103,11 +101,11 @@ public class RaidsTheivingTest
 		TreeSet<Integer> compareSet1 = new TreeSet<>(Arrays.asList(6, 10, 20, 25, 26, 30, 32, 34, 52, 59));
 		TreeSet<Integer> compareSet2 = new TreeSet<>(Arrays.asList(10, 30, 32, 59));
 
-		assert compare(compareSet1, solver.matchSolutions());
+		Assert.assertTrue(compare(compareSet1, solver.matchSolutions()));
 
 		solver.addEmptyChest(30);
-		assert !compare(compareSet1, solver.matchSolutions());
-		assert compare(compareSet2, solver.matchSolutions());
+		Assert.assertFalse(compare(compareSet1, solver.matchSolutions()));
+		Assert.assertTrue(compare(compareSet2, solver.matchSolutions()));
 	}
 
 	@Test
@@ -120,11 +118,11 @@ public class RaidsTheivingTest
 		TreeSet<Integer> compareSet1 = new TreeSet<>(Arrays.asList(61, 22, 29, 38, 56, 70));
 		TreeSet<Integer> compareSet2 = new TreeSet<>(Arrays.asList(61, 29, 22, 56));
 
-		assert compare(compareSet1, solver.matchSolutions());
+		Assert.assertTrue(compare(compareSet1, solver.matchSolutions()));
 
 		solver.addEmptyChest(29);
-		assert !compare(compareSet1, solver.matchSolutions());
-		assert compare(compareSet2, solver.matchSolutions());
+		Assert.assertFalse(compare(compareSet1, solver.matchSolutions()));
+		Assert.assertTrue(compare(compareSet2, solver.matchSolutions()));
 	}
 
 
@@ -138,11 +136,11 @@ public class RaidsTheivingTest
 		TreeSet<Integer> compareSet1 = new TreeSet<>(Arrays.asList(25, 55, 46, 13, 30, 22, 31));
 		TreeSet<Integer> compareSet2 = new TreeSet<>(Arrays.asList(25, 30, 13, 31));
 
-		assert compare(compareSet1, solver.matchSolutions());
+		Assert.assertTrue(compare(compareSet1, solver.matchSolutions()));
 
 		solver.addEmptyChest(30);
-		assert !compare(compareSet1, solver.matchSolutions());
-		assert compare(compareSet2, solver.matchSolutions());
+		Assert.assertFalse(compare(compareSet1, solver.matchSolutions()));
+		Assert.assertTrue(compare(compareSet2, solver.matchSolutions()));
 	}
 
 
@@ -151,11 +149,12 @@ public class RaidsTheivingTest
 	{
 		BatSolver solver = new BatSolver(ThievingRoomType.STRAIGHT);
 		TreeSet<Integer> matches = solver.matchSolutions();
-		assert matches.size() == 0;
+
+		Assert.assertEquals(0, matches.size());
 		solver.addEmptyChest(1);
-		assert solver.matchSolutions().size() != 0;
+		Assert.assertNotEquals(0, solver.matchSolutions().size());
 		solver.addEmptyChest(2);
-		assert solver.matchSolutions().size() == 0;
+		Assert.assertEquals(0, solver.matchSolutions().size());
 	}
 
 
@@ -163,46 +162,68 @@ public class RaidsTheivingTest
 	public void testChestChance()
 	{
 		BatSolver solver = new BatSolver(ThievingRoomType.STRAIGHT);
-		assert solver.relativeLikelihoodPoison(1) < 0.20;
-		assert solver.relativeLikelihoodPoison(25) < 0.9;
-		assert solver.relativeLikelihoodPoison(34) > 0.99;
+		Assert.assertTrue(solver.relativeLikelihoodPoison(1) < 0.20);
+		Assert.assertTrue(solver.relativeLikelihoodPoison(25) < 0.9);
+		Assert.assertTrue(solver.relativeLikelihoodPoison(34) > 0.99);
 		solver = new BatSolver(ThievingRoomType.LEFT_TURN);
-		assert solver.relativeLikelihoodPoison(11) < 0.10;
-		assert solver.relativeLikelihoodPoison(1) < 0.6;
-		assert solver.relativeLikelihoodPoison(13) < 0.99 && solver.relativeLikelihoodPoison(13) > 0.92;
-		assert solver.relativeLikelihoodPoison(45) > 0.99;
+		Assert.assertTrue(solver.relativeLikelihoodPoison(11) < 0.10);
+		Assert.assertTrue(solver.relativeLikelihoodPoison(1) < 0.6);
+		Assert.assertTrue(solver.relativeLikelihoodPoison(13) < 0.99 && solver.relativeLikelihoodPoison(13) > 0.92);
+		Assert.assertTrue(solver.relativeLikelihoodPoison(45) > 0.99);
 	}
 
+	@Test
+	public void testInstancePoint()
+	{
+
+		Point[] bases = {
+			new Point(9896, 9640),
+			new Point(8744, 10792),
+			new Point(9704, 10600),
+			new Point(12008, 10792)
+		};
+
+		Point[] tiles = {
+			new Point(9939, 9684),
+			new Point(8788, 10836),
+			new Point(9748, 10643),
+			new Point(12051, 10835)
+		};
+
+		Point origin = new Point(0, 0);
+
+		for (int i = 0; i < 4; i++) {
+			InstancePoint point = InstancePoint.buildFromTile(bases[i], tiles[i], i, origin);
+			Assert.assertEquals(3, point.getX());
+			Assert.assertEquals(4, point.getY());
+		}
+	}
 
 	@Test
-	public void testLinearAlgebra()
+	public void testInstancePointFar()
 	{
-		int[][] rotMatrix = {{0, -1}, {1, 0}};
-		int[][] rot180MatrixCheck = {{-1, 0}, {0, -1}};
-		int[][] vector = {{-1}, {-1}};
-		int[][] rot180Matrix = MatrixMultiple2D(rotMatrix, rotMatrix);
 
-		for (int i = 0; i < 2; i++)
-		{
-			for (int j = 0; j < 2; j++)
-			{
-				assert rot180Matrix[i][j] == rot180MatrixCheck[i][j];
-			}
+		Point[] bases = {
+			new Point(7016, 2728),
+			new Point(7784, 3304),
+			new Point(9128, 3496),
+			new Point(9704, 3688)
+		};
+
+		Point[] tiles = {
+			new Point(7071, 2783),
+			new Point(7839, 3352),
+			new Point(9176, 3544),
+			new Point(9752, 3743)
+		};
+
+		Point origin = new Point(0, 0);
+
+		for (int i = 0; i < 4; i++) {
+			InstancePoint point = InstancePoint.buildFromTile(bases[i], tiles[i], i, origin);
+			Assert.assertEquals(7, point.getX());
+			Assert.assertEquals(7, point.getY());
 		}
-		rot180Matrix = Rotate90(rotMatrix);
-
-		for (int i = 0; i < 2; i++)
-		{
-			for (int j = 0; j < 2; j++)
-			{
-				assert rot180Matrix[i][j] == rot180MatrixCheck[i][j];
-			}
-		}
-
-		int[][] rotVector = MatrixMultiple2D(rotMatrix, vector);
-
-		assert rotVector[0][0] == 1;
-		assert rotVector[1][0] == -1;
 	}
 
 }
