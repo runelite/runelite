@@ -126,6 +126,7 @@ public class ClientUI
 	private PluginPanel pluginPanel;
 	private ClientPluginToolbar pluginToolbar;
 	private ClientTitleToolbar titleToolbar;
+	private JComponent titleBar;
 	private JButton currentButton;
 	private NavigationButton currentNavButton;
 	private boolean sidebarOpen;
@@ -382,7 +383,7 @@ public class ClientUI
 			{
 				frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
 
-				final JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
+				titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
 				titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
 				titleBar.add(titleToolbar);
 
@@ -877,5 +878,15 @@ public class ClientUI
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
 			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, bounds);
 		}
+	}
+
+	public ContainableFrame getFrame()
+	{
+		return frame;
+	}
+
+	public JComponent getTitleBar()
+	{
+		return titleBar;
 	}
 }
