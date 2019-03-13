@@ -383,9 +383,19 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("teleport", option, target, true);
 			}
 
+			if (config.swapContract() && target.contains("guildmaster jane"))
+			{
+				swap("contract", option, target, true);
+			}
+
 			if (config.swapBank())
 			{
 				swap("bank", option, target, true);
+			}
+
+			if (config.swapApproval())
+			{
+				swap("check-approval", option, target, true);
 			}
 
 			if (config.swapExchange())

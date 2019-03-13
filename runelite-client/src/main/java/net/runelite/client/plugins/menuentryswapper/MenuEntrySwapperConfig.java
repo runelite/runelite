@@ -103,6 +103,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapApproval",
+			name = "Check-Approval",
+			description = "Swap Talk-to with Check-Approval for your Subjects on Miscellania/Etceteria"
+	)
+	default boolean swapApproval()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "claimSlime",
 		name = "Claim Slime",
 		description = "Swap Talk-to with Claim Slime from Morytania diaries"
@@ -150,6 +160,16 @@ public interface MenuEntrySwapperConfig extends Config
 	default FairyRingMode swapFairyRing()
 	{
 		return FairyRingMode.LAST_DESTINATION;
+	}
+
+	@ConfigItem(
+			keyName = "swapContract",
+			name = "Farming Contract",
+			description = "Swaps Talk-to with Contract for Guildmaster Jane"
+	)
+	default boolean swapContract()
+	{
+		return true;
 	}
 
 	@ConfigItem(
