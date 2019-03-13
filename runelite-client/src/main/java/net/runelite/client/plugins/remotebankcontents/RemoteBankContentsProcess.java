@@ -14,92 +14,94 @@ import java.util.LinkedHashMap;
 
 public class RemoteBankContentsProcess
 {
-    private static final int INVENTORY_ITEM_WIDGETID = WidgetInfo.INVENTORY.getPackedId();
-    private LinkedHashMap<Integer, Integer> items = new LinkedHashMap<>();
+	private static final int INVENTORY_ITEM_WIDGETID = WidgetInfo.INVENTORY.getPackedId();
+	private LinkedHashMap<Integer, Integer> items = new LinkedHashMap<>();
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private ItemManager itemManager;
+	@Inject
+	private ItemManager itemManager;
 
-    @Inject
-    private ChatMessageManager chatMessageManager;
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
-    private RemoteBankContentsConfig config;
+	private RemoteBankContentsConfig config;
 
-    @Inject
-    RemoteBankContentsProcess(RemoteBankContentsConfig config, Client client)
-    {
-        this.config = config;
-        this.client = client;
-    }
+	@Inject
+	RemoteBankContentsProcess(RemoteBankContentsConfig config, Client client)
+	{
+		this.config = config;
+		this.client = client;
+	}
 
-    void populateBankItemMap()
-    {
-        ItemContainer bankInventory = client.getItemContainer(InventoryID.BANK);
+	void populateBankItemMap()
+	{
+		ItemContainer bankInventory = client.getItemContainer(InventoryID.BANK);
 
-        if (bankInventory == null)
-        {
-            return;
-        }
+		if (bankInventory == null)
+		{
+			return;
+		}
 
-        items.clear();
+		items.clear();
 
-        for (Item s : bankInventory.getItems())
-        {
-            items.put(s.getId(), s.getQuantity());
-        }
+		for (Item s : bankInventory.getItems())
+		{
+			items.put(s.getId(), s.getQuantity());
+		}
 
-    }
+	}
 
-    public String getName(int id)
-    {
-        return itemManager.getItemComposition(id).getName();
-    }
-
-
-    public int getQuantity(int id)
-    {
-        return items.get(id) != null ? items.get(id) : 0;
-    }
+	public String getName(int id)
+	{
+		return itemManager.getItemComposition(id).getName();
+	}
 
 
-    boolean initialised()
-    {
-        return items.size() > 0;
-    }
-
-    void outputExamine(MenuOptionClicked event)
-    {
-
-        int id = event.getId();
-        final int widgetId = event.getWidgetId();
+	public int getQuantity(int id)
+	{
+		return items.get(id) != null ? items.get(id) : 0;
+	}
 
 
-        if (!event.getMenuOption().equals("Examine"))
-        {
-            return;
-        }
+	boolean initialised()
+	{
+		return items.size() > 0;
+	}
 
-        if (widgetId == INVENTORY_ITEM_WIDGETID)
-        {
+	void outputExamine(MenuOptionClicked event)
+	{
 
-            if (!initialised())
-            {
-
-                chatMessageManager.queue(QueuedMessage.builder()
-                        .type(ChatMessageType.SERVER).runeLiteFormattedMessage("<col" + ChatColorType.HIGHLIGHT + ">" + "Please open your bank to initialise.").build());
-
-            } else
-            {
-                int quantity = getQuantity(id);
-                String name = getName(id);
-
-                final ChatMessageBuilder message = new ChatMessageBuilder();
+		int id = event.getId();
+		final int widgetId = event.getWidgetId();
 
 
-                /*TODO
+		if (!event.getMenuOption().equals("Examine"))
+		{
+			return;
+		}
+
+		if (widgetId == INVENTORY_ITEM_WIDGETID)
+		{
+
+			if (!initialised())
+			{
+
+				chatMessageManager.queue(QueuedMessage.builder()
+						.type(ChatMessageType.SERVER).runeLiteFormattedMessage("<col" + ChatColorType.HIGHLIGHT + ">" + "Please open your bank to initialise.").build());
+
+			}
+			else
+			{
+				int quantity = getQuantity(id);
+				String name = getName(id);
+
+				final ChatMessageBuilder message = new ChatMessageBuilder();
+
+
+				/*
+                    TODO
 
                 Refine message based on quantity and if this necessitates a plural.
 
@@ -113,12 +115,12 @@ public class RemoteBankContentsProcess
                 }
                 */
 
-                message.append("<col" + ChatColorType.HIGHLIGHT + ">" + "You currently have " + quantity + " " + name + " in your bank.");
+				message.append("<col" + ChatColorType.HIGHLIGHT + ">" + "You currently have " + quantity + " " + name + " in your bank.");
 
-                chatMessageManager.queue(QueuedMessage.builder()
-                        .type(ChatMessageType.EXAMINE_ITEM).runeLiteFormattedMessage(message.build()).build());
-            }
-        }
-    }
+				chatMessageManager.queue(QueuedMessage.builder()
+						.type(ChatMessageType.EXAMINE_ITEM).runeLiteFormattedMessage(message.build()).build());
+			}
+		}
+	}
 }
 

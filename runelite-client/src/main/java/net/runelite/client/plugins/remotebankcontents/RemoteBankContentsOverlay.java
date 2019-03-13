@@ -102,7 +102,8 @@ public class RemoteBankContentsOverlay extends Overlay
                         }
 
                         // If it hasn't been populated, tell them to initialise by opening the bank.
-                    } else
+                    }
+                    else
                     {
                         tooltipManager.add(new Tooltip(ColorUtil.prependColorTag("Open bank to initialise", new Color(238, 238, 238))));
                     }
