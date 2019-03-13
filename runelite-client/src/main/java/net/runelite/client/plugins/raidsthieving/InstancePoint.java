@@ -30,7 +30,8 @@ public class InstancePoint
 		this.rot = 0;
 	}
 
-	public static InstancePoint buildFromPoint(WorldPoint worldPoint, Client client) {
+	public static InstancePoint buildFromPoint(WorldPoint worldPoint, Client client)
+	{
 		Point point = new Point(worldPoint.getX(), worldPoint.getY());
 		Point base = new Point(client.getBaseX(), client.getBaseY());
 		int plane = worldPoint.getPlane();

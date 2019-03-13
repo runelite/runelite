@@ -252,7 +252,8 @@ public class RaidsThievingPlugin extends Plugin
 			if (chest.isEmpty() && !chest.isPoison())
 			{
 				batsFound = true;
-				if (config.batFoundNotify()) {
+				if (config.batFoundNotify())
+				{
 					notifier.notify("Bats have been found!");
 				}
 				return true;
@@ -261,7 +262,8 @@ public class RaidsThievingPlugin extends Plugin
 		return false;
 	}
 
-	public int getChestId(WorldPoint worldPoint) {
+	public int getChestId(WorldPoint worldPoint)
+	{
 		return chests.get(worldPoint).getChestId();
 	}
 }

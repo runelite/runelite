@@ -37,7 +37,8 @@ import java.util.TreeSet;
 @RunWith(MockitoJUnitRunner.class)
 public class RaidsTheivingTest
 {
-	private boolean compare(TreeSet<Integer> set1, TreeSet<Integer> set2) {
+	private boolean compare(TreeSet<Integer> set1, TreeSet<Integer> set2)
+	{
 		return set1.containsAll(set2) && set2.containsAll(set1);
 	}
 
@@ -192,7 +193,8 @@ public class RaidsTheivingTest
 
 		Point origin = new Point(0, 0);
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++)
+		{
 			InstancePoint point = InstancePoint.buildFromTile(bases[i], tiles[i], i, origin);
 			Assert.assertEquals(3, point.getX());
 			Assert.assertEquals(4, point.getY());
@@ -219,7 +221,8 @@ public class RaidsTheivingTest
 
 		Point origin = new Point(0, 0);
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++)
+		{
 			InstancePoint point = InstancePoint.buildFromTile(bases[i], tiles[i], i, origin);
 			Assert.assertEquals(7, point.getX());
 			Assert.assertEquals(7, point.getY());

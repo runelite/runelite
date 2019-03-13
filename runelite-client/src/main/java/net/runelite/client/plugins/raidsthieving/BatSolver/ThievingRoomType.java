@@ -44,10 +44,13 @@ public enum ThievingRoomType
 		this.y = y;
 	}
 
-	public static ThievingRoomType IdentifyByInstancePoint(InstancePoint point) {
-		for (ThievingRoomType type : ThievingRoomType.values()) {
+	public static ThievingRoomType IdentifyByInstancePoint(InstancePoint point)
+	{
+		for (ThievingRoomType type : ThievingRoomType.values())
+		{
 			if (Math.abs(type.x - point.getX()) <= 1 &&
-				Math.abs(type.y - point.getY()) <= 1) {
+				Math.abs(type.y - point.getY()) <= 1)
+			{
 				return type;
 			}
 		}
