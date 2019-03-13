@@ -135,7 +135,7 @@ public class WidgetID
 		static final int SEARCH = 24;
 		static final int SURFACE_SELECTOR = 32;
 		static final int TOOLTIP = 38;
-		static final int OPTION = 42;
+		static final int OPTION = 43;
 	}
 
 	static class SlayerRewards
@@ -294,7 +294,7 @@ public class WidgetID
 		static final int TOGGLE_RUN_ORB = 22; // Has the "Toggle run" name
 		static final int RUN_ORB_TEXT = 23;
 		static final int SPEC_ORB = 28;
-		static final int WORLDMAP_ORB = 40;
+		static final int WORLDMAP_ORB = 41;
 	}
 
 	static class LoginClickToPlayScreen
@@ -350,6 +350,7 @@ public class WidgetID
 		static final int ROOT_INTERFACE_CONTAINER = 62;
 		static final int BANK_CONTAINER = 64;
 		static final int INTERFACE_CONTAINER = 65;
+		static final int INVENTORY_CONTAINER = 69;
 	}
 
 	static class ResizableViewport
@@ -383,6 +384,7 @@ public class WidgetID
 		static final int PRAYER_ICON = 63;
 		static final int MAGIC_ICON = 64;
 		static final int INTERFACE_CONTAINER = 65;
+		static final int INVENTORY_CONTAINER = 71;
 	}
 
 	static class ResizableViewportBottomLine
@@ -415,6 +417,7 @@ public class WidgetID
 		static final int MUSIC_TAB = 40;
 		static final int MUSIC_ICON = 46;
 		static final int MAGIC_ICON = 63;
+		static final int INVENTORY_CONTAINER = 71;
 	}
 
 	static class Chatbox
@@ -570,7 +573,7 @@ public class WidgetID
 
 	static class Raids
 	{
-		static final int POINTS_INFOBOX = 3;
+		static final int POINTS_INFOBOX = 6;
 	}
 	
 	static class ExperienceDrop

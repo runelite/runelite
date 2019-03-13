@@ -61,6 +61,12 @@
       "xp": 6.3
     },
     {
+      "level": 21,
+      "icon": 6472,
+      "name": "Compost Potion (3)",
+      "xp": 60
+    },
+    {
       "level": 22,
       "icon": 127,
       "name": "Restore Potion (3)",
@@ -281,6 +287,18 @@
       "icon": 5954,
       "name": "Antidote++ (3)",
       "xp": 177.5
+    },
+    {
+      "level": 80,
+      "icon": 22464,
+      "name": "Bastion Potion (3)",
+      "xp": 155
+    },
+    {
+      "level": 80,
+      "icon": 22452,
+      "name": "Battlemage Potion (3)",
+      "xp": 155
     },
     {
       "level": 81,

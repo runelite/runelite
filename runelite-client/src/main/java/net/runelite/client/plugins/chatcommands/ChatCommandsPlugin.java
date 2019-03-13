@@ -366,6 +366,11 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
+		if (message.length() <= KILLCOUNT_COMMAND_STRING.length())
+		{
+			return;
+		}
+
 		ChatMessageType type = chatMessage.getType();
 		String search = message.substring(KILLCOUNT_COMMAND_STRING.length() + 1);
 
@@ -483,6 +488,11 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
+		if (message.length() <= PB_COMMAND.length())
+		{
+			return;
+		}
+
 		ChatMessageType type = chatMessage.getType();
 		String search = message.substring(PB_COMMAND.length() + 1);
 
@@ -574,6 +584,11 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
+		if (message.length() <= PRICE_COMMAND_STRING.length())
+		{
+			return;
+		}
+
 		MessageNode messageNode = chatMessage.getMessageNode();
 		String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
 
@@ -637,6 +652,11 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
+			if (message.length() <= LEVEL_COMMAND_STRING.length())
+			{
+				return;
+			}
+
 			search = message.substring(LEVEL_COMMAND_STRING.length() + 1);
 		}
 
