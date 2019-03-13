@@ -53,12 +53,12 @@ public class ThievingChest
 	@Setter
 	private boolean poison;
 
-	private WorldPoint localPoint;
-
-	private InstancePoint instancePoint;
 
 	@Setter
 	private int chestId;
+
+	private final WorldPoint localPoint;
+	private final InstancePoint instancePoint;
 
 	/**
 	 * Constructor for a ThievingChest object

@@ -35,9 +35,9 @@ import static net.runelite.client.plugins.raidsthieving.BatSolver.SolutionSet.SO
 public class BatSolver
 {
 	private Map<Integer, Integer> numberOfSolutionsWithPoison;
-	private SolutionSet solution;
+	private final SolutionSet solution;
 
-	private HashSet<Integer> grubsChests;
+	private final HashSet<Integer> grubsChests;
 
 	public BatSolver(ThievingRoomType roomType)
 	{
