@@ -121,14 +121,14 @@ public class WindowSnapPlugin extends Plugin
 			snapLeft();
 		else if (keyEvent == KeyEvent.VK_RIGHT)
 			snapRight();
+		else if (keyEvent == KeyEvent.VK_DOWN)
+			frame.setExtendedState(JFrame.ICONIFIED);
 	}
 
 	public void snapLeft()
 	{
 		int width = windowSnapConfig.enableCustomSize() ? windowSnapConfig.customWidth() : screenWidth / 2;
-		int height = windowSnapConfig.enableCustomSize() ? windowSnapConfig.customHeight() : screenHeight;
-		int y = windowSnapConfig.enableCustomSize() ? frame.getY() : 0;
-		frame.setBounds(0, y, width, height);
+		frame.setBounds(0, 0, width, screenHeight);
 	}
 
 	public void snapUpperLeft()
@@ -148,9 +148,7 @@ public class WindowSnapPlugin extends Plugin
 	public void snapRight()
 	{
 		int width = windowSnapConfig.enableCustomSize() ? windowSnapConfig.customWidth() : screenWidth / 2;
-		int height = windowSnapConfig.enableCustomSize() ? windowSnapConfig.customHeight() : screenHeight;
-		int y = windowSnapConfig.enableCustomSize() ? frame.getY() : 0;
-		frame.setBounds(screenWidth - width, y, width, height);
+		frame.setBounds(screenWidth - width, 0, width, screenHeight);
 	}
 
 	public void snapUpperRight()
@@ -169,13 +167,6 @@ public class WindowSnapPlugin extends Plugin
 
 	public void snapFull()
 	{
-		if (windowSnapConfig.enableCustomSize())
-		{
-			frame.setBounds(frame.getX(), 0, windowSnapConfig.customWidth(), windowSnapConfig.customHeight());
-		}
-		else
-		{
-			frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-		}
+		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 	}
 }
