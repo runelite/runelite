@@ -137,16 +137,16 @@ public class ChestOverlay extends Overlay
 	 */
 	private void drawCircleOnTrap(Graphics2D graphics, ThievingChest chest, Color fill)
 	{
-		if (chest.getWorldLocation().getPlane() != client.getPlane())
+		if (chest.getLocalPoint().getPlane() != client.getPlane())
 		{
 			return;
 		}
-		LocalPoint localLoc = LocalPoint.fromWorld(client, chest.getWorldLocation());
+		LocalPoint localLoc = LocalPoint.fromWorld(client, chest.getLocalPoint());
 		if (localLoc == null)
 		{
 			return;
 		}
-		Point loc = Perspective.localToCanvas(client, localLoc, chest.getWorldLocation().getPlane());
+		Point loc = Perspective.localToCanvas(client, localLoc, chest.getLocalPoint().getPlane());
 
 		ProgressPieComponent pie = new ProgressPieComponent();
 		pie.setFill(fill);

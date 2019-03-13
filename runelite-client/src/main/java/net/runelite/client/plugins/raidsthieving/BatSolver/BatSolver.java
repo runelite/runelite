@@ -108,7 +108,7 @@ public class BatSolver
 
 	public void calculateChanceOfPoison()
 	{
-		if (getType() == null || getType() == ThievingRoomType.UNKNOWN)
+		if (getType() == null)
 		{
 			numberOfSolutionsWithPoison = null;
 			return;

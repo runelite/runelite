@@ -31,7 +31,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.Varbits;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
@@ -46,14 +45,11 @@ import net.runelite.client.plugins.raidsthieving.BatSolver.BatSolver;
 import net.runelite.client.plugins.raidsthieving.BatSolver.ChestIdentifier;
 import net.runelite.client.plugins.raidsthieving.BatSolver.ThievingRoomType;
 import net.runelite.client.ui.overlay.OverlayManager;
-import org.apache.commons.lang3.ArrayUtils;
 import javax.inject.Inject;
 import java.text.MessageFormat;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import static net.runelite.client.plugins.raidsthieving.BatSolver.Matrix2D.MatrixMultiple2D;
-import static net.runelite.client.plugins.raidsthieving.BatSolver.Matrix2D.Rotate90;
 
 @Slf4j
 @PluginDescriptor(
@@ -93,9 +89,8 @@ public class RaidsThievingPlugin extends Plugin
 	private BatSolver solver;
 
 	@Getter
-	private ChestIdentifier identifier;
+	private ChestIdentifier mapper;
 
-	private WorldPoint thievingStorageLocation = null;
 
 	@Provides
 	RaidsThievingConfig provideConfig(ConfigManager configManager)
@@ -119,114 +114,100 @@ public class RaidsThievingPlugin extends Plugin
 		chests.clear();
 	}
 
-	private int getNumberOfChestsNearStorage(double maxDistance)
-	{
-		int number = 0;
-		for (WorldPoint point : chests.keySet())
-		{
-			if (Math.abs(point.getX() - thievingStorageLocation.getX()) < maxDistance &&
-				Math.abs(point.getY() - thievingStorageLocation.getY()) < maxDistance)
-			{
-				number++;
-			}
-		}
-		return number;
-	}
-
-	private boolean isStorageChestInThievingRoom(GameObject storageChest, WorldPoint location)
-	{
-
-		for (WorldPoint point : chests.keySet())
-		{
-			double distance = Math.pow((point.getX() - location.getX()), 2) +
-				Math.pow((point.getY() - location.getY()), 2);
-			if (distance < 5)
-			{
-				return true;
-			}
-
-		}
-
-		return false;
-	}
 
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject obj = event.getGameObject();
 		WorldPoint loc = obj.getWorldLocation();
-		if (ArrayUtils.indexOf(RaidsThievingConstants.STORAGE, obj.getId()) != -1 && thievingStorageLocation == null)
+		InstancePoint absLoc = InstancePoint.buildFromPoint(loc, client);
+
+		if (obj.getId() == RaidsThievingConstants.EMPTY_TROUGH) {
+			log.debug(MessageFormat.format("Found trough at: {0} {1} {2} {3} {4}",
+				loc.getX(), loc.getY(), absLoc.getX(), absLoc.getY(), absLoc.getRot()));
+		}
+
+		if (obj.getId() == RaidsThievingConstants.CLOSED_CHEST_ID) {
+			log.debug(MessageFormat.format("Found chest at: {0} {1} {2} {3} {4}",
+				loc.getX(), loc.getY(), absLoc.getX(), absLoc.getY(), absLoc.getRot()));
+		}
+
+		if (obj.getId() == RaidsThievingConstants.EMPTY_TROUGH)
 		{
-			// Found a storage chest possibly
-			LocalPoint storageChestLocation = event.getTile().getLocalLocation();
-			log.debug(MessageFormat.format("Found storage chest at {0},{1}", storageChestLocation.getX(), storageChestLocation.getY()));
-			if (chests.keySet().size() > 0 && isStorageChestInThievingRoom(obj, loc))
+			ThievingRoomType type = ThievingRoomType.IdentifyByInstancePoint(absLoc);
+
+
+			if (type != null)
 			{
-				log.debug("found thieving room chest");
-				thievingStorageLocation = loc;
+				if (type == ThievingRoomType.RIGHT_TURN)
+				{
+					log.debug("Identified right turn");
+				}
+				else if (type == ThievingRoomType.LEFT_TURN)
+				{
+					log.debug("Identified left turn");
+				}
+
+				solver = new BatSolver(type);
+				mapper = new ChestIdentifier(type);
+				for (ThievingChest chest : chests.values())
+				{
+					mapper.indentifyChest(chest);
+				}
 			}
 			else
 			{
-				log.debug("But it wasn't for thieving...");
+				log.error(MessageFormat.format("Unable to identify room type with: {0} {1} {2} {3} {4}.",
+					loc.getX(), loc.getY(), absLoc.getX(), absLoc.getY(), absLoc.getRot()));
+				log.error("Please report this @https://github.com/runelite/runelite/pull/4914!");
 			}
-
 		}
-		switch (obj.getId())
+		if (obj.getId() == RaidsThievingConstants.CLOSED_CHEST_ID)
 		{
+			if (!chests.containsKey(loc))
+			{
+				ThievingChest chest = new ThievingChest(obj, absLoc);
 
-			case RaidsThievingConstants.EMPTY_TROUGH:
-				// Found an empty trough
-				if (solver == null || identifier == null)
+				if (mapper != null)
 				{
-					// Initialise the BatSolver
-					WorldPoint chestLoc = findChestNearTrough(obj.getLocalLocation());
-					if (chestLoc != null)
-					{
-						ThievingRoomType roomType = determineRoom();
-						int[][] roomRotation = determineRoomRotation(roomType);
-						log.debug(MessageFormat.format("Room is {0}", roomType));
-						identifier = new ChestIdentifier(roomType, roomRotation);
-						solver = new BatSolver(roomType);
-					}
+					mapper.indentifyChest(chest);
 				}
-				break;
 
-			case RaidsThievingConstants.CLOSED_CHEST_ID:
-				if (!chests.containsKey(loc))
-				{
-					log.debug(MessageFormat.format("Found a new chest at {0}, {1}",
-						event.getTile().getLocalLocation().getX(), event.getTile().getLocalLocation().getY()));
-					chests.put(loc, new ThievingChest(obj));
-				}
-				else
-				{
-					// A chest that had been opened just closed
-					// If there is still a chest marked empty and without poison, it had the bats
-					checkForBats();
-				}
-				break;
+				chests.put(loc, chest);
+			}
+			else
+			{
+				checkForBats();
+			}
+		}
 
-			case RaidsThievingConstants.OPEN_EMPTY_CHEST:
-				log.debug(MessageFormat.format("Found empty chest with Bats or Poison at {0}, {1}",
-					event.getTile().getLocalLocation().getX(), event.getTile().getLocalLocation().getY()));
-				chests.get(loc).setEverOpened(true);
-				chests.get(loc).setEmpty(true);
-				solver.addEmptyChest(getChestId(loc));
-				break;
-			case RaidsThievingConstants.OPEN_FULL_CHEST_1:
-			case RaidsThievingConstants.OPEN_FULL_CHEST_2:
-				log.debug(MessageFormat.format("Found full chest at {0}, {1}",
-					event.getTile().getLocalLocation().getX(), event.getTile().getLocalLocation().getY()));
-				chests.get(loc).setEverOpened(true);
-				if (solver != null)
-				{
-					solver.addGrubsChest(getChestId(loc));
-				}
-				break;
+		if (obj.getId() == RaidsThievingConstants.OPEN_FULL_CHEST_1 ||
+			obj.getId() == RaidsThievingConstants.OPEN_FULL_CHEST_2)
+		{
+			ThievingChest chest = chests.get(obj.getWorldLocation());
+			// We found a chest that has grubs
+			log.info(MessageFormat.format("Found grubs at {0}, {1} chestId: {2}", loc.getX(), loc.getY(), chest.getChestId()));
+			if (solver != null && chest.getChestId() != -1)
+			{
+				chest.setEverOpened(true);
+				solver.addGrubsChest(chest.getChestId());
+			}
+			checkForBats();
+		}
 
-
+		if (obj.getId() == RaidsThievingConstants.OPEN_EMPTY_CHEST)
+		{
+			ThievingChest chest = chests.get(obj.getWorldLocation());
+			// We found a chest that could have poison
+			if (solver != null && chest.getChestId() != -1)
+			{
+				chest.setEmpty(true);
+				chest.setEverOpened(true);
+				solver.addEmptyChest(chest.getChestId());
+			}
 		}
 	}
+
 
 	@Subscribe
 	public void onGraphicsObjectCreated(GraphicsObjectCreated event)
@@ -267,128 +248,41 @@ public class RaidsThievingPlugin extends Plugin
 		chests.clear();
 		batsFound = false;
 		solver = null;
-		identifier = null;
-		thievingStorageLocation = null;
-	}
-
-	private void checkForBats()
-	{
-		for (Map.Entry<WorldPoint, ThievingChest> entry : getChests().entrySet())
-		{
-			ThievingChest chest = entry.getValue();
-			if (chest != null)
-			{
-				if (chest.isEmpty() && !chest.isPoison())
-				{
-					log.debug("Found bats!");
-					batsFound = true;
-					if (config.batFoundNotify())
-					{
-						notifier.notify("Bats have been found!");
-					}
-				}
-			}
-		}
-	}
-
-	private WorldPoint findChestNearTrough(LocalPoint point)
-	{
-		return thievingStorageLocation;
-	}
-
-	private ThievingRoomType determineRoom()
-	{
-
-		if (getNumberOfChestsNearStorage(2) == 0)
-		{
-			return ThievingRoomType.STRAIGHT;
-		}
-
-		int numberChests = getNumberOfChestsNearStorage(4);
-		log.debug(MessageFormat.format("Found {0} chests near storage", numberChests));
-
-		if (numberChests == 2)
-		{
-			return ThievingRoomType.LEFT_TURN;
-		}
-
-		if (numberChests == 4)
-		{
-			return ThievingRoomType.RIGHT_TURN;
-		}
-
-		log.debug("Couldn't determine which room...");
-		log.error(MessageFormat.format("Number of chests: {0}", numberChests));
-		return ThievingRoomType.UNKNOWN;
-	}
-
-	private int[][] determineRoomRotation(ThievingRoomType roomType)
-	{
-		int[][] currentRot = {{1, 0}, {0, 1}};
-		int[][] expectedLoc = {{0}, {0}};
-		switch (roomType)
-		{
-			case LEFT_TURN:
-			case RIGHT_TURN:
-				expectedLoc[0][0] = -1;
-				expectedLoc[1][0] = -1;
-				break;
-			case STRAIGHT:
-				expectedLoc[0][0] = 0;
-				expectedLoc[1][0] = -2;
-				break;
-			case UNKNOWN:
-				log.error("Couldn't determine thieving room rotation, please report with screenshot of thieving room zoomed out Camera North");
-				break;
-		}
-		int[][] testLoc;
-
-		for (int i = 0; i < 4; i++)
-		{
-			testLoc = MatrixMultiple2D(currentRot, expectedLoc);
-
-			WorldPoint point = new WorldPoint(thievingStorageLocation.getX() + testLoc[0][0],
-				thievingStorageLocation.getY() + testLoc[1][0],
-				thievingStorageLocation.getPlane());
-
-			if (chests.containsKey(point))
-			{
-				return currentRot;
-			}
-			currentRot = Rotate90(currentRot);
-		}
-		return new int[][]{{1, 1}, {1, 1}};
+		mapper = null;
 	}
 
 	public int numberOfEmptyChestsFound()
 	{
-		int emptyFound = 0;
-		for (ThievingChest chest : getChests().values())
+		int total = 0;
+		for (ThievingChest chest : chests.values())
 		{
-			if (chest.isEmpty() || chest.isPoison())
+			if (chest.isEmpty())
 			{
-				emptyFound++;
+				total++;
 			}
 		}
-		return emptyFound;
+		return total;
 	}
 
-	private int[] getDeltaFromStorage(WorldPoint pos)
-	{
-		int dx = pos.getX() - thievingStorageLocation.getX();
-		int dy = pos.getY() - thievingStorageLocation.getY();
-		return new int[]{dx, dy};
-	}
 
-	public int getChestId(WorldPoint pos)
+	private boolean checkForBats()
 	{
-		if (thievingStorageLocation != null)
+		for (ThievingChest chest : chests.values())
 		{
-			int[] delta = getDeltaFromStorage(pos);
-			return identifier.findChestId(delta[0], delta[1]);
+			if (chest.isEmpty() && !chest.isPoison())
+			{
+				batsFound = true;
+				if (config.batFoundNotify()) {
+					notifier.notify("Bats have been found!");
+				}
+				return true;
+			}
 		}
-		return -1;
+		return false;
 	}
 
+	public int getChestId(WorldPoint worldPoint) {
+		return chests.get(worldPoint).getChestId();
+	}
 }
 

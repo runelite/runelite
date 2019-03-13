@@ -25,9 +25,9 @@
 package net.runelite.client.plugins.raidsthieving.BatSolver;
 
 import lombok.Getter;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 // Each Thieving room has 4 empty chests
 // User-reported data shows these 4 come in groups,
@@ -138,13 +138,13 @@ public class SolutionSet
 	SolutionSet(ThievingRoomType type)
 	{
 		this.type = type;
-		emptyChests = new ArrayList<>();
+		emptyChests = new HashSet<>();
 	}
 
 	private SolutionSet(ThievingRoomType type, Integer... emptyChests)
 	{
 		this.type = type;
-		this.emptyChests = Arrays.asList(emptyChests);
+		this.emptyChests = new HashSet<>(Arrays.asList(emptyChests));
 	}
 
 	public void addEmptyChest(int chestId)
@@ -154,19 +154,12 @@ public class SolutionSet
 
 	public boolean containsChest(int chestId)
 	{
-		for (Integer compareId : emptyChests)
-		{
-			if (chestId == compareId)
-			{
-				return true;
-			}
-		}
-		return false;
+		return emptyChests.contains(chestId);
 	}
 
 	@Getter
 	private ThievingRoomType type;
 
 	@Getter
-	private List<Integer> emptyChests;
+	private Set<Integer> emptyChests;
 }

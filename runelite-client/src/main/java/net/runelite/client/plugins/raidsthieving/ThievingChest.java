@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tim Lehner <Timothy.Lehner.2011@live.rhul.ac.uk>
+ * Copyright (c) 2019, Tim Lehner <Timothy.Lehner.2011@live.rhul.ac.uk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,52 +32,47 @@ import net.runelite.api.coords.WorldPoint;
 /**
  * Wrapper class for a GameObject that represents a chest in the thieving room of Chambers of Xeric.
  */
-class ThievingChest
+@Getter
+public class ThievingChest
 {
 	/**
 	 * If the chest has never been opened, it could have bats.
 	 */
-	@Getter
 	@Setter
 	private boolean everOpened;
 
 	/**
 	 * If the chest is empty, it could have bats.
 	 */
-	@Getter
 	@Setter
 	private boolean empty;
 
 	/**
 	 * If the chest contains a poison trap instead.
 	 */
-	@Getter
 	@Setter
 	private boolean poison;
 
+	private WorldPoint localPoint;
 
-	/**
-	 * The ID of the game object this is representing
-	 */
-	@Getter
-	private int objectId;
+	private InstancePoint instancePoint;
 
-	@Getter
-	private WorldPoint worldLocation;
-
+	@Setter
+	private int chestId;
 
 	/**
 	 * Constructor for a ThievingChest object
 	 *
 	 * @param gameObject The gameobject thats corresponds with this trap.
 	 */
-	ThievingChest(GameObject gameObject)
+	ThievingChest(GameObject gameObject, InstancePoint instancePoint)
 	{
 		this.everOpened = false;
 		this.poison = false;
 		this.empty = false;
-		this.objectId = gameObject.getId();
-		this.worldLocation = gameObject.getWorldLocation();
+		localPoint = gameObject.getWorldLocation();
+		this.instancePoint = instancePoint;
+		this.chestId = -1;
 	}
 
 }
