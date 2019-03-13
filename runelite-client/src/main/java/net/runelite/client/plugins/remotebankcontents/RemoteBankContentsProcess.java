@@ -12,11 +12,9 @@ import net.runelite.client.game.ItemManager;
 import javax.inject.Inject;
 import java.util.LinkedHashMap;
 
-public class RemoteBankContentsProcess {
-
-
+public class RemoteBankContentsProcess
+{
     private static final int INVENTORY_ITEM_WIDGETID = WidgetInfo.INVENTORY.getPackedId();
-
     private LinkedHashMap<Integer, Integer> items = new LinkedHashMap<>();
 
     @Inject
@@ -31,58 +29,70 @@ public class RemoteBankContentsProcess {
     private RemoteBankContentsConfig config;
 
     @Inject
-    RemoteBankContentsProcess(RemoteBankContentsConfig config, Client client) {
+    RemoteBankContentsProcess(RemoteBankContentsConfig config, Client client)
+    {
         this.config = config;
         this.client = client;
     }
 
-    void populateBankItemMap() {
+    void populateBankItemMap()
+    {
         ItemContainer bankInventory = client.getItemContainer(InventoryID.BANK);
 
-        if (bankInventory == null) {
+        if (bankInventory == null)
+        {
             return;
         }
 
         items.clear();
 
-        for (Item s : bankInventory.getItems()) {
+        for (Item s : bankInventory.getItems())
+        {
             items.put(s.getId(), s.getQuantity());
         }
 
     }
 
-    public String getName(int id) {
+    public String getName(int id)
+    {
         return itemManager.getItemComposition(id).getName();
     }
 
 
-    public int getQuantity(int id) {
+    public int getQuantity(int id)
+    {
         return items.get(id) != null ? items.get(id) : 0;
     }
 
 
-    boolean initialised() {
+    boolean initialised()
+    {
         return items.size() > 0;
     }
 
-    void outputExamine(MenuOptionClicked event) {
+    void outputExamine(MenuOptionClicked event)
+    {
 
         int id = event.getId();
         final int widgetId = event.getWidgetId();
 
 
-        if (!event.getMenuOption().equals("Examine")) {
+        if (!event.getMenuOption().equals("Examine"))
+        {
             return;
         }
 
-        if (widgetId == INVENTORY_ITEM_WIDGETID) {
+        if (widgetId == INVENTORY_ITEM_WIDGETID)
+        {
 
-            if (!initialised()) {
+            if (!initialised())
+            {
 
                 chatMessageManager.queue(QueuedMessage.builder()
                         .type(ChatMessageType.SERVER).runeLiteFormattedMessage("<col" + ChatColorType.HIGHLIGHT + ">" + "Please open your bank to initialise.").build());
 
-            } else {
+            } else
+            {
                 int quantity = getQuantity(id);
                 String name = getName(id);
 

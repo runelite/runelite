@@ -12,7 +12,8 @@ import net.runelite.client.util.ColorUtil;
 import javax.inject.Inject;
 import java.awt.*;
 
-public class RemoteBankContentsOverlay extends Overlay {
+public class RemoteBankContentsOverlay extends Overlay
+{
 
     //Inventory widget id
     private static final int INVENTORY_ITEM_WIDGETID = WidgetInfo.INVENTORY.getPackedId();
@@ -26,24 +27,28 @@ public class RemoteBankContentsOverlay extends Overlay {
 
 
     @Inject
-    RemoteBankContentsOverlay(Client client, TooltipManager tooltipManager) {
+    RemoteBankContentsOverlay(Client client, TooltipManager tooltipManager)
+    {
         setPosition(OverlayPosition.DYNAMIC);
         this.client = client;
         this.tooltipManager = tooltipManager;
     }
 
-    void setRemoteBankContentsProcess(RemoteBankContentsProcess remoteBankContentsProcess) {
+    void setRemoteBankContentsProcess(RemoteBankContentsProcess remoteBankContentsProcess)
+    {
         this.remoteBankContentsProcess = remoteBankContentsProcess;
     }
 
 
     @Override
-    public Dimension render(Graphics2D graphics) {
+    public Dimension render(Graphics2D graphics)
+    {
 
         //A lot of this code in this method is based on the code from the ItemOverlay plugin. Credit goes to the author of that.
 
         //Hide if the right click menu is open
-        if (client.isMenuOpen()) {
+        if (client.isMenuOpen())
+        {
             return null;
         }
 
@@ -51,8 +56,10 @@ public class RemoteBankContentsOverlay extends Overlay {
         final MenuEntry[] menuEntries = client.getMenuEntries();
         final int last = menuEntries.length - 1;
 
-        if (last < 0) {
+        if (last < 0)
+        {
             return null;
+
         }
 
         final MenuEntry menuEntry = menuEntries[last];
@@ -61,7 +68,8 @@ public class RemoteBankContentsOverlay extends Overlay {
         final int groupId = WidgetInfo.TO_GROUP(widgetId);
 
         // Tooltip action type handling
-        switch (action) {
+        switch (action)
+        {
             case WIDGET_DEFAULT:
             case ITEM_USE:
             case ITEM_FIRST_OPTION:
@@ -70,9 +78,11 @@ public class RemoteBankContentsOverlay extends Overlay {
             case ITEM_FOURTH_OPTION:
             case ITEM_FIFTH_OPTION:
                 // Item tooltip values
-                if (groupId == WidgetID.INVENTORY_GROUP_ID) {
+                if (groupId == WidgetID.INVENTORY_GROUP_ID)
+                {
 
-                    if (!config.overlay()) {
+                    if (!config.overlay())
+                    {
                         return null;
                     }
 
@@ -82,15 +92,18 @@ public class RemoteBankContentsOverlay extends Overlay {
 
 
                     //If the hashmap has been populated at least once before.
-                    if (remoteBankContentsProcess.initialised()) {
+                    if (remoteBankContentsProcess.initialised())
+                    {
 
                         //Is text always null here? Keep this as a failsafe.
-                        if (text != null) {
+                        if (text != null)
+                        {
                             tooltipManager.add(new Tooltip(ColorUtil.prependColorTag(text, new Color(238, 238, 238))));
                         }
 
                         // If it hasn't been populated, tell them to initialise by opening the bank.
-                    } else {
+                    } else
+                    {
                         tooltipManager.add(new Tooltip(ColorUtil.prependColorTag("Open bank to initialise", new Color(238, 238, 238))));
                     }
                 }
@@ -108,18 +121,21 @@ public class RemoteBankContentsOverlay extends Overlay {
      * @param menuEntry - Pass a menu entry
      * @return The id of the item with the passed menu entry
      */
-    private int getItemID(MenuEntry menuEntry) {
+    private int getItemID(MenuEntry menuEntry)
+    {
 
         final int widgetId = menuEntry.getParam1();
         ItemContainer container = null;
 
         // Inventory item
-        if (widgetId == INVENTORY_ITEM_WIDGETID) {
+        if (widgetId == INVENTORY_ITEM_WIDGETID)
+        {
             container = client.getItemContainer(InventoryID.INVENTORY);
         }
 
         //If inventory is not open (somehow)
-        if (container == null) {
+        if (container == null)
+        {
             return -1;
         }
 
@@ -127,7 +143,8 @@ public class RemoteBankContentsOverlay extends Overlay {
         final Item[] items = container.getItems();
         final int index = menuEntry.getParam0();
 
-        if (index < items.length) {
+        if (index < items.length)
+        {
 
             //get the item ID
             return items[index].getId();

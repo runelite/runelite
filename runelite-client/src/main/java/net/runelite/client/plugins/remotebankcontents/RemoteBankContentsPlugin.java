@@ -18,7 +18,8 @@ import javax.inject.Inject;
         tags = {"remotebankcontents", "skilling", "combat", "utility"}
 )
 
-public class RemoteBankContentsPlugin extends Plugin {
+public class RemoteBankContentsPlugin extends Plugin
+{
 
     @Inject
     private RemoteBankContentsProcess remoteBankContentsProcess;
@@ -33,12 +34,14 @@ public class RemoteBankContentsPlugin extends Plugin {
     private RemoteBankContentsConfig config;
 
     @Provides
-    RemoteBankContentsConfig getConfig(ConfigManager configManager) {
+    RemoteBankContentsConfig getConfig(ConfigManager configManager)
+    {
         return configManager.getConfig(RemoteBankContentsConfig.class);
     }
 
     @Override
-    protected void startUp() throws Exception {
+    protected void startUp() throws Exception
+    {
         overlayManager.add(overlay);
 
         //pass a reference to the remoteBankContentsProcess which has the hashmap in to make sure that both classes use the same hashmap
@@ -47,15 +50,18 @@ public class RemoteBankContentsPlugin extends Plugin {
 
 
     @Subscribe
-    public void onItemContainerChanged(ItemContainerChanged event) {
+    public void onItemContainerChanged(ItemContainerChanged event)
+    {
         remoteBankContentsProcess.populateBankItemMap();
     }
 
     @Subscribe
-    public void onScriptCallbackEvent(ScriptCallbackEvent event) {
+    public void onScriptCallbackEvent(ScriptCallbackEvent event)
+    {
 
         //only run this if the event is opening the bank.
-        if (event.getEventName().equals("setBankTitle")) {
+        if (event.getEventName().equals("setBankTitle"))
+        {
 
             //populate the hashmap with all of the items from the bank
             remoteBankContentsProcess.populateBankItemMap();
@@ -66,10 +72,12 @@ public class RemoteBankContentsPlugin extends Plugin {
     }
 
     @Subscribe
-    public void onMenuOptionClicked(MenuOptionClicked event) {
+    public void onMenuOptionClicked(MenuOptionClicked event)
+    {
 
         //only run this if the examine option in the configuration is checked
-        if (config.examine()) {
+        if (config.examine())
+        {
             remoteBankContentsProcess.outputExamine(event);
         }
     }
