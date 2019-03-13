@@ -122,32 +122,12 @@ public class RaidsThievingPlugin extends Plugin
 		WorldPoint loc = obj.getWorldLocation();
 		InstancePoint absLoc = InstancePoint.buildFromPoint(loc, client);
 
-		if (obj.getId() == RaidsThievingConstants.EMPTY_TROUGH) {
-			log.debug(MessageFormat.format("Found trough at: {0} {1} {2} {3} {4}",
-				loc.getX(), loc.getY(), absLoc.getX(), absLoc.getY(), absLoc.getRot()));
-		}
-
-		if (obj.getId() == RaidsThievingConstants.CLOSED_CHEST_ID) {
-			log.debug(MessageFormat.format("Found chest at: {0} {1} {2} {3} {4}",
-				loc.getX(), loc.getY(), absLoc.getX(), absLoc.getY(), absLoc.getRot()));
-		}
-
 		if (obj.getId() == RaidsThievingConstants.EMPTY_TROUGH)
 		{
 			ThievingRoomType type = ThievingRoomType.IdentifyByInstancePoint(absLoc);
 
-
 			if (type != null)
 			{
-				if (type == ThievingRoomType.RIGHT_TURN)
-				{
-					log.debug("Identified right turn");
-				}
-				else if (type == ThievingRoomType.LEFT_TURN)
-				{
-					log.debug("Identified left turn");
-				}
-
 				solver = new BatSolver(type);
 				mapper = new ChestIdentifier(type);
 				for (ThievingChest chest : chests.values())
