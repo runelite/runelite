@@ -32,10 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface RemoteBankContentsConfig extends Config
 {
 	@ConfigItem(
-			keyName = "examineText",
-			name = "Bank Contents on Examine",
-			description = "A message appears in the chatbox when you examine.",
-			position = 1
+		keyName = "examineText",
+		name = "Bank Contents on Examine",
+		description = "A message appears in the chatbox when you examine.",
+		position = 1
 	)
 	default boolean examine()
 	{
@@ -43,10 +43,10 @@ public interface RemoteBankContentsConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "inventoryOverlay",
-			name = "Inventory Item Tooltip",
-			description = "Tooltips appear over inventory items if on.",
-			position = 2
+		keyName = "inventoryOverlay",
+		name = "Inventory Item Tooltip",
+		description = "Tooltips appear over inventory items if on.",
+		position = 2
 	)
 	default boolean overlay()
 	{

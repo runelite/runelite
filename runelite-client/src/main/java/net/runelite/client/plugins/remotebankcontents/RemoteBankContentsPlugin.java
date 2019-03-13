@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.remotebankcontents;
 
 import com.google.inject.Provides;
+import javax.inject.Inject;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -10,12 +11,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import javax.inject.Inject;
-
 @PluginDescriptor(
-		name = "Remote Bank Contents",
-		description = "View how many of inventory items you have in your bank.",
-		tags = {"remotebankcontents", "skilling", "combat", "utility"}
+	name = "Remote Bank Contents",
+	description = "View how many of inventory items you have in your bank.",
+	tags = {"remotebankcontents", "skilling", "combat", "utility"}
 )
 
 public class RemoteBankContentsPlugin extends Plugin

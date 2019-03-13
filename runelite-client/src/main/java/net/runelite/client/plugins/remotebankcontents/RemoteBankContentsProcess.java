@@ -1,16 +1,21 @@
 package net.runelite.client.plugins.remotebankcontents;
 
-import net.runelite.api.*;
+import java.util.LinkedHashMap;
+import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.game.ItemManager;
-
-import javax.inject.Inject;
-import java.util.LinkedHashMap;
 
 public class RemoteBankContentsProcess
 {
@@ -82,45 +87,68 @@ public class RemoteBankContentsProcess
 			return;
 		}
 
-		if (widgetId == INVENTORY_ITEM_WIDGETID)
+		if (widgetId != WidgetID.BANK_GROUP_ID && widgetId != WidgetID.BANK_INVENTORY_GROUP_ID)
 		{
 
-			if (!initialised())
+			if (isUltimateIronman())
 			{
-
 				chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.SERVER).runeLiteFormattedMessage("<col" + ChatColorType.HIGHLIGHT + ">" + "Please open your bank to initialise.").build());
+					.type(ChatMessageType.SERVER).runeLiteFormattedMessage("<col" + ChatColorType.HIGHLIGHT + ">" + "UIM BTW.").build());
 
 			}
-			else
+			else if (initialised())
 			{
-				int quantity = getQuantity(id);
-				String name = getName(id);
 
 				final ChatMessageBuilder message = new ChatMessageBuilder();
 
+				/*Refine message based on quantity and if this necessitates a plural.
 
-				/*
-                    TODO
+				if (quantity == 1) {
+					message.append("<col" + ChatColorType.HIGHLIGHT + ">" + "You currently have " + quantity + " " + name + " in your bank.");
+				} else {
 
-                Refine message based on quantity and if this necessitates a plural.
-
-                if (quantity == 1) {
-                    message.append("<col" + ChatColorType.HIGHLIGHT + ">" + "You currently have " + quantity + " " + name + " in your bank.");
-                } else {
-
-                    //Add s to the end. Need to check if the item ends in S and if it does not add S
-                    //and if the item ends in Y and add "ies". Also need to check exceptions to this rule.
-                    message.append("<col" + ChatColorType.HIGHLIGHT + ">" + "You currently have " + quantity + " " + name + "s in your bank.");
-                }
+					//Add s to the end. Need to check if the item ends in S and if it does not add S
+					//and if the item ends in Y and add "ies". Also need to check exceptions to this rule.
+					message.append("<col" + ChatColorType.HIGHLIGHT + ">" + "You currently have " + quantity + " " + name + "s in your bank.");
+				}
                 */
+				int quantity = getQuantity(id);
+				String name = getName(id);
 
 				message.append("<col" + ChatColorType.HIGHLIGHT + ">" + "You currently have " + quantity + " " + name + " in your bank.");
 
 				chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.EXAMINE_ITEM).runeLiteFormattedMessage(message.build()).build());
+					.type(ChatMessageType.EXAMINE_ITEM).runeLiteFormattedMessage(message.build()).build());
 			}
+			else
+			{
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.SERVER).runeLiteFormattedMessage("<col" + ChatColorType.HIGHLIGHT + ">" + "Please open your bank to initialise.").build());
+
+			}
+
+
 		}
 	}
+
+
+	/*
+	TODO
+	 * BUG - currently things people with a 3 at character 5 in name are UIM
+	 *
+	 *
+	 */
+	private boolean isUltimateIronman()
+	{
+
+		char c = 5;
+		Widget w = client.getWidget(WidgetInfo.CHATBOX_INPUT);
+
+		return w.getText().charAt(c) == '3';
+	}
+
+
 }
+
+
 
