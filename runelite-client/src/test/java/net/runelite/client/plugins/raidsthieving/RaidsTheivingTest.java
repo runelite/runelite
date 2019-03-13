@@ -168,9 +168,8 @@ public class RaidsTheivingTest
 		Assert.assertTrue(solver.relativeLikelihoodPoison(34) > 0.99);
 		solver = new BatSolver(ThievingRoomType.LEFT_TURN);
 		Assert.assertTrue(solver.relativeLikelihoodPoison(11) < 0.10);
-		Assert.assertTrue(solver.relativeLikelihoodPoison(1) < 0.6);
-		Assert.assertTrue(solver.relativeLikelihoodPoison(13) < 0.99 && solver.relativeLikelihoodPoison(13) > 0.92);
-		Assert.assertTrue(solver.relativeLikelihoodPoison(45) > 0.99);
+		Assert.assertTrue(solver.relativeLikelihoodPoison(1) < 0.75);
+		Assert.assertTrue(solver.relativeLikelihoodPoison(45) > 0.95);
 	}
 
 	@Test
