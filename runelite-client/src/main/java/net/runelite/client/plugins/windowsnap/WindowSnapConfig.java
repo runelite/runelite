@@ -12,7 +12,7 @@ public interface WindowSnapConfig extends Config
 			position = 1,
 			keyName = "enableMouseSnap",
 			name = "Mouse Drag Snaps Window",
-			description = "The window will snap to the side of the screen with the mouse")
+			description = "The window will snap to the side/corner of the screen with the mouse")
 	default boolean mouseEnabled()
 	{
 		return true;
@@ -22,7 +22,7 @@ public interface WindowSnapConfig extends Config
 			position = 2,
 			keyName = "enableKeySnap",
 			name = "Keyboard Shortcut Snaps Window",
-			description = "The window will snap to the side of the screen with keyboard shortcut")
+			description = "ctrl + arrow to control the window")
 	default boolean keyboardShortcutEnabled()
 	{
 		return true;
