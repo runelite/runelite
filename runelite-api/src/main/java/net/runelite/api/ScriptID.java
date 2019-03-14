@@ -117,15 +117,6 @@ public final class ScriptID
 	public static final int DIARY_QUEST_UPDATE_LINECOUNT = 2523;
 
 	/**
-	 * Initializes the chatbox input to use RuneLite callbacks
-	 * <ul>
-	 * <li> String  Prompt text </li>
-	 * <li> String  Default value </li>
-	 * </ul>
-	 */
-	public static final int RUNELITE_CHATBOX_INPUT_INIT = 10001;
-
-	/**
 	 * Does nothing
 	 *
 	 * This is used to eat events when you want a menu action attached to it

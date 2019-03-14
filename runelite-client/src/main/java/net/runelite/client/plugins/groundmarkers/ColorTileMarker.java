@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.script;
+package net.runelite.client.plugins.groundmarkers;
 
-import static net.runelite.api.Opcodes.RUNELITE_EXECUTE;
-import net.runelite.cache.script.Instructions;
+import java.awt.Color;
+import lombok.Value;
+import net.runelite.api.coords.WorldPoint;
 
-public class RuneLiteInstructions extends Instructions
+/**
+ * Used to denote marked tiles and their colors.
+ * Note: This is not used for serialization of ground markers; see {@link GroundMarkerPoint}
+ */
+@Value
+class ColorTileMarker
 {
-	@Override
-	public void init()
-	{
-		super.init();
-		add(RUNELITE_EXECUTE, "runelite_callback");
-	}
+	private WorldPoint worldPoint;
+	private Color color;
 }
