@@ -79,7 +79,7 @@ class XpState
 
 		if (state.getStartXp() == -1)
 		{
-			if (currentXp > 0)
+			if (currentXp >= 0)
 			{
 				initializeSkill(skill, currentXp);
 				return XpUpdateResult.INITIALIZED;
@@ -198,7 +198,8 @@ class XpState
 
 	boolean isInitialized(Skill skill)
 	{
-		return xpSkills.containsKey(skill);
+		XpStateSingle xpStateSingle = xpSkills.get(skill);
+		return xpStateSingle != null && xpStateSingle.getStartXp() != -1;
 	}
 
 	@NonNull

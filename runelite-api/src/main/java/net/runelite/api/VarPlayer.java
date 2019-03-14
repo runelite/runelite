@@ -69,6 +69,11 @@ public enum VarPlayer
 	THRONE_OF_MISCELLANIA(359),
 
 	/**
+	 * Item currently active in the creation of a buy or sell offer
+	 */
+	CURRENT_GE_ITEM(1151),
+
+	/**
 	 * Experience tracker goal start.
 	 */
 	ATTACK_GOAL_START(1229),
