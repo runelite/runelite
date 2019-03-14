@@ -177,11 +177,12 @@ public class NpcSceneOverlay extends Overlay
 
 		if (config.drawNames())
 		{
-			Point textLocation = actor.getCanvasTextLocation(graphics, actor.getName(), actor.getLogicalHeight() + 40);
+			String npcName = Text.removeTags(actor.getName());
+			Point textLocation = actor.getCanvasTextLocation(graphics, npcName, actor.getLogicalHeight() + 40);
 
 			if (textLocation != null)
 			{
-				OverlayUtil.renderTextLocation(graphics, textLocation, Text.removeTags(actor.getName()), color);
+				OverlayUtil.renderTextLocation(graphics, textLocation, npcName, color);
 			}
 		}
 	}
