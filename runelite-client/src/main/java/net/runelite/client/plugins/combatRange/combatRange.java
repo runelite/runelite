@@ -12,8 +12,8 @@ import javax.inject.Inject;
 @PluginDescriptor(
 	name = "Combat Range",
 	description = "Shows the combat range that can attack you in the wilderness.",
-	tags = {"test"},
-	enabledByDefault = false
+	tags = {"wildy", "wilderness", "combat", "level"},
+	enabledByDefault = true
 )
 
 public class combatRange extends Plugin
