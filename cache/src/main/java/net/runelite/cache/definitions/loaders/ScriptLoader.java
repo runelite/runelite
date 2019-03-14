@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.io.InputStream;
-import static net.runelite.cache.script.Opcodes.LOAD_STRING;
+import static net.runelite.cache.script.Opcodes.SCONST;
 import static net.runelite.cache.script.Opcodes.POP_INT;
 import static net.runelite.cache.script.Opcodes.POP_STRING;
 import static net.runelite.cache.script.Opcodes.RETURN;
@@ -94,7 +94,7 @@ public class ScriptLoader
 		for (int i = 0; in.getOffset() < endIdx; instructions[i++] = opcode)
 		{
 			opcode = in.readUnsignedShort();
-			if (opcode == LOAD_STRING)
+			if (opcode == SCONST)
 			{
 				stringOperands[i] = in.readString();
 			}
