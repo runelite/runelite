@@ -6207,6 +6207,7 @@ public final class NpcID
 	public static final int SPAWN_6768 = 6768;
 	public static final int OSTEN = 6769;
 	public static final int ARCIS = 6770;
+	public static final int DREW = 6771;
 	public static final int LOVADA = 6772;
 	public static final int DOOMSAYER = 6773;
 	public static final int DOOMSAYER_6774 = 6774;
