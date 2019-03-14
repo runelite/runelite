@@ -46,6 +46,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.Text;
 
 public class NpcSceneOverlay extends Overlay
 {
@@ -180,10 +181,12 @@ public class NpcSceneOverlay extends Overlay
 
 			if (textLocation != null)
 			{
+				name = Text.removeTags(name);
 				OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
 			}
 		}
 	}
+
 
 	private void renderPoly(Graphics2D graphics, Color color, Polygon polygon)
 	{
