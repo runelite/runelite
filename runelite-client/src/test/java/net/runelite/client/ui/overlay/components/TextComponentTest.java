@@ -69,7 +69,8 @@ public class TextComponentTest
 	}
 
 	@After
-	public void after() {
+	public void after()
+	{
 		graphics.dispose();
 		dest.flush();
 	}
