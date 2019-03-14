@@ -3,19 +3,19 @@
 .string_stack_count 0
 .int_var_count      3
 .string_var_count   0
-   load_string            "resetChatboxInput"
+   sconst                 "resetChatboxInput"
    runelite_callback     
-   load_int               1
-   load_int               10616872
-   widget_put_hidden_widget
-   load_int               0
-   load_int               10616887
-   widget_put_hidden_widget
+   iconst                 1
+   iconst                 10616872
+   if_sethide            
+   iconst                 0
+   iconst                 10616887
+   if_sethide            
    invoke                 923
-   load_int               0
+   iconst                 0
    istore                 2
    iload                  1
-   load_int               1
+   iconst                 1
    if_icmpeq              LABEL13
    jump                   LABEL27
 LABEL13:
@@ -26,144 +26,144 @@ LABEL13:
    iload                  2
    invoke                 89
    invoke                 223
-   load_int               1
+   iconst                 1
    invoke                 927
    invoke                 1972
-   load_int               1
+   iconst                 1
    if_icmpeq              LABEL26
    jump                   LABEL27
 LABEL26:
    invoke                 1984
 LABEL27:
    invoke                 1972
-   load_int               1
+   iconst                 1
    if_icmpeq              LABEL31
    jump                   LABEL32
 LABEL31:
    invoke                 2581
 LABEL32:
-   load_int               0
-   put_varc               5
+   iconst                 0
+   set_varc_int           5
    iload                  0
-   load_int               1
+   iconst                 1
    if_icmpeq              LABEL38
    jump                   LABEL40
 LABEL38:
-   load_string            ""
-   050                    359
+   sconst                 ""
+   set_varc_string        359
 LABEL40:
-   load_int               0
-   load_int               -8
-   load_int               1
-   load_int               1
-   load_int               10616876
-   widget_put_position_widget
-   load_int               0
-   load_int               40
-   load_int               1
-   load_int               0
-   load_int               10616876
-   widget_put_size_widget
-   load_int               0
-   load_int               22
-   load_int               1
-   load_int               1
-   load_int               10616877
-   widget_put_position_widget
-   load_int               0
-   load_int               20
-   load_int               1
-   load_int               0
-   load_int               10616877
-   widget_put_size_widget
-   load_int               0
-   load_int               10616876
-   widget_put_hidden_widget
-   load_int               0
-   load_int               10616877
-   widget_put_hidden_widget
-   load_int               1
-   load_int               10616881
-   widget_put_hidden_widget
-   load_int               10616885
-   widget_unset_children 
-   load_int               10616886
-   widget_unset_children 
-   load_int               -1
-   load_string            ""
-   load_int               10616872
-   widget_put_mouse_press_listener_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616872
-   widget_put_render_listener_widget
-   load_int               10616872
-   widget_unset_children 
-   load_int               10616878
-   widget_unset_children 
-   load_int               10616879
-   widget_unset_children 
-   load_int               10616880
-   widget_unset_children 
-   load_int               1
-   load_int               10616878
-   widget_put_hidden_widget
-   load_int               1
-   load_int               10616879
-   widget_put_hidden_widget
-   load_int               1
-   load_int               10616880
-   widget_put_hidden_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616878
-   widget_put_mouse_hover_listener_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616879
-   widget_put_mouse_hover_listener_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616880
-   widget_put_mouse_hover_listener_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616878
-   widget_put_mouse_exit_listener_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616879
-   widget_put_mouse_exit_listener_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616880
-   widget_put_mouse_exit_listener_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616878
-   widget_put_render_listener_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616879
-   widget_put_render_listener_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616880
-   widget_put_render_listener_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616878
-   widget_put_mouse_press_listener_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616879
-   widget_put_mouse_press_listener_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616880
-   widget_put_mouse_press_listener_widget
-   get_varc               41
-   load_int               -1
+   iconst                 0
+   iconst                 -8
+   iconst                 1
+   iconst                 1
+   iconst                 10616876
+   if_setposition        
+   iconst                 0
+   iconst                 40
+   iconst                 1
+   iconst                 0
+   iconst                 10616876
+   if_setsize            
+   iconst                 0
+   iconst                 22
+   iconst                 1
+   iconst                 1
+   iconst                 10616877
+   if_setposition        
+   iconst                 0
+   iconst                 20
+   iconst                 1
+   iconst                 0
+   iconst                 10616877
+   if_setsize            
+   iconst                 0
+   iconst                 10616876
+   if_sethide            
+   iconst                 0
+   iconst                 10616877
+   if_sethide            
+   iconst                 1
+   iconst                 10616881
+   if_sethide            
+   iconst                 10616885
+   cc_deleteall          
+   iconst                 10616886
+   cc_deleteall          
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616872
+   if_setonclick         
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616872
+   if_setontimer         
+   iconst                 10616872
+   cc_deleteall          
+   iconst                 10616878
+   cc_deleteall          
+   iconst                 10616879
+   cc_deleteall          
+   iconst                 10616880
+   cc_deleteall          
+   iconst                 1
+   iconst                 10616878
+   if_sethide            
+   iconst                 1
+   iconst                 10616879
+   if_sethide            
+   iconst                 1
+   iconst                 10616880
+   if_sethide            
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616878
+   if_setonmouserepeat   
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616879
+   if_setonmouserepeat   
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616880
+   if_setonmouserepeat   
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616878
+   if_setonmouseleave    
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616879
+   if_setonmouseleave    
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616880
+   if_setonmouseleave    
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616878
+   if_setontimer         
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616879
+   if_setontimer         
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616880
+   if_setontimer         
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616878
+   if_setonclick         
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616879
+   if_setonclick         
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616880
+   if_setonclick         
+   get_varc_int           41
+   iconst                 -1
    if_icmpeq              LABEL154
    jump                   LABEL156
 LABEL154:
@@ -171,7 +171,7 @@ LABEL154:
    pop_int               
 LABEL156:
    invoke                 1972
-   load_int               1
+   iconst                 1
    if_icmpeq              LABEL160
    jump                   LABEL161
 LABEL160:

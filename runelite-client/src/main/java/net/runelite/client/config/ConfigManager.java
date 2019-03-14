@@ -101,6 +101,9 @@ public class ConfigManager
 
 	public final void switchSession(AccountSession session)
 	{
+		// Ensure existing config is saved
+		sendConfig();
+
 		if (session == null)
 		{
 			this.session = null;
@@ -329,7 +332,7 @@ public class ConfigManager
 		}
 	}
 
-	private synchronized void saveToFile(final File propertiesFile) throws IOException
+	private void saveToFile(final File propertiesFile) throws IOException
 	{
 		propertiesFile.getParentFile().mkdirs();
 
@@ -406,19 +409,6 @@ public class ConfigManager
 			pendingChanges.put(groupName + "." + key, value);
 		}
 
-		Runnable task = () ->
-		{
-			try
-			{
-				saveToFile(propertiesFile);
-			}
-			catch (IOException ex)
-			{
-				log.warn("unable to save configuration file", ex);
-			}
-		};
-		executor.execute(task);
-
 		ConfigChanged configChanged = new ConfigChanged();
 		configChanged.setGroup(groupName);
 		configChanged.setKey(key);
@@ -448,19 +438,6 @@ public class ConfigManager
 		{
 			pendingChanges.put(groupName + "." + key, null);
 		}
-
-		Runnable task = () ->
-		{
-			try
-			{
-				saveToFile(propertiesFile);
-			}
-			catch (IOException ex)
-			{
-				log.warn("unable to save configuration file", ex);
-			}
-		};
-		executor.execute(task);
 
 		ConfigChanged configChanged = new ConfigChanged();
 		configChanged.setGroup(groupName);
@@ -667,6 +644,7 @@ public class ConfigManager
 
 	public void sendConfig()
 	{
+		boolean changed;
 		synchronized (pendingChanges)
 		{
 			if (client != null)
@@ -686,7 +664,20 @@ public class ConfigManager
 					}
 				}
 			}
+			changed = !pendingChanges.isEmpty();
 			pendingChanges.clear();
+		}
+
+		if (changed)
+		{
+			try
+			{
+				saveToFile(propertiesFile);
+			}
+			catch (IOException ex)
+			{
+				log.warn("unable to save configuration file", ex);
+			}
 		}
 	}
 }
