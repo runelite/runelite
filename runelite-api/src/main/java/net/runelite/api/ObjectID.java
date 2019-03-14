@@ -13120,8 +13120,9 @@ public final class ObjectID
 	public static final int DISPLAY_CASE_24551 = 24551;
 	public static final int SPECIMEN_TABLE_24555 = 24555;
 	public static final int SPECIMEN_TABLE_24556 = 24556;
-	public static final int ROCKS_24557 = 24557;
-	public static final int DIG_SITE_SPECIMEN_ROCKS = 24559;
+	public static final int DIG_SITE_SPECIMEN_ROCKS = 24557;
+	public static final int DIG_SITE_SPECIMEN_ROCKS_24558 = 24558;
+	public static final int DIG_SITE_SPECIMEN_ROCKS_24559 = 24559;
 	public static final int GATE_24560 = 24560;
 	public static final int GATE_24561 = 24561;
 	public static final int GAP_24562 = 24562;
@@ -13890,6 +13891,7 @@ public final class ObjectID
 	public static final int CHEST_26193 = 26193;
 	public static final int LEVER_26194 = 26194;
 	public static final int BIRTHDAY_CAKE = 26198;
+	public static final int GRINDER = 26199;
 	public static final int TABLE_26201 = 26201;
 	public static final int TABLE_26202 = 26202;
 	public static final int TABLE_26203 = 26203;
