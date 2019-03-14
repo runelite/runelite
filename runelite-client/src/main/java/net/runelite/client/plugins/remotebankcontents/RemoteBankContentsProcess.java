@@ -8,8 +8,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -81,13 +80,12 @@ public class RemoteBankContentsProcess
 		int id = event.getId();
 		final int widgetId = event.getWidgetId();
 
-
 		if (!event.getMenuOption().equals("Examine"))
 		{
 			return;
 		}
 
-		if (widgetId != WidgetID.BANK_GROUP_ID && widgetId != WidgetID.BANK_INVENTORY_GROUP_ID)
+		if (widgetId != WidgetInfo.BANK_ITEM_CONTAINER.getPackedId() && widgetId != WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId() && widgetId != 0)
 		{
 
 			if (isUltimateIronman())
@@ -132,22 +130,16 @@ public class RemoteBankContentsProcess
 	}
 
 
-	/*
-	TODO
-	 * BUG - currently things people with a 3 at character 5 in name are UIM
-	 *
-	 *
-	 */
 	private boolean isUltimateIronman()
 	{
-
-		char c = 5;
-		Widget w = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-
-		return w.getText().charAt(c) == '3';
+		return client.getAccountType().equals(AccountType.ULTIMATE_IRONMAN);
 	}
 
 
+	public void reset()
+	{
+		items.clear();
+	}
 }
 
 

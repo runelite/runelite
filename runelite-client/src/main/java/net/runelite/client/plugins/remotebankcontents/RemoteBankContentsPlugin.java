@@ -2,6 +2,8 @@ package net.runelite.client.plugins.remotebankcontents;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import net.runelite.api.GameState;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -48,6 +50,13 @@ public class RemoteBankContentsPlugin extends Plugin
 	}
 
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
+		remoteBankContentsProcess.reset();
+	}
+
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
@@ -78,6 +87,16 @@ public class RemoteBankContentsPlugin extends Plugin
 		if (config.examine())
 		{
 			remoteBankContentsProcess.outputExamine(event);
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			remoteBankContentsProcess.reset();
+			System.out.println("resetting map");
 		}
 	}
 

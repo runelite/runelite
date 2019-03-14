@@ -8,7 +8,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
@@ -19,9 +19,6 @@ import net.runelite.client.util.ColorUtil;
 
 public class RemoteBankContentsOverlay extends Overlay
 {
-
-	//Inventory widget id
-	private static final int INVENTORY_ITEM_WIDGETID = WidgetInfo.INVENTORY.getPackedId();
 
 	private final TooltipManager tooltipManager;
 	@Inject
@@ -51,7 +48,7 @@ public class RemoteBankContentsOverlay extends Overlay
 
 		//A lot of this code in this method is based on the code from the ItemOverlay plugin. Credit goes to the author of that.
 
-		//Hide if the right click menu is open
+		//Hide if the right click menu is open or if the overlay option is off.
 		if (client.isMenuOpen() || !config.overlay())
 		{
 			return null;
@@ -98,7 +95,6 @@ public class RemoteBankContentsOverlay extends Overlay
 					if (isUltimateIronman())
 					{
 						tooltipManager.add(new Tooltip(ColorUtil.prependColorTag("UIM BTW", new Color(238, 238, 238))));
-						return null;
 					}
 					else if (remoteBankContentsProcess.initialised())
 					{
@@ -125,19 +121,10 @@ public class RemoteBankContentsOverlay extends Overlay
 	}
 
 
-	/*
-	TODO
-	 * BUG - currently things people with a 3 at character 5 in name are UIM
-	 *
-	 *
-	 */
 	private boolean isUltimateIronman()
 	{
-
-		char c = 5;
-		Widget w = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-
-		return w.getText().charAt(c) == '3';
+		return client.getAccountType().equals(AccountType.ULTIMATE_IRONMAN);
 	}
+
 
 }
