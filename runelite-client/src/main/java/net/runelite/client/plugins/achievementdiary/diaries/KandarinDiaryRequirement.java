@@ -96,6 +96,9 @@ public class KandarinDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.MAGIC, 56));
 		add("Burn some Maple logs with a bow in Seers' Village.",
 			new SkillRequirement(Skill.FIREMAKING, 65));
+		add("Kill a Shadow Hound in the Shadow dungeon.",
+			new SkillRequirement(Skill.THIEVING, 53),
+			new QuestRequirement(Quest.DESERT_TREASURE, true));
 		add("Purchase and equip a granite body from Barbarian Assault.",
 			new SkillRequirement(Skill.STRENGTH, 50),
 			new SkillRequirement(Skill.DEFENCE, 50));
