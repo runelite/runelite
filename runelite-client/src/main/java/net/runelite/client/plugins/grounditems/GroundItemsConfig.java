@@ -30,7 +30,6 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.FontType;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
@@ -356,14 +355,4 @@ public interface GroundItemsConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "fontType",
-		name = "Font type",
-		description = "Configures the font type to use when drawing items",
-		position = 27
-	)
-	default FontType fontStyle()
-	{
-		return FontType.REGULAR;
-	}
 }
