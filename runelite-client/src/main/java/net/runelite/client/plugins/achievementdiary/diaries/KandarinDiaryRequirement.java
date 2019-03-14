@@ -40,7 +40,7 @@ public class KandarinDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.FISHING, 16));
 		add("Plant some Jute seeds in the patch north of McGrubor's Wood.",
 			new SkillRequirement(Skill.FARMING, 13));
-		add("Defeat on of each elemental in the workshop.",
+		add("Defeat one of each elemental in the workshop.",
 			new QuestRequirement(Quest.ELEMENTAL_WORKSHOP_I, true));
 		add("Cross the Coal truck log shortcut.",
 			new SkillRequirement(Skill.AGILITY, 20));
