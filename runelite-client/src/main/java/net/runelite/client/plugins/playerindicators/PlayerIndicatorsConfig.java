@@ -203,5 +203,8 @@ public interface PlayerIndicatorsConfig extends Config
 			name = "Show combat levels",
 			description = "Shows combat levels next to player names"
 	)
-	default boolean showCombatlevel()	{ return true; }
+	default boolean showCombatlevel()
+	{
+		return true; 
+	}
 }
