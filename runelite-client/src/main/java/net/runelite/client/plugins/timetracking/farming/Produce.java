@@ -93,8 +93,8 @@ public enum Produce
 	// Tree crops
 	OAK("Oak", ItemID.OAK_LOGS, 40, 5),
 	WILLOW("Willow", ItemID.WILLOW_LOGS, 40, 7),
-	MAPLE("Maple", ItemID.MAPLE_TREE, 40, 9),
-	YEW("Yew", ItemID.YEW_TREE, 40, 11),
+	MAPLE("Maple", ItemID.MAPLE_LOGS, 40, 9),
+	YEW("Yew", ItemID.YEW_LOGS, 40, 11),
 	MAGIC("Magic", ItemID.MAGIC_LOGS, 40, 13),
 
 	// Fruit tree crops
