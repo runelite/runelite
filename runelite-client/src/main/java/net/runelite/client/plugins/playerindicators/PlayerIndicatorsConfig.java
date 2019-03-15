@@ -196,4 +196,12 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 15,
+			keyName = "showCombatlevel",
+			name = "Show combat levels",
+			description = "Shows combat levels next to player names"
+	)
+	default boolean showCombatlevel()	{ return true; }
 }

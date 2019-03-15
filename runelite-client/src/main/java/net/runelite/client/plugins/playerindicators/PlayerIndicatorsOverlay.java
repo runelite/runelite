@@ -88,7 +88,15 @@ public class PlayerIndicatorsOverlay extends Overlay
 				zOffset = actor.getLogicalHeight() + ACTOR_OVERHEAD_TEXT_MARGIN;
 		}
 
-		final String name = Text.sanitize(actor.getName());
+		final String name;
+		if ( config.showCombatlevel())
+		{
+			name = Text.sanitize(actor.getName()  + " (" + actor.getCombatLevel() + ")");
+		}
+		else
+		{
+			name = Text.sanitize(actor.getName());
+		}
 		Point textLocation = actor.getCanvasTextLocation(graphics, name, zOffset);
 
 		if (drawPlayerNamesConfig == PlayerNameLocation.MODEL_RIGHT)
@@ -110,7 +118,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 		if (config.showClanRanks() && actor.isClanMember())
 		{
-			final ClanMemberRank rank = clanManager.getRank(name);
+			final ClanMemberRank rank = clanManager.getRank(actor.getName());
 
 			if (rank != ClanMemberRank.UNRANKED)
 			{
