@@ -63,7 +63,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2849, 3033, 0), "West of nature altar, North of Shilo Village (CKR).")
 		.put(new WorldPoint(2848, 3296, 0), "North of Crandor.")
 		.put(new WorldPoint(2583, 2990, 0), "Feldip Hills, south-east of Gu'Thanoth (AKS).")
-		.put(new WorldPoint(3179, 3344, 0), "Just south of the Champions' Guild, opposite side of the River Lum in Lumbridge.")
+		.put(new WorldPoint(3179, 3344, 0), "South of the Champions' Guild, opposite side of the River Lum.")
 		.put(new WorldPoint(2383, 3370, 0), "South-west of Tree Gnome Stronghold.")
 		.put(new WorldPoint(3312, 3375, 0), "North-west of Exam Centre, on the hill.")
 		.put(new WorldPoint(3121, 3384, 0), "North-east of Draynor Manor, near River Lum.")
@@ -208,16 +208,12 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left(solution)
 				.build());
+		}
 
-			panelComponent.getChildren().add(LineComponent.builder().left("").build());
-			panelComponent.getChildren().add(TitleComponent.builder().text("Marked on world map.").build());
-		}
-		else
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Click the clue scroll along the edge of your world map to see where you should dig.")
-				.build());
-		}
+		panelComponent.getChildren().add(LineComponent.builder().build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Click the clue scroll on your world map to see dig location.")
+			.build());
 
 		if (plugin.getInventoryItems() != null)
 		{
