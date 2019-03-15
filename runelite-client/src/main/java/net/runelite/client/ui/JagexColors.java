@@ -62,4 +62,10 @@ public class JagexColors
 	public static final Color TOOLTIP_BACKGROUND = new Color(255, 255, 160);
 	public static final Color TOOLTIP_BORDER = Color.BLACK;
 	public static final Color TOOLTIP_TEXT = Color.BLACK;
+
+	/*
+	 * Colors used in interfaces
+	 */
+	public static final Color DARK_ORANGE_INTERFACE_TEXT = new Color(255, 152, 31);
+	public static final Color YELLOW_INTERFACE_TEXT = Color.YELLOW;
 }
