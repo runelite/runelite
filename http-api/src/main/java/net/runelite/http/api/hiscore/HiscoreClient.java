@@ -106,7 +106,7 @@ public class HiscoreClient
 					case 404:
 						return null;
 					default:
-						throw new IOException("Error retrieving data from Jagex Hiscores: " + okresponse.toString());
+						throw new IOException("Error retrieving data from Jagex Hiscores: " + okresponse);
 				}
 			}
 

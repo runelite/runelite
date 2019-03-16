@@ -103,9 +103,9 @@ public class TwitterService
 						{
 							return getTweets(true);
 						}
-						throw new InternalServerErrorException("Could not auth to Twitter after trying once: " + response.toString());
+						throw new InternalServerErrorException("Could not auth to Twitter after trying once: " + response);
 					default:
-						throw new IOException("Error getting Twitter list: " + response.toString());
+						throw new IOException("Error getting Twitter list: " + response);
 				}
 			}
 

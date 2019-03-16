@@ -98,7 +98,7 @@ public class LootTrackerClient
 		{
 			if (!response.isSuccessful())
 			{
-				log.debug("Error looking up loot: {}", response.toString());
+				log.debug("Error looking up loot: {}", response);
 				return null;
 			}
 

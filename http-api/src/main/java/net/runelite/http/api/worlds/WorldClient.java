@@ -57,7 +57,7 @@ public class WorldClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.debug("Error looking up worlds: {}", response.toString());
+				logger.debug("Error looking up worlds: {}", response);
 				return null;
 			}
 

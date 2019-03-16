@@ -63,7 +63,7 @@ public class OSRSNewsService
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Error getting OSRS news: " + response.toString());
+				throw new IOException("Error getting OSRS news: " + response);
 			}
 
 			try
