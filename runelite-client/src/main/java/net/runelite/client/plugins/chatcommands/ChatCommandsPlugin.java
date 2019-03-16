@@ -71,7 +71,6 @@ import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.ItemPrice;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
@@ -598,7 +597,7 @@ public class ChatCommandsPlugin extends Plugin
 		int amt = 1; //Amount of items
 		int maxAmt = 1000000;
 
-		if(search.length() > 1)
+		if (search.length() > 1)
 		{
 			if
 			(StringUtils.isNumeric(search.split(" ")[0]))
