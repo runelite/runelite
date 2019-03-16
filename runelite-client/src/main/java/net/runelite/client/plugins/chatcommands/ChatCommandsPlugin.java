@@ -593,7 +593,6 @@ public class ChatCommandsPlugin extends Plugin
 		MessageNode messageNode = chatMessage.getMessageNode();
 		String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
 
-		String[] amtSearch = search.split(" ");
 		int amt = 1; //Amount of items
 		int maxAmt = 1000000;
 
