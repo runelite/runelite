@@ -601,7 +601,14 @@ public class ChatCommandsPlugin extends Plugin
 			if
 			(StringUtils.isNumeric(search.split(" ")[0]))
 			{
-				amt = Integer.parseInt(search.split(" ")[0]);
+				try
+				{
+					amt = Integer.parseInt(search.split(" ")[0]);
+				}
+				catch (NumberFormatException e)
+				{
+					amt = 1;
+				}
 
 				if (amt > maxAmt)
 				{
