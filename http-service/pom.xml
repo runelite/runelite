@@ -184,6 +184,14 @@
 				<groupId>com.github.kongchen</groupId>
 				<artifactId>swagger-maven-plugin</artifactId>
 				<version>3.1.8</version>
+				<dependencies>
+					<!-- Java 11+ does not include this anymore -->
+					<dependency>
+						<groupId>javax.xml.bind</groupId>
+						<artifactId>jaxb-api</artifactId>
+						<version>2.3.1</version>
+					</dependency>
+				</dependencies>
 				<configuration>
 					<apiSources>
 						<apiSource>
