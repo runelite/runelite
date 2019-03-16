@@ -586,44 +586,32 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
+		if (message.length() <= PRICE_COMMAND_STRING.length())
+		{
+			return;
+		}
+
 		MessageNode messageNode = chatMessage.getMessageNode();
 		String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
 
 		String[] amtSearch = search.split(" ");
 		int amt = 1; //Amount of items
-		int place = amtSearch.length - 1;
-		String searchAmount = amtSearch[place];
 		int maxAmt = 1000000;
 
-		try
+		if(search.length() > 1)
 		{
-			if (NumberUtils.isParsable(searchAmount))
+			if
+			(StringUtils.isNumeric(search.split(" ")[0]))
 			{
-				if (Integer.parseInt(searchAmount) <= maxAmt)
-				{
-					amt = Integer.parseInt(searchAmount);
-				}
-				else
+				amt = Integer.parseInt(search.split(" ")[0]);
+
+				if (amt > maxAmt)
 				{
 					amt = maxAmt;
 				}
-			}
-		}
-		catch (NumberFormatException e)
-		{
-			amt = 1;
-		}
 
-		if (StringUtils.isNumeric(searchAmount))
-		{
-			String[] searchSplit = search.split(" ");
-			String search2 = "";
-			for (int i = 0; i < place; i++)
-			{
-				search2 = search2 + searchSplit[i] + " "; //Rebuilding the search
+				search = search.substring(search.split(" ")[0].length() + 1);
 			}
-			search2 = search2.substring(0, search2.length() - 1);
-			search = search2;
 		}
 
 		List<ItemPrice> results = itemManager.search(search);
@@ -634,7 +622,7 @@ public class ChatCommandsPlugin extends Plugin
 
 			int itemId = item.getId();
 			int itemPrice = item.getPrice();
-			int totalPrice = 0;
+			int totalPrice;
 
 			totalPrice = itemPrice * amt;
 			String sPrice;
