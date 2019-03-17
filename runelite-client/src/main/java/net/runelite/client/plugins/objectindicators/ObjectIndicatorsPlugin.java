@@ -29,6 +29,7 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
+
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,11 +39,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+
 import static net.runelite.api.Constants.REGION_SIZE;
+
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
@@ -68,22 +72,25 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Object Markers",
-	description = "Enable marking of objects using the Shift key",
-	tags = {"overlay", "objects", "mark", "marker"},
-	enabledByDefault = false
+		name = "Object Markers",
+		description = "Enable marking of objects using the Shift key",
+		tags = {"overlay", "objects", "mark", "marker"},
+		enabledByDefault = false
 )
 public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 {
 	private static final String CONFIG_GROUP = "objectindicators";
 	private static final String MARK = "Mark object";
+	private static final String MARK_CLICKBOX = "Mark clickbox";
 
 	private final Gson GSON = new Gson();
 	@Getter(AccessLevel.PACKAGE)
-	private final List<TileObject> objects = new ArrayList<>();
+	private final List<Pair<TileObject, ObjectPoint>> objects = new ArrayList<>();
 	private final Map<Integer, Set<ObjectPoint>> points = new HashMap<>();
 	private boolean hotKeyPressed;
 
@@ -175,13 +182,13 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
-		objects.remove(event.getGameObject());
+		objects.removeIf(pair -> pair.getLeft() == event.getGameObject());
 	}
 
 	@Subscribe
 	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
-		objects.remove(event.getDecorativeObject());
+		objects.removeIf(pair -> pair.getLeft() == event.getDecorativeObject());
 	}
 
 	@Subscribe
@@ -219,21 +226,44 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		}
 
 		MenuEntry[] menuEntries = client.getMenuEntries();
-		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 2);
+		MenuEntry menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
 		menuEntry.setOption(MARK);
 		menuEntry.setTarget(event.getTarget());
 		menuEntry.setParam0(event.getActionParam0());
 		menuEntry.setParam1(event.getActionParam1());
 		menuEntry.setIdentifier(event.getIdentifier());
 		menuEntry.setType(MenuAction.RUNELITE.getId());
+
+		menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+		menuEntry.setOption(MARK_CLICKBOX);
+		menuEntry.setTarget(event.getTarget());
+		menuEntry.setParam0(event.getActionParam0());
+		menuEntry.setParam1(event.getActionParam1());
+		menuEntry.setIdentifier(event.getIdentifier());
+		menuEntry.setType(MenuAction.RUNELITE.getId());
+
 		client.setMenuEntries(menuEntries);
 	}
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuAction() != MenuAction.RUNELITE || !event.getMenuOption().equals(MARK))
+		if (event.getMenuAction() != MenuAction.RUNELITE)
+		{
+			return;
+		}
+
+		int style;
+		if (event.getMenuOption().equals(MARK))
+		{
+			style = ObjectPoint.STYLE_OUTLINE;
+		}
+		else if (event.getMenuOption().equals(MARK_CLICKBOX))
+		{
+			style = ObjectPoint.STYLE_CLICKBOX;
+		}
+		else
 		{
 			return;
 		}
@@ -258,7 +288,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		markObject(name, object);
+		markObject(name, object, style);
 	}
 
 	private void checkObjectPoints(TileObject object)
@@ -278,7 +308,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			{
 				if (objectPoint.getName().equals(client.getObjectDefinition(object.getId()).getName()))
 				{
-					objects.add(object);
+					objects.add(new ImmutablePair<>(object, objectPoint));
 					break;
 				}
 			}
@@ -330,7 +360,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		return null;
 	}
 
-	private void markObject(String name, final TileObject object)
+	private void markObject(String name, final TileObject object, int style)
 	{
 		if (object == null)
 		{
@@ -340,23 +370,24 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
 		final int regionId = worldPoint.getRegionID();
 		final ObjectPoint point = new ObjectPoint(
-			name,
-			regionId,
-			worldPoint.getX() & (REGION_SIZE - 1),
-			worldPoint.getY() & (REGION_SIZE - 1),
-			client.getPlane());
+				name,
+				regionId,
+				worldPoint.getX() & (REGION_SIZE - 1),
+				worldPoint.getY() & (REGION_SIZE - 1),
+				client.getPlane(),
+				style);
 
 		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
 
 		if (objectPoints.contains(point))
 		{
 			objectPoints.remove(point);
-			objects.remove(object);
+			objects.remove(new ImmutablePair<>(object, point));
 		}
 		else
 		{
 			objectPoints.add(point);
-			objects.add(object);
+			objects.add(new ImmutablePair<>(object, point));
 		}
 
 		savePoints(regionId, objectPoints);
