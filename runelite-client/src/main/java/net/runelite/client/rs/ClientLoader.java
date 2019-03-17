@@ -37,7 +37,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarEntry;
@@ -48,6 +47,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.client.rs.ClientUpdateCheckMode.*;
 import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.compress.compressors.CompressorException;
@@ -83,7 +83,10 @@ public class ClientLoader
 			{
 				String codebase = config.getCodeBase();
 				String initialJar = config.getInitialJar();
-				URL url = new URL(codebase + initialJar);
+				HttpUrl url = HttpUrl.parse(codebase).newBuilder()
+					.scheme("https")
+					.addPathSegment(initialJar)
+					.build();
 				Request request = new Request.Builder()
 					.url(url)
 					.build();
