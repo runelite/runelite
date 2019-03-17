@@ -187,7 +187,6 @@ public class NpcSceneOverlay extends Overlay
 		}
 	}
 
-
 	private void renderPoly(Graphics2D graphics, Color color, Polygon polygon)
 	{
 		if (polygon != null)
