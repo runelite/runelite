@@ -41,6 +41,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -94,6 +97,9 @@ public class ItemChargePlugin extends Plugin
 	@Inject
 	private ItemChargeConfig config;
 
+	// Limits destroy callback to once per tick
+	private int lastCheckTick;
+
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
 	{
@@ -111,6 +117,7 @@ public class ItemChargePlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		infoBoxManager.removeIf(ItemChargeInfobox.class::isInstance);
+		lastCheckTick = -1;
 	}
 
 	@Subscribe
@@ -241,6 +248,21 @@ public class ItemChargePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
+	{
+		if (!"destroyOnOpKey".equals(event.getEventName()))
+		{
+			return;
+		}
+
+		final int yesOption = client.getIntStack()[client.getIntStackSize() - 1];
+		if (yesOption == 1)
+		{
+			checkDestroyWidget();
+		}
+	}
+
 	private void updateDodgyNecklaceCharges(final int value)
 	{
 		config.dodgyNecklace(value);
@@ -272,6 +294,32 @@ public class ItemChargePlugin extends Plugin
 			}
 
 			updateJewelleryInfobox(ItemWithSlot.BINDING_NECKLACE, itemContainer.getItems());
+		}
+	}
+
+	private void checkDestroyWidget()
+	{
+		final int currentTick = client.getTickCount();
+		if (lastCheckTick == currentTick)
+		{
+			return;
+		}
+		lastCheckTick = currentTick;
+
+		final Widget widgetDestroyItemName = client.getWidget(WidgetInfo.DESTROY_ITEM_NAME);
+		if (widgetDestroyItemName == null)
+		{
+			return;
+		}
+
+		switch (widgetDestroyItemName.getText())
+		{
+			case "Binding necklace":
+				updateBindingNecklaceCharges(MAX_BINDING_CHARGES);
+				break;
+			case "Dodgy necklace":
+				updateDodgyNecklaceCharges(MAX_DODGY_CHARGES);
+				break;
 		}
 	}
 
