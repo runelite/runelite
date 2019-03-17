@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.objectindicators;
 
 import java.awt.*;
+import java.awt.geom.Area;
 import javax.inject.Inject;
 
 import net.runelite.api.Client;
@@ -71,7 +72,11 @@ class ObjectIndicatorsOverlay extends Overlay
 
 			if (objectPoint.getStyle() == ObjectPoint.STYLE_CLICKBOX)
 			{
-				OverlayUtil.renderHoverableArea(graphics, object.getClickbox(), client.getMouseCanvasPosition(), fillColor, markerColor, markerColor.darker());
+				Area clickbox = object.getClickbox();
+				if (clickbox != null)
+				{
+					OverlayUtil.renderHoverableArea(graphics, object.getClickbox(), client.getMouseCanvasPosition(), fillColor, markerColor, markerColor.darker());
+				}
 				continue;
 			}
 
