@@ -25,42 +25,98 @@
 package net.runelite.client.plugins.specialcounter;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 import net.runelite.client.ui.overlay.infobox.Counter;
 
 class SpecialCounter extends Counter
 {
 	private SpecialWeapon weapon;
+	private Map<String, Integer> counts = new HashMap<>();
 
-	SpecialCounter(BufferedImage image, SpecialCounterPlugin plugin, int hitValue, SpecialWeapon weapon)
+	SpecialCounter(BufferedImage image, SpecialCounterPlugin plugin, String name, int hitValue, SpecialWeapon weapon)
 	{
-		super(image, plugin, hitValue);
+		super(image, plugin, 0);
 		this.weapon = weapon;
+		addHits(name, hitValue);
 	}
 
-	void addHits(double hit)
+	void addHits(String name, int hit)
+	{
+		if (name != null)
+		{
+			if (counts.containsKey(name))
+			{
+				counts.put(name, counts.get(name) + hit);
+			}
+			else
+			{
+				counts.put(name, hit);
+			}
+		}
+		else
+		{
+			setCount(getCount() + hit);
+		}
+	}
+
+	@Override
+	public String getText()
 	{
 		int count = getCount();
-		setCount(count + (int) hit);
+		for (int hits : counts.values())
+		{
+			count += hits;
+		}
+		return String.valueOf(count);
 	}
 
 	@Override
 	public String getTooltip()
 	{
+		String tooltip = "";
 		int hitValue = getCount();
-		if (!weapon.isDamage())
+		if (hitValue != 0)
 		{
-			if (hitValue == 1)
+			if (!weapon.isDamage())
 			{
-				return weapon.getName() + " special has hit " + hitValue + " time.";
+				if (hitValue == 1)
+				{
+					tooltip += "You have hit " + hitValue + " " + weapon.getName() + " spec.";
+				}
+				else
+				{
+					tooltip += "You have hit " + hitValue + " " + weapon.getName() + " specs.";
+				}
 			}
 			else
 			{
-				return weapon.getName() + " special has hit " + hitValue + " times.";
+				tooltip += tooltip += "You have hit " + hitValue + " " + weapon.getName() + " spec damage.";
 			}
+			tooltip += "</br>";
 		}
-		else
+
+		for (String name : counts.keySet())
 		{
-			return weapon.getName() + " special has hit " + hitValue + " total.";
+			hitValue = counts.get(name);
+			if (!weapon.isDamage())
+			{
+				if (hitValue == 1)
+				{
+					tooltip += name + " has hit " + hitValue + " " + weapon.getName() + " spec.";
+				}
+				else
+				{
+					tooltip += name + " has hit " + hitValue + " " + weapon.getName() + " specs.";
+				}
+			}
+			else
+			{
+				tooltip += tooltip += name + " has hit " + hitValue + " " + weapon.getName() + " spec damage.";
+			}
+			tooltip += "</br>";
 		}
+		tooltip = tooltip.substring(0, tooltip.length() - 5);
+		return tooltip;
 	}
 }
