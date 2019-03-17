@@ -146,7 +146,7 @@ public class TwitterService
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Error authing to Twitter: " + response.toString());
+				throw new IOException("Error authing to Twitter: " + response);
 			}
 
 			InputStream in = response.body().byteStream();
