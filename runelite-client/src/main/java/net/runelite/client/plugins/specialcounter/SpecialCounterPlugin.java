@@ -161,10 +161,11 @@ public class SpecialCounterPlugin extends Plugin
 			{
 				if (specialWeapon != null)
 				{
-					updateCounter(specialWeapon, null, deltaExperience);
+					int hit = getHit(specialWeapon, deltaExperience);
+					updateCounter(specialWeapon, null, hit);
 					if (!party.getMembers().isEmpty())
 					{
-						final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(checkInteracting(), specialWeapon, deltaExperience);
+						final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(npcId, specialWeapon, hit);
 						specialCounterUpdate.setMemberId(party.getLocalMember().getMemberId());
 						wsClient.send(specialCounterUpdate);
 					}
@@ -223,7 +224,7 @@ public class SpecialCounterPlugin extends Plugin
 		String name = party.getMemberById(event.getMemberId()).getName();
 		if (interactedNpcIds.contains(event.getNpcId()))
 		{
-			clientThread.invokeLater(() -> updateCounter(event.getWeapon(), name, event.getExperience()));
+			clientThread.invokeLater(() -> updateCounter(event.getWeapon(), name, event.getHit()));
 		}
 	}
 
@@ -255,10 +256,9 @@ public class SpecialCounterPlugin extends Plugin
 		return null;
 	}
 
-	private void updateCounter(SpecialWeapon specialWeapon, String name, int deltaExperience)
+	private void updateCounter(SpecialWeapon specialWeapon, String name, int hit)
 	{
 		SpecialCounter counter = specialCounter[specialWeapon.ordinal()];
-		int hit = getHit(specialWeapon, deltaExperience);
 
 		if (counter == null)
 		{
