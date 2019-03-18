@@ -162,4 +162,15 @@ public interface RaidsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "saveRaidInfo",
+		name = "Save raid data",
+		description = "Submit raid data (requires being logged in)"
+	)
+	default boolean saveRaid()
+	{
+		return true;
+	}
 }

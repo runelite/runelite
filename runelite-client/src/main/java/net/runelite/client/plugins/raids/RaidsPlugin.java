@@ -24,14 +24,17 @@
  */
 package net.runelite.client.plugins.raids;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -39,16 +42,25 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
 import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
+import net.runelite.api.Skill;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.account.AccountSession;
+import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -56,6 +68,9 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
+import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -65,6 +80,9 @@ import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.loottracker.GameItem;
+import net.runelite.http.api.raidtracker.RaidRecord;
+import net.runelite.http.api.raidtracker.RaidTrackerClient;
 
 @PluginDescriptor(
 	name = "Chambers Of Xeric",
@@ -82,6 +100,10 @@ public class RaidsPlugin extends Plugin
 	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
+	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: (\\d+)");
+	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
+		"You feel something weird sneaking into your backpack",
+		"You have a funny feeling like you would have been followed");
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -110,6 +132,9 @@ public class RaidsPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private SessionManager sessionManager;
+
 	@Getter
 	private final ArrayList<String> roomWhitelist = new ArrayList<>();
 
@@ -128,7 +153,19 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private boolean inRaidChambers;
 
+	private RaidTrackerClient raidTrackerClient;
+
 	private RaidsTimer timer;
+	private int upperTime = -1;
+	private int middleTime = -1;
+	private int lowerTime = -1;
+	private int raidTime = -1;
+	private int kc = -1;
+	private boolean cm = false;
+	private boolean pet = false;
+	private boolean prep = false;
+	private int cachedXp;
+	private boolean hasUpdated = false;
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -148,6 +185,12 @@ public class RaidsPlugin extends Plugin
 		overlayManager.add(overlay);
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
+
+		AccountSession accountSession = sessionManager.getAccountSession();
+		if (accountSession != null)
+		{
+			raidTrackerClient = new RaidTrackerClient(accountSession.getUuid());
+		}
 	}
 
 	@Override
@@ -158,6 +201,27 @@ public class RaidsPlugin extends Plugin
 		inRaidChambers = false;
 		raid = null;
 		timer = null;
+		raidTrackerClient = null;
+	}
+
+	@Subscribe
+	public void onSessionOpen(SessionOpen sessionOpen)
+	{
+		AccountSession accountSession = sessionManager.getAccountSession();
+		if (accountSession.getUuid() != null)
+		{
+			raidTrackerClient = new RaidTrackerClient(accountSession.getUuid());
+		}
+		else
+		{
+			raidTrackerClient = null;
+		}
+	}
+
+	@Subscribe
+	public void onSessionClose(SessionClose sessionClose)
+	{
+		raidTrackerClient = null;
 	}
 
 	@Subscribe
@@ -187,10 +251,9 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
+		String message = Text.removeTags(event.getMessage());
 		if (inRaidChambers && event.getType() == ChatMessageType.CLANCHAT_INFO)
 		{
-			String message = Text.removeTags(event.getMessage());
-
 			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
 			{
 				timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
@@ -241,6 +304,100 @@ public class RaidsPlugin extends Plugin
 				}
 			}
 		}
+
+		Matcher matcher = RAIDS_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			String boss = matcher.group(1);
+			kc = Integer.parseInt(matcher.group(2));
+			if (boss.toLowerCase().contains("challenge"))
+			{
+				cm = true;
+			}
+
+		}
+
+		if (PET_MESSAGES.stream().anyMatch(message::contains))
+		{
+			pet = true;
+		}
+	}
+
+	@Subscribe
+	public void onExperienceChanged(ExperienceChanged event)
+	{
+		if (event.getSkill() != Skill.HERBLORE)
+		{
+			return;
+		}
+
+		int herbExp = client.getSkillExperience(Skill.HERBLORE);
+
+		if (herbExp <= cachedXp)
+		{
+			return;
+		}
+
+		if (cachedXp == 0)
+		{
+			// this is the initial xp sent on login
+			cachedXp = herbExp;
+			return;
+		}
+
+		if (inRaidChambers)
+		{
+			prep = true;
+		}
+		cachedXp = herbExp;
+	}
+
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() != WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID)
+		{
+			return;
+		}
+
+		final ItemContainer container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
+		if (container == null || hasUpdated)
+		{
+			return;
+		}
+
+		final Collection<ItemStack> items = Arrays.stream(container.getItems())
+			.filter(item -> item.getId() > 0)
+			.map(item -> new ItemStack(item.getId(), item.getQuantity(), client.getLocalPlayer().getLocalLocation()))
+			.collect(Collectors.toList());
+
+		if (items.isEmpty())
+		{
+			log.debug("No items to find for Container: {}", container);
+			return;
+		}
+
+		if (raidTrackerClient != null && config.saveRaid() && raid != null)
+		{
+			String username = client.getUsername();
+			int points = client.getVar(Varbits.PERSONAL_POINTS);
+			int teamPoints = client.getVar(Varbits.TOTAL_POINTS);
+			int teamSize = client.getVar(Varbits.RAID_PARTY_SIZE);
+			String rotation = raid.getRotationString();
+			Collection<GameItem> gameItems = toGameItems(items);
+
+			if (pet)
+			{
+				gameItems.add(new GameItem(ItemID.OLMLET, 1));
+			}
+
+			RaidRecord raidRecord = new RaidRecord(username, kc, cm, upperTime, middleTime, lowerTime, raidTime, points,
+				teamPoints, teamSize, rotation, prep, gameItems);
+			raidTrackerClient.submit(raidRecord);
+		}
+
+
+		hasUpdated = true;
 	}
 
 	private void checkRaidPresence(boolean force)
@@ -601,5 +758,26 @@ public class RaidsPlugin extends Plugin
 		}
 
 		return room;
+	}
+
+	private static Collection<GameItem> toGameItems(Collection<ItemStack> items)
+	{
+		return items.stream()
+			.map(item -> new GameItem(item.getId(), item.getQuantity()))
+			.collect(Collectors.toList());
+	}
+
+	private void reset()
+	{
+		raid = null;
+		hasUpdated = false;
+		updateInfoBoxState();
+		cm = false;
+		kc = -1;
+		prep = false;
+		pet = false;
+		upperTime = -1;
+		lowerTime = -1;
+		raidTime = -1;
 	}
 }
