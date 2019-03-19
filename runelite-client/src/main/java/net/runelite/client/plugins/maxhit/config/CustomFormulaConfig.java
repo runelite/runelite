@@ -33,27 +33,31 @@ public enum CustomFormulaConfig {
 
     TRIDENT_OF_SEAS(
             MaxHitCalculator.CombatMethod.MAGIC,
-            new ArrayList<>(Arrays.asList(
-                new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "Slayer's staff")),
-                new SpellRequirement(SpellBaseDamageConfig.MAGIC_DART)
+            new ArrayList<>(Collections.singletonList(
+                new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "Trident of the seas"))
             )),
             (client, calculator) -> {
                 int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
 
-                return Math.floor(magicLevel / 3.0) - 5.0;
+                int baseDamage = (int) Math.floor(magicLevel / 3.0) - 5;
+                calculator.setBaseDamage(baseDamage);
+
+                return calculator.calculateDefault();
             }
     ),
 
     TRIDENT_OF_SWAMP(
             MaxHitCalculator.CombatMethod.MAGIC,
-            new ArrayList<>(Arrays.asList(
-                new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "Slayer's staff")),
-                new SpellRequirement(SpellBaseDamageConfig.MAGIC_DART)
+            new ArrayList<>(Collections.singletonList(
+                new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "Trident of the swamp"))
             )),
             (client, calculator) -> {
                 int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
 
-                return Math.floor(magicLevel / 3.0) - 2.0;
+                int baseDamage = (int) Math.floor(magicLevel / 3.0) - 2;
+                calculator.setBaseDamage(baseDamage);
+
+                return calculator.calculateDefault();
             }
     ),
 

@@ -21,6 +21,7 @@ public abstract class MaxHitCalculator {
     Client client;
     CombatMethod combatMethod;
     Item[] equipedItems;
+    int baseDamage = 0;
 
     public enum CombatMethod {
         MELEE,
@@ -107,7 +108,11 @@ public abstract class MaxHitCalculator {
         return null;
     }
 
-    protected abstract double calculateDefault();
+    public abstract double calculateDefault();
+
+    public void setBaseDamage(int baseDamage) {
+        this.baseDamage = baseDamage;
+    }
 
     double getSkillStrength() {
         return Double.parseDouble(this.getSkillStrengthText(this.equipmentSkillPower().getText()));

@@ -39,14 +39,18 @@ public class MagicMaxHitCalculator extends MaxHitCalculator {
     * Section 4.
     * */
     @Override
-    protected double calculateDefault() {
-        int autoCastSpellId = client.getVar(Varbits.AUTO_CAST_SPELL);
-        if(autoCastSpellId == 0) {
-            return 0.0;
-        }
+    public double calculateDefault() {
+        int spellBaseDamage = this.baseDamage;
 
-        SpellBaseDamageConfig autoCastSpell = SpellBaseDamageConfig.findSpellById(autoCastSpellId);
-        int spellBaseDamage = autoCastSpell.getBaseDamage();
+        if(spellBaseDamage == 0) {
+            int autoCastSpellId = client.getVar(Varbits.AUTO_CAST_SPELL);
+            if(autoCastSpellId == 0) {
+                return 0.0;
+            }
+
+            SpellBaseDamageConfig autoCastSpell = SpellBaseDamageConfig.findSpellById(autoCastSpellId);
+            spellBaseDamage = autoCastSpell.getBaseDamage();
+        }
 
 //      a.Find the base maximum damage a spell can deal.
 //      See CustomFormulaConfig for spells based on magic lvl
