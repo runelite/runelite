@@ -10,12 +10,11 @@ public enum PrayerBonusConfig
     ULTIMATE_STRENGTH(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_ULTIMATE_STRENGTH, 0.15),
     CHIVALRY(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_CHIVALRY, 0.18),
 
-    PIETY(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_PIETY, 0.23),
-    SHARP_EYE(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_SHARP_EYE, 0.05),
-    HAWK_EYE(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_HAWK_EYE, 0.1),
-    EAGLE_EYE(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_EAGLE_EYE, 0.15),
-    RIGOUR(MaxHitCalculator.CombatMethod.MELEE, Varbits.PRAYER_RIGOUR, 0.23);
-
+    PIETY(MaxHitCalculator.CombatMethod.RANGE, Varbits.PRAYER_PIETY, 0.23),
+    SHARP_EYE(MaxHitCalculator.CombatMethod.RANGE, Varbits.PRAYER_SHARP_EYE, 0.05),
+    HAWK_EYE(MaxHitCalculator.CombatMethod.RANGE, Varbits.PRAYER_HAWK_EYE, 0.1),
+    EAGLE_EYE(MaxHitCalculator.CombatMethod.RANGE, Varbits.PRAYER_EAGLE_EYE, 0.15),
+    RIGOUR(MaxHitCalculator.CombatMethod.RANGE, Varbits.PRAYER_RIGOUR, 0.23);
 
     private final MaxHitCalculator.CombatMethod combatMethod;
     private final Varbits prayerVarbit;

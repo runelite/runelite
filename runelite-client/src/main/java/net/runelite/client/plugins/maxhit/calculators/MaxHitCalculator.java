@@ -18,9 +18,9 @@ import java.util.function.BiFunction;
 
 public abstract class MaxHitCalculator {
 
-    Client client;
-    CombatMethod combatMethod;
-    Item[] equipedItems;
+    final Client client;
+    private final CombatMethod combatMethod;
+    private final Item[] equipedItems;
     int baseDamage = 0;
 
     public enum CombatMethod {
@@ -62,7 +62,8 @@ public abstract class MaxHitCalculator {
     double getPrayerBonus() {
         for(PrayerBonusConfig prayerBonus : PrayerBonusConfig.values()) {
             boolean prayerActive = client.getVar(prayerBonus.getPrayerVarbit()) == 1;
-            if(prayerActive) {
+            boolean sameCombatMethod = prayerBonus.getCombatMethod() == this.combatMethod;
+            if(prayerActive && sameCombatMethod) {
                 return prayerBonus.getStrengthBonus();
             }
         }

@@ -9,7 +9,7 @@ public class EquipmentHelper {
         return itemSet.getItems().stream().allMatch(item -> wearsItem(client, equipedItems, item.getEquipmentSlot(), item.getItem()));
     }
 
-    public static boolean wearsItem(Client client, Item[] equipedItems, EquipmentSlot slot, String item){
+    private static boolean wearsItem(Client client, Item[] equipedItems, EquipmentSlot slot, String item){
         return client.getItemDefinition(equipedItems[slot.getId()].getId()).getName().toLowerCase().contains(item.toLowerCase());
     }
 

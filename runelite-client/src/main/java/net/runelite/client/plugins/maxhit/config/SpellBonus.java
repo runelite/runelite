@@ -1,11 +1,11 @@
 package net.runelite.client.plugins.maxhit.config;
 
 import net.runelite.api.Client;
-import net.runelite.client.plugins.maxhit.requirements.AutocastSpellRequirement;
-import net.runelite.client.plugins.maxhit.requirements.Requirement;
-import net.runelite.client.plugins.maxhit.requirements.EquipmentItemRequirement;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlot;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlotItem;
+import net.runelite.client.plugins.maxhit.requirements.AutocastSpellRequirement;
+import net.runelite.client.plugins.maxhit.requirements.EquipmentItemRequirement;
+import net.runelite.client.plugins.maxhit.requirements.Requirement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,9 +38,9 @@ public enum SpellBonus {
         )))
     )));
 
-    private double bonusDamage;
-    private Operation operation;
-    private ArrayList<Requirement> requirement;
+    private final double bonusDamage;
+    private final Operation operation;
+    private final ArrayList<Requirement> requirement;
     private boolean afterEquipment = false;
 
     public boolean getAfterEquipment() {

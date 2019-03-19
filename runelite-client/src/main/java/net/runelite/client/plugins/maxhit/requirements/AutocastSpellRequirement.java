@@ -7,7 +7,7 @@ import net.runelite.client.plugins.maxhit.config.SpellBaseDamageConfig;
 import java.util.ArrayList;
 
 public class AutocastSpellRequirement implements Requirement {
-    private ArrayList<SpellBaseDamageConfig> autocastSpells;
+    private final ArrayList<SpellBaseDamageConfig> autocastSpells;
 
     public AutocastSpellRequirement(ArrayList<SpellBaseDamageConfig> autocastSpells) {
         this.autocastSpells = autocastSpells;

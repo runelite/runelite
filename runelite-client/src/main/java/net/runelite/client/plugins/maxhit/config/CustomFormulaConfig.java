@@ -2,19 +2,18 @@ package net.runelite.client.plugins.maxhit.config;
 
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
-import net.runelite.client.plugins.maxhit.requirements.Requirement;
-import net.runelite.client.plugins.maxhit.requirements.EquipmentItemRequirement;
-import net.runelite.client.plugins.maxhit.requirements.EquipmentItemSetRequirement;
-import net.runelite.client.plugins.maxhit.requirements.SpellRequirement;
 import net.runelite.client.plugins.maxhit.calculators.MaxHitCalculator;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentItemset;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlot;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlotItem;
+import net.runelite.client.plugins.maxhit.requirements.EquipmentItemRequirement;
+import net.runelite.client.plugins.maxhit.requirements.EquipmentItemSetRequirement;
+import net.runelite.client.plugins.maxhit.requirements.Requirement;
+import net.runelite.client.plugins.maxhit.requirements.SpellRequirement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.function.BiFunction;
 
 public enum CustomFormulaConfig {
@@ -126,8 +125,8 @@ public enum CustomFormulaConfig {
             }
     );
 
-    private MaxHitCalculator.CombatMethod requiredCombatMethod;
-    private ArrayList<Requirement> requirements;
+    private final MaxHitCalculator.CombatMethod requiredCombatMethod;
+    private final ArrayList<Requirement> requirements;
     private final BiFunction<Client, MaxHitCalculator, Double> customFormula;
 
     CustomFormulaConfig(MaxHitCalculator.CombatMethod requiredCombatMethod, ArrayList<Requirement> requirements, BiFunction<Client, MaxHitCalculator, Double> customFormula) {

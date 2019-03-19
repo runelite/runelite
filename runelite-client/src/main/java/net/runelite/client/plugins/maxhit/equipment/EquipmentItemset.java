@@ -3,7 +3,7 @@ package net.runelite.client.plugins.maxhit.equipment;
 import java.util.List;
 
 public class EquipmentItemset {
-    private List<EquipmentSlotItem> items;
+    private final List<EquipmentSlotItem> items;
 
     public EquipmentItemset(List<EquipmentSlotItem> items) {
         this.items = items;

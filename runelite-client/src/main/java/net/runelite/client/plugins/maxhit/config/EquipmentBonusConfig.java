@@ -1,13 +1,13 @@
 package net.runelite.client.plugins.maxhit.config;
 
 import net.runelite.api.Client;
-import net.runelite.client.plugins.maxhit.requirements.Requirement;
-import net.runelite.client.plugins.maxhit.requirements.SpellBookRequirement;
 import net.runelite.client.plugins.maxhit.calculators.MaxHitCalculator;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentCombatBonus;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentItemset;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlot;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlotItem;
+import net.runelite.client.plugins.maxhit.requirements.Requirement;
+import net.runelite.client.plugins.maxhit.requirements.SpellBookRequirement;
 
 import java.util.*;
 
@@ -166,7 +166,7 @@ public enum EquipmentBonusConfig {
 
     private static final Map<BonusType, ArrayList<EquipmentBonusConfig>> bonusTypes = new HashMap<>();
 
-    private BonusType bonusType = BonusType.EQUIPMENT;
+    private BonusType bonusType;
     private final EquipmentItemset itemset;
     private EquipmentCombatBonus equipmentCombatBonus;
     private List<Requirement> requirements = new ArrayList<>();

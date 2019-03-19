@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.maxhit.equipment;
 
+@SuppressWarnings("unused")
 public enum EquipmentSlot {
     HELM_SLOT(0),
     CAPE_SLOT(1),
@@ -12,7 +13,7 @@ public enum EquipmentSlot {
     BOOT_SLOT(10),
     RING_SLOT(12);
 
-    private int id;
+    private final int id;
 
     EquipmentSlot(int id) {
         this.id = id;

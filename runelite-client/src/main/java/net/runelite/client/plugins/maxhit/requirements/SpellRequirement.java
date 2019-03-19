@@ -5,7 +5,7 @@ import net.runelite.api.Varbits;
 import net.runelite.client.plugins.maxhit.config.SpellBaseDamageConfig;
 
 public class SpellRequirement implements Requirement {
-    private SpellBaseDamageConfig spellBaseDamageConfig;
+    private final SpellBaseDamageConfig spellBaseDamageConfig;
 
     public SpellRequirement(SpellBaseDamageConfig spellBaseDamageConfig) {
         this.spellBaseDamageConfig = spellBaseDamageConfig;

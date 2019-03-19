@@ -24,42 +24,26 @@
  */
 package net.runelite.client.plugins.maxhit.attackstyle;
 
-import net.runelite.api.Skill;
-
 public enum AttackStyle
 {
-	ACCURATE("Accurate", new Skill[]{Skill.ATTACK}, 0),
-	AGGRESSIVE("Aggressive", new Skill[]{Skill.STRENGTH}, 3),
-	DEFENSIVE("Defensive", new Skill[]{Skill.DEFENCE}, 0),
-	CONTROLLED("Controlled", new Skill[]{Skill.ATTACK, Skill.STRENGTH, Skill.DEFENCE}, 1),
-	RANGING("Ranging", new Skill[]{Skill.RANGED}, 3),
-	LONGRANGE("Longrange", new Skill[]{Skill.RANGED, Skill.DEFENCE}, 0),
-	CASTING("Casting", new Skill[]{Skill.MAGIC}, 0),
-	DEFENSIVE_CASTING("Defensive Casting", new Skill[]{Skill.MAGIC, Skill.DEFENCE}, 0),
-	OTHER("Other", new Skill[]{}, 0);
+	ACCURATE(0),
+	AGGRESSIVE(3),
+	DEFENSIVE(0),
+	CONTROLLED(1),
+	RANGING(3),
+	LONGRANGE(0),
+	CASTING(0),
+	DEFENSIVE_CASTING(0),
+	OTHER(0);
 
-	private final String name;
-	private final Skill[] skills;
-	private int maxHitBonus;
+	private final int maxHitBonus;
 
-	AttackStyle(String name, Skill[] skills, int maxHitBonus)
+	AttackStyle(int maxHitBonus)
 	{
-		this.name = name;
-		this.skills = skills;
 		this.maxHitBonus = maxHitBonus;
 	}
 
-	public String getName()
-	{
-		return this.name;
-	}
-
-	public Skill[] getSkills()
-	{
-		return this.skills;
-	}
-
-	public double getMaxHitBonus() {
+    public double getMaxHitBonus() {
 		return this.maxHitBonus;
 	}
 }

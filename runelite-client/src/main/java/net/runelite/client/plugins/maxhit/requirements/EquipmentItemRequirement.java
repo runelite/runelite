@@ -8,7 +8,7 @@ import net.runelite.client.plugins.maxhit.equipment.EquipmentHelper;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlotItem;
 
 public class EquipmentItemRequirement implements Requirement {
-    private EquipmentSlotItem item;
+    private final EquipmentSlotItem item;
 
     public EquipmentItemRequirement(EquipmentSlotItem item) {
         this.item = item;

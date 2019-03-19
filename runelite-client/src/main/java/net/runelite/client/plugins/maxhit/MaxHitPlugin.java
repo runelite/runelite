@@ -38,7 +38,6 @@ import net.runelite.client.plugins.maxhit.calculators.MeleeMaxHitCalculator;
 import net.runelite.client.plugins.maxhit.calculators.RangeMaxHitCalculator;
 
 import javax.inject.Inject;
-import java.text.DecimalFormat;
 
 //import net.runelite.client.plugins.maxhit.calculators.MagicMaxHitCalculator;
 //import net.runelite.client.plugins.maxhit.calculators.RangeMaxHitCalculator;
@@ -50,9 +49,6 @@ import java.text.DecimalFormat;
 )
 public class MaxHitPlugin extends Plugin
 {
-	private final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");
-
-	private boolean equipmentStatsIsOpen = false;
 
 	@Inject
 	private Client client;
@@ -105,25 +101,25 @@ public class MaxHitPlugin extends Plugin
 	}
 
 	private class MaxHit {
-		private double maxMeleeHit;
-		private double maxRangeHit;
-		private double maxMagicHit;
+		private final double maxMeleeHit;
+		private final double maxRangeHit;
+		private final double maxMagicHit;
 
-		public MaxHit(double maxMeleeHit, double maxRangeHit, double maxMagicHit) {
+		MaxHit(double maxMeleeHit, double maxRangeHit, double maxMagicHit) {
 			this.maxMeleeHit = maxMeleeHit;
 			this.maxRangeHit = maxRangeHit;
 			this.maxMagicHit = maxMagicHit;
 		}
 
-		public double getMaxMeleeHit() {
+		double getMaxMeleeHit() {
 			return maxMeleeHit;
 		}
 
-		public double getMaxRangeHit() {
+		double getMaxRangeHit() {
 			return maxRangeHit;
 		}
 
-		public double getMaxMagicHit() {
+		double getMaxMagicHit() {
 			return maxMagicHit;
 		}
 	}
