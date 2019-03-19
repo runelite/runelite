@@ -59,7 +59,6 @@ import net.runelite.client.ws.WSClient;
 	tags = {"combat", "npcs", "overlay"},
 	enabledByDefault = false
 )
-@PluginDependency(PartyPlugin.class)
 public class SpecialCounterPlugin extends Plugin
 {
 	private int currentWorld = -1;
@@ -162,7 +161,7 @@ public class SpecialCounterPlugin extends Plugin
 				if (specialWeapon != null)
 				{
 					int hit = getHit(specialWeapon, deltaExperience);
-					updateCounter(specialWeapon, null, hit);
+					updateCounter(specialWeapon, "You", hit);
 					if (!party.getMembers().isEmpty())
 					{
 						final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(npcId, specialWeapon, hit);
