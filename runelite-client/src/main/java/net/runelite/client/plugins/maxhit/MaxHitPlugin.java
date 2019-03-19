@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2019, Bartvollebregt <https://github.com/Bartvollebregt>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,9 +38,6 @@ import net.runelite.client.plugins.maxhit.calculators.MeleeMaxHitCalculator;
 import net.runelite.client.plugins.maxhit.calculators.RangeMaxHitCalculator;
 
 import javax.inject.Inject;
-
-//import net.runelite.client.plugins.maxhit.calculators.MagicMaxHitCalculator;
-//import net.runelite.client.plugins.maxhit.calculators.RangeMaxHitCalculator;
 
 @PluginDescriptor(
 		name = "maxhitplugin",
