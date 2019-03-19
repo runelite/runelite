@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class ColorUtilTest
@@ -47,7 +49,8 @@ public class ColorUtilTest
 	@Test
 	public void colorTag()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals("<col=" + hex + ">", ColorUtil.colorTag(color));
 		});
 	}
@@ -55,7 +58,8 @@ public class ColorUtilTest
 	@Test
 	public void prependColorTag()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals("<col=" + hex + ">test", ColorUtil.prependColorTag("test", color));
 			assertEquals("<col=" + hex + ">", ColorUtil.prependColorTag("", color));
 		});
@@ -66,7 +70,8 @@ public class ColorUtilTest
 	@Test
 	public void wrapWithColorTag()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals("<col=" + hex + ">test</col>", ColorUtil.wrapWithColorTag("test", color));
 			assertEquals("<col=" + hex + "></col>", ColorUtil.wrapWithColorTag("", color));
 		});
@@ -75,7 +80,8 @@ public class ColorUtilTest
 	@Test
 	public void toHexColor()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals("#" + hex, ColorUtil.toHexColor(color));
 		});
 	}
@@ -92,7 +98,8 @@ public class ColorUtilTest
 	@Test
 	public void colorToHexCode()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals(hex, ColorUtil.colorToHexCode(color));
 		});
 	}
@@ -102,10 +109,10 @@ public class ColorUtilTest
 	{
 		for (Color color : COLOR_HEXSTRING_MAP.keySet())
 		{
-			assert(!ColorUtil.isFullyTransparent(color));
+			assertFalse(ColorUtil.isFullyTransparent(color));
 		}
-		assert(ColorUtil.isFullyTransparent(new Color(0, 0, 0, 0)));
-		assert(!ColorUtil.isFullyTransparent(new Color(0, 0, 0, 1)));
+		assertTrue(ColorUtil.isFullyTransparent(new Color(0, 0, 0, 0)));
+		assertFalse(ColorUtil.isFullyTransparent(new Color(0, 0, 0, 1)));
 	}
 
 	@Test
@@ -113,9 +120,9 @@ public class ColorUtilTest
 	{
 		for (Color color : COLOR_HEXSTRING_MAP.keySet())
 		{
-			assert(ColorUtil.isNotFullyTransparent(color));
+			assertTrue(ColorUtil.isNotFullyTransparent(color));
 		}
-		assert(!ColorUtil.isNotFullyTransparent(new Color(0, 0, 0, 0)));
-		assert(ColorUtil.isNotFullyTransparent(new Color(0, 0, 0, 1)));
+		assertFalse(ColorUtil.isNotFullyTransparent(new Color(0, 0, 0, 0)));
+		assertTrue(ColorUtil.isNotFullyTransparent(new Color(0, 0, 0, 1)));
 	}
 }

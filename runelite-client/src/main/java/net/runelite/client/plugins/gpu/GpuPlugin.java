@@ -1151,8 +1151,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glTexSubImage2D(gl.GL_TEXTURE_2D, 0, 0, 0, width, height, gl.GL_BGRA, gl.GL_UNSIGNED_INT_8_8_8_8_REV, interfaceBuffer);
 		}
 
-		gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
-
 		if (client.isStretchedEnabled())
 		{
 			Dimension dim = client.getStretchedDimensions();

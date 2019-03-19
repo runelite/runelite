@@ -473,7 +473,14 @@ public enum Varbits
 	/*
 	* Spells being auto-casted
 	* */
-	AUTO_CAST_SPELL(276);
+	AUTO_CAST_SPELL(276),
+
+	/**
+	 * Type of GE offer currently being created
+	 * 0 = buy
+	 * 1 = sell
+	 */
+	GE_OFFER_CREATION_TYPE(4397);
 
 	/**
 	 * The raw varbit ID.

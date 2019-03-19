@@ -299,7 +299,7 @@ public class ChatCommandsPlugin extends Plugin
 			Widget boss = bossChildren[i];
 			Widget kill = killsChildren[i];
 
-			String bossName = boss.getText();
+			String bossName = boss.getText().replace(":", "");
 			int kc = Integer.parseInt(kill.getText().replace(",", ""));
 			if (kc != getKc(bossName))
 			{
@@ -362,6 +362,11 @@ public class ChatCommandsPlugin extends Plugin
 	private void killCountLookup(ChatMessage chatMessage, String message)
 	{
 		if (!config.killcount())
+		{
+			return;
+		}
+
+		if (message.length() <= KILLCOUNT_COMMAND_STRING.length())
 		{
 			return;
 		}
@@ -483,6 +488,11 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
+		if (message.length() <= PB_COMMAND.length())
+		{
+			return;
+		}
+
 		ChatMessageType type = chatMessage.getType();
 		String search = message.substring(PB_COMMAND.length() + 1);
 
@@ -574,6 +584,11 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
+		if (message.length() <= PRICE_COMMAND_STRING.length())
+		{
+			return;
+		}
+
 		MessageNode messageNode = chatMessage.getMessageNode();
 		String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
 
@@ -637,6 +652,11 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		else
 		{
+			if (message.length() <= LEVEL_COMMAND_STRING.length())
+			{
+				return;
+			}
+
 			search = message.substring(LEVEL_COMMAND_STRING.length() + 1);
 		}
 
@@ -1089,6 +1109,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "barrows":
 				return "Barrows Chests";
 
+			// cox
 			case "cox":
 			case "xeric":
 			case "chambers":
@@ -1096,6 +1117,15 @@ public class ChatCommandsPlugin extends Plugin
 			case "raids":
 				return "Chambers of Xeric";
 
+			// cox cm
+			case "cox cm":
+			case "xeric cm":
+			case "chambers cm":
+			case "olm cm":
+			case "raids cm":
+				return "Chambers of Xeric Challenge Mode";
+
+			// tob
 			case "tob":
 			case "theatre":
 			case "verzik":

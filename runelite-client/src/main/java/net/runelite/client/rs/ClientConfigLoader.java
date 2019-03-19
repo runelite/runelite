@@ -38,7 +38,7 @@ import okhttp3.Response;
 @Singleton
 class ClientConfigLoader
 {
-	private static final String CONFIG_URL = "http://oldschool.runescape.com/jav_config.ws";
+	private static final String CONFIG_URL = "https://oldschool.runescape.com/jav_config.ws";
 	private final OkHttpClient httpClient;
 
 	@Inject
