@@ -7,8 +7,8 @@ import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.maxhit.config.EquipmentBonusConfig;
+import net.runelite.client.plugins.maxhit.config.SpellBaseDamageConfig;
 import net.runelite.client.plugins.maxhit.config.SpellBonus;
-import net.runelite.client.plugins.maxhit.config.SpellConfig;
 
 import java.util.ArrayList;
 
@@ -45,7 +45,7 @@ public class MagicMaxHitCalculator extends MaxHitCalculator {
             return 0.0;
         }
 
-        SpellConfig autoCastSpell = SpellConfig.findSpellById(autoCastSpellId);
+        SpellBaseDamageConfig autoCastSpell = SpellBaseDamageConfig.findSpellById(autoCastSpellId);
         int spellBaseDamage = autoCastSpell.getBaseDamage();
 
 //      a.Find the base maximum damage a spell can deal.

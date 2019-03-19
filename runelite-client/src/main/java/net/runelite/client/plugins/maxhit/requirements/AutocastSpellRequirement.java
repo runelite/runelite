@@ -1,15 +1,15 @@
-package net.runelite.client.plugins.maxhit.bonus.requirements;
+package net.runelite.client.plugins.maxhit.requirements;
 
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
-import net.runelite.client.plugins.maxhit.config.SpellConfig;
+import net.runelite.client.plugins.maxhit.config.SpellBaseDamageConfig;
 
 import java.util.ArrayList;
 
-public class AutocastSpellRequirement implements BonusRequirement {
-    private ArrayList<SpellConfig> autocastSpells;
+public class AutocastSpellRequirement implements Requirement {
+    private ArrayList<SpellBaseDamageConfig> autocastSpells;
 
-    public AutocastSpellRequirement(ArrayList<SpellConfig> autocastSpells) {
+    public AutocastSpellRequirement(ArrayList<SpellBaseDamageConfig> autocastSpells) {
         this.autocastSpells = autocastSpells;
     }
 

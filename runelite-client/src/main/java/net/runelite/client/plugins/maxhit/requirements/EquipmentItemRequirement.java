@@ -1,14 +1,16 @@
-package net.runelite.client.plugins.maxhit.bonus.requirements;
+package net.runelite.client.plugins.maxhit.requirements;
 
-import net.runelite.api.*;
-import net.runelite.client.plugins.maxhit.config.SpellConfig;
+import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentHelper;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlotItem;
 
-public class EquipmentRequirement implements BonusRequirement {
+public class EquipmentItemRequirement implements Requirement {
     private EquipmentSlotItem item;
 
-    public EquipmentRequirement(EquipmentSlotItem item) {
+    public EquipmentItemRequirement(EquipmentSlotItem item) {
         this.item = item;
     }
 

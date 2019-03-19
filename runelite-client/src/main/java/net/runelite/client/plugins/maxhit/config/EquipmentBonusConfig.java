@@ -1,9 +1,8 @@
 package net.runelite.client.plugins.maxhit.config;
 
 import net.runelite.api.Client;
-import net.runelite.client.plugins.maxhit.bonus.requirements.AutocastSpellRequirement;
-import net.runelite.client.plugins.maxhit.bonus.requirements.BonusRequirement;
-import net.runelite.client.plugins.maxhit.bonus.requirements.SpellBookRequirement;
+import net.runelite.client.plugins.maxhit.requirements.Requirement;
+import net.runelite.client.plugins.maxhit.requirements.SpellBookRequirement;
 import net.runelite.client.plugins.maxhit.calculators.MaxHitCalculator;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentCombatBonus;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentItemset;
@@ -135,7 +134,7 @@ public enum EquipmentBonusConfig {
     )), new EquipmentCombatBonus(0, 0, 0.025)),
     SMOKE_STAFF(BonusType.EQUIPMENT, new EquipmentItemset(Collections.singletonList(
             new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT ,"Smoke Staff")
-    )),  new EquipmentCombatBonus(0, 0, 0.10), Collections.singletonList(new SpellBookRequirement(SpellConfig.SpellBook.NORMAL))),
+    )),  new EquipmentCombatBonus(0, 0, 0.10), Collections.singletonList(new SpellBookRequirement(SpellBaseDamageConfig.SpellBook.NORMAL))),
 
 
 //
@@ -170,7 +169,7 @@ public enum EquipmentBonusConfig {
     private BonusType bonusType = BonusType.EQUIPMENT;
     private final EquipmentItemset itemset;
     private EquipmentCombatBonus equipmentCombatBonus;
-    private List<BonusRequirement> bonusRequirements = new ArrayList<>();
+    private List<Requirement> requirements = new ArrayList<>();
 
     static
     {
@@ -192,11 +191,11 @@ public enum EquipmentBonusConfig {
         this.equipmentCombatBonus = equipmentCombatBonus;
     }
 
-    EquipmentBonusConfig(BonusType bonusType, EquipmentItemset itemset, EquipmentCombatBonus equipmentCombatBonus, List<BonusRequirement> bonusRequirements) {
+    EquipmentBonusConfig(BonusType bonusType, EquipmentItemset itemset, EquipmentCombatBonus equipmentCombatBonus, List<Requirement> requirements) {
         this.bonusType = bonusType;
         this.itemset = itemset;
         this.equipmentCombatBonus = equipmentCombatBonus;
-        this.bonusRequirements = bonusRequirements;
+        this.requirements = requirements;
     }
 
     public EquipmentItemset getItemset() {
@@ -215,7 +214,7 @@ public enum EquipmentBonusConfig {
     }
 
     public boolean meetsRequirements(Client client) {
-        return bonusRequirements.stream().allMatch(requirement -> requirement.meetsRequirements(client));
+        return requirements.stream().allMatch(requirement -> requirement.meetsRequirements(client));
     }
 }
 

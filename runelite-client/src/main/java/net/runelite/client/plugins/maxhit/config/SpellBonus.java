@@ -1,9 +1,9 @@
 package net.runelite.client.plugins.maxhit.config;
 
 import net.runelite.api.Client;
-import net.runelite.client.plugins.maxhit.bonus.requirements.AutocastSpellRequirement;
-import net.runelite.client.plugins.maxhit.bonus.requirements.BonusRequirement;
-import net.runelite.client.plugins.maxhit.bonus.requirements.EquipmentRequirement;
+import net.runelite.client.plugins.maxhit.requirements.AutocastSpellRequirement;
+import net.runelite.client.plugins.maxhit.requirements.Requirement;
+import net.runelite.client.plugins.maxhit.requirements.EquipmentItemRequirement;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlot;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlotItem;
 
@@ -14,33 +14,33 @@ import java.util.Collections;
 public enum SpellBonus {
     CHAOS_GAUNTLETS(3, Operation.ADD,  new ArrayList<>(Collections.singletonList(
             new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
-                    SpellConfig.AIR_BOLT,
-                    SpellConfig.WATER_BOLT,
-                    SpellConfig.EARTH_BOLT,
-                    SpellConfig.FIRE_BOLT
+                    SpellBaseDamageConfig.AIR_BOLT,
+                    SpellBaseDamageConfig.WATER_BOLT,
+                    SpellBaseDamageConfig.EARTH_BOLT,
+                    SpellBaseDamageConfig.FIRE_BOLT
             )))
     ))),
     TOME_OF_FIRE(1.5, Operation.MULTIPLY, new ArrayList<>(Arrays.asList(
-            new EquipmentRequirement(new EquipmentSlotItem(EquipmentSlot.SHIELD_SLOT, "Tome of fire")),
+            new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.SHIELD_SLOT, "Tome of fire")),
             new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
-                SpellConfig.FIRE_BLAST,
-                SpellConfig.FIRE_BOLT,
-                SpellConfig.FIRE_STRIKE,
-                SpellConfig.FIRE_SURGE,
-                SpellConfig.FIRE_WAVE
+                SpellBaseDamageConfig.FIRE_BLAST,
+                SpellBaseDamageConfig.FIRE_BOLT,
+                SpellBaseDamageConfig.FIRE_STRIKE,
+                SpellBaseDamageConfig.FIRE_SURGE,
+                SpellBaseDamageConfig.FIRE_WAVE
             ))
     ))), true),
     CHARGE(10, Operation.ADD,  new ArrayList<>(Collections.singletonList(
         new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
-            SpellConfig.FLAMES_OF_ZAMAROK,
-            SpellConfig.CLAWS_OF_GUTHIX,
-            SpellConfig.SARADOMIN_STRIKE
+            SpellBaseDamageConfig.FLAMES_OF_ZAMAROK,
+            SpellBaseDamageConfig.CLAWS_OF_GUTHIX,
+            SpellBaseDamageConfig.SARADOMIN_STRIKE
         )))
     )));
 
     private double bonusDamage;
     private Operation operation;
-    private ArrayList<BonusRequirement> bonusRequirement;
+    private ArrayList<Requirement> requirement;
     private boolean afterEquipment = false;
 
     public boolean getAfterEquipment() {
@@ -52,16 +52,16 @@ public enum SpellBonus {
         MULTIPLY
     }
 
-    SpellBonus(double bonusDamage, Operation operation, ArrayList<BonusRequirement> bonusRequirement) {
+    SpellBonus(double bonusDamage, Operation operation, ArrayList<Requirement> requirement) {
         this.bonusDamage = bonusDamage;
         this.operation = operation;
-        this.bonusRequirement = bonusRequirement;
+        this.requirement = requirement;
     }
 
-    SpellBonus(double bonusDamage, Operation operation, ArrayList<BonusRequirement> bonusRequirement, boolean afterEquipment) {
+    SpellBonus(double bonusDamage, Operation operation, ArrayList<Requirement> requirement, boolean afterEquipment) {
         this.bonusDamage = bonusDamage;
         this.operation = operation;
-        this.bonusRequirement = bonusRequirement;
+        this.requirement = requirement;
         this.afterEquipment = afterEquipment;
     }
 
@@ -70,8 +70,8 @@ public enum SpellBonus {
 
         for(SpellBonus spellBonus: values()) {
             boolean meetsRequirements = true;
-            for(BonusRequirement bonusRequirement: spellBonus.bonusRequirement) {
-                if(!bonusRequirement.meetsRequirements(client)) {
+            for(Requirement requirement : spellBonus.requirement) {
+                if(!requirement.meetsRequirements(client)) {
                     meetsRequirements = false;
                 }
             }

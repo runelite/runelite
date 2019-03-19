@@ -7,7 +7,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.maxhit.attackstyle.AttackStyle;
 import net.runelite.client.plugins.maxhit.config.EquipmentBonusConfig;
-import net.runelite.client.plugins.maxhit.equipment.EquipmentCombatBonus;
 
 public class MeleeMaxHitCalculator extends MaxHitCalculator {
 

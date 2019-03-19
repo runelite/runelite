@@ -1,11 +1,8 @@
 package net.runelite.client.plugins.maxhit.config;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
-public enum SpellConfig {
+public enum SpellBaseDamageConfig {
 
     /*
     * Normal Spellbook
@@ -82,7 +79,7 @@ public enum SpellConfig {
     private int spellID;
     private int baseDamage;
 
-    SpellConfig(SpellBook spellBook, int spellID, int baseDamage) {
+    SpellBaseDamageConfig(SpellBook spellBook, int spellID, int baseDamage) {
         this.spellBook = spellBook;
         this.spellID = spellID;
         this.baseDamage = baseDamage;
@@ -100,7 +97,7 @@ public enum SpellConfig {
         return spellBook;
     }
 
-    public static SpellConfig findSpellById(int spellID){
+    public static SpellBaseDamageConfig findSpellById(int spellID){
         return Arrays.stream(values()).filter(spell -> spell.getSpellID() == spellID).findFirst().orElse(null);
     }
 }

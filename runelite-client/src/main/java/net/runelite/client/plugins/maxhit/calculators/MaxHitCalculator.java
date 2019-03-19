@@ -10,14 +10,11 @@ import net.runelite.client.plugins.maxhit.attackstyle.WeaponType;
 import net.runelite.client.plugins.maxhit.config.CustomFormulaConfig;
 import net.runelite.client.plugins.maxhit.config.EquipmentBonusConfig;
 import net.runelite.client.plugins.maxhit.config.PrayerBonusConfig;
-import net.runelite.client.plugins.maxhit.config.SpellConfig;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentHelper;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentItemset;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public abstract class MaxHitCalculator {
 
@@ -100,9 +97,9 @@ public abstract class MaxHitCalculator {
                 continue;
             }
 
-            boolean wearsSet = EquipmentHelper.wearsItemSet(this.client, this.equipedItems, customFormula.getRequiredItemSet());
-            boolean isCastingSpell = this.isCastingSpell(customFormula.getRequiredSpells());
-            if(wearsSet && isCastingSpell) {
+            boolean meetsRequirements = customFormula.getRequirements().stream().allMatch(requirement -> requirement.meetsRequirements(this.client));
+
+            if(meetsRequirements) {
                 return customFormula.getCustomFormula();
             }
         }
@@ -111,14 +108,6 @@ public abstract class MaxHitCalculator {
     }
 
     protected abstract double calculateDefault();
-
-    private boolean isCastingSpell(List<SpellConfig> requiredSpells) {
-        if(requiredSpells == null){
-            return false;
-        }
-        int currentSpellId = client.getVar(Varbits.AUTO_CAST_SPELL);
-        return requiredSpells.stream().anyMatch(spell -> spell.getSpellID() == currentSpellId);
-    }
 
     double getSkillStrength() {
         return Double.parseDouble(this.getSkillStrengthText(this.equipmentSkillPower().getText()));
