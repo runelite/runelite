@@ -6,20 +6,29 @@ import net.runelite.client.plugins.maxhit.config.SpellBaseDamageConfig;
 
 import java.util.ArrayList;
 
-public class AutocastSpellRequirement implements Requirement {
-    private final ArrayList<SpellBaseDamageConfig> autocastSpells;
+public class AutocastSpellRequirement implements Requirement
+{
 
-    public AutocastSpellRequirement(ArrayList<SpellBaseDamageConfig> autocastSpells) {
-        this.autocastSpells = autocastSpells;
-    }
+	private final ArrayList<SpellBaseDamageConfig> autocastSpells;
 
-    @Override
-    public boolean meetsRequirements(Client client) {
-        int autoCastSpellId = client.getVar(Varbits.AUTO_CAST_SPELL);
-        if(autoCastSpellId == 0) {
-            return false;
-        }
+	public AutocastSpellRequirement(ArrayList<SpellBaseDamageConfig> autocastSpells)
+	{
+		this.autocastSpells = autocastSpells;
+	}
 
-        return this.autocastSpells.stream().anyMatch(spell -> spell.getSpellID() == autoCastSpellId);
-    }
+	@Override
+	public boolean meetsRequirements(Client client)
+	{
+		int autoCastSpellId = client.getVar(Varbits.AUTO_CAST_SPELL);
+
+		if (autoCastSpellId == 0)
+		{
+
+			return false;
+
+		}
+
+		return this.autocastSpells.stream().anyMatch(spell -> spell.getSpellID() == autoCastSpellId);
+
+	}
 }

@@ -66,16 +66,19 @@ public class MaxHitPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event) {
+	public void onVarbitChanged(VarbitChanged event)
+	{
 		updateMaxHitWidget();
 	}
 
-	private void updateMaxHitWidget() {
+	private void updateMaxHitWidget()
+	{
 		Widget equipmentStats = client.getWidget(WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER);
 
 		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
 
-		if (equipmentContainer != null && equipmentStats != null && !equipmentStats.isHidden()) {
+		if (equipmentContainer != null && equipmentStats != null && !equipmentStats.isHidden())
+		{
 			Item[] equipedItems = equipmentContainer.getItems();
 
 			MeleeMaxHitCalculator meleeMaxHitCalculator = new MeleeMaxHitCalculator(this.client, equipedItems);
@@ -90,7 +93,8 @@ public class MaxHitPlugin extends Plugin
 		}
 	}
 
-	private void setWidgetMaxHit(MaxHit maxhit) {
+	private void setWidgetMaxHit(MaxHit maxhit)
+	{
 		Widget equipYourCharacter = client.getWidget(WidgetInfo.EQUIP_YOUR_CHARACTER);
 		String maxHitText = "Melee Max Hit: " + maxhit.getMaxMeleeHit();
 		maxHitText += "<br>Range Max Hit: " + maxhit.getMaxRangeHit();
@@ -100,26 +104,31 @@ public class MaxHitPlugin extends Plugin
 		equipYourCharacter.setText(maxHitText);
 	}
 
-	private class MaxHit {
+	private class MaxHit
+	{
 		private final double maxMeleeHit;
 		private final double maxRangeHit;
 		private final double maxMagicHit;
 
-		MaxHit(double maxMeleeHit, double maxRangeHit, double maxMagicHit) {
+		MaxHit(double maxMeleeHit, double maxRangeHit, double maxMagicHit)
+		{
 			this.maxMeleeHit = maxMeleeHit;
 			this.maxRangeHit = maxRangeHit;
 			this.maxMagicHit = maxMagicHit;
 		}
 
-		double getMaxMeleeHit() {
+		double getMaxMeleeHit()
+		{
 			return maxMeleeHit;
 		}
 
-		double getMaxRangeHit() {
+		double getMaxRangeHit()
+		{
 			return maxRangeHit;
 		}
 
-		double getMaxMagicHit() {
+		double getMaxMagicHit()
+		{
 			return maxMagicHit;
 		}
 	}

@@ -43,7 +43,8 @@ public enum AttackStyle
 		this.maxHitBonus = maxHitBonus;
 	}
 
-    public double getMaxHitBonus() {
+	public double getMaxHitBonus()
+	{
 		return this.maxHitBonus;
 	}
 }
