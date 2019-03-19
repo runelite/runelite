@@ -43,6 +43,7 @@ import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.LocalPlayerDeath;
+import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
@@ -206,6 +207,18 @@ public abstract class RSActorMixin implements RSActor
 	{
 		InteractingChanged interactingChanged = new InteractingChanged(this, getInteracting());
 		client.getCallbacks().post(interactingChanged);
+	}
+
+	@FieldHook("overhead")
+	@Inject
+	public void overheadTextChanged(int idx)
+	{
+		String overheadText = getOverheadText();
+		if (overheadText != null)
+		{
+			OverheadTextChanged overheadTextChanged = new OverheadTextChanged(this, overheadText);
+			client.getCallbacks().post(overheadTextChanged);
+		}
 	}
 
 	@Inject
