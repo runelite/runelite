@@ -64,4 +64,37 @@ public interface BankConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "rightClickBankInventory",
+		name = "Disable left click bank inventory",
+		description = "Configures whether the bank inventory button will bank your inventory on left click",
+		position = 4
+	)
+	default boolean rightClickBankInventory()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rightClickBankEquip",
+		name = "Disable left click bank equipment",
+		description = "Configures whether the bank equipment button will bank your equipment on left click",
+		position = 5
+	)
+	default boolean rightClickBankEquip()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rightClickBankLoot",
+		name = "Disable left click bank looting bag",
+		description = "Configures whether the bank looting bag button will bank your looting bag contents on left click",
+		position = 6
+	)
+	default boolean rightClickBankLoot()
+	{
+		return false;
+	}
 }
