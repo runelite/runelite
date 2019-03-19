@@ -86,7 +86,7 @@ class SpecialCounter extends InfoBox
 			}
 			else
 			{
-				tooltip += tooltip += name + ": " + hitValue + " " + weapon.getName() + " spec damage.";
+				tooltip += name + ": " + hitValue + " " + weapon.getName() + " spec damage.";
 			}
 			tooltip += "</br>";
 		}
