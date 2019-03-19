@@ -1,14 +1,30 @@
-//package net.runelite.client.plugins.maxhit.calculators;
-//
-//public class RangeMaxHitCalculator implements MaxHitCalculator {
-//
-//    @Override
-//    public double calculate() {
-//        double equipmentRangedStrength = Double.parseDouble(widget.getText().replace("Ranged strength: ", ""));
-//        double effectiveRangedStrength = Math.floor((Math.floor(currentStat * prayerBonus) + 8) * SetBoosts.find(set).getVoidRange());
-//        maxHit = Math.floor((0.5 + effectiveRangedStrength * (equipmentRangedStrength + 64) / 640) * SetBoosts.find(set).getSlayerRange());
-//        maxHit = Math.floor(maxHit * multiplier);
-//
-//        return 0.0;
-//    }
-//}
+package net.runelite.client.plugins.maxhit.calculators;
+
+import net.runelite.api.Client;
+import net.runelite.api.Item;
+import net.runelite.api.Skill;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+
+public class RangeMaxHitCalculator extends MeleeMaxHitCalculator {
+
+    public RangeMaxHitCalculator(Client client, Item[] equipedItems) {
+        super(client, CombatMethod.RANGE, equipedItems);
+    }
+
+    @Override
+    protected String getSkillStrengthText(String equipmentText) {
+        return equipmentText.replace("Ranged strength: ", "").replace(".", "").replace("%", "");
+    }
+
+    @Override
+    public Widget equipmentSkillPower() {
+        return this.client.getWidget(WidgetInfo.EQUIPMENT_RANGED_STRENGTH);
+    }
+
+    @Override
+    public double getCurrentSkillPower() {
+        return this.client.getRealSkillLevel(Skill.RANGED);
+    }
+
+}

@@ -35,6 +35,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.maxhit.calculators.MagicMaxHitCalculator;
 import net.runelite.client.plugins.maxhit.calculators.MeleeMaxHitCalculator;
+import net.runelite.client.plugins.maxhit.calculators.RangeMaxHitCalculator;
 
 import javax.inject.Inject;
 import java.text.DecimalFormat;
@@ -82,13 +83,13 @@ public class MaxHitPlugin extends Plugin
 			Item[] equipedItems = equipmentContainer.getItems();
 
 			MeleeMaxHitCalculator meleeMaxHitCalculator = new MeleeMaxHitCalculator(this.client, equipedItems);
-//			RangeMaxHitCalculator rangeMaxHitCalculator = new RangeMaxHitCalculator(this.client, equipedItems);
+			RangeMaxHitCalculator rangeMaxHitCalculator = new RangeMaxHitCalculator(this.client, equipedItems);
 			MagicMaxHitCalculator magicMaxHitCalculator = new MagicMaxHitCalculator(this.client, equipedItems);
 
 			int autoCastSpell = client.getVar(Varbits.AUTO_CAST_SPELL);
 			System.out.println("AutoCast: " + autoCastSpell);
 
-			MaxHit maxHit = new MaxHit(meleeMaxHitCalculator.calculate(), 0, magicMaxHitCalculator.calculate());
+			MaxHit maxHit = new MaxHit(meleeMaxHitCalculator.calculate(), rangeMaxHitCalculator.calculate(), magicMaxHitCalculator.calculate());
 			this.setWidgetMaxHit(maxHit);
 		}
 	}

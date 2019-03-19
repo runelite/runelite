@@ -14,6 +14,10 @@ public class MeleeMaxHitCalculator extends MaxHitCalculator {
         super(client, CombatMethod.MELEE, equipedItems);
     }
 
+    MeleeMaxHitCalculator(Client client, CombatMethod combatMethod, Item[] equipedItems) {
+        super(client, combatMethod, equipedItems);
+    }
+
     @Override
     protected String getSkillStrengthText(String equipmentText) {
         return equipmentText.replace("Melee strength: ", "");
