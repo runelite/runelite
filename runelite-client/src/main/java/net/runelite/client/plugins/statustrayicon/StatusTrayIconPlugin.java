@@ -116,7 +116,8 @@ public class StatusTrayIconPlugin extends Plugin
 			g.fillRect(prayerX, getYOffset(), prayerWidth, scaledMissingPrayer);
 		}
 
-		if (config.numberToDisplay() !=  StatusNumberMode.NONE) {
+		if (config.numberToDisplay() !=  StatusNumberMode.NONE)
+		{
 			int numberToDisplay = config.numberToDisplay() == StatusNumberMode.HITPOINTS ? currentHealth : currentPrayer;
 			g.setFont(numberToDisplay < 100 ? STATUS_FONT : STATUS_FONT_SMALL);
 			g.setColor(TEXT_COLOR);
@@ -150,12 +151,14 @@ public class StatusTrayIconPlugin extends Plugin
 		return configManager.getConfig(StatusTrayIconConfig.class);
 	}
 
-	private void resetTrayIcon() {
+	private void resetTrayIcon()
+	{
 		clientUI.getTrayIcon().setImage(ClientUI.ICON);
 
 	}
 
-	private int getYOffset() {
+	private int getYOffset()
+	{
 		return OSType.getOSType() == OSType.MacOS ? MAC_HEIGHT_OFFSET : 0;
 	}
 }
