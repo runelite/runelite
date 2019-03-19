@@ -186,7 +186,7 @@ public class Hooks implements Callbacks
 	 * When the world map opens it loads about ~100mb of data into memory, which
 	 * represents about half of the total memory allocated by the client.
 	 * This gets cached and never released, which causes GC pressure which can affect
-	 * performance. This method re-initializes the world map cache, which allows the
+	 * performance. This method reinitializes the world map cache, which allows the
 	 * data to be garbage collected, and causes the map data from disk each time
 	 * is it opened.
 	 */
@@ -210,7 +210,7 @@ public class Hooks implements Callbacks
 
 		if (manager != null && manager.isLoaded())
 		{
-			log.debug("World map was closed, re-initializing");
+			log.debug("World map was closed, reinitializing");
 			renderOverview.initializeWorldMap(renderOverview.getWorldMapData());
 		}
 	}
