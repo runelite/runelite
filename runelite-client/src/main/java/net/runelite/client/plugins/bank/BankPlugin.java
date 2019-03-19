@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.bankvalue;
+package net.runelite.client.plugins.bank;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
@@ -38,11 +38,11 @@ import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.util.StackFormatter;
 
 @PluginDescriptor(
-	name = "Bank Value",
-	description = "Show the value of your bank and/or current tab",
-	tags = {"grand", "exchange", "high", "alchemy", "prices"}
+	name = "Bank",
+	description = "Modifications to the banking interface",
+	tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit"}
 )
-public class BankValuePlugin extends Plugin
+public class BankPlugin extends Plugin
 {
 	@Inject
 	private Client client;
@@ -54,15 +54,15 @@ public class BankValuePlugin extends Plugin
 	private BankCalculation bankCalculation;
 
 	@Inject
-	private BankValueConfig config;
+	private BankConfig config;
 
 	@Inject
 	private BankSearch bankSearch;
 
 	@Provides
-	BankValueConfig getConfig(ConfigManager configManager)
+	BankConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(BankValueConfig.class);
+		return configManager.getConfig(BankConfig.class);
 	}
 
 	@Override
