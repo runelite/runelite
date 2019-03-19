@@ -45,6 +45,7 @@ import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
@@ -597,6 +598,10 @@ public class ConfigManager
 			int plane = Integer.parseInt(splitStr[2]);
 			return new WorldPoint(x, y, plane);
 		}
+		if (type == Duration.class)
+		{
+			return Duration.ofMillis(Long.parseLong(str));
+		}
 		return str;
 	}
 
@@ -638,6 +643,10 @@ public class ConfigManager
 		{
 			WorldPoint wp = (WorldPoint) object;
 			return wp.getX() + ":" + wp.getY() + ":" + wp.getPlane();
+		}
+		if (object instanceof Duration)
+		{
+			return Long.toString(((Duration) object).toMillis());
 		}
 		return object.toString();
 	}
