@@ -122,10 +122,12 @@ public enum SpellBonus
 		if (this.operation == Operation.ADD)
 		{
 			return inputDamage + this.bonusDamage;
-		} else if (this.operation == Operation.MULTIPLY)
+		}
+		else if (this.operation == Operation.MULTIPLY)
 		{
 			return inputDamage * this.bonusDamage;
-		} else
+		}
+		else
 		{
 			return inputDamage;
 		}
