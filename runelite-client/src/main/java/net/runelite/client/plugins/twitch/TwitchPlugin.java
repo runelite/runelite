@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.twitch;
 
+import com.google.common.base.Strings;
 import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
@@ -98,9 +99,9 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 
 	private synchronized void connect()
 	{
-		if (twitchConfig.username() != null
-			&& twitchConfig.oauthToken() != null
-			&& twitchConfig.channel() != null)
+		if (!Strings.isNullOrEmpty(twitchConfig.username())
+			&& !Strings.isNullOrEmpty(twitchConfig.oauthToken())
+			&& !Strings.isNullOrEmpty(twitchConfig.channel()))
 		{
 			String channel = twitchConfig.channel().toLowerCase();
 			if (!channel.startsWith("#"))
