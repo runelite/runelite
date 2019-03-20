@@ -49,6 +49,6 @@ public class EquipmentItemRequirement implements Requirement
 			return false;
 		}
 		Item[] equipedItems = equipmentContainer.getItems();
-		return EquipmentHelper.wearsItem(client, equipedItems, this.item);
+		return EquipmentHelper.wearsItem(equipedItems, this.item);
 	}
 }

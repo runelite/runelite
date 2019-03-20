@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.maxhit.config;
 
 import net.runelite.api.Client;
+import net.runelite.api.ItemID;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlot;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlotItem;
 import net.runelite.client.plugins.maxhit.requirements.AutocastSpellRequirement;
@@ -45,8 +46,11 @@ public enum SpellBonus
 					SpellBaseDamageConfig.FIRE_BOLT
 			)))
 	))),
+
 	TOME_OF_FIRE(1.5, Operation.MULTIPLY, new ArrayList<>(Arrays.asList(
-			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.SHIELD_SLOT, "Tome of fire")),
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.SHIELD_SLOT, new ArrayList<>(Collections.singletonList(
+				ItemID.TOME_OF_FIRE
+			)))),
 			new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
 				SpellBaseDamageConfig.FIRE_BLAST,
 				SpellBaseDamageConfig.FIRE_BOLT,
@@ -55,6 +59,7 @@ public enum SpellBonus
 				SpellBaseDamageConfig.FIRE_WAVE
 			))
 	))), true),
+
 	CHARGE(10, Operation.ADD,  new ArrayList<>(Collections.singletonList(
 		new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
 			SpellBaseDamageConfig.FLAMES_OF_ZAMAROK,

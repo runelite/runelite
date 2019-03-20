@@ -109,7 +109,7 @@ public abstract class MaxHitCalculator
 		for (EquipmentBonusConfig equipmentBonus : equipmentBonuses)
 		{
 			EquipmentItemset itemSet = equipmentBonus.getItemset();
-			boolean wearsSet = EquipmentHelper.wearsItemSet(this.client, this.equipedItems, itemSet);
+			boolean wearsSet = EquipmentHelper.wearsItemSet(this.equipedItems, itemSet);
 			if (wearsSet && equipmentBonus.meetsRequirements(this.client))
 			{
 				bonus += equipmentBonus.getBonus(this.combatMethod);

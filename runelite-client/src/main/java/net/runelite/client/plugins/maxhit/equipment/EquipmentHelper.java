@@ -24,25 +24,26 @@
  */
 package net.runelite.client.plugins.maxhit.equipment;
 
-import net.runelite.api.Client;
 import net.runelite.api.Item;
 
 public class EquipmentHelper
 {
 
-	public static boolean wearsItemSet(Client client, Item[] equipedItems, EquipmentItemset itemSet)
+	public static boolean wearsItemSet(Item[] equipedItems, EquipmentItemset itemSet)
 	{
-		return itemSet.getItems().stream().allMatch(item -> wearsItem(client, equipedItems, item.getEquipmentSlot(), item.getItem()));
+		return itemSet.getItems().stream().allMatch(item -> wearsItem(equipedItems, item));
 	}
 
-	private static boolean wearsItem(Client client, Item[] equipedItems, EquipmentSlot slot, String item)
+	private static boolean wearsItem(Item[] equipedItems, EquipmentSlot slot, int itemId)
 	{
-		return client.getItemDefinition(equipedItems[slot.getId()].getId()).getName().toLowerCase().contains(item.toLowerCase());
+		return equipedItems[slot.getId()].getId() == itemId;
 	}
 
-	public static boolean wearsItem(Client client, Item[] equipedItems, EquipmentSlotItem equipmentSlotItem)
+	public static boolean wearsItem(Item[] equipedItems, EquipmentSlotItem equipmentSlotItem)
 	{
-		return wearsItem(client, equipedItems, equipmentSlotItem.getEquipmentSlot(), equipmentSlotItem.getItem());
+		return equipmentSlotItem.getItems().stream().anyMatch(itemId ->
+			wearsItem(equipedItems, equipmentSlotItem.getEquipmentSlot(), itemId)
+		);
 	}
 
 }

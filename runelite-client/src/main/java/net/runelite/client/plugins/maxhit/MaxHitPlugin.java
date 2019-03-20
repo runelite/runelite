@@ -40,7 +40,7 @@ import net.runelite.client.plugins.maxhit.calculators.RangeMaxHitCalculator;
 import javax.inject.Inject;
 
 @PluginDescriptor(
-		name = "maxhitplugin",
+		name = "Max Hit",
 		description = "Max Hit Calculator",
 		enabledByDefault = false
 )

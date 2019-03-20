@@ -50,6 +50,6 @@ public class EquipmentItemSetRequirement implements Requirement
 		}
 		Item[] equipedItems = equipmentContainer.getItems();
 
-		return EquipmentHelper.wearsItemSet(client, equipedItems, this.itemSet);
+		return EquipmentHelper.wearsItemSet(equipedItems, this.itemSet);
 	}
 }

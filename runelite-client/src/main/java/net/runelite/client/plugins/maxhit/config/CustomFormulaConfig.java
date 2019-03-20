@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.maxhit.config;
 
 import net.runelite.api.Client;
+import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.maxhit.calculators.MaxHitCalculator;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentItemset;
@@ -44,118 +45,164 @@ public enum CustomFormulaConfig
 {
 
 	MAGIC_DART(
-			MaxHitCalculator.CombatMethod.MAGIC,
-			new ArrayList<>(Arrays.asList(
-					new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "Slayer's staff")),
-					new SpellRequirement(SpellBaseDamageConfig.MAGIC_DART)
-			)),
-			(client, calculator) ->
-			{
-				int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
-				return Math.floor((magicLevel / 10.0) + 10.0);
-			}
+		MaxHitCalculator.CombatMethod.MAGIC,
+		new ArrayList<>(Arrays.asList(
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Arrays.asList(
+				ItemID.SLAYERS_STAFF,
+				ItemID.SLAYERS_STAFF_E
+			)))),
+			new SpellRequirement(SpellBaseDamageConfig.MAGIC_DART)
+		)),
+		(client, calculator) ->
+		{
+			int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+			return Math.floor((magicLevel / 10.0) + 10.0);
+		}
 	),
 
 	TRIDENT_OF_SEAS(
-			MaxHitCalculator.CombatMethod.MAGIC,
-			new ArrayList<>(Collections.singletonList(
-				new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "Trident of the seas"))
-			)),
-			(client, calculator) ->
-			{
-				int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+		MaxHitCalculator.CombatMethod.MAGIC,
+		new ArrayList<>(Collections.singletonList(
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Arrays.asList(
+				ItemID.TRIDENT_OF_THE_SEAS_FULL,
+				ItemID.TRIDENT_OF_THE_SEAS,
+				ItemID.TRIDENT_OF_THE_SEAS_E
+			))))
+		)),
+		(client, calculator) ->
+		{
+			int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
 
-				int baseDamage = (int) Math.floor(magicLevel / 3.0) - 5;
-				calculator.setBaseDamage(baseDamage);
+			int baseDamage = (int) Math.floor(magicLevel / 3.0) - 5;
+			calculator.setBaseDamage(baseDamage);
 
-				return calculator.calculateDefault();
-			}
+			return calculator.calculateDefault();
+		}
 	),
 
 	TRIDENT_OF_SWAMP(
-			MaxHitCalculator.CombatMethod.MAGIC,
-			new ArrayList<>(Collections.singletonList(
-				new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "Trident of the swamp"))
-			)),
-			(client, calculator) ->
-			{
-				int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+		MaxHitCalculator.CombatMethod.MAGIC,
+		new ArrayList<>(Collections.singletonList(
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Arrays.asList(
+				ItemID.TRIDENT_OF_THE_SWAMP,
+				ItemID.TRIDENT_OF_THE_SWAMP_E
+			))))
+		)),
+		(client, calculator) ->
+		{
+			int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
 
-				int baseDamage = (int) Math.floor(magicLevel / 3.0) - 2;
-				calculator.setBaseDamage(baseDamage);
+			int baseDamage = (int) Math.floor(magicLevel / 3.0) - 2;
+			calculator.setBaseDamage(baseDamage);
 
-				return calculator.calculateDefault();
-			}
+			return calculator.calculateDefault();
+		}
 	),
 
 	SWAMP_LIZARD(
-			MaxHitCalculator.CombatMethod.MAGIC,
-			new ArrayList<>(Collections.singletonList(
-				new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "Swamp lizard"))
-			)),
-			(client, calculator) ->
-			{
-				int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
-				return Math.floor(0.5 + magicLevel * (64.0 + 56.0) / 640.0);
-			}
+		MaxHitCalculator.CombatMethod.MAGIC,
+		new ArrayList<>(Collections.singletonList(
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Collections.singletonList(
+				ItemID.SWAMP_LIZARD
+			))))
+		)),
+		(client, calculator) ->
+		{
+			int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+			return Math.floor(0.5 + magicLevel * (64.0 + 56.0) / 640.0);
+		}
 	),
 
 	ORANGE_SALAMANDER(
-			MaxHitCalculator.CombatMethod.MAGIC,
-			new ArrayList<>(Collections.singletonList(
-				new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "Orange salamander"))
-			)),
-			(client, calculator) ->
-			{
-				int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
-				return Math.floor(0.5 + magicLevel * (64.0 + 59.0) / 640.0);
-			}
+		MaxHitCalculator.CombatMethod.MAGIC,
+		new ArrayList<>(Collections.singletonList(
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Collections.singletonList(
+				ItemID.ORANGE_SALAMANDER
+			))))
+		)),
+		(client, calculator) ->
+		{
+			int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+			return Math.floor(0.5 + magicLevel * (64.0 + 59.0) / 640.0);
+		}
 	),
 
 	RED_SALAMANDER(
-			MaxHitCalculator.CombatMethod.MAGIC,
-			new ArrayList<>(Collections.singletonList(
-				new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "Red salamander"))
-			)),
-			(client, calculator) ->
-			{
-				int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
-				return Math.floor(0.5 + magicLevel * (64.0 + 77.0) / 640.0);
-			}
+		MaxHitCalculator.CombatMethod.MAGIC,
+		new ArrayList<>(Collections.singletonList(
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Collections.singletonList(
+				ItemID.RED_SALAMANDER
+			))))
+		)),
+		(client, calculator) ->
+		{
+			int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+			return Math.floor(0.5 + magicLevel * (64.0 + 77.0) / 640.0);
+		}
 	),
 
 	BLACK_SALAMANDER(
-			MaxHitCalculator.CombatMethod.MAGIC,
-			new ArrayList<>(Collections.singletonList(
-				new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "Black salamander"))
-			)),
-			(client, calculator) ->
-			{
-				int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
-				return Math.floor(0.5 + magicLevel * (64.0 + 92.0) / 640.0);
-			}
+		MaxHitCalculator.CombatMethod.MAGIC,
+		new ArrayList<>(Collections.singletonList(
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Collections.singletonList(
+				ItemID.BLACK_SALAMANDER
+			))))
+		)),
+		(client, calculator) ->
+		{
+			int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+			return Math.floor(0.5 + magicLevel * (64.0 + 92.0) / 640.0);
+		}
 	),
 
 	DHAROK(
-			MaxHitCalculator.CombatMethod.MELEE,
-			new ArrayList<>(Collections.singletonList(new EquipmentItemSetRequirement(new EquipmentItemset(Arrays.asList(
-					new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, "dharok"),
-					new EquipmentSlotItem(EquipmentSlot.CHEST_SLOT, "dharok"),
-					new EquipmentSlotItem(EquipmentSlot.LEG_SLOT, "dharok"),
-					new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, "dharok")
-			))))),
-			(client, calculator) ->
-			{
-				int currentHP = client.getBoostedSkillLevel(Skill.HITPOINTS);
-				int maxHP = client.getRealSkillLevel(Skill.HITPOINTS);
-				int lostHP = maxHP - currentHP;
+		MaxHitCalculator.CombatMethod.MELEE,
+		new ArrayList<>(Collections.singletonList(new EquipmentItemSetRequirement(new EquipmentItemset(Arrays.asList(
+			new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, new ArrayList<>(Arrays.asList(
+				ItemID.DHAROKS_HELM,
+				ItemID.DHAROKS_HELM_100,
+				ItemID.DHAROKS_HELM_75,
+				ItemID.DHAROKS_HELM_50,
+				ItemID.DHAROKS_HELM_25,
+				ItemID.DHAROKS_HELM_0
+			))),
+			new EquipmentSlotItem(EquipmentSlot.CHEST_SLOT, new ArrayList<>(Arrays.asList(
+				ItemID.DHAROKS_PLATEBODY,
+				ItemID.DHAROKS_PLATEBODY_100,
+				ItemID.DHAROKS_PLATEBODY_75,
+				ItemID.DHAROKS_PLATEBODY_50,
+				ItemID.DHAROKS_PLATEBODY_25,
+				ItemID.DHAROKS_PLATEBODY_0
+			))),
+			new EquipmentSlotItem(EquipmentSlot.LEG_SLOT, new ArrayList<>(Arrays.asList(
+				ItemID.DHAROKS_PLATELEGS,
+				ItemID.DHAROKS_PLATELEGS_100,
+				ItemID.DHAROKS_PLATELEGS_75,
+				ItemID.DHAROKS_PLATELEGS_50,
+				ItemID.DHAROKS_PLATELEGS_25,
+				ItemID.DHAROKS_PLATELEGS_0
+			))),
+			new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Arrays.asList(
+				ItemID.DHAROKS_GREATAXE,
+				ItemID.DHAROKS_GREATAXE_100,
+				ItemID.DHAROKS_GREATAXE_75,
+				ItemID.DHAROKS_GREATAXE_50,
+				ItemID.DHAROKS_GREATAXE_25,
+				ItemID.DHAROKS_GREATAXE_0
+			)))
+		))))),
+		(client, calculator) ->
+		{
+			int currentHP = client.getBoostedSkillLevel(Skill.HITPOINTS);
+			int maxHP = client.getRealSkillLevel(Skill.HITPOINTS);
+			int lostHP = maxHP - currentHP;
 
-				double initialMaxHit = calculator.calculate();
+			double initialMaxHit = calculator.calculate();
 
-				double multiplier = (1.0 + lostHP / 100.0 * maxHP / 100.0);
+			double multiplier = (1.0 + lostHP / 100.0 * maxHP / 100.0);
 
-				return initialMaxHit * multiplier;
-			}
+			return initialMaxHit * multiplier;
+		}
 	);
 
 	private final MaxHitCalculator.CombatMethod requiredCombatMethod;
