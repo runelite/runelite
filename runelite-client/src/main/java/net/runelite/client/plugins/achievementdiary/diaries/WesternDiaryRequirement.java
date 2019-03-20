@@ -88,7 +88,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 		// HARD
 		add("Kill an Elf with a Crystal bow.",
 			new SkillRequirement(Skill.RANGED, 70),
-			new SkillRequirement(Skill.AGILITY, 50),
+			new SkillRequirement(Skill.AGILITY, 56),
 			new QuestRequirement(Quest.ROVING_ELVES));
 		add("Catch and cook a Monkfish in Piscatoris.",
 			new SkillRequirement(Skill.FISHING, 62),

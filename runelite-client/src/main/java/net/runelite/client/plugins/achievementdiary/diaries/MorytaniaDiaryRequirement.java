@@ -48,6 +48,8 @@ public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.SLAYER, 15));
 		add("Place a Scarecrow in the Morytania flower patch.",
 			new SkillRequirement(Skill.FARMING, 23));
+		add("Kill a werewolf in its human form using the Wolfbane Dagger.",
+			new QuestRequirement(Quest.PRIEST_IN_PERIL));
 		add("Restore your prayer points at the nature altar.",
 			new QuestRequirement(Quest.NATURE_SPIRIT));
 
@@ -74,7 +76,7 @@ public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 		add("Use an ectophial to return to Port Phasmatys.",
 			new QuestRequirement(Quest.GHOSTS_AHOY));
 		add("Mix a Guthix Balance potion while in Morytania.",
-			new SkillRequirement(Skill.HERBLORE, 36),
+			new SkillRequirement(Skill.HERBLORE, 22),
 			new QuestRequirement(Quest.IN_AID_OF_THE_MYREQUE, true));
 
 		// HARD
