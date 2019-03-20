@@ -39,4 +39,7 @@ public interface RSChatLineBuffer extends ChatLineBuffer
 	@Import("length")
 	@Override
 	int getLength();
+
+	@Import("length")
+	void setLength(int length);
 }

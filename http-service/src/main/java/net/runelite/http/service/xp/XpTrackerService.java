@@ -96,17 +96,11 @@ public class XpTrackerService
 					log.warn("Username update queue is full ({})", QUEUE_LIMIT);
 					return;
 				}
+
+				usernameUpdateQueue.add(username);
 			}
-
-			con.createQuery("update player set last_updated = CURRENT_TIMESTAMP where id = :id")
-				.addParameter("id", playerEntity.getId())
-				.executeUpdate();
 		}
 
-		synchronized (usernameUpdateQueue)
-		{
-			usernameUpdateQueue.add(username);
-		}
 		usernameFilter.put(username);
 	}
 
@@ -190,7 +184,7 @@ public class XpTrackerService
 				.addParameter("overall_rank", hiscoreResult.getOverall().getRank())
 				.executeUpdate();
 
-			con.createQuery("update player set rank = :rank where id = :id")
+			con.createQuery("update player set rank = :rank, last_updated = CURRENT_TIMESTAMP where id = :id")
 				.addParameter("id", playerEntity.getId())
 				.addParameter("rank", hiscoreResult.getOverall().getRank())
 				.executeUpdate();

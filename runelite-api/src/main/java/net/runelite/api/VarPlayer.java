@@ -37,6 +37,10 @@ public enum VarPlayer
 	ATTACK_STYLE(43),
 	QUEST_POINTS(101),
 	IS_POISONED(102),
+	/**
+	 * Seems to start at 50(10 splash) and goes down by 1 every 30 seconds
+	 */
+	DISEASE_VALUE(456),
 
 	BANK_TAB(115),
 
@@ -63,6 +67,11 @@ public enum VarPlayer
 	 * greater than 99 : completed
 	 */
 	THRONE_OF_MISCELLANIA(359),
+
+	/**
+	 * Item currently active in the creation of a buy or sell offer
+	 */
+	CURRENT_GE_ITEM(1151),
 
 	/**
 	 * Experience tracker goal start.
@@ -130,7 +139,30 @@ public enum VarPlayer
 	 * Slayer unlock bitfields
 	 */
 	SLAYER_UNLOCK_1(1076),
-	SLAYER_UNLOCK_2(1344);
+	SLAYER_UNLOCK_2(1344),
+
+	/**
+	 * Music track unlock bitfields
+	 */
+	MUSIC_TRACKS_UNLOCKED_1(20),
+	MUSIC_TRACKS_UNLOCKED_2(21),
+	MUSIC_TRACKS_UNLOCKED_3(22),
+	MUSIC_TRACKS_UNLOCKED_4(23),
+	MUSIC_TRACKS_UNLOCKED_5(24),
+	MUSIC_TRACKS_UNLOCKED_6(25),
+	MUSIC_TRACKS_UNLOCKED_7(298),
+	MUSIC_TRACKS_UNLOCKED_8(311),
+	MUSIC_TRACKS_UNLOCKED_9(346),
+	MUSIC_TRACKS_UNLOCKED_10(414),
+	MUSIC_TRACKS_UNLOCKED_11(464),
+	MUSIC_TRACKS_UNLOCKED_12(598),
+	MUSIC_TRACKS_UNLOCKED_13(662),
+	MUSIC_TRACKS_UNLOCKED_14(721),
+	MUSIC_TRACKS_UNLOCKED_15(906),
+	MUSIC_TRACKS_UNLOCKED_16(1009),
+	MUSIC_TRACKS_UNLOCKED_17(1338),
+	MUSIC_TRACKS_UNLOCKED_18(1681),
+	MUSIC_TRACKS_UNLOCKED_19(2065);
 
 	private final int id;
 }

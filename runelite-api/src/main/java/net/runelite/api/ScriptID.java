@@ -46,6 +46,11 @@ public final class ScriptID
 	public static final int CHATBOX_INPUT = 96;
 
 	/**
+	 * Rebuilds the chatbox
+	 */
+	public static final int BUILD_CHATBOX = 216;
+
+	/**
 	 * Opens the Private Message chat interface
 	 *
 	 * Jagex refers to this script as {@code meslayer_mode6}
@@ -110,15 +115,6 @@ public final class ScriptID
 	 * </ul>
 	 */
 	public static final int DIARY_QUEST_UPDATE_LINECOUNT = 2523;
-
-	/**
-	 * Initializes the chatbox input to use RuneLite callbacks
-	 * <ul>
-	 * <li> String  Prompt text </li>
-	 * <li> String  Default value </li>
-	 * </ul>
-	 */
-	public static final int RUNELITE_CHATBOX_INPUT_INIT = 10001;
 
 	/**
 	 * Does nothing

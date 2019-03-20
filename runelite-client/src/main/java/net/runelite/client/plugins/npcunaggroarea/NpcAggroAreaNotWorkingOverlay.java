@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,73 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.raids;
+package net.runelite.client.plugins.npcunaggroarea;
 
+import com.google.inject.Inject;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import javax.inject.Inject;
-import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import net.runelite.api.Varbits;
-import static net.runelite.client.plugins.raids.RaidsPlugin.POINTS_FORMAT;
 import net.runelite.client.ui.overlay.Overlay;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class RaidsPointsOverlay extends Overlay
+class NpcAggroAreaNotWorkingOverlay extends Overlay
 {
-	@Inject
-	private Client client;
+	private final NpcAggroAreaPlugin plugin;
+	private final PanelComponent panelComponent;
 
 	@Inject
-	private RaidsPlugin plugin;
-
-	private final PanelComponent panel = new PanelComponent();
-
-	@Inject
-	private RaidsPointsOverlay(RaidsPlugin plugin)
+	private NpcAggroAreaNotWorkingOverlay(NpcAggroAreaPlugin plugin)
 	{
-		super(plugin);
-		setPosition(OverlayPosition.TOP_RIGHT);
-		setPriority(OverlayPriority.HIGH);
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay"));
+		this.plugin = plugin;
+
+		panelComponent = new PanelComponent();
+		panelComponent.setPreferredSize(new Dimension(150, 0));
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Unaggressive NPC timers will start working when you teleport far away or enter a dungeon.")
+			.build());
+
+		setPriority(OverlayPriority.LOW);
+		setPosition(OverlayPosition.TOP_LEFT);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isInRaidChambers())
+		if (!plugin.isActive() || plugin.getSafeCenters()[1] != null)
 		{
 			return null;
 		}
 
-		int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
-		int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
-		int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
-
-		panel.getChildren().clear();
-		panel.getChildren().add(LineComponent.builder()
-			.left("Total:")
-			.right(POINTS_FORMAT.format(totalPoints))
-			.build());
-
-		panel.getChildren().add(LineComponent.builder()
-			.left(client.getLocalPlayer().getName() + ":")
-			.right(POINTS_FORMAT.format(personalPoints))
-			.build());
-
-		if (partySize > 1)
-		{
-			panel.getChildren().add(LineComponent.builder()
-				.left("Party size:")
-				.right(String.valueOf(partySize))
-				.build());
-		}
-
-		return panel.render(graphics);
+		return panelComponent.render(graphics);
 	}
 }
