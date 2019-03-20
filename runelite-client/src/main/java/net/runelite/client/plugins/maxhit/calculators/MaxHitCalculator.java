@@ -48,13 +48,6 @@ public abstract class MaxHitCalculator
 	private final Item[] equipedItems;
 	int baseDamage = 0;
 
-	public enum CombatMethod
-	{
-		MELEE,
-		RANGE,
-		MAGIC
-	}
-
 	MaxHitCalculator(Client client, CombatMethod combatMethod, Item[] equipedItems)
 	{
 		this.client = client;
@@ -131,7 +124,7 @@ public abstract class MaxHitCalculator
 
 	private BiFunction<Client, MaxHitCalculator, Double> getCustomFormula()
 	{
-		for (CustomFormulaConfig customFormula: CustomFormulaConfig.values())
+		for (CustomFormulaConfig customFormula : CustomFormulaConfig.values())
 		{
 			if (this.combatMethod != customFormula.getRequiredCombatMethod())
 			{
@@ -159,5 +152,12 @@ public abstract class MaxHitCalculator
 	double getSkillStrength()
 	{
 		return Double.parseDouble(this.getSkillStrengthText(this.equipmentSkillPower().getText()));
+	}
+
+	public enum CombatMethod
+	{
+		MELEE,
+		RANGE,
+		MAGIC
 	}
 }

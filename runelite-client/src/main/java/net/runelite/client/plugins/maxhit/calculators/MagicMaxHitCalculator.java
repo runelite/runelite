@@ -63,10 +63,10 @@ public class MagicMaxHitCalculator extends MaxHitCalculator
 	}
 
 	/*
-	* Damage formula based on:
-	* http://services.runescape.com/m=forum/forums.ws?317,318,712,65587452
-	* Section 4.
-	* */
+	 * Damage formula based on:
+	 * http://services.runescape.com/m=forum/forums.ws?317,318,712,65587452
+	 * Section 4.
+	 * */
 	@Override
 	public double calculateDefault()
 	{
@@ -117,7 +117,7 @@ public class MagicMaxHitCalculator extends MaxHitCalculator
 	private double getSpellBonus(double inputDamage, boolean afterEqupment)
 	{
 		ArrayList<SpellBonus> spellBonusses = SpellBonus.getMeetsRequirements(this.client);
-		for (SpellBonus spellBonus: spellBonusses)
+		for (SpellBonus spellBonus : spellBonusses)
 		{
 			if (spellBonus.getAfterEquipment() == afterEqupment)
 			{

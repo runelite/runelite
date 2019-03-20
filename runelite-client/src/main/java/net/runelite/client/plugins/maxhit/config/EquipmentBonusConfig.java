@@ -285,20 +285,7 @@ public enum EquipmentBonusConfig
 		)))
 	)), new EquipmentCombatBonus(0, 0, 0.10), Collections.singletonList(new SpellBookRequirement(SpellBaseDamageConfig.SpellBook.NORMAL)));
 
-	public enum BonusType
-	{
-		EQUIPMENT,
-		SLAYER,
-		VOID_KNIGHT,
-		SPECIAL
-	}
-
 	private static final Map<BonusType, ArrayList<EquipmentBonusConfig>> bonusTypes = new HashMap<>();
-
-	private BonusType bonusType;
-	private final EquipmentItemset itemset;
-	private EquipmentCombatBonus equipmentCombatBonus;
-	private List<Requirement> requirements = new ArrayList<>();
 
 	static
 	{
@@ -315,6 +302,11 @@ public enum EquipmentBonusConfig
 		}
 	}
 
+	private final EquipmentItemset itemset;
+	private BonusType bonusType;
+	private EquipmentCombatBonus equipmentCombatBonus;
+	private List<Requirement> requirements = new ArrayList<>();
+
 	EquipmentBonusConfig(BonusType bonusType, EquipmentItemset itemset, EquipmentCombatBonus equipmentCombatBonus)
 	{
 		this.bonusType = bonusType;
@@ -330,6 +322,15 @@ public enum EquipmentBonusConfig
 		this.requirements = requirements;
 	}
 
+	public static ArrayList<EquipmentBonusConfig> getBonusByType(BonusType bonusType)
+	{
+		if (!bonusTypes.containsKey(bonusType))
+		{
+			return new ArrayList<>();
+		}
+		return bonusTypes.get(bonusType);
+	}
+
 	public EquipmentItemset getItemset()
 	{
 		return itemset;
@@ -340,18 +341,17 @@ public enum EquipmentBonusConfig
 		return this.equipmentCombatBonus.getCombatBonus(combatMethod);
 	}
 
-	public static ArrayList<EquipmentBonusConfig> getBonusByType(BonusType bonusType)
-	{
-		if (!bonusTypes.containsKey(bonusType))
-		{
-			return new ArrayList<>();
-		}
-		return bonusTypes.get(bonusType);
-	}
-
 	public boolean meetsRequirements(Client client)
 	{
 		return requirements.stream().allMatch(requirement -> requirement.meetsRequirements(client));
+	}
+
+	public enum BonusType
+	{
+		EQUIPMENT,
+		SLAYER,
+		VOID_KNIGHT,
+		SPECIAL
 	}
 }
 

@@ -62,8 +62,6 @@ public enum WeaponType
 
 	private static final Map<Integer, WeaponType> weaponTypes = new HashMap<>();
 
-	private final AttackStyle[] attackStyles;
-
 	static
 	{
 		for (WeaponType weaponType : values())
@@ -72,18 +70,20 @@ public enum WeaponType
 		}
 	}
 
+	private final AttackStyle[] attackStyles;
+
 	WeaponType(AttackStyle... attackStyles)
 	{
 		this.attackStyles = attackStyles;
 	}
 
-	public AttackStyle[] getAttackStyles()
-	{
-		return attackStyles;
-	}
-
 	public static WeaponType getWeaponType(int id)
 	{
 		return weaponTypes.get(id);
+	}
+
+	public AttackStyle[] getAttackStyles()
+	{
+		return attackStyles;
 	}
 }

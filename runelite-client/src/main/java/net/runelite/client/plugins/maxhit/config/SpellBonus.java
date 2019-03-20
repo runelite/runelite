@@ -38,29 +38,29 @@ import java.util.Collections;
 
 public enum SpellBonus
 {
-	CHAOS_GAUNTLETS(3, Operation.ADD,  new ArrayList<>(Collections.singletonList(
-			new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
-					SpellBaseDamageConfig.AIR_BOLT,
-					SpellBaseDamageConfig.WATER_BOLT,
-					SpellBaseDamageConfig.EARTH_BOLT,
-					SpellBaseDamageConfig.FIRE_BOLT
-			)))
+	CHAOS_GAUNTLETS(3, Operation.ADD, new ArrayList<>(Collections.singletonList(
+		new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
+			SpellBaseDamageConfig.AIR_BOLT,
+			SpellBaseDamageConfig.WATER_BOLT,
+			SpellBaseDamageConfig.EARTH_BOLT,
+			SpellBaseDamageConfig.FIRE_BOLT
+		)))
 	))),
 
 	TOME_OF_FIRE(1.5, Operation.MULTIPLY, new ArrayList<>(Arrays.asList(
-			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.SHIELD_SLOT, new ArrayList<>(Collections.singletonList(
-				ItemID.TOME_OF_FIRE
-			)))),
-			new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
-				SpellBaseDamageConfig.FIRE_BLAST,
-				SpellBaseDamageConfig.FIRE_BOLT,
-				SpellBaseDamageConfig.FIRE_STRIKE,
-				SpellBaseDamageConfig.FIRE_SURGE,
-				SpellBaseDamageConfig.FIRE_WAVE
-			))
-	))), true),
+		new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.SHIELD_SLOT, new ArrayList<>(Collections.singletonList(
+			ItemID.TOME_OF_FIRE
+		)))),
+		new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
+			SpellBaseDamageConfig.FIRE_BLAST,
+			SpellBaseDamageConfig.FIRE_BOLT,
+			SpellBaseDamageConfig.FIRE_STRIKE,
+			SpellBaseDamageConfig.FIRE_SURGE,
+			SpellBaseDamageConfig.FIRE_WAVE
+		))
+		))), true),
 
-	CHARGE(10, Operation.ADD,  new ArrayList<>(Collections.singletonList(
+	CHARGE(10, Operation.ADD, new ArrayList<>(Collections.singletonList(
 		new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
 			SpellBaseDamageConfig.FLAMES_OF_ZAMAROK,
 			SpellBaseDamageConfig.CLAWS_OF_GUTHIX,
@@ -72,17 +72,6 @@ public enum SpellBonus
 	private final Operation operation;
 	private final ArrayList<Requirement> requirement;
 	private boolean afterEquipment = false;
-
-	public boolean getAfterEquipment()
-	{
-		return this.afterEquipment;
-	}
-
-	private enum Operation
-	{
-		ADD,
-		MULTIPLY
-	}
 
 	SpellBonus(double bonusDamage, Operation operation, ArrayList<Requirement> requirement)
 	{
@@ -103,7 +92,7 @@ public enum SpellBonus
 	{
 		ArrayList<SpellBonus> result = new ArrayList<>();
 
-		for (SpellBonus spellBonus: values())
+		for (SpellBonus spellBonus : values())
 		{
 			boolean meetsRequirements = true;
 			for (Requirement requirement : spellBonus.requirement)
@@ -123,19 +112,28 @@ public enum SpellBonus
 		return result;
 	}
 
+	public boolean getAfterEquipment()
+	{
+		return this.afterEquipment;
+	}
+
 	public double applyBonus(double inputDamage)
 	{
 		if (this.operation == Operation.ADD)
 		{
 			return inputDamage + this.bonusDamage;
-		}
-		else if (this.operation == Operation.MULTIPLY)
+		} else if (this.operation == Operation.MULTIPLY)
 		{
 			return inputDamage * this.bonusDamage;
-		}
-		else
+		} else
 		{
 			return inputDamage;
 		}
+	}
+
+	private enum Operation
+	{
+		ADD,
+		MULTIPLY
 	}
 }

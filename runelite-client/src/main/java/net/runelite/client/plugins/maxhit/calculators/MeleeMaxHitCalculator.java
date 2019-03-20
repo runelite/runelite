@@ -96,7 +96,7 @@ public class MeleeMaxHitCalculator extends MaxHitCalculator
 		return effectiveLevel;
 	}
 
-//  3.3 Take the melee or ranged strength bonus from the equipment stats interface and let this equal 'B' in the formula in 3.1.
+	//  3.3 Take the melee or ranged strength bonus from the equipment stats interface and let this equal 'B' in the formula in 3.1.
 	private double getEquipmentBonus()
 	{
 		return this.getSkillStrength();

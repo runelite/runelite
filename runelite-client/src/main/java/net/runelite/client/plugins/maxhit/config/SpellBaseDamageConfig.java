@@ -30,8 +30,8 @@ public enum SpellBaseDamageConfig
 {
 
 	/*
-	* Normal Spellbook
-	* */
+	 * Normal Spellbook
+	 * */
 	AIR_STRIKE(SpellBook.NORMAL, 1, 2),
 	WATER_STRIKE(SpellBook.NORMAL, 2, 4),
 	EARTH_STRIKE(SpellBook.NORMAL, 3, 6),
@@ -58,8 +58,8 @@ public enum SpellBaseDamageConfig
 	FIRE_SURGE(SpellBook.NORMAL, 20, 24),
 
 	/*
-	* Ancient Spellbook
-	* */
+	 * Ancient Spellbook
+	 * */
 	SMOKE_RUSH(SpellBook.ANCIENT, 31, 14),
 	SHADOW_RUSH(SpellBook.ANCIENT, 32, 15),
 	BLOOD_RUSH(SpellBook.ANCIENT, 33, 16),
@@ -81,8 +81,8 @@ public enum SpellBaseDamageConfig
 	ICE_BARRAGE(SpellBook.ANCIENT, 46, 30),
 
 	/*
-	* Other spells
-	* */
+	 * Other spells
+	 * */
 	CRUMBLE_UNDEAD(SpellBook.OTHER, 17, 15),
 	IBAN_BLAST(SpellBook.OTHER, 47, 25),
 	FLAMES_OF_ZAMAROK(SpellBook.OTHER, 18, 20),
@@ -90,26 +90,23 @@ public enum SpellBaseDamageConfig
 	SARADOMIN_STRIKE(SpellBook.OTHER, 20, 20),
 
 	/*
-	* Custom Formula spells
-	* */
+	 * Custom Formula spells
+	 * */
 	MAGIC_DART(SpellBook.OTHER, 18, 0);
-
-	public enum SpellBook
-	{
-		NORMAL,
-		ANCIENT,
-		OTHER
-	}
 
 	private final SpellBook spellBook;
 	private final int spellID;
 	private final int baseDamage;
-
 	SpellBaseDamageConfig(SpellBook spellBook, int spellID, int baseDamage)
 	{
 		this.spellBook = spellBook;
 		this.spellID = spellID;
 		this.baseDamage = baseDamage;
+	}
+
+	public static SpellBaseDamageConfig findSpellById(int spellID)
+	{
+		return Arrays.stream(values()).filter(spell -> spell.getSpellID() == spellID).findFirst().orElse(null);
 	}
 
 	public int getSpellID()
@@ -127,8 +124,10 @@ public enum SpellBaseDamageConfig
 		return spellBook;
 	}
 
-	public static SpellBaseDamageConfig findSpellById(int spellID)
+	public enum SpellBook
 	{
-		return Arrays.stream(values()).filter(spell -> spell.getSpellID() == spellID).findFirst().orElse(null);
+		NORMAL,
+		ANCIENT,
+		OTHER
 	}
 }
