@@ -99,6 +99,13 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 
 	private synchronized void connect()
 	{
+		if (twitchIRCClient != null)
+		{
+			log.debug("Terminating Twitch client {}", twitchIRCClient);
+			twitchIRCClient.close();
+			twitchIRCClient = null;
+		}
+
 		if (!Strings.isNullOrEmpty(twitchConfig.username())
 			&& !Strings.isNullOrEmpty(twitchConfig.oauthToken())
 			&& !Strings.isNullOrEmpty(twitchConfig.channel()))
@@ -110,11 +117,6 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			}
 
 			log.debug("Connecting to Twitch as {}", twitchConfig.username());
-
-			if (twitchIRCClient != null)
-			{
-				twitchIRCClient.close();
-			}
 
 			twitchIRCClient = new TwitchIRCClient(
 				this,
