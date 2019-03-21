@@ -26,6 +26,7 @@ package net.runelite.client.plugins.kourendlibrary;
 
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.util.EnumSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -34,6 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
@@ -41,6 +45,7 @@ import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -94,6 +99,7 @@ public class KourendLibraryPlugin extends Plugin
 	private boolean buttonAttached = false;
 	private WorldPoint lastBookcaseClick = null;
 	private WorldPoint lastBookcaseAnimatedOn = null;
+	private EnumSet<Book> playerBooks = null;
 
 	@Provides
 	KourendLibraryConfig provideConfig(ConfigManager configManager)
@@ -120,6 +126,8 @@ public class KourendLibraryPlugin extends Plugin
 
 		overlayManager.add(overlay);
 
+		updatePlayerBooks();
+
 		if (!config.hideButton())
 		{
 			clientToolbar.addNavigation(navButton);
@@ -135,6 +143,7 @@ public class KourendLibraryPlugin extends Plugin
 		buttonAttached = false;
 		lastBookcaseClick = null;
 		lastBookcaseAnimatedOn = null;
+		playerBooks = null;
 	}
 
 	@Subscribe
@@ -269,6 +278,39 @@ public class KourendLibraryPlugin extends Plugin
 					panel.update();
 				}
 			}
+		}
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged itemContainerChangedEvent)
+	{
+		updatePlayerBooks();
+	}
+
+	boolean doesPlayerContainBook(Book book)
+	{
+		return playerBooks.contains(book);
+	}
+
+	private void updatePlayerBooks()
+	{
+		ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+
+		if (itemContainer != null)
+		{
+			EnumSet<Book> books = EnumSet.noneOf(Book.class);
+
+			for (Item item : itemContainer.getItems())
+			{
+				Book book = Book.byId(item.getId());
+
+				if (book != null)
+				{
+					books.add(book);
+				}
+			}
+
+			playerBooks = books;
 		}
 	}
 }

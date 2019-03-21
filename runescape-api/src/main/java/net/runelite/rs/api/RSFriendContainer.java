@@ -24,6 +24,6 @@
  */
 package net.runelite.rs.api;
 
-public interface RSFriendContainer extends RSNameableContainer
+public interface RSFriendContainer extends RSNameableContainer<RSFriend>
 {
 }

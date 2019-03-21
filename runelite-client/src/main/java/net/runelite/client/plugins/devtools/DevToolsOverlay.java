@@ -347,6 +347,12 @@ class DevToolsOverlay extends Overlay
 			{
 				graphics.drawPolygon(p);
 			}
+
+			p = decorObject.getConvexHull2();
+			if (p != null)
+			{
+				graphics.drawPolygon(p);
+			}
 		}
 	}
 

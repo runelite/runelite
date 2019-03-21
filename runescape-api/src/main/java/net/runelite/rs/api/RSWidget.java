@@ -328,6 +328,10 @@ public interface RSWidget extends Widget
 	@Override
 	void setOnMouseOverListener(Object... args);
 
+	@Import("onMouseRepeatListener")
+	@Override
+	void setOnMouseRepeatListener(Object... args);
+
 	@Import("onMouseLeaveListener")
 	@Override
 	void setOnMouseLeaveListener(Object... args);
@@ -335,6 +339,14 @@ public interface RSWidget extends Widget
 	@Import("onTimerListener")
 	@Override
 	void setOnTimerListener(Object... args);
+
+	@Import("onTargetEnterListener")
+	@Override
+	void setOnTargetEnterListener(Object... args);
+
+	@Import("onTargetLeaveListener")
+	@Override
+	void setOnTargetLeaveListener(Object... args);
 
 	@Import("fontId")
 	@Override
@@ -435,4 +447,28 @@ public interface RSWidget extends Widget
 	@Import("filled")
 	@Override
 	void setFilled(boolean filled);
+
+	@Import("targetVerb")
+	@Override
+	String getTargetVerb();
+
+	@Import("targetVerb")
+	@Override
+	void setTargetVerb(String targetVerb);
+
+	@Import("noClickThrough")
+	@Override
+	boolean getNoClickThrough();
+
+	@Import("noClickThrough")
+	@Override
+	void setNoClickThrough(boolean noClickThrough);
+
+	@Import("noScrollThrough")
+	@Override
+	boolean getNoScrollThrough();
+
+	@Import("noScrollThrough")
+	@Override
+	void setNoScrollThrough(boolean noScrollThrough);
 }

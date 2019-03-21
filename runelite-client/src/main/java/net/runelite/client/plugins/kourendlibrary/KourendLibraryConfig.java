@@ -42,4 +42,14 @@ public interface KourendLibraryConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "hideDuplicateBook",
+		name = "Hide duplicate book",
+		description = "Don't show the duplicate book locations in the library"
+	)
+	default boolean hideDuplicateBook()
+	{
+		return true;
+	}
 }

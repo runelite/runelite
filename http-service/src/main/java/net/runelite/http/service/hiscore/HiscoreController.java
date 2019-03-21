@@ -34,6 +34,7 @@ import net.runelite.http.service.util.HiscoreEndpointEditor;
 import net.runelite.http.service.xp.XpTrackerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +51,7 @@ public class HiscoreController
 	@Autowired
 	private XpTrackerService xpTrackerService;
 
-	@RequestMapping("/{endpoint}")
+	@GetMapping("/{endpoint}")
 	public HiscoreResult lookup(@PathVariable HiscoreEndpoint endpoint, @RequestParam String username) throws ExecutionException
 	{
 		HiscoreResult result = hiscoreService.lookupUsername(username, endpoint);
@@ -68,7 +69,7 @@ public class HiscoreController
 		return result;
 	}
 
-	@RequestMapping("/{endpoint}/{skillName}")
+	@GetMapping("/{endpoint}/{skillName}")
 	public SingleHiscoreSkillResult singleSkillLookup(@PathVariable HiscoreEndpoint endpoint, @PathVariable String skillName, @RequestParam String username) throws ExecutionException
 	{
 		HiscoreSkill skill = HiscoreSkill.valueOf(skillName.toUpperCase());
