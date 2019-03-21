@@ -47,8 +47,8 @@ import net.runelite.http.api.item.ItemPrice;
 import static net.runelite.api.ItemID.*;
 import static net.runelite.api.AnimationID.TRIDENT_ATTACK;
 import static net.runelite.api.AnimationID.BLOWPIPE_ATTACK;
-import static net.runelite.client.plugins.suppliestracker.ActionTypeEnum.CONSUMABLE;
-import static net.runelite.client.plugins.suppliestracker.ActionTypeEnum.TELEPORT;
+import static net.runelite.client.plugins.suppliestracker.ActionType.CONSUMABLE;
+import static net.runelite.client.plugins.suppliestracker.ActionType.TELEPORT;
 
 import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
@@ -101,7 +101,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	private ItemContainer old;
 	private Deque<Integer> itemStack = new ArrayDeque<>();
 	private Deque<Integer> slotStack = new ArrayDeque<>();
-	private Deque<ActionTypeEnum> typeStack = new ArrayDeque<>();
+	private Deque<ActionType> typeStack = new ArrayDeque<>();
 	private Deque<net.runelite.api.Item[]> oldInventStack = new ArrayDeque<>();
 	private int ammoId = 0;
 	private int ammoAmount = 0;
@@ -280,7 +280,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		{
 			while (!typeStack.isEmpty())
 			{
-				ActionTypeEnum type = typeStack.pop();
+				ActionType type = typeStack.pop();
 				//Consumable
 				if (type == CONSUMABLE)
 				{

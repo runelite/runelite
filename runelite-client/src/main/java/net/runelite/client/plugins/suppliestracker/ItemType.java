@@ -29,7 +29,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-public enum ItemTypeEnum
+public enum ItemType
 {
 	FOOD("Food"),
 	POTION("Potions"),
@@ -47,27 +47,27 @@ public enum ItemTypeEnum
 	 * note that if the guess is wrong (per say) it won't break anything because it will be
 	 * consistently wrong but it could have an item that is clearly not food in the food section
 	 */
-	public static ItemTypeEnum categorize(SuppliesTrackerItem item)
+	public static ItemType categorize(SuppliesTrackerItem item)
 	{
 		if (item.getName().contains("(4)"))
 		{
-			return ItemTypeEnum.POTION;
+			return ItemType.POTION;
 		}
 		if (item.getName().toLowerCase().contains("bolt") || item.getName().toLowerCase().contains("dart")
 				|| item.getName().toLowerCase().contains("arrow") || item.getName().toLowerCase().contains("javelin")
 				|| item.getName().toLowerCase().contains("knive") || item.getName().toLowerCase().contains("throwing")
 				|| item.getName().toLowerCase().contains("zulrah's scale"))
 		{
-			return ItemTypeEnum.AMMO;
+			return ItemType.AMMO;
 		}
 		if (item.getName().contains("rune"))
 		{
-			return ItemTypeEnum.RUNE;
+			return ItemType.RUNE;
 		}
 		if (item.getName().contains("teleport"))
 		{
-			return ItemTypeEnum.TELEPORT;
+			return ItemType.TELEPORT;
 		}
-		return ItemTypeEnum.FOOD;
+		return ItemType.FOOD;
 	}
 }

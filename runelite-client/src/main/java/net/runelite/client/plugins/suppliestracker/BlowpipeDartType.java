@@ -6,7 +6,7 @@ import lombok.Getter;
 import static net.runelite.api.ItemID.*;
 
 @AllArgsConstructor
-public enum BlowpipeDartTypeEnum
+public enum BlowpipeDartType
 {
 	BRONZE(BRONZE_DART), IRON(IRON_DART),
 	STEEL(STEEL_DART), MITHRIL(MITHRIL_DART),

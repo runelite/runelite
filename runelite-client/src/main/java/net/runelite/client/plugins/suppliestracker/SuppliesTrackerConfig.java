@@ -12,8 +12,8 @@ public interface SuppliesTrackerConfig extends Config
 			name = "Ammo used in your blowpipe",
 			description = "What type of dart are you using in your toxic blowpipe"
 	)
-	default BlowpipeDartTypeEnum blowpipeAmmo()
+	default BlowpipeDartType blowpipeAmmo()
 	{
-		return BlowpipeDartTypeEnum.MITHRIL;
+		return BlowpipeDartType.MITHRIL;
 	}
 }

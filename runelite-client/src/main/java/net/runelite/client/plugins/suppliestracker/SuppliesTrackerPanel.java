@@ -104,7 +104,7 @@ class SuppliesTrackerPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
-		for (ItemTypeEnum type : ItemTypeEnum.values())
+		for (ItemType type : ItemType.values())
 		{
 			SuppliesBox newBox = new SuppliesBox(itemManager, type.getLabel(), plugin, this, type);
 			logsContainer.add(newBox);
@@ -169,7 +169,7 @@ class SuppliesTrackerPanel extends PluginPanel
 	 */
 	public void addItem(SuppliesTrackerItem item)
 	{
-		ItemTypeEnum category = ItemTypeEnum.categorize(item);
+		ItemType category = ItemType.categorize(item);
 		for (SuppliesBox box : boxList)
 		{
 			if (box.getType() == category)

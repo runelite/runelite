@@ -63,11 +63,11 @@ public class SuppliesBox extends JPanel
 	private long totalPrice;
 
 	@Getter
-	private final ItemTypeEnum type;
+	private final ItemType type;
 
 	SuppliesBox(final ItemManager itemManager, final String id,
 				final SuppliesTrackerPlugin plugin, final SuppliesTrackerPanel panel,
-				final ItemTypeEnum type)
+				final ItemType type)
 	{
 		this.id = id;
 		this.itemManager = itemManager;
