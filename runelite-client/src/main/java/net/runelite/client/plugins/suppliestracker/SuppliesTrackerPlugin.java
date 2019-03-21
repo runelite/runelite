@@ -43,6 +43,9 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.item.ItemPrice;
 import static net.runelite.api.ItemID.*;
+import static net.runelite.client.plugins.suppliestracker.TypeEnum.CONSUMABLE;
+import static net.runelite.client.plugins.suppliestracker.TypeEnum.TELEPORT;
+
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -67,6 +70,11 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	private static final String POTION_PATTERN = "[(]\\d[)]";
 
+	private static final String EAT_PATTERN = "^eat";
+	private static final String DRINK_PATTERN = "^drink";
+	private static final String TELEPORT_PATTERN = "^teleport";
+	private static final String TELETAB_PATTERN = "^break";
+
 	private static final int POTION_DOSES = 4, CAKE_DOSES = 3, PIZZA_PIE_DOSES = 2;
 
 	//Hold Supply Data
@@ -74,7 +82,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	private ItemContainer old;
 	private Deque<Integer> itemStack = new ArrayDeque<>();
 	private Deque<Integer> slotStack = new ArrayDeque<>();
-	private Deque<String> typeStack = new ArrayDeque<>();
+	private Deque<TypeEnum> typeStack = new ArrayDeque<>();
 	private Deque<net.runelite.api.Item[]> oldInventStack = new ArrayDeque<>();
 	private int ammoId = 0;
 	private int ammoAmount = 0;
@@ -88,7 +96,6 @@ public class SuppliesTrackerPlugin extends Plugin
 	private SuppliesTrackerPanel panel;
 	private NavigationButton navButton;
 	private String[] RAIDS_CONSUMABLES = new String[]{"xeric's", "elder", "twisted", "revitalisation", "overload", "prayer enhance", "pysk", "suphi", "leckish", "brawk", "mycil", "roqed", "kyren", "guanic", "prael", "giral", "phluxia", "kryket", "murng", "psykk"};
-
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -167,7 +174,6 @@ public class SuppliesTrackerPlugin extends Plugin
 				}
 			}
 		}
-
 	}
 
 	@Subscribe
@@ -179,9 +185,9 @@ public class SuppliesTrackerPlugin extends Plugin
 		{
 			while (!typeStack.isEmpty())
 			{
-				String getType = typeStack.pop();
+				TypeEnum type = typeStack.pop();
 				//Consumable
-				if (getType.contains("consumable"))
+				if (type == CONSUMABLE)
 				{
 					for (int i = 0; i < slotStack.size(); i++)
 					{
@@ -195,7 +201,7 @@ public class SuppliesTrackerPlugin extends Plugin
 					}
 				}
 				//Teleports
-				if (getType.contains("teleport"))
+				if (type == TELEPORT)
 				{
 					int slot = slotStack.pop();
 					int teleid = itemStack.pop();
@@ -300,9 +306,9 @@ public class SuppliesTrackerPlugin extends Plugin
 	{
 		//Uses stacks to push/pop for tick eating
 		//Create pattern to find eat/drink at beginning
-		Pattern r = Pattern.compile("^eat");
-		Pattern r2 = Pattern.compile("^drink");
-		if (r.matcher(event.getMenuTarget().toLowerCase()).find() || r2.matcher(event.getMenuTarget().toLowerCase()).find())
+		Pattern eatPattern = Pattern.compile(EAT_PATTERN);
+		Pattern drinkPattern = Pattern.compile(DRINK_PATTERN);
+		if (eatPattern.matcher(event.getMenuTarget().toLowerCase()).find() || drinkPattern.matcher(event.getMenuTarget().toLowerCase()).find())
 		{
 			if (!itemStack.contains(event.getId()))
 			{
@@ -312,7 +318,7 @@ public class SuppliesTrackerPlugin extends Plugin
 				if (old.getItems() != null)
 				{
 					int pushItem = old.getItems()[event.getActionParam()].getId();
-					typeStack.push("consumable");
+					typeStack.push(CONSUMABLE);
 					itemStack.push(pushItem);
 					slotStack.push(slot);
 				}
@@ -321,44 +327,39 @@ public class SuppliesTrackerPlugin extends Plugin
 
 		// Change pattern for teleport
 
-		r = Pattern.compile("^teleport");
+		Pattern teleportPattern = Pattern.compile(TELEPORT_PATTERN);
 		int teleid;
-		if (r.matcher(event.getMenuTarget().toLowerCase()).find())
+		if (teleportPattern.matcher(event.getMenuTarget().toLowerCase()).find())
 		{
 			old = client.getItemContainer(InventoryID.INVENTORY);
 
 			//Makes stack only contains one teleport type to stop from adding multiple of one teleport
-			if (old.getItems() != null && !typeStack.contains("teleport"))
+			if (old.getItems() != null && !typeStack.contains(TELEPORT))
 			{
 				teleid = event.getId();
 				oldInventStack.push(old.getItems());
 				slotStack.push(event.getActionParam());
-				typeStack.push("teleport");
+				typeStack.push(TELEPORT);
 				itemStack.push(teleid);
 			}
 		}
 
 		//Change pattern for teleport tablets
-		r = Pattern.compile("^break");
+		Pattern teletabPattern = Pattern.compile(TELETAB_PATTERN);
 
-		if (r.matcher(event.getMenuTarget().toLowerCase()).find())
+		if (teletabPattern.matcher(event.getMenuTarget().toLowerCase()).find())
 		{
 			old = client.getItemContainer(InventoryID.INVENTORY);
 
-			if (old.getItems() != null && !typeStack.contains("teleport"))
+			if (old.getItems() != null && !typeStack.contains(TELEPORT))
 			{
 				teleid = event.getId();
 				oldInventStack.push(old.getItems());
 				slotStack.push(event.getActionParam());
-				typeStack.push("teleport");
+				typeStack.push(TELEPORT);
 				itemStack.push(teleid);
 			}
 		}
-	}
-
-	void buildEntries(int itemId) throws ExecutionException
-	{
-		buildEntries(itemId, 1);
 	}
 
 	private boolean isPotion(String name)
@@ -402,6 +403,11 @@ public class SuppliesTrackerPlugin extends Plugin
 			return price / CAKE_DOSES;
 		}
 		return price;
+	}
+
+	void buildEntries(int itemId) throws ExecutionException
+	{
+		buildEntries(itemId, 1);
 	}
 
 	void buildEntries(int itemId, int count) throws ExecutionException
