@@ -64,9 +64,9 @@ import net.runelite.client.util.WildcardMatcher;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Unaggressive NPC timer",
+	name = "NPC Aggression Timer",
 	description = "Highlights the unaggressive area of NPCs nearby and timer until it becomes active",
-	tags = {"highlight", "lines", "unaggro", "aggro", "aggressive", "npcs", "area", "timer", "slayer"},
+	tags = {"highlight", "lines", "unaggro", "aggro", "aggressive", "npcs", "area", "slayer"},
 	enabledByDefault = false
 )
 public class NpcAggroAreaPlugin extends Plugin
