@@ -12,6 +12,10 @@ import java.time.Instant;
 public class MasterFarmerNPC
 {
 	@Getter
+	@Setter
+	private NPC npc;
+
+	@Getter
 	private int npcIndex;
 
 	@Getter
@@ -35,6 +39,7 @@ public class MasterFarmerNPC
 
 	MasterFarmerNPC(NPC npc)
 	{
+		this.npc = npc;
 		this.npcName = npc.getName();
 		this.npcIndex = npc.getIndex();
 		this.stoppedMovingTick = Instant.now();

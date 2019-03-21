@@ -31,7 +31,7 @@ public class MasterFarmerOverlay extends Overlay
 
 	static
 	{
-		((DecimalFormat)TIME_LEFT_FORMATTER).applyPattern("#0");
+		((DecimalFormat)TIME_LEFT_FORMATTER).applyPattern("");
 	}
 
 	private final Client client;
@@ -54,7 +54,25 @@ public class MasterFarmerOverlay extends Overlay
 
 		if (config.showOverlay())
 		{
-			plugin.getMasterfarmers().forEach((id, npc) -> renderTimer(npc, graphics));
+			for (NPC npc : client.getNpcs())
+			{
+				final String npcName = npc.getName();
+
+				if (npcName == null)
+				{
+					continue;
+				}
+
+				if (npc.getId() == 3257)
+				{
+					final MasterFarmerNPC mf = plugin.getMasterfarmers().get(npc.getIndex());
+
+					if (mf != null)
+					{
+						renderTimer(mf, graphics);
+					}
+				}
+			}
 		}
 
 		return null;
@@ -62,47 +80,31 @@ public class MasterFarmerOverlay extends Overlay
 
 	private void renderTimer(final MasterFarmerNPC npc, final Graphics2D graphics)
 	{
+		final WorldPoint npcWorldPoint = npc.getCurrentLocation();
 
-		final WorldPoint respawnLocation = npc.getCurrentLocation();
-		final LocalPoint lp = LocalPoint.fromWorld(client, respawnLocation.getX(), respawnLocation.getY());
+		final LocalPoint npcLocalPoint = LocalPoint.fromWorld(client, npcWorldPoint.getX(), npcWorldPoint.getY());
 
-		if (lp == null)
+		if (npcLocalPoint == null)
 		{
 			return;
 		}
 
-		final Color color = Color.WHITE;
+		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 
-		final LocalPoint centerLp = new LocalPoint(
-			lp.getX() + Perspective.LOCAL_TILE_SIZE * (npc.getNpcSize() - 1) / 2,
-			lp.getY() + Perspective.LOCAL_TILE_SIZE * (npc.getNpcSize() - 1) / 2);
-
-		final Polygon poly = Perspective.getCanvasTileAreaPoly(client, centerLp, npc.getNpcSize());
-
-		if (poly != null)
+		if (playerLocation == null)
 		{
-			OverlayUtil.renderPolygon(graphics, poly, color);
+			return;
 		}
 
-		final Instant now = Instant.now();
-		//final double baseTick = (npc.getStoppedMovingTick().getNano() - client.getTickCount()) * 0.6;
-		//final double sinceLast = (now.toEpochMilli() - plugin.getLastTickUpdate().toEpochMilli()) / 1000.0;
 		final double timeLeft = Math.max(0.0, (300 - npc.getTimeWithoutMoving()));
-		final String timeLeftStr = TIME_LEFT_FORMATTER.format(timeLeft);
 
-		final int textWidth = graphics.getFontMetrics().stringWidth(timeLeftStr);
-		final int textHeight = graphics.getFontMetrics().getAscent();
+		final String timeLeftString = TIME_LEFT_FORMATTER.format(timeLeft);
 
-		final Point canvasPoint = Perspective
-			.localToCanvas(client, centerLp, respawnLocation.getPlane());
+		final Point canvasPoint = npc.getNpc().getCanvasTextLocation(graphics, timeLeftString, npc.getNpc().getLogicalHeight() + config.timerHeight());
 
 		if (canvasPoint != null && (config.maxDisplay() >= timeLeft))
 		{
-			final Point canvasCenterPoint = new Point(
-				canvasPoint.getX() - textWidth / 2,
-				canvasPoint.getY() + textHeight / 2);
-
-			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, timeLeftStr, Color.WHITE);
+			OverlayUtil.renderTextLocation(graphics, canvasPoint, timeLeftString, config.timerColor());
 		}
 	}
 

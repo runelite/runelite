@@ -110,10 +110,10 @@ public class MasterFarmerPlugin extends Plugin
 			return;
 		}
 
-		if (npc.getId() == 3257 || npc.getId() == 3258)
+		if (npc.getId() == 3257)
 		{
-			System.out.println("Master Farmer Spawned");
-			System.out.println("ID: " + npc.getId() + "X: " + npc.getWorldLocation().getX() + "Y: " + npc.getWorldLocation().getY());
+			//System.out.println("Master Farmer Spawned");
+			//System.out.println("ID: " + npc.getId() + "X: " + npc.getWorldLocation().getX() + "Y: " + npc.getWorldLocation().getY());
 			MasterFarmer(npc);
 			return;
 		}
@@ -134,7 +134,7 @@ public class MasterFarmerPlugin extends Plugin
 				continue;
 			}
 
-			if (npc.getId() == 3257)
+			if (npc.getId() == 3257 || npc.getId() == 3258)
 			{
 				final MasterFarmerNPC mf = masterfarmers.get(npc.getIndex());
 
@@ -145,16 +145,14 @@ public class MasterFarmerPlugin extends Plugin
 
 				if (mf.getCurrentLocation().getX() != npc.getWorldLocation().getX() || mf.getCurrentLocation().getY() != npc.getWorldLocation().getY())
 				{
-					System.out.println("OLD " + "  X: " + mf.getCurrentLocation().getX() + "  Y: " + mf.getCurrentLocation().getY());
-					System.out.println("NEW " + "  X: " + npc.getWorldLocation().getX() + "  Y: " + npc.getWorldLocation().getY());
 					mf.setCurrentLocation(npc.getWorldLocation());
 					mf.setTimeWithoutMoving(0);
 					mf.setStoppedMovingTick(Instant.now());
+					mf.setNpc(npc);
 				}
 				else
 				{
 					mf.setTimeWithoutMoving(lastTickUpdate.getEpochSecond() - mf.getStoppedMovingTick().getEpochSecond());
-					System.out.println("Time without moving: " + mf.getTimeWithoutMoving());
 				}
 				continue;
 			}
