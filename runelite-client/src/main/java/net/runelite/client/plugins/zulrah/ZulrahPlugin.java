@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
@@ -98,6 +99,16 @@ public class ZulrahPlugin extends Plugin
 		if (isNpcZulrah(npc.getId()))
 		{
 			npcZulrah = npc;
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		NPC npc = event.getNpc();
+		if (isNpcZulrah(npc.getId()))
+		{
+			npcZulrah = null;
 		}
 	}
 
