@@ -75,6 +75,9 @@ public class SuppliesTrackerPlugin extends Plugin
 	private static final String TELEPORT_PATTERN = "^teleport";
 	private static final String TELETAB_PATTERN = "^break";
 
+	private static final int EQUIPMENT_MAINHAND_SLOT = EquipmentInventorySlot.WEAPON.getSlotIdx();
+	private static final int EQUIPMENT_AMMO_SLOT = EquipmentInventorySlot.AMMO.getSlotIdx();
+
 	private static final int POTION_DOSES = 4, CAKE_DOSES = 3, PIZZA_PIE_DOSES = 2;
 
 	//Hold Supply Data
@@ -217,10 +220,10 @@ public class SuppliesTrackerPlugin extends Plugin
 		if (itemContainer == client.getItemContainer(InventoryID.EQUIPMENT))
 		{
 			//set mainhand for trident tracking
-			if (itemContainer.getItems().length > 3)
+			if (itemContainer.getItems().length > EQUIPMENT_MAINHAND_SLOT)
 			{
-				mainHand = itemContainer.getItems()[3].getId();
-				net.runelite.api.Item mainHandItem = itemContainer.getItems()[3];
+				mainHand = itemContainer.getItems()[EQUIPMENT_MAINHAND_SLOT].getId();
+				net.runelite.api.Item mainHandItem = itemContainer.getItems()[EQUIPMENT_MAINHAND_SLOT];
 				for (int throwingIDs: throwingIds)
 				{
 					if (mainHand == throwingIDs)
@@ -264,9 +267,9 @@ public class SuppliesTrackerPlugin extends Plugin
 				}
 			}
 			//Ammo tracking
-			if (itemContainer.getItems().length > 13)
+			if (itemContainer.getItems().length > EQUIPMENT_AMMO_SLOT)
 			{
-				net.runelite.api.Item ammoSlot = itemContainer.getItems()[13];
+				net.runelite.api.Item ammoSlot = itemContainer.getItems()[EQUIPMENT_AMMO_SLOT];
 				if (ammoSlot != null)
 				{
 					if (ammoLoaded)
