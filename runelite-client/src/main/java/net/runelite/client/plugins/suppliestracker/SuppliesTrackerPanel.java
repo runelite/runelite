@@ -75,6 +75,7 @@ class SuppliesTrackerPanel extends PluginPanel
 	private final JLabel overallCostLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
 	private final ItemManager itemManager;
+	private final SuppliesTrackerPlugin plugin;
 	private int overallSuppliesUsed;
 	private int overallCost;
 	private String menusAdded = "";
@@ -86,11 +87,12 @@ class SuppliesTrackerPanel extends PluginPanel
 
 	private final ClientThread clientThread;
 
-	SuppliesTrackerPanel(ClientThread clientThread, final ItemManager itemManager, ScheduledExecutorService executor)
+	SuppliesTrackerPanel(ClientThread clientThread, final ItemManager itemManager, ScheduledExecutorService executor, SuppliesTrackerPlugin plugin)
 	{
 		this.clientThread = clientThread;
 		this.executor = executor;
 		this.itemManager = itemManager;
+		this.plugin = plugin;
 		setBorder(new EmptyBorder(6, 6, 6, 6));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
@@ -127,7 +129,7 @@ class SuppliesTrackerPanel extends PluginPanel
 			overallSuppliesUsed = 0;
 			overallCost = 0;
 			updateOverall();
-			SuppliesTrackerPlugin.getInstance().clearSupplies();
+			plugin.clearSupplies();
 			logsContainer.removeAll();
 			logsContainer.repaint();
 		});
@@ -294,7 +296,7 @@ class SuppliesTrackerPanel extends PluginPanel
 			{
 				overallCost -= row.totalCost;
 				overallSuppliesUsed -= row.quantity;
-				SuppliesTrackerPlugin.getInstance().clearItem(row.itemId);
+				plugin.clearItem(row.itemId);
 				updateOverall();
 				logsContainer.remove(row);
 				logsContainer.repaint();
@@ -336,7 +338,7 @@ class SuppliesTrackerPanel extends PluginPanel
 
 					if (c == KeyEvent.VK_ENTER)
 					{
-						clientThread.invokeLater(() -> SuppliesTrackerPlugin.getInstance().setAmount(row.itemId, Integer.valueOf(setAmountRow.amount.getText().replace(",", ""))));
+						clientThread.invokeLater(() -> plugin.setAmount(row.itemId, Integer.valueOf(setAmountRow.amount.getText().replace(",", ""))));
 
 						((JFormattedTextField)e.getSource()).removeKeyListener( this );
 						setAmountRow.setVisible(false);
@@ -418,7 +420,7 @@ class SuppliesTrackerPanel extends PluginPanel
 		return itemId;
 	}
 
-	private int getSingleDose(String name) throws ExecutionException
+	private int getSingleDose(String name)
 	{
 		int itemId = 0;
 		List<ItemPrice> itemList = itemManager.search(name);
@@ -441,6 +443,6 @@ class SuppliesTrackerPanel extends PluginPanel
 	private void processResult(int itemID) throws ExecutionException
 	{
 
-		SuppliesTrackerPlugin.getInstance().buildEntries(itemID);
+		plugin.buildEntries(itemID);
 	}
-	}
+}

@@ -28,10 +28,7 @@ package net.runelite.client.plugins.suppliestracker;
 
 
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
+import net.runelite.api.*;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
@@ -67,9 +64,12 @@ import java.util.concurrent.ExecutionException;
 @Slf4j
 public class SuppliesTrackerPlugin extends Plugin
 {
+
+	private static final String POTION_PATTERN = "[(]\\d[)]";
+
+	private static final int POTION_DOSES = 4, CAKE_DOSES = 3, PIZZA_PIE_DOSES = 2;
+
 	//Hold Supply Data
-	private static SuppliesTrackerPlugin suppliesTrackerPlugin_instance = null;
-	private static HashMap<Integer, Integer> suppliesUsed = new HashMap<>();
 	private static HashMap<Integer, SuppliesTrackerItemEntry> suppliesEntry = new HashMap<>();
 	private ItemContainer old;
 	private Deque<Integer> itemStack = new ArrayDeque<>();
@@ -113,8 +113,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 
-		panel = new SuppliesTrackerPanel(clientThread, itemManager, executorService);
-		suppliesTrackerPlugin_instance = this;
+		panel = new SuppliesTrackerPanel(clientThread, itemManager, executorService, this);
 		final BufferedImage header = ImageUtil.getResourceStreamFromClass(getClass(), "sarabrew.png");
 		panel.loadHeaderIcon(header);
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
@@ -149,40 +148,21 @@ public class SuppliesTrackerPlugin extends Plugin
 				{
 					buildEntries(CHAOS_RUNE);
 					buildEntries(DEATH_RUNE);
-					buildEntries(FIRE_RUNE);
-					buildEntries(FIRE_RUNE);
-					buildEntries(FIRE_RUNE);
-					buildEntries(FIRE_RUNE);
-					buildEntries(FIRE_RUNE);
-					buildEntries(COINS_995);
-					buildEntries(COINS_995);
-					buildEntries(COINS_995);
-					buildEntries(COINS_995);
-					buildEntries(COINS_995);
-					buildEntries(COINS_995);
-					buildEntries(COINS_995);
-					buildEntries(COINS_995);
-					buildEntries(COINS_995);
-					buildEntries(COINS_995);
+					buildEntries(FIRE_RUNE, 5);
+					buildEntries(COINS_995, 10);
 				}
 				//Trident of the swamp
 				if (mainHand == TRIDENT_OF_THE_SWAMP_E || mainHand == TRIDENT_OF_THE_SWAMP || mainHand == UNCHARGED_TOXIC_TRIDENT_E || mainHand == UNCHARGED_TOXIC_TRIDENT)
 				{
 					buildEntries(CHAOS_RUNE);
 					buildEntries(DEATH_RUNE);
-					buildEntries(FIRE_RUNE);
-					buildEntries(FIRE_RUNE);
-					buildEntries(FIRE_RUNE);
-					buildEntries(FIRE_RUNE);
-					buildEntries(FIRE_RUNE);
+					buildEntries(FIRE_RUNE, 5);
 					buildEntries(ZULRAHS_SCALES);
 				}
 				//Sang Staff
 				if (mainHand == SANGUINESTI_STAFF || mainHand == SANGUINESTI_STAFF_UNCHARGED)
 				{
-					buildEntries(BLOOD_RUNE);
-					buildEntries(BLOOD_RUNE);
-					buildEntries(BLOOD_RUNE);
+					buildEntries(BLOOD_RUNE, 3);
 
 				}
 			}
@@ -313,7 +293,7 @@ public class SuppliesTrackerPlugin extends Plugin
 			}
 
 		}
-			}
+	}
 
 	@Subscribe
 	public void onMenuOptionClicked(final MenuOptionClicked event)
@@ -378,87 +358,101 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	void buildEntries(int itemId) throws ExecutionException
 	{
+		buildEntries(itemId, 1);
+	}
+
+	private boolean isPotion(String name)
+	{
+		return name.contains("(4)") || name.contains("(3)") || name.contains("(2)") || name.contains("(1)");
+	}
+
+	private boolean isPizzaPie(String name)
+	{
+		return name.toLowerCase().contains("pizza") || name.toLowerCase().contains(" pie");
+	}
+
+	private boolean isCake(String name, int itemId)
+	{
+		return name.toLowerCase().contains("cake") || itemId == ItemID.CHOCOLATE_SLICE;
+	}
+
+	/**
+	 * correct prices for potions, pizzas pies, and cakes
+	 * tracker tracks each dose of a potion/pizza/pie/cake as an entire one
+	 * so must divide price by total amount of doses in each
+	 * this is necessary b/c the most correct/accurate price for these resources is the
+	 * full price not the 1-dose price
+	 * @param name the item name
+	 * @param itemId the item id
+	 * @param price the current calculated price
+	 * @return the price modified by the number of doses
+	 */
+	private long scalePriceByDoses(String name, int itemId, long price)
+	{
+		if (isPotion(name))
+		{
+			return price / POTION_DOSES;
+		}
+		if (isPizzaPie(name))
+		{
+			return price / PIZZA_PIE_DOSES;
+		}
+		if (isCake(name, itemId))
+		{
+			return price / CAKE_DOSES;
+		}
+		return price;
+	}
+
+	void buildEntries(int itemId, int count) throws ExecutionException
+	{
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			String name = itemComposition.getName();
-			long price;
-			boolean potion = false;
-			boolean pizzapie = false;
+			long calculatedPrice;
 
 			for (String raidsConsumables: RAIDS_CONSUMABLES)
 			{
 				if (name.toLowerCase().contains(raidsConsumables)) return;
 			}
 
-			//Check if item is potion, pie, or pizza
-			if (name.contains("(4)") || name.contains("(3)") || name.contains("(2)") || name.contains("(1)"))
+			// convert potions, pizzas/pies, and cakes to their full equivalents
+			// e.g. a half pizza becomes full pizza, 3 dose potion becomes 4, etc...
+			if (isPotion(name))
 			{
-				String pattern = "[(]\\d[)]";
-				name = name.replaceAll(pattern, "(4)");
-				itemId = getNewName(name);
-				potion = true;
+				name = name.replaceAll(POTION_PATTERN, "(4)");
+				itemId = getItemID(name);
 			}
-			if (name.toLowerCase().contains("pizza") || name.toLowerCase().contains(" pie"))
+			if (isPizzaPie(name))
 			{
-				itemId = getFull(itemId);
+				itemId = getFullVersionItemID(itemId);
 				name = itemManager.getItemComposition(itemId).getName();
-				pizzapie = true;
 			}
-			else if (name.toLowerCase().contains("cake") || itemId == 1901)
+			if (isCake(name, itemId))
 			{
-				itemId = getFull(itemId);
+				itemId = getFullVersionItemID(itemId);
 				name = itemManager.getItemComposition(itemId).getName();
 			}
 
-			//build supplies used hashmap
-			int temp;
-			if (suppliesUsed.containsKey(itemId))
+			int newQuantity;
+			if (suppliesEntry.containsKey(itemId))
 			{
-				temp = suppliesUsed.get(itemId) + 1;
-				suppliesUsed.put(itemId, temp);
+				newQuantity = suppliesEntry.get(itemId).getQuantity() + count;
 			}
 			else
 			{
-				suppliesUsed.put(itemId, 1);
-			}
-			int quantity = suppliesUsed.get(itemId);
-
-			//get price
-			price = (long)itemManager.getItemPrice(itemId) * (long)quantity;
-
-			//Divide price if true
-			if (potion)
-			{
-				price = price / 4;
-			}
-			if (pizzapie)
-			{
-				price = price / 2;
+				newQuantity = count;
 			}
 
-			//Correct price for cake
-			if (itemId == CHOCOLATE_CAKE || itemId == CAKE)
-			{
-				price = price / 3;
-			}
+			// calculate price for amount of doses used
+			calculatedPrice = ((long) itemManager.getItemPrice(itemId)) * ((long) newQuantity);
+			calculatedPrice = scalePriceByDoses(name, itemId, calculatedPrice);
 
-			//Check for duplicates
-			if (!suppliesEntry.containsKey(itemId))
-			{
-				suppliesEntry.put(itemId, new SuppliesTrackerItemEntry(
-					itemId,
-					name,
-					quantity,
-					price));
-			}
-			else
-				{
-					suppliesEntry.remove(itemId);
-					suppliesEntry.put(itemId, new SuppliesTrackerItemEntry(
-						itemId,
-						name,
-						quantity,
-						price));
-				}
+			// write the new quantity and calculated price for this entry
+			suppliesEntry.put(itemId, new SuppliesTrackerItemEntry(
+				itemId,
+				name,
+				newQuantity,
+				calculatedPrice));
 			SwingUtilities.invokeLater(() ->
 			{
 				try
@@ -476,29 +470,23 @@ public class SuppliesTrackerPlugin extends Plugin
 	void clearSupplies()
 	{
 		suppliesEntry.clear();
-		suppliesUsed.clear();
 	}
 
-	//Used for reset item row
+	// Used for reset item row
 	void clearItem(int itemId)
 	{
-		suppliesUsed.remove(itemId);
 		suppliesEntry.remove(itemId);
 	}
 
 	void setAmount(int itemId, int amount)
 	{
-		long price;
-		price = (long)itemManager.getItemPrice(itemId) * (long)amount;
-		if (itemManager.getItemComposition(itemId).getName().contains("(4)"))
-		{
-			price = price / 4;
-		}
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		String name = itemComposition.getName();
+		long price;
+		price = (long)itemManager.getItemPrice(itemId) * (long)amount;
+		price = scalePriceByDoses(name, itemId, price);
 
 		suppliesEntry.put(itemId, new SuppliesTrackerItemEntry(itemId, name, amount, price));
-		suppliesUsed.put(itemId, amount);
 
 		SwingUtilities.invokeLater(() ->
 		{
@@ -513,11 +501,14 @@ public class SuppliesTrackerPlugin extends Plugin
 		});
 	}
 
-	private int getNewName(String name) throws ExecutionException
+	/**
+	 * Gets the item id that matches the provided name within the itemManager
+	 * @param name the given name
+	 * @return the item id for this name
+	 */
+	private int getItemID(String name)
 	{
 		int itemId = 0;
-
-		if (name.equals("Extended antifire(4)")) return 11951;
 
 		List<ItemPrice> items = itemManager.search(name);
 		for (ItemPrice item: items)
@@ -530,7 +521,13 @@ public class SuppliesTrackerPlugin extends Plugin
 		return itemId;
 	}
 
-	private int getFull(int itemId)
+	/**
+	 * Takes the item id of a partial item (e.g. 1 dose potion, 1/2 a pizza, etc...) and returns
+	 * the corresponding full item
+	 * @param itemId the partial item id
+	 * @return the full item id
+	 */
+	private int getFullVersionItemID(int itemId)
 	{
 		switch (itemId)
 		{
@@ -577,28 +574,15 @@ public class SuppliesTrackerPlugin extends Plugin
 				itemId = MEAT_PIE;
 				break;
 			case _23_CAKE:
-				itemId = CAKE;
-				break;
 			case SLICE_OF_CAKE:
 				itemId = CAKE;
 				break;
 			case _23_CHOCOLATE_CAKE:
-				itemId = CHOCOLATE_CAKE;
-				break;
 			case CHOCOLATE_SLICE:
 				itemId = CHOCOLATE_CAKE;
 				break;
 		}
 		return itemId;
-	}
-
-	public synchronized static SuppliesTrackerPlugin getInstance()
-	{
-		if (suppliesTrackerPlugin_instance == null)
-		{
-			suppliesTrackerPlugin_instance = new SuppliesTrackerPlugin();
-		}
-		return suppliesTrackerPlugin_instance;
 	}
 
 }
