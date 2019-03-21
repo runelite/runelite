@@ -120,8 +120,8 @@ public class SuppliesTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 
-		panel = new SuppliesTrackerPanel(clientThread, itemManager, executorService, this);
-		final BufferedImage header = ImageUtil.getResourceStreamFromClass(getClass(), "sarabrew.png");
+		panel = new SuppliesTrackerPanel(itemManager, executorService, this);
+		final BufferedImage header = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
 		panel.loadHeaderIcon(header);
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
 

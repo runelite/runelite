@@ -2,5 +2,5 @@ package net.runelite.client.plugins.suppliestracker;
 
 public enum ItemTypeEnum
 {
-	FOOD, POTION, RUNE, AMMO;
+	FOOD, POTION, RUNE, AMMO, TELEPORT;
 }

@@ -85,6 +85,12 @@ public class SuppliesBox extends JPanel
 		setVisible(trackedItems.size() > 0);
 	}
 
+	void clearAll()
+	{
+		trackedItems.clear();
+		setVisible(false);
+	}
+
 	public long getTotalSupplies()
 	{
 		long totalSupplies = 0;

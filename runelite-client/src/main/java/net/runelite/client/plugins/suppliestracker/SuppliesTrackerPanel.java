@@ -26,9 +26,6 @@
  */
 package net.runelite.client.plugins.suppliestracker;
 
-import net.runelite.api.Client;
-import static net.runelite.api.ItemID.*;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -36,27 +33,16 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.http.api.item.ItemPrice;
-import javax.inject.Inject;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 
 
@@ -68,7 +54,7 @@ class SuppliesTrackerPanel extends PluginPanel
 	// Handle loot logs
 	private final JPanel logsContainer = new JPanel();
 
-	private final SuppliesBox food, potions, runes, ammo;
+	private final SuppliesBox food, potions, runes, ammo, teleports;
 
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
@@ -83,17 +69,9 @@ class SuppliesTrackerPanel extends PluginPanel
 	private final SuppliesTrackerPlugin plugin;
 	private int overallSuppliesUsed;
 	private int overallCost;
-	private String menusAdded = "";
-	private JMenu temp;
 
-	@Inject
-	private Client client;
-
-	private final ClientThread clientThread;
-
-	SuppliesTrackerPanel(ClientThread clientThread, final ItemManager itemManager, ScheduledExecutorService executor, SuppliesTrackerPlugin plugin)
+	SuppliesTrackerPanel(final ItemManager itemManager, ScheduledExecutorService executor, SuppliesTrackerPlugin plugin)
 	{
-		this.clientThread = clientThread;
 		this.executor = executor;
 		this.itemManager = itemManager;
 		this.plugin = plugin;
@@ -124,15 +102,31 @@ class SuppliesTrackerPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
+		food = new SuppliesBox(itemManager, "Food", plugin, this);
+		potions = new SuppliesBox(itemManager, "Potions", plugin, this);
+		runes = new SuppliesBox(itemManager, "Runes", plugin, this);
+		ammo = new SuppliesBox(itemManager, "Ammo", plugin, this);
+		teleports = new SuppliesBox(itemManager, "Teleports", plugin, this);
+
+		logsContainer.add(food);
+		logsContainer.add(potions);
+		logsContainer.add(runes);
+		logsContainer.add(ammo);
+		logsContainer.add(teleports);
+
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e ->
 		{
 			overallSuppliesUsed = 0;
 			overallCost = 0;
-			updateOverall();
 			plugin.clearSupplies();
-			logsContainer.removeAll();
+			food.clearAll();
+			potions.clearAll();
+			runes.clearAll();
+			ammo.clearAll();
+			teleports.clearAll();
+			updateOverall();
 			logsContainer.repaint();
 		});
 
@@ -146,16 +140,6 @@ class SuppliesTrackerPanel extends PluginPanel
 		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(logsContainer);
-
-		food = new SuppliesBox(itemManager, "Food", plugin, this);
-		potions = new SuppliesBox(itemManager, "Potions", plugin, this);
-		runes = new SuppliesBox(itemManager, "Runes", plugin, this);
-		ammo = new SuppliesBox(itemManager, "Ammo", plugin, this);
-
-		logsContainer.add(food);
-		logsContainer.add(potions);
-		logsContainer.add(runes);
-		logsContainer.add(ammo);
 
 		errorPanel.setContent("Supply trackers", "You have not used any supplies yet.");
 		add(errorPanel);
@@ -189,6 +173,10 @@ class SuppliesTrackerPanel extends PluginPanel
 		{
 			return ItemTypeEnum.RUNE;
 		}
+		if (item.getName().contains("teleport"))
+		{
+			return ItemTypeEnum.TELEPORT;
+		}
 		return ItemTypeEnum.FOOD;
 	}
 
@@ -212,6 +200,9 @@ class SuppliesTrackerPanel extends PluginPanel
 				ammo.update(item);
 				ammo.rebuild();
 				break;
+			case TELEPORT:
+				teleports.update(item);
+				teleports.rebuild();
 		}
 		updateOverall();
 	}
@@ -223,12 +214,14 @@ class SuppliesTrackerPanel extends PluginPanel
 		overallSuppliesUsed += potions.getTotalSupplies();
 		overallSuppliesUsed += runes.getTotalSupplies();
 		overallSuppliesUsed += ammo.getTotalSupplies();
+		overallSuppliesUsed += teleports.getTotalSupplies();
 
 		overallCost = 0;
 		overallCost += food.getTotalPrice();
 		overallCost += potions.getTotalPrice();
 		overallCost += runes.getTotalPrice();
 		overallCost += ammo.getTotalPrice();
+		overallCost += teleports.getTotalPrice();
 
 		overallSuppliesUsedLabel.setText(htmlLabel("Total Supplies: ", overallSuppliesUsed));
 		overallCostLabel.setText(htmlLabel("Total Cost: ", overallCost));
@@ -243,9 +236,5 @@ class SuppliesTrackerPanel extends PluginPanel
 			remove(errorPanel);
 			overallPanel.setVisible(true);
 		}
-	}
-	private void processResult(int itemID) throws ExecutionException
-	{
-		plugin.buildEntries(itemID);
 	}
 }
