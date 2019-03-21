@@ -25,11 +25,14 @@
 package net.runelite.client.plugins.zulrah;
 
 import com.google.inject.Binder;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.queries.NPCQuery;
+import net.runelite.api.NpcID;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.ItemSpawned;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.zulrah.overlays.ZulrahRotationOverlay;
@@ -40,29 +43,16 @@ import net.runelite.client.plugins.zulrah.rotation.ZulrahRotationFour;
 import net.runelite.client.plugins.zulrah.rotation.ZulrahRotationOne;
 import net.runelite.client.plugins.zulrah.rotation.ZulrahRotationThree;
 import net.runelite.client.plugins.zulrah.rotation.ZulrahRotationTwo;
-import net.runelite.client.task.Schedule;
-import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.QueryRunner;
-
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Collection;
 
 @PluginDescriptor(
-  name = "Zulrah"
+	name = "Zulrah",
+	description = "Make Zulrah fight trivial.",
+	tags = {"combat", "overlay", "pve", "pvm"}
 )
 @Slf4j
 public class ZulrahPlugin extends Plugin
 {
-	private ZulrahRotation[] rotations = new ZulrahRotation[]
-	  {
-		new ZulrahRotationOne(),
-		new ZulrahRotationTwo(),
-		new ZulrahRotationThree(),
-		new ZulrahRotationFour()
-	  };
-
 	@Inject
 	private Client client;
 
@@ -75,8 +65,13 @@ public class ZulrahPlugin extends Plugin
 	@Inject
 	private ZulrahRotationOverlay rotationOverlay;
 
-	@Inject
-	private QueryRunner queryRunner;
+	private ZulrahRotation[] rotations = new ZulrahRotation[]
+	{
+		new ZulrahRotationOne(),
+		new ZulrahRotationTwo(),
+		new ZulrahRotationThree(),
+		new ZulrahRotationFour()
+	};
 
 	private ZulrahInstance instance;
 
@@ -93,13 +88,34 @@ public class ZulrahPlugin extends Plugin
 		overlayManager.add(rotationOverlay);
 	}
 
-	@Schedule(
-	  period = 600,
-	  unit = ChronoUnit.MILLIS
-	)
-	public void update()
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
 	{
-		NPC zulrah = findZulrah();
+		NPC npc = event.getNpc();
+		if (isNpcZulrah(npc.getId()))
+		{
+			update(npc);
+		}
+	}
+
+	@Subscribe
+	public void onItemSpawned(ItemSpawned event)
+	{
+		if (instance != null)
+		{
+			update(null);
+		}
+	}
+
+	public static boolean isNpcZulrah(int npcId)
+	{
+		return npcId == NpcID.ZULRAH ||
+				npcId == NpcID.ZULRAH_2043 ||
+				npcId == NpcID.ZULRAH_2044;
+	}
+
+	public void update(NPC zulrah)
+	{
 		if (zulrah == null)
 		{
 			if (instance != null)
@@ -150,12 +166,6 @@ public class ZulrahPlugin extends Plugin
 		{
 			instance.reset();
 		}
-	}
-
-	private NPC findZulrah()
-	{
-		NPC[] result = queryRunner.runQuery(new NPCQuery().nameEquals("Zulrah"));
-		return result.length == 1 ? result[0] : null;
 	}
 
 	public ZulrahInstance getInstance()
