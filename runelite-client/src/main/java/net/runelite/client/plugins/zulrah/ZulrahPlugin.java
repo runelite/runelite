@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.zulrah;
 
 import com.google.inject.Binder;
+import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -43,6 +44,7 @@ import net.runelite.client.plugins.zulrah.rotation.ZulrahRotationFour;
 import net.runelite.client.plugins.zulrah.rotation.ZulrahRotationOne;
 import net.runelite.client.plugins.zulrah.rotation.ZulrahRotationThree;
 import net.runelite.client.plugins.zulrah.rotation.ZulrahRotationTwo;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -75,6 +77,8 @@ public class ZulrahPlugin extends Plugin
 
 	private ZulrahInstance instance;
 
+	private NPC npcZulrah;
+
 	@Override
 	public void configure(Binder binder)
 	{
@@ -86,7 +90,13 @@ public class ZulrahPlugin extends Plugin
 	{
 		overlayManager.add(tileOverlay);
 		overlayManager.add(rotationOverlay);
+		npcZulrah = null;
 	}
+
+	@Schedule(
+			period = 600,
+			unit = ChronoUnit.MILLIS
+	)
 
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
@@ -94,7 +104,8 @@ public class ZulrahPlugin extends Plugin
 		NPC npc = event.getNpc();
 		if (isNpcZulrah(npc.getId()))
 		{
-			update(npc);
+			npcZulrah = npc;
+			update();
 		}
 	}
 
@@ -103,7 +114,8 @@ public class ZulrahPlugin extends Plugin
 	{
 		if (instance != null)
 		{
-			update(null);
+			npcZulrah = null;
+			update();
 		}
 	}
 
@@ -114,9 +126,9 @@ public class ZulrahPlugin extends Plugin
 				npcId == NpcID.ZULRAH_2044;
 	}
 
-	public void update(NPC zulrah)
+	public void update()
 	{
-		if (zulrah == null)
+		if (npcZulrah == null)
 		{
 			if (instance != null)
 			{
@@ -128,11 +140,11 @@ public class ZulrahPlugin extends Plugin
 
 		if (instance == null)
 		{
-			instance = new ZulrahInstance(zulrah);
+			instance = new ZulrahInstance(npcZulrah);
 			log.debug("Zulrah encounter has started.");
 		}
 
-		ZulrahPhase phase = ZulrahPhase.valueOf(instance.getStartWorldPoint(), zulrah);
+		ZulrahPhase phase = ZulrahPhase.valueOf(instance.getStartWorldPoint(), npcZulrah);
 		if (instance.getPhase() == null)
 		{
 			instance.setPhase(phase);
