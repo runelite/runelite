@@ -68,6 +68,26 @@ public class SuppliesBox extends JPanel
 		add(logTitle, BorderLayout.NORTH);
 		add(itemContainer, BorderLayout.CENTER);
 
+		// Create popup menu
+		final JPopupMenu popupMenu = new JPopupMenu();
+		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setComponentPopupMenu(popupMenu);
+
+		// Create reset menu
+		final JMenuItem reset = new JMenuItem("Reset Category");
+		reset.addActionListener(e ->
+		{
+			for (SuppliesTrackerItem item : trackedItems)
+			{
+				plugin.clearItem(item.getId());
+			}
+			clearAll();
+			rebuild();
+			panel.updateOverall();
+		});
+
+		popupMenu.add(reset);
+
 		setVisible(false);
 	}
 
