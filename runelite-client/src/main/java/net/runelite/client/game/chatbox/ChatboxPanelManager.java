@@ -93,6 +93,10 @@ public class ChatboxPanelManager
 			0,
 			1
 		);
+		if (currentInput != null)
+		{
+			killCurrentPanel();
+		}
 	}
 
 	private void unsafeOpenInput(ChatboxInput input)
@@ -111,6 +115,11 @@ public class ChatboxPanelManager
 		if (input instanceof MouseWheelListener)
 		{
 			mouseManager.registerMouseWheelListener((MouseWheelListener) input);
+		}
+
+		if (currentInput != null)
+		{
+			killCurrentPanel();
 		}
 
 		currentInput = input;
