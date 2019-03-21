@@ -129,6 +129,10 @@ public enum ChatMessageType
 	 */
 	FILTERED(105),
 	/**
+	 * The "Welcome to Old School RuneScape." message
+	 */
+	WELCOME(108),
+	/**
 	 * A message about an action.
 	 */
 	ACTION(109),
