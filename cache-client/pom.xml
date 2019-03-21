@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.17-SNAPSHOT</version>
+		<version>1.5.18-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>cache-client</artifactId>

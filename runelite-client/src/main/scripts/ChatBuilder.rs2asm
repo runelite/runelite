@@ -183,7 +183,18 @@ LABEL157:
    iload                  12
    invoke                 193
    iconst                 1
-   if_icmpeq              LABEL172
+   if_icmpeq              CHAT_FILTER       ; Jump to our new label instead
+   jump                   LABEL641
+CHAT_FILTER:
+   sload                  11                ; Load the message
+   iconst                 1                 ; Gets changed to 0 if message is blocked
+   iload                  10                ; Load the messageType
+   sconst                 "chatFilterCheck"
+   runelite_callback
+   pop_int                                  ; Pop the messageType
+   iconst                 1                 ; 2nd half of conditional
+   sstore                 11                ; Override the message with our filtered message
+   if_icmpeq              LABEL172          ; Check if we are building this message
    jump                   LABEL641
 LABEL172:
    iload                  10
