@@ -85,7 +85,6 @@ class SuppliesTrackerPanel extends PluginPanel
 	private int overallCost;
 	private String menusAdded = "";
 	private JMenu temp;
-	private final SuppliesTrackSetAmountRow setAmountRow = new SuppliesTrackSetAmountRow();
 
 	@Inject
 	private Client client;
@@ -125,8 +124,6 @@ class SuppliesTrackerPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
-		setAmountRow.setVisible(false);
-
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e ->
@@ -139,114 +136,15 @@ class SuppliesTrackerPanel extends PluginPanel
 			logsContainer.repaint();
 		});
 
-		final JMenu addSupply = new JMenu("Add Supply: ");
-		final JMenu addPotion = new JMenu("Potion dose");
-		final JMenu addFood = new JMenu("Food");
-		final JMenu addAmmo = new JMenu("Ammo");
-		final JMenu addRune = new JMenu("Runes");
-
-		for (String list: SuppliesEnum.Food.MenuItemList())
-		{
-			String[] item = list.split(" - #");
-			ActionListener ActionMenuListener = e -> clientThread.invokeLater(() ->
-			{
-				try
-				{
-					processResult(Integer.parseInt(item[1].trim()));
-				}
-				catch (ExecutionException e1)
-				{
-					e1.printStackTrace();
-				}
-			});
-			addFood.add(new JMenuItem(item[0])).addActionListener(ActionMenuListener);
-		}
-
-		for (String list: SuppliesEnum.Runes.MenuItemList())
-		{
-			String[] item = list.split(" - #");
-			ActionListener ActionMenuListener = e -> clientThread.invokeLater(() ->
-			{
-				try
-				{
-					processResult(Integer.parseInt(item[1].trim()));
-				}
-				catch (ExecutionException e1)
-				{
-					e1.printStackTrace();
-				}
-			});
-			addRune.add(new JMenuItem(item[0])).addActionListener(ActionMenuListener);
-		}
-
-		for (String list: SuppliesEnum.Potion.MenuItemList())
-		{
-			String[] item = list.split("#");
-			ActionListener ActionMenuListener = e -> clientThread.invokeLater(() ->
-			{
-				try
-				{
-					processResult(Integer.parseInt(item[2].trim()));
-				}
-				catch (ExecutionException e1)
-				{
-					e1.printStackTrace();
-				}
-			});
-			if (!item[0].equals(menusAdded))
-			{
-				temp = new JMenu(item[0]);
-				addPotion.add(temp);
-				temp.add(new JMenuItem(item[1])).addActionListener(ActionMenuListener);
-				menusAdded = item[0];
-			}
-			else
-				{
-				temp.add(new JMenuItem(item[1])).addActionListener(ActionMenuListener);
-			}
-		}
-		for (String list: SuppliesEnum.Ammo.MenuItemList())
-		{
-			String[] item = list.split("#");
-			ActionListener ActionMenuListener = e -> clientThread.invokeLater(() ->
-			{
-				try
-				{
-					processResult(Integer.parseInt(item[2].trim()));
-				}
-				catch (ExecutionException e1)
-				{
-					e1.printStackTrace();
-				}
-			});
-			if (!item[0].equals(menusAdded))
-			{
-				temp = new JMenu(item[0]);
-				addAmmo.add(temp);
-				temp.add(new JMenuItem(item[1])).addActionListener(ActionMenuListener);
-				menusAdded = item[0];
-			}
-			else
-			{
-				temp.add( new JMenuItem(item[1])).addActionListener(ActionMenuListener);
-			}
-		}
-		addSupply.add(addAmmo);
-		addSupply.add(addFood);
-		addSupply.add(addPotion);
-		addSupply.add(addRune);
-
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(reset);
-		popupMenu.add(addSupply);
 		overallPanel.setComponentPopupMenu(popupMenu);
 
 		// Create Supply Rows wrapper
 		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
 		layoutPanel.add(overallPanel);
-		layoutPanel.add(setAmountRow);
 		layoutPanel.add(logsContainer);
 
 		food = new SuppliesBox(itemManager, "Food", plugin, this);
