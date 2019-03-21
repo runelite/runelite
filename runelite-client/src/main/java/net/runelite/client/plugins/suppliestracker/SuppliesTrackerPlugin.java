@@ -75,7 +75,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	private static final String DRINK_PATTERN = "^drink";
 	private static final String TELEPORT_PATTERN = "^teleport";
 	private static final String TELETAB_PATTERN = "^break";
-	private static final String SPELL_PATTERN = "^cast";
+	private static final String SPELL_PATTERN = "^cast|^grand\\sexchange|^outside|^seers|^yanille";
 
 	private static final int EQUIPMENT_MAINHAND_SLOT = EquipmentInventorySlot.WEAPON.getSlotIdx();
 	private static final int EQUIPMENT_AMMO_SLOT = EquipmentInventorySlot.AMMO.getSlotIdx();
