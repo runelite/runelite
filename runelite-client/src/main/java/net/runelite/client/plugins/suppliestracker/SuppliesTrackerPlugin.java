@@ -1,6 +1,8 @@
 /*
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Sir Girion <https://github.com/darakelian>
+ * Copyright (c) 2018, Davis Cook <https://github.com/daviscook477>
  * Copyright (c) 2018, Daddy Dozer <Whitedylan7@gmail.com>
  * All rights reserved.
  *
@@ -27,12 +29,12 @@
 package net.runelite.client.plugins.suppliestracker;
 
 
+import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.*;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -43,18 +45,17 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.item.ItemPrice;
 import static net.runelite.api.ItemID.*;
+import static net.runelite.api.AnimationID.TRIDENT_ATTACK;
+import static net.runelite.api.AnimationID.BLOWPIPE_ATTACK;
 import static net.runelite.client.plugins.suppliestracker.ActionTypeEnum.CONSUMABLE;
 import static net.runelite.client.plugins.suppliestracker.ActionTypeEnum.TELEPORT;
 
+import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import java.awt.image.BufferedImage;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
@@ -77,8 +78,23 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	private static final int EQUIPMENT_MAINHAND_SLOT = EquipmentInventorySlot.WEAPON.getSlotIdx();
 	private static final int EQUIPMENT_AMMO_SLOT = EquipmentInventorySlot.AMMO.getSlotIdx();
+	private static final int EQUIPMENT_CAPE_SLOT = EquipmentInventorySlot.CAPE.getSlotIdx();
+
+	private static final double NO_AVAS_PERCENT = 1.0;
+	private static final double ASSEMBLER_PERCENT = 0.20;
+	private static final double ACCUMULATOR_PERCENT = 0.28;
+	private static final double ATTRACTOR_PERCENT = 0.40;
+
+	private static final int BLOWPIPE_TICKS_RAPID_PVM = 2;
+	private static final int BLOWPIPE_TICKS_RAPID_PVP = 3;
+	private static final int BLOWPIPE_TICKS_NORMAL_PVM = 3;
+	private static final int BLOWPIPE_TICKS_NORMAL_PVP = 4;
+
+	private static final double SCALES_PERCENT = 0.66;
 
 	private static final int POTION_DOSES = 4, CAKE_DOSES = 3, PIZZA_PIE_DOSES = 2;
+
+	private static final Random random = new Random();
 
 	//Hold Supply Data
 	private static HashMap<Integer, SuppliesTrackerItem> suppliesEntry = new HashMap<>();
@@ -100,6 +116,10 @@ public class SuppliesTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 	private String[] RAIDS_CONSUMABLES = new String[]{"xeric's", "elder", "twisted", "revitalisation", "overload", "prayer enhance", "pysk", "suphi", "leckish", "brawk", "mycil", "roqed", "kyren", "guanic", "prael", "giral", "phluxia", "kryket", "murng", "psykk"};
 
+	private int attackStyleVarbit = -1;
+	private int ticks = 0;
+	private int ticksInAnimation;
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -108,6 +128,9 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	@Inject
 	private SpriteManager spriteManager;
+
+	@Inject
+	private SuppliesTrackerConfig config;
 
 	@Inject
 	private Client client;
@@ -122,12 +145,10 @@ public class SuppliesTrackerPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-
 		panel = new SuppliesTrackerPanel(itemManager, executorService, this);
 		final BufferedImage header = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
 		panel.loadHeaderIcon(header);
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
-
 
 		navButton = NavigationButton.builder()
 			.tooltip("Supplies Tracker")
@@ -145,13 +166,84 @@ public class SuppliesTrackerPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
+	@Provides
+	SuppliesTrackerConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(SuppliesTrackerConfig.class);
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		Player player = client.getLocalPlayer();
+		if (player.getAnimation() == BLOWPIPE_ATTACK)
+		{
+			ticks++;
+		}
+		if (ticks == ticksInAnimation && (player.getAnimation() == BLOWPIPE_ATTACK))
+		{
+			double ava_percent = getAccumulatorPercent();
+			double scale_percent = SCALES_PERCENT;
+			// randomize the usage of supplies since we CANNOT actually get real supplies used
+			if (random.nextDouble() <= ava_percent)
+			{
+				buildEntries(config.blowpipeAmmo().getDartID());
+
+			}
+			if (random.nextDouble() <= scale_percent)
+			{
+				buildEntries(ZULRAHS_SCALES);
+			}
+			ticks = 0;
+		}
+	}
+
+	private double getAccumulatorPercent()
+	{
+		double percent = NO_AVAS_PERCENT;
+		ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		if (equipment.getItems().length > EQUIPMENT_CAPE_SLOT)
+		{
+			int capeID = equipment.getItems()[EQUIPMENT_CAPE_SLOT].getId();
+			switch(capeID)
+			{
+				case AVAS_ASSEMBLER:
+				case ASSEMBLER_MAX_CAPE:
+					percent = ASSEMBLER_PERCENT;
+					break;
+				case AVAS_ACCUMULATOR:
+				case ACCUMULATOR_MAX_CAPE:
+				// TODO: the ranging cape can be used as an attractor so this could be wrong
+				case RANGING_CAPE:
+					percent = ACCUMULATOR_PERCENT;
+					break;
+				case AVAS_ATTRACTOR:
+					percent = ATTRACTOR_PERCENT;
+					break;
+			}
+		}
+		return percent;
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getVar(VarPlayer.ATTACK_STYLE))
+		{
+			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
+			if (attackStyleVarbit == 0 || attackStyleVarbit == 3)
+				ticksInAnimation = client.getLocalPlayer().getInteracting() instanceof Player ? BLOWPIPE_TICKS_NORMAL_PVP : BLOWPIPE_TICKS_NORMAL_PVM;
+			else if (attackStyleVarbit == 1)
+				ticksInAnimation = client.getLocalPlayer().getInteracting() instanceof Player ? BLOWPIPE_TICKS_RAPID_PVP : BLOWPIPE_TICKS_RAPID_PVM;
+		}
+	}
+
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged animationChanged) throws ExecutionException
 	{
-
 		if (animationChanged.getActor() == client.getLocalPlayer())
 		{
-			if (animationChanged.getActor().getAnimation() == 1167)
+			if (animationChanged.getActor().getAnimation() == TRIDENT_ATTACK)
 			{
 				//Trident of the seas
 				if (mainHand == TRIDENT_OF_THE_SEAS || mainHand == TRIDENT_OF_THE_SEAS_E || mainHand == TRIDENT_OF_THE_SEAS_FULL )
@@ -448,7 +540,7 @@ public class SuppliesTrackerPlugin extends Plugin
 			if (isPotion(name))
 			{
 				name = name.replaceAll(POTION_PATTERN, "(4)");
-				itemId = getItemID(name);
+				itemId = getPotionID(name);
 			}
 			if (isPizzaPie(name))
 			{
@@ -511,7 +603,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	 * @param name the given name
 	 * @return the item id for this name
 	 */
-	private int getItemID(String name)
+	private int getPotionID(String name)
 	{
 		int itemId = 0;
 
