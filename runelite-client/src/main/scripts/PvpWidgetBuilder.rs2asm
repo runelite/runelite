@@ -1,0 +1,119 @@
+.id                 388
+.int_stack_count    1
+.string_stack_count 0
+.int_var_count      3
+.string_var_count   0
+   invoke                 384
+   istore                 1
+   invoke                 1138
+   istore                 2
+   iload                  2
+   iconst                 1
+   if_icmpeq              LABEL8
+   jump                   LABEL74
+LABEL8:
+   get_varp               1676
+   iconst                 4
+   if_icmpgt              LABEL12
+   jump                   LABEL31
+LABEL12:
+   iload                  1
+   iconst                 0
+   if_icmpgt              LABEL16
+   jump                   LABEL27
+LABEL16:
+   get_varbit             5954
+   iconst                 1
+   if_icmpeq              LABEL20
+   jump                   LABEL27
+LABEL20:
+   sconst                 "Level: "
+   iload                  1
+   tostring              
+   join_string            2
+   iload                  0
+   if_settext            
+   jump                   LABEL30
+LABEL27:
+   sconst                 "Deadman"
+   iload                  0
+   if_settext            
+LABEL30:
+   jump                   LABEL73
+LABEL31:
+   get_varbit             4965
+   iconst                 0
+   if_icmpgt              LABEL35
+   jump                   LABEL39
+LABEL35:
+   sconst                 "Protection"
+   iload                  0
+   if_settext            
+   jump                   LABEL73
+LABEL39:
+   iload                  1
+   iconst                 0
+   if_icmpgt              LABEL43
+   jump                   LABEL54
+LABEL43:
+   get_varbit             5954
+   iconst                 1
+   if_icmpeq              LABEL47
+   jump                   LABEL54
+LABEL47:
+   sconst                 "Level: "
+   iload                  1
+   tostring              
+   join_string            2
+   iload                  0
+   if_settext            
+   jump                   LABEL73
+LABEL54:
+   get_varc_int           78
+   iconst                 1
+   if_icmpeq              LABEL58
+   jump                   LABEL62
+LABEL58:
+   sconst                 "Guarded"
+   iload                  0
+   if_settext            
+   jump                   LABEL73
+LABEL62:
+   get_varc_int           78
+   iconst                 2
+   if_icmpeq              LABEL66
+   jump                   LABEL70
+LABEL66:
+   sconst                 "No PvP"
+   iload                  0
+   if_settext            
+   jump                   LABEL73
+LABEL70:
+   sconst                 "Deadman"
+   iload                  0
+   if_settext            
+LABEL73:
+   jump                   LABEL88
+LABEL74:
+   iload                  1
+   iconst                 0
+   if_icmpgt              LABEL78
+   jump                   LABEL85
+LABEL78:
+   sconst                 "Level: "
+   iload                  1
+   tostring              
+   join_string            2
+   iload                  0
+   if_settext            
+   jump                   LABEL88
+LABEL85:
+   sconst                 ""
+   iload                  0
+   if_settext            
+LABEL88:
+   iload                  1
+   invoke                 387
+   sconst                 "wildernessWidgetTextSet"  ; set callback name
+   runelite_callback                                 ; invoke callback
+   return                

@@ -69,7 +69,7 @@ enum Task
 	COCKATRICE("Cockatrice", ItemID.COCKATRICE, "Cockathrice"),
 	COWS("Cows", ItemID.COW_MASK),
 	CRAWLING_HANDS("Crawling hands", ItemID.CRAWLING_HAND, "Crushing hand"),
-	CRAZY_ARCHAEOLOGIST("Crazy Archaeologist", ItemID.FEDORA),
+	CRAZY_ARCHAEOLOGIST("Crazy Archaeologists", ItemID.FEDORA, "Crazy Archaeologist"),
 	CROCODILES("Crocodiles", ItemID.SWAMP_LIZARD),
 	DAGANNOTH("Dagannoth", ItemID.DAGANNOTH),
 	DAGANNOTH_KINGS("Dagannoth Kings", ItemID.PET_DAGANNOTH_PRIME),
