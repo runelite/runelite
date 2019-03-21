@@ -44,11 +44,12 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.item.ItemPrice;
+
+import static net.runelite.api.AnimationID.*;
 import static net.runelite.api.ItemID.*;
-import static net.runelite.api.AnimationID.TRIDENT_ATTACK;
-import static net.runelite.api.AnimationID.BLOWPIPE_ATTACK;
 import static net.runelite.client.plugins.suppliestracker.ActionType.CONSUMABLE;
 import static net.runelite.client.plugins.suppliestracker.ActionType.TELEPORT;
+import static net.runelite.client.plugins.suppliestracker.ActionType.CAST;
 
 import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
@@ -75,6 +76,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	private static final String DRINK_PATTERN = "^drink";
 	private static final String TELEPORT_PATTERN = "^teleport";
 	private static final String TELETAB_PATTERN = "^break";
+	private static final String SPELL_PATTERN = "^cast";
 
 	private static final int EQUIPMENT_MAINHAND_SLOT = EquipmentInventorySlot.WEAPON.getSlotIdx();
 	private static final int EQUIPMENT_AMMO_SLOT = EquipmentInventorySlot.AMMO.getSlotIdx();
@@ -96,18 +98,17 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	private static final Random random = new Random();
 
+	private static final int[] throwingIds = new int[]{BRONZE_DART, IRON_DART, STEEL_DART, BLACK_DART, MITHRIL_DART, ADAMANT_DART, RUNE_DART, DRAGON_DART, BRONZE_KNIFE, IRON_KNIFE, STEEL_KNIFE, BLACK_KNIFE, MITHRIL_KNIFE, ADAMANT_KNIFE, RUNE_KNIFE, BRONZE_THROWNAXE, IRON_THROWNAXE, STEEL_THROWNAXE, MITHRIL_THROWNAXE, ADAMANT_THROWNAXE, RUNE_THROWNAXE, DRAGON_KNIFE, DRAGON_KNIFE_22812, DRAGON_KNIFE_22814, DRAGON_KNIFEP_22808, DRAGON_KNIFEP_22810, DRAGON_KNIFEP , DRAGON_THROWNAXE, CHINCHOMPA_10033, RED_CHINCHOMPA_10034, BLACK_CHINCHOMPA};
+	private static final int[] runeIds = new int[]{AIR_RUNE, WATER_RUNE, EARTH_RUNE, MIND_RUNE, BODY_RUNE, COSMIC_RUNE, CHAOS_RUNE, NATURE_RUNE, LAW_RUNE, DEATH_RUNE, ASTRAL_RUNE, BLOOD_RUNE, SOUL_RUNE, WRATH_RUNE, MIST_RUNE, DUST_RUNE, MUD_RUNE, SMOKE_RUNE, STEAM_RUNE, LAVA_RUNE};
+
 	//Hold Supply Data
 	private static HashMap<Integer, SuppliesTrackerItem> suppliesEntry = new HashMap<>();
 	private ItemContainer old;
-	private Deque<Integer> itemStack = new ArrayDeque<>();
-	private Deque<Integer> slotStack = new ArrayDeque<>();
-	private Deque<ActionType> typeStack = new ArrayDeque<>();
-	private Deque<net.runelite.api.Item[]> oldInventStack = new ArrayDeque<>();
+	private Deque<MenuAction> actionStack = new ArrayDeque();
 	private int ammoId = 0;
 	private int ammoAmount = 0;
 	private int thrownId = 0;
 	private int thrownAmount = 0;
-	private int[] throwingIds = new int[]{BRONZE_DART, IRON_DART, STEEL_DART, BLACK_DART, MITHRIL_DART, ADAMANT_DART, RUNE_DART, DRAGON_DART, BRONZE_KNIFE, IRON_KNIFE, STEEL_KNIFE, BLACK_KNIFE, MITHRIL_KNIFE, ADAMANT_KNIFE, RUNE_KNIFE, BRONZE_THROWNAXE, IRON_THROWNAXE, STEEL_THROWNAXE, MITHRIL_THROWNAXE, ADAMANT_THROWNAXE, RUNE_THROWNAXE, DRAGON_KNIFE, DRAGON_KNIFE_22812, DRAGON_KNIFE_22814, DRAGON_KNIFEP_22808, DRAGON_KNIFEP_22810, DRAGON_KNIFEP , DRAGON_THROWNAXE, CHINCHOMPA_10033, RED_CHINCHOMPA_10034, BLACK_CHINCHOMPA};
 	private boolean ammoLoaded = false;
 	private boolean throwingAmmoLoaded = false;
 	private boolean mainHandThrowing = false;
@@ -198,6 +199,11 @@ public class SuppliesTrackerPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * checks the player's cape slot to determine what percent of their darts are lost
+	 * - where lost means either break or drop to floor
+	 * @return the percent lost
+	 */
 	private double getAccumulatorPercent()
 	{
 		double percent = NO_AVAS_PERCENT;
@@ -238,12 +244,42 @@ public class SuppliesTrackerPlugin extends Plugin
 		}
 	}
 
+	private void checkUsedRunes(ItemContainer itemContainer, Item[] oldInv)
+	{
+		for (int i = 0; i < itemContainer.getItems().length; i++)
+		{
+			Item newItem = itemContainer.getItems()[i];
+			Item oldItem = oldInv[i];
+			boolean isRune = false;
+			for (int j = 0; j < runeIds.length; j++)
+			{
+				if (oldItem.getId() == runeIds[j])
+				{
+					isRune = true;
+				}
+			}
+			if (isRune)
+			{
+				System.out.println("found rune with " + newItem.getId() + " " + oldItem.getQuantity() + " -> " + newItem.getQuantity());
+			}
+			if (isRune && (newItem.getId() != oldItem.getId() || newItem.getQuantity() != oldItem.getQuantity()))
+			{
+				int quantity = oldItem.getQuantity();
+				if (newItem.getId() == oldItem.getId())
+				{
+					quantity -= newItem.getQuantity();
+				}
+				buildEntries(oldItem.getId(), quantity);
+			}
+		}
+	}
+
 	@Subscribe
-	public void onAnimationChanged(AnimationChanged animationChanged) throws ExecutionException
+	public void onAnimationChanged(AnimationChanged animationChanged)
 	{
 		if (animationChanged.getActor() == client.getLocalPlayer())
 		{
-			if (animationChanged.getActor().getAnimation() == TRIDENT_ATTACK)
+			if (animationChanged.getActor().getAnimation() == HIGH_LEVEL_MAGIC_ATTACK)
 			{
 				//Trident of the seas
 				if (mainHand == TRIDENT_OF_THE_SEAS || mainHand == TRIDENT_OF_THE_SEAS_E || mainHand == TRIDENT_OF_THE_SEAS_FULL )
@@ -254,7 +290,7 @@ public class SuppliesTrackerPlugin extends Plugin
 					buildEntries(COINS_995, 10);
 				}
 				//Trident of the swamp
-				if (mainHand == TRIDENT_OF_THE_SWAMP_E || mainHand == TRIDENT_OF_THE_SWAMP || mainHand == UNCHARGED_TOXIC_TRIDENT_E || mainHand == UNCHARGED_TOXIC_TRIDENT)
+				else if (mainHand == TRIDENT_OF_THE_SWAMP_E || mainHand == TRIDENT_OF_THE_SWAMP || mainHand == UNCHARGED_TOXIC_TRIDENT_E || mainHand == UNCHARGED_TOXIC_TRIDENT)
 				{
 					buildEntries(CHAOS_RUNE);
 					buildEntries(DEATH_RUNE);
@@ -262,49 +298,72 @@ public class SuppliesTrackerPlugin extends Plugin
 					buildEntries(ZULRAHS_SCALES);
 				}
 				//Sang Staff
-				if (mainHand == SANGUINESTI_STAFF || mainHand == SANGUINESTI_STAFF_UNCHARGED)
+				else if (mainHand == SANGUINESTI_STAFF || mainHand == SANGUINESTI_STAFF_UNCHARGED)
 				{
 					buildEntries(BLOOD_RUNE, 3);
+				}
+				else
+				{
+					old = client.getItemContainer(InventoryID.INVENTORY);
 
+					if (old.getItems() != null && !actionStack.stream().anyMatch(a ->
+							a.getType() == CAST))
+					{
+						MenuAction newAction = new MenuAction(CAST, old.getItems());
+						actionStack.push(newAction);
+					}
+				}
+			}
+			else if (animationChanged.getActor().getAnimation() == LOW_LEVEL_MAGIC_ATTACK)
+			{
+				old = client.getItemContainer(InventoryID.INVENTORY);
+
+				if (old.getItems() != null && !actionStack.stream().anyMatch(a ->
+						a.getType() == CAST))
+				{
+					MenuAction newAction = new MenuAction(CAST, old.getItems());
+					actionStack.push(newAction);
 				}
 			}
 		}
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged) throws ExecutionException
+	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
 	{
 		ItemContainer itemContainer = itemContainerChanged.getItemContainer();
 
-		if (itemContainer == client.getItemContainer(InventoryID.INVENTORY) && old != null && !typeStack.isEmpty())
+		if (itemContainer == client.getItemContainer(InventoryID.INVENTORY) && old != null && !actionStack.isEmpty())
 		{
-			while (!typeStack.isEmpty())
+			while (!actionStack.isEmpty())
 			{
-				ActionType type = typeStack.pop();
-				//Consumable
-				if (type == CONSUMABLE)
+				MenuAction frame = actionStack.pop();
+				ActionType type = frame.getType();
+				MenuAction.ItemAction itemFrame;
+				Item[] oldInv = frame.getOldInventory();
+				switch(type)
 				{
-					for (int i = 0; i < slotStack.size(); i++)
-					{
-						int nextItem = itemStack.pop();
-						int nextSlot = slotStack.pop();
-						net.runelite.api.Item[] oldInv = oldInventStack.pop();
+					case CONSUMABLE:
+						itemFrame = (MenuAction.ItemAction) frame;
+						int nextItem = itemFrame.getItemID();
+						int nextSlot = itemFrame.getSlot();
 						if (itemContainer.getItems()[nextSlot].getId() != oldInv[nextSlot].getId())
 						{
 							buildEntries(nextItem);
 						}
-					}
-				}
-				//Teleports
-				if (type == TELEPORT)
-				{
-					int slot = slotStack.pop();
-					int teleid = itemStack.pop();
-					net.runelite.api.Item[] oldInv = oldInventStack.pop();
-					if (itemContainer.getItems()[slot].getId() != oldInv[slot].getId() || itemContainer.getItems()[slot].getQuantity() != oldInv[slot].getQuantity())
-					{
-						buildEntries(teleid);
-					}
+						break;
+					case TELEPORT:
+						itemFrame = (MenuAction.ItemAction) frame;
+						int teleid = itemFrame.getItemID();
+						int slot = itemFrame.getSlot();
+						if (itemContainer.getItems()[slot].getId() != oldInv[slot].getId() || itemContainer.getItems()[slot].getQuantity() != oldInv[slot].getQuantity())
+						{
+							buildEntries(teleid);
+						}
+						break;
+					case CAST:
+						checkUsedRunes(itemContainer, oldInv);
+						break;
 				}
 			}
 		}
@@ -399,60 +458,69 @@ public class SuppliesTrackerPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(final MenuOptionClicked event)
 	{
-		//Uses stacks to push/pop for tick eating
-		//Create pattern to find eat/drink at beginning
+		System.out.println(event.getMenuAction().getId());
+		System.out.println(event.getActionParam());
+		System.out.println(event.getMenuOption());
+		System.out.println(event.getMenuTarget());
+
+		// Uses stacks to push/pop for tick eating
+		// Create pattern to find eat/drink at beginning
 		Pattern eatPattern = Pattern.compile(EAT_PATTERN);
 		Pattern drinkPattern = Pattern.compile(DRINK_PATTERN);
 		if (eatPattern.matcher(event.getMenuTarget().toLowerCase()).find() || drinkPattern.matcher(event.getMenuTarget().toLowerCase()).find())
 		{
-			if (!itemStack.contains(event.getId()))
+			if (!actionStack.stream().anyMatch(a ->
+			{
+				if (a instanceof MenuAction.ItemAction)
+				{
+					MenuAction.ItemAction i = (MenuAction.ItemAction) a;
+					return i.getItemID() == event.getId();
+				}
+				return false;
+			}))
 			{
 				old = client.getItemContainer(InventoryID.INVENTORY);
-				oldInventStack.push(old.getItems());
 				int slot = event.getActionParam();
 				if (old.getItems() != null)
 				{
 					int pushItem = old.getItems()[event.getActionParam()].getId();
-					typeStack.push(CONSUMABLE);
-					itemStack.push(pushItem);
-					slotStack.push(slot);
+					MenuAction newAction = new MenuAction.ItemAction(CONSUMABLE, old.getItems(), pushItem, slot);
+					actionStack.push(newAction);
 				}
 			}
 		}
 
-		// Change pattern for teleport
-
+		// Create pattern for teleport scrolls and tabs
 		Pattern teleportPattern = Pattern.compile(TELEPORT_PATTERN);
-		int teleid;
-		if (teleportPattern.matcher(event.getMenuTarget().toLowerCase()).find())
+		Pattern teletabPattern = Pattern.compile(TELETAB_PATTERN);
+		if (teleportPattern.matcher(event.getMenuTarget().toLowerCase()).find() ||
+				teletabPattern.matcher(event.getMenuTarget().toLowerCase()).find())
 		{
 			old = client.getItemContainer(InventoryID.INVENTORY);
 
-			//Makes stack only contains one teleport type to stop from adding multiple of one teleport
-			if (old.getItems() != null && !typeStack.contains(TELEPORT))
+			// Makes stack only contains one teleport type to stop from adding multiple of one teleport
+			if (old.getItems() != null && !actionStack.stream().anyMatch(a ->
+					a.getType() == TELEPORT))
 			{
-				teleid = event.getId();
-				oldInventStack.push(old.getItems());
-				slotStack.push(event.getActionParam());
-				typeStack.push(TELEPORT);
-				itemStack.push(teleid);
+				int teleid = event.getId();
+				MenuAction newAction = new MenuAction.ItemAction(TELEPORT, old.getItems(), teleid, event.getActionParam());
+				actionStack.push(newAction);
 			}
 		}
 
-		//Change pattern for teleport tablets
-		Pattern teletabPattern = Pattern.compile(TELETAB_PATTERN);
-
-		if (teletabPattern.matcher(event.getMenuTarget().toLowerCase()).find())
+		// Create pattern for spell cast
+		Pattern spellPattern = Pattern.compile(SPELL_PATTERN);
+		// note that here we look at the menuOption not menuTarget b/c the option for all spells is cast
+		// but the target differs based on each spell name
+		if (spellPattern.matcher(event.getMenuOption().toLowerCase()).find())
 		{
 			old = client.getItemContainer(InventoryID.INVENTORY);
 
-			if (old.getItems() != null && !typeStack.contains(TELEPORT))
+			if (old.getItems() != null && !actionStack.stream().anyMatch(a ->
+					a.getType() == CAST))
 			{
-				teleid = event.getId();
-				oldInventStack.push(old.getItems());
-				slotStack.push(event.getActionParam());
-				typeStack.push(TELEPORT);
-				itemStack.push(teleid);
+				MenuAction newAction = new MenuAction(CAST, old.getItems());
+				actionStack.push(newAction);
 			}
 		}
 	}
