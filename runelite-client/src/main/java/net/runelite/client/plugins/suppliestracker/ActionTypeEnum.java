@@ -1,6 +1,6 @@
 package net.runelite.client.plugins.suppliestracker;
 
-public enum TypeEnum
+public enum ActionTypeEnum
 {
     CONSUMABLE,
     TELEPORT;

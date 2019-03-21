@@ -43,8 +43,8 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.item.ItemPrice;
 import static net.runelite.api.ItemID.*;
-import static net.runelite.client.plugins.suppliestracker.TypeEnum.CONSUMABLE;
-import static net.runelite.client.plugins.suppliestracker.TypeEnum.TELEPORT;
+import static net.runelite.client.plugins.suppliestracker.ActionTypeEnum.CONSUMABLE;
+import static net.runelite.client.plugins.suppliestracker.ActionTypeEnum.TELEPORT;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Pattern;
@@ -78,11 +78,11 @@ public class SuppliesTrackerPlugin extends Plugin
 	private static final int POTION_DOSES = 4, CAKE_DOSES = 3, PIZZA_PIE_DOSES = 2;
 
 	//Hold Supply Data
-	private static HashMap<Integer, SuppliesTrackerItemEntry> suppliesEntry = new HashMap<>();
+	private static HashMap<Integer, SuppliesTrackerItem> suppliesEntry = new HashMap<>();
 	private ItemContainer old;
 	private Deque<Integer> itemStack = new ArrayDeque<>();
 	private Deque<Integer> slotStack = new ArrayDeque<>();
-	private Deque<TypeEnum> typeStack = new ArrayDeque<>();
+	private Deque<ActionTypeEnum> typeStack = new ArrayDeque<>();
 	private Deque<net.runelite.api.Item[]> oldInventStack = new ArrayDeque<>();
 	private int ammoId = 0;
 	private int ammoAmount = 0;
@@ -185,7 +185,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		{
 			while (!typeStack.isEmpty())
 			{
-				TypeEnum type = typeStack.pop();
+				ActionTypeEnum type = typeStack.pop();
 				//Consumable
 				if (type == CONSUMABLE)
 				{
@@ -362,17 +362,17 @@ public class SuppliesTrackerPlugin extends Plugin
 		}
 	}
 
-	private boolean isPotion(String name)
+	static boolean isPotion(String name)
 	{
 		return name.contains("(4)") || name.contains("(3)") || name.contains("(2)") || name.contains("(1)");
 	}
 
-	private boolean isPizzaPie(String name)
+	static boolean isPizzaPie(String name)
 	{
 		return name.toLowerCase().contains("pizza") || name.toLowerCase().contains(" pie");
 	}
 
-	private boolean isCake(String name, int itemId)
+	static boolean isCake(String name, int itemId)
 	{
 		return name.toLowerCase().contains("cake") || itemId == ItemID.CHOCOLATE_SLICE;
 	}
@@ -454,21 +454,16 @@ public class SuppliesTrackerPlugin extends Plugin
 			calculatedPrice = scalePriceByDoses(name, itemId, calculatedPrice);
 
 			// write the new quantity and calculated price for this entry
-			suppliesEntry.put(itemId, new SuppliesTrackerItemEntry(
+			SuppliesTrackerItem newEntry = new SuppliesTrackerItem(
 				itemId,
 				name,
 				newQuantity,
-				calculatedPrice));
+				calculatedPrice);
+
+			suppliesEntry.put(itemId, newEntry);
 			SwingUtilities.invokeLater(() ->
 			{
-				try
-				{
-					panel.addRow(suppliesEntry);
-				}
-				catch (ExecutionException e)
-				{
-					e.printStackTrace();
-				}
+				panel.addItem(newEntry);
 			});
 	}
 
@@ -492,18 +487,12 @@ public class SuppliesTrackerPlugin extends Plugin
 		price = (long)itemManager.getItemPrice(itemId) * (long)amount;
 		price = scalePriceByDoses(name, itemId, price);
 
-		suppliesEntry.put(itemId, new SuppliesTrackerItemEntry(itemId, name, amount, price));
+		SuppliesTrackerItem itemEntry = new SuppliesTrackerItem(itemId, name, amount, price);
+		suppliesEntry.put(itemId, itemEntry);
 
 		SwingUtilities.invokeLater(() ->
 		{
-			try
-			{
-				panel.addRow(suppliesEntry);
-			}
-			catch (ExecutionException e)
-			{
-				e.printStackTrace();
-			}
+			panel.addItem(itemEntry);
 		});
 	}
 

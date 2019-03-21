@@ -67,6 +67,8 @@ class SuppliesTrackerPanel extends PluginPanel
 	// Handle loot logs
 	private final JPanel logsContainer = new JPanel();
 
+	private final SuppliesBox food, potions, runes, ammo;
+
 	private final ScheduledExecutorService executor;
 
 	// Handle overall session data
@@ -202,30 +204,30 @@ class SuppliesTrackerPanel extends PluginPanel
 		}
 		for (String list: SuppliesEnum.Ammo.MenuItemList())
 		{
-		String[] item = list.split("#");
-		ActionListener ActionMenuListener = e -> clientThread.invokeLater(() ->
-		{
-			try
+			String[] item = list.split("#");
+			ActionListener ActionMenuListener = e -> clientThread.invokeLater(() ->
 			{
-				processResult(Integer.parseInt(item[2].trim()));
+				try
+				{
+					processResult(Integer.parseInt(item[2].trim()));
+				}
+				catch (ExecutionException e1)
+				{
+					e1.printStackTrace();
+				}
+			});
+			if (!item[0].equals(menusAdded))
+			{
+				temp = new JMenu(item[0]);
+				addAmmo.add(temp);
+				temp.add(new JMenuItem(item[1])).addActionListener(ActionMenuListener);
+				menusAdded = item[0];
 			}
-			catch (ExecutionException e1)
+			else
 			{
-				e1.printStackTrace();
+				temp.add( new JMenuItem(item[1])).addActionListener(ActionMenuListener);
 			}
-		});
-		if (!item[0].equals(menusAdded))
-		{
-			temp = new JMenu(item[0]);
-			addAmmo.add(temp);
-			temp.add(new JMenuItem(item[1])).addActionListener(ActionMenuListener);
-			menusAdded = item[0];
 		}
-		else
-			{
-			temp.add( new JMenuItem(item[1])).addActionListener(ActionMenuListener);
-		}
-	}
 		addSupply.add(addAmmo);
 		addSupply.add(addFood);
 		addSupply.add(addPotion);
@@ -243,8 +245,17 @@ class SuppliesTrackerPanel extends PluginPanel
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(setAmountRow);
 		layoutPanel.add(logsContainer);
-	}
 
+		food = new SuppliesBox(itemManager, "Food", plugin, this);
+		potions = new SuppliesBox(itemManager, "Potions", plugin, this);
+		runes = new SuppliesBox(itemManager, "Runes", plugin, this);
+		ammo = new SuppliesBox(itemManager, "Ammo", plugin, this);
+
+		logsContainer.add(food);
+		logsContainer.add(potions);
+		logsContainer.add(runes);
+		logsContainer.add(ammo);
+	}
 
 	void loadHeaderIcon(BufferedImage img)
 	{
@@ -257,192 +268,68 @@ class SuppliesTrackerPanel extends PluginPanel
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
-	void addRow(HashMap<Integer, SuppliesTrackerItemEntry> supplies) throws ExecutionException
+	private ItemTypeEnum categorize(SuppliesTrackerItem item)
 	{
-		//Reset
-		logsContainer.removeAll();
-		overallCost = 0;
-		overallSuppliesUsed = 0;
-
-		//Iterate through supplies used and build rows
-		for (int itemId: supplies.keySet())
+		if (item.getName().contains("(4)"))
 		{
-			SuppliesTrackerItemEntry tempSuppleEntry = supplies.get(itemId);
-			String name = tempSuppleEntry.getName();
-			int originalId = itemId;
-			if (name.contains("(4)"))
-			{
-				name = name.replace("(4)", "(1)");
-				itemId = getSingleDose(name);
-			}
-			else if (name.toLowerCase().contains("pizza") || name.toLowerCase().contains(" pie"))
-			{
-				itemId = getHalf(itemId);
-			}
-			else if (name.toLowerCase().contains("cake"))
-			{
-				itemId = getSlice(itemId);
-			}
-			long cost = tempSuppleEntry.getPrice();
-			int quantity = tempSuppleEntry.getQuantity();
-			final SuppliesTrackRow row = new SuppliesTrackRow(itemManager.getImage(itemId, 1, false), name, quantity, cost, originalId);
-			logsContainer.add(row);
-			overallSuppliesUsed += quantity;
-			overallCost += cost;
+			return ItemTypeEnum.POTION;
+		}
+		if (item.getName().contains("bolt") || item.getName().contains("dart")
+			|| item.getName().contains("arrow") || item.getName().contains("javelin")
+			|| item.getName().contains("knive") || item.getName().contains("throwing"))
+		{
+			return ItemTypeEnum.AMMO;
+		}
+		if (item.getName().contains("rune"))
+		{
+			return ItemTypeEnum.RUNE;
+		}
+		return ItemTypeEnum.FOOD;
+	}
 
-			//Create delete row menu
-			final JMenuItem reset = new JMenuItem("Delete");
-			reset.addActionListener((ActionEvent e) ->
-			{
-				overallCost -= row.totalCost;
-				overallSuppliesUsed -= row.quantity;
-				plugin.clearItem(row.itemId);
-				updateOverall();
-				logsContainer.remove(row);
-				logsContainer.repaint();
-			});
-
-			//Create set amount menu
-			final JMenuItem setAmount = new JMenuItem("Set Amount");
-			setAmount.addActionListener((ActionEvent e) ->
-			{
-				setAmountRow(row);
-				updateOverall();
-			});
-
-			// Create popup menu
-			final JPopupMenu popupMenu = new JPopupMenu();
-			popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-			popupMenu.add(reset);
-			popupMenu.add(setAmount);
-			row.setComponentPopupMenu(popupMenu);
-
+	void addItem(SuppliesTrackerItem item)
+	{
+		switch (categorize(item))
+		{
+			case FOOD:
+				food.update(item);
+				food.rebuild();
+				break;
+			case POTION:
+				potions.update(item);
+				potions.rebuild();
+				break;
+			case RUNE:
+				runes.update(item);
+				runes.rebuild();
+				break;
+			case AMMO:
+				ammo.update(item);
+				ammo.rebuild();
+				break;
 		}
 		updateOverall();
-		logsContainer.validate();
-		logsContainer.repaint();
-
 	}
 
-	private void setAmountRow(SuppliesTrackRow row)
+	public void updateOverall()
 	{
-		setAmountRow.setVisible(true);
-		setAmountRow.amount.setText("0");
+		overallSuppliesUsed = 0;
+		overallSuppliesUsed += food.getTotalSupplies();
+		overallSuppliesUsed += potions.getTotalSupplies();
+		overallSuppliesUsed += runes.getTotalSupplies();
+		overallSuppliesUsed += ammo.getTotalSupplies();
 
-		KeyAdapter keyAdapter = new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-					int c = e.getKeyCode();
+		overallCost = 0;
+		overallCost += food.getTotalPrice();
+		overallCost += potions.getTotalPrice();
+		overallCost += runes.getTotalPrice();
+		overallCost += ammo.getTotalPrice();
 
-					if (c == KeyEvent.VK_ENTER)
-					{
-						clientThread.invokeLater(() -> plugin.setAmount(row.itemId, Integer.valueOf(setAmountRow.amount.getText().replace(",", ""))));
-
-						((JFormattedTextField)e.getSource()).removeKeyListener( this );
-						setAmountRow.setVisible(false);
-					}
-
-					if (c == KeyEvent.VK_BACK_SPACE && setAmountRow.amount.getText().length() == 1)
-					{
-						setAmountRow.amount.setText("0");
-					}
-			}
-		};
-		setAmountRow.amount.addKeyListener(keyAdapter);
-	}
-
-	//Switches full cake ids to get the image for slice
-	private int getSlice(int itemId)
-	{
-		switch (itemId)
-		{
-			case CAKE:
-				itemId = SLICE_OF_CAKE;
-				break;
-			case CHOCOLATE_CAKE:
-				itemId = CHOCOLATE_SLICE;
-				break;
-		}
-		return itemId;
-	}
-
-	//Switches full pizza and pie ids to get the image for half
-	private int getHalf(int itemId)
-	{
-		switch (itemId)
-		{
-			case ANCHOVY_PIZZA:
-				itemId = _12_ANCHOVY_PIZZA;
-				break;
-			case MEAT_PIZZA:
-				itemId = _12_MEAT_PIZZA;
-				break;
-			case PINEAPPLE_PIZZA:
-				itemId = _12_PINEAPPLE_PIZZA;
-				break;
-			case PLAIN_PIZZA:
-				itemId = _12_PLAIN_PIZZA;
-				break;
-			case REDBERRY_PIE:
-				itemId = HALF_A_REDBERRY_PIE;
-				break;
-			case GARDEN_PIE:
-				itemId = HALF_A_GARDEN_PIE;
-				break;
-			case SUMMER_PIE:
-				itemId = HALF_A_SUMMER_PIE;
-				break;
-			case FISH_PIE:
-				itemId = HALF_A_FISH_PIE;
-				break;
-			case BOTANICAL_PIE:
-				itemId = HALF_A_BOTANICAL_PIE;
-				break;
-			case MUSHROOM_PIE:
-				itemId = HALF_A_MUSHROOM_PIE;
-				break;
-			case ADMIRAL_PIE:
-				itemId = HALF_AN_ADMIRAL_PIE;
-				break;
-			case WILD_PIE:
-				itemId = HALF_A_WILD_PIE;
-				break;
-			case APPLE_PIE:
-				itemId = HALF_AN_APPLE_PIE;
-				break;
-			case MEAT_PIE:
-				itemId = HALF_A_MEAT_PIE;
-				break;
-
-		}
-		return itemId;
-	}
-
-	private int getSingleDose(String name)
-	{
-		int itemId = 0;
-		List<ItemPrice> itemList = itemManager.search(name);
-		for (ItemPrice item: itemList)
-		{
-			if (item.getName().equals(name))
-			{
-				itemId = item.getId();
-			}
-
-		}
-		return itemId;
-	}
-
-	private void updateOverall()
-	{
 		overallSuppliesUsedLabel.setText(htmlLabel("Total Supplies: ", overallSuppliesUsed));
 		overallCostLabel.setText(htmlLabel("Total Cost: ", overallCost));
 	}
 	private void processResult(int itemID) throws ExecutionException
 	{
-
 		plugin.buildEntries(itemID);
 	}
 }
