@@ -25,14 +25,13 @@
 package net.runelite.client.plugins.zulrah;
 
 import com.google.inject.Binder;
-import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -44,7 +43,6 @@ import net.runelite.client.plugins.zulrah.rotation.ZulrahRotationFour;
 import net.runelite.client.plugins.zulrah.rotation.ZulrahRotationOne;
 import net.runelite.client.plugins.zulrah.rotation.ZulrahRotationThree;
 import net.runelite.client.plugins.zulrah.rotation.ZulrahRotationTwo;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -93,11 +91,6 @@ public class ZulrahPlugin extends Plugin
 		npcZulrah = null;
 	}
 
-	@Schedule(
-			period = 600,
-			unit = ChronoUnit.MILLIS
-	)
-
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
@@ -105,17 +98,6 @@ public class ZulrahPlugin extends Plugin
 		if (isNpcZulrah(npc.getId()))
 		{
 			npcZulrah = npc;
-			update();
-		}
-	}
-
-	@Subscribe
-	public void onItemSpawned(ItemSpawned event)
-	{
-		if (instance != null)
-		{
-			npcZulrah = null;
-			update();
 		}
 	}
 
@@ -126,7 +108,8 @@ public class ZulrahPlugin extends Plugin
 				npcId == NpcID.ZULRAH_2044;
 	}
 
-	public void update()
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
 	{
 		if (npcZulrah == null)
 		{
