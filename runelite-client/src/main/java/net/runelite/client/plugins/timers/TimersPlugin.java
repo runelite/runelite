@@ -59,6 +59,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
 import net.runelite.client.config.ConfigManager;
@@ -217,7 +218,7 @@ public class TimersPlugin extends Plugin
 	{
 		Widget widget = event.getWidget();
 		if (WorldType.isPvpWorld(client.getWorldType())
-			&& WidgetInfo.TO_GROUP(widget.getId()) == WidgetInfo.PVP_CONTAINER.getGroupId())
+			&& WidgetInfo.TO_GROUP(widget.getId()) == WidgetID.PVP_GROUP_ID)
 		{
 			widgetHiddenChangedOnPvpWorld = true;
 		}

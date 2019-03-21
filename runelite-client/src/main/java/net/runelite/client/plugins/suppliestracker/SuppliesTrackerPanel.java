@@ -108,6 +108,7 @@ class SuppliesTrackerPanel extends PluginPanel
 		{
 			SuppliesBox newBox = new SuppliesBox(itemManager, type.getLabel(), plugin, this, type);
 			logsContainer.add(newBox);
+			boxList.add(newBox);
 		}
 
 		// Create reset all menu
