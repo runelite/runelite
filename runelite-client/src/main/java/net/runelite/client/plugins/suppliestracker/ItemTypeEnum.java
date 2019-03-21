@@ -40,15 +40,22 @@ public enum ItemTypeEnum
 	@Getter
 	private String label;
 
+	/**
+	 * Takes an item and determines what ItemType it should categorize into
+	 * @param item the item to determine category for
+	 * @return our best guess for what category this item goes into
+	 * note that if the guess is wrong (per say) it won't break anything because it will be
+	 * consistently wrong but it could have an item that is clearly not food in the food section
+	 */
 	public static ItemTypeEnum categorize(SuppliesTrackerItem item)
 	{
 		if (item.getName().contains("(4)"))
 		{
 			return ItemTypeEnum.POTION;
 		}
-		if (item.getName().contains("bolt") || item.getName().contains("dart")
-				|| item.getName().contains("arrow") || item.getName().contains("javelin")
-				|| item.getName().contains("knive") || item.getName().contains("throwing"))
+		if (item.getName().toLowerCase().contains("bolt") || item.getName().toLowerCase().contains("dart")
+				|| item.getName().toLowerCase().contains("arrow") || item.getName().toLowerCase().contains("javelin")
+				|| item.getName().toLowerCase().contains("knive") || item.getName().toLowerCase().contains("throwing"))
 		{
 			return ItemTypeEnum.AMMO;
 		}

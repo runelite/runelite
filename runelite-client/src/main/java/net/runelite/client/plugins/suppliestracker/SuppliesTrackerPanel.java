@@ -142,17 +142,31 @@ class SuppliesTrackerPanel extends PluginPanel
 		overallPanel.setVisible(false);
 	}
 
+	/**
+	 * loads an img to the icon on the header
+	 * @param img the img for the header icon
+	 */
 	public void loadHeaderIcon(BufferedImage img)
 	{
 		overallIcon.setIcon(new ImageIcon(img));
 	}
 
+	/**
+	 * convert key value pair to html formatting needed to display nicely
+	 * @param key key
+	 * @param value value
+	 * @return key: value in html
+	 */
 	private static String htmlLabel(String key, long value)
 	{
 		final String valueStr = StackFormatter.quantityToStackSize(value);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
+	/**
+	 * Add an item to the supply panel by placing it into the correct box
+	 * @param item the item to add
+	 */
 	public void addItem(SuppliesTrackerItem item)
 	{
 		ItemTypeEnum category = ItemTypeEnum.categorize(item);
@@ -168,6 +182,10 @@ class SuppliesTrackerPanel extends PluginPanel
 		updateOverall();
 	}
 
+	/**
+	 * Updates overall stats to calculate overall used and overall cost from
+	 * the info in each box
+	 */
 	public void updateOverall()
 	{
 		overallSuppliesUsed = 0;

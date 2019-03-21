@@ -365,11 +365,21 @@ public class SuppliesTrackerPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Checks if item name is potion
+	 * @param name the name of the item
+	 * @return if the item is a potion - i.e. has a (1) (2) (3) or (4) in the name
+	 */
 	static boolean isPotion(String name)
 	{
 		return name.contains("(4)") || name.contains("(3)") || name.contains("(2)") || name.contains("(1)");
 	}
 
+	/**
+	 * Checks if item name is pizza or pie
+	 * @param name the name of the item
+	 * @return if the item is a pizza or a pie - i.e. has pizza or pie in the name
+	 */
 	static boolean isPizzaPie(String name)
 	{
 		return name.toLowerCase().contains("pizza") || name.toLowerCase().contains(" pie");
@@ -408,12 +418,21 @@ public class SuppliesTrackerPlugin extends Plugin
 		return price;
 	}
 
-	void buildEntries(int itemId) throws ExecutionException
+	/**
+	 * Add an item to the supply tracker (with 1 count for that item)
+	 * @param itemId the id of the item
+	 */
+	void buildEntries(int itemId)
 	{
 		buildEntries(itemId, 1);
 	}
 
-	void buildEntries(int itemId, int count) throws ExecutionException
+	/**
+	 * Add an item to the supply tracker
+	 * @param itemId the id of the item
+	 * @param count the amount of the item to add to the tracker
+	 */
+	void buildEntries(int itemId, int count)
 	{
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			String name = itemComposition.getName();
@@ -470,33 +489,21 @@ public class SuppliesTrackerPlugin extends Plugin
 			});
 	}
 
-	// Used for reset all
-	void clearSupplies()
+	/**
+	 * reset all item stacks
+	 */
+	public void clearSupplies()
 	{
 		suppliesEntry.clear();
 	}
 
-	// Used for reset item row
-	void clearItem(int itemId)
+	/**
+	 * reset an individual item stack
+	 * @param itemId the id of the item stack
+	 */
+	public void clearItem(int itemId)
 	{
 		suppliesEntry.remove(itemId);
-	}
-
-	void setAmount(int itemId, int amount)
-	{
-		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		String name = itemComposition.getName();
-		long price;
-		price = (long)itemManager.getItemPrice(itemId) * (long)amount;
-		price = scalePriceByDoses(name, itemId, price);
-
-		SuppliesTrackerItem itemEntry = new SuppliesTrackerItem(itemId, name, amount, price);
-		suppliesEntry.put(itemId, itemEntry);
-
-		SwingUtilities.invokeLater(() ->
-		{
-			panel.addItem(itemEntry);
-		});
 	}
 
 	/**
@@ -571,6 +578,7 @@ public class SuppliesTrackerPlugin extends Plugin
 			case HALF_A_MEAT_PIE:
 				itemId = MEAT_PIE;
 				break;
+			// note behavior of case means both below cases return CAKE
 			case _23_CAKE:
 			case SLICE_OF_CAKE:
 				itemId = CAKE;
