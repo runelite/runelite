@@ -33,6 +33,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.item.ItemPrice;
@@ -68,6 +69,8 @@ class SuppliesTrackerPanel extends PluginPanel
 	private final JPanel logsContainer = new JPanel();
 
 	private final SuppliesBox food, potions, runes, ammo;
+
+	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
 	private final ScheduledExecutorService executor;
 
@@ -255,6 +258,10 @@ class SuppliesTrackerPanel extends PluginPanel
 		logsContainer.add(potions);
 		logsContainer.add(runes);
 		logsContainer.add(ammo);
+
+		errorPanel.setContent("Supply trackers", "You have not used any supplies yet.");
+		add(errorPanel);
+		overallPanel.setVisible(false);
 	}
 
 	void loadHeaderIcon(BufferedImage img)
@@ -327,6 +334,17 @@ class SuppliesTrackerPanel extends PluginPanel
 
 		overallSuppliesUsedLabel.setText(htmlLabel("Total Supplies: ", overallSuppliesUsed));
 		overallCostLabel.setText(htmlLabel("Total Cost: ", overallCost));
+
+		if (overallSuppliesUsed <= 0)
+		{
+			add(errorPanel);
+			overallPanel.setVisible(false);
+		}
+		else
+		{
+			remove(errorPanel);
+			overallPanel.setVisible(true);
+		}
 	}
 	private void processResult(int itemID) throws ExecutionException
 	{
