@@ -28,6 +28,10 @@ package net.runelite.client.plugins.suppliestracker;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * The potential types that supplies can be along with a categorization function
+ * that assigns the supplies to these categories
+ */
 @AllArgsConstructor
 public enum ItemType
 {

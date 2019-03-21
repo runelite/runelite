@@ -57,7 +57,6 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.ExecutionException;
 
 
 @PluginDescriptor(
@@ -98,13 +97,13 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	private static final Random random = new Random();
 
-	private static final int[] throwingIds = new int[]{BRONZE_DART, IRON_DART, STEEL_DART, BLACK_DART, MITHRIL_DART, ADAMANT_DART, RUNE_DART, DRAGON_DART, BRONZE_KNIFE, IRON_KNIFE, STEEL_KNIFE, BLACK_KNIFE, MITHRIL_KNIFE, ADAMANT_KNIFE, RUNE_KNIFE, BRONZE_THROWNAXE, IRON_THROWNAXE, STEEL_THROWNAXE, MITHRIL_THROWNAXE, ADAMANT_THROWNAXE, RUNE_THROWNAXE, DRAGON_KNIFE, DRAGON_KNIFE_22812, DRAGON_KNIFE_22814, DRAGON_KNIFEP_22808, DRAGON_KNIFEP_22810, DRAGON_KNIFEP , DRAGON_THROWNAXE, CHINCHOMPA_10033, RED_CHINCHOMPA_10034, BLACK_CHINCHOMPA};
-	private static final int[] runeIds = new int[]{AIR_RUNE, WATER_RUNE, EARTH_RUNE, MIND_RUNE, BODY_RUNE, COSMIC_RUNE, CHAOS_RUNE, NATURE_RUNE, LAW_RUNE, DEATH_RUNE, ASTRAL_RUNE, BLOOD_RUNE, SOUL_RUNE, WRATH_RUNE, MIST_RUNE, DUST_RUNE, MUD_RUNE, SMOKE_RUNE, STEAM_RUNE, LAVA_RUNE};
+	private static final int[] THROWING_IDS = new int[]{BRONZE_DART, IRON_DART, STEEL_DART, BLACK_DART, MITHRIL_DART, ADAMANT_DART, RUNE_DART, DRAGON_DART, BRONZE_KNIFE, IRON_KNIFE, STEEL_KNIFE, BLACK_KNIFE, MITHRIL_KNIFE, ADAMANT_KNIFE, RUNE_KNIFE, BRONZE_THROWNAXE, IRON_THROWNAXE, STEEL_THROWNAXE, MITHRIL_THROWNAXE, ADAMANT_THROWNAXE, RUNE_THROWNAXE, DRAGON_KNIFE, DRAGON_KNIFE_22812, DRAGON_KNIFE_22814, DRAGON_KNIFEP_22808, DRAGON_KNIFEP_22810, DRAGON_KNIFEP , DRAGON_THROWNAXE, CHINCHOMPA_10033, RED_CHINCHOMPA_10034, BLACK_CHINCHOMPA};
+	private static final int[] RUNE_IDS = new int[]{AIR_RUNE, WATER_RUNE, EARTH_RUNE, MIND_RUNE, BODY_RUNE, COSMIC_RUNE, CHAOS_RUNE, NATURE_RUNE, LAW_RUNE, DEATH_RUNE, ASTRAL_RUNE, BLOOD_RUNE, SOUL_RUNE, WRATH_RUNE, MIST_RUNE, DUST_RUNE, MUD_RUNE, SMOKE_RUNE, STEAM_RUNE, LAVA_RUNE};
 
 	//Hold Supply Data
 	private static HashMap<Integer, SuppliesTrackerItem> suppliesEntry = new HashMap<>();
 	private ItemContainer old;
-	private Deque<MenuAction> actionStack = new ArrayDeque();
+	private Deque<MenuAction> actionStack = new ArrayDeque<>();
 	private int ammoId = 0;
 	private int ammoAmount = 0;
 	private int thrownId = 0;
@@ -211,7 +210,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		if (equipment.getItems().length > EQUIPMENT_CAPE_SLOT)
 		{
 			int capeID = equipment.getItems()[EQUIPMENT_CAPE_SLOT].getId();
-			switch(capeID)
+			switch (capeID)
 			{
 				case AVAS_ASSEMBLER:
 				case ASSEMBLER_MAX_CAPE:
@@ -244,6 +243,15 @@ public class SuppliesTrackerPlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Checks for changes between the provided inventories in runes specifically to add those runes
+	 * to the supply tracker
+	 *
+	 * we can't in general just check for when inventory slots change but this method is only run
+	 * immediately after the player performs a cast animation or cast menu click/entry
+	 * @param itemContainer the new inventory
+	 * @param oldInv the old inventory
+	 */
 	private void checkUsedRunes(ItemContainer itemContainer, Item[] oldInv)
 	{
 		for (int i = 0; i < itemContainer.getItems().length; i++)
@@ -251,9 +259,9 @@ public class SuppliesTrackerPlugin extends Plugin
 			Item newItem = itemContainer.getItems()[i];
 			Item oldItem = oldInv[i];
 			boolean isRune = false;
-			for (int j = 0; j < runeIds.length; j++)
+			for (int j = 0; j < RUNE_IDS.length; j++)
 			{
-				if (oldItem.getId() == runeIds[j])
+				if (oldItem.getId() == RUNE_IDS[j])
 				{
 					isRune = true;
 				}
@@ -341,7 +349,7 @@ public class SuppliesTrackerPlugin extends Plugin
 				ActionType type = frame.getType();
 				MenuAction.ItemAction itemFrame;
 				Item[] oldInv = frame.getOldInventory();
-				switch(type)
+				switch (type)
 				{
 					case CONSUMABLE:
 						itemFrame = (MenuAction.ItemAction) frame;
@@ -375,7 +383,7 @@ public class SuppliesTrackerPlugin extends Plugin
 			{
 				mainHand = itemContainer.getItems()[EQUIPMENT_MAINHAND_SLOT].getId();
 				net.runelite.api.Item mainHandItem = itemContainer.getItems()[EQUIPMENT_MAINHAND_SLOT];
-				for (int throwingIDs: throwingIds)
+				for (int throwingIDs: THROWING_IDS)
 				{
 					if (mainHand == throwingIDs)
 					{
