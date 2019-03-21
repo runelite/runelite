@@ -51,16 +51,11 @@ public class MasterFarmerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		/*
-		if (config.showRespawnTimer())
+
+		if (config.showOverlay())
 		{
-			plugin.getDeadNpcsToDisplay().forEach((id, npc) -> renderNpcRespawn(npc, graphics));
+			plugin.getMasterfarmers().forEach((id, npc) -> renderTimer(npc, graphics));
 		}
-		*/
-
-		plugin.getMasterfarmers().forEach((id, npc) -> renderTimer(npc, graphics));
-
-
 
 		return null;
 	}
@@ -101,7 +96,7 @@ public class MasterFarmerOverlay extends Overlay
 		final Point canvasPoint = Perspective
 			.localToCanvas(client, centerLp, respawnLocation.getPlane());
 
-		if (canvasPoint != null)
+		if (canvasPoint != null && (config.maxDisplay() >= timeLeft))
 		{
 			final Point canvasCenterPoint = new Point(
 				canvasPoint.getX() - textWidth / 2,

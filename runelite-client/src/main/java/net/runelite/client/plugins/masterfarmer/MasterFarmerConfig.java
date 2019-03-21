@@ -4,6 +4,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("tithefarmplugin")
 public interface MasterFarmerConfig extends Config
@@ -16,5 +17,19 @@ public interface MasterFarmerConfig extends Config
 	default boolean showOverlay()
 	{
 		return true;
+	}
+
+	@Range(
+		max = 300
+	)
+	@ConfigItem(
+		keyName = "maxDisplay",
+		name = "Time at which timer appears",
+		description = "The maximum time at which the timer is displayed",
+		position = 1
+	)
+	default int maxDisplay()
+	{
+		return 300;
 	}
 }
