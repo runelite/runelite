@@ -25,7 +25,41 @@
  */
 package net.runelite.client.plugins.suppliestracker;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
 public enum ItemTypeEnum
 {
-	FOOD, POTION, RUNE, AMMO, TELEPORT;
+	FOOD("Food"),
+	POTION("Potions"),
+	RUNE("Runes"),
+	AMMO("Ammo"),
+	TELEPORT("Teleports");
+
+	@Getter
+	private String label;
+
+	public static ItemTypeEnum categorize(SuppliesTrackerItem item)
+	{
+		if (item.getName().contains("(4)"))
+		{
+			return ItemTypeEnum.POTION;
+		}
+		if (item.getName().contains("bolt") || item.getName().contains("dart")
+				|| item.getName().contains("arrow") || item.getName().contains("javelin")
+				|| item.getName().contains("knive") || item.getName().contains("throwing"))
+		{
+			return ItemTypeEnum.AMMO;
+		}
+		if (item.getName().contains("rune"))
+		{
+			return ItemTypeEnum.RUNE;
+		}
+		if (item.getName().contains("teleport"))
+		{
+			return ItemTypeEnum.TELEPORT;
+		}
+		return ItemTypeEnum.FOOD;
+	}
 }

@@ -62,12 +62,18 @@ public class SuppliesBox extends JPanel
 
 	private long totalPrice;
 
-	SuppliesBox(final ItemManager itemManager, final String id, final SuppliesTrackerPlugin plugin, final SuppliesTrackerPanel panel)
+	@Getter
+	private final ItemTypeEnum type;
+
+	SuppliesBox(final ItemManager itemManager, final String id,
+				final SuppliesTrackerPlugin plugin, final SuppliesTrackerPanel panel,
+				final ItemTypeEnum type)
 	{
 		this.id = id;
 		this.itemManager = itemManager;
 		this.plugin = plugin;
 		this.panel = panel;
+		this.type = type;
 
 		setLayout(new BorderLayout(0, 1));
 		setBorder(new EmptyBorder(5, 0, 0, 0));

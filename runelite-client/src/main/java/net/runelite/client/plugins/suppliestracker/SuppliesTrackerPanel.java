@@ -43,6 +43,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 
 
@@ -54,7 +56,7 @@ class SuppliesTrackerPanel extends PluginPanel
 	// Handle loot logs
 	private final JPanel logsContainer = new JPanel();
 
-	private final SuppliesBox food, potions, runes, ammo, teleports;
+	private final List<SuppliesBox> boxList = new ArrayList<>();
 
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
@@ -102,17 +104,11 @@ class SuppliesTrackerPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
-		food = new SuppliesBox(itemManager, "Food", plugin, this);
-		potions = new SuppliesBox(itemManager, "Potions", plugin, this);
-		runes = new SuppliesBox(itemManager, "Runes", plugin, this);
-		ammo = new SuppliesBox(itemManager, "Ammo", plugin, this);
-		teleports = new SuppliesBox(itemManager, "Teleports", plugin, this);
-
-		logsContainer.add(food);
-		logsContainer.add(potions);
-		logsContainer.add(runes);
-		logsContainer.add(ammo);
-		logsContainer.add(teleports);
+		for (ItemTypeEnum type : ItemTypeEnum.values())
+		{
+			SuppliesBox newBox = new SuppliesBox(itemManager, type.getLabel(), plugin, this, type);
+			logsContainer.add(newBox);
+		}
 
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
@@ -121,11 +117,10 @@ class SuppliesTrackerPanel extends PluginPanel
 			overallSuppliesUsed = 0;
 			overallCost = 0;
 			plugin.clearSupplies();
-			food.clearAll();
-			potions.clearAll();
-			runes.clearAll();
-			ammo.clearAll();
-			teleports.clearAll();
+			for (SuppliesBox box : boxList)
+			{
+				box.clearAll();
+			}
 			updateOverall();
 			logsContainer.repaint();
 		});
@@ -146,7 +141,7 @@ class SuppliesTrackerPanel extends PluginPanel
 		overallPanel.setVisible(false);
 	}
 
-	void loadHeaderIcon(BufferedImage img)
+	public void loadHeaderIcon(BufferedImage img)
 	{
 		overallIcon.setIcon(new ImageIcon(img));
 	}
@@ -157,52 +152,17 @@ class SuppliesTrackerPanel extends PluginPanel
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
-	private ItemTypeEnum categorize(SuppliesTrackerItem item)
+	public void addItem(SuppliesTrackerItem item)
 	{
-		if (item.getName().contains("(4)"))
+		ItemTypeEnum category = ItemTypeEnum.categorize(item);
+		for (SuppliesBox box : boxList)
 		{
-			return ItemTypeEnum.POTION;
-		}
-		if (item.getName().contains("bolt") || item.getName().contains("dart")
-			|| item.getName().contains("arrow") || item.getName().contains("javelin")
-			|| item.getName().contains("knive") || item.getName().contains("throwing"))
-		{
-			return ItemTypeEnum.AMMO;
-		}
-		if (item.getName().contains("rune"))
-		{
-			return ItemTypeEnum.RUNE;
-		}
-		if (item.getName().contains("teleport"))
-		{
-			return ItemTypeEnum.TELEPORT;
-		}
-		return ItemTypeEnum.FOOD;
-	}
-
-	void addItem(SuppliesTrackerItem item)
-	{
-		switch (categorize(item))
-		{
-			case FOOD:
-				food.update(item);
-				food.rebuild();
+			if (box.getType() == category)
+			{
+				box.update(item);
+				box.rebuild();
 				break;
-			case POTION:
-				potions.update(item);
-				potions.rebuild();
-				break;
-			case RUNE:
-				runes.update(item);
-				runes.rebuild();
-				break;
-			case AMMO:
-				ammo.update(item);
-				ammo.rebuild();
-				break;
-			case TELEPORT:
-				teleports.update(item);
-				teleports.rebuild();
+			}
 		}
 		updateOverall();
 	}
@@ -210,18 +170,16 @@ class SuppliesTrackerPanel extends PluginPanel
 	public void updateOverall()
 	{
 		overallSuppliesUsed = 0;
-		overallSuppliesUsed += food.getTotalSupplies();
-		overallSuppliesUsed += potions.getTotalSupplies();
-		overallSuppliesUsed += runes.getTotalSupplies();
-		overallSuppliesUsed += ammo.getTotalSupplies();
-		overallSuppliesUsed += teleports.getTotalSupplies();
+		for (SuppliesBox box : boxList)
+		{
+			overallSuppliesUsed += box.getTotalSupplies();
+		}
 
 		overallCost = 0;
-		overallCost += food.getTotalPrice();
-		overallCost += potions.getTotalPrice();
-		overallCost += runes.getTotalPrice();
-		overallCost += ammo.getTotalPrice();
-		overallCost += teleports.getTotalPrice();
+		for (SuppliesBox box : boxList)
+		{
+			overallCost += box.getTotalPrice();
+		}
 
 		overallSuppliesUsedLabel.setText(htmlLabel("Total Supplies: ", overallSuppliesUsed));
 		overallCostLabel.setText(htmlLabel("Total Cost: ", overallCost));
