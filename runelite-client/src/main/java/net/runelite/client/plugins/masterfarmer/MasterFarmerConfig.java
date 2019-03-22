@@ -7,7 +7,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
 
-@ConfigGroup("tithefarmplugin")
+@ConfigGroup("masterfarmerplugin")
 public interface MasterFarmerConfig extends Config
 {
 	@Alpha
