@@ -291,6 +291,12 @@ public class SuppliesTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onCannonballFired(CannonballFired cannonballFired)
+	{
+		buildEntries(CANNONBALL);
+	}
+
+	@Subscribe
 	public void onAnimationChanged(AnimationChanged animationChanged)
 	{
 		if (animationChanged.getActor() == client.getLocalPlayer())
@@ -348,6 +354,11 @@ public class SuppliesTrackerPlugin extends Plugin
 	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
 	{
 		ItemContainer itemContainer = itemContainerChanged.getItemContainer();
+
+		for (MenuAction action : actionStack)
+		{
+			System.out.println(action.getType());
+		}
 
 		if (itemContainer == client.getItemContainer(InventoryID.INVENTORY) && old != null && !actionStack.isEmpty())
 		{
