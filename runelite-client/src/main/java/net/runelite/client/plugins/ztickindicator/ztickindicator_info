@@ -1,0 +1,11 @@
+This plugin plays Sound Effect 1 every tick, and Sound Effect 2 every X ticks,
+where X is the interval specified in the configuration.
+Using X = 0 will simply play Sound Effect 1 every tick (standard metronome).
+
+Press shift to reset the ticking, so that Sound Effect 2 will play on the next tick.
+
+List of possible sound effect ids to use:
+3929 (Standard ticking noise, taken from Grand Exchange)
+3699 (Piano note)
+4031 (For those who wish for dramatic flair)
+3892 (Best sound effect in the game)
