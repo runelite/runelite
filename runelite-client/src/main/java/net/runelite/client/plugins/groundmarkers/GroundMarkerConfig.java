@@ -54,4 +54,24 @@ public interface GroundMarkerConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showMinimap",
+		name = "Show on minimap",
+		description = "Shows marked tiles on the minimap"
+	)
+	default boolean showMinimap()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "minimapOpacity",
+			name = "Minimap Overlay Opacity",
+			description = "The opacity of the minimap markers [0, 255]"
+	)
+	default int minimapOverlayOpacity()
+	{
+		return 128;
+	}
 }
