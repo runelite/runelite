@@ -1,137 +1,131 @@
-/*     */ package net.runelite.client.plugins.vanguards;
-/*     */ 
-/*     */ import com.google.inject.Provides;
-/*     */ import java.util.ArrayList;
-/*     */ import java.util.List;
-/*     */ import javax.inject.Inject;
-/*     */ import net.runelite.api.Client;
-/*     */ import net.runelite.api.NPC;
-/*     */ import net.runelite.api.Varbits;
-/*     */ import net.runelite.api.events.GameTick;
-/*     */ import net.runelite.api.events.VarbitChanged;
-/*     */ import net.runelite.client.config.ConfigManager;
-/*     */ import net.runelite.client.eventbus.Subscribe;
-/*     */ import net.runelite.client.plugins.Plugin;
-/*     */ import net.runelite.client.plugins.PluginDescriptor;
-/*     */ import net.runelite.client.ui.overlay.OverlayManager;
-/*     */ 
-/*     */ 
-/*     */ @PluginDescriptor(name="Vanguards", enabledByDefault=false)
-/*     */ public class VanguardsPlugin
-/*     */   extends Plugin
-/*     */ {
-/*  23 */   final int MAGE = 7529;
-/*  24 */   final int RANGE = 7528;
-/*  25 */   final int MELEE = 7527;
-/*  26 */   final int DOWN = 7526;
-/*  27 */   public ArrayList<Integer> ids = new ArrayList();
-/*     */   public NPC ranger;
-/*     */   public NPC mager;
-/*     */   public NPC meleer;
-/*     */   public boolean inRaid;
-/*     */   public boolean magerFound;
-/*     */   public boolean rangerFound;
-/*     */   public boolean meleeFound;
-/*  35 */   public int mageHP = -1;
-/*  36 */   public int rangeHP = -1;
-/*  37 */   public int meleeHP = -1;
-/*     */   
-/*     */   public float percent;
-/*     */   
-/*     */   public boolean inVangs;
-/*     */   
-/*     */   @Inject
-/*     */   private Client client;
-/*     */   
-/*     */   @Inject
-/*     */   private VanguardsConfig config;
-/*     */   @Inject
-/*     */   private OverlayManager overlayManager;
-/*     */   @Inject
-/*     */   private VanguardsOverlay overlay;
-/*     */   @Inject
-/*     */   private VanguardsHighlight highlight;
-/*     */   
-/*     */   @Provides
-/*     */   VanguardsConfig provideConfig(ConfigManager configManager)
-/*     */   {
-/*  58 */     return (VanguardsConfig)configManager.getConfig(VanguardsConfig.class);
-/*     */   }
-/*     */   
-/*     */ 
-/*     */   protected void startUp()
-/*     */   {
-/*  64 */     this.overlayManager.add(this.overlay);
-/*  65 */     this.overlayManager.add(this.highlight);
-/*  66 */     this.ids.add(Integer.valueOf(7529));
-/*  67 */     this.ids.add(Integer.valueOf(7528));
-/*  68 */     this.ids.add(Integer.valueOf(7527));
-/*  69 */     this.ids.add(Integer.valueOf(7526));
-/*  70 */     this.inRaid = false;
-/*  71 */     this.inVangs = false;
-/*  72 */     this.meleeFound = false;
-/*  73 */     this.rangerFound = false;
-/*  74 */     this.magerFound = false;
-/*     */   }
-/*     */   
-/*     */ 
-/*     */   protected void shutDown()
-/*     */   {
-/*  80 */     this.overlayManager.remove(this.overlay);
-/*  81 */     this.overlayManager.remove(this.highlight);
-/*     */   }
-/*     */   
-/*     */   @Subscribe
-/*     */   public void onGameTick(GameTick tick) {
-/*  86 */     if (!this.inRaid) {
-/*  87 */       return;
-/*     */     }
-/*  89 */     List<NPC> npcs = this.client.getNpcs();
-/*  90 */     this.inVangs = false;
-/*  91 */     for (NPC npc : npcs)
-/*     */     {
-/*  93 */       if (this.ids.contains(Integer.valueOf(npc.getId())))
-/*     */       {
-/*     */ 
-/*  96 */         this.inVangs = true;
-/*  97 */         int currentId = npc.getId();
-/*  98 */         switch (currentId) {
-/*     */         case 7529: 
-/* 100 */           this.percent = (npc.getHealthRatio() / npc.getHealth() * 100.0F);
-/* 101 */           this.mageHP = ((int)this.percent);
-/* 102 */           this.mager = npc;
-/* 103 */           break;
-/*     */         case 7528: 
-/* 105 */           this.percent = (npc.getHealthRatio() / npc.getHealth() * 100.0F);
-/* 106 */           this.rangeHP = ((int)this.percent);
-/* 107 */           this.ranger = npc;
-/* 108 */           break;
-/*     */         case 7527: 
-/* 110 */           this.percent = (npc.getHealthRatio() / npc.getHealth() * 100.0F);
-/* 111 */           this.meleeHP = ((int)this.percent);
-/* 112 */           this.meleer = npc;
-/* 113 */           break;
-/*     */         case 7526: 
-/*     */           
-/*     */         }
-/*     */         
-/*     */       }
-/*     */     }
-/*     */   }
-/*     */   
-/*     */   @Subscribe
-/*     */   public void onVarbitChanged(VarbitChanged bit)
-/*     */   {
-/* 125 */     if (this.client.getVar(Varbits.IN_RAID) == 1) {
-/* 126 */       this.inRaid = true;
-/*     */     } else {
-/* 128 */       this.inRaid = false;
-/*     */     }
-/*     */   }
-/*     */ }
+package net.runelite.client.plugins.vanguards;
 
+import com.google.inject.Provides;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.Varbits;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
-/* Location:              C:\Users\Lightsaber\Desktop\lyzrdRl.jar!\net\runelite\client\plugins\vanguards\VanguardsPlugin.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       0.7.1
- */
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+
+@PluginDescriptor(name = "Vanguards",
+        enabledByDefault = false
+)
+public class VanguardsPlugin extends Plugin {
+final int MAGE = 7529;
+final int RANGE = 7528;
+final int MELEE = 7527;
+final int DOWN = 7526;
+public ArrayList<Integer> ids = new ArrayList<Integer>();
+public NPC ranger;
+public NPC mager;
+public NPC meleer;
+public boolean inRaid;
+public boolean magerFound;
+public boolean rangerFound;
+public boolean meleeFound;
+public int mageHP = -1;
+public int rangeHP = -1;
+public int meleeHP = -1;
+public float percent;
+public boolean inVangs;
+    @Inject
+    private Client client;
+
+    @Inject
+    private VanguardsConfig config;
+
+    @Inject
+    private OverlayManager overlayManager;
+
+    @Inject
+    private VanguardsOverlay overlay;
+
+    @Inject
+    private VanguardsHighlight highlight;
+
+    @Provides
+    VanguardsConfig provideConfig(ConfigManager configManager)
+    {
+        return configManager.getConfig(VanguardsConfig.class);
+    }
+
+    @Override
+    protected void startUp()
+    {
+        overlayManager.add(overlay);
+        overlayManager.add(highlight);
+        ids.add(MAGE);
+        ids.add(RANGE);
+        ids.add(MELEE);
+        ids.add(DOWN);
+        inRaid = false;
+        inVangs = false;
+        meleeFound = false;
+        rangerFound = false;
+        magerFound = false;
+    }
+
+    @Override
+    protected void shutDown()
+    {
+        overlayManager.remove(overlay);
+        overlayManager.remove(highlight);
+    }
+
+    @Subscribe
+    public void onGameTick(GameTick tick){
+        if(!inRaid){
+            return;
+        }
+        List<NPC> npcs = client.getNpcs();
+        inVangs = false;
+        for(NPC npc : npcs){
+
+            if(!ids.contains(npc.getId())){
+                continue;
+            }
+            inVangs = true;
+            int currentId = npc.getId();
+            switch (currentId) {
+                case MAGE:
+                    percent = (float)npc.getHealthRatio() / npc.getHealth() * 100;
+                    mageHP = (int) percent;
+                    mager = npc;
+                    break;
+                case RANGE:
+                    percent = (float)npc.getHealthRatio() / npc.getHealth() * 100;
+                    rangeHP = (int) percent;
+                    ranger = npc;
+                    break;
+                case MELEE:
+                    percent = (float)npc.getHealthRatio() / npc.getHealth() * 100;
+                    meleeHP = (int) percent;
+                    meleer = npc;
+                    break;
+                case DOWN:
+                    break;
+                default:
+
+            }
+
+        }
+
+    }
+    @Subscribe
+    public void onVarbitChanged(VarbitChanged bit){
+        if(client.getVar(Varbits.IN_RAID) == 1){
+            inRaid = true;
+        }else{
+            inRaid = false;
+        }
+    }
+}

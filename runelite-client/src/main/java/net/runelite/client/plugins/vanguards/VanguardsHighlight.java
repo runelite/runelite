@@ -1,88 +1,82 @@
-/*    */ package net.runelite.client.plugins.vanguards;
-/*    */ 
-/*    */ import java.awt.BasicStroke;
-/*    */ import java.awt.Color;
-/*    */ import java.awt.Dimension;
-/*    */ import java.awt.Graphics2D;
-/*    */ import java.awt.Polygon;
-/*    */ import javax.inject.Inject;
-/*    */ import net.runelite.api.Client;
-/*    */ import net.runelite.api.NPC;
-/*    */ import net.runelite.client.ui.overlay.Overlay;
-/*    */ import net.runelite.client.ui.overlay.OverlayLayer;
-/*    */ import net.runelite.client.ui.overlay.components.PanelComponent;
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ 
-/*    */ public class VanguardsHighlight
-/*    */   extends Overlay
-/*    */ {
-/*    */   private final Client client;
-/*    */   private final VanguardsPlugin plugin;
-/*    */   private final VanguardsConfig config;
-/* 31 */   private final PanelComponent panelComponent = new PanelComponent();
-/*    */   
-/*    */   @Inject
-/*    */   VanguardsHighlight(Client client, VanguardsPlugin plugin, VanguardsConfig config)
-/*    */   {
-/* 36 */     super(plugin);
-/* 37 */     setLayer(OverlayLayer.ABOVE_MAP);
-/* 38 */     this.client = client;
-/* 39 */     this.plugin = plugin;
-/* 40 */     this.config = config;
-/*    */   }
-/*    */   
-/*    */   public Dimension render(Graphics2D graphics) {
-/* 44 */     if (!this.plugin.inVangs) {
-/* 45 */       return null;
-/*    */     }
-/* 47 */     if (this.config.showTile()) {
-/* 48 */       if (this.plugin.ranger != null) {
-/* 49 */         renderNpcOverlay(graphics, this.plugin.ranger, "Range", Color.GREEN);
-/*    */       }
-/* 51 */       if (this.plugin.mager != null) {
-/* 52 */         renderNpcOverlay(graphics, this.plugin.mager, "Mage", Color.BLUE);
-/*    */       }
-/* 54 */       if (this.plugin.meleer != null) {
-/* 55 */         renderNpcOverlay(graphics, this.plugin.meleer, "Melee", Color.RED);
-/*    */       }
-/*    */     }
-/* 58 */     return null;
-/*    */   }
-/*    */   
-/*    */ 
-/*    */ 
-/*    */   private void renderNpcOverlay(Graphics2D graphics, NPC actor, String name, Color color)
-/*    */   {
-/* 65 */     Polygon objectClickbox = actor.getConvexHull();
-/*    */     
-/* 67 */     renderPoly(graphics, color, objectClickbox);
-/*    */   }
-/*    */   
-/*    */ 
-/*    */   private void renderPoly(Graphics2D graphics, Color color, Polygon polygon)
-/*    */   {
-/* 73 */     if (polygon != null)
-/*    */     {
-/* 75 */       graphics.setColor(color);
-/* 76 */       graphics.setStroke(new BasicStroke(2.0F));
-/* 77 */       graphics.draw(polygon);
-/* 78 */       graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
-/* 79 */       graphics.fill(polygon);
-/*    */     }
-/*    */   }
-/*    */ }
+package net.runelite.client.plugins.vanguards;
+
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.Perspective;
+import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
+
+import javax.inject.Inject;
+import java.awt.*;
+import java.util.List;
+
+import static java.awt.Color.GRAY;
+import static java.awt.Color.ORANGE;
+import static java.awt.Color.YELLOW;
+
+public class VanguardsHighlight extends Overlay {
+
+    private final Client client;
+    private final VanguardsPlugin plugin;
+    private final VanguardsConfig config;
+    private final PanelComponent panelComponent = new PanelComponent();
+
+    @Inject
+    VanguardsHighlight(Client client, VanguardsPlugin plugin, VanguardsConfig config)
+    {
+        super(plugin);
+        setLayer(OverlayLayer.ABOVE_MAP);
+        this.client = client;
+        this.plugin = plugin;
+        this.config = config;
+    }
+    @Override
+    public Dimension render(Graphics2D graphics) {
+        if(!plugin.inVangs){
+            return null;
+        }
+        if(config.showTile()){
+            if(plugin.ranger != null){
+                renderNpcOverlay(graphics,plugin.ranger,"Range",Color.GREEN);
+            }
+            if(plugin.mager != null){
+                renderNpcOverlay(graphics,plugin.mager,"Mage",Color.BLUE);
+            }
+            if(plugin.meleer != null){
+                renderNpcOverlay(graphics,plugin.meleer,"Melee",Color.RED);
+            }
+        }
+        return null;
+    }
 
 
-/* Location:              C:\Users\Lightsaber\Desktop\lyzrdRl.jar!\net\runelite\client\plugins\vanguards\VanguardsHighlight.class
- * Java compiler version: 8 (52.0)
- * JD-Core Version:       0.7.1
- */
+    private void renderNpcOverlay(Graphics2D graphics, NPC actor, String name, Color color)
+    {
+
+        Polygon objectClickbox = actor.getConvexHull();
+
+        renderPoly(graphics, color, objectClickbox);
+
+    }
+
+    private void renderPoly(Graphics2D graphics, Color color, Polygon polygon)
+    {
+        if (polygon != null)
+        {
+            graphics.setColor(color);
+            graphics.setStroke(new BasicStroke(2));
+            graphics.draw(polygon);
+            graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+            graphics.fill(polygon);
+        }
+    }
+}
