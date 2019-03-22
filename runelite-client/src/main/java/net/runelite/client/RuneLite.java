@@ -116,6 +116,9 @@ public class RuneLite
 	private PartyService partyService;
 
 	@Inject
+	private RuneLiteProperties runeLiteProperties;
+
+	@Inject
 	private Provider<ItemManager> itemManager;
 
 	@Inject
@@ -228,6 +231,12 @@ public class RuneLite
 
 	public void start() throws Exception
 	{
+		log.info("Client version: {}", runeLiteProperties.getVersion());
+		if (RuneLiteProperties.getLauncherVersion() != null)
+		{
+			log.info("Launcher version: {}", RuneLiteProperties.getLauncherVersion());
+		}
+
 		// Load RuneLite or Vanilla client
 		final boolean isOutdated = client == null;
 
