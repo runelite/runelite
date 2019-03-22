@@ -51,6 +51,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.Varbits;
 import static net.runelite.api.Skill.SLAYER;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -60,6 +61,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.vars.SlayerUnlock;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -111,9 +113,6 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern NPC_ASSIGN_BOSS_MESSAGE = Pattern.compile("^Excellent. You're now assigned to kill (?:the )?(.*) (\\d+) times.*Your reward point tally is (.*)\\.$");
 	private static final Pattern NPC_ASSIGN_FIRST_MESSAGE = Pattern.compile("^We'll start you off hunting (.*), you'll need to kill (\\d*) of them.");
 	private static final Pattern NPC_CURRENT_MESSAGE = Pattern.compile("^You're still (?:hunting|bringing balance to) (?<name>.+)(?: (?:in|on) (?:the )?(?<location>.+), with|; you have) (?<amount>\\d+) to go\\..*");
-
-	//Reward UI
-	private static final Pattern REWARD_POINTS = Pattern.compile("Reward points: ((?:\\d+,)*\\d+)");
 
 	private static final int GROTESQUE_GUARDIANS_REGION = 6727;
 
@@ -201,7 +200,9 @@ public class SlayerPlugin extends Plugin
 	private int streak;
 
 	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int points;
+	private int cachedPoints;
 
 	private TaskCounter counter;
 	private int cachedXp;
@@ -221,7 +222,6 @@ public class SlayerPlugin extends Plugin
 			&& config.amount() != -1
 			&& !config.taskName().isEmpty())
 		{
-			points = config.points();
 			streak = config.streak();
 			setExpeditiousChargeCount(config.expeditious());
 			setSlaughterChargeCount(config.slaughter());
@@ -258,6 +258,7 @@ public class SlayerPlugin extends Plugin
 			case HOPPING:
 			case LOGGING_IN:
 				cachedXp = 0;
+				cachedPoints = 0;
 				taskName = "";
 				amount = 0;
 				loginFlag = true;
@@ -268,7 +269,6 @@ public class SlayerPlugin extends Plugin
 					&& !config.taskName().isEmpty()
 					&& loginFlag)
 				{
-					points = config.points();
 					streak = config.streak();
 					setExpeditiousChargeCount(config.expeditious());
 					setSlaughterChargeCount(config.slaughter());
@@ -279,13 +279,30 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (client.getVar(Varbits.SLAYER_REWARD_POINTS) == cachedPoints)
+		{
+			return;
+		}
+
+		setPoints(client.getVar(Varbits.SLAYER_REWARD_POINTS));
+
+		if (!config.showInfobox())
+		{
+			return;
+		}
+
+		addCounter();
+		counter.setCount(amount);
+	}
 	private void save()
 	{
 		config.amount(amount);
 		config.initialAmount(initialAmount);
 		config.taskName(taskName);
 		config.taskLocation(taskLocation);
-		config.points(points);
 		config.streak(streak);
 		config.expeditious(expeditiousChargeCount);
 		config.slaughter(slaughterChargeCount);
@@ -360,28 +377,6 @@ public class SlayerPlugin extends Plugin
 			{
 				expeditiousChargeCount = EXPEDITIOUS_CHARGE;
 				config.expeditious(expeditiousChargeCount);
-			}
-		}
-
-		Widget rewardsBarWidget = client.getWidget(WidgetInfo.SLAYER_REWARDS_TOPBAR);
-		if (rewardsBarWidget != null)
-		{
-			for (Widget w : rewardsBarWidget.getDynamicChildren())
-			{
-				Matcher mPoints = REWARD_POINTS.matcher(w.getText());
-				if (mPoints.find())
-				{
-					final int prevPoints = points;
-					points = Integer.parseInt(mPoints.group(1).replaceAll(",", ""));
-
-					if (prevPoints != points)
-					{
-						removeCounter();
-						addCounter();
-					}
-
-					break;
-				}
 			}
 		}
 
@@ -469,7 +464,6 @@ public class SlayerPlugin extends Plugin
 					break;
 				case 3:
 					streak = Integer.parseInt(matches.get(0));
-					points = Integer.parseInt(matches.get(2));
 					break;
 				default:
 					log.warn("Unreachable default case for message ending in '; return to Slayer master'");

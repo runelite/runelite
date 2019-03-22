@@ -212,24 +212,6 @@ public interface SlayerConfig extends Config
 	void streak(int streak);
 
 	@ConfigItem(
-		keyName = "points",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int points()
-	{
-		return -1;
-	}
-
-	@ConfigItem(
-		keyName = "points",
-		name = "",
-		description = ""
-	)
-	void points(int points);
-
-	@ConfigItem(
 		keyName = "expeditious",
 		name = "",
 		description = "",

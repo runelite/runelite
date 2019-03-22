@@ -35,9 +35,11 @@ import static net.runelite.api.ChatMessageType.SERVER;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
@@ -304,21 +306,6 @@ public class SlayerPluginTest
 	}
 
 	@Test
-	public void testRewardPointsWidget()
-	{
-		Widget rewardBar = mock(Widget.class);
-		Widget rewardBarText = mock(Widget.class);
-		Widget[] rewardBarChildren = new Widget[]{rewardBarText};
-
-		when(rewardBar.getDynamicChildren()).thenReturn(rewardBarChildren);
-		when(rewardBarText.getText()).thenReturn(REWARD_POINTS);
-		when(client.getWidget(WidgetInfo.SLAYER_REWARDS_TOPBAR)).thenReturn(rewardBar);
-		slayerPlugin.onGameTick(new GameTick());
-
-		assertEquals(17566, slayerPlugin.getPoints());
-	}
-
-	@Test
 	public void testOneTask()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "Perterter", TASK_ONE, null, 0);
@@ -343,8 +330,12 @@ public class SlayerPluginTest
 	@Test
 	public void testPoints()
 	{
+		when(client.getVar(Varbits.SLAYER_REWARD_POINTS)).thenReturn(18_000);
+
 		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "Perterter", TASK_POINTS, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
+		VarbitChanged varbitChanged = new VarbitChanged();
+		slayerPlugin.onVarbitChanged(varbitChanged);
 
 		assertEquals(9, slayerPlugin.getStreak());
 		assertEquals("", slayerPlugin.getTaskName());
@@ -355,8 +346,12 @@ public class SlayerPluginTest
 	@Test
 	public void testLargeStreak()
 	{
+		when(client.getVar(Varbits.SLAYER_REWARD_POINTS)).thenReturn(17_566_000);
+
 		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "Perterter", TASK_LARGE_STREAK, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
+		VarbitChanged varbitChanged = new VarbitChanged();
+		slayerPlugin.onVarbitChanged(varbitChanged);
 
 		assertEquals(2465, slayerPlugin.getStreak());
 		assertEquals("", slayerPlugin.getTaskName());
