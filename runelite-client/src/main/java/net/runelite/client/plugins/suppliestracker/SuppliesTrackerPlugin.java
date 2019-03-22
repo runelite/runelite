@@ -237,9 +237,21 @@ public class SuppliesTrackerPlugin extends Plugin
 		{
 			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
 			if (attackStyleVarbit == 0 || attackStyleVarbit == 3)
-				ticksInAnimation = client.getLocalPlayer().getInteracting() instanceof Player ? BLOWPIPE_TICKS_NORMAL_PVP : BLOWPIPE_TICKS_NORMAL_PVM;
+			{
+				ticksInAnimation = BLOWPIPE_TICKS_NORMAL_PVM;
+				if (client.getLocalPlayer() != null &&
+						client.getLocalPlayer().getInteracting() instanceof Player) {
+					ticksInAnimation = BLOWPIPE_TICKS_NORMAL_PVP;
+				}
+			}
 			else if (attackStyleVarbit == 1)
-				ticksInAnimation = client.getLocalPlayer().getInteracting() instanceof Player ? BLOWPIPE_TICKS_RAPID_PVP : BLOWPIPE_TICKS_RAPID_PVM;
+			{
+				ticksInAnimation = BLOWPIPE_TICKS_RAPID_PVM;
+				if (client.getLocalPlayer() != null &&
+						client.getLocalPlayer().getInteracting() instanceof Player) {
+					ticksInAnimation = BLOWPIPE_TICKS_RAPID_PVP;
+				}
+			}
 		}
 	}
 
@@ -265,10 +277,6 @@ public class SuppliesTrackerPlugin extends Plugin
 				{
 					isRune = true;
 				}
-			}
-			if (isRune)
-			{
-				System.out.println("found rune with " + newItem.getId() + " " + oldItem.getQuantity() + " -> " + newItem.getQuantity());
 			}
 			if (isRune && (newItem.getId() != oldItem.getId() || newItem.getQuantity() != oldItem.getQuantity()))
 			{
