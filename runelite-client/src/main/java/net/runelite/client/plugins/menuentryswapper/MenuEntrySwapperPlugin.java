@@ -388,6 +388,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("bank", option, target, true);
 			}
 
+			if (config.swapContract())
+			{
+				swap("contract", option, target, true);
+			}
+
 			if (config.swapExchange())
 			{
 				swap("exchange", option, target, true);

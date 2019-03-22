@@ -63,7 +63,7 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.debug("Error looking up item {}: {}", itemId, response.message());
+				logger.debug("Error looking up item {}: {}", itemId, response);
 				return null;
 			}
 
@@ -99,7 +99,7 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.debug("Error looking up items {}: {}", Arrays.toString(itemIds), response.message());
+				logger.debug("Error looking up items {}: {}", Arrays.toString(itemIds), response);
 				return null;
 			}
 
@@ -130,7 +130,7 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.debug("Error grabbing icon {}: {}", itemId, response.message());
+				logger.debug("Error grabbing icon {}: {}", itemId, response);
 				return null;
 			}
 
@@ -160,7 +160,7 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.debug("Error looking up item {}: {}", itemName, response.message());
+				logger.debug("Error looking up item {}: {}", itemName, response);
 				return null;
 			}
 
@@ -191,7 +191,7 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.warn("Error looking up prices: {}", response.message());
+				logger.warn("Error looking up prices: {}", response);
 				return null;
 			}
 
@@ -223,7 +223,7 @@ public class ItemClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.warn("Error looking up item stats: {}", response.message());
+				logger.warn("Error looking up item stats: {}", response);
 				return null;
 			}
 
