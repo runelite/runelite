@@ -70,7 +70,8 @@ public class BarbarianAssaultPlugin extends Plugin {
 	private Font font;
 	private Image clockImage;
 	private int inGameBit = 0;
-	private int eggCount = 0;
+	private int inventoryEggCount = 0;
+	private int collectedEggCount = 0;;
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
 
@@ -109,7 +110,7 @@ public class BarbarianAssaultPlugin extends Plugin {
 		gameTime = null;
 		currentWave = START_WAVE;
 		inGameBit = 0;
-		eggCount = 0;
+		collectedEggCount = 0;
 	}
 
 	@Subscribe
@@ -137,7 +138,7 @@ public class BarbarianAssaultPlugin extends Plugin {
 			}
 		} else if (event.getType() == ChatMessageType.GAME
 				&& event.getMessage().contains("egg explode")) {
-			eggCount--;
+			collectedEggCount--;
 		}
 	}
 
@@ -148,9 +149,10 @@ public class BarbarianAssaultPlugin extends Plugin {
 			return;
 		}
 
-		if (collectedEgg(event.getItemContainer(), client.getItemContainer(InventoryID.INVENTORY))) {
-			eggCount++;
+		if (countEggs(event.getItemContainer()) > inventoryEggCount) {
+			collectedEggCount++;
 		}
+		inventoryEggCount = countEggs(event.getItemContainer());
 	}
 
 	@Subscribe
@@ -206,22 +208,53 @@ public class BarbarianAssaultPlugin extends Plugin {
 				.build());
 	}
 
-	private boolean isEgg(ItemID itemID) {
-		if (itemID.equals(ItemID.RED_EGG) || itemID.equals(ItemID.GREEN_EGG)
-			|| itemID.equals(ItemID.BLUE_EGG )|| itemID.equals(ItemID.YELLOW_EGG))
+	private boolean isEgg(int itemID)
+	{
+		if (itemID == ItemID.RED_EGG || itemID == ItemID.GREEN_EGG
+			|| itemID == ItemID.BLUE_EGG || itemID == ItemID.YELLOW_EGG)
 		{
 			return true;
 		}
 		return false;
 	}
 
-	private boolean collectedEgg(ItemContainer newInventory, ItemContainer oldInventory)
+	private boolean isCollectionBag(int itemID)
 	{
-		if(newInventory.getItems().length > oldInventory.getItems().length)
+		if (itemID == ItemID.COLLECTION_BAG || itemID == ItemID.COLLECTION_BAG_10522
+			|| itemID == ItemID.COLLECTION_BAG_10523
+			|| itemID == ItemID.COLLECTION_BAG_10524
+			|| itemID == ItemID.COLLECTION_BAG_10525)
 		{
 			return true;
 		}
 		return false;
+	}
+
+	private int countBagEggs(Item collectionBag)
+	{
+		//TODO Count how many eggs total are in the bag
+		return 0;
+	}
+
+	private int countEggs(ItemContainer itemContainer)
+	{
+		int count = 0;
+		for (Item item : itemContainer.getItems())
+		{
+			if (item == null)
+			{
+				continue;
+			}
+			if (isEgg(item.getId()))
+			{
+				count++;
+			}
+			if (isCollectionBag((item.getId())))
+			{
+				count += countBagEggs(item);
+			}
+		}
+		return count;
 	}
 
 	public Font getFont()
