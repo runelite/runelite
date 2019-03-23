@@ -217,8 +217,11 @@ public class BarbarianAssaultPlugin extends Plugin {
 
 	private boolean collectedEgg(ItemContainer newInventory, ItemContainer oldInventory)
 	{
-		//TODO
-		return true;
+		if(newInventory.getItems().length > oldInventory.getItems().length)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	public Font getFont()
