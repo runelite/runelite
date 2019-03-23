@@ -211,7 +211,6 @@ public class ClientLoader
 			}
 
 			log.error("Error loading RS!", e);
-			System.exit(-1);
 			return null;
 		}
 	}
