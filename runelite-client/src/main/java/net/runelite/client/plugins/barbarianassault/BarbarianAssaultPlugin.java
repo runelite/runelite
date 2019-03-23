@@ -29,6 +29,7 @@ import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.Image;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -67,11 +68,13 @@ public class BarbarianAssaultPlugin extends Plugin {
 	private static final String START_WAVE = "1";
 	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
 
+	@Getter
+	private int collectedEggCount = 0;
+
 	private Font font;
 	private Image clockImage;
 	private int inGameBit = 0;
 	private int inventoryEggCount = 0;
-	private int collectedEggCount = 0;;
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
 
