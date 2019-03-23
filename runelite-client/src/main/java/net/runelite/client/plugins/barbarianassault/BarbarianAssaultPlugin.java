@@ -67,6 +67,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	private Font font;
 	private Image clockImage;
 	private int inGameBit = 0;
+	private int eggCount = 0;
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
 
@@ -108,6 +109,7 @@ public class BarbarianAssaultPlugin extends Plugin
 		gameTime = null;
 		currentWave = START_WAVE;
 		inGameBit = 0;
+		eggCount = 0;
 	}
 
 	@Subscribe
@@ -141,6 +143,11 @@ public class BarbarianAssaultPlugin extends Plugin
 			{
 				gameTime.setWaveStartTime();
 			}
+		}
+		else if (event.getType() == ChatMessageType.GAME
+			&& event.getMessage().contains("egg explode"))
+		{
+			eggCount--;
 		}
 	}
 
