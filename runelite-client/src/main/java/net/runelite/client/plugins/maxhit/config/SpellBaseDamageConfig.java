@@ -52,10 +52,10 @@ public enum SpellBaseDamageConfig
 	EARTH_WAVE(SpellBook.NORMAL, 15, 19),
 	FIRE_WAVE(SpellBook.NORMAL, 16, 20),
 
-	AIR_SURGE(SpellBook.NORMAL, 17, 21),
-	WATER_SURGE(SpellBook.NORMAL, 18, 22),
-	EARTH_SURGE(SpellBook.NORMAL, 19, 23),
-	FIRE_SURGE(SpellBook.NORMAL, 20, 24),
+	AIR_SURGE(SpellBook.NORMAL, 48, 21),
+	WATER_SURGE(SpellBook.NORMAL, 49, 22),
+	EARTH_SURGE(SpellBook.NORMAL, 50, 23),
+	FIRE_SURGE(SpellBook.NORMAL, 51, 24),
 
 	/*
 	 * Ancient Spellbook
