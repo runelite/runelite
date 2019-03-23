@@ -82,16 +82,17 @@ public abstract class MaxHitCalculator
 
 	double getPrayerBonus()
 	{
+		double bonus = 1;
 		for (PrayerBonusConfig prayerBonus : PrayerBonusConfig.values())
 		{
 			boolean prayerActive = client.getVar(prayerBonus.getPrayerVarbit()) == 1;
 			boolean sameCombatMethod = prayerBonus.getCombatMethod() == this.combatMethod;
 			if (prayerActive && sameCombatMethod)
 			{
-				return prayerBonus.getStrengthBonus();
+				bonus += prayerBonus.getStrengthBonus();
 			}
 		}
-		return 1;
+		return bonus;
 	}
 
 	double getEquipmentBonus(EquipmentBonusConfig.BonusType bonusType)
