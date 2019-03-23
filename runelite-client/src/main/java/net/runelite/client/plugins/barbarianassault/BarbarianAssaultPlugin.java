@@ -28,6 +28,8 @@ package net.runelite.client.plugins.barbarianassault;
 import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.Image;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -77,6 +79,7 @@ public class BarbarianAssaultPlugin extends Plugin {
 	private int inventoryEggCount = 0;
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
+	private Map<Varbits, Integer> eggBagContents;
 
 	@Inject
 	private Client client;
@@ -105,6 +108,11 @@ public class BarbarianAssaultPlugin extends Plugin {
 				.deriveFont(Font.BOLD, 24);
 
 		clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
+		eggBagContents = new HashMap<Varbits, Integer>(){{
+			eggBagContents.put(Varbits.COLL_BAG_EGG1, 0);
+			eggBagContents.put(Varbits.COLL_BAG_EGG2, 0);
+			eggBagContents.put(Varbits.COLL_BAG_EGG3, 0);
+		}};
 	}
 
 	@Override
@@ -194,8 +202,14 @@ public class BarbarianAssaultPlugin extends Plugin {
 				}
 			}
 		}
-		if (isBagVarbit(event.getIndex())) {
-			//TODO: Increment collectedEggCount if > 0
+
+		for (Varbits varbit : eggBagContents.keySet()){
+			if (eggBagContents.get(varbit) != client.getVar(varbit)){
+				eggBagContents.replace(varbit, client.getVar(varbit));
+				if (eggBagContents.get(varbit) > 0) {
+					collectedEggCount++;
+				}
+			}
 		}
 
 		inGameBit = inGame;
@@ -225,30 +239,6 @@ public class BarbarianAssaultPlugin extends Plugin {
 		return false;
 	}
 
-	private boolean isCollectionBag(int itemID)
-	{
-		if (itemID == ItemID.COLLECTION_BAG || itemID == ItemID.COLLECTION_BAG_10522
-			|| itemID == ItemID.COLLECTION_BAG_10523
-			|| itemID == ItemID.COLLECTION_BAG_10524
-			|| itemID == ItemID.COLLECTION_BAG_10525)
-		{
-			return true;
-		}
-		return false;
-	}
-
-	private boolean isBagVarbit(int index)
-	{
-		//TODO: Check if index references a coll bag Varbit
-		return false;
-	}
-
-	private int countBagEggs(Item collectionBag)
-	{
-		//TODO Count how many eggs total are in the bag
-		return 0;
-	}
-
 	private int countEggs(ItemContainer itemContainer)
 	{
 		int count = 0;
@@ -261,10 +251,6 @@ public class BarbarianAssaultPlugin extends Plugin {
 			if (isEgg(item.getId()))
 			{
 				count++;
-			}
-			if (isCollectionBag((item.getId())))
-			{
-				count += countBagEggs(item);
 			}
 		}
 		return count;
