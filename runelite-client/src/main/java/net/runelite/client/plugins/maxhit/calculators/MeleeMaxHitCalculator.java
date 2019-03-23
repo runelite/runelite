@@ -90,7 +90,8 @@ public class MeleeMaxHitCalculator extends MaxHitCalculator
 //      • Void melee: multiply by 1.10. Round down.
 //      • Void ranged: multiply by 1.10. Round down.
 //      • Elite void ranged: multiply by 1.125. Round down.
-
+		double voidBonus = this.getEquipmentBonus(EquipmentBonusConfig.BonusType.VOID_KNIGHT);
+		effectiveLevel = effectiveLevel * voidBonus;
 
 //      g. This is the effective (ranged) strength level. Let this equal 'A' in the formula in
 		return effectiveLevel;
@@ -128,6 +129,9 @@ public class MeleeMaxHitCalculator extends MaxHitCalculator
 //      c. Multiply by the bonus of one of the following items
 		double specialBonus = this.getEquipmentBonus(EquipmentBonusConfig.BonusType.SPECIAL);
 		maxHit = maxHit * specialBonus;
+
+//		d. Round down to the nearest integer.
+		maxHit = Math.floor(maxHit);
 
 		return maxHit;
 	}
