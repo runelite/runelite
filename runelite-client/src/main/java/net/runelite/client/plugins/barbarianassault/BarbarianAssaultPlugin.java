@@ -108,11 +108,6 @@ public class BarbarianAssaultPlugin extends Plugin {
 				.deriveFont(Font.BOLD, 24);
 
 		clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
-		eggBagContents = new HashMap<Varbits, Integer>(){{
-			eggBagContents.put(Varbits.COLL_BAG_EGG1, 0);
-			eggBagContents.put(Varbits.COLL_BAG_EGG2, 0);
-			eggBagContents.put(Varbits.COLL_BAG_EGG3, 0);
-		}};
 	}
 
 	@Override
@@ -142,6 +137,10 @@ public class BarbarianAssaultPlugin extends Plugin {
 			String[] message = event.getMessage().split(" ");
 			currentWave = message[BA_WAVE_NUM_INDEX];
 			collectedEggCount = 0;
+			if (eggBagContents == null) { eggBagContents = new HashMap<>(); }
+			eggBagContents.put(Varbits.COLL_BAG_EGG1, 0);
+			eggBagContents.put(Varbits.COLL_BAG_EGG2, 0);
+			eggBagContents.put(Varbits.COLL_BAG_EGG3, 0);
 
 			if (currentWave.equals(START_WAVE)) {
 				gameTime = new GameTimer();
