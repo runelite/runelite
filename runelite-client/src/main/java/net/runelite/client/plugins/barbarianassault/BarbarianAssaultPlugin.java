@@ -206,8 +206,12 @@ public class BarbarianAssaultPlugin extends Plugin {
 				.build());
 	}
 
-	private boolean isEgg(Item item) {
-		//TODO
+	private boolean isEgg(ItemID itemID) {
+		if (itemID.equals(ItemID.RED_EGG) || itemID.equals(ItemID.GREEN_EGG)
+			|| itemID.equals(ItemID.BLUE_EGG )|| itemID.equals(ItemID.YELLOW_EGG))
+		{
+			return true;
+		}
 		return false;
 	}
 
