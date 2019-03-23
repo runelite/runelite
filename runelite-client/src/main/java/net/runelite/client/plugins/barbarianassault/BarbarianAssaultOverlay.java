@@ -84,7 +84,7 @@ class BarbarianAssaultOverlay extends Overlay
 		{
 			if (role.equals(Role.COLLECTOR))
 			{
-				roleText.setText(String.format("00:%02d - %02d Eggs", currentRound.getTimeToChange(), plugin.getCollectedEggCount()));
+				roleText.setText(String.format("(%d) 00:%02d", plugin.getCollectedEggCount(), currentRound.getTimeToChange()));
 			}
 			else
 			{

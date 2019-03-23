@@ -133,13 +133,14 @@ public class BarbarianAssaultPlugin extends Plugin {
 				&& event.getMessage().startsWith("---- Wave:")) {
 			String[] message = event.getMessage().split(" ");
 			currentWave = message[BA_WAVE_NUM_INDEX];
+			collectedEggCount = 0;
 
 			if (currentWave.equals(START_WAVE)) {
 				gameTime = new GameTimer();
 			} else if (gameTime != null) {
 				gameTime.setWaveStartTime();
 			}
-		} else if (event.getType() == ChatMessageType.GAME
+		} else if (event.getType() == ChatMessageType.SERVER
 				&& event.getMessage().contains("egg explode")) {
 			collectedEggCount--;
 		}
