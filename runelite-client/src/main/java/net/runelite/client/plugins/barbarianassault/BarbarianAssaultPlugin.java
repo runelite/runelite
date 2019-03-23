@@ -31,10 +31,14 @@ import java.awt.Image;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.kit.KitType;
@@ -58,8 +62,7 @@ import net.runelite.client.util.ImageUtil;
 	description = "Show a timer to the next call change and game/wave duration in chat.",
 	tags = {"minigame", "overlay", "timer"}
 )
-public class BarbarianAssaultPlugin extends Plugin
-{
+public class BarbarianAssaultPlugin extends Plugin {
 	private static final int BA_WAVE_NUM_INDEX = 2;
 	private static final String START_WAVE = "1";
 	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
@@ -87,24 +90,21 @@ public class BarbarianAssaultPlugin extends Plugin
 	private BarbarianAssaultOverlay overlay;
 
 	@Provides
-	BarbarianAssaultConfig provideConfig(ConfigManager configManager)
-	{
+	BarbarianAssaultConfig provideConfig(ConfigManager configManager) {
 		return configManager.getConfig(BarbarianAssaultConfig.class);
 	}
 
 	@Override
-	protected void startUp() throws Exception
-	{
+	protected void startUp() throws Exception {
 		overlayManager.add(overlay);
 		font = FontManager.getRunescapeFont()
-			.deriveFont(Font.BOLD, 24);
+				.deriveFont(Font.BOLD, 24);
 
 		clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
 	}
 
 	@Override
-	protected void shutDown() throws Exception
-	{
+	protected void shutDown() throws Exception {
 		overlayManager.remove(overlay);
 		gameTime = null;
 		currentWave = START_WAVE;
@@ -113,54 +113,53 @@ public class BarbarianAssaultPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
-	{
-		if (event.getGroupId() == WidgetID.BA_REWARD_GROUP_ID)
-		{
+	public void onWidgetLoaded(WidgetLoaded event) {
+		if (event.getGroupId() == WidgetID.BA_REWARD_GROUP_ID) {
 			Widget rewardWidget = client.getWidget(WidgetInfo.BA_REWARD_TEXT);
 
-			if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
-			{
+			if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null) {
 				announceTime("Game finished, duration: ", gameTime.getTime(false));
 			}
 		}
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
+	public void onChatMessage(ChatMessage event) {
 		if (event.getType() == ChatMessageType.SERVER
-			&& event.getMessage().startsWith("---- Wave:"))
-		{
+				&& event.getMessage().startsWith("---- Wave:")) {
 			String[] message = event.getMessage().split(" ");
 			currentWave = message[BA_WAVE_NUM_INDEX];
 
-			if (currentWave.equals(START_WAVE))
-			{
+			if (currentWave.equals(START_WAVE)) {
 				gameTime = new GameTimer();
-			}
-			else if (gameTime != null)
-			{
+			} else if (gameTime != null) {
 				gameTime.setWaveStartTime();
 			}
-		}
-		else if (event.getType() == ChatMessageType.GAME
-			&& event.getMessage().contains("egg explode"))
-		{
+		} else if (event.getType() == ChatMessageType.GAME
+				&& event.getMessage().contains("egg explode")) {
 			eggCount--;
 		}
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		if (client.getVar(Varbits.IN_GAME_BA) == 0 || client.getLocalPlayer() == null || overlay.getCurrentRound() != null)
-		{
+	public void onItemContainerChanged(ItemContainerChanged event) {
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY)
+				|| client.getVar(Varbits.IN_GAME_BA) == 0) {
 			return;
 		}
 
-		switch (client.getLocalPlayer().getPlayerComposition().getEquipmentId(KitType.CAPE))
-		{
+		if (collectedEgg(event.getItemContainer(), client.getItemContainer(InventoryID.INVENTORY))) {
+			eggCount++;
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event) {
+		if (client.getVar(Varbits.IN_GAME_BA) == 0 || client.getLocalPlayer() == null || overlay.getCurrentRound() != null) {
+			return;
+		}
+
+		switch (client.getLocalPlayer().getPlayerComposition().getEquipmentId(KitType.CAPE)) {
 			case ItemID.ATTACKER_ICON:
 				overlay.setCurrentRound(new Round(Role.ATTACKER));
 				break;
@@ -177,18 +176,14 @@ public class BarbarianAssaultPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
-	{
+	public void onVarbitChanged(VarbitChanged event) {
 		int inGame = client.getVar(Varbits.IN_GAME_BA);
 
-		if (inGameBit != inGame)
-		{
-			if (inGameBit == 1)
-			{
+		if (inGameBit != inGame) {
+			if (inGameBit == 1) {
 				overlay.setCurrentRound(null);
 
-				if (config.waveTimes() && gameTime != null)
-				{
+				if (config.waveTimes() && gameTime != null) {
 					announceTime("Wave " + currentWave + " duration: ", gameTime.getTime(true));
 				}
 			}
@@ -197,19 +192,29 @@ public class BarbarianAssaultPlugin extends Plugin
 		inGameBit = inGame;
 	}
 
-	private void announceTime(String preText, String time)
-	{
+	private void announceTime(String preText, String time) {
 		final String chatMessage = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append(preText)
-			.append(ChatColorType.HIGHLIGHT)
-			.append(time)
-			.build();
+				.append(ChatColorType.NORMAL)
+				.append(preText)
+				.append(ChatColorType.HIGHLIGHT)
+				.append(time)
+				.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.GAME)
-			.runeLiteFormattedMessage(chatMessage)
-			.build());
+				.type(ChatMessageType.GAME)
+				.runeLiteFormattedMessage(chatMessage)
+				.build());
+	}
+
+	private boolean isEgg(Item item) {
+		//TODO
+		return false;
+	}
+
+	private boolean collectedEgg(ItemContainer newInventory, ItemContainer oldInventory)
+	{
+		//TODO
+		return true;
 	}
 
 	public Font getFont()
