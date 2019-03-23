@@ -197,11 +197,11 @@ public enum CustomFormulaConfig
 			int maxHP = client.getRealSkillLevel(Skill.HITPOINTS);
 			int lostHP = maxHP - currentHP;
 
-			double initialMaxHit = calculator.calculate();
+			double initialMaxHit = calculator.calculateDefault();
 
 			double multiplier = (1.0 + lostHP / 100.0 * maxHP / 100.0);
 
-			return initialMaxHit * multiplier;
+			return Math.floor(initialMaxHit * multiplier);
 		}
 	);
 
