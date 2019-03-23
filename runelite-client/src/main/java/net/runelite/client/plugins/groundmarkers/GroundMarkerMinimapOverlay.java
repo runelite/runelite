@@ -114,6 +114,8 @@ public class GroundMarkerMinimapOverlay extends Overlay
 			return;
 		}
 
+		Point centerPoint = new Point(minimapPoint.getX() + 1, minimapPoint.getY() + 1);
+
 		int opacity = config.minimapOverlayOpacity();
 		if (opacity < 0)
 		{
@@ -124,10 +126,19 @@ public class GroundMarkerMinimapOverlay extends Overlay
 			opacity = 255;
 		}
 
-		Color transparentColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
-		graphics.setColor(transparentColor);
-		graphics.rotate(angle, minimapPoint.getX(), minimapPoint.getY());
-		graphics.fillRect(minimapPoint.getX() - 2, minimapPoint.getY() - 2, 4, 4);
-		graphics.rotate(-angle, minimapPoint.getX(), minimapPoint.getY());
+		Color tileColor;
+		if (client.getMouseCanvasPosition().distanceTo(centerPoint) < 2)
+		{
+			tileColor = new Color(255, 255, 255, opacity);
+		}
+		else
+		{
+			tileColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
+		}
+
+		graphics.setColor(tileColor);
+		graphics.rotate(angle, centerPoint.getX(), centerPoint.getY());
+		graphics.fillRect(centerPoint.getX() - 1, centerPoint.getY() - 3, 4, 4);
+		graphics.rotate(-angle, centerPoint.getX(), centerPoint.getY());
 	}
 }
