@@ -11,6 +11,7 @@ import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -57,6 +58,7 @@ public class MasterFarmerPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(masterfarmeroverlay);
+		masterFarmers.clear();
 	}
 
 	@Subscribe
@@ -72,8 +74,24 @@ public class MasterFarmerPlugin extends Plugin
 
 		if (npc.getId() == NpcID.MASTER_FARMER || npc.getId() == NpcID.MASTER_FARMER_3258)
 		{
-			MasterFarmer(npc);
+			masterFarmers.putIfAbsent(npc.getIndex(), new MasterFarmerNPC(npc));
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned npcDespawned)
+	{
+		final NPC npc = npcDespawned.getNpc();
+		final String npcName = npc.getName();
+
+		if (npcName == null)
+		{
 			return;
+		}
+
+		if (npc.getId() == NpcID.MASTER_FARMER || npc.getId() == NpcID.MASTER_FARMER_3258)
+		{
+			masterFarmers.remove(npc.getIndex());
 		}
 	}
 
@@ -114,11 +132,5 @@ public class MasterFarmerPlugin extends Plugin
 				continue;
 			}
 		}
-	}
-
-	private void MasterFarmer(NPC npc)
-	{
-		final int npcIndex = npc.getIndex();
-		masterFarmers.putIfAbsent(npcIndex, new MasterFarmerNPC(npc));
 	}
 }
