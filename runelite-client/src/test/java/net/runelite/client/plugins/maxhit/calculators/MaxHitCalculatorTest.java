@@ -6,6 +6,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import net.runelite.api.Client;
 import net.runelite.client.plugins.maxhit.calculators.testconfig.MagicMaxHitConfig;
 import net.runelite.client.plugins.maxhit.calculators.testconfig.MaxHitConfig;
+import net.runelite.client.plugins.maxhit.calculators.testconfig.MeleeMaxHitConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,7 @@ public class MaxHitCalculatorTest
 	public void calculate()
 	{
 		testMaxHitConfig(MagicMaxHitConfig.values());
+		testMaxHitConfig(MeleeMaxHitConfig.values());
 	}
 
 	private void testMaxHitConfig(MaxHitConfig[] maxHitConfigs)

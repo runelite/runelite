@@ -190,26 +190,6 @@ public enum MagicMaxHitConfig implements MaxHitConfig
 		return item;
 	}
 
-	public int[] getMagicLevels()
-	{
-		return magicLevels;
-	}
-
-	public int getSpellId()
-	{
-		return spellId;
-	}
-
-	public Item[] getEquipedItems()
-	{
-		return equipedItems;
-	}
-
-	public int[] getExpectedMaxHits()
-	{
-		return expectedMaxHits;
-	}
-
 	public void test(Client client)
 	{
 		int[] magicLevels = this.magicLevels;
