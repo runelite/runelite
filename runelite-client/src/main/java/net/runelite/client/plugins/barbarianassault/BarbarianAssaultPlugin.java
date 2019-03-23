@@ -194,6 +194,9 @@ public class BarbarianAssaultPlugin extends Plugin {
 				}
 			}
 		}
+		if (isBagVarbit(event.getIndex())) {
+			//TODO: Increment collectedEggCount if > 0
+		}
 
 		inGameBit = inGame;
 	}
@@ -231,6 +234,12 @@ public class BarbarianAssaultPlugin extends Plugin {
 		{
 			return true;
 		}
+		return false;
+	}
+
+	private boolean isBagVarbit(int index)
+	{
+		//TODO: Check if index references a coll bag Varbit
 		return false;
 	}
 
