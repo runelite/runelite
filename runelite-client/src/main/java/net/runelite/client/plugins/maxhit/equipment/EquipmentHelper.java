@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.maxhit.equipment;
 
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Item;
 
 public class EquipmentHelper
@@ -34,9 +35,9 @@ public class EquipmentHelper
 		return itemSet.getItems().stream().allMatch(item -> wearsItem(equipedItems, item));
 	}
 
-	private static boolean wearsItem(Item[] equipedItems, EquipmentSlot slot, int itemId)
+	private static boolean wearsItem(Item[] equipedItems, EquipmentInventorySlot slot, int itemId)
 	{
-		return equipedItems[slot.getId()].getId() == itemId;
+		return equipedItems[slot.getSlotIdx()].getId() == itemId;
 	}
 
 	public static boolean wearsItem(Item[] equipedItems, EquipmentSlotItem equipmentSlotItem)

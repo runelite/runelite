@@ -25,11 +25,11 @@
 package net.runelite.client.plugins.maxhit.config;
 
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.maxhit.calculators.MaxHitCalculator;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentItemset;
-import net.runelite.client.plugins.maxhit.equipment.EquipmentSlot;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlotItem;
 import net.runelite.client.plugins.maxhit.requirements.EquipmentItemRequirement;
 import net.runelite.client.plugins.maxhit.requirements.EquipmentItemSetRequirement;
@@ -47,7 +47,7 @@ public enum CustomFormulaConfig
 	MAGIC_DART(
 		MaxHitCalculator.CombatMethod.MAGIC,
 		new ArrayList<>(Arrays.asList(
-			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Arrays.asList(
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentInventorySlot.WEAPON, new ArrayList<>(Arrays.asList(
 				ItemID.SLAYERS_STAFF,
 				ItemID.SLAYERS_STAFF_E
 			)))),
@@ -63,7 +63,7 @@ public enum CustomFormulaConfig
 	TRIDENT_OF_SEAS(
 		MaxHitCalculator.CombatMethod.MAGIC,
 		new ArrayList<>(Collections.singletonList(
-			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Arrays.asList(
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentInventorySlot.WEAPON, new ArrayList<>(Arrays.asList(
 				ItemID.TRIDENT_OF_THE_SEAS_FULL,
 				ItemID.TRIDENT_OF_THE_SEAS,
 				ItemID.TRIDENT_OF_THE_SEAS_E
@@ -83,7 +83,7 @@ public enum CustomFormulaConfig
 	TRIDENT_OF_SWAMP(
 		MaxHitCalculator.CombatMethod.MAGIC,
 		new ArrayList<>(Collections.singletonList(
-			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Arrays.asList(
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentInventorySlot.WEAPON, new ArrayList<>(Arrays.asList(
 				ItemID.TRIDENT_OF_THE_SWAMP,
 				ItemID.TRIDENT_OF_THE_SWAMP_E
 			))))
@@ -102,7 +102,7 @@ public enum CustomFormulaConfig
 	SWAMP_LIZARD(
 		MaxHitCalculator.CombatMethod.MAGIC,
 		new ArrayList<>(Collections.singletonList(
-			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Collections.singletonList(
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentInventorySlot.WEAPON, new ArrayList<>(Collections.singletonList(
 				ItemID.SWAMP_LIZARD
 			))))
 		)),
@@ -116,7 +116,7 @@ public enum CustomFormulaConfig
 	ORANGE_SALAMANDER(
 		MaxHitCalculator.CombatMethod.MAGIC,
 		new ArrayList<>(Collections.singletonList(
-			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Collections.singletonList(
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentInventorySlot.WEAPON, new ArrayList<>(Collections.singletonList(
 				ItemID.ORANGE_SALAMANDER
 			))))
 		)),
@@ -130,7 +130,7 @@ public enum CustomFormulaConfig
 	RED_SALAMANDER(
 		MaxHitCalculator.CombatMethod.MAGIC,
 		new ArrayList<>(Collections.singletonList(
-			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Collections.singletonList(
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentInventorySlot.WEAPON, new ArrayList<>(Collections.singletonList(
 				ItemID.RED_SALAMANDER
 			))))
 		)),
@@ -144,7 +144,7 @@ public enum CustomFormulaConfig
 	BLACK_SALAMANDER(
 		MaxHitCalculator.CombatMethod.MAGIC,
 		new ArrayList<>(Collections.singletonList(
-			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Collections.singletonList(
+			new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentInventorySlot.WEAPON, new ArrayList<>(Collections.singletonList(
 				ItemID.BLACK_SALAMANDER
 			))))
 		)),
@@ -158,7 +158,7 @@ public enum CustomFormulaConfig
 	DHAROK(
 		MaxHitCalculator.CombatMethod.MELEE,
 		new ArrayList<>(Collections.singletonList(new EquipmentItemSetRequirement(new EquipmentItemset(Arrays.asList(
-			new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, new ArrayList<>(Arrays.asList(
+			new EquipmentSlotItem(EquipmentInventorySlot.HEAD, new ArrayList<>(Arrays.asList(
 				ItemID.DHAROKS_HELM,
 				ItemID.DHAROKS_HELM_100,
 				ItemID.DHAROKS_HELM_75,
@@ -166,7 +166,7 @@ public enum CustomFormulaConfig
 				ItemID.DHAROKS_HELM_25,
 				ItemID.DHAROKS_HELM_0
 			))),
-			new EquipmentSlotItem(EquipmentSlot.CHEST_SLOT, new ArrayList<>(Arrays.asList(
+			new EquipmentSlotItem(EquipmentInventorySlot.BODY, new ArrayList<>(Arrays.asList(
 				ItemID.DHAROKS_PLATEBODY,
 				ItemID.DHAROKS_PLATEBODY_100,
 				ItemID.DHAROKS_PLATEBODY_75,
@@ -174,7 +174,7 @@ public enum CustomFormulaConfig
 				ItemID.DHAROKS_PLATEBODY_25,
 				ItemID.DHAROKS_PLATEBODY_0
 			))),
-			new EquipmentSlotItem(EquipmentSlot.LEG_SLOT, new ArrayList<>(Arrays.asList(
+			new EquipmentSlotItem(EquipmentInventorySlot.LEGS, new ArrayList<>(Arrays.asList(
 				ItemID.DHAROKS_PLATELEGS,
 				ItemID.DHAROKS_PLATELEGS_100,
 				ItemID.DHAROKS_PLATELEGS_75,
@@ -182,7 +182,7 @@ public enum CustomFormulaConfig
 				ItemID.DHAROKS_PLATELEGS_25,
 				ItemID.DHAROKS_PLATELEGS_0
 			))),
-			new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Arrays.asList(
+			new EquipmentSlotItem(EquipmentInventorySlot.WEAPON, new ArrayList<>(Arrays.asList(
 				ItemID.DHAROKS_GREATAXE,
 				ItemID.DHAROKS_GREATAXE_100,
 				ItemID.DHAROKS_GREATAXE_75,

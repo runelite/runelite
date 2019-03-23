@@ -42,7 +42,7 @@ public enum SpellBaseDamageConfig
 	EARTH_BOLT(SpellBook.NORMAL, 7, 11),
 	FIRE_BOLT(SpellBook.NORMAL, 8, 12),
 
-	AIR_BLAST(SpellBook.NORMAL, 9, 13),
+	WIND_BLAST(SpellBook.NORMAL, 9, 13),
 	WATER_BLAST(SpellBook.NORMAL, 10, 14),
 	EARTH_BLAST(SpellBook.NORMAL, 11, 15),
 	FIRE_BLAST(SpellBook.NORMAL, 12, 16),
@@ -85,9 +85,9 @@ public enum SpellBaseDamageConfig
 	 * */
 	CRUMBLE_UNDEAD(SpellBook.OTHER, 17, 15),
 	IBAN_BLAST(SpellBook.OTHER, 47, 25),
-	FLAMES_OF_ZAMAROK(SpellBook.OTHER, 18, 20),
+	FLAMES_OF_ZAMAROK(SpellBook.OTHER, 20, 20),
 	CLAWS_OF_GUTHIX(SpellBook.OTHER, 19, 20),
-	SARADOMIN_STRIKE(SpellBook.OTHER, 20, 20),
+	SARADOMIN_STRIKE(SpellBook.OTHER, 18, 20),
 
 	/*
 	 * Custom Formula spells

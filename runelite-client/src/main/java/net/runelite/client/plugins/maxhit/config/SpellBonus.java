@@ -25,8 +25,8 @@
 package net.runelite.client.plugins.maxhit.config;
 
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.ItemID;
-import net.runelite.client.plugins.maxhit.equipment.EquipmentSlot;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlotItem;
 import net.runelite.client.plugins.maxhit.requirements.AutocastSpellRequirement;
 import net.runelite.client.plugins.maxhit.requirements.EquipmentItemRequirement;
@@ -38,7 +38,10 @@ import java.util.Collections;
 
 public enum SpellBonus
 {
-	CHAOS_GAUNTLETS(3, Operation.ADD, new ArrayList<>(Collections.singletonList(
+	CHAOS_GAUNTLETS(3, Operation.ADD, new ArrayList<>(Arrays.asList(
+		new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentInventorySlot.GLOVES, new ArrayList<>(Collections.singletonList(
+			ItemID.CHAOS_GAUNTLETS
+		)))),
 		new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
 			SpellBaseDamageConfig.AIR_BOLT,
 			SpellBaseDamageConfig.WATER_BOLT,
@@ -48,7 +51,7 @@ public enum SpellBonus
 	))),
 
 	TOME_OF_FIRE(1.5, Operation.MULTIPLY, new ArrayList<>(Arrays.asList(
-		new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentSlot.SHIELD_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentItemRequirement(new EquipmentSlotItem(EquipmentInventorySlot.SHIELD, new ArrayList<>(Collections.singletonList(
 			ItemID.TOME_OF_FIRE
 		)))),
 		new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
@@ -58,15 +61,7 @@ public enum SpellBonus
 			SpellBaseDamageConfig.FIRE_SURGE,
 			SpellBaseDamageConfig.FIRE_WAVE
 		))
-		))), true),
-
-	CHARGE(10, Operation.ADD, new ArrayList<>(Collections.singletonList(
-		new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
-			SpellBaseDamageConfig.FLAMES_OF_ZAMAROK,
-			SpellBaseDamageConfig.CLAWS_OF_GUTHIX,
-			SpellBaseDamageConfig.SARADOMIN_STRIKE
-		)))
-	)));
+	))), true);
 
 	private final double bonusDamage;
 	private final Operation operation;

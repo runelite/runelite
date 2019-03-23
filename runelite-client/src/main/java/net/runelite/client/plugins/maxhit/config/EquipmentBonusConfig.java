@@ -25,11 +25,11 @@
 package net.runelite.client.plugins.maxhit.config;
 
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.ItemID;
 import net.runelite.client.plugins.maxhit.calculators.MaxHitCalculator;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentCombatBonus;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentItemset;
-import net.runelite.client.plugins.maxhit.equipment.EquipmentSlot;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlotItem;
 import net.runelite.client.plugins.maxhit.requirements.Requirement;
 import net.runelite.client.plugins.maxhit.requirements.SpellBookRequirement;
@@ -44,7 +44,7 @@ public enum EquipmentBonusConfig
 	 * Slayer bonus items
 	 */
 	BLACKMASK(BonusType.SLAYER, new EquipmentItemset(Collections.singletonList(
-		new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.HEAD, new ArrayList<>(Arrays.asList(
 			ItemID.BLACK_MASK_10,
 			ItemID.BLACK_MASK_9,
 			ItemID.BLACK_MASK_8,
@@ -60,7 +60,7 @@ public enum EquipmentBonusConfig
 	)), new EquipmentCombatBonus(((7.0 / 6.0) - 1), 0, 0)),
 
 	SLAYERHELM(BonusType.SLAYER, new EquipmentItemset(Collections.singletonList(
-		new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.HEAD, new ArrayList<>(Arrays.asList(
 			ItemID.SLAYER_HELMET,
 			ItemID.BLACK_SLAYER_HELMET,
 			ItemID.GREEN_SLAYER_HELMET,
@@ -72,7 +72,7 @@ public enum EquipmentBonusConfig
 	)), new EquipmentCombatBonus(((7.0 / 6.0) - 1), 0, 0)),
 
 	BLACKMASKI(BonusType.SLAYER, new EquipmentItemset(Collections.singletonList(
-		new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.HEAD, new ArrayList<>(Arrays.asList(
 			ItemID.BLACK_MASK_10_I,
 			ItemID.BLACK_MASK_9_I,
 			ItemID.BLACK_MASK_8_I,
@@ -88,7 +88,7 @@ public enum EquipmentBonusConfig
 	)), new EquipmentCombatBonus(((7.0 / 6.0) - 1), 0.15, 0.15)),
 
 	SLAYERHELMI(BonusType.SLAYER, new EquipmentItemset(Collections.singletonList(
-		new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.HEAD, new ArrayList<>(Arrays.asList(
 			ItemID.SLAYER_HELMET_I,
 			ItemID.BLACK_SLAYER_HELMET_I,
 			ItemID.GREEN_SLAYER_HELMET_I,
@@ -103,85 +103,85 @@ public enum EquipmentBonusConfig
 	 * Void bonus items
 	 * */
 	MELEEVOID(BonusType.VOID_KNIGHT, new EquipmentItemset(Arrays.asList(
-		new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.HEAD, new ArrayList<>(Arrays.asList(
 			ItemID.VOID_MELEE_HELM,
 			ItemID.VOID_MELEE_HELM_11676
 		))),
-		new EquipmentSlotItem(EquipmentSlot.CHEST_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.BODY, new ArrayList<>(Arrays.asList(
 			ItemID.VOID_KNIGHT_TOP,
 			ItemID.VOID_KNIGHT_TOP_10611
 		))),
-		new EquipmentSlotItem(EquipmentSlot.LEG_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.LEGS, new ArrayList<>(Collections.singletonList(
 			ItemID.VOID_KNIGHT_ROBE
 		))),
-		new EquipmentSlotItem(EquipmentSlot.GLOVE_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.GLOVES, new ArrayList<>(Collections.singletonList(
 			ItemID.VOID_KNIGHT_GLOVES
 		)))
 	)), new EquipmentCombatBonus(0.1, 0, 0)),
 
 	RANGERVOID(BonusType.VOID_KNIGHT, new EquipmentItemset(Arrays.asList(
-		new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.HEAD, new ArrayList<>(Arrays.asList(
 			ItemID.VOID_RANGER_HELM,
 			ItemID.VOID_RANGER_HELM_11675
 		))),
-		new EquipmentSlotItem(EquipmentSlot.CHEST_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.BODY, new ArrayList<>(Arrays.asList(
 			ItemID.VOID_KNIGHT_TOP,
 			ItemID.VOID_KNIGHT_TOP_10611
 		))),
-		new EquipmentSlotItem(EquipmentSlot.LEG_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.LEGS, new ArrayList<>(Collections.singletonList(
 			ItemID.VOID_KNIGHT_ROBE
 		))),
-		new EquipmentSlotItem(EquipmentSlot.GLOVE_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.GLOVES, new ArrayList<>(Collections.singletonList(
 			ItemID.VOID_KNIGHT_GLOVES
 		)))
 	)), new EquipmentCombatBonus(0, 0.1, 0)),
 
 
 	ELITEMELEERVOID(BonusType.VOID_KNIGHT, new EquipmentItemset(Arrays.asList(
-		new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.HEAD, new ArrayList<>(Arrays.asList(
 			ItemID.VOID_MELEE_HELM,
 			ItemID.VOID_MELEE_HELM_11676
 		))),
-		new EquipmentSlotItem(EquipmentSlot.CHEST_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.BODY, new ArrayList<>(Collections.singletonList(
 			ItemID.ELITE_VOID_TOP
 		))),
-		new EquipmentSlotItem(EquipmentSlot.LEG_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.LEGS, new ArrayList<>(Collections.singletonList(
 			ItemID.ELITE_VOID_ROBE
 		))),
-		new EquipmentSlotItem(EquipmentSlot.GLOVE_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.GLOVES, new ArrayList<>(Collections.singletonList(
 			ItemID.VOID_KNIGHT_GLOVES
 		)))
 	)), new EquipmentCombatBonus(0.125, 0, 0)),
 
 
 	ELITERANGERVOID(BonusType.VOID_KNIGHT, new EquipmentItemset(Arrays.asList(
-		new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.HEAD, new ArrayList<>(Arrays.asList(
 			ItemID.VOID_RANGER_HELM,
 			ItemID.VOID_RANGER_HELM_11675
 		))),
-		new EquipmentSlotItem(EquipmentSlot.CHEST_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.BODY, new ArrayList<>(Collections.singletonList(
 			ItemID.ELITE_VOID_TOP
 		))),
-		new EquipmentSlotItem(EquipmentSlot.LEG_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.LEGS, new ArrayList<>(Collections.singletonList(
 			ItemID.ELITE_VOID_ROBE
 		))),
-		new EquipmentSlotItem(EquipmentSlot.GLOVE_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.GLOVES, new ArrayList<>(Collections.singletonList(
 			ItemID.VOID_KNIGHT_GLOVES
 		)))
 	)), new EquipmentCombatBonus(0, 0.125, 0)),
 
 	ELITEMAGICVOID(BonusType.EQUIPMENT, new EquipmentItemset(Arrays.asList(
-		new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.HEAD, new ArrayList<>(Arrays.asList(
 			ItemID.VOID_MAGE_HELM,
 			ItemID.VOID_MAGE_HELM_11674
 		))),
-		new EquipmentSlotItem(EquipmentSlot.CHEST_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.BODY, new ArrayList<>(Collections.singletonList(
 			ItemID.ELITE_VOID_TOP
 		))),
-		new EquipmentSlotItem(EquipmentSlot.LEG_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.LEGS, new ArrayList<>(Collections.singletonList(
 			ItemID.ELITE_VOID_ROBE
 		))),
-		new EquipmentSlotItem(EquipmentSlot.GLOVE_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.GLOVES, new ArrayList<>(Collections.singletonList(
 			ItemID.VOID_KNIGHT_GLOVES
 		)))
 	)), new EquipmentCombatBonus(0, 0, 0.025)),
@@ -190,16 +190,16 @@ public enum EquipmentBonusConfig
 	 * Special Melee Equipment
 	 * */
 	OBISIDIAN(BonusType.SPECIAL, new EquipmentItemset(Arrays.asList(
-		new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.HEAD, new ArrayList<>(Collections.singletonList(
 			ItemID.OBSIDIAN_HELMET
 		))),
-		new EquipmentSlotItem(EquipmentSlot.CHEST_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.BODY, new ArrayList<>(Collections.singletonList(
 			ItemID.OBSIDIAN_PLATEBODY
 		))),
-		new EquipmentSlotItem(EquipmentSlot.LEG_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.LEGS, new ArrayList<>(Collections.singletonList(
 			ItemID.OBSIDIAN_PLATELEGS
 		))),
-		new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.WEAPON, new ArrayList<>(Arrays.asList(
 			ItemID.TOKTZXILAK,
 			ItemID.TOKTZXILEK,
 			ItemID.TZHAARKETEM,
@@ -209,8 +209,8 @@ public enum EquipmentBonusConfig
 	)), new EquipmentCombatBonus(0.1, 0, 0)),
 
 	BERSERKERNECKLACE(BonusType.SPECIAL, new EquipmentItemset(Arrays.asList(
-		new EquipmentSlotItem(EquipmentSlot.NECK_SLOT, new ArrayList<>(Collections.singletonList(ItemID.BERSERKER_NECKLACE))),
-		new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.AMULET, new ArrayList<>(Collections.singletonList(ItemID.BERSERKER_NECKLACE))),
+		new EquipmentSlotItem(EquipmentInventorySlot.WEAPON, new ArrayList<>(Arrays.asList(
 			ItemID.TOKTZXILAK,
 			ItemID.TOKTZXILEK,
 			ItemID.TZHAARKETEM,
@@ -224,25 +224,25 @@ public enum EquipmentBonusConfig
 	 * Magic Equipment
 	 */
 	ANCESTRAL_HAT(BonusType.EQUIPMENT, new EquipmentItemset(Collections.singletonList(
-		new EquipmentSlotItem(EquipmentSlot.HELM_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.HEAD, new ArrayList<>(Collections.singletonList(
 			ItemID.ANCESTRAL_HAT
 		)))
 	)), new EquipmentCombatBonus(0, 0, 0.02)),
 
 	ANCESTRAL_ROBE_TOP(BonusType.EQUIPMENT, new EquipmentItemset(Collections.singletonList(
-		new EquipmentSlotItem(EquipmentSlot.CHEST_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.BODY, new ArrayList<>(Collections.singletonList(
 			ItemID.ANCESTRAL_ROBE_TOP
 		)))
 	)), new EquipmentCombatBonus(0, 0, 0.02)),
 
 	ANCESTRAL_ROBE_BOTTOM(BonusType.EQUIPMENT, new EquipmentItemset(Collections.singletonList(
-		new EquipmentSlotItem(EquipmentSlot.LEG_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.LEGS, new ArrayList<>(Collections.singletonList(
 			ItemID.ANCESTRAL_ROBE_BOTTOM
 		)))
 	)), new EquipmentCombatBonus(0, 0, 0.02)),
 
 	IMBUED_GOD_CAPE(BonusType.EQUIPMENT, new EquipmentItemset(Collections.singletonList(
-		new EquipmentSlotItem(EquipmentSlot.CAPE_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.CAPE, new ArrayList<>(Arrays.asList(
 			ItemID.IMBUED_SARADOMIN_MAX_CAPE,
 			ItemID.IMBUED_SARADOMIN_CAPE,
 			ItemID.IMBUED_ZAMORAK_MAX_CAPE,
@@ -253,33 +253,34 @@ public enum EquipmentBonusConfig
 	)), new EquipmentCombatBonus(0, 0, 0.02)),
 
 	KODAI_WAND(BonusType.EQUIPMENT, new EquipmentItemset(Collections.singletonList(
-		new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.WEAPON, new ArrayList<>(Collections.singletonList(
 			ItemID.KODAI_WAND
 		)))
 	)), new EquipmentCombatBonus(0, 0, 0.15)),
 
 	OCCULT_NECKLACE(BonusType.EQUIPMENT, new EquipmentItemset(Collections.singletonList(
-		new EquipmentSlotItem(EquipmentSlot.NECK_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.AMULET, new ArrayList<>(Arrays.asList(
 			ItemID.OCCULT_NECKLACE,
 			ItemID.OCCULT_NECKLACE_OR
 		)))
 	)), new EquipmentCombatBonus(0, 0, 0.10)),
 
 	STAFF_OF_THE_DEAD(BonusType.EQUIPMENT, new EquipmentItemset(Collections.singletonList(
-		new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.WEAPON, new ArrayList<>(Arrays.asList(
 			ItemID.STAFF_OF_THE_DEAD,
-			ItemID.TOXIC_STAFF_OF_THE_DEAD
+			ItemID.TOXIC_STAFF_OF_THE_DEAD,
+			ItemID.STAFF_OF_LIGHT
 		)))
 	)), new EquipmentCombatBonus(0, 0, 0.15)),
 
 	TORMENTED_BRACELET(BonusType.EQUIPMENT, new EquipmentItemset(Collections.singletonList(
-		new EquipmentSlotItem(EquipmentSlot.GLOVE_SLOT, new ArrayList<>(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.GLOVES, new ArrayList<>(Collections.singletonList(
 			ItemID.TORMENTED_BRACELET
 		)))
 	)), new EquipmentCombatBonus(0, 0, 0.05)),
 
 	SMOKE_STAFF(BonusType.EQUIPMENT, new EquipmentItemset(Collections.singletonList(
-		new EquipmentSlotItem(EquipmentSlot.WEAPON_SLOT, new ArrayList<>(Arrays.asList(
+		new EquipmentSlotItem(EquipmentInventorySlot.WEAPON, new ArrayList<>(Arrays.asList(
 			ItemID.SMOKE_BATTLESTAFF,
 			ItemID.MYSTIC_SMOKE_STAFF
 		)))
