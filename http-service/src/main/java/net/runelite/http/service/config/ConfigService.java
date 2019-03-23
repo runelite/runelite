@@ -36,6 +36,7 @@ import static com.mongodb.client.model.Updates.set;
 import static com.mongodb.client.model.Updates.unset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -114,7 +115,7 @@ public class ConfigService
 
 		if (configMap == null || configMap.isEmpty())
 		{
-			return null;
+			return new Configuration(Collections.emptyList());
 		}
 
 		List<ConfigEntry> config = new ArrayList<>();
