@@ -87,7 +87,7 @@ public enum SpellBaseDamageConfig
 	IBAN_BLAST(SpellBook.OTHER, 47, 25),
 	FLAMES_OF_ZAMAROK(SpellBook.OTHER, 20, 20),
 	CLAWS_OF_GUTHIX(SpellBook.OTHER, 19, 20),
-	SARADOMIN_STRIKE(SpellBook.OTHER, 18, 20),
+	SARADOMIN_STRIKE(SpellBook.OTHER, 52, 20),
 
 	/*
 	 * Custom Formula spells
