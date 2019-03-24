@@ -134,7 +134,7 @@ public class ChatFilterPlugin extends Plugin
 	@Subscribe
 	public void onOverheadTextChanged(OverheadTextChanged event)
 	{
-		if (!(event.getActor() instanceof Player))
+		if (!(event.getActor() instanceof Player) || !shouldFilterPlayerMessage((Player) event.getActor()))
 		{
 			return;
 		}
@@ -199,6 +199,12 @@ public class ChatFilterPlugin extends Plugin
 			})
 			.filter(Objects::nonNull)
 			.forEach(filteredPatterns::add);
+	}
+
+	boolean shouldFilterPlayerMessage(Player player)
+	{
+		return !(player.isClanMember() || player.isFriend() ||
+				player.getName() .equals(client.getLocalPlayer().getName()));
 	}
 
 	@Subscribe

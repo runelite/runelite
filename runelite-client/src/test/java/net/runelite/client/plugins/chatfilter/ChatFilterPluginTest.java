@@ -31,6 +31,9 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import net.runelite.api.Player;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,6 +52,10 @@ public class ChatFilterPluginTest
 	@Bind
 	private ChatFilterConfig chatFilterConfig;
 
+	@Mock
+	@Bind
+	private Player player;
+
 	@Inject
 	private ChatFilterPlugin chatFilterPlugin;
 
@@ -60,6 +67,8 @@ public class ChatFilterPluginTest
 		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
 		when(chatFilterConfig.filteredWords()).thenReturn("");
 		when(chatFilterConfig.filteredRegex()).thenReturn("");
+
+
 	}
 
 	@Test
@@ -109,5 +118,33 @@ public class ChatFilterPluginTest
 
 		chatFilterPlugin.updateFilteredPatterns();
 		assertNull(chatFilterPlugin.censorMessage("te\u008Cst"));
+	}
+
+	@Test
+	public void testFilteredMessageFromFriend()
+	{
+		when(player.isFriend()).thenReturn(true);
+		assertFalse(chatFilterPlugin.shouldFilterPlayerMessage(player));
+	}
+
+	@Test
+	public void testFilteredMessageFromNonFriend()
+	{
+		when(player.isFriend()).thenReturn(false);
+		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage(player));
+	}
+
+	@Test
+	public void testFilteredMessageFromClanMember()
+	{
+		when(player.isClanMember()).thenReturn(true);
+		assertFalse(chatFilterPlugin.shouldFilterPlayerMessage(player));
+	}
+
+	@Test
+	public void testFilteredMessageFromNonClanMember()
+	{
+		when(player.isClanMember()).thenReturn(false);
+		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage(player));
 	}
 }
