@@ -1,0 +1,256 @@
+.id                 2091
+.int_stack_count    2
+.string_stack_count 0
+.int_var_count      2
+.string_var_count   0
+   iload                  0
+   iload                  1
+   sconst				  "fakeXpDrop"
+   runelite_callback	  ;
+   pop_int
+   pop_int
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           207
+   coordx
+   enum
+   iload                  0
+   if_icmpeq              LABEL9
+   jump                   LABEL16
+LABEL9:
+   get_varc_int           207
+   iconst                 0
+   iconst                 0
+   iload                  1
+   movecoord
+   set_varc_int           207
+   jump                   LABEL216
+LABEL16:
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           208
+   coordx
+   enum
+   iload                  0
+   if_icmpeq              LABEL25
+   jump                   LABEL32
+LABEL25:
+   get_varc_int           208
+   iconst                 0
+   iconst                 0
+   iload                  1
+   movecoord
+   set_varc_int           208
+   jump                   LABEL216
+LABEL32:
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           209
+   coordx
+   enum
+   iload                  0
+   if_icmpeq              LABEL41
+   jump                   LABEL48
+LABEL41:
+   get_varc_int           209
+   iconst                 0
+   iconst                 0
+   iload                  1
+   movecoord
+   set_varc_int           209
+   jump                   LABEL216
+LABEL48:
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           210
+   coordx
+   enum
+   iload                  0
+   if_icmpeq              LABEL57
+   jump                   LABEL64
+LABEL57:
+   get_varc_int           210
+   iconst                 0
+   iconst                 0
+   iload                  1
+   movecoord
+   set_varc_int           210
+   jump                   LABEL216
+LABEL64:
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           211
+   coordx
+   enum
+   iload                  0
+   if_icmpeq              LABEL73
+   jump                   LABEL80
+LABEL73:
+   get_varc_int           211
+   iconst                 0
+   iconst                 0
+   iload                  1
+   movecoord
+   set_varc_int           211
+   jump                   LABEL216
+LABEL80:
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           212
+   coordx
+   enum
+   iload                  0
+   if_icmpeq              LABEL89
+   jump                   LABEL96
+LABEL89:
+   get_varc_int           212
+   iconst                 0
+   iconst                 0
+   iload                  1
+   movecoord
+   set_varc_int           212
+   jump                   LABEL216
+LABEL96:
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           213
+   coordx
+   enum
+   iload                  0
+   if_icmpeq              LABEL105
+   jump                   LABEL112
+LABEL105:
+   get_varc_int           213
+   iconst                 0
+   iconst                 0
+   iload                  1
+   movecoord
+   set_varc_int           213
+   jump                   LABEL216
+LABEL112:
+   get_varc_int           207
+   iconst                 -1
+   if_icmpeq              LABEL116
+   jump                   LABEL127
+LABEL116:
+   iconst                 0
+   iconst                 83
+   iconst                 105
+   iconst                 81
+   iload                  0
+   enum
+   iconst                 0
+   iload                  1
+   movecoord
+   set_varc_int           207
+   jump                   LABEL216
+LABEL127:
+   get_varc_int           208
+   iconst                 -1
+   if_icmpeq              LABEL131
+   jump                   LABEL142
+LABEL131:
+   iconst                 0
+   iconst                 83
+   iconst                 105
+   iconst                 81
+   iload                  0
+   enum
+   iconst                 0
+   iload                  1
+   movecoord
+   set_varc_int           208
+   jump                   LABEL216
+LABEL142:
+   get_varc_int           209
+   iconst                 -1
+   if_icmpeq              LABEL146
+   jump                   LABEL157
+LABEL146:
+   iconst                 0
+   iconst                 83
+   iconst                 105
+   iconst                 81
+   iload                  0
+   enum
+   iconst                 0
+   iload                  1
+   movecoord
+   set_varc_int           209
+   jump                   LABEL216
+LABEL157:
+   get_varc_int           210
+   iconst                 -1
+   if_icmpeq              LABEL161
+   jump                   LABEL172
+LABEL161:
+   iconst                 0
+   iconst                 83
+   iconst                 105
+   iconst                 81
+   iload                  0
+   enum
+   iconst                 0
+   iload                  1
+   movecoord
+   set_varc_int           210
+   jump                   LABEL216
+LABEL172:
+   get_varc_int           211
+   iconst                 -1
+   if_icmpeq              LABEL176
+   jump                   LABEL187
+LABEL176:
+   iconst                 0
+   iconst                 83
+   iconst                 105
+   iconst                 81
+   iload                  0
+   enum
+   iconst                 0
+   iload                  1
+   movecoord
+   set_varc_int           211
+   jump                   LABEL216
+LABEL187:
+   get_varc_int           212
+   iconst                 -1
+   if_icmpeq              LABEL191
+   jump                   LABEL202
+LABEL191:
+   iconst                 0
+   iconst                 83
+   iconst                 105
+   iconst                 81
+   iload                  0
+   enum
+   iconst                 0
+   iload                  1
+   movecoord
+   set_varc_int           212
+   jump                   LABEL216
+LABEL202:
+   get_varc_int           213
+   iconst                 -1
+   if_icmpeq              LABEL206
+   jump                   LABEL216
+LABEL206:
+   iconst                 0
+   iconst                 83
+   iconst                 105
+   iconst                 81
+   iload                  0
+   enum
+   iconst                 0
+   iload                  1
+   movecoord
+   set_varc_int           213
+LABEL216:
+   return

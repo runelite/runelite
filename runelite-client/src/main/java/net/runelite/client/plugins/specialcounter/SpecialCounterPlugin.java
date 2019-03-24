@@ -42,11 +42,16 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.party.PartyPlugin;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.ws.PartyService;
+import net.runelite.client.ws.WSClient;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
@@ -54,6 +59,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	tags = {"combat", "npcs", "overlay"},
 	enabledByDefault = false
 )
+@PluginDependency(PartyPlugin.class)
 public class SpecialCounterPlugin extends Plugin
 {
 	private int currentWorld = -1;
@@ -70,15 +76,31 @@ public class SpecialCounterPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	ClientThread clientThread;
+
+	@Inject
+	private WSClient wsClient;
+
+	@Inject
+	private PartyService party;
+
+	@Inject
 	private InfoBoxManager infoBoxManager;
 
 	@Inject
 	private ItemManager itemManager;
 
 	@Override
+	protected void startUp()
+	{
+		wsClient.registerMessage(SpecialCounterUpdate.class);
+	}
+
+	@Override
 	protected void shutDown()
 	{
 		removeCounters();
+		wsClient.unregisterMessage(SpecialCounterUpdate.class);
 	}
 
 	@Subscribe
@@ -126,7 +148,7 @@ public class SpecialCounterPlugin extends Plugin
 			return;
 		}
 
-		checkInteracting();
+		int npcId = checkInteracting();
 
 		if (specialHitpointsExperience != -1 && specialUsed)
 		{
@@ -139,13 +161,20 @@ public class SpecialCounterPlugin extends Plugin
 			{
 				if (specialWeapon != null)
 				{
-					updateCounter(specialWeapon, deltaExperience);
+					int hit = getHit(specialWeapon, deltaExperience);
+					updateCounter(specialWeapon, null, hit);
+					if (!party.getMembers().isEmpty())
+					{
+						final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(npcId, specialWeapon, hit);
+						specialCounterUpdate.setMemberId(party.getLocalMember().getMemberId());
+						wsClient.send(specialCounterUpdate);
+					}
 				}
 			}
 		}
 	}
 
-	private void checkInteracting()
+	private int checkInteracting()
 	{
 		Player localPlayer = client.getLocalPlayer();
 		Actor interacting = localPlayer.getInteracting();
@@ -168,7 +197,9 @@ public class SpecialCounterPlugin extends Plugin
 				}
 
 			}
+			return interactingId;
 		}
+		return -1;
 	}
 
 	@Subscribe
@@ -179,6 +210,21 @@ public class SpecialCounterPlugin extends Plugin
 		if (actor.isDead() && interactedNpcIds.contains(actor.getId()))
 		{
 			removeCounters();
+		}
+	}
+
+	@Subscribe
+	public void onSpecialCounterUpdate(SpecialCounterUpdate event)
+	{
+		if (party.getLocalMember().getMemberId().equals(event.getMemberId()))
+		{
+			return;
+		}
+
+		String name = party.getMemberById(event.getMemberId()).getName();
+		if (interactedNpcIds.contains(event.getNpcId()))
+		{
+			clientThread.invokeLater(() -> updateCounter(event.getWeapon(), name, event.getHit()));
 		}
 	}
 
@@ -210,21 +256,20 @@ public class SpecialCounterPlugin extends Plugin
 		return null;
 	}
 
-	private void updateCounter(SpecialWeapon specialWeapon, int deltaExperience)
+	private void updateCounter(SpecialWeapon specialWeapon, String name, int hit)
 	{
 		SpecialCounter counter = specialCounter[specialWeapon.ordinal()];
-		int hit = getHit(specialWeapon, deltaExperience);
 
 		if (counter == null)
 		{
 			counter = new SpecialCounter(itemManager.getImage(specialWeapon.getItemID()), this,
-				hit, specialWeapon);
+					name, hit, specialWeapon);
 			infoBoxManager.addInfoBox(counter);
 			specialCounter[specialWeapon.ordinal()] = counter;
 		}
 		else
 		{
-			counter.addHits(hit);
+			counter.addHits(name, hit);
 		}
 	}
 
