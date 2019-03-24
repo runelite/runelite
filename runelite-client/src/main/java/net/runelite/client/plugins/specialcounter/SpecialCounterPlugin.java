@@ -126,9 +126,9 @@ public class SpecialCounterPlugin extends Plugin
 			return;
 		}
 
-		checkInteracting();
+		int interactingId = checkInteracting();
 
-		if (specialHitpointsExperience != -1 && specialUsed)
+		if (interactingId > -1 && specialHitpointsExperience != -1 && specialUsed)
 		{
 			specialUsed = false;
 			int hpXp = client.getSkillExperience(Skill.HITPOINTS);
@@ -145,7 +145,7 @@ public class SpecialCounterPlugin extends Plugin
 		}
 	}
 
-	private void checkInteracting()
+	private int checkInteracting()
 	{
 		Player localPlayer = client.getLocalPlayer();
 		Actor interacting = localPlayer.getInteracting();
@@ -168,7 +168,11 @@ public class SpecialCounterPlugin extends Plugin
 				}
 
 			}
+
+			return interactingId;
 		}
+
+		return -1;
 	}
 
 	@Subscribe
