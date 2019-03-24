@@ -124,42 +124,54 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 				.build());
 		}
 		// strange device has been tested, show possible locations for final dig spot
-		else {
+		else
+		{
 			panelComponent.getChildren().add(LineComponent.builder()
-					.left("Possible areas:")
-					.build());
+				.left("Possible areas:")
+				.build());
 			Map<HotColdArea, Integer> locationCounts = new HashMap<>();
 
-			for (HotColdLocation hotColdLocation : digLocations) {
+			for (HotColdLocation hotColdLocation : digLocations)
+			{
 				HotColdArea hotColdArea = hotColdLocation.getHotColdArea();
 
-				if (locationCounts.containsKey(hotColdArea)) {
+				if (locationCounts.containsKey(hotColdArea))
+				{
 					locationCounts.put(hotColdArea, locationCounts.get(hotColdArea) + 1);
-				} else {
+				}
+				else
+				{
 					locationCounts.put(hotColdArea, 1);
 				}
 			}
 
-			if (digLocations.size() > 10) {
-				for (HotColdArea area : locationCounts.keySet()) {
+			if (digLocations.size() > 10)
+			{
+				for (HotColdArea area : locationCounts.keySet())
+				{
 					panelComponent.getChildren().add(LineComponent.builder()
-							.left(area.getName())
-							.right(Integer.toString(locationCounts.get(area)))
-							.build());
+						.left(area.getName())
+						.right(Integer.toString(locationCounts.get(area)))
+						.build());
 				}
-			} else {
-				for (HotColdArea s : locationCounts.keySet()) {
+			}
+			else
+			{
+				for (HotColdArea s : locationCounts.keySet())
+				{
 					panelComponent.getChildren().add(LineComponent.builder()
-							.left(s.getName() + ":")
-							.build());
+						.left(s.getName() + ":")
+						.build());
 
-					for (HotColdLocation hotColdLocation : digLocations) {
-						if (hotColdLocation.getHotColdArea() == s) {
+					for (HotColdLocation hotColdLocation : digLocations)
+					{
+						if (hotColdLocation.getHotColdArea() == s)
+						{
 							Rectangle2D r = hotColdLocation.getRect();
 							panelComponent.getChildren().add(LineComponent.builder()
-									.left("- " + hotColdLocation.getArea())
-									.leftColor(Color.LIGHT_GRAY)
-									.build());
+								.left("- " + hotColdLocation.getArea())
+								.leftColor(Color.LIGHT_GRAY)
+								.build());
 						}
 					}
 				}
