@@ -97,6 +97,7 @@ public enum SpellBaseDamageConfig
 	private final SpellBook spellBook;
 	private final int spellID;
 	private final int baseDamage;
+
 	SpellBaseDamageConfig(SpellBook spellBook, int spellID, int baseDamage)
 	{
 		this.spellBook = spellBook;

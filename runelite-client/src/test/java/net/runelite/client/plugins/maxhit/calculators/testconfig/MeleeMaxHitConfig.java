@@ -102,22 +102,22 @@ public enum MeleeMaxHitConfig implements MaxHitConfig
 		}, new int[] {18, 19, 23}),
 
 	DHAROK_SET(new int[] {75, 75, 75, 83, 83, 83, 99, 99, 99}, 105, WeaponType.TYPE_1, 1,
-		new int[][]{{99, 99}, {1, 99}, {32, 75}, {99, 99}, {1, 99}, {32, 75}, {99, 99}, {1, 99}, {32, 75}},
+		new int[][] {{99, 99}, {1, 99}, {32, 75}, {99, 99}, {1, 99}, {32, 75}, {99, 99}, {1, 99}, {32, 75}},
 		new Item[]
-		{
-			mockItem(ItemID.DHAROKS_HELM_100),
-			mockItem(ItemID.BLACK_CAPE),
-			mockItem(ItemID.GOLD_NECKLACE),
-			mockItem(ItemID.DHAROKS_GREATAXE_100),
-			mockItem(ItemID.DHAROKS_PLATEBODY_100),
-			null,
-			null,
-			mockItem(ItemID.DHAROKS_PLATELEGS_100),
-			null,
-			mockItem(ItemID.LEATHER_GLOVES),
-			mockItem(ItemID.LEATHER_BOOTS),
-			mockItem(ItemID.GOLD_RING)
-		}, new int[] {23, 45, 30, 25, 49, 33, 29, 57, 38}),
+			{
+				mockItem(ItemID.DHAROKS_HELM_100),
+				mockItem(ItemID.BLACK_CAPE),
+				mockItem(ItemID.GOLD_NECKLACE),
+				mockItem(ItemID.DHAROKS_GREATAXE_100),
+				mockItem(ItemID.DHAROKS_PLATEBODY_100),
+				null,
+				null,
+				mockItem(ItemID.DHAROKS_PLATELEGS_100),
+				null,
+				mockItem(ItemID.LEATHER_GLOVES),
+				mockItem(ItemID.LEATHER_BOOTS),
+				mockItem(ItemID.GOLD_RING)
+			}, new int[] {23, 45, 30, 25, 49, 33, 29, 57, 38}),
 
 	VOID_SET(new int[] {75, 83, 99}, 66, WeaponType.TYPE_9, 1, new Item[]
 		{
@@ -138,12 +138,12 @@ public enum MeleeMaxHitConfig implements MaxHitConfig
 
 
 	private final int[] strengthLevels;
-	private int[][] hitpoints = new int[][] {{99, 99}};
-	private int meleeEquipmentStrength;
 	private final WeaponType weaponType;
 	private final int attackStyleId;
 	private final Item[] equipedItems;
 	private final int[] expectedMaxHits;
+	private int[][] hitpoints = new int[][] {{99, 99}};
+	private int meleeEquipmentStrength;
 
 	MeleeMaxHitConfig(int strengthLevel, int meleeEquipmentStrength, WeaponType weaponType, int attackStyleId, Item[] equipedItems, int expectedMaxHit)
 	{

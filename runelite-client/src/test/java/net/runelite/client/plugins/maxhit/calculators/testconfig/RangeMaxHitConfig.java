@@ -28,7 +28,6 @@ import net.runelite.api.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.maxhit.attackstyle.WeaponType;
-import net.runelite.client.plugins.maxhit.calculators.MeleeMaxHitCalculator;
 import net.runelite.client.plugins.maxhit.calculators.RangeMaxHitCalculator;
 
 import static org.junit.Assert.assertEquals;
@@ -107,11 +106,11 @@ public enum RangeMaxHitConfig implements MaxHitConfig
 	;
 
 	private final int[] rangeLevels;
-	private int ammoEquipmentStrength;
 	private final WeaponType weaponType;
 	private final int attackStyleId;
 	private final Item[] equipedItems;
 	private final int[] expectedMaxHits;
+	private int ammoEquipmentStrength;
 
 	RangeMaxHitConfig(int rangeLevel, int ammoEquipmentStrength, WeaponType weaponType, int attackStyleId, Item[] equipedItems, int expectedMaxHit)
 	{

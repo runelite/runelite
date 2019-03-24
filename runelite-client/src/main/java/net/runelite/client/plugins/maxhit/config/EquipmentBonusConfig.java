@@ -289,8 +289,8 @@ public enum EquipmentBonusConfig
 
 
 	/*
-	* Special magic bonusses
-	* */
+	 * Special magic bonusses
+	 * */
 
 	CHAOS_GAUNTLETS(BonusType.SPECIAL, new EquipmentItemset(Collections.singletonList(
 		new EquipmentSlotItem(EquipmentInventorySlot.GLOVES, new ArrayList<>(Collections.singletonList(
@@ -322,24 +322,8 @@ public enum EquipmentBonusConfig
 				SpellBaseDamageConfig.FIRE_WAVE
 			)))
 		)
-	)
+	);
 
-	;
-
-
-	public enum BonusType
-	{
-		EQUIPMENT,
-		SLAYER,
-		VOID_KNIGHT,
-		SPECIAL,
-		MAGIC_SPECIAL
-	}
-	public enum Operation
-	{
-		ADD,
-		MULTIPLY
-	}
 
 	private static final Map<BonusType, ArrayList<EquipmentBonusConfig>> bonusTypes = new HashMap<>();
 
@@ -363,14 +347,12 @@ public enum EquipmentBonusConfig
 	private EquipmentCombatBonus equipmentCombatBonus;
 	private List<Requirement> requirements = new ArrayList<>();
 	private Operation operation = Operation.MULTIPLY;
-
 	EquipmentBonusConfig(BonusType bonusType, EquipmentItemset itemset, EquipmentCombatBonus equipmentCombatBonus)
 	{
 		this.bonusType = bonusType;
 		this.itemset = itemset;
 		this.equipmentCombatBonus = equipmentCombatBonus;
 	}
-
 	EquipmentBonusConfig(BonusType bonusType, EquipmentItemset itemset, EquipmentCombatBonus equipmentCombatBonus, List<Requirement> requirements)
 	{
 		this.bonusType = bonusType;
@@ -415,6 +397,21 @@ public enum EquipmentBonusConfig
 	public boolean meetsRequirements(Client client)
 	{
 		return requirements.stream().allMatch(requirement -> requirement.meetsRequirements(client));
+	}
+
+	public enum BonusType
+	{
+		EQUIPMENT,
+		SLAYER,
+		VOID_KNIGHT,
+		SPECIAL,
+		MAGIC_SPECIAL
+	}
+
+	public enum Operation
+	{
+		ADD,
+		MULTIPLY
 	}
 
 }
