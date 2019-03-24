@@ -28,8 +28,6 @@ package net.runelite.client.plugins.barbarianassault;
 import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.Image;
-import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -41,7 +39,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.kit.KitType;
@@ -79,7 +77,8 @@ public class BarbarianAssaultPlugin extends Plugin {
 	private int inventoryEggCount = 0;
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
-	private Map<Varbits, Integer> eggBagContents;
+	private long bagHash;
+	private int bagHashCode;
 
 	@Inject
 	private Client client;
@@ -137,10 +136,8 @@ public class BarbarianAssaultPlugin extends Plugin {
 			String[] message = event.getMessage().split(" ");
 			currentWave = message[BA_WAVE_NUM_INDEX];
 			collectedEggCount = 0;
-			if (eggBagContents == null) { eggBagContents = new HashMap<>(); }
-			eggBagContents.put(Varbits.COLL_BAG_EGG1, 0);
-			eggBagContents.put(Varbits.COLL_BAG_EGG2, 0);
-			eggBagContents.put(Varbits.COLL_BAG_EGG3, 0);
+			inventoryEggCount = 0;
+			hasNewEgg(client.getItemContainer(InventoryID.INVENTORY));
 
 			if (currentWave.equals(START_WAVE)) {
 				gameTime = new GameTimer();
@@ -151,19 +148,6 @@ public class BarbarianAssaultPlugin extends Plugin {
 				&& event.getMessage().contains("egg explode")) {
 			collectedEggCount--;
 		}
-	}
-
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event) {
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY)
-				|| client.getVar(Varbits.IN_GAME_BA) == 0) {
-			return;
-		}
-
-		if (countEggs(event.getItemContainer()) > inventoryEggCount) {
-			collectedEggCount++;
-		}
-		inventoryEggCount = countEggs(event.getItemContainer());
 	}
 
 	@Subscribe
@@ -202,16 +186,57 @@ public class BarbarianAssaultPlugin extends Plugin {
 			}
 		}
 
-		for (Varbits varbit : eggBagContents.keySet()){
-			if (eggBagContents.get(varbit) != client.getVar(varbit)){
-				eggBagContents.replace(varbit, client.getVar(varbit));
-				if (eggBagContents.get(varbit) > 0) {
-					collectedEggCount++;
+		inGameBit = inGame;
+	}
+
+	@Subscribe
+	public void onItemDespawned(ItemDespawned event) {
+		if (client.getVar(Varbits.IN_GAME_BA) == 0 || !isEgg(event.getItem().getId())) {
+			return;
+		}
+		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		if (hasNewEgg(inventory)) {
+			collectedEggCount++;
+		}
+	}
+
+	//Updates bagHash, bagHashCode, and inventoryEggCount, returns true if there is a new egg
+	private boolean hasNewEgg(ItemContainer itemContainer)
+	{
+		int count = 0;
+		boolean newBagHash = false;
+		boolean newInventoryEgg = false;
+
+		for (Item item : itemContainer.getItems())
+		{
+			if (item == null)
+			{
+				continue;
+			}
+			if (isEgg(item.getId()))
+			{
+				count++;
+			}
+			if (isBag(item.getId()))
+			{
+				if (item.hashCode() != bagHashCode || item.getHash() != bagHash)
+				{
+					newBagHash = true;
 				}
 			}
 		}
 
-		inGameBit = inGame;
+		if (count > inventoryEggCount) {
+			newInventoryEgg = true;
+		}
+		inventoryEggCount = count;
+
+		//If both change then the player removed eggs from the bag
+		if (newInventoryEgg ^ newBagHash)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	private void announceTime(String preText, String time) {
@@ -238,21 +263,15 @@ public class BarbarianAssaultPlugin extends Plugin {
 		return false;
 	}
 
-	private int countEggs(ItemContainer itemContainer)
+	private boolean isBag(int itemID)
 	{
-		int count = 0;
-		for (Item item : itemContainer.getItems())
+		if (itemID == ItemID.COLLECTION_BAG || itemID == ItemID.COLLECTION_BAG_10522
+			|| itemID == ItemID.COLLECTION_BAG_10523 || itemID == ItemID.COLLECTION_BAG_10524
+			|| itemID == ItemID.COLLECTION_BAG_10525)
 		{
-			if (item == null)
-			{
-				continue;
-			}
-			if (isEgg(item.getId()))
-			{
-				count++;
-			}
+			return true;
 		}
-		return count;
+		return false;
 	}
 
 	public Font getFont()
