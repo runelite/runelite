@@ -94,6 +94,22 @@ public enum MeleeMaxHitConfig implements MaxHitConfig
 			mockItem(ItemID.LEATHER_BOOTS),
 			mockItem(ItemID.GOLD_RING)
 		}, new int[] {23, 45, 30, 25, 49, 33, 29, 57, 38}),
+
+	VOID_SET(new int[] {75, 83, 99}, 66, WeaponType.TYPE_9, 1, new Item[]
+		{
+			mockItem(ItemID.VOID_MELEE_HELM),
+			mockItem(ItemID.BLACK_CAPE),
+			mockItem(ItemID.GOLD_NECKLACE),
+			mockItem(ItemID.DRAGON_SCIMITAR),
+			mockItem(ItemID.VOID_KNIGHT_TOP),
+			mockItem(ItemID.IRON_KITESHIELD),
+			null,
+			mockItem(ItemID.VOID_KNIGHT_ROBE),
+			null,
+			mockItem(ItemID.VOID_KNIGHT_GLOVES),
+			mockItem(ItemID.LEATHER_BOOTS),
+			mockItem(ItemID.GOLD_RING)
+		}, new int[] {19, 21, 25}),
 	;
 
 
