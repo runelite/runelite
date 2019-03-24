@@ -36,6 +36,8 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.Player;
+import net.runelite.api.Tile;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
@@ -190,12 +192,16 @@ public class BarbarianAssaultPlugin extends Plugin {
 	}
 
 	@Subscribe
-	public void onItemDespawned(ItemDespawned event) {
-		if (client.getVar(Varbits.IN_GAME_BA) == 0 || !isEgg(event.getItem().getId())) {
+	public void onItemDespawned(ItemDespawned event)
+	{
+		if (client.getVar(Varbits.IN_GAME_BA) == 0 || !isEgg(event.getItem().getId()))
+		{
 			return;
 		}
+
 		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-		if (hasNewEgg(inventory)) {
+		if (isUnderPlayer(event.getTile()) && hasNewEgg(inventory))
+		{
 			collectedEggCount++;
 		}
 	}
@@ -209,15 +215,9 @@ public class BarbarianAssaultPlugin extends Plugin {
 
 		for (Item item : itemContainer.getItems())
 		{
-			if (item == null)
-			{
-				continue;
-			}
-			else if (isEgg(item.getId()))
-			{
-				count++;
-			}
-			else if (isBag(item.getId()))
+			if (item == null) { continue; }
+			if (isEgg(item.getId())) { count++; }
+			if (isBag(item.getId()))
 			{
 				if (item.hashCode() != bagHashCode || item.getHash() != bagHash)
 				{
@@ -234,11 +234,8 @@ public class BarbarianAssaultPlugin extends Plugin {
 		}
 		inventoryEggCount = count;
 
-		if (newBagHash ^ newInventoryEgg)
-		{
-			return true;
-		}
-		return false;
+		//XOR because both occur when you empty your bag
+		return (newBagHash ^ newInventoryEgg);
 	}
 
 	private void announceTime(String preText, String time) {
@@ -274,6 +271,16 @@ public class BarbarianAssaultPlugin extends Plugin {
 			return true;
 		}
 		return false;
+	}
+
+	private boolean isUnderPlayer(Tile tile) {
+		Player local = client.getLocalPlayer();
+		if (local == null)
+		{
+			return false;
+		}
+
+		return (tile.getWorldLocation().equals(local.getWorldLocation()));
 	}
 
 	public Font getFont()
