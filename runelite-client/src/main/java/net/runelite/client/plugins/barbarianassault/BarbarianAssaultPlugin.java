@@ -32,9 +32,6 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
@@ -76,11 +73,8 @@ public class BarbarianAssaultPlugin extends Plugin {
 	private Font font;
 	private Image clockImage;
 	private int inGameBit = 0;
-	private int inventoryEggCount = 0;
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
-	private long bagHash;
-	private int bagHashCode;
 
 	@Inject
 	private Client client;
@@ -138,8 +132,6 @@ public class BarbarianAssaultPlugin extends Plugin {
 			String[] message = event.getMessage().split(" ");
 			currentWave = message[BA_WAVE_NUM_INDEX];
 			collectedEggCount = 0;
-			inventoryEggCount = 0;
-			hasNewEgg(client.getItemContainer(InventoryID.INVENTORY));
 
 			if (currentWave.equals(START_WAVE)) {
 				gameTime = new GameTimer();
@@ -148,7 +140,7 @@ public class BarbarianAssaultPlugin extends Plugin {
 			}
 		} else if (event.getType() == ChatMessageType.SERVER
 				&& event.getMessage().contains("egg explode")) {
-			collectedEggCount--;
+			collectedEggCount -= 2;
 		}
 	}
 
@@ -198,44 +190,10 @@ public class BarbarianAssaultPlugin extends Plugin {
 		{
 			return;
 		}
-
-		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-		if (isUnderPlayer(event.getTile()) && hasNewEgg(inventory))
+		if (isUnderPlayer(event.getTile()))
 		{
 			collectedEggCount++;
 		}
-	}
-
-	//Updates bagHash, bagHashCode, and inventoryEggCount, returns true if there is a new egg
-	private boolean hasNewEgg(ItemContainer itemContainer)
-	{
-		int count = 0;
-		boolean newBagHash = false;
-		boolean newInventoryEgg = false;
-
-		for (Item item : itemContainer.getItems())
-		{
-			if (item == null) { continue; }
-			if (isEgg(item.getId())) { count++; }
-			if (isBag(item.getId()))
-			{
-				if (item.hashCode() != bagHashCode || item.getHash() != bagHash)
-				{
-					bagHashCode = item.hashCode();
-					bagHash = item.getHash();
-					newBagHash = true;
-				}
-			}
-		}
-
-		if (count > inventoryEggCount)
-		{
-			newInventoryEgg = true;
-		}
-		inventoryEggCount = count;
-
-		//XOR because both occur when you empty your bag
-		return (newBagHash ^ newInventoryEgg);
 	}
 
 	private void announceTime(String preText, String time) {
@@ -256,17 +214,6 @@ public class BarbarianAssaultPlugin extends Plugin {
 	{
 		if (itemID == ItemID.RED_EGG || itemID == ItemID.GREEN_EGG
 			|| itemID == ItemID.BLUE_EGG || itemID == ItemID.YELLOW_EGG)
-		{
-			return true;
-		}
-		return false;
-	}
-
-	private boolean isBag(int itemID)
-	{
-		if (itemID == ItemID.COLLECTION_BAG || itemID == ItemID.COLLECTION_BAG_10522
-			|| itemID == ItemID.COLLECTION_BAG_10523 || itemID == ItemID.COLLECTION_BAG_10524
-			|| itemID == ItemID.COLLECTION_BAG_10525)
 		{
 			return true;
 		}
