@@ -40,12 +40,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
+import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdLocation;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -72,6 +75,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	private final String solution;
 	private WorldPoint location;
 	private WorldPoint lastWorldPoint;
+	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(ItemID.SPADE);
 
 	public static HotColdClue forText(String text)
 	{
@@ -120,57 +124,59 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 				.build());
 		}
 		// strange device has been tested, show possible locations for final dig spot
-		else
-		{
+		else {
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Possible areas:")
-				.build());
+					.left("Possible areas:")
+					.build());
 			Map<HotColdArea, Integer> locationCounts = new HashMap<>();
 
-			for (HotColdLocation hotColdLocation : digLocations)
-			{
+			for (HotColdLocation hotColdLocation : digLocations) {
 				HotColdArea hotColdArea = hotColdLocation.getHotColdArea();
 
-				if (locationCounts.containsKey(hotColdArea))
-				{
+				if (locationCounts.containsKey(hotColdArea)) {
 					locationCounts.put(hotColdArea, locationCounts.get(hotColdArea) + 1);
-				}
-				else
-				{
+				} else {
 					locationCounts.put(hotColdArea, 1);
 				}
 			}
 
-			if (digLocations.size() > 10)
-			{
-				for (HotColdArea area : locationCounts.keySet())
-				{
+			if (digLocations.size() > 10) {
+				for (HotColdArea area : locationCounts.keySet()) {
 					panelComponent.getChildren().add(LineComponent.builder()
-						.left(area.getName())
-						.right(Integer.toString(locationCounts.get(area)))
-						.build());
+							.left(area.getName())
+							.right(Integer.toString(locationCounts.get(area)))
+							.build());
 				}
-			}
-			else
-			{
-				for (HotColdArea s : locationCounts.keySet())
-				{
+			} else {
+				for (HotColdArea s : locationCounts.keySet()) {
 					panelComponent.getChildren().add(LineComponent.builder()
-						.left(s.getName() + ":")
-						.build());
+							.left(s.getName() + ":")
+							.build());
 
-					for (HotColdLocation hotColdLocation : digLocations)
-					{
-						if (hotColdLocation.getHotColdArea() == s)
-						{
+					for (HotColdLocation hotColdLocation : digLocations) {
+						if (hotColdLocation.getHotColdArea() == s) {
 							Rectangle2D r = hotColdLocation.getRect();
 							panelComponent.getChildren().add(LineComponent.builder()
-								.left("- " + hotColdLocation.getArea())
-								.leftColor(Color.LIGHT_GRAY)
-								.build());
+									.left("- " + hotColdLocation.getArea())
+									.leftColor(Color.LIGHT_GRAY)
+									.build());
 						}
 					}
 				}
+			}
+		}
+
+		if (plugin.getInventoryItems() != null)
+		{
+			if (!HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+						.left("")
+						.build());
+				panelComponent.getChildren().add(LineComponent.builder()
+						.left("Requires Spade!")
+						.leftColor(Color.RED)
+						.build());
 			}
 		}
 	}
