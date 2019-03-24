@@ -46,7 +46,7 @@ public class MaxHitCalculatorTest
 	protected Client client;
 
 	@Before
-	public void setUp() throws Exception
+	public void setUp()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 	}

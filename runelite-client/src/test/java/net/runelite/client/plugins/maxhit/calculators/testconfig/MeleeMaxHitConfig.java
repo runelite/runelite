@@ -142,18 +142,8 @@ public enum MeleeMaxHitConfig implements MaxHitConfig
 	private final int attackStyleId;
 	private final Item[] equipedItems;
 	private final int[] expectedMaxHits;
-	private int[][] hitpoints = new int[][] {{99, 99}};
-	private int meleeEquipmentStrength;
-
-	MeleeMaxHitConfig(int strengthLevel, int meleeEquipmentStrength, WeaponType weaponType, int attackStyleId, Item[] equipedItems, int expectedMaxHit)
-	{
-		this.strengthLevels = new int[] {strengthLevel};
-		this.meleeEquipmentStrength = meleeEquipmentStrength;
-		this.weaponType = weaponType;
-		this.attackStyleId = attackStyleId;
-		this.equipedItems = equipedItems;
-		this.expectedMaxHits = new int[] {expectedMaxHit};
-	}
+	private final int[][] hitpoints;
+	private final int meleeEquipmentStrength;
 
 	MeleeMaxHitConfig(int[] strengthLevels, int meleeEquipmentStrength, WeaponType weaponType, int attackStyleId, int[][] hitpoints, Item[] equipedItems, int[] expectedMaxHits)
 	{

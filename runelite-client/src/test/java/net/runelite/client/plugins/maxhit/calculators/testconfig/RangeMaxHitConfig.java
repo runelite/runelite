@@ -110,17 +110,7 @@ public enum RangeMaxHitConfig implements MaxHitConfig
 	private final int attackStyleId;
 	private final Item[] equipedItems;
 	private final int[] expectedMaxHits;
-	private int ammoEquipmentStrength;
-
-	RangeMaxHitConfig(int rangeLevel, int ammoEquipmentStrength, WeaponType weaponType, int attackStyleId, Item[] equipedItems, int expectedMaxHit)
-	{
-		this.rangeLevels = new int[] {rangeLevel};
-		this.ammoEquipmentStrength = ammoEquipmentStrength;
-		this.weaponType = weaponType;
-		this.attackStyleId = attackStyleId;
-		this.equipedItems = equipedItems;
-		this.expectedMaxHits = new int[] {expectedMaxHit};
-	}
+	private final int ammoEquipmentStrength;
 
 	RangeMaxHitConfig(int[] rangeLevels, int ammoEquipmentStrength, WeaponType weaponType, int attackStyleId, Item[] equipedItems, int[] expectedMaxHits)
 	{
