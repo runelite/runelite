@@ -37,10 +37,11 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
-import static net.runelite.api.ObjectID.CANNON_BASE;
+import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import static net.runelite.api.ProjectileID.CANNONBALL;
@@ -49,6 +50,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ProjectileMoved;
@@ -80,7 +82,7 @@ public class CannonPlugin extends Plugin
 	private int cballsLeft;
 
 	@Getter
-	private boolean cannonPlaced;
+	private boolean checkCannon;
 
 	@Getter
 	private GameObject cannon;
@@ -134,7 +136,8 @@ public class CannonPlugin extends Plugin
 		cannonSpotOverlay.setHidden(true);
 		overlayManager.remove(cannonOverlay);
 		overlayManager.remove(cannonSpotOverlay);
-		cannonPlaced = false;
+		checkCannon = false;
+		cannon = null;
 		cballsLeft = 0;
 		removeCounter();
 		skipProjectileCheckThisTick = false;
@@ -155,7 +158,7 @@ public class CannonPlugin extends Plugin
 		boolean hasFurnace = false;
 		boolean hasAll = false;
 
-		if (!cannonPlaced)
+		if (cannon == null)
 		{
 			for (Item item : event.getItemContainer().getItems())
 			{
@@ -236,12 +239,22 @@ public class CannonPlugin extends Plugin
 		final GameObject gameObject = event.getGameObject();
 		final Player localPlayer = client.getLocalPlayer();
 
-		if (!cannonPlaced
-			&& gameObject.getId() == CANNON_BASE
+		if (checkCannon
+			&& gameObject.getId() == ObjectID.DWARF_MULTICANNON
 			&& localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2
 			&& localPlayer.getAnimation() == AnimationID.BURYING_BONES)
 		{
 			cannon = gameObject;
+			checkCannon = false;
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		if (gameStateChanged.getGameState() == GameState.LOADING)
+		{
+			checkCannon = false;
 		}
 	}
 
@@ -285,14 +298,15 @@ public class CannonPlugin extends Plugin
 
 		if (event.getMessage().equals("You add the furnace."))
 		{
-			cannonPlaced = true;
+			checkCannon = true;
 			addCounter();
 			cballsLeft = 0;
 		}
 
 		if (event.getMessage().contains("You pick up the cannon"))
 		{
-			cannonPlaced = false;
+			checkCannon = false;
+			cannon = null;
 			cballsLeft = 0;
 			removeCounter();
 		}
