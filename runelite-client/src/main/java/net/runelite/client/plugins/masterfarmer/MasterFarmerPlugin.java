@@ -8,8 +8,10 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -96,9 +98,20 @@ public class MasterFarmerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGIN_SCREEN ||
+			event.getGameState() == GameState.HOPPING)
+		{
+			masterFarmers.clear();
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		lastTickUpdate = Instant.now();
+
 
 		for (NPC npc : client.getNpcs())
 		{

@@ -56,6 +56,6 @@ public interface MasterFarmerConfig extends Config
 	)
 	default int timerHeight()
 	{
-		return 50;
+		return 25;
 	}
 }
