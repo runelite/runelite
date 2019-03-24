@@ -112,7 +112,6 @@ public class MasterFarmerPlugin extends Plugin
 	{
 		lastTickUpdate = Instant.now();
 
-
 		for (NPC npc : client.getNpcs())
 		{
 			final String npcName = npc.getName();
