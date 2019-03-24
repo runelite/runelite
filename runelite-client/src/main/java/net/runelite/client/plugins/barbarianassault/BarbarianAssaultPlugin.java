@@ -213,26 +213,28 @@ public class BarbarianAssaultPlugin extends Plugin {
 			{
 				continue;
 			}
-			if (isEgg(item.getId()))
+			else if (isEgg(item.getId()))
 			{
 				count++;
 			}
-			if (isBag(item.getId()))
+			else if (isBag(item.getId()))
 			{
 				if (item.hashCode() != bagHashCode || item.getHash() != bagHash)
 				{
+					bagHashCode = item.hashCode();
+					bagHash = item.getHash();
 					newBagHash = true;
 				}
 			}
 		}
 
-		if (count > inventoryEggCount) {
+		if (count > inventoryEggCount)
+		{
 			newInventoryEgg = true;
 		}
 		inventoryEggCount = count;
 
-		//If both change then the player removed eggs from the bag
-		if (newInventoryEgg ^ newBagHash)
+		if (newBagHash ^ newInventoryEgg)
 		{
 			return true;
 		}
