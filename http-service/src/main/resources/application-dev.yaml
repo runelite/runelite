@@ -6,23 +6,23 @@ logging.level.net.runelite: DEBUG
 datasource:
   runelite:
     jndiName:
-    driverClassName: com.mysql.jdbc.Driver
-    type: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-    url: jdbc:mysql://localhost:3306/runelite
+    driverClassName: org.mariadb.jdbc.Driver
+    type: org.mariadb.jdbc.MariaDbDataSource
+    url: jdbc:mariadb://localhost:3306/runelite
     username: runelite
     password: runelite
   runelite-cache:
     jndiName:
-    driverClassName: com.mysql.jdbc.Driver
-    type: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-    url: jdbc:mysql://localhost:3306/runelite-cache
+    driverClassName: org.mariadb.jdbc.Driver
+    type: org.mariadb.jdbc.MariaDbDataSource
+    url: jdbc:mariadb://localhost:3306/cache
     username: runelite
     password: runelite
   runelite-tracker:
     jndiName:
-    driverClassName: com.mysql.jdbc.Driver
-    type: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-    url: jdbc:mysql://localhost:3306/runelite-tracker
+    driverClassName: org.mariadb.jdbc.Driver
+    type: org.mariadb.jdbc.MariaDbDataSource
+    url: jdbc:mariadb://localhost:3306/xptracker
     username: runelite
     password: runelite
 
