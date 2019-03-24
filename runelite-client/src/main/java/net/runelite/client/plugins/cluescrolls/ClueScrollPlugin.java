@@ -28,6 +28,7 @@ package net.runelite.client.plugins.cluescrolls;
 
 import com.google.inject.Binder;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -83,6 +84,8 @@ import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ThreeStepCrypticClue;
+import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
@@ -384,6 +387,12 @@ public class ClueScrollPlugin extends Plugin
 		emoteImage = ImageUtil.getResourceStreamFromClass(getClass(), "emote.png");
 
 		return emoteImage;
+	}
+
+	public void spadeReminder(PanelComponent panelComponent)
+	{
+		panelComponent.getChildren().add(LineComponent.builder().left("").build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
 	}
 
 	public BufferedImage getSpadeImage()
