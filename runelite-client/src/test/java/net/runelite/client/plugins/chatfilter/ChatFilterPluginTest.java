@@ -56,6 +56,9 @@ public class ChatFilterPluginTest
 	@Bind
 	private Player player;
 
+	@Mock
+	private Player localPlayer;
+
 	@Inject
 	private ChatFilterPlugin chatFilterPlugin;
 
@@ -67,8 +70,7 @@ public class ChatFilterPluginTest
 		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
 		when(chatFilterConfig.filteredWords()).thenReturn("");
 		when(chatFilterConfig.filteredRegex()).thenReturn("");
-
-
+		when(client.getLocalPlayer()).thenReturn(localPlayer);
 	}
 
 	@Test
@@ -131,6 +133,8 @@ public class ChatFilterPluginTest
 	public void testFilteredMessageFromNonFriend()
 	{
 		when(player.isFriend()).thenReturn(false);
+		when(player.getName()).thenReturn("MyPlayerName432");
+		when(localPlayer.getName()).thenReturn("NamePlayerMy234");
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage(player));
 	}
 
@@ -145,6 +149,24 @@ public class ChatFilterPluginTest
 	public void testFilteredMessageFromNonClanMember()
 	{
 		when(player.isClanMember()).thenReturn(false);
+		when(player.getName()).thenReturn("MyPlayerName432");
+		when(localPlayer.getName()).thenReturn("NamePlayerMy234");
+		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage(player));
+	}
+
+	@Test
+	public void testFilteredMessageFromSelf()
+	{
+		when(player.getName()).thenReturn("MyPlayerName432");
+		when(localPlayer.getName()).thenReturn("MyPlayerName432");
+		assertFalse(chatFilterPlugin.shouldFilterPlayerMessage(player));
+	}
+
+	@Test
+	public void testFilteredMessageFromOtherPlayer()
+	{
+		when(player.getName()).thenReturn("MyPlayerName432");
+		when(localPlayer.getName()).thenReturn("NamePlayerMy234");
 		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage(player));
 	}
 }

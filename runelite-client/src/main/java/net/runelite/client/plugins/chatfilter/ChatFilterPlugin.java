@@ -204,7 +204,7 @@ public class ChatFilterPlugin extends Plugin
 	boolean shouldFilterPlayerMessage(Player player)
 	{
 		return !(player.isClanMember() || player.isFriend() ||
-				player.getName() .equals(client.getLocalPlayer().getName()));
+				player.getName().equals(client.getLocalPlayer().getName()));
 	}
 
 	@Subscribe
