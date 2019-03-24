@@ -90,8 +90,7 @@ public class MeleeMaxHitCalculator extends MaxHitCalculator
 //      • Void melee: multiply by 1.10. Round down.
 //      • Void ranged: multiply by 1.10. Round down.
 //      • Elite void ranged: multiply by 1.125. Round down.
-		double voidBonus = this.getEquipmentBonus(EquipmentBonusConfig.BonusType.VOID_KNIGHT);
-		effectiveLevel = effectiveLevel * voidBonus;
+		effectiveLevel = this.applyEquipmentBonus(effectiveLevel, EquipmentBonusConfig.BonusType.VOID_KNIGHT);
 
 //      g. This is the effective (ranged) strength level. Let this equal 'A' in the formula in
 		return effectiveLevel;
@@ -120,15 +119,13 @@ public class MeleeMaxHitCalculator extends MaxHitCalculator
 
 //      3.4 Special attacks (not actually taking weapon special attacks into account)
 //      a. Multiply by the bonus of one of the following items (slayer)
-		double slayerBonus = this.getEquipmentBonus(EquipmentBonusConfig.BonusType.SLAYER);
-		maxHit = maxHit * slayerBonus;
+		maxHit = this.applyEquipmentBonus(maxHit, EquipmentBonusConfig.BonusType.SLAYER);
 
 //      b. Round down the max hit to the nearest integer.
 		maxHit = Math.floor(maxHit);
 
 //      c. Multiply by the bonus of one of the following items
-		double specialBonus = this.getEquipmentBonus(EquipmentBonusConfig.BonusType.SPECIAL);
-		maxHit = maxHit * specialBonus;
+		maxHit = this.applyEquipmentBonus(maxHit, EquipmentBonusConfig.BonusType.SPECIAL);
 
 //		d. Round down to the nearest integer.
 		maxHit = Math.floor(maxHit);

@@ -95,9 +95,11 @@ public abstract class MaxHitCalculator
 		return bonus;
 	}
 
-	double getEquipmentBonus(EquipmentBonusConfig.BonusType bonusType)
+	double applyEquipmentBonus(double maxhit, EquipmentBonusConfig.BonusType bonusType)
 	{
 		double bonus = 1;
+		ArrayList<Double> addList = new ArrayList<>();
+
 		ArrayList<EquipmentBonusConfig> equipmentBonuses = EquipmentBonusConfig.getBonusByType(bonusType);
 
 		for (EquipmentBonusConfig equipmentBonus : equipmentBonuses)
@@ -106,10 +108,22 @@ public abstract class MaxHitCalculator
 			boolean wearsSet = EquipmentHelper.wearsItemSet(this.equipedItems, itemSet);
 			if (wearsSet && equipmentBonus.meetsRequirements(this.client))
 			{
-				bonus += equipmentBonus.getBonus(this.combatMethod);
+				if (equipmentBonus.getOperation() == EquipmentBonusConfig.Operation.MULTIPLY)
+				{
+					bonus += equipmentBonus.getBonus(this.combatMethod);
+				}
+				else if (equipmentBonus.getOperation() == EquipmentBonusConfig.Operation.ADD)
+				{
+					addList.add(equipmentBonus.getBonus(this.combatMethod));
+				}
 			}
 		}
-		return bonus;
+
+		maxhit *= bonus;
+
+		maxhit = maxhit + addList.stream().reduce(0.0, Double::sum);
+
+		return maxhit;
 	}
 
 	public double calculate()

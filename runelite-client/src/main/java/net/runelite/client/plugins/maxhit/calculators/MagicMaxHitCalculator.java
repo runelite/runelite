@@ -32,9 +32,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.maxhit.config.EquipmentBonusConfig;
 import net.runelite.client.plugins.maxhit.config.SpellBaseDamageConfig;
-import net.runelite.client.plugins.maxhit.config.SpellBonus;
-
-import java.util.ArrayList;
 
 public class MagicMaxHitCalculator extends MaxHitCalculator
 {
@@ -88,24 +85,23 @@ public class MagicMaxHitCalculator extends MaxHitCalculator
 //      See CustomFormulaConfig for spells based on magic lvl
 		double maxHit = spellBaseDamage;
 
-//      b. Increase the base damage (God spells and Chaos Gauntlets)
-		maxHit = this.getSpellBonus(maxHit, false);
+//      b. Increase the base damage (Chaos Gauntlets)
+		maxHit = this.applyEquipmentBonus(maxHit, EquipmentBonusConfig.BonusType.SPECIAL);
 
 //      c. The following bonuses stack by adding up. (List of bonus items)
-		maxHit = maxHit * getEquipmentBonus(EquipmentBonusConfig.BonusType.EQUIPMENT);
+		maxHit = this.applyEquipmentBonus(maxHit, EquipmentBonusConfig.BonusType.EQUIPMENT);
 
 //      d. Round down to the nearest integer.
 		maxHit = Math.floor(maxHit);
 
 //      e. On a slayer task, multiply by 1.15 (imbued)
-		double slayerBonus = this.getEquipmentBonus(EquipmentBonusConfig.BonusType.SLAYER);
-		maxHit = maxHit * slayerBonus;
+		maxHit = this.applyEquipmentBonus(maxHit, EquipmentBonusConfig.BonusType.SLAYER);
 
 //      f. Round down to the nearest integer.
 		maxHit = Math.floor(maxHit);
 
 //      g. If a fire spell is used, multiply by 1.5 (Tome of fire)
-		maxHit = this.getSpellBonus(maxHit, true);
+		maxHit = this.applyEquipmentBonus(maxHit, EquipmentBonusConfig.BonusType.MAGIC_SPECIAL);
 
 //      h. Round down to the nearest integer.
 		maxHit = Math.floor(maxHit);
@@ -114,17 +110,4 @@ public class MagicMaxHitCalculator extends MaxHitCalculator
 		return maxHit;
 	}
 
-	private double getSpellBonus(double inputDamage, boolean afterEqupment)
-	{
-		ArrayList<SpellBonus> spellBonusses = SpellBonus.getMeetsRequirements(this.client);
-		for (SpellBonus spellBonus : spellBonusses)
-		{
-			if (spellBonus.getAfterEquipment() == afterEqupment)
-			{
-				inputDamage = spellBonus.applyBonus(inputDamage);
-			}
-		}
-
-		return inputDamage;
-	}
 }

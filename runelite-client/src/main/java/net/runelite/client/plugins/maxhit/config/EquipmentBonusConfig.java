@@ -31,6 +31,7 @@ import net.runelite.client.plugins.maxhit.calculators.MaxHitCalculator;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentCombatBonus;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentItemset;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentSlotItem;
+import net.runelite.client.plugins.maxhit.requirements.AutocastSpellRequirement;
 import net.runelite.client.plugins.maxhit.requirements.Requirement;
 import net.runelite.client.plugins.maxhit.requirements.SpellBookRequirement;
 
@@ -284,7 +285,61 @@ public enum EquipmentBonusConfig
 			ItemID.SMOKE_BATTLESTAFF,
 			ItemID.MYSTIC_SMOKE_STAFF
 		)))
-	)), new EquipmentCombatBonus(0, 0, 0.10), Collections.singletonList(new SpellBookRequirement(SpellBaseDamageConfig.SpellBook.NORMAL)));
+	)), new EquipmentCombatBonus(0, 0, 0.10), Collections.singletonList(new SpellBookRequirement(SpellBaseDamageConfig.SpellBook.NORMAL))),
+
+
+	/*
+	* Special magic bonusses
+	* */
+
+	CHAOS_GAUNTLETS(BonusType.SPECIAL, new EquipmentItemset(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.GLOVES, new ArrayList<>(Collections.singletonList(
+			ItemID.CHAOS_GAUNTLETS
+		))))),
+		new EquipmentCombatBonus(0, 0, 3),
+		Collections.singletonList(
+			new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
+				SpellBaseDamageConfig.AIR_BOLT,
+				SpellBaseDamageConfig.WATER_BOLT,
+				SpellBaseDamageConfig.EARTH_BOLT,
+				SpellBaseDamageConfig.FIRE_BOLT
+			)))
+		),
+		Operation.ADD
+	),
+
+	TOME_OF_FIRE(BonusType.MAGIC_SPECIAL, new EquipmentItemset(Collections.singletonList(
+		new EquipmentSlotItem(EquipmentInventorySlot.SHIELD, new ArrayList<>(Collections.singletonList(
+			ItemID.TOME_OF_FIRE
+		))))),
+		new EquipmentCombatBonus(0, 0, 0.5),
+		Collections.singletonList(
+			new AutocastSpellRequirement(new ArrayList<>(Arrays.asList(
+				SpellBaseDamageConfig.FIRE_BLAST,
+				SpellBaseDamageConfig.FIRE_BOLT,
+				SpellBaseDamageConfig.FIRE_STRIKE,
+				SpellBaseDamageConfig.FIRE_SURGE,
+				SpellBaseDamageConfig.FIRE_WAVE
+			)))
+		)
+	)
+
+	;
+
+
+	public enum BonusType
+	{
+		EQUIPMENT,
+		SLAYER,
+		VOID_KNIGHT,
+		SPECIAL,
+		MAGIC_SPECIAL
+	}
+	public enum Operation
+	{
+		ADD,
+		MULTIPLY
+	}
 
 	private static final Map<BonusType, ArrayList<EquipmentBonusConfig>> bonusTypes = new HashMap<>();
 
@@ -307,6 +362,7 @@ public enum EquipmentBonusConfig
 	private BonusType bonusType;
 	private EquipmentCombatBonus equipmentCombatBonus;
 	private List<Requirement> requirements = new ArrayList<>();
+	private Operation operation = Operation.MULTIPLY;
 
 	EquipmentBonusConfig(BonusType bonusType, EquipmentItemset itemset, EquipmentCombatBonus equipmentCombatBonus)
 	{
@@ -323,6 +379,15 @@ public enum EquipmentBonusConfig
 		this.requirements = requirements;
 	}
 
+	EquipmentBonusConfig(BonusType bonusType, EquipmentItemset itemset, EquipmentCombatBonus equipmentCombatBonus, List<Requirement> requirements, Operation operation)
+	{
+		this.bonusType = bonusType;
+		this.itemset = itemset;
+		this.equipmentCombatBonus = equipmentCombatBonus;
+		this.requirements = requirements;
+		this.operation = operation;
+	}
+
 	public static ArrayList<EquipmentBonusConfig> getBonusByType(BonusType bonusType)
 	{
 		if (!bonusTypes.containsKey(bonusType))
@@ -337,6 +402,11 @@ public enum EquipmentBonusConfig
 		return itemset;
 	}
 
+	public Operation getOperation()
+	{
+		return operation;
+	}
+
 	public double getBonus(MaxHitCalculator.CombatMethod combatMethod)
 	{
 		return this.equipmentCombatBonus.getCombatBonus(combatMethod);
@@ -347,12 +417,5 @@ public enum EquipmentBonusConfig
 		return requirements.stream().allMatch(requirement -> requirement.meetsRequirements(client));
 	}
 
-	public enum BonusType
-	{
-		EQUIPMENT,
-		SLAYER,
-		VOID_KNIGHT,
-		SPECIAL
-	}
 }
 
