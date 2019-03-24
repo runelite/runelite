@@ -182,13 +182,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		{
 			if (!HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
 			{
-				panelComponent.getChildren().add(LineComponent.builder()
-						.left("")
-						.build());
-				panelComponent.getChildren().add(LineComponent.builder()
-						.left("Requires Spade!")
-						.leftColor(Color.RED)
-						.build());
+				plugin.spadeReminder(panelComponent);
 			}
 		}
 	}
