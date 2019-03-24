@@ -83,9 +83,6 @@ public class CannonPlugin extends Plugin
 	private boolean cannonPlaced;
 
 	@Getter
-	private WorldPoint cannonPosition;
-
-	@Getter
 	private GameObject cannon;
 
 	@Getter
@@ -138,7 +135,6 @@ public class CannonPlugin extends Plugin
 		overlayManager.remove(cannonOverlay);
 		overlayManager.remove(cannonSpotOverlay);
 		cannonPlaced = false;
-		cannonPosition = null;
 		cballsLeft = 0;
 		removeCounter();
 		skipProjectileCheckThisTick = false;
@@ -204,15 +200,11 @@ public class CannonPlugin extends Plugin
 			{
 				removeCounter();
 			}
-			else
+			else if (cannon != null)
 			{
-				if (cannonPlaced)
-				{
-					clientThread.invoke(this::addCounter);
-				}
+				clientThread.invoke(this::addCounter);
 			}
 		}
-
 	}
 
 	@Schedule(
@@ -241,31 +233,34 @@ public class CannonPlugin extends Plugin
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		GameObject gameObject = event.getGameObject();
+		final GameObject gameObject = event.getGameObject();
+		final Player localPlayer = client.getLocalPlayer();
 
-		Player localPlayer = client.getLocalPlayer();
-		if (gameObject.getId() == CANNON_BASE && !cannonPlaced)
+		if (!cannonPlaced
+			&& gameObject.getId() == CANNON_BASE
+			&& localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2
+			&& localPlayer.getAnimation() == AnimationID.BURYING_BONES)
 		{
-			if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2
-				&& localPlayer.getAnimation() == AnimationID.BURYING_BONES)
-			{
-				cannonPosition = gameObject.getWorldLocation();
-				cannon = gameObject;
-			}
+			cannon = gameObject;
 		}
 	}
 
 	@Subscribe
 	public void onProjectileMoved(ProjectileMoved event)
 	{
-		Projectile projectile = event.getProjectile();
-
-		if ((projectile.getId() == CANNONBALL || projectile.getId() == GRANITE_CANNONBALL) && cannonPosition != null)
+		if (cannon == null)
 		{
-			WorldPoint projectileLoc = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), client.getPlane());
+			return;
+		}
+
+		final Projectile projectile = event.getProjectile();
+
+		if ((projectile.getId() == CANNONBALL || projectile.getId() == GRANITE_CANNONBALL))
+		{
+			final WorldPoint projectileLoc = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), client.getPlane());
 
 			//Check to see if projectile x,y is 0 else it will continuously decrease while ball is flying.
-			if (projectileLoc.equals(cannonPosition) && projectile.getX() == 0 && projectile.getY() == 0)
+			if (projectileLoc.equals(cannon.getWorldLocation()) && projectile.getX() == 0 && projectile.getY() == 0)
 			{
 				// When there's a chat message about cannon reloaded/unloaded/out of ammo,
 				// the message event runs before the projectile event. However they run
