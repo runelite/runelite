@@ -55,7 +55,7 @@ public enum CustomFormulaConfig
 		)),
 		(client, calculator) ->
 		{
-			int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+			int magicLevel = client.getBoostedSkillLevel(Skill.MAGIC);
 			return Math.floor((magicLevel / 10.0) + 10.0);
 		}
 	),
@@ -71,7 +71,7 @@ public enum CustomFormulaConfig
 		)),
 		(client, calculator) ->
 		{
-			int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+			int magicLevel = client.getBoostedSkillLevel(Skill.MAGIC);
 
 			int baseDamage = (int) Math.floor(magicLevel / 3.0) - 5;
 			calculator.setBaseDamage(baseDamage);
@@ -90,7 +90,7 @@ public enum CustomFormulaConfig
 		)),
 		(client, calculator) ->
 		{
-			int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+			int magicLevel = client.getBoostedSkillLevel(Skill.MAGIC);
 
 			int baseDamage = (int) Math.floor(magicLevel / 3.0) - 2;
 			calculator.setBaseDamage(baseDamage);
@@ -108,7 +108,7 @@ public enum CustomFormulaConfig
 		)),
 		(client, calculator) ->
 		{
-			int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+			int magicLevel = client.getBoostedSkillLevel(Skill.MAGIC);
 			return Math.floor(0.5 + magicLevel * (64.0 + 56.0) / 640.0);
 		}
 	),
@@ -122,7 +122,7 @@ public enum CustomFormulaConfig
 		)),
 		(client, calculator) ->
 		{
-			int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+			int magicLevel = client.getBoostedSkillLevel(Skill.MAGIC);
 			return Math.floor(0.5 + magicLevel * (64.0 + 59.0) / 640.0);
 		}
 	),
@@ -136,7 +136,7 @@ public enum CustomFormulaConfig
 		)),
 		(client, calculator) ->
 		{
-			int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+			int magicLevel = client.getBoostedSkillLevel(Skill.MAGIC);
 			return Math.floor(0.5 + magicLevel * (64.0 + 77.0) / 640.0);
 		}
 	),
@@ -150,7 +150,7 @@ public enum CustomFormulaConfig
 		)),
 		(client, calculator) ->
 		{
-			int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+			int magicLevel = client.getBoostedSkillLevel(Skill.MAGIC);
 			return Math.floor(0.5 + magicLevel * (64.0 + 92.0) / 640.0);
 		}
 	),

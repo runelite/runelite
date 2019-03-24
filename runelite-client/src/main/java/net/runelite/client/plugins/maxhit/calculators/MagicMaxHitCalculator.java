@@ -56,7 +56,7 @@ public class MagicMaxHitCalculator extends MaxHitCalculator
 	@Override
 	public double getCurrentSkillPower()
 	{
-		return this.client.getRealSkillLevel(Skill.MAGIC);
+		return this.client.getBoostedSkillLevel(Skill.MAGIC);
 	}
 
 	/*

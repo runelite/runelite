@@ -53,7 +53,7 @@ public class RangeMaxHitCalculator extends MeleeMaxHitCalculator
 	@Override
 	public double getCurrentSkillPower()
 	{
-		return this.client.getRealSkillLevel(Skill.RANGED);
+		return this.client.getBoostedSkillLevel(Skill.RANGED);
 	}
 
 }

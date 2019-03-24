@@ -60,7 +60,7 @@ public class MeleeMaxHitCalculator extends MaxHitCalculator
 	@Override
 	public double getCurrentSkillPower()
 	{
-		return this.client.getRealSkillLevel(Skill.STRENGTH);
+		return this.client.getBoostedSkillLevel(Skill.STRENGTH);
 	}
 
 	private double getEffectiveLevel()
