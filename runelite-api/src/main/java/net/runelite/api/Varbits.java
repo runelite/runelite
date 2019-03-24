@@ -212,9 +212,6 @@ public enum Varbits
 	 * Barbarian Assault
 	 */
 	IN_GAME_BA(3923),
-	COLL_BAG_EGG1(3259),
-	COLL_BAG_EGG2(3260),
-	COLL_BAG_EGG3(3269),
 
 	/**
 	 * 0 = Outside wilderness
