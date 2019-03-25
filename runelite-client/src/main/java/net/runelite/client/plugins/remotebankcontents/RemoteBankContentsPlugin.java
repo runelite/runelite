@@ -22,15 +22,13 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class RemoteBankContentsPlugin extends Plugin
 {
 
+
 	@Inject
 	private RemoteBankContentsProcess remoteBankContentsProcess;
-
 	@Inject
 	private RemoteBankContentsOverlay overlay;
-
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private RemoteBankContentsConfig config;
 
@@ -47,8 +45,9 @@ public class RemoteBankContentsPlugin extends Plugin
 
 		//pass a reference to the remoteBankContentsProcess which has the hashmap in to make sure that both classes use the same hashmap
 		overlay.setRemoteBankContentsProcess(remoteBankContentsProcess);
-	}
 
+
+	}
 
 	@Override
 	protected void shutDown() throws Exception
@@ -61,6 +60,7 @@ public class RemoteBankContentsPlugin extends Plugin
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		remoteBankContentsProcess.populateBankItemMap();
+
 	}
 
 	@Subscribe
@@ -73,22 +73,36 @@ public class RemoteBankContentsPlugin extends Plugin
 
 			//populate the hashmap with all of the items from the bank
 			remoteBankContentsProcess.populateBankItemMap();
+			remoteBankContentsProcess.setInventorySpace();
+
 
 		}
 
 
 	}
+
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 
 		//only run this if the examine option in the configuration is checked
-		if (config.examine())
+		if (event.getMenuOption().equals("Examine") && config.examine())
 		{
 			remoteBankContentsProcess.outputExamine(event);
 		}
+		else if (event.getMenuOption().contains("Deposit"))
+		{
+			remoteBankContentsProcess.depositHandler(event);
+
+		}
+		else if (event.getMenuOption().contains("Withdraw"))
+		{
+			remoteBankContentsProcess.withdrawHandler(event);
+
+		}
 	}
+
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
@@ -96,7 +110,6 @@ public class RemoteBankContentsPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			remoteBankContentsProcess.reset();
-			System.out.println("resetting map");
 		}
 	}
 
