@@ -325,7 +325,12 @@ public class RemoteBankContentsProcess
 			{
 				replaceItemInBankWithdraw(id, quantityInBank);
 			}
-			else if (inventorySpace > 1 && client.getItemDefinition(id).isStackable())
+			else if (inventorySpace >= 1 && client.getItemDefinition(id).isStackable())
+			{
+				replaceItemInBankWithdraw(id, quantityInBank);
+			}
+
+			else if (inventorySpace >= 1 && isNotedWithdraw())
 			{
 				replaceItemInBankWithdraw(id, quantityInBank);
 			}
@@ -336,11 +341,16 @@ public class RemoteBankContentsProcess
 		}
 		else
 		{
-			if (inventorySpace > quantity || inventorySpace > 1 && client.getItemDefinition(id).isStackable())
+			if (inventorySpace > quantity)
+			{
+				replaceItemInBankWithdraw(id, quantity);
+
+			}
+			else if (inventorySpace >= 1 && client.getItemDefinition(id).isStackable())
 			{
 				replaceItemInBankWithdraw(id, quantity);
 			}
-			else if (inventorySpace > 1 && isNotedWithdraw())
+			else if (inventorySpace >= 1 && isNotedWithdraw())
 			{
 				replaceItemInBankWithdraw(id, quantity);
 			}
