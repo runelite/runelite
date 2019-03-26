@@ -24,34 +24,44 @@
  */
 package net.runelite.client.plugins;
 
-import com.google.inject.Binder;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
-public abstract class Plugin implements Module
+/**
+ * A classloader for external plugins
+ *
+ * @author Adam
+ */
+public class PluginClassLoader extends URLClassLoader
 {
-	protected Injector injector;
+  private final ClassLoader parent;
 
-	public File file;
-	public PluginClassLoader loader;
+  public PluginClassLoader(File plugin, ClassLoader parent) throws MalformedURLException
+  {
+    super(
+            new URL[]
+                    {
+                            plugin.toURI().toURL()
+                    },
+            null // null or else class path scanning includes everything from the main class loader
+    );
 
-	@Override
-	public void configure(Binder binder)
-	{
-	}
+    this.parent = parent;
+  }
 
-	protected void startUp() throws Exception
-	{
-	}
-
-	protected void shutDown() throws Exception
-	{
-	}
-
-	public final Injector getInjector()
-	{
-		return injector;
-	}
+  @Override
+  public Class<?> loadClass(String name) throws ClassNotFoundException
+  {
+    try
+    {
+      return super.loadClass(name);
+    }
+    catch (ClassNotFoundException ex)
+    {
+      // fall back to main class loader
+      return parent.loadClass(name);
+    }
+  }
 }
