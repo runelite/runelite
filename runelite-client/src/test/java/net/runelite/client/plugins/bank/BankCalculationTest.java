@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.bankvalue;
+package net.runelite.client.plugins.bank;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Guice;
@@ -58,7 +58,7 @@ public class BankCalculationTest
 
 	@Mock
 	@Bind
-	private BankValueConfig bankValueConfig;
+	private BankConfig bankConfig;
 
 	@Inject
 	private BankCalculation bankCalculation;
@@ -72,7 +72,7 @@ public class BankCalculationTest
 	@Test
 	public void testCalculate()
 	{
-		when(bankValueConfig.showHA())
+		when(bankConfig.showHA())
 			.thenReturn(true);
 
 		Item coins = mock(Item.class);

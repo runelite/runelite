@@ -23,14 +23,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.bankvalue;
+package net.runelite.client.plugins.bank;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("bankvalue")
-public interface BankValueConfig extends Config
+@ConfigGroup("bank")
+public interface BankConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showGE",
@@ -61,6 +61,39 @@ public interface BankValueConfig extends Config
 		position = 3
 	)
 	default boolean showExact()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rightClickBankInventory",
+		name = "Disable left click bank inventory",
+		description = "Configures whether the bank inventory button will bank your inventory on left click",
+		position = 4
+	)
+	default boolean rightClickBankInventory()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rightClickBankEquip",
+		name = "Disable left click bank equipment",
+		description = "Configures whether the bank equipment button will bank your equipment on left click",
+		position = 5
+	)
+	default boolean rightClickBankEquip()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rightClickBankLoot",
+		name = "Disable left click bank looting bag",
+		description = "Configures whether the bank looting bag button will bank your looting bag contents on left click",
+		position = 6
+	)
+	default boolean rightClickBankLoot()
 	{
 		return false;
 	}
