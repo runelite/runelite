@@ -40,12 +40,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
+import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdLocation;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -64,6 +67,8 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Jorral may have a clue.",
 			"Jorral",
 			"Speak to Jorral to receive a strange device.");
+
+	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(ItemID.SPADE);
 
 	// list of potential places to dig
 	private List<HotColdLocation> digLocations = new ArrayList<>();
@@ -171,6 +176,13 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 						}
 					}
 				}
+			}
+		}
+		if (plugin.getInventoryItems() != null)
+		{
+			if (!HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
+			{
+				plugin.spadeReminder(panelComponent);
 			}
 		}
 	}
