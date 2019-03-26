@@ -634,20 +634,10 @@ public interface Client extends GameEngine
 	int[] getVarps();
 
 	/**
-	 * Gets an array of all integer client variables.
-	 *
-	 * @return local variables
+	 * Gets an array of all client variables.
 	 */
 	@VisibleForDevtools
-	int[] getIntVarcs();
-
-	/**
-	 * Gets an array of all string client variables.
-	 *
-	 * @return local variables
-	 */
-	@VisibleForDevtools
-	String[] getStrVarcs();
+	Map<Integer, Object> getVarcMap();
 
 	/**
 	 * Gets the value corresponding to the passed player variable.
@@ -781,6 +771,13 @@ public interface Client extends GameEngine
 	 * @return the experience
 	 */
 	int getSkillExperience(Skill skill);
+
+	/**
+	 * Get the total experience of the player
+	 *
+	 * @return
+	 */
+	long getOverallExperience();
 
 	/**
 	 * Gets the game drawing mode.
@@ -1054,6 +1051,20 @@ public interface Client extends GameEngine
 	 * @return the clan chat members, null if not in a clan
 	 */
 	ClanMember[] getClanMembers();
+
+	/**
+	 * Gets the clan owner of the currently joined clan chat
+	 *
+	 * @return
+	 */
+	String getClanOwner();
+
+	/**
+	 * Gets the clan chat name of the currently joined clan chat
+	 *
+	 * @return
+	 */
+	String getClanChatName();
 
 	/**
 	 * Gets an array of players in the friends list.
@@ -1569,4 +1580,16 @@ public interface Client extends GameEngine
 	int getRasterizer3D_clipMidY2();
 
 	void checkClickbox(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
+
+	/**
+	 * Sets if a widget is in target mode
+	 */
+	void setSpellSelected(boolean selected);
+
+	/**
+	 * Returns client item composition cache
+	 */
+	NodeCache getItemCompositionCache();
+
+	EnumComposition getEnum(int id);
 }

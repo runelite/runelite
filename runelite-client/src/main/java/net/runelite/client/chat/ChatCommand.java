@@ -28,7 +28,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.events.SetMessage;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.client.events.ChatInput;
 
 @AllArgsConstructor
@@ -37,6 +37,6 @@ class ChatCommand
 {
 	private final String name;
 	private boolean async;
-	private final BiConsumer<SetMessage, String> execute;
+	private final BiConsumer<ChatMessage, String> execute;
 	private final BiPredicate<ChatInput, String> input;
 }

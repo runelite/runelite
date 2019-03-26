@@ -38,6 +38,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarEntry;
@@ -46,7 +51,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import static net.runelite.client.rs.ClientUpdateCheckMode.*;
+import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
+import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
+import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -81,6 +88,7 @@ public class ClientLoader
 
 			Map<String, byte[]> zipFile = new HashMap<>();
 			{
+				Certificate[] jagexCertificateChain = getJagexCertificateChain();
 				String codebase = config.getCodeBase();
 				String initialJar = config.getInitialJar();
 				URL url = new URL(codebase + initialJar);
@@ -111,6 +119,20 @@ public class ClientLoader
 								break;
 							}
 							buffer.write(tmp, 0, n);
+						}
+
+						if (!Arrays.equals(metadata.getCertificates(), jagexCertificateChain))
+						{
+							if (metadata.getName().startsWith("META-INF/"))
+							{
+								// META-INF/JAGEXLTD.SF and META-INF/JAGEXLTD.RSA are not signed, but we don't need
+								// anything in META-INF anyway.
+								continue;
+							}
+							else
+							{
+								throw new VerificationException("Unable to verify jar entry: " + metadata.getName());
+							}
 						}
 
 						zipFile.put(metadata.getName(), buffer.toByteArray());
@@ -201,7 +223,8 @@ public class ClientLoader
 			return rs;
 		}
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
-			| CompressorException | InvalidHeaderException e)
+			| CompressorException | InvalidHeaderException | CertificateException | VerificationException
+			| SecurityException e)
 		{
 			if (e instanceof ClassNotFoundException)
 			{
@@ -211,8 +234,14 @@ public class ClientLoader
 			}
 
 			log.error("Error loading RS!", e);
-			System.exit(-1);
 			return null;
 		}
+	}
+
+	private static Certificate[] getJagexCertificateChain() throws CertificateException
+	{
+		CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+		Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(ClientLoader.class.getResourceAsStream("jagex.crt"));
+		return certificates.toArray(new Certificate[certificates.size()]);
 	}
 }

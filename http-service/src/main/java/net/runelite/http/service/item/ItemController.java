@@ -40,6 +40,7 @@ import net.runelite.http.api.item.SearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -78,7 +79,7 @@ public class ItemController
 			.toArray(ItemPrice[]::new), 30, TimeUnit.MINUTES);
 	}
 
-	@RequestMapping("/{itemId}")
+	@GetMapping("/{itemId}")
 	public Item getItem(HttpServletResponse response, @PathVariable int itemId)
 	{
 		ItemEntry item = itemService.getItem(itemId);
@@ -91,7 +92,7 @@ public class ItemController
 		return null;
 	}
 
-	@RequestMapping(path = "/{itemId}/icon", produces = "image/gif")
+	@GetMapping(path = "/{itemId}/icon", produces = "image/gif")
 	public ResponseEntity<byte[]> getIcon(@PathVariable int itemId)
 	{
 		ItemEntry item = itemService.getItem(itemId);
@@ -104,7 +105,7 @@ public class ItemController
 		return ResponseEntity.notFound().build();
 	}
 
-	@RequestMapping(path = "/{itemId}/icon/large", produces = "image/gif")
+	@GetMapping(path = "/{itemId}/icon/large", produces = "image/gif")
 	public ResponseEntity<byte[]> getIconLarge(HttpServletResponse response, @PathVariable int itemId)
 	{
 		ItemEntry item = itemService.getItem(itemId);
@@ -117,7 +118,7 @@ public class ItemController
 		return ResponseEntity.notFound().build();
 	}
 
-	@RequestMapping("/{itemId}/price")
+	@GetMapping("/{itemId}/price")
 	public ResponseEntity<ItemPrice> itemPrice(
 		@PathVariable int itemId,
 		@RequestParam(required = false) Instant time
@@ -179,7 +180,7 @@ public class ItemController
 			.body(itemPrice);
 	}
 
-	@RequestMapping("/search")
+	@GetMapping("/search")
 	public SearchResult search(@RequestParam String query)
 	{
 		List<ItemEntry> result = itemService.search(query);
@@ -193,7 +194,7 @@ public class ItemController
 		return searchResult;
 	}
 
-	@RequestMapping("/price")
+	@GetMapping("/price")
 	public ItemPrice[] prices(@RequestParam("id") int[] itemIds)
 	{
 		if (itemIds.length > MAX_BATCH_LOOKUP)
@@ -216,7 +217,7 @@ public class ItemController
 			.toArray(ItemPrice[]::new);
 	}
 
-	@RequestMapping("/prices")
+	@GetMapping("/prices")
 	public ResponseEntity<ItemPrice[]> prices()
 	{
 		return ResponseEntity.ok()

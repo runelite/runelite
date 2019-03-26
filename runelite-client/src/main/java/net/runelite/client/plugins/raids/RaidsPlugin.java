@@ -49,9 +49,6 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -105,9 +102,6 @@ public class RaidsPlugin extends Plugin
 	private RaidsOverlay overlay;
 
 	@Inject
-	private RaidsPointsOverlay pointsOverlay;
-
-	@Inject
 	private LayoutSolver layoutSolver;
 
 	@Inject
@@ -152,7 +146,6 @@ public class RaidsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		overlayManager.add(pointsOverlay);
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
@@ -161,7 +154,6 @@ public class RaidsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-		overlayManager.remove(pointsOverlay);
 		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
 		raid = null;
@@ -184,22 +176,6 @@ public class RaidsPlugin extends Plugin
 
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
-	}
-
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
-	{
-		if (!inRaidChambers || event.isHidden())
-		{
-			return;
-		}
-
-		Widget widget = event.getWidget();
-
-		if (widget == client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX))
-		{
-			widget.setHidden(true);
-		}
 	}
 
 	@Subscribe
@@ -230,7 +206,7 @@ public class RaidsPlugin extends Plugin
 			{
 				if (timer != null)
 				{
-					timer.timeFloor();
+					timer.timeOlm();
 					timer.setStopped(true);
 				}
 

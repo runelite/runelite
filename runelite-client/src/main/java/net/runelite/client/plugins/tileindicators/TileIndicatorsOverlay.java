@@ -42,7 +42,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class TileIndicatorsOverlay extends Overlay
 {
-	private static final Color EMPTY = new Color(0, 0, 0, 0);
 	private final Client client;
 	private final TileIndicatorsConfig config;
 
@@ -76,7 +75,7 @@ public class TileIndicatorsOverlay extends Overlay
 			// If we have tile "selected" render it
 			if (client.getSelectedSceneTile() != null)
 			{
-				renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), EMPTY);
+				renderTile(graphics, client.getSelectedSceneTile().getLocalLocation(), config.highlightHoveredColor());
 			}
 		}
 

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
- * Copyright (c) 2018, Shaun Dreclin <https://github.com/ShaunDreclin>
+ * Copyright (c) 2018-2019, Shaun Dreclin <https://github.com/ShaunDreclin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -86,10 +86,15 @@ public class DailyTasksPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	public void startUp()
+	{
+		loggingIn = true;
+	}
+
+	@Override
+	public void shutDown()
 	{
 		lastReset = 0L;
-		loggingIn = false;
 	}
 
 	@Subscribe
@@ -108,7 +113,6 @@ public class DailyTasksPlugin extends Plugin
 		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
 
 		if ((dailyReset || loggingIn)
-			&& client.getGameState() == GameState.LOGGED_IN
 			&& client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
 		{
 			// Round down to the nearest day

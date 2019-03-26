@@ -58,7 +58,7 @@ public interface TileIndicatorsConfig extends Config
 	@ConfigItem(
 		keyName = "highlightCurrentColor",
 		name = "Color of current tile highlighting",
-		description = "Configures the highlight color of current destination"
+		description = "Configures the highlight color of current tile position"
 	)
 	default Color highlightCurrentColor()
 	{
@@ -73,6 +73,17 @@ public interface TileIndicatorsConfig extends Config
 	default boolean highlightCurrentTile()
 	{
 		return false;
+	}
+  
+	@Alpha
+	@ConfigItem(
+		keyName = "highlightHoveredColor",
+		name = "Color of current hovered highlighting",
+		description = "Configures the highlight color of hovered tile"
+	)
+	default Color highlightHoveredColor()
+	{
+		return new Color(0, 0, 0, 0);
 	}
 
 	@ConfigItem(

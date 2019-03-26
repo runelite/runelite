@@ -379,7 +379,7 @@ public class Perspective
 		@Nullable String text,
 		int zOffset)
 	{
-		if (text == null || "".equals(text))
+		if (text == null)
 		{
 			return null;
 		}
