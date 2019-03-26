@@ -685,20 +685,54 @@ public class ChatCommandsPlugin extends Plugin
 
 			final Skill hiscoreSkill = result.getSkill();
 
-			final String response = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("Level ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(skill.getName()).append(": ").append(String.valueOf(hiscoreSkill.getLevel()))
-				.append(ChatColorType.NORMAL)
-				.append(" Experience: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", hiscoreSkill.getExperience()))
-				.append(ChatColorType.NORMAL)
-				.append(" Rank: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(String.format("%,d", hiscoreSkill.getRank()))
-				.build();
+			String response;
+
+			if(hiscoreSkill.getLevel() < 99) {
+
+				final int currentLevel = hiscoreSkill.getLevel();
+				final int nextLevel = currentLevel+1;
+				final long experienceForCurrentLevel = Experience.getXpForLevel(currentLevel);
+				final long experienceSinceCurrentLevel = hiscoreSkill.getExperience() - experienceForCurrentLevel;
+				final long experienceTillNextLevel = Experience.getXpForLevel(nextLevel) - experienceForCurrentLevel;
+
+				final int percentageToNextLevel = (int) Math.floor(
+						(double) experienceSinceCurrentLevel / (double) experienceTillNextLevel
+								* 100d);
+
+				response = new ChatMessageBuilder()
+						.append(ChatColorType.NORMAL)
+						.append("Level ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(skill.getName()).append(": ").append(String.valueOf(hiscoreSkill.getLevel()))
+						.append(ChatColorType.NORMAL)
+						.append(" Experience: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(String.format("%,d", hiscoreSkill.getExperience()))
+						.append(ChatColorType.NORMAL)
+						.append(" Next: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(percentageToNextLevel+"%")
+						.append(ChatColorType.NORMAL)
+						.append(" Rank: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(String.format("%,d", hiscoreSkill.getRank()))
+						.build();
+			} else {
+				response = new ChatMessageBuilder()
+						.append(ChatColorType.NORMAL)
+						.append("Level ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(skill.getName()).append(": ").append(String.valueOf(hiscoreSkill.getLevel()))
+						.append(ChatColorType.NORMAL)
+						.append(" Experience: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(String.format("%,d", hiscoreSkill.getExperience()))
+						.append(ChatColorType.NORMAL)
+						.append(" Rank: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(String.format("%,d", hiscoreSkill.getRank()))
+						.build();
+			}
 
 			log.debug("Setting response {}", response);
 			final MessageNode messageNode = chatMessage.getMessageNode();
