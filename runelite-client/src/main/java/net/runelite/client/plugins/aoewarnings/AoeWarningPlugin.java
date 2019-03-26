@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,41 +24,41 @@
  */
 package net.runelite.client.plugins.aoewarnings;
 
-import com.google.common.eventbus.Subscribe;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Projectile;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.events.ProjectileMoved;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
+
+import javax.inject.Inject;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.inject.Inject;
-import net.runelite.api.Point;
-import net.runelite.api.Projectile;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.api.events.ProjectileMoved;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
 
 @PluginDescriptor(
-	name = "AoE projectiles"
+	name = "[BANNED] AoE Warnings",
+	description = "Shows the final destination for AoE projectiles",
+	tags = {"bosses", "combat", "pve", "overlay"}
 )
+@Slf4j
 public class AoeWarningPlugin extends Plugin
 {
-	@Inject
-	AoeWarningOverlay overlay;
 
 	@Inject
-	AoeWarningConfig config;
+	private OverlayManager overlayManager;
 
-	private final Map<Projectile, AoeProjectile> projectiles = new HashMap<>();
+	@Inject
+	private AoeWarningOverlay coreOverlay;
 
-	@Override
-	public void configure(Binder binder)
-	{
-		binder.bind(AoeWarningOverlay.class);
-	}
+	@Inject
+	public AoeWarningConfig config;
+
 
 	@Provides
 	AoeWarningConfig getConfig(ConfigManager configManager)
@@ -66,23 +66,26 @@ public class AoeWarningPlugin extends Plugin
 		return configManager.getConfig(AoeWarningConfig.class);
 	}
 
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
+
+	private final Map<Projectile, AoeProjectile> projectiles = new HashMap<>();
 
 	public Map<Projectile, AoeProjectile> getProjectiles()
 	{
 		return projectiles;
 	}
 
-	/**
-	 * Called when a projectile is set to move towards a point. For
-	 * projectiles that target the ground, like AoE projectiles from
-	 * Lizardman Shamans, this is only called once
-	 *
-	 * @param event Projectile moved event
-	 */
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(coreOverlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(coreOverlay);
+	}
+
 	@Subscribe
 	public void onProjectileMoved(ProjectileMoved event)
 	{
@@ -93,6 +96,7 @@ public class AoeWarningPlugin extends Plugin
 		AoeProjectileInfo aoeProjectileInfo = AoeProjectileInfo.getById(projectileId);
 		if (aoeProjectileInfo != null && isConfigEnabledForProjectileId(projectileId))
 		{
+			Logger.getGlobal().warning("Known Projectile Moved :" + event.getProjectile().getId());
 			LocalPoint targetPoint = event.getPosition();
 			AoeProjectile aoeProjectile = new AoeProjectile(Instant.now(), targetPoint, aoeProjectileInfo);
 			projectiles.put(projectile, aoeProjectile);
@@ -148,4 +152,5 @@ public class AoeWarningPlugin extends Plugin
 
 		return false;
 	}
+
 }
