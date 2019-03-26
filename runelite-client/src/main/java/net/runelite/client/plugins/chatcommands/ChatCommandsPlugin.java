@@ -687,10 +687,11 @@ public class ChatCommandsPlugin extends Plugin
 
 			String response;
 
-			if(hiscoreSkill.getLevel() < 99) {
+			if (hiscoreSkill.getLevel() < 99)
+			{
 
 				final int currentLevel = hiscoreSkill.getLevel();
-				final int nextLevel = currentLevel+1;
+				final int nextLevel = currentLevel + 1;
 				final long experienceForCurrentLevel = Experience.getXpForLevel(currentLevel);
 				final long experienceSinceCurrentLevel = hiscoreSkill.getExperience() - experienceForCurrentLevel;
 				final long experienceTillNextLevel = Experience.getXpForLevel(nextLevel) - experienceForCurrentLevel;
@@ -711,13 +712,15 @@ public class ChatCommandsPlugin extends Plugin
 						.append(ChatColorType.NORMAL)
 						.append(" Next: ")
 						.append(ChatColorType.HIGHLIGHT)
-						.append(percentageToNextLevel+"%")
+						.append(percentageToNextLevel + "%")
 						.append(ChatColorType.NORMAL)
 						.append(" Rank: ")
 						.append(ChatColorType.HIGHLIGHT)
 						.append(String.format("%,d", hiscoreSkill.getRank()))
 						.build();
-			} else {
+			}
+			else
+				{
 				response = new ChatMessageBuilder()
 						.append(ChatColorType.NORMAL)
 						.append("Level ")
