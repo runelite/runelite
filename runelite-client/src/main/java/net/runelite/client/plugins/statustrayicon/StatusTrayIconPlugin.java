@@ -28,8 +28,14 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -57,14 +63,15 @@ public class StatusTrayIconPlugin extends Plugin
 	private static final Color MISSING_HEALTH_COLOR = new Color(255, 0, 0);
 	private static final Color REMAINING_PRAYER_COLOR = new Color(57, 255, 186);
 	private static final Color MISSING_PRAYER_COLOR = new Color(28, 128, 93);
-	private static final Color TEXT_COLOR = Color.BLACK;
-	private static final Font STATUS_FONT = FontManager.getRunescapeBoldFont().deriveFont(32f);
-	private static final Font STATUS_FONT_SMALL = FontManager.getRunescapeBoldFont().deriveFont(24f);
+	private static final Font STATUS_FONT = FontManager.getRunescapeBoldFont().deriveFont(36f);
+	private static final Font STATUS_FONT_SMALL = FontManager.getRunescapeBoldFont().deriveFont(30f);
 
 	private static final int HEIGHT = 42;
 	private static final int WIDTH = 42;
 	private static final int HALF_WIDTH = WIDTH / 2;
-	private static final int MAC_HEIGHT_OFFSET = 4;
+	private static final int MAC_HEIGHT_OFFSET = 3;
+
+	private static final Map<StatusTrayCacheKey, BufferedImage> imageCache = new HashMap<>();
 
 	@Inject
 	private Client client;
@@ -78,21 +85,37 @@ public class StatusTrayIconPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !(config.showHitpoints() || config.showPrayer()))
+		if (!(config.showHitpoints() || config.showPrayer()))
 		{
 			return;
 		}
 
 		final int maxHealth = client.getRealSkillLevel(Skill.HITPOINTS);
 		final int currentHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
-		final int scaledMissingHealth = (int) Math.ceil((Math.max(maxHealth - currentHealth, 0) * HEIGHT * 1.0) / maxHealth);
+		final int scaledMissingHealth = (int) Math.ceil(((float) Math.max(maxHealth - currentHealth, 0) * HEIGHT) / maxHealth);
 
 		final int maxPrayer = client.getRealSkillLevel(Skill.PRAYER);
 		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
-		final int scaledMissingPrayer = (int) Math.ceil((Math.max(maxPrayer - currentPrayer, 0) * HEIGHT * 1.0) / maxPrayer);
+		final int scaledMissingPrayer = (int) Math.ceil(((float) Math.max(maxPrayer - currentPrayer, 0) * HEIGHT) / maxPrayer);
 
-		final BufferedImage hpImage = new BufferedImage(WIDTH, HEIGHT + getYOffset(), BufferedImage.TYPE_4BYTE_ABGR);
-		final Graphics2D g = hpImage.createGraphics();
+		int numberToDisplay = config.numberToDisplay() == StatusNumberMode.HITPOINTS ? currentHealth : currentPrayer;
+
+		StatusTrayCacheKey key = new StatusTrayCacheKey(config.showHitpoints() ? scaledMissingHealth : null,
+			config.showPrayer() ? scaledMissingPrayer : null,
+			config.numberToDisplay() != StatusNumberMode.NONE ? numberToDisplay : null);
+
+		BufferedImage existingImage = imageCache.get(key);
+
+		if (existingImage != null)
+		{
+			clientUI.getTrayIcon().setImage(existingImage);
+			return;
+		}
+
+		final BufferedImage statusImage = new BufferedImage(WIDTH, HEIGHT + getYOffset(), BufferedImage.TYPE_4BYTE_ABGR);
+		final Graphics2D g = statusImage.createGraphics();
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
 		if (config.showHitpoints())
 		{
@@ -118,22 +141,30 @@ public class StatusTrayIconPlugin extends Plugin
 
 		if (config.numberToDisplay() !=  StatusNumberMode.NONE)
 		{
-			int numberToDisplay = config.numberToDisplay() == StatusNumberMode.HITPOINTS ? currentHealth : currentPrayer;
 			g.setFont(numberToDisplay < 100 ? STATUS_FONT : STATUS_FONT_SMALL);
-			g.setColor(TEXT_COLOR);
-			int numberDrawY = (numberToDisplay < 100 ? 34 : 30) +  getYOffset();
-			g.drawString(String.valueOf(numberToDisplay), 2, numberDrawY);
+			String numberString = String.valueOf(numberToDisplay);
+			int numberWidth = g.getFontMetrics().stringWidth(numberString);
+			int numberHeight = g.getFontMetrics().getHeight();
+			int numberDrawY = HEIGHT - ((HEIGHT - numberHeight) / 2) + getYOffset();
+			int numberDrawX = (WIDTH - numberWidth) / 2;
+
+			g.setColor(Color.BLACK);
+			g.drawString(String.valueOf(numberToDisplay), numberDrawX + 1, numberDrawY + 1);
+
+			g.setColor(Color.WHITE);
+			g.drawString(String.valueOf(numberToDisplay), numberDrawX, numberDrawY);
 		}
 
 		g.dispose();
 
-		clientUI.getTrayIcon().setImage(hpImage);
+		clientUI.getTrayIcon().setImage(statusImage);
+		imageCache.put(key, statusImage);
 	}
 
 	@Subscribe
 	public void onGameStateChanged(final GameStateChanged event)
 	{
-		if (event.getGameState() != GameState.LOGGED_IN)
+		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			resetTrayIcon();
 		}
@@ -160,5 +191,14 @@ public class StatusTrayIconPlugin extends Plugin
 	private int getYOffset()
 	{
 		return OSType.getOSType() == OSType.MacOS ? MAC_HEIGHT_OFFSET : 0;
+	}
+
+	@EqualsAndHashCode
+	@AllArgsConstructor
+	private static class StatusTrayCacheKey
+	{
+		Integer scaledHealth;
+		Integer scaledPrayer;
+		Integer displayNumber;
 	}
 }
