@@ -2,7 +2,7 @@
 
 RuneLit is a fork of [RuneLite](https://github.com/runelite/runelite) that includes additional plugins as well as modified versions of RuneLite's plugins.
 
-Re-enabled:
+Re-enabled:  
 External plugin support  
 AoE Warnings
 
