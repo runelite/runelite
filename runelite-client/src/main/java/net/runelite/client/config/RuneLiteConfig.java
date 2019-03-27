@@ -34,7 +34,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "gameSize",
 		name = "Game size",
 		description = "The game will resize to this resolution upon starting the client",
-		position = 9
+		position = 10
 	)
 	default Dimension gameSize()
 	{
@@ -59,17 +59,6 @@ public interface RuneLiteConfig extends Config
 		position = 12
 	)
 	default boolean lockWindowSize()
-	{
-		return false;
-	}
-	
-	@ConfigItem(
-		keyName = "enablePlugins",
-		name = "Enable loading of external plugins",
-		description = "Enable loading of external plugins",
-			position = 10
-	)
-	default boolean enablePlugins()
 	{
 		return false;
 	}

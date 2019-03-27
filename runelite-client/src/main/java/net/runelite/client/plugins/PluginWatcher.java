@@ -84,10 +84,7 @@ public class PluginWatcher extends Thread
 	@Override
 	public void run()
 	{
-		if (runeliteConfig.enablePlugins())
-		{
-			scan();
-		}
+		scan();
 
 		for (;;)
 		{
@@ -95,12 +92,6 @@ public class PluginWatcher extends Thread
 			{
 				WatchKey key = watchService.take();
 				Thread.sleep(50);
-
-				if (!runeliteConfig.enablePlugins())
-				{
-					key.reset();
-					continue;
-				}
 
 				for (WatchEvent<?> event : key.pollEvents())
 				{

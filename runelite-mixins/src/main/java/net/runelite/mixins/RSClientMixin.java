@@ -85,6 +85,7 @@ import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
@@ -1465,6 +1466,14 @@ public abstract class RSClientMixin implements RSClient
 	boolean rl$shouldLeftClickOpenMenu()
 	{
 		if (rs$shouldLeftClickOpenMenu())
+		{
+			return true;
+		}
+
+		MenuShouldLeftClick menuShouldLeftClick = new MenuShouldLeftClick();
+		client.getCallbacks().post(menuShouldLeftClick);
+
+		if (menuShouldLeftClick.isForceRightClick())
 		{
 			return true;
 		}
