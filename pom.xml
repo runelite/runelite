@@ -42,7 +42,7 @@
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
-
+		<archetype.test.skip>true</archetype.test.skip>
 		<rs.version>178</rs.version>
 	</properties>
 
@@ -120,6 +120,7 @@
 		<module>runelite-mixins</module>
 		<module>runelite-script-assembler-plugin</module>
 		<module>runescape-api</module>
+		<module>runelite-plugin-archetype</module>
 		<module>http-api</module>
 		<module>http-service</module>
 		<module>protocol-api</module>
@@ -148,6 +149,13 @@
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-parent</artifactId>
 				<version>1.2.3</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.archetype</groupId>
+				<artifactId>archetype-packaging</artifactId>
+				<version>3.0.1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
