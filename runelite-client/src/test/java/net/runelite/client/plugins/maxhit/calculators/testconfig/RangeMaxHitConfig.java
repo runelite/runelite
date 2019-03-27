@@ -158,7 +158,7 @@ public enum RangeMaxHitConfig implements MaxHitConfig
 
 			// Test
 			RangeMaxHitCalculator maxHitCalculator = new RangeMaxHitCalculator(client, this.equipedItems);
-			assertEquals(this.toString(), expectedMaxHit, maxHitCalculator.calculate(), 0);
+			assertEquals(this.toString(), expectedMaxHit, maxHitCalculator.getMaxHit(), 0);
 
 		}
 

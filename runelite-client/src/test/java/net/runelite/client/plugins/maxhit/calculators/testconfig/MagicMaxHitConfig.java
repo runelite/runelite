@@ -234,7 +234,7 @@ public enum MagicMaxHitConfig implements MaxHitConfig
 
 			// Test
 			MagicMaxHitCalculator maxHitCalculator = new MagicMaxHitCalculator(client, this.equipedItems);
-			assertEquals(this.toString(), expectedMaxHit, maxHitCalculator.calculate(), 0);
+			assertEquals(this.toString(), expectedMaxHit, maxHitCalculator.getMaxHit(), 0);
 
 		}
 

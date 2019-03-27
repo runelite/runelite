@@ -65,7 +65,7 @@ public class MagicMaxHitCalculator extends MaxHitCalculator
 	 * Section 4.
 	 * */
 	@Override
-	public double calculateDefault()
+	public double calculate()
 	{
 		int spellBaseDamage = this.baseDamage;
 

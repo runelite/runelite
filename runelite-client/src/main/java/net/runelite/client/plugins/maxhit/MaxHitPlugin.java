@@ -85,7 +85,7 @@ public class MaxHitPlugin extends Plugin
 			int autoCastSpell = client.getVar(Varbits.AUTO_CAST_SPELL);
 			System.out.println("AutoCast: " + autoCastSpell);
 
-			MaxHit maxHit = new MaxHit(meleeMaxHitCalculator.calculate(), rangeMaxHitCalculator.calculate(), magicMaxHitCalculator.calculate());
+			MaxHit maxHit = new MaxHit(meleeMaxHitCalculator.getMaxHit(), rangeMaxHitCalculator.getMaxHit(), magicMaxHitCalculator.getMaxHit());
 			this.setWidgetMaxHit(maxHit);
 		}
 	}

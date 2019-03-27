@@ -108,7 +108,7 @@ public class MeleeMaxHitCalculator extends MaxHitCalculator
 	 * Section 3.1
 	 * */
 	@Override
-	public double calculateDefault()
+	public double calculate()
 	{
 
 //      a. Max hit = 0.5 + A * (B+64) /640 (A is effective level, B is Equipment bonus)

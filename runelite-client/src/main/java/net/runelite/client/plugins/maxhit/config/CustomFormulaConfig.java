@@ -76,7 +76,7 @@ public enum CustomFormulaConfig
 			int baseDamage = (int) Math.floor(magicLevel / 3.0) - 5;
 			calculator.setBaseDamage(baseDamage);
 
-			return calculator.calculateDefault();
+			return calculator.calculate();
 		}
 	),
 
@@ -95,7 +95,7 @@ public enum CustomFormulaConfig
 			int baseDamage = (int) Math.floor(magicLevel / 3.0) - 2;
 			calculator.setBaseDamage(baseDamage);
 
-			return calculator.calculateDefault();
+			return calculator.calculate();
 		}
 	),
 
@@ -197,7 +197,7 @@ public enum CustomFormulaConfig
 			int maxHP = client.getRealSkillLevel(Skill.HITPOINTS);
 			int lostHP = maxHP - currentHP;
 
-			double initialMaxHit = calculator.calculateDefault();
+			double initialMaxHit = calculator.calculate();
 
 			double multiplier = (1.0 + lostHP / 100.0 * maxHP / 100.0);
 

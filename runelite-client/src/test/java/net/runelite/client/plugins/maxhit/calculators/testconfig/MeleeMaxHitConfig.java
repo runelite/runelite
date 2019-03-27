@@ -208,7 +208,7 @@ public enum MeleeMaxHitConfig implements MaxHitConfig
 
 			// Test
 			MeleeMaxHitCalculator maxHitCalculator = new MeleeMaxHitCalculator(client, this.equipedItems);
-			assertEquals(this.toString(), expectedMaxHit, maxHitCalculator.calculate(), 0);
+			assertEquals(this.toString(), expectedMaxHit, maxHitCalculator.getMaxHit(), 0);
 
 		}
 

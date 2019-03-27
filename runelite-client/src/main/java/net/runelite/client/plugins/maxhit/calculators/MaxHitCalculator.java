@@ -126,7 +126,7 @@ public abstract class MaxHitCalculator
 		return maxhit;
 	}
 
-	public double calculate()
+	public double getMaxHit()
 	{
 		BiFunction<Client, MaxHitCalculator, Double> customFormula = this.getCustomFormula();
 		if (customFormula != null)
@@ -134,7 +134,7 @@ public abstract class MaxHitCalculator
 			return customFormula.apply(this.client, this);
 		}
 
-		return this.calculateDefault();
+		return this.calculate();
 	}
 
 	private BiFunction<Client, MaxHitCalculator, Double> getCustomFormula()
@@ -157,7 +157,7 @@ public abstract class MaxHitCalculator
 		return null;
 	}
 
-	public abstract double calculateDefault();
+	public abstract double calculate();
 
 	public void setBaseDamage(int baseDamage)
 	{
