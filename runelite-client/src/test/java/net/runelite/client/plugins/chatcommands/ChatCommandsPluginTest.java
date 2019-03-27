@@ -131,6 +131,17 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testHerbiboar()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "", "Your herbiboar harvest count is: <col=ff0000>4091</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+
+		verify(configManager).setConfiguration("killcount.adam", "herbiboar", 4091);
+	}
+
+	@Test
 	public void testPersonalBest()
 	{
 		final String FIGHT_DURATION = "Fight duration: <col=ff0000>2:06</col>. Personal best: 1:19.";
