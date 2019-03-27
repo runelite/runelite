@@ -127,6 +127,7 @@ public class WidgetID
 	public static final int FULLSCREEN_MAP_GROUP_ID = 165;
 	public static final int QUESTLIST_GROUP_ID = 399;
 	public static final int SKILLS_GROUP_ID = 320;
+	public static final int QUESTTAB_GROUP_ID = 629;
 
 	static class WorldMap
 	{
@@ -890,8 +891,16 @@ public class WidgetID
 
 	static class QuestList
 	{
+		static final int BOX = 0;
+		static final int SCROLLBAR = 3;
+		static final int CONTAINER = 5;
 		static final int FREE_CONTAINER = 6;
 		static final int MEMBERS_CONTAINER = 7;
 		static final int MINIQUEST_CONTAINER = 8;
+	}
+
+	static class QuestTab
+	{
+		static final int QUEST_TAB = 3;
 	}
 }
