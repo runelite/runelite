@@ -24,31 +24,27 @@
  */
 package net.runelite.client.plugins.raids;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
+
 import java.text.DecimalFormat;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.InstanceTemplates;
-import net.runelite.api.NullObjectID;
+import net.runelite.api.*;
+
 import static net.runelite.api.Perspective.SCENE_SIZE;
-import net.runelite.api.Point;
 import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
-import net.runelite.api.Tile;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.VarbitChanged;
+
+import net.runelite.api.events.*;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -56,6 +52,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -63,13 +60,14 @@ import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Chambers Of Xeric",
-	description = "Show helpful information for the Chambers of Xeric raid",
-	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses"}
+		name = "Chambers Of Xeric",
+		description = "Show helpful information for the Chambers of Xeric raid",
+		tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses"}
 )
 @Slf4j
 public class RaidsPlugin extends Plugin
@@ -102,6 +100,9 @@ public class RaidsPlugin extends Plugin
 	private RaidsOverlay overlay;
 
 	@Inject
+	private RaidsPartyOverlay partyOverlay;
+
+	@Inject
 	private LayoutSolver layoutSolver;
 
 	@Inject
@@ -130,6 +131,18 @@ public class RaidsPlugin extends Plugin
 
 	private RaidsTimer timer;
 
+	@Getter
+	private int startPlayerCount;
+
+	@Getter
+	private List<String> partyMembers = new ArrayList<>();
+
+	@Getter
+	private List<String> startingPartyMembers = new ArrayList<>();
+
+	@Getter
+	private Set<String> missingPartyMembers = new HashSet<>();
+
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
 	{
@@ -146,6 +159,10 @@ public class RaidsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		if (config.partyDisplay())
+		{
+			overlayManager.add(partyOverlay);
+		}
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
@@ -154,6 +171,10 @@ public class RaidsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		if (config.partyDisplay())
+		{
+			overlayManager.remove(partyOverlay);
+		}
 		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
 		raid = null;
@@ -174,6 +195,18 @@ public class RaidsPlugin extends Plugin
 			return;
 		}
 
+		if (event.getKey().equals("partyDisplay"))
+		{
+			if (config.partyDisplay())
+			{
+				overlayManager.add(partyOverlay);
+			}
+			else
+			{
+				overlayManager.remove(partyOverlay);
+			}
+		}
+
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
@@ -182,6 +215,10 @@ public class RaidsPlugin extends Plugin
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		checkRaidPresence(false);
+		if (config.partyDisplay())
+		{
+			updatePartyMembers(false);
+		}
 	}
 
 	@Subscribe
@@ -191,10 +228,27 @@ public class RaidsPlugin extends Plugin
 		{
 			String message = Text.removeTags(event.getMessage());
 
-			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
+			if (message.startsWith(RAID_START_MESSAGE))
 			{
-				timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
-				infoBoxManager.addInfoBox(timer);
+				if (config.raidsTimer())
+				{
+					timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
+					infoBoxManager.addInfoBox(timer);
+				}
+				if (config.partyDisplay())
+				{
+					// Base this on visible players since party size shows people outside the lobby
+					// and they did not get to come on the raid
+					List<Player> players = client.getPlayers();
+					startPlayerCount = players.size();
+
+					partyMembers.clear();
+					startingPartyMembers.clear();
+					missingPartyMembers.clear();
+
+					startingPartyMembers.addAll(Lists.transform(players, Player::getName));
+					partyMembers.addAll(startingPartyMembers);
+				}
 			}
 
 			if (timer != null && message.contains(LEVEL_COMPLETE_MESSAGE))
@@ -218,26 +272,113 @@ public class RaidsPlugin extends Plugin
 					double percentage = personalPoints / (totalPoints / 100.0);
 
 					String chatMessage = new ChatMessageBuilder()
-						.append(ChatColorType.NORMAL)
-						.append("Total points: ")
-						.append(ChatColorType.HIGHLIGHT)
-						.append(POINTS_FORMAT.format(totalPoints))
-						.append(ChatColorType.NORMAL)
-						.append(", Personal points: ")
-						.append(ChatColorType.HIGHLIGHT)
-						.append(POINTS_FORMAT.format(personalPoints))
-						.append(ChatColorType.NORMAL)
-						.append(" (")
-						.append(ChatColorType.HIGHLIGHT)
-						.append(DECIMAL_FORMAT.format(percentage))
-						.append(ChatColorType.NORMAL)
-						.append("%)")
-						.build();
+							.append(ChatColorType.NORMAL)
+							.append("Total points: ")
+							.append(ChatColorType.HIGHLIGHT)
+							.append(POINTS_FORMAT.format(totalPoints))
+							.append(ChatColorType.NORMAL)
+							.append(", Personal points: ")
+							.append(ChatColorType.HIGHLIGHT)
+							.append(POINTS_FORMAT.format(personalPoints))
+							.append(ChatColorType.NORMAL)
+							.append(" (")
+							.append(ChatColorType.HIGHLIGHT)
+							.append(DECIMAL_FORMAT.format(percentage))
+							.append(ChatColorType.NORMAL)
+							.append("%)")
+							.build();
 
 					chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.CLANCHAT_INFO)
-						.runeLiteFormattedMessage(chatMessage)
-						.build());
+							.type(ChatMessageType.CLANCHAT_INFO)
+							.runeLiteFormattedMessage(chatMessage)
+							.build());
+				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked event)
+	{
+		OverlayMenuEntry entry = event.getEntry();
+		if (entry.getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
+				entry.getTarget().equals("Raids party overlay"))
+		{
+			switch (entry.getOption())
+			{
+				case RaidsPartyOverlay.PARTY_OVERLAY_RESET:
+					startingPartyMembers.clear();
+					updatePartyMembers(true);
+					missingPartyMembers.clear();
+					break;
+				case RaidsPartyOverlay.PARTY_OVERLAY_REFRESH:
+					updatePartyMembers(true);
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	private void updatePartyMembers(boolean force)
+	{
+		int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
+		if (partySize <= 0)
+		{
+			return;
+		}
+
+		if (startingPartyMembers.size() == partySize && !force)
+		{
+			// Skip update if the part is as big as when we started
+			missingPartyMembers.clear(); // Clear missing members in case someone came back
+			return;
+		}
+
+		// Only update while in raid
+		if (client.getVar(VarPlayer.IN_RAID_PARTY) == -1 || force)
+		{
+			Widget[] widgets;
+			try
+			{
+				widgets = client.getWidget(WidgetInfo.RAIDING_PARTY).getStaticChildren()[2].getStaticChildren()[3].getDynamicChildren();
+			}
+			catch (NullPointerException e)
+			{
+				return; // Raid widget not loaded
+			}
+
+			partyMembers.clear();
+			for (int i = 0; i < widgets.length; i++)
+			{
+				if (widgets[i] != null)
+				{
+					// Party members names can be found as a color tagged string in every fourth(ish) of these children
+					String name = widgets[i].getName();
+					if (name.length() > 1)
+					{
+						// Clean away tag
+						partyMembers.add(name.substring(name.indexOf('>') + 1, name.indexOf('<', 1)));
+					}
+				}
+			}
+
+			// If we don't have any starting members, update starting members
+			if (startingPartyMembers.size() == 0 || force)
+			{
+				missingPartyMembers.clear();
+				startingPartyMembers.clear();
+				startingPartyMembers.addAll(partyMembers);
+			}
+			else
+			{
+
+				// Check if anyone left
+				if (startingPartyMembers.size() > partyMembers.size())
+				{
+					missingPartyMembers.clear();
+					missingPartyMembers.addAll(startingPartyMembers);
+					missingPartyMembers.removeAll(partyMembers);
 				}
 			}
 		}
@@ -305,14 +446,14 @@ public class RaidsPlugin extends Plugin
 		final String raidData = "[" + layout + "]: " + rooms;
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.CLANCHAT_INFO)
-			.runeLiteFormattedMessage(new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("Layout: ")
-				.append(ChatColorType.NORMAL)
-				.append(raidData)
-				.build())
-			.build());
+				.type(ChatMessageType.CLANCHAT_INFO)
+				.runeLiteFormattedMessage(new ChatMessageBuilder()
+						.append(ChatColorType.HIGHLIGHT)
+						.append("Layout: ")
+						.append(ChatColorType.NORMAL)
+						.append(raidData)
+						.build())
+				.build());
 	}
 
 	private void updateInfoBoxState()

@@ -162,4 +162,15 @@ public interface RaidsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 12,
+			keyName = "partyDisplay",
+			name = "Party Info Display",
+			description = "Display an overlay that shows information about the current party"
+	)
+	default boolean partyDisplay()
+	{
+		return false;
+	}
 }
