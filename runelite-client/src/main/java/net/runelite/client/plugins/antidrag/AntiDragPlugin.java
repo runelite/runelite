@@ -24,26 +24,30 @@
  */
 package net.runelite.client.plugins.antidrag;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
-@PluginDescriptor(
-	name = "Shift Anti Drag",
-	description = "Prevent dragging an item for a specified delay",
-	tags = {"antidrag", "delay", "inventory", "items"}
-)
+import net.runelite.client.ui.overlay.OverlayManager;
+
+@PluginDescriptor(name = "Anti Drag")
 public class AntiDragPlugin extends Plugin implements KeyListener
 {
 	private static final int DEFAULT_DELAY = 5;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private AntiDragOverlay antiDragOverlay;
 
 	@Inject
 	private Client client;
@@ -63,7 +67,9 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp() throws Exception
 	{
+		client.setInventoryDragDelay(config.dragDelay());
 		keyManager.registerKeyListener(this);
+		overlayManager.add(antiDragOverlay);
 	}
 
 	@Override
@@ -71,6 +77,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	{
 		client.setInventoryDragDelay(DEFAULT_DELAY);
 		keyManager.unregisterKeyListener(this);
+		overlayManager.remove(antiDragOverlay);
 	}
 
 	@Override
@@ -79,30 +86,40 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 
 	}
 
+	public boolean toggleDrag = true;
+
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		/*if (e.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
 			client.setInventoryDragDelay(config.dragDelay());
 		}
+		client.setInventoryDragDelay(config.dragDelay());*/
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
-		{
+		if (e.getKeyCode() == KeyEvent.VK_CONTROL && toggleDrag) {
+
+			toggleDrag = false;
 			client.setInventoryDragDelay(DEFAULT_DELAY);
+
+		} else if (e.getKeyCode() == KeyEvent.VK_CONTROL && !toggleDrag) {
+
+			toggleDrag = true;
+			client.setInventoryDragDelay(config.dragDelay());
+
 		}
 	}
 
-	@Subscribe
+	/*@Subscribe
 	public void onFocusChanged(FocusChanged focusChanged)
 	{
 		if (!focusChanged.isFocused())
 		{
 			client.setInventoryDragDelay(DEFAULT_DELAY);
 		}
-	}
+	}*/
 }

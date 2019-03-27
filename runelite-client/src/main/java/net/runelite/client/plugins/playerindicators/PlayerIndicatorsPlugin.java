@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import javax.inject.Inject;
@@ -35,7 +36,6 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -93,7 +93,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	public void onMenuEntryAdd(MenuEntryAdded menuEntryAdded)
 	{
 		int type = menuEntryAdded.getType();
 
@@ -132,7 +132,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			int image = -1;
 			Color color = null;
 
-			if (config.highlightFriends() && player.isFriend())
+			if (config.highlightFriends() && client.isFriended(player.getName(), false))
 			{
 				color = config.getFriendColor();
 			}

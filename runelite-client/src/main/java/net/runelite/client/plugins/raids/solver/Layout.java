@@ -62,9 +62,4 @@ public class Layout
 
 		return builder.toString();
 	}
-
-	public String toCodeString()
-	{
-		return toCode().replaceAll("#", "").replaceAll("¤", "");
-	}
 }

@@ -60,6 +60,16 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "chestLootChat",
+		name = "Show chest loot value in chat",
+		description = "Show the value of items from CoX/ToB/Barrows chests in chat"
+	)
+	default boolean chestLootChat()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "syncPanel",
 		name = "Synchronize panel contents",
 		description = "Synchronize you local loot tracker with your online (requires being logged in). This means" +
