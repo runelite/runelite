@@ -90,13 +90,11 @@ public class AoeWarningPlugin extends Plugin
 	public void onProjectileMoved(ProjectileMoved event)
 	{
 		Projectile projectile = event.getProjectile();
-		Logger.getGlobal().warning("Projectile Moved :" + event.getProjectile().getId());
 
 		int projectileId = projectile.getId();
 		AoeProjectileInfo aoeProjectileInfo = AoeProjectileInfo.getById(projectileId);
 		if (aoeProjectileInfo != null && isConfigEnabledForProjectileId(projectileId))
 		{
-			Logger.getGlobal().warning("Known Projectile Moved :" + event.getProjectile().getId());
 			LocalPoint targetPoint = event.getPosition();
 			AoeProjectile aoeProjectile = new AoeProjectile(Instant.now(), targetPoint, aoeProjectileInfo);
 			projectiles.put(projectile, aoeProjectile);
