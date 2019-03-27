@@ -20,7 +20,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-        name = "TickIndicator",
+        name = "! TickIndicator",
         description = "Play a sound on tick to get big rhythm",
         tags = {"ticks"},
         enabledByDefault = false

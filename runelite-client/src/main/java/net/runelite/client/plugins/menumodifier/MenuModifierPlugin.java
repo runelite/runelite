@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @PluginDescriptor(
-        name = "Menu Modifier Plugin",
+        name = "! Menu Modifier Plugin",
         description = "Changes right click menu for players",
         tags = { "menu", "modifier", "right", "click", "pk", "bogla" },
         enabledByDefault = false

@@ -59,7 +59,7 @@ import java.util.concurrent.ExecutionException;
 
 
 @PluginDescriptor(
-	name = "Supplies Used Tracker",
+	name = "! Supplies Used Tracker",
 	description = "Tracks supplies used during the session",
 	tags = {"cost"},
 	enabledByDefault = false

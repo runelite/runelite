@@ -18,7 +18,7 @@ import net.runelite.client.util.MiscUtils;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-        name = "PK Vision Plugin",
+        name = "! PK Vision Plugin",
         description = "Highlight players on-screen and/or on the minimap",
         tags = {"highlight", "minimap", "overlay", "players", "pk", "helper", "vision", "bogla"},
         enabledByDefault = false

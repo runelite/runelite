@@ -53,7 +53,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Barrows Brothers",
+	name = "! Barrows Brothers",
 	description = "Show helpful information for the Barrows minigame",
 	tags = {"combat", "minigame", "minimap", "bosses", "pve", "pvm"}
 )

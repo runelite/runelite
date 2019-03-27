@@ -42,7 +42,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 @PluginDescriptor(
-	name = "[BANNED] AoE Warnings",
+	name = "! AoE Warnings",
 	description = "Shows the final destination for AoE projectiles",
 	tags = {"bosses", "combat", "pve", "overlay"}
 )

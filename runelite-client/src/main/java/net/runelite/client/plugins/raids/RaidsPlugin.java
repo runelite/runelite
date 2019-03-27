@@ -107,7 +107,7 @@ import net.runelite.client.util.StackFormatter;
 import net.runelite.api.events.WidgetLoaded;
 
 @PluginDescriptor(
-	name = "Chambers Of Xeric",
+	name = "! Chambers Of Xeric",
 	description = "Show helpful information for the Chambers of Xeric raid",
 	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses", "cox", "olm"}
 )

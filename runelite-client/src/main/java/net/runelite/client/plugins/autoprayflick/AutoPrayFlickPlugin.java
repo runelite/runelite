@@ -50,7 +50,7 @@ import java.util.Random;
 import java.util.concurrent.*;
 
 @PluginDescriptor(
-	name = "Auto Pray Flick",
+	name = "! Auto Pray Flick",
 	enabledByDefault = false
 )
 public class AutoPrayFlickPlugin extends Plugin implements KeyListener, MouseListener

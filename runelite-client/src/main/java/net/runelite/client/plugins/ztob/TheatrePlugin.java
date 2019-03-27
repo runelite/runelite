@@ -24,7 +24,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-        name = "Theatre of Blood",
+        name = "! Theatre of Blood",
         description = "All-in-one plugin for Theatre of Blood",
         tags = {"ToB"},
         enabledByDefault = true
@@ -552,7 +552,7 @@ public class TheatrePlugin extends Plugin {
                     it.remove();
                 }
             }
-            if (Xarpus_NPC.getComposition().getOverheadIcon() != null )
+            if (Xarpus_NPC.getOverheadText() != null )
             {
                 Xarpus_Stare = true;
             }

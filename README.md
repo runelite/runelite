@@ -13,17 +13,20 @@ FightCave+
 FreezeTimers  
 LootTracker+  
 MenuEntrySwapper+  
-MenuMoifier  
+MenuModifier  
 NextHitNotifier  
 PKVision  
 PlayerIndicators+  
 Raids  
 RememberClan  
-ScreenCap  
 SuppliesTracker  
 TickIndicator  
 TheatreOfBlood  
 Zulrah  
+SpellbookIconResize  
+BlackJackMenuSwapper  
+HidePrayers  
+ProtectItemReminder  
 
 ### How To Use
 To use RuneLit, you can build the project yourself by following RuneLite's [guide to building with IntelliJ IDEA](https://github.com/runelite/runelite/wiki/Building-with-IntelliJ-IDEA).

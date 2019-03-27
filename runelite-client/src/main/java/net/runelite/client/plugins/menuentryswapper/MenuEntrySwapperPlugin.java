@@ -63,7 +63,7 @@ import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "Menu Entry Swapper",
+	name = "! Menu Entry Swapper",
 	description = "Change the default option that is displayed when hovering over objects",
 	tags = {"npcs", "inventory", "items", "objects"},
 	enabledByDefault = false

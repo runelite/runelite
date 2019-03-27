@@ -21,7 +21,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Zulrah",
+	name = "! Zulrah",
 	description = "Zulrah Helper",
 	tags = {"Zulrah", "Helper"}
 )
