@@ -27,6 +27,7 @@ package net.runelite.mixins;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -735,7 +736,13 @@ public abstract class RSClientMixin implements RSClient
 	public ClanMember[] getClanMembers()
 	{
 		final RSClanMemberManager clanMemberManager = getClanMemberManager();
-		return clanMemberManager != null ? getClanMemberManager().getNameables() : null;
+		if (clanMemberManager == null)
+		{
+			return null;
+		}
+
+		final int count = clanMemberManager.getCount();
+		return Arrays.copyOf(clanMemberManager.getNameables(), count);
 	}
 
 	@Inject
@@ -768,7 +775,8 @@ public abstract class RSClientMixin implements RSClient
 			return null;
 		}
 
-		return friendContainer.getNameables();
+		final int count = friendContainer.getCount();
+		return Arrays.copyOf(friendContainer.getNameables(), count);
 	}
 
 	@Inject
@@ -806,7 +814,8 @@ public abstract class RSClientMixin implements RSClient
 			return null;
 		}
 
-		return ignoreContainer.getNameables();
+		final int count = ignoreContainer.getCount();
+		return Arrays.copyOf(ignoreContainer.getNameables(), count);
 	}
 
 	@Inject
