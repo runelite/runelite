@@ -16,6 +16,7 @@ spring.jmx.enabled: false
 oauth:
   client-id:
   client-secret:
+  callback: https://api.runelite.net/oauth/
 
 # Minio client storage for cache
 minio:

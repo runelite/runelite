@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,33 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.events;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
 /**
- * An enumeration of integer local variables.
+ * Event called when the client is checking if the menu should be
+ * opened on left click.
  */
-@AllArgsConstructor
-@Getter
-public enum VarClientInt
+@Data
+public class MenuShouldLeftClick
 {
-	TOOLTIP_TIMEOUT(1),
-
 	/**
-	 * 0 = no tooltip displayed
-	 * 1 = tooltip displaying
+	 * If set to true, the menu will open on left click.
 	 */
-	TOOLTIP_VISIBLE(2),
-
-	INPUT_TYPE(5),
-
-	MEMBERSHIP_STATUS(103),
-
-	INVENTORY_TAB(171),
-
-	WORLD_MAP_SEARCH_FOCUSED(190);
-
-	private final int index;
+	private boolean forceRightClick;
 }

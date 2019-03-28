@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.bankvalue;
+package net.runelite.client.plugins.bank;
 
 import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ class BankCalculation
 		Varbits.BANK_TAB_NINE_COUNT
 	);
 
-	private final BankValueConfig config;
+	private final BankConfig config;
 	private final ItemManager itemManager;
 	private final Client client;
 
@@ -74,7 +74,7 @@ class BankCalculation
 	private long haPrice;
 
 	@Inject
-	BankCalculation(ItemManager itemManager, BankValueConfig config, Client client)
+	BankCalculation(ItemManager itemManager, BankConfig config, Client client)
 	{
 		this.itemManager = itemManager;
 		this.config = config;
