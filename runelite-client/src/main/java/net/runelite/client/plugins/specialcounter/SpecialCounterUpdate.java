@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, TheLonelyDev <https://github.com/TheLonelyDev>
- * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
+ * Copyright (c) 2019, Trevor <https://github.com/15987632>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,45 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.bankvalue;
+package net.runelite.client.plugins.specialcounter;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
+import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 
-@ConfigGroup("bankvalue")
-public interface BankValueConfig extends Config
+@Value
+@EqualsAndHashCode(callSuper = true)
+public class SpecialCounterUpdate extends PartyMemberMessage
 {
-	@ConfigItem(
-		keyName = "showGE",
-		name = "Show Grand Exchange price",
-		description = "Show grand exchange price total (GE)",
-		position = 1
-	)
-	default boolean showGE()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showHA",
-		name = "Show high alchemy price",
-		description = "Show high alchemy price total (HA)",
-		position = 2
-	)
-	default boolean showHA()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "showExact",
-		name = "Show exact bank value",
-		description = "Show exact bank value",
-		position = 3
-	)
-	default boolean showExact()
-	{
-		return false;
-	}
+	private final int npcId;
+	private final SpecialWeapon weapon;
+	private final int hit;
 }
