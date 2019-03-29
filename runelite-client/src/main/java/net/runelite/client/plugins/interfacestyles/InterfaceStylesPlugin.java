@@ -31,6 +31,7 @@ import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.HealthBarOverride;
 import net.runelite.api.SpriteID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.ConfigChanged;
@@ -85,6 +86,7 @@ public class InterfaceStylesPlugin extends Plugin
 		{
 			restoreWidgetDimensions();
 			removeGameframe();
+			client.setHealthBarOverride(null);
 		});
 	}
 
@@ -110,6 +112,7 @@ public class InterfaceStylesPlugin extends Plugin
 		overrideWidgetSprites();
 		restoreWidgetDimensions();
 		adjustWidgetDimensions();
+		overrideHealthBars();
 	}
 
 	private void overrideSprites()
@@ -226,6 +229,27 @@ public class InterfaceStylesPlugin extends Plugin
 					widget.setHeight(widgetOffset.getHeight());
 				}
 			}
+		}
+	}
+
+	private void overrideHealthBars()
+	{
+		if (config.hdHealthBars())
+		{
+			String fileBase = Skin.AROUND_2010.toString() + "/healthbar/";
+
+			SpritePixels frontSprite = getFileSpritePixels(fileBase + "front.png");
+			SpritePixels backSprite = getFileSpritePixels(fileBase + "back.png");
+
+			SpritePixels frontSpriteLarge = getFileSpritePixels(fileBase + "front_large.png");
+			SpritePixels backSpriteLarge = getFileSpritePixels(fileBase + "back_large.png");
+
+			HealthBarOverride override = new HealthBarOverride(frontSprite, backSprite, frontSpriteLarge, backSpriteLarge);
+			client.setHealthBarOverride(override);
+		}
+		else
+		{
+			client.setHealthBarOverride(null);
 		}
 	}
 
