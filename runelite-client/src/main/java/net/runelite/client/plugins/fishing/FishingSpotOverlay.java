@@ -161,7 +161,6 @@ class FishingSpotOverlay extends Overlay
 			}
 		}
 
-
 		return null;
 	}
 }
