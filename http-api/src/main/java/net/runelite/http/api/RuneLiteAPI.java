@@ -79,6 +79,8 @@ public class RuneLiteAPI
 
 		CLIENT = new OkHttpClient.Builder()
 			.pingInterval(30, TimeUnit.SECONDS)
+			.connectTimeout(30, TimeUnit.SECONDS)
+			.readTimeout(30, TimeUnit.SECONDS)
 			.addNetworkInterceptor(new Interceptor()
 			{
 
