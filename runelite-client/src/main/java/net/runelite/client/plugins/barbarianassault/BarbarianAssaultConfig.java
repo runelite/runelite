@@ -29,21 +29,9 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-import java.awt.*;
-
 @ConfigGroup("barbarianAssault")
 public interface BarbarianAssaultConfig extends Config
 {
-	@ConfigItem(
-			keyName = "removeUnused",
-			name = "Remove incorrect calls",
-			description = "Removes incorrect calls for Role horn"
-	)
-	default boolean removeWrong()
-	{
-		return true;
-	}
-
 	@ConfigItem(
 		keyName = "showTimer",
 		name = "Show call change timer",
@@ -63,22 +51,11 @@ public interface BarbarianAssaultConfig extends Config
 	{
 		return true;
 	}
+
 	@ConfigItem(
-			keyName = "textOverlay",
-			name = "Show healer codes",
-			description = "enable/disable Healer codes"
+		keyName = "showEggCount",
+		name = "Show count of eggs collected as collector.",
+		description = "Display egg count as collector"
 	)
-	default boolean textOverlay()
-	{
-		return true;
-	}
-	@ConfigItem(
-			keyName = "chooseColor",
-			name = "Choose color of text",
-			description = "Changes the color of the text"
-	)
-	default Color chooseColor()
-	{
-		return Color.BLUE;
-	}
+	default boolean showEggCount() { return false; }
 }

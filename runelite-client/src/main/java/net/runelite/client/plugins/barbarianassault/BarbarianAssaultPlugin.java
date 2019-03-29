@@ -25,16 +25,22 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
-
 import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.Image;
-import java.util.ArrayList;
-import java.util.List;
 import javax.inject.Inject;
-
-import net.runelite.api.*;
-import net.runelite.api.events.*;
+import lombok.Getter;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.ItemID;
+import net.runelite.api.Player;
+import net.runelite.api.Tile;
+import net.runelite.api.Varbits;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.kit.KitType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -44,9 +50,9 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
@@ -56,18 +62,20 @@ import net.runelite.client.util.ImageUtil;
 	description = "Show a timer to the next call change and game/wave duration in chat.",
 	tags = {"minigame", "overlay", "timer"}
 )
-public class BarbarianAssaultPlugin extends Plugin
-{
+public class BarbarianAssaultPlugin extends Plugin {
 	private static final int BA_WAVE_NUM_INDEX = 2;
 	private static final String START_WAVE = "1";
 	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
 
-	private final List<MenuEntry> entries = new ArrayList<>();
+	@Getter
+	private int collectedEggCount = 0;
+	@Getter
+	private int HpHealed = 0;
 
 	private Font font;
 	private Image clockImage;
 	private int inGameBit = 0;
-	protected String currentWave = START_WAVE;
+	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
 
 	@Inject
@@ -85,164 +93,163 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Inject
 	private BarbarianAssaultOverlay overlay;
 
-	@Inject
-	private TextOverlay textOverlay;
-
 	@Provides
-	BarbarianAssaultConfig provideConfig(ConfigManager configManager)
-	{
+	BarbarianAssaultConfig provideConfig(ConfigManager configManager) {
 		return configManager.getConfig(BarbarianAssaultConfig.class);
 	}
 
 	@Override
-	protected void startUp() throws Exception
-	{
+	protected void startUp() throws Exception {
 		overlayManager.add(overlay);
-		overlayManager.add(textOverlay);
 		font = FontManager.getRunescapeFont()
-			.deriveFont(Font.BOLD, 24);
+				.deriveFont(Font.BOLD, 24);
 
 		clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
 	}
 
 	@Override
-	protected void shutDown() throws Exception
-	{
+	protected void shutDown() throws Exception {
 		overlayManager.remove(overlay);
-		overlayManager.remove(textOverlay);
 		gameTime = null;
 		currentWave = START_WAVE;
 		inGameBit = 0;
+		collectedEggCount = 0;
+		HpHealed = 0;
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
-	{
-		if (event.getGroupId() == WidgetID.BA_REWARD_GROUP_ID)
-		{
+	public void onWidgetLoaded(WidgetLoaded event) {
+		if (event.getGroupId() == WidgetID.BA_REWARD_GROUP_ID) {
 			Widget rewardWidget = client.getWidget(WidgetInfo.BA_REWARD_TEXT);
 
-			if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
-			{
-				announceTime("Game finished, duration: ", gameTime.getTime(false));
+			if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null) {
+				announceTime("Game finished, duration: ", gameTime.getTime(false), collectedEggCount+HpHealed+"");
 			}
 		}
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
-	{
+	public void onChatMessage(ChatMessage event) {
 		if (event.getType() == ChatMessageType.SERVER
-			&& event.getMessage().startsWith("---- Wave:"))
-		{
+				&& event.getMessage().startsWith("---- Wave:")) {
 			String[] message = event.getMessage().split(" ");
 			currentWave = message[BA_WAVE_NUM_INDEX];
+			collectedEggCount = 0;
+			HpHealed = 0;
 
-			if (currentWave.equals(START_WAVE))
-			{
+			if (currentWave.equals(START_WAVE)) {
 				gameTime = new GameTimer();
-			}
-			else if (gameTime != null)
-			{
+			} else if (gameTime != null) {
 				gameTime.setWaveStartTime();
 			}
-		}
+		} else if (event.getType() == ChatMessageType.SERVER
+				&& event.getMessage().contains("egg explode")) {
+			collectedEggCount -= 2;
+		} else if (event.getType() == ChatMessageType.SERVER
+				&& event.getMessage().contains("healed")) {
+				String message = event.getMessage();
+				String [] tokens = message.split(" ");
+				int Hp = Integer.parseInt(tokens[2]);
+				HpHealed+=Hp;
+				}
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
-	{
-		if (client.getVar(Varbits.IN_GAME_BA) == 0 || client.getLocalPlayer() == null || overlay.getCurrentRound() != null)
-		{
+	public void onGameTick(GameTick event) {
+		if (client.getVar(Varbits.IN_GAME_BA) == 0 || client.getLocalPlayer() == null || overlay.getCurrentRound() != null) {
 			return;
 		}
 
-		switch (client.getLocalPlayer().getPlayerComposition().getEquipmentId(KitType.CAPE))
-		{
+		switch (client.getLocalPlayer().getPlayerComposition().getEquipmentId(KitType.CAPE)) {
 			case ItemID.ATTACKER_ICON:
 				overlay.setCurrentRound(new Round(Role.ATTACKER));
-				textOverlay.setCurrentRound(new Round(Role.ATTACKER));
 				break;
 			case ItemID.COLLECTOR_ICON:
 				overlay.setCurrentRound(new Round(Role.COLLECTOR));
-				textOverlay.setCurrentRound(new Round(Role.COLLECTOR));
 				break;
 			case ItemID.DEFENDER_ICON:
 				overlay.setCurrentRound(new Round(Role.DEFENDER));
-				textOverlay.setCurrentRound(new Round(Role.DEFENDER));
 				break;
 			case ItemID.HEALER_ICON:
 				overlay.setCurrentRound(new Round(Role.HEALER));
-				textOverlay.setCurrentRound(new Round(Role.HEALER));
 				break;
 		}
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
-	{
-		if (config.removeWrong() && overlay.getCurrentRound() != null && event.getTarget().endsWith("horn"))
-		{
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			WidgetInfo callInfo = overlay.getCurrentRound().getRoundRole().getCall();
-			Widget callWidget = client.getWidget(callInfo);
-			String call = Calls.getOption(callWidget.getText());
-			MenuEntry correctCall = null;
-			entries.clear();
-			for (MenuEntry entry : menuEntries)
-			{
-				String option = entry.getOption();
-				if (option.equals(call))
-				{
-					correctCall = entry;
-				}
-				else if (!option.startsWith("Tell-"))
-				{
-					entries.add(entry);
-				}
-			}
-			if (correctCall != null)
-			{
-				entries.add(correctCall);
-				client.setMenuEntries(entries.toArray(new MenuEntry[entries.size()]));
-			}
-		}
-	}
-
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
-	{
+	public void onVarbitChanged(VarbitChanged event) {
 		int inGame = client.getVar(Varbits.IN_GAME_BA);
 
-		if (inGameBit != inGame)
-		{
-			if (inGameBit == 1)
-			{
+		if (inGameBit != inGame) {
+			if (inGameBit == 1) {
 				overlay.setCurrentRound(null);
-				textOverlay.setCurrentRound(null);
-				if (config.waveTimes() && gameTime != null)
-				{
-					announceTime("Wave " + currentWave + " duration: ", gameTime.getTime(true));
+
+				if (config.waveTimes() && gameTime != null) {
+					announceTime("Wave " + currentWave + " duration: ", gameTime.getTime(true), collectedEggCount+HpHealed+"");
 				}
+
 			}
 		}
 
 		inGameBit = inGame;
 	}
 
-	private void announceTime(String preText, String time)
+	@Subscribe
+	public void onItemDespawned(ItemDespawned event)
 	{
+		if (client.getVar(Varbits.IN_GAME_BA) == 0 || !isEgg(event.getItem().getId()))
+		{
+			return;
+		}
+		if (isUnderPlayer(event.getTile()))
+		{
+			collectedEggCount++;
+		}
+	}
+
+	private void announceTime(String preText, String time, String amt) {
+		String type = "";
+		if (collectedEggCount>0) {
+			type = "Collected: ";
+		}
+		else if (HpHealed>0) {
+			type = "Healed: ";
+		}
 		final String chatMessage = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append(preText)
-			.append(ChatColorType.HIGHLIGHT)
-			.append(time)
-			.build();
+				.append(ChatColorType.NORMAL)
+				.append(preText)
+				.append(ChatColorType.HIGHLIGHT)
+				.append(time)
+				.append(ChatColorType.NORMAL)
+				.append(type)
+				.append(ChatColorType.HIGHLIGHT)
+				.append(amt)
+				.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.GAME)
-			.runeLiteFormattedMessage(chatMessage)
-			.build());
+				.type(ChatMessageType.GAME)
+				.runeLiteFormattedMessage(chatMessage)
+				.build());
+	}
+
+	private boolean isEgg(int itemID)
+	{
+		if (itemID == ItemID.RED_EGG || itemID == ItemID.GREEN_EGG
+			|| itemID == ItemID.BLUE_EGG || itemID == ItemID.YELLOW_EGG)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isUnderPlayer(Tile tile) {
+		Player local = client.getLocalPlayer();
+		if (local == null)
+		{
+			return false;
+		}
+
+		return (tile.getWorldLocation().equals(local.getWorldLocation()));
 	}
 
 	public Font getFont()
