@@ -71,6 +71,10 @@ public class BarbarianAssaultPlugin extends Plugin {
 	private int collectedEggCount = 0;
 	@Getter
 	private int HpHealed = 0;
+	@Getter
+	private int totalCollectedEggCount = 0;
+	@Getter
+	private int totalHpHealed = 0;
 
 	private Font font;
 	private Image clockImage;
@@ -115,6 +119,8 @@ public class BarbarianAssaultPlugin extends Plugin {
 		inGameBit = 0;
 		collectedEggCount = 0;
 		HpHealed = 0;
+		totalCollectedEggCount = 0;
+		totalHpHealed = 0;
 	}
 
 	@Subscribe
@@ -134,6 +140,8 @@ public class BarbarianAssaultPlugin extends Plugin {
 				&& event.getMessage().startsWith("---- Wave:")) {
 			String[] message = event.getMessage().split(" ");
 			currentWave = message[BA_WAVE_NUM_INDEX];
+			totalCollectedEggCount += collectedEggCount;
+			totalHpHealed += HpHealed;
 			collectedEggCount = 0;
 			HpHealed = 0;
 
@@ -147,11 +155,13 @@ public class BarbarianAssaultPlugin extends Plugin {
 			collectedEggCount -= 2;
 		} else if (event.getType() == ChatMessageType.SERVER
 				&& event.getMessage().contains("healed")) {
-				String message = event.getMessage();
-				String [] tokens = message.split(" ");
+			String message = event.getMessage();
+			String[] tokens = message.split(" ");
+			if (Integer.parseInt(tokens[2]) > 0) {
 				int Hp = Integer.parseInt(tokens[2]);
-				HpHealed+=Hp;
-				}
+				HpHealed += Hp;
+			}
+		}
 	}
 
 	@Subscribe
@@ -208,16 +218,23 @@ public class BarbarianAssaultPlugin extends Plugin {
 	}
 
 	private void announceTime(String preText, String time) {
-		String amt = "";
 		String type = "";
+		String amt = "";
 		if (config.showHpCount() && HpHealed>0) {
 			type = " Healed: ";
-			amt = ""+HpHealed;
+			if (currentWave.equals("10"))
+				amt =""+totalHpHealed;
+			else
+				amt = ""+HpHealed;
 		}
 		else if (config.showEggCount() && collectedEggCount>0) {
 			type = " Collected: ";
-			amt = ""+collectedEggCount;
+			if (currentWave.equals("10"))
+				amt = ""+totalCollectedEggCount;
+			else
+				amt = ""+collectedEggCount;
 		}
+
 		final String chatMessage = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
 				.append(preText)

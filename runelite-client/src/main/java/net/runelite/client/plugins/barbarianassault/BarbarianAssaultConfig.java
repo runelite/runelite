@@ -35,30 +35,29 @@ public interface BarbarianAssaultConfig extends Config
 	@ConfigItem(
 		keyName = "showTimer",
 		name = "Show call change timer",
-		description = "Show time to next call change"
+		description = "Show time to next call change",
+        position = 0
 	)
-	default boolean showTimer()
-	{
-		return true;
-	}
+	default boolean showTimer()	{ return true; }
 
 	@ConfigItem(
 		keyName = "waveTimes",
 		name = "Show wave and game duration",
-		description = "Displays wave and game duration"
-	)
+		description = "Displays wave and game duration",
+        position = 1
+    )
 	default boolean waveTimes() { return true; }
     @ConfigItem(
-            keyName = "showEggCountMessage",
-            name = "Show count of eggs collected as collector.",
-            description = "Display egg count as collector after each wave"
+        keyName = "showEggCountMessage",
+        name = "Show count of eggs collected as collector.",
+        description = "Display egg count as collector after each wave"
     )
     default boolean showEggCount() { return false; }
 
     @ConfigItem(
-            keyName = "showEggCountOverlay",
-            name = "Overlay of eggs counted",
-            description = "Display current egg count as collector"
+        keyName = "showEggCountOverlay",
+        name = "Overlay of eggs counted",
+        description = "Display current egg count as collector"
     )
     default boolean showEggCountOverlay() { return false; }
 
