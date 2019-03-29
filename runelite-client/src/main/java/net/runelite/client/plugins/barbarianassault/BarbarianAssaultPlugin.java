@@ -123,7 +123,7 @@ public class BarbarianAssaultPlugin extends Plugin {
 			Widget rewardWidget = client.getWidget(WidgetInfo.BA_REWARD_TEXT);
 
 			if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null) {
-				announceTime("Game finished, duration: ", gameTime.getTime(false), collectedEggCount+HpHealed+"");
+				announceTime("Game finished, duration: ", gameTime.getTime(false));
 			}
 		}
 	}
@@ -185,7 +185,7 @@ public class BarbarianAssaultPlugin extends Plugin {
 				overlay.setCurrentRound(null);
 
 				if (config.waveTimes() && gameTime != null) {
-					announceTime("Wave " + currentWave + " duration: ", gameTime.getTime(true), collectedEggCount+HpHealed+"");
+					announceTime("Wave " + currentWave + " duration: ", gameTime.getTime(true));
 				}
 
 			}
@@ -207,13 +207,16 @@ public class BarbarianAssaultPlugin extends Plugin {
 		}
 	}
 
-	private void announceTime(String preText, String time, String amt) {
+	private void announceTime(String preText, String time) {
+		String amt = "";
 		String type = "";
-		if (collectedEggCount>0) {
-			type = " Collected: ";
-		}
-		else if (HpHealed>0) {
+		if (config.showHpCount() && HpHealed>0) {
 			type = " Healed: ";
+			amt = ""+HpHealed;
+		}
+		else if (config.showEggCount() && collectedEggCount>0) {
+			type = " Collected: ";
+			amt = ""+collectedEggCount;
 		}
 		final String chatMessage = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
