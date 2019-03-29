@@ -31,6 +31,7 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -42,6 +43,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -52,6 +54,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.DEFAULT_OPTION;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
@@ -114,7 +117,7 @@ public class ClientUI
 	private final RuneLiteConfig config;
 	private final KeyManager keyManager;
 	private final MouseManager mouseManager;
-	private final Applet client;
+	private  Applet client;
 	private final ConfigManager configManager;
 	private final Provider<ClientThread> clientThreadProvider;
 	private final CardLayout cardLayout = new CardLayout();
@@ -514,13 +517,46 @@ public class ClientUI
 			log.info("Showing frame {}", frame);
 		});
 
+
 		// Show out of date dialog if needed
 		if (client == null)
 		{
-			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
-				"Error loading client! Check your logs for more details.",
-				"Unable to load client",
-				ERROR_MESSAGE));
+			final String[] options = {
+				"Open logs and exit",
+				"Exit",
+			};
+
+			SwingUtilities.invokeLater(() ->
+			{
+				int result = JOptionPane.showOptionDialog(frame,
+					"Error loading client! Check your logs for more details.",
+					"Unable to load client",
+					DEFAULT_OPTION,
+					ERROR_MESSAGE,
+					null,
+					options,
+					options[0]);
+
+				switch (result)
+				{
+					case 0:
+						final File logFile = new File(RuneLite.LOGS_DIR, "client.log");
+						try
+						{
+							Desktop.getDesktop().edit(logFile);
+						}
+						catch (Exception e)
+						{
+							log.warn("Failed to open editor for {}", logFile, e);
+						}
+
+						System.exit(1);
+						break;
+					case 1:
+						System.exit(1);
+						break;
+				}
+			});
 		}
 		else if (!(client instanceof Client))
 		{
