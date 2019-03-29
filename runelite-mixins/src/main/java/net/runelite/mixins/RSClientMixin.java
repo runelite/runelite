@@ -27,6 +27,7 @@ package net.runelite.mixins;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +86,7 @@ import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
@@ -734,7 +736,13 @@ public abstract class RSClientMixin implements RSClient
 	public ClanMember[] getClanMembers()
 	{
 		final RSClanMemberManager clanMemberManager = getClanMemberManager();
-		return clanMemberManager != null ? getClanMemberManager().getNameables() : null;
+		if (clanMemberManager == null)
+		{
+			return null;
+		}
+
+		final int count = clanMemberManager.getCount();
+		return Arrays.copyOf(clanMemberManager.getNameables(), count);
 	}
 
 	@Inject
@@ -767,7 +775,8 @@ public abstract class RSClientMixin implements RSClient
 			return null;
 		}
 
-		return friendContainer.getNameables();
+		final int count = friendContainer.getCount();
+		return Arrays.copyOf(friendContainer.getNameables(), count);
 	}
 
 	@Inject
@@ -805,7 +814,8 @@ public abstract class RSClientMixin implements RSClient
 			return null;
 		}
 
-		return ignoreContainer.getNameables();
+		final int count = ignoreContainer.getCount();
+		return Arrays.copyOf(ignoreContainer.getNameables(), count);
 	}
 
 	@Inject
@@ -1465,6 +1475,14 @@ public abstract class RSClientMixin implements RSClient
 	boolean rl$shouldLeftClickOpenMenu()
 	{
 		if (rs$shouldLeftClickOpenMenu())
+		{
+			return true;
+		}
+
+		MenuShouldLeftClick menuShouldLeftClick = new MenuShouldLeftClick();
+		client.getCallbacks().post(menuShouldLeftClick);
+
+		if (menuShouldLeftClick.isForceRightClick())
 		{
 			return true;
 		}

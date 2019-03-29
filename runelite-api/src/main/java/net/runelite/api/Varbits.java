@@ -475,7 +475,12 @@ public enum Varbits
 	 * 0 = buy
 	 * 1 = sell
 	 */
-	GE_OFFER_CREATION_TYPE(4397);
+	GE_OFFER_CREATION_TYPE(4397),
+
+	/**
+	 * The active tab within the quest interface
+	 */
+	QUEST_TAB(8168);
 
 	/**
 	 * The raw varbit ID.

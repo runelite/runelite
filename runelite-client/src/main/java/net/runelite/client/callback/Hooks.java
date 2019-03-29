@@ -186,8 +186,8 @@ public class Hooks implements Callbacks
 	 * When the world map opens it loads about ~100mb of data into memory, which
 	 * represents about half of the total memory allocated by the client.
 	 * This gets cached and never released, which causes GC pressure which can affect
-	 * performance. This method reinitailzies the world map cache, which allows the
-	 * data to be garbage collecged, and causes the map data from disk each time
+	 * performance. This method reinitializes the world map cache, which allows the
+	 * data to be garbage collected, and causes the map data from disk each time
 	 * is it opened.
 	 */
 	private void checkWorldMap()
