@@ -28,6 +28,7 @@ import java.awt.Polygon;
 import java.awt.geom.Area;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
@@ -123,7 +124,8 @@ public abstract class RSDecorativeObjectMixin implements RSDecorativeObject
 			return null;
 		}
 
-		return model.getConvexHull(getX() + getXOffset(), getY() + getYOffset(), 0);
+		int tileHeight = Perspective.getTileHeight(client, new LocalPoint(getX(), getY()), client.getPlane());
+		return model.getConvexHull(getX() + getXOffset(), getY() + getYOffset(), 0, tileHeight);
 	}
 
 	@Inject
@@ -137,6 +139,7 @@ public abstract class RSDecorativeObjectMixin implements RSDecorativeObject
 			return null;
 		}
 
-		return model.getConvexHull(getX(), getY(), 0);
+		int tileHeight = Perspective.getTileHeight(client, new LocalPoint(getX(), getY()), client.getPlane());
+		return model.getConvexHull(getX(), getY(), 0, tileHeight);
 	}
 }
