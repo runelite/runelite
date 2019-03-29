@@ -138,8 +138,8 @@ public class BarbarianAssaultPlugin extends Plugin {
 				&& event.getMessage().startsWith("---- Wave:")) {
 			String[] message = event.getMessage().split(" ");
 			currentWave = message[BA_WAVE_NUM_INDEX];
-			collectedEggCount += totalCollectedEggCount;
-			HpHealed += totalHpHealed;
+			totalCollectedEggCount += collectedEggCount;
+			totalHpHealed += HpHealed;
 			collectedEggCount = 0;
 			HpHealed = 0;
 
