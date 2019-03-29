@@ -210,10 +210,10 @@ public class BarbarianAssaultPlugin extends Plugin {
 	private void announceTime(String preText, String time, String amt) {
 		String type = "";
 		if (collectedEggCount>0) {
-			type = "Collected: ";
+			type = " Collected: ";
 		}
 		else if (HpHealed>0) {
-			type = "Healed: ";
+			type = " Healed: ";
 		}
 		final String chatMessage = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
