@@ -124,6 +124,13 @@ class FishingSpotOverlay extends Overlay
 			if (config.showSpotTiles())
 			{
 				Polygon poly = npc.getCanvasTilePoly();
+
+				if (spot == FishingSpot.COMMON_TENCH
+					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= 3)
+				{
+					color = Color.GREEN;
+				}
+
 				if (poly != null)
 				{
 					OverlayUtil.renderPolygon(graphics, poly, color.darker());
@@ -132,7 +139,7 @@ class FishingSpotOverlay extends Overlay
 
 			if (config.showSpotIcons())
 			{
-				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());;
+				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
 				if (fishImage != null)
 				{
 					Point imageLocation = npc.getCanvasImageLocation(fishImage, npc.getLogicalHeight());
@@ -153,6 +160,7 @@ class FishingSpotOverlay extends Overlay
 				}
 			}
 		}
+
 
 		return null;
 	}
