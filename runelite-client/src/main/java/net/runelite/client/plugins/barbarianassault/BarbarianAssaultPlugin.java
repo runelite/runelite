@@ -25,16 +25,25 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
-import com.google.inject.Provides;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+import java.util.Map;
 import javax.inject.Inject;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.inject.Provides;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.kit.KitType;
@@ -51,6 +60,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
@@ -58,16 +68,27 @@ import net.runelite.client.util.ImageUtil;
 	description = "Show a timer to the next call change and game/wave duration in chat.",
 	tags = {"minigame", "overlay", "timer"}
 )
+@Slf4j
 public class BarbarianAssaultPlugin extends Plugin
 {
 	private static final int BA_WAVE_NUM_INDEX = 2;
-	private static final String START_WAVE = "1";
+	private static final int START_WAVE = 1;
 	private static final String ENDGAME_REWARD_NEEDLE_TEXT = "<br>5";
+
+	private static final Map<Integer, Color> EGG_COLOR_MAPPING = ImmutableMap.of(
+			ItemID.RED_EGG, Color.RED,
+			ItemID.BLUE_EGG, Color.BLUE,
+			ItemID.GREEN_EGG, Color.GREEN,
+			ItemID.YELLOW_EGG, Color.YELLOW);
 
 	private Font font;
 	private Image clockImage;
 	private int inGameBit = 0;
-	private String currentWave = START_WAVE;
+
+	@Getter(AccessLevel.MODULE)
+	private int currentWave = START_WAVE;
+
+	@Getter(AccessLevel.MODULE)
 	private GameTimer gameTime;
 
 	@Inject
@@ -127,13 +148,19 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() == ChatMessageType.SERVER
-			&& event.getMessage().startsWith("---- Wave:"))
+		if (!isInGame() || event.getType() != ChatMessageType.SERVER)
 		{
-			String[] message = event.getMessage().split(" ");
-			currentWave = message[BA_WAVE_NUM_INDEX];
+			return;
+		}
 
-			if (currentWave.equals(START_WAVE))
+		String message = event.getMessage();
+
+		if (message.startsWith("---- Wave:"))
+		{
+			String[] messageParts = event.getMessage().split("\\s+");
+			currentWave = Integer.parseInt(messageParts[BA_WAVE_NUM_INDEX]);
+
+			if (currentWave == START_WAVE)
 			{
 				gameTime = new GameTimer();
 			}
@@ -147,7 +174,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (client.getVar(Varbits.IN_GAME_BA) == 0 || client.getLocalPlayer() == null || overlay.getCurrentRound() != null)
+		if (!isInGame() || client.getLocalPlayer() == null || overlay.getCurrentRound() != null)
 		{
 			return;
 		}
@@ -167,6 +194,34 @@ public class BarbarianAssaultPlugin extends Plugin
 				overlay.setCurrentRound(new Round(Role.HEALER));
 				break;
 		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (!config.colorEggOptions() || !isInGame())
+		{
+			return;
+		}
+
+		int itemId = event.getIdentifier();
+		String option = event.getOption();
+
+		if (!option.equalsIgnoreCase("take")
+				|| !EGG_COLOR_MAPPING.containsKey(itemId))
+		{
+			return;
+		}
+
+		Color color = EGG_COLOR_MAPPING.get(itemId);
+
+		MenuEntry[] menuOptions = client.getMenuEntries();
+		MenuEntry lastEntry = menuOptions[menuOptions.length - 1];
+
+		String target = lastEntry.getTarget().substring(lastEntry.getTarget().indexOf(">") + 1);
+		lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
+
+		client.setMenuEntries(menuOptions);
 	}
 
 	@Subscribe
@@ -203,6 +258,11 @@ public class BarbarianAssaultPlugin extends Plugin
 			.type(ChatMessageType.GAME)
 			.runeLiteFormattedMessage(chatMessage)
 			.build());
+	}
+
+	private boolean isInGame()
+	{
+		return client.getVar(Varbits.IN_GAME_BA) == 1;
 	}
 
 	public Font getFont()

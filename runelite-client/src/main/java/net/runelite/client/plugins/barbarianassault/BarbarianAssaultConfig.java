@@ -51,4 +51,14 @@ public interface BarbarianAssaultConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "colorEggOptions",
+		name = "Show egg colors in right-click menu",
+		description = "Changes color of \"Take\" options to match the color of eggs"
+	)
+	default boolean colorEggOptions()
+	{
+		return true;
+	}
 }
