@@ -119,8 +119,6 @@ public class BarbarianAssaultPlugin extends Plugin {
 		inGameBit = 0;
 		collectedEggCount = 0;
 		HpHealed = 0;
-		totalCollectedEggCount = 0;
-		totalHpHealed = 0;
 	}
 
 	@Subscribe
@@ -140,8 +138,8 @@ public class BarbarianAssaultPlugin extends Plugin {
 				&& event.getMessage().startsWith("---- Wave:")) {
 			String[] message = event.getMessage().split(" ");
 			currentWave = message[BA_WAVE_NUM_INDEX];
-			totalCollectedEggCount += collectedEggCount;
-			totalHpHealed += HpHealed;
+			collectedEggCount += totalCollectedEggCount;
+			HpHealed += totalHpHealed;
 			collectedEggCount = 0;
 			HpHealed = 0;
 
@@ -221,14 +219,14 @@ public class BarbarianAssaultPlugin extends Plugin {
 		String type = "";
 		String amt = "";
 		if (config.showHpCount() && HpHealed>0) {
-			type = " Healed: ";
+			type = "; Healed: ";
 			if (currentWave.equals("10"))
 				amt =""+totalHpHealed;
 			else
 				amt = ""+HpHealed;
 		}
 		else if (config.showEggCount() && collectedEggCount>0) {
-			type = " Collected: ";
+			type = "; Collected: ";
 			if (currentWave.equals("10"))
 				amt = ""+totalCollectedEggCount;
 			else
