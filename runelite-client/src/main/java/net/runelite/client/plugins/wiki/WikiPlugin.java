@@ -30,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Provider;
+import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
@@ -38,6 +39,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
@@ -49,6 +51,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -103,6 +106,15 @@ public class WikiPlugin extends Plugin
 	@Inject
 	private Provider<WikiSearchChatboxTextInput> wikiSearchChatboxTextInputProvider;
 
+	@Inject
+	private WikiConfig config;
+
+	@Provides
+	WikiConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(WikiConfig.class);
+	}
+
 	private Widget icon;
 
 	private boolean wikiSelected = false;
@@ -110,31 +122,13 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		spriteManager.addSpriteOverrides(WikiSprite.values());
-		clientThread.invokeLater(this::addWidgets);
+		orbCreate();
 	}
 
 	@Override
 	public void shutDown()
 	{
-		spriteManager.removeSpriteOverrides(WikiSprite.values());
-		clientThread.invokeLater(() ->
-		{
-			Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
-			if (minimapOrbs == null)
-			{
-				return;
-			}
-			Widget[] children = minimapOrbs.getChildren();
-			if (children == null || children.length < 1)
-			{
-				return;
-			}
-			children[0] = null;
-
-			onDeselect();
-			client.setSpellSelected(false);
-		});
+		orbDestroy();
 	}
 
 	@Subscribe
@@ -149,7 +143,7 @@ public class WikiPlugin extends Plugin
 	private void addWidgets()
 	{
 		Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
-		if (minimapOrbs == null)
+		if (minimapOrbs == null || !config.orbEnable())
 		{
 			return;
 		}
@@ -365,5 +359,46 @@ public class WikiPlugin extends Plugin
 
 			client.setMenuEntries(menuEntries);
 		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("wiki") && !config.orbEnable())
+		{
+			orbDestroy();
+		}
+		else
+		{
+			orbCreate();
+		}
+	}
+
+	private void orbCreate()
+	{
+		spriteManager.addSpriteOverrides(WikiSprite.values());
+		clientThread.invokeLater(this::addWidgets);
+	}
+
+	private void orbDestroy()
+	{
+		spriteManager.removeSpriteOverrides(WikiSprite.values());
+		clientThread.invokeLater(() ->
+		{
+			Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
+			if (minimapOrbs == null)
+			{
+				return;
+			}
+			Widget[] children = minimapOrbs.getChildren();
+			if (children == null || children.length < 1)
+			{
+				return;
+			}
+			children[0] = null;
+
+			onDeselect();
+			client.setSpellSelected(false);
+		});
 	}
 }
