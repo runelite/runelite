@@ -223,7 +223,8 @@ public class ChatMessageManager
 				case GAME:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
 				case TWITCH:
-					return twitchPurple;		}
+					return twitchPurple;
+			}
 		}
 		else
 		{
