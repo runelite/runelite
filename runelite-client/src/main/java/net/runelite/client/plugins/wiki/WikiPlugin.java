@@ -180,6 +180,24 @@ public class WikiPlugin extends Plugin
 		icon.revalidate();
 	}
 
+	private void removeWidgets()
+	{
+		Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
+		if (minimapOrbs == null)
+		{
+			return;
+		}
+		Widget[] children = minimapOrbs.getChildren();
+		if (children == null || children.length < 1)
+		{
+			return;
+		}
+		children[0] = null;
+
+		onDeselect();
+		client.setSpellSelected(false);
+	}
+
 	private void onDeselect()
 	{
 		wikiSelected = false;
@@ -392,22 +410,6 @@ public class WikiPlugin extends Plugin
 	private void orbDestroy()
 	{
 		spriteManager.removeSpriteOverrides(WikiSprite.values());
-		clientThread.invokeLater(() ->
-		{
-			Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
-			if (minimapOrbs == null)
-			{
-				return;
-			}
-			Widget[] children = minimapOrbs.getChildren();
-			if (children == null || children.length < 1)
-			{
-				return;
-			}
-			children[0] = null;
-
-			onDeselect();
-			client.setSpellSelected(false);
-		});
+		clientThread.invokeLater(this::removeWidgets);
 	}
 }
