@@ -229,6 +229,10 @@ public enum MenuAction
 	 * Default menu action for a widget.
 	 */
 	WIDGET_DEFAULT(57),
+	/**
+	 * A menu action injected by runelite that takes priority over other menu actions.
+	 */
+	RUNELITE_PRIORITY(500),
 
 	/**
 	 * Menu action triggered by examining an object.

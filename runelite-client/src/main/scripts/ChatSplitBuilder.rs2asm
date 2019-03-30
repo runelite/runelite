@@ -19,7 +19,7 @@
    iconst                 105
    iconst                 1136
    iload                  6
-   enum                  
+   enum
    iconst                 0
    if_icmpgt              LABEL20
    jump                   LABEL58
@@ -35,7 +35,7 @@ LABEL24:
    iconst                 105
    iconst                 1960
    iload                  6
-   enum                  
+   enum
    iconst                 30
    istore                 5
    istore                 1
@@ -54,7 +54,7 @@ LABEL40:
 LABEL44:
    iload                  4
    iload                  5
-   add                   
+   add
    istore                 4
    jump                   LABEL58
 LABEL49:
@@ -79,7 +79,7 @@ LABEL58:
    iconst                 73
    iconst                 580
    iload                  9
-   enum                  
+   enum
    istore                 10
    iconst                 0
    istore                 11
@@ -90,7 +90,7 @@ LABEL58:
    if_icmpgt              LABEL79
    jump                   LABEL156
 LABEL79:
-   reboottimer           
+   reboottimer
    iconst                 50
    div                   
    iconst                 60
@@ -138,7 +138,7 @@ LABEL110:
    iconst                 16776960
    iconst                 1
    invoke                 199
-   add                   
+   add
    istore                 7
    iload                  10
    if_clearops           
@@ -168,7 +168,7 @@ LABEL110:
    iconst                 73
    iconst                 580
    iload                  9
-   enum                  
+   enum
    istore                 10
 LABEL156:
    iconst                 -1
@@ -233,12 +233,12 @@ LABEL196:
    iconst                 16776960
    iconst                 1
    invoke                 199
-   add                   
+   add
    istore                 7
    iload                  10
    if_clearops           
    sload                  3
-   string_length         
+   string_length
    iconst                 0
    if_icmpgt              LABEL223
    jump                   LABEL248
@@ -302,7 +302,7 @@ LABEL256:
    iconst                 73
    iconst                 580
    iload                  9
-   enum                  
+   enum
    istore                 10
 LABEL282:
    iload                  0
@@ -334,13 +334,13 @@ LABEL301:
 LABEL305:
    iload                  7
    iload                  4
-   sub                   
+   sub
    iconst                 57
    if_icmplt              LABEL311
    jump                   LABEL479
 LABEL311:
    iload                  12
-   chat_gethistory_byuid 
+   chat_gethistory_byuid
    istore                 14
    sstore                 0
    sstore                 2
@@ -368,7 +368,7 @@ CHAT_FILTER:
    jump                   LABEL475
 LABEL327:
    iload                  15
-   switch                
+   switch
       3: LABEL330
       6: LABEL351
       7: LABEL330
@@ -394,7 +394,7 @@ LABEL330:
    iconst                 65535
    iconst                 1
    invoke                 203
-   add                   
+   add
    istore                 7
    jump                   LABEL407
 LABEL351:
@@ -418,7 +418,7 @@ LABEL351:
    iconst                 65535
    iconst                 1
    invoke                 203
-   add                   
+   add
    istore                 7
    jump                   LABEL407
 LABEL372:
@@ -436,7 +436,7 @@ LABEL372:
    iconst                 65535
    iconst                 1
    invoke                 199
-   add                   
+   add
    istore                 7
    iload                  15
    iconst                 5
@@ -532,7 +532,7 @@ LABEL457:
    iconst                 73
    iconst                 580
    iload                  9
-   enum                  
+   enum
    istore                 10
 LABEL475:
    iload                  12
@@ -603,8 +603,8 @@ LABEL529:
    iconst                 73
    iconst                 580
    iload                  9
-   enum                  
+   enum
    istore                 10
    jump                   LABEL479
 LABEL540:
-   return                
+   return

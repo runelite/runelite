@@ -1,0 +1,115 @@
+.id                 553
+.int_stack_count    0
+.string_stack_count 0
+.int_var_count      7
+.string_var_count   3
+   iconst                 -1
+   istore                 0
+   iconst                 -1
+   istore                 1
+   sconst                 ""
+   sstore                 0
+   sconst                 ""
+   sstore                 1
+   sconst                 ""
+   sstore                 2
+   iconst                 -1
+   istore                 2
+   iconst                 -2147483648
+   istore                 3
+   iconst                 -2147483648
+   istore                 4
+   iconst                 0
+   istore                 5
+   iconst                 0
+   istore                 6
+LABEL20:
+   iload                  5
+   iconst                 109           ; Changed from 108 to 109 to accomodate Twitch Chat type
+   if_icmple              LABEL24
+   jump                   LABEL88
+LABEL24:
+   iload                  5
+   chat_gethistorylength 
+   iconst                 0
+   if_icmpgt              LABEL29
+   jump                   LABEL83
+LABEL29:
+   iload                  5
+   iconst                 0
+   chat_gethistory_bytypeandline
+   istore                 6
+   sstore                 2
+   sstore                 1
+   sstore                 0
+   istore                 1
+   istore                 0
+   iload                  1
+   iload                  3
+   if_icmpgt              LABEL45
+   iload                  0
+   iload                  2
+   if_icmpgt              LABEL45
+   jump                   LABEL49
+LABEL45:
+   iload                  1
+   istore                 3
+   iload                  0
+   istore                 2
+LABEL49:
+   iload                  5
+   switch                
+      3: LABEL52
+      6: LABEL52
+      7: LABEL52
+      14: LABEL62
+   jump                   LABEL83
+LABEL52:
+   iload                  1
+   iload                  4
+   if_icmpgt              LABEL56
+   jump                   LABEL61
+LABEL56:
+   iload                  1
+   istore                 4
+   sload                  0
+   removetags            
+   set_varc_string        356
+LABEL61:
+   jump                   LABEL83
+LABEL62:
+   iload                  0
+   iconst                 -1
+   if_icmpne              LABEL66
+   jump                   LABEL83
+LABEL66:
+   iload                  1
+   get_varc_int           202
+   if_icmpge              LABEL70
+   jump                   LABEL83
+LABEL70:
+   iload                  1
+   clientclock           
+   iconst                 3000
+   sub                   
+   if_icmpgt              LABEL76
+   jump                   LABEL83
+LABEL76:
+   iload                  1
+   set_varc_int           55
+   iconst                 664
+   iconst                 0
+   sconst                 "1"
+   iconst                 10616832
+   if_setontimer         
+LABEL83:
+   iload                  5
+   iconst                 1
+   add                   
+   istore                 5
+   jump                   LABEL20
+LABEL88:
+   iload                  2
+   return                
+   iconst                 0
+   return                

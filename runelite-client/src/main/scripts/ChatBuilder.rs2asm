@@ -6,7 +6,7 @@
    iconst                 10616890
    if_getwidth           
    istore                 1
-   chat_playername       
+   chat_playername
    removetags            
    sstore                 0
    iconst                 0
@@ -75,7 +75,7 @@ LABEL58:
    iconst                 73
    iconst                 579
    iload                  7
-   enum                  
+   enum
    istore                 8
    get_varc_int           41
    iconst                 0
@@ -85,7 +85,7 @@ LABEL58:
    if_icmpeq              LABEL77
    jump                   LABEL133
 LABEL77:
-   chat_getmessagefilter 
+   chat_getmessagefilter
    string_length         
    iconst                 0
    if_icmpgt              LABEL82
@@ -130,7 +130,7 @@ LABEL82:
    if_setonmouseleave    
    iload                  5
    iload                  6
-   sub                   
+   sub
    istore                 5
    iload                  7
    iconst                 1
@@ -140,7 +140,7 @@ LABEL82:
    iconst                 73
    iconst                 579
    iload                  7
-   enum                  
+   enum
    istore                 8
 LABEL133:
    iload                  0
@@ -171,7 +171,7 @@ LABEL153:
    jump                   LABEL645
 LABEL157:
    iload                  9
-   chat_gethistory_byuid 
+   chat_gethistory_byuid
    istore                 12
    sstore                 11
    sstore                 10
@@ -210,7 +210,7 @@ LABEL172:
    jump                   LABEL641
 LABEL183:
    iload                  10
-   switch                
+   switch
       1: LABEL186
       2: LABEL186
       3: LABEL228
@@ -225,6 +225,7 @@ LABEL183:
       14: LABEL367
       90: LABEL207
       91: LABEL207
+      109: LABEL341                     ;
    jump                   LABEL426
 LABEL186:
    iload                  9                 ; The id of the messageNode of the message being built
@@ -486,7 +487,7 @@ LABEL367:
    istore                 6
    jump                   LABEL440
 LABEL390:
-   clientclock           
+   clientclock
    iload                  11
    sub                   
    iconst                 500
@@ -544,7 +545,7 @@ LABEL440:
    iload                  8
    if_clearops           
    iload                  10
-   switch                
+   switch
       1: LABEL445
       2: LABEL445
       3: LABEL445
@@ -582,7 +583,7 @@ LABEL445:
    if_setonmouseleave    
    sload                  0
    sload                  9
-   removetags            
+   removetags
    compare               
    iconst                 0
    if_icmpne              LABEL472
@@ -617,7 +618,7 @@ LABEL489:
    if_icmpeq              LABEL497
    jump                   LABEL509
 LABEL497:
-   clan_getchatcount     
+   clan_getchatcount
    iconst                 0
    if_icmpgt              LABEL501
    jump                   LABEL509
@@ -687,7 +688,7 @@ LABEL535:
    jump                   LABEL627
 LABEL560:
    sload                  12
-   string_length         
+   string_length
    iconst                 0
    if_icmpgt              LABEL565
    jump                   LABEL590
@@ -760,7 +761,7 @@ LABEL615:
 LABEL627:
    iload                  5
    iload                  6
-   sub                   
+   sub
    istore                 5
    iload                  7
    iconst                 1
@@ -770,7 +771,7 @@ LABEL627:
    iconst                 73
    iconst                 579
    iload                  7
-   enum                  
+   enum
    istore                 8
 LABEL641:
    iload                  9
@@ -844,7 +845,7 @@ LABEL697:
    iconst                 73
    iconst                 579
    iload                  7
-   enum                  
+   enum
    istore                 8
    jump                   LABEL647
 LABEL708:
@@ -854,7 +855,7 @@ LABEL708:
    istore                 5
    iconst                 0
    iload                  5
-   sub                   
+   sub
    istore                 5
    iconst                 10616890
    if_getheight          
@@ -883,12 +884,12 @@ LABEL731:
    iconst                 73
    iconst                 579
    iload                  7
-   enum                  
+   enum
    istore                 8
    iload                  8
    if_gety               
    iload                  14
-   add                   
+   add
    iconst                 2
    sub                   
    istore                 5

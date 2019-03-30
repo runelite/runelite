@@ -61,6 +61,22 @@ public final class ScriptID
 	public static final int OPEN_PRIVATE_MESSAGE_INTERFACE = 107;
 
 	/**
+	 * Mouse listener for when a chat button is pressed
+	 * <ul>
+	 * <li> Int (0 - 5) Representing the chat button that was clicked</li>
+	 * <li> Int (2 - 5) Represents the chat to switch to and is used to set the chat filter</li>
+	 * </ul>
+	 */
+	public static final int CHAT_BUTTON_ONOP = 175;
+
+	/**
+	 * Redraws the chat buttons
+	 *
+	 * Script name is redraw_chat_buttons
+	 */
+	public static final int CHAT_BUTTON_REDRAW = 178;
+
+	/**
 	 * Rebuilds the text input widget inside the chat interface
 	 * <ul>
 	 * <li> String Message Prefix. Only used inside the GE search interfaces
