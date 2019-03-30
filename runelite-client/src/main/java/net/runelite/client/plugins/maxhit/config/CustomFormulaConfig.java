@@ -199,7 +199,7 @@ public enum CustomFormulaConfig
 
 			double initialMaxHit = calculator.calculate();
 
-			double multiplier = (1.0 + lostHP / 100.0 * maxHP / 100.0);
+			double multiplier = (1.0 + ((lostHP / 100.0) * (maxHP / 100.0)));
 
 			return Math.floor(initialMaxHit * multiplier);
 		}
