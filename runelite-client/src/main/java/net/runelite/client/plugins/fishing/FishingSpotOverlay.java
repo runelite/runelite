@@ -46,6 +46,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import net.runelite.client.util.ImageUtil;
 
 class FishingSpotOverlay extends Overlay
 {
@@ -139,7 +140,18 @@ class FishingSpotOverlay extends Overlay
 
 			if (config.showSpotIcons())
 			{
-				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
+				BufferedImage fishImage;
+
+				if (spot == FishingSpot.COMMON_TENCH
+					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= 3)
+				{
+					fishImage = ImageUtil.outlineImage(itemManager.getImage(spot.getFishSpriteId()), Color.GREEN);
+				}
+				else
+				{
+					fishImage = itemManager.getImage(spot.getFishSpriteId());
+				}
+
 				if (fishImage != null)
 				{
 					Point imageLocation = npc.getCanvasImageLocation(fishImage, npc.getLogicalHeight());
@@ -154,6 +166,13 @@ class FishingSpotOverlay extends Overlay
 			{
 				String text = spot.getName();
 				Point textLocation = npc.getCanvasTextLocation(graphics, text, npc.getLogicalHeight() + 40);
+
+				if (spot == FishingSpot.COMMON_TENCH
+					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= 3)
+				{
+					color = Color.GREEN;
+				}
+
 				if (textLocation != null)
 				{
 					OverlayUtil.renderTextLocation(graphics, textLocation, text, color.darker());
