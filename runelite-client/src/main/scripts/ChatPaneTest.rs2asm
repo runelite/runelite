@@ -109,7 +109,7 @@ LABEL71:
    jump                   LABEL83
 LABEL93:                                    ;
    iload                  0                 ;
-   iconst                 108               ;
+   iconst                 109               ;
    if_icmpeq              LABEL94           ;
    jump                   LABEL95           ;
 LABEL81:

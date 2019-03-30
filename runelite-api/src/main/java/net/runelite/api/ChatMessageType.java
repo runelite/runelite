@@ -131,7 +131,7 @@ public enum ChatMessageType
 	/**
 	 * A message from a twitch chat.
 	 */
-	TWITCH(108),
+	TWITCH(109),
 	/**
 	 * An unknown message type.
 	 */

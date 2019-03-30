@@ -20,7 +20,7 @@ LABEL10:
    if_icmpeq              LABEL14
    jump                   LABEL17
 LABEL14:
-   iconst                 -1
+   iconst                 1337
    set_varc_int           41
    jump                   LABEL19
 LABEL17:

@@ -25,7 +25,7 @@
    istore                 6
 LABEL20:
    iload                  5
-   iconst                 108           ; Changed from 107 to 108 to accomodate Twitch Chat type
+   iconst                 109           ; Changed from 108 to 109 to accomodate Twitch Chat type
    if_icmple              LABEL24
    jump                   LABEL88
 LABEL24:
