@@ -38,11 +38,11 @@ import net.runelite.client.ui.ColorScheme;
  * was very hard to see in the dark gray background, this makes the selected
  * item white and adds some padding to the elements for more readable list.
  */
-public final class ComboBoxListRenderer extends JLabel implements ListCellRenderer
+public final class ComboBoxListRenderer<A> extends JLabel implements ListCellRenderer<A>
 {
 
 	@Override
-	public Component getListCellRendererComponent(JList list, Object o, int index, boolean isSelected, boolean cellHasFocus)
+	public Component getListCellRendererComponent(JList<? extends A> list, A a, int index, boolean isSelected, boolean cellHasFocus)
 	{
 		if (isSelected)
 		{
@@ -57,7 +57,7 @@ public final class ComboBoxListRenderer extends JLabel implements ListCellRender
 
 		setBorder(new EmptyBorder(5, 5, 5, 0));
 
-		String text = o.toString();
+		String text = a.toString();
 		setText(text);
 
 		return this;
