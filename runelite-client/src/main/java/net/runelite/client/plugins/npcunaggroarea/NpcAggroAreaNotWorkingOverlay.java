@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, TheLonelyDev <https://github.com/TheLonelyDev>
- * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,45 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.bankvalue;
+package net.runelite.client.plugins.npcunaggroarea;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import com.google.inject.Inject;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
-@ConfigGroup("bankvalue")
-public interface BankValueConfig extends Config
+class NpcAggroAreaNotWorkingOverlay extends Overlay
 {
-	@ConfigItem(
-		keyName = "showGE",
-		name = "Show Grand Exchange price",
-		description = "Show grand exchange price total (GE)",
-		position = 1
-	)
-	default boolean showGE()
+	private final NpcAggroAreaPlugin plugin;
+	private final PanelComponent panelComponent;
+
+	@Inject
+	private NpcAggroAreaNotWorkingOverlay(NpcAggroAreaPlugin plugin)
 	{
-		return true;
+		this.plugin = plugin;
+
+		panelComponent = new PanelComponent();
+		panelComponent.setPreferredSize(new Dimension(150, 0));
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Unaggressive NPC timers will start working when you teleport far away or enter a dungeon.")
+			.build());
+
+		setPriority(OverlayPriority.LOW);
+		setPosition(OverlayPosition.TOP_LEFT);
 	}
 
-	@ConfigItem(
-		keyName = "showHA",
-		name = "Show high alchemy price",
-		description = "Show high alchemy price total (HA)",
-		position = 2
-	)
-	default boolean showHA()
+	@Override
+	public Dimension render(Graphics2D graphics)
 	{
-		return false;
-	}
+		if (!plugin.isActive() || plugin.getSafeCenters()[1] != null)
+		{
+			return null;
+		}
 
-	@ConfigItem(
-		keyName = "showExact",
-		name = "Show exact bank value",
-		description = "Show exact bank value",
-		position = 3
-	)
-	default boolean showExact()
-	{
-		return false;
+		return panelComponent.render(graphics);
 	}
 }

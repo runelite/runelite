@@ -81,7 +81,7 @@ import org.apache.commons.text.WordUtils;
 public class ChatCommandsPlugin extends Plugin
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
-	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>");
+	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (.+) (?:kill|harvest) count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern RAIDS_PATTERN = Pattern.compile("Your completed (.+) count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern WINTERTODT_PATTERN = Pattern.compile("Your subdued Wintertodt count is: <col=ff0000>(\\d+)</col>");
 	private static final Pattern BARROWS_PATTERN = Pattern.compile("Your Barrows chest count is: <col=ff0000>(\\d+)</col>");
@@ -1108,6 +1108,8 @@ public class ChatCommandsPlugin extends Plugin
 				return "Wintertodt";
 			case "barrows":
 				return "Barrows Chests";
+			case "herbi":
+				return "Herbiboar";
 
 			// cox
 			case "cox":
