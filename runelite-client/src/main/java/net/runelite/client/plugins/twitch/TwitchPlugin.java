@@ -78,6 +78,8 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 	private static final String CLAN_CHAT_MENUTARGET = ColorUtil.wrapWithColorTag("Clan chat", clanMenuOpColor);
 	private static final String TWITCH_FILTER_MENUOPTION = ColorUtil.wrapWithColorTag("Twitch:", twitchMenuOpColor);
 
+	private static int TWITCH_CHAT_PANE = 6;
+
 	private boolean twitchChatSelected = false;
 	private boolean twitchChatFilter = false;
 
@@ -138,7 +140,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			twitchChatSelected = false;
 			clanChatButtonText.setText("Clan");
 
-			if (client.getVar(VarClientInt.CHAT_PANEL_SELECTED) == 6)
+			if (client.getVar(VarClientInt.CHAT_PANE_SELECTED) == TWITCH_CHAT_PANE)
 			{
 				clientThread.invoke(() -> client.runScript(ScriptID.CHAT_BUTTON_ONOP, 1, 4));
 			}
@@ -352,14 +354,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 		}
 		else if (event.getMenuOption().equals(TWITCH_FILTER_MENUOPTION))
 		{
-			if (event.getMenuTarget().equals("Show all"))
-			{
-				twitchChatFilter = false;
-			}
-			else
-			{
-				twitchChatFilter = true;
-			}
+			twitchChatFilter = !event.getMenuTarget().equals("On");
 		}
 	}
 
@@ -375,14 +370,10 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			MenuEntry [] newMenu = new MenuEntry[menuEntries.length + 3];
 			newMenu[newMenu.length - 1] = menuEntries[menuEntries.length - 1];
 			MenuEntry switchOption = newMenu[newMenu.length - 2] = new MenuEntry();
-			if (!twitchChatSelected)
-			{
-				switchOption.setTarget(TWITCH_CHAT_MENUTARGET);
-			}
-			else
-			{
-				switchOption.setTarget(CLAN_CHAT_MENUTARGET);
-			}
+			String targetString = twitchChatSelected ? CLAN_CHAT_MENUTARGET : TWITCH_CHAT_MENUTARGET;
+			System.out.println(twitchChatSelected);
+			System.out.println(targetString);
+			switchOption.setTarget(targetString);
 			switchOption.setOption("Switch:");
 			switchOption.setParam0(widgetIndex);
 			switchOption.setParam1(widgetID);
@@ -390,7 +381,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			switchOption.setType(MenuAction.RUNELITE_PRIORITY.getId());
 			System.arraycopy(menuEntries, 0, newMenu, 0, 4);
 			MenuEntry twitchChatFilterAll = newMenu[5] = new MenuEntry();
-			twitchChatFilterAll.setTarget("Show all");
+			twitchChatFilterAll.setTarget("On");
 			twitchChatFilterAll.setOption(TWITCH_FILTER_MENUOPTION);
 			twitchChatFilterAll.setParam0(widgetIndex);
 			twitchChatFilterAll.setParam1(widgetID);

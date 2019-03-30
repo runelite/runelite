@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.twitch;
 
 import net.runelite.api.Client;
+import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.client.plugins.twitch.TwitchConfig;
 import net.runelite.client.plugins.twitch.TwitchPlugin;
@@ -39,6 +40,10 @@ public class twitchChatButtonOverlay extends Overlay
 	private final Client client;
 	private final TwitchConfig config;
 	private final TwitchPlugin plugin;
+
+	private static final int TWITCH_CHAT_PANE = 6;
+	private static final int CLAN_CHAT_BUTTON = 4;
+
 
 	@Inject
 	private twitchChatButtonOverlay(Client client, TwitchConfig config, TwitchPlugin plugin)
@@ -65,31 +70,27 @@ public class twitchChatButtonOverlay extends Overlay
 
 	private void setSprite()
 	{
-		if (client.getVar(VarClientInt.CHAT_PANEL_SELECTED) == 6 && client.getVar(VarClientInt.CHAT_BUTTON_HIGHLIGHTED) == 4)
+		if (client.getVar(VarClientInt.CHAT_PANE_SELECTED) == TWITCH_CHAT_PANE && client.getVar(VarClientInt.CHAT_BUTTON_HOVERED_OVER) == CLAN_CHAT_BUTTON)
 		{
-			plugin.clanChatButtonBackground.setSpriteId(1023);
+			plugin.clanChatButtonBackground.setSpriteId(SpriteID.CHATBOX_BUTTON_SELECTED_HOVERED);
 		}
-		else if ( client.getVar(VarClientInt.CHAT_BUTTON_HIGHLIGHTED) == 4)
+		else if ( client.getVar(VarClientInt.CHAT_BUTTON_HOVERED_OVER) == CLAN_CHAT_BUTTON)
 		{
-			plugin.clanChatButtonBackground.setSpriteId(1020);
+			plugin.clanChatButtonBackground.setSpriteId(SpriteID.CHATBOX_BUTTON_HOVERED);
 		}
-		else if (client.getVar(VarClientInt.CHAT_PANEL_SELECTED) == 6)
+		else if (client.getVar(VarClientInt.CHAT_PANE_SELECTED) == TWITCH_CHAT_PANE)
 		{
-			plugin.clanChatButtonBackground.setSpriteId(1022);
+			plugin.clanChatButtonBackground.setSpriteId(SpriteID.CHATBOX_BUTTON_SELECTED);
 		}
 		else
 		{
-			plugin.clanChatButtonBackground.setSpriteId(1019);
+			plugin.clanChatButtonBackground.setSpriteId(SpriteID.CHATBOX_BUTTON);
 		}
 
-		if (!plugin.getTwitchChatFilter())
-		{
-			plugin.clanChatButtonFilterText.setText(ColorUtil.wrapWithColorTag("On", new Color(0x00FF00)));
-		}
-		else
-		{
-			plugin.clanChatButtonFilterText.setText(ColorUtil.wrapWithColorTag("Off", new Color(0xFF0000)));
-		}
+		String filterText = plugin.getTwitchChatFilter()
+				? ColorUtil.wrapWithColorTag("Off", new Color(0xFF0000))
+				: ColorUtil.wrapWithColorTag("On", new Color(0x00FF00));
+		plugin.clanChatButtonFilterText.setText(filterText);
 	}
 
 }

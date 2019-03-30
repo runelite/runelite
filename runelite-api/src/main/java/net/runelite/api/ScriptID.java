@@ -62,6 +62,10 @@ public final class ScriptID
 
 	/**
 	 * Mouse listener for when a chat button is pressed
+	 * <ul>
+	 * <li> Int (0 - 5) Representing the chat button that was clicked</li>
+	 * <li> Int (2 - 5) Represents the chat to switch to and is used to set the chat filter</li>
+	 * </ul>
 	 */
 	public static final int CHAT_BUTTON_ONOP = 175;
 

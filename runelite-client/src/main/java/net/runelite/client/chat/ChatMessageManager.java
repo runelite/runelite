@@ -63,6 +63,8 @@ public class ChatMessageManager
 	private int transparencyVarbit = -1;
 	private final Queue<QueuedMessage> queuedMessages = new ConcurrentLinkedQueue<>();
 
+	private static final Color twitchPurple = new Color(100, 65, 164); //Twitch.tv purple
+
 	@Inject
 	private ChatMessageManager(
 		Client client,
@@ -141,7 +143,6 @@ public class ChatMessageManager
 			case CLANCHAT:
 				usernameColor = isChatboxTransparent ? chatColorConfig.transparentClanUsernames() : chatColorConfig.opaqueClanUsernames();
 				break;
-
 		}
 
 		senderColor = isChatboxTransparent ? chatColorConfig.transparentClanChannelName() : chatColorConfig.opaqueClanChannelName();
@@ -222,8 +223,7 @@ public class ChatMessageManager
 				case GAME:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
 				case TWITCH:
-					return new Color(100, 65, 164); //Twitch.tv purple
-			}
+					return twitchPurple;		}
 		}
 		else
 		{
@@ -239,7 +239,7 @@ public class ChatMessageManager
 				case CLANCHAT:
 					return JagexColors.CHAT_CLAN_TEXT_TRANSPARENT_BACKGROUND;
 				case TWITCH:
-					return new Color(100, 65, 164); //Twitch.tv purple
+					return twitchPurple;
 				case EXAMINE_ITEM:
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
@@ -538,15 +538,15 @@ public class ChatMessageManager
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentFilteredHighlight(), true),
 				ChatMessageType.FILTERED);
 		}
-		if (chatColorConfig.transparentClanChatMessage() != null)
+		if (chatColorConfig.transparentTwitchChatMessage() != null)
 		{
-			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentClanChatMessage(), true),
-					ChatMessageType.CLANCHAT);
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentTwitchChatMessage(), true),
+					ChatMessageType.TWITCH);
 		}
-		if (chatColorConfig.transparentClanChatMessageHighlight() != null)
+		if (chatColorConfig.transparentTwitchChatMessageHighlight() != null)
 		{
-			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentClanChatMessageHighlight(), true),
-					ChatMessageType.CLANCHAT);
+			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.transparentTwitchChatMessageHighlight(), true),
+					ChatMessageType.TWITCH);
 		}
 	}
 

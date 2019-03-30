@@ -136,21 +136,6 @@ LABEL102:
    iload                  2
    invoke                 89
    jump                   LABEL170
-LABEL171:                               ;
-   iload                  0             ;
-   iconst                 6             ;
-   if_icmpeq              LABEL172      ;
-   jump                   LABEL111      ;
-LABEL172:                               ;
-   iload                  1             ;
-   iconst                 1             ;
-   invoke                 184           ;
-   invoke                 178           ;
-   iload                  2             ;
-   invoke                 84            ;
-   iload                  2             ;
-   invoke                 89            ;
-   jump                   LABEL170      ;
 LABEL111:
    iload                  1
    iconst                 2
