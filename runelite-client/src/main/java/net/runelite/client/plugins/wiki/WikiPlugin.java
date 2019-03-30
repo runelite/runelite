@@ -364,22 +364,31 @@ public class WikiPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("wiki") && !config.orbEnable())
+		if (event.getGroup().equals("wiki"))
 		{
-			orbDestroy();
-		}
-		else
-		{
-			orbCreate();
+			if (!config.orbEnable())
+			{
+				orbDestroy();
+			}
+			else
+			{
+				orbCreate();
+			}
 		}
 	}
 
+	/**
+	 * This will create the minimap orb for the wiki plugin. This does not affect quest guide menu options.
+	 */
 	private void orbCreate()
 	{
 		spriteManager.addSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(this::addWidgets);
 	}
 
+	/**
+	 *  Destroys/removes the minimap orb for the wiki plugin. This does not affect quest guide menu options.
+	 */
 	private void orbDestroy()
 	{
 		spriteManager.removeSpriteOverrides(WikiSprite.values());
