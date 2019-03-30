@@ -128,8 +128,6 @@ public class BarbarianAssaultPlugin extends Plugin {
 			String amt,type,totalMsg,total;
 			amt=type=totalMsg=total="";
 			if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null) {
-				totalCollectedEggCount += collectedEggCount;
-				totalHpHealed += HpHealed;
 				if (config.showHpCount() && HpHealed > 0) {
 					totalMsg = "; Total Healed: ";
 					total = ""+totalHpHealed;
