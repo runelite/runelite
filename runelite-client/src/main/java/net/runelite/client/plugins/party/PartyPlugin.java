@@ -191,7 +191,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.CLANCHAT_INFO)
+				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
 				.runeLiteFormattedMessage(leaveMessage)
 				.build());
 		}
@@ -381,7 +381,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 			.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.CLANCHAT_INFO)
+			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
 			.runeLiteFormattedMessage(joinMessage)
 			.build());
 
@@ -430,7 +430,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 					.build();
 
 				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.CLANCHAT_INFO)
+					.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
 					.runeLiteFormattedMessage(joinMessage)
 					.build());
 			}
@@ -519,7 +519,7 @@ public class PartyPlugin extends Plugin implements KeyListener
 			.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.CLANCHAT_INFO)
+			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
 			.runeLiteFormattedMessage(helpMessage)
 			.build());
 	}
