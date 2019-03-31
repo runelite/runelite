@@ -122,13 +122,13 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		orbCreate();
+		createOrb();
 	}
 
 	@Override
 	public void shutDown()
 	{
-		orbDestroy();
+		destroyOrb();
 	}
 
 	@Subscribe
@@ -386,11 +386,11 @@ public class WikiPlugin extends Plugin
 		{
 			if (!config.orbEnable())
 			{
-				orbDestroy();
+				destroyOrb();
 			}
 			else
 			{
-				orbCreate();
+				createOrb();
 			}
 		}
 	}
@@ -398,7 +398,7 @@ public class WikiPlugin extends Plugin
 	/**
 	 * This will create the minimap orb for the wiki plugin. This does not affect quest guide menu options.
 	 */
-	private void orbCreate()
+	private void createOrb()
 	{
 		spriteManager.addSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(this::addWidgets);
@@ -407,7 +407,7 @@ public class WikiPlugin extends Plugin
 	/**
 	 *  Destroys/removes the minimap orb for the wiki plugin. This does not affect quest guide menu options.
 	 */
-	private void orbDestroy()
+	private void destroyOrb()
 	{
 		spriteManager.removeSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(this::removeWidgets);
