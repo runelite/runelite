@@ -166,7 +166,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.CLANCHAT)
+			.type(ChatMessageType.FRIENDSCHAT)
 			.sender("Twitch")
 			.name(sender)
 			.runeLiteFormattedMessage(chatMessage)

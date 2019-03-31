@@ -235,7 +235,7 @@ public class AlchemyRoom extends MTARoom
 
 		String message = wrapper.getMessage();
 
-		if (wrapper.getType() == ChatMessageType.SERVER)
+		if (wrapper.getType() == ChatMessageType.GAMEMESSAGE)
 		{
 			if (message.contains(YOU_FOUND))
 			{
