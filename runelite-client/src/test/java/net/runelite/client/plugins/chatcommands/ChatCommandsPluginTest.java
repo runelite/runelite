@@ -29,7 +29,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
-import static net.runelite.api.ChatMessageType.SERVER;
+import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.config.ChatColorConfig;
@@ -80,7 +80,7 @@ public class ChatCommandsPluginTest
 	{
 		when(client.getUsername()).thenReturn("Adam");
 
-		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "", "Your Corporeal Beast kill count is: <col=ff0000>4</col>.", null, 0);
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your Corporeal Beast kill count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
 		verify(configManager).setConfiguration("killcount.adam", "corporeal beast", 4);
@@ -91,7 +91,7 @@ public class ChatCommandsPluginTest
 	{
 		when(client.getUsername()).thenReturn("Adam");
 
-		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
 		verify(configManager).setConfiguration("killcount.adam", "theatre of blood", 73);
@@ -102,7 +102,7 @@ public class ChatCommandsPluginTest
 	{
 		when(client.getUsername()).thenReturn("Adam");
 
-		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "", "Your subdued Wintertodt count is: <col=ff0000>4</col>.", null, 0);
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your subdued Wintertodt count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
 		verify(configManager).setConfiguration("killcount.adam", "wintertodt", 4);
@@ -113,7 +113,7 @@ public class ChatCommandsPluginTest
 	{
 		when(client.getUsername()).thenReturn("Adam");
 
-		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null, 0);
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
 		verify(configManager).setConfiguration("killcount.adam", "kree'arra", 4);
@@ -124,10 +124,21 @@ public class ChatCommandsPluginTest
 	{
 		when(client.getUsername()).thenReturn("Adam");
 
-		ChatMessage chatMessageEvent = new ChatMessage(null, SERVER, "", "Your Barrows chest count is: <col=ff0000>277</col>.", null, 0);
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your Barrows chest count is: <col=ff0000>277</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
 		verify(configManager).setConfiguration("killcount.adam", "barrows chests", 277);
+	}
+
+	@Test
+	public void testHerbiboar()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your herbiboar harvest count is: <col=ff0000>4091</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+
+		verify(configManager).setConfiguration("killcount.adam", "herbiboar", 4091);
 	}
 
 	@Test
@@ -138,10 +149,10 @@ public class ChatCommandsPluginTest
 		when(client.getUsername()).thenReturn("Adam");
 
 		// This sets lastBoss
-		ChatMessage chatMessage = new ChatMessage(null, SERVER, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		chatMessage = new ChatMessage(null, SERVER, "", FIGHT_DURATION, null, 0);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", FIGHT_DURATION, null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("kree'arra"), eq(79));
@@ -155,10 +166,10 @@ public class ChatCommandsPluginTest
 		when(client.getUsername()).thenReturn("Adam");
 
 		// This sets lastBoss
-		ChatMessage chatMessage = new ChatMessage(null, SERVER, "", "Your Zulrah kill count is: <col=ff0000>4</col>.", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Zulrah kill count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		chatMessage = new ChatMessage(null, SERVER, "", FIGHT_DURATION, null, 0);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", FIGHT_DURATION, null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("zulrah"), eq(55));
@@ -172,10 +183,10 @@ public class ChatCommandsPluginTest
 		when(client.getUsername()).thenReturn("Adam");
 
 		// This sets lastBoss
-		ChatMessage chatMessage = new ChatMessage(null, SERVER, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Kree'arra kill count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		chatMessage = new ChatMessage(null, SERVER, "", NEW_PB, null, 0);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", NEW_PB, null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("kree'arra"), eq(181));

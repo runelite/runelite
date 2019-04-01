@@ -60,6 +60,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
@@ -125,6 +126,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private SpriteManager spriteManager;
+
 	private boolean shiftPressed = false;
 
 	@Provides
@@ -139,7 +143,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::init);
-		client.getSpriteOverrides().putAll(TabSprites.toMap(client));
+		spriteManager.addSpriteOverrides(TabSprites.values());
 	}
 
 	@Override
@@ -148,11 +152,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 		keyManager.unregisterKeyListener(this);
 		mouseManager.unregisterMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::destroy);
-
-		for (TabSprites value : TabSprites.values())
-		{
-			client.getSpriteOverrides().remove(value.getSpriteId());
-		}
+		spriteManager.removeSpriteOverrides(TabSprites.values());
 
 		shiftPressed = false;
 	}

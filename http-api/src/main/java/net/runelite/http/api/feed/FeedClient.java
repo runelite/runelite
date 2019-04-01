@@ -55,7 +55,7 @@ public class FeedClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.debug("Error looking up feed: {}", response.message());
+				logger.debug("Error looking up feed: {}", response);
 				return null;
 			}
 

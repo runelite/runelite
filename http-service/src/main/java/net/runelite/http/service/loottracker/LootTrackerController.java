@@ -35,6 +35,7 @@ import net.runelite.http.service.account.AuthFilter;
 import net.runelite.http.service.account.beans.SessionEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -65,8 +66,8 @@ public class LootTrackerController
 		response.setStatus(HttpStatusCodes.STATUS_CODE_OK);
 	}
 
-	@RequestMapping
-	public Collection<LootRecord> getLootRecords(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "count", defaultValue = "1024") int count) throws IOException
+	@GetMapping
+	public Collection<LootRecord> getLootRecords(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "count", defaultValue = "1024") int count, @RequestParam(value = "start", defaultValue = "0") int start) throws IOException
 	{
 		SessionEntry e = auth.handle(request, response);
 		if (e == null)
@@ -75,7 +76,7 @@ public class LootTrackerController
 			return null;
 		}
 
-		return service.get(e.getUser(), count);
+		return service.get(e.getUser(), count, start);
 	}
 
 	@DeleteMapping

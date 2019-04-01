@@ -6,6 +6,7 @@ cache:
     - $HOME/.m2
 jdk:
 - oraclejdk8
+- openjdk11
 install: true
 script: ./travis/build.sh
 notifications:

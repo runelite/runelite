@@ -46,6 +46,29 @@ public final class ScriptID
 	public static final int CHATBOX_INPUT = 96;
 
 	/**
+	 * Rebuilds the chatbox
+	 */
+	public static final int BUILD_CHATBOX = 216;
+
+	/**
+	 * Opens the Private Message chat interface
+	 *
+	 * Jagex refers to this script as {@code meslayer_mode6}
+	 * <ul>
+	 * <li> String Player to send private message to</li>
+	 * </ul>
+	 */
+	public static final int OPEN_PRIVATE_MESSAGE_INTERFACE = 107;
+
+	/**
+	 * Rebuilds the text input widget inside the chat interface
+	 * <ul>
+	 * <li> String Message Prefix. Only used inside the GE search interfaces
+	 * </ul>
+	 */
+	public static final int CHAT_TEXT_INPUT_REBUILD = 222;
+
+	/**
 	 * Layouts the bank widgets
 	 *
 	 * Takes 13 widget ids of various parts of the bank interface
@@ -92,15 +115,6 @@ public final class ScriptID
 	 * </ul>
 	 */
 	public static final int DIARY_QUEST_UPDATE_LINECOUNT = 2523;
-
-	/**
-	 * Initializes the chatbox input to use RuneLite callbacks
-	 * <ul>
-	 * <li> String  Prompt text </li>
-	 * <li> String  Default value </li>
-	 * </ul>
-	 */
-	public static final int RUNELITE_CHATBOX_INPUT_INIT = 10001;
 
 	/**
 	 * Does nothing

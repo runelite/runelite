@@ -585,7 +585,7 @@ public class WorldHopperPlugin extends Plugin
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
+				.type(ChatMessageType.CONSOLE)
 				.runeLiteFormattedMessage(chatMessage)
 				.build());
 		}
@@ -632,7 +632,7 @@ public class WorldHopperPlugin extends Plugin
 
 			chatMessageManager
 				.queue(QueuedMessage.builder()
-					.type(ChatMessageType.GAME)
+					.type(ChatMessageType.CONSOLE)
 					.runeLiteFormattedMessage(chatMessage)
 					.build());
 		}
@@ -666,7 +666,7 @@ public class WorldHopperPlugin extends Plugin
 
 				chatMessageManager
 					.queue(QueuedMessage.builder()
-						.type(ChatMessageType.GAME)
+						.type(ChatMessageType.CONSOLE)
 						.runeLiteFormattedMessage(chatMessage)
 						.build());
 
@@ -683,7 +683,7 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
 			return;
 		}

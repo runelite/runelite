@@ -35,12 +35,13 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SpriteManager;
@@ -50,21 +51,35 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Poison",
 	description = "Tracks current damage values for Poison and Venom",
-	tags = {"combat", "poison", "venom"}
+	tags = {"combat", "poison", "venom", "heart", "hp"}
 )
-@Slf4j
 public class PoisonPlugin extends Plugin
 {
 	static final int POISON_TICK_MILLIS = 18200;
 	private static final int VENOM_THRESHOLD = 1000000;
 	private static final int VENOM_MAXIUMUM_DAMAGE = 20;
 
+	private static final BufferedImage HEART_DISEASE;
+	private static final BufferedImage HEART_POISON;
+	private static final BufferedImage HEART_VENOM;
+
+	static
+	{
+		HEART_DISEASE = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(PoisonPlugin.class, "1067-DISEASE.png"), 26, 26);
+		HEART_POISON = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(PoisonPlugin.class, "1067-POISON.png"), 26, 26);
+		HEART_VENOM = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(PoisonPlugin.class, "1067-VENOM.png"), 26, 26);
+	}
+
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private PoisonOverlay poisonOverlay;
@@ -88,6 +103,8 @@ public class PoisonPlugin extends Plugin
 	private Instant poisonNaturalCure;
 	private Instant nextPoisonTick;
 	private int lastValue = -1;
+	private int lastDiseaseValue = -1;
+	private BufferedImage heart;
 
 	@Provides
 	PoisonConfig getConfig(ConfigManager configManager)
@@ -99,6 +116,11 @@ public class PoisonPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(poisonOverlay);
+
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			clientThread.invoke(this::checkHealthIcon);
+		}
 	}
 
 	@Override
@@ -117,63 +139,86 @@ public class PoisonPlugin extends Plugin
 		poisonNaturalCure = null;
 		nextPoisonTick = null;
 		lastValue = -1;
+		lastDiseaseValue = -1;
 
+		clientThread.invoke(this::resetHealthIcon);
 	}
 
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		final int poisonValue = client.getVar(VarPlayer.POISON);
-		if (poisonValue == lastValue)
+		if (poisonValue != lastValue)
 		{
-			return;
-		}
+			lastValue = poisonValue;
+			nextPoisonTick = Instant.now().plus(Duration.of(POISON_TICK_MILLIS, ChronoUnit.MILLIS));
 
-		lastValue = poisonValue;
-		nextPoisonTick = Instant.now().plus(Duration.of(POISON_TICK_MILLIS, ChronoUnit.MILLIS));
+			final int damage = nextDamage(poisonValue);
+			this.lastDamage = damage;
 
-		final int damage = nextDamage(poisonValue);
-		this.lastDamage = damage;
+			envenomed = poisonValue >= VENOM_THRESHOLD;
 
-		envenomed = poisonValue >= VENOM_THRESHOLD;
-
-		if (poisonValue < VENOM_THRESHOLD)
-		{
-			poisonNaturalCure = Instant.now().plus(Duration.of(POISON_TICK_MILLIS * poisonValue, ChronoUnit.MILLIS));
-		}
-		else
-		{
-			poisonNaturalCure = null;
-		}
-
-		if (config.showInfoboxes())
-		{
-			if (infobox != null)
+			if (poisonValue < VENOM_THRESHOLD)
 			{
-				infoBoxManager.removeInfoBox(infobox);
-				infobox = null;
+				poisonNaturalCure = Instant.now().plus(Duration.of(POISON_TICK_MILLIS * poisonValue, ChronoUnit.MILLIS));
+			}
+			else
+			{
+				poisonNaturalCure = null;
 			}
 
-			if (damage > 0)
+			if (config.showInfoboxes())
 			{
-				final BufferedImage image = getSplat(envenomed ? SpriteID.HITSPLAT_DARK_GREEN_VENOM : SpriteID.HITSPLAT_GREEN_POISON, damage);
-
-				if (image != null)
+				if (infobox != null)
 				{
-					infobox = new PoisonInfobox(image, this);
-					infoBoxManager.addInfoBox(infobox);
+					infoBoxManager.removeInfoBox(infobox);
+					infobox = null;
+				}
+
+				if (damage > 0)
+				{
+					final BufferedImage image = getSplat(envenomed ? SpriteID.HITSPLAT_DARK_GREEN_VENOM : SpriteID.HITSPLAT_GREEN_POISON, damage);
+
+					if (image != null)
+					{
+						infobox = new PoisonInfobox(image, this);
+						infoBoxManager.addInfoBox(infobox);
+					}
 				}
 			}
+
+			checkHealthIcon();
+		}
+
+		final int diseaseValue = client.getVar(VarPlayer.DISEASE_VALUE);
+		if (diseaseValue != lastDiseaseValue)
+		{
+			lastDiseaseValue = diseaseValue;
+			checkHealthIcon();
 		}
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals(PoisonConfig.GROUP) && !config.showInfoboxes() && infobox != null)
+		if (!event.getGroup().equals(PoisonConfig.GROUP))
+		{
+			return;
+		}
+
+		if (!config.showInfoboxes() && infobox != null)
 		{
 			infoBoxManager.removeInfoBox(infobox);
 			infobox = null;
+		}
+
+		if (config.changeHealthIcon())
+		{
+			clientThread.invoke(this::checkHealthIcon);
+		}
+		else
+		{
+			clientThread.invoke(this::resetHealthIcon);
 		}
 	}
 
@@ -249,5 +294,54 @@ public class PoisonPlugin extends Plugin
 		String line2 = envenomed ? "" : MessageFormat.format("</br>Time until cure: {0}", getFormattedTime(poisonNaturalCure));
 
 		return line1 + line2;
+	}
+
+	private void checkHealthIcon()
+	{
+		if (!config.changeHealthIcon())
+		{
+			return;
+		}
+
+		final BufferedImage newHeart;
+		final int poison = client.getVar(VarPlayer.IS_POISONED);
+
+		if (poison >= VENOM_THRESHOLD)
+		{
+			newHeart = HEART_VENOM;
+		}
+		else if (poison > 0)
+		{
+			newHeart = HEART_POISON;
+		}
+		else if (client.getVar(VarPlayer.DISEASE_VALUE) > 0)
+		{
+			newHeart = HEART_DISEASE;
+		}
+		else
+		{
+			resetHealthIcon();
+			return;
+		}
+
+		// Only update sprites when the heart icon actually changes
+		if (newHeart != heart)
+		{
+			heart = newHeart;
+			client.getWidgetSpriteCache().reset();
+			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, ImageUtil.getImageSpritePixels(heart, client));
+		}
+	}
+
+	private void resetHealthIcon()
+	{
+		if (heart == null)
+		{
+			return;
+		}
+
+		client.getWidgetSpriteCache().reset();
+		client.getSpriteOverrides().remove(SpriteID.MINIMAP_ORB_HITPOINTS_ICON);
+		heart = null;
 	}
 }

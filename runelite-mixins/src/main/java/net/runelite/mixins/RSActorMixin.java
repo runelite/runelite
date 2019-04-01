@@ -43,6 +43,7 @@ import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.LocalPlayerDeath;
+import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
@@ -54,7 +55,6 @@ import net.runelite.rs.api.RSCombatInfo1;
 import net.runelite.rs.api.RSCombatInfo2;
 import net.runelite.rs.api.RSCombatInfoList;
 import net.runelite.rs.api.RSCombatInfoListHolder;
-import net.runelite.rs.api.RSModel;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSNode;
 
@@ -208,16 +208,16 @@ public abstract class RSActorMixin implements RSActor
 		client.getCallbacks().post(interactingChanged);
 	}
 
+	@FieldHook("overhead")
 	@Inject
-	@Override
-	public Polygon getConvexHull()
+	public void overheadTextChanged(int idx)
 	{
-		RSModel model = getModel();
-		if (model == null)
+		String overheadText = getOverheadText();
+		if (overheadText != null)
 		{
-			return null;
+			OverheadTextChanged overheadTextChanged = new OverheadTextChanged(this, overheadText);
+			client.getCallbacks().post(overheadTextChanged);
 		}
-		return model.getConvexHull(getX(), getY(), getOrientation());
 	}
 
 	@Inject

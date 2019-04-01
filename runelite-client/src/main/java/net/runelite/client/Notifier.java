@@ -140,7 +140,7 @@ public class Notifier
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
+				.type(ChatMessageType.CONSOLE)
 				.name(appName)
 				.runeLiteFormattedMessage(formattedMessage)
 				.build());
@@ -154,13 +154,13 @@ public class Notifier
 
 	public void processFlash(final Graphics2D graphics)
 	{
-		if (flashStart == null)
+		if (flashStart == null || client.getGameCycle() % 40 >= 20)
 		{
 			return;
 		}
-
-		if (client.getGameCycle() % 40 >= 20)
+		else if (client.getGameState() != GameState.LOGGED_IN)
 		{
+			flashStart = null;
 			return;
 		}
 

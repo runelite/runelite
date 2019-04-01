@@ -400,7 +400,7 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
 		{
 			return;
 		}
@@ -580,7 +580,7 @@ public class SlayerPlugin extends Plugin
 
 		// add and update counter, set timer
 		addCounter();
-		counter.setText(String.valueOf(amount));
+		counter.setCount(amount);
 		infoTimer = Instant.now();
 	}
 
@@ -733,7 +733,7 @@ public class SlayerPlugin extends Plugin
 		ChatMessageType type = chatMessage.getType();
 
 		final String player;
-		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
+		if (type.equals(ChatMessageType.PRIVATECHATOUT))
 		{
 			player = client.getLocalPlayer().getName();
 		}

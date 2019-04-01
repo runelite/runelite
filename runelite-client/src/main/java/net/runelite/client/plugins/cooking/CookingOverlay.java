@@ -78,7 +78,6 @@ class CookingOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.setPreferredSize(new Dimension(145, 0));
 		panelComponent.getChildren().clear();
 
 		if (isCooking() || Duration.between(session.getLastCookingAction(), Instant.now()).getSeconds() < COOK_TIMEOUT)

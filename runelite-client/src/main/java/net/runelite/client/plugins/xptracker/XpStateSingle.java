@@ -42,7 +42,7 @@ class XpStateSingle
 	private final Map<XpActionType, XpAction> actions = new HashMap<>();
 
 	@Getter
-	private final int startXp;
+	private final long startXp;
 
 	@Getter
 	private int xpGained = 0;
@@ -60,7 +60,7 @@ class XpStateSingle
 		return actions.get(type);
 	}
 
-	private int getCurrentXp()
+	private long getCurrentXp()
 	{
 		return startXp + xpGained;
 	}
@@ -86,7 +86,7 @@ class XpStateSingle
 
 	private int getXpRemaining()
 	{
-		return endLevelExp - getCurrentXp();
+		return endLevelExp - (int) getCurrentXp();
 	}
 
 	private int getActionsRemaining()
@@ -170,7 +170,7 @@ class XpStateSingle
 		return toHourly(xpGained);
 	}
 
-	boolean update(int currentXp, int goalStartXp, int goalEndXp)
+	boolean update(long currentXp, int goalStartXp, int goalEndXp)
 	{
 		if (startXp == -1)
 		{
@@ -178,8 +178,8 @@ class XpStateSingle
 			return false;
 		}
 
-		int originalXp = xpGained + startXp;
-		int actionExp = currentXp - originalXp;
+		long originalXp = xpGained + startXp;
+		int actionExp = (int) (currentXp - originalXp);
 
 		// No experience gained
 		if (actionExp == 0)
@@ -210,28 +210,31 @@ class XpStateSingle
 		action.setActions(action.getActions() + 1);
 
 		// Calculate experience gained
-		xpGained = currentXp - startXp;
+		xpGained = (int) (currentXp - startXp);
 
-		// Determine XP goals
-		if (goalStartXp <= 0 || currentXp > goalEndXp)
+		// Determine XP goals, overall has no goals
+		if (skill != Skill.OVERALL)
 		{
-			startLevelExp = Experience.getXpForLevel(Experience.getLevelForXp(currentXp));
-		}
-		else
-		{
-			startLevelExp = goalStartXp;
-		}
+			if (goalStartXp <= 0 || currentXp > goalEndXp)
+			{
+				startLevelExp = Experience.getXpForLevel(Experience.getLevelForXp((int) currentXp));
+			}
+			else
+			{
+				startLevelExp = goalStartXp;
+			}
 
-		if (goalEndXp <= 0 || currentXp > goalEndXp)
-		{
-			int currentLevel = Experience.getLevelForXp(currentXp);
-			endLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL
-				? Experience.getXpForLevel(currentLevel + 1)
-				: Experience.MAX_SKILL_XP;
-		}
-		else
-		{
-			endLevelExp = goalEndXp;
+			if (goalEndXp <= 0 || currentXp > goalEndXp)
+			{
+				int currentLevel = Experience.getLevelForXp((int) currentXp);
+				endLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL
+					? Experience.getXpForLevel(currentLevel + 1)
+					: Experience.MAX_SKILL_XP;
+			}
+			else
+			{
+				endLevelExp = goalEndXp;
+			}
 		}
 
 		return true;

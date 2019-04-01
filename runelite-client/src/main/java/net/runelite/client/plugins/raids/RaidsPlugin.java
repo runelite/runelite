@@ -49,9 +49,6 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -105,9 +102,6 @@ public class RaidsPlugin extends Plugin
 	private RaidsOverlay overlay;
 
 	@Inject
-	private RaidsPointsOverlay pointsOverlay;
-
-	@Inject
 	private LayoutSolver layoutSolver;
 
 	@Inject
@@ -152,7 +146,6 @@ public class RaidsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		overlayManager.add(pointsOverlay);
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
@@ -161,17 +154,10 @@ public class RaidsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-		overlayManager.remove(pointsOverlay);
 		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
 		raid = null;
 		timer = null;
-
-		final Widget widget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX);
-		if (widget != null)
-		{
-			widget.setHidden(false);
-		}
 	}
 
 	@Subscribe
@@ -193,22 +179,6 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
-	{
-		if (!inRaidChambers || event.isHidden())
-		{
-			return;
-		}
-
-		Widget widget = event.getWidget();
-
-		if (widget == client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX))
-		{
-			widget.setHidden(true);
-		}
-	}
-
-	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		checkRaidPresence(false);
@@ -217,7 +187,7 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (inRaidChambers && event.getType() == ChatMessageType.CLANCHAT_INFO)
+		if (inRaidChambers && event.getType() == ChatMessageType.FRIENDSCHATNOTIFICATION)
 		{
 			String message = Text.removeTags(event.getMessage());
 
@@ -236,7 +206,7 @@ public class RaidsPlugin extends Plugin
 			{
 				if (timer != null)
 				{
-					timer.timeFloor();
+					timer.timeOlm();
 					timer.setStopped(true);
 				}
 
@@ -265,7 +235,7 @@ public class RaidsPlugin extends Plugin
 						.build();
 
 					chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.CLANCHAT_INFO)
+						.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
 						.runeLiteFormattedMessage(chatMessage)
 						.build());
 				}
@@ -335,7 +305,7 @@ public class RaidsPlugin extends Plugin
 		final String raidData = "[" + layout + "]: " + rooms;
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.CLANCHAT_INFO)
+			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
 			.runeLiteFormattedMessage(new ChatMessageBuilder()
 				.append(ChatColorType.HIGHLIGHT)
 				.append("Layout: ")

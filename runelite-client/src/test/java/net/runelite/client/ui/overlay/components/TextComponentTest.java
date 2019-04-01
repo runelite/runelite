@@ -27,7 +27,6 @@ package net.runelite.client.ui.overlay.components;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -86,6 +85,7 @@ public class TextComponentTest
 		verify(graphics, atLeastOnce()).setColor(Color.GREEN);
 	}
 
+
 	/* Garrett Foister's Tests */
 
 	@Test
@@ -113,4 +113,5 @@ public class TextComponentTest
 		verify(graphics, atLeastOnce()).setColor(Color.GREEN);
 		verify(graphics, atLeastOnce()).setColor(Color.RED);
 	}
+}
 }

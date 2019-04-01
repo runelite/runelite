@@ -94,11 +94,11 @@ public class ChatCommandManager implements ChatboxInputListener
 
 		switch (chatMessage.getType())
 		{
-			case PUBLIC:
-			case PUBLIC_MOD:
-			case CLANCHAT:
-			case PRIVATE_MESSAGE_RECEIVED:
-			case PRIVATE_MESSAGE_SENT:
+			case PUBLICCHAT:
+			case MODCHAT:
+			case FRIENDSCHAT:
+			case PRIVATECHAT:
+			case PRIVATECHATOUT:
 				break;
 			default:
 				return;

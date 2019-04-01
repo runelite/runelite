@@ -147,7 +147,8 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOADING)
+		GameState gameState = gameStateChanged.getGameState();
+		if (gameState == GameState.CONNECTION_LOST || gameState == GameState.LOGIN_SCREEN || gameState == GameState.HOPPING)
 		{
 			fishingSpots.clear();
 			minnowSpots.clear();
@@ -179,7 +180,7 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.FILTERED)
+		if (event.getType() != ChatMessageType.SPAM)
 		{
 			return;
 		}
