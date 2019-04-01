@@ -31,7 +31,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.SetMessage;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
@@ -117,45 +117,45 @@ public class ChatTranslatePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSetMessage(SetMessage message)
+	public void onSetMessage(ChatMessage message)
 	{
 		executorService.submit(() ->
 		{
 			switch (message.getType())
 			{
-				case PRIVATE_MESSAGE_RECEIVED_MOD:
-				case PRIVATE_MESSAGE_RECEIVED:
+				case MODPRIVATECHAT:
+				case PRIVATECHAT:
 					if (config.translatePrivateMessages())
 					{
 						translatePrivateMessage(message);
 					}
 					break;
-				case PRIVATE_MESSAGE_SENT:
+				case PRIVATECHATOUT:
 					break;
-				case GAME:
-				case SERVER:
+				case GAMEMESSAGE:
+				case ENGINE:
 					if (config.translateGameMessages())
 					{
 						messageHandler(message);
 					}
 					break;
-				case PUBLIC_MOD:
-				case PUBLIC:
+				case MODCHAT:
+				case PUBLICCHAT:
 					if (config.translatePublicMessages())
 					{
 						messageHandler(message);
 					}
 					break;
-				case CLANCHAT_INFO:
-				case CLANCHAT:
+				case FRIENDSCHATNOTIFICATION:
+				case FRIENDSCHAT:
 					if (config.translateClanMessages())
 					{
 						messageHandler(message);
 					}
 					break;
-				case EXAMINE_ITEM:
-				case EXAMINE_OBJECT:
-				case EXAMINE_NPC:
+				case ITEM_EXAMINE:
+				case OBJECT_EXAMINE:
+				case NPC_EXAMINE:
 					if (config.translateExamineMessages())
 					{
 						messageHandler(message);
@@ -168,7 +168,7 @@ public class ChatTranslatePlugin extends Plugin
 
 
 	// TODO: Rewrite messageHandler to do this function
-	private void translatePrivateMessage(SetMessage message)
+	private void translatePrivateMessage(ChatMessage message)
 	{
 		MessageNode messageNode = message.getMessageNode();
 		if (fromUserMatcher != null)
@@ -223,7 +223,7 @@ public class ChatTranslatePlugin extends Plugin
 	 *
 	 * @param message
 	 */
-	private void messageHandler(SetMessage message)
+	private void messageHandler(ChatMessage message)
 	{
 		MessageNode messageNode = message.getMessageNode();
 		String msg = "";
@@ -283,13 +283,13 @@ public class ChatTranslatePlugin extends Plugin
 	 *
 	 * @param message
 	 */
-	private void messageQueueManager(SetMessage message)
+	private void messageQueueManager(ChatMessage message)
 	{
 		final QueuedMessage queuedMessage = QueuedMessage.builder()
 				.type(message.getType())
 				.name(message.getName())
 				.sender(message.getSender())
-				.value(nbsp(message.getValue()))
+				.value(nbsp(message.getMessage()))
 				.runeLiteFormattedMessage(nbsp(message.getMessageNode().getRuneLiteFormatMessage()))
 				.build();
 

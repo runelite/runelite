@@ -35,6 +35,17 @@ public interface ChatTranslateConfig extends Config
 
 	@ConfigItem(
 			position = 0,
+			keyName = "howToSetUp",
+			name = "*HOW TO SETUP*",
+			description = "Open link for set up tutorial."
+	)
+	default String howToSetUp()
+	{
+		return "https://github.com/runelite/runelite/wiki/Chat-Translate";
+	}
+
+	@ConfigItem(
+			position = 1,
 			keyName = "translateJSONFile",
 			name = "Google JSON Keyfile path",
 			description = "API JSON keyfile path used to translate"
@@ -44,44 +55,44 @@ public interface ChatTranslateConfig extends Config
 		return "";
 	}
 
-	@ConfigItem(
-			position = 1,
-			keyName = "translateToLang",
-			name = "Translate To Language",
-			description = "The language you want to read"
-	)
-	default ChatLanguageMode translateToLang()
-	{
-		return ChatLanguageMode.ENGLISH;
-	}
+    @ConfigItem(
+            position = 2,
+            keyName = "translateToLang",
+            name = "Translate To Language",
+            description = "The language you want to read"
+    )
+    default ChatLanguageMode translateToLang()
+    {
+        return ChatLanguageMode.ENGLISH;
+    }
+
+    @ConfigItem(
+            position = 3,
+            keyName = "translateFromLang",
+            name = "Translate From Language",
+            description = "The language you don't understand"
+    )
+    default ChatLanguageMode translateFromLang()
+    {
+        return ChatLanguageMode.SPANISH;
+    }
+
+    @ConfigItem(
+            position = 4,
+            keyName = "translateFromUsers",
+            name = "Translate From Users",
+            description = "Translate private messages only from these people; ', ' separated."
+    )
+    default String translateFromUsers()
+    {
+        return "*";
+    }
 
 	@ConfigItem(
-			position = 2,
-			keyName = "translateFromLang",
-			name = "Translate From Language",
-			description = "The language you don't understand"
-	)
-	default ChatLanguageMode translateFromLang()
-	{
-		return ChatLanguageMode.SPANISH;
-	}
-
-	@ConfigItem(
-			position = 3,
-			keyName = "translateFromUsers",
-			name = "Translate From Users",
-			description = "Translate private messages only from these people; ', ' separated."
-	)
-	default String translateFromUsers()
-	{
-		return "*";
-	}
-
-	@ConfigItem(
-			position = 4,
-			keyName = "translatePrivateMessages",
-			name = "Translate Private Chat from ^",
-			description = "Any private messages from the above players will be translated"
+		position = 5,
+		keyName = "translatePrivateMessages",
+		name = "Translate Private Chat from ^",
+		description = "Any private messages from the above players will be translated"
 	)
 	default boolean translatePrivateMessages()
 	{
@@ -89,10 +100,10 @@ public interface ChatTranslateConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 5,
-			keyName = "translateClanMessages",
-			name = "Translate Clan Chat",
-			description = "A message received in clan chat."
+		position = 6,
+		keyName = "translateClanMessages",
+		name = "Translate Clan Chat",
+		description = "A message received in clan chat."
 	)
 	default boolean translateClanMessages()
 	{
@@ -100,7 +111,7 @@ public interface ChatTranslateConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 6,
+			position = 7,
 			keyName = "translateExamineMessages",
 			name = "Translate Examine messages",
 			description = "Examine item, object, NPC translations."
@@ -111,7 +122,7 @@ public interface ChatTranslateConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 7,
+			position = 8,
 			keyName = "translateGameMessages",
 			name = "Translate Game messages",
 			description = "Game setting changed or server message."
@@ -122,7 +133,7 @@ public interface ChatTranslateConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 8,
+			position = 9,
 			keyName = "translatePublicMessages",
 			name = "Translate Public Chat*",
 			description = "*Use with caution* Can quickly use your quota"
@@ -133,51 +144,9 @@ public interface ChatTranslateConfig extends Config
 	}
 
 	/*
-	//TODO: Implement this, will need to watch out for Menu entry swapper
-	 @ConfigItem(
-			position = 9,
-			keyName = "translateMenuOptions",
-			name = "Translate Menu Options",
-			description = "Translates right clicked menu options"
-	)
-	default boolean translateMenuOptions()
-	{
-		return false;
-	}
-	*/
-
-	/*
-	//TODO: Implement this
-	 @ConfigItem(
-			position = 10,
-			keyName = "translateItemNames",
-			name = "Translate Item Names",
-			description = "Translates item names"
-	)
-	default boolean translateItemNames()
-	{
-		return false;
-	}
-	*/
-
-	/*
-	//TODO: Implement this
-	 @ConfigItem(
-			position = 11,
-			keyName = "enableCaching",
-			name = "Enable Caching of translations",
-			description = "Reduces quota usage"
-	)
-	default boolean enableCaching()
-	{
-		return false;
-	}
-	*/
-
-	/*
 	//TODO: Implement this
 	@ConfigItem(
-			position = 12,
+			position = 10,
 			keyName = "translateNPCConversations",
 			name = "Translate NPC Conversations*",
 			description = "Translates options and dialog between your character and a NPC."
@@ -191,7 +160,7 @@ public interface ChatTranslateConfig extends Config
 	/*
     //TODO: Implement this
 	@ConfigItem(
-			position = 13,
+			position = 11,
 			keyName = "enableTranslationCommands",
 			name = "Enable Translation Commands",
 			description = "Translate outgoing messages; Usage: !t<lang> <message> !tes Hello = Hola"
