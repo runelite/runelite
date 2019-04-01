@@ -95,10 +95,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "highlightUntradables",
+		name = "Highlight untradables",
+		description = "Configures whether or not untradeable items should always be highlighted",
+		position = 4
+	)
+	default boolean highlightUntradables()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showMenuItemQuantities",
 		name = "Show Menu Item Quantities",
 		description = "Configures whether or not to show the item quantities in the menu",
-		position = 4
+		position = 5
 	)
 	default boolean showMenuItemQuantities()
 	{
@@ -109,7 +120,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "recolorMenuHiddenItems",
 		name = "Recolor Menu Hidden Items",
 		description = "Configures whether or not hidden items in right click menu will be recolored",
-		position = 5
+		position = 6
 	)
 	default boolean recolorMenuHiddenItems()
 	{
@@ -120,7 +131,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highlightTiles",
 		name = "Highlight Tiles",
 		description = "Configures whether or not to highlight tiles containing ground items",
-		position = 6
+		position = 7
 	)
 	default boolean highlightTiles() 
 	{ 

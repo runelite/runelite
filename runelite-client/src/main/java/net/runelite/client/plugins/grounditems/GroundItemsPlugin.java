@@ -483,7 +483,7 @@ public class GroundItemsPlugin extends Plugin
 			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
 			final int gePrice = quantity * price;
 			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
-			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
+			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
 			final Color color = getItemColor(highlighted, hidden);
 			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
 
@@ -537,7 +537,7 @@ public class GroundItemsPlugin extends Plugin
 		config.setHighlightedItem(Text.toCSV(highlightedItemSet));
 	}
 
-	Color getHighlighted(String item, int gePrice, int haPrice)
+	Color getHighlighted(String item, int gePrice, int haPrice, boolean tradeable)
 	{
 		if (TRUE.equals(highlightedItems.getUnchecked(item)))
 		{
@@ -548,6 +548,11 @@ public class GroundItemsPlugin extends Plugin
 		if (TRUE.equals(hiddenItems.getUnchecked(item)))
 		{
 			return null;
+		}
+
+		if (config.highlightUntradables() && !tradeable)
+		{
+			return config.highlightedColor();
 		}
 
 		for (Map.Entry<Integer, Color> entry : priceChecks.entrySet())
