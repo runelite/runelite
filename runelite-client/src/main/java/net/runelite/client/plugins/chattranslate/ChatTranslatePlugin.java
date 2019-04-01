@@ -117,7 +117,7 @@ public class ChatTranslatePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSetMessage(ChatMessage message)
+	public void onChatMessage(ChatMessage message)
 	{
 		executorService.submit(() ->
 		{
