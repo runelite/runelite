@@ -25,10 +25,9 @@
  */
 package net.runelite.client.plugins.timers;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -110,7 +109,7 @@ public class TimersPlugin extends Plugin
 	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String SUPER_ANTIVENOM_DRINK_MESSAGE = "You drink some of your super antivenom potion";
-	private static final Integer[] ANTIPOISON_ITEMS_ARRAY = {
+	private static final Set<Integer> ANTIPOISON_ITEMS = ImmutableSet.of(
 		ItemID.ANTIDOTE1_5958,
 		ItemID.ANTIDOTE2_5956,
 		ItemID.ANTIDOTE3_5954,
@@ -133,8 +132,7 @@ public class TimersPlugin extends Plugin
 		ItemID.SUPERANTIPOISON4,
 		ItemID.ANTIPOISON_SUPERMIX1,
 		ItemID.ANTIPOISON_SUPERMIX2
-	};
-	private static final Set<Integer> ANTIPOISON_ITEMS = new HashSet<>(Arrays.asList(ANTIPOISON_ITEMS_ARRAY));
+	);
 
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
@@ -148,7 +146,7 @@ public class TimersPlugin extends Plugin
 	private int lastAnimation;
 	private boolean loggedInRace;
 	private boolean widgetHiddenChangedOnPvpWorld;
-	private Item[] prevItems = null;
+	private static Item[] prevItems;
 
 	@Inject
 	private ItemManager itemManager;
@@ -358,8 +356,7 @@ public class TimersPlugin extends Plugin
 		{
 			// what was drunk? we don't know.
 			// so, take inv snapshot before your character takes a sip
-			this.prevItems = client.getItemContainer(InventoryID.INVENTORY).getItems().clone();
-			// on inv change: see what has changed. GOTO -> onItemContainerChanged
+			prevItems = client.getItemContainer(InventoryID.INVENTORY).getItems().clone();
 			return;
 		}
 
@@ -827,76 +824,68 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	// compare current inv state with previous inv state
-	private int getPreviousItemId(Item[] prevInv, Item[] newInv) {
-		for (int i = 0; i < prevInv.length; i++) {
-			if (ANTIPOISON_ITEMS.contains(prevInv[i].getId())) {
+	/**
+	 * compare current inv state with previous inv state
+	 *
+	 * @param newInv
+	 */
+	private static int getPreviousItemId(Item[] newInv)
+	{
+		for (int i = 0; i < prevItems.length; i++)
+		{
+			if (ANTIPOISON_ITEMS.contains(prevItems[i].getId()))
+			{
 				// did it change?
-				if (prevInv[i].getId() != newInv[i].getId() || newInv[i] == null) return prevInv[i].getId();
+				if (prevItems[i].getId() != newInv[i].getId() || newInv[i] == null) return prevItems[i].getId();
 			}
 		}
 
 		return -1;
 	}
 
-	/**
-	 * remove SOTD timer when weapon is changed
-	 *
-	 * @param itemContainerChanged
-	 */
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
 	{
-		if (config.showAntiPoison() && this.prevItems != null)
+		if (config.showAntiPoison() && prevItems != null)
 		{
-			Item[] prevInv = this.prevItems;
 			Item[] newInv = itemContainerChanged.getItemContainer().getItems();
 
 			// what potion was drunk?
-			int itemID = getPreviousItemId(prevInv, newInv);
-			this.prevItems = null;
+			int itemID = getPreviousItemId(newInv);
+			prevItems = null;
 
-			if (itemID == ItemID.ANTIDOTE1_5958
-				|| itemID == ItemID.ANTIDOTE2_5956
-				|| itemID == ItemID.ANTIDOTE3_5954
-				|| itemID == ItemID.ANTIDOTE4_5952)
+			switch (itemID)
 			{
-				// Needs menu option hook because drink message is intercepting with antipoison message
-				createGameTimer(ANTIDOTEPLUSPLUS);
-			}
-
-			if (itemID == ItemID.ANTIDOTE1
-				|| itemID == ItemID.ANTIDOTE2
-				|| itemID == ItemID.ANTIDOTE3
-				|| itemID == ItemID.ANTIDOTE4
-				|| itemID == ItemID.ANTIDOTE_MIX1
-				|| itemID == ItemID.ANTIDOTE_MIX2)
-			{
-				// Needs menu option hook because drink message is intercepting with antipoison message
-				createGameTimer(ANTIDOTEPLUS);
-			}
-
-			if (itemID == ItemID.ANTIPOISON1
-				|| itemID == ItemID.ANTIPOISON2
-				|| itemID == ItemID.ANTIPOISON3
-				|| itemID == ItemID.ANTIPOISON4
-				|| itemID == ItemID.ANTIPOISON_MIX1
-				|| itemID == ItemID.ANTIPOISON_MIX2)
-			{
-				createGameTimer(ANTIPOISON);
-			}
-
-			if (itemID == ItemID.SUPERANTIPOISON1
-				|| itemID == ItemID.SUPERANTIPOISON2
-				|| itemID == ItemID.SUPERANTIPOISON3
-				|| itemID == ItemID.SUPERANTIPOISON4
-				|| itemID == ItemID.ANTIPOISON_SUPERMIX1
-				|| itemID == ItemID.ANTIPOISON_SUPERMIX2)
-			{
-				createGameTimer(SUPERANTIPOISON);
+				case ItemID.ANTIDOTE1_5958:
+				case ItemID.ANTIDOTE2_5956:
+				case ItemID.ANTIDOTE3_5954:
+				case ItemID.ANTIDOTE4_5952:
+					createGameTimer(ANTIDOTEPLUSPLUS);
+				case ItemID.ANTIDOTE1:
+				case ItemID.ANTIDOTE2:
+				case ItemID.ANTIDOTE3:
+				case ItemID.ANTIDOTE4:
+				case ItemID.ANTIDOTE_MIX1:
+				case ItemID.ANTIDOTE_MIX2:
+					createGameTimer(ANTIDOTEPLUS);
+				case ItemID.ANTIPOISON1:
+				case ItemID.ANTIPOISON2:
+				case ItemID.ANTIPOISON3:
+				case ItemID.ANTIPOISON4:
+				case ItemID.ANTIPOISON_MIX1:
+				case ItemID.ANTIPOISON_MIX2:
+					createGameTimer(ANTIPOISON);
+				case ItemID.SUPERANTIPOISON1:
+				case ItemID.SUPERANTIPOISON2:
+				case ItemID.SUPERANTIPOISON3:
+				case ItemID.SUPERANTIPOISON4:
+				case ItemID.ANTIPOISON_SUPERMIX1:
+				case ItemID.ANTIPOISON_SUPERMIX2:
+					createGameTimer(SUPERANTIPOISON);
 			}
 		}
 
+		// remove SOTD timer when weapon is changed
 		ItemContainer container = itemContainerChanged.getItemContainer();
 		if (container == client.getItemContainer(InventoryID.EQUIPMENT))
 		{
