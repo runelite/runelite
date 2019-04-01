@@ -26,7 +26,7 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
-public interface RSBuffer
+public interface RSBuffer extends RSNode
 {
 	@Import("payload")
 	byte[] getPayload();

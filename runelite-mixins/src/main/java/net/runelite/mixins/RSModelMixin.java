@@ -27,11 +27,14 @@ package net.runelite.mixins;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.api.model.Jarvis;
 import net.runelite.api.model.Triangle;
@@ -47,6 +50,63 @@ public abstract class RSModelMixin implements RSModel
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
+
+	@Inject
+	private int rl$sceneId;
+
+	@Inject
+	private int rl$bufferOffset;
+
+	@Inject
+	private int rl$uvBufferOffset;
+
+	@Inject
+	private float[][] rl$faceTextureUCoordinates;
+
+	@Inject
+	private float[][] rl$faceTextureVCoordinates;
+
+	@MethodHook(value = "<init>", end = true)
+	@Inject
+	public void rl$init(RSModel[] models, int length)
+	{
+		int count = 0;
+		for (int i = 0; i < length; ++i)
+		{
+			RSModel model = models[i];
+			if (model != null)
+			{
+				count += model.getTrianglesCount();
+			}
+		}
+
+		float[][] u = new float[count][];
+		float[][] v = new float[count][];
+		int idx = 0;
+
+		for (int i = 0; i < length; ++i)
+		{
+			RSModel model = models[i];
+			if (model != null)
+			{
+				float[][] modelU = model.getFaceTextureUCoordinates();
+				float[][] modelV = model.getFaceTextureVCoordinates();
+
+				for (int j = 0; j < model.getTrianglesCount(); ++j)
+				{
+					if (modelU != null && modelV != null)
+					{
+						u[idx] = modelU[j];
+						v[idx] = modelV[j];
+					}
+					++idx;
+				}
+			}
+		}
+
+		setFaceTextureUCoordinates(u);
+		setFaceTextureVCoordinates(v);
+	}
 
 	@Override
 	@Inject
@@ -97,6 +157,33 @@ public abstract class RSModelMixin implements RSModel
 		}
 
 		return triangles;
+	}
+
+	@Copy("contourGround")
+	public abstract Model rs$contourGround(int[][] tileHeights, int packedX, int height, int packedY, boolean copy, int contouredGround);
+
+	@Replace("contourGround")
+	public Model rl$contourGround(int[][] tileHeights, int packedX, int height, int packedY, boolean copy, int contouredGround)
+	{
+		// With contouredGround >= 0 lighted models are countoured, so we need to copy uvs
+		Model model = rs$contourGround(tileHeights, packedX, height, packedY, copy, contouredGround);
+		if (model != null && model != this)
+		{
+			RSModel rsModel = (RSModel) model;
+			rsModel.setFaceTextureUCoordinates(rl$faceTextureUCoordinates);
+			rsModel.setFaceTextureVCoordinates(rl$faceTextureVCoordinates);
+		}
+		return model;
+	}
+
+	@MethodHook("buildSharedModel")
+	@Inject
+	public void rl$buildSharedModel(boolean refTransparencies, Model sharedModel, byte[] transparencyBuffer)
+	{
+		// Animated models are usually a shared Model instance that is global
+		RSModel rsModel = (RSModel) sharedModel;
+		rsModel.setFaceTextureUCoordinates(rl$faceTextureUCoordinates);
+		rsModel.setFaceTextureVCoordinates(rl$faceTextureVCoordinates);
 	}
 
 	@Inject
@@ -235,7 +322,7 @@ public abstract class RSModelMixin implements RSModel
 
 	@Override
 	@Inject
-	public Polygon getConvexHull(int localX, int localY, int orientation)
+	public Polygon getConvexHull(int localX, int localY, int orientation, int tileHeight)
 	{
 		List<Vertex> vertices = getVertices();
 
@@ -252,9 +339,9 @@ public abstract class RSModelMixin implements RSModel
 		{
 			// Compute canvas location of vertex
 			Point p = Perspective.localToCanvas(client,
-				new LocalPoint(localX - v.getX(), localY - v.getZ()),
-				client.getPlane(),
-				-v.getY());
+				localX - v.getX(),
+				localY - v.getZ(),
+				tileHeight + v.getY());
 			if (p != null)
 			{
 				points.add(p);
@@ -276,5 +363,75 @@ public abstract class RSModelMixin implements RSModel
 		}
 
 		return p;
+	}
+
+	@Inject
+	@Override
+	public int getSceneId()
+	{
+		return rl$sceneId;
+	}
+
+	@Inject
+	@Override
+	public void setSceneId(int sceneId)
+	{
+		this.rl$sceneId = sceneId;
+	}
+
+	@Inject
+	@Override
+	public int getBufferOffset()
+	{
+		return rl$bufferOffset;
+	}
+
+	@Inject
+	@Override
+	public void setBufferOffset(int bufferOffset)
+	{
+		rl$bufferOffset = bufferOffset;
+	}
+
+	@Inject
+	@Override
+	public int getUvBufferOffset()
+	{
+		return rl$uvBufferOffset;
+	}
+
+	@Inject
+	@Override
+	public void setUvBufferOffset(int bufferOffset)
+	{
+		rl$uvBufferOffset = bufferOffset;
+	}
+
+	@Inject
+	@Override
+	public float[][] getFaceTextureUCoordinates()
+	{
+		return rl$faceTextureUCoordinates;
+	}
+
+	@Inject
+	@Override
+	public void setFaceTextureUCoordinates(float[][] faceTextureUCoordinates)
+	{
+		this.rl$faceTextureUCoordinates = faceTextureUCoordinates;
+	}
+
+	@Inject
+	@Override
+	public float[][] getFaceTextureVCoordinates()
+	{
+		return rl$faceTextureVCoordinates;
+	}
+
+	@Inject
+	@Override
+	public void setFaceTextureVCoordinates(float[][] faceTextureVCoordinates)
+	{
+		this.rl$faceTextureVCoordinates = faceTextureVCoordinates;
 	}
 }

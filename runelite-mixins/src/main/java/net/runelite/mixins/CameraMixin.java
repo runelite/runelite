@@ -24,7 +24,6 @@
  */
 package net.runelite.mixins;
 
-import net.runelite.api.Perspective;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -39,9 +38,6 @@ public abstract class CameraMixin implements RSClient
 
 	@Shadow("clientInstance")
 	static RSClient client;
-
-	@Shadow("isDrawingScene")
-	static boolean isDrawingScene;
 
 	@Inject
 	static boolean pitchRelaxEnabled = false;
@@ -112,28 +108,5 @@ public abstract class CameraMixin implements RSClient
 			}
 		}
 		lastPitch = pitch;
-	}
-
-	// All of this is to bypass a check in Scene.drawScene
-
-	@FieldHook("pitchSin")
-	@Inject
-	static void onPitchSinChanged(int idx)
-	{
-		if (pitchRelaxEnabled && isDrawingScene)
-		{
-			client.setPitchSin(Perspective.SINE[client.getCameraPitch()]);
-		}
-	}
-
-
-	@FieldHook("pitchCos")
-	@Inject
-	static void onPitchCosChanged(int idx)
-	{
-		if (pitchRelaxEnabled && isDrawingScene)
-		{
-			client.setPitchCos(Perspective.COSINE[client.getCameraPitch()]);
-		}
 	}
 }

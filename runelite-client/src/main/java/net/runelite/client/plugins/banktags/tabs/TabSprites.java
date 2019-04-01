@@ -25,18 +25,12 @@
  */
 package net.runelite.client.plugins.banktags.tabs;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.PixelGrabber;
-import java.util.HashMap;
-import java.util.Map;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.SpritePixels;
-import net.runelite.client.util.ImageUtil;
+import lombok.RequiredArgsConstructor;
+import net.runelite.client.game.SpriteOverride;
 
-@Slf4j
-public enum TabSprites
+@RequiredArgsConstructor
+public enum TabSprites implements SpriteOverride
 {
 	INCINERATOR(-200, "incinerator.png"),
 	TAB_BACKGROUND(-201, "tag-tab.png"),
@@ -47,40 +41,7 @@ public enum TabSprites
 
 	@Getter
 	private final int spriteId;
-	private final BufferedImage image;
 
-	TabSprites(final int spriteId, final String imageName)
-	{
-		this.spriteId = spriteId;
-		this.image = ImageUtil.getResourceStreamFromClass(this.getClass(), imageName);
-	}
-
-	public static Map<Integer, SpritePixels> toMap(Client client)
-	{
-		final Map<Integer, SpritePixels> map = new HashMap<>();
-
-		for (TabSprites value : values())
-		{
-			map.put(value.spriteId, getSpritePixels(client, value.image));
-		}
-
-		return map;
-	}
-
-	private static SpritePixels getSpritePixels(Client client, BufferedImage image)
-	{
-		int[] pixels = new int[image.getWidth() * image.getHeight()];
-
-		try
-		{
-			new PixelGrabber(image, 0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth())
-				.grabPixels();
-		}
-		catch (InterruptedException ex)
-		{
-			log.debug("PixelGrabber was interrupted: ", ex);
-		}
-
-		return client.createSpritePixels(pixels, image.getWidth(), image.getHeight());
-	}
+	@Getter
+	private final String fileName;
 }

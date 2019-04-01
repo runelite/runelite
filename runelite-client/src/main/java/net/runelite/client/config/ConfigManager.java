@@ -25,8 +25,8 @@
 package net.runelite.client.config;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.eventbus.EventBus;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -36,24 +36,36 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.nio.channels.FileLock;
+import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.config.ConfigClient;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
@@ -63,12 +75,12 @@ import net.runelite.http.api.config.Configuration;
 public class ConfigManager
 {
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
+	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
 	@Inject
 	EventBus eventBus;
 
-	@Inject
-	ScheduledExecutorService executor;
+	private final ScheduledExecutorService executor;
 
 	private AccountSession session;
 	private ConfigClient client;
@@ -76,14 +88,22 @@ public class ConfigManager
 
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
+	private final Map<String, String> pendingChanges = new HashMap<>();
 
-	public ConfigManager()
+	@Inject
+	public ConfigManager(ScheduledExecutorService scheduledExecutorService)
 	{
+		this.executor = scheduledExecutorService;
 		this.propertiesFile = getPropertiesFile();
+
+		executor.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
 	}
 
 	public final void switchSession(AccountSession session)
 	{
+		// Ensure existing config is saved
+		sendConfig();
+
 		if (session == null)
 		{
 			this.session = null;
@@ -100,12 +120,17 @@ public class ConfigManager
 		load(); // load profile specific config
 	}
 
+	private File getLocalPropertiesFile()
+	{
+		return new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME);
+	}
+
 	private File getPropertiesFile()
 	{
 		// Sessions that aren't logged in have no username
 		if (session == null || session.getUsername() == null)
 		{
-			return new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME);
+			return getLocalPropertiesFile();
 		}
 		else
 		{
@@ -135,7 +160,7 @@ public class ConfigManager
 			return;
 		}
 
-		if (configuration.getConfig().isEmpty())
+		if (configuration.getConfig() == null || configuration.getConfig().isEmpty())
 		{
 			log.debug("No configuration from client, using saved configuration on disk");
 			loadFromFile();
@@ -147,7 +172,13 @@ public class ConfigManager
 		for (ConfigEntry entry : configuration.getConfig())
 		{
 			log.debug("Loading configuration value from client {}: {}", entry.getKey(), entry.getValue());
-			final String[] split = entry.getKey().split("\\.");
+			final String[] split = entry.getKey().split("\\.", 2);
+
+			if (split.length != 2)
+			{
+				continue;
+			}
+
 			final String groupName = split[0];
 			final String key = split[1];
 			final String value = entry.getValue();
@@ -163,7 +194,7 @@ public class ConfigManager
 
 		try
 		{
-			saveToFile();
+			saveToFile(propertiesFile);
 
 			log.debug("Updated configuration on disk with the latest version");
 		}
@@ -173,13 +204,82 @@ public class ConfigManager
 		}
 	}
 
+	private synchronized void syncPropertiesFromFile(File propertiesFile)
+	{
+		final Properties properties = new Properties();
+		try (FileInputStream in = new FileInputStream(propertiesFile))
+		{
+			properties.load(new InputStreamReader(in, Charset.forName("UTF-8")));
+		}
+		catch (Exception e)
+		{
+			log.debug("Malformed properties, skipping update");
+			return;
+		}
+
+		final Map<String, String> copy = (Map) ImmutableMap.copyOf(this.properties);
+		copy.forEach((groupAndKey, value) ->
+		{
+			if (!properties.containsKey(groupAndKey))
+			{
+				final String[] split = groupAndKey.split("\\.", 2);
+				if (split.length != 2)
+				{
+					return;
+				}
+
+				final String groupName = split[0];
+				final String key = split[1];
+				unsetConfiguration(groupName, key);
+			}
+		});
+
+		properties.forEach((objGroupAndKey, objValue) ->
+		{
+			final String groupAndKey = String.valueOf(objGroupAndKey);
+			final String[] split = groupAndKey.split("\\.", 2);
+			if (split.length != 2)
+			{
+				return;
+			}
+
+			final String groupName = split[0];
+			final String key = split[1];
+			final String value = String.valueOf(objValue);
+			setConfiguration(groupName, key, value);
+		});
+	}
+
+	public void importLocal()
+	{
+		if (session == null)
+		{
+			// No session, no import
+			return;
+		}
+
+		final File file = new File(propertiesFile.getParent(), propertiesFile.getName() + "." + TIME_FORMAT.format(new Date()));
+
+		try
+		{
+			saveToFile(file);
+		}
+		catch (IOException e)
+		{
+			log.warn("Backup failed, skipping import", e);
+			return;
+		}
+
+		syncPropertiesFromFile(getLocalPropertiesFile());
+	}
+
 	private synchronized void loadFromFile()
 	{
 		properties.clear();
 
 		try (FileInputStream in = new FileInputStream(propertiesFile))
 		{
-			properties.load(in);
+			properties.load(new InputStreamReader(in, Charset.forName("UTF-8")));
 		}
 		catch (FileNotFoundException ex)
 		{
@@ -199,6 +299,7 @@ public class ConfigManager
 				if (split.length != 2)
 				{
 					log.debug("Properties key malformed!: {}", groupAndKey);
+					properties.remove(groupAndKey);
 					return;
 				}
 
@@ -219,13 +320,22 @@ public class ConfigManager
 		}
 	}
 
-	private synchronized void saveToFile() throws IOException
+	private void saveToFile(final File propertiesFile) throws IOException
 	{
 		propertiesFile.getParentFile().mkdirs();
 
 		try (FileOutputStream out = new FileOutputStream(propertiesFile))
 		{
-			properties.store(out, "RuneLite configuration");
+			final FileLock lock = out.getChannel().lock();
+
+			try
+			{
+				properties.store(new OutputStreamWriter(out, Charset.forName("UTF-8")), "RuneLite configuration");
+			}
+			finally
+			{
+				lock.release();
+			}
 		}
 	}
 
@@ -237,9 +347,9 @@ public class ConfigManager
 		}
 
 		T t = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]
-		{
-			clazz
-		}, handler);
+			{
+				clazz
+			}, handler);
 
 		return t;
 	}
@@ -273,27 +383,19 @@ public class ConfigManager
 
 	public void setConfiguration(String groupName, String key, String value)
 	{
-		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
-
 		String oldValue = (String) properties.setProperty(groupName + "." + key, value);
 
-		if (client != null)
+		if (Objects.equals(oldValue, value))
 		{
-			client.set(groupName + "." + key, value);
+			return;
 		}
 
-		Runnable task = () ->
+		log.debug("Setting configuration value for {}.{} to {}", groupName, key, value);
+
+		synchronized (pendingChanges)
 		{
-			try
-			{
-				saveToFile();
-			}
-			catch (IOException ex)
-			{
-				log.warn("unable to save configuration file", ex);
-			}
-		};
-		executor.execute(task);
+			pendingChanges.put(groupName + "." + key, value);
+		}
 
 		ConfigChanged configChanged = new ConfigChanged();
 		configChanged.setGroup(groupName);
@@ -311,27 +413,19 @@ public class ConfigManager
 
 	public void unsetConfiguration(String groupName, String key)
 	{
-		log.debug("Unsetting configuration value for {}.{}", groupName, key);
-
 		String oldValue = (String) properties.remove(groupName + "." + key);
 
-		if (client != null)
+		if (oldValue == null)
 		{
-			client.unset(groupName + "." + key);
+			return;
 		}
 
-		Runnable task = () ->
+		log.debug("Unsetting configuration value for {}.{}", groupName, key);
+
+		synchronized (pendingChanges)
 		{
-			try
-			{
-				saveToFile();
-			}
-			catch (IOException ex)
-			{
-				log.warn("unable to save configuration file", ex);
-			}
-		};
-		executor.execute(task);
+			pendingChanges.put(groupName + "." + key, null);
+		}
 
 		ConfigChanged configChanged = new ConfigChanged();
 		configChanged.setGroup(groupName);
@@ -351,14 +445,20 @@ public class ConfigManager
 			throw new IllegalArgumentException("Not a config group");
 		}
 
-		List<ConfigItemDescriptor> items = Arrays.stream(inter.getMethods())
+		final List<ConfigItemDescriptor> items = Arrays.stream(inter.getMethods())
 			.filter(m -> m.getParameterCount() == 0)
-			.sorted(Comparator.comparingInt(m -> m.getDeclaredAnnotation(ConfigItem.class).position()))
 			.map(m -> new ConfigItemDescriptor(
 				m.getDeclaredAnnotation(ConfigItem.class),
-				m.getReturnType()
+				m.getReturnType(),
+				m.getDeclaredAnnotation(Range.class),
+				m.getDeclaredAnnotation(Alpha.class)
 			))
+			.sorted((a, b) -> ComparisonChain.start()
+				.compare(a.getItem().position(), b.getItem().position())
+				.compare(a.getItem().name(), b.getItem().name())
+				.result())
 			.collect(Collectors.toList());
+
 		return new ConfigDescriptor(group, items);
 	}
 
@@ -446,7 +546,7 @@ public class ConfigManager
 		}
 		if (type == Color.class)
 		{
-			return Color.decode(str);
+			return ColorUtil.fromString(str);
 		}
 		if (type == Dimension.class)
 		{
@@ -479,12 +579,28 @@ public class ConfigManager
 		{
 			return Instant.parse(str);
 		}
-		if (type == Keybind.class)
+		if (type == Keybind.class || type == ModifierlessKeybind.class)
 		{
 			String[] splitStr = str.split(":");
 			int code = Integer.parseInt(splitStr[0]);
 			int mods = Integer.parseInt(splitStr[1]);
+			if (type == ModifierlessKeybind.class)
+			{
+				return new ModifierlessKeybind(code, mods);
+			}
 			return new Keybind(code, mods);
+		}
+		if (type == WorldPoint.class)
+		{
+			String[] splitStr = str.split(":");
+			int x = Integer.parseInt(splitStr[0]);
+			int y = Integer.parseInt(splitStr[1]);
+			int plane = Integer.parseInt(splitStr[2]);
+			return new WorldPoint(x, y, plane);
+		}
+		if (type == Duration.class)
+		{
+			return Duration.ofMillis(Long.parseLong(str));
 		}
 		return str;
 	}
@@ -523,6 +639,54 @@ public class ConfigManager
 			Keybind k = (Keybind) object;
 			return k.getKeyCode() + ":" + k.getModifiers();
 		}
+		if (object instanceof WorldPoint)
+		{
+			WorldPoint wp = (WorldPoint) object;
+			return wp.getX() + ":" + wp.getY() + ":" + wp.getPlane();
+		}
+		if (object instanceof Duration)
+		{
+			return Long.toString(((Duration) object).toMillis());
+		}
 		return object.toString();
+	}
+
+	public void sendConfig()
+	{
+		boolean changed;
+		synchronized (pendingChanges)
+		{
+			if (client != null)
+			{
+				for (Map.Entry<String, String> entry : pendingChanges.entrySet())
+				{
+					String key = entry.getKey();
+					String value = entry.getValue();
+
+					if (Strings.isNullOrEmpty(value))
+					{
+						client.unset(key);
+					}
+					else
+					{
+						client.set(key, value);
+					}
+				}
+			}
+			changed = !pendingChanges.isEmpty();
+			pendingChanges.clear();
+		}
+
+		if (changed)
+		{
+			try
+			{
+				saveToFile(propertiesFile);
+			}
+			catch (IOException ex)
+			{
+				log.warn("unable to save configuration file", ex);
+			}
+		}
 	}
 }

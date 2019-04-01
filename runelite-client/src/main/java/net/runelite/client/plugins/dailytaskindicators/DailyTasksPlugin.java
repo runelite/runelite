@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
- * Copyright (c) 2018, Shaun Dreclin <https://github.com/ShaunDreclin>
+ * Copyright (c) 2018-2019, Shaun Dreclin <https://github.com/ShaunDreclin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,6 @@
 
 package net.runelite.client.plugins.dailytaskindicators;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
@@ -43,6 +42,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -57,16 +57,14 @@ public class DailyTasksPlugin extends Plugin
 	private static final String HERB_BOX_MESSAGE = "You have herb boxes waiting to be collected at NMZ.";
 	private static final int HERB_BOX_MAX = 15;
 	private static final int HERB_BOX_COST = 9500;
-
 	private static final String STAVES_MESSAGE = "You have battlestaves waiting to be collected from Zaff.";
-
 	private static final String ESSENCE_MESSAGE = "You have essence waiting to be collected from Wizard Cromperty.";
-
 	private static final String RUNES_MESSAGE = "You have random runes waiting to be collected from Lundail.";
-
 	private static final String SAND_MESSAGE = "You have sand waiting to be collected from Bert.";
 	private static final int SAND_QUEST_COMPLETE = 160;
-
+	private static final String FLAX_MESSAGE = "You have bowstrings waiting to be converted from flax from the Flax keeper.";
+	private static final String BONEMEAL_MESSAGE = "You have bonemeal and slime waiting to be collected from Robin.";
+	private static final int BONEMEAL_PER_DIARY = 13;
 	private static final String RELOG_MESSAGE = " (Requires relog)";
 
 	@Inject
@@ -88,10 +86,15 @@ public class DailyTasksPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	public void startUp()
+	{
+		loggingIn = true;
+	}
+
+	@Override
+	public void shutDown()
 	{
 		lastReset = 0L;
-		loggingIn = false;
 	}
 
 	@Subscribe
@@ -110,7 +113,6 @@ public class DailyTasksPlugin extends Plugin
 		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
 
 		if ((dailyReset || loggingIn)
-			&& client.getGameState() == GameState.LOGGED_IN
 			&& client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
 		{
 			// Round down to the nearest day
@@ -140,6 +142,16 @@ public class DailyTasksPlugin extends Plugin
 			if (config.showSand())
 			{
 				checkSand(dailyReset);
+			}
+
+			if (config.showFlax())
+			{
+				checkFlax(dailyReset);
+			}
+
+			if (config.showBonemeal())
+			{
+				checkBonemeal(dailyReset);
 			}
 		}
 	}
@@ -220,6 +232,46 @@ public class DailyTasksPlugin extends Plugin
 		}
 	}
 
+	private void checkFlax(boolean dailyReset)
+	{
+		if (client.getVar(Varbits.DIARY_KANDARIN_EASY) == 1)
+		{
+			if (client.getVar(Varbits.DAILY_FLAX_STATE) == 0)
+			{
+				sendChatMessage(FLAX_MESSAGE);
+			}
+			else if (dailyReset)
+			{
+				sendChatMessage(FLAX_MESSAGE + RELOG_MESSAGE);
+			}
+		}
+	}
+
+	private void checkBonemeal(boolean dailyReset)
+	{
+		if (client.getVar(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
+		{
+			int collected = client.getVar(Varbits.DAILY_BONEMEAL_STATE);
+			int max = BONEMEAL_PER_DIARY;
+			if (client.getVar(Varbits.DIARY_MORYTANIA_HARD) == 1)
+			{
+				max += BONEMEAL_PER_DIARY;
+				if (client.getVar(Varbits.DIARY_MORYTANIA_ELITE) == 1)
+				{
+					max += BONEMEAL_PER_DIARY;
+				}
+			}
+			if (collected < max)
+			{
+				sendChatMessage(BONEMEAL_MESSAGE);
+			}
+			else if (dailyReset)
+			{
+				sendChatMessage(BONEMEAL_MESSAGE + RELOG_MESSAGE);
+			}
+		}
+	}
+
 	private void sendChatMessage(String chatMessage)
 	{
 		final String message = new ChatMessageBuilder()
@@ -229,7 +281,7 @@ public class DailyTasksPlugin extends Plugin
 
 		chatMessageManager.queue(
 			QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
+				.type(ChatMessageType.CONSOLE)
 				.runeLiteFormattedMessage(message)
 				.build());
 	}

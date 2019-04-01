@@ -25,7 +25,7 @@
 package net.runelite.api;
 
 /**
- * Represents an indexed database, typically used for sprites.
+ * Represents an index in the cache
  */
 public interface IndexDataBase
 {

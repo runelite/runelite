@@ -26,6 +26,7 @@ package net.runelite.mixins;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import net.runelite.api.HashTable;
@@ -518,7 +519,15 @@ public abstract class RSWidgetMixin implements RSWidget
 			}
 			else
 			{
-				index = siblings.length;
+				index = 0;
+				for (int i = siblings.length - 1; i >= 0; i--)
+				{
+					if (siblings[i] != null)
+					{
+						index = i + 1;
+						break;
+					}
+				}
 			}
 		}
 
@@ -558,5 +567,15 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		client.revalidateWidget(this);
 		client.revalidateWidgetScroll(client.getWidgets()[TO_GROUP(this.getId())], this, false);
+	}
+
+	@Inject
+	@Override
+	public void deleteAllChildren()
+	{
+		if (getChildren() != null)
+		{
+			Arrays.fill(getChildren(), null);
+		}
 	}
 }

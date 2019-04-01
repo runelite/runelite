@@ -25,6 +25,7 @@
 package net.runelite.client.config;
 
 import java.awt.Color;
+import net.runelite.client.ui.JagexColors;
 
 @ConfigGroup("textrecolor")
 public interface ChatColorConfig extends Config
@@ -94,7 +95,7 @@ public interface ChatColorConfig extends Config
 	)
 	default Color opaqueClanChatInfo()
 	{
-		return Color.BLACK;
+		return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
 	}
 
 	@ConfigItem(
@@ -334,7 +335,7 @@ public interface ChatColorConfig extends Config
 	)
 	default Color transparentClanChatInfo()
 	{
-		return Color.WHITE;
+		return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
 	}
 
 	@ConfigItem(

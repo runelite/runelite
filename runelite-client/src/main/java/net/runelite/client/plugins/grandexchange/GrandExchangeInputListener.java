@@ -31,11 +31,11 @@ import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.client.input.KeyListener;
-import net.runelite.client.input.MouseListener;
+import net.runelite.client.input.MouseAdapter;
 import static net.runelite.client.plugins.grandexchange.GrandExchangePlugin.SEARCH_GRAND_EXCHANGE;
 import net.runelite.client.util.Text;
 
-public class GrandExchangeInputListener extends MouseListener implements KeyListener
+public class GrandExchangeInputListener extends MouseAdapter implements KeyListener
 {
 	private final Client client;
 	private final GrandExchangePlugin plugin;

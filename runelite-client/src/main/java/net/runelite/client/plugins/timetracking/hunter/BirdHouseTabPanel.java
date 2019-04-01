@@ -144,8 +144,6 @@ public class BirdHouseTabPanel extends TabContentPanel
 					panel.getEstimate().setText("Unknown");
 					break;
 			}
-
-			panel.getProgress().update();
 		}
 	}
 }

@@ -79,4 +79,26 @@ public interface WorldHopperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "ping",
+		name = "Show world ping",
+		description = "Shows ping to each game world",
+		position = 4
+	)
+	default boolean ping()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showMessage",
+		name = "Show world hop message in chat",
+		description = "Shows what world is being hopped to in the chat",
+		position = 5
+	)
+	default boolean showWorldHopMessage()
+	{
+		return true;
+	}
 }

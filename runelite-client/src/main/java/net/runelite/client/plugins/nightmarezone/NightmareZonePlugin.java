@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.nightmarezone;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import javax.inject.Inject;
@@ -34,8 +33,11 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -81,10 +83,17 @@ public class NightmareZonePlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlay.removeAbsorptionCounter();
+
+		Widget nmzWidget = client.getWidget(WidgetInfo.NIGHTMARE_ZONE);
+
+		if (nmzWidget != null)
+		{
+			nmzWidget.setHidden(false);
+		}
 	}
 
 	@Subscribe
-	public void updateConfig(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		overlay.updateConfig();
 	}
@@ -116,7 +125,7 @@ public class NightmareZonePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER
+		if (event.getType() != ChatMessageType.GAMEMESSAGE
 				|| !isInNightmareZone())
 		{
 			return;

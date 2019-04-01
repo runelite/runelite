@@ -52,4 +52,15 @@ public interface OpponentInfoConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showOpponentsOpponent",
+		name = "Show opponent's opponent",
+		description = "Toggle showing opponent's opponent if within a multi-combat area",
+		position = 2
+	)
+	default boolean showOpponentsOpponent()
+	{
+		return true;
+	}
 }

@@ -47,4 +47,16 @@ public interface RSSpritePixels extends SpritePixels
 
 	@Import("setRaster")
 	void setRaster();
+
+	@Import("maxWidth")
+	void setMaxWidth(int maxWidth);
+
+	@Import("maxHeight")
+	void setMaxHeight(int maxHeight);
+
+	@Import("offsetX")
+	void setOffsetX(int offsetX);
+
+	@Import("offsetY")
+	void setOffsetY(int offsetY);
 }

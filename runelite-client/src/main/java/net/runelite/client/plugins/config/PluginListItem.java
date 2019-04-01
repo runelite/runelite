@@ -36,6 +36,7 @@ import javax.annotation.Nullable;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
@@ -62,6 +63,14 @@ class PluginListItem extends JPanel
 	@Getter
 	@Nullable
 	private final Plugin plugin;
+
+	@Nullable
+	@Getter(AccessLevel.PACKAGE)
+	private final Config config;
+
+	@Nullable
+	@Getter(AccessLevel.PACKAGE)
+	private final ConfigDescriptor configDescriptor;
 
 	@Getter
 	private final String name;
@@ -132,6 +141,8 @@ class PluginListItem extends JPanel
 	{
 		this.configPanel = configPanel;
 		this.plugin = plugin;
+		this.config = config;
+		this.configDescriptor = configDescriptor;
 		this.name = name;
 		this.description = description;
 		Collections.addAll(keywords, name.toLowerCase().split(" "));

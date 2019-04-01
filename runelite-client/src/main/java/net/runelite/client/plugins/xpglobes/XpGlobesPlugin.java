@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.xpglobes;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -32,12 +31,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -57,6 +58,8 @@ public class XpGlobesPlugin extends Plugin
 	private static final int MAXIMUM_SHOWN_GLOBES = 5;
 
 	private XpGlobe[] globeCache = new XpGlobe[Skill.values().length - 1]; //overall does not trigger xp change event
+
+	@Getter
 	private final List<XpGlobe> xpGlobes = new ArrayList<>();
 
 	@Inject
@@ -109,33 +112,22 @@ public class XpGlobesPlugin extends Plugin
 			return;
 		}
 
-		int startingXp = Experience.getXpForLevel(currentLevel);
-		int goalXp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
-
 		if (cachedGlobe != null)
 		{
 			cachedGlobe.setSkill(skill);
 			cachedGlobe.setCurrentXp(currentXp);
 			cachedGlobe.setCurrentLevel(currentLevel);
-			cachedGlobe.setGoalXp(goalXp);
 			cachedGlobe.setTime(Instant.now());
-			cachedGlobe.setSkillProgressRadius(startingXp, currentXp, goalXp);
-
 			this.addXpGlobe(globeCache[skillIdx], MAXIMUM_SHOWN_GLOBES);
 		}
 		else
 		{
-			//dont draw non cached globes, this is triggered on login to setup all of the initial values
-			globeCache[skillIdx] = new XpGlobe(skill, currentXp, currentLevel, goalXp);
+			// dont draw non cached globes, this is triggered on login to setup all of the initial values
+			globeCache[skillIdx] = new XpGlobe(skill, currentXp, currentLevel, Instant.now());
 		}
 	}
 
-	public List<XpGlobe> getXpGlobes()
-	{
-		return xpGlobes;
-	}
-
-	public void addXpGlobe(XpGlobe xpGlobe, int maxLength)
+	private void addXpGlobe(XpGlobe xpGlobe, int maxLength)
 	{
 		//remove the old globe, allowing it to be readded as the most recent (right) side when drawn
 		xpGlobes.remove(xpGlobe);
@@ -146,7 +138,7 @@ public class XpGlobesPlugin extends Plugin
 		xpGlobes.add(xpGlobe);
 	}
 
-	public int getXpGlobesSize()
+	int getXpGlobesSize()
 	{
 		return xpGlobes.size();
 	}
@@ -174,7 +166,7 @@ public class XpGlobesPlugin extends Plugin
 		}
 	}
 
-	public void resetGlobeState()
+	private void resetGlobeState()
 	{
 		xpGlobes.clear();
 		globeCache = new XpGlobe[Skill.values().length - 1];

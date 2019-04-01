@@ -27,7 +27,6 @@ package net.runelite.client.game;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -49,6 +48,7 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.ClanChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
@@ -138,7 +138,7 @@ public class ClanManager
 	}
 
 	@Subscribe
-	public void onClanChange(ClanChanged clanChanged)
+	public void onClanChanged(ClanChanged clanChanged)
 	{
 		clanRanksCache.invalidateAll();
 	}

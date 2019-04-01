@@ -30,17 +30,17 @@ import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import static net.runelite.api.ItemID.*;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.FUNGICIDE_SPRAY;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.BELLOWS;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
 
 @AllArgsConstructor
 @Getter
 enum ItemWithCharge
 {
+	ABRACE1(ABYSSAL_BRACELET, ABYSSAL_BRACELET1, 1),
+	ABRACE2(ABYSSAL_BRACELET, ABYSSAL_BRACELET2, 2),
+	ABRACE3(ABYSSAL_BRACELET, ABYSSAL_BRACELET3, 3),
+	ABRACE4(ABYSSAL_BRACELET, ABYSSAL_BRACELET4, 4),
+	ABRACE5(ABYSSAL_BRACELET, ABYSSAL_BRACELET5, 5),
 	BELLOWS0(BELLOWS, OGRE_BELLOWS, 0),
 	BELLOWS1(BELLOWS, OGRE_BELLOWS_1, 1),
 	BELLOWS2(BELLOWS, OGRE_BELLOWS_2, 2),

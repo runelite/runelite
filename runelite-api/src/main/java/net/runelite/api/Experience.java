@@ -48,6 +48,11 @@ public class Experience
 	public static final int MAX_SKILL_XP = 200_000_000;
 
 	/**
+	 * The maximum possible combat level.
+	 */
+	public static final int MAX_COMBAT_LEVEL = 126;
+
+	/**
 	 * The total experience required for each skill level.
 	 */
 	private static final int[] XP_FOR_LEVEL = new int[MAX_VIRT_LEVEL];

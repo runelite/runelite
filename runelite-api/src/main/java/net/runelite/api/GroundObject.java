@@ -29,4 +29,5 @@ package net.runelite.api;
  */
 public interface GroundObject extends TileObject
 {
+	Renderable getRenderable();
 }

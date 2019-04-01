@@ -37,6 +37,14 @@ import static net.runelite.api.HeadIcon.SMITE;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.SkullIcon;
+import static net.runelite.api.SkullIcon.DEAD_MAN_FIVE;
+import static net.runelite.api.SkullIcon.DEAD_MAN_FOUR;
+import static net.runelite.api.SkullIcon.DEAD_MAN_ONE;
+import static net.runelite.api.SkullIcon.DEAD_MAN_THREE;
+import static net.runelite.api.SkullIcon.DEAD_MAN_TWO;
+import static net.runelite.api.SkullIcon.SKULL;
+import static net.runelite.api.SkullIcon.SKULL_FIGHT_PIT;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
@@ -55,9 +63,6 @@ public abstract class RSPlayerMixin implements RSPlayer
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
-
-	@Inject
-	private int playerIndex;
 
 	@Inject
 	@Override
@@ -105,6 +110,37 @@ public abstract class RSPlayerMixin implements RSPlayer
 
 	@Inject
 	@Override
+	public SkullIcon getSkullIcon()
+	{
+		if (this != client.getLocalPlayer())
+		{
+			// prevent seeing skulls of other players.
+			return null;
+		}
+
+		switch (getRsSkullIcon())
+		{
+			case 0:
+				return SKULL;
+			case 1:
+				return SKULL_FIGHT_PIT;
+			case 8:
+				return DEAD_MAN_FIVE;
+			case 9:
+				return DEAD_MAN_FOUR;
+			case 10:
+				return DEAD_MAN_THREE;
+			case 11:
+				return DEAD_MAN_TWO;
+			case 12:
+				return DEAD_MAN_ONE;
+			default:
+				return null;
+		}
+	}
+
+	@Inject
+	@Override
 	public Polygon[] getPolygons()
 	{
 		Model model = getModel();
@@ -119,6 +155,8 @@ public abstract class RSPlayerMixin implements RSPlayer
 
 		int orientation = getOrientation();
 
+		final int tileHeight = Perspective.getTileHeight(client, new LocalPoint(localX, localY), client.getPlane());
+
 		List<Triangle> triangles = model.getTriangles();
 
 		triangles = rotate(triangles, orientation);
@@ -131,25 +169,25 @@ public abstract class RSPlayerMixin implements RSPlayer
 			Vertex vz = triangle.getC();
 
 			Point x = Perspective.localToCanvas(client,
-				new LocalPoint(localX - vx.getX(), localY - vx.getZ()),
-				client.getPlane(),
-				-vx.getY());
+				localX - vx.getX(),
+				localY - vx.getZ(),
+				tileHeight + vx.getY());
 
 			Point y = Perspective.localToCanvas(client,
-				new LocalPoint(localX - vy.getX(), localY - vy.getZ()),
-				client.getPlane(),
-				-vy.getY());
+				localX - vy.getX(),
+				localY - vy.getZ(),
+				tileHeight + vy.getY());
 
 			Point z = Perspective.localToCanvas(client,
-				new LocalPoint(localX - vz.getX(), localY - vz.getZ()),
-				client.getPlane(),
-				-vz.getY());
+				localX - vz.getX(),
+				localY - vz.getZ(),
+				tileHeight + vz.getY());
 
-			int xx[] =
+			int[] xx =
 			{
 				x.getX(), y.getX(), z.getX()
 			};
-			int yy[] =
+			int[] yy =
 			{
 				x.getY(), y.getY(), z.getY()
 			};
@@ -157,6 +195,20 @@ public abstract class RSPlayerMixin implements RSPlayer
 		}
 
 		return polys.toArray(new Polygon[polys.size()]);
+	}
+
+	@Inject
+	@Override
+	public Polygon getConvexHull()
+	{
+		RSModel model = getModel();
+		if (model == null)
+		{
+			return null;
+		}
+
+		int tileHeight = Perspective.getTileHeight(client, new LocalPoint(getX(), getY()), client.getPlane());
+		return model.getConvexHull(getX(), getY(), getOrientation(), tileHeight);
 	}
 
 	@Inject

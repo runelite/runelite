@@ -25,69 +25,71 @@
  */
 package net.runelite.client.ui.components;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import javax.swing.JPanel;
-import lombok.Setter;
-import net.runelite.client.ui.ColorScheme;
+import lombok.Getter;
 
 /**
  * A progress bar to be displayed underneath the GE offer item panels
  */
 public class ThinProgressBar extends JPanel
 {
-	@Setter
-	private int maximumValue;
+	@Getter
+	private int maximumValue = 1;
 
-	@Setter
+	@Getter
 	private int value;
-
-	private final JPanel topBar = new JPanel();
 
 	public ThinProgressBar()
 	{
-		setLayout(new BorderLayout());
-		setBackground(Color.GREEN.darker());
-
-		topBar.setPreferredSize(new Dimension(100, 4));
-		topBar.setBackground(ColorScheme.PROGRESS_COMPLETE_COLOR);
-
-		add(topBar, BorderLayout.WEST);
-	}
-
-	/**
-	 * Updates the UI based on the percentage progress
-	 */
-	public void update()
-	{
-		double percentage = getPercentage();
-		int topWidth = (int) (getSize().width * (percentage / 100));
-
-		topBar.setPreferredSize(new Dimension(topWidth, 4));
-		topBar.repaint();
-
-		revalidate();
-		repaint();
+		setForeground(Color.GREEN);
+		setMaximumSize(new Dimension(Integer.MAX_VALUE, 4));
+		setMinimumSize(new Dimension(0, 4));
+		setPreferredSize(new Dimension(0, 4));
+		setSize(new Dimension(0, 4));
+		setOpaque(true);
 	}
 
 	public double getPercentage()
 	{
-		if (value == 0)
-		{
-			return 0;
-		}
-
 		return (value * 100) / maximumValue;
 	}
 
 	@Override
 	public void setForeground(Color color)
 	{
-		if (topBar != null)
-		{
-			topBar.setBackground(color);
-		}
+		super.setForeground(color);
 		setBackground(color.darker());
+	}
+
+	public void setMaximumValue(int maximumValue)
+	{
+		if (maximumValue < 1)
+		{
+			maximumValue = 1;
+		}
+		this.maximumValue = maximumValue;
+		repaint();
+	}
+
+	public void setValue(int value)
+	{
+		this.value = value;
+		repaint();
+	}
+
+	@Override
+	public void paintComponent(Graphics g)
+	{
+		super.paintComponent(g);
+		int w = getWidth();
+		int h = getHeight();
+		int div = (value * w) / maximumValue;
+		g.setColor(getBackground());
+		g.fillRect(div, 0, w, h);
+		g.setColor(getForeground());
+		g.fillRect(0, 0, div, h);
 	}
 }

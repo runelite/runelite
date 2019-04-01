@@ -27,30 +27,38 @@ package net.runelite.client.plugins.zoom;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("zoom")
 public interface ZoomConfig extends Config
 {
-	@ConfigItem(
-		keyName = "enabled",
-		name = "Expand outer zoom limit",
-		description = "Configures whether or not the outer zoom limit is reduced",
-		position = 1
-	)
-	default boolean outerLimit()
-	{
-		return true;
-	}
+	int OUTER_LIMIT_MIN = -400;
+	int OUTER_LIMIT_MAX = 400;
 
 	@ConfigItem(
 		keyName = "inner",
 		name = "Expand inner zoom limit",
 		description = "Configures whether or not the inner zoom limit is reduced",
-		position = 2
+		position = 1
 	)
 	default boolean innerLimit()
 	{
 		return false;
+	}
+
+	@Range(
+		min = OUTER_LIMIT_MIN,
+		max = OUTER_LIMIT_MAX
+	)
+	@ConfigItem(
+		keyName = "outerLimit",
+		name = "Expand outer zoom limit",
+		description = "Configures how much the outer zoom limit is adjusted",
+		position = 2
+	)
+	default int outerLimit()
+	{
+		return 0;
 	}
 
 	@ConfigItem(

@@ -143,6 +143,11 @@ public class TrapOverlay extends Overlay
 		}
 		net.runelite.api.Point loc = Perspective.localToCanvas(client, localLoc, client.getPlane());
 
+		if (loc == null)
+		{
+			return;
+		}
+
 		double timeLeft = 1 - trap.getTrapTimeRelative();
 
 		ProgressPieComponent pie = new ProgressPieComponent();

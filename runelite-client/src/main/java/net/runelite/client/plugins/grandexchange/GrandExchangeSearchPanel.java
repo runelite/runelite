@@ -60,6 +60,7 @@ class GrandExchangeSearchPanel extends JPanel
 {
 	private static final String ERROR_PANEL = "ERROR_PANEL";
 	private static final String RESULTS_PANEL = "RESULTS_PANEL";
+	private static final int MAX_SEARCH_ITEMS = 100;
 
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	private final CardLayout cardLayout = new CardLayout();
@@ -101,8 +102,8 @@ class GrandExchangeSearchPanel extends JPanel
 
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setPreferredSize(new Dimension(100, 30));
-		searchBar.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
-		searchBar.setHoverBackgroundColor(ColorScheme.MEDIUM_GRAY_COLOR.brighter());
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
 		searchBar.addActionListener(e -> executor.execute(() -> priceLookup(false)));
 
 		searchItemsPanel.setLayout(new GridBagLayout());
@@ -163,7 +164,7 @@ class GrandExchangeSearchPanel extends JPanel
 
 		// Input is not empty, add searching label
 		searchItemsPanel.removeAll();
-		searchBar.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setEditable(false);
 		searchBar.setIcon(IconTextField.Icon.LOADING);
 
@@ -187,8 +188,16 @@ class GrandExchangeSearchPanel extends JPanel
 
 		cardLayout.show(centerPanel, RESULTS_PANEL);
 
+		int count = 0;
+
 		for (ItemPrice item : result)
 		{
+			if (count++ > MAX_SEARCH_ITEMS)
+			{
+				// Cap search
+				break;
+			}
+
 			int itemId = item.getId();
 
 			ItemComposition itemComp = itemManager.getItemComposition(itemId);

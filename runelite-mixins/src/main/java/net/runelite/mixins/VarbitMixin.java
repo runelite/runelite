@@ -26,6 +26,7 @@ package net.runelite.mixins;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import java.util.Map;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
@@ -118,43 +119,40 @@ public abstract class VarbitMixin implements RSClient
 	@Override
 	public int getVar(VarClientInt varClientInt)
 	{
-		return getIntVarcs()[varClientInt.getIndex()];
+		Map<Integer, Object> varcmap = getVarcMap();
+		Object object = varcmap.get(varClientInt.getIndex());
+		return object instanceof Integer ? (Integer) object : 0;
 	}
 
 	@Inject
 	@Override
 	public String getVar(VarClientStr varClientStr)
 	{
-		return getStrVarcs()[varClientStr.getIndex()];
+		Map<Integer, Object> varcmap = getVarcMap();
+		Object var2 = varcmap.get(varClientStr.getIndex());
+		return var2 instanceof String ? (String) var2 : "";
 	}
 
 	@Inject
 	@Override
 	public void setVar(VarClientStr varClientStr, String value)
 	{
-		String[] vars = getStrVarcs();
-		vars[varClientStr.getIndex()] = value;
+		Map<Integer, Object> varcmap = getVarcMap();
+		varcmap.put(varClientStr.getIndex(), value);
 	}
 
 	@Inject
 	@Override
 	public void setVar(VarClientInt varClientInt, int value)
 	{
-		int[] vars = getIntVarcs();
-		vars[varClientInt.getIndex()] = value;
+		Map<Integer, Object> varcmap = getVarcMap();
+		varcmap.put(varClientInt.getIndex(), value);
 	}
 
 	@Inject
 	@Override
-	public int[] getIntVarcs()
+	public Map<Integer, Object> getVarcMap()
 	{
-		return getVarcs().getIntVarcs();
-	}
-
-	@Inject
-	@Override
-	public String[] getStrVarcs()
-	{
-		return getVarcs().getStrVarcs();
+		return getVarcs().getVarcMap();
 	}
 }

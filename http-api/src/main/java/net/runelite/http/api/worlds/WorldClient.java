@@ -44,7 +44,7 @@ public class WorldClient
 	public WorldResult lookupWorlds() throws IOException
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("worlds")
+			.addPathSegment("worlds.js")
 			.build();
 
 		logger.debug("Built URI: {}", url);
@@ -57,7 +57,7 @@ public class WorldClient
 		{
 			if (!response.isSuccessful())
 			{
-				logger.debug("Error looking up worlds: {}", response.message());
+				logger.debug("Error looking up worlds: {}", response);
 				return null;
 			}
 

@@ -28,8 +28,10 @@ package net.runelite.client.plugins.xptracker;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -59,8 +61,8 @@ class XpInfoBox extends JPanel
 
 	// Templates
 	private static final String HTML_TOOL_TIP_TEMPLATE =
-		"<html>%s actions done<br/>"
-			+ "%s actions/hr<br/>"
+		"<html>%s %s done<br/>"
+			+ "%s %s/hr<br/>"
 			+ "%s till goal lvl</html>";
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
@@ -88,10 +90,13 @@ class XpInfoBox extends JPanel
 	private final JLabel actionsLeft = new JLabel();
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
 
+	private final XpTrackerConfig xpTrackerConfig;
+
 	private boolean paused = false;
 
-	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, Client client, JPanel panel, Skill skill, SkillIconManager iconManager) throws IOException
+	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, XpTrackerConfig xpTrackerConfig, Client client, JPanel panel, Skill skill, SkillIconManager iconManager)
 	{
+		this.xpTrackerConfig = xpTrackerConfig;
 		this.panel = panel;
 		this.skill = skill;
 
@@ -197,7 +202,7 @@ class XpInfoBox extends JPanel
 			// Update information labels
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
 			expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
-			actionsLeft.setText(htmlLabel("Actions: ", xpSnapshotSingle.getActionsRemainingToGoal()));
+			actionsLeft.setText(htmlLabel(xpSnapshotSingle.getActionType().getLabel() + ": ", xpSnapshotSingle.getActionsRemainingToGoal()));
 
 			// Update progress bar
 			progressBar.setValue((int) xpSnapshotSingle.getSkillProgressToGoal());
@@ -207,10 +212,31 @@ class XpInfoBox extends JPanel
 				? "200M"
 				: "Lvl. " + xpSnapshotSingle.getEndLevel());
 
+			// Add intermediate level positions to progressBar
+			if (xpTrackerConfig.showIntermediateLevels() && xpSnapshotSingle.getEndLevel() - xpSnapshotSingle.getStartLevel() > 1)
+			{
+				final List<Double> positions = new ArrayList<>();
+
+				for (int level = xpSnapshotSingle.getStartLevel() + 1; level < xpSnapshotSingle.getEndLevel(); level++)
+				{
+					double relativeStartExperience = Experience.getXpForLevel(level) - xpSnapshotSingle.getStartGoalXp();
+					double relativeEndExperience = xpSnapshotSingle.getEndGoalXp() - xpSnapshotSingle.getStartGoalXp();
+					positions.add(relativeStartExperience / relativeEndExperience);
+				}
+
+				progressBar.setPositions(positions);
+			}
+			else
+			{
+				progressBar.setPositions(Collections.emptyList());
+			}
+
 			progressBar.setToolTipText(String.format(
 				HTML_TOOL_TIP_TEMPLATE,
 				xpSnapshotSingle.getActionsInSession(),
+				xpSnapshotSingle.getActionType().getLabel(),
 				xpSnapshotSingle.getActionsPerHour(),
+				xpSnapshotSingle.getActionType().getLabel(),
 				xpSnapshotSingle.getTimeTillGoal()));
 
 			progressBar.setDimmed(skillPaused);

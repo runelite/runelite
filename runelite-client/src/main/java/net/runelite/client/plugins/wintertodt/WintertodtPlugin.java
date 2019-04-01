@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.wintertodt;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -58,12 +57,13 @@ import static net.runelite.api.ItemID.BRUMA_ROOT;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.SetMessage;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -71,8 +71,8 @@ import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "Wintertodt",
-	description = "Wintertodt",
-	tags = {"minigame", "firemaking"}
+	description = "Show helpful information for the Wintertodt boss",
+	tags = {"minigame", "firemaking", "boss"}
 )
 @Slf4j
 public class WintertodtPlugin extends Plugin
@@ -206,21 +206,21 @@ public class WintertodtPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSetMessage(SetMessage setMessage)
+	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (!isInWintertodt)
 		{
 			return;
 		}
 
-		ChatMessageType chatMessageType = setMessage.getType();
+		ChatMessageType chatMessageType = chatMessage.getType();
 
-		if (chatMessageType != ChatMessageType.SERVER && chatMessageType != ChatMessageType.FILTERED)
+		if (chatMessageType != ChatMessageType.GAMEMESSAGE && chatMessageType != ChatMessageType.SPAM)
 		{
 			return;
 		}
 
-		MessageNode messageNode = setMessage.getMessageNode();
+		MessageNode messageNode = chatMessage.getMessageNode();
 		final WintertodtInterruptType interruptType;
 
 		if (messageNode.getValue().startsWith("The cold of"))
@@ -399,7 +399,7 @@ public class WintertodtPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void itemContainerChanged(ItemContainerChanged event)
+	public void onItemContainerChanged(ItemContainerChanged event)
 	{
 		final ItemContainer container = event.getItemContainer();
 

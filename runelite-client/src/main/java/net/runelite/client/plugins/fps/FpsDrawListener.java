@@ -24,8 +24,6 @@
  */
 package net.runelite.client.plugins.fps;
 
-import java.awt.Image;
-import java.util.function.Consumer;
 import javax.inject.Inject;
 import net.runelite.api.events.FocusChanged;
 
@@ -42,7 +40,7 @@ import net.runelite.api.events.FocusChanged;
  * Enforcing FPS in the draw code does not impact the client engine's ability to run including its audio,
  * even when forced to 1 FPS with this plugin.
  */
-public class FpsDrawListener implements Consumer<Image>
+public class FpsDrawListener implements Runnable
 {
 	private static final int SAMPLE_SIZE = 4;
 
@@ -90,7 +88,7 @@ public class FpsDrawListener implements Consumer<Image>
 	}
 
 	@Override
-	public void accept(Image image)
+	public void run()
 	{
 
 		if (!isEnforced())

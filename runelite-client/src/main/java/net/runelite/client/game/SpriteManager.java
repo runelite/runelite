@@ -28,6 +28,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.inject.Inject;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
@@ -36,11 +37,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.SpritePixels;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.util.ImageUtil;
 
+@Slf4j
 @Singleton
 public class SpriteManager
 {
@@ -125,6 +129,38 @@ public class SpriteManager
 			{
 				c.setIcon(new ImageIcon(img));
 			});
+		});
+	}
+
+	public void addSpriteOverrides(SpriteOverride[] add)
+	{
+		if (add.length <= 0)
+		{
+			return;
+		}
+
+		clientThread.invokeLater(() ->
+		{
+			Map<Integer, SpritePixels> overrides = client.getSpriteOverrides();
+			Class<?> owner = add[0].getClass();
+			for (SpriteOverride o : add)
+			{
+				BufferedImage image = ImageUtil.getResourceStreamFromClass(owner, o.getFileName());
+				SpritePixels sp = ImageUtil.getImageSpritePixels(image, client);
+				overrides.put(o.getSpriteId(), sp);
+			}
+		});
+	}
+
+	public void removeSpriteOverrides(SpriteOverride[] remove)
+	{
+		clientThread.invokeLater(() ->
+		{
+			Map<Integer, SpritePixels> overrides = client.getSpriteOverrides();
+			for (SpriteOverride o : remove)
+			{
+				overrides.remove(o.getSpriteId());
+			}
 		});
 	}
 }

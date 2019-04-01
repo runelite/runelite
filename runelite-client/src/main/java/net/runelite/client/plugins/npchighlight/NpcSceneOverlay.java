@@ -46,6 +46,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.Text;
 
 public class NpcSceneOverlay extends Overlay
 {
@@ -87,7 +88,7 @@ public class NpcSceneOverlay extends Overlay
 
 		for (NPC npc : plugin.getHighlightedNpcs())
 		{
-			renderNpcOverlay(graphics, npc, npc.getName(), config.getHighlightColor());
+			renderNpcOverlay(graphics, npc, config.getHighlightColor());
 		}
 
 		return null;
@@ -143,7 +144,7 @@ public class NpcSceneOverlay extends Overlay
 		}
 	}
 
-	private void renderNpcOverlay(Graphics2D graphics, NPC actor, String name, Color color)
+	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color)
 	{
 		switch (config.renderStyle())
 		{
@@ -176,11 +177,12 @@ public class NpcSceneOverlay extends Overlay
 
 		if (config.drawNames())
 		{
-			Point textLocation = actor.getCanvasTextLocation(graphics, name, actor.getLogicalHeight() + 40);
+			String npcName = Text.removeTags(actor.getName());
+			Point textLocation = actor.getCanvasTextLocation(graphics, npcName, actor.getLogicalHeight() + 40);
 
 			if (textLocation != null)
 			{
-				OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+				OverlayUtil.renderTextLocation(graphics, textLocation, npcName, color);
 			}
 		}
 	}

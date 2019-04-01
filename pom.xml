@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.4.21-SNAPSHOT</version>
+	<version>1.5.19-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -38,12 +38,12 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
-		<lombok.version>1.16.22</lombok.version>
+		<lombok.version>1.18.4</lombok.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
 
-		<rs.version>175</rs.version>
+		<rs.version>178</rs.version>
 	</properties>
 
 	<licenses>
@@ -114,9 +114,7 @@
 	<modules>
 		<module>cache</module>
 		<module>cache-client</module>
-		<module>cache-server</module>
 		<module>cache-updater</module>
-		<module>model-viewer</module>
 		<module>runelite-api</module>
 		<module>runelite-client</module>
 		<module>runelite-mixins</module>
@@ -188,6 +186,10 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.0.0-M1</version>
+				<configuration>
+					<!-- Fix Javadoc on Java 11+ - JDK-8212233 -->
+					<source>8</source>
+				</configuration>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -221,7 +223,20 @@
 					<configLocation>checkstyle.xml</configLocation>
 					<!-- exclude generated sources from checkstyle https://stackoverflow.com/a/30406454/7189686 -->
 					<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>io.github.zlika</groupId>
+				<artifactId>reproducible-build-maven-plugin</artifactId>
+				<version>0.7</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>strip-jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<pluginManagement>
