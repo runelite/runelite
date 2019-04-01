@@ -559,15 +559,21 @@ public class GroundItemsPlugin extends Plugin
 			{
 				case GE:
 					if(gePrice > entry.getKey())
+					{
 						return entry.getValue();
+					}
 					break;
 				case HA:
 					if(haPrice > entry.getKey())
+					{
 						return entry.getValue();
+					}
 					break;
 				default: // case BOTH
 					if(gePrice > entry.getKey() || haPrice > entry.getKey())
+					{
 						return entry.getValue();
+					}
 					break;
 			}
 		}
