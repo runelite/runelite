@@ -52,6 +52,7 @@ class FishingSpotOverlay extends Overlay
 {
 	private static final Duration MINNOW_MOVE = Duration.ofSeconds(15);
 	private static final Duration MINNOW_WARN = Duration.ofSeconds(3);
+	private static final int ONE_TICK_AERIAL_FISHING = 3;
 
 	private final FishingPlugin plugin;
 	private final FishingConfig config;
@@ -127,7 +128,7 @@ class FishingSpotOverlay extends Overlay
 				Polygon poly = npc.getCanvasTilePoly();
 
 				if (spot == FishingSpot.COMMON_TENCH
-					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= 3)
+					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
 				{
 					color = Color.GREEN;
 				}
@@ -143,7 +144,7 @@ class FishingSpotOverlay extends Overlay
 				BufferedImage fishImage;
 
 				if (spot == FishingSpot.COMMON_TENCH
-					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= 3)
+					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
 				{
 					fishImage = ImageUtil.outlineImage(itemManager.getImage(spot.getFishSpriteId()), Color.GREEN);
 				}
@@ -168,7 +169,7 @@ class FishingSpotOverlay extends Overlay
 				Point textLocation = npc.getCanvasTextLocation(graphics, text, npc.getLogicalHeight() + 40);
 
 				if (spot == FishingSpot.COMMON_TENCH
-					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= 3)
+					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
 				{
 					color = Color.GREEN;
 				}
