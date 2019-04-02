@@ -554,22 +554,22 @@ public class GroundItemsPlugin extends Plugin
 		ValueCalculationMode mode = config.valueCalculationMode();
 		for (Map.Entry<Integer, Color> entry : priceChecks.entrySet())
 		{
-			switch(mode)
+			switch (mode)
 			{
 				case GE:
-					if(gePrice > entry.getKey())
+					if (gePrice > entry.getKey())
 					{
 						return entry.getValue();
 					}
 					break;
 				case HA:
-					if(haPrice > entry.getKey())
+					if (haPrice > entry.getKey())
 					{
 						return entry.getValue();
 					}
 					break;
 				default: // case HIGHEST
-					if(gePrice > entry.getKey() || haPrice > entry.getKey())
+					if (gePrice > entry.getKey() || haPrice > entry.getKey())
 					{
 						return entry.getValue();
 					}

@@ -179,9 +179,9 @@ public interface GroundItemsConfig extends Config
 		position = 11
 	)
 	default ValueCalculationMode valueCalculationMode()
-    {
-        return ValueCalculationMode.HIGHEST;
-    }
+	{
+		return ValueCalculationMode.HIGHEST;
+	}
 
 	@ConfigItem(
 		keyName = "highlightOverValue2",
