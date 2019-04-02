@@ -167,7 +167,8 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				sendChatMessage(HERB_BOX_MESSAGE + RELOG_MESSAGE);
+				//HerbBoxes does not require "Relog message"
+				sendChatMessage(HERB_BOX_MESSAGE);
 			}
 		}
 	}
@@ -182,7 +183,8 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				sendChatMessage(STAVES_MESSAGE + RELOG_MESSAGE);
+				//Staves does not require "Relog message"
+				sendChatMessage(STAVES_MESSAGE);
 			}
 		}
 	}
@@ -212,7 +214,8 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				sendChatMessage(RUNES_MESSAGE + RELOG_MESSAGE);
+				//Runes does not require "Relog message"
+				sendChatMessage(RUNES_MESSAGE);
 			}
 		}
 	}
@@ -227,7 +230,8 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				sendChatMessage(SAND_MESSAGE + RELOG_MESSAGE);
+				//sand does not require "Relog message"
+				sendChatMessage(SAND_MESSAGE);
 			}
 		}
 	}
@@ -242,7 +246,8 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				sendChatMessage(FLAX_MESSAGE + RELOG_MESSAGE);
+				//Flax does not require "Relog message"
+				sendChatMessage(FLAX_MESSAGE);
 			}
 		}
 	}
@@ -267,7 +272,8 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				sendChatMessage(BONEMEAL_MESSAGE + RELOG_MESSAGE);
+				//Bonemeal does not require "Relog message"
+				sendChatMessage(BONEMEAL_MESSAGE);
 			}
 		}
 	}
