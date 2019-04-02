@@ -240,7 +240,8 @@ public class SuppliesTrackerPlugin extends Plugin
 			{
 				ticksInAnimation = BLOWPIPE_TICKS_NORMAL_PVM;
 				if (client.getLocalPlayer() != null &&
-						client.getLocalPlayer().getInteracting() instanceof Player) {
+						client.getLocalPlayer().getInteracting() instanceof Player)
+				{
 					ticksInAnimation = BLOWPIPE_TICKS_NORMAL_PVP;
 				}
 			}
@@ -248,7 +249,8 @@ public class SuppliesTrackerPlugin extends Plugin
 			{
 				ticksInAnimation = BLOWPIPE_TICKS_RAPID_PVM;
 				if (client.getLocalPlayer() != null &&
-						client.getLocalPlayer().getInteracting() instanceof Player) {
+						client.getLocalPlayer().getInteracting() instanceof Player)
+				{
 					ticksInAnimation = BLOWPIPE_TICKS_RAPID_PVP;
 				}
 			}
