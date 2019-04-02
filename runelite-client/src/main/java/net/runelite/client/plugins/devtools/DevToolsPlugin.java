@@ -280,6 +280,24 @@ public class DevToolsPlugin extends Plugin
 				eventBus.post(experienceChanged);
 				break;
 			}
+			case "setxp":
+			{
+				Skill skill = Skill.valueOf(args[0].toUpperCase());
+				int xp = Integer.parseInt(args[1]);
+
+				int level = min(Experience.getLevelForXp(xp), Experience.MAX_REAL_LEVEL);
+
+				client.getBoostedSkillLevels()[skill.ordinal()] = level;
+				client.getRealSkillLevels()[skill.ordinal()] = level;
+				client.getSkillExperiences()[skill.ordinal()] = xp;
+
+				client.queueChangedSkill(skill);
+
+				ExperienceChanged experienceChanged = new ExperienceChanged();
+				experienceChanged.setSkill(skill);
+				eventBus.post(experienceChanged);
+				break;
+			}
 			case "setstat":
 			{
 				Skill skill = Skill.valueOf(args[0].toUpperCase());
