@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -63,13 +62,19 @@ public class StatusTrayIconPlugin extends Plugin
 	private static final Color MISSING_HEALTH_COLOR = new Color(255, 0, 0);
 	private static final Color REMAINING_PRAYER_COLOR = new Color(57, 255, 186);
 	private static final Color MISSING_PRAYER_COLOR = new Color(28, 128, 93);
-	private static final Font STATUS_FONT = FontManager.getRunescapeBoldFont().deriveFont(36f);
-	private static final Font STATUS_FONT_SMALL = FontManager.getRunescapeBoldFont().deriveFont(30f);
+	private static final Font STATUS_FONT = FontManager.getRunescapeBoldFont().deriveFont(80f);
+	private static final Font STATUS_FONT_SMALL = FontManager.getRunescapeBoldFont().deriveFont(64f);
 
-	private static final int HEIGHT = 42;
-	private static final int WIDTH = 42;
+	private static final int HEIGHT = 100;
+	private static final int WIDTH = 100;
 	private static final int HALF_WIDTH = WIDTH / 2;
-	private static final int MAC_HEIGHT_OFFSET = 3;
+	private static final int SHADOW_STROKE_WIDTH = 2;
+
+	/**
+	 * On Mac, the way that SystemTray sets up the icon pushes it up against the top of the screen,
+	 * instead of centering it as Windows does. This offset adds transparent padding to the top of the icon.
+	 */
+	private static final int MAC_HEIGHT_OFFSET = 6;
 
 	private static final Map<StatusTrayCacheKey, BufferedImage> imageCache = new HashMap<>();
 
@@ -145,11 +150,12 @@ public class StatusTrayIconPlugin extends Plugin
 			String numberString = String.valueOf(numberToDisplay);
 			int numberWidth = g.getFontMetrics().stringWidth(numberString);
 			int numberHeight = g.getFontMetrics().getHeight();
-			int numberDrawY = HEIGHT - ((HEIGHT - numberHeight) / 2) + getYOffset();
+			int numberAscent = g.getFontMetrics().getAscent();
+			int numberDrawY = ((HEIGHT - numberHeight) / 2) + numberAscent + getYOffset();
 			int numberDrawX = (WIDTH - numberWidth) / 2;
 
 			g.setColor(Color.BLACK);
-			g.drawString(String.valueOf(numberToDisplay), numberDrawX + 1, numberDrawY + 1);
+			g.drawString(String.valueOf(numberToDisplay), numberDrawX + SHADOW_STROKE_WIDTH, numberDrawY + SHADOW_STROKE_WIDTH);
 
 			g.setColor(Color.WHITE);
 			g.drawString(String.valueOf(numberToDisplay), numberDrawX, numberDrawY);
