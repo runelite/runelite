@@ -287,7 +287,13 @@ public class SuppliesTrackerPlugin extends Plugin
 				{
 					quantity -= newItem.getQuantity();
 				}
-				buildEntries(oldItem.getId(), quantity);
+				// ensure that only positive quantities are added since it is reported
+				// that sometimes checkUsedRunes is called on the same tick that a player
+				// gains runes in their inventory
+				if (quantity > 0)
+				{
+					buildEntries(oldItem.getId(), quantity);
+				}
 			}
 		}
 	}
@@ -356,11 +362,6 @@ public class SuppliesTrackerPlugin extends Plugin
 	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
 	{
 		ItemContainer itemContainer = itemContainerChanged.getItemContainer();
-
-		for (MenuAction action : actionStack)
-		{
-			System.out.println(action.getType());
-		}
 
 		if (itemContainer == client.getItemContainer(InventoryID.INVENTORY) && old != null && !actionStack.isEmpty())
 		{
@@ -487,11 +488,6 @@ public class SuppliesTrackerPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(final MenuOptionClicked event)
 	{
-		System.out.println(event.getMenuAction().getId());
-		System.out.println(event.getActionParam());
-		System.out.println(event.getMenuOption());
-		System.out.println(event.getMenuTarget());
-
 		// Uses stacks to push/pop for tick eating
 		// Create pattern to find eat/drink at beginning
 		Pattern eatPattern = Pattern.compile(EAT_PATTERN);
