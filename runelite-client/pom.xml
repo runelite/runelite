@@ -247,7 +247,7 @@
 		<dependency>
 			<groupId>com.google.cloud</groupId>
 			<artifactId>google-cloud-translate</artifactId>
-			<version>1.40.0</version>
+			<version>1.66.0</version>
 		</dependency>
 	</dependencies>
 

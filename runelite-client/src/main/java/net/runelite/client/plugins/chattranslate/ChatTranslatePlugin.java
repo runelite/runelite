@@ -25,6 +25,9 @@
  */
 package net.runelite.client.plugins.chattranslate;
 
+import com.google.auth.oauth2.AccessToken;
+import java.io.InputStream;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import net.runelite.api.Client;
@@ -43,7 +46,7 @@ import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
 import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.Lists;
-import com.google.common.eventbus.Subscribe;
+import net.runelite.client.eventbus.Subscribe;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import javax.inject.Inject;
@@ -120,52 +123,52 @@ public class ChatTranslatePlugin extends Plugin
 	public void onChatMessage(ChatMessage message)
 	{
 		executorService.submit(() ->
-		{
-			switch (message.getType())
 			{
-				case MODPRIVATECHAT:
-				case PRIVATECHAT:
-					if (config.translatePrivateMessages())
-					{
-						translatePrivateMessage(message);
-					}
-					break;
-				case PRIVATECHATOUT:
-					break;
-				case GAMEMESSAGE:
-				case ENGINE:
-					if (config.translateGameMessages())
-					{
-						messageHandler(message);
-					}
-					break;
-				case MODCHAT:
-				case PUBLICCHAT:
-					if (config.translatePublicMessages())
-					{
-						messageHandler(message);
-					}
-					break;
-				case FRIENDSCHATNOTIFICATION:
-				case FRIENDSCHAT:
-					if (config.translateClanMessages())
-					{
-						messageHandler(message);
-					}
-					break;
-				case ITEM_EXAMINE:
-				case OBJECT_EXAMINE:
-				case NPC_EXAMINE:
-					if (config.translateExamineMessages())
-					{
-						messageHandler(message);
-					}
-				default:
-			}
-
-		});
+				switch (message.getType())
+				{
+					case MODPRIVATECHAT:
+					case PRIVATECHAT:
+						if (config.translatePrivateMessages())
+						{
+							translatePrivateMessage(message);
+						}
+						break;
+					case PRIVATECHATOUT:
+						break;
+					case CONSOLE:
+					case GAMEMESSAGE:
+					case ENGINE:
+						if (config.translateGameMessages())
+						{
+							messageHandler(message);
+						}
+						break;
+					case MODCHAT:
+					case PUBLICCHAT:
+						if (config.translatePublicMessages())
+						{
+							messageHandler(message);
+						}
+						break;
+					case FRIENDSCHATNOTIFICATION:
+					case FRIENDSCHAT:
+						if (config.translateClanMessages())
+						{
+							messageHandler(message);
+						}
+						break;
+					case ITEM_EXAMINE:
+					case OBJECT_EXAMINE:
+					case NPC_EXAMINE:
+						if (config.translateExamineMessages())
+						{
+							messageHandler(message);
+						}
+					default:
+						break;
+				}
+			});
 	}
-
 
 	// TODO: Rewrite messageHandler to do this function
 	private void translatePrivateMessage(ChatMessage message)
@@ -234,6 +237,7 @@ public class ChatTranslatePlugin extends Plugin
 
 		if (!(client.getLocalPlayer().getName().equalsIgnoreCase(messageNode.getName())))
 		{
+			log.debug("About to translate");
 			// outgoing value to translate
 			msg = doTranslation(messageValue);
 			//update = true;
@@ -241,6 +245,7 @@ public class ChatTranslatePlugin extends Plugin
 		}
 		if (foundMatch)
 		{
+			log.debug("Setting message value");
 			messageNode.setValue(msg);
 		}
 
@@ -259,6 +264,8 @@ public class ChatTranslatePlugin extends Plugin
 		GoogleCredentials credentials;
 		try
 		{
+			//AccessToken token = new AccessToken("snip", new Date());
+			//credentials = GoogleCredentials.newBuilder().setAccessToken(token).build();
 			credentials = GoogleCredentials.fromStream(new FileInputStream(jsonPath)).createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
 			Translate translate = TranslateOptions.newBuilder().setCredentials(credentials).build().getService();
 
@@ -268,9 +275,10 @@ public class ChatTranslatePlugin extends Plugin
 							valueToTranslate,
 							TranslateOption.sourceLanguage(config.translateFromLang().toString()),
 							TranslateOption.targetLanguage(config.translateToLang().toString()));
+			log.info(translation.getTranslatedText());
 			return translation.getTranslatedText();
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			log.error(e.getMessage());
 			return valueToTranslate;
@@ -295,7 +303,11 @@ public class ChatTranslatePlugin extends Plugin
 
 		if (!messageQueue.contains(queuedMessage))
 		{
+			log.debug("Does not contain");
 			messageQueue.offer(queuedMessage);
+			client.refreshChat();
+		}else{
+			log.debug("Contains "+queuedMessage);
 		}
 	}
 
