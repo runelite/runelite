@@ -45,4 +45,14 @@ public interface TimestampConfig extends Config
 		description = "Colour of Timestamps from the Timestamps plugin (transparent)"
 	)
 	Color transparentTimestamp();
+
+	@ConfigItem(
+		keyName = "twelveHourClock",
+		name = "Twelve hour clock",
+		description = "Use a 12 hour clock instead of 24. (e.g. 4:00pm instead of 16:00)"
+	)
+	default boolean twelveHourClock()
+	{
+		return false;
+	}
 }
