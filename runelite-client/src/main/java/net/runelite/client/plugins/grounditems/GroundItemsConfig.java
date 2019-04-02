@@ -178,7 +178,10 @@ public interface GroundItemsConfig extends Config
 		description = "Configures which coin value is used to determine highlight color",
 		position = 11
 	)
-	default ValueCalculationMode valueCalculationMode() { return ValueCalculationMode.BOTH; }
+	default ValueCalculationMode valueCalculationMode()
+    {
+        return ValueCalculationMode.HIGHEST;
+    }
 
 	@ConfigItem(
 		keyName = "highlightOverValue2",
