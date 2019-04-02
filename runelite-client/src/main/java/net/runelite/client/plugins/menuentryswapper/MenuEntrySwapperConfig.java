@@ -113,9 +113,19 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "claimSlime",
-		name = "Claim Slime",
-		description = "Swap Talk-to with Claim Slime from Morytania diaries"
+		keyName = "claimDynamite",
+		name = "Claim Dynamite",
+		description = "Swap Talk-to with Claim Dynamite on Thirus"
+	)
+	default boolean claimDynamite()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "claimSlime",
+			name = "Claim Slime",
+			description = "Swap Talk-to with Claim Slime from Morytania diaries"
 	)
 	default boolean claimSlime()
 	{

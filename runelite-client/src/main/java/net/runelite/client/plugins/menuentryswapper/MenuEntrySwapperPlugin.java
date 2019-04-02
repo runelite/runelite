@@ -420,6 +420,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("claim-slime", option, target, true);
 			}
 
+			if (config.claimDynamite() && target.contains("Thirus"))
+			{
+				swap("claim-dynamite", option, target, true);
+			}
+
 			if (config.swapTravel())
 			{
 				swap("travel", option, target, true);
