@@ -132,19 +132,19 @@ public class ChatNotificationsPlugin extends Plugin
 
 		switch (chatMessage.getType())
 		{
-			case TRADE:
+			case TRADEREQ:
 				if (chatMessage.getMessage().contains("wishes to trade with you.") && config.notifyOnTrade())
 				{
 					notifier.notify(chatMessage.getMessage());
 				}
 				break;
-			case DUEL:
+			case CHALREQ_TRADE:
 				if (chatMessage.getMessage().contains("wishes to duel with you.") && config.notifyOnDuel())
 				{
 					notifier.notify(chatMessage.getMessage());
 				}
 				break;
-			case GAME:
+			case CONSOLE:
 				// Don't notify for notification messages
 				if (chatMessage.getName().equals(runeLiteProperties.getTitle()))
 				{

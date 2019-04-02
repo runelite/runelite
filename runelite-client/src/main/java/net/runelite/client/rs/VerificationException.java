@@ -22,24 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.client.rs;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.boot.SpringApplication;
-
-public class SpringBootWebApplicationTest
+class VerificationException extends Exception
 {
-	@Test
-	@Ignore
-	public void run() throws InterruptedException
+	public VerificationException(String message)
 	{
-		System.setProperty("spring.profiles.active", "dev");
-		SpringApplication.run(SpringBootWebApplication.class);
+		super(message);
+	}
 
-		for (;;)
-		{
-			Thread.sleep(100L);
-		}
+	public VerificationException(String message, Throwable cause)
+	{
+		super(message, cause);
 	}
 }

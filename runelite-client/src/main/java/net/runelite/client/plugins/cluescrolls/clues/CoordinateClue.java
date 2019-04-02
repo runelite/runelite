@@ -27,21 +27,16 @@ package net.runelite.client.plugins.cluescrolls.clues;
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-@AllArgsConstructor
 public class CoordinateClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
 	private static final ImmutableMap<WorldPoint, String> CLUES = new ImmutableMap.Builder<WorldPoint, String>()
@@ -101,7 +96,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2339, 3311, 0), "East of Tirannwn on Arandar mountain pass.")
 		.put(new WorldPoint(3440, 3341, 0), "Nature Spirit's grotto.")
 		.put(new WorldPoint(2763, 2974, 0), "Cairn Isle, west of Shilo Village.")
-		.put(new WorldPoint(3138, 2969, 0), "West of Bandid Camp.")
+		.put(new WorldPoint(3138, 2969, 0), "West of Bandit Camp.")
 		.put(new WorldPoint(2924, 2963, 0), "On the southern part of eastern Karamja.")
 		.put(new WorldPoint(2838, 2914, 0), "Kharazi Jungle, near water pool.")
 		.put(new WorldPoint(3441, 3419, 0), "Mort Myre Swamp.")
@@ -112,7 +107,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3168, 3677, 0), "Wilderness. Graveyard of Shadows.")
 		.put(new WorldPoint(2853, 3690, 0), "Entrance to the troll Stronghold.")
 		.put(new WorldPoint(3305, 3692, 0), "Wilderness. West of eastern green dragon.")
-		.put(new WorldPoint(3055, 3696, 0), "Wilderness. Bandid Camp.")
+		.put(new WorldPoint(3055, 3696, 0), "Wilderness. Bandit Camp.")
 		.put(new WorldPoint(3302, 3696, 0), "Wilderness. West of eastern green dragon.")
 		.put(new WorldPoint(1479, 3696, 0), "Lizardman Canyon.")
 		.put(new WorldPoint(2712, 3732, 0), "North-east of Rellekka.")
@@ -192,9 +187,15 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2994, 3961, 0), "Wilderness. Inside Agility Training Area.")
 		.build();
 
-	private String text;
-	private WorldPoint location;
-	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(ItemID.SPADE);
+	private final String text;
+	private final WorldPoint location;
+
+	public CoordinateClue(String text, WorldPoint location)
+	{
+		this.text = text;
+		this.location = location;
+		setRequiresSpade(true);
+	}
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
@@ -214,15 +215,6 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Click the clue scroll on your world map to see dig location.")
 			.build());
-
-		if (plugin.getInventoryItems() != null)
-		{
-			if (!HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
-			{
-				panelComponent.getChildren().add(LineComponent.builder().left("").build());
-				panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
-			}
-		}
 	}
 
 	@Override
