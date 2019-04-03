@@ -120,11 +120,6 @@ public class DailyTasksPlugin extends Plugin
 			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
 			loggingIn = false;
 
-			if(dailyReset)
-			{
-				sendChatMessage(RELOG_MESSAGE_2);
-			}
-
 			if (config.showHerbBoxes())
 			{
 				checkHerbBoxes(dailyReset);
@@ -173,6 +168,8 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
+				//Sends "may Require Relog" before all messages at start of reset
+				sendChatMessage(RELOG_MESSAGE_2);
 				//HerbBoxes does not require "Relog message"
 				sendChatMessage(HERB_BOX_MESSAGE);
 			}
