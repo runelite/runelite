@@ -253,6 +253,16 @@ public class WorldHopperPlugin extends Plugin
 						SwingUtilities.invokeLater(() -> panel.hidePing());
 					}
 					break;
+				case "subscriptionFilter":
+					if(config.subscriptionFilter() == SubscriptionFilterMode.BOTH){
+						panel.setSubFilter(SubscriptionFilterMode.BOTH);
+					} else if(config.subscriptionFilter() == SubscriptionFilterMode.MEMBER){
+						panel.setSubFilter(SubscriptionFilterMode.MEMBER);
+					} else {
+						panel.setSubFilter(SubscriptionFilterMode.FREE);
+					}
+					updateList();
+					break;
 			}
 		}
 	}
@@ -543,9 +553,7 @@ public class WorldHopperPlugin extends Plugin
 					worldIdx = 0;
 				}
 			}
-
 			world = worlds.get(worldIdx);
-
 			EnumSet<WorldType> types = world.getTypes().clone();
 
 			types.remove(WorldType.BOUNTY);
