@@ -212,7 +212,8 @@ class WorldSwitcherPanel extends PluginPanel
 		}
 
 	}
-	void setSubFilter(SubscriptionFilterMode filterOption){
+	void setSubFilter(SubscriptionFilterMode filterOption)
+	{
 		subFilter = filterOption;
 	}
 	void populate(List<World> worlds)
