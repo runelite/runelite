@@ -221,18 +221,22 @@ class WorldSwitcherPanel extends PluginPanel
 		for (int i = 0; i < worlds.size(); i++)
 		{
 			World world = worlds.get(i);
-			if(world.getTypes().clone().contains(WorldType.MEMBERS)){
-				if(subFilter == SubscriptionFilterMode.FREE){
+			if(world.getTypes().clone().contains(WorldType.MEMBERS))
+			{
+				if(subFilter == SubscriptionFilterMode.FREE)
+				{
 					continue;
 				}
-			} else{
-				if(subFilter == SubscriptionFilterMode.MEMBER){
+			}
+			else
+			{
+				if(subFilter == SubscriptionFilterMode.MEMBER)
+				{
 					continue;
 				}
 			}
 			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));
 		}
-
 		updateList();
 	}
 

@@ -32,7 +32,8 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Keybind;
 
 @ConfigGroup(WorldHopperConfig.GROUP)
-public interface WorldHopperConfig extends Config {
+public interface WorldHopperConfig extends Config
+	{
 	String GROUP = "worldhopper";
 
 	@ConfigItem(
@@ -41,7 +42,8 @@ public interface WorldHopperConfig extends Config {
 			description = "When you press this key you'll hop to the previous world",
 			position = 0
 	)
-	default Keybind previousKey() {
+	default Keybind previousKey()
+	{
 		return new Keybind(KeyEvent.VK_LEFT, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK);
 	}
 
@@ -51,7 +53,8 @@ public interface WorldHopperConfig extends Config {
 			description = "When you press this key you'll hop to the next world",
 			position = 1
 	)
-	default Keybind nextKey() {
+	default Keybind nextKey()
+	{
 		return new Keybind(KeyEvent.VK_RIGHT, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK);
 	}
 

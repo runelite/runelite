@@ -254,11 +254,16 @@ public class WorldHopperPlugin extends Plugin
 					}
 					break;
 				case "subscriptionFilter":
-					if(config.subscriptionFilter() == SubscriptionFilterMode.BOTH){
+					if(config.subscriptionFilter() == SubscriptionFilterMode.BOTH)
+					{
 						panel.setSubFilter(SubscriptionFilterMode.BOTH);
-					} else if(config.subscriptionFilter() == SubscriptionFilterMode.MEMBER){
+					}
+					else if(config.subscriptionFilter() == SubscriptionFilterMode.MEMBER)
+					{
 						panel.setSubFilter(SubscriptionFilterMode.MEMBER);
-					} else {
+					}
+					else
+					{
 						panel.setSubFilter(SubscriptionFilterMode.FREE);
 					}
 					updateList();

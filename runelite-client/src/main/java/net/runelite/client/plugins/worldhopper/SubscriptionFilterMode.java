@@ -30,14 +30,16 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum SubscriptionFilterMode {
+public enum SubscriptionFilterMode
+{
     BOTH("Both"),
     FREE("Free"),
     MEMBER("Member");
     private final String name;
 
     @Override
-    public String toString(){
+    public String toString()
+    {
         return name;
     }
 }
