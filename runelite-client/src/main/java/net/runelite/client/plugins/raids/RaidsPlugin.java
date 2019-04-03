@@ -26,49 +26,22 @@ package net.runelite.client.plugins.raids;
 
 import com.google.inject.Binder;
 import com.google.inject.Provides;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Vector;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
-
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
-import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
-import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
-
 import net.runelite.api.Point;
-import net.runelite.api.events.*;
-import net.runelite.api.SpriteID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.InventoryID;
 import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
@@ -76,40 +49,27 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetHiddenChanged;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SpriteManager;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
-import net.runelite.client.ui.ClientToolbar;
-import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.DrawManager;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.util.*;
-import net.runelite.client.util.ScreenCapture;
-import net.runelite.client.util.StackFormatter;
-import net.runelite.api.events.WidgetLoaded;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "! Chambers Of Xeric",
+	name = "Chambers Of Xeric",
 	description = "Show helpful information for the Chambers of Xeric raid",
-	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses", "cox", "olm"}
+	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses"}
 )
 @Slf4j
 public class RaidsPlugin extends Plugin
@@ -122,10 +82,6 @@ public class RaidsPlugin extends Plugin
 	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
-	private static final int LINE_COMPONENT_HEIGHT = 16;
-
-	@Inject
-	private ItemManager itemManager;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -137,12 +93,6 @@ public class RaidsPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private DrawManager drawManager;
-
-	@Inject
-	private ScheduledExecutorService executor;
-
-	@Inject
 	private RaidsConfig config;
 
 	@Inject
@@ -152,9 +102,6 @@ public class RaidsPlugin extends Plugin
 	private RaidsOverlay overlay;
 
 	@Inject
-	private RaidsPointsOverlay pointsOverlay;
-
-	@Inject
 	private LayoutSolver layoutSolver;
 
 	@Inject
@@ -162,12 +109,6 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
-
-	@Inject
-	private KeyManager keyManager;
-
-	@Inject
-	private ScreenCapture screenCapture;
 
 	@Getter
 	private final ArrayList<String> roomWhitelist = new ArrayList<>();
@@ -182,22 +123,12 @@ public class RaidsPlugin extends Plugin
 	private final ArrayList<String> layoutWhitelist = new ArrayList<>();
 
 	@Getter
-	private final Map<String, List<Integer>> recommendedItemsList = new HashMap<>();
-
-	@Getter
 	private Raid raid;
-	private RaidsPanel panel;
-	private NavigationButton navButton;
 
 	@Getter
 	private boolean inRaidChambers;
-	private boolean freshStart = true;
-	private boolean canClick = false;
 
 	private RaidsTimer timer;
-	@Inject
-	private ClientToolbar clientToolbar;
-	public boolean canShow;
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -214,54 +145,24 @@ public class RaidsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		freshStart = true;
 		overlayManager.add(overlay);
-		overlayManager.add(pointsOverlay);
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
-		keyManager.registerKeyListener(hotkeyListener);
-
-			panel = injector.getInstance(RaidsPanel.class);
-			panel.init(config);
-
-			final BufferedImage icon = ImageUtil.getResourceStreamFromClass(this.getClass(), "instancereloadhelper.png");
-
-			navButton = NavigationButton.builder()
-					.tooltip("Raids Reload")
-					.icon(icon)
-					.priority(8)
-					.panel(panel)
-					.build();
-
-			clientToolbar.addNavigation(navButton);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		clientToolbar.removeNavigation(navButton);
 		overlayManager.remove(overlay);
-		overlayManager.remove(pointsOverlay);
 		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
 		raid = null;
 		timer = null;
-		final Widget widget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX);
-		if (widget != null)
-		{
-			widget.setHidden(false);
-		}
-		keyManager.unregisterKeyListener(hotkeyListener);
 	}
-
-
-
-
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-
 		if (!event.getGroup().equals("raids"))
 		{
 			return;
@@ -277,34 +178,16 @@ public class RaidsPlugin extends Plugin
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 	}
 
-
-	@Subscribe
-	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
-	{
-		if (!inRaidChambers || event.isHidden())
-		{
-			return;
-		}
-
-		Widget widget = event.getWidget();
-
-		if (widget == client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX))
-		{
-			widget.setHidden(true);
-		}
-	}
-
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		checkRaidPresence(false);
-
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (inRaidChambers && event.getType() == ChatMessageType.CLANCHAT_INFO)
+		if (inRaidChambers && event.getType() == ChatMessageType.FRIENDSCHATNOTIFICATION)
 		{
 			String message = Text.removeTags(event.getMessage());
 
@@ -335,24 +218,24 @@ public class RaidsPlugin extends Plugin
 					double percentage = personalPoints / (totalPoints / 100.0);
 
 					String chatMessage = new ChatMessageBuilder()
-							.append(ChatColorType.NORMAL)
-							.append("Total points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(totalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(", Personal points: ")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(POINTS_FORMAT.format(personalPoints))
-							.append(ChatColorType.NORMAL)
-							.append(" (")
-							.append(ChatColorType.HIGHLIGHT)
-							.append(DECIMAL_FORMAT.format(percentage))
-							.append(ChatColorType.NORMAL)
-							.append("%)")
-							.build();
+						.append(ChatColorType.NORMAL)
+						.append("Total points: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(POINTS_FORMAT.format(totalPoints))
+						.append(ChatColorType.NORMAL)
+						.append(", Personal points: ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(POINTS_FORMAT.format(personalPoints))
+						.append(ChatColorType.NORMAL)
+						.append(" (")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(DECIMAL_FORMAT.format(percentage))
+						.append(ChatColorType.NORMAL)
+						.append("%)")
+						.build();
 
 					chatMessageManager.queue(QueuedMessage.builder()
-						.type(ChatMessageType.CLANCHAT_INFO)
+						.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
 						.runeLiteFormattedMessage(chatMessage)
 						.build());
 				}
@@ -360,18 +243,15 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	public void checkRaidPresence(boolean force)
+	private void checkRaidPresence(boolean force)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
-		boolean setting = true;
-		if(!force) {
-			setting = client.getVar(Varbits.IN_RAID) == 1;
-		}else{
 
-		}
+		boolean setting = client.getVar(Varbits.IN_RAID) == 1;
+
 		if (force || inRaidChambers != setting)
 		{
 			inRaidChambers = setting;
@@ -396,75 +276,9 @@ public class RaidsPlugin extends Plugin
 				}
 
 				raid.updateLayout(layout);
-
 				RotationSolver.solve(raid.getCombatRooms());
-				Vector<String> puzzles = new Vector<String>();
-				puzzles.clear();
-				for(RaidRoom r : raid.getRooms()){
-                    if(r != null){
-                        if(r.getPuzzle() != null) {
-                            if (r.getPuzzle().getName() != null) {
-                                if(r.getPuzzle().getName().equals("Lmao")){
-                                    puzzles.add("Unknown");
-                                }else {
-                                    puzzles.add(r.getPuzzle().getName());
-                                }
-                            }
-                        }
-                    }
-                }
-				//Push puzzles to api
-				String urlString = "http://lyzrds.com/runelite/puzzle.php";
-				boolean add = true;
-				if(puzzles.size() > 3 ){
-					add = false;
-				}
-				if(puzzles.size() == 0){
-					add = false;
-				}
-				switch(puzzles.size()){
-					case 1:
-						urlString = urlString + "?p1=" + puzzles.get(0);
-						break;
-					case 2:
-						urlString = urlString + "?p1=" + puzzles.get(0) + "&p2=" + puzzles.get(1);
-						break;
-					case 3:
-						urlString = urlString + "?p1=" + puzzles.get(0) + "&p2=" + puzzles.get(1) + "&p3=" + puzzles.get(2);
-						break;
-
-				}
-
-
-				if(add && canShow) {
-					URL oracle = null;
-					try {
-						oracle = new URL(urlString.replace(" ",""));
-					} catch (MalformedURLException e) {
-						e.printStackTrace();
-					}
-					URLConnection yc = null;
-					try {
-						yc = oracle.openConnection();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					BufferedReader in = null;
-					try {
-						in = new BufferedReader(new InputStreamReader(
-								yc.getInputStream()));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					try {
-						in.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
-				}
-				canShow = true;
 				overlay.setScoutOverlayShown(true);
+				sendRaidLayoutMessage();
 			}
 			else if (!config.scoutOverlayAtBank())
 			{
@@ -477,6 +291,28 @@ public class RaidsPlugin extends Plugin
 		{
 			overlay.setScoutOverlayShown(false);
 		}
+	}
+
+	private void sendRaidLayoutMessage()
+	{
+		if (!config.layoutMessage())
+		{
+			return;
+		}
+
+		final String layout = getRaid().getLayout().toCodeString();
+		final String rooms = getRaid().toRoomString();
+		final String raidData = "[" + layout + "]: " + rooms;
+
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+			.runeLiteFormattedMessage(new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append("Layout: ")
+				.append(ChatColorType.NORMAL)
+				.append(raidData)
+				.build())
+			.build());
 	}
 
 	private void updateInfoBoxState()
@@ -510,41 +346,6 @@ public class RaidsPlugin extends Plugin
 		updateList(roomBlacklist, config.blacklistedRooms());
 		updateList(rotationWhitelist, config.whitelistedRotations());
 		updateList(layoutWhitelist, config.whitelistedLayouts());
-		updateMap(recommendedItemsList, config.recommendedItems());
-	}
-
-	private void updateMap(Map<String, List<Integer>> map, String input)
-	{
-		map.clear();
-
-		Matcher m = ROTATION_REGEX.matcher(input);
-		while (m.find())
-		{
-			String everything = m.group(1).toLowerCase();
-			int split = everything.indexOf(',');
-			if (split < 0)
-				continue;
-			String key = everything.substring(0, split);
-			if (key.length() < 1)
-				continue;
-			String[] itemNames = everything.substring(split).split(SPLIT_REGEX);
-
-			map.computeIfAbsent(key, k -> new ArrayList<>());
-
-			for (String itemName : itemNames)
-			{
-				if (itemName.equals(""))
-					continue;
-				if (itemName.equals("ice barrage"))
-					map.get(key).add(SpriteID.SPELL_ICE_BARRAGE);
-				else if (itemName.startsWith("salve"))
-					map.get(key).add(ItemID.SALVE_AMULETEI);
-				else if (itemManager.search(itemName).size() > 0)
-					map.get(key).add(itemManager.search(itemName).get(0).getId());
-				else
-					log.info("RaidsPlugin: Could not find an item ID for item: " + itemName);
-			}
-		}
 	}
 
 	private void updateList(ArrayList<String> list, String input)
@@ -800,43 +601,5 @@ public class RaidsPlugin extends Plugin
 		}
 
 		return room;
-	}
-
-	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
-	{
-		@Override
-		public void hotkeyPressed()
-		{
-			initiateCopyImage();
-		}
-	};
-
-	private void initiateCopyImage()
-	{
-		if (!config.enableSharableImage() || !overlay.isScouterActive())
-			return;
-
-		Rectangle overlaySize = overlay.getBounds();
-		if (overlaySize.width <= 0 || overlaySize.height <= 0)
-			return;
-		if (!config.alwaysShowWorldAndCC())
-			overlaySize.height += LINE_COMPONENT_HEIGHT;
-
-		BufferedImage bim = new BufferedImage(overlaySize.width, overlaySize.height, BufferedImage.TYPE_INT_ARGB);
-		overlay.setSharable(true);
-		Graphics2D g = bim.createGraphics();
-		g.setFont(FontManager.getRunescapeFont());
-
-		//this is needed to update the PanelComponent childDimensions, because they are a frame behind
-		if (!config.alwaysShowWorldAndCC())
-			overlay.render(g);
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, overlaySize.width, overlaySize.height);
-
-		overlay.render(g);
-		screenCapture.takeScreenshot(bim, config.enableTrayNotification(), "Chambers");
-		g.dispose();
-
-		overlay.setSharable(false);
 	}
 }

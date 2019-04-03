@@ -259,7 +259,6 @@ under the License.
       <properties>
         <maven.javadoc.skip>false</maven.javadoc.skip>
         <checkstyle.skip>false</checkstyle.skip>
-		<archetype.test.skip>false</archetype.test.skip>
       </properties>
     </profile>
   </profiles>

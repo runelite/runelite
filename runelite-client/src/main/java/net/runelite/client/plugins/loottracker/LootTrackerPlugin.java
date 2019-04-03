@@ -25,6 +25,10 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Multisets;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -34,6 +38,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
@@ -46,7 +51,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.Item;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
@@ -56,15 +60,12 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.chat.ChatColorType;
-import net.runelite.client.chat.ChatMessageBuilder;
-import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NpcLootReceived;
@@ -79,7 +80,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
@@ -99,14 +99,18 @@ public class LootTrackerPlugin extends Plugin
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails.");
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
 
+	// Chest loot handling
+	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
+	private static final Map<Integer, String> CHEST_EVENT_TYPES = ImmutableMap.of(
+		5179, "Brimstone Chest",
+		11573, "Crystal Chest"
+	);
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
 	@Inject
 	private ItemManager itemManager;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private SpriteManager spriteManager;
@@ -131,6 +135,8 @@ public class LootTrackerPlugin extends Plugin
 	private String eventType;
 
 	private List<String> ignoredItems = new ArrayList<>();
+
+	private Multiset<Integer> inventorySnapshot;
 
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
@@ -342,29 +348,6 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (!(event.getGroupId() == WidgetID.CLUE_SCROLL_REWARD_GROUP_ID) && config.chestLootChat())
-		{
-			Item[] items = container.getItems();
-			long chestPrice = 0;
-			for (Item item : items)
-			{
-				long itemStack = (long) itemManager.getItemPrice(item.getId()) * (long) item.getQuantity();
-				chestPrice += itemStack;
-			}
-
-			final ChatMessageBuilder message = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
-					.append("Your loot is worth around ")
-					.append(StackFormatter.formatNumber(chestPrice))
-					.append(" coins.")
-					.append(ChatColorType.NORMAL);
-
-			chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.EXAMINE_ITEM)
-					.runeLiteFormattedMessage(message.build())
-					.build());
-		}
-
 		// Convert container items to array of ItemStack
 		final Collection<ItemStack> items = Arrays.stream(container.getItems())
 			.filter(item -> item.getId() > 0)
@@ -390,13 +373,36 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
 		{
 			return;
 		}
 
+		final String message = event.getMessage();
+
+		if (message.equals(CHEST_LOOTED_MESSAGE))
+		{
+			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
+			if (!CHEST_EVENT_TYPES.containsKey(regionID))
+			{
+				return;
+			}
+
+			eventType = CHEST_EVENT_TYPES.get(regionID);
+
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+			if (itemContainer != null)
+			{
+				inventorySnapshot = HashMultiset.create();
+				Arrays.stream(itemContainer.getItems())
+						.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
+			}
+
+			return;
+		}
+
 		// Check if message is for a clue scroll reward
-		final Matcher m = CLUE_SCROLL_PATTERN.matcher(Text.removeTags(event.getMessage()));
+		final Matcher m = CLUE_SCROLL_PATTERN.matcher(Text.removeTags(message));
 		if (m.find())
 		{
 			final String type = m.group(1).toLowerCase();
@@ -418,6 +424,48 @@ public class LootTrackerPlugin extends Plugin
 					eventType = "Clue Scroll (Master)";
 					break;
 			}
+		}
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (eventType != null && CHEST_EVENT_TYPES.containsValue(eventType))
+		{
+			if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+			{
+				return;
+			}
+
+			processChestLoot(eventType, event.getItemContainer());
+			eventType = null;
+		}
+	}
+
+	private void processChestLoot(String chestType, ItemContainer inventoryContainer)
+	{
+		if (inventorySnapshot != null)
+		{
+			Multiset<Integer> currentInventory = HashMultiset.create();
+			Arrays.stream(inventoryContainer.getItems())
+				.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
+
+			final Multiset<Integer> diff = Multisets.difference(currentInventory, inventorySnapshot);
+
+			List<ItemStack> items = diff.entrySet().stream()
+				.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
+				.collect(Collectors.toList());
+
+			final LootTrackerItem[] entries = buildEntries(stack(items));
+			SwingUtilities.invokeLater(() -> panel.add(chestType, -1, entries));
+
+			if (lootTrackerClient != null && config.saveLoot())
+			{
+				LootRecord lootRecord = new LootRecord(chestType, LootRecordType.EVENT, toGameItems(items), Instant.now());
+				lootTrackerClient.submit(lootRecord);
+			}
+
+			inventorySnapshot = null;
 		}
 	}
 

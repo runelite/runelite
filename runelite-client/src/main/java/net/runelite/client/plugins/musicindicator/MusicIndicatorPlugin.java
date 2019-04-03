@@ -197,7 +197,7 @@ public class MusicIndicatorPlugin extends Plugin
 
 		chatMessageManager.queue(
 			QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
+				.type(ChatMessageType.CONSOLE)
 				.runeLiteFormattedMessage(message)
 				.build());
 	}

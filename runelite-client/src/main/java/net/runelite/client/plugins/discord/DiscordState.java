@@ -180,7 +180,7 @@ class DiscordState
 			.details(MoreObjects.firstNonNull(details, ""))
 			.largeImageText(properties.getTitle() + " v" + versionShortHand)
 			.startTimestamp(event.getStart())
-			.largeImageKey("runelit")
+			.smallImageKey(imageKey)
 			.partyMax(PARTY_MAX)
 			.partySize(party.getMembers().size());
 

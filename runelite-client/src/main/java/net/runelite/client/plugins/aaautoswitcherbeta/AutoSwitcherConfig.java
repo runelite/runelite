@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
- * Copyright (c) 2018, Shaun Dreclin <https://github.com/ShaunDreclin>
- *
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,25 +22,74 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.rememberclan;
+package net.runelite.client.plugins.aaautoswitcherbeta;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("rememberclan")
-public interface RememberClanConfig extends Config
-{
+@ConfigGroup("autoswitcher")
+public interface AutoSwitcherConfig extends Config {
+
+    @ConfigItem(
+            position = 0,
+            keyName = "menuEntriesEnabled",
+            name = "Menu Entries",
+            description = "Enables Menu Entries to be altared. (REQUIRED for setup)"
+    )
+    default boolean menuEntriesEnabled() {
+        return true;
+    }
+
     @ConfigItem(
             position = 1,
-            keyName = "clanname",
-            name = "Clan Name",
-            description = "Clanname to always remember"
+            keyName = "preset1",
+            name = "Preset 1",
+            description = "The (Script) for preset 1"
     )
-    default String clanname()
-    {
+    default String preset1() {
         return "";
     }
 
+    @ConfigItem(
+            keyName = "preset1",
+            name = "",
+            description = ""
+    )
+    void setPreset1(String key);
 
+
+    @ConfigItem(
+            position = 2,
+            keyName = "preset2",
+            name = "Preset 2",
+            description = "The (Script) for preset 2"
+    )
+    default String preset2() {
+        return "";
+    }
+
+    @ConfigItem(
+            keyName = "preset2",
+            name = "",
+            description = ""
+    )
+    void setPreset2(String key);
+
+    @ConfigItem(
+            position = 3,
+            keyName = "preset3",
+            name = "Preset 3",
+            description = "The (Script) for preset 3"
+    )
+    default String preset3() {
+        return "";
+    }
+
+    @ConfigItem(
+            keyName = "preset3",
+            name = "",
+            description = ""
+    )
+    void setPreset3(String key);
 }

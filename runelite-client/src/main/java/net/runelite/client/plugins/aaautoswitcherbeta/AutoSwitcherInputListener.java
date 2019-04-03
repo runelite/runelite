@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, DennisDeV <https://github.com/DevDennis>
+ * Copyright (c) 2018, Seth <https://github.com/sethtroll>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,56 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.antidrag;
+package net.runelite.client.plugins.aaautoswitcherbeta;
 
-import com.google.inject.Provides;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.time.Instant;
 import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.events.FocusChanged;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
+import javax.swing.SwingUtilities;
 import net.runelite.client.input.KeyListener;
-import net.runelite.client.input.KeyManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.input.MouseAdapter;
 
-@PluginDescriptor(
-	name = "Shift Anti Drag",
-	description = "Prevent dragging an item for a specified delay",
-	tags = {"antidrag", "delay", "inventory", "items"}
-)
-public class AntiDragPlugin extends Plugin implements KeyListener
+public class AutoSwitcherInputListener extends MouseAdapter implements KeyListener
 {
-	private static final int DEFAULT_DELAY = 5;
+	private static final int HOTKEY_CORE = KeyEvent.VK_CONTROL;
+	private static final int HOTKEY_1 = KeyEvent.VK_1;
+	private static final int HOTKEY_2 = KeyEvent.VK_2;
+	private static final int HOTKEY_3 = KeyEvent.VK_3;
+
+
+	private Instant lastPress;
 
 	@Inject
-	private Client client;
+	private AutoSwitcherPlugin plugin;
 
 	@Inject
-	private AntiDragConfig config;
-
-	@Inject
-	private KeyManager keyManager;
-
-	@Provides
-	AntiDragConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(AntiDragConfig.class);
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		keyManager.registerKeyListener(this);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		client.setInventoryDragDelay(DEFAULT_DELAY);
-		keyManager.unregisterKeyListener(this);
-	}
+	private AutoSwitcherConfig config;
 
 	@Override
 	public void keyTyped(KeyEvent e)
@@ -82,27 +58,60 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		if (e.getKeyCode() == HOTKEY_CORE)
 		{
-			client.setInventoryDragDelay(config.dragDelay());
+			{
+				System.out.println("Core Key Pressed");
+				plugin.setCoreKeyPressed(true);
+				lastPress = Instant.now();
+				e.consume();
+			}
+		}
+		if (e.getKeyCode() == HOTKEY_1)
+		{
+			if (plugin.isCoreKeyPressed()) {
+				plugin.executeScript(e.getKeyCode());
+			}
+		}
+		if (e.getKeyCode() == HOTKEY_2)
+		{
+			if (plugin.isCoreKeyPressed()) {
+				plugin.executeScript(e.getKeyCode());
+			}
+		}
+		if (e.getKeyCode() == HOTKEY_3)
+		{
+			if (plugin.isCoreKeyPressed()) {
+				plugin.executeScript(e.getKeyCode());
+			}
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		if (e.getKeyCode() == HOTKEY_CORE)
 		{
-			client.setInventoryDragDelay(DEFAULT_DELAY);
+			plugin.setCoreKeyPressed(false);
 		}
 	}
 
-	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
+	@Override
+	public MouseEvent mousePressed(MouseEvent e)
 	{
-		if (!focusChanged.isFocused())
+		final Point mousePos = e.getPoint();
+
+		if (plugin.isCoreKeyPressed())
 		{
-			client.setInventoryDragDelay(DEFAULT_DELAY);
+			if (SwingUtilities.isLeftMouseButton(e))
+			{
+			}
+			else if (SwingUtilities.isRightMouseButton(e))
+			{
+			}
 		}
+
+		return e;
 	}
 }
+

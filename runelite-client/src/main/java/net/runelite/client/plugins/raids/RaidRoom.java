@@ -75,7 +75,7 @@ public class RaidRoom
 		VASA("Vasa"),
 		VANGUARDS("Vanguards"),
 		MYSTICS("Mystics"),
-		UNKNOWN("Lmao");
+		UNKNOWN("Unknown");
 
 		@Getter
 		private final String name;
@@ -101,7 +101,7 @@ public class RaidRoom
 		ICE_DEMON("Ice Demon"),
 		TIGHTROPE("Tightrope"),
 		THIEVING("Thieving"),
-		UNKNOWN("Lmao");
+		UNKNOWN("Unknown");
 
 		@Getter
 		private final String name;

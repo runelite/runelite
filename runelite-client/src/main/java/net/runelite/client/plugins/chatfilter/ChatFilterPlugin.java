@@ -102,12 +102,12 @@ public class ChatFilterPlugin extends Plugin
 		// Only filter public chat and private messages
 		switch (chatMessageType)
 		{
-			case PUBLIC:
-			case PUBLIC_MOD:
-			case AUTOCHAT:
-			case PRIVATE_MESSAGE_RECEIVED:
-			case PRIVATE_MESSAGE_RECEIVED_MOD:
-			case CLANCHAT:
+			case PUBLICCHAT:
+			case MODCHAT:
+			case AUTOTYPER:
+			case PRIVATECHAT:
+			case MODPRIVATECHAT:
+			case FRIENDSCHAT:
 				break;
 			default:
 				return;

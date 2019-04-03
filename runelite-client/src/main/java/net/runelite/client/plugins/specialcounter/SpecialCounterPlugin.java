@@ -24,13 +24,10 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
-import lombok.AccessLevel;
-import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -72,8 +69,6 @@ public class SpecialCounterPlugin extends Plugin
 	private SpecialWeapon specialWeapon;
 	private final Set<Integer> interactedNpcIds = new HashSet<>();
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
-	@Getter(AccessLevel.PACKAGE)
-	private final Map<String, Integer> partySpecs = new HashMap<>();
 
 	@Inject
 	private Client client;
@@ -300,6 +295,7 @@ public class SpecialCounterPlugin extends Plugin
 		}
 
 		// If in a party, add hit to partySpecs for the infobox tooltip
+		Map<String, Integer> partySpecs = counter.getPartySpecs();
 		if (!party.getMembers().isEmpty())
 		{
 			if (partySpecs.containsKey(name))
@@ -316,7 +312,6 @@ public class SpecialCounterPlugin extends Plugin
 	private void removeCounters()
 	{
 		interactedNpcIds.clear();
-		partySpecs.clear();
 
 		for (int i = 0; i < specialCounter.length; ++i)
 		{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Dylan White <Whitedylan7@gmail.com>
+ * Copyright (c) 2019, Abel Briggs <https://github.com/abelbriggs1>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,44 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.suppliestracker;
 
+package net.runelite.client.plugins.grounditems.config;
 
-import net.runelite.client.game.AsyncBufferedImage;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-
-class SuppliesTrackRow extends JPanel
+@Getter
+@RequiredArgsConstructor
+public enum ValueCalculationMode
 {
-	int quantity;
-	long totalCost;
-	int itemId;
+	HA("High Alchemy"), // calc highlight by HA value
+	GE("Grand Exchange"), // calc by GE
+	HIGHEST("Highest"); // use whatever is highest.
 
-	SuppliesTrackRow(AsyncBufferedImage icon, String name, int quant, long cost, int id)
+	private final String name;
+
+	@Override
+	public String toString()
 	{
-		//Set variables
-		quantity = quant;
-		totalCost = cost;
-		itemId = id;
-
-		//build components
-		setLayout(new BorderLayout());
-		JLabel iconLabel = new JLabel();
-		icon.addTo(iconLabel);
-		String rowText = "  x " + quant + "   (" + String.format("%,d", cost) + "gp)";
-		JLabel label = new JLabel(rowText);
-		iconLabel.setToolTipText(buildToolTip(name, quant, cost));
-
-		//add components
-		add(label, BorderLayout.CENTER);
-		add(iconLabel, BorderLayout.LINE_START);
+		return name;
 	}
-
-	private String buildToolTip(String name, int quantity, long cost)
-	{
-		return name + " x " + quantity + " (" + String.format("%,d", cost) + "gp)";
-	}
-
 }
