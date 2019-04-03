@@ -40,6 +40,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.worlds.World;
+import net.runelite.http.api.worlds.WorldType;
 
 @Slf4j
 class WorldSwitcherPanel extends PluginPanel
@@ -58,6 +59,7 @@ class WorldSwitcherPanel extends PluginPanel
 	private WorldTableHeader pingHeader;
 
 	private WorldOrder orderIndex = WorldOrder.WORLD;
+	private SubscriptionFilterMode subFilter = SubscriptionFilterMode.BOTH;
 	private boolean ascendingOrder = true;
 
 	private ArrayList<WorldTableRow> rows = new ArrayList<>();
@@ -77,7 +79,6 @@ class WorldSwitcherPanel extends PluginPanel
 		add(headerContainer);
 		add(listContainer);
 	}
-
 	void switchCurrentHighlight(int newWorld, int lastWorld)
 	{
 		for (WorldTableRow row : rows)
@@ -211,14 +212,24 @@ class WorldSwitcherPanel extends PluginPanel
 		}
 
 	}
-
+	void setSubFilter(SubscriptionFilterMode filterOption){
+		subFilter = filterOption;
+	}
 	void populate(List<World> worlds)
 	{
 		rows.clear();
-
 		for (int i = 0; i < worlds.size(); i++)
 		{
 			World world = worlds.get(i);
+			if(world.getTypes().clone().contains(WorldType.MEMBERS)){
+				if(subFilter == SubscriptionFilterMode.FREE){
+					continue;
+				}
+			} else{
+				if(subFilter == SubscriptionFilterMode.MEMBER){
+					continue;
+				}
+			}
 			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));
 		}
 
