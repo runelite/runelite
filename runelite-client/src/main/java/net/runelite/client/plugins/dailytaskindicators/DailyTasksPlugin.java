@@ -66,7 +66,7 @@ public class DailyTasksPlugin extends Plugin
 	private static final String BONEMEAL_MESSAGE = "You have bonemeal and slime waiting to be collected from Robin.";
 	private static final int BONEMEAL_PER_DIARY = 13;
 	private static final String RELOG_MESSAGE = " (Requires relog)";
-	private static final String RELOG_MESSAGE_2 = "The following tasks may require a relog: Staves, Sand ";
+	private static final String RELOG_MESSAGE_2 = "The following tasks may require a relog: Staves ";
 
 	@Inject
 	private Client client;
@@ -233,7 +233,7 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				//sand may require Relog
+				//Does not require a Relog
 				sendChatMessage(SAND_MESSAGE);
 			}
 		}
