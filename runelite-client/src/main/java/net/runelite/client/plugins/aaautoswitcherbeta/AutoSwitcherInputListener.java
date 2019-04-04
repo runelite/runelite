@@ -39,6 +39,7 @@ public class AutoSwitcherInputListener extends MouseAdapter implements KeyListen
     private static final int HOTKEY_1 = KeyEvent.VK_1;
     private static final int HOTKEY_2 = KeyEvent.VK_2;
     private static final int HOTKEY_3 = KeyEvent.VK_3;
+    private static final int HOTKEY_4 = KeyEvent.VK_4;
 
 
     private Instant lastPress;
@@ -74,6 +75,11 @@ public class AutoSwitcherInputListener extends MouseAdapter implements KeyListen
             }
         }
         if (e.getKeyCode() == HOTKEY_3) {
+            if (plugin.isCoreKeyPressed()) {
+                plugin.executeScript(e.getKeyCode());
+            }
+        }
+        if (e.getKeyCode() == HOTKEY_4) {
             if (plugin.isCoreKeyPressed()) {
                 plugin.executeScript(e.getKeyCode());
             }

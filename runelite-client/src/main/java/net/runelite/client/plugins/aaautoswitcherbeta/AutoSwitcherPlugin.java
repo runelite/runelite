@@ -125,6 +125,10 @@ public class AutoSwitcherPlugin extends Plugin {
             AutoSwitch as = (AutoSwitch) o;
             AutoSwitcherOverlay.preset3Items.add(as.itemID);
         }
+        for (Object o : getSwitchesFromPreset(4)) {
+            AutoSwitch as = (AutoSwitch) o;
+            AutoSwitcherOverlay.preset4Items.add(as.itemID);
+        }
     }
 
     @Override
@@ -225,15 +229,19 @@ public class AutoSwitcherPlugin extends Plugin {
                 List switches = getSwitchesFromPreset(4);
                 Thread thread = new Thread() {
                     public void run() {
-                        for (Object as : switches.toArray()) {
-                            AutoSwitch news = (AutoSwitch) as;
-                            if (news.isItemSwitch) {
-                                mu.doClick(news.itemID);
+                        try {
+                            for (Object as : switches.toArray()) {
+                                AutoSwitch news = (AutoSwitch) as;
+                                if (news.isItemSwitch) {
+                                    mu.doClick(news.itemID);
+                                }
+                                if (news.isTabSwitch) {
+                                    System.out.print("Tab Switch: ");
+                                    System.out.println(" ID: " + news.tabName);
+                                }
                             }
-                            if (news.isTabSwitch) {
-                                System.out.print("Tab Switch: ");
-                                System.out.println(" ID: " + news.tabName);
-                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 };
@@ -278,7 +286,7 @@ public class AutoSwitcherPlugin extends Plugin {
         if (config.preset3() != preset3)
             preset3 = config.preset3();
         if (config.preset4() != preset4)
-            preset3 = config.preset4();
+            preset4 = config.preset4();
 
         AutoSwitcherOverlay.inventoryItems = new ArrayList<WidgetItem>();
         initOverlay();
@@ -383,7 +391,7 @@ public class AutoSwitcherPlugin extends Plugin {
         if (event.getMenuTarget().endsWith(PRESET_3)) {
             config.setPreset3(config.preset3() + ",I" + itemId);
         }
-        if (event.getMenuTarget().endsWith(PRESET_3)) {
+        if (event.getMenuTarget().endsWith(PRESET_4)) {
             config.setPreset4(config.preset4() + ",I" + itemId);
         }
     }
