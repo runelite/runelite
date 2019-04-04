@@ -4,27 +4,22 @@ import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.api.MenuAction;
 import net.runelite.api.Point;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
-import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
-import javax.swing.event.MouseInputListener;
 import java.awt.*;
-import java.awt.event.MouseEvent;
 
 @PluginDescriptor(
     name = RegionLockerPlugin.PLUGIN_NAME,
@@ -75,6 +70,7 @@ public class RegionLockerPlugin extends Plugin {
         regionLocker = new RegionLocker(client, config, configManager);
         overlayManager.add(regionLockerOverlay);
         keyManager.registerKeyListener(inputListener);
+        setKeys();
     }
 
     @Override
@@ -91,6 +87,8 @@ public class RegionLockerPlugin extends Plugin {
         {
             return;
         }
+
+        setKeys();
 
         regionLocker.readConfig();
     }
@@ -133,5 +131,10 @@ public class RegionLockerPlugin extends Plugin {
 
         if (unlockKeyPressed) regionLocker.addRegion(regionId);
         if (blockKeyPressed) regionLocker.blockRegion(regionId);
+    }
+
+    private void setKeys() {
+        RegionLockerInput.UNLOCK_KEY = config.unlockKey();
+        RegionLockerInput.BLOCK_KEY = config.blacklistKey();
     }
 }

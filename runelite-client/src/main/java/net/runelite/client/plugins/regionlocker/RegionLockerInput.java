@@ -1,13 +1,14 @@
 package net.runelite.client.plugins.regionlocker;
 
+import net.runelite.client.config.Keybind;
 import net.runelite.client.input.KeyListener;
 
 import javax.inject.Inject;
 import java.awt.event.KeyEvent;
 
 public class RegionLockerInput implements KeyListener {
-    private static final int UNLOCK_KEY = KeyEvent.VK_SHIFT;
-    private static final int BLOCK_KEY = KeyEvent.VK_CONTROL;
+    static Keybind UNLOCK_KEY;
+    static Keybind BLOCK_KEY;
 
     @Inject
     private RegionLockerPlugin plugin;
@@ -21,11 +22,11 @@ public class RegionLockerInput implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() == UNLOCK_KEY)
+        if (UNLOCK_KEY.matches(e))
         {
             plugin.setUnlockKeyPressed(true);
         }
-        if (e.getKeyCode() == BLOCK_KEY)
+        if (BLOCK_KEY.matches(e))
         {
             plugin.setBlockKeyPressed(true);
         }
@@ -34,11 +35,11 @@ public class RegionLockerInput implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e)
     {
-        if (e.getKeyCode() == UNLOCK_KEY)
+        if (UNLOCK_KEY.matches(e))
         {
             plugin.setUnlockKeyPressed(false);
         }
-        if (e.getKeyCode() == BLOCK_KEY)
+        if (BLOCK_KEY.matches(e))
         {
             plugin.setBlockKeyPressed(false);
         }

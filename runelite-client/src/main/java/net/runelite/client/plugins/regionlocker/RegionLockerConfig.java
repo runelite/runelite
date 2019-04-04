@@ -3,6 +3,7 @@ package net.runelite.client.plugins.regionlocker;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 import java.awt.*;
 
@@ -16,36 +17,6 @@ public interface RegionLockerConfig extends Config {
     )
     default boolean renderLockedRegions() {
         return true;
-    }
-
-    @ConfigItem(
-            keyName = "unlockedRegions",
-            name = "Unlocked regions",
-            description = "List of unlocked regions seperated by a ',' symbol",
-            position = 1
-    )
-    default String unlockedRegions() {
-        return "";
-    }
-
-    @ConfigItem(
-            keyName = "unlockableRegions",
-            name = "Unlockable regions",
-            description = "List of unlockable regions seperated by a ',' symbol",
-            position = 2
-    )
-    default String unlockableRegions() {
-        return "";
-    }
-
-    @ConfigItem(
-            keyName = "blacklistedRegions",
-            name = "Blacklisted regions",
-            description = "List of blacklisted regions seperated by a ',' symbol",
-            position = 3
-    )
-    default String blacklistedRegions() {
-        return "";
     }
 
     @ConfigItem(
@@ -166,5 +137,57 @@ public interface RegionLockerConfig extends Config {
     )
     default boolean drawRegionId() {
         return true;
+    }
+
+    @ConfigItem(
+            keyName = "unlockKey",
+            name = "Unlock hotkey",
+            description = "When you hold this key you can click on the map to unlock a region",
+            position = 16
+    )
+    default Keybind unlockKey()
+    {
+        return Keybind.SHIFT;
+    }
+
+    @ConfigItem(
+            keyName = "blacklistKey",
+            name = "Blacklist hotkey",
+            description = "When you hold this key you can click on the map to blacklist a region",
+            position = 17
+    )
+    default Keybind blacklistKey()
+    {
+        return Keybind.CTRL;
+    }
+
+    @ConfigItem(
+            keyName = "unlockedRegions",
+            name = "Unlocked regions",
+            description = "List of unlocked regions seperated by a ',' symbol",
+            position = 18
+    )
+    default String unlockedRegions() {
+        return "";
+    }
+
+    @ConfigItem(
+            keyName = "unlockableRegions",
+            name = "Unlockable regions",
+            description = "List of unlockable regions seperated by a ',' symbol",
+            position = 19
+    )
+    default String unlockableRegions() {
+        return "";
+    }
+
+    @ConfigItem(
+            keyName = "blacklistedRegions",
+            name = "Blacklisted regions",
+            description = "List of blacklisted regions seperated by a ',' symbol",
+            position = 20
+    )
+    default String blacklistedRegions() {
+        return "";
     }
 }
