@@ -65,7 +65,18 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+			position = 3,
+			keyName = "swapXpRemaining",
+			name = "Swap XP/Time Left",
+			description = "Swaps the amount of xp remaining with the estimated time remaining"
+	)
+	default boolean swapXpRemaining()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "pauseSkillAfter",
 		name = "Auto pause after",
 		description = "Configures how many minutes passes before pausing a skill while in game and there's no XP, 0 means disabled"

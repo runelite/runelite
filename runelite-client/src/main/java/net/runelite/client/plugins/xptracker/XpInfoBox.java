@@ -90,12 +90,14 @@ class XpInfoBox extends JPanel
 	private final JLabel actionsLeft = new JLabel();
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
 
+	private final XpTrackerPlugin xpTrackerPlugin;
 	private final XpTrackerConfig xpTrackerConfig;
 
 	private boolean paused = false;
 
 	XpInfoBox(XpTrackerPlugin xpTrackerPlugin, XpTrackerConfig xpTrackerConfig, Client client, JPanel panel, Skill skill, SkillIconManager iconManager)
 	{
+		this.xpTrackerPlugin = xpTrackerPlugin;
 		this.xpTrackerConfig = xpTrackerConfig;
 		this.panel = panel;
 		this.skill = skill;
@@ -201,8 +203,16 @@ class XpInfoBox extends JPanel
 
 			// Update information labels
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
-			expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
 			actionsLeft.setText(htmlLabel(xpSnapshotSingle.getActionType().getLabel() + ": ", xpSnapshotSingle.getActionsRemainingToGoal()));
+			if (xpTrackerConfig.swapXpRemaining())//User has chosen to toggle the swap for Xp left and Time Left
+			{
+				String timeLeft = xpTrackerPlugin.convertTimeToShortText(String.format(xpSnapshotSingle.getTimeTillGoal()));
+				expLeft.setText("<html>Time Left: <font color=WHITE>" + timeLeft + "</font></html>");
+			}
+			else
+			{
+				expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
+			}
 
 			// Update progress bar
 			progressBar.setValue((int) xpSnapshotSingle.getSkillProgressToGoal());
@@ -231,13 +241,25 @@ class XpInfoBox extends JPanel
 				progressBar.setPositions(Collections.emptyList());
 			}
 
+			//If "Xp/Time Left" swap is enabled the tooltip data will change as well
+			String xpTillGoalText = "";
+			if (xpTrackerConfig.swapXpRemaining())
+			{
+				Double number = Double.valueOf(xpSnapshotSingle.getXpRemainingToGoal()); //Doesn't work without converting into to double
+				xpTillGoalText = "XP Left: " + String.format("%,.0f", number);
+			}
+			else
+			{
+				xpTillGoalText = xpSnapshotSingle.getTimeTillGoal();
+			}
+
 			progressBar.setToolTipText(String.format(
 				HTML_TOOL_TIP_TEMPLATE,
 				xpSnapshotSingle.getActionsInSession(),
 				xpSnapshotSingle.getActionType().getLabel(),
 				xpSnapshotSingle.getActionsPerHour(),
 				xpSnapshotSingle.getActionType().getLabel(),
-				xpSnapshotSingle.getTimeTillGoal()));
+				xpTillGoalText));
 
 			progressBar.setDimmed(skillPaused);
 

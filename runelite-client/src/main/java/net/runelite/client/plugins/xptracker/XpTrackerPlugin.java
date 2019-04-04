@@ -533,4 +533,50 @@ public class XpTrackerPlugin extends Plugin
 			pauseSkill(skill, pause);
 		}
 	}
+
+	/**
+	 * Converts the long format time text to a short format.
+	 * Allows the toggling of rather xp left or time left is shown on the InfoBox.
+	 * @param time Time left remaining in goal
+	 */
+	String convertTimeToShortText(String time)
+	{
+		String days = "0", hours = null, minutes = null, seconds = null;
+		String timeWithoutDays = null;
+		String[] daysAndHours = null;
+		boolean over24Hr = false;
+		boolean over60min = false;
+
+		if (time.contains(" days ")) //Split Days if applicable (example text: "35 days 04:12:59")
+		{
+			daysAndHours  = time.split(" days ");
+			days = daysAndHours[0];
+			timeWithoutDays = daysAndHours[1];
+			over24Hr = true;
+		}
+		else
+		{
+			timeWithoutDays = time;
+		}
+
+		String[] hourMinSeconds = timeWithoutDays.split(":"); //Split Hours/Minutes/Seconds if applicable
+		if (hourMinSeconds.length > 2)
+		{
+			hours = hourMinSeconds[0];
+			minutes = hourMinSeconds[1];
+			seconds = hourMinSeconds[2];
+			over60min = true;
+		}
+		else
+		{
+			minutes = hourMinSeconds[0];
+			seconds = hourMinSeconds[1];
+		}
+		String shortenedTime = ""; //There are a few conditions to ensure only 2 significant time measurements being shown
+		if (over24Hr) shortenedTime += days + "D ";
+		if (hours != null) shortenedTime += hours + "H ";
+		if (!over24Hr && !minutes.equals("00")) shortenedTime += minutes + "M ";
+		if (!over60min) shortenedTime += seconds + "S";
+		return shortenedTime;
+	}
 }
