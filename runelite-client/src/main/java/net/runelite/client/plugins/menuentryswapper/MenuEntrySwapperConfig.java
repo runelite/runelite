@@ -95,7 +95,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 			keyName = "swapBuckets",
 			name = "Buckets",
-			description = "Swap buckets use to drop"
+			description = "Swap Use with Drop on Buckets"
 	)
 	default boolean swapBuckets()
 	{
