@@ -93,6 +93,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapBuckets",
+			name = "Buckets",
+			description = "Swap buckets use to drop"
+	)
+	default boolean swapBuckets()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapContract",
 		name = "Contract",
 		description = "Swap Talk-to with Contract on Guildmaster Jane"
