@@ -228,6 +228,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniBlockMain;
 	private int uniSmoothBanding;
 
+	private int uniUseGray;
 	private int uniBaseX;
 	private int uniBaseY;
 	private int uniLockedRegions;
@@ -518,6 +519,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniFogDepth = gl.glGetUniformLocation(glProgram, "fogDepth");
 		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 
+		uniUseGray = gl.glGetUniformLocation(glProgram, "useGray");
 		uniBaseX = gl.glGetUniformLocation(glProgram, "baseX");
 		uniBaseY = gl.glGetUniformLocation(glProgram, "baseY");
 		uniLockedRegions = gl.glGetUniformLocation(glProgram, "lockedRegions");
@@ -738,19 +740,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void createLockedRegions() {
 		int bx, by;
-		if (!RegionLocker.renderLockedRegions || (client.isInInstancedRegion() && instanceRegionUnlocked())) {
-			bx = -1;
-			by = -1;
-			gl.glUniform1i(uniBaseX, bx);
-			gl.glUniform1i(uniBaseY, by);
-			gl.glUniform4iv(uniLockedRegions, 36, regionCoords, 0);
-			return;
-		} else {
-			bx = client.getBaseX() * 128;
-			by = client.getBaseY() * 128;
-		}
-		gl.glUniform1i(uniBaseX, bx);
-		gl.glUniform1i(uniBaseY, by);
+		bx = client.getBaseX() * 128;
+		by = client.getBaseY() * 128;
 
 		for (int i = 0; i < loadedLockedRegions.length; i++) {
 			loadedLockedRegions[i] = 0;
@@ -772,6 +763,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			regionCoords[j+3] = regionCoords[j+1] + 8192;
 		}
 
+		gl.glUniform1i(uniBaseX, bx);
+		gl.glUniform1i(uniBaseY, by);
 		gl.glUniform4iv(uniLockedRegions, 36, regionCoords, 0);
 	}
 
@@ -1085,7 +1078,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUniform1i(uniFogDepth, fogDepth);
 			gl.glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
 
-			createLockedRegions();
+			if (!RegionLocker.renderLockedRegions || (client.isInInstancedRegion() && instanceRegionUnlocked())) {
+				gl.glUniform1i(uniUseGray, 0);
+			} else {
+				createLockedRegions();
+				gl.glUniform1i(uniUseGray, 1);
+			}
 
 			// Brightness happens to also be stored in the texture provider, so we use that
 			gl.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
