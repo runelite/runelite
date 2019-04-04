@@ -61,7 +61,7 @@ public interface BoostsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "displayInfoboxes",
+		keyName = "displayIndicators",
 		name = "Display as infoboxes",
 		description = "Configures whether or not to display the boost as infoboxes",
 		position = 3
