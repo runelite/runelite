@@ -108,14 +108,14 @@ public class RegionLocker {
 
     public static RegionTypes getType(int regionId) {
         String id = Integer.toString(regionId);
+        int y = getY(regionId);
+        if (unlockReamls && y >= 4160 && y < 5952) return RegionTypes.UNLOCKED;
+        if (unlockUnderground && y >= 8960) return RegionTypes.UNLOCKED;
         if (regions == null) return null;
         return regions.get(id);
     }
 
     public static boolean hasRegion(int regionId) {
-        int y = getY(regionId);
-        if (unlockReamls && y >= 4160 && y < 5952) return true;
-        if (unlockUnderground && y >= 8960) return true;
         RegionTypes type = getType(regionId);
         if (type == null) return false;
         return type == RegionTypes.UNLOCKED;
@@ -124,9 +124,6 @@ public class RegionLocker {
     public static boolean isUnlockable(int regionId) {
         RegionTypes type = getType(regionId);
         if (type == null) return false;
-        if (type == RegionTypes.UNLOCKABLE) {
-            type = type;
-        }
         return type == RegionTypes.UNLOCKABLE;
     }
 
