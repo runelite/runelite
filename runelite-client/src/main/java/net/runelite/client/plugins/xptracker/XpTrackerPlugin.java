@@ -547,9 +547,16 @@ public class XpTrackerPlugin extends Plugin
 		boolean over24Hr = false;
 		boolean over60min = false;
 
-		if (time.contains(" days ")) //Split Days if applicable (example text: "35 days 04:12:59")
+		if (time.contains(" days " ) || time.contains(" day ")) //Split Days if applicable (example text: "35 days 04:12:59")
 		{
-			daysAndHours  = time.split(" days ");
+			if (time.charAt(0) == '1' && time.charAt(1) == ' ')
+			{
+				daysAndHours  = time.split(" day ");
+			}
+			else
+			{
+				daysAndHours  = time.split(" days ");
+			}
 			days = daysAndHours[0];
 			timeWithoutDays = daysAndHours[1];
 			over24Hr = true;
