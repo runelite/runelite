@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, Abel Briggs <https://github.com/abelbriggs1>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues;
 
-import java.awt.Graphics2D;
-import lombok.AccessLevel;
+package net.runelite.client.plugins.grounditems.config;
+
 import lombok.Getter;
-import lombok.Setter;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import lombok.RequiredArgsConstructor;
 
-public abstract class ClueScroll
+@Getter
+@RequiredArgsConstructor
+public enum ValueCalculationMode
 {
-	@Setter(AccessLevel.PROTECTED)
-	@Getter(AccessLevel.PUBLIC)
-	private boolean requiresSpade;
+	HA("High Alchemy"), // calc highlight by HA value
+	GE("Grand Exchange"), // calc by GE
+	HIGHEST("Highest"); // use whatever is highest.
 
-	public abstract void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin);
+	private final String name;
 
-	public abstract void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin);
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

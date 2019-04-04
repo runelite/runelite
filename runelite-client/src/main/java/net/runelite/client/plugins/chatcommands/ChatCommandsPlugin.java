@@ -197,7 +197,7 @@ public class ChatCommandsPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (chatMessage.getType() != ChatMessageType.SERVER && chatMessage.getType() != ChatMessageType.FILTERED)
+		if (chatMessage.getType() != ChatMessageType.GAMEMESSAGE && chatMessage.getType() != ChatMessageType.SPAM)
 		{
 			return;
 		}
@@ -375,7 +375,7 @@ public class ChatCommandsPlugin extends Plugin
 		String search = message.substring(KILLCOUNT_COMMAND_STRING.length() + 1);
 
 		final String player;
-		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
+		if (type.equals(ChatMessageType.PRIVATECHATOUT))
 		{
 			player = client.getLocalPlayer().getName();
 		}
@@ -423,7 +423,7 @@ public class ChatCommandsPlugin extends Plugin
 		ChatMessageType type = chatMessage.getType();
 
 		final String player;
-		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
+		if (type.equals(ChatMessageType.PRIVATECHATOUT))
 		{
 			player = client.getLocalPlayer().getName();
 		}
@@ -497,7 +497,7 @@ public class ChatCommandsPlugin extends Plugin
 		String search = message.substring(PB_COMMAND.length() + 1);
 
 		final String player;
-		if (type.equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
+		if (type.equals(ChatMessageType.PRIVATECHATOUT))
 		{
 			player = client.getLocalPlayer().getName();
 		}
@@ -722,7 +722,7 @@ public class ChatCommandsPlugin extends Plugin
 		ChatMessageType type = chatMessage.getType();
 
 		String player;
-		if (type == ChatMessageType.PRIVATE_MESSAGE_SENT)
+		if (type == ChatMessageType.PRIVATECHATOUT)
 		{
 			player = client.getLocalPlayer().getName();
 		}
@@ -899,7 +899,7 @@ public class ChatCommandsPlugin extends Plugin
 		final String player;
 		final HiscoreEndpoint ironmanStatus;
 
-		if (chatMessage.getType().equals(ChatMessageType.PRIVATE_MESSAGE_SENT))
+		if (chatMessage.getType().equals(ChatMessageType.PRIVATECHATOUT))
 		{
 			player = client.getLocalPlayer().getName();
 			ironmanStatus = hiscoreEndpoint;
