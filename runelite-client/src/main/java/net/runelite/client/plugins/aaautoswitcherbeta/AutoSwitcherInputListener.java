@@ -24,94 +24,80 @@
  */
 package net.runelite.client.plugins.aaautoswitcherbeta;
 
-import java.awt.Point;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.time.Instant;
-import javax.inject.Inject;
-import javax.swing.SwingUtilities;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 
-public class AutoSwitcherInputListener extends MouseAdapter implements KeyListener
-{
-	private static final int HOTKEY_CORE = KeyEvent.VK_CONTROL;
-	private static final int HOTKEY_1 = KeyEvent.VK_1;
-	private static final int HOTKEY_2 = KeyEvent.VK_2;
-	private static final int HOTKEY_3 = KeyEvent.VK_3;
+import javax.inject.Inject;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.time.Instant;
+
+public class AutoSwitcherInputListener extends MouseAdapter implements KeyListener {
+    private static final int HOTKEY_CORE = KeyEvent.VK_CONTROL;
+    private static final int HOTKEY_1 = KeyEvent.VK_1;
+    private static final int HOTKEY_2 = KeyEvent.VK_2;
+    private static final int HOTKEY_3 = KeyEvent.VK_3;
 
 
-	private Instant lastPress;
+    private Instant lastPress;
 
-	@Inject
-	private AutoSwitcherPlugin plugin;
+    @Inject
+    private AutoSwitcherPlugin plugin;
 
-	@Inject
-	private AutoSwitcherConfig config;
+    @Inject
+    private AutoSwitcherConfig config;
 
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
+    @Override
+    public void keyTyped(KeyEvent e) {
 
-	}
+    }
 
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == HOTKEY_CORE)
-		{
-			{
-				System.out.println("Core Key Pressed");
-				plugin.setCoreKeyPressed(true);
-				lastPress = Instant.now();
-				e.consume();
-			}
-		}
-		if (e.getKeyCode() == HOTKEY_1)
-		{
-			if (plugin.isCoreKeyPressed()) {
-				plugin.executeScript(e.getKeyCode());
-			}
-		}
-		if (e.getKeyCode() == HOTKEY_2)
-		{
-			if (plugin.isCoreKeyPressed()) {
-				plugin.executeScript(e.getKeyCode());
-			}
-		}
-		if (e.getKeyCode() == HOTKEY_3)
-		{
-			if (plugin.isCoreKeyPressed()) {
-				plugin.executeScript(e.getKeyCode());
-			}
-		}
-	}
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == HOTKEY_CORE) {
+            {
+                plugin.setCoreKeyPressed(true);
+                lastPress = Instant.now();
+                e.consume();
+            }
+        }
+        if (e.getKeyCode() == HOTKEY_1) {
+            if (plugin.isCoreKeyPressed()) {
+                plugin.executeScript(e.getKeyCode());
+            }
+        }
+        if (e.getKeyCode() == HOTKEY_2) {
+            if (plugin.isCoreKeyPressed()) {
+                plugin.executeScript(e.getKeyCode());
+            }
+        }
+        if (e.getKeyCode() == HOTKEY_3) {
+            if (plugin.isCoreKeyPressed()) {
+                plugin.executeScript(e.getKeyCode());
+            }
+        }
+    }
 
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (e.getKeyCode() == HOTKEY_CORE)
-		{
-			plugin.setCoreKeyPressed(false);
-		}
-	}
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == HOTKEY_CORE) {
+            plugin.setCoreKeyPressed(false);
+        }
+    }
 
-	@Override
-	public MouseEvent mousePressed(MouseEvent e)
-	{
-		final Point mousePos = e.getPoint();
+    @Override
+    public MouseEvent mousePressed(MouseEvent e) {
+        final Point mousePos = e.getPoint();
 
-		if (plugin.isCoreKeyPressed())
-		{
-			if (SwingUtilities.isLeftMouseButton(e))
-			{
-			}
-			else if (SwingUtilities.isRightMouseButton(e))
-			{
-			}
-		}
+        if (plugin.isCoreKeyPressed()) {
+            if (SwingUtilities.isLeftMouseButton(e)) {
+            } else if (SwingUtilities.isRightMouseButton(e)) {
+            }
+        }
 
-		return e;
-	}
+        return e;
+    }
 }
 

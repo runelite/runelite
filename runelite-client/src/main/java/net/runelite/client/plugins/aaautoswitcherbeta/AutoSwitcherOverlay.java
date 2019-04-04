@@ -27,8 +27,9 @@ package net.runelite.client.plugins.aaautoswitcherbeta;
 import net.runelite.api.Client;
 import net.runelite.api.Query;
 import net.runelite.api.queries.InventoryWidgetItemQuery;
+import net.runelite.api.queries.WidgetItemQuery;
 import net.runelite.api.widgets.WidgetItem;
-import net.runelite.client.ui.FontManager;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -37,6 +38,7 @@ import net.runelite.client.util.QueryRunner;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 
@@ -45,13 +47,11 @@ public class AutoSwitcherOverlay extends Overlay {
     public static ArrayList<Integer> preset1Items = new ArrayList<>();
     public static ArrayList<Integer> preset2Items = new ArrayList<>();
     public static ArrayList<Integer> preset3Items = new ArrayList<>();
-
+    public static ArrayList<Integer> preset4Items = new ArrayList<>();
     public static ArrayList inventoryItems = new ArrayList<WidgetItem>();
-
+    private final ItemManager itemManager;
     @Inject
     private QueryRunner queryRunner = new QueryRunner();
-
-    private static final Color PurPur = Color.magenta.darker();
 
     @Inject
     private Client client;
@@ -63,9 +63,10 @@ public class AutoSwitcherOverlay extends Overlay {
     private AutoSwitcherConfig config;
 
     @Inject
-    public AutoSwitcherOverlay(@Nullable Client client, AutoSwitcherPlugin plugin, AutoSwitcherConfig config) {
+    public AutoSwitcherOverlay(@Nullable Client client, AutoSwitcherPlugin plugin, ItemManager itemManager, AutoSwitcherConfig config) {
         setPosition(OverlayPosition.DYNAMIC);
-        setLayer(OverlayLayer.UNDER_WIDGETS);
+        setLayer(OverlayLayer.ABOVE_WIDGETS);
+        this.itemManager = itemManager;
         this.client = client;
         this.plugin = plugin;
         this.config = config;
@@ -73,38 +74,43 @@ public class AutoSwitcherOverlay extends Overlay {
 
     @Override
     public Dimension render(Graphics2D graphics) {
-        Query inventoryQuery = new InventoryWidgetItemQuery();
-        WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
 
+        final Query query = new InventoryWidgetItemQuery();
 
-        graphics.setFont(FontManager.getRunescapeSmallFont());
+        final WidgetItem[] widgetItems = queryRunner.runQuery(query);
 
-        inventoryItems = new ArrayList<WidgetItem>();
-        for (WidgetItem item : inventoryWidgetItems) {
-            inventoryItems.add(item);
-            for (Integer i : preset1Items) {
-                if (i == item.getId()) {
-                    graphics.setColor(Color.red);
-                    final Rectangle bounds = item.getCanvasBounds();
-                    graphics.draw(bounds);
-                }
+        for (final WidgetItem item : widgetItems) {
+            for (int i : preset1Items) {
+                if (item.getId() == i)
+                    renderOutline(item, graphics);
             }
-            for (Integer i : preset2Items) {
-                if (i == item.getId()) {
-                    graphics.setColor(Color.BLUE);
-                    final Rectangle bounds = item.getCanvasBounds();
-                    graphics.draw(bounds);
-                }
+            for (int i : preset2Items) {
+                if (item.getId() == i)
+                    renderOutline(item, graphics);
             }
-            for (Integer i : preset3Items) {
-                if (i == item.getId()) {
-                    graphics.setColor(Color.MAGENTA);
-                    final Rectangle bounds = item.getCanvasBounds();
-                    graphics.draw(bounds);
-                }
+            for (int i : preset3Items) {
+                if (item.getId() == i)
+                    renderOutline(item, graphics);
             }
+            for (int i : preset4Items) {
+                if (item.getId() == i)
+                    renderOutline(item, graphics);
+            }
+
         }
 
         return null;
+    }
+
+    public void renderOutline(WidgetItem item, Graphics graphics) {
+        final String group = plugin.getTag(item.getId());
+
+        if (group != null) {
+            final Color color = plugin.getGroupNameColor(group);
+            if (color != null) {
+                final BufferedImage outline = itemManager.getItemOutline(item.getId(), item.getQuantity(), color);
+                graphics.drawImage(outline, item.getCanvasLocation().getX() + 1, item.getCanvasLocation().getY() + 1, null);
+            }
+        }
     }
 }

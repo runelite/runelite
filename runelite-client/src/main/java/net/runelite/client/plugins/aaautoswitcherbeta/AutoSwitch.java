@@ -9,13 +9,14 @@ public class AutoSwitch {
     public int itemID = -1;
     public String tabName = "";
 
-    public AutoSwitch(String type, int id) {
-            isItemSwitch=true;
-            itemID = id;
+    public AutoSwitch(int id) {
+        isItemSwitch = true;
+        itemID = id;
     }
-    public AutoSwitch(String type, String name) {
-            isTabSwitch = true;
-            tabName = name;
+
+    public AutoSwitch(String name) {
+        isTabSwitch = true;
+        tabName = name;
     }
 
 }

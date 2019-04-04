@@ -28,6 +28,8 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
+import java.awt.*;
+
 @ConfigGroup("autoswitcher")
 public interface AutoSwitcherConfig extends Config {
 
@@ -41,10 +43,21 @@ public interface AutoSwitcherConfig extends Config {
         return true;
     }
 
+
     @ConfigItem(
             position = 1,
-            keyName = "preset1",
+            keyName = "presetColor1",
             name = "Preset 1",
+            description = "Color of the Tag"
+    )
+    default Color getPreset1Color() {
+        return Color.red;
+    }
+
+    @ConfigItem(
+            position = 2,
+            keyName = "preset1",
+            name = "",
             description = "The (Script) for preset 1"
     )
     default String preset1() {
@@ -60,9 +73,19 @@ public interface AutoSwitcherConfig extends Config {
 
 
     @ConfigItem(
-            position = 2,
-            keyName = "preset2",
+            position = 3,
+            keyName = "presetColor2",
             name = "Preset 2",
+            description = "Color of the Tag"
+    )
+    default Color getPreset2Color() {
+        return Color.green;
+    }
+
+    @ConfigItem(
+            position = 4,
+            keyName = "preset2",
+            name = "",
             description = "The (Script) for preset 2"
     )
     default String preset2() {
@@ -76,10 +99,21 @@ public interface AutoSwitcherConfig extends Config {
     )
     void setPreset2(String key);
 
+
     @ConfigItem(
-            position = 3,
-            keyName = "preset3",
+            position = 5,
+            keyName = "presetColor3",
             name = "Preset 3",
+            description = "Color of the Tag"
+    )
+    default Color getPreset3Color() {
+        return Color.blue;
+    }
+
+    @ConfigItem(
+            position = 6,
+            keyName = "preset3",
+            name = "",
             description = "The (Script) for preset 3"
     )
     default String preset3() {
@@ -92,4 +126,32 @@ public interface AutoSwitcherConfig extends Config {
             description = ""
     )
     void setPreset3(String key);
+
+    @ConfigItem(
+            position = 7,
+            keyName = "presetColor4",
+            name = "Preset 4",
+            description = "Color of the Tag"
+    )
+    default Color getPreset4Color() {
+        return Color.MAGENTA;
+    }
+
+    @ConfigItem(
+            position = 8,
+            keyName = "preset4",
+            name = "",
+            description = "The (Script) for preset 4"
+    )
+    default String preset4() {
+        return "";
+    }
+
+    @ConfigItem(
+            position = 9,
+            keyName = "preset4",
+            name = "",
+            description = ""
+    )
+    void setPreset4(String key);
 }

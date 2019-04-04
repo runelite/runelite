@@ -95,7 +95,7 @@ class DiscordState
 			.details(lastPresence.getDetails())
 			.largeImageText(lastPresence.getLargeImageText())
 			.startTimestamp(lastPresence.getStartTimestamp())
-			.smallImageKey(lastPresence.getSmallImageKey())
+			.largeImageKey("runelit")
 			.partyMax(lastPresence.getPartyMax())
 			.partySize(party.getMembers().size());
 
