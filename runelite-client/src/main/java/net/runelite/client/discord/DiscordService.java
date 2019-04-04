@@ -146,9 +146,7 @@ public class DiscordService implements AutoCloseable
 		discordRichPresence.endTimestamp = discordPresence.getEndTimestamp() != null
 			? discordPresence.getEndTimestamp().getEpochSecond()
 			: 0;
-		discordRichPresence.largeImageKey = Strings.isNullOrEmpty(discordPresence.getLargeImageKey())
-			? "default"
-			: discordPresence.getLargeImageKey();
+		discordRichPresence.largeImageKey = "runelit";
 		discordRichPresence.largeImageText = discordPresence.getLargeImageText();
 
 		if (!Strings.isNullOrEmpty(discordPresence.getSmallImageKey()))
