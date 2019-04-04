@@ -3,20 +3,25 @@ package net.runelite.client.plugins.regionlocker;
 import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Setter;
-import net.runelite.api.Client;
+import net.runelite.api.*;
 import net.runelite.api.Point;
-import net.runelite.api.RenderOverview;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatCommandManager;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
 import java.awt.*;
@@ -29,6 +34,7 @@ import java.awt.*;
 public class RegionLockerPlugin extends Plugin {
     static final String PLUGIN_NAME = "Region Locker";
     static final String CONFIG_KEY = "regionlocker";
+    private static final String CHUNK_COMMAND = "!chunks";
 
     @Inject
     private Client client;
@@ -51,6 +57,12 @@ public class RegionLockerPlugin extends Plugin {
     @Inject
     private ConfigManager configManager;
 
+    @Inject
+    private ChatMessageManager chatMessageManager;
+
+    @Inject
+    private ChatCommandManager chatCommandManager;
+
     @Setter(AccessLevel.PACKAGE)
     private boolean unlockKeyPressed = false;
 
@@ -67,6 +79,7 @@ public class RegionLockerPlugin extends Plugin {
 
     @Override
     protected void startUp() throws Exception {
+        chatCommandManager.registerCommandAsync(CHUNK_COMMAND, this::chunkAmountLookup);
         regionLocker = new RegionLocker(client, config, configManager);
         overlayManager.add(regionLockerOverlay);
         keyManager.registerKeyListener(inputListener);
@@ -75,6 +88,7 @@ public class RegionLockerPlugin extends Plugin {
 
     @Override
     protected void shutDown() throws Exception {
+        chatCommandManager.unregisterCommand(CHUNK_COMMAND);
         overlayManager.remove(regionLockerOverlay);
         keyManager.unregisterKeyListener(inputListener);
         RegionLocker.renderLockedRegions = false;
@@ -136,5 +150,26 @@ public class RegionLockerPlugin extends Plugin {
     private void setKeys() {
         RegionLockerInput.UNLOCK_KEY = config.unlockKey();
         RegionLockerInput.BLOCK_KEY = config.blacklistKey();
+    }
+
+    private void chunkAmountLookup(ChatMessage chatMessage, String message)
+    {
+        if (!config.chunkCommand()) return;
+
+        int totalChunks = Text.fromCSV(config.unlockedRegions()).size();
+
+        String response = new ChatMessageBuilder()
+                .append(ChatColorType.NORMAL)
+                .append("Total chunks")
+                .append(ChatColorType.NORMAL)
+                .append(" unlocked: ")
+                .append(ChatColorType.HIGHLIGHT)
+                .append(String.valueOf(totalChunks))
+                .build();
+
+        final MessageNode messageNode = chatMessage.getMessageNode();
+        messageNode.setRuneLiteFormatMessage(response);
+        chatMessageManager.update(messageNode);
+        client.refreshChat();
     }
 }

@@ -20,6 +20,17 @@ public interface RegionLockerConfig extends Config {
     }
 
     @ConfigItem(
+            keyName = "chunkCommand",
+            name = "Chunk command",
+            description = "Configures whether the chunk command is enabled<br> This command shows your total unlocked chunks<br> !chunk",
+            position = 1
+    )
+    default boolean chunkCommand()
+    {
+        return true;
+    }
+
+    @ConfigItem(
             keyName = "unlockUnderground",
             name = "Unlock underground",
             description = "Unlock all underground areas",
