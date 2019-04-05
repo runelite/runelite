@@ -38,7 +38,7 @@ public interface ChooseOptionConfig extends Config
 			description = "Color of the highlighted choose option.",
 			position = 1
 	)
-    default Color getChooseOptionColor()
+	default Color getChooseOptionColor()
 	{
 		return Color.BLACK;
 	}

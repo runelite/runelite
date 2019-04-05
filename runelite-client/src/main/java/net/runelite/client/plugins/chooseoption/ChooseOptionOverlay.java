@@ -107,13 +107,13 @@ class ChooseOptionOverlay extends Overlay
 		}
 
 		int currentMenuIndex = -1;
-		if(client.getMouseCanvasPosition().getY() >= highlightMenuPosStart)
+		if (client.getMouseCanvasPosition().getY() >= highlightMenuPosStart)
 		{
 			for (int i = 0; i < menuEntries.length; i++)
 			{
 				int menuEntryPos = highlightMenuPosStart + ((last - i) * chooseOptionLength);
 
-				if(client.getMouseCanvasPosition().getY() >= menuEntryPos)
+				if (client.getMouseCanvasPosition().getY() >= menuEntryPos)
 				{
 					currentMenuIndex = i;
 					break;
@@ -123,7 +123,7 @@ class ChooseOptionOverlay extends Overlay
 
 		for (int i = 0; i < menuEntries.length; i++)
 		{
-			if(i == currentMenuIndex)
+			if (i == currentMenuIndex)
 			{
 				menuEntries[i].setOption(ColorUtil.prependColorTag(menuEntryOptions[i], config.getChooseOptionColor()));
 			}
