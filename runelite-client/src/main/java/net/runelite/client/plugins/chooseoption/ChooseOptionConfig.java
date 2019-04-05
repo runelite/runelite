@@ -40,6 +40,6 @@ public interface ChooseOptionConfig extends Config
     )
     default Color getChooseOptionColor()
     {
-        return Color.YELLOW;
+        return Color.BLACK;
     }
 }
