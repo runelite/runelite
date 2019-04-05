@@ -34,107 +34,107 @@ import java.awt.*;
 
 class ChooseOptionOverlay extends Overlay
 {
-    private final Client client;
-    private final ChooseOptionConfig config;
-    private final int chooseOptionInitLength = 19; // length of the bar on top of the choose option menu
-    private final int chooseOptionLength = 15; // length of each choose option
-    private final int chooseOptionBottomBorderLength = 3; // choose option menu won't go past the bottom 3 pixels of the client unless the menu reaches the top of the client
-    private static int highlightMenuPosStart;
-    private static boolean init = true;
-    private static String[] menuEntryOptions = new String[100];
+	private final Client client;
+	private final ChooseOptionConfig config;
+	private final int chooseOptionInitLength = 19; // length of the bar on top of the choose option menu
+	private final int chooseOptionLength = 15; // length of each choose option
+	private final int chooseOptionBottomBorderLength = 3; // choose option menu won't go past the bottom 3 pixels of the client unless the menu reaches the top of the client
+	private static int highlightMenuPosStart;
+	private static boolean init = true;
+	private static String[] menuEntryOptions = new String[100];
 
-    @Inject
-    ChooseOptionOverlay(Client client, ChooseOptionConfig config)
-    {
-        setPosition(OverlayPosition.DYNAMIC);
-        this.client = client;
-        this.config = config;
-    }
+	@Inject
+	ChooseOptionOverlay(Client client, ChooseOptionConfig config)
+	{
+		setPosition(OverlayPosition.DYNAMIC);
+		this.client = client;
+		this.config = config;
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        if (!client.isMenuOpen())
-        {
-            if (!init)
-            {
-                init = true;
-            }
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!client.isMenuOpen())
+		{
+			if (!init)
+			{
+				init = true;
+			}
 
-            return null;
-        }
+			return null;
+		}
 
-        MenuEntry[] menuEntries = client.getMenuEntries();
-        int last = menuEntries.length - 1;
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		int last = menuEntries.length - 1;
 
-        if (last < 0)
-        {
-            return null;
-        }
+		if (last < 0)
+		{
+			return null;
+		}
 
-        MenuEntry menuEntry = menuEntries[last];
-        String option = menuEntry.getOption();
+		MenuEntry menuEntry = menuEntries[last];
+		String option = menuEntry.getOption();
 
-        if (Strings.isNullOrEmpty(option))
-        {
-            return null;
-        }
+		if (Strings.isNullOrEmpty(option))
+		{
+			return null;
+		}
 
-        if (init)
-        {
-            init = false;
+		if (init)
+		{
+			init = false;
 
-            highlightMenuPosStart = client.getMouseCanvasPosition().getY() + chooseOptionInitLength;
+			highlightMenuPosStart = client.getMouseCanvasPosition().getY() + chooseOptionInitLength;
 
-            // check for choose option menu getting positioned upwards due to menu going off the bottom of the client
-            int menuPosEnd = highlightMenuPosStart + (menuEntries.length * chooseOptionLength);
-            if (menuPosEnd > (int) client.getRealDimensions().getHeight())
-            {
-                highlightMenuPosStart -= (menuPosEnd - client.getRealDimensions().getHeight()) + chooseOptionBottomBorderLength;
-            }
+			// check for choose option menu getting positioned upwards due to menu going off the bottom of the client
+			int menuPosEnd = highlightMenuPosStart + (menuEntries.length * chooseOptionLength);
+			if (menuPosEnd > (int) client.getRealDimensions().getHeight())
+			{
+				highlightMenuPosStart -= (menuPosEnd - client.getRealDimensions().getHeight()) + chooseOptionBottomBorderLength;
+			}
 
-            // check for choose option menu getting positioned downwards due to menu going off the top of the client
-            if (highlightMenuPosStart < chooseOptionInitLength)
-            {
-                highlightMenuPosStart = chooseOptionInitLength;
-            }
+			// check for choose option menu getting positioned downwards due to menu going off the top of the client
+			if (highlightMenuPosStart < chooseOptionInitLength)
+			{
+				highlightMenuPosStart = chooseOptionInitLength;
+			}
 
-            // the options must be stored to be able to switch between colors
-            for (int i = 0; i < menuEntries.length; i++)
-            {
-                menuEntryOptions[i] = menuEntries[i].getOption();
-            }
-        }
+			// the options must be stored to be able to switch between colors
+			for (int i = 0; i < menuEntries.length; i++)
+			{
+				menuEntryOptions[i] = menuEntries[i].getOption();
+			}
+		}
 
-        int currentMenuIndex = -1;
-        if(client.getMouseCanvasPosition().getY() >= highlightMenuPosStart)
-        {
-            for (int i = 0; i < menuEntries.length; i++)
-            {
-                int menuEntryPos = highlightMenuPosStart + ((last - i) * chooseOptionLength);
+		int currentMenuIndex = -1;
+		if(client.getMouseCanvasPosition().getY() >= highlightMenuPosStart)
+		{
+			for (int i = 0; i < menuEntries.length; i++)
+			{
+				int menuEntryPos = highlightMenuPosStart + ((last - i) * chooseOptionLength);
 
-                if(client.getMouseCanvasPosition().getY() >= menuEntryPos)
-                {
-                    currentMenuIndex = i;
-                    break;
-                }
-            }
-        }
+				if(client.getMouseCanvasPosition().getY() >= menuEntryPos)
+				{
+					currentMenuIndex = i;
+					break;
+				}
+			}
+		}
 
-        for (int i = 0; i < menuEntries.length; i++)
-        {
-            if(i == currentMenuIndex)
-            {
-                menuEntries[i].setOption(ColorUtil.prependColorTag(menuEntryOptions[i], config.getChooseOptionColor()));
-            }
-            else
-            {
-                menuEntries[i].setOption(menuEntryOptions[i]);
-            }
-        }
+		for (int i = 0; i < menuEntries.length; i++)
+		{
+			if(i == currentMenuIndex)
+			{
+				menuEntries[i].setOption(ColorUtil.prependColorTag(menuEntryOptions[i], config.getChooseOptionColor()));
+			}
+			else
+			{
+				menuEntries[i].setOption(menuEntryOptions[i]);
+			}
+		}
 
-        client.setMenuEntries(menuEntries);
+		client.setMenuEntries(menuEntries);
 
-        return null;
-    }
+		return null;
+	}
 }

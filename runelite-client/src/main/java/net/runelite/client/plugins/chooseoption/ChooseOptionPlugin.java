@@ -32,35 +32,35 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import javax.inject.Inject;
 
 @PluginDescriptor(
-        name = "Choose Options",
-        description = "Change the color of the currently highlighted choose option"
+		name = "Choose Options",
+		description = "Change the color of the currently highlighted choose option"
 )
 public class ChooseOptionPlugin extends Plugin
 {
-    @Inject
-    private OverlayManager overlayManager;
+	@Inject
+	private OverlayManager overlayManager;
 
-    @Inject
-    private ChooseOptionOverlay overlay;
+	@Inject
+	private ChooseOptionOverlay overlay;
 
-    @Inject
-    private ChooseOptionConfig config;
+	@Inject
+	private ChooseOptionConfig config;
 
-    @Override
-    protected void startUp() throws Exception
-    {
-        overlayManager.add(overlay);
-    }
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(overlay);
+	}
 
-    @Override
-    protected void shutDown() throws Exception
-    {
-        overlayManager.remove(overlay);
-    }
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
+	}
 
-    @Provides
-    ChooseOptionConfig getConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(ChooseOptionConfig.class);
-    }
+	@Provides
+	ChooseOptionConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(ChooseOptionConfig.class);
+	}
 }
