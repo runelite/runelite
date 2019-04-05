@@ -204,6 +204,7 @@ public class RuneLite
 		new Thread(() ->
 		{
 			clientLoader.get();
+			ClassPreloader.preload();
 		}, "Preloader").start();
 
 		final boolean developerMode = options.has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null;
