@@ -333,6 +333,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		this.objectId = objectId;
 		this.location = location;
 		this.solution = solution;
+		setRequiresSpade(getLocation() != null && getNpc() == null && objectId == -1);
 	}
 
 	@Override
