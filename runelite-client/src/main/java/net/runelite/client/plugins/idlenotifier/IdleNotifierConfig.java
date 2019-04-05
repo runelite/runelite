@@ -76,10 +76,31 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hitpoints",
-		name = "Hitpoints Notification Threshold",
-		description = "The amount of hitpoints to send a notification at. A value of 0 will disable notification.",
-		position = 5
+		keyName = "oxygen",
+		name = "Oxygen Notification Threshold",
+		position = 5,
+		description = "The amount of remaining oxygen to send a notification at. A value of 0 will disable notification."
+	)
+	default int getOxygenThreshold()
+	{
+		return 0;
+	}
+	@ConfigItem(
+			keyName = "spec",
+			name = "Special Attack Energy Notification Threshold",
+			position = 6,
+			description = "The amount of spec energy reached to send a notification at. A value of 0 will disable notification."
+	)
+	default int getSpecEnergyThreshold()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+			keyName = "hitpoints",
+			name = "Hitpoints Notification Threshold",
+			description = "The amount of hitpoints to send a notification at. A value of 0 will disable notification.",
+			position = 7
 	)
 	default int getHitpointsThreshold()
 	{
@@ -87,10 +108,10 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "prayer",
-		name = "Prayer Notification Threshold",
-		description = "The amount of prayer points to send a notification at. A value of 0 will disable notification.",
-		position = 6
+			keyName = "prayer",
+			name = "Prayer Notification Threshold",
+			description = "The amount of prayer points to send a notification at. A value of 0 will disable notification.",
+			position = 8
 	)
 	default int getPrayerThreshold()
 	{
@@ -98,23 +119,45 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "oxygen",
-		name = "Oxygen Notification Threshold",
-		position = 7,
-		description = "The amount of remaining oxygen to send a notification at. A value of 0 will disable notification."
+			keyName = "ranged",
+			name = "Ranged Notification Threshold",
+			description = "The ranged level to send a notification at. A value of 0 will disable notification.",
+			position = 9
 	)
-	default int getOxygenThreshold()
+	default int getRangedThreshold()
 	{
 		return 0;
 	}
 
 	@ConfigItem(
-		keyName = "spec",
-		name = "Special Attack Energy Notification Threshold",
-		position = 8,
-		description = "The amount of spec energy reached to send a notification at. A value of 0 will disable notification."
+			keyName = "attack",
+			name = "Attack Notification Threshold",
+			description = "The attack level to send a notification at. A value of 0 will disable notification.",
+			position = 10
 	)
-	default int getSpecEnergyThreshold()
+	default int getAttackThreshold()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+			keyName = "strength",
+			name = "Strength Notification Threshold",
+			description = "The strength level to send a notification at. A value of 0 will disable notification.",
+			position = 11
+	)
+	default int getStrengthThreshold()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+			keyName = "defence",
+			name = "Defence Notification Threshold",
+			description = "The defence level to send a notification at. A value of 0 will disable notification.",
+			position = 12
+	)
+	default int getDefenceThreshold()
 	{
 		return 0;
 	}
