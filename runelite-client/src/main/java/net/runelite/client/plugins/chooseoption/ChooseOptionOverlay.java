@@ -28,29 +28,26 @@ import com.google.common.base.Strings;
 import net.runelite.api.*;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.tooltip.Tooltip;
-import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
 import javax.inject.Inject;
 import java.awt.*;
 
 class ChooseOptionOverlay extends Overlay
 {
-    private final TooltipManager tooltipManager;
     private final Client client;
     private final ChooseOptionConfig config;
-    private final int chooseOptionInitIncrement = 19;
-    private final int chooseOptionIncrement = 15;
-    private static int mousePosY;
+    private final int chooseOptionInitLength = 19; // length of the bar on top of the choose option menu
+    private final int chooseOptionLength = 15; // length of each choose option
+    private final int chooseOptionBottomBorderLength = 3; // choose option menu won't go past the bottom 3 pixels of the client unless the menu reaches the top of the client
+    private static int highlightMenuPosStart;
     private static boolean init = true;
     private static String[] menuEntryOptions = new String[100];
 
     @Inject
-    ChooseOptionOverlay(Client client, TooltipManager tooltipManager, ChooseOptionConfig config)
+    ChooseOptionOverlay(Client client, ChooseOptionConfig config)
     {
         setPosition(OverlayPosition.DYNAMIC);
         this.client = client;
-        this.tooltipManager = tooltipManager;
         this.config = config;
     }
 
@@ -87,22 +84,34 @@ class ChooseOptionOverlay extends Overlay
         {
             init = false;
 
-            mousePosY = client.getMouseCanvasPosition().getY();
+            highlightMenuPosStart = client.getMouseCanvasPosition().getY() + chooseOptionInitLength;
 
-            for (int i = 0; i < menuEntries.length; i++) {
+            // check for choose option menu getting positioned upwards due to menu going off the bottom of the client
+            int menuPosEnd = highlightMenuPosStart + (menuEntries.length * chooseOptionLength);
+            if (menuPosEnd > (int) client.getRealDimensions().getHeight())
+            {
+                highlightMenuPosStart -= (menuPosEnd - client.getRealDimensions().getHeight()) + chooseOptionBottomBorderLength;
+            }
 
-                // the options must be stored to be able to switch between colors
+            // check for choose option menu getting positioned downwards due to menu going off the top of the client
+            if (highlightMenuPosStart < chooseOptionInitLength)
+            {
+                highlightMenuPosStart = chooseOptionInitLength;
+            }
+
+            // the options must be stored to be able to switch between colors
+            for (int i = 0; i < menuEntries.length; i++)
+            {
                 menuEntryOptions[i] = menuEntries[i].getOption();
             }
         }
 
         int currentMenuIndex = -1;
-        int highlightMenuPosStart = mousePosY + chooseOptionInitIncrement;
         if(client.getMouseCanvasPosition().getY() >= highlightMenuPosStart)
         {
             for (int i = 0; i < menuEntries.length; i++)
             {
-                int menuEntryPos = highlightMenuPosStart + ((last - i) * chooseOptionIncrement);
+                int menuEntryPos = highlightMenuPosStart + ((last - i) * chooseOptionLength);
 
                 if(client.getMouseCanvasPosition().getY() >= menuEntryPos)
                 {
@@ -125,8 +134,6 @@ class ChooseOptionOverlay extends Overlay
         }
 
         client.setMenuEntries(menuEntries);
-
-       //tooltipManager.addFront(new Tooltip("Max height: " + (int) client.getRealDimensions().getHeight() + ", Current pos: " + client.getMouseCanvasPosition().getY()));
 
         return null;
     }
