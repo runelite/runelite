@@ -65,7 +65,7 @@ public class DailyTasksPlugin extends Plugin
 	private static final String FLAX_MESSAGE = "You have bowstrings waiting to be converted from flax from the Flax keeper.";
 	private static final String BONEMEAL_MESSAGE = "You have bonemeal and slime waiting to be collected from Robin.";
 	private static final int BONEMEAL_PER_DIARY = 13;
-	private static final String RELOG_MESSAGE = " The following tasks may require a relog";
+	private static final String RELOG_MESSAGE = " (May require a relog)";
 
 	@Inject
 	private Client client;
@@ -118,11 +118,6 @@ public class DailyTasksPlugin extends Plugin
 			// Round down to the nearest day
 			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
 			loggingIn = false;
-
-			if(dailyReset)
-            {
-                sendChatMessage(RELOG_MESSAGE);
-            }
 
 			if (config.showHerbBoxes())
 			{
@@ -187,7 +182,7 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				sendChatMessage(STAVES_MESSAGE);
+				sendChatMessage(STAVES_MESSAGE + RELOG_MESSAGE);
 			}
 		}
 	}
