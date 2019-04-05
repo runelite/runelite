@@ -65,8 +65,7 @@ public class DailyTasksPlugin extends Plugin
 	private static final String FLAX_MESSAGE = "You have bowstrings waiting to be converted from flax from the Flax keeper.";
 	private static final String BONEMEAL_MESSAGE = "You have bonemeal and slime waiting to be collected from Robin.";
 	private static final int BONEMEAL_PER_DIARY = 13;
-	private static final String RELOG_MESSAGE = " (Requires relog)";
-	private static final String RELOG_MESSAGE_2 = "The following tasks may require a relog: Staves ";
+	private static final String RELOG_MESSAGE = " The following tasks may require a relog";
 
 	@Inject
 	private Client client;
@@ -120,6 +119,11 @@ public class DailyTasksPlugin extends Plugin
 			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
 			loggingIn = false;
 
+			if(dailyReset)
+            {
+                sendChatMessage(RELOG_MESSAGE);
+            }
+
 			if (config.showHerbBoxes())
 			{
 				checkHerbBoxes(dailyReset);
@@ -168,9 +172,6 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				//Sends "may Require Relog" before all messages at start of reset
-				sendChatMessage(RELOG_MESSAGE_2);
-				//HerbBoxes does not require "Relog message"
 				sendChatMessage(HERB_BOX_MESSAGE);
 			}
 		}
@@ -186,7 +187,6 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				//Staves may require a Relog
 				sendChatMessage(STAVES_MESSAGE);
 			}
 		}
@@ -202,7 +202,7 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				sendChatMessage(ESSENCE_MESSAGE + RELOG_MESSAGE);
+				sendChatMessage(ESSENCE_MESSAGE);
 			}
 		}
 	}
@@ -217,7 +217,6 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				//Runes does not require "Relog message"
 				sendChatMessage(RUNES_MESSAGE);
 			}
 		}
@@ -233,7 +232,6 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				//Does not require a Relog
 				sendChatMessage(SAND_MESSAGE);
 			}
 		}
@@ -249,7 +247,6 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				//Flax does not require "Relog message"
 				sendChatMessage(FLAX_MESSAGE);
 			}
 		}
@@ -275,7 +272,6 @@ public class DailyTasksPlugin extends Plugin
 			}
 			else if (dailyReset)
 			{
-				//Bonemeal does not require "Relog message"
 				sendChatMessage(BONEMEAL_MESSAGE);
 			}
 		}
