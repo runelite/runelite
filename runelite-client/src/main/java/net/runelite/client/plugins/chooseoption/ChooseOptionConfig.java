@@ -33,9 +33,9 @@ import java.awt.*;
 public interface ChooseOptionConfig extends Config
 {
     @ConfigItem(
-            keyName = "chooseOptionColor",
-            name = "Choose Option Color",
-            description = "Color of the choose option.",
+            keyName = "highlightColor",
+            name = "Highlight Color",
+            description = "Color of the highlighted choose option.",
             position = 1
     )
     default Color getChooseOptionColor()
