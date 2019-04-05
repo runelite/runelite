@@ -534,7 +534,7 @@ public class IdleNotifierPlugin extends Plugin
 			return false;
 		}
 
-		// ranged is boostable so we wont check than RealSkillLevel > RangedThreshold
+		// ranged is boostable so we wont check that RealSkillLevel > RangedThreshold
 		if (client.getBoostedSkillLevel(Skill.RANGED) <= config.getRangedThreshold())
 		{
 			if (!notifyRanged)
@@ -558,7 +558,7 @@ public class IdleNotifierPlugin extends Plugin
 			return false;
 		}
 
-		// strength is boostable so we wont check than RealSkillLevel > StrengthThreshold
+		// strength is boostable so we wont check that RealSkillLevel > StrengthThreshold
 		if (client.getBoostedSkillLevel(Skill.STRENGTH) <= config.getStrengthThreshold())
 		{
 			if (!notifyStrength)
@@ -582,7 +582,7 @@ public class IdleNotifierPlugin extends Plugin
 			return false;
 		}
 
-		// attack is boostable so we wont check than RealSkillLevel > AttackThreshold
+		// attack is boostable so we wont check that RealSkillLevel > AttackThreshold
 		if (client.getBoostedSkillLevel(Skill.ATTACK) <= config.getAttackThreshold())
 		{
 			if (!notifyAttack)
@@ -606,7 +606,7 @@ public class IdleNotifierPlugin extends Plugin
 			return false;
 		}
 
-		// attack is boostable so we wont check than RealSkillLevel > DefenceThreshold
+		// attack is boostable so we wont check that RealSkillLevel > DefenceThreshold
 		if (client.getBoostedSkillLevel(Skill.DEFENCE) <= config.getDefenceThreshold())
 		{
 			if (!notifyDefence)
