@@ -32,6 +32,7 @@ import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.TileObject;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -40,6 +41,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class ObjectIndicatorsOverlay extends Overlay
 {
+	private static final int MAX_DRAW_DISTANCE = 32;
+
 	private final Client client;
 	private final ObjectIndicatorsConfig config;
 	private final ObjectIndicatorsPlugin plugin;
@@ -60,6 +63,13 @@ class ObjectIndicatorsOverlay extends Overlay
 	{
 		for (TileObject object : plugin.getObjects())
 		{
+			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+			WorldPoint tileLocation = object.getWorldLocation();
+			if (tileLocation.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
+			{
+				return null;
+			}
+
 			if (object.getPlane() != client.getPlane())
 			{
 				continue;
