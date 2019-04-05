@@ -44,4 +44,14 @@ public interface ObjectIndicatorsConfig extends Config
 	{
 		return Color.YELLOW;
 	}
+
+	@ConfigItem(
+		keyName = "maxDrawDistance",
+		name = "Max draw distance",
+		description = "Sets the maximum draw distance for markers"
+	)
+	default int getMaxDrawDistance()
+	{
+		return 32;
+	}
 }

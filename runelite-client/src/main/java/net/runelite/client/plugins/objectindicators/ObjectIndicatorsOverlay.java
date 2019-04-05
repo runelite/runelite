@@ -41,8 +41,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class ObjectIndicatorsOverlay extends Overlay
 {
-	private static final int MAX_DRAW_DISTANCE = 32;
-
 	private final Client client;
 	private final ObjectIndicatorsConfig config;
 	private final ObjectIndicatorsPlugin plugin;
@@ -65,7 +63,7 @@ class ObjectIndicatorsOverlay extends Overlay
 		{
 			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 			WorldPoint tileLocation = object.getWorldLocation();
-			if (tileLocation.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
+			if (tileLocation.distanceTo(playerLocation) >= config.getMaxDrawDistance())
 			{
 				return null;
 			}
