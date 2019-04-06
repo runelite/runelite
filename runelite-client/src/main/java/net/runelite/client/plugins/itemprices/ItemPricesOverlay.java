@@ -55,8 +55,6 @@ class ItemPricesOverlay extends Overlay
 	private static final int BANK_INVENTORY_ITEM_WIDGETID = WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId();
 	private static final int BANK_ITEM_WIDGETID = WidgetInfo.BANK_ITEM_CONTAINER.getPackedId();
 
-	private static final int EXPLORERS_RING_ITEM_WIDGETID = WidgetInfo.EXPLORERS_RING_ALCH_INVENTORY.getPackedId();
-
 	private final Client client;
 	private final ItemPricesConfig config;
 	private final TooltipManager tooltipManager;
@@ -141,7 +139,7 @@ class ItemPricesOverlay extends Overlay
 		ItemContainer container = null;
 
 		// Inventory item
-		if (widgetId == INVENTORY_ITEM_WIDGETID || widgetId == BANK_INVENTORY_ITEM_WIDGETID || widgetId == EXPLORERS_RING_ITEM_WIDGETID)
+		if (widgetId == INVENTORY_ITEM_WIDGETID || widgetId == BANK_INVENTORY_ITEM_WIDGETID)
 		{
 			container = client.getItemContainer(InventoryID.INVENTORY);
 		}
