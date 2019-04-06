@@ -61,12 +61,12 @@ public interface BoostsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "displayIndicators",
+		keyName = "displayInfoboxes",
 		name = "Display as indicators",
 		description = "Configures whether or not to display the boost as indicators",
 		position = 3
 	)
-	default boolean displayIndicators()
+	default boolean displayInfoboxes()
 	{
 		return false;
 	}
