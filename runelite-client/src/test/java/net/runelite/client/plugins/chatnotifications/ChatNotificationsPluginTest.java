@@ -84,7 +84,7 @@ public class ChatNotificationsPluginTest
 		when(messageNode.getValue()).thenReturn("Deathbeam, Deathbeam OSRS");
 
 		ChatMessage chatMessage = new ChatMessage();
-		chatMessage.setType(ChatMessageType.PUBLIC);
+		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setMessageNode(messageNode);
 
 		chatNotificationsPlugin.startUp(); // load highlight config

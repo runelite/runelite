@@ -180,7 +180,7 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.FILTERED)
+		if (event.getType() != ChatMessageType.SPAM)
 		{
 			return;
 		}

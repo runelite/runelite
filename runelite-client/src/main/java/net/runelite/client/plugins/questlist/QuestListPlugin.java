@@ -25,13 +25,6 @@
 package net.runelite.client.plugins.questlist;
 
 import com.google.common.collect.ImmutableList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.inject.Inject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -59,6 +52,13 @@ import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
+import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @PluginDescriptor(
 	name = "Quest List",
@@ -69,17 +69,13 @@ public class QuestListPlugin extends Plugin
 	private static final int ENTRY_PADDING = 8;
 	private static final List<String> QUEST_HEADERS = ImmutableList.of("Free Quests", "Members' Quests", "Miniquests");
 
-	private static final int SPRITE_SHOW_COMPLETED = SpriteID.OPTIONS_ZOOM_SLIDER_THUMB;
-	private static final int SPRITE_HIDE_COMPLETED = SpriteID.SQUARE_CHECK_BOX;
-
 	private static final String MENU_OPEN = "Open";
 	private static final String MENU_CLOSE = "Close";
 
-	private static final String MENU_SHOW = "Show";
-	private static final String MENU_HIDE = "Hide";
+	private static final String MENU_TOGGLE = "Toggle";
 
 	private static final String MENU_SEARCH = "Search";
-	private static final String MENU_COMPLETED = "Completed Quests";
+	private static final String MENU_SHOW = "Show";
 
 	@Inject
 	private Client client;
@@ -92,18 +88,18 @@ public class QuestListPlugin extends Plugin
 
 	private ChatboxTextInput searchInput;
 	private Widget questSearchButton;
-	private Widget questHideCompletedButton;
+	private Widget questHideButton;
 
 	private EnumMap<QuestContainer, Collection<QuestWidget>> questSet;
 
-	private boolean hideCompleted;
+	private QuestState currentFilterState;
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged e)
 	{
 		if (e.getGameState() == GameState.LOGGING_IN)
 		{
-			hideCompleted = false;
+			currentFilterState = QuestState.ALL;
 		}
 	}
 
@@ -128,19 +124,18 @@ public class QuestListPlugin extends Plugin
 				questSearchButton.setName(MENU_SEARCH);
 				questSearchButton.revalidate();
 
-				questHideCompletedButton = header.createChild(-1, WidgetType.GRAPHIC);
-				redrawHideCompletedButton();
+				questHideButton = header.createChild(-1, WidgetType.GRAPHIC);
+				redrawHideButton();
 
-				questHideCompletedButton.setOriginalWidth(18);
-				questHideCompletedButton.setOriginalHeight(17);
-				questHideCompletedButton.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
-				questHideCompletedButton.setOriginalX(25);
-				questHideCompletedButton.setOriginalY(0);
-				questHideCompletedButton.setHasListener(true);
-				questHideCompletedButton.setOnOpListener((JavaScriptCallback) e -> toggleHideCompleted());
-				questHideCompletedButton.setName(MENU_COMPLETED);
-
-				questHideCompletedButton.revalidate();
+				questHideButton.setOriginalWidth(13);
+				questHideButton.setOriginalHeight(13);
+				questHideButton.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
+				questHideButton.setOriginalX(24);
+				questHideButton.setOriginalY(2);
+				questHideButton.setHasListener(true);
+				questHideButton.setOnOpListener((JavaScriptCallback) e -> toggleHidden());
+				questHideButton.setAction(1, MENU_TOGGLE);
+				questHideButton.revalidate();
 
 				questSet = new EnumMap<>(QuestContainer.class);
 
@@ -173,19 +168,22 @@ public class QuestListPlugin extends Plugin
 		}
 	}
 
-	private void toggleHideCompleted()
+	private void toggleHidden()
 	{
-		hideCompleted = !hideCompleted;
-		redrawHideCompletedButton();
+		QuestState[] questStates = QuestState.values();
+		int nextState = (currentFilterState.ordinal() + 1) % questStates.length;
+		currentFilterState = questStates[nextState];
+
+		redrawHideButton();
 
 		updateFilter();
 		client.playSoundEffect(SoundEffectID.UI_BOOP);
 	}
 
-	private void redrawHideCompletedButton()
+	private void redrawHideButton()
 	{
-		questHideCompletedButton.setSpriteId(hideCompleted ? SPRITE_HIDE_COMPLETED : SPRITE_SHOW_COMPLETED);
-		questHideCompletedButton.setAction(1, hideCompleted ? MENU_SHOW : MENU_HIDE);
+		questHideButton.setSpriteId(currentFilterState.getSpriteId());
+		questHideButton.setName(MENU_SHOW + " " + currentFilterState.getName());
 	}
 
 	private boolean isOnQuestTab()
@@ -324,9 +322,17 @@ public class QuestListPlugin extends Plugin
 			Widget quest = questInfo.getQuest();
 			QuestState questState = QuestState.getByColor(quest.getTextColor());
 
-			boolean hidden = !(filter.isEmpty()
-				|| questInfo.getTitle().contains(filter))
-				|| (filter.isEmpty() && hideCompleted && questState == QuestState.COMPLETE);
+			boolean hidden;
+			if (!filter.isEmpty())
+			{
+				// If searching, show result regardless of filtered state
+				hidden = !questInfo.getTitle().contains(filter);
+			}
+			else
+			{
+				// Otherwise hide if it doesn't match the filter state
+				hidden = currentFilterState != QuestState.ALL && questState != currentFilterState;
+			}
 
 			quest.setHidden(hidden);
 			quest.setOriginalY(y);
@@ -356,9 +362,14 @@ public class QuestListPlugin extends Plugin
 	@Getter
 	private enum QuestState
 	{
-		NOT_STARTED(0xff0000), IN_PROGRESS(0xffff00), COMPLETE(0xdc10d);
+		NOT_STARTED(0xff0000, "Not started", SpriteID.MINIMAP_ORB_HITPOINTS),
+		IN_PROGRESS(0xffff00, "In progress", SpriteID.MINIMAP_ORB_HITPOINTS_DISEASE),
+		COMPLETE(0xdc10d, "Completed", SpriteID.MINIMAP_ORB_HITPOINTS_POISON),
+		ALL(0, "All", SpriteID.MINIMAP_ORB_PRAYER);
 
 		private final int color;
+		private final String name;
+		private final int spriteId;
 
 		static QuestState getByColor(int color)
 		{

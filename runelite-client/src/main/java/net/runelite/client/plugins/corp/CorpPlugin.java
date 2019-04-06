@@ -181,7 +181,7 @@ public class CorpPlugin extends Plugin
 					.build();
 
 				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.GAME)
+					.type(ChatMessageType.CONSOLE)
 					.runeLiteFormattedMessage(message)
 					.build());
 			}

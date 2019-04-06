@@ -409,6 +409,12 @@
       "xp": 195.5
     },
     {
+      "level": 52,
+      "icon": 19662,
+      "name": "Botanical Pie",
+      "xp": 180
+    },
+    {
       "level": 55,
       "icon": 2297,
       "name": "Anchovy Pizza",
@@ -425,6 +431,12 @@
       "icon": 2011,
       "name": "Curry",
       "xp": 280
+    },
+    {
+      "level": 60,
+      "icon": 21690,
+      "name": "Mushroom Pie",
+      "xp": 200
     },
     {
       "level": 62,
@@ -461,6 +473,12 @@
       "icon": 7198,
       "name": "Admiral Pie",
       "xp": 210
+    },
+    {
+      "level": 73,
+      "icon": 22795,
+      "name": "Dragonfruit Pie",
+      "xp": 220
     },
     {
       "level": 80,
