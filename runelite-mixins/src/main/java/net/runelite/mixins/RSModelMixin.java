@@ -116,7 +116,7 @@ public abstract class RSModelMixin implements RSModel
 		int[] verticesY = getVerticesY();
 		int[] verticesZ = getVerticesZ();
 
-		List<Vertex> vertices = new ArrayList<Vertex>();
+		List<Vertex> vertices = new ArrayList<Vertex>(getVerticesCount());
 
 		for (int i = 0; i < getVerticesCount(); ++i)
 		{
