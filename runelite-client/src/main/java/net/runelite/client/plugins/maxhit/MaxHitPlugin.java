@@ -82,9 +82,6 @@ public class MaxHitPlugin extends Plugin
 			RangeMaxHitCalculator rangeMaxHitCalculator = new RangeMaxHitCalculator(this.client, equipedItems);
 			MagicMaxHitCalculator magicMaxHitCalculator = new MagicMaxHitCalculator(this.client, equipedItems);
 
-			int autoCastSpell = client.getVar(Varbits.AUTO_CAST_SPELL);
-			System.out.println("AutoCast: " + autoCastSpell);
-
 			MaxHit maxHit = new MaxHit(meleeMaxHitCalculator.getMaxHit(), rangeMaxHitCalculator.getMaxHit(), magicMaxHitCalculator.getMaxHit());
 			this.setWidgetMaxHit(maxHit);
 		}
