@@ -28,9 +28,6 @@ package net.runelite.client.plugins.interfacestyles;
 
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -123,7 +120,8 @@ public class InterfaceStylesPlugin extends Plugin
 			{
 				if (skin == config.skin())
 				{
-					SpritePixels spritePixels = getFileSpritePixels(String.valueOf(spriteOverride.getSpriteID()), null);
+					String file = config.skin().toString() + "/" + spriteOverride.getSpriteID() + ".png";
+					SpritePixels spritePixels = getFileSpritePixels(file);
 
 					if (spriteOverride.getSpriteID() == SpriteID.COMPASS_TEXTURE)
 					{
@@ -154,7 +152,8 @@ public class InterfaceStylesPlugin extends Plugin
 		{
 			if (widgetOverride.getSkin() == config.skin())
 			{
-				SpritePixels spritePixels = getFileSpritePixels(widgetOverride.getName(), "widget");
+				String file = config.skin().toString() + "/widget/" + widgetOverride.getName() + ".png";
+				SpritePixels spritePixels = getFileSpritePixels(file);
 
 				if (spritePixels != null)
 				{
@@ -178,32 +177,17 @@ public class InterfaceStylesPlugin extends Plugin
 		}
 	}
 
-	private SpritePixels getFileSpritePixels(String file, String subfolder)
+	private SpritePixels getFileSpritePixels(String file)
 	{
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(config.skin().toString() + "/");
-
-		if (subfolder != null)
+		try
 		{
-			stringBuilder.append(subfolder + "/");
+			log.debug("Loading: {}", file);
+			BufferedImage image = ImageUtil.getResourceStreamFromClass(this.getClass(), file);
+			return ImageUtil.getImageSpritePixels(image, client);
 		}
-
-		stringBuilder.append(file + ".png");
-		String filePath = stringBuilder.toString();
-
-		try (InputStream inputStream = InterfaceStylesPlugin.class.getResourceAsStream(filePath))
-		{
-			log.debug("Loading: " + filePath);
-			BufferedImage spriteImage = ImageIO.read(inputStream);
-			return ImageUtil.getImageSpritePixels(spriteImage, client);
-		}
-		catch (IOException ex)
+		catch (RuntimeException ex)
 		{
 			log.debug("Unable to load image: ", ex);
-		}
-		catch (IllegalArgumentException ex)
-		{
-			log.debug("Input stream of file path " + filePath + " could not be read: ", ex);
 		}
 
 		return null;
