@@ -513,10 +513,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("chase", option, target, true);
 		}
-		else if (config.swapBuckets() && option.equals("use"))
-		{
-			swap("drop", option, target, true);
-		}
 		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
 		{
 			swap("empty", option, target, true);
@@ -574,7 +570,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, true);
 		}
+		else if (config.swapBuckets() && option.equals("use") && target.equalsIgnoreCase("bucket"))
+		{
+			swap("drop", option, target, true);
 
+		}
+		else if (config.swapBuckets() && shiftModifier && option.equals("drop") && target.equalsIgnoreCase("bucket"))
+		{
+			swap("use", option, target, true);
+		}
 	}
 
 	@Subscribe
