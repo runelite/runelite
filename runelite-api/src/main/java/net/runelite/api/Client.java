@@ -1600,4 +1600,6 @@ public interface Client extends GameEngine
 	NodeCache getItemCompositionCache();
 
 	EnumComposition getEnum(int id);
+
+	void draw2010Menu();
 }
