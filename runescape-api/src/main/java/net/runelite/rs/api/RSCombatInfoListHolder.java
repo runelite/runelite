@@ -31,6 +31,6 @@ public interface RSCombatInfoListHolder extends RSNode
 	@Import("combatInfo1")
 	RSCombatInfoList getCombatInfo1();
 
-	@Import("combatInfo2")
-	RSCombatInfo2 getCombatInfo2();
+	@Import("healthBar")
+	RSHealthBar getHealthBar();
 }

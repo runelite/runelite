@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
- * Copyright (c) 2018, Raqes <j.raqes@gmail.com>
+ * Copyright (c) 2019, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,32 +23,15 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.interfacestyles;
+package net.runelite.api;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Data;
 
-@ConfigGroup("interfaceStyles")
-public interface InterfaceStylesConfig extends Config
+@Data
+public class HealthBarOverride
 {
-	@ConfigItem(
-		keyName = "gameframe",
-		name = "Gameframe",
-		description = "The gameframe to use for the interface"
-	)
-	default Skin skin()
-	{
-		return Skin.AROUND_2010;
-	}
-
-	@ConfigItem(
-		keyName = "hdHealthBars",
-		name = "High Detail health bars",
-		description = "Replaces health bars with the RuneScape High Detail mode design"
-	)
-	default boolean hdHealthBars()
-	{
-		return false;
-	}
+	public final SpritePixels frontSprite;
+	public final SpritePixels backSprite;
+	public final SpritePixels frontSpriteLarge;
+	public final SpritePixels backSpriteLarge;
 }

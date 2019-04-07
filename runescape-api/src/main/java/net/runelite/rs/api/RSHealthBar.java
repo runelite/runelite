@@ -26,7 +26,7 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
-public interface RSCombatInfo2
+public interface RSHealthBar
 {
 	@Import("healthScale")
 	int getHealthScale();
