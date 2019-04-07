@@ -122,13 +122,13 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		createOrb();
+		clientThread.invokeLater(this::addWidgets);
 	}
 
 	@Override
 	public void shutDown()
 	{
-		destroyOrb();
+		clientThread.invokeLater(this::removeWidgets);
 	}
 
 	@Subscribe
@@ -142,6 +142,7 @@ public class WikiPlugin extends Plugin
 
 	private void addWidgets()
 	{
+		spriteManager.addSpriteOverrides(WikiSprite.values());
 		Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
 		if (minimapOrbs == null || !config.orbEnable())
 		{
@@ -182,6 +183,7 @@ public class WikiPlugin extends Plugin
 
 	private void removeWidgets()
 	{
+		spriteManager.removeSpriteOverrides(WikiSprite.values());
 		Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
 		if (minimapOrbs == null)
 		{
@@ -386,30 +388,12 @@ public class WikiPlugin extends Plugin
 		{
 			if (!config.orbEnable())
 			{
-				destroyOrb();
+				clientThread.invokeLater(this::removeWidgets);
 			}
 			else
 			{
-				createOrb();
+				clientThread.invokeLater(this::addWidgets);
 			}
 		}
-	}
-
-	/**
-	 * This will create the minimap orb for the wiki plugin. This does not affect quest guide menu options.
-	 */
-	private void createOrb()
-	{
-		spriteManager.addSpriteOverrides(WikiSprite.values());
-		clientThread.invokeLater(this::addWidgets);
-	}
-
-	/**
-	 *  Destroys/removes the minimap orb for the wiki plugin. This does not affect quest guide menu options.
-	 */
-	private void destroyOrb()
-	{
-		spriteManager.removeSpriteOverrides(WikiSprite.values());
-		clientThread.invokeLater(this::removeWidgets);
 	}
 }

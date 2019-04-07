@@ -32,7 +32,6 @@ import net.runelite.client.config.ConfigItem;
 public interface WikiConfig extends Config
 {
 	@ConfigItem(
-		position = 1,
 		keyName = "orbEnable",
 		name = "Enable Wiki Widget",
 		description = "Enable the wiki banner next to the minimap to do wiki searches and entity lookups"
