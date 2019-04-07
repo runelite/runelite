@@ -115,7 +115,7 @@ public class RemoteBankContentsProcess
 		if (isUltimateIronman())
 		{
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.SERVER).runeLiteFormattedMessage("<col" + ChatColorType.HIGHLIGHT + ">" + "UIM BTW.").build());
+				.type(ChatMessageType.GAMEMESSAGE).runeLiteFormattedMessage("<col" + ChatColorType.HIGHLIGHT + ">" + "UIM BTW.").build());
 
 		}
 		else if (initialised())
@@ -140,12 +140,12 @@ public class RemoteBankContentsProcess
 			message.append("<col" + ChatColorType.HIGHLIGHT + ">" + "You currently have " + quantity + " " + name + " in your bank.");
 
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.EXAMINE_ITEM).runeLiteFormattedMessage(message.build()).build());
+				.type(ChatMessageType.ITEM_EXAMINE).runeLiteFormattedMessage(message.build()).build());
 		}
 		else
 		{
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.SERVER).runeLiteFormattedMessage("<col" + ChatColorType.HIGHLIGHT + ">" + "Please open your bank to initialise.").build());
+				.type(ChatMessageType.GAMEMESSAGE).runeLiteFormattedMessage("<col" + ChatColorType.HIGHLIGHT + ">" + "Please open your bank to initialise.").build());
 
 		}
 
