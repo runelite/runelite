@@ -224,10 +224,12 @@ public class ClientUI
 			if (inTitle)
 			{
 				titleToolbar.addComponent(event.getButton(), button);
+				titleToolbar.revalidate();
 			}
 			else
 			{
 				pluginToolbar.addComponent(event.getButton(), button);
+				pluginToolbar.revalidate();
 			}
 		});
 	}
@@ -238,7 +240,9 @@ public class ClientUI
 		SwingUtilities.invokeLater(() ->
 		{
 			pluginToolbar.removeComponent(event.getButton());
+			pluginToolbar.revalidate();
 			titleToolbar.removeComponent(event.getButton());
+			titleToolbar.revalidate();
 			final PluginPanel pluginPanel = event.getButton().getPanel();
 
 			if (pluginPanel != null)
