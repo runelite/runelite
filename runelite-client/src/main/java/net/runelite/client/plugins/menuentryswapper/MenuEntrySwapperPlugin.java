@@ -570,6 +570,50 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, true);
 		}
+		else if (config.removeWithdrawAllButOne() && option.equals("withdraw-all-but-1"))
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+
+			int index = searchIndex(entries, option, target, true);
+
+			remove(index);
+		}
+		else if (config.removeRepeatedBankOptions() && (option.contains("withdraw-") || option.contains("deposit-")))
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+			MenuEntry prevMenuEntry = entries[entries.length - 2];
+			String prevOption = Text.removeTags(prevMenuEntry.getOption()).toLowerCase();
+
+			if ((!option.equals("withdraw-1") && prevOption.equals("withdraw-1")) || (!option.equals("deposit-1") && prevOption.equals("deposit-1")))
+			{
+				if (option.equals("withdraw-5") || option.equals("deposit-5"))
+				{
+					remove(entries.length - 3);
+				}
+				else if (option.equals("withdraw-10") || option.equals("deposit-10"))
+				{
+					remove(entries.length - 4);
+				}
+				else if (option.equals("withdraw-all") || option.equals("deposit-all"))
+				{
+					// check if there is an X option set
+					MenuEntry testMenuEntry = entries[entries.length - 6];
+					String testOption = Text.removeTags(testMenuEntry.getOption()).toLowerCase();
+					if (testOption.equals("withdraw-all") || testOption.equals("deposit-all"))
+					{
+						remove(entries.length - 6);
+					}
+					else
+					{
+						remove(entries.length - 7);
+					}
+				}
+				else // X option
+				{
+					remove(entries.length - 5);
+				}
+			}
+		}
 	}
 
 	@Subscribe
@@ -635,6 +679,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 			client.setMenuEntries(entries);
 		}
+	}
+
+	private void remove(int index)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+
+		entries = ArrayUtils.remove(entries, index);
+
+		client.setMenuEntries(entries);
 	}
 
 	private void removeShiftClickCustomizationMenus()
