@@ -34,6 +34,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.flexo.Flexo;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
@@ -166,86 +167,48 @@ public class AutoSwitcherPlugin extends Plugin {
         configManager.setConfiguration(InventoryTagsConfig.GROUP, ITEM_KEY_PREFIX + itemId, tag);
     }
 
-    public void executeScript(int key) {
+    public void executeScript(int preset) {
+        MouseUtil mu = new MouseUtil(client, this);
+        Point p = MouseInfo.getPointerInfo().getLocation();
         try {
-            MouseUtil mu = new MouseUtil(client, this);
+            Flexo flexo = new Flexo();
+            List switches = getSwitchesFromPreset(preset);
+            Thread thread = new Thread() {
+                public void run() {
+                    for (Object as : switches.toArray()) {
+                        AutoSwitch news = (AutoSwitch) as;
+                        if (news.isItemSwitch) {
+                            mu.doClick(news.itemID);
+                        }
+                        if (news.isTabSwitch) {
+                            System.out.print("Tab Switch: ");
+                            System.out.println(" ID: " + news.tabName);
+                        }
+                    }
+                    flexo.mouseMove((int)p.getX(), (int)p.getY());
+                }
+            };
+
+            thread.start();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void initScript(int key) {
+        try {
             if (key == KeyEvent.VK_1) {
-                List switches = getSwitchesFromPreset(1);
-                Thread thread = new Thread() {
-                    public void run() {
-                        for (Object as : switches.toArray()) {
-                            AutoSwitch news = (AutoSwitch) as;
-                            if (news.isItemSwitch) {
-                                mu.doClick(news.itemID);
-                            }
-                            if (news.isTabSwitch) {
-                                System.out.print("Tab Switch: ");
-                                System.out.println(" ID: " + news.tabName);
-                            }
-                        }
-                    }
-                };
-
-                thread.start();
+                executeScript(1);
             }
-            if (key == KeyEvent.VK_2) {
-                List switches = getSwitchesFromPreset(2);
-                Thread thread = new Thread() {
-                    public void run() {
-                        for (Object as : switches.toArray()) {
-                            AutoSwitch news = (AutoSwitch) as;
-                            if (news.isItemSwitch) {
-                                mu.doClick(news.itemID);
-                            }
-                            if (news.isTabSwitch) {
-                                System.out.print("Tab Switch: ");
-                                System.out.println(" ID: " + news.tabName);
-                            }
-                        }
-                    }
-                };
-
-                thread.start();
+            else if (key == KeyEvent.VK_2) {
+                executeScript(2);
             }
-            if (key == KeyEvent.VK_3) {
-                List switches = getSwitchesFromPreset(3);
-                Thread thread = new Thread() {
-                    public void run() {
-                        for (Object as : switches.toArray()) {
-                            AutoSwitch news = (AutoSwitch) as;
-                            if (news.isItemSwitch) {
-                                mu.doClick(news.itemID);
-                            }
-                            if (news.isTabSwitch) {
-                                System.out.print("Tab Switch: ");
-                                System.out.println(" ID: " + news.tabName);
-                            }
-                        }
-                    }
-                };
-                thread.start();
+            else if (key == KeyEvent.VK_3) {
+                executeScript(3);
             }
-            if (key == KeyEvent.VK_4) {
-                List switches = getSwitchesFromPreset(4);
-                Thread thread = new Thread() {
-                    public void run() {
-                        try {
-                            for (Object as : switches.toArray()) {
-                                AutoSwitch news = (AutoSwitch) as;
-                                if (news.isItemSwitch) {
-                                    mu.doClick(news.itemID);
-                                }
-                                if (news.isTabSwitch) {
-                                    System.out.print("Tab Switch: ");
-                                    System.out.println(" ID: " + news.tabName);
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-                thread.start();
+            else if (key == KeyEvent.VK_4) {
+                executeScript(4);
             }
         } catch (Exception e) {
             e.printStackTrace();

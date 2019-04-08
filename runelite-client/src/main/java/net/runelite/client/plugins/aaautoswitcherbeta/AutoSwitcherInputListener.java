@@ -66,22 +66,22 @@ public class AutoSwitcherInputListener extends MouseAdapter implements KeyListen
         }
         if (e.getKeyCode() == HOTKEY_1) {
             if (plugin.isCoreKeyPressed()) {
-                plugin.executeScript(e.getKeyCode());
+                plugin.initScript(e.getKeyCode());
             }
         }
         if (e.getKeyCode() == HOTKEY_2) {
             if (plugin.isCoreKeyPressed()) {
-                plugin.executeScript(e.getKeyCode());
+                plugin.initScript(e.getKeyCode());
             }
         }
         if (e.getKeyCode() == HOTKEY_3) {
             if (plugin.isCoreKeyPressed()) {
-                plugin.executeScript(e.getKeyCode());
+                plugin.initScript(e.getKeyCode());
             }
         }
         if (e.getKeyCode() == HOTKEY_4) {
             if (plugin.isCoreKeyPressed()) {
-                plugin.executeScript(e.getKeyCode());
+                plugin.initScript(e.getKeyCode());
             }
         }
     }
