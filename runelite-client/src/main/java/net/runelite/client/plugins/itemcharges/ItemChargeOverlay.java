@@ -84,6 +84,15 @@ class ItemChargeOverlay extends Overlay
 
 				charges = config.dodgyNecklace();
 			}
+			else if (item.getId() == ItemID.BINDING_NECKLACE)
+			{
+				if (!config.showBindingNecklaceCharges())
+				{
+					continue;
+				}
+
+				charges = config.bindingNecklace();
+			}
 			else
 			{
 				ItemWithCharge chargeItem = ItemWithCharge.findItem(item.getId());
