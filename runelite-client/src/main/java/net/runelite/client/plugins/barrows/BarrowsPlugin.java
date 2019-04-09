@@ -26,7 +26,10 @@ package net.runelite.client.plugins.barrows;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -41,6 +44,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.WallObject;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -61,6 +65,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.StackFormatter;
 
@@ -89,11 +94,17 @@ public class BarrowsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> ladders = new HashSet<>();
 
+	@Getter
+	private List<WorldPoint> spotPoints = new ArrayList<>();
+
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
 	private BarrowsOverlay barrowsOverlay;
+
+	@Inject
+	private CryptOverlay cryptOverlay;
 
 	@Inject
 	private BarrowsBrotherSlainOverlay brotherOverlay;
@@ -121,6 +132,7 @@ public class BarrowsPlugin extends Plugin
 	{
 		overlayManager.add(barrowsOverlay);
 		overlayManager.add(brotherOverlay);
+		overlayManager.add(cryptOverlay);
 	}
 
 	@Override
@@ -128,6 +140,7 @@ public class BarrowsPlugin extends Plugin
 	{
 		overlayManager.remove(barrowsOverlay);
 		overlayManager.remove(brotherOverlay);
+		overlayManager.remove(cryptOverlay);
 		walls.clear();
 		ladders.clear();
 
@@ -242,6 +255,28 @@ public class BarrowsPlugin extends Plugin
 				.type(ChatMessageType.ITEM_EXAMINE)
 				.runeLiteFormattedMessage(message.build())
 				.build());
+		}
+	}
+	@Schedule(
+			period = 1,
+			unit = ChronoUnit.SECONDS
+	)
+	public void checkSpots()
+	{
+		if (!config.showDigTiles())
+		{
+			return;
+		}
+
+		spotPoints.clear();
+		for (WorldPoint spot : CryptLocations.getCryptLocations())
+		{
+			if (spot.getPlane() != client.getPlane() || !spot.isInScene(client))
+			{
+				continue;
+			}
+
+			spotPoints.add(spot);
 		}
 	}
 }
