@@ -200,6 +200,7 @@ public class WorldHopperPlugin extends Plugin
 			clientToolbar.addNavigation(navButton);
 		}
 
+		panel.setFilterMode(config.subscriptionFilter());
 		worldResultFuture = executorService.scheduleAtFixedRate(this::tick, 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
 
 		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
@@ -252,6 +253,10 @@ public class WorldHopperPlugin extends Plugin
 					{
 						SwingUtilities.invokeLater(() -> panel.hidePing());
 					}
+					break;
+				case "subscriptionFilter":
+					panel.setFilterMode(config.subscriptionFilter());
+					updateList();
 					break;
 			}
 		}
