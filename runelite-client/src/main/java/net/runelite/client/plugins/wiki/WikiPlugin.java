@@ -122,12 +122,14 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
+		spriteManager.addSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(this::addWidgets);
 	}
 
 	@Override
 	public void shutDown()
 	{
+		spriteManager.removeSpriteOverrides(WikiSprite.values());
 		clientThread.invokeLater(this::removeWidgets);
 	}
 
@@ -142,7 +144,6 @@ public class WikiPlugin extends Plugin
 
 	private void addWidgets()
 	{
-		spriteManager.addSpriteOverrides(WikiSprite.values());
 		Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
 		if (minimapOrbs == null || !config.orbEnable())
 		{
@@ -183,7 +184,6 @@ public class WikiPlugin extends Plugin
 
 	private void removeWidgets()
 	{
-		spriteManager.removeSpriteOverrides(WikiSprite.values());
 		Widget minimapOrbs = client.getWidget(WidgetInfo.MINIMAP_ORBS);
 		if (minimapOrbs == null)
 		{
