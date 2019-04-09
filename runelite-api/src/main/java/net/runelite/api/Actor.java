@@ -246,4 +246,7 @@ public interface Actor extends Renderable
 	 * @param overheadText the overhead text
 	 */
 	void setOverheadText(String overheadText);
+
+	int getActionFrame();
+	int getActionFrameCycle();
 }
