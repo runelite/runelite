@@ -27,7 +27,6 @@ package net.runelite.client.plugins.raids;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.text.DecimalFormat;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -42,13 +41,14 @@ import net.runelite.api.InstanceTemplates;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
-import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -63,8 +63,12 @@ import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.WidgetOverlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Chambers Of Xeric",
@@ -75,13 +79,12 @@ import net.runelite.client.util.Text;
 public class RaidsPlugin extends Plugin
 {
 	private static final int LOBBY_PLANE = 3;
-	private static final String RAID_START_MESSAGE = "The raid has begun!";
-	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
-	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
+	private static final Pattern LEVEL_COMPLETE_REGEX = Pattern.compile("(.+) level complete! Duration: ([0-9:]+)");
+	private static final Pattern RAID_COMPLETE_REGEX = Pattern.compile("Congratulations - your raid is complete! Duration: ([0-9:]+)");
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -110,6 +113,9 @@ public class RaidsPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private TooltipManager tooltipManager;
+
 	@Getter
 	private final ArrayList<String> roomWhitelist = new ArrayList<>();
 
@@ -128,7 +134,12 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private boolean inRaidChambers;
 
-	private RaidsTimer timer;
+	private int upperTime = -1;
+	private int middleTime = -1;
+	private int lowerTime = -1;
+	private int raidTime = -1;
+	private WidgetOverlay widgetOverlay;
+	private String tooltip;
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -148,16 +159,17 @@ public class RaidsPlugin extends Plugin
 		overlayManager.add(overlay);
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
+		widgetOverlay = overlayManager.getWidgetOverlay(WidgetInfo.RAIDS_POINTS_INFOBOX);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
+		widgetOverlay = null;
 		raid = null;
-		timer = null;
+		reset();
 	}
 
 	@Subscribe
@@ -165,12 +177,6 @@ public class RaidsPlugin extends Plugin
 	{
 		if (!event.getGroup().equals("raids"))
 		{
-			return;
-		}
-
-		if (event.getKey().equals("raidsTimer"))
-		{
-			updateInfoBoxState();
 			return;
 		}
 
@@ -190,25 +196,33 @@ public class RaidsPlugin extends Plugin
 		if (inRaidChambers && event.getType() == ChatMessageType.FRIENDSCHATNOTIFICATION)
 		{
 			String message = Text.removeTags(event.getMessage());
+			Matcher matcher;
 
-			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
+			matcher = LEVEL_COMPLETE_REGEX.matcher(message);
+			if (matcher.find())
 			{
-				timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
-				infoBoxManager.addInfoBox(timer);
-			}
-
-			if (timer != null && message.contains(LEVEL_COMPLETE_MESSAGE))
-			{
-				timer.timeFloor();
-			}
-
-			if (message.startsWith(RAID_COMPLETE_MESSAGE))
-			{
-				if (timer != null)
+				String floor = matcher.group(1);
+				int time = timeToSeconds(matcher.group(2));
+				if (floor.equals("Upper"))
 				{
-					timer.timeOlm();
-					timer.setStopped(true);
+					upperTime = time;
 				}
+				else if (floor.equals("Middle"))
+				{
+					middleTime = time;
+				}
+				else if (floor.equals("Lower"))
+				{
+					lowerTime = time;
+				}
+				updateTooltip();
+			}
+
+			matcher = RAID_COMPLETE_REGEX.matcher(message);
+			if (matcher.find())
+			{
+				raidTime = timeToSeconds(matcher.group(1));
+				updateTooltip();
 
 				if (config.pointsMessage())
 				{
@@ -243,6 +257,23 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onClientTick(ClientTick event)
+	{
+		if (!config.raidsTimer()
+				|| !client.getGameState().equals(GameState.LOGGED_IN)
+				|| tooltip == null)
+		{
+			return;
+		}
+
+		final Point mousePosition = client.getMouseCanvasPosition();
+		if (widgetOverlay.getBounds().contains(mousePosition.getX(), mousePosition.getY()))
+		{
+			tooltipManager.add(new Tooltip(tooltip));
+		}
+	}
+
 	private void checkRaidPresence(boolean force)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
@@ -255,7 +286,6 @@ public class RaidsPlugin extends Plugin
 		if (force || inRaidChambers != setting)
 		{
 			inRaidChambers = setting;
-			updateInfoBoxState();
 
 			if (inRaidChambers)
 			{
@@ -280,9 +310,14 @@ public class RaidsPlugin extends Plugin
 				overlay.setScoutOverlayShown(true);
 				sendRaidLayoutMessage();
 			}
-			else if (!config.scoutOverlayAtBank())
+			else
 			{
-				overlay.setScoutOverlayShown(false);
+				if (!config.scoutOverlayAtBank())
+				{
+					overlay.setScoutOverlayShown(false);
+				}
+
+				reset();
 			}
 		}
 
@@ -313,31 +348,6 @@ public class RaidsPlugin extends Plugin
 				.append(raidData)
 				.build())
 			.build());
-	}
-
-	private void updateInfoBoxState()
-	{
-		if (timer == null)
-		{
-			return;
-		}
-
-		if (inRaidChambers && config.raidsTimer())
-		{
-			if (!infoBoxManager.getInfoBoxes().contains(timer))
-			{
-				infoBoxManager.addInfoBox(timer);
-			}
-		}
-		else
-		{
-			infoBoxManager.removeInfoBox(timer);
-		}
-
-		if (!inRaidChambers)
-		{
-			timer = null;
-		}
 	}
 
 	private void updateLists()
@@ -601,5 +611,95 @@ public class RaidsPlugin extends Plugin
 		}
 
 		return room;
+	}
+
+	public void reset()
+	{
+		raid = null;
+		upperTime = -1;
+		middleTime = -1;
+		lowerTime = -1;
+		raidTime = -1;
+		tooltip = null;
+	}
+
+	private int timeToSeconds(String s)
+	{
+		int seconds = -1;
+		String[] split = s.split(":");
+		if (split.length == 2)
+		{
+			seconds = Integer.parseInt(split[0]) * 60 + Integer.parseInt(split[1]);
+		}
+		if (split.length == 3)
+		{
+			seconds = Integer.parseInt(split[0]) * 3600 + Integer.parseInt(split[1]) * 60 + Integer.parseInt(split[2]);
+		}
+		return seconds;
+	}
+
+	private String secondsToTime(int seconds)
+	{
+		StringBuilder builder = new StringBuilder();
+		if (seconds >= 3600)
+		{
+			builder.append((int)Math.floor(seconds / 3600) + ";");
+		}
+		seconds %= 3600;
+		if (builder.toString().equals(""))
+		{
+			builder.append((int)Math.floor(seconds / 60));
+		}
+		else
+		{
+			builder.append(StringUtils.leftPad(String.valueOf((int)Math.floor(seconds / 60)), 2, '0'));
+		}
+		builder.append(":");
+		seconds %= 60;
+		builder.append(StringUtils.leftPad(String.valueOf(seconds), 2, '0'));
+		return builder.toString();
+	}
+
+	private void updateTooltip()
+	{
+		StringBuilder builder = new StringBuilder();
+		if (upperTime == -1)
+		{
+			tooltip = null;
+			return;
+		}
+		builder.append("Upper level: " + secondsToTime(upperTime));
+		if (middleTime == -1)
+		{
+			if (lowerTime == -1)
+			{
+				tooltip = builder.toString();
+				return;
+			}
+			else
+			{
+				builder.append("</br>Lower level: " + secondsToTime(lowerTime - upperTime));
+			}
+		}
+		else
+		{
+			builder.append("</br>Middle level: " + secondsToTime(middleTime - upperTime));
+			if (lowerTime == -1)
+			{
+				tooltip = builder.toString();
+				return;
+			}
+			else
+			{
+				builder.append("</br>Lower level: " + secondsToTime(lowerTime - middleTime));
+			}
+		}
+		if (raidTime == -1)
+		{
+			tooltip = builder.toString();
+			return;
+		}
+		builder.append("</br>Olm: " + secondsToTime(raidTime - lowerTime));
+		tooltip = builder.toString();
 	}
 }

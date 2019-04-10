@@ -34,8 +34,8 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 		position = 0,
 		keyName = "raidsTimer",
-		name = "Display elapsed raid time",
-		description = "Display elapsed raid time"
+		name = "Level time tooltip",
+		description = "Displays your level times as a tooltip on the points overlay"
 	)
 	default boolean raidsTimer()
 	{
