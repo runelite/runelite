@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2019, Bartvollebregt <https://github.com/Bartvollebregt>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.boosts;
+package net.runelite.client.plugins.maxhit.requirements;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import net.runelite.api.Client;
+import net.runelite.api.Varbits;
+import net.runelite.client.plugins.maxhit.config.SpellBaseDamageConfig;
 
-public class StatChangeIndicator extends InfoBox
+import java.util.ArrayList;
+
+public class AutocastSpellRequirement implements Requirement
 {
-	private final boolean up;
-	private final BoostsPlugin plugin;
-	private final BoostsConfig config;
 
-	StatChangeIndicator(boolean up, BufferedImage image, BoostsPlugin plugin, BoostsConfig config)
+	private final ArrayList<SpellBaseDamageConfig> autocastSpells;
+
+	public AutocastSpellRequirement(ArrayList<SpellBaseDamageConfig> autocastSpells)
 	{
-		super(image, plugin);
-		this.up = up;
-		this.plugin = plugin;
-		this.config = config;
-		setPriority(InfoBoxPriority.MED);
-		setTooltip(up ? "Next debuff change" : "Next buff change");
+		this.autocastSpells = autocastSpells;
 	}
 
 	@Override
-	public String getText()
+	public boolean meetsRequirements(Client client)
 	{
-		return String.format("%02d", plugin.getChangeTime(up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()));
-	}
+		int autoCastSpellId = client.getVar(Varbits.AUTO_CAST_SPELL);
 
-	@Override
-	public Color getTextColor()
-	{
-		return (up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()) < 10 ? Color.RED.brighter() : Color.WHITE;
-	}
+		if (autoCastSpellId == 0)
+		{
 
-	@Override
-	public boolean render()
-	{
-		final int time = up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks();
-		return config.displayInfoboxes() && time != -1;
+			return false;
+
+		}
+
+		return this.autocastSpells.stream().anyMatch(spell -> spell.getSpellID() == autoCastSpellId);
+
 	}
 }

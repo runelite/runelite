@@ -59,7 +59,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2848, 3296, 0), "North of Crandor island.")
 		.put(new WorldPoint(2583, 2990, 0), "Feldip Hills, south-east of Gu'Thanoth (AKS).")
 		.put(new WorldPoint(3179, 3344, 0), "South of the Champions' Guild, opposite side of the River Lum.")
-		.put(new WorldPoint(2383, 3370, 0), "South-west of Tree Gnome Stronghold.")
+		.put(new WorldPoint(2383, 3370, 0), "West of the outpost")
 		.put(new WorldPoint(3312, 3375, 0), "North-west of Exam Centre, on the hill.")
 		.put(new WorldPoint(3121, 3384, 0), "North-east of Draynor Manor, near River Lum.")
 		.put(new WorldPoint(3430, 3388, 0), "West of Mort Myre Swamp.")

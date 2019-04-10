@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2019, Bartvollebregt <https://github.com/Bartvollebregt>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.boosts;
+package net.runelite.client.plugins.maxhit.attackstyle;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
-
-public class StatChangeIndicator extends InfoBox
+public enum AttackStyle
 {
-	private final boolean up;
-	private final BoostsPlugin plugin;
-	private final BoostsConfig config;
+	ACCURATE(0),
+	AGGRESSIVE(3),
+	DEFENSIVE(0),
+	CONTROLLED(1),
+	ACCURATERANGING(3),
+	RANGING(0),
+	LONGRANGE(0),
+	CASTING(0),
+	DEFENSIVE_CASTING(0),
+	OTHER(0);
 
-	StatChangeIndicator(boolean up, BufferedImage image, BoostsPlugin plugin, BoostsConfig config)
+	private final int maxHitBonus;
+
+	AttackStyle(int maxHitBonus)
 	{
-		super(image, plugin);
-		this.up = up;
-		this.plugin = plugin;
-		this.config = config;
-		setPriority(InfoBoxPriority.MED);
-		setTooltip(up ? "Next debuff change" : "Next buff change");
+		this.maxHitBonus = maxHitBonus;
 	}
 
-	@Override
-	public String getText()
+	public double getMaxHitBonus()
 	{
-		return String.format("%02d", plugin.getChangeTime(up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()));
-	}
-
-	@Override
-	public Color getTextColor()
-	{
-		return (up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()) < 10 ? Color.RED.brighter() : Color.WHITE;
-	}
-
-	@Override
-	public boolean render()
-	{
-		final int time = up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks();
-		return config.displayInfoboxes() && time != -1;
+		return this.maxHitBonus;
 	}
 }

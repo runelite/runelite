@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2019, Bartvollebregt <https://github.com/Bartvollebregt>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.boosts;
+package net.runelite.client.plugins.maxhit.equipment;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.Item;
 
-public class StatChangeIndicator extends InfoBox
+public class EquipmentHelper
 {
-	private final boolean up;
-	private final BoostsPlugin plugin;
-	private final BoostsConfig config;
 
-	StatChangeIndicator(boolean up, BufferedImage image, BoostsPlugin plugin, BoostsConfig config)
+	public static boolean wearsItemSet(Item[] equipedItems, EquipmentItemset itemSet)
 	{
-		super(image, plugin);
-		this.up = up;
-		this.plugin = plugin;
-		this.config = config;
-		setPriority(InfoBoxPriority.MED);
-		setTooltip(up ? "Next debuff change" : "Next buff change");
+		return itemSet.getItems().stream().allMatch(item -> wearsItem(equipedItems, item));
 	}
 
-	@Override
-	public String getText()
+	private static boolean wearsItem(Item[] equipedItems, EquipmentInventorySlot slot, int itemId)
 	{
-		return String.format("%02d", plugin.getChangeTime(up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()));
+		return equipedItems[slot.getSlotIdx()].getId() == itemId;
 	}
 
-	@Override
-	public Color getTextColor()
+	public static boolean wearsItem(Item[] equipedItems, EquipmentSlotItem equipmentSlotItem)
 	{
-		return (up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()) < 10 ? Color.RED.brighter() : Color.WHITE;
+		return equipmentSlotItem.getItems().stream().anyMatch(itemId ->
+			wearsItem(equipedItems, equipmentSlotItem.getEquipmentSlot(), itemId)
+		);
 	}
 
-	@Override
-	public boolean render()
-	{
-		final int time = up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks();
-		return config.displayInfoboxes() && time != -1;
-	}
 }

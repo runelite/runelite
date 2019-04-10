@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2019, Bartvollebregt <https://github.com/Bartvollebregt>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.boosts;
+package net.runelite.client.plugins.maxhit.equipment;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import net.runelite.api.EquipmentInventorySlot;
 
-public class StatChangeIndicator extends InfoBox
+import java.util.ArrayList;
+
+public class EquipmentSlotItem
 {
-	private final boolean up;
-	private final BoostsPlugin plugin;
-	private final BoostsConfig config;
+	private final EquipmentInventorySlot equipmentSlot;
+	private final ArrayList<Integer> itemIds;
 
-	StatChangeIndicator(boolean up, BufferedImage image, BoostsPlugin plugin, BoostsConfig config)
+	public EquipmentSlotItem(EquipmentInventorySlot equipmentSlot, ArrayList<Integer> itemIds)
 	{
-		super(image, plugin);
-		this.up = up;
-		this.plugin = plugin;
-		this.config = config;
-		setPriority(InfoBoxPriority.MED);
-		setTooltip(up ? "Next debuff change" : "Next buff change");
+		this.equipmentSlot = equipmentSlot;
+		this.itemIds = itemIds;
 	}
 
-	@Override
-	public String getText()
+	public ArrayList<Integer> getItems()
 	{
-		return String.format("%02d", plugin.getChangeTime(up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()));
+		return this.itemIds;
 	}
 
-	@Override
-	public Color getTextColor()
+	public EquipmentInventorySlot getEquipmentSlot()
 	{
-		return (up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()) < 10 ? Color.RED.brighter() : Color.WHITE;
-	}
-
-	@Override
-	public boolean render()
-	{
-		final int time = up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks();
-		return config.displayInfoboxes() && time != -1;
+		return this.equipmentSlot;
 	}
 }

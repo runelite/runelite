@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2019, Bartvollebregt <https://github.com/Bartvollebregt>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.boosts;
+package net.runelite.client.plugins.maxhit.calculators;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import net.runelite.api.Client;
+import net.runelite.api.Item;
+import net.runelite.api.Skill;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 
-public class StatChangeIndicator extends InfoBox
+public class RangeMaxHitCalculator extends MeleeMaxHitCalculator
 {
-	private final boolean up;
-	private final BoostsPlugin plugin;
-	private final BoostsConfig config;
 
-	StatChangeIndicator(boolean up, BufferedImage image, BoostsPlugin plugin, BoostsConfig config)
+	public RangeMaxHitCalculator(Client client, Item[] equipedItems)
 	{
-		super(image, plugin);
-		this.up = up;
-		this.plugin = plugin;
-		this.config = config;
-		setPriority(InfoBoxPriority.MED);
-		setTooltip(up ? "Next debuff change" : "Next buff change");
+		super(client, CombatMethod.RANGE, equipedItems);
 	}
 
 	@Override
-	public String getText()
+	protected String getSkillStrengthText(String equipmentText)
 	{
-		return String.format("%02d", plugin.getChangeTime(up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()));
+		return equipmentText.replace("Ranged strength: ", "").replace(".", "").replace("%", "");
 	}
 
 	@Override
-	public Color getTextColor()
+	public Widget equipmentSkillPower()
 	{
-		return (up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()) < 10 ? Color.RED.brighter() : Color.WHITE;
+		return this.client.getWidget(WidgetInfo.EQUIPMENT_RANGED_STRENGTH);
 	}
 
 	@Override
-	public boolean render()
+	public double getCurrentSkillPower()
 	{
-		final int time = up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks();
-		return config.displayInfoboxes() && time != -1;
+		return this.client.getBoostedSkillLevel(Skill.RANGED);
 	}
+
 }

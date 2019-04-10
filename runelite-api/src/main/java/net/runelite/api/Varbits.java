@@ -470,6 +470,11 @@ public enum Varbits
 	BANK_TAB_EIGHT_COUNT(4178),
 	BANK_TAB_NINE_COUNT(4179),
 
+	/*
+	* Spells being auto-casted
+	* */
+	AUTO_CAST_SPELL(276),
+
 	/**
 	 * Type of GE offer currently being created
 	 * 0 = buy
