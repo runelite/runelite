@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,27 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.itemcharges;
+package net.runelite.rs.api;
 
-import com.google.common.collect.Sets;
-import java.util.Set;
-import lombok.Getter;
-import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.mapping.Import;
 
-@Getter
-enum ItemWithSlot
+public interface RSHealthBar
 {
-	ABYSSAL_BRACELET(ItemChargeType.ABYSSAL_BRACELET, EquipmentInventorySlot.GLOVES),
-	DODGY_NECKLACE(ItemChargeType.DODGY_NECKLACE, EquipmentInventorySlot.AMULET),
-	BINDING_NECKLACE(ItemChargeType.BINDING_NECKLACE, EquipmentInventorySlot.AMULET),
-	TELEPORT(ItemChargeType.TELEPORT, EquipmentInventorySlot.WEAPON, EquipmentInventorySlot.AMULET, EquipmentInventorySlot.GLOVES, EquipmentInventorySlot.RING);
-
-	private final ItemChargeType type;
-	private final Set<EquipmentInventorySlot> slots;
-
-	ItemWithSlot(final ItemChargeType type, final EquipmentInventorySlot... slots)
-	{
-		this.type = type;
-		this.slots = Sets.newHashSet(slots);
-	}
+	@Import("healthScale")
+	int getHealthScale();
 }

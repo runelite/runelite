@@ -52,7 +52,7 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSActor;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSCombatInfo1;
-import net.runelite.rs.api.RSCombatInfo2;
+import net.runelite.rs.api.RSHealthBar;
 import net.runelite.rs.api.RSCombatInfoList;
 import net.runelite.rs.api.RSCombatInfoListHolder;
 import net.runelite.rs.api.RSNPC;
@@ -123,7 +123,7 @@ public abstract class RSActorMixin implements RSActor
 			if (next instanceof RSCombatInfoListHolder)
 			{
 				RSCombatInfoListHolder combatInfoListWrapper = (RSCombatInfoListHolder) next;
-				RSCombatInfo2 cf = combatInfoListWrapper.getCombatInfo2();
+				RSHealthBar cf = combatInfoListWrapper.getHealthBar();
 				return cf.getHealthScale();
 			}
 		}
