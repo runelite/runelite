@@ -25,31 +25,21 @@
 package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 import net.runelite.api.Point;
 
 /**
  * An item that is being represented in a {@link Widget}.
  */
+@AllArgsConstructor
+@ToString
 public class WidgetItem
 {
 	private final int id;
 	private final int quantity;
 	private final int index;
 	private final Rectangle canvasBounds;
-
-	public WidgetItem(int id, int quantity, int index, Rectangle canvasBounds)
-	{
-		this.id = id;
-		this.quantity = quantity;
-		this.index = index;
-		this.canvasBounds = canvasBounds;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "WidgetItem{" + "id=" + id + ", quantity=" + quantity + ", index=" + index + ", canvasBounds=" + canvasBounds + '}';
-	}
 
 	/**
 	 * Gets the ID of the item represented.
