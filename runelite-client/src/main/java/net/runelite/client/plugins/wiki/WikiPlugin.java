@@ -78,9 +78,9 @@ public class WikiPlugin extends Plugin
 	static final String UTM_SORUCE_KEY = "utm_source";
 	static final String UTM_SORUCE_VALUE = "runelite";
 
-	private static final String MENUOP_GUIDE = "Guide";
-	private static final String MENUOP_QUICKGUIDE = "Quick Guide";
-	private static final String MENUOP_WIKI = "Wiki";
+	private static final String MENUOP_GUIDE = "Lookup Wiki Guide";
+	private static final String MENUOP_QUICKGUIDE = "Lookup Wiki Quick Guide";
+	private static final String MENUOP_WIKI = "Lookup Wiki";
 
 	private static final Pattern SKILL_REGEX = Pattern.compile("([A-Za-z]+) guide");
 	private static final Pattern DIARY_REGEX = Pattern.compile("([A-Za-z &]+) Journal");
@@ -293,6 +293,14 @@ public class WikiPlugin extends Plugin
 					LinkBrowser.browse(ub.build().toString());
 					break;
 				case MENUOP_WIKI:
+					ev.consume();
+					String wiki = Text.removeTags(ev.getMenuTarget());
+					LinkBrowser.browse(WIKI_BASE.newBuilder()
+							.addPathSegment("w")
+							.addPathSegment(wiki)
+							.addQueryParameter(UTM_SORUCE_KEY, UTM_SORUCE_VALUE)
+							.build().toString());
+
 					Matcher skillRegex = WikiPlugin.SKILL_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
 					Matcher diaryRegex = WikiPlugin.DIARY_REGEX.matcher(Text.removeTags(ev.getMenuTarget()));
 
@@ -343,6 +351,27 @@ public class WikiPlugin extends Plugin
 			menuEntry = menuEntries[menuEntries.length - 2] = new MenuEntry();
 			menuEntry.setTarget(event.getTarget());
 			menuEntry.setOption(MENUOP_QUICKGUIDE);
+			menuEntry.setParam0(widgetIndex);
+			menuEntry.setParam1(widgetID);
+			menuEntry.setType(MenuAction.RUNELITE.getId());
+
+			client.setMenuEntries(menuEntries);
+		}
+
+		if (WidgetInfo.TO_GROUP(widgetID) == WidgetID.EQUIPMENT_GROUP_ID && "Remove".equals(event.getOption())
+			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.BANK_GROUP_ID && "Withdraw-1".equals(event.getOption())
+			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.BANK_INVENTORY_GROUP_ID && "Deposit-1".equals(event.getOption())
+			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.PRAYER_GROUP_ID && "Activate".equals(event.getOption())
+			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.QUICK_PRAYERS_GROUP_ID && "Activate".equals(event.getOption())
+			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.QUICK_PRAYERS_GROUP_ID && "Deactivate".equals(event.getOption())
+			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.SHOP_GROUP_ID && "Value".equals(event.getOption())
+			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.SHOP_INVENTORY_GROUP_ID && "Value".equals(event.getOption())
+			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.SPELLBOOK_GROUP_ID && "Cast".equals(event.getOption()))
+		{
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			menuEntry.setTarget(event.getTarget());
+			menuEntry.setOption(MENUOP_WIKI);
 			menuEntry.setParam0(widgetIndex);
 			menuEntry.setParam1(widgetID);
 			menuEntry.setType(MenuAction.RUNELITE.getId());
