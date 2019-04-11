@@ -52,6 +52,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
@@ -223,10 +224,12 @@ public class ClientUI
 			if (inTitle)
 			{
 				titleToolbar.addComponent(event.getButton(), button);
+				titleToolbar.revalidate();
 			}
 			else
 			{
 				pluginToolbar.addComponent(event.getButton(), button);
+				pluginToolbar.revalidate();
 			}
 		});
 	}
@@ -237,7 +240,9 @@ public class ClientUI
 		SwingUtilities.invokeLater(() ->
 		{
 			pluginToolbar.removeComponent(event.getButton());
+			pluginToolbar.revalidate();
 			titleToolbar.removeComponent(event.getButton());
+			titleToolbar.revalidate();
 			final PluginPanel pluginPanel = event.getButton().getPanel();
 
 			if (pluginPanel != null)
@@ -510,8 +515,14 @@ public class ClientUI
 		});
 
 		// Show out of date dialog if needed
-		final boolean isOutdated = !(client instanceof Client);
-		if (isOutdated)
+		if (client == null)
+		{
+			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
+				"Error loading client! Check your logs for more details.",
+				"Unable to load client",
+				ERROR_MESSAGE));
+		}
+		else if (!(client instanceof Client))
 		{
 			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
 				"RuneLite has not yet been updated to work with the latest\n"

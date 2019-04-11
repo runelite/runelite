@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Trevor <https://github.com/15987632>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.client.plugins.specialcounter;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.boot.SpringApplication;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
+import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 
-public class SpringBootWebApplicationTest
+@Value
+@EqualsAndHashCode(callSuper = true)
+public class SpecialCounterUpdate extends PartyMemberMessage
 {
-	@Test
-	@Ignore
-	public void run() throws InterruptedException
-	{
-		System.setProperty("spring.profiles.active", "dev");
-		SpringApplication.run(SpringBootWebApplication.class);
-
-		for (;;)
-		{
-			Thread.sleep(100L);
-		}
-	}
+	private final int npcId;
+	private final SpecialWeapon weapon;
+	private final int hit;
 }

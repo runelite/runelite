@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.rs;
 
-import net.runelite.mapping.Import;
-
-public interface RSCombatInfo2
+class VerificationException extends Exception
 {
-	@Import("healthScale")
-	int getHealthScale();
+	public VerificationException(String message)
+	{
+		super(message);
+	}
+
+	public VerificationException(String message, Throwable cause)
+	{
+		super(message, cause);
+	}
 }

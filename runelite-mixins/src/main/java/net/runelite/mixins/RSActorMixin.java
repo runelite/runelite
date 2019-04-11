@@ -52,10 +52,9 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSActor;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSCombatInfo1;
-import net.runelite.rs.api.RSCombatInfo2;
+import net.runelite.rs.api.RSHealthBar;
 import net.runelite.rs.api.RSCombatInfoList;
 import net.runelite.rs.api.RSCombatInfoListHolder;
-import net.runelite.rs.api.RSModel;
 import net.runelite.rs.api.RSNPC;
 import net.runelite.rs.api.RSNode;
 
@@ -124,7 +123,7 @@ public abstract class RSActorMixin implements RSActor
 			if (next instanceof RSCombatInfoListHolder)
 			{
 				RSCombatInfoListHolder combatInfoListWrapper = (RSCombatInfoListHolder) next;
-				RSCombatInfo2 cf = combatInfoListWrapper.getCombatInfo2();
+				RSHealthBar cf = combatInfoListWrapper.getHealthBar();
 				return cf.getHealthScale();
 			}
 		}
@@ -219,18 +218,6 @@ public abstract class RSActorMixin implements RSActor
 			OverheadTextChanged overheadTextChanged = new OverheadTextChanged(this, overheadText);
 			client.getCallbacks().post(overheadTextChanged);
 		}
-	}
-
-	@Inject
-	@Override
-	public Polygon getConvexHull()
-	{
-		RSModel model = getModel();
-		if (model == null)
-		{
-			return null;
-		}
-		return model.getConvexHull(getX(), getY(), getOrientation());
 	}
 
 	@Inject
