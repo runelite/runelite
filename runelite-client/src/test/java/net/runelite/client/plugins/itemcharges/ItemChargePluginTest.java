@@ -88,22 +88,22 @@ public class ItemChargePluginTest
 	@Test
 	public void testOnChatMessage()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SERVER, "", CHECK, "", 0);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(config).dodgyNecklace(eq(10));
 		reset(config);
 
-		chatMessage = new ChatMessage(null, ChatMessageType.SERVER, "", PROTECT, "", 0);
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", PROTECT, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(config).dodgyNecklace(eq(9));
 		reset(config);
 
-		chatMessage = new ChatMessage(null, ChatMessageType.SERVER, "", PROTECT_1, "", 0);
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", PROTECT_1, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(config).dodgyNecklace(eq(1));
 		reset(config);
 
-		chatMessage = new ChatMessage(null, ChatMessageType.SERVER, "", BREAK, "", 0);
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(config).dodgyNecklace(eq(10));
 		reset(config);

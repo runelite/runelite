@@ -142,9 +142,12 @@ public class BarbarianAssaultPlugin extends Plugin {
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event) {
-		if (event.getType() == ChatMessageType.SERVER
-				&& event.getMessage().startsWith("---- Wave:")) {
+
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() == ChatMessageType.GAMEMESSAGE
+			&& event.getMessage().startsWith("---- Wave:"))
+		{
 			String[] message = event.getMessage().split(" ");
 			currentWave = message[BA_WAVE_NUM_INDEX];
 			collectedEggCount = 0;
@@ -157,10 +160,10 @@ public class BarbarianAssaultPlugin extends Plugin {
 			} else if (gameTime != null) {
 				gameTime.setWaveStartTime();
 			}
-		} else if (event.getType() == ChatMessageType.SERVER
+		} else if (event.getType() == ChatMessageType.GAMEMESSAGE
 				&& event.getMessage().contains("egg explode")) {
 			collectedEggCount -= 2;
-		} else if (event.getType() == ChatMessageType.SERVER
+		} else if (event.getType() == ChatMessageType.GAMEMESSAGE
 				&& event.getMessage().contains("healed")) {
 			String message = event.getMessage();
 			String[] tokens = message.split(" ");
@@ -261,7 +264,7 @@ public class BarbarianAssaultPlugin extends Plugin {
 				.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
+				.type(ChatMessageType.GAMEMESSAGE)
 				.runeLiteFormattedMessage(chatMessage)
 				.build());
 	}

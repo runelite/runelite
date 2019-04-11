@@ -162,12 +162,8 @@ public interface RSModel extends RSRenderable, Model
 
 	/**
 	 * Compute the convex hull of this model
-	 * @param localX
-	 * @param localY
-	 * @param orientation
-	 * @return
 	 */
-	Polygon getConvexHull(int localX, int localY, int orientation);
+	Polygon getConvexHull(int localX, int localY, int orientation, int tileHeight);
 
 	float[][] getFaceTextureUCoordinates();
 	void setFaceTextureUCoordinates(float[][] rl$faceTextureUCoordinates);
