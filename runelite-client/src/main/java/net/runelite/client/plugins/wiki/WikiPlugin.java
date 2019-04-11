@@ -358,14 +358,11 @@ public class WikiPlugin extends Plugin
 			client.setMenuEntries(menuEntries);
 		}
 
-		if (WidgetInfo.TO_GROUP(widgetID) == WidgetID.EQUIPMENT_GROUP_ID && "Remove".equals(event.getOption())
-			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.BANK_GROUP_ID && "Withdraw-1".equals(event.getOption())
-			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.BANK_INVENTORY_GROUP_ID && "Deposit-1".equals(event.getOption())
+		if (WidgetInfo.TO_GROUP(widgetID) == WidgetID.EQUIPMENT_GROUP_ID && "Examine".equals(event.getOption())
+			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.BANK_GROUP_ID && "Examine".equals(event.getOption())
+			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.BANK_INVENTORY_GROUP_ID && "Examine".equals(event.getOption())
+			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.SHOP_GROUP_ID && "Examine".equals(event.getOption())
 			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.PRAYER_GROUP_ID && "Activate".equals(event.getOption())
-			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.QUICK_PRAYERS_GROUP_ID && "Activate".equals(event.getOption())
-			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.QUICK_PRAYERS_GROUP_ID && "Deactivate".equals(event.getOption())
-			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.SHOP_GROUP_ID && "Value".equals(event.getOption())
-			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.SHOP_INVENTORY_GROUP_ID && "Value".equals(event.getOption())
 			|| WidgetInfo.TO_GROUP(widgetID) == WidgetID.SPELLBOOK_GROUP_ID && "Cast".equals(event.getOption()))
 		{
 			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
