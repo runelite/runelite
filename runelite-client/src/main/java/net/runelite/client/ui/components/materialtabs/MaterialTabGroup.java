@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.swing.JPanel;
 
 /**
@@ -126,5 +127,10 @@ public class MaterialTabGroup extends JPanel
 		}
 
 		return true;
+	}
+
+	public Optional<MaterialTab> selectedTab()
+	{
+		return tabs.stream().filter(MaterialTab::isSelected).findFirst();
 	}
 }

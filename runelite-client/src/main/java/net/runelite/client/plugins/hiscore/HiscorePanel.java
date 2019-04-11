@@ -122,7 +122,6 @@ public class HiscorePanel extends PluginPanel
 
 	/* The currently selected endpoint */
 	private HiscoreEndpoint selectedEndPoint;
-	private Datapoint.TimePeriod selectedTimePeriod;
 
 	/* Used to prevent users from switching endpoint tabs while the results are loading */
 	private boolean loading;
@@ -363,11 +362,12 @@ public class HiscorePanel extends PluginPanel
 	{
 		String lookup = searchBar.getText();
 		lookup = sanitize(lookup);
-
 		if (Strings.isNullOrEmpty(lookup))
 		{
 			return;
 		}
+
+		trackerTimePeriodGroup.selectedTab().ifPresent(MaterialTab::unselect);
 
 		/* Runescape usernames can't be longer than 12 characters long */
 		if (lookup.length() > MAX_USERNAME_LENGTH)
