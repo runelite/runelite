@@ -27,6 +27,27 @@ package net.runelite.client.plugins.hiscore;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -40,25 +61,15 @@ import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.http.api.hiscore.*;
-
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
-
+import net.runelite.http.api.hiscore.Datapoint;
+import net.runelite.http.api.hiscore.HiscoreClient;
+import net.runelite.http.api.hiscore.HiscoreEndpoint;
+import net.runelite.http.api.hiscore.HiscoreResult;
+import net.runelite.http.api.hiscore.HiscoreSkill;
 import static net.runelite.http.api.hiscore.HiscoreSkill.*;
+import net.runelite.http.api.hiscore.Progression;
+import net.runelite.http.api.hiscore.Skill;
+import net.runelite.http.api.hiscore.TrackerClient;
 
 @Slf4j
 public class HiscorePanel extends PluginPanel
@@ -235,7 +246,8 @@ public class HiscorePanel extends PluginPanel
 				trackerLoading = true;
 				String player = currentLookup;
 
-				executor.execute(() -> {
+				executor.execute(() ->
+				{
 					try
 					{
 						Datapoint dp = tracker.track(player, tp);
