@@ -101,4 +101,15 @@ public interface WorldHopperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "subscriptionFilter",
+		name = "Show subscription types",
+		description = "Only show free worlds, member worlds, or both types of worlds in sidebar",
+		position = 6
+	)
+	default SubscriptionFilterMode subscriptionFilter()
+	{
+		return SubscriptionFilterMode.BOTH;
+	}
 }

@@ -198,7 +198,7 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (lastBookcaseAnimatedOn != null && event.getType() == ChatMessageType.SERVER)
+		if (lastBookcaseAnimatedOn != null && event.getType() == ChatMessageType.GAMEMESSAGE)
 		{
 			if (event.getMessage().equals("You don't find anything useful here."))
 			{
