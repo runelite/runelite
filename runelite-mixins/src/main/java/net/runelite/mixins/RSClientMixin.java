@@ -108,6 +108,7 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.rs.api.RSActor;
 import net.runelite.rs.api.RSChatLineBuffer;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
@@ -1523,5 +1524,38 @@ public abstract class RSClientMixin implements RSClient
 		rsEnum = getRsEnum(id);
 		enumCache.put(id, rsEnum);
 		return rsEnum;
+	}
+
+	@Inject
+	private static boolean insideDraw2dExtras;
+
+	@Copy("draw2DExtras")
+	public static void rs$draw2DExtras(RSActor actor, int var1, int var2, int var3, int var4, int var5)
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("draw2DExtras")
+	public static void rl$draw2DExtras(RSActor actor, int var1, int var2, int var3, int var4, int var5)
+	{
+		insideDraw2dExtras = true;
+		rs$draw2DExtras(actor, var1, var2, var3, var4, var5);
+		insideDraw2dExtras = false;
+	}
+
+	@Copy("setInnerDrawRegion")
+	public static void rs$setInnerDrawRegion(int x, int y, int width, int height)
+	{
+		throw new RuntimeException();
+	}
+
+	@Replace("setInnerDrawRegion")
+	public static void rl$setInnerDrawRegion(int x, int y, int width, int height)
+	{
+		if (insideDraw2dExtras && healthBarOverride != null)
+		{
+			width += 1;
+		}
+		rs$setInnerDrawRegion(x, y, width, height);
 	}
 }
