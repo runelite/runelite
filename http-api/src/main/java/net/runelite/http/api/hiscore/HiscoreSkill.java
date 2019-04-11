@@ -53,6 +53,7 @@ public enum HiscoreSkill
 	BOUNTY_HUNTER_HUNTER("Bounty Hunter - Hunter"),
 	BOUNTY_HUNTER_ROGUE("Bounty Hunter - Rogue"),
 	CLUE_SCROLL_ALL("Clue Scrolls (all)"),
+	CLUE_SCROLL_BEGINNER("Clue Scrolls (beginner)"),
 	CLUE_SCROLL_EASY("Clue Scrolls (easy)"),
 	CLUE_SCROLL_MEDIUM("Clue Scrolls (medium)"),
 	CLUE_SCROLL_HARD("Clue Scrolls (hard)"),
