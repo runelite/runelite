@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.client.plugins.npcunaggroarea;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.boot.SpringApplication;
+import com.google.inject.Inject;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class SpringBootWebApplicationTest
+class NpcAggroAreaNotWorkingOverlay extends Overlay
 {
-	@Test
-	@Ignore
-	public void run() throws InterruptedException
-	{
-		System.setProperty("spring.profiles.active", "dev");
-		SpringApplication.run(SpringBootWebApplication.class);
+	private final NpcAggroAreaPlugin plugin;
+	private final PanelComponent panelComponent;
 
-		for (;;)
+	@Inject
+	private NpcAggroAreaNotWorkingOverlay(NpcAggroAreaPlugin plugin)
+	{
+		this.plugin = plugin;
+
+		panelComponent = new PanelComponent();
+		panelComponent.setPreferredSize(new Dimension(150, 0));
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Unaggressive NPC timers will start working when you teleport far away or enter a dungeon.")
+			.build());
+
+		setPriority(OverlayPriority.LOW);
+		setPosition(OverlayPosition.TOP_LEFT);
+	}
+
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!plugin.isActive() || plugin.getSafeCenters()[1] != null)
 		{
-			Thread.sleep(100L);
+			return null;
 		}
+
+		return panelComponent.render(graphics);
 	}
 }

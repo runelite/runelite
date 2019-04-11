@@ -344,7 +344,7 @@ public class GrandExchangePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!this.config.enableNotifications() || event.getType() != ChatMessageType.SERVER)
+		if (!this.config.enableNotifications() || event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
 			return;
 		}

@@ -41,6 +41,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -64,8 +67,14 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern DODGY_BREAK_PATTERN = Pattern.compile(
 		"Your dodgy necklace protects you\\..*It then crumbles to dust\\.");
 	private static final String RING_OF_RECOIL_BREAK_MESSAGE = "<col=7f007f>Your Ring of Recoil has shattered.</col>";
+	private static final Pattern BINDING_CHECK_PATTERN = Pattern.compile(
+		"You have ([0-9]+|one) charges? left before your Binding necklace disintegrates\\.");
+	private static final Pattern BINDING_USED_PATTERN = Pattern.compile(
+		"You bind the temple's power into (mud|lava|steam|dust|smoke|mist) runes\\.");
+	private static final String BINDING_BREAK_TEXT = "Your Binding necklace has disintegrated.";
 
 	private static final int MAX_DODGY_CHARGES = 10;
+	private static final int MAX_BINDING_CHARGES = 16;
 
 	@Inject
 	private Client client;
@@ -88,6 +97,9 @@ public class ItemChargePlugin extends Plugin
 	@Inject
 	private ItemChargeConfig config;
 
+	// Limits destroy callback to once per tick
+	private int lastCheckTick;
+
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
 	{
@@ -105,6 +117,7 @@ public class ItemChargePlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		infoBoxManager.removeIf(ItemChargeInfobox.class::isInstance);
+		lastCheckTick = -1;
 	}
 
 	@Subscribe
@@ -135,6 +148,11 @@ public class ItemChargePlugin extends Plugin
 		{
 			removeInfobox(ItemWithSlot.DODGY_NECKLACE);
 		}
+
+		if (!config.showBindingNecklaceCharges())
+		{
+			removeInfobox(ItemWithSlot.BINDING_NECKLACE);
+		}
 	}
 
 	@Subscribe
@@ -144,7 +162,10 @@ public class ItemChargePlugin extends Plugin
 		Matcher dodgyCheckMatcher = DODGY_CHECK_PATTERN.matcher(message);
 		Matcher dodgyProtectMatcher = DODGY_PROTECT_PATTERN.matcher(message);
 		Matcher dodgyBreakMatcher = DODGY_BREAK_PATTERN.matcher(message);
-		if (event.getType() == ChatMessageType.SERVER || event.getType() == ChatMessageType.FILTERED)
+		Matcher bindingNecklaceCheckMatcher = BINDING_CHECK_PATTERN.matcher(event.getMessage());
+		Matcher bindingNecklaceUsedMatcher = BINDING_USED_PATTERN.matcher(event.getMessage());
+
+		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -166,6 +187,32 @@ public class ItemChargePlugin extends Plugin
 			else if (dodgyProtectMatcher.find())
 			{
 				updateDodgyNecklaceCharges(Integer.parseInt(dodgyProtectMatcher.group(1)));
+			}
+			else if (message.contains(BINDING_BREAK_TEXT))
+			{
+				if (config.bindingNotification())
+				{
+					notifier.notify(BINDING_BREAK_TEXT);
+				}
+
+				// This chat message triggers before the used message so add 1 to the max charges to ensure proper sync
+				updateBindingNecklaceCharges(MAX_BINDING_CHARGES + 1);
+			}
+			else if (bindingNecklaceUsedMatcher.find())
+			{
+				updateBindingNecklaceCharges(config.bindingNecklace() - 1);
+			}
+			else if (bindingNecklaceCheckMatcher.find())
+			{
+				final String match = bindingNecklaceCheckMatcher.group(1);
+
+				int charges = 1;
+				if (!match.equals("one"))
+				{
+					charges = Integer.parseInt(match);
+				}
+
+				updateBindingNecklaceCharges(charges);
 			}
 		}
 	}
@@ -194,6 +241,26 @@ public class ItemChargePlugin extends Plugin
 		{
 			updateJewelleryInfobox(ItemWithSlot.ABYSSAL_BRACELET, items);
 		}
+
+		if (config.showBindingNecklaceCharges())
+		{
+			updateJewelleryInfobox(ItemWithSlot.BINDING_NECKLACE, items);
+		}
+	}
+
+	@Subscribe
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
+	{
+		if (!"destroyOnOpKey".equals(event.getEventName()))
+		{
+			return;
+		}
+
+		final int yesOption = client.getIntStack()[client.getIntStackSize() - 1];
+		if (yesOption == 1)
+		{
+			checkDestroyWidget();
+		}
 	}
 
 	private void updateDodgyNecklaceCharges(final int value)
@@ -210,6 +277,49 @@ public class ItemChargePlugin extends Plugin
 			}
 
 			updateJewelleryInfobox(ItemWithSlot.DODGY_NECKLACE, itemContainer.getItems());
+		}
+	}
+
+	private void updateBindingNecklaceCharges(final int value)
+	{
+		config.bindingNecklace(value);
+
+		if (config.showInfoboxes() && config.showBindingNecklaceCharges())
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.BINDING_NECKLACE, itemContainer.getItems());
+		}
+	}
+
+	private void checkDestroyWidget()
+	{
+		final int currentTick = client.getTickCount();
+		if (lastCheckTick == currentTick)
+		{
+			return;
+		}
+		lastCheckTick = currentTick;
+
+		final Widget widgetDestroyItemName = client.getWidget(WidgetInfo.DESTROY_ITEM_NAME);
+		if (widgetDestroyItemName == null)
+		{
+			return;
+		}
+
+		switch (widgetDestroyItemName.getText())
+		{
+			case "Binding necklace":
+				updateBindingNecklaceCharges(MAX_BINDING_CHARGES);
+				break;
+			case "Dodgy necklace":
+				updateDodgyNecklaceCharges(MAX_DODGY_CHARGES);
+				break;
 		}
 	}
 
@@ -244,6 +354,10 @@ public class ItemChargePlugin extends Plugin
 			if (id == ItemID.DODGY_NECKLACE && type == ItemWithSlot.DODGY_NECKLACE)
 			{
 				charges = config.dodgyNecklace();
+			}
+			else if (id == ItemID.BINDING_NECKLACE && type == ItemWithSlot.BINDING_NECKLACE)
+			{
+				charges = config.bindingNecklace();
 			}
 		}
 		else if (itemWithCharge.getType() == type.getType())

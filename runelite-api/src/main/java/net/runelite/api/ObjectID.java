@@ -1452,7 +1452,6 @@ public final class ObjectID
 	public static final int DOOR_2627 = 2627;
 	public static final int DOOR_2628 = 2628;
 	public static final int WALL_2629 = 2629;
-	public static final int FISHING_SPOT_2630 = 2630;
 	public static final int DOOR_2631 = 2631;
 	public static final int CHEST_2632 = 2632;
 	public static final int CHEST_2633 = 2633;
@@ -8227,7 +8226,6 @@ public final class ObjectID
 	public static final int MYSTERIOUS_RUINS_14413 = 14413;
 	public static final int MYSTERIOUS_RUINS_14414 = 14414;
 	public static final int STUDY_DESK_14415 = 14415;
-	public static final int FISHING_SPOT_14428 = 14428;
 	public static final int RIFT_14431 = 14431;
 	public static final int GAS_BUBBLE = 14434;
 	public static final int CAVE_ENTRANCE_14436 = 14436;
@@ -13120,8 +13118,9 @@ public final class ObjectID
 	public static final int DISPLAY_CASE_24551 = 24551;
 	public static final int SPECIMEN_TABLE_24555 = 24555;
 	public static final int SPECIMEN_TABLE_24556 = 24556;
-	public static final int ROCKS_24557 = 24557;
-	public static final int DIG_SITE_SPECIMEN_ROCKS = 24559;
+	public static final int DIG_SITE_SPECIMEN_ROCKS = 24557;
+	public static final int DIG_SITE_SPECIMEN_ROCKS_24558 = 24558;
+	public static final int DIG_SITE_SPECIMEN_ROCKS_24559 = 24559;
 	public static final int GATE_24560 = 24560;
 	public static final int GATE_24561 = 24561;
 	public static final int GAP_24562 = 24562;
@@ -13890,9 +13889,11 @@ public final class ObjectID
 	public static final int CHEST_26193 = 26193;
 	public static final int LEVER_26194 = 26194;
 	public static final int BIRTHDAY_CAKE = 26198;
+	public static final int GRINDER = 26199;
 	public static final int TABLE_26201 = 26201;
 	public static final int TABLE_26202 = 26202;
 	public static final int TABLE_26203 = 26203;
+	public static final int DOOR_26205 = 26205;
 	public static final int LARGE_DOOR_26207 = 26207;
 	public static final int WOODEN_BENCH_26210 = 26210;
 	public static final int OAK_BENCH_26211 = 26211;
