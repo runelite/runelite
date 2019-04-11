@@ -644,8 +644,8 @@ public class HiscorePanel extends PluginPanel
 					if (dp != null)
 					{
 						Progression progress = dp.getXp().get(skill);
-						int xpGained = progress.getXpGained();
-						double ehpGained = progress.getEhpGained();
+						String xpGained = StackFormatter.formatNumber(progress.getXpGained());
+						String ehpGained = StackFormatter.formatNumber(progress.getEhpGained());
 
 						content += "<p><span style = 'color:white'>+Exp:</span> <span style = 'color:lime'>" + xpGained + "</span></p>";
 						content += "<p><span style = 'color:white'>+Ehp:</span> <span style = 'color:lime'>" + ehpGained + "</span></p>";
