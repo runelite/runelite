@@ -27,15 +27,6 @@ package net.runelite.client.plugins.hiscore;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
-import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.swing.SwingUtilities;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
@@ -54,7 +45,20 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.hiscore.CML;
+import net.runelite.http.api.hiscore.TrackerClient;
 import org.apache.commons.lang3.ArrayUtils;
+
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @PluginDescriptor(
 	name = "HiScore",
@@ -91,11 +95,20 @@ public class HiscorePlugin extends Plugin
 	@Inject
 	private NameAutocompleter autocompleter;
 
+	@Inject
+    private TrackerClient tracker;
+
 	@Provides
 	HiscoreConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(HiscoreConfig.class);
 	}
+
+	@Provides
+    TrackerClient provideTracker()
+    {
+        return new CML();
+    }
 
 	@Override
 	protected void startUp() throws Exception
@@ -121,6 +134,9 @@ public class HiscorePlugin extends Plugin
 		{
 			hiscorePanel.addInputKeyListener(autocompleter);
 		}
+
+		hiscorePanel.enableTracker(config.tracker());
+		executor.scheduleWithFixedDelay(() -> tracker.release(), 30, 30, TimeUnit.MINUTES);
 	}
 
 	@Override
@@ -148,18 +164,19 @@ public class HiscorePlugin extends Plugin
 				{
 					menuManager.get().addPlayerMenuItem(LOOKUP);
 				}
-			}
 
-			if (event.getKey().equals("autocomplete"))
-			{
-				if (config.autocomplete())
-				{
-					hiscorePanel.addInputKeyListener(autocompleter);
-				}
-				else
-				{
-					hiscorePanel.removeInputKeyListener(autocompleter);
-				}
+                switch (event.getKey())
+                {
+                    case "autocomplete":
+                        if (config.autocomplete())
+                            hiscorePanel.addInputKeyListener(autocompleter);
+                        else
+                            hiscorePanel.removeInputKeyListener(autocompleter);
+                        break;
+                    case "tracker":
+                        hiscorePanel.enableTracker(config.tracker());
+                        break;
+                }
 			}
 		}
 	}

@@ -27,26 +27,6 @@ package net.runelite.client.plugins.hiscore;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -60,39 +40,25 @@ import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.http.api.hiscore.HiscoreClient;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
-import net.runelite.http.api.hiscore.HiscoreResult;
-import net.runelite.http.api.hiscore.HiscoreSkill;
-import static net.runelite.http.api.hiscore.HiscoreSkill.AGILITY;
-import static net.runelite.http.api.hiscore.HiscoreSkill.ATTACK;
-import static net.runelite.http.api.hiscore.HiscoreSkill.BOUNTY_HUNTER_HUNTER;
-import static net.runelite.http.api.hiscore.HiscoreSkill.BOUNTY_HUNTER_ROGUE;
-import static net.runelite.http.api.hiscore.HiscoreSkill.CLUE_SCROLL_ALL;
-import static net.runelite.http.api.hiscore.HiscoreSkill.CONSTRUCTION;
-import static net.runelite.http.api.hiscore.HiscoreSkill.COOKING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.CRAFTING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.DEFENCE;
-import static net.runelite.http.api.hiscore.HiscoreSkill.FARMING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.FIREMAKING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.FISHING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.FLETCHING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.HERBLORE;
-import static net.runelite.http.api.hiscore.HiscoreSkill.HITPOINTS;
-import static net.runelite.http.api.hiscore.HiscoreSkill.HUNTER;
-import static net.runelite.http.api.hiscore.HiscoreSkill.LAST_MAN_STANDING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.MAGIC;
-import static net.runelite.http.api.hiscore.HiscoreSkill.MINING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.OVERALL;
-import static net.runelite.http.api.hiscore.HiscoreSkill.PRAYER;
-import static net.runelite.http.api.hiscore.HiscoreSkill.RANGED;
-import static net.runelite.http.api.hiscore.HiscoreSkill.RUNECRAFT;
-import static net.runelite.http.api.hiscore.HiscoreSkill.SLAYER;
-import static net.runelite.http.api.hiscore.HiscoreSkill.SMITHING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.STRENGTH;
-import static net.runelite.http.api.hiscore.HiscoreSkill.THIEVING;
-import static net.runelite.http.api.hiscore.HiscoreSkill.WOODCUTTING;
-import net.runelite.http.api.hiscore.Skill;
+import net.runelite.http.api.hiscore.*;
+
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
+
+import static net.runelite.http.api.hiscore.HiscoreSkill.*;
 
 @Slf4j
 public class HiscorePanel extends PluginPanel
@@ -121,6 +87,9 @@ public class HiscorePanel extends PluginPanel
 	@Nullable
 	private Client client;
 
+	@Inject
+    private TrackerClient tracker;
+
 	private final HiscoreConfig config;
 
 	private final IconTextField searchBar;
@@ -129,8 +98,12 @@ public class HiscorePanel extends PluginPanel
 
 	private final JPanel statsPanel = new JPanel();
 
+    private final GridBagConstraints c = new GridBagConstraints();
+
 	/* Container of all the selectable endpoints (ironman, deadman, etc) */
-	private final MaterialTabGroup tabGroup;
+	private final MaterialTabGroup endpointGroup;
+
+	private final MaterialTabGroup trackerTimePeriodGroup;
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 
@@ -138,9 +111,13 @@ public class HiscorePanel extends PluginPanel
 
 	/* The currently selected endpoint */
 	private HiscoreEndpoint selectedEndPoint;
+	private Datapoint.TimePeriod selectedTimePeriod;
 
 	/* Used to prevent users from switching endpoint tabs while the results are loading */
-	private boolean loading = false;
+	private boolean loading;
+	private boolean trackerLoading;
+
+	private String currentLookup;
 
 	@Inject
 	public HiscorePanel(HiscoreConfig config)
@@ -151,18 +128,17 @@ public class HiscorePanel extends PluginPanel
 		// The layout seems to be ignoring the top margin and only gives it
 		// a 2-3 pixel margin, so I set the value to 18 to compensate
 		// TODO: Figure out why this layout is ignoring most of the top margin
-		setBorder(new EmptyBorder(18, 10, 0, 10));
+		setBorder(new EmptyBorder(10, 10, 0, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new GridBagLayout());
 
 		// Expand sub items to fit width of panel, align to top of panel
-		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 1;
 		c.weighty = 0;
-		c.insets = new Insets(0, 0, 10, 0);
+		c.insets = new Insets(0, 0, 7, 0);
 
 		searchBar = new IconTextField();
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
@@ -193,54 +169,93 @@ public class HiscorePanel extends PluginPanel
 				}
 			}
 		});
-
 		add(searchBar, c);
 		c.gridy++;
 
-		tabGroup = new MaterialTabGroup();
-		tabGroup.setLayout(new GridLayout(1, 5, 7, 7));
+		endpointGroup = new MaterialTabGroup();
+		endpointGroup.setLayout(new GridLayout(1, 5, 7, 7));
+        for (HiscoreEndpoint endpoint : HiscoreEndpoint.values())
+        {
+            final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), endpoint.name().toLowerCase() + ".png");
 
-		for (HiscoreEndpoint endpoint : HiscoreEndpoint.values())
-		{
-			final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), endpoint.name().toLowerCase() + ".png");
+            MaterialTab tab = new MaterialTab(new ImageIcon(iconImage), endpointGroup, null);
+            tab.setToolTipText(endpoint.getName() + " Hiscores");
+            tab.setOnSelectEvent(() ->
+            {
+                if (loading)
+                {
+                    return false;
+                }
 
-			MaterialTab tab = new MaterialTab(new ImageIcon(iconImage), tabGroup, null);
-			tab.setToolTipText(endpoint.getName() + " Hiscores");
-			tab.setOnSelectEvent(() ->
-			{
-				if (loading)
-				{
-					return false;
-				}
+                selectedEndPoint = endpoint;
+                return true;
+            });
 
-				selectedEndPoint = endpoint;
-				return true;
-			});
+            // Adding the lookup method to a mouseListener instead of the above onSelectedEvent
+            // Because sometimes you might want to switch the tab, without calling for lookup
+            // Ex: selecting the normal hiscores as default
+            tab.addMouseListener(new MouseAdapter()
+            {
+                @Override
+                public void mousePressed(MouseEvent mouseEvent)
+                {
+                    if (loading)
+                    {
+                        return;
+                    }
 
-			// Adding the lookup method to a mouseListener instead of the above onSelectedEvent
-			// Because sometimes you might want to switch the tab, without calling for lookup
-			// Ex: selecting the normal hiscores as default
-			tab.addMouseListener(new MouseAdapter()
-			{
-				@Override
-				public void mousePressed(MouseEvent mouseEvent)
-				{
-					if (loading)
-					{
-						return;
-					}
+                    executor.execute(HiscorePanel.this::lookup);
+                }
+            });
 
-					executor.execute(HiscorePanel.this::lookup);
-				}
-			});
-
-			tabGroup.addTab(tab);
-		}
-
-		// Default selected tab is normal hiscores
+            endpointGroup.addTab(tab);
+        }
 		resetEndpoints();
+		add(endpointGroup, c);
+		c.gridy++;
 
-		add(tabGroup, c);
+		trackerTimePeriodGroup = new MaterialTabGroup();
+        trackerTimePeriodGroup.setLayout(new GridLayout(1, 5, 7, 7));
+		for (Datapoint.TimePeriod tp : Datapoint.TimePeriod.values())
+        {
+            // Prob a better way to do this
+            String title = tp.toString().toLowerCase();
+            title = title.substring(1);
+            title = Character.toString(tp.toString().charAt(0)).toUpperCase() + title;
+
+            MaterialTab tab = new MaterialTab(title, trackerTimePeriodGroup, null);
+            tab.setBackground(Color.BLACK);
+            tab.setOnSelectEvent(() ->
+            {
+                if (trackerLoading || currentLookup == null)
+                {
+                    tab.unselect();
+                    return false;
+                }
+                trackerLoading = true;
+                String player = currentLookup;
+
+                executor.execute(() -> {
+                    try
+                    {
+                        Datapoint dp = tracker.track(player, tp);
+                        // Lookup tracker stats as well
+                        resetStatTooltips(dp);
+                    } catch (Exception ex)
+                    {
+                        ex.printStackTrace();
+                        tab.unselect();
+                        resetStatTooltips();
+                    } finally
+                    {
+                        trackerLoading = false;
+                    }
+                });
+                return true;
+            });
+            trackerTimePeriodGroup.addTab(tab);
+        }
+		//add(trackerTimePeriodGroup, c);
 		c.gridy++;
 
 		// Panel that holds skill icons
@@ -255,17 +270,15 @@ public class HiscorePanel extends PluginPanel
 			JPanel panel = makeSkillPanel(skill);
 			statsPanel.add(panel);
 		}
-
 		add(statsPanel, c);
 		c.gridy++;
 
 		JPanel totalPanel = new JPanel();
 		totalPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		totalPanel.setLayout(new GridLayout(1, 2));
-
 		totalPanel.add(makeSkillPanel(null)); //combat has no hiscore skill, refered to as null
 		totalPanel.add(makeSkillPanel(OVERALL));
-
+//		totalPanel.add(makeSkillPanel(EHP));
 		add(totalPanel, c);
 		c.gridy++;
 
@@ -274,12 +287,10 @@ public class HiscorePanel extends PluginPanel
 		// panel to change its size for some reason...
 		minigamePanel.setLayout(new GridLayout(2, 3));
 		minigamePanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-
 		minigamePanel.add(makeSkillPanel(CLUE_SCROLL_ALL));
 		minigamePanel.add(makeSkillPanel(LAST_MAN_STANDING));
 		minigamePanel.add(makeSkillPanel(BOUNTY_HUNTER_ROGUE));
 		minigamePanel.add(makeSkillPanel(BOUNTY_HUNTER_HUNTER));
-
 		add(minigamePanel, c);
 		c.gridy++;
 	}
@@ -300,7 +311,7 @@ public class HiscorePanel extends PluginPanel
 
 		String skillName = (skill == null ? "combat" : skill.getName().toLowerCase());
 		String directory = "/skill_icons";
-		if (skillName.equals("combat") || skillName.equals("overall"))
+		if (skillName.equals("combat") || skillName.equals("overall") || skillName.equals("ehp"))
 		{
 			// Cannot use SpriteManager as HiscorePlugin loads before a Client is available
 			directory += "/";
@@ -337,7 +348,6 @@ public class HiscorePanel extends PluginPanel
 	private void lookup()
 	{
 		String lookup = searchBar.getText();
-
 		lookup = sanitize(lookup);
 
 		if (Strings.isNullOrEmpty(lookup))
@@ -440,10 +450,29 @@ public class HiscorePanel extends PluginPanel
 				}
 			}
 
-			label.setToolTipText(detailsHtml(result, skill));
+			label.setToolTipText(detailsHtml(result, null, skill));
 			index++;
 		}
+		currentLookup = lookup;
 	}
+
+	private void resetStatTooltips()
+    {
+        resetStatTooltips(null);
+    }
+
+	private void resetStatTooltips(Datapoint dp)
+    {
+        if (loading || result == null)
+            return;
+
+        int index = 0;
+        for (JLabel label : skillLabels)
+        {
+            label.setToolTipText(detailsHtml(result, dp, find(index)));
+            index++;
+        }
+    }
 
 	void addInputKeyListener(KeyListener l)
 	{
@@ -487,7 +516,7 @@ public class HiscorePanel extends PluginPanel
 	/*
 		Builds a html string to display on tooltip (when hovering a skill).
 	 */
-	private String detailsHtml(HiscoreResult result, HiscoreSkill skill)
+	private String detailsHtml(HiscoreResult result, Datapoint dp, HiscoreSkill skill)
 	{
 		String openingTags = "<html><body style = 'padding: 5px;color:#989898'>";
 		String closingTags = "</html><body>";
@@ -569,6 +598,10 @@ public class HiscorePanel extends PluginPanel
 					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
 					break;
 				}
+                case EHP:
+                {
+                    break;
+                }
 				default:
 				{
 					Skill requestedSkill = result.getSkill(skill);
@@ -591,6 +624,16 @@ public class HiscorePanel extends PluginPanel
 					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
 					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
 					content += "<p><span style = 'color:white'>Remaining XP:</span> " + remainingXp + "</p>";
+
+                    if (dp != null)
+                    {
+                        Progression progress = dp.getXp().get(skill);
+                        int xpGained = progress.getXpGained();
+                        double ehpGained = progress.getEhpGained();
+
+                        content += "<p><span style = 'color:white'>+Exp:</span> <span style = 'color:lime'>" + xpGained + "</span></p>";
+                        content += "<p><span style = 'color:white'>+Ehp:</span> <span style = 'color:lime'>" + ehpGained + "</span></p>";
+                    }
 
 					break;
 				}
@@ -635,7 +678,7 @@ public class HiscorePanel extends PluginPanel
 	private void resetEndpoints()
 	{
 		// Select the correct tab based on the world type.
-		tabGroup.select(tabGroup.getTab(selectWorldEndpoint().ordinal()));
+		endpointGroup.select(endpointGroup.getTab(selectWorldEndpoint().ordinal()));
 	}
 
 	private HiscoreEndpoint selectWorldEndpoint()
@@ -659,4 +702,19 @@ public class HiscorePanel extends PluginPanel
 		}
 		return HiscoreEndpoint.NORMAL;
 	}
+
+	public void enableTracker(boolean enable)
+    {
+        if (enable)
+        {
+            c.gridy = 2;
+            add(trackerTimePeriodGroup, c);
+            repaint();
+        } else
+        {
+            remove(trackerTimePeriodGroup);
+            resetStatTooltips();
+            currentLookup = null;
+        }
+    }
 }

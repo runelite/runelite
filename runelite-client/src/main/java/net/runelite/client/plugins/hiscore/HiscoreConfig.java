@@ -85,4 +85,15 @@ public interface HiscoreConfig extends Config
 	{
 		return false;
 	}
+
+    @ConfigItem(
+            position = 6,
+            keyName = "tracker",
+            name = "Exp tracker",
+            description = "Show XP progression based off CML"
+    )
+	default boolean tracker()
+    {
+	    return false;
+    }
 }
