@@ -50,7 +50,7 @@ public enum HiscoreSkill
 	RUNECRAFT("Runecraft"),
 	HUNTER("Hunter"),
 	CONSTRUCTION("Construction"),
-    EHP("EHP"),
+	EHP("EHP"),
 	BOUNTY_HUNTER_HUNTER("Bounty Hunter - Hunter"),
 	BOUNTY_HUNTER_ROGUE("Bounty Hunter - Rogue"),
 	CLUE_SCROLL_ALL("Clue Scrolls (all)"),

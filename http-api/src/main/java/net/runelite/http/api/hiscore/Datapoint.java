@@ -8,39 +8,39 @@ import java.util.Map;
 @Getter
 public class Datapoint
 {
-    private TimePeriod time;
-    private Map<HiscoreSkill, Progression> xp = new HashMap<>();
+	private TimePeriod time;
+	private Map<HiscoreSkill, Progression> xp = new HashMap<>();
 
-    public enum TimePeriod
-    {
-        DAY, WEEK, MONTH
-    }
+	public enum TimePeriod
+	{
+		DAY, WEEK, MONTH
+	}
 
-    protected Datapoint(TimePeriod time)
-    {
-        this.time = time;
-    }
+	protected Datapoint(TimePeriod time)
+	{
+		this.time = time;
+	}
 
-    static class Builder
-    {
-        private TimePeriod timePeriod;
-        private Map<HiscoreSkill, Progression> xp = new HashMap<>();
+	static class Builder
+	{
+		private TimePeriod timePeriod;
+		private Map<HiscoreSkill, Progression> xp = new HashMap<>();
 
-        Builder(TimePeriod timePeriod)
-        {
-            this.timePeriod = timePeriod;
-        }
+		Builder(TimePeriod timePeriod)
+		{
+			this.timePeriod = timePeriod;
+		}
 
-        void addProgression(HiscoreSkill skill, Progression amount)
-        {
-            xp.put(skill, amount);
-        }
+		void addProgression(HiscoreSkill skill, Progression amount)
+		{
+			xp.put(skill, amount);
+		}
 
-        public Datapoint build()
-        {
-            Datapoint instance = new Datapoint(timePeriod);
-            instance.xp = xp;
-            return instance;
-        }
-    }
+		public Datapoint build()
+		{
+			Datapoint instance = new Datapoint(timePeriod);
+			instance.xp = xp;
+			return instance;
+		}
+	}
 }

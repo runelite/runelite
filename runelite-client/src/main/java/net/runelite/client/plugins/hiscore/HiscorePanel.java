@@ -88,7 +88,7 @@ public class HiscorePanel extends PluginPanel
 	private Client client;
 
 	@Inject
-    private TrackerClient tracker;
+	private TrackerClient tracker;
 
 	private final HiscoreConfig config;
 
@@ -98,7 +98,7 @@ public class HiscorePanel extends PluginPanel
 
 	private final JPanel statsPanel = new JPanel();
 
-    private final GridBagConstraints c = new GridBagConstraints();
+	private final GridBagConstraints c = new GridBagConstraints();
 
 	/* Container of all the selectable endpoints (ironman, deadman, etc) */
 	private final MaterialTabGroup endpointGroup;
@@ -174,87 +174,89 @@ public class HiscorePanel extends PluginPanel
 
 		endpointGroup = new MaterialTabGroup();
 		endpointGroup.setLayout(new GridLayout(1, 5, 7, 7));
-        for (HiscoreEndpoint endpoint : HiscoreEndpoint.values())
-        {
-            final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), endpoint.name().toLowerCase() + ".png");
+		for (HiscoreEndpoint endpoint : HiscoreEndpoint.values())
+		{
+			final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), endpoint.name().toLowerCase() + ".png");
 
-            MaterialTab tab = new MaterialTab(new ImageIcon(iconImage), endpointGroup, null);
-            tab.setToolTipText(endpoint.getName() + " Hiscores");
-            tab.setOnSelectEvent(() ->
-            {
-                if (loading)
-                {
-                    return false;
-                }
+			MaterialTab tab = new MaterialTab(new ImageIcon(iconImage), endpointGroup, null);
+			tab.setToolTipText(endpoint.getName() + " Hiscores");
+			tab.setOnSelectEvent(() ->
+			{
+				if (loading)
+				{
+					return false;
+				}
 
-                selectedEndPoint = endpoint;
-                return true;
-            });
+				selectedEndPoint = endpoint;
+				return true;
+			});
 
-            // Adding the lookup method to a mouseListener instead of the above onSelectedEvent
-            // Because sometimes you might want to switch the tab, without calling for lookup
-            // Ex: selecting the normal hiscores as default
-            tab.addMouseListener(new MouseAdapter()
-            {
-                @Override
-                public void mousePressed(MouseEvent mouseEvent)
-                {
-                    if (loading)
-                    {
-                        return;
-                    }
+			// Adding the lookup method to a mouseListener instead of the above onSelectedEvent
+			// Because sometimes you might want to switch the tab, without calling for lookup
+			// Ex: selecting the normal hiscores as default
+			tab.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mousePressed(MouseEvent mouseEvent)
+				{
+					if (loading)
+					{
+						return;
+					}
 
-                    executor.execute(HiscorePanel.this::lookup);
-                }
-            });
+					executor.execute(HiscorePanel.this::lookup);
+				}
+			});
 
-            endpointGroup.addTab(tab);
-        }
+			endpointGroup.addTab(tab);
+		}
 		resetEndpoints();
 		add(endpointGroup, c);
 		c.gridy++;
 
 		trackerTimePeriodGroup = new MaterialTabGroup();
-        trackerTimePeriodGroup.setLayout(new GridLayout(1, 5, 7, 7));
+		trackerTimePeriodGroup.setLayout(new GridLayout(1, 5, 7, 7));
 		for (Datapoint.TimePeriod tp : Datapoint.TimePeriod.values())
-        {
-            // Prob a better way to do this
-            String title = tp.toString().toLowerCase();
-            title = title.substring(1);
-            title = Character.toString(tp.toString().charAt(0)).toUpperCase() + title;
+		{
+			// Prob a better way to do this
+			String title = tp.toString().toLowerCase();
+			title = title.substring(1);
+			title = Character.toString(tp.toString().charAt(0)).toUpperCase() + title;
 
-            MaterialTab tab = new MaterialTab(title, trackerTimePeriodGroup, null);
-            tab.setBackground(Color.BLACK);
-            tab.setOnSelectEvent(() ->
-            {
-                if (trackerLoading || currentLookup == null)
-                {
-                    tab.unselect();
-                    return false;
-                }
-                trackerLoading = true;
-                String player = currentLookup;
+			MaterialTab tab = new MaterialTab(title, trackerTimePeriodGroup, null);
+			tab.setBackground(Color.BLACK);
+			tab.setOnSelectEvent(() ->
+			{
+				if (trackerLoading || currentLookup == null)
+				{
+					tab.unselect();
+					return false;
+				}
+				trackerLoading = true;
+				String player = currentLookup;
 
-                executor.execute(() -> {
-                    try
-                    {
-                        Datapoint dp = tracker.track(player, tp);
-                        // Lookup tracker stats as well
-                        resetStatTooltips(dp);
-                    } catch (Exception ex)
-                    {
-                        ex.printStackTrace();
-                        tab.unselect();
-                        resetStatTooltips();
-                    } finally
-                    {
-                        trackerLoading = false;
-                    }
-                });
-                return true;
-            });
-            trackerTimePeriodGroup.addTab(tab);
-        }
+				executor.execute(() -> {
+					try
+					{
+						Datapoint dp = tracker.track(player, tp);
+						// Lookup tracker stats as well
+						resetStatTooltips(dp);
+					}
+					catch (Exception ex)
+					{
+						ex.printStackTrace();
+						tab.unselect();
+						resetStatTooltips();
+					}
+					finally
+					{
+						trackerLoading = false;
+					}
+				});
+				return true;
+			});
+			trackerTimePeriodGroup.addTab(tab);
+		}
 		//add(trackerTimePeriodGroup, c);
 		c.gridy++;
 
@@ -457,22 +459,24 @@ public class HiscorePanel extends PluginPanel
 	}
 
 	private void resetStatTooltips()
-    {
-        resetStatTooltips(null);
-    }
+	{
+		resetStatTooltips(null);
+	}
 
 	private void resetStatTooltips(Datapoint dp)
-    {
-        if (loading || result == null)
-            return;
+	{
+		if (loading || result == null)
+		{
+			return;
+		}
 
-        int index = 0;
-        for (JLabel label : skillLabels)
-        {
-            label.setToolTipText(detailsHtml(result, dp, find(index)));
-            index++;
-        }
-    }
+		int index = 0;
+		for (JLabel label : skillLabels)
+		{
+			label.setToolTipText(detailsHtml(result, dp, find(index)));
+			index++;
+		}
+	}
 
 	void addInputKeyListener(KeyListener l)
 	{
@@ -598,10 +602,10 @@ public class HiscorePanel extends PluginPanel
 					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
 					break;
 				}
-                case EHP:
-                {
-                    break;
-                }
+				case EHP:
+				{
+					break;
+				}
 				default:
 				{
 					Skill requestedSkill = result.getSkill(skill);
@@ -625,15 +629,15 @@ public class HiscorePanel extends PluginPanel
 					content += "<p><span style = 'color:white'>Experience:</span> " + exp + "</p>";
 					content += "<p><span style = 'color:white'>Remaining XP:</span> " + remainingXp + "</p>";
 
-                    if (dp != null)
-                    {
-                        Progression progress = dp.getXp().get(skill);
-                        int xpGained = progress.getXpGained();
-                        double ehpGained = progress.getEhpGained();
+					if (dp != null)
+					{
+						Progression progress = dp.getXp().get(skill);
+						int xpGained = progress.getXpGained();
+						double ehpGained = progress.getEhpGained();
 
-                        content += "<p><span style = 'color:white'>+Exp:</span> <span style = 'color:lime'>" + xpGained + "</span></p>";
-                        content += "<p><span style = 'color:white'>+Ehp:</span> <span style = 'color:lime'>" + ehpGained + "</span></p>";
-                    }
+						content += "<p><span style = 'color:white'>+Exp:</span> <span style = 'color:lime'>" + xpGained + "</span></p>";
+						content += "<p><span style = 'color:white'>+Ehp:</span> <span style = 'color:lime'>" + ehpGained + "</span></p>";
+					}
 
 					break;
 				}
@@ -704,17 +708,18 @@ public class HiscorePanel extends PluginPanel
 	}
 
 	public void enableTracker(boolean enable)
-    {
-        if (enable)
-        {
-            c.gridy = 2;
-            add(trackerTimePeriodGroup, c);
-            repaint();
-        } else
-        {
-            remove(trackerTimePeriodGroup);
-            resetStatTooltips();
-            currentLookup = null;
-        }
-    }
+	{
+		if (enable)
+		{
+			c.gridy = 2;
+			add(trackerTimePeriodGroup, c);
+			repaint();
+		}
+		else
+		{
+			remove(trackerTimePeriodGroup);
+			resetStatTooltips();
+			currentLookup = null;
+		}
+	}
 }

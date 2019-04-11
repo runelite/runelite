@@ -96,7 +96,7 @@ public class HiscorePlugin extends Plugin
 	private NameAutocompleter autocompleter;
 
 	@Inject
-    private TrackerClient tracker;
+	private TrackerClient tracker;
 
 	@Provides
 	HiscoreConfig provideConfig(ConfigManager configManager)
@@ -105,10 +105,10 @@ public class HiscorePlugin extends Plugin
 	}
 
 	@Provides
-    TrackerClient provideTracker()
-    {
-        return new CML();
-    }
+	TrackerClient provideTracker()
+	{
+		return new CML();
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -165,18 +165,22 @@ public class HiscorePlugin extends Plugin
 					menuManager.get().addPlayerMenuItem(LOOKUP);
 				}
 
-                switch (event.getKey())
-                {
-                    case "autocomplete":
-                        if (config.autocomplete())
-                            hiscorePanel.addInputKeyListener(autocompleter);
-                        else
-                            hiscorePanel.removeInputKeyListener(autocompleter);
-                        break;
-                    case "tracker":
-                        hiscorePanel.enableTracker(config.tracker());
-                        break;
-                }
+				switch (event.getKey())
+				{
+					case "autocomplete":
+						if (config.autocomplete())
+						{
+							hiscorePanel.addInputKeyListener(autocompleter);
+						}
+						else
+						{
+							hiscorePanel.removeInputKeyListener(autocompleter);
+						}
+						break;
+					case "tracker":
+						hiscorePanel.enableTracker(config.tracker());
+						break;
+				}
 			}
 		}
 	}
@@ -193,8 +197,8 @@ public class HiscorePlugin extends Plugin
 		String option = event.getOption();
 
 		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.CLAN_CHAT.getGroupId() ||
-				groupId == WidgetInfo.CHATBOX.getGroupId() && !KICK_OPTION.equals(option) || //prevent from adding for Kick option (interferes with the raiding party one)
-				groupId == WidgetInfo.RAIDING_PARTY.getGroupId() || groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId())
+			groupId == WidgetInfo.CHATBOX.getGroupId() && !KICK_OPTION.equals(option) || //prevent from adding for Kick option (interferes with the raiding party one)
+			groupId == WidgetInfo.RAIDING_PARTY.getGroupId() || groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId())
 		{
 			boolean after;
 
