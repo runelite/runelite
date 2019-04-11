@@ -446,8 +446,8 @@ public class ClueScrollPlugin extends Plugin
 				return clue;
 			}
 		}
-
-		if (text.startsWith("this anagram reveals who to speak to next:"))
+		//beginner clues have different text for anagrams
+		if (text.contains("anagram"))
 		{
 			return AnagramClue.forText(text);
 		}

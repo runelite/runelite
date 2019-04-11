@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
@@ -58,13 +60,17 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	private static final Pattern INITIAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*)");
 	private static final Pattern STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*), (.*) last time\\.");
 	private static final Pattern FINAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is visibly shaking.*");
-	private static final HotColdClue CLUE =
+	private static final Set<HotColdClue> CLUES = ImmutableSet.of(
 		new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Jorral may have a clue.",
 			"Jorral",
-			"Speak to Jorral to receive a strange device.");
+			"Speak to Jorral to receive a strange device."),
+		new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, a man called Reldo may have a clue.",
+			"Reldo",
+			"Speak to Reldo to receive a strange device"));
 
 	// list of potential places to dig
 	private List<HotColdLocation> digLocations = new ArrayList<>();
+	private List<HotColdLocation> digLocationsBeginner = new ArrayList<>();
 	private final String text;
 	private final String npc;
 	private final String solution;
@@ -73,11 +79,13 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 
 	public static HotColdClue forText(String text)
 	{
-		if (CLUE.text.equalsIgnoreCase(text))
+		for (HotColdClue clue : CLUES)
 		{
-			return CLUE;
+			if (clue.text.equalsIgnoreCase(text))
+			{
+				return clue;
+			}
 		}
-
 		return null;
 	}
 
