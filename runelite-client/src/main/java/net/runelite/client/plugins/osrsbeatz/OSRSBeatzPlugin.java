@@ -65,9 +65,9 @@ public class OSRSBeatzPlugin extends Plugin
 {
     private static MediaPlayer mediaPlayer;
     private static String prefix = "OSRSBeatz+-+";
-    private static int fadeOutSeconds = 5;
+    private static int fadeOutSeconds = 3;
     private List<String> availableMusic = new ArrayList<>();
-    private static double volume = 0.20;
+    private static double volume = 0.25;
     private String song = null;
 
     @Inject
@@ -170,17 +170,16 @@ public class OSRSBeatzPlugin extends Plugin
                 song = song.replaceAll("\\s", "\\+");
                 String songURL = "http://1h.lc/" + prefix + song + ".mp3";
                 Duration d = mediaPlayer.getCurrentTime();
-                d = d.add(Duration.seconds(fadeOutSeconds + 0.5));
+                d = d.add(Duration.seconds(fadeOutSeconds + 0.2));
                 mediaPlayer.setStopTime(d);
                 timeline.play();
                 mediaPlayer.setOnEndOfMedia(() -> {
                     Media media = new Media(songURL);
                     mediaPlayer = new MediaPlayer(media);
-                    //mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+                    mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
                     play(mediaPlayer, 7500);
                 });
             }
-
     }
 }
 

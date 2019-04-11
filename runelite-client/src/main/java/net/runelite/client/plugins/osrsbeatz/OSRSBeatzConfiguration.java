@@ -33,20 +33,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("TickTock")
+@ConfigGroup("osrsbeatz")
 public interface OSRSBeatzConfiguration extends Config {
-    @ConfigItem(
-            keyName = "tickCount",
-            name = "Tick count",
-            description = "Configures how often the music change will be observed",
-            position = 2
-    )
-    default int tickCount()
-    {
-        return 1;
-    }
-
-
-
 
 }
