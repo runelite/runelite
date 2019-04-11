@@ -37,7 +37,12 @@ public class EquipmentHelper
 
 	private static boolean wearsItem(Item[] equipedItems, EquipmentInventorySlot slot, int itemId)
 	{
-		return equipedItems[slot.getSlotIdx()].getId() == itemId;
+		Item item = equipedItems[slot.getSlotIdx()];
+		if (item == null)
+		{
+			return false;
+		}
+		return item.getId() == itemId;
 	}
 
 	public static boolean wearsItem(Item[] equipedItems, EquipmentSlotItem equipmentSlotItem)

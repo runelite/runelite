@@ -24,7 +24,10 @@
  */
 package net.runelite.client.plugins.maxhit;
 
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -53,19 +56,19 @@ public class MaxHitPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
-		updateMaxHitWidget();
+		this.updateMaxHitWidget();
 	}
 
 	@Subscribe
 	public void onConfigChanged(final ConfigChanged event)
 	{
-		updateMaxHitWidget();
+		this.updateMaxHitWidget();
 	}
 
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		updateMaxHitWidget();
+		this.updateMaxHitWidget();
 	}
 
 	private void updateMaxHitWidget()
@@ -73,10 +76,14 @@ public class MaxHitPlugin extends Plugin
 		Widget equipmentStats = client.getWidget(WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER);
 
 		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		Item[] equipedItems = new Item[14];
 
-		if (equipmentContainer != null && equipmentStats != null && !equipmentStats.isHidden())
+		if (equipmentStats != null && !equipmentStats.isHidden())
 		{
-			Item[] equipedItems = equipmentContainer.getItems();
+			if (equipmentContainer != null)
+			{
+				equipedItems = equipmentContainer.getItems();
+			}
 
 			MeleeMaxHitCalculator meleeMaxHitCalculator = new MeleeMaxHitCalculator(this.client, equipedItems);
 			RangeMaxHitCalculator rangeMaxHitCalculator = new RangeMaxHitCalculator(this.client, equipedItems);
