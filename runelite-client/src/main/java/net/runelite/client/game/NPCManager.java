@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,42 +25,89 @@
  */
 package net.runelite.client.game;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
+import com.google.common.collect.ImmutableMap;
+import java.io.IOException;
 import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.http.api.npc.NPCClient;
+import net.runelite.http.api.npc.NPCStats;
 
 @Singleton
+@Slf4j
 public class NPCManager
 {
-	private final Map<String, Integer> healthMap;
+	private final NPCClient NPCClient = new NPCClient();
+	private final ImmutableMap<Integer, NPCStats> statsMap;
 
 	@Inject
 	private NPCManager()
 	{
-		final Gson gson = new Gson();
-		final Type typeToken = new TypeToken<Map<String, Integer>>()
-		{
-		}.getType();
+		this.statsMap = getStatsMap();
+	}
 
-		final InputStream healthFile = getClass().getResourceAsStream("/npc_health.json");
-		healthMap = gson.fromJson(new InputStreamReader(healthFile), typeToken);
+	private ImmutableMap<Integer, NPCStats> getStatsMap()
+	{
+		try
+		{
+			final Map<Integer, NPCStats> stats = NPCClient.getStats();
+			if (stats != null)
+			{
+				log.debug("Loaded {} npc stats", stats.size());
+				return ImmutableMap.copyOf(stats);
+			}
+		}
+		catch (IOException e)
+		{
+			log.warn("error loading stats!", e);
+		}
+
+		return ImmutableMap.of();
 	}
 
 	/**
-	 * Returns health for target NPC based on it's combat level and name
-	 * @param name npc name
-	 * @param combatLevel npc combat level
-	 * @return health or null if HP is unknown
+	 * Returns the {@link NPCStats} for target NPC id
+	 * @param npcId NPC id
+	 * @return the {@link NPCStats} or null if unknown
 	 */
 	@Nullable
-	public Integer getHealth(final String name, final int combatLevel)
+	public NPCStats getStats(final int npcId)
 	{
-		return healthMap.get(name + "_" + combatLevel);
+		return statsMap.get(npcId);
+	}
+
+	/**
+	 * Returns health for target NPC ID
+	 * @param npcId NPC id
+	 * @return health or null if unknown
+	 */
+	@Nullable
+	public Integer getHealth(final int npcId)
+	{
+		final NPCStats s = statsMap.get(npcId);
+		if (s == null || s.getHitpoints() == -1)
+		{
+			return null;
+		}
+
+		return s.getHitpoints();
+	}
+
+	/**
+	 * Returns the exp modifier for target NPC ID based on its stats.
+	 * @param npcId NPC id
+	 * @return npcs exp modifier. Assumes default xp rate if npc stats are unknown (returns 1)
+	 */
+	public double getXpModifier(final int npcId)
+	{
+		final NPCStats s = statsMap.get(npcId);
+		if (s == null)
+		{
+			return 1;
+		}
+
+		return s.calculateXpModifier();
 	}
 }
