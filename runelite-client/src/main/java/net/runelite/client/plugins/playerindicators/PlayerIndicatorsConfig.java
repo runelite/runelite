@@ -205,6 +205,6 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean showCombatlevel()
 	{
-		return true; 
+		return false;
 	}
 }
