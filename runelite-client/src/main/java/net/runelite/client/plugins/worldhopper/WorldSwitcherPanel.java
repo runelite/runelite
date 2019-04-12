@@ -35,11 +35,14 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import lombok.AccessLevel;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.worlds.World;
+import net.runelite.http.api.worlds.WorldType;
 
 @Slf4j
 class WorldSwitcherPanel extends PluginPanel
@@ -62,6 +65,8 @@ class WorldSwitcherPanel extends PluginPanel
 
 	private ArrayList<WorldTableRow> rows = new ArrayList<>();
 	private WorldHopperPlugin plugin;
+	@Setter(AccessLevel.PACKAGE)
+	private SubscriptionFilterMode filterMode;
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
@@ -219,6 +224,23 @@ class WorldSwitcherPanel extends PluginPanel
 		for (int i = 0; i < worlds.size(); i++)
 		{
 			World world = worlds.get(i);
+
+			switch (filterMode)
+			{
+				case FREE:
+					if (world.getTypes().contains(WorldType.MEMBERS))
+					{
+						continue;
+					}
+					break;
+				case MEMBERS:
+					if (!world.getTypes().contains(WorldType.MEMBERS))
+					{
+						continue;
+					}
+					break;
+			}
+
 			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));
 		}
 

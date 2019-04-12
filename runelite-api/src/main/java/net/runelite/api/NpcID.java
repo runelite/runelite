@@ -6217,6 +6217,7 @@ public final class NpcID
 	public static final int MAZE_GUARDIAN_6779 = 6779;
 	public static final int PILIAR = 6780;
 	public static final int SHAYDA = 6781;
+	public static final int FISHING_SPOT_6784 = 6784;
 	public static final int HOSA = 6785;
 	public static final int HELLRAT_BEHEMOTH = 6793;
 	public static final int MONKEY_ARCHER_6794 = 6794;

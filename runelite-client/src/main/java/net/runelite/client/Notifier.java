@@ -140,7 +140,7 @@ public class Notifier
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
+				.type(ChatMessageType.CONSOLE)
 				.name(appName)
 				.runeLiteFormattedMessage(formattedMessage)
 				.build());

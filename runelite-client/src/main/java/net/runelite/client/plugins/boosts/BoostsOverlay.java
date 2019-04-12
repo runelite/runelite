@@ -62,7 +62,7 @@ class BoostsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.displayIndicators())
+		if (config.displayInfoboxes())
 		{
 			return null;
 		}
@@ -137,7 +137,7 @@ class BoostsOverlay extends Overlay
 			return new Color(238, 51, 51);
 		}
 
-		return boost < config.boostThreshold() ? Color.YELLOW : Color.GREEN;
+		return boost <= config.boostThreshold() ? Color.YELLOW : Color.GREEN;
 
 	}
 }

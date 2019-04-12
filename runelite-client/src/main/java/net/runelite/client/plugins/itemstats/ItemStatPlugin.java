@@ -134,7 +134,8 @@ public class ItemStatPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		if (itemInformationTitle != null && config.geStats()
-			&& client.getWidget(WidgetInfo.GRAND_EXCHANGE_WINDOW_CONTAINER) == null)
+			&& (client.getWidget(WidgetInfo.GRAND_EXCHANGE_WINDOW_CONTAINER) == null
+			|| client.getWidget(WidgetInfo.GRAND_EXCHANGE_WINDOW_CONTAINER).isHidden()))
 		{
 			resetGEInventory();
 		}

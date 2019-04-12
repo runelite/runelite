@@ -163,7 +163,7 @@ LABEL40:
    iconst                 10616880
    if_setonclick         
    get_varc_int           41
-   iconst                 -1
+   iconst                 1337
    if_icmpeq              LABEL154
    jump                   LABEL156
 LABEL154:

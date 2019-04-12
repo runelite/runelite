@@ -16,6 +16,7 @@ spring.jmx.enabled: false
 oauth:
   client-id:
   client-secret:
+  callback: https://api.runelite.net/oauth/
 
 # Minio client storage for cache
 minio:
@@ -28,6 +29,9 @@ minio:
 redis:
   pool.size: 10
   host: http://localhost:6379
+
+mongo:
+  host: mongodb://localhost:27017
 
 # Twitter client for feed
 runelite:
