@@ -143,6 +143,7 @@ public enum HotColdLocation
 	WILDERNESS_5(new WorldPoint(3169, 3558, 0), WILDERNESS, "North of the Grand Exchange, level 5 Wilderness."),
 	WILDERNESS_12(new WorldPoint(3038, 3612, 0), WILDERNESS, "South-east of the Dark Warriors' Fortress, level 12 Wilderness."),
 	WILDERNESS_20(new WorldPoint(3225, 3676, 0), WILDERNESS, "East of the Corporeal Beast's lair, level 20 Wilderness."),
+	WILDERNESS_27(new WorldPoint(3174, 3735, 0), WILDERNESS, "North-west of the Corporeal Beast cave, in the ruins at level 27 Wilderness."),
 	WILDERNESS_28(new WorldPoint(3374, 3734, 0), WILDERNESS, "East of Venenatis' nest, level 28 Wilderness."),
 	WILDERNESS_35(new WorldPoint(3153, 3795, 0), WILDERNESS, "East of the Wilderness canoe exit, level 35 Wilderness."),
 	WILDERNESS_37(new WorldPoint(2975, 3811, 0), WILDERNESS, "South-east of the Chaos Temple, level 37 Wilderness."),
