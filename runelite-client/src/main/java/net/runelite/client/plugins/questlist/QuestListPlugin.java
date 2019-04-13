@@ -288,7 +288,7 @@ public class QuestListPlugin extends Plugin
 
 		if (quests != null)
 		{
-			// Check to make sure the list hasn't been rebuild since we were last her
+			// Check to make sure the list hasn't been rebuilt since we were last here
 			// Do this by making sure the list's dynamic children are the same as when we last saw them
 			if (quests.stream().noneMatch(w ->
 			{
