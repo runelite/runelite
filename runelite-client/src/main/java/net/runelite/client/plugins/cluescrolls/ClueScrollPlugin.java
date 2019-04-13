@@ -465,7 +465,8 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		if (text.startsWith("this anagram reveals who to speak to next:"))
+		// (This|The) anagram reveals who to speak to next:
+		if (text.startsWith("anagram reveals who to speak to next:"))
 		{
 			return AnagramClue.forText(text);
 		}
