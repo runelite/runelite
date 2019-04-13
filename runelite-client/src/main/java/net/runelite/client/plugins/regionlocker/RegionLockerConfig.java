@@ -20,10 +20,20 @@ public interface RegionLockerConfig extends Config {
     }
 
     @ConfigItem(
+            keyName = "renderRegionBorders",
+            name = "Render region borders",
+            description = "Draws the region borders in the environment",
+            position = 1
+    )
+    default boolean renderRegionBorders() {
+        return false;
+    }
+
+    @ConfigItem(
             keyName = "chunkCommand",
             name = "Chunk command",
             description = "Configures whether the chunk command is enabled<br> This command shows your total unlocked chunks<br> !chunk",
-            position = 1
+            position = 2
     )
     default boolean chunkCommand()
     {
@@ -131,10 +141,40 @@ public interface RegionLockerConfig extends Config {
     }
 
     @ConfigItem(
+            keyName = "regionBorderColor",
+            name = "Region border color",
+            description = "The color of the region borders",
+            position = 14
+    )
+    default Color regionBorderColor() {
+        return new Color(0, 200, 83, 200);
+    }
+
+    @ConfigItem(
+            keyName = "regionBorderAlpha",
+            name = "Region border alpha",
+            description = "How transparent the region borders will be (0-255)",
+            position = 15
+    )
+    default int regionBorderAlpha() {
+        return 200;
+    }
+
+    @ConfigItem(
+            keyName = "regionBorderWidth",
+            name = "Region border width",
+            description = "How wide the region border will be",
+            position = 16
+    )
+    default int regionBorderWidth() {
+        return 4;
+    }
+
+    @ConfigItem(
             keyName = "drawMapGrid",
             name = "Draw map grid",
             description = "Draw the grid of regions on the map",
-            position = 14
+            position = 17
     )
     default boolean drawMapGrid() {
         return true;
@@ -144,7 +184,7 @@ public interface RegionLockerConfig extends Config {
             keyName = "drawRegionId",
             name = "Draw region IDs",
             description = "Draw the region ID for each region on the map",
-            position = 15
+            position = 18
     )
     default boolean drawRegionId() {
         return true;
@@ -154,7 +194,7 @@ public interface RegionLockerConfig extends Config {
             keyName = "unlockKey",
             name = "Unlock hotkey",
             description = "When you hold this key you can click on the map to unlock a region",
-            position = 16
+            position = 19
     )
     default Keybind unlockKey()
     {
@@ -165,7 +205,7 @@ public interface RegionLockerConfig extends Config {
             keyName = "blacklistKey",
             name = "Blacklist hotkey",
             description = "When you hold this key you can click on the map to blacklist a region",
-            position = 17
+            position = 20
     )
     default Keybind blacklistKey()
     {
@@ -176,7 +216,7 @@ public interface RegionLockerConfig extends Config {
             keyName = "unlockedRegions",
             name = "Unlocked regions",
             description = "List of unlocked regions seperated by a ',' symbol",
-            position = 18
+            position = 21
     )
     default String unlockedRegions() {
         return "";
@@ -186,7 +226,7 @@ public interface RegionLockerConfig extends Config {
             keyName = "unlockableRegions",
             name = "Unlockable regions",
             description = "List of unlockable regions seperated by a ',' symbol",
-            position = 19
+            position = 22
     )
     default String unlockableRegions() {
         return "";
@@ -196,7 +236,7 @@ public interface RegionLockerConfig extends Config {
             keyName = "blacklistedRegions",
             name = "Blacklisted regions",
             description = "List of blacklisted regions seperated by a ',' symbol",
-            position = 20
+            position = 23
     )
     default String blacklistedRegions() {
         return "";
