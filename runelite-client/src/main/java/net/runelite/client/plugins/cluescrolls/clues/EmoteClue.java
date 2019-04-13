@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.runelite.api.EquipmentInventorySlot;
 import static net.runelite.api.EquipmentInventorySlot.*;
@@ -209,14 +210,15 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 	private final WorldPoint location;
 	private final Emote firstEmote;
 	private final Emote secondEmote;
+	@Nonnull
 	private final ItemRequirement[] itemRequirements;
 
-	private EmoteClue(String text, Integer stashUnit, WorldPoint location, Emote firstEmote, ItemRequirement... itemRequirements)
+	private EmoteClue(String text, Integer stashUnit, WorldPoint location, Emote firstEmote, @Nonnull ItemRequirement... itemRequirements)
 	{
 		this(text, stashUnit, location, firstEmote, null, itemRequirements);
 	}
 
-	private EmoteClue(String text, Integer stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, ItemRequirement... itemRequirements)
+	private EmoteClue(String text, Integer stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, @Nonnull ItemRequirement... itemRequirements)
 	{
 		this.text = text;
 		this.stashUnit = stashUnit;
@@ -244,14 +246,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 				.build());
 		}
 
-		if (getItemRequirements() == null)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Items:")
-				.right("None")
-				.build());
-		}
-		else
+		if (itemRequirements.length > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Equip:").build());
 
@@ -274,7 +269,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			System.arraycopy(equipment, 0, combined, 0, equipment.length);
 			System.arraycopy(inventory, 0, combined, equipment.length, inventory.length);
 
-			for (ItemRequirement requirement : getItemRequirements())
+			for (ItemRequirement requirement : itemRequirements)
 			{
 				boolean equipmentFulfilled = requirement.fulfilledBy(equipment);
 				boolean combinedFulfilled = requirement.fulfilledBy(combined);
