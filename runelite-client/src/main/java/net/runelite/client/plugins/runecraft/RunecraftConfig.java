@@ -33,17 +33,6 @@ import net.runelite.client.config.ConfigItem;
 public interface RunecraftConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showBindNeck",
-		name = "Show Binding Neck charges",
-		description = "Configures whether the binding neck charge is displayed",
-		position = 2
-	)
-	default boolean showBindNeck()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showRifts",
 		name = "Show Rifts in Abyss",
 		description = "Configures whether the rifts in the abyss will be displayed",

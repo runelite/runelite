@@ -57,6 +57,7 @@ public class HiscoreResult
 	private Skill bountyHunterHunter;
 	private Skill bountyHunterRogue;
 	private Skill clueScrollAll;
+	private Skill clueScrollBeginner;
 	private Skill clueScrollEasy;
 	private Skill clueScrollMedium;
 	private Skill clueScrollHard;
@@ -122,6 +123,8 @@ public class HiscoreResult
 				return getBountyHunterRogue();
 			case CLUE_SCROLL_ALL:
 				return getClueScrollAll();
+			case CLUE_SCROLL_BEGINNER:
+				return getClueScrollBeginner();
 			case CLUE_SCROLL_EASY:
 				return getClueScrollEasy();
 			case CLUE_SCROLL_MEDIUM:

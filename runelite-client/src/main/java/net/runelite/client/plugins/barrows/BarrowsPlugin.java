@@ -239,7 +239,7 @@ public class BarrowsPlugin extends Plugin
 				.append(ChatColorType.NORMAL);
 
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.EXAMINE_ITEM)
+				.type(ChatMessageType.ITEM_EXAMINE)
 				.runeLiteFormattedMessage(message.build())
 				.build());
 		}

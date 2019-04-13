@@ -27,21 +27,16 @@ package net.runelite.client.plugins.cluescrolls.clues;
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-@AllArgsConstructor
 public class CoordinateClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
 	private static final ImmutableMap<WorldPoint, String> CLUES = new ImmutableMap.Builder<WorldPoint, String>()
@@ -64,7 +59,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2848, 3296, 0), "North of Crandor island.")
 		.put(new WorldPoint(2583, 2990, 0), "Feldip Hills, south-east of Gu'Thanoth (AKS).")
 		.put(new WorldPoint(3179, 3344, 0), "South of the Champions' Guild, opposite side of the River Lum.")
-		.put(new WorldPoint(2383, 3370, 0), "South-west of Tree Gnome Stronghold.")
+		.put(new WorldPoint(2383, 3370, 0), "West of the outpost")
 		.put(new WorldPoint(3312, 3375, 0), "North-west of Exam Centre, on the hill.")
 		.put(new WorldPoint(3121, 3384, 0), "North-east of Draynor Manor, near River Lum.")
 		.put(new WorldPoint(3430, 3388, 0), "West of Mort Myre Swamp.")
@@ -192,9 +187,15 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2994, 3961, 0), "Wilderness. Inside Agility Training Area.")
 		.build();
 
-	private String text;
-	private WorldPoint location;
-	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(ItemID.SPADE);
+	private final String text;
+	private final WorldPoint location;
+
+	public CoordinateClue(String text, WorldPoint location)
+	{
+		this.text = text;
+		this.location = location;
+		setRequiresSpade(true);
+	}
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
@@ -214,15 +215,6 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Click the clue scroll on your world map to see dig location.")
 			.build());
-
-		if (plugin.getInventoryItems() != null)
-		{
-			if (!HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
-			{
-				panelComponent.getChildren().add(LineComponent.builder().left("").build());
-				panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
-			}
-		}
 	}
 
 	@Override

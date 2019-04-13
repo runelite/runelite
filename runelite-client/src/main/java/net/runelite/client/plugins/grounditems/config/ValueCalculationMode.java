@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Abel Briggs <https://github.com/abelbriggs1>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
 
-import net.runelite.mapping.Import;
+package net.runelite.client.plugins.grounditems.config;
 
-public interface RSCombatInfo2
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum ValueCalculationMode
 {
-	@Import("healthScale")
-	int getHealthScale();
+	HA("High Alchemy"), // calc highlight by HA value
+	GE("Grand Exchange"), // calc by GE
+	HIGHEST("Highest"); // use whatever is highest.
+
+	private final String name;
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

@@ -25,13 +25,18 @@
 package net.runelite.client.plugins.specialcounter;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.Map;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.client.ui.overlay.infobox.Counter;
 
 class SpecialCounter extends Counter
 {
 	private final SpecialCounterPlugin plugin;
 	private SpecialWeapon weapon;
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<String, Integer> partySpecs = new HashMap<>();
 
 	SpecialCounter(BufferedImage image, SpecialCounterPlugin plugin, int hitValue, SpecialWeapon weapon)
 	{
@@ -49,7 +54,6 @@ class SpecialCounter extends Counter
 	@Override
 	public String getTooltip()
 	{
-		Map<String, Integer> partySpecs = plugin.getPartySpecs();
 		int hitValue = getCount();
 
 		if (partySpecs.isEmpty())

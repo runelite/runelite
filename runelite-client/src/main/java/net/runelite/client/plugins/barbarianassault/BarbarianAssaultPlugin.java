@@ -127,7 +127,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() == ChatMessageType.SERVER
+		if (event.getType() == ChatMessageType.GAMEMESSAGE
 			&& event.getMessage().startsWith("---- Wave:"))
 		{
 			String[] message = event.getMessage().split(" ");
@@ -200,7 +200,7 @@ public class BarbarianAssaultPlugin extends Plugin
 			.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.GAME)
+			.type(ChatMessageType.CONSOLE)
 			.runeLiteFormattedMessage(chatMessage)
 			.build());
 	}
