@@ -89,4 +89,9 @@ public class Constants
 	 * the maximum framerate of 50 fps.
 	 */
 	public static final int CLIENT_TICK_LENGTH = 20;
+
+	/**
+	 * The text of the welcome message upon logging in.
+	 */
+	public static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape.";
 }
