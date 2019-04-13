@@ -236,7 +236,8 @@ public class MusicListPlugin extends Plugin
 		{
 			return;
 		}
-		if (trackList.getChild(0).getText().equals("")) {
+		if (trackList.getChild(0).getText().equals(""))
+		{
 			return;
 		}
 
