@@ -1,16 +1,16 @@
 /*
  * Copyright (c) 2018, Morgan Lewis <https://github.com/MESLewis>
+ * Copyright (c) 2019, Yani <yani@xenokore.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
+ *    list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -25,18 +25,29 @@
  */
 package net.runelite.client.plugins.worldmap;
 
+import com.google.common.base.Strings;
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.GameState;
 import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.AgilityShortcut;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
@@ -71,6 +82,10 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_RARE_TREE_TOOLTIPS = "rareTreeTooltips";
 	static final String CONFIG_KEY_RARE_TREE_LEVEL_ICON = "rareTreeIcon";
 
+	static final String WAYPOINT_SET_MESSAGE = "You have set a waypoint.";
+	static final String WAYPOINT_UNSET_MESSAGE = "You have cleared your waypoint.";
+	static final String WAYPOINT_ACTIVE_MESSAGE = "You have an active waypoint.";
+
 	static
 	{
 		//A size of 17 gives us a buffer when triggering tooltips
@@ -91,13 +106,29 @@ public class WorldMapPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ConfigManager configManager;
+
+	@Inject
 	private WorldMapConfig config;
 
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
 
+	@Inject
+	private MouseManager mouseManager;
+
+	@Inject
+	private WayPointWorldMapListener wayPointWorldMapListener;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
+
 	private int agilityLevel = 0;
 	private int woodcuttingLevel = 0;
+
+	private WorldPoint wayPoint;
+
+	private static final Gson gson = new Gson();
 
 	@Provides
 	WorldMapConfig provideConfig(ConfigManager configManager)
@@ -111,6 +142,14 @@ public class WorldMapPlugin extends Plugin
 		agilityLevel = client.getRealSkillLevel(Skill.AGILITY);
 		woodcuttingLevel = client.getRealSkillLevel(Skill.WOODCUTTING);
 		updateShownIcons();
+
+		mouseManager.registerMouseListener(wayPointWorldMapListener);
+		wayPoint = loadWayPoint();
+
+		if (wayPoint != null)
+		{
+			updateWayPoint();
+		}
 	}
 
 	@Override
@@ -123,8 +162,25 @@ public class WorldMapPlugin extends Plugin
 		worldMapPointManager.removeIf(MinigamePoint.class::isInstance);
 		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);
 		worldMapPointManager.removeIf(RareTreePoint.class::isInstance);
+		worldMapPointManager.removeIf(WayPointWorldMapPoint.class::isInstance);
+
 		agilityLevel = 0;
 		woodcuttingLevel = 0;
+
+		if (wayPoint != null)
+		{
+			client.clearHintArrow();
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			sendChatMessage(WAYPOINT_ACTIVE_MESSAGE);
+			updateWayPoint();
+		}
 	}
 
 	@Subscribe
@@ -136,6 +192,7 @@ public class WorldMapPlugin extends Plugin
 		}
 
 		updateShownIcons();
+		updateWayPoint();
 	}
 
 	@Subscribe
@@ -260,5 +317,82 @@ public class WorldMapPlugin extends Plugin
 				}
 			}).map(TeleportPoint::new)
 			.forEach(worldMapPointManager::add);
+	}
+
+	private WorldPoint loadWayPoint()
+	{
+		String json = configManager.getConfiguration(WorldMapPlugin.CONFIG_KEY, "waypoint_data");
+
+		if (Strings.isNullOrEmpty(json))
+		{
+			return null;
+		}
+
+		return gson.fromJson(json, WorldPoint.class);
+	}
+
+	private void saveWayPoint()
+	{
+		if (wayPoint == null)
+		{
+			configManager.unsetConfiguration(WorldMapPlugin.CONFIG_KEY, "waypoint_data");
+			return;
+		}
+
+		String json = gson.toJson(wayPoint);
+		configManager.setConfiguration(WorldMapPlugin.CONFIG_KEY, "waypoint_data", json);
+	}
+
+	public void setWayPoint(WorldPoint point)
+	{
+		wayPoint = point;
+		saveWayPoint();
+		updateWayPoint();
+		sendChatMessage(WAYPOINT_SET_MESSAGE);
+	}
+
+	public void removeWayPoint()
+	{
+		wayPoint = null;
+		saveWayPoint();
+		updateWayPoint();
+		sendChatMessage(WAYPOINT_UNSET_MESSAGE);
+	}
+
+	public boolean hasWayPoint()
+	{
+		return (wayPoint != null);
+	}
+
+	private void updateWayPoint()
+	{
+		client.clearHintArrow();
+		worldMapPointManager.removeIf(WayPointWorldMapPoint.class::isInstance);
+
+		if (!config.isWaypointEnabled())
+		{
+			return;
+		}
+
+		if (wayPoint == null)
+		{
+			return;
+		}
+
+		client.setHintArrow(wayPoint);
+		worldMapPointManager.add(new WayPointWorldMapPoint(wayPoint));
+	}
+
+	private void sendChatMessage(String chatMessage)
+	{
+		final String message = new ChatMessageBuilder()
+				.append(chatMessage)
+				.build();
+
+		chatMessageManager.queue(
+				QueuedMessage.builder()
+						.type(ChatMessageType.GAME)
+						.runeLiteFormattedMessage(message)
+						.build());
 	}
 }
