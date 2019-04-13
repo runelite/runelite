@@ -34,6 +34,7 @@ import java.util.Queue;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
@@ -58,7 +59,6 @@ import net.runelite.client.util.Text;
 )
 public class ChatHistoryPlugin extends Plugin implements KeyListener
 {
-	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape.";
 	private static final String CLEAR_HISTORY = "Clear history";
 	private static final String CLEAR_PRIVATE = "<col=ffff00>Private:";
 	private static final int CYCLE_HOTKEY = KeyEvent.VK_TAB;
@@ -110,7 +110,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	{
 		// Start sending old messages right after the welcome message, as that is most reliable source
 		// of information that chat history was reset
-		if (chatMessage.getMessage().equals(WELCOME_MESSAGE))
+		if (chatMessage.getMessage().equals(Constants.WELCOME_MESSAGE))
 		{
 			if (!config.retainChatHistory())
 			{
@@ -145,8 +145,8 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 					.type(chatMessage.getType())
 					.name(chatMessage.getName())
 					.sender(chatMessage.getSender())
-					.value(nbsp(chatMessage.getMessage()))
-					.runeLiteFormattedMessage(nbsp(chatMessage.getMessageNode().getRuneLiteFormatMessage()))
+					.value(chatMessage.getMessage())
+					.runeLiteFormattedMessage(chatMessage.getMessageNode().getRuneLiteFormatMessage())
 					.timestamp(chatMessage.getTimestamp())
 					.build();
 
@@ -174,21 +174,6 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 				messageQueue.removeIf(e -> e.getType() == ChatMessageType.PUBLICCHAT || e.getType() == ChatMessageType.MODCHAT);
 			}
 		}
-	}
-
-	/**
-	 * Small hack to prevent plugins checking for specific messages to match
-	 * @param message message
-	 * @return message with nbsp
-	 */
-	private static String nbsp(final String message)
-	{
-		if (message != null)
-		{
-			return message.replace(' ', '\u00A0');
-		}
-
-		return null;
 	}
 
 	@Override
