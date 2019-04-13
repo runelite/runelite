@@ -92,7 +92,7 @@ public class RemoteBankContentsProcess
 	void populatePanelItems()
 	{
 		itemSet.clear();
-		items.forEach((i, j) -> itemSet.add(new BankItem(client.getItemDefinition(i).getName(), i, j, itemManager)));
+		items.forEach((i, j) -> itemSet.add(new BankItem(i, j, itemManager, client)));
 		panel.setItems(itemSet);
 
 	}

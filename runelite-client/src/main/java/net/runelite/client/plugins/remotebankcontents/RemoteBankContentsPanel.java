@@ -1,13 +1,13 @@
 package net.runelite.client.plugins.remotebankcontents;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -19,7 +19,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import net.runelite.api.Client;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
@@ -28,9 +27,8 @@ public class RemoteBankContentsPanel extends PluginPanel
 {
 
 	private static final int ITEMS_PER_ROW = 5;
-	final JPanel innerPanel = new JPanel();
+	final JPanel bankItemPanel = new JPanel();
 	private final JLabel overallIcon = new JLabel();    // Details and navigation
-	private final JPanel itemContainer = new JPanel();
 
 	@Inject
 	private final ItemManager itemManager;
@@ -38,8 +36,8 @@ public class RemoteBankContentsPanel extends PluginPanel
 	private Client client;
 	@Inject
 	private ClientThread clientThread;
-	private Set<BankItem> items; //Goes through all tabs numerically and then does the first main tab.
-	private Set<BankItem> tempItems;
+	private LinkedHashSet<BankItem> items; //Goes through all tabs numerically and then does the first main tab.
+	private LinkedHashSet<BankItem> tempItems;
 	private JTextField searchBar = new JTextField();
 	private JPanel searchPanel = new JPanel();
 	private LinkedHashMap<Integer, Integer> itemsAndQuantities;
@@ -51,10 +49,9 @@ public class RemoteBankContentsPanel extends PluginPanel
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BoxLayout(this, 1));
 
-		add(searchPanel);
-		searchPanel.setLayout(new GridLayout(1, 2));
 
-		searchPanel.add(searchBar);
+		add(searchBar);
+
 		searchBar.getDocument().addDocumentListener(new DocumentListener()
 		{
 			public void insertUpdate(DocumentEvent e)
@@ -75,9 +72,10 @@ public class RemoteBankContentsPanel extends PluginPanel
 		});
 
 
-		add(innerPanel);
-		innerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		innerPanel.setBorder(new EmptyBorder(5, 5, 5, 10));
+		bankItemPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		bankItemPanel.setBorder(new EmptyBorder(5, 5, 5, 10));
+
+		add(bankItemPanel);
 
 
 	}
@@ -93,7 +91,7 @@ public class RemoteBankContentsPanel extends PluginPanel
 	void setItems(LinkedHashSet<BankItem> items)
 	{
 
-		this.items = items;
+		this.items = items.stream().filter(i -> !i.isTemplate()).filter(i -> i.getQuantity() > 0).filter(i -> i.getName().length() > 0).collect(Collectors.toCollection(LinkedHashSet::new));
 
 		populatePanel();
 	}
@@ -104,47 +102,41 @@ public class RemoteBankContentsPanel extends PluginPanel
 
 		if (items != null)
 		{
-			final int rowSize = ((items.size() % ITEMS_PER_ROW == 0) ? 0 : 1) + items.size() / ITEMS_PER_ROW;
-			innerPanel.setLayout(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
-			innerPanel.removeAll();
+			int itemsPerRow = ITEMS_PER_ROW;
+			final int numberOfRows = ((items.size() % itemsPerRow == 0) ? items.size() / itemsPerRow : items.size() / itemsPerRow + 1);
+
+			bankItemPanel.removeAll();
+			bankItemPanel.setLayout(new GridLayout(numberOfRows, ITEMS_PER_ROW, 1, 1));
+			bankItemPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+
 			items.forEach(bankItem -> {
 
-
-				if (client.getItemDefinition(bankItem.getId()).getPlaceholderTemplateId() == -1)
-				{
-
-
-					int quantity = 0;
-
-
-					quantity = bankItem.getQuantity();
-
-
-					if (quantity > 0)
+					if (!bankItem.isTemplate() && bankItem.getQuantity() > 0 && !bankItem.getName().equals(""))
 					{
 
-						final JPanel slotContainer = new JPanel();
+						JPanel slotContainer = new JPanel();
 						slotContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-
-						AsyncBufferedImage itemImage = bankItem.getImage();
 
 						JLabel imageLabel = new JLabel();
 						imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 						imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-						itemImage.addTo(imageLabel);
+						bankItem.getImage().addTo(imageLabel);
 						imageLabel.setToolTipText(bankItem.getName());
+
 						slotContainer.add(imageLabel);
-						innerPanel.add(slotContainer);
+						bankItemPanel.add(slotContainer);
 					}
 				}
-			});
+			);
 
 			rebuild();
 		}
+
 	}
 
 	public void rebuild()
 	{
+
 		repaint();
 		revalidate();
 	}
@@ -162,7 +154,8 @@ public class RemoteBankContentsPanel extends PluginPanel
 			System.out.println(chars.length());
 			if (chars.length() > 0)
 			{
-				items = items.stream().filter(i -> i.getName().toLowerCase().contains(chars)).collect(Collectors.toSet());
+
+				items = items.stream().filter(i -> i.getName().toLowerCase().contains(chars)).collect(Collectors.toCollection(LinkedHashSet::new));
 				populatePanel();
 				items = tempItems;
 			}
