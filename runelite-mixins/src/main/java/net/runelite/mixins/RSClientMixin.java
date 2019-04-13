@@ -35,6 +35,7 @@ import javax.annotation.Nullable;
 import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
+import net.runelite.api.Constants;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.Friend;
 import net.runelite.api.GameState;
@@ -189,6 +190,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private static HealthBarOverride healthBarOverride;
+
+	@Inject
+	private static int loginTime;
 
 	@Inject
 	public RSClientMixin()
@@ -1312,7 +1316,17 @@ public abstract class RSClientMixin implements RSClient
 
 		final ChatMessageType chatMessageType = ChatMessageType.of(type);
 		final ChatMessage chatMessage = new ChatMessage(messageNode, chatMessageType, name, message, sender, messageNode.getTimestamp());
-		client.getCallbacks().post(chatMessage);
+
+		if (chatMessage.getMessage().equals(Constants.WELCOME_MESSAGE))
+		{
+			loginTime = (int) System.currentTimeMillis() / 1000;
+		}
+
+		// Don't post events for chat messages earlier than the welcome message to prevent chat history from sending events
+		if (chatMessage.getTimestamp() >= loginTime)
+		{
+			client.getCallbacks().post(chatMessage);
+		}
 	}
 
 	@Inject
