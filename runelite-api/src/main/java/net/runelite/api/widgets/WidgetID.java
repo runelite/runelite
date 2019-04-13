@@ -128,6 +128,8 @@ public class WidgetID
 	public static final int QUESTLIST_GROUP_ID = 399;
 	public static final int SKILLS_GROUP_ID = 320;
 	public static final int QUESTTAB_GROUP_ID = 629;
+	public static final int CRAFTING_GROUP_ID = 270;
+	public static final int MUSIC_GROUP_ID = 239;
 
 	static class WorldMap
 	{
