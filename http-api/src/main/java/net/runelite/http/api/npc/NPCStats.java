@@ -61,6 +61,10 @@ public class NPCStats
 	private final boolean poisonImmune;
 	private final boolean venomImmune;
 
+	private final boolean dragon;
+	private final boolean demon;
+	private final boolean undead;
+
 	/**
 	 * Based off the formula found here: http://services.runescape.com/m=forum/c=PLuJ4cy6gtA/forums.ws?317,318,712,65587452,209,337584542#209
 	 * @return bonus XP modifier
