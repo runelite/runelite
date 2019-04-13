@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
@@ -39,6 +41,7 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class MusicClue extends ClueScroll implements NpcClueScroll
 {
@@ -47,11 +50,6 @@ public class MusicClue extends ClueScroll implements NpcClueScroll
 	private static final Pattern SONG_PATTERN = Pattern.compile("<col=ffffff>([A-Za-z !&',.]+)</col>");
 
 	private final String song;
-
-	private MusicClue(String song)
-	{
-		this.song = song;
-	}
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
