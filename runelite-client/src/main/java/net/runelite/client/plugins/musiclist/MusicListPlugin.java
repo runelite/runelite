@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2019 Spudjb <https://github.com/spudjb>
+ * Copyright (c) 2019 Atroolantra <https://github.com/Atrolantra>
+ * Heavily adapted from the QuestListPlugin - (c) 2019 Spudjb <https://github.com/spudjb>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,7 +25,6 @@
  */
 package net.runelite.client.plugins.musiclist;
 
-import com.google.common.collect.ImmutableList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -41,11 +41,9 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.questlist.QuestListPlugin;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
-import java.io.Console;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,8 +54,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MusicListPlugin extends Plugin
 {
-	private static final int ENTRY_PADDING = 8;
-
 	private static final String MENU_OPEN = "Open";
 	private static final String MENU_CLOSE = "Close";
 
