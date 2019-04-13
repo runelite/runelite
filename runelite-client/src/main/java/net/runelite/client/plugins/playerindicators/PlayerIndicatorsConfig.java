@@ -198,10 +198,10 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 15,
-			keyName = "showCombatlevel",
-			name = "Show combat levels",
-			description = "Shows combat levels next to player names"
+		position = 15,
+		keyName = "showCombatlevel",
+		name = "Show combat levels",
+		description = "Shows combat levels next to player names"
 	)
 	default boolean showCombatlevel()
 	{
