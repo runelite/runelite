@@ -93,6 +93,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapRockCake",
+			name = "RockCake",
+			description = "Swap Eat with Guzzle on the Dwarven Rock Cake"
+	)
+	default boolean swapRockCake()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapContract",
 		name = "Contract",
 		description = "Swap Talk-to with Contract on Guildmaster Jane"

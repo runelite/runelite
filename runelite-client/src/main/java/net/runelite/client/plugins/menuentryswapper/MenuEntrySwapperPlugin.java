@@ -570,6 +570,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, true);
 		}
+		else if (config.swapRockCake() && option.equals("eat") && target.contains("dwarven"))
+		{
+			swap("guzzle", option, target, true);
+		}
 	}
 
 	@Subscribe
