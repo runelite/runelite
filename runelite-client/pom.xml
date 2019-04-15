@@ -352,6 +352,11 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- Strip jar before signing -->
+			<plugin>
+				<groupId>io.github.zlika</groupId>
+				<artifactId>reproducible-build-maven-plugin</artifactId>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jarsigner-plugin</artifactId>

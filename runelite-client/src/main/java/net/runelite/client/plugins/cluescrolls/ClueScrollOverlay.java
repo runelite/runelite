@@ -53,7 +53,7 @@ public class ClueScrollOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	public ClueScrollOverlay(ClueScrollPlugin plugin)
+	private ClueScrollOverlay(ClueScrollPlugin plugin)
 	{
 		super(plugin);
 		this.plugin = plugin;
