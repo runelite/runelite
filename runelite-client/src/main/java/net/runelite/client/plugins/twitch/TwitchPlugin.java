@@ -26,6 +26,9 @@ package net.runelite.client.plugins.twitch;
 
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
+
+import java.awt.*;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import javax.inject.Inject;
@@ -33,7 +36,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.MessageNode;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -46,9 +51,15 @@ import net.runelite.client.events.ChatboxInput;
 import net.runelite.client.events.PrivateMessageInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.timestamp.TimestampPlugin;
 import net.runelite.client.plugins.twitch.irc.TwitchIRCClient;
 import net.runelite.client.plugins.twitch.irc.TwitchListener;
 import net.runelite.client.task.Schedule;
+import net.runelite.client.ui.JagexColors;
+import net.runelite.client.util.ColorUtil;
+
+import java.util.Date;
+import java.sql.Timestamp;
 
 @PluginDescriptor(
 	name = "Twitch",
@@ -71,6 +82,8 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 	private CommandManager commandManager;
 
 	private TwitchIRCClient twitchIRCClient;
+
+	private ScriptCallbackEvent event;
 
 	@Override
 	protected void startUp()
@@ -160,16 +173,24 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 
 	private void addChatMessage(String sender, String message)
 	{
+
+		Date messageTime = new Date();
+		Timestamp time = new Timestamp(messageTime.getTime());
+
 		String chatMessage = new ChatMessageBuilder()
+			.append("[" + time.getHours() + ":" + time.getMinutes() + "] ")
+			.append("[Twitch] ")
+			.append(sender + ": ")
 			.append(ChatColorType.NORMAL)
 			.append(message)
 			.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHAT)
+			.type(ChatMessageType.TWITCH)
 			.sender("Twitch")
 			.name(sender)
 			.runeLiteFormattedMessage(chatMessage)
+			.timestamp(time.getNanos())
 			.build());
 	}
 

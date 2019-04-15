@@ -40,6 +40,7 @@ public class JagexColors
 	public static final Color CHAT_CLAN_NAME_OPAQUE_BACKGROUND = Color.BLUE;
 	public static final Color CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND = Color.BLACK;
 	public static final Color CHAT_TYPED_TEXT_OPAQUE_BACKGROUND = Color.BLUE;
+	public static final Color CHAT_TWITCH_TEXT_OPAQUE_BACKGROUND = new Color(102,0,153);
 
 	/*
 	 * Colors of chat text when displayed on a transparent background.
