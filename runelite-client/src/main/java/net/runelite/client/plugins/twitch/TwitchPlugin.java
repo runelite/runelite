@@ -49,6 +49,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.twitch.irc.TwitchIRCClient;
 import net.runelite.client.plugins.twitch.irc.TwitchListener;
 import net.runelite.client.task.Schedule;
+import java.util.Date;
+import java.sql.Timestamp;
 
 @PluginDescriptor(
 	name = "Twitch",
@@ -160,16 +162,24 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 
 	private void addChatMessage(String sender, String message)
 	{
+
+		Date messageTime = new Date();
+
+		Timestamp time = new Timestamp(messageTime.getTime());
+
 		String chatMessage = new ChatMessageBuilder()
+			.append("[" + time.getHours() + ":" + time.getMinutes() + "]")
+			.append(sender)
 			.append(ChatColorType.NORMAL)
 			.append(message)
 			.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHAT)
+			.type(ChatMessageType.TWITCH)
 			.sender("Twitch")
 			.name(sender)
 			.runeLiteFormattedMessage(chatMessage)
+			.timestamp(time.getNanos())
 			.build());
 	}
 
