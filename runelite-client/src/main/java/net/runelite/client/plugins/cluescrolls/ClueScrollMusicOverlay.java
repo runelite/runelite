@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,23 +26,26 @@ package net.runelite.client.plugins.cluescrolls;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
+import net.runelite.client.plugins.cluescrolls.clues.MusicClue;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-class ClueScrollEmoteOverlay extends Overlay
+class ClueScrollMusicOverlay extends Overlay
 {
+	private static final Rectangle PADDING = new Rectangle(2, 1, 0, 1);
+
 	private final ClueScrollPlugin plugin;
 	private final Client client;
 
 	@Inject
-	private ClueScrollEmoteOverlay(ClueScrollPlugin plugin, Client client)
+	private ClueScrollMusicOverlay(ClueScrollPlugin plugin, Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -55,45 +58,44 @@ class ClueScrollEmoteOverlay extends Overlay
 	{
 		ClueScroll clue = plugin.getClue();
 
-		if (!(clue instanceof EmoteClue))
+		if (!(clue instanceof MusicClue))
 		{
 			return null;
 		}
 
-		EmoteClue emoteClue = (EmoteClue) clue;
+		MusicClue musicClue = (MusicClue) clue;
 
-		if (!emoteClue.getFirstEmote().hasSprite())
+		Widget musicContainer = client.getWidget(WidgetInfo.MUSIC_WINDOW);
+
+		if (musicContainer == null || musicContainer.isHidden())
 		{
 			return null;
 		}
 
-		Widget emoteContainer = client.getWidget(WidgetInfo.EMOTE_CONTAINER);
+		Widget trackList = client.getWidget(WidgetInfo.MUSIC_TRACK_LIST);
+		String trackToFind = musicClue.getSong();
+		Widget found = null;
 
-		if (emoteContainer == null || emoteContainer.isHidden())
+		if (trackList == null)
 		{
 			return null;
 		}
 
-		Widget emoteWindow = client.getWidget(WidgetInfo.EMOTE_WINDOW);
-
-		if (emoteWindow == null)
+		for (Widget track : trackList.getDynamicChildren())
 		{
-			return null;
-		}
-
-		for (Widget emoteWidget : emoteContainer.getDynamicChildren())
-		{
-			if (emoteWidget.getSpriteId() == emoteClue.getFirstEmote().getSpriteId())
+			if (track.getText().equals(trackToFind))
 			{
-				plugin.highlightWidget(graphics, emoteWidget, emoteWindow, null,
-					emoteClue.getSecondEmote() != null ? "1st" : null);
-			}
-			else if (emoteClue.getSecondEmote() != null
-				&& emoteWidget.getSpriteId() == emoteClue.getSecondEmote().getSpriteId())
-			{
-				plugin.highlightWidget(graphics, emoteWidget, emoteWindow, null, "2nd");
+				found = track;
+				break;
 			}
 		}
+
+		if (found == null)
+		{
+			return null;
+		}
+
+		plugin.highlightWidget(graphics, found, trackList, PADDING, null);
 
 		return null;
 	}
