@@ -28,13 +28,19 @@ package net.runelite.client.plugins.barbarianassault;
 import com.google.inject.Provides;
 import java.awt.Font;
 import java.awt.Image;
+import java.util.HashMap;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.kit.KitType;
@@ -70,6 +76,18 @@ public class BarbarianAssaultPlugin extends Plugin
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
 
+	@Getter(AccessLevel.PACKAGE)
+	private HashMap<WorldPoint, Integer> redEggs;
+
+	@Getter(AccessLevel.PACKAGE)
+	private HashMap<WorldPoint, Integer> greenEggs;
+
+	@Getter(AccessLevel.PACKAGE)
+	private HashMap<WorldPoint, Integer> blueEggs;
+
+	@Getter(AccessLevel.PACKAGE)
+	private HashMap<WorldPoint, Integer> yellowEggs;
+
 	@Inject
 	private Client client;
 
@@ -99,6 +117,11 @@ public class BarbarianAssaultPlugin extends Plugin
 			.deriveFont(Font.BOLD, 24);
 
 		clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
+
+		redEggs = new HashMap<>();
+		greenEggs = new HashMap<>();
+		blueEggs = new HashMap<>();
+		yellowEggs = new HashMap<>();
 	}
 
 	@Override
@@ -188,6 +211,74 @@ public class BarbarianAssaultPlugin extends Plugin
 		}
 
 		inGameBit = inGame;
+	}
+
+	@Subscribe
+	public void onItemSpawned(ItemSpawned itemSpawned)
+	{
+		int itemId = itemSpawned.getItem().getId();
+		WorldPoint worldPoint = itemSpawned.getTile().getWorldLocation();
+		HashMap<WorldPoint, Integer> eggMap = getEggMap(itemId);
+
+		if (eggMap !=  null)
+		{
+			Integer existingQuantity = eggMap.putIfAbsent(worldPoint, 1);
+			if (existingQuantity != null)
+			{
+				eggMap.put(worldPoint, existingQuantity + 1);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onItemDespawned(ItemDespawned itemDespawned)
+	{
+		int itemId = itemDespawned.getItem().getId();
+		WorldPoint worldPoint = itemDespawned.getTile().getWorldLocation();
+		HashMap<WorldPoint, Integer> eggMap = getEggMap(itemId);
+
+		if (eggMap != null && eggMap.containsKey(worldPoint))
+		{
+			int quantity = eggMap.get(worldPoint);
+			if (quantity > 1)
+			{
+				eggMap.put(worldPoint, quantity - 1);
+			}
+			else
+			{
+				eggMap.remove(worldPoint);
+			}
+		}
+	}
+
+	String getCollectorHeardCall()
+	{
+		Widget widget = client.getWidget(WidgetInfo.BA_COLL_HEARD_TEXT);
+		String call = null;
+
+		if (widget != null)
+		{
+			call = widget.getText();
+		}
+
+		return call;
+	}
+
+	private HashMap<WorldPoint, Integer> getEggMap(int itemID)
+	{
+		switch (itemID)
+		{
+			case ItemID.RED_EGG:
+				return redEggs;
+			case ItemID.GREEN_EGG:
+				return greenEggs;
+			case ItemID.BLUE_EGG:
+				return blueEggs;
+			case ItemID.YELLOW_EGG:
+				return yellowEggs;
+			default:
+				return null;
+		}
 	}
 
 	private void announceTime(String preText, String time)

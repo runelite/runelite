@@ -51,4 +51,14 @@ public interface BarbarianAssaultConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "highlightCollectorEggs",
+			name = "Highlight collector eggs",
+			description = "Highlight called egg colors"
+	)
+	default boolean highlightCollectorEggs()
+	{
+		return true;
+	}
 }
