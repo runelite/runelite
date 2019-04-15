@@ -89,8 +89,8 @@ public class PlayerIndicatorsOverlay extends Overlay
 		}
 
 		final String name;
-        final String nameSanitized = Text.sanitize(actor.getName());
-        if ( config.showCombatlevel())
+		final String nameSanitized = Text.sanitize(actor.getName());
+		if (config.showCombatlevel())
 		{
 			name = nameSanitized + " (" + actor.getCombatLevel() + ")";
 		}
