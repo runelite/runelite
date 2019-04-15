@@ -177,7 +177,7 @@ public class BASPlugin extends Plugin
 												.append(" online.")
 												.build();
 											chatMessageManager.queue(QueuedMessage.builder()
-												.type(ChatMessageType.GAME)
+												.type(ChatMessageType.GAMEMESSAGE)
 												.runeLiteFormattedMessage(chatMessage)
 												.build());
 										}
@@ -211,7 +211,7 @@ public class BASPlugin extends Plugin
 								.append(" offline.")
 								.build();
 							chatMessageManager.queue(QueuedMessage.builder()
-								.type(ChatMessageType.GAME)
+								.type(ChatMessageType.GAMEMESSAGE)
 								.runeLiteFormattedMessage(chatMessage)
 								.build());
 						}

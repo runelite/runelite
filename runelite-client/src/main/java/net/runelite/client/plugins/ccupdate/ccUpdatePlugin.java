@@ -191,7 +191,7 @@ public class ccUpdatePlugin extends Plugin
 				.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
+				.type(ChatMessageType.GAMEMESSAGE)
 				.runeLiteFormattedMessage(message)
 				.build());
 	}

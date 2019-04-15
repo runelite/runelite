@@ -70,6 +70,10 @@ public class BarbarianAssaultPlugin extends Plugin {
 	@Getter
 	private int collectedEggCount = 0;
 	@Getter
+	private int positiveEggCount = 0;
+	@Getter
+	private int wrongEggs = 0;
+	@Getter
 	private int HpHealed = 0;
 	@Getter
 	private int totalCollectedEggCount = 0;
@@ -118,6 +122,8 @@ public class BarbarianAssaultPlugin extends Plugin {
 		currentWave = START_WAVE;
 		inGameBit = 0;
 		collectedEggCount = 0;
+		positiveEggCount = 0;
+		wrongEggs = 0;
 		HpHealed = 0;
 	}
 
@@ -131,10 +137,21 @@ public class BarbarianAssaultPlugin extends Plugin {
 				if (config.showHpCount() && HpHealed > 0) {
 					totalMsg = "; Total Healed: ";
 					total = ""+totalHpHealed;
+					if (HpHealed > 504)
+					{
+						total = ""+504;
+					}
 				}
 				else if (config.showEggCount() && collectedEggCount > 0) {
+					collectedEggCount -= wrongEggs; //true positive egg count
+					if (collectedEggCount > 60)
+					{
+						collectedEggCount = 60;
+					}
+					collectedEggCount -= wrongEggs; //true positive - negative egg count\
 					totalMsg = "; Total Collected: ";
-					total = ""+totalCollectedEggCount;
+					total = "" + totalCollectedEggCount;
+
 				}
 				announceTime("Game finished, duration: ", gameTime.getTime(false),type, amt, totalMsg, total);
 			}
@@ -162,7 +179,7 @@ public class BarbarianAssaultPlugin extends Plugin {
 			}
 		} else if (event.getType() == ChatMessageType.GAMEMESSAGE
 				&& event.getMessage().contains("egg explode")) {
-			collectedEggCount -= 2;
+			wrongEggs --;
 		} else if (event.getType() == ChatMessageType.GAMEMESSAGE
 				&& event.getMessage().contains("healed")) {
 			String message = event.getMessage();
@@ -264,7 +281,7 @@ public class BarbarianAssaultPlugin extends Plugin {
 				.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAMEMESSAGE)
+				.type(ChatMessageType.CONSOLE)
 				.runeLiteFormattedMessage(chatMessage)
 				.build());
 	}
