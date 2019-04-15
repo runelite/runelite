@@ -114,7 +114,7 @@ public class HighAlchGuidePricePlugin extends Plugin
 	private int setDisplayHighAlch(Widget[] itemWidgets)
 	{
 		int totalValue = 0;
-		for(int i = 0; i < 28; i++)
+		for (int i = 0; i < 28; i++)
 		{
 			if (itemWidgets[i].getItemQuantity() < 1)
 			{
@@ -141,7 +141,7 @@ public class HighAlchGuidePricePlugin extends Plugin
 	private int setDisplaydefault(Widget[] itemWidgets)
 	{
 		int totalValue = 0;
-		for(int i = 0; i < 28; i++)
+		for (int i = 0; i < 28; i++)
 		{
 			if (itemWidgets[i].getItemQuantity() < 1)
 			{
@@ -185,7 +185,7 @@ public class HighAlchGuidePricePlugin extends Plugin
 					{
 						geValue = NumberFormat.getNumberInstance(java.util.Locale.US).parse(m.group(1)).intValue();
 					}
-					catch(ParseException e)
+					catch (ParseException e)
 					{
 						e.printStackTrace();
 						geValue = 0;
