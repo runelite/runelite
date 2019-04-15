@@ -554,7 +554,7 @@ public class WidgetID
 		static final int CURRENT_WAVE_WIDGET = 4;
 		static final int CURRENT_WAVE = 5;
 		static final int CALL_WIDGET = 6;
-		static final int CALL_TEXT = 7;
+		static final int HEARD_CALL = 7;
 		static final int TO_CALL_WIDGET = 8;
 		static final int TO_CALL = 9;
 		static final int ROLE_SPRITE = 10;
