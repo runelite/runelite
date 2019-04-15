@@ -42,7 +42,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @PluginDescriptor(
-		name="High Alch Guide Prices",
+		name = "High Alch Guide Prices",
 		description = "Show prices for High Alchemy alongside the Grand Exchange prices in the price checker menu"
 )
 
@@ -62,11 +62,11 @@ public class HighAlchGuidePricePlugin extends Plugin
 	{
 		Widget priceWidget = client.getWidget(WidgetInfo.GUIDE_PRICES_PRICE_CONTAINER);
 
-		if(priceWidget != null)
+		if (priceWidget != null)
 		{
 			Widget itemContainerWidget = client.getWidget(WidgetInfo.GUIDE_PRICES_ITEMS_CONTAINER);
 			int totalPrice = 0;
-			if(itemContainerWidget.getDynamicChildren() != null)
+			if (itemContainerWidget.getDynamicChildren() != null)
 			{
 				totalPrice = setDisplaydefault(itemContainerWidget.getDynamicChildren());
 			}
@@ -87,15 +87,15 @@ public class HighAlchGuidePricePlugin extends Plugin
 		Widget priceWidget = client.getWidget(WidgetInfo.GUIDE_PRICES_PRICE_CONTAINER);
 		Widget itemContainerWidget = client.getWidget(WidgetInfo.GUIDE_PRICES_ITEMS_CONTAINER);
 
-		if(priceWidget != null)
+		if (priceWidget != null)
 		{
 			String currPriceText = priceWidget.getText();
 			Pattern p = Pattern.compile("<col=ffffff>(.*?)</col>");
 			Matcher m = p.matcher(currPriceText);
-			if(m.find())
+			if (m.find())
 			{
 				int alchValue = 0;
-				if(itemContainerWidget.getDynamicChildren() != null)
+				if (itemContainerWidget.getDynamicChildren() != null)
 				{
 					alchValue = setDisplayHighAlch(itemContainerWidget.getDynamicChildren());
 				}
@@ -116,7 +116,7 @@ public class HighAlchGuidePricePlugin extends Plugin
 		int totalValue = 0;
 		for(int i = 0; i < 28; i++)
 		{
-			if(itemWidgets[i].getItemQuantity() < 1)
+			if (itemWidgets[i].getItemQuantity() < 1)
 			{
 				break;
 			}
@@ -143,7 +143,7 @@ public class HighAlchGuidePricePlugin extends Plugin
 		int totalValue = 0;
 		for(int i = 0; i < 28; i++)
 		{
-			if(itemWidgets[i].getItemQuantity() < 1)
+			if (itemWidgets[i].getItemQuantity() < 1)
 			{
 				break;
 			}
@@ -154,12 +154,12 @@ public class HighAlchGuidePricePlugin extends Plugin
 			int geValue = 0;
 			int quantity = currentItemWidget.getItemQuantity();
 
-			if(quantity == 1)
+			if (quantity == 1)
 			{
 				Pattern p = Pattern.compile("GE = (.*?)<br>");
 				Matcher m = p.matcher(currentTextWidget.getText());
 
-				if(m.find())
+				if (m.find())
 				{
 					try
 					{
@@ -179,7 +179,7 @@ public class HighAlchGuidePricePlugin extends Plugin
 				Pattern p = Pattern.compile("x (.*?)<br>");
 				Matcher m = p.matcher(currentTextWidget.getText());
 
-				if(m.find())
+				if (m.find())
 				{
 					try
 					{
@@ -222,7 +222,7 @@ public class HighAlchGuidePricePlugin extends Plugin
 		NumberFormat commaSep = NumberFormat.getInstance();
 		commaSep.setGroupingUsed(true);
 
-		if(quantity == 1)
+		if (quantity == 1)
 		{
 			stringBuilder.append("GE = ")
 					.append(commaSep.format(geValue))
@@ -250,7 +250,7 @@ public class HighAlchGuidePricePlugin extends Plugin
 		NumberFormat commaSep = NumberFormat.getInstance();
 		commaSep.setGroupingUsed(true);
 
-		if(quantity == 1)
+		if (quantity == 1)
 		{
 			stringBuilder.append(commaSep.format(geValue));
 		}
