@@ -141,7 +141,7 @@ class BarbarianAssaultOverlay extends Overlay
 			for (WorldPoint worldPoint : yellowEggMap.keySet())
 			{
 				int quantity = yellowEggMap.get(worldPoint);
-				renderEggLocation(graphics, worldPoint, quantity, highlightColor);
+				renderEggLocation(graphics, worldPoint, quantity, Color.YELLOW);
 			}
 		}
 
@@ -164,8 +164,13 @@ class BarbarianAssaultOverlay extends Overlay
 		}
 
 		Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
-		final Stroke originalStroke = graphics.getStroke();
 
+		if (poly == null)
+		{
+			return;
+		}
+
+		final Stroke originalStroke = graphics.getStroke();
 		graphics.setColor(color);
 		graphics.setStroke(new BasicStroke(2));
 		graphics.drawPolygon(poly);
