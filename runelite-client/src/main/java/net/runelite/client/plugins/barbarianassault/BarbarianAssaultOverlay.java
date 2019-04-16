@@ -105,80 +105,62 @@ class BarbarianAssaultOverlay extends Overlay
 		if (role == Role.COLLECTOR && config.highlightCollectorEggs())
 		{
 			String heardCall = plugin.getCollectorHeardCall();
-			Color highlightColor;
-			Map<WorldPoint, Integer> calledEggMap;
-
+			Color highlightColor = BarbarianAssaultPlugin.getEggColor(heardCall);
+			Map<WorldPoint, Integer> calledEggMap = plugin.getCalledEggMap();
 			Map<WorldPoint, Integer> yellowEggMap = plugin.getYellowEggs();
-
-			switch (heardCall)
-			{
-				case "Red eggs":
-					calledEggMap = plugin.getRedEggs();
-					highlightColor = Color.RED;
-					break;
-				case "Green eggs":
-					calledEggMap = plugin.getGreenEggs();
-					highlightColor = Color.GREEN;
-					break;
-				case "Blue eggs":
-					calledEggMap = plugin.getBlueEggs();
-					highlightColor = Color.BLUE;
-					break;
-				default:
-					calledEggMap = null;
-					highlightColor = null;
-			}
 
 			if (calledEggMap != null)
 			{
-				for (WorldPoint worldPoint : calledEggMap.keySet())
-				{
-					int quantity = calledEggMap.get(worldPoint);
-					renderEggLocation(graphics, worldPoint, quantity, highlightColor);
-				}
+				renderEggLocations(graphics, calledEggMap, highlightColor);
 			}
 
 			// Always show yellow eggs
-			for (WorldPoint worldPoint : yellowEggMap.keySet())
-			{
-				int quantity = yellowEggMap.get(worldPoint);
-				renderEggLocation(graphics, worldPoint, quantity, Color.YELLOW);
-			}
+			renderEggLocations(graphics, yellowEggMap, Color.YELLOW);
 		}
 
 		return null;
 	}
 
-	private void renderEggLocation(Graphics2D graphics, WorldPoint location, int quantity, Color color)
+	private void renderEggLocations(Graphics2D graphics, Map<WorldPoint, Integer> eggMap, Color color)
 	{
-		LocalPoint groundPoint = LocalPoint.fromWorld(client, location);
 		Player player = client.getLocalPlayer();
 
-		if (groundPoint == null || player == null)
-		{
-			return;
-		}
-
-		if (player.getLocalLocation().distanceTo(groundPoint) > MAX_EGG_DISTANCE)
-		{
-			return;
-		}
-
-		Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
-
-		if (poly == null)
+		if (player == null)
 		{
 			return;
 		}
 
 		final Stroke originalStroke = graphics.getStroke();
-		graphics.setColor(color);
-		graphics.setStroke(new BasicStroke(2));
-		graphics.drawPolygon(poly);
-		graphics.setStroke(originalStroke);
 
-		String quantityText = "x" + quantity;
-		Point textPoint = Perspective.getCanvasTextLocation(client, graphics, groundPoint, quantityText, OFFSET_Z);
-		OverlayUtil.renderTextLocation(graphics, textPoint, quantityText, Color.WHITE);
+		for (WorldPoint worldPoint : eggMap.keySet())
+		{
+			LocalPoint groundPoint = LocalPoint.fromWorld(client, worldPoint);
+
+			if (groundPoint == null)
+			{
+				continue;
+			}
+			if (player.getLocalLocation().distanceTo(groundPoint) > MAX_EGG_DISTANCE)
+			{
+				continue;
+			}
+
+			Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
+
+			if (poly == null)
+			{
+				continue;
+			}
+
+			int quantity = eggMap.get(worldPoint);
+			String quantityText = "x" + quantity;
+			Point textPoint = Perspective.getCanvasTextLocation(client, graphics, groundPoint, quantityText, OFFSET_Z);
+			graphics.setColor(color);
+			graphics.setStroke(new BasicStroke(2));
+			graphics.drawPolygon(poly);
+			OverlayUtil.renderTextLocation(graphics, textPoint, quantityText, Color.WHITE);
+		}
+
+		graphics.setStroke(originalStroke);
 	}
 }

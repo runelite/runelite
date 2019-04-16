@@ -31,6 +31,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -284,23 +285,11 @@ public class BarbarianAssaultPlugin extends Plugin
 
 			if (calledEgg != null && calledEgg.startsWith(targetClean))
 			{
-				switch (calledEgg)
-				{
-					case "Red eggs":
-						highlightColor = Color.RED;
-						break;
-					case "Green eggs":
-						highlightColor = Color.GREEN;
-						break;
-					case "Blue eggs":
-						highlightColor = Color.BLUE;
-						break;
-					default:
-						highlightColor = null;
-				}
+				highlightColor = getEggColor(targetClean);
 			}
 			else if ("Yellow egg".equals(targetClean))
 			{
+				// Always show yellow egg
 				highlightColor = Color.YELLOW;
 			}
 
@@ -325,6 +314,67 @@ public class BarbarianAssaultPlugin extends Plugin
 		}
 
 		return call;
+	}
+
+	Map<WorldPoint, Integer> getCalledEggMap()
+	{
+		Map<WorldPoint, Integer> map;
+		String calledEgg = getCollectorHeardCall();
+
+		if (calledEgg == null)
+		{
+			return null;
+		}
+
+		switch (calledEgg)
+		{
+			case "Red eggs":
+				map = redEggs;
+				break;
+			case "Green eggs":
+				map = greenEggs;
+				break;
+			case "Blue eggs":
+				map = blueEggs;
+				break;
+			default:
+				map = null;
+		}
+
+		return map;
+	}
+
+	static Color getEggColor(String str)
+	{
+		Color color;
+
+		if (str == null)
+		{
+			return null;
+		}
+
+		if (str.startsWith("Red"))
+		{
+			color = Color.RED;
+		}
+		else if (str.startsWith("Green"))
+		{
+			color = Color.GREEN;
+		}
+		else if (str.startsWith("Blue"))
+		{
+			color = Color.CYAN;
+		}
+		else if (str.startsWith("Yellow"))
+		{
+			color = Color.YELLOW;
+		}
+		else
+		{
+			color = null;
+		}
+
+		return color;
 	}
 
 	private HashMap<WorldPoint, Integer> getEggMap(int itemID)
