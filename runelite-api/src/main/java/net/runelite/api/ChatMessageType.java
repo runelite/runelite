@@ -37,97 +37,117 @@ import lombok.Getter;
 public enum ChatMessageType
 {
 	/**
-	 * A message received from the server.
+	 * A normal game message.
 	 */
-	SERVER(0),
+	GAMEMESSAGE(0),
 	/**
  	* A message in the public chat from a moderator
  	*/
-	PUBLIC_MOD(1),
+	MODCHAT(1),
 	/**
 	 * A message in the public chat.
 	 */
-	PUBLIC(2),
+	PUBLICCHAT(2),
 	/**
 	 * A private message from another player.
 	 */
-	PRIVATE_MESSAGE_RECEIVED(3),
+	PRIVATECHAT(3),
 	/**
-	 * A trade request received.
+	 * A message that the game engine sends.
 	 */
-	TRADE_RECEIVED(4),
+	ENGINE(4),
 	/**
 	 * A message received when a friend logs in or out.
 	 */
-	PRIVATE_MESSAGE_INFO(5),
+	LOGINLOGOUTNOTIFICATION(5),
 	/**
 	 * A private message sent to another player.
 	 */
-	PRIVATE_MESSAGE_SENT(6),
+	PRIVATECHATOUT(6),
 	/**
 	 * A private message received from a moderator.
 	 */
-	PRIVATE_MESSAGE_RECEIVED_MOD(7),
+	MODPRIVATECHAT(7),
 	/**
 	 * A message received in clan chat.
 	 */
-	CLANCHAT(9),
+	FRIENDSCHAT(9),
 	/**
 	 * A message received with information about the current clan chat.
 	 */
-	CLANCHAT_INFO(11),
+	FRIENDSCHATNOTIFICATION(11),
 	/**
 	 * A trade request being sent.
 	 */
 	TRADE_SENT(12),
 	/**
+	 * A game broadcast.
+	 */
+	BROADCAST(14),
+	/**
 	 * An abuse report submitted.
 	 */
-	ABUSE_REPORT(26),
+	SNAPSHOTFEEDBACK(26),
 	/**
 	 * Examine item description.
 	 */
-	EXAMINE_ITEM(27),
+	ITEM_EXAMINE(27),
 	/**
 	 * Examine NPC description.
 	 */
-	EXAMINE_NPC(28),
+	NPC_EXAMINE(28),
 	/**
 	 * Examine object description.
 	 */
-	EXAMINE_OBJECT(29),
+	OBJECT_EXAMINE(29),
 	/**
 	 * Adding player to friend list.
 	 */
-	FRIENDS_LIST_ADD(30),
+	FRIENDNOTIFICATION(30),
 	/**
 	 * Adding player to ignore list.
 	 */
-	IGNORE_LIST_ADD(31),
+	IGNORENOTIFICATION(31),
 	/**
-	 * An autochat message from a player.
+	 * An autotyper message from a player.
 	 */
-	AUTOCHAT(90),
+	AUTOTYPER(90),
+	/**
+	 * An autotyper message from a mod.
+	 */
+	MODAUTOTYPER(91),
 	/**
 	 * A game message (ie. when a setting is changed).
 	 */
-	GAME(99),
+	CONSOLE(99),
 	/**
 	 * A message received when somebody sends a trade offer.
 	 */
-	TRADE(101),
+	TRADEREQ(101),
+	/**
+	 * A message received when completing a trade or a duel
+	 */
+	TRADE(102),
 	/**
 	 * A message received when somebody sends a duel offer.
 	 */
-	DUEL(103),
+	CHALREQ_TRADE(103),
+	/**
+	 * A message received when someone sends a clan challenge offer.
+	 */
+	CHALREQ_FRIENDSCHAT(104),
 	/**
 	 * A message that was filtered.
 	 */
-	FILTERED(105),
+	SPAM(105),
 	/**
-	 * A message about an action.
+	 * A message that is relating to the player.
 	 */
-	ACTION(109),
+	PLAYERRELATED(106),
+	/**
+	 * A message that times out after 10 seconds.
+	 */
+	TENSECTIMEOUT(107),
 	/**
 	 * An unknown message type.
 	 */

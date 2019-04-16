@@ -300,7 +300,7 @@ class SceneUploader
 		int vertexCx = localX + Perspective.LOCAL_TILE_SIZE;
 		int vertexCy = localY;
 		int vertexCz = seHeight;
-		final int c2 = nwColor;
+		final int c2 = seColor;
 
 		// 1,1
 		int vertexAx = localX + Perspective.LOCAL_TILE_SIZE;
@@ -312,7 +312,7 @@ class SceneUploader
 		int vertexBx = localX;
 		int vertexBy = localY + Perspective.LOCAL_TILE_SIZE;
 		int vertexBz = nwHeight;
-		final int c4 = seColor;
+		final int c4 = nwColor;
 
 		vertexBuffer.put(vertexAx, vertexAz, vertexAy, c3);
 		vertexBuffer.put(vertexBx, vertexBz, vertexBy, c4);
@@ -324,14 +324,14 @@ class SceneUploader
 
 		if (tile.getTexture() != -1)
 		{
-			float tex = tile.getTexture();
-			uvBuffer.put(tex, 1.0f + 1f, 1.0f + 1f, 0f);
-			uvBuffer.put(tex, 0.0f + 1f, 1.0f + 1f, 0f);
-			uvBuffer.put(tex, 1.0f + 1f, 0.0f + 1f, 0f);
+			float tex = tile.getTexture() + 1f;
+			uvBuffer.put(tex, 1.0f, 1.0f, 0f);
+			uvBuffer.put(tex, 0.0f, 1.0f, 0f);
+			uvBuffer.put(tex, 1.0f, 0.0f, 0f);
 
-			uvBuffer.put(tex, 0.0f + 1f, 0.0f + 1f, 0f);
-			uvBuffer.put(tex, 1.0f + 1f, 0.0f + 1f, 0f);
-			uvBuffer.put(tex, 0.0f + 1f, 1.0f + 1f, 0f);
+			uvBuffer.put(tex, 0.0f, 0.0f, 0f);
+			uvBuffer.put(tex, 1.0f, 0.0f, 0f);
+			uvBuffer.put(tex, 0.0f, 1.0f, 0f);
 		}
 
 		return 6;
@@ -396,10 +396,10 @@ class SceneUploader
 			{
 				if (triangleTextures[i] != -1)
 				{
-					float tex = triangleTextures[i];
-					uvBuffer.put(tex, vertexXA / 128f + 1f, vertexZA / 128f + 1f, 0f);
-					uvBuffer.put(tex, vertexXB / 128f + 1f, vertexZB / 128f + 1f, 0f);
-					uvBuffer.put(tex, vertexXC / 128f + 1f, vertexZC / 128f + 1f, 0f);
+					float tex = triangleTextures[i] + 1f;
+					uvBuffer.put(tex, vertexXA / 128f, vertexZA / 128f, 0f);
+					uvBuffer.put(tex, vertexXB / 128f, vertexZB / 128f, 0f);
+					uvBuffer.put(tex, vertexXC / 128f, vertexZC / 128f, 0f);
 				}
 				else
 				{
@@ -475,7 +475,7 @@ class SceneUploader
 		int color3 = color3s[face];
 
 		int alpha = 0;
-		if (transparencies != null)
+		if (transparencies != null && (faceTextures == null || faceTextures[face] == -1))
 		{
 			alpha = (transparencies[face] & 0xFF) << 24;
 		}
@@ -531,10 +531,10 @@ class SceneUploader
 		{
 			if (u != null && v != null && (uf = u[face]) != null && (vf = v[face]) != null)
 			{
-				final short texture = faceTextures[face];
-				uvBuffer.put(texture, 1f + uf[0], 1f + vf[0], 0f);
-				uvBuffer.put(texture, 1f + uf[1], 1f + vf[1], 0f);
-				uvBuffer.put(texture, 1f + uf[2], 1f + vf[2], 0f);
+				float texture = faceTextures[face] + 1f;
+				uvBuffer.put(texture, uf[0], vf[0], 0f);
+				uvBuffer.put(texture, uf[1], vf[1], 0f);
+				uvBuffer.put(texture, uf[2], vf[2], 0f);
 			}
 			else
 			{

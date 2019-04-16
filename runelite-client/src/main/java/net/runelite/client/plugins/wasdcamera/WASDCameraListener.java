@@ -137,12 +137,12 @@ class WASDCameraListener extends MouseAdapter implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !plugin.chatboxFocused())
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
 
-		if (!plugin.isTyping())
+		if (plugin.chatboxFocused() && !plugin.isTyping())
 		{
 			modified.remove(e.getKeyCode());
 

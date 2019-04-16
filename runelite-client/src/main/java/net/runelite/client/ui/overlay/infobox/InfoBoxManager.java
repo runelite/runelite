@@ -26,7 +26,6 @@ package net.runelite.client.ui.overlay.infobox;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ComparisonChain;
-import com.google.common.eventbus.Subscribe;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -40,6 +39,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @Singleton
@@ -76,18 +76,20 @@ public class InfoBoxManager
 
 	public void removeInfoBox(InfoBox infoBox)
 	{
-		log.debug("Removing InfoBox {}", infoBox);
-		infoBoxes.remove(infoBox);
-
-		refreshInfoBoxes();
+		if (infoBoxes.remove(infoBox))
+		{
+			log.debug("Removed InfoBox {}", infoBox);
+			refreshInfoBoxes();
+		}
 	}
 
 	public void removeIf(Predicate<InfoBox> filter)
 	{
-		log.debug("Removing InfoBoxes for filter {}", filter);
-		infoBoxes.removeIf(filter);
-
-		refreshInfoBoxes();
+		if (infoBoxes.removeIf(filter))
+		{
+			log.debug("Removed InfoBoxes for filter {}", filter);
+			refreshInfoBoxes();
+		}
 	}
 
 	public List<InfoBox> getInfoBoxes()

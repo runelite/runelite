@@ -27,17 +27,61 @@ package net.runelite.client.plugins.gpu;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
+import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_FOG_DEPTH;
+import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
+import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_DISTANCE;
 
 @ConfigGroup("gpu")
 public interface GpuPluginConfig extends Config
 {
+	@Range(
+		max = MAX_DISTANCE
+	)
 	@ConfigItem(
 		keyName = "drawDistance",
 		name = "Draw Distance",
-		description = "Draw distance"
+		description = "Draw distance",
+		position = 1
 	)
 	default int drawDistance()
 	{
 		return 25;
+	}
+
+	@ConfigItem(
+		keyName = "smoothBanding",
+		name = "Remove Color Banding",
+		description = "Smooths out the color banding that is present in the CPU renderer",
+		position = 2
+	)
+	default boolean smoothBanding()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "antiAliasingMode",
+		name = "Anti Aliasing",
+		description = "Configures the anti-aliasing mode",
+		position = 3
+	)
+	default AntiAliasingMode antiAliasingMode()
+	{
+		return AntiAliasingMode.DISABLED;
+	}
+
+	@Range(
+		max = MAX_FOG_DEPTH
+	)
+	@ConfigItem(
+		keyName = "fogDepth",
+		name = "Fog depth",
+		description = "Distance from the scene edge the fog starts",
+		position = 4
+	)
+	default int fogDepth()
+	{
+		return 0;
 	}
 }

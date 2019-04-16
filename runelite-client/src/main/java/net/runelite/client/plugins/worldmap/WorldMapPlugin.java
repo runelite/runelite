@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.worldmap;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
@@ -36,6 +35,8 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
@@ -44,7 +45,7 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "World Map",
 	description = "Enhance the world map to display additional information",
-	tags = {"agility", "fairy", "rings", "teleports"}
+	tags = {"agility", "fairy", "farming", "rings", "teleports"}
 )
 public class WorldMapPlugin extends Plugin
 {
@@ -66,6 +67,9 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_MISC_TELEPORT_ICON = "miscellaneousTeleportIcon";
 	static final String CONFIG_KEY_QUEST_START_TOOLTIPS = "questStartTooltips";
 	static final String CONFIG_KEY_MINIGAME_TOOLTIP = "minigameTooltip";
+	static final String CONFIG_KEY_FARMING_PATCH_TOOLTIPS = "farmingpatchTooltips";
+	static final String CONFIG_KEY_RARE_TREE_TOOLTIPS = "rareTreeTooltips";
+	static final String CONFIG_KEY_RARE_TREE_LEVEL_ICON = "rareTreeIcon";
 
 	static
 	{
@@ -93,6 +97,7 @@ public class WorldMapPlugin extends Plugin
 	private WorldMapPointManager worldMapPointManager;
 
 	private int agilityLevel = 0;
+	private int woodcuttingLevel = 0;
 
 	@Provides
 	WorldMapConfig provideConfig(ConfigManager configManager)
@@ -104,6 +109,7 @@ public class WorldMapPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		agilityLevel = client.getRealSkillLevel(Skill.AGILITY);
+		woodcuttingLevel = client.getRealSkillLevel(Skill.WOODCUTTING);
 		updateShownIcons();
 	}
 
@@ -115,7 +121,10 @@ public class WorldMapPlugin extends Plugin
 		worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
 		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
 		worldMapPointManager.removeIf(MinigamePoint.class::isInstance);
+		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);
+		worldMapPointManager.removeIf(RareTreePoint.class::isInstance);
 		agilityLevel = 0;
+		woodcuttingLevel = 0;
 	}
 
 	@Subscribe
@@ -141,6 +150,16 @@ public class WorldMapPlugin extends Plugin
 				updateAgilityIcons();
 			}
 		}
+
+		if (event.getSkill() == Skill.WOODCUTTING)
+		{
+			int newWoodcutLevel = Experience.getLevelForXp(client.getSkillExperience(Skill.WOODCUTTING));
+			if (newWoodcutLevel != woodcuttingLevel)
+			{
+				woodcuttingLevel = newWoodcutLevel;
+				updateRareTreeIcons();
+			}
+		}
 	}
 
 	private void updateAgilityIcons()
@@ -149,17 +168,36 @@ public class WorldMapPlugin extends Plugin
 
 		if (config.agilityShortcutLevelIcon() || config.agilityShortcutTooltips())
 		{
-			Arrays.stream(AgilityShortcutLocation.values())
+			Arrays.stream(AgilityShortcut.values())
+				.filter(value -> value.getWorldMapLocation() != null)
 				.map(value -> new AgilityShortcutPoint(value,
-					agilityLevel > 0 && config.agilityShortcutLevelIcon() && value.getLevelReq() > agilityLevel ? NOPE_ICON : BLANK_ICON,
+					agilityLevel > 0 && config.agilityShortcutLevelIcon() && value.getLevel() > agilityLevel ? NOPE_ICON : BLANK_ICON,
 					config.agilityShortcutTooltips()))
 				.forEach(worldMapPointManager::add);
+		}
+	}
+
+	private void updateRareTreeIcons()
+	{
+		worldMapPointManager.removeIf(RareTreePoint.class::isInstance);
+
+		if (config.rareTreeLevelIcon() || config.rareTreeTooltips())
+		{
+			Arrays.stream(RareTreeLocation.values()).forEach(rareTree ->
+				Arrays.stream(rareTree.getLocations())
+					.map(point -> new RareTreePoint(point,
+						rareTree.getTooltip(),
+						woodcuttingLevel > 0 && config.rareTreeLevelIcon() &&
+							rareTree.getLevelReq() > woodcuttingLevel ? NOPE_ICON : BLANK_ICON,
+						config.rareTreeTooltips()))
+					.forEach(worldMapPointManager::add));
 		}
 	}
 
 	private void updateShownIcons()
 	{
 		updateAgilityIcons();
+		updateRareTreeIcons();
 
 		worldMapPointManager.removeIf(FairyRingPoint.class::isInstance);
 		if (config.fairyRingIcon() || config.fairyRingTooltips())
@@ -185,6 +223,16 @@ public class WorldMapPlugin extends Plugin
 			Arrays.stream(QuestStartLocation.values())
 				.map(value -> new QuestStartPoint(value, BLANK_ICON))
 				.forEach(worldMapPointManager::add);
+		}
+
+		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);
+		if (config.farmingPatchTooltips())
+		{
+			Arrays.stream(FarmingPatchLocation.values()).forEach(location ->
+				Arrays.stream(location.getLocations())
+					.map(point -> new FarmingPatchPoint(point, location.getTooltip(), BLANK_ICON))
+					.forEach(worldMapPointManager::add)
+			);
 		}
 
 		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);

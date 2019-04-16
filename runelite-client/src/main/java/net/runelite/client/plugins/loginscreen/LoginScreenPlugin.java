@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.loginscreen;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
@@ -37,12 +36,14 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.SessionOpen;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.OSType;
 
 @PluginDescriptor(
 	name = "Login Screen",
@@ -51,6 +52,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 @Slf4j
 public class LoginScreenPlugin extends Plugin implements KeyListener
 {
+	private static final int MAX_USERNAME_LENGTH = 254;
+	private static final int MAX_PASSWORD_LENGTH = 20;
+
 	@Inject
 	private Client client;
 
@@ -164,7 +168,10 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_V && e.isControlDown())
+		// enable pasting on macOS with the Command (meta) key
+		boolean isModifierDown = OSType.getOSType() == OSType.MacOS ? e.isMetaDown() : e.isControlDown();
+
+		if (e.getKeyCode() == KeyEvent.VK_V && isModifierDown)
 		{
 			try
 			{
@@ -178,11 +185,13 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 				// 0 is username, 1 is password
 				if (client.getCurrentLoginField() == 0)
 				{
-					client.setUsername(data);
+					// Truncate data to maximum username length if necessary
+					client.setUsername(data.substring(0, Math.min(data.length(), MAX_USERNAME_LENGTH)));
 				}
 				else
 				{
-					client.setPassword(data);
+					// Truncate data to maximum password length if necessary
+					client.setPassword(data.substring(0, Math.min(data.length(), MAX_PASSWORD_LENGTH)));
 				}
 			}
 			catch (UnsupportedFlavorException | IOException ex)

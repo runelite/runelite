@@ -26,24 +26,25 @@ package net.runelite.client.ui.overlay.infobox;
 
 import java.awt.Color;
 import java.awt.Image;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.plugins.Plugin;
 
 public abstract class InfoBox
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Plugin plugin;
 
 	@Getter
 	@Setter
 	private Image image;
 
-	@Getter
-	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private Image scaledImage;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	@Setter
 	private InfoBoxPriority priority;
 

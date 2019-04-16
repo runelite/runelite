@@ -24,6 +24,8 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nullable;
+
 /**
  * Represents a non-player character in the game.
  */
@@ -64,6 +66,7 @@ public interface NPC extends Actor
 	 *
 	 * @return the transformed NPC
 	 */
+	@Nullable
 	NPCComposition getTransformedComposition();
 
 	/**

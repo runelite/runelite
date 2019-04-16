@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.prayer;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -41,6 +40,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -134,8 +134,8 @@ public class PrayerPlugin extends Plugin
 		if (container == inventory || container == equipment)
 		{
 			doseOverlay.setHasHolyWrench(false);
-			doseOverlay.setHasPrayerPotion(false);
-			doseOverlay.setHasRestorePotion(false);
+			doseOverlay.setHasPrayerRestore(false);
+			doseOverlay.setBonusPrayer(0);
 
 			if (inventory != null)
 			{
@@ -212,6 +212,10 @@ public class PrayerPlugin extends Plugin
 
 		int total = 0;
 
+		boolean hasPrayerPotion = false;
+		boolean hasSuperRestore = false;
+		boolean hasSanfew = false;
+
 		for (Item item : items)
 		{
 			if (item == null)
@@ -226,19 +230,35 @@ public class PrayerPlugin extends Plugin
 				switch (type)
 				{
 					case PRAYERPOT:
-						doseOverlay.setHasPrayerPotion(true);
+						hasPrayerPotion = true;
+						break;
+					case RESTOREPOT:
+						hasSuperRestore = true;
+						break;
+					case SANFEWPOT:
+						hasSanfew = true;
 						break;
 					case HOLYWRENCH:
 						doseOverlay.setHasHolyWrench(true);
-						break;
-					case RESTOREPOT:
-						doseOverlay.setHasRestorePotion(true);
 						break;
 				}
 			}
 
 			int bonus = PrayerItems.getItemPrayerBonus(item.getId());
 			total += bonus;
+		}
+
+		if (hasSanfew || hasSuperRestore || hasPrayerPotion)
+		{
+			doseOverlay.setHasPrayerRestore(true);
+			if (hasSanfew)
+			{
+				doseOverlay.setBonusPrayer(2);
+			}
+			else if (hasSuperRestore)
+			{
+				doseOverlay.setBonusPrayer(1);
+			}
 		}
 
 		return total;

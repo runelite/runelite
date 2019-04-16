@@ -71,6 +71,17 @@ public interface TimeTrackingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "defaultTimerMinutes",
+		name = "Default Time (Minutes)",
+		description = "The default time for the timer in minutes",
+		position = 4
+	)
+	default int defaultTimerMinutes()
+	{
+		return 5;
+	}
+
+	@ConfigItem(
 		keyName = "activeTab",
 		name = "Active Tab",
 		description = "The currently selected tab",

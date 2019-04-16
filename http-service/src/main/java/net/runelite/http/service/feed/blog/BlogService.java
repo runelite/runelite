@@ -63,7 +63,7 @@ public class BlogService
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Error getting blog posts: " + response.message());
+				throw new IOException("Error getting blog posts: " + response);
 			}
 
 			try

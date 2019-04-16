@@ -33,8 +33,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import javax.swing.Box;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -50,6 +51,7 @@ import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.http.api.loottracker.LootTrackerClient;
 
 class LootTrackerPanel extends PluginPanel
 {
@@ -97,6 +99,7 @@ class LootTrackerPanel extends PluginPanel
 
 	private final ItemManager itemManager;
 	private final LootTrackerPlugin plugin;
+	private final LootTrackerConfig config;
 
 	private boolean groupLoot;
 	private boolean hideIgnoredItems;
@@ -128,10 +131,11 @@ class LootTrackerPanel extends PluginPanel
 		INVISIBLE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(invisibleImg, -220));
 	}
 
-	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager)
+	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager, final LootTrackerConfig config)
 	{
 		this.itemManager = itemManager;
 		this.plugin = plugin;
+		this.config = config;
 		this.hideIgnoredItems = true;
 
 		setBorder(new EmptyBorder(6, 6, 6, 6));
@@ -265,7 +269,10 @@ class LootTrackerPanel extends PluginPanel
 		actionsContainer.add(viewControls, BorderLayout.EAST);
 
 		// Create panel that will contain overall data
-		overallPanel.setBorder(new EmptyBorder(8, 10, 8, 10));
+		overallPanel.setBorder(BorderFactory.createCompoundBorder(
+			BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR),
+			BorderFactory.createEmptyBorder(8, 10, 8, 10)
+		));
 		overallPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallPanel.setLayout(new BorderLayout());
 		overallPanel.setVisible(false);
@@ -292,6 +299,13 @@ class LootTrackerPanel extends PluginPanel
 			updateOverall();
 			logsContainer.removeAll();
 			logsContainer.repaint();
+
+			// Delete all loot, or loot matching the current view
+			LootTrackerClient client = plugin.getLootTrackerClient();
+			if (client != null && config.syncPanel())
+			{
+				client.delete(currentView);
+			}
 		});
 
 		// Create popup menu
@@ -303,7 +317,6 @@ class LootTrackerPanel extends PluginPanel
 		// Create loot boxes wrapper
 		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
 		layoutPanel.add(actionsContainer);
-		layoutPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(logsContainer);
 
@@ -333,6 +346,15 @@ class LootTrackerPanel extends PluginPanel
 			box.rebuild();
 			updateOverall();
 		}
+	}
+
+	/**
+	 * Adds a Collection of records to the panel
+	 */
+	void addRecords(Collection<LootTrackerRecord> recs)
+	{
+		records.addAll(recs);
+		rebuild();
 	}
 
 	/**
@@ -451,6 +473,13 @@ class LootTrackerPanel extends PluginPanel
 			updateOverall();
 			logsContainer.remove(box);
 			logsContainer.repaint();
+
+			LootTrackerClient client = plugin.getLootTrackerClient();
+			// Without loot being grouped we have no way to identify single kills to be deleted
+			if (client != null && groupLoot && config.syncPanel())
+			{
+				client.delete(box.getId());
+			}
 		});
 
 		popupMenu.add(reset);

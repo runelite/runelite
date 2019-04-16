@@ -30,7 +30,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
@@ -77,11 +76,14 @@ class StatusBarsOverlay extends Overlay
 	private static final int SKILL_ICON_HEIGHT = 35;
 	private static final int COUNTER_ICON_HEIGHT = 18;
 	private static final int OFFSET = 2;
+
 	private final Client client;
 	private final StatusBarsConfig config;
 	private final SkillIconManager skillIconManager;
 	private final TextComponent textComponent = new TextComponent();
 	private final ItemStatChangesService itemStatService;
+
+	private final Image prayerImage;
 
 	@Inject
 	private StatusBarsOverlay(Client client, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice)
@@ -92,6 +94,8 @@ class StatusBarsOverlay extends Overlay
 		this.config = config;
 		this.skillIconManager = skillIconManager;
 		this.itemStatService = itemstatservice;
+
+		prayerImage = ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE);
 	}
 
 	@Override
@@ -147,13 +151,13 @@ class StatusBarsOverlay extends Overlay
 		final int poisonState = client.getVar(VarPlayer.IS_POISONED);
 		final Color healthBar;
 
-		if (poisonState > 0 && poisonState < 50)
-		{
-			healthBar = POISONED_COLOR;
-		}
-		else if (poisonState >= 1000000)
+		if (poisonState >= 1000000)
 		{
 			healthBar = VENOMED_COLOR;
+		}
+		else if (poisonState > 0)
+		{
+			healthBar = POISONED_COLOR;
 		}
 		else
 		{
@@ -177,32 +181,35 @@ class StatusBarsOverlay extends Overlay
 		{
 			final MenuEntry[] menu = client.getMenuEntries();
 			final int menuSize = menu.length;
-			final MenuEntry entry = menu[menuSize - 1];
-			final Effect change = itemStatService.getItemStatChanges(entry.getIdentifier());
+			final MenuEntry entry = menuSize > 0 ? menu[menuSize - 1] : null;
 			int prayerHealValue = 0;
 			int foodHealValue = 0;
-
-			if (change != null &
-				entry.getParam1() == WidgetInfo.INVENTORY.getId() &&
-				entry.getIdentifier() != ItemID.SPICY_STEW)
+			if (entry != null && entry.getParam1() == WidgetInfo.INVENTORY.getId())
 			{
-				final StatsChanges statsChanges = change.calculate(client);
+				final Effect change = itemStatService.getItemStatChanges(entry.getIdentifier());
 
-				for (final StatChange c : statsChanges.getStatChanges())
+				if (change != null)
 				{
-					if (c.getStat().getName().equals(Skill.HITPOINTS.getName()))
-					{
-						foodHealValue = Integer.parseInt(c.getTheoretical());
-					}
+					final StatsChanges statsChanges = change.calculate(client);
 
-					if (c.getStat().getName().equals(Skill.PRAYER.getName()))
+					for (final StatChange c : statsChanges.getStatChanges())
 					{
-						prayerHealValue = Integer.parseInt(c.getTheoretical());
-					}
+						final int theoreticalBoost = c.getTheoretical();
 
-					if (foodHealValue != 0 && prayerHealValue != 0)
-					{
-						break;
+						if (c.getStat().getName().equals(Skill.HITPOINTS.getName()))
+						{
+							foodHealValue = theoreticalBoost;
+						}
+
+						if (c.getStat().getName().equals(Skill.PRAYER.getName()))
+						{
+							prayerHealValue = theoreticalBoost;
+						}
+
+						if (foodHealValue != 0 && prayerHealValue != 0)
+						{
+							break;
+						}
 					}
 				}
 			}
@@ -219,7 +226,6 @@ class StatusBarsOverlay extends Overlay
 		if (config.enableSkillIcon() || config.enableCounter())
 		{
 			final Image healthImage = skillIconManager.getSkillImage(Skill.HITPOINTS, true);
-			final Image prayerImage = ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE);
 			final int counterHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
 			final int counterPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
 			final String counterHealthText = Integer.toString(counterHealth);

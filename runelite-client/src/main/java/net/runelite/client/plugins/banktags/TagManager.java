@@ -37,8 +37,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import static net.runelite.client.plugins.banktags.BankTagsPlugin.CONFIG_GROUP;
-import static net.runelite.client.plugins.banktags.BankTagsPlugin.JOINER;
-import static net.runelite.client.plugins.banktags.BankTagsPlugin.SPLITTER;
 import net.runelite.client.plugins.cluescrolls.ClueScrollService;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
@@ -83,7 +81,7 @@ public class TagManager
 
 	Collection<String> getTags(int itemId, boolean variation)
 	{
-		return new LinkedHashSet<>(SPLITTER.splitToList(getTagString(itemId, variation).toLowerCase()));
+		return new LinkedHashSet<>(Text.fromCSV(getTagString(itemId, variation).toLowerCase()));
 	}
 
 	void setTagString(int itemId, String tags, boolean variation)
@@ -120,7 +118,7 @@ public class TagManager
 
 	private void setTags(int itemId, Collection<String> tags, boolean variation)
 	{
-		setTagString(itemId, JOINER.join(tags), variation);
+		setTagString(itemId, Text.toCSV(tags), variation);
 	}
 
 	boolean findTag(int itemId, String search)
@@ -167,6 +165,20 @@ public class TagManager
 		{
 			setTags(itemId, tags, true);
 		}
+	}
+
+	public void renameTag(String oldTag, String newTag)
+	{
+		List<Integer> items = getItemsForTag(Text.standardize(oldTag));
+		items.forEach(id ->
+		{
+			Collection<String> tags = getTags(id, id < 0);
+
+			tags.remove(Text.standardize(oldTag));
+			tags.add(Text.standardize(newTag));
+
+			setTags(id, tags, id < 0);
+		});
 	}
 
 	private int getItemId(int itemId, boolean variation)

@@ -43,6 +43,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LinkBrowser
 {
+	private static boolean shouldAttemptXdg = OSType.getOSType() == OSType.Linux;
+
 	/**
 	 * Tries to navigate to specified URL in browser. In case operation fails, displays message box with message
 	 * and copies link to clipboard to navigate to.
@@ -56,9 +58,55 @@ public class LinkBrowser
 			return false;
 		}
 
+		if (attemptDesktopBrowse(url))
+		{
+			log.debug("Opened browser through Desktop#browse to {}", url);
+			return true;
+		}
+
+		if (shouldAttemptXdg && attemptXdgOpen(url))
+		{
+			log.debug("Opened browser through xdg-open to {}", url);
+			return true;
+		}
+
+		showMessageBox("Unable to open link. Press 'OK' and link will be copied to your clipboard.", url);
+		return false;
+	}
+
+	private static boolean attemptXdgOpen(String url)
+	{
+		try
+		{
+			final Process exec = Runtime.getRuntime().exec(new String[]{"xdg-open", url});
+			exec.waitFor();
+
+			final int ret = exec.exitValue();
+			if (ret == 0)
+			{
+				return true;
+			}
+
+			log.warn("xdg-open {} returned with error code {}", url, ret);
+			return false;
+		}
+		catch (IOException ex)
+		{
+			// xdg-open not found
+			shouldAttemptXdg = false;
+			return false;
+		}
+		catch (InterruptedException ex)
+		{
+			log.warn("Interrupted while waiting for xdg-open {} to execute", url);
+			return false;
+		}
+	}
+
+	private static boolean attemptDesktopBrowse(String url)
+	{
 		if (!Desktop.isDesktopSupported())
 		{
-			showMessageBox("Desktop is not supported. Press 'OK' and link will be copied to your clipboard.", url);
 			return false;
 		}
 
@@ -66,20 +114,17 @@ public class LinkBrowser
 
 		if (!desktop.isSupported(Desktop.Action.BROWSE))
 		{
-			showMessageBox("Desktop browser is not supported. Press 'OK' and link will be copied to your clipboard.", url);
 			return false;
 		}
 
 		try
 		{
 			desktop.browse(new URI(url));
-			log.debug("Opened browser to {}", url);
 			return true;
 		}
 		catch (IOException | URISyntaxException ex)
 		{
-			log.warn("Unable to open URL {}. Error: {}", url, ex);
-			showMessageBox("Unable to open a URL. Press 'OK' and link will be copied to your clipboard.", url);
+			log.warn("Failed to open Desktop#browser {}", url, ex);
 			return false;
 		}
 	}

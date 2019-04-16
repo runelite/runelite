@@ -23,18 +23,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.groundmarkers;
 
+import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-import java.awt.Color;
-
 @ConfigGroup("groundMarker")
 public interface GroundMarkerConfig extends Config
 {
+	@Alpha
 	@ConfigItem(
 		keyName = "markerColor",
 		name = "Color of the tile",
@@ -43,5 +43,25 @@ public interface GroundMarkerConfig extends Config
 	default Color markerColor()
 	{
 		return Color.YELLOW;
+	}
+
+	@ConfigItem(
+		keyName = "rememberTileColors",
+		name = "Remember color per tile",
+		description = "Color tiles using the color from time of placement"
+	)
+	default boolean rememberTileColors()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "drawOnMinimap",
+		name = "Draw tiles on minimap",
+		description = "Configures whether marked tiles should be drawn on minimap"
+	)
+	default boolean drawTileOnMinimmap()
+	{
+		return false;
 	}
 }

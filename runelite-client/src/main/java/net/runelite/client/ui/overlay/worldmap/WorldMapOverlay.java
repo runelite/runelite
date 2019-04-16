@@ -69,7 +69,7 @@ public class WorldMapOverlay extends Overlay
 		this.worldMapPointManager = worldMapPointManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGHEST);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setLayer(OverlayLayer.ABOVE_MAP);
 		mouseManager.registerMouseListener(worldMapOverlayMouseListener);
 	}
 
@@ -95,6 +95,7 @@ public class WorldMapOverlay extends Overlay
 		// in fixed, the bounds are offset by the size of the black borders outside the canvas
 		canvasBounds.setLocation(0, 0);
 		final Area canvasViewArea = getWorldMapClipArea(canvasBounds);
+		Area currentClip = null;
 
 		WorldMapPoint tooltipPoint = null;
 
@@ -113,10 +114,19 @@ public class WorldMapOverlay extends Overlay
 					continue;
 				}
 
-				if (worldPoint.isSnapToEdge())
+				if (worldPoint.isSnapToEdge() && canvasViewArea != currentClip)
 				{
 					graphics.setClip(canvasViewArea);
+					currentClip = canvasViewArea;
+				}
+				else if (!worldPoint.isSnapToEdge() && mapViewArea != currentClip)
+				{
+					graphics.setClip(mapViewArea);
+					currentClip = mapViewArea;
+				}
 
+				if (worldPoint.isSnapToEdge())
+				{
 					if (worldMapRectangle.contains(drawPoint.getX(), drawPoint.getY()))
 					{
 						if (worldPoint.isCurrentlyEdgeSnapped())
@@ -134,10 +144,6 @@ public class WorldMapOverlay extends Overlay
 							worldPoint.onEdgeSnap();
 						}
 					}
-				}
-				else
-				{
-					graphics.setClip(mapViewArea);
 				}
 
 				int drawX = drawPoint.getX();

@@ -27,7 +27,6 @@ package net.runelite.client;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.eventbus.EventBus;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -50,11 +49,14 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.LootManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.menus.MenuManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
@@ -66,8 +68,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
+import net.runelite.client.ws.PartyService;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 @Singleton
 @Slf4j
@@ -76,8 +78,6 @@ public class RuneLite
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
-	private static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
-	private static final File LOGS_FILE_NAME = new File(LOGS_DIR, "application");
 
 	@Getter
 	private static Injector injector;
@@ -111,6 +111,9 @@ public class RuneLite
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private PartyService partyService;
 
 	@Inject
 	private Provider<ItemManager> itemManager;
@@ -180,9 +183,9 @@ public class RuneLite
 			System.exit(0);
 		}
 
-		final boolean developerMode = options.has("developer-mode");
+		final boolean developerMode = options.has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null;
 
-		if (developerMode && RuneLiteProperties.getLauncherVersion() == null)
+		if (developerMode)
 		{
 			boolean assertions = false;
 			assert assertions = true;
@@ -193,9 +196,6 @@ public class RuneLite
 		}
 
 		PROFILES_DIR.mkdirs();
-
-		// Setup logger
-		MDC.put("logFileName", LOGS_FILE_NAME.getAbsolutePath());
 
 		if (options.has("debug"))
 		{
@@ -269,6 +269,7 @@ public class RuneLite
 		eventBus.register(overlayManager);
 		eventBus.register(drawManager);
 		eventBus.register(infoBoxManager);
+		eventBus.register(partyService);
 
 		if (!isOutdated)
 		{
@@ -297,8 +298,21 @@ public class RuneLite
 
 	public void shutdown()
 	{
+		configManager.sendConfig();
 		clientSessionManager.shutdown();
 		discordService.close();
+
+		for (final Plugin plugin : pluginManager.getPlugins())
+		{
+			try
+			{
+				pluginManager.stopPlugin(plugin);
+			}
+			catch (PluginInstantiationException e)
+			{
+				log.warn("Failed to gracefully close plugin", e);
+			}
+		}
 	}
 
 	@VisibleForTesting

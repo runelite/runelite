@@ -151,4 +151,15 @@ public interface RaidsConfig extends Config
 	{
 		return "";
 	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "layoutMessage",
+		name = "Send raid layout message when entering raid",
+		description = "Sends game message with raid layout on entering new raid"
+	)
+	default boolean layoutMessage()
+	{
+		return true;
+	}
 }

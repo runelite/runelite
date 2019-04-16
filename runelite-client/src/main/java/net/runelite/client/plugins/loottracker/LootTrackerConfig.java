@@ -48,4 +48,26 @@ public interface LootTrackerConfig extends Config
 		description = ""
 	)
 	void setIgnoredItems(String key);
+
+	@ConfigItem(
+		keyName = "saveLoot",
+		name = "Submit loot tracker data",
+		description = "Submit loot tracker data (requires being logged in)"
+	)
+	default boolean saveLoot()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "syncPanel",
+		name = "Synchronize panel contents",
+		description = "Synchronize you local loot tracker with your online (requires being logged in). This means" +
+			" that panel is filled with portion of your remote data on startup and deleting data in panel deletes them" +
+			" also on server."
+	)
+	default boolean syncPanel()
+	{
+		return true;
+	}
 }

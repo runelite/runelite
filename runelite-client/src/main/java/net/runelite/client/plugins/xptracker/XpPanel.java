@@ -27,7 +27,6 @@ package net.runelite.client.plugins.xptracker;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.BoxLayout;
@@ -63,7 +62,7 @@ class XpPanel extends PluginPanel
 	/* This displays the "No exp gained" text */
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
-	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager)
+	XpPanel(XpTrackerPlugin xpTrackerPlugin, XpTrackerConfig xpTrackerConfig, Client client, SkillIconManager iconManager)
 	{
 		super();
 
@@ -91,19 +90,12 @@ class XpPanel extends PluginPanel
 
 		// Create pause all menu
 		final JMenuItem pauseAll = new JMenuItem("Pause All");
-		pauseAll.addActionListener(e ->
-		{
-			if (pauseAll.getText().equals("Pause All"))
-			{
-				xpTrackerPlugin.pauseAllSkills(true);
-				pauseAll.setText("Unpause All");
-			}
-			else
-			{
-				xpTrackerPlugin.pauseAllSkills(false);
-				pauseAll.setText("Pause All");
-			}
-		});
+		pauseAll.addActionListener(e -> xpTrackerPlugin.pauseAllSkills(true));
+
+		// Create unpause all menu
+		final JMenuItem unpauseAll = new JMenuItem("Unpause All");
+		unpauseAll.addActionListener(e -> xpTrackerPlugin.pauseAllSkills(false));
+
 
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
@@ -111,6 +103,7 @@ class XpPanel extends PluginPanel
 		popupMenu.add(openXpTracker);
 		popupMenu.add(reset);
 		popupMenu.add(pauseAll);
+		popupMenu.add(unpauseAll);
 		overallPanel.setComponentPopupMenu(popupMenu);
 
 		final JLabel overallIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(Skill.OVERALL)));
@@ -135,20 +128,13 @@ class XpPanel extends PluginPanel
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(infoBoxPanel);
 
-		try
+		for (Skill skill : Skill.values())
 		{
-			for (Skill skill : Skill.values())
+			if (skill == Skill.OVERALL)
 			{
-				if (skill == Skill.OVERALL)
-				{
-					break;
-				}
-				infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, client, infoBoxPanel, skill, iconManager));
+				break;
 			}
-		}
-		catch (IOException e)
-		{
-			log.warn(null, e);
+			infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, xpTrackerConfig, client, infoBoxPanel, skill, iconManager));
 		}
 
 		errorPanel.setContent("Exp trackers", "You have not gained experience yet.");
@@ -199,7 +185,7 @@ class XpPanel extends PluginPanel
 		}
 	}
 
-	void updateTotal(XpSnapshotTotal xpSnapshotTotal)
+	void updateTotal(XpSnapshotSingle xpSnapshotTotal)
 	{
 		// if player has gained exp and hasn't switched displays yet, hide error panel and show overall info
 		if (xpSnapshotTotal.getXpGainedInSession() > 0 && !overallPanel.isVisible())
@@ -207,11 +193,16 @@ class XpPanel extends PluginPanel
 			overallPanel.setVisible(true);
 			remove(errorPanel);
 		}
+		else if (xpSnapshotTotal.getXpGainedInSession() == 0 && overallPanel.isVisible())
+		{
+			overallPanel.setVisible(false);
+			add(errorPanel);
+		}
 
 		SwingUtilities.invokeLater(() -> rebuildAsync(xpSnapshotTotal));
 	}
 
-	private void rebuildAsync(XpSnapshotTotal xpSnapshotTotal)
+	private void rebuildAsync(XpSnapshotSingle xpSnapshotTotal)
 	{
 		overallExpGained.setText(XpInfoBox.htmlLabel("Gained: ", xpSnapshotTotal.getXpGainedInSession()));
 		overallExpHour.setText(XpInfoBox.htmlLabel("Per hour: ", xpSnapshotTotal.getXpPerHour()));

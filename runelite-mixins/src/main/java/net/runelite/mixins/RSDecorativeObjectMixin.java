@@ -28,6 +28,7 @@ import java.awt.Polygon;
 import java.awt.geom.Area;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
@@ -83,6 +84,29 @@ public abstract class RSDecorativeObjectMixin implements RSDecorativeObject
 	}
 
 	@Inject
+	private RSModel getModel2()
+	{
+		RSRenderable renderable = getRenderable2();
+		if (renderable == null)
+		{
+			return null;
+		}
+
+		RSModel model;
+
+		if (renderable instanceof Model)
+		{
+			model = (RSModel) renderable;
+		}
+		else
+		{
+			model = renderable.getModel();
+		}
+
+		return model;
+	}
+
+	@Inject
 	@Override
 	public Area getClickbox()
 	{
@@ -100,6 +124,22 @@ public abstract class RSDecorativeObjectMixin implements RSDecorativeObject
 			return null;
 		}
 
-		return model.getConvexHull(getX(), getY(), getOrientation());
+		int tileHeight = Perspective.getTileHeight(client, new LocalPoint(getX(), getY()), client.getPlane());
+		return model.getConvexHull(getX() + getXOffset(), getY() + getYOffset(), 0, tileHeight);
+	}
+
+	@Inject
+	@Override
+	public Polygon getConvexHull2()
+	{
+		RSModel model = getModel2();
+
+		if (model == null)
+		{
+			return null;
+		}
+
+		int tileHeight = Perspective.getTileHeight(client, new LocalPoint(getX(), getY()), client.getPlane());
+		return model.getConvexHull(getX(), getY(), 0, tileHeight);
 	}
 }

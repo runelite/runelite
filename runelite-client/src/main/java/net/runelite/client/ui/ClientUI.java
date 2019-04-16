@@ -25,7 +25,6 @@
 package net.runelite.client.ui;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
 import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.CardLayout;
@@ -53,6 +52,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
@@ -76,6 +76,7 @@ import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.config.WarningOnExit;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
 import net.runelite.client.input.KeyManager;
@@ -223,10 +224,12 @@ public class ClientUI
 			if (inTitle)
 			{
 				titleToolbar.addComponent(event.getButton(), button);
+				titleToolbar.revalidate();
 			}
 			else
 			{
 				pluginToolbar.addComponent(event.getButton(), button);
+				pluginToolbar.revalidate();
 			}
 		});
 	}
@@ -237,7 +240,9 @@ public class ClientUI
 		SwingUtilities.invokeLater(() ->
 		{
 			pluginToolbar.removeComponent(event.getButton());
+			pluginToolbar.revalidate();
 			titleToolbar.removeComponent(event.getButton());
+			titleToolbar.revalidate();
 			final PluginPanel pluginPanel = event.getButton().getPanel();
 
 			if (pluginPanel != null)
@@ -510,8 +515,14 @@ public class ClientUI
 		});
 
 		// Show out of date dialog if needed
-		final boolean isOutdated = !(client instanceof Client);
-		if (isOutdated)
+		if (client == null)
+		{
+			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
+				"Error loading client! Check your logs for more details.",
+				"Unable to load client",
+				ERROR_MESSAGE));
+		}
+		else if (!(client instanceof Client))
 		{
 			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
 				"RuneLite has not yet been updated to work with the latest\n"
@@ -542,6 +553,7 @@ public class ClientUI
 	 */
 	public void paint(final Graphics graphics)
 	{
+		assert SwingUtilities.isEventDispatchThread() : "paint must be called on EDT";
 		frame.paint(graphics);
 	}
 
@@ -630,7 +642,16 @@ public class ClientUI
 			: 5;
 
 		final BufferedImage image = sidebarOpen ? sidebarClosedIcon : sidebarOpenIcon;
-		graphics.drawImage(image, x, y, null);
+
+		final Rectangle sidebarButtonRange = new Rectangle(x - 15, 0, image.getWidth() + 25, client.getRealDimensions().height);
+		final Point mousePosition = new Point(
+			client.getMouseCanvasPosition().getX() + client.getViewportXOffset(),
+			client.getMouseCanvasPosition().getY() + client.getViewportYOffset());
+
+		if (sidebarButtonRange.contains(mousePosition.getX(), mousePosition.getY()))
+		{
+			graphics.drawImage(image, x, y, null);
+		}
 
 		// Update button dimensions
 		sidebarButtonPosition.setBounds(x, y, image.getWidth(), image.getHeight());

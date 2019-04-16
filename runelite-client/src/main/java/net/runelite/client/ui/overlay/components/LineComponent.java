@@ -31,7 +31,9 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
 @Setter
@@ -53,17 +55,22 @@ public class LineComponent implements LayoutableRenderableEntity
 	@Builder.Default
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
+	@Builder.Default
+	@Getter
+	private final Rectangle bounds = new Rectangle();
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		graphics.translate(preferredLocation.x, preferredLocation.y);
 		// Prevent NPEs
 		final String left = MoreObjects.firstNonNull(this.left, "");
 		final String right = MoreObjects.firstNonNull(this.right, "");
 
 		final FontMetrics metrics = graphics.getFontMetrics();
-		int x = 0;
-		int y = metrics.getHeight();
+		final int baseX = preferredLocation.x;
+		final int baseY = preferredLocation.y + metrics.getHeight();
+		int x = baseX;
+		int y = baseY;
 		final int leftFullWidth = getLineWidth(left, metrics);
 		final int rightFullWidth = getLineWidth(right, metrics);
 
@@ -112,8 +119,10 @@ public class LineComponent implements LayoutableRenderableEntity
 				y += metrics.getHeight();
 			}
 
-			graphics.translate(-preferredLocation.x, -preferredLocation.y);
-			return new Dimension(preferredSize.width, y - metrics.getHeight());
+			final Dimension dimension = new Dimension(preferredSize.width, y - baseY);
+			bounds.setLocation(preferredLocation);
+			bounds.setSize(dimension);
+			return dimension;
 		}
 
 		final TextComponent leftLineComponent = new TextComponent();
@@ -129,8 +138,10 @@ public class LineComponent implements LayoutableRenderableEntity
 		rightLineComponent.render(graphics);
 		y += metrics.getHeight();
 
-		graphics.translate(-preferredLocation.x, -preferredLocation.y);
-		return new Dimension(preferredSize.width, y - metrics.getHeight());
+		final Dimension dimension = new Dimension(preferredSize.width, y - baseY);
+		bounds.setLocation(preferredLocation);
+		bounds.setSize(dimension);
+		return dimension;
 	}
 
 	private static int getLineWidth(final String line, final FontMetrics metrics)
