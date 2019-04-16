@@ -122,18 +122,13 @@ class BarrowsOverlay extends Overlay
 			renderBarrowsBrothers(graphics);
 		}
 
-		if (config.showPuzzleAnswer())
+		if (config.showPuzzleAnswer() && puzzleAnswer != null && !puzzleAnswer.isHidden())
 		{
-			if (puzzleAnswer != null)
-			{
-				if (!puzzleAnswer.isHidden())
-				{
-					Rectangle answerRect = puzzleAnswer.getBounds();
-					graphics.setColor(Color.GREEN);
-					graphics.draw(answerRect);
-				}
-			}
+			Rectangle answerRect = puzzleAnswer.getBounds();
+			graphics.setColor(Color.GREEN);
+			graphics.draw(answerRect);
 		}
+
 		return null;
 	}
 

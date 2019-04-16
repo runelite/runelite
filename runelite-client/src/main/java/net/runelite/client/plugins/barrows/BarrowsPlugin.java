@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.barrows;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
 import java.util.HashSet;
@@ -82,7 +83,6 @@ public class BarrowsPlugin extends Plugin
 	);
 
 	private static final Set<Integer> BARROWS_LADDERS = Sets.newHashSet(NullObjectID.NULL_20675, NullObjectID.NULL_20676, NullObjectID.NULL_20677);
-	private final Set<Widget> POSSIBLE_SOLUTIONS = new HashSet<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> walls = new HashSet<>();
@@ -252,23 +252,23 @@ public class BarrowsPlugin extends Plugin
 
 		if (event.getGroupId() == WidgetID.BARROWS_PUZZLE_GROUP_ID)
 		{
-			int answer = client.getWidget(WidgetInfo.BARROWS_FIRST_PUZZLE).getModelId() - 3;
+			final int answer = client.getWidget(WidgetInfo.BARROWS_FIRST_PUZZLE).getModelId() - 3;
+			final ImmutableSet<WidgetInfo> possibleSolutions = ImmutableSet.of(
+					WidgetInfo.BARROWS_PUZZLE_ANSWER1,
+					WidgetInfo.BARROWS_PUZZLE_ANSWER2,
+					WidgetInfo.BARROWS_PUZZLE_ANSWER3
+			);
 
-			POSSIBLE_SOLUTIONS.clear();
-			POSSIBLE_SOLUTIONS.add(client.getWidget(WidgetInfo.BARROWS_PUZZLE_ANSWER1));
-			POSSIBLE_SOLUTIONS.add(client.getWidget(WidgetInfo.BARROWS_PUZZLE_ANSWER2));
-			POSSIBLE_SOLUTIONS.add(client.getWidget(WidgetInfo.BARROWS_PUZZLE_ANSWER3));
-
-			for (Widget puzzleNode : POSSIBLE_SOLUTIONS)
+			for (WidgetInfo puzzleNode : possibleSolutions)
 			{
 				if (puzzleNode == null)
 				{
 					continue;
 				}
 
-				if (puzzleNode.getModelId() == answer)
+				if (client.getWidget(puzzleNode).getModelId() == answer)
 				{
-					widgetToHighlight = puzzleNode;
+					widgetToHighlight = client.getWidget(puzzleNode);
 					break;
 				}
 			}
