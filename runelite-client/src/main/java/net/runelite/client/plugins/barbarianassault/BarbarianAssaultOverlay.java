@@ -54,6 +54,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 class BarbarianAssaultOverlay extends Overlay
 {
 	private static final int MAX_EGG_DISTANCE = 2500;
+	private static final int OFFSET_Z = 20;
 
 	private final Client client;
 	private final BarbarianAssaultPlugin plugin;
@@ -177,7 +178,7 @@ class BarbarianAssaultOverlay extends Overlay
 		graphics.setStroke(originalStroke);
 
 		String quantityText = "x" + quantity;
-		Point textPoint = Perspective.getCanvasTextLocation(client, graphics, groundPoint, quantityText, 0);
+		Point textPoint = Perspective.getCanvasTextLocation(client, graphics, groundPoint, quantityText, OFFSET_Z);
 		OverlayUtil.renderTextLocation(graphics, textPoint, quantityText, Color.WHITE);
 	}
 }
