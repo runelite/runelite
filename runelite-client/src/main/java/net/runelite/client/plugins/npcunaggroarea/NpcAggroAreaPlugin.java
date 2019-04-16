@@ -141,6 +141,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(notWorkingOverlay);
 		npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
+		recheckActive();
 	}
 
 	@Override
