@@ -215,6 +215,7 @@ public class ChatMessageManager
 				case FRIENDSCHAT:
 					return JagexColors.CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
 				case TWITCH:
+					return JagexColors.CHAT_TWITCH_TEXT_OPAQUE_BACKGROUND;
                 case ITEM_EXAMINE:
 				case OBJECT_EXAMINE:
 				case NPC_EXAMINE:
