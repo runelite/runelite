@@ -24,32 +24,34 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.interfacestyles;
+package net.runelite.client.plugins.virtuallevels;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("interfaceStyles")
-public interface InterfaceStylesConfig extends Config
+@ConfigGroup("virtualLevels")
+public interface VirtualLevelsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "gameframe",
-		name = "Gameframe",
-		description = "The gameframe to use for the interface"
+		keyName = "virtualLevelsEnabled",
+		name = "Virtual Levels",
+		description = "Configuration for the virtual levels plugin."
 	)
-	default Skin skin()
+	default boolean virtualLevelsEnabled()
 	{
-		return Skin.AROUND_2010;
+		return true;
 	}
 
 	@ConfigItem(
-		keyName = "hdHealthBars",
-		name = "High Detail health bars",
-		description = "Replaces health bars with the RuneScape High Detail mode design"
+		keyName = "hideMembersSkills",
+		name = "Hide Members Skills on F2P worlds",
+		description = "Hide Members levels and recalculate total level on F2P worlds."
 	)
-	default boolean hdHealthBars()
+	default boolean hideMembersSkills()
 	{
 		return false;
 	}
+
 }
+
