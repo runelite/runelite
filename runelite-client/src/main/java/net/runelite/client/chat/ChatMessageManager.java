@@ -312,8 +312,8 @@ public class ChatMessageManager
 			cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, chatColorConfig.opaquePrivateMessageReceivedHighlight(), false),
 				ChatMessageType.MODPRIVATECHAT);
 		}
-		if (chatColorConfig.opaqueTwitchMessages()!= null)
-        {
+		if (chatColorConfig.opaqueTwitchMessages() != null)
+		{
             cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueTwitchMessages(),  false),
                 ChatMessageType.TWITCH);
         }

@@ -96,7 +96,7 @@ public class ChatCommandManager implements ChatboxInputListener
 		{
 			case PUBLICCHAT:
 			case MODCHAT:
-            case TWITCH:
+			case TWITCH:
 			case FRIENDSCHAT:
 			case PRIVATECHAT:
 			case PRIVATECHATOUT:
