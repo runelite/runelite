@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins.barrows;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -38,6 +40,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -117,6 +120,11 @@ class BarrowsOverlay extends Overlay
 		else if (config.showBrotherLoc())
 		{
 			renderBarrowsBrothers(graphics);
+		}
+		if (config.showDigLocation())
+		{
+
+			renderDigLocations(graphics);
 		}
 
 		return null;
@@ -227,6 +235,38 @@ class BarrowsOverlay extends Overlay
 				}
 
 				graphics.drawString(brotherLetter, minimapText.getX(), minimapText.getY());
+			}
+		}
+	}
+	private void renderDigLocations(Graphics2D graphics)
+	{
+		for (BarrowsBrothers brother : BarrowsBrothers.values())
+		{
+			WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+
+			if (brother.getLocation().distanceTo(playerLocation) >= 32)
+			{
+				continue;
+			}
+
+			if (client.getVar(brother.getKilledVarbit()) > 0)
+			{
+				graphics.setColor(config.deadBrotherLocColor());
+			}
+
+			else
+			{
+				graphics.setColor(config.brotherLocColor());
+			}
+
+			List<Polygon> pList = Perspective.getLinePolyList(client, brother.getDigLocationStart(), brother.getDigLocationEnd());
+			for (Polygon p : pList)
+			{
+				if (p != null)
+				{
+					graphics.setStroke(new BasicStroke(0.1F));
+					graphics.draw(p);
+				}
 			}
 		}
 	}
