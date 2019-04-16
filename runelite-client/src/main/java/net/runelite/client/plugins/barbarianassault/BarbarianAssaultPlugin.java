@@ -26,6 +26,8 @@
 package net.runelite.client.plugins.barbarianassault;
 
 import com.google.inject.Provides;
+
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.util.HashMap;
@@ -35,12 +37,14 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.kit.KitType;
@@ -57,6 +61,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
@@ -247,6 +252,64 @@ public class BarbarianAssaultPlugin extends Plugin
 			else
 			{
 				eggMap.remove(worldPoint);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (!config.highlightCollectorEggs())
+		{
+			return;
+		}
+		if (overlay.getCurrentRound() == null)
+		{
+			return;
+		}
+		if (overlay.getCurrentRound().getRoundRole() != Role.COLLECTOR)
+		{
+			return;
+		}
+
+		String calledEgg = getCollectorHeardCall();
+		String target = event.getTarget();
+		String option = event.getOption();
+		String targetClean = target.substring(target.indexOf('>') + 1);
+		String optionClean = option.substring(option.indexOf('>') + 1);
+
+		if ("Take".equals(optionClean))
+		{
+			Color highlightColor = null;
+
+			if (calledEgg != null && calledEgg.startsWith(targetClean))
+			{
+				switch (calledEgg)
+				{
+					case "Red eggs":
+						highlightColor = Color.RED;
+						break;
+					case "Green eggs":
+						highlightColor = Color.GREEN;
+						break;
+					case "Blue eggs":
+						highlightColor = Color.BLUE;
+						break;
+					default:
+						highlightColor = null;
+				}
+			}
+			else if ("Yellow egg".equals(targetClean))
+			{
+				highlightColor = Color.YELLOW;
+			}
+
+			if (highlightColor != null)
+			{
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				MenuEntry last = menuEntries[menuEntries.length - 1];
+				last.setTarget(ColorUtil.prependColorTag(targetClean, highlightColor));
+				client.setMenuEntries(menuEntries);
 			}
 		}
 	}
