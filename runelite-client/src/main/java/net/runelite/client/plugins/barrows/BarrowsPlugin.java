@@ -83,11 +83,12 @@ public class BarrowsPlugin extends Plugin
 	);
 
 	private static final Set<Integer> BARROWS_LADDERS = Sets.newHashSet(NullObjectID.NULL_20675, NullObjectID.NULL_20676, NullObjectID.NULL_20677);
-	private static final ImmutableSet<WidgetInfo> possibleSolutions = ImmutableSet.of(
+	private static final ImmutableSet<WidgetInfo> POSSIBLE_SOLUTIONS = ImmutableSet.of(
 		WidgetInfo.BARROWS_PUZZLE_ANSWER1,
 		WidgetInfo.BARROWS_PUZZLE_ANSWER2,
 		WidgetInfo.BARROWS_PUZZLE_ANSWER3
 	);
+
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> walls = new HashSet<>();
 
@@ -259,9 +260,10 @@ public class BarrowsPlugin extends Plugin
 			final int answer = client.getWidget(WidgetInfo.BARROWS_FIRST_PUZZLE).getModelId() - 3;
 			puzzleAnswer = null;
 
-			for (WidgetInfo puzzleNode : possibleSolutions)
+			for (WidgetInfo puzzleNode : POSSIBLE_SOLUTIONS)
 			{
-				Widget widgetToCheck = client.getWidget(puzzleNode);
+				final Widget widgetToCheck = client.getWidget(puzzleNode);
+
 				if (widgetToCheck != null && widgetToCheck.getModelId() == answer)
 				{
 					puzzleAnswer = client.getWidget(puzzleNode);
