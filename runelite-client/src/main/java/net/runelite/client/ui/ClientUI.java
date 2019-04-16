@@ -596,6 +596,27 @@ public class ClientUI
 		{
 			OSXUtil.requestFocus();
 		}
+		// The workaround for Windows is to minimise and then un-minimise the client to bring
+		// it to the front because java.awt.Window#toFront doesn't work reliably.
+		else if (OSType.getOSType() == OSType.Windows && !frame.isFocused())
+		{
+			if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH)
+			{
+				frame.setExtendedState(JFrame.ICONIFIED);
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			}
+			else
+			{
+				// If the client is snapped to the edges of the screen, setExtendedState(JFrame.NORMAL)
+				// will undo the snap-to-edge so setSize() is required to prevent the client from
+				// changing size. Unfortunately Windows does not support JFrame.MAXIMIZED_VERT
+				int width = frame.getWidth();
+				int height = frame.getHeight();
+				frame.setExtendedState(JFrame.ICONIFIED);
+				frame.setExtendedState(JFrame.NORMAL);
+				frame.setSize(width, height);
+			}
+		}
 
 		frame.requestFocus();
 		giveClientFocus();
