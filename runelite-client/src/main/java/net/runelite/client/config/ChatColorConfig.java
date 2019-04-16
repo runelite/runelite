@@ -273,8 +273,8 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 			position = 58,
 			keyName = "opaqueTwitchMessages",
-			name = "Twitch messages",
-			description = "Color of Twitch messages"
+			name = "Twitch chat Messages",
+			description = "Color of Twitch Messages"
 	)
 	Color opaqueTwitchMessages();
 
