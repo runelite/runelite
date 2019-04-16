@@ -418,7 +418,8 @@ class LootTrackerPanel extends PluginPanel
 		boxes.forEach(LootTrackerBox::rebuild);
 		updateOverall();
 		boxes.sort(config.getLootSorting().getSorter());
-		boxes.forEach(box -> {
+		boxes.forEach(box ->
+		{
 			logsContainer.add(box, 0);
 			if (!groupLoot && boxes.size() > MAX_LOOT_BOXES)
 			{
