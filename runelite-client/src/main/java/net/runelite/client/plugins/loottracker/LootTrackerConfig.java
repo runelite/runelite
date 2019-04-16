@@ -50,6 +50,16 @@ public interface LootTrackerConfig extends Config
 	void setIgnoredItems(String key);
 
 	@ConfigItem(
+		keyName = "lootSorting",
+		name = "Loot Sorting",
+		description = "How the entries in the loot tracking panel are sorted."
+	)
+	default LootEntrySorting getLootSorting()
+	{
+		return LootEntrySorting.LAST;
+	}
+
+	@ConfigItem(
 		keyName = "saveLoot",
 		name = "Submit loot tracker data",
 		description = "Submit loot tracker data (requires being logged in)"
