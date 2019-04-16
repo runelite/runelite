@@ -68,7 +68,7 @@ class BarrowsOverlay extends Overlay
 		Player local = client.getLocalPlayer();
 		final Color npcColor = getMinimapDotColor(1);
 		final Color playerColor = getMinimapDotColor(2);
-		Widget puzzleAnswer = plugin.getWidgetToHighlight();
+		Widget puzzleAnswer = plugin.getPuzzleAnswer();
 
 		// tunnels are only on z=0
 		if (!plugin.getWalls().isEmpty() && client.getPlane() == 0 && config.showMinimap())

@@ -83,7 +83,11 @@ public class BarrowsPlugin extends Plugin
 	);
 
 	private static final Set<Integer> BARROWS_LADDERS = Sets.newHashSet(NullObjectID.NULL_20675, NullObjectID.NULL_20676, NullObjectID.NULL_20677);
-
+	private static final ImmutableSet<WidgetInfo> possibleSolutions = ImmutableSet.of(
+		WidgetInfo.BARROWS_PUZZLE_ANSWER1,
+		WidgetInfo.BARROWS_PUZZLE_ANSWER2,
+		WidgetInfo.BARROWS_PUZZLE_ANSWER3
+	);
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> walls = new HashSet<>();
 
@@ -91,7 +95,7 @@ public class BarrowsPlugin extends Plugin
 	private final Set<GameObject> ladders = new HashSet<>();
 
 	@Getter
-	private Widget widgetToHighlight;
+	private Widget puzzleAnswer;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -134,7 +138,7 @@ public class BarrowsPlugin extends Plugin
 		overlayManager.remove(brotherOverlay);
 		walls.clear();
 		ladders.clear();
-		widgetToHighlight = null;
+		puzzleAnswer = null;
 
 		// Restore widgets
 		final Widget potential = client.getWidget(WidgetInfo.BARROWS_POTENTIAL);
@@ -218,7 +222,7 @@ public class BarrowsPlugin extends Plugin
 			// on region changes the tiles get set to null
 			walls.clear();
 			ladders.clear();
-			widgetToHighlight = null;
+			puzzleAnswer = null;
 		}
 	}
 
@@ -253,22 +257,14 @@ public class BarrowsPlugin extends Plugin
 		if (event.getGroupId() == WidgetID.BARROWS_PUZZLE_GROUP_ID)
 		{
 			final int answer = client.getWidget(WidgetInfo.BARROWS_FIRST_PUZZLE).getModelId() - 3;
-			final ImmutableSet<WidgetInfo> possibleSolutions = ImmutableSet.of(
-					WidgetInfo.BARROWS_PUZZLE_ANSWER1,
-					WidgetInfo.BARROWS_PUZZLE_ANSWER2,
-					WidgetInfo.BARROWS_PUZZLE_ANSWER3
-			);
+			puzzleAnswer = null;
 
 			for (WidgetInfo puzzleNode : possibleSolutions)
 			{
-				if (puzzleNode == null)
+				Widget widgetToCheck = client.getWidget(puzzleNode);
+				if (widgetToCheck != null && widgetToCheck.getModelId() == answer)
 				{
-					continue;
-				}
-
-				if (client.getWidget(puzzleNode).getModelId() == answer)
-				{
-					widgetToHighlight = client.getWidget(puzzleNode);
+					puzzleAnswer = client.getWidget(puzzleNode);
 					break;
 				}
 			}
