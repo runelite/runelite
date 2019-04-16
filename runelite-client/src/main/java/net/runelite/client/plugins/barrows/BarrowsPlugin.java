@@ -82,12 +82,16 @@ public class BarrowsPlugin extends Plugin
 	);
 
 	private static final Set<Integer> BARROWS_LADDERS = Sets.newHashSet(NullObjectID.NULL_20675, NullObjectID.NULL_20676, NullObjectID.NULL_20677);
+	private final Set<Widget> POSSIBLE_SOLUTIONS = new HashSet<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> walls = new HashSet<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> ladders = new HashSet<>();
+
+	@Getter
+	private Widget widgetToHighlight;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -130,6 +134,7 @@ public class BarrowsPlugin extends Plugin
 		overlayManager.remove(brotherOverlay);
 		walls.clear();
 		ladders.clear();
+		widgetToHighlight = null;
 
 		// Restore widgets
 		final Widget potential = client.getWidget(WidgetInfo.BARROWS_POTENTIAL);
@@ -213,6 +218,7 @@ public class BarrowsPlugin extends Plugin
 			// on region changes the tiles get set to null
 			walls.clear();
 			ladders.clear();
+			widgetToHighlight = null;
 		}
 	}
 
@@ -242,6 +248,30 @@ public class BarrowsPlugin extends Plugin
 				.type(ChatMessageType.ITEM_EXAMINE)
 				.runeLiteFormattedMessage(message.build())
 				.build());
+		}
+
+		if (event.getGroupId() == WidgetID.BARROWS_PUZZLE_GROUP_ID)
+		{
+			int answer = client.getWidget(WidgetInfo.BARROWS_FIRST_PUZZLE).getModelId() - 3;
+
+			POSSIBLE_SOLUTIONS.clear();
+			POSSIBLE_SOLUTIONS.add(client.getWidget(WidgetInfo.BARROWS_PUZZLE_ANSWER1));
+			POSSIBLE_SOLUTIONS.add(client.getWidget(WidgetInfo.BARROWS_PUZZLE_ANSWER2));
+			POSSIBLE_SOLUTIONS.add(client.getWidget(WidgetInfo.BARROWS_PUZZLE_ANSWER3));
+
+			for (Widget puzzleNode : POSSIBLE_SOLUTIONS)
+			{
+				if (puzzleNode == null)
+				{
+					continue;
+				}
+
+				if (puzzleNode.getModelId() == answer)
+				{
+					widgetToHighlight = puzzleNode;
+					break;
+				}
+			}
 		}
 	}
 }
