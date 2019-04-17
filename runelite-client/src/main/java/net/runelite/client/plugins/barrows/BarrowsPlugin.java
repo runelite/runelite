@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.barrows;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
 import java.util.HashSet;
@@ -83,7 +83,7 @@ public class BarrowsPlugin extends Plugin
 	);
 
 	private static final Set<Integer> BARROWS_LADDERS = Sets.newHashSet(NullObjectID.NULL_20675, NullObjectID.NULL_20676, NullObjectID.NULL_20677);
-	private static final ImmutableSet<WidgetInfo> POSSIBLE_SOLUTIONS = ImmutableSet.of(
+	private static final ImmutableList<WidgetInfo> POSSIBLE_SOLUTIONS = ImmutableList.of(
 		WidgetInfo.BARROWS_PUZZLE_ANSWER1,
 		WidgetInfo.BARROWS_PUZZLE_ANSWER2,
 		WidgetInfo.BARROWS_PUZZLE_ANSWER3

@@ -122,7 +122,7 @@ class BarrowsOverlay extends Overlay
 			renderBarrowsBrothers(graphics);
 		}
 
-		if (config.showPuzzleAnswer() && puzzleAnswer != null && !puzzleAnswer.isHidden())
+		if (puzzleAnswer != null && config.showPuzzleAnswer() && !puzzleAnswer.isHidden())
 		{
 			Rectangle answerRect = puzzleAnswer.getBounds();
 			graphics.setColor(Color.GREEN);
