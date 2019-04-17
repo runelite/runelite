@@ -213,7 +213,7 @@ public class ReportButtonPlugin extends Plugin
 		return DATE_FORMAT.format(new Date());
 	}
 
-	private static String getTickCount()
+	private String getTickCount()
 	{
 		return Integer.toString(tickCounter);
 	}
