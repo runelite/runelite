@@ -191,6 +191,11 @@ public class ReportButtonPlugin extends Plugin
 		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 
+	private String getTickCount()
+	{
+		return Integer.toString(tickCounter);
+	}
+
 	private static String getLocalTime()
 	{
 		return LocalTime.now().format(DATE_TIME_FORMAT);
@@ -211,10 +216,5 @@ public class ReportButtonPlugin extends Plugin
 	private static String getDate()
 	{
 		return DATE_FORMAT.format(new Date());
-	}
-
-	private String getTickCount()
-	{
-		return Integer.toString(tickCounter);
 	}
 }
