@@ -1,15 +1,11 @@
 package net.runelite.client.plugins.remotebankcontents;
 
-import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.image.BufferedImage;
-import java.util.LinkedHashMap;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.stream.Collectors;
-import javax.inject.Inject;
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -18,38 +14,76 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import net.runelite.api.Client;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.PluginErrorPanel;
 
 public class RemoteBankContentsPanel extends PluginPanel
 {
 
-	private static final int ITEMS_PER_ROW = 5;
-	final JPanel bankItemPanel = new JPanel();
-	private final JLabel overallIcon = new JLabel();    // Details and navigation
+	/*
+		Constants
+	 */
 
-	@Inject
+	//May make this changeable in settings in the future.
+	private static final int ITEMS_PER_ROW = 5;
+
+
 	private final ItemManager itemManager;
-	@Inject
+
+	/*
+		Swing Stuff
+	 */
+	private final JPanel bankItemPanel = new JPanel();
+	/*  The error panel, this displays an error message */
+	PluginErrorPanel initialPanel = new PluginErrorPanel();
 	private Client client;
-	@Inject
-	private ClientThread clientThread;
 	private LinkedHashSet<BankItem> items; //Goes through all tabs numerically and then does the first main tab.
-	private LinkedHashSet<BankItem> tempItems;
+	private boolean initialised = false;
 	private JTextField searchBar = new JTextField();
-	private JPanel searchPanel = new JPanel();
-	private LinkedHashMap<Integer, Integer> itemsAndQuantities;
 
 	RemoteBankContentsPanel(Client client, ItemManager itemManager)
 	{
+
+		/*
+			Pass client and item manager from main class.
+		 */
 		this.client = client;
 		this.itemManager = itemManager;
+
+
+		initialPanel.setBorder(new EmptyBorder(50, 20, 20, 20));
+		initialPanel.setContent("Plugin not initialised.", "Please open the bank to initialise");
+
+		add(initialPanel);
+	}
+
+	public void setInitialPanel(){
+		initialPanel.setBorder(new EmptyBorder(50, 20, 20, 20));
+		initialPanel.setContent("Plugin not initialised.", "Please open the bank to initialise");
+
+		add(initialPanel);
+	}
+
+	public void reset()
+	{
+		removeAll();
+		setInitialPanel();
+		rebuild();
+	}
+
+
+
+	private void initialiseMainPanel()
+	{
+
+
+		removeAll();
+
+		setBorder(new EmptyBorder(8, 8, 8, 8));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BoxLayout(this, 1));
-
-
 		add(searchBar);
 
 		searchBar.getDocument().addDocumentListener(new DocumentListener()
@@ -71,22 +105,20 @@ public class RemoteBankContentsPanel extends PluginPanel
 			}
 		});
 
-
 		bankItemPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		bankItemPanel.setBorder(new EmptyBorder(5, 5, 5, 10));
 
 		add(bankItemPanel);
-
+		initialised = true;
 
 	}
 
-
-	//AsyncBufferedImage itemImage = itemManager.getImage(item.getId(), item.getQuantity(), item.getQuantity() > 1);
-	//private final ItemManager itemManager;
+/*
 	void loadHeaderIcon(BufferedImage img)
 	{
 		overallIcon.setIcon(new ImageIcon(img));
 	}
+*/
 
 	void setItems(LinkedHashSet<BankItem> items)
 	{
@@ -99,6 +131,10 @@ public class RemoteBankContentsPanel extends PluginPanel
 
 	public void populatePanel()
 	{
+
+		Instant start = Instant.now();
+
+
 
 		if (items != null)
 		{
@@ -131,14 +167,22 @@ public class RemoteBankContentsPanel extends PluginPanel
 
 			rebuild();
 		}
-
+		Instant finish = Instant.now();
+		long timeElapsed = Duration.between(start, finish).toMillis();
+		client.getLogger().debug("Populate panel took: " + timeElapsed + "ms");
 	}
 
 	public void rebuild()
 	{
 
+		if (!initialised)
+		{
+			initialiseMainPanel();
+		}
+
 		repaint();
 		revalidate();
+
 	}
 
 
@@ -147,7 +191,7 @@ public class RemoteBankContentsPanel extends PluginPanel
 	{
 		if (items != null)
 		{
-			tempItems = items;
+			LinkedHashSet<BankItem> tempItems = items;
 
 			CharSequence chars = name.toLowerCase();
 
@@ -168,4 +212,11 @@ public class RemoteBankContentsPanel extends PluginPanel
 
 		}
 	}
+
+	public LinkedHashSet<BankItem> getItems() {
+
+
+		return items;
+}
+
 }

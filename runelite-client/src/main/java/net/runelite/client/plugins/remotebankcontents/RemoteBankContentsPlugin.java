@@ -88,6 +88,7 @@ public class RemoteBankContentsPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		remoteBankContentsProcess.reset();
+		panel.reset();
 
 	}
 
@@ -145,6 +146,7 @@ public class RemoteBankContentsPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			remoteBankContentsProcess.reset();
+		
 		}
 	}
 

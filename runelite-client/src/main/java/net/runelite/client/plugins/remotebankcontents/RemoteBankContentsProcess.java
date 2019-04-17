@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -220,6 +219,7 @@ public class RemoteBankContentsProcess
 	public void reset()
 	{
 		items.clear();
+		//panel.reset();
 	}
 
 	void depositHandler(MenuOptionClicked event)
@@ -307,21 +307,20 @@ public class RemoteBankContentsProcess
 
 	}
 
+	/*
+	Populate panel called here
+	 */
 	private void depositInventory()
 	{
 		ItemContainer inventoryContainer = client.getItemContainer(InventoryID.INVENTORY);
 		HashMap<Integer, Integer> inventoryItems = new LinkedHashMap<>();
 
+		Arrays.stream(inventoryContainer.getItems()).filter(item -> item.getId() != -1).filter(distinctByKey(Item::getId)).forEach(item -> inventoryItems.put(item.getId(), getQuantityInInventory(item.getId())));
 
-		Arrays.stream(inventoryContainer.getItems()).filter(item -> item.getId() != -1).filter(distinctByKey(Item::getId)).forEach(item -> deposit(item.getId(), getQuantityInInventory(item.getId())));
-		try
-		{
-			SwingUtilities.invokeAndWait(this::populatePanelItems);
-		}
-		catch (InterruptedException | InvocationTargetException e)
-		{
-			e.printStackTrace();
-		}
+		System.out.println(inventoryItems.entrySet().toString());
+		inventoryItems.forEach((id, quantity) -> System.out.println(id + "," + quantity));
+		replaceItemInBankDepositAll(inventoryItems);
+
 
 	}
 
@@ -349,18 +348,13 @@ public class RemoteBankContentsProcess
 		{
 			replaceItemInBankDeposit(id, quantity);
 		}
-		try
-		{
-			SwingUtilities.invokeAndWait(this::populatePanelItems);
-		}
-		catch (InterruptedException | InvocationTargetException e)
-		{
-			e.printStackTrace();
-		}
 
 	}
 
 
+	/*
+	Populate panel called here
+	 */
 	private void withdraw(int id, int quantityInBank, int quantity)
 	{
 
@@ -398,14 +392,6 @@ public class RemoteBankContentsProcess
 
 		}
 
-		try
-		{
-			SwingUtilities.invokeAndWait(this::populatePanelItems);
-		}
-		catch (InterruptedException | InvocationTargetException e)
-		{
-			e.printStackTrace();
-		}
 
 	}
 
@@ -485,14 +471,6 @@ public class RemoteBankContentsProcess
 
 
 		}
-		try
-		{
-			SwingUtilities.invokeAndWait(this::populatePanelItems);
-		}
-		catch (InterruptedException | InvocationTargetException e)
-		{
-			e.printStackTrace();
-		}
 
 	}
 
@@ -519,6 +497,31 @@ public class RemoteBankContentsProcess
 			e.printStackTrace();
 		}
 	}
+
+	private void replaceItemInBankDepositAll(HashMap<Integer, Integer> inventoryItems)
+	{
+
+		inventoryItems.forEach((id, quantity) -> {
+			if (items.get(id) == null)
+			{
+				items.put(id, quantity);
+			}
+			else
+			{
+				items.replace(id, items.get(id) + quantity);
+			}
+		});
+
+		try
+		{
+			SwingUtilities.invokeAndWait(this::populatePanelItems);
+		}
+		catch (InterruptedException | InvocationTargetException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 
 	private void replaceItemInBankWithdraw(int id, int quantity)
 	{
