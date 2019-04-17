@@ -831,6 +831,9 @@ public class ChatCommandsPlugin extends Plugin
 
 			switch (level)
 			{
+				case "beginner":
+					hiscoreSkill = result.getClueScrollBeginner();
+					break;
 				case "easy":
 					hiscoreSkill = result.getClueScrollEasy();
 					break;

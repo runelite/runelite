@@ -129,6 +129,7 @@ public class WidgetID
 	public static final int SKILLS_GROUP_ID = 320;
 	public static final int EQUIPMENT_PAGE_GROUP_ID = 84;
 	public static final int QUESTTAB_GROUP_ID = 629;
+	public static final int MUSIC_GROUP_ID = 239;
 
 	static class WorldMap
 	{
@@ -786,5 +787,11 @@ public class WidgetID
 	static class QuestTab
 	{
 		static final int QUEST_TAB = 3;
+	}
+
+	static class Music
+	{
+		static final int CONTAINER = 0;
+		static final int LIST = 3;
 	}
 }

@@ -408,6 +408,9 @@ public class LootTrackerPlugin extends Plugin
 			final String type = m.group(1).toLowerCase();
 			switch (type)
 			{
+				case "beginner":
+					eventType = "Clue Scroll (Beginner)";
+					break;
 				case "easy":
 					eventType = "Clue Scroll (Easy)";
 					break;
