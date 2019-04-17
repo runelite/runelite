@@ -38,7 +38,6 @@ public class RemoteBankContentsPanel extends PluginPanel
 	private final JPanel bankItemPanel = new JPanel();
 	/*  The error panel, this displays an error message */
 	PluginErrorPanel initialPanel = new PluginErrorPanel();
-	LinkedHashSet<BankItem> tempItems = new LinkedHashSet<BankItem>();
 	private Client client;
 	private LinkedHashSet<BankItem> items; //Goes through all tabs numerically and then does the first main tab.
 	private boolean initialised = false;
@@ -60,8 +59,7 @@ public class RemoteBankContentsPanel extends PluginPanel
 		add(initialPanel);
 	}
 
-	public void setInitialPanel()
-	{
+	public void setInitialPanel(){
 		initialPanel.setBorder(new EmptyBorder(50, 20, 20, 20));
 		initialPanel.setContent("Plugin not initialised.", "Please open the bank to initialise");
 
@@ -74,6 +72,7 @@ public class RemoteBankContentsPanel extends PluginPanel
 		setInitialPanel();
 		rebuild();
 	}
+
 
 
 	private void initialiseMainPanel()
@@ -121,10 +120,20 @@ public class RemoteBankContentsPanel extends PluginPanel
 	}
 */
 
+	void setItems(LinkedHashSet<BankItem> items)
+	{
+
+		this.items = items.stream().filter(i -> !i.isTemplate()).filter(i -> i.getQuantity() > 0).filter(i -> i.getName().length() > 0).collect(Collectors.toCollection(LinkedHashSet::new));
+
+		populatePanel();
+	}
+
+
 	public void populatePanel()
 	{
 
 		Instant start = Instant.now();
+
 
 
 		if (items != null)
@@ -170,18 +179,19 @@ public class RemoteBankContentsPanel extends PluginPanel
 		{
 			initialiseMainPanel();
 		}
-		searchBar.setText("");
+
 		repaint();
 		revalidate();
 
 	}
+
 
 	//remember on logout everything resets
 	public void filter(String name)
 	{
 		if (items != null)
 		{
-
+			LinkedHashSet<BankItem> tempItems = items;
 
 			CharSequence chars = name.toLowerCase();
 
@@ -203,19 +213,10 @@ public class RemoteBankContentsPanel extends PluginPanel
 		}
 	}
 
-	public LinkedHashSet<BankItem> getItems()
-	{
+	public LinkedHashSet<BankItem> getItems() {
 
 
 		return items;
-	}
-
-	void setItems(LinkedHashSet<BankItem> items)
-	{
-
-		this.items = items.stream().filter(i -> !i.isTemplate()).filter(i -> i.getQuantity() > 0).filter(i -> i.getName().length() > 0).collect(Collectors.toCollection(LinkedHashSet::new));
-
-		populatePanel();
-	}
+}
 
 }
