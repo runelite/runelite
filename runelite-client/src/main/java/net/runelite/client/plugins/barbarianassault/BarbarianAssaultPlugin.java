@@ -163,13 +163,8 @@ public class BarbarianAssaultPlugin extends Plugin {
 						total = ""+504;
 					}
 				}
-				else if (config.showEggCount() && collectedEggCount > 0) {
-					collectedEggCount -= wrongEggs; //true positive egg count
-					if (collectedEggCount > 60)
-					{
-						collectedEggCount = 60;
-					}
-					collectedEggCount -= wrongEggs; //true positive - negative egg count\
+				else if (config.showEggCount()) {
+
 					totalMsg = "; Total Collected: ";
 					total = "" + totalCollectedEggCount;
 
@@ -190,7 +185,8 @@ public class BarbarianAssaultPlugin extends Plugin {
 			currentWave = message[BA_WAVE_NUM_INDEX];
 			collectedEggCount = 0;
 			HpHealed = 0;
-
+			positiveEggCount = 0;
+			wrongEggs = 0;
 			if (currentWave.equals(START_WAVE)) {
 				gameTime = new GameTimer();
 				totalHpHealed = 0;
@@ -199,8 +195,9 @@ public class BarbarianAssaultPlugin extends Plugin {
 				gameTime.setWaveStartTime();
 			}
 		} else if (event.getType() == ChatMessageType.GAMEMESSAGE
-				&& event.getMessage().contains("egg explode")) {
-			wrongEggs --;
+				&& event.getMessage().contains("explode")) {
+			wrongEggs++;
+			positiveEggCount--;
 		} else if (event.getType() == ChatMessageType.GAMEMESSAGE
 				&& event.getMessage().contains("healed")) {
 			String message = event.getMessage();
@@ -266,7 +263,6 @@ public class BarbarianAssaultPlugin extends Plugin {
 
 			}
 		}
-
 		inGameBit = inGame;
 	}
 
@@ -312,7 +308,13 @@ public class BarbarianAssaultPlugin extends Plugin {
 		}
 		if (isUnderPlayer(itemDespawned.getTile()))
 		{
-			collectedEggCount++;
+			if (client.getLocalPlayer().getPlayerComposition().getEquipmentId(KitType.CAPE)==ItemID.COLLECTOR_ICON) {
+				positiveEggCount++;
+				if (positiveEggCount == 60) {
+					positiveEggCount--;
+				}
+				collectedEggCount = positiveEggCount - wrongEggs; //true positive - negative egg count\
+			}
 		}
 	}
 
