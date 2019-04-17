@@ -62,9 +62,8 @@ public class ReportButtonPlugin extends Plugin
 	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy");
 
-	private int tickCounter;
-
 	private Instant loginTime;
+	private int ticksSinceLogin;
 	private boolean ready;
 
 	@Inject
@@ -116,8 +115,8 @@ public class ReportButtonPlugin extends Plugin
 			case LOGGED_IN:
 				if (ready)
 				{
-					tickCounter = 0;
 					loginTime = Instant.now();
+					ticksSinceLogin = 0;
 					ready = false;
 				}
 				break;
@@ -127,7 +126,7 @@ public class ReportButtonPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		tickCounter++;
+		ticksSinceLogin++;
 		updateReportButtonTime();
 	}
 
@@ -170,8 +169,8 @@ public class ReportButtonPlugin extends Plugin
 			case DATE:
 				reportButton.setText(getDate());
 				break;
-			case TICK:
-				reportButton.setText(getTickCount());
+			case GAME_TICKS:
+				reportButton.setText(getGameTicks());
 				break;
 			case OFF:
 				reportButton.setText("Report");
@@ -191,9 +190,9 @@ public class ReportButtonPlugin extends Plugin
 		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 
-	private String getTickCount()
+	private String getGameTicks()
 	{
-		return Integer.toString(tickCounter);
+		return Integer.toString(ticksSinceLogin);
 	}
 
 	private static String getLocalTime()
