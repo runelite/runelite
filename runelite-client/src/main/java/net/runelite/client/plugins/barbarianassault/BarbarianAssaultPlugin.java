@@ -36,11 +36,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
@@ -82,16 +84,16 @@ public class BarbarianAssaultPlugin extends Plugin
 	private GameTimer gameTime;
 
 	@Getter(AccessLevel.PACKAGE)
-	private HashMap<WorldPoint, Integer> redEggs;
+	private final HashMap<WorldPoint, Integer> redEggs = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private HashMap<WorldPoint, Integer> greenEggs;
+	private final HashMap<WorldPoint, Integer> greenEggs = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private HashMap<WorldPoint, Integer> blueEggs;
+	private final HashMap<WorldPoint, Integer> blueEggs = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private HashMap<WorldPoint, Integer> yellowEggs;
+	private final HashMap<WorldPoint, Integer> yellowEggs = new HashMap<>();
 
 	@Inject
 	private Client client;
@@ -122,11 +124,6 @@ public class BarbarianAssaultPlugin extends Plugin
 			.deriveFont(Font.BOLD, 24);
 
 		clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
-
-		redEggs = new HashMap<>();
-		greenEggs = new HashMap<>();
-		blueEggs = new HashMap<>();
-		yellowEggs = new HashMap<>();
 	}
 
 	@Override
@@ -136,6 +133,7 @@ public class BarbarianAssaultPlugin extends Plugin
 		gameTime = null;
 		currentWave = START_WAVE;
 		inGameBit = 0;
+		clearAllEggMaps();
 	}
 
 	@Subscribe
@@ -302,6 +300,15 @@ public class BarbarianAssaultPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onGameStateChanged(final GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOADING)
+		{
+			clearAllEggMaps();
+		}
+	}
+
 	String getCollectorHeardCall()
 	{
 		Widget widget = client.getWidget(WidgetInfo.BA_COLL_HEARD_TEXT);
@@ -406,6 +413,14 @@ public class BarbarianAssaultPlugin extends Plugin
 			.type(ChatMessageType.CONSOLE)
 			.runeLiteFormattedMessage(chatMessage)
 			.build());
+	}
+
+	private void clearAllEggMaps()
+	{
+		redEggs.clear();
+		greenEggs.clear();
+		blueEggs.clear();
+		yellowEggs.clear();
 	}
 
 	public Font getFont()
