@@ -41,7 +41,7 @@ enum QuestStartLocation
 	IMP_CATCHER("Imp Catcher", new WorldPoint(3108, 3160, 0)),
 	THE_KNIGHTS_SWORD("The Knight's Sword", new WorldPoint(2976, 3342, 0)),
 	MISTHALIN_MYSTERY("Misthalin Mystery", new WorldPoint(3234, 3155, 0)),
-	PIRATES_TREASURE("Pirate's Treasure", new WorldPoint(3050, 3248, 0)),
+	PIRATES_TREASURE("Pirate's Treasure", new WorldPoint(3051, 3252, 0)),
 	PRINCE_ALI_RESCUE("Prince Ali Rescue", new WorldPoint(3301, 3163, 0)),
 	THE_RESTLESS_GHOST("The Restless Ghost", new WorldPoint(3240, 3210, 0)),
 	RUNE_MYSTERIES("Rune Mysteries", new WorldPoint(3210, 3220, 0)),
