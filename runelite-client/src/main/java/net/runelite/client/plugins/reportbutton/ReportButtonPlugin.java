@@ -39,6 +39,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
@@ -60,6 +61,8 @@ public class ReportButtonPlugin extends Plugin
 
 	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM. dd, yyyy");
+
+	private int tickCounter;
 
 	private Instant loginTime;
 	private boolean ready;
@@ -113,11 +116,19 @@ public class ReportButtonPlugin extends Plugin
 			case LOGGED_IN:
 				if (ready)
 				{
+					tickCounter = 0;
 					loginTime = Instant.now();
 					ready = false;
 				}
 				break;
 		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		tickCounter++;
+		updateReportButtonTime();
 	}
 
 	@Schedule(
@@ -158,6 +169,9 @@ public class ReportButtonPlugin extends Plugin
 				break;
 			case DATE:
 				reportButton.setText(getDate());
+				break;
+			case TICK:
+				reportButton.setText(Integer.toString(tickCounter));
 				break;
 			case OFF:
 				reportButton.setText("Report");
