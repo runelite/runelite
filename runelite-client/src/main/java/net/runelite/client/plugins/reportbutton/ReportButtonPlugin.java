@@ -171,7 +171,7 @@ public class ReportButtonPlugin extends Plugin
 				reportButton.setText(getDate());
 				break;
 			case TICK:
-				reportButton.setText(Integer.toString(tickCounter));
+				reportButton.setText(getTickCount());
 				break;
 			case OFF:
 				reportButton.setText("Report");
@@ -211,5 +211,10 @@ public class ReportButtonPlugin extends Plugin
 	private static String getDate()
 	{
 		return DATE_FORMAT.format(new Date());
+	}
+
+	private static String getTickCount()
+	{
+		return Integer.toString(tickCounter);
 	}
 }
