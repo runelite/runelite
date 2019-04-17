@@ -27,7 +27,6 @@ package net.runelite.client.plugins.twitch;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
 
-import java.awt.*;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import javax.inject.Inject;
