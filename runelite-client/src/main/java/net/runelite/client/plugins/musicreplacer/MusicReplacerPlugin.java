@@ -31,7 +31,6 @@ import com.google.inject.Provides;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.animation.Transition;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -50,7 +49,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,10 +88,10 @@ public class MusicReplacerPlugin extends Plugin
     public void onConfigChanged(ConfigChanged event)
     {
         String key = event.getKey();
-        switch(key)
+        switch (key)
         {
             //More to add later
-            case "musicPack":
+            case "musicPack" :
                 File dirCheck = new File(RUNELITE_DIR_MUSIC + config.musicPack());
                 if(dirCheck.exists() && !config.musicPack().isEmpty())
                 {
@@ -101,14 +99,14 @@ public class MusicReplacerPlugin extends Plugin
                     createMusicList(dirCheck);
                 }
                 break;
-            case "Vol":
+            case "Vol" :
                 volume = (double) config.Vol() / 100;
                 mediaPlayer.setVolume(volume);
                 break;
-            case "FadeIn":
+            case "FadeIn" :
                 fadeInMillis = config.FadeIn();
                 break;
-            case "FadeOut":
+            case "FadeOut" :
                 fadeOutMillis = config.FadeOut();
                 break;
         }
@@ -125,9 +123,11 @@ public class MusicReplacerPlugin extends Plugin
 
             while ((line = br.readLine()) != null)
             {
-                if(!line.isEmpty()) {
+                if (!line.isEmpty())
+                {
                     String[] values = line.split(",");
-                    if(!values[0].isEmpty() && !values[1].isEmpty()) {
+                    if (!values[0].isEmpty() && !values[1].isEmpty())
+                    {
                         musicMap.put(values[0].trim(), values[1].trim());
                     }
                 }
@@ -147,15 +147,20 @@ public class MusicReplacerPlugin extends Plugin
         fadeInMillis = config.FadeIn();
         fadeOutMillis = config.FadeOut();
 
-        if(!config.musicPack().isEmpty()) {
+        if (!config.musicPack().isEmpty())
+        {
             File dirCheck = new File(RUNELITE_DIR_MUSIC + "/" + config.musicPack());
-            if (dirCheck.exists()) {
+            if (dirCheck.exists())
+            {
                 createMusicList(dirCheck);
-                if(musicMap.containsKey("Main Theme")) {
-                    if(!musicMap.get("Main Theme").equals("")) {
+                if (musicMap.containsKey("Main Theme"))
+                {
+                    if (!musicMap.get("Main Theme").equals(""))
+                    {
                         String songLoc = RUNELITE_DIR_MUSIC + "/" + config.musicPack() + "/" + musicMap.get("Main Theme");
                         File songFile = new File(songLoc);
-                        if (songFile.exists()) {
+                        if (songFile.exists())
+                        {
                             String songURI = songFile.toURI().toString();
                             Media media = new Media(songURI);
                             mediaPlayer = new MediaPlayer(media);
@@ -207,11 +212,13 @@ public class MusicReplacerPlugin extends Plugin
         // Set up and play song
         if (musicMap.containsKey(song))
         {
-            if(!musicMap.get(song).equals("")) {
+            if(!musicMap.get(song).equals(""))
+            {
                 Timeline fadeOut = stop(fadeOutMillis);
                 String songLoc = RUNELITE_DIR_MUSIC + "/" + config.musicPack() + "/" + musicMap.get(song);
                 File songFile = new File(songLoc);
-                if (songFile.exists()) {
+                if (songFile.exists())
+                {
                     String songURI = songFile.toURI().toString();
                     Duration d = mediaPlayer.getCurrentTime();
                     d = d.add(Duration.millis(fadeOutMillis + 200));

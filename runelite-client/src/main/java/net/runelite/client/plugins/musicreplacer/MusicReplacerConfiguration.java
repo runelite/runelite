@@ -32,36 +32,46 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("osrsbeatz")
-public interface MusicReplacerConfiguration extends Config {
-    @ConfigItem(
-            position = 0,
-            keyName = "musicPack",
-            name = "Music Pack",
-            description = "Music Pack Choice"
-    )
-    default String musicPack()
-    {
-        return "";
-    }
-    @ConfigItem(
-            position = 1,
-            keyName = "Vol",
-            name =  "Volume",
-            description = "Volume"
-    )
-    default int Vol(){ return 25; }
+public interface MusicReplacerConfiguration extends Config
+{
+	@ConfigItem(
+			position = 0,
+			keyName = "musicPack",
+			name = "Music Pack",
+			description = "Music Pack Choice"
+	)
+	default String musicPack()
+	{
+		return "";
+	}
+	@ConfigItem(
+			position = 1,
+			keyName = "Vol",
+			name =  "Volume",
+			description = "Volume"
+	)
+	default int Vol()
+	{
+		return 25;
+	}
 	@ConfigItem(
 			position = 2,
 			keyName = "FadeIn",
 			name =  "Fade In (Millis)",
 			description = "Fade In in Milliseconds"
 	)
-	default int FadeIn(){ return 2500; }
+	default int FadeIn()
+	{
+		return 2500;
+	}
 	@ConfigItem(
 			position = 3,
 			keyName = "FadeOut",
 			name =  "Fade Out (Millis)",
 			description = "Fade Out in Milliseconds"
 	)
-	default int FadeOut(){ return 2500; }
+	default int FadeOut()
+	{
+		return 2500;
+	}
 }
