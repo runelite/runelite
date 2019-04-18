@@ -8,6 +8,7 @@ import javassist.NotFoundException;
 import net.runelite.client.RuneLite;
 import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.bytecode.transformers.ActorTransform;
+import net.runelite.client.rs.bytecode.transformers.PlayerTransform;
 import net.runelite.client.rs.bytecode.transformers.ProjectileTransform;
 import net.runelite.http.api.RuneLiteAPI;
 import org.xeustechnologies.jcl.JarClassLoader;
@@ -50,6 +51,8 @@ public class ByteCodePatcher {
                 transformActor(actorClass);
                 Class projectileClass = Class.forName(hooks.projectileClass, false, child);
                 transformProjectile(projectileClass);
+                Class playerClass = Class.forName(hooks.playerClass, false, child);
+                transformPlayer(playerClass);
                 ByteCodeUtils.updateHijackedJar();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -103,6 +106,7 @@ public class ByteCodePatcher {
                 Class classToLoad = Class.forName(entry.getName().replace(".class", ""), false, child);
                 checkActor(classToLoad);
                 checkProjectile(classToLoad);
+                checkPlayer(classToLoad);
             } catch (Exception e) {
             e.printStackTrace();
             }
@@ -129,10 +133,10 @@ public class ByteCodePatcher {
         }
     }
 
-    public static void transformActor(Class current) {
-        System.out.println("[RuneLit] Transforming Actor at class: "+current.getName());
+    public static void transformActor(Class actor) {
+        System.out.println("[RuneLit] Transforming Actor at class: "+actor.getName());
         ActorTransform at = new ActorTransform();
-        at.modify(current);
+        at.modify(actor);
     }
 
     public static void checkProjectile(Class current) {
@@ -151,10 +155,32 @@ public class ByteCodePatcher {
         }
     }
 
-    public static void transformProjectile(Class current) {
-        System.out.println("[RuneLit] Transforming Projectile at class: "+current.getName());
+    public static void transformProjectile(Class projectile) {
+        System.out.println("[RuneLit] Transforming Projectile at class: "+projectile.getName());
         ProjectileTransform pt = new ProjectileTransform();
-        pt.modify(current);
+        pt.modify(projectile);
+    }
+
+    public static void checkPlayer(Class current) {
+        try {
+            Method method = current.getDeclaredMethod("getSkullIcon");
+            if (method!=null) {
+                hooks.playerClass = current.getName();
+                System.out.println("[RuneLit] Transforming Player at class: "+current.getName());
+                PlayerTransform pt = new PlayerTransform();
+                pt.modify(current);
+            }
+        } catch (NoSuchMethodException e) {
+            //e.printStackTrace();
+        } catch (NoClassDefFoundError e) {
+            //e.printStackTrace();
+        }
+    }
+
+    public static void transformPlayer(Class player) {
+        System.out.println("[RuneLit] Transforming Player at class: "+player.getName());
+        PlayerTransform pt = new PlayerTransform();
+        pt.modify(player);
     }
 
 }

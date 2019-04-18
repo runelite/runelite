@@ -233,7 +233,8 @@ public class ClientLoader
 
 					if (hooks.clientInstance.equals("")||
 						hooks.projectileClass.equals("") ||
-						hooks.actorClass.equals("")) {
+						hooks.actorClass.equals("") ||
+							hooks.playerClass.equals("")) {
 							System.out.println("[RuneLit] Bad hooks, re-scraping.");
 						ByteCodePatcher.clientInstance = getClientInstance(ByteCodeUtils.injectedClientFile.getPath());
 						ByteCodePatcher.findHooks(injectedClientFile.getPath());
