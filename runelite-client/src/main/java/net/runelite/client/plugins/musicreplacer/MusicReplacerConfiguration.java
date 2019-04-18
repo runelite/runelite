@@ -56,12 +56,12 @@ public interface MusicReplacerConfiguration extends Config {
 			name =  "Fade In (Millis)",
 			description = "Fade In in Milliseconds"
 	)
-	default int FadeIn(){ return 7500; }
+	default int FadeIn(){ return 5000; }
 	@ConfigItem(
 			position = 3,
 			keyName = "FadeOut",
 			name =  "Fade Out (Millis)",
 			description = "Fade Out in Milliseconds"
 	)
-	default int FadeOut(){ return 4000; }
+	default int FadeOut(){ return 5000; }
 }

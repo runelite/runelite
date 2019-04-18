@@ -50,6 +50,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,12 +65,12 @@ import java.util.Map;
 public class MusicReplacerPlugin extends Plugin
 {
     private static MediaPlayer mediaPlayer;
-    private static int fadeOutMillis = 4000;
+    private static int fadeOutMillis;
     private Map<String, String> musicMap = new HashMap<>();
-    private static double volume = 0.25;
+    private static double volume;
     private String song = null;
     private static String RUNELITE_DIR_MUSIC = new File(RuneLite.RUNELITE_DIR, "/music-replacer/").toString();
-    private static int fadeInMillis = 7500;
+    private static int fadeInMillis;
 
     @Inject
     private Client client;
@@ -158,7 +159,10 @@ public class MusicReplacerPlugin extends Plugin
                             String songURI = songFile.toURI().toString();
                             Media media = new Media(songURI);
                             mediaPlayer = new MediaPlayer(media);
-                            play(mediaPlayer, fadeInMillis);
+                            Timeline fadeIn = play(fadeInMillis);
+                            mediaPlayer.setVolume(0);
+                            mediaPlayer.play();
+                            fadeIn.play();
                             mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
                         }
                     }
@@ -170,13 +174,11 @@ public class MusicReplacerPlugin extends Plugin
     @Override
     protected void shutDown() throws Exception
     {
-            Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.millis(fadeOutMillis),
-                            new KeyValue(mediaPlayer.volumeProperty(), 0)));
+            Timeline fadeOut = stop(fadeOutMillis);
             Duration d = mediaPlayer.getCurrentTime();
             d = d.add(Duration.millis(fadeOutMillis + 500));
             mediaPlayer.setStopTime(d);
-            timeline.play();
+            fadeOut.play();
             mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.dispose());
 
     }
@@ -206,9 +208,7 @@ public class MusicReplacerPlugin extends Plugin
         if (musicMap.containsKey(song))
         {
             if(!musicMap.get(song).equals("")) {
-                Timeline timeline = new Timeline(
-                        new KeyFrame(Duration.millis(fadeOutMillis),
-                                new KeyValue(mediaPlayer.volumeProperty(), 0)));
+                Timeline fadeOut = stop(fadeOutMillis);
                 String songLoc = RUNELITE_DIR_MUSIC + "/" + config.musicPack() + "/" + musicMap.get(song);
                 File songFile = new File(songLoc);
                 if (songFile.exists()) {
@@ -216,20 +216,39 @@ public class MusicReplacerPlugin extends Plugin
                     Duration d = mediaPlayer.getCurrentTime();
                     d = d.add(Duration.millis(fadeOutMillis + 200));
                     mediaPlayer.setStopTime(d);
-                    timeline.play();
+                    fadeOut.play();
                     mediaPlayer.setOnEndOfMedia(() ->
                     {
                         Media media = new Media(songURI);
                         mediaPlayer = new MediaPlayer(media);
                         mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
-                        play(mediaPlayer, fadeInMillis);
+                        Timeline fadeIn = play(fadeInMillis);
+                        mediaPlayer.setVolume(0);
+                        mediaPlayer.play();
+                        fadeIn.play();
                     });
                 }
             }
         }
     }
 
-    private static void play(final MediaPlayer mediaPlayer, final long fadeInMillis)
+    private static Timeline play(final int fadeOutMillis)
+    {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.millis(fadeOutMillis),
+                        new KeyValue(mediaPlayer.volumeProperty(), volume)));
+        return timeline;
+    }
+
+    private static Timeline stop(final int fadeOutMillis)
+    {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.millis(fadeOutMillis),
+                        new KeyValue(mediaPlayer.volumeProperty(), 0)));
+        return timeline;
+    }
+
+    /*private static void play(final MediaPlayer mediaPlayer, final long fadeInMillis)
     {
 
         if (fadeInMillis > 0)
@@ -254,5 +273,5 @@ public class MusicReplacerPlugin extends Plugin
                 }
             }.play();
         });
-    }
+    }*/
 }
