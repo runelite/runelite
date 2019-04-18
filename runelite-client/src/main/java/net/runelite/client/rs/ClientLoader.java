@@ -51,13 +51,16 @@ import javax.inject.Singleton;
 import java.applet.Applet;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.jar.*;
 import java.util.logging.Logger;
@@ -66,27 +69,33 @@ import static net.runelite.client.rs.ClientUpdateCheckMode.*;
 
 @Slf4j
 @Singleton
-public class ClientLoader {
-    public static File hooksFile = new File(RuneLite.RUNELITE_DIR + "/hooks-" + RuneLiteAPI.getVersion() + "-.json");
-    private final ClientConfigLoader clientConfigLoader;
-    private ClientUpdateCheckMode updateCheckMode;
-    private JarOutputStream target;
+public class ClientLoader
+{
+	public static File hooksFile = new File(RuneLite.RUNELITE_DIR+"/hooks-"+ RuneLiteAPI.getVersion() +"-.json");
+	private final ClientConfigLoader clientConfigLoader;
+	private ClientUpdateCheckMode updateCheckMode;
+	private JarOutputStream target;
+	private boolean scrapedHooks = false;
 
-    @Inject
-    private ClientLoader(
-            @Named("updateCheckMode") final ClientUpdateCheckMode updateCheckMode,
-            final ClientConfigLoader clientConfigLoader) {
-        this.updateCheckMode = updateCheckMode;
-        this.clientConfigLoader = clientConfigLoader;
-    }
+	@Inject
+	private ClientLoader(
+		@Named("updateCheckMode") final ClientUpdateCheckMode updateCheckMode,
+		final ClientConfigLoader clientConfigLoader)
+	{
+		this.updateCheckMode = updateCheckMode;
+		this.clientConfigLoader = clientConfigLoader;
+	}
 
-    private static Certificate[] getJagexCertificateChain() throws CertificateException {
-        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-        Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(ClientLoader.class.getResourceAsStream("jagex.crt"));
-        return certificates.toArray(new Certificate[certificates.size()]);
-    }
-
-    public static String getClientInstance(String jarFile) {
+	private static Certificate[] getJagexCertificateChain() throws CertificateException
+	{
+		CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+		Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(ClientLoader.class.getResourceAsStream("jagex.crt"));
+		return certificates.toArray(new Certificate[certificates.size()]);
+	}
+  
+    public static String initVanillaInjected(String jarFile) {
+		List<String> protectedMethods = new ArrayList<>();
+		String clientInstance = "";
         JarClassLoader jcl = new JarClassLoader();
         try {
             ClassPool classPool = new ClassPool(true);
@@ -114,8 +123,10 @@ public class ClientLoader {
                                 try {
                                     jcl2.add(new FileInputStream(ByteCodeUtils.injectedClientFile));
                                     Field[] fields = classToLoad.getDeclaredFields();
+                                    Method[] methods = classToLoad.getMethods();
                                     for (Field f : fields) {
                                         try {
+
                                             if (f.getType().getName() == "client") {
                                                 ByteCodePatcher.hooks.clientInstance = classToLoad.getName() + "." + f.getName();
                                                 System.out.println("[RuneLit] Found client instance at " + classToLoad.getName() + "." + f.getName());
@@ -125,6 +136,11 @@ public class ClientLoader {
                                             e.printStackTrace();
                                         }
                                     }
+                                    for (Method m : methods) {
+                                    	if (m.getName().contains("protect")) {
+											protectedMethods.add(classToLoad.getName()+":"+m.getName());
+										}
+									}
                                 } catch (FileNotFoundException e) {
                                     e.printStackTrace();
                                 }
@@ -142,7 +158,14 @@ public class ClientLoader {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
+		String[] hooksProtectedMethods = new String[protectedMethods.size()];
+        int i = 0;
+        for (String s : protectedMethods) {
+			hooksProtectedMethods[i] = s;
+			i++;
+		}
+        ByteCodePatcher.hooks.protectedMethods = hooksProtectedMethods;
+        return clientInstance;
     }
 
     public Applet load() {
@@ -262,10 +285,10 @@ public class ClientLoader {
                 if (hooks.clientInstance.equals("") ||
                         hooks.projectileClass.equals("") ||
                         hooks.actorClass.equals("") ||
-                        hooks.mainClientInstance.equals("") ||
+                        hooks.clientInstance.equals("") ||
                         hooks.playerClass.equals("")) {
                     System.out.println("[RuneLit] Bad hooks, re-scraping.");
-                    ByteCodePatcher.clientInstance = getClientInstance(ByteCodeUtils.injectedClientFile.getPath());
+                    ByteCodePatcher.clientInstance = ByteCodeUtils.injectedClientFile.getPath();
                     ByteCodePatcher.findHooks(injectedClientFile.getPath());
                 } else {
                     ByteCodePatcher.clientInstance = hooks.clientInstance;
@@ -275,7 +298,7 @@ public class ClientLoader {
 
             } else {
                 System.out.println("[RuneLit] Hooks file not found, scraping hooks.");
-                ByteCodePatcher.clientInstance = getClientInstance(ByteCodeUtils.injectedClientFile.getPath());
+                ByteCodePatcher.clientInstance = initVanillaInjected(ByteCodeUtils.injectedClientFile.getPath());
                 ByteCodePatcher.findHooks(injectedClientFile.getPath());
             }
 
