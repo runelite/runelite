@@ -1,6 +1,4 @@
 /*
- * Copyright (c) 2016-2017, Seth <Sethtroll3@gmail.com>
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
  * All rights reserved.
  *
@@ -27,45 +25,67 @@
  */
 package net.runelite.client.plugins.questhelper;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
-import net.runelite.client.plugins.questhelper.questhelpers.QuestHelper;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.ComponentConstants;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import static net.runelite.api.Constants.REGION_SIZE;
+import net.runelite.api.coords.WorldPoint;
 
-public class QuestHelperOverlay extends Overlay
+public class Zone
 {
-	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
+	private int minX;
+	private int maxX;
+	private int minY;
+	private int maxY;
+	private int minPlane = 0;
+	private int maxPlane = 2;
 
-	private final QuestHelperPlugin plugin;
-	private final PanelComponent panelComponent = new PanelComponent();
-
-	@Inject
-	public QuestHelperOverlay(QuestHelperPlugin plugin)
+	//The first plane of the "Overworld"
+	public Zone()
 	{
-		this.plugin = plugin;
-		setPriority(OverlayPriority.LOW);
+		minX = 1152;
+		maxX = 3903;
+		minY = 2496;
+		maxY = 4159;
+		maxPlane = 0;
 	}
 
-	@Override
-	public Dimension render(Graphics2D graphics)
+	public Zone(WorldPoint p1, WorldPoint p2)
 	{
-		QuestHelper questHelper = plugin.getSelectedQuest();
+		minX = Math.min(p1.getX(), p2.getX());
+		maxX = Math.max(p1.getX(), p2.getX());
+		minY = Math.min(p1.getY(), p2.getY());
+		maxY = Math.max(p1.getY(), p2.getY());
+		minPlane = Math.min(p1.getPlane(), p2.getPlane());
+		maxPlane = Math.max(p1.getPlane(), p2.getPlane());
+	}
 
-		if (questHelper == null || questHelper.getCurrentStep() == null)
+	public Zone(int regionID)
+	{
+		int regionX = (regionID >> 8) & 0xff;
+		int regionY = regionID & 0xff;
+		minX = regionX >> 6;
+		maxX = minX + REGION_SIZE;
+		minY = regionY >> 6;
+		maxY = minY + REGION_SIZE;
+	}
+
+	public Zone(int regionID, int plane)
+	{
+		this(regionID);
+		minPlane = plane;
+		maxPlane = plane;
+	}
+
+	public boolean contains(WorldPoint worldPoint)
+	{
+		if (minX <= worldPoint.getX()
+			&& worldPoint.getX() <= maxX
+			&& minY <= worldPoint.getY()
+			&& worldPoint.getY() <= maxY
+			&& minPlane <= worldPoint.getPlane()
+			&& worldPoint.getPlane() <= maxPlane)
 		{
-			return null;
+			return true;
 		}
 
-		panelComponent.getChildren().clear();
-		panelComponent.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH, 0));
-
-		questHelper.getCurrentStep().makeOverlayHint(panelComponent, plugin);
-
-		return panelComponent.render(graphics);
+		return false;
 	}
 }

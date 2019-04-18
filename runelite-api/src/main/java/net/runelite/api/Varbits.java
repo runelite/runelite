@@ -576,6 +576,16 @@ public enum Varbits
 	QUEST_THE_MAGE_ARENA_II(6067),
 
 	/**
+	* Ernest the chicken quest puzzle levers
+	 */
+	ERNEST_LEVER_A(1788),
+	ERNEST_LEVER_B(1789),
+	ERNEST_LEVER_C(1790),
+	ERNEST_LEVER_D(1791),
+	ERNEST_LEVER_E(1792),
+	ERNEST_LEVER_F(1793),
+
+	/**
 	 * Explorer ring
 	 */
 	EXPLORER_RING_ALCHTYPE(5398),

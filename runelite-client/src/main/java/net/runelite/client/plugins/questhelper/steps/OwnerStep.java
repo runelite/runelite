@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Trevor <https://github.com/Trevor159>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.questhelper.quests.impcatcher;
+package net.runelite.client.plugins.questhelper.steps;
 
-import java.util.HashMap;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.Quest;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.plugins.questhelper.ItemRequirement;
-import net.runelite.client.plugins.questhelper.questhelpers.BasicQuestHelper;
-import net.runelite.client.plugins.questhelper.steps.NpcTalkStep;
-import net.runelite.client.plugins.questhelper.steps.QuestStep;
-import net.runelite.client.plugins.questhelper.QuestDescriptor;
+import java.util.Collection;
 
-@QuestDescriptor(
-	quest = Quest.IMP_CATCHER
-)
-public class ImpCatcher extends BasicQuestHelper
+public interface OwnerStep
 {
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
-	{
-		Map<Integer, QuestStep> steps = new HashMap<>();
-
-		steps.put(0, new NpcTalkStep(this, NpcID.WIZARD_MIZGOG, new WorldPoint(3103, 3163, 2),
-			"Talk to Wizard Mizgog on the top floor of the Wizards' Tower with the required items to finish the quest.",
-			new ItemRequirement(ItemID.BLACK_BEAD), new ItemRequirement(ItemID.WHITE_BEAD),
-			new ItemRequirement(ItemID.RED_BEAD), new ItemRequirement(ItemID.YELLOW_BEAD)));
-
-		steps.put(1, steps.get(0));
-
-		return steps;
-	}
+	Collection<QuestStep> getSteps();
 }

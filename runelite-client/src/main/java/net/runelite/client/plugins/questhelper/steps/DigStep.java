@@ -35,9 +35,11 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.questhelper.ItemRequirement;
-import net.runelite.client.plugins.questhelper.QuestHelper;
+import net.runelite.client.plugins.questhelper.questhelpers.QuestHelper;
 import net.runelite.client.plugins.questhelper.QuestHelperPlugin;
 import net.runelite.client.plugins.questhelper.QuestHelperWorldMapPoint;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -68,15 +70,26 @@ public class DigStep extends QuestStep
 	}
 
 	@Override
-	public void startUp() throws Exception
+	public void startUp()
 	{
 		worldMapPointManager.add(new QuestHelperWorldMapPoint(worldPoint, getQuestImage()));
 	}
 
 	@Override
-	public void shutDown() throws Exception
+	public void shutDown()
 	{
 		worldMapPointManager.removeIf(QuestHelperWorldMapPoint.class::isInstance);
+		client.clearHintArrow();
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		System.out.println("test");
+		if (worldPoint != null)
+		{
+			client.setHintArrow(worldPoint);
+		}
 	}
 
 	@Override

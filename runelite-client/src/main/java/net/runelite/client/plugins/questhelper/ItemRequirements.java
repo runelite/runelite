@@ -22,37 +22,64 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.questhelper.quests.impcatcher;
+package net.runelite.client.plugins.questhelper;
 
-import java.util.HashMap;
-import java.util.Map;
-import net.runelite.api.ItemID;
-import net.runelite.api.NpcID;
-import net.runelite.api.Quest;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.plugins.questhelper.ItemRequirement;
-import net.runelite.client.plugins.questhelper.questhelpers.BasicQuestHelper;
-import net.runelite.client.plugins.questhelper.steps.NpcTalkStep;
-import net.runelite.client.plugins.questhelper.steps.QuestStep;
-import net.runelite.client.plugins.questhelper.QuestDescriptor;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import net.runelite.api.Client;
 
-@QuestDescriptor(
-	quest = Quest.IMP_CATCHER
-)
-public class ImpCatcher extends BasicQuestHelper
+public class ItemRequirements
 {
-	@Override
-	public Map<Integer, QuestStep> loadSteps()
+	Set<ItemRequirement> itemRequirements;
+
+	Set<ItemRequirements> alternates = new HashSet<>();
+
+	public ItemRequirements(int id)
 	{
-		Map<Integer, QuestStep> steps = new HashMap<>();
+		this(id, 1);
+	}
 
-		steps.put(0, new NpcTalkStep(this, NpcID.WIZARD_MIZGOG, new WorldPoint(3103, 3163, 2),
-			"Talk to Wizard Mizgog on the top floor of the Wizards' Tower with the required items to finish the quest.",
-			new ItemRequirement(ItemID.BLACK_BEAD), new ItemRequirement(ItemID.WHITE_BEAD),
-			new ItemRequirement(ItemID.RED_BEAD), new ItemRequirement(ItemID.YELLOW_BEAD)));
+	public ItemRequirements(int id, int quantity)
+	{
+		this(id, quantity, false);
+	}
 
-		steps.put(1, steps.get(0));
+	public ItemRequirements(int id, int quantity, boolean equip)
+	{
+		itemRequirements = new HashSet<>();
+		itemRequirements.add(new ItemRequirement(id, quantity, equip));
+	}
 
-		return steps;
+	public ItemRequirements(ItemRequirement... itemRequirements)
+	{
+		this.itemRequirements = new HashSet<>();
+		Collections.addAll(this.itemRequirements, itemRequirements);
+	}
+
+	public void addAlternate(ItemRequirements... itemRequirements)
+	{
+		Collections.addAll(alternates, itemRequirements);
+	}
+
+	public boolean check(Client client)
+	{
+		for (ItemRequirements itemRequirements : alternates)
+		{
+			if (itemRequirements.check(client))
+			{
+				return true;
+			}
+		}
+
+		for (ItemRequirement itemRequirement : itemRequirements)
+		{
+			if (!itemRequirement.check(client))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

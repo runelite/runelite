@@ -26,19 +26,19 @@ package net.runelite.client.plugins.questhelper.steps;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.questhelper.ItemRequirement;
-import net.runelite.client.plugins.questhelper.QuestHelper;
+import net.runelite.client.plugins.questhelper.questhelpers.QuestHelper;
 import net.runelite.client.plugins.questhelper.QuestHelperPlugin;
 import net.runelite.client.plugins.questhelper.QuestHelperWorldMapPoint;
 import static net.runelite.client.plugins.questhelper.QuestHelperWorldOverlay.IMAGE_Z_OFFSET;
@@ -60,7 +60,7 @@ public class NpcTalkStep extends QuestStep
 
 	private int npcID;
 	private WorldPoint worldPoint;
-	private List<NPC> npcsToHighlight = new ArrayList<>();
+	private NPC npc;
 	List<ItemRequirement> itemRequirements;
 
 	public NpcTalkStep(QuestHelper questHelper, int npcID, WorldPoint worldPoint, String text, ItemRequirement... itemRequirements)
@@ -72,40 +72,54 @@ public class NpcTalkStep extends QuestStep
 	}
 
 	@Override
-	public void startUp() throws Exception
+	public void startUp()
 	{
 		for (NPC npc : client.getNpcs())
 		{
 			if (npcID == npc.getId())
 			{
-				npcsToHighlight.add(npc);
+				this.npc = npc;
+				client.setHintArrow(npc);
 			}
 		}
 		worldMapPointManager.add(new QuestHelperWorldMapPoint(worldPoint, getQuestImage()));
 	}
 
 	@Override
-	public void shutDown() throws Exception
+	public void shutDown()
 	{
-		npcsToHighlight.clear();
+		npc = null;
+		client.clearHintArrow();
 		worldMapPointManager.removeIf(QuestHelperWorldMapPoint.class::isInstance);
 	}
 
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		if (event.getNpc().getId() == npcID)
+		if (event.getNpc().getId() == npcID && npc == null)
 		{
-			npcsToHighlight.add(event.getNpc());
+			npc = event.getNpc();
+			client.setHintArrow(npc);
 		}
 	}
 
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
 	{
-		if (npcsToHighlight.contains(event.getNpc()))
+		if (event.getNpc().equals(npc))
 		{
-			npcsToHighlight.remove(event.getNpc());
+			npc = null;
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (worldPoint != null
+			&& (client.getHintArrowNpc() == null
+			|| !client.getHintArrowNpc().equals(npc)))
+		{
+			client.setHintArrow(worldPoint);
 		}
 	}
 
@@ -147,15 +161,11 @@ public class NpcTalkStep extends QuestStep
 			return;
 		}
 
-		if (npcsToHighlight.isEmpty())
+		if (npc == null)
 		{
 			return;
 		}
 
-		for (NPC npc : npcsToHighlight)
-		{
-			OverlayUtil.renderActorOverlayImage(graphics, npc, getQuestImage(), Color.CYAN, IMAGE_Z_OFFSET);
-		}
-
+		OverlayUtil.renderActorOverlayImage(graphics, npc, getQuestImage(), Color.CYAN, IMAGE_Z_OFFSET);
 	}
 }

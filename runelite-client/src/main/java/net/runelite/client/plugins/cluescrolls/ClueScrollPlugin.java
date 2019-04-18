@@ -653,7 +653,6 @@ public class ClueScrollPlugin extends Plugin
 					objectsToMark.add(object);
 					continue;
 				}
-
 				// Check impostors
 				final ObjectComposition comp = client.getObjectDefinition(object.getId());
 				final ObjectComposition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;

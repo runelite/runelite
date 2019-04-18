@@ -31,18 +31,18 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Quest;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.questhelper.ItemRequirement;
-import net.runelite.client.plugins.questhelper.QuestHelper;
+import net.runelite.client.plugins.questhelper.QuestDescriptor;
+import net.runelite.client.plugins.questhelper.questhelpers.BasicQuestHelper;
 import net.runelite.client.plugins.questhelper.steps.NpcTalkStep;
 import net.runelite.client.plugins.questhelper.steps.QuestStep;
-import net.runelite.client.plugins.questhelper.QuestDescriptor;
 
 @QuestDescriptor(
 	quest = Quest.COOKS_ASSISTANT
 )
-public class CooksAssistant extends QuestHelper
+public class CooksAssistant extends BasicQuestHelper
 {
 	@Override
-	protected Map<Integer, QuestStep> loadSteps()
+	public Map<Integer, QuestStep> loadSteps()
 	{
 		Map<Integer, QuestStep> steps = new HashMap<>();
 

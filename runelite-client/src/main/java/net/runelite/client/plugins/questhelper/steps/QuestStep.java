@@ -29,9 +29,11 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.SpriteID;
 import net.runelite.client.game.SpriteManager;
-import net.runelite.client.plugins.questhelper.QuestHelper;
+import net.runelite.client.plugins.questhelper.questhelpers.QuestHelper;
 import static net.runelite.client.plugins.questhelper.QuestHelperOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.questhelper.QuestHelperPlugin;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -43,7 +45,11 @@ public abstract class QuestStep implements Module
 	@Inject
 	SpriteManager spriteManager;
 
+	@Setter
+	@Getter
 	private final String text;
+
+	@Getter
 	private final QuestHelper questHelper;
 
 	public QuestStep(QuestHelper questHelper, String text)
@@ -57,11 +63,11 @@ public abstract class QuestStep implements Module
 	{
 	}
 
-	public void startUp() throws Exception
+	public void startUp()
 	{
 	}
 
-	public void shutDown() throws Exception
+	public void shutDown()
 	{
 	}
 
@@ -69,7 +75,7 @@ public abstract class QuestStep implements Module
 	{
 		panelComponent.getChildren().add(TitleComponent.builder().text(questHelper.getQuest().getName()).build());
 
-		panelComponent.getChildren().add(LineComponent.builder().left("Step:").build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Step: " +  questHelper.getVar()).build());
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(text)
 			.leftColor(TITLED_CONTENT_COLOR)

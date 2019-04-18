@@ -22,13 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.questhelper;
+package net.runelite.client.plugins.questhelper.questhelpers;
 
 import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import java.util.Map;
+import java.util.Collection;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +36,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.plugins.questhelper.steps.OwnerStep;
 import net.runelite.client.plugins.questhelper.steps.QuestStep;
 
 public abstract class QuestHelper implements Module
@@ -53,37 +54,27 @@ public abstract class QuestHelper implements Module
 	@Setter
 	private Quest quest;
 
-	protected Injector injector;
-	protected Map<Integer, QuestStep> steps;
-	protected int var;
+	@Setter
+	private Injector injector;
 
 	@Override
 	public void configure(Binder binder)
 	{
 	}
 
-	protected void startUp() throws Exception
-	{
-		steps = loadSteps();
-		instantiateSteps();
-		var = getVar();
-		startUpStep(var);
-	}
+	public abstract void startUp();
 
-	protected void shutDown() throws Exception
-	{
-		steps = null;
-		shutDownStep();
-	}
+	public abstract void shutDown();
 
-	protected void startUpStep(int i) throws Exception
+	public abstract boolean updateQuest();
+
+	protected void startUpStep(QuestStep step)
 	{
-		if (steps.containsKey(i))
+		if (step != null)
 		{
-			QuestStep step = steps.get(i);
 			currentStep = step;
-			eventBus.register(currentStep);
 			currentStep.startUp();
+			eventBus.register(currentStep);
 		}
 		else
 		{
@@ -91,7 +82,7 @@ public abstract class QuestHelper implements Module
 		}
 	}
 
-	protected void shutDownStep() throws Exception
+	protected void shutDownStep()
 	{
 		if (currentStep != null)
 		{
@@ -101,44 +92,37 @@ public abstract class QuestHelper implements Module
 		}
 	}
 
-	protected void updateQuest() throws Exception
+	protected void instantiateSteps(Collection<QuestStep> steps)
 	{
-		shutDownStep();
-		if (!isCompleted())
+		for (QuestStep step : steps)
 		{
-			currentStep = steps.get(getVar());
-			currentStep.startUp();
-		}
-		else
-		{
-			currentStep = null;
-		}
-	}
-
-	protected void instantiateSteps()
-	{
-		for (QuestStep step : steps.values())
-		{
-			try
+			instantiateStep(step);
+			if (step instanceof OwnerStep)
 			{
-				injector.injectMembers(step);
-			}
-			catch (CreationException ex)
-			{
-				ex.printStackTrace();
+				instantiateSteps(((OwnerStep) step).getSteps());
 			}
 		}
 	}
 
-	protected boolean isCompleted()
+	public void instantiateStep(QuestStep questStep)
+	{
+		try
+		{
+			injector.injectMembers(questStep);
+		}
+		catch (CreationException ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+
+	public boolean isCompleted()
 	{
 		return (quest.getState(client) == QuestState.FINISHED);
 	}
 
-	protected int getVar()
+	public int getVar()
 	{
 		return quest.getVar(client);
 	}
-
-	protected abstract Map<Integer, QuestStep> loadSteps();
 }

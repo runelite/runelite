@@ -25,12 +25,14 @@
 package net.runelite.client.plugins.questhelper;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.primitives.Ints;
 import com.google.common.reflect.ClassPath;
 import com.google.inject.Binder;
 import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -38,18 +40,19 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.Quest;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLite;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.questhelper.questhelpers.QuestHelper;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
@@ -60,6 +63,26 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class QuestHelperPlugin extends Plugin
 {
+	private static final int[] QUESTLIST_WIDGET_IDS = new int[]
+		{
+			WidgetInfo.QUESTLIST_FREE_CONTAINER.getId(),
+			WidgetInfo.QUESTLIST_MEMBERS_CONTAINER.getId(),
+			WidgetInfo.QUESTLIST_MINIQUEST_CONTAINER.getId(),
+		};
+
+	private static final int[] QUESTTAB_WIDGET_IDS = new int[]
+		{
+			WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_QUESTS_TAB.getId(),
+			WidgetInfo.RESIZABLE_VIEWPORT_QUESTS_TAB.getId(),
+			WidgetInfo.FIXED_VIEWPORT_QUESTS_TAB.getId(),
+			WidgetInfo.QUESTTAB_QUEST_TAB.getId(),
+		};
+
+	private static final String QUEST_PACKAGE = "net.runelite.client.plugins.questhelper.quests";
+
+	private static final String MENUOP_STARTHELPER = "Start Quest Helper";
+	private static final String MENUOP_STOPHELPER = "Stop Quest Helper";
+
 	@Inject
 	private Client client;
 
@@ -75,22 +98,16 @@ public class QuestHelperPlugin extends Plugin
 	@Inject
 	private QuestHelperWorldOverlay questHelperWorldOverlay;
 
-	private static final String QUEST_PACKAGE = "net.runelite.client.plugins.questhelper.quests";
-	private Map<String, QuestHelper> quests;
-
 	@Getter
 	private QuestHelper selectedQuest = null;
+
+	private Map<String, QuestHelper> quests;
 
 	@Override
 	protected void startUp() throws IOException
 	{
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			if (quests == null)
-			{
-				quests = scanAndInstantiate(getClass().getClassLoader(), QUEST_PACKAGE);
-			}
-		}
+
+		quests = scanAndInstantiate(getClass().getClassLoader(), QUEST_PACKAGE);
 		overlayManager.add(questHelperOverlay);
 		overlayManager.add(questHelperWorldOverlay);
 	}
@@ -105,52 +122,93 @@ public class QuestHelperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event) throws Exception
+	public void onVarbitChanged(VarbitChanged event)
 	{
-		int groupId = event.getGroupId();
-		if (groupId == WidgetID.DIARY_QUEST_GROUP_ID)
+		if (!(client.getGameState() == GameState.LOGGED_IN))
 		{
-			Widget widget = client.getWidget(WidgetInfo.DIARY_QUEST_WIDGET_TITLE);
-			String questname = Text.removeTags(widget.getText());
-			if (quests.containsKey(questname))
+			return;
+		}
+
+		if (selectedQuest != null
+			&& selectedQuest.updateQuest()
+			&& selectedQuest.getCurrentStep() == null)
+		{
+			shutDownQuest();
+		}
+	}
+
+	@Subscribe
+	private void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (event.getMenuAction() == MenuAction.RUNELITE)
+		{
+			switch (event.getMenuOption())
 			{
-				QuestHelper widgetQuest = quests.get(questname);
-				if (selectedQuest == null || !selectedQuest.equals(widgetQuest))
-				{
+				case MENUOP_STARTHELPER:
+					event.consume();
 					shutDownQuest();
-					startUpQuest(widgetQuest);
+					String quest = Text.removeTags(event.getMenuTarget());
+					startUpQuest(quests.get(quest));
+					break;
+				case MENUOP_STOPHELPER:
+					event.consume();
+					shutDownQuest();
+			}
+		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		int widgetIndex = event.getActionParam0();
+		int widgetID = event.getActionParam1();
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		String target = Text.removeTags(event.getTarget());
+
+		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read Journal:".equals(event.getOption()))
+		{
+			QuestHelper questHelper = quests.get(target);
+			if (questHelper != null && !questHelper.isCompleted())
+			{
+				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+
+				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+				menuEntry.setTarget(event.getTarget());
+				menuEntry.setParam0(widgetIndex);
+				menuEntry.setParam1(widgetID);
+				menuEntry.setType(MenuAction.RUNELITE.getId());
+
+				if (selectedQuest != null && selectedQuest.getQuest().getName().equals(target))
+				{
+					menuEntry.setOption(MENUOP_STOPHELPER);
 				}
+				else
+				{
+					menuEntry.setOption(MENUOP_STARTHELPER);
+				}
+
+				client.setMenuEntries(menuEntries);
 			}
 		}
-	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event) throws IOException
-	{
-		if (event.getGameState() == GameState.LOGGED_IN)
+		if (Ints.contains(QUESTTAB_WIDGET_IDS, widgetID)
+			&& "Quest List".equals(event.getOption())
+			&& selectedQuest != null)
 		{
-			if (quests == null)
-			{
-				quests = scanAndInstantiate(getClass().getClassLoader(), QUEST_PACKAGE);
-			}
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+
+			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			menuEntry.setTarget(event.getTarget());
+			menuEntry.setParam0(widgetIndex);
+			menuEntry.setParam1(widgetID);
+			menuEntry.setType(MenuAction.RUNELITE.getId());
+			menuEntry.setOption(MENUOP_STOPHELPER);
+
+			client.setMenuEntries(menuEntries);
 		}
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event) throws Exception
-	{
-		if (selectedQuest != null && selectedQuest.var != selectedQuest.getVar())
-		{
-			selectedQuest.var = selectedQuest.getVar();
-			selectedQuest.updateQuest();
-			if (selectedQuest.getCurrentStep() == null)
-			{
-				shutDownQuest();
-			}
-		}
-	}
-
-	private void startUpQuest(QuestHelper questHelper) throws Exception
+	private void startUpQuest(QuestHelper questHelper)
 	{
 		if (!questHelper.isCompleted())
 		{
@@ -164,7 +222,7 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
-	private void shutDownQuest() throws Exception
+	private void shutDownQuest()
 	{
 		if (selectedQuest != null)
 		{
@@ -174,7 +232,7 @@ public class QuestHelperPlugin extends Plugin
 		}
 	}
 
-	Map<String, QuestHelper> scanAndInstantiate(ClassLoader classLoader, String packageName) throws IOException
+	private Map<String, QuestHelper> scanAndInstantiate(ClassLoader classLoader, String packageName) throws IOException
 	{
 		Map<Quest, Class<? extends QuestHelper>> quests = new HashMap<>();
 
@@ -198,7 +256,7 @@ public class QuestHelperPlugin extends Plugin
 				continue;
 			}
 
-			if (clazz.getSuperclass() != QuestHelper.class)
+			if (clazz.isAssignableFrom(QuestHelper.class))
 			{
 				log.warn("Class {} has quest descriptor, but is not a quest helper",
 					clazz);
@@ -250,7 +308,7 @@ public class QuestHelperPlugin extends Plugin
 			};
 			Injector questInjector = RuneLite.getInjector().createChildInjector(questModule);
 			questInjector.injectMembers(questHelper);
-			questHelper.injector = questInjector;
+			questHelper.setInjector(questInjector);
 		}
 		catch (CreationException ex)
 		{
