@@ -250,4 +250,3 @@ public class MusicReplacerPlugin extends Plugin
         });
     }
 }
-
