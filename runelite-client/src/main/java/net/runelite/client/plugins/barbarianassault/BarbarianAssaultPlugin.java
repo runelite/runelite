@@ -315,8 +315,8 @@ public class BarbarianAssaultPlugin extends Plugin {
 		{
 			if (client.getLocalPlayer().getPlayerComposition().getEquipmentId(KitType.CAPE)==ItemID.COLLECTOR_ICON) {
 				positiveEggCount++;
-				if (positiveEggCount == 60) {
-					positiveEggCount--;
+				if (positiveEggCount > 60) {
+					positiveEggCount = 60;
 				}
 				collectedEggCount = positiveEggCount - wrongEggs; //true positive - negative egg count\
 			}
