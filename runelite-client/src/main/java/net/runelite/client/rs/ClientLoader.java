@@ -33,38 +33,61 @@ import com.google.gson.Gson;
 import io.sigpipe.jbsdiff.InvalidHeaderException;
 import io.sigpipe.jbsdiff.Patch;
 import java.applet.Applet;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+
+import javassist.ClassPool;
+import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
 import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
+
+import net.runelite.client.RuneLite;
+import net.runelite.client.rs.bytecode.ByteCodeUtils;
+import net.runelite.client.rs.bytecode.ByteCodePatcher;
+import net.runelite.client.rs.bytecode.Hooks;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.compress.compressors.CompressorException;
+import org.xeustechnologies.jcl.JarClassLoader;
 
 @Slf4j
 @Singleton
 public class ClientLoader
 {
+	public static File hooksFile = new File(RuneLite.RUNELITE_DIR+"/hooks-"+ RuneLiteAPI.getVersion() +"-.json");
 	private final ClientConfigLoader clientConfigLoader;
 	private ClientUpdateCheckMode updateCheckMode;
+	private JarOutputStream target;
 
 	@Inject
 	private ClientLoader(
@@ -84,6 +107,11 @@ public class ClientLoader
 
 		try
 		{
+			File injectedClientFile = ByteCodeUtils.injectedClientFile;
+			File hijackedClientFile = ByteCodeUtils.hijackedClientFile;
+				Manifest manifest = new Manifest();
+				manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
+				target = new JarOutputStream(new FileOutputStream(injectedClientFile), manifest);
 			RSConfig config = clientConfigLoader.fetch();
 
 			Map<String, byte[]> zipFile = new HashMap<>();
@@ -98,7 +126,9 @@ public class ClientLoader
 
 				try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 				{
-					JarInputStream jis = new JarInputStream(response.body().byteStream());
+					JarInputStream jis;
+
+						jis = new JarInputStream(response.body().byteStream());
 
 					byte[] tmp = new byte[4096];
 					ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
@@ -121,81 +151,125 @@ public class ClientLoader
 							buffer.write(tmp, 0, n);
 						}
 
-						if (!Arrays.equals(metadata.getCertificates(), jagexCertificateChain))
-						{
-							if (metadata.getName().startsWith("META-INF/"))
-							{
-								// META-INF/JAGEXLTD.SF and META-INF/JAGEXLTD.RSA are not signed, but we don't need
-								// anything in META-INF anyway.
-								continue;
-							}
-							else
-							{
-								throw new VerificationException("Unable to verify jar entry: " + metadata.getName());
-							}
-						}
-
 						zipFile.put(metadata.getName(), buffer.toByteArray());
 					}
 				}
 			}
 
-			if (updateCheckMode == AUTO)
-			{
-				Map<String, String> hashes;
-				try (InputStream is = ClientLoader.class.getResourceAsStream("/patch/hashes.json"))
+				if (updateCheckMode == AUTO)
 				{
-					hashes = new Gson().fromJson(new InputStreamReader(is), new TypeToken<HashMap<String, String>>()
+					Map<String, String> hashes;
+					try (InputStream is = ClientLoader.class.getResourceAsStream("/patch/hashes.json"))
 					{
-					}.getType());
-				}
-
-				for (Map.Entry<String, String> file : hashes.entrySet())
-				{
-					byte[] bytes = zipFile.get(file.getKey());
-
-					String ourHash = null;
-					if (bytes != null)
-					{
-						ourHash = Hashing.sha512().hashBytes(bytes).toString();
-					}
-
-					if (!file.getValue().equals(ourHash))
-					{
-						log.debug("{} had a hash mismatch; falling back to vanilla. {} != {}", file.getKey(), file.getValue(), ourHash);
-						log.info("Client is outdated!");
-						updateCheckMode = VANILLA;
-						break;
-					}
-				}
-			}
-
-			if (updateCheckMode == AUTO)
-			{
-				ByteArrayOutputStream patchOs = new ByteArrayOutputStream(756 * 1024);
-				int patchCount = 0;
-
-				for (Map.Entry<String, byte[]> file : zipFile.entrySet())
-				{
-					byte[] bytes;
-					try (InputStream is = ClientLoader.class.getResourceAsStream("/patch/" + file.getKey() + ".bs"))
-					{
-						if (is == null)
+						hashes = new Gson().fromJson(new InputStreamReader(is), new TypeToken<HashMap<String, String>>()
 						{
-							continue;
+						}.getType());
+					}
+
+					for (Map.Entry<String, String> file : hashes.entrySet())
+					{
+						byte[] bytes = zipFile.get(file.getKey());
+
+						String ourHash = null;
+						if (bytes != null)
+						{
+							ourHash = Hashing.sha512().hashBytes(bytes).toString();
 						}
 
-						bytes = ByteStreams.toByteArray(is);
+						if (!file.getValue().equals(ourHash))
+						{
+							if (hijackedClientFile.exists()) {
+								Logger.getAnonymousLogger().warning("[RuneLit] Hash checking / Client patching skipped due to hijacked client.");
+								updateCheckMode = VANILLA;
+								break;
+							} else {
+								log.info("{} had a hash mismatch; falling back to vanilla. {} != {}", file.getKey(), file.getValue(), ourHash);
+								log.info("Client is outdated!");
+								updateCheckMode = VANILLA;
+								break;
+							}
+						}
 					}
-
-					patchOs.reset();
-					Patch.patch(file.getValue(), bytes, patchOs);
-					file.setValue(patchOs.toByteArray());
-
-					++patchCount;
 				}
 
-				log.debug("Patched {} classes", patchCount);
+				if (updateCheckMode == AUTO)
+				{
+					ByteArrayOutputStream patchOs = new ByteArrayOutputStream(756 * 1024);
+					int patchCount = 0;
+
+					for (Map.Entry<String, byte[]> file : zipFile.entrySet())
+					{
+						byte[] bytes;
+						try (InputStream is = ClientLoader.class.getResourceAsStream("/patch/" + file.getKey() + ".bs"))
+						{
+							if (is == null)
+							{
+								continue;
+							}
+
+							bytes = ByteStreams.toByteArray(is);
+						}
+
+						patchOs.reset();
+						Patch.patch(file.getValue(), bytes, patchOs);
+						file.setValue(patchOs.toByteArray());
+
+						++patchCount;
+
+							if (!file.getKey().startsWith("META")) {
+								add(file.getValue(), file.getKey(), target);
+							}
+					}
+					if (target!=null)
+						target.close();
+
+					log.info("Patched {} classes", patchCount);
+				}
+				if (hooksFile.exists()) {
+					ByteCodePatcher.classPool = new ClassPool(true);
+					ByteCodePatcher.classPool.appendClassPath(RuneLite.RUNELITE_DIR+"/injectedClient-"+ RuneLiteAPI.getVersion() +"-.jar");
+					Gson gson = new Gson();
+					Hooks hooks = gson.fromJson(new BufferedReader(new FileReader(hooksFile)), Hooks.class);
+
+					if (hooks.clientInstance.equals("")||
+						hooks.projectileClass.equals("") ||
+						hooks.actorClass.equals("")) {
+							System.out.println("[RuneLit] Bad hooks, re-scraping.");
+						ByteCodePatcher.clientInstance = getClientInstance(ByteCodeUtils.injectedClientFile.getPath());
+						ByteCodePatcher.findHooks(injectedClientFile.getPath());
+					} else {
+						ByteCodePatcher.clientInstance = hooks.clientInstance;
+						ByteCodePatcher.applyHooks(ByteCodeUtils.injectedClientFile, hooks);
+						System.out.println("[RuneLit] Loaded hooks");
+					}
+
+				} else {
+					System.out.println("[RuneLit] Hooks file not found, scraping hooks.");
+					ByteCodePatcher.clientInstance = getClientInstance(ByteCodeUtils.injectedClientFile.getPath());
+					ByteCodePatcher.findHooks(injectedClientFile.getPath());
+				}
+
+			Map<String, byte[]> zipFile2 = new HashMap<>();
+			JarInputStream jis = new JarInputStream(new FileInputStream(hijackedClientFile));
+
+			byte[] tmp = new byte[4096];
+			ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
+			for (; ; ) {
+				JarEntry metadata = jis.getNextJarEntry();
+				if (metadata == null) {
+					break;
+				}
+
+				buffer.reset();
+				for (; ; ) {
+					int n = jis.read(tmp);
+					if (n <= -1) {
+						break;
+					}
+					buffer.write(tmp, 0, n);
+				}
+
+				zipFile2.put(metadata.getName(), buffer.toByteArray());
 			}
 
 			String initialClass = config.getInitialClass();
@@ -206,7 +280,7 @@ public class ClientLoader
 				protected Class<?> findClass(String name) throws ClassNotFoundException
 				{
 					String path = name.replace('.', '/').concat(".class");
-					byte[] data = zipFile.get(path);
+					byte[] data = zipFile2.get(path);
 					if (data == null)
 					{
 						throw new ClassNotFoundException(name);
@@ -223,8 +297,7 @@ public class ClientLoader
 			return rs;
 		}
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
-			| CompressorException | InvalidHeaderException | CertificateException | VerificationException
-			| SecurityException e)
+			| CompressorException | InvalidHeaderException | CertificateException | SecurityException e)
 		{
 			if (e instanceof ClassNotFoundException)
 			{
@@ -235,6 +308,22 @@ public class ClientLoader
 
 			log.error("Error loading RS!", e);
 			return null;
+		} catch (NotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private void add(byte[] bytes, String entryName ,JarOutputStream target) throws IOException {
+		BufferedInputStream in = null;
+		try {
+			JarEntry entry = new JarEntry(entryName);
+			target.putNextEntry(entry);
+			target.write(bytes);
+			target.closeEntry();
+		} finally {
+			if (in != null)
+				in.close();
 		}
 	}
 
@@ -244,4 +333,63 @@ public class ClientLoader
 		Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(ClientLoader.class.getResourceAsStream("jagex.crt"));
 		return certificates.toArray(new Certificate[certificates.size()]);
 	}
+
+    public static String getClientInstance(String jarFile) {
+        JarClassLoader jcl = new JarClassLoader();
+        try {
+            ClassPool classPool = new ClassPool(true);
+            classPool.appendClassPath(RuneLite.RUNELITE_DIR+"/injectedClient-"+ RuneLiteAPI.getVersion() +"-.jar");
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            jcl.add(new FileInputStream(jarFile));
+            try (JarInputStream in = new JarInputStream(new BufferedInputStream(new FileInputStream(jarFile)))) {
+                JarEntry entry;
+                while ((entry = in.getNextJarEntry()) != null) {
+                    if (entry.getName().endsWith(".class")) {
+                        File temp = new File(jarFile);
+                        ClassLoader cl = ClassLoader.getSystemClassLoader();
+                        try {
+                            URLClassLoader child = new URLClassLoader(
+                                    new URL[] {temp.toURI().toURL()},
+                                    cl
+                            );
+                            try {
+                                Class classToLoad = Class.forName(entry.getName().replace(".class", ""), false, child);
+                                JarClassLoader jcl2 = new JarClassLoader();
+                                try {
+                                    jcl2.add(new FileInputStream(ByteCodeUtils.injectedClientFile));
+                                    Field[] fields = classToLoad.getDeclaredFields();
+                                    for (Field f : fields) {
+                                        try {
+                                            if (f.getType().getName()=="client") {
+                                            	ByteCodePatcher.hooks.clientInstance = classToLoad.getName()+"."+f.getName();
+                                                System.out.println("[RuneLit] Found client instance at "+classToLoad.getName()+"."+f.getName());
+                                                return classToLoad.getName()+"."+f.getName();
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            System.out.println("Class not found: "+entry.getName());
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 }
