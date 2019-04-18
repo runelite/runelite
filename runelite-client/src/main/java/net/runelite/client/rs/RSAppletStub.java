@@ -25,11 +25,12 @@
  */
 package net.runelite.client.rs;
 
+import lombok.RequiredArgsConstructor;
+
 import java.applet.AppletContext;
 import java.applet.AppletStub;
 import java.net.MalformedURLException;
 import java.net.URL;
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class RSAppletStub implements AppletStub
