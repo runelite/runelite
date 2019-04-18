@@ -9,6 +9,7 @@ public class Hooks {
     public String actorClass = "";
     public String projectileClass = "";
     public String playerClass = "";
+    public String clientClass = "client"; //Always named client
     public String[] protectedMethods;
 
     public Hooks() {

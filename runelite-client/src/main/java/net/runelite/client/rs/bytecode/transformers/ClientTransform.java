@@ -3,27 +3,26 @@ package net.runelite.client.rs.bytecode.transformers;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
+import javassist.NotFoundException;
 import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.ClassFile;
 import javassist.bytecode.ConstPool;
 import net.runelite.client.rs.bytecode.ByteCodePatcher;
 
-
-public class getProjectileTransform {
+public class ClientTransform {
     public CtClass ct = null;
 
-    public void modify(Class getprojectile) {
+    public void modify(Class client) {
         try {
-            ct = ByteCodePatcher.classPool.get(getprojectile.getName());
-
-            transformGetProjectile();
+            ct = ByteCodePatcher.classPool.get(client.getName());
+            transformGetProjectiles();
             ByteCodePatcher.modifiedClasses.add(ct);
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public void transformGetProjectile() {
+    public void transformGetProjectiles() {
 
         CtMethod getProjectiles;
         try {
@@ -53,4 +52,5 @@ public class getProjectileTransform {
             e.printStackTrace();
         }
     }
+
 }

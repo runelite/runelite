@@ -7,10 +7,7 @@ import javassist.CtClass;
 import javassist.NotFoundException;
 import net.runelite.client.RuneLite;
 import net.runelite.client.rs.ClientLoader;
-import net.runelite.client.rs.bytecode.transformers.ActorTransform;
-import net.runelite.client.rs.bytecode.transformers.PlayerTransform;
-import net.runelite.client.rs.bytecode.transformers.ProjectileTransform;
-import net.runelite.client.rs.bytecode.transformers.getProjectileTransform;
+import net.runelite.client.rs.bytecode.transformers.*;
 import net.runelite.http.api.RuneLiteAPI;
 import org.xeustechnologies.jcl.JarClassLoader;
 
@@ -45,6 +42,8 @@ public class ByteCodePatcher {
                 transformProjectile(projectileClass);
                 Class playerClass = Class.forName(hooks.playerClass, false, child);
                 transformPlayer(playerClass);
+                Class clientClass = Class.forName(hooks.clientClass, false, child);
+                transformClient(clientClass);
                 ByteCodeUtils.updateHijackedJar();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -99,6 +98,7 @@ public class ByteCodePatcher {
                 checkActor(classToLoad);
                 checkProjectile(classToLoad);
                 checkPlayer(classToLoad);
+                checkClient(classToLoad);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -156,53 +156,37 @@ public class ByteCodePatcher {
     public static void checkPlayer(Class current) {
         try {
             Method method = current.getDeclaredMethod("getSkullIcon");
-            if (method!=null) {
-                hooks.playerClass = current.getName();
-                System.out.println("[RuneLit] Transforming Player at class: "+current.getName());
-                PlayerTransform pt = new PlayerTransform();
-                pt.modify(current);
-
-    public static void checkgetProjectiles(Class getprojectile) {
-        try {
-            Method method = getprojectile.getDeclaredMethod("getProjectiles");
-            if (method != null) {
-                hooks.mainClientInstance = getprojectile.getName();
-                System.out.println("[RuneLit] Transforming Projectile at class: " + getprojectile.getName());
-                getProjectileTransform gpt = new getProjectileTransform();
-                gpt.modify(getprojectile);
-            }
-        } catch (NoSuchMethodException e) {
-            //e.printStackTrace();
-        } catch (NoClassDefFoundError e) {
-            //e.printStackTrace();
-        }
-    }
-              
-    public static void transformPlayer(Class player) {
-        System.out.println("[RuneLit] Transforming Player at class: "+player.getName());
-        PlayerTransform pt = new PlayerTransform();
-        pt.modify(player);
-
-    public static void transformGetProjectile(Class current) {
-        System.out.println("[RuneLit] Transforming getProjectile at class: " + current.getName());
-        getProjectileTransform gpt = new getProjectileTransform();
-        gpt.modify(current);
-    }
-
-    public static void checkPlayer(Class current) {
-        try {
-            Method method = current.getDeclaredMethod("getSkullIcon");
             if (method != null) {
                 hooks.playerClass = current.getName();
                 System.out.println("[RuneLit] Transforming Player at class: " + current.getName());
                 PlayerTransform pt = new PlayerTransform();
                 pt.modify(current);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void checkClient(Class current) {
+        try {
+            Method method = current.getDeclaredMethod("getProjectiles");
+            if (method != null) {
+                hooks.clientInstance = current.getName();
+                System.out.println("[RuneLit] Transforming Projectile at class: " + current.getName());
+                ClientTransform ct = new ClientTransform();
+                ct.modify(current);
+            }
         } catch (NoSuchMethodException e) {
             //e.printStackTrace();
         } catch (NoClassDefFoundError e) {
             //e.printStackTrace();
         }
+    }
+
+    public static void transformClient(Class client) {
+        System.out.println("[RuneLit] Transforming Client at class: " + client.getName());
+        ClientTransform ct = new ClientTransform();
+        ct.modify(client);
     }
 
     public static void transformPlayer(Class player) {
