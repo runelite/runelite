@@ -186,10 +186,21 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "notificationCursor",
+			name = "Enable cursor notification",
+			description = "Makes a popup follow the cursor as a notification",
+			position = 25
+	)
+	default boolean enableCursorNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "notificationFocused",
 		name = "Send notifications when focused",
 		description = "Toggles all notifications for when the client is focused",
-		position = 25
+		position = 26
 	)
 	default boolean sendNotificationsWhenFocused()
 	{

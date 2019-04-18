@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
+
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -52,6 +53,7 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.ui.components.notification.NotificationCursor;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.util.OSType;
 
@@ -79,6 +81,7 @@ public class Notifier
 	private final Path notifyIconPath;
 	private final boolean terminalNotifierAvailable;
 	private Instant flashStart;
+	private NotificationCursor notificationCursor = new NotificationCursor();
 
 	@Inject
 	private Notifier(
@@ -149,6 +152,11 @@ public class Notifier
 		if (runeLiteConfig.enableFlashNotification())
 		{
 			flashStart = Instant.now();
+		}
+
+		if (runeLiteConfig.enableCursorNotification())
+		{
+			notificationCursor.sendNotification(message, client);
 		}
 	}
 
