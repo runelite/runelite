@@ -142,6 +142,10 @@ public class MusicReplacerPlugin extends Plugin
     protected void startUp() throws Exception
     {
         JFXPanel fxPanel = new JFXPanel();
+        volume = (double) config.Vol() / 100;
+        fadeInMillis = config.FadeIn();
+        fadeOutMillis = config.FadeOut();
+
         if(!config.musicPack().isEmpty()) {
             File dirCheck = new File(RUNELITE_DIR_MUSIC + "/" + config.musicPack());
             if (dirCheck.exists()) {
