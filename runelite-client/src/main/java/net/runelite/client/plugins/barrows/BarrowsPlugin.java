@@ -254,8 +254,7 @@ public class BarrowsPlugin extends Plugin
 				.runeLiteFormattedMessage(message.build())
 				.build());
 		}
-
-		if (event.getGroupId() == WidgetID.BARROWS_PUZZLE_GROUP_ID)
+		else if (event.getGroupId() == WidgetID.BARROWS_PUZZLE_GROUP_ID)
 		{
 			final int answer = client.getWidget(WidgetInfo.BARROWS_FIRST_PUZZLE).getModelId() - 3;
 			puzzleAnswer = null;
