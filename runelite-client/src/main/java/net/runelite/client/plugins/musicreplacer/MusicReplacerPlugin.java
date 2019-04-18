@@ -247,31 +247,4 @@ public class MusicReplacerPlugin extends Plugin
                         new KeyValue(mediaPlayer.volumeProperty(), 0)));
         return timeline;
     }
-
-    /*private static void play(final MediaPlayer mediaPlayer, final long fadeInMillis)
-    {
-
-        if (fadeInMillis > 0)
-        {
-            mediaPlayer.setVolume(0);
-        }
-        mediaPlayer.setOnReady(() ->
-        {
-            mediaPlayer.play();
-            new Transition()
-            {
-                {
-                    setCycleDuration(Duration.millis(fadeInMillis));
-                }
-                @Override
-                protected void interpolate(double frac)
-                {
-                    if (mediaPlayer.getVolume() < volume)
-                    {
-                        mediaPlayer.setVolume(frac);
-                    }
-                }
-            }.play();
-        });
-    }*/
 }
