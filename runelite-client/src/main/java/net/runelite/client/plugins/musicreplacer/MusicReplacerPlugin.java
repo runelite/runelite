@@ -26,39 +26,44 @@
  * PERMISSIONS TO USE AND STORE SAID MUSIC.
  */
 
-package net.runelite.client.plugins.osrsbeatz;
+package net.runelite.client.plugins.musicreplacer;
 
 
 import com.google.inject.Provides;
-import net.runelite.api.events.ConfigChanged;
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import javax.inject.Inject;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.Transition;
 import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 import net.runelite.api.Client;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.osrsbeatz.OSRSBeatzConfiguration;
+
+import javax.inject.Inject;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @PluginDescriptor(
-        name = "OSRSBeatz Music Track Replacer",
-        description = "Replace Normal Old School Runescape Music with OSRSBeatz Remixes",
-        tags = {"music", "sound", ""},
+        name = "Music Track Replacer",
+        description = "Replace Old School Runescape Music with User Defined Packs",
+        tags = {"music", "sound", "replace", "track", "pack"},
         enabledByDefault = false
 )
 
-public class OSRSBeatzPlugin extends Plugin
+public class MusicReplacerPlugin extends Plugin
 {
     private static MediaPlayer mediaPlayer;
     private static int fadeOutSeconds = 3;
@@ -105,14 +110,11 @@ public class OSRSBeatzPlugin extends Plugin
 
     }
 
-
-
     private void createMusicList(File musicDir)
     {
         String line;
         try
         {
-
             /*URL url = new URL("http://1h.lc/music-list.txt");
             HttpURLConnection huc = (HttpURLConnection) url.openConnection();
             huc.setRequestMethod("GET");
@@ -120,12 +122,13 @@ public class OSRSBeatzPlugin extends Plugin
             FileReader fr = new FileReader(musicDir + "/list.csv");
             BufferedReader br = new BufferedReader(fr);
 
-
             while ((line = br.readLine()) != null)
             {
-                if(!line.equals("")) {
+                if(!line.isEmpty()) {
                     String[] values = line.split(",");
-                    musicMap.put(values[0].trim(), values[1].trim());
+                    if(!values[0].isEmpty() && !values[0].isEmpty()) {
+                        musicMap.put(values[0].trim(), values[1].trim());
+                    }
                 }
             }
         }
