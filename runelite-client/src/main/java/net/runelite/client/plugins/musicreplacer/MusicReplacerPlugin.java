@@ -22,8 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * ALL MUSIC USED IS THE PROPERTY OF OSRSBeatz AND THE AUTHOR OF THIS CODE HAS HAD
- * PERMISSIONS TO USE AND STORE SAID MUSIC.
  */
 
 package net.runelite.client.plugins.musicreplacer;
@@ -45,7 +43,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.osrsbeatz.OSRSBeatzConfiguration;
 
 import javax.inject.Inject;
 import java.io.BufferedReader;
@@ -77,13 +74,13 @@ public class MusicReplacerPlugin extends Plugin
 
 
     @Inject
-    private OSRSBeatzConfiguration config;
+    private MusicReplacerConfiguration config;
 
 
     @Provides
-    OSRSBeatzConfiguration provideConfig(ConfigManager configManager)
+    MusicReplacerConfiguration provideConfig(ConfigManager configManager)
     {
-        return configManager.getConfig(OSRSBeatzConfiguration.class);
+        return configManager.getConfig(MusicReplacerConfiguration.class);
     }
 
     @Subscribe
@@ -96,6 +93,7 @@ public class MusicReplacerPlugin extends Plugin
             case "musicPack":
                 System.out.println("Config change: " + config.musicPack());
                 File dirCheck = new File(RUNELITE_DIR_MUSIC + config.musicPack());
+                System.out.println(dirCheck);
                 if(dirCheck.exists() && !config.musicPack().isEmpty())
                 {
                     //Change to music pack and start
@@ -103,9 +101,10 @@ public class MusicReplacerPlugin extends Plugin
                     createMusicList(dirCheck);
                 }
                 break;
-            case "Default":
+            case "vol":
+                volume = (double) config.vol() / 100;
+                mediaPlayer.setVolume(volume);
                 break;
-
         }
 
     }
@@ -126,7 +125,7 @@ public class MusicReplacerPlugin extends Plugin
             {
                 if(!line.isEmpty()) {
                     String[] values = line.split(",");
-                    if(!values[0].isEmpty() && !values[0].isEmpty()) {
+                    if(!values[0].isEmpty() && !values[1].isEmpty()) {
                         musicMap.put(values[0].trim(), values[1].trim());
                     }
                 }
@@ -142,17 +141,16 @@ public class MusicReplacerPlugin extends Plugin
     protected void startUp() throws Exception
     {
         JFXPanel fxPanel = new JFXPanel();
-
         if(!config.musicPack().isEmpty()) {
-            System.out.println(config.musicPack());
             File dirCheck = new File(RUNELITE_DIR_MUSIC + config.musicPack());
             if (dirCheck.exists()) {
                 createMusicList(dirCheck);
                 if(musicMap.containsKey("Main Theme")) {
-                    if(musicMap.get("Main Theme") != "") {
+                    if(!musicMap.get("Main Theme").equals("")) {
                         String songLoc = RUNELITE_DIR_MUSIC + config.musicPack() + "/" + musicMap.get("Main Theme");
-                        String songURI = new File(songLoc).toURI().toString();
-                        if(new File(songURI).exists()) {
+                        File songFile = new File(songLoc);
+                        if (songFile.exists()) {
+                            String songURI = songFile.toURI().toString();
                             Media media = new Media(songURI);
                             mediaPlayer = new MediaPlayer(media);
                             play(mediaPlayer, 5000);
@@ -171,7 +169,6 @@ public class MusicReplacerPlugin extends Plugin
                 new KeyFrame(Duration.seconds(fadeOutSeconds),
                         new KeyValue(mediaPlayer.volumeProperty(), 0)));
         timeline.play();
-        mediaPlayer.dispose();
     }
 
     @Subscribe
@@ -186,7 +183,11 @@ public class MusicReplacerPlugin extends Plugin
                 song = newSong;
                 onMusicChange(song);
             }
-        } catch (NullPointerException ignored){}
+        }
+        catch (NullPointerException ignored)
+        {
+
+        }
     }
 
     private void onMusicChange(String song)
@@ -194,25 +195,27 @@ public class MusicReplacerPlugin extends Plugin
         // Set up and play song
         if (musicMap.containsKey(song))
         {
-            Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.seconds(fadeOutSeconds),
-                            new KeyValue(mediaPlayer.volumeProperty(), 0)));
-            //song = song.replaceAll("\\s", "\\+");
-            //String songURL = "http://LINK" + prefix + song + ".mp3";
-            String songLoc = RUNELITE_DIR_MUSIC + config.musicPack() + "/" + musicMap.get(song);
-            String songURI = new File(songLoc).toURI().toString();
-            System.out.println(songURI);
-            Duration d = mediaPlayer.getCurrentTime();
-            d = d.add(Duration.seconds(fadeOutSeconds + 0.2));
-            mediaPlayer.setStopTime(d);
-            timeline.play();
-            mediaPlayer.setOnEndOfMedia(() ->
-            {
-                Media media = new Media(songURI);
-                mediaPlayer = new MediaPlayer(media);
-                mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
-                play(mediaPlayer, 7500);
-            });
+            if(!musicMap.get(song).equals("")) {
+                Timeline timeline = new Timeline(
+                        new KeyFrame(Duration.seconds(fadeOutSeconds),
+                                new KeyValue(mediaPlayer.volumeProperty(), 0)));
+                String songLoc = RUNELITE_DIR_MUSIC + config.musicPack() + "/" + musicMap.get(song);
+                File songFile = new File(songLoc);
+                if (songFile.exists()) {
+                    String songURI = songFile.toURI().toString();
+                    Duration d = mediaPlayer.getCurrentTime();
+                    d = d.add(Duration.seconds(fadeOutSeconds + 0.2));
+                    mediaPlayer.setStopTime(d);
+                    timeline.play();
+                    mediaPlayer.setOnEndOfMedia(() ->
+                    {
+                        Media media = new Media(songURI);
+                        mediaPlayer = new MediaPlayer(media);
+                        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+                        play(mediaPlayer, 7500);
+                    });
+                }
+            }
         }
     }
 

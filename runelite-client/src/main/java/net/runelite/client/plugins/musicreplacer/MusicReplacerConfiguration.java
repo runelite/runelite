@@ -22,8 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * ALL MUSIC USED IS THE PROPERTY OF OSRSBeatz AND THE AUTHOR OF THIS CODE HAS HAD
- * PERMISSIONS TO USE AND STORE SAID MUSIC.
  */
 
 
@@ -45,4 +43,11 @@ public interface MusicReplacerConfiguration extends Config {
     {
         return "";
     }
+    @ConfigItem(
+            position = 1,
+            keyName = "vol",
+            name =  "Volume",
+            description = "Volume"
+    )
+    default int vol(){ return 50; }
 }
