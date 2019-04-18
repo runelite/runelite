@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls;
+package net.runelite.client.plugins.cluescrolls.clues;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
-import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.api.coords.WorldPoint;
+import org.junit.Test;
 
-public class ClueScrollWorldOverlay extends Overlay
+public class CoordinateClueTest
 {
-	public static final int IMAGE_Z_OFFSET = 30;
-
-	public static final Color CLICKBOX_BORDER_COLOR = Color.ORANGE;
-	public static final Color CLICKBOX_HOVER_BORDER_COLOR = CLICKBOX_BORDER_COLOR.darker();
-	public static final Color CLICKBOX_FILL_COLOR = new Color(0, 255, 0, 20);
-
-	private final ClueScrollPlugin plugin;
-
-	@Inject
-	private ClueScrollWorldOverlay(ClueScrollPlugin plugin)
+	@Test
+	public void testDuplicateCoordinates()
 	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
-		this.plugin = plugin;
-	}
-
-	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		ClueScroll clue = plugin.getClue();
-
-		if (clue != null)
-		{
-			clue.makeWorldOverlayHint(graphics, plugin);
-		}
-
-		return null;
+		// If this doesn't throw then the clues map doesn't have duplicate keys
+		new CoordinateClue("test", new WorldPoint(0, 0, 0));
 	}
 }

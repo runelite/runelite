@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.5.20-SNAPSHOT</version>
+	<version>1.5.21-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -225,6 +225,20 @@
 					<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>io.github.zlika</groupId>
+				<artifactId>reproducible-build-maven-plugin</artifactId>
+				<version>0.7</version>
+				<executions>
+					<execution>
+						<!-- Move from pre-integration-test to place before jarsigning -->
+						<phase>package</phase>
+						<goals>
+							<goal>strip-jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 		<pluginManagement>
