@@ -54,204 +54,204 @@ import java.util.Map;
 
 
 @PluginDescriptor(
-        name = "Music Track Replacer",
-        description = "Replace Old School Runescape Music with User Defined Packs",
-        tags = {"music", "sound", "replace", "track", "pack"},
-        enabledByDefault = false
+		name = "Music Track Replacer",
+		description = "Replace Old School Runescape Music with User Defined Packs",
+		tags = {"music", "sound", "replace", "track", "pack"},
+		enabledByDefault = false
 )
 
 public class MusicReplacerPlugin extends Plugin
 {
-    private static MediaPlayer mediaPlayer;
-    private static int fadeOutMillis;
-    private Map<String, String> musicMap = new HashMap<>();
-    private static double volume;
-    private String song = null;
-    private static String RUNELITE_DIR_MUSIC = new File(RuneLite.RUNELITE_DIR, "/music-replacer/").toString();
-    private static int fadeInMillis;
+	private static MediaPlayer mediaPlayer;
+	private static int fadeOutMillis;
+	private Map<String, String> musicMap = new HashMap<>();
+	private static double volume;
+	private String song = null;
+	private static String RUNELITE_DIR_MUSIC = new File(RuneLite.RUNELITE_DIR, "/music-replacer/").toString();
+	private static int fadeInMillis;
 
-    @Inject
-    private Client client;
-
-
-    @Inject
-    private MusicReplacerConfiguration config;
+	@Inject
+	private Client client;
 
 
-    @Provides
-    MusicReplacerConfiguration provideConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(MusicReplacerConfiguration.class);
-    }
+	@Inject
+	private MusicReplacerConfiguration config;
 
-    @Subscribe
-    public void onConfigChanged(ConfigChanged event)
-    {
-        String key = event.getKey();
-        switch (key)
-        {
-            //More to add later
-            case "musicPack" :
-                File dirCheck = new File(RUNELITE_DIR_MUSIC + config.musicPack());
-                if(dirCheck.exists() && !config.musicPack().isEmpty())
-                {
-                    //Change to music pack and start
-                    createMusicList(dirCheck);
-                }
-                break;
-            case "Vol" :
-                volume = (double) config.Vol() / 100;
-                mediaPlayer.setVolume(volume);
-                break;
-            case "FadeIn" :
-                fadeInMillis = config.FadeIn();
-                break;
-            case "FadeOut" :
-                fadeOutMillis = config.FadeOut();
-                break;
-        }
 
-    }
+	@Provides
+	MusicReplacerConfiguration provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(MusicReplacerConfiguration.class);
+	}
 
-    private void createMusicList(File musicDir)
-    {
-        String line;
-        try
-        {
-            FileReader fr = new FileReader(musicDir + "/list.csv");
-            BufferedReader br = new BufferedReader(fr);
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		String key = event.getKey();
+		switch (key)
+		{
+			//More to add later
+			case "musicPack" :
+				File dirCheck = new File(RUNELITE_DIR_MUSIC + config.musicPack());
+				if (dirCheck.exists() && !config.musicPack().isEmpty())
+				{
+					//Change to music pack and start
+					createMusicList(dirCheck);
+				}
+				break;
+			case "Vol" :
+				volume = (double) config.Vol() / 100;
+				mediaPlayer.setVolume(volume);
+				break;
+			case "FadeIn" :
+				fadeInMillis = config.FadeIn();
+				break;
+			case "FadeOut" :
+				fadeOutMillis = config.FadeOut();
+				break;
+		}
 
-            while ((line = br.readLine()) != null)
-            {
-                if (!line.isEmpty())
-                {
-                    String[] values = line.split(",");
-                    if (!values[0].isEmpty() && !values[1].isEmpty())
-                    {
-                        musicMap.put(values[0].trim(), values[1].trim());
-                    }
-                }
-            }
-        }
-        catch (IOException ex)
-        {
-            System.err.println(ex.toString());
-        }
-    }
+	}
 
-    @Override
-    protected void startUp() throws Exception
-    {
-        JFXPanel fxPanel = new JFXPanel();
-        volume = (double) config.Vol() / 100;
-        fadeInMillis = config.FadeIn();
-        fadeOutMillis = config.FadeOut();
+	private void createMusicList(File musicDir)
+	{
+		String line;
+		try
+		{
+			FileReader fr = new FileReader(musicDir + "/list.csv");
+			BufferedReader br = new BufferedReader(fr);
 
-        if (!config.musicPack().isEmpty())
-        {
-            File dirCheck = new File(RUNELITE_DIR_MUSIC + "/" + config.musicPack());
-            if (dirCheck.exists())
-            {
-                createMusicList(dirCheck);
-                if (musicMap.containsKey("Main Theme"))
-                {
-                    if (!musicMap.get("Main Theme").equals(""))
-                    {
-                        String songLoc = RUNELITE_DIR_MUSIC + "/" + config.musicPack() + "/" + musicMap.get("Main Theme");
-                        File songFile = new File(songLoc);
-                        if (songFile.exists())
-                        {
-                            String songURI = songFile.toURI().toString();
-                            Media media = new Media(songURI);
-                            mediaPlayer = new MediaPlayer(media);
-                            Timeline fadeIn = play(fadeInMillis);
-                            mediaPlayer.setVolume(0);
-                            mediaPlayer.play();
-                            fadeIn.play();
-                            mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
-                        }
-                    }
-                }
-            }
-        }
-    }
+			while ((line = br.readLine()) != null)
+			{
+				if (!line.isEmpty())
+				{
+					String[] values = line.split(",");
+					if (!values[0].isEmpty() && !values[1].isEmpty())
+					{
+						musicMap.put(values[0].trim(), values[1].trim());
+					}
+				}
+			}
+		}
+		catch (IOException ex)
+		{
+			System.err.println(ex.toString());
+		}
+	}
 
-    @Override
-    protected void shutDown() throws Exception
-    {
-            Timeline fadeOut = stop(fadeOutMillis);
-            Duration d = mediaPlayer.getCurrentTime();
-            d = d.add(Duration.millis(fadeOutMillis + 500));
-            mediaPlayer.setStopTime(d);
-            fadeOut.play();
-            mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.dispose());
+	@Override
+	protected void startUp() throws Exception
+	{
+		JFXPanel fxPanel = new JFXPanel();
+		volume = (double) config.Vol() / 100;
+		fadeInMillis = config.FadeIn();
+		fadeOutMillis = config.FadeOut();
 
-    }
+		if (!config.musicPack().isEmpty())
+		{
+			File dirCheck = new File(RUNELITE_DIR_MUSIC + "/" + config.musicPack());
+			if (dirCheck.exists())
+			{
+				createMusicList(dirCheck);
+				if (musicMap.containsKey("Main Theme"))
+				{
+					if (!musicMap.get("Main Theme").equals(""))
+					{
+						String songLoc = RUNELITE_DIR_MUSIC + "/" + config.musicPack() + "/" + musicMap.get("Main Theme");
+						File songFile = new File(songLoc);
+						if (songFile.exists())
+						{
+							String songURI = songFile.toURI().toString();
+							Media media = new Media(songURI);
+							mediaPlayer = new MediaPlayer(media);
+							Timeline fadeIn = play(fadeInMillis);
+							mediaPlayer.setVolume(0);
+							mediaPlayer.play();
+							fadeIn.play();
+							mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+						}
+					}
+				}
+			}
+		}
+	}
 
-    @Subscribe
-    public void onGameTick(GameTick tick)
-    {
-        try
-        {
-            String newSong = client.getWidget(239, 6).getText();
+	@Override
+	protected void shutDown() throws Exception
+	{
+			Timeline fadeOut = stop(fadeOutMillis);
+			Duration d = mediaPlayer.getCurrentTime();
+			d = d.add(Duration.millis(fadeOutMillis + 500));
+			mediaPlayer.setStopTime(d);
+			fadeOut.play();
+			mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.dispose());
 
-            if (!newSong.equals(song))
-            {
-                song = newSong;
-                onMusicChange(song);
-            }
-        }
-        catch (NullPointerException ex)
-        {
-            System.err.println(ex.toString());
-        }
-    }
+	}
 
-    private void onMusicChange(String song)
-    {
-        // Set up and play song
-        if (musicMap.containsKey(song))
-        {
-            if(!musicMap.get(song).equals(""))
-            {
-                Timeline fadeOut = stop(fadeOutMillis);
-                String songLoc = RUNELITE_DIR_MUSIC + "/" + config.musicPack() + "/" + musicMap.get(song);
-                File songFile = new File(songLoc);
-                if (songFile.exists())
-                {
-                    String songURI = songFile.toURI().toString();
-                    Duration d = mediaPlayer.getCurrentTime();
-                    d = d.add(Duration.millis(fadeOutMillis + 200));
-                    mediaPlayer.setStopTime(d);
-                    fadeOut.play();
-                    mediaPlayer.setOnEndOfMedia(() ->
-                    {
-                        Media media = new Media(songURI);
-                        mediaPlayer = new MediaPlayer(media);
-                        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
-                        Timeline fadeIn = play(fadeInMillis);
-                        mediaPlayer.setVolume(0);
-                        mediaPlayer.play();
-                        fadeIn.play();
-                    });
-                }
-            }
-        }
-    }
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		try
+		{
+			String newSong = client.getWidget(239, 6).getText();
 
-    private static Timeline play(final int fadeOutMillis)
-    {
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.millis(fadeOutMillis),
-                        new KeyValue(mediaPlayer.volumeProperty(), volume)));
-        return timeline;
-    }
+			if (!newSong.equals(song))
+			{
+				song = newSong;
+				onMusicChange(song);
+			}
+		}
+		catch (NullPointerException ex)
+		{
+			System.err.println(ex.toString());
+		}
+	}
 
-    private static Timeline stop(final int fadeOutMillis)
-    {
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.millis(fadeOutMillis),
-                        new KeyValue(mediaPlayer.volumeProperty(), 0)));
-        return timeline;
-    }
+	private void onMusicChange(String song)
+	{
+		// Set up and play song
+		if (musicMap.containsKey(song))
+		{
+			if (!musicMap.get(song).equals(""))
+			{
+				Timeline fadeOut = stop(fadeOutMillis);
+				String songLoc = RUNELITE_DIR_MUSIC + "/" + config.musicPack() + "/" + musicMap.get(song);
+				File songFile = new File(songLoc);
+				if (songFile.exists())
+				{
+					String songURI = songFile.toURI().toString();
+					Duration d = mediaPlayer.getCurrentTime();
+					d = d.add(Duration.millis(fadeOutMillis + 200));
+					mediaPlayer.setStopTime(d);
+					fadeOut.play();
+					mediaPlayer.setOnEndOfMedia(() ->
+					{
+						Media media = new Media(songURI);
+						mediaPlayer = new MediaPlayer(media);
+						mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+						Timeline fadeIn = play(fadeInMillis);
+						mediaPlayer.setVolume(0);
+						mediaPlayer.play();
+						fadeIn.play();
+					});
+				}
+			}
+		}
+	}
+
+	private static Timeline play(final int fadeOutMillis)
+	{
+		Timeline timeline = new Timeline(
+				new KeyFrame(Duration.millis(fadeOutMillis),
+						new KeyValue(mediaPlayer.volumeProperty(), volume)));
+		return timeline;
+	}
+
+	private static Timeline stop(final int fadeOutMillis)
+	{
+		Timeline timeline = new Timeline(
+				new KeyFrame(Duration.millis(fadeOutMillis),
+						new KeyValue(mediaPlayer.volumeProperty(), 0)));
+		return timeline;
+	}
 }
