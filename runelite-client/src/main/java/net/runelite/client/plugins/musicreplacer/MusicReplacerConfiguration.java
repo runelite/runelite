@@ -45,9 +45,23 @@ public interface MusicReplacerConfiguration extends Config {
     }
     @ConfigItem(
             position = 1,
-            keyName = "vol",
+            keyName = "Vol",
             name =  "Volume",
             description = "Volume"
     )
-    default int vol(){ return 50; }
+    default int Vol(){ return 25; }
+	@ConfigItem(
+			position = 2,
+			keyName = "FadeIn",
+			name =  "Fade In (Sec)",
+			description = "Fade In in Seconds"
+	)
+	default int FadeIn(){ return 7500; }
+	@ConfigItem(
+			position = 3,
+			keyName = "FadeOut",
+			name =  "Fade Out (Sec)",
+			description = "Fade Out in Seconds"
+	)
+	default int FadeOut(){ return 4000; }
 }
