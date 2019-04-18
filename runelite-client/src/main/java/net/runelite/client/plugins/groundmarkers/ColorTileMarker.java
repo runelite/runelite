@@ -37,4 +37,5 @@ class ColorTileMarker
 {
 	private WorldPoint worldPoint;
 	private Color color;
+	private String label;
 }

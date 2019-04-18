@@ -33,6 +33,7 @@ import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -40,6 +41,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.TextComponent;
 
 public class GroundMarkerOverlay extends Overlay
 {
@@ -48,6 +50,7 @@ public class GroundMarkerOverlay extends Overlay
 	private final Client client;
 	private final GroundMarkerConfig config;
 	private final GroundMarkerPlugin plugin;
+    private final TextComponent textComponent = new TextComponent();
 
 	@Inject
 	private GroundMarkerOverlay(Client client, GroundMarkerConfig config, GroundMarkerPlugin plugin)
@@ -79,13 +82,13 @@ public class GroundMarkerOverlay extends Overlay
 				tileColor = config.markerColor();
 			}
 
-			drawTile(graphics, worldPoint, tileColor);
+			drawTile(graphics, worldPoint, tileColor, point.getLabel());
 		}
 
 		return null;
 	}
 
-	private void drawTile(Graphics2D graphics, WorldPoint point, Color color)
+	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, String label)
 	{
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
@@ -107,5 +110,21 @@ public class GroundMarkerOverlay extends Overlay
 		}
 
 		OverlayUtil.renderPolygon(graphics, poly, color);
+
+		if (label.isEmpty())
+        {
+           return;
+        }
+
+        final Point textPoint = Perspective.getCanvasTextLocation(client,
+                graphics,
+                lp,
+                label,
+                0);
+
+        textComponent.setText(label);
+        textComponent.setColor(color);
+        textComponent.setPosition(new java.awt.Point(textPoint.getX(), textPoint.getY()));
+        textComponent.render(graphics);
 	}
 }

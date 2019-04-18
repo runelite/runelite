@@ -64,4 +64,14 @@ public interface GroundMarkerConfig extends Config
 	{
 		return false;
 	}
+
+    @ConfigItem(
+            keyName = "drawTextLabel",
+            name = "Draw text label on tile",
+            description = "Configures whether to show text label on ground tiles"
+    )
+    default boolean drawTextLabel()
+    {
+        return false;
+    }
 }

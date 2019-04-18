@@ -29,6 +29,8 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -51,12 +53,17 @@ import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.widgets.JavaScriptCallback;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
+import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.Text;
 
 @Slf4j
 @PluginDescriptor(
@@ -72,6 +79,8 @@ public class GroundMarkerPlugin extends Plugin
 	private static final String REGION_PREFIX = "region_";
 
 	private static final Gson GSON = new Gson();
+
+    private ChatboxTextInput LabelInput = null;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -100,6 +109,12 @@ public class GroundMarkerPlugin extends Plugin
 
 	@Inject
 	private GroundMarkerMinimapOverlay minimapOverlay;
+
+    @Inject
+    private ChatboxPanelManager chatboxPanelManager;
+
+    @Inject
+    private ClientThread clientThread;
 
 	@Inject
 	private KeyManager keyManager;
@@ -173,11 +188,11 @@ public class GroundMarkerPlugin extends Plugin
 		return points.stream()
 			.map(point -> new ColorTileMarker(
 				WorldPoint.fromRegion(point.getRegionId(), point.getRegionX(), point.getRegionY(), point.getZ()),
-				point.getColor()))
+				point.getColor(), point.getLabel()))
 			.flatMap(colorTile ->
 			{
 				final Collection<WorldPoint> localWorldPoints = WorldPoint.toLocalInstance(client, colorTile.getWorldPoint());
-				return localWorldPoints.stream().map(wp -> new ColorTileMarker(wp, colorTile.getColor()));
+				return localWorldPoints.stream().map(wp -> new ColorTileMarker(wp, colorTile.getColor(), colorTile.getLabel()));
 			})
 			.collect(Collectors.toList());
 	}
@@ -265,21 +280,61 @@ public class GroundMarkerPlugin extends Plugin
 		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, localPoint);
 
 		int regionId = worldPoint.getRegionID();
-		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), config.markerColor());
+		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), config.markerColor(), "DEFAULT");
 		log.debug("Updating point: {} - {}", point, worldPoint);
 
 		List<GroundMarkerPoint> groundMarkerPoints = new ArrayList<>(getPoints(regionId));
-		if (groundMarkerPoints.contains(point))
+
+        boolean shouldAdd = true;
+        for (GroundMarkerPoint gmp : groundMarkerPoints)
+        {
+            if(gmp.getRegionX() == point.getRegionX() && gmp.getRegionY() == point.getRegionY() && gmp.getZ() == point.getZ())
+            {
+                groundMarkerPoints.remove(gmp);
+                shouldAdd = false;
+                break;
+            }
+        }
+		if (shouldAdd)
 		{
-			groundMarkerPoints.remove(point);
-		}
-		else
-		{
+		    setLabel(point);
 			groundMarkerPoints.add(point);
 		}
 
 		savePoints(regionId, groundMarkerPoints);
-
 		loadPoints();
 	}
+
+    private void setLabel(GroundMarkerPoint gmp)
+    {
+        if(config.drawTextLabel())
+        {
+            chatboxPanelManager.openTextInput("Enter Text Label:")
+                    .onDone((content) ->
+                    {
+                        if (content == null)
+                        {
+                            return;
+                        }
+
+                        setTileLabel(new GroundMarkerPoint(gmp.getRegionId(), gmp.getRegionX(), gmp.getRegionY(), gmp.getZ(), gmp.getColor(), content));
+                    }).build();
+        }
+    }
+
+    private void setTileLabel(GroundMarkerPoint gmp)
+    {
+        List<GroundMarkerPoint> groundMarkerPoints = new ArrayList<>(getPoints(gmp.getRegionId()));
+        for (GroundMarkerPoint point : groundMarkerPoints)
+        {
+            if (gmp.getRegionX() == point.getRegionX() && gmp.getRegionY() == point.getRegionY() && gmp.getZ() == point.getZ())
+            {
+                groundMarkerPoints.remove(point);
+                groundMarkerPoints.add(gmp);
+            }
+        }
+
+        savePoints(gmp.getRegionId(), groundMarkerPoints);
+        loadPoints();
+    }
 }

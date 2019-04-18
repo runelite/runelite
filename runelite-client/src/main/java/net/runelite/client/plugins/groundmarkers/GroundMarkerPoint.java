@@ -41,4 +41,5 @@ class GroundMarkerPoint
 	private int regionY;
 	private int z;
 	private Color color;
+	private String label;
 }
