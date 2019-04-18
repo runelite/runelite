@@ -91,13 +91,10 @@ public class MusicReplacerPlugin extends Plugin
         {
             //More to add later
             case "musicPack":
-                System.out.println("Config change: " + config.musicPack());
                 File dirCheck = new File(RUNELITE_DIR_MUSIC + config.musicPack());
-                System.out.println(dirCheck);
                 if(dirCheck.exists() && !config.musicPack().isEmpty())
                 {
                     //Change to music pack and start
-                    System.out.println("Exists: " + dirCheck.toString());
                     createMusicList(dirCheck);
                 }
                 break;
@@ -114,10 +111,6 @@ public class MusicReplacerPlugin extends Plugin
         String line;
         try
         {
-            /*URL url = new URL("http://1h.lc/music-list.txt");
-            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-            huc.setRequestMethod("GET");
-            huc.connect();*/
             FileReader fr = new FileReader(musicDir + "/list.csv");
             BufferedReader br = new BufferedReader(fr);
 
