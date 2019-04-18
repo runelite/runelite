@@ -25,9 +25,10 @@
  */
 package net.runelite.client.rs;
 
+import lombok.Getter;
+
 import java.util.HashMap;
 import java.util.Map;
-import lombok.Getter;
 
 @Getter
 class RSConfig
