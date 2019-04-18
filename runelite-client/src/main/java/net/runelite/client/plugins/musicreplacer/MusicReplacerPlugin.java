@@ -100,14 +100,16 @@ public class MusicReplacerPlugin extends Plugin
                     createMusicList(dirCheck);
                 }
                 break;
-            case "vol":
+            case "Vol":
                 volume = (double) config.Vol() / 100;
                 mediaPlayer.setVolume(volume);
                 break;
             case "FadeIn":
                 fadeInMillis = config.FadeIn();
+                break;
             case "FadeOut":
                 fadeOutMillis = config.FadeOut();
+                break;
         }
 
     }
