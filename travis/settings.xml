@@ -257,8 +257,8 @@ under the License.
       <id>runelite</id>
 
       <properties>
-        <maven.javadoc.skip>false</maven.javadoc.skip>
-        <checkstyle.skip>false</checkstyle.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <checkstyle.skip>true</checkstyle.skip>
       </properties>
     </profile>
   </profiles>
