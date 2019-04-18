@@ -183,7 +183,7 @@ public class RuneLite
 			System.exit(0);
 		}
 
-		final boolean developerMode = options.has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null;
+		final boolean developerMode = true;
 
 		if (developerMode)
 		{
@@ -191,7 +191,7 @@ public class RuneLite
 			assert assertions = true;
 			if (!assertions)
 			{
-				throw new RuntimeException("Developers should enable assertions; Add `-ea` to your JVM arguments`");
+				java.util.logging.Logger.getAnonymousLogger().warning("Developers should enable assertions; Add `-ea` to your JVM arguments`");
 			}
 		}
 
