@@ -1,6 +1,6 @@
 ![](https://i.imgur.com/sBLouZ7.png)
 
-[![Discord](https://img.shields.io/discord/373382904769675265.svg)](https://discord.gg/HN5gf3m) [![Travis](https://travis-ci.com/zeruth/runelit.svg?branch=master)](https://travis-ci.com/zeruth/runelit)  
+[![Discord](https://img.shields.io/discord/373382904769675265.svg)](https://discord.gg/HN5gf3m) [![Build Status](https://travis-ci.org/runelite-extended/runelite.svg?branch=master)](https://travis-ci.org/runelite-extended/runelite)  
 RuneLit is a fork of [RuneLite](https://github.com/runelite/runelite) that provides more functionality and less restrictions while staying open source. This is meant to directly compete with 3rd party RL clients that are trying to sell their code. 
   
 # Notable Features:
