@@ -207,4 +207,15 @@ public interface WorldMapConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = WorldMapPlugin.CONFIG_KEY_TRANSPORATION_TELEPORT_TOOLTIPS,
+		name = "Show transporation tooltips",
+		description = "Indicates types and destinations of Transporation",
+		position = 17
+	)
+	default boolean transportationTeleportTooltips()
+	{
+		return true;
+	}
 }

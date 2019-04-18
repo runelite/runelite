@@ -302,14 +302,33 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Dig under Ithoi's cabin.", new WorldPoint(2529, 2838, 0), "Dig under Ithoi's cabin in the Corsair Cove."),
 		new CrypticClue("Search the drawers, upstairs in the bank to the East of Varrock.", DRAWERS_7194, new WorldPoint(3250, 3420, 1), "Search the drawers upstairs in Varrock east bank."),
 		new CrypticClue("Speak to Hazelmere.", "Hazelmere", new WorldPoint(2677, 3088, 1), "Located upstairs in the house to the north of fairy ring CLS. Answer: 6859"),
-		new CrypticClue("The effects of this fire are magnified.", new WorldPoint(1179, 3626, 0), "Dig by the fire beside Ket'sal K'uk in the westernmost part of the Kebos Swamp. ")
+		new CrypticClue("The effects of this fire are magnified.", new WorldPoint(1179, 3626, 0), "Dig by the fire beside Ket'sal K'uk in the westernmost part of the Kebos Swamp. "),
+		new CrypticClue("Always walking around the castle grounds and somehow everyone's age.", "Hans", new WorldPoint(3221, 3218, 0), "Talk to Hans walking around Lumbridge Castle."),
+		new CrypticClue("In the place Duke Horacio calls home, talk to a man with a hat dropped by goblins.", "Cook", new WorldPoint(3208, 3213, 0), "Talk to the Cook in Lumbridge Castle."),
+		new CrypticClue("In a village of barbarians, I am the one who guards the village from up high.", "Hunding", new WorldPoint(3097, 3432, 2), "Talk to Hunding atop the tower on the east side of Barbarian Village."),
+		new CrypticClue("Talk to Charlie the Tramp in Varrock.", "Charlie the Tramp", new WorldPoint(3209, 3390, 0), "Talk to Charlie the Tramp by the southern entrance to Varrock. He will give you a task."),
+		new CrypticClue("Near the open desert I reside, to get past me you must abide. Go forward if you dare, for when you pass me, you'll be sweating by your hair.", "Shantay", new WorldPoint(3303, 3123, 0), "Talk to Shantay at the Shantay Pass south of Al Kharid."),
+		new CrypticClue("Search the chest in Fred the Farmer's bedroom.", CLOSED_CHEST_375, new WorldPoint(3185, 3274, 0), "Search the chest by Fred the Farmer's bed in his house north-west of Lumbridge."),
+		new CrypticClue("Search the eastern bookcase in Father Urhney's house.", BOOKCASE_9523, new WorldPoint(3149, 3177, 0), "Father Urhney's house is found in the western end of the Lumbridge Swamp."),
+		new CrypticClue("Talk to Morgan in his house at Draynor Village.", "Morgan", new WorldPoint(3098, 3268, 0), "Morgan can be found in the house with the quest start map icon."),
+		new CrypticClue("Talk to Charles at Port Piscarilius.", "Charles", new WorldPoint(1821, 3690, 0), "Charles is found by Veos' ship in Port Piscarilius."),
+		new CrypticClue("Search the crate in Rommiks crafting shop in Rimmington.", CRATE_9534, new WorldPoint(2947, 3206, 0), "The crates in Rommik's Crafty Supplies in Rimmington."),
+		new CrypticClue("Talk to Ali the Leaflet Dropper north of the Al Kharid mine.", "Ali the Leaflet Dropper", new WorldPoint(3283, 3329, 0), "Ali the Leaflet Dropper can be found roaming north of the Al Kharid mine."),
+		new CrypticClue("Talk to the cook in the Blue Moon Inn in Varrock.", "Cook", new WorldPoint(3230, 3401, 0), "The Blue Moon Inn can be found by the southern entrance to Varrock."),
+		new CrypticClue("Search the single crate in Horvik's smithy in Varrock.", CRATE_5106, new WorldPoint(3228, 3433, 0), "Horvik's Smithy is found north-east of of Varrock Square."),
+		new CrypticClue("Search the crates in Falador General store.", CRATES_24088, new WorldPoint(2955, 3390, 0), "The Falador General Store can be found by the northern entrance to the city."),
+		new CrypticClue("Talk to Wayne at Wayne's Chains in Falador.", "Wayne", new WorldPoint(2972, 3312, 0), "Wayne's shop is found directly south of the White Knights' Castle."),
+		new CrypticClue("Search the boxes next to a chest that needs a crystal key.", BOXES_360, new WorldPoint(2915, 3452, 0), "The Crystal chest can be found in the house directly south of the Witch's house in Taverley."),
+		new CrypticClue("Talk to Turael in Burthorpe.", "Turael", new WorldPoint(2930, 3536, 0), "Turael is located in the small house east of the Toad and Chicken inn."),
+		new CrypticClue("More resources than I can handle, but in a very dangerous area. Can't wait to strike gold!", new WorldPoint(3183, 3941, 0), "Dig between the three gold ores in the Wilderness Resource Area."),
+		new CrypticClue("Observing someone in a swamp, under the telescope lies treasure.", new WorldPoint(2221, 3091, 0), "Dig next to the telescope on Broken Handz's island in the poison wastes. (Accessible only through fairy ring DLR)")
 	);
 
-	private String text;
-	private String npc;
-	private int objectId;
-	private WorldPoint location;
-	private String solution;
+	private final String text;
+	private final String npc;
+	private final int objectId;
+	private final WorldPoint location;
+	private final String solution;
 
 	private CrypticClue(String text, WorldPoint location, String solution)
 	{
@@ -430,11 +449,13 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		return null;
 	}
 
+	@Override
 	public int[] getObjectIds()
 	{
 		return new int[] {objectId};
 	}
 
+	@Override
 	public String[] getNpcs()
 	{
 		return new String[] {npc};

@@ -132,4 +132,7 @@ public final class STASHUnit
 	public static final int BEHIND_MISS_SCHISM_IN_DRAYNOR_VILLAGE = NullObjectID.NULL_29059;
 	public static final int NORTHWESTERN_CORNER_OF_THE_ENCHANTED_VALLEY = NullObjectID.NULL_29060;
 	public static final int NORTH_OF_MOUNT_KARUULM = NullObjectID.NULL_34647;
+	public static final int GYPSY_TENT_ENTRANCE = NullObjectID.NULL_34736;
+	public static final int FINE_CLOTHES_ENTRANCE = NullObjectID.NULL_34737;
+	public static final int BOB_AXES_ENTRANCE = NullObjectID.NULL_34738;
 }

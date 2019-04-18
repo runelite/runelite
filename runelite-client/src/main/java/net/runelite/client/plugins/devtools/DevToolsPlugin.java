@@ -27,6 +27,7 @@ package net.runelite.client.plugins.devtools;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.collect.ImmutableList;
+import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
@@ -42,6 +43,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -276,6 +278,29 @@ public class DevToolsPlugin extends Plugin
 				ExperienceChanged experienceChanged = new ExperienceChanged();
 				experienceChanged.setSkill(skill);
 				eventBus.post(experienceChanged);
+				break;
+			}
+			case "setstat":
+			{
+				Skill skill = Skill.valueOf(args[0].toUpperCase());
+				int level = Integer.parseInt(args[1]);
+
+				level = Ints.constrainToRange(level, 1, Experience.MAX_REAL_LEVEL);
+				int xp = Experience.getXpForLevel(level);
+
+				client.getBoostedSkillLevels()[skill.ordinal()] = level;
+				client.getRealSkillLevels()[skill.ordinal()] = level;
+				client.getSkillExperiences()[skill.ordinal()] = xp;
+
+				client.queueChangedSkill(skill);
+
+				ExperienceChanged experienceChanged = new ExperienceChanged();
+				experienceChanged.setSkill(skill);
+				eventBus.post(experienceChanged);
+
+				BoostedLevelChanged boostedLevelChanged = new BoostedLevelChanged();
+				boostedLevelChanged.setSkill(skill);
+				eventBus.post(boostedLevelChanged);
 				break;
 			}
 			case "anim":
