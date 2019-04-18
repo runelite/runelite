@@ -3,6 +3,8 @@ package net.runelite.client.plugins.remotebankcontents;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
@@ -18,6 +20,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Remote Bank Contents",
@@ -27,10 +30,12 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 public class RemoteBankContentsPlugin extends Plugin
 {
+
+	@Getter(AccessLevel.PACKAGE)
+	private RemoteBankContentsPanel panel;
+
 	@Inject
 	private SpriteManager spriteManager;
-
-	private RemoteBankContentsPanel panel;
 
 	@Inject
 	private Client client;
@@ -40,13 +45,17 @@ public class RemoteBankContentsPlugin extends Plugin
 
 	@Inject
 	private RemoteBankContentsProcess remoteBankContentsProcess;
+
 	@Inject
 	private RemoteBankContentsOverlay overlay;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private RemoteBankContentsConfig config;
 
+	@Getter
 	private NavigationButton navButton;
 
 	@Inject
@@ -61,10 +70,9 @@ public class RemoteBankContentsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		panel = new RemoteBankContentsPanel(client, itemManager);
-		//spriteManager.getSpriteAsync(SpriteID.BANK_SHOW_MENU_ICON, 0, panel::loadHeaderIcon);
+		panel = injector.getInstance(RemoteBankContentsPanel.class);
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "icon.png");
 
-		final BufferedImage icon = new BufferedImage(200, 200, BufferedImage.TYPE_INT_RGB);
 
 		navButton = NavigationButton.builder()
 			.tooltip("Remote Bank Contents")
@@ -146,7 +154,7 @@ public class RemoteBankContentsPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			remoteBankContentsProcess.reset();
-		
+
 		}
 	}
 

@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -43,7 +44,8 @@ public class RemoteBankContentsPanel extends PluginPanel
 	private boolean initialised = false;
 	private JTextField searchBar = new JTextField();
 
-	RemoteBankContentsPanel(Client client, ItemManager itemManager)
+	@Inject
+	private RemoteBankContentsPanel(Client client, ItemManager itemManager)
 	{
 
 		/*
@@ -59,7 +61,8 @@ public class RemoteBankContentsPanel extends PluginPanel
 		add(initialPanel);
 	}
 
-	public void setInitialPanel(){
+	public void setInitialPanel()
+	{
 		initialPanel.setBorder(new EmptyBorder(50, 20, 20, 20));
 		initialPanel.setContent("Plugin not initialised.", "Please open the bank to initialise");
 
@@ -72,7 +75,6 @@ public class RemoteBankContentsPanel extends PluginPanel
 		setInitialPanel();
 		rebuild();
 	}
-
 
 
 	private void initialiseMainPanel()
@@ -120,20 +122,10 @@ public class RemoteBankContentsPanel extends PluginPanel
 	}
 */
 
-	void setItems(LinkedHashSet<BankItem> items)
-	{
-
-		this.items = items.stream().filter(i -> !i.isTemplate()).filter(i -> i.getQuantity() > 0).filter(i -> i.getName().length() > 0).collect(Collectors.toCollection(LinkedHashSet::new));
-
-		populatePanel();
-	}
-
-
 	public void populatePanel()
 	{
 
 		Instant start = Instant.now();
-
 
 
 		if (items != null)
@@ -160,7 +152,7 @@ public class RemoteBankContentsPanel extends PluginPanel
 						imageLabel.setToolTipText(bankItem.getName());
 
 						slotContainer.add(imageLabel);
-						bankItemPanel.add(slotContainer);
+						bankItemPanel.add(imageLabel);
 					}
 				}
 			);
@@ -174,7 +166,7 @@ public class RemoteBankContentsPanel extends PluginPanel
 
 	public void rebuild()
 	{
-
+		Instant start = Instant.now();
 		if (!initialised)
 		{
 			initialiseMainPanel();
@@ -183,8 +175,10 @@ public class RemoteBankContentsPanel extends PluginPanel
 		repaint();
 		revalidate();
 
+		Instant finish = Instant.now();
+		long timeElapsed = Duration.between(start, finish).toMillis();
+		client.getLogger().debug("Rebuild panel took: " + timeElapsed + "ms");
 	}
-
 
 	//remember on logout everything resets
 	public void filter(String name)
@@ -213,10 +207,19 @@ public class RemoteBankContentsPanel extends PluginPanel
 		}
 	}
 
-	public LinkedHashSet<BankItem> getItems() {
+	public LinkedHashSet<BankItem> getItems()
+	{
 
 
 		return items;
-}
+	}
+
+	void setItems(LinkedHashSet<BankItem> items)
+	{
+
+		this.items = items.stream().filter(i -> !i.isTemplate()).filter(i -> i.getQuantity() > 0).filter(i -> i.getName().length() > 0).collect(Collectors.toCollection(LinkedHashSet::new));
+
+		populatePanel();
+	}
 
 }

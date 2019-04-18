@@ -139,7 +139,7 @@ public class RemoteBankContentsProcess
 		if (isUltimateIronman())
 		{
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAMEMESSAGE).runeLiteFormattedMessage("<col" + ChatColorType.HIGHLIGHT + ">" + "UIM BTW.").build());
+				.type(ChatMessageType.GAMEMESSAGE).runeLiteFormattedMessage("UIM BTW.").build());
 
 		}
 		else if (initialised())
@@ -161,7 +161,7 @@ public class RemoteBankContentsProcess
 			int quantity = getQuantityInBank(id);
 			String name = getItemName(id);
 
-			message.append("<col" + ChatColorType.HIGHLIGHT + ">" + "You currently have " + quantity + " " + name + " in your bank.");
+			message.append("You currently have " + quantity + " " + name + " in your bank.");
 
 			chatMessageManager.queue(QueuedMessage.builder()
 				.type(ChatMessageType.ITEM_EXAMINE).runeLiteFormattedMessage(message.build()).build());
@@ -324,18 +324,6 @@ public class RemoteBankContentsProcess
 
 	}
 
-	private void deposit(int id, int quantity)
-	{
-		replaceItemInBankDeposit(id, quantity);
-		try
-		{
-			SwingUtilities.invokeAndWait(this::populatePanelItems);
-		}
-		catch (InterruptedException | InvocationTargetException e)
-		{
-			e.printStackTrace();
-		}
-	}
 
 
 	private void deposit(int id, int quantityInInventory, int quantity)
