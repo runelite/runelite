@@ -26,6 +26,10 @@ package net.runelite.client.plugins.performancestats;
 
 import com.google.inject.Provides;
 import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -47,10 +51,17 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
+import net.runelite.client.events.PartyChanged;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.Text;
+import net.runelite.client.ws.PartyMember;
+import net.runelite.client.ws.PartyService;
+import net.runelite.client.ws.WSClient;
+import net.runelite.http.api.ws.messages.party.UserPart;
+import net.runelite.http.api.ws.messages.party.UserSync;
 
 @PluginDescriptor(
 	name = "Performance Stats",
@@ -86,6 +97,12 @@ public class PerformanceStatsPlugin extends Plugin
 	@Inject
 	private NPCManager npcManager;
 
+	@Inject
+	private PartyService partyService;
+
+	@Inject
+	private WSClient wsClient;
+
 	@Getter
 	private boolean enabled = false;
 	@Getter
@@ -100,6 +117,10 @@ public class PerformanceStatsPlugin extends Plugin
 	private boolean hopping;
 	private int pausedTicks = 0;
 
+	// Party System
+	@Getter
+	private final Map<UUID, Performance> partyDataMap = Collections.synchronizedMap(new HashMap<>());
+
 	@Provides
 	PerformanceStatsConfig getConfig(ConfigManager configManager)
 	{
@@ -110,12 +131,14 @@ public class PerformanceStatsPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(performanceTrackerOverlay);
+		wsClient.registerMessage(Performance.class);
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		overlayManager.remove(performanceTrackerOverlay);
+		wsClient.unregisterMessage(Performance.class);
 		disable();
 		reset();
 	}
@@ -256,6 +279,10 @@ public class PerformanceStatsPlugin extends Plugin
 				submit();
 			}
 		}
+
+		final String name = client.getLocalPlayer().getName();
+		performance.setUsername(Text.removeTags(name));
+		sendPerformance();
 	}
 
 	@Subscribe
@@ -381,4 +408,43 @@ public class PerformanceStatsPlugin extends Plugin
 			.append(")")
 			.build();
 	}
+
+	private void sendPerformance()
+	{
+		final PartyMember me = partyService.getLocalMember();
+		if (me != null && me.getMemberId() != null)
+		{
+			performance.setMemberId(me.getMemberId());
+			wsClient.send(performance);
+		}
+	}
+
+	@Subscribe
+	public void onPerformance(final Performance performance)
+	{
+		partyDataMap.put(performance.getMemberId(), performance);
+	}
+
+	@Subscribe
+	public void onUserSync(final UserSync event)
+	{
+		if (isEnabled())
+		{
+			sendPerformance();
+		}
+	}
+
+	@Subscribe
+	public void onUserPart(final UserPart event)
+	{
+		partyDataMap.remove(event.getMemberId());
+	}
+
+	@Subscribe
+	public void onPartyChanged(final PartyChanged event)
+	{
+		// Reset party
+		partyDataMap.clear();
+	}
+
 }

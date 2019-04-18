@@ -92,6 +92,17 @@ public class PerformanceStatsOverlay extends Overlay
 		final String[] rowElements = createRowElements(performance);
 		tableComponent.addRow(rowElements);
 
+		for (Performance p : tracker.getPartyDataMap().values())
+		{
+			if (p.getMemberId().equals(performance.getMemberId()))
+			{
+				continue;
+			}
+			
+			final String[] eles = createRowElements(p);
+			tableComponent.addRow(eles);
+		}
+
 		return panelComponent.render(graphics);
 	}
 
