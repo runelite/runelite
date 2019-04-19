@@ -130,7 +130,7 @@ public class ConfigPanel extends PluginPanel
 	}
 
 	ConfigPanel(PluginManager pluginManager, ConfigManager configManager, ScheduledExecutorService executorService,
-		RuneLiteConfig runeLiteConfig, ChatColorConfig chatColorConfig)
+				RuneLiteConfig runeLiteConfig, ChatColorConfig chatColorConfig)
 	{
 		super(false);
 		this.pluginManager = pluginManager;
@@ -195,28 +195,28 @@ public class ConfigPanel extends PluginPanel
 
 		// populate pluginList with all non-hidden plugins
 		pluginManager.getPlugins().stream()
-			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
-			.forEach(plugin ->
-			{
-				final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
-				final Config config = pluginManager.getPluginConfigProxy(plugin);
-				final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
+				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
+				.forEach(plugin ->
+				{
+					final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
+					final Config config = pluginManager.getPluginConfigProxy(plugin);
+					final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
 
-				final PluginListItem listItem = new PluginListItem(this, plugin, descriptor, config, configDescriptor);
-				listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
-				pluginList.add(listItem);
-			});
+					final PluginListItem listItem = new PluginListItem(this, plugin, descriptor, config, configDescriptor);
+					listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
+					pluginList.add(listItem);
+				});
 
 		// add special entries for core client configurations
 		final PluginListItem runeLite = new PluginListItem(this, runeLiteConfig,
-			configManager.getConfigDescriptor(runeLiteConfig),
-			RUNELITE_PLUGIN, "RuneLite client settings", "client");
+				configManager.getConfigDescriptor(runeLiteConfig),
+				RUNELITE_PLUGIN, "RuneLite client settings", "client");
 		runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN));
 		pluginList.add(runeLite);
 
 		final PluginListItem chatColor = new PluginListItem(this, chatColorConfig,
-			configManager.getConfigDescriptor(chatColorConfig),
-			CHAT_COLOR_PLUGIN, "Recolor chat text", "colour", "messages");
+				configManager.getConfigDescriptor(chatColorConfig),
+				CHAT_COLOR_PLUGIN, "Recolor chat text", "colour", "messages");
 		chatColor.setPinned(pinnedPlugins.contains(CHAT_COLOR_PLUGIN));
 		pluginList.add(chatColor);
 
@@ -421,7 +421,7 @@ public class ConfigPanel extends PluginPanel
 					public void mouseClicked(MouseEvent e)
 					{
 						RuneliteColorPicker colorPicker = new RuneliteColorPicker(SwingUtilities.windowForComponent(ConfigPanel.this),
-							colorPickerBtn.getBackground(), cid.getItem().name(), cid.getAlpha() == null);
+								colorPickerBtn.getBackground(), cid.getItem().name(), cid.getAlpha() == null);
 						colorPicker.setLocation(getLocationOnScreen());
 						colorPicker.setOnColorChange(c ->
 						{
@@ -467,7 +467,7 @@ public class ConfigPanel extends PluginPanel
 				heightSpinnerTextField.setColumns(4);
 
 				ChangeListener listener = e ->
-					configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
+						configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
 
 				widthSpinner.addChangeListener(listener);
 				heightSpinner.addChangeListener(listener);
@@ -512,8 +512,8 @@ public class ConfigPanel extends PluginPanel
 			if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
 			{
 				Keybind startingValue = configManager.getConfiguration(cd.getGroup().value(),
-					cid.getItem().keyName(),
-					(Class<? extends Keybind>) cid.getType());
+						cid.getItem().keyName(),
+						(Class<? extends Keybind>) cid.getType());
 
 				HotkeyButton button = new HotkeyButton(startingValue, cid.getType() == ModifierlessKeybind.class);
 
@@ -536,8 +536,8 @@ public class ConfigPanel extends PluginPanel
 		resetButton.addActionListener((e) ->
 		{
 			final int result = JOptionPane.showOptionDialog(resetButton, "Are you sure you want to reset this plugin's configuration?",
-				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-				null, new String[]{"Yes", "No"}, "No");
+					"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+					null, new String[]{"Yes", "No"}, "No");
 
 			if (result == JOptionPane.YES_OPTION)
 			{
@@ -564,8 +564,8 @@ public class ConfigPanel extends PluginPanel
 		if (!Strings.isNullOrEmpty(configItem.warning()))
 		{
 			final int result = JOptionPane.showOptionDialog(component, configItem.warning(),
-				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-				null, new String[]{"Yes", "No"}, "No");
+					"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+					null, new String[]{"Yes", "No"}, "No");
 
 			if (result != JOptionPane.YES_OPTION)
 			{
@@ -659,9 +659,9 @@ public class ConfigPanel extends PluginPanel
 	void savePinnedPlugins()
 	{
 		final String value = pluginList.stream()
-			.filter(PluginListItem::isPinned)
-			.map(PluginListItem::getName)
-			.collect(Collectors.joining(","));
+				.filter(PluginListItem::isPinned)
+				.map(PluginListItem::getName)
+				.collect(Collectors.joining(","));
 
 		configManager.setConfiguration(RUNELITE_GROUP_NAME, PINNED_PLUGINS_CONFIG_KEY, value);
 	}
