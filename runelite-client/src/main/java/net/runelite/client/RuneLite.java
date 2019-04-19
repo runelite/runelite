@@ -77,7 +77,6 @@ public class RuneLite
 {
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
-	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 
 	@Getter
@@ -243,9 +242,6 @@ public class RuneLite
 
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
-
-		// Begin watching for new plugins
-		pluginManager.watch();
 
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);

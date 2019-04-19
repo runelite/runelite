@@ -92,9 +92,6 @@ public class PluginManager
 	private final String runeliteGroupName = RuneLiteConfig.class
 			.getAnnotation(ConfigGroup.class).value();
 
-	@Inject
-	PluginWatcher pluginWatcher;
-
 	@Setter
 	boolean isOutdated;
 
@@ -114,11 +111,6 @@ public class PluginManager
 		this.configManager = configManager;
 		this.executor = executor;
 		this.sceneTileManager = sceneTileManager;
-	}
-
-		public void watch()
-	{
-		pluginWatcher.start();
 	}
 
 	@Subscribe
