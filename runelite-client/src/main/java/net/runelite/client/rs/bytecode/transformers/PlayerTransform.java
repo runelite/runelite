@@ -1,3 +1,4 @@
+
 package net.runelite.client.rs.bytecode.transformers;
 
 import javassist.CtClass;
@@ -61,4 +62,3 @@ public class PlayerTransform {
         }
     }
 }
-
