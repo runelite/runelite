@@ -7,12 +7,23 @@ import javassist.CtClass;
 import javassist.NotFoundException;
 import net.runelite.client.RuneLite;
 import net.runelite.client.rs.ClientLoader;
-import net.runelite.client.rs.bytecode.transformers.*;
+import net.runelite.client.rs.bytecode.transformers.ActorTransform;
+import net.runelite.client.rs.bytecode.transformers.PlayerTransform;
+import net.runelite.client.rs.bytecode.transformers.ProjectileTransform;
 import net.runelite.http.api.RuneLiteAPI;
 import org.xeustechnologies.jcl.JarClassLoader;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -32,7 +43,7 @@ public class ByteCodePatcher {
     public static void applyHooks(File jf, Hooks hooks) {
         try {
             URLClassLoader child = new URLClassLoader(
-                    new URL[]{jf.toURI().toURL()},
+                    new URL[] {jf.toURI().toURL()},
                     cl
             );
             try {
@@ -42,8 +53,6 @@ public class ByteCodePatcher {
                 transformProjectile(projectileClass);
                 Class playerClass = Class.forName(hooks.playerClass, false, child);
                 transformPlayer(playerClass);
-                Class clientClass = Class.forName(hooks.clientClass, false, child);
-                transformClient(clientClass);
                 ByteCodeUtils.updateHijackedJar();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -57,7 +66,7 @@ public class ByteCodePatcher {
     public static void findHooks(String jf) {
         try {
             classPool = new ClassPool(true);
-            classPool.appendClassPath(RuneLite.RUNELITE_DIR + "/injectedClient-" + RuneLiteAPI.getVersion() + "-.jar");
+            classPool.appendClassPath(RuneLite.RUNELITE_DIR+"/injectedClient-"+ RuneLiteAPI.getVersion() +"-.jar");
         } catch (NotFoundException e) {
             e.printStackTrace();
         }
@@ -90,7 +99,7 @@ public class ByteCodePatcher {
     public static void checkClasses(File jf, JarEntry entry) {
         try {
             URLClassLoader child = new URLClassLoader(
-                    new URL[]{jf.toURI().toURL()},
+                    new URL[] {jf.toURI().toURL()},
                     cl
             );
             try {
@@ -98,23 +107,22 @@ public class ByteCodePatcher {
                 checkActor(classToLoad);
                 checkProjectile(classToLoad);
                 checkPlayer(classToLoad);
-                checkClient(classToLoad);
             } catch (Exception e) {
-                e.printStackTrace();
+            e.printStackTrace();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Class not found: " + entry.getName());
+            System.out.println("Class not found: "+entry.getName());
         }
     }
 
     public static void checkActor(Class current) {
         try {
-            Method method = current.getDeclaredMethod("setCombatInfo", int.class, int.class, int.class, int.class, int.class, int.class);
-            if (method != null) {
+            Method method = current.getDeclaredMethod("setCombatInfo", new Class[] { int.class, int.class, int.class, int.class, int.class, int.class });
+            if (method!=null) {
                 hooks.actorClass = current.getName();
-                System.out.println("[Z-lyte] Transforming Actor at class: " + current.getName());
+                System.out.println("[RuneLit] Transforming Actor at class: "+current.getName());
                 ActorTransform at = new ActorTransform();
                 at.modify(current);
             }
@@ -126,17 +134,17 @@ public class ByteCodePatcher {
     }
 
     public static void transformActor(Class actor) {
-        System.out.println("[RuneLit] Transforming Actor at class: " + actor.getName());
+        System.out.println("[RuneLit] Transforming Actor at class: "+actor.getName());
         ActorTransform at = new ActorTransform();
         at.modify(actor);
     }
 
     public static void checkProjectile(Class current) {
         try {
-            Method method = current.getDeclaredMethod("projectileMoved", int.class, int.class, int.class, int.class);
-            if (method != null) {
+            Method method = current.getDeclaredMethod("projectileMoved", new Class[] { int.class, int.class, int.class, int.class});
+            if (method!=null) {
                 hooks.projectileClass = current.getName();
-                System.out.println("[RuneLit] Transforming Projectile at class: " + current.getName());
+                System.out.println("[RuneLit] Transforming Projectile at class: "+current.getName());
                 ProjectileTransform pt = new ProjectileTransform();
                 pt.modify(current);
             }
@@ -148,7 +156,7 @@ public class ByteCodePatcher {
     }
 
     public static void transformProjectile(Class projectile) {
-        System.out.println("[RuneLit] Transforming Projectile at class: " + projectile.getName());
+        System.out.println("[RuneLit] Transforming Projectile at class: "+projectile.getName());
         ProjectileTransform pt = new ProjectileTransform();
         pt.modify(projectile);
     }
@@ -156,25 +164,11 @@ public class ByteCodePatcher {
     public static void checkPlayer(Class current) {
         try {
             Method method = current.getDeclaredMethod("getSkullIcon");
-            if (method != null) {
+            if (method!=null) {
                 hooks.playerClass = current.getName();
-                System.out.println("[RuneLit] Transforming Player at class: " + current.getName());
+                System.out.println("[RuneLit] Transforming Player at class: "+current.getName());
                 PlayerTransform pt = new PlayerTransform();
                 pt.modify(current);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void checkClient(Class current) {
-        try {
-            Method method = current.getDeclaredMethod("getProjectiles");
-            if (method != null) {
-                hooks.clientInstance = current.getName();
-                System.out.println("[RuneLit] Transforming Projectile at class: " + current.getName());
-                ClientTransform ct = new ClientTransform();
-                ct.modify(current);
             }
         } catch (NoSuchMethodException e) {
             //e.printStackTrace();
@@ -183,16 +177,10 @@ public class ByteCodePatcher {
         }
     }
 
-    public static void transformClient(Class client) {
-        System.out.println("[RuneLit] Transforming Client at class: " + client.getName());
-        ClientTransform ct = new ClientTransform();
-        ct.modify(client);
-    }
-
     public static void transformPlayer(Class player) {
-        System.out.println("[RuneLit] Transforming Player at class: " + player.getName());
+        System.out.println("[RuneLit] Transforming Player at class: "+player.getName());
         PlayerTransform pt = new PlayerTransform();
         pt.modify(player);
-
     }
+
 }
