@@ -99,17 +99,17 @@ class PluginListItem extends JPanel
 		ON_STAR = new ImageIcon(onStar);
 		CONFIG_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(configIcon, -100));
 		BufferedImage offSwitcherImage = ImageUtil.flipImage(
-			ImageUtil.grayscaleOffset(
-				ImageUtil.grayscaleImage(onSwitcher),
-				0.61f
-			),
-			true,
-			false
+				ImageUtil.grayscaleOffset(
+						ImageUtil.grayscaleImage(onSwitcher),
+						0.61f
+				),
+				true,
+				false
 		);
 		OFF_SWITCHER = new ImageIcon(offSwitcherImage);
 		BufferedImage offStar = ImageUtil.grayscaleOffset(
-			ImageUtil.grayscaleImage(onStar),
-			0.77f
+				ImageUtil.grayscaleImage(onStar),
+				0.77f
 		);
 		OFF_STAR = new ImageIcon(offStar);
 	}
@@ -121,23 +121,23 @@ class PluginListItem extends JPanel
 	 * if there is no configuration associated with the plugin.
 	 */
 	PluginListItem(ConfigPanel configPanel, Plugin plugin, PluginDescriptor descriptor,
-		@Nullable Config config, @Nullable ConfigDescriptor configDescriptor)
+				   @Nullable Config config, @Nullable ConfigDescriptor configDescriptor)
 	{
 		this(configPanel, plugin, config, configDescriptor,
-			descriptor.name(), descriptor.description(), descriptor.tags());
+				descriptor.name(), descriptor.description(), descriptor.tags());
 	}
 
 	/**
 	 * Creates a new {@code PluginListItem} for a core configuration.
 	 */
 	PluginListItem(ConfigPanel configPanel, Config config, ConfigDescriptor configDescriptor,
-		String name, String description, String... tags)
+				   String name, String description, String... tags)
 	{
 		this(configPanel, null, config, configDescriptor, name, description, tags);
 	}
 
 	private PluginListItem(ConfigPanel configPanel, @Nullable Plugin plugin, @Nullable Config config,
-		@Nullable ConfigDescriptor configDescriptor, String name, String description, String... tags)
+						   @Nullable ConfigDescriptor configDescriptor, String name, String description, String... tags)
 	{
 		this.configPanel = configPanel;
 		this.plugin = plugin;
@@ -153,7 +153,9 @@ class PluginListItem extends JPanel
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
 
 		JLabel nameLabel = new JLabel(name);
+		nameLabel.setText("<html>" + name +"</html>");
 		nameLabel.setForeground(Color.WHITE);
+
 
 		if (!description.isEmpty())
 		{
@@ -260,7 +262,7 @@ class PluginListItem extends JPanel
 		for (String term : searchTerms)
 		{
 			if (keywords.stream().noneMatch((t) -> t.contains(term) ||
-				DISTANCE.apply(t, term) > 0.9))
+					DISTANCE.apply(t, term) > 0.9))
 			{
 				return false;
 			}
