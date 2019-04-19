@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Cameron <https://github.com/noremac201>
+ * Copyright (c) 2019, whartd <github.com/whartd>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,39 +24,53 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import javax.inject.Inject;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-class BarbarianAssaultOverlay extends Overlay
+class HealerOverlay extends Overlay
 {
+	@Getter
+	@AllArgsConstructor
+	private enum HealerTeam
+	{
+		TEAMMATE1(WidgetInfo.BA_HEAL_TEAMMATE1, 28, 2, 115),
+		TEAMMATE2(WidgetInfo.BA_HEAL_TEAMMATE2, 26, 2, 115),
+		TEAMMATE3(WidgetInfo.BA_HEAL_TEAMMATE3, 26, 2, 115),
+		TEAMMATE4(WidgetInfo.BA_HEAL_TEAMMATE4, 25, 2, 115);
+
+		private WidgetInfo teammate;
+		private int offsetX;
+		private int offsetY;
+		private int width;
+	}
+
+	private static final Color HP_HIGH = new Color(10, 146, 5, 125);
+	private static final Color HP_MID = new Color(146, 146, 0, 230);
+	private static final Color HP_LOW = new Color(225, 35, 0, 125);
+
 	private final Client client;
 	private final BarbarianAssaultPlugin plugin;
 	private final BarbarianAssaultConfig config;
 
-	@Getter
-	@Setter
-	private Round currentRound;
-
-
 	@Inject
-	private BarbarianAssaultOverlay(Client client, BarbarianAssaultPlugin plugin, BarbarianAssaultConfig config)
+	private HealerOverlay(Client client, BarbarianAssaultPlugin plugin, BarbarianAssaultConfig config)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setLayer(OverlayLayer.UNDER_WIDGETS);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
@@ -66,28 +80,72 @@ class BarbarianAssaultOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || currentRound == null)
+		Round round = plugin.getCurrentRound();
+		if (round == null)
 		{
 			return null;
 		}
 
-		Role role = currentRound.getRoundRole();
+		Role role = round.getRoundRole();
 		if (role == null)
 		{
 			return null;
 		}
 
-		Widget roleText = client.getWidget(role.getRoleText());
-		Widget roleSprite = client.getWidget(role.getRoleSprite());
-
-		if (config.showTimer() && roleText != null && roleSprite != null)
+		if (config.showHealerBars() && role == Role.HEALER)
 		{
-			roleText.setText(String.format("00:%02d", currentRound.getTimeToChange()));
-			Rectangle spriteBounds = roleSprite.getBounds();
-			roleSprite.setHidden(true);
-			graphics.drawImage(plugin.getClockImage(), spriteBounds.x, spriteBounds.y, null);
+			for (HealerTeam teammate : HealerTeam.values())
+			{
+				Widget widget = client.getWidget(teammate.getTeammate());
+				if (widget == null)
+				{
+					continue;
+				}
+
+				String[] teammateHealth = widget.getText().split(" / ");
+				int curHealth = Integer.parseInt(teammateHealth[0]);
+				int maxHealth = Integer.parseInt(teammateHealth[1]);
+
+				int width = teammate.getWidth();
+				double hpRatio = (double) curHealth / maxHealth;
+				int filledWidth = getBarWidth(hpRatio, width);
+				Color barColor = getBarColor(hpRatio);
+
+				int offsetX = teammate.getOffsetX();
+				int offsetY = teammate.getOffsetY();
+				int x = widget.getCanvasLocation().getX() - offsetX;
+				int y = widget.getCanvasLocation().getY() - offsetY;
+
+				graphics.setColor(barColor);
+				graphics.fillRect(x, y, filledWidth, 20);
+			}
 		}
 
 		return null;
+	}
+
+	private int getBarWidth(double ratio, int size)
+	{
+		if (ratio >= 1)
+		{
+			return size;
+		}
+
+		return (int) Math.round(ratio * size);
+	}
+
+	private Color getBarColor(double ratio)
+	{
+		if (ratio <= 0.33)
+		{
+			return HP_LOW;
+		}
+
+		if (ratio <= 0.66)
+		{
+			return HP_MID;
+		}
+
+		return HP_HIGH;
 	}
 }
