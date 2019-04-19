@@ -44,7 +44,7 @@ public class ProjectileID
 	public static final int VASA_RANGED_AOE = 1329;
 	public static final int TEKTON_METEOR_AOE = 660;
 
-	public static final int OLM_FALLING_CRYSTAL_AOE = 1357;
+	public static final int OLM_FALLING_CRYSTAL_AOE = -1; //please help
 	public static final int OLM_BURNING_AOE = -1;
 
 	public static final int VORKATH_BOMB_AOE = 1481;
@@ -84,10 +84,4 @@ public class ProjectileID
 	public static final int VORKATH_PRAYER_DISABLE = 1471;
 	public static final int VORKATH_VENOM = 1470;
 	public static final int VORKATH_ICE = 350;
-
-	public static final int HYDRA_MAGIC = 1662;
-	public static final int HYDRA_RANGED = 1663;
-	public static final int HYDRA_POISON = 1644;
-	public static final int HYDRA_LIGHTNING = 1664;
-	public static final int HYDRA_LIGHTNING_2 = 1665;
 }

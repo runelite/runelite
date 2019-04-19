@@ -34,7 +34,6 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.VarClientInt;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -49,32 +48,24 @@ class InventoryViewerOverlay extends Overlay
 	private static final ImageComponent PLACEHOLDER_IMAGE = new ImageComponent(new BufferedImage(PLACEHOLDER_WIDTH, PLACEHOLDER_HEIGHT, BufferedImage.TYPE_4BYTE_ABGR));
 
 	private final Client client;
-	private final InventoryViewerConfig config;
 	private final ItemManager itemManager;
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private InventoryViewerOverlay(Client client, InventoryViewerConfig config, ItemManager itemManager)
+	private InventoryViewerOverlay(Client client, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		panelComponent.setWrapping(4);
 		panelComponent.setGap(new Point(6, 4));
 		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
-		this.client = client;
-		this.config = config;
 		this.itemManager = itemManager;
+		this.client = client;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.hideWhenInvOpen()
-			&& client.getVar(VarClientInt.PLAYER_INVENTORY_OPENED) == 3)
-		{
-			return null;
-		}
-
 		final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
 
 		if (itemContainer == null)
