@@ -5,9 +5,10 @@ import javassist.CtMethod;
 import javassist.CtNewMethod;
 import net.runelite.client.rs.bytecode.ByteCodePatcher;
 
-public class PlayerTransform {
+public class PlayerTransform implements Transform {
     public CtClass ct = null;
 
+    @Override
     public void modify(Class player) {
         try {
             ct = ByteCodePatcher.classPool.get(player.getName());
@@ -18,6 +19,9 @@ public class PlayerTransform {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void transform(){}
 
     public void transformProtectedGetSkullIcon() {
         CtMethod protectedGetSkullIcon;

@@ -4,22 +4,23 @@ import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
 import net.runelite.client.rs.bytecode.ByteCodePatcher;
-import net.runelite.client.rs.bytecode.ByteCodeUtils;
 
-public class ProjectileTransform {
+public class ProjectileTransform implements Transform {
     public CtClass ct = null;
 
+    @Override
     public void modify(Class projectile) {
         try {
             ct = ByteCodePatcher.classPool.get(projectile.getName());
-            transformProjectileMoved();
+            transform();
             ByteCodePatcher.modifiedClasses.add(ct);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void transformProjectileMoved() {
+    @Override
+    public void transform() {
         CtMethod getAnimation;
         try {
             getAnimation = ct.getDeclaredMethod("projectileMoved", new CtClass[]{CtClass.intType, CtClass.intType, CtClass.intType, CtClass.intType});
@@ -37,4 +38,5 @@ public class ProjectileTransform {
             e.printStackTrace();
         }
     }
+
 }
