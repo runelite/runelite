@@ -28,6 +28,7 @@ import java.awt.image.BufferedImage;
 import lombok.Getter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
+import net.runelite.client.util.StackFormatter;
 
 public class AmmoCounter extends Counter
 {
@@ -42,6 +43,12 @@ public class AmmoCounter extends Counter
 		super(image, plugin, count);
 		this.itemID = itemID;
 		this.name = name;
+	}
+
+	@Override
+	public String getText()
+	{
+		return StackFormatter.quantityToRSDecimalStack(getCount());
 	}
 
 	@Override
