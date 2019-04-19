@@ -153,7 +153,9 @@ class PluginListItem extends JPanel
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
 
 		JLabel nameLabel = new JLabel(name);
+		nameLabel.setText("<html>" + name +"</html>");
 		nameLabel.setForeground(Color.WHITE);
+
 
 		if (!description.isEmpty())
 		{

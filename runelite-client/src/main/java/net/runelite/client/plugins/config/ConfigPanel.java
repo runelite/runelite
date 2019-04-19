@@ -310,7 +310,8 @@ public class ConfigPanel extends PluginPanel
 		String name = listItem.getName();
 		JLabel title = new JLabel(name);
 		title.setForeground(Color.WHITE);
-		title.setToolTipText("<html>" + name + ":<br>" + listItem.getDescription() + "</html>");
+		title.setText("<html>" + name +"</html>");
+		title.setToolTipText("<html>" + ":<br>" + listItem.getDescription() + "</html>");
 		topPanel.add(title);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
