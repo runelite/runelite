@@ -24,24 +24,37 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.Stroke;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.api.Perspective;
+import net.runelite.api.Player;
+import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 class BarbarianAssaultOverlay extends Overlay
 {
+	private static final int MAX_EGG_DISTANCE = 2500;
+
 	private final Client client;
 	private final BarbarianAssaultPlugin plugin;
 	private final BarbarianAssaultConfig config;
@@ -82,12 +95,95 @@ class BarbarianAssaultOverlay extends Overlay
 
 		if (config.showTimer() && roleText != null && roleSprite != null)
 		{
-			roleText.setText(String.format("00:%02d", currentRound.getTimeToChange()));
+			if (config.showEggCountOverlay() && role.equals(Role.COLLECTOR))
+			{
+				roleText.setText(String.format("(%d) 00:%02d", plugin.getCollectedEggCount(), currentRound.getTimeToChange()));
+			}
+			else if (config.showHpCountOverlay() && role.equals(Role.HEALER))
+			{
+				roleText.setText(String.format("(%d) 00:%02d", plugin.getHpHealed(), currentRound.getTimeToChange()));
+			}
+			else
+			{
+				roleText.setText(String.format("00:%02d", currentRound.getTimeToChange()));
+			}
 			Rectangle spriteBounds = roleSprite.getBounds();
 			roleSprite.setHidden(true);
 			graphics.drawImage(plugin.getClockImage(), spriteBounds.x, spriteBounds.y, null);
 		}
 
+		if (role == Role.COLLECTOR && config.highlightCollectorEggs())
+		{
+			String heardCall = plugin.getCollectorHeardCall();
+			Color highlightColor;
+			Map<WorldPoint, Integer> calledEggMap;
+
+			Map<WorldPoint, Integer> yellowEggMap = plugin.getYellowEggs();
+
+			switch (heardCall)
+			{
+				case "Red eggs":
+					calledEggMap = plugin.getRedEggs();
+					highlightColor = Color.RED;
+					break;
+				case "Green eggs":
+					calledEggMap = plugin.getGreenEggs();
+					highlightColor = Color.GREEN;
+					break;
+				case "Blue eggs":
+					calledEggMap = plugin.getBlueEggs();
+					highlightColor = Color.BLUE;
+					break;
+				default:
+					calledEggMap = null;
+					highlightColor = null;
+			}
+
+			if (calledEggMap != null)
+			{
+				for (WorldPoint worldPoint : calledEggMap.keySet())
+				{
+					int quantity = calledEggMap.get(worldPoint);
+					renderEggLocation(graphics, worldPoint, quantity, highlightColor);
+				}
+			}
+
+			// Always show yellow eggs
+			for (WorldPoint worldPoint : yellowEggMap.keySet())
+			{
+				int quantity = yellowEggMap.get(worldPoint);
+				renderEggLocation(graphics, worldPoint, quantity, highlightColor);
+			}
+		}
+
 		return null;
+	}
+
+	private void renderEggLocation(Graphics2D graphics, WorldPoint location, int quantity, Color color)
+	{
+		LocalPoint groundPoint = LocalPoint.fromWorld(client, location);
+		Player player = client.getLocalPlayer();
+
+		if (groundPoint == null || player == null)
+		{
+			return;
+		}
+
+		if (player.getLocalLocation().distanceTo(groundPoint) > MAX_EGG_DISTANCE)
+		{
+			return;
+		}
+
+		Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
+		final Stroke originalStroke = graphics.getStroke();
+
+		graphics.setColor(color);
+		graphics.setStroke(new BasicStroke(2));
+		graphics.drawPolygon(poly);
+		graphics.setStroke(originalStroke);
+
+		String quantityText = "x" + quantity;
+		Point textPoint = Perspective.getCanvasTextLocation(client, graphics, groundPoint, quantityText, 0);
+		OverlayUtil.renderTextLocation(graphics, textPoint, quantityText, Color.WHITE);
 	}
 }

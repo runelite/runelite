@@ -126,4 +126,37 @@ public interface ClanChatConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "discord",
+		name = "Discord",
+		description = "Send clan chats to a discord webhook <br> See https://support.discordapp.com/hc/en-us/articles/228383668",
+		position = 8
+	)
+	default boolean discord()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "discordPath",
+		name = "Webhook path",
+		description = "Your webhook id and webhook token <br> (the part after \"/webhooks/\")",
+		position = 9
+	)
+	default String discordPath()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "discordAccount",
+		name = "Discord/RS account",
+		description = "The login username (not rsn!) of the runescape account you want to use this on",
+		position = 10
+	)
+	default String discordAccount()
+	{
+		return "";
+	}
 }

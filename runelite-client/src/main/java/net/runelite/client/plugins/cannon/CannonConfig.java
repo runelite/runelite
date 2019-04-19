@@ -83,4 +83,24 @@ public interface CannonConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "ammoAmount",
+		name = "Ammo left",
+		description = "Configure to set the amount of ammo left to receive ammo left notification"
+	)
+	default int ammoAmount()
+	{
+		return 5;
+	}
+
+	@ConfigItem(
+		keyName = "notifyAmmoLeft",
+		name = "Ammo left notification",
+		description = "Sends a notification when cannon ammo is under the specified amount"
+	)
+	default boolean notifyAmmoLeft()
+	{
+		return true;
+	}
 }

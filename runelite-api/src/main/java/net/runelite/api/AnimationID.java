@@ -154,10 +154,26 @@ public final class AnimationID
 	public static final int PISCARILIUS_CRANE_REPAIR = 7199;
 	public static final int HOME_MAKE_TABLET = 4067;
 
+	//block animations for players and perhaps npcs as well?
+	public static final int BLOCK_DEFENDER = 4177;
+	public static final int BLOCK_NO_SHIELD = 420;
+	public static final int BLOCK_SHIELD = 1156;
+	public static final int BLOCK_SWORD = 388;
+	public static final int BLOCK_UNARMED = 424;
+
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
 	public static final int HELLHOUND_DEFENCE = 6566;
+	public static final int VORKATH_WAKE_UP = 7950;
+	public static final int VORKATH_DEATH = 7949;
+	public static final int VORKATH_SLASH_ATTACK = 7951;
+	public static final int VORKATH_ATTACK = 7952;
+	public static final int VORKATH_FIRE_BOMB_ATTACK = 7960;
+	public static final int VORKATH_ACID_ATTACK = 7957;
+	public static final int BLACKJACK_KO = 838;
+	public static final int VETION_EARTHQUAKE = 5507;
+	public static final int ZULRAH_DEATH = 5804;
 
 	// Farming
 	public static final int FARMING_HARVEST_FRUIT_TREE = 2280;
@@ -194,4 +210,31 @@ public final class AnimationID
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
+
+	// Weapons
+	public static final int LOW_LEVEL_MAGIC_ATTACK = 1162;
+	public static final int HIGH_LEVEL_MAGIC_ATTACK = 1167;
+	public static final int BLOWPIPE_ATTACK = 5061;
+
+	// Hydra
+	public static final int HYDRA_POISON_1 = 8234;
+	public static final int HYDRA_RANGED_1 = 8235;
+	public static final int HYDRA_MAGIC_1 = 8236;
+	public static final int HYDRA_1_1 = 8237;
+	public static final int HYDRA_1_2 = 8238;
+	public static final int HYDRA_LIGHTNING = 8241;
+	public static final int HYDRA_RANGED_2 = 8242;
+	public static final int HYDRA_MAGIC_2 = 8243;
+	public static final int HYDRA_2_1 = 8244;
+	public static final int HYDRA_2_2 = 8245;
+	public static final int HYDRA_FIRE = 8248;
+	public static final int HYDRA_RANGED_3 = 8249;
+	public static final int HYDRA_MAGIC_3 = 8250;
+	public static final int HYDRA_3_1 = 8251;
+	public static final int HYDRA_3_2 = 8252;
+	public static final int HYDRA_MAGIC_4 = 8254;
+	public static final int HYDRA_POISON_4 = 8254;
+	public static final int HYDRA_RANGED_4 = 8255;
+	public static final int HYDRA_4_1 = 8257;
+	public static final int HYDRA_4_2 = 8258;
 }

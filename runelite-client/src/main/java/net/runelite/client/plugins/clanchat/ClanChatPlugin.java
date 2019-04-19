@@ -39,6 +39,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
@@ -72,18 +73,22 @@ import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.clanchat.discord.DiscordClient;
+import net.runelite.client.plugins.clanchat.discord.DiscordMessage;
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_NAME_OPAQUE_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_NAME_TRANSPARENT_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_TEXT_TRANSPARENT_BACKGROUND;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
+import static net.runelite.client.util.Text.removeTags;
 
 @PluginDescriptor(
 	name = "Clan Chat",
 	description = "Add rank icons to users talking in clan chat",
 	tags = {"icons", "rank", "recent"}
 )
+@Slf4j
 public class ClanChatPlugin extends Plugin
 {
 	private static final int MAX_CHATS = 10;
@@ -113,6 +118,9 @@ public class ClanChatPlugin extends Plugin
 	private List<String> chats = new ArrayList<>();
 	private List<Player> clanMembers = new ArrayList<>();
 	private ClanChatIndicator clanMemberCounter;
+
+	private DiscordClient discordClient;
+
 	/**
 	 * queue of temporary messages added to the client
 	 */
@@ -138,6 +146,7 @@ public class ClanChatPlugin extends Plugin
 		clanMembers.clear();
 		removeClanCounter();
 		resetClanChats();
+		stopDiscordClient();
 	}
 
 	@Subscribe
@@ -157,6 +166,15 @@ public class ClanChatPlugin extends Plugin
 			else
 			{
 				removeClanCounter();
+			}
+
+			if (config.discord())
+			{
+				startDiscordClient();
+			}
+			else
+			{
+				stopDiscordClient();
 			}
 		}
 	}
@@ -285,6 +303,38 @@ public class ClanChatPlugin extends Plugin
 		addClanActivityMessages();
 	}
 
+	private void submitMessage(String message, String user, String url)
+	{
+		if (discordClient == null)
+		{
+			return;
+		}
+
+		DiscordMessage discordMessage = new DiscordMessage();
+
+		message = removeTags(message);
+		if (!user.contains("<img=2>") && !user.contains("<img=10>"))
+		{
+			discordMessage.setContent(message);
+		}
+		else if (user.contains("img=10"))
+		{
+			discordMessage.setContent("<:hcim:557056153834487819> " + message);
+		}
+		else
+		{
+			discordMessage.setContent("<:iron:557056153729630209> " + message);
+		}
+		discordMessage.setUsername(removeTags(user));
+		discordMessage.setAvatar_url(url);
+
+		discordClient.submit(discordMessage, config.discordPath());
+	}
+	private void submitMessage(String message)
+	{
+		submitMessage(message, "", "");
+	}
+
 	private void timeoutClanMessages()
 	{
 		if (clanJoinMessages.isEmpty())
@@ -346,7 +396,7 @@ public class ClanChatPlugin extends Plugin
 
 	private void addActivityMessage(ClanMember member, ClanActivityType activityType)
 	{
-		final String activityMessage = activityType == ClanActivityType.JOINED ? " has joined." : " has left.";
+		final String activityMessage = activityType == ClanActivityType.JOINED ? " has joined. " : " has left. ";
 		final ClanMemberRank rank = member.getRank();
 		Color textColor = CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
 		Color channelColor = CHAT_CLAN_NAME_OPAQUE_BACKGROUND;
@@ -358,7 +408,7 @@ public class ClanChatPlugin extends Plugin
 			channelColor = CHAT_CLAN_NAME_TRANSPARENT_BACKGROUND;
 		}
 
-		if (config.clanChatIcons() && rank != null && rank != ClanMemberRank.UNRANKED)
+		if (config.clanChatIcons() && rank != ClanMemberRank.UNRANKED)
 		{
 			rankIcon = clanManager.getIconNumber(rank);
 		}
@@ -378,6 +428,10 @@ public class ClanChatPlugin extends Plugin
 
 		final String messageString = message.build();
 		client.addChatMessage(ChatMessageType.FRIENDSCHATNOTIFICATION, "", messageString, "");
+		if (discordClient != null)
+		{
+			submitMessage(member.getUsername() + activityMessage + client.getClanChatCount() + " people online.");
+		}
 
 		final ChatLineBuffer chatLineBuffer = client.getChatLineMap().get(ChatMessageType.FRIENDSCHATNOTIFICATION.getType());
 		final MessageNode[] lines = chatLineBuffer.getLines();
@@ -399,12 +453,7 @@ public class ClanChatPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
-
-		if (client.getClanChatCount() <= 0)
+		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN || client.getClanChatCount() <= 0)
 		{
 			return;
 		}
@@ -426,6 +475,12 @@ public class ClanChatPlugin extends Plugin
 				}
 				break;
 			case FRIENDSCHAT:
+				if (discordClient != null)
+				{
+					String url = clanManager.getRank(chatMessage.getName()).getDiscavatar();
+					submitMessage(chatMessage.getMessage(), chatMessage.getName(), url);
+				}
+
 				if (!config.clanChatIcons())
 				{
 					return;
@@ -447,8 +502,12 @@ public class ClanChatPlugin extends Plugin
 		{
 			clanMembers.clear();
 			removeClanCounter();
-
 			clanJoinMessages.clear();
+
+			if (gameState == GameState.LOGIN_SCREEN)
+			{
+				stopDiscordClient();
+			}
 		}
 	}
 
@@ -477,6 +536,11 @@ public class ClanChatPlugin extends Plugin
 		if (event.isJoined())
 		{
 			clanJoinedTick = client.getTickCount();
+
+			if (config.discord())
+			{
+				startDiscordClient();
+			}
 		}
 		else
 		{
@@ -594,5 +658,23 @@ public class ClanChatPlugin extends Plugin
 		final BufferedImage image = spriteManager.getSprite(SpriteID.TAB_CLAN_CHAT, 0);
 		clanMemberCounter = new ClanChatIndicator(image, this);
 		infoBoxManager.addInfoBox(clanMemberCounter);
+	}
+
+	private void startDiscordClient()
+	{
+		if (discordClient == null && config.discordAccount().equals(client.getUsername()))
+		{
+			discordClient = new DiscordClient();
+			submitMessage("Started\n\n" + client.getLocalPlayer().getName() + " has joined.");
+		}
+	}
+
+	private void stopDiscordClient()
+	{
+		if (discordClient != null)
+		{
+			submitMessage(client.getLocalPlayer().getName() + " has left.\n\nStopped");
+			discordClient = null;
+		}
 	}
 }
