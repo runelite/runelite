@@ -25,65 +25,39 @@
 package net.runelite.client.plugins.inventorytags;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import net.runelite.api.Query;
-import net.runelite.api.queries.InventoryWidgetItemQuery;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.util.QueryRunner;
+import net.runelite.client.ui.overlay.WidgetItemOverlay;
 
-public class InventoryTagsOverlay extends Overlay
+public class InventoryTagsOverlay extends WidgetItemOverlay
 {
-	private final QueryRunner queryRunner;
 	private final ItemManager itemManager;
 	private final InventoryTagsPlugin plugin;
 
 	@Inject
-	private InventoryTagsOverlay(QueryRunner queryRunner, ItemManager itemManager, InventoryTagsPlugin plugin)
+	private InventoryTagsOverlay(ItemManager itemManager, InventoryTagsPlugin plugin)
 	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.LOW);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		this.queryRunner = queryRunner;
 		this.itemManager = itemManager;
 		this.plugin = plugin;
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem itemWidget)
 	{
-		if (!plugin.isHasTaggedItems())
+		final String group = plugin.getTag(itemId);
+		if (group != null)
 		{
-			return null;
-		}
-
-		// Now query the inventory for the tagged item ids
-		final Query query = new InventoryWidgetItemQuery();
-		final WidgetItem[] widgetItems = queryRunner.runQuery(query);
-
-		// Iterate through all found items and draw the outlines
-		for (final WidgetItem item : widgetItems)
-		{
-			final String group = plugin.getTag(item.getId());
-
-			if (group != null)
+			final Color color = plugin.getGroupNameColor(group);
+			if (color != null)
 			{
-				final Color color = plugin.getGroupNameColor(group);
-				if (color != null)
-				{
-					final BufferedImage outline = itemManager.getItemOutline(item.getId(), item.getQuantity(), color);
-					graphics.drawImage(outline, item.getCanvasLocation().getX() + 1, item.getCanvasLocation().getY() + 1, null);
-				}
+				Rectangle bounds = itemWidget.getCanvasBounds();
+				final BufferedImage outline = itemManager.getItemOutline(itemId, itemWidget.getQuantity(), color);
+				graphics.drawImage(outline, (int) bounds.getX() + 1, (int) bounds.getY() + 1, null);
 			}
 		}
-
-		return null;
 	}
 }
