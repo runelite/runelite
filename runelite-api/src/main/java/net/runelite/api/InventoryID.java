@@ -58,6 +58,10 @@ public enum InventoryID
 	 */
 	CHAMBERS_OF_XERIC_CHEST(581),
 	/**
+	 * Looting Bag inventory
+	 */
+	LOOTING_BAG(516),
+	/**
 	 * Theater of Blood reward chest inventory (Raids 2)
 	 */
 	THEATRE_OF_BLOOD_CHEST(612);

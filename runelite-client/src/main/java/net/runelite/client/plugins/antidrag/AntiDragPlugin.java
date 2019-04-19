@@ -25,31 +25,38 @@
 package net.runelite.client.plugins.antidrag;
 
 import com.google.inject.Provides;
-import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.HotkeyListener;
 
 @PluginDescriptor(
 	name = "Shift Anti Drag",
 	description = "Prevent dragging an item for a specified delay",
 	tags = {"antidrag", "delay", "inventory", "items"}
 )
-public class AntiDragPlugin extends Plugin implements KeyListener
+public class AntiDragPlugin extends Plugin
 {
 	private static final int DEFAULT_DELAY = 5;
+	private boolean toggleDrag;
 
 	@Inject
 	private Client client;
 
 	@Inject
 	private AntiDragConfig config;
+
+	@Inject
+	private AntiDragOverlay overlay;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private KeyManager keyManager;
@@ -63,46 +70,50 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp() throws Exception
 	{
-		keyManager.registerKeyListener(this);
+		keyManager.registerKeyListener(hotkeyListener);
+		toggleDrag = false;
+
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		client.setInventoryDragDelay(DEFAULT_DELAY);
-		keyManager.unregisterKeyListener(this);
+		keyManager.unregisterKeyListener(hotkeyListener);
+		toggleDrag = false;
+		overlayManager.remove(overlay);
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e)
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.key())
 	{
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+		@Override
+		public void hotkeyPressed()
 		{
-			client.setInventoryDragDelay(config.dragDelay());
-		}
-	}
+			toggleDrag = !toggleDrag;
+			if (toggleDrag)
+			{
+				if (config.overlay())
+				{
+					overlayManager.add(overlay);
+				}
 
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
-		{
-			client.setInventoryDragDelay(DEFAULT_DELAY);
+				client.setInventoryDragDelay(config.dragDelay());
+			}
+			else
+			{
+				overlayManager.remove(overlay);
+				client.setInventoryDragDelay(DEFAULT_DELAY);
+			}
 		}
-	}
+	};
 
 	@Subscribe
 	public void onFocusChanged(FocusChanged focusChanged)
 	{
-		if (!focusChanged.isFocused())
+		if (!focusChanged.isFocused() && config.reqfocus())
 		{
 			client.setInventoryDragDelay(DEFAULT_DELAY);
+			overlayManager.remove(overlay);
 		}
 	}
 }

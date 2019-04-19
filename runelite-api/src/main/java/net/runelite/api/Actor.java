@@ -39,6 +39,12 @@ import net.runelite.api.coords.WorldPoint;
 public interface Actor extends Renderable
 {
 	/**
+	 * Used by the "Tick Counter Plugin
+	 */
+	int getActionFrame();
+	int getActionFrameCycle();
+
+	/**
 	 * Gets the combat level of the actor.
 	 *
 	 * @return the combat level

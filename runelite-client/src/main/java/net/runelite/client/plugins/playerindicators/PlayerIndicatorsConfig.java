@@ -196,4 +196,15 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 15,
+			keyName = "showCombatLevels",
+			name = "Show combat levels",
+			description = "Add combat level to overhead name"
+	)
+	default boolean showCombatLevels()
+	{
+		return true;
+	}
 }

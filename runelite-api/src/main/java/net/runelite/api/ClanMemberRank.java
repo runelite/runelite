@@ -39,43 +39,43 @@ public enum ClanMemberRank
 	/**
 	 * Not in a clan.
 	 */
-	UNRANKED(-1),
+	UNRANKED(-1, "", -1),
 	/**
 	 * Friend rank.
 	 */
-	FRIEND(0),
+	FRIEND(0, "https://cdn.discordapp.com/attachments/556184918770843649/557023638826778635/1004.png", SpriteID.CLAN_CHAT_RANK_SMILEY_FRIEND),
 	/**
 	 * Recruit rank.
 	 */
-	RECRUIT(1),
+	RECRUIT(1, "https://cdn.discordapp.com/attachments/556184918770843649/557023639111991306/1012-0.png", SpriteID.CLAN_CHAT_RANK_SINGLE_CHEVRON_RECRUIT),
 	/**
 	 * Corporal rank.
 	 */
-	CORPORAL(2),
+	CORPORAL(2, "https://cdn.discordapp.com/attachments/556184918770843649/557023638889431052/1011-0.png", SpriteID.CLAN_CHAT_RANK_DOUBLE_CHEVRON_CORPORAL),
 	/**
 	 * Sergeant rank.
 	 */
-	SERGEANT(3),
+	SERGEANT(3, "https://cdn.discordapp.com/attachments/556184918770843649/557023641968312321/1010-0.png", SpriteID.CLAN_CHAT_RANK_TRIPLE_CHEVRON_SERGEANT),
 	/**
 	 * Lieutenant rank.
 	 */
-	LIEUTENANT(4),
+	LIEUTENANT(4, "https://cdn.discordapp.com/attachments/556184918770843649/557023638893756416/1009-0.png", SpriteID.CLAN_CHAT_RANK_BRONZE_STAR_LIEUTENANT),
 	/**
 	 * Captain rank.
 	 */
-	CAPTAIN(5),
+	CAPTAIN(5, "https://cdn.discordapp.com/attachments/556184918770843649/557023638910664734/1008-0.png", SpriteID.CLAN_CHAT_RANK_SILVER_STAR_CAPTAIN),
 	/**
 	 * General rank.
 	 */
-	GENERAL(6),
+	GENERAL(6, "https://cdn.discordapp.com/attachments/556184918770843649/557023638835036170/1007-0.png", SpriteID.CLAN_CHAT_RANK_GOLD_STAR_GENERAL),
 	/**
 	 * Channel owner rank.
 	 */
-	OWNER(7),
+	OWNER(7, "https://cdn.discordapp.com/attachments/556184918770843649/557023638822453248/1006-0.png", SpriteID.CLAN_CHAT_RANK_KEY_CHANNEL_OWNER),
 	/**
 	 * JMod rank.
 	 */
-	JMOD(127);
+	JMOD(127, "", SpriteID.CLAN_CHAT_RANK_CROWN_JAGEX_MODERATOR);
 
 	private static final Map<Integer, ClanMemberRank> RANKS = new HashMap<>();
 
@@ -86,6 +86,8 @@ public enum ClanMemberRank
 			RANKS.put(clanMemberRank.value, clanMemberRank);
 		}
 	}
+
+
 
 	/**
 	 * Utility method that maps the rank value to its respective
@@ -99,8 +101,11 @@ public enum ClanMemberRank
 		return RANKS.get(rank);
 	}
 
+
 	/**
 	 * The value of the clan rank.
 	 */
 	private final int value;
+	private final String discavatar;
+	private	final int spriteID;
 }

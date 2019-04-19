@@ -36,6 +36,7 @@ import net.runelite.api.PlayerComposition;
  */
 public enum KitType
 {
+	HELM(0),
 	CAPE(1),
 	AMULET(2),
 	WEAPON(3),

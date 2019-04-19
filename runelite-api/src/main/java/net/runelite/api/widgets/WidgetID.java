@@ -129,6 +129,7 @@ public class WidgetID
 	public static final int SKILLS_GROUP_ID = 320;
 	public static final int QUESTTAB_GROUP_ID = 629;
 	public static final int MUSIC_GROUP_ID = 239;
+	public static final int MUSICTAB_GROUP_ID = 239;
 	public static final int BARROWS_PUZZLE_GROUP_ID = 25;
 
 	static class WorldMap
@@ -555,13 +556,14 @@ public class WidgetID
 		static final int CURRENT_WAVE_WIDGET = 4;
 		static final int CURRENT_WAVE = 5;
 		static final int CALL_WIDGET = 6;
-		static final int CALL_TEXT = 7;
+		static final int HEARD_CALL = 7;
 		static final int TO_CALL_WIDGET = 8;
 		static final int TO_CALL = 9;
 		static final int ROLE_SPRITE = 10;
 		static final int ROLE = 11;
 		static final int REWARD_TEXT = 57;
 	}
+
 
 	static class LevelUp
 	{
@@ -701,16 +703,154 @@ public class WidgetID
 	static class StandardSpellBook
 	{
 		static final int LUMBRIDGE_HOME_TELEPORT = 4;
+		static final int WIND_STRIKE = 5;
+		static final int CONFUSE = 6;
+		static final int ENCHANT_CROSSBOW_BOLT = 7;
+		static final int WATER_STRIKE = 8;
+		static final int LVL_1_ENCHANT = 9;
+		static final int EARTH_STRIKE = 10;
+		static final int WEAKEN = 11;
+		static final int FIRE_STRIKE = 12;
+		static final int BONES_TO_BANANAS = 13;
+		static final int WIND_BOLT = 14;
+		static final int CURSE = 15;
+		static final int BIND = 16;
+		static final int LOW_LEVEL_ALCHEMY = 17;
+		static final int WATER_BOLT = 18;
+		static final int VARROCK_TELEPORT = 19;
+		static final int LVL_2_ENCHANT = 20;
+		static final int EARTH_BOLT = 21;
+		static final int LUMBRIDGE_TELEPORT = 22;
+		static final int TELEKINETIC_GRAB = 23;
+		static final int FIRE_BOLT = 24;
+		static final int FALADOR_TELEPORT = 25;
+		static final int CRUMBLE_UNDEAD = 26;
+		static final int TELEPORT_TO_HOUSE = 27;
+		static final int WIND_BLAST = 28;
+		static final int SUPERHEAT_ITEM = 29;
+		static final int CAMELOT_TELEPORT = 30;
+		static final int WATER_BLAST = 31;
+		static final int LVL_3_ENCHANT = 32;
+		static final int IBAN_BLAST = 33;
+		static final int SNARE = 34;
+		static final int MAGIC_DART = 35;
+		static final int ARDOUGNE_TELEPORT = 36;
+		static final int EARTH_BLAST = 37;
+		static final int HIGH_LEVEL_ALCHEMY = 38;
+		static final int CHARGE_WATER_ORB = 39;
+		static final int LVL_4_ENCHANT = 40;
+		static final int WATCHTOWER_TELEPORT = 41;
+		static final int FIRE_BLAST = 42;
+		static final int CHARGE_EARTH_ORB = 43;
+		static final int BONES_TO_PEACHES = 44;
+		static final int SARADOMIN_STRIKE = 45;
+		static final int CLAWS_OF_GUTHIX = 46;
+		static final int FLAMES_OF_ZAMORAK = 47;
+		static final int TROLLHEIM_TELEPORT = 48;
+		static final int WIND_WAVE = 49;
+		static final int HARGE_FIRE_ORB = 50;
+		static final int TELEPORT_TO_APE_ATOLL = 51;
+		static final int WATER_WAVE = 52;
+		static final int CHARGE_AIR_ORB = 53;
+		static final int VULNERABILITY = 54;
+		static final int LVL_5_ENCHANT = 55;
+		static final int TELEPORT_TO_KOUREND = 56;
+		static final int EARTH_WAVE = 57;
+		static final int ENFEEBLE = 58;
+		static final int TELEOTHER_LUMBRIDGE = 59;
+		static final int FIRE_WAVE = 60;
+		static final int ENTANGLE = 61;
+		static final int STUN = 62;
+		static final int CHARGE = 63;
+		static final int WIND_SURGE = 64;
+		static final int TELEOTHER_FALADOR = 65;
+		static final int WATER_SURGE = 66;
+		static final int TELE_BLOCK = 67;
+		static final int BOUNTY_TARGET_TELEPORT = 68;
+		static final int LVL_6_ENCHANT = 69;
+		static final int TELEOTHER_CAMELOT = 70;
+		static final int EARTH_SURGE = 71;
+		static final int LVL_7_ENCHANT = 72;
+		static final int FIRE_SURGE = 73;
 	}
 
 	static class AncientSpellBook
 	{
+		static final int BOUNTY_TARGET_TELEPORT = 68;
+		static final int ICE_RUSH = 74;
+		static final int ICE_BLITZ = 75;
+		static final int ICE_BURST = 76;
+		static final int ICE_BARRAGE = 77;
+		static final int BLOOD_RUSH = 78;
+		static final int BLOOD_BLITZ = 79;
+		static final int BLOOD_BURST = 80;
+		static final int BLOOD_BARRAGE = 81;
+		static final int SMOKE_RUSH = 82;
+		static final int SMOKE_BLITZ = 83;
+		static final int SMOKE_BURST = 84;
+		static final int SMOKE_BARRAGE = 85;
+		static final int SHADOW_RUSH = 86;
+		static final int SHADOW_BLITZ = 87;
+		static final int SHADOW_BURST = 88;
+		static final int SHADOW_BARRAGE = 89;
+		static final int PADDEWWA_TELEPORT = 90;
+		static final int SENNTISTEN_TELEPORT = 91;
+		static final int KHARYRLL_TELEPORT = 92;
+		static final int LASSAR_TELEPORT = 93;
+		static final int DAREEYAK_TELEPORT = 94;
+		static final int CARRALLANGER_TELEPORT = 95;
+		static final int ANNAKARL_TELEPORT = 96;
+		static final int GHORROCK_TELEPORT = 97;
 		static final int EDGEVILLE_HOME_TELEPORT = 98;
 	}
 
 	static class LunarSpellBook
 	{
+		static final int BOUNTY_TARGET_TELEPORT = 68;
 		static final int LUNAR_HOME_TELEPORT = 99;
+		static final int BAKE_PIE = 100;
+		static final int CURE_PLANT = 101;
+		static final int MONSTER_EXAMINE = 102;
+		static final int NPC_CONTACT = 103;
+		static final int CURE_OTHER = 104;
+		static final int HUMIDIFY = 105;
+		static final int MOONCLAN_TELEPORT = 106;
+		static final int TELE_GROUP_MOONCLAN = 107;
+		static final int CURE_ME = 108;
+		static final int HUNTER_KIT = 109;
+		static final int WATERBIRTH_TELEPORT = 110;
+		static final int TELE_GROUP_WATERBIRTH = 111;
+		static final int CURE_GROUP = 112;
+		static final int STAT_SPY = 113;
+		static final int BARBARIAN_TELEPORT = 114;
+		static final int TELE_GROUP_BARBARIAN = 115;
+		static final int SUPERGLASS_MAKE = 116;
+		static final int TAN_LEATHER = 117;
+		static final int KHAZARD_TELEPORT = 118;
+		static final int TELE_GROUP_KHAZARD = 119;
+		static final int DREAM = 120;
+		static final int STRING_JEWELLERY = 121;
+		static final int STAT_RESTORE_POT_SHARE = 122;
+		static final int MAGIC_IMBUE = 123;
+		static final int FERTILE_SOIL = 124;
+		static final int BOOST_POTION_SHARE = 125;
+		static final int FISHING_GUILD_TELEPORT = 126;
+		static final int TELE_GROUP_FISHING_GUILD = 127;
+		static final int PLANK_MAKE = 128;
+		static final int CATHERBY_TELEPORT = 129;
+		static final int TELE_GROUP_CATHERBY = 130;
+		static final int RECHARGE_DRAGONSTONE = 131;
+		static final int ICE_PLATEAU_TELEPORT = 132;
+		static final int TELE_GROUP_ICE_PLATEAU = 133;
+		static final int ENERGY_TRANSFER = 134;
+		static final int HEAL_OTHER = 135;
+		static final int VENGEANCE_OTHER = 136;
+		static final int VENGEANCE = 137;
+		static final int HEAL_GROUP = 138;
+		static final int SPELLBOOK_SWAP = 139;
+		static final int GEOMANCY = 140;
+		static final int SPIN_FLAX = 141;
+		static final int OURANIA_TELEPORT = 142;
 	}
 
 	static class ArceuusSpellBook
