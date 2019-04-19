@@ -64,6 +64,17 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "enablePlugins",
+		name = "Enable loading of external plugins",
+		description = "Enable loading of external plugins",
+			position = 10
+	)
+	default boolean enablePlugins()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "containInScreen",
 		name = "Contain in screen",
 		description = "Makes the client stay contained in the screen when attempted to move out of it.<br>Note: Only works if custom chrome is enabled.",
