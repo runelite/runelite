@@ -1,4 +1,3 @@
-
 package net.runelite.client.rs.bytecode.transformers;
 
 import javassist.CtClass;
@@ -39,23 +38,23 @@ public class PlayerTransform {
             String SkullIcon = "net.runelite.api.SkullIcon";
             getSkullIcon = ct.getDeclaredMethod("getSkullIcon");
             ct.removeMethod(getSkullIcon);
-            getSkullIcon = CtNewMethod.make("public " + SkullIcon + " getSkullIcon() {" +
+            getSkullIcon = CtNewMethod.make("public "+SkullIcon+" getSkullIcon() {" +
                     "                               switch (this.getRsSkullIcon()) {" +
                     "                               case 0: {" +
-                    "                               return " + SkullIcon + ".SKULL; }" +
+                    "                               return "+SkullIcon+".SKULL; }" +
                     "                               case 1: {" +
-                    "                               return " + SkullIcon + ".SKULL_FIGHT_PIT; }" +
+                    "                               return "+SkullIcon+".SKULL_FIGHT_PIT; }" +
                     "                               case 8: {" +
-                    "                               return " + SkullIcon + ".DEAD_MAN_FIVE; }" +
+                    "                               return "+SkullIcon+".DEAD_MAN_FIVE; }" +
                     "                               case 9: {" +
-                    "                               return " + SkullIcon + ".DEAD_MAN_FOUR; }" +
+                    "                               return "+SkullIcon+".DEAD_MAN_FOUR; }" +
                     "                               case 10: {" +
-                    "                               return " + SkullIcon + ".DEAD_MAN_THREE; }" +
+                    "                               return "+SkullIcon+".DEAD_MAN_THREE; }" +
                     "                               case 11: {" +
-                    "                               return " + SkullIcon + ".DEAD_MAN_TWO; }" +
+                    "                               return "+SkullIcon+".DEAD_MAN_TWO; }" +
                     "                               case 12: {" +
-                    "                               return " + SkullIcon + ".DEAD_MAN_ONE; } }" +
-                    "                               return null; }", ct);
+                    "                               return "+SkullIcon+".DEAD_MAN_ONE; } }" +
+                    "                               return null; }",ct);
             ct.addMethod(getSkullIcon);
         } catch (Exception e) {
             e.printStackTrace();
