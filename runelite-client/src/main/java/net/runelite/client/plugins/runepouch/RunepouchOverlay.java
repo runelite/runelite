@@ -69,6 +69,8 @@ public class RunepouchOverlay extends WidgetItemOverlay
 		this.tooltipManager = tooltipManager;
 		this.client = client;
 		this.config = config;
+		showOnInventory();
+		showOnBank();
 	}
 
 	@Override
