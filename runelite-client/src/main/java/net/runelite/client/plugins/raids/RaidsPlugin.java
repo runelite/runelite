@@ -26,18 +26,10 @@ package net.runelite.client.plugins.raids;
 
 import com.google.inject.Binder;
 import com.google.inject.Provides;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -47,11 +39,9 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
-import net.runelite.api.ItemID;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
-import net.runelite.api.SpriteID;
 import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
@@ -59,34 +49,27 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.SpriteManager;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
-import net.runelite.client.ui.DrawManager;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.util.ScreenCapture;
 import net.runelite.client.util.Text;
-import net.runelite.client.util.HotkeyListener;
 
 @PluginDescriptor(
 	name = "Chambers Of Xeric",
 	description = "Show helpful information for the Chambers of Xeric raid",
-	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses", "cox", "olm"}
+	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses"}
 )
 @Slf4j
 public class RaidsPlugin extends Plugin
@@ -99,10 +82,6 @@ public class RaidsPlugin extends Plugin
 	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
 	private static final Pattern ROTATION_REGEX = Pattern.compile("\\[(.*?)]");
-	private static final int LINE_COMPONENT_HEIGHT = 16;
-
-	@Inject
-	private ItemManager itemManager;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -112,12 +91,6 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private Client client;
-
-	@Inject
-	private DrawManager drawManager;
-
-	@Inject
-	private ScheduledExecutorService executor;
 
 	@Inject
 	private RaidsConfig config;
@@ -137,12 +110,6 @@ public class RaidsPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
-	@Inject
-	private KeyManager keyManager;
-
-	@Inject
-	private ScreenCapture screenCapture;
-
 	@Getter
 	private final ArrayList<String> roomWhitelist = new ArrayList<>();
 
@@ -154,9 +121,6 @@ public class RaidsPlugin extends Plugin
 
 	@Getter
 	private final ArrayList<String> layoutWhitelist = new ArrayList<>();
-
-	@Getter
-	private final Map<String, List<Integer>> recommendedItemsList = new HashMap<>();
 
 	@Getter
 	private Raid raid;
@@ -184,7 +148,6 @@ public class RaidsPlugin extends Plugin
 		overlayManager.add(overlay);
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
-		keyManager.registerKeyListener(hotkeyListener);
 	}
 
 	@Override
@@ -195,7 +158,6 @@ public class RaidsPlugin extends Plugin
 		inRaidChambers = false;
 		raid = null;
 		timer = null;
-		keyManager.unregisterKeyListener(hotkeyListener);
 	}
 
 	@Subscribe
@@ -384,41 +346,6 @@ public class RaidsPlugin extends Plugin
 		updateList(roomBlacklist, config.blacklistedRooms());
 		updateList(rotationWhitelist, config.whitelistedRotations());
 		updateList(layoutWhitelist, config.whitelistedLayouts());
-		updateMap(recommendedItemsList, config.recommendedItems());
-	}
-
-	private void updateMap(Map<String, List<Integer>> map, String input)
-	{
-		map.clear();
-
-		Matcher m = ROTATION_REGEX.matcher(input);
-		while (m.find())
-		{
-			String everything = m.group(1).toLowerCase();
-			int split = everything.indexOf(',');
-			if (split < 0)
-				continue;
-			String key = everything.substring(0, split);
-			if (key.length() < 1)
-				continue;
-			String[] itemNames = everything.substring(split).split(SPLIT_REGEX);
-
-			map.computeIfAbsent(key, k -> new ArrayList<>());
-
-			for (String itemName : itemNames)
-			{
-				if (itemName.equals(""))
-					continue;
-				if (itemName.equals("ice barrage"))
-					map.get(key).add(SpriteID.SPELL_ICE_BARRAGE);
-				else if (itemName.startsWith("salve"))
-					map.get(key).add(ItemID.SALVE_AMULETEI);
-				else if (itemManager.search(itemName).size() > 0)
-					map.get(key).add(itemManager.search(itemName).get(0).getId());
-				else
-					log.info("RaidsPlugin: Could not find an item ID for item: " + itemName);
-			}
-		}
 	}
 
 	private void updateList(ArrayList<String> list, String input)
@@ -674,43 +601,5 @@ public class RaidsPlugin extends Plugin
 		}
 
 		return room;
-	}
-
-	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
-	{
-		@Override
-		public void hotkeyPressed()
-		{
-			initiateCopyImage();
-		}
-	};
-
-	private void initiateCopyImage()
-	{
-		if (!config.enableSharableImage() || !overlay.isScouterActive())
-			return;
-
-		Rectangle overlaySize = overlay.getBounds();
-		if (overlaySize.width <= 0 || overlaySize.height <= 0)
-			return;
-		if (!config.alwaysShowWorldAndCC())
-			overlaySize.height += LINE_COMPONENT_HEIGHT;
-
-		BufferedImage bim = new BufferedImage(overlaySize.width, overlaySize.height, BufferedImage.TYPE_INT_ARGB);
-		overlay.setSharable(true);
-		Graphics2D g = bim.createGraphics();
-		g.setFont(FontManager.getRunescapeFont());
-
-		//this is needed to update the PanelComponent childDimensions, because they are a frame behind
-		if (!config.alwaysShowWorldAndCC())
-			overlay.render(g);
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, overlaySize.width, overlaySize.height);
-
-		overlay.render(g);
-		screenCapture.takeScreenshot(bim, config.enableTrayNotification(), "Chambers");
-		g.dispose();
-
-		overlay.setSharable(false);
 	}
 }

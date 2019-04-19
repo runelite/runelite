@@ -193,34 +193,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "swapBlackjack",
-			name = "Blackjacking",
-			description = "Requires \"The Fued\" quest completed."
-	)
-
-	default boolean swapBlackjack() {return false; }
-        
-        
-        @ConfigItem(
-		keyName = "setDelay",
-		name = "Blackjacking Delay",
-		description = "Sets the delay for how long you can pickpocket after knocking target out in milliseconds"
-	)
-	default int setDelay()
-	{
-		return 2000;
-	}
-        
-
-	@ConfigItem(
 		keyName = "swapPay",
 		name = "Pay",
 		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth"
 	)
-        
-        
-        
-        
 	default boolean swapPay()
 	{
 		return true;

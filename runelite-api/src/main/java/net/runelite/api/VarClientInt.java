@@ -48,12 +48,6 @@ public enum VarClientInt
 
 	INVENTORY_TAB(171),
 
-	/**
-	 * -1 = player inventory closed
-	 * 3 = player inventory opened
-	 */
-	PLAYER_INVENTORY_OPENED(171),
-
 	WORLD_MAP_SEARCH_FOCUSED(190);
 
 	private final int index;
