@@ -4,6 +4,7 @@ import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
 import net.runelite.client.rs.bytecode.ByteCodePatcher;
+import net.runelite.client.rs.bytecode.ByteCodeUtils;
 
 public class ProjectileTransform {
     public CtClass ct = null;
