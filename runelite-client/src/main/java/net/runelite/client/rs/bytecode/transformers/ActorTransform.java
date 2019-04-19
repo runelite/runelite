@@ -1,22 +1,15 @@
 package net.runelite.client.rs.bytecode.transformers;
 
-import javassist.CannotCompileException;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
 import javassist.NotFoundException;
 import net.runelite.client.rs.bytecode.ByteCodePatcher;
-import net.runelite.client.rs.bytecode.ByteCodeUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-
-public class ActorTransform {
+public class ActorTransform implements Transform {
     public CtClass ct = null;
 
-
+    @Override
     public void modify(Class actor) {
         try {
             ct = ByteCodePatcher.classPool.get(actor.getName());
@@ -27,6 +20,9 @@ public class ActorTransform {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void transform() { }
 
     public void transformGetAnimation() {
         try {
