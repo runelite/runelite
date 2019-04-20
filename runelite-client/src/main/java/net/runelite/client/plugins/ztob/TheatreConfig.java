@@ -14,15 +14,16 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("Theatre")
 
-public interface TheatreConfig extends Config
-{
+public interface TheatreConfig extends Config {
     @ConfigItem(
             position = 0,
             keyName = "MaidenBlood",
             name = "Maiden blood attack",
             description = ""
     )
-    default boolean MaidenBlood(){ return false; }
+    default boolean MaidenBlood() {
+        return true;
+    }
 
     @ConfigItem(
             position = 1,
@@ -30,109 +31,181 @@ public interface TheatreConfig extends Config
             name = "Maiden blood spawns",
             description = ""
     )
-    default boolean MaidenSpawns(){ return false; }
+    default boolean MaidenSpawns() {
+        return true;
+    }
 
     @ConfigItem(
             position = 2,
             keyName = "BloatIndicator",
-            name = "Bloat indicator",
+            name = "Bloat Indicator",
             description = ""
     )
-    default boolean BloatIndicator(){ return false; }
+    default boolean BloatIndicator() {
+        return true;
+    }
 
     @ConfigItem(
             position = 3,
-            keyName = "BloatHands",
-            name = "Bloat Falling Hands",
+            keyName = "bloat Timer",
+            name = "Bloat Timer",
             description = ""
     )
-    default boolean BloatHands(){ return false; }
+    default boolean bloatTimer() {
+        return true;
+    }
 
     @ConfigItem(
             position = 4,
+            keyName = "bloatFeet",
+            name = "Bloat Feet",
+            description = ""
+    )
+    default boolean bloatFeetIndicator() {
+        return true;
+    }
+
+    @ConfigItem(
+            position = 5,
             keyName = "NyloPillars",
             name = "Nylocas pillar health",
             description = ""
     )
-    default boolean NyloPillars(){ return false; }
+    default boolean NyloPillars() {
+        return true;
+    }
+
 
     @ConfigItem(
-            position = 5,
+            position = 6,
             keyName = "NyloBlasts",
             name = "Nylocas explosions",
             description = ""
     )
-    default boolean NyloBlasts(){ return false; }
+    default boolean NyloBlasts() {
+        return true;
+    }
 
     @ConfigItem(
-            position = 6,
+            position = 7,
+            keyName = "NyloMenu",
+            name = "Hide Attack options for Nylocas",
+            description = ""
+    )
+
+    default boolean NyloMenu() {
+        return true;
+    }
+
+    @ConfigItem(
+            position = 8,
             keyName = "SotetsegMaze1",
             name = "Sotetseg maze",
             description = ""
     )
-    default boolean SotetsegMaze1(){ return false; }
+    default boolean SotetsegMaze1() {
+        return true;
+    }
 
     @ConfigItem(
-            position = 7,
+            position = 9,
             keyName = "SotetsegMaze2",
             name = "Sotetseg maze (solo mode)",
             description = ""
     )
-    default boolean SotetsegMaze2(){ return false; }
-
-    @ConfigItem(
-            position = 8,
-            keyName = "SotetsegTick",
-            name = "Sotetseg tick eat",
-            description = ""
-    )
-    default boolean SotetsegTick(){ return false; }
-
-    @ConfigItem(
-            position = 9,
-            keyName = "XarpusExhumed",
-            name = "Xarpus exhumed",
-            description = ""
-    )
-    default boolean XarpusExhumed(){ return false; }
+    default boolean SotetsegMaze2() {
+        return true;
+    }
 
     @ConfigItem(
             position = 10,
-            keyName = "XarpusTick",
-            name = "Xarpus tick",
+            keyName = "XarpusExhumed",
+            name = "Xarpus Exhumed",
             description = ""
     )
-    default boolean XarpusTick(){ return false; }
+    default boolean XarpusExhumed() {
+        return true;
+    }
 
     @ConfigItem(
             position = 11,
-            keyName = "VerzikCupcakes",
-            name = "Verzik cupcakes",
-            description = " "
+            keyName = "XarpusTick",
+            name = "Xarpus Tick",
+            description = ""
     )
-    default boolean VerzikCupcakes(){ return false; }
+    default boolean XarpusTick() {
+        return false;
+    }
 
     @ConfigItem(
             position = 12,
-            keyName = "VerzikTick",
-            name = "Verzik p3 tick",
+            keyName = "xarpusExhumes",
+            name = "Xarpus Exhume Counter",
             description = ""
     )
-    default boolean VerzikTick(){ return false; }
+    default boolean XarpusExhumeOverlay() {
+        return false;
+    }
 
     @ConfigItem(
             position = 13,
-            keyName = "VerzikMelee",
-            name = "Verzik p3 melee range",
+            keyName = "VerzikCupcakes",
+            name = "Verzik Projectile Markers",
             description = ""
     )
-    default boolean VerzikMelee(){ return false; }
+    default boolean VerzikCupcakes() {
+        return false;
+    }
 
     @ConfigItem(
             position = 14,
-            keyName = "VerzikYellow",
-            name = "Verzik yellow timing",
+            keyName = "VerzikTick",
+            name = "Verzik P3 Tick",
             description = ""
     )
-    default boolean VerzikYellow(){ return false; }
+    default boolean VerzikTick() {
+        return false;
+    }
+
+    @ConfigItem(
+            position = 15,
+            keyName = "VerzikMelee",
+            name = "Verzik P3 Melee Range",
+            description = ""
+    )
+    default boolean VerzikMelee() {
+        return false;
+    }
+
+    @ConfigItem(
+            position = 16,
+            keyName = "VerzikYellow",
+            name = "Verzik Yellow Timing",
+            description = ""
+    )
+    default boolean VerzikYellow() {
+        return false;
+    }
+
+    @ConfigItem(
+            position = 17,
+            keyName = "Verzik Nylo",
+            name = "Verzik Nylo Overlay",
+            description = ""
+    )
+    default boolean NyloTargetOverlay() {
+        return false;
+    }
+
+    @ConfigItem(
+            position = 18,
+            keyName = "VerzikTankTile",
+            name = "Verzik P3 Tile Overlay",
+            description = ""
+    )
+    default boolean verzikTankTile() {
+        return true;
+    }
+
+
 }
