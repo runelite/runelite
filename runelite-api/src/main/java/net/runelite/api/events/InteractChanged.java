@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 AWPH-I
+ * Copyright (c) 2018, Seth <http://github.com/sethtroll>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.inventoryviewer;
+package net.runelite.api.events;
 
-import com.google.inject.Provides;
-import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
+import lombok.Data;
+import net.runelite.api.Actor;
 
-@PluginDescriptor(
-	name = "Inventory Viewer",
-	description = "Add an overlay showing the contents of your inventory",
-	tags = {"alternate", "items", "overlay", "second"},
-	enabledByDefault = false
-)
-public class InventoryViewerPlugin extends Plugin
+@Data
+public class InteractChanged
 {
-	static final String CONFIG_GROUP_KEY = "inventoryviewer";
-
-	@Inject
-	private InventoryViewerOverlay overlay;
-
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Provides
-	InventoryViewerConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(InventoryViewerConfig.class);
-	}
-
-	@Override
-	public void startUp()
-	{
-		overlayManager.add(overlay);
-	}
-
-	@Override
-	public void shutDown()
-	{
-		overlayManager.remove(overlay);
-	}
+    private Actor actor;
 }

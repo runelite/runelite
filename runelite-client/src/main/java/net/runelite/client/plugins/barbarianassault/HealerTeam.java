@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 AWPH-I
+ * Copyright (c) 2018, whartd <github.com/whartd>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.inventoryviewer;
+package net.runelite.client.plugins.barbarianassault;
 
-import com.google.inject.Provides;
-import javax.inject.Inject;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.Point;
+import net.runelite.api.widgets.WidgetInfo;
 
-@PluginDescriptor(
-	name = "Inventory Viewer",
-	description = "Add an overlay showing the contents of your inventory",
-	tags = {"alternate", "items", "overlay", "second"},
-	enabledByDefault = false
-)
-public class InventoryViewerPlugin extends Plugin
+@Getter
+@AllArgsConstructor
+enum HealerTeam
 {
-	static final String CONFIG_GROUP_KEY = "inventoryviewer";
+	TEAMMATE1(WidgetInfo.BA_HEAL_TEAMMATE1, new Point(28,  2), 115),
+	TEAMMATE2(WidgetInfo.BA_HEAL_TEAMMATE2, new Point(26,  2), 115),
+	TEAMMATE3(WidgetInfo.BA_HEAL_TEAMMATE3, new Point(26,  2), 115),
+	TEAMMATE4(WidgetInfo.BA_HEAL_TEAMMATE4, new Point(25,  2), 115);
 
-	@Inject
-	private InventoryViewerOverlay overlay;
-
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Provides
-	InventoryViewerConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(InventoryViewerConfig.class);
-	}
-
-	@Override
-	public void startUp()
-	{
-		overlayManager.add(overlay);
-	}
-
-	@Override
-	public void shutDown()
-	{
-		overlayManager.remove(overlay);
-	}
+	private WidgetInfo teammate;
+	private Point offset;
+	private int width;
 }

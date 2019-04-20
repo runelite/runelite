@@ -45,6 +45,11 @@ public enum VarClientInt
 	INPUT_TYPE(5),
 
 	MEMBERSHIP_STATUS(103),
+    /**
+     * -1 = player inventory closed
+     * 3 = player inventory opened
+     */
+    PLAYER_INVENTORY_OPENED(171),
 
 	INVENTORY_TAB(171),
 
