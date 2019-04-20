@@ -40,6 +40,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.COINS_995;
+import static net.runelite.api.ItemID.MASTER_SCROLL_BOOK;
 import static net.runelite.api.ItemID.PLATINUM_TOKEN;
 import net.runelite.api.Varbits;
 import net.runelite.client.game.ItemManager;
@@ -59,7 +60,25 @@ class BankCalculation
 		Varbits.BANK_TAB_EIGHT_COUNT,
 		Varbits.BANK_TAB_NINE_COUNT
 	);
-
+	private static final Map<Varbits, Integer> VARBIT_MASTERBOOK_ITEMIDMAP = new HashMap<Varbits, Integer>()
+	{
+		{
+			put(Varbits.MASTER_SCROLL_BOOK_NARDAH, ItemID.NARDAH_TELEPORT);
+			put(Varbits.MASTER_SCROLL_BOOK_DIGSITE, ItemID.DIGSITE_TELEPORT);
+			put(Varbits.MASTER_SCROLL_BOOK_FELDIP_HILLS, ItemID.FELDIP_HILLS_TELEPORT);
+			put(Varbits.MASTER_SCROLL_BOOK_LUNAR_ISLE, ItemID.LUNAR_ISLE_TELEPORT);
+			put(Varbits.MASTER_SCROLL_BOOK_MORTTON, ItemID.MORTTON_TELEPORT);
+			put(Varbits.MASTER_SCROLL_BOOK_PEST_CONTROL, ItemID.PEST_CONTROL_TELEPORT);
+			put(Varbits.MASTER_SCROLL_BOOK_PISCATORIS, ItemID.PISCATORIS_TELEPORT);
+			put(Varbits.MASTER_SCROLL_BOOK_TAI_BWO_WANNAI, ItemID.TAI_BWO_WANNAI_TELEPORT);
+			put(Varbits.MASTER_SCROLL_BOOK_ELF_CAMP, ItemID.ELF_CAMP_TELEPORT);
+			put(Varbits.MASTER_SCROLL_BOOK_MOS_LE_HARMLESS, ItemID.MOS_LEHARMLESS_TELEPORT);
+			put(Varbits.MASTER_SCROLL_BOOK_LUMBERYARD, ItemID.LUMBERYARD_TELEPORT);
+			put(Varbits.MASTER_SCROLL_BOOK_ZUL_ANDRA, ItemID.ZULANDRA_TELEPORT);
+			put(Varbits.MASTER_SCROLL_BOOK_REVENANT_CAVES, ItemID.REVENANT_CAVE_TELEPORT);
+			put(Varbits.MASTER_SCROLL_BOOK_WATSON_TELEPORT, ItemID.WATSON_TELEPORT);
+		}
+	};
 	private final BankConfig config;
 	private final ItemManager itemManager;
 	private final Client client;
@@ -142,6 +161,18 @@ class BankCalculation
 				gePrice += quantity * 1000L;
 				haPrice += quantity * 1000L;
 				continue;
+			}
+
+			if (item.getId() == MASTER_SCROLL_BOOK)
+			{
+				gePrice += itemManager.getItemPrice(ItemID.MASTER_SCROLL_BOOK_EMPTY);
+
+				for (Map.Entry<Varbits, Integer> entry : VARBIT_MASTERBOOK_ITEMIDMAP.entrySet())
+				{
+					final long price = itemManager.getItemPrice(entry.getValue());
+					final long amount = client.getVar(entry.getKey());
+					gePrice += price * amount;
+				}
 			}
 
 			final ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
