@@ -79,6 +79,7 @@ class BankCalculation
 			put(Varbits.MASTER_SCROLL_BOOK_WATSON_TELEPORT, ItemID.WATSON_TELEPORT);
 		}
 	};
+	
 	private final BankConfig config;
 	private final ItemManager itemManager;
 	private final Client client;
