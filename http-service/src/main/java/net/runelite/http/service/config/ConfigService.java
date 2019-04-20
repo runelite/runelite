@@ -32,6 +32,7 @@ import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.eq;
 import com.mongodb.client.model.IndexOptions;
 import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.UpdateOptions;
 import static com.mongodb.client.model.Updates.set;
 import static com.mongodb.client.model.Updates.unset;
 import java.util.ArrayList;
@@ -46,54 +47,22 @@ import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.sql2o.Connection;
-import org.sql2o.Sql2o;
-import org.sql2o.Sql2oException;
 
 @Service
 @Slf4j
 public class ConfigService
 {
-	private static final String CREATE_CONFIG = "CREATE TABLE IF NOT EXISTS `config` (\n"
-		+ "  `user` int(11) NOT NULL,\n"
-		+ "  `key` tinytext NOT NULL,\n"
-		+ "  `value` text NOT NULL,\n"
-		+ "  UNIQUE KEY `user_key` (`user`,`key`(64))\n"
-		+ ") ENGINE=InnoDB;";
-
-	private static final String CONFIG_FK = "ALTER TABLE `config`\n"
-		+ "  ADD CONSTRAINT `user_fk` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;";
-
-	private final Sql2o sql2o;
 	private final Gson GSON = RuneLiteAPI.GSON;
+	private final UpdateOptions upsertUpdateOptions = new UpdateOptions().upsert(true);
 
 	private final MongoCollection<Document> mongoCollection;
 
 	@Autowired
 	public ConfigService(
-		@Qualifier("Runelite SQL2O") Sql2o sql2o,
 		MongoClient mongoClient
 	)
 	{
-		this.sql2o = sql2o;
-
-		try (Connection con = sql2o.open())
-		{
-			con.createQuery(CREATE_CONFIG)
-				.executeUpdate();
-
-			try
-			{
-				con.createQuery(CONFIG_FK)
-					.executeUpdate();
-			}
-			catch (Sql2oException ex)
-			{
-				// Ignore, happens when index already exists
-			}
-		}
 
 		MongoDatabase database = mongoClient.getDatabase("config");
 		MongoCollection<Document> collection = database.getCollection("config");
@@ -160,15 +129,6 @@ public class ConfigService
 		@Nullable String value
 	)
 	{
-		try (Connection con = sql2o.open())
-		{
-			con.createQuery("insert into config (user, `key`, value) values (:user, :key, :value) on duplicate key update `key` = :key, value = :value")
-				.addParameter("user", userId)
-				.addParameter("key", key)
-				.addParameter("value", value != null ? value : "")
-				.executeUpdate();
-		}
-
 		if (key.startsWith("$") || key.startsWith("_"))
 		{
 			return;
@@ -182,7 +142,8 @@ public class ConfigService
 
 		Object jsonValue = parseJsonString(value);
 		mongoCollection.updateOne(eq("_userId", userId),
-			set(split[0] + "." + split[1].replace('.', ':'), jsonValue));
+			set(split[0] + "." + split[1].replace('.', ':'), jsonValue),
+			upsertUpdateOptions);
 	}
 
 	public void unsetKey(
@@ -190,14 +151,6 @@ public class ConfigService
 		String key
 	)
 	{
-		try (Connection con = sql2o.open())
-		{
-			con.createQuery("delete from config where user = :user and `key` = :key")
-				.addParameter("user", userId)
-				.addParameter("key", key)
-				.executeUpdate();
-		}
-
 		if (key.startsWith("$") || key.startsWith("_"))
 		{
 			return;

@@ -30,7 +30,6 @@ import java.util.List;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
@@ -117,7 +116,7 @@ public abstract class RSModelMixin implements RSModel
 		int[] verticesY = getVerticesY();
 		int[] verticesZ = getVerticesZ();
 
-		List<Vertex> vertices = new ArrayList<Vertex>();
+		List<Vertex> vertices = new ArrayList<Vertex>(getVerticesCount());
 
 		for (int i = 0; i < getVerticesCount(); ++i)
 		{
@@ -323,7 +322,7 @@ public abstract class RSModelMixin implements RSModel
 
 	@Override
 	@Inject
-	public Polygon getConvexHull(int localX, int localY, int orientation)
+	public Polygon getConvexHull(int localX, int localY, int orientation, int tileHeight)
 	{
 		List<Vertex> vertices = getVertices();
 
@@ -340,9 +339,9 @@ public abstract class RSModelMixin implements RSModel
 		{
 			// Compute canvas location of vertex
 			Point p = Perspective.localToCanvas(client,
-				new LocalPoint(localX - v.getX(), localY - v.getZ()),
-				client.getPlane(),
-				-v.getY());
+				localX - v.getX(),
+				localY - v.getZ(),
+				tileHeight + v.getY());
 			if (p != null)
 			{
 				points.add(p);

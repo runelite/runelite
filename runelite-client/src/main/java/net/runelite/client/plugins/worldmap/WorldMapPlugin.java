@@ -70,6 +70,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_FARMING_PATCH_TOOLTIPS = "farmingpatchTooltips";
 	static final String CONFIG_KEY_RARE_TREE_TOOLTIPS = "rareTreeTooltips";
 	static final String CONFIG_KEY_RARE_TREE_LEVEL_ICON = "rareTreeIcon";
+	static final String CONFIG_KEY_TRANSPORATION_TELEPORT_TOOLTIPS = "transportationTooltips";
 
 	static
 	{
@@ -120,6 +121,7 @@ public class WorldMapPlugin extends Plugin
 		worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
 		worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
 		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
+		worldMapPointManager.removeIf(TransportationPoint.class::isInstance);
 		worldMapPointManager.removeIf(MinigamePoint.class::isInstance);
 		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);
 		worldMapPointManager.removeIf(RareTreePoint.class::isInstance);
@@ -223,6 +225,14 @@ public class WorldMapPlugin extends Plugin
 			Arrays.stream(QuestStartLocation.values())
 				.map(value -> new QuestStartPoint(value, BLANK_ICON))
 				.forEach(worldMapPointManager::add);
+		}
+
+		worldMapPointManager.removeIf(TransportationPoint.class::isInstance);
+		if (config.transportationTeleportTooltips())
+		{
+			Arrays.stream(TransportationPointLocation.values())
+					.map(value -> new TransportationPoint(value, BLANK_ICON))
+					.forEach((worldMapPointManager::add));
 		}
 
 		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);
