@@ -30,15 +30,13 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.util.StackFormatter;
 
-public class AmmoCounter extends Counter
+class AmmoCounter extends Counter
 {
 	@Getter
-	private int itemID;
+	private final int itemID;
+	private final String name;
 
-	@Getter
-	private String name;
-
-	public AmmoCounter(Plugin plugin, int itemID, int count, String name, BufferedImage image)
+	AmmoCounter(Plugin plugin, int itemID, int count, String name, BufferedImage image)
 	{
 		super(image, plugin, count);
 		this.itemID = itemID;
