@@ -146,13 +146,12 @@ public class FreezeTimersOverlay extends Overlay
                 Point imageLocation = new Point(textLocation.getX() - width, ((textLocation.getY() -
                         graphics.getFontMetrics().getHeight()) + 10));
                 graphics.setFont(FontManager.getRunescapeFont());
-                graphics.setStroke(new BasicStroke(3));
+               // graphics.setStroke(new BasicStroke(3));
 
                 if (config.spellIcon())
                 {
                     frozenoverlay = true;
-                    graphics.drawOval(imageLocation.getX(), imageLocation.getY(), clanchatImage.getWidth(),
-                            clanchatImage.getHeight());
+                   // graphics.drawOval(imageLocation.getX(), imageLocation.getY(), clanchatImage.getWidth(), clanchatImage.getHeight());
                     OverlayUtil.renderImageLocation(graphics, imageLocation, clanchatImage);
                     OverlayUtil.renderTextLocation(graphics, textLocation, String.valueOf(timer), color);
 

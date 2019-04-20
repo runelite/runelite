@@ -411,17 +411,14 @@ public class FreezeTimersPlugin extends Plugin
         }
     }
 
-    private static IndexedSprite createIndexedSprite(final Client client, final BufferedImage bufferedImage)
-    {
-        final IndexColorModel indexedCM = (IndexColorModel) bufferedImage.getColorModel();
-
-        final int width = bufferedImage.getWidth();
-        final int height = bufferedImage.getHeight();
-        final byte[] pixels = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
-        final int[] palette = new int[indexedCM.getMapSize()];
+    private static IndexedSprite createIndexedSprite(Client client, BufferedImage bufferedImage) {
+        IndexColorModel indexedCM = (IndexColorModel)bufferedImage.getColorModel();
+        int width = bufferedImage.getWidth();
+        int height = bufferedImage.getHeight();
+        byte[] pixels = ((DataBufferByte)bufferedImage.getRaster().getDataBuffer()).getData();
+        int[] palette = new int[indexedCM.getMapSize()];
         indexedCM.getRGBs(palette);
-
-        final IndexedSprite newIndexedSprite = client.createIndexedSprite();
+        IndexedSprite newIndexedSprite = client.createIndexedSprite();
         newIndexedSprite.setPixels(pixels);
         newIndexedSprite.setPalette(palette);
         newIndexedSprite.setWidth(width);
@@ -433,20 +430,14 @@ public class FreezeTimersPlugin extends Plugin
         return newIndexedSprite;
     }
 
-    private static BufferedImage rgbaToIndexedBufferedImage(final BufferedImage sourceBufferedImage)
-    {
-        final BufferedImage indexedImage = new BufferedImage(
-                sourceBufferedImage.getWidth(),
-                sourceBufferedImage.getHeight(),
-                BufferedImage.TYPE_BYTE_INDEXED);
-
-        final ColorModel cm = indexedImage.getColorModel();
-        final IndexColorModel icm = (IndexColorModel) cm;
-
-        final int size = icm.getMapSize();
-        final byte[] reds = new byte[size];
-        final byte[] greens = new byte[size];
-        final byte[] blues = new byte[size];
+    private static BufferedImage rgbaToIndexedBufferedImage(BufferedImage sourceBufferedImage) {
+        BufferedImage indexedImage = new BufferedImage(sourceBufferedImage.getWidth(), sourceBufferedImage.getHeight(), BufferedImage.TYPE_BYTE_INDEXED);
+        ColorModel cm = indexedImage.getColorModel();
+        IndexColorModel icm = (IndexColorModel)cm;
+        int size = icm.getMapSize();
+        byte[] reds = new byte[size];
+        byte[] greens = new byte[size];
+        byte[] blues = new byte[size];
         icm.getReds(reds);
         icm.getGreens(greens);
         icm.getBlues(blues);
