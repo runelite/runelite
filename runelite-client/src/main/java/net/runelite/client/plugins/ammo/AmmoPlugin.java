@@ -43,7 +43,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @PluginDescriptor(
 	name = "Ammo",
 	description = "Shows the current ammo the player has equipped",
-	tags = {"bolts", "darts", "chinchompa"}
+	tags = {"bolts", "darts", "chinchompa", "equipment"}
 )
 public class AmmoPlugin extends Plugin
 {
@@ -62,20 +62,21 @@ public class AmmoPlugin extends Plugin
 	private AmmoCounter counterBox;
 
 	@Override
-	public void startUp() throws Exception
+	protected void startUp() throws Exception
 	{
 		clientThread.invokeLater(() ->
 		{
-			ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
+			final ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
+
 			if (container != null)
 			{
-				parseInventory(container.getItems());
+				checkInventory(container.getItems());
 			}
 		});
 	}
 
 	@Override
-	public void shutDown() throws Exception
+	protected void shutDown() throws Exception
 	{
 		infoBoxManager.removeInfoBox(counterBox);
 		counterBox = null;
@@ -89,10 +90,10 @@ public class AmmoPlugin extends Plugin
 			return;
 		}
 
-		parseInventory(event.getItemContainer().getItems());
+		checkInventory(event.getItemContainer().getItems());
 	}
 
-	private void parseInventory(Item[] items)
+	private void checkInventory(final Item[] items)
 	{
 		// Check for weapon slot items. This overrides the ammo slot,
 		// as the player will use the thrown weapon (eg. chinchompas, knives, darts)
@@ -125,7 +126,7 @@ public class AmmoPlugin extends Plugin
 		updateInfobox(ammo, comp);
 	}
 
-	private void updateInfobox(Item item, ItemComposition comp)
+	private void updateInfobox(final Item item, final ItemComposition comp)
 	{
 		if (counterBox != null && counterBox.getItemID() == item.getId())
 		{
