@@ -42,4 +42,14 @@ public interface InterfaceStylesConfig extends Config
 	{
 		return Skin.AROUND_2010;
 	}
+
+	@ConfigItem(
+		keyName = "hdHealthBars",
+		name = "High Detail health bars",
+		description = "Replaces health bars with the RuneScape High Detail mode design"
+	)
+	default boolean hdHealthBars()
+	{
+		return false;
+	}
 }

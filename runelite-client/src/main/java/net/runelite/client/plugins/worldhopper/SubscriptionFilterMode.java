@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Shawn <http://github.com/DrRobosnarfen>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.client.plugins.worldhopper;
 
-import net.runelite.mapping.Import;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-public interface RSCombatInfo2
+@Getter
+@RequiredArgsConstructor
+public enum SubscriptionFilterMode
 {
-	@Import("healthScale")
-	int getHealthScale();
+	BOTH("Both"),
+	FREE("Free"),
+	MEMBERS("Member");
+
+	private final String name;
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

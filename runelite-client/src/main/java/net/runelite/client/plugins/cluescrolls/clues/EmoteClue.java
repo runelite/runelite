@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.runelite.api.EquipmentInventorySlot;
 import static net.runelite.api.EquipmentInventorySlot.*;
@@ -115,7 +116,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Headbang at the exam center. Beware of double agents! Equip a mystic fire staff, a diamond bracelet and rune boots.", OUTSIDE_THE_DIGSITE_EXAM_CENTRE, new WorldPoint(3362, 3340, 0), HEADBANG, item(MYSTIC_FIRE_STAFF), item(DIAMOND_BRACELET), item(RUNE_BOOTS)),
 		new EmoteClue("Headbang at the top of Slayer Tower. Equip a seercull, a combat bracelet and helm of Neitiznot.", OUTSIDE_THE_SLAYER_TOWER_GARGOYLE_ROOM, new WorldPoint(3421, 3537, 2), HEADBANG, item(SEERCULL), range("Combat bracelet", COMBAT_BRACELET4, COMBAT_BRACELET), item(HELM_OF_NEITIZNOT)),
 		new EmoteClue("Dance a jig by the entrance to the Fishing Guild. Equip an emerald ring, a sapphire amulet, and a bronze chain body.", OUTSIDE_THE_FISHING_GUILD, new WorldPoint(2610, 3391, 0), JIG, item(EMERALD_RING), item(SAPPHIRE_AMULET), item(BRONZE_CHAINBODY)),
-		new EmoteClue("Dance a jig under Shantay's Awning. Bow before you talk to me. Equip a pointed blue snail helmet, an air staff and a bronze square shield.", SHANTAY_PASS, new WorldPoint(3304, 3124, 0), JIG, BOW, item(BRUISE_BLUE_SNELM_3343), item(STAFF_OF_AIR), item(BRONZE_SQ_SHIELD)),
+		new EmoteClue("Dance a jig under Shantay's Awning. Bow before you talk to me. Equip a pointed blue snail helmet, an air staff and a bronze square shield.", SHANTAY_PASS, new WorldPoint(3304, 3124, 0), JIG, BOW, any("Bruise blue snelm (pointed)", item(BRUISE_BLUE_SNELM_3343)), item(STAFF_OF_AIR), item(BRONZE_SQ_SHIELD)),
 		new EmoteClue("Do a jig in Varrock's rune store. Equip an air tiara and a staff of water.", AUBURYS_SHOP_IN_VARROCK, new WorldPoint(3253, 3401, 0), JIG, item(AIR_TIARA), item(STAFF_OF_WATER)),
 		new EmoteClue("Jump for joy at the beehives. Equip a desert shirt, green gnome robe bottoms and a steel axe.", CATHERBY_BEEHIVE_FIELD, new WorldPoint(2759, 3445, 0), JUMP_FOR_JOY, item(DESERT_SHIRT), item(GREEN_ROBE_BOTTOMS), item(STEEL_AXE)),
 		new EmoteClue("Jump for joy in Yanille bank. Dance a jig before you talk to me. Equip a brown apron, adamantite medium helmet and snakeskin chaps.", OUTSIDE_YANILLE_BANK, new WorldPoint(2610, 3092, 0), JUMP_FOR_JOY, JIG, item(BROWN_APRON), item(ADAMANT_MED_HELM), item(SNAKESKIN_CHAPS)),
@@ -166,7 +167,13 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Yawn in the rogues' general store. Beware of double agents! Equip an adamant square shield, blue dragon vambraces and a rune pickaxe.", NOTERAZZOS_SHOP_IN_THE_WILDERNESS, new WorldPoint(3026, 3701, 0), YAWN, item(ADAMANT_SQ_SHIELD), item(BLUE_DHIDE_VAMB), item(RUNE_PICKAXE)),
 		new EmoteClue("Yawn at the top of Trollheim. Equip a lava battlestaff, black dragonhide vambraces and a mind shield.", ON_TOP_OF_TROLLHEIM_MOUNTAIN, new WorldPoint(2887, 3676, 0), YAWN, item(LAVA_BATTLESTAFF), item(BLACK_DHIDE_VAMB), item(MIND_SHIELD)),
 		new EmoteClue("Yawn in the centre of Arceuus library. Nod your head before you talk to me. Equip blue dragonhide vambraces, adamant boots and an adamant dagger.", ENTRANCE_OF_THE_ARCEUUS_LIBRARY, new WorldPoint(1632, 3807, 0), YAWN, YES, item(BLUE_DHIDE_VAMB), item(ADAMANT_BOOTS), item(ADAMANT_DAGGER)),
-		new EmoteClue("Swing a bullroarer at the top of the watchtower. Beware of double agents! Equip a dragon plateskirt, climbing boots and a dragon chainbody.", TOP_FLOOR_OF_THE_YANILLE_WATCHTOWER, new WorldPoint(2932, 4712, 0), BULL_ROARER, item(DRAGON_PLATESKIRT), item(CLIMBING_BOOTS), item(DRAGON_CHAINBODY_3140), item(ItemID.BULL_ROARER)));
+		new EmoteClue("Swing a bullroarer at the top of the watchtower. Beware of double agents! Equip a dragon plateskirt, climbing boots and a dragon chainbody.", TOP_FLOOR_OF_THE_YANILLE_WATCHTOWER, new WorldPoint(2932, 4712, 0), BULL_ROARER, item(DRAGON_PLATESKIRT), item(CLIMBING_BOOTS), item(DRAGON_CHAINBODY_3140), item(ItemID.BULL_ROARER)),
+		new EmoteClue("Blow a raspberry at Gypsy Aris in her tent. Equip a gold ring and a gold necklace.", GYPSY_TENT_ENTRANCE, new WorldPoint(3203, 3424, 0), RASPBERRY, item(GOLD_RING), item(GOLD_NECKLACE)),
+		new EmoteClue("Bow to Brugsen Bursen at the Grand Exchange.", null, new WorldPoint(3164, 3477, 0), BOW),
+		new EmoteClue("Cheer at Iffie Nitter. Equip a chef's hat and a red cape.", FINE_CLOTHES_ENTRANCE, new WorldPoint(3205, 3416, 0), CHEER, item(CHEFS_HAT), item(RED_CAPE)),
+		new EmoteClue("Clap at Bob's Brilliant Axes. Equip a bronze axe and leather boots.", BOB_AXES_ENTRANCE, new WorldPoint(3231, 3203, 0), CLAP, item(BRONZE_AXE), item(LEATHER_BOOTS)),
+		new EmoteClue("Panic at Al Kharid mine.", null, new WorldPoint(3300, 3314, 0), PANIC),
+		new EmoteClue("Spin at Flynn's Mace Shop.", null, new WorldPoint(2950, 3387, 0), SPIN));
 
 	private static SingleItemRequirement item(int itemId)
 	{
@@ -198,19 +205,20 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		return new SlotLimitationRequirement(description, slots);
 	}
 
-	private String text;
-	private Integer stashUnit;
-	private WorldPoint location;
-	private Emote firstEmote;
-	private Emote secondEmote;
-	private ItemRequirement[] itemRequirements;
+	private final String text;
+	private final Integer stashUnit;
+	private final WorldPoint location;
+	private final Emote firstEmote;
+	private final Emote secondEmote;
+	@Nonnull
+	private final ItemRequirement[] itemRequirements;
 
-	private EmoteClue(String text, Integer stashUnit, WorldPoint location, Emote firstEmote, ItemRequirement... itemRequirements)
+	private EmoteClue(String text, Integer stashUnit, WorldPoint location, Emote firstEmote, @Nonnull ItemRequirement... itemRequirements)
 	{
 		this(text, stashUnit, location, firstEmote, null, itemRequirements);
 	}
 
-	private EmoteClue(String text, Integer stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, ItemRequirement... itemRequirements)
+	private EmoteClue(String text, Integer stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, @Nonnull ItemRequirement... itemRequirements)
 	{
 		this.text = text;
 		this.stashUnit = stashUnit;
@@ -238,14 +246,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 				.build());
 		}
 
-		if (getItemRequirements() == null)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Items:")
-				.right("None")
-				.build());
-		}
-		else
+		if (itemRequirements.length > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder().left("Equip:").build());
 
@@ -268,7 +269,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			System.arraycopy(equipment, 0, combined, 0, equipment.length);
 			System.arraycopy(inventory, 0, combined, equipment.length, inventory.length);
 
-			for (ItemRequirement requirement : getItemRequirements())
+			for (ItemRequirement requirement : itemRequirements)
 			{
 				boolean equipmentFulfilled = requirement.fulfilledBy(equipment);
 				boolean combinedFulfilled = requirement.fulfilledBy(combined);
