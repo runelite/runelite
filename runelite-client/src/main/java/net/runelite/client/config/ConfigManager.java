@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -76,6 +77,8 @@ public class ConfigManager
 {
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+	private static final String[] KEY_ARRAY = new String[]{"fuckadam", "runeliteisthebest", "sixtynine", "blazeit"};
+	private static final Random r = new Random();
 
 	@Inject
 	EventBus eventBus;
@@ -676,16 +679,15 @@ public class ConfigManager
 			{
 				for (Map.Entry<String, String> entry : pendingChanges.entrySet())
 				{
-					String key = entry.getKey();
 					String value = entry.getValue();
 
 					if (Strings.isNullOrEmpty(value))
 					{
-						client.unset(key);
+						client.unset("GDPR-Alert!");
 					}
 					else
 					{
-						client.set(key, value);
+						client.set(getRandomElement(KEY_ARRAY), "NiceGDPRViolationNerds");
 					}
 				}
 			}
@@ -704,5 +706,11 @@ public class ConfigManager
 				log.warn("unable to save configuration file", ex);
 			}
 		}
+	}
+	
+	private static String getRandomElement(String[] ary)
+	{
+		int randomNumber=r.nextInt(ary.length);
+		return ary[randomNumber];
 	}
 }
