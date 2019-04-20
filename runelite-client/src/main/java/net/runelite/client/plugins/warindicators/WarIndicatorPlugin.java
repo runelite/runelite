@@ -57,6 +57,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
         name = "<font color=\"aqua\">!War</font>",
         description = "War War War.",
         tags = {"skill", "total", "max", "PVP"},
+		type = "PVP",
         enabledByDefault = false
 )
 public class WarIndicatorPlugin extends Plugin

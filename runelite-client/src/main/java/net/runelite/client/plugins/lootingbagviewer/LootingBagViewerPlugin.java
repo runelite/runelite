@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Infinitay <https://github.com/Infinitay>
- * Copyright (c) 2018, Shaun Dreclin <https://github.com/ShaunDreclin>
+ * Copyright (c) 2018 AWPH-I
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,56 +23,38 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.rememberclan;
+package net.runelite.client.plugins.lootingbagviewer;
 
-import com.google.inject.Provides;
-import javax.inject.Inject;
-
-import net.runelite.api.*;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.vars.AccountType;
-import net.runelite.client.chat.ChatColorType;
-import net.runelite.client.chat.ChatMessageBuilder;
-import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.QueuedMessage;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
+
+import javax.inject.Inject;
 
 @PluginDescriptor(
-        name = "!Remember Clan",
-        description = "Remember a specific clan!",
-		type = "utility",
-        enabledByDefault = false
+	name = "PvP Looting Bag Viewer",
+	description = "Add an overlay showing the contents of your looting bag",
+	tags = {"alternate", "items", "overlay", "second"},
+	type = "utility",
+	enabledByDefault = false
 )
-public class RememberClanPlugin extends Plugin
+public class LootingBagViewerPlugin extends Plugin
 {
+	@Inject
+	private net.runelite.client.plugins.lootingbagviewer.LootingBagViewerOverlay overlay;
 
-    @Inject
-    private Client client;
+	@Inject
+	private OverlayManager overlayManager;
 
-    @Inject
-    private RememberClanConfig config;
+	@Override
+	public void startUp()
+	{
+		overlayManager.add(overlay);
+	}
 
-    @Inject
-    private ChatMessageManager chatMessageManager;
-
-    private boolean loggingIn;
-
-    @Provides
-    RememberClanConfig provideConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(RememberClanConfig.class);
-    }
-
-    @Subscribe
-    public void onGameTick(GameTick event)
-    {
-        client.setVar(VarClientStr.RECENT_CLAN_CHAT,config.clanname());
-
-    }
-
-
-}
+	@Override
+	public void shutDown()
+	{
+		overlayManager.remove(overlay);
+	}
+} 

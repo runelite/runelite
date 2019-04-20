@@ -55,6 +55,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
         name = "<font color=\"aqua\">!MultiLines</font>",
         description = "Show borders of multicombat and PvP safezones",
         tags = {"multicombat", "lines", "pvp", "deadman", "safezones", "bogla"},
+		type = "utility",
         enabledByDefault = false
 )
 public class ZoneIndicatorsPlugin extends Plugin

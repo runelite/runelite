@@ -17,6 +17,7 @@ import java.util.LinkedHashMap;
         name = "!Group Item List",
         description = "Group the right click menu of a pile of items.",
         tags = {"ground", "compress", "pile", "group"},
+		type = "utility",
         enabledByDefault = false
 )
 

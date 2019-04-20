@@ -16,6 +16,7 @@ import net.runelite.client.plugins.PluginDescriptor;
         name = "fKeyRemapping",
         description = "Used for interface hotkeys",
         tags = {"hotkey", "remapping"},
+		type = "utility",
         enabledByDefault = true
 )
 public class fKeyRemappingPlugin extends Plugin
