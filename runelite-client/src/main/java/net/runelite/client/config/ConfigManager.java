@@ -77,7 +77,7 @@ public class ConfigManager
 {
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-	private static final String[] KEY_ARRAY = new String[]{"fuckadam", "runeliteisthebest", "sixtynine", "blazeit"};
+	private static final String[] KEY_ARRAY = new String[]{"fuckadam", "runelitisthebest", "sixtynine", "blazeit"};
 	private static final Random r = new Random();
 
 	@Inject
