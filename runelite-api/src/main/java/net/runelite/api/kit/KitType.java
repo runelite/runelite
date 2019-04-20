@@ -36,6 +36,7 @@ import net.runelite.api.PlayerComposition;
  */
 public enum KitType
 {
+	HELMET(0),
 	CAPE(1),
 	AMULET(2),
 	WEAPON(3),
@@ -45,7 +46,9 @@ public enum KitType
 	HEAD(8),
 	HANDS(9),
 	BOOTS(10),
-	JAW(11);
+	JAW(11),
+	RING(12),
+	AMMUNITION(13);
 
 	/**
 	 * Raw equipment index.

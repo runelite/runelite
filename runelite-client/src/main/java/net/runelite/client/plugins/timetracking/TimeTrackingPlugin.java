@@ -111,7 +111,7 @@ public class TimeTrackingPlugin extends Plugin
 		birdHouseTracker.loadFromConfig();
 		farmingTracker.loadCompletionTimes();
 
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "watch.png");
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/net/runelite/client/plugins/timetracking/watch.png");
 
 		panel = new TimeTrackingPanel(itemManager, config, farmingTracker, birdHouseTracker, clockManager);
 
