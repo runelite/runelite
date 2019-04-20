@@ -57,9 +57,10 @@ import net.runelite.client.util.ImageUtil;
 import org.slf4j.Logger;
 
 @PluginDescriptor(
-	name = "<font color=\"aqua\">!Freeze Timers</font>",
+	name = "Freeze Timers",
 	description = "PVP Freeze Timers",
-	tags = {"PvP", "Freeze", "Timers"}
+	tags = {"PvP", "Freeze", "Timers"},
+        type = "PVP"
 )
 
 public class FreezeTimersPlugin

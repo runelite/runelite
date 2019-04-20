@@ -76,9 +76,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "<font color=\"green\">!Slayermusiq1 Guides</font>",
+	name = "Slayermusiq1 Guides",
 	description = "Adds a right-click option to go to Slayermusiq1's guides from the quest tab",
-	tags = {"quest", "guide", "slayermusiq"}
+	tags = {"quest", "guide", "slayermusiq"},
+		type = "utility"
 )
 @Slf4j
 public class SlayermusiqPlugin extends Plugin

@@ -41,10 +41,11 @@ import javax.inject.Inject;
  * Shift Walker Plugin. Credit to MenuEntrySwapperPlugin for code some code structure used here.
  */
 @PluginDescriptor(
-	name = "<font color=\"green\">!Shift To Walk Here</font>",
+	name = "Shift To Walk",
 	description = "Use Shift to toggle the Walk Here menu option. While pressed you will Walk rather than interact with objects.",
 	tags = {"npcs", "items", "objects"},
-	enabledByDefault = false
+	enabledByDefault = false,
+		type = "utility"
 )
 public class ShiftWalkerPlugin extends Plugin
 {

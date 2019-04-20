@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zoneIndicators;
+package net.runelite.client.plugins.multiindicators;
 
 import net.runelite.client.eventbus.Subscribe;
 import com.google.inject.Provides;
@@ -52,12 +52,13 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-        name = "<font color=\"aqua\">!MultiLines</font>",
+        name = "Multi-Lines",
         description = "Show borders of multicombat and PvP safezones",
         tags = {"multicombat", "lines", "pvp", "deadman", "safezones", "bogla"},
-        enabledByDefault = false
+        enabledByDefault = false,
+        type = "PVP"
 )
-public class ZoneIndicatorsPlugin extends Plugin
+public class MultiIndicatorsPlugin extends Plugin
 {
     @Inject
     private Client client;
@@ -66,13 +67,13 @@ public class ZoneIndicatorsPlugin extends Plugin
     private ClientThread clientThread;
 
     @Inject
-    private ZoneIndicatorsConfig config;
+    private MultiIndicatorsConfig config;
 
     @Inject
-    private ZoneIndicatorsOverlay overlay;
+    private MultiIndicatorsOverlay overlay;
 
     @Inject
-    private ZoneIndicatorsMinimapOverlay minimapOverlay;
+    private MultiIndicatorsMinimapOverlay minimapOverlay;
 
     @Inject
     private OverlayManager overlayManager;
@@ -92,9 +93,9 @@ public class ZoneIndicatorsPlugin extends Plugin
     private int currentPlane;
 
     @Provides
-    ZoneIndicatorsConfig getConfig(ConfigManager configManager)
+    MultiIndicatorsConfig getConfig(ConfigManager configManager)
     {
-        return configManager.getConfig(ZoneIndicatorsConfig.class);
+        return configManager.getConfig(MultiIndicatorsConfig.class);
     }
 
     @Override

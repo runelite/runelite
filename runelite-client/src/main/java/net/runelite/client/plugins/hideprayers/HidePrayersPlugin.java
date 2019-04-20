@@ -20,8 +20,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @PluginDescriptor(
-	name = "<font color=\"green\">!Hide Prayers</font>", 
-	description = "Hides specific Prayers in the Prayer tab."
+	name = "Hide Prayers",
+	description = "Hides specific Prayers in the Prayer tab.",
+		type = "utility"
 )
 public class HidePrayersPlugin extends Plugin {
 	private static final int PRAYER_COUNT = Prayer.values().length;

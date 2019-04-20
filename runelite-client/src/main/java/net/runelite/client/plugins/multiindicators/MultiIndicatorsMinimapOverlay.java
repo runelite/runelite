@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zoneIndicators;
+package net.runelite.client.plugins.multiindicators;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -40,7 +40,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 
-public class ZoneIndicatorsMinimapOverlay extends Overlay
+public class MultiIndicatorsMinimapOverlay extends Overlay
 {
     private final static int MAX_LOCAL_DRAW_LENGTH = 20 * Perspective.LOCAL_TILE_SIZE;
 
@@ -48,13 +48,13 @@ public class ZoneIndicatorsMinimapOverlay extends Overlay
     private Client client;
 
     @Inject
-    private ZoneIndicatorsPlugin plugin;
+    private MultiIndicatorsPlugin plugin;
 
     @Inject
-    private ZoneIndicatorsConfig config;
+    private MultiIndicatorsConfig config;
 
     @Inject
-    public ZoneIndicatorsMinimapOverlay()
+    public MultiIndicatorsMinimapOverlay()
     {
         setPosition(OverlayPosition.DYNAMIC);
         setLayer(OverlayLayer.ALWAYS_ON_TOP);

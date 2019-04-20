@@ -58,4 +58,6 @@ public @interface PluginDescriptor
 	boolean developerPlugin() default false;
 
 	boolean loadWhenOutdated() default false;
+
+    String type() default "";
 }
