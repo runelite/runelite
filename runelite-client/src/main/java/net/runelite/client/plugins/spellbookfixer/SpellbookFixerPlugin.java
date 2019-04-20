@@ -21,7 +21,8 @@ import javax.inject.Inject;
 @PluginDescriptor(
         name = "Spellbook Fixer",
         description = "Resize and filter spellbook for PKing",
-        tags = {"resize", "spellbook", "magic", "spell", "pk", "book", "filter", "bogla"}
+        tags = {"resize", "spellbook", "magic", "spell", "pk", "book", "filter", "bogla"},
+        type = "PVP"
 )
 @Slf4j
 public class SpellbookFixerPlugin extends Plugin

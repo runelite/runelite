@@ -56,6 +56,7 @@ import net.runelite.client.eventbus.Subscribe;
         description = "Gives you an estimation damage on a boss and taken after the fight is done" +
                 "the damage will be posted in the chat",
         tags = {"combat", "npcs", "tob", "damage"},
+        type = "PVM",
         enabledByDefault = false
 )
 
