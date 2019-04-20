@@ -92,7 +92,7 @@ public class PluginSorterPlugin extends Plugin {
         Iterator<PluginListItem> iter = ConfigPanel.pluginList.iterator();
         while (iter.hasNext()) {
             PluginListItem pli = iter.next();
-            if (pli.getPlugin() != null)
+            if (pli.getPlugin() != null) {
                 if (!pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals(""))
                     if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("PVM")) {
                         iter.remove();
@@ -108,6 +108,7 @@ public class PluginSorterPlugin extends Plugin {
                         iter.remove();
                         removedPlugins.add(pli);
                     }
+            }
         }
     }
 
