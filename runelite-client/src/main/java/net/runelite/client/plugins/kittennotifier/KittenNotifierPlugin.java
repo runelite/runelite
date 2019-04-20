@@ -52,6 +52,7 @@ public class KittenNotifierPlugin extends Plugin{
     }
     @Subscribe
     public void onNpcActionChanged(NpcActionChanged event) {
+        if (event.getNpcComposition()!=null)
         if (!config.catOwned()) {
             for (NPC npc : client.getNpcs()) {
                 if (npc.getInteracting() != null) {
