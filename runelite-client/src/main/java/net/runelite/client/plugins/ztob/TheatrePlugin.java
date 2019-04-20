@@ -26,9 +26,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-        name = "<font color=\"#4863A0\">!Theatre of Blood</font>",
+        name = "Theatre of Blood",
         description = "All-in-one plugin for Theatre of Blood",
         tags = {"ToB"},
+        type = "PVM",
         enabledByDefault = false
 )
 

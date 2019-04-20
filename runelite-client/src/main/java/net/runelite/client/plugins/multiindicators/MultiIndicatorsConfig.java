@@ -22,15 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zoneIndicators;
+package net.runelite.client.plugins.multiindicators;
 
 import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("zoneIndicators")
-public interface ZoneIndicatorsConfig extends Config
+@ConfigGroup("multiindicators")
+public interface MultiIndicatorsConfig extends Config
 {
     @ConfigItem(
             keyName = "multicombatZoneVisibility",

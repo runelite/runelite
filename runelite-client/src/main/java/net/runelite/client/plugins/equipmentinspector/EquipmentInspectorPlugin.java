@@ -32,8 +32,10 @@ import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
 
 @PluginDescriptor(
-		name = "<font color=\"green\">!Equipment Inspector</font>",
-		enabledByDefault = false
+		name = "Equipment Inspector",
+		description = "Inspects enemy equipment",
+		enabledByDefault = false,
+		type = "utility"
 )
 
 @Slf4j

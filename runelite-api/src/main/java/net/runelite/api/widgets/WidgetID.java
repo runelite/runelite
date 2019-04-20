@@ -552,6 +552,13 @@ public class WidgetID
 			static final int ROLE_SPRITE = 11;
 			static final int ROLE = 12;
 		}
+		static class HLR
+		{
+			static final int TEAMMATE1 = 18;
+			static final int TEAMMATE2 = 22;
+			static final int TEAMMATE3 = 26;
+			static final int TEAMMATE4 = 30;
+		}
 		static final int CORRECT_STYLE = 3;
 		static final int CURRENT_WAVE_WIDGET = 4;
 		static final int CURRENT_WAVE = 5;
@@ -857,6 +864,9 @@ static final int WIND_STRIKE = 5;
 
 	static class Pvp
 	{
+		static final int PVP_WIDGET_CONTAINER = 54;  // OUTDATED?
+		static final int SKULL = 56;  // OUTDATED?
+		static final int ATTACK_RANGE = 59;  // OUTDATED?
 		static final int BOUNTY_HUNTER_INFO = 19;
 		static final int KILLDEATH_RATIO = 15;
 		static final int SKULL_CONTAINER = 62;

@@ -350,6 +350,11 @@ public enum Varbits
 	MULTICOMBAT_AREA(4605),
 
 	/**
+	 * In the Wilderness
+	 */
+	IN_THE_WILDERNESS(5963),
+
+	/**
 	 * Kingdom Management
 	 */
 	KINGDOM_FAVOR(72),

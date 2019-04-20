@@ -61,9 +61,10 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 @PluginDescriptor(
-	name = "<font color=\"green\">!AoE Warnings</font>",
+	name = "AoE Warnings",
 	description = "Shows the final destination for AoE Attack projectiles",
-	tags = {"bosses", "combat", "pve", "overlay"}
+	tags = {"bosses", "combat", "pve", "overlay"},
+		type = "PVM"
 )
 
 @Slf4j

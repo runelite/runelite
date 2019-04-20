@@ -14,9 +14,10 @@ import net.runelite.api.Client;
 import javax.inject.Inject;
 
 @PluginDescriptor(
-        name = "!Kitten Notifier",
+        name = "Kitten Notifier",
         description = "Sends a notification when your kitten needs food, attention, or is grown.",
-        tags = {"kitten, notifications"}
+        tags = {"kitten, notifications"},
+        type = "utility"
 )
 public class KittenNotifierPlugin extends Plugin{
     @Inject
@@ -51,10 +52,11 @@ public class KittenNotifierPlugin extends Plugin{
     }
     @Subscribe
     public void onNpcActionChanged(NpcActionChanged event) {
+        if (event.getNpcComposition()!=null)
         if (!config.catOwned()) {
             for (NPC npc : client.getNpcs()) {
                 if (npc.getInteracting() != null) {
-                    if (npc.getName().contentEquals("Cat") && !config.catOwned()) {
+                    if (npc.getName().equals("Cat") && !config.catOwned()) {
                         // If this if statement is included in previous it could null.
                         if (npc.getInteracting().getName().contentEquals(client.getLocalPlayer().getName())) {
                             config.catOwned(true);

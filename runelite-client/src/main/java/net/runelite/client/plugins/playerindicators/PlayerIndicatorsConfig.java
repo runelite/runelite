@@ -137,13 +137,48 @@ public interface PlayerIndicatorsConfig extends Config
 		name = "Non-clan member color",
 		description = "Color of non-clan member names"
 	)
-	default Color getNonClanMemberColor()
+	default Color getNonClanMemberColor() { return Color.RED; }
+
+	@ConfigItem(
+			position = 10,
+			keyName = "drawAttackerNames",
+			name = "Highlight attacker players",
+			description = "Configures whether or not attacker players should be highlighted"
+	)
+	default boolean highlightAttackerPlayers()
 	{
-		return Color.RED;
+		return false;
 	}
 
 	@ConfigItem(
-		position = 10,
+			position = 11,
+			keyName = "attackerColor",
+			name = "Attacker player color",
+			description = "Color of attacking player names"
+	)
+	default Color getAttackerPlayerColor() { return new Color(241, 0, 108); }
+
+	@ConfigItem(
+			position = 12,
+			keyName = "drawAttackableNames",
+			name = "Highlight attackable players",
+			description = "Configures whether or not attackable players should be highlighted"
+	)
+	default boolean highlightAttackablePlayers()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 13,
+			keyName = "attackableColor",
+			name = "Attackable player color",
+			description = "Color of attackable player names"
+	)
+	default Color getAttackablePlayerColor() { return new Color(231, 122,- 0); }
+
+	@ConfigItem(
+		position = 14,
 		keyName = "drawPlayerTiles",
 		name = "Draw tiles under players",
 		description = "Configures whether or not tiles under highlighted players should be drawn"
@@ -154,18 +189,29 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
-		keyName = "playerNamePosition",
-		name = "Name position",
-		description = "Configures the position of drawn player names, or if they should be disabled"
+		position = 15,
+		keyName = "drawOverheadPlayerNames",
+		name = "Draw names above players",
+		description = "Configures whether or not player names should be drawn above players"
 	)
-	default PlayerNameLocation playerNamePosition()
+	default boolean drawOverheadPlayerNames()
 	{
-		return PlayerNameLocation.ABOVE_HEAD;
+		return true;
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 16,
+		keyName = "drawOverheadLevels",
+		name = "Draw combat levels above players",
+		description = "Configures whether or not combat levels should be drawn above players"
+	)
+	default boolean drawOverheadLevels()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 17,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not minimap names for players with rendered names should be drawn"
@@ -176,7 +222,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 18,
 		keyName = "colorPlayerMenu",
 		name = "Colorize player menu",
 		description = "Color right click menu for players"
@@ -187,7 +233,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+	    position = 19,
 		keyName = "clanMenuIcons",
 		name = "Show clan ranks",
 		description = "Add clan rank to right click menu and next to player names"
@@ -196,4 +242,109 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return true;
 	}
+
+    @ConfigItem(
+            position = 20,
+            keyName = "showOfflineFriends",
+            name = "Show offline friends",
+            description = "Draw friends names even if they're offline"
+    )
+    default boolean showOfflineFriends()
+    {
+        return true;
+    }
+
+	@ConfigItem(
+			position = 21,
+			keyName = "drawHighlightedNames",
+			name = "Draw highlighted player names",
+			description = "Configures whether or not highlighted player names should be drawn"
+	)
+	default boolean drawHighlightedNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "highlightedNames",
+			name = "Highlighted names",
+			description = "Clan caller names separated by a comma"
+	)
+	default String getHighlightedNames()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+			keyName = "highlightedNamesColor",
+			name = "Highlighted names color",
+			description = "Color of highlighted names"
+	)
+	default Color getHighlightedNamesColor()
+	{
+		return Color.ORANGE;
+	}
+
+	@ConfigItem(
+            position = 22,
+			keyName = "drawHighlightedTargetNames",
+			name = "Draw highlighted target names",
+			description = "Configures whether or not highlighted target names should be drawn"
+	)
+	default boolean drawHighlightedTargetNames()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 23,
+			keyName = "highlightedTargetColor",
+			name = "Highlighted target color",
+			description = "Color of highlighted target names"
+	)
+	default Color getHighlightedTargetColor()
+	{
+		return new Color(255, 100, 183);
+	}
+
+	@ConfigItem(
+			position = 24,
+			keyName = "limitLevel",
+			name = "Limit Level",
+			description = "Limit the players to show +-x your level. Useful for BH"
+	)
+	default boolean limitLevel()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 25,
+			keyName = "level",
+			name = "Level",
+			description = "The level to limit players shown +-x"
+	)
+	default int intLevel()
+	{
+		return 5;
+	}
+
+    @ConfigItem(
+            position = 26,
+            keyName = "wildernessOnly",
+            name = "Show only in wilderness",
+            description = "Toggle whether or not to only show player indicators in the wilderness"
+    )
+    default boolean showInWildernessOnly()
+    {
+        return false;
+    }
+
+	@ConfigItem(
+			position = 27,
+			keyName="rightClickOverhead",
+			name="Add Overheads to Right Click Menu",
+			description="Feature shows a player's overhead prayer in the right click menu. Useful for DDs, or extremely crowded areas.")
+
+	default boolean rightClickOverhead() { return false; }
 }

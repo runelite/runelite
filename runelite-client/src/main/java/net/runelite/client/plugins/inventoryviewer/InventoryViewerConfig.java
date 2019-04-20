@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2019 Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zoneIndicators;
+package net.runelite.client.plugins.inventoryviewer;
 
-import lombok.RequiredArgsConstructor;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-@RequiredArgsConstructor
-public enum ZoneVisibility
+@ConfigGroup(InventoryViewerPlugin.CONFIG_GROUP_KEY)
+public interface InventoryViewerConfig extends Config
 {
-    HIDE("Hide"),
-    SHOW_IN_PVP("Show in PvP"),
-    SHOW_EVERYWHERE("Show everywhere");
+	@ConfigItem(
+		keyName = "viewerMode",
+		name = "Mode",
+		description = "The mode to display the inventory viewer with"
+	)
+	default InventoryViewerMode viewerMode()
+	{
+		return InventoryViewerMode.FULL;
+	}
 
-    private final String visibility;
+	@ConfigItem(
+		keyName = "showFreeSlots",
+		name = "Show Free Slots",
+		description = "Whether to show a label with the free slots in the inventory"
+	)
+	default boolean showFreeSlots()
+	{
+		return false;
+	}
 
-    @Override
-    public String toString()
+    @ConfigItem(
+            keyName = "hideWhenInvOpen",
+            name = "Hide when inventory is open",
+            description = "Hide the inventory viewer when the player's inventory is open"
+    )
+    default boolean hideWhenInvOpen()
     {
-        return visibility;
+        return false;
     }
 }

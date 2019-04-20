@@ -87,4 +87,26 @@ public interface XpDropConfig extends Config
 		return 0;
 	}
 
+	@ConfigItem(
+			keyName = "showDamage",
+			name = "Show Damage on XP Drop",
+			description = "Show what you hit next to the XP drop",
+			position = 5
+	)
+	default boolean showDamage()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "damageColor",
+		name = "Damage Color",
+		description = "The color you want the text to be for damage",
+		position = 6
+	)
+	default Color getDamageColor()
+	{
+		return Color.RED;
+	}
+
 }
