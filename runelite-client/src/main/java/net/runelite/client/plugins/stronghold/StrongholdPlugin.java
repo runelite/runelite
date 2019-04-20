@@ -43,7 +43,7 @@ import java.awt.Color;
         name = "Stronghold",
         description = "Highlights the correct answer to Stronghold of Security questions",
         tags = {"stronghold", "security", "overlay", "answer", "highlight"},
-		type = "utility",
+		type = "utility"
 )
 @Slf4j
 public class StrongholdPlugin extends Plugin {
