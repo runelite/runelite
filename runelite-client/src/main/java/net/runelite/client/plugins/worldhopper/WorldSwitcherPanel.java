@@ -428,6 +428,13 @@ class WorldSwitcherPanel extends PluginPanel
 
 	void populate(List<World> worlds)
 	{
+		Map<Integer, Integer> pingHistory = new HashMap<>();
+
+		for (WorldTableRow row : rows)
+		{
+			pingHistory.put(row.getWorld().getId(), row.getPing());
+		}
+
 		rows.clear();
 
 		for (int i = 0; i < worlds.size(); i++)
@@ -450,7 +457,8 @@ class WorldSwitcherPanel extends PluginPanel
 					break;
 			}
 
-			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));
+			Integer ping = pingHistory.getOrDefault(world.getId(), 0);
+			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world), ping));
 		}
 
 		updateList();
@@ -599,7 +607,7 @@ class WorldSwitcherPanel extends PluginPanel
 	/**
 	 * Builds a table row, that displays the world's information.
 	 */
-	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite)
+	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite, Integer ping)
 	{
 		WorldTableRow row = new WorldTableRow(world, current, favorite,
 				world1 ->
