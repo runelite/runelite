@@ -52,7 +52,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-        name = "<font color=\"aqua\">!MultiLines</font>",
+        name = "MultiLines",
         description = "Show borders of multicombat and PvP safezones",
         tags = {"multicombat", "lines", "pvp", "deadman", "safezones", "bogla"},
 		type = "utility",

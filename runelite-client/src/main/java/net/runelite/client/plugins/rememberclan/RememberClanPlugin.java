@@ -43,7 +43,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-        name = "!Remember Clan",
+        name = "Remember Clan",
         description = "Remember a specific clan!",
 		type = "utility",
         enabledByDefault = false

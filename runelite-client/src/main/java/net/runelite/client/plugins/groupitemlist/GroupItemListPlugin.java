@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 @PluginDescriptor(
-        name = "!Group Item List",
+        name = "Group Item List",
         description = "Group the right click menu of a pile of items.",
         tags = {"ground", "compress", "pile", "group"},
 		type = "utility",

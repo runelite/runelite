@@ -40,9 +40,9 @@ import javax.inject.Inject;
 import java.awt.Color;
 
 @PluginDescriptor(
-        name = "!Stronghold",
+        name = "Stronghold",
         description = "Highlights the correct answer to Stronghold of Security questions",
-        tags = {"stronghold", "security", "overlay", "answer", "highlight"}
+        tags = {"stronghold", "security", "overlay", "answer", "highlight"},
 		type = "utility",
 )
 @Slf4j

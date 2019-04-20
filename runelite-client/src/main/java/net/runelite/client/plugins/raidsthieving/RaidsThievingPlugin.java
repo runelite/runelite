@@ -53,9 +53,10 @@ import java.util.Map;
 
 @Slf4j
 @PluginDescriptor(
-	name = "<font color=\"#4863A0\">!Raids Bat Finder</font>",
+	name = "Raids Bat Finder",
 	description = "Tracks which chests need to be searched for bats and which poison",
-	tags = {"overlay", "skilling", "raid"}
+	tags = {"overlay", "skilling", "raid"},
+	type = "PVM"
 )
 public class RaidsThievingPlugin extends Plugin
 {
