@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Hydrox6 <ikada@protonmail.ch>
+ * Copyright (c) 2018, Craftiii4 <craftiii4@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.ammo;
+package net.runelite.client.config;
 
-import java.awt.image.BufferedImage;
+import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.Counter;
-import net.runelite.client.util.StackFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
 
-class AmmoCounter extends Counter
+public class ConfigItemsGroup
 {
-	@Getter
-	private final int itemID;
-	private final String name;
 
-	AmmoCounter(Plugin plugin, int itemID, int count, String name, BufferedImage image)
-	{
-		super(image, plugin, count);
-		this.itemID = itemID;
-		this.name = name;
-	}
+    @Getter(AccessLevel.PUBLIC)
+    private final String group;
 
-	@Override
-	public String getText()
-	{
-		return StackFormatter.quantityToRSDecimalStack(getCount());
-	}
+    @Getter(AccessLevel.PUBLIC)
+    private Collection<ConfigItemDescriptor> items;
 
-	@Override
-	public String getTooltip()
-	{
-		return name;
-	}
+    public ConfigItemsGroup(String group)
+    {
+        this.group = group;
+        this.items = new ArrayList<>();
+    }
+
+    public void addItem(ConfigItemDescriptor item)
+    {
+        items.add(item);
+    }
+
 }
