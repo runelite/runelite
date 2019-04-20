@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Tim Lehner <Timothy.Lehner.2011@live.rhul.ac.uk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,46 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.raidsthieving;
 
-/**
- * An enumeration of possible inventory types.
- */
-public enum InventoryID
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
+
+@ConfigGroup("raidsthievingplugin")
+public interface RaidsThievingConfig extends Config
 {
-	/**
-	 * Standard player inventory.
-	 */
-	INVENTORY(93),
-	/**
-	 * Equipment inventory.
-	 */
-	EQUIPMENT(94),
-	/**
-	 * Bank inventory.
-	 */
-	BANK(95),
-	/**
-	 * A puzzle box inventory.
-	 */
-	PUZZLE_BOX(140),
-	/**
-	 * Barrows reward chest inventory.
-	 */
-	BARROWS_REWARD(141),
-	/**
-	 * Monkey madness puzzle box inventory.
-	 */
-	MONKEY_MADNESS_PUZZLE_BOX(221),
-	/**
-	 * Chambers of Xeric chest inventory.
-	 */
-	CHAMBERS_OF_XERIC_CHEST(581),
-	/**
-	 * Looting Bag inventory
-	 */
-	LOOTING_BAG(516),
-	/**
-	 * Theater of Blood reward chest inventory (Raids 2)
-	 */
-	THEATRE_OF_BLOOD_CHEST(612);
-
-	private final int id;
-
-	InventoryID(int id)
+	@ConfigItem(
+		position = 1,
+		keyName = "hexColorPotentialBat",
+		name = "Potential Bat",
+		description = "Color of marker for chests which could have bat"
+	)
+	default Color getPotentialBatColor()
 	{
-		this.id = id;
+		return Color.YELLOW;
 	}
 
-	/**
-	 * Gets the raw inventory type ID.
-	 *
-	 * @return inventory type
-	 */
-	public int getId()
+	@ConfigItem(
+		position = 2,
+		keyName = "hexColorPoison",
+		name = "Poison trap",
+		description = "Color of chest with poison"
+	)
+	default Color getPoisonTrapColor()
 	{
-		return id;
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "batNotify",
+		name = "Notify when found",
+		description = "Send notification if you see bats being found."
+	)
+	default boolean batFoundNotify()
+	{
+		return false;
 	}
 }

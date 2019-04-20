@@ -15,7 +15,8 @@ class ItemPanel extends JPanel
 
 	ItemPanel(ItemComposition item, KitType kitType, AsyncBufferedImage icon)
 	{
-		setBorder(new EmptyBorder(3, 3, 3, 3));
+
+        setBorder(new EmptyBorder(3, 3, 3, 3));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		GroupLayout layout = new GroupLayout(this);

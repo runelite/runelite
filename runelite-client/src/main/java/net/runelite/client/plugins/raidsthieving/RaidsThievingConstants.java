@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Tim Lehner <Timothy.Lehner.2011@live.rhul.ac.uk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.raidsthieving;
 
-/**
- * An enumeration of possible inventory types.
- */
-public enum InventoryID
+public class RaidsThievingConstants
 {
-	/**
-	 * Standard player inventory.
-	 */
-	INVENTORY(93),
-	/**
-	 * Equipment inventory.
-	 */
-	EQUIPMENT(94),
-	/**
-	 * Bank inventory.
-	 */
-	BANK(95),
-	/**
-	 * A puzzle box inventory.
-	 */
-	PUZZLE_BOX(140),
-	/**
-	 * Barrows reward chest inventory.
-	 */
-	BARROWS_REWARD(141),
-	/**
-	 * Monkey madness puzzle box inventory.
-	 */
-	MONKEY_MADNESS_PUZZLE_BOX(221),
-	/**
-	 * Chambers of Xeric chest inventory.
-	 */
-	CHAMBERS_OF_XERIC_CHEST(581),
-	/**
-	 * Looting Bag inventory
-	 */
-	LOOTING_BAG(516),
-	/**
-	 * Theater of Blood reward chest inventory (Raids 2)
-	 */
-	THEATRE_OF_BLOOD_CHEST(612);
-
-	private final int id;
-
-	InventoryID(int id)
-	{
-		this.id = id;
-	}
-
-	/**
-	 * Gets the raw inventory type ID.
-	 *
-	 * @return inventory type
-	 */
-	public int getId()
-	{
-		return id;
-	}
+	public static final int CLOSED_CHEST_ID = 29742;
+	public static final int OPEN_EMPTY_CHEST = 29743;
+	public static final int OPEN_FULL_CHEST_1 = 29744;
+	public static final int OPEN_FULL_CHEST_2 = 29745;
+	public static final int EMPTY_TROUGH = 29746;
+	public static final int[] STORAGE = {29769, 29770, 29771, 29772};
 }
