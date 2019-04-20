@@ -372,7 +372,7 @@ public enum Varbits
 	/**
 	 * This varbit tracks how much bonemeal has been redeemed from Robin
 	 * The player gets 13 for each diary completed above and including Medium, for a maxiumum of 39
-	*/
+	 */
 	DAILY_BONEMEAL_STATE(4543),
 
 	/**
