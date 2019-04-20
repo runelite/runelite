@@ -480,7 +480,16 @@ public enum Varbits
 	/**
 	 * The active tab within the quest interface
 	 */
-	QUEST_TAB(8168);
+	QUEST_TAB(8168),
+	
+	/**
+	 *  Temple Trekking
+	 */
+	TREK_POINTS(1955),
+	TREK_STARTED(1956),
+	TREK_EVENT(1958),
+	TREK_STATUS(6719);
+
 
 	/**
 	 * The raw varbit ID.

@@ -154,10 +154,26 @@ public final class AnimationID
 	public static final int PISCARILIUS_CRANE_REPAIR = 7199;
 	public static final int HOME_MAKE_TABLET = 4067;
 
+	//block animations for players and perhaps npcs as well?
+	public static final int BLOCK_DEFENDER = 4177;
+	public static final int BLOCK_NO_SHIELD = 420;
+	public static final int BLOCK_SHIELD = 1156;
+	public static final int BLOCK_SWORD = 388;
+	public static final int BLOCK_UNARMED = 424;
+
 	// NPC animations
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
 	public static final int HELLHOUND_DEFENCE = 6566;
+	public static final int VORKATH_WAKE_UP = 7950;
+	public static final int VORKATH_DEATH = 7949;
+	public static final int VORKATH_SLASH_ATTACK = 7951;
+	public static final int VORKATH_ATTACK = 7952;
+	public static final int VORKATH_FIRE_BOMB_ATTACK = 7960;
+	public static final int VORKATH_ACID_ATTACK = 7957;
+	public static final int BLACKJACK_KO = 838;
+	public static final int VETION_EARTHQUAKE = 5507;
+	public static final int ZULRAH_DEATH = 5804;										 
 
 	// Farming
 	public static final int FARMING_HARVEST_FRUIT_TREE = 2280;
@@ -194,4 +210,7 @@ public final class AnimationID
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
+	public static final int LOW_LEVEL_MAGIC_ATTACK = 1162;
+    public static final int HIGH_LEVEL_MAGIC_ATTACK = 1167;
+    public static final int BLOWPIPE_ATTACK = 5061;
 }
