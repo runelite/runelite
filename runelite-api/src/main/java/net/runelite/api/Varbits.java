@@ -484,6 +484,7 @@ public enum Varbits
 
 	/**
 	 * Master Scroll Book Teleports
+	 * Gives amount of given teleport scrolls in master scroll book
 	 */
 	MASTER_SCROLL_BOOK_NARDAH(5672),
 	MASTER_SCROLL_BOOK_DIGSITE(5673),
