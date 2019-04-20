@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,53 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.rs.api;
 
-import net.runelite.api.Client;
-import net.runelite.api.Query;
-import net.runelite.api.widgets.WidgetItem;
+import net.runelite.mapping.Import;
 
-public abstract class WidgetItemQuery extends Query<WidgetItem, WidgetItemQuery>
+public interface RSHealthBar
 {
-
-	public WidgetItemQuery idEquals(int... ids)
-	{
-		predicate = and(item ->
-		{
-			for (int id : ids)
-			{
-				if (item.getId() == id)
-				{
-					return true;
-				}
-			}
-			return false;
-		});
-		return this;
-	}
-
-	public WidgetItemQuery indexEquals(int... indexes)
-	{
-		predicate = and(item ->
-		{
-			for (int index : indexes)
-			{
-				if (item.getIndex() == index)
-				{
-					return true;
-				}
-			}
-			return false;
-		});
-		return this;
-	}
-
-	public WidgetItemQuery quantityEquals(int quantity)
-	{
-		predicate = and(item -> item.getQuantity() == quantity);
-		return this;
-	}
-
-	@Override
-	public abstract WidgetItem[] result(Client client);
+	@Import("healthScale")
+	int getHealthScale();
 }

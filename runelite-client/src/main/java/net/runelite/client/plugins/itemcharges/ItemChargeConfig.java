@@ -205,10 +205,50 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showBindingNecklaceCharges",
+		name = "Show Binding Necklace Charges",
+		description = "Configures if binding necklace item charge is shown",
+		position = 15
+	)
+	default boolean showBindingNecklaceCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "bindingNecklace",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int bindingNecklace()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "bindingNecklace",
+		name = "",
+		description = ""
+	)
+	void bindingNecklace(int bindingNecklace);
+
+	@ConfigItem(
+		keyName = "bindingNotification",
+		name = "Binding Necklace Notification",
+		description = "Configures if the binding necklace breaking notification is shown",
+		position = 16
+	)
+	default boolean bindingNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
-		position = 15
+		position = 17
 	)
 	default boolean showInfoboxes()
 	{

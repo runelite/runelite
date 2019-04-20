@@ -27,21 +27,16 @@ package net.runelite.client.plugins.cluescrolls.clues;
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-@AllArgsConstructor
 public class CoordinateClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
 	private static final ImmutableMap<WorldPoint, String> CLUES = new ImmutableMap.Builder<WorldPoint, String>()
@@ -64,7 +59,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2848, 3296, 0), "North of Crandor island.")
 		.put(new WorldPoint(2583, 2990, 0), "Feldip Hills, south-east of Gu'Thanoth (AKS).")
 		.put(new WorldPoint(3179, 3344, 0), "South of the Champions' Guild, opposite side of the River Lum.")
-		.put(new WorldPoint(2383, 3370, 0), "South-west of Tree Gnome Stronghold.")
+		.put(new WorldPoint(2383, 3370, 0), "West of the outpost")
 		.put(new WorldPoint(3312, 3375, 0), "North-west of Exam Centre, on the hill.")
 		.put(new WorldPoint(3121, 3384, 0), "North-east of Draynor Manor, near River Lum.")
 		.put(new WorldPoint(3430, 3388, 0), "West of Mort Myre Swamp.")
@@ -85,6 +80,9 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2735, 3638, 0), "East of Rellekka, north-west of Golden Apple Tree (AJR).")
 		.put(new WorldPoint(2681, 3653, 0), "Rellekka, in the garden of the south-east house.")
 		.put(new WorldPoint(2537, 3881, 0), "Miscellania.")
+		.put(new WorldPoint(2828, 3234, 0), "Southern coast of Crandor.")
+		.put(new WorldPoint(1247, 3726, 0), "Just inside the Farming Guild")
+		.put(new WorldPoint(3770, 3898, 0), "On the small island north-east of Fossil Island's mushroom forest.")
 		// Hard
 		.put(new WorldPoint(2209, 3161, 0), "North-east of Tyras Camp.")
 		.put(new WorldPoint(2181, 3206, 0), "South of Elf Camp.")
@@ -134,6 +132,9 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3039, 3960, 0), "Wilderness. Pirates' Hideout.")
 		.put(new WorldPoint(2987, 3963, 0), "Wilderness. West of Wilderness Agility Course.")
 		.put(new WorldPoint(3189, 3963, 0), "Wilderness. North of Resource Area, near magic axe hut.")
+		.put(new WorldPoint(2341, 3697, 0), "North-east of the Piscatoris Fishing Colony bank.")
+		.put(new WorldPoint(3143, 3774, 0), "In level 32 Wilderness, by the black chinchompa hunting area.")
+		.put(new WorldPoint(2992, 3941, 0), "Wilderness Agility Course, past the log balance.")
 		// Elite
 		.put(new WorldPoint(2357, 3151, 0), "Lletya.")
 		.put(new WorldPoint(3587, 3180, 0), "Meiyerditch.")
@@ -163,6 +164,8 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3188, 3933, 0), "Wilderness. Resource Area.")
 		.put(new WorldPoint(2997, 3953, 0), "Wilderness. Inside Agility Training Area.")
 		.put(new WorldPoint(3380, 3963, 0), "Wilderness. North of Volcano.")
+		.put(new WorldPoint(3051, 3736, 0), "East of the Wilderness Obelisk in 28 Wilderness.")
+		.put(new WorldPoint(2316, 3814, 0), "West of Neitiznot, near the bridge.")
 		// Master
 		.put(new WorldPoint(2178, 3209, 0), "South of Elf Camp.")
 		.put(new WorldPoint(2155, 3100, 0), "South of Port Tyras (BJS).")
@@ -179,7 +182,6 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2934, 2727, 0), "Eastern shore of Crash Island.")
 		.put(new WorldPoint(1451, 3695, 0), "West side of Lizardman Canyon with Lizardman shaman.")
 		.put(new WorldPoint(2538, 3739, 0), "Waterbirth Island.")
-		.put(new WorldPoint(1248, 3751, 0), "Farming Guild.")
 		.put(new WorldPoint(1698, 3792, 0), "Arceuus church.")
 		.put(new WorldPoint(2951, 3820, 0), "Wilderness. Chaos Temple (level 38).")
 		.put(new WorldPoint(2202, 3825, 0), "Pirates' Cove, between Lunar Isle and Rellekka.")
@@ -190,11 +192,18 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3188, 3939, 0), "Wilderness. Resource Area.")
 		.put(new WorldPoint(3304, 3941, 0), "Wilderness. East of Rogues' Castle.")
 		.put(new WorldPoint(2994, 3961, 0), "Wilderness. Inside Agility Training Area.")
+		.put(new WorldPoint(1248, 3751, 0), "In the north wing of the Farming Guild.")
 		.build();
 
-	private String text;
-	private WorldPoint location;
-	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(ItemID.SPADE);
+	private final String text;
+	private final WorldPoint location;
+
+	public CoordinateClue(String text, WorldPoint location)
+	{
+		this.text = text;
+		this.location = location;
+		setRequiresSpade(true);
+	}
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
@@ -214,15 +223,6 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Click the clue scroll on your world map to see dig location.")
 			.build());
-
-		if (plugin.getInventoryItems() != null)
-		{
-			if (!HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
-			{
-				panelComponent.getChildren().add(LineComponent.builder().left("").build());
-				panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
-			}
-		}
 	}
 
 	@Override

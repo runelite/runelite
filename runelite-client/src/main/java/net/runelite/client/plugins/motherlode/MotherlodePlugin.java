@@ -217,7 +217,7 @@ public class MotherlodePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!inMlm || event.getType() != ChatMessageType.FILTERED)
+		if (!inMlm || event.getType() != ChatMessageType.SPAM)
 		{
 			return;
 		}

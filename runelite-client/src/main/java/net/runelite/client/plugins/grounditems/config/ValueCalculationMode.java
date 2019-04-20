@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2019, Abel Briggs <https://github.com/abelbriggs1>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.util;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.api.Client;
-import net.runelite.api.Query;
+package net.runelite.client.plugins.grounditems.config;
 
-@Singleton
-public class QueryRunner
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum ValueCalculationMode
 {
-	@Inject
-	private Client client;
+	HA("High Alchemy"), // calc highlight by HA value
+	GE("Grand Exchange"), // calc by GE
+	HIGHEST("Highest"); // use whatever is highest.
 
-	@SuppressWarnings("unchecked")
-	public <T> T[] runQuery(Query query)
+	private final String name;
+
+	@Override
+	public String toString()
 	{
-		return (T[]) query.result(client);
+		return name;
 	}
 }

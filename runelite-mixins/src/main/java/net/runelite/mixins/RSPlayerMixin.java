@@ -155,6 +155,8 @@ public abstract class RSPlayerMixin implements RSPlayer
 
 		int orientation = getOrientation();
 
+		final int tileHeight = Perspective.getTileHeight(client, new LocalPoint(localX, localY), client.getPlane());
+
 		List<Triangle> triangles = model.getTriangles();
 
 		triangles = rotate(triangles, orientation);
@@ -167,25 +169,25 @@ public abstract class RSPlayerMixin implements RSPlayer
 			Vertex vz = triangle.getC();
 
 			Point x = Perspective.localToCanvas(client,
-				new LocalPoint(localX - vx.getX(), localY - vx.getZ()),
-				client.getPlane(),
-				-vx.getY());
+				localX - vx.getX(),
+				localY - vx.getZ(),
+				tileHeight + vx.getY());
 
 			Point y = Perspective.localToCanvas(client,
-				new LocalPoint(localX - vy.getX(), localY - vy.getZ()),
-				client.getPlane(),
-				-vy.getY());
+				localX - vy.getX(),
+				localY - vy.getZ(),
+				tileHeight + vy.getY());
 
 			Point z = Perspective.localToCanvas(client,
-				new LocalPoint(localX - vz.getX(), localY - vz.getZ()),
-				client.getPlane(),
-				-vz.getY());
+				localX - vz.getX(),
+				localY - vz.getZ(),
+				tileHeight + vz.getY());
 
-			int xx[] =
+			int[] xx =
 			{
 				x.getX(), y.getX(), z.getX()
 			};
-			int yy[] =
+			int[] yy =
 			{
 				x.getY(), y.getY(), z.getY()
 			};
@@ -193,6 +195,20 @@ public abstract class RSPlayerMixin implements RSPlayer
 		}
 
 		return polys.toArray(new Polygon[polys.size()]);
+	}
+
+	@Inject
+	@Override
+	public Polygon getConvexHull()
+	{
+		RSModel model = getModel();
+		if (model == null)
+		{
+			return null;
+		}
+
+		int tileHeight = Perspective.getTileHeight(client, new LocalPoint(getX(), getY()), client.getPlane());
+		return model.getConvexHull(getX(), getY(), getOrientation(), tileHeight);
 	}
 
 	@Inject
