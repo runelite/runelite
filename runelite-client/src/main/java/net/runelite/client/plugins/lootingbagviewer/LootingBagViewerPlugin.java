@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018 AWPH-I
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
 
-/**
- * An enumeration of possible inventory types.
- */
-public enum InventoryID
+package net.runelite.client.plugins.lootingbagviewer;
+
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
+
+import javax.inject.Inject;
+
+@PluginDescriptor(
+	name = "PvP Looting Bag Viewer",
+	description = "Add an overlay showing the contents of your looting bag",
+	tags = {"alternate", "items", "overlay", "second"},
+	enabledByDefault = false
+)
+public class LootingBagViewerPlugin extends Plugin
 {
-	/**
-	 * Standard player inventory.
-	 */
-	INVENTORY(93),
-	/**
-	 * Equipment inventory.
-	 */
-	EQUIPMENT(94),
-	/**
-	 * Bank inventory.
-	 */
-	BANK(95),
-	/**
-	 * A puzzle box inventory.
-	 */
-	PUZZLE_BOX(140),
-	/**
-	 * Barrows reward chest inventory.
-	 */
-	BARROWS_REWARD(141),
-	/**
-	 * Monkey madness puzzle box inventory.
-	 */
-	MONKEY_MADNESS_PUZZLE_BOX(221),
-	/**
-	 * Chambers of Xeric chest inventory.
-	 */
-	CHAMBERS_OF_XERIC_CHEST(581),
-	/**
-	 * Looting Bag inventory
-	 */
-	LOOTING_BAG(516),
-	/**
-	 * Theater of Blood reward chest inventory (Raids 2)
-	 */
-	THEATRE_OF_BLOOD_CHEST(612);
+	@Inject
+	private net.runelite.client.plugins.lootingbagviewer.LootingBagViewerOverlay overlay;
 
-	private final int id;
+	@Inject
+	private OverlayManager overlayManager;
 
-	InventoryID(int id)
+	@Override
+	public void startUp()
 	{
-		this.id = id;
+		overlayManager.add(overlay);
 	}
 
-	/**
-	 * Gets the raw inventory type ID.
-	 *
-	 * @return inventory type
-	 */
-	public int getId()
+	@Override
+	public void shutDown()
 	{
-		return id;
+		overlayManager.remove(overlay);
 	}
-}
+} 
