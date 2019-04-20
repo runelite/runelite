@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tim Lehner <Timothy.Lehner.2011@live.rhul.ac.uk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.raidsthieving.BatSolver;
 
-/**
- * An enumeration of possible inventory types.
- */
-public enum InventoryID
+// There are three distinct Thieving rooms, distinguished by the position of the entrance relative to the exit
+// e.g. If you enter the room and must turn left to get to the exit and trough, this is a LEFT_TURN
+
+import net.runelite.client.plugins.raidsthieving.InstancePoint;
+
+public enum ThievingRoomType
 {
-	/**
-	 * Standard player inventory.
-	 */
-	INVENTORY(93),
-	/**
-	 * Equipment inventory.
-	 */
-	EQUIPMENT(94),
-	/**
-	 * Bank inventory.
-	 */
-	BANK(95),
-	/**
-	 * A puzzle box inventory.
-	 */
-	PUZZLE_BOX(140),
-	/**
-	 * Barrows reward chest inventory.
-	 */
-	BARROWS_REWARD(141),
-	/**
-	 * Monkey madness puzzle box inventory.
-	 */
-	MONKEY_MADNESS_PUZZLE_BOX(221),
-	/**
-	 * Chambers of Xeric chest inventory.
-	 */
-	CHAMBERS_OF_XERIC_CHEST(581),
-	/**
-	 * Looting Bag inventory
-	 */
-	LOOTING_BAG(516),
-	/**
-	 * Theater of Blood reward chest inventory (Raids 2)
-	 */
-	THEATRE_OF_BLOOD_CHEST(612);
+	LEFT_TURN(3271, 5389),
+	RIGHT_TURN(3350, 5399),
+	STRAIGHT(3317, 5397);
 
-	private final int id;
+	private final int x;
+	private final int y;
 
-	InventoryID(int id)
+	ThievingRoomType(int x, int y)
 	{
-		this.id = id;
+		this.x = x;
+		this.y = y;
 	}
 
-	/**
-	 * Gets the raw inventory type ID.
-	 *
-	 * @return inventory type
-	 */
-	public int getId()
+	public static ThievingRoomType IdentifyByInstancePoint(InstancePoint point)
 	{
-		return id;
+		for (ThievingRoomType type : ThievingRoomType.values())
+		{
+			if (Math.abs(type.x - point.getX()) <= 1 &&
+				Math.abs(type.y - point.getY()) <= 1)
+			{
+				return type;
+			}
+		}
+
+		return null;
 	}
+
 }

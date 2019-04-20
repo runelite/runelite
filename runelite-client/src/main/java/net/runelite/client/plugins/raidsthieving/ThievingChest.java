@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Tim Lehner <Timothy.Lehner.2011@live.rhul.ac.uk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,64 +22,57 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.raidsthieving;
+
+import lombok.Getter;
+import lombok.Setter;
+import net.runelite.api.GameObject;
+import net.runelite.api.coords.WorldPoint;
 
 /**
- * An enumeration of possible inventory types.
+ * Wrapper class for a GameObject that represents a chest in the thieving room of Chambers of Xeric.
  */
-public enum InventoryID
+@Getter
+public class ThievingChest
 {
 	/**
-	 * Standard player inventory.
+	 * If the chest has never been opened, it could have bats.
 	 */
-	INVENTORY(93),
-	/**
-	 * Equipment inventory.
-	 */
-	EQUIPMENT(94),
-	/**
-	 * Bank inventory.
-	 */
-	BANK(95),
-	/**
-	 * A puzzle box inventory.
-	 */
-	PUZZLE_BOX(140),
-	/**
-	 * Barrows reward chest inventory.
-	 */
-	BARROWS_REWARD(141),
-	/**
-	 * Monkey madness puzzle box inventory.
-	 */
-	MONKEY_MADNESS_PUZZLE_BOX(221),
-	/**
-	 * Chambers of Xeric chest inventory.
-	 */
-	CHAMBERS_OF_XERIC_CHEST(581),
-	/**
-	 * Looting Bag inventory
-	 */
-	LOOTING_BAG(516),
-	/**
-	 * Theater of Blood reward chest inventory (Raids 2)
-	 */
-	THEATRE_OF_BLOOD_CHEST(612);
-
-	private final int id;
-
-	InventoryID(int id)
-	{
-		this.id = id;
-	}
+	@Setter
+	private boolean everOpened;
 
 	/**
-	 * Gets the raw inventory type ID.
+	 * If the chest is empty, it could have bats.
+	 */
+	@Setter
+	private boolean empty;
+
+	/**
+	 * If the chest contains a poison trap instead.
+	 */
+	@Setter
+	private boolean poison;
+
+
+	@Setter
+	private int chestId;
+
+	private final WorldPoint localPoint;
+	private final InstancePoint instancePoint;
+
+	/**
+	 * Constructor for a ThievingChest object
 	 *
-	 * @return inventory type
+	 * @param gameObject The gameobject thats corresponds with this trap.
 	 */
-	public int getId()
+	ThievingChest(GameObject gameObject, InstancePoint instancePoint)
 	{
-		return id;
+		this.everOpened = false;
+		this.poison = false;
+		this.empty = false;
+		localPoint = gameObject.getWorldLocation();
+		this.instancePoint = instancePoint;
+		this.chestId = -1;
 	}
+
 }
