@@ -107,7 +107,7 @@ public class FreezeTimersOverlay extends Overlay
         {
             // if the freezetimer is still active. . .
             textLocation = actor.getCanvasTextLocation(graphics, String.valueOf((timer)), offset);
-            textLocation = new Point(textLocation.getX() + 10, textLocation.getY() + 5);
+            textLocation = new Point(textLocation.getX(), textLocation.getY() - config.FreezeTimerPos());
         }
         else
         {
@@ -118,7 +118,7 @@ public class FreezeTimersOverlay extends Overlay
                 if (config.refreezeTimer())
                 {
                     textLocation = actor.getCanvasTextLocation(graphics, String.valueOf((timer)), offset);
-                    textLocation = new Point(textLocation.getX() + 10, textLocation.getY() + 5);
+                    textLocation = new Point(textLocation.getX(), textLocation.getY() - config.FreezeTimerPos());
                     graphics.setFont(FontManager.getRunescapeBoldFont());
                     if (headIcon != null)
                     {

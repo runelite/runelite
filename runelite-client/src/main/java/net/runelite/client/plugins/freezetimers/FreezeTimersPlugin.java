@@ -77,7 +77,7 @@ public class FreezeTimersPlugin extends Plugin
                     SpriteID.SPELL_TELE_BLOCK
             };
 
-    private static final Dimension FREEZE_ICON_DIMENSION = new Dimension(17, 17);
+    private static final Dimension FREEZE_ICON_DIMENSION = new Dimension(25, 25);
     private static final Color FREEZE_ICON_OUTLINE_COLOR = new Color(33, 33, 33);
     private final BufferedImage[] FreezeIcons = new BufferedImage[FREEZE_ICONS.length];
 
