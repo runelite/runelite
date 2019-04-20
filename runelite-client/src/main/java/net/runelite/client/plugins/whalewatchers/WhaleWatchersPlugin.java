@@ -14,7 +14,13 @@ import net.runelite.api.*;
 import net.runelite.api.events.*;
 import java.util.*;
 
-@PluginDescriptor(name = "<font color=\"aqua\">!Whale Watchers</font>", description = "A Plugin to save help whales in the wild", tags = { "whale watchers", "whale", "protect item", "warning", "pklite" }, enabledByDefault = true, hidden = false, developerPlugin = false, loadWhenOutdated = false)
+@PluginDescriptor(
+        name = "Whale Watchers",
+        description = "A Plugin to save help whales in the wild",
+        tags = { "whale watchers", "whale", "protect item", "warning", "pklite" },
+        type = "PVP",
+        enabledByDefault = false
+)
 public class WhaleWatchersPlugin extends Plugin
 {
     @Inject

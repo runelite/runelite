@@ -35,7 +35,7 @@ import java.util.concurrent.ScheduledExecutorService;
 		name = "Equipment Inspector",
 		description = "Inspects enemy equipment",
 		enabledByDefault = false,
-		type = "PVP"
+		type = "utility"
 )
 
 @Slf4j
