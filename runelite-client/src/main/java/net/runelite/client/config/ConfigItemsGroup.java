@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Craftiii4 <craftiii4@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,41 +24,29 @@
  */
 package net.runelite.client.config;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ConfigDescriptor
+public class ConfigItemsGroup
 {
-	private final ConfigGroup group;
-	private final Collection<ConfigItemsGroup> itemGroups;
 
-	public ConfigDescriptor(ConfigGroup group, Collection<ConfigItemsGroup> itemGroups)
-	{
-		this.group = group;
-		this.itemGroups = itemGroups;
-	}
+    @Getter(AccessLevel.PUBLIC)
+    private final String group;
 
-	public ConfigGroup getGroup()
-	{
-		return group;
-	}
+    @Getter(AccessLevel.PUBLIC)
+    private Collection<ConfigItemDescriptor> items;
 
-	public Collection<ConfigItemsGroup> getItemGroups()
-	{
-		return itemGroups;
-	}
+    public ConfigItemsGroup(String group)
+    {
+        this.group = group;
+        this.items = new ArrayList<>();
+    }
 
-	public Collection<ConfigItemDescriptor> getItems()
-	{
-		Collection<ConfigItemDescriptor> allItems = new ArrayList<>();
-		for (ConfigItemsGroup g : itemGroups)
-		{
-			for (ConfigItemDescriptor item : g.getItems())
-			{
-				allItems.add(item);
-			}
-		}
-		return allItems;
-	}
+    public void addItem(ConfigItemDescriptor item)
+    {
+        items.add(item);
+    }
 
 }
