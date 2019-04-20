@@ -16,9 +16,6 @@ import net.runelite.api.HeadIcon;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.client.game.SpriteManager;
-import net.runelite.client.plugins.freezetimers.FreezeTimersConfig;
-import net.runelite.client.plugins.freezetimers.FreezeTimersPlugin;
-import net.runelite.client.plugins.freezetimers.FreezeTimersService;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -27,7 +24,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 @Singleton
 public class FreezeTimersOverlay
-extends Overlay {
+        extends Overlay {
     private final FreezeTimersService FreezeTimersService;
     private final FreezeTimersConfig config;
     private final FreezeTimersPlugin plugin;
@@ -59,10 +56,10 @@ extends Overlay {
         int timer = 0;
         String name = actor.getName();
         int freezetype = this.plugin.freezetype(name);
-		boolean frozenoverlay = false;
+        boolean frozenoverlay = false;
         int offset = 5;
         long dtime = this.plugin.opponentfreezetime(name);
-		long tbed = plugin.istbed(name);
+        long tbed = plugin.istbed(name);
         Point textLocation = null;
         HeadIcon headIcon = actor.getOverheadIcon();
         int freezetime = 0;
@@ -97,7 +94,7 @@ extends Overlay {
                 if (headIcon != null) {
                     textLocation = new Point(textLocation.getX(), textLocation.getY() - config.FreezeTimerPos());
                 }
-				frozenoverlay = true;
+                frozenoverlay = true;
                 OverlayUtil.renderTextLocation(graphics, textLocation, String.valueOf(timer), this.config.RefreezeTimerColor());
                 return;
             }
@@ -111,7 +108,7 @@ extends Overlay {
             graphics.setFont(FontManager.getRunescapeFont());
             graphics.setStroke(new BasicStroke(3.0f));
             if (this.config.spellIcon()) {
-				frozenoverlay = true;
+                frozenoverlay = true;
                 graphics.drawOval(imageLocation.getX(), imageLocation.getY(), clanchatImage.getWidth(), clanchatImage.getHeight());
                 OverlayUtil.renderImageLocation(graphics, imageLocation, clanchatImage);
                 OverlayUtil.renderTextLocation(graphics, textLocation, String.valueOf(timer), color);
@@ -124,34 +121,34 @@ extends Overlay {
             }
         }
 
-		if (config.TBTimer()) {
-			if (tbed > 0) {
-				int type = plugin.tbtype(name);
-				int tbexpiry;
-				if (type > 0) {
-					if (type == 1) {
-						tbexpiry = 300000;
-					} else if (type == 2) {
-						tbexpiry = 150000;
-					} else {
-						return;
-					}
-					long tbtime = currenttime - tbed;
-					int tbtimer = (tbexpiry - (int) tbtime) / 1000;
-					if (tbtime < tbexpiry) {
-						textLocation = actor.getCanvasTextLocation(graphics, Integer.toString(tbtimer), actor.getLogicalHeight() + config.FreezeTimerPos());
-						if (frozenoverlay) {
-							textLocation = new Point(textLocation.getX() + 40, textLocation.getY() - config.FreezeTimerPos());
-						} else {
-							textLocation = new Point(textLocation.getX(), textLocation.getY() - config.FreezeTimerPos());
-						}
-					} else {
-						plugin.deletetb(name);
-					}
-				}
+        if (config.TBTimer()) {
+            if (tbed > 0) {
+                int type = plugin.tbtype(name);
+                int tbexpiry;
+                if (type > 0) {
+                    if (type == 1) {
+                        tbexpiry = 300000;
+                    } else if (type == 2) {
+                        tbexpiry = 150000;
+                    } else {
+                        return;
+                    }
+                    long tbtime = currenttime - tbed;
+                    int tbtimer = (tbexpiry - (int) tbtime) / 1000;
+                    if (tbtime < tbexpiry) {
+                        textLocation = actor.getCanvasTextLocation(graphics, Integer.toString(tbtimer), actor.getLogicalHeight() + config.FreezeTimerPos());
+                        if (frozenoverlay) {
+                            textLocation = new Point(textLocation.getX() + 40, textLocation.getY() - config.FreezeTimerPos());
+                        } else {
+                            textLocation = new Point(textLocation.getX(), textLocation.getY() - config.FreezeTimerPos());
+                        }
+                    } else {
+                        plugin.deletetb(name);
+                    }
+                }
 
-			}
-		}
-	}
+            }
+        }
+    }
 }
 
