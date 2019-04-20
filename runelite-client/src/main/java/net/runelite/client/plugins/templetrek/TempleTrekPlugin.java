@@ -44,7 +44,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Temple Trekking",
 	description = "Helpers for the Temple Trek minigame",
-	tags = {"minigame", "overlay", "temple trek"}
+	tags = {"minigame", "overlay", "temple trek"},
+	type = "utility"
 )
 public class TempleTrekPlugin extends Plugin
 {
