@@ -965,4 +965,8 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("drawCircle")
 	void RasterizerDrawCircle(int x, int y, int r, int rgb);
+
+	@Import("healthbarCache")
+	@Override
+	RSNodeCache getHealthBarCache();
 }
