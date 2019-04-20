@@ -40,9 +40,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @PluginDescriptor(
-        name = "<font color=\"#4863A0\">!Vetion</font>",
+        name = "Vetion",
         description = "Tracks Vet'ion's special attacks",
-        tags = {"bosses", "combat", "pve", "overlay"}
+        tags = {"bosses", "combat", "pve", "overlay"},
+        type = "PVM"
 )
 public class VetionPlugin extends Plugin {
 

@@ -16,10 +16,11 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import javax.inject.Inject;
 
 @PluginDescriptor(
-        name = "<font color=\"green\">!Next Hit Notifier</font>",
+        name = "Next Hit Notifier",
         description = "Shows estimated next hit based on xp drop.",
         tags = { "experience", "damage", "overlay", "pking", "bogla" },
-        enabledByDefault = false
+        enabledByDefault = false,
+        type = "utility"
 )
 public class NextHitNotifierPlugin extends Plugin
 {

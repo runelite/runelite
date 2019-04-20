@@ -18,10 +18,11 @@ import net.runelite.client.util.MiscUtils;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-        name = "<font color=\"aqua\">!PK Vision</font>",
+        name = "PK Vision",
         description = "Highlight players on-screen and/or on the minimap",
         tags = {"highlight", "minimap", "overlay", "players", "pk", "helper", "vision", "bogla"},
-        enabledByDefault = false
+        enabledByDefault = false,
+        type = "PVP"
 )
 public class PKVisionPlugin extends Plugin
 {

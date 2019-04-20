@@ -21,9 +21,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "<font color=\"#4863A0\">!Zulrah</font>",
+	name = "Zulrah",
 	description = "Zulrah Helper",
-	tags = {"Zulrah", "Helper"}
+	tags = {"Zulrah", "Helper"},
+		type = "PVM"
 )
 public class ZulrahPlugin extends Plugin
 {
