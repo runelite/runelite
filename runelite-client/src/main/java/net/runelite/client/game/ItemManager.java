@@ -50,6 +50,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.client.callback.ClientThread;
@@ -151,6 +152,23 @@ public class ItemManager
 		put(AGILITY_CAPET_13341, AGILITY_CAPET).
 		put(AGILITY_CAPE_13340, AGILITY_CAPE).
 		build();
+
+	private static final ImmutableMap<Varbits, Integer> VARBIT_MASTERBOOK_ITEMIDMAP = new ImmutableMap.Builder<Varbits, Integer>()
+		.put(Varbits.MASTER_SCROLL_BOOK_NARDAH, ItemID.NARDAH_TELEPORT)
+		.put(Varbits.MASTER_SCROLL_BOOK_DIGSITE, ItemID.DIGSITE_TELEPORT)
+		.put(Varbits.MASTER_SCROLL_BOOK_FELDIP_HILLS, ItemID.FELDIP_HILLS_TELEPORT)
+		.put(Varbits.MASTER_SCROLL_BOOK_LUNAR_ISLE, ItemID.LUNAR_ISLE_TELEPORT)
+		.put(Varbits.MASTER_SCROLL_BOOK_MORTTON, ItemID.MORTTON_TELEPORT)
+		.put(Varbits.MASTER_SCROLL_BOOK_PEST_CONTROL, ItemID.PEST_CONTROL_TELEPORT)
+		.put(Varbits.MASTER_SCROLL_BOOK_PISCATORIS, ItemID.PISCATORIS_TELEPORT)
+		.put(Varbits.MASTER_SCROLL_BOOK_TAI_BWO_WANNAI, ItemID.TAI_BWO_WANNAI_TELEPORT)
+		.put(Varbits.MASTER_SCROLL_BOOK_ELF_CAMP, ItemID.ELF_CAMP_TELEPORT)
+		.put(Varbits.MASTER_SCROLL_BOOK_MOS_LE_HARMLESS, ItemID.MOS_LEHARMLESS_TELEPORT)
+		.put(Varbits.MASTER_SCROLL_BOOK_LUMBERYARD, ItemID.LUMBERYARD_TELEPORT)
+		.put(Varbits.MASTER_SCROLL_BOOK_ZUL_ANDRA, ItemID.ZULANDRA_TELEPORT)
+		.put(Varbits.MASTER_SCROLL_BOOK_REVENANT_CAVES, ItemID.REVENANT_CAVE_TELEPORT)
+		.put(Varbits.MASTER_SCROLL_BOOK_WATSON_TELEPORT, ItemID.WATSON_TELEPORT)
+		.build();
 
 	@Inject
 	public ItemManager(Client client, ScheduledExecutorService executor, ClientThread clientThread)
@@ -280,6 +298,18 @@ public class ItemManager
 		if (itemID == ItemID.PLATINUM_TOKEN)
 		{
 			return 1000;
+		}
+		if (itemID == ItemID.MASTER_SCROLL_BOOK)
+		{
+			int totalPrice = 0;
+
+			for (Map.Entry<Varbits, Integer> entry : VARBIT_MASTERBOOK_ITEMIDMAP.entrySet())
+			{
+				final int amount = client.getVar(entry.getKey());
+				totalPrice += getItemPrice(entry.getValue()) * amount;
+			}
+
+			return totalPrice;
 		}
 
 		UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
