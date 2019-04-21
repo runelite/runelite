@@ -185,7 +185,6 @@ public class MusicReplacerPlugin extends Plugin
 			mediaPlayer.setStopTime(d);
 			fadeOut.play();
 			mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.dispose());
-
 	}
 
 	@Subscribe
