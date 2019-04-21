@@ -56,7 +56,7 @@ public class KittenNotifierPlugin extends Plugin{
         if (!config.catOwned()) {
             for (NPC npc : client.getNpcs()) {
                 if (npc.getInteracting() != null) {
-                    if (npc.getName().equalsIgnoreCase("Cat") && !config.catOwned()) {
+                    if (npc.getName().equals("Cat") && !config.catOwned()) {
                         // If this if statement is included in previous it could null.
                         if (npc.getInteracting().getName().contentEquals(client.getLocalPlayer().getName())) {
                             config.catOwned(true);
