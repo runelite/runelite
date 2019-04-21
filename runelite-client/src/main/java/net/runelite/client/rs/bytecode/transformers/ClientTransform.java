@@ -172,9 +172,6 @@ public class ClientTransform implements Transform {
 								"}" +
 								"net.runelite.api.MenuEntry menuEntry = arrmenuEntry2[n4];" +
 								"int n5 = menuEntry.getType();" +
-								"if (!(n5 != net.runelite.api.MenuAction.NPC_THIRD_OPTION.getId() && n5 != net.runelite.api.MenuAction.NPC_FIFTH_OPTION.getId() || n2 != arrmenuEntry.length - 1 || "+ByteCodePatcher.clientInstance+".getLocalPlayer().getWorldLocation().getRegionID() != 13358 || (string = menuEntry.getOption().toLowerCase()).hashCode() != 974723797 && string.hashCode() != -1108625161)) {" +
-									"n5 = net.runelite.api.MenuAction.CANCEL.getId();" +
-								"}" +
 								"arrstring[n2] = menuEntry.getOption();" +
 								"arrstring2[n2] = menuEntry.getTarget();" +
 								"arrn[n2] = menuEntry.getIdentifier();" +
