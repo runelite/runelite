@@ -24,10 +24,7 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Image;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -39,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.util.SwingUtil;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -116,25 +114,36 @@ public class RuneLiteSplashScreen
 		panel.add(title, titleConstraints);
 
 		// version
-		final JLabel version = new JLabel("Version " + runeLiteProperties.getVersion());
+		final JLabel version = new JLabel("RuneLite Version : " + runeLiteProperties.getVersion());
+		version.setForeground(Color.GREEN);
 		version.setFont(FontManager.getRunescapeSmallFont());
 		version.setForeground(version.getForeground().darker());
 		final GridBagConstraints versionConstraints = new GridBagConstraints();
 		versionConstraints.gridy = 2;
 		panel.add(version, versionConstraints);
 
+		// version
+		final JLabel litVersion = new JLabel("Lit Version : PRE-" + RuneLite.RUNELIT_VERSION);
+		litVersion.setForeground(Color.GREEN);
+		litVersion.setFont(FontManager.getRunescapeSmallFont());
+		litVersion.setForeground(litVersion.getForeground().darker());
+		final GridBagConstraints litVersionConstraints = new GridBagConstraints();
+		litVersionConstraints.gridy = 3;
+		litVersionConstraints.weightx = 4;
+		panel.add(litVersion, litVersionConstraints);
+
 		// progressbar
 		final GridBagConstraints progressConstraints = new GridBagConstraints();
 		progressConstraints.insets = new Insets(0, 30, 5, 30);
 		progressConstraints.fill = GridBagConstraints.HORIZONTAL;
 		progressConstraints.anchor = GridBagConstraints.SOUTH;
-		progressConstraints.gridy = 3;
+		progressConstraints.gridy = 4;
 		panel.add(progressBar, progressConstraints);
 
 		// main message
 		messageLabel.setFont(FontManager.getRunescapeSmallFont());
 		final GridBagConstraints messageConstraints = new GridBagConstraints();
-		messageConstraints.gridy = 4;
+		messageConstraints.gridy = 5;
 		panel.add(messageLabel, messageConstraints);
 
 		// alternate message
@@ -142,7 +151,7 @@ public class RuneLiteSplashScreen
 		subMessageLabel.setFont(FontManager.getRunescapeSmallFont());
 		final GridBagConstraints altConstrains = new GridBagConstraints();
 		altConstrains.anchor = GridBagConstraints.NORTH;
-		altConstrains.gridy = 5;
+		altConstrains.gridy = 6;
 		panel.add(subMessageLabel, altConstrains);
 
 		frame.setContentPane(panel);
