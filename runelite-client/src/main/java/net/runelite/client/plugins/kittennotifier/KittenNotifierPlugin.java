@@ -2,6 +2,7 @@ package net.runelite.client.plugins.kittennotifier;
 import com.google.inject.Provides;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcActionChanged;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
@@ -20,6 +21,8 @@ import javax.inject.Inject;
         type = "utility"
 )
 public class KittenNotifierPlugin extends Plugin{
+
+    public boolean catOwned = false;
     @Inject
     private Notifier notifier;
     @Inject
@@ -51,36 +54,33 @@ public class KittenNotifierPlugin extends Plugin{
         }
     }
     @Subscribe
-    public void onNpcActionChanged(NpcActionChanged event) {
-        if (event.getNpcComposition()!=null)
+    public void onGameTick(GameTick event) {
         if (!config.catOwned()) {
             for (NPC npc : client.getNpcs()) {
-                if (npc.getInteracting() != null) {
-                    if (npc.getName().equals("Cat") && !config.catOwned()) {
-                        // If this if statement is included in previous it could null.
+                if (npc.getInteracting()!=null)
                         if (npc.getInteracting().getName().contentEquals(client.getLocalPlayer().getName())) {
-                            config.catOwned(true);
-                            notifier.notify("Your kitten has grown into a cat.");
+                            if (npc.getName().equals("Cat") && !config.catOwned()) {
+                                // If this if statement is included in previous it could null.
+                           catOwned = true;
+                           notifier.notify("Your kitten has grown into a cat.");
                         }
                     }
                 }
             }
-        }
     }
     @Subscribe
     public void onNpcSpawned(NpcSpawned event) {
         NPC cat = event.getNpc();
-        if (cat.getName() != null) {
-            if (cat.getName().equalsIgnoreCase("Kitten")) {
-                if (cat.getInteracting().getName().contentEquals(client.getLocalPlayer().getName())) {
-                    config.catOwned(false);
+        if (cat.getInteracting()!=null)
+            if (cat.getInteracting().getName().equalsIgnoreCase(client.getLocalPlayer().getName())) {
+                if (cat.getName().contains("itten") && !config.catOwned()) {
+                    catOwned = false;
                 }
             }
-            else if (cat.getName().contentEquals("Cat")) {
+            else if (cat.getName().equals("Cat")) {
                 if (cat.getInteracting().getName().equalsIgnoreCase(client.getLocalPlayer().getName())) {
-                    config.catOwned(true);
+                    catOwned = true;
                 }
             }
         }
-    }
 }
