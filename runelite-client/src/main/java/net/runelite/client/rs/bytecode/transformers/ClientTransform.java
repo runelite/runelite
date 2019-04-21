@@ -147,30 +147,89 @@ public class ClientTransform implements Transform {
 	public void transformSetMenuEntries() {
 		CtMethod setMenuEntries;
 		try {
-			setMenuEntries = ct.getDeclaredMethods("setMenuEntries"/*, works for now */)[0];
+			setMenuEntries = ct.getDeclaredMethod("setMenuEntries");
 			ct.removeMethod(setMenuEntries);
 			String src;
 			setMenuEntries = CtNewMethod.make(
-					"public void setMenuEntries(net.runelite.api.MenuEntry[] paramArrayOfMenuEntry) {" +
-							"int i = 0;" +
-							"String[] arrayOfString1 = this.getMenuOptions();" +
-							"String[] arrayOfString2 = this.getMenuTargets();" +
-							"int[] arrayOfInt1 = this.getMenuIdentifiers();" +
-							"int[] arrayOfInt2 = this.getMenuTypes();" +
-							"int[] arrayOfInt3 = this.getMenuActionParams0();" +
-							"int[] arrayOfInt4 = this.getMenuActionParams1();" +
-							"boolean[] arrayOfBoolean = getMenuForceLeftClick();" +
-							"int testingInt[] = {1,2,3,4,5,6};" +
-							"for (int m = 0 ; m < paramArrayOfMenuEntry.length ; m++) {" +
-								"net.runelite.api.MenuEntry menuEntry = paramArrayOfMenuEntry[m];" +
+					"public void setMenuEntries(net.runelite.api.MenuEntry[] arrmenuEntry) {" +
+							"int n2 = 0;" +
+							"String[] arrstring = this.getMenuOptions();" +
+							"String[] arrstring2 = this.getMenuTargets();" +
+							"int[] arrn = this.getMenuIdentifiers();" +
+							"int[] arrn2 = this.getMenuTypes();" +
+							"int[] arrn3 = this.getMenuActionParams0();" +
+							"int[] arrn4 = this.getMenuActionParams1();" +
+							"boolean[] arrbl = getMenuForceLeftClick();" +
+							"net.runelite.api.MenuEntry[] arrmenuEntry2 = arrmenuEntry;" +
+							"int n3 = arrmenuEntry2.length;" +
+							"int n4 = 0;" +
+							"do {" +
+								"String string;" +
+								"if (n4 >= n3) {" +
+									"this.setMenuOptionCount(n2);" +
+									"oldMenuEntryCount = n2;" +
+									"return;" +
 								"}" +
-							"}"
+								"net.runelite.api.MenuEntry menuEntry = arrmenuEntry2[n4];" +
+								"int n5 = menuEntry.getType();" +
+								"if (!(n5 != net.runelite.api.MenuAction.NPC_THIRD_OPTION.getId() && n5 != net.runelite.api.MenuAction.NPC_FIFTH_OPTION.getId() || n2 != arrmenuEntry.length - 1 || "+ByteCodePatcher.clientInstance+".getLocalPlayer().getWorldLocation().getRegionID() != 13358 || (string = menuEntry.getOption().toLowerCase()).hashCode() != 974723797 && string.hashCode() != -1108625161)) {" +
+									"n5 = net.runelite.api.MenuAction.CANCEL.getId();" +
+								"}" +
+								"arrstring[n2] = menuEntry.getOption();" +
+								"arrstring2[n2] = menuEntry.getTarget();" +
+								"arrn[n2] = menuEntry.getIdentifier();" +
+								"arrn2[n2] = n5;" +
+								"arrn3[n2] = menuEntry.getParam0();" +
+								"arrn4[n2] = menuEntry.getParam1();" +
+								"arrbl[n2] = menuEntry.isForceLeftClick();" +
+								"++n2;" +
+								"++n4;" +
+							"} while (true);" +
+						"}"
 					, ct);
 			ct.addMethod(setMenuEntries);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+	/*
+	public void setMenuEntries(MenuEntry[] arrmenuEntry) {
+    int n2 = 0;
+    String[] arrstring = this.1protect$getMenuOptions();
+    String[] arrstring2 = this.1protect$getMenuTargets();
+    int[] arrn = this.1protect$getMenuIdentifiers();
+    int[] arrn2 = this.1protect$getMenuTypes();
+    int[] arrn3 = this.1protect$getMenuActionParams0();
+    int[] arrn4 = this.1protect$getMenuActionParams1();
+    boolean[] arrbl = this.getMenuForceLeftClick();
+    MenuEntry[] arrmenuEntry2 = arrmenuEntry;
+    int n3 = arrmenuEntry2.length;
+    int n4 = 0;
+    do {
+        String string;
+        if (n4 >= n3) {
+            this.setMenuOptionCount(n2);
+            oldMenuEntryCount = n2;
+            return;
+        }
+        MenuEntry menuEntry = arrmenuEntry2[n4];
+        int n5 = menuEntry.getType();
+        if (!(n5 != MenuAction.NPC_THIRD_OPTION.getId() && n5 != MenuAction.NPC_FIFTH_OPTION.getId() || n2 != arrmenuEntry.length - 1 || bv.ak.getLocalPlayer().getWorldLocation().getRegionID() != 13358 || (string = menuEntry.getOption().toLowerCase()).hashCode() != 974723797 && string.hashCode() != -1108625161)) {
+            n5 = MenuAction.CANCEL.getId();
+        }
+        arrstring[n2] = menuEntry.getOption();
+        arrstring2[n2] = menuEntry.getTarget();
+        arrn[n2] = menuEntry.getIdentifier();
+        arrn2[n2] = n5;
+        arrn3[n2] = menuEntry.getParam0();
+        arrn4[n2] = menuEntry.getParam1();
+        arrbl[n2] = menuEntry.isForceLeftClick();
+        ++n2;
+        ++n4;
+    } while (true);
+}
+	 */
 
 	public void transformOnMenuOptionsChanged() {
 		CtMethod onMenuOptionsChanged;
