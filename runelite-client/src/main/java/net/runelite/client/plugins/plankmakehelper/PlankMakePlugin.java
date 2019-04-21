@@ -10,7 +10,8 @@ import javax.inject.Inject;
 @PluginDescriptor(
 		name = "Plank Make Helper",
 		description = "Highlights planks and plank make spell",
-		tags = {"overlay", "plankmaking", "lunar", "money", "moneymaking", "gp"}
+		tags = {"overlay", "plankmaking", "lunar", "money", "moneymaking", "gp"},
+		type = "utility"
 )
 
 public class PlankMakePlugin extends Plugin {
