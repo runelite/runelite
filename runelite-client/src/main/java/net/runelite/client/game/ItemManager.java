@@ -299,18 +299,6 @@ public class ItemManager
 		{
 			return 1000;
 		}
-		if (itemID == ItemID.MASTER_SCROLL_BOOK)
-		{
-			int totalPrice = 0;
-
-			for (Map.Entry<Varbits, Integer> entry : VARBIT_MASTERBOOK_ITEMIDMAP.entrySet())
-			{
-				final int amount = client.getVar(entry.getKey());
-				totalPrice += getItemPrice(entry.getValue()) * amount;
-			}
-
-			return totalPrice;
-		}
 
 		UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
 		if (p != null)
@@ -325,6 +313,25 @@ public class ItemManager
 			if (ip != null)
 			{
 				price += ip.getPrice();
+			}
+		}
+
+		return price;
+	}
+
+	public int getItemPrice(int itemID, int quantity)
+	{
+		int price = 0;
+
+		if (itemID == ItemID.MASTER_SCROLL_BOOK)
+		{
+			final int totalEmptyBookPrice = getItemPrice(MASTER_SCROLL_BOOK_EMPTY) * quantity;
+			price = totalEmptyBookPrice;
+
+			for (Map.Entry<Varbits, Integer> entry : VARBIT_MASTERBOOK_ITEMIDMAP.entrySet())
+			{
+				final int amount = client.getVar(entry.getKey());
+				price += getItemPrice(entry.getValue()) * amount;
 			}
 		}
 

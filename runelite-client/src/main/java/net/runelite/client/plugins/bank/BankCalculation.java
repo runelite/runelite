@@ -177,13 +177,15 @@ class BankCalculation
 					continue;
 				}
 
-				//Limit quantity to 1 because master scroll books share teleport scrolls
+				//If item is MASTER_SCROLL_BOOK get price for one filled book and the empty books
 				if (itemId == ItemID.MASTER_SCROLL_BOOK)
 				{
-					quantity = 1;
+					gePrice += (long) itemManager.getItemPrice(itemId, quantity);
 				}
-
-				gePrice += (long) itemManager.getItemPrice(itemId) * quantity;
+				else
+				{
+					gePrice += (long) itemManager.getItemPrice(itemId) * quantity;
+				}
 			}
 		}
 	}
