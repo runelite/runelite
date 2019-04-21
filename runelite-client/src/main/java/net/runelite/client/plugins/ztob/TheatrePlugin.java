@@ -301,7 +301,7 @@ public class TheatrePlugin extends Plugin {
             }
 
         }
-        if (pOptionToReplace.equals("CANCEL") || pOptionToReplace.equals("WALK HERE") || pOptionToReplace.equals("PASS")) {
+        if (!pOptionToReplace.equals("ATTACK")) {
             return;
         }
         int Id = 0;
