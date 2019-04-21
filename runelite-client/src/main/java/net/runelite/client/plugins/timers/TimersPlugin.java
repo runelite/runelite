@@ -43,6 +43,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Prayer;
+import net.runelite.api.SkullIcon;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
@@ -120,6 +121,7 @@ public class TimersPlugin extends Plugin
 	private int lastAnimation;
 	private boolean loggedInRace;
 	private boolean widgetHiddenChangedOnPvpWorld;
+	private boolean skulledLastTick = false;
 
 	@Inject
 	private ItemManager itemManager;
@@ -607,6 +609,21 @@ public class TimersPlugin extends Plugin
 
 		Player player = client.getLocalPlayer();
 		WorldPoint currentWorldPoint = player.getWorldLocation();
+
+		final boolean isSkulled = player.getSkullIcon() != null && player.getSkullIcon() != SkullIcon.SKULL_FIGHT_PIT;
+
+		if (isSkulled != skulledLastTick)
+		{
+			skulledLastTick = isSkulled;
+			if (isSkulled)
+			{
+				createGameTimer(SKULL);
+			}
+			else
+			{
+				removeGameTimer(SKULL);
+			}
+		}
 
 		if (freezeTimer != null)
 		{
