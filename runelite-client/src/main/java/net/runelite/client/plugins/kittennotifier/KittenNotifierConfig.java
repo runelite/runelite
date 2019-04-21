@@ -18,10 +18,4 @@ public interface KittenNotifierConfig extends Config{
             hidden = true
     )
     default boolean catOwned() { return false; }
-    @ConfigItem(
-            keyName = "catOwned",
-            name = "",
-            description = ""
-    )
-    void catOwned(Boolean bool);
 }
