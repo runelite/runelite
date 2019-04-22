@@ -12,6 +12,7 @@ public class ErrorTransform implements Transform {
     //Where Runelites error interceptor is located, not auto-scraped.
     private final String ERROR_INSTANCE_CLASS = "dp";
     private final String ERROR_INSTANCE_METHOD = "a";
+    private final String ERROR_WARNING = "Tried to send a warning";
 
     @Override
     public void modify(Class clazz) {
@@ -21,9 +22,11 @@ public class ErrorTransform implements Transform {
             CtMethod error = ct.getDeclaredMethod(ERROR_INSTANCE_METHOD);
             ct.removeMethod(error);
             error = CtMethod.make("public static void a(String string, Throwable throwable, byte by) {"+
-                    "                   return;"+
+                    "                       throwable.printStackTrace();"+
+                    "                       System.out.println(\"[RuneLit] Prevented preceeding stack trace from being sent to Jagex\");"+
                     "                   }", ct);
             ct.addMethod(error);
+            ByteCodePatcher.modifiedClasses.add(ct);
         } catch (Exception e) {
             e.printStackTrace();
         }
