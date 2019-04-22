@@ -197,10 +197,18 @@ public class ConfigPanel extends PluginPanel
 	{
 		final List<String> pinnedPlugins = getPinnedPluginNames();
 
+		// set RuneLite config on top, as it should always have been
+		final PluginListItem runeLite = new PluginListItem(this, configManager, runeLiteConfig,
+				configManager.getConfigDescriptor(runeLiteConfig),
+				RUNELITE_PLUGIN, "RuneLite client settings", "client");
+		runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN));
+		runeLite.nameLabel.setForeground(Color.WHITE);
+		pluginList.add(runeLite);
+
 		List<PluginListItem> externalPlugins = new ArrayList<>();
 		// populate pluginList with all external Plugins
 		pluginManager.getPlugins().stream()
-				.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals("external"))
+				.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type()==PluginType.EXTERNAL)
 				.forEach(plugin ->
 				{
 					final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
@@ -292,6 +300,7 @@ public class ConfigPanel extends PluginPanel
 				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVP))
 				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.UTILITY))
 				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PLUGIN_ORGANIZER))
+				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.EXTERNAL))
 				.forEach(plugin ->
 				{
 					final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
@@ -304,22 +313,16 @@ public class ConfigPanel extends PluginPanel
 				}
 				);
 
-		vanillaPlugins.sort(Comparator.comparing(PluginListItem::getName));
-		for (PluginListItem plugin : vanillaPlugins)
-			pluginList.add(plugin);
-
-		// add special entries for core client configurations
-		final PluginListItem runeLite = new PluginListItem(this, configManager, runeLiteConfig,
-				configManager.getConfigDescriptor(runeLiteConfig),
-				RUNELITE_PLUGIN, "RuneLite client settings", "client");
-		runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN));
-		pluginList.add(runeLite);
-
 		final PluginListItem chatColor = new PluginListItem(this, configManager, chatColorConfig,
 				configManager.getConfigDescriptor(chatColorConfig),
 				CHAT_COLOR_PLUGIN, "Recolor chat text", "colour", "messages");
 		chatColor.setPinned(pinnedPlugins.contains(CHAT_COLOR_PLUGIN));
-		pluginList.add(chatColor);
+		chatColor.nameLabel.setForeground(Color.WHITE);
+		vanillaPlugins.add(chatColor);
+
+		vanillaPlugins.sort(Comparator.comparing(PluginListItem::getName));
+		for (PluginListItem plugin : vanillaPlugins)
+			pluginList.add(plugin);
 
 		// Add plugin sorter to bottom
 		pluginManager.getPlugins().stream()
