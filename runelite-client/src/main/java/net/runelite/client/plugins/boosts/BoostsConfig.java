@@ -103,4 +103,15 @@ public interface BoostsConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "groupNotifications",
+		name = "Group Notifications",
+		description = "Configures whether or not to group notifications for multiple skills into a single notification",
+		position = 7
+	)
+	default boolean groupNotifications()
+	{
+		return false;
+	}
 }
