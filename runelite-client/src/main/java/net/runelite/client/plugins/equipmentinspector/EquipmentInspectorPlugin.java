@@ -36,7 +36,7 @@ import java.util.concurrent.ScheduledExecutorService;
 @PluginDescriptor(
         name = "Equipment Inspector",
         enabledByDefault = false,
-        type = "utility"
+        type = "PVP"
 )
 
 @Slf4j
