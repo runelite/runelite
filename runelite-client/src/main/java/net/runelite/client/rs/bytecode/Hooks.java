@@ -6,6 +6,7 @@ public class Hooks {
     public String actorClass = "";
     public String projectileClass = "";
     public String playerClass = "";
+    public String[] protectedStuff;
 
     public Hooks() {
     }

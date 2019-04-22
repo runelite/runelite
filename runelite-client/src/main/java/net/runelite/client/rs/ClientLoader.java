@@ -45,13 +45,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
@@ -88,6 +91,7 @@ public class ClientLoader
 	private final ClientConfigLoader clientConfigLoader;
 	private ClientUpdateCheckMode updateCheckMode;
 	private JarOutputStream target;
+	private static String[] preotectedStuffs;
 
 	@Inject
 	private ClientLoader(
@@ -236,7 +240,7 @@ public class ClientLoader
 						hooks.actorClass.equals("") ||
 							hooks.playerClass.equals("")) {
 							System.out.println("[RuneLit] Bad hooks, re-scraping.");
-						ByteCodePatcher.clientInstance = getClientInstance(ByteCodeUtils.injectedClientFile.getPath());
+						ByteCodePatcher.clientInstance = initHookScrape(ByteCodeUtils.injectedClientFile.getPath());
 						ByteCodePatcher.findHooks(injectedClientFile.getPath());
 					} else {
 						ByteCodePatcher.clientInstance = hooks.clientInstance;
@@ -246,7 +250,8 @@ public class ClientLoader
 
 				} else {
 					System.out.println("[RuneLit] Hooks file not found, scraping hooks.");
-					ByteCodePatcher.clientInstance = getClientInstance(ByteCodeUtils.injectedClientFile.getPath());
+					ByteCodePatcher.clientInstance = initHookScrape(ByteCodeUtils.injectedClientFile.getPath());
+					ByteCodePatcher.hooks.protectedStuff = preotectedStuffs;
 					ByteCodePatcher.findHooks(injectedClientFile.getPath());
 				}
 
@@ -335,7 +340,9 @@ public class ClientLoader
 		return certificates.toArray(new Certificate[certificates.size()]);
 	}
 
-    public static String getClientInstance(String jarFile) {
+    public static String initHookScrape(String jarFile) {
+		List protectedStuff = new ArrayList<String>();
+		String clientInstance = "";
         JarClassLoader jcl = new JarClassLoader();
         try {
             ClassPool classPool = new ClassPool(true);
@@ -363,17 +370,26 @@ public class ClientLoader
                                 try {
                                     jcl2.add(new FileInputStream(ByteCodeUtils.injectedClientFile));
                                     Field[] fields = classToLoad.getDeclaredFields();
+                                    Method[] methods = classToLoad.getDeclaredMethods();
                                     for (Field f : fields) {
                                         try {
+                                        	if (f.getName().contains("$")) {
+                                        		System.out.println(classToLoad.getName()+"."+f.getName());
+												protectedStuff.add(classToLoad.getName()+"."+f.getName());
+											}
                                             if (f.getType().getName()=="client") {
                                             	ByteCodePatcher.hooks.clientInstance = classToLoad.getName()+"."+f.getName();
-                                                System.out.println("[RuneLit] Found client instance at "+classToLoad.getName()+"."+f.getName());
-                                                return classToLoad.getName()+"."+f.getName();
+												clientInstance = classToLoad.getName()+"."+f.getName();
                                             }
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
                                     }
+                                    for (Method m : methods) {
+										if (m.getName().contains("$")) {
+											protectedStuff.add(classToLoad.getName()+"."+m.getName());
+										}
+									}
                                 } catch (FileNotFoundException e) {
                                     e.printStackTrace();
                                 }
@@ -391,6 +407,16 @@ public class ClientLoader
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
+        int i = 0;
+        for (Object o : protectedStuff) {
+			i++;
+		}
+        preotectedStuffs = new String[i];
+        i = 0;
+		for (Object o : protectedStuff) {
+			preotectedStuffs[i] = (String) o;
+			i++;
+		}
+        return clientInstance;
     }
 }
