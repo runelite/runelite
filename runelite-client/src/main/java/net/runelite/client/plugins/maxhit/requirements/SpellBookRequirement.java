@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2019, Yani <yani@xenokore.com>
+ * Copyright (c) 2019, Bartvollebregt <https://github.com/Bartvollebregt>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,40 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pestcontrol;
+package net.runelite.client.plugins.maxhit.requirements;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.Client;
+import net.runelite.api.Varbits;
+import net.runelite.client.plugins.maxhit.config.SpellBaseDamageConfig;
 
-@Getter
-@Setter
-class Portal
+public class SpellBookRequirement implements Requirement
 {
-	private PortalColor color;
-	private WidgetPortal widget;
-	private WorldPoint location;
+	private final SpellBaseDamageConfig.SpellBook spellBook;
 
-	private PortalState portalState = PortalState.SHIELDED;
-
-	public Portal(PortalColor color, WidgetPortal widget)
+	public SpellBookRequirement(SpellBaseDamageConfig.SpellBook spellBook)
 	{
-		this.color = color;
-		this.widget = widget;
+		this.spellBook = spellBook;
 	}
 
-	public boolean isShielded()
+	@Override
+	public boolean meetsRequirements(Client client)
 	{
-		return portalState == PortalState.SHIELDED;
-	}
+		int autoCastSpellId = client.getVar(Varbits.AUTO_CAST_SPELL);
+		if (autoCastSpellId == 0)
+		{
+			return false;
+		}
 
-	public boolean isDead()
-	{
-		return portalState == PortalState.DEAD;
-	}
-
-	public boolean isActive()
-	{
-		return (!isShielded() && !isDead());
+		SpellBaseDamageConfig autoCastSpell = SpellBaseDamageConfig.findSpellById(autoCastSpellId);
+		return autoCastSpell.getSpellBook() == this.spellBook;
 	}
 }

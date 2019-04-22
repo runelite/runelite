@@ -25,38 +25,37 @@
  */
 package net.runelite.client.plugins.pestcontrol;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.coords.WorldPoint;
+import static net.runelite.client.plugins.pestcontrol.PortalColor.BLUE;
+import static net.runelite.client.plugins.pestcontrol.PortalColor.PURPLE;
+import static net.runelite.client.plugins.pestcontrol.PortalColor.RED;
+import static net.runelite.client.plugins.pestcontrol.PortalColor.YELLOW;
 
-@Getter
-@Setter
-class Portal
+enum PortalRotation
 {
-	private PortalColor color;
-	private WidgetPortal widget;
-	private WorldPoint location;
+	PBYR(PURPLE, BLUE, YELLOW, RED),
+	PYBR(PURPLE, YELLOW, BLUE, RED),
+	BRYP(BLUE, RED, YELLOW, PURPLE),
+	BPRY(BLUE, PURPLE, RED, YELLOW),
+	YRPB(YELLOW, RED, PURPLE, BLUE),
+	YPRB(YELLOW, PURPLE, RED, BLUE);
 
-	private PortalState portalState = PortalState.SHIELDED;
+	private final PortalColor[] portals;
 
-	public Portal(PortalColor color, WidgetPortal widget)
+	PortalRotation(PortalColor first, PortalColor second, PortalColor third, PortalColor fourth)
 	{
-		this.color = color;
-		this.widget = widget;
+		portals = new PortalColor[]
+			{
+				first, second, third, fourth
+			};
 	}
 
-	public boolean isShielded()
+	public Portal getPortal(Game game, int index)
 	{
-		return portalState == PortalState.SHIELDED;
-	}
+		if (index < 0 || index >= portals.length)
+		{
+			return null;
+		}
 
-	public boolean isDead()
-	{
-		return portalState == PortalState.DEAD;
-	}
-
-	public boolean isActive()
-	{
-		return (!isShielded() && !isDead());
+		return game.getPortal(portals[index]);
 	}
 }

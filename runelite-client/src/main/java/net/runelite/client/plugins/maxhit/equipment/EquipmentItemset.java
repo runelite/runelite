@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2019, Yani <yani@xenokore.com>
+ * Copyright (c) 2019, Bartvollebregt <https://github.com/Bartvollebregt>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,40 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pestcontrol;
+package net.runelite.client.plugins.maxhit.equipment;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.coords.WorldPoint;
+import java.util.List;
 
-@Getter
-@Setter
-class Portal
+public class EquipmentItemset
 {
-	private PortalColor color;
-	private WidgetPortal widget;
-	private WorldPoint location;
+	private final List<EquipmentSlotItem> items;
 
-	private PortalState portalState = PortalState.SHIELDED;
-
-	public Portal(PortalColor color, WidgetPortal widget)
+	public EquipmentItemset(List<EquipmentSlotItem> items)
 	{
-		this.color = color;
-		this.widget = widget;
+		this.items = items;
 	}
 
-	public boolean isShielded()
+	public List<EquipmentSlotItem> getItems()
 	{
-		return portalState == PortalState.SHIELDED;
-	}
-
-	public boolean isDead()
-	{
-		return portalState == PortalState.DEAD;
-	}
-
-	public boolean isActive()
-	{
-		return (!isShielded() && !isDead());
+		return items;
 	}
 }
