@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2019, Yani <yani@xenokore.com>
+ * Copyright (c) 2019, Bartvollebregt <https://github.com/Bartvollebregt>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,40 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pestcontrol;
+package net.runelite.client.plugins.maxhit.calculators;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.coords.WorldPoint;
+import com.google.inject.Guice;
+import com.google.inject.testing.fieldbinder.Bind;
+import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import net.runelite.api.Client;
+import net.runelite.client.plugins.maxhit.calculators.testconfig.MagicMaxHitConfig;
+import net.runelite.client.plugins.maxhit.calculators.testconfig.MaxHitConfig;
+import net.runelite.client.plugins.maxhit.calculators.testconfig.MeleeMaxHitConfig;
+import net.runelite.client.plugins.maxhit.calculators.testconfig.RangeMaxHitConfig;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
-@Getter
-@Setter
-class Portal
+@RunWith(MockitoJUnitRunner.class)
+public class MaxHitCalculatorTest
 {
-	private PortalColor color;
-	private WidgetPortal widget;
-	private WorldPoint location;
+	@Mock
+	@Bind
+	protected Client client;
 
-	private PortalState portalState = PortalState.SHIELDED;
-
-	public Portal(PortalColor color, WidgetPortal widget)
+	@Before
+	public void setUp()
 	{
-		this.color = color;
-		this.widget = widget;
+		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 	}
 
-	public boolean isShielded()
+	@Test
+	public void calculate()
 	{
-		return portalState == PortalState.SHIELDED;
+		testMaxHitConfig(MeleeMaxHitConfig.values());
+		testMaxHitConfig(RangeMaxHitConfig.values());
+		testMaxHitConfig(MagicMaxHitConfig.values());
 	}
 
-	public boolean isDead()
+	private void testMaxHitConfig(MaxHitConfig[] maxHitConfigs)
 	{
-		return portalState == PortalState.DEAD;
-	}
-
-	public boolean isActive()
-	{
-		return (!isShielded() && !isDead());
+		for (MaxHitConfig maxHitConfig : maxHitConfigs)
+		{
+			maxHitConfig.test(client);
+		}
 	}
 }

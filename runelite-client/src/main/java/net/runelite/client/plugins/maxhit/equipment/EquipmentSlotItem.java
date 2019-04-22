@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2019, Yani <yani@xenokore.com>
+ * Copyright (c) 2019, Bartvollebregt <https://github.com/Bartvollebregt>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,40 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pestcontrol;
+package net.runelite.client.plugins.maxhit.equipment;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.EquipmentInventorySlot;
 
-@Getter
-@Setter
-class Portal
+import java.util.ArrayList;
+
+public class EquipmentSlotItem
 {
-	private PortalColor color;
-	private WidgetPortal widget;
-	private WorldPoint location;
+	private final EquipmentInventorySlot equipmentSlot;
+	private final ArrayList<Integer> itemIds;
 
-	private PortalState portalState = PortalState.SHIELDED;
-
-	public Portal(PortalColor color, WidgetPortal widget)
+	public EquipmentSlotItem(EquipmentInventorySlot equipmentSlot, ArrayList<Integer> itemIds)
 	{
-		this.color = color;
-		this.widget = widget;
+		this.equipmentSlot = equipmentSlot;
+		this.itemIds = itemIds;
 	}
 
-	public boolean isShielded()
+	public ArrayList<Integer> getItems()
 	{
-		return portalState == PortalState.SHIELDED;
+		return this.itemIds;
 	}
 
-	public boolean isDead()
+	public EquipmentInventorySlot getEquipmentSlot()
 	{
-		return portalState == PortalState.DEAD;
-	}
-
-	public boolean isActive()
-	{
-		return (!isShielded() && !isDead());
+		return this.equipmentSlot;
 	}
 }

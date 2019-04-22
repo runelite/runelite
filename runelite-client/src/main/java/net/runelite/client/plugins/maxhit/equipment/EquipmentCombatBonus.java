@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2019, Yani <yani@xenokore.com>
+ * Copyright (c) 2019, Bartvollebregt <https://github.com/Bartvollebregt>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,40 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pestcontrol;
+package net.runelite.client.plugins.maxhit.equipment;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.maxhit.calculators.MaxHitCalculator;
 
-@Getter
-@Setter
-class Portal
+public class EquipmentCombatBonus
 {
-	private PortalColor color;
-	private WidgetPortal widget;
-	private WorldPoint location;
 
-	private PortalState portalState = PortalState.SHIELDED;
+	private final double meleeBonus;
+	private final double rangeBonus;
+	private final double magicBonus;
 
-	public Portal(PortalColor color, WidgetPortal widget)
+	public EquipmentCombatBonus(double meleeBonus, double rangeBonus, double magicBonus)
 	{
-		this.color = color;
-		this.widget = widget;
+		this.meleeBonus = meleeBonus;
+		this.rangeBonus = rangeBonus;
+		this.magicBonus = magicBonus;
 	}
 
-	public boolean isShielded()
+	public double getCombatBonus(MaxHitCalculator.CombatMethod combatMethod)
 	{
-		return portalState == PortalState.SHIELDED;
+		switch (combatMethod)
+		{
+			default:
+			case MELEE:
+				return this.meleeBonus;
+			case RANGE:
+				return this.rangeBonus;
+			case MAGIC:
+				return this.magicBonus;
+		}
 	}
 
-	public boolean isDead()
-	{
-		return portalState == PortalState.DEAD;
-	}
-
-	public boolean isActive()
-	{
-		return (!isShielded() && !isDead());
-	}
 }

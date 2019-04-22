@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Yani <yani@xenokore.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,15 +25,12 @@
 package net.runelite.client.plugins.pestcontrol;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
-@RequiredArgsConstructor
 @Getter
-@Setter
-class PortalContext
+public enum PortalColor
 {
-	private final Portal portal;
-	private boolean isShielded = true;
-	private boolean isDead;
+	BLUE,
+	PURPLE,
+	YELLOW,
+	RED
 }

@@ -1,6 +1,7 @@
 /*
  *  Copyright (c) 2017, Kronos <https://github.com/KronosDesign>
  *  Copyright (c) 2017, Adam <Adam@sigterm.info>
+ *  Copyright (c) 2019, Yani <yani@xenokore.com>
  *  All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -31,151 +32,107 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import javax.inject.Inject;
-import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.NPC;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.client.plugins.pestcontrol.Portal.BLUE;
-import static net.runelite.client.plugins.pestcontrol.Portal.PURPLE;
-import static net.runelite.client.plugins.pestcontrol.Portal.RED;
-import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 @Slf4j
-public class PestControlOverlay extends Overlay
+public class WidgetOverlay extends Overlay
 {
-	private final PestControlPlugin plugin;
 	private final Client client;
 
-	// Pest control game
-	@Getter(AccessLevel.PACKAGE)
-	private Game game;
+	private final PestControlPlugin plugin;
 
 	@Inject
-	public PestControlOverlay(PestControlPlugin plugin, Client client)
+	public WidgetOverlay(Client client, PestControlPlugin plugin)
 	{
-		setPosition(OverlayPosition.DYNAMIC);
 		this.plugin = plugin;
 		this.client = client;
+
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
+	}
+
+	public Integer getPortalHitpoints(PortalColor color)
+	{
+		if (plugin.getGame() == null)
+		{
+			return null;
+		}
+
+		WidgetInfo healthWidgetInfo = null;
+
+		switch (color)
+		{
+			case RED:
+			{
+				healthWidgetInfo = WidgetPortal.RED.getHitpoints();
+				break;
+			}
+			case BLUE:
+			{
+				healthWidgetInfo = WidgetPortal.BLUE.getHitpoints();
+				break;
+			}
+			case PURPLE:
+			{
+				healthWidgetInfo = WidgetPortal.PURPLE.getHitpoints();
+				break;
+			}
+			case YELLOW:
+			{
+				healthWidgetInfo = WidgetPortal.YELLOW.getHitpoints();
+				break;
+			}
+		}
+
+		if (healthWidgetInfo == null)
+		{
+			return null;
+		}
+
+		Widget healthWidget = client.getWidget(healthWidgetInfo);
+
+		if (healthWidget == null)
+		{
+			return null;
+		}
+
+		return Integer.parseInt(healthWidget.getText().trim());
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		// See if we are in a game or not
-		if (client.getWidget(WidgetInfo.PEST_CONTROL_BLUE_SHIELD) == null)
+		if (plugin.getGame() == null)
 		{
-			if (game != null)
-			{
-				log.debug("Pest control game has ended");
-				game = null;
-			}
-
 			return null;
 		}
 
-		if (game == null)
-		{
-			log.debug("Pest control game has started");
-			game = new Game();
-		}
-
-		renderSpinners(graphics);
-		renderPortalWidgets(graphics);
-
-		return null;
-	}
-
-	private void renderSpinners(Graphics2D graphics)
-	{
-		for (NPC npc : plugin.getSpinners())
-		{
-			OverlayUtil.renderActorOverlay(graphics, npc, npc.getName(), Color.CYAN);
-		}
-	}
-
-	private void renderPortalWidgets(Graphics2D graphics)
-	{
-		PortalContext purple = game.getPurple();
-		PortalContext blue = game.getBlue();
-		PortalContext yellow = game.getYellow();
-		PortalContext red = game.getRed();
-
-		Widget purpleHealth = client.getWidget(PURPLE.getHitpoints());
-		Widget blueHealth = client.getWidget(BLUE.getHitpoints());
-		Widget yellowHealth = client.getWidget(YELLOW.getHitpoints());
-		Widget redHealth = client.getWidget(RED.getHitpoints());
-
-		// Check for dead portals
-		if (isZero(purpleHealth))
-		{
-			game.die(purple);
-		}
-		if (isZero(blueHealth))
-		{
-			game.die(blue);
-		}
-		if (isZero(yellowHealth))
-		{
-			game.die(yellow);
-		}
-		if (isZero(redHealth))
-		{
-			game.die(red);
-		}
-
-		// display "ATK" overlay on recorded portals without shields
-		renderAttack(graphics, purple);
-		renderAttack(graphics, blue);
-		renderAttack(graphics, yellow);
-		renderAttack(graphics, red);
-
-		// display "NEXT" overlay on predicted portals
-		for (Portal portal : game.getNextPortals())
+		for (Portal portal : plugin.getGame().getNextPortals())
 		{
 			renderWidgetOverlay(graphics, portal, "NEXT", Color.ORANGE);
 		}
 
-		renderProgressWidget(graphics);
-	}
-
-	private void renderProgressWidget(Graphics2D graphics)
-	{
-		Widget bar = client.getWidget(WidgetInfo.PEST_CONTROL_ACTIVITY_BAR).getChild(0);
-		Rectangle2D bounds = bar.getBounds().getBounds2D();
-
-		Widget prgs = client.getWidget(WidgetInfo.PEST_CONTROL_ACTIVITY_PROGRESS).getChild(0);
-		int perc = (int) ((prgs.getBounds().getWidth() / bounds.getWidth()) * 100);
-
-		Color color = Color.GREEN;
-		if (perc < 25)
+		for (Portal portal : plugin.getGame().getActivePortals())
 		{
-			color = Color.RED;
+			renderWidgetOverlay(graphics, portal, "ATT", Color.RED);
 		}
 
-		String text = String.valueOf(perc) + "%";
+		renderProgressWidget(graphics);
 
-		FontMetrics fm = graphics.getFontMetrics();
-		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
-		int x = (int) (bounds.getX() - textBounds.getWidth());
-		int y = (int) (bounds.getY() + fm.getHeight() - 2);
-
-		graphics.setColor(Color.BLACK);
-		graphics.drawString(text, x + 1, y + 1);
-		graphics.setColor(color);
-		graphics.drawString(text, x, y);
+		return null;
 	}
 
 	private void renderWidgetOverlay(Graphics2D graphics, Portal portal, String text, Color color)
 	{
-		Widget shield = client.getWidget(portal.getShield());
-		Widget icon = client.getWidget(portal.getIcon());
-		Widget hp = client.getWidget(portal.getHitpoints());
+		Widget shield = client.getWidget(portal.getWidget().getShield());
+		Widget icon = client.getWidget(portal.getWidget().getIcon());
+		Widget hp = client.getWidget(portal.getWidget().getHitpoints());
 
 		Widget bar = client.getWidget(WidgetInfo.PEST_CONTROL_ACTIVITY_BAR).getChild(0);
 
@@ -199,6 +156,45 @@ public class PestControlOverlay extends Overlay
 		graphics.drawString(text, x, y + 4);
 	}
 
+	private void renderProgressWidget(Graphics2D graphics)
+	{
+		String text;
+		int percentage;
+
+		Widget bar = client.getWidget(WidgetInfo.PEST_CONTROL_ACTIVITY_BAR).getChild(0);
+		Rectangle2D bounds = bar.getBounds().getBounds2D();
+
+		Widget prgs = client.getWidget(WidgetInfo.PEST_CONTROL_ACTIVITY_PROGRESS).getChild(0);
+
+		// At 0% the inner widget changes and your progress will not increase anymore
+		if ((int) (prgs.getBounds().getX()) - bounds.getX() != 2)
+		{
+			percentage = 0;
+			text = "FAILED";
+		}
+		else
+		{
+			percentage = (int) ((prgs.getBounds().getWidth() / bounds.getWidth()) * 100);
+			text = String.valueOf(percentage) + "%";
+		}
+
+		Color color = Color.GREEN;
+		if (percentage < 25)
+		{
+			color = Color.RED;
+		}
+
+		FontMetrics fm = graphics.getFontMetrics();
+		Rectangle2D textBounds = fm.getStringBounds(text, graphics);
+		int x = (int) (bounds.getX() - textBounds.getWidth() - 4);
+		int y = (int) (bounds.getY() + fm.getHeight() - 2);
+
+		graphics.setColor(Color.BLACK);
+		graphics.drawString(text, x + 1, y + 1);
+		graphics.setColor(color);
+		graphics.drawString(text, x, y);
+	}
+
 	private static Rectangle2D union(Rectangle2D src1, Rectangle2D src2)
 	{
 		double x1 = Math.min(src1.getMinX(), src2.getMinX());
@@ -210,20 +206,5 @@ public class PestControlOverlay extends Overlay
 		result.setFrameFromDiagonal(x1, y1, x2, y2);
 
 		return result;
-	}
-
-	private void renderAttack(Graphics2D graphics, PortalContext portal)
-	{
-		if (portal.isShielded() || portal.isDead())
-		{
-			return;
-		}
-
-		renderWidgetOverlay(graphics, portal.getPortal(), "ATK", Color.RED);
-	}
-
-	private static boolean isZero(Widget widget)
-	{
-		return widget.getText().trim().equals("0");
 	}
 }

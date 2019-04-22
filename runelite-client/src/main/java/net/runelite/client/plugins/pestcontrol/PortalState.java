@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Yani <yani@xenokore.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,37 +24,9 @@
  */
 package net.runelite.client.plugins.pestcontrol;
 
-import static net.runelite.client.plugins.pestcontrol.Portal.BLUE;
-import static net.runelite.client.plugins.pestcontrol.Portal.PURPLE;
-import static net.runelite.client.plugins.pestcontrol.Portal.RED;
-import static net.runelite.client.plugins.pestcontrol.Portal.YELLOW;
-
-enum Rotation
+public enum PortalState
 {
-	PBYR(PURPLE, BLUE, YELLOW, RED),
-	PYBR(PURPLE, YELLOW, BLUE, RED),
-	BRYP(BLUE, RED, YELLOW, PURPLE),
-	BPRY(BLUE, PURPLE, RED, YELLOW),
-	YRPB(YELLOW, RED, PURPLE, BLUE),
-	YPRB(YELLOW, PURPLE, RED, BLUE);
-
-	private final Portal[] portals;
-
-	Rotation(Portal first, Portal second, Portal third, Portal fourth)
-	{
-		portals = new Portal[]
-		{
-			first, second, third, fourth
-		};
-	}
-
-	public Portal getPortal(int index)
-	{
-		if (index < 0 || index >= portals.length)
-		{
-			return null;
-		}
-
-		return portals[index];
-	}
+	ACTIVE,
+	SHIELDED,
+	DEAD
 }

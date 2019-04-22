@@ -55,6 +55,8 @@ public class WidgetID
 	public static final int DIARY_GROUP_ID = 259;
 	public static final int PEST_CONTROL_BOAT_GROUP_ID = 407;
 	public static final int PEST_CONTROL_GROUP_ID = 408;
+	public static final int PEST_CONTROL_EXCHANGE_WINDOW_GROUP_ID = 243;
+	public static final int PEST_CONTROL_DIALOG_GROUP_ID = 229;
 	public static final int CLAN_CHAT_GROUP_ID = 7;
 	public static final int MINIMAP_GROUP_ID = 160;
 	public static final int LOGIN_CLICK_TO_PLAY_GROUP_ID = 378;
@@ -127,6 +129,7 @@ public class WidgetID
 	public static final int FULLSCREEN_MAP_GROUP_ID = 165;
 	public static final int QUESTLIST_GROUP_ID = 399;
 	public static final int SKILLS_GROUP_ID = 320;
+	public static final int EQUIPMENT_PAGE_GROUP_ID = 84;
 	public static final int QUESTTAB_GROUP_ID = 629;
 	public static final int MUSIC_GROUP_ID = 239;
 	public static final int MUSICTAB_GROUP_ID = 239;
@@ -164,11 +167,31 @@ public class WidgetID
 	static class PestControlBoat
 	{
 		static final int INFO = 3;
+
+		static final int NEXT_DEPARTURE = 4;
+		static final int PLAYERS_READY = 5;
+		static final int POINTS = 6;
+	}
+
+	static class PestControlExchangeWindow
+	{
+		static final int ITEM_LIST = 2;
+		static final int BOTTOM = 5;
+		static final int POINTS = 8;
+		static final int CONFIRM_BUTTON = 6;
+	}
+
+	static class PestControlDialog
+	{
+		static final int TEXT = 1;
+		static final int CONTINUE = 2;
 	}
 
 	static class PestControl
 	{
 		static final int INFO = 3;
+
+		static final int TIME = 6;
 
 		static final int ACTIVITY_BAR = 12;
 		static final int ACTIVITY_PROGRESS = 14;
@@ -673,6 +696,28 @@ public class WidgetID
 		static final int DESTROY_ITEM_NAME = 6;
 		static final int DESTROY_ITEM_YES = 1;
 		static final int DESTROY_ITEM_NO = 3;
+	}
+
+	static class EquipmentWidgetIdentifiers
+	{
+		static final int EQUIP_YOUR_CHARACTER = 3;
+		static final int STAB_ATTACK_BONUS = 23;
+		static final int SLASH_ATTACK_BONUS = 24;
+		static final int CRUSH_ATTACK_BONUS = 25;
+		static final int MAGIC_ATTACK_BONUS = 26;
+		static final int RANGED_ATTACK_BONUS = 27;
+		static final int STAB_DEFENCE_BONUS = 29;
+		static final int SLASH_DEFENCE_BONUS = 30;
+		static final int CRUSH_DEFENCE_BONUS = 31;
+		static final int MAGIC_DEFENCE_BONUS = 32;
+		static final int RANGED_DEFENCE_BONUS = 33;
+		static final int MELEE_STRENGTH = 35;
+		static final int RANGED_STRENGTH = 36;
+		static final int MAGIC_DAMAGE = 37;
+		static final int PRAYER_BONUS = 38;
+		static final int UNDEAD_DAMAGE_BONUS = 40;
+		static final int SLAYER_DAMAGE_BONUS = 41;
+		static final int WEIGHT = 43;
 	}
 
 	static class VarrockMuseum

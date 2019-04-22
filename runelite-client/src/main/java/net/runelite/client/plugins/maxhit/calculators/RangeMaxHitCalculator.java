@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2019, Yani <yani@xenokore.com>
+ * Copyright (c) 2019, Bartvollebregt <https://github.com/Bartvollebregt>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,40 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pestcontrol;
+package net.runelite.client.plugins.maxhit.calculators;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.Client;
+import net.runelite.api.Item;
+import net.runelite.api.Skill;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 
-@Getter
-@Setter
-class Portal
+public class RangeMaxHitCalculator extends MeleeMaxHitCalculator
 {
-	private PortalColor color;
-	private WidgetPortal widget;
-	private WorldPoint location;
 
-	private PortalState portalState = PortalState.SHIELDED;
-
-	public Portal(PortalColor color, WidgetPortal widget)
+	public RangeMaxHitCalculator(Client client, Item[] equipedItems)
 	{
-		this.color = color;
-		this.widget = widget;
+		super(client, CombatMethod.RANGE, equipedItems);
 	}
 
-	public boolean isShielded()
+	@Override
+	protected String getSkillStrengthText(String equipmentText)
 	{
-		return portalState == PortalState.SHIELDED;
+		return equipmentText.replace("Ranged strength: ", "").replace(".", "").replace("%", "");
 	}
 
-	public boolean isDead()
+	@Override
+	public Widget equipmentSkillPower()
 	{
-		return portalState == PortalState.DEAD;
+		return this.client.getWidget(WidgetInfo.EQUIPMENT_RANGED_STRENGTH);
 	}
 
-	public boolean isActive()
+	@Override
+	public double getCurrentSkillPower()
 	{
-		return (!isShielded() && !isDead());
+		return this.client.getBoostedSkillLevel(Skill.RANGED);
 	}
+
 }

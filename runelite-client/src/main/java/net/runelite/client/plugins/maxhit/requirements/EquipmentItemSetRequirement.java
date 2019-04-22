@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2019, Yani <yani@xenokore.com>
+ * Copyright (c) 2019, Bartvollebregt <https://github.com/Bartvollebregt>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,40 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pestcontrol;
+package net.runelite.client.plugins.maxhit.requirements;
 
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.client.plugins.maxhit.equipment.EquipmentHelper;
+import net.runelite.client.plugins.maxhit.equipment.EquipmentItemset;
 
-@Getter
-@Setter
-class Portal
+public class EquipmentItemSetRequirement implements Requirement
 {
-	private PortalColor color;
-	private WidgetPortal widget;
-	private WorldPoint location;
+	private final EquipmentItemset itemSet;
 
-	private PortalState portalState = PortalState.SHIELDED;
-
-	public Portal(PortalColor color, WidgetPortal widget)
+	public EquipmentItemSetRequirement(EquipmentItemset itemSet)
 	{
-		this.color = color;
-		this.widget = widget;
+		this.itemSet = itemSet;
 	}
 
-	public boolean isShielded()
+	@Override
+	public boolean meetsRequirements(Client client)
 	{
-		return portalState == PortalState.SHIELDED;
-	}
+		ItemContainer equipmentContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+		if (equipmentContainer == null)
+		{
+			return false;
+		}
+		Item[] equipedItems = equipmentContainer.getItems();
 
-	public boolean isDead()
-	{
-		return portalState == PortalState.DEAD;
-	}
-
-	public boolean isActive()
-	{
-		return (!isShielded() && !isDead());
+		return EquipmentHelper.wearsItemSet(equipedItems, this.itemSet);
 	}
 }
