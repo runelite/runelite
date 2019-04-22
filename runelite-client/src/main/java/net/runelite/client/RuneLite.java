@@ -58,6 +58,7 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
@@ -183,6 +184,19 @@ public class RuneLite
 			System.exit(0);
 		}
 
+		if (options.has("debug"))
+		{
+			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+			logger.setLevel(Level.DEBUG);
+		}
+
+		final ClientLoader clientLoader = new ClientLoader(options.valueOf(updateMode));
+
+		new Thread(() ->
+		{
+			clientLoader.get();
+		}, "Preloader").start();
+
 		final boolean developerMode = options.has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null;
 
 		if (developerMode)
@@ -197,12 +211,6 @@ public class RuneLite
 
 		PROFILES_DIR.mkdirs();
 
-		if (options.has("debug"))
-		{
-			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-			logger.setLevel(Level.DEBUG);
-		}
-
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
 		{
 			log.error("Uncaught exception:", throwable);
@@ -215,7 +223,7 @@ public class RuneLite
 		final long start = System.currentTimeMillis();
 
 		injector = Guice.createInjector(new RuneLiteModule(
-			options.valueOf(updateMode),
+			clientLoader,
 			developerMode));
 
 		injector.getInstance(RuneLite.class).start();

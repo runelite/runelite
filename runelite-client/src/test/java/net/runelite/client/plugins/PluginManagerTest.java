@@ -48,7 +48,6 @@ import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.rs.ClientUpdateCheckMode;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Rule;
@@ -80,7 +79,7 @@ public class PluginManagerTest
 	public void before() throws IOException
 	{
 		Injector injector = Guice.createInjector(Modules
-			.override(new RuneLiteModule(ClientUpdateCheckMode.AUTO, true))
+			.override(new RuneLiteModule(() -> null, true))
 			.with(BoundFieldModule.of(this)));
 
 		RuneLite.setInjector(injector);
@@ -97,7 +96,6 @@ public class PluginManagerTest
 				pluginClasses.add(clazz);
 			}
 		}
-
 	}
 
 	@Test
@@ -135,7 +133,7 @@ public class PluginManagerTest
 	{
 		List<Module> modules = new ArrayList<>();
 		modules.add(new GraphvizModule());
-		modules.add(new RuneLiteModule(ClientUpdateCheckMode.AUTO, true));
+		modules.add(new RuneLiteModule(() -> null, true));
 
 		PluginManager pluginManager = new PluginManager(true, null, null, null, null, null);
 		pluginManager.loadCorePlugins();

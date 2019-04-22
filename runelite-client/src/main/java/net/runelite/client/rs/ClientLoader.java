@@ -47,9 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
+import javax.inject.Provider;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
@@ -60,22 +58,29 @@ import okhttp3.Response;
 import org.apache.commons.compress.compressors.CompressorException;
 
 @Slf4j
-@Singleton
-public class ClientLoader
+public class ClientLoader implements Provider<Applet>
 {
-	private final ClientConfigLoader clientConfigLoader;
 	private ClientUpdateCheckMode updateCheckMode;
+	private Applet client = null;
 
-	@Inject
-	private ClientLoader(
-		@Named("updateCheckMode") final ClientUpdateCheckMode updateCheckMode,
-		final ClientConfigLoader clientConfigLoader)
+	public ClientLoader(ClientUpdateCheckMode updateCheckMode)
 	{
 		this.updateCheckMode = updateCheckMode;
-		this.clientConfigLoader = clientConfigLoader;
 	}
 
-	public Applet load()
+	public Applet get()
+	{
+		synchronized (this)
+		{
+			if (client == null)
+			{
+				client = doLoad();
+			}
+			return client;
+		}
+	}
+
+	private Applet doLoad()
 	{
 		if (updateCheckMode == NONE)
 		{
@@ -84,7 +89,7 @@ public class ClientLoader
 
 		try
 		{
-			RSConfig config = clientConfigLoader.fetch();
+			RSConfig config = new ClientConfigLoader().fetch();
 
 			Map<String, byte[]> zipFile = new HashMap<>();
 			{

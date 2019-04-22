@@ -25,13 +25,11 @@
  */
 package net.runelite.client.rs;
 
-import com.google.common.annotations.VisibleForTesting;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import javax.inject.Inject;
 import javax.inject.Singleton;
-import okhttp3.OkHttpClient;
+import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -39,14 +37,6 @@ import okhttp3.Response;
 class ClientConfigLoader
 {
 	private static final String CONFIG_URL = "http://oldschool.runescape.com/jav_config.ws";
-	private final OkHttpClient httpClient;
-
-	@Inject
-	@VisibleForTesting
-	ClientConfigLoader(final OkHttpClient httpClient)
-	{
-		this.httpClient = httpClient;
-	}
 
 	RSConfig fetch() throws IOException
 	{
@@ -56,8 +46,8 @@ class ClientConfigLoader
 
 		final RSConfig config = new RSConfig();
 
-		try (final Response response = httpClient.newCall(request).execute(); final BufferedReader in = new BufferedReader(
-			new InputStreamReader(response.body().byteStream())))
+		try (final Response response = RuneLiteAPI.CLIENT.newCall(request).execute();
+			final BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream())))
 		{
 			String str;
 
