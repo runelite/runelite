@@ -357,11 +357,6 @@ public class SuppliesTrackerPlugin extends Plugin
 	{
 		ItemContainer itemContainer = itemContainerChanged.getItemContainer();
 
-		for (MenuAction action : actionStack)
-		{
-			System.out.println(action.getType());
-		}
-
 		if (itemContainer == client.getItemContainer(InventoryID.INVENTORY) && old != null && !actionStack.isEmpty())
 		{
 			while (!actionStack.isEmpty())
@@ -487,11 +482,6 @@ public class SuppliesTrackerPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(final MenuOptionClicked event)
 	{
-		System.out.println(event.getMenuAction().getId());
-		System.out.println(event.getActionParam());
-		System.out.println(event.getMenuOption());
-		System.out.println(event.getMenuTarget());
-
 		// Uses stacks to push/pop for tick eating
 		// Create pattern to find eat/drink at beginning
 		Pattern eatPattern = Pattern.compile(EAT_PATTERN);
