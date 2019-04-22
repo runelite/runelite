@@ -107,6 +107,7 @@ public class ConfigPanel extends PluginPanel
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
 	private static final String RUNELITE_PLUGIN = "RuneLite";
 	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
+	public static boolean flexoConfigEnabled = false;
 
 	private final PluginManager pluginManager;
 	private final ConfigManager configManager;
@@ -195,6 +196,26 @@ public class ConfigPanel extends PluginPanel
 	{
 		final List<String> pinnedPlugins = getPinnedPluginNames();
 
+		List<PluginListItem> externalPlugins = new ArrayList<>();
+		// populate pluginList with all external Plugins
+		pluginManager.getPlugins().stream()
+				.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals("external"))
+				.forEach(plugin ->
+				{
+					final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
+					final Config config = pluginManager.getPluginConfigProxy(plugin);
+					final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
+
+					final PluginListItem listItem = new PluginListItem(this, configManager, plugin, descriptor, config, configDescriptor);
+					System.out.println("Started "+listItem.getName());
+					listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
+					externalPlugins.add(listItem);
+				});
+
+		externalPlugins.sort(Comparator.comparing(PluginListItem::getName));
+		for (PluginListItem plugin : externalPlugins)
+			pluginList.add(plugin);
+
 		List<PluginListItem> pvmPlugins = new ArrayList<>();
 		// populate pluginList with all PVM Plugins
 		pluginManager.getPlugins().stream()
@@ -236,7 +257,7 @@ public class ConfigPanel extends PluginPanel
 			pluginList.add(plugin);
 
 		List<PluginListItem> utilPlugins = new ArrayList<>();
-		// populate pluginList with all PVP Plugins
+		// populate pluginList with all utility Plugins
 		pluginManager.getPlugins().stream()
 				.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals("utility"))
 				.forEach(plugin ->
@@ -246,9 +267,16 @@ public class ConfigPanel extends PluginPanel
 					final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
 
 					final PluginListItem listItem = new PluginListItem(this, configManager, plugin, descriptor, config, configDescriptor);
+					if (listItem.getName().contains("Flexo") && flexoConfigEnabled) {
+						System.out.println("Started "+listItem.getName());
+						listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
+						utilPlugins.add(listItem);
+					} else if (!listItem.getName().contains("Flexo")) {
 					System.out.println("Started "+listItem.getName());
 					listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
 					utilPlugins.add(listItem);
+					}
+
 				});
 
 		utilPlugins.sort(Comparator.comparing(PluginListItem::getName));

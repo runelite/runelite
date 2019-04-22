@@ -259,6 +259,11 @@
             <artifactId>annotations</artifactId>
             <version>17.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.joonasvali.naturalmouse</groupId>
+            <artifactId>naturalmouse</artifactId>
+            <version>[1.0.0,)</version>
+        </dependency>
     </dependencies>
 
 	<build>

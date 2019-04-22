@@ -114,6 +114,7 @@ public class SmeltingPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		if (session!=null)
 		if (session.getLastItemSmelted() != null)
 		{
 			final Duration statTimeout = Duration.ofMinutes(config.statTimeout());

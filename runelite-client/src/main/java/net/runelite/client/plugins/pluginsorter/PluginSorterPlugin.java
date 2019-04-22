@@ -76,7 +76,9 @@ public class PluginSorterPlugin extends Plugin {
         for (PluginListItem pli : ConfigPanel.pluginList) {
             if (pli.getPlugin()!=null) {
                 if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type()!=null)
-                    if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("PVM"))
+                    if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("external"))
+                        pli.nameLabel.setForeground(config.pvmColor());
+                    else if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("PVM"))
                         pli.nameLabel.setForeground(config.pvmColor());
                     else if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("PVP"))
                         pli.nameLabel.setForeground(config.pvpColor());
@@ -93,6 +95,11 @@ public class PluginSorterPlugin extends Plugin {
         while (iter.hasNext()) {
             PluginListItem pli = iter.next();
             if (pli.getPlugin() != null) {
+                if (!pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals(""))
+                    if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("external")) {
+                        iter.remove();
+                        removedPlugins.add(pli);
+                    }
                 if (!pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals(""))
                     if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("PVM")) {
                         iter.remove();

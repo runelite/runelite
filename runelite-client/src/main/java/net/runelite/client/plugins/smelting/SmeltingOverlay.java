@@ -71,6 +71,8 @@ class SmeltingOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		SmeltingSession session = plugin.getSession();
+
+		if (session!=null)
 		if (session.getLastItemSmelted() == null)
 		{
 			return null;
@@ -78,6 +80,7 @@ class SmeltingOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 
+		if (session!=null)
 		if (isSmelting() || Duration.between(session.getLastItemSmelted(), Instant.now()).getSeconds() < SMELT_TIMEOUT)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
