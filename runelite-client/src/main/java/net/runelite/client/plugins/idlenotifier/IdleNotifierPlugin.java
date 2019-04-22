@@ -26,6 +26,8 @@
 package net.runelite.client.plugins.idlenotifier;
 
 import com.google.inject.Provides;
+
+import java.awt.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -50,16 +52,18 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.PlayerSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.PvPUtil;
 
 @PluginDescriptor(
 	name = "Idle Notifier",
 	description = "Send a notification when going idle, or when HP/Prayer reaches a threshold",
-	tags = {"health", "hitpoints", "notifications", "prayer"}
+	tags = {"health", "hitpoints", "notifications", "prayer", "pvp", "pker"}
 )
 public class IdleNotifierPlugin extends Plugin
 {
@@ -235,6 +239,29 @@ public class IdleNotifierPlugin extends Plugin
 				// On unknown animation simply assume the animation is invalid and dont throw notification
 				lastAnimation = IDLE;
 				lastAnimating = null;
+		}
+	}
+
+	@Subscribe
+	private void onPlayerSpawned(PlayerSpawned event)
+	{
+		final Player p = event.getPlayer();
+		if (config.notifyPkers())
+		{
+			if (p != null)
+			{
+				if (p != client.getLocalPlayer())
+				{
+					if (PvPUtil.isAttackable(client, p) && !client.isFriended(p.getName(), false)
+						&& !client.isClanMember(p.getName()))
+					{
+						String playerName = p.getName();
+						int combat = p.getCombatLevel();
+						notifier.notify("PK'er warning! A level " + combat + " player named " + playerName +
+							" appeared!", TrayIcon.MessageType.WARNING);
+					}
+				}
+			}
 		}
 	}
 
