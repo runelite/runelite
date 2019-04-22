@@ -97,7 +97,7 @@ public class AmmoPlugin extends Plugin
 	{
 		// Check for weapon slot items. This overrides the ammo slot,
 		// as the player will use the thrown weapon (eg. chinchompas, knives, darts)
-		if (items.length >= EquipmentInventorySlot.WEAPON.getSlotIdx() - 1)
+		if (items.length > EquipmentInventorySlot.WEAPON.getSlotIdx())
 		{
 			final Item weapon = items[EquipmentInventorySlot.WEAPON.getSlotIdx()];
 			final ItemComposition weaponComp = itemManager.getItemComposition(weapon.getId());
