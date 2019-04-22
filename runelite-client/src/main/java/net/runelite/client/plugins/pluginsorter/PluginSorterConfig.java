@@ -6,7 +6,7 @@ import net.runelite.client.config.ConfigItem;
 
 import java.awt.*;
 
-@ConfigGroup("runelit")
+@ConfigGroup("pluginsorter")
 public interface PluginSorterConfig extends Config {
 
     Color rlDefault = new Color(250, 155, 23);

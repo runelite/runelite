@@ -17,13 +17,13 @@ public class ErrorTransform implements Transform {
     @Override
     public void modify(Class clazz) {
         try {
-            System.out.println("[RuneLit] Transforming error method at class: "+ERROR_INSTANCE_CLASS);
+            System.out.println("[RuneLitePlus] Transforming error method at class: "+ERROR_INSTANCE_CLASS);
             ct = ByteCodePatcher.classPool.get(ERROR_INSTANCE_CLASS);
             CtMethod error = ct.getDeclaredMethod(ERROR_INSTANCE_METHOD);
             ct.removeMethod(error);
             error = CtMethod.make("public static void a(String string, Throwable throwable, byte by) {"+
                     "                       throwable.printStackTrace();"+
-                    "                       System.out.println(\"[RuneLit] Prevented preceeding stack trace from being sent to Jagex\");"+
+                    "                       System.out.println(\"[RuneLitePlus] Prevented preceeding stack trace from being sent to Jagex\");"+
                     "                   }", ct);
             ct.addMethod(error);
             ByteCodePatcher.modifiedClasses.add(ct);

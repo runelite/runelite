@@ -127,7 +127,7 @@ public class ByteCodePatcher {
 			Method method = current.getDeclaredMethod("setCombatInfo", new Class[] { int.class, int.class, int.class, int.class, int.class, int.class });
 			if (method!=null) {
 				hooks.actorClass = current.getName();
-				System.out.println("[RuneLit] Transforming Actor at class: "+current.getName());
+				System.out.println("[RuneLitePlus] Transforming Actor at class: "+current.getName());
 				ActorTransform at = new ActorTransform();
 				at.modify(current);
 			}
@@ -139,7 +139,7 @@ public class ByteCodePatcher {
 	}
 
 	public static void transformActor(Class actor) {
-		System.out.println("[RuneLit] Transforming Actor at class: "+actor.getName());
+		System.out.println("[RuneLitePlus] Transforming Actor at class: "+actor.getName());
 		ActorTransform at = new ActorTransform();
 		at.modify(actor);
 	}
@@ -149,7 +149,7 @@ public class ByteCodePatcher {
 			Method method = current.getDeclaredMethod("projectileMoved", new Class[] { int.class, int.class, int.class, int.class});
 			if (method!=null) {
 				hooks.projectileClass = current.getName();
-				System.out.println("[RuneLit] Transforming Projectile at class: "+current.getName());
+				System.out.println("[RuneLitePlus] Transforming Projectile at class: "+current.getName());
 				ProjectileTransform pt = new ProjectileTransform();
 				pt.modify(current);
 			}
@@ -161,7 +161,7 @@ public class ByteCodePatcher {
 	}
 
 	public static void transformProjectile(Class projectile) {
-		System.out.println("[RuneLit] Transforming Projectile at class: "+projectile.getName());
+		System.out.println("[RuneLitePlus] Transforming Projectile at class: "+projectile.getName());
 		ProjectileTransform pt = new ProjectileTransform();
 		pt.modify(projectile);
 	}
@@ -171,7 +171,7 @@ public class ByteCodePatcher {
 			Method method = current.getDeclaredMethod("getSkullIcon");
 			if (method!=null) {
 				hooks.playerClass = current.getName();
-				System.out.println("[RuneLit] Transforming Player at class: "+current.getName());
+				System.out.println("[RuneLitePlus] Transforming Player at class: "+current.getName());
 				PlayerTransform pt = new PlayerTransform();
 				pt.modify(current);
 			}
@@ -183,13 +183,13 @@ public class ByteCodePatcher {
 	}
 
 	public static void transformPlayer(Class player) {
-		System.out.println("[RuneLit] Transforming Player at class: "+player.getName());
+		System.out.println("[RuneLitePlus] Transforming Player at class: "+player.getName());
 		PlayerTransform pt = new PlayerTransform();
 		pt.modify(player);
 	}
 
 	public static void transformBlackjack(Class clazz) {
-		System.out.println("[RuneLit] Transforming Blackjack at class: "+clazz.getName());
+		System.out.println("[RuneLitePlus] Transforming Blackjack at class: "+clazz.getName());
 		ClientTransform bt = new ClientTransform();
 		bt.modify(clazz);
 	}
