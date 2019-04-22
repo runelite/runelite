@@ -16,6 +16,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import java.util.HashMap;
 import java.util.Map;
+
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -23,7 +25,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 		description = "Configures timer for lizardmen shaman spawns.",
 		enabledByDefault = false,
 		tags = {"shaman", "lizard", "lizardmen"},
-		type = "PVM"
+		type = PluginType.PVM
 )
 @Slf4j
 public class LizardmenShamanPlugin extends Plugin

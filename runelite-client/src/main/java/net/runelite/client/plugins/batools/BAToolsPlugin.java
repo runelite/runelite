@@ -70,6 +70,7 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
@@ -79,7 +80,7 @@ import net.runelite.client.util.Text;
 	name = "BA Tools",
 	description = "Custom tools for Barbarian Assault",
 	tags = {"minigame", "overlay", "timer"},
-	type = "PVM"
+	type = PluginType.PVM
 )
 public class BAToolsPlugin extends Plugin implements KeyListener
 {

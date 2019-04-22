@@ -74,6 +74,7 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
@@ -88,7 +89,7 @@ import net.runelite.client.util.HotkeyListener;
 	name = "Chambers Of Xeric",
 	description = "Show helpful information for the Chambers of Xeric raid",
 	tags = {"combat", "raid", "overlay", "pve", "pvm", "bosses", "cox", "olm"},
-	type = "PVM"
+	type = PluginType.PVM
 )
 @Slf4j
 public class RaidsPlugin extends Plugin

@@ -36,6 +36,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.WorldUtil;
 import org.apache.commons.lang3.ObjectUtils;
@@ -48,7 +49,7 @@ import org.jetbrains.annotations.NotNull;
 	enabledByDefault = true,
 	hidden = false,
 	developerPlugin = false,
-	type = "PVP",
+	type = PluginType.PVP,
 	loadWhenOutdated = false
 )
 public class WhaleWatchersPlugin extends Plugin

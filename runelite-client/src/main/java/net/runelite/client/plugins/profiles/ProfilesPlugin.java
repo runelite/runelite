@@ -21,6 +21,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
@@ -30,7 +31,7 @@ import net.runelite.client.util.ImageUtil;
     name="Account Switcher",
     description="Allow for a allows you to easily switch between multiple OSRS Accounts", 
     tags={"profile", "account", "login", "log in"},
-    type = "utility"
+    type = PluginType.UTILITY
 )
 
 public class ProfilesPlugin

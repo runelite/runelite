@@ -41,6 +41,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.raidsthieving.BatSolver.BatSolver;
 import net.runelite.client.plugins.raidsthieving.BatSolver.ChestIdentifier;
 import net.runelite.client.plugins.raidsthieving.BatSolver.ThievingRoomType;
@@ -56,7 +57,7 @@ import java.util.Map;
 	name = "Raids Bat Finder",
 	description = "Tracks which chests need to be searched for bats and which poison",
 	tags = {"overlay", "skilling", "raid"},
-	type = "PVM"
+	type = PluginType.PVM
 )
 public class RaidsThievingPlugin extends Plugin
 {

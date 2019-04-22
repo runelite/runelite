@@ -9,6 +9,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.config.ConfigPanel;
 import net.runelite.client.plugins.config.PluginListItem;
 
@@ -22,7 +23,7 @@ import java.util.List;
         name = "Plugin Organizer",
         description = "Hides and colors 3rd party plugins for better control",
         tags = {"Fuck RL","Abex is shit :p"},
-        type = "pluginOrganizer"
+        type = PluginType.PLUGIN_ORGANIZER
 )
 public class PluginSorterPlugin extends Plugin {
 
@@ -75,17 +76,23 @@ public class PluginSorterPlugin extends Plugin {
     public void updateColors() {
         for (PluginListItem pli : ConfigPanel.pluginList) {
             if (pli.getPlugin()!=null) {
-                if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type()!=null)
-                    if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("external"))
-                        pli.nameLabel.setForeground(config.externalColor());
-                    else if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("PVM"))
-                        pli.nameLabel.setForeground(config.pvmColor());
-                    else if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("PVP"))
-                        pli.nameLabel.setForeground(config.pvpColor());
-                    else if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("utility"))
-                        pli.nameLabel.setForeground(config.utilityColor());
-                    else
-                        pli.nameLabel.setForeground(Color.WHITE);
+				switch (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type()) {
+					case EXTERNAL:
+						pli.nameLabel.setForeground(config.externalColor());
+						break;
+					case PVM:
+						pli.nameLabel.setForeground(config.pvmColor());
+						break;
+					case PVP:
+						pli.nameLabel.setForeground(config.pvpColor());
+						break;
+					case UTILITY:
+						pli.nameLabel.setForeground(config.utilityColor());
+						break;
+					default:
+						pli.nameLabel.setForeground(Color.WHITE);
+						break;
+				}
             }
         }
     }
@@ -95,38 +102,27 @@ public class PluginSorterPlugin extends Plugin {
         while (iter.hasNext()) {
             PluginListItem pli = iter.next();
             if (pli.getPlugin() != null) {
-                if (!pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals(""))
-                    if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("external")) {
-                        iter.remove();
-                        removedPlugins.add(pli);
-                    }
-                if (!pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals(""))
-                    if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("PVM")) {
-                        iter.remove();
-                        removedPlugins.add(pli);
-                    }
-                if (!pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals(""))
-                    if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("PVP")) {
-                        iter.remove();
-                        removedPlugins.add(pli);
-                    }
-                if (!pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals(""))
-                    if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("utility")) {
-                        iter.remove();
-                        removedPlugins.add(pli);
-                    }
+				switch (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type())
+				{
+					case PVM:
+					case PVP:
+					case UTILITY:
+					case EXTERNAL:
+						iter.remove();
+						removedPlugins.add(pli);
+						break;
+					case GENERAL_USE:
+					default:
+						break;
+				}
             }
         }
     }
 
     public void showPlugins() {
         List<PluginListItem> tempList = new ArrayList<>();
-        for (PluginListItem pli : removedPlugins) {
-            tempList.add(pli);
-        }
-        for (PluginListItem pli : ConfigPanel.pluginList) {
-            tempList.add(pli);
-        }
+		tempList.addAll(removedPlugins);
+		tempList.addAll(ConfigPanel.pluginList);
         ConfigPanel.pluginList = tempList;
     }
 }

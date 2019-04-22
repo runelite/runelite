@@ -17,6 +17,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
@@ -25,7 +26,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	name = "Clan Man Mode",
 	description = "Assists in clan PVP scenarios",
 	tags = {"highlight", "minimap", "overlay", "players"},
-		type = "PVP"
+		type = PluginType.PVP
 )
 public class ClanManModePlugin extends Plugin
 {

@@ -26,6 +26,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 import org.slf4j.Logger;
@@ -33,7 +34,7 @@ import org.slf4j.Logger;
 @PluginDescriptor(
         name = "Freeze Timers",
         description = "PVP Freeze Timers",
-        type = "PVP",
+        type = PluginType.PVP,
         tags = {"PvP", "Freeze", "Timers", "pklite"}
 )
 public class FreezeTimersPlugin extends Plugin

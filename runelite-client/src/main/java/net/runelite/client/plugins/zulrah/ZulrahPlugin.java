@@ -17,6 +17,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
@@ -24,7 +25,7 @@ import net.runelite.client.util.ImageUtil;
 	name = "Zulrah Helper",
 	description = "Zulrah Helper",
 	tags = {"Zulrah", "Helper"},
-	type = "PVM"
+	type = PluginType.PVM
 )
 public class ZulrahPlugin extends Plugin
 {
