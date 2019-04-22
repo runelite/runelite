@@ -9,6 +9,7 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.bytecode.transformers.ActorTransform;
 import net.runelite.client.rs.bytecode.transformers.ClientTransform;
+import net.runelite.client.rs.bytecode.transformers.ErrorTransform;
 import net.runelite.client.rs.bytecode.transformers.PlayerTransform;
 import net.runelite.client.rs.bytecode.transformers.ProjectileTransform;
 import net.runelite.http.api.RuneLiteAPI;
@@ -50,10 +51,12 @@ public class ByteCodePatcher {
 				transformProjectile(projectileClass);
 				Class playerClass = Class.forName(hooks.playerClass, false, child);
 				transformPlayer(playerClass);
-
-				//experimental
 				Class clientClass = Class.forName("client", false, child);
 				transformBlackjack(clientClass);
+
+				//Odds and ends
+				ErrorTransform et = new ErrorTransform();
+				et.modify(null);
 
 				ByteCodeUtils.updateHijackedJar();
 			} catch (Exception e) {
