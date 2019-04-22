@@ -19,6 +19,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
@@ -36,7 +37,7 @@ import java.util.concurrent.ScheduledExecutorService;
 @PluginDescriptor(
         name = "Equipment Inspector",
         enabledByDefault = false,
-        type = "utility"
+        type = PluginType.UTILITY
 )
 
 @Slf4j

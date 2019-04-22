@@ -27,6 +27,7 @@ package net.runelite.client.plugins.lootingbagviewer;
 
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
@@ -35,7 +36,7 @@ import javax.inject.Inject;
 	name = "PvP Looting Bag Viewer",
 	description = "Add an overlay showing the contents of your looting bag",
 	tags = {"alternate", "items", "overlay", "second"},
-	type = "utility",
+	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
 public class LootingBagViewerPlugin extends Plugin

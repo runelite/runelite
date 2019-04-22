@@ -18,6 +18,7 @@ import net.runelite.client.flexo.Flexo;
 import net.runelite.client.flexo.FlexoUtils;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.stretchedmode.StretchedModeConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
 
@@ -29,7 +30,7 @@ import java.util.List;
         name = "Flexo Config",
         description = "Customizes Flexo, the MouseInput Assistant ;)",
         tags = {"flexo", "null"},
-		type = "utility"
+		type = PluginType.UTILITY
 )
 @Slf4j
 public class FlexoPlugin extends Plugin {

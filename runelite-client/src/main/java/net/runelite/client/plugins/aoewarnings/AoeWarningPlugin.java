@@ -52,6 +52,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
@@ -64,7 +65,7 @@ import java.util.logging.Logger;
 	name = "AoE Warnings",
 	description = "Shows the final destination for AoE Attack projectiles",
 	tags = {"bosses", "combat", "pve", "overlay"},
-		type = "PVM"
+		type = PluginType.PVM
 )
 
 @Slf4j

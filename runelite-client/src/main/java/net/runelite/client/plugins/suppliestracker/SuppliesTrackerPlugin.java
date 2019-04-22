@@ -40,6 +40,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
@@ -63,7 +64,7 @@ import java.awt.image.BufferedImage;
 	name = "Supplies Used Tracker",
 	description = "Tracks supplies used during the session",
 	tags = {"cost"},
-	type = "PVM",
+	type = PluginType.PVM,
 	enabledByDefault = false
 )
 @Slf4j

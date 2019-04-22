@@ -42,6 +42,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import com.google.common.base.Splitter;
@@ -58,7 +59,7 @@ import net.runelite.client.util.WildcardMatcher;
 	name = "Player Indicators",
 	description = "Highlight players on-screen and/or on the minimap",
 	tags = {"highlight", "minimap", "overlay", "players"},
-	type = "utility"
+	type = PluginType.UTILITY
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {

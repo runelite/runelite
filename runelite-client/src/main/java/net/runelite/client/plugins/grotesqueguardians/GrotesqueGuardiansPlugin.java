@@ -27,13 +27,14 @@ package net.runelite.client.plugins.grotesqueguardians;
 import javax.inject.Inject;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Grotesque Guardians",
 	description = "Display tile indicators for the Grotesque Guardian special attacks",
 	tags = {"grotesque", "guardians", "gargoyle", "garg"},
-		type = "PVM"
+		type = PluginType.PVM
 )
 public class GrotesqueGuardiansPlugin extends Plugin
 {

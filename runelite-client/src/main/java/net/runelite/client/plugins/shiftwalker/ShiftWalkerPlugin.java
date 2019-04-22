@@ -33,6 +33,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
@@ -45,7 +46,7 @@ import javax.inject.Inject;
 	description = "Use Shift to toggle the Walk Here menu option. While pressed you will Walk rather than interact with objects.",
 	tags = {"npcs", "items", "objects"},
 	enabledByDefault = false,
-		type = "utility"
+		type = PluginType.UTILITY
 )
 public class ShiftWalkerPlugin extends Plugin
 {

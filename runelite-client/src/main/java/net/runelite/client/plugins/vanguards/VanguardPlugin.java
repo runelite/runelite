@@ -4,6 +4,7 @@ package net.runelite.client.plugins.vanguards;
 import javax.inject.Inject;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -11,7 +12,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
         description= "tracks HP of all three vanguards",
         tags= {"overlay", "vangs", "cox"},
         enabledByDefault = false,
-        type = "PVM"
+        type = PluginType.PVM
 )
 public class VanguardPlugin extends Plugin {
     private static final int MAGE_VANGUARD_ID = 7526; //i think
