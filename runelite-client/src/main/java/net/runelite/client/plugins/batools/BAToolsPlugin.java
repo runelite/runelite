@@ -80,7 +80,7 @@ import net.runelite.client.util.Text;
 	name = "BA Tools",
 	description = "Custom tools for Barbarian Assault",
 	tags = {"minigame", "overlay", "timer"},
-	type = PluginType.UTILITY
+	type = PluginType.PVM
 )
 public class BAToolsPlugin extends Plugin implements KeyListener
 {

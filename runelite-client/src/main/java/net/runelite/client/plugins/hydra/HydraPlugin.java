@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @PluginDescriptor(
-	name = "Hydra",
+	name = "Hydra Helper",
 	description = "Hydra Helper",
 	tags = {"Hydra", "Helper"},
 	type = PluginType.PVM

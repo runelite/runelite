@@ -36,7 +36,7 @@ import javax.inject.Inject;
 	name = "PvP Looting Bag Viewer",
 	description = "Add an overlay showing the contents of your looting bag",
 	tags = {"alternate", "items", "overlay", "second"},
-	type = PluginType.UTILITY,
+	type = PluginType.PVP,
 	enabledByDefault = false
 )
 public class LootingBagViewerPlugin extends Plugin

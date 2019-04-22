@@ -64,7 +64,7 @@ import java.awt.image.BufferedImage;
 	name = "Supplies Used Tracker",
 	description = "Tracks supplies used during the session",
 	tags = {"cost"},
-	type = PluginType.PVM,
+	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
 @Slf4j

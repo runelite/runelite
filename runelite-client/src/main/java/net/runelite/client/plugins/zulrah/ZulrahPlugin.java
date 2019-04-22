@@ -22,10 +22,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Zulrah",
+	name = "Zulrah Helper",
 	description = "Zulrah Helper",
 	tags = {"Zulrah", "Helper"},
-		type = PluginType.PVM
+	type = PluginType.PVM
 )
 public class ZulrahPlugin extends Plugin
 {

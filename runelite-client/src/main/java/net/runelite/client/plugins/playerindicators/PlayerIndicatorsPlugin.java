@@ -59,7 +59,7 @@ import net.runelite.client.util.WildcardMatcher;
 	name = "Player Indicators",
 	description = "Highlight players on-screen and/or on the minimap",
 	tags = {"highlight", "minimap", "overlay", "players"},
-	type = PluginType.UTILITY
+	type = PluginType.PVP
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {

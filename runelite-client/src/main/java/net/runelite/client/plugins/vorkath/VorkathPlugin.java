@@ -15,10 +15,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "Vorkath",
+	name = "Vorkath Helper",
 	description = "Vorkath Helper",
 	tags = {"Vorkath", "Helper"},
-		type = PluginType.PVM
+	type = PluginType.PVM
 )
 public class VorkathPlugin extends Plugin
 {
