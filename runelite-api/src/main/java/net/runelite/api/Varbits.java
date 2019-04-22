@@ -292,6 +292,7 @@ public enum Varbits {
      */
     NMZ_ABSORPTION(3956),
     NMZ_POINTS(3949),
+    NMZ_OVERLOAD(3955),
 
     /**
      * Blast Furnace
