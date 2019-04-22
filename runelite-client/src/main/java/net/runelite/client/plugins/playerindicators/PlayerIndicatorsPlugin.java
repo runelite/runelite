@@ -24,31 +24,45 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import javax.inject.Inject;
-import net.runelite.api.ClanMemberRank;
+
+import net.runelite.api.*;
+
 import static net.runelite.api.ClanMemberRank.UNRANKED;
-import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.*;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.Player;
+
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import com.google.common.base.Splitter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.InteractChanged;
+import net.runelite.client.util.WildcardMatcher;
+
 
 @PluginDescriptor(
-	name = "!Player Indicators",
+	name = "Player Indicators",
 	description = "Highlight players on-screen and/or on the minimap",
-	tags = {"highlight", "minimap", "overlay", "players"}
+	tags = {"highlight", "minimap", "overlay", "players"},
+	type = "utility"
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {
+	private static final Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*"));
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -70,6 +84,8 @@ public class PlayerIndicatorsPlugin extends Plugin
 	@Inject
 	private ClanManager clanManager;
 
+	private Map<String, Actor> highlightedPlayers = new HashMap<>();
+
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
@@ -82,6 +98,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		overlayManager.add(playerIndicatorsOverlay);
 		overlayManager.add(playerIndicatorsTileOverlay);
 		overlayManager.add(playerIndicatorsMinimapOverlay);
+		updateHighlightList();
 	}
 
 	@Override
@@ -93,8 +110,59 @@ public class PlayerIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdd(MenuEntryAdded menuEntryAdded)
+	public void onInteractChanged(InteractChanged event)
 	{
+		Actor actor = event.getActor();
+		if (actor != null
+				&& actor.getName() != null
+				&& isHighlighted(actor))
+		{
+			highlightedPlayers.put(actor.getName().toLowerCase(), actor.getInteracting());
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("playerindicators") && event.getKey().equals("highlightedNames"))
+		{
+			updateHighlightList();
+		}
+	}
+
+	private void updateHighlightList()
+	{
+		highlightedPlayers.clear();
+		for (String player : COMMA_SPLITTER.splitToList(config.getHighlightedNames().toLowerCase().trim()))
+		{
+			highlightedPlayers.put(player, null);
+		}
+	}
+
+	boolean isHighlighted(Actor player)
+	{
+		for (Map.Entry<String, Actor> map : highlightedPlayers.entrySet())
+		{
+			if (WildcardMatcher.matches(map.getKey(), player.getName()))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	boolean isHighlightedTarget(Player player)
+	{
+		return highlightedPlayers.containsValue(player);
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		if (config.showInWildernessOnly() && client.getVar(Varbits.IN_THE_WILDERNESS) != 1)
+		{
+			return;
+		}
 		int type = menuEntryAdded.getType();
 
 		if (type >= 2000)
@@ -132,7 +200,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			int image = -1;
 			Color color = null;
 
-			if (config.highlightFriends() && client.isFriended(player.getName(), false))
+			if (config.highlightFriends() && player.isFriend())
 			{
 				color = config.getFriendColor();
 			}
@@ -153,6 +221,37 @@ public class PlayerIndicatorsPlugin extends Plugin
 			else if (config.highlightNonClanMembers() && !player.isClanMember())
 			{
 				color = config.getNonClanMemberColor();
+			}
+			else if (config.drawHighlightedNames() && isHighlighted(player))
+			{
+				color = config.getHighlightedNamesColor();
+			}
+			else if (config.drawHighlightedTargetNames() && isHighlightedTarget(player))
+			{
+				color = config.getHighlightedTargetColor();
+			}
+			else if (config.highlightAttackerPlayers() && player.getInteracting() == localPlayer)
+			{
+				color = config.getAttackerPlayerColor();
+			}
+			else if (config.highlightAttackablePlayers() && isWithinLevelRange(player.getCombatLevel()))
+			{
+				color = config.getAttackablePlayerColor();
+			}
+			if (this.config.rightClickOverhead() && !player.isClanMember() && player.getOverheadIcon() != null) { // NEEDS TESTING
+				if (player.getOverheadIcon().equals((Object)HeadIcon.MAGIC)) {
+					image = 29;
+				} else if (player.getOverheadIcon().equals((Object)HeadIcon.RANGED)) {
+					image = 30;
+				} else if (player.getOverheadIcon().equals((Object)HeadIcon.MELEE)) {
+					image = 31;
+				} else if (player.getOverheadIcon().equals((Object)HeadIcon.REDEMPTION)) {
+					image = 32;
+				} else if (player.getOverheadIcon().equals((Object)HeadIcon.RETRIBUTION)) {
+					image = 33;
+				} else if (player.getOverheadIcon().equals((Object)HeadIcon.SMITE)) {
+					image = 34;
+				}
 			}
 
 			if (image != -1 || color != null)
@@ -182,4 +281,57 @@ public class PlayerIndicatorsPlugin extends Plugin
 			}
 		}
 	}
+
+    public boolean isWithinLevelRange(int playerCombatLevel)
+    {
+        Widget levelRangeWidget = client.getWidget(WidgetInfo.PVP_ATTACK_RANGE);
+        Widget wildernessLevelWidget = client.getWidget(WidgetInfo.PVP_WILDERNESS_LEVEL);
+
+        int localPlayerLevel = client.getLocalPlayer().getCombatLevel();
+        int lowerLevelBound = localPlayerLevel - 15;
+        int upperLevelBound = localPlayerLevel + 15;
+
+        if (levelRangeWidget == null && wildernessLevelWidget == null)
+        {
+            return false;
+        }
+
+        if (!levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
+        {
+            int wildernessLevel = calculateWildernessLevel(client.getLocalPlayer().getWorldLocation());
+            lowerLevelBound = localPlayerLevel - wildernessLevel - 15;
+            upperLevelBound = localPlayerLevel + wildernessLevel + 15;
+            return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
+        }
+        else if (levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
+        {
+            int wildernessLevel = calculateWildernessLevel(client.getLocalPlayer().getWorldLocation());
+            lowerLevelBound = localPlayerLevel - wildernessLevel;
+            upperLevelBound = localPlayerLevel + wildernessLevel;
+            return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
+        }
+        else
+        {
+            return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
+        }
+    }
+
+    public static int calculateWildernessLevel(WorldPoint userLocation)
+    {
+        int wildernessLevel = 0;
+        if (WorldPoint.isInZone(new WorldPoint(2944, 3520, 0), new WorldPoint(3391, 4351, 3), userLocation))
+        {
+            wildernessLevel = ((userLocation.getY() - (55 * 64)) / 8) + 1;
+        }
+        else if (WorldPoint.isInZone(new WorldPoint(3008, 10112, 0), new WorldPoint(3071, 10175, 3), userLocation))
+        {
+            wildernessLevel = ((userLocation.getY() - (155 * 64)) / 8) - 1;
+        }
+        else if (WorldPoint.isInZone(new WorldPoint(2944, 9920, 0), new WorldPoint(3391, 10879, 3), userLocation))
+        {
+            wildernessLevel = ((userLocation.getY() - (155 * 64)) / 8) + 1;
+        }
+        return wildernessLevel;
+    }
+
 }

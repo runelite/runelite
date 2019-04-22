@@ -31,8 +31,19 @@ import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.*;
-import net.runelite.api.events.*;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOpened;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.PostItemComposition;
+import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -48,7 +59,7 @@ import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "!Menu Entry Swapper",
+	name = "Menu Entry Swapper",
 	description = "Change the default option that is displayed when hovering over objects",
 	tags = {"npcs", "inventory", "items", "objects"},
 	enabledByDefault = false
@@ -89,9 +100,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		MenuAction.NPC_FIFTH_OPTION,
 		MenuAction.EXAMINE_NPC);
 
-	private static long timeSinceKnockout;
-        private static long timeSinceAggro;
-        
 	@Inject
 	private Client client;
 
@@ -363,19 +371,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-                if (config.swapBlackjack() && (target.contains("bandit") | target.contains("menaphite thug"))) {
-                Quest quest = Quest.THE_FEUD;
-                    if (quest.getState(client) == QuestState.FINISHED) {
-                        if (System.currentTimeMillis() < (timeSinceKnockout + config.setDelay())) {
-                            swap("pickpocket", option, target, true);
-                        }
-                        if (System.currentTimeMillis() < (timeSinceAggro + 1300)) {
-                            swap("pickpocket", option, target, true);
-                        }
-                        swap("knock-out", option, target, true);
-                    }
-                }
-
 		if (option.equals("talk-to"))
 		{
 			if (config.swapPickpocket() && target.contains("h.a.m."))
@@ -549,6 +544,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("pick-lots", option, target, true);
 		}
+		else if (config.swapRogueschests() && target.contains("chest"))
+		{
+			swap("search for traps", option, target, true);
+		}
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(eventId);
@@ -597,17 +596,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			shiftModifier = false;
 		}
 	}
-
-        @Subscribe
-        public void onChatMessage(ChatMessage event) {
-            if (event.getType() == ChatMessageType.SPAM) {
-                if (event.getMessage().contains("ou smack the bandit over the head and render them unconsci")) {
-                    timeSinceKnockout = System.currentTimeMillis();
-                } else if (event.getMessage().contains("our blow only glances off the bandi")) {
-                    timeSinceAggro = System.currentTimeMillis();
-                }
-            }
-        }
 
 	private int searchIndex(MenuEntry[] entries, String option, String target, boolean strict)
 	{

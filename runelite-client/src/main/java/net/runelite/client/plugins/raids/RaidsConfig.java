@@ -179,39 +179,6 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
-		keyName = "enableSharableImage",
-		name = "Enable sharable image",
-		description = "Use the specified hotkey to capture the raid scouter"
-	)
-	default boolean enableSharableImage()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 14,
-		keyName = "hotkey",
-		name = "Capture hotkey",
-		description = "Hotkey used to capture the scouter"
-	)
-	default Keybind hotkey()
-	{
-		return new Keybind(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK);
-	}
-
-	@ConfigItem(
-		position = 15,
-		keyName = "enableTrayNotification",
-		name = "Enable tray notification",
-		description = "Adds a system tray notification on successful screen capture"
-	)
-	default boolean enableTrayNotification()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		position = 16,
 		keyName = "showRecommendedItems",
 		name = "Show recommended items",
@@ -319,5 +286,16 @@ public interface RaidsConfig extends Config
 	default boolean layoutMessage()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			position = 26,
+			keyName = "displayFloorBreak",
+			name = "Layout floor break",
+			description = "Displays floor break in layout"
+	)
+	default boolean displayFloorBreak()
+	{
+		return false;
 	}
 }

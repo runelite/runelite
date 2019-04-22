@@ -59,7 +59,9 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -79,7 +81,6 @@ import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.util.ScreenCapture;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.HotkeyListener;
 
@@ -129,6 +130,9 @@ public class RaidsPlugin extends Plugin
 	private RaidsOverlay overlay;
 
 	@Inject
+	private RaidsPointsOverlay pointsOverlay;
+
+	@Inject
 	private LayoutSolver layoutSolver;
 
 	@Inject
@@ -139,9 +143,6 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private KeyManager keyManager;
-
-	@Inject
-	private ScreenCapture screenCapture;
 
 	@Getter
 	private final ArrayList<String> roomWhitelist = new ArrayList<>();
@@ -182,20 +183,26 @@ public class RaidsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(pointsOverlay);
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
-		keyManager.registerKeyListener(hotkeyListener);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(pointsOverlay);
 		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
 		raid = null;
 		timer = null;
-		keyManager.unregisterKeyListener(hotkeyListener);
+
+		final Widget widget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX);
+		if (widget != null)
+		{
+			widget.setHidden(false);
+		}
 	}
 
 	@Subscribe
@@ -214,6 +221,22 @@ public class RaidsPlugin extends Plugin
 
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
+	}
+
+	@Subscribe
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	{
+		if (!inRaidChambers || event.isHidden())
+		{
+			return;
+		}
+
+		Widget widget = event.getWidget();
+
+		if (widget == client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX))
+		{
+			widget.setHidden(true);
+		}
 	}
 
 	@Subscribe
@@ -674,43 +697,5 @@ public class RaidsPlugin extends Plugin
 		}
 
 		return room;
-	}
-
-	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
-	{
-		@Override
-		public void hotkeyPressed()
-		{
-			initiateCopyImage();
-		}
-	};
-
-	private void initiateCopyImage()
-	{
-		if (!config.enableSharableImage() || !overlay.isScouterActive())
-			return;
-
-		Rectangle overlaySize = overlay.getBounds();
-		if (overlaySize.width <= 0 || overlaySize.height <= 0)
-			return;
-		if (!config.alwaysShowWorldAndCC())
-			overlaySize.height += LINE_COMPONENT_HEIGHT;
-
-		BufferedImage bim = new BufferedImage(overlaySize.width, overlaySize.height, BufferedImage.TYPE_INT_ARGB);
-		overlay.setSharable(true);
-		Graphics2D g = bim.createGraphics();
-		g.setFont(FontManager.getRunescapeFont());
-
-		//this is needed to update the PanelComponent childDimensions, because they are a frame behind
-		if (!config.alwaysShowWorldAndCC())
-			overlay.render(g);
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, overlaySize.width, overlaySize.height);
-
-		overlay.render(g);
-		screenCapture.takeScreenshot(bim, config.enableTrayNotification(), "Chambers");
-		g.dispose();
-
-		overlay.setSharable(false);
 	}
 }

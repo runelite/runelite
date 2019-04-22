@@ -26,8 +26,10 @@ package net.runelite.client.plugins.boosts;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -100,6 +102,7 @@ public class BoostsPlugin extends Plugin
 	private int lastChangeUp = -1;
 	private boolean preserveBeenActive = false;
 	private long lastTickMillis;
+	private List<String> boostedSkillsChanged = new ArrayList<>();
 
 	@Provides
 	BoostsConfig provideConfig(ConfigManager configManager)
@@ -213,7 +216,14 @@ public class BoostsPlugin extends Plugin
 			int boost = cur - real;
 			if (boost <= boostThreshold && boostThreshold < lastBoost)
 			{
-				notifier.notify(skill.getName() + " level is getting low!");
+				if (config.groupNotifications())
+				{
+					boostedSkillsChanged.add(skill.getName());
+				}
+				else
+				{
+					notifier.notify(skill.getName() + " level is getting low!");
+				}
 			}
 		}
 	}
@@ -222,6 +232,35 @@ public class BoostsPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		lastTickMillis = System.currentTimeMillis();
+
+		if (config.groupNotifications() && !boostedSkillsChanged.isEmpty())
+		{
+			if (boostedSkillsChanged.size() == 1)
+			{
+				notifier.notify(boostedSkillsChanged.get(0) + " level is getting low!");
+			}
+			else
+			{
+				String notification = "";
+				for (int i = 0; i < boostedSkillsChanged.size(); i++)
+				{
+					if (i == 0)
+					{
+						notification = boostedSkillsChanged.get(i);
+					}
+					else if (i < boostedSkillsChanged.size() - 1)
+					{
+						notification = notification + ", " + boostedSkillsChanged.get(i);
+					}
+					else
+					{
+						notification = notification + " and " + boostedSkillsChanged.get(i) + " levels are getting low!";
+						notifier.notify(notification);
+					}
+				}
+			}
+			boostedSkillsChanged.clear();
+		}
 
 		if (getChangeUpTicks() <= 0)
 		{

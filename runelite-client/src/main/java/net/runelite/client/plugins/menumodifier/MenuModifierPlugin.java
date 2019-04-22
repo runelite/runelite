@@ -25,10 +25,11 @@ import java.util.Iterator;
 import java.util.List;
 
 @PluginDescriptor(
-        name = "<font color=\"green\">!Menu Modifier</font>",
+        name = "Menu Modifier",
         description = "Changes right click menu for players",
         tags = { "menu", "modifier", "right", "click", "pk", "bogla" },
-        enabledByDefault = false
+        enabledByDefault = false,
+        type = "utility"
 )
 public class MenuModifierPlugin extends Plugin
 {

@@ -42,9 +42,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 @PluginDescriptor(
-		name = "<font color=\"aqua\">!Pray Against Player</font>",
+		name = "Pray Against Player",
 		description = "Use plugin in PvP situations for best results!!",
-		tags = {"highlight", "pvp", "overlay", "players"}
+		tags = {"highlight", "pvp", "overlay", "players"},
+		type = "PVP"
 )
 
 /**

@@ -19,10 +19,11 @@ import java.util.Map;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-		name = "<font color=\"#4863A0\">!Lizard Shamans</font>",
+		name = "Lizard Shamans",
 		description = "Configures timer for lizardmen shaman spawns.",
 		enabledByDefault = false,
-		tags = {"shaman", "lizard", "lizardmen"}
+		tags = {"shaman", "lizard", "lizardmen"},
+		type = "PVM"
 )
 @Slf4j
 public class LizardmenShamanPlugin extends Plugin

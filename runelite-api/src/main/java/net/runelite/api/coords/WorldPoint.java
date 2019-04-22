@@ -328,6 +328,27 @@ public class WorldPoint
 	}
 
 	/**
+	 * Checks if user in within certain zone specified by upper and lower bound
+	 * @param lowerBound
+	 * @param upperBound
+	 * @param userLocation
+	 * @return
+	 */
+	public static boolean isInZone(WorldPoint lowerBound, WorldPoint upperBound, WorldPoint userLocation)
+	{
+		if (userLocation.getX() < lowerBound.getX()
+				|| userLocation.getX() > upperBound.getX()
+				|| userLocation.getY() < lowerBound.getY()
+				|| userLocation.getY() > upperBound.getY()
+				|| userLocation.getPlane() < lowerBound.getPlane()
+				|| userLocation.getPlane() > upperBound.getPlane())
+		{
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Converts the passed region ID and coordinates to a world coordinate
 	 */
 	public static WorldPoint fromRegion(int regionId, int regionX, int regionY, int plane)

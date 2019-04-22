@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
@@ -193,34 +194,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "swapBlackjack",
-			name = "Blackjacking",
-			description = "Requires \"The Fued\" quest completed."
-	)
-
-	default boolean swapBlackjack() {return false; }
-        
-        
-        @ConfigItem(
-		keyName = "setDelay",
-		name = "Blackjacking Delay",
-		description = "Sets the delay for how long you can pickpocket after knocking target out in milliseconds"
-	)
-	default int setDelay()
-	{
-		return 2000;
-	}
-        
-
-	@ConfigItem(
 		keyName = "swapPay",
 		name = "Pay",
 		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth"
 	)
-        
-        
-        
-        
 	default boolean swapPay()
 	{
 		return true;
@@ -302,6 +279,16 @@ public interface MenuEntrySwapperConfig extends Config
 		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
 	)
 	default boolean swapTravel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "swapRogueschests",
+			name = "Rogueschests",
+			description = "Swap Rogueschests from open to Search for traps"
+	)
+	default boolean swapRogueschests()
 	{
 		return true;
 	}

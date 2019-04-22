@@ -30,7 +30,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.util.HashMap;
 import javax.inject.Inject;
-import lombok.Getter;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -42,7 +41,6 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.VarbitChanged;
@@ -75,6 +73,10 @@ public class BarbarianAssaultPlugin extends Plugin {
 
 	@Getter
 	private int collectedEggCount = 0;
+	@Getter
+	private int positiveEggCount = 0;
+	@Getter
+	private int wrongEggs = 0;
 	@Getter
 	private int HpHealed = 0;
 	@Getter
@@ -141,6 +143,8 @@ public class BarbarianAssaultPlugin extends Plugin {
 		currentWave = START_WAVE;
 		inGameBit = 0;
 		collectedEggCount = 0;
+		positiveEggCount = 0;
+		wrongEggs = 0;
 		HpHealed = 0;
 	}
 
@@ -154,10 +158,21 @@ public class BarbarianAssaultPlugin extends Plugin {
 				if (config.showHpCount() && HpHealed > 0) {
 					totalMsg = "; Total Healed: ";
 					total = ""+totalHpHealed;
+					if (HpHealed > 504)
+					{
+						total = ""+504;
+					}
 				}
 				else if (config.showEggCount() && collectedEggCount > 0) {
+					collectedEggCount -= wrongEggs; //true positive egg count
+					if (collectedEggCount > 60)
+					{
+						collectedEggCount = 60;
+					}
+					collectedEggCount -= wrongEggs; //true positive - negative egg count\
 					totalMsg = "; Total Collected: ";
-					total = ""+totalCollectedEggCount;
+					total = "" + totalCollectedEggCount;
+
 				}
 				announceTime("Game finished, duration: ", gameTime.getTime(false),type, amt, totalMsg, total);
 			}
@@ -165,9 +180,12 @@ public class BarbarianAssaultPlugin extends Plugin {
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event) {
+
+	public void onChatMessage(ChatMessage event)
+	{
 		if (event.getType() == ChatMessageType.GAMEMESSAGE
-				&& event.getMessage().startsWith("---- Wave:")) {
+			&& event.getMessage().startsWith("---- Wave:"))
+		{
 			String[] message = event.getMessage().split(" ");
 			currentWave = message[BA_WAVE_NUM_INDEX];
 			collectedEggCount = 0;
@@ -182,7 +200,7 @@ public class BarbarianAssaultPlugin extends Plugin {
 			}
 		} else if (event.getType() == ChatMessageType.GAMEMESSAGE
 				&& event.getMessage().contains("egg explode")) {
-			collectedEggCount -= 2;
+			wrongEggs --;
 		} else if (event.getType() == ChatMessageType.GAMEMESSAGE
 				&& event.getMessage().contains("healed")) {
 			String message = event.getMessage();
@@ -252,71 +270,84 @@ public class BarbarianAssaultPlugin extends Plugin {
 		inGameBit = inGame;
 	}
 
-    @Subscribe
-    public void onItemSpawned(ItemSpawned itemSpawned)
-    {
-        int itemId = itemSpawned.getItem().getId();
-        WorldPoint worldPoint = itemSpawned.getTile().getWorldLocation();
-        HashMap<WorldPoint, Integer> eggMap = getEggMap(itemId);
+	@Subscribe
+	public void onItemSpawned(ItemSpawned itemSpawned)
+	{
+		int itemId = itemSpawned.getItem().getId();
+		WorldPoint worldPoint = itemSpawned.getTile().getWorldLocation();
+		HashMap<WorldPoint, Integer> eggMap = getEggMap(itemId);
 
-        if (eggMap !=  null)
-        {
-            Integer existingQuantity = eggMap.putIfAbsent(worldPoint, 1);
-            if (existingQuantity != null)
-            {
-                eggMap.put(worldPoint, existingQuantity + 1);
-            }
-        }
-    }
+		if (eggMap !=  null)
+		{
+			Integer existingQuantity = eggMap.putIfAbsent(worldPoint, 1);
+			if (existingQuantity != null)
+			{
+				eggMap.put(worldPoint, existingQuantity + 1);
+			}
+		}
+	}
 
 	@Subscribe
-	public void onItemDespawned(ItemDespawned event)
+	public void onItemDespawned(ItemDespawned itemDespawned)
 	{
-		if (client.getVar(Varbits.IN_GAME_BA) == 0 || !isEgg(event.getItem().getId()))
+		int itemId = itemDespawned.getItem().getId();
+		WorldPoint worldPoint = itemDespawned.getTile().getWorldLocation();
+		HashMap<WorldPoint, Integer> eggMap = getEggMap(itemId);
+
+		if (eggMap != null && eggMap.containsKey(worldPoint))
+		{
+			int quantity = eggMap.get(worldPoint);
+			if (quantity > 1)
+			{
+				eggMap.put(worldPoint, quantity - 1);
+			}
+			else
+			{
+				eggMap.remove(worldPoint);
+			}
+		}
+		if (client.getVar(Varbits.IN_GAME_BA) == 0 || !isEgg(itemDespawned.getItem().getId()))
 		{
 			return;
 		}
-		if (isUnderPlayer(event.getTile()))
+		if (isUnderPlayer(itemDespawned.getTile()))
 		{
 			collectedEggCount++;
 		}
 	}
 
-    String getCollectorHeardCall()
-    {
-        Widget widget = client.getWidget(WidgetInfo.BA_COLL_HEARD_TEXT);
-        String call = null;
+	String getCollectorHeardCall()
+	{
+		Widget widget = client.getWidget(WidgetInfo.BA_COLL_HEARD_TEXT);
+		String call = null;
 
-        if (widget != null)
-        {
-            call = widget.getText();
-        }
+		if (widget != null)
+		{
+			call = widget.getText();
+		}
 
-        return call;
-    }
+		return call;
+	}
 
-
-    private HashMap<WorldPoint, Integer> getEggMap(int itemID)
-    {
-        switch (itemID)
-        {
-            case ItemID.RED_EGG:
-                return redEggs;
-            case ItemID.GREEN_EGG:
-                return greenEggs;
-            case ItemID.BLUE_EGG:
-                return blueEggs;
-            case ItemID.YELLOW_EGG:
-                return yellowEggs;
-            default:
-                return null;
-        }
-    }
-
-
-    private void announceTime(String preText, String time, String type, String amt, String totalMsg, String total) {
+	private HashMap<WorldPoint, Integer> getEggMap(int itemID)
+	{
+		switch (itemID)
+		{
+			case ItemID.RED_EGG:
+				return redEggs;
+			case ItemID.GREEN_EGG:
+				return greenEggs;
+			case ItemID.BLUE_EGG:
+				return blueEggs;
+			case ItemID.YELLOW_EGG:
+				return yellowEggs;
+			default:
+				return null;
+		}
+	}
 
 
+	private void announceTime(String preText, String time, String type, String amt, String totalMsg, String total) {
 		final String chatMessage = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
 				.append(preText)

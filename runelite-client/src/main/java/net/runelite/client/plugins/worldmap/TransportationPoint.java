@@ -1,5 +1,7 @@
 /*
- * Copyright (c) 2019, Kyle Sergio <https://github.com/ksergio39> , , Bryce Altomare <https://github.com/Twinkiel0ver>
+ * Copyright (c) 2019, Kyle Sergio <https://github.com/ksergio39>
+ * Copyright (c) 2019, Bryce Altomare <https://github.com/Twinkiel0ver>
+ * Copyright (c) 2019, Kyle Stead <http://github.com/kyle1elyk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,13 +30,11 @@ package net.runelite.client.plugins.worldmap;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import java.awt.image.BufferedImage;
 
-public class TransportationPoint extends WorldMapPoint
+class TransportationPoint extends WorldMapPoint
 {
-    TransportationPoint(TransportationPointLocation data, BufferedImage icon)
-    {
-        super(data.getLocation(), icon);
-
-        setTooltip(data.getTooltip());
-    }
-
+	TransportationPoint(TransportationPointLocation data, BufferedImage icon)
+	{
+		super(data.getLocation(), icon);
+		setTooltip(data.getTooltip());
+	}
 }

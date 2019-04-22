@@ -1335,7 +1335,7 @@ public abstract class RSClientMixin implements RSClient
 		for (Widget rlWidget : widgets)
 		{
 			RSWidget widget = (RSWidget) rlWidget;
-			if (widget == null || widget.getRSParentId() != parentId)
+			if (widget == null || widget.getRSParentId() != parentId || widget.isSelfHidden())
 			{
 				continue;
 			}
@@ -1355,7 +1355,7 @@ public abstract class RSClientMixin implements RSClient
 			{
 				if (renderX >= minX && renderX <= maxX && renderY >= minY && renderY <= maxY)
 				{
-					WidgetItem widgetItem = new WidgetItem(widget.getItemId(), widget.getItemQuantity(), -1, widget.getBounds());
+					WidgetItem widgetItem = new WidgetItem(widget.getItemId(), widget.getItemQuantity(), -1, widget.getBounds(), widget);
 					callbacks.drawItem(widget.getItemId(), widgetItem);
 				}
 			}

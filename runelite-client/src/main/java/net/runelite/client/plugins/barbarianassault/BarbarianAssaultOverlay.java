@@ -55,6 +55,11 @@ class BarbarianAssaultOverlay extends Overlay
 {
 	private static final int MAX_EGG_DISTANCE = 2500;
 
+
+	private final int HEALTH_BAR_HEIGHT = 20;
+	private final Color HEALTH_BAR_COLOR = new Color(225, 35, 0, 125);
+	private static final Color BACKGROUND = new Color(0, 0, 0, 150);
+
 	private final Client client;
 	private final BarbarianAssaultPlugin plugin;
 	private final BarbarianAssaultConfig config;
@@ -156,7 +161,35 @@ class BarbarianAssaultOverlay extends Overlay
 			}
 		}
 
-		return null;
+        if (role == Role.HEALER)
+        {
+            for (HealerTeam teammate : HealerTeam.values())
+            {
+                Widget widget = client.getWidget(teammate.getTeammate());
+                if (widget == null)
+                {
+                    continue;
+                }
+
+                String[] teammateHealth = widget.getText().split(" / ");
+                final int curHealth = Integer.parseInt(teammateHealth[0]);
+                final int maxHealth = Integer.parseInt(teammateHealth[1]);
+
+                int width = teammate.getWidth();
+                final int filledWidth = getBarWidth(maxHealth, curHealth, width);
+
+                int offsetX = teammate.getOffset().getX();
+                int offsetY = teammate.getOffset().getY();
+                int x = widget.getCanvasLocation().getX() - offsetX;
+                int y = widget.getCanvasLocation().getY() - offsetY;
+
+                graphics.setColor(HEALTH_BAR_COLOR);
+                graphics.fillRect(x, y, filledWidth, HEALTH_BAR_HEIGHT);
+            }
+        }
+
+
+        return null;
 	}
 
 	private void renderEggLocation(Graphics2D graphics, WorldPoint location, int quantity, Color color)
@@ -186,4 +219,16 @@ class BarbarianAssaultOverlay extends Overlay
 		Point textPoint = Perspective.getCanvasTextLocation(client, graphics, groundPoint, quantityText, 0);
 		OverlayUtil.renderTextLocation(graphics, textPoint, quantityText, Color.WHITE);
 	}
+
+    private static int getBarWidth(int base, int current, int size)
+    {
+        final double ratio = (double) current / base;
+
+        if (ratio >= 1)
+        {
+            return size;
+        }
+
+        return (int) Math.round(ratio * size);
+    }
 }

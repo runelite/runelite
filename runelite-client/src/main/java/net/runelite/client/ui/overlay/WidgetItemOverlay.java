@@ -26,15 +26,33 @@ package net.runelite.client.ui.overlay;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Setter;
+import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetID.BANK_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.BANK_INVENTORY_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.DEPOSIT_BOX_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.EQUIPMENT_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.EQUIPMENT_INVENTORY_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.GRAND_EXCHANGE_INVENTORY_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.GUIDE_PRICES_INVENTORY_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.INVENTORY_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.SHOP_INVENTORY_GROUP_ID;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
 
 public abstract class WidgetItemOverlay extends Overlay
 {
 	@Setter(AccessLevel.PACKAGE)
 	private OverlayManager overlayManager;
+	/**
+	 * Interfaces to draw overlay over.
+	 */
+	private final Set<Integer> interfaceGroups = new HashSet<>();
 
 	protected WidgetItemOverlay()
 	{
@@ -49,11 +67,47 @@ public abstract class WidgetItemOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		final List<WidgetItem> itemWidgets = overlayManager.getItemWidgets();
-		for (WidgetItem widget : itemWidgets)
+		for (WidgetItem widgetItem : itemWidgets)
 		{
-			renderItemOverlay(graphics, widget.getId(), widget);
+			Widget widget = widgetItem.getWidget();
+			int interfaceGroup = TO_GROUP(widget.getId());
+
+			// Don't draw if this widget isn't one of the allowed
+			if (!interfaceGroups.contains(interfaceGroup))
+			{
+				continue;
+			}
+
+			renderItemOverlay(graphics, widgetItem.getId(), widgetItem);
 		}
 		return null;
+	}
+
+	protected void showOnInventory()
+	{
+		showOnInterfaces(
+			DEPOSIT_BOX_GROUP_ID,
+			BANK_INVENTORY_GROUP_ID,
+			SHOP_INVENTORY_GROUP_ID,
+			GRAND_EXCHANGE_INVENTORY_GROUP_ID,
+			GUIDE_PRICES_INVENTORY_GROUP_ID,
+			EQUIPMENT_INVENTORY_GROUP_ID,
+			INVENTORY_GROUP_ID);
+	}
+
+	protected void showOnBank()
+	{
+		showOnInterfaces(BANK_GROUP_ID);
+	}
+
+	protected void showOnEquipment()
+	{
+		showOnInterfaces(EQUIPMENT_GROUP_ID);
+	}
+
+	protected void showOnInterfaces(int... ids)
+	{
+		Arrays.stream(ids).forEach(interfaceGroups::add);
 	}
 
 	// Don't allow setting position, priority, or layer

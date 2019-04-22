@@ -112,4 +112,15 @@ public interface WorldHopperConfig extends Config
 	{
 		return SubscriptionFilterMode.BOTH;
 	}
+
+	@ConfigItem(
+			keyName = "showHistory",
+			name = "Show history tab",
+			description = "Shows the history tab",
+			position = 5
+	)
+	default boolean showHistory()
+	{
+		return true;
+	}
 }

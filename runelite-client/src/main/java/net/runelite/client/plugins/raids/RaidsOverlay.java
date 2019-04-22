@@ -125,6 +125,16 @@ public class RaidsOverlay extends Overlay
 
 		Color color = Color.WHITE;
 		String layout = plugin.getRaid().getLayout().toCodeString();
+		String displayLayout;
+		if (config.displayFloorBreak())
+		{
+			displayLayout = plugin.getRaid().getLayout().toCode();
+			displayLayout = displayLayout.substring(0, displayLayout.length() - 1).replaceAll("#", "").replaceFirst("¤", " | ");
+		}
+		else
+		{
+			displayLayout = layout;
+		}
 
 		if (config.enableLayoutWhitelist() && !plugin.getLayoutWhitelist().contains(layout.toLowerCase()))
 		{
@@ -196,7 +206,7 @@ public class RaidsOverlay extends Overlay
 			}
 
 			scouterActive = true;
-			layout = (config.enhanceScouterTitle() ? "" + combatCount + "c " + puzzles + " " : "") + layout;
+			displayLayout = (config.enhanceScouterTitle() ? "" + combatCount + "c " + puzzles + " " : "") + displayLayout;
 
 			for (Integer i : iceRooms)
 			{
@@ -212,7 +222,7 @@ public class RaidsOverlay extends Overlay
 		}
 		int lastScavs = scavRooms.get(scavRooms.size() - 1);
 		panelComponent.getChildren().add(TitleComponent.builder()
-			.text(layout)
+			.text(displayLayout)
 			.color(color)
 			.build());
 		color = Color.ORANGE;
