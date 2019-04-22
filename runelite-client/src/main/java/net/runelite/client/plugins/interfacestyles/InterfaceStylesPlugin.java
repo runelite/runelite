@@ -34,6 +34,7 @@ import net.runelite.api.Client;
 import net.runelite.api.HealthBarOverride;
 import net.runelite.api.SpriteID;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
@@ -113,6 +114,16 @@ public class InterfaceStylesPlugin extends Plugin
 		restoreWidgetDimensions();
 		adjustWidgetDimensions();
 		overrideHealthBars();
+	}
+
+	@Subscribe
+	public void onBeforeMenuRender(BeforeMenuRender event)
+	{
+		if (config.hdMenu())
+		{
+			client.draw2010Menu();
+			event.consume();
+		}
 	}
 
 	private void overrideSprites()
