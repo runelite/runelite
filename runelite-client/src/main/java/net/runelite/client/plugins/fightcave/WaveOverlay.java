@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fightcavewavehelper;
+package net.runelite.client.plugins.fightcave;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -43,13 +43,13 @@ class WaveOverlay extends Overlay
 {
 	private static final Color HEADER_COLOR = ColorScheme.BRAND_ORANGE;
 
-	private final FightCaveWaveHelperConfig config;
-	private final FightCaveWaveHelperPlugin plugin;
+	private final FightCaveConfig config;
+	private final FightCavePlugin plugin;
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private WaveOverlay(FightCaveWaveHelperConfig config, FightCaveWaveHelperPlugin plugin)
+	private WaveOverlay(FightCaveConfig config, FightCavePlugin plugin)
 	{
 		setPosition(OverlayPosition.TOP_RIGHT);
 		this.config = config;
@@ -73,23 +73,22 @@ class WaveOverlay extends Overlay
 		if (config.waveDisplay() == WaveDisplayMode.CURRENT
 			|| config.waveDisplay() == WaveDisplayMode.BOTH)
 		{
-			final Map<WaveMonster, Integer> waveContents = FightCaveWaveHelperPlugin.getWAVES().get(waveIndex);
+			final Map<WaveMonster, Integer> waveContents = FightCavePlugin.getWAVES().get(waveIndex);
 
 			addWaveInfo("Wave " + plugin.getCurrentWave(), waveContents);
 		}
 
 		if ((config.waveDisplay() == WaveDisplayMode.NEXT
 			|| config.waveDisplay() == WaveDisplayMode.BOTH)
-			&& currentWave != FightCaveWaveHelperPlugin.MAX_WAVE)
+			&& currentWave != FightCavePlugin.MAX_WAVE)
 		{
-			final Map<WaveMonster, Integer> waveContents = FightCaveWaveHelperPlugin.getWAVES().get(waveIndex + 1);
+			final Map<WaveMonster, Integer> waveContents = FightCavePlugin.getWAVES().get(waveIndex + 1);
 
 			addWaveInfo("Next wave", waveContents);
 		}
 
 		return panelComponent.render(graphics);
 	}
-
 	private void addWaveInfo(final String headerText, final Map<WaveMonster, Integer> waveContents)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder()
@@ -114,7 +113,7 @@ class WaveOverlay extends Overlay
 			final WaveMonster monster = monsterEntry.getKey();
 			final int quantity = monsterEntry.getValue();
 			final LineComponent line = LineComponent.builder()
-				.left(FightCaveWaveHelperPlugin.formatMonsterQuantity(monster, quantity))
+				.left(FightCavePlugin.formatMonsterQuantity(monster, quantity))
 				.build();
 
 			outputLines.add(line);

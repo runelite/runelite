@@ -22,22 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fightcavewavehelper;
+package net.runelite.client.plugins.fightcave;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 
-@RequiredArgsConstructor
-public enum WaveDisplayMode
+@AllArgsConstructor
+enum WaveMonster
 {
-	CURRENT("Current wave"),
-	NEXT("Next wave"),
-	BOTH("Both");
+	TZ_KIH("Tz-Kih", 22),
+	TZ_KEK("Tz-Kek", 45),
+	TOK_XIL("Tok-Xil", 90),
+	YT_MEJKOT("Yt-MejKot", 180),
+	KET_ZEK("Ket-Zek", 360),
+	TZKOK_JAD("TzTok-Jad", 702);
 
 	private final String name;
+	private final int level;
 
 	@Override
 	public String toString()
 	{
-		return name;
+		return String.format("%s - Level %s", name, level);
 	}
 }
