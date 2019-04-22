@@ -32,6 +32,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
@@ -40,10 +41,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @PluginDescriptor(
-        name = "Vetion",
+        name = "Vetion Helper",
         description = "Tracks Vet'ion's special attacks",
         tags = {"bosses", "combat", "pve", "overlay"},
-        type = "PVM"
+        type = PluginType.PVM
 )
 public class VetionPlugin extends Plugin {
 

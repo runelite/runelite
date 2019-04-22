@@ -36,6 +36,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.maxhit.calculators.MagicMaxHitCalculator;
 import net.runelite.client.plugins.maxhit.calculators.MeleeMaxHitCalculator;
 import net.runelite.client.plugins.maxhit.calculators.RangeMaxHitCalculator;
@@ -45,7 +46,7 @@ import javax.inject.Inject;
 @PluginDescriptor(
 	name = "Max Hit",
 	description = "Max Hit Calculator",
-	type = "PVM",
+	type = PluginType.PVM,
 	enabledByDefault = false
 )
 public class MaxHitPlugin extends Plugin

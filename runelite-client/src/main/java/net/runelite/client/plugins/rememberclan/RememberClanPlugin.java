@@ -41,11 +41,12 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
         name = "Remember Clan",
         description = "Remember a specific clan!",
-		type = "utility",
+		type = PluginType.UTILITY,
         enabledByDefault = false
 )
 public class RememberClanPlugin extends Plugin

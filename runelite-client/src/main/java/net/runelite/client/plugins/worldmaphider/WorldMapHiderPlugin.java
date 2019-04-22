@@ -24,11 +24,12 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
 	name = "Hide Worldmap Button",
 	description = "Hides the world map button",
-	type = "PVM",
+	type = PluginType.PVM,
 	tags = {"world", "world map", "hide", "button", "map", "hide world map", "pklite"}
 )
 public class WorldMapHiderPlugin extends Plugin

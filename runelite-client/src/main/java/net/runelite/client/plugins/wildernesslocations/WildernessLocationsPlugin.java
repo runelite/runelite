@@ -18,6 +18,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.wildernesslocations.WildernessLocationsOverlay;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -26,7 +27,8 @@ import net.runelite.client.util.WildernessLocation;
 @PluginDescriptor(name="PvP Wild Locations",
         description="Indicates the players current location in the wild",
         tags={"Wildy,", "Wilderness Location", "location", "loc", "pvp", "pklite"},
-        type = "PVP")
+        type = PluginType.PVP
+)
 
 public class WildernessLocationsPlugin extends Plugin {
     @Inject

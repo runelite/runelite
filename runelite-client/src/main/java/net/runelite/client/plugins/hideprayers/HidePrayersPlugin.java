@@ -13,6 +13,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @PluginDescriptor(
 	name = "Hide Prayers",
 	description = "Hides specific Prayers in the Prayer tab.",
-		type = "utility"
+		type = PluginType.UTILITY
 )
 public class HidePrayersPlugin extends Plugin {
 	private static final int PRAYER_COUNT = Prayer.values().length;

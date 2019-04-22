@@ -82,6 +82,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.pluginsorter.PluginSorterPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -219,7 +220,7 @@ public class ConfigPanel extends PluginPanel
 		List<PluginListItem> pvmPlugins = new ArrayList<>();
 		// populate pluginList with all PVM Plugins
 		pluginManager.getPlugins().stream()
-				.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals("PVM"))
+				.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVM))
 				.forEach(plugin ->
 				{
 					final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
@@ -239,7 +240,7 @@ public class ConfigPanel extends PluginPanel
 		List<PluginListItem> pvpPlugins = new ArrayList<>();
 		// populate pluginList with all PVP Plugins
 		pluginManager.getPlugins().stream()
-				.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals("PVP"))
+				.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVP))
 				.forEach(plugin ->
 				{
 					final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
@@ -259,7 +260,7 @@ public class ConfigPanel extends PluginPanel
 		List<PluginListItem> utilPlugins = new ArrayList<>();
 		// populate pluginList with all utility Plugins
 		pluginManager.getPlugins().stream()
-				.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals("utility"))
+				.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.UTILITY))
 				.forEach(plugin ->
 				{
 					final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
@@ -287,10 +288,10 @@ public class ConfigPanel extends PluginPanel
 		List<PluginListItem> vanillaPlugins = new ArrayList<>();
 		pluginManager.getPlugins().stream()
 				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
-				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals("PVM"))
-				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals("PVP"))
-				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals("utility"))
-				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals("pluginOrganizer"))
+				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVM))
+				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVP))
+				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.UTILITY))
+				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PLUGIN_ORGANIZER))
 				.forEach(plugin ->
 				{
 					final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
@@ -322,7 +323,7 @@ public class ConfigPanel extends PluginPanel
 
 		// Add plugin sorter to bottom
 		pluginManager.getPlugins().stream()
-				.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals("pluginOrganizer"))
+				.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PLUGIN_ORGANIZER))
 				.forEach(plugin ->
 				{
 					final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);

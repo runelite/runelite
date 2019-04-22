@@ -20,6 +20,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
@@ -31,7 +32,7 @@ import java.util.*;
         description = "All-in-one plugin for Theatre of Blood",
         tags = {"ToB"},
         enabledByDefault = false,
-        type = "PVM"
+        type = PluginType.PVM
 )
 
 public class TheatrePlugin extends Plugin {

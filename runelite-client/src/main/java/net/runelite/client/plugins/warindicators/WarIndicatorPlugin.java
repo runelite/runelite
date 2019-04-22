@@ -30,6 +30,8 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Collection;
 import javax.inject.Inject;
+
+import net.runelite.client.plugins.PluginType;
 import org.apache.commons.lang3.ArrayUtils;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.FOLLOW;
@@ -57,7 +59,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
         name = "War calling indicators",
         description = "War War War.",
         tags = {"skill", "total", "max", "PVP"},
-		type = "PVP",
+		type = PluginType.PVP,
         enabledByDefault = false
 )
 public class WarIndicatorPlugin extends Plugin

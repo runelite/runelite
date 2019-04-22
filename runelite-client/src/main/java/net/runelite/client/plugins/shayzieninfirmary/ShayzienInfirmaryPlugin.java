@@ -36,6 +36,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
@@ -43,7 +44,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Shayzien Infirmary",
 	description = "Shows the status of wounded soldiers",
 	tags = {"shayzien", "infirmary", "soldiers"},
-	type = "utility"
+	type = PluginType.UTILITY
 )
 public class ShayzienInfirmaryPlugin extends Plugin
 {

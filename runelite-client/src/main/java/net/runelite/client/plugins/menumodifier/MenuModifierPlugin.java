@@ -15,6 +15,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.MiscUtils;
 import net.runelite.client.util.Text;
 
@@ -29,7 +30,7 @@ import java.util.List;
         description = "Changes right click menu for players",
         tags = { "menu", "modifier", "right", "click", "pk", "bogla" },
         enabledByDefault = false,
-        type = "utility"
+        type = PluginType.UTILITY
 )
 public class MenuModifierPlugin extends Plugin
 {

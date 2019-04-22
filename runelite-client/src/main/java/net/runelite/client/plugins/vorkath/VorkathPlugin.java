@@ -10,14 +10,15 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "Vorkath",
+	name = "Vorkath Helper",
 	description = "Vorkath Helper",
 	tags = {"Vorkath", "Helper"},
-		type = "PVM"
+	type = PluginType.PVM
 )
 public class VorkathPlugin extends Plugin
 {

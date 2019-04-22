@@ -35,10 +35,11 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
         name = "Anti Drag",
-        type = "utility",
+        type = PluginType.UTILITY,
         enabledByDefault = false)
 public class AntiDragPlugin extends Plugin implements KeyListener
 {
