@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.skybox;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -447,7 +448,7 @@ class Skybox
 		}
 
 		// Convert back to int range values, and bounds check while we are at it
-		byte ay = (byte) Math.min(Math.max(Math.round(Math.pow(ty / t, brightness) * 255.d), 0), 255);
+		byte ay = (byte) Math.min(Math.max(Math.round(ty / t * 255.d), 0), 255);
 		byte aco = (byte) Math.min(Math.max(Math.round(tco * 128.d / t), -128), 127);
 		byte acg = (byte) Math.min(Math.max(Math.round(tcg * 128.d / t), -128), 127);
 
@@ -457,7 +458,11 @@ class Skybox
 		int r = (tmp - (aco >> 1)) & 0xFF;
 		int b = (r + aco) & 0xFF;
 
-		return r << 16 | g << 8 | b;
+		// increase brightness with HSB
+		float[] hsb = Color.RGBtoHSB(r, g, b, null);
+		hsb[2] = (float) Math.pow(hsb[2], brightness);
+
+		return 0xFFFFFF & Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]);
 	}
 
 	/**

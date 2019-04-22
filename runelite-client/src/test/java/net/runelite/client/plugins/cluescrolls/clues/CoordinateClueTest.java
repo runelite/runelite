@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.util;
+package net.runelite.client.plugins.cluescrolls.clues;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import net.runelite.api.Client;
-import net.runelite.api.Query;
+import net.runelite.api.coords.WorldPoint;
+import org.junit.Test;
 
-@Singleton
-public class QueryRunner
+public class CoordinateClueTest
 {
-	@Inject
-	private Client client;
-
-	@SuppressWarnings("unchecked")
-	public <T> T[] runQuery(Query query)
+	@Test
+	public void testDuplicateCoordinates()
 	{
-		return (T[]) query.result(client);
+		// If this doesn't throw then the clues map doesn't have duplicate keys
+		new CoordinateClue("test", new WorldPoint(0, 0, 0));
 	}
 }
