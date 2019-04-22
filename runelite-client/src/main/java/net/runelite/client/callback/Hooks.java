@@ -47,6 +47,7 @@ import net.runelite.api.NullItemID;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.Renderable;
 import net.runelite.api.WorldMapManager;
+import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.hooks.Callbacks;
@@ -507,5 +508,12 @@ public class Hooks implements Callbacks
 		{
 			overlayManager.getItemWidgets().add(widgetItem);
 		}
+	}
+
+	public static boolean drawMenu()
+	{
+		BeforeMenuRender event = new BeforeMenuRender();
+		client.getCallbacks().post(event);
+		return event.isConsumed();
 	}
 }
