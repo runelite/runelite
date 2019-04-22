@@ -40,7 +40,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @PluginDescriptor(
-        name = "Vetion",
+        name = "Vetion Helper",
         description = "Tracks Vet'ion's special attacks",
         tags = {"bosses", "combat", "pve", "overlay"},
         type = "PVM"
