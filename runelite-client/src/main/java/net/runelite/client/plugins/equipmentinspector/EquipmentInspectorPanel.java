@@ -44,7 +44,6 @@ public class EquipmentInspectorPanel extends PluginPanel
 		c.weightx = 1;
 		c.gridx = 0;
 		c.gridy = 0;
-
 		header = new JPanel();
 		header.setLayout(new BorderLayout());
 		header.setBorder(new CompoundBorder(
@@ -53,9 +52,7 @@ public class EquipmentInspectorPanel extends PluginPanel
 
 		nameLabel = new JLabel(NO_PLAYER_SELECTED);
 		nameLabel.setForeground(Color.WHITE);
-
 		header.add(nameLabel, BorderLayout.CENTER);
-
 		layout.setHorizontalGroup(layout.createParallelGroup()
 				.addComponent(equipmentPanels)
 				.addComponent(header)
@@ -65,7 +62,6 @@ public class EquipmentInspectorPanel extends PluginPanel
 				.addGap(10)
 				.addComponent(equipmentPanels)
 		);
-
 		update(new HashMap<>(), "");
 	}
 
@@ -79,7 +75,6 @@ public class EquipmentInspectorPanel extends PluginPanel
 		{
 			nameLabel.setText("Player: " + playerName);
 		}
-
 		SwingUtilities.invokeLater(() ->
 				{
 					equipmentPanels.removeAll();

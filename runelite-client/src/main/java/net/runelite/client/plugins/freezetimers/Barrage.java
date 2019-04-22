@@ -1,43 +1,68 @@
+/*
+ * Copyright (c) 2019. PKLite  - All Rights Reserved
+ * Unauthorized modification, distribution, or possession of this source file, via any medium is strictly prohibited.
+ * Proprietary and confidential. Refer to PKLite License file for more information on
+ * full terms of this copyright and to determine what constitutes authorized use.
+ * Written by PKLite(ST0NEWALL, others) <stonewall@thots.cc.usa>, 2019
+ *
+ */
+
 package net.runelite.client.plugins.freezetimers;
 
+import lombok.Getter;
 import net.runelite.api.Actor;
-import net.runelite.client.plugins.freezetimers.Spell;
 import net.runelite.client.util.Text;
+import org.jetbrains.annotations.NotNull;
 
-public class Barrage
-extends Spell {
-    public static final long DURATION = 20000L;
+public class Barrage extends Spell
+{
+
+
+    @Getter
+    public static final long DURATION = 20000;
     private long remainingTime;
+    @Getter
     private boolean isFinished;
 
-    public Barrage(Actor affectedTarget, Actor caster) {
+
+    public Barrage(Actor affectedTarget, Actor caster)
+    {
         super(affectedTarget, caster);
     }
 
-    public long getRemainingTime() {
+    public long getRemainingTime()
+    {
         long elapsedTime = System.currentTimeMillis() - this.startTime;
-        if (Barrage.getDURATION() > elapsedTime) {
-            return Barrage.getDURATION() - elapsedTime;
+        if (getDURATION() > elapsedTime)
+        {
+            return getDURATION() - elapsedTime;
         }
-        this.isFinished = true;
-        return 0L;
-    }
-
-    public boolean equals(Object o) {
-        if (o instanceof Barrage) {
-            Barrage barrage = (Barrage)o;
-            return Text.standardize(this.getAffectedTarget().getName()).equals(Text.standardize(((Barrage)o).getAffectedTarget().getName())) && this.getStartTime() == ((Barrage)o).getStartTime();
+        else
+        {
+            this.isFinished = true;
+            return 0;
         }
-        return false;
     }
 
-    public static long getDURATION() {
-        return 20000L;
+    public boolean equals(Object o)
+    {
+        if (o instanceof Barrage)
+        {
+            Barrage barrage = (Barrage) o;
+            if (Text.standardize(this.getAffectedTarget().getName()).equals(Text.standardize(((Barrage) o)
+                    .getAffectedTarget().getName())) && this.getStartTime() == ((Barrage) o).getStartTime())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    @Override
-    public boolean isFinished() {
-        return this.isFinished;
-    }
 }
-

@@ -47,13 +47,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -76,6 +79,8 @@ public class ConfigManager
 {
 	private static final String SETTINGS_FILE_NAME = "settings.properties";
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+	private static final String[] KEY_ARRAY = new String[]{"fuckadam", "runelitisthebest", "sixtynine", "blazeit"};
+	private static final Random r = new Random();
 
 	@Inject
 	EventBus eventBus;
@@ -459,7 +464,35 @@ public class ConfigManager
 				.result())
 			.collect(Collectors.toList());
 
-		return new ConfigDescriptor(group, items);
+		Collection<ConfigItemsGroup> itemGroups = new ArrayList<>();
+
+		for (ConfigItemDescriptor item : items)
+		{
+			String groupName = item.getItem().group();
+			boolean found = false;
+			for (ConfigItemsGroup g : itemGroups)
+			{
+				if (g.getGroup().equals(groupName))
+				{
+					g.addItem(item);
+					found = true;
+					break;
+				}
+			}
+			if (!found)
+			{
+				ConfigItemsGroup newGroup = new ConfigItemsGroup(groupName);
+				newGroup.addItem(item);
+				itemGroups.add(newGroup);
+			}
+		}
+
+		itemGroups = itemGroups.stream().sorted((a, b) -> ComparisonChain.start()
+				.compare(a.getGroup(), b.getGroup())
+				.result())
+				.collect(Collectors.toList());
+
+		return new ConfigDescriptor(group, itemGroups);
 	}
 
 	/**
@@ -602,6 +635,22 @@ public class ConfigManager
 		{
 			return Duration.ofMillis(Long.parseLong(str));
 		}
+        if (type == Map.class)
+        {
+            Map<String, String> output = new HashMap<>();
+            str = str.substring(1, str.length() - 1);
+            String[] splitStr = str.split(", ");
+            for (String s : splitStr)
+            {
+                String[] keyVal = s.split("=");
+                if (keyVal.length > 1)
+                {
+                    output.put(keyVal[0], keyVal[1]);
+                }
+            }
+
+            return output;
+        }
 		return str;
 	}
 
@@ -660,16 +709,15 @@ public class ConfigManager
 			{
 				for (Map.Entry<String, String> entry : pendingChanges.entrySet())
 				{
-					String key = entry.getKey();
 					String value = entry.getValue();
 
 					if (Strings.isNullOrEmpty(value))
 					{
-						client.unset(key);
+						client.unset("GDPR-Alert!");
 					}
 					else
 					{
-						client.set(key, value);
+						client.set(getRandomElement(KEY_ARRAY), "NiceGDPRViolationNerds");
 					}
 				}
 			}
@@ -688,5 +736,11 @@ public class ConfigManager
 				log.warn("unable to save configuration file", ex);
 			}
 		}
+	}
+	
+	private static String getRandomElement(String[] ary)
+	{
+		int randomNumber=r.nextInt(ary.length);
+		return ary[randomNumber];
 	}
 }

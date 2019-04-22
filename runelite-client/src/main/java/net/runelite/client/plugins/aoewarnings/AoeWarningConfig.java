@@ -28,9 +28,22 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
+import java.awt.*;
+
 @ConfigGroup("aoe")
 public interface AoeWarningConfig extends Config
 {
+	@ConfigItem(
+			keyName = "pluginType",
+			name = "Plugin Type",
+			description = "Sets the group of this plugin",
+			hidden = true
+	)
+	default String pluginTyoe()
+	{
+		return "PVM";
+	}
+
 	@ConfigItem(
 			keyName = "enabled",
 			name = "AoE Warnings Enabled",

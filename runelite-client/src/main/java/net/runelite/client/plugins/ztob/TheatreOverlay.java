@@ -8,27 +8,21 @@
 
 package net.runelite.client.plugins.ztob;
 
+import net.runelite.api.Point;
+import net.runelite.api.*;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.ui.overlay.*;
+
+import javax.inject.Inject;
 import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
-
-import net.runelite.api.*;
-import net.runelite.api.Point;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldArea;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class TheatreOverlay extends Overlay {
     private final Client client;
-
-
     private final TheatrePlugin plugin;
     private final TheatreConfig config;
 
@@ -43,69 +37,71 @@ public class TheatreOverlay extends Overlay {
     }
 
     @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        if (plugin.isRunMaiden())
-        {
-            if (config.MaidenBlood())
-            {
-                for (WorldPoint point : plugin.getMaiden_BloodSpatters())
-                {
-                    drawTile(graphics, point, new Color(0,150,200), 2, 150, 10);
+    public Dimension render(Graphics2D graphics) {
+        if (plugin.isRunMaiden()) {
+            if (config.MaidenBlood()) {
+                for (WorldPoint point : plugin.getMaiden_BloodSpatters()) {
+                    drawTile(graphics, point, new Color(36, 248, 229), 2, 150, 10);
                 }
             }
 
-            if (config.MaidenSpawns())
-            {
-                for (WorldPoint point : plugin.getMaiden_SpawnLocations())
-                {
-                    drawTile(graphics, point, new Color(0,150,200), 2, 180, 20);
+            if (config.MaidenSpawns()) {
+                for (WorldPoint point : plugin.getMaiden_SpawnLocations()) {
+                    drawTile(graphics, point, new Color(36, 248, 229), 2, 180, 20);
                 }
-                for (WorldPoint point : plugin.getMaiden_SpawnLocations2())
-                {
-                    drawTile(graphics, point, new Color(0,150,200), 1,120, 10);
+                for (WorldPoint point : plugin.getMaiden_SpawnLocations2()) {
+                    drawTile(graphics, point, new Color(36, 248, 229), 1, 120, 10);
                 }
             }
         }
 
-        if (plugin.isRunBloat())
-        {
+        if (plugin.isRunBloat() && config.BloatIndicator()) {
+            if (config.bloatFeetIndicator()) {
+                if (plugin.getTemp().size() > 0) {
+                    if (plugin.isTempFlag()) {
+                        for (WorldPoint point : plugin.getTemp()) {
 
-            if (config.BloatHands())
-            {
-                for (WorldPoint p : plugin.getBloat_Hands())
-                {
-                    drawTile(graphics, p, Color.BLACK,3,255,0);
+                            drawTile(graphics, point, Color.black, 4, 255, 0);
+
+                        }
+
+                    }
+                } else if (plugin.getTemp2().size() > 0) {
+                    if (plugin.isTemp2Flag()) {
+                        for (WorldPoint point : plugin.getTemp2()) {
+
+                            drawTile(graphics, point, Color.black, 4, 255, 0);
+
+
+                        }
+
+                    }
                 }
             }
-            if(config.BloatIndicator()) {
-                NPC bloat = plugin.getBloat_NPC();
-                int state = plugin.getBloat_State();
-                if (bloat == null) {
-                    return null;
-                }
-                switch (state) {
-                    case 2:
-                        renderNpcOverlay(graphics, bloat, Color.GREEN, 3, 150, 0);
-                        break;
-                    case 3:
-                        renderNpcOverlay(graphics, bloat, Color.YELLOW, 3, 150, 0);
-                        break;
-                    default:
-                        renderNpcOverlay(graphics, bloat, new Color(223, 109, 255), 3, 150, 0);
-                        break;
-                }
+            NPC bloat = plugin.getBloat_NPC();
+            int state = plugin.getBloat_State();
+            if (bloat == null) {
+                return null;
+            }
+            switch (state) {
+                case 2:
+                    renderNpcOverlay(graphics, bloat, Color.GREEN, 3, 150, 0);
+                    break;
+                case 3:
+                    renderNpcOverlay(graphics, bloat, Color.YELLOW, 3, 150, 0);
+                    break;
+                default:
+                    renderNpcOverlay(graphics, bloat, new Color(223, 109, 255), 3, 150, 0);
+                    break;
             }
         }
 
-        if (plugin.isRunNylocas())
-        {
-            if (config.NyloPillars())
-            {
+        if (plugin.isRunNylocas()) {
+            if (config.NyloPillars()) {
                 Map<NPC, Integer> pillars = plugin.getNylocas_Pillars();
                 for (NPC npc : pillars.keySet()) {
                     final int health = pillars.get(npc);
-                    final String healthStr = String.valueOf(health) + "%";
+                    final String healthStr = health + "%";
                     WorldPoint p = npc.getWorldLocation();
                     LocalPoint lp = LocalPoint.fromWorld(client, p.getX() + 1, p.getY() + 1);
                     final double rMod = 130.0 * health / 100.0;
@@ -118,41 +114,34 @@ public class TheatreOverlay extends Overlay {
                 }
             }
 
-            if (config.NyloBlasts())
-            {
+            if (config.NyloBlasts()) {
                 final Map<NPC, Integer> npcMap = plugin.getNylocas_Map();
-                for (NPC npc : npcMap.keySet())
-                {
+                for (NPC npc : npcMap.keySet()) {
                     int ticksLeft = npcMap.get(npc);
                     if (ticksLeft > -1) {
                         if (ticksLeft <= 6) {
-                            Color color = new Color(255, 255,0 ,180);
+                            Color color = new Color(255, 255, 0, 180);
                             int outlineWidth = 2;
                             int outlineAlpha = 150;
-                            renderNpcOverlay(graphics, npc, color, outlineWidth, outlineAlpha, 0);
+                            renderNpcOverlay(graphics, npc, color, outlineWidth, outlineAlpha, 15);
                         }
                     }
                 }
             }
         }
 
-        if (plugin.isRunSotetseg())
-        {
-            if (config.SotetsegMaze1())
-            {
+        if (plugin.isRunSotetseg()) {
+            if (config.SotetsegMaze1()) {
                 int i = 1;
-                for (GroundObject z : plugin.getRedTiles().keySet())
-                {
-                    Polygon poly = z.getCanvasTilePoly();
-                    if (poly != null)
-                    {
+                for (GroundObject o : plugin.getRedTiles().keySet()) {
+                    Polygon poly = o.getCanvasTilePoly();
+                    if (poly != null) {
                         graphics.setColor(Color.WHITE);
                         graphics.setStroke(new BasicStroke(2));
                         graphics.draw(poly);
                     }
-                    Point textLocation = z.getCanvasTextLocation(graphics, String.valueOf(i), 0);
-                    if (textLocation != null)
-                    {
+                    Point textLocation = o.getCanvasTextLocation(graphics, String.valueOf(i), 0);
+                    if (textLocation != null) {
                         OverlayUtil.renderTextLocation(graphics, textLocation, String.valueOf(i), Color.WHITE);
                     }
 
@@ -160,111 +149,111 @@ public class TheatreOverlay extends Overlay {
                 }
             }
 
-            if (config.SotetsegMaze2())
-            {
-                for (WorldPoint p : plugin.getRedTilesOverworld())
-                {
+            if (config.SotetsegMaze2()) {
+                for (WorldPoint p : plugin.getRedTilesOverworld()) {
                     drawTile(graphics, p, Color.WHITE, 2, 255, 10);
-                }
-            }
-            if (config.SotetsegTick()) {
-                NPC boss = plugin.getSotetseg_NPC();
-                int eattick = plugin.getTickTillEat();
-                if (eattick > -1)
-                {
-                    final String eatTicksStr = String.valueOf(eattick);
-                    Point canvasPoint = boss.getCanvasTextLocation(graphics, eatTicksStr, 130);
-                    renderTextLocation(graphics, eatTicksStr, 12, Font.BOLD, Color.WHITE, canvasPoint);
-
                 }
             }
         }
 
 
-
-        if (plugin.isRunXarpus())
-        {
+        if (plugin.isRunXarpus()) {
             NPC boss = plugin.getXarpus_NPC();
 
-            if (boss.getId() == NpcID.XARPUS_8340 && !plugin.isXarpus_Stare() && config.XarpusTick())
-            {
+            if (boss.getId() == NpcID.XARPUS_8340 && !plugin.isXarpus_Stare() && config.XarpusTick()) {
                 int tick = plugin.getXarpus_TicksUntilShoot();
-                if (tick < 1)
-                {
+                if (tick < 1) {
                     tick = tick % 4 + 4;
                 }
                 final String ticksLeftStr = String.valueOf(tick);
                 Point canvasPoint = boss.getCanvasTextLocation(graphics, ticksLeftStr, 130);
                 renderTextLocation(graphics, ticksLeftStr, 12, Font.BOLD, Color.WHITE, canvasPoint);
             }
-            if (boss.getId() == NpcID.XARPUS_8339 && config.XarpusExhumed())
-            {
-                for (GroundObject o : plugin.getXarpus_Exhumeds().keySet())
-                {
+            if (boss.getId() == NpcID.XARPUS_8339 && config.XarpusExhumed()) {
+                for (GroundObject o : plugin.getXarpus_Exhumeds().keySet()) {
+
+
                     Polygon poly = o.getCanvasTilePoly();
-                    if (poly != null)
-                    {
+                    if (poly != null) {
                         graphics.setColor(new Color(0, 255, 0, 130));
                         graphics.setStroke(new BasicStroke(1));
                         graphics.draw(poly);
                     }
                 }
+                for (Map.Entry<GroundObject, Integer> exhumes : plugin.getXarpusExhumedsTimer().entrySet()) {
+                    final String ticksremaining = String.valueOf(exhumes.getValue());
+                    if (Integer.valueOf(ticksremaining) > 0) {
+                        GroundObject ex = exhumes.getKey();
+                        Point point = ex.getCanvasTextLocation(graphics, ticksremaining, 0);
+                        renderTextLocation(graphics, ticksremaining, 12, Font.BOLD, Color.white, point);
+                    }
+
+                }
+
+
             }
+
         }
 
-        if (plugin.isRunVerzik())
-        {
-            if (config.VerzikCupcakes())
-            {
-                for (WorldPoint p : plugin.getVerzik_RangeProjectiles().values())
-                {
+
+        if (plugin.isRunVerzik()) {
+
+
+            if (config.VerzikCupcakes()) {
+                for (WorldPoint p : plugin.getVerzik_RangeProjectiles().values()) {
                     drawTile(graphics, p, Color.RED, 2, 180, 50);
                 }
             }
 
-            if (config.VerzikYellow())
-            {
-                for (WorldPoint p : plugin.getVerzik_YellowTiles())
-                {
-                    drawTile(graphics, p, Color.YELLOW,3,255,0);
-
+            if (config.VerzikYellow()) {
+                for (WorldPoint p : plugin.getVerzik_YellowTiles()) {
+                    drawTile(graphics, p, Color.YELLOW, 3, 255, 0);
                     Projectile yellowBall = plugin.getVerzik_YellowBall();
-                    if (yellowBall != null)
-                    {
-                        final int ticksToImpact = yellowBall.getRemainingCycles()/30;
+                    if (yellowBall != null) {
+                        final int ticksToImpact = yellowBall.getRemainingCycles() / 30;
                         final String countdownStr = String.valueOf(ticksToImpact);
                         Point canvasPoint = Perspective.getCanvasTextLocation(client, graphics, LocalPoint.fromWorld(client, p), countdownStr, 0);
                         renderTextLocation(graphics, countdownStr, 12, Font.BOLD, Color.WHITE, canvasPoint);
+
                     }
                 }
             }
-            if (plugin.getVerzik_NPC_P3() != null) {
-                final NPC boss = plugin.getVerzik_NPC_P3();
-                if (boss.getId() == NpcID.VERZIK_VITUR_8374)
-                {
-                    if (config.VerzikTick())
-                    {
-                        final int ticksLeft = plugin.getP3_TicksUntilAttack();
-                        if (ticksLeft > 0 && ticksLeft < 8)
-                        {
-                            final String ticksLeftStr = String.valueOf(ticksLeft);
-                            Point canvasPoint = boss.getCanvasTextLocation(graphics, ticksLeftStr, 60);
-                            renderTextLocation(graphics, ticksLeftStr, 15, Font.BOLD, Color.WHITE, canvasPoint);
-                        }
+
+            final NPC boss = plugin.getVerzik_NPC();
+            if (boss.getId() == NpcID.VERZIK_VITUR_8374) {
+                if (config.verzikTankTile()) {
+                    renderNpcOverlay(graphics, boss, new Color(75, 0, 130), 1, 255, 0);
+                }
+
+                if (config.VerzikTick()) {
+                    final int ticksLeft = plugin.getP3_TicksUntilAttack();
+                    if (ticksLeft > 0 && ticksLeft < 8) {
+                        final String ticksLeftStr = String.valueOf(ticksLeft);
+                        Point canvasPoint = boss.getCanvasTextLocation(graphics, ticksLeftStr, 60);
+                        renderTextLocation(graphics, ticksLeftStr, 15, Font.BOLD, Color.WHITE, canvasPoint);
                     }
+                }
 
-                    if (config.VerzikMelee() && boss.getAnimation() != 8127)
-                    {
-                        List<WorldPoint> meleeRange = getHitSquares(boss.getWorldLocation(), 7, 1, false);
+                if (config.VerzikMelee()) {
+                    List<WorldPoint> meleeRange = getHitSquares(boss.getWorldLocation(), 7, 1, false);
 
-                        for (WorldPoint p : meleeRange)
-                        {
-                            drawTile(graphics, p, Color.WHITE, 1,155, 10);
-                        }
+                    for (WorldPoint p : meleeRange) {
+                        drawTile(graphics, p, Color.WHITE, 1, 155, 10);
                     }
                 }
             }
+
+            if (boss.getAnimation() == 8117) {
+                final int ticksLeft = plugin.getRedCrabsTimer();
+                if (ticksLeft > 0) {
+                    final String ticksLeftStr = String.valueOf(ticksLeft);
+                    Point canvasPoint = boss.getCanvasTextLocation(graphics, ticksLeftStr, 60);
+                    renderTextLocation(graphics, ticksLeftStr, 15, Font.BOLD, Color.WHITE, canvasPoint);
+                }
+            }
+
         }
+
         return null;
     }
 
@@ -290,19 +279,16 @@ public class TheatreOverlay extends Overlay {
         graphics.fill(poly);
     }
 
-    private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color, int outlineWidth, int outlineAlpha, int fillAlpha)
-    {
+    private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color, int outlineWidth, int outlineAlpha, int fillAlpha) {
         int size = 1;
         NPCComposition composition = actor.getTransformedComposition();
-        if (composition != null)
-        {
+        if (composition != null) {
             size = composition.getSize();
         }
         LocalPoint lp = actor.getLocalLocation();
         Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
 
-        if (tilePoly != null)
-        {
+        if (tilePoly != null) {
             graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
             graphics.setStroke(new BasicStroke(outlineWidth));
             graphics.draw(tilePoly);
@@ -311,33 +297,27 @@ public class TheatreOverlay extends Overlay {
         }
     }
 
-    private void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint)
-    {
+    private void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint) {
         graphics.setFont(new Font("Arial", fontStyle, fontSize));
-        if (canvasPoint != null)
-        {
+        if (canvasPoint != null) {
             final Point canvasCenterPoint = new Point(
                     canvasPoint.getX(),
                     canvasPoint.getY());
             final Point canvasCenterPoint_shadow = new Point(
                     canvasPoint.getX() + 1,
-                    canvasPoint.getY() + 1) ;
+                    canvasPoint.getY() + 1);
             OverlayUtil.renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
             OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor);
         }
     }
 
-    private List<WorldPoint> getHitSquares(WorldPoint npcLoc, int npcSize, int thickness, boolean includeUnder)
-    {
+    private List<WorldPoint> getHitSquares(WorldPoint npcLoc, int npcSize, int thickness, boolean includeUnder) {
         List<WorldPoint> little = new WorldArea(npcLoc, npcSize, npcSize).toWorldPointList();
-        List<WorldPoint> big = new WorldArea(npcLoc.getX()-thickness, npcLoc.getY()-thickness, npcSize + (thickness * 2), npcSize + (thickness * 2), npcLoc.getPlane()).toWorldPointList();
-        if (!includeUnder)
-        {
-            for (Iterator<WorldPoint> it = big.iterator(); it.hasNext();)
-            {
+        List<WorldPoint> big = new WorldArea(npcLoc.getX() - thickness, npcLoc.getY() - thickness, npcSize + (thickness * 2), npcSize + (thickness * 2), npcLoc.getPlane()).toWorldPointList();
+        if (!includeUnder) {
+            for (Iterator<WorldPoint> it = big.iterator(); it.hasNext(); ) {
                 WorldPoint p = it.next();
-                if (little.contains(p))
-                {
+                if (little.contains(p)) {
                     it.remove();
                 }
             }

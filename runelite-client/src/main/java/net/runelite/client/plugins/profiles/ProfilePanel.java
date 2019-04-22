@@ -6,28 +6,19 @@ package net.runelite.client.plugins.profiles;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.LayoutManager;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.client.plugins.profiles.ProfilesConfig;
-import net.runelite.client.plugins.profiles.ProfilesPanel;
-import net.runelite.client.plugins.profiles.ProfilesPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.ImageUtil;
 import org.slf4j.Logger;
@@ -123,7 +114,7 @@ extends JPanel {
     }
 
     static {
-        BufferedImage deleteImg = ImageUtil.getResourceStreamFromClass(ProfilesPlugin.class, "delete_icon.png");
+        BufferedImage deleteImg = ImageUtil.getResourceStreamFromClass(ProfilesPlugin.class, "net/runelite/client/plugins/profiles/delete_icon.png");
         DELETE_ICON = new ImageIcon(deleteImg);
         DELETE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(deleteImg, -100));
     }

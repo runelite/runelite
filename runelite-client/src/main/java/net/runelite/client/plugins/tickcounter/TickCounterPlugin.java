@@ -21,9 +21,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-@PluginDescriptor(name = "<font color=\"green\">!Tick Counter</font>",
+@PluginDescriptor(name = "Tick Counter",
 		description = "Counts combat activity for nearby players",
-		enabledByDefault = false
+		enabledByDefault = false,
+		type = "utility"
 )
 public class TickCounterPlugin extends Plugin {
 

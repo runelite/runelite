@@ -83,7 +83,6 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
-import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.OSType;
@@ -122,10 +121,10 @@ public class ClientUI
 	private boolean withTitleBar;
 	private BufferedImage sidebarOpenIcon;
 	private BufferedImage sidebarClosedIcon;
-	private ContainableFrame frame;
+	public static ContainableFrame frame;
 	private JPanel navContainer;
-	private PluginPanel pluginPanel;
-	private ClientPluginToolbar pluginToolbar;
+	public static PluginPanel pluginPanel;
+	public static ClientPluginToolbar pluginToolbar;
 	private ClientTitleToolbar titleToolbar;
 	private JButton currentButton;
 	private NavigationButton currentNavButton;
@@ -300,14 +299,7 @@ public class ClientUI
 	{
 		SwingUtilities.invokeAndWait(() ->
 		{
-			// Set some sensible swing defaults
-			SwingUtil.setupDefaults();
-
-			// Use substance look and feel
-			SwingUtil.setTheme(new SubstanceRuneLiteLookAndFeel());
-
-			// Use custom UI font
-			SwingUtil.setFont(FontManager.getRunescapeFont());
+			SwingUtil.setupRuneLiteLookAndFeel();
 
 			// Create main window
 			frame = new ContainableFrame();

@@ -3,10 +3,8 @@
  */
 package net.runelite.client.plugins.profiles;
 
-import com.google.inject.Injector;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -18,18 +16,13 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.profiles.ProfilesConfig;
-import net.runelite.client.plugins.profiles.ProfilesPanel;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(name="Account Switcher", description="Allow for a allows you to easily switch between multiple OSRS Accounts", tags={"profile", "account", "login", "log in"})
@@ -55,7 +48,7 @@ extends Plugin {
     @Override
     protected void startUp() throws Exception {
         this.panel = this.injector.getInstance(ProfilesPanel.class);
-        BufferedImage icon = ImageUtil.getResourceStreamFromClass(this.getClass(), "profiles_icon.png");
+        BufferedImage icon = ImageUtil.getResourceStreamFromClass(this.getClass(), "/net/runelite/client/plugins/profiles/profiles_icon.png");
         this.navButton = NavigationButton.builder().tooltip("Profiles").icon(icon).priority(8).panel(this.panel).build();
         this.clientToolbar.addNavigation(this.navButton);
     }

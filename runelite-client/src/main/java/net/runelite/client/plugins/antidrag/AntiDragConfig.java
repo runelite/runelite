@@ -24,16 +24,16 @@
  */
 package net.runelite.client.plugins.antidrag;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Keybind;
-import net.runelite.client.config.ModifierlessKeybind;
 
-@ConfigGroup("antiDrag")
+/*@ConfigGroup(
+	keyName = "antiDrag",
+	name = "Anti Drag",
+	description = "Configuration for the anti drag plugin"
+)*/
+@ConfigGroup("antidrag")
 public interface AntiDragConfig extends Config
 {
 	@ConfigItem(
@@ -45,50 +45,5 @@ public interface AntiDragConfig extends Config
 	default int dragDelay()
 	{
 		return 600 / 20; // one game tick
-	}
-
-	@ConfigItem(
-		keyName = "keybind",
-		name = "keybind",
-		description = "The keybind you want to use for antidrag",
-		position = 2
-	)
-	default Keybind key()
-	{
-		return new ModifierlessKeybind(KeyEvent.VK_SHIFT, 0);
-	}
-
-	@ConfigItem(
-		keyName = "reqfocus",
-		name = "Reset on focus loss",
-		description = "Disable antidrag when losing focus (like alt tabbing)",
-		position = 3
-	)
-	default boolean reqfocus()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "overlay",
-		name = "Enable overlay",
-		description = "Do you really need a description?",
-		position = 4
-	)
-	default boolean overlay()
-	{
-		return true;
-	}
-
-	@Alpha
-	@ConfigItem(
-		keyName = "color",
-		name = "Overlay color",
-		description = "Change the overlay color, duh",
-		position = 5
-	)
-	default Color color()
-	{
-		return new Color(255, 0, 0, 30);
 	}
 }

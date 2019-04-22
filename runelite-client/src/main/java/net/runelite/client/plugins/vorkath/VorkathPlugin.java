@@ -14,9 +14,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "<font color=\"#4863A0\">!Vorkath</font>",
+	name = "Vorkath",
 	description = "Vorkath Helper",
-	tags = {"Vorkath", "Helper"}
+	tags = {"Vorkath", "Helper"},
+		type = "PVM"
 )
 public class VorkathPlugin extends Plugin
 {

@@ -77,7 +77,6 @@ public interface BarbarianAssaultConfig extends Config
     )
     default boolean showHpCountOverlay() { return false; }
 
-
 	@ConfigItem(
 			keyName = "highlightCollectorEggs",
 			name = "Highlight collector eggs",
