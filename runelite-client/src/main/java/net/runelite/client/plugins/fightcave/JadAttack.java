@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +22,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fightcavewavehelper;
+package net.runelite.client.plugins.fightcave;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import net.runelite.api.AnimationID;
+import net.runelite.api.Prayer;
 
-@ConfigGroup("Fight Cave - Wave Helper")
-public interface FightCaveWaveHelperConfig extends Config
+public enum JadAttack
 {
-	@ConfigItem(
-		keyName = "waveDisplay",
-		name = "Wave display",
-		description = "Shows monsters that will spawn on the selected wave(s)."
-	)
-	default WaveDisplayMode waveDisplay()
-	{
-		return WaveDisplayMode.BOTH;
-	}
+    MAGIC(AnimationID.TZTOK_JAD_MAGIC_ATTACK, Prayer.PROTECT_FROM_MAGIC),
+    RANGE(AnimationID.TZTOK_JAD_RANGE_ATTACK, Prayer.PROTECT_FROM_MISSILES);
+
+    private final int animation;
+    private final Prayer prayer;
+
+    JadAttack(int animation, Prayer prayer)
+    {
+        this.animation = animation;
+        this.prayer = prayer;
+    }
+
+    public int getAnimation()
+    {
+        return animation;
+    }
+
+    public Prayer getPrayer()
+    {
+        return prayer;
+    }
 }

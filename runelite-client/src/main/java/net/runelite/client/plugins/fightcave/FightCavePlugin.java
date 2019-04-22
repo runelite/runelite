@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fightcavewavehelper;
+package net.runelite.client.plugins.fightcave;
 
 import com.google.inject.Provides;
 import java.util.ArrayList;
@@ -30,12 +30,19 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -46,13 +53,13 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "Fight Cave - Waves",
+	name = "Fight Cave",
 	description = "Displays current and upcoming wave monsters in the Fight Caves",
 	tags = {"bosses", "combat", "minigame", "overlay", "pve", "pvm", "jad", "fire", "cape", "wave"},
-		type = PluginType.PVM,
-        enabledByDefault = false
+	type = PluginType.PVM,
+	enabledByDefault = false
 )
-public class FightCaveWaveHelperPlugin extends Plugin
+public class FightCavePlugin extends Plugin
 {
 	private static final Pattern WAVE_PATTERN = Pattern.compile(".*Wave: (\\d+).*");
 	private static final int FIGHT_CAVE_REGION = 9551;
@@ -74,6 +81,15 @@ public class FightCaveWaveHelperPlugin extends Plugin
 
 	@Inject
 	private WaveOverlay waveOverlay;
+
+	@Inject
+	private JadOverlay jadOverlay;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Nullable
+	private JadAttack attack;
+
+	private NPC jad;
 
 	static
 	{
@@ -116,15 +132,16 @@ public class FightCaveWaveHelperPlugin extends Plugin
 	}
 
 	@Provides
-	FightCaveWaveHelperConfig provideConfig(ConfigManager configManager)
+	FightCaveConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(FightCaveWaveHelperConfig.class);
+		return configManager.getConfig(FightCaveConfig.class);
 	}
 
 	@Override
 	public void startUp()
 	{
 		overlayManager.add(waveOverlay);
+		overlayManager.add(jadOverlay);
 	}
 
 	@Override
@@ -132,6 +149,11 @@ public class FightCaveWaveHelperPlugin extends Plugin
 	{
 		overlayManager.remove(waveOverlay);
 		currentWave = -1;
+
+		overlayManager.remove(jadOverlay);
+		jad = null;
+		attack = null;
+
 	}
 
 	@Subscribe
@@ -171,5 +193,44 @@ public class FightCaveWaveHelperPlugin extends Plugin
 	static String formatMonsterQuantity(final WaveMonster monster, final int quantity)
 	{
 		return String.format("%dx %s", quantity, monster);
+	}
+
+	@Subscribe
+	public void onNpcSpawned(final NpcSpawned event)
+	{
+		final int id = event.getNpc().getId();
+
+		if (id == NpcID.TZTOKJAD || id == NpcID.TZTOKJAD_6506)
+		{
+			jad = event.getNpc();
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(final NpcDespawned event)
+	{
+		if (jad == event.getNpc())
+		{
+			jad = null;
+			attack = null;
+		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged(final AnimationChanged event)
+	{
+		if (event.getActor() != jad)
+		{
+			return;
+		}
+
+		if (jad.getAnimation() == JadAttack.MAGIC.getAnimation())
+		{
+			attack = JadAttack.MAGIC;
+		}
+		else if (jad.getAnimation() == JadAttack.RANGE.getAnimation())
+		{
+			attack = JadAttack.RANGE;
+		}
 	}
 }
