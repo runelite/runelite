@@ -150,6 +150,9 @@ public class EquipmentInspectorPlugin extends Plugin {
                     Map<KitType, ItemComposition> playerEquipment = new HashMap<>();
 
                     for (KitType kitType : KitType.values()) {
+                        if (kitType == KitType.RING) continue; //prevents the equipment inspector from breaking
+                        if (kitType == KitType.AMMUNITION) continue;
+
                         int itemId = p.getPlayerComposition().getEquipmentId(kitType);
                         if (itemId != -1) {
                             ItemComposition itemComposition = client.getItemDefinition(itemId);
