@@ -129,9 +129,9 @@ public class FreezeTimersPlugin extends Plugin
             final Pattern ppattern = Pattern.compile("> <col=ffffff>(.+?)<col=");
             final Matcher smatch = spattern.matcher(event.getMenuTarget());
             final Matcher pmatch = ppattern.matcher(event.getMenuTarget());
-            smatch.find();
-            pmatch.find();
-            if (smatch.group(1) != null && pmatch.group(1) != null)
+
+            if (smatch.find() && smatch.group(1) != null &&
+				pmatch.find() && pmatch.group(1) != null)
             {
                 currticks = ticks;
                 spell = smatch.group(1);
