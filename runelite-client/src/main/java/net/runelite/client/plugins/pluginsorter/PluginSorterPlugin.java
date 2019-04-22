@@ -77,7 +77,7 @@ public class PluginSorterPlugin extends Plugin {
             if (pli.getPlugin()!=null) {
                 if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type()!=null)
                     if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("external"))
-                        pli.nameLabel.setForeground(config.pvmColor());
+                        pli.nameLabel.setForeground(config.externalColor());
                     else if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("PVM"))
                         pli.nameLabel.setForeground(config.pvmColor());
                     else if (pli.getPlugin().getClass().getAnnotation(PluginDescriptor.class).type().equals("PVP"))

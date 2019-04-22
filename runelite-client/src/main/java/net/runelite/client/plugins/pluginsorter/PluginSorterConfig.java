@@ -36,7 +36,7 @@ public interface PluginSorterConfig extends Config {
     }
 
     @ConfigItem(
-            position = 1,
+            position = 2,
             keyName = "pvmColor",
             name = "PVM color",
             description = "Configure the color of PVM related plugins"
@@ -47,7 +47,7 @@ public interface PluginSorterConfig extends Config {
     }
 
     @ConfigItem(
-            position = 2,
+            position = 3,
             keyName = "pvpColor",
             name = "PVP color",
             description = "Configure the color of PVP related plugins"
@@ -58,7 +58,7 @@ public interface PluginSorterConfig extends Config {
     }
 
     @ConfigItem(
-            position = 3,
+            position = 4,
             keyName = "utilityColor",
             name = "Utility color",
             description = "Configure the color of utility related plugins"
