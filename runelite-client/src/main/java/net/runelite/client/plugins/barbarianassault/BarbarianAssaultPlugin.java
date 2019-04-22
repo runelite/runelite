@@ -64,7 +64,8 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Barbarian Assault",
 	description = "Show a timer to the next call change and game/wave duration in chat.",
-	tags = {"minigame", "overlay", "timer"}
+	tags = {"minigame", "overlay", "timer"},
+	type = "utility"
 )
 public class BarbarianAssaultPlugin extends Plugin {
 	private static final int BA_WAVE_NUM_INDEX = 2;
