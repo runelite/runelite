@@ -128,6 +128,8 @@ public class WidgetID
 	public static final int QUESTLIST_GROUP_ID = 399;
 	public static final int SKILLS_GROUP_ID = 320;
 	public static final int QUESTTAB_GROUP_ID = 629;
+	public static final int MUSIC_GROUP_ID = 239;
+	public static final int BARROWS_PUZZLE_GROUP_ID = 25;
 
 	static class WorldMap
 	{
@@ -576,7 +578,7 @@ public class WidgetID
 	{
 		static final int POINTS_INFOBOX = 6;
 	}
-	
+
 	static class ExperienceDrop
 	{
 		static final int DROP_1 = 15;
@@ -763,5 +765,33 @@ public class WidgetID
 	static class QuestTab
 	{
 		static final int QUEST_TAB = 3;
+	}
+
+	static class Music
+	{
+		static final int CONTAINER = 0;
+		static final int LIST = 3;
+	}
+
+	static class Barrows_Puzzle
+	{
+		static final int PARENT = 0;
+		static final int CONTAINER = 1;
+		static final int TOP_ROW_PUZZLE = 2;
+		static final int SEQUENCE_1 = 3;
+		static final int SEQUENCE_1_TEXT = 4;
+		static final int SEQUENCE_2 = 5;
+		static final int SEQUENCE_2_TEXT = 6;
+		static final int SEQUENCE_3 = 7;
+		static final int SEQUENCE_3_TEXT = 8;
+		static final int SEQUENCE_4 = 9;
+		static final int SEQUENCE_4_TEXT = 10;
+		static final int NEXT_SHAPE_TEXT = 11;
+		static final int ANSWER1_CONTAINER = 12;
+		static final int ANSWER1 = 13;
+		static final int ANSWER2_CONTAINER = 14;
+		static final int ANSWER2 = 15;
+		static final int ANSWER3_CONTAINER = 16;
+		static final int ANSWER3 = 17;
 	}
 }

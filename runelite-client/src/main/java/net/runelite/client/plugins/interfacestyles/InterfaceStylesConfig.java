@@ -52,4 +52,14 @@ public interface InterfaceStylesConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "hdMenu",
+		name = "High Detail menu",
+		description = "Replaces game menu with the RuneScape High Detail mode design"
+	)
+	default boolean hdMenu()
+	{
+		return false;
+	}
 }

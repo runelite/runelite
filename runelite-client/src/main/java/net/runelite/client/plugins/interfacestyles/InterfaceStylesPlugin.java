@@ -31,10 +31,14 @@ import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.HealthBar;
 import net.runelite.api.HealthBarOverride;
+import net.runelite.api.NodeCache;
 import net.runelite.api.SpriteID;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.PostHealthBar;
 import net.runelite.api.events.WidgetPositioned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -67,6 +71,8 @@ public class InterfaceStylesPlugin extends Plugin
 	@Inject
 	private SpriteManager spriteManager;
 
+	private HealthBarOverride healthBarOverride;
+
 	@Provides
 	InterfaceStylesConfig provideConfig(ConfigManager configManager)
 	{
@@ -86,6 +92,7 @@ public class InterfaceStylesPlugin extends Plugin
 		{
 			restoreWidgetDimensions();
 			removeGameframe();
+			healthBarOverride = null;
 			client.setHealthBarOverride(null);
 		});
 	}
@@ -105,6 +112,25 @@ public class InterfaceStylesPlugin extends Plugin
 		adjustWidgetDimensions();
 	}
 
+	@Subscribe
+	public void onPostHealthBar(PostHealthBar postHealthBar)
+	{
+		if (healthBarOverride == null || !config.hdHealthBars())
+		{
+			return;
+		}
+
+		HealthBar healthBar = postHealthBar.getHealthBar();
+		SpritePixels frontSprite = healthBar.getHealthBarFrontSprite();
+
+		// Check if this is the health bar we are replacing
+		if (frontSprite == healthBarOverride.getFrontSprite() || frontSprite == healthBarOverride.getFrontSpriteLarge())
+		{
+			// Increase padding to show some more green at very low hp percentages
+			healthBar.setPadding(1);
+		}
+	}
+
 	private void updateAllOverrides()
 	{
 		removeGameframe();
@@ -113,6 +139,16 @@ public class InterfaceStylesPlugin extends Plugin
 		restoreWidgetDimensions();
 		adjustWidgetDimensions();
 		overrideHealthBars();
+	}
+
+	@Subscribe
+	public void onBeforeMenuRender(BeforeMenuRender event)
+	{
+		if (config.hdMenu())
+		{
+			client.draw2010Menu();
+			event.consume();
+		}
 	}
 
 	private void overrideSprites()
@@ -234,6 +270,10 @@ public class InterfaceStylesPlugin extends Plugin
 
 	private void overrideHealthBars()
 	{
+		// Reset health bar cache to reset applied padding
+		NodeCache healthBarCache = client.getHealthBarCache();
+		healthBarCache.reset();
+
 		if (config.hdHealthBars())
 		{
 			String fileBase = Skin.AROUND_2010.toString() + "/healthbar/";
@@ -245,10 +285,12 @@ public class InterfaceStylesPlugin extends Plugin
 			SpritePixels backSpriteLarge = getFileSpritePixels(fileBase + "back_large.png");
 
 			HealthBarOverride override = new HealthBarOverride(frontSprite, backSprite, frontSpriteLarge, backSpriteLarge);
+			healthBarOverride = override;
 			client.setHealthBarOverride(override);
 		}
 		else
 		{
+			healthBarOverride = null;
 			client.setHealthBarOverride(null);
 		}
 	}

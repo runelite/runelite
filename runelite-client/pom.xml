@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.20-SNAPSHOT</version>
+		<version>1.5.21-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -346,6 +346,11 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<!-- Strip jar before signing -->
+			<plugin>
+				<groupId>io.github.zlika</groupId>
+				<artifactId>reproducible-build-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
