@@ -492,6 +492,12 @@ public interface Client extends GameEngine
 	int[] getWidgetPositionsY();
 
 	/**
+	 * Creates a new widget element
+	 * @return
+	 */
+	Widget createWidget();
+
+	/**
 	 * Gets the current run energy of the logged in player.
 	 *
 	 * @return the run energy

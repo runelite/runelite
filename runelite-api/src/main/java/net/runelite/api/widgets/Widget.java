@@ -821,4 +821,24 @@ public interface Widget
 	 * Can widgets under this widgets be scrolled in this widgets bounding box
 	 */
 	void setNoScrollThrough(boolean noScrollThrough);
+
+	/**
+	 * Changes the parent ID for the widget
+	 */
+	void setParentId(int id);
+
+	/**
+	 * Changes the ID of the widget
+	 */
+	void setId(int id);
+
+	/**
+	 * Sets the index of this element
+	 */
+	void setIndex(int index);
+
+	/**
+	 * Seems like this needs to set to true when creating new widgets
+	 */
+	void setIsIf3(boolean isIf3);
 }

@@ -134,6 +134,7 @@ public class WidgetID
 	public static final int MUSIC_GROUP_ID = 239;
 	public static final int MUSICTAB_GROUP_ID = 239;
 	public static final int BARROWS_PUZZLE_GROUP_ID = 25;
+	public static final int ITEMS_KEPT_ON_DEATH_GROUP_ID = 4;
 
 	static class WorldMap
 	{
@@ -382,6 +383,7 @@ public class WidgetID
 
 	static class ResizableViewport
 	{
+		static final int ITEMS_KEPT_ON_DEATH = 13;
 		static final int CLAN_CHAT_TAB = 35;
 		static final int FRIENDS_TAB = 37;
 		static final int IGNORES_TAB = 36;
@@ -986,5 +988,17 @@ static final int WIND_STRIKE = 5;
 		static final int ANSWER2 = 15;
 		static final int ANSWER3_CONTAINER = 16;
 		static final int ANSWER3 = 17;
+	}
+
+	static class KeptOnDeath
+	{
+		static final int KEPT_ITEMS_CONTAINER = 18;
+		static final int LOST_ITEMS_CONTAINER = 21;
+		static final int LOST_ITEMS_VALUE = 23;
+		static final int INFORMATION_CONTAINER = 29;
+		static final int MAX_ITEMS_KEPT_ON_DEATH = 30;
+		static final int SAFE_ZONE_CONTAINER = 31;
+
+		static final int CUSTOM_TEXT_CONTAINER = 33;
 	}
 }
