@@ -84,7 +84,6 @@ public enum WorldType
 		DEADMAN,
 		DEADMAN_TOURNAMENT,
 		PVP,
-		HIGH_RISK,
 		SEASONAL_DEADMAN
 	);
 
