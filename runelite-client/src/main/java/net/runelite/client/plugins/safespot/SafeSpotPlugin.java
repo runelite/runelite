@@ -26,9 +26,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "1 Way PVP Safe Spots",
 	description = "Renders tile overlays for one way safe spots",
-	tags = {"safe spot", "pvp", "safespots", "pklite"},
+	tags = {"safe spot", "pvp", "safespots", "npc", "pklite"},
 	enabledByDefault = false,
-	type = PluginType.PVP
+	type = PluginType.UTILITY
 )
 public class SafeSpotPlugin extends Plugin
 {
