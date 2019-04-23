@@ -1602,4 +1602,6 @@ public interface Client extends GameEngine
 	EnumComposition getEnum(int id);
 
 	void draw2010Menu();
+
+	NodeCache getHealthBarCache();
 }
