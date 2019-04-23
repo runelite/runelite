@@ -32,7 +32,8 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum Varbits {
+public enum Varbits
+{
     /*
      * If chatbox is transparent or not
      */
@@ -484,10 +485,9 @@ public enum Varbits {
     GE_OFFER_CREATION_TYPE(4397),
 
 
-    /*
+    /**
      * Spells being auto-casted
-     *
-     * */
+     */
     AUTO_CAST_SPELL(276),
 
 
