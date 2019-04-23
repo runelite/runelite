@@ -409,7 +409,7 @@ public class DiscordPlugin extends Plugin
 		if (worldType.contains(WorldType.SEASONAL_DEADMAN) ||
 			worldType.contains(WorldType.DEADMAN) ||
 			worldType.contains(WorldType.PVP) ||
-			worldType.contains(WorldType.PVP_HIGH_RISK))
+			worldType.contains(WorldType.HIGH_RISK))
 		{
 			return false;
 		}
