@@ -1,159 +1,195 @@
 package net.runelite.client.plugins.vorkath;
 
-import net.runelite.api.events.*;
-import net.runelite.client.eventbus.Subscribe;
-import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import net.runelite.api.*;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.SpriteManager;
+import lombok.Getter;
+import net.runelite.api.AnimationID;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
-import org.apache.commons.lang3.ArrayUtils;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Vorkath Helper",
-	description = "Vorkath Helper",
-	tags = {"Vorkath", "Helper"},
+	name = "Vorkath",
+	description = "Count vorkath attacks, and which phase is coming next",
+	tags = {"combat", "overlay", "pve", "pvm"},
 	type = PluginType.PVM
 )
 public class VorkathPlugin extends Plugin
 {
 	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private VorkathConfig config;
-
-	@Inject
-	private VorkathOverlay VorkathOverlay;
-
-	@Inject
-	private VorkathIndicatorOverlay VorkathIndicatorOverlay;
-
-	@Inject
 	private Client client;
 
 	@Inject
-	private SpriteManager spriteManager;
+	private OverlayManager overlayManager;
 
-	@Provides
-	VorkathConfig provideConfig(ConfigManager configManager) {
-		return configManager.getConfig(VorkathConfig.class);
+	@Inject
+	private VorkathOverlay overlay;
+
+	@Inject
+	private ZombifiedSpawnOverlay SpawnOverlay;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Getter
+	private Vorkath vorkath;
+
+	@Getter
+	private ZombifiedSpawn spawn;
+
+	static final BufferedImage ACID;
+	static final BufferedImage ICE;
+	static final BufferedImage MAGERANGE;
+
+	static
+	{
+		ACID = ImageUtil.getResourceStreamFromClass(VorkathPlugin.class, "acid.png");
+		ICE = ImageUtil.getResourceStreamFromClass(VorkathPlugin.class, "ice.png");
+		MAGERANGE = ImageUtil.getResourceStreamFromClass(VorkathPlugin.class, "magerange.png");
 	}
-
-	NPC Vorkath;
-	int hits;
-	int ticks;
-	Boolean ice = false;
-	LocalPoint fireball;
-	int fireballticks = 0;
-	int lastattack;
-	int venomticks;
-
-	int[] VorkathIDs = {393, 395, 1470, 1471, 1477, 1479};
 
 	@Override
-	protected void startUp() throws Exception {
-		overlayManager.add(VorkathOverlay);
-		overlayManager.add(VorkathIndicatorOverlay);
+	protected void startUp()
+	{
+		overlayManager.add(overlay);
+		overlayManager.add(SpawnOverlay);
+		clientThread.invoke(this::reset);
 	}
 
 	@Override
-	protected void shutDown() throws Exception {
-		overlayManager.remove(VorkathOverlay);
-		overlayManager.remove(VorkathIndicatorOverlay);
-		Vorkath = null;
-		hits = 0;
-		fireball = null;
-		fireballticks = 0;
-		ice = false;
-		lastattack = 0;
+	protected void shutDown()
+	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(SpawnOverlay);
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event) {
-		if (!config.EnableVorkath()) {
-			return;
-		}
-		ticks++;
-		if (ticks - fireballticks > 5) {
-			fireballticks = 0;
-			fireball = null;
-		}
-
-		if (venomticks + 30 <= ticks) {
-			venomticks = 0;
-		}
-
-		boolean foundVorkath = false;
-		for (NPC monster : client.getNpcs())
+	private void reset()
+	{
+		this.vorkath = null;
+		for (NPC npc : client.getNpcs())
 		{
-			if (monster == null || monster.getName() == null || monster.getCombatLevel() == 0)
+			if (isNpcVorkath(npc.getId()))
 			{
-				continue;
+				this.vorkath = new Vorkath(npc);
 			}
-			if (monster.getName().equalsIgnoreCase("Vorkath")) {
-				foundVorkath = true;
-				Vorkath = monster;
-				break;
-			}
-		}
-		if (!foundVorkath) {
-			Vorkath = null;
-			hits = 0;
-			fireball = null;
-			fireballticks = 0;
-			ice = false;
-			lastattack = 0;
-		}
-	}
-
-	@Subscribe
-	public void onProjectileMoved(ProjectileMoved event) {
-		if (Vorkath != null) {
-			Projectile ball = event.getProjectile();
-			if (ArrayUtils.contains(VorkathIDs, ball.getId())) {
-				if (ticks - lastattack > 4) {
-					if (ball.getId() == 395) {
-						ice = true;
-					}
-					hits++;
-					lastattack = ticks;
-					if (hits == 7) {
-						hits = 0;
-					}
-				}
+			else if (isNpcZombifiedSpawn(npc.getId()))
+			{
+				this.spawn = new ZombifiedSpawn(npc);
 			}
 		}
 	}
 
+	private static boolean isNpcVorkath(int npcId)
+	{
+		return npcId == NpcID.VORKATH ||
+			npcId == NpcID.VORKATH_8058 ||
+			npcId == NpcID.VORKATH_8059 ||
+			npcId == NpcID.VORKATH_8060 ||
+			npcId == NpcID.VORKATH_8061;
+	}
+
+	private static boolean isNpcZombifiedSpawn(int id)
+	{
+		return id == NpcID.ZOMBIFIED_SPAWN ||
+			id == NpcID.ZOMBIFIED_SPAWN_8063;
+	}
+
 	@Subscribe
-	public void onAnimationChanged(AnimationChanged event) {
-		Actor vorki = event.getActor();
-		Actor local = client.getLocalPlayer();
-		if (vorki instanceof NPC) {
-			if (vorki.equals(Vorkath)) {
-				if (vorki.getAnimation() != -1 && vorki.getAnimation() != 7948 && vorki.getAnimation() != 7952) {
-					if (ice) {
-						ice = false;
-					} else {
-						hits++;
-						if (hits == 7) {
-							venomticks = ticks;
-							hits = 0;
-						}
-						if (vorki.getAnimation() == 7960) {
-							fireball = local.getLocalLocation();
-							fireballticks = ticks;
-						}
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		NPC npc = event.getNpc();
+		if (isNpcVorkath(npc.getId()))
+		{
+			this.vorkath = new Vorkath(npc);
+		}
+		else if (isNpcZombifiedSpawn(npc.getId()))
+		{
+			this.spawn = new ZombifiedSpawn(npc);
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned npcDespawned)
+	{
+		final NPC npc = npcDespawned.getNpc();
+		if (this.vorkath != null)
+		{
+			if (npc.getId() == this.vorkath.getNpc().getId())
+			{
+				this.vorkath = null;
+				reset();
+			}
+		}
+
+		if (this.spawn != null)
+		{
+			if (npc.getId() == this.spawn.getNpc().getId())
+			{
+				this.spawn = null;
+			}
+		}
+	}
+
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		GameState gs = event.getGameState();
+		if (gs == GameState.LOGGING_IN ||
+			gs == GameState.CONNECTION_LOST ||
+			gs == GameState.HOPPING)
+		{
+			reset();
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (vorkath != null)
+		{
+			int animationId = vorkath.getNpc().getAnimation();
+
+			if (animationId != vorkath.getLastTickAnimation())
+			{
+				if (animationId == AnimationID.VORKATH_ACID_ATTACK)
+				{
+					vorkath.setPhase(2);
+					vorkath.setAttacksUntilSwitch(Vorkath.ATTACKS_PER_SWITCH);
+				}
+				else if (animationId == AnimationID.VORKATH_ATTACK && vorkath.getAttacksUntilSwitch() == 0)
+				{
+					vorkath.setPhase(1);
+					vorkath.setAttacksUntilSwitch(Vorkath.ATTACKS_PER_SWITCH);
+					//Vorkath does a bomb animation after the ice dragon breathe, we need to account for it
+					vorkath.setIcePhaseAttack(true);
+				}
+				else if (animationId == AnimationID.VORKATH_ATTACK || animationId == AnimationID.VORKATH_FIRE_BOMB_ATTACK)
+				{
+					if (vorkath.isIcePhaseAttack())
+					{
+						vorkath.setIcePhaseAttack(false);
+					}
+					else
+					{
+						vorkath.setAttacksUntilSwitch(vorkath.getAttacksUntilSwitch() - 1);
 					}
 				}
-
 			}
+
+			vorkath.setLastTickAnimation(animationId);
 		}
 	}
 }
