@@ -31,13 +31,14 @@ import java.awt.Image;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
+import net.runelite.api.InventoryID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.kit.KitType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -120,6 +121,7 @@ public class BarbarianAssaultPlugin extends Plugin
 			if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
 			{
 				announceTime("Game finished, duration: ", gameTime.getTime(false));
+				gameTime = null;
 			}
 		}
 	}
@@ -152,20 +154,32 @@ public class BarbarianAssaultPlugin extends Plugin
 			return;
 		}
 
-		switch (client.getLocalPlayer().getPlayerComposition().getEquipmentId(KitType.CAPE))
+		for (Item item : client.getItemContainer(InventoryID.INVENTORY).getItems())
 		{
-			case ItemID.ATTACKER_ICON:
-				overlay.setCurrentRound(new Round(Role.ATTACKER));
-				break;
-			case ItemID.COLLECTOR_ICON:
-				overlay.setCurrentRound(new Round(Role.COLLECTOR));
-				break;
-			case ItemID.DEFENDER_ICON:
-				overlay.setCurrentRound(new Round(Role.DEFENDER));
-				break;
-			case ItemID.HEALER_ICON:
-				overlay.setCurrentRound(new Round(Role.HEALER));
-				break;
+			if (item == null)
+			{
+				continue;
+			}
+
+			switch (item.getId())
+			{
+				case ItemID.ATTACKER_HORN:
+				case ItemID.ATTACKER_HORN_10520:
+				case ItemID.ATTACKER_HORN_10517:
+				case ItemID.ATTACKER_HORN_10518:
+				case ItemID.ATTACKER_HORN_10519:
+					overlay.setCurrentRound(new Round(Role.ATTACKER));
+					break;
+				case ItemID.DEFENDER_HORN:
+					overlay.setCurrentRound(new Round(Role.COLLECTOR));
+					break;
+				case ItemID.HEALER_HORN:
+					overlay.setCurrentRound(new Round(Role.DEFENDER));
+					break;
+				case ItemID.COLLECTOR_HORN:
+					overlay.setCurrentRound(new Round(Role.HEALER));
+					break;
+			}
 		}
 	}
 
