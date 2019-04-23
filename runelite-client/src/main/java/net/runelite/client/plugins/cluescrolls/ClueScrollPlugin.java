@@ -81,6 +81,7 @@ import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
 import net.runelite.client.plugins.cluescrolls.clues.CrypticClue;
 import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.plugins.cluescrolls.clues.FairyRingClue;
+import net.runelite.client.plugins.cluescrolls.clues.FaloTheBardClue;
 import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
 import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.LocationsClueScroll;
@@ -505,6 +506,13 @@ public class ClueScrollPlugin extends Plugin
 		if (fairyRingClue != null)
 		{
 			return fairyRingClue;
+		}
+
+		final FaloTheBardClue faloTheBardClue = FaloTheBardClue.forText(text);
+
+		if (faloTheBardClue != null)
+		{
+			return faloTheBardClue;
 		}
 
 		final HotColdClue hotColdClue = HotColdClue.forText(text);
