@@ -5,6 +5,7 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
@@ -12,6 +13,8 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
@@ -85,7 +88,7 @@ public class RemoteBankContentsPlugin extends Plugin
 		overlayManager.add(overlay);
 
 		remoteBankContentsProcess.setPanel(panel);
-    
+
 		//pass a reference to the remoteBankContentsProcess which has the hashmap in to make sure that both classes use the same hashmap
 		overlay.setRemoteBankContentsProcess(remoteBankContentsProcess);
 
