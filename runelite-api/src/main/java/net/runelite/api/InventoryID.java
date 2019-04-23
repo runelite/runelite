@@ -54,13 +54,13 @@ public enum InventoryID
 	 */
 	MONKEY_MADNESS_PUZZLE_BOX(221),
 	/**
-	 * Chambers of Xeric chest inventory.
-	 */
-	CHAMBERS_OF_XERIC_CHEST(581),
-	/**
 	 * Looting Bag inventory
 	 */
 	LOOTING_BAG(516),
+	/**
+	 * Chambers of Xeric chest inventory.
+	 */
+	CHAMBERS_OF_XERIC_CHEST(581),
 	/**
 	 * Theater of Blood reward chest inventory (Raids 2)
 	 */
