@@ -25,7 +25,7 @@ import static net.runelite.api.MenuAction.WALK;
 
 
 @PluginDescriptor(
-        name = "!Easyscape",
+        name = "Easyscape",
         description = "Easyscape.",
         tags = {"Easyscape"},
         enabledByDefault = false,
