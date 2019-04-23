@@ -82,6 +82,7 @@ import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.BOTH;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
+import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
@@ -550,11 +551,29 @@ public class GroundItemsPlugin extends Plugin
 			return null;
 		}
 
+		ValueCalculationMode mode = config.valueCalculationMode();
 		for (Map.Entry<Integer, Color> entry : priceChecks.entrySet())
 		{
-			if (gePrice > entry.getKey() || haPrice > entry.getKey())
+			switch (mode)
 			{
-				return entry.getValue();
+				case GE:
+					if (gePrice > entry.getKey())
+					{
+						return entry.getValue();
+					}
+					break;
+				case HA:
+					if (haPrice > entry.getKey())
+					{
+						return entry.getValue();
+					}
+					break;
+				default: // case HIGHEST
+					if (gePrice > entry.getKey() || haPrice > entry.getKey())
+					{
+						return entry.getValue();
+					}
+					break;
 			}
 		}
 

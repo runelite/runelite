@@ -1481,6 +1481,14 @@ public interface Client extends GameEngine
 	NodeCache getWidgetSpriteCache();
 
 	/**
+	 * Overrides health bar sprites with the sprites from the specified override.
+	 * Pass in {@code null} to revert the health bars back to their default.
+	 *
+	 * @param override the health bar override
+	 */
+	void setHealthBarOverride(HealthBarOverride override);
+
+	/**
 	 * Gets the current server tick count.
 	 *
 	 * @return the tick count
@@ -1592,4 +1600,8 @@ public interface Client extends GameEngine
 	NodeCache getItemCompositionCache();
 
 	EnumComposition getEnum(int id);
+
+	void draw2010Menu();
+
+	NodeCache getHealthBarCache();
 }

@@ -43,7 +43,7 @@ LABEL24:
    istore                 2
 LABEL36:
    get_varc_int           41
-   iconst                 -1
+   iconst                 1337
    if_icmpeq              LABEL40
    jump                   LABEL49
 LABEL40:
@@ -315,7 +315,7 @@ LABEL282:
    jump                   LABEL479
 LABEL290:
    get_varc_int           41
-   iconst                 -1
+   iconst                 1337
    if_icmpne              LABEL297
    get_varbit             4089
    iconst                 0
@@ -353,7 +353,18 @@ LABEL311:
    iload                  14
    invoke                 91
    iconst                 1
-   if_icmpeq              LABEL327
+   if_icmpeq              CHAT_FILTER       ; Jump to our new label instead
+   jump                   LABEL475
+CHAT_FILTER:
+   sload                  0                 ; Load the message
+   iconst                 1                 ; Gets changed to 0 if message is blocked
+   iload                  15                ; Load the messageType
+   sconst                 "chatFilterCheck"
+   runelite_callback     
+   pop_int               ; Pop the messageType
+   iconst                 1                 ; 2nd half of conditional
+   sstore                 0                 ; Override the message with our filtered message
+   if_icmpeq              LABEL327          ; Check if we are building this message
    jump                   LABEL475
 LABEL327:
    iload                  15

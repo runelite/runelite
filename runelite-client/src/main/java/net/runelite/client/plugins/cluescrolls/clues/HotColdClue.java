@@ -39,7 +39,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -54,7 +53,6 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-@RequiredArgsConstructor
 public class HotColdClue extends ClueScroll implements LocationClueScroll, LocationsClueScroll, TextClueScroll, NpcClueScroll
 {
 	private static final Pattern INITIAL_STRANGE_DEVICE_MESSAGE = Pattern.compile("The device is (.*)");
@@ -81,6 +79,14 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		}
 
 		return null;
+	}
+
+	private HotColdClue(String text, String npc, String solution)
+	{
+		this.text = text;
+		this.npc = npc;
+		this.solution = solution;
+		setRequiresSpade(true);
 	}
 
 	@Override

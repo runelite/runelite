@@ -215,7 +215,7 @@ public class WintertodtPlugin extends Plugin
 
 		ChatMessageType chatMessageType = chatMessage.getType();
 
-		if (chatMessageType != ChatMessageType.SERVER && chatMessageType != ChatMessageType.FILTERED)
+		if (chatMessageType != ChatMessageType.GAMEMESSAGE && chatMessageType != ChatMessageType.SPAM)
 		{
 			return;
 		}

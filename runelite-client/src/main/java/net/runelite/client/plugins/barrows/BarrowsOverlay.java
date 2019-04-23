@@ -27,6 +27,7 @@ package net.runelite.client.plugins.barrows;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -38,6 +39,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -66,6 +68,7 @@ class BarrowsOverlay extends Overlay
 		Player local = client.getLocalPlayer();
 		final Color npcColor = getMinimapDotColor(1);
 		final Color playerColor = getMinimapDotColor(2);
+		Widget puzzleAnswer = plugin.getPuzzleAnswer();
 
 		// tunnels are only on z=0
 		if (!plugin.getWalls().isEmpty() && client.getPlane() == 0 && config.showMinimap())
@@ -117,6 +120,13 @@ class BarrowsOverlay extends Overlay
 		else if (config.showBrotherLoc())
 		{
 			renderBarrowsBrothers(graphics);
+		}
+
+		if (puzzleAnswer != null && config.showPuzzleAnswer() && !puzzleAnswer.isHidden())
+		{
+			Rectangle answerRect = puzzleAnswer.getBounds();
+			graphics.setColor(Color.GREEN);
+			graphics.draw(answerRect);
 		}
 
 		return null;

@@ -36,4 +36,7 @@ public interface RSFontTypeFace extends FontTypeFace
 	@Import("verticalSpace")
 	@Override
 	int getBaseline();
+
+	@Import("drawTextLeftAligned")
+	void drawTextLeftAligned(String text, int x, int y, int fontColor, int shadowColor);
 }

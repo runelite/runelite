@@ -63,6 +63,7 @@ public abstract class RSGameEngineMixin implements RSGameEngine
 	public void onRun()
 	{
 		thread = Thread.currentThread();
+		thread.setName("Client");
 	}
 
 	@Inject

@@ -143,7 +143,9 @@ public enum HotColdLocation
 	WILDERNESS_5(new WorldPoint(3169, 3558, 0), WILDERNESS, "North of the Grand Exchange, level 5 Wilderness."),
 	WILDERNESS_12(new WorldPoint(3038, 3612, 0), WILDERNESS, "South-east of the Dark Warriors' Fortress, level 12 Wilderness."),
 	WILDERNESS_20(new WorldPoint(3225, 3676, 0), WILDERNESS, "East of the Corporeal Beast's lair, level 20 Wilderness."),
+	WILDERNESS_27(new WorldPoint(3174, 3735, 0), WILDERNESS, "Inside the Ruins north of the Graveyard of Shadows, level 27 Wilderness."),
 	WILDERNESS_28(new WorldPoint(3374, 3734, 0), WILDERNESS, "East of Venenatis' nest, level 28 Wilderness."),
+	WILDERNESS_32(new WorldPoint(3311, 3773, 0), WILDERNESS, "North of Venenatis' nest, level 32 Wilderness."),
 	WILDERNESS_35(new WorldPoint(3153, 3795, 0), WILDERNESS, "East of the Wilderness canoe exit, level 35 Wilderness."),
 	WILDERNESS_37(new WorldPoint(2975, 3811, 0), WILDERNESS, "South-east of the Chaos Temple, level 37 Wilderness."),
 	WILDERNESS_38(new WorldPoint(3294, 3817, 0), WILDERNESS, "South of Callisto, level 38 Wilderness."),
@@ -170,7 +172,6 @@ public enum HotColdLocation
 	ZEAH_MESS_HALL(new WorldPoint(1658, 3621, 0), ZEAH, "East of Mess hall."),
 	ZEAH_WATSONS_HOUSE(new WorldPoint(1653, 3573, 0), ZEAH, "East of Watson's house."),
 	ZEAH_VANNAHS_FARM_STORE(new WorldPoint(1806, 3521, 0), ZEAH, "North of Vannah's Farm Store, between the chicken coop and willow trees."),
-	ZEAH_FARMING_GUILD_SW(new WorldPoint(1227, 3712, 0), ZEAH, "South-west of the Farming Guild."),
 	ZEAH_FARMING_GUILD_W(new WorldPoint(1209, 3737, 0), ZEAH, "West of the Farming Guild."),
 	ZEAH_DAIRY_COW(new WorldPoint(1320, 3718, 0), ZEAH, "North-east of the Kebos Lowlands, east of the dairy cow."),
 	ZEAH_CRIMSON_SWIFTS(new WorldPoint(1186, 3583, 0), ZEAH, "South-west of the Kebos Swamp, below the crimson swifts.");
