@@ -78,6 +78,10 @@ public class PlayerIndicatorsOverlay extends Overlay
 		String namee = actor.getName().replace('\u00A0', ' ');
 		String combatLevel = Integer.toString(actor.getCombatLevel());
 		String playerInfo = "";
+		Point minimapLocation = actor.getMinimapLocation();
+
+		graphics.fillOval(minimapLocation.getX() - 1, minimapLocation.getY() - 1, 2, 2);
+
 
 		if (config.drawOverheadPlayerNames())
 		{
