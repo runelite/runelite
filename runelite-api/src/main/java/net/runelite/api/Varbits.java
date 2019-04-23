@@ -477,8 +477,9 @@ public enum Varbits
 	 * 0 = Item
 	 * 1 = Noted
 	 */
-	BANK_WITHDRAW_OPTION(3958),
 
+	BANK_WITHDRAW_OPTION(3958),
+  
 	/**
 	 * Type of GE offer currently being created
 	 * 0 = buy

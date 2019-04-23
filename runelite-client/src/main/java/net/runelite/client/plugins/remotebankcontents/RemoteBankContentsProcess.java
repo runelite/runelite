@@ -317,13 +317,10 @@ public class RemoteBankContentsProcess
 
 		Arrays.stream(inventoryContainer.getItems()).filter(item -> item.getId() != -1).filter(distinctByKey(Item::getId)).forEach(item -> inventoryItems.put(item.getId(), getQuantityInInventory(item.getId())));
 
-		System.out.println(inventoryItems.entrySet().toString());
-		inventoryItems.forEach((id, quantity) -> System.out.println(id + "," + quantity));
 		replaceItemInBankDepositAll(inventoryItems);
 
 
 	}
-
 
 
 	private void deposit(int id, int quantityInInventory, int quantity)
