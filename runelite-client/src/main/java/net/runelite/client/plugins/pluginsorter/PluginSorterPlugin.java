@@ -22,7 +22,7 @@ import java.util.List;
 @PluginDescriptor(
         name = "Plugin Organizer",
         description = "Hides and colors 3rd party plugins for better control",
-        tags = {"Fuck RL","Abex is shit :p"},
+        tags = {"plugins","organizer"},
         type = PluginType.PLUGIN_ORGANIZER
 )
 public class PluginSorterPlugin extends Plugin {

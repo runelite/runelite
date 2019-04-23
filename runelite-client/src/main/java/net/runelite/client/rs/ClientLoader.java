@@ -183,7 +183,7 @@ public class ClientLoader
 						if (!file.getValue().equals(ourHash))
 						{
 							if (hijackedClientFile.exists()) {
-								Logger.getAnonymousLogger().warning("[RuneLit] Hash checking / Client patching skipped due to hijacked client.");
+								Logger.getAnonymousLogger().warning("[RuneLitePlus] Hash checking / Client patching skipped due to hijacked client.");
 								updateCheckMode = VANILLA;
 								break;
 							} else {
@@ -239,17 +239,17 @@ public class ClientLoader
 						hooks.projectileClass.equals("") ||
 						hooks.actorClass.equals("") ||
 							hooks.playerClass.equals("")) {
-							System.out.println("[RuneLit] Bad hooks, re-scraping.");
+							System.out.println("[RuneLitePlus] Bad hooks, re-scraping.");
 						ByteCodePatcher.clientInstance = initHookScrape(ByteCodeUtils.injectedClientFile.getPath());
 						ByteCodePatcher.findHooks(injectedClientFile.getPath());
 					} else {
 						ByteCodePatcher.clientInstance = hooks.clientInstance;
 						ByteCodePatcher.applyHooks(ByteCodeUtils.injectedClientFile, hooks);
-						System.out.println("[RuneLit] Loaded hooks");
+						System.out.println("[RuneLitePlus] Loaded hooks");
 					}
 
 				} else {
-					System.out.println("[RuneLit] Hooks file not found, scraping hooks.");
+					System.out.println("[RuneLitePlus] Hooks file not found, scraping hooks.");
 					ByteCodePatcher.clientInstance = initHookScrape(ByteCodeUtils.injectedClientFile.getPath());
 					ByteCodePatcher.hooks.protectedStuff = preotectedStuffs;
 					ByteCodePatcher.findHooks(injectedClientFile.getPath());

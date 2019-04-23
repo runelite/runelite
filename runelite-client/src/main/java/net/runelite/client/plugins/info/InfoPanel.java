@@ -45,6 +45,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import net.runelite.api.Client;
+import net.runelite.client.RuneLite;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.RuneLiteProperties;
@@ -176,10 +177,10 @@ public class InfoPanel extends PluginPanel
 			}
 		});
 
-		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "Report an issue or", "make a suggestion", runeLiteProperties.getGithubLink()));
-		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "discord server", runeLiteProperties.getDiscordInvite()));
-		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Become a patron to", "help support RuneLite", runeLiteProperties.getPatreonLink()));
-		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", runeLiteProperties.getWikiLink()));
+		//actionsContainer.add(buildLinkPanel(GITHUB_ICON, "Report an issue or", "make a suggestion", runeLiteProperties.getGithubLink()));
+		//actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "discord server", runeLiteProperties.getDiscordInvite()));
+		//actionsContainer.add(buildLinkPanel(PATREON_ICON, "Become a patron to", "help support RuneLite", runeLiteProperties.getPatreonLink()));
+		//actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", runeLiteProperties.getWikiLink()));
 
 		add(versionPanel, BorderLayout.NORTH);
 		add(actionsContainer, BorderLayout.CENTER);
@@ -285,9 +286,9 @@ public class InfoPanel extends PluginPanel
 		}
 		else
 		{
-			emailLabel.setContentType("text/html");
-			emailLabel.setText("<a href=\"" + RUNELITE_LOGIN + "\">Login</a> to sync settings to the cloud.");
-			loggedLabel.setText("Not logged in");
+			//emailLabel.setContentType("text/html");
+			//emailLabel.setText("<a href=\"" + RUNELITE_LOGIN + "\">Login</a> to sync settings to the cloud.");
+			//loggedLabel.setText("Not logged in");
 			actionsContainer.remove(syncPanel);
 		}
 	}

@@ -213,7 +213,7 @@ public class RuneLite
 
 		if (options.has("flexo"))
 		{
-			System.out.println("[RuneLit] Flexo config enabled");
+			System.out.println("[RuneLitePlus] Flexo config enabled");
 			ConfigPanel.flexoConfigEnabled = true;
 		}
 
