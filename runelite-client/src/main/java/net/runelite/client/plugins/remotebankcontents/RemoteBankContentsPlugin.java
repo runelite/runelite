@@ -1,7 +1,10 @@
 package net.runelite.client.plugins.remotebankcontents;
 
+import com.google.inject.Inject;
 import com.google.inject.Provides;
-import javax.inject.Inject;
+import java.awt.image.BufferedImage;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
@@ -11,7 +14,10 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.ClientToolbar;
+import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Remote Bank Contents",
@@ -23,14 +29,36 @@ public class RemoteBankContentsPlugin extends Plugin
 {
 
 
+	@Getter(AccessLevel.PACKAGE)
+	private RemoteBankContentsPanel panel;
+
+	@Inject
+	private SpriteManager spriteManager;
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private ItemManager itemManager;
+
 	@Inject
 	private RemoteBankContentsProcess remoteBankContentsProcess;
+
 	@Inject
 	private RemoteBankContentsOverlay overlay;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private RemoteBankContentsConfig config;
+
+	@Getter
+	private NavigationButton navButton;
+
+	@Inject
+	private ClientToolbar clientToolbar;
+
 
 	@Provides
 	RemoteBankContentsConfig getConfig(ConfigManager configManager)
@@ -41,8 +69,23 @@ public class RemoteBankContentsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+
+		panel = injector.getInstance(RemoteBankContentsPanel.class);
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "icon.png");
+
+
+		navButton = NavigationButton.builder()
+			.tooltip("Remote Bank Contents")
+			.icon(icon)
+			.priority(5)
+			.panel(panel)
+			.build();
+
+		clientToolbar.addNavigation(navButton);
 		overlayManager.add(overlay);
 
+		remoteBankContentsProcess.setPanel(panel);
+    
 		//pass a reference to the remoteBankContentsProcess which has the hashmap in to make sure that both classes use the same hashmap
 		overlay.setRemoteBankContentsProcess(remoteBankContentsProcess);
 
@@ -54,6 +97,9 @@ public class RemoteBankContentsPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		remoteBankContentsProcess.reset();
+		panel.reset();
+
+
 	}
 
 	@Subscribe
@@ -110,6 +156,7 @@ public class RemoteBankContentsPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			remoteBankContentsProcess.reset();
+
 		}
 	}
 

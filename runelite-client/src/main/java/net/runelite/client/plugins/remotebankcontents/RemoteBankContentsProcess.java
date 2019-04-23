@@ -1,15 +1,18 @@
 package net.runelite.client.plugins.remotebankcontents;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -31,18 +34,16 @@ public class RemoteBankContentsProcess
 {
 
 	private final LinkedHashMap<Integer, Integer> items = new LinkedHashMap<>();
-
+	boolean panelInitialised = false;
 	@Inject
 	private Client client;
-
 	@Inject
 	private ItemManager itemManager;
-
 	@Inject
 	private ChatMessageManager chatMessageManager;
-
-
 	private int inventorySpace;
+	private RemoteBankContentsPanel panel;
+	private LinkedHashSet<BankItem> itemSet = new LinkedHashSet<>();
 
 	@Inject
 	RemoteBankContentsProcess(Client client)
@@ -50,7 +51,7 @@ public class RemoteBankContentsProcess
 		this.client = client;
 	}
 
-	public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor)
+	private static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor)
 	{
 		Map<Object, Boolean> map = new ConcurrentHashMap<>();
 		return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
@@ -65,15 +66,36 @@ public class RemoteBankContentsProcess
 
 		if (bankItemContainer != null)
 		{
+
+
 			items.clear();
 
 			Arrays.stream(bankItemContainer.getItems()).forEach(s -> items.put(s.getId(), s.getQuantity()));
 
-
+			if (!panelInitialised)
+			{
+				try
+				{
+					SwingUtilities.invokeAndWait(this::populatePanelItems);
+					panelInitialised = true;
+				}
+				catch (InterruptedException | InvocationTargetException e)
+				{
+					e.printStackTrace();
+				}
+			}
 		}
 
+	}
+
+	void populatePanelItems()
+	{
+		itemSet.clear();
+		items.forEach((i, j) -> itemSet.add(new BankItem(i, j, itemManager, client)));
+		panel.setItems(itemSet);
 
 	}
+
 
 	/**
 	 * @param id The ID of the item that you would like the name of.
@@ -106,7 +128,9 @@ public class RemoteBankContentsProcess
 
 		int id = event.getId();
 
-		if (!event.getMenuOption().equals("Examine"))
+		int widgetId = event.getWidgetId();
+
+		if (!event.getMenuOption().equals("Examine") || widgetId == WidgetInfo.BANK_ITEM_CONTAINER.getPackedId() || widgetId == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId())
 		{
 			return;
 		}
@@ -115,7 +139,7 @@ public class RemoteBankContentsProcess
 		if (isUltimateIronman())
 		{
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAMEMESSAGE).runeLiteFormattedMessage("<col" + ChatColorType.HIGHLIGHT + ">" + "UIM BTW.").build());
+				.type(ChatMessageType.GAMEMESSAGE).runeLiteFormattedMessage("UIM BTW.").build());
 
 		}
 		else if (initialised())
@@ -137,7 +161,7 @@ public class RemoteBankContentsProcess
 			int quantity = getQuantityInBank(id);
 			String name = getItemName(id);
 
-			message.append("<col" + ChatColorType.HIGHLIGHT + ">" + "You currently have " + quantity + " " + name + " in your bank.");
+			message.append("You currently have " + quantity + " " + name + " in your bank.");
 
 			chatMessageManager.queue(QueuedMessage.builder()
 				.type(ChatMessageType.ITEM_EXAMINE).runeLiteFormattedMessage(message.build()).build());
@@ -195,6 +219,7 @@ public class RemoteBankContentsProcess
 	public void reset()
 	{
 		items.clear();
+		//panel.reset();
 	}
 
 	void depositHandler(MenuOptionClicked event)
@@ -282,20 +307,19 @@ public class RemoteBankContentsProcess
 
 	}
 
+	/*
+	Populate panel called here
+	 */
 	private void depositInventory()
 	{
 		ItemContainer inventoryContainer = client.getItemContainer(InventoryID.INVENTORY);
 		HashMap<Integer, Integer> inventoryItems = new LinkedHashMap<>();
 
+		Arrays.stream(inventoryContainer.getItems()).filter(item -> item.getId() != -1).filter(distinctByKey(Item::getId)).forEach(item -> inventoryItems.put(item.getId(), getQuantityInInventory(item.getId())));
 
-		Arrays.stream(inventoryContainer.getItems()).filter(item -> item.getId() != -1).filter(distinctByKey(Item::getId)).forEach(item -> deposit(item.getId(), getQuantityInInventory(item.getId())));
+		replaceItemInBankDepositAll(inventoryItems);
 
 
-	}
-
-	private void deposit(int id, int quantity)
-	{
-		replaceItemInBankDeposit(id, quantity);
 	}
 
 
@@ -310,10 +334,12 @@ public class RemoteBankContentsProcess
 			replaceItemInBankDeposit(id, quantity);
 		}
 
-
 	}
 
 
+	/*
+	Populate panel called here
+	 */
 	private void withdraw(int id, int quantityInBank, int quantity)
 	{
 
@@ -325,12 +351,7 @@ public class RemoteBankContentsProcess
 			{
 				replaceItemInBankWithdraw(id, quantityInBank);
 			}
-			else if (inventorySpace >= 1 && client.getItemDefinition(id).isStackable())
-			{
-				replaceItemInBankWithdraw(id, quantityInBank);
-			}
-
-			else if (inventorySpace >= 1 && isNotedWithdraw())
+			else if (inventorySpace > 1 && client.getItemDefinition(id).isStackable())
 			{
 				replaceItemInBankWithdraw(id, quantityInBank);
 			}
@@ -341,16 +362,11 @@ public class RemoteBankContentsProcess
 		}
 		else
 		{
-			if (inventorySpace > quantity)
-			{
-				replaceItemInBankWithdraw(id, quantity);
-
-			}
-			else if (inventorySpace >= 1 && client.getItemDefinition(id).isStackable())
+			if (inventorySpace > quantity || inventorySpace > 1 && client.getItemDefinition(id).isStackable())
 			{
 				replaceItemInBankWithdraw(id, quantity);
 			}
-			else if (inventorySpace >= 1 && isNotedWithdraw())
+			else if (inventorySpace > 1 && isNotedWithdraw())
 			{
 				replaceItemInBankWithdraw(id, quantity);
 			}
@@ -456,7 +472,41 @@ public class RemoteBankContentsProcess
 		{
 			items.replace(id, items.get(id) + quantity);
 		}
+
+		try
+		{
+			SwingUtilities.invokeAndWait(this::populatePanelItems);
+		}
+		catch (InterruptedException | InvocationTargetException e)
+		{
+			e.printStackTrace();
+		}
 	}
+
+	private void replaceItemInBankDepositAll(HashMap<Integer, Integer> inventoryItems)
+	{
+
+		inventoryItems.forEach((id, quantity) -> {
+			if (items.get(id) == null)
+			{
+				items.put(id, quantity);
+			}
+			else
+			{
+				items.replace(id, items.get(id) + quantity);
+			}
+		});
+
+		try
+		{
+			SwingUtilities.invokeAndWait(this::populatePanelItems);
+		}
+		catch (InterruptedException | InvocationTargetException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 
 	private void replaceItemInBankWithdraw(int id, int quantity)
 	{
@@ -467,6 +517,15 @@ public class RemoteBankContentsProcess
 		else
 		{
 			items.replace(id, items.get(id) - quantity);
+		}
+
+		try
+		{
+			SwingUtilities.invokeAndWait(this::populatePanelItems);
+		}
+		catch (InterruptedException | InvocationTargetException e)
+		{
+			e.printStackTrace();
 		}
 	}
 
@@ -504,7 +563,11 @@ public class RemoteBankContentsProcess
 		}
 
 	}
-}
 
+	public void setPanel(RemoteBankContentsPanel panel)
+	{
+		this.panel = panel;
+	}
+}
 
 

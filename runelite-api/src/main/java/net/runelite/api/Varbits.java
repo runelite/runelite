@@ -479,6 +479,7 @@ public enum Varbits
 	 */
 
 	BANK_WITHDRAW_OPTION(3958),
+  
 	/**
 	 * Type of GE offer currently being created
 	 * 0 = buy
