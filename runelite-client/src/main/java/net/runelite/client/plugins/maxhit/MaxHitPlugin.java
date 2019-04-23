@@ -46,7 +46,7 @@ import javax.inject.Inject;
 @PluginDescriptor(
 	name = "Max Hit",
 	description = "Max Hit Calculator",
-	type = PluginType.PVM,
+	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
 public class MaxHitPlugin extends Plugin
