@@ -200,6 +200,7 @@ public class WorldHopperPlugin extends Plugin
 			clientToolbar.addNavigation(navButton);
 		}
 
+		panel.setFilterMode(config.subscriptionFilter());
 		worldResultFuture = executorService.scheduleAtFixedRate(this::tick, 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
 
 		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
@@ -252,6 +253,10 @@ public class WorldHopperPlugin extends Plugin
 					{
 						SwingUtilities.invokeLater(() -> panel.hidePing());
 					}
+					break;
+				case "subscriptionFilter":
+					panel.setFilterMode(config.subscriptionFilter());
+					updateList();
 					break;
 			}
 		}
@@ -504,7 +509,7 @@ public class WorldHopperPlugin extends Plugin
 		if (config.quickhopOutOfDanger())
 		{
 			currentWorldTypes.remove(WorldType.PVP);
-			currentWorldTypes.remove(WorldType.PVP_HIGH_RISK);
+			currentWorldTypes.remove(WorldType.HIGH_RISK);
 		}
 		// Don't regard these worlds as a type that must be hopped between
 		currentWorldTypes.remove(WorldType.BOUNTY);
@@ -585,7 +590,7 @@ public class WorldHopperPlugin extends Plugin
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
+				.type(ChatMessageType.CONSOLE)
 				.runeLiteFormattedMessage(chatMessage)
 				.build());
 		}
@@ -632,7 +637,7 @@ public class WorldHopperPlugin extends Plugin
 
 			chatMessageManager
 				.queue(QueuedMessage.builder()
-					.type(ChatMessageType.GAME)
+					.type(ChatMessageType.CONSOLE)
 					.runeLiteFormattedMessage(chatMessage)
 					.build());
 		}
@@ -666,7 +671,7 @@ public class WorldHopperPlugin extends Plugin
 
 				chatMessageManager
 					.queue(QueuedMessage.builder()
-						.type(ChatMessageType.GAME)
+						.type(ChatMessageType.CONSOLE)
 						.runeLiteFormattedMessage(chatMessage)
 						.build());
 
@@ -683,7 +688,7 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
 			return;
 		}

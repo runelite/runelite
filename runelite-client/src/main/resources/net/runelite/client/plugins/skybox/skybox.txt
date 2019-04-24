@@ -56,7 +56,7 @@
 // 		C <chunk X 1> <chunk Y 1> <chunk X 2> <chunk Y 2>
 // Sets the chunks relative to the last region/region1 to the current color and blending
 
-bounds 18 39 60 162
+bounds 18 19 60 162
 
 b 8
 
@@ -942,3 +942,7 @@ c 2 3
 c 4 3
 c 6 3
 c 7 4
+
+// Cerberus
+#100
+R 19 19 21 20

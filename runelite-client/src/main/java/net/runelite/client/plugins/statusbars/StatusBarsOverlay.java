@@ -151,13 +151,13 @@ class StatusBarsOverlay extends Overlay
 		final int poisonState = client.getVar(VarPlayer.IS_POISONED);
 		final Color healthBar;
 
-		if (poisonState > 0 && poisonState < 50)
-		{
-			healthBar = POISONED_COLOR;
-		}
-		else if (poisonState >= 1000000)
+		if (poisonState >= 1000000)
 		{
 			healthBar = VENOMED_COLOR;
+		}
+		else if (poisonState > 0)
+		{
+			healthBar = POISONED_COLOR;
 		}
 		else
 		{

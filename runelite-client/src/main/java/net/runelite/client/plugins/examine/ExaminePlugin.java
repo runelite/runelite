@@ -162,16 +162,16 @@ public class ExaminePlugin extends Plugin
 		ExamineType type;
 		switch (event.getType())
 		{
-			case EXAMINE_ITEM:
+			case ITEM_EXAMINE:
 				type = ExamineType.ITEM;
 				break;
-			case EXAMINE_OBJECT:
+			case OBJECT_EXAMINE:
 				type = ExamineType.OBJECT;
 				break;
-			case EXAMINE_NPC:
+			case NPC_EXAMINE:
 				type = ExamineType.NPC;
 				break;
-			case SERVER:
+			case GAMEMESSAGE:
 				type = ExamineType.ITEM_BANK_EQ;
 				break;
 			default:
@@ -381,7 +381,7 @@ public class ExaminePlugin extends Plugin
 			}
 
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.EXAMINE_ITEM)
+				.type(ChatMessageType.ITEM_EXAMINE)
 				.runeLiteFormattedMessage(message.build())
 				.build());
 		}

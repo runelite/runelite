@@ -66,6 +66,8 @@ class PrayerDoseOverlay extends Overlay
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hasPrayerRestore;
 	@Setter(AccessLevel.PACKAGE)
+	private int bonusPrayer;
+	@Setter(AccessLevel.PACKAGE)
 	private boolean hasHolyWrench;
 
 	@Inject
@@ -135,14 +137,9 @@ class PrayerDoseOverlay extends Overlay
 		final double dosePercentage = hasHolyWrench ? .27 : .25;
 		final int basePointsRestored = (int) Math.floor(maxPrayer * dosePercentage);
 
-		// how many points a prayer and super restore will heal
-		final int prayerPotionPointsRestored = basePointsRestored + 7;
-		final int superRestorePointsRestored = basePointsRestored + 8;
+		final int pointsRestored = basePointsRestored + 7 + bonusPrayer;
 
-		final boolean usePrayerPotion = prayerPointsMissing >= prayerPotionPointsRestored;
-		final boolean useSuperRestore = prayerPointsMissing >= superRestorePointsRestored;
-
-		if (!usePrayerPotion && !useSuperRestore)
+		if (prayerPointsMissing < pointsRestored)
 		{
 			return null;
 		}

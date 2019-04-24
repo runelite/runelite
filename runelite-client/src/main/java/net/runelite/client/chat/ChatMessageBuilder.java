@@ -24,6 +24,10 @@
  */
 package net.runelite.client.chat;
 
+import java.awt.Color;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.Text;
+
 public class ChatMessageBuilder
 {
 	private final StringBuilder builder = new StringBuilder();
@@ -34,9 +38,21 @@ public class ChatMessageBuilder
 		return this;
 	}
 
+	public ChatMessageBuilder append(final Color color, final String message)
+	{
+		builder.append(ColorUtil.wrapWithColorTag(message, color));
+		return this;
+	}
+
 	public ChatMessageBuilder append(final String message)
 	{
-		builder.append(message);
+		builder.append(Text.escapeJagex(message));
+		return this;
+	}
+
+	public ChatMessageBuilder img(int imageId)
+	{
+		builder.append("<img=").append(imageId).append('>');
 		return this;
 	}
 
