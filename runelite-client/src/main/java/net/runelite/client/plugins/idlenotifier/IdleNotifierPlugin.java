@@ -31,6 +31,7 @@ import java.awt.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
@@ -44,8 +45,10 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.SkullIcon;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -100,6 +103,8 @@ public class IdleNotifierPlugin extends Plugin
 	private Instant sixHourWarningTime;
 	private boolean ready;
 	private boolean lastInteractWasCombat;
+	private SkullIcon lastTickSkull = null;
+	private boolean isFirstTick = true;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -327,9 +332,13 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			case LOGIN_SCREEN:
 				resetTimers();
+				isFirstTick = true;
+				break;
+			case HOPPING:
+				isFirstTick = true;
+				ready = true;
 				break;
 			case LOGGING_IN:
-			case HOPPING:
 			case CONNECTION_LOST:
 				ready = true;
 				break;
@@ -381,6 +390,8 @@ public class IdleNotifierPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		skullNotifier();
+
 		final Player local = client.getLocalPlayer();
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
 		lastCombatCountdown = Math.max(lastCombatCountdown - 1, 0);
@@ -664,6 +675,33 @@ public class IdleNotifierPlugin extends Plugin
 		if (client.getGameState() == GameState.LOGIN_SCREEN || local == null || local.getInteracting() != lastInteract)
 		{
 			lastInteract = null;
+		}
+	}
+
+	private void skullNotifier()
+	{
+		final Player local = client.getLocalPlayer();
+		SkullIcon currentTickSkull = local.getSkullIcon();
+		EnumSet worldTypes = client.getWorldType();
+		if (!(worldTypes.contains(WorldType.DEADMAN) || worldTypes.contains(WorldType.SEASONAL_DEADMAN)))
+		{
+			if (!isFirstTick)
+			{
+				if (config.showSkullNotification() && lastTickSkull == null && currentTickSkull == SkullIcon.SKULL)
+				{
+					notifier.notify("[" + local.getName() + "] is now skulled!");
+				}
+				else if (config.showUnskullNotification() && lastTickSkull == SkullIcon.SKULL && currentTickSkull == null)
+				{
+					notifier.notify("[" + local.getName() + "] is now unskulled!");
+				}
+			}
+			else
+			{
+				isFirstTick = false;
+			}
+
+			lastTickSkull = currentTickSkull;
 		}
 	}
 }

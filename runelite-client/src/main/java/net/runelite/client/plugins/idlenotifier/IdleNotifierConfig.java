@@ -65,10 +65,32 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 4,
+		keyName = "skullNotification",
+		name = "Skull Notification",
+		description = "Receive a notification when you skull."
+	)
+	default boolean showSkullNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "unskullNotification",
+		name = "Unskull Notification",
+		description = "Receive a notification when you unskull."
+	)
+	default boolean showUnskullNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "timeout",
 		name = "Idle Notification Delay (ms)",
 		description = "The notification delay after the player is idle",
-		position = 4
+		position = 6
 	)
 	default int getIdleNotificationDelay()
 	{
@@ -79,7 +101,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "hitpoints",
 		name = "Hitpoints Notification Threshold",
 		description = "The amount of hitpoints to send a notification at. A value of 0 will disable notification.",
-		position = 5
+		position = 7
 	)
 	default int getHitpointsThreshold()
 	{
@@ -90,7 +112,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "prayer",
 		name = "Prayer Notification Threshold",
 		description = "The amount of prayer points to send a notification at. A value of 0 will disable notification.",
-		position = 6
+		position = 8
 	)
 	default int getPrayerThreshold()
 	{
@@ -100,7 +122,7 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "oxygen",
 		name = "Oxygen Notification Threshold",
-		position = 7,
+		position = 9,
 		description = "The amount of remaining oxygen to send a notification at. A value of 0 will disable notification."
 	)
 	default int getOxygenThreshold()
@@ -111,7 +133,7 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "spec",
 		name = "Special Attack Energy Notification Threshold",
-		position = 8,
+		position = 10,
 		description = "The amount of spec energy reached to send a notification at. A value of 0 will disable notification."
 	)
 	default int getSpecEnergyThreshold()

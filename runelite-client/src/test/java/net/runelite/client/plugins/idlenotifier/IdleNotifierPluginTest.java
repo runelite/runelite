@@ -28,6 +28,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.util.EnumSet;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -36,6 +37,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -118,6 +120,7 @@ public class IdleNotifierPluginTest
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		when(client.getKeyboardIdleTicks()).thenReturn(42);
 		when(client.getMouseLastPressedMillis()).thenReturn(System.currentTimeMillis() - 100_000L);
+		when(client.getWorldType()).thenReturn(EnumSet.of(WorldType.DEADMAN));
 	}
 
 	@Test

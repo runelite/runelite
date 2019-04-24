@@ -66,6 +66,8 @@ import net.runelite.client.ui.RuneLiteSplashScreen;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.WidgetOverlay;
+import net.runelite.client.ui.overlay.arrow.ArrowMinimapOverlay;
+import net.runelite.client.ui.overlay.arrow.ArrowWorldOverlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
@@ -147,6 +149,12 @@ public class RuneLite
 
 	@Inject
 	private Provider<WorldMapOverlay> worldMapOverlay;
+
+	@Inject
+	private Provider<ArrowWorldOverlay> arrowWorldOverlay;
+
+	@Inject
+	private Provider<ArrowMinimapOverlay> arrowMinimapOverlay;
 
 	@Inject
 	private Provider<LootManager> lootManager;
@@ -323,6 +331,8 @@ public class RuneLite
 			overlayManager.add(infoBoxOverlay.get());
 			overlayManager.add(worldMapOverlay.get());
 			overlayManager.add(tooltipOverlay.get());
+			overlayManager.add(arrowWorldOverlay.get());
+			overlayManager.add(arrowMinimapOverlay.get());
 		}
 
 		// Start plugins

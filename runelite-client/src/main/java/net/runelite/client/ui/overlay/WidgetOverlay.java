@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -64,6 +65,7 @@ public class WidgetOverlay extends Overlay
 	}
 
 	private final Client client;
+	@Getter
 	private final WidgetInfo widgetInfo;
 	private final Rectangle parentBounds = new Rectangle();
 
