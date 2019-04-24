@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,14 +26,31 @@
 
 package net.runelite.client.plugins.skillcalculator;
 
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
+import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.skillcalculator.banked.CriticalItem;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
@@ -48,6 +66,9 @@ public class SkillCalculatorPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private SkillIconManager skillIconManager;
 
 	@Inject
@@ -59,13 +80,28 @@ public class SkillCalculatorPlugin extends Plugin
 	@Inject
 	private ClientToolbar clientToolbar;
 
+	@Inject
+	private SkillCalculatorConfig skillCalculatorConfig;
+
 	private NavigationButton uiNavigationButton;
+	private SkillCalculatorPanel uiPanel;
+
+	@Getter
+	private Map<Integer, Integer> bankMap = new HashMap<>();
+
+	private int bankHash;
+
+	@Provides
+	SkillCalculatorConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(SkillCalculatorConfig.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "calc.png");
-		final SkillCalculatorPanel uiPanel = new SkillCalculatorPanel(skillIconManager, client, spriteManager, itemManager);
+		this.uiPanel = new SkillCalculatorPanel(skillIconManager, client, skillCalculatorConfig, spriteManager, itemManager);
 
 		uiNavigationButton = NavigationButton.builder()
 			.tooltip("Skill Calculator")
@@ -75,11 +111,112 @@ public class SkillCalculatorPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(uiNavigationButton);
+
+		clientThread.invokeLater(() ->
+		{
+			switch (client.getGameState())
+			{
+				case STARTING:
+				case UNKNOWN:
+					return false;
+			}
+
+			CriticalItem.prepareItemCompositions(itemManager);
+			return true;
+		});
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		clientToolbar.removeNavigation(uiNavigationButton);
+		bankMap.clear();
+		bankHash = -1;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("skillCalculator"))
+		{
+			if (event.getKey().equals("showBankedXp"))
+			{
+				bankMap.clear();
+				bankHash = -1;
+			}
+
+			SwingUtilities.invokeLater(() -> uiPanel.refreshPanel());
+		}
+	}
+
+	// Pulled from bankvalue plugin to check if bank is open
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (!skillCalculatorConfig.showBankedXp())
+		{
+			return;
+		}
+
+		Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+
+		// Don't update on a search because rs seems to constantly update the title
+		if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden() || widgetBankTitleBar.getText().contains("Showing"))
+		{
+			return;
+		}
+
+		updateBankItems();
+	}
+
+	// Check if bank contents changed and if so send to UI
+	private void updateBankItems()
+	{
+		ItemContainer c = client.getItemContainer(InventoryID.BANK);
+		Item[] widgetItems = (c == null ? new Item[0] : c.getItems());
+
+		// Couldn't find any items in bank, do nothing.
+		if (widgetItems == null || widgetItems.length == 0)
+		{
+			return;
+		}
+
+		Map<Integer, Integer> newBankMap = getBankMapIfDiff(widgetItems);
+
+		// Bank didn't change
+		if (newBankMap.size() == 0)
+		{
+			return;
+		}
+
+		bankMap = newBankMap;
+		// send updated bank map to ui
+		uiPanel.updateBankMap(bankMap);
+	}
+
+	// Recreates the bankMap and checks if the hashCode is different (the map has changed). Sends an empty map if no changes
+	private Map<Integer, Integer> getBankMapIfDiff(Item[] widgetItems)
+	{
+		Map<Integer, Integer> mapCheck = new HashMap<>();
+		for (Item widgetItem : widgetItems)
+		{
+			mapCheck.put(widgetItem.getId(), widgetItem.getQuantity());
+		}
+
+		int curHash = mapCheck.hashCode();
+
+		if (curHash != bankHash)
+		{
+			bankHash = curHash;
+			return mapCheck;
+		}
+
+		return new HashMap<>();
+	}
+
+	@Subscribe
+	public void onExperienceChanged(ExperienceChanged changeEvent)
+	{
+		uiPanel.updateSkillCalculator(changeEvent.getSkill());
 	}
 }

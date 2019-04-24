@@ -127,4 +127,11 @@ public class MaterialTabGroup extends JPanel
 
 		return true;
 	}
+
+	@Override
+	public void removeAll()
+	{
+		super.removeAll();
+		tabs.clear();
+	}
 }

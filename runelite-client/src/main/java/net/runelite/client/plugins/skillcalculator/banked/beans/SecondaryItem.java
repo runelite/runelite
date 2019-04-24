@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
@@ -23,48 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.skillcalculator;
+package net.runelite.client.plugins.skillcalculator.banked.beans;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.Skill;
 
-@AllArgsConstructor
 @Getter
-public enum CalculatorType
+public class SecondaryItem
 {
-	AGILITY(Skill.AGILITY, "skill_agility.json", false),
-	CONSTRUCTION(Skill.CONSTRUCTION, "skill_construction.json", true),
-	COOKING(Skill.COOKING, "skill_cooking.json", true),
-	CRAFTING(Skill.CRAFTING, "skill_crafting.json", true),
-	FARMING(Skill.FARMING, "skill_farming.json", true),
-	FIREMAKING(Skill.FIREMAKING, "skill_firemaking.json", false),
-	FLETCHING(Skill.FLETCHING, "skill_fletching.json", false),
-	FISHING(Skill.FISHING, "skill_fishing.json", false),
-	HERBLORE(Skill.HERBLORE, "skill_herblore.json", true),
-	HUNTER(Skill.HUNTER, "skill_hunter.json", false),
-	MAGIC(Skill.MAGIC, "skill_magic.json", false),
-	MINING(Skill.MINING, "skill_mining.json", false),
-	PRAYER(Skill.PRAYER, "skill_prayer.json", true),
-	RUNECRAFT(Skill.RUNECRAFT, "skill_runecraft.json", false),
-	SMITHING(Skill.SMITHING, "skill_smithing.json", true),
-	THIEVING(Skill.THIEVING, "skill_thieving.json", false),
-	WOODCUTTING(Skill.WOODCUTTING, "skill_woodcutting.json", false);
+	private final int id;
+	private final int qty;
 
-	private final Skill skill;
-	private final String dataFile;
-	private final boolean bankedXpFlag;
-
-	public static CalculatorType getBySkill(Skill skill)
+	public SecondaryItem(int id, int qty)
 	{
-		for (CalculatorType c : values())
-		{
-			if (c.getSkill().equals(skill))
-			{
-				return c;
-			}
-		}
+		this.id = id;
+		this.qty = qty;
+	}
 
-		return null;
+	public SecondaryItem(int id)
+	{
+		this(id, 1);
 	}
 }
