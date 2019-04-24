@@ -26,13 +26,11 @@
  */
 package net.runelite.client.plugins.suppliestracker;
 
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.ui.components.PluginErrorPanel;
-import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.StackFormatter;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -40,12 +38,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.PluginErrorPanel;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.StackFormatter;
 
 
 class SuppliesTrackerPanel extends PluginPanel
@@ -60,23 +59,16 @@ class SuppliesTrackerPanel extends PluginPanel
 
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
-	private final ScheduledExecutorService executor;
-
 	// Handle overall session data
 	private final JPanel overallPanel = new JPanel();
 	private final JLabel overallSuppliesUsedLabel = new JLabel();
 	private final JLabel overallCostLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
-	private final ItemManager itemManager;
-	private final SuppliesTrackerPlugin plugin;
 	private int overallSuppliesUsed;
 	private int overallCost;
 
-	SuppliesTrackerPanel(final ItemManager itemManager, ScheduledExecutorService executor, SuppliesTrackerPlugin plugin)
+	SuppliesTrackerPanel(final ItemManager itemManager, SuppliesTrackerPlugin plugin)
 	{
-		this.executor = executor;
-		this.itemManager = itemManager;
-		this.plugin = plugin;
 		setBorder(new EmptyBorder(6, 6, 6, 6));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
@@ -146,7 +138,7 @@ class SuppliesTrackerPanel extends PluginPanel
 	 * loads an img to the icon on the header
 	 * @param img the img for the header icon
 	 */
-	public void loadHeaderIcon(BufferedImage img)
+	void loadHeaderIcon(BufferedImage img)
 	{
 		overallIcon.setIcon(new ImageIcon(img));
 	}
@@ -167,7 +159,7 @@ class SuppliesTrackerPanel extends PluginPanel
 	 * Add an item to the supply panel by placing it into the correct box
 	 * @param item the item to add
 	 */
-	public void addItem(SuppliesTrackerItem item)
+	void addItem(SuppliesTrackerItem item)
 	{
 		ItemType category = ItemType.categorize(item);
 		for (SuppliesBox box : boxList)
@@ -186,7 +178,7 @@ class SuppliesTrackerPanel extends PluginPanel
 	 * Updates overall stats to calculate overall used and overall cost from
 	 * the info in each box
 	 */
-	public void updateOverall()
+	void updateOverall()
 	{
 		overallSuppliesUsed = 0;
 		for (SuppliesBox box : boxList)

@@ -25,8 +25,20 @@
  */
 package net.runelite.client.plugins.suppliestracker;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
+import static net.runelite.api.ItemID.*;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
@@ -35,16 +47,7 @@ import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.item.ItemPrice;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import static net.runelite.api.ItemID.*;
-import static net.runelite.api.ItemID.HALF_A_MEAT_PIE;
-
-public class SuppliesBox extends JPanel
+class SuppliesBox extends JPanel
 {
 	private static final int ITEMS_PER_ROW = 5;
 
@@ -129,7 +132,7 @@ public class SuppliesBox extends JPanel
 		setVisible(trackedItems.size() > 0);
 	}
 
-	void remove(SuppliesTrackerItem item)
+	private void remove(SuppliesTrackerItem item)
 	{
 		trackedItems.removeIf(r -> r.getId() == item.getId());
 		plugin.clearItem(item.getId());
@@ -142,7 +145,7 @@ public class SuppliesBox extends JPanel
 		setVisible(false);
 	}
 
-	public long getTotalSupplies()
+	long getTotalSupplies()
 	{
 		long totalSupplies = 0;
 		for (SuppliesTrackerItem item : trackedItems)
@@ -152,7 +155,7 @@ public class SuppliesBox extends JPanel
 		return totalSupplies;
 	}
 
-	public long getTotalPrice()
+	long getTotalPrice()
 	{
 		return totalPrice;
 	}

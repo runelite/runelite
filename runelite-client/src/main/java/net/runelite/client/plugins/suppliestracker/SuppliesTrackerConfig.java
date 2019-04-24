@@ -32,9 +32,9 @@ import net.runelite.client.config.ConfigItem;
 public interface SuppliesTrackerConfig extends Config
 {
 	@ConfigItem(
-			keyName = "blowpipeAmmo",
-			name = "Ammo used in your blowpipe",
-			description = "What type of dart are you using in your toxic blowpipe"
+		keyName = "blowpipeAmmo",
+		name = "Ammo used in your blowpipe",
+		description = "What type of dart are you using in your toxic blowpipe"
 	)
 	default BlowpipeDartType blowpipeAmmo()
 	{

@@ -30,34 +30,48 @@ package net.runelite.client.plugins.suppliestracker;
 
 
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+import java.util.regex.Pattern;
+import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
-import net.runelite.api.events.*;
-import net.runelite.client.callback.ClientThread;
+import static net.runelite.api.AnimationID.BLOWPIPE_ATTACK;
+import static net.runelite.api.AnimationID.HIGH_LEVEL_MAGIC_ATTACK;
+import static net.runelite.api.AnimationID.LOW_LEVEL_MAGIC_ATTACK;
+import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import static net.runelite.api.ItemID.*;
+import net.runelite.api.Player;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.CannonballFired;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
+import static net.runelite.client.plugins.suppliestracker.ActionType.CAST;
+import static net.runelite.client.plugins.suppliestracker.ActionType.CONSUMABLE;
+import static net.runelite.client.plugins.suppliestracker.ActionType.TELEPORT;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.item.ItemPrice;
-
-import static net.runelite.api.AnimationID.*;
-import static net.runelite.api.ItemID.*;
-import static net.runelite.client.plugins.suppliestracker.ActionType.CONSUMABLE;
-import static net.runelite.client.plugins.suppliestracker.ActionType.TELEPORT;
-import static net.runelite.client.plugins.suppliestracker.ActionType.CAST;
-
-import java.util.*;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.regex.Pattern;
-import javax.inject.Inject;
-import javax.swing.SwingUtilities;
-import java.awt.image.BufferedImage;
 
 
 @PluginDescriptor(
@@ -70,7 +84,6 @@ import java.awt.image.BufferedImage;
 @Slf4j
 public class SuppliesTrackerPlugin extends Plugin
 {
-
 	private static final String POTION_PATTERN = "[(]\\d[)]";
 
 	private static final String EAT_PATTERN = "^eat";
@@ -129,25 +142,16 @@ public class SuppliesTrackerPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Inject
-	private SpriteManager spriteManager;
-
-	@Inject
 	private SuppliesTrackerConfig config;
 
 	@Inject
 	private Client client;
 
-	@Inject
-	private ScheduledExecutorService executorService;
-
-	@Inject
-	private ClientThread clientThread;
-
 	
 	@Override
 	protected void startUp() throws Exception
 	{
-		panel = new SuppliesTrackerPanel(itemManager, executorService, this);
+		panel = new SuppliesTrackerPanel(itemManager, this);
 		final BufferedImage header = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
 		panel.loadHeaderIcon(header);
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
@@ -185,14 +189,13 @@ public class SuppliesTrackerPlugin extends Plugin
 		if (ticks == ticksInAnimation && (player.getAnimation() == BLOWPIPE_ATTACK))
 		{
 			double ava_percent = getAccumulatorPercent();
-			double scale_percent = SCALES_PERCENT;
 			// randomize the usage of supplies since we CANNOT actually get real supplies used
 			if (random.nextDouble() <= ava_percent)
 			{
 				buildEntries(config.blowpipeAmmo().getDartID());
 
 			}
-			if (random.nextDouble() <= scale_percent)
+			if (random.nextDouble() <= SCALES_PERCENT)
 			{
 				buildEntries(ZULRAHS_SCALES);
 			}
@@ -209,7 +212,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	{
 		double percent = NO_AVAS_PERCENT;
 		ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-		if (equipment.getItems().length > EQUIPMENT_CAPE_SLOT)
+		if (equipment != null && equipment.getItems().length > EQUIPMENT_CAPE_SLOT)
 		{
 			int capeID = equipment.getItems()[EQUIPMENT_CAPE_SLOT].getId();
 			switch (capeID)
@@ -220,7 +223,7 @@ public class SuppliesTrackerPlugin extends Plugin
 					break;
 				case AVAS_ACCUMULATOR:
 				case ACCUMULATOR_MAX_CAPE:
-				// TODO: the ranging cape can be used as an attractor so this could be wrong
+					// TODO: the ranging cape can be used as an attractor so this could be wrong
 				case RANGING_CAPE:
 					percent = ACCUMULATOR_PERCENT;
 					break;
@@ -268,28 +271,32 @@ public class SuppliesTrackerPlugin extends Plugin
 	 */
 	private void checkUsedRunes(ItemContainer itemContainer, Item[] oldInv)
 	{
-		for (int i = 0; i < itemContainer.getItems().length; i++)
+		try
 		{
-			Item newItem = itemContainer.getItems()[i];
-			Item oldItem = oldInv[i];
-			boolean isRune = false;
-			for (int j = 0; j < RUNE_IDS.length; j++)
+			for (int i = 0; i < itemContainer.getItems().length; i++)
 			{
-				if (oldItem.getId() == RUNE_IDS[j])
+				Item newItem = itemContainer.getItems()[i];
+				Item oldItem = oldInv[i];
+				boolean isRune = false;
+				for (int runeId : RUNE_IDS)
 				{
-					isRune = true;
+					if (oldItem.getId() == runeId)
+					{
+						isRune = true;
+					}
 				}
-			}
-			if (isRune && (newItem.getId() != oldItem.getId() || newItem.getQuantity() != oldItem.getQuantity()))
-			{
-				int quantity = oldItem.getQuantity();
-				if (newItem.getId() == oldItem.getId())
+				if (isRune && (newItem.getId() != oldItem.getId() || newItem.getQuantity() != oldItem.getQuantity()))
 				{
-					quantity -= newItem.getQuantity();
+					int quantity = oldItem.getQuantity();
+					if (newItem.getId() == oldItem.getId())
+					{
+						quantity -= newItem.getQuantity();
+					}
+					buildEntries(oldItem.getId(), quantity);
 				}
-				buildEntries(oldItem.getId(), quantity);
 			}
 		}
+		catch (IndexOutOfBoundsException ignored) {}
 	}
 
 	@Subscribe
@@ -330,8 +337,8 @@ public class SuppliesTrackerPlugin extends Plugin
 				{
 					old = client.getItemContainer(InventoryID.INVENTORY);
 
-					if (old.getItems() != null && !actionStack.stream().anyMatch(a ->
-							a.getType() == CAST))
+					if (old != null && old.getItems() != null && actionStack.stream().noneMatch(a ->
+						a.getType() == CAST))
 					{
 						MenuAction newAction = new MenuAction(CAST, old.getItems());
 						actionStack.push(newAction);
@@ -342,8 +349,8 @@ public class SuppliesTrackerPlugin extends Plugin
 			{
 				old = client.getItemContainer(InventoryID.INVENTORY);
 
-				if (old.getItems() != null && !actionStack.stream().anyMatch(a ->
-						a.getType() == CAST))
+				if (old != null && old.getItems() != null && actionStack.stream().noneMatch(a ->
+					a.getType() == CAST))
 				{
 					MenuAction newAction = new MenuAction(CAST, old.getItems());
 					actionStack.push(newAction);
@@ -488,7 +495,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		Pattern drinkPattern = Pattern.compile(DRINK_PATTERN);
 		if (eatPattern.matcher(event.getMenuTarget().toLowerCase()).find() || drinkPattern.matcher(event.getMenuTarget().toLowerCase()).find())
 		{
-			if (!actionStack.stream().anyMatch(a ->
+			if (actionStack.stream().noneMatch(a ->
 			{
 				if (a instanceof MenuAction.ItemAction)
 				{
@@ -518,8 +525,8 @@ public class SuppliesTrackerPlugin extends Plugin
 			old = client.getItemContainer(InventoryID.INVENTORY);
 
 			// Makes stack only contains one teleport type to stop from adding multiple of one teleport
-			if (old.getItems() != null && !actionStack.stream().anyMatch(a ->
-					a.getType() == TELEPORT))
+			if (old != null && old.getItems() != null && actionStack.stream().noneMatch(a ->
+				a.getType() == TELEPORT))
 			{
 				int teleid = event.getId();
 				MenuAction newAction = new MenuAction.ItemAction(TELEPORT, old.getItems(), teleid, event.getActionParam());
@@ -535,8 +542,8 @@ public class SuppliesTrackerPlugin extends Plugin
 		{
 			old = client.getItemContainer(InventoryID.INVENTORY);
 
-			if (old.getItems() != null && !actionStack.stream().anyMatch(a ->
-					a.getType() == CAST))
+			if (old != null && old.getItems() != null && actionStack.stream().noneMatch(a ->
+				a.getType() == CAST))
 			{
 				MenuAction newAction = new MenuAction(CAST, old.getItems());
 				actionStack.push(newAction);
@@ -601,7 +608,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	 * Add an item to the supply tracker (with 1 count for that item)
 	 * @param itemId the id of the item
 	 */
-	void buildEntries(int itemId)
+	private void buildEntries(int itemId)
 	{
 		buildEntries(itemId, 1);
 	}
@@ -611,7 +618,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	 * @param itemId the id of the item
 	 * @param count the amount of the item to add to the tracker
 	 */
-	void buildEntries(int itemId, int count)
+	private void buildEntries(int itemId, int count)
 	{
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			String name = itemComposition.getName();
@@ -663,15 +670,13 @@ public class SuppliesTrackerPlugin extends Plugin
 
 			suppliesEntry.put(itemId, newEntry);
 			SwingUtilities.invokeLater(() ->
-			{
-				panel.addItem(newEntry);
-			});
+				panel.addItem(newEntry));
 	}
 
 	/**
 	 * reset all item stacks
 	 */
-	public void clearSupplies()
+	void clearSupplies()
 	{
 		suppliesEntry.clear();
 	}
@@ -680,7 +685,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	 * reset an individual item stack
 	 * @param itemId the id of the item stack
 	 */
-	public void clearItem(int itemId)
+	void clearItem(int itemId)
 	{
 		suppliesEntry.remove(itemId);
 	}
@@ -769,5 +774,4 @@ public class SuppliesTrackerPlugin extends Plugin
 		}
 		return itemId;
 	}
-
 }

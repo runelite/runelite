@@ -26,8 +26,13 @@ package net.runelite.client.plugins.suppliestracker;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import static net.runelite.api.ItemID.*;
+import static net.runelite.api.ItemID.ADAMANT_DART;
+import static net.runelite.api.ItemID.BRONZE_DART;
+import static net.runelite.api.ItemID.DRAGON_DART;
+import static net.runelite.api.ItemID.IRON_DART;
+import static net.runelite.api.ItemID.MITHRIL_DART;
+import static net.runelite.api.ItemID.RUNE_DART;
+import static net.runelite.api.ItemID.STEEL_DART;
 
 /**
  * Type of darts that can be put into the blowpipe

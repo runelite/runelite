@@ -30,7 +30,5 @@ package net.runelite.client.plugins.suppliestracker;
  */
 public enum ActionType
 {
-
 	CONSUMABLE, TELEPORT, CAST;
-
 }
