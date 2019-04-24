@@ -375,6 +375,9 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("createSprite")
 	RSSpritePixels createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
 
+	@Override
+	void invokeMenuAction(int n2, int n3, int n4, int n5, String string, String string2, int n6, int n7);
+
 	@Import("decodeSprite")
 	void decodeSprite(byte[] data);
 

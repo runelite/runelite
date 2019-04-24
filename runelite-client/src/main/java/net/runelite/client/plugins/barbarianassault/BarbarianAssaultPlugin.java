@@ -57,6 +57,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
@@ -64,7 +65,8 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Barbarian Assault",
 	description = "Show a timer to the next call change and game/wave duration in chat.",
-	tags = {"minigame", "overlay", "timer"}
+	tags = {"minigame", "overlay", "timer"},
+	type = PluginType.PVM
 )
 public class BarbarianAssaultPlugin extends Plugin {
 	private static final int BA_WAVE_NUM_INDEX = 2;
