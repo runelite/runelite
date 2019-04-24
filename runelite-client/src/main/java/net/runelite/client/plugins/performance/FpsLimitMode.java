@@ -22,45 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fps;
+package net.runelite.client.plugins.performance;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@ConfigGroup(FpsPlugin.CONFIG_GROUP_KEY)
-public interface FpsConfig extends Config
+@Getter
+@RequiredArgsConstructor
+public enum FpsLimitMode
 {
-	@ConfigItem(
-		keyName = "limitMode",
-		name = "Limit Mode",
-		description = "Stay at or under the target frames per second even when in this mode",
-		position = 1
-	)
-	default FpsLimitMode limitMode()
-	{
-		return FpsLimitMode.NEVER;
-	}
+	NEVER("Never"),
+	UNFOCUSED("Unfocused"),
+	ALWAYS("Always");
 
-	@ConfigItem(
-		keyName = "maxFps",
-		name = "FPS target",
-		description = "Desired max frames per second",
-		position = 2
-	)
-	default int maxFps()
-	{
-		return 50;
-	}
+	private final String name;
 
-	@ConfigItem(
-		keyName = "drawFps",
-		name = "Draw FPS indicator",
-		description = "Show a number in the corner for the current FPS",
-		position = 3
-	)
-	default boolean drawFps()
+	@Override
+	public String toString()
 	{
-		return true;
+		return name;
 	}
 }

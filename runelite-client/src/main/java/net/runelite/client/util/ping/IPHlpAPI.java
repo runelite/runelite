@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Levi <me@levischuck.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fps;
+package net.runelite.client.util.ping;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.sun.jna.Library;
+import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 
-@Getter
-@RequiredArgsConstructor
-public enum FpsLimitMode
+interface IPHlpAPI extends Library
 {
-	NEVER("Never"),
-	UNFOCUSED("Unfocused"),
-	ALWAYS("Always");
+	IPHlpAPI INSTANCE = Native.loadLibrary("IPHlpAPI", IPHlpAPI.class);
 
-	private final String name;
+	Pointer IcmpCreateFile();
 
-	@Override
-	public String toString()
-	{
-		return name;
-	}
+	boolean IcmpCloseHandle(Pointer handle);
+
+	int IcmpSendEcho(Pointer IcmpHandle, int DestinationAddress, Pointer RequestData, short RequestSize, Pointer RequestOptions, IcmpEchoReply ReplyBuffer, int ReplySize, int Timeout);
 }

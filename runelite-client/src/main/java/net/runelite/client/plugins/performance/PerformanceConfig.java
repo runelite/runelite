@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Levi <me@levischuck.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.worldhopper.ping;
+package net.runelite.client.plugins.performance;
 
-import com.sun.jna.Library;
-import com.sun.jna.Native;
-import com.sun.jna.Pointer;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-interface IPHlpAPI extends Library
+@ConfigGroup(PerformancePlugin.CONFIG_GROUP_KEY)
+public interface PerformanceConfig extends Config
 {
-	IPHlpAPI INSTANCE = Native.loadLibrary("IPHlpAPI", IPHlpAPI.class);
+	@ConfigItem(
+		keyName = "limitMode",
+		name = "Limit Mode",
+		description = "Stay at or under the target frames per second even when in this mode",
+		position = 1
+	)
+	default FpsLimitMode limitMode()
+	{
+		return FpsLimitMode.NEVER;
+	}
 
-	Pointer IcmpCreateFile();
+	@ConfigItem(
+		keyName = "maxFps",
+		name = "FPS target",
+		description = "Desired max frames per second",
+		position = 2
+	)
+	default int maxFps()
+	{
+		return 50;
+	}
 
-	boolean IcmpCloseHandle(Pointer handle);
+	@ConfigItem(
+		keyName = "drawFps",
+		name = "Draw FPS indicator",
+		description = "Show a number in the corner for the current FPS",
+		position = 3
+	)
+	default boolean drawFps()
+	{
+		return true;
+	}
 
-	int IcmpSendEcho(Pointer IcmpHandle, int DestinationAddress, Pointer RequestData, short RequestSize, Pointer RequestOptions, IcmpEchoReply ReplyBuffer, int ReplySize, int Timeout);
+	@ConfigItem(
+		keyName = "drawPing",
+		name = "Draw ping indicator",
+		description = "Show a number in the corner for the current ping",
+		position = 3
+	)
+	default boolean drawPing()
+	{
+		return false;
+	}
 }

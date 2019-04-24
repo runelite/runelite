@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.worldhopper.ping;
+package net.runelite.client.util.ping;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
@@ -45,14 +45,19 @@ public class Ping
 
 	public static int ping(World world)
 	{
+		return ping(world.getAddress());
+	}
+
+	public static int ping(String address)
+	{
 		try
 		{
 			switch (OSType.getOSType())
 			{
 				case Windows:
-					return windowsPing(world);
+					return windowsPing(address);
 				default:
-					return tcpPing(world);
+					return tcpPing(address);
 			}
 		}
 		catch (IOException ex)
@@ -62,11 +67,11 @@ public class Ping
 		}
 	}
 
-	private static int windowsPing(World world) throws UnknownHostException
+	private static int windowsPing(String worldAddress) throws UnknownHostException
 	{
 		IPHlpAPI ipHlpAPI = IPHlpAPI.INSTANCE;
 		Pointer ptr = ipHlpAPI.IcmpCreateFile();
-		InetAddress inetAddress = InetAddress.getByName(world.getAddress());
+		InetAddress inetAddress = InetAddress.getByName(worldAddress);
 		byte[] address = inetAddress.getAddress();
 		String dataStr = RUNELITE_PING;
 		int dataLength = dataStr.length() + 1;
@@ -88,12 +93,12 @@ public class Ping
 		return rtt;
 	}
 
-	private static int tcpPing(World world) throws IOException
+	private static int tcpPing(String worldAddress) throws IOException
 	{
 		try (Socket socket = new Socket())
 		{
 			socket.setSoTimeout(TIMEOUT);
-			InetAddress inetAddress = InetAddress.getByName(world.getAddress());
+			InetAddress inetAddress = InetAddress.getByName(worldAddress);
 			long start = System.nanoTime();
 			socket.connect(new InetSocketAddress(inetAddress, PORT));
 			long end = System.nanoTime();
