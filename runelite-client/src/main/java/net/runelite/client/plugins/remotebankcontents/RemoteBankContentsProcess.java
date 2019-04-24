@@ -34,7 +34,7 @@ public class RemoteBankContentsProcess
 {
 
 	private final LinkedHashMap<Integer, Integer> items = new LinkedHashMap<>();
-	boolean panelInitialised = false;
+	private boolean panelInitialised = false;
 	@Inject
 	private Client client;
 	@Inject
@@ -88,7 +88,7 @@ public class RemoteBankContentsProcess
 
 	}
 
-	void populatePanelItems()
+	private void populatePanelItems()
 	{
 		itemSet.clear();
 		items.forEach((i, j) -> itemSet.add(new BankItem(i, j, itemManager, client)));
@@ -183,7 +183,6 @@ public class RemoteBankContentsProcess
 	private int getQuantityInInventory(int id)
 	{
 
-		Item desiredItem = null;
 		ItemComposition itemComposition = client.getItemDefinition(id);
 		ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
 
@@ -486,7 +485,8 @@ public class RemoteBankContentsProcess
 	private void replaceItemInBankDepositAll(HashMap<Integer, Integer> inventoryItems)
 	{
 
-		inventoryItems.forEach((id, quantity) -> {
+		inventoryItems.forEach((id, quantity) ->
+		{
 			if (items.get(id) == null)
 			{
 				items.put(id, quantity);

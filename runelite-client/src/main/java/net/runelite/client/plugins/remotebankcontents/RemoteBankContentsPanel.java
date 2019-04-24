@@ -27,7 +27,7 @@ public class RemoteBankContentsPanel extends PluginPanel
 		Constants
 	 */
 
-	//May make this changeable in settings in the future.
+
 	private static final int ITEMS_PER_ROW = 5;
 
 
@@ -137,7 +137,8 @@ public class RemoteBankContentsPanel extends PluginPanel
 			bankItemPanel.setLayout(new GridLayout(numberOfRows, ITEMS_PER_ROW, 1, 1));
 			bankItemPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-			items.forEach(bankItem -> {
+			items.forEach(bankItem ->
+				{
 
 					if (!bankItem.isTemplate() && bankItem.getQuantity() > 0 && !bankItem.getName().equals(""))
 					{
