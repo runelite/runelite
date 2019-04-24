@@ -127,7 +127,10 @@ public class ReportButtonPlugin extends Plugin
 	public void onGameTick(GameTick tick)
 	{
 		ticksSinceLogin++;
-		updateReportButtonTime();
+
+		if (config.time() == TimeStyle.GAME_TICKS) {
+			updateReportButtonTime();
+		}
 	}
 
 	@Schedule(
