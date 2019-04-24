@@ -128,7 +128,8 @@ public class ReportButtonPlugin extends Plugin
 	{
 		ticksSinceLogin++;
 
-		if (config.time() == TimeStyle.GAME_TICKS) {
+		if (config.time() == TimeStyle.GAME_TICKS)
+		{
 			updateReportButtonTime();
 		}
 	}
