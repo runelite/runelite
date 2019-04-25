@@ -133,6 +133,33 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern TASK_STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
 	private static final int TASK_STRING_MAX_LENGTH = 50;
 
+	// Superiors
+	@VisibleForTesting
+	static List<String> SUPERIOR_SLAYER_MONSTERS = Arrays.asList(
+			"crushing hand",
+			"chasm crawler",
+			"screaming banshee",
+			"screaming twisted banshee",
+			"giant rockslug",
+			"cockathrice",
+			"flaming pyrelord",
+			"monstrous basilisk",
+			"malevolent mage",
+			"insatiable bloodveld",
+			"insatiable mutated bloodveld",
+			"vitreous jelly",
+			"vitreous warped jelly",
+			"cave abomination",
+			"abhorrent spectre",
+			"repugnant spectre",
+			"choke devil",
+			"king kurask",
+			"marble gargoyle",
+			"nechryarch",
+			"greater abyssal demon",
+			"night beast",
+			"nuclear smoke devil");
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -573,6 +600,11 @@ public class SlayerPlugin extends Plugin
 		currentTask.setElapsedXp(currentTask.getElapsedXp() + delta);
 		killedOne();
 		cachedXp = slayerExp;
+	}
+
+	boolean isSuperior(String name)
+	{
+		return SUPERIOR_SLAYER_MONSTERS.contains(name.toLowerCase());
 	}
 
 	@Subscribe
