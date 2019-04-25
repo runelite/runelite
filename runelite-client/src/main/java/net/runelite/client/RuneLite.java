@@ -174,7 +174,6 @@ public class RuneLite
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("no-splash", "Do not show the splash screen");
-		parser.accepts("flexo", "Allow flexo api configuration");
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
@@ -217,12 +216,6 @@ public class RuneLite
 		{
 			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 			logger.setLevel(Level.DEBUG);
-		}
-
-		if (options.has("flexo"))
-		{
-			System.out.println("[RuneLitePlus] Flexo config enabled");
-			ConfigPanel.flexoConfigEnabled = true;
 		}
 
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
