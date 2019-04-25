@@ -42,6 +42,7 @@ import java.io.File;
     name = "Music Track Customizer",
     description = "Customize what track plays and how it sounds, with local files",
     tags = {"music", "sound"},
+    type = PluginType.UTILITY,
     enabledByDefault = false
 )
 
