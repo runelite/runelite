@@ -19,7 +19,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import javax.inject.Inject;
 
 @PluginDescriptor(
-        name="<html><font color=\"Lime\">Olm Cripple Timer</font></html>",
+        name="Olm Cripple Timer",
         description = "Shows a timer over the olm hand cripple",
         tags = {"cox", "raid", "clench", "melee", "hand"},
         type = PluginType.PVM
