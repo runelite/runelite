@@ -89,18 +89,6 @@ public interface PvpToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "attackOptionsHotkey",
-		name = "Attack Option Hotkey",
-		description = "Enables a hotkey for attack options to disable or enable hiding quickly",
-		position = 10,
-		group = "Right-Click Attack Options"
-	)
-	default Keybind attackOptionsHotkey()
-	{
-		return Keybind.CTRL;
-	}
-
-	@ConfigItem(
 			keyName = "levelRangeAttackOptions",
 			name = "Moves Other Attack Options",
 			description = "Moves the attack option for people that are outside your level range",
