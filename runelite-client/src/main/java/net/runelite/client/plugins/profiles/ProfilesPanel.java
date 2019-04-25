@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.profiles;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -56,6 +57,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
+import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 
 @Slf4j
@@ -67,7 +69,12 @@ class ProfilesPanel extends PluginPanel
 	private static final String ACCOUNT_USERNAME = "Account Username";
 	private static final String ACCOUNT_LABEL = "Account Label";
 	private static final String PASSWORD_LABEL = "Account Password";
+	private static final String HELP = "To add and load accounts, first enter a password into the Encryption Password " +
+		"field then press Load Accounts. You can now add as many accounts as you would like. The next time you restart" +
+		" PKLite, enter your encryption password and click load accounts to see the accounts you entered";
 	private static final Dimension PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 20, 30);
+	private static final Dimension HELP_PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 20, 130);
+
 	private static final Dimension MINIMUM_SIZE = new Dimension(0, 30);
 	
 	private final Client client;
@@ -79,6 +86,7 @@ class ProfilesPanel extends PluginPanel
 	private final JPasswordField txtAccountLogin = new JPasswordField(ACCOUNT_USERNAME);
 	private final JPasswordField txtPasswordLogin = new JPasswordField(PASSWORD_LABEL);
 	private final JPanel profilesPanel = new JPanel();
+	private final JPanel helpPanel = new JPanel(new BorderLayout());
 	private GridBagConstraints c;
 	
 	@Inject
@@ -99,7 +107,19 @@ class ProfilesPanel extends PluginPanel
 		c.weightx = 1;
 		c.weighty = 0;
 		c.insets = new Insets(0, 0, 4, 0);
-		
+
+		helpPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		JLabel helpLabel = new JLabel("<html> <p>" + HELP + "</p></html>");
+		helpLabel.setFont(FontManager.getRunescapeSmallFont());
+		helpPanel.setPreferredSize(HELP_PREFERRED_SIZE);
+		//helpPanel.setSize(MINIMUM_SIZE);
+		helpPanel.add(helpLabel, BorderLayout.NORTH);
+
+		add(helpPanel);
+		c.gridy = c.gridy + 3;
+		c.gridy++;
+
+
 		txtDecryptPassword.setEchoChar((char) 0);
 		txtDecryptPassword.setPreferredSize(PREFERRED_SIZE);
 		txtDecryptPassword.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
@@ -398,7 +418,7 @@ class ProfilesPanel extends PluginPanel
 		profilesPanel.removeAll();
 		c.gridy = 0;
 		addAccounts(getProfileData());
-		
+
 		revalidate();
 		repaint();
 	}
@@ -434,7 +454,9 @@ class ProfilesPanel extends PluginPanel
 	{
 		setProfileData(
 				getProfileData().replaceAll(data + "\\n", ""));
-		redrawProfiles();
+		revalidate();
+		repaint();
+
 	}
 	
 	void setSalt(byte[] bytes)
