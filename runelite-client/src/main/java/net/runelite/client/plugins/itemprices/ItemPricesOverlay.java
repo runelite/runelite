@@ -200,7 +200,7 @@ class ItemPricesOverlay extends Overlay
 
 		if (config.showGEPrice())
 		{
-			gePrice = itemManager.getItemPrice(id);
+			gePrice = (int) itemManager.getItemPrice(id);
 		}
 		if (config.showHAValue())
 		{
@@ -275,7 +275,7 @@ class ItemPricesOverlay extends Overlay
 
 	private int calculateHAProfit(int haPrice, int gePrice)
 	{
-		int natureRunePrice = itemManager.getItemPrice(ItemID.NATURE_RUNE);
+		int natureRunePrice = (int) itemManager.getItemPrice(ItemID.NATURE_RUNE);
 		return haPrice - gePrice - natureRunePrice;
 	}
 
