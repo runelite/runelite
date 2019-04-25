@@ -44,7 +44,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 		name = "Smelting",
 		description = "Show Smelting stats",
-		tags = {"overlay", "skilling"}
+		tags = {"overlay", "skilling"},
+		type = PluginType.UTILITY
 )
 @PluginDependency(XpTrackerPlugin.class)
 public class SmeltingPlugin extends Plugin
@@ -127,4 +128,3 @@ public class SmeltingPlugin extends Plugin
 		}
 	}
 }
-
