@@ -32,6 +32,7 @@ import net.runelite.client.config.ConfigItem;
 public interface StatusBarsConfig extends Config
 {
 	@ConfigItem(
+		position = 1,
 		keyName = "enableCounter",
 		name = "Show hitpoints & prayer counter",
 		description = "Shows current amount of hitpoints & prayer on the status bars"
@@ -42,6 +43,7 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 2,
 		keyName = "enableSkillIcon",
 		name = "Show hitpoints & prayer icons",
 		description = "Adds skill icons at the top of the bars."
@@ -52,6 +54,7 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
 		keyName = "enableRestorationBars",
 		name = "Show amount of hitpoints and prayer restored",
 		description = "Visually shows how much a food or prayer will heal/restore you on the bars."
@@ -59,5 +62,27 @@ public interface StatusBarsConfig extends Config
 	default boolean enableRestorationBars()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "toggleRestorationBars",
+		name = "Toggle to hide when not in combat",
+		description = "Visually hides the Status Bars when player is out of combat."
+	)
+	default boolean toggleRestorationBars()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "hideStatusBarDelay",
+		name = "Delay (seconds)",
+		description = "Number of seconds after combat to hide the status bars."
+	)
+	default int hideStatusBarDelay()
+	{
+		return 3;
 	}
 }
