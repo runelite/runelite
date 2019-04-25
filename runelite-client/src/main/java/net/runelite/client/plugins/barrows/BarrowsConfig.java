@@ -86,4 +86,15 @@ public interface BarrowsConfig extends Config
 	{
 		return Color.RED;
 	}
+
+	@ConfigItem(
+		keyName = "showPuzzleAnswer",
+		name = "Show Puzzle Answer",
+		description = "Configures if the puzzle answer should be shown.",
+		position = 5
+	)
+	default boolean showPuzzleAnswer()
+	{
+		return true;
+	}
 }
