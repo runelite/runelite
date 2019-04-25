@@ -49,9 +49,9 @@ public enum WorldType
 	 */
 	SKILL_TOTAL(1 << 7),
 	/**
-	 * High risk world type.
+	 * Pvp high risk world type.
 	 */
-	HIGH_RISK(1 << 10),
+	PVP_HIGH_RISK(1 << 10),
 	/**
 	 * Last man standing world type.
 	 */
@@ -84,6 +84,7 @@ public enum WorldType
 		DEADMAN,
 		DEADMAN_TOURNAMENT,
 		PVP,
+		PVP_HIGH_RISK,
 		SEASONAL_DEADMAN
 	);
 

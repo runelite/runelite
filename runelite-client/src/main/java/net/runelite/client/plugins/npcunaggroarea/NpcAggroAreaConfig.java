@@ -37,6 +37,7 @@ public interface NpcAggroAreaConfig extends Config
 	String CONFIG_CENTER2 = "center2";
 	String CONFIG_LOCATION = "location";
 	String CONFIG_DURATION = "duration";
+	String CONFIG_NOT_WORKING_OVERLAY = "overlay";
 
 	@ConfigItem(
 		keyName = "npcUnaggroAlwaysActive",
@@ -95,12 +96,12 @@ public interface NpcAggroAreaConfig extends Config
 
 	@ConfigItem(
 		keyName = "npcUnaggroShowNotWorkingOverlay",
-		name = "Hide overlay hint",
-		description = "Hide overlay hint if plugin is enabled in unsupported area",
+		name = "Show not working hint",
+		description = "Show hint if plugin is enabled in unsupported area",
 		position = 6
 	)
-	default boolean hideOverlayHint()
+	default boolean showNotWorkingOverlay()
 	{
-		return false;
+		return true;
 	}
 }
