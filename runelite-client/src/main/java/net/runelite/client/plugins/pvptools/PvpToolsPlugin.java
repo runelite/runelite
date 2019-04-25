@@ -166,25 +166,6 @@ public class PvpToolsPlugin extends Plugin
 		}
 	};
 
-
-	private final HotkeyListener attackOptionsHotKeyListener = new HotkeyListener(() -> config.attackOptionsHotkey())
-	{
-		long lastPress = 0;
-
-		@Override
-		public void keyPressed(KeyEvent e)
-		{
-			attackHotKeyPressed = true;
-		}
-
-		@Override
-		public void keyReleased(KeyEvent e)
-		{
-			attackHotKeyPressed = (System.currentTimeMillis() - lastPress) < 800;
-			lastPress = System.currentTimeMillis();
-		}
-	};
-
 	private int[] overheadCount = new int[]{0, 0, 0};
 
 	private Comparator<Item> itemPriceComparator = new Comparator<Item>()
@@ -196,6 +177,7 @@ public class PvpToolsPlugin extends Plugin
 				- itemManager.getItemPrice(itemManager.getItemComposition(o2.getId()).getPrice()));
 		}
 	};
+
 	private String mtarget;
 
 	public List getMissingMembers()
@@ -280,8 +262,6 @@ public class PvpToolsPlugin extends Plugin
 		clientToolbar.addNavigation(navButton);
 
 
-		keyManager.registerKeyListener(attackOptionsHotKeyListener);
-
 		if (config.missingPlayersEnabled())
 		{
 			panel.missingPlayers.setVisible(true);
@@ -298,7 +278,6 @@ public class PvpToolsPlugin extends Plugin
 	{
 		overlayManager.remove(pvpToolsOverlay);
 		keyManager.unregisterKeyListener(hotkeyListener);
-		keyManager.unregisterKeyListener(attackOptionsHotKeyListener);
 		clientToolbar.removeNavigation(navButton);
 	}
 
@@ -412,8 +391,6 @@ public class PvpToolsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
-		if (!attackHotKeyPressed)
-		{
 			if (config.attackOptionsFriend() || config.attackOptionsClan() || config.levelRangeAttackOptions())
 			{
 				if (client.getGameState() != GameState.LOGGED_IN)
@@ -450,9 +427,7 @@ public class PvpToolsPlugin extends Plugin
 					}
 				}
 			}
-		}
 	}
-
 
 	private void moveEntry(String mtarget)
 	{
