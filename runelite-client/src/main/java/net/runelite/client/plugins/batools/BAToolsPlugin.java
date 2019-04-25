@@ -211,7 +211,8 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 			counter.setCount(tickNum);
 			if (config.defTimer())
 			{
-				log.info("" + tickNum++);
+				//log.info("" + tickNum++);
+				tickNum++;
 			}
 		}
 
@@ -354,7 +355,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 			{
 				int spawnNumber = healers.size();
 				healers.put(npc, new Healer(npc, spawnNumber, currentWave));
-				log.info("spawn number: " + spawnNumber + " on wave " + currentWave);
+				//log.info("spawn number: " + spawnNumber + " on wave " + currentWave);
 			}
 		}
 	}
@@ -483,7 +484,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 		if (client.getWidget(WidgetInfo.BA_COLL_LISTEN_TEXT) != null && inGameBit == 1 && config.eggBoi() && event.getTarget().endsWith("egg") && shiftDown)
 		{
 			String[] currentCall = client.getWidget(WidgetInfo.BA_COLL_LISTEN_TEXT).getText().split(" ");
-			log.info("1 " + currentCall[0]);
+			//log.info("1 " + currentCall[0]);
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			MenuEntry correctEgg = null;
 			entries.clear();
