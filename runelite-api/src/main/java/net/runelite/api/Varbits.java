@@ -463,6 +463,20 @@ public enum Varbits
      * Spell cooldowns
      */
     VENGEANCE_COOLDOWN(2451),
+	
+	/**
+	* 0 = standard
+	* 1 = ancients
+	* 2 = lunars
+	* 3 = arrceus
+	**/
+    SPELLBOOK_ID(4070),
+	
+	/**
+	* 0 = no
+	* 1 = yes
+	**/
+	SPELLBOOK_HIDDEN(6718),
 
     /**
      * Amount of items in each bank tab
