@@ -40,6 +40,7 @@ import java.util.logging.Logger;
 
 import com.github.joonasvali.naturalmouse.api.MouseMotionFactory;
 import net.runelite.api.Client;
+import net.runelite.api.Point;
 import net.runelite.client.plugins.flexo.FlexoOverlay;
 import net.runelite.client.ui.ClientUI;
 import sun.awt.ComponentFactory;
@@ -120,6 +121,10 @@ public class Flexo extends java.awt.Robot{
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+  }
+
+  public synchronized void mouseMove(Point p) {
+    mouseMove((int)p.getX(), (int)p.getY());
   }
 
   @Override

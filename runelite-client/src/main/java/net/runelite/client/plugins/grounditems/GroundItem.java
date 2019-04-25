@@ -31,6 +31,7 @@ import net.runelite.api.coords.WorldPoint;
 
 @Data
 @Builder
+public
 class GroundItem
 {
 	private int id;
