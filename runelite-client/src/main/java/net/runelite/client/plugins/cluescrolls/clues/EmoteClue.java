@@ -170,7 +170,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		new EmoteClue("Swing a bullroarer at the top of the watchtower. Beware of double agents! Equip a dragon plateskirt, climbing boots and a dragon chainbody.", TOP_FLOOR_OF_THE_YANILLE_WATCHTOWER, new WorldPoint(2932, 4712, 0), BULL_ROARER, item(DRAGON_PLATESKIRT), item(CLIMBING_BOOTS), item(DRAGON_CHAINBODY_3140), item(ItemID.BULL_ROARER)),
 		new EmoteClue("Blow a raspberry at Gypsy Aris in her tent. Equip a gold ring and a gold necklace.", GYPSY_TENT_ENTRANCE, new WorldPoint(3203, 3424, 0), RASPBERRY, item(GOLD_RING), item(GOLD_NECKLACE)),
 		new EmoteClue("Bow to Brugsen Bursen at the Grand Exchange.", null, new WorldPoint(3164, 3477, 0), BOW),
-		new EmoteClue("Cheer at Iffie Nitter. Equip a chef's hat and a red cape.", FINE_CLOTHES_ENTRANCE, new WorldPoint(3205, 3416, 0), CHEER, item(CHEFS_HAT), item(RED_CAPE)),
+		new EmoteClue("Cheer at Iffie Nitter. Equip a chef hat and a red cape.", FINE_CLOTHES_ENTRANCE, new WorldPoint(3205, 3416, 0), CHEER, item(CHEFS_HAT), item(RED_CAPE)),
 		new EmoteClue("Clap at Bob's Brilliant Axes. Equip a bronze axe and leather boots.", BOB_AXES_ENTRANCE, new WorldPoint(3231, 3203, 0), CLAP, item(BRONZE_AXE), item(LEATHER_BOOTS)),
 		new EmoteClue("Panic at Al Kharid mine.", null, new WorldPoint(3300, 3314, 0), PANIC),
 		new EmoteClue("Spin at Flynn's Mace Shop.", null, new WorldPoint(2950, 3387, 0), SPIN));
