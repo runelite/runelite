@@ -47,7 +47,7 @@ public class MiscUtils
             if (y < 9920)
                 wildernessLevel = 0;
 
-        if (client.getWorldType().stream().anyMatch(worldType -> worldType == WorldType.PVP || worldType == WorldType.PVP_HIGH_RISK))
+        if (client.getWorldType().stream().anyMatch(worldType -> worldType == WorldType.PVP || worldType == WorldType.HIGH_RISK))
         {
             wildernessLevel += 15;
         }
