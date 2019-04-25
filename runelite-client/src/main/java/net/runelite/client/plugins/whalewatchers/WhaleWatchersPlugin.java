@@ -242,7 +242,7 @@ public class WhaleWatchersPlugin extends Plugin
 						enableOverlay = true;
 					}
 					if (client.getVar(Varbits.PRAYER_PROTECT_ITEM) == 1 || client.getVar(Varbits.IN_WILDERNESS) == 0 ||
-						client.getWorldType().contains(PVP_HIGH_RISK) || client.getWorld() == 365)
+						client.getWorldType().contains(HIGH_RISK) || client.getWorld() == 365)
 					{
 						enableOverlay = false;
 					}

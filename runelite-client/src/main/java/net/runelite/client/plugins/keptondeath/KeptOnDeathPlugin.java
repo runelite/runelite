@@ -178,7 +178,7 @@ public class KeptOnDeathPlugin extends Plugin
 	private boolean isInPvpWorld()
 	{
 		EnumSet<WorldType> world = client.getWorldType();
-		return world.contains(WorldType.PVP) || world.contains(WorldType.PVP_HIGH_RISK);
+		return world.contains(WorldType.PVP) || world.contains(WorldType.HIGH_RISK);
 	}
 
 	private boolean isInPvPSafeZone()

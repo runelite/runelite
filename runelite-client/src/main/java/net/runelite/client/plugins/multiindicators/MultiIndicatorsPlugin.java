@@ -211,7 +211,7 @@ public class MultiIndicatorsPlugin extends Plugin
         inDeadman = client.getWorldType().stream().anyMatch(x ->
                 x == WorldType.DEADMAN || x == WorldType.SEASONAL_DEADMAN);
         inPvp = client.getWorldType().stream().anyMatch(x ->
-                x == WorldType.PVP || x == WorldType.PVP_HIGH_RISK);
+                x == WorldType.PVP || x == WorldType.HIGH_RISK);
 
         Rectangle sceneRect = new Rectangle(
                 client.getBaseX() + 1, client.getBaseY() + 1,

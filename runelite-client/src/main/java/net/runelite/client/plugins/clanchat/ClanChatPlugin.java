@@ -91,19 +91,27 @@ public class ClanChatPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onClanMemberJoined(final ClanMemberJoined event) {
-		final ClanMember member = event.getMember();
-		if (member.getWorld() == this.client.getWorld()) {
-			final String memberName = Text.toJagexName(member.getUsername());
-			for (final Player player : this.client.getPlayers()) {
-				if (player != null && memberName.equals(Text.toJagexName(player.getName()))) {
-					ClanChatPlugin.clanMembers.add(player);
-					this.addClanCounter();
-					break;
-				}
-			}
-		}
+    @Subscribe
+    public void onClanMemberJoined(ClanMemberJoined event)
+    {
+        final ClanMember member = event.getMember();
+
+        if (member.getWorld() == client.getWorld())
+        {
+            final Player local = client.getLocalPlayer();
+            final String memberName = Text.toJagexName(member.getUsername());
+
+            for (final Player player : client.getPlayers())
+            {
+                if (player != null && player != local && memberName.equals(Text.toJagexName(player.getName())))
+                {
+                    clanMembers.add(player);
+                    addClanCounter();
+                    break;
+                }
+            }
+        }
+
 		if (this.clanJoinedTick == this.client.getTickCount()) {
 			return;
 		}
@@ -292,13 +300,18 @@ public class ClanChatPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onPlayerSpawned(final PlayerSpawned event) {
-		if (event.getPlayer().isClanMember()) {
-			ClanChatPlugin.clanMembers.add(event.getPlayer());
-			this.addClanCounter();
-		}
-	}
+    @Subscribe
+    public void onPlayerSpawned(PlayerSpawned event)
+    {
+        final Player local = client.getLocalPlayer();
+        final Player player = event.getPlayer();
+
+        if (player != local && player.isClanMember())
+        {
+            clanMembers.add(player);
+            addClanCounter();
+        }
+    }
 
 	@Subscribe
 	public void onPlayerDespawned(final PlayerDespawned event) {

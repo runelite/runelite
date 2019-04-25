@@ -104,4 +104,15 @@ public interface NpcAggroAreaConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "npcUnaggroShowNotWorkingOverlay",
+		name = "Hide overlay hint",
+		description = "Hide overlay hint if plugin is enabled in unsupported area",
+		position = 6
+	)
+	default boolean hideOverlayHint()
+	{
+		return false;
+	}
 }
