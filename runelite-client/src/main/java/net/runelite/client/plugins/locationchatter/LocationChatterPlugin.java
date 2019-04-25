@@ -25,7 +25,7 @@ import javax.inject.Inject;
 @PluginDescriptor(
 	name = "Location Chatter", 
 	tags = {"location", "exilent", "pklite", "spammer"},
-	type = PluginType.UTILITY
+	type = PluginType.PVP
 	)
 public class LocationChatterPlugin extends Plugin
 {
