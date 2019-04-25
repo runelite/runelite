@@ -282,11 +282,21 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+	
+	@ConfigItem(
+		keyName = "rockCake",
+		name = "Rock Cake Guzzle",
+		description = "Enables Left Click Guzzle to Rock Cake"
+	)
+	default boolean rockCake() 
+	{ 
+		return false;
+	}
 
 	@ConfigItem(
-			keyName = "swapRogueschests",
-			name = "Rogueschests",
-			description = "Swap Rogueschests from open to Search for traps"
+		keyName = "swapRogueschests",
+		name = "Rogueschests",
+		description = "Swap Rogueschests from open to Search for traps"
 	)
 	default boolean swapRogueschests()
 	{

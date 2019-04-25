@@ -44,13 +44,16 @@ import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Tarn's Lair",
 	description = "Mark tiles and clickboxes to help traverse the maze",
-	tags = {"agility", "maze", "minigame", "overlay"}
+	tags = {"agility", "maze", "minigame", "overlay"},
+	type = PluginType.UTILITY
 )
+
 @Slf4j
 public class TarnsLairPlugin extends Plugin
 {

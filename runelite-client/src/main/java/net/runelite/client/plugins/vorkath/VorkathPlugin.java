@@ -21,7 +21,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Vorkath",
+	name = "Vorkath Helper",
 	description = "Count vorkath attacks, and which phase is coming next",
 	tags = {"combat", "overlay", "pve", "pvm"},
 	type = PluginType.PVM

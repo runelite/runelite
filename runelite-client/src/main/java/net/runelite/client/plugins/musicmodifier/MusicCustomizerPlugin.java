@@ -37,11 +37,13 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 import javax.inject.Inject;
 import java.io.File;
+import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
     name = "Music Track Customizer",
     description = "Customize what track plays and how it sounds, with local files",
     tags = {"music", "sound"},
+    type = PluginType.UTILITY,
     enabledByDefault = false
 )
 
