@@ -135,6 +135,7 @@ public class WidgetID
 	public static final int MUSICTAB_GROUP_ID = 239;
 	public static final int BARROWS_PUZZLE_GROUP_ID = 25;
 	public static final int ITEMS_KEPT_ON_DEATH_GROUP_ID = 4;
+	public static final int FISHING_TRAWLER_GROUP_ID = 366;
 
 	static class WorldMap
 	{

@@ -303,7 +303,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the drawers, upstairs in the bank to the East of Varrock.", DRAWERS_7194, new WorldPoint(3250, 3420, 1), "Search the drawers upstairs in Varrock east bank."),
 		new CrypticClue("Speak to Hazelmere.", "Hazelmere", new WorldPoint(2677, 3088, 1), "Located upstairs in the house to the north of fairy ring CLS. Answer: 6859"),
 		new CrypticClue("The effects of this fire are magnified.", new WorldPoint(1179, 3626, 0), "Dig by the fire beside Ket'sal K'uk in the westernmost part of the Kebos Swamp. "),
-		new CrypticClue("Always walking around the castle grounds and somehow everyone's age.", "Hans", new WorldPoint(3221, 3218, 0), "Talk to Hans walking around Lumbridge Castle."),
+		new CrypticClue("Always walking around the castle grounds and somehow knows everyone's age.", "Hans", new WorldPoint(3221, 3218, 0), "Talk to Hans walking around Lumbridge Castle."),
 		new CrypticClue("In the place Duke Horacio calls home, talk to a man with a hat dropped by goblins.", "Cook", new WorldPoint(3208, 3213, 0), "Talk to the Cook in Lumbridge Castle."),
 		new CrypticClue("In a village of barbarians, I am the one who guards the village from up high.", "Hunding", new WorldPoint(3097, 3432, 2), "Talk to Hunding atop the tower on the east side of Barbarian Village."),
 		new CrypticClue("Talk to Charlie the Tramp in Varrock.", "Charlie the Tramp", new WorldPoint(3209, 3390, 0), "Talk to Charlie the Tramp by the southern entrance to Varrock. He will give you a task."),
