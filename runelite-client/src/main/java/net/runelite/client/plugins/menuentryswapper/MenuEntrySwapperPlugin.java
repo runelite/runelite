@@ -450,30 +450,32 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("quick-travel", option, target, true);
 			}
 		}
+		
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
 			swap("pay-toll(2-ecto)", option, target, true);
 		}
+		
 		else if (config.swapTravel() && option.equals("open") && target.equals("gate"))
 		{
 			swap("pay-toll(10gp)", option, target, true);
 		}
+		
 		else if (config.swapTravel() && option.equals("inspect") && target.equals("trapdoor"))
 		{
 			swap("travel", option, target, true);
 		}
-		else if (config.swapTravel() && option.equals("board") && target.equals("travel cart"))
-		{
-			swap("pay-fare", option, target, true);
-		}
+		
 		else if (config.swapHarpoon() && option.equals("cage"))
 		{
 			swap("harpoon", option, target, true);
 		}
+		
 		else if (config.swapHarpoon() && (option.equals("big net") || option.equals("net")))
 		{
 			swap("harpoon", option, target, true);
 		}
+		
 		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter"))
 		{
 			switch (config.swapHomePortal())
@@ -501,57 +503,76 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("configure", option, target, false);
 			}
 		}
+		
 		else if (config.swapFairyRing() == FairyRingMode.ZANARIS && option.equals("tree"))
 		{
 			swap("zanaris", option, target, false);
 		}
+		
 		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
 		{
 			swap("reset", option, target, true);
 		}
+		
 		else if (config.swapBoxTrap() && option.equals("take"))
 		{
 			swap("lay", option, target, true);
 		}
+		
 		else if (config.swapChase() && option.equals("pick-up"))
 		{
 			swap("chase", option, target, true);
 		}
+		
 		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
 		{
 			swap("empty", option, target, true);
 		}
+		
 		else if (config.swapQuick() && option.equals("ring"))
 		{
 			swap("quick-start", option, target, true);
 		}
+		
 		else if (config.swapQuick() && option.equals("pass"))
 		{
 			swap("quick-pass", option, target, true);
 			swap("quick pass", option, target, true);
 		}
+		
 		else if (config.swapQuick() && option.equals("open"))
 		{
 			swap("quick-open", option, target, true);
 		}
+		
 		else if (config.swapAdmire() && option.equals("admire"))
 		{
 			swap("teleport", option, target, true);
 			swap("spellbook", option, target, true);
 			swap("perks", option, target, true);
 		}
+		
 		else if (config.swapPrivate() && option.equals("shared"))
 		{
 			swap("private", option, target, true);
 		}
+		
 		else if (config.swapPick() && option.equals("pick"))
 		{
 			swap("pick-lots", option, target, true);
 		}
+		
 		else if (config.swapRogueschests() && target.contains("chest"))
 		{
 			swap("search for traps", option, target, true);
 		}
+		
+		else if (config.rockCake() && option.equals("eat"))
+		{
+			swap("guzzle", option, target, true); 
+		}
+		
+		
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(eventId);
@@ -561,6 +582,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap("use", option, target, true);
 			}
 		}
+		
 		// Put all item-related swapping after shift-click
 		else if (config.swapTeleportItem() && option.equals("wear"))
 		{
