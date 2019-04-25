@@ -100,19 +100,7 @@ public class ProfilesPlugin extends Plugin
 	{
 		clientToolbar.removeNavigation(navButton);
 	}
-
-	@Subscribe
-	void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState().equals(GameState.LOGIN_SCREEN) && config.switchPanel())
-		{
-			if (!navButton.isSelected())
-			{
-				navButton.getOnSelect().run();
-			}
-		}
-	}
-
+	
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event) throws Exception
 	{
