@@ -176,6 +176,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			{
 				messageQueue.removeIf(e -> e.getType() == ChatMessageType.PRIVATECHAT ||
 					e.getType() == ChatMessageType.PRIVATECHATOUT || e.getType() == ChatMessageType.MODPRIVATECHAT);
+				friends.clear();
 			}
 			else
 			{
