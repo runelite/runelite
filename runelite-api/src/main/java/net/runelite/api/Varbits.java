@@ -470,10 +470,13 @@ public enum Varbits
 	* 2 = lunars
 	* 3 = arrceus
 	**/
-	SPELLBOOK_ID(0),
-	SPELLBOOK_ID(1),
-	SPELLBOOK_ID(2),
-	SPELLBOOK_ID(3),
+    SPELLBOOK_ID(4070),
+	
+	/**
+	* 0 = no
+	* 1 = yes
+	**/
+	SPELLBOOK_HIDDEN(6718),
 
     /**
      * Amount of items in each bank tab
