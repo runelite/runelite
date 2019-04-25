@@ -104,7 +104,7 @@ class SlayerOverlay extends WidgetItemOverlay
 			return;
 		}
 
-		int amount = plugin.getAmount();
+		int amount = plugin.getCurrentTask().getAmount();
 		if (amount <= 0)
 		{
 			return;
