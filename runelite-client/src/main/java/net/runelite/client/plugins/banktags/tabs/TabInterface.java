@@ -642,6 +642,15 @@ public class TabInterface
 		Widget draggedOn = client.getDraggedOnWidget();
 		Widget draggedWidget = client.getDraggedWidget();
 
+		// round-about way to prevent drag reordering when in a tag tab, now that it looks like a normal tab
+		// returning early from drag release and nulling out the drag release listener have no effect,
+		// probably a better way to do this though
+		if (draggedWidget.getId() == WidgetInfo.BANK_ITEM_CONTAINER.getId() && isActive()
+			&& config.removeSeparators())
+		{
+			client.setDraggedOnWidget(null);
+		}
+
 		if (!isDragging || draggedOn == null)
 		{
 			return;
