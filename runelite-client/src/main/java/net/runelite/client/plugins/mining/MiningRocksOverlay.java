@@ -24,42 +24,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.motherlode;
+package net.runelite.client.plugins.mining;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.image.BufferedImage;
-import javax.inject.Inject;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
-import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.Perspective;
-import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.Skill;
-import net.runelite.api.WallObject;
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.plugins.mining.MiningConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-class MotherlodeRocksOverlay extends Overlay
+import javax.inject.Inject;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+class MiningRocksOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
 
 	private final Client client;
-	private final MotherlodePlugin plugin;
-	private final MotherlodeConfig config;
+	private final MiningPlugin plugin;
+	private final MiningConfig config;
 
 	private final BufferedImage miningIcon;
 
 	@Inject
-	MotherlodeRocksOverlay(Client client, MotherlodePlugin plugin, MotherlodeConfig config, SkillIconManager iconManager)
+	MiningRocksOverlay(Client client, MiningPlugin plugin, MiningConfig config, SkillIconManager iconManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -73,11 +65,6 @@ class MotherlodeRocksOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if ((!config.showVeins() && !config.showRockFalls()) || !plugin.isInMlm())
-		{
-			return null;
-		}
-
 		Player local = client.getLocalPlayer();
 
 		renderTiles(graphics, local);
@@ -89,54 +76,35 @@ class MotherlodeRocksOverlay extends Overlay
 	{
 		LocalPoint localLocation = local.getLocalLocation();
 
-		if (config.showVeins())
-		{
-			for (WallObject vein : plugin.getVeins())
-			{
-				LocalPoint location = vein.getLocalLocation();
-				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
-				{
-					// Only draw veins on the same level
-					if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(vein.getLocalLocation()))
-					{
-						renderVein(graphics, vein);
-					}
-				}
-			}
-		}
+		if (config.showMiningRocks()) {
+			for (GameObject rock : plugin.getRocks()) {
 
-		if (config.showRockFalls())
-		{
-			for (GameObject rock : plugin.getRocks())
-			{
 				LocalPoint location = rock.getLocalLocation();
-				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
-				{
-					plugin.checkMining();
-					renderRock(graphics, rock);
+				if (localLocation.distanceTo(location) <= MAX_DISTANCE) {
+					renderMiningRock(graphics, rock);
 				}
 			}
 		}
 
 	}
 
-	private void renderVein(Graphics2D graphics, WallObject vein)
+	private void renderMiningRock(Graphics2D graphics, GameObject rock)
 	{
-		Point canvasLoc = Perspective.getCanvasImageLocation(client, vein.getLocalLocation(), miningIcon, 150);
-
+		Point canvasLoc = Perspective.getCanvasImageLocation(client, rock.getLocalLocation(), miningIcon, 0);
 		if (canvasLoc != null)
 		{
 			graphics.drawImage(miningIcon, canvasLoc.getX(), canvasLoc.getY(), null);
 		}
 	}
 
-	private void renderRock(Graphics2D graphics, GameObject rock)
-	{
-		Polygon poly = Perspective.getCanvasTilePoly(client, rock.getLocalLocation());
+//	private void renderMiningRockSquare(Graphics2D graphics, GameObject rock)
+//	{
+//		Polygon poly = Perspective.getCanvasTilePoly(client, rock.getLocalLocation());
+//
+//		if (poly != null)
+//		{
+//			OverlayUtil.renderPolygon(graphics, poly, Color.red);
+//		}
+//	}
 
-		if (poly != null)
-		{
-			OverlayUtil.renderPolygon(graphics, poly, Color.red);
-		}
-	}
 }

@@ -101,7 +101,7 @@ public class Scheduler
 		}
 		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
 		{
-			log.warn("error invoking scheduled task", ex);
+			//log.warn("error invoking scheduled task", ex);
 		}
 		catch (Exception ex)
 		{

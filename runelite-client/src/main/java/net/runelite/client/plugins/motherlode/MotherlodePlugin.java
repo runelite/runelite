@@ -259,6 +259,7 @@ public class MotherlodePlugin extends Plugin
 			return;
 		}
 
+
 		depositsLeft = calculateDepositsLeft();
 
 		Instant lastPayDirtMined = session.getLastPayDirtMined();
