@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Cameron <https://github.com/noremac201>
+ * Copyright (c) 2018, https://runelitepl.us
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

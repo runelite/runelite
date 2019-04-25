@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, runeliteplus
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.locationchatter;
+package net.runelite.client.plugins.prayeralert;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Keybind;
+import com.google.inject.Provides;
+import javax.inject.Inject;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.PluginType;
+import net.runelite.client.ui.overlay.OverlayManager;
 
-@ConfigGroup("locationchatter")
-public interface LocationChatterConfig extends Config
+@PluginDescriptor(
+        name = "Prayer Alerter",
+        description = "Alert the player when prayer is low",
+        tags = {"prayer", "overlay"},
+        type = PluginType.UTILITY,
+        enabledByDefault = false
+)
+public class PrayerAlertPlugin extends Plugin
 {
-	@ConfigItem(keyName = "keybind", name = "Send to CC", description = "Configure button to send current location to CC")
-	default Keybind keybind()
-	{
-		return Keybind.NOT_SET;
-	}
+    @Inject
+    private OverlayManager overlayManager;
+
+    @Inject
+    private PrayerAlertOverlay overlay;
+
+    @Inject
+    private PrayerAlertConfig config;
+
+    @Provides
+    PrayerAlertConfig provideConfig(ConfigManager configManager)
+    {
+        return configManager.getConfig(PrayerAlertConfig.class);
+    }
+
+    @Override
+    protected void startUp() throws Exception
+    {
+        overlayManager.add(overlay);
+    }
+
+    @Override
+    protected void shutDown() throws Exception
+    {
+        overlayManager.remove(overlay);
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, runeliteplus
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.locationchatter;
+package net.runelite.client.plugins.prayeralert;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Keybind;
 
-@ConfigGroup("locationchatter")
-public interface LocationChatterConfig extends Config
+@ConfigGroup("prayeralert")
+public interface PrayerAlertConfig extends Config
 {
-	@ConfigItem(keyName = "keybind", name = "Send to CC", description = "Configure button to send current location to CC")
-	default Keybind keybind()
-	{
-		return Keybind.NOT_SET;
-	}
+    @ConfigItem(
+            position = 1,
+            keyName = "alwaysShowAlert",
+            name = "Always show prayer alert",
+            description = "Show the alert, even without prayer restore in inventory"
+    )
+    default boolean alwaysShowAlert()
+    {
+        return false;
+    }
+    @ConfigItem(
+            position = 2,
+            keyName = "oldRenderMode",
+            name = "Render using old method",
+            description = "Render the prayer alert using the old method"
+    )
+    default boolean oldRenderMode()
+    {
+        return false;
+    }
 }
