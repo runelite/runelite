@@ -602,19 +602,28 @@ public class ClientUI
 		{
 			if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH)
 			{
-				frame.setExtendedState(JFrame.ICONIFIED);
-				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				SwingUtilities.invokeLater(() ->
+				{
+					frame.setExtendedState(JFrame.ICONIFIED);
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				});
 			}
 			else
 			{
-				// If the client is snapped to the edges of the screen, setExtendedState(JFrame.NORMAL)
-				// will undo the snap-to-edge so setSize() is required to prevent the client from
-				// changing size. Unfortunately Windows does not support JFrame.MAXIMIZED_VERT
-				int width = frame.getWidth();
-				int height = frame.getHeight();
-				frame.setExtendedState(JFrame.ICONIFIED);
-				frame.setExtendedState(JFrame.NORMAL);
-				frame.setSize(width, height);
+				SwingUtilities.invokeLater(() ->
+				{
+					// If the client is snapped to the top and bottom edges of the screen, setExtendedState will
+					// will reset it so setSize and setLocation ensure that the client doesn't move or resize.
+					// It is done this way because Windows does not support JFrame.MAXIMIZED_VERT
+					int x = frame.getLocation().x;
+					int y = frame.getLocation().y;
+					int width = frame.getWidth();
+					int height = frame.getHeight();
+					frame.setExtendedState(JFrame.ICONIFIED);
+					frame.setExtendedState(JFrame.NORMAL);
+					frame.setLocation(x, y);
+					frame.setSize(width, height);
+				});
 			}
 		}
 
