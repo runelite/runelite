@@ -94,6 +94,8 @@ public class InterfaceStylesPlugin extends Plugin
 			removeGameframe();
 			healthBarOverride = null;
 			client.setHealthBarOverride(null);
+			NodeCache heathBarCache = client.getHealthBarCache();
+			heathBarCache.reset(); // invalidate healthbar cache so padding resets
 		});
 	}
 
