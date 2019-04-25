@@ -730,7 +730,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	private boolean instanceRegionUnlocked() {
-		if (!RegionLocker.renderLockedRegions) return true;
 		for (int i = 0; i < client.getMapRegions().length; i++) {
 			int region = client.getMapRegions()[i];
 			if (RegionLocker.hasRegion(region)) return true;
