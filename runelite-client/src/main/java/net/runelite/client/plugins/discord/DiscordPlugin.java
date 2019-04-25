@@ -406,7 +406,10 @@ public class DiscordPlugin extends Plugin
 		final EnumSet<WorldType> worldType = client.getWorldType();
 
 		// Do not show location in PVP activities
-		if (WorldType.isPvpWorld(worldType))
+		if (worldType.contains(WorldType.SEASONAL_DEADMAN) ||
+			worldType.contains(WorldType.DEADMAN) ||
+			worldType.contains(WorldType.PVP) ||
+			worldType.contains(WorldType.PVP_HIGH_RISK))
 		{
 			return false;
 		}
