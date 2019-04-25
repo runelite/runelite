@@ -23,6 +23,7 @@ import net.runelite.client.util.WildernessLocation;
 		name = "Wild Locations",
 		description = "Indicates the players current location in the wild",
 		tags = {"Wildy", "Wilderness Location", "location", "loc", "pvp", "pklite"}
+		type = PluginType.PVP
 )
 public class WildernessLocationsPlugin extends Plugin
 {
