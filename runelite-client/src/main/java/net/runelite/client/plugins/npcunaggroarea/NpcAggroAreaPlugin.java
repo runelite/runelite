@@ -128,7 +128,6 @@ public class NpcAggroAreaPlugin extends Plugin
 	private WorldPoint previousUnknownCenter;
 	private boolean loggingIn;
 	private List<String> npcNamePatterns;
-	private boolean notWorkingOverlayShown = false;
 
 	@Provides
 	NpcAggroAreaConfig provideConfig(ConfigManager configManager)
@@ -140,12 +139,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		if (config.showNotWorkingOverlay())
-		{
 			overlayManager.add(notWorkingOverlay);
-			notWorkingOverlayShown = true;
-		}
-
 		npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
 		recheckActive();
 	}
@@ -155,11 +149,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	{
 		removeTimer();
 		overlayManager.remove(overlay);
-		if (notWorkingOverlayShown)
-		{
 			overlayManager.remove(notWorkingOverlay);
-		}
-
 		Arrays.fill(safeCenters, null);
 		lastPlayerLocation = null;
 		currentTimer = null;
@@ -416,7 +406,6 @@ public class NpcAggroAreaPlugin extends Plugin
 		configManager.unsetConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER2);
 		configManager.unsetConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_LOCATION);
 		configManager.unsetConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_DURATION);
-		configManager.unsetConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_NOT_WORKING_OVERLAY);
 	}
 
 	private void saveConfig()
