@@ -1566,4 +1566,7 @@ public final class SpriteID
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_2 = 1626;
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS_UNUSED = 1708;
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS = 1711;
+	public static final int BIG_ASS_GUTHIX_SPELL = 1774;
+	public static final int BIG_SUPERHEAT = 1800;
+	public static final int BIG_SPEC_TRANSFER = 1959;
 }
