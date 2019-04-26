@@ -5,6 +5,9 @@ import javassist.CtClass;
 import javassist.CtMember;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
+import javassist.bytecode.AnnotationsAttribute;
+import javassist.bytecode.ClassFile;
+import javassist.bytecode.ConstPool;
 import javassist.bytecode.StackMapTable;
 import net.runelite.client.rs.bytecode.ByteCodePatcher;
 
@@ -25,7 +28,7 @@ public class ClientTransform implements Transform {
 			transformGetMenuEntries();
 			transformSetMenuEntries();
 			transformOnMenuOptionsChanged();
-
+            transformGetProjectile();
 			ByteCodePatcher.modifiedClasses.add(ct);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -44,6 +47,37 @@ public class ClientTransform implements Transform {
 		}
 	}
 
+    public void transformGetProjectile() {
+
+        CtMethod getProjectiles;
+        try {
+            CtMethod protectedAnimation = ct.getDeclaredMethod("1protect$getProjectilesDeque");
+            ct.removeMethod(protectedAnimation);
+            protectedAnimation.setName("getProjectilesDeque");
+            ct.addMethod(protectedAnimation);
+            getProjectiles = ct.getDeclaredMethod("getProjectiles");
+            ct.removeMethod(getProjectiles);
+            getProjectiles = CtNewMethod.make("public java.util.List getProjectiles() { " +
+                    "                               java.util.ArrayList localArrayList = new java.util.ArrayList();" +
+                    "                               net.runelite.rs.api.RSDeque localRSDeque = getProjectilesDeque();" +
+                    "                               net.runelite.rs.api.RSNode localRSNode = localRSDeque.getHead();" +
+                    "                               for (net.runelite.api.Node localNode = localRSNode.getNext(); localNode != localRSNode; localNode = localNode.getNext()) {" +
+                    "                                   net.runelite.api.Projectile localProjectile = (net.runelite.api.Projectile)localNode;" +
+                    "                                   localArrayList.add(localProjectile);  }" +
+                    "                               return localArrayList; }", ct);
+
+            ct.addMethod(getProjectiles);
+            ClassFile classFile = ct.getClassFile();
+            ConstPool constPool = classFile.getConstPool();
+            AnnotationsAttribute attr = new AnnotationsAttribute(constPool, AnnotationsAttribute.visibleTag);
+            javassist.bytecode.annotation.Annotation annotation = new javassist.bytecode.annotation.Annotation("Override", constPool);
+            attr.setAnnotation(annotation);
+            getProjectiles.getMethodInfo().addAttribute(attr);
+            System.out.println("Added override annotation for getprojectiles");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 	public void transformProtectedGetMenuTargets() {
 		CtMethod protectedGetMenuTargets;
 		try {
