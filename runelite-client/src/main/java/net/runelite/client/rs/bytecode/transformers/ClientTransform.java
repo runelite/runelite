@@ -30,6 +30,8 @@ public class ClientTransform implements Transform {
 			transformOnMenuOptionsChanged();
             transformGetProjectiles();
             transformGetCollisionMaps();
+            transformDraw2010Menu();
+
 			ByteCodePatcher.modifiedClasses.add(ct);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -295,6 +297,62 @@ public class ClientTransform implements Transform {
 							"							}"
 														, ct);
 			ct.addMethod(onMenuOptionsChanged);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void transformDraw2010Menu() {
+		CtMethod draw2010Menu;
+		try {
+			draw2010Menu = ct.getDeclaredMethod("draw2010Menu");
+			ct.removeMethod(draw2010Menu);
+			draw2010Menu = CtNewMethod.make(
+						"    public void draw2010Menu() {" +
+							"        int n2 = this.getMenuX();" +
+							"        int n3 = this.getMenuY();" +
+							"        int n4 = this.getMenuWidth();" +
+							"        int n5 = this.getMenuHeight();" +
+							"        this.RasterizerDrawHorizontalLine(n2 + 2, n3, n4 - 4, 7170651);" +
+							"        this.RasterizerDrawHorizontalLine(n2 + 2, n3 + n5 - 1, n4 - 4, 7170651);" +
+							"        this.RasterizerDrawVerticalLine(n2, n3 + 2, n5 - 4, 7170651);" +
+							"        this.RasterizerDrawVerticalLine(n2 + n4 - 1, n3 + 2, n5 - 4, 7170651);" +
+							"        this.RasterizerDrawRectangle(n2 + 1, n3 + 5, n4 - 2, n5 - 6, 2827810);" +
+							"        this.RasterizerDrawHorizontalLine(n2 + 1, n3 + 17, n4 - 2, 2827810);" +
+							"        this.RasterizerDrawCircle(n2 + 2, n3 + n5 - 3, 0, 2827810);" +
+							"        this.RasterizerDrawCircle(n2 + n4 - 3, n3 + n5 - 3, 0, 2827810);" +
+							"        this.RasterizerDrawGradient(n2 + 2, n3 + 1, n4 - 4, 16, 3288610, 592388);" +
+							"        this.RasterizerFillRectangle(n2 + 1, n3 + 1, 2, 4, 2827810);" +
+							"        this.RasterizerFillRectangle(n2 + n4 - 3, n3 + 1, 2, 4, 2827810);" +
+							"        this.RasterizerDrawHorizontalLine(n2 + 2, n3 + 18, n4 - 4, 5392957);" +
+							"        this.RasterizerDrawHorizontalLine(n2 + 3, n3 + n5 - 3, n4 - 6, 5392957);" +
+							"        this.RasterizerDrawVerticalLine(n2 + 2, n3 + 18, n5 - 21, 5392957);" +
+							"        this.RasterizerDrawVerticalLine(n2 + n4 - 3, n3 + 18, n5 - 21, 5392957);" +
+							"        this.RasterizerFillRectangle(n2 + 3, n3 + 19, n4 - 6, n5 - 22, 2828060);" +
+							"        this.RasterizerDrawCircle(n2 + 1, n3 + 1, 0, 7170651);" +
+							"        this.RasterizerDrawCircle(n2 + n4 - 2, n3 + 1, 0, 7170651);" +
+							"        this.RasterizerDrawCircle(n2 + 1, n3 + n5 - 2, 0, 7170651);" +
+							"        this.RasterizerDrawCircle(n2 + n4 - 2, n3 + n5 - 2, 0, 7170651);" +
+							"        net.runelite.rs.api.RSFont rSFont = this.getFontBold12();" +
+							"        rSFont.drawTextLeftAligned(\"Choose Option\", n2 + 3, n3 + 14, 13023381, -1);" +
+							"        int n6 = this.getMouseX();" +
+							"        int n7 = this.getMouseY();" +
+							"        int n8 = this.getMenuOptionCount();" +
+							"        String[] arrstring = this.getMenuTargets();" +
+							"        String[] arrstring2 = this.getMenuOptions();" +
+							"        for (int i = 0; i < n8; ++i) {" +
+							"            int n9 = n3 + (n8 - 1 - i) * 15 + 31;" +
+							"            String string = arrstring2[i];" +
+							"            if (!arrstring[i].isEmpty()) {" +
+							"                string = string + \" \" + arrstring[i];" +
+							"            }" +
+							"            rSFont.drawTextLeftAligned(string, n2 + 3, n9, 13023381, -1);" +
+							"            if (n6 <= n2 || n6 >= n4 + n2 || n7 <= n9 - 13 || n7 >= n9 + 3) continue;" +
+							"            this.RasterizerFillRectangleAlpha(n2 + 3, n9 - 12, n4 - 6, 15, 16777215, 80);" +
+							"        }" +
+							"    }"
+					, ct);
+			ct.addMethod(draw2010Menu);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
