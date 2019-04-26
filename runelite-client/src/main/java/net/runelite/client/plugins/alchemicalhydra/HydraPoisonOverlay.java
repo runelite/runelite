@@ -134,8 +134,8 @@ class HydraPoisonOverlay extends Overlay
 
 		Color color = new Color(255, 0, 0, 100); // like
 
-		if (hydra.getNpc().getWorldArea().intersectsWith(new WorldArea(wp.getX() - 1, wp.getY() - 1, 3, 3, wp.getPlane()))) 	// coords
-		{																														// WHICH FUCKING RETARD DID X, Y, dX, dY, Z???? IT'S XYZdXdY REEEEEEEEEE
+		if (hydra.getNpc().getWorldArea().intersectsWith(new WorldArea(wp, 1, 1))) 	// coords
+		{																							// WHICH FUCKING RETARD DID X, Y, dX, dY, Z???? IT'S XYZdXdY REEEEEEEEEE
 			color = new Color(0, 255, 0, 100);
 		}
 
