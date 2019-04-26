@@ -117,7 +117,7 @@ public interface WorldHopperConfig extends Config
 			keyName = "showHistory",
 			name = "Show history tab",
 			description = "Shows the history tab",
-			position = 5
+			position = 7
 	)
 	default boolean showHistory()
 	{
