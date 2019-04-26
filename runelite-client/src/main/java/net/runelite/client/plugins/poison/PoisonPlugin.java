@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018 Hydrox6 <ikada@protonmail.ch>
+ * Copyright (c) 2019, Lucas <https://github.com/Lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,9 +61,9 @@ import net.runelite.client.util.ImageUtil;
 )
 public class PoisonPlugin extends Plugin
 {
-	static final int POISON_TICK_MILLIS = 18200;
+	private static final int POISON_TICK_MILLIS = 18000;
 	private static final int VENOM_THRESHOLD = 1000000;
-	private static final int VENOM_MAXIUMUM_DAMAGE = 20;
+	private static final int VENOM_MAXIMUM_DAMAGE = 20;
 
 	private static final BufferedImage HEART_DISEASE;
 	private static final BufferedImage HEART_POISON;
@@ -100,11 +101,11 @@ public class PoisonPlugin extends Plugin
 	private int lastDamage;
 	private boolean envenomed;
 	private PoisonInfobox infobox;
-	private Instant poisonNaturalCure;
 	private Instant nextPoisonTick;
-	private int lastValue = -1;
-	private int lastDiseaseValue = -1;
+	private int lastValue = 0;
+	private int lastDiseaseValue = 0;
 	private BufferedImage heart;
+	private int nextTickCount;
 
 	@Provides
 	PoisonConfig getConfig(ConfigManager configManager)
@@ -136,10 +137,9 @@ public class PoisonPlugin extends Plugin
 
 		envenomed = false;
 		lastDamage = 0;
-		poisonNaturalCure = null;
 		nextPoisonTick = null;
-		lastValue = -1;
-		lastDiseaseValue = -1;
+		lastValue = 0;
+		lastDiseaseValue = 0;
 
 		clientThread.invoke(this::resetHealthIcon);
 	}
@@ -150,22 +150,17 @@ public class PoisonPlugin extends Plugin
 		final int poisonValue = client.getVar(VarPlayer.POISON);
 		if (poisonValue != lastValue)
 		{
-			lastValue = poisonValue;
-			nextPoisonTick = Instant.now().plus(Duration.of(POISON_TICK_MILLIS, ChronoUnit.MILLIS));
-
-			final int damage = nextDamage(poisonValue);
-			this.lastDamage = damage;
-
 			envenomed = poisonValue >= VENOM_THRESHOLD;
 
-			if (poisonValue < VENOM_THRESHOLD)
+			if (nextTickCount - client.getTickCount() <= 30 || lastValue == 0)
 			{
-				poisonNaturalCure = Instant.now().plus(Duration.of(POISON_TICK_MILLIS * poisonValue, ChronoUnit.MILLIS));
+				nextPoisonTick = Instant.now().plus(Duration.of(POISON_TICK_MILLIS, ChronoUnit.MILLIS));
+				nextTickCount = client.getTickCount() + 30;
 			}
-			else
-			{
-				poisonNaturalCure = null;
-			}
+
+			lastValue = poisonValue;
+			final int damage = nextDamage(poisonValue);
+			this.lastDamage = damage;
 
 			if (config.showInfoboxes())
 			{
@@ -181,12 +176,12 @@ public class PoisonPlugin extends Plugin
 
 					if (image != null)
 					{
-						infobox = new PoisonInfobox(image, this);
+						int duration = 600 * (nextTickCount - client.getTickCount());
+						infobox = new PoisonInfobox(duration, image, this);
 						infoBoxManager.addInfoBox(infobox);
 					}
 				}
 			}
-
 			checkHealthIcon();
 		}
 
@@ -233,9 +228,9 @@ public class PoisonPlugin extends Plugin
 			poisonValue -= VENOM_THRESHOLD - 3;
 			damage = poisonValue * 2;
 			//Venom Damage caps at 20, but the VarPlayer keeps increasing
-			if (damage > VENOM_MAXIUMUM_DAMAGE)
+			if (damage > VENOM_MAXIMUM_DAMAGE)
 			{
-				damage = VENOM_MAXIUMUM_DAMAGE;
+				damage = VENOM_MAXIMUM_DAMAGE;
 			}
 		}
 		else
@@ -277,9 +272,13 @@ public class PoisonPlugin extends Plugin
 		return splat;
 	}
 
-	private static String getFormattedTime(Instant endTime)
+	private static String getFormattedTime(Duration timeLeft)
 	{
-		final Duration timeLeft = Duration.between(Instant.now(), endTime);
+		if (timeLeft.isNegative())
+		{
+			return "Now!";
+		}
+
 		int seconds = (int) (timeLeft.toMillis() / 1000L);
 		int minutes = seconds / 60;
 		int secs = seconds % 60;
@@ -289,9 +288,20 @@ public class PoisonPlugin extends Plugin
 
 	String createTooltip()
 	{
+		Duration timeLeft;
+		if (nextPoisonTick.isBefore(Instant.now()) && !envenomed)
+		{
+			timeLeft = Duration.of(POISON_TICK_MILLIS * (lastValue - 1), ChronoUnit.MILLIS);
+		}
+		else
+		{
+			timeLeft = Duration.between(Instant.now(), nextPoisonTick).plusMillis(POISON_TICK_MILLIS * (lastValue - 1));
+		}
+
 		String line1 = MessageFormat.format("Next {0} damage: {1}</br>Time until damage: {2}",
-			envenomed ? "venom" : "poison", ColorUtil.wrapWithColorTag(String.valueOf(lastDamage), Color.RED), getFormattedTime(nextPoisonTick));
-		String line2 = envenomed ? "" : MessageFormat.format("</br>Time until cure: {0}", getFormattedTime(poisonNaturalCure));
+			envenomed ? "venom" : "poison",	ColorUtil.wrapWithColorTag(String.valueOf(lastDamage), Color.RED),
+				getFormattedTime(Duration.between(Instant.now(), nextPoisonTick)));
+		String line2 = envenomed ? "" : MessageFormat.format("</br>Time until cure: {0}", getFormattedTime(timeLeft));
 
 		return line1 + line2;
 	}

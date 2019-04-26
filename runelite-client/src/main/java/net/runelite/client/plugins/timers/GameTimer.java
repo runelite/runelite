@@ -2,6 +2,7 @@
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2019, Lucas <https://github.com/Lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,10 +49,7 @@ enum GameTimer
 	HALFTB(SpriteID.SPELL_TELE_BLOCK, GameTimerImageType.SPRITE, "Half Teleblock", 150, ChronoUnit.SECONDS, true),
 	DMM_FULLTB(SpriteID.SPELL_TELE_BLOCK, GameTimerImageType.SPRITE, "Deadman Mode Full Teleblock", 150, ChronoUnit.SECONDS, true),
 	DMM_HALFTB(SpriteID.SPELL_TELE_BLOCK, GameTimerImageType.SPRITE, "Deadman Mode Half Teleblock", 75, ChronoUnit.SECONDS, true),
-	ANTIVENOMPLUS(ItemID.ANTIVENOM4_12913, GameTimerImageType.ITEM, "Anti-venom+", 3, ChronoUnit.MINUTES, true),
-	ANTIVENOMPLUS_ANTIPOSION(ItemID.SUPERANTIPOISON4, GameTimerImageType.ITEM, "Anti-venom+ Antipoison", 15, ChronoUnit.MINUTES, 3),
 	SUPERANTIFIRE(ItemID.SUPER_ANTIFIRE_POTION4, GameTimerImageType.ITEM, "Super antifire", 3, ChronoUnit.MINUTES),
-	ANTIDOTEPLUSPLUS(ItemID.ANTIDOTE4_5952, GameTimerImageType.ITEM, "Antidote++", 12, ChronoUnit.MINUTES),
 	BIND(SpriteID.SPELL_BIND, GameTimerImageType.SPRITE, "Bind", GraphicID.BIND, 5, ChronoUnit.SECONDS, true),
 	HALFBIND(SpriteID.SPELL_BIND, GameTimerImageType.SPRITE, "Half Bind", GraphicID.BIND, 2500, ChronoUnit.MILLIS, true),
 	SNARE(SpriteID.SPELL_SNARE, GameTimerImageType.SPRITE, "Snare", GraphicID.SNARE, 10, ChronoUnit.SECONDS, true),
@@ -64,22 +62,18 @@ enum GameTimer
 	ICEBARRAGE(SpriteID.SPELL_ICE_BARRAGE, GameTimerImageType.SPRITE, "Ice barrage", GraphicID.ICE_BARRAGE, 20, ChronoUnit.SECONDS, true),
 	IMBUEDHEART(ItemID.IMBUED_HEART, GameTimerImageType.ITEM, "Imbued heart", GraphicID.IMBUED_HEART, 420, ChronoUnit.SECONDS),
 	VENGEANCE(SpriteID.SPELL_VENGEANCE, GameTimerImageType.SPRITE, "Vengeance", 30, ChronoUnit.SECONDS),
-	ANTIDOTEPLUS(ItemID.ANTIDOTE4, GameTimerImageType.ITEM, "Antidote+", 518, ChronoUnit.SECONDS),
-	ANTIVENOM(ItemID.ANTIVENOM4, GameTimerImageType.ITEM, "Anti-venom", 1, ChronoUnit.MINUTES, true),
-	ANTIVENOM_ANTIPOISON(ItemID.ANTIPOISON4, GameTimerImageType.ITEM, "Anti-venom Antipoison", 12, ChronoUnit.MINUTES, 1),
 	EXSUPERANTIFIRE(ItemID.EXTENDED_SUPER_ANTIFIRE4, GameTimerImageType.ITEM, "Extended Super AntiFire", 6, ChronoUnit.MINUTES),
-	SANFEW(ItemID.SANFEW_SERUM4, GameTimerImageType.ITEM, "Sanfew serum", 6, ChronoUnit.MINUTES, true),
 	OVERLOAD_RAID(ItemID.OVERLOAD_4_20996, GameTimerImageType.ITEM, "Overload", 5, ChronoUnit.MINUTES, true),
 	PRAYER_ENHANCE(ItemID.PRAYER_ENHANCE_4, GameTimerImageType.ITEM, "Prayer enhance", 290, ChronoUnit.SECONDS, true),
 	GOD_WARS_ALTAR(SpriteID.SKILL_PRAYER, GameTimerImageType.SPRITE, "God wars altar", 10, ChronoUnit.MINUTES),
-	ANTIPOISON(ItemID.ANTIPOISON4, GameTimerImageType.ITEM, "Antipoison", 90, ChronoUnit.SECONDS),
-	SUPERANTIPOISON(ItemID.SUPERANTIPOISON4, GameTimerImageType.ITEM, "Superantipoison", 346, ChronoUnit.SECONDS),
 	CHARGE(SpriteID.SPELL_CHARGE, GameTimerImageType.SPRITE, "Charge", 6, ChronoUnit.MINUTES),
 	STAFF_OF_THE_DEAD(ItemID.STAFF_OF_THE_DEAD, GameTimerImageType.ITEM, "Staff of the Dead", 1, ChronoUnit.MINUTES),
 	ABYSSAL_SIRE_STUN(ItemID.ABYSSAL_ORPHAN, GameTimerImageType.ITEM, "Abyssal Sire Stun", 30, ChronoUnit.SECONDS, true),
 	HOME_TELEPORT(SpriteID.SPELL_LUMBRIDGE_HOME_TELEPORT, GameTimerImageType.SPRITE, "Home Teleport", 30, ChronoUnit.MINUTES),
 	MINIGAME_TELEPORT(SpriteID.TAB_QUESTS_RED_MINIGAMES, GameTimerImageType.SPRITE, "Minigame Teleport", 20, ChronoUnit.MINUTES),
-	SKULL(SpriteID.PLAYER_KILLER_SKULL_523, GameTimerImageType.SPRITE, "Skull", 20, ChronoUnit.MINUTES);
+	SKULL(SpriteID.PLAYER_KILLER_SKULL_523, GameTimerImageType.SPRITE, "Skull", 20, ChronoUnit.MINUTES),
+	ANTIPOISON(ItemID.ANTIPOISON4, GameTimerImageType.ITEM, "Antipoison"),
+	ANTIVENOM(ItemID.ANTIVENOM4, GameTimerImageType.ITEM, "Anti-venom");
 
 	@Getter
 	private final Duration duration;
@@ -89,12 +83,11 @@ enum GameTimer
 	private final String description;
 	@Getter
 	private final boolean removedOnDeath;
-	@Getter
-	private final Duration initialDelay;
+
 	private final int imageId;
 	private final GameTimerImageType imageType;
 
-	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, ChronoUnit unit, long delay, boolean removedOnDeath)
+	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, ChronoUnit unit, boolean removedOnDeath)
 	{
 		this.description = description;
 		this.graphicId = graphicId;
@@ -102,12 +95,6 @@ enum GameTimer
 		this.imageId = imageId;
 		this.imageType = idType;
 		this.removedOnDeath = removedOnDeath;
-		this.initialDelay = Duration.of(delay, unit);
-	}
-
-	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, ChronoUnit unit, boolean removedOnDeath)
-	{
-		this(imageId, idType, description, graphicId, time, unit, 0, removedOnDeath);
 	}
 
 	GameTimer(int imageId, GameTimerImageType idType, String description, long time, ChronoUnit unit, boolean removeOnDeath)
@@ -115,19 +102,19 @@ enum GameTimer
 		this(imageId, idType, description, null, time, unit, removeOnDeath);
 	}
 
-	GameTimer(int imageId, GameTimerImageType idType, String description, long time, ChronoUnit unit)
-	{
-		this(imageId, idType, description, null, time, unit, false);
-	}
-
 	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, ChronoUnit unit)
 	{
 		this(imageId, idType, description, graphicId, time, unit, false);
 	}
 
-	GameTimer(int imageId, GameTimerImageType idType, String description, long time, ChronoUnit unit, long delay)
+	GameTimer(int imageId, GameTimerImageType idType, String description, long time, ChronoUnit unit)
 	{
-		this(imageId, idType, description, null, time, unit, delay, false);
+		this(imageId, idType, description, null, time, unit, false);
+	}
+
+	GameTimer(int imageId, GameTimerImageType idType, String description)
+	{
+		this(imageId, idType, description, null, 1, ChronoUnit.MILLIS, false);
 	}
 
 	BufferedImage getImage(ItemManager itemManager, SpriteManager spriteManager)
