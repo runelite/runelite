@@ -179,7 +179,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
 		Widget widget = client.getWidget(WidgetInfo.BA_RUNNERS_PASSED);
-		if (widget != null && config.showSummaryOfPoints() && !hasAnnounced)
+		if (widget != null && config.showSummaryOfPoints() && !hasAnnounced && client.getVar(Varbits.IN_GAME_BA) == 0)
 		{
 			announceSomething("Wave Points Summary: " + giveSummaryOfPoints());
 			hasAnnounced = true;
