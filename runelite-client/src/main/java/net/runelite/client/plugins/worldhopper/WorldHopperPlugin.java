@@ -509,7 +509,7 @@ public class WorldHopperPlugin extends Plugin
 		if (config.quickhopOutOfDanger())
 		{
 			currentWorldTypes.remove(WorldType.PVP);
-			currentWorldTypes.remove(WorldType.PVP_HIGH_RISK);
+			currentWorldTypes.remove(WorldType.HIGH_RISK);
 		}
 		// Don't regard these worlds as a type that must be hopped between
 		currentWorldTypes.remove(WorldType.BOUNTY);

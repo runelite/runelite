@@ -62,6 +62,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	private static final String CLEAR_HISTORY = "Clear history";
 	private static final String CLEAR_PRIVATE = "<col=ffff00>Private:";
 	private static final int CYCLE_HOTKEY = KeyEvent.VK_TAB;
+	private static final int FRIENDS_MAX_SIZE = 5;
 
 	private Queue<QueuedMessage> messageQueue;
 	private Deque<String> friends;
@@ -91,7 +92,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	protected void startUp()
 	{
 		messageQueue = EvictingQueue.create(100);
-		friends = new ArrayDeque<>(5);
+		friends = new ArrayDeque<>(FRIENDS_MAX_SIZE + 1);
 		keyManager.registerKeyListener(this);
 	}
 
@@ -134,7 +135,14 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			case MODPRIVATECHAT:
 				final String name = Text.removeTags(chatMessage.getName());
 				// Remove to ensure uniqueness & its place in history
-				friends.remove(name);
+				if (!friends.remove(name))
+				{
+					// If the friend didn't previously exist ensure deque capacity doesn't increase by adding them
+					if (friends.size() >= FRIENDS_MAX_SIZE)
+					{
+						friends.remove();
+					}
+				}
 				friends.add(name);
 				// intentional fall-through
 			case PUBLICCHAT:
@@ -168,6 +176,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			{
 				messageQueue.removeIf(e -> e.getType() == ChatMessageType.PRIVATECHAT ||
 					e.getType() == ChatMessageType.PRIVATECHATOUT || e.getType() == ChatMessageType.MODPRIVATECHAT);
+				friends.clear();
 			}
 			else
 			{

@@ -168,11 +168,12 @@ public class ClanChatPlugin extends Plugin
 
 		if (member.getWorld() == client.getWorld())
 		{
+			final Player local = client.getLocalPlayer();
 			final String memberName = Text.toJagexName(member.getUsername());
 
 			for (final Player player : client.getPlayers())
 			{
-				if (player != null && memberName.equals(Text.toJagexName(player.getName())))
+				if (player != null && player != local && memberName.equals(Text.toJagexName(player.getName())))
 				{
 					clanMembers.add(player);
 					addClanCounter();
@@ -455,9 +456,12 @@ public class ClanChatPlugin extends Plugin
 	@Subscribe
 	public void onPlayerSpawned(PlayerSpawned event)
 	{
-		if (event.getPlayer().isClanMember())
+		final Player local = client.getLocalPlayer();
+		final Player player = event.getPlayer();
+
+		if (player != local && player.isClanMember())
 		{
-			clanMembers.add(event.getPlayer());
+			clanMembers.add(player);
 			addClanCounter();
 		}
 	}
