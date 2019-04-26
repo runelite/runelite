@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, Lucas <https://github.com/lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,12 +29,16 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.Area;
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import static net.runelite.api.Perspective.getCanvasTileAreaPoly;
+import net.runelite.api.Projectile;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -57,29 +61,85 @@ class HydraPoisonOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final HashSet<LocalPoint> initialPoints = plugin.getPoisonPoints();
-		Area poisonTiles = new Area();
-		for (LocalPoint point : initialPoints)
-		{
-			Polygon poly = getCanvasTileAreaPoly(client, point, 3);
-			if (poly == null)
-			{
-				break;
-			}
+		Hydra hydra = plugin.getHydra();
+		final Map<LocalPoint, Projectile> poisonProjectiles = plugin.getPoisonProjectiles();
 
-			poisonTiles.add(new Area(poly));
+		if (!poisonProjectiles.isEmpty())
+		{
+			drawPoisonArea(graphics, poisonProjectiles);
 		}
 
-		if (poisonTiles.isEmpty())
+		if (hydra.getPhase().getFountain() != null)
 		{
-			return null;
+			drawFountain(graphics, hydra);
 		}
-		graphics.setPaintMode();
-		graphics.setColor(new Color(255, 0, 0, 75));
-		graphics.draw(poisonTiles);
-		graphics.setColor(new Color(255, 0, 0, 30));
-		graphics.fill(poisonTiles);
 
 		return null;
+	}
+
+	private void drawPoisonArea(Graphics2D graphics, Map<LocalPoint, Projectile> poisonProjectiles)
+	{
+		Area poisonTiles = new Area();
+
+		for (Map.Entry<LocalPoint, Projectile> entry : poisonProjectiles.entrySet())
+		{
+			if (entry.getValue().getEndCycle() < client.getGameCycle())
+			{
+				continue;
+			}
+
+			LocalPoint point = entry.getKey();
+			Polygon poly = getCanvasTileAreaPoly(client, point, 3);
+
+			if (poly != null)
+			{
+			poisonTiles.add(new Area(poly));
+		}
+		}
+
+		graphics.setPaintMode();
+		graphics.setColor(new Color(255, 0, 0, 100));
+		graphics.draw(poisonTiles);
+		graphics.setColor(new Color(255, 0, 0, 50));
+		graphics.fill(poisonTiles);
+	}
+
+	private void drawFountain(Graphics2D graphics, Hydra hydra)
+	{
+		Collection<WorldPoint> fountainWorldPoint = WorldPoint.toLocalInstance(client, hydra.getPhase().getFountain()); // thanks
+		if (fountainWorldPoint.size() > 1) // for
+		{
+			return;
+		}
+
+		WorldPoint wp = null;
+		for (WorldPoint p : fountainWorldPoint) // this
+		{
+			wp = p;
+		}
+
+		LocalPoint fountainPoint = wp == null ? null : LocalPoint.fromWorld(client, wp); // trash
+
+		if (fountainPoint == null || hydra.isWeakened()) // I
+		{
+			return;
+		}
+
+		final Polygon poly = getCanvasTileAreaPoly(client, fountainPoint, 3); // don't
+
+		if (poly == null)
+		{
+			return;
+		}
+
+		Color color = new Color(255, 0, 0, 100); // like
+
+		if (hydra.getNpc().getWorldArea().intersectsWith(new WorldArea(wp.getX() - 1, wp.getY() - 1, 3, 3, wp.getPlane()))) 	// coords
+		{																														// WHICH FUCKING RETARD DID X, Y, dX, dY, Z???? IT'S XYZdXdY REEEEEEEEEE
+			color = new Color(0, 255, 0, 100);
+		}
+
+		graphics.setColor(color);
+		graphics.draw(poly);
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, Lucas <https://github.com/lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,7 @@ package net.runelite.client.plugins.alchemicalhydra;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.NPC;
 import net.runelite.api.Prayer;
 import net.runelite.api.ProjectileID;
 
@@ -52,6 +53,9 @@ class Hydra
 	}
 
 	@Getter
+	private NPC npc;
+
+	@Getter
 	@Setter
 	private HydraPhase phase;
 
@@ -75,12 +79,19 @@ class Hydra
 	@Setter
 	private AttackStyle lastAttack;
 
-	Hydra()
+	@Getter
+	@Setter
+	private boolean weakened;
+
+	Hydra(NPC npc)
 	{
+		this.npc = npc;
 		this.phase = HydraPhase.ONE;
 		this.nextAttack = AttackStyle.MAGIC;
+		this.lastAttack = AttackStyle.MAGIC; // important, else we wouldn't switch if the first attack is ranged
 		this.nextSpecial = 3;
 		this.nextSwitch = phase.getAttacksPerSwitch();
 		this.attackCount = 0;
+		this.weakened = false;
 	}
 }

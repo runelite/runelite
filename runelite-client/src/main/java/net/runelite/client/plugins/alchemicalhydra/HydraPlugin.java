@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, Lucas <https://github.com/lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,17 +25,22 @@
 package net.runelite.client.plugins.alchemicalhydra;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Projectile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.ProjectileMoved;
@@ -55,14 +60,13 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class HydraPlugin extends Plugin
 {
 	@Getter
-	private HashSet<LocalPoint> poisonPoints = new HashSet<>();
+	private Map<LocalPoint, Projectile> poisonProjectiles = new HashMap<>();
 
 	@Getter
 	private Hydra hydra;
 
 	private boolean inHydraInstance;
 	private int lastAttackTick;
-	private int lastPoisonTick;
 
 	private static final int[] HYDRA_REGIONS = {
 		5279, 5280,
@@ -86,7 +90,7 @@ public class HydraPlugin extends Plugin
 	{
 		inHydraInstance = checkArea();
 		lastAttackTick = -1;
-		poisonPoints.clear();
+		poisonProjectiles.clear();
 	}
 
 	@Override
@@ -94,7 +98,7 @@ public class HydraPlugin extends Plugin
 	{
 		inHydraInstance = false;
 		hydra = null;
-		poisonPoints.clear();
+		poisonProjectiles.clear();
 		removeOverlays();
 		lastAttackTick = -1;
 	}
@@ -109,18 +113,29 @@ public class HydraPlugin extends Plugin
 
 		inHydraInstance = checkArea();
 
-		if (inHydraInstance)
+		if (!inHydraInstance)
 		{
-			hydra = new Hydra();
-			log.debug("Entered hydra instance");
-			addOverlays();
-		}
-		else if (hydra != null)
+
+			if (hydra != null)
 		{
 			removeOverlays();
 			hydra = null;
-			log.debug("Left hydra instance");
+			}
+			return;
 		}
+		NPC hydraNpc = null;
+
+		for (NPC npc : client.getNpcs())
+		{
+			if (npc.getId() == NpcID.ALCHEMICAL_HYDRA)
+			{
+				hydraNpc = npc;
+				break;
+			}
+		}
+
+		hydra = new Hydra(hydraNpc);
+		addOverlays();
 	}
 
 	@Subscribe
@@ -131,8 +146,7 @@ public class HydraPlugin extends Plugin
 			return;
 		}
 
-		hydra = new Hydra();
-		log.debug("Hydra spawned");
+		hydra = new Hydra(event.getNpc());
 		addOverlays();
 	}
 
@@ -148,47 +162,56 @@ public class HydraPlugin extends Plugin
 
 		HydraPhase phase = hydra.getPhase();
 
-		// Using the first animation sometimes fucks shit up, so just use 2
-		if ( /* actor.getAnimation() == phase.getDeathAnim1() || */ actor.getAnimation() == phase.getDeathAnim2())
+		if (actor.getAnimation() == phase.getDeathAnim2() &&
+			phase != HydraPhase.THREE  // Else log's gonna say "Tried some weird shit"
+			|| actor.getAnimation() == phase.getDeathAnim1() &&
+			phase == HydraPhase.THREE) // We want the pray to switch ye ok ty
 		{
 			switch (phase)
 			{
 				case ONE:
 					changePhase(HydraPhase.TWO);
-					log.debug("Hydra phase 2");
+					hydra.setWeakened(false);
 					return;
 				case TWO:
 					changePhase(HydraPhase.THREE);
-					log.debug("Hydra phase 3");
+					hydra.setWeakened(false);
 					return;
 				case THREE:
 					changePhase(HydraPhase.FOUR);
-					log.debug("Hydra phase 4");
 					return;
 				case FOUR:
 					hydra = null;
-					poisonPoints.clear();
-					log.debug("Hydra dead");
+					poisonProjectiles.clear();
 					removeOverlays();
 					return;
 				default:
 					log.debug("Tried some weird shit");
 					break;
 			}
-
-			if (actor.getAnimation() == phase.getDeathAnim1() && phase == HydraPhase.THREE)
-			{
-				changePhase(HydraPhase.FOUR);
 			}
-		}
+
 		else if (actor.getAnimation() == phase.getSpecAnimationId() && phase.getSpecAnimationId() != 0)
 		{
 			hydra.setNextSpecial(hydra.getNextSpecial() + 9);
 		}
 
-		if (!poisonPoints.isEmpty() && lastPoisonTick + 10 < client.getTickCount())
+		if (poisonProjectiles.isEmpty())
 		{
-			poisonPoints.clear();
+			return;
+		}
+
+		Set<LocalPoint> exPoisonProjectiles = new HashSet<>();
+		for (Map.Entry<LocalPoint, Projectile> entry : poisonProjectiles.entrySet())
+		{
+			if (entry.getValue().getEndCycle() < client.getGameCycle())
+			{
+				exPoisonProjectiles.add(entry.getKey());
+			}
+		}
+		for (LocalPoint toRemove : exPoisonProjectiles)
+		{
+			poisonProjectiles.remove(toRemove);
 		}
 	}
 
@@ -203,11 +226,11 @@ public class HydraPlugin extends Plugin
 
 		Projectile projectile = event.getProjectile();
 		int id = projectile.getId();
+
 		if (hydra.getPhase().getSpecProjectileId() != 0 && hydra.getPhase().getSpecProjectileId() == id)
 		{
-			poisonPoints.add(event.getPosition());
+			poisonProjectiles.put(event.getPosition(), projectile);
 			hydra.setNextSpecial(hydra.getNextSpecial() + 9);
-			lastPoisonTick = client.getTickCount();
 		}
 		else if (client.getTickCount() != lastAttackTick
 			&& (id == Hydra.AttackStyle.MAGIC.getProjId() || id == Hydra.AttackStyle.RANGED.getProjId()))
@@ -215,6 +238,17 @@ public class HydraPlugin extends Plugin
 			handleAttack(id);
 			lastAttackTick = client.getTickCount();
 		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (!event.getMessage().equals("The chemicals neutralise the Alchemical Hydra's defences!"))
+		{
+			return;
+		}
+
+		hydra.setWeakened(true);
 	}
 
 	private boolean checkArea()
@@ -255,15 +289,25 @@ public class HydraPlugin extends Plugin
 
 	private void handleAttack(int id)
 	{
-		hydra.setNextSwitch(hydra.getNextSwitch() - 1);
-		hydra.setAttackCount(hydra.getAttackCount() + 1);
-		hydra.setLastAttack(hydra.getNextAttack());
-
-		if (id != hydra.getNextAttack().getProjId())
-		{
+		if (id != hydra.getNextAttack().getProjId() && id != hydra.getLastAttack().getProjId())
+		{ // If the current attack isn't what was expected and we should have switched prayers
 			switchStyles();
+			hydra.setNextSwitch(hydra.getPhase().getAttacksPerSwitch() - 1);
+			hydra.setLastAttack(hydra.getNextAttack());
 		}
-		else if (hydra.getNextSwitch() <= 0)
+		else if (id != hydra.getNextAttack().getProjId() && id == hydra.getLastAttack().getProjId())
+		{ // If the current attack isn't what was expected and we accidentally counted 1 too much
+			return;
+		}
+		else
+		{
+		hydra.setNextSwitch(hydra.getNextSwitch() - 1);
+		hydra.setLastAttack(hydra.getNextAttack());
+		}
+
+		hydra.setAttackCount(hydra.getAttackCount() + 1);
+
+		if (hydra.getNextSwitch() <= 0)
 		{
 			switchStyles();
 			hydra.setNextSwitch(hydra.getPhase().getAttacksPerSwitch());
