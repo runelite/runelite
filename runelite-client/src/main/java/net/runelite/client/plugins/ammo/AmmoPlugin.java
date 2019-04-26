@@ -134,7 +134,7 @@ public class AmmoPlugin extends Plugin
 			return;
 		}
 
-		infoBoxManager.removeInfoBox(counterBox);
+		removeInfobox();
 		final BufferedImage image = itemManager.getImage(item.getId(), 5, false);
 		counterBox = new AmmoCounter(this, item.getId(), item.getQuantity(), comp.getName(), image);
 		infoBoxManager.addInfoBox(counterBox);
