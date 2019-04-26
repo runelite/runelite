@@ -152,7 +152,7 @@ class AgilityOverlay extends Overlay
 
 		if (config.showPyramidBlockTimer())
 		{
-			for(Map.Entry<Integer, Instant> ent : plugin.getBlocks().entrySet())
+			for (Map.Entry<Integer, Instant> ent : plugin.getBlocks().entrySet())
 			{
 				int block_id = ent.getKey();
 				Instant timer = ent.getValue();
@@ -162,13 +162,13 @@ class AgilityOverlay extends Overlay
 				if (block_id == PYRAMID_BLOCK_LOWER_ID)
 				{
 					compare_time = LOWER_MAX_BLOCK_TIME;
-					lp = LocalPoint.fromWorld(client,LOWER_BLOCK_X,LOWER_BLOCK_Y);
+					lp = LocalPoint.fromWorld(client, LOWER_BLOCK_X, LOWER_BLOCK_Y);
 					plane = 1;
 				}
 				else if (block_id == PYRAMID_BLOCK_UPPER_ID)
 				{
 					compare_time = UPPER_MAX_BLOCK_TIME;
-					lp = LocalPoint.fromWorld(client,UPPER_BLOCK_X,UPPER_BLOCK_Y);
+					lp = LocalPoint.fromWorld(client, UPPER_BLOCK_X, UPPER_BLOCK_Y);
 					plane = 3;
 				}
 				else
@@ -176,7 +176,7 @@ class AgilityOverlay extends Overlay
 					continue;
 				}
 
-				final Point position = Perspective.localToCanvas(client,lp,plane);
+				final Point position = Perspective.localToCanvas(client, lp, plane);
 
 				final ProgressPieComponent progressPie = new ProgressPieComponent();
 				progressPie.setDiameter(20);
