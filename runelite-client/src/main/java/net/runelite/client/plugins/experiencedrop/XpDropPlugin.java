@@ -378,6 +378,11 @@ public class XpDropPlugin extends Plugin
 			lastTime = Instant.now();
 			return;
 		}
+		else if (opponent.getName().equalsIgnoreCase("fishing spot"))
+		{
+			lastTime = Instant.now().minus(WAIT);
+			return;
+		}
 
 		damage = 0;
 		lastOpponent = opponent;
