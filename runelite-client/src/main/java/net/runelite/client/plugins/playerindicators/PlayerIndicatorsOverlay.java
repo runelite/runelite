@@ -80,8 +80,10 @@ public class PlayerIndicatorsOverlay extends Overlay
 		String playerInfo = "";
 		Point minimapLocation = actor.getMinimapLocation();
 
-		graphics.fillOval(minimapLocation.getX() - 1, minimapLocation.getY() - 1, 2, 2);
-
+		if (minimapLocation != null)
+		{
+			graphics.fillOval(minimapLocation.getX() - 1, minimapLocation.getY() - 1, 2, 2);
+		}
 
 		if (config.drawOverheadPlayerNames())
 		{
