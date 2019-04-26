@@ -453,6 +453,10 @@ public class BarbarianAssaultPlugin extends Plugin
 		{
 			total += widgetsTextList.get(i);
 		}
+		if (startingIndex == 5)
+		{
+			total += 80;
+		}
 		return total;
 	}
 	String getCollectorHeardCall()
