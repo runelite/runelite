@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.agility;
 
 import com.google.inject.Provides;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,6 +38,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
+import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import static net.runelite.api.Skill.AGILITY;
@@ -81,12 +83,20 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class AgilityPlugin extends Plugin
 {
 	private static final int AGILITY_ARENA_REGION_ID = 11157;
+	private static final int AGILITY_PYRAMID_REGION_ID = 13356;
+	private static final int PYRAMID_BLOCK_LOWER_ID = 5788;
+	private static final int PYRAMID_BLOCK_LOWER_REST_X = 3372;
+	private static final int PYRAMID_BLOCK_UPPER_ID = 5787;
+	private static final int PYRAMID_BLOCK_UPPER_REST_Y = 2845;
 
 	@Getter
 	private final Map<TileObject, Obstacle> obstacles = new HashMap<>();
 
 	@Getter
 	private final List<Tile> marksOfGrace = new ArrayList<>();
+
+	@Getter
+	private final Map<Integer, Instant> blocks = new HashMap<>();
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -118,6 +128,9 @@ public class AgilityPlugin extends Plugin
 	private int lastAgilityXp;
 	private WorldPoint lastArenaTicketPosition;
 
+	private int lastLowerBlockCoordinate;
+	private int lastUpperBlockCoordinate;
+
 	@Getter
 	private int agilityLevel;
 
@@ -144,6 +157,7 @@ public class AgilityPlugin extends Plugin
 		obstacles.clear();
 		session = null;
 		agilityLevel = 0;
+		resetBlocks();
 	}
 
 	@Subscribe
@@ -156,10 +170,12 @@ public class AgilityPlugin extends Plugin
 				session = null;
 				lastArenaTicketPosition = null;
 				removeAgilityArenaTimer();
+				resetBlocks();
 				break;
 			case LOADING:
 				marksOfGrace.clear();
 				obstacles.clear();
+				resetBlocks();
 				break;
 			case LOGGED_IN:
 				if (!isInAgilityArena())
@@ -167,6 +183,7 @@ public class AgilityPlugin extends Plugin
 					lastArenaTicketPosition = null;
 					removeAgilityArenaTimer();
 				}
+				resetBlocks();
 				break;
 		}
 	}
@@ -177,6 +194,10 @@ public class AgilityPlugin extends Plugin
 		if (!config.showAgilityArenaTimer())
 		{
 			removeAgilityArenaTimer();
+		}
+		if (!config.showPyramidBlockTimer())
+		{
+			resetBlocks();
 		}
 	}
 
@@ -276,6 +297,59 @@ public class AgilityPlugin extends Plugin
 				{
 					showNewAgilityArenaTimer();
 				}
+			}
+		}
+		if (isInAgilityPyramid())
+		{
+			boolean foundLowerBlock = false;
+			boolean foundUpperBlock = false;
+			for (NPC npc : client.getNpcs())
+			{
+				int id = npc.getId();
+				if (id == PYRAMID_BLOCK_LOWER_ID)
+				{
+					// Lower block transitions from x = 3372 to 3374
+					foundLowerBlock = true;
+					int wp_x = npc.getWorldLocation().getX();
+					if (wp_x == PYRAMID_BLOCK_LOWER_REST_X && lastLowerBlockCoordinate == (wp_x + 1))
+					{
+						// just arrived at rest position
+						blocks.put(PYRAMID_BLOCK_LOWER_ID, Instant.now());
+					}
+					if (lastLowerBlockCoordinate == PYRAMID_BLOCK_LOWER_REST_X
+						&& wp_x != PYRAMID_BLOCK_LOWER_REST_X)
+					{
+						// starting to move again, remove the timer
+						blocks.clear();
+					}
+					lastLowerBlockCoordinate = wp_x;
+				}
+				if (id == PYRAMID_BLOCK_UPPER_ID)
+				{
+					// Upper block transitions from y = 2845 to 2847
+					foundUpperBlock = true;
+					int wp_y = npc.getWorldLocation().getY();
+					if (wp_y == PYRAMID_BLOCK_UPPER_REST_Y && lastUpperBlockCoordinate == (wp_y + 1))
+					{
+						blocks.put(PYRAMID_BLOCK_UPPER_ID, Instant.now());
+					}
+					if (lastUpperBlockCoordinate == PYRAMID_BLOCK_UPPER_REST_Y
+						&& wp_y != PYRAMID_BLOCK_UPPER_REST_Y)
+					{
+						blocks.clear();
+					}
+					lastUpperBlockCoordinate = wp_y;
+				}
+			}
+			if (!foundLowerBlock)
+			{
+				blocks.remove(PYRAMID_BLOCK_LOWER_ID);
+				lastLowerBlockCoordinate = 0;
+			}
+			if (!foundUpperBlock)
+			{
+				blocks.remove(PYRAMID_BLOCK_UPPER_ID);
+				lastUpperBlockCoordinate = 0;
 			}
 		}
 	}
@@ -420,5 +494,24 @@ public class AgilityPlugin extends Plugin
 				obstacles.put(newObject, new Obstacle(tile, closestShortcut));
 			}
 		}
+	}
+
+	private boolean isInAgilityPyramid()
+	{
+		Player local = client.getLocalPlayer();
+		if (local == null)
+		{
+			return false;
+		}
+
+		WorldPoint location = local.getWorldLocation();
+		return location.getRegionID() == AGILITY_PYRAMID_REGION_ID;
+	}
+
+	private void resetBlocks()
+	{
+		lastUpperBlockCoordinate = 0;
+		lastLowerBlockCoordinate = 0;
+		blocks.clear();
 	}
 }

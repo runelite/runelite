@@ -30,9 +30,13 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.Area;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
@@ -41,11 +45,21 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
 class AgilityOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
 	private static final Color SHORTCUT_HIGH_LEVEL_COLOR = Color.ORANGE;
+
+	private static final int PYRAMID_BLOCK_LOWER_ID = 5788;
+	private static final int PYRAMID_BLOCK_UPPER_ID = 5787;
+	private static final int LOWER_BLOCK_X = 3374;
+	private static final int LOWER_BLOCK_Y = 2848;
+	private static final int UPPER_BLOCK_X = 3366;
+	private static final int UPPER_BLOCK_Y = 2847;
+	private static final Duration LOWER_MAX_BLOCK_TIME = Duration.ofSeconds(6);
+	private static final Duration UPPER_MAX_BLOCK_TIME = Duration.ofSeconds(5);
 
 	private final Client client;
 	private final AgilityPlugin plugin;
@@ -133,6 +147,48 @@ class AgilityOverlay extends Overlay
 
 					OverlayUtil.renderPolygon(graphics, poly, config.getMarkColor());
 				}
+			}
+		}
+
+		if (config.showPyramidBlockTimer())
+		{
+			for(Map.Entry<Integer, Instant> ent : plugin.getBlocks().entrySet())
+			{
+				int block_id = ent.getKey();
+				Instant timer = ent.getValue();
+				Duration compare_time;
+				LocalPoint lp;
+				int plane;
+				if (block_id == PYRAMID_BLOCK_LOWER_ID)
+				{
+					compare_time = LOWER_MAX_BLOCK_TIME;
+					lp = LocalPoint.fromWorld(client,LOWER_BLOCK_X,LOWER_BLOCK_Y);
+					plane = 1;
+				}
+				else if (block_id == PYRAMID_BLOCK_UPPER_ID)
+				{
+					compare_time = UPPER_MAX_BLOCK_TIME;
+					lp = LocalPoint.fromWorld(client,UPPER_BLOCK_X,UPPER_BLOCK_Y);
+					plane = 3;
+				}
+				else
+				{
+					continue;
+				}
+
+				final Point position = Perspective.localToCanvas(client,lp,plane);
+
+				final ProgressPieComponent progressPie = new ProgressPieComponent();
+				progressPie.setDiameter(20);
+				progressPie.setFill(Color.PINK);
+				progressPie.setPosition(position);
+
+				final Duration duration = Duration.between(timer, Instant.now());
+				progressPie.setProgress(1 - (duration.compareTo(compare_time) < 0
+					? (double) duration.toMillis() / compare_time.toMillis()
+					: 1));
+
+				progressPie.render(graphics);
 			}
 		}
 

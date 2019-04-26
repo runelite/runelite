@@ -122,7 +122,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "agilityArenaNotifier",
-		name = "Agility Arena notifier",
+		name = "Agility Arena Notifier",
 		description = "Notify on ticket location change in Agility Arena",
 		position = 9
 	)
@@ -133,7 +133,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "agilityArenaTimer",
-		name = "Agility Arena timer",
+		name = "Agility Arena Timer",
 		description = "Configures whether Agility Arena timer is displayed",
 		position = 10
 	)
@@ -141,4 +141,16 @@ public interface AgilityConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "pyramidBlockTimer",
+		name = "Agility Pyramid Block Timer",
+		description = "Configure whether a timer for moving blocks on the Agility Pyramid is displayed",
+		position = 11
+	)
+	default boolean showPyramidBlockTimer()
+	{
+		return true;
+	}
+
 }
