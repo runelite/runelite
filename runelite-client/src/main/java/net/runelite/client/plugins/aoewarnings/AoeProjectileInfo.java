@@ -27,6 +27,8 @@ package net.runelite.client.plugins.aoewarnings;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+
+import net.runelite.api.Projectile;
 import net.runelite.api.ProjectileID;
 
 public enum AoeProjectileInfo
@@ -92,8 +94,12 @@ public enum AoeProjectileInfo
 	/**
 	 * the AOE of the Wintertodt snow that falls
 	 */
-	WINTERTODT_SNOW_FALL(1310, 4000, 3);
+	WINTERTODT_SNOW_FALL(1310, 4000, 3),
 
+	/**
+	 * AOE of Xarpus throwing poison
+	 */
+	XARPUS_POISON_AOE(ProjectileID.XARPUS_ACID, 4000, 3);
 
 	/**
 	 * The id of the projectile to trigger this AoE warning

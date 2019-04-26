@@ -71,6 +71,8 @@ public class ProjectileID
 	public static final int DEMONIC_GORILLA_MAGIC = 1304;
 	public static final int DEMONIC_GORILLA_BOULDER = 856;
 
+	public static final int XARPUS_ACID = 1555;
+
 	/**
 	 * missing: marble gargoyle, superior dark beast
 	 */

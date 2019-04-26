@@ -195,6 +195,13 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "isXarpusEnabled",
+			name = "Xarpus",
+			description = "Configures whether or not AOE Projectile Warnings for Xarpus are displayed"
+	)
+	default boolean isXarpusEnabled() { return true; }
+
+	@ConfigItem(
 			keyName = "outline",
 			name = "Display Outline",
 			description = "Configures whether or not AoE Projectile Warnings have an outline"

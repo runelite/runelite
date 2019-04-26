@@ -302,6 +302,8 @@ public class AoeWarningPlugin extends Plugin
 				return config.isCorpEnabled();
 			case WINTERTODT_SNOW_FALL:
 				return config.isWintertodtEnabled();
+			case XARPUS_POISON_AOE:
+				return config.isXarpusEnabled();
 		}
 
 		return false;
