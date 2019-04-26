@@ -99,6 +99,17 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "addLevelsToShortcutOptions",
+		name = "Show Shortcut Requirement",
+		description = "Enable/disable showing agility requirements in shortcut right-click options",
+		position = 6
+	)
+	default boolean showShortcutLevel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "trapOverlay",
 		name = "Show Trap Overlay",
 		description = "Enable/disable the highlighting of traps on Agility courses",

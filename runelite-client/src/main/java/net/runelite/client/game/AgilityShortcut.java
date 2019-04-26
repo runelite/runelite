@@ -245,4 +245,9 @@ public enum AgilityShortcut
 	{
 		return description + " - Level " + level;
 	}
+
+	public int getLevel()
+	{
+		return level;
+	}
 }

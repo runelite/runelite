@@ -59,6 +59,7 @@ import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -71,6 +72,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.api.MenuEntry;
 
 @PluginDescriptor(
 	name = "Agility",
@@ -421,4 +423,39 @@ public class AgilityPlugin extends Plugin
 			}
 		}
 	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (config.showShortcutLevel())
+		{
+			MenuEntry[] entries = client.getMenuEntries();
+
+			//Skip anything where there's 0 chance it's a agi shortcut.
+			if (event.getTarget() == null || event.getTarget() == ""){
+				return;
+			}
+
+			Map<TileObject,Obstacle> obstacles = getObstacles();
+			for (Obstacle o : obstacles.values())
+			{
+				//Compare the event ID to nearby obstacle ID's
+				for (int obId: o.getShortcut().getObstacleIds()){
+					if (obId == event.getIdentifier()){
+						AgilityShortcut agilityShortcut = o.getShortcut();
+						for (MenuEntry entry : entries) {
+							//Check it's the non-examine
+							if (entry.getTarget().equalsIgnoreCase(event.getTarget()) && !entry.getOption().equalsIgnoreCase("examine") && !entry.getTarget().toLowerCase().contains("(level-")) {
+								//Append level with a color to the added entry and update it!
+								if (agilityShortcut.getLevel() <= getAgilityLevel()) entry.setTarget(entry.getTarget() + " <col=00ff00>(level-" + agilityShortcut.getLevel() + ")");
+								else entry.setTarget(entry.getTarget() + " <col=ff0000>(level-" + agilityShortcut.getLevel() + ")");
+								client.setMenuEntries(entries);
+								return;
+							}
+						}
+					}
+				}
+			}
+		}
+    }
 }
