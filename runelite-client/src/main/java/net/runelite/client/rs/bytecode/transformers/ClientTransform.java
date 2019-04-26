@@ -29,6 +29,7 @@ public class ClientTransform implements Transform {
 			transformSetMenuEntries();
 			transformOnMenuOptionsChanged();
             transformGetProjectile();
+            transformGetCollisionMaps();
 			ByteCodePatcher.modifiedClasses.add(ct);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -90,6 +91,23 @@ public class ClientTransform implements Transform {
 		}
 	}
 
+    public void transformGetCollisionMaps() {
+        CtMethod getCollisionMaps;
+        try {
+            CtMethod protectedMaps = ct.getDeclaredMethod("1protect$getRsCollisionMaps");
+            ct.removeMethod(protectedMaps);
+            protectedMaps.setName("getRsCollisionMaps");
+            ct.addMethod(protectedMaps);
+            getCollisionMaps = ct.getDeclaredMethod("getCollisionMaps");
+            ct.removeMethod(getCollisionMaps);
+            getCollisionMaps = CtMethod.make("public net.runelite.rs.api.RSCollisionData[] getCollisionMaps() {" +
+                    "								return getRsCollisionMaps();" +
+                    "							}", ct);
+            ct.addMethod(getCollisionMaps);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 	public void transformProtectedGetMenuIdentifiers() {
 		CtMethod protectedGetMenuIdentifiers;
 		try {
