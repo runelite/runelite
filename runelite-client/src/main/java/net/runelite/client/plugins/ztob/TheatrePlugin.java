@@ -9,11 +9,39 @@
 package net.runelite.client.plugins.ztob;
 
 import com.google.inject.Provides;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.GraphicsObject;
+import net.runelite.api.GroundObject;
+import net.runelite.api.ItemID;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.Point;
+import net.runelite.api.Projectile;
+import net.runelite.api.Tile;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.*;
+import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.GraphicsObjectCreated;
+import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -24,15 +52,12 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
-import javax.inject.Inject;
-import java.util.*;
-
 @PluginDescriptor(
         name = "Theater of Blood",
         description = "All-in-one plugin for Theatre of Blood",
-        tags = {"ToB"},
+	tags = {"ToB", "theatre", "blood"},
         enabledByDefault = false,
-        type = PluginType.PVM
+	type = PluginType.PVM
 )
 
 public class TheatrePlugin extends Plugin {
@@ -55,24 +80,30 @@ public class TheatrePlugin extends Plugin {
     private static final int PROJECTILE_ID_P3_GREEN = 1598;
 
 
-    @Getter(AccessLevel.PACKAGE)
-    private final Map<GroundObject, Integer> xarpusExhumedsTimer = new HashMap<>();
     @Getter
     int exhumecount;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<GroundObject, Integer> xarpusExhumedsTimer = new HashMap<>();
+
     @Getter
     int bloatTimer = 0;
 
     int bloatFeetTimer = 0;
-    NPC BossNylo = null;
-    private boolean bloatFlag = false;
+
     @Getter
     private Set<WorldPoint> bloatTiles = new HashSet<>();
+
     @Getter
     private Set<WorldPoint> temp = new HashSet<>();
-    @Getter
+
+	@Getter
     private Set<WorldPoint> temp2 = new HashSet<>();
-    @Getter
+
+	@Getter
     private Set<WorldPoint> localTemp = new HashSet<>();
+	NPC BossNylo = null;
+	private boolean bloatFlag = false;
 
     //@Getter
     //private List<WorldPoint> bloatTiles = new ArrayList<>();
@@ -168,7 +199,8 @@ public class TheatrePlugin extends Plugin {
 
     @Getter(AccessLevel.PACKAGE)
     private NPC Verzik_NPC;
-    @Getter(AccessLevel.PACKAGE)
+
+	@Getter(AccessLevel.PACKAGE)
     private List<NPC> tornadoList;
 
     @Getter(AccessLevel.PACKAGE)
@@ -224,7 +256,6 @@ public class TheatrePlugin extends Plugin {
         overlayManager.remove(bloatTimerOverlay);
     }
 
-
     @Subscribe
     public void onMenuEntryAdded(MenuEntryAdded event) {
         if (client.getGameState() != GameState.LOGGED_IN || !config.NyloMenu() || !runNylocas) {
@@ -232,12 +263,10 @@ public class TheatrePlugin extends Plugin {
         }
 
         final String pOptionToReplace = Text.removeTags(event.getOption()).toUpperCase();
-        Map<KitType, ItemComposition> playerEquipment = new HashMap<>();
 
         int attackType = 0; //0=idk 1= melee 2= range 3= mage
 
         for (KitType kitType : KitType.values()) {
-
             int itemId = client.getLocalPlayer().getPlayerComposition().getEquipmentId(kitType);
             switch (itemId) {
                 case ItemID.DRAGON_CLAWS:
@@ -302,7 +331,8 @@ public class TheatrePlugin extends Plugin {
             }
 
         }
-        if (!pOptionToReplace.equals("ATTACK")) {
+
+		if (!pOptionToReplace.equals("ATTACK")) {
             return;
         }
         int Id = 0;
@@ -912,7 +942,7 @@ public class TheatrePlugin extends Plugin {
                     Keep = "Nylocas Ischyros";
                     break;
                 case 2:
-                    Keep = "Nylocal Toxobolos";
+					Keep = "Nylocas Toxobolos";
                     break;
                 case 3:
                     Keep = "Nylocas Hagios";

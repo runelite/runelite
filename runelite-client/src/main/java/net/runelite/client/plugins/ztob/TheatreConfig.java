@@ -14,16 +14,18 @@ import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("Theatre")
 
-public interface TheatreConfig extends Config {
+public interface TheatreConfig extends Config
+{
     @ConfigItem(
             position = 0,
             keyName = "MaidenBlood",
             name = "Maiden blood attack",
             description = ""
     )
-    default boolean MaidenBlood() {
-        return true;
-    }
+	default boolean MaidenBlood()
+	{
+		return true;
+	}
 
     @ConfigItem(
             position = 1,
@@ -31,9 +33,10 @@ public interface TheatreConfig extends Config {
             name = "Maiden blood spawns",
             description = ""
     )
-    default boolean MaidenSpawns() {
-        return true;
-    }
+	default boolean MaidenSpawns()
+	{
+		return true;
+	}
 
     @ConfigItem(
             position = 2,
@@ -41,9 +44,10 @@ public interface TheatreConfig extends Config {
             name = "Bloat Indicator",
             description = ""
     )
-    default boolean BloatIndicator() {
-        return true;
-    }
+	default boolean BloatIndicator()
+	{
+		return true;
+	}
 
     @ConfigItem(
             position = 3,
@@ -51,9 +55,10 @@ public interface TheatreConfig extends Config {
             name = "Bloat Timer",
             description = ""
     )
-    default boolean bloatTimer() {
-        return true;
-    }
+	default boolean bloatTimer()
+	{
+		return true;
+	}
 
     @ConfigItem(
             position = 4,
@@ -61,9 +66,10 @@ public interface TheatreConfig extends Config {
             name = "Bloat Feet",
             description = ""
     )
-    default boolean bloatFeetIndicator() {
-        return true;
-    }
+	default boolean bloatFeetIndicator()
+	{
+		return true;
+	}
 
     @ConfigItem(
             position = 5,
@@ -71,9 +77,11 @@ public interface TheatreConfig extends Config {
             name = "Nylocas pillar health",
             description = ""
     )
-    default boolean NyloPillars() {
-        return true;
-    }
+	default boolean NyloPillars()
+	{
+		return true;
+	}
+
 
 
     @ConfigItem(
@@ -82,9 +90,10 @@ public interface TheatreConfig extends Config {
             name = "Nylocas explosions",
             description = ""
     )
-    default boolean NyloBlasts() {
-        return true;
-    }
+	default boolean NyloBlasts()
+	{
+		return true;
+	}
 
     @ConfigItem(
             position = 7,
@@ -103,9 +112,10 @@ public interface TheatreConfig extends Config {
             name = "Sotetseg maze",
             description = ""
     )
-    default boolean SotetsegMaze1() {
-        return true;
-    }
+	default boolean SotetsegMaze1()
+	{
+		return true;
+	}
 
     @ConfigItem(
             position = 9,
@@ -113,9 +123,10 @@ public interface TheatreConfig extends Config {
             name = "Sotetseg maze (solo mode)",
             description = ""
     )
-    default boolean SotetsegMaze2() {
-        return true;
-    }
+	default boolean SotetsegMaze2()
+	{
+		return true;
+	}
 
     @ConfigItem(
             position = 10,
@@ -123,9 +134,10 @@ public interface TheatreConfig extends Config {
             name = "Xarpus Exhumed",
             description = ""
     )
-    default boolean XarpusExhumed() {
-        return true;
-    }
+	default boolean XarpusExhumed()
+	{
+		return true;
+	}
 
     @ConfigItem(
             position = 11,
@@ -133,9 +145,10 @@ public interface TheatreConfig extends Config {
             name = "Xarpus Tick",
             description = ""
     )
-    default boolean XarpusTick() {
-        return false;
-    }
+	default boolean XarpusTick()
+	{
+		return false;
+	}
 
     @ConfigItem(
             position = 12,
@@ -143,9 +156,10 @@ public interface TheatreConfig extends Config {
             name = "Xarpus Exhume Counter",
             description = ""
     )
-    default boolean XarpusExhumeOverlay() {
-        return false;
-    }
+	default boolean XarpusExhumeOverlay()
+	{
+		return false;
+	}
 
     @ConfigItem(
             position = 13,
@@ -153,9 +167,10 @@ public interface TheatreConfig extends Config {
             name = "Verzik Projectile Markers",
             description = ""
     )
-    default boolean VerzikCupcakes() {
-        return false;
-    }
+	default boolean VerzikCupcakes()
+	{
+		return false;
+	}
 
     @ConfigItem(
             position = 14,
@@ -163,9 +178,10 @@ public interface TheatreConfig extends Config {
             name = "Verzik P3 Tick",
             description = ""
     )
-    default boolean VerzikTick() {
-        return false;
-    }
+	default boolean VerzikTick()
+	{
+		return false;
+	}
 
     @ConfigItem(
             position = 15,
@@ -173,9 +189,10 @@ public interface TheatreConfig extends Config {
             name = "Verzik P3 Melee Range",
             description = ""
     )
-    default boolean VerzikMelee() {
-        return false;
-    }
+	default boolean VerzikMelee()
+	{
+		return false;
+	}
 
     @ConfigItem(
             position = 16,
@@ -183,19 +200,21 @@ public interface TheatreConfig extends Config {
             name = "Verzik Yellow Timing",
             description = ""
     )
-    default boolean VerzikYellow() {
-        return false;
-    }
+	default boolean VerzikYellow()
+	{
+		return false;
+	}
 
     @ConfigItem(
             position = 17,
-            keyName = "Verzik Nylo",
-            name = "Verzik Nylo Overlay",
-            description = ""
-    )
-    default boolean NyloTargetOverlay() {
-        return false;
-    }
+		keyName = "Verzik Nylo",
+		name = "Verzik Nylo Overlay",
+		description = ""
+	)
+	default boolean NyloTargetOverlay()
+	{
+		return false;
+	}
 
     @ConfigItem(
             position = 18,
@@ -203,9 +222,11 @@ public interface TheatreConfig extends Config {
             name = "Verzik P3 Tile Overlay",
             description = ""
     )
-    default boolean verzikTankTile() {
-        return true;
-    }
+	default boolean verzikTankTile()
+	{
+		return true;
+	}
+
 
 
 }
