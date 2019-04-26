@@ -122,7 +122,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "agilityArenaNotifier",
-		name = "Agility Arena Notifier",
+		name = "Agility Arena notifier",
 		description = "Notify on ticket location change in Agility Arena",
 		position = 9
 	)
@@ -133,7 +133,7 @@ public interface AgilityConfig extends Config
 
 	@ConfigItem(
 		keyName = "agilityArenaTimer",
-		name = "Agility Arena Timer",
+		name = "Agility Arena timer",
 		description = "Configures whether Agility Arena timer is displayed",
 		position = 10
 	)
