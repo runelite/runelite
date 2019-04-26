@@ -52,7 +52,7 @@ public class ByteCodePatcher {
 				Class playerClass = Class.forName(hooks.playerClass, false, child);
 				transformPlayer(playerClass);
 				Class clientClass = Class.forName("client", false, child);
-				transformBlackjack(clientClass);
+				transformClient(clientClass);
 
 				//Odds and ends
 				ErrorTransform et = new ErrorTransform();
@@ -188,8 +188,8 @@ public class ByteCodePatcher {
 		pt.modify(player);
 	}
 
-	public static void transformBlackjack(Class clazz) {
-		System.out.println("[RuneLitePlus] Transforming Blackjack at class: "+clazz.getName());
+	public static void transformClient(Class clazz) {
+		System.out.println("[RuneLitePlus] Transforming Client");
 		ClientTransform bt = new ClientTransform();
 		bt.modify(clazz);
 	}

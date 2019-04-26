@@ -28,7 +28,7 @@ public class ClientTransform implements Transform {
 			transformGetMenuEntries();
 			transformSetMenuEntries();
 			transformOnMenuOptionsChanged();
-            transformGetProjectile();
+            transformGetProjectiles();
             transformGetCollisionMaps();
 			ByteCodePatcher.modifiedClasses.add(ct);
 		} catch (Exception e) {
@@ -48,14 +48,14 @@ public class ClientTransform implements Transform {
 		}
 	}
 
-    public void transformGetProjectile() {
+    public void transformGetProjectiles() {
 
         CtMethod getProjectiles;
         try {
-            CtMethod protectedAnimation = ct.getDeclaredMethod("1protect$getProjectilesDeque");
-            ct.removeMethod(protectedAnimation);
-            protectedAnimation.setName("getProjectilesDeque");
-            ct.addMethod(protectedAnimation);
+            CtMethod getProjectilesDeque = ct.getDeclaredMethod("1protect$getProjectilesDeque");
+            ct.removeMethod(getProjectilesDeque);
+			getProjectilesDeque.setName("getProjectilesDeque");
+            ct.addMethod(getProjectilesDeque);
             getProjectiles = ct.getDeclaredMethod("getProjectiles");
             ct.removeMethod(getProjectiles);
             getProjectiles = CtNewMethod.make("public java.util.List getProjectiles() { " +
