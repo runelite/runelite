@@ -78,10 +78,6 @@ public class BarbarianAssaultPlugin extends Plugin
 	private int totalCollectedEggCount = 0;
 	@Getter
 	private int totalHpHealed = 0;
-	@Getter
-	private int wrongAttacks = 0;
-	@Getter
-	private int totalWrongAttacks = 0;
 
 	private boolean hasAnnounced;
 
@@ -99,7 +95,6 @@ public class BarbarianAssaultPlugin extends Plugin
 	private int inGameBit = 0;
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
-	private Actor lastInteracted;
 
 	@Getter(AccessLevel.PACKAGE)
 	private HashMap<WorldPoint, Integer> redEggs;
@@ -116,7 +111,6 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Inject
 	private Client client;
 
-
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
@@ -128,7 +122,6 @@ public class BarbarianAssaultPlugin extends Plugin
 
 	@Inject
 	private BarbarianAssaultOverlay overlay;
-
 
 	@Provides
 	BarbarianAssaultConfig provideConfig(ConfigManager configManager)
@@ -152,8 +145,6 @@ public class BarbarianAssaultPlugin extends Plugin
 
 		clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
 
-		lastInteracted = null;
-
 		redEggs = new HashMap<>();
 		greenEggs = new HashMap<>();
 		blueEggs = new HashMap<>();
@@ -165,14 +156,12 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		gameTime = null;
-		lastInteracted = null;
 		currentWave = START_WAVE;
 		inGameBit = 0;
 		collectedEggCount = 0;
 		positiveEggCount = 0;
 		wrongEggs = 0;
 		HpHealed = 0;
-		wrongAttacks = 0;
 	}
 
 	@Subscribe
@@ -220,13 +209,35 @@ public class BarbarianAssaultPlugin extends Plugin
 		{
 			String[] tempMessage = chatMessage.getMessage().split(" ");
 			currentWave = tempMessage[BA_WAVE_NUM_INDEX];
+			collectedEggCount = 0;
+			HpHealed = 0;
+			positiveEggCount = 0;
+			wrongEggs = 0;
 			if (currentWave.equals(START_WAVE))
 			{
 				gameTime = new GameTimer();
+				totalHpHealed = 0;
+				totalCollectedEggCount = 0;
 			}
 			else if (gameTime != null)
 			{
 				gameTime.setWaveStartTime();
+			}
+			else if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE
+					&& chatMessage.getMessage().contains("explode"))
+			{
+				wrongEggs++;
+				positiveEggCount--;
+			}
+			else if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE
+					&& chatMessage.getMessage().contains("healed"))
+			{
+				String[] tokens = message.split(" ");
+				if (Integer.parseInt(tokens[2]) > 0)
+				{
+					int Hp = Integer.parseInt(tokens[2]);
+					HpHealed += Hp;
+				}
 			}
 		}
 		if (message.contains("the wrong type of poisoned food to use"))
