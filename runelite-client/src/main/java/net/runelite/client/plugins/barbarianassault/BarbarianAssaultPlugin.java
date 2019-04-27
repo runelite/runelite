@@ -185,7 +185,7 @@ public class BarbarianAssaultPlugin extends Plugin
 							+ "; Total Wrong Heal Packs: " +  pointsList[2]
 							+ "; Total Eggs: " +  pointsList[3]
 							+ "; Total Failed attacks: " +  pointsList[4]
-							+ "; Total Honour Points: " + pointsList[5]);
+							+ "; Total Honour Points: " + (80 + pointsList[5]));
 			}
 
 			Widget pointsWidget = client.getWidget(WidgetInfo.BA_RUNNERS_PASSED);
