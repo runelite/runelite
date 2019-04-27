@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.agility;
 
 import com.google.inject.Provides;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -76,6 +75,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.api.MenuEntry;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.api.MenuAction;
+import java.awt.Color;
 
 @PluginDescriptor(
 	name = "Agility",
@@ -440,10 +440,8 @@ public class AgilityPlugin extends Plugin
 			return;
 		}
 
-		if (event.getType() == MenuAction.EXAMINE_OBJECT.getId()
-			|| event.getType() == MenuAction.EXAMINE_NPC.getId()
-			|| event.getType() == MenuAction.EXAMINE_ITEM.getId()
-		)
+		//Guarding against non-first option because agility shortcuts are always that type of event.
+		if (event.getType() != MenuAction.GAME_OBJECT_FIRST_OPTION.getId())
 		{
 			return;
 		}
