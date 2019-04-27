@@ -66,6 +66,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WildcardMatcher;
 
@@ -248,20 +249,31 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!hotKeyPressed || event.getType() != MenuAction.EXAMINE_NPC.getId())
-		{
-			return;
-		}
-
 		MenuEntry[] menuEntries = client.getMenuEntries();
-		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-		menuEntry.setOption(TAG);
-		menuEntry.setTarget(event.getTarget());
-		menuEntry.setParam0(event.getActionParam0());
-		menuEntry.setParam1(event.getActionParam1());
-		menuEntry.setIdentifier(event.getIdentifier());
-		menuEntry.setType(MenuAction.RUNELITE.getId());
+		String target = event.getTarget();
+		if (config.highlightMenuNames() && highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()))
+		{
+			MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
+			// Strip out existing color tag
+			int idx = target.indexOf('>');
+			if (idx != -1)
+			{
+				target = target.substring(idx + 1);
+			}
+			target = ColorUtil.prependColorTag(target, config.getHighlightColor());
+			menuEntry.setTarget(target);
+		}
+		if (hotKeyPressed && event.getType() == MenuAction.EXAMINE_NPC.getId())
+		{
+			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+			MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			tagEntry.setOption(TAG);
+			tagEntry.setTarget(target);
+			tagEntry.setParam0(event.getActionParam0());
+			tagEntry.setParam1(event.getActionParam1());
+			tagEntry.setIdentifier(event.getIdentifier());
+			tagEntry.setType(MenuAction.RUNELITE.getId());
+		}
 		client.setMenuEntries(menuEntries);
 	}
 
