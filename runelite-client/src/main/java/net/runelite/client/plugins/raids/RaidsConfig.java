@@ -179,6 +179,16 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 1,
+		keyName = "ptsHr",
+		name = "Enable points per hour message",
+		description = "Enable the message"
+	)
+	default boolean ptsHr()
+	{
+		return true;
+	}
+	@ConfigItem(
 		position = 16,
 		keyName = "showRecommendedItems",
 		name = "Show recommended items",

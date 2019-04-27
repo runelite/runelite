@@ -104,16 +104,17 @@ public class RaidsPointsOverlay extends Overlay
 				.left("Unique:")
 				.right(UNIQUE_FORMAT.format(uniqueChance))
 				.build());
-
+		//TODO this is annoyingly bugged, personalpoints returns null for some reason
+/*
 		if (partySize > 1)
 		{
-			double personalChance = uniqueChance * (personalPoints / totalPoints);
+				double personalChance = uniqueChance * (double)(personalPoints / totalPoints);
 
-			panel.getChildren().add(LineComponent.builder()
+				panel.getChildren().add(LineComponent.builder()
 					.left("Personal:")
 					.right(UNIQUE_FORMAT.format(personalChance))
 					.build());
-		}
+		}*/
 
 		return panel.render(graphics);
 	}
