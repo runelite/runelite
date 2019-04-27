@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.newraids;
+package net.runelite.client.plugins.raids;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -93,8 +93,6 @@ public class RaidsPanel extends PluginPanel
 					//Method m = client.getClass().getClassLoader().loadClass("jr").getDeclaredMethod("fn", int.class, int.class);
 					//m.setAccessible(true);
 					//m.invoke(null, 40, -1893789506);
-					raidsPlugin.canShow = false;
-					raidsPlugin.timerOverride = true;
 					//TODO: Since this is mainly for raids i'd like to reload the raids scouting plugin after the dc is finished
 
 				}
@@ -112,7 +110,6 @@ public class RaidsPanel extends PluginPanel
 		{
 			if ((client.getGameState() == GameState.LOGGED_IN))
 			{
-				raidsPlugin.canShow = false;
 				raidsPlugin.checkRaidPresence(true);
 			}
 		});

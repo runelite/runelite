@@ -79,13 +79,16 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.raids.solver.Layout;
 import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.WidgetOverlay;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.HotkeyListener;
 import org.apache.commons.lang3.StringUtils;
@@ -174,12 +177,17 @@ public class RaidsPlugin extends Plugin
 	@Getter
 	private boolean inRaidChambers;
 
+	@Inject
+	private ClientToolbar clientToolbar;
+	private RaidsPanel panel;
 	private int upperTime = -1;
 	private int middleTime = -1;
 	private int lowerTime = -1;
 	private int raidTime = -1;
 	private WidgetOverlay widgetOverlay;
 	private String tooltip;
+	public boolean canShow;
+	private NavigationButton navButton;
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -201,6 +209,16 @@ public class RaidsPlugin extends Plugin
 		updateLists();
 		clientThread.invokeLater(() -> checkRaidPresence(true));
 		widgetOverlay = overlayManager.getWidgetOverlay(WidgetInfo.RAIDS_POINTS_INFOBOX);
+		panel = injector.getInstance(RaidsPanel.class);
+		panel.init(config);
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(this.getClass(), "instancereloadhelper.png");
+		navButton = NavigationButton.builder()
+			.tooltip("Raids Reload")
+			.icon(icon)
+			.priority(8)
+			.panel(panel)
+			.build();
+		clientToolbar.addNavigation(navButton);
 	}
 
 	@Override
@@ -208,6 +226,7 @@ public class RaidsPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(pointsOverlay);
+		clientToolbar.removeNavigation(navButton);
 		inRaidChambers = false;
 		widgetOverlay = null;
 		raid = null;
@@ -286,12 +305,14 @@ public class RaidsPlugin extends Plugin
 			if (matcher.find())
 			{
 				raidTime = timeToSeconds(matcher.group(1));
+				int timesec = timeToSeconds(matcher.group(1));
 				updateTooltip();
 
 				if (config.pointsMessage())
 				{
 					int totalPoints = client.getVar(Varbits.TOTAL_POINTS);
 					int personalPoints = client.getVar(Varbits.PERSONAL_POINTS);
+					int partySize = client.getVar(Varbits.RAID_PARTY_SIZE);
 
 					double percentage = personalPoints / (totalPoints / 100.0);
 
@@ -316,6 +337,52 @@ public class RaidsPlugin extends Plugin
 						.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
 						.runeLiteFormattedMessage(chatMessage)
 						.build());
+					if (config.ptsHr())
+					{
+						String ptssolo;
+						{
+							ptssolo = POINTS_FORMAT.format(((float) personalPoints / (float) timesec) * 3600);
+						}
+
+						String ptsteam;
+						{
+							ptsteam = POINTS_FORMAT.format(((float) totalPoints / (float) timesec) * 3600);
+						}
+
+						String ptssplit;
+						{
+							ptssplit = POINTS_FORMAT.format(((float) (totalPoints / (float) timesec) * 3600) / (partySize));
+						}
+
+
+						String chatMessage2 = new ChatMessageBuilder()
+							.append(ChatColorType.NORMAL)
+							.append("Solo Pts/Hr: ")
+							.append(ChatColorType.HIGHLIGHT)
+							.append(ptssolo)
+							.append(ChatColorType.NORMAL)
+							.append("Team Pts/Hr: ")
+							.append(ChatColorType.HIGHLIGHT)
+							.append(ptsteam)
+							.build();
+
+						chatMessageManager.queue(QueuedMessage.builder()
+							.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+							.runeLiteFormattedMessage(chatMessage2)
+							.build());
+
+						String chatMessage3 = new ChatMessageBuilder()
+							.append(ChatColorType.NORMAL)
+							.append("Split Pts/Hr: ")
+							.append(ChatColorType.HIGHLIGHT)
+							.append(ptssplit)
+							.build();
+
+						chatMessageManager.queue(QueuedMessage.builder()
+							.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+							.runeLiteFormattedMessage(chatMessage3)
+							.build());
+					}
 				}
 			}
 		}
@@ -338,7 +405,7 @@ public class RaidsPlugin extends Plugin
 		}
 	}
 
-	private void checkRaidPresence(boolean force)
+	public void checkRaidPresence(boolean force)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
