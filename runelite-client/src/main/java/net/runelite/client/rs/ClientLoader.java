@@ -92,6 +92,7 @@ public class ClientLoader
 	private ClientUpdateCheckMode updateCheckMode;
 	private JarOutputStream target;
 	private static String[] preotectedStuffs;
+	private static int stepCount;
 
 	@Inject
 	private ClientLoader(
@@ -240,6 +241,7 @@ public class ClientLoader
 						hooks.actorClass.equals("") ||
 							hooks.playerClass.equals("")) {
 							System.out.println("[RuneLitePlus] Bad hooks, re-scraping.");
+						stepCount = getStepCount(ByteCodeUtils.injectedClientFile.getPath());
 						ByteCodePatcher.clientInstance = initHookScrape(ByteCodeUtils.injectedClientFile.getPath());
 						ByteCodePatcher.findHooks(injectedClientFile.getPath());
 					} else {
@@ -250,6 +252,7 @@ public class ClientLoader
 
 				} else {
 					System.out.println("[RuneLitePlus] Hooks file not found, scraping hooks.");
+					stepCount = getStepCount(ByteCodeUtils.injectedClientFile.getPath());
 					ByteCodePatcher.clientInstance = initHookScrape(ByteCodeUtils.injectedClientFile.getPath());
 					ByteCodePatcher.hooks.protectedStuff = preotectedStuffs;
 					ByteCodePatcher.findHooks(injectedClientFile.getPath());
@@ -340,7 +343,35 @@ public class ClientLoader
 		return certificates.toArray(new Certificate[certificates.size()]);
 	}
 
+	public static int getStepCount(String jarFile) {
+		int stepCount = 0;
+		JarClassLoader jcl = new JarClassLoader();
+		try {
+			ClassPool classPool = new ClassPool(true);
+			classPool.appendClassPath(RuneLite.RUNELITE_DIR+"/injectedClient-"+ RuneLiteAPI.getVersion() +"-.jar");
+		} catch (NotFoundException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			jcl.add(new FileInputStream(jarFile));
+			try (JarInputStream in = new JarInputStream(new BufferedInputStream(new FileInputStream(jarFile)))) {
+				JarEntry entry;
+				while ((entry = in.getNextJarEntry()) != null) {
+					if (entry.getName().endsWith(".class")) {
+						stepCount++;
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return stepCount;
+	}
+
     public static String initHookScrape(String jarFile) {
+		int currentStep = 0;
+		RuneLite.splashScreen.setMessage("Analyzing injected client");
 		List protectedStuff = new ArrayList<String>();
 		String clientInstance = "";
         JarClassLoader jcl = new JarClassLoader();
@@ -366,6 +397,9 @@ public class ClientLoader
                             );
                             try {
                                 Class classToLoad = Class.forName(entry.getName().replace(".class", ""), false, child);
+                                RuneLite.splashScreen.setSubMessage(entry.getName());
+                                currentStep++;
+                                RuneLite.splashScreen.setProgress(currentStep, stepCount);
                                 JarClassLoader jcl2 = new JarClassLoader();
                                 try {
                                     jcl2.add(new FileInputStream(ByteCodeUtils.injectedClientFile));
@@ -386,6 +420,8 @@ public class ClientLoader
                                         }
                                     }
                                     for (Method m : methods) {
+										RuneLite.splashScreen.setSubMessage("Checked "+m.getName());
+										RuneLite.splashScreen.setProgress(currentStep, stepCount);
 										if (m.getName().contains("$")) {
 											protectedStuff.add(classToLoad.getName()+"."+m.getName());
 										}
@@ -396,7 +432,7 @@ public class ClientLoader
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-
+							RuneLite.splashScreen.setProgress(2, 5);
                         } catch (Exception e) {
                             e.printStackTrace();
                             System.out.println("Class not found: "+entry.getName());

@@ -15,6 +15,7 @@ import net.runelite.client.rs.bytecode.transformers.ProjectileTransform;
 import net.runelite.http.api.RuneLiteAPI;
 import org.xeustechnologies.jcl.JarClassLoader;
 
+import javax.swing.*;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,27 +38,42 @@ public class ByteCodePatcher {
 	public static JarClassLoader jcl = new JarClassLoader();
 	public static ClassPool classPool = null;
 	public static ClassLoader cl = ClassLoader.getSystemClassLoader();
+	public static int classCount = 0;
 
 	public static void applyHooks(File jf, Hooks hooks) {
+		RuneLite.splashScreen.setProgress(0, 5);
+		RuneLite.splashScreen.setMessage("Applying cached bytecode patches...");
 		try {
 			URLClassLoader child = new URLClassLoader(
 					new URL[] {jf.toURI().toURL()},
 					cl
 			);
 			try {
+				RuneLite.splashScreen.setSubMessage("Transforming Actor");
 				Class actorClass = Class.forName(hooks.actorClass, false, child);
 				transformActor(actorClass);
+				RuneLite.splashScreen.setProgress(1, 5);
+
+				RuneLite.splashScreen.setSubMessage("Transforming Projectile");
 				Class projectileClass = Class.forName(hooks.projectileClass, false, child);
 				transformProjectile(projectileClass);
+				RuneLite.splashScreen.setProgress(2, 5);
+
+				RuneLite.splashScreen.setSubMessage("Transforming Player");
 				Class playerClass = Class.forName(hooks.playerClass, false, child);
 				transformPlayer(playerClass);
+				RuneLite.splashScreen.setProgress(3, 5);
+
+				RuneLite.splashScreen.setSubMessage("Transforming Client");
 				Class clientClass = Class.forName("client", false, child);
 				transformClient(clientClass);
+				RuneLite.splashScreen.setProgress(4, 5);
 
 				//Odds and ends
+				RuneLite.splashScreen.setSubMessage("Transforming Error method");
 				ErrorTransform et = new ErrorTransform();
 				et.modify(null);
-
+				RuneLite.splashScreen.setProgress(5, 5);
 				ByteCodeUtils.updateHijackedJar();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -69,6 +85,7 @@ public class ByteCodePatcher {
 	}
 
 	public static void findHooks(String jf) {
+		RuneLite.splashScreen.setMessage("Intercepting Classes");
 		try {
 			classPool = new ClassPool(true);
 			classPool.appendClassPath(RuneLite.RUNELITE_DIR+"/injectedClient-"+ RuneLiteAPI.getVersion() +"-.jar");
@@ -82,7 +99,20 @@ public class ByteCodePatcher {
 				JarEntry entry;
 				while ((entry = in.getNextJarEntry()) != null) {
 					if (entry.getName().endsWith(".class")) {
+						classCount++;
+					}
+				}
+			}
+			int i = 0;
+			jcl.add(new FileInputStream(jf));
+			try (JarInputStream in = new JarInputStream(new BufferedInputStream(new FileInputStream(jf)))) {
+				JarEntry entry;
+				while ((entry = in.getNextJarEntry()) != null) {
+					if (entry.getName().endsWith(".class")) {
+						RuneLite.splashScreen.setProgress(i, classCount);
+						RuneLite.splashScreen.setSubMessage("Checking "+entry.getName());
 						checkClasses(new File(jf), entry);
+						i++;
 					}
 				}
 			}
@@ -193,6 +223,5 @@ public class ByteCodePatcher {
 		ClientTransform bt = new ClientTransform();
 		bt.modify(clazz);
 	}
-
 
 }

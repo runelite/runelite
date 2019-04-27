@@ -84,7 +84,7 @@ public class RuneLite
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
-    private static final RuneLiteSplashScreen splashScreen = new RuneLiteSplashScreen();
+    public static RuneLiteSplashScreen splashScreen = new RuneLiteSplashScreen();
 
 
     @Getter
@@ -233,7 +233,8 @@ public class RuneLite
 		}
 
 		// The submessage is shown in case the connection is slow
-		splashScreen.setMessage("Loading client", "And checking for updates...");
+		splashScreen.setMessage("Starting RuneLite Injector");
+		splashScreen.setSubMessage( " ");
 
 		final long start = System.currentTimeMillis();
 
@@ -242,7 +243,7 @@ public class RuneLite
 			developerMode));
 
 		injector.getInstance(RuneLite.class).start();
-
+		splashScreen.setProgress(1, 4);
 		final long end = System.currentTimeMillis();
 		final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
 		final long uptime = rb.getUptime();
@@ -263,6 +264,7 @@ public class RuneLite
 		// Load user configuration
 		splashScreen.setMessage("Loading configuration");
 		configManager.load();
+		splashScreen.setProgress(2, 4);
 
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
@@ -275,8 +277,10 @@ public class RuneLite
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
-		splashScreen.setMessage("Loading plugins and patches", "Starting session...");
+		splashScreen.setMessage("Loading plugins and patches");
+		splashScreen.setSubMessage("Starting session...");
 		pluginManager.loadCorePlugins();
+		splashScreen.setProgress(3, 4);
 
 		// Plugins have provided their config, so set default config
 		// to main settings
@@ -287,6 +291,7 @@ public class RuneLite
 
 		// Load the session, including saved configuration
 		splashScreen.setMessage("Loading interface");
+		splashScreen.setProgress(4, 4);
 
 		// Initialize UI
 		clientUI.open(this);

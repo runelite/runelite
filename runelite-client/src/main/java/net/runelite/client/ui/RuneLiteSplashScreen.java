@@ -51,10 +51,10 @@ public class RuneLiteSplashScreen
 {
 	private RuneLiteProperties runeLiteProperties = new RuneLiteProperties();
 
-	private JFrame frame;
-	private JLabel messageLabel;
-	private JLabel subMessageLabel;
-	private JProgressBar progressBar;
+	public JFrame frame;
+	public JLabel messageLabel;
+	public JLabel subMessageLabel;
+	public JProgressBar progressBar;
 
 	private int currentStep;
 
@@ -191,21 +191,7 @@ public class RuneLiteSplashScreen
 		});
 	}
 
-	/**
-	 * Set a loading message. The subMessage will also be removed.
-	 * @param message The main message. It will automatically append an ellipsis.
-	 */
 	public void setMessage(final String message)
-	{
-		setMessage(message, " ");
-	}
-
-	/**
-	 * Set a loading message.
-	 * @param message The main message. It will automatically append an ellipsis.
-	 * @param subMessage A separate alternate title.
-	 */
-	public void setMessage(final String message, final String subMessage)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
@@ -213,10 +199,32 @@ public class RuneLiteSplashScreen
 			{
 				return;
 			}
+			messageLabel.setText(message);
+		});
+	}
 
-			messageLabel.setText(message + "...");
+	public void setSubMessage(final String subMessage)
+	{
+		SwingUtilities.invokeLater(() ->
+		{
+			if (notActive())
+			{
+				return;
+			}
 			subMessageLabel.setText(subMessage);
-			progressBar.setValue(++currentStep);
+		});
+	}
+
+	public void setProgress(int currentProgress, int progressGoal)
+	{
+		SwingUtilities.invokeLater(() ->
+		{
+			if (notActive())
+			{
+				return;
+			}
+			progressBar.setMaximum(progressGoal);
+			progressBar.setValue(currentProgress);
 		});
 	}
 }
