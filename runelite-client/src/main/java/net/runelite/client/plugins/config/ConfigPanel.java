@@ -108,8 +108,6 @@ public class ConfigPanel extends PluginPanel
 	private static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
 	private static final String RUNELITE_PLUGIN = "RuneLite";
 	private static final String CHAT_COLOR_PLUGIN = "Chat Color";
-	public static boolean flexoConfigEnabled = false;
-
 	private final PluginManager pluginManager;
 	private final ConfigManager configManager;
 	private final ScheduledExecutorService executorService;
@@ -276,16 +274,9 @@ public class ConfigPanel extends PluginPanel
 					final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
 
 					final PluginListItem listItem = new PluginListItem(this, configManager, plugin, descriptor, config, configDescriptor);
-					if (listItem.getName().contains("Flexo") && flexoConfigEnabled) {
-						System.out.println("Started "+listItem.getName());
-						listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
-						utilPlugins.add(listItem);
-					} else if (!listItem.getName().contains("Flexo")) {
 					System.out.println("Started "+listItem.getName());
 					listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
 					utilPlugins.add(listItem);
-					}
-
 				});
 
 		utilPlugins.sort(Comparator.comparing(PluginListItem::getName));
