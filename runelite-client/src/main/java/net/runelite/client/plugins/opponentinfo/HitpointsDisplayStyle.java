@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2019, Sean Dewar <https://github.com/seandewar>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,43 +24,9 @@
  */
 package net.runelite.client.plugins.opponentinfo;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup("opponentinfo")
-public interface OpponentInfoConfig extends Config
+public enum HitpointsDisplayStyle
 {
-	@ConfigItem(
-		keyName = "lookupOnInteraction",
-		name = "Lookup players on interaction",
-		description = "Display a combat stat comparison panel on player interaction. (follow, trade, challenge, attack, etc.)",
-		position = 0
-	)
-	default boolean lookupOnInteraction()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "hitpointsDisplayStyle",
-		name = "Hitpoints display style",
-		description = "Show opponent's hitpoints as a value (if known), percentage, or both",
-		position = 1
-	)
-	default HitpointsDisplayStyle hitpointsDisplayStyle()
-	{
-		return HitpointsDisplayStyle.HITPOINTS;
-	}
-
-	@ConfigItem(
-		keyName = "showOpponentsOpponent",
-		name = "Show opponent's opponent",
-		description = "Toggle showing opponent's opponent if within a multi-combat area",
-		position = 2
-	)
-	default boolean showOpponentsOpponent()
-	{
-		return true;
-	}
+	HITPOINTS,
+	PERCENTAGE,
+	BOTH;
 }
