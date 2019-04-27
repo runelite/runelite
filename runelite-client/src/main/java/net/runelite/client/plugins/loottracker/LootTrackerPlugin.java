@@ -100,8 +100,8 @@ public class LootTrackerPlugin extends Plugin
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
 
 	// Herbiboar loot handling
-	private static final String HERBIBOAR_LOOTED_MESSAGE = "You harvest herbs from the herbiboar, whereupon it escapes";
-	private static final String HERBIBOAR_TRACKING_MESSAGE = "Something has passed this way.";
+	private static final String HERBIBOAR_LOOTED_MESSAGE = "You harvest herbs from the herbiboar, whereupon it escapes.";
+	private static final String HERBIBOR_EVENT = "Herbiboar";
 
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
@@ -398,9 +398,9 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (message.equals(HERBIBOAR_LOOTED_MESSAGE) || message.contains(HERBIBOAR_TRACKING_MESSAGE))
+		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
 		{
-			eventType = "Herbiboar";
+			eventType = HERBIBOR_EVENT;
 			takeInventorySnapshot();
 
 			return;
@@ -438,7 +438,7 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (eventType != null && (CHEST_EVENT_TYPES.containsValue(eventType) || eventType.equals("Herbiboar")))
+		if (eventType != null && (CHEST_EVENT_TYPES.containsValue(eventType) || HERBIBOR_EVENT.equals(eventType)))
 		{
 			if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
 			{
