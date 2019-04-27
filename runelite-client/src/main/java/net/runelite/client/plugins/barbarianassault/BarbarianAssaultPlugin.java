@@ -54,11 +54,15 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+
 
 @PluginDescriptor(
-	name = "Barbarian Assault",
-	description = "Show a timer to the next call change and game/wave duration in chat.",
-	tags = {"minigame", "overlay", "timer"}
+		name = "Barbarian Assault",
+		description = "Show a timer to the next call change and game/wave duration in chat.",
+		tags = {"minigame", "overlay", "timer"}
 )
 public class BarbarianAssaultPlugin extends Plugin
 {
@@ -81,7 +85,7 @@ public class BarbarianAssaultPlugin extends Plugin
 
 	private boolean hasAnnounced;
 
-	private ArrayList<Integer> widgetsTextList = new ArrayList<>();
+	private int[] pointsList;
 
 	String[] descriptions = {"Runners: ",
 			"Hitpoints: ",
@@ -149,6 +153,7 @@ public class BarbarianAssaultPlugin extends Plugin
 		greenEggs = new HashMap<>();
 		blueEggs = new HashMap<>();
 		yellowEggs = new HashMap<>();
+		pointsList = new int[6];
 	}
 
 	@Override
@@ -167,12 +172,6 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		Widget widget = client.getWidget(WidgetInfo.BA_RUNNERS_PASSED);
-		if (widget != null && config.showSummaryOfPoints() && !hasAnnounced && client.getVar(Varbits.IN_GAME_BA) == 0)
-		{
-			announceSomething("Wave Points Summary: " + giveSummaryOfPoints());
-			hasAnnounced = true;
-		}
 		if (event.getGroupId() == WidgetID.BA_REWARD_GROUP_ID)
 		{
 			Widget rewardWidget = client.getWidget(WidgetInfo.BA_REWARD_TEXT);
@@ -181,12 +180,19 @@ public class BarbarianAssaultPlugin extends Plugin
 				if (config.waveTimes())
 					announceTime("Game finished, duration: ", gameTime.getTime(false));
 				if (config.showTotalRewards())
-					announceSomething("Game Summary: " + "Total Runners: " + calculateTotalNumber("Runners")
-							+ "; Total Hp Replenished: " + calculateTotalNumber("Hitpoints")
-							+ "; Total Wrong Heal Packs: " + calculateTotalNumber("Wrong heal packs")
-							+ "; Total Eggs: " + calculateTotalNumber("Eggs")
-							+ "; Total Failed attacks: " + calculateTotalNumber("Failed attacks")
-							+ "; Total Honour Points: " + calculateTotalNumber("Honour Points"));
+					announceSomething("Game Summary: " + "Total Runners: " + pointsList[0]
+							+ "; Total Hp Replenished: " +  pointsList[1]
+							+ "; Total Wrong Heal Packs: " +  pointsList[2]
+							+ "; Total Eggs: " +  pointsList[3]
+							+ "; Total Failed attacks: " +  pointsList[4]
+							+ "; Total Honour Points: " + pointsList[5]);
+			}
+
+			Widget pointsWidget = client.getWidget(WidgetInfo.BA_RUNNERS_PASSED);
+			if (pointsWidget != null && config.showSummaryOfPoints() && !hasAnnounced && client.getVar(Varbits.IN_GAME_BA) == 0)
+			{
+				announceSomething("Wave Points Summary: " + giveSummaryOfPoints());
+				hasAnnounced = true;
 			}
 		}
 	}
@@ -218,7 +224,7 @@ public class BarbarianAssaultPlugin extends Plugin
 				gameTime = new GameTimer();
 				totalHpHealed = 0;
 				totalCollectedEggCount = 0;
-				widgetsTextList = null;
+				pointsList = new int[]{0,0,0,0,0,0};
 			}
 			else if (gameTime != null)
 			{
@@ -412,54 +418,25 @@ public class BarbarianAssaultPlugin extends Plugin
 
 	private String giveSummaryOfPoints()
 	{
-		StringBuilder stringBuilder = new StringBuilder();
+		StringBuilder message = new StringBuilder();
 		for (int i = 0; i < WIDGETS.size(); i++)
 		{
-			widgetsTextList.add(Integer.parseInt(client.getWidget(WIDGETS.get(i)).getText()));
-			stringBuilder.append(descriptions[i])
-					.append(client.getWidget(WIDGETS.get(i)).getText())
+			Widget w = client.getWidget(WIDGETS.get(i));
+			if (w != null && !w.getText().equals(""))
+			{
+				pointsList[i] += Integer.parseInt(w.getText());
+			}
+			else
+			{
+				log.info("widget null");
+			}
+			message.append(descriptions[i])
+					.append(Integer.parseInt(w.getText()))
 					.append("; ");
 		}
-		String message = stringBuilder.toString().substring(0, stringBuilder.toString().length() - 2);
-		stringBuilder = new StringBuilder(message);
-		return stringBuilder.toString();
+		return message.toString();
 	}
 
-	private int calculateTotalNumber(String choice)
-	{
-		int startingIndex = 0;
-		int total = 0;
-		switch (choice)
-		{
-			case "Runners":
-				startingIndex = 0;
-				break;
-			case "Hitpoints":
-				startingIndex = 1;
-				break;
-			case "Wrong heal packs":
-				startingIndex = 2;
-				break;
-			case "Eggs":
-				startingIndex = 3;
-				break;
-			case "Failed attacks":
-				startingIndex = 4;
-				break;
-			case "Honour Points":
-				startingIndex = 5;
-				break;
-		}
-		for (int i = startingIndex; i < widgetsTextList.size(); i+=6)
-		{
-			total += widgetsTextList.get(i);
-		}
-		if (startingIndex == 5)
-		{
-			total += 80;
-		}
-		return total;
-	}
 	String getCollectorHeardCall()
 	{
 		Widget widget = client.getWidget(WidgetInfo.BA_COLL_HEARD_TEXT);
@@ -570,7 +547,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	private boolean isEgg(int itemID)
 	{
 		if (itemID == ItemID.RED_EGG || itemID == ItemID.GREEN_EGG
-			|| itemID == ItemID.BLUE_EGG || itemID == ItemID.YELLOW_EGG)
+				|| itemID == ItemID.BLUE_EGG || itemID == ItemID.YELLOW_EGG)
 		{
 			return true;
 		}
