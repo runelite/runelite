@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.agility;
 
 import com.google.inject.Provides;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -73,6 +75,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.api.MenuEntry;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.api.MenuAction;
 
 @PluginDescriptor(
 	name = "Agility",
@@ -427,35 +431,52 @@ public class AgilityPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (config.showShortcutLevel())
+		if (!config.showShortcutLevel())
 		{
-			MenuEntry[] entries = client.getMenuEntries();
+			return;
+		}
 
-			//Skip anything where there's 0 chance it's a agi shortcut.
-			if (event.getTarget() == null || event.getTarget() == ""){
-				return;
-			}
+		if (event.getTarget() == null || event.getTarget() == "")
+		{
+			return;
+		}
 
-			Map<TileObject,Obstacle> obstacles = getObstacles();
-			for (Obstacle o : obstacles.values())
+		if (event.getType() == MenuAction.EXAMINE_OBJECT.getId()
+			|| event.getType() == MenuAction.EXAMINE_NPC.getId()
+			|| event.getType() == MenuAction.EXAMINE_ITEM.getId()
+		)
+		{
+			return;
+		}
+
+		MenuEntry[] menuEntries = client.getMenuEntries();
+
+		for (Obstacle nearbyObstacle : getObstacles().values())
+		{
+			for (int obId: nearbyObstacle.getShortcut().getObstacleIds())
 			{
-				//Compare the event ID to nearby obstacle ID's
-				for (int obId: o.getShortcut().getObstacleIds()){
-					if (obId == event.getIdentifier()){
-						AgilityShortcut agilityShortcut = o.getShortcut();
-						for (MenuEntry entry : entries) {
-							//Check it's the non-examine
-							if (entry.getTarget().equalsIgnoreCase(event.getTarget()) && !entry.getOption().equalsIgnoreCase("examine") && !entry.getTarget().toLowerCase().contains("(level-")) {
-								//Append level with a color to the added entry and update it!
-								if (agilityShortcut.getLevel() <= getAgilityLevel()) entry.setTarget(entry.getTarget() + " <col=00ff00>(level-" + agilityShortcut.getLevel() + ")");
-								else entry.setTarget(entry.getTarget() + " <col=ff0000>(level-" + agilityShortcut.getLevel() + ")");
-								client.setMenuEntries(entries);
-								return;
+				if (obId == event.getIdentifier())
+				{
+					AgilityShortcut agilityShortcut = nearbyObstacle.getShortcut();
+					for (MenuEntry entry : menuEntries)
+					{
+						if (entry.getTarget().equalsIgnoreCase(event.getTarget()) && !entry.getTarget().toLowerCase().contains("(level-"))
+						{
+							if (agilityShortcut.getLevel() <= getAgilityLevel())
+							{
+								entry.setTarget(entry.getTarget() + " " + ColorUtil.colorTag(Color.GREEN));
 							}
+							else
+							{
+								entry.setTarget(entry.getTarget() + " " + ColorUtil.colorTag(Color.RED));
+							}
+							entry.setTarget(entry.getTarget() + "(level-" + agilityShortcut.getLevel() + ")");
+							client.setMenuEntries(menuEntries);
+							return;
 						}
 					}
 				}
 			}
 		}
-    }
+	}
 }
