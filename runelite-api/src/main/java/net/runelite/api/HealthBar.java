@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.rs.api;
+package net.runelite.api;
 
-import net.runelite.api.FontTypeFace;
-import net.runelite.mapping.Import;
-
-public interface RSFontTypeFace extends FontTypeFace
+public interface HealthBar
 {
-	@Import("getTextWidth")
-	@Override
-	int getTextWidth(String text);
+	SpritePixels getHealthBarFrontSprite();
 
-	@Import("verticalSpace")
-	@Override
-	int getBaseline();
+	SpritePixels getHealthBarBackSprite();
 
-	@Import("drawTextLeftAligned")
-	void drawTextLeftAligned(String text, int x, int y, int fontColor, int shadowColor);
+	void setPadding(int padding);
 }

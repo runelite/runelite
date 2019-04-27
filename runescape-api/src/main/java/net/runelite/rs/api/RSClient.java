@@ -932,4 +932,41 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("getEnum")
 	RSEnum getRsEnum(int id);
+
+	@Import("menuX")
+	int getMenuX();
+
+	@Import("menuY")
+	int getMenuY();
+
+	@Import("menuHeight")
+	int getMenuHeight();
+
+	@Import("menuWidth")
+	int getMenuWidth();
+
+	@Import("fontBold12")
+	RSFont getFontBold12();
+
+	@Import("drawHorizontalLine")
+	void RasterizerDrawHorizontalLine(int x, int y, int w, int rgb);
+
+	@Import("drawVerticalLine")
+	void RasterizerDrawVerticalLine(int x, int y, int h, int rgb);
+
+	@Import("drawGradient")
+	void RasterizerDrawGradient(int x, int y, int w, int h, int rgbTop, int rgbBottom);
+
+	@Import("fillRectangleAlpha")
+	void RasterizerFillRectangleAlpha(int x, int y, int w, int h, int rgb, int a);
+
+	@Import("drawRectangle")
+	void RasterizerDrawRectangle(int x, int y, int w, int h, int rgb);
+
+	@Import("drawCircle")
+	void RasterizerDrawCircle(int x, int y, int r, int rgb);
+
+	@Import("healthbarCache")
+	@Override
+	RSNodeCache getHealthBarCache();
 }

@@ -97,7 +97,7 @@ public class AmmoPlugin extends Plugin
 	{
 		// Check for weapon slot items. This overrides the ammo slot,
 		// as the player will use the thrown weapon (eg. chinchompas, knives, darts)
-		if (items.length >= EquipmentInventorySlot.WEAPON.getSlotIdx() - 1)
+		if (items.length > EquipmentInventorySlot.WEAPON.getSlotIdx())
 		{
 			final Item weapon = items[EquipmentInventorySlot.WEAPON.getSlotIdx()];
 			final ItemComposition weaponComp = itemManager.getItemComposition(weapon.getId());
@@ -110,6 +110,7 @@ public class AmmoPlugin extends Plugin
 
 		if (items.length <= EquipmentInventorySlot.AMMO.getSlotIdx())
 		{
+			removeInfobox();
 			return;
 		}
 
@@ -118,8 +119,7 @@ public class AmmoPlugin extends Plugin
 
 		if (!comp.isStackable())
 		{
-			infoBoxManager.removeInfoBox(counterBox);
-			counterBox = null;
+			removeInfobox();
 			return;
 		}
 
@@ -134,9 +134,15 @@ public class AmmoPlugin extends Plugin
 			return;
 		}
 
-		infoBoxManager.removeInfoBox(counterBox);
+		removeInfobox();
 		final BufferedImage image = itemManager.getImage(item.getId(), 5, false);
 		counterBox = new AmmoCounter(this, item.getId(), item.getQuantity(), comp.getName(), image);
 		infoBoxManager.addInfoBox(counterBox);
+	}
+
+	private void removeInfobox()
+	{
+		infoBoxManager.removeInfoBox(counterBox);
+		counterBox = null;
 	}
 }
