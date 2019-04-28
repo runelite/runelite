@@ -59,6 +59,7 @@ import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -71,6 +72,10 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.api.MenuEntry;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.api.MenuAction;
+import java.awt.Color;
 
 @PluginDescriptor(
 	name = "Agility",
@@ -418,6 +423,40 @@ public class AgilityPlugin extends Plugin
 			if (closestShortcut != null)
 			{
 				obstacles.put(newObject, new Obstacle(tile, closestShortcut));
+			}
+		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (!config.showShortcutLevel())
+		{
+			return;
+		}
+
+		//Guarding against non-first option because agility shortcuts are always that type of event.
+		if (event.getType() != MenuAction.GAME_OBJECT_FIRST_OPTION.getId())
+		{
+			return;
+		}
+
+		final int entryId = event.getIdentifier();
+		MenuEntry[] menuEntries = client.getMenuEntries();
+
+		for (Obstacle nearbyObstacle : getObstacles().values())
+		{
+			AgilityShortcut shortcut = nearbyObstacle.getShortcut();
+			if (Arrays.stream(shortcut.getObstacleIds()).anyMatch(i -> i == entryId))
+			{
+				MenuEntry entry = menuEntries[menuEntries.length - 1];
+				int level = shortcut.getLevel();
+				Color color = level <= getAgilityLevel() ? Color.GREEN : Color.RED;
+				String requirementText = " (level-" + level + ")";
+
+				entry.setTarget(event.getTarget() + ColorUtil.prependColorTag(requirementText, color));
+				client.setMenuEntries(menuEntries);
+				return;
 			}
 		}
 	}
