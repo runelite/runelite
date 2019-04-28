@@ -650,7 +650,7 @@ public class ConfigPanel extends PluginPanel
 
 		if (config == null)
 		{
-			return Collections.emptyList();
+			return Collections.singletonList(RUNELITE_PLUGIN);
 		}
 
 		return Text.fromCSV(config);
