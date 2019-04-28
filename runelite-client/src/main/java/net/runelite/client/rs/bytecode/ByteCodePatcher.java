@@ -74,6 +74,7 @@ public class ByteCodePatcher {
 				ErrorTransform et = new ErrorTransform();
 				et.modify(null);
 				RuneLite.splashScreen.setProgress(5, 5);
+				RuneLite.splashScreen.setSubMessage("");
 				ByteCodeUtils.updateHijackedJar();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -85,7 +86,7 @@ public class ByteCodePatcher {
 	}
 
 	public static void findHooks(String jf) {
-		RuneLite.splashScreen.setMessage("Intercepting Classes");
+		RuneLite.splashScreen.setMessage("Hijacking Classes");
 		try {
 			classPool = new ClassPool(true);
 			classPool.appendClassPath(RuneLite.RUNELITE_DIR+"/injectedClient-"+ RuneLiteAPI.getVersion() +"-.jar");

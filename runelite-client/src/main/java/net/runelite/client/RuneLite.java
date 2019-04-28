@@ -243,7 +243,7 @@ public class RuneLite
 			developerMode));
 
 		injector.getInstance(RuneLite.class).start();
-		splashScreen.setProgress(1, 4);
+		splashScreen.setProgress(1, 5);
 		final long end = System.currentTimeMillis();
 		final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
 		final long uptime = rb.getUptime();
@@ -264,10 +264,12 @@ public class RuneLite
 		// Load user configuration
 		splashScreen.setMessage("Loading configuration");
 		configManager.load();
-		splashScreen.setProgress(2, 4);
 
 		// Load the session, including saved configuration
 		sessionManager.loadSession();
+		splashScreen.setProgress(2, 5);
+
+		splashScreen.setMessage("Loading plugins");
 
 		// Begin watching for new plugins
 		pluginManager.watch();
@@ -277,21 +279,21 @@ public class RuneLite
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
-		splashScreen.setMessage("Loading plugins and patches");
-		splashScreen.setSubMessage("Starting session...");
 		pluginManager.loadCorePlugins();
-		splashScreen.setProgress(3, 4);
 
 		// Plugins have provided their config, so set default config
 		// to main settings
 		pluginManager.loadDefaultPluginConfiguration();
+		splashScreen.setProgress(3, 5);
 
+		splashScreen.setMessage("Starting Session");
 		// Start client session
 		clientSessionManager.start();
+		splashScreen.setProgress(4, 5);
 
 		// Load the session, including saved configuration
 		splashScreen.setMessage("Loading interface");
-		splashScreen.setProgress(4, 4);
+		splashScreen.setProgress(5, 5);
 
 		// Initialize UI
 		clientUI.open(this);

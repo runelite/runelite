@@ -421,11 +421,11 @@ public class ClientLoader
                                     }
                                     for (Method m : methods) {
 										RuneLite.splashScreen.setSubMessage("Checked "+m.getName());
-										RuneLite.splashScreen.setProgress(currentStep, stepCount);
 										if (m.getName().contains("$")) {
 											protectedStuff.add(classToLoad.getName()+"."+m.getName());
 										}
 									}
+                                    RuneLite.splashScreen.setProgress(currentStep, stepCount);
                                 } catch (FileNotFoundException e) {
                                     e.printStackTrace();
                                 }
