@@ -435,43 +435,30 @@ public class AgilityPlugin extends Plugin
 			return;
 		}
 
-		if (event.getTarget() == null || event.getTarget() == "")
-		{
-			return;
-		}
-
 		//Guarding against non-first option because agility shortcuts are always that type of event.
 		if (event.getType() != MenuAction.GAME_OBJECT_FIRST_OPTION.getId())
 		{
 			return;
 		}
 
+		final int entryId = event.getIdentifier();
 		MenuEntry[] menuEntries = client.getMenuEntries();
 
 		for (Obstacle nearbyObstacle : getObstacles().values())
 		{
-			for (int obId: nearbyObstacle.getShortcut().getObstacleIds())
+			AgilityShortcut shortcut = nearbyObstacle.getShortcut();
+			if (Arrays.stream(shortcut.getObstacleIds()).anyMatch(i -> i == entryId))
 			{
-				if (obId == event.getIdentifier())
+				MenuEntry entry = menuEntries[menuEntries.length - 1];
+				if (!entry.getTarget().toLowerCase().contains("(level-"))
 				{
-					AgilityShortcut agilityShortcut = nearbyObstacle.getShortcut();
-					for (MenuEntry entry : menuEntries)
-					{
-						if (entry.getTarget().equalsIgnoreCase(event.getTarget()) && !entry.getTarget().toLowerCase().contains("(level-"))
-						{
-							if (agilityShortcut.getLevel() <= getAgilityLevel())
-							{
-								entry.setTarget(entry.getTarget() + " " + ColorUtil.colorTag(Color.GREEN));
-							}
-							else
-							{
-								entry.setTarget(entry.getTarget() + " " + ColorUtil.colorTag(Color.RED));
-							}
-							entry.setTarget(entry.getTarget() + "(level-" + agilityShortcut.getLevel() + ")");
-							client.setMenuEntries(menuEntries);
-							return;
-						}
-					}
+					int level = shortcut.getLevel();
+					Color color = level <= getAgilityLevel() ? Color.GREEN : Color.RED;
+					String requirementText = " (level-" + level + ")";
+
+					entry.setTarget(event.getTarget() + ColorUtil.prependColorTag(requirementText, color));
+					client.setMenuEntries(menuEntries);
+					return;
 				}
 			}
 		}
