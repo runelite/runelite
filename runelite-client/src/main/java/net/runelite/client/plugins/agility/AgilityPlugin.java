@@ -450,16 +450,13 @@ public class AgilityPlugin extends Plugin
 			if (Arrays.stream(shortcut.getObstacleIds()).anyMatch(i -> i == entryId))
 			{
 				MenuEntry entry = menuEntries[menuEntries.length - 1];
-				if (!entry.getTarget().toLowerCase().contains("(level-"))
-				{
-					int level = shortcut.getLevel();
-					Color color = level <= getAgilityLevel() ? Color.GREEN : Color.RED;
-					String requirementText = " (level-" + level + ")";
+				int level = shortcut.getLevel();
+				Color color = level <= getAgilityLevel() ? Color.GREEN : Color.RED;
+				String requirementText = " (level-" + level + ")";
 
-					entry.setTarget(event.getTarget() + ColorUtil.prependColorTag(requirementText, color));
-					client.setMenuEntries(menuEntries);
-					return;
-				}
+				entry.setTarget(event.getTarget() + ColorUtil.prependColorTag(requirementText, color));
+				client.setMenuEntries(menuEntries);
+				return;
 			}
 		}
 	}
