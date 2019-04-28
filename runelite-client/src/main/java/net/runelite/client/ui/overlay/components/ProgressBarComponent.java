@@ -40,7 +40,8 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 	public enum LabelDisplayMode
 	{
 		PERCENTAGE,
-		FULL
+		FULL,
+		BOTH
 	}
 
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.0");
@@ -76,6 +77,10 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 		{
 			case PERCENTAGE:
 				textToWrite = DECIMAL_FORMAT.format(pc * 100d) + "%";
+				break;
+			case BOTH:
+				textToWrite = DECIMAL_FORMAT_ABS.format(Math.floor(currentValue)) + "/" + maximum
+					+ " (" + DECIMAL_FORMAT.format(pc * 100d) + "%)";
 				break;
 			default:
 				textToWrite = DECIMAL_FORMAT_ABS.format(Math.floor(currentValue)) + "/" + maximum;
