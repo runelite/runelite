@@ -187,9 +187,9 @@ public class BarbarianAssaultPlugin extends Plugin
 							+ "; Total Failed attacks: " +  pointsList[4]
 							+ "; Total Honour Points: " + (80 + pointsList[5]));
 			}
-
 			Widget pointsWidget = client.getWidget(WidgetInfo.BA_RUNNERS_PASSED);
-			if (pointsWidget != null && config.showSummaryOfPoints() && !hasAnnounced && client.getVar(Varbits.IN_GAME_BA) == 0)
+			if (!rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && pointsWidget != null
+					&& config.showSummaryOfPoints() && !hasAnnounced && client.getVar(Varbits.IN_GAME_BA) == 0)
 			{
 				announceSomething("Wave Points Summary: " + giveSummaryOfPoints());
 				hasAnnounced = true;
@@ -230,23 +230,22 @@ public class BarbarianAssaultPlugin extends Plugin
 			{
 				gameTime.setWaveStartTime();
 			}
-			else if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE
-					&& chatMessage.getMessage().contains("explode"))
+		}
+		if (chatMessage.getMessage().contains("exploded"))
+		{
+			wrongEggs++;
+			positiveEggCount--;
+		}
+		if (chatMessage.getMessage().contains("You healed"))
+		{
+			String[] tokens = message.split(" ");
+			if (Integer.parseInt(tokens[2]) > 0)
 			{
-				wrongEggs++;
-				positiveEggCount--;
-			}
-			else if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE
-					&& chatMessage.getMessage().contains("healed"))
-			{
-				String[] tokens = message.split(" ");
-				if (Integer.parseInt(tokens[2]) > 0)
-				{
-					int Hp = Integer.parseInt(tokens[2]);
-					HpHealed += Hp;
-				}
+				int Hp = Integer.parseInt(tokens[2]);
+				HpHealed += Hp;
 			}
 		}
+
 		if (message.contains("the wrong type of poisoned food to use"))
 		{
 			recolored = ColorUtil.wrapWithColorTag(nodeValue, config.wrongPoisonFoodTextColor());
@@ -354,7 +353,7 @@ public class BarbarianAssaultPlugin extends Plugin
 				{
 					positiveEggCount = 60;
 				}
-				collectedEggCount = positiveEggCount - wrongEggs; //true positive - negative egg count\
+				collectedEggCount = positiveEggCount - wrongEggs; //true positive - negative egg count
 			}
 		}
 	}
