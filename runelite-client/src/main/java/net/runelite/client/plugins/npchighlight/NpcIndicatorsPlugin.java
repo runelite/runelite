@@ -255,11 +255,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
 			// Strip out existing color tag
-			int idx = target.indexOf('>');
-			if (idx != -1)
-			{
-				target = target.substring(idx + 1);
-			}
+			target.substring(target.indexOf('>') + 1);
 			target = ColorUtil.prependColorTag(target, config.getHighlightColor());
 			menuEntry.setTarget(target);
 		}
