@@ -1,6 +1,6 @@
 language: java
 sudo: false
-dist: trusty
+dist: xenial
 cache:
   directories:
     - $HOME/.m2
