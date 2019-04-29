@@ -569,7 +569,7 @@ public class WidgetID
 		static final int VENT_C_STATUS = 25;
 	}
 
-	static class BarbarianAssault
+	public static class BarbarianAssault
 	{
 		static class ATK
 		{
@@ -579,12 +579,20 @@ public class WidgetID
 			static final int ROLE_SPRITE = 11;
 			static final int ROLE = 12;
 		}
-		static class HLR
-		{
+		static class HLR {
 			static final int TEAMMATE1 = 18;
 			static final int TEAMMATE2 = 22;
 			static final int TEAMMATE3 = 26;
 			static final int TEAMMATE4 = 30;
+		}
+		public static class REWARD_VALUES
+		{
+			public static final int RUNNERS_PASSED = 14;
+			static final int HITPOINTS_REPLENISHED = 19;
+			static final int WRONG_POISON_PACKS_USED = 20;
+			static final int EGGS_COLLECTED = 21;
+			static final int FAILED_ATTACKER_ATTACKS = 22;
+			static final int HONOUR_POINTS_REWARD = 49;
 		}
 		static final int CORRECT_STYLE = 3;
 		static final int CURRENT_WAVE_WIDGET = 4;

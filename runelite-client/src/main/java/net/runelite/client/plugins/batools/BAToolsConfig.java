@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, Cameron <https://github.com/noremac201>
+ * Copyright (c) 2018, Jacob M <https://github.com/jacoblairm>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -120,4 +121,45 @@ public interface BAToolsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "prayerMetronome",
+		name = "Prayer Metronome",
+		description = "asd"
+	)
+	default boolean prayerMetronome()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "prayerMetronomeVolume",
+		name = "Prayer Metronome Volume",
+		description = "asd"
+	)
+	default int prayerMetronomeVolume()
+	{
+		return 1;
+	}
+
+	@ConfigItem(
+		keyName = "attackStyles",
+		name = "Attack Styles",
+		description = "asd"
+	)
+	default boolean attackStyles()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "tagging",
+		name = "Attack Tags",
+		description = "asd"
+	)
+	default boolean tagging()
+	{
+		return false;
+	}
+
 }

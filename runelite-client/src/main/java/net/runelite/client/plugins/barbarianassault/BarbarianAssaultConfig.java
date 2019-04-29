@@ -29,6 +29,8 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
+import java.awt.*;
+
 @ConfigGroup("barbarianAssault")
 public interface BarbarianAssaultConfig extends Config
 {
@@ -80,10 +82,34 @@ public interface BarbarianAssaultConfig extends Config
 	@ConfigItem(
 			keyName = "highlightCollectorEggs",
 			name = "Highlight collector eggs",
-			description = "Highlight called egg colors"
+			description = "Highlight called egg colors",
+			position = 4
 	)
 	default boolean highlightCollectorEggs()
 	{
-		return true;
+		return false;
 	}
+
+	@ConfigItem(
+			keyName = "showTotalRewards",
+			name = "Summarize total reward points",
+			description = "Displays total eggs/healed hp and missed attacks/lost runners",
+			position = 5
+	)
+	default boolean showTotalRewards(){ return false; };
+
+	@ConfigItem(
+			keyName = "showSummaryOfPoints",
+			name = "Display summary of advanced points",
+			description = "Gives summary of advanced points breakdown in chat log",
+			position = 7
+	)
+	default boolean showSummaryOfPoints() { return false; };
+	@ConfigItem(
+			keyName = "wrongPoisonFoodTextColor",
+			name = "Change healer wrong poison pack color",
+			description = "Change healer wrong poison pack color",
+			position = 8
+	)
+	default Color wrongPoisonFoodTextColor() { return Color.BLACK;}
 }
