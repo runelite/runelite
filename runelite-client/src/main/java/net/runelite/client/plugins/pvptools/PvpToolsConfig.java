@@ -63,12 +63,23 @@ public interface PvpToolsConfig extends Config
 	{
 		return Keybind.NOT_SET;
 	}
+	
+	@ConfigItem(
+		keyName = "renderSelfHotkey",
+		name = "Render Self Hotkey",
+		description = "Toggles renderself when you press the hotkey",
+		position = 7
+	)
+	default Keybind renderSelf()
+	{
+		return Keybind.NOT_SET;
+	}
 
 	@ConfigItem(
 		keyName = "attackOptionsClan",
 		name = "Move CC Attack Option",
 		description = "Moves the attack option for people in the same CC",
-		position = 7,
+		position = 8,
 		group = "Right-Click Attack Options"
 	)
 	default boolean attackOptionsClan()
@@ -80,7 +91,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "attackOptionsFriend",
 		name = "Move Friend Attack Options",
 		description = "Moves the attack option for people on your friends list",
-		position = 8,
+		position = 9,
 		group = "Right-Click Attack Options"
 	)
 	default boolean attackOptionsFriend()
@@ -92,7 +103,7 @@ public interface PvpToolsConfig extends Config
 			keyName = "levelRangeAttackOptions",
 			name = "Moves Other Attack Options",
 			description = "Moves the attack option for people that are outside your level range",
-			position = 9,
+			position = 10,
 			group = "Right-Click Attack Options"
 	)
 	default boolean levelRangeAttackOptions()
@@ -104,7 +115,7 @@ public interface PvpToolsConfig extends Config
 		keyName = "riskCalculator",
 		name = "Risk Calculator",
 		description = "Enables a panel in the PvP Tools Panel that shows the players current risk",
-		position = 13
+		position = 14
 	)
 	default boolean riskCalculatorEnabled()
 	{
@@ -116,7 +127,7 @@ public interface PvpToolsConfig extends Config
 		name = "Missing CC Players",
 		description = "Adds a button to the PvP Tools panel that opens a window showing which CC members are not at" +
 				" the current players location",
-		position = 14
+		position = 15
 	)
 	default boolean missingPlayersEnabled() { return true; }
 
@@ -125,7 +136,7 @@ public interface PvpToolsConfig extends Config
 			name = "Current CC Players",
 			description = "Adds a button to the PvP Tools panel that opens a window showing which CC members currently at" +
 					" the players location",
-			position = 15
+			position = 16
 	)
 	default boolean currentPlayersEnabled()
 	{

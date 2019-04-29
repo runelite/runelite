@@ -1611,6 +1611,8 @@ public interface Client extends GameEngine
 	void draw2010Menu();
 
 	NodeCache getHealthBarCache();
+	
+	void toggleRenderSelf();
 
 	void invokeMenuAction(int var1, int var2, int var3, int var4, String var5, String var6, int var7, int var8);
 

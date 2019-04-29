@@ -12,11 +12,8 @@ package net.runelite.client.plugins.pvptools;
 import com.google.inject.Provides;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NavigableMap;
@@ -53,8 +50,8 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.PluginType;
+import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.clanchat.ClanChatPlugin;
 import static net.runelite.client.plugins.pvptools.PvpToolsPanel.htmlLabel;
 import net.runelite.client.ui.ClientToolbar;
@@ -70,7 +67,7 @@ import org.apache.commons.lang3.ArrayUtils;
 @PluginDescriptor(
 	name = "PvP Tools",
 	description = "Enable the PvP Tools panel",
-	tags = {"panel", "pvp", "pk", "pklite"},
+	tags = {"panel", "pvp", "pk", "pklite", "renderself"},
 	type = PluginType.PVP
 )
 public class PvpToolsPlugin extends Plugin
@@ -155,14 +152,23 @@ public class PvpToolsPlugin extends Plugin
 
 
 	private ClanChatPlugin clanChatPlugin;
+	
 	/**
 	 * The HotKeyListener for the hot key assigned in the config that triggers the Fall In Helper feature
 	 */
-	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
+	private final HotkeyListener fallinHotkeyListener = new HotkeyListener(() -> config.hotkey())
 	{
 		public void hotkeyPressed()
 		{
 			toggleFallinHelper();
+		}
+	};
+	
+	private final HotkeyListener renderselfHotkeyListener = new HotkeyListener(() -> config.renderSelf())
+	{
+		public void hotkeyPressed()
+		{
+			client.toggleRenderSelf();
 		}
 	};
 
@@ -244,7 +250,8 @@ public class PvpToolsPlugin extends Plugin
 
 		overlayManager.add(pvpToolsOverlay);
 
-		keyManager.registerKeyListener(hotkeyListener);
+		keyManager.registerKeyListener(fallinHotkeyListener);
+		keyManager.registerKeyListener(renderselfHotkeyListener);
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "skull.png");
 
 		panel = new PvpToolsPanel();
@@ -277,7 +284,8 @@ public class PvpToolsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(pvpToolsOverlay);
-		keyManager.unregisterKeyListener(hotkeyListener);
+		keyManager.unregisterKeyListener(fallinHotkeyListener);
+		keyManager.unregisterKeyListener(renderselfHotkeyListener);
 		clientToolbar.removeNavigation(navButton);
 	}
 

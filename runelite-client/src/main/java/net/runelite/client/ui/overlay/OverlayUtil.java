@@ -37,6 +37,7 @@ import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
@@ -257,5 +258,18 @@ public class OverlayUtil
 		}
 
 		return result;
+	}
+	
+	public static void renderActorTextAndImage(Graphics2D graphics, Actor actor, String text, Color color,
+			BufferedImage image, int yOffset, int xOffset)
+	{
+		Point textLocation = new Point(actor.getConvexHull().getBounds().x + xOffset,
+				actor.getConvexHull().getBounds().y + yOffset);
+		
+		renderImageLocation(graphics, textLocation, image);
+		xOffset = image.getWidth() + 1;
+		yOffset = (image.getHeight() - (int) graphics.getFontMetrics().getStringBounds(text, graphics).getHeight());
+		textLocation = new Point(textLocation.getX() + xOffset, textLocation.getY() + image.getHeight() - yOffset);
+		renderTextLocation(graphics, textLocation, text, color);
 	}
 }

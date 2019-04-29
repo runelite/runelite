@@ -77,7 +77,7 @@ public interface Player extends Actor
 	 * @return the overhead icon
 	 */
 	HeadIcon getOverheadIcon();
-
+	
 	/**
 	 * Gets the displayed skull icon of the player.
 	 * Only works on the local player.
