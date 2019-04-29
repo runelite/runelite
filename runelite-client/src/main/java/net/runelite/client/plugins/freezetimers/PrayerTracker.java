@@ -43,10 +43,10 @@ public class PrayerTracker
 			newTick.put(actor, new HashMap<>());
 		}
 		if (actor instanceof Player)
-			if (((Player) actor).getOverheadIcon()!=null) {
-				newTick.get(actor).put("PrayerIcon", ((Player) actor).getOverheadIcon().ordinal());
-				newTick.get(actor).put("SpotAnim", actor.getGraphic());
+			if(actor instanceof Player) {
+				newTick.get(actor).put("PrayerIcon", ((Player) actor).getOverheadIcon() == null ? -1 : ((Player) actor).getOverheadIcon().ordinal());
 			}
+		newTick.get(actor).put("SpotAnim", actor.getGraphic());
 	}
 	
 	public int getPrayerIconLastTick(Actor p)
