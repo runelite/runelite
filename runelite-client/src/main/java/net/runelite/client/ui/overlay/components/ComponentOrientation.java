@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2018, Jasper Ketelaar <Jasper0781@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.ui.overlay.components;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-/**
- * An enumeration of string local variables.
- */
-@AllArgsConstructor
-@Getter
-public enum VarClientStr
+public enum ComponentOrientation
 {
-	DUEL_OPPONENT_NAME(357),
-	CHATBOX_TYPED_TEXT(335),
-	INPUT_TEXT(359),
-	PRIVATE_MESSAGE_TARGET(360),
-	RECENT_CLAN_CHAT(362);
-
-	private final int index;
+	HORIZONTAL,
+	VERTICAL
 }

@@ -57,6 +57,8 @@ import net.runelite.client.util.StackFormatter;
 
 class XpInfoBox extends JPanel
 {
+	private static final String REMOVE_STATE = "Remove from canvas";
+	private static final String ADD_STATE = "Add to canvas";
 	private static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("0.00");
 
 	// Templates
@@ -91,6 +93,7 @@ class XpInfoBox extends JPanel
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
 
 	private final XpTrackerConfig xpTrackerConfig;
+	private final JMenuItem canvasItem = new JMenuItem(ADD_STATE);
 
 	private boolean paused = false;
 
@@ -128,6 +131,21 @@ class XpInfoBox extends JPanel
 		popupMenu.add(reset);
 		popupMenu.add(resetOthers);
 		popupMenu.add(pauseSkill);
+		popupMenu.add(canvasItem);
+
+		canvasItem.addActionListener(e ->
+		{
+			if (canvasItem.getText().equals(REMOVE_STATE))
+			{
+				xpTrackerPlugin.removeOverlay(skill);
+				canvasItem.setText(ADD_STATE);
+			}
+			else
+			{
+				xpTrackerPlugin.addOverlay(skill);
+				canvasItem.setText(REMOVE_STATE);
+			}
+		});
 
 		JLabel skillIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(skill)));
 		skillIcon.setHorizontalAlignment(SwingConstants.CENTER);
@@ -177,6 +195,7 @@ class XpInfoBox extends JPanel
 
 	void reset()
 	{
+		canvasItem.setText(ADD_STATE);
 		container.remove(statsPanel);
 		panel.remove(this);
 		panel.revalidate();
