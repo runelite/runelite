@@ -434,8 +434,7 @@ public class AgilityPlugin extends Plugin
 		{
 			return;
 		}
-
-		//Guarding against non-first option because agility shortcuts are always that type of event.
+		
 		if (event.getType() != MenuAction.GAME_OBJECT_FIRST_OPTION.getId())
 		{
 			return;
