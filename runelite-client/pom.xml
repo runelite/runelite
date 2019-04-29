@@ -42,7 +42,20 @@
 		<jarsigner.skip>true</jarsigner.skip>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>RuneLit</id>
+			<name>RuneLit</name>
+			<url>https://raw.githubusercontent.com/runelite-extended/maven-repo/master</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
+		<dependency>
+			<groupId>net.runelit</groupId>
+			<artifactId>flexo</artifactId>
+			<version>1.0.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
