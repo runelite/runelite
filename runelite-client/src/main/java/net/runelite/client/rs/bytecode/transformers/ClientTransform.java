@@ -31,6 +31,7 @@ public class ClientTransform implements Transform {
             transformGetProjectiles();
             transformGetCollisionMaps();
             transformDraw2010Menu();
+			transformRenderSelf();
 
 			ByteCodePatcher.modifiedClasses.add(ct);
 		} catch (Exception e) {
@@ -297,6 +298,25 @@ public class ClientTransform implements Transform {
 							"							}"
 														, ct);
 			ct.addMethod(onMenuOptionsChanged);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void transformRenderSelf() {
+		CtMethod renderSelf;
+		try {
+			renderSelf = CtMethod.make("	public void toggleRenderSelf() {"+
+							"						jb = !jb;"+
+							"					}"
+					, ct);
+			ClassFile classFile = ct.getClassFile();
+			ConstPool constPool = classFile.getConstPool();
+			AnnotationsAttribute attr = new AnnotationsAttribute(constPool, AnnotationsAttribute.visibleTag);
+			javassist.bytecode.annotation.Annotation annotation = new javassist.bytecode.annotation.Annotation("Export", constPool);
+			attr.setAnnotation(annotation);
+			renderSelf.getMethodInfo().addAttribute(attr);
+			ct.addMethod(renderSelf);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
