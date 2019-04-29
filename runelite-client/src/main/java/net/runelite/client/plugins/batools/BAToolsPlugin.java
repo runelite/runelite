@@ -443,11 +443,11 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 				client.setMenuEntries(entries.toArray(new MenuEntry[entries.size()]));
 			}
 		}
-		else if (config.calls() && event.getTarget().endsWith("horn"))
+		/*else if (config.calls() && event.getTarget().endsWith("horn"))
 		{
 			entries.clear();
 			client.setMenuEntries(entries.toArray(new MenuEntry[entries.size()]));
-		}
+		}*/
 
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
