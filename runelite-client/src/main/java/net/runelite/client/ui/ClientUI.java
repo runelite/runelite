@@ -110,6 +110,9 @@ public class ClientUI
 	@Getter
 	private TrayIcon trayIcon;
 
+	@Getter
+	private JPanel container;
+
 	private final RuneLiteProperties properties;
 	private final RuneLiteConfig config;
 	private final KeyManager keyManager;
@@ -130,7 +133,6 @@ public class ClientUI
 	private JButton currentButton;
 	private NavigationButton currentNavButton;
 	private boolean sidebarOpen;
-	private JPanel container;
 	private NavigationButton sidebarNavigationButton;
 	private JButton sidebarNavigationJButton;
 	private Dimension lastClientSize;
