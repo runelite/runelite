@@ -15,6 +15,7 @@ public class ActorTransform implements Transform {
             ct = ByteCodePatcher.classPool.get(actor.getName());
             transformGetAnimation();
             transformAnimationChanged();
+            transformGraphicChanged();
             ByteCodePatcher.modifiedClasses.add(ct);
         } catch (NotFoundException e) {
             e.printStackTrace();
@@ -49,6 +50,20 @@ public class ActorTransform implements Transform {
                     "                                       animationChanged.setActor((net.runelite.api.Actor)this);" +
                     "                                       "+ByteCodePatcher.clientInstance+".getCallbacks().post((java.lang.Object)animationChanged); }",ct);
             ct.addMethod(getAnimationChanged);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void transformGraphicChanged() {
+        try {
+            CtMethod graphicChanged = ct.getDeclaredMethod("graphicChanged", new CtClass[]{CtClass.intType});
+            ct.removeMethod(graphicChanged);
+            graphicChanged = CtNewMethod.make("public void graphicChanged(int paramInt){" +
+                    "                                       net.runelite.api.events.GraphicChanged localGraphicChanged = new net.runelite.api.events.GraphicChanged();" +
+                    "                                       localGraphicChanged.setActor(this);" +
+                    "                                       "+ByteCodePatcher.clientInstance+".getCallbacks().post(localGraphicChanged);}",ct);
+            ct.addMethod(graphicChanged);
         } catch (Exception e) {
             e.printStackTrace();
         }
