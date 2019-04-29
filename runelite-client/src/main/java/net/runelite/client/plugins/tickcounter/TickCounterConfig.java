@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.tickcounter;
 
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -18,6 +19,7 @@ public interface TickCounterConfig extends Config {
     {
         return true;
     }
+    @Alpha
     @ConfigItem(
             keyName = "selfColor",
             name = "Your color",
@@ -28,6 +30,7 @@ public interface TickCounterConfig extends Config {
     {
         return Color.green;
     }
+    @Alpha
     @ConfigItem(
             keyName = "totalColor",
             name = "Total color",
@@ -38,6 +41,7 @@ public interface TickCounterConfig extends Config {
     {
         return Color.RED;
     }
+    @Alpha
     @ConfigItem(
             keyName = "otherColor",
             name = "Other players color",
@@ -48,6 +52,7 @@ public interface TickCounterConfig extends Config {
     {
         return Color.white;
     }
+    @Alpha
     @ConfigItem(
             keyName = "bgColor",
             name = "Background color",
@@ -58,6 +63,7 @@ public interface TickCounterConfig extends Config {
     {
         return new Color(70, 61, 50, 156);
     }
+    @Alpha
     @ConfigItem(
             keyName = "titleColor",
             name = "Title color",

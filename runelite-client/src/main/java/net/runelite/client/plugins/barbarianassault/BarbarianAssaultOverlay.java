@@ -54,11 +54,10 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 class BarbarianAssaultOverlay extends Overlay
 {
 	private static final int MAX_EGG_DISTANCE = 2500;
-
-
 	private final int HEALTH_BAR_HEIGHT = 20;
 	private final Color HEALTH_BAR_COLOR = new Color(225, 35, 0, 125);
 	private static final Color BACKGROUND = new Color(0, 0, 0, 150);
+	private static final int OFFSET_Z = 20;
 
 	private final Client client;
 	private final BarbarianAssaultPlugin plugin;
@@ -67,7 +66,6 @@ class BarbarianAssaultOverlay extends Overlay
 	@Getter
 	@Setter
 	private Round currentRound;
-
 
 	@Inject
 	private BarbarianAssaultOverlay(Client client, BarbarianAssaultPlugin plugin, BarbarianAssaultConfig config)
@@ -120,115 +118,99 @@ class BarbarianAssaultOverlay extends Overlay
 		if (role == Role.COLLECTOR && config.highlightCollectorEggs())
 		{
 			String heardCall = plugin.getCollectorHeardCall();
-			Color highlightColor;
-			Map<WorldPoint, Integer> calledEggMap;
-
+			Color highlightColor = BarbarianAssaultPlugin.getEggColor(heardCall);
+			Map<WorldPoint, Integer> calledEggMap = plugin.getCalledEggMap();
 			Map<WorldPoint, Integer> yellowEggMap = plugin.getYellowEggs();
-
-			switch (heardCall)
-			{
-				case "Red eggs":
-					calledEggMap = plugin.getRedEggs();
-					highlightColor = Color.RED;
-					break;
-				case "Green eggs":
-					calledEggMap = plugin.getGreenEggs();
-					highlightColor = Color.GREEN;
-					break;
-				case "Blue eggs":
-					calledEggMap = plugin.getBlueEggs();
-					highlightColor = Color.BLUE;
-					break;
-				default:
-					calledEggMap = null;
-					highlightColor = null;
-			}
 
 			if (calledEggMap != null)
 			{
-				for (WorldPoint worldPoint : calledEggMap.keySet())
-				{
-					int quantity = calledEggMap.get(worldPoint);
-					renderEggLocation(graphics, worldPoint, quantity, highlightColor);
-				}
+				renderEggLocations(graphics, calledEggMap, highlightColor);
 			}
 
 			// Always show yellow eggs
-			for (WorldPoint worldPoint : yellowEggMap.keySet())
+			renderEggLocations(graphics, yellowEggMap, Color.YELLOW);
+		}
+		if (role == Role.HEALER)
+		{
+			for (HealerTeam teammate : HealerTeam.values())
 			{
-				int quantity = yellowEggMap.get(worldPoint);
-				renderEggLocation(graphics, worldPoint, quantity, highlightColor);
+				Widget widget = client.getWidget(teammate.getTeammate());
+				if (widget == null)
+				{
+					continue;
+				}
+
+				String[] teammateHealth = widget.getText().split(" / ");
+				final int curHealth = Integer.parseInt(teammateHealth[0]);
+				final int maxHealth = Integer.parseInt(teammateHealth[1]);
+
+				int width = teammate.getWidth();
+				final int filledWidth = getBarWidth(maxHealth, curHealth, width);
+
+				int offsetX = teammate.getOffset().getX();
+				int offsetY = teammate.getOffset().getY();
+				int x = widget.getCanvasLocation().getX() - offsetX;
+				int y = widget.getCanvasLocation().getY() - offsetY;
+
+				graphics.setColor(HEALTH_BAR_COLOR);
+				graphics.fillRect(x, y, filledWidth, HEALTH_BAR_HEIGHT);
 			}
 		}
-
-        if (role == Role.HEALER)
-        {
-            for (HealerTeam teammate : HealerTeam.values())
-            {
-                Widget widget = client.getWidget(teammate.getTeammate());
-                if (widget == null)
-                {
-                    continue;
-                }
-
-                String[] teammateHealth = widget.getText().split(" / ");
-                final int curHealth = Integer.parseInt(teammateHealth[0]);
-                final int maxHealth = Integer.parseInt(teammateHealth[1]);
-
-                int width = teammate.getWidth();
-                final int filledWidth = getBarWidth(maxHealth, curHealth, width);
-
-                int offsetX = teammate.getOffset().getX();
-                int offsetY = teammate.getOffset().getY();
-                int x = widget.getCanvasLocation().getX() - offsetX;
-                int y = widget.getCanvasLocation().getY() - offsetY;
-
-                graphics.setColor(HEALTH_BAR_COLOR);
-                graphics.fillRect(x, y, filledWidth, HEALTH_BAR_HEIGHT);
-            }
-        }
-
-
-        return null;
+		return null;
 	}
 
-	private void renderEggLocation(Graphics2D graphics, WorldPoint location, int quantity, Color color)
+	private void renderEggLocations(Graphics2D graphics, Map<WorldPoint, Integer> eggMap, Color color)
 	{
-		LocalPoint groundPoint = LocalPoint.fromWorld(client, location);
 		Player player = client.getLocalPlayer();
 
-		if (groundPoint == null || player == null)
+		if (player == null)
 		{
 			return;
 		}
 
-		if (player.getLocalLocation().distanceTo(groundPoint) > MAX_EGG_DISTANCE)
-		{
-			return;
-		}
-
-		Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
 		final Stroke originalStroke = graphics.getStroke();
 
-		graphics.setColor(color);
-		graphics.setStroke(new BasicStroke(2));
-		graphics.drawPolygon(poly);
-		graphics.setStroke(originalStroke);
+		for (WorldPoint worldPoint : eggMap.keySet())
+		{
+			LocalPoint groundPoint = LocalPoint.fromWorld(client, worldPoint);
 
-		String quantityText = "x" + quantity;
-		Point textPoint = Perspective.getCanvasTextLocation(client, graphics, groundPoint, quantityText, 0);
-		OverlayUtil.renderTextLocation(graphics, textPoint, quantityText, Color.WHITE);
+			if (groundPoint == null)
+			{
+				continue;
+			}
+			if (player.getLocalLocation().distanceTo(groundPoint) > MAX_EGG_DISTANCE)
+			{
+				continue;
+			}
+
+			Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
+
+			if (poly == null)
+			{
+				continue;
+			}
+
+			int quantity = eggMap.get(worldPoint);
+			String quantityText = "x" + quantity;
+			Point textPoint = Perspective.getCanvasTextLocation(client, graphics, groundPoint, quantityText, OFFSET_Z);
+			graphics.setColor(color);
+			graphics.setStroke(new BasicStroke(2));
+			graphics.drawPolygon(poly);
+			OverlayUtil.renderTextLocation(graphics, textPoint, quantityText, Color.WHITE);
+		}
+
+		graphics.setStroke(originalStroke);
 	}
 
-    private static int getBarWidth(int base, int current, int size)
-    {
-        final double ratio = (double) current / base;
+	private static int getBarWidth(int base, int current, int size)
+	{
+		final double ratio = (double) current / base;
 
-        if (ratio >= 1)
-        {
-            return size;
-        }
+		if (ratio >= 1)
+		{
+			return size;
+		}
 
-        return (int) Math.round(ratio * size);
-    }
+		return (int) Math.round(ratio * size);
+	}
 }
