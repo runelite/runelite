@@ -438,7 +438,7 @@ public class BarbarianAssaultPlugin extends Plugin
 
 	String getCollectorHeardCall()
 	{
-		Widget widget = client.getWidget(WidgetInfo.BA_COLL_HEARD_TEXT);
+		Widget widget = client.getWidget(WidgetInfo.BA_COLL_LISTEN_TEXT);
 		String call = null;
 
 		if (widget != null)
@@ -572,5 +572,31 @@ public class BarbarianAssaultPlugin extends Plugin
 	public Image getClockImage()
 	{
 		return clockImage;
+	}
+
+	public int getListenItemId(WidgetInfo listenInfo)
+	{
+		Widget listenWidget = client.getWidget(listenInfo);
+
+		if (listenWidget != null)
+		{
+			switch (listenWidget.getText())
+			{
+				case "Tofu":
+					return ItemID.TOFU;
+				case "Crackers":
+					return ItemID.CRACKERS;
+				case "Worms":
+					return ItemID.WORMS;
+				case "Pois. Worms":
+					return ItemID.POISONED_WORMS;
+				case "Pois. Tofu":
+					return ItemID.POISONED_TOFU;
+				case "Pois. Meat":
+					return ItemID.POISONED_MEAT;
+			}
+		}
+
+		return -1;
 	}
 }

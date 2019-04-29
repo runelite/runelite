@@ -546,7 +546,7 @@ public class WidgetID
 	{
 		static class ATK
 		{
-			static final int CALL_TEXT = 8;
+			static final int LISTEN = 8;
 			static final int TO_CALL_WIDGET = 9;
 			static final int TO_CALL = 10;
 			static final int ROLE_SPRITE = 11;
@@ -561,11 +561,11 @@ public class WidgetID
 			static final int FAILED_ATTACKER_ATTACKS = 22;
 			static final int HONOUR_POINTS_REWARD = 49;
 		}
-		static final int CORRECT_STYLE = 3;
+		static final int GAME_WIDGET = 3;
 		static final int CURRENT_WAVE_WIDGET = 4;
 		static final int CURRENT_WAVE = 5;
-		static final int CALL_WIDGET = 6;
-		static final int HEARD_CALL = 7;
+		static final int LISTEN_WIDGET = 6;
+		static final int LISTEN = 7;
 		static final int TO_CALL_WIDGET = 8;
 		static final int TO_CALL = 9;
 		static final int ROLE_SPRITE = 10;

@@ -25,11 +25,10 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-
-import java.awt.*;
 
 @ConfigGroup("barbarianAssault")
 public interface BarbarianAssaultConfig extends Config
@@ -37,21 +36,24 @@ public interface BarbarianAssaultConfig extends Config
 	@ConfigItem(
 		keyName = "showTimer",
 		name = "Show call change timer",
-		description = "Show time to next call change"
+		description = "Show time to next call change",
+		position = 0
 	)
 	default boolean showTimer()	{ return true; }
 
 	@ConfigItem(
 		keyName = "waveTimes",
 		name = "Show wave and game duration",
-		description = "Displays wave and game duration"
+		description = "Displays wave and game duration",
+        position = 1
     )
 	default boolean waveTimes() { return true; }
+
     @ConfigItem(
         keyName = "showEggCountMessage",
         name = "Show count of eggs collected as collector.",
         description = "Display egg count as collector after each wave",
-        position = 0
+        position = 2
     )
     default boolean showEggCount() { return false; }
 
@@ -59,7 +61,7 @@ public interface BarbarianAssaultConfig extends Config
         keyName = "showEggCountOverlay",
         name = "Overlay of eggs counted",
         description = "Display current egg count as collector",
-        position = 1
+        position = 3
     )
     default boolean showEggCountOverlay() { return false; }
 
@@ -67,7 +69,7 @@ public interface BarbarianAssaultConfig extends Config
         keyName = "showHpCountMessage",
         name = "Show count of Hp healed as healer.",
         description = "Display healed count as healer after each wave",
-        position = 2
+        position = 4
     )
     default boolean showHpCount() { return false; }
 
@@ -75,7 +77,7 @@ public interface BarbarianAssaultConfig extends Config
 			keyName = "showHpCountOverlay",
 			name = "Overlay of Hp counted",
 			description = "Display current healed count as healer",
-			position = 3
+			position = 5
 	)
 	default boolean showHpCountOverlay() { return false; }
 
@@ -83,18 +85,15 @@ public interface BarbarianAssaultConfig extends Config
 			keyName = "highlightCollectorEggs",
 			name = "Highlight collector eggs",
 			description = "Highlight called egg colors",
-			position = 4
+			position = 6
 	)
-	default boolean highlightCollectorEggs()
-	{
-		return false;
-	}
+	default boolean highlightCollectorEggs() { return false; }
 
 	@ConfigItem(
 			keyName = "showTotalRewards",
 			name = "Summarize total reward points",
 			description = "Displays total eggs/healed hp and missed attacks/lost runners",
-			position = 5
+			position = 7
 	)
 	default boolean showTotalRewards(){ return false; };
 
@@ -102,14 +101,37 @@ public interface BarbarianAssaultConfig extends Config
 			keyName = "showSummaryOfPoints",
 			name = "Display summary of advanced points",
 			description = "Gives summary of advanced points breakdown in chat log",
-			position = 7
-	)
+			position = 8
+    )
 	default boolean showSummaryOfPoints() { return false; };
+
 	@ConfigItem(
 			keyName = "wrongPoisonFoodTextColor",
 			name = "Change healer wrong poison pack color",
 			description = "Change healer wrong poison pack color",
-			position = 8
+			position = 9
 	)
 	default Color wrongPoisonFoodTextColor() { return Color.BLACK;}
+
+    @ConfigItem(
+			keyName = "highlightItems",
+			name = "Highlight called poison/bait",
+			description = "Highlights the poison or bait that was called by your teammate",
+			position = 10
+	)
+	default boolean highlightItems()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "highlightColor",
+			name = "Highlight color",
+			description = "Configures the color to highlight the called poison/bait",
+			position = 11
+	)
+	default Color highlightColor()
+	{
+		return Color.GREEN;
+	}
 }
