@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Shaun Dreclin <https://github.com/ShaunDreclin>
+ * Copyright (c) 2019, Lucas <https://github.com/Lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,28 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.spellbook;
 
-/**
- * Utility class used for mapping enum IDs.
- * <p>
- * Note: This class is not complete and may be missing mapped IDs.
- */
-public final class EnumID
+import java.util.HashMap;
+import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+public enum Spellbook
 {
-	public static final int MUSIC_TRACK_NAMES = 812;
-	public static final int MUSIC_TRACK_IDS = 819;
+	STANDARD(0, "standard"),
+	ANCIENT(1, "ancient"),
+	LUNAR(2, "lunar"),
+	ARCEUUS(3, "arceuus");
 
-	/**
-	 * Translates spellbook varbit into enum ID
-	 */
-	public static final int SPELLBOOKS = 1981;
+	@Getter
+	private final int id;
 
-	/**
-	 * key: index in spellbook, value: NullItemID corresponding to spell
-	 */
-	public static final int STANDARD_SPELLBOOK = 1982;
-	public static final int ANCIENT_SPELLBOOK = 1983;
-	public static final int LUNAR_SPELLBOOK = 1984;
-	public static final int ARCEUUS_SPELLBOOK = 1985;
+	@Getter
+	private final String configKey;
+
+	private static final Map<Integer, Spellbook> map = new HashMap<>();
+
+	static
+	{
+		for (Spellbook s : values())
+		{
+			map.put(s.id, s);
+		}
+	}
+
+	public static Spellbook getByID(int id)
+	{
+		return map.get(id);
+	}
 }

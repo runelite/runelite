@@ -605,7 +605,17 @@ public enum Varbits
     QUEST_SKIPPY_AND_THE_MOGRES(1344),
     QUEST_LAIR_OF_TARN_RAZORLOR(3290),
     QUEST_FAMILY_PEST(5347),
-    QUEST_THE_MAGE_ARENA_II(6067);
+    QUEST_THE_MAGE_ARENA_II(6067),
+
+	/**
+	 * Active spellbook (see enumID)
+	 */
+	SPELLBOOK(4070),
+
+	/**
+	 * Spellbook filtering (1 = unfiltered, 0 = filtered)
+	 */
+	FILTER_SPELLBOOK(6718);
 
     /**
      * The raw varbit ID.
