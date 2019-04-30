@@ -33,9 +33,9 @@ import net.runelite.client.config.ConfigItem;
 public interface BASConfig extends Config
 {
 	@ConfigItem(
-		keyName = "basFeature",
-		name = "BAS Customers",
-		description = "asd"
+			keyName = "basFeature",
+			name = "BAS Customers",
+			description = "asd"
 	)
 	default boolean basFeature()
 	{

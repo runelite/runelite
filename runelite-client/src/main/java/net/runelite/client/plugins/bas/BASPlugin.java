@@ -25,7 +25,7 @@
  */
 package net.runelite.client.plugins.bas;
 
-import com.google.common.eventbus.Subscribe;
+import net.runelite.client.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -36,7 +36,6 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
@@ -53,9 +52,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "BAS",
-	description = "BAS Customer CC Info",
-	tags = {"minigame"}
+		name = "BAS",
+		description = "BAS Customer CC Info",
+		tags = {"minigame"}
 )
 public class BASPlugin extends Plugin
 {
@@ -127,7 +126,6 @@ public class BASPlugin extends Plugin
 	{
 		if (config.basFeature())
 		{
-			log.info("checking");
 			Widget clanChatTitleWidget = client.getWidget(WidgetInfo.CLAN_CHAT_TITLE);
 			if (clanChatTitleWidget != null)
 			{
@@ -171,15 +169,15 @@ public class BASPlugin extends Plugin
 										{
 											premList.add(member.getText());
 											final String chatMessage = new ChatMessageBuilder()
-												.append(ChatColorType.NORMAL)
-												.append("Premium leech " + member.getText())
-												.append(ChatColorType.HIGHLIGHT)
-												.append(" online.")
-												.build();
+													.append(ChatColorType.NORMAL)
+													.append("Premium leech " + member.getText())
+													.append(ChatColorType.HIGHLIGHT)
+													.append(" online.")
+													.build();
 											chatMessageManager.queue(QueuedMessage.builder()
-												.type(ChatMessageType.GAMEMESSAGE)
-												.runeLiteFormattedMessage(chatMessage)
-												.build());
+													.type(ChatMessageType.CONSOLE)
+													.runeLiteFormattedMessage(chatMessage)
+													.build());
 										}
 									}
 									else
@@ -193,7 +191,6 @@ public class BASPlugin extends Plugin
 					for (String prem : premList)
 					{
 						boolean online = false;
-						log.info("members size = "+ members.length);
 						for (Widget member : members)
 						{
 							if(member.getText().toLowerCase().contains(prem.toLowerCase()))
@@ -205,15 +202,15 @@ public class BASPlugin extends Plugin
 						{
 							premList.remove(prem);
 							final String chatMessage = new ChatMessageBuilder()
-								.append(ChatColorType.NORMAL)
-								.append("Premium leech " + prem)
-								.append(ChatColorType.HIGHLIGHT)
-								.append(" offline.")
-								.build();
+									.append(ChatColorType.NORMAL)
+									.append("Premium leech " + prem)
+									.append(ChatColorType.HIGHLIGHT)
+									.append(" offline.")
+									.build();
 							chatMessageManager.queue(QueuedMessage.builder()
-								.type(ChatMessageType.GAMEMESSAGE)
-								.runeLiteFormattedMessage(chatMessage)
-								.build());
+									.type(ChatMessageType.CONSOLE)
+									.runeLiteFormattedMessage(chatMessage)
+									.build());
 						}
 					}
 				}
@@ -231,7 +228,10 @@ public class BASPlugin extends Plugin
 		while ((s = in.readLine()) != null)
 		{
 			String[] splitString = s.split(",");
-			csvContent.add(new String[]{splitString[2], splitString[2].equals("R") ? splitString[4] : splitString[3], splitString[0]});
+			if(splitString.length>1)
+			{
+				csvContent.add(new String[]{splitString[2], splitString[2].equals("R") ? splitString[4] : splitString[3], splitString[0]});
+			}
 		}
 	}
 }
