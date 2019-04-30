@@ -272,6 +272,21 @@ LABEL239:
    iload                  17
    invoke                 2619
    iconst                 1
+   if_icmpeq              FILTER_SPELL
+   jump                   LABEL263
+FILTER_SPELL:
+   iconst                 1                             ; boolean the callback modifies
+   iload                  17
+   iconst                 596                           ; widgetID, to populate config
+   oc_param
+   iload                  17
+   iconst                 601                           ; spell_name
+   oc_param                                             ; look up from object composition
+   sconst                 "shouldFilterSpell"
+   runelite_callback
+   pop_string                                           ; pop the name
+   pop_int                                              ; and the widgetID
+   iconst                 1                             ; default true, so the script still functions without plugin on
    if_icmpeq              LABEL250
    jump                   LABEL263
 LABEL250:
@@ -360,7 +375,9 @@ LABEL316:
    istore                 23
    iload                  12
    istore                 24
-   iload                  10
+   iconst                 0
+   sconst                 "isMobileSpellbookEnabled"
+   runelite_callback
    iconst                 1
    if_icmpeq              LABEL332
    jump                   LABEL422
@@ -372,6 +389,8 @@ LABEL332:
 LABEL336:
    iconst                 40
    iconst                 3
+   sconst                 "resizeSpell"
+   runelite_callback
    istore                 20
    istore                 19
    jump                   LABEL360
@@ -640,9 +659,11 @@ LABEL577:
    iconst                 1
    sub                   
    iload                  23
-   multiply              
-   add                   
-   iload                  24
+   multiply
+   add                                                  ; start of the label until here calcs total width
+   iload                  24                            ; total height
+   sconst                 "setSpellAreaSize"
+   runelite_callback
    iconst                 0
    iconst                 0
    iload                  0
@@ -703,7 +724,9 @@ LABEL611:
    iconst                 0
    iconst                 0
    iload                  25
-   if_setposition        
+   sconst                 "setSpellPosition"
+   runelite_callback
+   if_setposition
    iload                  17
    iload                  25
    invoke                 2614

@@ -432,7 +432,7 @@ public class WidgetID
 		static final int EQUIP_ICON = 61;
 		static final int PRAYER_TAB = 55;
 		static final int PRAYER_ICON = 62;
-		static final int SPELL_TAB = 56;
+		static final int MAGIC_TAB = 56;
 		static final int SPELL_ICON = 53;
 		static final int FC_TAB = 35;
 		static final int FC_ICON = 41;
@@ -763,10 +763,13 @@ public class WidgetID
 		static final int TELEPORT_BUTTON = 26;
 	}
 
-	static class StandardSpellBook
+	static class SpellBook
 	{
+		static final int FILTERED_SPELLS_BOUNDS = 3;
+
+		// NORMAL SPELLS
 		static final int LUMBRIDGE_HOME_TELEPORT = 4;
-static final int WIND_STRIKE = 5;
+		static final int WIND_STRIKE = 5;
 		static final int CONFUSE = 6;
 		static final int ENCHANT_CROSSBOW_BOLT = 7;
 		static final int WATER_STRIKE = 8;
@@ -835,10 +838,8 @@ static final int WIND_STRIKE = 5;
 		static final int EARTH_SURGE = 71;
 		static final int LVL_7_ENCHANT = 72;
 		static final int FIRE_SURGE = 73;
-	}
 
-	static class AncientSpellBook {
-		static final int BOUNTY_TARGET_TELEPORT = 68;
+		// ANCIENT SPELLS
 		static final int ICE_RUSH = 74;
 		static final int ICE_BLITZ = 75;
 		static final int ICE_BURST = 76;
@@ -864,10 +865,8 @@ static final int WIND_STRIKE = 5;
 		static final int ANNAKARL_TELEPORT = 96;
 		static final int GHORROCK_TELEPORT = 97;
 		static final int EDGEVILLE_HOME_TELEPORT = 98;
-	}
 
-	static class LunarSpellBook {
-		static final int BOUNTY_TARGET_TELEPORT = 68;
+		// LUNAR SPELLS
 		static final int LUNAR_HOME_TELEPORT = 99;
 		static final int BAKE_PIE = 100;
 		static final int CURE_PLANT = 101;
@@ -912,10 +911,8 @@ static final int WIND_STRIKE = 5;
 		static final int GEOMANCY = 140;
 		static final int SPIN_FLAX = 141;
 		static final int OURANIA_TELEPORT = 142;
-	}
 
-	static class ArceuusSpellBook
-	{
+		// ARCEUUS SPELLS
 		static final int ARCEUUS_HOME_TELEPORT = 143;
 	}
 
