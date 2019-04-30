@@ -152,4 +152,25 @@ public interface BAToolsConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+			keyName = "removeBA",
+			name = "*Barbarian Assault Helper*",
+			description = "Remove unnecessary menu options in Barbarian Assault depending on role<br>Examples: Remove attack options when not attacker<br>Remove take options when not collector"
+	)
+	default boolean removeBA() { return true; }
+
+	@ConfigItem(
+			keyName = "removeWrongEggs",
+			name = "Remove wrong eggs - *Barbarian Assault Helper*",
+			description = "Remove unnecessary menu options in Barbarian Assault depending on role<br>Examples: Remove attack options when not attacker<br>Remove take options when not collector"
+	)
+	default boolean removeWrongEggs() { return false; }
+
+	@ConfigItem(
+			keyName = "removeWrongHealFood",
+			name = "Remove wrong Heal Food - *Barbarian Assault Helper*",
+			description = "Remove unnecessary menu options in Barbarian Assault depending on role<br>Examples: Remove attack options when not attacker<br>Remove take options when not collector"
+	)
+	default boolean removeHealWrongFood() { return false; }
+
 }

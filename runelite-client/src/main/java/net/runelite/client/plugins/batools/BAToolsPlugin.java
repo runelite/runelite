@@ -36,10 +36,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -77,6 +74,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.ArrayUtils;
 
 @Slf4j
 @PluginDescriptor(
@@ -443,19 +441,122 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 				client.setMenuEntries(entries.toArray(new MenuEntry[entries.size()]));
 			}
 		}
-		/*else if (config.calls() && event.getTarget().endsWith("horn"))
-		{
-			entries.clear();
-			client.setMenuEntries(entries.toArray(new MenuEntry[entries.size()]));
-		}*/
 
+		final int itemId = event.getIdentifier();
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
+
 
 		if (config.swapLadder() && option.equals("climb-down") && target.equals("ladder"))
 		{
 			swap("quick-start", option, target, true);
 		}
+		else if(config.removeBA() && client.getVar(Varbits.IN_GAME_BA) == 1 && !option.contains("tell-"))//if in barbarian assault and menu isnt from a horn
+		{
+			if(itemId == ItemID.LOGS && !target.contains("healing vial"))
+			{
+				if(client.getWidget(WidgetInfo.BA_DEF_ROLE_TEXT) == null)
+					remove(new String[]{"take", "light"}, target, true);
+				else//remove "Light" option (and "Take" option if not defender).
+					remove("light", target, true);
+			}
+			else if(option.equals("use"))
+			{
+				if (config.removeHealWrongFood()) {
+					Widget healer = client.getWidget(WidgetInfo.BA_HEAL_LISTEN_TEXT);
+					if (healer != null) {
+						String item = target.split("-")[0].trim();
+						List<String> poison = Arrays.asList("poisoned tofu", "poisoned meat", "poisoned worms");
+						List<String> vials = Arrays.asList("healing vial", "healing vial(1)", "healing vial(2)", "healing vial(3)", "healing vial(4)");//"healing vial(4)"
+						if (poison.contains(item)) {//if item is a poison item
+							int calledPoison = 0;
+							switch (healer.getText())//choose which poison to hide the use/destroy option for
+							{
+								case "Pois. Tofu":
+									calledPoison = ItemID.POISONED_TOFU;
+									break;
+								case "Pois. Meat":
+									calledPoison = ItemID.POISONED_MEAT;
+									break;
+								case "Pois. Worms":
+									calledPoison = ItemID.POISONED_WORMS;
+									break;
+							}
+							System.out.println(target.equals(item));
+							if (target.equals(item))//if targeting the item itself
+							{
+								if (calledPoison != 0 && itemId != calledPoison)//if no call or chosen item is not the called one
+								{
+									remove(new String[]{"use", "destroy", "examine"}, target, true);//remove options
+								}
+							} else if (!target.contains("penance healer")) {
+								remove(option, target, true);
+							}
+						} else if (vials.contains(item))//if item is the healer's healing vial
+						{
+
+							if (!target.equals(item))//if target is not the vial itself
+							{
+
+								if (!target.contains("level") || target.contains("penance") || target.contains("queen spawn"))//if someone has "penance" or "queen spawn" in their name, gg...
+								{
+									remove(option, target, true);
+								}
+							}
+						}
+					}
+				}
+			}
+			else if(option.equals("attack") && client.getWidget(WidgetInfo.BA_ATK_ROLE_TEXT) == null && !target.equals("queen spawn"))//if not attacker
+			{//remove attack option from everything but queen spawns
+				remove(option, target, true);
+			}
+			else if((option.equals("fix") || (option.equals("block") && target.equals("penance cave"))) && client.getWidget(WidgetInfo.BA_DEF_ROLE_TEXT) == null)//if not defender
+			{//the check for option requires checking target as well because defensive attack style option is also called "block".
+				remove(option, target, true);
+			}
+			else if((option.equals("load")) && client.getWidget(WidgetInfo.BA_COLL_ROLE_TEXT) == null)//if not collector, remove hopper options
+			{
+				remove(new String[]{option, "look-in"}, target, true);
+			}
+			else if(config.removeWrongEggs() && option.equals("take"))
+			{
+				Widget eggToColl = client.getWidget(WidgetInfo.BA_COLL_LISTEN_TEXT);
+				if(eggToColl != null)//if we're a collector
+				{
+					List<Integer> eggsToHide = new ArrayList<>();
+					eggsToHide.add(ItemID.HAMMER);
+					switch(eggToColl.getText())//choose which eggs to hide take option for
+					{
+						case "Red eggs":
+							eggsToHide.add(ItemID.BLUE_EGG);
+							eggsToHide.add(ItemID.GREEN_EGG);
+							break;
+						case "Blue eggs":
+							eggsToHide.add(ItemID.RED_EGG);
+							eggsToHide.add(ItemID.GREEN_EGG);
+							break;
+						case "Green eggs":
+							eggsToHide.add(ItemID.RED_EGG);
+							eggsToHide.add(ItemID.BLUE_EGG);
+							break;
+					}
+					if(eggsToHide.contains(itemId))
+					{
+						remove(option, target, true);//hide wrong eggs
+					}
+				}
+				else
+				{
+					List<Integer> defenderItems = Arrays.asList(ItemID.HAMMER, ItemID.TOFU, ItemID.CRACKERS, ItemID.WORMS);//logs are handled separately due to hiding "light" option too.
+					if(client.getWidget(WidgetInfo.BA_DEF_ROLE_TEXT) == null || !defenderItems.contains(itemId))//if not defender, or item is not a defenderItem
+					{
+						remove(option, target, true);//hide everything except hammer/logs and bait if Defender
+					}
+				}
+			}
+		}
+
 
 		if (inGameBit == 1 && config.healerMenuOption() && event.getTarget().contains("Penance Healer"))
 		{
@@ -593,6 +694,30 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 
 		infoBoxManager.removeInfoBox(counter);
 		counter = null;
+	}
+
+	private void remove(String option, String target, boolean strict)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+		int idx = searchIndex(entries, option, target, strict);
+		if(idx >= 0 && entries[idx] != null)
+		{
+			entries = ArrayUtils.removeElement(entries, entries[idx]);
+			client.setMenuEntries(entries);
+		}
+	}
+
+	private void remove(String[] options, String target, boolean strict)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+		for(int i = 0; i < options.length; i++)
+		{
+			int idx = searchIndex(entries, options[i], target, strict);
+			if(idx >= 0 && entries[idx] != null)
+				entries = ArrayUtils.removeElement(entries, entries[idx]);
+		}
+
+		client.setMenuEntries(entries);
 	}
 
 	private void swap(String optionA, String optionB, String target, boolean strict)
