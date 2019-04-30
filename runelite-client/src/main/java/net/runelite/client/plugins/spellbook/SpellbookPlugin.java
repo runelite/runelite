@@ -201,13 +201,15 @@ public class SpellbookPlugin extends Plugin
 		String[] sStack = client.getStringStack();
 		int sStackSize = client.getStringStackSize();
 
-		if ("shouldFilterSpell".equals(event.getEventName()))
+		if ("startSpellRedraw".equals(event.getEventName()))
+		{
+			spellbook = Spellbook.getByID(client.getVar(Varbits.SPELLBOOK));
+			loadSpells();
+		}
+		else if ("shouldFilterSpell".equals(event.getEventName()))
 		{
 			String spell = sStack[sStackSize - 1].toLowerCase();
 			int widget = iStack[iStackSize - 1];
-
-			spellbook = Spellbook.getByID(client.getVar(Varbits.SPELLBOOK));
-			loadSpells();
 
 			// Add the spell to spells
 			if (!spells.containsKey(widget))
@@ -341,13 +343,16 @@ public class SpellbookPlugin extends Plugin
 		{
 			return;
 		}
+
 		spells.clear();
+
 		String cfg = configManager.getConfiguration("spellbook", spellbook.getConfigKey());
 
 		if (Strings.isNullOrEmpty(cfg))
 		{
 			return;
 		}
+
 		// CHECKSTYLE:OFF
 		Collection<Spell> gson = GSON.fromJson(cfg, new TypeToken<List<Spell>>(){}.getType());
 		// CHECKSTYLE:ON
