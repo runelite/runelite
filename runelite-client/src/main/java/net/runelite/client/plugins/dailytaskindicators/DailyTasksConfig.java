@@ -109,4 +109,15 @@ public interface DailyTasksConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "showDynamite",
+		name = "Show Claimable Dynamite",
+		description = "Show a message when you can collect Dynamite from Thirus."
+	)
+	default boolean showDynamite()
+	{
+		return false;
+	}
 }
