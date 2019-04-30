@@ -447,8 +447,7 @@ public class AgilityPlugin extends Plugin
 		for (Obstacle nearbyObstacle : getObstacles().values())
 		{
 			AgilityShortcut shortcut = nearbyObstacle.getShortcut();
-			if (Arrays.stream(shortcut.getObstacleIds()).anyMatch(i -> i == entryId))
-			{
+			if (shortcut != null && Arrays.stream(shortcut.getObstacleIds()).anyMatch(i -> i == entryId)) {
 				MenuEntry entry = menuEntries[menuEntries.length - 1];
 				int level = shortcut.getLevel();
 				Color color = level <= getAgilityLevel() ? Color.GREEN : Color.RED;
