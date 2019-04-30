@@ -251,18 +251,27 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		String target = event.getTarget();
-		if (config.highlightMenuNames() && highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()))
+		final int identifier = event.getIdentifier();
+		int type = event.getType();
+
+		if (type >= 2000)
 		{
-			MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-			// Strip out existing color tag
-			target.substring(target.indexOf('>') + 1);
-			target = ColorUtil.prependColorTag(target, config.getHighlightColor());
+			type -= 2000;
+		}
+
+		if (config.highlightMenuNames() &&
+			NPC_MENU_ACTIONS.contains(MenuAction.of(type)) &&
+			highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == identifier))
+		{
+			final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
+			target = ColorUtil.prependColorTag(Text.removeTags(target), config.getHighlightColor());
 			menuEntry.setTarget(target);
 		}
-		if (hotKeyPressed && event.getType() == MenuAction.EXAMINE_NPC.getId())
+
+		if (hotKeyPressed && type == MenuAction.EXAMINE_NPC.getId())
 		{
 			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-			MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 			tagEntry.setOption(TAG);
 			tagEntry.setTarget(target);
 			tagEntry.setParam0(event.getActionParam0());
@@ -270,6 +279,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			tagEntry.setIdentifier(event.getIdentifier());
 			tagEntry.setType(MenuAction.RUNELITE.getId());
 		}
+
 		client.setMenuEntries(menuEntries);
 	}
 
