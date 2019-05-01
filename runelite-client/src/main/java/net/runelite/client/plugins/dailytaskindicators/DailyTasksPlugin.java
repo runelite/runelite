@@ -63,6 +63,7 @@ public class DailyTasksPlugin extends Plugin
 	private static final String SAND_MESSAGE = "You have sand waiting to be collected from Bert.";
 	private static final int SAND_QUEST_COMPLETE = 160;
 	private static final String FLAX_MESSAGE = "You have bowstrings waiting to be converted from flax from the Flax keeper.";
+	private static final String ARROWS_MESSAGE = "You have ogre arrows waiting to be collected from Rantz.";
 	private static final String BONEMEAL_MESSAGE = "You have bonemeal and slime waiting to be collected from Robin.";
 	private static final int BONEMEAL_PER_DIARY = 13;
 	private static final String DYNAMITE_MESSAGE = "You have dynamite waiting to be collected from Thirus.";
@@ -160,22 +161,21 @@ public class DailyTasksPlugin extends Plugin
 				checkDynamite(dailyReset);
 			}
 
+
+			if (config.showArrows())
+			{
+				checkArrows(dailyReset);
+			}
 		}
 	}
 
 	private void checkHerbBoxes(boolean dailyReset)
 	{
-		if (client.getAccountType() == AccountType.NORMAL
+		if ((client.getAccountType() == AccountType.NORMAL
 			&& client.getVar(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST)
+			&& (dailyReset || client.getVar(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX))
 		{
-			if (client.getVar(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX)
-			{
-				sendChatMessage(HERB_BOX_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(HERB_BOX_MESSAGE);
-			}
+			sendChatMessage(HERB_BOX_MESSAGE);
 		}
 	}
 
@@ -196,60 +196,51 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkEssence(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1)
+		if ((client.getVar(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1)
+			&& (dailyReset || client.getVar(Varbits.DAILY_ESSENCE_COLLECTED) == 0))
 		{
-			if (client.getVar(Varbits.DAILY_ESSENCE_COLLECTED) == 0)
-			{
-				sendChatMessage(ESSENCE_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(ESSENCE_MESSAGE);
-			}
+			sendChatMessage(ESSENCE_MESSAGE);
 		}
 	}
 
 	private void checkRunes(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1)
+		if ((client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1)
+			&& (dailyReset || client.getVar(Varbits.DAILY_RUNES_COLLECTED) == 0))
 		{
-			if (client.getVar(Varbits.DAILY_RUNES_COLLECTED) == 0)
-			{
-				sendChatMessage(RUNES_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(RUNES_MESSAGE);
-			}
+			sendChatMessage(RUNES_MESSAGE);
 		}
 	}
 
 	private void checkSand(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE)
+		if ((client.getVar(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE)
+			&& (dailyReset || client.getVar(Varbits.DAILY_SAND_COLLECTED) == 0))
 		{
-			if (client.getVar(Varbits.DAILY_SAND_COLLECTED) == 0)
-			{
-				sendChatMessage(SAND_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(SAND_MESSAGE);
-			}
+			sendChatMessage(SAND_MESSAGE);
 		}
 	}
 
 	private void checkFlax(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_KANDARIN_EASY) == 1)
+		if ((client.getVar(Varbits.DIARY_KANDARIN_EASY) == 1)
+			&& (dailyReset || client.getVar(Varbits.DAILY_FLAX_STATE) == 0))
 		{
-			if (client.getVar(Varbits.DAILY_FLAX_STATE) == 0)
+			sendChatMessage(FLAX_MESSAGE);
+		}
+	}
+
+	private void checkArrows(boolean dailyReset)
+	{
+		if (client.getVar(Varbits.DIARY_WESTERN_EASY) == 1)
+		{
+			if (client.getVar(Varbits.DAILY_ARROWS_STATE) == 0)
 			{
-				sendChatMessage(FLAX_MESSAGE);
+				sendChatMessage(ARROWS_MESSAGE);
 			}
 			else if (dailyReset)
 			{
-				sendChatMessage(FLAX_MESSAGE);
+				sendChatMessage(ARROWS_MESSAGE + RELOG_MESSAGE);
 			}
 		}
 	}
@@ -268,11 +259,7 @@ public class DailyTasksPlugin extends Plugin
 					max += BONEMEAL_PER_DIARY;
 				}
 			}
-			if (collected < max)
-			{
-				sendChatMessage(BONEMEAL_MESSAGE);
-			}
-			else if (dailyReset)
+			if (dailyReset ||  collected < max)
 			{
 				sendChatMessage(BONEMEAL_MESSAGE);
 			}
