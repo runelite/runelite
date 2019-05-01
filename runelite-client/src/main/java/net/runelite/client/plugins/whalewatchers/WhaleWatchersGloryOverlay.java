@@ -52,16 +52,7 @@ public class WhaleWatchersGloryOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		panelComponent.getChildren().clear();
-		int amuletID = 0;
-		try
-		{
-			amuletID = client.getLocalPlayer().getPlayerComposition().getEquipmentId(KitType.AMULET);
-		}
-		catch (NullPointerException e)
-		{
-
-		}
-		if (config.gloryWarning() && amuletID == ItemID.AMULET_OF_GLORY)
+		if (plugin.isDisplayGloryOverlay())
 		{
 			panelComponent.setBackgroundColor(Color.lightGray);
 			final AsyncBufferedImage gloryImage = itemManager.getImage(ItemID.AMULET_OF_GLORY);

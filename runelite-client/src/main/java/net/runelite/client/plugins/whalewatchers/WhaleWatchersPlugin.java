@@ -142,7 +142,7 @@ public class WhaleWatchersPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (config.gloryWarning() && event.getItemContainer().equals(InventoryID.EQUIPMENT))
+		if (config.gloryWarning() && event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
 		{
 			final int amuletID = ObjectUtils.defaultIfNull(client.getLocalPlayer()
 				.getPlayerComposition().getEquipmentId(KitType.AMULET), 0);
