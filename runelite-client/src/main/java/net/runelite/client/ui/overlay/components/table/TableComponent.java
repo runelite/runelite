@@ -123,6 +123,14 @@ public class TableComponent implements LayoutableRenderableEntity
 		columns.get(col).setAlignment(alignment);
 	}
 
+	public void setColumnColors(@Nonnull final Color... colors)
+	{
+		for (int i = 0; i < colors.length; i++)
+		{
+			setColumnColor(i, colors[i]);
+		}
+	}
+
 	public void addRow(@Nonnull final String... cells)
 	{
 		final TableElement[] elements = new TableElement[cells.length];
