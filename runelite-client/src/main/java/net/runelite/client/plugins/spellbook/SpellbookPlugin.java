@@ -141,6 +141,7 @@ public class SpellbookPlugin extends Plugin
 		clearMagicTabMenus();
 		saveSpells();
 		config.canDrag(false);
+		mouseManager.unregisterMouseListener(mouseListener);
 		mouseListener = null;
 	}
 
