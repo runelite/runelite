@@ -38,7 +38,7 @@ public interface spellbookiconresizeConfig extends Config
 		return true;
 	}
 
-	//ice blitz
+	//Blood Barrage
 	@ConfigItem(position = 1, keyName = "shouldModifyBloodBarrage", name = "Blood Barrage", description = "Toggle on to Blood Barrage modifications.")
 	default boolean shouldModifyBloodBarrage() { return true; }
 	@ConfigItem(position = 2, keyName = "getBloodPositionX", name = "Blood Barrage Pos X", description = "Modifies the X-axis position of Blood Barrage.")
@@ -58,7 +58,7 @@ public interface spellbookiconresizeConfig extends Config
 	{
 		return false;
 	}
-	//ice barrage
+	//Ice Barrage
 	@ConfigItem(position = 7, keyName = "shouldModifyIceBarrage", name = "Ice Barrage", description = "Toggle on to enable Ice Barrage modifications.")
 	default boolean shouldModifyIceBarrage() { return true; }
 	@ConfigItem(position = 8, keyName = "getBarragePositionX", name = "Ice Barrage Pos X", description = "Modifies the X-axis position of Ice Barrage.")
@@ -81,7 +81,7 @@ public interface spellbookiconresizeConfig extends Config
 	{
 		return false;
 	}
-
+	//Ice Blitz
 	@ConfigItem(position = 13, keyName = "shouldModifyIceBlitz", name = "Ice Blitz", description = "Toggle on to enable Ice Blitz modifications.")
 	default boolean shouldModifyIceBlitz() { return true; }
 	@ConfigItem(position = 14, keyName = "getBlitzPositionX", name = "Ice Blitz Pos X", description = "Modifies the X-axis position of Ice Blitz.")
@@ -101,8 +101,8 @@ public interface spellbookiconresizeConfig extends Config
 	{
 		return false;
 	}
-
-	@ConfigItem(position = 18, keyName = "shouldModifyBloodBlitz", name = "Blood Blitz", description = "Toggle on to enable Ice Blitz modifications.")
+	//Blood blitz
+	@ConfigItem(position = 18, keyName = "shouldModifyBloodBlitz", name = "Blood Blitz", description = "Toggle on to enable Blood Blitz modifications.")
 	default boolean shouldModifyBloodBlitz() { return true; }
 	@ConfigItem(position = 19, keyName = "getBloodBlitzPositionX", name = "Blood Blitz Pos X", description = "Modifies the X-axis position of Blood Blitz.")
 	default int getBloodBlitzPositionX() { return 0; }
@@ -121,6 +121,86 @@ public interface spellbookiconresizeConfig extends Config
 	{
 		return false;
 	}
-
-
+/*
+	//Vengeance
+	@ConfigItem(position = 23, keyName = "shouldModifyVengeance", name = "Vengeance", description = "Toggle on to enable Vengeance modifications.")
+	default boolean shouldModifyVengeance() { return true; }
+	@ConfigItem(position = 24, keyName = "getVengeancePositionX", name = "Vengeance Pos X", description = "Modifies the X-axis position of Vengeance.")
+	default int getVengeancePositionX() { return 0; }
+	@ConfigItem(position = 25, keyName = "getVengeancePositionY", name = "Vengeance Pos y", description = "Modifies the X-axis position of Vengeance.")
+	default int getVengeancePositionY()
+	{
+		return 0;
+	}
+	@ConfigItem(position = 26, keyName = "getVengeanceSize", name = "Vengeance Size", description = "Modifies the width position of Vengeance.")
+	default int getVengeanceSize()
+	{
+		return 100;
+	}
+	@ConfigItem(position = 27, keyName = "shouldHideVengeance", name = "Hide Vengeance", description = "Enable this to hide Vengeance")
+	default boolean shouldVengeance()
+	{
+		return false;
+	}	
+	//TeleBlock
+	@ConfigItem(position = 28, keyName = "shouldModifyTeleBlock", name = "TeleBlock", description = "Toggle on to enable TeleBlock modifications.")
+	default boolean shouldModifyTeleBlock() { return true; }
+	@ConfigItem(position = 29, keyName = "getTeleBlockPositionX", name = "TeleBlock Pos X", description = "Modifies the X-axis position of TeleBlock.")
+	default int getTeleBlockPositionX() { return 0; }
+	@ConfigItem(position = 30, keyName = "getTeleBlockPositionY", name = "TeleBlock Pos y", description = "Modifies the X-axis position of TeleBlock.")
+	default int getTeleBlockPositionY()
+	{
+		return 0;
+	}
+	@ConfigItem(position = 31, keyName = "getTeleBlockSize", name = "TeleBlock Size", description = "Modifies the width position of TeleBlock.")
+	default int getTeleBlockSize()
+	{
+		return 100;
+	}
+	@ConfigItem(position = 32, keyName = "shouldHideTeleBlock", name = "Hide TeleBlock", description = "Enable this to hide TeleBlock")
+	default boolean shouldTeleBlock()
+	{
+		return false;
+	}	
+	//Entangle
+	@ConfigItem(position = 33, keyName = "shouldModifyEntangle", name = "Entangle", description = "Toggle on to enable Entangle modifications.")
+	default boolean shouldModifyEntangle() { return true; }
+	@ConfigItem(position = 34, keyName = "getEntanglePositionX", name = "Entangle Pos X", description = "Modifies the X-axis position of Entangle.")
+	default int getEntanglePositionX() { return 0; }
+	@ConfigItem(position = 35, keyName = "getEntanglePositionY", name = "Entangle Pos y", description = "Modifies the X-axis position of Entangle.")
+	default int getEntanglePositionY()
+	{
+		return 0;
+	}
+	@ConfigItem(position = 36, keyName = "getEntangleSize", name = "Entangle Size", description = "Modifies the width position of Entangle.")
+	default int getEntangleSize()
+	{
+		return 100;
+	}
+	@ConfigItem(position = 37, keyName = "shouldHideEntangle", name = "Hide Entangle", description = "Enable this to hide Entangle")
+	default boolean shouldEntangle()
+	{
+		return false;
+	}	
+	//FireSurge
+	@ConfigItem(position = 38, keyName = "shouldModifyFireSurge", name = "FireSurge", description = "Toggle on to enable FireSurge modifications.")
+	default boolean shouldModifyFireSurge() { return true; }
+	@ConfigItem(position = 39, keyName = "getFireSurgePositionX", name = "FireSurge Pos X", description = "Modifies the X-axis position of FireSurge.")
+	default int getFireSurgePositionX() { return 0; }
+	@ConfigItem(position = 40, keyName = "getFireSurgePositionY", name = "FireSurge Pos y", description = "Modifies the X-axis position of FireSurge.")
+	default int getFireSurgePositionY()
+	{
+		return 0;
+	}
+	@ConfigItem(position = 41, keyName = "getFireSurgeSize", name = "FireSurge Size", description = "Modifies the width position of FireSurge.")
+	default int getFireSurgeSize()
+	{
+		return 100;
+	}
+	@ConfigItem(position = 42, keyName = "shouldHideFireSurge", name = "Hide FireSurge", description = "Enable this to hide FireSurge")
+	default boolean shouldFireSurge()
+	{
+		return false;
+	}	
+*/
 }

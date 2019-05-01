@@ -32,20 +32,8 @@ public interface WhaleWatchersConfig extends Config
 		return true;
 	}
 
-	@Alpha
 	@ConfigItem(
 		position = 3,
-		keyName = "damageBackgroundColor",
-		name = "Counter Background Color",
-		description = "The background color for the damage counter overlay"
-	)
-	default Color damageBackgroundColor()
-	{
-		return Color.darkGray;
-	}
-
-	@ConfigItem(
-		position = 4,
 		keyName = "smiteableWarning",
 		name = "Smite Warning",
 		description = "Displays a warning overlay when your prayer is at a smiteable level"
@@ -56,7 +44,7 @@ public interface WhaleWatchersConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 4,
 		keyName = "gloryWarning",
 		name = "Glory Warning",
 		description = "Displays a warning box while you are wearing an uncharged glory"

@@ -1,89 +1,69 @@
+/*******************************************************************************
+ * Copyright (c) 2019. PKLite
+ *  Redistributions and modifications of this software are permitted as long as this notice remains in its original unmodified state at the top of this file.
+ *  If there are any questions comments, or feedback about this software, please direct all inquiries directly to the following authors:
+ *
+ *   PKLite discord: https://discord.gg/Dp3HuFM
+ *   Written by PKLite(ST0NEWALL, others) <stonewall@stonewall@pklite.xyz>, 2019
+ *
+ ******************************************************************************/
+
 package net.runelite.client.plugins.whalewatchers;
 
 import com.google.inject.Provides;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Predicate;
 import javax.inject.Inject;
 import lombok.Getter;
-import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
-import net.runelite.api.Player;
-import net.runelite.api.PlayerComposition;
 import net.runelite.api.Skill;
 import net.runelite.api.SkullIcon;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.api.WorldType;
-import static net.runelite.api.WorldType.*;
-import net.runelite.api.events.ExperienceChanged;
-import net.runelite.api.events.GameStateChanged;
+import static net.runelite.api.WorldType.HIGH_RISK;
+import static net.runelite.api.WorldType.PVP;
+import static net.runelite.api.WorldType.isPvpWorld;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.ItemManager;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.WorldUtil;
 import org.apache.commons.lang3.ObjectUtils;
-import org.jetbrains.annotations.NotNull;
 
 @PluginDescriptor(
 	name = "Whale Watchers",
 	description = "A Plugin to save help whales in the wild",
-	tags = {"whale watchers", "whale", "protect item", "warning", "pklite"},
-	enabledByDefault = true,
-	hidden = false,
-	developerPlugin = false,
-	type = PluginType.PVP,
-	loadWhenOutdated = false
+	tags = {"whale watchers", "whale", "protect item", "warning", "pklite"}
 )
 public class WhaleWatchersPlugin extends Plugin
 {
 
-	@Inject
-	private Client client;
-
-	@Inject
-	private WhaleWatchersConfig config;
-
-	@Inject
-	private WhaleWatchersOverlay overlay;
-
-	@Inject
-	private WhaleWatchersProtOverlay whaleWatchersProtOverlay;
-
-	@Inject
-	private WhaleWatchersSmiteableOverlay whaleWatchersSmiteableOverlay;
-
-	@Inject
-	private WhaleWatchersGloryOverlay whaleWatchersGloryOverlay;
-
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private ItemManager itemManager;
-
 	public boolean enableOverlay = false;
-	private int lastXP = 0;
 	public int damageDone = 0;
 	public int damageTaken = 0;
 	public boolean inCombat = false;
+	@Inject
+	private Client client;
+	@Inject
+	private WhaleWatchersConfig config;
+	@Inject
+	private WhaleWatchersOverlay overlay;
+	@Inject
+	private WhaleWatchersProtOverlay whaleWatchersProtOverlay;
+	@Inject
+	private WhaleWatchersSmiteableOverlay whaleWatchersSmiteableOverlay;
+	@Inject
+	private WhaleWatchersGloryOverlay whaleWatchersGloryOverlay;
+	@Inject
+	private OverlayManager overlayManager;
 	private int tickCountdown = 0;
 	@Getter
 	private boolean displaySmiteOverlay;
@@ -96,9 +76,26 @@ public class WhaleWatchersPlugin extends Plugin
 		return configManager.getConfig(WhaleWatchersConfig.class);
 	}
 
+	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked event)
+	{
+		if (!event.getOverlay().equals(overlay))
+		{
+			return;
+		}
+		else
+		{
+			if (event.getEntry().getOption().equals("Reset"))
+			{
+				resetDamageCounter();
+			}
+		}
+	}
+
 	@Override
 	protected void startUp() throws Exception
 	{
+
 		overlayManager.add(overlay);
 		overlayManager.add(whaleWatchersProtOverlay);
 		overlayManager.add(whaleWatchersSmiteableOverlay);
@@ -112,6 +109,7 @@ public class WhaleWatchersPlugin extends Plugin
 		overlayManager.remove(whaleWatchersProtOverlay);
 		overlayManager.remove(whaleWatchersSmiteableOverlay);
 		overlayManager.remove(whaleWatchersGloryOverlay);
+		resetDamageCounter();
 	}
 
 
@@ -125,14 +123,12 @@ public class WhaleWatchersPlugin extends Plugin
 			{
 				return;
 			}
-			if (isAttackingPlayer(client) || inCombat)
+			if (isAttackingPlayer() || inCombat)
 			{
 				inCombat = true;
-
 				if (event.getActor() == client.getLocalPlayer())
 				{
 					damageTaken += event.getHitsplat().getAmount();
-
 				}
 				if (event.getActor() == client.getLocalPlayer().getInteracting())
 				{
@@ -142,31 +138,6 @@ public class WhaleWatchersPlugin extends Plugin
 		}
 	}
 
-
-	/**
-	 * final Player target = (Player) event.getTarget();
-	 * if (lastInteracting == null)
-	 * {
-	 * lastInteracting = target;
-	 * inCombat = true;
-	 * interactingStarted = System.currentTimeMillis();
-	 * }
-	 * List<String> optionsList = Arrays.asList(client.getPlayerOptions());
-	 * <p>
-	 * if (target == lastInteracting || target == null)
-	 * {
-	 * inCombat = true;
-	 * lastInteracting = target;
-	 * interactingStarted = System.currentTimeMillis();
-	 * }
-	 * if (target != lastInteracting && target != null && lastInteracting != null)
-	 * {
-	 * damageDone = 0;
-	 * damageTaken = 0;
-	 * interactingStarted = System.currentTimeMillis();
-	 * inCombat = true;
-	 * }
-	 **/
 
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
@@ -190,20 +161,6 @@ public class WhaleWatchersPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onExperienceChanged(ExperienceChanged event)
-	{
-		final Skill skill = event.getSkill();
-		final Player player = client.getLocalPlayer();
-		if (skill.equals(Skill.HITPOINTS))
-		{
-			if (player.getInteracting() instanceof Player)
-			{
-				//lient.getLogger().info(String.valueOf(Math.round((client.getSkillExperience(skill) - lastXP) / 1.33)) + 2);
-				lastXP = client.getSkillExperience(skill);
-			}
-		}
-	}
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
@@ -223,8 +180,6 @@ public class WhaleWatchersPlugin extends Plugin
 			{
 				if (inCombat)
 				{
-					//damageTaken = 0;
-					//damageDone = 0;
 					tickCountdown = 10;
 				}
 			}
@@ -262,36 +217,26 @@ public class WhaleWatchersPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-
-		if (tickCountdown > 0 && tickCountdown < 11)
+		if (config.showDamageCounter())
 		{
-			tickCountdown--;
-			if (tickCountdown == 1)
+			if (tickCountdown > 0 && tickCountdown < 11)
 			{
-				if (!isAttackingPlayer(client))
+				tickCountdown--;
+				if (tickCountdown == 1)
 				{
 					inCombat = false;
-					damageDone = 0;
-					damageTaken = 0;
+					resetDamageCounter();
 					return;
 				}
 			}
 		}
-
 		if (config.smiteableWarning() && (client.getVar(Varbits.IN_WILDERNESS) == 1 || isPvpWorld(client.getWorldType())))
 		{
 			if (client.getLocalPlayer().getSkullIcon() != null && client.getLocalPlayer().getSkullIcon().equals(SkullIcon.SKULL))
 			{
 				final int currentHealth = client.getLocalPlayer().getHealth();
 				final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
-				if (currentPrayer <= (Math.ceil(currentHealth / 4)))
-				{
-					displaySmiteOverlay = true;
-				}
-				else
-				{
-					displaySmiteOverlay = false;
-				}
+				displaySmiteOverlay = currentPrayer <= (Math.ceil(currentHealth / 4));
 			}
 			else
 			{
@@ -304,14 +249,24 @@ public class WhaleWatchersPlugin extends Plugin
 		}
 	}
 
-	public boolean isAttackingPlayer(@NotNull Client c)
+	/**
+	 * Checks to see if client is attacking another player
+	 * @return returns true if they are, false otherwise
+	 */
+	private boolean isAttackingPlayer()
 	{
 		if (client.getVar(Varbits.IN_WILDERNESS) == 1 && client.getLocalPlayer().getInteracting() != null)
 		{
 			return true;
 		}
-		int varp = c.getVar(VarPlayer.ATTACKING_PLAYER);
+		int varp = client.getVar(VarPlayer.ATTACKING_PLAYER);
 		return varp != -1;
+	}
+
+	private void resetDamageCounter()
+	{
+		damageTaken = 0;
+		damageDone = 0;
 	}
 
 }

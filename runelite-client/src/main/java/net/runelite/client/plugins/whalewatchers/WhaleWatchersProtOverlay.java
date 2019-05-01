@@ -1,3 +1,14 @@
+
+/*******************************************************************************
+ * Copyright (c) 2019. PKLite
+ *  Redistributions and modifications of this software are permitted as long as this notice remains in its original unmodified state at the top of this file.
+ *  If there are any questions comments, or feedback about this software, please direct all inquiries directly to the following authors:
+ *
+ *   PKLite discord: https://discord.gg/Dp3HuFM
+ *   Written by PKLite(ST0NEWALL, others) <stonewall@stonewall@pklite.xyz>, 2019
+ *
+ ******************************************************************************/
+
 package net.runelite.client.plugins.whalewatchers;
 
 import java.awt.BasicStroke;
@@ -16,7 +27,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+
 
 public class WhaleWatchersProtOverlay extends Overlay
 {
@@ -34,7 +45,6 @@ public class WhaleWatchersProtOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGH);
 		setPosition(OverlayPosition.DYNAMIC);
-
 	}
 
 	@Override

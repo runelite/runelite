@@ -148,8 +148,6 @@ public class FreezeTimersOverlay extends Overlay
 		int xOffset = (int) rect.getWidth();
 		OverlayUtil.renderActorTextAndImage(g, actor, text, Color.WHITE, image, yOffset,
 				xOffset);
-		g.setColor(RED);
-		g.draw(actor.getConvexHull().getBounds());
 	}
 	
 	private String processTickCounter(long finishedAt)

@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2019. PKLite
+ *  Redistributions and modifications of this software are permitted as long as this notice remains in its original unmodified state at the top of this file.
+ *  If there are any questions comments, or feedback about this software, please direct all inquiries directly to the following authors:
+ *
+ *   PKLite discord: https://discord.gg/Dp3HuFM
+ *   Written by PKLite(ST0NEWALL, others) <stonewall@stonewall@pklite.xyz>, 2019
+ *
+ ******************************************************************************/
 package net.runelite.client.plugins.whalewatchers;
 
 import java.awt.Color;
@@ -15,9 +24,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-import org.apache.commons.lang3.ObjectUtils;
 
 public class WhaleWatchersGloryOverlay extends Overlay
 {

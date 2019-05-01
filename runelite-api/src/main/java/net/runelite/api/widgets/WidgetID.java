@@ -814,7 +814,7 @@ public class WidgetID
 		static final int FLAMES_OF_ZAMORAK = 47;
 		static final int TROLLHEIM_TELEPORT = 48;
 		static final int WIND_WAVE = 49;
-		static final int HARGE_FIRE_ORB = 50;
+		static final int CHARGE_FIRE_ORB = 50;
 		static final int TELEPORT_TO_APE_ATOLL = 51;
 		static final int WATER_WAVE = 52;
 		static final int CHARGE_AIR_ORB = 53;
@@ -913,7 +913,7 @@ public class WidgetID
 		static final int OURANIA_TELEPORT = 142;
 
 		// ARCEUUS SPELLS
-		static final int ARCEUUS_HOME_TELEPORT = 143;
+  		static final int ARCEUUS_HOME_TELEPORT = 143;
 	}
 
 	static class Pvp

@@ -1,16 +1,30 @@
+/*******************************************************************************
+ * Copyright (c) 2019. PKLite
+ *  Redistributions and modifications of this software are permitted as long as this notice remains in its original unmodified state at the top of this file.
+ *  If there are any questions comments, or feedback about this software, please direct all inquiries directly to the following authors:
+ *
+ *   PKLite discord: https://discord.gg/Dp3HuFM
+ *   Written by PKLite(ST0NEWALL, others) <stonewall@stonewall@pklite.xyz>, 2019
+ *
+ ******************************************************************************/
 package net.runelite.client.plugins.whalewatchers;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+
+/**
+ * The overlay for the Damage Counter
+ */
 
 public class WhaleWatchersOverlay extends Overlay
 {
@@ -19,16 +33,21 @@ public class WhaleWatchersOverlay extends Overlay
 	private WhaleWatchersPlugin plugin;
 	private PanelComponent panelComponent;
 	private String lastOpponent = "-";
+	private final OverlayMenuEntry resetMenuEntry = new OverlayMenuEntry(MenuAction.RUNELITE_OVERLAY,
+		"Reset", "Damage Counter");
+
 
 	@Inject
 	public WhaleWatchersOverlay(WhaleWatchersConfig config, Client client, WhaleWatchersPlugin plugin)
 	{
+		this.getMenuEntries().add(resetMenuEntry);
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		setPriority(OverlayPriority.HIGH);
-		setPosition(OverlayPosition.DETACHED);
+		setPriority(OverlayPriority.HIGHEST);
+		setPosition(OverlayPosition.DYNAMIC);
+		this.setPreferredPosition(OverlayPosition.TOP_CENTER);
 		panelComponent = new PanelComponent();
 	}
 
@@ -39,40 +58,33 @@ public class WhaleWatchersOverlay extends Overlay
 
 		if (plugin.inCombat && config.showDamageCounter())
 		{
-			panelComponent.setBackgroundColor(config.damageBackgroundColor());
+			panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+			panelComponent.setWrapping(5);
 			String opp = client.getLocalPlayer().getInteracting() != null ?
 				client.getLocalPlayer().getInteracting().getName() : lastOpponent;
 			if (client.getLocalPlayer().getInteracting() != null)
 			{
 				lastOpponent = client.getLocalPlayer().getInteracting().getName();
 			}
-			final String opponent = "Fight vs " + opp;
 			String damageTaken = "Damage Taken: " + plugin.damageTaken;
 			String damageDealt = "Damage Dealt: " + plugin.damageDone;
 
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text(opponent)
-				.color(Color.BLACK)
+				.text(lastOpponent)
 				.build());
 
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text(damageDealt)
-				.color(Color.BLACK)
 				.build());
 
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text(damageTaken)
-				.color(Color.BLACK)
 				.build());
-
-			panelComponent.setPreferredSize(new Dimension(
-				graphics.getFontMetrics().stringWidth(damageDealt) +
-					+ graphics.getFontMetrics().stringWidth(opponent) + 10,0));
-
 		}
 		else
 		{
 			panelComponent.getChildren().clear();
+			
 		}
 		return panelComponent.render(graphics);
 	}
