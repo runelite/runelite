@@ -38,6 +38,12 @@
 	<properties>
 		<spring.boot.version>1.5.6.RELEASE</spring.boot.version>
 		<mapstruct.version>1.2.0.Final</mapstruct.version>
+		<maria.java.client.version>2.2.3</maria.java.client.version>
+		<mongodb.driver.version>3.10.1</mongodb.driver.version>
+		<scribejava.apis.version>4.1.0</scribejava.apis.version>
+		<swagger.maven.plugin.version>3.1.8</swagger.maven.plugin.version>
+		<redis.clients.version>2.10.0</redis.clients.version>
+		<jaxb.api.version>2.3.1</jaxb.api.version>
 	</properties>
 
 	<dependencies>
@@ -85,13 +91,13 @@
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
-			<version>2.2.3</version>
+			<version>${maria.java.client.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.sql2o</groupId>
 			<artifactId>sql2o</artifactId>
-			<version>1.5.4</version>
+			<version>${sql2o.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -104,17 +110,17 @@
 		<dependency>
 			<groupId>com.github.scribejava</groupId>
 			<artifactId>scribejava-apis</artifactId>
-			<version>4.1.0</version>
+			<version>${scribejava.apis.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.minio</groupId>
 			<artifactId>minio</artifactId>
-			<version>3.0.6</version>
+			<version>${minio.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
-			<version>2.10.0</version>
+			<version>${redis.clients.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.apache.commons</groupId>
@@ -125,7 +131,7 @@
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongodb-driver-sync</artifactId>
-			<version>3.10.1</version>
+			<version>${mongodb.driver.version}</version>
 		</dependency>
 
 		<dependency>
@@ -136,7 +142,7 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>mockwebserver</artifactId>
-			<version>3.7.0</version>
+			<version>${okhttp3.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -188,13 +194,13 @@
 			<plugin>
 				<groupId>com.github.kongchen</groupId>
 				<artifactId>swagger-maven-plugin</artifactId>
-				<version>3.1.8</version>
+				<version>${swagger.maven.plugin.version}</version>
 				<dependencies>
 					<!-- Java 11+ does not include this anymore -->
 					<dependency>
 						<groupId>javax.xml.bind</groupId>
 						<artifactId>jaxb-api</artifactId>
-						<version>2.3.1</version>
+						<version>${jaxb.api.version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>

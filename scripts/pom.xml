@@ -31,12 +31,16 @@
 	<version>1.0.0</version>
 	<name>Scripts</name>
 
+	<properties>
+		<webdav.version>2.12</webdav.version>
+	</properties>
+
 	<build>
 		<extensions>
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-webdav-jackrabbit</artifactId>
-				<version>2.12</version>
+				<version>${webdav.version}</version>
 			</extension>
 		</extensions>
 	</build>
