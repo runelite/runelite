@@ -50,8 +50,7 @@ public class TableComponent implements LayoutableRenderableEntity
 	@Getter
 	private final Rectangle bounds = new Rectangle();
 
-	@Nonnull
-	private TableElement[] columns = new TableElement[0];
+	private final List<TableElement> columns = new ArrayList<>();
 	private final List<TableRow> rows = new ArrayList<>();
 
 	@Nonnull
@@ -75,7 +74,7 @@ public class TableComponent implements LayoutableRenderableEntity
 		graphics.translate(preferredLocation.x, preferredLocation.y);
 
 		final int numRows = rows.size();
-		final int numCols = columns.length;
+		final int numCols = columns.size();
 
 		for (int row = 0; row < numRows; row++)
 		{
@@ -114,14 +113,14 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	public void setColumnColor(final int col, final Color color)
 	{
-		assert columns.length > col;
-		columns[col].setColor(color);
+		assert columns.size() > col;
+		columns.get(col).setColor(color);
 	}
 
 	public void setColumnAlignment(final int col, final TableAlignment alignment)
 	{
-		assert columns.length > col;
-		columns[col].setAlignment(alignment);
+		assert columns.size() > col;
+		columns.get(col).setAlignment(alignment);
 	}
 
 	public void addRow(@Nonnull final String... cells)
@@ -146,6 +145,35 @@ public class TableComponent implements LayoutableRenderableEntity
 		}
 	}
 
+	public void addColumn(@Nonnull TableElement element)
+	{
+		this.columns.add(element);
+	}
+
+	public void addColumns(@Nonnull final TableElement... elements)
+	{
+		for (TableElement ele : elements)
+		{
+			addColumn(ele);
+		}
+	}
+
+	public void addColumn(@Nonnull final String... cells)
+	{
+		for (int i = 0; i < cells.length; i++)
+		{
+			this.columns.add(TableElement.builder().content(cells[i]).build());
+		}
+	}
+
+	public void addColumns(@Nonnull final String[]... columns)
+	{
+		for (String[] col : columns)
+		{
+			addColumn(col);
+		}
+	}
+
 	public void addRow(@Nonnull TableRow row)
 	{
 		this.rows.add(row);
@@ -161,11 +189,11 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	private String getCellText(final int col, final int row)
 	{
-		assert col < columns.length && row < rows.size();
+		assert col < columns.size() && row < rows.size();
 
 		if (row == -1)
 		{
-			return columns[col].getContent();
+			return columns.get(col).getContent();
 		}
 
 		TableElement[] elements = rows.get(row).getElements();
@@ -181,7 +209,7 @@ public class TableComponent implements LayoutableRenderableEntity
 	private int[] getColumnWidths(final FontMetrics metrics)
 	{
 		final int numRows = rows.size();
-		final int numCols = columns.length;
+		final int numCols = columns.size();
 
 		// Based on https://stackoverflow.com/questions/22206825/algorithm-for-calculating-variable-column-widths-for-set-table-width
 		int[] maxtextw = new int[numCols];      // max text width over all rows
@@ -344,11 +372,11 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	private Color getCellColor(final int row, final int column)
 	{
-		assert row < rows.size() && column < columns.length;
+		assert row < rows.size() && column < columns.size();
 
 		// Row should be -1 for columns so use a empty TableRow
 		final TableRow rowEle = row != -1 ? rows.get(row) : EMPTY_ROW;
-		final TableElement columnElement = columns[column];
+		final TableElement columnElement = columns.get(column);
 		final TableElement[] elements = rowEle.getElements();
 
 		// Some rows may not have every element, even though they should..
@@ -364,11 +392,11 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	private TableAlignment getCellAlignment(final int row, final int column)
 	{
-		assert row < rows.size() && column < columns.length;
+		assert row < rows.size() && column < columns.size();
 
 		// Row should be -1 for columns so use a empty TableRow
 		final TableRow rowEle = row != -1 ? rows.get(row) : EMPTY_ROW;
-		final TableElement columnElement = columns[column];
+		final TableElement columnElement = columns.get(column);
 		final TableElement[] elements = rowEle.getElements();
 
 		// Some rows may not have every element, even though they should..
