@@ -140,7 +140,7 @@ public class TableComponent implements LayoutableRenderableEntity
 		{
 			columns.add(TableElement.builder().build());
 		}
-		
+
 		final TableElement[] elements = new TableElement[cells.length];
 		for (int i = 0; i < cells.length; i++)
 		{
