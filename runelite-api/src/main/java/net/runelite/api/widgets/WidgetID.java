@@ -559,6 +559,11 @@ public class WidgetID
 			static final int WRONG_POISON_PACKS_USED = 20;
 			static final int EGGS_COLLECTED = 21;
 			static final int FAILED_ATTACKER_ATTACKS = 22;
+			static final int RUNNERS_PASSED_POINTS = 24;
+			static final int HITPOINTS_REPLENISHED_POINTS = 29;
+			static final int WRONG_POISON_PACKS_USED_POINTS = 30;
+			static final int EGGS_COLLECTED_POINTS = 31;
+			static final int FAILED_ATTACKER_ATTACKS_POINTS = 32;
 			static final int HONOUR_POINTS_REWARD = 49;
 		}
 		static final int GAME_WIDGET = 3;
