@@ -33,6 +33,9 @@ public interface RSProjectile extends RSRenderable, Projectile
 	@Override
 	int getId();
 
+	@Import("interacting")
+	int getRsInteracting();
+
 	@Import("height")
 	@Override
 	int getHeight();

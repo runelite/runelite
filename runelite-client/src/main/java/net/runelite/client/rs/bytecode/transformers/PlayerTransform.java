@@ -1,12 +1,14 @@
 package net.runelite.client.rs.bytecode.transformers;
 
+import javassist.CannotCompileException;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
+import javassist.NotFoundException;
 import net.runelite.client.rs.bytecode.ByteCodePatcher;
 
 public class PlayerTransform implements Transform {
-    public CtClass ct = null;
+	private CtClass ct;
 
     @Override
     public void modify(Class player) {
@@ -15,53 +17,47 @@ public class PlayerTransform implements Transform {
             transformProtectedGetSkullIcon();
             transformGetSkullIcon();
             ByteCodePatcher.modifiedClasses.add(ct);
-        } catch (Exception e) {
+        } catch (CannotCompileException | NotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void transform(){}
-
-    public void transformProtectedGetSkullIcon() {
+    private void transformProtectedGetSkullIcon() throws CannotCompileException, NotFoundException {
         CtMethod protectedGetSkullIcon;
-        try {
-            protectedGetSkullIcon = ct.getDeclaredMethod("1protect$getRsSkullIcon");
-            ct.removeMethod(protectedGetSkullIcon);
-            protectedGetSkullIcon.setName("getRsSkullIcon");
-            ct.addMethod(protectedGetSkullIcon);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
+        protectedGetSkullIcon = ct.getDeclaredMethod("1protect$getRsSkullIcon");
+        ct.removeMethod(protectedGetSkullIcon);
+        protectedGetSkullIcon.setName("getRsSkullIcon");
+
+        ct.addMethod(protectedGetSkullIcon);
     }
 
-    public void transformGetSkullIcon() {
+    private void transformGetSkullIcon() throws CannotCompileException, NotFoundException
+	{
         CtMethod getSkullIcon;
-        try {
-            String SkullIcon = "net.runelite.api.SkullIcon";
-            getSkullIcon = ct.getDeclaredMethod("getSkullIcon");
-            ct.removeMethod(getSkullIcon);
-            getSkullIcon = CtNewMethod.make("public "+SkullIcon+" getSkullIcon() {" +
-                    "                               switch (this.getRsSkullIcon()) {" +
-                    "                               case 0: {" +
-                    "                               return "+SkullIcon+".SKULL; }" +
-                    "                               case 1: {" +
-                    "                               return "+SkullIcon+".SKULL_FIGHT_PIT; }" +
-                    "                               case 8: {" +
-                    "                               return "+SkullIcon+".DEAD_MAN_FIVE; }" +
-                    "                               case 9: {" +
-                    "                               return "+SkullIcon+".DEAD_MAN_FOUR; }" +
-                    "                               case 10: {" +
-                    "                               return "+SkullIcon+".DEAD_MAN_THREE; }" +
-                    "                               case 11: {" +
-                    "                               return "+SkullIcon+".DEAD_MAN_TWO; }" +
-                    "                               case 12: {" +
-                    "                               return "+SkullIcon+".DEAD_MAN_ONE; } }" +
-                    "                               return null; }",ct);
-            ct.addMethod(getSkullIcon);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
+        String SkullIcon = "net.runelite.api.SkullIcon";
+        getSkullIcon = ct.getDeclaredMethod("getSkullIcon");
+        ct.removeMethod(getSkullIcon);
+
+        getSkullIcon = CtNewMethod.make(
+        	"public "+SkullIcon+" getSkullIcon() {" +
+				"switch (this.getRsSkullIcon()) {" +
+					"case 0: {" +
+						"return " + SkullIcon + ".SKULL; }" +
+					"case 1: {" +
+						"return " + SkullIcon + ".SKULL_FIGHT_PIT; }" +
+					"case 8: {" +
+						"return " + SkullIcon + ".DEAD_MAN_FIVE; }" +
+					"case 9: {" +
+						"return " + SkullIcon + ".DEAD_MAN_FOUR; }" +
+					"case 10: {" +
+						"return " + SkullIcon + ".DEAD_MAN_THREE; }" +
+					"case 11: {" +
+						"return " + SkullIcon + ".DEAD_MAN_TWO; }" +
+					"case 12: {" +
+						"return " + SkullIcon + ".DEAD_MAN_ONE; } }" +
+				"return null; }", ct);
+        ct.addMethod(getSkullIcon);
+	}
 }
