@@ -87,7 +87,7 @@ public class BarbarianAssaultPlugin extends Plugin
 
 	private int[] pointsList;
 
-	String[] descriptions = {"Runners: ",
+	private String[] descriptions = {"Runners: ",
 			"Hitpoints: ",
 			"Wrong heal packs: ",
 			"Eggs: ",
