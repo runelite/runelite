@@ -51,8 +51,8 @@ public class TableComponent implements LayoutableRenderableEntity
 	private final Rectangle bounds = new Rectangle();
 
 	@Nonnull
-	private TableElement[] tableColumns = new TableElement[0];
-	private final List<TableRow> tableRows = new ArrayList<>();
+	private TableElement[] columns = new TableElement[0];
+	private final List<TableRow> rows = new ArrayList<>();
 
 	@Nonnull
 	private TableAlignment defaultAlignment = TableAlignment.LEFT;
@@ -74,8 +74,8 @@ public class TableComponent implements LayoutableRenderableEntity
 
 		graphics.translate(preferredLocation.x, preferredLocation.y);
 
-		final int numRows = tableRows.size();
-		final int numCols = tableColumns.length;
+		final int numRows = rows.size();
+		final int numCols = columns.length;
 
 		for (int row = 0; row < numRows; row++)
 		{
@@ -114,14 +114,14 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	public void setColumnColor(final int col, final Color color)
 	{
-		assert tableColumns.length > col;
-		tableColumns[col].setColor(color);
+		assert columns.length > col;
+		columns[col].setColor(color);
 	}
 
 	public void setColumnAlignment(final int col, final TableAlignment alignment)
 	{
-		assert tableColumns.length > col;
-		tableColumns[col].setAlignment(alignment);
+		assert columns.length > col;
+		columns[col].setAlignment(alignment);
 	}
 
 	public void addRow(@Nonnull final String... cells)
@@ -135,7 +135,7 @@ public class TableComponent implements LayoutableRenderableEntity
 		final TableRow row = TableRow.builder().build();
 		row.setElements(elements);
 
-		this.tableRows.add(row);
+		this.rows.add(row);
 	}
 
 	public void addRows(@Nonnull final String[]... rows)
@@ -148,7 +148,7 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	public void addRow(@Nonnull TableRow row)
 	{
-		this.tableRows.add(row);
+		this.rows.add(row);
 	}
 
 	public void addRows(@Nonnull final TableRow... rows)
@@ -161,14 +161,14 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	private String getCellText(final int col, final int row)
 	{
-		assert col < tableColumns.length && row < tableRows.size();
+		assert col < columns.length && row < rows.size();
 
 		if (row == -1)
 		{
-			return tableColumns[col].getContent();
+			return columns[col].getContent();
 		}
 
-		TableElement[] elements = tableRows.get(row).getElements();
+		TableElement[] elements = rows.get(row).getElements();
 		if (col >= elements.length)
 		{
 			return "";
@@ -180,8 +180,8 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	private int[] getColumnWidths(final FontMetrics metrics)
 	{
-		final int numRows = tableRows.size();
-		final int numCols = tableColumns.length;
+		final int numRows = rows.size();
+		final int numCols = columns.length;
 
 		// Based on https://stackoverflow.com/questions/22206825/algorithm-for-calculating-variable-column-widths-for-set-table-width
 		int[] maxtextw = new int[numCols];      // max text width over all rows
@@ -344,11 +344,11 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	private Color getCellColor(final int row, final int column)
 	{
-		assert row < tableRows.size() && column < tableColumns.length;
+		assert row < rows.size() && column < columns.length;
 
 		// Row should be -1 for columns so use a empty TableRow
-		final TableRow rowEle = row != -1 ? tableRows.get(row) : EMPTY_ROW;
-		final TableElement columnElement = tableColumns[column];
+		final TableRow rowEle = row != -1 ? rows.get(row) : EMPTY_ROW;
+		final TableElement columnElement = columns[column];
 		final TableElement[] elements = rowEle.getElements();
 
 		// Some rows may not have every element, even though they should..
@@ -364,11 +364,11 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	private TableAlignment getCellAlignment(final int row, final int column)
 	{
-		assert row < tableRows.size() && column < tableColumns.length;
+		assert row < rows.size() && column < columns.length;
 
 		// Row should be -1 for columns so use a empty TableRow
-		final TableRow rowEle = row != -1 ? tableRows.get(row) : EMPTY_ROW;
-		final TableElement columnElement = tableColumns[column];
+		final TableRow rowEle = row != -1 ? rows.get(row) : EMPTY_ROW;
+		final TableElement columnElement = columns[column];
 		final TableElement[] elements = rowEle.getElements();
 
 		// Some rows may not have every element, even though they should..
