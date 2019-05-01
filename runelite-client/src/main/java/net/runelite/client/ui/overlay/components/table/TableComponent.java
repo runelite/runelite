@@ -114,6 +114,14 @@ public class TableComponent implements LayoutableRenderableEntity
 		return dimension;
 	}
 
+	private void ensureColumnSize(final int size)
+	{
+		while (size > columns.size())
+		{
+			columns.add(TableElement.builder().build());
+		}
+	}
+
 	public void setColumnColor(final int col, final Color color)
 	{
 		assert columns.size() > col;
@@ -122,6 +130,7 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	public void setColumnColors(@Nonnull final Color... colors)
 	{
+		ensureColumnSize(colors.length);
 		for (int i = 0; i < colors.length; i++)
 		{
 			setColumnColor(i, colors[i]);
@@ -136,6 +145,7 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	public void setColumnAlignments(@Nonnull final TableAlignment... alignments)
 	{
+		ensureColumnSize(alignments.length);
 		for (int i = 0; i < alignments.length; i++)
 		{
 			setColumnAlignment(i, alignments[i]);
@@ -144,10 +154,7 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	public void addRow(@Nonnull final String... cells)
 	{
-		while (cells.length > columns.size())
-		{
-			columns.add(TableElement.builder().build());
-		}
+		ensureColumnSize(cells.length);
 
 		final TableElement[] elements = new TableElement[cells.length];
 		for (int i = 0; i < cells.length; i++)
