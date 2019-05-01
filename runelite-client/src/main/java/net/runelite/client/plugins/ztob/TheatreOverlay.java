@@ -168,6 +168,35 @@ public class TheatreOverlay extends Overlay {
 
 		if (plugin.isRunSotetseg())
 		{
+			if (config.highlightSote())
+			{
+				for (Projectile projectile : plugin.getSotetseg_MageProjectiles())
+				{
+					String text = "Mage";
+					int x = (int) projectile.getX();
+					int y = (int) projectile.getY();
+					LocalPoint projectilePoint = new LocalPoint(x, y);
+					Point textLocation = Perspective.getCanvasTextLocation(client, graphics, projectilePoint, text, 0);
+					if (textLocation != null)
+					{
+						OverlayUtil.renderTextLocation(graphics, textLocation, text, Color.CYAN);
+					}
+				}
+
+				for (Projectile projectile : plugin.getSotetseg_RangeProjectiles())
+				{
+					String text = "Range";
+					int x = (int) projectile.getX();
+					int y = (int) projectile.getY();
+					LocalPoint projectilePoint = new LocalPoint(x, y);
+					Point textLocation = Perspective.getCanvasTextLocation(client, graphics, projectilePoint, text, 0);
+					if (textLocation != null)
+					{
+						OverlayUtil.renderTextLocation(graphics, textLocation, text, Color.GREEN);
+					}
+				}
+			}
+
 			if (config.SotetsegMaze1())
 			{
                 int i = 1;

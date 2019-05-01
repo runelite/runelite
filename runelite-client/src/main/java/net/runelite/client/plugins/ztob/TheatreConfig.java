@@ -11,6 +11,7 @@ package net.runelite.client.plugins.ztob;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("Theatre")
 
@@ -106,8 +107,19 @@ public interface TheatreConfig extends Config
         return true;
     }
 
+	@ConfigItem(
+		position = 8,
+		keyName = "highlightSote",
+		name = "Sote Missiles",
+		description = "Highlight Sotetseg's Missiles with pray type"
+	)
+	default boolean highlightSote()
+	{
+		return true;
+	}
+
     @ConfigItem(
-            position = 8,
+            position = 9,
             keyName = "SotetsegMaze1",
             name = "Sotetseg maze",
             description = ""
@@ -118,7 +130,7 @@ public interface TheatreConfig extends Config
 	}
 
     @ConfigItem(
-            position = 9,
+            position = 10,
             keyName = "SotetsegMaze2",
             name = "Sotetseg maze (solo mode)",
             description = ""
@@ -129,7 +141,7 @@ public interface TheatreConfig extends Config
 	}
 
     @ConfigItem(
-            position = 10,
+            position = 11,
             keyName = "XarpusExhumed",
             name = "Xarpus Exhumed",
             description = ""
@@ -140,7 +152,7 @@ public interface TheatreConfig extends Config
 	}
 
     @ConfigItem(
-            position = 11,
+            position = 12,
             keyName = "XarpusTick",
             name = "Xarpus Tick",
             description = ""
@@ -151,7 +163,7 @@ public interface TheatreConfig extends Config
 	}
 
     @ConfigItem(
-            position = 12,
+            position = 13,
             keyName = "xarpusExhumes",
             name = "Xarpus Exhume Counter",
             description = ""
@@ -162,7 +174,7 @@ public interface TheatreConfig extends Config
 	}
 
     @ConfigItem(
-            position = 13,
+            position = 14,
             keyName = "VerzikCupcakes",
             name = "Verzik Projectile Markers",
             description = ""
@@ -173,7 +185,7 @@ public interface TheatreConfig extends Config
 	}
 
     @ConfigItem(
-            position = 14,
+            position = 15,
             keyName = "VerzikTick",
             name = "Verzik P3 Tick",
             description = ""
@@ -184,7 +196,7 @@ public interface TheatreConfig extends Config
 	}
 
     @ConfigItem(
-            position = 15,
+            position = 16,
             keyName = "VerzikMelee",
             name = "Verzik P3 Melee Range",
             description = ""
@@ -195,7 +207,7 @@ public interface TheatreConfig extends Config
 	}
 
     @ConfigItem(
-            position = 16,
+            position = 17,
             keyName = "VerzikYellow",
             name = "Verzik Yellow Timing",
             description = ""
@@ -206,7 +218,7 @@ public interface TheatreConfig extends Config
 	}
 
     @ConfigItem(
-            position = 17,
+            position = 18,
 		keyName = "Verzik Nylo",
 		name = "Verzik Nylo Overlay",
 		description = ""
@@ -217,7 +229,7 @@ public interface TheatreConfig extends Config
 	}
 
     @ConfigItem(
-            position = 18,
+            position = 19,
             keyName = "VerzikTankTile",
             name = "Verzik P3 Tile Overlay",
             description = ""
