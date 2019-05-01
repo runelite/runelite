@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,9 +30,14 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import javax.annotation.Nonnull;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
 public class TableComponent implements LayoutableRenderableEntity
 {
 	public enum TableAlignment
@@ -41,16 +47,29 @@ public class TableComponent implements LayoutableRenderableEntity
 		RIGHT
 	}
 
+	@Getter
+	private final Rectangle bounds = new Rectangle();
+
+	@Setter(AccessLevel.NONE)
 	private ArrayList<String[]> cells = new ArrayList<>();
-	private TableAlignment[] columnAlignments;
-	private Color[] columnColors;
+	@Nonnull
+	private TableAlignment[] columnAlignments = new TableAlignment[0];
+	@Nonnull
+	private Color[] columnColors = new Color[0];
+	@Setter(AccessLevel.NONE)
 	private int numCols;
+	@Setter(AccessLevel.NONE)
 	private int numRows;
 
+	@Nonnull
 	private TableAlignment defaultAlignment = TableAlignment.LEFT;
+	@Nonnull
 	private Color defaultColor = Color.WHITE;
+	@Nonnull
 	private Dimension gutter = new Dimension(3, 0);
+	@Nonnull
 	private Point preferredLocation = new Point();
+	@Nonnull
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
 
 	@Override
@@ -88,44 +107,10 @@ public class TableComponent implements LayoutableRenderableEntity
 		}
 
 		graphics.translate(-preferredLocation.x, -preferredLocation.y);
-		return new Dimension(preferredSize.width, height);
-	}
-
-	public void setDefaultColor(@Nonnull final Color color)
-	{
-		this.defaultColor = color;
-	}
-
-	public void setDefaultAlignment(@Nonnull final TableAlignment alignment)
-	{
-		this.defaultAlignment = alignment;
-	}
-
-	public void setGutter(@Nonnull final Dimension gutter)
-	{
-		this.gutter = gutter;
-	}
-
-	@Override
-	public void setPreferredLocation(@Nonnull final Point location)
-	{
-		this.preferredLocation = location;
-	}
-
-	@Override
-	public void setPreferredSize(@Nonnull final Dimension size)
-	{
-		this.preferredSize = size;
-	}
-
-	public void setColumnColors(@Nonnull Color... colors)
-	{
-		columnColors = colors;
-	}
-
-	public void setColumnAlignments(@Nonnull TableAlignment... alignments)
-	{
-		columnAlignments = alignments;
+		final Dimension dimension = new Dimension(preferredSize.width, height);
+		bounds.setLocation(preferredLocation);
+		bounds.setSize(dimension);
+		return dimension;
 	}
 
 	public void setColumnColor(final int col, final Color color)
@@ -157,8 +142,7 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	private Color getColumnColor(final int column)
 	{
-		if (columnColors == null
-			|| columnColors.length <= column
+		if (columnColors.length <= column
 			|| columnColors[column] == null)
 		{
 			return defaultColor;
@@ -168,8 +152,7 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	private TableAlignment getColumnAlignment(final int column)
 	{
-		if (columnAlignments == null
-			|| columnAlignments.length <= column
+		if (columnAlignments.length <= column
 			|| columnAlignments[column] == null)
 		{
 			return defaultAlignment;
