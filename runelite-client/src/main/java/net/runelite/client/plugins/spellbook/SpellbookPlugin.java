@@ -56,13 +56,15 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Spellbook",
 	description = "Modifications to the spellbook",
-	tags = {"resize", "spell", "mobile", "lowers", "pvp", "skill", "level"}
+	tags = {"resize", "spell", "mobile", "lowers", "pvp", "skill", "level"},
+	type = PluginType.UTILITY
 )
 @Slf4j
 public class SpellbookPlugin extends Plugin
