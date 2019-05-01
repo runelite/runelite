@@ -30,7 +30,13 @@ import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import static net.runelite.api.ItemID.*;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.ABYSSAL_BRACELET;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.BELLOWS;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.FUNGICIDE_SPRAY;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
 
 @AllArgsConstructor
 @Getter
