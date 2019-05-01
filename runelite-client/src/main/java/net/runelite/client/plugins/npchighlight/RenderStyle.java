@@ -29,7 +29,11 @@ public enum RenderStyle
 	OFF("Off"),
 	TILE("Tile"),
 	HULL("Hull"),
-	SOUTH_WEST_TILE("South West Tile");
+	SOUTH_WEST_TILE("South West Tile"),
+	THIN_OUTLINE("Thin outline"),
+	OUTLINE("Outline"),
+	THIN_GLOW("Thin glow"),
+	GLOW("Glow");
 
 	private final String name;
 

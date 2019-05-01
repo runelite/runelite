@@ -40,7 +40,7 @@ public interface NpcIndicatorsConfig extends Config
 	)
 	default RenderStyle renderStyle()
 	{
-		return RenderStyle.HULL;
+		return RenderStyle.THIN_OUTLINE;
 	}
 
 	@ConfigItem(

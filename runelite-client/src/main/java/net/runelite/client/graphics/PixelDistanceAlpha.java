@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.slayer;
+package net.runelite.client.graphics;
 
-import java.awt.image.BufferedImage;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.Counter;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
-class TaskCounter extends Counter
+@Value
+@RequiredArgsConstructor
+class PixelDistanceAlpha
 {
-	TaskCounter(BufferedImage img, Plugin plugin, int amount)
-	{
-		super(img, plugin, amount);
-	}
+	private final int outerAlpha;
+	private final int distArrayPos;
 }

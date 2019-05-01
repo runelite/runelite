@@ -433,6 +433,11 @@ public enum Varbits
      */
     ACCOUNT_TYPE(1777),
 
+	/**
+	 * Varbit used for Slayer reward points
+	 */
+	SLAYER_REWARD_POINTS(4068),
+
     /**
      * The varbit that stores the oxygen percentage for player
      */
