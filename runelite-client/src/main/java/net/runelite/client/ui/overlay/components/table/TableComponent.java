@@ -136,6 +136,11 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	public void addRow(@Nonnull final String... cells)
 	{
+		while (cells.length > columns.size())
+		{
+			columns.add(TableElement.builder().build());
+		}
+		
 		final TableElement[] elements = new TableElement[cells.length];
 		for (int i = 0; i < cells.length; i++)
 		{
