@@ -167,18 +167,15 @@ public class TableComponent implements LayoutableRenderableEntity
 		this.columns.addAll(Arrays.asList(elements));
 	}
 
-	public void addColumn(@Nonnull final String... cells)
+	public void addColumn(@Nonnull final String col)
 	{
-		for (String cell : cells)
-		{
-			this.columns.add(TableElement.builder().content(cell).build());
-		}
+		this.columns.add(TableElement.builder().content(col).build());
 	}
 
-	public void setColumns(@Nonnull final String[]... columns)
+	public void setColumns(@Nonnull final String... columns)
 	{
 		this.columns.clear();
-		for (String[] col : columns)
+		for (String col : columns)
 		{
 			addColumn(col);
 		}
