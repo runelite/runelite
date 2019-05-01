@@ -25,10 +25,12 @@
 package net.runelite.client.plugins.spellbook;
 
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import javax.swing.SwingUtilities;
 import net.runelite.client.input.MouseAdapter;
+import net.runelite.client.input.MouseWheelListener;
 
-public class SpellbookMouseListener extends MouseAdapter
+public class SpellbookMouseListener extends MouseAdapter implements MouseWheelListener
 {
 	private final SpellbookPlugin plugin;
 
@@ -40,9 +42,14 @@ public class SpellbookMouseListener extends MouseAdapter
 	@Override
 	public MouseEvent mouseClicked(MouseEvent event)
 	{
-		if (SwingUtilities.isMiddleMouseButton(event) || !plugin.isOnSpellWidget(event.getPoint()))
+		if (!plugin.isOnSpellWidget(event.getPoint()))
 		{
 			return event;
+		}
+
+		if (SwingUtilities.isMiddleMouseButton(event))
+		{
+			plugin.resetZoom(event.getPoint());
 		}
 
 		event.consume();
@@ -72,6 +79,29 @@ public class SpellbookMouseListener extends MouseAdapter
 		}
 
 		plugin.completeDragging(event.getPoint());
+
+		event.consume();
+		return event;
+	}
+
+	@Override
+	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
+	{
+		if (!plugin.isOnSpellWidget(event.getPoint()))
+		{
+			return event;
+		}
+
+		int direction = event.getWheelRotation();
+
+		if (direction > 0)
+		{
+			plugin.increaseSize(event.getPoint());
+		}
+		else
+		{
+			plugin.decreaseSize(event.getPoint());
+		}
 
 		event.consume();
 		return event;

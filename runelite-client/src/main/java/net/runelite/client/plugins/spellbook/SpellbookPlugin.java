@@ -116,6 +116,7 @@ public class SpellbookPlugin extends Plugin
 	private Point draggingLocation;
 
 	private Map<Integer, Spell> spells = new HashMap<>();
+	private Map<Integer, Spell> tmp = null;
 	private List<String> notFilteredSpells = new ArrayList<>();
 	private Spellbook spellbook;
 	private SpellbookMouseListener mouseListener;
@@ -142,6 +143,9 @@ public class SpellbookPlugin extends Plugin
 		saveSpells();
 		config.canDrag(false);
 		mouseManager.unregisterMouseListener(mouseListener);
+
+		mouseManager.unregisterMouseWheelListener(mouseListener);
+
 		mouseListener = null;
 	}
 
@@ -173,7 +177,7 @@ public class SpellbookPlugin extends Plugin
 			loadFilter();
 		}
 
-		runRebuild();
+		clientThread.invokeLater(this::runRebuild);
 	}
 
 	@Subscribe
@@ -206,6 +210,11 @@ public class SpellbookPlugin extends Plugin
 
 		if ("startSpellRedraw".equals(event.getEventName()))
 		{
+			if (config.canDrag())
+			{
+				return;
+			}
+
 			spellbook = Spellbook.getByID(client.getVar(Varbits.SPELLBOOK));
 			loadSpells();
 		}
@@ -221,6 +230,7 @@ public class SpellbookPlugin extends Plugin
 				s.setWidget(widget);
 				s.setX(-1);
 				s.setY(-1);
+				s.setSize(0);
 				s.setName(spell);
 
 				spells.put(widget, s);
@@ -254,6 +264,29 @@ public class SpellbookPlugin extends Plugin
 
 			iStack[iStackSize - 1] = FULL_HEIGHT;
 			iStack[iStackSize - 2] = FULL_WIDTH;
+		}
+		else if ("resizeIndividualSpells".equals(event.getEventName()))
+		{
+			int widget = iStack[iStackSize - 1];
+			int visCount =
+				(int) spells.values().stream()
+					.map(Spell::getName)
+					.filter(s -> notFilteredSpells
+						.stream()
+						.anyMatch(s::contains))
+					.count();
+
+
+			if (visCount > 20 || visCount == 0)
+			{
+				return;
+			}
+
+			Spell spell = spells.get(widget);
+			int newSize = spell.getSize() * 5 + config.size();
+
+			iStack[iStackSize - 2] = newSize;
+			iStack[iStackSize - 3] = newSize;
 		}
 		else if ("setSpellPosition".equals(event.getEventName()))
 		{
@@ -293,12 +326,21 @@ public class SpellbookPlugin extends Plugin
 			config.canDrag(true);
 			overlayManager.add(overlay);
 			mouseManager.registerMouseListener(mouseListener);
+			tmp = new HashMap<>();
+
+			if (config.scroll())
+			{
+				mouseManager.registerMouseWheelListener(mouseListener);
+			}
 		}
 		else if (event.getMenuOption().equals(LOCK))
 		{
 			config.canDrag(false);
 			overlayManager.remove(overlay);
 			mouseManager.unregisterMouseListener(mouseListener);
+			mouseManager.unregisterMouseWheelListener(mouseListener);
+			saveSpells();
+			tmp = null;
 		}
 	}
 
@@ -360,6 +402,11 @@ public class SpellbookPlugin extends Plugin
 		Collection<Spell> gson = GSON.fromJson(cfg, new TypeToken<List<Spell>>(){}.getType());
 		// CHECKSTYLE:ON
 		gson.stream().filter(Objects::nonNull).forEach(s -> spells.put(s.getWidget(), s));
+
+		if (tmp != null)
+		{
+			tmp.forEach((k, v) -> spells.replace(k, v));
+		}
 	}
 
 	private void saveSpells()
@@ -368,6 +415,8 @@ public class SpellbookPlugin extends Plugin
 		{
 			return;
 		}
+
+		tmp.forEach((k, v) -> spells.replace(k, v));
 
 		String key = spellbook.getConfigKey();
 
@@ -395,25 +444,10 @@ public class SpellbookPlugin extends Plugin
 			return false;
 		}
 
-		for (int id : spells.keySet())
-		{
-			Widget w = client.getWidget(WidgetInfo.TO_GROUP(id), WidgetInfo.TO_CHILD(id)); // lol very useful
-
-			if (w == null || notFilteredSpells.stream().noneMatch(spells.get(id).getName()::contains))
-			{
-				continue;
-			}
-
-			if (w.getBounds().contains(point))
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return currentWidget(point) != null;
 	}
 
-	void startDragging(java.awt.Point point)
+	private Widget currentWidget(java.awt.Point point)
 	{
 		for (int id : spells.keySet())
 		{
@@ -424,8 +458,19 @@ public class SpellbookPlugin extends Plugin
 				continue;
 			}
 
-			draggingWidget = w;
-			break;
+			return w;
+		}
+
+		return null;
+	}
+
+	void startDragging(java.awt.Point point)
+	{
+		draggingWidget = currentWidget(point);
+
+		if (draggingWidget == null)
+		{
+			return;
 		}
 
 		Point widgetPos = draggingWidget.getCanvasLocation();
@@ -471,11 +516,118 @@ public class SpellbookPlugin extends Plugin
 		n.setX(x);
 		n.setY(y);
 
-		spells.replace(draggedID, n);
+		tmp.put(draggedID, n);
 
 		draggingWidget.setHidden(false);
 		dragging = false;
 
-		saveSpells();
+		runRebuild();
+	}
+
+	void resetZoom(java.awt.Point point)
+	{
+		Widget clickedWidget = currentWidget(point);
+
+		if (clickedWidget == null || !config.scroll())
+		{
+			return;
+		}
+
+		int clickedWidgetId = clickedWidget.getId();
+
+		if (!spells.containsKey(clickedWidgetId))
+		{
+			return;
+		}
+
+		Spell clickedSpell = spells.get(clickedWidgetId);
+
+		int oldSize = clickedSpell.getSize();
+		int tmpSize = tmp.get(clickedWidgetId).getSize();
+
+		if (tmpSize == 0 && oldSize == 0)
+		{
+			return;
+		}
+
+		clickedSpell.setSize(0);
+
+		clickedSpell.setX(clickedSpell.getX() + oldSize * 5 / 2);
+		clickedSpell.setY(clickedSpell.getY() + oldSize * 5 / 2);
+
+		tmp.put(clickedWidgetId, clickedSpell);
+
+		runRebuild();
+	}
+
+	void decreaseSize(java.awt.Point point)
+	{
+		Widget scrolledWidget = currentWidget(point);
+
+		if (scrolledWidget == null)
+		{
+			return;
+		}
+
+		int scrolledWidgetId = scrolledWidget.getId();
+
+		if (!spells.containsKey(scrolledWidgetId))
+		{
+			return;
+		}
+
+		Spell scrolledSpell = spells.get(scrolledWidgetId);
+
+		scrolledSpell.setSize(scrolledSpell.getSize() + 1);
+
+		if (scrolledSpell.getSize() % 2 == 0)
+		{
+			scrolledSpell.setX(scrolledSpell.getX() - 3);
+			scrolledSpell.setY(scrolledSpell.getY() - 3);
+		}
+		else
+		{
+			scrolledSpell.setX(scrolledSpell.getX() - 2);
+			scrolledSpell.setY(scrolledSpell.getY() - 2);
+		}
+
+		tmp.put(scrolledWidgetId, scrolledSpell);
+
+		runRebuild();
+	}
+
+	void increaseSize(java.awt.Point point)
+	{
+		Widget scrolledWidget = currentWidget(point);
+
+		if (scrolledWidget == null)
+		{
+			return;
+		}
+
+		int scrolledWidgetId = scrolledWidget.getId();
+
+		if (!spells.containsKey(scrolledWidgetId))
+		{
+			return;
+		}
+
+		Spell scrolledSpell = spells.get(scrolledWidgetId);
+		scrolledSpell.setSize(scrolledSpell.getSize() - 1);
+
+		if (scrolledSpell.getSize() % 2 == 0)
+		{
+			scrolledSpell.setX(scrolledSpell.getX() + 3);
+			scrolledSpell.setY(scrolledSpell.getY() + 3);
+		}
+		else
+		{
+			scrolledSpell.setX(scrolledSpell.getX() + 2);
+			scrolledSpell.setY(scrolledSpell.getY() + 2);
+		}
+
+		tmp.put(scrolledWidgetId, scrolledSpell);
+
+		runRebuild();
 	}
 }

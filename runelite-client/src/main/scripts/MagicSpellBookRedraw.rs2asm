@@ -705,6 +705,10 @@ LABEL611:
    istore                 25
    iload                  19
    iload                  19
+   iload                  25
+   sconst                 "resizeIndividualSpells"
+   runelite_callback
+   pop_int
    iconst                 0
    iconst                 0
    iload                  25

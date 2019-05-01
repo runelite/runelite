@@ -54,10 +54,21 @@ public interface SpellbookConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "scroll",
+		name = "Scrollwheel resizing",
+		description = "Resize spells by scrolling your scrollwheel over them, reset with scrollwheel click",
+		position = 3
+	)
+	default boolean scroll()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "size",
 		name = "Spell size",
 		description = "Size (in px) of spells. Normal mobile size is 40px, use common sense for this setting please",
-		position = 3
+		position = 4
 	)
 	default int size()
 	{
