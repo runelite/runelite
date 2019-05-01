@@ -32,6 +32,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -50,7 +51,9 @@ public class TableComponent implements LayoutableRenderableEntity
 	@Getter
 	private final Rectangle bounds = new Rectangle();
 
+	@Getter
 	private final List<TableElement> columns = new ArrayList<>();
+	@Getter
 	private final List<TableRow> rows = new ArrayList<>();
 
 	@Nonnull
@@ -158,24 +161,23 @@ public class TableComponent implements LayoutableRenderableEntity
 		this.columns.add(element);
 	}
 
-	public void addColumns(@Nonnull final TableElement... elements)
+	public void setColumns(@Nonnull final TableElement... elements)
 	{
-		for (TableElement ele : elements)
-		{
-			addColumn(ele);
-		}
+		this.columns.clear();
+		this.columns.addAll(Arrays.asList(elements));
 	}
 
 	public void addColumn(@Nonnull final String... cells)
 	{
-		for (int i = 0; i < cells.length; i++)
+		for (String cell : cells)
 		{
-			this.columns.add(TableElement.builder().content(cells[i]).build());
+			this.columns.add(TableElement.builder().content(cell).build());
 		}
 	}
 
-	public void addColumns(@Nonnull final String[]... columns)
+	public void setColumns(@Nonnull final String[]... columns)
 	{
+		this.columns.clear();
 		for (String[] col : columns)
 		{
 			addColumn(col);
