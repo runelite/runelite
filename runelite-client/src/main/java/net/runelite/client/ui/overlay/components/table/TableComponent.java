@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.components;
+package net.runelite.client.ui.overlay.components.table;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -32,34 +32,27 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nonnull;
-import lombok.AccessLevel;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
+import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
+import net.runelite.client.ui.overlay.components.TextComponent;
 
 @Setter
 public class TableComponent implements LayoutableRenderableEntity
 {
-	public enum TableAlignment
-	{
-		LEFT,
-		CENTER,
-		RIGHT
-	}
+	private static final TableRow EMPTY_ROW = TableRow.builder().build();
+	private static final TableElement EMPTY_ELEMENT = TableElement.builder().build();
 
 	@Getter
 	private final Rectangle bounds = new Rectangle();
 
-	@Setter(AccessLevel.NONE)
-	private ArrayList<String[]> cells = new ArrayList<>();
 	@Nonnull
-	private TableAlignment[] columnAlignments = new TableAlignment[0];
-	@Nonnull
-	private Color[] columnColors = new Color[0];
-	@Setter(AccessLevel.NONE)
-	private int numCols;
-	@Setter(AccessLevel.NONE)
-	private int numRows;
+	private TableElement[] tableColumns = new TableElement[0];
+	private final List<TableRow> tableRows = new ArrayList<>();
 
 	@Nonnull
 	private TableAlignment defaultAlignment = TableAlignment.LEFT;
@@ -81,6 +74,9 @@ public class TableComponent implements LayoutableRenderableEntity
 
 		graphics.translate(preferredLocation.x, preferredLocation.y);
 
+		final int numRows = tableRows.size();
+		final int numCols = tableColumns.length;
+
 		for (int row = 0; row < numRows; row++)
 		{
 			int x = 0;
@@ -91,13 +87,16 @@ public class TableComponent implements LayoutableRenderableEntity
 				final String[] lines = lineBreakText(getCellText(col, row), columnWidths[col], metrics);
 				for (String line : lines)
 				{
-					final int alignmentOffset = getAlignedPosition(line, getColumnAlignment(col), columnWidths[col], metrics);
+					final TableAlignment alignment = getCellAlignment(row, col);
+					final int alignmentOffset = getAlignedPosition(line, alignment, columnWidths[col], metrics);
 					final TextComponent leftLineComponent = new TextComponent();
 					y += metrics.getHeight();
 
+					final Color lineColor = getCellColor(row, col);
+
 					leftLineComponent.setPosition(new Point(x + alignmentOffset, y));
 					leftLineComponent.setText(line);
-					leftLineComponent.setColor(getColumnColor(col));
+					leftLineComponent.setColor(lineColor);
 					leftLineComponent.render(graphics);
 				}
 				height = Math.max(height, y);
@@ -115,21 +114,28 @@ public class TableComponent implements LayoutableRenderableEntity
 
 	public void setColumnColor(final int col, final Color color)
 	{
-		assert columnColors.length > col;
-		columnColors[col] = color;
+		assert tableColumns.length > col;
+		tableColumns[col].setColor(color);
 	}
 
 	public void setColumnAlignment(final int col, final TableAlignment alignment)
 	{
-		assert columnAlignments.length > col;
-		columnAlignments[col] = alignment;
+		assert tableColumns.length > col;
+		tableColumns[col].setAlignment(alignment);
 	}
 
 	public void addRow(@Nonnull final String... cells)
 	{
-		numCols = Math.max(numCols, cells.length);
-		numRows++;
-		this.cells.add(cells);
+		final TableElement[] elements = new TableElement[cells.length];
+		for (int i = 0; i < cells.length; i++)
+		{
+			elements[i] = TableElement.builder().content(cells[i]).build();
+		}
+
+		final TableRow row = TableRow.builder().build();
+		row.setElements(elements);
+
+		this.tableRows.add(row);
 	}
 
 	public void addRows(@Nonnull final String[]... rows)
@@ -140,39 +146,43 @@ public class TableComponent implements LayoutableRenderableEntity
 		}
 	}
 
-	private Color getColumnColor(final int column)
+	public void addRow(@Nonnull TableRow row)
 	{
-		if (columnColors.length <= column
-			|| columnColors[column] == null)
-		{
-			return defaultColor;
-		}
-		return columnColors[column];
+		this.tableRows.add(row);
 	}
 
-	private TableAlignment getColumnAlignment(final int column)
+	public void addRows(@Nonnull final TableRow... rows)
 	{
-		if (columnAlignments.length <= column
-			|| columnAlignments[column] == null)
+		for (TableRow row : rows)
 		{
-			return defaultAlignment;
+			addRow(row);
 		}
-		return columnAlignments[column];
 	}
 
 	private String getCellText(final int col, final int row)
 	{
-		assert col < numCols && row < numRows;
+		assert col < tableColumns.length && row < tableRows.size();
 
-		if (cells.get(row).length < col)
+		if (row == -1)
+		{
+			return tableColumns[col].getContent();
+		}
+
+		TableElement[] elements = tableRows.get(row).getElements();
+		if (col >= elements.length)
 		{
 			return "";
 		}
-		return cells.get(row)[col];
+
+		final String result = elements[col].content;
+		return result != null ? result : "";
 	}
 
 	private int[] getColumnWidths(final FontMetrics metrics)
 	{
+		final int numRows = tableRows.size();
+		final int numCols = tableColumns.length;
+
 		// Based on https://stackoverflow.com/questions/22206825/algorithm-for-calculating-variable-column-widths-for-set-table-width
 		int[] maxtextw = new int[numCols];      // max text width over all rows
 		int[] maxwordw = new int[numCols];      // max width of longest word
@@ -330,5 +340,64 @@ public class TableComponent implements LayoutableRenderableEntity
 				break;
 		}
 		return offset;
+	}
+
+	private Color getCellColor(final int row, final int column)
+	{
+		assert row < tableRows.size() && column < tableColumns.length;
+
+		// Row should be -1 for columns so use a empty TableRow
+		final TableRow rowEle = row != -1 ? tableRows.get(row) : EMPTY_ROW;
+		final TableElement columnElement = tableColumns[column];
+		final TableElement[] elements = rowEle.getElements();
+
+		// Some rows may not have every element, even though they should..
+		final TableElement ele = column < elements.length ? elements[column] : EMPTY_ELEMENT;
+
+		// Color priorities goes as follow: cell->row->column->default
+		return firstNonNull(
+			ele.getColor(),
+			rowEle.getRowColor(),
+			columnElement.getColor(),
+			defaultColor);
+	}
+
+	private TableAlignment getCellAlignment(final int row, final int column)
+	{
+		assert row < tableRows.size() && column < tableColumns.length;
+
+		// Row should be -1 for columns so use a empty TableRow
+		final TableRow rowEle = row != -1 ? tableRows.get(row) : EMPTY_ROW;
+		final TableElement columnElement = tableColumns[column];
+		final TableElement[] elements = rowEle.getElements();
+
+		// Some rows may not have every element, even though they should..
+		final TableElement ele = column < elements.length ? elements[column] : EMPTY_ELEMENT;
+
+		// Alignment priorities goes as follow: cell->row->column->default
+		return firstNonNull(
+			ele.getAlignment(),
+			rowEle.getRowAlignment(),
+			columnElement.getAlignment(),
+			defaultAlignment);
+	}
+
+	@SafeVarargs
+	private static <T> T firstNonNull(@Nullable T... elements)
+	{
+		if (elements == null || elements.length == 0)
+		{
+			return null;
+		}
+
+		int i = 0;
+		T cur = elements[0];
+		while (cur == null && i < elements.length)
+		{
+			cur = elements[i];
+			i++;
+		}
+
+		return cur;
 	}
 }
