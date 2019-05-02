@@ -251,6 +251,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		int type = event.getType();
+		String target = event.getTarget();
 
 		if (type >= MENU_ACTION_DEPRIORITIZE_OFFSET)
 		{
@@ -263,18 +264,23 @@ public class NpcIndicatorsPlugin extends Plugin
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-			final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), config.getHighlightColor());
+			target = ColorUtil.prependColorTag(Text.removeTags(target), config.getHighlightColor());
 			menuEntry.setTarget(target);
 			client.setMenuEntries(menuEntries);
 		}
 		else if (hotKeyPressed && type == MenuAction.EXAMINE_NPC.getId())
 		{
+			if (config.highlightMenuNames())
+			{
+				target = ColorUtil.prependColorTag(Text.removeTags(target), config.getHighlightColor());
+			}
+
 			// Add tag option
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
 			tagEntry.setOption(TAG);
-			tagEntry.setTarget(event.getTarget());
+			tagEntry.setTarget(target);
 			tagEntry.setParam0(event.getActionParam0());
 			tagEntry.setParam1(event.getActionParam1());
 			tagEntry.setIdentifier(event.getIdentifier());
