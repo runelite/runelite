@@ -37,9 +37,9 @@
 	<packaging>maven-plugin</packaging>
 
 	<properties>
-		<maven.plugin.api.version>3.6.1</maven.plugin.api.version>
-		<maven.plugin.annotations.version>3.6.0</maven.plugin.annotations.version>
-		<maven.plugin.plugin.version>3.6.0</maven.plugin.plugin.version>
+		<maven.plugin.api.version>3.0.5</maven.plugin.api.version>
+		<maven.plugin.annotations.version>3.4</maven.plugin.annotations.version>
+		<maven.plugin.plugin.version>3.4</maven.plugin.plugin.version>
 	</properties>
 
 	<dependencies>

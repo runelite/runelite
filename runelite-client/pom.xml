@@ -47,8 +47,8 @@
 		<runelite.pushingpixels.trident.version>1.5.00</runelite.pushingpixels.trident.version>
 		<runelite.discord.version>1.1</runelite.discord.version>
 		<runelite.orange.extensions.version>1.0</runelite.orange.extensions.version>
-		<maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
-		<maven.jarsigner.plugin.version>3.0.0</maven.jarsigner.plugin.version>
+		<maven.resources.plugin.version>3.0.2</maven.resources.plugin.version>
+		<maven.jarsigner.plugin.version>1.4</maven.jarsigner.plugin.version>
 		<maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
 
 		<jarsigner.skip>true</jarsigner.skip>

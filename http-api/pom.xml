@@ -37,7 +37,7 @@
 	<properties>
 		<commons.csv.version>1.4</commons.csv.version>
 
-		<maven.git.commit.id.version>2.2.6</maven.git.commit.id.version>
+		<maven.git.commit.id.version>2.2.5</maven.git.commit.id.version>
 
 		<git.commit.id.abbrev>nogit</git.commit.id.abbrev>
 		<git.dirty>false</git.dirty>
