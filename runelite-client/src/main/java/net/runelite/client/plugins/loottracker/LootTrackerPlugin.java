@@ -99,6 +99,10 @@ public class LootTrackerPlugin extends Plugin
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails.");
 	private static final int THEATRE_OF_BLOOD_REGION = 12867;
 
+	// Herbiboar loot handling
+	private static final String HERBIBOAR_LOOTED_MESSAGE = "You harvest herbs from the herbiboar, whereupon it escapes.";
+	private static final String HERBIBOR_EVENT = "Herbiboar";
+
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Map<Integer, String> CHEST_EVENT_TYPES = ImmutableMap.of(
@@ -389,14 +393,15 @@ public class LootTrackerPlugin extends Plugin
 			}
 
 			eventType = CHEST_EVENT_TYPES.get(regionID);
+			takeInventorySnapshot();
 
-			final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
-			if (itemContainer != null)
-			{
-				inventorySnapshot = HashMultiset.create();
-				Arrays.stream(itemContainer.getItems())
-						.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
-			}
+			return;
+		}
+
+		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
+		{
+			eventType = HERBIBOR_EVENT;
+			takeInventorySnapshot();
 
 			return;
 		}
@@ -433,7 +438,7 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (eventType != null && CHEST_EVENT_TYPES.containsValue(eventType))
+		if (eventType != null && (CHEST_EVENT_TYPES.containsValue(eventType) || HERBIBOR_EVENT.equals(eventType)))
 		{
 			if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
 			{
@@ -442,6 +447,17 @@ public class LootTrackerPlugin extends Plugin
 
 			processChestLoot(eventType, event.getItemContainer());
 			eventType = null;
+		}
+	}
+
+	private void takeInventorySnapshot()
+	{
+		final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		if (itemContainer != null)
+		{
+			inventorySnapshot = HashMultiset.create();
+			Arrays.stream(itemContainer.getItems())
+					.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
 		}
 	}
 

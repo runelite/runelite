@@ -66,6 +66,7 @@ public class DailyTasksPlugin extends Plugin
 	private static final String ARROWS_MESSAGE = "You have ogre arrows waiting to be collected from Rantz.";
 	private static final String BONEMEAL_MESSAGE = "You have bonemeal and slime waiting to be collected from Robin.";
 	private static final int BONEMEAL_PER_DIARY = 13;
+	private static final String DYNAMITE_MESSAGE = "You have dynamite waiting to be collected from Thirus.";
 	private static final String RELOG_MESSAGE = " (May require a relog)";
 
 	@Inject
@@ -159,6 +160,11 @@ public class DailyTasksPlugin extends Plugin
 			{
 				checkArrows(dailyReset);
 			}
+
+			if (config.showDynamite())
+			{
+				checkDynamite(dailyReset);
+			}
 		}
 	}
 
@@ -249,6 +255,21 @@ public class DailyTasksPlugin extends Plugin
 			if (dailyReset ||  collected < max)
 			{
 				sendChatMessage(BONEMEAL_MESSAGE);
+			}
+		}
+	}
+
+	private void checkDynamite(boolean dailyReset)
+	{
+		if (client.getVar(Varbits.DIARY_KOUREND_MEDIUM) == 1)
+		{
+			if (client.getVar(Varbits.DAILY_DYNAMITE_COLLECTED) == 0)
+			{
+				sendChatMessage(DYNAMITE_MESSAGE);
+			}
+			else if (dailyReset)
+			{
+				sendChatMessage(DYNAMITE_MESSAGE);
 			}
 		}
 	}
