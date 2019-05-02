@@ -70,7 +70,6 @@
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-buffer</artifactId>
-			<version>${netty.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.antlr</groupId>
@@ -91,14 +90,10 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>

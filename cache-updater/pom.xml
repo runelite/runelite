@@ -69,12 +69,10 @@
 		<dependency>
 			<groupId>org.sql2o</groupId>
 			<artifactId>sql2o</artifactId>
-			<version>${sql2o.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.minio</groupId>
 			<artifactId>minio</artifactId>
-			<version>${minio.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>

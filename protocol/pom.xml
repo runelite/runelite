@@ -54,7 +54,6 @@
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-all</artifactId>
-			<version>${netty.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -65,8 +64,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
