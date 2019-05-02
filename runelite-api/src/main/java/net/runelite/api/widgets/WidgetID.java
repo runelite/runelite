@@ -204,9 +204,9 @@ public class WidgetID
 	static class ClanChat
 	{
 		static final int TITLE = 1;
-		static final int NAME = 3;
-		static final int OWNER = 5;
-		static final int LIST = 15;
+		static final int NAME = 4;
+		static final int OWNER = 6;
+		static final int LIST = 16;
 	}
 
 	static class Bank
