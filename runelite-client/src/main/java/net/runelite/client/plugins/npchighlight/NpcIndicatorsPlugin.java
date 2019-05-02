@@ -66,7 +66,6 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WildcardMatcher;
 
@@ -249,37 +248,20 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
+		if (!hotKeyPressed || event.getType() != MenuAction.EXAMINE_NPC.getId())
+		{
+			return;
+		}
+
 		MenuEntry[] menuEntries = client.getMenuEntries();
-		String target = event.getTarget();
-		final int identifier = event.getIdentifier();
-		int type = event.getType();
-
-		if (type >= 2000)
-		{
-			type -= 2000;
-		}
-
-		if (config.highlightMenuNames() &&
-			NPC_MENU_ACTIONS.contains(MenuAction.of(type)) &&
-			highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == identifier))
-		{
-			final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-			target = ColorUtil.prependColorTag(Text.removeTags(target), config.getHighlightColor());
-			menuEntry.setTarget(target);
-		}
-
-		if (hotKeyPressed && type == MenuAction.EXAMINE_NPC.getId())
-		{
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			tagEntry.setOption(TAG);
-			tagEntry.setTarget(target);
-			tagEntry.setParam0(event.getActionParam0());
-			tagEntry.setParam1(event.getActionParam1());
-			tagEntry.setIdentifier(event.getIdentifier());
-			tagEntry.setType(MenuAction.RUNELITE.getId());
-		}
-
+		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+		menuEntry.setOption(TAG);
+		menuEntry.setTarget(event.getTarget());
+		menuEntry.setParam0(event.getActionParam0());
+		menuEntry.setParam1(event.getActionParam1());
+		menuEntry.setIdentifier(event.getIdentifier());
+		menuEntry.setType(MenuAction.RUNELITE.getId());
 		client.setMenuEntries(menuEntries);
 	}
 
