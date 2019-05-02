@@ -69,7 +69,6 @@ public class SlayerPluginTest
 	private static final String TASK_NEW = "Your new task is to kill 231 Suqahs.";
 	private static final String TASK_NEW_KONAR = "You are to bring balance to 147 Wyrms in the Karuulm Slayer Dungeon.";
 	private static final String TASK_NEW_KONAR_2 = "You are to bring balance to 142 Hellhounds in Witchhaven Dungeon.";
-	private static final String TASK_NEW_KONAR_3 = "You are to bring balance to 135 Trolls south of Mount Quidamortem.";
 	private static final String TASK_NEW_FIRST = "We'll start you off hunting goblins, you'll need to kill 17 of them.";
 	private static final String TASK_NEW_NPC_CONTACT = "Excellent, you're doing great. Your new task is to kill<br>211 Suqahs.";
 	private static final String TASK_NEW_FROM_PARTNER = "You have received a new Slayer assignment from breaklulz: Dust Devils (377)";
@@ -187,19 +186,6 @@ public class SlayerPluginTest
 		assertEquals("Hellhounds", slayerPlugin.getCurrentTask().getTaskName());
 		assertEquals(142, slayerPlugin.getCurrentTask().getAmount());
 		assertEquals("Witchhaven Dungeon", slayerPlugin.getCurrentTask().getTaskLocation());
-	}
-
-	@Test
-	public void testNewKonarTask3()
-	{
-		Widget npcDialog = mock(Widget.class);
-		when(npcDialog.getText()).thenReturn(TASK_NEW_KONAR_3);
-		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
-		slayerPlugin.onGameTick(new GameTick());
-
-		assertEquals("Trolls", slayerPlugin.getCurrentTask().getTaskName());
-		assertEquals(135, slayerPlugin.getCurrentTask().getAmount());
-		assertEquals("Mount Quidamortem", slayerPlugin.getCurrentTask().getTaskLocation());
 	}
 
 	@Test
