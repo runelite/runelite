@@ -188,6 +188,12 @@ public class TheatrePlugin extends Plugin {
     @Getter(AccessLevel.PACKAGE)
     private final Map<Projectile, WorldPoint> Verzik_RangeProjectiles = new HashMap<>();
 
+	@Getter(AccessLevel.PACKAGE)
+	private final List<Projectile> Sotetseg_MageProjectiles = new ArrayList<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private final List<Projectile> Sotetseg_RangeProjectiles = new ArrayList<>();
+
     @Getter(AccessLevel.PACKAGE)
     private int P3_TicksUntilAttack = -1;
 
@@ -558,6 +564,16 @@ public class TheatrePlugin extends Plugin {
                 Verzik_RangeProjectiles.put(projectile, p);
             }
         }
+        if (runSotetseg)
+		{
+			Projectile projectile = event.getProjectile();
+			if (projectile.getId() == 1606) {
+				Sotetseg_MageProjectiles.add(projectile);
+			}
+			if (projectile.getId() == 1607) {
+				Sotetseg_RangeProjectiles.add(projectile);
+			}
+		}
     }
 
     @Subscribe
@@ -730,6 +746,24 @@ public class TheatrePlugin extends Plugin {
                     break;
                 }
             }
+
+			if (!getSotetseg_MageProjectiles().isEmpty()) {
+				for (Iterator<Projectile> it = Sotetseg_MageProjectiles.iterator(); it.hasNext(); ) {
+					Projectile projectile = it.next();
+					if (projectile.getRemainingCycles() < 1) {
+						it.remove();
+					}
+				}
+			}
+
+			if (!getSotetseg_RangeProjectiles().isEmpty()) {
+				for (Iterator<Projectile> it = Sotetseg_RangeProjectiles.iterator(); it.hasNext(); ) {
+					Projectile projectile = it.next();
+					if (projectile.getRemainingCycles() < 1) {
+						it.remove();
+					}
+				}
+			}
 
             if (!sotetsegFighting) {
                 if (!BlackTilesUnderworld.isEmpty() && !RedTilesUnderworld.isEmpty() && GridPath.isEmpty()) {
