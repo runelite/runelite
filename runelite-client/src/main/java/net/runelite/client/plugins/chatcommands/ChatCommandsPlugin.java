@@ -70,6 +70,7 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.ItemPrice;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
@@ -592,6 +593,32 @@ public class ChatCommandsPlugin extends Plugin
 		MessageNode messageNode = chatMessage.getMessageNode();
 		String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
 
+		int amt = 1; //Amount of items
+		int maxAmt = 1000000;
+
+		if (search.length() > 1)
+		{
+			if
+			(StringUtils.isNumeric(search.split(" ")[0]))
+			{
+				try
+				{
+					amt = Integer.parseInt(search.split(" ")[0]);
+				}
+				catch (NumberFormatException e)
+				{
+					amt = 1;
+				}
+
+				if (amt > maxAmt)
+				{
+					amt = maxAmt;
+				}
+
+				search = search.substring(search.split(" ")[0].length() + 1);
+			}
+		}
+
 		List<ItemPrice> results = itemManager.search(search);
 
 		if (!results.isEmpty())
@@ -600,26 +627,49 @@ public class ChatCommandsPlugin extends Plugin
 
 			int itemId = item.getId();
 			int itemPrice = item.getPrice();
+			int totalPrice;
+
+			totalPrice = itemPrice * amt;
+			String sPrice;
+
+			if (totalPrice >= Integer.MAX_VALUE || totalPrice < 0)
+			{
+				sPrice = "Lots!";
+			}
+			else
+			{
+				sPrice = StackFormatter.formatNumber(totalPrice);
+			}
 
 			final ChatMessageBuilder builder = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
-				.append("Price of ")
+				.append("Price of " + StackFormatter.formatNumber(amt) + " ")
 				.append(ChatColorType.HIGHLIGHT)
 				.append(item.getName())
 				.append(ChatColorType.NORMAL)
 				.append(": GE average ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(StackFormatter.formatNumber(itemPrice));
+				.append(sPrice);
 
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			if (itemComposition != null)
 			{
-				int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+				int alchPrice = Math.round((itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * amt);
+				String salchPrice;
+				if (alchPrice >= Integer.MAX_VALUE || alchPrice < 0)
+				{
+					salchPrice = "Lots!";
+				}
+				else
+				{
+					salchPrice = StackFormatter.formatNumber(alchPrice);
+				}
+
 				builder
 					.append(ChatColorType.NORMAL)
 					.append(" HA value ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(StackFormatter.formatNumber(alchPrice));
+					.append(salchPrice);
 			}
 
 			String response = builder.build();
