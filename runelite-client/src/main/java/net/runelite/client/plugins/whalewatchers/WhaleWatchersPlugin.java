@@ -35,13 +35,15 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.apache.commons.lang3.ObjectUtils;
 
 @PluginDescriptor(
 	name = "Whale Watchers",
 	description = "A Plugin to save help whales in the wild",
-	tags = {"whale watchers", "whale", "protect item", "warning", "pklite"}
+	tags = {"whale watchers", "whale", "protect item", "warning", "pklite"},
+	type = PluginType.PVP
 )
 public class WhaleWatchersPlugin extends Plugin
 {
