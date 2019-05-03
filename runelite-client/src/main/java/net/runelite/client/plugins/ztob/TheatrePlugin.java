@@ -546,9 +546,9 @@ public class TheatrePlugin extends Plugin {
             GroundObject o = event.getGroundObject();
             if (o.getId() == GROUNDOBJECT_ID_EXHUMED) {
 
-                xarpusExhumedsTimer.put(o, 18);
+                xarpusExhumedsTimer.put(o, 11);
 
-                Xarpus_Exhumeds.put(o, 18);
+                Xarpus_Exhumeds.put(o, 11);
 
             }
 
