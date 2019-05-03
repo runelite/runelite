@@ -33,12 +33,10 @@ import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
 import net.runelite.client.util.StackFormatter;
 
-@Slf4j
 class AmmoCounter extends Counter
 {
 	@Getter
