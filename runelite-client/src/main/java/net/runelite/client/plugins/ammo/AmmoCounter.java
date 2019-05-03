@@ -29,8 +29,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.Temporal;
 
 import lombok.Getter;
 import net.runelite.client.plugins.Plugin;
@@ -66,7 +64,8 @@ class AmmoCounter extends Counter
 		return String.format("%s</br>Loss Rate: %s/h", name, lossRate());
 	}
 
-	int lossRate() {
+	int lossRate()
+	{
 		BigDecimal diff = BigDecimal.valueOf(total).subtract(BigDecimal.valueOf(getCount()));
 		BigDecimal timeSinceStart = BigDecimal.valueOf(Duration.between(time, Instant.now()).getSeconds())
 				.setScale(6, RoundingMode.UP);
