@@ -85,7 +85,9 @@ public class BarbarianAssaultPlugin extends Plugin
 
 	private boolean hasAnnounced;
 
+	private int[] amountsList;
 	private int[] pointsList;
+	private List<Integer> pointsGainedOrLost = new ArrayList<>();
 
 	private String[] descriptions = {"Runners: ",
 			"Hitpoints: ",
@@ -140,6 +142,14 @@ public class BarbarianAssaultPlugin extends Plugin
 			WidgetInfo.BA_FAILED_ATTACKER_ATTACKS,
 			WidgetInfo.BA_HONOUR_POINTS_REWARD
 	);
+	private static final ImmutableList<WidgetInfo> POINTSWIDGETS = ImmutableList.of(
+			WidgetInfo.BA_RUNNERS_PASSED_POINTS,
+			WidgetInfo.BA_HITPOINTS_REPLENISHED_POINTS,
+			WidgetInfo.BA_WRONG_POISON_PACKS_POINTS,
+			WidgetInfo.BA_EGGS_COLLECTED_POINTS,
+			WidgetInfo.BA_FAILED_ATTACKER_ATTACKS_POINTS,
+			WidgetInfo.BA_HONOUR_POINTS_REWARD
+	);
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -153,7 +163,8 @@ public class BarbarianAssaultPlugin extends Plugin
 		greenEggs = new HashMap<>();
 		blueEggs = new HashMap<>();
 		yellowEggs = new HashMap<>();
-		pointsList = new int[6];
+		amountsList = new int[6];
+		pointsList = new int[7];
 	}
 
 	@Override
@@ -180,12 +191,21 @@ public class BarbarianAssaultPlugin extends Plugin
 				if (config.waveTimes())
 					announceTime("Game finished, duration: ", gameTime.getTime(false));
 				if (config.showTotalRewards())
-					announceSomething("Game Summary: " + "Total Runners: " + pointsList[0]
-							+ "; Total Hp Replenished: " +  pointsList[1]
-							+ "; Total Wrong Heal Packs: " +  pointsList[2]
-							+ "; Total Eggs: " +  pointsList[3]
-							+ "; Total Failed attacks: " +  pointsList[4]
-							+ "; Total Honour Points: " + (80 + pointsList[5]));
+				{
+					String operator = "";
+					if (pointsList[6] > 0)
+						operator = "+";
+					if (pointsList[6] == 0)
+						operator = "\u00B1";
+					log.info("totalbonuspts: " + pointsList[6]);
+					log.info("operator: " + operator);
+					announceSomething("Game Summary: " + "Total Runners: " + amountsList[0] + "(" + pointsList[0] + ")"
+							+ "; Total Hp Replenished: " + amountsList[1] + "(" + pointsList[1] + ")"
+							+ "; Total Wrong Heal Packs: " + amountsList[2] + "(" + pointsList[2] + ")"
+							+ "; Total Eggs: " + amountsList[3] + "(" + pointsList[3] + ")"
+							+ "; Total Failed attacks: " + amountsList[4] + "(" + pointsList[4] + ")"
+							+ "; Total Honour Points: " + (80 + amountsList[5]) + "(" + operator + pointsList[6] + ")");
+				}
 			}
 			Widget pointsWidget = client.getWidget(WidgetInfo.BA_RUNNERS_PASSED);
 			if (!rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && pointsWidget != null
@@ -224,7 +244,9 @@ public class BarbarianAssaultPlugin extends Plugin
 				gameTime = new GameTimer();
 				totalHpHealed = 0;
 				totalCollectedEggCount = 0;
-				pointsList = new int[]{0,0,0,0,0,0};
+				amountsList = new int[]{0,0,0,0,0,0};
+				pointsList = new int[]{0,0,0,0,0,0,0};
+				pointsGainedOrLost = new ArrayList<>();
 			}
 			else if (gameTime != null)
 			{
@@ -418,20 +440,43 @@ public class BarbarianAssaultPlugin extends Plugin
 	private String giveSummaryOfPoints()
 	{
 		StringBuilder message = new StringBuilder();
+		pointsList[5] = 0;
 		for (int i = 0; i < WIDGETS.size(); i++)
 		{
 			Widget w = client.getWidget(WIDGETS.get(i));
-			if (w != null && !w.getText().equals(""))
-			{
-				pointsList[i] += Integer.parseInt(w.getText());
+			Widget w2 = client.getWidget(POINTSWIDGETS.get(i));
+			message.append(descriptions[i]);
+			if (w != null && !w.getText().equals("")) {
+					amountsList[i] += Integer.parseInt(w.getText());
+					message.append(Integer.parseInt(w.getText()));
+			} else {
+					log.info("widget1 null");
+			}
+			if (i != 5) {
+				if (w2 != null && !w2.getText().equals("")) {
+					pointsList[i] += Integer.parseInt(w2.getText());
+					pointsList[5] += Integer.parseInt(w2.getText());
+					message.append("(" + Integer.parseInt(w2.getText()) + ")");
+					message.append("; ");
+				} else {
+					log.info("widget2 null");
+				}
 			}
 			else
 			{
-				log.info("widget null");
+				pointsList[6] += pointsList[5];
+				message.append("(" + pointsList[5] + ")");
 			}
-			message.append(descriptions[i])
-					.append(Integer.parseInt(w.getText()))
-					.append("; ");
+		}
+		System.out.print("pointsList: ");
+		for (int number : pointsList)
+		{
+			System.out.print(number + ", ");
+		}
+		System.out.print("amountsList: ");
+		for (int number : amountsList)
+		{
+			System.out.print(number + ", ");
 		}
 		return message.toString();
 	}
