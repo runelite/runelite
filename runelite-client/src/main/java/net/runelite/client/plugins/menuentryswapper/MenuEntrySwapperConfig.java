@@ -253,6 +253,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapCastleWars",
+			name = "Castle Wars",
+			description = "Swap Remove with Castle Wars teleport on an equipped Ring of dueling"
+	)
+	default boolean swapCastleWars()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapAbyssTeleport",
 		name = "Teleport to Abyss",
 		description = "Swap Talk-to with Teleport for the Mage of Zamorak"

@@ -559,6 +559,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap("rub", option, target, true);
 			swap("teleport", option, target, true);
 		}
+		else if (config.swapCastleWars() && target.contains("ring of dueling") && option.equals("remove"))
+		{
+			swap("castle wars", option, target, true);
+		}
 		else if (option.equals("wield"))
 		{
 			if (config.swapTeleportItem())
