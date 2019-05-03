@@ -41,6 +41,8 @@ class ClueScrollEmoteOverlay extends Overlay
 	private final ClueScrollPlugin plugin;
 	private final Client client;
 
+	private boolean hasScrolled;
+
 	@Inject
 	private ClueScrollEmoteOverlay(ClueScrollPlugin plugin, Client client)
 	{
@@ -57,6 +59,7 @@ class ClueScrollEmoteOverlay extends Overlay
 
 		if (!(clue instanceof EmoteClue))
 		{
+			hasScrolled = false;
 			return null;
 		}
 
@@ -81,18 +84,28 @@ class ClueScrollEmoteOverlay extends Overlay
 			return null;
 		}
 
+		Widget firstEmoteWidget = null;
+		Widget secondEmoteWidget = null;
+
 		for (Widget emoteWidget : emoteContainer.getDynamicChildren())
 		{
 			if (emoteWidget.getSpriteId() == emoteClue.getFirstEmote().getSpriteId())
 			{
+				firstEmoteWidget = emoteWidget;
 				plugin.highlightWidget(graphics, emoteWidget, emoteWindow, null,
 					emoteClue.getSecondEmote() != null ? "1st" : null);
 			}
 			else if (emoteClue.getSecondEmote() != null
 				&& emoteWidget.getSpriteId() == emoteClue.getSecondEmote().getSpriteId())
 			{
+				secondEmoteWidget = emoteWidget;
 				plugin.highlightWidget(graphics, emoteWidget, emoteWindow, null, "2nd");
 			}
+		}
+		if (!hasScrolled)
+		{
+			hasScrolled = true;
+			plugin.scrollToWidget(WidgetInfo.EMOTE_CONTAINER, WidgetInfo.EMOTE_SCROLLBAR, firstEmoteWidget, secondEmoteWidget);
 		}
 
 		return null;

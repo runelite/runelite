@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2019, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,89 +22,65 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.npchighlight;
+package net.runelite.client.plugins.itemidentification;
 
 import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("npcindicators")
-public interface NpcIndicatorsConfig extends Config
+@ConfigGroup("itemidentification")
+public interface ItemIdentificationConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
-		keyName = "highlightStyle",
-		name = "Highlight Style",
-		description = "Highlight setting"
+		keyName = "identificationType",
+		name = "Identification Type",
+		position = -4,
+		description = "How much to show of the item name"
 	)
-	default RenderStyle renderStyle()
+	default ItemIdentificationMode identificationType()
 	{
-		return RenderStyle.HULL;
+		return ItemIdentificationMode.SHORT;
 	}
 
 	@ConfigItem(
-		position = 1,
-		keyName = "npcToHighlight",
-		name = "NPCs to Highlight",
-		description = "List of NPC names to highlight"
+		keyName = "textColor",
+		name = "Color",
+		position = -3,
+		description = "The colour of the identification text"
 	)
-	default String getNpcToHighlight()
+	default Color textColor()
 	{
-		return "";
+		return Color.WHITE;
 	}
 
 	@ConfigItem(
-		position = 2,
-		keyName = "npcColor",
-		name = "Highlight Color",
-		description = "Color of the NPC highlight"
+		keyName = "showSeeds",
+		name = "Seeds",
+		description = "Show identification on Seeds"
 	)
-	default Color getHighlightColor()
+	default boolean showSeeds()
 	{
-		return Color.CYAN;
+		return true;
 	}
 
 	@ConfigItem(
-		position = 3,
-		keyName = "drawNames",
-		name = "Draw names above NPC",
-		description = "Configures whether or not NPC names should be drawn above the NPC"
+		keyName = "showHerbs",
+		name = "Herbs",
+		description = "Show identification on Herbs"
 	)
-	default boolean drawNames()
+	default boolean showHerbs()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		position = 4,
-		keyName = "drawMinimapNames",
-		name = "Draw names on minimap",
-		description = "Configures whether or not NPC names should be drawn on the minimap"
+		keyName = "showSaplings",
+		name = "Saplings",
+		description = "Show identification on Saplings and Seedlings"
 	)
-	default boolean drawMinimapNames()
+	default boolean showSaplings()
 	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 5,
-		keyName = "highlightMenuNames",
-		name = "Highlight menu names",
-		description = "Highlight NPC names in right click menu"
-	)
-	default boolean highlightMenuNames()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 6,
-		keyName = "showRespawnTimer",
-		name = "Show respawn timer",
-		description = "Show respawn timer of tagged NPCs")
-	default boolean showRespawnTimer()
-	{
-		return false;
+		return true;
 	}
 }
