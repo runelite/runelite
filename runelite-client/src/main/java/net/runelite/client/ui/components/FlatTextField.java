@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -108,6 +109,18 @@ public class FlatTextField extends JPanel
 	public void setText(String text)
 	{
 		textField.setText(text);
+	}
+
+	@Override
+	public void addMouseListener(MouseListener mouseListener)
+	{
+		textField.addMouseListener(mouseListener);
+	}
+
+	@Override
+	public void removeMouseListener(MouseListener mouseListener)
+	{
+		textField.removeMouseListener(mouseListener);
 	}
 
 	@Override

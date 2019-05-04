@@ -169,6 +169,20 @@ public class IconTextField extends JPanel
 		add(clearButton, BorderLayout.EAST);
 	}
 
+	@Override
+	public void addMouseListener(MouseListener mouseListener)
+	{
+		super.addMouseListener(mouseListener);
+		textField.addMouseListener(mouseListener);
+	}
+
+	@Override
+	public void removeMouseListener(MouseListener mouseListener)
+	{
+		super.removeMouseListener(mouseListener);
+		textField.removeMouseListener(mouseListener);
+	}
+
 	public void addActionListener(ActionListener actionListener)
 	{
 		textField.addActionListener(actionListener);
