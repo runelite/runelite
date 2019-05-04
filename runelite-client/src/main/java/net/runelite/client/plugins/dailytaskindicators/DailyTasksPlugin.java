@@ -66,7 +66,6 @@ public class DailyTasksPlugin extends Plugin
 	private static final String BONEMEAL_MESSAGE = "You have bonemeal and slime waiting to be collected from Robin.";
 	private static final int BONEMEAL_PER_DIARY = 13;
 	private static final String DYNAMITE_MESSAGE = "You have dynamite waiting to be collected from Thirus.";
-	private static final String RELOG_MESSAGE = " (May require a relog)";
 
 	@Inject
 	private Client client;
@@ -166,91 +165,61 @@ public class DailyTasksPlugin extends Plugin
 	private void checkHerbBoxes(boolean dailyReset)
 	{
 		if (client.getAccountType() == AccountType.NORMAL
-			&& client.getVar(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST)
+			&& client.getVar(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST
+			&& (client.getVar(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX
+			|| dailyReset))
 		{
-			if (client.getVar(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX)
-			{
-				sendChatMessage(HERB_BOX_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(HERB_BOX_MESSAGE);
-			}
+			sendChatMessage(HERB_BOX_MESSAGE);
 		}
 	}
 
 	private void checkStaves(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_VARROCK_EASY) == 1)
+		if (client.getVar(Varbits.DIARY_VARROCK_EASY) == 1
+			&& (client.getVar(Varbits.DAILY_STAVES_COLLECTED) == 0
+			|| dailyReset))
 		{
-			if (client.getVar(Varbits.DAILY_STAVES_COLLECTED) == 0)
-			{
-				sendChatMessage(STAVES_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(STAVES_MESSAGE + RELOG_MESSAGE);
-			}
+			sendChatMessage(STAVES_MESSAGE);
 		}
 	}
 
 	private void checkEssence(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1)
+		if (client.getVar(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1
+			&& (client.getVar(Varbits.DAILY_ESSENCE_COLLECTED) == 0
+			|| dailyReset))
 		{
-			if (client.getVar(Varbits.DAILY_ESSENCE_COLLECTED) == 0)
-			{
-				sendChatMessage(ESSENCE_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(ESSENCE_MESSAGE);
-			}
+			sendChatMessage(ESSENCE_MESSAGE);
 		}
 	}
 
 	private void checkRunes(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1)
+		if (client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1
+			&& (client.getVar(Varbits.DAILY_RUNES_COLLECTED) == 0
+			|| dailyReset))
 		{
-			if (client.getVar(Varbits.DAILY_RUNES_COLLECTED) == 0)
-			{
-				sendChatMessage(RUNES_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(RUNES_MESSAGE);
-			}
+			sendChatMessage(RUNES_MESSAGE);
 		}
 	}
 
 	private void checkSand(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE)
+		if (client.getVar(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE
+			&& (client.getVar(Varbits.DAILY_SAND_COLLECTED) == 0
+			|| dailyReset))
 		{
-			if (client.getVar(Varbits.DAILY_SAND_COLLECTED) == 0)
-			{
-				sendChatMessage(SAND_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(SAND_MESSAGE);
-			}
+			sendChatMessage(SAND_MESSAGE);
 		}
 	}
 
 	private void checkFlax(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_KANDARIN_EASY) == 1)
+		if (client.getVar(Varbits.DIARY_KANDARIN_EASY) == 1
+			&& (client.getVar(Varbits.DAILY_FLAX_STATE) == 0
+			|| dailyReset))
 		{
-			if (client.getVar(Varbits.DAILY_FLAX_STATE) == 0)
-			{
-				sendChatMessage(FLAX_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(FLAX_MESSAGE);
-			}
+			sendChatMessage(FLAX_MESSAGE);
 		}
 	}
 
@@ -268,11 +237,7 @@ public class DailyTasksPlugin extends Plugin
 					max += BONEMEAL_PER_DIARY;
 				}
 			}
-			if (collected < max)
-			{
-				sendChatMessage(BONEMEAL_MESSAGE);
-			}
-			else if (dailyReset)
+			if (collected < max || dailyReset)
 			{
 				sendChatMessage(BONEMEAL_MESSAGE);
 			}
@@ -281,16 +246,11 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkDynamite(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_KOUREND_MEDIUM) == 1)
+		if (client.getVar(Varbits.DIARY_KOUREND_MEDIUM) == 1
+			&& (client.getVar(Varbits.DAILY_DYNAMITE_COLLECTED) == 0
+			|| dailyReset))
 		{
-			if (client.getVar(Varbits.DAILY_DYNAMITE_COLLECTED) == 0)
-			{
-				sendChatMessage(DYNAMITE_MESSAGE);
-			}
-			else if (dailyReset)
-			{
-				sendChatMessage(DYNAMITE_MESSAGE);
-			}
+			sendChatMessage(DYNAMITE_MESSAGE);
 		}
 	}
 
