@@ -26,19 +26,22 @@ package net.runelite.client.plugins.aoewarnings;
 
 
 import com.google.inject.Provides;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Projectile;
-import net.runelite.api.Client;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -46,7 +49,6 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -56,43 +58,33 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import javax.inject.Inject;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
-
 @PluginDescriptor(
 	name = "AoE Warnings",
 	description = "Shows the final destination for AoE Attack projectiles",
 	tags = {"bosses", "combat", "pve", "overlay"},
-		type = PluginType.PVM
+	type = PluginType.PVM
 )
 
 @Slf4j
 public class AoeWarningPlugin extends Plugin
 {
 
+	@Getter
+	private final Map<WorldPoint, CrystalBomb> bombs = new HashMap<>();
+	private final Map<Projectile, AoeProjectile> projectiles = new HashMap<>();
+	@Inject
+	public AoeWarningConfig config;
 	@Inject
 	private OverlayManager overlayManager;
-
 	@Inject
 	private AoeWarningOverlay coreOverlay;
 
 	@Inject
-	public AoeWarningConfig config;
-
-	@Inject
 	private BombOverlay bombOverlay;
-
 	@Inject
 	private Client client;
-
 	@Inject
 	private Notifier notifier;
-
-	@Getter
-	private final Map<WorldPoint, CrystalBomb> bombs = new HashMap<>();
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> LightningTrail = new ArrayList<>();
 	@Getter(AccessLevel.PACKAGE)
@@ -100,15 +92,11 @@ public class AoeWarningPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> CrystalSpike = new ArrayList<>();
 
-
 	@Provides
 	AoeWarningConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(AoeWarningConfig.class);
 	}
-
-
-	private final Map<Projectile, AoeProjectile> projectiles = new HashMap<>();
 
 	public Map<Projectile, AoeProjectile> getProjectiles()
 	{
@@ -130,6 +118,9 @@ public class AoeWarningPlugin extends Plugin
 	{
 		overlayManager.remove(coreOverlay);
 		overlayManager.remove(bombOverlay);
+		LightningTrail.clear();
+		AcidTrail.clear();
+		CrystalSpike.clear();
 	}
 
 	@Subscribe

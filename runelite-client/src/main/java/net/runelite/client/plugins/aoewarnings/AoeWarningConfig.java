@@ -28,26 +28,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-import java.awt.*;
-
 @ConfigGroup("aoe")
 public interface AoeWarningConfig extends Config
 {
 	@ConfigItem(
-			keyName = "pluginType",
-			name = "Plugin Type",
-			description = "Sets the group of this plugin",
-			hidden = true
-	)
-	default String pluginTyoe()
-	{
-		return "PVM";
-	}
-
-	@ConfigItem(
-			keyName = "enabled",
-			name = "AoE Warnings Enabled",
-			description = "Configures whether or not AoE Projectile Warnings plugin is displayed"
+		keyName = "enabled",
+		name = "AoE Warnings Enabled",
+		description = "Configures whether or not AoE Projectile Warnings plugin is displayed",
+		position = 1
 	)
 	default boolean enabled()
 	{
@@ -55,9 +43,32 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "lizardmanaoe",
-			name = "Lizardman Shamans",
-			description = "Configures whether or not AoE Projectile Warnings for Lizardman Shamans is displayed"
+		keyName = "outline",
+		name = "Display Outline",
+		description = "Configures whether or not AoE Projectile Warnings have an outline",
+		position = 2
+	)
+	default boolean isOutlineEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "fade",
+		name = "Fade Warnings",
+		description = "Configures whether or not AoE Projectile Warnings fade over time",
+		position = 3
+	)
+	default boolean isFadeEnabled()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "lizardmanaoe",
+		name = "Lizardman Shamans",
+		description = "Configures whether or not AoE Projectile Warnings for Lizardman Shamans is displayed",
+		position = 4
 	)
 	default boolean isShamansEnabled()
 	{
@@ -65,9 +76,10 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "archaeologistaoe",
-			name = "Crazy Archaeologist",
-			description = "Configures whether or not AoE Projectile Warnings for Archaeologist is displayed"
+		keyName = "archaeologistaoe",
+		name = "Crazy Archaeologist",
+		description = "Configures whether or not AoE Projectile Warnings for Archaeologist is displayed",
+		position = 4
 	)
 	default boolean isArchaeologistEnabled()
 	{
@@ -75,9 +87,10 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "icedemon",
-			name = "Ice Demon",
-			description = "Configures whether or not AoE Projectile Warnings for Ice Demon is displayed"
+		keyName = "icedemon",
+		name = "Ice Demon",
+		description = "Configures whether or not AoE Projectile Warnings for Ice Demon is displayed",
+		position = 4
 	)
 	default boolean isIceDemonEnabled()
 	{
@@ -85,9 +98,10 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "vasa",
-			name = "Vasa",
-			description = "Configures whether or not AoE Projectile Warnings for Vasa is displayed"
+		keyName = "vasa",
+		name = "Vasa",
+		description = "Configures whether or not AoE Projectile Warnings for Vasa is displayed",
+		position = 4
 	)
 	default boolean isVasaEnabled()
 	{
@@ -95,9 +109,10 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "tekton",
-			name = "Tekton",
-			description = "Configures whether or not AoE Projectile Warnings for Tekton is displayed"
+		keyName = "tekton",
+		name = "Tekton",
+		description = "Configures whether or not AoE Projectile Warnings for Tekton is displayed",
+		position = 4
 	)
 	default boolean isTektonEnabled()
 	{
@@ -105,9 +120,10 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "vorkath",
-			name = "Vorkath",
-			description = "Configures whether or not AoE Projectile Warnings for Vorkath are displayed"
+		keyName = "vorkath",
+		name = "Vorkath",
+		description = "Configures whether or not AoE Projectile Warnings for Vorkath are displayed",
+		position = 4
 	)
 	default boolean isVorkathEnabled()
 	{
@@ -115,9 +131,10 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "galvek",
-			name = "Galvek",
-			description = "Configures whether or not AoE Projectile Warnings for Galvek are displayed"
+		keyName = "galvek",
+		name = "Galvek",
+		description = "Configures whether or not AoE Projectile Warnings for Galvek are displayed",
+		position = 4
 	)
 	default boolean isGalvekEnabled()
 	{
@@ -125,9 +142,10 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "gargboss",
-			name = "Gargoyle Boss",
-			description = "Configs whether or not AoE Projectile Warnings for Dawn/Dusk are displayed"
+		keyName = "gargboss",
+		name = "Gargoyle Boss",
+		description = "Configs whether or not AoE Projectile Warnings for Dawn/Dusk are displayed",
+		position = 4
 	)
 	default boolean isGargBossEnabled()
 	{
@@ -135,9 +153,10 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "vetion",
-			name = "Vet'ion",
-			description = "Configures whether or not AoE Projectile Warnings for Vet'ion are displayed"
+		keyName = "vetion",
+		name = "Vet'ion",
+		description = "Configures whether or not AoE Projectile Warnings for Vet'ion are displayed",
+		position = 4
 	)
 	default boolean isVetionEnabled()
 	{
@@ -145,9 +164,10 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "chaosfanatic",
-			name = "Chaos Fanatic",
-			description = "Configures whether or not AoE Projectile Warnings for Chaos Fanatic are displayed"
+		keyName = "chaosfanatic",
+		name = "Chaos Fanatic",
+		description = "Configures whether or not AoE Projectile Warnings for Chaos Fanatic are displayed",
+		position = 4
 	)
 	default boolean isChaosFanaticEnabled()
 	{
@@ -155,9 +175,10 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "olm",
-			name = "Great Olm",
-			description = "Configures whether or not AoE Projectile Warnings for The Great Olm are displayed"
+		keyName = "olm",
+		name = "Olm",
+		description = "Configures whether or not AoE Projectile Warnings for The Great Olm are displayed",
+		position = 4
 	)
 	default boolean isOlmEnabled()
 	{
@@ -166,8 +187,9 @@ public interface AoeWarningConfig extends Config
 
 	@ConfigItem(
 		keyName = "bombDisplay",
-		name = "Display crystal phase bomb tracker",
-		description = "Display a timer and colour-coded AoE for Olm's crystal-phase bombs."
+		name = "Olm Bombs",
+		description = "Display a timer and colour-coded AoE for Olm's crystal-phase bombs.",
+		position = 4
 	)
 	default boolean bombDisplay()
 	{
@@ -175,9 +197,10 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "corp",
-			name = "Corporeal Beast",
-			description = "Configures whether or not AoE Projectile Warnings for the Corporeal Beast are displayed"
+		keyName = "corp",
+		name = "Corporeal Beast",
+		description = "Configures whether or not AoE Projectile Warnings for the Corporeal Beast are displayed",
+		position = 4
 	)
 	default boolean isCorpEnabled()
 	{
@@ -185,9 +208,10 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "wintertodt",
-			name = "Wintertodt Snow Fall",
-			description = "Configures whether or not AOE Projectile Warnings for the Wintertodt snow fall are displayed"
+		keyName = "wintertodt",
+		name = "Wintertodt Snow Fall",
+		description = "Configures whether or not AOE Projectile Warnings for the Wintertodt snow fall are displayed",
+		position = 4
 	)
 	default boolean isWintertodtEnabled()
 	{
@@ -195,26 +219,21 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "isXarpusEnabled",
-			name = "Xarpus",
-			description = "Configures whether or not AOE Projectile Warnings for Xarpus are displayed"
+		keyName = "isXarpusEnabled",
+		name = "Xarpus",
+		description = "Configures whether or not AOE Projectile Warnings for Xarpus are displayed",
+		position = 4
 	)
-	default boolean isXarpusEnabled() { return true; }
-
-	@ConfigItem(
-			keyName = "outline",
-			name = "Display Outline",
-			description = "Configures whether or not AoE Projectile Warnings have an outline"
-	)
-	default boolean isOutlineEnabled()
+	default boolean isXarpusEnabled()
 	{
 		return true;
 	}
 
 	@ConfigItem(
 		keyName = "lightning",
-		name = "Show Lightning Trails",
-		description = "Show Lightning Trails"
+		name = "Olm Lightning Trails",
+		description = "Show Lightning Trails",
+		position = 4
 	)
 	default boolean LightningTrail()
 	{
@@ -222,11 +241,12 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "fade",
-			name = "Fade Warnings",
-			description = "Configures whether or not AoE Projectile Warnings fade over time"
+		keyName = "addyDrags",
+		name = "Addy Drags",
+		description = "Show Bad Areas",
+		position = 4
 	)
-	default boolean isFadeEnabled()
+	default boolean addyDrags()
 	{
 		return true;
 	}
