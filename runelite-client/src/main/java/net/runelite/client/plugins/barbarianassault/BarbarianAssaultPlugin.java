@@ -96,6 +96,12 @@ public class BarbarianAssaultPlugin extends Plugin
 			"Failed attacks: ",
 			"Honour Points: "};
 
+	private String[] totalDescriptions = {"Total Runners: ",
+            "; Total Hp Replenished: ",
+            "; Total Wrong Heal Packs: ",
+            "; Total Eggs: ",
+            "; Total Failed attacks: ",
+            "; Total Honour Points: "};
 	private Font font;
 	private Image clockImage;
 	private int inGameBit = 0;
@@ -197,14 +203,11 @@ public class BarbarianAssaultPlugin extends Plugin
 						operator = "+";
 					if (pointsList[6] == 0)
 						operator = "\u00B1";
-					log.info("totalbonuspts: " + pointsList[6]);
-					log.info("operator: " + operator);
-					announceSomething("Game Summary: " + "Total Runners: " + amountsList[0] + "(" + pointsList[0] + ")"
-							+ "; Total Hp Replenished: " + amountsList[1] + "(" + pointsList[1] + ")"
-							+ "; Total Wrong Heal Packs: " + amountsList[2] + "(" + pointsList[2] + ")"
-							+ "; Total Eggs: " + amountsList[3] + "(" + pointsList[3] + ")"
-							+ "; Total Failed attacks: " + amountsList[4] + "(" + pointsList[4] + ")"
-							+ "; Total Honour Points: " + (80 + amountsList[5]) + "(" + operator + pointsList[6] + ")");
+					for (int i = 0; i < amountsList.length-1; i++)
+					{
+					    announceSomething(totalDescriptions[i] + amountsList[i] + "(" + pointsList[i] + ")");
+                    }
+					announceSomething("; Total Honour Points: " + (80 + amountsList[5]) + "(" + operator + pointsList[6] + ")");
 				}
 			}
 			Widget pointsWidget = client.getWidget(WidgetInfo.BA_RUNNERS_PASSED);
@@ -467,16 +470,6 @@ public class BarbarianAssaultPlugin extends Plugin
 				pointsList[6] += pointsList[5];
 				message.append("(" + pointsList[5] + ")");
 			}
-		}
-		System.out.print("pointsList: ");
-		for (int number : pointsList)
-		{
-			System.out.print(number + ", ");
-		}
-		System.out.print("amountsList: ");
-		for (int number : amountsList)
-		{
-			System.out.print(number + ", ");
 		}
 		return message.toString();
 	}
