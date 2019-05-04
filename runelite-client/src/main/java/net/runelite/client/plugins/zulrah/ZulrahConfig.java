@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, https://github.com/runeliteplusplus
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,6 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.client.plugins.zulrah;
 
 import net.runelite.client.config.Config;
@@ -29,20 +31,38 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("zulrah")
-public interface ZulrahConfig extends Config {
+public interface ZulrahConfig extends Config
+{
 	@ConfigItem(
 		position = 0,
 		keyName = "zulrahenable",
 		name = "Enable Zulrah Helper",
 		description = "Configures whether or not to enable Zulrah Helper."
 	)
-	default boolean EnableZulrah() { return true; }
+	default boolean EnableZulrah()
+	{
+		return true;
+	}
 
 	@ConfigItem(
-			position = 1,
-			keyName = "zulrahprayenable",
-			name = "Show Prayer Helper",
-			description = "Configures whether or not to show when to pray at Zulrah."
+		position = 1,
+		keyName = "zulrahprayenable",
+		name = "Show Prayer Helper",
+		description = "Configures whether or not to show when to pray at Zulrah."
 	)
-	default boolean EnableZulrahPrayerHelper() { return true; }
+	default boolean EnableZulrahPrayerHelper()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "jadphasehelper",
+		name = "Jad Phase Helper",
+		description = "Tells you what to pray against Zulrah jad phase"
+	)
+	default boolean ZulrahJadHelper()
+	{
+		return true;
+	}
 }
