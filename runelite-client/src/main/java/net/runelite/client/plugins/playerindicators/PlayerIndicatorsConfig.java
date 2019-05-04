@@ -340,11 +340,11 @@ public interface PlayerIndicatorsConfig extends Config
         return false;
     }
 
-	@ConfigItem(
+/*	@ConfigItem(
 			position = 27,
 			keyName="rightClickOverhead",
 			name="Add Overheads to Right Click Menu",
 			description="Feature shows a player's overhead prayer in the right click menu. Useful for DDs, or extremely crowded areas.")
 
-	default boolean rightClickOverhead() { return false; }
+	default boolean rightClickOverhead() { return false; }*/
 }
