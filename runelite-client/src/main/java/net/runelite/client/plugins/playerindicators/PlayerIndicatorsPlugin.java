@@ -244,7 +244,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			{
 				color = config.getAttackablePlayerColor();
 			}
-			if (this.config.rightClickOverhead() && !player.isClanMember() && player.getOverheadIcon() != null) { // NEEDS TESTING
+/*			if (this.config.rightClickOverhead() && !player.isClanMember() && player.getOverheadIcon() != null) { // NEEDS TESTING
 				if (player.getOverheadIcon().equals((Object)HeadIcon.MAGIC)) {
 					image = 29;
 				} else if (player.getOverheadIcon().equals((Object)HeadIcon.RANGED)) {
@@ -258,7 +258,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 				} else if (player.getOverheadIcon().equals((Object)HeadIcon.SMITE)) {
 					image = 34;
 				}
-			}
+			}*/
 
 			if (image != -1 || color != null)
 			{
