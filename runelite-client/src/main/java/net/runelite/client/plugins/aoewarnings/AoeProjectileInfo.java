@@ -27,8 +27,6 @@ package net.runelite.client.plugins.aoewarnings;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-
-import net.runelite.api.Projectile;
 import net.runelite.api.ProjectileID;
 
 public enum AoeProjectileInfo
@@ -83,41 +81,27 @@ public enum AoeProjectileInfo
 
 	/**
 	 * the AOEs of The Great Olm
-	 * missing ids and length, please help
 	 */
-	OLM_FALLING_CRYSTAL(1357, 3000, 3),
-	OLM_BURNING(1349, 2400, 1),
-	OLM_FALLING_CRYSTAL_TRAIL(1352, 2400, 1),
-	OLM_ACID_TRAIL(1354, 2400, 1),
-	OLM_FIRE_LINE(1347, 2400, 1),
+	OLM_FALLING_CRYSTAL(ProjectileID.OLM_FALLING_CRYSTAL, 3000, 3),
+	OLM_BURNING(ProjectileID.OLM_BURNING, 2400, 1),
+	OLM_FALLING_CRYSTAL_TRAIL(ProjectileID.OLM_FALLING_CRYSTAL_TRAIL, 2400, 1),
+	OLM_ACID_TRAIL(ProjectileID.OLM_ACID_TRAIL, 2400, 1),
+	OLM_FIRE_LINE(ProjectileID.OLM_FIRE_LINE, 2400, 1),
 
 	/**
 	 * the AOE of the Wintertodt snow that falls
 	 */
-	WINTERTODT_SNOW_FALL(1310, 4000, 3),
+	WINTERTODT_SNOW_FALL(ProjectileID.WINTERTODT_SNOW_FALL_AOE, 4000, 3),
 
 	/**
 	 * AOE of Xarpus throwing poison
 	 */
-	XARPUS_POISON_AOE(ProjectileID.XARPUS_ACID, 4000, 3);
+	XARPUS_POISON_AOE(ProjectileID.XARPUS_ACID, 4000, 3),
 
 	/**
-	 * The id of the projectile to trigger this AoE warning
+	 * Aoe of Addy Drags
 	 */
-	private final int id;
-
-	/**
-	 * How long the indicator should last for this AoE warning This might
-	 * need to be a bit longer than the projectile actually takes to land as
-	 * there is a fade effect on the warning
-	 */
-	private final Duration lifeTime;
-
-	/**
-	 * The size of the splash radius of the AoE warning Ex. Lizardman shaman
-	 * AoE is a 3x3, so aoeSize = 3
-	 */
-	private final int aoeSize;
+	ADDY_DRAG_POISON(ProjectileID.ADDY_DRAG_POISON, 2400, 1);
 
 	private static final Map<Integer, AoeProjectileInfo> map = new HashMap<>();
 
@@ -129,11 +113,32 @@ public enum AoeProjectileInfo
 		}
 	}
 
+	/**
+	 * The id of the projectile to trigger this AoE warning
+	 */
+	private final int id;
+	/**
+	 * How long the indicator should last for this AoE warning This might
+	 * need to be a bit longer than the projectile actually takes to land as
+	 * there is a fade effect on the warning
+	 */
+	private final Duration lifeTime;
+	/**
+	 * The size of the splash radius of the AoE warning Ex. Lizardman shaman
+	 * AoE is a 3x3, so aoeSize = 3
+	 */
+	private final int aoeSize;
+
 	AoeProjectileInfo(int id, int lifeTimeMillis, int aoeSize)
 	{
 		this.id = id;
 		this.lifeTime = Duration.ofMillis(lifeTimeMillis);
 		this.aoeSize = aoeSize;
+	}
+
+	public static AoeProjectileInfo getById(int id)
+	{
+		return map.get(id);
 	}
 
 	public Duration getLifeTime()
@@ -149,10 +154,5 @@ public enum AoeProjectileInfo
 	public int getAoeSize()
 	{
 		return aoeSize;
-	}
-
-	public static AoeProjectileInfo getById(int id)
-	{
-		return map.get(id);
 	}
 }

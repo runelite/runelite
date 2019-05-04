@@ -295,6 +295,8 @@ public class AoeWarningPlugin extends Plugin
 				return config.isWintertodtEnabled();
 			case XARPUS_POISON_AOE:
 				return config.isXarpusEnabled();
+			case ADDY_DRAG_POISON:
+				return config.addyDrags();
 		}
 
 		return false;

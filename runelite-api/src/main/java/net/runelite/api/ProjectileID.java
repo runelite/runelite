@@ -44,13 +44,18 @@ public class ProjectileID
 	public static final int VASA_RANGED_AOE = 1329;
 	public static final int TEKTON_METEOR_AOE = 660;
 
-	public static final int OLM_FALLING_CRYSTAL_AOE = -1; //please help
-	public static final int OLM_BURNING_AOE = -1;
+	public static final int OLM_FALLING_CRYSTAL = 1357;
+	public static final int OLM_BURNING = 1349;
+	public static final int OLM_FALLING_CRYSTAL_TRAIL = 1352;
+	public static final int OLM_ACID_TRAIL = 1354;
+	public static final int OLM_FIRE_LINE = 1347;
 
 	public static final int VORKATH_BOMB_AOE = 1481;
 	public static final int VORKATH_POISON_POOL_AOE = 1483;
 	public static final int VORKATH_TICK_FIRE_AOE = 1482;
 	public static final int VORKATH_SPAWN_AOE = 1484;
+
+	public static final int ADDY_DRAG_POISON = 1486;
 
 	public static final int GALVEK_MINE = 1495;
 	public static final int GALVEK_BOMB = 1491;
@@ -60,12 +65,12 @@ public class ProjectileID
 
 	public static final int VETION_LIGHTNING = 280;
 
-	public static final int CHAOS_FANATIC_AOE = 551; //for lack of a better word
+	public static final int CHAOS_FANATIC_AOE = 551;
 
 	public static final int CORPOREAL_BEAST_AOE = 315;
 	public static final int CORPOREAL_BEAST_DARK_CORE_AOE = 319;
 
-	public static final int WINTERTODT_SNOW_FALL_AOE = 501;
+	public static final int WINTERTODT_SNOW_FALL_AOE = 1310;
 
 	public static final int DEMONIC_GORILLA_RANGED = 1302;
 	public static final int DEMONIC_GORILLA_MAGIC = 1304;
