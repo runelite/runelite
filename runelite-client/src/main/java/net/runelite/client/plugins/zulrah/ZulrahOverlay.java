@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, https://github.com/runeliteplusplus
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +23,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.client.plugins.zulrah;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import javax.inject.Inject;
-
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.HeadIcon;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -35,7 +41,8 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-public class ZulrahOverlay extends Overlay {
+public class ZulrahOverlay extends Overlay
+{
 	private final ZulrahConfig config;
 	private final ZulrahPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
@@ -45,7 +52,8 @@ public class ZulrahOverlay extends Overlay {
 	private Client client;
 
 	@Inject
-	private ZulrahOverlay(ZulrahConfig config, ZulrahPlugin plugin) {
+	private ZulrahOverlay(ZulrahConfig config, ZulrahPlugin plugin)
+	{
 		this.config = config;
 		this.plugin = plugin;
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -55,16 +63,21 @@ public class ZulrahOverlay extends Overlay {
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics) {
-		if (!config.EnableZulrahPrayerHelper()) {
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!config.EnableZulrahPrayerHelper())
+		{
 			return null;
 		}
 		NPC Zulrah = plugin.Zulrah;
-		if (Zulrah != null) {
-			if (plugin.prayerconserve && plugin.nextprayerendticks == 0) {
+		if (Zulrah != null)
+		{
+			if (plugin.prayerconserve && plugin.nextprayerendticks == 0)
+			{
 				Player player = client.getLocalPlayer();
 				HeadIcon icon = player.getOverheadIcon();
-				if (icon != null) {
+				if (icon != null)
+				{
 					final String text = "Disable Overhead Prayer";
 					final int textWidth = graphics.getFontMetrics().stringWidth(text);
 					final int textHeight = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
@@ -75,10 +88,13 @@ public class ZulrahOverlay extends Overlay {
 					panelComponent.setPreferredLocation(jpoint);
 					panelComponent.render(graphics);
 				}
-			} else if (plugin.nextprayerendticks != 0) {
+			}
+			else if (plugin.nextprayerendticks != 0)
+			{
 				Player player = client.getLocalPlayer();
 				HeadIcon icon = player.getOverheadIcon();
-				if (icon == null) {
+				if (icon == null)
+				{
 					final String text = "Protect from MAGIC: " + (plugin.nextprayerendticks - plugin.ticks);
 					final int textWidth = graphics.getFontMetrics().stringWidth(text);
 					final int textHeight = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
