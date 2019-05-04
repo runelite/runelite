@@ -423,6 +423,16 @@ class DevToolsOverlay extends Overlay
 			{
 				OverlayUtil.renderActorOverlay(graphics, projectile.getInteracting(), infoString, Color.RED);
 			}
+			else
+			{
+				LocalPoint projectilePoint = new LocalPoint((int) projectile.getX(), (int) projectile.getY());
+				Point textLocation = Perspective.getCanvasTextLocation(client, graphics, projectilePoint, infoString, 0);
+
+				if (textLocation != null)
+				{
+					OverlayUtil.renderTextLocation(graphics, textLocation, infoString, Color.RED);
+				}
+			}
 		}
 	}
 
