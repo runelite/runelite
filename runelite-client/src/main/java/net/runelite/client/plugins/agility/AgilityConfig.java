@@ -163,4 +163,15 @@ public interface AgilityConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "addLevelsToShortcutOptions",
+		name = "Show shortcut agility req. in options",
+		description = "Enable/disable showing shortcut agility level requirements in right-click options",
+		position = 13
+	)
+	default boolean showShortcutLevel()
+	{
+		return true;
+	}
 }
