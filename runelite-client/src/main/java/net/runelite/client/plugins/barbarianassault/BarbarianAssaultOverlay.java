@@ -24,24 +24,38 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.Stroke;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.api.Perspective;
+import net.runelite.api.Player;
+import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 class BarbarianAssaultOverlay extends Overlay
 {
+	private static final int MAX_EGG_DISTANCE = 2500;
+	private static final int OFFSET_Z = 20;
+
 	private final Client client;
 	private final BarbarianAssaultPlugin plugin;
 	private final BarbarianAssaultConfig config;
@@ -88,6 +102,65 @@ class BarbarianAssaultOverlay extends Overlay
 			graphics.drawImage(plugin.getClockImage(), spriteBounds.x, spriteBounds.y, null);
 		}
 
+		if (role == Role.COLLECTOR && config.highlightCollectorEggs())
+		{
+			String heardCall = plugin.getCollectorHeardCall();
+			Color highlightColor = BarbarianAssaultPlugin.getEggColor(heardCall);
+			Map<WorldPoint, Integer> calledEggMap = plugin.getCalledEggMap();
+			Map<WorldPoint, Integer> yellowEggMap = plugin.getYellowEggs();
+
+			if (calledEggMap != null)
+			{
+				renderEggLocations(graphics, calledEggMap, highlightColor);
+			}
+
+			// Always show yellow eggs
+			renderEggLocations(graphics, yellowEggMap, Color.YELLOW);
+		}
+
 		return null;
+	}
+
+	private void renderEggLocations(Graphics2D graphics, Map<WorldPoint, Integer> eggMap, Color color)
+	{
+		Player player = client.getLocalPlayer();
+
+		if (player == null)
+		{
+			return;
+		}
+
+		final Stroke originalStroke = graphics.getStroke();
+
+		for (WorldPoint worldPoint : eggMap.keySet())
+		{
+			LocalPoint groundPoint = LocalPoint.fromWorld(client, worldPoint);
+
+			if (groundPoint == null)
+			{
+				continue;
+			}
+			if (player.getLocalLocation().distanceTo(groundPoint) > MAX_EGG_DISTANCE)
+			{
+				continue;
+			}
+
+			Polygon poly = Perspective.getCanvasTilePoly(client, groundPoint);
+
+			if (poly == null)
+			{
+				continue;
+			}
+
+			int quantity = eggMap.get(worldPoint);
+			String quantityText = "x" + quantity;
+			Point textPoint = Perspective.getCanvasTextLocation(client, graphics, groundPoint, quantityText, OFFSET_Z);
+			graphics.setColor(color);
+			graphics.setStroke(new BasicStroke(2));
+			graphics.drawPolygon(poly);
+			OverlayUtil.renderTextLocation(graphics, textPoint, quantityText, Color.WHITE);
+		}
+
+		graphics.setStroke(originalStroke);
 	}
 }
