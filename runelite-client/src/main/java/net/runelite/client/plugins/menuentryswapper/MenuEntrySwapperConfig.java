@@ -243,6 +243,16 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapSearch",
+		name = "Search",
+		description = "Swap Close, Shut with Search on chests, cupboards, etc."
+	)
+	default boolean swapSearch()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "swapTeleportItem",
 		name = "Teleport item",
 		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Explorer's ring, Chronicle"
