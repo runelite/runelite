@@ -696,9 +696,21 @@ public class ChatCommandsPlugin extends Plugin
 				.append(String.format("%,d", hiscoreSkill.getExperience()))
 				.append(ChatColorType.NORMAL)
 				.append(" Rank: ")
-				.append(ChatColorType.HIGHLIGHT)
+				.append(ChatColorType.HIGHLIGHT);
+			/**
+			  * Ensures that we don't print -1 for the rank of the player, and print unranked instead.
+			 **/
+			if(highscoreSkill.getRank() == -1) {
+				response.append("Unranked");
+			}
+			else {
+				response.append(String.format("%,d", hiscoreSkill.getRank()))
+			}
+			response.build();
+
+				/**.append(ChatColorType.HIGHLIGHT)
 				.append(String.format("%,d", hiscoreSkill.getRank()))
-				.build();
+				.build();**/
 
 			log.debug("Setting response {}", response);
 			final MessageNode messageNode = chatMessage.getMessageNode();
