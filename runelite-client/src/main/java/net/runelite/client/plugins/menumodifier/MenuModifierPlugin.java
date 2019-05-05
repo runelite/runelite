@@ -124,6 +124,12 @@ public class MenuModifierPlugin extends Plugin
             if (option.contains("examine") && config.hideExamine())
                 continue;
 
+			if (option.contains("net") && config.hideNet())
+				continue;
+
+			if (option.contains("bait") && config.hideBait())
+				continue;
+
             int identifier = entry.getIdentifier();
 
             Player[] players = client.getCachedPlayers();

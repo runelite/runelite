@@ -45,4 +45,10 @@ public interface MenuModifierConfig extends Config
 
     @ConfigItem(position = 4, keyName = "hideLookup", name = "Hide Lookup", description = "Hides the 'lookup' option from the right click menu")
     default boolean hideLookup() { return true; }
+
+	@ConfigItem(position = 4, keyName = "hideNet", name = "Hide Net", description = "Hides the 'net' option from the right click menu")
+	default boolean hideNet() { return true; }
+
+	@ConfigItem(position = 4, keyName = "hideBait", name = "Hide Bait", description = "Hides the 'Bait' option from the right click menu")
+	default boolean hideBait() { return true; }
 }
