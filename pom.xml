@@ -39,6 +39,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<lombok.version>1.18.4</lombok.version>
+		<spring.boot.version>1.5.6.RELEASE</spring.boot.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
@@ -159,7 +160,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.1</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -168,8 +168,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<!-- newer versions seem to not show stacktraces in Netbeans -->
-				<version>2.18</version>
 				<configuration>
 					<enableAssertions>true</enableAssertions>
 					<argLine>-Xmx512m</argLine>
@@ -229,7 +227,6 @@
 			<plugin>
 				<groupId>io.github.zlika</groupId>
 				<artifactId>reproducible-build-maven-plugin</artifactId>
-				<version>0.7</version>
 				<executions>
 					<execution>
 						<!-- Move from pre-integration-test to place before jarsigning -->
@@ -252,6 +249,22 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.6.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<!-- newer versions seem to not show stacktraces in Netbeans -->
+					<version>2.18</version>
+				</plugin>
+				<plugin>
+					<groupId>io.github.zlika</groupId>
+					<artifactId>reproducible-build-maven-plugin</artifactId>
+					<version>0.7</version>
+				</plugin>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring.boot.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
