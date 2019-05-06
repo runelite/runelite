@@ -58,9 +58,8 @@ public class SplitComponent implements LayoutableRenderableEntity
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		graphics.translate(preferredLocation.x, preferredLocation.y);
+		first.setPreferredLocation(preferredLocation);
 		first.setPreferredSize(preferredSize);
-		first.setPreferredLocation(new Point(0, 0));
 
 		final Dimension firstDimension = first.render(graphics);
 		int x = 0, y = 0;
@@ -74,7 +73,7 @@ public class SplitComponent implements LayoutableRenderableEntity
 			x = firstDimension.width + gap.x;
 		}
 
-		second.setPreferredLocation(new Point(x, y));
+		second.setPreferredLocation(new Point(x + preferredLocation.x, y + preferredLocation.y));
 		// Make the second component fit to whatever size is left after the first component is rendered
 		second.setPreferredSize(new Dimension(preferredSize.width - x, preferredSize.height - y));
 
@@ -94,8 +93,6 @@ public class SplitComponent implements LayoutableRenderableEntity
 			totalHeight = Math.max(firstDimension.height, secondDimension.height);
 			totalWidth = x + secondDimension.width;
 		}
-
-		graphics.translate(-preferredLocation.x, -preferredLocation.y);
 
 		final Dimension dimension = new Dimension(totalWidth, totalHeight);
 		bounds.setLocation(preferredLocation);
