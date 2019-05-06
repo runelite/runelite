@@ -14,7 +14,7 @@ Here are the guidelines we'd like you to follow:
 
 ## <a name="question"></a> Got a Question or Problem?
 
-If you have questions about how to contribute to runelite, please join our [Discord](https://discord.gg/mePCs8U) server.
+If you have questions about how to contribute to runelite, please join our [Discord](https://discord.gg/HN5gf3m) server.
 
 ## <a name="issue"></a> Found an Issue?
 
@@ -43,7 +43,7 @@ quickly:
 ### Submitting a Pull Request
 Before you submit your pull request consider the following guidelines:
 
-* Search [GitHub](https://github.com/runelite/runelite/pulls) for an open or closed Pull Request
+* Search [GitHub](https://github.com/runelite-extended/runelite/pulls) for an open or closed Pull Request
   that relates to your submission. You don't want to duplicate effort.
 * [Fork](https://help.github.com/articles/fork-a-repo/) this repo.
 * [Clone](https://help.github.com/articles/cloning-a-repository/) your copy.
@@ -54,7 +54,7 @@ Before you submit your pull request consider the following guidelines:
 * After cloning, set a new remote [upstream](https://help.github.com/articles/configuring-a-remote-for-a-fork/) (this helps to keep your fork up to date)
     
     ```shell
-    git remote add upstream https://github.com/runelite/runelite.git
+    git remote add upstream https://github.com/runelite-extended/runelite.git
     ```
 
 * Make your changes in a new git branch:
@@ -130,5 +130,5 @@ from the main (upstream) repository:
 To ensure consistency throughout the source code, review our [code conventions](https://github.com/runelite/runelite/wiki/Code-Conventions).
 
 
-[github]: https://github.com/runelite/runelite
-[discord]: https://discord.gg/mePCs8U
+[github]: https://github.com/runelite-extended/runelite
+[discord]: https://discord.gg/HN5gf3m
