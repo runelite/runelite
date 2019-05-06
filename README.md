@@ -16,7 +16,7 @@
 - [runescape-api](runescape-api/src/main/java/net/runelite) - Mappings correspond to these interfaces, runelite-api is a subset of this
 - [runelite-client](runelite-client/src/main/java/net/runelite/client) - Game client with plugins
 
-### License
+## License
 
 RuneLitePlus is licensed under the BSD 2-clause license. See the license header in the respective file to be sure.
 
