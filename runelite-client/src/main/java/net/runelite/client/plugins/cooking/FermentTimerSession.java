@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Joris K <kjorisje@gmail.com>
- * Copyright (c) 2018, Lasse <cronick@zytex.dk>
+ * Copyright (c) 2019, Lucas C <lucas1757@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,32 +24,17 @@
  */
 package net.runelite.client.plugins.cooking;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.time.Instant;
+import lombok.AccessLevel;
+import lombok.Getter;
 
-@ConfigGroup("cooking")
-public interface CookingConfig extends Config
+class FermentTimerSession
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until the session resets and the overlay is hidden (0 = Disable feature)"
-	)
-	default int statTimeout()
-	{
-		return 5;
-	}
+	@Getter(AccessLevel.PACKAGE)
+	private Instant lastWineMakingAction;
 
-	@ConfigItem(
-		position = 2,
-		keyName = "fermentTimer",
-		name = "Show wine fermenting timer",
-		description = "Conifgures if the timer before wines are fermented is shown."
-	)
-	default boolean fermentTimer()
+	void updateLastWineMakingAction()
 	{
-		return true;
+		this.lastWineMakingAction = Instant.now();
 	}
 }
