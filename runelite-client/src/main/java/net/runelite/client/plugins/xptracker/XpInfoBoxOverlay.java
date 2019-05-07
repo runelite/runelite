@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -31,8 +32,10 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
@@ -113,6 +116,15 @@ class XpInfoBoxOverlay extends Overlay
 		iconXpSplitPanel.getChildren().add(iconXpSplit);
 
 		final ProgressBarComponent progressBarComponent = new ProgressBarComponent();
+
+		progressBarComponent.setBackgroundColor(new Color(61, 56, 49));
+		progressBarComponent.setForegroundColor(SkillColor.find(skill).getColor());
+
+		progressBarComponent.setLeftLabel(String.valueOf(snapshot.getStartLevel()));
+		progressBarComponent.setRightLabel(snapshot.getEndGoalXp() == Experience.MAX_SKILL_XP
+			? "200M"
+			: String.valueOf(snapshot.getEndLevel()));
+
 		progressBarComponent.setValue(snapshot.getSkillProgressToGoal());
 
 		panel.getChildren().add(iconXpSplitPanel);
