@@ -202,7 +202,10 @@ class XpInfoBox extends JPanel
 			// Update information labels
 			expGained.setText(htmlLabel("XP Gained: ", xpSnapshotSingle.getXpGainedInSession()));
 			expLeft.setText(htmlLabel("XP Left: ", xpSnapshotSingle.getXpRemainingToGoal()));
-			actionsLeft.setText(htmlLabel(xpSnapshotSingle.getActionType().getLabel() + ": ", xpSnapshotSingle.getActionsRemainingToGoal()));
+			if (!xpTrackerConfig.timeToGoal())
+			{
+				actionsLeft.setText(htmlLabel(xpSnapshotSingle.getActionType().getLabel() + ": ", xpSnapshotSingle.getActionsRemainingToGoal()));
+			}
 
 			// Update progress bar
 			progressBar.setValue((int) xpSnapshotSingle.getSkillProgressToGoal());
@@ -260,13 +263,23 @@ class XpInfoBox extends JPanel
 			pauseSkill.setText("Pause");
 		}
 
-		// Update exp per hour separately, every time (not only when there's an update)
+		// Update exp per hour and TTL separately, every time (not only when there's an update)
 		expHour.setText(htmlLabel("XP/Hour: ", xpSnapshotSingle.getXpPerHour()));
+
+		if (xpTrackerConfig.timeToGoal())
+		{
+			actionsLeft.setText(htmlLabel("Time Left: ", xpSnapshotSingle.getTimeTillGoal()));
+		}
 	}
 
 	static String htmlLabel(String key, int value)
 	{
-		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
-		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
+		final String valueStr = StackFormatter.quantityToRSDecimalStack(value);
+		return htmlLabel(key, valueStr);
+	}
+
+	static String htmlLabel(String key, String value)
+	{
+		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, value);
 	}
 }

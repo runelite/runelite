@@ -74,4 +74,15 @@ public interface XpTrackerConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "showTimeToGoal",
+		name = "Time to goal",
+		description = "Replaces Actions Left with Time Left (to goal)."
+	)
+	default boolean timeToGoal()
+	{
+		return false;
+	}
 }
