@@ -2,6 +2,9 @@
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
+ *
+ * Modified by farhan1666
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
@@ -24,6 +27,17 @@
  */
 package net.runelite.client.plugins.aoewarnings;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Iterator;
+import java.util.Map;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Projectile;
@@ -32,13 +46,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import java.awt.*;
-import java.time.Instant;
-import java.util.Iterator;
-import java.util.Map;
 
 public class AoeWarningOverlay extends Overlay
 {
@@ -85,7 +92,7 @@ public class AoeWarningOverlay extends Overlay
 		{
 			AoeProjectile aoeProjectile = it.next();
 
-			if (now.isAfter(aoeProjectile.getStartTime().plus(aoeProjectile.getAoeProjectileInfo().getLifeTime())))
+			if (now.isAfter(aoeProjectile.getStartTime().plus(Duration.ofMillis(aoeProjectile.getProjectileLifetime()))))
 			{
 				it.remove();
 				continue;
@@ -98,7 +105,7 @@ public class AoeWarningOverlay extends Overlay
 			}
 
 			// how far through the projectiles lifetime between 0-1.
-			double progress = (System.currentTimeMillis() - aoeProjectile.getStartTime().toEpochMilli()) / (double) aoeProjectile.getAoeProjectileInfo().getLifeTime().toMillis();
+			double progress = (System.currentTimeMillis() - aoeProjectile.getStartTime().toEpochMilli()) / (double) aoeProjectile.getProjectileLifetime();
 
 			int fillAlpha, outlineAlpha;
 			if (config.isFadeEnabled())

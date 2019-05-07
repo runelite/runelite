@@ -2,6 +2,9 @@
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
+ *
+ * Modified by farhan1666
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
@@ -24,21 +27,22 @@
  */
 package net.runelite.client.plugins.aoewarnings;
 
-import net.runelite.api.coords.LocalPoint;
-
 import java.time.Instant;
+import net.runelite.api.coords.LocalPoint;
 
 public class AoeProjectile
 {
 	private final Instant startTime;
 	private final LocalPoint targetPoint;
 	private final AoeProjectileInfo aoeProjectileInfo;
+	private final int projectileLifetime;
 
-	public AoeProjectile(Instant startTime, LocalPoint targetPoint, AoeProjectileInfo aoeProjectileInfo)
+	public AoeProjectile(Instant startTime, LocalPoint targetPoint, AoeProjectileInfo aoeProjectileInfo, int projectileLifetime)
 	{
 		this.startTime = startTime;
 		this.targetPoint = targetPoint;
 		this.aoeProjectileInfo = aoeProjectileInfo;
+		this.projectileLifetime = projectileLifetime;
 	}
 
 	public Instant getStartTime()
@@ -54,5 +58,10 @@ public class AoeProjectile
 	public AoeProjectileInfo getAoeProjectileInfo()
 	{
 		return aoeProjectileInfo;
+	}
+
+	public int getProjectileLifetime()
+	{
+		return projectileLifetime;
 	}
 }

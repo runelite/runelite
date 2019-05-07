@@ -2,6 +2,8 @@
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
+ * Modified by farhan1666
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
@@ -259,4 +261,14 @@ public interface AoeWarningConfig extends Config
     default boolean isDrakeEnabled() {
         return true;
     }
+
+	@ConfigItem(
+		keyName = "delay",
+		name = "Fade delay",
+		description = "Configures the amount of time in milliseconds that the warning lingers for after the projectile has touched the ground"
+	)
+	default int delay()
+	{
+		return 300;
+	}
 }
