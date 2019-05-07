@@ -40,11 +40,16 @@ public abstract class RSClanMemberManagerMixin implements RSClanMemberManager
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
+	private RSNameable nameable;
+	private RSName name;
+	private RSName prevName;
 
 	@Inject
 	@Override
 	public void rl$add(RSName name, RSName prevName)
 	{
+		this.name = name;
+		this.prevName = prevName;
 		ClanMember member = findByName(name);
 		if (member == null)
 		{
@@ -59,6 +64,7 @@ public abstract class RSClanMemberManagerMixin implements RSClanMemberManager
 	@Override
 	public void rl$remove(RSNameable nameable)
 	{
+		this.nameable = nameable;
 		ClanMember member = findByName(nameable.getRsName());
 		if (member == null)
 		{
