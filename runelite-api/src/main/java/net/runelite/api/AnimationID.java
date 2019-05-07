@@ -177,6 +177,7 @@ public final class AnimationID
 	public static final int MAGIC_LUNAR_CURE_PLANT = 4432;
 	public static final int MAGIC_LUNAR_GEOMANCY = 7118;
 	public static final int MAGIC_LUNAR_STRING_JEWELRY = 4412;
+	public static final int MAGIC_LUNAR_PLANK_MAKE = 6298;
 
 	// Arceuus spellbook
 	public static final int MAGIC_ARCEUUS_RESURRECT_CROPS = 7118;
