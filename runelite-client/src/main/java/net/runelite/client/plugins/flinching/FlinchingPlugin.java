@@ -54,7 +54,7 @@ import com.google.inject.Provides;
         description = "Time your attacks while flinching",
         tags = {"overlay", "flinching", "timers", "combat"},
         enabledByDefault = false,
-        type = PluginType.UTILITY
+        type = PluginType.PVM
 )
 public class FlinchingPlugin extends Plugin
 {
