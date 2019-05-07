@@ -118,7 +118,7 @@ public enum HotColdLocation
 	MISTHALIN_VARROCK_STONE_CIRCLE(new WorldPoint(3225, 3355, 0), MISTHALIN, "South of the stone circle near Varrock's entrance."),
 	MISTHALIN_LUMBRIDGE(new WorldPoint(3238, 3169, 0), MISTHALIN, "Just north-west of the Lumbridge Fishing tutor."),
 	MISTHALIN_LUMBRIDGE_2(new WorldPoint(3170, 3278, 0), MISTHALIN, "North of the pond between Lumbridge and Draynor Village."),
-	MISTHALIN_GERTUDES(new WorldPoint(3158, 3421, 0), MISTHALIN, "Nort-east of Gertrude's house west of Varrock."),
+	MISTHALIN_GERTUDES(new WorldPoint(3158, 3421, 0), MISTHALIN, "North-east of Gertrude's house west of Varrock."),
 	MISTHALIN_DRAYNOR_BANK(new WorldPoint(3096, 3235, 0), MISTHALIN, "South of Draynor Village bank."),
 	MISTHALIN_LUMBER_YARD(new WorldPoint(3303, 3483, 0), MISTHALIN, "South of Lumber Yard, east of Assistant Serf."),
 	MORYTANIA_BURGH_DE_ROTT(new WorldPoint(3545, 3253, 0), MORYTANIA, "In the north-east area of Burgh de Rott, by the reverse-L-shaped ruins."),
