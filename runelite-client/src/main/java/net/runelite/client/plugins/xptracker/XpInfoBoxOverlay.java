@@ -37,6 +37,7 @@ import net.runelite.api.Skill;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -44,6 +45,8 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.SplitComponent;
 import net.runelite.client.util.StackFormatter;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
 class XpInfoBoxOverlay extends Overlay
 {
@@ -79,6 +82,7 @@ class XpInfoBoxOverlay extends Overlay
 		iconXpSplitPanel.setBorder(XP_AND_ICON_COMPONENT_BORDER);
 		iconXpSplitPanel.setBackgroundColor(null);
 		iconXpSplitPanel.setPreferredSize(new Dimension(PANEL_PREFERRED_WIDTH, 0));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "XP Tracker overlay"));
 	}
 
 	@Override
