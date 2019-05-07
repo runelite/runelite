@@ -81,6 +81,13 @@ public class SpellbookPlugin extends Plugin
 	private static final WidgetMenuOption RESIZABLE_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,	MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_MAGIC_TAB);
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_MAGIC_TAB_LOCK = new WidgetMenuOption(LOCK,	MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,	MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
+	private enum WordFilterMode
+	{
+		CONTAINS,
+		EQUALS,
+		STARTSWITH,
+		ENDSWITH
+	}
 
 	@Inject
 	private Client client;
@@ -143,9 +150,7 @@ public class SpellbookPlugin extends Plugin
 		saveSpells();
 		config.canDrag(false);
 		mouseManager.unregisterMouseListener(mouseListener);
-
 		mouseManager.unregisterMouseWheelListener(mouseListener);
-
 		mouseListener = null;
 	}
 
@@ -168,16 +173,13 @@ public class SpellbookPlugin extends Plugin
 
 		String key = event.getKey();
 
-		if ("canDrag".equals(key))
-		{
-			refreshMagicTabOption();
-		}
-		else if ("filter".equals(key))
+		if ("filter".equals(key))
 		{
 			loadFilter();
 		}
 
 		clientThread.invokeLater(this::runRebuild);
+		refreshMagicTabOption();
 	}
 
 	@Subscribe
@@ -241,7 +243,46 @@ public class SpellbookPlugin extends Plugin
 				return;
 			}
 
-			iStack[iStackSize - 2] = notFilteredSpells.stream().anyMatch(spell::contains) ? 1 : 0;
+			for (String str : notFilteredSpells)
+			{
+				WordFilterMode mode = getFilterMode(str);
+				str = str.replaceAll("\"", "");
+
+				if (mode == WordFilterMode.CONTAINS)
+				{
+					if (spell.contains(str))
+					{
+						iStack[iStackSize - 2] = 1;
+						break;
+					}
+				}
+				else if (mode == WordFilterMode.STARTSWITH)
+				{
+					if (spell.startsWith(str))
+					{
+						iStack[iStackSize - 2] = 1;
+						break;
+					}
+				}
+				else if (mode == WordFilterMode.ENDSWITH)
+				{
+					if (spell.endsWith(str))
+					{
+						iStack[iStackSize - 2] = 1;
+						break;
+					}
+				}
+				else if (mode == WordFilterMode.EQUALS)
+				{
+					if (spell.equals(str))
+					{
+						iStack[iStackSize - 2] = 1;
+						break;
+					}
+				}
+
+				iStack[iStackSize - 2] = 0;
+			}
 		}
 		else if ("isMobileSpellbookEnabled".equals(event.getEventName()))
 		{
@@ -273,7 +314,7 @@ public class SpellbookPlugin extends Plugin
 					.map(Spell::getName)
 					.filter(s -> notFilteredSpells
 						.stream()
-						.anyMatch(s::contains))
+						.anyMatch(s.replaceAll("\"", "" )::contains))
 					.count();
 
 
@@ -434,6 +475,24 @@ public class SpellbookPlugin extends Plugin
 		clientThread.invoke(() ->
 			client.runScript(2611, 14286851, 14287027, 14287036, 14286849, 14287033, 14287034, 14287035, 14286850, 14287029, 14287032, "Info", "Filters", false)
 		);
+	}
+
+	private static WordFilterMode getFilterMode(String s)
+	{
+		if (!s.contains("\""))
+		{
+			return WordFilterMode.CONTAINS;
+		}
+		if (s.startsWith("\""))
+		{
+			return s.endsWith("\"") ? WordFilterMode.EQUALS : WordFilterMode.STARTSWITH;
+		}
+		else if (s.endsWith("\""))
+		{
+			return WordFilterMode.ENDSWITH;
+		}
+
+		return WordFilterMode.CONTAINS; // but probably null soz
 	}
 
 	boolean isOnSpellWidget(java.awt.Point point)

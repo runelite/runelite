@@ -78,8 +78,8 @@ public interface SpellbookConfig extends Config
 	@ConfigItem(
 		keyName = "filter",
 		name = "Unfiltered spells",
-		description = "Spells you don't want to filter, seperated with a comma"
-	)
+		description = "Spells you don't want to filter, seperated with a comma. <br> \"'s can be used in front and behind spells (eg: '\"c' matches all spells starting with a c"
+	)                                                                         //  ^ JAJAJJAJAJAJAJA BRAZIL
 	default String filter()
 	{
 		return "";
