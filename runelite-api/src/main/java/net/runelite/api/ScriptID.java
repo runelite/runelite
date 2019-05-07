@@ -94,6 +94,15 @@ public final class ScriptID
 	 * Builds the chatbox input widget
 	 */
 	public static final int CHAT_PROMPT_INIT = 223;
+	
+	/**
+	 * Joins a clan chat
+	 * <ul>
+	 *     <li>string Name of player's clan chat to join</li>
+	 * </ul>
+	 *
+	 */
+	public static final int FORCE_JOIN_CC = 437;
 
 	/**
 	 * Displays the game messages when clicking on an item inside the Items Kept on Death interface
