@@ -280,7 +280,7 @@ public class PoisonPlugin extends Plugin
 	private static String getFormattedTime(Instant endTime)
 	{
 		final Duration timeLeft = Duration.between(Instant.now(), endTime);
-		int seconds = (int) (timeLeft.toMillis() / 1000L);
+		int seconds = Math.max(0, (int) (timeLeft.toMillis() / 1000L));
 		int minutes = seconds / 60;
 		int secs = seconds % 60;
 
