@@ -28,6 +28,8 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
+import java.io.File;
+
 @ConfigGroup("customcursor")
 public interface CustomCursorConfig extends Config
 {
@@ -39,5 +41,15 @@ public interface CustomCursorConfig extends Config
 	default CustomCursor selectedCursor()
 	{
 		return CustomCursor.RS3_GOLD;
+	}
+
+	@ConfigItem(
+		keyName = "customImage",
+		name = "Custom Image",
+		description = "Use your own image file for a cursor"
+	)
+	default File customImageFile()
+	{
+		return new File("\\");
 	}
 }

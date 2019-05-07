@@ -602,6 +602,10 @@ public class ConfigManager
 		{
 			return Duration.ofMillis(Long.parseLong(str));
 		}
+		if (type == File.class)
+		{
+			return new File(str);
+		}
 		return str;
 	}
 
@@ -647,6 +651,10 @@ public class ConfigManager
 		if (object instanceof Duration)
 		{
 			return Long.toString(((Duration) object).toMillis());
+		}
+		if (object instanceof File)
+		{
+			return ((File) object).getAbsolutePath();
 		}
 		return object.toString();
 	}

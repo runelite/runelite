@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.customcursor;
 
 import com.google.inject.Provides;
+
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
@@ -32,6 +34,10 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 @PluginDescriptor(
 	name = "Custom Cursor",
@@ -67,13 +73,42 @@ public class CustomCursorPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("customcursor") && event.getKey().equals("cursorStyle"))
+		if (event.getGroup().equals("customcursor"))
 		{
-			updateCursor();
+			if (event.getKey().equals("cursorStyle"))
+			{
+				useSelectedCursor();
+			}
+			else if (event.getKey().equals("customImage"))
+			{
+				updateCursor();
+			}
 		}
 	}
 
 	private void updateCursor()
+	{
+		// Custom image file takes precedent
+		File customImageFile = config.customImageFile();
+		if (customImageFile.exists() && !customImageFile.isDirectory())
+		{
+			try
+			{
+				BufferedImage image = ImageIO.read(customImageFile);
+				clientUI.setCursor(image, "Custom");
+			}
+			catch (IOException e)
+			{
+				useSelectedCursor();
+			}
+		}
+		else
+		{
+			useSelectedCursor();
+		}
+	}
+
+	private void useSelectedCursor()
 	{
 		CustomCursor selectedCursor = config.selectedCursor();
 		clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());

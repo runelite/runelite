@@ -38,6 +38,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -49,6 +50,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -65,6 +67,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.JTextComponent;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ChatColorConfig;
@@ -529,6 +532,34 @@ public class ConfigPanel extends PluginPanel
 				item.add(button, BorderLayout.EAST);
 			}
 
+			if (cid.getType() == File.class)
+			{
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Select a custom cursor image");
+				fileChooser.setAcceptAllFileFilterUsed(false);
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("image files", "png", "gif", "jpeg", "jpg", "bmp", "ico", "cur");
+				fileChooser.addChoosableFileFilter(filter);
+
+				JButton chooserButton = new JButton("Select Image File");
+				chooserButton.setPreferredSize(new Dimension(140, 20));
+				chooserButton.addActionListener(e ->
+				{
+					int returnValue = fileChooser.showOpenDialog(null);
+					if (returnValue == JFileChooser.APPROVE_OPTION)
+					{
+						changeConfiguration(listItem, config, fileChooser, cd, cid);
+						chooserButton.setText(fileChooser.getSelectedFile().getName());
+					}
+				});
+				String currentFilePath = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
+				String fileName = currentFilePath.substring(currentFilePath.lastIndexOf("\\") + 1);
+				if (!fileName.isEmpty())
+				{
+					chooserButton.setText(fileName);
+				}
+				item.add(chooserButton, BorderLayout.EAST);
+			}
+
 			mainPanel.add(item);
 		}
 
@@ -603,6 +634,11 @@ public class ConfigPanel extends PluginPanel
 		{
 			HotkeyButton hotkeyButton = (HotkeyButton) component;
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), hotkeyButton.getValue());
+		}
+		else if (component instanceof JFileChooser)
+		{
+			JFileChooser fileChooser = (JFileChooser) component;
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), fileChooser.getSelectedFile());
 		}
 	}
 
