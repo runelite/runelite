@@ -266,7 +266,7 @@ class XpInfoBox extends JPanel
 
 	static String htmlLabel(String key, int value)
 	{
-		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
+		String valueStr = StackFormatter.quantityToRSDecimalStack(value, true);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 }
