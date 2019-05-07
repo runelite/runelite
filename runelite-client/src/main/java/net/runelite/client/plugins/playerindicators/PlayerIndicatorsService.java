@@ -107,7 +107,7 @@ public class PlayerIndicatorsService
 			{
 				consumer.accept(player, config.callerColor());
 			}
-			if (config.highlightPile() && PvPUtil.isAttackable(client, player) && playerIndicatorsPlugin.isPile(player)
+			if (config.highlightPile() && playerIndicatorsPlugin.isPile(player)
 				&& !player.isClanMember())
 			{
 				consumer.accept(player, config.pileColor());
