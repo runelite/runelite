@@ -25,9 +25,12 @@
 package net.runelite.client.plugins.playerindicators;
 
 import java.awt.Color;
+
+import net.runelite.api.ClanMemberRank;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("playerindicators")
 public interface PlayerIndicatorsConfig extends Config
@@ -137,48 +140,13 @@ public interface PlayerIndicatorsConfig extends Config
 		name = "Non-clan member color",
 		description = "Color of non-clan member names"
 	)
-	default Color getNonClanMemberColor() { return Color.RED; }
-
-	@ConfigItem(
-			position = 10,
-			keyName = "drawAttackerNames",
-			name = "Highlight attacker players",
-			description = "Configures whether or not attacker players should be highlighted"
-	)
-	default boolean highlightAttackerPlayers()
+	default Color getNonClanMemberColor()
 	{
-		return false;
+		return Color.RED;
 	}
 
 	@ConfigItem(
-			position = 11,
-			keyName = "attackerColor",
-			name = "Attacker player color",
-			description = "Color of attacking player names"
-	)
-	default Color getAttackerPlayerColor() { return new Color(241, 0, 108); }
-
-	@ConfigItem(
-			position = 12,
-			keyName = "drawAttackableNames",
-			name = "Highlight attackable players",
-			description = "Configures whether or not attackable players should be highlighted"
-	)
-	default boolean highlightAttackablePlayers()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-			position = 13,
-			keyName = "attackableColor",
-			name = "Attackable player color",
-			description = "Color of attackable player names"
-	)
-	default Color getAttackablePlayerColor() { return new Color(231, 122,- 0); }
-
-	@ConfigItem(
-		position = 14,
+		position = 10,
 		keyName = "drawPlayerTiles",
 		name = "Draw tiles under players",
 		description = "Configures whether or not tiles under highlighted players should be drawn"
@@ -189,29 +157,18 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
-		keyName = "drawOverheadPlayerNames",
-		name = "Draw names above players",
-		description = "Configures whether or not player names should be drawn above players"
+		position = 11,
+		keyName = "playerNamePosition",
+		name = "Name position",
+		description = "Configures the position of drawn player names, or if they should be disabled"
 	)
-	default boolean drawOverheadPlayerNames()
+	default PlayerNameLocation playerNamePosition()
 	{
-		return true;
+		return PlayerNameLocation.ABOVE_HEAD;
 	}
 
 	@ConfigItem(
-		position = 16,
-		keyName = "drawOverheadLevels",
-		name = "Draw combat levels above players",
-		description = "Configures whether or not combat levels should be drawn above players"
-	)
-	default boolean drawOverheadLevels()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 17,
+		position = 12,
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not minimap names for players with rendered names should be drawn"
@@ -222,7 +179,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 18,
+		position = 13,
 		keyName = "colorPlayerMenu",
 		name = "Colorize player menu",
 		description = "Color right click menu for players"
@@ -233,7 +190,7 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-	    position = 19,
+		position = 14,
 		keyName = "clanMenuIcons",
 		name = "Show clan ranks",
 		description = "Add clan rank to right click menu and next to player names"
@@ -243,108 +200,216 @@ public interface PlayerIndicatorsConfig extends Config
 		return true;
 	}
 
-    @ConfigItem(
-            position = 20,
-            keyName = "showOfflineFriends",
-            name = "Show offline friends",
-            description = "Draw friends names even if they're offline"
-    )
-    default boolean showOfflineFriends()
-    {
-        return true;
-    }
-
 	@ConfigItem(
-			position = 21,
-			keyName = "drawHighlightedNames",
-			name = "Draw highlighted player names",
-			description = "Configures whether or not highlighted player names should be drawn"
+			position = 15,
+			keyName = "highlightTargets",
+			name = "Highlight attackable players in wilderness on the minimap",
+			description = "Highlights players on the minimap that the current player can attack based on combat/wilderness levels",
+			group = "Target Indicator"
 	)
-	default boolean drawHighlightedNames()
+	default boolean highlightTargets()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-			keyName = "highlightedNames",
-			name = "Highlighted names",
-			description = "Clan caller names separated by a comma"
+			position = 16,
+			keyName = "highlightOverheadTargets",
+			name = "Highlights attackable players over their head",
+			description = "Highlights players over their head that the current player can attack based on combat/wilderness levels",
+			group = "Target Indicator"
 	)
-	default String getHighlightedNames()
-	{
-		return "";
-	}
-
-	@ConfigItem(
-			keyName = "highlightedNamesColor",
-			name = "Highlighted names color",
-			description = "Color of highlighted names"
-	)
-	default Color getHighlightedNamesColor()
-	{
-		return Color.ORANGE;
-	}
-
-	@ConfigItem(
-            position = 22,
-			keyName = "drawHighlightedTargetNames",
-			name = "Draw highlighted target names",
-			description = "Configures whether or not highlighted target names should be drawn"
-	)
-	default boolean drawHighlightedTargetNames()
+	default boolean highlightOverheadTargets()
 	{
 		return false;
 	}
 
+	@ConfigItem(
+			position = 17,
+			keyName = "targetColor",
+			name = "Target color",
+			description = "Color of attackable targets",
+			group = "Target Indicator"
+	)
+	default Color getTargetColor()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
+			position = 18,
+			keyName = "showCombat",
+			name = "Show Combat Levels",
+			description = "Show the combat level of attackable players next to their name.",
+			group = "Target Indicator"
+	)
+	default boolean showCombatLevel()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 19,
+			keyName = "playerSkull",
+			name = "Show Skull Information",
+			description = "Indicate of the player is skulled.",
+			group = "Target Indicator"
+	)
+	default boolean playerSkull()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 19,
+		keyName = "minimapSkullLocation",
+		name = "Skull Icon Location",
+		description = "The location of the skull icon for skulled players",
+		group = "Target Indicator"
+	)
+	default PlayerIndicatorsPlugin.minimapSkullLocations skullLocation()
+	{
+		return PlayerIndicatorsPlugin.minimapSkullLocations.AFTER_NAME;
+	}
+
+	@ConfigItem(
+			position = 19,
+			keyName = "skulledTargetsOnly",
+			name = "Tag Skulls Only",
+			description = "Only indicate skulled targets (which are also attackable)",
+			group = "Target Indicator"
+	)
+	default boolean skulledTargetsOnly()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 19,
+			keyName = "targetRisk",
+			name = "Indicate Target Risk",
+			description = "Indicates the risk (in K GP) of the target",
+			group = "Target Indicator"
+	)
+	default boolean targetRisk()
+	{
+		return false;
+	}
+	
 	@ConfigItem(
 			position = 23,
-			keyName = "highlightedTargetColor",
-			name = "Highlighted target color",
-			description = "Color of highlighted target names"
+			keyName = "rightClickOverhead",
+			name = "Add Overheads to Right Click Menu",
+			description = "Feature shows a player's overhead prayer in the right click menu. Useful for DDs, or extremely crowded areas."
 	)
-	default Color getHighlightedTargetColor()
-	{
-		return new Color(255, 100, 183);
-	}
-
-	@ConfigItem(
-			position = 24,
-			keyName = "limitLevel",
-			name = "Limit Level",
-			description = "Limit the players to show +-x your level. Useful for BH"
-	)
-	default boolean limitLevel()
+	default boolean rightClickOverhead()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-			position = 25,
-			keyName = "level",
-			name = "Level",
-			description = "The level to limit players shown +-x"
+			keyName = "useClanchatRanks",
+			name = "Use Ranks as Callers",
+			description = "Uses clanchat ranks as the list of callers",
+			group = "Callers",
+			position = 24
 	)
-	default int intLevel()
+	default boolean useClanchatRanks()
 	{
-		return 5;
+		return false;
 	}
 
-    @ConfigItem(
-            position = 26,
-            keyName = "wildernessOnly",
-            name = "Show only in wilderness",
-            description = "Toggle whether or not to only show player indicators in the wilderness"
-    )
-    default boolean showInWildernessOnly()
-    {
-        return false;
-    }
+	@ConfigItem(
+			keyName = "callerRank",
+			name = "Minimum rank for Clan Caller",
+			description = "Chooses the minimum rank to use as clanchat callers.",
+			group = "Callers",
+			position = 25
+	)
+	default ClanMemberRank callerRank()
+	{
+		return ClanMemberRank.CAPTAIN;
+	}
 
-/*	@ConfigItem(
+	@ConfigItem(
+			keyName = "callers",
+			name = "List of callers to highlight",
+			description = "Highlights callers, only highlights one at a time. Separate each entry with a comma and enter" +
+					" in the order you want them highlighted.",
+			group = "Callers"
+	)
+	default String callers()
+	{
+		return " ";
+	}
+	@ConfigItem(
+			keyName = "highlightCallers",
+			name = "Highlight Callers",
+			description = "Highlights Callers Onscreen",
+			group = "Callers"
+	)
+	default boolean highlightCallers()
+	{
+		return true;
+	}
+	@ConfigItem(
+			position = 26,
+			keyName = "callerColor",
+			name = "Caller Color",
+			description = "Color of Indicated Callers",
+			group = "Callers"
+	)
+	default Color callerColor()
+	{
+		return Color.WHITE;
+	}
+	@ConfigItem(
 			position = 27,
-			keyName="rightClickOverhead",
-			name="Add Overheads to Right Click Menu",
-			description="Feature shows a player's overhead prayer in the right click menu. Useful for DDs, or extremely crowded areas.")
+			keyName = "highlightPile",
+			name = "Highlight Pile",
+			description = "Highlights Pile Onscreen",
+			group = "Callers"
+	)
+	default boolean highlightPile()
+	{
+		return false;
+	}
+	@ConfigItem(
+			position = 29,
+			keyName = "drawPileHull",
+			name = "Draws the hull of the pile.",
+			description = "Draws the hull of the pile for best visibility.",
+			group = "Callers"
+	)
+	default boolean drawPileHull()
+	{
+		return false;
+	}
 
-	default boolean rightClickOverhead() { return false; }*/
+	@Range(
+			min = 1,
+			max = 10
+	)
+	@ConfigItem(
+			position = 30,
+			keyName = "pileColor",
+			name = "Pile Color",
+			description = "Color of Indicated Pile",
+			group = "Callers"
+	)
+	default Color pileColor()
+	{
+		return Color.WHITE;
+	}
+	@ConfigItem(
+			position = 27,
+			keyName = "unchargedGlory",
+			name = "Uncharged Glory Indication",
+			description = "Indicates if players have an uncharged glory"
+	)
+	default boolean unchargedGlory()
+	{
+		return false;
+	}
+	
 }

@@ -27,20 +27,32 @@ package net.runelite.client.plugins.playerindicators;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.Client;
 import net.runelite.api.Player;
+import net.runelite.api.Point;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.plugins.friendtagging.FriendTaggingPlugin;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.ImageUtil;
 
 @Singleton
 public class PlayerIndicatorsMinimapOverlay extends Overlay
 {
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
+	private final BufferedImage skullIcon = ImageUtil.getResourceStreamFromClass(PlayerIndicatorsPlugin.class,
+		"skull.png");
+	@Inject
+	private ItemManager itemManager;
+	@Inject
+	private Client client;
 
 	@Inject
 	private PlayerIndicatorsMinimapOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService)
@@ -61,15 +73,60 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		final String name = actor.getName().replace('\u00A0', ' ');
-
 		if (config.drawMinimapNames())
 		{
-			final net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
+			String name = actor.getName().replace('\u00A0', ' ');
+			String tag = "";
+			String prefix = "tag_";
+			if (FriendTaggingPlugin.taggedFriends.containsKey(prefix + name.trim().toLowerCase()))
+			{
+				tag = " [" + FriendTaggingPlugin.taggedFriends.get(prefix + name.trim().toLowerCase()) + "] ";
+			}
+
+			name += tag;
+
+			net.runelite.api.Point minimapLocation = actor.getMinimapLocation();
 
 			if (minimapLocation != null)
 			{
-				OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
+				if (config.showCombatLevel())
+				{
+					if (config.showCombatLevel())
+					{
+						name += "-(" + actor.getCombatLevel() + ")";
+					}
+				}
+				if (config.drawMinimapNames())
+				{
+					if (actor.getSkullIcon() != null && config.playerSkull())
+					{
+						switch (actor.getSkullIcon())
+						{
+							case SKULL:
+
+								int width = graphics.getFontMetrics().stringWidth(name);
+								int height = graphics.getFontMetrics().getHeight();
+								if (config.skullLocation().equals(PlayerIndicatorsPlugin.minimapSkullLocations.AFTER_NAME))
+								{
+									OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX()
+											+ width, minimapLocation.getY() - height),
+										ImageUtil.resizeImage(skullIcon, height, height));
+								}
+								else
+								{
+									OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX(),
+											minimapLocation.getY() - height),
+										ImageUtil.resizeImage(skullIcon, height, height));
+									minimapLocation = new Point(minimapLocation.getX() + skullIcon.getWidth(),
+										minimapLocation.getY());
+								}
+								break;
+							default:
+								break;
+						}
+					}
+					OverlayUtil.renderTextLocation(graphics, minimapLocation, name, color);
+				}
 			}
 		}
 	}
