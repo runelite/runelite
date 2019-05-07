@@ -56,6 +56,7 @@ class XpInfoBoxOverlay extends Overlay
 	private final PanelComponent panel = new PanelComponent();
 	private final PanelComponent iconXpSplitPanel = new PanelComponent();
 	private final XpTrackerPlugin plugin;
+	private final XpTrackerConfig config;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Skill skill;
@@ -63,11 +64,13 @@ class XpInfoBoxOverlay extends Overlay
 
 	XpInfoBoxOverlay(
 		XpTrackerPlugin plugin,
+		XpTrackerConfig config,
 		Skill skill,
 		BufferedImage icon)
 	{
 		super(plugin);
 		this.plugin = plugin;
+		this.config = config;
 		this.skill = skill;
 		this.icon = icon;
 		panel.setBorder(new Rectangle(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE));
@@ -90,8 +93,9 @@ class XpInfoBoxOverlay extends Overlay
 		final XpSnapshotSingle snapshot = plugin.getSkillSnapshot(skill);
 
 		final LineComponent xpLine = LineComponent.builder()
-				.left("XP Gained:")
-				.right(StackFormatter.quantityToRSDecimalStack(snapshot.getXpGainedInSession()))
+				.left(config.displayXpLeftOnScreen() ? "XP Left:" : "XP Gained:")
+				.right(StackFormatter.quantityToRSDecimalStack(config.displayXpLeftOnScreen()
+					? snapshot.getXpRemainingToGoal() : snapshot.getXpGainedInSession()))
 				.build();
 
 		final LineComponent xpHour = LineComponent.builder()
