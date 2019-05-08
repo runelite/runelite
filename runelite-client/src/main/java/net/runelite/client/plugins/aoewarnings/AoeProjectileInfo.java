@@ -110,7 +110,7 @@ public enum AoeProjectileInfo
 	/**
 	* the Breath of the Drake
 	*/
-	DRAKE_BREATH(ProjectileID.DRAKE_BREATH, 1);
+	DRAKE_BREATH(ProjectileID.DRAKE_BREATH, 1),
 	
 	/**
 	 * Cerbs fire
