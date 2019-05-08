@@ -90,14 +90,14 @@ public class CustomCursorPlugin extends Plugin
 	{
 		// Custom image file takes precedent
 		File customImageFile = config.customImageFile();
-		if (customImageFile.exists() && !customImageFile.isDirectory())
+		if (customImageFile != null && customImageFile.exists() && !customImageFile.isDirectory())
 		{
 			try
 			{
 				BufferedImage image = ImageIO.read(customImageFile);
 				clientUI.setCursor(image, "Custom");
 			}
-			catch (IOException e)
+			catch (Exception e)
 			{
 				useSelectedCursor();
 			}

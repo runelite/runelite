@@ -656,6 +656,10 @@ public class ConfigManager
 		{
 			return ((File) object).getAbsolutePath();
 		}
+		if (object == null)
+		{
+			return "";
+		}
 		return object.toString();
 	}
 

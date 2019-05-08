@@ -28,6 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
+import javax.annotation.Nullable;
 import java.io.File;
 
 @ConfigGroup("customcursor")
@@ -48,8 +49,9 @@ public interface CustomCursorConfig extends Config
 		name = "Custom Image",
 		description = "Use your own image file for a cursor"
 	)
+	@Nullable
 	default File customImageFile()
 	{
-		return new File("\\");
+		return null;
 	}
 }

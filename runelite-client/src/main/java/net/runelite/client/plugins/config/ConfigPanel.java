@@ -535,12 +535,15 @@ public class ConfigPanel extends PluginPanel
 			if (cid.getType() == File.class)
 			{
 				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setDialogTitle("Select a custom cursor image");
-				fileChooser.setAcceptAllFileFilterUsed(false);
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("image files", "png", "gif", "jpeg", "jpg", "bmp", "ico", "cur");
-				fileChooser.addChoosableFileFilter(filter);
+				fileChooser.setDialogTitle("Select a file");
+				if (cd.getGroup().value().equals("customcursor"))
+				{
+					fileChooser.setAcceptAllFileFilterUsed(false);
+					FileNameExtensionFilter filter = new FileNameExtensionFilter("image files", "png", "gif", "jpeg", "jpg", "bmp", "ico", "cur");
+					fileChooser.addChoosableFileFilter(filter);
+				}
 
-				JButton chooserButton = new JButton("Select Image File");
+				JButton chooserButton = new JButton("Choose File");
 				chooserButton.setPreferredSize(new Dimension(140, 20));
 				chooserButton.addActionListener(e ->
 				{
