@@ -70,6 +70,8 @@ import net.runelite.http.api.hiscore.HiscoreSkill;
 import net.runelite.http.api.hiscore.SingleHiscoreSkillResult;
 import net.runelite.http.api.hiscore.Skill;
 import net.runelite.http.api.item.ItemPrice;
+import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
+import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
 import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
@@ -98,6 +100,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final ChatClient chatClient = new ChatClient();
+	private final OSBGrandExchangeClient CLIENT = new OSBGrandExchangeClient();
 
 	private boolean logKills;
 	private HiscoreEndpoint hiscoreEndpoint; // hiscore endpoint for current player
@@ -597,19 +600,31 @@ public class ChatCommandsPlugin extends Plugin
 		if (!results.isEmpty())
 		{
 			ItemPrice item = retrieveFromList(results, search);
+			OSBGrandExchangeResult osbresult = new OSBGrandExchangeResult();
+			try
+			{
+				osbresult = CLIENT.lookupItem(item.getId());
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 
 			int itemId = item.getId();
 			int itemPrice = item.getPrice();
 
-			final ChatMessageBuilder builder = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("Price of ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(item.getName())
-				.append(ChatColorType.NORMAL)
-				.append(": GE average ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(StackFormatter.formatNumber(itemPrice));
+			final ChatMessageBuilder builder = new ChatMessageBuilder();
+				builder.append(ChatColorType.NORMAL);
+				builder.append(ChatColorType.HIGHLIGHT);
+				builder.append(item.getName());
+				builder.append(ChatColorType.NORMAL);
+				builder.append(": GE ");
+				builder.append(ChatColorType.HIGHLIGHT);
+				builder.append(StackFormatter.formatNumber(itemPrice));
+				builder.append(ChatColorType.NORMAL);
+				builder.append(": OSB ");
+				builder.append(ChatColorType.HIGHLIGHT);
+				builder.append(StackFormatter.formatNumber(osbresult.getOverall_average()));
 
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			if (itemComposition != null)
