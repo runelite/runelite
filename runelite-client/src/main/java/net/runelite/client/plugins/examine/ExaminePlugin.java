@@ -26,6 +26,7 @@ package net.runelite.client.plugins.examine;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -54,6 +55,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.http.api.examine.ExamineClient;
+import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
+import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
 
 /**
  * Submits examine info to the api
@@ -72,6 +75,7 @@ public class ExaminePlugin extends Plugin
 	private static final Pattern X_PATTERN = Pattern.compile("^\\d+ x ");
 
 	private final Deque<PendingExamine> pending = new ArrayDeque<>();
+	private final OSBGrandExchangeClient CLIENT = new OSBGrandExchangeClient();
 	private final Cache<CacheKey, Boolean> cache = CacheBuilder.newBuilder()
 		.maximumSize(128L)
 		.build();
@@ -342,11 +346,24 @@ public class ExaminePlugin extends Plugin
 
 			if (gePrice > 0)
 			{
+				OSBGrandExchangeResult osbresult = new OSBGrandExchangeResult();
+				try
+				{
+					osbresult = CLIENT.lookupItem(itemComposition.getId());
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
 				message
 					.append(ChatColorType.NORMAL)
-					.append(" GE average ")
+					.append(" GE  ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(StackFormatter.formatNumber(gePrice * quantity));
+					.append(StackFormatter.formatNumber(gePrice * quantity))
+					.append(ChatColorType.NORMAL)
+					.append(" OSB  ")
+					.append(ChatColorType.HIGHLIGHT)
+					.append(StackFormatter.formatNumber(osbresult.getOverall_average() * quantity));
 
 				if (quantity > 1)
 				{
