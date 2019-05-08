@@ -253,14 +253,25 @@ public interface AoeWarningConfig extends Config
 		return true;
 	}
 
-    @ConfigItem(
-            keyName = "drake",
-            name = "Drakes Breath",
-            description = "Configures if Drakes Breath tile markers are displayed"
-    )
-    default boolean isDrakeEnabled() {
-        return true;
-    }
+   	 @ConfigItem(
+            	keyName = "drake",
+            	name = "Drakes Breath",
+            	description = "Configures if Drakes Breath tile markers are displayed"
+    	)
+    	default boolean isDrakeEnabled() 
+	{
+        	return true;
+    	}
+	
+    	@ConfigItem(
+		keyName = "cerbFire",
+		name = "Cerberus Fire",
+		description = "Configures if Cerberus fire tile markers are displayed"
+	)
+	default boolean isCerbFireEnabled()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		keyName = "delay",
