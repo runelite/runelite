@@ -25,12 +25,16 @@
  */
 package net.runelite.client.util;
 
+import com.google.common.base.Strings;
+import java.awt.FontMetrics;
+import java.util.regex.Pattern;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import java.util.Collection;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * A set of utilities to use when dealing with text.
@@ -39,11 +43,157 @@ public class Text
 {
 	private static final Pattern TAG_REGEXP = Pattern.compile("<[^>]*>");
 	private static final Splitter COMMA_SPLITTER = Splitter
-		.on(",")
-		.omitEmptyStrings()
-		.trimResults();
+			.on(",")
+			.omitEmptyStrings()
+			.trimResults();
 
 	private static final Joiner COMMA_JOINER = Joiner.on(",").skipNulls();
+
+	/**
+	 * Gets the width of the given string ignoring tags.
+	 * <p>
+	 * Doesn't 'care' if a tag isn't usable, will ignore anything
+	 * that matches {@link #TAG_REGEXP}
+	 *
+	 * @param text    The string to check
+	 * @param metrics {@link FontMetrics}
+	 * @return Width of given string, in pixels
+	 */
+	public static int getWidth(@Nonnull FontMetrics metrics, @Nullable String text)
+	{
+		return metrics.stringWidth(removeTags(Strings.nullToEmpty(text)));
+	}
+
+	/**
+	 * Get the width of the largest string in the specified array.
+	 * The width is returned based on the value recieved from {@link FontMetrics#stringWidth(String)},
+	 * the largest returned value from the given array is returned.
+	 * <p>
+	 * Doesn't 'care' if a tag isn't usable, will ignore anything
+	 * that matches {@link #TAG_REGEXP}
+	 *
+	 * @param metrics {@link FontMetrics}
+	 * @param lines   Array of strings to check
+	 * @return Maximum width of provided strings, in pixels
+	 */
+	public static int getMaxWidth(@Nonnull FontMetrics metrics, @Nonnull String... lines)
+	{
+		return getMaxWidth(metrics, 0, lines);
+	}
+
+	/**
+	 * Get the width of the largest string in the specified array.
+	 * The width is returned based on the value recieved from {@link FontMetrics#stringWidth(String)},
+	 * the largest returned value from the given array is returned.
+	 *
+	 * @param metrics    {@link FontMetrics}
+	 * @param startIndex The index to start the check
+	 * @param lines      Array of strings to check
+	 * @return Maximum width of provided strings, in pixels
+	 */
+	public static int getMaxWidth(@Nonnull FontMetrics metrics, int startIndex, @Nonnull String... lines)
+	{
+		return startIndex < lines.length ? Math.max(getWidth(metrics, lines[startIndex]), getMaxWidth(metrics, ++startIndex, lines)) : getWidth(metrics, lines[0]);
+	}
+
+	/**
+	 * Create an array of width specific lines using the provided maximum width {@link FontMetrics} object and line separator.
+	 * <p>
+	 * Valid tags will not count towards the maximum width, the formatted string will prefer to wrap on spaces instead of
+	 * splitting the middle of a word. If a word has to be split it will split on the last character before maximum width is
+	 * achieved. {@code #maxWidth}
+	 *
+	 * @param text     Text to format
+	 * @param maxWidth Maximum width in pixels
+	 * @param metrics  {@link FontMetrics}
+	 * @return An array containing width formatted strings
+	 */
+	public static String[] splitToWidth(@Nonnull String text, int maxWidth, @Nonnull FontMetrics metrics)
+	{
+		return formatToWidth(text, maxWidth, metrics, "\n").split("\n");
+	}
+
+	/**
+	 * Format a given string to a specified width using the provided {@link FontMetrics} object and line separator.
+	 * <p>
+	 * This method will return a String which will be separated using a provided line separator and will be within the given
+	 * maximum width for a font represented in the FontMetrics object.
+	 * <p>
+	 * Valid tags will not count towards the maximum width, the formatted string will 'prefer' to wrap on spaces instead of
+	 * splitting the middle of a word. If a word has to be split it will split on the last character before maximum width is
+	 * achieved.
+	 *
+	 * @param text          Text to format
+	 * @param maxWidth      Maximum width in pixels
+	 * @param metrics       {@link FontMetrics}
+	 * @param lineSeparator Line separator
+	 * @return Formatted string
+	 */
+	public static String formatToWidth(@Nonnull String text, int maxWidth, @Nonnull FontMetrics metrics, @Nonnull String lineSeparator)
+	{
+		int maxChars = getMaxWidthIndex(text, maxWidth, metrics);
+
+		if (text.length() <= maxChars)
+		{
+			return text;
+		}
+		else
+		{
+			char charAt = text.charAt(maxChars);
+			boolean newLine = charAt == ' ';
+			String substring = text.substring(maxChars + (newLine ? 1 : 0));
+			return text.substring(0, maxChars) + lineSeparator + formatToWidth(substring, maxWidth, metrics, lineSeparator);
+		}
+	}
+
+	/**
+	 * Get the index of a given string that will comply with the provided maximum width.
+	 * This will prefer to split on a space instead in the middle of a word.
+	 *
+	 * @param text     Text to check
+	 * @param maxWidth Maximum width in pixels
+	 * @param metrics  The font metrics object
+	 * @return Index of maximum achievable width
+	 */
+	private static int getMaxWidthIndex(@Nonnull String text, int maxWidth, @Nonnull FontMetrics metrics)
+	{
+		int length = text.length();
+		int currentStringWidth = 0;
+		int index = 0;
+		int spaceIndex = -1;
+
+		boolean insideTag = false;
+
+		for (; index < length; ++index)
+		{
+			char currentChar = text.charAt(index);
+
+			switch (currentChar)
+			{
+				case '<':
+					insideTag = true;
+					continue;
+				case '>':
+					insideTag = false;
+					continue;
+				case ' ':
+					spaceIndex = index;
+					break;
+			}
+
+			if (!insideTag)
+			{
+				currentStringWidth += metrics.charWidth(currentChar);
+			}
+
+			if (currentStringWidth > maxWidth)
+			{
+				break;
+			}
+		}
+
+		return index != length && spaceIndex != -1 && spaceIndex < index ? spaceIndex : index;
+	}
 
 	/**
 	 * Splits comma separated values to list of strings

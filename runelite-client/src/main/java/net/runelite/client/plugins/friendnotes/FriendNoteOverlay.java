@@ -34,9 +34,13 @@ import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.Text;
 
 class FriendNoteOverlay extends Overlay
 {
+	private static final int MAX_WIDTH = 200;
+	private static final String BR = "</br>";
+
 	private final Client client;
 	private final FriendNotesPlugin plugin;
 	private final TooltipManager tooltipManager;
@@ -62,7 +66,7 @@ class FriendNoteOverlay extends Overlay
 
 		if (hovered != null) // Will always have a friend note if non-null
 		{
-			final String content = hovered.getNote();
+			final String content = Text.formatToWidth(hovered.getNote(), MAX_WIDTH, graphics.getFontMetrics(), BR);
 			tooltipManager.add(new Tooltip(content));
 		}
 
