@@ -26,6 +26,7 @@ package net.runelite.client.plugins.examine;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -356,11 +357,11 @@ public class ExaminePlugin extends Plugin
 				}
 				message
 					.append(ChatColorType.NORMAL)
-					.append(" GE ")
+					.append(" GE  ")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(StackFormatter.formatNumber(gePrice * quantity))
 					.append(ChatColorType.NORMAL)
-					.append(" OSB ")
+					.append(" OSB  ")
 					.append(ChatColorType.HIGHLIGHT)
 					.append(StackFormatter.formatNumber(osbresult.getOverall_average() * quantity));
 
