@@ -358,11 +358,10 @@ public class ExaminePlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" GE ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(StackFormatter.formatNumber(gePrice * quantity));
+					.append(StackFormatter.formatNumber(gePrice * quantity))
 					.append(ChatColorType.NORMAL)
 					.append(" OSB ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(StackFormatter.formatNumber(gePrice * quantity));
 					.append(StackFormatter.formatNumber(osbresult.getOverall_average() * quantity));
 
 				if (quantity > 1)
