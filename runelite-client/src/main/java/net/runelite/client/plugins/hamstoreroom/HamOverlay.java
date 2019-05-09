@@ -36,87 +36,109 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import javax.inject.Inject;
 import java.awt.*;
 
-class HamOverlay extends Overlay {
-    private final Client client;
-    private final HamPlugin hamPlugin;
+class HamOverlay extends Overlay
+{
+	private final Client client;
+	private final HamPlugin hamPlugin;
 
-    @Inject
-    private HamOverlay(Client client, HamPlugin corpPlugin) {
-        setPosition(OverlayPosition.DYNAMIC);
-        setLayer(OverlayLayer.ABOVE_SCENE);
-        this.client = client;
-        this.hamPlugin = corpPlugin;
-    }
+	@Inject
+	private HamOverlay(Client client, HamPlugin corpPlugin)
+	{
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
+		this.client = client;
+		this.hamPlugin = corpPlugin;
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics) {
-        Scene scene = client.getScene();
-        Tile[][][] tiles = scene.getTiles();
-        int z = client.getPlane();
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		Scene scene = client.getScene();
+		Tile[][][] tiles = scene.getTiles();
+		int z = client.getPlane();
 
-        for (int x = 0; x < Constants.SCENE_SIZE; ++x) {
-            for (int y = 0; y < Constants.SCENE_SIZE; ++y) {
-                Tile tile = tiles[z][x][y];
+		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
+		{
+			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
+			{
+				Tile tile = tiles[z][x][y];
 
-                if (tile == null) {
-                    continue;
-                }
-                GameObject[] gameObjects = tile.getGameObjects();
-                if (gameObjects != null) {
-                    for (GameObject gameObject : gameObjects) {
-                        if (gameObject != null) {
-                            switch (gameObject.getId()) {
-                                case 15722:
-                                    if (gameObject.getY() < 6500)
-                                        hamPlugin.steelPolygon = gameObject.getCanvasTilePoly();
-                                    break;
-                                case 15726:
-                                    hamPlugin.ironPolygon = gameObject.getCanvasTilePoly();
-                                    break;
-                                case 15724:
-                                    hamPlugin.silverPolygon = gameObject.getCanvasTilePoly();
-                                    break;
-                                case 15723:
-                                    hamPlugin.bronzePolygon = gameObject.getCanvasTilePoly();
-                                    break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+				if (tile == null)
+				{
+					continue;
+				}
+				GameObject[] gameObjects = tile.getGameObjects();
+				if (gameObjects != null)
+				{
+					for (GameObject gameObject : gameObjects)
+					{
+						if (gameObject != null)
+						{
+							switch (gameObject.getId())
+							{
+								case 15722:
+									if (gameObject.getY() < 6500)
+									{
+										hamPlugin.steelPolygon = gameObject.getCanvasTilePoly();
+									}
+									break;
+								case 15726:
+									hamPlugin.ironPolygon = gameObject.getCanvasTilePoly();
+									break;
+								case 15724:
+									hamPlugin.silverPolygon = gameObject.getCanvasTilePoly();
+									break;
+								case 15723:
+									hamPlugin.bronzePolygon = gameObject.getCanvasTilePoly();
+									break;
+							}
+						}
+					}
+				}
+			}
+		}
 
-        Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
-        hamPlugin.drawSteel = false;
-        hamPlugin.drawIron = false;
-        hamPlugin.drawSilver = false;
-        hamPlugin.drawBronze = false;
-        for (WidgetItem item : inventory.getWidgetItems()) {
-            switch (item.getId()) {
-                case 8866:
-                    hamPlugin.drawSteel = true;
-                    break;
-                case 8869:
-                    hamPlugin.drawIron = true;
-                    break;
-                case 8868:
-                    hamPlugin.drawSilver = true;
-                    break;
-                case 8867:
-                    hamPlugin.drawBronze = true;
-                    break;
-            }
-        }
-        if (hamPlugin.steelPolygon != null)
-            OverlayUtil.renderPolygon(graphics, hamPlugin.steelPolygon, hamPlugin.drawSteel ? Color.GREEN.brighter() : Color.RED.brighter());
-        if (hamPlugin.ironPolygon != null)
-            OverlayUtil.renderPolygon(graphics, hamPlugin.ironPolygon, hamPlugin.drawIron ? Color.GREEN.brighter() : Color.RED.brighter());
-        if (hamPlugin.silverPolygon != null)
-            OverlayUtil.renderPolygon(graphics, hamPlugin.silverPolygon, hamPlugin.drawSilver ? Color.GREEN.brighter() : Color.RED.brighter());
-        if (hamPlugin.bronzePolygon != null)
-            OverlayUtil.renderPolygon(graphics, hamPlugin.bronzePolygon, hamPlugin.drawBronze ? Color.GREEN.brighter() : Color.RED.brighter());
-        return null;
-    }
+		Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
+		hamPlugin.drawSteel = false;
+		hamPlugin.drawIron = false;
+		hamPlugin.drawSilver = false;
+		hamPlugin.drawBronze = false;
+		for (WidgetItem item : inventory.getWidgetItems())
+		{
+			switch (item.getId())
+			{
+				case 8866:
+					hamPlugin.drawSteel = true;
+					break;
+				case 8869:
+					hamPlugin.drawIron = true;
+					break;
+				case 8868:
+					hamPlugin.drawSilver = true;
+					break;
+				case 8867:
+					hamPlugin.drawBronze = true;
+					break;
+			}
+		}
+		if (hamPlugin.steelPolygon != null)
+		{
+			OverlayUtil.renderPolygon(graphics, hamPlugin.steelPolygon, hamPlugin.drawSteel ? Color.GREEN.brighter() : Color.RED.brighter());
+		}
+		if (hamPlugin.ironPolygon != null)
+		{
+			OverlayUtil.renderPolygon(graphics, hamPlugin.ironPolygon, hamPlugin.drawIron ? Color.GREEN.brighter() : Color.RED.brighter());
+		}
+		if (hamPlugin.silverPolygon != null)
+		{
+			OverlayUtil.renderPolygon(graphics, hamPlugin.silverPolygon, hamPlugin.drawSilver ? Color.GREEN.brighter() : Color.RED.brighter());
+		}
+		if (hamPlugin.bronzePolygon != null)
+		{
+			OverlayUtil.renderPolygon(graphics, hamPlugin.bronzePolygon, hamPlugin.drawBronze ? Color.GREEN.brighter() : Color.RED.brighter());
+		}
+		return null;
+	}
 
 
 }
