@@ -107,4 +107,15 @@ public interface ChatCommandsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 7,
+			keyName = "math",
+			name = "Math Commands",
+			description = "Enable !Math (equation) in chat"
+	)
+	default boolean enableMath()
+	{
+		return true;
+	}
 }

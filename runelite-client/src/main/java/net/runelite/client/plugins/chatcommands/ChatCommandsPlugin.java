@@ -32,6 +32,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -95,6 +98,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String CMB_COMMAND_STRING = "!cmb";
 	private static final String QP_COMMAND_STRING = "!qp";
 	private static final String PB_COMMAND = "!pb";
+	private static final String MATH_COMMAND = "!math";
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final ChatClient chatClient = new ChatClient();
@@ -143,6 +147,8 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(KILLCOUNT_COMMAND_STRING, this::killCountLookup, this::killCountSubmit);
 		chatCommandManager.registerCommandAsync(QP_COMMAND_STRING, this::questPointsLookup, this::questPointsSubmit);
 		chatCommandManager.registerCommandAsync(PB_COMMAND, this::personalBestLookup, this::personalBestSubmit);
+		chatCommandManager.registerCommandAsync(MATH_COMMAND, this::doMath);
+
 	}
 
 	@Override
@@ -160,6 +166,8 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(KILLCOUNT_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(QP_COMMAND_STRING);
 		chatCommandManager.unregisterCommand(PB_COMMAND);
+		chatCommandManager.unregisterCommand(MATH_COMMAND);
+
 	}
 
 	@Provides
@@ -568,6 +576,35 @@ public class ChatCommandsPlugin extends Plugin
 		});
 
 		return true;
+	}
+
+	/**
+	 * Converts a in chat message to a numeric value
+	 *
+	 * @param chatMessage The chat message containing the command.
+	 * @param message The chat message
+	 */
+	private void doMath(ChatMessage chatMessage, String message)
+	{
+		if(!config.enableMath())
+		{
+			return;
+		}
+
+		if (message.length() <= MATH_COMMAND.length())
+		{
+			return;
+		}
+
+		MessageNode messageNode = chatMessage.getMessageNode();
+		String equation = message.substring(MATH_COMMAND.length() + 1);
+
+		final ChatMessageBuilder builder = new ChatMessageBuilder().append(equation).append("=").append(String.valueOf(eval(equation)));
+
+		String response = builder.build();
+		messageNode.setRuneLiteFormatMessage(response);
+		chatMessageManager.update(messageNode);
+		client.refreshChat();
 	}
 
 	/**
@@ -1141,5 +1178,90 @@ public class ChatCommandsPlugin extends Plugin
 			default:
 				return WordUtils.capitalize(boss);
 		}
+	}
+
+	/**
+	 * Evaluates an equation String to a double. See: https://stackoverflow.com/questions/3422673/how-to-evaluate-a-math-expression-given-in-string-form
+	 * @param str Input equation as String
+	 * @return output double value
+	 */
+	public static double eval(final String str) {
+		return new Object() {
+			int pos = -1, ch;
+
+			void nextChar() {
+				ch = (++pos < str.length()) ? str.charAt(pos) : -1;
+			}
+
+			boolean eat(int charToEat) {
+				while (ch == ' ') nextChar();
+				if (ch == charToEat) {
+					nextChar();
+					return true;
+				}
+				return false;
+			}
+
+			double parse() {
+				nextChar();
+				double x = parseExpression();
+				if (pos < str.length()) throw new RuntimeException("Unexpected: " + (char)ch);
+				return x;
+			}
+
+			// Grammar:
+			// expression = term | expression `+` term | expression `-` term
+			// term = factor | term `*` factor | term `/` factor
+			// factor = `+` factor | `-` factor | `(` expression `)`
+			//        | number | functionName factor | factor `^` factor
+
+			double parseExpression() {
+				double x = parseTerm();
+				for (;;) {
+					if      (eat('+')) x += parseTerm(); // addition
+					else if (eat('-')) x -= parseTerm(); // subtraction
+					else return x;
+				}
+			}
+
+			double parseTerm() {
+				double x = parseFactor();
+				for (;;) {
+					if      (eat('*')) x *= parseFactor(); // multiplication
+					else if (eat('/')) x /= parseFactor(); // division
+					else return x;
+				}
+			}
+
+			double parseFactor() {
+				if (eat('+')) return parseFactor(); // unary plus
+				if (eat('-')) return -parseFactor(); // unary minus
+
+				double x;
+				int startPos = this.pos;
+				if (eat('(')) { // parentheses
+					x = parseExpression();
+					eat(')');
+				} else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
+					while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
+					x = Double.parseDouble(str.substring(startPos, this.pos));
+				} else if (ch >= 'a' && ch <= 'z') { // functions
+					while (ch >= 'a' && ch <= 'z') nextChar();
+					String func = str.substring(startPos, this.pos);
+					x = parseFactor();
+					if (func.equals("sqrt")) x = Math.sqrt(x);
+					else if (func.equals("sin")) x = Math.sin(Math.toRadians(x));
+					else if (func.equals("cos")) x = Math.cos(Math.toRadians(x));
+					else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
+					else throw new RuntimeException("Unknown function: " + func);
+				} else {
+					throw new RuntimeException("Unexpected: " + (char)ch);
+				}
+
+				if (eat('^')) x = Math.pow(x, parseFactor()); // exponentiation
+
+				return x;
+			}
+		}.parse();
 	}
 }
