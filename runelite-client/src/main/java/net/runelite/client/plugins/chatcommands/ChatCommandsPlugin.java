@@ -1351,7 +1351,7 @@ public class ChatCommandsPlugin extends Plugin
 			for ( int i = 0; i < input.length(); i ++)
 			{
 				newString.append(input.charAt(i));
-				if (input.charAt(i) == ')' && (i + 1 <= input.length())
+				if (input.charAt(i) == ')' && (i + 1 <= input.length()))
 				{
 					if (input.charAt(i + 1) == ('+') || input.charAt(i + 1) == ('-') || input.charAt(i + 1) == ('/') || input.charAt(i + 1) == ('*') || input.charAt(i + 1) == ('^'))
 					{
@@ -1376,7 +1376,9 @@ public class ChatCommandsPlugin extends Plugin
 							{
 								newString.append("*");
 							}
-						} else {
+						}
+						else
+						{
 							newString.append("*");
 						}
 					}
