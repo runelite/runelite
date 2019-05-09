@@ -1341,7 +1341,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	/**
 	 * Returns a corrected equation to include * when needed. IE: (123)(123) = (123)*(123)
-	 * @param input inputs
+	 * @param input input equation String. Checks to see if it contains a closing bracket ')'
 	 * @return returns corrected String or the original input value if there is never a closing bracket.
 	 */
 	private static String addMultiplyWhenRequired(String input) {
@@ -1351,7 +1351,7 @@ public class ChatCommandsPlugin extends Plugin
 			for ( int i = 0; i < input.length(); i ++)
 			{
 				newString.append(input.charAt(i));
-				if (input.charAt(i) == ')' && (i + 1 <= input.length()))
+				if (input.charAt(i) == ')' && (i + 1 < input.length()))
 				{
 					if (input.charAt(i + 1) == ('+') || input.charAt(i + 1) == ('-') || input.charAt(i + 1) == ('/') || input.charAt(i + 1) == ('*') || input.charAt(i + 1) == ('^'))
 					{
