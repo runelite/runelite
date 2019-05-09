@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Joris K <kjorisje@gmail.com>
- * Copyright (c) 2018, Lasse <cronick@zytex.dk>
+ * Copyright (c) 2019, Brandon White <bmwqg@live.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,34 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cooking;
+package net.runelite.client.plugins.blastfurnace;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.time.temporal.ChronoUnit;
+import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.infobox.Timer;
 
-@ConfigGroup("cooking")
-public interface CookingConfig extends Config
+class ForemanTimer extends Timer
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until the session resets and the overlay is hidden (0 = Disable feature)"
-	)
-	default int statTimeout()
-	{
-		return 5;
-	}
+	private static final String TOOLTIP_TEXT = "Foreman Fee";
 
-	@ConfigItem(
-		position = 2,
-		keyName = "fermentTimer",
-		name = "Show wine fermenting timer",
-		description = "Conifgures if the timer before wines are fermented is shown."
-	)
-	default boolean fermentTimer()
+	ForemanTimer(BlastFurnacePlugin plugin, ItemManager itemManager)
 	{
-		return true;
+		super(10, ChronoUnit.MINUTES, itemManager.getImage(ItemID.COAL_BAG), plugin);
+
+		setTooltip(TOOLTIP_TEXT);
 	}
 }

@@ -192,6 +192,7 @@ public final class AnimationID
 	public static final int MAGIC_LUNAR_SHARED = 4413; // Utilized by Fertile Soil, Boost/Stat Potion Share, NPC Contact, Bake Pie
 	public static final int MAGIC_LUNAR_CURE_PLANT = 4432;
 	public static final int MAGIC_LUNAR_GEOMANCY = 7118;
+	public static final int MAGIC_LUNAR_PLANK_MAKE = 6298;
 	public static final int MAGIC_LUNAR_STRING_JEWELRY = 4412;
 
 	// Arceuus spellbook

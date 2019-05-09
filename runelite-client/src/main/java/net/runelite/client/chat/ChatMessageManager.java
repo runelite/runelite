@@ -27,12 +27,14 @@ package net.runelite.client.chat;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.inject.Inject;
@@ -41,6 +43,7 @@ import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
+import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
@@ -56,6 +59,8 @@ import net.runelite.client.util.ColorUtil;
 @Singleton
 public class ChatMessageManager
 {
+	private static final Set<Integer> TUTORIAL_ISLAND_REGIONS = ImmutableSet.of(12336, 12335, 12592, 12080, 12079, 12436);
+
 	private final Multimap<ChatMessageType, ChatColor> colorCache = HashMultimap.create();
 	private final Client client;
 	private final ChatColorConfig chatColorConfig;
@@ -550,6 +555,13 @@ public class ChatMessageManager
 
 	private void add(QueuedMessage message)
 	{
+		// Do not send message if the player is on tutorial island
+		final Player player = client.getLocalPlayer();
+		if (player != null && TUTORIAL_ISLAND_REGIONS.contains(player.getWorldLocation().getRegionID()))
+		{
+			return;
+		}
+
 		// this updates chat cycle
 		client.addChatMessage(
 			message.getType(),

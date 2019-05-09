@@ -33,6 +33,9 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -66,6 +69,10 @@ public class CookingPluginTest
 
 	@Mock
 	@Bind
+	FermentTimerOverlay fermentTimerOverlay;
+
+	@Mock
+	@Bind
 	OverlayManager overlayManager;
 
 	@Before
@@ -83,8 +90,30 @@ public class CookingPluginTest
 			cookingPlugin.onChatMessage(chatMessage);
 		}
 
-		CookingSession cookingSession = cookingPlugin.getSession();
+		CookingSession cookingSession = cookingPlugin.getCookingSession();
 		assertNotNull(cookingSession);
 		assertEquals(COOKING_MESSAGES.length, cookingSession.getCookAmount());
+	}
+
+	@Test
+	public void testFermentTimerOnChatMessage()
+	{
+		when(config.fermentTimer()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", COOKING_MESSAGES[6], "", 0);
+		cookingPlugin.onChatMessage(chatMessage);
+		FermentTimerSession fermentTimerSession = cookingPlugin.getFermentTimerSession();
+
+		assertNotNull(fermentTimerSession);
+	}
+
+	@Test
+	public void testFermentTimerOnChatMessage_pluginDisabled()
+	{
+		when(config.fermentTimer()).thenReturn(false);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", COOKING_MESSAGES[6], "", 0);
+		cookingPlugin.onChatMessage(chatMessage);
+		FermentTimerSession fermentTimerSession = cookingPlugin.getFermentTimerSession();
+
+		assertNull(fermentTimerSession);
 	}
 }
