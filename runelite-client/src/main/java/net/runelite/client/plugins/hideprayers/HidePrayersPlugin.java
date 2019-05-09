@@ -204,14 +204,20 @@ public class HidePrayersPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// range
 					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// melee
 					prayerWidgets.get(Prayer.values()[23].ordinal()).setHidden(false);// smite
-					if (config.showEagleMystic()) 
+					if (config.showEagle()) 
 					{
 					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(true);// rigour
-					prayerWidgets.get(Prayer.values()[28].ordinal()).setHidden(true);// augury
 					} 
 					else 
 					{
 						prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// rigour
+					}
+					if (config.showMystic()) 
+					{
+					prayerWidgets.get(Prayer.values()[28].ordinal()).setHidden(true);// augury
+					} 
+					else 
+					{
 						prayerWidgets.get(Prayer.values()[28].ordinal()).setHidden(false);// augury
 					}
 					if (config.showUltStrength()) 
@@ -255,12 +261,16 @@ public class HidePrayersPlugin extends Plugin
 						prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(false);// Rapid Heal
 					}
 				}
-				if (config.showEagleMystic()) 
+				if (config.showEagle()) 
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);// eagle
-					prayerWidgets.get(Prayer.values()[20].ordinal()).setHidden(false);// mystic
 					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(true);// rigour
+				}
+				if (config.showMystic()) 
+				{
+					prayerWidget.setHidden(true);
+					prayerWidgets.get(Prayer.values()[20].ordinal()).setHidden(false);// mystic
 					prayerWidgets.get(Prayer.values()[28].ordinal()).setHidden(true);// augury
 				}
 				if (config.showUltStrength()) 
