@@ -24,7 +24,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package net.runelite.client.plugins.barbarianassault;
-
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -84,26 +83,8 @@ public class BarbarianAssaultPlugin extends Plugin
 	private int totalHpHealed = 0;
 
 	private boolean hasAnnounced;
-
-	private int[] amountsList;
-	private int[] pointsList;
-	private List<Integer> pointsGainedOrLost = new ArrayList<>();
-
-	private String[] descriptions = {"Runners: ",
-			"Hitpoints: ",
-			"Wrong heal packs: ",
-			"Eggs: ",
-			"Failed attacks: ",
-			"Honour Points: "};
-
-	private String[] totalDescriptions = {"Total Runners: ",
-            "; Total Hp Replenished: ",
-            "; Total Wrong Heal Packs: ",
-            "; Total Eggs: ",
-            "; Total Failed attacks: ",
-            "; Total Honour Points: "};
-	private Font font;
-	private Image clockImage;
+    private Font font;
+	private final Image clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
 	private int inGameBit = 0;
 	private String currentWave = START_WAVE;
 	private GameTimer gameTime;
@@ -121,6 +102,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	private HashMap<WorldPoint, Integer> yellowEggs;
 
 	@Inject
+	@Getter
 	private Client client;
 
 	@Inject
@@ -135,43 +117,52 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Inject
 	private BarbarianAssaultOverlay overlay;
 
-	@Provides
+	private final ImmutableList<WidgetInfo> WIDGETS = ImmutableList.of(
+			WidgetInfo.BA_FAILED_ATTACKER_ATTACKS,
+			WidgetInfo.BA_RUNNERS_PASSED,
+			WidgetInfo.BA_EGGS_COLLECTED,
+			WidgetInfo.BA_HITPOINTS_REPLENISHED,
+			WidgetInfo.BA_WRONG_POISON_PACKS,
+			WidgetInfo.BA_HONOUR_POINTS_REWARD
+	);
+	private final ImmutableList<WidgetInfo> POINTSWIDGETS = ImmutableList.of(
+			//base
+			WidgetInfo.BA_BASE_POINTS,
+			//att
+			WidgetInfo.BA_FAILED_ATTACKER_ATTACKS_POINTS,
+			WidgetInfo.BA_RANGERS_KILLED,
+			WidgetInfo.BA_FIGHTERS_KILLED,
+			//def
+			WidgetInfo.BA_RUNNERS_PASSED_POINTS,
+			WidgetInfo.BA_RUNNERS_KILLED,
+			//coll
+			WidgetInfo.BA_EGGS_COLLECTED_POINTS,
+			//heal
+			WidgetInfo.BA_HEALERS_KILLED,
+			WidgetInfo.BA_HITPOINTS_REPLENISHED_POINTS,
+			WidgetInfo.BA_WRONG_POISON_PACKS_POINTS
+	);
+
+    @Provides
 	BarbarianAssaultConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(BarbarianAssaultConfig.class);
 	}
-	private static final ImmutableList<WidgetInfo> WIDGETS = ImmutableList.of(
-			WidgetInfo.BA_RUNNERS_PASSED,
-			WidgetInfo.BA_HITPOINTS_REPLENISHED,
-			WidgetInfo.BA_WRONG_POISON_PACKS,
-			WidgetInfo.BA_EGGS_COLLECTED,
-			WidgetInfo.BA_FAILED_ATTACKER_ATTACKS,
-			WidgetInfo.BA_HONOUR_POINTS_REWARD
-	);
-	private static final ImmutableList<WidgetInfo> POINTSWIDGETS = ImmutableList.of(
-			WidgetInfo.BA_RUNNERS_PASSED_POINTS,
-			WidgetInfo.BA_HITPOINTS_REPLENISHED_POINTS,
-			WidgetInfo.BA_WRONG_POISON_PACKS_POINTS,
-			WidgetInfo.BA_EGGS_COLLECTED_POINTS,
-			WidgetInfo.BA_FAILED_ATTACKER_ATTACKS_POINTS,
-			WidgetInfo.BA_HONOUR_POINTS_REWARD
-	);
+
+	private Game game;
+    private Wave wave;
+
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
 		font = FontManager.getRunescapeFont()
 				.deriveFont(Font.BOLD, 24);
-
-		clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
-
 		redEggs = new HashMap<>();
 		greenEggs = new HashMap<>();
 		blueEggs = new HashMap<>();
 		yellowEggs = new HashMap<>();
-		amountsList = new int[6];
-		pointsList = new int[7];
-	}
+    }
 
 	@Override
 	protected void shutDown() throws Exception
@@ -191,6 +182,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		if (event.getGroupId() == WidgetID.BA_REWARD_GROUP_ID)
 		{
+			wave = new Wave(client);
 			Widget rewardWidget = client.getWidget(WidgetInfo.BA_REWARD_TEXT);
 			if (rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
 			{
@@ -198,24 +190,17 @@ public class BarbarianAssaultPlugin extends Plugin
 					announceTime("Game finished, duration: ", gameTime.getTime(false));
 				if (config.showTotalRewards())
 				{
-					String operator = "";
-					if (pointsList[6] > 0)
-						operator = "+";
-					if (pointsList[6] == 0)
-						operator = "\u00B1";
-					for (int i = 0; i < amountsList.length-1; i++)
-					{
-					    announceSomething(totalDescriptions[i] + amountsList[i] + "(" + pointsList[i] + ")");
-                    }
-					announceSomething("; Total Honour Points: " + (80 + amountsList[5]) + "(" + operator + pointsList[6] + ")");
+					announceSomething(game.getGameSummary());
 				}
 			}
 			Widget pointsWidget = client.getWidget(WidgetInfo.BA_RUNNERS_PASSED);
 			if (!rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && pointsWidget != null
 					&& config.showSummaryOfPoints() && !hasAnnounced && client.getVar(Varbits.IN_GAME_BA) == 0)
 			{
-				announceSomething("Wave Points Summary: " + giveSummaryOfPoints());
-				hasAnnounced = true;
+				wave.setWaveAmounts();
+				wave.setWavePoints();
+				game.getWaves().add(wave);
+				announceSomething(wave.getWaveSummary());
 			}
 		}
 	}
@@ -223,6 +208,27 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
+		if (chatMessage.getMessage().toLowerCase().contains("testing"))
+		{
+			ArrayList<Wave> waves = new ArrayList<>();
+			for (int i = 0; i < 1; i++)
+			{
+				Wave wave1 = new Wave(client);
+				int[] amounts = {4, 0, 30, 10, 1, 38};
+				int[] points = {-3, -2, 6, -4, -8, -11};
+				int[] otherPoints = {38, 35, 33, 30};
+				wave1.setWaveAmounts(amounts);
+				wave1.setWavePoints(points, otherPoints);
+				waves.add(wave1);
+				announceSomething(wave1.getWaveSummary());
+			}
+			Game game1 = new Game(client, waves);
+			announceSomething(game1.getGameSummary());
+		}
+		if (chatMessage.getMessage().toLowerCase().startsWith("wave points"))
+		{
+			hasAnnounced = true;
+		}
 		if (!chatMessage.getType().equals(ChatMessageType.GAMEMESSAGE))
 		{
 			return;
@@ -247,9 +253,7 @@ public class BarbarianAssaultPlugin extends Plugin
 				gameTime = new GameTimer();
 				totalHpHealed = 0;
 				totalCollectedEggCount = 0;
-				amountsList = new int[]{0,0,0,0,0,0};
-				pointsList = new int[]{0,0,0,0,0,0,0};
-				pointsGainedOrLost = new ArrayList<>();
+				game = new Game(client);
 			}
 			else if (gameTime != null)
 			{
@@ -429,49 +433,12 @@ public class BarbarianAssaultPlugin extends Plugin
 		}
 	}
 
-	private void announceSomething(String something)
+	private void announceSomething(final ChatMessageBuilder chatMessage)
 	{
-		final String chatMessage = new ChatMessageBuilder()
-				.append(something)
-				.build();
 		chatMessageManager.queue(QueuedMessage.builder()
 				.type(ChatMessageType.CONSOLE)
-				.runeLiteFormattedMessage(chatMessage)
+				.runeLiteFormattedMessage(chatMessage.build())
 				.build());
-	}
-
-	private String giveSummaryOfPoints()
-	{
-		StringBuilder message = new StringBuilder();
-		pointsList[5] = 0;
-		for (int i = 0; i < WIDGETS.size(); i++)
-		{
-			Widget w = client.getWidget(WIDGETS.get(i));
-			Widget w2 = client.getWidget(POINTSWIDGETS.get(i));
-			message.append(descriptions[i]);
-			if (w != null && !w.getText().equals("")) {
-					amountsList[i] += Integer.parseInt(w.getText());
-					message.append(Integer.parseInt(w.getText()));
-			} else {
-					log.info("widget1 null");
-			}
-			if (i != 5) {
-				if (w2 != null && !w2.getText().equals("")) {
-					pointsList[i] += Integer.parseInt(w2.getText());
-					pointsList[5] += Integer.parseInt(w2.getText());
-					message.append("(" + Integer.parseInt(w2.getText()) + ")");
-					message.append("; ");
-				} else {
-					log.info("widget2 null");
-				}
-			}
-			else
-			{
-				pointsList[6] += pointsList[5];
-				message.append("(" + pointsList[5] + ")");
-			}
-		}
-		return message.toString();
 	}
 
 	String getCollectorHeardCall()

@@ -563,22 +563,15 @@ public class WidgetID
 			static final int EGGS_COLLECTED = 21;
 			static final int FAILED_ATTACKER_ATTACKS = 22;
 			static final int RUNNERS_PASSED_POINTS = 24;
+			static final int RANGERS_KILLED = 25;
+			static final int FIGHTERS_KILLED = 26;
+			static final int HEALERS_KILLED = 27;
+			static final int RUNNERS_KILLED = 28;
 			static final int HITPOINTS_REPLENISHED_POINTS = 29;
 			static final int WRONG_POISON_PACKS_USED_POINTS = 30;
 			static final int EGGS_COLLECTED_POINTS = 31;
 			static final int FAILED_ATTACKER_ATTACKS_POINTS = 32;
-			static class INDIVIDUAL_REWARD_VALUES
-			{
-				static final int RUNNERS_GOT_PASSED = 38;
-				static final int HEALERS_KILLED = 39;
-				static final int RUNNERS_KILLED = 40;
-				static final int FIGHTERS_KILLED = 41;
-				static final int RANGERS_KILLED = 42;
-				static final int HITPOINTS = 43;
-				static final int EGGS = 44;
-				static final int WRONG_POISON = 45;
-				static final int FAILED_ATTACKS = 46;
-			}
+			static final int BASE_POINTS = 33;
 			static final int HONOUR_POINTS_REWARD = 49;
 		}
 		static final int GAME_WIDGET = 3;
