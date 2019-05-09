@@ -1344,7 +1344,8 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param input input equation String. Checks to see if it contains a closing bracket ')'
 	 * @return returns corrected String or the original input value if there is never a closing bracket.
 	 */
-	private static String addMultiplyWhenRequired(String input) {
+	private static String addMultiplyWhenRequired(String input)
+	{
 		StringBuilder newString = new StringBuilder();
 		if (input.contains(")"))
 		{
