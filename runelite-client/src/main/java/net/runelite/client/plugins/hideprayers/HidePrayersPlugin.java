@@ -193,7 +193,19 @@ public class HidePrayersPlugin extends Plugin
 				Prayer prayer = Prayer.values()[index];
 				Widget prayerWidget = prayerWidgets.get(prayer.ordinal());
 				
-				if (!config.showPrayers() && !config.showEagleMystic())
+				if (!config.showPrayers() && !config.showEagle())
+					prayerWidget.setHidden(false);
+				if (!config.showPrayers() && !config.showMystic())
+					prayerWidget.setHidden(false);
+				if (!config.showPrayers() && !config.showUltStrength())
+					prayerWidget.setHidden(false);
+				if (!config.showPrayers() && !config.showPreserve())
+					prayerWidget.setHidden(false);
+				if (!config.showPrayers() && !config.showRapidHeal())
+					prayerWidget.setHidden(false);
+				if (!config.showPrayers() && !config.showRapidRestore())
+					prayerWidget.setHidden(false);
+				if (!config.showPrayers() && !config.showRedemption())
 					prayerWidget.setHidden(false);
 				
 				if (config.showPrayers()) 
