@@ -400,6 +400,7 @@ public class FishingPlugin extends Plugin
 		{
 			timeLeft = 0;
 		}
+
 		int minutes = (int) timeLeft / 60;
 		int seconds = (int) timeLeft % 60;
 
