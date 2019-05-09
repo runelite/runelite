@@ -25,9 +25,11 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -97,6 +99,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String QP_COMMAND_STRING = "!qp";
 	private static final String PB_COMMAND = "!pb";
 	private static final String MATH_COMMAND = "!math";
+	private static final Set<String> SINTANCOS = ImmutableSet.of("sin", "tan", "cos");
 
 	private final HiscoreClient hiscoreClient = new HiscoreClient();
 	private final ChatClient chatClient = new ChatClient();
@@ -1183,15 +1186,21 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param str Input equation as String
 	 * @return output double value
 	 */
-	public static double eval(final String str)
+	public static double eval(String str)
 	{
+		if (str.contains(")"))
+		{
+			str = addMultiplyWhenRequired(str);
+		}
+
+		final String finalStr = str;
 		return new Object()
 		{
 			int pos = -1, ch;
 
 			void nextChar()
 			{
-				ch = (++pos < str.length()) ? str.charAt(pos) : -1;
+				ch = (++pos < finalStr.length()) ? finalStr.charAt(pos) : -1;
 			}
 
 			boolean eat(int charToEat)
@@ -1209,7 +1218,7 @@ public class ChatCommandsPlugin extends Plugin
 			{
 				nextChar();
 				double x = parseExpression();
-				if (pos < str.length())
+				if (pos < finalStr.length())
 				{
 					return -1.0;
 				}
@@ -1287,12 +1296,12 @@ public class ChatCommandsPlugin extends Plugin
 					{
 						nextChar();
 					}
-					x = Double.parseDouble(str.substring(startPos, this.pos));
+					x = Double.parseDouble(finalStr.substring(startPos, this.pos));
 				}
 				else if (ch >= 'a' && ch <= 'z') // functions
 				{
 					while (ch >= 'a' && ch <= 'z') nextChar();
-					String func = str.substring(startPos, this.pos);
+					String func = finalStr.substring(startPos, this.pos);
 					x = parseFactor();
 					if (func.equals("sqrt"))
 					{
@@ -1328,5 +1337,53 @@ public class ChatCommandsPlugin extends Plugin
 				return x;
 			}
 		}.parse();
+	}
+
+	/**
+	 * Returns a corrected equation to include * when needed. IE: (123)(123) = (123)*(123)
+	 * @param input inputs
+	 * @return returns corrected String or the original input value if there is never a closing bracket.
+	 */
+	private static String addMultiplyWhenRequired(String input) {
+		StringBuilder newString = new StringBuilder();
+		if (input.contains(")"))
+		{
+			for ( int i = 0; i < input.length(); i ++)
+			{
+				newString.append(input.charAt(i));
+				if (input.charAt(i) == ')' && (i + 1 <= input.length())
+				{
+					if (input.charAt(i + 1) == ('+') || input.charAt(i + 1) == ('-') || input.charAt(i + 1) == ('/') || input.charAt(i + 1) == ('*') || input.charAt(i + 1) == ('^'))
+					{
+						// no need to insert multiply
+					}
+					else if (input.charAt(i + 1) == '(')
+					{
+						newString.append("*");
+					}
+					else
+					{
+						if (i + 5 <= input.length())
+						{
+							if (input.substring(i + 1, i + 5).equals("sqrt") || SINTANCOS.contains(input.substring(i + 1, i + 4)))
+							{
+								newString.append("*");
+							}
+						}
+						else if (i + 4 <= input.length())
+						{
+							if (SINTANCOS.contains(input.substring(i + 1, i + 4)))
+							{
+								newString.append("*");
+							}
+						} else {
+							newString.append("*");
+						}
+					}
+				}
+			}
+			return newString.toString();
+		}
+		return input;
 	}
 }
