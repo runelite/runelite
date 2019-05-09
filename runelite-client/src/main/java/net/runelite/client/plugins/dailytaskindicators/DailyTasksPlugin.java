@@ -66,7 +66,6 @@ public class DailyTasksPlugin extends Plugin
 	private static final String BONEMEAL_MESSAGE = "You have bonemeal and slime waiting to be collected from Robin.";
 	private static final int BONEMEAL_PER_DIARY = 13;
 	private static final String DYNAMITE_MESSAGE = "You have dynamite waiting to be collected from Thirus.";
-	private static final String RELOG_MESSAGE = " (May require a relog)";
 
 	@Inject
 	private Client client;
@@ -197,8 +196,8 @@ public class DailyTasksPlugin extends Plugin
 	private void checkRunes(boolean dailyReset)
 	{
 		if (client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1
-			&& (client.getVar(Varbits.DAILY_RUNES_COLLECTED) == 0)
-			|| dailyReset)
+			&& (client.getVar(Varbits.DAILY_RUNES_COLLECTED) == 0
+			|| dailyReset))
 		{
 			sendChatMessage(RUNES_MESSAGE);
 		}
