@@ -5,5 +5,5 @@ public enum TimerType
 	FREEZE,
 	VENG,
 	TELEBLOCK,
-	THIS_SHIT_BROKE;
+	THIS_SHIT_BROKE
 }

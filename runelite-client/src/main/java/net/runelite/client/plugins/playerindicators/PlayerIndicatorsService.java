@@ -30,96 +30,88 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.Varbits;
-
-
-import static net.runelite.client.plugins.playerindicators.PlayerIndicatorsPlugin.calculateWildernessLevel;
+import net.runelite.client.util.PvPUtil;
 
 @Singleton
-public class PlayerIndicatorsService {
+public class PlayerIndicatorsService
+{
 	private final Client client;
 	private final PlayerIndicatorsConfig config;
+	private final PlayerIndicatorsPlugin playerIndicatorsPlugin;
 
 	@Inject
-	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config) {
+	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config, PlayerIndicatorsPlugin plugin)
+	{
 		this.config = config;
 		this.client = client;
+		this.playerIndicatorsPlugin = plugin;
 	}
 
-	public void forEachPlayer(final BiConsumer<Player, Color> consumer) {
-
-		if (config.showInWildernessOnly() && client.getVar(Varbits.IN_THE_WILDERNESS) != 1)
-		{
-			return;
-		}
-
+	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
+	{
 		if (!config.highlightOwnPlayer() && !config.drawClanMemberNames()
-				&& !config.highlightFriends() && !config.highlightNonClanMembers()
-				&& !config.highlightAttackablePlayers() && !config.highlightAttackerPlayers()) {
+			&& !config.highlightFriends() && !config.highlightNonClanMembers() && !config.highlightTargets()
+		&& !config.highlightPile() && !config.highlightCallers() && !config.highlightTeamMembers())
+		{
 			return;
 		}
 
 		final Player localPlayer = client.getLocalPlayer();
 
-		for (Player player : client.getPlayers()) {
-			if (player == null || player.getName() == null) {
+		for (Player player : client.getPlayers())
+		{
+			if (player == null || player.getName() == null)
+			{
 				continue;
 			}
 
 			boolean isClanMember = player.isClanMember();
 
-			if (player == localPlayer) {
-				if (config.highlightOwnPlayer()) {
+			if (player == localPlayer)
+			{
+				if (config.highlightOwnPlayer())
+				{
 					consumer.accept(player, config.getOwnPlayerColor());
 				}
-			} else if (config.highlightFriends() && (player.isFriend() || client.isFriended(player.getName(), false))) {
+			}
+			else if (config.highlightFriends() && client.isFriended(player.getName(), false))
+			{
 				consumer.accept(player, config.getFriendColor());
-			} else if (config.drawClanMemberNames() && isClanMember) {
+			}
+			else if (config.drawClanMemberNames() && isClanMember)
+			{
 				consumer.accept(player, config.getClanMemberColor());
-			} else if (config.highlightTeamMembers() && localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam()) {
+			}
+			else if (config.highlightTeamMembers() && localPlayer.getTeam() > 0 &&
+				localPlayer.getTeam() == player.getTeam())
+			{
 				consumer.accept(player, config.getTeamMemberColor());
-			} else if (config.highlightNonClanMembers() && !isClanMember) {
+			}
+			else if (config.highlightNonClanMembers() && !isClanMember)
+			{
 				consumer.accept(player, config.getNonClanMemberColor());
-            } else if (config.highlightAttackerPlayers() && player.getInteracting() == localPlayer) {
-                consumer.accept(player, config.getAttackerPlayerColor());
-			} else if (config.highlightAttackablePlayers() && isWithinLevelRange(player.getCombatLevel())) {
-                consumer.accept(player, config.getAttackablePlayerColor());
-            }
-		}
-	}
-
-	public boolean isWithinLevelRange(int playerCombatLevel)
-	{
-		Widget levelRangeWidget = client.getWidget(WidgetInfo.PVP_ATTACK_RANGE);
-		Widget wildernessLevelWidget = client.getWidget(WidgetInfo.PVP_WILDERNESS_LEVEL);
-
-		int localPlayerLevel = client.getLocalPlayer().getCombatLevel();
-		int lowerLevelBound = localPlayerLevel - 15;
-		int upperLevelBound = localPlayerLevel + 15;
-
-		if (levelRangeWidget == null && wildernessLevelWidget == null)
-		{
-			return false;
-		}
-
-		if (!levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
-		{
-			lowerLevelBound = Integer.parseInt(levelRangeWidget.getText().split("-")[0]);
-			upperLevelBound = Integer.parseInt(levelRangeWidget.getText().split("-")[1]);
-			return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
-		}
-		else if (levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
-		{
-			int wildernessLevel = calculateWildernessLevel(client.getLocalPlayer().getWorldLocation());
-			lowerLevelBound = localPlayerLevel - wildernessLevel;
-			upperLevelBound = localPlayerLevel + wildernessLevel;
-			return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
-		}
-		else
-		{
-			return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
+			}
+			else if (config.highlightTargets() && PvPUtil.isAttackable(client, player) &&
+				!client.isFriended(player.getName(), false) && !player.isClanMember())
+			{
+			    if (config.skulledTargetsOnly() && player.getSkullIcon() != null)
+                {
+                    consumer.accept(player, config.getTargetColor());
+                }
+			    else if (!config.skulledTargetsOnly())
+                {
+                    consumer.accept(player, config.getTargetColor());
+                }
+			}
+			if (config.highlightCallers() && config.callers() != null && playerIndicatorsPlugin.isCaller(player))
+			{
+				consumer.accept(player, config.callerColor());
+			}
+			if (config.highlightPile() && playerIndicatorsPlugin.isPile(player)
+				&& !player.isClanMember())
+			{
+				consumer.accept(player, config.pileColor());
+			}
 		}
 	}
 }

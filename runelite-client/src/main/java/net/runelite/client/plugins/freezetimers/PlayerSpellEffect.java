@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PlayerSpellEffect
 {
-	BIND("Bind", 181,5000, true, 0, TimerType.FREEZE),
+	BIND("Bind", 181, 5000, true, 0, TimerType.FREEZE),
 	SNARE("Snare", 180, 10000, true, 1, TimerType.FREEZE),
 	ENTANGLE("Entangle", 179, 15000, true, 2, TimerType.FREEZE),
 	RUSH("Ice Rush", 361, 5000, false, 3, TimerType.FREEZE),
@@ -17,7 +17,7 @@ public enum PlayerSpellEffect
 	VENG("Vengeance", 726, 30000, false, 8, TimerType.VENG),
 	VENG_OTHER("Vengeance Other", 725, 30000, false, 9, TimerType.VENG),
 	NONE("Nothing", -69, 420, true, 9999, TimerType.THIS_SHIT_BROKE);
-	
+
 	@Getter
 	private final String name;
 	@Getter
@@ -30,7 +30,7 @@ public enum PlayerSpellEffect
 	private final int spriteIdx;
 	@Getter
 	private final TimerType type;
-	
+
 	public static PlayerSpellEffect getFromSpotAnim(int spotAnim)
 	{
 		for(PlayerSpellEffect effect : values())
@@ -40,5 +40,5 @@ public enum PlayerSpellEffect
 		}
 		return NONE;
 	}
-	
+
 }

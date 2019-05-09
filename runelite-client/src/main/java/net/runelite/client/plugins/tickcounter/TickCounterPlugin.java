@@ -25,7 +25,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(name = "Tick Counter",
 		description = "Counts combat activity for nearby players",
 		enabledByDefault = false,
-		type = PluginType.UTILITY
+		type = PluginType.PVP
 )
 public class TickCounterPlugin extends Plugin {
 

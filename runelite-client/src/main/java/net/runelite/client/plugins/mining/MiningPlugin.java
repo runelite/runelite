@@ -37,10 +37,10 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.mining.MiningConfig;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
-
 import javax.inject.Inject;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
@@ -52,6 +52,7 @@ import static net.runelite.api.ObjectID.*;
 	name = "Mining",
 	description = "Show helpful information about Mining",
 	tags = {"mining", "skilling", "overlay"},
+	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
 public class MiningPlugin extends Plugin

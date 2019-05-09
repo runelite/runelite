@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2019. PKLite  - All Rights Reserved
+ * Unauthorized modification, distribution, or possession of this source file, via any medium is strictly prohibited.
+ * Proprietary and confidential. Refer to PKLite License file for more information on
+ * full terms of this copyright and to determine what constitutes authorized use.
+ * Written by PKLite(ST0NEWALL, others) <stonewall@thots.cc.usa>, 2019
+ *
+ */
+ 
 package net.runelite.client.plugins.wildernesslocations;
 
 import java.awt.Dimension;
@@ -14,6 +23,9 @@ public class WildernessLocationsOverlay extends Overlay
 {
 	private final WildernessLocationsPlugin plugin;
 	private TextComponent textComponent;
+	
+	@Inject
+	private WildernessLocationsConfig wildyConfig;
 
 	@Inject
 	public WildernessLocationsOverlay(Client client, WildernessLocationsPlugin plugin)
@@ -29,7 +41,7 @@ public class WildernessLocationsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.isRenderLocation())
+		if (plugin.isRenderLocation() && wildyConfig.drawOverlay())
 		{
 			textComponent.setText(plugin.getLocationString());
 			return textComponent.render(graphics);

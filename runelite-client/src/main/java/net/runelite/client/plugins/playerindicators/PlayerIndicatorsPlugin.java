@@ -26,245 +26,313 @@ package net.runelite.client.plugins.playerindicators;
 
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 
-import net.runelite.api.*;
-
+import net.runelite.api.Actor;
+import net.runelite.api.ClanMember;
+import net.runelite.api.ClanMemberRank;
 import static net.runelite.api.ClanMemberRank.UNRANKED;
+import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.*;
 
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.HeadIcon;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.Player;
+import net.runelite.api.events.ClanMemberJoined;
+import net.runelite.api.events.ClanMemberLeft;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
-import com.google.common.base.Splitter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
-
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.InteractChanged;
-import net.runelite.client.util.WildcardMatcher;
-
+import net.runelite.client.util.PvPUtil;
 
 @PluginDescriptor(
-	name = "Player Indicators",
-	description = "Highlight players on-screen and/or on the minimap",
-	tags = {"highlight", "minimap", "overlay", "players"},
-	type = PluginType.PVP
+		name = "Player Indicators",
+		description = "Highlight players on-screen and/or on the minimap",
+		tags = {"highlight", "minimap", "overlay", "players", "pklite"}
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {
-	private static final Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*"));
 	@Inject
 	private OverlayManager overlayManager;
-
+	
 	@Inject
 	private PlayerIndicatorsConfig config;
-
+	
 	@Inject
 	private PlayerIndicatorsOverlay playerIndicatorsOverlay;
-
+	
 	@Inject
 	private PlayerIndicatorsTileOverlay playerIndicatorsTileOverlay;
-
-	@Inject
-	private FriendMinimapOverlay friendMinimapOverlay;
-
+	
 	@Inject
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
-
+	
 	@Inject
 	private Client client;
-
+	
 	@Inject
 	private ClanManager clanManager;
-
-	private Map<String, Actor> highlightedPlayers = new HashMap<>();
-
+	
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PlayerIndicatorsConfig.class);
 	}
-
+	
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(playerIndicatorsOverlay);
 		overlayManager.add(playerIndicatorsTileOverlay);
 		overlayManager.add(playerIndicatorsMinimapOverlay);
-		overlayManager.add(friendMinimapOverlay);
-		updateHighlightList();
+		getCallerList();
 	}
-
+	
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(playerIndicatorsOverlay);
 		overlayManager.remove(playerIndicatorsTileOverlay);
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
-		overlayManager.remove(friendMinimapOverlay);
 	}
-
+	
+	private ArrayList<String> callers =	new ArrayList<>();
+	private List<String> pileList;
+	
 	@Subscribe
-	public void onInteractChanged(InteractChanged event)
+	public void onConfigChanged(ConfigChanged e)
 	{
-		Actor actor = event.getActor();
-		if (actor != null
-				&& actor.getName() != null
-				&& isHighlighted(actor))
+		if (config.callers() != null && !config.callers().trim().equals(""))
 		{
-			highlightedPlayers.put(actor.getName().toLowerCase(), actor.getInteracting());
+			getCallerList();
 		}
 	}
-
+	
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	public void onGameTick(GameTick gameTick)
 	{
-		if (event.getGroup().equals("playerindicators") && event.getKey().equals("highlightedNames"))
+		if (config.highlightPile() && callers != null)
 		{
-			updateHighlightList();
+			for (Player p : client.getPlayers())
+			{
+				for (String name:callers)
+				{
+					Actor pile = null;
+					String finalName = name.toLowerCase().replace("_", " ");
+					if (p.getName().toLowerCase().replace("_", " ").equals(finalName))
+					{
+						pile = p.getInteracting();
+						if (pile != null)
+						{
+							pileList.set(callers.indexOf(name), pile.getName());
+							//pileList.add(pile.getName());
+						}
+						else
+						{
+							pileList.set(callers.indexOf(name), "");
+						}
+					}
+				}
+			}
 		}
 	}
-
-	private void updateHighlightList()
+	
+	@Subscribe
+	public void onClanMemberJoined(ClanMemberJoined event)
 	{
-		highlightedPlayers.clear();
-		for (String player : COMMA_SPLITTER.splitToList(config.getHighlightedNames().toLowerCase().trim()))
-		{
-			highlightedPlayers.put(player, null);
-		}
+		getCallerList();
 	}
-
-	boolean isHighlighted(Actor player)
+	
+	@Subscribe
+	public void onClanMemberLeft(ClanMemberLeft event)
 	{
-		for (Map.Entry<String, Actor> map : highlightedPlayers.entrySet())
+		getCallerList();
+	}
+	
+	public void getCallerList()
+	{
+		callers.clear();
+		if (config.useClanchatRanks() && client.getClanMembers() != null)
 		{
-			if (WildcardMatcher.matches(map.getKey(), player.getName()))
+			for (ClanMember clanMember : client.getClanMembers())
+			{
+				if (clanMember.getRank().getValue() > config.callerRank().getValue())
+				{
+					callers.add(clanMember.getUsername());
+				}
+			}
+		}
+		if (config.callers().contains(","))
+		{
+			callers.addAll(Arrays.asList(config.callers().split(",")));
+		}
+		else
+		{
+			if (!config.callers().equals("") || config.callers().length() > 1)
+			{
+				callers.add(config.callers());
+			}
+		}
+		pileList = Arrays.asList(new String[callers.size()]);
+	}
+	
+	public boolean isCaller(Player player)
+	{
+		if (callers != null)
+		{
+			for (String name:callers)
+			{
+				String finalName = name.toLowerCase().replace("_", " ");
+				if (player.getName().toLowerCase().replace("_", " ").equals(finalName))
+				{
+					return true;
+				}
+			}
+		}
+		else {return false;}
+		return false;
+	}
+	
+	public boolean isPile(Player player)
+	{
+		if (Objects.nonNull(pileList) && pileList.size() > 0)
+		{
+			if (pileList.contains(player.getName()))
 			{
 				return true;
 			}
 		}
 		return false;
 	}
-
-	boolean isHighlightedTarget(Player player)
-	{
-		return highlightedPlayers.containsValue(player);
-	}
-
+	
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
-		if (config.showInWildernessOnly() && client.getVar(Varbits.IN_THE_WILDERNESS) != 1)
-		{
-			return;
-		}
 		int type = menuEntryAdded.getType();
-
+		
 		if (type >= 2000)
 		{
 			type -= 2000;
 		}
-
+		
 		int identifier = menuEntryAdded.getIdentifier();
 		if (type == FOLLOW.getId() || type == TRADE.getId()
-			|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
-			|| type == PLAYER_FIRST_OPTION.getId()
-			|| type == PLAYER_SECOND_OPTION.getId()
-			|| type == PLAYER_THIRD_OPTION.getId()
-			|| type == PLAYER_FOURTH_OPTION.getId()
-			|| type == PLAYER_FIFTH_OPTION.getId()
-			|| type == PLAYER_SIXTH_OPTION.getId()
-			|| type == PLAYER_SEVENTH_OPTION.getId()
-			|| type == PLAYER_EIGTH_OPTION.getId()
-			|| type == RUNELITE.getId())
+				|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
+				|| type == PLAYER_FIRST_OPTION.getId()
+				|| type == PLAYER_SECOND_OPTION.getId()
+				|| type == PLAYER_THIRD_OPTION.getId()
+				|| type == PLAYER_FOURTH_OPTION.getId()
+				|| type == PLAYER_FIFTH_OPTION.getId()
+				|| type == PLAYER_SIXTH_OPTION.getId()
+				|| type == PLAYER_SEVENTH_OPTION.getId()
+				|| type == PLAYER_EIGTH_OPTION.getId()
+				|| type == RUNELITE.getId())
 		{
 			final Player localPlayer = client.getLocalPlayer();
 			Player[] players = client.getCachedPlayers();
 			Player player = null;
-
+			
 			if (identifier >= 0 && identifier < players.length)
 			{
 				player = players[identifier];
 			}
-
+			
 			if (player == null)
 			{
 				return;
 			}
-
+			
 			int image = -1;
+			int image2 = -1;
 			Color color = null;
-
-			if (config.highlightFriends() && player.isFriend())
+			
+			if (config.colorPlayerMenu() && client.isFriended(player.getName(), false))
 			{
 				color = config.getFriendColor();
 			}
-			else if (config.drawClanMemberNames() && player.isClanMember())
+			else if (config.colorPlayerMenu() && player.isClanMember())
 			{
 				color = config.getClanMemberColor();
-
+				
 				ClanMemberRank rank = clanManager.getRank(player.getName());
 				if (rank != UNRANKED)
 				{
 					image = clanManager.getIconNumber(rank);
 				}
 			}
-			else if (config.highlightTeamMembers() && player.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
+			else if (config.colorPlayerMenu() && player.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
+		{
+			color = config.getTeamMemberColor();
+		}
+		else if (!player.isClanMember() && !player.isFriend() && !PvPUtil.isAttackable(client, player))
+		{
+			color = config.getNonClanMemberColor();
+		}
+		else if (config.colorPlayerMenu() && !player.isClanMember() && client.isFriended(player.getName(), false) && PvPUtil.isAttackable(client, player))
+		{
+			color = config.getTargetColor();
+		}
+		else if (config.colorPlayerMenu() && PvPUtil.isAttackable(client, player) && !player.isClanMember() && !player.isFriend())
+		{
+			color = config.getTargetColor();
+		}
+			if (config.rightClickOverhead() && !player.isClanMember() && player.getOverheadIcon() != null)
 			{
-				color = config.getTeamMemberColor();
-			}
-			else if (config.highlightNonClanMembers() && !player.isClanMember())
-			{
-				color = config.getNonClanMemberColor();
-			}
-			else if (config.drawHighlightedNames() && isHighlighted(player))
-			{
-				color = config.getHighlightedNamesColor();
-			}
-			else if (config.drawHighlightedTargetNames() && isHighlightedTarget(player))
-			{
-				color = config.getHighlightedTargetColor();
-			}
-			else if (config.highlightAttackerPlayers() && player.getInteracting() == localPlayer)
-			{
-				color = config.getAttackerPlayerColor();
-			}
-			else if (config.highlightAttackablePlayers() && isWithinLevelRange(player.getCombatLevel()))
-			{
-				color = config.getAttackablePlayerColor();
-			}
-/*			if (this.config.rightClickOverhead() && !player.isClanMember() && player.getOverheadIcon() != null) { // NEEDS TESTING
-				if (player.getOverheadIcon().equals((Object)HeadIcon.MAGIC)) {
+				if (player.getOverheadIcon().equals(HeadIcon.MAGIC))
+				{
 					image = 29;
-				} else if (player.getOverheadIcon().equals((Object)HeadIcon.RANGED)) {
+				}
+				else if (player.getOverheadIcon().equals(HeadIcon.RANGED))
+				{
 					image = 30;
-				} else if (player.getOverheadIcon().equals((Object)HeadIcon.MELEE)) {
+				}
+				else if (player.getOverheadIcon().equals(HeadIcon.MELEE))
+				{
 					image = 31;
-				} else if (player.getOverheadIcon().equals((Object)HeadIcon.REDEMPTION)) {
+				}
+				else if (player.getOverheadIcon().equals(HeadIcon.REDEMPTION))
+				{
 					image = 32;
-				} else if (player.getOverheadIcon().equals((Object)HeadIcon.RETRIBUTION)) {
+				}
+				else if (player.getOverheadIcon().equals(HeadIcon.RETRIBUTION))
+				{
 					image = 33;
-				} else if (player.getOverheadIcon().equals((Object)HeadIcon.SMITE)) {
+				}
+				else if (player.getOverheadIcon().equals(HeadIcon.SMITE))
+				{
 					image = 34;
 				}
-			}*/
-
+				
+			}
+			if (config.playerSkull() && !player.isClanMember() && player.getSkullIcon() != null)
+			{
+				image2 = 35;
+			}
+			if (config.colorPlayerMenu() && config.highlightCallers() && this.isCaller(player))
+			{
+				color = config.callerColor();
+			}
+			if (config.colorPlayerMenu() && config.highlightPile() && this.isPile(player))
+			{
+				color = config.pileColor();
+			}
 			if (image != -1 || color != null)
 			{
 				MenuEntry[] menuEntries = client.getMenuEntries();
 				MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
-
+				
+				
 				if (color != null && config.colorPlayerMenu())
 				{
 					// strip out existing <col...
@@ -274,70 +342,27 @@ public class PlayerIndicatorsPlugin extends Plugin
 					{
 						target = target.substring(idx + 1);
 					}
-
+					
 					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
 				}
-
-				if (image != -1 && config.showClanRanks())
+				
+				if (image != -1 && config.showClanRanks() || image != -1 && config.rightClickOverhead())
 				{
-					lastEntry.setTarget("<img=" + image + ">" + lastEntry.getTarget());
+					lastEntry.setTarget(lastEntry.getTarget() + "<img=" + image + ">");
 				}
-
+				if (image2 != -1 && config.playerSkull())
+				{
+					lastEntry.setTarget("<img=" + image2 + ">" + lastEntry.getTarget());
+				}
+				
 				client.setMenuEntries(menuEntries);
 			}
 		}
 	}
-
-    public boolean isWithinLevelRange(int playerCombatLevel)
-    {
-        Widget levelRangeWidget = client.getWidget(WidgetInfo.PVP_ATTACK_RANGE);
-        Widget wildernessLevelWidget = client.getWidget(WidgetInfo.PVP_WILDERNESS_LEVEL);
-
-        int localPlayerLevel = client.getLocalPlayer().getCombatLevel();
-        int lowerLevelBound = localPlayerLevel - 15;
-        int upperLevelBound = localPlayerLevel + 15;
-
-        if (levelRangeWidget == null && wildernessLevelWidget == null)
-        {
-            return false;
-        }
-
-        if (!levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
-        {
-            int wildernessLevel = calculateWildernessLevel(client.getLocalPlayer().getWorldLocation());
-            lowerLevelBound = localPlayerLevel - wildernessLevel - 15;
-            upperLevelBound = localPlayerLevel + wildernessLevel + 15;
-            return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
-        }
-        else if (levelRangeWidget.isHidden() && !wildernessLevelWidget.isHidden())
-        {
-            int wildernessLevel = calculateWildernessLevel(client.getLocalPlayer().getWorldLocation());
-            lowerLevelBound = localPlayerLevel - wildernessLevel;
-            upperLevelBound = localPlayerLevel + wildernessLevel;
-            return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
-        }
-        else
-        {
-            return (playerCombatLevel >= lowerLevelBound && playerCombatLevel <= upperLevelBound);
-        }
-    }
-
-    public static int calculateWildernessLevel(WorldPoint userLocation)
-    {
-        int wildernessLevel = 0;
-        if (WorldPoint.isInZone(new WorldPoint(2944, 3520, 0), new WorldPoint(3391, 4351, 3), userLocation))
-        {
-            wildernessLevel = ((userLocation.getY() - (55 * 64)) / 8) + 1;
-        }
-        else if (WorldPoint.isInZone(new WorldPoint(3008, 10112, 0), new WorldPoint(3071, 10175, 3), userLocation))
-        {
-            wildernessLevel = ((userLocation.getY() - (155 * 64)) / 8) - 1;
-        }
-        else if (WorldPoint.isInZone(new WorldPoint(2944, 9920, 0), new WorldPoint(3391, 10879, 3), userLocation))
-        {
-            wildernessLevel = ((userLocation.getY() - (155 * 64)) / 8) + 1;
-        }
-        return wildernessLevel;
-    }
-
+	
+	public static enum minimapSkullLocations
+	{
+		BEFORE_NAME,
+		AFTER_NAME
+	}
 }
