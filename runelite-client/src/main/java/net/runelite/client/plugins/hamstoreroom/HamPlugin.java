@@ -33,30 +33,33 @@ import javax.inject.Inject;
 import java.awt.*;
 
 @PluginDescriptor(
-        name = "H.A.M Store Room",
-        description = "Show green / red overlays on chests in H.A.M store room, depending on the keys you have",
-        tags = {"overlay"}
+	name = "H.A.M Store Room",
+	description = "Show green / red overlays on chests in H.A.M store room, depending on the keys you have",
+	tags = {"overlay"}
 )
+
 @Slf4j
-public class HamPlugin extends Plugin {
+public class HamPlugin extends Plugin
+{
+	@Inject
+	private OverlayManager overlayManager;
 
-    @Inject
-    private OverlayManager overlayManager;
+	@Inject
+	private HamOverlay hamOverlay;
 
-    @Inject
-    private HamOverlay hamOverlay;
+	boolean drawSteel = false, drawIron = false, drawSilver = false, drawBronze = false;
 
+	Polygon steelPolygon, ironPolygon, silverPolygon, bronzePolygon;
 
-    boolean drawSteel = false, drawIron = false, drawSilver = false, drawBronze = false;
-    Polygon steelPolygon, ironPolygon, silverPolygon, bronzePolygon;
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(hamOverlay);
+	}
 
-    @Override
-    protected void startUp() throws Exception {
-        overlayManager.add(hamOverlay);
-    }
-
-    @Override
-    protected void shutDown() throws Exception {
-        overlayManager.remove(hamOverlay);
-    }
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(hamOverlay);
+	}
 }
