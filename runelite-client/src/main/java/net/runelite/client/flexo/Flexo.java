@@ -52,6 +52,7 @@ public class Flexo extends Robot {
   public static boolean isActive;
   public static double scale;
   public static Client client;
+  public static ClientUI clientUI;
   public static int fixedWidth = 765;
   public static int fixedHeight = 503;
   public static boolean isStretched;
@@ -108,7 +109,7 @@ public class Flexo extends Robot {
   public synchronized void mouseMove(int x, int y) {
     try {
       //TODO: Must be better way to determine titlebar width
-      currentMouseMotionFactory.build(ClientUI.frame.getX()+x, ClientUI.frame.getY()+y+20).move();
+      currentMouseMotionFactory.build(ClientUI.frame.getX()+x+determineHorizontalOffset(), ClientUI.frame.getY()+y+determineVerticalOffset()).move();
       this.delay(getMinDelay());
     } catch (InterruptedException e) {
       e.printStackTrace();
@@ -268,6 +269,14 @@ public class Flexo extends Robot {
   @Override
   public void delay(int ms) {
     pauseMS(ms);
+  }
+  
+  public int determineHorizontalOffset() {
+    return clientUI.getCanvasOffset().getX();
+  }
+  
+  public int determineVerticalOffset() {
+    return clientUI.getCanvasOffset().getY();
   }
 
 }

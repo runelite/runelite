@@ -53,6 +53,7 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.grounditems.GroundItem;
 import net.runelite.client.plugins.grounditems.GroundItemsPlugin;
 import net.runelite.client.plugins.stretchedmode.StretchedModeConfig;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
@@ -80,6 +81,9 @@ public class FlexoPlugin extends Plugin {
 
     @Inject
     private Client client;
+    
+    @Inject
+    private ClientUI clientUI;
 
     @Inject
     private ConfigManager configManager;
@@ -112,6 +116,8 @@ public class FlexoPlugin extends Plugin {
     public void onBeforeRender(BeforeRender event) {
         if (Flexo.client==null)
             Flexo.client = client;
+        if (Flexo.clientUI==null)
+            Flexo.clientUI = clientUI;
         overlay.clickAreas = new ArrayList<>();
         overlay.clickPoints = new ArrayList<>();
             if (getConfig(configManager).getDebugNPCs()) {
