@@ -396,6 +396,11 @@ public class FishingPlugin extends Plugin
 		}
 
 		long timeLeft = TRAWLER_TIME_LIMIT_IN_SECONDS - Duration.between(trawlerStartTime, Instant.now()).getSeconds();
+		if (timeLeft < 0)
+		{
+			timeLeft = 0;
+		}
+
 		int minutes = (int) timeLeft / 60;
 		int seconds = (int) timeLeft % 60;
 
