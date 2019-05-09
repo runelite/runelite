@@ -47,18 +47,30 @@ public interface HidePrayersConfig extends Config
     @ConfigItem
 	(
     	position = 1,
-    	keyName = "eagle/mystic",
-    	name = "Shows Eagle and Mystic Prayers",
+    	keyName = "eagle",
+    	name = "Shows Eagle Eye Prayer",
     	description = "Hides widget icons."
     )
-    default boolean showEagleMystic() 
+    default boolean showEagle() 
+	{ 
+		return false;
+	}
+	
+	@ConfigItem
+	(
+    	position = 2,
+    	keyName = "mystic",
+    	name = "Shows Mystic Might Prayer",
+    	description = "Hides widget icons."
+    )
+    default boolean showMystic() 
 	{ 
 		return false;
 	}
 
 	@ConfigItem
 	(
-		position = 2,
+		position = 3,
 		keyName = "ultstr",
 		name = "Shows Ultimate Strength/Incredible Reflex/Steel Skin",
 		description = "Hides widget icons."
@@ -70,7 +82,7 @@ public interface HidePrayersConfig extends Config
 	
 	@ConfigItem
 	(
-		position = 3,
+		position = 4,
 		keyName = "preserve",
 		name = "Shows Preserve",
 		description = "unides widget icons."
@@ -82,7 +94,7 @@ public interface HidePrayersConfig extends Config
 	
 	@ConfigItem
 	(
-		position = 4,
+		position = 5,
 		keyName = "redemption",
 		name = "Shows Redemption",
 		description = "unides widget icons."
@@ -94,7 +106,7 @@ public interface HidePrayersConfig extends Config
 
 	@ConfigItem
 	(
-		position = 5,
+		position = 6,
 		keyName = "rapidheal",
 		name = "Shows Rapid Heal",
 		description = "unides widget icons."
@@ -106,7 +118,7 @@ public interface HidePrayersConfig extends Config
 	
 	@ConfigItem
 	(
-		position = 6,
+		position = 7,
 		keyName = "rapidRestore",
 		name = "Shows Rapid restore",
 		description = "unides widget icons."
