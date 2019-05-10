@@ -26,6 +26,7 @@ package net.runelite.client.ui.overlay;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -77,6 +78,18 @@ public abstract class WidgetItemOverlay extends Overlay
 			if (!interfaceGroups.contains(interfaceGroup))
 			{
 				continue;
+			}
+
+			// Bank inventory widget items' x and y bound values are each one pixel too high
+			if (interfaceGroup == BANK_INVENTORY_GROUP_ID)
+			{
+				final Rectangle oldBounds = widgetItem.getCanvasBounds();
+				final Rectangle fixedBounds = new Rectangle(oldBounds.x - 1, oldBounds.y - 1, oldBounds.width, oldBounds.height);
+				widgetItem = new WidgetItem(widgetItem.getId(),
+					widgetItem.getQuantity(),
+					widgetItem.getIndex(),
+					fixedBounds,
+					widgetItem.getWidget());
 			}
 
 			renderItemOverlay(graphics, widgetItem.getId(), widgetItem);
