@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins.batools;
 
+import lombok.Getter;
+
 import java.util.HashMap;
 import java.util.Map;
-
+@Getter
 public enum Calls
 {
 	//Attacker Calls
@@ -64,16 +66,6 @@ public enum Calls
 	{
 		this.call = call;
 		this.option = option;
-	}
-
-	public String getCall()
-	{
-		return call;
-	}
-
-	public String getOption()
-	{
-		return option;
 	}
 
 	public static String getOption(String call)
