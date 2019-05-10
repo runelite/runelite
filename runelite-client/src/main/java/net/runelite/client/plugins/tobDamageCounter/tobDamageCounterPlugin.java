@@ -24,20 +24,32 @@
  */
 package net.runelite.client.plugins.tobDamageCounter;
 
-import javax.inject.Inject;
 import com.google.inject.Provides;
 import java.text.DecimalFormat;
-import net.runelite.api.*;
+import javax.inject.Inject;
+import net.runelite.api.Actor;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.Hitsplat;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.*;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.LocalPlayerDeath;
+import net.runelite.api.events.NpcDespawned;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.eventbus.Subscribe;
 
 
 @PluginDescriptor(
@@ -51,8 +63,8 @@ public class tobDamageCounterPlugin extends Plugin
 {
 	private int currentWorld = -1;
 	private int DamageCount = 0;
-	private int currenthpxp = -1; // checking the current hp xp so be easier to find
-	private String BossName = null; //to ID the boss to calculate the damage
+	private int currenthpxp = -1; // setting the current HP XP for now
+	private String BossName = null; //the name of the boss to calculate the damage
 	private int DamageTaken = 0;
 	private int DamageHeal = 0;
 	private boolean status = true; //default boolean alive = true, dead = false
