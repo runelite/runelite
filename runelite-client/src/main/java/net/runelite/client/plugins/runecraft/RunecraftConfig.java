@@ -218,4 +218,13 @@ public interface RunecraftConfig extends Config
 	{
 		return true;
 	}
+	@ConfigItem(
+		keyName = "opLavas",
+		name = "Op lavas",
+		description = "Op orange dorito mode - Only does something if you're wearing fire tiara"
+	)
+	default boolean opLavas()
+	{
+		return true;
+	}
 }
