@@ -229,8 +229,12 @@ public class HydraPlugin extends Plugin
 
 		if (hydra.getPhase().getSpecProjectileId() != 0 && hydra.getPhase().getSpecProjectileId() == id)
 		{
-			poisonProjectiles.put(event.getPosition(), projectile);
+			if (poisonProjectiles.isEmpty())
+			{
+				// Only add 9 to next special on the first poison projectile (whoops)
 			hydra.setNextSpecial(hydra.getNextSpecial() + 9);
+		}
+			poisonProjectiles.put(event.getPosition(), projectile);
 		}
 		else if (client.getTickCount() != lastAttackTick
 			&& (id == Hydra.AttackStyle.MAGIC.getProjId() || id == Hydra.AttackStyle.RANGED.getProjId()))
