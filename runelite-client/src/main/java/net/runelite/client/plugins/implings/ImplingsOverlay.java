@@ -29,10 +29,12 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Point;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
@@ -95,9 +97,37 @@ public class ImplingsOverlay extends Overlay
 				String impName = spawn.getType().getName();
 				drawSpawn(graphics, spawn.getSpawnLocation(), impName, config.getSpawnColor());
 			}
+
+			//Draw dynamic spawns
+			Map<Integer, String> dynamicSpawns = plugin.getDynamicSpawns();
+			for (Map.Entry<Integer, String>  dynamicSpawn : dynamicSpawns.entrySet())
+			{
+				drawDynamicSpawn(graphics, dynamicSpawn.getKey(), dynamicSpawn.getValue(), config.getDynamicSpawnColor());
+
+			}
 		}
 
 		return null;
+	}
+
+	private void drawDynamicSpawn(Graphics2D graphics, Integer spawnID, String text, Color color)
+	{
+		List<NPC> npcs = client.getNpcs();
+		for (NPC npc : npcs)
+		{
+			if (npc.getComposition().getId() == spawnID)
+			{
+				NPCComposition composition = npc.getComposition();
+				if (composition.getConfigs() != null)
+				{
+					NPCComposition transformedComposition = composition.transform();
+					if (transformedComposition == null)
+					{
+						OverlayUtil.renderActorOverlay(graphics, npc, text, color);
+					}
+				}
+			}
+		}
 	}
 
 	private void drawSpawn(Graphics2D graphics, WorldPoint point, String text, Color color)
