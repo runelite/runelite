@@ -63,52 +63,53 @@ class HamOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (client.getLocalPlayer().getWorldLocation().getRegionID() == 10321)
+		if (client.getLocalPlayer().getWorldLocation().getRegionID() != 10321)
 		{
-			drawSteel = false;
-			drawIron = false;
-			drawSilver = false;
-			drawBronze = false;
+			return null;
+		}
+		drawSteel = false;
+		drawIron = false;
+		drawSilver = false;
+		drawBronze = false;
 
-			ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+		ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
 
-			if (itemContainer != null)
+		if (itemContainer != null)
+		{
+			for (Item item : itemContainer.getItems())
 			{
-				for (Item item : itemContainer.getItems())
+				switch (item.getId())
 				{
-					switch (item.getId())
-					{
-						case ItemID.STEEL_KEY:
-							drawSteel = true;
-							break;
-						case ItemID.IRON_KEY_8869:
-							drawIron = true;
-							break;
-						case ItemID.SILVER_KEY:
-							drawSilver = true;
-							break;
-						case ItemID.BRONZE_KEY_8867:
-							drawBronze = true;
-							break;
-					}
+					case ItemID.STEEL_KEY:
+						drawSteel = true;
+						break;
+					case ItemID.IRON_KEY_8869:
+						drawIron = true;
+						break;
+					case ItemID.SILVER_KEY:
+						drawSilver = true;
+						break;
+					case ItemID.BRONZE_KEY_8867:
+						drawBronze = true;
+						break;
 				}
 			}
-			if (hamPlugin.steelObject.getCanvasTilePoly() != null)
-			{
-				OverlayUtil.renderPolygon(graphics, hamPlugin.steelObject.getCanvasTilePoly(), drawSteel ? Color.GREEN.brighter() : Color.RED.brighter());
-			}
-			if (hamPlugin.ironObject.getCanvasTilePoly() != null)
-			{
-				OverlayUtil.renderPolygon(graphics, hamPlugin.ironObject.getCanvasTilePoly(), drawIron ? Color.GREEN.brighter() : Color.RED.brighter());
-			}
-			if (hamPlugin.silverObject.getCanvasTilePoly() != null)
-			{
-				OverlayUtil.renderPolygon(graphics, hamPlugin.silverObject.getCanvasTilePoly(), drawSilver ? Color.GREEN.brighter() : Color.RED.brighter());
-			}
-			if (hamPlugin.bronzeObject.getCanvasTilePoly() != null)
-			{
-				OverlayUtil.renderPolygon(graphics, hamPlugin.bronzeObject.getCanvasTilePoly(), drawBronze ? Color.GREEN.brighter() : Color.RED.brighter());
-			}
+		}
+		if (hamPlugin.steelObject.getCanvasTilePoly() != null)
+		{
+			OverlayUtil.renderPolygon(graphics, hamPlugin.steelObject.getCanvasTilePoly(), drawSteel ? Color.GREEN.brighter() : Color.RED.brighter());
+		}
+		if (hamPlugin.ironObject.getCanvasTilePoly() != null)
+		{
+			OverlayUtil.renderPolygon(graphics, hamPlugin.ironObject.getCanvasTilePoly(), drawIron ? Color.GREEN.brighter() : Color.RED.brighter());
+		}
+		if (hamPlugin.silverObject.getCanvasTilePoly() != null)
+		{
+			OverlayUtil.renderPolygon(graphics, hamPlugin.silverObject.getCanvasTilePoly(), drawSilver ? Color.GREEN.brighter() : Color.RED.brighter());
+		}
+		if (hamPlugin.bronzeObject.getCanvasTilePoly() != null)
+		{
+			OverlayUtil.renderPolygon(graphics, hamPlugin.bronzeObject.getCanvasTilePoly(), drawBronze ? Color.GREEN.brighter() : Color.RED.brighter());
 		}
 		return null;
 	}
