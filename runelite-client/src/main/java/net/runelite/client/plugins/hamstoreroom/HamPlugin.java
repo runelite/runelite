@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Alex <https://github.com/Barragek0>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,13 +24,14 @@
  */
 package net.runelite.client.plugins.hamstoreroom;
 
-import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.GameObject;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
-import java.awt.*;
 
 @PluginDescriptor(
 	name = "H.A.M Store Room",
@@ -38,7 +39,6 @@ import java.awt.*;
 	tags = {"overlay"}
 )
 
-@Slf4j
 public class HamPlugin extends Plugin
 {
 	@Inject
@@ -47,14 +47,25 @@ public class HamPlugin extends Plugin
 	@Inject
 	private HamOverlay hamOverlay;
 
-	boolean drawSteel = false, drawIron = false, drawSilver = false, drawBronze = false;
-
-	Polygon steelPolygon, ironPolygon, silverPolygon, bronzePolygon;
+	public GameObject steelObject;
+	public GameObject ironObject;
+	public GameObject silverObject;
+	public GameObject bronzeObject;
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(hamOverlay);
+	}
+
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
+	{
+		GameObject object = event.getGameObject();
+		if (object != null)
+		{
+			hamOverlay.check(object);
+		}
 	}
 
 	@Override

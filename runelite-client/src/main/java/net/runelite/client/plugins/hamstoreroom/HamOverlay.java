@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Alex <https://github.com/Barragek0>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,22 +24,34 @@
  */
 package net.runelite.client.plugins.hamstoreroom;
 
-import net.runelite.api.*;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
+import java.awt.Color;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.ObjectID;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 import javax.inject.Inject;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
+@Slf4j
 class HamOverlay extends Overlay
 {
 	private final Client client;
 	private final HamPlugin hamPlugin;
+
+	private boolean drawSteel = false;
+	private boolean drawIron = false;
+	private boolean drawSilver = false;
+	private boolean drawBronze = false;
 
 	@Inject
 	private HamOverlay(Client client, HamPlugin hamPlugin)
@@ -53,91 +65,76 @@ class HamOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Scene scene = client.getScene();
-		Tile[][][] tiles = scene.getTiles();
-		int z = client.getPlane();
-
-		for (int x = 0; x < Constants.SCENE_SIZE; ++x)
+		if (client.getLocalPlayer().getWorldLocation().getRegionID() == 10321)
 		{
-			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
-			{
-				Tile tile = tiles[z][x][y];
+			drawSteel = false;
+			drawIron = false;
+			drawSilver = false;
+			drawBronze = false;
 
-				if (tile == null)
+			ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+
+			if (itemContainer != null)
+			{
+				for (Item item : itemContainer.getItems())
 				{
-					continue;
-				}
-				GameObject[] gameObjects = tile.getGameObjects();
-				if (gameObjects != null)
-				{
-					for (GameObject gameObject : gameObjects)
+					switch (item.getId())
 					{
-						if (gameObject != null)
-						{
-							switch (gameObject.getId())
-							{
-								case 15722:
-									if (gameObject.getY() < 6500)
-									{
-										hamPlugin.steelPolygon = gameObject.getCanvasTilePoly();
-									}
-									break;
-								case 15726:
-									hamPlugin.ironPolygon = gameObject.getCanvasTilePoly();
-									break;
-								case 15724:
-									hamPlugin.silverPolygon = gameObject.getCanvasTilePoly();
-									break;
-								case 15723:
-									hamPlugin.bronzePolygon = gameObject.getCanvasTilePoly();
-									break;
-							}
-						}
+						case ItemID.STEEL_KEY:
+							drawSteel = true;
+							break;
+						case ItemID.IRON_KEY_8869:
+							drawIron = true;
+							break;
+						case ItemID.SILVER_KEY:
+							drawSilver = true;
+							break;
+						case ItemID.BRONZE_KEY_8867:
+							drawBronze = true;
+							break;
 					}
 				}
 			}
-		}
-
-		Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
-		hamPlugin.drawSteel = false;
-		hamPlugin.drawIron = false;
-		hamPlugin.drawSilver = false;
-		hamPlugin.drawBronze = false;
-		for (WidgetItem item : inventory.getWidgetItems())
-		{
-			switch (item.getId())
+			if (hamPlugin.steelObject.getCanvasTilePoly() != null)
 			{
-				case 8866:
-					hamPlugin.drawSteel = true;
-					break;
-				case 8869:
-					hamPlugin.drawIron = true;
-					break;
-				case 8868:
-					hamPlugin.drawSilver = true;
-					break;
-				case 8867:
-					hamPlugin.drawBronze = true;
-					break;
+				OverlayUtil.renderPolygon(graphics, hamPlugin.steelObject.getCanvasTilePoly(), drawSteel ? Color.GREEN.brighter() : Color.RED.brighter());
+			}
+			if (hamPlugin.ironObject.getCanvasTilePoly() != null)
+			{
+				OverlayUtil.renderPolygon(graphics, hamPlugin.ironObject.getCanvasTilePoly(), drawIron ? Color.GREEN.brighter() : Color.RED.brighter());
+			}
+			if (hamPlugin.silverObject.getCanvasTilePoly() != null)
+			{
+				OverlayUtil.renderPolygon(graphics, hamPlugin.silverObject.getCanvasTilePoly(), drawSilver ? Color.GREEN.brighter() : Color.RED.brighter());
+			}
+			if (hamPlugin.bronzeObject.getCanvasTilePoly() != null)
+			{
+				OverlayUtil.renderPolygon(graphics, hamPlugin.bronzeObject.getCanvasTilePoly(), drawBronze ? Color.GREEN.brighter() : Color.RED.brighter());
 			}
 		}
-		if (hamPlugin.steelPolygon != null)
-		{
-			OverlayUtil.renderPolygon(graphics, hamPlugin.steelPolygon, hamPlugin.drawSteel ? Color.GREEN.brighter() : Color.RED.brighter());
-		}
-		if (hamPlugin.ironPolygon != null)
-		{
-			OverlayUtil.renderPolygon(graphics, hamPlugin.ironPolygon, hamPlugin.drawIron ? Color.GREEN.brighter() : Color.RED.brighter());
-		}
-		if (hamPlugin.silverPolygon != null)
-		{
-			OverlayUtil.renderPolygon(graphics, hamPlugin.silverPolygon, hamPlugin.drawSilver ? Color.GREEN.brighter() : Color.RED.brighter());
-		}
-		if (hamPlugin.bronzePolygon != null)
-		{
-			OverlayUtil.renderPolygon(graphics, hamPlugin.bronzePolygon, hamPlugin.drawBronze ? Color.GREEN.brighter() : Color.RED.brighter());
-		}
 		return null;
+	}
+
+	public void check(GameObject object)
+	{
+		switch (object.getId())
+		{
+			case ObjectID.SMALL_CHEST:
+				if (object.getY() < 8000)
+				{
+					hamPlugin.steelObject = object;
+				}
+				break;
+			case ObjectID.SMALL_CHEST_15726:
+				hamPlugin.ironObject = object;
+				break;
+			case ObjectID.SMALL_CHEST_15724:
+				hamPlugin.silverObject = object;
+				break;
+			case ObjectID.SMALL_CHEST_15723:
+				hamPlugin.bronzeObject = object;
+				break;
+		}
 	}
 
 
