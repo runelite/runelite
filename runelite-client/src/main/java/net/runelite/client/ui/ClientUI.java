@@ -106,6 +106,7 @@ public class ClientUI
 	private static final int CLIENT_WELL_HIDDEN_MARGIN = 160;
 	private static final int CLIENT_WELL_HIDDEN_MARGIN_TOP = 10;
 	public static boolean allowInput = false;
+	public static String currentPresenceName = "RuneLite";
 	public static final BufferedImage ICON = ImageUtil.getResourceStreamFromClass(ClientUI.class, "/runelite.png");
 
 	@Getter
@@ -286,7 +287,7 @@ public class ClientUI
 				return false;
 			}
 
-			frame.setTitle(properties.getTitle() + " - " + name);
+			frame.setTitle(currentPresenceName + " - " + name);
 			return true;
 		});
 	}
@@ -309,7 +310,7 @@ public class ClientUI
 			// Try to enable fullscreen on OSX
 			OSXUtil.tryEnableFullscreen(frame);
 
-			frame.setTitle(properties.getTitle());
+			frame.setTitle(ClientUI.currentPresenceName);
 			frame.setIconImage(ICON);
 			frame.getLayeredPane().setCursor(Cursor.getDefaultCursor()); // Prevent substance from using a resize cursor for pointing
 			frame.setLocationRelativeTo(frame.getOwner());
@@ -832,12 +833,12 @@ public class ClientUI
 
 			if (player != null && player.getName() != null)
 			{
-				frame.setTitle(properties.getTitle() + " - " + player.getName());
+				frame.setTitle(currentPresenceName + " - " + player.getName());
 			}
 		}
 		else
 		{
-			frame.setTitle(properties.getTitle());
+			frame.setTitle(currentPresenceName);
 		}
 
 		if (frame.isAlwaysOnTopSupported())

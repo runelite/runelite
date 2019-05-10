@@ -82,6 +82,8 @@ import okhttp3.Response;
 @Slf4j
 public class DiscordPlugin extends Plugin
 {
+	public static boolean discordEnabled = false;
+
 	@Inject
 	private Client client;
 
@@ -138,6 +140,7 @@ public class DiscordPlugin extends Plugin
 		}
 
 		wsClient.registerMessage(DiscordUserInfo.class);
+		discordEnabled = true;
 	}
 
 	@Override
@@ -147,6 +150,7 @@ public class DiscordPlugin extends Plugin
 		discordState.reset();
 		partyService.changeParty(null);
 		wsClient.unregisterMessage(DiscordUserInfo.class);
+		discordEnabled = false;
 	}
 
 	@Subscribe

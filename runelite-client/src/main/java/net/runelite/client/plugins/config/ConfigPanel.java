@@ -412,6 +412,7 @@ public class ConfigPanel extends PluginPanel
 		topPanelBackButton.setToolTipText("Back");
 		topPanel.add(topPanelBackButton, BorderLayout.WEST);
 
+		if (!listItem.getName().equals("RuneLitePlus"))
 		topPanel.add(listItem.createToggleButton(), BorderLayout.EAST);
 
 		String name = listItem.getName();

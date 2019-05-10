@@ -178,30 +178,32 @@ public class PluginListItem extends JPanel
 			configPanel.openConfigList();
 		});
 
-		final JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new GridLayout(1, 2));
-		add(buttonPanel, BorderLayout.LINE_END);
 
-		configButton.setPreferredSize(new Dimension(25, 0));
-		configButton.setVisible(false);
-		buttonPanel.add(configButton);
+			final JPanel buttonPanel = new JPanel();
+			buttonPanel.setLayout(new GridLayout(1, 2));
+			add(buttonPanel, BorderLayout.LINE_END);
 
-		// add a listener to configButton only if there are config items to show
-		if (config != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
-		{
-			configButton.addActionListener(e ->
+			configButton.setPreferredSize(new Dimension(25, 0));
+			configButton.setVisible(false);
+			buttonPanel.add(configButton);
+
+			// add a listener to configButton only if there are config items to show
+			if (config != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
 			{
-				configButton.setIcon(CONFIG_ICON);
-				configPanel.openGroupConfigPanel(PluginListItem.this, config, configDescriptor);
-			});
+				configButton.addActionListener(e ->
+				{
+					configButton.setIcon(CONFIG_ICON);
+					configPanel.openGroupConfigPanel(PluginListItem.this, config, configDescriptor);
+				});
 
-			configButton.setVisible(true);
-			configButton.setToolTipText("Edit plugin configuration");
+				configButton.setVisible(true);
+				configButton.setToolTipText("Edit plugin configuration");
+			}
+		if (!name.equals("RuneLitePlus")) {
+			toggleButton.setPreferredSize(new Dimension(25, 0));
+			attachToggleButtonListener(toggleButton);
+			buttonPanel.add(toggleButton);
 		}
-
-		toggleButton.setPreferredSize(new Dimension(25, 0));
-		attachToggleButtonListener(toggleButton);
-		buttonPanel.add(toggleButton);
 	}
 
 	private void attachToggleButtonListener(IconButton button)
