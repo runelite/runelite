@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.hamstoreroom;
 
 import java.awt.Color;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.InventoryID;
@@ -42,7 +41,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-@Slf4j
 class HamOverlay extends Overlay
 {
 	private final Client client;
