@@ -389,7 +389,7 @@ public class tobDamageCounterPlugin extends Plugin
 				client.getLocalPlayer().getLocalLocation()).getRegionID());
 
 		String Encouragement = "PLANKER!!!!!";
-		String Damageper = "You did " + String.format("%.2f", Percent) + "% of the damage" +
+		String Damageper = "You did " + String.format("%.2f", Percent) + "% of the damage " +
 				BossName + "!";
 
 		String MessageTaken = "You have taken " + DAMAGEFORMAT.format(DamageTaken) + " damage from this fight!";
