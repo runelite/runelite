@@ -29,32 +29,32 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("tobDamageCounter")
-public interface tobDamageCounterConfig extends Config{
+public interface tobDamageCounterConfig extends Config
+{
+	@ConfigItem(
+		position = 1,
+		keyName = "tobEncouragement",
+		name = "Encouragement Message",
+		description = "You will get a message after ths boss dies, either good or bad."
+	)
+	default boolean tobEncouragement()
+	{   return true;    }
 
-    @ConfigItem(
-            position = 1,
-            keyName = "tobEncouragement",
-            name = "Encouragement Message",
-            description = "You will get a message after ths boss dies, either good or bad."
-    )
-    default boolean tobEncouragement(){return true;}
+	@ConfigItem(
+		position = 2,
+		keyName = "tobDamageTaken",
+		name = "Damage Taken Message",
+		description = "You will get a damage taken statistic after you died or lived."
+	)
+	default boolean tobDamageTaken()
+	{   return true;    }
 
-    @ConfigItem(
-            position = 2,
-            keyName = "tobDamageTaken",
-            name = "Damage Taken Message",
-            description = "You will get a damage taken statistic after you died or lived."
-    )
-    default boolean tobDamageTaken(){return true;}
-
-    @ConfigItem(
-            position = 5,
-            keyName = "tobParty",
-            name = "Party Members",
-            description = "The number of party members(including you) are in your group effects the ToB Bosses HP."
-    )//default value will be 4, since its the most common to do in a group
-    default int tobParty()
-    {
-        return 4;
-    }
+	@ConfigItem(
+		position = 5,
+		keyName = "tobParty",
+		name = "Party Members",
+		description = "The number of party members(including you) are in your group effects the ToB Bosses HP."
+	)//default value will be 4, since its the most common to do in a group
+	default int tobParty()
+	{   return 4;   }
 }
