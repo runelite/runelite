@@ -29,19 +29,25 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "motherlode",
-	name = "Motherlode Mine",
-	description = "Configuration for the Motherlode Mine plugin"
-)
+@ConfigGroup("motherlode")
 public interface MotherlodeConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showRocks",
+		keyName = "showVeins",
 		name = "Show pay-dirt mining spots",
 		description = "Configures whether or not the pay-dirt mining spots are displayed."
 	)
-	default boolean showRocks()
+	default boolean showVeins()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showRocks",
+		name = "Show rocks obstacles",
+		description = "Configures whether or not the fallen rocks obstacles are displayed."
+	)
+	default boolean showRockFalls()
 	{
 		return true;
 	}
@@ -102,6 +108,16 @@ public interface MotherlodeConfig extends Config
 		description = "Shows gems found during current mining session"
 	)
 	default boolean showGemsFound()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showOresFound",
+		name = "Show ores found",
+		description = "Shows the ores found during current mining session"
+	)
+	default boolean showOresFound()
 	{
 		return true;
 	}

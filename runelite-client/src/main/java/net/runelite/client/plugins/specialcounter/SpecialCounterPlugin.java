@@ -24,7 +24,9 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
-import com.google.common.eventbus.Subscribe;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -47,13 +49,19 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 >>>>>>> upstream/master
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.ws.PartyService;
+import net.runelite.client.ws.WSClient;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
+	description = "Track DWH, Arclight, Darklight, and BGS special attacks used on NPCs",
+	tags = {"combat", "npcs", "overlay"},
 	enabledByDefault = false
 )
 public class SpecialCounterPlugin extends Plugin
@@ -65,11 +73,20 @@ public class SpecialCounterPlugin extends Plugin
 	private double modifier = 1d;
 
 	private SpecialWeapon specialWeapon;
-	private int interactedNpcId;
+	private final Set<Integer> interactedNpcIds = new HashSet<>();
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private WSClient wsClient;
+
+	@Inject
+	private PartyService party;
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
@@ -78,9 +95,16 @@ public class SpecialCounterPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Override
+	protected void startUp()
+	{
+		wsClient.registerMessage(SpecialCounterUpdate.class);
+	}
+
+	@Override
 	protected void shutDown()
 	{
 		removeCounters();
+		wsClient.unregisterMessage(SpecialCounterUpdate.class);
 	}
 
 	@Subscribe
@@ -101,7 +125,7 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSpecialChanged(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		int specialPercentage = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT);
 
@@ -128,9 +152,9 @@ public class SpecialCounterPlugin extends Plugin
 			return;
 		}
 
-		checkInteracting();
+		int interactingId = checkInteracting();
 
-		if (specialHitpointsExperience != -1 && specialUsed)
+		if (interactingId > -1 && specialHitpointsExperience != -1 && specialUsed)
 		{
 			specialUsed = false;
 			int hpXp = client.getSkillExperience(Skill.HITPOINTS);
@@ -141,13 +165,22 @@ public class SpecialCounterPlugin extends Plugin
 			{
 				if (specialWeapon != null)
 				{
-					updateCounter(specialWeapon, deltaExperience);
+					int hit = getHit(specialWeapon, deltaExperience);
+
+					updateCounter(specialWeapon, null, hit);
+
+					if (!party.getMembers().isEmpty())
+					{
+						final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(interactingId, specialWeapon, hit);
+						specialCounterUpdate.setMemberId(party.getLocalMember().getMemberId());
+						wsClient.send(specialCounterUpdate);
+					}
 				}
 			}
 		}
 	}
 
-	private void checkInteracting()
+	private int checkInteracting()
 	{
 		Player localPlayer = client.getLocalPlayer();
 		Actor interacting = localPlayer.getInteracting();
@@ -156,18 +189,34 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			int interactingId = ((NPC) interacting).getId();
 
-			if (interactedNpcId != interactingId)
+			if (!interactedNpcIds.contains(interactingId))
 			{
-				interactedNpcId = interactingId;
 				removeCounters();
-
-				Boss boss = Boss.getBoss(interacting.getName());
-				modifier = boss != null ? boss.getModifier() : 1d;
+				addInteracting(interactingId);
 			}
+
+			return interactingId;
+		}
+
+		return -1;
+	}
+
+	private void addInteracting(int npcId)
+	{
+		modifier = 1d;
+		interactedNpcIds.add(npcId);
+
+		// Add alternate forms of bosses
+		final Boss boss = Boss.getBoss(npcId);
+		if (boss != null)
+		{
+			modifier = boss.getModifier();
+			interactedNpcIds.addAll(boss.getIds());
 		}
 	}
 
 	@Subscribe
+<<<<<<< HEAD
 <<<<<<< HEAD
 	public void onActorDeath(ActorDeath death)
 	{
@@ -181,9 +230,46 @@ public class SpecialCounterPlugin extends Plugin
 
 		if (actor.isDead() && actor.getId() == interactedNpcId)
 >>>>>>> upstream/master
+=======
+	public void onNpcDespawned(NpcDespawned npcDespawned)
+	{
+		NPC actor = npcDespawned.getNpc();
+
+		if (actor.isDead() && interactedNpcIds.contains(actor.getId()))
+>>>>>>> upstream/master
 		{
 			removeCounters();
 		}
+	}
+
+	@Subscribe
+	public void onSpecialCounterUpdate(SpecialCounterUpdate event)
+	{
+		if (party.getLocalMember().getMemberId().equals(event.getMemberId()))
+		{
+			return;
+		}
+
+		String name = party.getMemberById(event.getMemberId()).getName();
+		if (name == null)
+		{
+			return;
+		}
+
+		clientThread.invoke(() ->
+		{
+			// If not interacting with any npcs currently, add to interacting list
+			if (interactedNpcIds.isEmpty())
+			{
+				addInteracting(event.getNpcId());
+			}
+
+			// Otherwise we only add the count if it is against a npc we are already tracking
+			if (interactedNpcIds.contains(event.getNpcId()))
+			{
+				updateCounter(event.getWeapon(), name, event.getHit());
+			}
+		});
 	}
 
 	private SpecialWeapon usedSpecialWeapon()
@@ -214,10 +300,9 @@ public class SpecialCounterPlugin extends Plugin
 		return null;
 	}
 
-	private void updateCounter(SpecialWeapon specialWeapon, int deltaExperience)
+	private void updateCounter(SpecialWeapon specialWeapon, String name, int hit)
 	{
 		SpecialCounter counter = specialCounter[specialWeapon.ordinal()];
-		int hit = getHit(specialWeapon, deltaExperience);
 
 		if (counter == null)
 		{
@@ -230,10 +315,26 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			counter.addHits(hit);
 		}
+
+		// If in a party, add hit to partySpecs for the infobox tooltip
+		Map<String, Integer> partySpecs = counter.getPartySpecs();
+		if (!party.getMembers().isEmpty())
+		{
+			if (partySpecs.containsKey(name))
+			{
+				partySpecs.put(name, hit + partySpecs.get(name));
+			}
+			else
+			{
+				partySpecs.put(name, hit);
+			}
+		}
 	}
 
 	private void removeCounters()
 	{
+		interactedNpcIds.clear();
+
 		for (int i = 0; i < specialCounter.length; ++i)
 		{
 			SpecialCounter counter = specialCounter[i];

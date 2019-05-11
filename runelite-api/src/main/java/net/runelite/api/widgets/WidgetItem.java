@@ -25,6 +25,9 @@
 package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 import net.runelite.api.Point;
 
 <<<<<<< HEAD
@@ -32,6 +35,7 @@ import net.runelite.api.Point;
 /**
  * An item that is being represented in a {@link Widget}.
  */
+<<<<<<< HEAD
 >>>>>>> upstream/master
 public class WidgetItem
 {
@@ -56,12 +60,19 @@ public class WidgetItem
 
 <<<<<<< HEAD
 =======
+=======
+@AllArgsConstructor
+@ToString
+@Getter
+public class WidgetItem
+{
+>>>>>>> upstream/master
 	/**
-	 * Gets the ID of the item represented.
+	 * The ID of the item represented.
 	 *
-	 * @return the items ID
 	 * @see net.runelite.api.ItemID
 	 */
+<<<<<<< HEAD
 >>>>>>> upstream/master
 	public int getId()
 	{
@@ -70,11 +81,13 @@ public class WidgetItem
 
 <<<<<<< HEAD
 =======
+=======
+	private final int id;
+>>>>>>> upstream/master
 	/**
-	 * Gets the quantity of the represented item.
-	 *
-	 * @return the items quantity
+	 * The quantity of the represented item.
 	 */
+<<<<<<< HEAD
 >>>>>>> upstream/master
 	public int getQuantity()
 	{
@@ -83,13 +96,16 @@ public class WidgetItem
 
 <<<<<<< HEAD
 =======
+=======
+	private final int quantity;
+>>>>>>> upstream/master
 	/**
-	 * Gets the index position of this WidgetItem inside its parents
+	 * The index position of this WidgetItem inside its parents
 	 * WidgetItem array.
 	 *
-	 * @return the index in the parent widget
 	 * @see Widget#getWidgetItems()
 	 */
+<<<<<<< HEAD
 >>>>>>> upstream/master
 	public int getIndex()
 	{
@@ -98,16 +114,25 @@ public class WidgetItem
 
 <<<<<<< HEAD
 =======
+=======
+	private final int index;
+>>>>>>> upstream/master
 	/**
-	 * Gets the area where the widget is drawn on the canvas.
-	 *
-	 * @return the occupied area of the widget
+	 * The area where the widget is drawn on the canvas.
 	 */
+<<<<<<< HEAD
 >>>>>>> upstream/master
 	public Rectangle getCanvasBounds()
 	{
 		return canvasBounds;
 	}
+=======
+	private final Rectangle canvasBounds;
+	/**
+	 * The widget which contains this item.
+	 */
+	private final Widget widget;
+>>>>>>> upstream/master
 
 <<<<<<< HEAD
 =======

@@ -26,17 +26,20 @@
  */
 package net.runelite.client.plugins.cluescrolls;
 
-import com.google.common.eventbus.Subscribe;
+import com.google.common.base.MoreObjects;
+import com.google.inject.Binder;
 import com.google.inject.Provides;
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -47,11 +50,14 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.Query;
-import net.runelite.api.Region;
+import net.runelite.api.ObjectComposition;
+import net.runelite.api.Point;
+import net.runelite.api.Scene;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -60,11 +66,12 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.queries.InventoryItemQuery;
-import net.runelite.api.queries.NPCQuery;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -75,39 +82,43 @@ import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
 import net.runelite.client.plugins.cluescrolls.clues.CrypticClue;
 import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.plugins.cluescrolls.clues.FairyRingClue;
+import net.runelite.client.plugins.cluescrolls.clues.FaloTheBardClue;
 import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
 import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.LocationsClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.MapClue;
+import net.runelite.client.plugins.cluescrolls.clues.MusicClue;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.plugins.cluescrolls.clues.ThreeStepCrypticClue;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
-import net.runelite.client.util.QueryRunner;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Clue Scroll"
+	name = "Clue Scroll",
+	description = "Show answers to clue scroll riddles, anagrams, ciphers, and cryptic clues",
+	tags = {"arrow", "hints", "world", "map", "coordinates", "emotes"}
 )
 @Slf4j
 public class ClueScrollPlugin extends Plugin
 {
-	private static final Duration WAIT_DURATION = Duration.ofMinutes(4);
-
-	public static final BufferedImage CLUE_SCROLL_IMAGE;
-	public static final BufferedImage MAP_ARROW;
-	public static final BufferedImage EMOTE_IMAGE;
-	public static final BufferedImage SPADE_IMAGE;
+	private static final Color HIGHLIGHT_BORDER_COLOR = Color.ORANGE;
+	private static final Color HIGHLIGHT_HOVER_BORDER_COLOR = HIGHLIGHT_BORDER_COLOR.darker();
+	private static final Color HIGHLIGHT_FILL_COLOR = new Color(0, 255, 0, 20);
 
 	@Getter
 	private ClueScroll clue;
 
 	@Getter
-	private NPC[] npcsToMark;
+	private final List<NPC> npcsToMark = new ArrayList<>();
 
 	@Getter
-	private GameObject[] objectsToMark;
+	private final List<TileObject> objectsToMark = new ArrayList<>();
 
 	@Getter
 	private Item[] equippedItems;
@@ -117,10 +128,13 @@ public class ClueScrollPlugin extends Plugin
 =======
 	private Item[] inventoryItems;
 
+<<<<<<< HEAD
 	@Getter
 >>>>>>> upstream/master
 	private Instant clueTimeout;
 
+=======
+>>>>>>> upstream/master
 	@Inject
 	@Getter
 	private Client client;
@@ -129,13 +143,16 @@ public class ClueScrollPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Inject
-	private QueryRunner queryRunner;
+	private OverlayManager overlayManager;
 
 	@Inject
 	private ClueScrollOverlay clueScrollOverlay;
 
 	@Inject
 	private ClueScrollEmoteOverlay clueScrollEmoteOverlay;
+
+	@Inject
+	private ClueScrollMusicOverlay clueScrollMusicOverlay;
 
 	@Inject
 	private ClueScrollWorldOverlay clueScrollWorldOverlay;
@@ -146,27 +163,12 @@ public class ClueScrollPlugin extends Plugin
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
 
+	private BufferedImage emoteImage;
+	private BufferedImage mapArrow;
 	private Integer clueItemId;
-	private boolean clueItemChanged = false;
 	private boolean worldMapPointsSet = false;
 
-	static
-	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				CLUE_SCROLL_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_scroll.png"));
-				MAP_ARROW = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("clue_arrow.png"));
-				EMOTE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("emote.png"));
-				SPADE_IMAGE = ImageIO.read(ClueScrollPlugin.class.getResourceAsStream("spade.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
+	private final TextComponent textComponent = new TextComponent();
 
 	@Provides
 	ClueScrollConfig getConfig(ConfigManager configManager)
@@ -175,28 +177,44 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	public void configure(Binder binder)
 	{
-		resetClue();
+		binder.bind(ClueScrollService.class).to(ClueScrollServiceImpl.class);
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
+	protected void startUp() throws Exception
 	{
-		return Arrays.asList(clueScrollOverlay, clueScrollEmoteOverlay, clueScrollWorldOverlay);
+		overlayManager.add(clueScrollOverlay);
+		overlayManager.add(clueScrollEmoteOverlay);
+		overlayManager.add(clueScrollWorldOverlay);
+		overlayManager.add(clueScrollMusicOverlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(clueScrollOverlay);
+		overlayManager.remove(clueScrollEmoteOverlay);
+		overlayManager.remove(clueScrollWorldOverlay);
+		overlayManager.remove(clueScrollMusicOverlay);
+		npcsToMark.clear();
+		inventoryItems = null;
+		equippedItems = null;
+		resetClue(true);
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
 		{
 			return;
 		}
 
-		if (clue instanceof LocationsClueScroll)
+		if (clue instanceof HotColdClue)
 		{
-			if (((LocationsClueScroll)clue).update(event.getMessage(), this))
+			if (((HotColdClue) clue).update(event.getMessage(), this))
 			{
 				worldMapPointsSet = false;
 			}
@@ -208,7 +226,7 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		resetClue();
+		resetClue(true);
 	}
 
 	@Subscribe
@@ -221,7 +239,7 @@ public class ClueScrollPlugin extends Plugin
 			if (itemComposition != null && itemComposition.getName().startsWith("Clue scroll"))
 			{
 				clueItemId = itemComposition.getId();
-				clueItemChanged = true;
+				updateClue(MapClue.forItemId(clueItemId));
 			}
 		}
 	}
@@ -229,15 +247,71 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
+		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
+		{
+			equippedItems = event.getItemContainer().getItems();
+			return;
+		}
+
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		{
+			return;
+		}
+
+		inventoryItems = event.getItemContainer().getItems();
+
 		// Check if item was removed from inventory
-		if (clue != null && clueItemId != null && event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
+		if (clue != null && clueItemId != null)
 		{
 			final Stream<Item> items = Arrays.stream(event.getItemContainer().getItems());
 
 			// Check if clue was removed from inventory
 			if (items.noneMatch(item -> itemManager.getItemComposition(item.getId()).getId() == clueItemId))
 			{
-				resetClue();
+				resetClue(true);
+			}
+		}
+
+		// if three step clue check for clue scroll pieces
+		if (clue instanceof ThreeStepCrypticClue)
+		{
+			if (((ThreeStepCrypticClue) clue).update(client, event, itemManager))
+			{
+				worldMapPointsSet = false;
+				npcsToMark.clear();
+
+				if (config.displayHintArrows())
+				{
+					client.clearHintArrow();
+				}
+
+				checkClueNPCs(clue, client.getCachedNPCs());
+			}
+		}
+	}
+
+	@Subscribe
+	public void onNpcSpawned(final NpcSpawned event)
+	{
+		final NPC npc = event.getNpc();
+		checkClueNPCs(clue, npc);
+	}
+
+	@Subscribe
+	public void onNpcDespawned(final NpcDespawned event)
+	{
+		final boolean removed = npcsToMark.remove(event.getNpc());
+
+		if (removed)
+		{
+			if (npcsToMark.isEmpty())
+			{
+				client.clearHintArrow();
+			}
+			else
+			{
+				// Always set hint arrow to first seen NPC
+				client.setHintArrow(npcsToMark.get(0));
 			}
 		}
 	}
@@ -256,13 +330,14 @@ public class ClueScrollPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			resetClue();
+			resetClue(true);
 		}
 	}
 
 	@Subscribe
 	public void onGameTick(final GameTick event)
 	{
+<<<<<<< HEAD
 		npcsToMark = null;
 		objectsToMark = null;
 		equippedItems = null;
@@ -270,90 +345,65 @@ public class ClueScrollPlugin extends Plugin
 =======
 		inventoryItems = null;
 >>>>>>> upstream/master
+=======
+		objectsToMark.clear();
+>>>>>>> upstream/master
 
 		if (clue instanceof LocationsClueScroll)
 		{
-			final List<WorldPoint> locations = ((LocationsClueScroll) clue).getLocations();
+			final WorldPoint[] locations = ((LocationsClueScroll) clue).getLocations();
 
-			if (!locations.isEmpty())
+			if (locations.length > 0)
 			{
-				addMapPoints(locations.toArray(new WorldPoint[locations.size()]));
+				addMapPoints(locations);
 			}
-		}
 
-		// If we have location clue, set world location before all other types of clues
-		// to allow NPCs and objects to override it when needed
-		if (clue instanceof LocationClueScroll)
-		{
-			final WorldPoint location = ((LocationClueScroll) clue).getLocation();
-
-			if (location != null)
+			if (clue instanceof ObjectClueScroll)
 			{
-				if (config.displayHintArrows())
+				int[] objectIds = ((ObjectClueScroll) clue).getObjectIds();
+
+				if (objectIds.length > 0)
 				{
-					client.setHintArrow(location);
-				}
-
-				addMapPoints(location);
-			}
-		}
-
-		if (clue instanceof NpcClueScroll)
-		{
-			String npc = ((NpcClueScroll) clue).getNpc();
-
-			if (npc != null)
-			{
-				Query query = new NPCQuery().nameEquals(npc);
-				npcsToMark = queryRunner.runQuery(query);
-
-				// Set hint arrow to first NPC found as there can only be 1 hint arrow
-				if (npcsToMark.length >= 1)
-				{
-					if (config.displayHintArrows())
+					for (WorldPoint location : locations)
 					{
-						client.setHintArrow(npcsToMark[0]);
-					}
-
-					addMapPoints(npcsToMark[0].getWorldLocation());
-				}
-			}
-		}
-
-		if (clue instanceof ObjectClueScroll)
-		{
-			final ObjectClueScroll objectClueScroll = (ObjectClueScroll) clue;
-			int objectId = objectClueScroll.getObjectId();
-
-			if (objectId != -1)
-			{
-				// Match object with location every time
-				final WorldPoint location = objectClueScroll.getLocation();
-
-				if (location != null)
-				{
-					final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
-
-					if (localLocation != null)
-					{
-						final Region region = client.getRegion();
-						final Tile[][][] tiles = region.getTiles();
-						final Tile tile = tiles[client.getPlane()][localLocation.getRegionX()][localLocation.getRegionY()];
-
-						objectsToMark = Arrays.stream(tile.getGameObjects())
-							.filter(object -> object != null && object.getId() == objectId)
-							.toArray(GameObject[]::new);
-
-						// Set hint arrow to first object found as there can only be 1 hint arrow
-						if (config.displayHintArrows() && objectsToMark.length >= 1)
+						if (location != null)
 						{
-							client.setHintArrow(objectsToMark[0].getWorldLocation());
+							highlightObjectsForLocation(location, objectIds);
 						}
 					}
 				}
 			}
 		}
 
+		if (clue instanceof LocationClueScroll)
+		{
+			final WorldPoint location = ((LocationClueScroll) clue).getLocation();
+
+			if (location != null)
+			{
+				// Only set the location hint arrow if we do not already have more accurate location
+				if (config.displayHintArrows()
+					&& (client.getHintArrowNpc() == null
+					|| !npcsToMark.contains(client.getHintArrowNpc())))
+				{
+					client.setHintArrow(location);
+				}
+
+				addMapPoints(location);
+
+				if (clue instanceof ObjectClueScroll)
+				{
+					int[] objectIds = ((ObjectClueScroll) clue).getObjectIds();
+
+					if (objectIds.length > 0)
+					{
+						highlightObjectsForLocation(location, objectIds);
+					}
+				}
+			}
+		}
+
+<<<<<<< HEAD
 		if (clue instanceof EmoteClue)
 		{
 <<<<<<< HEAD
@@ -369,69 +419,71 @@ public class ClueScrollPlugin extends Plugin
 			{
 				equippedItems = equipment.getItems();
 			}
+=======
+		// If we have a clue, save that knowledge
+		// so the clue window doesn't have to be open.
+		updateClue(findClueScroll());
+	}
+>>>>>>> upstream/master
 
-			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+	public BufferedImage getClueScrollImage()
+	{
+		return itemManager.getImage(ItemID.CLUE_SCROLL_MASTER);
+	}
 
+<<<<<<< HEAD
 			if (inventory != null)
 			{
 				inventoryItems = inventory.getItems();
 >>>>>>> upstream/master
 			}
-		}
-
-		if (clue instanceof CoordinateClue)
+=======
+	public BufferedImage getEmoteImage()
+	{
+		if (emoteImage != null)
 		{
-			ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
-
-			if (container != null)
-			{
-				equippedItems = container.getItems();
-			}
+			return emoteImage;
+>>>>>>> upstream/master
 		}
 
-		ClueScroll clue = findClueScroll();
+		emoteImage = ImageUtil.getResourceStreamFromClass(getClass(), "emote.png");
 
-		if (clue == null && this.clue != null)
-		{
-			// If clue window isn't open, and we don't have a map clue in inventory,
-			// but we have recorded the player having a clue,
-			// wait for WAIT_DURATION before discarding the knowledge of the player having a clue.
-			if (Instant.now().compareTo(clueTimeout.plus(WAIT_DURATION)) < 0)
-			{
-				return;
-			}
-		}
-
-		// If we have a clue, save that knowledge
-		// so the clue window doesn't have to be open.
-		if (clue != null)
-		{
-			if (clue != this.clue)
-			{
-				resetClue();
-			}
-
-			this.clue = clue;
-			this.clueTimeout = Instant.now();
-		}
+		return emoteImage;
 	}
 
-	private void resetClue()
+	public BufferedImage getSpadeImage()
 	{
-		if (!clueItemChanged)
+		return itemManager.getImage(ItemID.SPADE);
+	}
+
+	BufferedImage getMapArrow()
+	{
+		if (mapArrow != null)
 		{
-			clueItemId = null;
+			return mapArrow;
 		}
 
+		mapArrow = ImageUtil.getResourceStreamFromClass(getClass(), "/util/clue_arrow.png");
+
+		return mapArrow;
+	}
+
+	private void resetClue(boolean withItemId)
+	{
 		if (clue instanceof LocationsClueScroll)
 		{
 			((LocationsClueScroll) clue).reset();
 		}
 
-		clueItemChanged = false;
+		if (withItemId)
+		{
+			clueItemId = null;
+		}
+
 		clue = null;
 		worldMapPointManager.removeIf(ClueScrollWorldMapPoint.class::isInstance);
 		worldMapPointsSet = false;
+		npcsToMark.clear();
 
 		if (config.displayHintArrows())
 		{
@@ -441,92 +493,92 @@ public class ClueScrollPlugin extends Plugin
 
 	private ClueScroll findClueScroll()
 	{
-		Widget clueScrollText = client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT);
+		final Widget clueScrollText = client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT);
 
-		if (clueScrollText != null)
-		{
-			// Remove line breaks and also the rare occasion where there are double line breaks
-			String text = Text.removeTags(clueScrollText.getText()
-					.replaceAll("-<br>", "-")
-					.replaceAll("<br>", " ")
-					.replaceAll("[ ]+", " ")
-					.toLowerCase());
-
-			if (clue != null && clue instanceof TextClueScroll)
-			{
-				if (((TextClueScroll) clue).getText().equalsIgnoreCase(text))
-				{
-					return clue;
-				}
-			}
-
-			if (text.startsWith("this anagram reveals who to speak to next:"))
-			{
-				return AnagramClue.forText(text);
-			}
-			else if (text.startsWith("the cipher reveals who to speak to next:"))
-			{
-				return CipherClue.forText(text);
-			}
-			else if (text.contains("degrees") && text.contains("minutes"))
-			{
-				return coordinatesToWorldPoint(text);
-			}
-			else
-			{
-				CrypticClue crypticClue = CrypticClue.forText(text);
-
-				if (crypticClue != null)
-				{
-					return crypticClue;
-				}
-
-				EmoteClue emoteClue = EmoteClue.forText(text);
-
-				if (emoteClue != null)
-				{
-					return emoteClue;
-				}
-
-				final FairyRingClue fairyRingClue = FairyRingClue.forText(text);
-
-				if (fairyRingClue != null)
-				{
-					return fairyRingClue;
-				}
-
-				final HotColdClue hotColdClue = HotColdClue.forText(text);
-
-				if (hotColdClue != null)
-				{
-					return hotColdClue;
-				}
-
-				// We have unknown clue, reset
-				resetClue();
-				return null;
-			}
-		}
-
-		Item[] result = queryRunner.runQuery(new InventoryItemQuery(InventoryID.INVENTORY));
-
-		if (result == null)
+		if (clueScrollText == null)
 		{
 			return null;
 		}
 
-		for (Item item : result)
-		{
-			MapClue clue = MapClue.forItemId(item.getId());
+		// Remove line breaks and also the rare occasion where there are double line breaks
+		final String text = Text.sanitizeMultilineText(clueScrollText.getText()).toLowerCase();
 
-			if (clue != null)
+		// Early return if this is same clue as already existing one
+		if (clue instanceof TextClueScroll)
+		{
+			if (((TextClueScroll) clue).getText().equalsIgnoreCase(text))
 			{
-				clueItemId = item.getId();
-				clueItemChanged = true;
 				return clue;
 			}
 		}
 
+		// (This|The) anagram reveals who to speak to next:
+		if (text.contains("anagram reveals who to speak to next:"))
+		{
+			return AnagramClue.forText(text);
+		}
+
+		if (text.startsWith("the cipher reveals who to speak to next:"))
+		{
+			return CipherClue.forText(text);
+		}
+
+		if (text.startsWith("i'd like to hear some music."))
+		{
+			return MusicClue.forText(clueScrollText.getText());
+		}
+
+		if (text.contains("degrees") && text.contains("minutes"))
+		{
+			return coordinatesToWorldPoint(text);
+		}
+
+		final CrypticClue crypticClue = CrypticClue.forText(text);
+
+		if (crypticClue != null)
+		{
+			return crypticClue;
+		}
+
+		final EmoteClue emoteClue = EmoteClue.forText(text);
+
+		if (emoteClue != null)
+		{
+			return emoteClue;
+		}
+
+		final FairyRingClue fairyRingClue = FairyRingClue.forText(text);
+
+		if (fairyRingClue != null)
+		{
+			return fairyRingClue;
+		}
+
+		final FaloTheBardClue faloTheBardClue = FaloTheBardClue.forText(text);
+
+		if (faloTheBardClue != null)
+		{
+			return faloTheBardClue;
+		}
+
+		final HotColdClue hotColdClue = HotColdClue.forText(text);
+
+		if (hotColdClue != null)
+		{
+			return hotColdClue;
+		}
+
+		// three step cryptic clues need unedited text to check which steps are already done
+		final ThreeStepCrypticClue threeStepCrypticClue = ThreeStepCrypticClue.forText(text, clueScrollText.getText());
+
+		if (threeStepCrypticClue != null)
+		{
+			return threeStepCrypticClue;
+		}
+
+		// We have unknown clue, reset
+		log.warn("Encountered unhandled clue text: {}", clueScrollText.getText());
+		resetClue(true);
 		return null;
 	}
 
@@ -573,7 +625,7 @@ public class ClueScrollPlugin extends Plugin
 
 	/**
 	 * This conversion is explained on
-	 * http://oldschoolrunescape.wikia.com/wiki/Treasure_Trails/Guide/Coordinates
+	 * https://oldschool.runescape.wiki/w/Treasure_Trails/Guide/Coordinates
 	 */
 	private WorldPoint coordinatesToWorldPoint(int degX, int minX, int degY, int minY)
 	{
@@ -599,7 +651,175 @@ public class ClueScrollPlugin extends Plugin
 
 		for (final WorldPoint point : points)
 		{
-			worldMapPointManager.add(new ClueScrollWorldMapPoint(point));
+			worldMapPointManager.add(new ClueScrollWorldMapPoint(point, this));
 		}
+	}
+
+	private void highlightObjectsForLocation(final WorldPoint location, final int... objectIds)
+	{
+		final LocalPoint localLocation = LocalPoint.fromWorld(client, location);
+
+		if (localLocation == null)
+		{
+			return;
+		}
+
+		final Scene scene = client.getScene();
+		final Tile[][][] tiles = scene.getTiles();
+		final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
+		objectsToMark.clear();
+
+		for (GameObject object : tile.getGameObjects())
+		{
+			if (object == null)
+			{
+				continue;
+			}
+
+			for (int id : objectIds)
+			{
+				if (object.getId() == id)
+				{
+					objectsToMark.add(object);
+					continue;
+				}
+
+				// Check impostors
+				final ObjectComposition comp = client.getObjectDefinition(object.getId());
+				final ObjectComposition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
+
+				if (impostor != null && impostor.getId() == id)
+				{
+					objectsToMark.add(object);
+				}
+			}
+		}
+	}
+
+	private void checkClueNPCs(ClueScroll clue, final NPC... npcs)
+	{
+		if (!(clue instanceof NpcClueScroll))
+		{
+			return;
+		}
+
+		final NpcClueScroll npcClueScroll = (NpcClueScroll) clue;
+
+		if (npcClueScroll.getNpcs() == null || npcClueScroll.getNpcs().length == 0)
+		{
+			return;
+		}
+
+		for (NPC npc : npcs)
+		{
+			if (npc == null || npc.getName() == null)
+			{
+				continue;
+			}
+
+			for (String npcName : npcClueScroll.getNpcs())
+			{
+				if (!Objects.equals(npc.getName(), npcName))
+				{
+					continue;
+				}
+
+				npcsToMark.add(npc);
+			}
+		}
+
+		if (!npcsToMark.isEmpty() && config.displayHintArrows())
+		{
+			// Always set hint arrow to first seen NPC
+			client.setHintArrow(npcsToMark.get(0));
+		}
+	}
+
+	private void updateClue(final ClueScroll clue)
+	{
+		if (clue == null || clue == this.clue)
+		{
+			return;
+		}
+
+		resetClue(false);
+		checkClueNPCs(clue, client.getCachedNPCs());
+		this.clue = clue;
+	}
+
+	void highlightWidget(Graphics2D graphics, Widget toHighlight, Widget container, Rectangle padding, String text)
+	{
+		padding = MoreObjects.firstNonNull(padding, new Rectangle());
+
+		Point canvasLocation = toHighlight.getCanvasLocation();
+
+		if (canvasLocation == null)
+		{
+			return;
+		}
+
+		Point windowLocation = container.getCanvasLocation();
+
+		if (windowLocation.getY() > canvasLocation.getY() + toHighlight.getHeight()
+			|| windowLocation.getY() + container.getHeight() < canvasLocation.getY())
+		{
+			return;
+		}
+
+		// Visible area of widget
+		Area widgetArea = new Area(
+			new Rectangle(
+				canvasLocation.getX() - padding.x,
+				Math.max(canvasLocation.getY(), windowLocation.getY()) - padding.y,
+				toHighlight.getWidth() + padding.x + padding.width,
+				Math.min(
+					Math.min(windowLocation.getY() + container.getHeight() - canvasLocation.getY(), toHighlight.getHeight()),
+					Math.min(canvasLocation.getY() + toHighlight.getHeight() - windowLocation.getY(), toHighlight.getHeight())) + padding.y + padding.height
+			));
+
+		OverlayUtil.renderHoverableArea(graphics, widgetArea, client.getMouseCanvasPosition(),
+			HIGHLIGHT_FILL_COLOR, HIGHLIGHT_BORDER_COLOR, HIGHLIGHT_HOVER_BORDER_COLOR);
+
+		if (text == null)
+		{
+			return;
+		}
+
+		FontMetrics fontMetrics = graphics.getFontMetrics();
+
+		textComponent.setPosition(new java.awt.Point(
+			canvasLocation.getX() + toHighlight.getWidth() / 2 - fontMetrics.stringWidth(text) / 2,
+			canvasLocation.getY() + fontMetrics.getHeight()));
+		textComponent.setText(text);
+		textComponent.render(graphics);
+	}
+
+	void scrollToWidget(WidgetInfo list, WidgetInfo scrollbar, Widget ... toHighlight)
+	{
+		final Widget parent = client.getWidget(list);
+		int averageCentralY = 0;
+		int nonnullCount = 0;
+		for (Widget widget : toHighlight)
+		{
+			if (widget != null)
+			{
+				averageCentralY += widget.getRelativeY() + widget.getHeight() / 2;
+				nonnullCount += 1;
+			}
+		}
+		if (nonnullCount == 0)
+		{
+			return;
+		}
+		averageCentralY /= nonnullCount;
+		final int newScroll = Math.max(0, Math.min(parent.getScrollHeight(),
+			averageCentralY - parent.getHeight() / 2));
+
+		client.runScript(
+			ScriptID.UPDATE_SCROLLBAR,
+			scrollbar.getId(),
+			list.getId(),
+			newScroll
+		);
 	}
 }

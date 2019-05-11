@@ -32,9 +32,9 @@ public class KingdomCounter extends Counter
 {
 	private final KingdomPlugin plugin;
 
-	public KingdomCounter(BufferedImage image, KingdomPlugin plugin)
+	KingdomCounter(BufferedImage image, KingdomPlugin plugin)
 	{
-		super(image, plugin, String.valueOf(plugin.getFavor()));
+		super(image, plugin, plugin.getFavor());
 		this.plugin = plugin;
 	}
 
@@ -47,7 +47,7 @@ public class KingdomCounter extends Counter
 	@Override
 	public String getTooltip()
 	{
-		return String.format("Favor: " + plugin.getFavor() + "/127" + "</br>"
-			+ "Coffer: " + StackFormatter.quantityToRSStackSize(plugin.getCoffer()));
+		return "Favor: " + plugin.getFavor() + "/127" + "</br>"
+			+ "Coffer: " + StackFormatter.quantityToRSStackSize(plugin.getCoffer());
 	}
 }

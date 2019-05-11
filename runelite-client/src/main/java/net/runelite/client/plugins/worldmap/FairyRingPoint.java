@@ -25,15 +25,18 @@
  */
 package net.runelite.client.plugins.worldmap;
 
-import net.runelite.api.coords.WorldPoint;
-import static net.runelite.client.plugins.worldmap.WorldMapPlugin.BLANK_ICON;
+import java.awt.image.BufferedImage;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
 class FairyRingPoint extends WorldMapPoint
 {
-	FairyRingPoint(String tooltip, WorldPoint worldPoint)
+	FairyRingPoint(FairyRingLocation data, BufferedImage icon, boolean showTooltip)
 	{
-		super(worldPoint, BLANK_ICON);
-		setTooltip("Fairy Ring - " + tooltip);
+		super(data.getLocation(), icon);
+
+		if (showTooltip)
+		{
+			setTooltip("Fairy Ring - " + data.getCode());
+		}
 	}
 }

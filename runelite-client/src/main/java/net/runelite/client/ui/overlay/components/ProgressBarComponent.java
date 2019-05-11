@@ -29,7 +29,9 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.text.DecimalFormat;
+import lombok.Getter;
 import lombok.Setter;
 
 @Setter
@@ -43,6 +45,7 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.0");
 	private static final DecimalFormat DECIMAL_FORMAT_ABS = new DecimalFormat("#0");
+
 	private long minimum;
 	private long maximum = 100;
 	private double value;
@@ -50,15 +53,19 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 	private Color foregroundColor = new Color(82, 161, 82);
 	private Color backgroundColor = new Color(255, 255, 255, 127);
 	private Color fontColor = Color.WHITE;
+	private Point preferredLocation = new Point();
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 16);
+
+	@Getter
+	private final Rectangle bounds = new Rectangle();
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		final FontMetrics metrics = graphics.getFontMetrics();
 
-		final int barX = 0;
-		final int barY = -metrics.getHeight();
+		final int barX = preferredLocation.x;
+		final int barY = preferredLocation.y;
 
 		final long span = maximum - minimum;
 		final double currentValue = value - minimum;
@@ -78,9 +85,9 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 		final int height = Math.max(preferredSize.height, 16);
 		final int progressTextX = barX + (width - metrics.stringWidth(textToWrite)) / 2;
 		final int progressTextY = barY + ((height - metrics.getHeight()) / 2) + metrics.getHeight();
-		final int progressFill = (int) (width * pc);
+		final int progressFill = (int) (width * Math.min(1, pc));
 
-		//Draw bar
+		// Draw bar
 		graphics.setColor(backgroundColor);
 		graphics.fillRect(barX, barY, width, height);
 		graphics.setColor(foregroundColor);
@@ -92,6 +99,9 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 		textComponent.setText(textToWrite);
 		textComponent.render(graphics);
 
-		return new Dimension(width, height);
+		final Dimension dimension = new Dimension(width, height);
+		bounds.setLocation(preferredLocation);
+		bounds.setSize(dimension);
+		return dimension;
 	}
 }

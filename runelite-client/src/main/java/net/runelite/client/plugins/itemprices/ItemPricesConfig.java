@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "itemprices",
-	name = "Item Prices",
-	description = "Configuration for the Item Prices plugin"
-)
+@ConfigGroup("itemprices")
 public interface ItemPricesConfig extends Config
 {
 	@ConfigItem(
@@ -78,4 +74,16 @@ public interface ItemPricesConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showAlchProfit",
+		name = "Show High Alchemy Profit",
+		description = "Show the profit from casting high alchemy on items",
+		position = 5
+	)
+	default boolean showAlchProfit()
+	{
+		return false;
+	}
+
 }

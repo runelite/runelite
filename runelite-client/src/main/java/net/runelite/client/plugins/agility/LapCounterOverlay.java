@@ -29,13 +29,16 @@ import java.awt.Graphics2D;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class LapCounterOverlay extends Overlay
+class LapCounterOverlay extends Overlay
 {
 	private final AgilityPlugin plugin;
 	private final AgilityConfig config;
@@ -43,12 +46,14 @@ public class LapCounterOverlay extends Overlay
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	LapCounterOverlay(AgilityPlugin plugin, AgilityConfig config)
+	private LapCounterOverlay(AgilityPlugin plugin, AgilityConfig config)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
 		this.plugin = plugin;
 		this.config = config;
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Agility overlay"));
 	}
 
 	@Override
@@ -76,14 +81,14 @@ public class LapCounterOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Total Laps")
+			.left("Total Laps:")
 			.right(Integer.toString(session.getTotalLaps()))
 			.build());
 
 		if (session.getLapsTillLevel() > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Laps till level")
+				.left("Laps until level:")
 				.right(Integer.toString(session.getLapsTillLevel()))
 				.build());
 		}

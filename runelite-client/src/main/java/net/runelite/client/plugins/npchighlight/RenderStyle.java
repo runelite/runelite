@@ -28,7 +28,8 @@ public enum RenderStyle
 {
 	OFF("Off"),
 	TILE("Tile"),
-	HULL("Hull");
+	HULL("Hull"),
+	SOUTH_WEST_TILE("South West Tile");
 
 	private final String name;
 

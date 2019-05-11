@@ -39,7 +39,7 @@ public class PlayerDespawned implements ActorDespawned
  * Note: This event does not get called for the local player.
  */
 @Value
-public class PlayerDespawned implements ActorDespawned
+public class PlayerDespawned
 {
 	/**
 	 * The despawned player.
@@ -47,7 +47,6 @@ public class PlayerDespawned implements ActorDespawned
 >>>>>>> upstream/master
 	private final Player player;
 
-	@Override
 	public Actor getActor()
 	{
 		return player;

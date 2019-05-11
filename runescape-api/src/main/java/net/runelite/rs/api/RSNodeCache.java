@@ -24,9 +24,10 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.api.NodeCache;
 import net.runelite.mapping.Import;
 
-public interface RSNodeCache
+public interface RSNodeCache extends NodeCache
 {
 	@Import("get")
 	RSCacheableNode get(long id);
@@ -35,6 +36,19 @@ public interface RSNodeCache
 =======
 
 	@Import("reset")
+	@Override
 	void reset();
+<<<<<<< HEAD
+}
+>>>>>>> upstream/master
+=======
+
+	@Import("capacity")
+	@Override
+	void setCapacity(int capacity);
+
+	@Import("remainingCapacity")
+	@Override
+	void setRemainingCapacity(int remainingCapacity);
 }
 >>>>>>> upstream/master

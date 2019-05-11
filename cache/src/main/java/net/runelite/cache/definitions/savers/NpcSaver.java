@@ -144,7 +144,7 @@ public class NpcSaver
 			out.writeShort(npc.headIcon);
 		}
 		out.writeByte(103);
-		out.writeShort(npc.anInt2156);
+		out.writeShort(npc.rotation);
 		if (!npc.isClickable)
 		{
 			out.writeByte(107);
@@ -157,13 +157,13 @@ public class NpcSaver
 		{
 			out.writeByte(111);
 		}
-		if (npc.anIntArray2185 != null)
+		if (npc.configs != null)
 		{
 			out.writeByte(118);
-			out.writeShort(npc.anInt2174);
-			out.writeShort(npc.anInt2187);
+			out.writeShort(npc.varbitIndex);
+			out.writeShort(npc.varpIndex);
 
-			int[] c = npc.anIntArray2185;
+			int[] c = npc.configs;
 			out.writeShort(c[c.length - 1]);
 			out.writeByte(c.length - 2);
 			for (int i = 0; i <= c.length - 2; ++i)

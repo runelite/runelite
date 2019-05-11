@@ -37,7 +37,7 @@ public class NpcSpawned implements ActorSpawned
  * An event where an {@link NPC} has spawned.
  */
 @Value
-public class NpcSpawned implements ActorSpawned
+public class NpcSpawned
 {
 	/**
 	 * The spawned NPC.
@@ -45,7 +45,6 @@ public class NpcSpawned implements ActorSpawned
 >>>>>>> upstream/master
 	private final NPC npc;
 
-	@Override
 	public Actor getActor()
 	{
 		return npc;

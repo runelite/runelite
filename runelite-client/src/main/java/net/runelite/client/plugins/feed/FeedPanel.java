@@ -64,6 +64,7 @@ import net.runelite.client.ui.ColorScheme;
 >>>>>>> upstream/master
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.feed.FeedItem;
@@ -95,12 +96,15 @@ class FeedPanel extends PluginPanel
 	private static final int TIME_WIDTH = 20;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	/**
 	 * Holds all feed items.
 	 */
 	private final JPanel feedContainer = new JPanel();
 
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 	private static final Comparator<FeedItem> FEED_ITEM_COMPARATOR = (o1, o2) ->
 	{
@@ -121,6 +125,7 @@ class FeedPanel extends PluginPanel
 
 	static
 	{
+<<<<<<< HEAD
 		try
 		{
 			synchronized (ImageIO.class)
@@ -153,6 +158,10 @@ class FeedPanel extends PluginPanel
 			throw new RuntimeException(e);
 >>>>>>> upstream/master
 		}
+=======
+		RUNELITE_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(FeedPanel.class, "runelite.png"));
+		OSRS_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(FeedPanel.class, "osrs.png"));
+>>>>>>> upstream/master
 	}
 
 	private final FeedConfig config;
@@ -160,6 +169,7 @@ class FeedPanel extends PluginPanel
 
 	FeedPanel(FeedConfig config, Supplier<FeedResult> feedSupplier)
 	{
+		super(true);
 		this.config = config;
 		this.feedSupplier = feedSupplier;
 <<<<<<< HEAD
@@ -167,6 +177,7 @@ class FeedPanel extends PluginPanel
 
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
+<<<<<<< HEAD
 		setLayout(new BorderLayout());
 
 		feedContainer.setLayout(new GridLayout(0, 1, 0, 4));
@@ -178,6 +189,9 @@ class FeedPanel extends PluginPanel
 
 		add(title, BorderLayout.NORTH);
 		add(feedContainer, BorderLayout.CENTER);
+>>>>>>> upstream/master
+=======
+		setLayout(new GridLayout(0, 1, 0, 4));
 >>>>>>> upstream/master
 	}
 
@@ -193,9 +207,13 @@ class FeedPanel extends PluginPanel
 		SwingUtilities.invokeLater(() ->
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
 			removeAll();
 =======
 			feedContainer.removeAll();
+>>>>>>> upstream/master
+=======
+			removeAll();
 >>>>>>> upstream/master
 
 			feed.getItems()
@@ -371,9 +389,13 @@ class FeedPanel extends PluginPanel
 		});
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		add(avatarAndRight);
 =======
 		feedContainer.add(avatarAndRight);
+>>>>>>> upstream/master
+=======
+		add(avatarAndRight);
 >>>>>>> upstream/master
 	}
 

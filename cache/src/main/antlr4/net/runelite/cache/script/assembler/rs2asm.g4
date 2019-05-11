@@ -42,25 +42,25 @@ string_var_value: INT ;
 
 line: instruction | label | switch_lookup ;
 instruction: instruction_name instruction_operand ;
-label: 'LABEL' INT ':' ;
+label: IDENTIFIER ':' ;
 
 instruction_name: name_string | name_opcode ;
-name_string: INSTRUCTION ;
+name_string: IDENTIFIER ;
 name_opcode: INT ;
 
 instruction_operand: operand_int | operand_qstring | operand_label | ;
 operand_int: INT ;
 operand_qstring: QSTRING ;
-operand_label: 'LABEL' INT ;
+operand_label: IDENTIFIER ;
 
 switch_lookup: switch_key ':' switch_value ;
 switch_key: INT ;
-switch_value: 'LABEL' INT ;
+switch_value: IDENTIFIER ;
 
 NEWLINE: ( '\r' | '\n' )+ ;
 INT: '-'? [0-9]+ ;
 QSTRING: '"' (~('"' | '\\' | '\r' | '\n') | '\\' ('"' | '\\'))* '"' ;
-INSTRUCTION: [a-z0-9_]+ ;
+IDENTIFIER: [a-zA-Z0-9_]+ ;
 COMMENT: ';' ~( '\r' | '\n' )* -> channel(HIDDEN) ;
 
 WS: (' ' | '\t')+ -> channel(HIDDEN) ;

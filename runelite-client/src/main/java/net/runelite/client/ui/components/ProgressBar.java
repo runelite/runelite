@@ -28,8 +28,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import lombok.Setter;
@@ -39,7 +40,7 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 /**
  * A progress bar to be displayed underneath the GE offer item panels
  */
-public class ProgressBar extends JPanel
+public class ProgressBar extends DimmableJPanel
 {
 	@Setter
 	private int maximumValue;
@@ -47,14 +48,22 @@ public class ProgressBar extends JPanel
 	@Setter
 	private int value;
 
+	@Setter
+	private List<Integer> positions = Collections.emptyList();
+
 	private final JLabel leftLabel = new JShadowedLabel();
 	private final JLabel rightLabel = new JShadowedLabel();
 	private final JLabel centerLabel = new JShadowedLabel();
+	private String centerLabelText = "";
+	private String dimmedText = "";
 
 	public ProgressBar()
 	{
 		setLayout(new BorderLayout());
+		// The background color should be overridden
 		setBackground(Color.GREEN.darker());
+		setForeground(Color.GREEN.brighter());
+
 		setPreferredSize(new Dimension(100, 16));
 
 		leftLabel.setFont(FontManager.getRunescapeSmallFont());
@@ -70,41 +79,76 @@ public class ProgressBar extends JPanel
 		centerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		centerLabel.setBorder(new EmptyBorder(2, 0, 0, 0));
 
+		// Adds components to be automatically redrawn when paintComponents is called
 		add(leftLabel, BorderLayout.WEST);
 		add(centerLabel, BorderLayout.CENTER);
 		add(rightLabel, BorderLayout.EAST);
-
 	}
 
 	@Override
 	public void paint(Graphics g)
 	{
-		double percentage = getPercentage();
-		int topWidth = (int) (getSize().width * (percentage / 100));
+		int percentage = getPercentage();
+		int topWidth = (int) (getSize().width * (percentage / 100f));
 
 		super.paint(g);
 		g.setColor(getForeground());
 		g.fillRect(0, 0, topWidth, 16);
+
+		for (final Integer position : positions)
+		{
+			final int xCord = getSize().width * position / maximumValue;
+			if (xCord > topWidth)
+			{
+				g.fillRect(xCord, 0, 1, 16);
+			}
+		}
+
 		super.paintComponents(g);
 	}
 
+	@Override
+	public void setDimmed(boolean dimmed)
+	{
+		super.setDimmed(dimmed);
+
+		if (dimmed)
+		{
+			leftLabel.setForeground(Color.GRAY);
+			rightLabel.setForeground(Color.GRAY);
+			centerLabel.setText(dimmedText);
+		}
+		else
+		{
+			leftLabel.setForeground(Color.WHITE);
+			rightLabel.setForeground(Color.WHITE);
+			centerLabel.setText(centerLabelText);
+		}
+	}
 
 	public void setLeftLabel(String txt)
 	{
-		this.leftLabel.setText(txt);
+		leftLabel.setText(txt);
 	}
 
 	public void setRightLabel(String txt)
 	{
-		this.rightLabel.setText(txt);
+		rightLabel.setText(txt);
 	}
 
 	public void setCenterLabel(String txt)
 	{
-		this.centerLabel.setText(txt);
+		centerLabelText = txt;
+		centerLabel.setText(isDimmed() ? dimmedText : txt);
 	}
 
-	public double getPercentage()
+	public void setDimmedText(String txt)
+	{
+		dimmedText = txt;
+		centerLabel.setText(isDimmed() ? txt : centerLabelText);
+	}
+
+	public int getPercentage()
 	{
 		if (value == 0)
 		{

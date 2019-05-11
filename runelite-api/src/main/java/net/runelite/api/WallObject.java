@@ -62,4 +62,7 @@ public interface WallObject extends TileObject
 	 */
 >>>>>>> upstream/master
 	int getConfig();
+
+	Renderable getRenderable1();
+	Renderable getRenderable2();
 }

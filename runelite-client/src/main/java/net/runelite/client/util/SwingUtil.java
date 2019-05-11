@@ -28,30 +28,36 @@ import java.awt.AWTException;
 <<<<<<< HEAD
 =======
 import java.awt.Color;
+<<<<<<< HEAD
 >>>>>>> upstream/master
 import java.awt.Dimension;
+=======
+>>>>>>> upstream/master
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Graphics2D;
 import java.awt.Image;
+<<<<<<< HEAD
 import java.awt.Rectangle;
 <<<<<<< HEAD
 =======
 import java.awt.RenderingHints;
 >>>>>>> upstream/master
+=======
+>>>>>>> upstream/master
 import java.awt.SystemTray;
-import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 import java.util.Enumeration;
 import java.util.concurrent.Callable;
@@ -79,7 +85,6 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.CustomScrollBarUI;
 >>>>>>> upstream/master
 import org.pushingpixels.substance.internal.SubstanceSynapse;
-import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
 
 /**
  * Various Swing utilities.
@@ -126,6 +131,7 @@ public class SwingUtil
 
 	/**
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	 * Offsets an image in the grayscale (darkens/brightens) by an offset
 	 */
@@ -169,6 +175,8 @@ public class SwingUtil
 	}
 
 	/**
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 	 * Safely sets Swing theme
 	 *
@@ -254,20 +262,6 @@ public class SwingUtil
 	}
 
 	/**
-	 * Check if point is in screen bounds.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @return the boolean
-	 */
-	public static boolean isInScreenBounds(final int x, final int y)
-	{
-		final Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-		final Rectangle bounds = new Rectangle(size);
-		return bounds.contains(x, y);
-	}
-
-	/**
 	 * Add graceful exit callback.
 	 *
 	 * @param frame           the frame
@@ -316,6 +310,7 @@ public class SwingUtil
 <<<<<<< HEAD
 =======
 	/**
+<<<<<<< HEAD
 	 * Re-size a BufferedImage to the given dimensions.
 	 *
 	 * @param image the BufferedImage.
@@ -336,6 +331,8 @@ public class SwingUtil
 	}
 
 	/**
+=======
+>>>>>>> upstream/master
 	 * Create swing button from navigation button.
 	 *
 	 * @param navigationButton the navigation button
@@ -350,14 +347,18 @@ public class SwingUtil
 	{
 
 		final BufferedImage scaledImage = iconSize > 0
-			? resizeImage(navigationButton.getIcon(), iconSize, iconSize)
+			? ImageUtil.resizeImage(navigationButton.getIcon(), iconSize, iconSize)
 			: navigationButton.getIcon();
 
 		final JButton button = new JButton();
 <<<<<<< HEAD
+<<<<<<< HEAD
 		button.setName(navigationButton.getName());
 =======
 		button.setMaximumSize(new Dimension(30, 30));
+>>>>>>> upstream/master
+=======
+		button.setSize(scaledImage.getWidth(), scaledImage.getHeight());
 >>>>>>> upstream/master
 		button.setToolTipText(navigationButton.getTooltip());
 		button.setIcon(new ImageIcon(scaledImage));
@@ -392,16 +393,5 @@ public class SwingUtil
 
 		navigationButton.setOnSelect(button::doClick);
 		return button;
-	}
-
-	/**
-	 * Checks if custom substance title pane is present.
-	 *
-	 * @param frame the parent frame
-	 * @return true if title pane is present
-	 */
-	public static boolean isCustomTitlePanePresent(final Window frame)
-	{
-		return SubstanceCoreUtilities.getTitlePaneComponent(frame) != null;
 	}
 }

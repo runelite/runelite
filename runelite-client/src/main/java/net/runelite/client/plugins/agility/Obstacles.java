@@ -28,15 +28,32 @@ package net.runelite.client.plugins.agility;
 import com.google.common.collect.ImmutableSet;
 =======
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Multimap;
 import java.util.List;
 >>>>>>> upstream/master
 import java.util.Set;
+import static net.runelite.api.NullObjectID.NULL_10872;
+import static net.runelite.api.NullObjectID.NULL_10873;
+import static net.runelite.api.NullObjectID.NULL_12945;
+import static net.runelite.api.NullObjectID.NULL_18083;
+import static net.runelite.api.NullObjectID.NULL_18116;
+import static net.runelite.api.NullObjectID.NULL_18122;
+import static net.runelite.api.NullObjectID.NULL_18124;
+import static net.runelite.api.NullObjectID.NULL_18129;
+import static net.runelite.api.NullObjectID.NULL_18130;
+import static net.runelite.api.NullObjectID.NULL_18132;
+import static net.runelite.api.NullObjectID.NULL_18133;
+import static net.runelite.api.NullObjectID.NULL_18135;
+import static net.runelite.api.NullObjectID.NULL_18136;
+import static net.runelite.api.NullObjectID.NULL_3550;
 import static net.runelite.api.ObjectID.*;
+import net.runelite.client.game.AgilityShortcut;
 
-public class Obstacles
+class Obstacles
 {
-	public static final Set<Integer> COURSE_OBSTACLE_IDS = ImmutableSet.of(
+	static final Set<Integer> COURSE_OBSTACLE_IDS = ImmutableSet.of(
 		// Gnome
 		OBSTACLE_NET_23134, TREE_BRANCH_23559, TREE_BRANCH_23560, OBSTACLE_NET_23135, OBSTACLE_PIPE_23138,
 		OBSTACLE_PIPE_23139, LOG_BALANCE_23145, BALANCING_ROPE_23557,
@@ -44,7 +61,7 @@ public class Obstacles
 		PLANK_3572, PLANK_3571, PLANK_3570, ROPE_SWING, PILLAR_3578, LOW_WALL, LOG_BALANCE, LOG_BALANCE_3557,
 		BALANCING_LEDGE_3561, BALANCING_LEDGE, MONKEY_BARS_3564, BALANCING_ROPE, HAND_HOLDS_3583,
 		// Draynor
-		ROUGH_WALL, TIGHTROPE, TIGHTROPE_10075, NARROW_WALL, WALL_10084, GAP_10085, CRATE_10086,
+		ROUGH_WALL, TIGHTROPE, TIGHTROPE_10075, NARROW_WALL, WALL_10084, GAP_10085, CRATE_10086, STILE_7527,
 		// Al-Kharid
 		ROUGH_WALL_10093, TIGHTROPE_10284, CABLE, ZIP_LINE, TROPICAL_TREE_10357, ROOF_TOP_BEAMS,
 		TIGHTROPE_10583, GAP_10352,
@@ -65,7 +82,7 @@ public class Obstacles
 		STEPPING_STONE_15412, TROPICAL_TREE_15414, MONKEYBARS_15417, SKULL_SLOPE_15483, ROPE_15487, TROPICAL_TREE_16062,
 		// Falador
 		ROUGH_WALL_10833, TIGHTROPE_10834, HAND_HOLDS_10836, GAP_11161, GAP_11360, TIGHTROPE_11361,
-		TIGHTROPE_11364, GAP_11365, LEDGE_11366, LEDGE_11367, LEDGE_11368, LEDGE_11370, EDGE_11371,
+		TIGHTROPE_11364, GAP_11365, LEDGE_11366, LEDGE_11367, LEDGE_11369, LEDGE_11370, EDGE_11371,
 		// Wilderness
 		OBSTACLE_PIPE_23137, ROPESWING_23132, STEPPING_STONE_23556, LOG_BALANCE_23542, ROCKS_23640,
 		// Seers
@@ -83,9 +100,22 @@ public class Obstacles
 		// Rellaka
 		ROUGH_WALL_11391, GAP_11392, TIGHTROPE_11393, GAP_11395, GAP_11396, TIGHTROPE_11397, PILE_OF_FISH,
 		// Ardougne
-		GAP_11406, GAP_11429, GAP_11430, STEEP_ROOF, GAP_11630, PLANK_11631, WOODEN_BEAMS
+		GAP_11406, GAP_11429, GAP_11430, STEEP_ROOF, GAP_11630, PLANK_11631, WOODEN_BEAMS,
+		// Meiyerditch
+		NULL_12945, ROCK_17958, ROCK_17959, ROCK_17960, BOAT_17961, NULL_18122, NULL_18124, WALL_RUBBLE,
+		WALL_RUBBLE_18038, FLOORBOARDS, FLOORBOARDS_18071, FLOORBOARDS_18072, FLOORBOARDS_18073, NULL_18129, NULL_18130,
+		WALL_18078, NULL_18132, NULL_18133, NULL_18083, TUNNEL_18085, SHELF_18086, SHELF_18087, WALL_18088,
+		FLOORBOARDS_18089, FLOORBOARDS_18090, DOOR_18091, FLOORBOARDS_18093, FLOORBOARDS_18094, SHELF_18095,
+		SHELF_18096, FLOORBOARDS_18097, FLOORBOARDS_18098, WASHING_LINE_18099, WASHING_LINE_18100,
+		NULL_18135, NULL_18136, SHELF_18105, SHELF_18106, SHELF_18107, SHELF_18108, FLOORBOARDS_18109,
+		FLOORBOARDS_18110, FLOORBOARDS_18112, FLOORBOARDS_18111, FLOORBOARDS_18114, FLOORBOARDS_18113,
+		NULL_18116, FLOORBOARDS_18117, FLOORBOARDS_18118, STAIRS_DOWN, WALL_17980,
+		// Werewolf
+		STEPPING_STONE_11643, HURDLE, HURDLE_11639, HURDLE_11640, PIPE_11657, SKULL_SLOPE, ZIP_LINE_11644,
+		ZIP_LINE_11645, ZIP_LINE_11646
 	);
 
+<<<<<<< HEAD
 	public static final Set<Integer> SHORTCUT_OBSTACLE_IDS = ImmutableSet.of(
 		// Grand Exchange
 		UNDERWALL_TUNNEL_16529, UNDERWALL_TUNNEL_16530,
@@ -196,14 +226,34 @@ public class Obstacles
 		GAP, GAP_2831
 >>>>>>> upstream/master
 	);
+=======
+	static final Multimap<Integer, AgilityShortcut> SHORTCUT_OBSTACLE_IDS;
+>>>>>>> upstream/master
 
-	public static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
+	static final Set<Integer> TRAP_OBSTACLE_IDS = ImmutableSet.of(
 		// Agility pyramid
 		NULL_3550, NULL_10872, NULL_10873
 	);
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
 	public static final List<Integer> TRAP_OBSTACLE_REGIONS = ImmutableList.of(12105, 13356);
+>>>>>>> upstream/master
+=======
+	static final List<Integer> TRAP_OBSTACLE_REGIONS = ImmutableList.of(12105, 13356);
+
+	static
+	{
+		final ImmutableMultimap.Builder<Integer, AgilityShortcut> builder = ImmutableMultimap.builder();
+		for (final AgilityShortcut item : AgilityShortcut.values())
+		{
+			for (int obstacle : item.getObstacleIds())
+			{
+				builder.put(obstacle, item);
+			}
+		}
+		SHORTCUT_OBSTACLE_IDS = builder.build();
+	}
 >>>>>>> upstream/master
 }

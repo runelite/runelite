@@ -37,7 +37,7 @@ public class NpcDespawned implements ActorDespawned
  * An event where an {@link NPC} has despawned.
  */
 @Value
-public class NpcDespawned implements ActorDespawned
+public class NpcDespawned
 {
 	/**
 	 * The despawned NPC.
@@ -45,7 +45,6 @@ public class NpcDespawned implements ActorDespawned
 >>>>>>> upstream/master
 	private final NPC npc;
 
-	@Override
 	public Actor getActor()
 	{
 		return npc;

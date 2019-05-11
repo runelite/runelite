@@ -24,14 +24,16 @@
  */
 package net.runelite.client.plugins.tithefarm;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+<<<<<<< HEAD
 <<<<<<< HEAD
 import java.time.temporal.ChronoUnit;
 =======
 >>>>>>> upstream/master
 import java.util.Arrays;
 import java.util.Collection;
+=======
+>>>>>>> upstream/master
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -50,18 +52,26 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+<<<<<<< HEAD
 >>>>>>> upstream/master
 import net.runelite.client.ui.overlay.Overlay;
+=======
+import net.runelite.client.ui.overlay.OverlayManager;
+>>>>>>> upstream/master
 
 @Slf4j
 @PluginDescriptor(
-	name = "Tithe Farm"
+	name = "Tithe Farm",
+	description = "Show timers for the farming patches within the Tithe Farm minigame",
+	tags = {"farming", "minigame", "overlay", "skilling", "timers"}
 )
 public class TitheFarmPlugin extends Plugin
 {
 	@Inject
+<<<<<<< HEAD
 <<<<<<< HEAD
 	private TitheFarmPluginConfig config;
 
@@ -72,9 +82,12 @@ public class TitheFarmPlugin extends Plugin
 
 	@Inject
 	private TitheFarmSackOverlay titheFarmSackOverlay;
+=======
+	private OverlayManager overlayManager;
+>>>>>>> upstream/master
 
 	@Inject
-	private TitheFarmInventoryOverlay titheFarmInventoryOverlay;
+	private TitheFarmPlantOverlay titheFarmOverlay;
 
 	@Getter
 	private final Set<TitheFarmPlant> plants = new HashSet<>();
@@ -86,9 +99,10 @@ public class TitheFarmPlugin extends Plugin
 	}
 
 	@Override
-	public Collection<Overlay> getOverlays()
+	protected void startUp() throws Exception
 	{
-		return Arrays.asList(titheFarmOverlay, titheFarmSackOverlay, titheFarmInventoryOverlay);
+		overlayManager.add(titheFarmOverlay);
+		titheFarmOverlay.updateConfig();
 	}
 
 <<<<<<< HEAD
@@ -96,9 +110,9 @@ public class TitheFarmPlugin extends Plugin
 	public void checkPlants()
 =======
 	@Override
-	public void startUp() throws Exception
+	protected void shutDown() throws Exception
 	{
-		titheFarmOverlay.updateConfig();
+		overlayManager.remove(titheFarmOverlay);
 	}
 
 	@Subscribe

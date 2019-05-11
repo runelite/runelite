@@ -48,14 +48,14 @@ public abstract class PlaySoundEffectMixin implements RSClient
 
 		int[] queuedSoundEffectIDs = getQueuedSoundEffectIDs();
 		int[] unknownSoundValues1 = getUnknownSoundValues1();
-		int[] unknownSoundValues2 = getUnknownSoundValues2();
+		int[] queuedSoundEffectDelays = getQueuedSoundEffectDelays();
 		RSSoundEffect[] audioEffects = getAudioEffects();
 		int[] soundLocations = getSoundLocations();
 		int queuedSoundEffectCount = getQueuedSoundEffectCount();
 
 		queuedSoundEffectIDs[queuedSoundEffectCount] = id;
 		unknownSoundValues1[queuedSoundEffectCount] = 0;
-		unknownSoundValues2[queuedSoundEffectCount] = 0;
+		queuedSoundEffectDelays[queuedSoundEffectCount] = 0;
 		audioEffects[queuedSoundEffectCount] = null;
 		soundLocations[queuedSoundEffectCount] = position;
 

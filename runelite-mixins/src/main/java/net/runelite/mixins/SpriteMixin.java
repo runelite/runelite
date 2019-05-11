@@ -25,6 +25,7 @@
  */
 package net.runelite.mixins;
 
+import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.mixins.Copy;
@@ -39,24 +40,23 @@ import net.runelite.rs.api.RSSpritePixels;
 public abstract class SpriteMixin implements RSClient
 {
 	@Inject
-	private static Map<Integer, SpritePixels> spriteOverrides;
+	private static final Map<Integer, SpritePixels> spriteOverrides = new HashMap<Integer, SpritePixels>();
 
 	@Inject
-	private static Map<Integer, SpritePixels> widgetSpriteOverrides;
+	private static final Map<Integer, SpritePixels> widgetSpriteOverrides = new HashMap<Integer, SpritePixels>();
 
 	@Inject
 	@Override
-	public void setSpriteOverrides(Map<Integer, SpritePixels> overrides)
+	public Map<Integer, SpritePixels> getSpriteOverrides()
 	{
-		getWidgetSpriteCache().reset();
-		spriteOverrides = overrides;
+		return spriteOverrides;
 	}
 
 	@Inject
 	@Override
-	public void setWidgetSpriteOverrides(Map<Integer, SpritePixels> overrides)
+	public Map<Integer, SpritePixels> getWidgetSpriteOverrides()
 	{
-		widgetSpriteOverrides = overrides;
+		return widgetSpriteOverrides;
 	}
 
 	@Copy("getSpriteAsSpritePixels")
@@ -68,14 +68,11 @@ public abstract class SpriteMixin implements RSClient
 	@Replace("getSpriteAsSpritePixels")
 	public static RSSpritePixels rl$loadSprite(RSIndexDataBase var0, int var1, int var2)
 	{
-		if (spriteOverrides != null)
-		{
-			SpritePixels sprite = spriteOverrides.get(var1);
+		SpritePixels sprite = spriteOverrides.get(var1);
 
-			if (sprite != null)
-			{
-				return (RSSpritePixels) sprite;
-			}
+		if (sprite != null)
+		{
+			return (RSSpritePixels) sprite;
 		}
 
 		return rs$loadSprite(var0, var1, var2);

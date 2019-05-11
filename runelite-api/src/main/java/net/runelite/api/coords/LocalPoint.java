@@ -101,7 +101,7 @@ public class LocalPoint
 		int baseX = client.getBaseX();
 		int baseY = client.getBaseY();
 
-		return fromRegion(x - baseX, y - baseY);
+		return fromScene(x - baseX, y - baseY);
 	}
 
 	/**
@@ -127,19 +127,13 @@ public class LocalPoint
 	 * Returns a LocalPoint of the center of the passed tile
 =======
 	 * Gets the coordinate at the center of the passed tile.
-	 * <p>
-	 * The coordinate returned by this method is the true tile location,
-	 * in LocalPoint units, relative to tile (0, 0).
-	 * <p>
-	 * e.g. If the local player is standing on tile 3170, the method returns
-	 * 405823, or 3170 * 128 + 64.
 	 *
-	 * @param x      x-axis coordinate of the tile
-	 * @param y      y-axis coordinate of the tile
+	 * @param x      x-axis coordinate of the tile in Scene coords
+	 * @param y      y-axis coordinate of the tile in Scene coords
 	 * @return true coordinate of the tile
 >>>>>>> upstream/master
 	 */
-	public static LocalPoint fromRegion(int x, int y)
+	public static LocalPoint fromScene(int x, int y)
 	{
 		return new LocalPoint(
 			(x << Perspective.LOCAL_COORD_BITS) + (1 << Perspective.LOCAL_COORD_BITS - 1) - 1,
@@ -156,7 +150,7 @@ public class LocalPoint
 	 * @return x-axis coordinate
 >>>>>>> upstream/master
 	 */
-	public int getRegionX()
+	public int getSceneX()
 	{
 		return x >>> Perspective.LOCAL_COORD_BITS;
 	}
@@ -172,7 +166,7 @@ public class LocalPoint
 	 * @return y-axis coordinate
 >>>>>>> upstream/master
 	 */
-	public int getRegionY()
+	public int getSceneY()
 	{
 		return y >>> Perspective.LOCAL_COORD_BITS;
 	}

@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.hunter;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.HashMap;
@@ -46,13 +45,16 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.util.QueryRunner;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Hunter"
+	name = "Hunter",
+	description = "Show the state of your traps",
+	tags = {"overlay", "skilling", "timers"}
 )
 public class HunterPlugin extends Plugin
 {
@@ -60,10 +62,9 @@ public class HunterPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private QueryRunner queryRunner;
+	private OverlayManager overlayManager;
 
 	@Inject
-	@Getter
 	private TrapOverlay overlay;
 
 	@Inject
@@ -89,12 +90,14 @@ public class HunterPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		overlayManager.add(overlay);
 		overlay.updateConfig();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
 		lastActionTime = Instant.ofEpochMilli(0);
 		traps.clear();
 	}
@@ -125,7 +128,7 @@ public class HunterPlugin extends Plugin
 
 			case ObjectID.MONKEY_TRAP: // Maniacal monkey trap placed
 				// If player is right next to "object" trap assume that player placed the trap
-				if (localPlayer.getWorldLocation().distanceTo(trapLocation) <= 1)
+				if (localPlayer.getWorldLocation().distanceTo(trapLocation) <= 2)
 				{
 					log.debug("Trap placed by \"{}\" on {}", localPlayer.getName(), trapLocation);
 					traps.put(trapLocation, new HunterTrap(gameObject));
@@ -303,7 +306,7 @@ public class HunterPlugin extends Plugin
 	{
 		// Check if all traps are still there, and remove the ones that are not.
 		Iterator<Map.Entry<WorldPoint, HunterTrap>> it = traps.entrySet().iterator();
-		Tile[][][] tiles = client.getRegion().getTiles();
+		Tile[][][] tiles = client.getScene().getTiles();
 
 		Instant expire = Instant.now().minus(HunterTrap.TRAP_TIME.multipliedBy(2));
 
@@ -327,7 +330,7 @@ public class HunterPlugin extends Plugin
 				continue;
 			}
 
-			Tile tile = tiles[world.getPlane()][local.getRegionX()][local.getRegionY()];
+			Tile tile = tiles[world.getPlane()][local.getSceneX()][local.getSceneY()];
 			GameObject[] objects = tile.getGameObjects();
 
 			boolean containsBoulder = false;

@@ -1,0 +1,44 @@
+.id                 300
+.int_stack_count    0
+.string_stack_count 0
+.int_var_count      0
+.string_var_count   1
+   get_varc_int           11
+   iconst                 1
+   if_icmpeq              LABEL4
+   jump                   LABEL5
+LABEL4:
+   if_close              
+LABEL5:
+   iconst                 11
+   invoke                 677
+   sconst                 "Show items whose names contain the following text:"
+   sconst                 "setSearchBankInputText"  ; load event name
+   runelite_callback     ; invoke callback
+   iconst                 10616876
+   if_settext            
+   sconst                 ""
+   invoke                 222
+   sconst                 ""
+   sstore                 0
+   iconst                 112
+   iconst                 -2147483640
+   iconst                 -2147483639
+   sload                  0
+   sconst                 "izs"
+   iconst                 10616877
+   if_setonkey           
+   iconst                 138
+   sconst                 ""
+   iconst                 10616877
+   if_setondialogabort   
+   invoke                 1972
+   iconst                 1
+   if_icmpeq              LABEL29
+   jump                   LABEL32
+LABEL29:
+   iconst                 0
+   iconst                 80
+   invoke                 1983
+LABEL32:
+   return                

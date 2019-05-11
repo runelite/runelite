@@ -24,93 +24,46 @@
  */
 package net.runelite.http.service.hiscore;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.hiscore.HiscoreClient;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
-import net.runelite.http.api.hiscore.HiscoreSkill;
-import net.runelite.http.api.hiscore.Skill;
-import net.runelite.http.service.util.exception.InternalServerErrorException;
-import net.runelite.http.service.util.exception.NotFoundException;
+import net.runelite.http.api.hiscore.HiscoreResult;
 import okhttp3.HttpUrl;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
 public class HiscoreService
 {
-	public HiscoreResultBuilder lookupUsername(String username, HiscoreEndpoint endpoint) throws IOException
-	{
-		return lookupUsername(username, endpoint.getHiscoreURL());
-	}
-
-	public HiscoreResultBuilder lookupUsername(String username, HttpUrl hiscoreUrl) throws IOException
-	{
-		HttpUrl url = hiscoreUrl.newBuilder()
-			.addQueryParameter("player", username)
-			.build();
-
-		log.debug("Built URL {}", url);
-
-		Request okrequest = new Request.Builder()
-			.url(url)
-			.build();
-
-		String responseStr;
-
-		try (Response okresponse = RuneLiteAPI.CLIENT.newCall(okrequest).execute())
-		{
-			if (!okresponse.isSuccessful())
+	private final HiscoreClient hiscoreClient = new HiscoreClient();
+	private final LoadingCache<HiscoreKey, HiscoreResult> hiscoreCache = CacheBuilder.newBuilder()
+		.maximumSize(128)
+		.expireAfterWrite(1, TimeUnit.MINUTES)
+		.build(
+			new CacheLoader<HiscoreKey, HiscoreResult>()
 			{
-				switch (HttpStatus.valueOf(okresponse.code()))
+				@Override
+				public HiscoreResult load(HiscoreKey key) throws IOException
 				{
-					case NOT_FOUND:
-						throw new NotFoundException();
-					default:
-						throw new InternalServerErrorException("Error retrieving data from Jagex Hiscores: " + okresponse.message());
+					return hiscoreClient.lookup(key.getUsername(), key.getEndpoint());
 				}
-			}
+			});
 
-			responseStr = okresponse.body().string();
-		}
-
-		CSVParser parser = CSVParser.parse(responseStr, CSVFormat.DEFAULT);
-
-		HiscoreResultBuilder hiscoreBuilder = new HiscoreResultBuilder();
-		hiscoreBuilder.setPlayer(username);
-
-		int count = 0;
-
-		for (CSVRecord record : parser.getRecords())
-		{
-			if (count++ >= HiscoreSkill.values().length)
-			{
-				log.warn("Jagex Hiscore API returned unexpected data");
-				break; // rest is other things?
-			}
-
-			// rank, level, experience
-			int rank = Integer.parseInt(record.get(0));
-			int level = Integer.parseInt(record.get(1));
-
-			// items that are not skills do not have an experience parameter
-			long experience = -1;
-			if (record.size() == 3)
-			{
-				experience = Long.parseLong(record.get(2));
-			}
-
-			Skill skill = new Skill(rank, level, experience);
-			hiscoreBuilder.setNextSkill(skill);
-		}
-
-		return hiscoreBuilder;
+	@VisibleForTesting
+	HiscoreResult lookupUsername(String username, HttpUrl httpUrl) throws IOException
+	{
+		return hiscoreClient.lookup(username, httpUrl);
 	}
 
+	public HiscoreResult lookupUsername(String username, HiscoreEndpoint endpoint) throws ExecutionException
+	{
+		return hiscoreCache.get(new HiscoreKey(username, endpoint));
+	}
 }

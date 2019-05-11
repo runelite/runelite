@@ -24,7 +24,6 @@
  */
 package net.runelite.client.callback;
 
-import com.google.common.eventbus.EventBus;
 import com.google.inject.Injector;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -36,7 +35,6 @@ import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 >>>>>>> upstream/master
 import java.awt.RenderingHints;
-import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -44,23 +42,23 @@ import java.awt.image.BufferedImage;
 <<<<<<< HEAD
 =======
 import java.awt.image.VolatileImage;
+<<<<<<< HEAD
 >>>>>>> upstream/master
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
+=======
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.BufferProvider;
+>>>>>>> upstream/master
 import net.runelite.api.Client;
-import net.runelite.api.GraphicsObject;
-import net.runelite.api.Hitsplat;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.KeyFocusListener;
 import net.runelite.api.MainBufferProvider;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MessageNode;
-import net.runelite.api.PacketBuffer;
-import net.runelite.api.Projectile;
-import net.runelite.api.Region;
+import net.runelite.api.NullItemID;
 import net.runelite.api.RenderOverview;
-import net.runelite.api.TextureProvider;
+import net.runelite.api.Renderable;
 import net.runelite.api.WorldMapManager;
+<<<<<<< HEAD
 import net.runelite.api.coords.LocalPoint;
 <<<<<<< HEAD
 import net.runelite.api.events.ActorDeath;
@@ -68,19 +66,20 @@ import net.runelite.api.events.ActorDeath;
 >>>>>>> upstream/master
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.FocusChanged;
+=======
+import net.runelite.api.events.BeforeMenuRender;
+import net.runelite.api.events.BeforeRender;
+>>>>>>> upstream/master
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GraphicsObjectCreated;
-import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.MenuOpened;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.PostItemComposition;
-import net.runelite.api.events.ProjectileMoved;
-import net.runelite.api.events.SetMessage;
+import net.runelite.api.hooks.Callbacks;
+import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.Notifier;
 import net.runelite.client.RuneLite;
 import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
@@ -90,28 +89,26 @@ import net.runelite.client.ui.ClientUI;
 >>>>>>> upstream/master
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.DeferredEventBus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class Hooks
+/**
+ * This class contains field required for mixins and runelite hooks to work.
+ * All remaining method hooks in this class are performance-critical or contain client-specific logic and so they
+ * can't just be placed in mixins or sent through event bus.
+ */
+@Singleton
+@Slf4j
+public class Hooks implements Callbacks
 {
-	// must be public as the mixins use it
-	public static final Logger log = LoggerFactory.getLogger(Hooks.class);
-
 	private static final long CHECK = 600; // ms - how often to run checks
 
 	private static final Injector injector = RuneLite.getInjector();
 	private static final Client client = injector.getInstance(Client.class);
-	public static final EventBus eventBus = injector.getInstance(EventBus.class); // symbol must match mixin Hook
-	private static final DeferredEventBus _deferredEventBus = injector.getInstance(DeferredEventBus.class);
-	public static final EventBus deferredEventBus = _deferredEventBus; // symbol must match mixin Hook
-	private static final Scheduler scheduler = injector.getInstance(Scheduler.class);
-	private static final InfoBoxManager infoBoxManager = injector.getInstance(InfoBoxManager.class);
-	private static final ChatMessageManager chatMessageManager = injector.getInstance(ChatMessageManager.class);
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
+<<<<<<< HEAD
 	private static final MouseManager mouseManager = injector.getInstance(MouseManager.class);
 	private static final KeyManager keyManager = injector.getInstance(KeyManager.class);
 	private static final ClientThread clientThread = injector.getInstance(ClientThread.class);
@@ -134,18 +131,81 @@ public class Hooks
 	private static boolean shouldProcessGameTick;
 
 	public static void clientMainLoop(Client client, boolean arg1)
+=======
+	private static final OverlayManager overlayManager = injector.getInstance(OverlayManager.class);
+
+	private static final GameTick GAME_TICK = new GameTick();
+	private static final BeforeRender BEFORE_RENDER = new BeforeRender();
+
+	@Inject
+	private EventBus eventBus;
+
+	@Inject
+	private DeferredEventBus deferredEventBus;
+
+	@Inject
+	private Scheduler scheduler;
+
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
+
+	@Inject
+	private MouseManager mouseManager;
+
+	@Inject
+	private KeyManager keyManager;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private DrawManager drawManager;
+
+	@Inject
+	private Notifier notifier;
+
+	@Inject
+	private ClientUI clientUi;
+
+	private Dimension lastStretchedDimensions;
+	private VolatileImage stretchedImage;
+	private Graphics2D stretchedGraphics;
+
+	private long lastCheck;
+	private boolean shouldProcessGameTick;
+
+	@Override
+	public void post(Object event)
+	{
+		eventBus.post(event);
+	}
+
+	@Override
+	public void postDeferred(Object event)
+	{
+		deferredEventBus.post(event);
+	}
+
+	@Override
+	public void clientMainLoop()
+>>>>>>> upstream/master
 	{
 		if (shouldProcessGameTick)
 		{
 			shouldProcessGameTick = false;
 
-			_deferredEventBus.replay();
+			deferredEventBus.replay();
 
-			eventBus.post(tick);
+			eventBus.post(GAME_TICK);
 
 			int tick = client.getTickCount();
 			client.setTickCount(tick + 1);
 		}
+
+		eventBus.post(BEFORE_RENDER);
 
 		clientThread.invoke();
 
@@ -180,11 +240,11 @@ public class Hooks
 	 * When the world map opens it loads about ~100mb of data into memory, which
 	 * represents about half of the total memory allocated by the client.
 	 * This gets cached and never released, which causes GC pressure which can affect
-	 * performance. This method reinitailzies the world map cache, which allows the
-	 * data to be garbage collecged, and causes the map data from disk each time
+	 * performance. This method reinitializes the world map cache, which allows the
+	 * data to be garbage collected, and causes the map data from disk each time
 	 * is it opened.
 	 */
-	private static void checkWorldMap()
+	private void checkWorldMap()
 	{
 		Widget widget = client.getWidget(WORLD_MAP_VIEW);
 
@@ -209,78 +269,74 @@ public class Hooks
 		}
 	}
 
-	public static MouseEvent mousePressed(MouseEvent mouseEvent)
+	@Override
+	public MouseEvent mousePressed(MouseEvent mouseEvent)
 	{
 		return mouseManager.processMousePressed(mouseEvent);
 	}
 
-	public static MouseEvent mouseReleased(MouseEvent mouseEvent)
+	@Override
+	public MouseEvent mouseReleased(MouseEvent mouseEvent)
 	{
 		return mouseManager.processMouseReleased(mouseEvent);
 	}
 
-	public static MouseEvent mouseClicked(MouseEvent mouseEvent)
+	@Override
+	public MouseEvent mouseClicked(MouseEvent mouseEvent)
 	{
 		return mouseManager.processMouseClicked(mouseEvent);
 	}
 
-	public static MouseEvent mouseEntered(MouseEvent mouseEvent)
+	@Override
+	public MouseEvent mouseEntered(MouseEvent mouseEvent)
 	{
 		return mouseManager.processMouseEntered(mouseEvent);
 	}
 
-	public static MouseEvent mouseExited(MouseEvent mouseEvent)
+	@Override
+	public MouseEvent mouseExited(MouseEvent mouseEvent)
 	{
 		return mouseManager.processMouseExited(mouseEvent);
 	}
 
-	public static MouseEvent mouseDragged(MouseEvent mouseEvent)
+	@Override
+	public MouseEvent mouseDragged(MouseEvent mouseEvent)
 	{
 		return mouseManager.processMouseDragged(mouseEvent);
 	}
 
-	public static MouseEvent mouseMoved(MouseEvent mouseEvent)
+	@Override
+	public MouseEvent mouseMoved(MouseEvent mouseEvent)
 	{
 		return mouseManager.processMouseMoved(mouseEvent);
 	}
 
-	public static MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
+	@Override
+	public MouseWheelEvent mouseWheelMoved(MouseWheelEvent event)
 	{
 		return mouseManager.processMouseWheelMoved(event);
 	}
 
-	public static void keyPressed(KeyEvent keyEvent)
+	@Override
+	public void keyPressed(KeyEvent keyEvent)
 	{
 		keyManager.processKeyPressed(keyEvent);
 	}
 
-	public static void keyReleased(KeyEvent keyEvent)
+	@Override
+	public void keyReleased(KeyEvent keyEvent)
 	{
 		keyManager.processKeyReleased(keyEvent);
 	}
 
-	public static void keyTyped(KeyEvent keyEvent)
+	@Override
+	public void keyTyped(KeyEvent keyEvent)
 	{
 		keyManager.processKeyTyped(keyEvent);
 	}
 
-	public static void focusGained(KeyFocusListener l, FocusEvent focusEvent)
-	{
-		FocusChanged focusChanged = new FocusChanged();
-		focusChanged.setFocused(true);
-
-		eventBus.post(focusChanged);
-	}
-
-	public static void focusLost(KeyFocusListener l, FocusEvent focusEvent)
-	{
-		FocusChanged focusChanged = new FocusChanged();
-		focusChanged.setFocused(false);
-
-		eventBus.post(focusChanged);
-	}
-
-	public static void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
+	@Override
+	public void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y)
 	{
 		if (graphics == null)
 		{
@@ -291,6 +347,10 @@ public class Hooks
 		BufferedImage image = (BufferedImage) mainBufferProvider.getImage();
 =======
 		Image image = mainBufferProvider.getImage();
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
+		final Image finalImage;
 >>>>>>> upstream/master
 		final Graphics2D graphics2d = (Graphics2D) image.getGraphics();
 
@@ -305,8 +365,20 @@ public class Hooks
 
 		notifier.processFlash(graphics2d);
 
+		// Draw clientUI overlays
+		clientUi.paintOverlays(graphics2d);
+
+		graphics2d.dispose();
+
+		if (client.isGpu())
+		{
+			// processDrawComplete gets called on GPU by the gpu plugin at the end of its
+			// drawing cycle, which is later on.
+			return;
+		}
+
 		// Stretch the game image if the user has that enabled
-		if (!client.isResized() && client.isStretchedEnabled())
+		if (client.isStretchedEnabled())
 		{
 <<<<<<< HEAD
 			Dimension stretchedDimensions = client.getStretchedDimensions();
@@ -336,7 +408,7 @@ public class Hooks
 				stretchedGraphics = (Graphics2D) stretchedImage.getGraphics();
 
 				lastStretchedDimensions = stretchedDimensions;
-				
+
 				/*
 					Fill Canvas before drawing stretched image to prevent artifacts.
 				*/
@@ -345,25 +417,48 @@ public class Hooks
 			}
 
 			stretchedGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					client.isStretchedFast()
-							? RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
-							: RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+				client.isStretchedFast()
+					? RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
+					: RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			stretchedGraphics.drawImage(image, 0, 0, stretchedDimensions.width, stretchedDimensions.height, null);
 
-			image = stretchedImage;
+			finalImage = stretchedImage;
+		}
+		else
+		{
+			finalImage = image;
 		}
 
 		// Draw the image onto the game canvas
-		graphics.drawImage(image, 0, 0, client.getCanvas());
+		graphics.drawImage(finalImage, 0, 0, client.getCanvas());
 
-		renderHooks.processDrawComplete(image);
+		// finalImage is backed by the client buffer which will change soon. make a copy
+		// so that callbacks can safely use it later from threads.
+		drawManager.processDrawComplete(() -> copy(finalImage));
 	}
 
-	public static void drawRegion(Region region, int var1, int var2, int var3, int var4, int var5, int var6)
+	/**
+	 * Copy an image
+	 * @param src
+	 * @return
+	 */
+	private static Image copy(Image src)
+	{
+		final int width = src.getWidth(null);
+		final int height = src.getHeight(null);
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		Graphics graphics = image.getGraphics();
+		graphics.drawImage(src, 0, 0, width, height, null);
+		graphics.dispose();
+		return image;
+	}
+
+	@Override
+	public void drawScene()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();
-		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+		Graphics2D graphics2d = image.createGraphics();
 
 		try
 		{
@@ -373,13 +468,18 @@ public class Hooks
 		{
 			log.warn("Error during overlay rendering", ex);
 		}
+		finally
+		{
+			graphics2d.dispose();
+		}
 	}
 
-	public static void drawAboveOverheads(TextureProvider textureProvider, int var1)
+	@Override
+	public void drawAboveOverheads()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();
-		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+		Graphics2D graphics2d = image.createGraphics();
 
 		try
 		{
@@ -389,103 +489,52 @@ public class Hooks
 		{
 			log.warn("Error during overlay rendering", ex);
 		}
+		finally
+		{
+			graphics2d.dispose();
+		}
 	}
 
 	public static void drawAfterWidgets()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();
-		Graphics2D graphics2d = (Graphics2D) image.getGraphics();
+		Graphics2D graphics2d = image.createGraphics();
 
 		try
 		{
 			renderer.render(graphics2d, OverlayLayer.ABOVE_WIDGETS);
+			renderer.render(graphics2d, OverlayLayer.ABOVE_MAP);
 		}
 		catch (Exception ex)
 		{
 			log.warn("Error during overlay rendering", ex);
 		}
-	}
-
-	public static boolean menuActionHook(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
-	{
-		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
-		 * I have no idea why, but it does. Their code contains the same conditional statement.
-		 */
-		if (menuAction >= 2000)
+		finally
 		{
-			menuAction -= 2000;
+			graphics2d.dispose();
 		}
 
-		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
-		menuOptionClicked.setActionParam(actionParam);
-		menuOptionClicked.setMenuOption(menuOption);
-		menuOptionClicked.setMenuTarget(menuTarget);
-		menuOptionClicked.setMenuAction(MenuAction.of(menuAction));
-		menuOptionClicked.setId(id);
-		menuOptionClicked.setWidgetId(widgetId);
-
-		log.debug("Menu action clicked: {}", menuOptionClicked);
-
-		eventBus.post(menuOptionClicked);
-
-		return menuOptionClicked.isConsumed();
+		// WidgetItemOverlays render at ABOVE_WIDGETS, reset widget item
+		// list for next frame.
+		overlayManager.getItemWidgets().clear();
 	}
 
-	public static void addChatMessage(int type, String name, String message, String sender)
-	{
-		if (log.isDebugEnabled())
-		{
-			log.debug("Chat message type {}: {}", ChatMessageType.of(type), message);
-		}
-
-		ChatMessageType chatMessageType = ChatMessageType.of(type);
-		ChatMessage chatMessage = new ChatMessage(chatMessageType, name, message, sender);
-
-		eventBus.post(chatMessage);
-	}
-
-	/**
-	 * Called when a projectile is set to move towards a point. For
-	 * projectiles that target the ground, like AoE projectiles from
-	 * Lizardman Shamans, this is only called once
-	 *
-	 * @param projectile The projectile being moved
-	 * @param targetX X position of where the projectile is being moved to
-	 * @param targetY Y position of where the projectile is being moved to
-	 * @param targetZ Z position of where the projectile is being moved to
-	 * @param cycle
-	 */
-	public static void projectileMoved(Projectile projectile, int targetX, int targetY, int targetZ, int cycle)
-	{
-		LocalPoint position = new LocalPoint(targetX, targetY);
-		ProjectileMoved projectileMoved = new ProjectileMoved();
-		projectileMoved.setProjectile(projectile);
-		projectileMoved.setPosition(position);
-		projectileMoved.setZ(targetZ);
-		eventBus.post(projectileMoved);
-	}
-
-	public static void setMessage(MessageNode messageNode, int type, String name, String sender, String value)
-	{
-		SetMessage setMessage = new SetMessage();
-		setMessage.setMessageNode(messageNode);
-		setMessage.setType(ChatMessageType.of(type));
-		setMessage.setName(name);
-		setMessage.setSender(sender);
-		setMessage.setValue(value);
-
-		eventBus.post(setMessage);
-	}
-
-	public static void onNpcUpdate(boolean var0, PacketBuffer var1)
+	@Override
+	public void updateNpcs()
 	{
 		// The NPC update event seem to run every server tick,
 		// but having the game tick event after all packets
 		// have been processed is typically more useful.
 		shouldProcessGameTick = true;
+		// Replay deferred events, otherwise if two npc
+		// update packets get processed in one frame, a
+		// despawn event could be published prior to the
+		// spawn event, which is deferred
+		deferredEventBus.replay();
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	public static void onSetCombatInfo(Actor actor, int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
 	{
@@ -500,47 +549,54 @@ public class Hooks
 =======
 >>>>>>> upstream/master
 	public static void postItemComposition(ItemComposition itemComposition)
+=======
+	public static void renderDraw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)
+>>>>>>> upstream/master
 	{
-		PostItemComposition event = new PostItemComposition();
-		event.setItemComposition(itemComposition);
-		eventBus.post(event);
+		DrawCallbacks drawCallbacks = client.getDrawCallbacks();
+		if (drawCallbacks != null)
+		{
+			drawCallbacks.draw(renderable, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+		}
+		else
+		{
+			renderable.draw(orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+		}
 	}
 
-	public static void menuOpened(Client client, int var1, int var2)
+	public static void clearColorBuffer(int x, int y, int width, int height, int color)
 	{
-		MenuOpened event = new MenuOpened();
-		event.setMenuEntries(client.getMenuEntries());
-		eventBus.post(event);
+		BufferProvider bp = client.getBufferProvider();
+		int canvasWidth = bp.getWidth();
+		int[] pixels = bp.getPixels();
+
+		int pixelPos = y * canvasWidth + x;
+		int pixelJump = canvasWidth - width;
+
+		for (int cy = y; cy < y + height; cy++)
+		{
+			for (int cx = x; cx < x + width; cx++)
+			{
+				pixels[pixelPos++] = 0;
+			}
+			pixelPos += pixelJump;
+		}
 	}
 
-	/**
-	 * Called after a hitsplat has been processed on an actor.
-	 * Note that this event runs even if the hitsplat didn't show up,
-	 * i.e. the actor already had 4 visible hitsplats.
-	 *
-	 * @param actor The actor the hitsplat was applied to
-	 * @param type The hitsplat type (i.e. color)
-	 * @param value The value of the hitsplat (i.e. how high the hit was)
-	 * @param var3
-	 * @param var4
-	 * @param gameCycle The gamecycle the hitsplat was applied on
-	 * @param duration The amount of gamecycles the hitsplat will last for
-	 */
-	public static void onActorHitsplat(Actor actor, int type, int value, int var3, int var4,
-		int gameCycle, int duration)
+	@Override
+	public void drawItem(int itemId, WidgetItem widgetItem)
 	{
-		Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.fromInteger(type), value,
-			gameCycle + duration);
-
-		HitsplatApplied event = new HitsplatApplied();
-		event.setActor(actor);
-		event.setHitsplat(hitsplat);
-		eventBus.post(event);
+		// Empty bank item
+		if (widgetItem.getId() != NullItemID.NULL_6512)
+		{
+			overlayManager.getItemWidgets().add(widgetItem);
+		}
 	}
 
-	public static void onGraphicsObjectCreated(GraphicsObject go, int var1, int var2, int var3, int var4, int var5, int var6, int var7)
+	public static boolean drawMenu()
 	{
-		GraphicsObjectCreated event = new GraphicsObjectCreated(go);
-		eventBus.post(event);
+		BeforeMenuRender event = new BeforeMenuRender();
+		client.getCallbacks().post(event);
+		return event.isConsumed();
 	}
 }

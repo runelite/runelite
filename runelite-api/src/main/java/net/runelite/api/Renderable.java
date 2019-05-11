@@ -40,4 +40,8 @@ public interface Renderable extends Node
 	 */
 >>>>>>> upstream/master
 	Model getModel();
+
+	void setModelHeight(int modelHeight);
+
+	void draw(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
 }

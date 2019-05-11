@@ -28,17 +28,21 @@ import net.runelite.api.events.NameableNameChanged;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
-import static net.runelite.client.callback.Hooks.eventBus;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSNameable;
 
 @Mixin(RSNameable.class)
 public abstract class RSNameableMixin implements RSNameable
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@FieldHook("prevName")
 	@Inject
 	public void onPrevNameChanged(int idx)
 	{
 		NameableNameChanged nameableNameChanged = new NameableNameChanged(this);
-		eventBus.post(nameableNameChanged);
+		client.getCallbacks().post(nameableNameChanged);
 	}
 }

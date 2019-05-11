@@ -27,6 +27,8 @@ package net.runelite.client.plugins.screenmarkers;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Stroke;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -36,6 +38,10 @@ import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 public class ScreenMarkerRenderable implements LayoutableRenderableEntity
 {
 	@Getter(AccessLevel.PACKAGE)
+	@Setter
+	private Point preferredLocation;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter
 	private Dimension preferredSize;
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -49,6 +55,9 @@ public class ScreenMarkerRenderable implements LayoutableRenderableEntity
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private Stroke stroke;
+
+	@Getter
+	private final Rectangle bounds = new Rectangle();
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -67,12 +76,7 @@ public class ScreenMarkerRenderable implements LayoutableRenderableEntity
 		graphics.setColor(color);
 		graphics.setStroke(stroke);
 		graphics.drawRect(offset, offset, width - thickness, height - thickness);
+		bounds.setSize(preferredSize);
 		return preferredSize;
-	}
-
-	@Override
-	public void setPreferredSize(Dimension preferredSize)
-	{
-		this.preferredSize = preferredSize;
 	}
 }

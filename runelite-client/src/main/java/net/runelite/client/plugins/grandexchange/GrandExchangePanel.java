@@ -31,6 +31,7 @@ package net.runelite.client.plugins.grandexchange;
 
 import java.awt.BorderLayout;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
@@ -45,13 +46,15 @@ import net.runelite.api.ItemComposition;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.PluginPanel;
 =======
+=======
+import java.util.Map;
+>>>>>>> upstream/master
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
@@ -59,7 +62,6 @@ import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 >>>>>>> upstream/master
 
-@Slf4j
 class GrandExchangePanel extends PluginPanel
 {
 <<<<<<< HEAD
@@ -88,7 +90,7 @@ class GrandExchangePanel extends PluginPanel
 >>>>>>> upstream/master
 
 	@Inject
-	GrandExchangePanel(Client client, ItemManager itemManager, ScheduledExecutorService executor)
+	private GrandExchangePanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor)
 	{
 <<<<<<< HEAD
 		setLayout(new BorderLayout());
@@ -109,7 +111,7 @@ class GrandExchangePanel extends PluginPanel
 >>>>>>> upstream/master
 
 		// Search Panel
-		searchPanel = new GrandExchangeSearchPanel(client, itemManager, executor);
+		searchPanel = new GrandExchangeSearchPanel(clientThread, itemManager, executor);
 
 <<<<<<< HEAD
 		tabbedPane.addTab("Offers", offerPanel);
@@ -121,7 +123,7 @@ class GrandExchangePanel extends PluginPanel
 		offerSlotPanels[slot].updateOffer(item, itemImage, newOffer);
 =======
 		//Offers Panel
-		offersPanel = new GrandExchangeOffersPanel(client, itemManager, executor);
+		offersPanel = new GrandExchangeOffersPanel();
 
 		MaterialTab offersTab = new MaterialTab("Offers", tabGroup, offersPanel);
 		searchTab = new MaterialTab("Search", tabGroup, searchPanel);
@@ -151,6 +153,15 @@ class GrandExchangePanel extends PluginPanel
 =======
 		tabGroup.select(searchTab);
 		revalidate();
+	}
+<<<<<<< HEAD
+}
+>>>>>>> upstream/master
+=======
+
+	void setGELimits(Map<Integer, Integer> itemGELimits)
+	{
+		searchPanel.setItemGELimits(itemGELimits);
 	}
 }
 >>>>>>> upstream/master

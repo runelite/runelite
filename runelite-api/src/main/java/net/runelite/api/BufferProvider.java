@@ -32,4 +32,9 @@ package net.runelite.api;
 >>>>>>> upstream/master
 public interface BufferProvider
 {
+	int[] getPixels();
+
+	int getWidth();
+
+	int getHeight();
 }

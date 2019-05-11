@@ -15,24 +15,45 @@
     {
       "name": "Ectofuntus (400%)",
       "value": 3
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
+    },
+    {
+      "name": "Chaos Altar (700%)",
+      "value": 6
 >>>>>>> upstream/master
     }
   ],
   "actions": [
     {
       "level": 1,
-      "icon": 526,
-      "name": "Bones",
-      "xp": 4.5
+      "icon": 13447,
+      "name": "Ensouled Goblin Head",
+      "xp": 130,
+      "ignoreBonus": true
     },
     {
       "level": 1,
+<<<<<<< HEAD
       "icon": 13480,
       "name": "Ensouled Elf Head",
 <<<<<<< HEAD
       "xp": 754
 =======
       "xp": 754,
+=======
+      "icon": 13450,
+      "name": "Ensouled Monkey Head",
+      "xp": 182,
+      "ignoreBonus": true
+    },
+    {
+      "level": 1,
+      "icon": 13453,
+      "name": "Ensouled Imp Head",
+      "xp": 286,
+>>>>>>> upstream/master
       "ignoreBonus": true
 >>>>>>> upstream/master
     },
@@ -126,23 +147,35 @@
     },
     {
       "level": 1,
+<<<<<<< HEAD
       "icon": 13483,
       "name": "Ensouled Troll Head",
 <<<<<<< HEAD
       "xp": 780
 =======
       "xp": 780,
+=======
+      "icon": 13480,
+      "name": "Ensouled Elf Head",
+      "xp": 754,
+>>>>>>> upstream/master
       "ignoreBonus": true
 >>>>>>> upstream/master
     },
     {
       "level": 1,
+<<<<<<< HEAD
       "icon": 13450,
       "name": "Ensouled Monkey Head",
 <<<<<<< HEAD
       "xp": 182
 =======
       "xp": 182,
+=======
+      "icon": 13483,
+      "name": "Ensouled Troll Head",
+      "xp": 780,
+>>>>>>> upstream/master
       "ignoreBonus": true
 >>>>>>> upstream/master
     },
@@ -247,6 +280,7 @@
     },
     {
       "level": 1,
+<<<<<<< HEAD
       "icon": 13453,
       "name": "Ensouled Imp Head",
 <<<<<<< HEAD
@@ -265,6 +299,11 @@
 =======
       "xp": 130,
       "ignoreBonus": true
+>>>>>>> upstream/master
+=======
+      "icon": 526,
+      "name": "Bones",
+      "xp": 4.5
 >>>>>>> upstream/master
     },
     {
@@ -345,9 +384,9 @@
     },
     {
       "level": 1,
-      "icon": 4834,
-      "name": "Ourg Bones",
-      "xp": 140
+      "icon": 22780,
+      "name": "Wyrm Bones",
+      "xp": 50
     },
     {
       "level": 1,
@@ -371,6 +410,12 @@
       "icon": 536,
       "name": "Dragon Bones",
       "xp": 72
+    },
+    {
+      "level": 1,
+      "icon": 22783,
+      "name": "Drake Bones",
+      "xp": 80
     },
     {
       "level": 1,
@@ -414,9 +459,21 @@
     },
     {
       "level": 1,
+      "icon": 22786,
+      "name": "Hydra Bones",
+      "xp": 110
+    },
+    {
+      "level": 1,
       "icon": 6729,
       "name": "Dagannoth Bones",
       "xp": 125
+    },
+    {
+      "level": 1,
+      "icon": 4834,
+      "name": "Ourg Bones",
+      "xp": 140
     },
     {
       "level": 70,

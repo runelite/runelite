@@ -29,11 +29,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.annotation.Nullable;
 import javax.swing.JPanel;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 
-@Slf4j
 final class ClientPanel extends JPanel
 {
 	public ClientPanel(@Nullable Applet client)

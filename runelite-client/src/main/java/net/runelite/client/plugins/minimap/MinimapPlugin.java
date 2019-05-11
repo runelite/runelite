@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.minimap;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Arrays;
@@ -38,11 +37,14 @@ import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "Minimap"
+	name = "Minimap",
+	description = "Customize the color of minimap dots",
+	tags = {"items", "npcs", "players"}
 )
 public class MinimapPlugin extends Plugin
 {
@@ -65,13 +67,7 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
-
-		if (minimapWidget != null)
-		{
-			minimapWidget.setHidden(config.hideMinimap());
-		}
-
+		updateMinimapWidgetVisibility(config.hideMinimap());
 		storeOriginalDots();
 		replaceMapDots();
 	}
@@ -79,23 +75,80 @@ public class MinimapPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
-
-		if (minimapWidget != null)
-		{
-			minimapWidget.setHidden(false);
-		}
-
+		updateMinimapWidgetVisibility(false);
 		restoreOriginalDots();
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN && originalDotSprites == null)
 		{
 			storeOriginalDots();
 			replaceMapDots();
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("minimap"))
+		{
+			return;
+		}
+
+		if (event.getKey().equals("hideMinimap"))
+		{
+			updateMinimapWidgetVisibility(config.hideMinimap());
+			return;
+		}
+
+		replaceMapDots();
+	}
+
+	@Subscribe
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
+	{
+		updateMinimapWidgetVisibility(config.hideMinimap());
+	}
+
+	private void updateMinimapWidgetVisibility(boolean enable)
+	{
+		final Widget resizableStonesWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET);
+
+		if (resizableStonesWidget != null)
+		{
+			resizableStonesWidget.setHidden(enable);
+		}
+
+		final Widget resizableNormalWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_WIDGET);
+
+		if (resizableNormalWidget != null && !resizableNormalWidget.isSelfHidden())
+		{
+			for (Widget widget : resizableNormalWidget.getStaticChildren())
+			{
+				if (widget.getId() != WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON.getId() &&
+					widget.getId() != WidgetInfo.RESIZABLE_MINIMAP_LOGOUT_BUTTON.getId())
+				{
+					widget.setHidden(enable);
+				}
+			}
+		}
+	}
+
+	private void replaceMapDots()
+	{
+		SpritePixels[] mapDots = client.getMapDots();
+
+		if (mapDots == null)
+		{
+			return;
+		}
+
+		Color[] minimapDotColors = getColors();
+		for (int i = 0; i < mapDots.length && i < minimapDotColors.length; ++i)
+		{
+			mapDots[i] = MinimapDot.create(this.client, minimapDotColors[i]);
 		}
 	}
 
@@ -134,54 +187,4 @@ public class MinimapPlugin extends Plugin
 
 		System.arraycopy(originalDotSprites, 0, mapDots, 0, mapDots.length);
 	}
-
-	@Subscribe
-	public void configChanged(ConfigChanged event)
-	{
-		if (!event.getGroup().equals("minimap"))
-		{
-			return;
-		}
-
-		if (event.getKey().equals("hideMinimap"))
-		{
-			Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
-
-			if (minimapWidget != null)
-			{
-				minimapWidget.setHidden(config.hideMinimap());
-			}
-			return;
-		}
-
-		replaceMapDots();
-	}
-
-	@Subscribe
-	public void onWidgetHiddenChange(WidgetHiddenChanged event)
-	{
-		Widget minimapWidget = client.getWidget(WidgetInfo.MINIMAP_WIDGET);
-
-		if (event.getWidget() == minimapWidget)
-		{
-			minimapWidget.setHidden(config.hideMinimap());
-		}
-	}
-
-	private void replaceMapDots()
-	{
-		SpritePixels[] mapDots = client.getMapDots();
-
-		if (mapDots == null)
-		{
-			return;
-		}
-
-		Color[] minimapDotColors = getColors();
-		for (int i = 0; i < mapDots.length && i < minimapDotColors.length; ++i)
-		{
-			mapDots[i] = MinimapDot.create(this.client, minimapDotColors[i]);
-		}
-	}
-
 }

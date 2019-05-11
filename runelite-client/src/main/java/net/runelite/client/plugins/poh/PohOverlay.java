@@ -44,7 +44,8 @@ public class PohOverlay extends Overlay
 	{
 		PohIcons.LUMBRIDGE, PohIcons.FALADOR, PohIcons.VARROCK, PohIcons.CAMELOT, PohIcons.ARDOUGNE,
 		PohIcons.YANILLE, PohIcons.LUNARISLE, PohIcons.WATERBIRTH, PohIcons.FISHINGGUILD,
-		PohIcons.SENNTISTEN, PohIcons.KHARYLL, PohIcons.ANNAKARL, PohIcons.KOUREND, PohIcons.MARIM
+		PohIcons.SENNTISTEN, PohIcons.KHARYLL, PohIcons.ANNAKARL, PohIcons.KOUREND, PohIcons.MARIM, PohIcons.TROLLSTRONGHOLD, PohIcons.CARRALLANGAR, PohIcons.CATHERBY, PohIcons.GHORROCK
+
 	};
 
 	private static final int MAX_DISTANCE = 2350;
@@ -130,6 +131,18 @@ public class PohOverlay extends Overlay
 		if (config.showMagicTravel())
 		{
 			iconList.add(PohIcons.MAGICTRAVEL);
+		}
+		if (config.showPortalNexus())
+		{
+			iconList.add(PohIcons.PORTALNEXUS);
+		}
+		if (config.showDigsitePendant())
+		{
+			iconList.add(PohIcons.DIGSITEPENDANT);
+		}
+		if (config.showXericsTalisman())
+		{
+			iconList.add(PohIcons.XERICSTALISMAN);
 		}
 	}
 }

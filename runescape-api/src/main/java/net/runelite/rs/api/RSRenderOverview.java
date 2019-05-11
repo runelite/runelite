@@ -60,7 +60,7 @@ public interface RSRenderOverview extends RenderOverview
 	@Import("setWorldMapPosition")
 	void setWorldMapPosition(int worldMapX, int worldMapY, boolean changedSurface);
 
-	@Import("setWorldMapPositionTarget")
+	@Import("setWorldMapPositionTargetWorldPoint")
 	void setWorldMapPositionTarget(int worldPointX, int worldPointY);
 
 	@Import("worldMapManager")

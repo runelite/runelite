@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.nightmarezone;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
 import javax.inject.Inject;
@@ -34,15 +33,20 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
-	name = "Nightmare Zone"
+	name = "Nightmare Zone",
+	description = "Show NMZ points/absorption and/or notify about expiring potions",
+	tags = {"combat", "nmz", "minigame", "notifications"}
 )
 public class NightmareZonePlugin extends Plugin
 {
@@ -55,6 +59,9 @@ public class NightmareZonePlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private NightmareZoneConfig config;
 
 	@Inject
@@ -65,13 +72,28 @@ public class NightmareZonePlugin extends Plugin
 	private boolean absorptionNotificationSend = true;
 
 	@Override
-	protected void shutDown()
+	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
 		overlay.removeAbsorptionCounter();
 	}
 
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
+		overlay.removeAbsorptionCounter();
+
+		Widget nmzWidget = client.getWidget(WidgetInfo.NIGHTMARE_ZONE);
+
+		if (nmzWidget != null)
+		{
+			nmzWidget.setHidden(false);
+		}
+	}
+
 	@Subscribe
-	public void updateConfig(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
 		overlay.updateConfig();
 	}
@@ -80,12 +102,6 @@ public class NightmareZonePlugin extends Plugin
 	NightmareZoneConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(NightmareZoneConfig.class);
-	}
-
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
 	}
 
 	@Subscribe
@@ -109,7 +125,7 @@ public class NightmareZonePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER
+		if (event.getType() != ChatMessageType.GAMEMESSAGE
 				|| !isInNightmareZone())
 		{
 			return;
@@ -142,6 +158,13 @@ public class NightmareZonePlugin extends Plugin
 			else if (msg.contains("Zapper"))
 			{
 				if (config.zapperNotification())
+				{
+					notifier.notify(msg);
+				}
+			}
+			else if (msg.contains("Ultimate force"))
+			{
+				if (config.ultimateForceNotification())
 				{
 					notifier.notify(msg);
 				}

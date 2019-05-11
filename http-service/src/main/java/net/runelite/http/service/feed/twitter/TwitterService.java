@@ -32,7 +32,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.feed.FeedItem;
 import net.runelite.http.api.feed.FeedItemType;
@@ -47,7 +46,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 public class TwitterService
 {
 	private static final HttpUrl AUTH_URL = HttpUrl.parse("https://api.twitter.com/oauth2/token");
@@ -105,9 +103,9 @@ public class TwitterService
 						{
 							return getTweets(true);
 						}
-						throw new InternalServerErrorException("Could not auth to Twitter after trying once: " + response.message());
+						throw new InternalServerErrorException("Could not auth to Twitter after trying once: " + response);
 					default:
-						throw new IOException("Error getting Twitter list: " + response.message());
+						throw new IOException("Error getting Twitter list: " + response);
 				}
 			}
 
@@ -126,7 +124,7 @@ public class TwitterService
 					i.getUser().getProfileImageUrl(),
 					i.getUser().getScreenName(),
 					i.getText().replace("\n\n", " ").replaceAll("\n", " "),
-					"https://twitter.com/statuses/" + i.getId(),
+					"https://twitter.com/" + i.getUser().getScreenName() + "/status/" + i.getId(),
 					getTimestampFromSnowflake(i.getId())));
 			}
 
@@ -148,7 +146,7 @@ public class TwitterService
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Error authing to Twitter: " + response.message());
+				throw new IOException("Error authing to Twitter: " + response);
 			}
 
 			InputStream in = response.body().byteStream();

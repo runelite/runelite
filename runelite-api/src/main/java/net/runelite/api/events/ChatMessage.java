@@ -26,7 +26,9 @@ package net.runelite.api.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.MessageNode;
 
 <<<<<<< HEAD
 =======
@@ -41,6 +43,7 @@ import net.runelite.api.ChatMessageType;
 >>>>>>> upstream/master
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ChatMessage
 {
 <<<<<<< HEAD
@@ -48,6 +51,10 @@ public class ChatMessage
 	private String name;
 	private String message;
 =======
+	/**
+	 * The underlying MessageNode for the message.
+	 */
+	private MessageNode messageNode;
 	/**
 	 * The type of message received.
 	 */
@@ -68,4 +75,8 @@ public class ChatMessage
 	 */
 >>>>>>> upstream/master
 	private String sender;
+	/**
+	 * Timestamp of the message.
+	 */
+	private int timestamp;
 }

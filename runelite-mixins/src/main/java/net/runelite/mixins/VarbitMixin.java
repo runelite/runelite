@@ -26,6 +26,7 @@ package net.runelite.mixins;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import java.util.Map;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
@@ -84,6 +85,8 @@ public abstract class VarbitMixin implements RSClient
 	public int getVarbitValue(int[] varps, int varbitId)
 >>>>>>> upstream/master
 	{
+		assert client.isClientThread();
+
 		RSVarbit v = varbitCache.getIfPresent(varbitId);
 		if (v == null)
 		{
@@ -141,9 +144,15 @@ public abstract class VarbitMixin implements RSClient
 	public int getVar(VarClientInt varClientInt)
 	{
 <<<<<<< HEAD
+<<<<<<< HEAD
 		return getVarcs().getIntVarcs()[varClientInt.getIndex()];
 =======
 		return getIntVarcs()[varClientInt.getIndex()];
+>>>>>>> upstream/master
+=======
+		Map<Integer, Object> varcmap = getVarcMap();
+		Object object = varcmap.get(varClientInt.getIndex());
+		return object instanceof Integer ? (Integer) object : 0;
 >>>>>>> upstream/master
 	}
 
@@ -152,23 +161,42 @@ public abstract class VarbitMixin implements RSClient
 	public String getVar(VarClientStr varClientStr)
 	{
 <<<<<<< HEAD
+<<<<<<< HEAD
 		return getVarcs().getStrVarcs()[varClientStr.getIndex()];
 =======
 		return getStrVarcs()[varClientStr.getIndex()];
+=======
+		Map<Integer, Object> varcmap = getVarcMap();
+		Object var2 = varcmap.get(varClientStr.getIndex());
+		return var2 instanceof String ? (String) var2 : "";
 	}
 
 	@Inject
 	@Override
-	public int[] getIntVarcs()
+	public void setVar(VarClientStr varClientStr, String value)
 	{
-		return getVarcs().getIntVarcs();
+		Map<Integer, Object> varcmap = getVarcMap();
+		varcmap.put(varClientStr.getIndex(), value);
+>>>>>>> upstream/master
 	}
 
 	@Inject
 	@Override
-	public String[] getStrVarcs()
+	public void setVar(VarClientInt varClientInt, int value)
 	{
+		Map<Integer, Object> varcmap = getVarcMap();
+		varcmap.put(varClientInt.getIndex(), value);
+	}
+
+	@Inject
+	@Override
+	public Map<Integer, Object> getVarcMap()
+	{
+<<<<<<< HEAD
 		return getVarcs().getStrVarcs();
+>>>>>>> upstream/master
+=======
+		return getVarcs().getVarcMap();
 >>>>>>> upstream/master
 	}
 }

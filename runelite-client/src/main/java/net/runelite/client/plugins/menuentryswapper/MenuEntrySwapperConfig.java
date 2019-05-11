@@ -28,15 +28,41 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "menuentryswapper",
-	name = "Menu Entry Swapper",
-	description = "Swap menu entry options"
-)
+@ConfigGroup("menuentryswapper")
 public interface MenuEntrySwapperConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
+		position = -2,
+		keyName = "shiftClickCustomization",
+		name = "Customizable shift-click",
+		description = "Allows customization of shift-clicks on items"
+	)
+	default boolean shiftClickCustomization()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapAdmire",
+		name = "Admire",
+		description = "Swap Admire with Teleport, Spellbook and Perks (max cape) for mounted skill capes."
+	)
+	default boolean swapAdmire()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapAssignment",
+		name = "Assignment",
+		description = "Swap Talk-to with Assignment for Slayer Masters. This will take priority over swapping Trade."
+	)
+	default boolean swapAssignment()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "swapBanker",
 		name = "Bank",
 		description = "Swap Talk-to with Bank on Bank NPC<br>Example: Banker"
@@ -47,9 +73,12 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+<<<<<<< HEAD
 		position = 1,
 <<<<<<< HEAD
 =======
+=======
+>>>>>>> upstream/master
 		keyName = "swapBirdhouseEmpty",
 		name = "Birdhouse",
 		description = "Swap Interact with Empty for birdhouses on Fossil Island"
@@ -60,7 +89,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+<<<<<<< HEAD
 		position = 2,
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 		keyName = "swapBones",
 		name = "Bury",
@@ -68,10 +100,11 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean swapBones()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
+<<<<<<< HEAD
 <<<<<<< HEAD
 		position = 2,
 =======
@@ -80,17 +113,25 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "swapCatacombEntrance",
 		name = "Catacomb entrance",
 		description = "Swap Read with Investigate on Catacombs of Kourend entrance"
+=======
+		keyName = "swapContract",
+		name = "Contract",
+		description = "Swap Talk-to with Contract on Guildmaster Jane"
+>>>>>>> upstream/master
 	)
-	default boolean swapCatacombEntrance()
+	default boolean swapContract()
 	{
-		return true;
+		return true; 
 	}
 
 	@ConfigItem(
 <<<<<<< HEAD
+<<<<<<< HEAD
 		position = 3,
 =======
 		position = 4,
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 		keyName = "swapChase",
 		name = "Chase",
@@ -103,9 +144,12 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 <<<<<<< HEAD
+<<<<<<< HEAD
 		position = 4,
 =======
 		position = 5,
+=======
+>>>>>>> upstream/master
 		keyName = "claimSlime",
 		name = "Claim Slime",
 		description = "Swap Talk-to with Claim Slime from Morytania diaries"
@@ -115,23 +159,43 @@ public interface MenuEntrySwapperConfig extends Config
 		return true;
 	}
 
+<<<<<<< HEAD
 	@ConfigItem(
 		position = 6,
 >>>>>>> upstream/master
 		keyName = "shiftClickCustomization",
 		name = "Customizable shift-click",
 		description = "Allows customization of shift-clicks on items"
+=======
+	@ConfigItem(		
+		keyName = "swapDarkMage",
+		name = "Repairs",
+		description = "Swap Talk-to with Repairs for Dark Mage"
+>>>>>>> upstream/master
 	)
-	default boolean shiftClickCustomization()
+	default boolean swapDarkMage()
 	{
 		return true;
 	}
 
 	@ConfigItem(
 <<<<<<< HEAD
+<<<<<<< HEAD
 		position = 5,
 =======
 		position = 7,
+>>>>>>> upstream/master
+=======
+		keyName = "swapDecant",
+		name = "Decant",
+		description = "Swap Talk-to with Decant for Bob Barter and Murky Matt at the Grand Exchange."
+	)
+	default boolean swapDecant()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 >>>>>>> upstream/master
 		keyName = "swapExchange",
 		name = "Exchange",
@@ -144,9 +208,12 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 <<<<<<< HEAD
+<<<<<<< HEAD
 		position = 6,
 =======
 		position = 8,
+=======
+>>>>>>> upstream/master
 		keyName = "swapFairyRing",
 		name = "Fairy ring",
 		description = "Swap Zanaris with Last-destination or Configure on Fairy rings"
@@ -157,7 +224,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+<<<<<<< HEAD
 		position = 9,
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 		keyName = "swapHarpoon",
 		name = "Harpoon",
@@ -165,25 +235,30 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean swapHarpoon()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
+<<<<<<< HEAD
 <<<<<<< HEAD
 		position = 7,
 =======
 		position = 10,
 >>>>>>> upstream/master
 		keyName = "swapHome",
+=======
+		keyName = "swapHomePortal",
+>>>>>>> upstream/master
 		name = "Home",
-		description = "Swap Enter with Home on Portal"
+		description = "Swap Enter with Home or Build or Friend's house on Portal"
 	)
-	default boolean swapHome()
+	default HouseMode swapHomePortal()
 	{
-		return true;
+		return HouseMode.HOME;
 	}
 
 	@ConfigItem(
+<<<<<<< HEAD
 <<<<<<< HEAD
 		position = 8,
 		keyName = "swapLastDestination",
@@ -200,6 +275,8 @@ public interface MenuEntrySwapperConfig extends Config
 =======
 		position = 11,
 >>>>>>> upstream/master
+=======
+>>>>>>> upstream/master
 		keyName = "swapPickpocket",
 		name = "Pickpocket on H.A.M.",
 		description = "Swap Talk-to with Pickpocket on H.A.M members"
@@ -211,9 +288,12 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 <<<<<<< HEAD
+<<<<<<< HEAD
 		position = 10,
 =======
 		position = 12,
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 		keyName = "swapPay",
 		name = "Pay",
@@ -226,9 +306,42 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 <<<<<<< HEAD
+<<<<<<< HEAD
 		position = 11,
 =======
 		position = 13,
+>>>>>>> upstream/master
+=======
+		keyName = "swapPrivate",
+		name = "Private",
+		description = "Swap Shared with Private on the Chambers of Xeric storage units."
+	)
+	default boolean swapPrivate()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapPick",
+		name = "Pick",
+		description = "Swap Pick with Pick-lots of the Gourd tree in the Chambers of Xeric"
+	)
+	default boolean swapPick()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapQuick",
+		name = "Quick Pass/Open/Start/Travel",
+		description = "Swap Pass with Quick-Pass, Open with Quick-Open, Ring with Quick-Start and Talk-to with Quick-Travel"
+	)
+	default boolean swapQuick()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 >>>>>>> upstream/master
 		keyName = "swapBoxTrap",
 		name = "Reset",
@@ -241,13 +354,16 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 <<<<<<< HEAD
+<<<<<<< HEAD
 		position = 12,
 =======
 		position = 14,
 >>>>>>> upstream/master
+=======
+>>>>>>> upstream/master
 		keyName = "swapTeleportItem",
 		name = "Teleport item",
-		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Ardougne cloak, Chronicle"
+		description = "Swap Wear, Wield with Rub, Teleport on teleport item<br>Example: Amulet of glory, Explorer's ring, Chronicle"
 	)
 	default boolean swapTeleportItem()
 	{
@@ -256,9 +372,12 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 <<<<<<< HEAD
+<<<<<<< HEAD
 		position = 13,
 =======
 		position = 15,
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 		keyName = "swapAbyssTeleport",
 		name = "Teleport to Abyss",
@@ -271,9 +390,12 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 <<<<<<< HEAD
+<<<<<<< HEAD
 		position = 14,
 =======
 		position = 16,
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 		keyName = "swapTrade",
 		name = "Trade",
@@ -286,9 +408,12 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 <<<<<<< HEAD
+<<<<<<< HEAD
 		position = 15,
 =======
 		position = 17,
+>>>>>>> upstream/master
+=======
 >>>>>>> upstream/master
 		keyName = "swapTravel",
 		name = "Travel",

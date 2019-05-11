@@ -1,0 +1,83 @@
+.id                 1049
+.int_stack_count    0
+.string_stack_count 0
+.int_var_count      6
+.string_var_count   0
+; locals
+; 0 resizableZoomRange
+; 1 fixedZoomRange
+; 2 bar size
+   iconst                 896
+   sconst                 "innerZoomLimit"
+   runelite_callback     
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   sub                   
+   istore                 0
+   iconst                 896
+   sconst                 "innerZoomLimit"
+   runelite_callback     
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   sub                   
+   istore                 1
+   iconst                 17104910
+   if_getwidth           
+   iconst                 17104911
+   if_getwidth           
+   sub                   
+   istore                 2
+   iconst                 0
+   istore                 3
+   iconst                 0
+   istore                 4
+   viewport_geteffectivesize
+   istore                 4
+   istore                 3
+   iconst                 0
+   istore                 5
+   iload                  3
+   iconst                 334
+   if_icmpgt              LABEL27
+   jump                   LABEL36
+LABEL27:
+   get_varc_int           74
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   sub                   
+   iload                  0
+   sconst                 "zoomExpToLin"
+   runelite_callback     
+   pop_int               
+   iload                  2
+   multiply              
+   iload                  0
+   div                   
+   istore                 5
+   jump                   LABEL44
+LABEL36:
+   get_varc_int           73
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   sub                   
+   iload                  0
+   sconst                 "zoomExpToLin"
+   runelite_callback     
+   pop_int               
+   iload                  2
+   multiply              
+   iload                  1
+   div                   
+   istore                 5
+LABEL44:
+   iload                  5
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   iconst                 17104911
+   if_setposition        
+   return                

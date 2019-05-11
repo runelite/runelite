@@ -29,16 +29,12 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "agility",
-	name = "Agility",
-	description = "Configuration for the Agility plugin"
-)
+@ConfigGroup("agility")
 public interface AgilityConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showLapCount",
-		name = "Show Lap count",
+		name = "Show Lap Count",
 		description = "Enable/disable the lap counter",
 		position = 1
 	)

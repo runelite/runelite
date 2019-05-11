@@ -102,10 +102,14 @@ class UIActionSlot extends JPanel
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
+<<<<<<< HEAD
 	private int value = 0;
 >>>>>>> upstream/master
+=======
+	private double value = 0;
+>>>>>>> upstream/master
 
-	UIActionSlot(SkillDataEntry action)
+	UIActionSlot(SkillDataEntry action, JLabel uiIcon)
 	{
 		this.action = action;
 
@@ -149,6 +153,7 @@ class UIActionSlot extends JPanel
 		};
 
 		addMouseListener(hoverListener);
+<<<<<<< HEAD
 
 		JLabel uiIcon = new JLabel();
 
@@ -158,6 +163,8 @@ class UIActionSlot extends JPanel
 			SkillCalculator.spriteManager.addSpriteTo(uiIcon, action.getSprite(), 0);
 >>>>>>> upstream/master
 
+=======
+>>>>>>> upstream/master
 		uiIcon.setMinimumSize(ICON_SIZE);
 		uiIcon.setMaximumSize(ICON_SIZE);
 		uiIcon.setPreferredSize(ICON_SIZE);

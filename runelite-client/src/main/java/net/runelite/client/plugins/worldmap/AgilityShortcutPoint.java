@@ -26,19 +26,18 @@
 package net.runelite.client.plugins.worldmap;
 
 import java.awt.image.BufferedImage;
-import lombok.Getter;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
+import net.runelite.client.game.AgilityShortcut;
 
-public class AgilityShortcutPoint extends WorldMapPoint
+class AgilityShortcutPoint extends WorldMapPoint
 {
-	@Getter
-	private AgilityShortcutLocation data;
-
-	AgilityShortcutPoint(AgilityShortcutLocation data, BufferedImage icon)
+	AgilityShortcutPoint(AgilityShortcut data, BufferedImage icon, boolean showTooltip)
 	{
-		super(data.getLocation(), icon);
+		super(data.getWorldMapLocation(), icon);
 
-		this.data = data;
-		setTooltip(data.getTooltip());
+		if (showTooltip)
+		{
+			setTooltip(data.getTooltip());
+		}
 	}
 }

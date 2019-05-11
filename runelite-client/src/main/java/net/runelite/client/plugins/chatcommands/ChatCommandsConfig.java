@@ -32,18 +32,14 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "chatcommands",
-	name = "Chat Commands",
-	description = "Configuration for chat commands"
-)
+@ConfigGroup("chatcommands")
 public interface ChatCommandsConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
 		keyName = "price",
 		name = "Price Command",
-		description = "Configures whether the Price command is enabled"
+		description = "Configures whether the Price command is enabled<br> !price [item]"
 	)
 	default boolean price()
 	{
@@ -54,12 +50,13 @@ public interface ChatCommandsConfig extends Config
 		position = 1,
 		keyName = "lvl",
 		name = "Level Command",
-		description = "Configures whether the Level command is enabled"
+		description = "Configures whether the Level command is enabled<br> !lvl [skill]"
 	)
 	default boolean lvl()
 	{
 		return true;
 	}
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 	@ConfigItem(
@@ -71,10 +68,23 @@ public interface ChatCommandsConfig extends Config
 	default Color getPublicRecolor()
 	{
 		return Color.decode("#0000FF");
+=======
+
+	@ConfigItem(
+		position = 2,
+		keyName = "clue",
+		name = "Clue Command",
+		description = "Configures whether the Clue command is enabled<br> !clues"
+	)
+	default boolean clue()
+	{
+		return true;
+>>>>>>> upstream/master
 	}
 
 	@ConfigItem(
 		position = 3,
+<<<<<<< HEAD
 		keyName = "hexColorPublicH",
 		name = "Public chat highlight",
 		description = "Color of Public chat highlight"
@@ -82,10 +92,20 @@ public interface ChatCommandsConfig extends Config
 	default Color getPublicHRecolor()
 	{
 		return Color.decode("#000000");
+=======
+		keyName = "killcount",
+		name = "Killcount Command",
+		description = "Configures whether the Killcount command is enabled<br> !kc [boss]"
+	)
+	default boolean killcount()
+	{
+		return true;
+>>>>>>> upstream/master
 	}
 
 	@ConfigItem(
 		position = 4,
+<<<<<<< HEAD
 		keyName = "hexColorPrivate",
 		name = "Private chat",
 		description = "Color of Private chat"
@@ -93,10 +113,20 @@ public interface ChatCommandsConfig extends Config
 	default Color getPrivateRecolor()
 	{
 		return Color.decode("#0088FF");
+=======
+		keyName = "qp",
+		name = "QP Command",
+		description = "Configures whether the quest point command is enabled<br> !qp"
+	)
+	default boolean qp()
+	{
+		return true;
+>>>>>>> upstream/master
 	}
 
 	@ConfigItem(
 		position = 5,
+<<<<<<< HEAD
 		keyName = "hexColorPrivateH",
 		name = "Private chat highlight",
 		description = "Color of Private chat highlight"
@@ -104,10 +134,20 @@ public interface ChatCommandsConfig extends Config
 	default Color getPrivateHRecolor()
 	{
 		return Color.decode("#002783");
+=======
+		keyName = "pb",
+		name = "PB Command",
+		description = "Configures whether the personal best command is enabled<br> !pb"
+	)
+	default boolean pb()
+	{
+		return true;
+>>>>>>> upstream/master
 	}
 
 	@ConfigItem(
 		position = 6,
+<<<<<<< HEAD
 		keyName = "hexColorCc",
 		name = "Clan chat",
 		description = "Color of Clan chat"
@@ -194,5 +234,15 @@ public interface ChatCommandsConfig extends Config
 		return Color.decode("#FFFFFF");
 	}
 =======
+>>>>>>> upstream/master
+=======
+		keyName = "clearShortcuts",
+		name = "Clear shortcuts",
+		description = "Enable shortcuts (ctrl+w and backspace) for clearing the chatbox"
+	)
+	default boolean clearShortcuts()
+	{
+		return true;
+	}
 >>>>>>> upstream/master
 }

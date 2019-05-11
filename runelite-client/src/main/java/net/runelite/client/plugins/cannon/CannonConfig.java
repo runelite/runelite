@@ -25,15 +25,12 @@
 package net.runelite.client.plugins.cannon;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "cannon",
-	name = "Cannon",
-	description = "Configuration for the Cannon plugin"
-)
+@ConfigGroup("cannon")
 public interface CannonConfig extends Config
 {
 	@ConfigItem(
@@ -66,6 +63,7 @@ public interface CannonConfig extends Config
 		return false;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "highlightDoubleHitColor",
 		name = "Color of double hit spots",

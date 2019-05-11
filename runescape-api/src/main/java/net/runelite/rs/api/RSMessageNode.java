@@ -29,6 +29,10 @@ import net.runelite.mapping.Import;
 
 public interface RSMessageNode extends MessageNode
 {
+	@Import("id")
+	@Override
+	int getId();
+
 	@Import("type")
 	int getRSType();
 

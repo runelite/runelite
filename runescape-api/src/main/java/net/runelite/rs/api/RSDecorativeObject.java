@@ -39,11 +39,22 @@ public interface RSDecorativeObject extends DecorativeObject
 	@Import("y")
 	int getY();
 
+	@Import("offsetX")
+	int getXOffset();
+
+	@Import("offsetY")
+	int getYOffset();
+
 	@Import("rotation")
 	int getOrientation();
 
 	@Import("renderable1")
+	@Override
 	RSRenderable getRenderable();
+
+	@Import("renderable2")
+	@Override
+	RSRenderable getRenderable2();
 
 	void setPlane(int plane);
 }

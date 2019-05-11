@@ -33,7 +33,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.http.api.hiscore.HiscoreClient;
@@ -41,7 +40,6 @@ import net.runelite.http.api.hiscore.HiscoreEndpoint;
 import net.runelite.http.api.hiscore.HiscoreResult;
 
 @Singleton
-@Slf4j
 public class HiscoreManager
 {
 	@AllArgsConstructor

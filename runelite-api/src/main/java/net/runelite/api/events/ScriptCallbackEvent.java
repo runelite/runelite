@@ -34,7 +34,7 @@ public class ScriptCallbackEvent
 	private Script script;
 =======
 /**
- * An event where a Runelite ASM script is called.
+ * A callback from a runelite_callback opcode in a cs2
  */
 @Data
 public class ScriptCallbackEvent

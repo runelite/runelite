@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "teamCapes",
-	name = "Team Capes",
-	description = "Configuration for the team cape plugin"
-)
+@ConfigGroup("teamCapes")
 public interface TeamCapesConfig extends Config
 {
 	@ConfigItem(

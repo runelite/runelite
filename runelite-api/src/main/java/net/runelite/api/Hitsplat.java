@@ -62,11 +62,11 @@ public class Hitsplat
 		 */
 		POISON,
 		/**
-		 * Damage from venom (dark green).
+		 * Damage from venom (teal).
 		 */
 		VENOM,
 		/**
-		 * Damage from disease (yellow).
+		 * Damage from disease (orange).
 		 */
 		DISEASE,
 		/**

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.teamcapes;
 
+import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -32,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
-import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
@@ -40,10 +40,12 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Team Capes",
+	description = "Show the different team capes in your area and the amount of each",
+	tags = {"overlay", "players"},
 	enabledByDefault = false
 )
 public class TeamCapesPlugin extends Plugin
@@ -52,10 +54,10 @@ public class TeamCapesPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private TeamCapesConfig config;
+	private OverlayManager overlayManager;
 
 	@Inject
-	private TeamCapesOverlay teamCapesOverlay;
+	private TeamCapesOverlay overlay;
 
 	// Hashmap of team capes: Key is the teamCape #, Value is the count of teamcapes in the area.
 	private Map<Integer, Integer> teams = new HashMap<>();
@@ -67,14 +69,15 @@ public class TeamCapesPlugin extends Plugin
 	}
 
 	@Override
-	public Overlay getOverlay()
+	protected void startUp() throws Exception
 	{
-		return teamCapesOverlay;
+		overlayManager.add(overlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
 		teams.clear();
 	}
 
@@ -112,7 +115,6 @@ public class TeamCapesPlugin extends Plugin
 						Comparator.comparing(Map.Entry<Integer, Integer>::getValue, Comparator.reverseOrder())
 								.thenComparingInt(Map.Entry::getKey)
 					)
-					.limit(5)
 					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 	}
 

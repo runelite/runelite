@@ -33,28 +33,33 @@ import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.account.OAuthResponse;
+import net.runelite.http.api.ws.WebsocketGsonFactory;
+import net.runelite.http.api.ws.WebsocketMessage;
 import net.runelite.http.api.ws.messages.LoginResponse;
 import net.runelite.http.service.account.beans.SessionEntry;
 import net.runelite.http.service.account.beans.UserEntry;
-import net.runelite.http.service.ws.SessionManager;
-import net.runelite.http.service.ws.WSService;
+import net.runelite.http.service.util.redis.RedisPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
+import redis.clients.jedis.Jedis;
 
 @RestController
 @RequestMapping("/account")
@@ -66,7 +71,7 @@ public class AccountService
 		+ "  `user` int(11) NOT NULL PRIMARY KEY,\n"
 		+ "  `uuid` varchar(36) NOT NULL,\n"
 		+ "  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
-		+ "  `last_used` timestamp NOT NULL,\n"
+		+ "  `last_used` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,\n"
 		+ "  UNIQUE KEY `uuid` (`uuid`),\n"
 		+ "  KEY `user` (`user`)\n"
 		+ ") ENGINE=InnoDB";
@@ -84,28 +89,34 @@ public class AccountService
 
 	private static final String SCOPE = "https://www.googleapis.com/auth/userinfo.email";
 	private static final String USERINFO = "https://www.googleapis.com/oauth2/v2/userinfo";
-	private static final String RL_OAUTH_URL = "https://api.runelite.net/oauth/";
-	private static final String RL_REDIR = "http://runelite.net/logged-in";
+	private static final String RL_REDIR = "https://runelite.net/logged-in";
 
 	private final Gson gson = RuneLiteAPI.GSON;
+	private final Gson websocketGson = WebsocketGsonFactory.build();
 
 	private final Sql2o sql2o;
 	private final String oauthClientId;
 	private final String oauthClientSecret;
+	private final String oauthCallback;
 	private final AuthFilter auth;
+	private final RedisPool jedisPool;
 
 	@Autowired
 	public AccountService(
 		@Qualifier("Runelite SQL2O") Sql2o sql2o,
 		@Value("${oauth.client-id}") String oauthClientId,
 		@Value("${oauth.client-secret}") String oauthClientSecret,
-		AuthFilter auth
+		@Value("${oauth.callback}") String oauthCallback,
+		AuthFilter auth,
+		RedisPool jedisPool
 	)
 	{
 		this.sql2o = sql2o;
 		this.oauthClientId = oauthClientId;
 		this.oauthClientSecret = oauthClientSecret;
+		this.oauthCallback = oauthCallback;
 		this.auth = auth;
+		this.jedisPool = jedisPool;
 
 		try (Connection con = sql2o.open())
 		{
@@ -127,11 +138,9 @@ public class AccountService
 		}
 	}
 
-	@RequestMapping("/login")
-	public OAuthResponse login()
+	@GetMapping("/login")
+	public OAuthResponse login(@RequestParam UUID uuid)
 	{
-		UUID uuid = UUID.randomUUID();
-
 		State state = new State();
 		state.setUuid(uuid);
 		state.setApiVersion(RuneLiteAPI.getVersion());
@@ -140,11 +149,14 @@ public class AccountService
 			.apiKey(oauthClientId)
 			.apiSecret(oauthClientSecret)
 			.scope(SCOPE)
-			.callback(RL_OAUTH_URL)
+			.callback(oauthCallback)
 			.state(gson.toJson(state))
 			.build(GoogleApi20.instance());
 
-		String authorizationUrl = service.getAuthorizationUrl();
+		final Map<String, String> additionalParams = new HashMap<>();
+		additionalParams.put("prompt", "select_account");
+
+		String authorizationUrl = service.getAuthorizationUrl(additionalParams);
 
 		OAuthResponse lr = new OAuthResponse();
 		lr.setOauthUrl(authorizationUrl);
@@ -153,7 +165,7 @@ public class AccountService
 		return lr;
 	}
 
-	@RequestMapping("/callback")
+	@GetMapping("/callback")
 	public Object callback(
 		HttpServletRequest request,
 		HttpServletResponse response,
@@ -176,7 +188,7 @@ public class AccountService
 			.apiKey(oauthClientId)
 			.apiSecret(oauthClientSecret)
 			.scope(SCOPE)
-			.callback(RL_OAUTH_URL)
+			.callback(oauthCallback)
 			.state(gson.toJson(state))
 			.build(GoogleApi20.instance());
 
@@ -232,20 +244,16 @@ public class AccountService
 
 	private void notifySession(UUID uuid, String username)
 	{
-		WSService service = SessionManager.findSession(uuid);
-		if (service == null)
-		{
-			logger.info("Session {} logged in - but no websocket session", uuid);
-			return;
-		}
-
 		LoginResponse response = new LoginResponse();
 		response.setUsername(username);
 
-		service.send(response);
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.publish("session." + uuid, websocketGson.toJson(response, WebsocketMessage.class));
+		}
 	}
 
-	@RequestMapping("/logout")
+	@GetMapping("/logout")
 	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		SessionEntry session = auth.handle(request, response);
@@ -263,7 +271,7 @@ public class AccountService
 		}
 	}
 
-	@RequestMapping("/session-check")
+	@GetMapping("/session-check")
 	public void sessionCheck(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		auth.handle(request, response);

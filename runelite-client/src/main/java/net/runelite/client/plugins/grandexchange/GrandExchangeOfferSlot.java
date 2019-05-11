@@ -57,14 +57,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 import static net.runelite.api.GrandExchangeOfferState.CANCELLED_BUY;
@@ -74,11 +71,15 @@ import net.runelite.api.ItemComposition;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ThinProgressBar;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
+<<<<<<< HEAD
 import net.runelite.client.util.SwingUtil;
 >>>>>>> upstream/master
+=======
+>>>>>>> upstream/master
 
-@Slf4j
 public class GrandExchangeOfferSlot extends JPanel
 {
 <<<<<<< HEAD
@@ -107,11 +108,9 @@ public class GrandExchangeOfferSlot extends JPanel
 	private final JLabel itemIcon = new JLabel();
 	private final JLabel itemName = new JLabel();
 	private final JLabel offerInfo = new JLabel();
-	private final JLabel switchFaceViewIcon = new JLabel();
 
 	private final JLabel itemPrice = new JLabel();
 	private final JLabel offerSpent = new JLabel();
-	private final JLabel switchDetailsViewIcon = new JLabel();
 
 	private final ThinProgressBar progressBar = new ThinProgressBar();
 
@@ -119,18 +118,9 @@ public class GrandExchangeOfferSlot extends JPanel
 
 	static
 	{
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				RIGHT_ARROW_ICON = new ImageIcon(ImageIO.read(GrandExchangeOfferSlot.class.getResourceAsStream("arrow_right.png")));
-				LEFT_ARROW_ICON = new ImageIcon(ImageIO.read(GrandExchangeOfferSlot.class.getResourceAsStream("arrow_left.png")));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
+		final BufferedImage rightArrow = ImageUtil.alphaOffset(ImageUtil.getResourceStreamFromClass(GrandExchangeOfferSlot.class, "/util/arrow_right.png"), 0.25f);
+		RIGHT_ARROW_ICON = new ImageIcon(rightArrow);
+		LEFT_ARROW_ICON	= new ImageIcon(ImageUtil.flipImage(rightArrow, true, false));
 	}
 >>>>>>> upstream/master
 
@@ -140,6 +130,7 @@ public class GrandExchangeOfferSlot extends JPanel
 	 */
 	GrandExchangeOfferSlot()
 	{
+<<<<<<< HEAD
 		buildPanel();
 	}
 
@@ -192,6 +183,8 @@ public class GrandExchangeOfferSlot extends JPanel
 	}
 
 =======
+=======
+>>>>>>> upstream/master
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setBorder(new EmptyBorder(7, 0, 0, 0));
@@ -209,22 +202,22 @@ public class GrandExchangeOfferSlot extends JPanel
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
 				super.mouseEntered(mouseEvent);
-				container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR.brighter());
+				container.setBackground(ColorScheme.DARKER_GRAY_HOVER_COLOR);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
 				super.mouseExited(mouseEvent);
-				container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+				container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 			}
 		};
 
 		container.setLayout(cardLayout);
-		container.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		JPanel faceCard = new JPanel();
-		faceCard.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		faceCard.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		faceCard.setLayout(new BorderLayout());
 		faceCard.addMouseListener(ml);
 
@@ -240,13 +233,14 @@ public class GrandExchangeOfferSlot extends JPanel
 		offerInfo.setVerticalAlignment(JLabel.TOP);
 		offerInfo.setFont(FontManager.getRunescapeSmallFont());
 
+		JLabel switchFaceViewIcon = new JLabel();
 		switchFaceViewIcon.setIcon(RIGHT_ARROW_ICON);
 		switchFaceViewIcon.setVerticalAlignment(JLabel.CENTER);
 		switchFaceViewIcon.setHorizontalAlignment(JLabel.CENTER);
 		switchFaceViewIcon.setPreferredSize(new Dimension(30, 45));
 
 		JPanel offerFaceDetails = new JPanel();
-		offerFaceDetails.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		offerFaceDetails.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		offerFaceDetails.setLayout(new GridLayout(2, 1, 0, 2));
 
 		offerFaceDetails.add(itemName);
@@ -257,7 +251,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		faceCard.add(switchFaceViewIcon, BorderLayout.EAST);
 
 		JPanel detailsCard = new JPanel();
-		detailsCard.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		detailsCard.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		detailsCard.setLayout(new BorderLayout());
 		detailsCard.setBorder(new EmptyBorder(0, 15, 0, 0));
 		detailsCard.addMouseListener(ml);
@@ -270,13 +264,14 @@ public class GrandExchangeOfferSlot extends JPanel
 		offerSpent.setVerticalAlignment(JLabel.TOP);
 		offerSpent.setFont(FontManager.getRunescapeSmallFont());
 
+		JLabel switchDetailsViewIcon = new JLabel();
 		switchDetailsViewIcon.setIcon(LEFT_ARROW_ICON);
 		switchDetailsViewIcon.setVerticalAlignment(JLabel.CENTER);
 		switchDetailsViewIcon.setHorizontalAlignment(JLabel.CENTER);
 		switchDetailsViewIcon.setPreferredSize(new Dimension(30, 45));
 
 		JPanel offerDetails = new JPanel();
-		offerDetails.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
+		offerDetails.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		offerDetails.setLayout(new GridLayout(2, 1));
 
 		offerDetails.add(itemPrice);
@@ -293,7 +288,11 @@ public class GrandExchangeOfferSlot extends JPanel
 		add(container, BorderLayout.CENTER);
 		add(progressBar, BorderLayout.SOUTH);
 	}
+<<<<<<< HEAD
 	
+>>>>>>> upstream/master
+=======
+
 >>>>>>> upstream/master
 	void updateOffer(ItemComposition offerItem, BufferedImage itemImage, @Nullable GrandExchangeOffer newOffer)
 	{
@@ -400,7 +399,6 @@ public class GrandExchangeOfferSlot extends JPanel
 			progressBar.setForeground(getProgressColor(newOffer));
 			progressBar.setMaximumValue(newOffer.getTotalQuantity());
 			progressBar.setValue(newOffer.getQuantitySold());
-			progressBar.update();
 
 			/* Couldn't set the tooltip for the container panel as the children override it, so I'm setting
 			 * the tooltips on the children instead. */
@@ -420,12 +418,12 @@ public class GrandExchangeOfferSlot extends JPanel
 
 	private String htmlTooltip(String value)
 	{
-		return "<html><body style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>Progress: <span style = 'color:white'>" + value + "</span></body></html>";
+		return "<html><body style = 'color:" + ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>Progress: <span style = 'color:white'>" + value + "</span></body></html>";
 	}
 
 	private String htmlLabel(String key, String value)
 	{
-		return "<html><body style = 'color:white'>" + key + "<span style = 'color:" + SwingUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + value + "</span></body></html>";
+		return "<html><body style = 'color:white'>" + key + "<span style = 'color:" + ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR) + "'>" + value + "</span></body></html>";
 	}
 
 	private void switchPanel()

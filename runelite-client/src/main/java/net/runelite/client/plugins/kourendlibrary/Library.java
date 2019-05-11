@@ -57,7 +57,7 @@ import static net.runelite.client.plugins.kourendlibrary.Book.*;
  */
 @Singleton
 @Slf4j
-public class Library
+class Library
 {
 	private final Map<WorldPoint, Bookcase> byPoint = new HashMap<>();
 	private final Map<Integer, ArrayList<Bookcase>> byLevel = new HashMap<>();
@@ -83,23 +83,23 @@ public class Library
 		reset();
 	}
 
-	public synchronized List<Bookcase> getBookcasesOnLevel(int z)
+	synchronized List<Bookcase> getBookcasesOnLevel(int z)
 	{
 		return Collections.unmodifiableList(byLevel.get(z));
 	}
 
-	public synchronized List<Bookcase> getBookcases()
+	synchronized List<Bookcase> getBookcases()
 	{
 		return Collections.unmodifiableList(byIndex);
 	}
 
-	public void setCustomer(LibraryCustomer customer, Book book)
+	void setCustomer(LibraryCustomer customer, Book book)
 	{
 		this.customer = customer;
 		this.customerBook = book;
 	}
 
-	public synchronized void reset()
+	synchronized void reset()
 	{
 		state = SolvedState.NO_DATA;
 		for (Bookcase b : byIndex)
@@ -110,7 +110,7 @@ public class Library
 		log.info("Library is now reset");
 	}
 
-	public synchronized void mark(WorldPoint loc, Book book)
+	synchronized void mark(WorldPoint loc, Book book)
 	{
 		Bookcase bookcase = byPoint.get(loc);
 		if (bookcase == null)
@@ -299,7 +299,7 @@ public class Library
 				DARK_MANUSCRIPT_13515,
 				BYRNES_CORONATION_SPEECH,
 				DARK_MANUSCRIPT_13517,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				DARK_MANUSCRIPT_13518,
 				TRANSPORTATION_INCANTATIONS
 			),
@@ -322,7 +322,7 @@ public class Library
 				DARK_MANUSCRIPT_13514,
 				EATHRAM_RADA_EXTRACT,
 				DARK_MANUSCRIPT_13522,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
 				DARK_MANUSCRIPT_13515,
@@ -348,7 +348,7 @@ public class Library
 				DARK_MANUSCRIPT_13519,
 				BYRNES_CORONATION_SPEECH,
 				DARK_MANUSCRIPT_13517,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				DARK_MANUSCRIPT_13522,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
@@ -384,7 +384,7 @@ public class Library
 				TREACHERY_OF_ROYALTY,
 				DARK_MANUSCRIPT_13518,
 				TRANSPORTATION_INCANTATIONS,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				VARLAMORE_ENVOY
 			),
 			Arrays.asList(
@@ -409,7 +409,7 @@ public class Library
 				IDEOLOGY_OF_DARKNESS,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
-				SOUL_JORUNEY,
+				SOUL_JOURNEY,
 				DARK_MANUSCRIPT_13515,
 				EATHRAM_RADA_EXTRACT,
 				DARK_MANUSCRIPT_13518,

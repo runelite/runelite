@@ -33,9 +33,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface ConfigGroup
 {
-	String keyName();
-
-	String name();
-
-	String description();
+	/**
+	 * The key name of the config group used for storing configuration within the config group.
+	 * This should typically be a lowercased version of your plugin name, with all spaces removed.
+	 * <p>
+	 * For example, the {@code Grand Exchange} plugin uses the key name {@code grandexchange}.
+	 */
+	String value();
 }

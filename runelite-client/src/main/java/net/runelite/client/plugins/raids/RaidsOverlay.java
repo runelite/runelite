@@ -29,8 +29,12 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import lombok.Setter;
+import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.plugins.raids.solver.Room;
 import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -39,6 +43,9 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 public class RaidsOverlay extends Overlay
 {
+	private static final int OLM_PLANE = 0;
+
+	private Client client;
 	private RaidsPlugin plugin;
 	private RaidsConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
@@ -47,18 +54,21 @@ public class RaidsOverlay extends Overlay
 	private boolean scoutOverlayShown = false;
 
 	@Inject
-	public RaidsOverlay(RaidsPlugin plugin, RaidsConfig config)
+	private RaidsOverlay(Client client, RaidsPlugin plugin, RaidsConfig config)
 	{
+		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.LOW);
+		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay"));
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.scoutOverlay() || !scoutOverlayShown)
+		if (!config.scoutOverlay() || !scoutOverlayShown || plugin.isInRaidChambers() && client.getPlane() == OLM_PLANE)
 		{
 			return null;
 		}
@@ -75,22 +85,17 @@ public class RaidsOverlay extends Overlay
 			return panelComponent.render(graphics);
 		}
 
-		panelComponent.getChildren().add(TitleComponent.builder()
-			.text("Raid scouter")
-			.build());
-
 		Color color = Color.WHITE;
-		String layout = plugin.getRaid().getLayout().toCode().replaceAll("#", "").replaceAll("¤", "");
+		String layout = plugin.getRaid().getLayout().toCodeString();
 
 		if (config.enableLayoutWhitelist() && !plugin.getLayoutWhitelist().contains(layout.toLowerCase()))
 		{
 			color = Color.RED;
 		}
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Layout")
-			.right(layout)
-			.rightColor(color)
+		panelComponent.getChildren().add(TitleComponent.builder()
+			.text(layout)
+			.color(color)
 			.build());
 
 		int bossMatches = 0;

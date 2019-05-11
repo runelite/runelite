@@ -84,8 +84,16 @@ public enum ClanMemberRank
 	/**
 	 * Channel owner rank.
 	 */
+<<<<<<< HEAD
 >>>>>>> upstream/master
 	OWNER(7);
+=======
+	OWNER(7),
+	/**
+	 * JMod rank.
+	 */
+	JMOD(127);
+>>>>>>> upstream/master
 
 	private static final Map<Integer, ClanMemberRank> RANKS = new HashMap<>();
 

@@ -51,7 +51,9 @@ public class AssemblerTest
 	{
 		return new String[]
 		{
-			"91.rs2asm"
+			"91.rs2asm",
+			"681.rs2asm",
+			"Unicode.rs2asm"
 		};
 	}
 
@@ -74,7 +76,7 @@ public class AssemblerTest
 		in = AssemblerTest.class.getResourceAsStream(this.script);
 		Assert.assertNotNull(in);
 
-		String original = new String(IOUtils.toByteArray(in));
+		String original = new String(IOUtils.toByteArray(in)).replaceAll("\r\n", "\n");
 
 		logger.info(original);
 		logger.info("-----------------------");

@@ -31,18 +31,22 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.MapRegionChanged;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
+import static net.runelite.api.SpriteID.WINDOW_CLOSE_BUTTON_RED_X;
+import static net.runelite.api.SpriteID.WINDOW_CLOSE_BUTTON_RED_X_HOVERED;
 
 @Singleton
 class InstanceMapOverlay extends Overlay
@@ -71,19 +75,28 @@ class InstanceMapOverlay extends Overlay
 	private int viewedPlane = 0;
 
 	private final Client client;
+	private final SpriteManager spriteManager;
 
 	/**
-	 * Saved image of the region, no reason to draw the whole thing every
+	 * Saved image of the scene, no reason to draw the whole thing every
 	 * frame.
 	 */
 	private volatile BufferedImage mapImage;
 	private volatile boolean showMap = false;
 	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
 
+	@Setter
+	private boolean isCloseButtonHovered;
+	@Getter
+	private Rectangle closeButtonBounds;
+	private BufferedImage closeButtonImage;
+	private BufferedImage closeButtonHoveredImage;
+
 	@Inject
-	InstanceMapOverlay(Client client)
+	InstanceMapOverlay(Client client, SpriteManager spriteManager)
 	{
 		this.client = client;
+		this.spriteManager = spriteManager;
 		setPriority(OverlayPriority.HIGH);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -153,6 +166,8 @@ class InstanceMapOverlay extends Overlay
 
 		if (image == null)
 		{
+			BufferedImage closeButton = getCloseButtonImage();
+
 			SpritePixels map = client.drawInstanceMap(viewedPlane);
 			image = minimapToBufferedImage(map);
 			synchronized (this)
@@ -162,6 +177,9 @@ class InstanceMapOverlay extends Overlay
 					mapImage = image;
 				}
 			}
+
+			closeButtonBounds = new Rectangle(image.getWidth() - closeButton.getWidth() - 5, 6,
+				closeButton.getWidth(), closeButton.getHeight());
 		}
 
 		graphics.drawImage(image, 0, 0, null);
@@ -173,10 +191,8 @@ class InstanceMapOverlay extends Overlay
 			drawPlayerDot(graphics, client.getLocalPlayer(), Color.white, Color.black);
 		}
 
-		if (image == null)
-		{
-			return null;
-		}
+		graphics.drawImage(isCloseButtonHovered ? getCloseButtonHoveredImage() : getCloseButtonImage(),
+			(int) closeButtonBounds.getX(), (int) closeButtonBounds.getY(), null);
 
 		return new Dimension(image.getWidth(), image.getHeight());
 	}
@@ -188,8 +204,8 @@ class InstanceMapOverlay extends Overlay
 	 */
 	private Tile[][] getTiles()
 	{
-		Tile[][][] regionTiles = client.getRegion().getTiles();
-		return regionTiles[viewedPlane];
+		Tile[][][] sceneTiles = client.getScene().getTiles();
+		return sceneTiles[viewedPlane];
 	}
 
 	/**
@@ -203,25 +219,15 @@ class InstanceMapOverlay extends Overlay
 		LocalPoint playerLoc = player.getLocalLocation();
 
 		Tile[][] tiles = getTiles();
-		int tileX = playerLoc.getRegionX();
-		int tileY = (tiles[0].length - 1) - playerLoc.getRegionY(); // flip the y value
+		int tileX = playerLoc.getSceneX();
+		int tileY = (tiles[0].length - 1) - playerLoc.getSceneY(); // flip the y value
 
-		int x = (int) (tileX * TILE_SIZE);
-		int y = (int) (tileY * TILE_SIZE);
+		int x = tileX * TILE_SIZE;
+		int y = tileY * TILE_SIZE;
 		graphics.setColor(dotColor);
 		graphics.fillRect(x, y, PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//draw the players point on the map
 		graphics.setColor(outlineColor);
 		graphics.drawRect(x, y, PLAYER_MARKER_SIZE, PLAYER_MARKER_SIZE);//outline
-	}
-
-	/**
-	 * Handles region changes and re-draws the map
-	 *
-	 * @param event The region change event
-	 */
-	public void onRegionChange(MapRegionChanged event)
-	{
-		mapImage = null;
 	}
 
 	/**
@@ -244,5 +250,23 @@ class InstanceMapOverlay extends Overlay
 		// 24624 / 512 and 24624 % 512 are both 48
 		img = img.getSubimage(48, 48, TILE_SIZE * 104, TILE_SIZE * 104);
 		return img;
+	}
+
+	private BufferedImage getCloseButtonImage()
+	{
+		if (closeButtonImage == null)
+		{
+			closeButtonImage = spriteManager.getSprite(WINDOW_CLOSE_BUTTON_RED_X, 0);
+		}
+		return closeButtonImage;
+	}
+
+	private BufferedImage getCloseButtonHoveredImage()
+	{
+		if (closeButtonHoveredImage == null)
+		{
+			closeButtonHoveredImage = spriteManager.getSprite(WINDOW_CLOSE_BUTTON_RED_X_HOVERED, 0);
+		}
+		return closeButtonHoveredImage;
 	}
 }

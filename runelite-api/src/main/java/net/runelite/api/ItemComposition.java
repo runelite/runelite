@@ -167,8 +167,16 @@ public interface ItemComposition
 
 	/**
 <<<<<<< HEAD
+<<<<<<< HEAD
 	 * Returns the menu actions the item has in a players' inventory
 =======
+=======
+	 * Returns whether or not the item can be sold on the grand exchange.
+	 */
+	boolean isTradeable();
+
+	/**
+>>>>>>> upstream/master
 	 * Gets an array of possible right-click menu actions the item
 	 * has in a player inventory.
 >>>>>>> upstream/master

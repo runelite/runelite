@@ -30,11 +30,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "interfaceStyles",
-	name = "Interface Styles",
-	description = "Configuration for the Interface Styles plugin"
-)
+@ConfigGroup("interfaceStyles")
 public interface InterfaceStylesConfig extends Config
 {
 	@ConfigItem(
@@ -45,5 +41,25 @@ public interface InterfaceStylesConfig extends Config
 	default Skin skin()
 	{
 		return Skin.AROUND_2010;
+	}
+
+	@ConfigItem(
+		keyName = "hdHealthBars",
+		name = "High Detail health bars",
+		description = "Replaces health bars with the RuneScape High Detail mode design"
+	)
+	default boolean hdHealthBars()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "hdMenu",
+		name = "High Detail menu",
+		description = "Replaces game menu with the RuneScape High Detail mode design"
+	)
+	default boolean hdMenu()
+	{
+		return false;
 	}
 }

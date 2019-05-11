@@ -27,7 +27,6 @@
 package net.runelite.client.plugins.screenmarkers;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.awt.Dimension;
@@ -36,30 +35,29 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.screenmarkers.ui.ScreenMarkerPluginPanel;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
-import net.runelite.client.ui.PluginToolbar;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayRenderer;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Screen Markers"
+	name = "Screen Markers",
+	description = "Enable drawing of screen markers on top of the client",
+	tags = {"boxes", "overlay", "panel"}
 )
-@Slf4j
 public class ScreenMarkerPlugin extends Plugin
 {
 	private static final String PLUGIN_NAME = "Screen Markers";
@@ -79,13 +77,13 @@ public class ScreenMarkerPlugin extends Plugin
 	private MouseManager mouseManager;
 
 	@Inject
-	private PluginToolbar pluginToolbar;
+	private ClientToolbar clientToolbar;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private ScreenMarkerCreationOverlay overlay;
-
-	@Inject
-	private OverlayRenderer overlayRenderer;
 
 	private ScreenMarkerMouseListener mouseListener;
 	private ScreenMarkerPluginPanel pluginPanel;
@@ -99,28 +97,16 @@ public class ScreenMarkerPlugin extends Plugin
 	private Point startLocation = null;
 
 	@Override
-	public Collection<Overlay> getOverlays()
-	{
-		final List<Overlay> overlays = new ArrayList<>();
-		overlays.add(overlay);
-		overlays.addAll(screenMarkers);
-		return overlays;
-	}
-
-	@Override
 	protected void startUp() throws Exception
 	{
+		overlayManager.add(overlay);
 		loadConfig(configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY)).forEach(screenMarkers::add);
-		overlayRenderer.rebuildOverlays();
+		screenMarkers.forEach(overlayManager::add);
 
 		pluginPanel = injector.getInstance(ScreenMarkerPluginPanel.class);
-		pluginPanel.init();
+		pluginPanel.rebuild();
 
-		BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(ScreenMarkerPlugin.class.getResourceAsStream(ICON_FILE));
-		}
+		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), ICON_FILE);
 
 		navigationButton = NavigationButton.builder()
 			.tooltip(PLUGIN_NAME)
@@ -129,7 +115,7 @@ public class ScreenMarkerPlugin extends Plugin
 			.panel(pluginPanel)
 			.build();
 
-		pluginToolbar.addNavigation(navigationButton);
+		clientToolbar.addNavigation(navigationButton);
 
 		mouseListener = new ScreenMarkerMouseListener(this);
 	}
@@ -137,10 +123,12 @@ public class ScreenMarkerPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		pluginToolbar.removeNavigation(navigationButton);
+		overlayManager.remove(overlay);
+		overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
+		screenMarkers.clear();
+		clientToolbar.removeNavigation(navigationButton);
 		setMouseListenerEnabled(false);
 		creatingScreenMarker = false;
-		screenMarkers.clear();
 
 		pluginPanel = null;
 		currentMarker = null;
@@ -154,7 +142,8 @@ public class ScreenMarkerPlugin extends Plugin
 		if (screenMarkers.isEmpty() && event.getGroup().equals(CONFIG_GROUP) && event.getKey().equals(CONFIG_KEY))
 		{
 			loadConfig(event.getNewValue()).forEach(screenMarkers::add);
-			overlayRenderer.rebuildOverlays();
+			overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
+			screenMarkers.forEach(overlayManager::add);
 		}
 	}
 
@@ -197,10 +186,10 @@ public class ScreenMarkerPlugin extends Plugin
 			screenMarkerOverlay.setPreferredSize(overlay.getBounds().getSize());
 
 			screenMarkers.add(screenMarkerOverlay);
+			overlayManager.saveOverlay(screenMarkerOverlay);
+			overlayManager.add(screenMarkerOverlay);
 			pluginPanel.rebuild();
 			updateConfig();
-			overlayRenderer.saveOverlay(screenMarkerOverlay);
-			overlayRenderer.rebuildOverlays();
 		}
 
 		creatingScreenMarker = false;
@@ -219,11 +208,11 @@ public class ScreenMarkerPlugin extends Plugin
 
 	public void deleteMarker(final ScreenMarkerOverlay marker)
 	{
-		overlayRenderer.resetOverlay(marker);
 		screenMarkers.remove(marker);
+		overlayManager.remove(marker);
+		overlayManager.resetOverlay(marker);
 		pluginPanel.rebuild();
 		updateConfig();
-		overlayRenderer.rebuildOverlays();
 	}
 
 	void resizeMarker(Point point)

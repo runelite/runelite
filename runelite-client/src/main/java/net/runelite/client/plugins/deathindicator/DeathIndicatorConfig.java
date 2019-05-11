@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "deathIndicator",
-	name = "Death Indicator",
-	description = "Configuration for the death indicator plugin"
-)
+@ConfigGroup("deathIndicator")
 public interface DeathIndicatorConfig extends Config
 {
 	@ConfigItem(

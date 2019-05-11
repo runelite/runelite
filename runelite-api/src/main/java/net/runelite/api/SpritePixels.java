@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 <<<<<<< HEAD
@@ -102,5 +103,23 @@ public interface SpritePixels
 	 * @throws IllegalArgumentException if the width or height do not match
  	 */
 	void toBufferedImage(BufferedImage img) throws IllegalArgumentException;
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
+
+	/**
+	 * Writes the contents of the SpritePixels with chosen outline to the BufferedImage
+	 *
+	 * @param color target color
+	 */
+	BufferedImage toBufferedOutline(Color color);
+
+	/**
+	 * Writes the contents of the SpritePixels with chosen outline to the BufferedImage
+	 *
+	 * @param img target image
+	 * @param color target color
+	 */
+	void toBufferedOutline(BufferedImage img, int color);
 >>>>>>> upstream/master
 }

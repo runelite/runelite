@@ -25,9 +25,14 @@
 package net.runelite.api;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 public interface NPC extends Actor
 {
 =======
+=======
+import javax.annotation.Nullable;
+
+>>>>>>> upstream/master
 /**
  * Represents a non-player character in the game.
  */
@@ -74,6 +79,7 @@ public interface NPC extends Actor
 	 *
 	 * @return the transformed NPC
 	 */
+	@Nullable
 	NPCComposition getTransformedComposition();
 
 	/**

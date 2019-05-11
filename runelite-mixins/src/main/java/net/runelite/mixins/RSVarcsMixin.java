@@ -2,26 +2,30 @@ package net.runelite.mixins;
 
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarClientStrChanged;
-import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
+import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
-import net.runelite.client.callback.Hooks;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSVarcs;
 
 @Mixin(RSVarcs.class)
 public abstract class RSVarcsMixin implements RSVarcs
 {
-	@FieldHook("varCInts")
+	@Shadow("clientInstance")
+	private static RSClient client;
+
+	@MethodHook(value = "putVarc", end = true)
 	@Inject
-	public void onVarCIntChanged(int idx)
+	public void onVarCIntChanged(int id, int value)
 	{
-		Hooks.eventBus.post(new VarClientIntChanged(idx));
+		client.getCallbacks().post(new VarClientIntChanged(id));
 	}
 
-	@FieldHook("varCStrings")
+	@MethodHook(value = "putVarcStringNew", end = true)
 	@Inject
-	public void onVarCStrChanged(int idx)
+	public void onVarCStrChanged(int id, String value)
 	{
-		Hooks.eventBus.post(new VarClientStrChanged(idx));
+		client.getCallbacks().post(new VarClientStrChanged(id));
 	}
 }

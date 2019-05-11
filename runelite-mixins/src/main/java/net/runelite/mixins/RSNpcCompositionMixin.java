@@ -33,12 +33,16 @@ import net.runelite.api.events.NpcActionChanged;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
-import static net.runelite.client.callback.Hooks.eventBus;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSNPCComposition;
 
 @Mixin(RSNPCComposition.class)
 public abstract class RSNpcCompositionMixin implements RSNPCComposition
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@Inject
 	@Override
 	public HeadIcon getOverheadIcon()
@@ -65,6 +69,6 @@ public abstract class RSNpcCompositionMixin implements RSNPCComposition
 		NpcActionChanged npcActionChanged = new NpcActionChanged();
 		npcActionChanged.setNpcComposition(this);
 		npcActionChanged.setIdx(idx);
-		eventBus.post(npcActionChanged);
+		client.getCallbacks().post(npcActionChanged);
 	}
 }

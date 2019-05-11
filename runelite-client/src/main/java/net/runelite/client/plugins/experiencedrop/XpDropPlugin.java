@@ -24,32 +24,50 @@
  */
 package net.runelite.client.plugins.experiencedrop;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.stream.IntStream;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import static net.runelite.api.ScriptID.XPDROP_DISABLED;
+import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
 @PluginDescriptor(
-	name = "XP Drop"
+	name = "XP Drop",
+	description = "Enable customization of the way XP drops are displayed",
+	tags = {"experience", "levels", "tick"}
 )
 public class XpDropPlugin extends Plugin
 {
+	private static final int XPDROP_PADDING = 2; // space between xp drop icons
+
 	@Inject
 	private Client client;
 
 	@Inject
 	private XpDropConfig config;
+
+	private int tickCounter = 0;
+	private int previousExpGained;
+	private boolean hasDropped = false;
+	private boolean correctPrayer;
+	private Skill lastSkill = null;
+	private Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
+	private PrayerType currentTickPrayer;
 
 	@Provides
 	XpDropConfig provideConfig(ConfigManager configManager)
@@ -58,7 +76,7 @@ public class XpDropPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetHidden(WidgetHiddenChanged event)
+	public void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
 		Widget widget = event.getWidget();
 
@@ -74,13 +92,50 @@ public class XpDropPlugin extends Plugin
 			return;
 		}
 
-		if (config.hideSkillIcons() && widget.getSpriteId() > 0)
+		if (config.hideSkillIcons())
 		{
-			widget.setHidden(true);
-			return;
+			if (widget.getSpriteId() > 0)
+			{
+				widget.setHidden(true);
+				return;
+			}
+			else if (!widget.getText().isEmpty())
+			{
+				// Align text accordingly to take up hidden skill icon space
+				int width = 0;
+				for (Widget w : widget.getParent().getDynamicChildren())
+				{
+					if (w.getSpriteId() != -1)
+					{
+						if (width > 0)
+						{
+							// Add in space between sprites
+							width += XPDROP_PADDING;
+						}
+						width += w.getWidth(); // width of sprite
+					}
+				}
+
+				final int xpDropPosition = client.getVar(Varbits.EXPERIENCE_TRACKER_POSITION);
+				switch (xpDropPosition)
+				{
+					case 2: // left
+						int cur = widget.getRelativeX();
+						cur -= width;
+						widget.setRelativeX(cur);
+						break;
+					case 0: // right
+						break;
+					case 1: // center
+						cur = widget.getRelativeX();
+						cur -= width / 2;
+						widget.setRelativeX(cur);
+						break;
+				}
+			}
 		}
 
-		PrayerType prayer = getActivePrayerType();
+		PrayerType prayer = currentTickPrayer;
 		if (prayer == null)
 		{
 			resetTextColor(widget);
@@ -100,22 +155,24 @@ public class XpDropPlugin extends Plugin
 				case MELEE:
 					if (spriteIDs.anyMatch(id ->
 							id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE
-								|| id == SpriteID.SKILL_HITPOINTS))
+								|| correctPrayer))
 					{
 						color = config.getMeleePrayerColor().getRGB();
+						correctPrayer = true;
 					}
 					break;
-
 				case RANGE:
-					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_RANGED || id == SpriteID.SKILL_HITPOINTS))
+					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_RANGED || correctPrayer))
 					{
 						color = config.getRangePrayerColor().getRGB();
+						correctPrayer = true;
 					}
 					break;
 				case MAGIC:
-					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_MAGIC || id == SpriteID.SKILL_HITPOINTS))
+					if (spriteIDs.anyMatch(id -> id == SpriteID.SKILL_MAGIC || correctPrayer))
 					{
 						color = config.getMagePrayerColor().getRGB();
+						correctPrayer = true;
 					}
 					break;
 			}
@@ -142,4 +199,50 @@ public class XpDropPlugin extends Plugin
 		}
 		return null;
 	}
+
+	@Subscribe
+	public void onGameTick(GameTick tick)
+	{
+		currentTickPrayer = getActivePrayerType();
+		correctPrayer = false;
+
+		final int fakeTickDelay = config.fakeXpDropDelay();
+
+		if (fakeTickDelay == 0 || lastSkill == null)
+		{
+			return;
+		}
+
+		// If an xp drop was created this tick, reset the counter
+		if (hasDropped)
+		{
+			hasDropped = false;
+			tickCounter = 0;
+			return;
+		}
+
+		if (++tickCounter % fakeTickDelay != 0)
+		{
+			return;
+		}
+
+		client.runScript(XPDROP_DISABLED, lastSkill.ordinal(), previousExpGained);
+	}
+
+	@Subscribe
+	public void onExperienceChanged(ExperienceChanged event)
+	{
+		final Skill skill = event.getSkill();
+		final int xp = client.getSkillExperience(skill);
+
+		lastSkill = skill;
+
+		Integer previous = previousSkillExpTable.put(skill, xp);
+		if (previous != null)
+		{
+			previousExpGained = xp - previous;
+			hasDropped = true;
+		}
+	}
+
 }

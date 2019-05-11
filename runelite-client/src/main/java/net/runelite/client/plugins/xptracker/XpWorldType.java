@@ -24,22 +24,28 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import net.runelite.http.api.worlds.WorldType;
+import net.runelite.api.WorldType;
 
 enum XpWorldType
 {
 	NORMAL,
+	TOURNEY,
 	DMM,
-	SDMM;
+	SDMM,
+	DMMT;
 
-	public static XpWorldType of(WorldType type)
+	static XpWorldType of(WorldType type)
 	{
 		switch (type)
 		{
+			case TOURNAMENT:
+				return TOURNEY;
 			case DEADMAN:
 				return DMM;
 			case SEASONAL_DEADMAN:
 				return SDMM;
+			case DEADMAN_TOURNAMENT:
+				return DMMT;
 			default:
 				return NORMAL;
 		}

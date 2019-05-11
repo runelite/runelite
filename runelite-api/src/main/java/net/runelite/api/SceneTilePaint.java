@@ -40,4 +40,23 @@ public interface SceneTilePaint
 	 */
 >>>>>>> upstream/master
 	int getRBG();
+
+	int getSwColor();
+
+	int getSeColor();
+
+	int getNwColor();
+
+	int getNeColor();
+
+	int getTexture();
+
+	int getBufferOffset();
+	void setBufferOffset(int bufferOffset);
+
+	int getUvBufferOffset();
+	void setUvBufferOffset(int bufferOffset);
+
+	int getBufferLen();
+	void setBufferLen(int bufferLen);
 }

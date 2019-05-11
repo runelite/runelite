@@ -60,4 +60,6 @@ public interface GameEngine
 	 */
 >>>>>>> upstream/master
 	boolean isClientThread();
+
+	void resizeCanvas();
 }

@@ -26,13 +26,20 @@ package net.runelite.mixins;
 
 import java.util.EnumSet;
 import net.runelite.api.WorldType;
+import net.runelite.api.events.WorldListLoad;
+import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
+import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSWorld;
 
 @Mixin(RSWorld.class)
 public abstract class RSWorldMixin implements RSWorld
 {
+	@Shadow("clientInstance")
+	private static RSClient client;
+
 	@Inject
 	@Override
 	public EnumSet<WorldType> getTypes()
@@ -45,5 +52,18 @@ public abstract class RSWorldMixin implements RSWorld
 	public void setTypes(final EnumSet<WorldType> types)
 	{
 		setMask(WorldType.toMask(types));
+	}
+
+	@Inject
+	@FieldHook("playerCount")
+	public void playerCountChanged(int idx)
+	{
+		RSWorld[] worlds = client.getWorldList();
+		if (worlds != null && worlds.length > 0 && worlds[worlds.length - 1] == this)
+		{
+			// this is the last world in the list.
+			WorldListLoad worldLoad = new WorldListLoad(worlds);
+			client.getCallbacks().post(worldLoad);
+		}
 	}
 }

@@ -24,41 +24,37 @@
  */
 package net.runelite.client.plugins.prayer;
 
-import java.awt.image.BufferedImage;
+import java.awt.Color;
 import lombok.Getter;
-import lombok.Setter;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.Counter;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-public class PrayerCounter extends Counter
+class PrayerCounter extends InfoBox
 {
 	@Getter
 	private final PrayerType prayerType;
 
-	@Setter
-	private BufferedImage image;
-
 	PrayerCounter(Plugin plugin, PrayerType prayerType)
 	{
-		super(null, plugin, "");
+		super(null, plugin);
 		this.prayerType = prayerType;
 	}
 
 	@Override
-	public String toString()
+	public String getText()
 	{
-		return "Counter{" + "prayer=" + prayerType.getName() + '}';
+		return null;
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		return null;
 	}
 
 	@Override
 	public String getTooltip()
 	{
 		return prayerType.getDescription();
-	}
-
-	@Override
-	public BufferedImage getImage()
-	{
-		return image;
 	}
 }

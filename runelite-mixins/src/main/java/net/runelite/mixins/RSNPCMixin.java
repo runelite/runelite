@@ -25,8 +25,16 @@
 package net.runelite.mixins;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import net.runelite.api.NPCComposition;
+>>>>>>> upstream/master
+=======
+import java.awt.Polygon;
+import net.runelite.api.AnimationID;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.Perspective;
+import net.runelite.api.coords.LocalPoint;
 >>>>>>> upstream/master
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.mixins.Copy;
@@ -35,7 +43,6 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
-import static net.runelite.client.callback.Hooks.eventBus;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSModel;
 import net.runelite.rs.api.RSNPC;
@@ -112,7 +119,7 @@ public abstract class RSNPCMixin implements RSNPC
 	{
 		if (composition == null)
 		{
-			eventBus.post(new NpcDespawned(this));
+			client.getCallbacks().post(new NpcDespawned(this));
 		}
 	}
 
@@ -122,7 +129,8 @@ public abstract class RSNPCMixin implements RSNPC
 	@Replace("getModel")
 	public RSModel rl$getModel()
 	{
-		if (!client.isInterpolateNpcAnimations())
+		if (!client.isInterpolateNpcAnimations()
+			|| getAnimation() == AnimationID.HELLHOUND_DEFENCE)
 		{
 			return rs$getModel();
 		}
@@ -173,6 +181,28 @@ public abstract class RSNPCMixin implements RSNPC
 	public void setDead(boolean dead)
 	{
 		this.dead = dead;
+	}
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
+
+	@Inject
+	@Override
+	public Polygon getConvexHull()
+	{
+		RSModel model = getModel();
+		if (model == null)
+		{
+			return null;
+		}
+
+		int size = getComposition().getSize();
+		LocalPoint tileHeightPoint = new LocalPoint(
+			size * Perspective.LOCAL_HALF_TILE_SIZE - Perspective.LOCAL_HALF_TILE_SIZE + getX(),
+			size * Perspective.LOCAL_HALF_TILE_SIZE - Perspective.LOCAL_HALF_TILE_SIZE + getY());
+
+		int tileHeight = Perspective.getTileHeight(client, tileHeightPoint, client.getPlane());
+		return model.getConvexHull(getX(), getY(), getOrientation(), tileHeight);
 	}
 >>>>>>> upstream/master
 }

@@ -37,7 +37,7 @@ public class PlayerSpawned implements ActorSpawned
  * An event where a {@link Player} has spawned.
  */
 @Value
-public class PlayerSpawned implements ActorSpawned
+public class PlayerSpawned
 {
 	/**
 	 * The spawned player.
@@ -45,7 +45,6 @@ public class PlayerSpawned implements ActorSpawned
 >>>>>>> upstream/master
 	private final Player player;
 
-	@Override
 	public Actor getActor()
 	{
 		return player;

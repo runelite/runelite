@@ -28,11 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "blastfurnace",
-	name = "Blast Furnace",
-	description = "Configuration for the Blast furnace plugin"
-)
+@ConfigGroup("blastfurnace")
 public interface BlastFurnaceConfig extends Config
 {
 	@ConfigItem(
@@ -48,7 +44,7 @@ public interface BlastFurnaceConfig extends Config
 	)
 	default boolean showConveyorBelt()
 	{
-		return true;
+		return false;
 	}
 <<<<<<< HEAD
 =======
@@ -61,7 +57,7 @@ public interface BlastFurnaceConfig extends Config
 	)
 	default boolean showBarDispenser()
 	{
-		return true;
+		return false;
 	}
 >>>>>>> upstream/master
 }

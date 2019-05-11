@@ -29,11 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "barrows",
-	name = "Barrows Brothers",
-	description = "Configuration for the Barrows plugin"
-)
+@ConfigGroup("barrows")
 public interface BarrowsConfig extends Config
 {
 	@ConfigItem(
@@ -89,5 +85,27 @@ public interface BarrowsConfig extends Config
 	default Color deadBrotherLocColor()
 	{
 		return Color.RED;
+	}
+
+	@ConfigItem(
+		keyName = "showPuzzleAnswer",
+		name = "Show Puzzle Answer",
+		description = "Configures if the puzzle answer should be shown.",
+		position = 5
+	)
+	default boolean showPuzzleAnswer()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showPrayerDrainTimer",
+		name = "Show Prayer Drain Timer",
+		description = "Configure whether or not a countdown until the next prayer drain is displayed",
+		position = 6
+	)
+	default boolean showPrayerDrainTimer()
+	{
+		return true;
 	}
 }

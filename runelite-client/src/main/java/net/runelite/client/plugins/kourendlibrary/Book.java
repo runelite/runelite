@@ -32,7 +32,7 @@ import net.runelite.api.ItemID;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 
-public enum Book
+enum Book
 {
 	DARK_MANUSCRIPT_13514(ItemID.DARK_MANUSCRIPT),
 	DARK_MANUSCRIPT_13515(ItemID.DARK_MANUSCRIPT_13515),
@@ -59,7 +59,7 @@ public enum Book
 	TRISTESSAS_TRAGEDY(ItemID.TRISTESSAS_TRAGEDY, "Tristessa's Tragedy", "The Tragedy of Tristessa."),
 	TREACHERY_OF_ROYALTY(ItemID.TREACHERY_OF_ROYALTY, "The Treachery of Royalty", "The Treachery of Royalty, by Professor Answith."),
 	TRANSPORTATION_INCANTATIONS(ItemID.TRANSPORTATION_INCANTATIONS, "Transportation Incantations", "Transportation Incantations, by Amon Ducot."),
-	SOUL_JORUNEY(ItemID.SOUL_JOURNEY, "Soul Journey", "The Journey of Souls, by Aretha."),
+	SOUL_JOURNEY(ItemID.SOUL_JOURNEY, "Soul Journey", "The Journey of Souls, by Aretha."),
 	VARLAMORE_ENVOY(ItemID.VARLAMORE_ENVOY, "Varlamore Envoy", "The Envoy to Varlamore, by Deryk Paulson.");
 
 	private static final Map<Integer, Book> BY_ID = buildById();
@@ -89,12 +89,12 @@ public enum Book
 		return Collections.unmodifiableMap(byName);
 	}
 
-	public static Book byId(int id)
+	static Book byId(int id)
 	{
 		return BY_ID.get(id);
 	}
 
-	public static Book byName(String name)
+	static Book byName(String name)
 	{
 		return BY_NAME.get(name);
 	}

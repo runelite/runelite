@@ -1,0 +1,70 @@
+.id                 279
+.int_stack_count    1
+.string_stack_count 0
+.int_var_count      1
+.string_var_count   2
+   sconst                 ""
+   sstore                 0
+   sconst                 ""
+   sstore                 1
+   invoke                 514
+   iconst                 1
+   if_icmpeq              LABEL8
+   jump                   LABEL34
+LABEL8:
+   get_varc_string        359                ; Skip truncating of varcstr 22 by not calling 280
+   lowercase             ; instead get the var directly and lowercase it
+   sstore                 1
+   sload                  1
+   string_length         
+   iconst                 0
+   if_icmpgt              LABEL15
+   jump                   LABEL34
+LABEL15:
+   iload                  0
+   iconst                 -1
+   if_icmpne              LABEL19
+   jump                   LABEL23
+LABEL19:
+   iload                  0
+   oc_name               
+   lowercase             
+   sstore                 0
+LABEL1337:; check if the bank tags plugin is active
+   iconst                 1                  ; true
+   iconst                 0                  ; load active boolean
+   sconst                 "bankTagsActive"   ; push event name
+   runelite_callback     ; invoke callback
+   if_icmpeq              LABEL1338          ; if the plugin is active then jump to the label that decides if the
+                                             ; item should be shown
+   jump                   LABEL23            ; if the plugin is not active then jump to the normal label
+LABEL1338:; let the bank tag plugin decide if the item should be shown
+   iconst                 0                  ; load return value
+   iload                  0                  ; load item id
+   sload                  0                  ; load item name
+   sload                  1                  ; load search string
+   sconst                 "bankSearchFilter" ; push event name
+   runelite_callback     ; invoke callback
+   pop_int               ; pop item id
+   pop_string            ; pop search string
+   pop_string            ; pop item name
+   return                ; return value
+LABEL23:
+   sload                  0
+   sload                  1
+   iconst                 0
+   string_indexof_string 
+   iconst                 -1
+   if_icmpne              LABEL30
+   jump                   LABEL32
+LABEL30:
+   iconst                 1
+   return                
+LABEL32:
+   iconst                 0
+   return                
+LABEL34:
+   iconst                 1
+   return                
+   iconst                 -1
+   return                

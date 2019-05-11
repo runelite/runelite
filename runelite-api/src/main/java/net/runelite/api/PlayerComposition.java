@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.kit.KitType;
 
 <<<<<<< HEAD
@@ -73,4 +74,14 @@ public interface PlayerComposition
 	 */
 >>>>>>> upstream/master
 	int getKitId(KitType type);
+
+	/**
+	 * Update the cached hash value for player equipment
+	 * Used to cache the player models based on equipment.
+	 */
+	@VisibleForDevtools
+	void setHash();
+
+	@VisibleForDevtools
+	void setTransformedNpcId(int id);
 }

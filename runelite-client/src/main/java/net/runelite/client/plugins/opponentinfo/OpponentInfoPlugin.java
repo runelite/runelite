@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,44 +25,79 @@
  */
 package net.runelite.client.plugins.opponentinfo;
 
-import com.google.common.eventbus.Subscribe;
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Type;
+import com.google.inject.Provides;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.EnumSet;
-import java.util.Map;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.InteractingChanged;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.http.api.hiscore.HiscoreEndpoint;
 
 @PluginDescriptor(
-	name = "Opponent Information"
+	name = "Opponent Information",
+	description = "Show name and hitpoints information about the NPC you are fighting",
+	tags = {"combat", "health", "hitpoints", "npcs", "overlay"}
 )
 public class OpponentInfoPlugin extends Plugin
 {
+	private static final Duration WAIT = Duration.ofSeconds(5);
+
 	@Inject
 	private Client client;
 
 	@Inject
-	private OpponentInfoOverlay overlay;
+	private OpponentInfoConfig config;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private OpponentInfoOverlay opponentInfoOverlay;
+
+	@Inject
+	private PlayerComparisonOverlay playerComparisonOverlay;
 
 	@Getter(AccessLevel.PACKAGE)
 	private HiscoreEndpoint hiscoreEndpoint = HiscoreEndpoint.NORMAL;
 
-	@Override
-	public Overlay getOverlay()
+	@Getter(AccessLevel.PACKAGE)
+	private Actor lastOpponent;
+
+	private Instant lastTime;
+
+	@Provides
+	OpponentInfoConfig provideConfig(ConfigManager configManager)
 	{
-		return overlay;
+		return configManager.getConfig(OpponentInfoConfig.class);
+	}
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(opponentInfoOverlay);
+		overlayManager.add(playerComparisonOverlay);
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		lastOpponent = null;
+		lastTime = null;
+		overlayManager.remove(opponentInfoOverlay);
+		overlayManager.remove(playerComparisonOverlay);
 	}
 
 	@Subscribe
@@ -72,14 +108,18 @@ public class OpponentInfoPlugin extends Plugin
 			return;
 		}
 
-		EnumSet<WorldType> worldType = client.getWorldType();
-		if (worldType.contains(WorldType.DEADMAN))
+		final EnumSet<WorldType> worldType = client.getWorldType();
+		if (worldType.contains(WorldType.DEADMAN_TOURNAMENT))
 		{
-			hiscoreEndpoint = HiscoreEndpoint.DEADMAN;
+			hiscoreEndpoint = HiscoreEndpoint.DEADMAN_TOURNAMENT;
 		}
 		else if (worldType.contains(WorldType.SEASONAL_DEADMAN))
 		{
 			hiscoreEndpoint = HiscoreEndpoint.SEASONAL_DEADMAN;
+		}
+		else if (worldType.contains(WorldType.DEADMAN))
+		{
+			hiscoreEndpoint = HiscoreEndpoint.DEADMAN;
 		}
 		else
 		{
@@ -87,14 +127,36 @@ public class OpponentInfoPlugin extends Plugin
 		}
 	}
 
-	public static Map<String, Integer> loadNpcHealth()
+	@Subscribe
+	public void onInteractingChanged(InteractingChanged event)
 	{
-		Gson gson = new Gson();
-		Type type = new TypeToken<Map<String, Integer>>()
+		if (event.getSource() != client.getLocalPlayer())
 		{
-		}.getType();
+			return;
+		}
 
-		InputStream healthFile = OpponentInfoPlugin.class.getResourceAsStream("/npc_health.json");
-		return gson.fromJson(new InputStreamReader(healthFile), type);
+		Actor opponent = event.getTarget();
+
+		if (opponent == null)
+		{
+			lastTime = Instant.now();
+			return;
+		}
+
+		lastOpponent = opponent;
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (lastOpponent != null
+			&& lastTime != null
+			&& client.getLocalPlayer().getInteracting() == null)
+		{
+			if (Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
+			{
+				lastOpponent = null;
+			}
+		}
 	}
 }

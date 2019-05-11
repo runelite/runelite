@@ -32,41 +32,40 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
 class ClueScrollWorldMapPoint extends WorldMapPoint
 {
-	private static final BufferedImage CLUE_SCROLL_WORLD_IMAGE;
-	private static final Point CLUE_SCROLL_WORLD_IMAGE_POINT;
+	private final ClueScrollPlugin plugin;
+	private final BufferedImage clueScrollWorldImage;
+	private final Point clueScrollWorldImagePoint;
 
-	static
-	{
-		CLUE_SCROLL_WORLD_IMAGE = new BufferedImage(ClueScrollPlugin.MAP_ARROW.getWidth(), ClueScrollPlugin.MAP_ARROW.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics graphics = CLUE_SCROLL_WORLD_IMAGE.getGraphics();
-		graphics.drawImage(ClueScrollPlugin.MAP_ARROW, 0, 0, null);
-		graphics.drawImage(ClueScrollPlugin.CLUE_SCROLL_IMAGE, 0, 2, null);
-		CLUE_SCROLL_WORLD_IMAGE_POINT = new Point(
-			CLUE_SCROLL_WORLD_IMAGE.getWidth() / 2,
-			CLUE_SCROLL_WORLD_IMAGE.getHeight());
-	}
-
-	ClueScrollWorldMapPoint(final WorldPoint worldPoint)
+	ClueScrollWorldMapPoint(final WorldPoint worldPoint, ClueScrollPlugin plugin)
 	{
 		super(worldPoint, null);
 
+		clueScrollWorldImage = new BufferedImage(plugin.getMapArrow().getWidth(), plugin.getMapArrow().getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics graphics = clueScrollWorldImage.getGraphics();
+		graphics.drawImage(plugin.getMapArrow(), 0, 0, null);
+		graphics.drawImage(plugin.getClueScrollImage(), 0, 0, null);
+		clueScrollWorldImagePoint = new Point(
+			clueScrollWorldImage.getWidth() / 2,
+			clueScrollWorldImage.getHeight());
+
+		this.plugin = plugin;
 		this.setSnapToEdge(true);
 		this.setJumpOnClick(true);
-		this.setImage(CLUE_SCROLL_WORLD_IMAGE);
-		this.setImagePoint(CLUE_SCROLL_WORLD_IMAGE_POINT);
+		this.setImage(clueScrollWorldImage);
+		this.setImagePoint(clueScrollWorldImagePoint);
 	}
 
 	@Override
 	public void onEdgeSnap()
 	{
-		this.setImage(ClueScrollPlugin.CLUE_SCROLL_IMAGE);
+		this.setImage(plugin.getClueScrollImage());
 		this.setImagePoint(null);
 	}
 
 	@Override
 	public void onEdgeUnsnap()
 	{
-		this.setImage(CLUE_SCROLL_WORLD_IMAGE);
-		this.setImagePoint(CLUE_SCROLL_WORLD_IMAGE_POINT);
+		this.setImage(clueScrollWorldImage);
+		this.setImagePoint(clueScrollWorldImagePoint);
 	}
 }

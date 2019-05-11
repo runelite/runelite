@@ -33,7 +33,12 @@ public interface RSActor extends RSRenderable, Actor
 	int getRSInteracting();
 
 	@Import("overhead")
-	String getOverhead();
+	@Override
+	String getOverheadText();
+
+	@Import("overhead")
+	@Override
+	void setOverheadText(String overheadText);
 
 	@Import("x")
 	int getX();
@@ -73,6 +78,14 @@ public interface RSActor extends RSRenderable, Actor
 	@Import("logicalHeight")
 	@Override
 	int getLogicalHeight();
+
+	@Import("idlePoseAnimation")
+	@Override
+	void setIdlePoseAnimation(int animation);
+
+	@Import("poseAnimation")
+	@Override
+	void setPoseAnimation(int animation);
 
 	@Import("actionFrame")
 	int getActionFrame();

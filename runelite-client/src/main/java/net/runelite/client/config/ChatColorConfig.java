@@ -25,12 +25,9 @@
 package net.runelite.client.config;
 
 import java.awt.Color;
+import net.runelite.client.ui.JagexColors;
 
-@ConfigGroup(
-	keyName = "textrecolor",
-	name = "Chat Text Recolor",
-	description = "Configuration for chat text recoloring"
-)
+@ConfigGroup("textrecolor")
 public interface ChatColorConfig extends Config
 {
 	@ConfigItem(
@@ -74,7 +71,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 35,
 		keyName = "opaquePrivateMessageReceived",
-		name = "Recieved private messages",
+		name = "Received private messages",
 		description = "Color of Private messages you've received"
 	)
 	Color opaquePrivateMessageReceived();
@@ -96,7 +93,10 @@ public interface ChatColorConfig extends Config
 		name = "Clan chat info",
 		description = "Clan Chat Information (eg. when joining a channel)"
 	)
-	Color opaqueClanChatInfo();
+	default Color opaqueClanChatInfo()
+	{
+		return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
+	}
 
 	@ConfigItem(
 		position = 38,
@@ -106,7 +106,7 @@ public interface ChatColorConfig extends Config
 	)
 	default Color opaqueClanChatInfoHighlight()
 	{
-		return Color.decode("#EF20FF");
+		return Color.RED;
 	}
 
 	@ConfigItem(
@@ -206,7 +206,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 50,
 		keyName = "opaqueExamineHighlight",
-		name = "Examine Highlight",
+		name = "Examine highlight",
 		description = "Color of highlights in Examine Text"
 	)
 	default Color opaqueExamineHighlight()
@@ -225,7 +225,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 52,
 		keyName = "opaqueFilteredHighlight",
-		name = "Filtered Highlight",
+		name = "Filtered highlight",
 		description = "Color of highlights in Filtered Text"
 	)
 	Color opaqueFilteredHighlight();
@@ -249,7 +249,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 55,
 		keyName = "opaqueClanChannelName",
-		name = "Chan channel Name",
+		name = "Clan channel name",
 		description = "Color of Clan Channel Name"
 	)
 	Color opaqueClanChannelName();
@@ -261,6 +261,14 @@ public interface ChatColorConfig extends Config
 		description = "Color of Usernames in Clan Chat"
 	)
 	Color opaqueClanUsernames();
+
+	@ConfigItem(
+		position = 57,
+		keyName = "opaquePublicFriendUsernames",
+		name = "Public friend usernames",
+		description = "Color of Friend Usernames in Public Chat"
+	)
+	Color opaquePublicFriendUsernames();
 
 	@ConfigItem(
 		position = 61,
@@ -325,7 +333,10 @@ public interface ChatColorConfig extends Config
 		name = "Clan chat info (transparent)",
 		description = "Clan Chat Information (eg. when joining a channel) (transparent)"
 	)
-	Color transparentClanChatInfo();
+	default Color transparentClanChatInfo()
+	{
+		return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
+	}
 
 	@ConfigItem(
 		position = 68,
@@ -335,7 +346,7 @@ public interface ChatColorConfig extends Config
 	)
 	default Color transparentClanChatInfoHighlight()
 	{
-		return Color.decode("#EF20FF");
+		return Color.RED;
 	}
 
 	@ConfigItem(
@@ -435,7 +446,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 80,
 		keyName = "transparentExamineHighlight",
-		name = "Examine Highlight (transparent)",
+		name = "Examine highlight (transparent)",
 		description = "Color of highlights in Examine Text (transparent)"
 	)
 	default Color transparentExamineHighlight()
@@ -454,7 +465,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 82,
 		keyName = "transparentFilteredHighlight",
-		name = "Filtered Highlight (transparent)",
+		name = "Filtered highlight (transparent)",
 		description = "Color of highlights in Filtered Text (transparent)"
 	)
 	Color transparentFilteredHighlight();
@@ -478,7 +489,7 @@ public interface ChatColorConfig extends Config
 	@ConfigItem(
 		position = 85,
 		keyName = "transparentClanChannelName",
-		name = "Chan channel Name (transparent)",
+		name = "Clan channel name (transparent)",
 		description = "Color of Clan Channel Name (transparent)"
 	)
 	Color transparentClanChannelName();
@@ -490,4 +501,12 @@ public interface ChatColorConfig extends Config
 		description = "Color of Usernames in Clan Chat (transparent)"
 	)
 	Color transparentClanUsernames();
+
+	@ConfigItem(
+		position = 87,
+		keyName = "transparentPublicFriendUsernames",
+		name = "Public friend usernames (transparent)",
+		description = "Color of Friend Usernames in Public Chat (transparent)"
+	)
+	Color transparentPublicFriendUsernames();
 }

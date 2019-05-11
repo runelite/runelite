@@ -67,4 +67,33 @@ public interface SceneTileModel
 	 */
 >>>>>>> upstream/master
 	int getRotation();
+
+	int[] getFaceX();
+
+	int[] getFaceY();
+
+	int[] getFaceZ();
+
+	int[] getVertexX();
+
+	int[] getVertexY();
+
+	int[] getVertexZ();
+
+	int[] getTriangleColorA();
+
+	int[] getTriangleColorB();
+
+	int[] getTriangleColorC();
+
+	int[] getTriangleTextureId();
+
+	int getBufferOffset();
+	void setBufferOffset(int bufferOffset);
+
+	int getUvBufferOffset();
+	void setUvBufferOffset(int bufferOffset);
+
+	int getBufferLen();
+	void setBufferLen(int bufferLen);
 }

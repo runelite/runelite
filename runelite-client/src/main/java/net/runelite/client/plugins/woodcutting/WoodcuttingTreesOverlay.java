@@ -62,11 +62,16 @@ class WoodcuttingTreesOverlay extends Overlay
 			return null;
 		}
 
+		Axe axe = plugin.getAxe();
+		if (axe == null)
+		{
+			return null;
+		}
+
 		for (GameObject treeObject : plugin.getTreeObjects())
 		{
 			if (treeObject.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 12)
 			{
-				Axe axe = plugin.getAxe();
 				OverlayUtil.renderImageLocation(client, graphics, treeObject.getLocalLocation(), itemManager.getImage(axe.getItemId()), 120);
 			}
 		}

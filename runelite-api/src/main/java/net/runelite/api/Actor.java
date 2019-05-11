@@ -27,6 +27,7 @@ package net.runelite.api;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import javax.annotation.Nullable;
 import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
@@ -118,8 +119,8 @@ public interface Actor extends Renderable
 	/**
 	 * Gets the server-side location of the actor.
 	 * <p>
-	 * This value is typically ahead of where the client renders and may
-	 * be affected by things such as animations.
+	 * This value is typically ahead of where the client renders and is not
+	 * affected by things such as animations.
 	 *
 	 * @return the server location
 	 */
@@ -131,6 +132,12 @@ public interface Actor extends Renderable
 	 * @return the client location
 	 */
 	LocalPoint getLocalLocation();
+
+	@VisibleForDevtools
+	void setIdlePoseAnimation(int animation);
+
+	@VisibleForDevtools
+	void setPoseAnimation(int animation);
 
 	/**
 	 * Gets the orientation of the actor.
@@ -224,30 +231,29 @@ public interface Actor extends Renderable
 	 * @param zOffset the z-axis offset
 	 * @return the text drawing location
 	 */
+	@Nullable
 	Point getCanvasTextLocation(Graphics2D graphics, String text, int zOffset);
 
 	/**
 	 * Gets the point at which an image should be drawn, relative to the
 	 * current location with the given z-axis offset.
 	 *
-	 * @param graphics engine graphics
 	 * @param image the image to draw
 	 * @param zOffset the z-axis offset
 	 * @return the image drawing location
 	 */
-	Point getCanvasImageLocation(Graphics2D graphics, BufferedImage image, int zOffset);
+	Point getCanvasImageLocation(BufferedImage image, int zOffset);
 
 
 	/**
 	 * Gets the point at which a sprite should be drawn, relative to the
 	 * current location with the given z-axis offset.
 	 *
-	 * @param graphics engine graphics
 	 * @param sprite the sprite to draw
 	 * @param zOffset the z-axis offset
 	 * @return the sprite drawing location
 	 */
-	Point getCanvasSpriteLocation(Graphics2D graphics, SpritePixels sprite, int zOffset);
+	Point getCanvasSpriteLocation(SpritePixels sprite, int zOffset);
 
 	/**
 	 * Gets a point on the canvas of where this actors mini-map indicator
@@ -282,4 +288,18 @@ public interface Actor extends Renderable
 	 */
 >>>>>>> upstream/master
 	WorldArea getWorldArea();
+
+	/**
+	 * Gets the overhead text that is displayed above the actor
+	 *
+	 * @return the overhead text
+	 */
+	String getOverheadText();
+
+	/**
+	 * Sets the overhead text that is displayed above the actor
+	 *
+	 * @param overheadText the overhead text
+	 */
+	void setOverheadText(String overheadText);
 }

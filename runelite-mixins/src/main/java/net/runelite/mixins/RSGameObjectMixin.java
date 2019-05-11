@@ -29,6 +29,7 @@ import java.awt.geom.Area;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.Angle;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
@@ -45,14 +46,14 @@ public abstract class RSGameObjectMixin implements RSGameObject
 
 	@Inject
 	@Override
-	public Point getRegionMinLocation()
+	public Point getSceneMinLocation()
 	{
 		return new Point(getRelativeX(), getRelativeY());
 	}
 
 	@Inject
 	@Override
-	public Point getRegionMaxLocation()
+	public Point getSceneMaxLocation()
 	{
 		return new Point(getOffsetX(), getOffsetY());
 	}
@@ -80,7 +81,7 @@ public abstract class RSGameObjectMixin implements RSGameObject
 	@Override
 	public Area getClickbox()
 	{
-		return Perspective.getClickbox(client, getModel(), getRsOrientation(), getX(), getY());
+		return Perspective.getClickbox(client, getModel(), getRsOrientation(), getLocalLocation());
 	}
 
 	@Inject
@@ -94,7 +95,8 @@ public abstract class RSGameObjectMixin implements RSGameObject
 			return null;
 		}
 
-		return model.getConvexHull(getX(), getY(), getRsOrientation());
+		int tileHeight = Perspective.getTileHeight(client, new LocalPoint(getX(), getY()), client.getPlane());
+		return model.getConvexHull(getX(), getY(), getRsOrientation(), tileHeight);
 	}
 
 	@Override

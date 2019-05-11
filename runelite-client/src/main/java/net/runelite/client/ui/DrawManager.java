@@ -34,6 +34,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,6 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DrawManager
 {
+<<<<<<< HEAD
 <<<<<<< HEAD
 	private final List<Consumer<BufferedImage>> everyFrame = new CopyOnWriteArrayList<>();
 	private final Queue<Consumer<BufferedImage>> nextFrame = new ConcurrentLinkedQueue<>();
@@ -52,6 +54,12 @@ public class DrawManager
 
 	public void registerEveryFrameListener(Consumer<Image> everyFrameListener)
 >>>>>>> upstream/master
+=======
+	private final List<Runnable> everyFrame = new CopyOnWriteArrayList<>();
+	private final Queue<Consumer<Image>> nextFrame = new ConcurrentLinkedQueue<>();
+
+	public void registerEveryFrameListener(Runnable everyFrameListener)
+>>>>>>> upstream/master
 	{
 		if (!everyFrame.contains(everyFrameListener))
 		{
@@ -60,9 +68,13 @@ public class DrawManager
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public void unregisterEveryFrameListener(Consumer<BufferedImage> everyFrameListener)
 =======
 	public void unregisterEveryFrameListener(Consumer<Image> everyFrameListener)
+>>>>>>> upstream/master
+=======
+	public void unregisterEveryFrameListener(Runnable everyFrameListener)
 >>>>>>> upstream/master
 	{
 		everyFrame.remove(everyFrameListener);
@@ -78,6 +90,7 @@ public class DrawManager
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public void processDrawComplete(BufferedImage image)
 	{
 		for (Consumer<BufferedImage> everyFrameListener : everyFrame)
@@ -86,10 +99,15 @@ public class DrawManager
 	{
 		for (Consumer<Image> everyFrameListener : everyFrame)
 >>>>>>> upstream/master
+=======
+	public void processDrawComplete(Supplier<Image> imageSupplier)
+	{
+		for (Runnable everyFrameListener : everyFrame)
+>>>>>>> upstream/master
 		{
 			try
 			{
-				everyFrameListener.accept(image);
+				everyFrameListener.run();
 			}
 			catch (Exception e)
 			{
@@ -101,9 +119,31 @@ public class DrawManager
 		Consumer<BufferedImage> nextFrameListener = nextFrame.poll();
 =======
 		Consumer<Image> nextFrameListener = nextFrame.poll();
+<<<<<<< HEAD
+>>>>>>> upstream/master
+=======
+		Image image = null;
 >>>>>>> upstream/master
 		while (nextFrameListener != null)
 		{
+			if (image == null)
+			{
+				try
+				{
+					image = imageSupplier.get();
+				}
+				catch (Exception ex)
+				{
+					log.warn("error getting screenshot", ex);
+				}
+			}
+
+			if (image == null)
+			{
+				nextFrame.clear();
+				break;
+			}
+
 			try
 			{
 				nextFrameListener.accept(image);

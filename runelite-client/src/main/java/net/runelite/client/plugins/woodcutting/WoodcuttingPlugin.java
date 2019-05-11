@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 <<<<<<< HEAD
 import javax.inject.Inject;
@@ -33,8 +32,6 @@ import net.runelite.api.events.ChatMessage;
 =======
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -54,14 +51,17 @@ import net.runelite.api.events.GameTick;
 >>>>>>> upstream/master
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Woodcutting"
+	name = "Woodcutting",
+	description = "Show woodcutting statistics and/or bird nest notifications",
+	tags = {"birds", "nest", "notifications", "overlay", "skilling", "wc"}
 )
 @PluginDependency(XpTrackerPlugin.class)
 public class WoodcuttingPlugin extends Plugin
@@ -79,6 +79,9 @@ public class WoodcuttingPlugin extends Plugin
 	private final WoodcuttingSession session = new WoodcuttingSession();
 =======
 	private Client client;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Inject
 	private WoodcuttingOverlay overlay;
@@ -107,6 +110,7 @@ public class WoodcuttingPlugin extends Plugin
 
 	@Override
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public Overlay getOverlay()
 	{
 		return overlay;
@@ -117,13 +121,19 @@ public class WoodcuttingPlugin extends Plugin
 		return session;
 =======
 	public Collection<Overlay> getOverlays()
+=======
+	protected void startUp() throws Exception
+>>>>>>> upstream/master
 	{
-		return Arrays.asList(overlay, treesOverlay);
+		overlayManager.add(overlay);
+		overlayManager.add(treesOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		overlayManager.remove(overlay);
+		overlayManager.remove(treesOverlay);
 		treeObjects.clear();
 		session = null;
 		axe = null;
@@ -151,9 +161,9 @@ public class WoodcuttingPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() == ChatMessageType.FILTERED || event.getType() == ChatMessageType.SERVER)
+		if (event.getType() == ChatMessageType.SPAM || event.getType() == ChatMessageType.GAMEMESSAGE)
 		{
-			if (event.getMessage().startsWith("You get some") && event.getMessage().endsWith("logs."))
+			if (event.getMessage().startsWith("You get some") && (event.getMessage().endsWith("logs.") || event.getMessage().endsWith("mushrooms.")))
 			{
 <<<<<<< HEAD
 =======

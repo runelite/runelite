@@ -26,56 +26,40 @@ package net.runelite.client.plugins.deathindicator;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
-import static net.runelite.client.plugins.deathindicator.DeathIndicatorPlugin.BONES;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
 class DeathWorldMapPoint extends WorldMapPoint
 {
-	private static final BufferedImage WORLDMAP_HINT_ARROW;
-	private static final Point WORLDMAP_HINT_ARROW_POINT;
+	private final DeathIndicatorPlugin plugin;
+	private final BufferedImage worldmapHintArrow;
+	private final Point worldmapHintArrowPoint;
 
-	static
-	{
-		BufferedImage MAP_ARROW;
-		try
-		{
-			synchronized (ImageIO.class)
-			{
-				MAP_ARROW = ImageIO.read(DeathWorldMapPoint.class.getResourceAsStream("clue_arrow.png"));
-			}
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-
-		WORLDMAP_HINT_ARROW = new BufferedImage(MAP_ARROW.getWidth(),
-			MAP_ARROW.getHeight(), BufferedImage.TYPE_INT_ARGB);
-
-		Graphics graphics = WORLDMAP_HINT_ARROW.getGraphics();
-		graphics.drawImage(MAP_ARROW, 0, 0, null);
-		graphics.drawImage(BONES, 0, 1, null);
-		WORLDMAP_HINT_ARROW_POINT = new Point(WORLDMAP_HINT_ARROW.getWidth() / 2, WORLDMAP_HINT_ARROW.getHeight());
-	}
-
-	DeathWorldMapPoint(final WorldPoint worldPoint)
+	DeathWorldMapPoint(final WorldPoint worldPoint, final DeathIndicatorPlugin plugin)
 	{
 		super(worldPoint, null);
+
+		worldmapHintArrow = new BufferedImage(plugin.getMapArrow().getWidth(), plugin.getMapArrow().getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics graphics = worldmapHintArrow.getGraphics();
+		graphics.drawImage(plugin.getMapArrow(), 0, 0, null);
+		graphics.drawImage(plugin.getBonesImage(), 0, 0, null);
+		worldmapHintArrowPoint = new Point(
+			worldmapHintArrow.getWidth() / 2,
+			worldmapHintArrow.getHeight());
+
+		this.plugin = plugin;
 		this.setSnapToEdge(true);
 		this.setJumpOnClick(true);
-		this.setImage(WORLDMAP_HINT_ARROW);
-		this.setImagePoint(WORLDMAP_HINT_ARROW_POINT);
+		this.setImage(worldmapHintArrow);
+		this.setImagePoint(worldmapHintArrowPoint);
 		this.setTooltip("Death Location");
 	}
 
 	@Override
 	public void onEdgeSnap()
 	{
-		this.setImage(BONES);
+		this.setImage(plugin.getBonesImage());
 		this.setImagePoint(null);
 		this.setTooltip(null);
 	}
@@ -83,8 +67,8 @@ class DeathWorldMapPoint extends WorldMapPoint
 	@Override
 	public void onEdgeUnsnap()
 	{
-		this.setImage(WORLDMAP_HINT_ARROW);
-		this.setImagePoint(WORLDMAP_HINT_ARROW_POINT);
+		this.setImage(worldmapHintArrow);
+		this.setImagePoint(worldmapHintArrowPoint);
 		this.setTooltip("Death Location");
 	}
 }

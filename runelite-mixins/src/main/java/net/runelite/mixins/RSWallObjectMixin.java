@@ -101,8 +101,8 @@ public abstract class RSWallObjectMixin implements RSWallObject
 	{
 		Area clickbox = new Area();
 
-		Area clickboxA = Perspective.getClickbox(client, getModelA(), getOrientationA(), getX(), getY());
-		Area clickboxB = Perspective.getClickbox(client, getModelB(), getOrientationB(), getX(), getY());
+		Area clickboxA = Perspective.getClickbox(client, getModelA(), getOrientationA(), getLocalLocation());
+		Area clickboxB = Perspective.getClickbox(client, getModelB(), getOrientationB(), getLocalLocation());
 
 		if (clickboxA == null && clickboxB == null)
 		{

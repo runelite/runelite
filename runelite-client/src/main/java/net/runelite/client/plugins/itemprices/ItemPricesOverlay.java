@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.itemprices;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
@@ -42,8 +43,8 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.StackFormatter;
-import net.runelite.http.api.item.ItemPrice;
 
 class ItemPricesOverlay extends Overlay
 {
@@ -117,7 +118,7 @@ class ItemPricesOverlay extends Overlay
 						final String text = makeValueTooltip(menuEntry);
 						if (text != null)
 						{
-							tooltipManager.add(new Tooltip("<col=eeeeee>" + text));
+							tooltipManager.add(new Tooltip(ColorUtil.prependColorTag(text, new Color(238, 238, 238))));
 						}
 						break;
 				}
@@ -195,29 +196,30 @@ class ItemPricesOverlay extends Overlay
 
 		int gePrice = 0;
 		int haPrice = 0;
+		int haProfit = 0;
 
 		if (config.showGEPrice())
 		{
-			final ItemPrice price = itemManager.getItemPriceAsync(id);
-			if (price != null)
-			{
-				gePrice = price.getPrice();
-			}
+			gePrice = itemManager.getItemPrice(id);
 		}
 		if (config.showHAValue())
 		{
 			haPrice = Math.round(itemDef.getPrice() * HIGH_ALCHEMY_CONSTANT);
 		}
+		if (gePrice > 0 && haPrice > 0 && config.showAlchProfit())
+		{
+			haProfit = calculateHAProfit(haPrice, gePrice);
+		}
 
 		if (gePrice > 0 || haPrice > 0)
 		{
-			return stackValueText(qty, gePrice, haPrice);
+			return stackValueText(qty, gePrice, haPrice, haProfit);
 		}
 
 		return null;
 	}
 
-	private String stackValueText(int qty, int gePrice, int haValue)
+	private String stackValueText(int qty, int gePrice, int haValue, int haProfit)
 	{
 		if (gePrice > 0)
 		{
@@ -249,9 +251,36 @@ class ItemPricesOverlay extends Overlay
 			}
 		}
 
+		if (haProfit != 0)
+		{
+			Color haColor = haProfitColor(haProfit);
+
+			itemStringBuilder.append("</br>");
+			itemStringBuilder.append("HA Profit: ")
+				.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit * qty), haColor))
+				.append(" gp");
+			if (config.showEA() && qty > 1)
+			{
+				itemStringBuilder.append(" (")
+					.append(ColorUtil.wrapWithColorTag(String.valueOf(haProfit), haColor))
+					.append(" ea)");
+			}
+		}
+
 		// Build string and reset builder
 		final String text = itemStringBuilder.toString();
 		itemStringBuilder.setLength(0);
 		return text;
+	}
+
+	private int calculateHAProfit(int haPrice, int gePrice)
+	{
+		int natureRunePrice = itemManager.getItemPrice(ItemID.NATURE_RUNE);
+		return haPrice - gePrice - natureRunePrice;
+	}
+
+	private static Color haProfitColor(int haProfit)
+	{
+		return haProfit >= 0 ? Color.GREEN : Color.RED;
 	}
 }

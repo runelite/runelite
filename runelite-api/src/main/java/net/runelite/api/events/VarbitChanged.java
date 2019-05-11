@@ -31,10 +31,15 @@ import lombok.Data;
 <<<<<<< HEAD
 =======
 /**
- * An event where a varbit has changed.
+ * An event when a varbit or varplayer has changed.
  */
 >>>>>>> upstream/master
 @Data
 public class VarbitChanged
 {
+	/**
+	 * Index in the varp array that was changed.
+	 * For varplayer, this is the varplayer id.
+	 */
+	private int index = -1;
 }

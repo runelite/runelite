@@ -1,0 +1,91 @@
+.id                 42
+.int_stack_count    2
+.string_stack_count 0
+.int_var_count      6
+.string_var_count   0
+   get_varbit             4606
+   iconst                 0
+   if_icmpne              LABEL4
+   jump                   LABEL5
+LABEL4:
+   return                
+LABEL5:
+   iconst                 896
+   sconst                 "innerZoomLimit"
+   runelite_callback     
+   iload                  0
+   invoke                 1046
+   istore                 0
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   iload                  0
+   invoke                 1045
+   istore                 0
+   iconst                 896
+   sconst                 "innerZoomLimit"
+   runelite_callback     
+   iload                  1
+   invoke                 1046
+   istore                 1
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   iload                  1
+   invoke                 1045
+   istore                 1
+   iload                  0
+   iload                  1
+   viewport_setfov       
+   iconst                 0
+   istore                 2
+   iconst                 0
+   istore                 3
+   viewport_geteffectivesize
+   istore                 3
+   istore                 2
+   iload                  3
+   iconst                 334
+   sub                   
+   istore                 4
+   iload                  4
+   iconst                 0
+   if_icmplt              LABEL39
+   jump                   LABEL42
+LABEL39:
+   iconst                 0
+   istore                 4
+   jump                   LABEL48
+LABEL42:
+   iload                  4
+   iconst                 100
+   if_icmpgt              LABEL46
+   jump                   LABEL48
+LABEL46:
+   iconst                 100
+   istore                 4
+LABEL48:
+   iload                  0
+   iload                  1
+   iload                  0
+   sub                   
+   iload                  4
+   multiply              
+   iconst                 100
+   div                   
+   add                   
+   istore                 5
+   iconst                 25
+   iconst                 25
+   iload                  5
+   multiply              
+   iconst                 256
+   div                   
+   add                   
+   cam_setfollowheight   
+   iload                  0
+   iload                  1
+   set_varc_int           74
+   set_varc_int           73
+   invoke                 1049
+   return                

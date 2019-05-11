@@ -32,4 +32,5 @@ package net.runelite.api;
 >>>>>>> upstream/master
 public interface ChatPlayer extends Nameable
 {
+	int getWorld();
 }

@@ -30,7 +30,6 @@ package net.runelite.client.plugins.xptracker;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 <<<<<<< HEAD
@@ -86,10 +85,11 @@ class XpPanel extends PluginPanel
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 >>>>>>> upstream/master
 
-	XpPanel(XpTrackerPlugin xpTrackerPlugin, Client client, SkillIconManager iconManager)
+	XpPanel(XpTrackerPlugin xpTrackerPlugin, XpTrackerConfig xpTrackerConfig, Client client, SkillIconManager iconManager)
 	{
 		super();
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 		final JPanel layoutPanel = new JPanel();
 		layoutPanel.setLayout(new BorderLayout(0, 3));
@@ -124,6 +124,9 @@ class XpPanel extends PluginPanel
 		layoutPanel.add(infoBoxPanel, BorderLayout.CENTER);
 =======
 		setBorder(new EmptyBorder(10, 6, 10, 6));
+=======
+		setBorder(new EmptyBorder(6, 6, 6, 6));
+>>>>>>> upstream/master
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
 
@@ -145,11 +148,22 @@ class XpPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e -> xpTrackerPlugin.resetAndInitState());
 
+		// Create pause all menu
+		final JMenuItem pauseAll = new JMenuItem("Pause All");
+		pauseAll.addActionListener(e -> xpTrackerPlugin.pauseAllSkills(true));
+
+		// Create unpause all menu
+		final JMenuItem unpauseAll = new JMenuItem("Unpause All");
+		unpauseAll.addActionListener(e -> xpTrackerPlugin.pauseAllSkills(false));
+
+
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(openXpTracker);
 		popupMenu.add(reset);
+		popupMenu.add(pauseAll);
+		popupMenu.add(unpauseAll);
 		overallPanel.setComponentPopupMenu(popupMenu);
 
 		final JLabel overallIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(Skill.OVERALL)));
@@ -175,10 +189,11 @@ class XpPanel extends PluginPanel
 		layoutPanel.add(infoBoxPanel);
 >>>>>>> upstream/master
 
-		try
+		for (Skill skill : Skill.values())
 		{
-			for (Skill skill : Skill.values())
+			if (skill == Skill.OVERALL)
 			{
+<<<<<<< HEAD
 				if (skill == Skill.OVERALL)
 				{
 					break;
@@ -188,11 +203,11 @@ class XpPanel extends PluginPanel
 =======
 >>>>>>> upstream/master
 				infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, client, infoBoxPanel, skill, iconManager));
+=======
+				break;
+>>>>>>> upstream/master
 			}
-		}
-		catch (IOException e)
-		{
-			log.warn(null, e);
+			infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, xpTrackerConfig, client, infoBoxPanel, skill, iconManager));
 		}
 <<<<<<< HEAD
 =======
@@ -236,22 +251,26 @@ class XpPanel extends PluginPanel
 		}
 	}
 
-	void updateSkillExperience(boolean updated, Skill skill, XpSnapshotSingle xpSnapshotSingle)
+	void updateSkillExperience(boolean updated, boolean paused, Skill skill, XpSnapshotSingle xpSnapshotSingle)
 	{
 		final XpInfoBox xpInfoBox = infoBoxes.get(skill);
 
 		if (xpInfoBox != null)
 		{
-			xpInfoBox.update(updated, xpSnapshotSingle);
+			xpInfoBox.update(updated, paused, xpSnapshotSingle);
 		}
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 	void updateTotal(XpSnapshotTotal xpSnapshotTotal)
 	{
 =======
 
 	public void updateTotal(XpSnapshotTotal xpSnapshotTotal)
+=======
+	void updateTotal(XpSnapshotSingle xpSnapshotTotal)
+>>>>>>> upstream/master
 	{
 		// if player has gained exp and hasn't switched displays yet, hide error panel and show overall info
 		if (xpSnapshotTotal.getXpGainedInSession() > 0 && !overallPanel.isVisible())
@@ -259,12 +278,17 @@ class XpPanel extends PluginPanel
 			overallPanel.setVisible(true);
 			remove(errorPanel);
 		}
+		else if (xpSnapshotTotal.getXpGainedInSession() == 0 && overallPanel.isVisible())
+		{
+			overallPanel.setVisible(false);
+			add(errorPanel);
+		}
 
 >>>>>>> upstream/master
 		SwingUtilities.invokeLater(() -> rebuildAsync(xpSnapshotTotal));
 	}
 
-	private void rebuildAsync(XpSnapshotTotal xpSnapshotTotal)
+	private void rebuildAsync(XpSnapshotSingle xpSnapshotTotal)
 	{
 <<<<<<< HEAD
 		totalXpGained.setText(formatLine(xpSnapshotTotal.getXpGainedInSession(), "total xp gained"));

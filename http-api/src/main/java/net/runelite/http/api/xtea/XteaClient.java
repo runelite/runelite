@@ -51,20 +51,15 @@ public class XteaClient
 	private static final Logger logger = LoggerFactory.getLogger(XteaClient.class);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public Response submit(int revision, int region, int[] keys) throws IOException
 =======
 	public void submit(int revision, int region, int[] keys)
 >>>>>>> upstream/master
+=======
+	public void submit(XteaRequest xteaRequest)
+>>>>>>> upstream/master
 	{
-		XteaRequest xteaRequest = new XteaRequest();
-		xteaRequest.setRevision(revision);
-
-		XteaKey xteaKey = new XteaKey();
-		xteaKey.setRegion(region);
-		xteaKey.setKeys(keys);
-
-		xteaRequest.addKey(xteaKey);
-
 		String json = RuneLiteAPI.GSON.toJson(xteaRequest);
 
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()

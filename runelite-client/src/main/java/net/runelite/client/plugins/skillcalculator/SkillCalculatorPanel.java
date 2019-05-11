@@ -30,6 +30,7 @@
 package net.runelite.client.plugins.skillcalculator;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -56,15 +57,18 @@ class SkillCalculatorPanel extends PluginPanel
 	private final GridBagConstraints uiButtonGridConstraints = new GridBagConstraints();
 =======
 import java.awt.Color;
+=======
+>>>>>>> upstream/master
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
@@ -77,7 +81,7 @@ class SkillCalculatorPanel extends PluginPanel
 	private final MaterialTabGroup tabGroup;
 >>>>>>> upstream/master
 
-	SkillCalculatorPanel(SkillIconManager iconManager, Client client)
+	SkillCalculatorPanel(SkillIconManager iconManager, Client client, SpriteManager spriteManager, ItemManager itemManager)
 	{
 		super();
 <<<<<<< HEAD
@@ -125,15 +129,7 @@ class SkillCalculatorPanel extends PluginPanel
 		final UICalculatorInputArea uiInput = new UICalculatorInputArea();
 		uiInput.setBorder(new EmptyBorder(15, 0, 15, 0));
 		uiInput.setBackground(ColorScheme.DARK_GRAY_COLOR);
-
-		uiCalculator = new SkillCalculator(client, uiInput);
-
-		JLabel title = new JLabel("Skilling Calculator");
-		title.setBorder(new EmptyBorder(0, 1, 8, 0));
-		title.setForeground(Color.WHITE);
-
-		add(title, c);
-		c.gridy++;
+		uiCalculator = new SkillCalculator(client, uiInput, spriteManager, itemManager);
 
 		add(tabGroup, c);
 		c.gridy++;
@@ -186,7 +182,12 @@ class SkillCalculatorPanel extends PluginPanel
 =======
 			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(calculatorType.getSkill(), true));
 			MaterialTab tab = new MaterialTab(icon, tabGroup, null);
-			tab.setOnSelectEvent(() -> uiCalculator.openCalculator(calculatorType));
+			tab.setOnSelectEvent(() ->
+			{
+				uiCalculator.openCalculator(calculatorType);
+				return true;
+			});
+
 			tabGroup.addTab(tab);
 		}
 	}

@@ -26,11 +26,35 @@ package net.runelite.rs.api;
 
 import java.awt.Canvas;
 import net.runelite.api.GameEngine;
-import net.runelite.api.KeyFocusListener;
 import net.runelite.mapping.Import;
 
-public interface RSGameEngine extends GameEngine, KeyFocusListener
+public interface RSGameEngine extends GameEngine
 {
 	@Import("canvas")
 	Canvas getCanvas();
+
+	@Import("post")
+	void post(Object canvas);
+
+	@Import("resizeCanvas")
+	@Override
+	void resizeCanvas();
+
+	@Import("resizeCanvasNextFrame")
+	boolean isResizeCanvasNextFrame();
+
+	@Import("resizeCanvasNextFrame")
+	void setResizeCanvasNextFrame(boolean resize);
+
+	@Import("replaceCanvasNextFrame")
+	boolean isReplaceCanvasNextFrame();
+
+	@Import("replaceCanvasNextFrame")
+	void setReplaceCanvasNextFrame(boolean replace);
+
+	@Import("maxCanvasWidth")
+	void setMaxCanvasWidth(int width);
+
+	@Import("maxCanvasHeight")
+	void setMaxCanvasHeight(int height);
 }

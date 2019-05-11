@@ -47,14 +47,9 @@ import net.runelite.client.ui.overlay.OverlayUtil;
  */
 public class FpsOverlay extends Overlay
 {
-	private static final int MAX_FPS = 50;
-	private static final int FPS_SIZE = MAX_FPS + 1;
-	private static final int Y_OFFSET = 14;
-	private static final int VALUE_X_OFFSET = 15;
+	private static final int Y_OFFSET = 1;
+	private static final int VALUE_X_OFFSET = 1;
 	private static final String FPS_STRING = " FPS";
-
-	// Cache of FPS number strings from 00-50
-	private final String[] fpsNums;
 
 	// Local dependencies
 	private final FpsConfig config;
@@ -71,17 +66,6 @@ public class FpsOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGH);
 		setPosition(OverlayPosition.DYNAMIC);
-
-		// Populate pre-allocated strings of FPS, these are constant and there's no reason
-		// to create additional garbage
-		// FPS should never exceed 50, we have 0-50 (51 entries)
-		String[] fpsNums = new String[FPS_SIZE];
-		for (int i = 0; i < FPS_SIZE; i++)
-		{
-			fpsNums[i] = String.format("%02d", i);
-		}
-		this.fpsNums = fpsNums;
-
 	}
 
 	void onFocusChanged(FocusChanged event)
@@ -107,14 +91,14 @@ public class FpsOverlay extends Overlay
 		{
 			return null;
 		}
+		
+		final String text = client.getFPS() + FPS_STRING;
+		final int textWidth = graphics.getFontMetrics().stringWidth(text);
+		final int textHeight = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
 
-		final int fps = client.getFPS();
-		if (fps < FPS_SIZE)
-		{
-			final int width = client.getCanvas().getWidth();
-			final Point point = new Point(width - VALUE_X_OFFSET - graphics.getFontMetrics().stringWidth(FPS_STRING), Y_OFFSET);
-			OverlayUtil.renderTextLocation(graphics, point, fpsNums[fps] + FPS_STRING, getFpsValueColor());
-		}
+		final int width = (int) client.getRealDimensions().getWidth();
+		final Point point = new Point(width - textWidth - VALUE_X_OFFSET, textHeight + Y_OFFSET);
+		OverlayUtil.renderTextLocation(graphics, point, text, getFpsValueColor());
 
 		return null;
 	}

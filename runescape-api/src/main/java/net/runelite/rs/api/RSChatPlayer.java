@@ -30,6 +30,7 @@ import net.runelite.mapping.Import;
 public interface RSChatPlayer extends ChatPlayer, RSNameable
 {
 	@Import("world")
+	@Override
 	int getWorld();
 
 	@Import("rank")

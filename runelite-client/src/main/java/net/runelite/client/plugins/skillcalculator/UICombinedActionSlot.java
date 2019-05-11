@@ -41,6 +41,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JShadowedLabel;
 =======
 import javax.swing.border.EmptyBorder;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
@@ -48,12 +49,11 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
 class UICombinedActionSlot extends JPanel
 {
-
-	private JShadowedLabel uiLabelActions;
-	private JShadowedLabel uiLabelTitle;
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
+	private final JShadowedLabel uiLabelActions;
+	private final JShadowedLabel uiLabelTitle;
 
-	UICombinedActionSlot()
+	UICombinedActionSlot(SpriteManager spriteManager)
 	{
 <<<<<<< HEAD
 		BorderLayout layout = new BorderLayout();
@@ -70,8 +70,12 @@ class UICombinedActionSlot extends JPanel
 
 		JLabel uiIcon = new JLabel();
 		uiIcon.setBorder(new EmptyBorder(0, 0, 0, 5));
+<<<<<<< HEAD
 >>>>>>> upstream/master
 		SkillCalculator.spriteManager.addSpriteTo(uiIcon, 582, 0);
+=======
+		spriteManager.addSpriteTo(uiIcon, 582, 0);
+>>>>>>> upstream/master
 
 		uiIcon.setMinimumSize(ICON_SIZE);
 		uiIcon.setMaximumSize(ICON_SIZE);

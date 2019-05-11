@@ -49,10 +49,22 @@
       "xp": 50
     },
     {
+      "level": 19,
+      "icon": 10142,
+      "name": "Guam tar",
+      "xp": 30
+    },
+    {
       "level": 20,
       "icon": 255,
       "name": "Harralander",
       "xp": 6.3
+    },
+    {
+      "level": 21,
+      "icon": 6472,
+      "name": "Compost Potion (3)",
+      "xp": 60
     },
     {
       "level": 22,
@@ -85,6 +97,12 @@
       "xp": 75
     },
     {
+      "level": 31,
+      "icon": 10143,
+      "name": "Marrentill tar",
+      "xp": 42.5
+    },
+    {
       "level": 34,
       "icon": 3034,
       "name": "Agility Potion (3)",
@@ -103,10 +121,22 @@
       "xp": 87.5
     },
     {
+      "level": 39,
+      "icon": 10144,
+      "name": "Tarromin tar",
+      "xp": 55
+    },
+    {
       "level": 40,
       "icon": 259,
       "name": "Irit Leaf",
       "xp": 8.8
+    },
+    {
+      "level": 44,
+      "icon": 10145,
+      "name": "Harralander tar",
+      "xp": 72.5
     },
     {
       "level": 45,
@@ -259,6 +289,18 @@
       "xp": 177.5
     },
     {
+      "level": 80,
+      "icon": 22464,
+      "name": "Bastion Potion (3)",
+      "xp": 155
+    },
+    {
+      "level": 80,
+      "icon": 22452,
+      "name": "Battlemage Potion (3)",
+      "xp": 155
+    },
+    {
       "level": 81,
       "icon": 6687,
       "name": "Saradomin Brew (3)",
@@ -287,6 +329,12 @@
       "icon": 12695,
       "name": "Super Combat Potion(4)",
       "xp": 150
+    },
+    {
+      "level": 92,
+      "icon": 21981,
+      "name": "Super Antifire (3)",
+      "xp": 130
     },
     {
       "level": 94,

@@ -37,7 +37,21 @@ import lombok.Getter;
 @Getter
 public enum VarClientInt
 {
-	TOOLTIP_TIMEOUT(1);
+	TOOLTIP_TIMEOUT(1),
+
+	/**
+	 * 0 = no tooltip displayed
+	 * 1 = tooltip displaying
+	 */
+	TOOLTIP_VISIBLE(2),
+
+	INPUT_TYPE(5),
+
+	MEMBERSHIP_STATUS(103),
+
+	INVENTORY_TAB(171),
+
+	WORLD_MAP_SEARCH_FOCUSED(190);
 
 	private final int index;
 }

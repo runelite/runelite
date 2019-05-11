@@ -24,7 +24,6 @@
  */
 package net.runelite.mixins;
 
-import net.runelite.api.Perspective;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
@@ -40,15 +39,14 @@ public abstract class CameraMixin implements RSClient
 	@Shadow("clientInstance")
 	static RSClient client;
 
-	@Shadow("isDrawingRegion")
-	static boolean isDrawingRegion;
-
 	@Inject
 	static boolean pitchRelaxEnabled = false;
 
 	@Inject
 	static int lastPitch = 128;
 
+	@Inject
+	static int lastPitchTarget = 128;
 
 	@Inject
 	public void setCameraPitchRelaxerEnabled(boolean enabled)
@@ -68,12 +66,33 @@ public abstract class CameraMixin implements RSClient
 		}
 	}
 
-
 	@FieldHook("cameraPitchTarget")
+	@Inject
+	static void onCameraPitchTargetChanged(int idx)
+	{
+		int newPitch = client.getCameraPitchTarget();
+		int pitch = newPitch;
+		if (pitchRelaxEnabled)
+		{
+			// This works because the vanilla camera movement code only moves %2
+			if (lastPitchTarget > STANDARD_PITCH_MAX && newPitch == STANDARD_PITCH_MAX)
+			{
+				pitch = lastPitchTarget;
+				if (pitch > NEW_PITCH_MAX)
+				{
+					pitch = NEW_PITCH_MAX;
+				}
+				client.setCameraPitchTarget(pitch);
+			}
+		}
+		lastPitchTarget = pitch;
+	}
+
+	@FieldHook("cameraPitch")
 	@Inject
 	static void onCameraPitchChanged(int idx)
 	{
-		int newPitch = client.getCameraPitchTarget();
+		int newPitch = client.getCameraPitch();
 		int pitch = newPitch;
 		if (pitchRelaxEnabled)
 		{
@@ -85,32 +104,9 @@ public abstract class CameraMixin implements RSClient
 				{
 					pitch = NEW_PITCH_MAX;
 				}
-				client.setCameraPitchTarget(pitch);
+				client.setCameraPitch(pitch);
 			}
 		}
 		lastPitch = pitch;
-	}
-
-	// All of this is to bypass a check in Region.drawRegion
-
-	@FieldHook("pitchSin")
-	@Inject
-	static void onPitchSinChanged(int idx)
-	{
-		if (pitchRelaxEnabled && isDrawingRegion)
-		{
-			client.setPitchSin(Perspective.SINE[client.getCameraPitch()]);
-		}
-	}
-
-
-	@FieldHook("pitchCos")
-	@Inject
-	static void onPitchCosChanged(int idx)
-	{
-		if (pitchRelaxEnabled && isDrawingRegion)
-		{
-			client.setPitchCos(Perspective.COSINE[client.getCameraPitch()]);
-		}
 	}
 }
