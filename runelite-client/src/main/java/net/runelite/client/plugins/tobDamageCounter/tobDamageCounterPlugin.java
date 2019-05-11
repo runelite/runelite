@@ -64,7 +64,7 @@ public class tobDamageCounterPlugin extends Plugin
 	private int currentWorld = -1;
 	private int DamageCount = 0;
 	private int currenthpxp = -1; // setting the current HP XP for now
-	private String BossName = null; //the name of the boss to calculate the damage
+	private String BossName = null; //to ID the boss to calculate the damage
 	private int DamageTaken = 0;
 	private int DamageHeal = 0;
 	private boolean status = true; //default boolean alive = true, dead = false
@@ -354,14 +354,14 @@ public class tobDamageCounterPlugin extends Plugin
 		}
 		else if (percent >= 1)
 		{
-			Encouragement = "Well done everyone is pulling their weight! ";
+			Encouragement = "Well done everyone is pulling their weight!";
 			DamagePer = "You did " + String.format("%.2f", percent) + "% of the damage " +
 					actor.getName() + "!";
 		}
 		else
 		{
-			Encouragement = "FUCKING LEECH GET THE FUCK OUT OF HERE!";
-			DamagePer = "Fucking leech did " + String.format("%.2f", percent) + "% of the damage " +
+			Encouragement = "YOU'RE LEECHING!";
+			DamagePer = "You the leech did " + String.format("%.2f", percent) + "% of the damage " +
 					actor.getName() + "!";
 		}
 
@@ -388,9 +388,9 @@ public class tobDamageCounterPlugin extends Plugin
 		double Percent = calculatePercent(WorldPoint.fromLocalInstance(client,
 				client.getLocalPlayer().getLocalLocation()).getRegionID());
 
-		String Encouragement = "FUCKING PLANKER!";
+		String Encouragement = "PLANKER!!!!!";
 		String Damageper = "You did " + String.format("%.2f", Percent) + "% of the damage" +
-				BossName + "! Try not to plank again retard!";
+				BossName + "!";
 
 		String MessageTaken = "You have taken " + DAMAGEFORMAT.format(DamageTaken) + " damage from this fight!";
 		for (int i = 0; i < ToB_Region.length; i++)
