@@ -122,7 +122,7 @@ public class DpsCounterPlugin extends Plugin
 		dpsMember.addDamage(hit);
 //		System.out.println("HIT "+ hit);
 
-		if (!partyService.getMembers().isEmpty())
+		if (hit > 0 && !partyService.getMembers().isEmpty())
 		{
 			// Check the player is attacking the boss
 			if (npc != null && player.getInteracting() == npc)
@@ -147,7 +147,7 @@ public class DpsCounterPlugin extends Plugin
 			return;
 		}
 
-		DpsMember dpsMember = members.computeIfAbsent(name, n -> new DpsMember(name));
+		DpsMember dpsMember = members.computeIfAbsent(name, DpsMember::new);
 		dpsMember.addDamage(dpsUpdate.getHit());
 
 	}

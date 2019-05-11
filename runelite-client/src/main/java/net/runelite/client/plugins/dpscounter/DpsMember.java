@@ -21,6 +21,6 @@ class DpsMember
 	{
 		int diff = (int) (Instant.now().toEpochMilli() - start.toEpochMilli()) / 1000;
 		if (diff == 0) return 0;
-		return damage / diff;
+		return (int) ((float) damage / (float) diff);
 	}
 }
