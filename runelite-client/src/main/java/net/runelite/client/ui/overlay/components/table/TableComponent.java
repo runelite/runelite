@@ -76,7 +76,7 @@ public class TableComponent implements LayoutableRenderableEntity
 
 		for (TableRow row : this.rows)
 		{
-			height += displayRow(graphics, row, height, columnWidths, metrics);
+			height = displayRow(graphics, row, height, columnWidths, metrics);
 		}
 
 		graphics.translate(-preferredLocation.x, -preferredLocation.y);
@@ -99,7 +99,13 @@ public class TableComponent implements LayoutableRenderableEntity
 			int y = startingRowHeight;
 			final TableElement cell = elements.get(i);
 
-			final String[] lines = lineBreakText(cell.getContent(), columnWidths[i], metrics);
+			final String content = cell.getContent();
+			if (content == null)
+			{
+				continue;
+			}
+
+			final String[] lines = lineBreakText(content, columnWidths[i], metrics);
 			final TableAlignment alignment = getCellAlignment(row, i);
 			final Color color = getCellColor(row, i);
 
@@ -151,6 +157,11 @@ public class TableComponent implements LayoutableRenderableEntity
 			{
 				final TableElement ele = elements.get(col);
 				final String cell = ele.getContent();
+				if (cell == null)
+				{
+					continue;
+				}
+
 				final int cellWidth = getTextWidth(metrics, cell);
 
 				maxtextw[col] = Math.max(maxtextw[col], cellWidth);
