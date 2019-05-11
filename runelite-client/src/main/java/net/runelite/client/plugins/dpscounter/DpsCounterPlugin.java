@@ -128,6 +128,12 @@ public class DpsCounterPlugin extends Plugin
 		DpsMember dpsMember = members.computeIfAbsent(name, n -> new DpsMember(name));
 		dpsMember.addDamage(hit);
 
+		if (dpsMember.isPaused())
+		{
+			dpsMember.unpause();
+			log.debug("Unpausing {}", dpsMember.getName());
+		}
+
 		if (hit > 0 && !partyService.getMembers().isEmpty())
 		{
 			// Check the player is attacking the boss
@@ -162,6 +168,12 @@ public class DpsCounterPlugin extends Plugin
 
 		DpsMember dpsMember = members.computeIfAbsent(name, DpsMember::new);
 		dpsMember.addDamage(dpsUpdate.getHit());
+
+		if (dpsMember.isPaused())
+		{
+			dpsMember.unpause();
+			log.debug("Unpausing {}", dpsMember.getName());
+		}
 	}
 
 	@Subscribe

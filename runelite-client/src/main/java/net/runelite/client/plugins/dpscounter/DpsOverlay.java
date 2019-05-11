@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.text.DecimalFormat;
 import java.util.Map;
 import javax.inject.Inject;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -30,7 +30,7 @@ public class DpsOverlay extends Overlay
 		this.dpsCounterPlugin = dpsCounterPlugin;
 		this.dpsConfig = dpsConfig;
 		this.partyService = partyService;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, "Reset", "DPS counter"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, "Reset", "DPS counter"));
 	}
 
 	@Override

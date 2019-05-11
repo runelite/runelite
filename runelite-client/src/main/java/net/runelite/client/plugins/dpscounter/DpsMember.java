@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.dpscounter;
 
+import java.time.Duration;
 import java.time.Instant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +34,21 @@ class DpsMember
 	void pause()
 	{
 		end = Instant.now();
+	}
+
+	boolean isPaused()
+	{
+		return end != null;
+	}
+
+	void unpause()
+	{
+		if (end == null)
+		{
+			return;
+		}
+
+		start = start.plus(Duration.between(end, Instant.now());
+		end = null;
 	}
 }
