@@ -171,11 +171,12 @@ public interface RaidsConfig extends Config
 		position = 12,
 		keyName = "enhanceScouterTitle",
 		name = "Enhance scouter title",
-		description = "Adds #combat and good puzzles to scouter title"
+		description = "Adds #combat and good puzzles to scouter title",
+		hidden = true
 	)
 	default boolean enhanceScouterTitle()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -207,7 +208,7 @@ public interface RaidsConfig extends Config
 	)
 	default String recommendedItems()
 	{
-		return "";
+		return "[muttadiles,zamorak godsword],[Vasa,ghrazi rapier],[Guardians,Dragon pickaxe],[Mystics,Salve amulet(ei)],[Shamans,Antidote++],[Vespula,Super restore(4)]";
 	}
 
 	@ConfigItem(
@@ -229,7 +230,7 @@ public interface RaidsConfig extends Config
 	)
 	default boolean scavsBeforeOlm()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -251,7 +252,7 @@ public interface RaidsConfig extends Config
 	)
 	default boolean alwaysShowWorldAndCC()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -262,7 +263,7 @@ public interface RaidsConfig extends Config
 	)
 	default boolean colorTightrope()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
