@@ -150,6 +150,10 @@ public class Notifier
 		{
 			flashStart = Instant.now();
 		}
+
+		if (runeLiteConfig.logNotification()) {
+			log.info(message);
+		}
 	}
 
 	public void processFlash(final Graphics2D graphics)
