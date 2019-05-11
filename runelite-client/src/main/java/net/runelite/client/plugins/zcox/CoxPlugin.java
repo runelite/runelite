@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, xzact <https://github.com/xzact>
+ * Copyright (c) 2019, gazivodag <https://github.com/gazivodag>
  * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
