@@ -63,7 +63,7 @@ public interface HidePrayersPVMConfig extends Config
 		position = 2,
 		keyName = "zulrahcheap",
 		name = "Zulrah Eagle Eye/Mystic Might",
-		description = "Hide/Show Eagle Eye/Mystic Might for Zulrah"
+		description = "Show prayers for Zulrah"
 	)
 	default boolean showZulrahCheap()
 	{
@@ -75,11 +75,10 @@ public interface HidePrayersPVMConfig extends Config
 		position = 3,
 		keyName = "zulrahexpensive",
 		name = "Zulrah Augury/Rigour",
-		description = "Shows prayers needed for Zulrah"
+		description = "Shows prayers for Zulrah"
 	)
 	default boolean showZulrahExpensive()
 	{
 		return false;
 	}
-
 }
