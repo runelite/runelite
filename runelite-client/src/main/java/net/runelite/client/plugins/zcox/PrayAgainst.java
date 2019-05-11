@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, xzact <https://github.com/xzact>
+ * Copyright (c) 2019, gazivodag <https://github.com/gazivodag>
  * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
@@ -22,92 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.zcox;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup("Cox")
-
-public interface CoxConfig extends Config
+enum PrayAgainst
 {
-	@ConfigItem(
-		position = 0,
-		keyName = "Muttadile",
-		name = "Muttadile Marker",
-		description = ""
-	)
-	default boolean Muttadile()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 1,
-		keyName = "Tekton",
-		name = "Tekton Marker",
-		description = ""
-	)
-	default boolean Tekton()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 2,
-		keyName = "Guardians",
-		name = "Guardians timing",
-		description = ""
-	)
-	default boolean Guardians()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "OlmSpec",
-		name = "Olm Next Spec",
-		description = ""
-	)
-	default boolean OlmSpec()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "OlmTick",
-		name = "Olm Tick Counter",
-		description = ""
-	)
-	default boolean OlmTick()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 5,
-		keyName = "OlmCrystals",
-		name = "Olm AoE Indicator",
-		description = ""
-	)
-	default boolean OlmCrystals()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 6,
-		keyName = "LargeCrystals",
-		name = "Mark Large AoE Crystals rather then small ones",
-		description = ""
-	)
-	default boolean LargeCrystals()
-	{
-		return true;
-	}
-
+	MELEE,
+	MAGIC,
+	RANGED
 }
