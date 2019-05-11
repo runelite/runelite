@@ -186,21 +186,10 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "logNotification",
-			name = "Log notifications",
-			description = "Logs notifications.<br>This is useful as a developer for implementing your own hooks.",
-			position = 25
-	)
-	default boolean logNotification()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-			keyName = "notificationFocused",
-			name = "Send notifications when focused",
-			description = "Toggles all notifications for when the client is focused",
-			position = 26
+		keyName = "notificationFocused",
+		name = "Send notifications when focused",
+		description = "Toggles all notifications for when the client is focused",
+		position = 25
 	)
 	default boolean sendNotificationsWhenFocused()
 	{
