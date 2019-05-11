@@ -16,6 +16,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
@@ -25,6 +26,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ws.PartyMember;
 import net.runelite.client.ws.PartyService;
 import net.runelite.client.ws.WSClient;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "DPS Counter",
@@ -33,8 +35,6 @@ import net.runelite.client.ws.WSClient;
 @Slf4j
 public class DpsCounterPlugin extends Plugin
 {
-	private int lastXp = -1;
-
 	@Inject
 	private Client client;
 
@@ -51,7 +51,8 @@ public class DpsCounterPlugin extends Plugin
 	private DpsOverlay dpsOverlay;
 
 	private Boss boss;
-	private NPC npc;
+	private NPC bossNpc;
+	private int lastHpExp = -1;
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<String, DpsMember> members = new ConcurrentHashMap<>();
 
@@ -89,13 +90,13 @@ public class DpsCounterPlugin extends Plugin
 
 		if (target instanceof NPC)
 		{
-			int npcId = ((NPC) target).getId();
+			NPC npc = (NPC) target;
+			int npcId = npc.getId();
 			Boss boss = Boss.findBoss(npcId);
 			if (boss != null)
 			{
 				this.boss = boss;
-				npc = (NPC) target;
-				//	boss = Boss.ABYSSAL_SIRE;
+				bossNpc = (NPC) target;
 			}
 		}
 	}
@@ -109,15 +110,15 @@ public class DpsCounterPlugin extends Plugin
 		}
 
 		final int xp = client.getSkillExperience(Skill.HITPOINTS);
-		if (boss == null || lastXp < 0 || xp < lastXp)
+		if (boss == null || lastHpExp < 0 || xp < lastHpExp)
 		{
-			lastXp = xp;
+			lastHpExp = xp;
 			return;
 		}
 
-		final int delta = xp - lastXp;
+		final int delta = xp - lastHpExp;
 		final int hit = getHit(boss.getModifier(), delta);
-		lastXp = xp;
+		lastHpExp = xp;
 
 		// Update local member
 		PartyMember localMember = partyService.getLocalMember();
@@ -130,9 +131,9 @@ public class DpsCounterPlugin extends Plugin
 		if (hit > 0 && !partyService.getMembers().isEmpty())
 		{
 			// Check the player is attacking the boss
-			if (npc != null && player.getInteracting() == npc)
+			if (bossNpc != null && player.getInteracting() == bossNpc)
 			{
-				final DpsUpdate specialCounterUpdate = new DpsUpdate(npc.getId(), hit);
+				final DpsUpdate specialCounterUpdate = new DpsUpdate(bossNpc.getId(), hit);
 				specialCounterUpdate.setMemberId(partyService.getLocalMember().getMemberId());
 				wsClient.send(specialCounterUpdate);
 			}
@@ -154,7 +155,7 @@ public class DpsCounterPlugin extends Plugin
 		}
 
 		// Hmm - not attacking the same boss I am
-		if (npc == null || dpsUpdate.getNpcId() != npc.getId())
+		if (bossNpc == null || dpsUpdate.getNpcId() != bossNpc.getId())
 		{
 			return;
 		}
@@ -175,14 +176,47 @@ public class DpsCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
-		if (npc == null || npcDespawned.getNpc() != npc || !npc.isDead())
+		if (boss == null)
 		{
 			return;
 		}
 
-		log.debug("Boss has died!");
+		NPC npc = npcSpawned.getNpc();
+		int npcId = npc.getId();
+		if (!ArrayUtils.contains(boss.getIds(), npcId))
+		{
+			return;
+		}
+
+		log.debug("Boss has spawned!");
+		bossNpc = npc;
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned npcDespawned)
+	{
+		if (bossNpc == null || npcDespawned.getNpc() != bossNpc)
+		{
+			return;
+		}
+
+		if (bossNpc.isDead())
+		{
+			log.debug("Boss has died!");
+			pause();
+		}
+
+		bossNpc = null;
+	}
+
+	private void pause()
+	{
+		for (DpsMember dpsMember : members.values())
+		{
+			dpsMember.pause();
+		}
 	}
 
 	private int getHit(float modifier, int deltaExperience)
