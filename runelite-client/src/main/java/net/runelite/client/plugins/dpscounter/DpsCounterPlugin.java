@@ -20,6 +20,7 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
+import net.runelite.client.events.PartyChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -76,6 +77,12 @@ public class DpsCounterPlugin extends Plugin
 		overlayManager.remove(dpsOverlay);
 		members.clear();
 		boss = null;
+	}
+
+	@Subscribe
+	public void onPartyChanged(PartyChanged partyChanged)
+	{
+		members.clear();
 	}
 
 	@Subscribe
