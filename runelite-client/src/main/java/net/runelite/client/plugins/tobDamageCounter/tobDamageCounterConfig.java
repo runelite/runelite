@@ -51,7 +51,7 @@ public interface tobDamageCounterConfig extends Config{
             position = 5,
             keyName = "tobParty",
             name = "Party Members",
-            description = "The number of party members are in your group effects the ToB Bosses HP."
+            description = "The number of party members(including you) are in your group effects the ToB Bosses HP."
     )//default value will be 4, since its the most common to do in a group
     default int tobParty()
     {
