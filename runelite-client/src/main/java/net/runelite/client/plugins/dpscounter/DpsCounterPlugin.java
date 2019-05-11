@@ -60,12 +60,14 @@ public class DpsCounterPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(dpsOverlay);
+		wsClient.registerMessage(DpsUpdate.class);
 		//super.startUp();
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		wsClient.unregisterMessage(DpsUpdate.class);
 		overlayManager.remove(dpsOverlay);
 		boss = null;
 		//super.shutDown();
