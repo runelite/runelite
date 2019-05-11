@@ -48,7 +48,7 @@ class DpsMember
 			return;
 		}
 
-		start = start.plus(Duration.between(end, Instant.now());
+		start = start.plus(Duration.between(end, Instant.now()));
 		end = null;
 	}
 }

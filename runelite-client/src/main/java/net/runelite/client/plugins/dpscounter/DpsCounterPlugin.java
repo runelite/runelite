@@ -110,7 +110,7 @@ public class DpsCounterPlugin extends Plugin
 		}
 
 		final int xp = client.getSkillExperience(Skill.HITPOINTS);
-		if (boss == null || lastHpExp < 0 || xp < lastHpExp)
+		if (boss == null || lastHpExp < 0 || xp <= lastHpExp)
 		{
 			lastHpExp = xp;
 			return;
