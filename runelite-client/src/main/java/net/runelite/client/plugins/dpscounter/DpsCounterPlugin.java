@@ -74,6 +74,7 @@ public class DpsCounterPlugin extends Plugin
 	{
 		wsClient.unregisterMessage(DpsUpdate.class);
 		overlayManager.remove(dpsOverlay);
+		members.clear();
 		boss = null;
 	}
 
@@ -180,8 +181,8 @@ public class DpsCounterPlugin extends Plugin
 	public void onOverlayMenuClicked(OverlayMenuClicked event)
 	{
 		if (event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
-			event.getEntry().getTarget().equals("Reset") &&
-			event.getEntry().getOption().equals("DPS counter"))
+			event.getEntry().getOption().equals("Reset") &&
+			event.getEntry().getTarget().equals("DPS counter"))
 		{
 			members.clear();
 		}
