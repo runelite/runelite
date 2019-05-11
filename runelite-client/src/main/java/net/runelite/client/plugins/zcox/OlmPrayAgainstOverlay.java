@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, gazivodag <https://github.com/gazivodag>
+ * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -21,8 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.olmprayagainst;
+package net.runelite.client.plugins.zcox;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.SpriteID;
 import net.runelite.client.game.SpriteManager;
@@ -31,19 +40,17 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-import javax.inject.Inject;
-import java.awt.*;
-import java.awt.image.BufferedImage;
+class OlmPrayAgainstOverlay extends Overlay
+{
 
-class OlmPrayAgainstOverlay extends Overlay {
-
-	private final OlmPrayAgainstPlugin plugin;
+	private final CoxPlugin plugin;
 	private final Client client;
 	private final SpriteManager spriteManager;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	OlmPrayAgainstOverlay(OlmPrayAgainstPlugin plugin, Client client, SpriteManager spriteManager) {
+	OlmPrayAgainstOverlay(CoxPlugin plugin, Client client, SpriteManager spriteManager)
+	{
 		this.plugin = plugin;
 		this.client = client;
 		this.spriteManager = spriteManager;
@@ -51,31 +58,40 @@ class OlmPrayAgainstOverlay extends Overlay {
 		panelComponent.setOrientation(PanelComponent.Orientation.VERTICAL);
 	}
 
-	public Dimension render(Graphics2D graphics2D) {
-		if (plugin.getPrayAgainstOlm() == null) return null;
+	public Dimension render(Graphics2D graphics2D)
+	{
+		if (plugin.getPrayAgainstOlm() == null)
+		{
+			return null;
+		}
 
 		panelComponent.getChildren().clear();
 
-		if (System.currentTimeMillis() < (plugin.getLastPrayTime() + 120000)) {
+		if (System.currentTimeMillis() < (plugin.getLastPrayTime() + 120000))
+		{
 			InfoBoxComponent prayComponent = new InfoBoxComponent();
 			Image prayImg = scaleImg(getPrayerImage(plugin.prayAgainstOlm));
 			prayComponent.setImage(prayImg);
 			prayComponent.setColor(Color.WHITE);
-			prayComponent.setPreferredSize(new Dimension(40,40));
+			prayComponent.setPreferredSize(new Dimension(40, 40));
 			panelComponent.getChildren().add(prayComponent);
 
-			panelComponent.setPreferredSize(new Dimension(40,40));
-			panelComponent.setBorder(new Rectangle(0,0,0,0));
+			panelComponent.setPreferredSize(new Dimension(40, 40));
+			panelComponent.setBorder(new Rectangle(0, 0, 0, 0));
 			return panelComponent.render(graphics2D);
-		} else {
+		}
+		else
+		{
 			plugin.setPrayAgainstOlm(null);
 		}
 
 		return null;
 	}
 
-	private BufferedImage getPrayerImage(PrayAgainst prayAgainst) {
-		switch (prayAgainst) {
+	private BufferedImage getPrayerImage(PrayAgainst prayAgainst)
+	{
+		switch (prayAgainst)
+		{
 			case MAGIC:
 				return spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MAGIC, 0);
 			case MELEE:
@@ -86,7 +102,8 @@ class OlmPrayAgainstOverlay extends Overlay {
 		return null;
 	}
 
-	private Image scaleImg(final Image img) {
+	private Image scaleImg(final Image img)
+	{
 		if (img == null)
 		{
 			return null;

@@ -1,9 +1,27 @@
 /*
- * THIS SOFTWARE WRITTEN BY A KEYBOARD-WIELDING MONKEY BOI
- * No rights reserved. Use, redistribute, and modify at your own discretion,
- * and in accordance with Yagex and RuneLite guidelines.
- * However, aforementioned monkey would prefer if you don't sell this plugin for profit.
- * Good luck on your raids!
+ * Copyright (c) 2019, xzact <https://github.com/xzact>
+ * Copyright (c) 2019, gazivodag <https://github.com/gazivodag>
+ * Copyright (c) 2019, ganom <https://github.com/Ganom>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package net.runelite.client.plugins.zcox;
@@ -12,19 +30,24 @@ import com.google.inject.Provides;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.Projectile;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.ProjectileMoved;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -41,6 +64,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.PVM
 )
 
+@Slf4j
+@Singleton
 public class CoxPlugin extends Plugin
 {
 	private static final int GAMEOBJECT_ID_PSN = 30032;
@@ -57,6 +82,26 @@ public class CoxPlugin extends Plugin
 	private NPC Guard1_NPC;
 	@Getter(AccessLevel.PACKAGE)
 	private NPC Guard2_NPC;
+	private static final String OLM_HAND_CRIPPLE = "The Great Olm\'s left claw clenches to protect itself temporarily.";
+	@Inject
+	private Client client;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean HandCripple;
+	@Getter(AccessLevel.PACKAGE)
+	private int timer = 45;
+	@Getter(AccessLevel.PACKAGE)
+	private NPC hand;
+	@Inject
+	private OverlayManager overlayManager;
+	@Inject
+	private OlmCrippleTimerOverlay olmCrippleTimerOverlay;
+	@Setter
+	@Getter
+	protected PrayAgainst prayAgainstOlm;
+	@Getter
+	protected long lastPrayTime;
+	@Inject
+	private OlmPrayAgainstOverlay prayAgainstOverlay;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean runMutta;
@@ -120,13 +165,6 @@ public class CoxPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-
-	@Inject
-	private Client client;
-
-	@Inject
-	private OverlayManager overlayManager;
-
 	@Inject
 	private CoxOverlay overlay;
 
@@ -143,12 +181,19 @@ public class CoxPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(olmCrippleTimerOverlay);
+		overlayManager.add(prayAgainstOverlay);
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(olmCrippleTimerOverlay);
+		overlayManager.remove(prayAgainstOverlay);
+		HandCripple = false;
+		timer = 45;
+		hand = null;
 	}
 
 
@@ -195,6 +240,47 @@ public class CoxPlugin extends Plugin
 			needOlm = true;
 			Olm_NextSpec = -1;
 		}
+		if (messageNode.getValue().startsWith(OLM_HAND_CRIPPLE))
+		{
+			HandCripple = true;
+			timer = 45;
+		}
+		if (messageNode.getValue().toLowerCase().contains("aggression"))
+		{
+			log.debug("Melee Detected");
+			prayAgainstOlm = PrayAgainst.MELEE;
+			lastPrayTime = System.currentTimeMillis();
+		}
+		if (messageNode.getValue().toLowerCase().contains("of magical power"))
+		{
+			log.debug("Mage Detected");
+			prayAgainstOlm = PrayAgainst.MAGIC;
+			lastPrayTime = System.currentTimeMillis();
+		}
+		if (messageNode.getValue().toLowerCase().contains("accuracy and dexterity"))
+		{
+			log.debug("Missile Detected");
+			prayAgainstOlm = PrayAgainst.RANGED;
+			lastPrayTime = System.currentTimeMillis();
+		}
+	}
+
+	@Subscribe
+	public void onProjectileMoved(ProjectileMoved event)
+	{
+		Projectile projectile = event.getProjectile();
+		if (projectile.getId() == 1339)
+		{
+			log.debug("Mage Detected");
+			prayAgainstOlm = PrayAgainst.MAGIC;
+			lastPrayTime = System.currentTimeMillis();
+		}
+		if (projectile.getId() == 1340)
+		{
+			log.debug("Range Detected");
+			prayAgainstOlm = PrayAgainst.RANGED;
+			lastPrayTime = System.currentTimeMillis();
+		}
 	}
 
 	@Subscribe
@@ -212,8 +298,7 @@ public class CoxPlugin extends Plugin
 				runTekton = true;
 				Tekton_NPC = npc;
 				break;
-
-			case NpcID.MUTTADILE://momadile resting
+			case NpcID.MUTTADILE:
 				Momma_NPC = npc;
 				break;
 			case NpcID.MUTTADILE_7562:
@@ -224,28 +309,6 @@ public class CoxPlugin extends Plugin
 				runMutta = true;
 				Momma_NPC = npc;
 				break;
-
-			//   case NpcID.GREAT_OLM_7554:
-			//      System.out.println("Found Olm NPC");
-			//      if (!runOlm)
-			//        {
-			//           Olm_ActionCycle = 4;
-			///            Olm_TicksUntilAction = 4;
-			//       } else {
-			//            Olm_ActionCycle = 4;
-			//           Olm_TicksUntilAction = 3;
-			////         }
-			//        OlmPhase++;
-			//       System.out.println("OLM PHASE:"+OlmPhase);
-			//      runOlm = true;
-			//       Olm_NPC = npc;
-			//       Olm_NextSpec = 1;
-			//        break;
-//
-			//    case NpcID.GREAT_OLM_LEFT_CLAW:
-			//   case NpcID.GREAT_OLM_LEFT_CLAW_7555:
-			//       OlmMelee_NPC = npc;
-			//       break;
 			case NpcID.GUARDIAN:
 				Guard1_NPC = npc;
 				guardTick = -1;
@@ -256,8 +319,10 @@ public class CoxPlugin extends Plugin
 				guardTick = -1;
 				runGuard = true;
 				break;
-
-			//add vanguards
+			case NpcID.GREAT_OLM_RIGHT_CLAW_7553:
+			case NpcID.GREAT_OLM_LEFT_CLAW:
+				hand = npc;
+				break;
 		}
 	}
 
@@ -276,28 +341,16 @@ public class CoxPlugin extends Plugin
 				runTekton = false;
 				Tekton_NPC = null;
 				break;
-
 			case NpcID.MUTTADILE:
 				Momma_NPC = null;
 				break;
 			case NpcID.MUTTADILE_7562:
 				Mutta_NPC = null;
 				break;
-
 			case NpcID.MUTTADILE_7563:
 				runMutta = false;
 				Momma_NPC = null;
 				break;
-
-			//   case NpcID.GREAT_OLM_7554:
-			//      Olm_NPC = null;
-			//       break;
-
-			//case NpcID.GREAT_OLM_LEFT_CLAW:
-			//  case NpcID.GREAT_OLM_LEFT_CLAW_7555:
-			//      OlmMelee_NPC = null;
-			//       break;
-//
 			case NpcID.GUARDIAN:
 				Guard1_NPC = null;
 				runGuard = false;
@@ -314,7 +367,10 @@ public class CoxPlugin extends Plugin
 				runGuard = false;
 				Guard2_NPC = null;
 				break;
-			//add vanguards
+			case NpcID.GREAT_OLM_RIGHT_CLAW_7553:
+			case NpcID.GREAT_OLM_LEFT_CLAW:
+				HandCripple = false;
+				break;
 		}
 
 	}
@@ -337,6 +393,16 @@ public class CoxPlugin extends Plugin
 		else
 		{
 
+		}
+
+		if (HandCripple)
+		{
+			timer--;
+			if (timer <= 0)
+			{
+				HandCripple = false;
+				timer = 45;
+			}
 		}
 		if (needOlm = true)
 		{
@@ -434,30 +500,6 @@ public class CoxPlugin extends Plugin
 			{
 				Olm_TicksUntilAction--;
 			}
-
-			//for (GameObject i : client.getGameObjects()) {
-			//    if (i.getId() == GRAPHICSOBJECT_ID_CRYSTAL) {
-			//        WorldPoint newloc;
-			//         for (int x = -1; x <= 1; x++) {
-			//            for (int y = -1; y <= 1; y++) {
-			//               newloc = WorldPoint.fromLocal(client, o.getLocation());
-
-			//                if (config.LargeCrystals()) {
-			//                   newloc = newloc.dx(x);
-			//                   newloc = newloc.dy(y);
-			//               }
-			//               Olm_Crystals.add(newloc);
-			//           }
-
-			//       }
-
-//
-			//   }
-			//   if (o.getId() == GRAPHICSOBJECT_ID_HEAL) {
-			//       Olm_Heal.add(WorldPoint.fromLocal(client, o.getLocation()));
-			//   }
-			//}
-
 
 			for (GraphicsObject o : client.getGraphicsObjects())
 			{

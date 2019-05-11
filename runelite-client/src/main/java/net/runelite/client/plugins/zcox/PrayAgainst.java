@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, gazivodag <https://github.com/gazivodag>
+ * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -21,9 +22,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.olmprayagainst;
+package net.runelite.client.plugins.zcox;
 
-enum PrayAgainst {
+enum PrayAgainst
+{
 	MELEE,
 	MAGIC,
 	RANGED
