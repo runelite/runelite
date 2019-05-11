@@ -1,5 +1,7 @@
 /*
  * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, Kyle <https://github.com/kyleeld>
+ * Copyright (c) 2018, Raiever <https://github.com/Raieverr>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +24,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
-package net.runelite.client.plugins.hideprayers;
 
-public enum PrayerTabState
+package net.runelite.client.plugins.hideprayers.PVM;
+
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup("hideprayersPVM")
+public interface HidePrayersPVMConfig extends Config
 {
-    NONE,
-    PRAYERS,
-    QUICK_PRAYERS
+	@ConfigItem
+	(
+		position = 0,
+		keyName = "barrowscheap",
+		name = "Barrows Eagle Eye/Mystic Might",
+		description = "Shows prayers for Barrows"
+	)
+	default boolean showBarrowsCheap()
+	{
+		return false;
+	}
+
+	@ConfigItem
+	(
+		position = 1,
+		keyName = "barrowsexpensive",
+		name = "Barrows Augury/Rigour",
+		description = "Shows prayers for Barrows"
+	)
+	default boolean showBarrowsExpensive()
+	{
+		return false;
+	}
+
+	@ConfigItem
+	(
+		position = 2,
+		keyName = "zulrahcheap",
+		name = "Zulrah Eagle Eye/Mystic Might",
+		description = "Hide/Show Eagle Eye/Mystic Might for Zulrah"
+	)
+	default boolean showZulrahCheap()
+	{
+		return false;
+	}
+
+	@ConfigItem
+	(
+		position = 3,
+		keyName = "zulrahexpensive",
+		name = "Zulrah Augury/Rigour",
+		description = "Shows prayers needed for Zulrah"
+	)
+	default boolean showZulrahExpensive()
+	{
+		return false;
+	}
+
 }
