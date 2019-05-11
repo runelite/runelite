@@ -343,25 +343,25 @@ public class tobDamageCounterPlugin extends Plugin
 		if (percent >= 50)
 		{
 			Encouragement = "Well done carrying the fucking boulders in your team! WOWEEW";
-			DamagePer = "You did " + String.format("%.2f", percent) + "% of the damage " +
+			DamagePer = "You did " + String.format("%.2f", percent) + "% of the damage to " +
 					actor.getName() + "!";
 		}
 		else if (percent >= 25)
 		{
 			Encouragement = "Well done carrying some dead weight in your team! Awesome!";
-			DamagePer = "You did " + String.format("%.2f", percent) + "% of the damage " +
+			DamagePer = "You did " + String.format("%.2f", percent) + "% of the damage to " +
 					actor.getName() + "!";
 		}
 		else if (percent >= 1)
 		{
 			Encouragement = "Well done everyone is pulling their weight!";
-			DamagePer = "You did " + String.format("%.2f", percent) + "% of the damage " +
+			DamagePer = "You did " + String.format("%.2f", percent) + "% of the damage to " +
 					actor.getName() + "!";
 		}
 		else
 		{
 			Encouragement = "YOU'RE LEECHING!";
-			DamagePer = "You the leech did " + String.format("%.2f", percent) + "% of the damage " +
+			DamagePer = "You the leech did " + String.format("%.2f", percent) + "% of the damage to " +
 					actor.getName() + "!";
 		}
 
@@ -389,7 +389,7 @@ public class tobDamageCounterPlugin extends Plugin
 				client.getLocalPlayer().getLocalLocation()).getRegionID());
 
 		String Encouragement = "PLANKER!!!!!";
-		String Damageper = "You did " + String.format("%.2f", Percent) + "% of the damage " +
+		String Damageper = "You did " + String.format("%.2f", Percent) + "% of the damage to " +
 				BossName + "!";
 
 		String MessageTaken = "You have taken " + DAMAGEFORMAT.format(DamageTaken) + " damage from this fight!";
