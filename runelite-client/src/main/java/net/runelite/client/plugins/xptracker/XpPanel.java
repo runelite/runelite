@@ -1,9 +1,6 @@
 /*
  * Copyright (c) 2017, Cameron <moberg@tuta.io>
-<<<<<<< HEAD
-=======
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
->>>>>>> upstream/master
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,14 +29,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
-<<<<<<< HEAD
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-=======
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -48,33 +37,22 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
->>>>>>> upstream/master
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
-<<<<<<< HEAD
-import net.runelite.client.ui.PluginPanel;
-import net.runelite.client.util.LinkBrowser;
-import net.runelite.client.util.StackFormatter;
-=======
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.LinkBrowser;
->>>>>>> upstream/master
 import okhttp3.HttpUrl;
 
 @Slf4j
 class XpPanel extends PluginPanel
 {
 	private final Map<Skill, XpInfoBox> infoBoxes = new HashMap<>();
-<<<<<<< HEAD
-	private final JLabel totalXpGained = new JLabel();
-	private final JLabel totalXpHr = new JLabel();
-=======
 
 	private final JLabel overallExpGained = new JLabel(XpInfoBox.htmlLabel("Gained: ", 0));
 	private final JLabel overallExpHour = new JLabel(XpInfoBox.htmlLabel("Per hour: ", 0));
@@ -83,50 +61,12 @@ class XpPanel extends PluginPanel
 
 	/* This displays the "No exp gained" text */
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
->>>>>>> upstream/master
 
 	XpPanel(XpTrackerPlugin xpTrackerPlugin, XpTrackerConfig xpTrackerConfig, Client client, SkillIconManager iconManager)
 	{
 		super();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-		final JPanel layoutPanel = new JPanel();
-		layoutPanel.setLayout(new BorderLayout(0, 3));
-		add(layoutPanel);
-
-		final JPanel totalPanel = new JPanel();
-		totalPanel.setLayout(new BorderLayout());
-		totalPanel.setBorder(BorderFactory.createLineBorder(getBackground().brighter(), 1, true));
-
-		final JPanel infoPanel = new JPanel();
-		infoPanel.setLayout(new GridLayout(4, 1));
-		infoPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-
-		final JButton resetButton = new JButton("Reset All");
-		resetButton.addActionListener(e -> xpTrackerPlugin.resetAndInitState());
-
-		final JButton openTrackerButton = new JButton("Open XP tracker");
-		openTrackerButton.addActionListener(e -> LinkBrowser.browse(buildXpTrackerUrl(client.getLocalPlayer(), Skill.OVERALL)));
-
-		totalXpGained.setText(formatLine(0, "total xp gained"));
-		totalXpHr.setText(formatLine(0, "total xp/hr"));
-
-		infoPanel.add(totalXpGained);
-		infoPanel.add(totalXpHr);
-		infoPanel.add(resetButton);
-		infoPanel.add(openTrackerButton);
-		totalPanel.add(infoPanel, BorderLayout.CENTER);
-		layoutPanel.add(totalPanel, BorderLayout.NORTH);
-
-		final JPanel infoBoxPanel = new JPanel();
-		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
-		layoutPanel.add(infoBoxPanel, BorderLayout.CENTER);
-=======
-		setBorder(new EmptyBorder(10, 6, 10, 6));
-=======
 		setBorder(new EmptyBorder(6, 6, 6, 6));
->>>>>>> upstream/master
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new BorderLayout());
 
@@ -187,34 +127,18 @@ class XpPanel extends PluginPanel
 		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(infoBoxPanel);
->>>>>>> upstream/master
 
 		for (Skill skill : Skill.values())
 		{
 			if (skill == Skill.OVERALL)
 			{
-<<<<<<< HEAD
-				if (skill == Skill.OVERALL)
-				{
-					break;
-				}
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
-				infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, client, infoBoxPanel, skill, iconManager));
-=======
 				break;
->>>>>>> upstream/master
 			}
 			infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, xpTrackerConfig, client, infoBoxPanel, skill, iconManager));
 		}
-<<<<<<< HEAD
-=======
 
 		errorPanel.setContent("Exp trackers", "You have not gained experience yet.");
 		add(errorPanel);
->>>>>>> upstream/master
 	}
 
 	static String buildXpTrackerUrl(final Actor player, final Skill skill)
@@ -261,16 +185,7 @@ class XpPanel extends PluginPanel
 		}
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	void updateTotal(XpSnapshotTotal xpSnapshotTotal)
-	{
-=======
-
-	public void updateTotal(XpSnapshotTotal xpSnapshotTotal)
-=======
 	void updateTotal(XpSnapshotSingle xpSnapshotTotal)
->>>>>>> upstream/master
 	{
 		// if player has gained exp and hasn't switched displays yet, hide error panel and show overall info
 		if (xpSnapshotTotal.getXpGainedInSession() > 0 && !overallPanel.isVisible())
@@ -284,36 +199,13 @@ class XpPanel extends PluginPanel
 			add(errorPanel);
 		}
 
->>>>>>> upstream/master
 		SwingUtilities.invokeLater(() -> rebuildAsync(xpSnapshotTotal));
 	}
 
 	private void rebuildAsync(XpSnapshotSingle xpSnapshotTotal)
 	{
-<<<<<<< HEAD
-		totalXpGained.setText(formatLine(xpSnapshotTotal.getXpGainedInSession(), "total xp gained"));
-		totalXpHr.setText(formatLine(xpSnapshotTotal.getXpPerHour(), "total xp/hr"));
-	}
-
-	static String formatLine(double number, String description)
-	{
-		String numberStr;
-		if (number < 100000)
-		{
-			numberStr = StackFormatter.formatNumber(number);
-		}
-		else
-		{
-			int num = (int) (Math.log(number) / Math.log(1000));
-			numberStr = String.format("%.1f%c", number / Math.pow(1000, num), "KMB".charAt(num - 1));
-		}
-
-		return numberStr + " " + description;
-	}
-=======
 		overallExpGained.setText(XpInfoBox.htmlLabel("Gained: ", xpSnapshotTotal.getXpGainedInSession()));
 		overallExpHour.setText(XpInfoBox.htmlLabel("Per hour: ", xpSnapshotTotal.getXpPerHour()));
 	}
 
->>>>>>> upstream/master
 }

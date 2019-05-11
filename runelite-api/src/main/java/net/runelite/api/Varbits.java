@@ -27,12 +27,9 @@ package net.runelite.api;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-<<<<<<< HEAD
-=======
 /**
  * An enumeration of local client variables.
  */
->>>>>>> upstream/master
 @AllArgsConstructor
 @Getter
 public enum Varbits
@@ -222,10 +219,6 @@ public enum Varbits
 	IN_GAME_BA(3923),
 
 	/**
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
 	 * 0 = Outside wilderness
 	 * 1 = In wilderness
 	 */
@@ -238,7 +231,6 @@ public enum Varbits
 	FISHING_TRAWLER_ACTIVITY(3377),
 
 	/**
->>>>>>> upstream/master
 	 * Blast Furnace Bar Dispenser
 	 *
 	 * These are the expected values:
@@ -250,7 +242,6 @@ public enum Varbits
 	BAR_DISPENSER(936),
 
 	/**
->>>>>>> upstream/master
 	 * Motherlode mine sack
 	 */
 	SACK_NUMBER(5558),
@@ -499,11 +490,7 @@ public enum Varbits
 	QUEST_TAB(8168);
 
 	/**
-<<<<<<< HEAD
-	 * varbit id
-=======
 	 * The raw varbit ID.
->>>>>>> upstream/master
 	 */
 	private final int id;
 }

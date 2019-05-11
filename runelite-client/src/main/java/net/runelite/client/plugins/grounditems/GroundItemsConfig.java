@@ -38,12 +38,6 @@ import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 public interface GroundItemsConfig extends Config
 {
 	@ConfigItem(
-<<<<<<< HEAD
-		keyName = "showHighlightedOnly",
-		name = "Show Highlighted items only",
-		description = "Configures whether or not to draw items only on your highlighted list",
-		position = 1
-=======
 		keyName = "highlightedItems",
 		name = "Highlighted Items",
 		description = "Configures specifically highlighted ground items. Format: (item), (item)",
@@ -83,12 +77,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "showHighlightedOnly",
 		name = "Show Highlighted items only",
 		description = "Configures whether or not to draw items only on your highlighted list",
-<<<<<<< HEAD
-		position = 3
->>>>>>> upstream/master
-=======
 		position = 2
->>>>>>> upstream/master
 	)
 	default boolean showHighlightedOnly()
 	{
@@ -96,14 +85,6 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-		keyName = "showGEPrice",
-		name = "Show Grand Exchange Prices",
-		description = "Configures whether or not to draw GE prices alongside ground items",
-<<<<<<< HEAD
-		position = 2
-=======
-=======
 		keyName = "dontHideUntradeables",
 		name = "Do not hide untradeables",
 		description = "Configures whether or not untradeable items ignore hiding under settings",
@@ -118,9 +99,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "showMenuItemQuantities",
 		name = "Show Menu Item Quantities",
 		description = "Configures whether or not to show the item quantities in the menu",
->>>>>>> upstream/master
 		position = 4
->>>>>>> upstream/master
 	)
 	default boolean showMenuItemQuantities()
 	{
@@ -128,20 +107,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-		keyName = "showHAValue",
-		name = "Show High Alchemy Values",
-		description = "Configures whether or not to draw High Alchemy values alongside ground items",
-<<<<<<< HEAD
-		position = 3
-=======
-=======
 		keyName = "recolorMenuHiddenItems",
 		name = "Recolor Menu Hidden Items",
 		description = "Configures whether or not hidden items in right click menu will be recolored",
->>>>>>> upstream/master
 		position = 5
->>>>>>> upstream/master
 	)
 	default boolean recolorMenuHiddenItems()
 	{
@@ -149,20 +118,10 @@ public interface GroundItemsConfig extends Config
 	}
 	
 	@ConfigItem(
-<<<<<<< HEAD
-		keyName = "showMenuItemQuantities",
-		name = "Show Menu Item Quantities",
-		description = "Configures whether or not to show the item quantities in the menu",
-<<<<<<< HEAD
-		position = 4
-=======
-=======
 		keyName = "highlightTiles",
 		name = "Highlight Tiles",
 		description = "Configures whether or not to highlight tiles containing ground items",
->>>>>>> upstream/master
 		position = 6
->>>>>>> upstream/master
 	)
 	default boolean highlightTiles() 
 	{ 
@@ -195,15 +154,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "itemHighlightMode",
 		name = "Item Highlight Mode",
 		description = "Configures how ground items will be highlighted",
-<<<<<<< HEAD
-<<<<<<< HEAD
-		position = 5
-=======
-		position = 7
->>>>>>> upstream/master
-=======
 		position = 9
->>>>>>> upstream/master
 	)
 	default ItemHighlightMode itemHighlightMode()
 	{
@@ -214,15 +165,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "menuHighlightMode",
 		name = "Menu Highlight Mode",
 		description = "Configures what to highlight in right-click menu",
-<<<<<<< HEAD
-<<<<<<< HEAD
-		position = 6
-=======
-		position = 8
->>>>>>> upstream/master
-=======
 		position = 10
->>>>>>> upstream/master
 	)
 	default MenuHighlightMode menuHighlightMode()
 	{
@@ -230,21 +173,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-		keyName = "hideUnderGeValue",
-		name = "Hide < GE Value",
-		description = "Configures hidden ground items under GE value",
-<<<<<<< HEAD
-		position = 7
-=======
-		position = 9
->>>>>>> upstream/master
-=======
 		keyName = "highlightValueCalculation",
 		name = "Highlight Value Calculation",
 		description = "Configures which coin value is used to determine highlight color",
 		position = 11
->>>>>>> upstream/master
 	)
 	default ValueCalculationMode valueCalculationMode()
 	{
@@ -263,21 +195,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-		keyName = "hideUnderHaValue",
-		name = "Hide < HA Value",
-		description = "Configures hidden ground items under High Alch value",
-<<<<<<< HEAD
-		position = 8
-=======
-		position = 10
->>>>>>> upstream/master
-=======
 		keyName = "hideUnderValue",
 		name = "Hide < Value",
 		description = "Configures hidden ground items under both GE and HA value",
 		position = 13
->>>>>>> upstream/master
 	)
 	default int getHideUnderValue()
 	{
@@ -285,45 +206,6 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-		keyName = "highlightedItems",
-		name = "Highlighted Items",
-		description = "Configures specifically highlighted ground items. Format: (item), (item)",
-		position = 9
-	)
-	default String getHighlightItems()
-	{
-		return "";
-	}
-
-	@ConfigItem(
-		keyName = "highlightedItems",
-		name = "",
-		description = ""
-	)
-	void setHighlightedItem(String key);
-
-	@ConfigItem(
-		keyName = "hiddenItems",
-		name = "Hidden Items",
-		description = "Configures hidden ground items. Format: (item), (item)",
-		position = 10
-	)
-	default String getHiddenItems()
-	{
-		return "";
-	}
-
-	@ConfigItem(
-		keyName = "hiddenItems",
-		name = "",
-		description = ""
-	)
-	void setHiddenItems(String key);
-
-	@ConfigItem(
-=======
->>>>>>> upstream/master
 		keyName = "defaultColor",
 		name = "Default items color",
 		description = "Configures the color for default, non-highlighted items",

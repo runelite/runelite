@@ -60,73 +60,14 @@ class ObjectIndicatorsOverlay extends Overlay
 	{
 		for (TileObject object : plugin.getObjects())
 		{
-<<<<<<< HEAD:runelite-client/src/main/java/net/runelite/client/plugins/npchighlight/NpcClickboxOverlay.java
-<<<<<<< HEAD
-			renderNpcOverlay(graphics, npc, npc.getName(), config.getNpcColor());
-		}
-
-		NPC[] npcs = client.getCachedNPCs();
-		for (int npcId : plugin.getNpcTags())
-		{
-			NPC npc = npcs[npcId];
-			if (npc != null && npc.getName() != null)
-			{
-				renderNpcOverlay(graphics, npc, npc.getName(), config.getTagColor());
-			}
-=======
-			renderNpcOverlay(graphics, npc, npc.getName(), config.getHighlightColor());
->>>>>>> upstream/master
-		}
-
-		return null;
-	}
-
-	private void renderNpcOverlay(Graphics2D graphics, NPC actor, String name, Color color)
-	{
-		switch (config.renderStyle())
-		{
-			case TILE:
-				Polygon objectTile = actor.getCanvasTilePoly();
-
-				if (objectTile != null)
-				{
-					graphics.setColor(color);
-					graphics.setStroke(new BasicStroke(2));
-					graphics.draw(objectTile);
-<<<<<<< HEAD
-					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 255)); // ollie 5-14-2018
-=======
-					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
->>>>>>> upstream/master
-					graphics.fill(objectTile);
-				}
-				break;
-=======
 			if (object.getPlane() != client.getPlane())
 			{
 				continue;
 			}
->>>>>>> upstream/master:runelite-client/src/main/java/net/runelite/client/plugins/objectindicators/ObjectIndicatorsOverlay.java
 
 			final Polygon polygon;
 			Polygon polygon2 = null;
 
-<<<<<<< HEAD:runelite-client/src/main/java/net/runelite/client/plugins/npchighlight/NpcClickboxOverlay.java
-				if (objectClickbox != null)
-				{
-					graphics.setColor(color);
-					graphics.setStroke(new BasicStroke(2));
-					graphics.draw(objectClickbox);
-<<<<<<< HEAD
-					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 255));
-=======
-					graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
->>>>>>> upstream/master
-					graphics.fill(objectClickbox);
-				}
-				break;
-		}
-=======
 			if (object instanceof GameObject)
 			{
 				polygon = ((GameObject) object).getConvexHull();
@@ -140,7 +81,6 @@ class ObjectIndicatorsOverlay extends Overlay
 			{
 				polygon = object.getCanvasTilePoly();
 			}
->>>>>>> upstream/master:runelite-client/src/main/java/net/runelite/client/plugins/objectindicators/ObjectIndicatorsOverlay.java
 
 			if (polygon != null)
 			{

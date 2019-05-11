@@ -34,14 +34,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
-<<<<<<< HEAD
-<<<<<<< HEAD
-import java.util.concurrent.ScheduledExecutorService;
-=======
->>>>>>> upstream/master
-import javax.imageio.ImageIO;
-=======
->>>>>>> upstream/master
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
@@ -51,14 +43,8 @@ import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
-<<<<<<< HEAD
-=======
 import net.runelite.api.VarPlayer;
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 import net.runelite.api.WorldType;
->>>>>>> upstream/master
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -106,19 +92,8 @@ public class XpTrackerPlugin extends Plugin
 	@Inject
 	private SkillIconManager skillIconManager;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	@Inject
-	private ScheduledExecutorService executor;
-
-=======
->>>>>>> upstream/master
-	private NavigationButton navButton;
-	private XpPanel xpPanel;
-=======
 	@Inject
 	private XpTrackerConfig xpTrackerConfig;
->>>>>>> upstream/master
 
 	@Inject
 	private NPCManager npcManager;
@@ -155,14 +130,9 @@ public class XpTrackerPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "/skill_icons/overall.png");
 
 		navButton = NavigationButton.builder()
-<<<<<<< HEAD
-			.name("XP Tracker")
-			.icon(icon)
-=======
 			.tooltip("XP Tracker")
 			.icon(icon)
 			.priority(2)
->>>>>>> upstream/master
 			.panel(xpPanel)
 			.build();
 
@@ -206,27 +176,7 @@ public class XpTrackerPlugin extends Plugin
 			Player local = client.getLocalPlayer();
 			if (local == null)
 			{
-<<<<<<< HEAD
-<<<<<<< HEAD
-				log.debug("Submitting xp track for {}", username);
-
-				executor.submit(() ->
-				{
-					try
-					{
-						xpClient.update(username);
-					}
-					catch (IOException ex)
-					{
-						log.warn("error submitting xp track", ex);
-					}
-				});
-=======
-				xpClient.update(username);
->>>>>>> upstream/master
-=======
 				return;
->>>>>>> upstream/master
 			}
 
 			String username = local.getName();
@@ -306,8 +256,6 @@ public class XpTrackerPlugin extends Plugin
 		xpPanel.resetSkill(skill);
 	}
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Reset all skills except for the one provided
 	 * @param skill Skill to ignore during reset
@@ -324,20 +272,11 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
->>>>>>> upstream/master
 
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged event)
 	{
 		final Skill skill = event.getSkill();
-<<<<<<< HEAD
-		int currentXp = client.getSkillExperience(skill);
-
-		XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp);
-
-		boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
-
-=======
 		final int currentXp = client.getSkillExperience(skill);
 		final int currentLevel = Experience.getLevelForXp(currentXp);
 		final VarPlayer startGoal = startGoalVarpForSkill(skill);
@@ -363,13 +302,6 @@ public class XpTrackerPlugin extends Plugin
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
 		xpPanel.updateSkillExperience(updateResult == XpUpdateResult.UPDATED, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
 
-<<<<<<< HEAD
-		final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
->>>>>>> upstream/master
-		xpPanel.updateSkillExperience(updated, skill, xpState.getSkillSnapshot(skill));
-		xpState.recalculateTotal();
-		xpPanel.updateTotal(xpState.getTotalSnapshot());
-=======
 		if (skill == Skill.CONSTRUCTION && updateResult == XpUpdateResult.INITIALIZED)
 		{
 			// Construction is the last skill initialized on login, now initialize the total experience
@@ -382,7 +314,6 @@ public class XpTrackerPlugin extends Plugin
 			xpState.updateSkill(Skill.OVERALL, client.getOverallExperience(), -1, -1);
 			xpPanel.updateTotal(xpState.getTotalSnapshot());
 		}
->>>>>>> upstream/master
 	}
 
 	@Subscribe
@@ -420,8 +351,6 @@ public class XpTrackerPlugin extends Plugin
 	{
 		return xpState.getSkillSnapshot(skill);
 	}
-<<<<<<< HEAD
-=======
 
 	private static VarPlayer startGoalVarpForSkill(final Skill skill)
 	{
@@ -532,9 +461,6 @@ public class XpTrackerPlugin extends Plugin
 				return null;
 		}
 	}
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 
 	@Schedule(
 		period = 1,
@@ -607,5 +533,4 @@ public class XpTrackerPlugin extends Plugin
 			pauseSkill(skill, pause);
 		}
 	}
->>>>>>> upstream/master
 }

@@ -261,8 +261,6 @@ public interface RSWidget extends Widget
 	@Override
 	void setOriginalY(int originalY);
 
-<<<<<<< HEAD
-=======
 	@Import("originalHeight")
 	@Override
 	int getOriginalHeight();
@@ -279,10 +277,6 @@ public interface RSWidget extends Widget
 	@Override
 	void setOriginalWidth(int originalWidth);
 
-<<<<<<< HEAD
->>>>>>> upstream/master
-	@Import("paddingX")
-=======
 	@Import("xPitch")
 	int getXPitch();
 
@@ -292,7 +286,6 @@ public interface RSWidget extends Widget
 	void broadcastHidden(boolean hidden);
 
 	@Import("onOpListener")
->>>>>>> upstream/master
 	@Override
 	void setOnOpListener(Object... args);
 

@@ -24,14 +24,11 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-=======
 /**
  * Utility class used for mapping projectile IDs.
  * <p>
  * Note: This class is not complete and may be missing mapped IDs.
  */
->>>>>>> upstream/master
 public class ProjectileID
 {
 	public static final int CANNONBALL = 53;

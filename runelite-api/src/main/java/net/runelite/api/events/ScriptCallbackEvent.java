@@ -27,12 +27,6 @@ package net.runelite.api.events;
 import lombok.Data;
 import net.runelite.api.Script;
 
-<<<<<<< HEAD
-@Data
-public class ScriptCallbackEvent
-{
-	private Script script;
-=======
 /**
  * A callback from a runelite_callback opcode in a cs2
  */
@@ -46,6 +40,5 @@ public class ScriptCallbackEvent
 	/**
 	 * The name of the event that triggered script execution.
 	 */
->>>>>>> upstream/master
 	private String eventName;
 }

@@ -29,47 +29,26 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-<<<<<<< HEAD
-=======
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
->>>>>>> upstream/master
 import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
-<<<<<<< HEAD
-=======
 import java.awt.image.VolatileImage;
-<<<<<<< HEAD
->>>>>>> upstream/master
-import net.runelite.api.Actor;
-import net.runelite.api.ChatMessageType;
-=======
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
->>>>>>> upstream/master
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.NullItemID;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.Renderable;
 import net.runelite.api.WorldMapManager;
-<<<<<<< HEAD
-import net.runelite.api.coords.LocalPoint;
-<<<<<<< HEAD
-import net.runelite.api.events.ActorDeath;
-=======
->>>>>>> upstream/master
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.FocusChanged;
-=======
 import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.BeforeRender;
->>>>>>> upstream/master
 import net.runelite.api.events.GameTick;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
@@ -83,10 +62,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.task.Scheduler;
-<<<<<<< HEAD
-=======
 import net.runelite.client.ui.ClientUI;
->>>>>>> upstream/master
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -108,30 +84,6 @@ public class Hooks implements Callbacks
 	private static final Injector injector = RuneLite.getInjector();
 	private static final Client client = injector.getInstance(Client.class);
 	private static final OverlayRenderer renderer = injector.getInstance(OverlayRenderer.class);
-<<<<<<< HEAD
-	private static final MouseManager mouseManager = injector.getInstance(MouseManager.class);
-	private static final KeyManager keyManager = injector.getInstance(KeyManager.class);
-	private static final ClientThread clientThread = injector.getInstance(ClientThread.class);
-	private static final GameTick tick = new GameTick();
-	private static final DrawManager renderHooks = injector.getInstance(DrawManager.class);
-	private static final Notifier notifier = injector.getInstance(Notifier.class);
-<<<<<<< HEAD
-
-	private static Dimension lastStretchedDimensions;
-	private static BufferedImage stretchedImage;
-=======
-	private static final ClientUI clientUi = injector.getInstance(ClientUI.class);
-
-	private static Dimension lastStretchedDimensions;
-	private static VolatileImage stretchedImage;
->>>>>>> upstream/master
-	private static Graphics2D stretchedGraphics;
-
-	private static long lastCheck;
-	private static boolean shouldProcessGameTick;
-
-	public static void clientMainLoop(Client client, boolean arg1)
-=======
 	private static final OverlayManager overlayManager = injector.getInstance(OverlayManager.class);
 
 	private static final GameTick GAME_TICK = new GameTick();
@@ -191,7 +143,6 @@ public class Hooks implements Callbacks
 
 	@Override
 	public void clientMainLoop()
->>>>>>> upstream/master
 	{
 		if (shouldProcessGameTick)
 		{
@@ -343,15 +294,8 @@ public class Hooks implements Callbacks
 			return;
 		}
 
-<<<<<<< HEAD
-		BufferedImage image = (BufferedImage) mainBufferProvider.getImage();
-=======
 		Image image = mainBufferProvider.getImage();
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 		final Image finalImage;
->>>>>>> upstream/master
 		final Graphics2D graphics2d = (Graphics2D) image.getGraphics();
 
 		try
@@ -380,26 +324,16 @@ public class Hooks implements Callbacks
 		// Stretch the game image if the user has that enabled
 		if (client.isStretchedEnabled())
 		{
-<<<<<<< HEAD
-			Dimension stretchedDimensions = client.getStretchedDimensions();
-
-			if (lastStretchedDimensions == null || !lastStretchedDimensions.equals(stretchedDimensions))
-=======
 			GraphicsConfiguration gc = clientUi.getGraphicsConfiguration();
 			Dimension stretchedDimensions = client.getStretchedDimensions();
 
 			if (lastStretchedDimensions == null || !lastStretchedDimensions.equals(stretchedDimensions)
 				|| (stretchedImage != null && stretchedImage.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE))
->>>>>>> upstream/master
 			{
 				/*
 					Reuse the resulting image instance to avoid creating an extreme amount of objects
 				 */
-<<<<<<< HEAD
-				stretchedImage = new BufferedImage(stretchedDimensions.width, stretchedDimensions.height, BufferedImage.TYPE_INT_RGB);
-=======
 				stretchedImage = gc.createCompatibleVolatileImage(stretchedDimensions.width, stretchedDimensions.height);
->>>>>>> upstream/master
 
 				if (stretchedGraphics != null)
 				{
@@ -534,24 +468,7 @@ public class Hooks implements Callbacks
 		deferredEventBus.replay();
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public static void onSetCombatInfo(Actor actor, int combatInfoId, int gameCycle, int var3, int var4, int healthRatio, int health)
-	{
-		if (healthRatio == 0)
-		{
-			ActorDeath death = new ActorDeath();
-			death.setActor(actor);
-			eventBus.post(death);
-		}
-	}
-
-=======
->>>>>>> upstream/master
-	public static void postItemComposition(ItemComposition itemComposition)
-=======
 	public static void renderDraw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)
->>>>>>> upstream/master
 	{
 		DrawCallbacks drawCallbacks = client.getDrawCallbacks();
 		if (drawCallbacks != null)

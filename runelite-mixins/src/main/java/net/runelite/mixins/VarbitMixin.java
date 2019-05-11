@@ -58,11 +58,7 @@ public abstract class VarbitMixin implements RSClient
 	public int getVar(Varbits varbit)
 	{
 		int varbitId = varbit.getId();
-<<<<<<< HEAD
-		return getVarbitValue(varbitId);
-=======
 		return getVarbitValue(getVarps(), varbitId);
->>>>>>> upstream/master
 	}
 
 	@Inject
@@ -70,20 +66,12 @@ public abstract class VarbitMixin implements RSClient
 	public void setSetting(Varbits varbit, int value)
 	{
 		int varbitId = varbit.getId();
-<<<<<<< HEAD
-		setVarbitValue(varbitId, value);
-=======
 		setVarbitValue(getVarps(), varbitId, value);
->>>>>>> upstream/master
 	}
 
 	@Inject
 	@Override
-<<<<<<< HEAD
-	public int getVarbitValue(int varbitId)
-=======
 	public int getVarbitValue(int[] varps, int varbitId)
->>>>>>> upstream/master
 	{
 		assert client.isClientThread();
 
@@ -96,15 +84,11 @@ public abstract class VarbitMixin implements RSClient
 			varbitCache.put(varbitId, v);
 		}
 
-<<<<<<< HEAD
-		int[] varps = getVarps();
-=======
 		if (v.getIndex() == 0 && v.getLeastSignificantBit() == 0 && v.getMostSignificantBit() == 0)
 		{
 			throw new IndexOutOfBoundsException("Varbit " + varbitId + " does not exist");
 		}
 
->>>>>>> upstream/master
 		int value = varps[v.getIndex()];
 		int lsb = v.getLeastSignificantBit();
 		int msb = v.getMostSignificantBit();
@@ -114,11 +98,7 @@ public abstract class VarbitMixin implements RSClient
 
 	@Inject
 	@Override
-<<<<<<< HEAD
-	public void setVarbitValue(int varbitId, int value)
-=======
 	public void setVarbitValue(int[] varps, int varbitId, int value)
->>>>>>> upstream/master
 	{
 		RSVarbit v = varbitCache.getIfPresent(varbitId);
 		if (v == null)
@@ -129,10 +109,6 @@ public abstract class VarbitMixin implements RSClient
 			varbitCache.put(varbitId, v);
 		}
 
-<<<<<<< HEAD
-		int[] varps = getVarps();
-=======
->>>>>>> upstream/master
 		int lsb = v.getLeastSignificantBit();
 		int msb = v.getMostSignificantBit();
 		int mask = (1 << ((msb - lsb) + 1)) - 1;
@@ -143,29 +119,15 @@ public abstract class VarbitMixin implements RSClient
 	@Override
 	public int getVar(VarClientInt varClientInt)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		return getVarcs().getIntVarcs()[varClientInt.getIndex()];
-=======
-		return getIntVarcs()[varClientInt.getIndex()];
->>>>>>> upstream/master
-=======
 		Map<Integer, Object> varcmap = getVarcMap();
 		Object object = varcmap.get(varClientInt.getIndex());
 		return object instanceof Integer ? (Integer) object : 0;
->>>>>>> upstream/master
 	}
 
 	@Inject
 	@Override
 	public String getVar(VarClientStr varClientStr)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		return getVarcs().getStrVarcs()[varClientStr.getIndex()];
-=======
-		return getStrVarcs()[varClientStr.getIndex()];
-=======
 		Map<Integer, Object> varcmap = getVarcMap();
 		Object var2 = varcmap.get(varClientStr.getIndex());
 		return var2 instanceof String ? (String) var2 : "";
@@ -177,7 +139,6 @@ public abstract class VarbitMixin implements RSClient
 	{
 		Map<Integer, Object> varcmap = getVarcMap();
 		varcmap.put(varClientStr.getIndex(), value);
->>>>>>> upstream/master
 	}
 
 	@Inject
@@ -192,11 +153,6 @@ public abstract class VarbitMixin implements RSClient
 	@Override
 	public Map<Integer, Object> getVarcMap()
 	{
-<<<<<<< HEAD
-		return getVarcs().getStrVarcs();
->>>>>>> upstream/master
-=======
 		return getVarcs().getVarcMap();
->>>>>>> upstream/master
 	}
 }

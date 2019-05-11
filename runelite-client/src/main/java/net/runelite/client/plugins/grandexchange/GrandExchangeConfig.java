@@ -32,10 +32,7 @@ import net.runelite.client.config.ConfigItem;
 public interface GrandExchangeConfig extends Config
 {
 	@ConfigItem(
-<<<<<<< HEAD
-=======
 		position = 1,
->>>>>>> upstream/master
 		keyName = "quickLookup",
 		name = "Hotkey lookup (Alt + Left click)",
 		description = "Configures whether to enable the hotkey lookup for ge searches"
@@ -44,8 +41,6 @@ public interface GrandExchangeConfig extends Config
 	{
 		return true;
 	}
-<<<<<<< HEAD
-=======
 
 	@ConfigItem(
 		position = 2,
@@ -79,5 +74,4 @@ public interface GrandExchangeConfig extends Config
 	{
 		return true;
 	}
->>>>>>> upstream/master
 }

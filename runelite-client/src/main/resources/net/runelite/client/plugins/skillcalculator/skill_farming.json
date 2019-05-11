@@ -25,23 +25,18 @@
       "xp": 10
     },
     {
-<<<<<<< HEAD
-=======
       "level": 9,
       "icon": 249,
       "name": "Guam Leaf",
       "xp": 11
     },
     {
->>>>>>> upstream/master
       "level": 12,
       "icon": 1982,
       "name": "Tomatoes",
       "xp": 12.5
     },
     {
-<<<<<<< HEAD
-=======
       "level": 14,
       "icon": 251,
       "name": "Marrentill",
@@ -60,24 +55,18 @@
       "xp": 16
     },
     {
->>>>>>> upstream/master
       "level": 20,
       "icon": 5986,
       "name": "Sweetcorn",
       "xp": 17
     },
     {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
       "level": 23,
       "icon": 21504,
       "name": "Giant seaweed",
       "xp": 21
     },
     {
->>>>>>> upstream/master
       "level": 26,
       "icon": 255,
       "name": "Harralander",
@@ -108,15 +97,12 @@
       "xp": 1481.5
     },
     {
->>>>>>> upstream/master
       "level": 31,
       "icon": 5504,
       "name": "Strawberries",
       "xp": 26
     },
     {
-<<<<<<< HEAD
-=======
       "level": 32,
       "icon": 257,
       "name": "Ranarr Weed",
@@ -165,13 +151,10 @@
       "xp": 3448.4
     },
     {
->>>>>>> upstream/master
       "level": 47,
       "icon": 5982,
       "name": "Watermelons",
       "xp": 49
-<<<<<<< HEAD
-=======
     },
     {
       "level": 50,
@@ -292,16 +275,12 @@
       "icon": 269,
       "name": "Torstol",
       "xp": 199.5
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
     },
     {
       "level": 90,
       "icon": 19669,
       "name": "Redwood Tree",
       "xp": 22680
->>>>>>> upstream/master
     }
   ]
 }

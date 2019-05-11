@@ -24,16 +24,6 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-public interface ItemLayer extends TileObject
-{
-	int getHeight();
-
-	Renderable getBottom();
-
-	Renderable getMiddle();
-
-=======
 /**
  * Represents a pile of items held by a tile.
  */
@@ -65,6 +55,5 @@ public interface ItemLayer extends TileObject
 	 *
 	 * @return the top item
 	 */
->>>>>>> upstream/master
 	Renderable getTop();
 }

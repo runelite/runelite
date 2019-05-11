@@ -24,19 +24,8 @@
  */
 package net.runelite.client.plugins.xtea;
 
-<<<<<<< HEAD
-import com.google.common.eventbus.Subscribe;
-<<<<<<< HEAD
-import java.io.IOException;
-=======
->>>>>>> upstream/master
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ScheduledExecutorService;
-=======
-import java.util.HashSet;
-import java.util.Set;
->>>>>>> upstream/master
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -46,15 +35,8 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.http.api.xtea.XteaClient;
-<<<<<<< HEAD
-<<<<<<< HEAD
-import okhttp3.Response;
-=======
->>>>>>> upstream/master
-=======
 import net.runelite.http.api.xtea.XteaKey;
 import net.runelite.http.api.xtea.XteaRequest;
->>>>>>> upstream/master
 
 @PluginDescriptor(
 	name = "Xtea",
@@ -70,12 +52,6 @@ public class XteaPlugin extends Plugin
 	@Inject
 	private Client client;
 
-<<<<<<< HEAD
-	@Inject
-	private ScheduledExecutorService executor;
-
-=======
->>>>>>> upstream/master
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
@@ -116,29 +92,6 @@ public class XteaPlugin extends Plugin
 			return;
 		}
 
-<<<<<<< HEAD
-		sentRegions.add(region);
-
-<<<<<<< HEAD
-		executor.execute(() ->
-		{
-			try (Response response = xteaClient.submit(revision, region, keys))
-			{
-				if (!response.isSuccessful())
-				{
-					log.debug("unsuccessful xtea response");
-				}
-			}
-			catch (IOException ex)
-			{
-				log.debug("unable to submit xtea keys", ex);
-			}
-		});
-=======
-		xteaClient.submit(revision, region, keys);
->>>>>>> upstream/master
-=======
 		xteaClient.submit(xteaRequest);
->>>>>>> upstream/master
 	}
 }

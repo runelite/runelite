@@ -27,39 +27,13 @@ package net.runelite.api;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-<<<<<<< HEAD
-=======
 /**
  * Represents data about the pixels of a sprite image.
  */
->>>>>>> upstream/master
 public interface SpritePixels
 {
 	int DEFAULT_SHADOW_COLOR = 3153952;
 
-<<<<<<< HEAD
-	void drawAt(int x, int y);
-
-	int getWidth();
-
-	int getHeight();
-
-	int[] getPixels();
-
-	/**
-	 * Covert the SpritePixels to a BufferedImage
-	 *
-	 * @return
-	 */
-	BufferedImage toBufferedImage();
-
-
-	/**
-	 * Writes the contents of the SpritePixels to the BufferedImage.
-	 * Width and Height must match
- 	 */
-	void toBufferedImage(BufferedImage img);
-=======
 	/**
 	 * Draws the pixels at the given coordinates on the canvas.
 	 *
@@ -103,9 +77,6 @@ public interface SpritePixels
 	 * @throws IllegalArgumentException if the width or height do not match
  	 */
 	void toBufferedImage(BufferedImage img) throws IllegalArgumentException;
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 
 	/**
 	 * Writes the contents of the SpritePixels with chosen outline to the BufferedImage
@@ -121,5 +92,4 @@ public interface SpritePixels
 	 * @param color target color
 	 */
 	void toBufferedOutline(BufferedImage img, int color);
->>>>>>> upstream/master
 }

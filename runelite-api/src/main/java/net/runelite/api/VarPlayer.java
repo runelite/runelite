@@ -27,12 +27,9 @@ package net.runelite.api;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-<<<<<<< HEAD
-=======
 /**
  * An enumeration of local player variables.
  */
->>>>>>> upstream/master
 @AllArgsConstructor
 @Getter
 public enum VarPlayer
@@ -52,9 +49,6 @@ public enum VarPlayer
 	SPECIAL_ATTACK_PERCENT(300),
 	SPECIAL_ATTACK_ENABLED(301),
 
-<<<<<<< HEAD
-	IN_RAID_PARTY(1427);
-=======
 	IN_RAID_PARTY(1427),
 
 	NMZ_REWARD_POINTS(1060),
@@ -131,10 +125,6 @@ public enum VarPlayer
 	SLAYER_GOAL_END(1272),
 	FARMING_GOAL_END(1273),
 	CONSTRUCTION_GOAL_END(1274),
-<<<<<<< HEAD
-	HUNTER_GOAL_END(1275);
->>>>>>> upstream/master
-=======
 	HUNTER_GOAL_END(1275),
 
 	/**
@@ -173,7 +163,6 @@ public enum VarPlayer
 	MUSIC_TRACKS_UNLOCKED_17(1338),
 	MUSIC_TRACKS_UNLOCKED_18(1681),
 	MUSIC_TRACKS_UNLOCKED_19(2065);
->>>>>>> upstream/master
 
 	private final int id;
 }

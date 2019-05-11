@@ -25,25 +25,10 @@
 package net.runelite.client.util;
 
 import java.awt.AWTException;
-<<<<<<< HEAD
-=======
 import java.awt.Color;
-<<<<<<< HEAD
->>>>>>> upstream/master
-import java.awt.Dimension;
-=======
->>>>>>> upstream/master
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Image;
-<<<<<<< HEAD
-import java.awt.Rectangle;
-<<<<<<< HEAD
-=======
-import java.awt.RenderingHints;
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.MouseAdapter;
@@ -51,14 +36,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-import java.awt.image.LookupOp;
-import java.awt.image.LookupTable;
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 import java.util.Enumeration;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
@@ -77,13 +54,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.plaf.FontUIResource;
 import lombok.extern.slf4j.Slf4j;
-<<<<<<< HEAD
-import net.runelite.client.ui.NavigationButton;
-=======
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.components.CustomScrollBarUI;
->>>>>>> upstream/master
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 /**
@@ -101,10 +74,6 @@ public class SwingUtil
 		// Force heavy-weight popups/tooltips.
 		// Prevents them from being obscured by the game applet.
 		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
-<<<<<<< HEAD
-		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-
-=======
 		ToolTipManager.sharedInstance().setInitialDelay(300);
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
@@ -119,7 +88,6 @@ public class SwingUtil
 		UIManager.put("TextArea.selectionBackground", ColorScheme.BRAND_ORANGE_TRANSPARENT);
 		UIManager.put("TextArea.selectionForeground", Color.WHITE);
 
->>>>>>> upstream/master
 		// Do not render shadows under popups/tooltips.
 		// Fixes black boxes under popups that are above the game applet.
 		System.setProperty("jgoodies.popupDropShadowEnabled", "false");
@@ -130,54 +98,6 @@ public class SwingUtil
 	}
 
 	/**
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	 * Offsets an image in the grayscale (darkens/brightens) by an offset
-	 */
-	public static BufferedImage grayscaleOffset(BufferedImage image, int offset)
-	{
-		int numComponents = image.getColorModel().getNumComponents();
-		int index = numComponents - 1;
-
-		LookupTable lookup = new LookupTable(0, numComponents)
-		{
-			@Override
-			public int[] lookupPixel(int[] src, int[] dest)
-			{
-				if (dest[index] != 0)
-				{
-					dest[index] = dest[index] + offset;
-					if (dest[index] < 0)
-					{
-						dest[index] = 0;
-					}
-					else if (dest[index] > 255)
-					{
-						dest[index] = 255;
-					}
-				}
-
-				return dest;
-			}
-		};
-
-		LookupOp op = new LookupOp(lookup, new RenderingHints(null));
-		return op.filter(image, null);
-	}
-
-	/**
-	 * Converts a given color to it's hexidecimal equivalent.
-	 */
-	public static String toHexColor(Color color)
-	{
-		return "#" + Integer.toHexString(color.getRGB()).substring(2);
-	}
-
-	/**
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 	 * Safely sets Swing theme
 	 *
 	 * @param laf the swing look and feel
@@ -285,11 +205,7 @@ public class SwingUtil
 						result = JOptionPane.showConfirmDialog(
 							frame,
 							"Are you sure you want to exit?", "Exit",
-<<<<<<< HEAD
-							JOptionPane .OK_CANCEL_OPTION,
-=======
 							JOptionPane.OK_CANCEL_OPTION,
->>>>>>> upstream/master
 							JOptionPane.QUESTION_MESSAGE);
 					}
 				}
@@ -307,32 +223,7 @@ public class SwingUtil
 		});
 	}
 
-<<<<<<< HEAD
-=======
 	/**
-<<<<<<< HEAD
-	 * Re-size a BufferedImage to the given dimensions.
-	 *
-	 * @param image the BufferedImage.
-	 * @param newWidth The width to set the BufferedImage to.
-	 * @param newHeight The height to set the BufferedImage to.
-	 * @return The BufferedImage with the specified dimensions
-	 */
->>>>>>> upstream/master
-	private static BufferedImage resizeImage(BufferedImage image, int newWidth, int newHeight)
-	{
-		final Image tmp = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-		final BufferedImage dimg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-
-		final Graphics2D g2d = dimg.createGraphics();
-		g2d.drawImage(tmp, 0, 0, null);
-		g2d.dispose();
-		return dimg;
-	}
-
-	/**
-=======
->>>>>>> upstream/master
 	 * Create swing button from navigation button.
 	 *
 	 * @param navigationButton the navigation button
@@ -351,15 +242,7 @@ public class SwingUtil
 			: navigationButton.getIcon();
 
 		final JButton button = new JButton();
-<<<<<<< HEAD
-<<<<<<< HEAD
-		button.setName(navigationButton.getName());
-=======
-		button.setMaximumSize(new Dimension(30, 30));
->>>>>>> upstream/master
-=======
 		button.setSize(scaledImage.getWidth(), scaledImage.getHeight());
->>>>>>> upstream/master
 		button.setToolTipText(navigationButton.getTooltip());
 		button.setIcon(new ImageIcon(scaledImage));
 		button.putClientProperty(SubstanceSynapse.FLAT_LOOK, Boolean.TRUE);

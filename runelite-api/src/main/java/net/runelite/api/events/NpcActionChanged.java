@@ -27,12 +27,6 @@ package net.runelite.api.events;
 import lombok.Data;
 import net.runelite.api.NPCComposition;
 
-<<<<<<< HEAD
-@Data
-public class NpcActionChanged
-{
-	private NPCComposition npcComposition;
-=======
 /**
  * An event where an action of an {@link NPCComposition} has changed.
  */
@@ -46,6 +40,5 @@ public class NpcActionChanged
 	/**
 	 * The raw index of the modified action.
 	 */
->>>>>>> upstream/master
 	private int idx;
 }

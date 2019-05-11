@@ -25,21 +25,14 @@
 package net.runelite.client.util;
 
 import java.text.ParseException;
-<<<<<<< HEAD
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-=======
 import java.util.Locale;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import org.junit.Before;
->>>>>>> upstream/master
 import org.junit.Test;
 
 public class StackFormatterTest
 {
-<<<<<<< HEAD
-=======
 	@Before
 	public void setUp()
 	{
@@ -65,7 +58,6 @@ public class StackFormatterTest
 		assertEquals("1.5B", StackFormatter.quantityToRSDecimalStack(1500_000_000));
 		assertEquals("2.1B", StackFormatter.quantityToRSDecimalStack(Integer.MAX_VALUE));
 	}
->>>>>>> upstream/master
 
 	@Test
 	public void quantityToRSStackSize()

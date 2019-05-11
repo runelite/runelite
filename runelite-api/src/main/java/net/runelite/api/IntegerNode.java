@@ -24,12 +24,6 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-public interface IntegerNode extends Node
-{
-	int getValue();
-
-=======
 /**
  * Represents an integer typically in a {@link HashTable}.
  */
@@ -47,6 +41,5 @@ public interface IntegerNode extends Node
 	 *
 	 * @param value the new int value
 	 */
->>>>>>> upstream/master
 	void setValue(int value);
 }

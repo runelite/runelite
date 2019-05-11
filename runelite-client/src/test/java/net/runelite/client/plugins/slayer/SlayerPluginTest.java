@@ -64,8 +64,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class SlayerPluginTest
 {
-<<<<<<< HEAD
-=======
 	private static final String TASK_NEW = "Your new task is to kill 231 Suqahs.";
 	private static final String TASK_NEW_KONAR = "You are to bring balance to 147 Wyrms in the Karuulm Slayer Dungeon.";
 	private static final String TASK_NEW_KONAR_2 = "You are to bring balance to 142 Hellhounds in Witchhaven Dungeon.";
@@ -83,12 +81,8 @@ public class SlayerPluginTest
 
 	private static final String TASK_EXISTING = "You're still hunting suqahs; you have 222 to go. Come<br>back when you've finished your task.";
 
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 	private static final String REWARD_POINTS = "Reward points: 17,566";
 
->>>>>>> upstream/master
 	private static final String TASK_ONE = "You've completed one task; return to a Slayer master.";
 	private static final String TASK_COMPLETE_NO_POINTS = "<col=ef1020>You've completed 3 tasks; return to a Slayer master.</col>";
 	private static final String TASK_POINTS = "You've completed 9 tasks and received 0 points, giving you a total of 18,000; return to a Slayer master.";
@@ -99,10 +93,6 @@ public class SlayerPluginTest
 
 	private static final String SUPERIOR_MESSAGE = "A superior foe has appeared...";
 
-<<<<<<< HEAD
-	private static final String BRACLET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count decreasing.";
-	private static final String BRACLET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster.";
-=======
 	private static final String BRACLET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count decreasing. It has 9 charges left.";
 	private static final String BRACLET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster. It has 9 charges left.";
 
@@ -111,17 +101,13 @@ public class SlayerPluginTest
 
 	private static final String BRACLET_SLAUGHTER_V3 = "Your bracelet of slaughter prevents your slayer count decreasing. It then crumbles to dust.";
 	private static final String BRACLET_EXPEDITIOUS_V3 = "Your expeditious bracelet helps you progress your slayer faster. It then crumbles to dust.";
->>>>>>> upstream/master
 
 	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has 12 charges left.";
 	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has 12 charges left.";
 
-<<<<<<< HEAD
-=======
 	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE_ONE = "Your bracelet of slaughter has 1 charge left.";
 	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE_ONE = "Your expeditious bracelet has 1 charge left.";
 
->>>>>>> upstream/master
 	private static final String BREAK_SLAUGHTER = "The bracelet shatters. Your next bracelet of slaughter<br>will start afresh from 30 charges.";
 	private static final String BREAK_EXPEDITIOUS = "The bracelet shatters. Your next expeditious bracelet<br>will start afresh from 30 charges.";
 
@@ -179,8 +165,6 @@ public class SlayerPluginTest
 	}
 
 	@Test
-<<<<<<< HEAD
-=======
 	public void testNewTask()
 	{
 		Widget npcDialog = mock(Widget.class);
@@ -334,9 +318,6 @@ public class SlayerPluginTest
 	}
 
 	@Test
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 	public void testRewardPointsWidget()
 	{
 		Widget rewardBar = mock(Widget.class);
@@ -352,7 +333,6 @@ public class SlayerPluginTest
 	}
 
 	@Test
->>>>>>> upstream/master
 	public void testOneTask()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_ONE, null, 0);
@@ -456,26 +436,13 @@ public class SlayerPluginTest
 
 		assertEquals(12, slayerPlugin.getSlaughterChargeCount());
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-		slayerPlugin.setSlaughterChargeCount(1);
-		chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_SLAUGHTER, null);
-=======
-		chatMessageEvent = new ChatMessage(SERVER, "", CHAT_BRACELET_SLAUGHTER_CHARGE_ONE, null);
-=======
 		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CHAT_BRACELET_SLAUGHTER_CHARGE_ONE, null, 0);
->>>>>>> upstream/master
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(1, slayerPlugin.getSlaughterChargeCount());
 
 		slayerPlugin.setSlaughterChargeCount(1);
-<<<<<<< HEAD
-		chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_SLAUGHTER_V3, null);
->>>>>>> upstream/master
-=======
 		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_SLAUGHTER_V3, null, 0);
->>>>>>> upstream/master
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(30, slayerPlugin.getSlaughterChargeCount());
@@ -487,8 +454,6 @@ public class SlayerPluginTest
 		slayerPlugin.setSlaughterChargeCount(-1);
 		slayerPlugin.onGameTick(new GameTick());
 		assertEquals(30, slayerPlugin.getSlaughterChargeCount());
-<<<<<<< HEAD
-=======
 
 		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_SLAUGHTER_V2, null, 0);
 
@@ -499,7 +464,6 @@ public class SlayerPluginTest
 
 		assertEquals(1, slayerPlugin.getSlaughterChargeCount());
 		assertEquals(43, slayerPlugin.getAmount());
->>>>>>> upstream/master
 	}
 
 	@Test
@@ -520,26 +484,13 @@ public class SlayerPluginTest
 
 		assertEquals(12, slayerPlugin.getExpeditiousChargeCount());
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-		slayerPlugin.setExpeditiousChargeCount(1);
-		chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_EXPEDITIOUS, null);
-=======
-		chatMessageEvent = new ChatMessage(SERVER, "", CHAT_BRACELET_EXPEDITIOUS_CHARGE_ONE, null);
-=======
 		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CHAT_BRACELET_EXPEDITIOUS_CHARGE_ONE, null, 0);
->>>>>>> upstream/master
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(1, slayerPlugin.getExpeditiousChargeCount());
 
 		slayerPlugin.setExpeditiousChargeCount(1);
-<<<<<<< HEAD
-		chatMessageEvent = new ChatMessage(SERVER, "", BRACLET_EXPEDITIOUS_V3, null);
->>>>>>> upstream/master
-=======
 		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_EXPEDITIOUS_V3, null, 0);
->>>>>>> upstream/master
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(30, slayerPlugin.getExpeditiousChargeCount());
@@ -551,8 +502,6 @@ public class SlayerPluginTest
 		slayerPlugin.setExpeditiousChargeCount(-1);
 		slayerPlugin.onGameTick(new GameTick());
 		assertEquals(30, slayerPlugin.getExpeditiousChargeCount());
-<<<<<<< HEAD
-=======
 
 		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_EXPEDITIOUS_V2, null, 0);
 
@@ -563,7 +512,6 @@ public class SlayerPluginTest
 
 		assertEquals(41, slayerPlugin.getAmount());
 		assertEquals(1, slayerPlugin.getExpeditiousChargeCount());
->>>>>>> upstream/master
 	}
 
 	@Test

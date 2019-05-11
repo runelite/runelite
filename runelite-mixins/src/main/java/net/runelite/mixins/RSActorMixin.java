@@ -40,18 +40,8 @@ import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GraphicChanged;
-<<<<<<< HEAD
-<<<<<<< HEAD
-import net.runelite.api.mixins.FieldHook;
-import net.runelite.api.mixins.Inject;
-import net.runelite.api.mixins.Mixin;
-import net.runelite.api.mixins.Shadow;
-import static net.runelite.client.callback.Hooks.eventBus;
-=======
-=======
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
->>>>>>> upstream/master
 import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.mixins.FieldHook;
@@ -59,26 +49,13 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
-<<<<<<< HEAD
-import static net.runelite.client.callback.Hooks.eventBus;
-import static net.runelite.client.callback.Hooks.log;
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 import net.runelite.rs.api.RSActor;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSCombatInfo1;
 import net.runelite.rs.api.RSHealthBar;
 import net.runelite.rs.api.RSCombatInfoList;
 import net.runelite.rs.api.RSCombatInfoListHolder;
-<<<<<<< HEAD
-import net.runelite.rs.api.RSModel;
-<<<<<<< HEAD
-=======
-=======
->>>>>>> upstream/master
 import net.runelite.rs.api.RSNPC;
->>>>>>> upstream/master
 import net.runelite.rs.api.RSNode;
 
 @Mixin(RSActor.class)
@@ -263,8 +240,6 @@ public abstract class RSActorMixin implements RSActor
 
 		return new WorldArea(this.getWorldLocation(), size, size);
 	}
-<<<<<<< HEAD
-=======
 
 	@Inject
 	@MethodHook("setCombatInfo")
@@ -285,9 +260,6 @@ public abstract class RSActorMixin implements RSActor
 			}
 		}
 	}
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 
 	/**
 	 * Called after a hitsplat has been processed on an actor.
@@ -311,5 +283,4 @@ public abstract class RSActorMixin implements RSActor
 		event.setHitsplat(hitsplat);
 		client.getCallbacks().post(event);
 	}
->>>>>>> upstream/master
 }

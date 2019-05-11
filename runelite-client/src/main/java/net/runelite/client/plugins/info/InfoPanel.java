@@ -1,9 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
-<<<<<<< HEAD
-=======
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
->>>>>>> upstream/master
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,16 +27,6 @@ package net.runelite.client.plugins.info;
 
 import com.google.common.base.MoreObjects;
 import com.google.inject.Inject;
-<<<<<<< HEAD
-import java.awt.Font;
-import java.util.concurrent.ScheduledExecutorService;
-import javax.annotation.Nullable;
-import javax.inject.Singleton;
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.JLabel;
-import javax.swing.LayoutStyle;
-=======
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -56,41 +43,26 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
->>>>>>> upstream/master
 import javax.swing.event.HyperlinkEvent;
 import net.runelite.api.Client;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.account.SessionManager;
-<<<<<<< HEAD
-<<<<<<< HEAD
-import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.PluginPanel;
-=======
-=======
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
->>>>>>> upstream/master
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
-<<<<<<< HEAD
->>>>>>> upstream/master
-import net.runelite.client.util.RunnableExceptionLogger;
-=======
->>>>>>> upstream/master
 
 @Singleton
 public class InfoPanel extends PluginPanel
 {
 	private static final String RUNELITE_LOGIN = "https://runelite_login/";
 
-<<<<<<< HEAD
-=======
 	private static final ImageIcon ARROW_RIGHT_ICON;
 	private static final ImageIcon GITHUB_ICON;
 	private static final ImageIcon DISCORD_ICON;
@@ -103,7 +75,6 @@ public class InfoPanel extends PluginPanel
 	private JPanel syncPanel;
 	private JPanel actionsContainer;
 
->>>>>>> upstream/master
 	@Inject
 	@Nullable
 	private Client client;
@@ -120,30 +91,9 @@ public class InfoPanel extends PluginPanel
 	@Inject
 	private ScheduledExecutorService executor;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	private final GroupLayout layout = new GroupLayout(this);
-	private final JLabel usernameHeader = new JLabel();
-	private final JRichTextPane username = new JRichTextPane();
-
-	void init()
-	{
-		setLayout(layout);
-
-		final Font smallFont = FontManager.getRunescapeSmallFont();
-
-		final JLabel runeliteVersionHeader = new JLabel("RuneLite version");
-		runeliteVersionHeader.setFont(smallFont);
-		final JLabel runeliteVersion = new JLabel(runeLiteProperties.getVersion());
-
-		final JLabel runescapeVersionHeader = new JLabel("OldSchool Engine");
-		runescapeVersionHeader.setFont(smallFont);
-=======
-=======
 	@Inject
 	private ConfigManager configManager;
 
->>>>>>> upstream/master
 	static
 	{
 		ARROW_RIGHT_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(InfoPanel.class, "/util/arrow_right.png"));
@@ -172,20 +122,12 @@ public class InfoPanel extends PluginPanel
 
 		JLabel revision = new JLabel();
 		revision.setFont(smallFont);
->>>>>>> upstream/master
 
 		String engineVer = "Unknown";
 		if (client != null)
 		{
 			engineVer = String.format("Rev %d", client.getRevision());
 		}
-<<<<<<< HEAD
-		final JLabel runescapeVersion = new JLabel(engineVer);
-
-		usernameHeader.setFont(smallFont);
-		username.enableAutoLinkHandler(false);
-		username.addHyperlinkListener(e ->
-=======
 
 		revision.setText(htmlLabel("Oldschool revision: ", engineVer));
 
@@ -200,7 +142,6 @@ public class InfoPanel extends PluginPanel
 		emailLabel.setFont(smallFont);
 		emailLabel.enableAutoLinkHandler(false);
 		emailLabel.addHyperlinkListener(e ->
->>>>>>> upstream/master
 		{
 			if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType()) && e.getURL() != null)
 			{
@@ -211,49 +152,6 @@ public class InfoPanel extends PluginPanel
 			}
 		});
 
-<<<<<<< HEAD
-		updateLoggedIn();
-
-		final JRichTextPane issueLink = new JRichTextPane("text/html",
-			"RuneLite is open source!<br>"
-			+ "Found an issue? Want a feature?<br>"
-			+ "<a href=\"https://github.com/runelite/runelite/issues\">"
-			+ "Open an issue on GitHub!"
-			+ "</a>"
-		);
-
-		setBorder(BorderFactory.createEmptyBorder(2, 6, 6, 6));
-
-		layout.setVerticalGroup(layout.createSequentialGroup()
-			.addGroup(layout.createParallelGroup()
-				.addComponent(runeliteVersionHeader)
-				.addComponent(runescapeVersionHeader)
-			).addGroup(layout.createParallelGroup()
-				.addComponent(runeliteVersion)
-				.addComponent(runescapeVersion)
-			).addGap(6)
-			.addComponent(usernameHeader)
-			.addGroup(layout.createParallelGroup()
-				.addComponent(username)
-			)
-			.addGap(12)
-			.addComponent(issueLink)
-		);
-
-		layout.setHorizontalGroup(layout.createParallelGroup()
-			.addGroup(layout.createSequentialGroup()
-				.addComponent(runeliteVersionHeader)
-				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-				.addComponent(runescapeVersionHeader))
-			.addGroup(layout.createSequentialGroup()
-				.addComponent(runeliteVersion)
-				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-				.addComponent(runescapeVersion))
-			.addComponent(usernameHeader)
-			.addComponent(username)
-			.addComponent(issueLink)
-		);
-=======
 		versionPanel.add(version);
 		versionPanel.add(revision);
 		versionPanel.add(launcher);
@@ -285,14 +183,11 @@ public class InfoPanel extends PluginPanel
 
 		add(versionPanel, BorderLayout.NORTH);
 		add(actionsContainer, BorderLayout.CENTER);
->>>>>>> upstream/master
 
 		updateLoggedIn();
 		eventBus.register(this);
 	}
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Builds a link panel with a given icon, text and url to redirect to.
 	 */
@@ -375,7 +270,6 @@ public class InfoPanel extends PluginPanel
 		return container;
 	}
 
->>>>>>> upstream/master
 	private void updateLoggedIn()
 	{
 		final String name = sessionManager.getAccountSession() != null
@@ -384,20 +278,6 @@ public class InfoPanel extends PluginPanel
 
 		if (name != null)
 		{
-<<<<<<< HEAD
-			username.setContentType("text/plain");
-			username.setText(name);
-			usernameHeader.setText("Logged in as");
-		}
-		else
-		{
-			username.setContentType("text/html");
-			username.setText("<a href=\"" + RUNELITE_LOGIN + "\">Login</a> to sync settings to the cloud.");
-			usernameHeader.setText("Not logged in");
-		}
-	}
-
-=======
 			emailLabel.setContentType("text/plain");
 			emailLabel.setText(name);
 			loggedLabel.setText("Logged in as");
@@ -417,7 +297,6 @@ public class InfoPanel extends PluginPanel
 		return "<html><body style = 'color:#a5a5a5'>" + key + "<span style = 'color:white'>" + value + "</span></body></html>";
 	}
 
->>>>>>> upstream/master
 	@Subscribe
 	public void onSessionOpen(SessionOpen sessionOpen)
 	{

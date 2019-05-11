@@ -28,13 +28,6 @@ import lombok.Data;
 import net.runelite.api.DecorativeObject;
 import net.runelite.api.Tile;
 
-<<<<<<< HEAD
-@Data
-public class DecorativeObjectChanged
-{
-	private Tile tile;
-	private DecorativeObject previous;
-=======
 /**
  * An event where the {@link DecorativeObject} attached to a {@link Tile}
  * has been modified.
@@ -53,6 +46,5 @@ public class DecorativeObjectChanged
 	/**
 	 * The new decoration for the tile.
 	 */
->>>>>>> upstream/master
 	private DecorativeObject decorativeObject;
 }

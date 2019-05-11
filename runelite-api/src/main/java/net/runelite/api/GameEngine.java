@@ -26,14 +26,6 @@ package net.runelite.api;
 
 import java.awt.Canvas;
 
-<<<<<<< HEAD
-public interface GameEngine
-{
-	Canvas getCanvas();
-
-	Thread getClientThread();
-
-=======
 /**
  * Represents the client game engine.
  */
@@ -58,7 +50,6 @@ public interface GameEngine
 	 *
 	 * @return true if on the main thread, false otherwise
 	 */
->>>>>>> upstream/master
 	boolean isClientThread();
 
 	void resizeCanvas();

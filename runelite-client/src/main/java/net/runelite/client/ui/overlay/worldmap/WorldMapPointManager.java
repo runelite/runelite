@@ -24,13 +24,8 @@
  */
 package net.runelite.client.ui.overlay.worldmap;
 
-<<<<<<< HEAD
-import java.util.ArrayList;
-import java.util.List;
-=======
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
->>>>>>> upstream/master
 import java.util.function.Predicate;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -40,11 +35,7 @@ import lombok.Getter;
 public class WorldMapPointManager
 {
 	@Getter(AccessLevel.PACKAGE)
-<<<<<<< HEAD
-	private final List<WorldMapPoint> worldMapPoints = new ArrayList<>();
-=======
 	private final List<WorldMapPoint> worldMapPoints = new CopyOnWriteArrayList<>();
->>>>>>> upstream/master
 
 	public void add(WorldMapPoint worldMapPoint)
 	{

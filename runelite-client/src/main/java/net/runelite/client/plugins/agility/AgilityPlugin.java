@@ -30,30 +30,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-import java.util.Objects;
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
-<<<<<<< HEAD
-import net.runelite.api.ItemLayer;
-import net.runelite.api.Node;
-<<<<<<< HEAD
-import static net.runelite.api.Skill.AGILITY;
-import net.runelite.api.Tile;
-import net.runelite.api.TileObject;
-=======
-=======
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
->>>>>>> upstream/master
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import static net.runelite.api.Skill.AGILITY;
@@ -62,7 +45,6 @@ import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BoostedLevelChanged;
 import net.runelite.api.events.ConfigChanged;
->>>>>>> upstream/master
 import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
@@ -71,10 +53,7 @@ import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
-<<<<<<< HEAD
-=======
 import net.runelite.api.events.GameTick;
->>>>>>> upstream/master
 import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
@@ -83,25 +62,15 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
-<<<<<<< HEAD
-=======
 import net.runelite.client.Notifier;
->>>>>>> upstream/master
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-<<<<<<< HEAD
-import net.runelite.client.ui.overlay.Overlay;
-<<<<<<< HEAD
-=======
-=======
 import net.runelite.client.ui.overlay.OverlayManager;
->>>>>>> upstream/master
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
->>>>>>> upstream/master
 
 @PluginDescriptor(
 	name = "Agility",
@@ -111,11 +80,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @Slf4j
 public class AgilityPlugin extends Plugin
 {
-<<<<<<< HEAD
-=======
 	private static final int AGILITY_ARENA_REGION_ID = 11157;
 
->>>>>>> upstream/master
 	@Getter
 	private final Map<TileObject, Obstacle> obstacles = new HashMap<>();
 
@@ -132,11 +98,6 @@ public class AgilityPlugin extends Plugin
 	private LapCounterOverlay lapCounterOverlay;
 
 	@Inject
-<<<<<<< HEAD
-	private Client client;
-
-	@Inject
-=======
 	private Notifier notifier;
 
 	@Inject
@@ -146,7 +107,6 @@ public class AgilityPlugin extends Plugin
 	private InfoBoxManager infoBoxManager;
 
 	@Inject
->>>>>>> upstream/master
 	private AgilityConfig config;
 
 	@Inject
@@ -156,10 +116,7 @@ public class AgilityPlugin extends Plugin
 	private AgilitySession session;
 
 	private int lastAgilityXp;
-<<<<<<< HEAD
-=======
 	private WorldPoint lastArenaTicketPosition;
->>>>>>> upstream/master
 
 	@Getter
 	private int agilityLevel;
@@ -197,18 +154,13 @@ public class AgilityPlugin extends Plugin
 			case HOPPING:
 			case LOGIN_SCREEN:
 				session = null;
-<<<<<<< HEAD
-=======
 				lastArenaTicketPosition = null;
 				removeAgilityArenaTimer();
->>>>>>> upstream/master
 				break;
 			case LOADING:
 				marksOfGrace.clear();
 				obstacles.clear();
 				break;
-<<<<<<< HEAD
-=======
 			case LOGGED_IN:
 				if (!isInAgilityArena())
 				{
@@ -225,7 +177,6 @@ public class AgilityPlugin extends Plugin
 		if (!config.showAgilityArenaTimer())
 		{
 			removeAgilityArenaTimer();
->>>>>>> upstream/master
 		}
 	}
 
@@ -301,8 +252,6 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-<<<<<<< HEAD
-=======
 	public void onGameTick(GameTick tick)
 	{
 		if (isInAgilityArena())
@@ -355,7 +304,6 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
->>>>>>> upstream/master
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getGameObject());
@@ -437,15 +385,6 @@ public class AgilityPlugin extends Plugin
 		}
 
 		if (Obstacles.COURSE_OBSTACLE_IDS.contains(newObject.getId()) ||
-<<<<<<< HEAD
-				Obstacles.SHORTCUT_OBSTACLE_IDS.contains(newObject.getId()) ||
-<<<<<<< HEAD
-				Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId()))
-=======
-				(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
-					&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
->>>>>>> upstream/master
-=======
 			(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
 				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())))
 		{
@@ -453,7 +392,6 @@ public class AgilityPlugin extends Plugin
 		}
 
 		if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(newObject.getId()))
->>>>>>> upstream/master
 		{
 			AgilityShortcut closestShortcut = null;
 			int distance = -1;

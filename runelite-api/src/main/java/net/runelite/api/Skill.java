@@ -25,12 +25,9 @@
 
 package net.runelite.api;
 
-<<<<<<< HEAD
-=======
 /**
  * An enumeration of skills that a player can level.
  */
->>>>>>> upstream/master
 public enum Skill
 {
 	ATTACK("Attack"),
@@ -56,12 +53,9 @@ public enum Skill
 	RUNECRAFT("Runecraft"),
 	HUNTER("Hunter"),
 	CONSTRUCTION("Construction"),
-<<<<<<< HEAD
-=======
 	/**
 	 * The level of all skills added together.
 	 */
->>>>>>> upstream/master
 	OVERALL("Overall");
 
 	private final String name;
@@ -71,14 +65,11 @@ public enum Skill
 		this.name = name;
 	}
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Gets the name of the skill.
 	 *
 	 * @return the skill name
 	 */
->>>>>>> upstream/master
 	public String getName()
 	{
 		return name;

@@ -373,12 +373,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (option.equals("talk-to"))
 		{
-<<<<<<< HEAD
-			//if (config.swapPickpocket() && target.contains("h.a.m."))
-			if (config.swapPickpocket())
-=======
 			if (config.swapPickpocket() && target.contains("h.a.m."))
->>>>>>> upstream/master
 			{
 				swap("pickpocket", option, target, true);
 			}
@@ -463,15 +458,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("pay-toll(10gp)", option, target, true);
 		}
-<<<<<<< HEAD
-		else if (config.swapHarpoon() && option.equals("cage"))
-		{
-			swap("harpoon", option, target, true);
-		}
-		else if (option.equals("climb"))
-		{
-			swap("climb-up", option, target, true);
-=======
 		else if (config.swapTravel() && option.equals("inspect") && target.equals("trapdoor"))
 		{
 			swap("travel", option, target, true);
@@ -479,7 +465,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapHarpoon() && option.equals("cage"))
 		{
 			swap("harpoon", option, target, true);
->>>>>>> upstream/master
 		}
 		else if (config.swapHarpoon() && (option.equals("big net") || option.equals("net")))
 		{
@@ -500,17 +485,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 					break;
 			}
 		}
-<<<<<<< HEAD
-<<<<<<< HEAD
-		else if (config.swapLastDestination() && (option.equals("zanaris") || option.equals("tree")))
-		{
-			swap("last-destination (", option, target, false);
-=======
-		else if (config.swapFairyRing() != FairyRingMode.ZANARIS && (option.equals("zanaris") || option.equals("tree")))
-=======
 		else if (config.swapFairyRing() != FairyRingMode.OFF && config.swapFairyRing() != FairyRingMode.ZANARIS
 			&& (option.equals("zanaris") || option.equals("configure") || option.equals("tree")))
->>>>>>> upstream/master
 		{
 			if (config.swapFairyRing() == FairyRingMode.LAST_DESTINATION)
 			{
@@ -520,7 +496,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap("configure", option, target, false);
 			}
->>>>>>> upstream/master
 		}
 		else if (config.swapFairyRing() == FairyRingMode.ZANARIS && option.equals("tree"))
 		{
@@ -595,30 +570,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap("use", option, target, true);
 		}
-<<<<<<< HEAD
-<<<<<<< HEAD
-		else if (target.equals("iron ore"))
-		{
-			swap("drop", option, target, true);
-		}
-		else if (option.equals("attack")) {
-			//if (config.swapPickpocket() && target.contains("h.a.m."))
-			// Ollie 5-13-2018
-			if (config.swapPickpocket() && target.contains("bandit")) {
-				//swap("pickpocket", option, target, true);
-				swap("knock-out", option, target, true);
-			}
-			else if (config.swapPickpocket()) {
-				swap("pickpocket", option, target, true);
-			}
-=======
-		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
-		{
-			swap("empty", option, target, true);
->>>>>>> upstream/master
-		}
-=======
->>>>>>> upstream/master
 	}
 
 	@Subscribe

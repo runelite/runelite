@@ -26,16 +26,6 @@ package net.runelite.api;
 
 import lombok.Data;
 
-<<<<<<< HEAD
-@Data
-public class MenuEntry
-{
-	private String option;
-	private String target;
-	private int identifier;
-	private int type;
-	private int param0;
-=======
 /**
  * A menu entry in a right-click menu.
  */
@@ -68,7 +58,6 @@ public class MenuEntry
 	/**
 	 * A second additional parameter for the action.
 	 */
->>>>>>> upstream/master
 	private int param1;
 	/**
 	 * If this field is true and you have single mouse button on and this entry is

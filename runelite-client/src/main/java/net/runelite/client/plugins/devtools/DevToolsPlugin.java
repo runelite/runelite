@@ -92,45 +92,12 @@ public class DevToolsPlugin extends Plugin
 	private SceneOverlay sceneOverlay;
 
 	@Inject
-<<<<<<< HEAD
-=======
 	private CameraOverlay cameraOverlay;
 
 	@Inject
 	private WorldMapLocationOverlay worldMapLocationOverlay;
 
 	@Inject
-<<<<<<< HEAD
->>>>>>> upstream/master
-	private EventBus eventBus;
-
-	private boolean togglePlayers;
-	private boolean toggleNpcs;
-	private boolean toggleGroundItems;
-	private boolean toggleGroundObjects;
-	private boolean toggleGameObjects;
-	private boolean toggleWalls;
-	private boolean toggleDecor;
-	private boolean toggleInventory;
-	private boolean toggleProjectiles;
-	private boolean toggleLocation;
-	private boolean toggleChunkBorders;
-	private boolean toggleMapSquares;
-	private boolean toggleValidMovement;
-	private boolean toggleLineOfSight;
-	private boolean toggleGraphicsObjects;
-<<<<<<< HEAD
-=======
-	private boolean toggleCamera;
-	private boolean toggleWorldMapLocation;
-	private boolean toggleTileLocation;
->>>>>>> upstream/master
-
-	Widget currentWidget;
-	int itemIndex = -1;
-
-	private Font font;
-=======
 	private WorldMapRegionOverlay mapRegionOverlay;
 
 	@Inject
@@ -159,7 +126,6 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton detachedCamera;
 	private DevToolsButton widgetInspector;
 	private DevToolsButton varInspector;
->>>>>>> upstream/master
 	private NavigationButton navButton;
 
 	@Provides
@@ -213,14 +179,9 @@ public class DevToolsPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "devtools_icon.png");
 
 		navButton = NavigationButton.builder()
-<<<<<<< HEAD
-			.name("Developer Tools")
-			.icon(icon)
-=======
 			.tooltip("Developer Tools")
 			.icon(icon)
 			.priority(1)
->>>>>>> upstream/master
 			.panel(panel)
 			.build();
 
@@ -230,19 +191,6 @@ public class DevToolsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-<<<<<<< HEAD
-		pluginToolbar.removeNavigation(navButton);
-	}
-
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-<<<<<<< HEAD
-		return Arrays.asList(overlay, locationOverlay, sceneOverlay);
-=======
-		return Arrays.asList(overlay, locationOverlay, sceneOverlay, cameraOverlay, worldMapLocationOverlay);
->>>>>>> upstream/master
-=======
 		overlayManager.remove(overlay);
 		overlayManager.remove(locationOverlay);
 		overlayManager.remove(sceneOverlay);
@@ -250,7 +198,6 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.remove(worldMapLocationOverlay);
 		overlayManager.remove(mapRegionOverlay);
 		clientToolbar.removeNavigation(navButton);
->>>>>>> upstream/master
 	}
 
 	@Subscribe
@@ -301,32 +248,16 @@ public class DevToolsPlugin extends Plugin
 			case "getvarb":
 			{
 				int varbit = Integer.parseInt(args[0]);
-<<<<<<< HEAD
-				int value = client.getVarbitValue(varbit);
-=======
 				int value = client.getVarbitValue(client.getVarps(), varbit);
-<<<<<<< HEAD
->>>>>>> upstream/master
-				client.addChatMessage(ChatMessageType.SERVER, "", "Varbit " + varbit + ": " + value, null);
-=======
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Varbit " + varbit + ": " + value, null);
->>>>>>> upstream/master
 				break;
 			}
 			case "setvarb":
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = Integer.parseInt(args[1]);
-<<<<<<< HEAD
-				client.setVarbitValue(varbit, value);
-=======
 				client.setVarbitValue(client.getVarps(), varbit, value);
-<<<<<<< HEAD
->>>>>>> upstream/master
-				client.addChatMessage(ChatMessageType.SERVER, "", "Set varbit " + varbit + " to " + value, null);
-=======
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set varbit " + varbit + " to " + value, null);
->>>>>>> upstream/master
 				eventBus.post(new VarbitChanged()); // fake event
 				break;
 			}
@@ -408,165 +339,8 @@ public class DevToolsPlugin extends Plugin
 		}
 	}
 
-<<<<<<< HEAD
-	Font getFont()
-	{
-		return font;
-	}
-
-	void togglePlayers()
-	{
-		togglePlayers = !togglePlayers;
-	}
-
-	void toggleNpcs()
-	{
-		toggleNpcs = !toggleNpcs;
-	}
-
-	void toggleGroundItems()
-	{
-		toggleGroundItems = !toggleGroundItems;
-	}
-
-	void toggleGroundObjects()
-	{
-		toggleGroundObjects = !toggleGroundObjects;
-	}
-
-	void toggleGameObjects()
-	{
-		toggleGameObjects = !toggleGameObjects;
-	}
-
-	void toggleWalls()
-	{
-		toggleWalls = !toggleWalls;
-	}
-
-	void toggleDecor()
-	{
-		toggleDecor = !toggleDecor;
-	}
-
-	void toggleInventory()
-	{
-		toggleInventory = !toggleInventory;
-	}
-
-	void toggleProjectiles()
-	{
-		toggleProjectiles = !toggleProjectiles;
-	}
-
-	void toggleLocation()
-	{
-		toggleLocation = !toggleLocation;
-	}
-
-	void toggleChunkBorders()
-	{
-		toggleChunkBorders = !toggleChunkBorders;
-	}
-
-	void toggleMapSquares()
-	{
-		toggleMapSquares = !toggleMapSquares;
-	}
-
-	void toggleValidMovement()
-	{
-		toggleValidMovement = !toggleValidMovement;
-	}
-
-	void toggleLineOfSight()
-	{
-		toggleLineOfSight = !toggleLineOfSight;
-	}
-
-	void toggleGraphicsObjects()
-	{
-		toggleGraphicsObjects = !toggleGraphicsObjects;
-	}
-
-<<<<<<< HEAD
-=======
-	void toggleCamera()
-	{
-		toggleCamera = !toggleCamera;
-	}
-
-	void toggleWorldMapLocation()
-	{
-		toggleWorldMapLocation = !toggleWorldMapLocation;
-	}
-
-	void toggleTileLocation()
-	{
-		toggleTileLocation = !toggleTileLocation;
-	}
-
->>>>>>> upstream/master
-	boolean isTogglePlayers()
-	{
-		return togglePlayers;
-	}
-
-	boolean isToggleNpcs()
-	{
-		return toggleNpcs;
-	}
-
-	boolean isToggleGroundItems()
-	{
-		return toggleGroundItems;
-	}
-
-	boolean isToggleGroundObjects()
-	{
-		return toggleGroundObjects;
-	}
-
-	boolean isToggleGameObjects()
-	{
-		return toggleGameObjects;
-	}
-
-	boolean isToggleWalls()
-	{
-		return toggleWalls;
-	}
-
-	boolean isToggleDecor()
-	{
-		return toggleDecor;
-	}
-
-	boolean isToggleInventory()
-	{
-		return toggleInventory;
-	}
-
-	boolean isToggleProjectiles()
-	{
-		return toggleProjectiles;
-	}
-
-	boolean isToggleLocation()
-	{
-		return toggleLocation;
-	}
-
-	boolean isToggleChunkBorders()
-	{
-		return toggleChunkBorders;
-	}
-
-	boolean isToggleMapSquares()
-=======
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
->>>>>>> upstream/master
 	{
 		if (!examine.isActive())
 		{
@@ -580,17 +354,8 @@ public class DevToolsPlugin extends Plugin
 			MenuEntry[] entries = client.getMenuEntries();
 			MenuEntry entry = entries[entries.length - 1];
 
-<<<<<<< HEAD
-	boolean isToggleGraphicsObjects()
-	{
-		return toggleGraphicsObjects;
-	}
-<<<<<<< HEAD
-=======
-=======
 			final int identifier = event.getIdentifier();
 			String info = "ID: ";
->>>>>>> upstream/master
 
 			if (action == MenuAction.EXAMINE_NPC)
 			{
@@ -612,5 +377,4 @@ public class DevToolsPlugin extends Plugin
 			client.setMenuEntries(entries);
 		}
 	}
->>>>>>> upstream/master
 }

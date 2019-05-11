@@ -1,9 +1,6 @@
 /*
  * Copyright (c) 2018, SomeoneWithAnInternetConnection
-<<<<<<< HEAD
-=======
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
->>>>>>> upstream/master
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,25 +27,7 @@
 package net.runelite.client.plugins.grandexchange;
 
 import java.awt.BorderLayout;
-<<<<<<< HEAD
-<<<<<<< HEAD
-import java.awt.image.BufferedImage;
-import java.util.concurrent.ScheduledExecutorService;
-import javax.inject.Inject;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.GrandExchangeOffer;
-import net.runelite.api.ItemComposition;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.PluginPanel;
-=======
-=======
 import java.util.Map;
->>>>>>> upstream/master
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.swing.JPanel;
@@ -60,22 +39,9 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
->>>>>>> upstream/master
 
 class GrandExchangePanel extends PluginPanel
 {
-<<<<<<< HEAD
-	private static final int MAX_OFFERS = 8;
-
-	@Getter
-	private GrandExchangeSearchPanel searchPanel;
-
-	private GrandExchangeOfferSlot[] offerSlotPanels = new GrandExchangeOfferSlot[MAX_OFFERS];
-
-	private JPanel offerPanel = new JPanel();
-
-	private JTabbedPane tabbedPane = new JTabbedPane();
-=======
 
 	// this panel will hold either the ge search panel or the ge offers panel
 	private final JPanel display = new JPanel();
@@ -87,41 +53,18 @@ class GrandExchangePanel extends PluginPanel
 	private GrandExchangeSearchPanel searchPanel;
 	@Getter
 	private GrandExchangeOffersPanel offersPanel;
->>>>>>> upstream/master
 
 	@Inject
 	private GrandExchangePanel(ClientThread clientThread, ItemManager itemManager, ScheduledExecutorService executor)
 	{
-<<<<<<< HEAD
-		setLayout(new BorderLayout());
-		add(tabbedPane, BorderLayout.NORTH);
-
-		// Offer Panel
-		offerPanel.setLayout(new BoxLayout(offerPanel, BoxLayout.Y_AXIS));
-		for (int i = 0; i < offerSlotPanels.length; ++i)
-		{
-			offerSlotPanels[i] = new GrandExchangeOfferSlot();
-			offerPanel.add(offerSlotPanels[i]);
-		}
-=======
 		super(false);
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
->>>>>>> upstream/master
 
 		// Search Panel
 		searchPanel = new GrandExchangeSearchPanel(clientThread, itemManager, executor);
 
-<<<<<<< HEAD
-		tabbedPane.addTab("Offers", offerPanel);
-		tabbedPane.addTab("Search", searchPanel);
-	}
-
-	void updateOffer(ItemComposition item, BufferedImage itemImage, GrandExchangeOffer newOffer, int slot)
-	{
-		offerSlotPanels[slot].updateOffer(item, itemImage, newOffer);
-=======
 		//Offers Panel
 		offersPanel = new GrandExchangeOffersPanel();
 
@@ -135,7 +78,6 @@ class GrandExchangePanel extends PluginPanel
 
 		add(tabGroup, BorderLayout.NORTH);
 		add(display, BorderLayout.CENTER);
->>>>>>> upstream/master
 	}
 
 	void showSearch()
@@ -145,23 +87,12 @@ class GrandExchangePanel extends PluginPanel
 			return;
 		}
 
-<<<<<<< HEAD
-		tabbedPane.setSelectedComponent(searchPanel);
-		revalidate();
-	}
-}
-=======
 		tabGroup.select(searchTab);
 		revalidate();
 	}
-<<<<<<< HEAD
-}
->>>>>>> upstream/master
-=======
 
 	void setGELimits(Map<Integer, Integer> itemGELimits)
 	{
 		searchPanel.setItemGELimits(itemGELimits);
 	}
 }
->>>>>>> upstream/master

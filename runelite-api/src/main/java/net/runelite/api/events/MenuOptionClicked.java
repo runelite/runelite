@@ -27,19 +27,6 @@ package net.runelite.api.events;
 import lombok.Data;
 import net.runelite.api.MenuAction;
 
-<<<<<<< HEAD
-@Data
-public class MenuOptionClicked
-{
-	private int actionParam;
-	private String menuOption;
-	private String menuTarget;
-	private MenuAction menuAction;
-	private int id;
-	private int widgetId;
-	private boolean consumed;
-
-=======
 /**
  * An event where a menu option has been clicked.
  * <p>
@@ -92,7 +79,6 @@ public class MenuOptionClicked
 	 * option being clicked and that the event will not be passed on
 	 * for handling by vanilla client code.
 	 */
->>>>>>> upstream/master
 	public void consume()
 	{
 		this.consumed = true;

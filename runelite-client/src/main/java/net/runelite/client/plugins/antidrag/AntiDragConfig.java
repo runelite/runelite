@@ -28,21 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-<<<<<<< HEAD
-@ConfigGroup(
-<<<<<<< HEAD
-	keyName = AntiDragPlugin.CONFIG_GROUP,
-	name = "Anti Drag",
-	description = "Configuration for the anti drag plugin"
-=======
-	keyName = "antiDrag",
-	name = "Anti Drag",
-	description = "Configuration for the anti drag plugin (shift only)"
->>>>>>> upstream/master
-)
-=======
 @ConfigGroup("antiDrag")
->>>>>>> upstream/master
 public interface AntiDragConfig extends Config
 {
 	@ConfigItem(
@@ -55,25 +41,4 @@ public interface AntiDragConfig extends Config
 	{
 		return 600 / 20; // one game tick
 	}
-<<<<<<< HEAD
-
-	@ConfigItem(
-		keyName = "dragDelay",
-		name = "",
-		description = ""
-	)
-	void dragDelay(int delay);
-
-	@ConfigItem(
-		keyName = "onShiftOnly",
-		name = "On Shift Only",
-		description = "Configures whether to only adjust the delay while holding shift",
-		position = 2
-	)
-	default boolean onShiftOnly()
-	{
-		return true;
-	}
-=======
->>>>>>> upstream/master
 }

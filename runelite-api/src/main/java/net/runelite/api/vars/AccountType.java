@@ -29,15 +29,6 @@ package net.runelite.api.vars;
  */
 public enum AccountType
 {
-<<<<<<< HEAD
-	NORMAL,
-	IRONMAN,
-	ULTIMATE_IRONMAN,
-	HARDCORE_IRONMAN;
-
-	/**
-	 * Check if the {@code AccountType} is any of the possible ironman types.
-=======
 	/**
 	 * Normal account type.
 	 */
@@ -57,7 +48,6 @@ public enum AccountType
 
 	/**
 	 * Checks whether this type is an ironman.
->>>>>>> upstream/master
 	 *
 	 * @return {@code true} if the type is any of the ironman types.
 	 */

@@ -87,8 +87,6 @@ public class LocationOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().add(LineComponent.builder()
-<<<<<<< HEAD
-=======
 				.left("Base")
 				.right(client.getBaseX() + ", " + client.getBaseY())
 				.build());
@@ -104,7 +102,6 @@ public class LocationOverlay extends Overlay
 				.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
->>>>>>> upstream/master
 			.left("Tile")
 			.right(localWorld.getX() + ", " + localWorld.getY() + ", " + client.getPlane())
 			.build());

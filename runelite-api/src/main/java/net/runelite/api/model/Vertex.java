@@ -27,12 +27,9 @@ package net.runelite.api.model;
 import lombok.Value;
 import net.runelite.api.Perspective;
 
-<<<<<<< HEAD
-=======
 /**
  * Represents a point in a three-dimensional space.
  */
->>>>>>> upstream/master
 @Value
 public class Vertex
 {
@@ -40,25 +37,11 @@ public class Vertex
 	private final int y;
 	private final int z;
 
-<<<<<<< HEAD
-	public Vertex(int x, int y, int z)
-	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	}
-
-	/**
-	 * Rotate the vertex by the given orientation
-	 * @param orientation
-	 * @return the newly rotated vertex
-=======
 	/**
 	 * Rotates the triangle by the given orientation.
 	 *
 	 * @param orientation passed orientation
 	 * @return new instance
->>>>>>> upstream/master
 	 */
 	public Vertex rotate(int orientation)
 	{

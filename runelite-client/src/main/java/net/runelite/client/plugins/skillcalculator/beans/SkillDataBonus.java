@@ -24,12 +24,6 @@
  */
 package net.runelite.client.plugins.skillcalculator.beans;
 
-<<<<<<< HEAD
-public class SkillDataBonus
-{
-	public String name;
-	public float value;
-=======
 import lombok.Getter;
 
 @Getter
@@ -37,5 +31,4 @@ public class SkillDataBonus
 {
 	private String name;
 	private float value;
->>>>>>> upstream/master
 }

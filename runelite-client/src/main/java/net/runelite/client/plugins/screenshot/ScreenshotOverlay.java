@@ -29,10 +29,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-<<<<<<< HEAD
-=======
 import java.awt.Image;
->>>>>>> upstream/master
 import java.awt.image.BufferedImage;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -59,11 +56,7 @@ class ScreenshotOverlay extends Overlay
 	private final DrawManager drawManager;
 	private final ScreenshotPlugin plugin;
 
-<<<<<<< HEAD
-	private final Queue<Consumer<BufferedImage>> consumers = new ConcurrentLinkedQueue<>();
-=======
 	private final Queue<Consumer<Image>> consumers = new ConcurrentLinkedQueue<>();
->>>>>>> upstream/master
 
 	@Inject
 	private ScreenshotOverlay(Client client, DrawManager drawManager, ScreenshotPlugin plugin)
@@ -108,11 +101,7 @@ class ScreenshotOverlay extends Overlay
 
 		// Request the queued screenshots to be taken,
 		// now that the timestamp is visible.
-<<<<<<< HEAD
-		Consumer<BufferedImage> consumer;
-=======
 		Consumer<Image> consumer;
->>>>>>> upstream/master
 		while ((consumer = consumers.poll()) != null)
 		{
 			drawManager.requestNextFrameListener(consumer);
@@ -121,15 +110,7 @@ class ScreenshotOverlay extends Overlay
 		return null;
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public void queueForTimestamp(Consumer<BufferedImage> screenshotConsumer)
-=======
-	public void queueForTimestamp(Consumer<Image> screenshotConsumer)
->>>>>>> upstream/master
-=======
 	void queueForTimestamp(Consumer<Image> screenshotConsumer)
->>>>>>> upstream/master
 	{
 		if (plugin.getReportButton() == null)
 		{

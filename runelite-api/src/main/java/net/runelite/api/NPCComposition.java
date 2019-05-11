@@ -24,32 +24,6 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-public interface NPCComposition
-{
-	String getName();
-
-	int[] getModels();
-
-	String[] getActions();
-
-	boolean isClickable();
-
-	boolean isMinimapVisable();
-
-	boolean isVisable();
-
-	int getId();
-
-	int getCombatLevel();
-
-	int[] getConfigs();
-	
-	NPCComposition transform();
-
-	int getSize();
-
-=======
 /**
  * Represents the template of a specific NPC type.
  */
@@ -139,6 +113,5 @@ public interface NPCComposition
 	 *
 	 * @return the overhead icon
 	 */
->>>>>>> upstream/master
 	HeadIcon getOverheadIcon();
 }

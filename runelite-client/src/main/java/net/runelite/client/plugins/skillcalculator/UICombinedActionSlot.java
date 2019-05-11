@@ -1,9 +1,6 @@
 /*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
-<<<<<<< HEAD
-=======
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
->>>>>>> upstream/master
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,16 +33,11 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-<<<<<<< HEAD
-import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.JShadowedLabel;
-=======
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
->>>>>>> upstream/master
 
 class UICombinedActionSlot extends JPanel
 {
@@ -55,27 +47,13 @@ class UICombinedActionSlot extends JPanel
 
 	UICombinedActionSlot(SpriteManager spriteManager)
 	{
-<<<<<<< HEAD
-		BorderLayout layout = new BorderLayout();
-		layout.setHgap(8);
-		setLayout(layout);
-
-		setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-
-		JLabel uiIcon = new JLabel();
-=======
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		setBorder(BorderFactory.createEmptyBorder(7, 7, 7, 7));
 
 		JLabel uiIcon = new JLabel();
 		uiIcon.setBorder(new EmptyBorder(0, 0, 0, 5));
-<<<<<<< HEAD
->>>>>>> upstream/master
-		SkillCalculator.spriteManager.addSpriteTo(uiIcon, 582, 0);
-=======
 		spriteManager.addSpriteTo(uiIcon, 582, 0);
->>>>>>> upstream/master
 
 		uiIcon.setMinimumSize(ICON_SIZE);
 		uiIcon.setMaximumSize(ICON_SIZE);
@@ -84,18 +62,6 @@ class UICombinedActionSlot extends JPanel
 		add(uiIcon, BorderLayout.LINE_START);
 
 		JPanel uiInfo = new JPanel(new GridLayout(2, 1));
-<<<<<<< HEAD
-		uiInfo.setOpaque(false);
-
-		uiLabelTitle = new JShadowedLabel("No Action Selected");
-		uiInfo.add(uiLabelTitle);
-
-		uiLabelActions = new JShadowedLabel("Shift-click to select multiple");
-		uiLabelActions.setFont(FontManager.getRunescapeSmallFont());
-		uiInfo.add(uiLabelActions);
-
-		setBackground(Color.orange);
-=======
 		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		uiLabelTitle = new JShadowedLabel("No Action Selected");
@@ -108,7 +74,6 @@ class UICombinedActionSlot extends JPanel
 		uiInfo.add(uiLabelTitle);
 		uiInfo.add(uiLabelActions);
 
->>>>>>> upstream/master
 		add(uiInfo, BorderLayout.CENTER);
 	}
 

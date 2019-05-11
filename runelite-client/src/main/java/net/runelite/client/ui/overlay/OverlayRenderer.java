@@ -66,22 +66,8 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 	private static final Color SNAP_CORNER_ACTIVE_COLOR = new Color(0, 255, 0, 100);
 	private static final Color MOVING_OVERLAY_COLOR = new Color(255, 255, 0, 100);
 	private static final Color MOVING_OVERLAY_ACTIVE_COLOR = new Color(255, 255, 0, 200);
-<<<<<<< HEAD
-	private static final String OVERLAY_CONFIG_PREFERRED_LOCATION = "_preferredLocation";
-	private static final String OVERLAY_CONFIG_PREFERRED_POSITION = "_preferredPosition";
-<<<<<<< HEAD
-=======
-	private static final String OVERLAY_CONFIG_PREFERRED_SIZE = "_preferredSize";
->>>>>>> upstream/master
-
-	private final PluginManager pluginManager;
-	private final Provider<Client> clientProvider;
-	private final InfoBoxOverlay infoBoxOverlay;
-	private final ConfigManager configManager;
-=======
 	private final Client client;
 	private final OverlayManager overlayManager;
->>>>>>> upstream/master
 	private final RuneLiteConfig runeLiteConfig;
 
 	// Overlay movement variables
@@ -126,44 +112,8 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		}
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	private void rebuildOverlays()
-=======
-	/**
-	 * Force save overlay data
-	 * @param overlay overlay to save
-	 */
-	public void saveOverlay(final Overlay overlay)
-	{
-		saveOverlayPosition(overlay);
-		saveOverlaySize(overlay);
-		saveOverlayLocation(overlay);
-	}
-
-	/**
-	 * Resets stored overlay position data
-	 * @param overlay overlay to reset
-	 */
-	public void resetOverlay(final Overlay overlay)
-	{
-		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
-		final String positionKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
-		final String sizeKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_SIZE;
-		configManager.unsetConfiguration(runeliteGroupName, locationKey);
-		configManager.unsetConfiguration(runeliteGroupName, positionKey);
-		configManager.unsetConfiguration(runeliteGroupName, sizeKey);
-	}
-
-	/**
-	 * Rebuild overlay cache for rendering
-	 */
-	public void rebuildOverlays()
->>>>>>> upstream/master
-=======
 	@Subscribe
 	protected void onClientTick(ClientTick t)
->>>>>>> upstream/master
 	{
 		if (menuEntries == null)
 		{
@@ -172,40 +122,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 		if (!inMenuEntryMode && runeLiteConfig.menuEntryShift())
 		{
-<<<<<<< HEAD
-			final Point location = loadOverlayLocation(overlay);
-
-			if (location != null
-				&& client.getCanvas() != null
-				&& !client.getCanvas().contains(location))
-			{
-				overlay.setPreferredLocation(null);
-				saveOverlayLocation(overlay);
-			}
-<<<<<<< HEAD
-			else
-=======
-			else if (location != null)
->>>>>>> upstream/master
-			{
-				overlay.setPreferredLocation(location);
-			}
-
-<<<<<<< HEAD
-=======
-			final Dimension size = loadOverlaySize(overlay);
-
-			if (size != null)
-			{
-				overlay.setPreferredSize(size);
-			}
-
->>>>>>> upstream/master
-			final OverlayPosition position = loadOverlayPosition(overlay);
-			overlay.setPreferredPosition(position);
-=======
 			return;
->>>>>>> upstream/master
 		}
 
 		if (client.isMenuOpen())
@@ -258,11 +175,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		OverlayUtil.setGraphicProperties(graphics);
 
 		// Draw snap corners
-<<<<<<< HEAD
-		if (layer == OverlayLayer.UNDER_WIDGETS && movedOverlay != null)
-=======
 		if (layer == OverlayLayer.UNDER_WIDGETS && movedOverlay != null && movedOverlay.getPosition() != OverlayPosition.DETACHED)
->>>>>>> upstream/master
 		{
 			final OverlayBounds translatedSnapCorners = snapCorners.translated(
 				-SNAP_CORNER_SIZE.width,
@@ -319,11 +232,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 				final Dimension dimension = overlay.getBounds().getSize();
 
 				// If the final position is not modified, layout it
-<<<<<<< HEAD
-				if (overlay.getPreferredLocation() == null || overlay.getPreferredPosition() != null)
-=======
 				if (overlayPosition != OverlayPosition.DETACHED && (overlay.getPreferredLocation() == null || overlay.getPreferredPosition() != null))
->>>>>>> upstream/master
 				{
 					final Rectangle snapCorner = snapCorners.forPosition(overlayPosition);
 					final Point translation = OverlayUtil.transformPosition(overlayPosition, dimension);
@@ -333,16 +242,9 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 				}
 				else
 				{
-<<<<<<< HEAD
-<<<<<<< HEAD
-					location.setLocation(overlay.getPreferredLocation());
-=======
-					if (overlay.getPreferredLocation() != null)
-=======
 					final Point preferredLocation = overlay.getPreferredLocation();
 
 					if (preferredLocation != null)
->>>>>>> upstream/master
 					{
 						location.setLocation(preferredLocation);
 					}
@@ -355,7 +257,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 				if (overlay.getPreferredSize() != null)
 				{
 					overlay.getBounds().setSize(overlay.getPreferredSize());
->>>>>>> upstream/master
 				}
 
 				safeRender(client, overlay, layer, graphics, location);
@@ -399,19 +300,7 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 			{
 				if (overlay.getBounds().contains(mousePoint))
 				{
-<<<<<<< HEAD
-<<<<<<< HEAD
-					overlay.setPreferredLocation(null);
-					overlay.setPreferredPosition(null);
-					saveOverlayPosition(overlay);
-					saveOverlayLocation(overlay);
-					rebuildOverlayLayers();
-=======
-					// detached overlays have no place to reset back to
-					if (overlay.getPosition() != OverlayPosition.DETACHED)
-=======
 					if (SwingUtilities.isRightMouseButton(mouseEvent))
->>>>>>> upstream/master
 					{
 						overlayManager.resetOverlay(overlay);
 					}
@@ -427,17 +316,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 						movedOverlay.setPreferredLocation(mousePoint);
 						overlayManager.saveOverlay(movedOverlay);
 					}
-<<<<<<< HEAD
->>>>>>> upstream/master
-				}
-				else
-				{
-					mousePoint.translate(-overlay.getBounds().x, -overlay.getBounds().y);
-					overlayOffset.setLocation(mousePoint);
-					movedOverlay = overlay;
-				}
-=======
->>>>>>> upstream/master
 
 					mouseEvent.consume();
 					break;
@@ -485,23 +363,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		if (movedOverlay != null)
 		{
 			mousePosition.setLocation(-1, -1);
-<<<<<<< HEAD
-			final OverlayBounds snapCorners = this.snapCorners.translated(-SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height);
-
-			for (Rectangle snapCorner : snapCorners.getBounds())
-			{
-				if (snapCorner.contains(mouseEvent.getPoint()))
-				{
-					OverlayPosition position = snapCorners.fromBounds(snapCorner);
-					if (position == movedOverlay.getPosition())
-					{
-						// overlay moves back to default position
-						position = null;
-					}
-					movedOverlay.setPreferredPosition(position);
-					movedOverlay.setPreferredLocation(null); // from dragging
-					break;
-=======
 
 			// do not snapcorner detached overlays
 			if (movedOverlay.getPosition() != OverlayPosition.DETACHED)
@@ -524,7 +385,6 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 						movedOverlay.setPreferredLocation(null); // from dragging
 						break;
 					}
->>>>>>> upstream/master
 				}
 			}
 
@@ -699,99 +559,23 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 
 	private MenuEntry[] createRightClickMenuEntries(Overlay overlay)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		final String key = overlay.getClass().getSimpleName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
-=======
-		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
->>>>>>> upstream/master
-		if (overlay.getPreferredLocation() != null)
-		{
-			configManager.setConfiguration(
-				runeliteGroupName,
-				key,
-				overlay.getPreferredLocation());
-		}
-		else
-		{
-			configManager.unsetConfiguration(
-				runeliteGroupName,
-				key);
-		}
-	}
-
-<<<<<<< HEAD
-	private void saveOverlayPosition(final Overlay overlay)
-	{
-		final String key = overlay.getClass().getSimpleName() + OVERLAY_CONFIG_PREFERRED_POSITION;
-=======
-	private void saveOverlaySize(final Overlay overlay)
-	{
-		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_SIZE;
-		if (overlay.getPreferredSize() != null)
-		{
-			configManager.setConfiguration(
-				runeliteGroupName,
-				key,
-				overlay.getPreferredSize());
-		}
-		else
-		{
-			configManager.unsetConfiguration(
-				runeliteGroupName,
-				key);
-		}
-	}
-
-	private void saveOverlayPosition(final Overlay overlay)
-	{
-		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
->>>>>>> upstream/master
-		if (overlay.getPreferredPosition() != null)
-=======
 		List<OverlayMenuEntry> menuEntries = overlay.getMenuEntries();
 		final MenuEntry[] entries = new MenuEntry[menuEntries.size()];
 
 		// Add in reverse order so they display correctly in the right-click menu
 		for (int i = menuEntries.size() - 1; i >= 0; --i)
->>>>>>> upstream/master
 		{
 			OverlayMenuEntry overlayMenuEntry = menuEntries.get(i);
 
-<<<<<<< HEAD
-	private Point loadOverlayLocation(final Overlay overlay)
-	{
-<<<<<<< HEAD
-		final String key = overlay.getClass().getSimpleName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
-		return configManager.getConfiguration(runeliteGroupName, key, Point.class);
-	}
-
-	private OverlayPosition loadOverlayPosition(final Overlay overlay)
-	{
-		final String locationKey = overlay.getClass().getSimpleName() + OVERLAY_CONFIG_PREFERRED_POSITION;
-=======
-		final String key = overlay.getName() + OVERLAY_CONFIG_PREFERRED_LOCATION;
-		return configManager.getConfiguration(runeliteGroupName, key, Point.class);
-	}
-=======
 			final MenuEntry entry = new MenuEntry();
 			entry.setOption(overlayMenuEntry.getOption());
 			entry.setTarget(ColorUtil.wrapWithColorTag(overlayMenuEntry.getTarget(), JagexColors.MENU_TARGET));
 			entry.setType(MenuAction.RUNELITE_OVERLAY.getId());
 			entry.setIdentifier(overlayManager.getOverlays().indexOf(overlay)); // overlay id
->>>>>>> upstream/master
 
 			entries[i] = entry;
 		}
 
-<<<<<<< HEAD
-	private OverlayPosition loadOverlayPosition(final Overlay overlay)
-	{
-		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
->>>>>>> upstream/master
-		return configManager.getConfiguration(runeliteGroupName, locationKey, OverlayPosition.class);
-=======
 		return entries;
->>>>>>> upstream/master
 	}
 }

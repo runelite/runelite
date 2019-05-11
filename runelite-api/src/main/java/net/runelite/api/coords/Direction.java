@@ -24,14 +24,6 @@
  */
 package net.runelite.api.coords;
 
-<<<<<<< HEAD
-public enum Direction
-{
-	NORTH,
-	SOUTH,
-	EAST,
-	WEST;
-=======
 /**
  * Represents the four main cardinal points.
  */
@@ -56,5 +48,4 @@ public enum Direction
 	 * Angles ranging from 256 - 767.
 	 */
 	WEST
->>>>>>> upstream/master
 }

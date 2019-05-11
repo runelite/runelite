@@ -38,10 +38,7 @@ import net.runelite.api.hooks.Callbacks;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.chat.ChatMessageManager;
-<<<<<<< HEAD
-=======
 import net.runelite.client.config.ChatColorConfig;
->>>>>>> upstream/master
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
@@ -108,25 +105,14 @@ public class RuneLiteModule extends AbstractModule
 
 	@Provides
 	@Singleton
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	ChatColorConfig provideChatColorConfig(ConfigManager configManager)
-=======
 	Client provideClient(@Nullable Applet applet)
->>>>>>> upstream/master
 	{
 		return applet instanceof Client ? (Client) applet : null;
 	}
 
 	@Provides
 	@Singleton
-<<<<<<< HEAD
->>>>>>> upstream/master
-	EventBus provideEventBus()
-=======
 	RuneLiteConfig provideConfig(ConfigManager configManager)
->>>>>>> upstream/master
 	{
 		return configManager.getConfig(RuneLiteConfig.class);
 	}

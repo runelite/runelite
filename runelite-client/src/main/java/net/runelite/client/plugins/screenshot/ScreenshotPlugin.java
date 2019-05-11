@@ -30,10 +30,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Provides;
 import java.awt.Desktop;
 import java.awt.Graphics;
-<<<<<<< HEAD
-=======
 import java.awt.Image;
->>>>>>> upstream/master
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.datatransfer.Clipboard;
@@ -576,29 +573,11 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-		Consumer<BufferedImage> screenshotConsumer = image ->
-		{
-			BufferedImage screenshot = config.includeFrame()
-				? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
-				: new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-=======
-		Consumer<Image> screenshotConsumer = image ->
-		{
-			BufferedImage screenshot = config.includeFrame()
-				? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
-				: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
->>>>>>> upstream/master
-
-			Graphics graphics = screenshot.getGraphics();
-=======
 		Consumer<Image> imageCallback = (img) ->
 		{
 			// This callback is on the game thread, move to executor thread
 			executor.submit(() -> takeScreenshot(fileName, img));
 		};
->>>>>>> upstream/master
 
 		if (config.displayDate())
 		{

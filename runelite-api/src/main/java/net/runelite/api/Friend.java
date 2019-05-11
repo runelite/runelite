@@ -24,12 +24,6 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-public interface Friend extends ChatPlayer
-{
-	String getName();
-
-=======
 /**
  * Represents a player in the friends list.
  */
@@ -47,6 +41,5 @@ public interface Friend extends ChatPlayer
 	 *
 	 * @return the previous name
 	 */
->>>>>>> upstream/master
 	String getPrevName();
 }

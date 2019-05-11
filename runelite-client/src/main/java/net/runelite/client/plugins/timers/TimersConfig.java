@@ -53,11 +53,7 @@ public interface TimersConfig extends Config
 
 	@ConfigItem(
 		keyName = "showAntiFire",
-<<<<<<< HEAD
-		name = "AntiFire timer",
-=======
 		name = "Antifire timer",
->>>>>>> upstream/master
 		description = "Configures whether antifire timer is displayed"
 	)
 	default boolean showAntiFire()
@@ -116,12 +112,6 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-		position = 16,
-<<<<<<< HEAD
-=======
-=======
->>>>>>> upstream/master
 		keyName = "showCharge",
 		name = "Charge timer",
 		description = "Configures whether to show a timer for the Charge spell"
@@ -132,11 +122,6 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-		position = 17,
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 		keyName = "showImbuedHeart",
 		name = "Imbued heart timer",
 		description = "Configures whether imbued heart timer is displayed"
@@ -147,14 +132,6 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-<<<<<<< HEAD
-		position = 17,
-=======
-		position = 18,
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 		keyName = "showVengeance",
 		name = "Vengeance timer",
 		description = "Configures whether vengeance and vengeance other timer is displayed"
@@ -165,20 +142,9 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-<<<<<<< HEAD
-		position = 18,
-=======
-		position = 19,
->>>>>>> upstream/master
-		keyName = "showVengeanceOther",
-		name = "Vengeance Other timer",
-		description = "Configures whether vengeance other timer is displayed"
-=======
 		keyName = "showVengeanceActive",
 		name = "Vengeance active",
 		description = "Configures whether an indicator for vengeance being active is displayed"
->>>>>>> upstream/master
 	)
 	default boolean showVengeanceActive()
 	{
@@ -186,14 +152,6 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-<<<<<<< HEAD
-		position = 19,
-=======
-		position = 20,
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 		keyName = "showTeleblock",
 		name = "Teleblock timer",
 		description = "Configures whether teleblock timer is displayed"
@@ -204,14 +162,6 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-<<<<<<< HEAD
-		position = 20,
-=======
-		position = 21,
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 		keyName = "showFreezes",
 		name = "Freeze timer",
 		description = "Configures whether freeze timer is displayed"
@@ -222,14 +172,6 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-<<<<<<< HEAD
-		position = 21,
-=======
-		position = 22,
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 		keyName = "showGodWarsAltar",
 		name = "God wars altar timer",
 		description = "Configures whether god wars altar timer is displayed"

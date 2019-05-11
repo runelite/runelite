@@ -27,12 +27,9 @@ package net.runelite.api;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-<<<<<<< HEAD
-=======
 /**
  * An enumeration of integer local variables.
  */
->>>>>>> upstream/master
 @AllArgsConstructor
 @Getter
 public enum VarClientInt

@@ -72,14 +72,7 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-<<<<<<< HEAD
-<<<<<<< HEAD
 import net.runelite.api.WidgetNode;
-=======
->>>>>>> upstream/master
-=======
-import net.runelite.api.WidgetNode;
->>>>>>> upstream/master
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -885,23 +878,6 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-<<<<<<< HEAD
-	@Copy("closeWidget")
-	public static void rs$closeWidget(WidgetNode widget, boolean b)
-	{
-		throw new RuntimeException();
-	}
-
-	@Replace("closeWidget")
-	public static void rl$closeWidget(WidgetNode widget, boolean b)
-	{
-		MenuEntry[] entries = client.getMenuEntries();
-		rs$closeWidget(widget, b);
-		client.setMenuEntries(entries);
-	}
-
-=======
->>>>>>> upstream/master
 	@Copy("runWidgetOnLoadListener")
 	public static void rs$runWidgetOnLoadListener(int groupId)
 	{
@@ -1121,9 +1097,6 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public boolean hasHintArrow()
 	{
-<<<<<<< HEAD
-		return client.getHintArrowTargetType() == HintArrowType.NONE.getValue();
-=======
 		return client.getHintArrowTargetType() != HintArrowType.NONE.getValue();
 	}
 
@@ -1148,7 +1121,6 @@ public abstract class RSClientMixin implements RSClient
 		{
 			return HintArrowType.NONE;
 		}
->>>>>>> upstream/master
 	}
 
 	@Inject
@@ -1186,8 +1158,6 @@ public abstract class RSClientMixin implements RSClient
 		client.setHintArrowOffsetY(LOCAL_TILE_SIZE / 2);
 	}
 
-<<<<<<< HEAD
-=======
 	@Inject
 	@Override
 	public WorldPoint getHintArrowPoint()
@@ -1242,7 +1212,6 @@ public abstract class RSClientMixin implements RSClient
 		return null;
 	}
 
->>>>>>> upstream/master
 	@Copy("menuAction")
 	static void rs$menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7)
 	{

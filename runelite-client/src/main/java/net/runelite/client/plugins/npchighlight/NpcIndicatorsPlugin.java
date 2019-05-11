@@ -25,16 +25,8 @@
  */
 package net.runelite.client.plugins.npchighlight;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-import com.google.common.base.Splitter;
->>>>>>> upstream/master
-import com.google.common.eventbus.Subscribe;
-=======
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
->>>>>>> upstream/master
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -45,24 +37,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-import java.util.regex.Pattern;
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-<<<<<<< HEAD
-import net.runelite.api.NPC;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.FocusChanged;
-=======
 import net.runelite.api.GameState;
 import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
@@ -74,13 +54,9 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuEntryAdded;
->>>>>>> upstream/master
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -108,17 +84,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
 
-<<<<<<< HEAD
-	// Regex for splitting the hidden items in the config.
-<<<<<<< HEAD
-	private static final String DELIMITER_REGEX = "\\s*,\\s*";
-=======
-	private static final Splitter COMMA_SPLITTER = Splitter.on(Pattern.compile("\\s*,\\s*")).trimResults();
->>>>>>> upstream/master
-=======
 	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
->>>>>>> upstream/master
 
 	@Inject
 	private Client client;
@@ -148,17 +115,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	private boolean hotKeyPressed = false;
 
 	/**
-<<<<<<< HEAD
-	 * NPCs tagged with the Tag option
-	 */
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<Integer> npcTags = new HashSet<>();
-
-	/**
-	 * NPCs tagged due to highlight in the config
-=======
 	 * NPCs to highlight
->>>>>>> upstream/master
 	 */
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<NPC> highlightedNpcs = new HashSet<>();
@@ -186,25 +143,11 @@ public class NpcIndicatorsPlugin extends Plugin
 	 */
 	private List<String> highlights = new ArrayList<>();
 
-<<<<<<< HEAD
-	private boolean hotKeyPressed = false;
-
-	private void toggleTag(int npcId)
-	{
-		boolean removed = npcTags.remove(npcId);
-		if (!removed)
-			npcTags.add(npcId);
-	}
-=======
 	/**
 	 * NPC ids marked with the Tag option
 	 */
 	private final Set<Integer> npcTags = new HashSet<>();
 
-<<<<<<< HEAD
-	private boolean hotKeyPressed = false;
->>>>>>> upstream/master
-=======
 	/**
 	 * Tagged NPCs that spawned this tick, which need to be verified that
 	 * they actually spawned and didn't just walk into view range.
@@ -233,7 +176,6 @@ public class NpcIndicatorsPlugin extends Plugin
 	 * so we would not want to mark it as a real spawn in those cases.
 	 */
 	private boolean skipNextSpawnCheck = false;
->>>>>>> upstream/master
 
 	@Provides
 	NpcIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -248,19 +190,11 @@ public class NpcIndicatorsPlugin extends Plugin
 		overlayManager.add(npcMinimapOverlay);
 		keyManager.registerKeyListener(inputListener);
 		highlights = getHighlights();
-<<<<<<< HEAD
-<<<<<<< HEAD
-		rebuildNpcs();
-=======
-		rebuildAllNpcs();
->>>>>>> upstream/master
-=======
 		clientThread.invoke(() ->
 		{
 			skipNextSpawnCheck = true;
 			rebuildAllNpcs();
 		});
->>>>>>> upstream/master
 	}
 
 	@Override
@@ -279,59 +213,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public void onConfigChanged(ConfigChanged configChanged)
-	{
-		if (!configChanged.getGroup().equals("npcindicators"))
-		{
-			return;
-		}
-
-		highlights = getHighlights();
-		rebuildNpcs();
-	}
-
-	private List<String> getHighlights()
-	{
-		String configNpcs = config.getNpcToHighlight().toLowerCase();
-		if (configNpcs.isEmpty())
-			return Collections.emptyList();
-
-		List<String> highlightedNpcs = Arrays.asList(configNpcs.split(DELIMITER_REGEX));
-		return highlightedNpcs;
-	}
-
-	/**
-	 * Rebuild highlighted npcs
-	 */
-	private void rebuildNpcs()
-	{
-		highlightedNpcs.clear();
-
-		for (NPC npc : client.getNpcs())
-		{
-			String npcName = npc.getName();
-
-			if (npcName == null)
-			{
-				continue;
-			}
-
-			for (String highlight : highlights)
-			{
-				if (WildcardMatcher.matches(highlight, npcName))
-				{
-					highlightedNpcs.add(npc);
-					break;
-				}
-			}
-		}
-=======
-	public void onGameStateChange(GameStateChanged event)
-=======
 	public void onGameStateChanged(GameStateChanged event)
->>>>>>> upstream/master
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN ||
 			event.getGameState() == GameState.HOPPING)
@@ -354,7 +236,6 @@ public class NpcIndicatorsPlugin extends Plugin
 
 		highlights = getHighlights();
 		rebuildAllNpcs();
->>>>>>> upstream/master
 	}
 
 	@Subscribe
@@ -405,14 +286,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked click)
 	{
-<<<<<<< HEAD
-		if (click.getMenuOption().equals(TAG))
-<<<<<<< HEAD
-			toggleTag(click.getId());
-=======
-=======
 		if (click.getMenuAction() != MenuAction.RUNELITE || !click.getMenuOption().equals(TAG))
->>>>>>> upstream/master
 		{
 			return;
 		}
@@ -438,23 +312,13 @@ public class NpcIndicatorsPlugin extends Plugin
 			npcTags.add(id);
 			highlightedNpcs.add(npc);
 		}
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 
 		click.consume();
->>>>>>> upstream/master
 	}
 
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned npcSpawned)
 	{
-<<<<<<< HEAD
-		NPC npc = npcSpawned.getNpc();
-		String npcName = npc.getName();
-		if (npcName != null)
-		{
-=======
 		final NPC npc = npcSpawned.getNpc();
 		final String npcName = npc.getName();
 
@@ -463,10 +327,6 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-<<<<<<< HEAD
->>>>>>> upstream/master
-			for (String highlight : highlights)
-=======
 		if (npcTags.contains(npc.getIndex()))
 		{
 			memorizeNpc(npc);
@@ -478,7 +338,6 @@ public class NpcIndicatorsPlugin extends Plugin
 		for (String highlight : highlights)
 		{
 			if (WildcardMatcher.matches(highlight, npcName))
->>>>>>> upstream/master
 			{
 				memorizeNpc(npc);
 				highlightedNpcs.add(npc);
@@ -491,17 +350,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		NPC npc = npcDespawned.getNpc();
-		highlightedNpcs.remove(npc);
-=======
-		highlightedNpcs.remove(npcDespawned.getNpc());
->>>>>>> upstream/master
-	}
-=======
 		final NPC npc = npcDespawned.getNpc();
->>>>>>> upstream/master
 
 		if (memorizedNpcs.containsKey(npc.getIndex()))
 		{
@@ -588,8 +437,6 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		deadNpcsToDisplay.values().removeIf(x -> x.getDiedOnTick() + x.getRespawnTime() <= client.getTickCount() + 1);
 	}
-<<<<<<< HEAD
-=======
 
 	@VisibleForTesting
 	List<String> getHighlights()
@@ -647,9 +494,6 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 	}
 
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 	private void validateSpawnedNpcs()
 	{
 		if (skipNextSpawnCheck)
@@ -730,5 +574,4 @@ public class NpcIndicatorsPlugin extends Plugin
 		despawnedNpcsThisTick.clear();
 		teleportGraphicsObjectSpawnedThisTick.clear();
 	}
->>>>>>> upstream/master
 }

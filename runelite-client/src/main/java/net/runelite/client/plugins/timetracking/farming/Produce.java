@@ -121,16 +121,7 @@ public enum Produce
 	KRONOS("Kronos", NullItemID.NULL_22938, 640, 9),
 
 	// Special crops
-<<<<<<< HEAD:runelite-client/src/main/java/net/runelite/client/plugins/farmingtracker/Produce.java
-<<<<<<< HEAD
-	SEAWEED("Seaweed", ItemID.GIANT_SEAWEED, 10, 8, 0, 4),
-=======
-	SEAWEED("Seaweed", ItemID.GIANT_SEAWEED, 5, 8, 0, 4),
->>>>>>> upstream/master
-	TEAK("Teak", ItemID.TEAK_LOGS, 560, 9),
-=======
 	SEAWEED("Seaweed", ItemID.GIANT_SEAWEED, 10, 5, 0, 4),
->>>>>>> upstream/master:runelite-client/src/main/java/net/runelite/client/plugins/timetracking/farming/Produce.java
 	GRAPE("Grape", ItemID.GRAPES, 5, 8, 0, 5),
 	MUSHROOM("Mushroom", ItemID.MUSHROOM, 40, 7, 0, 7),
 	BELLADONNA("Belladonna", ItemID.CAVE_NIGHTSHADE, 80, 5),

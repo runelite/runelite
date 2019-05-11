@@ -46,14 +46,10 @@ public class LowMemoryPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-<<<<<<< HEAD
-		client.changeMemoryMode(true);
-=======
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			client.changeMemoryMode(true);
 		}
->>>>>>> upstream/master
 	}
 
 	@Override

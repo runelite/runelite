@@ -24,19 +24,8 @@
  */
 package net.runelite.client.ui;
 
-<<<<<<< HEAD:runelite-client/src/main/java/net/runelite/client/ui/PluginToolbar.java
-<<<<<<< HEAD
-import com.google.common.eventbus.EventBus;
-import java.util.Comparator;
-=======
-import com.google.common.collect.ComparisonChain;
-import com.google.common.eventbus.EventBus;
->>>>>>> upstream/master
-import java.util.TreeSet;
-=======
 import java.util.HashSet;
 import java.util.Set;
->>>>>>> upstream/master:runelite-client/src/main/java/net/runelite/client/ui/ClientToolbar.java
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.client.eventbus.EventBus;
@@ -50,19 +39,7 @@ import net.runelite.client.events.NavigationButtonRemoved;
 public class ClientToolbar
 {
 	private final EventBus eventBus;
-<<<<<<< HEAD:runelite-client/src/main/java/net/runelite/client/ui/PluginToolbar.java
-<<<<<<< HEAD
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>(Comparator.comparing(NavigationButton::getName));
-=======
-	private final TreeSet<NavigationButton> buttons = new TreeSet<>((a, b) ->
-		ComparisonChain.start()
-			.compare(a.getPriority(), b.getPriority())
-			.compare(a.getTooltip(), b.getTooltip())
-			.result());
->>>>>>> upstream/master
-=======
 	private final Set<NavigationButton> buttons = new HashSet<>();
->>>>>>> upstream/master:runelite-client/src/main/java/net/runelite/client/ui/ClientToolbar.java
 
 	@Inject
 	private ClientToolbar(final EventBus eventBus)

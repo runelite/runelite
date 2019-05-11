@@ -135,15 +135,8 @@ public class IdleNotifierPlugin extends Plugin
 			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
-<<<<<<< HEAD
-=======
 			case COOKING_WINE:
-<<<<<<< HEAD
->>>>>>> upstream/master
-			/* Crafting(Gem Cutting, Glassblowing, Spinning) */
-=======
 			/* Crafting(Gem Cutting, Glassblowing, Spinning, Battlestaves, Pottery) */
->>>>>>> upstream/master
 			case GEM_CUTTING_OPAL:
 			case GEM_CUTTING_JADE:
 			case GEM_CUTTING_REDTOPAZ:
@@ -211,13 +204,6 @@ public class IdleNotifierPlugin extends Plugin
 			case HERBLORE_MAKE_TAR:
 			/* Magic */
 			case MAGIC_CHARGING_ORBS:
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-			/* Prayer */
-			case USING_GILDED_ALTAR:
->>>>>>> upstream/master
-=======
 			case MAGIC_LUNAR_PLANK_MAKE:
 			case MAGIC_LUNAR_STRING_JEWELRY:
 			case MAGIC_MAKE_TABLET:
@@ -233,7 +219,6 @@ public class IdleNotifierPlugin extends Plugin
 			case PISCARILIUS_CRANE_REPAIR:
 			case HOME_MAKE_TABLET:
 			case SAND_COLLECTION:
->>>>>>> upstream/master
 				resetTimers();
 				lastAnimation = animation;
 				lastAnimating = Instant.now();

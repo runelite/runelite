@@ -29,21 +29,9 @@ import lombok.Value;
 @Value
 class PatchState
 {
-<<<<<<< HEAD:runelite-client/src/main/java/net/runelite/client/plugins/farmingtracker/Tab.java
-	ALLOTMENT("Allotments", ItemID.CABBAGE),
-	HERB("Herbs", ItemID.GRIMY_RANARR_WEED),
-	TREE("Trees", ItemID.MAHOGANY_LOGS),
-	FRUIT_TREE("Fruit Trees", ItemID.PINEAPPLE),
-<<<<<<< HEAD
-=======
-	BUSH("Bushes", ItemID.REDBERRIES),
->>>>>>> upstream/master
-	SPECIAL("Special", ItemID.MUSHROOM);
-=======
 	private final Produce produce;
 	private final CropState cropState;
 	private final int stage;
->>>>>>> upstream/master:runelite-client/src/main/java/net/runelite/client/plugins/timetracking/farming/PatchState.java
 
 	int getStages()
 	{

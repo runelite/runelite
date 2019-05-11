@@ -24,8 +24,6 @@
  */
 package net.runelite.api.widgets;
 
-<<<<<<< HEAD
-=======
 /**
  * Utility class mapping widget IDs to global constants.
  * <p>
@@ -36,7 +34,6 @@ package net.runelite.api.widgets;
  * For a more direct group-child widget mapping, use the
  * {@link WidgetInfo} enum class.
  */
->>>>>>> upstream/master
 public class WidgetID
 {
 	public static final int FAIRY_RING_PANEL_GROUP_ID = 381;
@@ -328,15 +325,8 @@ public class WidgetID
 
 	static class FixedViewport
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		static final int INVENTORY_TAB = 51;
-		static final int PRAYER_TAB = 53;
-=======
-=======
 		static final int MINIMAP = 3;
 		static final int MINIMAP_DRAW_AREA = 8;
->>>>>>> upstream/master
 		static final int CLAN_CHAT_TAB = 31;
 		static final int FRIENDS_TAB = 33;
 		static final int IGNORES_TAB = 32;
@@ -368,19 +358,11 @@ public class WidgetID
 		static final int ROOT_INTERFACE_CONTAINER = 62;
 		static final int BANK_CONTAINER = 64;
 		static final int INTERFACE_CONTAINER = 65;
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 		static final int INVENTORY_CONTAINER = 69;
->>>>>>> upstream/master
 	}
 
 	static class ResizableViewport
 	{
-<<<<<<< HEAD
-		static final int INVENTORY_TAB = 54;
-		static final int PRAYER_TAB = 56;
-=======
 		static final int CLAN_CHAT_TAB = 35;
 		static final int FRIENDS_TAB = 37;
 		static final int IGNORES_TAB = 36;
@@ -409,29 +391,13 @@ public class WidgetID
 		static final int EQUIPMENT_ICON = 62;
 		static final int PRAYER_ICON = 63;
 		static final int MAGIC_ICON = 64;
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 		static final int INTERFACE_CONTAINER = 65;
 		static final int INVENTORY_CONTAINER = 71;
->>>>>>> upstream/master
 	}
 
 	static class ResizableViewportBottomLine
 	{
-<<<<<<< HEAD
-		static final int INVENTORY_TAB = 51;
-		static final int PRAYER_TAB = 53;
-=======
 		static final int LOGOUT_BUTTON_OVERLAY = 29;
-<<<<<<< HEAD
-		static final int INVENTORY_TAB = 51;
-		static final int PRAYER_TAB = 53;
-		static final int QUESTS_ICON = 57;
-		static final int INVENTORY_ICON = 58;
-		static final int PRAYER_ICON = 60;
->>>>>>> upstream/master
-=======
 		static final int CMB_TAB = 50;
 		static final int CMB_ICON = 57;
 		static final int SKILLS_TAB = 51;
@@ -460,7 +426,6 @@ public class WidgetID
 		static final int MUSIC_ICON = 46;
 		static final int MAGIC_ICON = 63;
 		static final int INVENTORY_CONTAINER = 71;
->>>>>>> upstream/master
 	}
 
 	static class Chatbox

@@ -27,12 +27,9 @@ package net.runelite.api;
 import java.util.HashMap;
 import java.util.Map;
 
-<<<<<<< HEAD
-=======
 /**
  * An enumeration of right-click menu actions.
  */
->>>>>>> upstream/master
 public enum MenuAction
 {
 	/**

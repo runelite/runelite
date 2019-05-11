@@ -53,11 +53,8 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
-<<<<<<< HEAD
-=======
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
->>>>>>> upstream/master
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.events.SessionClose;
@@ -66,15 +63,9 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
-<<<<<<< HEAD
-=======
 import net.runelite.client.Notifier;
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
->>>>>>> upstream/master
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -144,8 +135,6 @@ public class GrandExchangePlugin extends Plugin
 	@Inject
 	private GrandExchangeConfig config;
 
-<<<<<<< HEAD
-=======
 	@Inject
 	private Notifier notifier;
 
@@ -184,7 +173,6 @@ public class GrandExchangePlugin extends Plugin
 		configManager.unsetConfiguration("geoffer." + client.getUsername().toLowerCase(), Integer.toString(slot));
 	}
 
->>>>>>> upstream/master
 	@Provides
 	GrandExchangeConfig provideConfig(ConfigManager configManager)
 	{
@@ -201,18 +189,9 @@ public class GrandExchangePlugin extends Plugin
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "ge_icon.png");
 
 		button = NavigationButton.builder()
-<<<<<<< HEAD
-<<<<<<< HEAD
-			.name("GE Offers")
-			.icon(icon)
-=======
-			.tooltip("GE Offers")
-=======
 			.tooltip("Grand Exchange")
->>>>>>> upstream/master
 			.icon(icon)
 			.priority(3)
->>>>>>> upstream/master
 			.panel(panel)
 			.build();
 
@@ -293,19 +272,11 @@ public class GrandExchangePlugin extends Plugin
 		ItemComposition offerItem = itemManager.getItemComposition(offer.getItemId());
 		boolean shouldStack = offerItem.isStackable() || offer.getTotalQuantity() > 1;
 		BufferedImage itemImage = itemManager.getImage(offer.getItemId(), offer.getTotalQuantity(), shouldStack);
-<<<<<<< HEAD
-<<<<<<< HEAD
-		SwingUtilities.invokeLater(() -> panel.updateOffer(offerItem, itemImage, offerEvent.getOffer(), offerEvent.getSlot()));
-=======
-		SwingUtilities.invokeLater(() -> panel.getOffersPanel().updateOffer(offerItem, itemImage, offerEvent.getOffer(), offerEvent.getSlot()));
-		this.queueNotification(offerItem, offerEvent.getOffer(), offerEvent.getSlot());
-=======
 		SwingUtilities.invokeLater(() -> panel.getOffersPanel().updateOffer(offerItem, itemImage, offer, slot));
 
 		submitTrades(slot, offer);
 
 		updateConfig(slot, offer);
->>>>>>> upstream/master
 	}
 
 	private void submitTrades(int slot, GrandExchangeOffer offer)
@@ -393,7 +364,6 @@ public class GrandExchangePlugin extends Plugin
 		{
 			panel.getOffersPanel().resetOffers();
 		}
->>>>>>> upstream/master
 	}
 
 	@Subscribe

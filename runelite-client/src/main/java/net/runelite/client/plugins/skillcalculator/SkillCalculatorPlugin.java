@@ -67,29 +67,14 @@ public class SkillCalculatorPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "calc.png");
 		final SkillCalculatorPanel uiPanel = new SkillCalculatorPanel(skillIconManager, client, spriteManager, itemManager);
 
-<<<<<<< HEAD
-		SkillCalculator.spriteManager = spriteManager;
-		SkillCalculator.itemManager = itemManager;
-
-		uiPanel = new SkillCalculatorPanel(skillIconManager, client);
-<<<<<<< HEAD
-		uiNavigationButton = NavigationButton.builder().name("Skill Calculator").icon(icon).panel(uiPanel).build();
-=======
-=======
->>>>>>> upstream/master
 		uiNavigationButton = NavigationButton.builder()
 			.tooltip("Skill Calculator")
 			.icon(icon)
 			.priority(6)
 			.panel(uiPanel)
 			.build();
-<<<<<<< HEAD
->>>>>>> upstream/master
-		pluginToolbar.addNavigation(uiNavigationButton);
-=======
 
 		clientToolbar.addNavigation(uiNavigationButton);
->>>>>>> upstream/master
 	}
 
 	@Override

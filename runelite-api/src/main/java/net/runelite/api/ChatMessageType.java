@@ -24,32 +24,6 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-public enum ChatMessageType
-{
-	SERVER(0),
-	PUBLIC(2),
-	PRIVATE_MESSAGE_RECEIVED(3),
-	TRADE_RECEIVED(4),
-	PRIVATE_MESSAGE_INFO(5),
-	PRIVATE_MESSAGE_SENT(6),
-	PRIVATE_MESSAGE_RECEIVED_MOD(7),
-	CLANCHAT(9),
-	CLANCHAT_INFO(11),
-	TRADE_SENT(12),
-	ABUSE_REPORT(26),
-	EXAMINE_ITEM(27),
-	EXAMINE_NPC(28),
-	EXAMINE_OBJECT(29),
-	FRIENDS_LIST_ADD(30),
-	IGNORE_LIST_ADD(31),
-	AUTOCHAT(90),
-	GAME(99),
-	TRADE(101),
-	DUEL(103),
-	FILTERED(105),
-	ACTION(109),
-=======
 import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -177,33 +151,10 @@ public enum ChatMessageType
 	/**
 	 * An unknown message type.
 	 */
->>>>>>> upstream/master
 	UNKNOWN(-1);
 
 	private final int type;
 
-<<<<<<< HEAD
-	ChatMessageType(int type)
-	{
-		this.type = type;
-	}
-
-	public static ChatMessageType of(int type)
-	{
-		for (ChatMessageType ct : ChatMessageType.values())
-		{
-			if (ct.type == type)
-			{
-				return ct;
-			}
-		}
-		return UNKNOWN;
-	}
-
-	public int getType()
-	{
-		return type;
-=======
 	private static final Map<Integer, ChatMessageType> CHAT_MESSAGE_TYPES = new HashMap<>();
 
 	static
@@ -224,6 +175,5 @@ public enum ChatMessageType
 	public static ChatMessageType of(int type)
 	{
 		return CHAT_MESSAGE_TYPES.getOrDefault(type, UNKNOWN);
->>>>>>> upstream/master
 	}
 }

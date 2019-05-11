@@ -24,26 +24,6 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-public interface MessageNode
-{
-	ChatMessageType getType();
-
-	String getName();
-
-	void setName(String name);
-
-	String getSender();
-
-	void setSender(String sender);
-
-	String getValue();
-
-	void setValue(String value);
-
-	String getRuneLiteFormatMessage();
-
-=======
 /**
  * Represents a message in the chatbox.
  */
@@ -121,7 +101,6 @@ public interface MessageNode
 	 *
 	 * @param runeLiteFormatMessage the new message format
 	 */
->>>>>>> upstream/master
 	void setRuneLiteFormatMessage(String runeLiteFormatMessage);
 
 	/**

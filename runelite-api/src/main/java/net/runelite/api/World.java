@@ -24,31 +24,17 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-
-import java.util.EnumSet;
-
-/**
- * Holds data of RuneScape world.
-=======
 import java.util.EnumSet;
 
 /**
  * Holds data of a RuneScape world.
->>>>>>> upstream/master
  */
 public interface World
 {
 	/**
-<<<<<<< HEAD
-	 * Gets world types.
-	 *
-	 * @return the types
-=======
 	 * Gets all applicable world types for this world.
 	 *
 	 * @return the world types
->>>>>>> upstream/master
 	 */
 	EnumSet<WorldType> getTypes();
 
@@ -60,146 +46,86 @@ public interface World
 	void setTypes(EnumSet<WorldType> types);
 
 	/**
-<<<<<<< HEAD
-	 * Gets player count.
-=======
 	 * Gets the current number of players logged in the world.
->>>>>>> upstream/master
 	 *
 	 * @return the player count
 	 */
 	int getPlayerCount();
 
 	/**
-<<<<<<< HEAD
-	 * Sets player count.
-	 *
-	 * @param playerCount the player count
-=======
 	 * Sets the player count of the world.
 	 *
 	 * @param playerCount the new player count
->>>>>>> upstream/master
 	 */
 	void setPlayerCount(int playerCount);
 
 	/**
-<<<<<<< HEAD
-	 * Gets location.
-	 *
-	 * @return the location
-=======
 	 * Gets the world location value.
 	 *
 	 * @return the world location
->>>>>>> upstream/master
 	 */
 	int getLocation();
 
 	/**
-<<<<<<< HEAD
-	 * Sets location.
-=======
 	 * Sets the world location value.
->>>>>>> upstream/master
 	 *
 	 * @param location the location
 	 */
 	void setLocation(int location);
 
 	/**
-<<<<<<< HEAD
-	 * Gets index.
-=======
 	 * Gets the worlds index.
->>>>>>> upstream/master
 	 *
 	 * @return the index
 	 */
 	int getIndex();
 
 	/**
-<<<<<<< HEAD
-	 * Sets index.
-=======
 	 *  Sets the worlds index.
->>>>>>> upstream/master
 	 *
 	 * @param index the index
 	 */
 	void setIndex(int index);
 
 	/**
-<<<<<<< HEAD
-	 * Gets id.
-	 *
-	 * @return the id
-=======
 	 * Gets the world number.
 	 *
 	 * @return the world number
->>>>>>> upstream/master
 	 */
 	int getId();
 
 	/**
-<<<<<<< HEAD
-	 * Sets id.
-	 *
-	 * @param id the id
-=======
 	 * Sets the world number.
 	 *
 	 * @param id the world number
->>>>>>> upstream/master
 	 */
 	void setId(int id);
 
 	/**
-<<<<<<< HEAD
-	 * Gets activity.
-	 *
-	 * @return the activity
-=======
 	 * Gets the world activity description.
 	 * <p>
 	 * For example, world 2 would return "Trade - Members".
 	 *
 	 * @return the world activity
->>>>>>> upstream/master
 	 */
 	String getActivity();
 
 	/**
-<<<<<<< HEAD
-	 * Sets activity.
-=======
 	 * Sets the world activity description.
->>>>>>> upstream/master
 	 *
 	 * @param activity the activity
 	 */
 	void setActivity(String activity);
 
 	/**
-<<<<<<< HEAD
-	 * Gets address.
-	 *
-	 * @return the address
-=======
 	 * Gets the address of the world.
 	 *
 	 * @return the world address
->>>>>>> upstream/master
 	 */
 	String getAddress();
 
 	/**
-<<<<<<< HEAD
-	 * Sets address.
-=======
 	 * Sets the address of the world.
->>>>>>> upstream/master
 	 *
 	 * @param address the address
 	 */

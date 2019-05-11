@@ -28,12 +28,6 @@ import lombok.Data;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
 
-<<<<<<< HEAD
-@Data
-public class WallObjectSpawned
-{
-	private Tile tile;
-=======
 /**
  * An event where a {@link WallObject} is added to a {@link Tile}.
  */
@@ -47,6 +41,5 @@ public class WallObjectSpawned
 	/**
 	 * The newly spawned wall object.
 	 */
->>>>>>> upstream/master
 	private WallObject wallObject;
 }

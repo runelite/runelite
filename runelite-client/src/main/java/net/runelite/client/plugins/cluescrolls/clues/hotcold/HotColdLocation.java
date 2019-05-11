@@ -60,18 +60,9 @@ public enum HotColdLocation
 	ASGARNIA_CRAFT_GUILD(new WorldPoint(2917, 3295, 0), ASGARNIA, "Outside the Crafting Guild cow pen."),
 	ASGARNIA_RIMMINGTON(new WorldPoint(2978, 3241, 0), ASGARNIA, "In the centre of the Rimmington mine."),
 	ASGARNIA_MUDSKIPPER(new WorldPoint(2984, 3109, 0), ASGARNIA, "Mudskipper Point, on the starfish in the south-west corner."),
-<<<<<<< HEAD
-	ASGARNIA_TROLL(new WorldPoint(2910, 3616, 0), ASGARNIA, "The Troll arena, where the player fights Dadduring the Troll Stronghold quest. Bring climbing boots."),
-=======
 	ASGARNIA_TROLL(new WorldPoint(2910, 3616, 0), ASGARNIA, "The Troll arena, where the player fights Dad during the Troll Stronghold quest. Bring climbing boots if travelling from Burthorpe."),
-<<<<<<< HEAD
->>>>>>> upstream/master
-	DESERT_GENIE(new WorldPoint(3363, 2905, 0), DESERT, "West of Nardah genie cave."),
-	DESERT_ALKHARID_MINE(new WorldPoint(3280, 3271, 0), DESERT, "West of Al Kharid mine."),
-=======
 	DESERT_GENIE(new WorldPoint(3364, 2910, 0), DESERT, "West of Nardah genie cave."),
 	DESERT_ALKHARID_MINE(new WorldPoint(3282, 3270, 0), DESERT, "West of Al Kharid mine."),
->>>>>>> upstream/master
 	DESERT_MENAPHOS_GATE(new WorldPoint(3224, 2816, 0), DESERT, "North of Menaphos gate."),
 	DESERT_BEDABIN_CAMP(new WorldPoint(3164, 3050, 0), DESERT, "Bedabin Camp, dig around the north tent."),
 	DESERT_UZER(new WorldPoint(3431, 3106, 0), DESERT, "West of Uzer."),
@@ -99,11 +90,7 @@ public enum HotColdLocation
 	FREMENNIK_PROVINCE_PIRATES_COVE(new WorldPoint(2210, 3814, 0), FREMENNIK_PROVINCE, "Pirates' Cove"),
 	FREMENNIK_PROVINCE_ASTRAL_ALTER(new WorldPoint(2147, 3862, 0), FREMENNIK_PROVINCE, "Astral altar"),
 	FREMENNIK_PROVINCE_LUNAR_VILLAGE(new WorldPoint(2087, 3915, 0), FREMENNIK_PROVINCE, "Lunar Isle, inside the village."),
-<<<<<<< HEAD
-	FREMENNIK_PROVINCE_LUNAR_NORTH(new WorldPoint(2101, 3949, 0), FREMENNIK_PROVINCE, "Lunar Isle, north of the village."),
-=======
 	FREMENNIK_PROVINCE_LUNAR_NORTH(new WorldPoint(2106, 3949, 0), FREMENNIK_PROVINCE, "Lunar Isle, north of the village."),
->>>>>>> upstream/master
 	KANDARIN_SINCLAR_MANSION(new WorldPoint(2726, 3588, 0), KANDARIN, "North-west of the Sinclair Mansion, near the log balance shortcut."),
 	KANDARIN_CATHERBY(new WorldPoint(2774, 3433, 0), KANDARIN, "Catherby, between the bank and the beehives, near small rock formation."),
 	KANDARIN_GRAND_TREE(new WorldPoint(2444, 3503, 0), KANDARIN, "Grand Tree, just east of the terrorchick gnome enclosure."),
@@ -156,17 +143,9 @@ public enum HotColdLocation
 	WILDERNESS_5(new WorldPoint(3169, 3558, 0), WILDERNESS, "North of the Grand Exchange, level 5 Wilderness."),
 	WILDERNESS_12(new WorldPoint(3038, 3612, 0), WILDERNESS, "South-east of the Dark Warriors' Fortress, level 12 Wilderness."),
 	WILDERNESS_20(new WorldPoint(3225, 3676, 0), WILDERNESS, "East of the Corporeal Beast's lair, level 20 Wilderness."),
-<<<<<<< HEAD
-<<<<<<< HEAD
-	WILDERNESS_28(new WorldPoint(3369, 3664, 0), WILDERNESS, "East of Venenatis' nest, level 28 Wilderness."),
-=======
-	WILDERNESS_28(new WorldPoint(3374, 3734, 0), WILDERNESS, "East of Venenatis' nest, level 28 Wilderness."),
->>>>>>> upstream/master
-=======
 	WILDERNESS_27(new WorldPoint(3174, 3735, 0), WILDERNESS, "Inside the Ruins north of the Graveyard of Shadows, level 27 Wilderness."),
 	WILDERNESS_28(new WorldPoint(3374, 3734, 0), WILDERNESS, "East of Venenatis' nest, level 28 Wilderness."),
 	WILDERNESS_32(new WorldPoint(3311, 3773, 0), WILDERNESS, "North of Venenatis' nest, level 32 Wilderness."),
->>>>>>> upstream/master
 	WILDERNESS_35(new WorldPoint(3153, 3795, 0), WILDERNESS, "East of the Wilderness canoe exit, level 35 Wilderness."),
 	WILDERNESS_37(new WorldPoint(2975, 3811, 0), WILDERNESS, "South-east of the Chaos Temple, level 37 Wilderness."),
 	WILDERNESS_38(new WorldPoint(3294, 3817, 0), WILDERNESS, "South of Callisto, level 38 Wilderness."),

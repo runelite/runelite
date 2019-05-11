@@ -53,8 +53,6 @@ public interface WorldMapConfig extends Config
 	{
 		return true;
 	}
-<<<<<<< HEAD
-=======
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_AGILITY_SHORTCUT_TOOLTIPS,
@@ -165,10 +163,6 @@ public interface WorldMapConfig extends Config
 	{
 		return true;
 	}
-<<<<<<< HEAD
->>>>>>> upstream/master
-}
-=======
 
 	@ConfigItem(
 		keyName = WorldMapPlugin.CONFIG_KEY_QUEST_START_TOOLTIPS,
@@ -225,4 +219,3 @@ public interface WorldMapConfig extends Config
 		return true;
 	}
 }
->>>>>>> upstream/master

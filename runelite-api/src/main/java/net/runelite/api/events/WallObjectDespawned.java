@@ -28,12 +28,6 @@ import lombok.Data;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
 
-<<<<<<< HEAD
-@Data
-public class WallObjectDespawned
-{
-	private Tile tile;
-=======
 /**
  * An event where a {@link WallObject} on a {@link Tile} has been removed.
  */
@@ -47,6 +41,5 @@ public class WallObjectDespawned
 	/**
 	 * The removed wall object.
 	 */
->>>>>>> upstream/master
 	private WallObject wallObject;
 }

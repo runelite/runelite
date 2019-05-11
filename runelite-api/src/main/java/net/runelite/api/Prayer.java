@@ -24,43 +24,6 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-public enum Prayer
-{
-	THICK_SKIN(Varbits.PRAYER_THICK_SKIN),
-	BURST_OF_STRENGTH(Varbits.PRAYER_BURST_OF_STRENGTH),
-	CLARITY_OF_THOUGHT(Varbits.PRAYER_CLARITY_OF_THOUGHT),
-	SHARP_EYE(Varbits.PRAYER_SHARP_EYE),
-	MYSTIC_WILL(Varbits.PRAYER_MYSTIC_WILL),
-	ROCK_SKIN(Varbits.PRAYER_ROCK_SKIN),
-	SUPERHUMAN_STRENGTH(Varbits.PRAYER_SUPERHUMAN_STRENGTH),
-	IMPROVED_REFLEXES(Varbits.PRAYER_IMPROVED_REFLEXES),
-	RAPID_RESTORE(Varbits.PRAYER_RAPID_RESTORE),
-	RAPID_HEAL(Varbits.PRAYER_RAPID_HEAL),
-	PROTECT_ITEM(Varbits.PRAYER_PROTECT_ITEM),
-	HAWK_EYE(Varbits.PRAYER_HAWK_EYE),
-	MYSTIC_LORE(Varbits.PRAYER_MYSTIC_LORE),
-	STEEL_SKIN(Varbits.PRAYER_STEEL_SKIN),
-	ULTIMATE_STRENGTH(Varbits.PRAYER_ULTIMATE_STRENGTH),
-	INCREDIBLE_REFLEXES(Varbits.PRAYER_INCREDIBLE_REFLEXES),
-	PROTECT_FROM_MAGIC(Varbits.PRAYER_PROTECT_FROM_MAGIC),
-	PROTECT_FROM_MISSILES(Varbits.PRAYER_PROTECT_FROM_MISSILES),
-	PROTECT_FROM_MELEE(Varbits.PRAYER_PROTECT_FROM_MELEE),
-	EAGLE_EYE(Varbits.PRAYER_EAGLE_EYE),
-	MYSTIC_MIGHT(Varbits.PRAYER_MYSTIC_MIGHT),
-	RETRIBUTION(Varbits.PRAYER_RETRIBUTION),
-	REDEMPTION(Varbits.PRAYER_REDEMPTION),
-	SMITE(Varbits.PRAYER_SMITE),
-	CHIVALRY(Varbits.PRAYER_CHIVALRY),
-	PIETY(Varbits.PRAYER_PIETY),
-	PRESERVE(Varbits.PRAYER_PRESERVE),
-	RIGOUR(Varbits.PRAYER_RIGOUR),
-	AUGURY(Varbits.PRAYER_AUGURY);
-	
-	private final Varbits varbit;
-
-	private Prayer(Varbits varbit)
-=======
 /**
  * An enumeration of different prayer spells.
  */
@@ -185,27 +148,19 @@ public enum Prayer
 
 	private final Varbits varbit;
 
-<<<<<<< HEAD
-	Prayer(Varbits varbit)
->>>>>>> upstream/master
-=======
 	private final double drainRate;
 
 	Prayer(Varbits varbit, double drainRate)
->>>>>>> upstream/master
 	{
 		this.varbit = varbit;
 		this.drainRate = drainRate;
 	}
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Gets the varbit that stores whether the prayer is active or not.
 	 *
 	 * @return the prayer active varbit
 	 */
->>>>>>> upstream/master
 	public Varbits getVarbit()
 	{
 		return varbit;

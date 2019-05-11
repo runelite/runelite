@@ -28,13 +28,6 @@ import lombok.Data;
 import net.runelite.api.GroundObject;
 import net.runelite.api.Tile;
 
-<<<<<<< HEAD
-@Data
-public class GroundObjectChanged
-{
-	private Tile tile;
-	private GroundObject previous;
-=======
 /**
  * An event where the {@link GroundObject} on a {@link Tile} has been changed.
  */
@@ -52,6 +45,5 @@ public class GroundObjectChanged
 	/**
 	 * The new ground object on the tile.
 	 */
->>>>>>> upstream/master
 	private GroundObject groundObject;
 }

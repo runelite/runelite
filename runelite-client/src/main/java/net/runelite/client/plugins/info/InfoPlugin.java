@@ -53,14 +53,9 @@ public class InfoPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "info_icon.png");
 
 		navButton = NavigationButton.builder()
-<<<<<<< HEAD
-			.name("Info")
-			.icon(icon)
-=======
 			.tooltip("Info")
 			.icon(icon)
 			.priority(9)
->>>>>>> upstream/master
 			.panel(panel)
 			.build();
 

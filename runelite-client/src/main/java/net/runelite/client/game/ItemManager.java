@@ -224,15 +224,6 @@ public class ItemManager
 
 	private void loadStats()
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-		itemId = ItemMapping.mapFirst(itemId);
-
->>>>>>> upstream/master
-		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
-		if (itemPrice != null && itemPrice != EMPTY)
-=======
 		try
 		{
 			final Map<Integer, ItemStats> stats = itemClient.getStats();
@@ -244,26 +235,11 @@ public class ItemManager
 			log.debug("Loaded {} stats", itemStats.size());
 		}
 		catch (IOException e)
->>>>>>> upstream/master
 		{
 			log.warn("error loading stats!", e);
 		}
 	}
 
-<<<<<<< HEAD
-	/**
-<<<<<<< HEAD
-=======
-	 * Look up an item's price from the price cache
-	 *
-	 * @param itemId
-	 * @return
-	 */
-	public ItemPrice getCachedItemPrice(int itemId)
-	{
-		itemId = ItemMapping.mapFirst(itemId);
-=======
->>>>>>> upstream/master
 
 	@Subscribe
 	public void onGameStateChanged(final GameStateChanged event)
@@ -281,10 +257,6 @@ public class ItemManager
 	}
 
 	/**
-<<<<<<< HEAD
->>>>>>> upstream/master
-	 * Look up bulk item prices asynchronously
-=======
 	 * Invalidates internal item manager item composition cache (but not client item composition cache)
 	 * @see Client#getItemCompositionCache()
 	 */
@@ -295,7 +267,6 @@ public class ItemManager
 
 	/**
 	 * Look up an item's price
->>>>>>> upstream/master
 	 *
 	 * @param itemID item id
 	 * @return item price
@@ -304,37 +275,11 @@ public class ItemManager
 	{
 		if (itemID == ItemID.COINS_995)
 		{
-<<<<<<< HEAD
-<<<<<<< HEAD
-			ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
-			if (itemPrice != null)
-			{
-				existing.add(itemPrice);
-			}
-			else
-			{
-				lookup.add(itemId);
-=======
-			for (int mappedItemId : ItemMapping.map(itemId))
-			{
-				ItemPrice itemPrice = itemPriceCache.getIfPresent(mappedItemId);
-				if (itemPrice != null)
-				{
-					existing.add(itemPrice);
-				}
-				else
-				{
-					lookup.add(mappedItemId);
-				}
->>>>>>> upstream/master
-			}
-=======
 			return 1;
 		}
 		if (itemID == ItemID.PLATINUM_TOKEN)
 		{
 			return 1000;
->>>>>>> upstream/master
 		}
 
 		UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
@@ -349,35 +294,7 @@ public class ItemManager
 			ItemPrice ip = itemPrices.get(mappedID);
 			if (ip != null)
 			{
-<<<<<<< HEAD
-				// Do a query for the items not in the cache
-				ItemPrice[] itemPrices = itemClient.lookupItemPrice(lookup.toArray(new Integer[lookup.size()]));
-<<<<<<< HEAD
-				if (itemPrices != null)
-				{
-					for (int itemId : lookup)
-					{
-						itemPriceCache.put(itemId, NONE);
-					}
-=======
-				for (int itemId : lookup)
-				{
-					itemPriceCache.put(itemId, NONE);
-				}
-				if (itemPrices != null)
-				{
->>>>>>> upstream/master
-					for (ItemPrice itemPrice : itemPrices)
-					{
-						itemPriceCache.put(itemPrice.getItem().getId(), itemPrice);
-					}
-					// Append these to the already cached items
-					Arrays.stream(itemPrices).forEach(existing::add);
-				}
-				future.complete(existing.toArray(new ItemPrice[existing.size()]));
-=======
 				price += ip.getPrice();
->>>>>>> upstream/master
 			}
 		}
 
@@ -392,19 +309,9 @@ public class ItemManager
 	@Nullable
 	public ItemStats getItemStats(int itemId, boolean allowNote)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-		itemId = ItemMapping.mapFirst(itemId);
-
->>>>>>> upstream/master
-		ItemPrice itemPrice = itemPriceCache.getIfPresent(itemId);
-		if (itemPrice != null && itemPrice != EMPTY)
-=======
 		ItemComposition itemComposition = getItemComposition(itemId);
 
 		if (itemComposition == null || itemComposition.getName() == null || (!allowNote && itemComposition.getNote() != -1))
->>>>>>> upstream/master
 		{
 			return null;
 		}

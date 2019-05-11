@@ -24,12 +24,6 @@
  */
 package net.runelite.api.vars;
 
-<<<<<<< HEAD
-public enum Autoweed
-{
-	UNOWNED,
-	OFF,
-=======
 /**
  * An enumeration of possible autoweed settings.
  */
@@ -46,6 +40,5 @@ public enum Autoweed
 	/**
 	 * Autoweed is enabled.
 	 */
->>>>>>> upstream/master
 	ON
 }

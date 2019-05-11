@@ -24,11 +24,7 @@
  */
 package net.runelite.client.ui;
 
-<<<<<<< HEAD
-import java.awt.image.BufferedImage;
-=======
 import java.awt.Image;
->>>>>>> upstream/master
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -42,24 +38,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DrawManager
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-	private final List<Consumer<BufferedImage>> everyFrame = new CopyOnWriteArrayList<>();
-	private final Queue<Consumer<BufferedImage>> nextFrame = new ConcurrentLinkedQueue<>();
-
-	public void registerEveryFrameListener(Consumer<BufferedImage> everyFrameListener)
-=======
-	private final List<Consumer<Image>> everyFrame = new CopyOnWriteArrayList<>();
-	private final Queue<Consumer<Image>> nextFrame = new ConcurrentLinkedQueue<>();
-
-	public void registerEveryFrameListener(Consumer<Image> everyFrameListener)
->>>>>>> upstream/master
-=======
 	private final List<Runnable> everyFrame = new CopyOnWriteArrayList<>();
 	private final Queue<Consumer<Image>> nextFrame = new ConcurrentLinkedQueue<>();
 
 	public void registerEveryFrameListener(Runnable everyFrameListener)
->>>>>>> upstream/master
 	{
 		if (!everyFrame.contains(everyFrameListener))
 		{
@@ -67,43 +49,19 @@ public class DrawManager
 		}
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public void unregisterEveryFrameListener(Consumer<BufferedImage> everyFrameListener)
-=======
-	public void unregisterEveryFrameListener(Consumer<Image> everyFrameListener)
->>>>>>> upstream/master
-=======
 	public void unregisterEveryFrameListener(Runnable everyFrameListener)
->>>>>>> upstream/master
 	{
 		everyFrame.remove(everyFrameListener);
 	}
 
-<<<<<<< HEAD
-	public void requestNextFrameListener(Consumer<BufferedImage> nextFrameListener)
-=======
 	public void requestNextFrameListener(Consumer<Image> nextFrameListener)
->>>>>>> upstream/master
 	{
 		nextFrame.add(nextFrameListener);
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public void processDrawComplete(BufferedImage image)
-	{
-		for (Consumer<BufferedImage> everyFrameListener : everyFrame)
-=======
-	public void processDrawComplete(Image image)
-	{
-		for (Consumer<Image> everyFrameListener : everyFrame)
->>>>>>> upstream/master
-=======
 	public void processDrawComplete(Supplier<Image> imageSupplier)
 	{
 		for (Runnable everyFrameListener : everyFrame)
->>>>>>> upstream/master
 		{
 			try
 			{
@@ -115,15 +73,8 @@ public class DrawManager
 			}
 		}
 
-<<<<<<< HEAD
-		Consumer<BufferedImage> nextFrameListener = nextFrame.poll();
-=======
 		Consumer<Image> nextFrameListener = nextFrame.poll();
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 		Image image = null;
->>>>>>> upstream/master
 		while (nextFrameListener != null)
 		{
 			if (image == null)

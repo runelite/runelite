@@ -29,66 +29,6 @@ import java.util.Collection;
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.Point;
 
-<<<<<<< HEAD
-public interface Widget
-{
-	int getId();
-
-	int getType();
-
-	void setType(int type);
-
-	int getContentType();
-
-	void setContentType(int contentType);
-
-	int getClickMask();
-
-	void setClickMask(int mask);
-
-	Widget getParent();
-
-	int getParentId();
-
-	Widget getChild(int index);
-
-	Widget[] getChildren();
-
-	Widget[] getDynamicChildren();
-
-	Widget[] getStaticChildren();
-
-	Widget[] getNestedChildren();
-
-	int getRelativeX();
-
-	void setRelativeX(int x);
-
-	int getRelativeY();
-
-	void setRelativeY(int y);
-
-	String getText();
-
-	void setText(String text);
-
-	int getTextColor();
-
-	void setTextColor(int textColor);
-
-	String getName();
-
-	void setName(String name);
-
-	int getModelId();
-
-	int getSpriteId();
-
-	void setSpriteId(int spriteId);
-
-	/**
-	 * @return True if this widget or any of it's parents are hidden
-=======
 /**
  * Represents an on-screen UI element that is drawn on the canvas.
  * <p>
@@ -330,54 +270,19 @@ public interface Widget
 	 * This must be ran on the client thread
 	 *
 	 * @return true if this widget or any parent is hidden, false otherwise
->>>>>>> upstream/master
 	 */
 	boolean isHidden();
 
 	/**
-<<<<<<< HEAD
-	 * @return True if this widget, regardless of it's parent's state
-=======
 	 * Checks whether this widget is hidden, not taking into account
 	 * any parent hidden states.
 	 *
 	 * @return true if this widget is hidden, false otherwise
->>>>>>> upstream/master
 	 */
 	boolean isSelfHidden();
 
 	/**
-<<<<<<< HEAD
-<<<<<<< HEAD
-	 * Sets if this element is hidden as returned by isSelfHidden()
-	 */
-	void setHidden(boolean hidden);
-
-	Point getCanvasLocation();
-
-	int getWidth();
-
-	void setWidth(int width);
-
-	int getHeight();
-
-	void setHeight(int height);
-
-	Rectangle getBounds();
-
-	Collection<WidgetItem> getWidgetItems();
-
-	WidgetItem getWidgetItem(int index);
-
-	int getItemId();
-
-	int getItemQuantity();
-	
-=======
-	 * Sets the hidden state of this widget.
-=======
 	 * Sets the self-hidden state of this widget.
->>>>>>> upstream/master
 	 *
 	 * @param hidden new hidden state
 	 */
@@ -494,7 +399,6 @@ public interface Widget
 	 * @param point the canvas point
 	 * @return true if this widget contains the point, false otherwise
 	 */
->>>>>>> upstream/master
 	boolean contains(Point point);
 
 	/**
@@ -517,24 +421,6 @@ public interface Widget
 	 */
 	void setScrollY(int scrollY);
 
-<<<<<<< HEAD
-	int getOriginalX();
-
-	void setOriginalX(int originalX);
-
-	int getOriginalY();
-
-	void setOriginalY(int originalY);
-
-	int getPaddingX();
-
-	void setPaddingX(int paddingX);
-
-	int getPaddingY();
-
-	void setPaddingY(int paddingY);
-
-=======
 	/**
 	 * Gets the size of the widget's viewport in the X axis
 	 */
@@ -657,10 +543,6 @@ public interface Widget
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
-<<<<<<< HEAD
->>>>>>> upstream/master
-	String[] getActions();
-=======
 	void setOnKeyListener(Object... args);
 
 	/**
@@ -939,5 +821,4 @@ public interface Widget
 	 * Can widgets under this widgets be scrolled in this widgets bounding box
 	 */
 	void setNoScrollThrough(boolean noScrollThrough);
->>>>>>> upstream/master
 }

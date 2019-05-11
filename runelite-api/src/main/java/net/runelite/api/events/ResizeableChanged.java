@@ -28,11 +28,6 @@ package net.runelite.api.events;
 
 import lombok.Data;
 
-<<<<<<< HEAD
-@Data
-public class ResizeableChanged
-{
-=======
 /**
  * An event where the game has changed from fixed to resizable mode or vice versa.
  */
@@ -42,6 +37,5 @@ public class ResizeableChanged
 	/**
 	 * Whether the game is in resizable mode.
 	 */
->>>>>>> upstream/master
 	private boolean isResized;
 }

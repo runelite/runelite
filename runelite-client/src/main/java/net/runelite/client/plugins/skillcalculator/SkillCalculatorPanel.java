@@ -1,9 +1,6 @@
 /*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
-<<<<<<< HEAD
-=======
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
->>>>>>> upstream/master
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,36 +26,6 @@
 
 package net.runelite.client.plugins.skillcalculator;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.image.BufferedImage;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import net.runelite.api.Client;
-import net.runelite.client.game.SkillIconManager;
-import net.runelite.client.ui.PluginPanel;
-
-class SkillCalculatorPanel extends PluginPanel
-{
-	private JButton activeButton;
-	private int uiButtonIndex = 0;
-	private final SkillCalculator uiCalculator;
-	private final SkillIconManager iconManager;
-	private final JPanel uiButtonGrid = new JPanel();
-	private final GridBagLayout uiButtonGridLayout = new GridBagLayout();
-	private final GridBagConstraints uiButtonGridConstraints = new GridBagConstraints();
-=======
-import java.awt.Color;
-=======
->>>>>>> upstream/master
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -79,35 +46,10 @@ class SkillCalculatorPanel extends PluginPanel
 	private final SkillCalculator uiCalculator;
 	private final SkillIconManager iconManager;
 	private final MaterialTabGroup tabGroup;
->>>>>>> upstream/master
 
 	SkillCalculatorPanel(SkillIconManager iconManager, Client client, SpriteManager spriteManager, ItemManager itemManager)
 	{
 		super();
-<<<<<<< HEAD
-		this.iconManager = iconManager;
-
-		BoxLayout layout = new BoxLayout(this, BoxLayout.Y_AXIS);
-		setLayout(layout);
-
-		uiButtonGridConstraints.fill = GridBagConstraints.BOTH;
-		uiButtonGridConstraints.weightx = 1;
-		uiButtonGridConstraints.ipady = 12;
-		uiButtonGridConstraints.insets = new Insets(2, 2, 2, 2);
-
-		uiButtonGrid.setLayout(uiButtonGridLayout);
-		uiButtonGrid.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-		addCalculatorButtons();
-
-		final UICalculatorInputArea uiInput = new UICalculatorInputArea();
-		uiCalculator = new SkillCalculator(client, uiInput);
-
-		add(uiButtonGrid);
-		add(Box.createRigidArea(new Dimension(0, 8)));
-		add(uiInput);
-		add(Box.createRigidArea(new Dimension(0, 14)));
-		add(uiCalculator);
-=======
 		getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		this.iconManager = iconManager;
@@ -139,47 +81,12 @@ class SkillCalculatorPanel extends PluginPanel
 
 		add(uiCalculator, c);
 		c.gridy++;
->>>>>>> upstream/master
 	}
 
 	private void addCalculatorButtons()
 	{
 		for (CalculatorType calculatorType : CalculatorType.values())
 		{
-<<<<<<< HEAD
-			final JButton uiButton = new JButton();
-			final BufferedImage icon = iconManager.getSkillImage(calculatorType.getSkill());
-			uiButton.addActionListener(e -> openCalculator(calculatorType, uiButton));
-
-			uiButton.setIcon(new ImageIcon(icon));
-			uiButton.setToolTipText(calculatorType.getSkill().getName());
-			uiButton.setFocusPainted(false);
-
-			uiButtonGridConstraints.gridx = uiButtonIndex % 4;
-			uiButtonGridLayout.setConstraints(uiButton, uiButtonGridConstraints);
-			uiButtonGrid.add(uiButton);
-			uiButtonIndex++;
-		}
-	}
-
-	private void openCalculator(CalculatorType calculatorType, JButton button)
-	{
-		// Remove highlight from existing button..
-		if (activeButton != null)
-			activeButton.setSelected(false);
-
-		// Set the new button as selected..
-		button.setSelected(true);
-		activeButton = button;
-
-		// Invoke the calculator component..
-		uiCalculator.openCalculator(calculatorType);
-
-		// Refresh rendering..
-		revalidate();
-		repaint();
-	}
-=======
 			ImageIcon icon = new ImageIcon(iconManager.getSkillImage(calculatorType.getSkill(), true));
 			MaterialTab tab = new MaterialTab(icon, tabGroup, null);
 			tab.setOnSelectEvent(() ->
@@ -191,5 +98,4 @@ class SkillCalculatorPanel extends PluginPanel
 			tabGroup.addTab(tab);
 		}
 	}
->>>>>>> upstream/master
 }

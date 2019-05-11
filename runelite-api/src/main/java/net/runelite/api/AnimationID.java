@@ -24,17 +24,12 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-// Note: This class is not complete: these animations were manually gathered
-// through getAnimation(). Please add animations as you happen to use them.
-=======
 /**
  * Utility class used for mapping animation IDs.
  * <p>
  * Note: This class is not complete and may not contain a specific animation
  * required.
  */
->>>>>>> upstream/master
 public final class AnimationID
 {
 	public static final int IDLE = -1;
@@ -51,15 +46,10 @@ public final class AnimationID
 	public static final int WOODCUTTING_3A_AXE = 7264;
 	public static final int CONSUMING = 829; // consuming consumables
 	public static final int FIREMAKING = 733;
-<<<<<<< HEAD
-	public static final int COOKING_FIRE = 897;
-	public static final int COOKING_RANGE = 896;
-=======
 	public static final int DEATH = 836;
 	public static final int COOKING_FIRE = 897;
 	public static final int COOKING_RANGE = 896;
 	public static final int COOKING_WINE = 7529;
->>>>>>> upstream/master
 	public static final int FLETCHING_BOW_CUTTING = 1248;
 	public static final int HUNTER_LAY_BOXTRAP_BIRDSNARE = 5208; //same for laying bird snares and box traps
 	public static final int HUNTER_LAY_DEADFALLTRAP = 5212; //setting up deadfall trap
@@ -141,10 +131,7 @@ public final class AnimationID
 	public static final int MAGIC_ENCHANTING_AMULET_2 = 720; // emerald, jade, dragonstone
 	public static final int MAGIC_ENCHANTING_AMULET_3 = 721; // ruby, topaz, onyx, zenyte
 	public static final int BURYING_BONES = 827;
-<<<<<<< HEAD
-=======
 	public static final int USING_GILDED_ALTAR = 3705;
->>>>>>> upstream/master
 	public static final int LOOKING_INTO = 832;
 	public static final int DIG = 830;
 	public static final int DEMONIC_GORILLA_MAGIC_ATTACK = 7225;

@@ -31,17 +31,10 @@ public interface RSNodeCache extends NodeCache
 {
 	@Import("get")
 	RSCacheableNode get(long id);
-<<<<<<< HEAD
-}
-=======
 
 	@Import("reset")
 	@Override
 	void reset();
-<<<<<<< HEAD
-}
->>>>>>> upstream/master
-=======
 
 	@Import("capacity")
 	@Override
@@ -51,4 +44,3 @@ public interface RSNodeCache extends NodeCache
 	@Override
 	void setRemainingCapacity(int remainingCapacity);
 }
->>>>>>> upstream/master

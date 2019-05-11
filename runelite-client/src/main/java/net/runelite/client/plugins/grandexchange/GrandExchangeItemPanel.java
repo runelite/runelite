@@ -1,9 +1,6 @@
 /*
  * Copyright (c) 2018, Seth <https://github.com/sethtroll>
-<<<<<<< HEAD
-=======
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
->>>>>>> upstream/master
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,11 +27,8 @@ package net.runelite.client.plugins.grandexchange;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-<<<<<<< HEAD
-=======
 import java.awt.Component;
 import java.awt.Cursor;
->>>>>>> upstream/master
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -43,37 +37,17 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-<<<<<<< HEAD
-<<<<<<< HEAD
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import lombok.extern.slf4j.Slf4j;
-=======
-import javax.swing.border.EmptyBorder;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.ui.ColorScheme;
->>>>>>> upstream/master
-=======
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
->>>>>>> upstream/master
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.StackFormatter;
 
-<<<<<<< HEAD
-=======
 /**
  * This panel displays an individual item result in the
  * Grand Exchange search plugin.
  */
-<<<<<<< HEAD
->>>>>>> upstream/master
-@Slf4j
-=======
->>>>>>> upstream/master
 class GrandExchangeItemPanel extends JPanel
 {
 	private static final Dimension ICON_SIZE = new Dimension(32, 32);
@@ -85,17 +59,8 @@ class GrandExchangeItemPanel extends JPanel
 		layout.setHgap(5);
 		setLayout(layout);
 		setToolTipText(name);
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-		setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
-		
->>>>>>> upstream/master
-=======
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
->>>>>>> upstream/master
 		Color background = getBackground();
 		List<JPanel> panels = new ArrayList<>();
 		panels.add(this);
@@ -105,38 +70,21 @@ class GrandExchangeItemPanel extends JPanel
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
-<<<<<<< HEAD
-<<<<<<< HEAD
-				setBackground(getBackground().darker().darker());
-=======
-				setBackground(background.brighter());
-				for (Component component : getComponents())
-=======
 				for (JPanel panel : panels)
->>>>>>> upstream/master
 				{
 					matchComponentBackground(panel, ColorScheme.DARK_GRAY_HOVER_COLOR);
 				}
 				setCursor(new Cursor(Cursor.HAND_CURSOR));
->>>>>>> upstream/master
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
-<<<<<<< HEAD
-				setBackground(background);
-<<<<<<< HEAD
-=======
-				for (Component component : getComponents())
-=======
 				for (JPanel panel : panels)
->>>>>>> upstream/master
 				{
 					matchComponentBackground(panel, background);
 				}
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
->>>>>>> upstream/master
 			}
 
 			@Override
@@ -148,15 +96,7 @@ class GrandExchangeItemPanel extends JPanel
 
 		addMouseListener(itemPanelMouseListener);
 
-<<<<<<< HEAD
-		setBorder(new CompoundBorder
-		(
-			new LineBorder(getBackground().brighter(), 1),
-			new EmptyBorder(5, 5, 5, 5)
-		));
-=======
 		setBorder(new EmptyBorder(5, 5, 5, 0));
->>>>>>> upstream/master
 
 		// Icon
 		JLabel itemIcon = new JLabel();
@@ -169,25 +109,14 @@ class GrandExchangeItemPanel extends JPanel
 
 		// Item details panel
 		JPanel rightPanel = new JPanel(new GridLayout(3, 1));
-<<<<<<< HEAD
-<<<<<<< HEAD
-		rightPanel.setOpaque(false);
-
-		// Item name
-		JLabel itemName = new JLabel();
-=======
-		rightPanel.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
-=======
 		panels.add(rightPanel);
 		rightPanel.setBackground(background);
->>>>>>> upstream/master
 
 		// Item name
 		JLabel itemName = new JLabel();
 		itemName.setForeground(Color.WHITE);
 		itemName.setMaximumSize(new Dimension(0, 0));        // to limit the label's size for
 		itemName.setPreferredSize(new Dimension(0, 0));    // items with longer names
->>>>>>> upstream/master
 		itemName.setText(name);
 		rightPanel.add(itemName);
 
@@ -201,11 +130,7 @@ class GrandExchangeItemPanel extends JPanel
 		{
 			gePriceLabel.setText("N/A");
 		}
-<<<<<<< HEAD
-		gePriceLabel.setForeground(Color.GREEN);
-=======
 		gePriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_PRICE);
->>>>>>> upstream/master
 		rightPanel.add(gePriceLabel);
 
 		JPanel alchAndLimitPanel = new JPanel(new BorderLayout());
@@ -215,14 +140,7 @@ class GrandExchangeItemPanel extends JPanel
 		// Alch price
 		JLabel haPriceLabel = new JLabel();
 		haPriceLabel.setText(StackFormatter.formatNumber(haPrice.intValue()) + " alch");
-<<<<<<< HEAD
-		haPriceLabel.setForeground(Color.orange);
-=======
 		haPriceLabel.setForeground(ColorScheme.GRAND_EXCHANGE_ALCH);
-<<<<<<< HEAD
->>>>>>> upstream/master
-		rightPanel.add(haPriceLabel);
-=======
 		alchAndLimitPanel.add(haPriceLabel, BorderLayout.WEST);
 
 		// GE Limit
@@ -234,7 +152,6 @@ class GrandExchangeItemPanel extends JPanel
 		alchAndLimitPanel.add(geLimitLabel, BorderLayout.EAST);
 
 		rightPanel.add(alchAndLimitPanel);
->>>>>>> upstream/master
 
 		add(rightPanel, BorderLayout.CENTER);
 	}
@@ -257,8 +174,4 @@ class GrandExchangeItemPanel extends JPanel
 
 		LinkBrowser.browse(url);
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> upstream/master

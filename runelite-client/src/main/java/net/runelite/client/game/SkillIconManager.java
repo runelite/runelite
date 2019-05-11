@@ -34,20 +34,12 @@ import net.runelite.client.util.ImageUtil;
 @Slf4j
 public class SkillIconManager
 {
-<<<<<<< HEAD
-	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length];
-
-	public BufferedImage getSkillImage(Skill skill)
-	{
-		int skillIdx = skill.ordinal();
-=======
 	// * 2 to account for the small version of each icon
 	private final BufferedImage[] imgCache = new BufferedImage[Skill.values().length * 2];
 
 	public BufferedImage getSkillImage(Skill skill, boolean small)
 	{
 		int skillIdx = skill.ordinal() + (small ? Skill.values().length : 0);
->>>>>>> upstream/master
 		BufferedImage skillImage = null;
 
 		if (imgCache[skillIdx] != null)
@@ -55,43 +47,18 @@ public class SkillIconManager
 			return imgCache[skillIdx];
 		}
 
-<<<<<<< HEAD
-		try
-		{
-<<<<<<< HEAD
-			String skillIconPath = "/skill_icons/" + skill.getName().toLowerCase() + ".png";
-=======
-			String skillIconPath = (small ? "/skill_icons_small/" : "/skill_icons/")
-				+ skill.getName().toLowerCase() + ".png";
->>>>>>> upstream/master
-			log.debug("Loading skill icon from {}", skillIconPath);
-			synchronized (ImageIO.class)
-			{
-				skillImage = ImageIO.read(SkillIconManager.class.getResourceAsStream(skillIconPath));
-			}
-			imgCache[skillIdx] = skillImage;
-		}
-		catch (IOException e)
-		{
-			log.debug("Error Loading skill icons {}", e);
-		}
-=======
 		String skillIconPath = (small ? "/skill_icons_small/" : "/skill_icons/")
 			+ skill.getName().toLowerCase() + ".png";
 		log.debug("Loading skill icon from {}", skillIconPath);
 		skillImage = ImageUtil.getResourceStreamFromClass(getClass(), skillIconPath);
 		imgCache[skillIdx] = skillImage;
->>>>>>> upstream/master
 
 		return skillImage;
 	}
-<<<<<<< HEAD
-=======
 
 	public BufferedImage getSkillImage(Skill skill)
 	{
 		return getSkillImage(skill, false);
 	}
 
->>>>>>> upstream/master
 }

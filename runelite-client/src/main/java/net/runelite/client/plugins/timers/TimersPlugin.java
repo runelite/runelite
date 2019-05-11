@@ -68,48 +68,8 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-<<<<<<< HEAD
-import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUS;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIDOTEPLUSPLUS;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIPOISON;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOM;
-import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOMPLUS;
-import static net.runelite.client.plugins.timers.GameTimer.BIND;
-import static net.runelite.client.plugins.timers.GameTimer.CANNON;
-<<<<<<< HEAD
-=======
-import static net.runelite.client.plugins.timers.GameTimer.CHARGE;
->>>>>>> upstream/master
-import static net.runelite.client.plugins.timers.GameTimer.ENTANGLE;
-import static net.runelite.client.plugins.timers.GameTimer.EXANTIFIRE;
-import static net.runelite.client.plugins.timers.GameTimer.EXSUPERANTIFIRE;
-import static net.runelite.client.plugins.timers.GameTimer.FULLTB;
-import static net.runelite.client.plugins.timers.GameTimer.GOD_WARS_ALTAR;
-import static net.runelite.client.plugins.timers.GameTimer.HALFBIND;
-import static net.runelite.client.plugins.timers.GameTimer.HALFENTANGLE;
-import static net.runelite.client.plugins.timers.GameTimer.HALFSNARE;
-import static net.runelite.client.plugins.timers.GameTimer.HALFTB;
-import static net.runelite.client.plugins.timers.GameTimer.ICEBARRAGE;
-import static net.runelite.client.plugins.timers.GameTimer.ICEBLITZ;
-import static net.runelite.client.plugins.timers.GameTimer.ICEBURST;
-import static net.runelite.client.plugins.timers.GameTimer.ICERUSH;
-import static net.runelite.client.plugins.timers.GameTimer.IMBUEDHEART;
-import static net.runelite.client.plugins.timers.GameTimer.MAGICIMBUE;
-import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
-import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD_RAID;
-import static net.runelite.client.plugins.timers.GameTimer.PRAYER_ENHANCE;
-import static net.runelite.client.plugins.timers.GameTimer.SANFEW;
-import static net.runelite.client.plugins.timers.GameTimer.SNARE;
-import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
-import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
-import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIPOISON;
-import static net.runelite.client.plugins.timers.GameTimer.VENGEANCE;
-import static net.runelite.client.plugins.timers.GameTimer.VENGEANCEOTHER;
-=======
 import static net.runelite.client.plugins.timers.GameIndicator.VENGEANCE_ACTIVE;
 import static net.runelite.client.plugins.timers.GameTimer.*;
->>>>>>> upstream/master
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -208,51 +168,7 @@ public class TimersPlugin extends Plugin
 			lastRaidVarb = raidVarb;
 		}
 
-<<<<<<< HEAD
-	@Subscribe
-	public void updateConfig(ConfigChanged event)
-	{
-<<<<<<< HEAD
-		if (!config.showStamina())
-		{
-			removeGameTimer(STAMINA);
-		}
-
-		if (!config.showAntiFire())
-		{
-			removeGameTimer(ANTIFIRE);
-		}
-
-		if (!config.showExAntiFire())
-		{
-			removeGameTimer(EXANTIFIRE);
-		}
-
-		if (!config.showOverload())
-		{
-			removeGameTimer(OVERLOAD);
-			removeGameTimer(OVERLOAD_RAID);
-		}
-
-		if (!config.showCannon())
-		{
-			removeGameTimer(CANNON);
-		}
-
-		if (!config.showMagicImbue())
-		{
-			removeGameTimer(MAGICIMBUE);
-		}
-
-		if (!config.showTeleblock())
-		{
-			removeGameTimer(FULLTB);
-			removeGameTimer(HALFTB);
-=======
-		if (!config.showAntidotePlus())
-=======
 		if (lastVengCooldownVarb != vengCooldownVarb && config.showVengeance())
->>>>>>> upstream/master
 		{
 			if (vengCooldownVarb == 1)
 			{
@@ -319,10 +235,6 @@ public class TimersPlugin extends Plugin
 
 		if (!config.showAntiPoison())
 		{
-<<<<<<< HEAD
-			removeGameTimer(EXANTIFIRE);
->>>>>>> upstream/master
-=======
 			removeGameTimer(ANTIDOTEPLUS);
 			removeGameTimer(ANTIDOTEPLUSPLUS);
 			removeGameTimer(SANFEW);
@@ -330,7 +242,6 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ANTIVENOMPLUS);
 			removeGameTimer(ANTIVENOM_ANTIPOISON);
 			removeGameTimer(ANTIVENOMPLUS_ANTIPOSION);
->>>>>>> upstream/master
 		}
 
 		if (!config.showAntiFire())
@@ -340,31 +251,6 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(SUPERANTIFIRE);
 		}
 
-<<<<<<< HEAD
-		if (!config.showAntidotePlusPlus())
-		{
-			removeGameTimer(ANTIDOTEPLUSPLUS);
-		}
-
-		if (!config.showAntidotePlus())
-		{
-			removeGameTimer(ANTIDOTEPLUS);
-		}
-
-		if (!config.showAntiVenom())
-		{
-			removeGameTimer(ANTIVENOM);
-		}
-
-		if (!config.showAntiVenomPlus())
-		{
-			removeGameTimer(ANTIVENOMPLUS);
-		}
-
-		if (!config.showSanfew())
-		{
-			removeGameTimer(SANFEW);
-=======
 		if (!config.showStamina())
 		{
 			removeGameTimer(STAMINA);
@@ -399,7 +285,6 @@ public class TimersPlugin extends Plugin
 		if (!config.showImbuedHeart())
 		{
 			removeGameTimer(IMBUEDHEART);
->>>>>>> upstream/master
 		}
 
 		if (!config.showStaffOfTheDead())
@@ -417,20 +302,9 @@ public class TimersPlugin extends Plugin
 			removeGameIndicator(VENGEANCE_ACTIVE);
 		}
 
-<<<<<<< HEAD
-		if (!config.showImbuedHeart())
-		{
-			removeGameTimer(IMBUEDHEART);
-=======
 		if (!config.showTeleblock())
 		{
-<<<<<<< HEAD
-			removeGameTimer(FULLTB);
-			removeGameTimer(HALFTB);
->>>>>>> upstream/master
-=======
 			removeTbTimers();
->>>>>>> upstream/master
 		}
 
 		if (!config.showFreezes())
@@ -446,14 +320,6 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ICEBLITZ);
 			removeGameTimer(ICEBARRAGE);
 		}
-<<<<<<< HEAD
-
-		if (!config.showPrayerEnhance())
-		{
-			removeGameTimer(PRAYER_ENHANCE);
-		}
-=======
->>>>>>> upstream/master
 	}
 
 	@Subscribe
@@ -706,8 +572,6 @@ public class TimersPlugin extends Plugin
 		{
 			createGameTimer(PRAYER_ENHANCE);
 		}
-<<<<<<< HEAD
-=======
 
 		if (config.showCharge() && event.getMessage().equals(CHARGE_MESSAGE))
 		{
@@ -718,9 +582,6 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(CHARGE);
 		}
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 
 		if (config.showStaffOfTheDead() && event.getMessage().contains(STAFF_OF_THE_DEAD_SPEC_MESSAGE))
 		{
@@ -789,7 +650,6 @@ public class TimersPlugin extends Plugin
 				loggedInRace = true;
 				break;
 		}
->>>>>>> upstream/master
 	}
 
 	@Subscribe

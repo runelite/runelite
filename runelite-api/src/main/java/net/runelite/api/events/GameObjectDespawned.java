@@ -28,12 +28,6 @@ import lombok.Data;
 import net.runelite.api.GameObject;
 import net.runelite.api.Tile;
 
-<<<<<<< HEAD
-@Data
-public class GameObjectDespawned
-{
-	private Tile tile;
-=======
 /**
  * An event where a {@link GameObject} on a {@link Tile} is removed.
  */
@@ -47,6 +41,5 @@ public class GameObjectDespawned
 	/**
 	 * The removed game object.
 	 */
->>>>>>> upstream/master
 	private GameObject gameObject;
 }

@@ -23,19 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-<<<<<<< HEAD:runelite-api/src/main/java/net/runelite/api/events/MapRegionChanged.java
-import lombok.Data;
-<<<<<<< HEAD
-
-@Data
-public class MapRegionChanged
-{
-	/** index into the region map that is changing
-=======
-import net.runelite.api.Client;
-=======
 package net.runelite.api;
->>>>>>> upstream/master:runelite-api/src/main/java/net/runelite/api/SkullIcon.java
 
 /**
  * An enumeration of PK skulls.
@@ -43,12 +31,7 @@ package net.runelite.api;
 public enum SkullIcon
 {
 	/**
-<<<<<<< HEAD:runelite-api/src/main/java/net/runelite/api/events/MapRegionChanged.java
-	 * The map region index.
->>>>>>> upstream/master
-=======
 	 * White skull from PVP world or wilderness
->>>>>>> upstream/master:runelite-api/src/main/java/net/runelite/api/SkullIcon.java
 	 */
 	SKULL,
 	/**

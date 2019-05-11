@@ -24,41 +24,6 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
-
-public interface Tile
-{
-	/**
-	 * Get the decorative object for this tile.
-	 *
-	 * @return
-	 */
-	DecorativeObject getDecorativeObject();
-
-	GameObject[] getGameObjects();
-
-	ItemLayer getItemLayer();
-
-	GroundObject getGroundObject();
-
-	WallObject getWallObject();
-
-	SceneTilePaint getSceneTilePaint();
-
-	SceneTileModel getSceneTileModel();
-
-	WorldPoint getWorldLocation();
-
-	Point getRegionLocation();
-
-	LocalPoint getLocalLocation();
-
-	int getPlane();
-
-	boolean hasLineOfSightTo(Tile other);
-=======
 import java.util.List;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -166,9 +131,6 @@ public interface Tile
 	 * @return the ground items
 	 */
 	List<Item> getGroundItems();
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 
 	/**
 	 * Return the tile under this one, if this tile is a bridge
@@ -176,5 +138,4 @@ public interface Tile
 	 * @return
 	 */
 	Tile getBridge();
->>>>>>> upstream/master
 }

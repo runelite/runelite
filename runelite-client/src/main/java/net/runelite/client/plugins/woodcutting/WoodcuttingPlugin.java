@@ -25,11 +25,6 @@
 package net.runelite.client.plugins.woodcutting;
 
 import com.google.inject.Provides;
-<<<<<<< HEAD
-import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.events.ChatMessage;
-=======
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
@@ -48,7 +43,6 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
->>>>>>> upstream/master
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -70,14 +64,6 @@ public class WoodcuttingPlugin extends Plugin
 	private Notifier notifier;
 
 	@Inject
-<<<<<<< HEAD
-	private WoodcuttingOverlay overlay;
-
-	@Inject
-	private WoodcuttingConfig config;
-
-	private final WoodcuttingSession session = new WoodcuttingSession();
-=======
 	private Client client;
 
 	@Inject
@@ -100,7 +86,6 @@ public class WoodcuttingPlugin extends Plugin
 
 	@Getter
 	private final Set<GameObject> treeObjects = new HashSet<>();
->>>>>>> upstream/master
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -109,21 +94,7 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Override
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
-
-	public WoodcuttingSession getSession()
-	{
-		return session;
-=======
-	public Collection<Overlay> getOverlays()
-=======
 	protected void startUp() throws Exception
->>>>>>> upstream/master
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(treesOverlay);
@@ -155,7 +126,6 @@ public class WoodcuttingPlugin extends Plugin
 			session = null;
 			axe = null;
 		}
->>>>>>> upstream/master
 	}
 
 	@Subscribe
@@ -165,14 +135,11 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			if (event.getMessage().startsWith("You get some") && (event.getMessage().endsWith("logs.") || event.getMessage().endsWith("mushrooms.")))
 			{
-<<<<<<< HEAD
-=======
 				if (session == null)
 				{
 					session = new WoodcuttingSession();
 				}
 
->>>>>>> upstream/master
 				session.setLastLogCut();
 			}
 
@@ -182,9 +149,6 @@ public class WoodcuttingPlugin extends Plugin
 			}
 		}
 	}
-<<<<<<< HEAD
-}
-=======
 
 	@Subscribe
 	public void onGameObjectSpawned(final GameObjectSpawned event)
@@ -237,4 +201,3 @@ public class WoodcuttingPlugin extends Plugin
 		}
 	}
 }
->>>>>>> upstream/master

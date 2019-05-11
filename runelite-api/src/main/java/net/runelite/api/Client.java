@@ -40,122 +40,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import org.slf4j.Logger;
 
-<<<<<<< HEAD
-public interface Client extends GameEngine
-{
-	List<Player> getPlayers();
-
-	List<NPC> getNpcs();
-
-	NPC[] getCachedNPCs();
-
-	Player[] getCachedPlayers();
-
-	int getBoostedSkillLevel(Skill skill);
-
-	int getRealSkillLevel(Skill skill);
-
-	void addChatMessage(ChatMessageType type, String name, String message, String sender);
-
-	GameState getGameState();
-
-	String getUsername();
-
-	void setUsername(String name);
-
-	/**
-	 * Gets the account type for the logged in player.
-	 */
-	AccountType getAccountType();
-
-	Canvas getCanvas();
-
-	int getFPS();
-
-	int getCameraX();
-
-	int getCameraY();
-
-	int getCameraZ();
-
-	/**
-	 * This returns the actual pitch of the camera in JAUs
-	 */
-	int getCameraPitch();
-
-	int getCameraYaw();
-
-	int getWorld();
-
-	int getViewportHeight();
-
-	int getViewportWidth();
-
-	int getViewportXOffset();
-
-	int getViewportYOffset();
-
-	int getScale();
-
-	Point getMouseCanvasPosition();
-
-	int[][][] getTileHeights();
-
-	byte[][][] getTileSettings();
-
-	int getPlane();
-
-	Region getRegion();
-
-	Player getLocalPlayer();
-
-	ItemComposition getItemDefinition(int id);
-
-	SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale);
-
-	SpritePixels getSprite(IndexDataBase source, int archiveId, int fileId);
-
-	IndexDataBase getIndexSprites();
-
-	int getBaseX();
-
-	int getBaseY();
-
-	int getMouseCurrentButton();
-
-	Tile getSelectedRegionTile();
-
-	boolean isDraggingWidget();
-
-	Widget getDraggedWidget();
-
-	Widget getDraggedOnWidget();
-
-	void setDraggedOnWidget(Widget widget);
-
-	Widget[] getWidgetRoots();
-
-	Widget getWidget(WidgetInfo widget);
-
-	Widget[] getGroup(int groupId);
-
-	Widget getWidget(int groupId, int childId);
-
-	int[] getWidgetPositionsX();
-
-	int[] getWidgetPositionsY();
-
-	int getEnergy();
-
-	String[] getPlayerOptions();
-
-	boolean[] getPlayerOptionsPriorities();
-
-	int[] getPlayerMenuTypes();
-
-	/**
-	 * Get list of all RuneScape worlds
-=======
 /**
  * Represents the RuneScape client.
  */
@@ -648,97 +532,10 @@ public interface Client extends GameEngine
 	/**
 	 * Gets a list of all RuneScape worlds.
 	 *
->>>>>>> upstream/master
 	 * @return world list
 	 */
 	World[] getWorldList();
 
-<<<<<<< HEAD
-	MenuEntry[] getMenuEntries();
-
-	void setMenuEntries(MenuEntry[] entries);
-
-	boolean isMenuOpen();
-
-	int getMapAngle();
-
-	boolean isResized();
-
-	int getRevision();
-
-	int[] getMapRegions();
-
-	int[][][] getInstanceTemplateChunks();
-
-	int[][] getXteaKeys();
-
-	int[] getVarps();
-
-	int getVar(VarPlayer varPlayer);
-
-	int getVar(Varbits varbit);
-
-	int getVar(VarClientInt varClientInt);
-
-	String getVar(VarClientStr varClientStr);
-
-	@VisibleForDevtools
-	void setSetting(Varbits varbit, int value);
-
-	@VisibleForDevtools
-	int getVarbitValue(int varbit);
-
-	@VisibleForDevtools
-	void setVarbitValue(int varbit, int value);
-
-	HashTable getWidgetFlags();
-
-	HashTable getComponentTable();
-
-	GrandExchangeOffer[] getGrandExchangeOffers();
-
-	boolean isPrayerActive(Prayer prayer);
-
-	int getSkillExperience(Skill skill);
-
-	int getGameDrawingMode();
-
-	void setGameDrawingMode(int gameDrawingMode);
-
-	void refreshChat();
-
-	Map<Integer, ChatLineBuffer> getChatLineMap();
-
-	Widget getViewportWidget();
-
-	ObjectComposition getObjectDefinition(int objectId);
-
-	NPCComposition getNpcDefinition(int npcId);
-
-	Area[] getMapAreas();
-
-	IndexedSprite[] getMapScene();
-	
-	SpritePixels[] getMapDots();
-
-	int getGameCycle();
-
-	SpritePixels[] getMapIcons();
-
-	IndexedSprite[] getModIcons();
-
-	void setModIcons(IndexedSprite[] modIcons);
-
-	IndexedSprite createIndexedSprite();
-
-	SpritePixels createSpritePixels(int[] pixels, int width, int height);
-
-	@Nullable
-	LocalPoint getLocalDestinationLocation();
-
-	List<Projectile> getProjectiles();
-
-=======
 	/**
 	 * Gets an array of currently open right-click menu entries that can be
 	 * clicked and activated.
@@ -1132,17 +929,12 @@ public interface Client extends GameEngine
 	 *
 	 * @return all graphics objects
 	 */
->>>>>>> upstream/master
 	List<GraphicsObject> getGraphicsObjects();
 
 	/**
 	 * Play a sound effect at the player's current location. This is how UI,
 	 * and player-generated (e.g. mining, woodcutting) sound effects are
-<<<<<<< HEAD
-	 * normally played
-=======
 	 * normally played.
->>>>>>> upstream/master
 	 *
 	 * @param id the ID of the sound to play. Any int is allowed, but see
 	 * {@link SoundEffectID} for some common ones
@@ -1161,12 +953,6 @@ public interface Client extends GameEngine
 	 */
 	void playSoundEffect(int id, int x, int y, int range);
 
-<<<<<<< HEAD
-	BufferProvider getBufferProvider();
-
-	int getMouseIdleTicks();
-
-=======
 	/**
 	 * Gets the clients graphic buffer provider.
 	 *
@@ -1194,7 +980,6 @@ public interface Client extends GameEngine
 	 * @return amount of idle keyboard ticks
 	 * @see Constants#CLIENT_TICK_LENGTH
 	 */
->>>>>>> upstream/master
 	int getKeyboardIdleTicks();
 
 	/**
@@ -1206,68 +991,14 @@ public interface Client extends GameEngine
 	void changeMemoryMode(boolean lowMemory);
 
 	/**
-<<<<<<< HEAD
-	 * Get the item container for an inventory
-	 *
-	 * @param inventory
-	 * @return
-=======
 	 * Get the item container for an inventory.
 	 *
 	 * @param inventory the inventory type
 	 * @return the item container
->>>>>>> upstream/master
 	 */
 	@Nullable
 	ItemContainer getItemContainer(InventoryID inventory);
 
-<<<<<<< HEAD
-	int getIntStackSize();
-
-	void setIntStackSize(int stackSize);
-
-	int[] getIntStack();
-
-	int getStringStackSize();
-
-	void setStringStackSize(int stackSize);
-
-	String[] getStringStack();
-
-	boolean isFriended(String name, boolean mustBeLoggedIn);
-
-	int getClanChatCount();
-
-	ClanMember[] getClanMembers();
-
-	Friend[] getFriends();
-
-	boolean isClanMember(String name);
-
-	Preferences getPreferences();
-
-	void setCameraPitchRelaxerEnabled(boolean enabled);
-
-	RenderOverview getRenderOverview();
-
-	boolean isStretchedEnabled();
-
-	void setStretchedEnabled(boolean state);
-
-	boolean isStretchedFast();
-
-	void setStretchedFast(boolean state);
-
-	void setStretchedKeepAspectRatio(boolean state);
-
-	Dimension getStretchedDimensions();
-
-	Dimension getRealDimensions();
-
-	/**
-	 * Changes world. Works only on login screen
-	 * @param world world
-=======
 	/**
 	 * Gets the length of the cs2 vm's int stack
 	 */
@@ -1476,68 +1207,10 @@ public interface Client extends GameEngine
 	 * is {@link GameState#LOGIN_SCREEN}.
 	 *
 	 * @param world the world to switch to
->>>>>>> upstream/master
 	 */
 	void changeWorld(World world);
 
 	/**
-<<<<<<< HEAD
-	 * Creates instance of new world
-	 * @return world
-	 */
-	World createWorld();
-
-	SpritePixels drawInstanceMap(int z);
-
-	void runScript(int id, Object... args);
-
-	boolean hasHintArrow();
-
-	void clearHintArrow();
-
-	void setHintArrow(WorldPoint point);
-
-	void setHintArrow(Player player);
-
-	void setHintArrow(NPC npc);
-
-	boolean isInterpolatePlayerAnimations();
-
-	void setInterpolatePlayerAnimations(boolean interpolate);
-
-	boolean isInterpolateNpcAnimations();
-
-	void setInterpolateNpcAnimations(boolean interpolate);
-
-	boolean isInterpolateObjectAnimations();
-
-	void setInterpolateObjectAnimations(boolean interpolate);
-
-	boolean isInInstancedRegion();
-
-	void setIsHidingEntities(boolean state);
-
-	void setPlayersHidden(boolean state);
-
-	void setPlayersHidden2D(boolean state);
-
-	void setFriendsHidden(boolean state);
-
-	void setClanMatesHidden(boolean state);
-
-	void setLocalPlayerHidden(boolean state);
-
-	void setLocalPlayerHidden2D(boolean state);
-
-	void setNPCsHidden(boolean state);
-
-	void setNPCsHidden2D(boolean state);
-
-	void setAttackersHidden(boolean state);
-
-	void setProjectilesHidden(boolean state);
-
-=======
 	 * Creates a new instance of a world.
 	 */
 	World createWorld();
@@ -1763,11 +1436,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return the collision data
 	 */
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 	@Nullable
->>>>>>> upstream/master
 	CollisionData[] getCollisionMaps();
 
 	@VisibleForDevtools
@@ -1781,14 +1450,6 @@ public interface Client extends GameEngine
 
 	void queueChangedSkill(Skill skill);
 
-<<<<<<< HEAD
-	int getTickCount();
-
-	void setTickCount(int tickCount);
-
-	void setInventoryDragDelay(int delay);
-
-=======
 	/**
 	 * Gets a mapping of sprites to override.
 	 * <p>
@@ -1853,7 +1514,6 @@ public interface Client extends GameEngine
 	 *
 	 * @return the types for current world
 	 */
->>>>>>> upstream/master
 	EnumSet<WorldType> getWorldType();
 
 	/**

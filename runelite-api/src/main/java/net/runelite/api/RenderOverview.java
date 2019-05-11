@@ -26,20 +26,6 @@ package net.runelite.api;
 
 import net.runelite.api.coords.WorldPoint;
 
-<<<<<<< HEAD
-public interface RenderOverview
-{
-	Point getWorldMapPosition();
-
-	float getWorldMapZoom();
-
-	void setWorldMapPositionTarget(WorldPoint worldPoint);
-
-	WorldMapManager getWorldMapManager();
-
-	void initializeWorldMap(WorldMapData var1);
-
-=======
 /**
  * Represents an overview of the currently rendered world map.
  */
@@ -85,6 +71,5 @@ public interface RenderOverview
 	 *
 	 * @return the map data
 	 */
->>>>>>> upstream/master
 	WorldMapData getWorldMapData();
 }

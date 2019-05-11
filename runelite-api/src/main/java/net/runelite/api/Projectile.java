@@ -24,46 +24,6 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-public interface Projectile extends Renderable
-{
-	int getId();
-
-	Actor getInteracting();
-
-	int getX1();
-
-	int getY1();
-
-	int getFloor();
-
-	int getHeight();
-
-	int getEndHeight();
-
-	int getStartMovementCycle();
-
-	int getEndCycle();
-
-	int getRemainingCycles();
-
-	int getSlope();
-
-	int getStartHeight();
-
-	double getX();
-
-	double getY();
-
-	double getZ();
-
-	double getScalar();
-
-	double getVelocityX();
-
-	double getVelocityY();
-
-=======
 /**
  * Represents a projectile entity (ie. cannonball, arrow).
  */
@@ -198,6 +158,5 @@ public interface Projectile extends Renderable
 	 *
 	 * @return the z-axis velocity
 	 */
->>>>>>> upstream/master
 	double getVelocityZ();
 }

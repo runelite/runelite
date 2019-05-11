@@ -24,10 +24,6 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-public interface WorldMapData
-{
-=======
 /**
  * Represents data on the world map.
  */
@@ -41,6 +37,5 @@ public interface WorldMapData
 	 * @param y y-axis coordinate
 	 * @return true if the coordinate is on the surface, false otherwise
 	 */
->>>>>>> upstream/master
 	boolean surfaceContainsPosition(int x, int y);
 }

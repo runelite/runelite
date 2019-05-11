@@ -41,12 +41,9 @@ public abstract class StretchedModeMixin implements RSClient
 	private static boolean stretchedFast;
 
 	@Inject
-<<<<<<< HEAD
-=======
 	private static boolean stretchedIntegerScaling;
 
 	@Inject
->>>>>>> upstream/master
 	private static boolean stretchedKeepAspectRatio;
 
 	@Inject
@@ -88,8 +85,6 @@ public abstract class StretchedModeMixin implements RSClient
 
 	@Inject
 	@Override
-<<<<<<< HEAD
-=======
 	public void setStretchedIntegerScaling(boolean state)
 	{
 		stretchedIntegerScaling = state;
@@ -97,7 +92,6 @@ public abstract class StretchedModeMixin implements RSClient
 
 	@Inject
 	@Override
->>>>>>> upstream/master
 	public void setStretchedKeepAspectRatio(boolean state)
 	{
 		stretchedKeepAspectRatio = state;
@@ -181,8 +175,6 @@ public abstract class StretchedModeMixin implements RSClient
 				}
 			}
 
-<<<<<<< HEAD
-=======
 			if (stretchedIntegerScaling)
 			{
 				if (parentWidth > realDimensions.width)
@@ -195,13 +187,7 @@ public abstract class StretchedModeMixin implements RSClient
 				}
 			}
 
-<<<<<<< HEAD:runelite-mixins/src/main/java/net/runelite/mixins/StretchedFixedModeMixin.java
->>>>>>> upstream/master
-			cachedStretchedDimensions = new Dimension(width, height);
-			lastCanvasDimensions = new Dimension(width, height);
-=======
 			cachedStretchedDimensions = new Dimension(parentWidth, parentHeight);
->>>>>>> upstream/master:runelite-mixins/src/main/java/net/runelite/mixins/StretchedModeMixin.java
 		}
 
 		return cachedStretchedDimensions;

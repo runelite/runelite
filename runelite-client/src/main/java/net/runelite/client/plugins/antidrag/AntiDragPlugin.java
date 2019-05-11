@@ -25,35 +25,16 @@
 package net.runelite.client.plugins.antidrag;
 
 import com.google.inject.Provides;
-<<<<<<< HEAD
-import net.runelite.api.Client;
-import net.runelite.api.events.ConfigChanged;
-=======
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.events.FocusChanged;
->>>>>>> upstream/master
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-<<<<<<< HEAD
-import javax.inject.Inject;
-import java.awt.event.KeyEvent;
-
-@PluginDescriptor(
-	name = "Anti Drag",
-	enabledByDefault = false
-)
-public class AntiDragPlugin extends Plugin implements KeyListener
-{
-	static final String CONFIG_GROUP = "antiDrag";
-
-	static final int DEFAULT_DELAY = 5;
-=======
 
 @PluginDescriptor(
 	name = "Shift Anti Drag",
@@ -63,7 +44,6 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 public class AntiDragPlugin extends Plugin implements KeyListener
 {
 	private static final int DEFAULT_DELAY = 5;
->>>>>>> upstream/master
 
 	@Inject
 	private Client client;
@@ -83,13 +63,6 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	protected void startUp() throws Exception
 	{
-<<<<<<< HEAD
-		if (!config.onShiftOnly())
-		{
-			client.setInventoryDragDelay(config.dragDelay());
-		}
-=======
->>>>>>> upstream/master
 		keyManager.registerKeyListener(this);
 	}
 
@@ -109,11 +82,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-<<<<<<< HEAD
-		if (config.onShiftOnly() && e.getKeyCode() == KeyEvent.VK_SHIFT)
-=======
 		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
->>>>>>> upstream/master
 		{
 			client.setInventoryDragDelay(config.dragDelay());
 		}
@@ -122,37 +91,18 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-<<<<<<< HEAD
-		if (config.onShiftOnly() && e.getKeyCode() == KeyEvent.VK_SHIFT)
-=======
 		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
->>>>>>> upstream/master
 		{
 			client.setInventoryDragDelay(DEFAULT_DELAY);
 		}
 	}
 
 	@Subscribe
-<<<<<<< HEAD
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals(CONFIG_GROUP))
-		{
-			if (config.onShiftOnly())
-			{
-				client.setInventoryDragDelay(DEFAULT_DELAY);
-			}
-			else
-			{
-				client.setInventoryDragDelay(config.dragDelay());
-			}
-=======
 	public void onFocusChanged(FocusChanged focusChanged)
 	{
 		if (!focusChanged.isFocused())
 		{
 			client.setInventoryDragDelay(DEFAULT_DELAY);
->>>>>>> upstream/master
 		}
 	}
 }

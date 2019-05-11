@@ -65,11 +65,8 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-<<<<<<< HEAD
-=======
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
->>>>>>> upstream/master
 
 @Singleton
 class DevToolsOverlay extends Overlay
@@ -92,11 +89,6 @@ class DevToolsOverlay extends Overlay
 
 	private final Client client;
 	private final DevToolsPlugin plugin;
-<<<<<<< HEAD
-
-	@Inject
-	public DevToolsOverlay(Client client, DevToolsPlugin plugin)
-=======
 	private final TooltipManager toolTipManager;
 
 	@Setter
@@ -107,21 +99,13 @@ class DevToolsOverlay extends Overlay
 	private int itemIndex = -1;
 
 	@Inject
-<<<<<<< HEAD
-	public DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
->>>>>>> upstream/master
-=======
 	private DevToolsOverlay(Client client, DevToolsPlugin plugin, TooltipManager toolTipManager)
->>>>>>> upstream/master
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_MAP);
 		this.client = client;
 		this.plugin = plugin;
-<<<<<<< HEAD
-=======
 		this.toolTipManager = toolTipManager;
->>>>>>> upstream/master
 	}
 
 	@Override
@@ -139,15 +123,7 @@ class DevToolsOverlay extends Overlay
 			renderNpcs(graphics);
 		}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-		if (plugin.isToggleGroundItems() || plugin.isToggleGroundObjects() || plugin.isToggleGameObjects() || plugin.isToggleWalls() || plugin.isToggleDecor())
-=======
-		if (plugin.isToggleGroundItems() || plugin.isToggleGroundObjects() || plugin.isToggleGameObjects() || plugin.isToggleWalls() || plugin.isToggleDecor() || plugin.isToggleTileLocation())
->>>>>>> upstream/master
-=======
 		if (plugin.getGroundItems().isActive() || plugin.getGroundObjects().isActive() || plugin.getGameObjects().isActive() || plugin.getWalls().isActive() || plugin.getDecorations().isActive() || plugin.getTileLocation().isActive())
->>>>>>> upstream/master
 		{
 			renderTileObjects(graphics);
 		}
@@ -269,20 +245,15 @@ class DevToolsOverlay extends Overlay
 				{
 					renderDecorObject(graphics, tile, player);
 				}
-<<<<<<< HEAD
-=======
 
 				if (plugin.getTileLocation().isActive())
 				{
 					renderTileTooltip(graphics, tile);
 				}
->>>>>>> upstream/master
 			}
 		}
 	}
 
-<<<<<<< HEAD
-=======
 	private void renderTileTooltip(Graphics2D graphics, Tile tile)
 	{
 		Polygon poly = Perspective.getCanvasTilePoly(client, tile.getLocalLocation());
@@ -293,7 +264,6 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
->>>>>>> upstream/master
 	private void renderGroundItems(Graphics2D graphics, Tile tile, Player player)
 	{
 		ItemLayer itemLayer = tile.getItemLayer();

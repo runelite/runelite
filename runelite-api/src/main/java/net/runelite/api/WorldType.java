@@ -28,11 +28,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 
 /**
-<<<<<<< HEAD
- * Enum representing world type.
-=======
  * An enumeration of possible world types.
->>>>>>> upstream/master
  */
 public enum WorldType
 {
@@ -116,11 +112,7 @@ public enum WorldType
 	 * Create mask from enum set of world types.
 	 *
 	 * @param types the types
-<<<<<<< HEAD
-	 * @return the int
-=======
 	 * @return the int containing all mask
->>>>>>> upstream/master
 	 */
 	public static int toMask(final EnumSet<WorldType> types)
 	{

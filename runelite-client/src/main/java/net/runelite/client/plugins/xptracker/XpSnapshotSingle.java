@@ -31,20 +31,11 @@ import lombok.Value;
 @Value
 class XpSnapshotSingle
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-	private int currentLevel;
-=======
-	private int startLevel;
-	private int endLevel;
->>>>>>> upstream/master
-=======
 	private XpActionType actionType;
 	private int startLevel;
 	private int endLevel;
 	private int startGoalXp;
 	private int endGoalXp;
->>>>>>> upstream/master
 	private int xpGainedInSession;
 	private int xpRemainingToGoal;
 	private int xpPerHour;

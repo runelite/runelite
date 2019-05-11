@@ -27,31 +27,16 @@
 package net.runelite.client.plugins.dailytaskindicators;
 
 import com.google.inject.Provides;
-<<<<<<< HEAD
-import java.awt.Color;
-=======
->>>>>>> upstream/master
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-<<<<<<< HEAD
-<<<<<<< HEAD
-import net.runelite.api.GameState;
-import net.runelite.api.Varbits;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.chat.ChatColor;
-=======
-=======
 import net.runelite.api.GameState;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarPlayer;
->>>>>>> upstream/master
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.vars.AccountType;
->>>>>>> upstream/master
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -91,16 +76,8 @@ public class DailyTasksPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg;
-=======
-	private boolean hasSentHerbMsg, hasSentStavesMsg, hasSentEssenceMsg, check;
->>>>>>> upstream/master
-=======
 	private long lastReset;
 	private boolean loggingIn;
->>>>>>> upstream/master
 
 	@Provides
 	DailyTasksConfig provideConfig(ConfigManager configManager)
@@ -111,15 +88,7 @@ public class DailyTasksPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-<<<<<<< HEAD
-		hasSentHerbMsg = hasSentStavesMsg = hasSentEssenceMsg = false;
-<<<<<<< HEAD
-		cacheColors();
-=======
->>>>>>> upstream/master
-=======
 		loggingIn = true;
->>>>>>> upstream/master
 	}
 
 	@Override
@@ -195,33 +164,10 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkHerbBoxes(boolean dailyReset)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		if (event.getGameState().equals(GameState.LOGGED_IN))
-		{
-			if (config.showHerbBoxes() && !hasSentHerbMsg && checkCanCollectHerbBox())
-			{
-				sendChatMessage("You have herb boxes waiting to be collected at NMZ.");
-				hasSentHerbMsg = true;
-			}
-			if (config.showStaves() && !hasSentStavesMsg && checkCanCollectStaves())
-			{
-				sendChatMessage("You have staves waiting to be collected from Zaff.");
-				hasSentStavesMsg = true;
-			}
-			if (config.showEssence() && !hasSentEssenceMsg && checkCanCollectEssence())
-			{
-				sendChatMessage("You have pure essence waiting to be collected from Wizard Cromperty.");
-				hasSentEssenceMsg = true;
-			}
-=======
-		switch (event.getGameState())
-=======
 		if (client.getAccountType() == AccountType.NORMAL
 			&& client.getVar(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST
 			&& (client.getVar(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX
 			|| dailyReset))
->>>>>>> upstream/master
 		{
 			sendChatMessage(HERB_BOX_MESSAGE);
 		}
@@ -263,35 +209,18 @@ public class DailyTasksPlugin extends Plugin
 			&& (client.getVar(Varbits.DAILY_SAND_COLLECTED) == 0
 			|| dailyReset))
 		{
-<<<<<<< HEAD
-			sendChatMessage("You have pure essence waiting to be collected from Wizard Cromperty.");
-			hasSentEssenceMsg = true;
->>>>>>> upstream/master
-=======
 			sendChatMessage(SAND_MESSAGE);
->>>>>>> upstream/master
 		}
 	}
 
 	private void checkFlax(boolean dailyReset)
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		int value = client.getVar(Varbits.DAILY_HERB_BOX);
-		return value < 15; // < 15 can claim
-=======
-		// Exclude ironmen from herb box notifications
-		int value = client.getVar(Varbits.DAILY_HERB_BOX);
-		return client.getAccountType() == AccountType.NORMAL && value < 15; // < 15 can claim
->>>>>>> upstream/master
-=======
 		if (client.getVar(Varbits.DIARY_KANDARIN_EASY) == 1
 			&& (client.getVar(Varbits.DAILY_FLAX_STATE) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(FLAX_MESSAGE);
 		}
->>>>>>> upstream/master
 	}
 
 	private void checkBonemeal(boolean dailyReset)
@@ -325,14 +254,6 @@ public class DailyTasksPlugin extends Plugin
 		}
 	}
 
-<<<<<<< HEAD
-	private void cacheColors()
-	{
-		chatMessageManager.cacheColor(new ChatColor(ChatColorType.HIGHLIGHT, Color.RED, false), ChatMessageType.GAME).refreshAll();
-	}
-
-=======
->>>>>>> upstream/master
 	private void sendChatMessage(String chatMessage)
 	{
 		final String message = new ChatMessageBuilder()

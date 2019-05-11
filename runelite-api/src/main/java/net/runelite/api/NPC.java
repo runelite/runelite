@@ -24,15 +24,8 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-public interface NPC extends Actor
-{
-=======
-=======
 import javax.annotation.Nullable;
 
->>>>>>> upstream/master
 /**
  * Represents a non-player character in the game.
  */
@@ -44,7 +37,6 @@ public interface NPC extends Actor
 	 * @return the ID of the NPC
 	 * @see NpcID
 	 */
->>>>>>> upstream/master
 	int getId();
 
 	@Override
@@ -53,11 +45,6 @@ public interface NPC extends Actor
 	@Override
 	int getCombatLevel();
 
-<<<<<<< HEAD
-	int getIndex();
-
-	NPCComposition getComposition();
-=======
 	/**
 	 * Gets the index position of this NPC in the clients cached
 	 * NPC array.
@@ -88,5 +75,4 @@ public interface NPC extends Actor
 	 * @return
 	 */
 	boolean isDead();
->>>>>>> upstream/master
 }

@@ -60,45 +60,13 @@ public interface NpcIndicatorsConfig extends Config
 		name = "Highlight Color",
 		description = "Color of the NPC highlight"
 	)
-<<<<<<< HEAD
-	default Color getNpcColor()
-=======
 	default Color getHighlightColor()
->>>>>>> upstream/master
 	{
 		return Color.CYAN;
 	}
 
 	@ConfigItem(
 		position = 3,
-<<<<<<< HEAD
-		keyName = "enableTag",
-		name = "Enable Tag Option",
-		description = "Enable the NPC tag menu option"
-	)
-	default boolean isTagEnabled()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 4,
-<<<<<<< HEAD
-		keyName = "tagColor",
-		name = "Tag Color",
-		description = "Color of the NPC tag highlight"
-	)
-	default Color getTagColor()
-	{
-		return Color.CYAN;
-	}
-
-	@ConfigItem(
-		position = 5,
-=======
->>>>>>> upstream/master
-=======
->>>>>>> upstream/master
 		keyName = "drawNames",
 		name = "Draw names above NPC",
 		description = "Configures whether or not NPC names should be drawn above the NPC"
@@ -109,15 +77,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-<<<<<<< HEAD
-		position = 6,
-=======
-		position = 5,
->>>>>>> upstream/master
-=======
 		position = 4,
->>>>>>> upstream/master
 		keyName = "drawMinimapNames",
 		name = "Draw names on minimap",
 		description = "Configures whether or not NPC names should be drawn on the minimap"

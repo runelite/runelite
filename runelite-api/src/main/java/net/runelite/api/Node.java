@@ -24,14 +24,6 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-public interface Node
-{
-	Node getNext();
-
-	Node getPrevious();
-
-=======
 /**
  * Represents a doubly linked node.
  */
@@ -56,6 +48,5 @@ public interface Node
 	 *
 	 * @return the hash value
 	 */
->>>>>>> upstream/master
 	long getHash();
 }

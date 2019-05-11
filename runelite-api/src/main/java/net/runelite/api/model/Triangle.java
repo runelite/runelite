@@ -26,12 +26,9 @@ package net.runelite.api.model;
 
 import lombok.Value;
 
-<<<<<<< HEAD
-=======
 /**
  * Represents 3 vertices as a three-dimensional Triangle.
  */
->>>>>>> upstream/master
 @Value
 public class Triangle
 {
@@ -39,22 +36,12 @@ public class Triangle
 	private final Vertex b;
 	private final Vertex c;
 
-<<<<<<< HEAD
-	public Triangle(Vertex a, Vertex b, Vertex c)
-	{
-		this.a = a;
-		this.b = b;
-		this.c = c;
-	}
-
-=======
 	/**
 	 * Rotates the triangle by the given orientation.
 	 *
 	 * @param orientation passed orientation
 	 * @return new instance
 	 */
->>>>>>> upstream/master
 	public Triangle rotate(int orientation)
 	{
 		return new Triangle(

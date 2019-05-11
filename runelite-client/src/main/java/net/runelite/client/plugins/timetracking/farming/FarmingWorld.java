@@ -61,67 +61,31 @@ class FarmingWorld
 		));
 
 		add(new FarmingRegion("Ardougne", 10290,
-<<<<<<< HEAD
-			new FarmingPatch("Bush", Varbits.FARMING_4771, PatchImplementation.BUSH)
-=======
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.BUSH)
->>>>>>> upstream/master
 		));
 		add(new FarmingRegion("Ardougne", 10548,
 			new FarmingPatch("North", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("South", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
-<<<<<<< HEAD
-			new FarmingPatch("Flower", Varbits.FARMING_4773, PatchImplementation.FLOWER),
-=======
 			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
->>>>>>> upstream/master
 			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB)
 		));
 
 		add(new FarmingRegion("Brimhaven", 11058,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.FRUIT_TREE),
-<<<<<<< HEAD
-			new FarmingPatch("Spirit Tree", Varbits.FARMING_4772, PatchImplementation.SPIRIT_TREE)
-=======
 			new FarmingPatch("", Varbits.FARMING_4772, PatchImplementation.SPIRIT_TREE)
->>>>>>> upstream/master
 		));
 
 		add(new FarmingRegion("Catherby", 11062,
 			new FarmingPatch("North", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("South", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
-<<<<<<< HEAD
-			new FarmingPatch("Flower", Varbits.FARMING_4773, PatchImplementation.FLOWER),
-=======
 			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
->>>>>>> upstream/master
 			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB)
 		));
 		add(new FarmingRegion("Catherby", 11317,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.FRUIT_TREE)
 		));
 
-<<<<<<< HEAD:runelite-client/src/main/java/net/runelite/client/plugins/farmingtracker/FarmingWorld.java
-		add(new FarmingRegion("Champion's Guild", 12596,
-<<<<<<< HEAD
-			new FarmingPatch("Bush", Varbits.FARMING_4771, PatchImplementation.BUSH)
-		));
-
-		add(new FarmingRegion("Draynor Manor", 12340,
-			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.BELLADONNA)
-		));
-
-		add(new FarmingRegion("Entrana", 11060,
-			new FarmingPatch("Hops", Varbits.FARMING_4771, PatchImplementation.HOPS)
-		));
-
-		add(new FarmingRegion("Etceteria", 10300,
-			new FarmingPatch("Bush", Varbits.FARMING_4771, PatchImplementation.BUSH),
-			new FarmingPatch("Spirit Tree", Varbits.FARMING_4772, PatchImplementation.SPIRIT_TREE)
-=======
-=======
 		add(new FarmingRegion("Champions' Guild", 12596,
->>>>>>> upstream/master:runelite-client/src/main/java/net/runelite/client/plugins/timetracking/farming/FarmingWorld.java
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.BUSH)
 		));
 
@@ -136,7 +100,6 @@ class FarmingWorld
 		add(new FarmingRegion("Etceteria", 10300,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.BUSH),
 			new FarmingPatch("", Varbits.FARMING_4772, PatchImplementation.SPIRIT_TREE)
->>>>>>> upstream/master
 		));
 
 		add(new FarmingRegion("Falador", 11828,
@@ -145,11 +108,7 @@ class FarmingWorld
 		add(new FarmingRegion("Falador", 12083,
 			new FarmingPatch("North West", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("South East", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
-<<<<<<< HEAD
-			new FarmingPatch("Flower", Varbits.FARMING_4773, PatchImplementation.FLOWER),
-=======
 			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
->>>>>>> upstream/master
 			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB)
 		)
 		{
@@ -183,19 +142,11 @@ class FarmingWorld
 		add(new FarmingRegion("Kourend", 7222,
 			new FarmingPatch("North East", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("South West", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
-<<<<<<< HEAD
-			new FarmingPatch("Flower", Varbits.FARMING_4773, PatchImplementation.FLOWER),
-			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB)
-		));
-		add(new FarmingRegion("Kourend", 6711,
-			new FarmingPatch("Spirit Tree", Varbits.FARMING_4771, PatchImplementation.SPIRIT_TREE)
-=======
 			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
 			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB)
 		));
 		add(new FarmingRegion("Kourend", 6711,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.SPIRIT_TREE)
->>>>>>> upstream/master
 		));
 		add(new FarmingRegion("Kourend", 7223,
 			new FarmingPatch("West 1", Varbits.GRAPES_4953, PatchImplementation.GRAPES),
@@ -217,11 +168,7 @@ class FarmingWorld
 		));
 
 		add(new FarmingRegion("Lumbridge", 12851,
-<<<<<<< HEAD
-			new FarmingPatch("Hops", Varbits.FARMING_4771, PatchImplementation.HOPS)
-=======
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.HOPS)
->>>>>>> upstream/master
 		));
 		add(new FarmingRegion("Lumbridge", 12594,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.TREE)
@@ -233,29 +180,17 @@ class FarmingWorld
 		add(new FarmingRegion("Morytania", 14391,
 			new FarmingPatch("North West", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
 			new FarmingPatch("South East", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
-<<<<<<< HEAD
-			new FarmingPatch("Flower", Varbits.FARMING_4773, PatchImplementation.FLOWER),
-=======
 			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
->>>>>>> upstream/master
 			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB)
 		));
 
 
 		add(new FarmingRegion("Port Sarim", 12082,
-<<<<<<< HEAD
-			new FarmingPatch("Spirit tree", Varbits.FARMING_4771, PatchImplementation.SPIRIT_TREE)
-		));
-
-		add(new FarmingRegion("Rimmington", 11570,
-			new FarmingPatch("Bush", Varbits.FARMING_4771, PatchImplementation.BUSH)
-=======
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.SPIRIT_TREE)
 		));
 
 		add(new FarmingRegion("Rimmington", 11570,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.BUSH)
->>>>>>> upstream/master
 		), 11826);
 
 		add(new FarmingRegion("Seers' Village", 10551,

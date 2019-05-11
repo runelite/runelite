@@ -24,10 +24,6 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-public interface Region
-{
-=======
 /**
  * Represents the entire 3D scene
  */
@@ -38,7 +34,6 @@ public interface Scene
 	 *
 	 * @return the tiles in [plane][x][y]
 	 */
->>>>>>> upstream/master
 	Tile[][][] getTiles();
 
 	int getDrawDistance();

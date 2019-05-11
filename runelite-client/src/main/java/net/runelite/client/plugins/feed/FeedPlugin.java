@@ -89,14 +89,9 @@ public class FeedPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "icon.png");
 
 		navButton = NavigationButton.builder()
-<<<<<<< HEAD
-			.name("News Feed")
-			.icon(icon)
-=======
 			.tooltip("News Feed")
 			.icon(icon)
 			.priority(8)
->>>>>>> upstream/master
 			.panel(feedPanel)
 			.build();
 

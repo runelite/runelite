@@ -183,15 +183,9 @@ public class RuneLite
 			System.exit(0);
 		}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-		if (RuneLite.getOptions().has("developer-mode"))
-=======
 		final boolean developerMode = options.has("developer-mode") && RuneLiteProperties.getLauncherVersion() == null;
 
 		if (developerMode)
->>>>>>> upstream/master
 		{
 			boolean assertions = false;
 			assert assertions = true;
@@ -201,7 +195,6 @@ public class RuneLite
 			}
 		}
 
->>>>>>> upstream/master
 		PROFILES_DIR.mkdirs();
 
 		if (options.has("debug"))

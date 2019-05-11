@@ -30,119 +30,46 @@ import lombok.Getter;
 import lombok.ToString;
 import net.runelite.api.Point;
 
-<<<<<<< HEAD
-=======
 /**
  * An item that is being represented in a {@link Widget}.
  */
-<<<<<<< HEAD
->>>>>>> upstream/master
-public class WidgetItem
-{
-	private final int id;
-	private final int quantity;
-	private final int index;
-	private final Rectangle canvasBounds;
-
-	public WidgetItem(int id, int quantity, int index, Rectangle canvasBounds)
-	{
-		this.id = id;
-		this.quantity = quantity;
-		this.index = index;
-		this.canvasBounds = canvasBounds;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "WidgetItem{" + "id=" + id + ", quantity=" + quantity + ", index=" + index + ", canvasBounds=" + canvasBounds + '}';
-	}
-
-<<<<<<< HEAD
-=======
-=======
 @AllArgsConstructor
 @ToString
 @Getter
 public class WidgetItem
 {
->>>>>>> upstream/master
 	/**
 	 * The ID of the item represented.
 	 *
 	 * @see net.runelite.api.ItemID
 	 */
-<<<<<<< HEAD
->>>>>>> upstream/master
-	public int getId()
-	{
-		return id;
-	}
-
-<<<<<<< HEAD
-=======
-=======
 	private final int id;
->>>>>>> upstream/master
 	/**
 	 * The quantity of the represented item.
 	 */
-<<<<<<< HEAD
->>>>>>> upstream/master
-	public int getQuantity()
-	{
-		return quantity;
-	}
-
-<<<<<<< HEAD
-=======
-=======
 	private final int quantity;
->>>>>>> upstream/master
 	/**
 	 * The index position of this WidgetItem inside its parents
 	 * WidgetItem array.
 	 *
 	 * @see Widget#getWidgetItems()
 	 */
-<<<<<<< HEAD
->>>>>>> upstream/master
-	public int getIndex()
-	{
-		return index;
-	}
-
-<<<<<<< HEAD
-=======
-=======
 	private final int index;
->>>>>>> upstream/master
 	/**
 	 * The area where the widget is drawn on the canvas.
 	 */
-<<<<<<< HEAD
->>>>>>> upstream/master
-	public Rectangle getCanvasBounds()
-	{
-		return canvasBounds;
-	}
-=======
 	private final Rectangle canvasBounds;
 	/**
 	 * The widget which contains this item.
 	 */
 	private final Widget widget;
->>>>>>> upstream/master
 
-<<<<<<< HEAD
-=======
 	/**
 	 * Gets the upper-left coordinate of where the widget is being drawn
 	 * on the canvas.
 	 *
 	 * @return the upper-left coordinate of where this widget is drawn
 	 */
->>>>>>> upstream/master
 	public Point getCanvasLocation()
 	{
 		return new Point((int) canvasBounds.getX(), (int) canvasBounds.getY());

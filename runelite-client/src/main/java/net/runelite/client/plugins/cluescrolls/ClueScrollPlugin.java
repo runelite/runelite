@@ -124,17 +124,8 @@ public class ClueScrollPlugin extends Plugin
 	private Item[] equippedItems;
 
 	@Getter
-<<<<<<< HEAD
-=======
 	private Item[] inventoryItems;
 
-<<<<<<< HEAD
-	@Getter
->>>>>>> upstream/master
-	private Instant clueTimeout;
-
-=======
->>>>>>> upstream/master
 	@Inject
 	@Getter
 	private Client client;
@@ -337,17 +328,7 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(final GameTick event)
 	{
-<<<<<<< HEAD
-		npcsToMark = null;
-		objectsToMark = null;
-		equippedItems = null;
-<<<<<<< HEAD
-=======
-		inventoryItems = null;
->>>>>>> upstream/master
-=======
 		objectsToMark.clear();
->>>>>>> upstream/master
 
 		if (clue instanceof LocationsClueScroll)
 		{
@@ -403,47 +384,21 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-<<<<<<< HEAD
-		if (clue instanceof EmoteClue)
-		{
-<<<<<<< HEAD
-			ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
-			
-			if (container != null)
-			{
-				equippedItems = container.getItems();
-=======
-			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-			
-			if (equipment != null)
-			{
-				equippedItems = equipment.getItems();
-			}
-=======
 		// If we have a clue, save that knowledge
 		// so the clue window doesn't have to be open.
 		updateClue(findClueScroll());
 	}
->>>>>>> upstream/master
 
 	public BufferedImage getClueScrollImage()
 	{
 		return itemManager.getImage(ItemID.CLUE_SCROLL_MASTER);
 	}
 
-<<<<<<< HEAD
-			if (inventory != null)
-			{
-				inventoryItems = inventory.getItems();
->>>>>>> upstream/master
-			}
-=======
 	public BufferedImage getEmoteImage()
 	{
 		if (emoteImage != null)
 		{
 			return emoteImage;
->>>>>>> upstream/master
 		}
 
 		emoteImage = ImageUtil.getResourceStreamFromClass(getClass(), "emote.png");

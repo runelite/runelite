@@ -148,8 +148,6 @@ public class StackFormatter
 	}
 
 	/**
-<<<<<<< HEAD
-=======
 	 * Convert a quantity to stack size as it would
 	 * appear in RuneScape. (with decimals)
 	 * <p>
@@ -198,7 +196,6 @@ public class StackFormatter
 	}
 
 	/**
->>>>>>> upstream/master
 	 * Converts a string representation of a stack
 	 * back to (close to) it's original value.
 	 *
@@ -217,13 +214,8 @@ public class StackFormatter
 	 *
 	 * @param number the long number to format
 	 * @return the formatted String
-<<<<<<< HEAD
-	 * @exception        ArithmeticException if rounding is needed with rounding
-	 *                   mode being set to RoundingMode.UNNECESSARY
-=======
 	 * @throws ArithmeticException if rounding is needed with rounding
 	 *                             mode being set to RoundingMode.UNNECESSARY
->>>>>>> upstream/master
 	 * @see java.text.Format#format
 	 */
 	public static String formatNumber(final long number)
@@ -236,13 +228,8 @@ public class StackFormatter
 	 *
 	 * @param number the double number to format
 	 * @return the formatted String
-<<<<<<< HEAD
-	 * @exception        ArithmeticException if rounding is needed with rounding
-	 *                   mode being set to RoundingMode.UNNECESSARY
-=======
 	 * @throws ArithmeticException if rounding is needed with rounding
 	 *                             mode being set to RoundingMode.UNNECESSARY
->>>>>>> upstream/master
 	 * @see java.text.Format#format
 	 */
 	public static String formatNumber(double number)

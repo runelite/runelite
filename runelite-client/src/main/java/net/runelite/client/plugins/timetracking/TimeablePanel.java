@@ -1,9 +1,6 @@
 /*
  * Copyright (c) 2018 Abex
-<<<<<<< HEAD
-=======
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
->>>>>>> upstream/master
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,19 +25,6 @@
  */
 package net.runelite.client.plugins.timetracking;
 
-<<<<<<< HEAD:runelite-client/src/main/java/net/runelite/client/plugins/farmingtracker/FarmingPatchPanel.java
-<<<<<<< HEAD
-import java.awt.Dimension;
-import javax.swing.GroupLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import lombok.Getter;
-import net.runelite.client.ui.FontManager;
-=======
-import com.google.common.base.Strings;
-=======
->>>>>>> upstream/master:runelite-client/src/main/java/net/runelite/client/plugins/timetracking/TimeablePanel.java
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -53,7 +37,6 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ThinProgressBar;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
->>>>>>> upstream/master
 
 @Getter
 public class TimeablePanel<T> extends JPanel
@@ -61,49 +44,12 @@ public class TimeablePanel<T> extends JPanel
 	private final T timeable;
 	private final JLabel icon = new JLabel();
 	private final JLabel estimate = new JLabel();
-<<<<<<< HEAD
-	private final JProgressBar progress = new JProgressBar();
-=======
 	private final ThinProgressBar progress = new ThinProgressBar();
->>>>>>> upstream/master
 
 	public TimeablePanel(T timeable, String title, int maximumProgressValue)
 	{
 		this.timeable = timeable;
 
-<<<<<<< HEAD
-		GroupLayout layout = new GroupLayout(this);
-		this.setLayout(layout);
-
-		final JLabel location = new JLabel(patch.getRegion().getName() + " " + patch.getName());
-		location.setFont(FontManager.getRunescapeSmallFont());
-		icon.setMinimumSize(new Dimension(36, 32));
-
-		layout.setVerticalGroup(layout.createSequentialGroup()
-			.addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-				.addComponent(icon)
-				.addGroup(layout.createSequentialGroup()
-					.addGap(1)
-					.addComponent(location)
-					.addGap(1)
-					.addComponent(estimate)
-				)
-			)
-			.addComponent(progress, 8, 8, 8)
-			.addGap(4)
-		);
-
-		layout.setHorizontalGroup(layout.createParallelGroup()
-			.addGroup(layout.createSequentialGroup()
-				.addComponent(icon)
-				.addGroup(layout.createParallelGroup()
-					.addComponent(location)
-					.addComponent(estimate)
-				)
-			)
-			.addComponent(progress)
-		);
-=======
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(7, 0, 0, 0));
 
@@ -137,6 +83,5 @@ public class TimeablePanel<T> extends JPanel
 
 		add(topContainer, BorderLayout.NORTH);
 		add(progress, BorderLayout.SOUTH);
->>>>>>> upstream/master
 	}
 }

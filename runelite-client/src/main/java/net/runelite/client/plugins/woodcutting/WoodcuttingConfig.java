@@ -32,16 +32,10 @@ import net.runelite.client.config.ConfigItem;
 public interface WoodcuttingConfig extends Config
 {
 	@ConfigItem(
-<<<<<<< HEAD
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until statistic is reset"
-=======
 		position = 1,
 		keyName = "statTimeout",
 		name = "Reset stats (minutes)",
 		description = "Configures the time until statistic is reset. Also configures when tree indicator is hidden"
->>>>>>> upstream/master
 	)
 	default int statTimeout()
 	{
@@ -49,10 +43,7 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-=======
 		position = 2,
->>>>>>> upstream/master
 		keyName = "showNestNotification",
 		name = "Bird nest notification",
 		description = "Configures whether to notify you of a bird nest spawn"
@@ -63,23 +54,15 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
-<<<<<<< HEAD
-		keyName = "showWoodcuttingStats",
-		name = "Show Woodcutting session stats",
-=======
 		position = 3,
 		keyName = "showWoodcuttingStats",
 		name = "Show session stats",
->>>>>>> upstream/master
 		description = "Configures whether to display woodcutting session stats"
 	)
 	default boolean showWoodcuttingStats()
 	{
 		return true;
 	}
-<<<<<<< HEAD
-}
-=======
 
 	@ConfigItem(
 		position = 4,
@@ -92,4 +75,3 @@ public interface WoodcuttingConfig extends Config
 		return true;
 	}
 }
->>>>>>> upstream/master

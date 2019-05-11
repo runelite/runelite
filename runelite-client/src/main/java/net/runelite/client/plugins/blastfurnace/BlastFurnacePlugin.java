@@ -36,14 +36,7 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import static net.runelite.api.NullObjectID.NULL_9092;
 import static net.runelite.api.ObjectID.CONVEYOR_BELT;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-import static net.runelite.api.ObjectID.NULL_9092;
->>>>>>> upstream/master
-=======
 import net.runelite.api.Skill;
->>>>>>> upstream/master
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -66,11 +59,6 @@ import net.runelite.client.util.Text;
 )
 public class BlastFurnacePlugin extends Plugin
 {
-<<<<<<< HEAD
-	@Getter(AccessLevel.PACKAGE)
-	private GameObject conveyorBelt;
-
-=======
 	private static final int BAR_DISPENSER = NULL_9092;
 	private static final String FOREMAN_PERMISSION_TEXT = "Okay, you can use the furnace for ten minutes. Remember, you only need half as much coal as with a regular furnace.";
 
@@ -80,15 +68,11 @@ public class BlastFurnacePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private GameObject barDispenser;
 
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 	private ForemanTimer foremanTimer;
 
 	@Inject
 	private OverlayManager overlayManager;
 
->>>>>>> upstream/master
 	@Inject
 	private BlastFurnaceOverlay overlay;
 
@@ -96,11 +80,7 @@ public class BlastFurnacePlugin extends Plugin
 	private BlastFurnaceCofferOverlay cofferOverlay;
 
 	@Inject
-<<<<<<< HEAD
-	private ConveyorBeltOverlay conveyorBeltOverlay;
-=======
 	private BlastFurnaceClickBoxOverlay clickBoxOverlay;
->>>>>>> upstream/master
 
 	@Inject
 	private Client client;
@@ -127,14 +107,8 @@ public class BlastFurnacePlugin extends Plugin
 		overlayManager.remove(cofferOverlay);
 		overlayManager.remove(clickBoxOverlay);
 		conveyorBelt = null;
-<<<<<<< HEAD
-=======
 		barDispenser = null;
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 		foremanTimer = null;
->>>>>>> upstream/master
 	}
 
 	@Provides
@@ -143,28 +117,10 @@ public class BlastFurnacePlugin extends Plugin
 		return configManager.getConfig(BlastFurnaceConfig.class);
 	}
 
-<<<<<<< HEAD
-	@Override
-	public Collection<Overlay> getOverlays()
-	{
-<<<<<<< HEAD
-		return Arrays.asList(overlay, cofferOverlay, conveyorBeltOverlay);
-=======
-		return Arrays.asList(overlay, cofferOverlay, clickBoxOverlay);
->>>>>>> upstream/master
-	}
-
-=======
->>>>>>> upstream/master
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
-<<<<<<< HEAD
-		if (gameObject.getId() == CONVEYOR_BELT)
-		{
-			conveyorBelt = gameObject;
-=======
 
 		switch (gameObject.getId())
 		{
@@ -175,7 +131,6 @@ public class BlastFurnacePlugin extends Plugin
 			case BAR_DISPENSER:
 				barDispenser = gameObject;
 				break;
->>>>>>> upstream/master
 		}
 	}
 
@@ -183,11 +138,6 @@ public class BlastFurnacePlugin extends Plugin
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		GameObject gameObject = event.getGameObject();
-<<<<<<< HEAD
-		if (gameObject.getId() == CONVEYOR_BELT)
-		{
-			conveyorBelt = null;
-=======
 
 		switch (gameObject.getId())
 		{
@@ -198,7 +148,6 @@ public class BlastFurnacePlugin extends Plugin
 			case BAR_DISPENSER:
 				barDispenser = null;
 				break;
->>>>>>> upstream/master
 		}
 	}
 
@@ -208,10 +157,7 @@ public class BlastFurnacePlugin extends Plugin
 		if (event.getGameState() == GameState.LOADING)
 		{
 			conveyorBelt = null;
-<<<<<<< HEAD
-=======
 			barDispenser = null;
->>>>>>> upstream/master
 		}
 	}
 

@@ -28,12 +28,6 @@ import lombok.Data;
 import net.runelite.api.Actor;
 import net.runelite.api.Hitsplat;
 
-<<<<<<< HEAD
-@Data
-public class HitsplatApplied
-{
-	private Actor actor;
-=======
 /**
  * An event called when a {@link Hitsplat} is processed on an {@link Actor}.
  * <p>
@@ -51,6 +45,5 @@ public class HitsplatApplied
 	/**
 	 * The applied hitsplat.
 	 */
->>>>>>> upstream/master
 	private Hitsplat hitsplat;
 }

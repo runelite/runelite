@@ -27,11 +27,6 @@ package net.runelite.api.events;
 import lombok.Data;
 import net.runelite.api.Skill;
 
-<<<<<<< HEAD
-@Data
-public class BoostedLevelChanged
-{
-=======
 /**
  * An event where a players skill level has been temporarily modified.
  * <p>
@@ -52,6 +47,5 @@ public class BoostedLevelChanged
 	/**
 	 * The skill that has had its level modified.
 	 */
->>>>>>> upstream/master
 	private Skill skill;
 }

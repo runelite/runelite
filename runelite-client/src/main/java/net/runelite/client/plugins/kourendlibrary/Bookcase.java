@@ -78,10 +78,6 @@ class Bookcase
 	{
 		StringBuilder b = new StringBuilder();
 
-<<<<<<< HEAD
-		boolean north = location.getY() > 3815;
-		boolean west = location.getX() < 1625;
-=======
 		// Floors 2 and 3
 		boolean north = location.getY() > 3815;
 		boolean west = location.getX() < 1625;
@@ -93,7 +89,6 @@ class Bookcase
 			west = location.getX() < 1627;
 		}
 
->>>>>>> upstream/master
 		if (north && west)
 		{
 			b.append("Northwest");

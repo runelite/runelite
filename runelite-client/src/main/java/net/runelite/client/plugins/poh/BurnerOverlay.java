@@ -27,15 +27,8 @@ package net.runelite.client.plugins.poh;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-import java.awt.Polygon;
->>>>>>> upstream/master
-=======
 import java.time.Duration;
 import java.time.Instant;
->>>>>>> upstream/master
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
@@ -108,18 +101,6 @@ class BurnerOverlay extends Overlay
 
 			pieComponent.setPosition(loc);
 
-<<<<<<< HEAD
-		//render tile
-<<<<<<< HEAD
-		OverlayUtil.renderPolygon(graphics, tileObject.getCanvasTilePoly(), color);
-=======
-		Polygon poly = tileObject.getCanvasTilePoly();
-		if (poly != null)
-		{
-			OverlayUtil.renderPolygon(graphics, poly, color);
-		}
->>>>>>> upstream/master
-=======
 			if (certainSec > 0)
 			{
 				pieComponent.setProgress(certainSec / burner.getCountdownTimer());
@@ -137,6 +118,5 @@ class BurnerOverlay extends Overlay
 		});
 
 		return null;
->>>>>>> upstream/master
 	}
 }

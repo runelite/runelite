@@ -68,14 +68,9 @@ public class NotesPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "notes_icon.png");
 
 		navButton = NavigationButton.builder()
-<<<<<<< HEAD
-			.name("Notes")
-			.icon(icon)
-=======
 			.tooltip("Notes")
 			.icon(icon)
 			.priority(7)
->>>>>>> upstream/master
 			.panel(panel)
 			.build();
 

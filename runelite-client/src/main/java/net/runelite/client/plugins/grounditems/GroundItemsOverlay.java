@@ -219,18 +219,9 @@ public class GroundItemsOverlay extends Overlay
 				}
 				else
 				{
-<<<<<<< HEAD
-					itemStringBuilder.append(" (").append(item.getQuantity()).append(")");
-=======
 					itemStringBuilder.append(" (")
-<<<<<<< HEAD
-							.append(StackFormatter.quantityToStackSize(item.getQuantity()))
-							.append(")");
->>>>>>> upstream/master
-=======
 						.append(StackFormatter.quantityToStackSize(item.getQuantity()))
 						.append(")");
->>>>>>> upstream/master
 				}
 			}
 

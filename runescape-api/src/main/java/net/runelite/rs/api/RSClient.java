@@ -777,8 +777,6 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("flags")
 	int getFlags();
-<<<<<<< HEAD
-=======
 
 	@Import("compass")
 	void setCompass(SpritePixels spritePixels);
@@ -786,9 +784,6 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("widgetSpriteCache")
 	@Override
 	RSNodeCache getWidgetSpriteCache();
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 
 	@Import("items")
 	@Override
@@ -974,5 +969,4 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("healthbarCache")
 	@Override
 	RSNodeCache getHealthBarCache();
->>>>>>> upstream/master
 }

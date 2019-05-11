@@ -105,15 +105,12 @@ public class CommandManager
 
 		String[] split = typedText.split(" ");
 
-<<<<<<< HEAD
-=======
 		// Fixes ArrayIndexOutOfBounds when typing ":: "
 		if (split.length == 0)
 		{
 			return;
 		}
 
->>>>>>> upstream/master
 		String command = split[0];
 		String[] args = Arrays.copyOfRange(split, 1, split.length);
 

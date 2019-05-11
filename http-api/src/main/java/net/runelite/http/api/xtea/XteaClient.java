@@ -31,11 +31,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import net.runelite.http.api.RuneLiteAPI;
-<<<<<<< HEAD
-=======
 import okhttp3.Call;
 import okhttp3.Callback;
->>>>>>> upstream/master
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -50,15 +47,7 @@ public class XteaClient
 
 	private static final Logger logger = LoggerFactory.getLogger(XteaClient.class);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public Response submit(int revision, int region, int[] keys) throws IOException
-=======
-	public void submit(int revision, int region, int[] keys)
->>>>>>> upstream/master
-=======
 	public void submit(XteaRequest xteaRequest)
->>>>>>> upstream/master
 	{
 		String json = RuneLiteAPI.GSON.toJson(xteaRequest);
 
@@ -73,9 +62,6 @@ public class XteaClient
 			.url(url)
 			.build();
 
-<<<<<<< HEAD
-		return RuneLiteAPI.CLIENT.newCall(request).execute();
-=======
 		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
 		{
 			@Override
@@ -100,7 +86,6 @@ public class XteaClient
 				}
 			}
 		});
->>>>>>> upstream/master
 	}
 
 	public List<XteaKey> get() throws IOException

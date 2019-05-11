@@ -24,16 +24,6 @@
  */
 package net.runelite.client.plugins.tithefarm;
 
-<<<<<<< HEAD
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.geom.Arc2D;
-import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Perspective;
-=======
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -43,23 +33,11 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
->>>>>>> upstream/master
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-<<<<<<< HEAD
-
-public class TitheFarmPlantOverlay extends Overlay
-{
-	private static final int TIMER_SIZE = 25;
-	private static final int TIMER_BORDER_WIDTH = 1;
-
-	private final Client client;
-	private final TitheFarmPlugin plugin;
-	private final TitheFarmPluginConfig config;
-=======
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
 public class TitheFarmPlantOverlay extends Overlay
@@ -69,7 +47,6 @@ public class TitheFarmPlantOverlay extends Overlay
 	private final TitheFarmPluginConfig config;
 	private final Map<TitheFarmPlantState, Color> borders = new HashMap<>();
 	private final Map<TitheFarmPlantState, Color> fills = new HashMap<>();
->>>>>>> upstream/master
 
 	@Inject
 	TitheFarmPlantOverlay(Client client, TitheFarmPlugin plugin, TitheFarmPluginConfig config)
@@ -81,15 +58,6 @@ public class TitheFarmPlantOverlay extends Overlay
 		this.client = client;
 	}
 
-<<<<<<< HEAD
-	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		Widget viewport = client.getViewportWidget();
-		for (TitheFarmPlant plant : plugin.getPlants())
-		{
-			LocalPoint localLocation = LocalPoint.fromWorld(client, plant.getWorldLocation());
-=======
 	/**
 	 * Updates the timer colors.
 	 */
@@ -128,28 +96,10 @@ public class TitheFarmPlantOverlay extends Overlay
 
 			final LocalPoint localLocation = LocalPoint.fromWorld(client, plant.getWorldLocation());
 
->>>>>>> upstream/master
 			if (localLocation == null)
 			{
 				continue;
 			}
-<<<<<<< HEAD
-			net.runelite.api.Point canvasLocation = Perspective.worldToCanvas(client, localLocation.getX(), localLocation.getY(), client.getPlane());
-			if (viewport != null && canvasLocation != null)
-			{
-				switch (plant.getState())
-				{
-					case UNWATERED:
-						drawTimerOnPlant(graphics, plant, canvasLocation, config.getColorUnwatered());
-						break;
-					case WATERED:
-						drawTimerOnPlant(graphics, plant, canvasLocation, config.getColorWatered());
-						break;
-					case GROWN:
-						drawTimerOnPlant(graphics, plant, canvasLocation, config.getColorGrown());
-						break;
-				}
-=======
 
 			final Point canvasLocation = Perspective.localToCanvas(client, localLocation, client.getPlane());
 
@@ -161,31 +111,9 @@ public class TitheFarmPlantOverlay extends Overlay
 				progressPieComponent.setBorderColor(borders.get(plant.getState()));
 				progressPieComponent.setFill(fills.get(plant.getState()));
 				progressPieComponent.render(graphics);
->>>>>>> upstream/master
 			}
 		}
 
 		return null;
 	}
-<<<<<<< HEAD
-
-	private void drawTimerOnPlant(Graphics2D graphics, TitheFarmPlant plant, net.runelite.api.Point loc, Color color)
-	{
-		//Construct the arc
-		Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
-		arc.setAngleStart(90);
-		double timeLeft = 1 - plant.getPlantTimeRelative();
-		arc.setAngleExtent(timeLeft * 360);
-		arc.setFrame(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
-
-		//Draw the inside of the arc
-		graphics.setColor(color);
-		graphics.fill(arc);
-
-		//Draw the outlines of the arc
-		graphics.setStroke(new BasicStroke(TIMER_BORDER_WIDTH));
-		graphics.drawOval(loc.getX() - TIMER_SIZE / 2, loc.getY() - TIMER_SIZE / 2, TIMER_SIZE, TIMER_SIZE);
-	}
-=======
->>>>>>> upstream/master
 }

@@ -26,14 +26,6 @@ package net.runelite.http.api.xp;
 
 import java.io.IOException;
 import net.runelite.http.api.RuneLiteAPI;
-<<<<<<< HEAD
-import okhttp3.HttpUrl;
-import okhttp3.Request;
-
-public class XpClient
-{
-	public void update(String username) throws IOException
-=======
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -47,7 +39,6 @@ public class XpClient
 	private static final Logger logger = LoggerFactory.getLogger(XpClient.class);
 
 	public void update(String username)
->>>>>>> upstream/master
 	{
 		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
 			.addPathSegment("xp")
@@ -59,9 +50,6 @@ public class XpClient
 			.url(url)
 			.build();
 
-<<<<<<< HEAD
-		RuneLiteAPI.CLIENT.newCall(request).execute().close();
-=======
 		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
 		{
 			@Override
@@ -77,6 +65,5 @@ public class XpClient
 				logger.debug("Submitted xp track for {}", username);
 			}
 		});
->>>>>>> upstream/master
 	}
 }

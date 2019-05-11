@@ -28,12 +28,6 @@ import lombok.Data;
 import net.runelite.api.GroundObject;
 import net.runelite.api.Tile;
 
-<<<<<<< HEAD
-@Data
-public class GroundObjectSpawned
-{
-	private Tile tile;
-=======
 /**
  * An event where a {@link GroundObject} is added to a {@link Tile}.
  */
@@ -47,6 +41,5 @@ public class GroundObjectSpawned
 	/**
 	 * The newly spawned ground object.
 	 */
->>>>>>> upstream/master
 	private GroundObject groundObject;
 }

@@ -25,15 +25,6 @@
 package net.runelite.client.plugins.tithefarm;
 
 import com.google.inject.Provides;
-<<<<<<< HEAD
-<<<<<<< HEAD
-import java.time.temporal.ChronoUnit;
-=======
->>>>>>> upstream/master
-import java.util.Arrays;
-import java.util.Collection;
-=======
->>>>>>> upstream/master
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -41,13 +32,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameObject;
 import net.runelite.api.coords.WorldPoint;
-<<<<<<< HEAD
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
-=======
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
@@ -55,12 +39,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-<<<<<<< HEAD
->>>>>>> upstream/master
-import net.runelite.client.ui.overlay.Overlay;
-=======
 import net.runelite.client.ui.overlay.OverlayManager;
->>>>>>> upstream/master
 
 @Slf4j
 @PluginDescriptor(
@@ -71,20 +50,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class TitheFarmPlugin extends Plugin
 {
 	@Inject
-<<<<<<< HEAD
-<<<<<<< HEAD
-	private TitheFarmPluginConfig config;
-
-	@Inject
-=======
->>>>>>> upstream/master
-	private TitheFarmPlantOverlay titheFarmOverlay;
-
-	@Inject
-	private TitheFarmSackOverlay titheFarmSackOverlay;
-=======
 	private OverlayManager overlayManager;
->>>>>>> upstream/master
 
 	@Inject
 	private TitheFarmPlantOverlay titheFarmOverlay;
@@ -105,10 +71,6 @@ public class TitheFarmPlugin extends Plugin
 		titheFarmOverlay.updateConfig();
 	}
 
-<<<<<<< HEAD
-	@Schedule(period = 600, unit = ChronoUnit.MILLIS)
-	public void checkPlants()
-=======
 	@Override
 	protected void shutDown() throws Exception
 	{
@@ -126,7 +88,6 @@ public class TitheFarmPlugin extends Plugin
 
 	@Subscribe
 	public void onGameTick(final GameTick event)
->>>>>>> upstream/master
 	{
 		plants.removeIf(plant -> plant.getPlantTimeRelative() == 1);
 	}

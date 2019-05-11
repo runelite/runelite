@@ -24,18 +24,11 @@
  */
 package net.runelite.mixins;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-import net.runelite.api.NPCComposition;
->>>>>>> upstream/master
-=======
 import java.awt.Polygon;
 import net.runelite.api.AnimationID;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
->>>>>>> upstream/master
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
@@ -58,12 +51,9 @@ public abstract class RSNPCMixin implements RSNPC
 	private int npcIndex;
 
 	@Inject
-<<<<<<< HEAD
-=======
 	private boolean dead;
 
 	@Inject
->>>>>>> upstream/master
 	@Override
 	public int getId()
 	{
@@ -154,8 +144,6 @@ public abstract class RSNPCMixin implements RSNPC
 			setSpotAnimFrame(spotAnimFrame);
 		}
 	}
-<<<<<<< HEAD
-=======
 
 	@Inject
 	@Override
@@ -182,9 +170,6 @@ public abstract class RSNPCMixin implements RSNPC
 	{
 		this.dead = dead;
 	}
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 
 	@Inject
 	@Override
@@ -204,5 +189,4 @@ public abstract class RSNPCMixin implements RSNPC
 		int tileHeight = Perspective.getTileHeight(client, tileHeightPoint, client.getPlane());
 		return model.getConvexHull(getX(), getY(), getOrientation(), tileHeight);
 	}
->>>>>>> upstream/master
 }

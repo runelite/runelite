@@ -119,8 +119,6 @@ public interface AgilityConfig extends Config
 	{
 		return Color.RED;
 	}
-<<<<<<< HEAD
-=======
 
 	@ConfigItem(
 		keyName = "agilityArenaNotifier",
@@ -143,5 +141,4 @@ public interface AgilityConfig extends Config
 	{
 		return true;
 	}
->>>>>>> upstream/master
 }

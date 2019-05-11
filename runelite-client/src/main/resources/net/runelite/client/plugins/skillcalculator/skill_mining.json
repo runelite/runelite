@@ -97,15 +97,12 @@
       "xp": 65
     },
     {
-<<<<<<< HEAD
-=======
       "level": 40,
       "icon": 1629,
       "name": "Gem Rocks",
       "xp": 65
     },
     {
->>>>>>> upstream/master
       "level": 45,
       "icon": 6979,
       "name": "Granite (500g)",

@@ -27,11 +27,6 @@ package net.runelite.api.events;
 import lombok.Data;
 import net.runelite.api.Actor;
 
-<<<<<<< HEAD
-@Data
-public class GraphicChanged
-{
-=======
 /**
  * An event where the graphic of an {@link Actor} has changed.
  * <p>
@@ -53,6 +48,5 @@ public class GraphicChanged
 	/**
 	 * The actor that has had their graphic changed.
 	 */
->>>>>>> upstream/master
 	private Actor actor;
 }

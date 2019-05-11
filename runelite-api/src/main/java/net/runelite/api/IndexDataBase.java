@@ -24,12 +24,9 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-=======
 /**
  * Represents an index in the cache
  */
->>>>>>> upstream/master
 public interface IndexDataBase
 {
 	/**

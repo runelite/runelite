@@ -27,13 +27,6 @@ package net.runelite.api.events;
 import lombok.Data;
 import net.runelite.api.MenuEntry;
 
-<<<<<<< HEAD
-@Data
-public class MenuOpened
-{
-	private MenuEntry[] menuEntries;
-
-=======
 /**
  * An event where a menu has been opened.
  */
@@ -53,7 +46,6 @@ public class MenuOpened
 	 *
 	 * @return the first entry
 	 */
->>>>>>> upstream/master
 	public MenuEntry getFirstEntry()
 	{
 		if (menuEntries.length > 0)

@@ -51,8 +51,6 @@ public interface StretchedModeConfig extends Config
 	{
 		return false;
 	}
-<<<<<<< HEAD
-=======
 
 	@ConfigItem(
 		keyName = "integerScaling",
@@ -63,9 +61,6 @@ public interface StretchedModeConfig extends Config
 	{
 		return false;
 	}
-<<<<<<< HEAD:runelite-client/src/main/java/net/runelite/client/plugins/stretchedfixedmode/StretchedFixedModeConfig.java
->>>>>>> upstream/master
-=======
 
 	@ConfigItem(
 		keyName = "scalingFactor",
@@ -76,5 +71,4 @@ public interface StretchedModeConfig extends Config
 	{
 		return 50;
 	}
->>>>>>> upstream/master:runelite-client/src/main/java/net/runelite/client/plugins/stretchedmode/StretchedModeConfig.java
 }

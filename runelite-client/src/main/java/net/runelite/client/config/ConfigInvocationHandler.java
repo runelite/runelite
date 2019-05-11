@@ -125,9 +125,6 @@ class ConfigInvocationHandler implements InvocationHandler
 				}
 			}
 
-<<<<<<< HEAD
-			manager.setConfiguration(group.keyName(), item.keyName(), args[0].toString());
-=======
 			if (newValue == null)
 			{
 				manager.unsetConfiguration(group.value(), item.keyName());
@@ -137,7 +134,6 @@ class ConfigInvocationHandler implements InvocationHandler
 				String newValueStr = ConfigManager.objectToString(newValue);
 				manager.setConfiguration(group.value(), item.keyName(), newValueStr);
 			}
->>>>>>> upstream/master
 			return null;
 		}
 	}

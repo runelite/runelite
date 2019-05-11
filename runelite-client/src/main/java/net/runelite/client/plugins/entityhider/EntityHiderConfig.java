@@ -106,11 +106,7 @@ public interface EntityHiderConfig extends Config
 	)
 	default boolean hideNPCs()
 	{
-<<<<<<< HEAD
-		return true;
-=======
 		return false;
->>>>>>> upstream/master
 	}
 
 	@ConfigItem(
@@ -121,11 +117,7 @@ public interface EntityHiderConfig extends Config
 	)
 	default boolean hideNPCs2D()
 	{
-<<<<<<< HEAD
-		return true;
-=======
 		return false;
->>>>>>> upstream/master
 	}
 
 	@ConfigItem(

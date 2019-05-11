@@ -25,41 +25,15 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-<<<<<<< HEAD
-import java.time.Duration;
-import java.time.Instant;
-<<<<<<< HEAD
-import java.time.LocalTime;
-import lombok.Data;
-=======
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
->>>>>>> upstream/master
-=======
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
->>>>>>> upstream/master
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 
-<<<<<<< HEAD
-@Data
-@Slf4j
-class XpStateSingle
-{
-	private final Skill skill;
-	private final int startXp;
-	private Instant skillTimeStart = null;
-	private int xpGained = 0;
-	private int actions = 0;
-	private int nextLevelExp = 0;
-	private int startLevelExp = 0;
-	private int level = 0;
-=======
 @Slf4j
 @RequiredArgsConstructor
 class XpStateSingle
@@ -79,32 +53,6 @@ class XpStateSingle
 	private long skillTime = 0;
 	private int startLevelExp = 0;
 	private int endLevelExp = 0;
-<<<<<<< HEAD
->>>>>>> upstream/master
-	private boolean actionsHistoryInitialized = false;
-	private int[] actionExps = new int[10];
-	private int actionExpIndex = 0;
-
-<<<<<<< HEAD
-	int getXpHr()
-	{
-		return toHourly(xpGained);
-	}
-
-	int getXpSec()
-	{
-		return getXpHr() / 3600;
-	}
-
-	int getActionsHr()
-	{
-		return toHourly(actions);
-	}
-
-	private int toHourly(int value)
-=======
-	private int getCurrentXp()
-=======
 
 	XpAction getXpAction(final XpActionType type)
 	{
@@ -113,7 +61,6 @@ class XpStateSingle
 	}
 
 	private long getCurrentXp()
->>>>>>> upstream/master
 	{
 		return startXp + xpGained;
 	}
@@ -129,29 +76,12 @@ class XpStateSingle
 	}
 
 	private long getTimeElapsedInSeconds()
->>>>>>> upstream/master
 	{
 		// If the skill started just now, we can divide by near zero, this results in odd behavior.
 		// To prevent that, pretend the skill has been active for a minute (60 seconds)
 		// This will create a lower estimate for the first minute,
 		// but it isn't ridiculous like saying 2 billion XP per hour.
-<<<<<<< HEAD
-<<<<<<< HEAD
-		long timeElapsedInSeconds = Math.max(60, Duration.between(skillTimeStart, Instant.now()).getSeconds());
-		return (int) ((1.0 / (timeElapsedInSeconds / 3600.0)) * value);
-	}
-
-	int getXpRemaining()
-	{
-		return nextLevelExp - (startXp + xpGained);
-	}
-
-	int getActionsRemaining()
-=======
-		return Math.max(60, Duration.between(skillTimeStart, Instant.now()).getSeconds());
-=======
 		return Math.max(60, skillTime / 1000);
->>>>>>> upstream/master
 	}
 
 	private int getXpRemaining()
@@ -160,32 +90,12 @@ class XpStateSingle
 	}
 
 	private int getActionsRemaining()
->>>>>>> upstream/master
 	{
 		final XpAction action = getXpAction(actionType);
 
 		if (action.isActionsHistoryInitialized())
 		{
-<<<<<<< HEAD
-			long xpRemaining = getXpRemaining() * actionExps.length;
-<<<<<<< HEAD
-			long actionExp = 0;
-
-			for (int i = 0; i < actionExps.length; i++)
-			{
-				actionExp += actionExps[i];
-			}
-
-			// Let's not divide by zero (or negative)
-			if (actionExp > 0)
-			{
-				// Make sure to account for the very last action at the end
-				long remainder = xpRemaining % actionExp;
-				long quotient = xpRemaining / actionExp;
-=======
-=======
 			long xpRemaining = getXpRemaining() * action.getActionExps().length;
->>>>>>> upstream/master
 			long totalActionXp = 0;
 
 			for (int actionXp : action.getActionExps())
@@ -199,7 +109,6 @@ class XpStateSingle
 				// Make sure to account for the very last action at the end
 				long remainder = xpRemaining % totalActionXp;
 				long quotient = xpRemaining / totalActionXp;
->>>>>>> upstream/master
 				return Math.toIntExact(quotient + (remainder > 0 ? 1 : 0));
 			}
 		}
@@ -207,33 +116,7 @@ class XpStateSingle
 		return Integer.MAX_VALUE;
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	int getSkillProgress()
-	{
-		int currentXp = startXp + xpGained;
-
-		double xpGained = currentXp - startLevelExp;
-		double xpGoal = nextLevelExp - startLevelExp;
-		return (int) ((xpGained / xpGoal) * 100);
-	}
-
-	String getTimeTillLevel()
-	{
-		if (getXpSec() > 0)
-		{
-			return LocalTime.MIN.plusSeconds( getXpRemaining() / getXpSec() ).toString();
-		}
-		return "\u221e";
-	}
-
-
-	boolean update(int currentXp)
-=======
-	private int getSkillProgress()
-=======
 	private double getSkillProgress()
->>>>>>> upstream/master
 	{
 		double xpGained = getCurrentXp() - startLevelExp;
 		double xpGoal = endLevelExp - startLevelExp;
@@ -287,12 +170,7 @@ class XpStateSingle
 		return toHourly(xpGained);
 	}
 
-<<<<<<< HEAD
-	boolean update(int currentXp, int goalStartXp, int goalEndXp)
->>>>>>> upstream/master
-=======
 	boolean update(long currentXp, int goalStartXp, int goalEndXp)
->>>>>>> upstream/master
 	{
 		if (startXp == -1)
 		{
@@ -303,10 +181,7 @@ class XpStateSingle
 		long originalXp = xpGained + startXp;
 		int actionExp = (int) (currentXp - originalXp);
 
-<<<<<<< HEAD
-=======
 		// No experience gained
->>>>>>> upstream/master
 		if (actionExp == 0)
 		{
 			return false;
@@ -331,26 +206,8 @@ class XpStateSingle
 			action.setActionsHistoryInitialized(true);
 		}
 
-<<<<<<< HEAD
-		actionExpIndex = (actionExpIndex + 1) % actionExps.length;
-<<<<<<< HEAD
-
-		actions++;
-		xpGained = currentXp - startXp;
-		startLevelExp = Experience.getXpForLevel(Experience.getLevelForXp(currentXp));
-
-		int currentLevel = Experience.getLevelForXp(currentXp);
-
-		level = currentLevel;
-
-		nextLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL ? Experience.getXpForLevel(currentLevel + 1) : -1;
-
-=======
-		actions++;
-=======
 		action.setActionExpIndex((action.getActionExpIndex() + 1) % action.getActionExps().length);
 		action.setActions(action.getActions() + 1);
->>>>>>> upstream/master
 
 		// Calculate experience gained
 		xpGained = (int) (currentXp - startXp);
@@ -380,11 +237,6 @@ class XpStateSingle
 			}
 		}
 
-<<<<<<< HEAD
-		// If this is first time we are updating, we just started tracking
->>>>>>> upstream/master
-		if (skillTimeStart == null)
-=======
 		return true;
 	}
 
@@ -392,7 +244,6 @@ class XpStateSingle
 	{
 		// Don't tick skills that have not gained XP or have been reset.
 		if (xpGained <= 0)
->>>>>>> upstream/master
 		{
 			return;
 		}
@@ -402,27 +253,14 @@ class XpStateSingle
 	XpSnapshotSingle snapshot()
 	{
 		return XpSnapshotSingle.builder()
-<<<<<<< HEAD
-			.currentLevel(getLevel())
-			.xpGainedInSession(getXpGained())
-			.xpRemainingToGoal(getXpRemaining())
-			.xpPerHour(getXpHr())
-			.skillProgressToGoal(getSkillProgress())
-			.actionsInSession(getActions())
-=======
 			.startLevel(Experience.getLevelForXp(startLevelExp))
 			.endLevel(Experience.getLevelForXp(endLevelExp))
 			.xpGainedInSession(xpGained)
 			.xpRemainingToGoal(getXpRemaining())
 			.xpPerHour(getXpHr())
 			.skillProgressToGoal(getSkillProgress())
-<<<<<<< HEAD
-			.actionsInSession(actions)
->>>>>>> upstream/master
-=======
 			.actionType(actionType)
 			.actionsInSession(getXpAction(actionType).getActions())
->>>>>>> upstream/master
 			.actionsRemainingToGoal(getActionsRemaining())
 			.actionsPerHour(getActionsHr())
 			.timeTillGoal(getTimeTillLevel())

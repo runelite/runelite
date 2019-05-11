@@ -26,34 +26,6 @@ package net.runelite.client.plugins.puzzlesolver.lightbox;
 
 import lombok.EqualsAndHashCode;
 
-<<<<<<< HEAD:runelite-api/src/main/java/net/runelite/api/events/ActorSpawned.java
-<<<<<<< HEAD
-public interface ActorSpawned
-{
-=======
-/**
- * Represents the base event where an {@link Actor} has spawned.
- * <p>
- * To hook into a more focused actor type, see the {@link PlayerSpawned}
- * or {@link NpcSpawned} events.
- * <p>
- * Examples of when this event may trigger include:
- * <ul>
- *     <li>Entering a new region or area with actors inside</li>
- *     <li>A player logging in nearby</li>
- *     <li>An actor moving into render distance</li>
- * </ul>
- */
-public interface ActorSpawned
-{
-	/**
-	 * Gets the spawned player or NPC.
-	 *
-	 * @return spawned entity
-	 */
->>>>>>> upstream/master
-	Actor getActor();
-=======
 @EqualsAndHashCode
 public class LightboxState
 {
@@ -83,5 +55,4 @@ public class LightboxState
 
 		return newState;
 	}
->>>>>>> upstream/master:runelite-client/src/main/java/net/runelite/client/plugins/puzzlesolver/lightbox/LightboxState.java
 }

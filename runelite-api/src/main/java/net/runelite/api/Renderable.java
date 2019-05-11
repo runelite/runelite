@@ -24,10 +24,6 @@
  */
 package net.runelite.api;
 
-<<<<<<< HEAD
-public interface Renderable extends Node
-{
-=======
 /**
  * Represents an object that can be rendered.
  */
@@ -38,7 +34,6 @@ public interface Renderable extends Node
 	 *
 	 * @return the model
 	 */
->>>>>>> upstream/master
 	Model getModel();
 
 	void setModelHeight(int modelHeight);

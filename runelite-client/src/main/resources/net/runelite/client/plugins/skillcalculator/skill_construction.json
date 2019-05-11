@@ -764,15 +764,12 @@
     },
     {
       "level": 59,
-<<<<<<< HEAD
-=======
       "icon": 8154,
       "name": "Limestone attack stone",
       "xp": 200
     },
     {
       "level": 59,
->>>>>>> upstream/master
       "icon": 8343,
       "name": "Lunar Globe",
       "xp": 570
@@ -851,15 +848,12 @@
     },
     {
       "level": 66,
-<<<<<<< HEAD
-=======
       "icon": 20649,
       "name": "Teak Garden Bench",
       "xp": 540
     },
     {
       "level": 66,
->>>>>>> upstream/master
       "icon": 8353,
       "name": "Crystal of Power",
       "xp": 890

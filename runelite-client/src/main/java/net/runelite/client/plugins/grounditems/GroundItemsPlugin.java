@@ -477,19 +477,6 @@ public class GroundItemsPlugin extends Plugin
 				current = current.getNext();
 			}
 
-<<<<<<< HEAD
-			ItemPrice itemPrice = getItemPrice(itemComposition);
-<<<<<<< HEAD
-			int price = itemPrice == null ? itemComposition.getPrice() : itemPrice.getPrice();
-=======
-			int price = itemPrice == null ? (int)Math.floor(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) : itemPrice.getPrice();
->>>>>>> upstream/master
-			int cost = quantity * price;
-			Color color = overlay.getCostColor(cost, isHighlighted(itemComposition.getName()),
-				isHidden(itemComposition.getName()));
-
-			if (!color.equals(config.defaultColor()))
-=======
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
 			final int itemPrice = itemManager.getItemPrice(realItemId);
@@ -502,7 +489,6 @@ public class GroundItemsPlugin extends Plugin
 			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
 
 			if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
->>>>>>> upstream/master
 			{
 				final MenuHighlightMode mode = config.menuHighlightMode();
 

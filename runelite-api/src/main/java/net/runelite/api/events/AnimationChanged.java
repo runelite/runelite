@@ -27,11 +27,6 @@ package net.runelite.api.events;
 import lombok.Data;
 import net.runelite.api.Actor;
 
-<<<<<<< HEAD
-@Data
-public class AnimationChanged
-{
-=======
 /**
  * An event where the {@link Actor} has changed animations.
  * <p>
@@ -51,6 +46,5 @@ public class AnimationChanged
 	/**
 	 * The actor that has entered a new animation.
 	 */
->>>>>>> upstream/master
 	private Actor actor;
 }

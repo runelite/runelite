@@ -68,15 +68,9 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
-<<<<<<< HEAD
-=======
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-<<<<<<< HEAD
->>>>>>> upstream/master
-=======
 import net.runelite.client.callback.ClientThread;
->>>>>>> upstream/master
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -142,18 +136,10 @@ public class MotherlodePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Integer depositsLeft;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	private final MotherlodeSession session = new MotherlodeSession();
-=======
-	private MotherlodeSession session;
->>>>>>> upstream/master
-=======
 	@Inject
 	private MotherlodeSession session;
 	private boolean shouldUpdateOres;
 	private Multiset<Integer> inventorySnapshot;
->>>>>>> upstream/master
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> veins = new HashSet<>();
@@ -169,44 +155,28 @@ public class MotherlodePlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		inMlm = checkInMlm();
-=======
-		session = new MotherlodeSession();
-=======
 		overlayManager.add(overlay);
 		overlayManager.add(rocksOverlay);
 		overlayManager.add(motherlodeGemOverlay);
 		overlayManager.add(motherlodeOreOverlay);
 		overlayManager.add(motherlodeSackOverlay);
 
->>>>>>> upstream/master
 		inMlm = checkInMlm();
 
 		if (inMlm)
 		{
 			clientThread.invokeLater(this::refreshSackValues);
 		}
->>>>>>> upstream/master
 	}
 
 	@Override
 	protected void shutDown()
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-		veins.clear();
-		rocks.clear();
-=======
-		session = null;
-=======
 		overlayManager.remove(overlay);
 		overlayManager.remove(rocksOverlay);
 		overlayManager.remove(motherlodeGemOverlay);
 		overlayManager.remove(motherlodeOreOverlay);
 		overlayManager.remove(motherlodeSackOverlay);
->>>>>>> upstream/master
 		veins.clear();
 		rocks.clear();
 
@@ -214,22 +184,11 @@ public class MotherlodePlugin extends Plugin
 
 		clientThread.invokeLater(() ->
 		{
-<<<<<<< HEAD
-			sack.setHidden(false);
-		}
->>>>>>> upstream/master
-	}
-
-	public MotherlodeSession getSession()
-	{
-		return session;
-=======
 			if (sack != null && sack.isHidden())
 			{
 				sack.setHidden(false);
 			}
 		});
->>>>>>> upstream/master
 	}
 
 	@Subscribe
@@ -237,15 +196,6 @@ public class MotherlodePlugin extends Plugin
 	{
 		if (inMlm)
 		{
-<<<<<<< HEAD
-<<<<<<< HEAD
-			curSackSize = client.getVar(Varbits.SACK_NUMBER);
-			boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
-			maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
-=======
-			refreshSackValues();
->>>>>>> upstream/master
-=======
 			int lastSackValue = curSackSize;
 			refreshSackValues();
 			shouldUpdateOres = curSackSize < lastSackValue;
@@ -261,7 +211,6 @@ public class MotherlodePlugin extends Plugin
 						.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
 				}
 			}
->>>>>>> upstream/master
 		}
 	}
 
@@ -531,8 +480,6 @@ public class MotherlodePlugin extends Plugin
 		return true;
 	}
 
-<<<<<<< HEAD
-=======
 	private void refreshSackValues()
 	{
 		curSackSize = client.getVar(Varbits.SACK_NUMBER);
@@ -540,7 +487,6 @@ public class MotherlodePlugin extends Plugin
 		maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
 	}
 
->>>>>>> upstream/master
 	/**
 	 * Checks if the given point is "upstairs" in the mlm.
 	 * The upper floor is actually on z=0.

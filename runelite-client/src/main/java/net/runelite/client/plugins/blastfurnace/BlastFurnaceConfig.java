@@ -33,21 +33,14 @@ public interface BlastFurnaceConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showConveyorBelt",
-<<<<<<< HEAD
-		name = "Show Conveyor belt clickbox",
-		description = "Configures whether or not the clickbox for the conveyor belt is displayed"
-=======
 		name = "Show conveyor belt clickbox",
 		description = "Configures whether or not the clickbox for the conveyor belt is displayed",
 		position = 1
->>>>>>> upstream/master
 	)
 	default boolean showConveyorBelt()
 	{
 		return false;
 	}
-<<<<<<< HEAD
-=======
 
 	@ConfigItem(
 		keyName = "showBarDispenser",
@@ -59,5 +52,4 @@ public interface BlastFurnaceConfig extends Config
 	{
 		return false;
 	}
->>>>>>> upstream/master
 }
