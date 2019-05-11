@@ -10,6 +10,7 @@ class DpsMember
 {
 	private final String name;
 	private Instant start = Instant.now();
+	private Instant end;
 	private int damage;
 
 	void addDamage(int amount)
@@ -17,10 +18,20 @@ class DpsMember
 		damage += amount;
 	}
 
-	int getDps()
+	float getDps()
 	{
-		int diff = (int) (Instant.now().toEpochMilli() - start.toEpochMilli()) / 1000;
-		if (diff == 0) return 0;
-		return (int) ((float) damage / (float) diff);
+		Instant now = end == null ? Instant.now() : end;
+		int diff = (int) (now.toEpochMilli() - start.toEpochMilli()) / 1000;
+		if (diff == 0)
+		{
+			return 0;
+		}
+
+		return (float) damage / (float) diff;
+	}
+
+	void pause()
+	{
+		end = Instant.now();
 	}
 }

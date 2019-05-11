@@ -1,19 +1,24 @@
 package net.runelite.client.plugins.dpscounter;
 
-import com.google.inject.Binder;
 import com.google.inject.Inject;
+import com.google.inject.Provides;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -24,8 +29,8 @@ import net.runelite.client.ws.WSClient;
 @PluginDescriptor(
 	name = "DPS Counter",
 	description = "counts dps?"
-//
 )
+@Slf4j
 public class DpsCounterPlugin extends Plugin
 {
 	private int lastXp = -1;
@@ -50,10 +55,10 @@ public class DpsCounterPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<String, DpsMember> members = new ConcurrentHashMap<>();
 
-	@Override
-	public void configure(Binder binder)
+	@Provides
+	DpsConfig provideConfig(ConfigManager configManager)
 	{
-		//super.configure(binder);
+		return configManager.getConfig(DpsConfig.class);
 	}
 
 	@Override
@@ -61,7 +66,6 @@ public class DpsCounterPlugin extends Plugin
 	{
 		overlayManager.add(dpsOverlay);
 		wsClient.registerMessage(DpsUpdate.class);
-		//super.startUp();
 	}
 
 	@Override
@@ -70,25 +74,28 @@ public class DpsCounterPlugin extends Plugin
 		wsClient.unregisterMessage(DpsUpdate.class);
 		overlayManager.remove(dpsOverlay);
 		boss = null;
-		//super.shutDown();
 	}
 
 	@Subscribe
-	public void onInteractingChanged(InteractingChanged interactingChanged) {
+	public void onInteractingChanged(InteractingChanged interactingChanged)
+	{
 		Actor source = interactingChanged.getSource();
 		Actor target = interactingChanged.getTarget();
 
-		if (source != client.getLocalPlayer()) {
+		if (source != client.getLocalPlayer())
+		{
 			return;
 		}
 
-		if (target instanceof NPC) {
+		if (target instanceof NPC)
+		{
 			int npcId = ((NPC) target).getId();
 			Boss boss = Boss.findBoss(npcId);
-			if (boss != null) {
+			if (boss != null)
+			{
 				this.boss = boss;
 				npc = (NPC) target;
-			//	boss = Boss.ABYSSAL_SIRE;
+				//	boss = Boss.ABYSSAL_SIRE;
 			}
 		}
 	}
@@ -110,7 +117,6 @@ public class DpsCounterPlugin extends Plugin
 
 		final int delta = xp - lastXp;
 		final int hit = getHit(boss.getModifier(), delta);
-//		final int hit = getHit(1.0f, delta);
 		lastXp = xp;
 
 		// Update local member
@@ -120,7 +126,6 @@ public class DpsCounterPlugin extends Plugin
 		final String name = localMember == null ? player.getName() : localMember.getName();
 		DpsMember dpsMember = members.computeIfAbsent(name, n -> new DpsMember(name));
 		dpsMember.addDamage(hit);
-//		System.out.println("HIT "+ hit);
 
 		if (hit > 0 && !partyService.getMembers().isEmpty())
 		{
@@ -135,7 +140,8 @@ public class DpsCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onDpsUpdate(DpsUpdate dpsUpdate) {
+	public void onDpsUpdate(DpsUpdate dpsUpdate)
+	{
 		if (partyService.getLocalMember().getMemberId().equals(dpsUpdate.getMemberId()))
 		{
 			return;
@@ -147,9 +153,36 @@ public class DpsCounterPlugin extends Plugin
 			return;
 		}
 
+		// Hmm - not attacking the same boss I am
+		if (npc == null || dpsUpdate.getNpcId() != npc.getId())
+		{
+			return;
+		}
+
 		DpsMember dpsMember = members.computeIfAbsent(name, DpsMember::new);
 		dpsMember.addDamage(dpsUpdate.getHit());
+	}
 
+	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked event)
+	{
+		if (event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
+			event.getEntry().getTarget().equals("Reset") &&
+			event.getEntry().getOption().equals("DPS counter"))
+		{
+			members.clear();
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned npcDespawned)
+	{
+		if (npc == null || npcDespawned.getNpc() != npc || !npc.isDead())
+		{
+			return;
+		}
+
+		log.debug("Boss has died!");
 	}
 
 	private int getHit(float modifier, int deltaExperience)
