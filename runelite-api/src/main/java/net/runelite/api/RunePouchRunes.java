@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.runepouch;
+package net.runelite.api;
 
 
 import java.awt.image.BufferedImage;
@@ -52,7 +52,10 @@ import static net.runelite.api.ItemID.STEAM_RUNE;
 import static net.runelite.api.ItemID.WATER_RUNE;
 import static net.runelite.api.ItemID.WRATH_RUNE;
 
-public enum Runes
+/**
+ * An enumeration of runes inside the rune pouch
+ */
+public enum RunePouchRunes
 {
 	AIR(1, AIR_RUNE),
 	WATER(2, WATER_RUNE),
@@ -85,23 +88,23 @@ public enum Runes
 	@Setter
 	private BufferedImage image;
 
-	private static final Map<Integer, Runes> runes = new HashMap<>();
+	private static final Map<Integer, RunePouchRunes> runes = new HashMap<>();
 
 	static
 	{
-		for (Runes rune : values())
+		for (RunePouchRunes rune : values())
 		{
 			runes.put(rune.getId(), rune);
 		}
 	}
 
-	Runes(int id, int itemId)
+	RunePouchRunes(int id, int itemId)
 	{
 		this.id = id;
 		this.itemId = itemId;
 	}
 
-	public static Runes getRune(int varbit)
+	public static RunePouchRunes getRune(int varbit)
 	{
 		return runes.get(varbit);
 	}

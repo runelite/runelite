@@ -177,7 +177,7 @@ class BankCalculation
 					continue;
 				}
 
-				gePrice += (long) itemManager.getItemPrice(itemId) * quantity;
+				gePrice += itemManager.getItemPrice(itemId, quantity);
 			}
 		}
 	}

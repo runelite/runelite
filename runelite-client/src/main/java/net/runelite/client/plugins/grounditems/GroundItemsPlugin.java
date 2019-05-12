@@ -391,7 +391,7 @@ public class GroundItemsPlugin extends Plugin
 		}
 		else
 		{
-			groundItem.setGePrice(itemManager.getItemPrice(realItemId));
+			groundItem.setGePrice( (int) itemManager.getItemPrice(realItemId));
 		}
 
 		return groundItem;
@@ -479,7 +479,7 @@ public class GroundItemsPlugin extends Plugin
 
 			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
-			final int itemPrice = itemManager.getItemPrice(realItemId);
+			final int itemPrice = (int) itemManager.getItemPrice(realItemId);
 			final int price = itemPrice <= 0 ? itemComposition.getPrice() : itemPrice;
 			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
 			final int gePrice = quantity * price;

@@ -49,7 +49,9 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.*;
+import net.runelite.api.RunePouchRunes;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.client.callback.ClientThread;
@@ -88,6 +90,15 @@ public class ItemManager
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
 	private final LoadingCache<Integer, ItemComposition> itemCompositions;
 	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
+
+	private static final Varbits[] AMOUNT_VARBITS =
+			{
+					Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3
+			};
+	private static final Varbits[] RUNE_VARBITS =
+			{
+					Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
+			};
 
 	// Worn items with weight reducing property have a different worn and inventory ItemID
 	private static final ImmutableMap<Integer, Integer> WORN_ITEMS = ImmutableMap.<Integer, Integer>builder().
@@ -265,14 +276,21 @@ public class ItemManager
 		itemCompositions.invalidateAll();
 	}
 
+	public long getItemPrice(int itemID)
+	{
+		return getItemPrice(itemID,  1);
+	}
+
 	/**
 	 * Look up an item's price
 	 *
 	 * @param itemID item id
+	 * @param quantity quantity
 	 * @return item price
 	 */
-	public int getItemPrice(int itemID)
+	public long getItemPrice(int itemID, int quantity)
 	{
+		assert client.isClientThread() : "getItemPrice must be called on client thread";
 		if (itemID == ItemID.COINS_995)
 		{
 			return 1;
@@ -281,11 +299,34 @@ public class ItemManager
 		{
 			return 1000;
 		}
+		if (itemID == RUNE_POUCH)
+		{
+			int pouchPrice = 0;
+			for (int i = 0; i < AMOUNT_VARBITS.length; i++)
+			{
+				Varbits amountVarbit = AMOUNT_VARBITS[i];
+				int amount = client.getVar(amountVarbit);
+				if (amount <= 0)
+				{
+					continue;
+				}
+				Varbits runeVarbit = RUNE_VARBITS[i];
+				int runeId = client.getVar(runeVarbit);
+				int runeQty = client.getVar(amountVarbit);
+				RunePouchRunes rune = RunePouchRunes.getRune(runeId);
+				if (rune == null)
+				{
+					continue;
+				}
+					pouchPrice += getItemPrice(rune.getItemId(), runeQty);
+			}
+			return pouchPrice;
+		}
 
 		UntradeableItemMapping p = UntradeableItemMapping.map(ItemVariationMapping.map(itemID));
 		if (p != null)
 		{
-			return getItemPrice(p.getPriceID()) * p.getQuantity();
+			return getItemPrice(p.getPriceID(), p.getQuantity() * quantity);
 		}
 
 		int price = 0;
@@ -297,8 +338,7 @@ public class ItemManager
 				price += ip.getPrice();
 			}
 		}
-
-		return price;
+		return (long) price * quantity;
 	}
 
 	/**
