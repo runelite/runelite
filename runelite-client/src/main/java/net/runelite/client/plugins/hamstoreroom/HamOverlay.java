@@ -26,12 +26,6 @@ package net.runelite.client.plugins.hamstoreroom;
 
 import java.awt.Color;
 import net.runelite.api.Client;
-import net.runelite.api.GameObject;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.ObjectID;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -46,10 +40,10 @@ class HamOverlay extends Overlay
 	private final Client client;
 	private final HamPlugin hamPlugin;
 
-	private boolean drawSteel = false;
-	private boolean drawIron = false;
-	private boolean drawSilver = false;
-	private boolean drawBronze = false;
+	public boolean drawSteel = false;
+	public boolean drawIron = false;
+	public boolean drawSilver = false;
+	public boolean drawBronze = false;
 
 	@Inject
 	private HamOverlay(Client client, HamPlugin hamPlugin)
@@ -72,29 +66,7 @@ class HamOverlay extends Overlay
 		drawSilver = false;
 		drawBronze = false;
 
-		ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
 
-		if (itemContainer != null)
-		{
-			for (Item item : itemContainer.getItems())
-			{
-				switch (item.getId())
-				{
-					case ItemID.STEEL_KEY:
-						drawSteel = true;
-						break;
-					case ItemID.IRON_KEY_8869:
-						drawIron = true;
-						break;
-					case ItemID.SILVER_KEY:
-						drawSilver = true;
-						break;
-					case ItemID.BRONZE_KEY_8867:
-						drawBronze = true;
-						break;
-				}
-			}
-		}
 		if (hamPlugin.steelObject.getCanvasTilePoly() != null)
 		{
 			OverlayUtil.renderPolygon(graphics, hamPlugin.steelObject.getCanvasTilePoly(), drawSteel ? Color.GREEN.brighter() : Color.RED.brighter());
@@ -112,28 +84,6 @@ class HamOverlay extends Overlay
 			OverlayUtil.renderPolygon(graphics, hamPlugin.bronzeObject.getCanvasTilePoly(), drawBronze ? Color.GREEN.brighter() : Color.RED.brighter());
 		}
 		return null;
-	}
-
-	public void check(GameObject object)
-	{
-		switch (object.getId())
-		{
-			case ObjectID.SMALL_CHEST:
-				if (object.getY() < 8000)
-				{
-					hamPlugin.steelObject = object;
-				}
-				break;
-			case ObjectID.SMALL_CHEST_15726:
-				hamPlugin.ironObject = object;
-				break;
-			case ObjectID.SMALL_CHEST_15724:
-				hamPlugin.silverObject = object;
-				break;
-			case ObjectID.SMALL_CHEST_15723:
-				hamPlugin.bronzeObject = object;
-				break;
-		}
 	}
 
 

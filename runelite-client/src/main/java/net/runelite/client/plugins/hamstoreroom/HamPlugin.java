@@ -24,8 +24,14 @@
  */
 package net.runelite.client.plugins.hamstoreroom;
 
+import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemID;
+import net.runelite.api.ObjectID;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -38,7 +44,6 @@ import javax.inject.Inject;
 	description = "Show green / red overlays on chests in H.A.M store room, depending on the keys you have",
 	tags = {"overlay"}
 )
-
 public class HamPlugin extends Plugin
 {
 	@Inject
@@ -46,6 +51,9 @@ public class HamPlugin extends Plugin
 
 	@Inject
 	private HamOverlay hamOverlay;
+
+	@Inject
+	private Client client;
 
 	public GameObject steelObject;
 	public GameObject ironObject;
@@ -64,7 +72,56 @@ public class HamPlugin extends Plugin
 		GameObject object = event.getGameObject();
 		if (object != null)
 		{
-			hamOverlay.check(object);
+			check(object);
+		}
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		{
+			return;
+		}
+			for (Item item : event.getItemContainer().getItems())
+			{
+				switch (item.getId())
+				{
+					case ItemID.STEEL_KEY:
+						hamOverlay.drawSteel = true;
+						break;
+					case ItemID.IRON_KEY_8869:
+						hamOverlay.drawIron = true;
+						break;
+					case ItemID.SILVER_KEY:
+						hamOverlay.drawSilver = true;
+						break;
+					case ItemID.BRONZE_KEY_8867:
+						hamOverlay.drawBronze = true;
+						break;
+				}
+			}
+	}
+
+	public void check(GameObject object)
+	{
+		switch (object.getId())
+		{
+			case ObjectID.SMALL_CHEST:
+				if (object.getY() < 8000)
+				{
+					steelObject = object;
+				}
+				break;
+			case ObjectID.SMALL_CHEST_15726:
+				ironObject = object;
+				break;
+			case ObjectID.SMALL_CHEST_15724:
+				silverObject = object;
+				break;
+			case ObjectID.SMALL_CHEST_15723:
+				bronzeObject = object;
+				break;
 		}
 	}
 
