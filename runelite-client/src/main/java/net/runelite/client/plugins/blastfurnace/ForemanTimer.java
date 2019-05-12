@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, DennisDeV <https://github.com/DevDennis>
+ * Copyright (c) 2019, Brandon White <bmwqg@live.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.antidrag;
+package net.runelite.client.plugins.blastfurnace;
 
-import net.runelite.api.Constants;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.time.temporal.ChronoUnit;
+import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.infobox.Timer;
 
-@ConfigGroup("antiDrag")
-public interface AntiDragConfig extends Config
+class ForemanTimer extends Timer
 {
-	@ConfigItem(
-		keyName = "dragDelay",
-		name = "Drag Delay",
-		description = "Configures the inventory drag delay in client ticks (20ms)",
-		position = 1
-	)
-	default int dragDelay()
+	private static final String TOOLTIP_TEXT = "Foreman Fee";
+
+	ForemanTimer(BlastFurnacePlugin plugin, ItemManager itemManager)
 	{
-		return Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH; // one game tick
+		super(10, ChronoUnit.MINUTES, itemManager.getImage(ItemID.COAL_BAG), plugin);
+
+		setTooltip(TOOLTIP_TEXT);
 	}
 }

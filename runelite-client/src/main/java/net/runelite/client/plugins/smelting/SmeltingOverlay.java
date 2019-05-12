@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Joris K <kjorisje@gmail.com>
- * Copyright (c) 2018, Lasse <cronick@zytex.dk>
+ * Copyright (c) 2019, Stephen <stepzhu@umich.edu>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,17 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cooking;
+package net.runelite.client.plugins.smelting;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
-import static net.runelite.api.AnimationID.COOKING_FIRE;
-import static net.runelite.api.AnimationID.COOKING_RANGE;
+import static net.runelite.api.AnimationID.SMITHING_CANNONBALL;
+import static net.runelite.api.AnimationID.SMITHING_SMELTING;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
@@ -46,33 +44,31 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class CookingOverlay extends Overlay
+class SmeltingOverlay extends Overlay
 {
-	private static final int COOK_TIMEOUT = 3;
-	private static final DecimalFormat FORMAT = new DecimalFormat("#.#");
+	private static final int SMELT_TIMEOUT = 5;
 
 	private final Client client;
-	private final CookingPlugin plugin;
-	private final CookingConfig config;
+	private final SmeltingPlugin plugin;
 	private final XpTrackerService xpTrackerService;
+
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private CookingOverlay(Client client, CookingPlugin plugin, CookingConfig config, XpTrackerService xpTrackerService)
+	SmeltingOverlay(Client client, SmeltingPlugin plugin, XpTrackerService xpTrackerService)
 	{
 		super(plugin);
-		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 		this.xpTrackerService = xpTrackerService;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Cooking overlay"));
+		setPosition(OverlayPosition.TOP_LEFT);
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Smelting overlay"));
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		CookingSession session = plugin.getCookingSession();
+		SmeltingSession session = plugin.getSession();
 		if (session == null)
 		{
 			return null;
@@ -80,40 +76,57 @@ class CookingOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 
-		if (isCooking() || Duration.between(session.getLastCookingAction(), Instant.now()).getSeconds() < COOK_TIMEOUT)
+		if (isSmelting() || Duration.between(session.getLastItemSmelted(), Instant.now()).getSeconds() < SMELT_TIMEOUT)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("Cooking")
-				.color(Color.GREEN)
-				.build());
+					.text("Smelting")
+					.color(Color.GREEN)
+					.build());
 		}
 		else
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
-				.text("NOT cooking")
-				.color(Color.RED)
-				.build());
+					.text("NOT smelting")
+					.color(Color.RED)
+					.build());
 		}
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Cooked:")
-			.right(session.getCookAmount() + (session.getCookAmount() >= 1 ? " (" + xpTrackerService.getActionsHr(Skill.COOKING) + "/hr)" : ""))
-			.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Burnt:")
-			.right(session.getBurnAmount() + (session.getBurnAmount() >= 1 ? " (" + FORMAT.format(session.getBurntPercentage()) + "%)" : ""))
-			.build());
+		int actions = xpTrackerService.getActions(Skill.SMITHING);
+		if (actions > 0)
+		{
+			if (plugin.getSession().getBarsSmelted() > 0)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+						.left("Bars:")
+						.right(Integer.toString(session.getBarsSmelted()))
+						.build());
+			}
+			if (plugin.getSession().getCannonBallsSmelted() > 0)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+						.left("Cannonballs:")
+						.right(Integer.toString(session.getCannonBallsSmelted()))
+						.build());
+			}
+			if (actions > 2)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+						.left("Actions/hr:")
+						.right(Integer.toString(xpTrackerService.getActionsHr(Skill.SMITHING)))
+						.build());
+			}
+		}
 
 		return panelComponent.render(graphics);
+
 	}
 
-	private boolean isCooking()
+	private boolean isSmelting()
 	{
 		switch (client.getLocalPlayer().getAnimation())
 		{
-			case COOKING_FIRE:
-			case COOKING_RANGE:
+			case SMITHING_SMELTING:
+			case SMITHING_CANNONBALL:
 				return true;
 			default:
 				return false;

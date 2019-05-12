@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Stephen <stepzhu@umich.edu>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cooking;
+package net.runelite.client.plugins.smelting;
 
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
@@ -33,9 +33,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.when;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,33 +40,21 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CookingPluginTest
+public class SmeltingPluginTest
 {
-	private static final String[] COOKING_MESSAGES = {
-		"You successfully cook a shark.",
-		"You successfully cook an anglerfish.",
-		"You manage to cook a tuna.",
-		"You cook the karambwan. It looks delicious.",
-		"You roast a lobster.",
-		"You cook a bass.",
-		"You squeeze the grapes into the jug. The wine begins to ferment.",
-		"You successfully bake a tasty garden pie."
-	};
+	private static final String SMELT_CANNONBALL = "You remove the cannonballs from the mould";
+	private static final String SMELT_BAR = "You retrieve a bar of steel.";
 
 	@Inject
-	CookingPlugin cookingPlugin;
+	SmeltingPlugin smeltingPlugin;
 
 	@Mock
 	@Bind
-	CookingConfig config;
+	SmeltingConfig config;
 
 	@Mock
 	@Bind
-	CookingOverlay cookingOverlay;
-
-	@Mock
-	@Bind
-	FermentTimerOverlay fermentTimerOverlay;
+	SmeltingOverlay smeltingOverlay;
 
 	@Mock
 	@Bind
@@ -82,38 +67,24 @@ public class CookingPluginTest
 	}
 
 	@Test
-	public void testOnChatMessage()
+	public void testCannonballs()
 	{
-		for (String message : COOKING_MESSAGES)
-		{
-			ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", message, "", 0);
-			cookingPlugin.onChatMessage(chatMessage);
-		}
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", SMELT_CANNONBALL, "", 0);
+		smeltingPlugin.onChatMessage(chatMessage);
 
-		CookingSession cookingSession = cookingPlugin.getCookingSession();
-		assertNotNull(cookingSession);
-		assertEquals(COOKING_MESSAGES.length, cookingSession.getCookAmount());
+		SmeltingSession smeltingSession = smeltingPlugin.getSession();
+		assertNotNull(smeltingSession);
+		assertEquals(4, smeltingSession.getCannonBallsSmelted());
 	}
 
 	@Test
-	public void testFermentTimerOnChatMessage()
+	public void testBars()
 	{
-		when(config.fermentTimer()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", COOKING_MESSAGES[6], "", 0);
-		cookingPlugin.onChatMessage(chatMessage);
-		FermentTimerSession fermentTimerSession = cookingPlugin.getFermentTimerSession();
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", SMELT_BAR, "", 0);
+		smeltingPlugin.onChatMessage(chatMessage);
 
-		assertNotNull(fermentTimerSession);
-	}
-
-	@Test
-	public void testFermentTimerOnChatMessage_pluginDisabled()
-	{
-		when(config.fermentTimer()).thenReturn(false);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", COOKING_MESSAGES[6], "", 0);
-		cookingPlugin.onChatMessage(chatMessage);
-		FermentTimerSession fermentTimerSession = cookingPlugin.getFermentTimerSession();
-
-		assertNull(fermentTimerSession);
+		SmeltingSession smeltingSession = smeltingPlugin.getSession();
+		assertNotNull(smeltingSession);
+		assertEquals(1, smeltingSession.getBarsSmelted());
 	}
 }

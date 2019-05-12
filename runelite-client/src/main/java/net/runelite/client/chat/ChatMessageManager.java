@@ -548,8 +548,14 @@ public class ChatMessageManager
 	{
 		if (!queuedMessages.isEmpty())
 		{
-			queuedMessages.forEach(this::add);
-			queuedMessages.clear();
+			try
+			{
+				queuedMessages.forEach(this::add);
+			}
+			finally
+			{
+				queuedMessages.clear();
+			}
 		}
 	}
 

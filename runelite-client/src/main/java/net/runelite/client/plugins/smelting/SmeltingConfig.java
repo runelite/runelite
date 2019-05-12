@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, DennisDeV <https://github.com/DevDennis>
+ * Copyright (c) 2019, Stephen <stepzhu@umich.edu>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.antidrag;
+package net.runelite.client.plugins.smelting;
 
-import net.runelite.api.Constants;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("antiDrag")
-public interface AntiDragConfig extends Config
+@ConfigGroup("smelting")
+public interface SmeltingConfig extends Config
 {
 	@ConfigItem(
-		keyName = "dragDelay",
-		name = "Drag Delay",
-		description = "Configures the inventory drag delay in client ticks (20ms)",
-		position = 1
+		position = 1,
+		keyName = "statTimeout",
+		name = "Reset stats (minutes)",
+		description = "The time it takes for the current smelting session to be reset"
 	)
-	default int dragDelay()
+	default int statTimeout()
 	{
-		return Constants.GAME_TICK_LENGTH / Constants.CLIENT_TICK_LENGTH; // one game tick
+		return 5;
 	}
 }

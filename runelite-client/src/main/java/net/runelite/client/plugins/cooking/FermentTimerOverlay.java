@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2019, Lucas C <lucas1757@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,71 +22,80 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.blastfurnace;
+package net.runelite.client.plugins.cooking;
 
+import com.google.inject.Inject;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import javax.inject.Inject;
+import java.time.Duration;
+import java.time.Instant;
+import lombok.extern.slf4j.Slf4j;
+import static net.runelite.api.AnimationID.COOKING_WINE;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.ComponentOrientation;
-import net.runelite.client.ui.overlay.components.ImageComponent;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class BlastFurnaceOverlay extends Overlay
+@Slf4j
+class FermentTimerOverlay extends Overlay
 {
+	private static final int INITIAL_TIME = 12;
+
 	private final Client client;
-	private final BlastFurnacePlugin plugin;
-	private final PanelComponent imagePanelComponent = new PanelComponent();
+	private final CookingPlugin plugin;
+	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private ItemManager itemManager;
-
-	@Inject
-	BlastFurnaceOverlay(Client client, BlastFurnacePlugin plugin)
+	private FermentTimerOverlay(final Client client, final CookingPlugin plugin)
 	{
 		super(plugin);
-		this.plugin = plugin;
-		this.client = client;
 		setPosition(OverlayPosition.TOP_LEFT);
-		imagePanelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Blast furnace overlay"));
+		this.client = client;
+		this.plugin = plugin;
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Fermenting Timer overlay"));
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.getConveyorBelt() == null)
+		FermentTimerSession session = plugin.getFermentTimerSession();
+		if (session == null)
 		{
 			return null;
 		}
 
-		imagePanelComponent.getChildren().clear();
+		panelComponent.getChildren().clear();
 
-		for (BarsOres varbit : BarsOres.values())
+		if (isMakingWine() || Duration.between(session.getLastWineMakingAction(), Instant.now()).getSeconds() < INITIAL_TIME)
 		{
-			int amount = client.getVar(varbit.getVarbit());
-
-			if (amount == 0)
-			{
-				continue;
-			}
-
-			imagePanelComponent.getChildren().add(new ImageComponent(getImage(varbit.getItemID(), amount)));
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text("Making Wine")
+				.color(Color.GREEN)
+				.build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Ferments in: ")
+				.right(String.valueOf(INITIAL_TIME - Duration.between(session.getLastWineMakingAction(), Instant.now()).getSeconds()))
+				.build());
+		}
+		else
+		{
+			panelComponent.getChildren().add(TitleComponent.builder()
+				.text("Wine Fermented")
+				.color(Color.ORANGE)
+				.build());
 		}
 
-		return imagePanelComponent.render(graphics);
+		return panelComponent.render(graphics);
 	}
 
-	private BufferedImage getImage(int itemID, int amount)
+	private boolean isMakingWine()
 	{
-		BufferedImage image = itemManager.getImage(itemID, amount, true);
-		return image;
+		return (client.getLocalPlayer().getAnimation() == COOKING_WINE);
 	}
 }
