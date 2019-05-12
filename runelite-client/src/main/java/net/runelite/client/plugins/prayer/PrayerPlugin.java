@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -268,7 +269,7 @@ public class PrayerPlugin extends Plugin
 	{
 		long timeSinceLastTick = Duration.between(startOfLastTick, Instant.now()).toMillis();
 
-		float tickProgress = (timeSinceLastTick % 600) / 600f;
+		float tickProgress = (timeSinceLastTick % Constants.GAME_TICK_LENGTH) / (float) Constants.GAME_TICK_LENGTH;
 		return tickProgress * Math.PI;
 	}
 
