@@ -58,13 +58,13 @@ public class HamPlugin extends Plugin
 	private Client client;
 
 	@Getter(AccessLevel.PACKAGE)
-	GameObject steelObject;
+	private GameObject steelObject;
 	@Getter(AccessLevel.PACKAGE)
-	GameObject ironObject;
+	private GameObject ironObject;
 	@Getter(AccessLevel.PACKAGE)
-	GameObject silverObject;
+	private GameObject silverObject;
 	@Getter(AccessLevel.PACKAGE)
-	GameObject bronzeObject;
+	private GameObject bronzeObject;
 
 	@Getter(AccessLevel.PACKAGE)
 	boolean drawSteel = false;
