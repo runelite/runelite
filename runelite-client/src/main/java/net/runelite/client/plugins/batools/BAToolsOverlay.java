@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2018, https://runelitepl.us
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -69,59 +69,57 @@ public class BAToolsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if(config.healerCodes())
+		if(!config.healerCodes())
 		{
-			for (Healer healer : plugin.getHealers().values())
-			{
-				NPCComposition composition = healer.getNpc().getComposition();
-				Color color = composition.getCombatLevel() > 1 ? YELLOW : ORANGE;
-				if (composition.getConfigs() != null)
-				{
-					NPCComposition transformedComposition = composition.transform();
-					if (transformedComposition == null)
-					{
-						color = GRAY;
-					}
-					else
-					{
-						composition = transformedComposition;
-					}
-				}
-				int timeLeft = healer.getLastFoodTime() - (int) Duration.between(plugin.getWave_start(), Instant.now()).getSeconds();
-				timeLeft = timeLeft < 1 ? 0 : timeLeft;
+			return null;
+		}
 
-				if (healer.getFoodRemaining() > 1)
+		for (Healer healer : plugin.getHealers().values())
+		{
+			NPCComposition composition = healer.getNpc().getComposition();
+			Color color = composition.getCombatLevel() > 1 ? YELLOW : ORANGE;
+			if (composition.getConfigs() != null)
+			{
+				NPCComposition transformedComposition = composition.transform();
+				if (transformedComposition == null)
 				{
-					color = GREEN;
-				}
-				else if (healer.getFoodRemaining() == 1)
-				{
-					if (timeLeft > 0)
-					{
-						color = RED;
-					}
-					else
-					{
-						color = GREEN;
-					}
+					color = GRAY;
 				}
 				else
 				{
-					continue;
+					composition = transformedComposition;
 				}
-
-				String text = String.format("%d  %d",
-					healer.getFoodRemaining(),
-					timeLeft);
-
-
-				OverlayUtil.renderActorOverlay(graphics, healer.getNpc(), text, color);
 			}
-		}
+			int timeLeft = healer.getLastFoodTime() - (int)Duration.between(plugin.getWave_start(), Instant.now()).getSeconds();
+			timeLeft = timeLeft < 1 ? 0 : timeLeft;
 
-		if(!config.eggBoi())
-		{
-			return null;
+			if(healer.getFoodRemaining() > 1)
+			{
+				color = GREEN;
+			}
+			else if(healer.getFoodRemaining() == 1)
+			{
+				if(timeLeft > 0)
+				{
+					color = RED;
+				}
+				else
+				{
+					color = GREEN;
+				}
+			}
+			else
+			{
+				continue;
+			}
+
+			String text = String.format("%d  %d",
+				healer.getFoodRemaining(),
+				timeLeft);
+
+
+
+			OverlayUtil.renderActorOverlay(graphics, healer.getNpc(), text, color);
 		}
 		return null;
 	}

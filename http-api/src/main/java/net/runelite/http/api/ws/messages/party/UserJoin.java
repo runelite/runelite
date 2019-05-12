@@ -34,5 +34,6 @@ import net.runelite.http.api.ws.WebsocketMessage;
 public class UserJoin extends WebsocketMessage
 {
 	private final UUID memberId;
+	private final UUID partyId;
 	private final String name;
 }

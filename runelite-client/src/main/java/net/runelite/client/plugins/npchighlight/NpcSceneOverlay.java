@@ -36,6 +36,7 @@ import java.time.Instant;
 import java.util.Locale;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Perspective;
@@ -56,9 +57,6 @@ public class NpcSceneOverlay extends Overlay
 	// Anything but white text is quite hard to see since it is drawn on
 	// a dark background
 	private static final Color TEXT_COLOR = Color.WHITE;
-
-	// Estimated time of a game tick in seconds
-	private static final double ESTIMATED_TICK_LENGTH = 0.6;
 
 	private static final NumberFormat TIME_LEFT_FORMATTER = DecimalFormat.getInstance(Locale.US);
 
@@ -128,7 +126,7 @@ public class NpcSceneOverlay extends Overlay
 		}
 
 		final Instant now = Instant.now();
-		final double baseTick = ((npc.getDiedOnTick() + npc.getRespawnTime()) - client.getTickCount()) * ESTIMATED_TICK_LENGTH;
+		final double baseTick = ((npc.getDiedOnTick() + npc.getRespawnTime()) - client.getTickCount()) * (Constants.GAME_TICK_LENGTH / 1000.0);
 		final double sinceLast = (now.toEpochMilli() - plugin.getLastTickUpdate().toEpochMilli()) / 1000.0;
 		final double timeLeft = Math.max(0.0, baseTick - sinceLast);
 		final String timeLeftStr = TIME_LEFT_FORMATTER.format(timeLeft);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Cameron <https://github.com/noremac201>
+ * Copyright (c) 2018, https://runelitepl.us
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,6 +32,7 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.util.Map;
+import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,22 +45,28 @@ import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.ImageUtil;
+
 
 class BarbarianAssaultOverlay extends Overlay
 {
 	private static final int MAX_EGG_DISTANCE = 2500;
-	private final int HEALTH_BAR_HEIGHT = 20;
-	private final Color HEALTH_BAR_COLOR = new Color(225, 35, 0, 125);
-	private static final Color BACKGROUND = new Color(0, 0, 0, 150);
+    private final int HEALTH_BAR_HEIGHT = 20;
+    private final Color HEALTH_BAR_COLOR = new Color(225, 35, 0, 125);
+    private static final Color BACKGROUND = new Color(0, 0, 0, 150);
 	private static final int OFFSET_Z = 20;
 
 	private final Client client;
+	private final ItemManager itemManager;
 	private final BarbarianAssaultPlugin plugin;
 	private final BarbarianAssaultConfig config;
 
@@ -67,13 +74,15 @@ class BarbarianAssaultOverlay extends Overlay
 	@Setter
 	private Round currentRound;
 
+
 	@Inject
-	private BarbarianAssaultOverlay(Client client, BarbarianAssaultPlugin plugin, BarbarianAssaultConfig config)
+	private BarbarianAssaultOverlay(Client client, ItemManager itemManager, BarbarianAssaultPlugin plugin, BarbarianAssaultConfig config)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
+		this.itemManager = itemManager;
 		this.plugin = plugin;
 		this.config = config;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "B.A. overlay"));
@@ -115,49 +124,79 @@ class BarbarianAssaultOverlay extends Overlay
 			graphics.drawImage(plugin.getClockImage(), spriteBounds.x, spriteBounds.y, null);
 		}
 
-		if (role == Role.COLLECTOR && config.highlightCollectorEggs())
-		{
+		if (role == Role.COLLECTOR && config.highlightCollectorEggs()) {
 			String heardCall = plugin.getCollectorHeardCall();
 			Color highlightColor = BarbarianAssaultPlugin.getEggColor(heardCall);
 			Map<WorldPoint, Integer> calledEggMap = plugin.getCalledEggMap();
 			Map<WorldPoint, Integer> yellowEggMap = plugin.getYellowEggs();
 
-			if (calledEggMap != null)
-			{
+			if (calledEggMap != null) {
 				renderEggLocations(graphics, calledEggMap, highlightColor);
 			}
 
 			// Always show yellow eggs
 			renderEggLocations(graphics, yellowEggMap, Color.YELLOW);
 		}
-		if (role == Role.HEALER)
-		{
-			for (HealerTeam teammate : HealerTeam.values())
-			{
-				Widget widget = client.getWidget(teammate.getTeammate());
-				if (widget == null)
+		Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
+
+		if (config.highlightItems() && inventory != null && !inventory.isHidden() && ((role == Role.DEFENDER || role == Role.HEALER))) {
+			int listenItemId = plugin.getListenItemId(role.getListen());
+
+			if (listenItemId != -1) {
+				Color color = config.highlightColor();
+				BufferedImage highlight = ImageUtil.fillImage(itemManager.getImage(listenItemId), new Color(color.getRed(), color.getGreen(), color.getBlue(), 150));
+
+				for (WidgetItem item : inventory.getWidgetItems())
 				{
-					continue;
+					if (item.getId() == listenItemId)
+					{
+						OverlayUtil.renderImageLocation(graphics, item.getCanvasLocation(), highlight);
+					}
 				}
-
-				String[] teammateHealth = widget.getText().split(" / ");
-				final int curHealth = Integer.parseInt(teammateHealth[0]);
-				final int maxHealth = Integer.parseInt(teammateHealth[1]);
-
-				int width = teammate.getWidth();
-				final int filledWidth = getBarWidth(maxHealth, curHealth, width);
-
-				int offsetX = teammate.getOffset().getX();
-				int offsetY = teammate.getOffset().getY();
-				int x = widget.getCanvasLocation().getX() - offsetX;
-				int y = widget.getCanvasLocation().getY() - offsetY;
-
-				graphics.setColor(HEALTH_BAR_COLOR);
-				graphics.fillRect(x, y, filledWidth, HEALTH_BAR_HEIGHT);
 			}
 		}
+
+        if (role == Role.HEALER)
+        {
+            for (HealerTeam teammate : HealerTeam.values())
+            {
+                Widget widget = client.getWidget(teammate.getTeammate());
+                if (widget == null)
+                {
+                    continue;
+                }
+
+                String[] teammateHealth = widget.getText().split(" / ");
+                final int curHealth = Integer.parseInt(teammateHealth[0]);
+                final int maxHealth = Integer.parseInt(teammateHealth[1]);
+
+                int width = teammate.getWidth();
+                final int filledWidth = getBarWidth(maxHealth, curHealth, width);
+
+                int offsetX = teammate.getOffset().getX();
+                int offsetY = teammate.getOffset().getY();
+                int x = widget.getCanvasLocation().getX() - offsetX;
+                int y = widget.getCanvasLocation().getY() - offsetY;
+
+                graphics.setColor(HEALTH_BAR_COLOR);
+                graphics.fillRect(x, y, filledWidth, HEALTH_BAR_HEIGHT);
+            }
+        }
+
 		return null;
 	}
+
+    private static int getBarWidth(int base, int current, int size)
+    {
+        final double ratio = (double) current / base;
+
+        if (ratio >= 1)
+        {
+            return size;
+        }
+
+        return (int) Math.round(ratio * size);
+    }
 
 	private void renderEggLocations(Graphics2D graphics, Map<WorldPoint, Integer> eggMap, Color color)
 	{
@@ -200,17 +239,5 @@ class BarbarianAssaultOverlay extends Overlay
 		}
 
 		graphics.setStroke(originalStroke);
-	}
-
-	private static int getBarWidth(int base, int current, int size)
-	{
-		final double ratio = (double) current / base;
-
-		if (ratio >= 1)
-		{
-			return size;
-		}
-
-		return (int) Math.round(ratio * size);
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jacob M <https://github.com/jacoblairm>
+ * Copyright (c) 2018, https://runelitepl.us
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import net.runelite.api.Constants;
 
 class GameTimer
 {
@@ -45,7 +46,7 @@ class GameTimer
 		}
 		else
 		{
-			elapsed = Duration.between(startTime, now).minusMillis(600);
+			elapsed = Duration.between(startTime, now).minusMillis(Constants.GAME_TICK_LENGTH);
 		}
 
 		return formatTime(LocalTime.ofSecondOfDay(elapsed.getSeconds()));

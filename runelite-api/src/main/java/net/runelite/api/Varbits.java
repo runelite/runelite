@@ -217,6 +217,7 @@ public enum Varbits
 	 * Barbarian Assault
 	 */
 	IN_GAME_BA(3923),
+	BA_GC(4768),
 
 	/**
 	 * 0 = Outside wilderness

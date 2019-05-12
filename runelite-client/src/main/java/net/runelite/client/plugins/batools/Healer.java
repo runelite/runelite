@@ -99,7 +99,7 @@ public class Healer
 				return HealerCode.WAVENINE;
 			case 10:
 				return HealerCode.WAVETEN;
-				default: return null;
+			default: return null;
 		}
 	}
 

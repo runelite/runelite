@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Cameron <https://github.com/noremac201>
- * Copyright (c) 2018, Jacob M <https://github.com/jacoblairm>
+ * Copyright (c) 2018, https://runelitepl.us
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,9 +32,9 @@ import net.runelite.client.config.ConfigItem;
 public interface BAToolsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "defTimer",
-		name = "Defender Tick Timer",
-		description = "Shows the current cycle tick of runners."
+			keyName = "defTimer",
+			name = "Defender Tick Timer",
+			description = "Shows the current cycle tick of runners."
 	)
 	default boolean defTimer()
 	{
@@ -43,9 +42,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "calls",
-		name = "Remove Incorrect Calls",
-		description = "Remove incorrect calls."
+			keyName = "calls",
+			name = "Remove Incorrect Calls",
+			description = "Remove incorrect calls."
 	)
 	default boolean calls()
 	{
@@ -53,9 +52,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapLadder",
-		name = "Swap ladder option",
-		description = "Swap Climb-down with Quick-start in the wave lobbies"
+			keyName = "swapLadder",
+			name = "Swap ladder option",
+			description = "Swap Climb-down with Quick-start in the wave lobbies"
 	)
 	default boolean swapLadder()
 	{
@@ -63,9 +62,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "healerCodes",
-		name = "Healer Codes",
-		description = "Overlay to show healer codes"
+			keyName = "healerCodes",
+			name = "Healer Codes",
+			description = "Overlay to show healer codes"
 	)
 	default boolean healerCodes()
 	{
@@ -73,9 +72,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "healerMenuOption",
-		name = "Healer menu options",
-		description = "asd"
+			keyName = "healerMenuOption",
+			name = "Healer menu options",
+			description = "asd"
 	)
 	default boolean healerMenuOption()
 	{
@@ -83,9 +82,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "antiDrag",
-		name = "Anti Drag",
-		description = "asd"
+			keyName = "antiDrag",
+			name = "Anti Drag",
+			description = "asd"
 	)
 	default boolean antiDrag()
 	{
@@ -93,9 +92,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "antiDragDelay",
-		name = "Anti Drag Delay",
-		description = "asd"
+			keyName = "antiDragDelay",
+			name = "Anti Drag Delay",
+			description = "asd"
 	)
 	default int antiDragDelay()
 	{
@@ -103,9 +102,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "eggBoi",
-		name = "Collector helper",
-		description = "asd"
+			keyName = "eggBoi",
+			name = "Collector helper",
+			description = "asd"
 	)
 	default boolean eggBoi()
 	{
@@ -113,9 +112,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "osHelp",
-		name = "Shift OS",
-		description = "asd"
+			keyName = "osHelp",
+			name = "Shift OS",
+			description = "asd"
 	)
 	default boolean osHelp()
 	{
@@ -123,9 +122,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "prayerMetronome",
-		name = "Prayer Metronome",
-		description = "asd"
+			keyName = "prayerMetronome",
+			name = "Prayer Metronome",
+			description = "asd"
 	)
 	default boolean prayerMetronome()
 	{
@@ -133,9 +132,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "prayerMetronomeVolume",
-		name = "Prayer Metronome Volume",
-		description = "asd"
+			keyName = "prayerMetronomeVolume",
+			name = "Prayer Metronome Volume",
+			description = "asd"
 	)
 	default int prayerMetronomeVolume()
 	{
@@ -143,9 +142,9 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "attackStyles",
-		name = "Attack Styles",
-		description = "asd"
+			keyName = "attackStyles",
+			name = "Attack Styles",
+			description = "Hide attack styles depending on weapon."
 	)
 	default boolean attackStyles()
 	{
@@ -153,13 +152,24 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "tagging",
-		name = "Attack Tags",
-		description = "asd"
+			keyName = "removeBA",
+			name = "*Barbarian Assault Helper*",
+			description = "Remove unnecessary menu options in Barbarian Assault depending on role<br>Examples: Remove attack options when not attacker<br>Remove take options when not collector"
 	)
-	default boolean tagging()
-	{
-		return false;
-	}
+	default boolean removeBA() { return true; }
+
+	@ConfigItem(
+			keyName = "removeWrongEggs",
+			name = "Remove wrong eggs - *Barbarian Assault Helper*",
+			description = "Remove unnecessary menu options in Barbarian Assault depending on role<br>Examples: Remove attack options when not attacker<br>Remove take options when not collector"
+	)
+	default boolean removeWrongEggs() { return false; }
+
+	@ConfigItem(
+			keyName = "removeWrongHealFood",
+			name = "Remove wrong Heal Food - *Barbarian Assault Helper*",
+			description = "Remove unnecessary menu options in Barbarian Assault depending on role<br>Examples: Remove attack options when not attacker<br>Remove take options when not collector"
+	)
+	default boolean removeHealWrongFood() { return false; }
 
 }
