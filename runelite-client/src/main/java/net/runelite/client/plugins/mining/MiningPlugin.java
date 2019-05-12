@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin Weymans <Robin.weymans@gmail.com>
+ * Copyright (c) 2019, Alex <https://github.com/Barragek0>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -188,7 +188,11 @@ public class MiningPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().toLowerCase().contains("you manage to mine"))
+		if (event.getMessage().toLowerCase().contains("you just mined an"))
+		{
+			currentNode = "Gem";
+		}
+		else if (event.getMessage().toLowerCase().contains("you manage to mine"))
 		{
 			currentNode = event.getMessage().replace("You manage to mine some", "").replace(".", "").replaceAll(" ", "");
 		}
@@ -369,7 +373,7 @@ public class MiningPlugin extends Plugin
 				return second * 2.3;
 			case ObjectID.ROCKS_7455: // Iron
 			case ObjectID.ROCKS_7488: // Iron
-				return second * (inMiningGuild() ? 2 : 5.3);
+				return second * (inMiningGuild() ? 2.2 : 5.3);
 			case ObjectID.ROCKS_7467: // Granite
 			case ObjectID.ROCKS_8727: // Sandstone
 				return second * 5.2;

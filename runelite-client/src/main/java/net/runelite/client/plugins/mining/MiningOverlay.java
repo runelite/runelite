@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Robin Weymans <Robin.weymans@gmail.com>
+ * Copyright (c) 2019, Alex <https://github.com/Barragek0>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -76,7 +76,7 @@ public class MiningOverlay extends Overlay
 				}
 				if (config.showCurrentOre() && plugin.currentNode != null && !plugin.currentNode.equalsIgnoreCase(plugin.convertObjectToNodeName(obj.getGameObject().getId())))
 				{
-					//log.info("Node: " + plugin.currentNode + " - " + plugin.convertObjectToNodeName());
+					//log.info("Object: " + plugin.currentNode + " - " + plugin.convertObjectToNodeName(obj.getGameObject().getId()));
 					continue;
 				}
 				drawOverlayOnNode(graphics, obj);
@@ -89,7 +89,7 @@ public class MiningOverlay extends Overlay
 				}
 				if (config.showCurrentOre() && plugin.currentNode != null && !plugin.currentNode.equalsIgnoreCase(plugin.convertObjectToNodeName(obj.getWallObject().getId())))
 				{
-					//log.info("Node: " + plugin.currentNode + " - " + plugin.convertObjectToNodeName());
+					//log.info("Wall: " + plugin.currentNode + " - " + plugin.convertObjectToNodeName(obj.getWallObject().getId()));
 					continue;
 				}
 				drawWallOverlayOnNode(graphics, obj);
