@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import lombok.AllArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -31,6 +32,23 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("xpTracker")
 public interface XpTrackerConfig extends Config
 {
+	@AllArgsConstructor
+	enum OnScreenDisplayMode
+	{
+		XP_GAINED("XP Gained"),
+		XP_LEFT("XP Left"),
+		ACTIONS_DONE("Actions Done"),
+		ACTIONS_LEFT("Actions Left");
+
+		private final String name;
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+	}
+
 	@ConfigItem(
 		position = 0,
 		keyName = "hideMaxed",
@@ -77,12 +95,12 @@ public interface XpTrackerConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "onScreenXpLeft",
-		name = "Display XP Left on-screen",
-		description = "Display remaining experience instead of experience gained on on-screen trackers"
+		keyName = "onScreenDisplayMode",
+		name = "On-screen tracker display mode",
+		description = "Configures the information displayed in the first line of on-screen XP overlays"
 	)
-	default boolean displayXpLeftOnScreen()
+	default OnScreenDisplayMode onScreenDisplayMode()
 	{
-		return false;
+		return OnScreenDisplayMode.XP_GAINED;
 	}
 }
