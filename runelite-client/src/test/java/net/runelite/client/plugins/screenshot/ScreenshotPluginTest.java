@@ -28,6 +28,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Consumer;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
@@ -45,13 +46,13 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mock;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -111,14 +112,8 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Seth", CLUE_SCROLL, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		WidgetLoaded event = new WidgetLoaded();
-		event.setGroupId(CLUE_SCROLL_REWARD_GROUP_ID);
-		screenshotPlugin.onWidgetLoaded(event);
-
-
-		//assertEquals("medium", screenshotPlugin.getClueType());
-		//assertEquals(28, screenshotPlugin.getClueNumber());
-		assertEquals("Clue Scroll Rewards", screenshotPlugin.getScreenShotSubDir());
+		assertEquals("medium", screenshotPlugin.getClueType());
+		assertEquals(28, screenshotPlugin.getClueNumber());
 	}
 
 	@Test
@@ -127,12 +122,7 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Seth", BARROWS_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		WidgetLoaded event = new WidgetLoaded();
-		event.setGroupId(BARROWS_REWARD_GROUP_ID);
-		screenshotPlugin.onWidgetLoaded(event);
-
-		//assertEquals(310, screenshotPlugin.getBarrowsNumber());
-		assertEquals("Boss Kills", screenshotPlugin.getScreenShotSubDir());
+		assertEquals(310, screenshotPlugin.getBarrowsNumber());
 	}
 
 	@Test
@@ -141,12 +131,7 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Seth", CHAMBERS_OF_XERIC_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		WidgetLoaded event = new WidgetLoaded();
-		event.setGroupId(CHAMBERS_OF_XERIC_REWARD_GROUP_ID);
-		screenshotPlugin.onWidgetLoaded(event);
-
-		//assertEquals(489, screenshotPlugin.getChambersOfXericNumber());
-		assertEquals("Boss Kills", screenshotPlugin.getScreenShotSubDir());
+		assertEquals(489, screenshotPlugin.getChambersOfXericNumber());
 	}
 
 	@Test
@@ -155,12 +140,7 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Magic fTail", THEATRE_OF_BLOOD_CHEST, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		WidgetLoaded event = new WidgetLoaded();
-		event.setGroupId(THEATRE_OF_BLOOD_REWARD_GROUP_ID);
-		screenshotPlugin.onWidgetLoaded(event);
-
-		//assertEquals(73, screenshotPlugin.gettheatreOfBloodNumber());
-		assertEquals("Boss Kills", screenshotPlugin.getScreenShotSubDir());
+		assertEquals(73, screenshotPlugin.gettheatreOfBloodNumber());
 	}
 
 	@Test
@@ -169,8 +149,7 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", VALUABLE_DROP, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		//verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
-		assertEquals("Valuable Drops", screenshotPlugin.getScreenShotSubDir());
+		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
 
 	@Test
@@ -179,8 +158,7 @@ public class ScreenshotPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", UNTRADEABLE_DROP, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		//verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
-		assertEquals("Untradeable Drops", screenshotPlugin.getScreenShotSubDir());
+		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
 
 	@Test
@@ -203,8 +181,7 @@ public class ScreenshotPluginTest
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
 
-		//verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
-		assertEquals("Levels", screenshotPlugin.getScreenShotSubDir());
+		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
 
 	@Test
@@ -227,8 +204,7 @@ public class ScreenshotPluginTest
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
 
-		//verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
-		assertEquals("Levels", screenshotPlugin.getScreenShotSubDir());
+		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
 
 	@Test
@@ -251,8 +227,7 @@ public class ScreenshotPluginTest
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
 
-		//verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
-		assertEquals("Levels", screenshotPlugin.getScreenShotSubDir());
+		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
 
 	@Test
@@ -275,7 +250,6 @@ public class ScreenshotPluginTest
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
 
-		//verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
-		assertEquals("Levels", screenshotPlugin.getScreenShotSubDir());
+		verify(drawManager).requestNextFrameListener(Matchers.any(Consumer.class));
 	}
 }
