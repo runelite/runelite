@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.prayer;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -453,17 +453,19 @@ enum PrayerItems
 	DAMAGED_BOOK_3841(ItemID.DAMAGED_BOOK_3841, 5),
 	FALADOR_SHIELD_4(ItemID.FALADOR_SHIELD_4, 5);
 
-	private static final Map<Integer, Integer> prayerBonuses = new HashMap<>();
+	private static final Map<Integer, Integer> prayerBonuses;
 
 	private final int itemId;
 	private final int prayerBonus;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, Integer> builder = new ImmutableMap.Builder<>();
 		for (PrayerItems item : values())
 		{
-			prayerBonuses.put(item.getItemId(), item.getPrayerBonus());
+			builder.put(item.getItemId(), item.getPrayerBonus());
 		}
+		prayerBonuses = builder.build();
 	}
 
 	static int getItemPrayerBonus(int itemId)

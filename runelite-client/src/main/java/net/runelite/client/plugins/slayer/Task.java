@@ -26,7 +26,7 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.base.Preconditions;
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -174,7 +174,7 @@ enum Task
 	ZUK("TzKal-Zuk", ItemID.TZREKZUK);
 	//</editor-fold>
 
-	private static final Map<String, Task> tasks = new HashMap<>();
+	private static final Map<String, Task> tasks;
 
 	private final String name;
 	private final int itemSpriteId;
@@ -184,10 +184,14 @@ enum Task
 
 	static
 	{
+		ImmutableMap.Builder<String, Task> builder = new ImmutableMap.Builder<>();
+
 		for (Task task : values())
 		{
-			tasks.put(task.getName().toLowerCase(), task);
+			builder.put(task.getName().toLowerCase(), task);
 		}
+
+		tasks = builder.build();
 	}
 
 	Task(String name, int itemSpriteId, String... targetNames)
