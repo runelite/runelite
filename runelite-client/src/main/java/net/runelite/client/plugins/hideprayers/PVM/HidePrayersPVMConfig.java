@@ -41,10 +41,7 @@ public interface HidePrayersPVMConfig extends Config
 		name = "Barrows Eagle Eye/Mystic Might",
 		description = "Shows prayers for Barrows"
 	)
-	default boolean showBarrowsCheap()
-	{
-		return false;
-	}
+	default boolean showBarrowsCheap() {return false;}
 
 	@ConfigItem
 	(
@@ -53,10 +50,7 @@ public interface HidePrayersPVMConfig extends Config
 		name = "Barrows Augury/Rigour",
 		description = "Shows prayers for Barrows"
 	)
-	default boolean showBarrowsExpensive()
-	{
-		return false;
-	}
+	default boolean showBarrowsExpensive() {return false;}
 
 	@ConfigItem
 	(
@@ -65,10 +59,7 @@ public interface HidePrayersPVMConfig extends Config
 		name = "Zulrah Eagle Eye/Mystic Might",
 		description = "Show prayers for Zulrah"
 	)
-	default boolean showZulrahCheap()
-	{
-		return false;
-	}
+	default boolean showZulrahCheap() {return false;}
 
 	@ConfigItem
 	(
@@ -77,8 +68,131 @@ public interface HidePrayersPVMConfig extends Config
 		name = "Zulrah Augury/Rigour",
 		description = "Shows prayers for Zulrah"
 	)
-	default boolean showZulrahExpensive()
-	{
-		return false;
-	}
+	default boolean showZulrahExpensive() {return false;}
+
+	@ConfigItem
+	(
+		position = 4,
+		keyName = "vorkathcheap",
+		name = "Vorkath Eagle Eye",
+		description = "Shows prayers for Vorkath"
+	)
+	default boolean showVorkathCheap() {return false;}
+
+	@ConfigItem
+	(
+		position = 5,
+		keyName = "vorkathexpensive",
+		name = "Vorkath Rigour",
+		description = "Shows prayers for Vorkath"
+	)
+	default boolean showVorkathExpensive() {return false;}
+
+	@ConfigItem
+	(
+		position = 6,
+		keyName = "cerberuscheap",
+		name = "Cerberus Strength/Skin/Reflexes",
+		description = "Shows prayers for Cerberus"
+	)
+	default boolean showCerberusCheap() {return false;}
+
+	@ConfigItem
+	(
+		position = 7,
+		keyName = "cerberusexpensive",
+		name = "Cerberus Piety",
+		description = "Shows prayers for Cerberus"
+	)
+	default boolean showCerberusExpensive() {return false;}
+
+	@ConfigItem
+	(
+		position = 8,
+		keyName = "cerberusrangeexpensive",
+		name = "Cerberus Eagle Eye",
+		description = "Shows prayers for Cerberus"
+	)
+	default boolean showCerberusRangeCheap() {return false;}
+
+	@ConfigItem
+	(
+		position = 9,
+		keyName = "cerberuserangexpensive",
+		name = "Cerberus Rigour",
+		description = "Shows prayers for Cerberus"
+	)
+	default boolean showCerberusRangeExpensive() {return false;}
+
+	@ConfigItem
+	(
+		position = 10,
+		keyName = "armadylcheap",
+		name = "Armadyl Eagle eye",
+		description = "Shows prayers for Armadyl GWD"
+	)
+	default boolean showArmadylCheap() {return false;}
+
+	@ConfigItem
+	(
+		position = 11,
+		keyName = "armadylexpensive",
+		name = "Armadyl Rigour",
+		description = "Shows prayers for Armadyl GWD"
+	)
+	default boolean showArmadylExpensive() {return false;}
+
+	@ConfigItem
+	(
+		position = 12,
+		keyName = "bandoscheap",
+		name = "Bandos Strength/Skin/Reflexes",
+		description = "Shows prayers for Bandos GWD"
+	)
+	default boolean showBandosCheap() {return false;}
+
+	@ConfigItem
+	(
+		position = 13,
+		keyName = "bandosexpensive",
+		name = "Bandos Piety",
+		description = "Shows prayers for Bandos GWD"
+	)
+	default boolean showBandosExpensive() {return false;}
+
+	@ConfigItem
+	(
+		position = 14,
+		keyName = "sardomincheap",
+		name = "Saradomin Eagle eye/Steel Skin",
+		description = "Shows prayers for Saradomin GWD"
+	)
+	default boolean showSaradominCheap() {return false;}
+
+	@ConfigItem
+	(
+		position = 15,
+		keyName = "saradominexpensive",
+		name = "Saradomin Piety/Rigour",
+		description = "Shows prayers for Saradomin GWD"
+	)
+	default boolean showSaradominExpensive() {return false;}
+
+	@ConfigItem
+	(
+		position = 16,
+		keyName = "zamorakcheap",
+		name = "Zamorak Strength/Skin/Reflexes",
+		description = "Shows prayers for Zamorak GWD"
+	)
+	default boolean showZamorakCheap() {return false;}
+
+	@ConfigItem
+	(
+		position = 17,
+		keyName = "zamorakexpensive",
+		name = "Zamorak Piety",
+		description = "Shows prayers for Zamorak GWD"
+			)
+	default boolean showZamorakExpensive() {return false;}
 }
