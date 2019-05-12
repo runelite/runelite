@@ -235,15 +235,15 @@ public class MiningPlugin extends Plugin
 				return "Mithril";
 			case ObjectID.ROCKS_7460: // Adamant
 			case ObjectID.ROCKS_7493: // Adamant
-				return "Adamant";
+				return "Adamantite";
 			case ObjectID.ROCKS_7461: // Rune
 			case ObjectID.ROCKS_7494: // Rune
-				return "Rune";
+				return "Runite";
 			case ORE_VEIN_26661: // Motherlode vein
 			case ORE_VEIN_26662: // Motherlode vein
 			case ORE_VEIN_26663: // Motherlode vein
 			case ORE_VEIN_26664: // Motherlode vein
-				return "Paydirt";
+				return "Pay-dirt";
 			case CRYSTALS: // Amethyst crystals
 			case CRYSTALS_30372: // Amethyst crystals
 				return "Amethyst";
