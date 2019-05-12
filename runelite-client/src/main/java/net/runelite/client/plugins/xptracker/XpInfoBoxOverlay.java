@@ -96,15 +96,38 @@ class XpInfoBoxOverlay extends Overlay
 
 		final XpSnapshotSingle snapshot = plugin.getSkillSnapshot(skill);
 
+		final String leftStr;
+		final int rightNum;
+
+		switch (config.onScreenDisplayMode())
+		{
+			case ACTIONS_DONE:
+				leftStr = snapshot.getActionType().getLabel() + " Done";
+				rightNum = snapshot.getActionsInSession();
+				break;
+			case ACTIONS_LEFT:
+				leftStr = snapshot.getActionType().getLabel() + " Left";
+				rightNum = snapshot.getActionsRemainingToGoal();
+				break;
+			case XP_LEFT:
+				leftStr = config.onScreenDisplayMode().toString();
+				rightNum = snapshot.getXpRemainingToGoal();
+				break;
+			case XP_GAINED:
+			default:
+				leftStr = config.onScreenDisplayMode().toString();
+				rightNum = snapshot.getXpGainedInSession();
+				break;
+		}
+
 		final LineComponent xpLine = LineComponent.builder()
-				.left(config.displayXpLeftOnScreen() ? "XP Left:" : "XP Gained:")
-				.right(StackFormatter.quantityToRSDecimalStack(config.displayXpLeftOnScreen()
-					? snapshot.getXpRemainingToGoal() : snapshot.getXpGainedInSession()))
-				.build();
+			.left(leftStr + ":")
+			.right(StackFormatter.quantityToRSDecimalStack(rightNum, true))
+			.build();
 
 		final LineComponent xpHour = LineComponent.builder()
 				.left("XP/Hour:")
-				.right(StackFormatter.quantityToRSDecimalStack(snapshot.getXpPerHour()))
+				.right(StackFormatter.quantityToRSDecimalStack(snapshot.getXpPerHour(), true))
 				.build();
 
 		final SplitComponent xpSplit = SplitComponent.builder()
