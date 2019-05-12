@@ -36,7 +36,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
-
 import static net.runelite.api.widgets.WidgetID.*;
 import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_LEVEL;
@@ -47,7 +46,6 @@ import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
