@@ -34,6 +34,8 @@ public interface Player extends Actor
 {
 	@Override
 	int getCombatLevel();
+	
+	int getPlayerId();
 
 	/**
 	 * Gets the composition of this player.
