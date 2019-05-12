@@ -41,10 +41,7 @@ public interface HidePrayersPVMConfig extends Config
 		name = "Barrows Eagle Eye/Mystic Might",
 		description = "Shows prayers for Barrows"
 	)
-	default boolean showBarrowsCheap()
-	{
-		return false;
-	}
+	default boolean showBarrowsCheap() {return false;}
 
 	@ConfigItem
 	(
@@ -53,10 +50,7 @@ public interface HidePrayersPVMConfig extends Config
 		name = "Barrows Augury/Rigour",
 		description = "Shows prayers for Barrows"
 	)
-	default boolean showBarrowsExpensive()
-	{
-		return false;
-	}
+	default boolean showBarrowsExpensive() {return false;}
 
 	@ConfigItem
 	(
@@ -65,10 +59,7 @@ public interface HidePrayersPVMConfig extends Config
 		name = "Zulrah Eagle Eye/Mystic Might",
 		description = "Show prayers for Zulrah"
 	)
-	default boolean showZulrahCheap()
-	{
-		return false;
-	}
+	default boolean showZulrahCheap() {return false;}
 
 	@ConfigItem
 	(
@@ -77,10 +68,7 @@ public interface HidePrayersPVMConfig extends Config
 		name = "Zulrah Augury/Rigour",
 		description = "Shows prayers for Zulrah"
 	)
-	default boolean showZulrahExpensive()
-	{
-		return false;
-	}
+	default boolean showZulrahExpensive() {return false;}
 
 	@ConfigItem
 	(
@@ -89,13 +77,13 @@ public interface HidePrayersPVMConfig extends Config
 		name = "Vorkath Eagle Eye",
 		description = "Shows prayers for Vorkath"
 	)
-default boolean showVorkathCheap() {return false;}
+	default boolean showVorkathCheap() {return false;}
 
 	@ConfigItem
 	(
 		position = 5,
 		keyName = "vorkathexpensive",
-		name = "Vorkath Augury/Rigour",
+		name = "Vorkath Rigour",
 		description = "Shows prayers for Vorkath"
 	)
 	default boolean showVorkathExpensive() {return false;}
@@ -140,7 +128,7 @@ default boolean showVorkathCheap() {return false;}
 	(
 		position = 10,
 		keyName = "armadylcheap",
-		name = "Armadyl Eagle eye/Preserve",
+		name = "Armadyl Eagle eye",
 		description = "Shows prayers for Armadyl GWD"
 	)
 	default boolean showArmadylCheap() {return false;}
@@ -149,7 +137,7 @@ default boolean showVorkathCheap() {return false;}
 	(
 		position = 11,
 		keyName = "armadylexpensive",
-		name = "Armadyl Preserve/Rigour",
+		name = "Armadyl Rigour",
 		description = "Shows prayers for Armadyl GWD"
 	)
 	default boolean showArmadylExpensive() {return false;}
@@ -167,7 +155,7 @@ default boolean showVorkathCheap() {return false;}
 	(
 		position = 13,
 		keyName = "bandosexpensive",
-		name = "Bandos Preserve/Piety",
+		name = "Bandos Piety",
 		description = "Shows prayers for Bandos GWD"
 	)
 	default boolean showBandosExpensive() {return false;}
@@ -176,7 +164,7 @@ default boolean showVorkathCheap() {return false;}
 	(
 		position = 14,
 		keyName = "sardomincheap",
-		name = "Saradomin Eagle/Steel Skin",
+		name = "Saradomin Eagle eye/Steel Skin",
 		description = "Shows prayers for Saradomin GWD"
 	)
 	default boolean showSaradominCheap() {return false;}
@@ -203,7 +191,7 @@ default boolean showVorkathCheap() {return false;}
 	(
 		position = 17,
 		keyName = "zamorakexpensive",
-		name = "Zamorak Preserve/Piety",
+		name = "Zamorak Piety",
 		description = "Shows prayers for Zamorak GWD"
 			)
 	default boolean showZamorakExpensive() {return false;}
