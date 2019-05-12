@@ -74,4 +74,15 @@ public interface XpTrackerConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "onScreenXpLeft",
+		name = "Display XP Left on-screen",
+		description = "Display remaining experience instead of experience gained on on-screen trackers"
+	)
+	default boolean displayXpLeftOnScreen()
+	{
+		return false;
+	}
 }
