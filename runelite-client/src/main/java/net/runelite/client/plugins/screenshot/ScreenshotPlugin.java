@@ -130,6 +130,8 @@ public class ScreenshotPlugin extends Plugin
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
 
+	private String screenShotSubDir = "Manual Screenshots";
+
 	static String format(Date date)
 	{
 		synchronized (TIME_FORMAT)
@@ -194,6 +196,7 @@ public class ScreenshotPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
+			screenShotSubDir = "Manual Screenshots";
 			takeScreenshot(format(new Date()));
 		}
 	};
@@ -269,21 +272,28 @@ public class ScreenshotPlugin extends Plugin
 		if (client.getWidget(WidgetInfo.LEVEL_UP_LEVEL) != null)
 		{
 			fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
+			screenShotSubDir = "Levels";
 		}
 		else if (client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT) != null)
 		{
 			fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+			screenShotSubDir = "Levels";
 		}
 		else if (client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT) != null)
 		{
 			// "You have completed The Corsair Curse!"
 			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
 			fileName = "Quest(" + text.substring(19, text.length() - 1) + ")";
+			screenShotSubDir = "Quests";
 		}
 
 		if (fileName != null)
 		{
 			takeScreenshot(fileName);
+		}
+		else
+		{
+			screenShotSubDir = "Manual Screenshots";
 		}
 	}
 
@@ -292,6 +302,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		if (config.screenshotPlayerDeath())
 		{
+			screenShotSubDir = "Deaths";
 			takeScreenshot("Death " + format(new Date()));
 		}
 	}
@@ -304,6 +315,7 @@ public class ScreenshotPlugin extends Plugin
 			final Player player = playerLootReceived.getPlayer();
 			final String name = player.getName();
 			String fileName = "Kill " + name + " " + format(new Date());
+			screenShotSubDir = "PvP Kills";
 			takeScreenshot(fileName);
 		}
 	}
@@ -372,6 +384,7 @@ public class ScreenshotPlugin extends Plugin
 		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
 			String fileName = "Pet " + format(new Date());
+			screenShotSubDir = "Pets";
 			takeScreenshot(fileName);
 		}
 
@@ -383,6 +396,7 @@ public class ScreenshotPlugin extends Plugin
 				String bossName = m.group(1);
 				String bossKillcount = m.group(2);
 				String fileName = bossName + "(" + bossKillcount + ")";
+				screenShotSubDir = "Boss Kills";
 				takeScreenshot(fileName);
 			}
 		}
@@ -394,6 +408,7 @@ public class ScreenshotPlugin extends Plugin
 			{
 				String valuableDropName = m.group(1);
 				String fileName = "Valuable drop " + valuableDropName + " " + format(new Date());
+				screenShotSubDir = "Valuable Drops";
 				takeScreenshot(fileName);
 			}
 		}
@@ -405,6 +420,7 @@ public class ScreenshotPlugin extends Plugin
 			{
 				String untradeableDropName = m.group(1);
 				String fileName = "Untradeable drop " + untradeableDropName + " " + format(new Date());
+				screenShotSubDir = "Untradeable Drops";
 				takeScreenshot(fileName);
 			}
 		}
@@ -417,6 +433,7 @@ public class ScreenshotPlugin extends Plugin
 				String result = m.group(1);
 				String count = m.group(2);
 				String fileName = "Duel " + result + " (" + count + ")";
+				screenShotSubDir = "Duels";
 				takeScreenshot(fileName);
 			}
 		}
@@ -460,6 +477,7 @@ public class ScreenshotPlugin extends Plugin
 			case KINGDOM_GROUP_ID:
 			{
 				fileName = "Kingdom " + LocalDate.now();
+				screenShotSubDir = "Kingdom Rewards";
 				takeScreenshot(fileName);
 				break;
 			}
@@ -468,12 +486,14 @@ public class ScreenshotPlugin extends Plugin
 				if (chambersOfXericNumber != null)
 				{
 					fileName = "Chambers of Xeric(" + chambersOfXericNumber + ")";
+					screenShotSubDir = "Boss Kills";
 					chambersOfXericNumber = null;
 					break;
 				}
 				else if (chambersOfXericChallengeNumber != null)
 				{
 					fileName = "Chambers of Xeric Challenge Mode(" + chambersOfXericChallengeNumber + ")";
+					screenShotSubDir = "Boss Kills";
 					chambersOfXericChallengeNumber = null;
 					break;
 				}
@@ -490,6 +510,7 @@ public class ScreenshotPlugin extends Plugin
 				}
 
 				fileName = "Theatre of Blood(" + theatreOfBloodNumber + ")";
+				screenShotSubDir = "Boss Kills";
 				theatreOfBloodNumber = null;
 				break;
 			}
@@ -501,6 +522,7 @@ public class ScreenshotPlugin extends Plugin
 				}
 
 				fileName = "Barrows(" + barrowsNumber + ")";
+				screenShotSubDir = "Boss Kills";
 				barrowsNumber = null;
 				break;
 			}
@@ -520,6 +542,7 @@ public class ScreenshotPlugin extends Plugin
 				}
 
 				fileName = Character.toUpperCase(clueType.charAt(0)) + clueType.substring(1) + "(" + clueNumber + ")";
+				screenShotSubDir = "Clue Scroll Rewards";
 				clueType = null;
 				clueNumber = null;
 				break;
@@ -636,6 +659,7 @@ public class ScreenshotPlugin extends Plugin
 				playerDir += "-Deadman";
 			}
 			playerFolder = new File(SCREENSHOT_DIR, playerDir);
+			playerFolder = new File(playerFolder, screenShotSubDir);
 		}
 		else
 		{
@@ -663,6 +687,7 @@ public class ScreenshotPlugin extends Plugin
 		{
 			log.warn("error writing screenshot", ex);
 		}
+		screenShotSubDir = "Manual Screenshots";
 	}
 
 	/**
@@ -750,5 +775,11 @@ public class ScreenshotPlugin extends Plugin
 	int gettheatreOfBloodNumber()
 	{
 		return theatreOfBloodNumber;
+	}
+
+	@VisibleForTesting
+	String getScreenShotSubDir()
+	{
+		return screenShotSubDir;
 	}
 }
