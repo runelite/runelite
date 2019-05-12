@@ -193,6 +193,6 @@ public interface HidePrayersPVMConfig extends Config
 		keyName = "zamorakexpensive",
 		name = "Zamorak Piety",
 		description = "Shows prayers for Zamorak GWD"
-			)
+	)
 	default boolean showZamorakExpensive() {return false;}
 }
