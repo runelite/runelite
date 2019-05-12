@@ -35,18 +35,10 @@ public interface XpTrackerConfig extends Config
 	@AllArgsConstructor
 	enum OnScreenDisplayMode
 	{
-		XP_GAINED("XP Gained"),
-		XP_LEFT("XP Left"),
-		ACTIONS_DONE("Actions Done"),
-		ACTIONS_LEFT("Actions Left");
-
-		private final String name;
-
-		@Override
-		public String toString()
-		{
-			return name;
-		}
+		XP_GAINED,
+		XP_LEFT,
+		ACTIONS_DONE,
+		ACTIONS_LEFT
 	}
 
 	@ConfigItem(
