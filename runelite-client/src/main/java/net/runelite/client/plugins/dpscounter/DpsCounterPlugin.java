@@ -1,8 +1,10 @@
 package net.runelite.client.plugins.dpscounter;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,6 +15,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.NpcDespawned;
@@ -50,6 +53,10 @@ public class DpsCounterPlugin extends Plugin
 
 	@Inject
 	private DpsOverlay dpsOverlay;
+
+	static private final Set<Varbits> TOB_PARTY_ORBS_VARBITS = ImmutableSet.of(Varbits.THEATRE_OF_BLOOD_ORB_1,
+		Varbits.THEATRE_OF_BLOOD_ORB_2, Varbits.THEATRE_OF_BLOOD_ORB_3, Varbits.THEATRE_OF_BLOOD_ORB_4,
+		Varbits.THEATRE_OF_BLOOD_ORB_5);
 
 	private Boss boss;
 	private NPC bossNpc;
@@ -125,7 +132,20 @@ public class DpsCounterPlugin extends Plugin
 		}
 
 		final int delta = xp - lastHpExp;
-		final int hit = getHit(boss.getModifier(), delta);
+
+		float modifier;
+		if (Boss.isTOB(boss))
+		{
+			int partySize = getTobPartySize();
+			System.out.println(partySize);
+			modifier = boss.getModifier(partySize);
+		}
+		else
+		{
+			modifier = boss.getModifier();
+		}
+
+		final int hit = getHit(modifier, delta);
 		lastHpExp = xp;
 
 		// Update local member
@@ -244,5 +264,23 @@ public class DpsCounterPlugin extends Plugin
 		float modifierBase = 1f / modifier;
 		float damageOutput = (deltaExperience * modifierBase) / 1.3333f;
 		return Math.round(damageOutput);
+	}
+
+	private int getTobPartySize()
+	{
+		int partySize = 0;
+		for (Varbits varbit : TOB_PARTY_ORBS_VARBITS)
+		{
+			if (client.getVar(varbit) != 0)
+			{
+				partySize++;
+				System.out.println(varbit.getId() + ": " + client.getVar(varbit));
+			}
+			else
+			{
+				break;
+			}
+		}
+		return partySize;
 	}
 }
