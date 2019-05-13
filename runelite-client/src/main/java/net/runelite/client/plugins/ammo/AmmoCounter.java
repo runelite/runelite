@@ -29,7 +29,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.Instant;
-
 import lombok.Getter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
@@ -42,6 +41,10 @@ class AmmoCounter extends Counter
 	private String name;
 	private int total;
 	private Instant time;
+	private BigDecimal ammoPerHour;
+	private BigDecimal timeSinceStartInHours;
+	private BigDecimal timeSinceStart;
+	private BigDecimal diff;
 
 	AmmoCounter(Plugin plugin, int itemID, int count, String name, BufferedImage image)
 	{
@@ -61,16 +64,33 @@ class AmmoCounter extends Counter
 	@Override
 	public String getTooltip()
 	{
-		return String.format("%s</br>Loss Rate: %s/h", name, lossRate());
+		if (lossRate() >= 1)
+		{
+			return String.format("%s</br>Loss Rate: %s/h", name, lossRate());
+		}
+		else
+		{
+			return "Need more data";
+		}
 	}
 
 	int lossRate()
 	{
-		BigDecimal diff = BigDecimal.valueOf(total).subtract(BigDecimal.valueOf(getCount()));
-		BigDecimal timeSinceStart = BigDecimal.valueOf(Duration.between(time, Instant.now()).getSeconds())
-				.setScale(6, RoundingMode.UP);
-		BigDecimal timeSinceStartInHours = timeSinceStart.divide(BigDecimal.valueOf(3600), RoundingMode.UP);
-		BigDecimal ammoPerHour = diff.divide(timeSinceStartInHours, RoundingMode.HALF_UP);
-		return ammoPerHour.intValue();
+		diff = BigDecimal.valueOf(total).subtract(BigDecimal.valueOf(getCount()));
+		timeSinceStart = BigDecimal.valueOf(Duration.between(time, Instant.now()).getSeconds())
+			.setScale(6, RoundingMode.UP);
+		if (timeSinceStart.compareTo(BigDecimal.ZERO) != 0)
+		{
+			timeSinceStartInHours = timeSinceStart.divide(BigDecimal.valueOf(3600), RoundingMode.UP);
+			ammoPerHour = diff.divide(timeSinceStartInHours, RoundingMode.HALF_UP);
+		}
+		if (ammoPerHour != null)
+		{
+			return ammoPerHour.intValue();
+		}
+		else
+		{
+			return 0;
+		}
 	}
 }
