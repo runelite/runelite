@@ -27,6 +27,7 @@ package net.runelite.client.plugins.barrows;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 import com.google.inject.Provides;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 import javax.inject.Inject;
@@ -41,6 +42,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.SpriteID;
 import net.runelite.api.WallObject;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameObjectChanged;
@@ -66,6 +68,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import net.runelite.client.ui.overlay.infobox.LoopTimer;
 import net.runelite.client.util.StackFormatter;
 
 @PluginDescriptor(
@@ -92,6 +96,7 @@ public class BarrowsPlugin extends Plugin
 		WidgetInfo.BARROWS_PUZZLE_ANSWER3
 	);
 
+	private static final long PRAYER_DRAIN_INTERVAL_MS = 18200;
 	private static final int CRYPT_REGION_ID = 14231;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -100,6 +105,7 @@ public class BarrowsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> ladders = new HashSet<>();
 
+	private LoopTimer barrowsPrayerDrainTimer;
 	private boolean wasInCrypt = false;
 
 	@Getter
@@ -313,13 +319,25 @@ public class BarrowsPlugin extends Plugin
 	{
 		if (config.showPrayerDrainTimer())
 		{
-			infoBoxManager.addInfoBox(new BarrowsPrayerDrainTimer(this, spriteManager));
+			final LoopTimer loopTimer = new LoopTimer(
+				PRAYER_DRAIN_INTERVAL_MS,
+				ChronoUnit.MILLIS,
+				spriteManager.getSprite(SpriteID.TAB_PRAYER, 0),
+				this,
+				true);
+
+			loopTimer.setPriority(InfoBoxPriority.MED);
+			loopTimer.setTooltip("Prayer Drain");
+
+			infoBoxManager.addInfoBox(loopTimer);
+			barrowsPrayerDrainTimer = loopTimer;
 		}
 	}
 
 	private void stopPrayerDrainTimer()
 	{
-		infoBoxManager.removeIf(BarrowsPrayerDrainTimer.class::isInstance);
+		infoBoxManager.removeInfoBox(barrowsPrayerDrainTimer);
+		barrowsPrayerDrainTimer = null;
 	}
 
 	private boolean isInCrypt()
