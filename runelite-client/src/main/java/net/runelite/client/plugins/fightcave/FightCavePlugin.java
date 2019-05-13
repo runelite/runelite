@@ -112,9 +112,6 @@ public class FightCavePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Map<NPC, NPCContainer> Ignore = new HashMap<>();
 
-	private boolean runMage;
-	private boolean runRange;
-
 	@Getter(AccessLevel.PACKAGE)
 	@Nullable
 	private JadAttack attack;
@@ -329,13 +326,11 @@ public class FightCavePlugin extends Plugin
 		if (jad.getAnimation() == JadAttack.MAGIC.getAnimation())
 		{
 			attack = JadAttack.MAGIC;
-			runMage = true;
 		}
 
 		else if (jad.getAnimation() == JadAttack.RANGE.getAnimation())
 		{
 			attack = JadAttack.RANGE;
-			runRange = true;
 		}
 	}
 
