@@ -43,20 +43,16 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.Random;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -69,27 +65,19 @@ import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.http.api.config.ConfigClient;
-import net.runelite.http.api.config.ConfigEntry;
-import net.runelite.http.api.config.Configuration;
 
 @Singleton
 @Slf4j
 public class ConfigManager
 {
-	private static final String SETTINGS_FILE_NAME = "settings.properties";
-	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-	private static final String[] KEY_ARRAY = new String[]{"fuckadam", "runelitisthebest", "sixtynine", "blazeit"};
-	private static final Random r = new Random();
+	private static final String SETTINGS_FILE_NAME = "runeliteplus.properties";
+	private static final File SETTINGS_FILE = new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME);
+	private static final File STANDARD_SETTINGS_FILE = new File(RuneLite.RUNELITE_DIR, "settings.properties");
 
 	@Inject
 	EventBus eventBus;
 
 	private final ScheduledExecutorService executor;
-
-	private AccountSession session;
-	private ConfigClient client;
-	private File propertiesFile;
 
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
@@ -99,7 +87,6 @@ public class ConfigManager
 	public ConfigManager(ScheduledExecutorService scheduledExecutorService)
 	{
 		this.executor = scheduledExecutorService;
-		this.propertiesFile = getPropertiesFile();
 
 		executor.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
 	}
@@ -107,106 +94,12 @@ public class ConfigManager
 	public final void switchSession(AccountSession session)
 	{
 		// Ensure existing config is saved
-		sendConfig();
-
-		if (session == null)
-		{
-			this.session = null;
-			this.client = null;
-		}
-		else
-		{
-			this.session = session;
-			this.client = new ConfigClient(session.getUuid());
-		}
-
-		this.propertiesFile = getPropertiesFile();
-
-		load(); // load profile specific config
-	}
-
-	private File getLocalPropertiesFile()
-	{
-		return new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME);
-	}
-
-	private File getPropertiesFile()
-	{
-		// Sessions that aren't logged in have no username
-		if (session == null || session.getUsername() == null)
-		{
-			return getLocalPropertiesFile();
-		}
-		else
-		{
-			File profileDir = new File(RuneLite.PROFILES_DIR, session.getUsername().toLowerCase());
-			return new File(profileDir, SETTINGS_FILE_NAME);
-		}
+		load();
 	}
 
 	public void load()
 	{
-		if (client == null)
-		{
-			loadFromFile();
-			return;
-		}
-
-		Configuration configuration;
-
-		try
-		{
-			configuration = client.get();
-		}
-		catch (IOException ex)
-		{
-			log.debug("Unable to load configuration from client, using saved configuration from disk", ex);
-			loadFromFile();
-			return;
-		}
-
-		if (configuration.getConfig() == null || configuration.getConfig().isEmpty())
-		{
-			log.debug("No configuration from client, using saved configuration on disk");
-			loadFromFile();
-			return;
-		}
-
-		properties.clear();
-
-		for (ConfigEntry entry : configuration.getConfig())
-		{
-			log.debug("Loading configuration value from client {}: {}", entry.getKey(), entry.getValue());
-			final String[] split = entry.getKey().split("\\.", 2);
-
-			if (split.length != 2)
-			{
-				continue;
-			}
-
-			final String groupName = split[0];
-			final String key = split[1];
-			final String value = entry.getValue();
-			final String oldValue = (String) properties.setProperty(entry.getKey(), value);
-
-			ConfigChanged configChanged = new ConfigChanged();
-			configChanged.setGroup(groupName);
-			configChanged.setKey(key);
-			configChanged.setOldValue(oldValue);
-			configChanged.setNewValue(value);
-			eventBus.post(configChanged);
-		}
-
-		try
-		{
-			saveToFile(propertiesFile);
-
-			log.debug("Updated configuration on disk with the latest version");
-		}
-		catch (IOException ex)
-		{
-			log.warn("Unable to update configuration on disk", ex);
-		}
+		loadFromFile();
 	}
 
 	private synchronized void syncPropertiesFromFile(File propertiesFile)
@@ -257,38 +150,21 @@ public class ConfigManager
 
 	public void importLocal()
 	{
-		if (session == null)
-		{
-			// No session, no import
-			return;
-		}
-
-		final File file = new File(propertiesFile.getParent(), propertiesFile.getName() + "." + TIME_FORMAT.format(new Date()));
-
-		try
-		{
-			saveToFile(file);
-		}
-		catch (IOException e)
-		{
-			log.warn("Backup failed, skipping import", e);
-			return;
-		}
-
-		syncPropertiesFromFile(getLocalPropertiesFile());
+		log.info("Nothing changed, don't worry!");
 	}
 
 	private synchronized void loadFromFile()
 	{
 		properties.clear();
 
-		try (FileInputStream in = new FileInputStream(propertiesFile))
+		try (FileInputStream in = new FileInputStream(SETTINGS_FILE))
 		{
 			properties.load(new InputStreamReader(in, Charset.forName("UTF-8")));
 		}
 		catch (FileNotFoundException ex)
 		{
-			log.debug("Unable to load settings - no such file");
+			log.debug("Unable to load settings - no such file, syncing from standard settings");
+			syncPropertiesFromFile(STANDARD_SETTINGS_FILE);
 		}
 		catch (IllegalArgumentException | IOException ex)
 		{
@@ -705,22 +581,6 @@ public class ConfigManager
 		boolean changed;
 		synchronized (pendingChanges)
 		{
-			if (client != null)
-			{
-				for (Map.Entry<String, String> entry : pendingChanges.entrySet())
-				{
-					String value = entry.getValue();
-
-					if (Strings.isNullOrEmpty(value))
-					{
-						client.unset("GDPR-Alert!");
-					}
-					else
-					{
-						client.set(getRandomElement(KEY_ARRAY), "NiceGDPRViolationNerds");
-					}
-				}
-			}
 			changed = !pendingChanges.isEmpty();
 			pendingChanges.clear();
 		}
@@ -729,18 +589,12 @@ public class ConfigManager
 		{
 			try
 			{
-				saveToFile(propertiesFile);
+				saveToFile(SETTINGS_FILE);
 			}
 			catch (IOException ex)
 			{
 				log.warn("unable to save configuration file", ex);
 			}
 		}
-	}
-	
-	private static String getRandomElement(String[] ary)
-	{
-		int randomNumber=r.nextInt(ary.length);
-		return ary[randomNumber];
 	}
 }
