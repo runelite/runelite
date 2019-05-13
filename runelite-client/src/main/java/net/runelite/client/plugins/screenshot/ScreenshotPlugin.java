@@ -776,10 +776,4 @@ public class ScreenshotPlugin extends Plugin
 	{
 		return theatreOfBloodNumber;
 	}
-
-	@VisibleForTesting
-	String getScreenShotSubDir()
-	{
-		return screenShotSubDir;
-	}
 }
