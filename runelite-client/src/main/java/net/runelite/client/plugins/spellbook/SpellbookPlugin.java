@@ -291,10 +291,10 @@ public class SpellbookPlugin extends Plugin
 		else if ("resizeSpell".equals(event.getEventName()))
 		{
 			int size = config.size();
-			int columns = Math.max(2, Math.min(FULL_WIDTH / size, 3));
+			int columns = clamp(FULL_WIDTH / size, 3, 2);
 
-			iStack[iStackSize - 1] = columns;
 			iStack[iStackSize - 2] = size;
+			iStack[iStackSize - 1] = columns;
 		}
 		else if ("setSpellAreaSize".equals(event.getEventName()))
 		{
@@ -303,20 +303,17 @@ public class SpellbookPlugin extends Plugin
 				return;
 			}
 
-			iStack[iStackSize - 1] = FULL_HEIGHT;
 			iStack[iStackSize - 2] = FULL_WIDTH;
+			iStack[iStackSize - 1] = FULL_HEIGHT;
 		}
 		else if ("resizeIndividualSpells".equals(event.getEventName()))
 		{
 			int widget = iStack[iStackSize - 1];
-			int visCount =
-				(int) spells.values().stream()
+			int visCount = (int) spells.values().stream()
 					.map(Spell::getName)
-					.filter(s -> notFilteredSpells
-						.stream()
-						.anyMatch(s.replaceAll("\"", "" )::contains))
+					.map(SpellbookPlugin::removeFlyingComma)
+					.filter(s -> notFilteredSpells.stream().anyMatch(s::contains))
 					.count();
-
 
 			if (visCount > 20 || visCount == 0)
 			{
@@ -324,10 +321,11 @@ public class SpellbookPlugin extends Plugin
 			}
 
 			Spell spell = spells.get(widget);
-			int newSize = spell.getSize() * 5 + config.size();
 
-			iStack[iStackSize - 2] = newSize;
+			int newSize = clamp(trueSize(spell), FULL_WIDTH, 0);
+
 			iStack[iStackSize - 3] = newSize;
+			iStack[iStackSize - 2] = newSize;
 		}
 		else if ("setSpellPosition".equals(event.getEventName()))
 		{
@@ -341,7 +339,7 @@ public class SpellbookPlugin extends Plugin
 			int x = s.getX();
 			int y = s.getY();
 
-			if (x == -1)
+			if (x == -1 || y == -1)
 			{
 				return;
 			}
@@ -548,28 +546,12 @@ public class SpellbookPlugin extends Plugin
 
 		int x = point.x - draggingLocation.getX() - parentPos.getX();
 		int y = point.y - draggingLocation.getY() - parentPos.getY();
-		int size = config.size();
+		int size = draggingWidget.getWidth();
 
-		if (x < 0)
-		{
-			x = 0;
-		}
-		else if (x > FULL_WIDTH - size)
-		{
-			x = FULL_WIDTH - size;
-		}
-
-		if (y < 0)
-		{
-			y = 0;
-		}
-		else if (y > FULL_HEIGHT - size)
-		{
-			y = FULL_HEIGHT - size;
-		}
+		x = clamp(x, FULL_WIDTH - size, 0);
+		y = clamp(y, FULL_HEIGHT - size, 0);
 
 		int draggedID = draggingWidget.getId();
-
 		Spell n = spells.get(draggedID);
 
 		n.setX(x);
@@ -587,7 +569,7 @@ public class SpellbookPlugin extends Plugin
 	{
 		Widget clickedWidget = currentWidget(point);
 
-		if (clickedWidget == null || !config.scroll())
+		if (clickedWidget == null || dragging || !config.scroll())
 		{
 			return;
 		}
@@ -599,58 +581,19 @@ public class SpellbookPlugin extends Plugin
 			return;
 		}
 
-		Spell clickedSpell = spells.get(clickedWidgetId);
+		Spell clickedSpell = tmp.getOrDefault(clickedWidgetId, spells.get(clickedWidgetId));
 
 		int oldSize = clickedSpell.getSize();
-		int tmpSize = tmp.get(clickedWidgetId).getSize();
-
-		if (tmpSize == 0 && oldSize == 0)
+		if (oldSize == 0)
 		{
 			return;
 		}
 
+		clickedSpell.setX(clickedSpell.getX() + trueSize(clickedSpell) / 4);
+		clickedSpell.setY(clickedSpell.getY() + trueSize(clickedSpell) / 4);
 		clickedSpell.setSize(0);
 
-		clickedSpell.setX(clickedSpell.getX() + oldSize * 5 / 2);
-		clickedSpell.setY(clickedSpell.getY() + oldSize * 5 / 2);
-
 		tmp.put(clickedWidgetId, clickedSpell);
-
-		runRebuild();
-	}
-
-	void decreaseSize(java.awt.Point point)
-	{
-		Widget scrolledWidget = currentWidget(point);
-
-		if (scrolledWidget == null)
-		{
-			return;
-		}
-
-		int scrolledWidgetId = scrolledWidget.getId();
-
-		if (!spells.containsKey(scrolledWidgetId))
-		{
-			return;
-		}
-
-		Spell scrolledSpell = spells.get(scrolledWidgetId);
-
-		scrolledSpell.setSize(scrolledSpell.getSize() + 1);
-
-		if (scrolledSpell.getSize() % 2 == 0)
-		{
-			scrolledSpell.setX(scrolledSpell.getX() - 3);
-			scrolledSpell.setY(scrolledSpell.getY() - 3);
-		}
-		else
-		{
-			scrolledSpell.setX(scrolledSpell.getX() - 2);
-			scrolledSpell.setY(scrolledSpell.getY() - 2);
-		}
-
-		tmp.put(scrolledWidgetId, scrolledSpell);
 
 		runRebuild();
 	}
@@ -659,7 +602,7 @@ public class SpellbookPlugin extends Plugin
 	{
 		Widget scrolledWidget = currentWidget(point);
 
-		if (scrolledWidget == null)
+		if (scrolledWidget == null || dragging)
 		{
 			return;
 		}
@@ -672,21 +615,69 @@ public class SpellbookPlugin extends Plugin
 		}
 
 		Spell scrolledSpell = spells.get(scrolledWidgetId);
-		scrolledSpell.setSize(scrolledSpell.getSize() - 1);
 
-		if (scrolledSpell.getSize() % 2 == 0)
+		if (trueSize(scrolledSpell) > FULL_WIDTH - 2)
 		{
-			scrolledSpell.setX(scrolledSpell.getX() + 3);
-			scrolledSpell.setY(scrolledSpell.getY() + 3);
+			scrolledSpell.setX(0);
+			scrolledSpell.setY(clamp(scrolledSpell.getY(), FULL_HEIGHT - FULL_WIDTH, 0));
+			return;
 		}
-		else
-		{
-			scrolledSpell.setX(scrolledSpell.getX() + 2);
-			scrolledSpell.setY(scrolledSpell.getY() + 2);
-		}
+
+		scrolledSpell.setSize(scrolledSpell.getSize() + 1);
+
+		scrolledSpell.setX(clamp(scrolledSpell.getX() - 1, FULL_WIDTH - trueSize(scrolledSpell), 0));
+		scrolledSpell.setY(clamp(scrolledSpell.getY() - 1, FULL_HEIGHT - trueSize(scrolledSpell), 0));
 
 		tmp.put(scrolledWidgetId, scrolledSpell);
 
 		runRebuild();
+	}
+
+	void decreaseSize(java.awt.Point point)
+	{
+		Widget scrolledWidget = currentWidget(point);
+
+		if (scrolledWidget == null || dragging)
+		{
+			return;
+		}
+
+		int scrolledWidgetId = scrolledWidget.getId();
+
+		if (!spells.containsKey(scrolledWidgetId))
+		{
+			return;
+		}
+
+		Spell scrolledSpell = spells.get(scrolledWidgetId);
+
+		// People probably don't want to scroll on a single pixel
+		if (trueSize(scrolledSpell) <= 5)
+		{
+			return;
+		}
+
+		scrolledSpell.setSize(scrolledSpell.getSize() - 1);
+		scrolledSpell.setX(scrolledSpell.getX() + 1);
+		scrolledSpell.setY(scrolledSpell.getY() + 1);
+
+		tmp.put(scrolledWidgetId, scrolledSpell);
+
+		runRebuild();
+	}
+
+	private static int clamp(int i, int upper, int lower)
+	{
+		return Math.min(Math.max(i, lower), upper);
+	}
+
+	private static String removeFlyingComma(String s)
+	{
+		return s.replaceAll("\"", "");
+	}
+
+	private int trueSize(Spell s)
+	{
+		return s.getSize() * 2 + config.size();
 	}
 }
