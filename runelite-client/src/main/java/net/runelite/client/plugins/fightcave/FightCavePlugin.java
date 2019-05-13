@@ -26,14 +26,11 @@
 package net.runelite.client.plugins.fightcave;
 
 import com.google.inject.Provides;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -45,7 +42,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
-import net.runelite.api.Point;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
@@ -58,7 +54,6 @@ import net.runelite.client.flexo.Flexo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
-import net.runelite.client.plugins.stretchedmode.StretchedModeConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -117,23 +112,8 @@ public class FightCavePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Map<NPC, NPCContainer> Ignore = new HashMap<>();
 
-	@Getter(AccessLevel.PACKAGE)
-	private Point clickPointMage;
-
-	@Getter(AccessLevel.PACKAGE)
-	private Point clickPointMelee;
-
-	@Getter(AccessLevel.PACKAGE)
-	private Point clickPointRanged;
-	private Rectangle boundsRangedPray = new Rectangle(0, 0, 0, 0);
-	private Rectangle boundsMagePray = new Rectangle(0, 0, 0, 0);
-	private Rectangle boundsMeleePray = new Rectangle(0, 0, 0, 0);
-
 	private boolean runMage;
 	private boolean runRange;
-	private Flexo flexo;
-	private ExecutorService executorService = Executors.newFixedThreadPool(1);
-	private int scalingfactor;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Nullable
@@ -190,22 +170,10 @@ public class FightCavePlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		scalingfactor = externalConfig.getConfig(StretchedModeConfig.class).scalingFactor();
 		overlayManager.add(waveOverlay);
 		overlayManager.add(jadOverlay);
 		overlayManager.add(timersOverlay);
 		Flexo.client = client;
-		executorService.submit(() -> {
-			flexo = null;
-			try
-			{
-				flexo = new Flexo();
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		});
 	}
 
 	@Override
@@ -237,8 +205,6 @@ public class FightCavePlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick Event)
 	{
-		scalingfactor = externalConfig.getConfig(StretchedModeConfig.class).scalingFactor();
-
 		for (NPCContainer ranger : getRangers().values())
 		{
 			ranger.setTicksUntilAttack(ranger.getTicksUntilAttack() - 1);
