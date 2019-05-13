@@ -25,10 +25,10 @@
 package net.runelite.client.plugins.spellbook;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -124,7 +124,7 @@ public class SpellbookPlugin extends Plugin
 
 	private Map<Integer, Spell> spells = new HashMap<>();
 	private Map<Integer, Spell> tmp = null;
-	private List<String> notFilteredSpells = new ArrayList<>();
+	private ImmutableSet<String> notFilteredSpells;
 	private Spellbook spellbook;
 	private SpellbookMouseListener mouseListener;
 
@@ -196,157 +196,45 @@ public class SpellbookPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private static boolean isUnfiltered(String spell, ImmutableSet<String> unfiltereds)
 	{
-		if (client.getVar(Varbits.FILTER_SPELLBOOK) != 0 || !config.enableMobile() || !event.getEventName().toLowerCase().contains("spell"))
+		for (String str : unfiltereds)
 		{
-			return;
-		}
+			WordFilterMode mode = getFilterMode(str);
+			str = removeFlyingComma(str).toLowerCase();
+			spell = spell.toLowerCase();
 
-		int[] iStack = client.getIntStack();
-		int iStackSize = client.getIntStackSize();
-
-		String[] sStack = client.getStringStack();
-		int sStackSize = client.getStringStackSize();
-
-		if ("startSpellRedraw".equals(event.getEventName()))
-		{
-			if (config.canDrag())
+			if (mode == WordFilterMode.CONTAINS)
 			{
-				return;
-			}
-
-			spellbook = Spellbook.getByID(client.getVar(Varbits.SPELLBOOK));
-			loadSpells();
-		}
-		else if ("shouldFilterSpell".equals(event.getEventName()))
-		{
-			String spell = sStack[sStackSize - 1].toLowerCase();
-			int widget = iStack[iStackSize - 1];
-
-			// Add the spell to spells
-			if (!spells.containsKey(widget))
-			{
-				Spell s = new Spell();
-				s.setWidget(widget);
-				s.setX(-1);
-				s.setY(-1);
-				s.setSize(0);
-				s.setName(spell);
-
-				spells.put(widget, s);
-			}
-
-			if (notFilteredSpells.isEmpty())
-			{
-				return;
-			}
-
-			for (String str : notFilteredSpells)
-			{
-				WordFilterMode mode = getFilterMode(str);
-				str = str.replaceAll("\"", "");
-
-				if (mode == WordFilterMode.CONTAINS)
+				if (spell.contains(str))
 				{
-					if (spell.contains(str))
-					{
-						iStack[iStackSize - 2] = 1;
-						break;
-					}
+					return true;
 				}
-				else if (mode == WordFilterMode.STARTSWITH)
+			}
+			else if (mode == WordFilterMode.STARTSWITH)
+			{
+				if (spell.startsWith(str))
 				{
-					if (spell.startsWith(str))
-					{
-						iStack[iStackSize - 2] = 1;
-						break;
-					}
+					return true;
 				}
-				else if (mode == WordFilterMode.ENDSWITH)
+			}
+			else if (mode == WordFilterMode.ENDSWITH)
+			{
+				if (spell.endsWith(str))
 				{
-					if (spell.endsWith(str))
-					{
-						iStack[iStackSize - 2] = 1;
-						break;
-					}
+					return true;
 				}
-				else if (mode == WordFilterMode.EQUALS)
+			}
+			else if (mode == WordFilterMode.EQUALS)
+			{
+				if (spell.equals(str))
 				{
-					if (spell.equals(str))
-					{
-						iStack[iStackSize - 2] = 1;
-						break;
-					}
+					return true;
 				}
-
-				iStack[iStackSize - 2] = 0;
 			}
 		}
-		else if ("isMobileSpellbookEnabled".equals(event.getEventName()))
-		{
-			iStack[iStackSize - 1] = 1;
-		}
-		else if ("resizeSpell".equals(event.getEventName()))
-		{
-			int size = config.size();
-			int columns = clamp(FULL_WIDTH / size, 3, 2);
 
-			iStack[iStackSize - 2] = size;
-			iStack[iStackSize - 1] = columns;
-		}
-		else if ("setSpellAreaSize".equals(event.getEventName()))
-		{
-			if (!config.dragSpells())
-			{
-				return;
-			}
-
-			iStack[iStackSize - 2] = FULL_WIDTH;
-			iStack[iStackSize - 1] = FULL_HEIGHT;
-		}
-		else if ("resizeIndividualSpells".equals(event.getEventName()))
-		{
-			int widget = iStack[iStackSize - 1];
-			int visCount = (int) spells.values().stream()
-					.map(Spell::getName)
-					.map(SpellbookPlugin::removeFlyingComma)
-					.filter(s -> notFilteredSpells.stream().anyMatch(s::contains))
-					.count();
-
-			if (visCount > 20 || visCount == 0)
-			{
-				return;
-			}
-
-			Spell spell = spells.get(widget);
-
-			int newSize = clamp(trueSize(spell), FULL_WIDTH, 0);
-
-			iStack[iStackSize - 3] = newSize;
-			iStack[iStackSize - 2] = newSize;
-		}
-		else if ("setSpellPosition".equals(event.getEventName()))
-		{
-			if (!config.dragSpells())
-			{
-				return;
-			}
-
-			int widget = iStack[iStackSize - 1];
-			Spell s = spells.get(widget);
-			int x = s.getX();
-			int y = s.getY();
-
-			if (x == -1 || y == -1)
-			{
-				return;
-			}
-
-			iStack[iStackSize - 5] = x;
-			iStack[iStackSize - 4] = y;
-		}
+		return false;
 	}
 
 
@@ -415,10 +303,121 @@ public class SpellbookPlugin extends Plugin
 		}
 	}
 
-	private void loadFilter()
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
-		notFilteredSpells.clear();
-		notFilteredSpells.addAll(Text.fromCSV(config.filter().toLowerCase()));
+		if (client.getVar(Varbits.FILTER_SPELLBOOK) != 0 || !config.enableMobile() || !event.getEventName().toLowerCase().contains("spell"))
+		{
+			return;
+		}
+
+		int[] iStack = client.getIntStack();
+		int iStackSize = client.getIntStackSize();
+
+		String[] sStack = client.getStringStack();
+		int sStackSize = client.getStringStackSize();
+
+		if ("startSpellRedraw".equals(event.getEventName()))
+		{
+			if (config.canDrag())
+			{
+				return;
+			}
+
+			spellbook = Spellbook.getByID(client.getVar(Varbits.SPELLBOOK));
+			loadSpells();
+		}
+		else if ("shouldFilterSpell".equals(event.getEventName()))
+		{
+			String spell = sStack[sStackSize - 1].toLowerCase();
+			int widget = iStack[iStackSize - 1];
+
+			// Add the spell to spells
+			if (!spells.containsKey(widget))
+			{
+				Spell s = new Spell();
+				s.setWidget(widget);
+				s.setX(-1);
+				s.setY(-1);
+				s.setSize(0);
+				s.setName(spell);
+
+				spells.put(widget, s);
+			}
+
+			if (notFilteredSpells.isEmpty())
+			{
+				return;
+			}
+
+			ImmutableSet<String> tmp = ImmutableSet.copyOf(notFilteredSpells);
+
+			iStack[iStackSize - 2] = isUnfiltered(spell, tmp) ? 1 : 0;
+		}
+		else if ("isMobileSpellbookEnabled".equals(event.getEventName()))
+		{
+			iStack[iStackSize - 1] = 1;
+		}
+		else if ("resizeSpell".equals(event.getEventName()))
+		{
+			int size = config.size();
+			int columns = clamp(FULL_WIDTH / size, 3, 2);
+
+			iStack[iStackSize - 2] = size;
+			iStack[iStackSize - 1] = columns;
+		}
+		else if ("setSpellAreaSize".equals(event.getEventName()))
+		{
+			if (!config.dragSpells())
+			{
+				return;
+			}
+
+			iStack[iStackSize - 2] = FULL_WIDTH;
+			iStack[iStackSize - 1] = FULL_HEIGHT;
+		}
+		else if ("resizeIndividualSpells".equals(event.getEventName()))
+		{
+			ImmutableSet<String> tmp = ImmutableSet.copyOf(notFilteredSpells);
+
+			int widget = iStack[iStackSize - 1];
+			int visCount = (int) spells.values().stream()
+					.map(Spell::getName)
+					.filter(s -> isUnfiltered(s, tmp))
+					.count();
+
+			if (visCount > 20 || visCount == 0)
+			{
+				return;
+			}
+
+			Spell spell = spells.get(widget);
+
+			int newSize = clamp(trueSize(spell), FULL_WIDTH, 0);
+
+			iStack[iStackSize - 3] = newSize;
+			iStack[iStackSize - 2] = newSize;
+		}
+		else if ("setSpellPosition".equals(event.getEventName()))
+		{
+			if (!config.dragSpells())
+			{
+				return;
+			}
+
+			int widget = iStack[iStackSize - 1];
+			Spell s = spells.get(widget);
+			int x = s.getX();
+			int y = s.getY();
+
+			if (x == -1 || y == -1)
+			{
+				return;
+			}
+
+			iStack[iStackSize - 5] = x;
+			iStack[iStackSize - 4] = y;
+		}
 	}
 
 	private void loadSpells()
@@ -504,21 +503,9 @@ public class SpellbookPlugin extends Plugin
 		return currentWidget(point) != null;
 	}
 
-	private Widget currentWidget(java.awt.Point point)
+	private void loadFilter()
 	{
-		for (int id : spells.keySet())
-		{
-			Widget w = client.getWidget(WidgetInfo.TO_GROUP(id), WidgetInfo.TO_CHILD(id)); // y tho let me just plop in id
-
-			if (w == null || !w.getBounds().contains(point) || notFilteredSpells.stream().noneMatch(spells.get(id).getName()::contains))
-			{
-				continue;
-			}
-
-			return w;
-		}
-
-		return null;
+		notFilteredSpells = ImmutableSet.copyOf(Text.fromCSV(config.filter().toLowerCase()));
 	}
 
 	void startDragging(java.awt.Point point)
@@ -565,37 +552,23 @@ public class SpellbookPlugin extends Plugin
 		runRebuild();
 	}
 
-	void resetZoom(java.awt.Point point)
+	private Widget currentWidget(java.awt.Point point)
 	{
-		Widget clickedWidget = currentWidget(point);
+		ImmutableSet<String> tmp = ImmutableSet.copyOf(notFilteredSpells);
 
-		if (clickedWidget == null || dragging || !config.scroll())
+		for (int id : spells.keySet())
 		{
-			return;
+			Widget w = client.getWidget(WidgetInfo.TO_GROUP(id), WidgetInfo.TO_CHILD(id)); // y tho let me just plop in id
+
+			if (w == null || !w.getBounds().contains(point) || !isUnfiltered(spells.get(id).getName(), tmp))
+			{
+				continue;
+			}
+
+			return w;
 		}
 
-		int clickedWidgetId = clickedWidget.getId();
-
-		if (!spells.containsKey(clickedWidgetId))
-		{
-			return;
-		}
-
-		Spell clickedSpell = tmp.getOrDefault(clickedWidgetId, spells.get(clickedWidgetId));
-
-		int oldSize = clickedSpell.getSize();
-		if (oldSize == 0)
-		{
-			return;
-		}
-
-		clickedSpell.setX(clickedSpell.getX() + trueSize(clickedSpell) / 4);
-		clickedSpell.setY(clickedSpell.getY() + trueSize(clickedSpell) / 4);
-		clickedSpell.setSize(0);
-
-		tmp.put(clickedWidgetId, clickedSpell);
-
-		runRebuild();
+		return null;
 	}
 
 	void increaseSize(java.awt.Point point)
@@ -633,6 +606,46 @@ public class SpellbookPlugin extends Plugin
 		runRebuild();
 	}
 
+	void resetZoom(java.awt.Point point)
+	{
+		Widget clickedWidget = currentWidget(point);
+
+		if (clickedWidget == null || dragging || !config.scroll())
+		{
+			return;
+		}
+
+		int clickedWidgetId = clickedWidget.getId();
+
+		if (!spells.containsKey(clickedWidgetId))
+		{
+			return;
+		}
+
+		Spell clickedSpell = spells.get(clickedWidgetId);
+
+		int oldSize = clickedSpell.getSize();
+		int tmpSize = tmp.get(clickedWidgetId).getSize();
+
+		if (tmpSize == 0 && oldSize == 0)
+		{
+			return;
+		}
+
+		clickedSpell.setX(clickedSpell.getX() + oldSize);
+		clickedSpell.setY(clickedSpell.getY() + oldSize);
+		clickedSpell.setSize(0);
+
+		tmp.put(clickedWidgetId, clickedSpell);
+
+		runRebuild();
+	}
+
+	private static int clamp(int i, int upper, int lower)
+	{
+		return Math.min(Math.max(i, lower), upper);
+	}
+
 	void decreaseSize(java.awt.Point point)
 	{
 		Widget scrolledWidget = currentWidget(point);
@@ -664,11 +677,6 @@ public class SpellbookPlugin extends Plugin
 		tmp.put(scrolledWidgetId, scrolledSpell);
 
 		runRebuild();
-	}
-
-	private static int clamp(int i, int upper, int lower)
-	{
-		return Math.min(Math.max(i, lower), upper);
 	}
 
 	private static String removeFlyingComma(String s)
