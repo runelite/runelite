@@ -200,28 +200,18 @@ public class HidePrayersPVMPlugin extends Plugin
 				Prayer prayer = Prayer.values()[index];
 				Widget prayerWidget = prayerWidgets.get(prayer.ordinal());
 
-				if (!config.showZulrahCheap()
-				&& !config.showZulrahExpensive()
-				&& !config.showBarrowsCheap()
-				&& !config.showBarrowsExpensive()
-				&& !config.showVorkathCheap()
-				&& !config.showVorkathExpensive()
-				&& !config.showCerberusCheap()
-				&& !config.showCerberusExpensive()
-				&& !config.showCerberusRangeCheap()
-				&& !config.showCerberusRangeExpensive()
-				&& !config.showArmadylCheap()
-				&& !config.showArmadylExpensive()
-				&& !config.showBandosCheap()
-				&& !config.showBandosExpensive()
-				&& !config.showSaradominCheap()
-				&& !config.showSaradominExpensive()
-				&& !config.showZamorakCheap()
-				&& !config.showZamorakExpensive()
+				if (config.Armadyl() == Armadyl.DISABLED
+					&& config.Bandos() == Bandos.DISABLED
+					&& config.Barrows() == Barrows.DISABLED
+					&& config.Cerberus() == Cerberus.DISABLED
+					&& config.Saradomin() == Saradomin.DISABLED
+					&& config.Vorkath() == Vorkath.DISABLED
+					&& config.Zamorak() == Zamorak.DISABLED
+					&& config.Zulrah() == Zulrah.DISABLED
 				)
 				prayerWidget.setHidden(false);
 
-				if (config.showZulrahCheap())
+				if (config.Zulrah() == Zulrah.ZULRAH_CHEAP)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
@@ -232,7 +222,7 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
 				}
 
-				if (config.showZulrahExpensive())
+				if (config.Zulrah() == Zulrah.ZULRAH_EXPENSIVE)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
@@ -243,7 +233,7 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[28].ordinal()).setHidden(false);// Augury
 				}
 
-				if (config.showBarrowsCheap())
+				if (config.Barrows() == Barrows.BARROWS_CHEAP)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
@@ -255,7 +245,7 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
 				}
 
-				if (config.showBarrowsExpensive())
+				if (config.Barrows() == Barrows.BARROWS_EXPENSIVE)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
@@ -267,7 +257,7 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[28].ordinal()).setHidden(false);// Augury
 				}
 
-				if (config.showVorkathCheap())
+				if (config.Vorkath() == Vorkath.VORKATH_CHEAP)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
@@ -277,7 +267,7 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
 				}
 
-				if (config.showVorkathExpensive())
+				if (config.Vorkath() == Vorkath.VORKATH_EXPENSIVE)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
@@ -287,10 +277,10 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
 				}
 
-				if (config.showCerberusCheap())
+				if (config.Cerberus() == Cerberus.CERBERUS_CHEAP)
 				{
 					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel Skin
+					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel PVM
 					prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);// Ultimate Strength
 					prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);// Incredible Reflex
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
@@ -300,7 +290,7 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
 				}
 
-				if (config.showCerberusExpensive())
+				if (config.Cerberus() == Cerberus.CERBERUS_EXPENSIVE)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
@@ -311,7 +301,7 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(false);// Piety
 				}
 
-				if (config.showCerberusRangeCheap())
+				if (config.Cerberus() == Cerberus.CERBERUS_CHEAP_RANGE)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
@@ -322,7 +312,7 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
 				}
 
-				if (config.showCerberusRangeExpensive())
+				if (config.Cerberus() == Cerberus.CERBERUS_EXPENSIVE_RANGE)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
@@ -333,7 +323,7 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
 				}
 
-				if (config.showArmadylCheap())
+				if (config.Armadyl() == Armadyl.ARMADYL_CHEAP)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
@@ -343,7 +333,7 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
 				}
 
-				if (config.showArmadylExpensive())
+				if (config.Armadyl() == Armadyl.ARMADYL_EXPENSIVE)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
@@ -353,11 +343,10 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
 				}
 
-
-				if (config.showBandosCheap())
+				if (config.Bandos() == Bandos.BANDOS_CHEAP)
 				{
 					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel Skin
+					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel PVM
 					prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);// Ultimate Strength
 					prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);// Incredible Reflex
 					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
@@ -365,7 +354,7 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
 				}
 
-				if (config.showBandosExpensive())
+				if (config.Bandos() == Bandos.BANDOS_EXPENSIVE)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
@@ -374,10 +363,10 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(false);// Piety
 				}
 
-				if (config.showSaradominCheap())
+				if (config.Saradomin() == Saradomin.SARDOMIN_CHEAP)
 				{
 					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel Skin
+					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel PVM
 					prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);// Ultimate Strength
 					prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);// Incredible Reflex
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from magic
@@ -386,7 +375,7 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
 				}
 
-				if (config.showSaradominExpensive())
+				if (config.Saradomin() == Saradomin.SARADOMIN_EXPENSIVE)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
@@ -396,7 +385,7 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
 				}
 
-				if (config.showZamorakCheap())
+				if (config.Zamorak() == Zamorak.ZAMORAK_CHEAP)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel Skin
@@ -408,7 +397,7 @@ public class HidePrayersPVMPlugin extends Plugin
 					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
 				}
 
-				if (config.showZamorakExpensive())
+				if (config.Zamorak() == Zamorak.ZAMORAK_EXPENSIVE)
 				{
 					prayerWidget.setHidden(true);
 					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic

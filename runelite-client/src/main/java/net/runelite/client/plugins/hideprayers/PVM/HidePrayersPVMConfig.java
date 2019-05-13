@@ -37,162 +37,72 @@ public interface HidePrayersPVMConfig extends Config
 	@ConfigItem
 	(
 		position = 0,
-		keyName = "barrowscheap",
-		name = "Barrows Eagle Eye/Mystic Might",
+		keyName = "Barrows",
+		name = "Barrows",
 		description = "Shows prayers for Barrows"
 	)
-	default boolean showBarrowsCheap() {return false;}
+	default Barrows Barrows() {return Barrows.DISABLED;}
 
 	@ConfigItem
 	(
 		position = 1,
-		keyName = "barrowsexpensive",
-		name = "Barrows Augury/Rigour",
-		description = "Shows prayers for Barrows"
+		keyName = "Cerberus",
+		name = "Cerberus",
+		description = "Shows prayers for Cerberus"
 	)
-	default boolean showBarrowsExpensive() {return false;}
+	default Cerberus Cerberus() {return Cerberus.DISABLED;}
 
 	@ConfigItem
 	(
 		position = 2,
-		keyName = "zulrahcheap",
-		name = "Zulrah Eagle Eye/Mystic Might",
-		description = "Show prayers for Zulrah"
+		keyName = "Vorkath",
+		name = "Vorkath",
+		description = "Shows prayers for Vorkath"
 	)
-	default boolean showZulrahCheap() {return false;}
+	default Vorkath Vorkath() {return Vorkath.DISABLED;}
 
 	@ConfigItem
 	(
 		position = 3,
-		keyName = "zulrahexpensive",
-		name = "Zulrah Augury/Rigour",
+		keyName = "Zulrah",
+		name = "Zulrah",
 		description = "Shows prayers for Zulrah"
 	)
-	default boolean showZulrahExpensive() {return false;}
+	default Zulrah Zulrah() {return Zulrah.DISABLED;}
 
 	@ConfigItem
 	(
 		position = 4,
-		keyName = "vorkathcheap",
-		name = "Vorkath Eagle Eye",
-		description = "Shows prayers for Vorkath"
+		keyName = "Armadyl",
+		name = "Armadyl",
+		description = "Shows prayers for Armadyl"
 	)
-	default boolean showVorkathCheap() {return false;}
+	default Armadyl Armadyl() {return Armadyl.DISABLED;}
 
 	@ConfigItem
 	(
 		position = 5,
-		keyName = "vorkathexpensive",
-		name = "Vorkath Rigour",
-		description = "Shows prayers for Vorkath"
+		keyName = "Bandos",
+		name = "Bandos",
+		description = "Shows prayers for Bandos"
 	)
-	default boolean showVorkathExpensive() {return false;}
+	default Bandos Bandos() {return Bandos.DISABLED;}
 
 	@ConfigItem
 	(
 		position = 6,
-		keyName = "cerberuscheap",
-		name = "Cerberus Strength/Skin/Reflexes",
-		description = "Shows prayers for Cerberus"
+		keyName = "Saradomin",
+		name = "Saradomin",
+		description = "Shows prayers for Saradomin"
 	)
-	default boolean showCerberusCheap() {return false;}
+	default Saradomin Saradomin() {return Saradomin.DISABLED;}
 
 	@ConfigItem
 	(
 		position = 7,
-		keyName = "cerberusexpensive",
-		name = "Cerberus Piety",
-		description = "Shows prayers for Cerberus"
+		keyName = "Zamorak",
+		name = "Zamorak",
+		description = "Shows prayers for Zamorak"
 	)
-	default boolean showCerberusExpensive() {return false;}
-
-	@ConfigItem
-	(
-		position = 8,
-		keyName = "cerberusrangeexpensive",
-		name = "Cerberus Eagle Eye",
-		description = "Shows prayers for Cerberus"
-	)
-	default boolean showCerberusRangeCheap() {return false;}
-
-	@ConfigItem
-	(
-		position = 9,
-		keyName = "cerberuserangexpensive",
-		name = "Cerberus Rigour",
-		description = "Shows prayers for Cerberus"
-	)
-	default boolean showCerberusRangeExpensive() {return false;}
-
-	@ConfigItem
-	(
-		position = 10,
-		keyName = "armadylcheap",
-		name = "Armadyl Eagle eye",
-		description = "Shows prayers for Armadyl GWD"
-	)
-	default boolean showArmadylCheap() {return false;}
-
-	@ConfigItem
-	(
-		position = 11,
-		keyName = "armadylexpensive",
-		name = "Armadyl Rigour",
-		description = "Shows prayers for Armadyl GWD"
-	)
-	default boolean showArmadylExpensive() {return false;}
-
-	@ConfigItem
-	(
-		position = 12,
-		keyName = "bandoscheap",
-		name = "Bandos Strength/Skin/Reflexes",
-		description = "Shows prayers for Bandos GWD"
-	)
-	default boolean showBandosCheap() {return false;}
-
-	@ConfigItem
-	(
-		position = 13,
-		keyName = "bandosexpensive",
-		name = "Bandos Piety",
-		description = "Shows prayers for Bandos GWD"
-	)
-	default boolean showBandosExpensive() {return false;}
-
-	@ConfigItem
-	(
-		position = 14,
-		keyName = "sardomincheap",
-		name = "Saradomin Eagle eye/Steel Skin",
-		description = "Shows prayers for Saradomin GWD"
-	)
-	default boolean showSaradominCheap() {return false;}
-
-	@ConfigItem
-	(
-		position = 15,
-		keyName = "saradominexpensive",
-		name = "Saradomin Piety/Rigour",
-		description = "Shows prayers for Saradomin GWD"
-	)
-	default boolean showSaradominExpensive() {return false;}
-
-	@ConfigItem
-	(
-		position = 16,
-		keyName = "zamorakcheap",
-		name = "Zamorak Strength/Skin/Reflexes",
-		description = "Shows prayers for Zamorak GWD"
-	)
-	default boolean showZamorakCheap() {return false;}
-
-	@ConfigItem
-	(
-		position = 17,
-		keyName = "zamorakexpensive",
-		name = "Zamorak Piety",
-		description = "Shows prayers for Zamorak GWD"
-	)
-	default boolean showZamorakExpensive() {return false;}
+	default Zamorak Zamorak() {return Zamorak.DISABLED;}
 }
