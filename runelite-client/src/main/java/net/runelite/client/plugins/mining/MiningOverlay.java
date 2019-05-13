@@ -68,32 +68,30 @@ public class MiningOverlay extends Overlay
 	private void drawNodes(Graphics2D graphics)
 	{
 
-			for (MiningPlugin.Obj obj : plugin.objects)
+		for (MiningPlugin.Obj obj : plugin.getObjects())
+		{
+			if (obj == null)
 			{
-				if (obj == null)
-				{
-					continue;
-				}
-				if (config.showCurrentOre() && plugin.currentNode != null && !plugin.currentNode.equalsIgnoreCase(plugin.convertObjectToNodeName(obj.getGameObject().getId())))
-				{
-					//log.info("Object: " + plugin.currentNode + " - " + plugin.convertObjectToNodeName(obj.getGameObject().getId()));
-					continue;
-				}
-				drawOverlayOnNode(graphics, obj);
+				continue;
 			}
-			for (MiningPlugin.WallObj obj : plugin.wallObjects)
+			if (config.showCurrentOre() && plugin.getCurrentNode() != null && !plugin.getCurrentNode().equalsIgnoreCase(plugin.convertObjectToNodeName(obj.getGameObject().getId())))
 			{
-				if (obj == null)
-				{
-					continue;
-				}
-				if (config.showCurrentOre() && plugin.currentNode != null && !plugin.currentNode.equalsIgnoreCase(plugin.convertObjectToNodeName(obj.getWallObject().getId())))
-				{
-					//log.info("Wall: " + plugin.currentNode + " - " + plugin.convertObjectToNodeName(obj.getWallObject().getId()));
-					continue;
-				}
-				drawWallOverlayOnNode(graphics, obj);
+				continue;
 			}
+			drawOverlayOnNode(graphics, obj);
+		}
+		for (MiningPlugin.WallObj obj : plugin.getWallObjects())
+		{
+			if (obj == null)
+			{
+				continue;
+			}
+			if (config.showCurrentOre() && plugin.getCurrentNode() != null && !plugin.getCurrentNode().equalsIgnoreCase(plugin.convertObjectToNodeName(obj.getWallObject().getId())))
+			{
+				continue;
+			}
+			drawWallOverlayOnNode(graphics, obj);
+		}
 	}
 
 	private void drawOverlayOnNode(Graphics2D graphics, MiningPlugin.Obj obj)
@@ -132,14 +130,16 @@ public class MiningOverlay extends Overlay
 		{
 			return;
 		}
-		double timeRemaining = ((System.currentTimeMillis() - spawnTime) / (double)respawnTime);
+		double timeRemaining = ((System.currentTimeMillis() - spawnTime) / (double) respawnTime);
 		ProgressPieComponent ppc = new ProgressPieComponent();
 		ppc.setBorderColor(Color.ORANGE);
 		ppc.setFill(Color.YELLOW);
 		ppc.setPosition(loc);
 		ppc.setProgress(timeRemaining);
 		if (timeRemaining <= 1)
+		{
 			ppc.render(graphics);
+		}
 	}
 
 	private void drawWallOverlayOnNode(Graphics2D graphics, MiningPlugin.WallObj obj)
@@ -178,13 +178,15 @@ public class MiningOverlay extends Overlay
 		{
 			return;
 		}
-		double timeRemaining = ((System.currentTimeMillis() - spawnTime) / (double)respawnTime);
+		double timeRemaining = ((System.currentTimeMillis() - spawnTime) / (double) respawnTime);
 		ProgressPieComponent ppc = new ProgressPieComponent();
 		ppc.setBorderColor(Color.ORANGE);
 		ppc.setFill(Color.YELLOW);
 		ppc.setPosition(loc);
 		ppc.setProgress(timeRemaining);
 		if (timeRemaining <= 1)
+		{
 			ppc.render(graphics);
+		}
 	}
 }

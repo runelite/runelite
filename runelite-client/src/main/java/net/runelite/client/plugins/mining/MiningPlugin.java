@@ -39,13 +39,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.ObjectID;
-import static net.runelite.api.ObjectID.CRYSTALS;
-import static net.runelite.api.ObjectID.CRYSTALS_30372;
-import static net.runelite.api.ObjectID.EMPTY_WALL;
-import static net.runelite.api.ObjectID.ORE_VEIN_26661;
-import static net.runelite.api.ObjectID.ORE_VEIN_26662;
-import static net.runelite.api.ObjectID.ORE_VEIN_26663;
-import static net.runelite.api.ObjectID.ORE_VEIN_26664;
+import static net.runelite.api.ObjectID.*;
 import net.runelite.api.Player;
 import net.runelite.api.WallObject;
 import net.runelite.api.events.ChatMessage;
@@ -148,12 +142,12 @@ public class MiningPlugin extends Plugin
 	}
 
 	@Getter(AccessLevel.PACKAGE)
-	public ArrayList<Obj> objects = new ArrayList<Obj>();
+	private ArrayList<Obj> objects = new ArrayList<Obj>();
 	@Getter(AccessLevel.PACKAGE)
-	ArrayList<WallObj> wallObjects = new ArrayList<WallObj>();
+	private ArrayList<WallObj> wallObjects = new ArrayList<WallObj>();
 
 	@Getter(AccessLevel.PACKAGE)
-	String currentNode = "";
+	private String currentNode = "";
 
 	@Override
 	protected void startUp()
@@ -243,9 +237,14 @@ public class MiningPlugin extends Plugin
 			case ORE_VEIN_26662: // Motherlode vein
 			case ORE_VEIN_26663: // Motherlode vein
 			case ORE_VEIN_26664: // Motherlode vein
+			case DEPLETED_VEIN_26665: // Depleted motherlode vein
+			case DEPLETED_VEIN_26666: // Depleted motherlode vein
+			case DEPLETED_VEIN_26667: // Depleted motherlode vein
+			case DEPLETED_VEIN_26668: // Depleted motherlode vein
 				return "Pay-dirt";
 			case CRYSTALS: // Amethyst crystals
 			case CRYSTALS_30372: // Amethyst crystals
+			case EMPTY_WALL: // Depleted amethyst crystals
 				return "Amethyst";
 		}
 		return "";
@@ -386,10 +385,10 @@ public class MiningPlugin extends Plugin
 			case ObjectID.ROCKS_7490: // Silver
 			case ObjectID.ROCKS_7458: // Gold
 			case ObjectID.ROCKS_7491: // Gold
-				return second * 59.5;
+				return minute * 1;
 			case ObjectID.ROCKS_7459: // Mithril
 			case ObjectID.ROCKS_7492: // Mithril
-				return second * (inMiningGuild() ? 1 : 2);
+				return minute * (inMiningGuild() ? 1 : 2);
 			case ObjectID.ROCKS_7460: // Adamant
 			case ObjectID.ROCKS_7493: // Adamant
 				return minute * (inMiningGuild() ? 2 : 4);
@@ -408,10 +407,10 @@ public class MiningPlugin extends Plugin
 			case ORE_VEIN_26662: // Motherlode vein
 			case ORE_VEIN_26663: // Motherlode vein
 			case ORE_VEIN_26664: // Motherlode vein
-			case 26665: // Depleted motherlode vein
-			case 26666: // Depleted motherlode vein
-			case 26667: // Depleted motherlode vein
-			case 26668: // Depleted motherlode vein
+			case DEPLETED_VEIN_26665: // Depleted motherlode vein
+			case DEPLETED_VEIN_26666: // Depleted motherlode vein
+			case DEPLETED_VEIN_26667: // Depleted motherlode vein
+			case DEPLETED_VEIN_26668: // Depleted motherlode vein
 				return (minute * 1) + (second * 48);
 			case CRYSTALS: // Amethyst crystals
 			case CRYSTALS_30372: // Amethyst crystals
@@ -484,10 +483,10 @@ public class MiningPlugin extends Plugin
 	{
 		switch (object.getId())
 		{
-			case 26665:
-			case 26666:
-			case 26667:
-			case 26668:
+			case DEPLETED_VEIN_26665: // Depleted motherlode vein
+			case DEPLETED_VEIN_26666: // Depleted motherlode vein
+			case DEPLETED_VEIN_26667: // Depleted motherlode vein
+			case DEPLETED_VEIN_26668: // Depleted motherlode vein
 			case EMPTY_WALL:
 				return true;
 		}
