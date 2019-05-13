@@ -96,10 +96,7 @@ public class TimersOverlay extends Overlay
 				}
 				final String ticksLeftStr = String.valueOf(ticksLeft);
 				Point canvasPoint = npc.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
-				Point test = plugin.getClickPointRanged();
-				System.out.println(test);
 				renderTextLocation(graphics, ticksLeftStr, 32, Font.BOLD, tickcolor, canvasPoint);
-				renderTextLocation(graphics, ticksLeftStr, 20, Font.BOLD, tickcolor, test);
 			}
 		}
 
@@ -120,9 +117,7 @@ public class TimersOverlay extends Overlay
 				}
 				final String ticksLeftStr = String.valueOf(ticksLeft);
 				Point canvasPoint = npc.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
-				Point test = plugin.getClickPointMage();
 				renderTextLocation(graphics, ticksLeftStr, 32, Font.BOLD, tickcolor, canvasPoint);
-				renderTextLocation(graphics, ticksLeftStr, 20, Font.BOLD, tickcolor, test);
 			}
 		}
 
@@ -143,9 +138,7 @@ public class TimersOverlay extends Overlay
 				}
 				final String ticksLeftStr = String.valueOf(ticksLeft);
 				Point canvasPoint = npc.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
-				Point test = plugin.getClickPointMelee();
 				renderTextLocation(graphics, ticksLeftStr, 32, Font.BOLD, tickcolor, canvasPoint);
-				renderTextLocation(graphics, ticksLeftStr, 20, Font.BOLD, tickcolor, test);
 			}
 		}
 
