@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2019, Ganom <https://github.com/Ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,9 +26,14 @@
 package net.runelite.client.plugins.fightcave;
 
 import com.google.inject.Provides;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -39,16 +45,20 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.Point;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.flexo.Flexo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
+import net.runelite.client.plugins.stretchedmode.StretchedModeConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -59,6 +69,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	type = PluginType.PVM,
 	enabledByDefault = false
 )
+
 public class FightCavePlugin extends Plugin
 {
 	private static final Pattern WAVE_PATTERN = Pattern.compile(".*Wave: (\\d+).*");
@@ -84,6 +95,45 @@ public class FightCavePlugin extends Plugin
 
 	@Inject
 	private JadOverlay jadOverlay;
+
+	@Inject
+	private TimersOverlay timersOverlay;
+
+	@Inject
+	private ConfigManager externalConfig;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Map<NPC, NPCContainer> Rangers = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private Map<NPC, NPCContainer> Magers = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private Map<NPC, NPCContainer> Meleers = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private Map<NPC, NPCContainer> Drainers = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private Map<NPC, NPCContainer> Ignore = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private Point clickPointMage;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Point clickPointMelee;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Point clickPointRanged;
+	private Rectangle boundsRangedPray = new Rectangle(0, 0, 0, 0);
+	private Rectangle boundsMagePray = new Rectangle(0, 0, 0, 0);
+	private Rectangle boundsMeleePray = new Rectangle(0, 0, 0, 0);
+
+	private boolean runMage;
+	private boolean runRange;
+	private Flexo flexo;
+	private ExecutorService executorService = Executors.newFixedThreadPool(1);
+	private int scalingfactor;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Nullable
@@ -140,8 +190,22 @@ public class FightCavePlugin extends Plugin
 	@Override
 	public void startUp()
 	{
+		scalingfactor = externalConfig.getConfig(StretchedModeConfig.class).scalingFactor();
 		overlayManager.add(waveOverlay);
 		overlayManager.add(jadOverlay);
+		overlayManager.add(timersOverlay);
+		Flexo.client = client;
+		executorService.submit(() -> {
+			flexo = null;
+			try
+			{
+				flexo = new Flexo();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		});
 	}
 
 	@Override
@@ -149,7 +213,7 @@ public class FightCavePlugin extends Plugin
 	{
 		overlayManager.remove(waveOverlay);
 		currentWave = -1;
-
+		overlayManager.remove(timersOverlay);
 		overlayManager.remove(jadOverlay);
 		jad = null;
 		attack = null;
@@ -171,6 +235,48 @@ public class FightCavePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameTick(GameTick Event)
+	{
+		scalingfactor = externalConfig.getConfig(StretchedModeConfig.class).scalingFactor();
+
+		for (NPCContainer ranger : getRangers().values())
+		{
+			ranger.setTicksUntilAttack(ranger.getTicksUntilAttack() - 1);
+			if (ranger.getNpc().getAnimation() == 2633)
+			{
+				if (ranger.getTicksUntilAttack() < 1)
+				{
+					ranger.setTicksUntilAttack(4);
+				}
+			}
+		}
+
+		for (NPCContainer meleer : getMeleers().values())
+		{
+			meleer.setTicksUntilAttack(meleer.getTicksUntilAttack() - 1);
+			if (meleer.getNpc().getAnimation() == 2637 || meleer.getNpc().getAnimation() == 2639)
+			{
+				if (meleer.getTicksUntilAttack() < 1)
+				{
+					meleer.setTicksUntilAttack(4);
+				}
+			}
+		}
+
+		for (NPCContainer mager : getMagers().values())
+		{
+			mager.setTicksUntilAttack(mager.getTicksUntilAttack() - 1);
+			if (mager.getNpc().getAnimation() == 2647)
+			{
+				if (mager.getTicksUntilAttack() < 1)
+				{
+					mager.setTicksUntilAttack(4);
+				}
+			}
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		final Matcher waveMatcher = WAVE_PATTERN.matcher(event.getMessage());
@@ -185,39 +291,69 @@ public class FightCavePlugin extends Plugin
 		currentWave = Integer.parseInt(waveMatcher.group(1));
 	}
 
-	boolean inFightCave()
-	{
-		return ArrayUtils.contains(client.getMapRegions(), FIGHT_CAVE_REGION);
-	}
-
-	static String formatMonsterQuantity(final WaveMonster monster, final int quantity)
-	{
-		return String.format("%dx %s", quantity, monster);
-	}
 
 	@Subscribe
-	public void onNpcSpawned(final NpcSpawned event)
+	public void onNpcSpawned(NpcSpawned event)
 	{
-		final int id = event.getNpc().getId();
-
-		if (id == NpcID.TZTOKJAD || id == NpcID.TZTOKJAD_6506)
+		NPC npc = event.getNpc();
+		switch (npc.getId())
 		{
-			jad = event.getNpc();
+			case NpcID.TZKIH_3116:
+			case NpcID.TZKIH_3117:
+				Drainers.put(npc, new NPCContainer(npc));
+				break;
+			case NpcID.TZKEK_3118:
+			case NpcID.TZKEK_3119:
+			case NpcID.TZKEK_3120:
+				Ignore.put(npc, new NPCContainer(npc));
+				break;
+			case NpcID.TOKXIL_3121:
+			case NpcID.TOKXIL_3122:
+				Rangers.put(npc, new NPCContainer(npc));
+				break;
+			case NpcID.YTMEJKOT:
+			case NpcID.YTMEJKOT_3124:
+				Meleers.put(npc, new NPCContainer(npc));
+				break;
+			case NpcID.KETZEK:
+			case NpcID.KETZEK_3126:
+				Magers.put(npc, new NPCContainer(npc));
+				break;
+			case NpcID.TZTOKJAD:
+			case NpcID.TZTOKJAD_6506:
+				jad = npc;
+				break;
 		}
 	}
 
 	@Subscribe
-	public void onNpcDespawned(final NpcDespawned event)
+	public void onNpcDespawned(NpcDespawned event)
 	{
-		if (jad == event.getNpc())
+		if (Rangers.remove(event.getNpc()) != null && Rangers.isEmpty())
 		{
-			jad = null;
-			attack = null;
+			Rangers.clear();
 		}
+		if (Meleers.remove(event.getNpc()) != null && Meleers.isEmpty())
+		{
+			Meleers.clear();
+		}
+		if (Magers.remove(event.getNpc()) != null && Magers.isEmpty())
+		{
+			Magers.clear();
+		}
+		if (Drainers.remove(event.getNpc()) != null && Drainers.isEmpty())
+		{
+			Drainers.clear();
+		}
+		if (Ignore.remove(event.getNpc()) != null && Ignore.isEmpty())
+		{
+			Ignore.clear();
+		}
+
 	}
 
 	@Subscribe
-	public void onAnimationChanged(final AnimationChanged event)
+	public void onAnimationChanged(AnimationChanged event)
 	{
 		if (event.getActor() != jad)
 		{
@@ -227,10 +363,23 @@ public class FightCavePlugin extends Plugin
 		if (jad.getAnimation() == JadAttack.MAGIC.getAnimation())
 		{
 			attack = JadAttack.MAGIC;
+			runMage = true;
 		}
+
 		else if (jad.getAnimation() == JadAttack.RANGE.getAnimation())
 		{
 			attack = JadAttack.RANGE;
+			runRange = true;
 		}
+	}
+
+	boolean inFightCave()
+	{
+		return ArrayUtils.contains(client.getMapRegions(), FIGHT_CAVE_REGION);
+	}
+
+	static String formatMonsterQuantity(final WaveMonster monster, final int quantity)
+	{
+		return String.format("%dx %s", quantity, monster);
 	}
 }
