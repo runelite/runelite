@@ -35,10 +35,9 @@ import net.runelite.client.chat.ChatMessageManager;
 import javax.inject.Inject;
 import java.awt.*;
 
-
+@Getter
 class Wave
 {
-    @Getter
     private Client client;
     private final ImmutableList<WidgetInfo> WIDGETS = ImmutableList.of(
             WidgetInfo.BA_FAILED_ATTACKER_ATTACKS,
@@ -65,17 +64,17 @@ class Wave
             WidgetInfo.BA_HITPOINTS_REPLENISHED_POINTS,
             WidgetInfo.BA_WRONG_POISON_PACKS_POINTS
     );
-    private int[] amountsList = new int[6];
+    private int[] waveAmounts = new int[6];
     private int[] allPointsList = new int[10];
-    private int[] importantPointsList = new int[6];
+    private int[] wavePoints = new int[6];
     private int[] otherRolesPointsList = new int[4];
     private String[] descriptions = {
             " A: ",
-            " D: ",
-            " C: ",
-            " Vial: ",
-            " H packs: ",
-            " Total: "};
+            "; D: ",
+            "; C: ",
+            "; Vial: ",
+            "; H packs: ",
+            "; Total: "};
 
     private String[] otherPointsDescriptions = {
             " A: ",
@@ -87,23 +86,11 @@ class Wave
     {
         this.client = client;
     }
-    int[] getOtherRolesPointsList()
-    {
-        return otherRolesPointsList;
-    }
-    int[] getWaveAmounts()
-    {
-        return amountsList;
-    }
-    int[] getWavePoints()
-    {
-        return importantPointsList;
-    }
     void setWaveAmounts(int[] amounts)
     {
         for (int i = 0; i < amounts.length; i++)
         {
-            amountsList[i] = amounts[i];
+            waveAmounts[i] = amounts[i];
         }
     }
 
@@ -111,7 +98,7 @@ class Wave
     {
         for (int i = 0; i < points.length; i++)
         {
-            importantPointsList[i] = points[i];
+            wavePoints[i] = points[i];
         }
         for (int i = 0; i < otherRolesPoints.length; i++)
         {
@@ -125,7 +112,7 @@ class Wave
             Widget w = client.getWidget(WIDGETS.get(i));
             if (w != null)
             {
-                amountsList[i] = Integer.parseInt(w.getText());
+                waveAmounts[i] = Integer.parseInt(w.getText());
             }
         }
     }
@@ -138,26 +125,26 @@ class Wave
             switch (i)
             {
                 case 1:
-                    importantPointsList[0] += allPointsList[i];
+                    wavePoints[0] += allPointsList[i];
                     break;
                 case 4:
-                    importantPointsList[1] += allPointsList[i];
+                    wavePoints[1] += allPointsList[i];
                     break;
                 case 6:
-                    importantPointsList[2] += allPointsList[i];
+                    wavePoints[2] += allPointsList[i];
                     break;
                 case 8:
                 case 9:
-                    importantPointsList[3] += allPointsList[i];
+                    wavePoints[3] += allPointsList[i];
                     break;
                 default:
                     break;
             }
         }
-        importantPointsList[5] = 0;
-        for (int i = 0; i < importantPointsList.length-1; i++)
+        wavePoints[5] = 0;
+        for (int i = 0; i < wavePoints.length-1; i++)
         {
-            importantPointsList[5] += importantPointsList[i];
+            wavePoints[5] += wavePoints[i];
         }
         for (int i = 0; i < POINTSWIDGETS.size(); i++)
         {
@@ -201,15 +188,19 @@ class Wave
             if (i != 4)
             {
                 message.append(descriptions[i]);
-                message.append(String.valueOf(amountsList[i]));
+                message.append(String.valueOf(waveAmounts[i]));
                 message.append("(");
-                if (importantPointsList[i] < 0)
+                if (wavePoints[i] < 0)
                 {
-                    message.append(Color.RED, String.valueOf(importantPointsList[i]));
+                    message.append(Color.RED, String.valueOf(wavePoints[i]));
+                }
+                else if (wavePoints[i] > 0)
+                {
+                    message.append(Color.BLUE, String.valueOf(wavePoints[i]));
                 }
                 else
                 {
-                    message.append(String.valueOf(importantPointsList[i]));
+                    message.append(String.valueOf(wavePoints[i]));
                 }
                 message.append(")");
             }

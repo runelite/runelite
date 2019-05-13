@@ -107,6 +107,28 @@ public class ChatController
 		return kc;
 	}
 
+	@PostMapping("/gc")
+	public void submitGc(@RequestParam String name, @RequestParam int gc)
+	{
+		if (gc < 0)
+		{
+			return;
+		}
+
+		chatService.setGc(name, gc);
+	}
+
+	@GetMapping("/gc")
+	public int getKc(@RequestParam String name)
+	{
+		Integer kc = chatService.getGc(name);
+		if (kc == null)
+		{
+			throw new NotFoundException();
+		}
+		return kc;
+	}
+
 	@PostMapping("/task")
 	public void submitTask(@RequestParam String name, @RequestParam("task") String taskName, @RequestParam int amount,
 		@RequestParam int initialAmount, @RequestParam String location)

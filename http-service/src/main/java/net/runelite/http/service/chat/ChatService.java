@@ -82,6 +82,24 @@ public class ChatService
 		}
 	}
 
+	public Integer getGc(String name)
+	{
+		String value;
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			value = jedis.get("gc." + name);
+		}
+		return value == null ? null : Integer.parseInt(value);
+	}
+
+	public void setGc(String name, int gc)
+	{
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.setex("gc." + name, (int) EXPIRE.getSeconds(), Integer.toString(gc));
+		}
+	}
+
 	public Task getTask(String name)
 	{
 		Map<String, String> map;

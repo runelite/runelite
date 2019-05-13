@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
@@ -174,14 +174,18 @@ enum ItemWithCharge
 	private final int id;
 	private final int charges;
 
-	private static final Map<Integer, ItemWithCharge> ID_MAP = new HashMap<>();
+	private static final Map<Integer, ItemWithCharge> ID_MAP;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, ItemWithCharge> builder = new ImmutableMap.Builder<>();
+
 		for (ItemWithCharge itemCharge : values())
 		{
-			ID_MAP.put(itemCharge.getId(), itemCharge);
+			builder.put(itemCharge.getId(), itemCharge);
 		}
+
+		ID_MAP = builder.build();
 	}
 
 	@Nullable

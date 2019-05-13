@@ -47,10 +47,14 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.0");
 	private static final DecimalFormat DECIMAL_FORMAT_ABS = new DecimalFormat("#0");
 
+	private static final int SIDE_LABEL_OFFSET = 4;
+
 	private long minimum;
 	private long maximum = 100;
 	private double value;
 	private LabelDisplayMode labelDisplayMode = LabelDisplayMode.PERCENTAGE;
+	private String leftLabel;
+	private String rightLabel;
 	private Color foregroundColor = new Color(82, 161, 82);
 	private Color backgroundColor = new Color(255, 255, 255, 127);
 	private Color fontColor = Color.WHITE;
@@ -103,6 +107,24 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 		textComponent.setColor(fontColor);
 		textComponent.setText(textToWrite);
 		textComponent.render(graphics);
+
+		if (leftLabel != null)
+		{
+			final TextComponent leftTextComponent = new TextComponent();
+			leftTextComponent.setPosition(new Point(barX + SIDE_LABEL_OFFSET, progressTextY));
+			leftTextComponent.setColor(fontColor);
+			leftTextComponent.setText(leftLabel);
+			leftTextComponent.render(graphics);
+		}
+
+		if (rightLabel != null)
+		{
+			final TextComponent leftTextComponent = new TextComponent();
+			leftTextComponent.setPosition(new Point(barX + width - metrics.stringWidth(rightLabel) - SIDE_LABEL_OFFSET, progressTextY));
+			leftTextComponent.setColor(fontColor);
+			leftTextComponent.setText(rightLabel);
+			leftTextComponent.render(graphics);
+		}
 
 		final Dimension dimension = new Dimension(width, height);
 		bounds.setLocation(preferredLocation);

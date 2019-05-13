@@ -37,12 +37,6 @@ import lombok.Setter;
 
 public class PanelComponent implements LayoutableRenderableEntity
 {
-	public enum Orientation
-	{
-		HORIZONTAL,
-		VERTICAL;
-	}
-
 	@Getter
 	private final Rectangle bounds = new Rectangle();
 
@@ -60,7 +54,7 @@ public class PanelComponent implements LayoutableRenderableEntity
 	private final List<LayoutableRenderableEntity> children = new ArrayList<>();
 
 	@Setter
-	private Orientation orientation = Orientation.VERTICAL;
+	private ComponentOrientation orientation = ComponentOrientation.VERTICAL;
 
 	@Setter
 	private int wrapping = -1;

@@ -27,11 +27,11 @@ package net.runelite.client.plugins.smelting;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.time.Instant;
 import java.time.Duration;
+import java.time.Instant;
 import javax.inject.Inject;
-import static net.runelite.api.AnimationID.SMITHING_SMELTING;
 import static net.runelite.api.AnimationID.SMITHING_CANNONBALL;
+import static net.runelite.api.AnimationID.SMITHING_SMELTING;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
@@ -50,20 +50,18 @@ class SmeltingOverlay extends Overlay
 
 	private final Client client;
 	private final SmeltingPlugin plugin;
-	private final SmeltingConfig config;
 	private final XpTrackerService xpTrackerService;
 
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	public SmeltingOverlay(Client client, SmeltingPlugin plugin, SmeltingConfig config, XpTrackerService xpTrackerService)
+	SmeltingOverlay(Client client, SmeltingPlugin plugin, XpTrackerService xpTrackerService)
 	{
 		super(plugin);
-		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 		this.xpTrackerService = xpTrackerService;
+		setPosition(OverlayPosition.TOP_LEFT);
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Smelting overlay"));
 	}
 
@@ -71,16 +69,13 @@ class SmeltingOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		SmeltingSession session = plugin.getSession();
-
-		if (session!=null)
-		if (session.getLastItemSmelted() == null)
+		if (session == null)
 		{
 			return null;
 		}
 
 		panelComponent.getChildren().clear();
 
-		if (session!=null)
 		if (isSmelting() || Duration.between(session.getLastItemSmelted(), Instant.now()).getSeconds() < SMELT_TIMEOUT)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
@@ -125,6 +120,7 @@ class SmeltingOverlay extends Overlay
 		return panelComponent.render(graphics);
 
 	}
+
 	private boolean isSmelting()
 	{
 		switch (client.getLocalPlayer().getAnimation())

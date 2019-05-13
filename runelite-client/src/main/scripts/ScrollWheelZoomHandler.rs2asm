@@ -6,13 +6,15 @@
    iconst                 1
    iconst                 0
    sconst                 "scrollWheelZoom"
-   runelite_callback     
+   runelite_callback
    if_icmpeq              LABEL18
    iconst                 0
    iload                  0
    iconst                 25
-   multiply              
-   sub                   
+   sconst            	  "scrollWheelZoomIncrement"
+   runelite_callback
+   multiply
+   sub
    istore                 1
    iconst                 512
    istore                 2
@@ -28,21 +30,21 @@ LABEL14:
    if_icmpne              LABEL18
    jump                   LABEL19
 LABEL18:
-   return                
+   return
 LABEL19:
-   viewport_getfov       
+   viewport_getfov
    istore                 2
    istore                 3
    iload                  3
    iload                  1
-   add                   
+   add
    istore                 3
    iload                  2
    iload                  1
-   add                   
+   add
    istore                 2
    iload                  3
    iload                  2
    invoke                 42
 LABEL33:
-   return                
+   return

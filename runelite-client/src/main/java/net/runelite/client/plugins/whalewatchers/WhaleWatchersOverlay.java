@@ -19,6 +19,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
@@ -58,7 +59,7 @@ public class WhaleWatchersOverlay extends Overlay
 
 		if (plugin.inCombat && config.showDamageCounter())
 		{
-			panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+			panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 			panelComponent.setWrapping(5);
 			String opp = client.getLocalPlayer().getInteracting() != null ?
 				client.getLocalPlayer().getInteracting().getName() : lastOpponent;

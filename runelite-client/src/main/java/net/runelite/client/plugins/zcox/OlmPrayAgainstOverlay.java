@@ -37,6 +37,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
@@ -55,7 +56,7 @@ class OlmPrayAgainstOverlay extends Overlay
 		this.client = client;
 		this.spriteManager = spriteManager;
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
-		panelComponent.setOrientation(PanelComponent.Orientation.VERTICAL);
+		panelComponent.setOrientation(ComponentOrientation.VERTICAL);
 	}
 
 	public Dimension render(Graphics2D graphics2D)

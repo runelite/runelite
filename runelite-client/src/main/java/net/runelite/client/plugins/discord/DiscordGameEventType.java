@@ -25,8 +25,8 @@
  */
 package net.runelite.client.plugins.discord;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -250,16 +250,18 @@ enum DiscordGameEventType
 	RAIDS_CHAMBERS_OF_XERIC("Chambers of Xeric", DiscordAreaType.RAIDS, Varbits.IN_RAID),
 	RAIDS_THEATRE_OF_BLOOD("Theatre of Blood", DiscordAreaType.RAIDS, Varbits.THEATRE_OF_BLOOD);
 
-	private static final Map<Integer, DiscordGameEventType> FROM_REGION = new HashMap<>();
-	private static final List<DiscordGameEventType> FROM_VARBITS = new ArrayList<>();
+	private static final Map<Integer, DiscordGameEventType> FROM_REGION;
+	private static final List<DiscordGameEventType> FROM_VARBITS;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, DiscordGameEventType> regionMapBuilder = new ImmutableMap.Builder<>();
+		ImmutableList.Builder<DiscordGameEventType> fromVarbitsBuilder = ImmutableList.builder();
 		for (DiscordGameEventType discordGameEventType : DiscordGameEventType.values())
 		{
 			if (discordGameEventType.getVarbits() != null)
 			{
-				FROM_VARBITS.add(discordGameEventType);
+				fromVarbitsBuilder.add(discordGameEventType);
 				continue;
 			}
 
@@ -270,10 +272,11 @@ enum DiscordGameEventType
 
 			for (int region : discordGameEventType.getRegionIds())
 			{
-				assert !FROM_REGION.containsKey(region);
-				FROM_REGION.put(region, discordGameEventType);
+				regionMapBuilder.put(region, discordGameEventType);
 			}
 		}
+		FROM_REGION = regionMapBuilder.build();
+		FROM_VARBITS = fromVarbitsBuilder.build();
 	}
 
 	private String imageKey;

@@ -48,10 +48,7 @@ import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.ImageComponent;
-import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.*;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
@@ -383,7 +380,7 @@ public class RaidsOverlay extends Overlay
 				smallImages = true;
 			}
 
-			panelImages.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+			panelImages.setOrientation(ComponentOrientation.HORIZONTAL);
 			for (Integer e : idArray)
 			{
 				final BufferedImage image = getImage(e, smallImages);

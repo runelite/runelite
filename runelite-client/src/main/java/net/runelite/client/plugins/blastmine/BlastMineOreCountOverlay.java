@@ -39,6 +39,8 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
@@ -57,7 +59,7 @@ class BlastMineOreCountOverlay extends Overlay
 		this.client = client;
 		this.config = config;
 		this.itemManager = itemManager;
-		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Blast mine overlay"));
 	}
 

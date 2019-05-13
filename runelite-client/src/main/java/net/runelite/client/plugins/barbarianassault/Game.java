@@ -31,16 +31,14 @@ import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.eventbus.Subscribe;
 
+import java.awt.*;
 import java.util.ArrayList;
 
+@Getter
 public class Game
 {
-    @Getter
     private Client client;
-
-    @Getter
     private String currentWave;
-    @Getter
     private ArrayList<Wave> waves = new ArrayList<>();
     private String[] totalDescriptions = {
             "A: ",
@@ -120,9 +118,11 @@ public class Game
                 message.append("(");
                 if (totalPoints[i] < 0)
                 {
-                    message.append(ChatColorType.HIGHLIGHT);
-                    message.append(String.valueOf(totalPoints[i]));
-                    message.append(ChatColorType.NORMAL);
+                    message.append(Color.RED, String.valueOf(totalPoints[i]));
+                }
+                else if (totalPoints[i] > 0)
+                {
+                    message.append(Color.BLUE, String.valueOf(totalPoints[i]));
                 }
                 else
                 {

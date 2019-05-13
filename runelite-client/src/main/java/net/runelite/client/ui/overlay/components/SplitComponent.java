@@ -24,47 +24,56 @@
  */
 package net.runelite.client.ui.overlay.components;
 
-import java.awt.*;
-
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
-@Builder
 @Setter
+@Builder
 public class SplitComponent implements LayoutableRenderableEntity
 {
+	private LayoutableRenderableEntity first;
+	private LayoutableRenderableEntity second;
+
 	@Builder.Default
 	private Point preferredLocation = new Point();
+
 	@Builder.Default
 	private Dimension preferredSize = new Dimension(ComponentConstants.STANDARD_WIDTH, 0);
+
 	@Builder.Default
 	private ComponentOrientation orientation = ComponentOrientation.VERTICAL;
+
 	@Builder.Default
 	private Point gap = new Point(0, 0);
 
-	private LayoutableRenderableEntity first;
-	private LayoutableRenderableEntity second;
+	@Builder.Default
+	@Getter
+	private final Rectangle bounds = new Rectangle();
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		graphics.translate(preferredLocation.x, preferredLocation.y);
+		first.setPreferredLocation(preferredLocation);
 		first.setPreferredSize(preferredSize);
-		first.setPreferredLocation(new Point(0, 0));
 
-		final Dimension firstDimenson = first.render(graphics);
+		final Dimension firstDimension = first.render(graphics);
 		int x = 0, y = 0;
 
 		if (orientation == ComponentOrientation.VERTICAL)
 		{
-			y = firstDimenson.height + gap.y;
+			y = firstDimension.height + gap.y;
 		}
 		else
 		{
-			x = firstDimenson.width + gap.x;
+			x = firstDimension.width + gap.x;
 		}
 
-		second.setPreferredLocation(new Point(x, y));
+		second.setPreferredLocation(new Point(x + preferredLocation.x, y + preferredLocation.y));
 		// Make the second component fit to whatever size is left after the first component is rendered
 		second.setPreferredSize(new Dimension(preferredSize.width - x, preferredSize.height - y));
 
@@ -76,21 +85,18 @@ public class SplitComponent implements LayoutableRenderableEntity
 
 		if (orientation == ComponentOrientation.VERTICAL)
 		{
-			totalWidth = Math.max(firstDimenson.width, secondDimension.width);
+			totalWidth = Math.max(firstDimension.width, secondDimension.width);
 			totalHeight = y + secondDimension.height;
 		}
 		else
 		{
-			totalHeight = Math.max(firstDimenson.height, secondDimension.height);
+			totalHeight = Math.max(firstDimension.height, secondDimension.height);
 			totalWidth = x + secondDimension.width;
 		}
 
-		graphics.translate(-preferredLocation.x, -preferredLocation.y);
-		return new Dimension(totalWidth, totalHeight);
-	}
-
-	@Override
-	public Rectangle getBounds() {
-		return null;
+		final Dimension dimension = new Dimension(totalWidth, totalHeight);
+		bounds.setLocation(preferredLocation);
+		bounds.setSize(dimension);
+		return dimension;
 	}
 }

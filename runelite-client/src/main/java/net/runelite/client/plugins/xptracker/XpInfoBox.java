@@ -57,8 +57,6 @@ import net.runelite.client.util.StackFormatter;
 
 class XpInfoBox extends JPanel
 {
-	private static final String REMOVE_STATE = "Remove from canvas";
-	private static final String ADD_STATE = "Add to canvas";
 	private static final DecimalFormat TWO_DECIMAL_FORMAT = new DecimalFormat("0.00");
 
 	// Templates
@@ -68,6 +66,9 @@ class XpInfoBox extends JPanel
 			+ "%s till goal lvl</html>";
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
+
+	private static final String REMOVE_STATE = "Remove from canvas";
+	private static final String ADD_STATE = "Add to canvas";
 
 	// Instance members
 	private final JPanel panel;
@@ -91,9 +92,9 @@ class XpInfoBox extends JPanel
 	private final JLabel expLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
+	private final JMenuItem canvasItem = new JMenuItem(ADD_STATE);
 
 	private final XpTrackerConfig xpTrackerConfig;
-	private final JMenuItem canvasItem = new JMenuItem(ADD_STATE);
 
 	private boolean paused = false;
 
@@ -244,7 +245,6 @@ class XpInfoBox extends JPanel
 				}
 
 				progressBar.setPositions(positions);
-				progressBar.setPositionWidth(xpTrackerConfig.levelMarkerWidth());
 			}
 			else
 			{
