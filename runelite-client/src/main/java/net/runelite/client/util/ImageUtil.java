@@ -24,6 +24,7 @@
  */
 package net.runelite.client.util;
 
+import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -34,12 +35,15 @@ import java.awt.image.DirectColorModel;
 import java.awt.image.PixelGrabber;
 import java.awt.image.RescaleOp;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.GrayFilter;
 import java.util.function.Predicate;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.IndexedSprite;
 import net.runelite.api.SpritePixels;
 
 /**
@@ -447,5 +451,75 @@ public class ImageUtil
 		}
 
 		return client.createSpritePixels(pixels, image.getWidth(), image.getHeight());
+	}
+
+	/**
+	 * Converts an image into an {@code IndexedSprite} instance.
+	 *
+	 * The passed in image can only have at max 255 different colors.
+	 *
+	 * @param image  The image to be converted
+	 * @param client Current client instance
+	 * @return		 The image as an {@code IndexedSprite}
+	 */
+	public static IndexedSprite getImageIndexedSprite(BufferedImage image, Client client)
+	{
+		final byte[] pixels = new byte[image.getWidth() * image.getHeight()];
+		final List<Integer> palette = new ArrayList<>();
+		/*
+			When drawing the indexed sprite, palette idx 0 is seen as fully transparent,
+			so pad the palette out so that our colors start at idx 1.
+		 */
+		palette.add(0);
+
+		final int[] sourcePixels = image.getRGB(0, 0,
+			image.getWidth(), image.getHeight(),
+			null, 0, image.getWidth());
+
+		/*
+			Build a color palette and assign the pixels to positions in the palette.
+		 */
+		for (int j = 0; j < sourcePixels.length; j++)
+		{
+			final int argb = sourcePixels[j];
+			final int a = (argb >> 24) & 0xFF;
+			final int rgb = argb & 0xFF_FF_FF;
+
+			// Default to not drawing the pixel.
+			int paletteIdx = 0;
+
+			// If the pixel is fully opaque, draw it.
+			if (a == 0xFF)
+			{
+				paletteIdx = palette.indexOf(rgb);
+
+				if (paletteIdx == -1)
+				{
+					paletteIdx = palette.size();
+					palette.add(rgb);
+				}
+			}
+
+			pixels[j] = (byte) paletteIdx;
+		}
+
+		if (palette.size() > 256)
+		{
+			throw new RuntimeException("Passed in image had " + (palette.size() - 1)
+				+ " different colors, exceeding the max of 255.");
+		}
+
+		final IndexedSprite sprite = client.createIndexedSprite();
+
+		sprite.setPixels(pixels);
+		sprite.setPalette(Ints.toArray(palette));
+		sprite.setWidth(image.getWidth());
+		sprite.setHeight(image.getHeight());
+		sprite.setOriginalWidth(image.getWidth());
+		sprite.setOriginalHeight(image.getHeight());
+		sprite.setOffsetX(0);
+		sprite.setOffsetY(0);
+
+		return sprite;
 	}
 }
