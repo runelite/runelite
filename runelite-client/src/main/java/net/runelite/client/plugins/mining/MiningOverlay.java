@@ -67,7 +67,6 @@ public class MiningOverlay extends Overlay
 
 	private void drawNodes(Graphics2D graphics)
 	{
-
 		for (MiningPlugin.Obj obj : plugin.getObjects())
 		{
 			if (obj == null)
@@ -103,17 +102,12 @@ public class MiningOverlay extends Overlay
 		{
 			return;
 		}
-		if (object.getWorldLocation().getPlane() != client.getPlane())
-		{
-			return;
-		}
 		LocalPoint local = LocalPoint.fromWorld(client, object.getWorldLocation());
 		if (local == null)
 		{
 			return;
 		}
 		Point loc = Perspective.localToCanvas(client, local, client.getPlane());
-
 		if (loc == null)
 		{
 			return;
@@ -151,17 +145,12 @@ public class MiningOverlay extends Overlay
 		{
 			return;
 		}
-		if (object.getWorldLocation().getPlane() != client.getPlane())
-		{
-			return;
-		}
 		LocalPoint local = LocalPoint.fromWorld(client, object.getWorldLocation());
 		if (local == null)
 		{
 			return;
 		}
 		Point loc = Perspective.localToCanvas(client, local, client.getPlane());
-
 		if (loc == null)
 		{
 			return;

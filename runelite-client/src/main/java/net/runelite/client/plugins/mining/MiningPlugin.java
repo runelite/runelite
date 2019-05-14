@@ -47,7 +47,6 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
-import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -70,9 +69,6 @@ public class MiningPlugin extends Plugin
 
 	@Inject
 	private MiningOverlay overlay;
-
-	@Inject
-	private Notifier notifier;
 
 	@Inject
 	private MiningConfig config;
@@ -181,7 +177,6 @@ public class MiningPlugin extends Plugin
 		{
 			return;
 		}
-
 		if (event.getMessage().toLowerCase().contains("you just mined an"))
 		{
 			currentNode = "Gem";
