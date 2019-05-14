@@ -430,7 +430,7 @@ public class ScreenshotPlugin extends Plugin
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
 		String fileName;
-		String screenshotSubDir = "";
+		String screenshotSubDir;
 		int groupId = event.getGroupId();
 
 		switch (groupId)
@@ -465,7 +465,7 @@ public class ScreenshotPlugin extends Plugin
 			case KINGDOM_GROUP_ID:
 			{
 				fileName = "Kingdom " + LocalDate.now();
-				takeScreenshot(fileName, "Kingdom Rewards");
+				screenshotSubDir = "Kingdom Rewards";
 				break;
 			}
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
