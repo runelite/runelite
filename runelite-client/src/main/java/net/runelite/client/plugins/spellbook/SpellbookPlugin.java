@@ -40,6 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Point;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -192,7 +193,7 @@ public class SpellbookPlugin extends Plugin
 
 		if (config.canDrag())
 		{
-			config.canDrag(client.getVar(Varbits.FILTER_SPELLBOOK) == 1);
+			config.canDrag(client.getVar(Varbits.FILTER_SPELLBOOK) == 1 && client.getVar(VarClientInt.INVENTORY_TAB) == 6);
 		}
 	}
 
@@ -495,7 +496,7 @@ public class SpellbookPlugin extends Plugin
 	boolean isOnSpellWidget(java.awt.Point point)
 	{
 		Widget boundsWidget = client.getWidget(WidgetInfo.SPELLBOOK_FILTERED_BOUNDS);
-		if (boundsWidget == null || !boundsWidget.getBounds().contains(point))
+		if (client.getVar(VarClientInt.INVENTORY_TAB) != 6 || boundsWidget == null || !boundsWidget.getBounds().contains(point))
 		{
 			return false;
 		}
