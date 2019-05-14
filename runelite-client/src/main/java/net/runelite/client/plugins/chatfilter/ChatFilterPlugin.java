@@ -108,6 +108,7 @@ public class ChatFilterPlugin extends Plugin
 			case PRIVATECHAT:
 			case MODPRIVATECHAT:
 			case FRIENDSCHAT:
+			case GAMEMESSAGE:
 				break;
 			default:
 				return;
