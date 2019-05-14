@@ -130,8 +130,6 @@ public class ScreenshotPlugin extends Plugin
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
 
-	private String screenShotSubDir = "Manual Screenshots";
-
 	static String format(Date date)
 	{
 		synchronized (TIME_FORMAT)
@@ -196,8 +194,7 @@ public class ScreenshotPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
-			screenShotSubDir = "Manual Screenshots";
-			takeScreenshot(format(new Date()));
+			takeScreenshot(format(new Date()), "Manual Screenshots");
 		}
 	};
 
@@ -220,7 +217,7 @@ public class ScreenshotPlugin extends Plugin
 			.tab(false)
 			.tooltip("Take screenshot")
 			.icon(iconImage)
-			.onClick(() -> takeScreenshot(format(new Date())))
+			.onClick(() -> takeScreenshot(format(new Date()), "Manual Screenshot"))
 			.popup(ImmutableMap
 				.<String, Runnable>builder()
 				.put("Open screenshot folder...", () ->
@@ -266,34 +263,31 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
+		String screenshotSubDir = "";
 		shouldTakeScreenshot = false;
 
 		String fileName = null;
 		if (client.getWidget(WidgetInfo.LEVEL_UP_LEVEL) != null)
 		{
 			fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
-			screenShotSubDir = "Levels";
+			screenshotSubDir = "Levels";
 		}
 		else if (client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT) != null)
 		{
 			fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
-			screenShotSubDir = "Levels";
+			screenshotSubDir = "Levels";
 		}
 		else if (client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT) != null)
 		{
 			// "You have completed The Corsair Curse!"
 			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
 			fileName = "Quest(" + text.substring(19, text.length() - 1) + ")";
-			screenShotSubDir = "Quests";
+			screenshotSubDir = "Quests";
 		}
 
 		if (fileName != null)
 		{
-			takeScreenshot(fileName);
-		}
-		else
-		{
-			screenShotSubDir = "Manual Screenshots";
+			takeScreenshot(fileName, screenshotSubDir);
 		}
 	}
 
@@ -302,8 +296,7 @@ public class ScreenshotPlugin extends Plugin
 	{
 		if (config.screenshotPlayerDeath())
 		{
-			screenShotSubDir = "Deaths";
-			takeScreenshot("Death " + format(new Date()));
+			takeScreenshot("Death " + format(new Date()), "Deaths");
 		}
 	}
 
@@ -315,8 +308,7 @@ public class ScreenshotPlugin extends Plugin
 			final Player player = playerLootReceived.getPlayer();
 			final String name = player.getName();
 			String fileName = "Kill " + name + " " + format(new Date());
-			screenShotSubDir = "PvP Kills";
-			takeScreenshot(fileName);
+			takeScreenshot(fileName, "PvP Kills");
 		}
 	}
 
@@ -384,8 +376,7 @@ public class ScreenshotPlugin extends Plugin
 		if (config.screenshotPet() && PET_MESSAGES.stream().anyMatch(chatMessage::contains))
 		{
 			String fileName = "Pet " + format(new Date());
-			screenShotSubDir = "Pets";
-			takeScreenshot(fileName);
+			takeScreenshot(fileName, "Pets");
 		}
 
 		if (config.screenshotBossKills() )
@@ -396,8 +387,7 @@ public class ScreenshotPlugin extends Plugin
 				String bossName = m.group(1);
 				String bossKillcount = m.group(2);
 				String fileName = bossName + "(" + bossKillcount + ")";
-				screenShotSubDir = "Boss Kills";
-				takeScreenshot(fileName);
+				takeScreenshot(fileName, "Boss Kills");
 			}
 		}
 
@@ -408,8 +398,7 @@ public class ScreenshotPlugin extends Plugin
 			{
 				String valuableDropName = m.group(1);
 				String fileName = "Valuable drop " + valuableDropName + " " + format(new Date());
-				screenShotSubDir = "Valuable Drops";
-				takeScreenshot(fileName);
+				takeScreenshot(fileName, "Valuable Drops");
 			}
 		}
 
@@ -420,8 +409,7 @@ public class ScreenshotPlugin extends Plugin
 			{
 				String untradeableDropName = m.group(1);
 				String fileName = "Untradeable drop " + untradeableDropName + " " + format(new Date());
-				screenShotSubDir = "Untradeable Drops";
-				takeScreenshot(fileName);
+				takeScreenshot(fileName, "Untradeable Drops");
 			}
 		}
 
@@ -433,8 +421,7 @@ public class ScreenshotPlugin extends Plugin
 				String result = m.group(1);
 				String count = m.group(2);
 				String fileName = "Duel " + result + " (" + count + ")";
-				screenShotSubDir = "Duels";
-				takeScreenshot(fileName);
+				takeScreenshot(fileName, "Duels");
 			}
 		}
 	}
@@ -443,6 +430,7 @@ public class ScreenshotPlugin extends Plugin
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
 		String fileName;
+		String screenshotSubDir;
 		int groupId = event.getGroupId();
 
 		switch (groupId)
@@ -477,8 +465,8 @@ public class ScreenshotPlugin extends Plugin
 			case KINGDOM_GROUP_ID:
 			{
 				fileName = "Kingdom " + LocalDate.now();
-				screenShotSubDir = "Kingdom Rewards";
-				takeScreenshot(fileName);
+				screenshotSubDir = "Kingdom Rewards";
+				takeScreenshot(fileName, screenshotSubDir);
 				break;
 			}
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
@@ -486,14 +474,14 @@ public class ScreenshotPlugin extends Plugin
 				if (chambersOfXericNumber != null)
 				{
 					fileName = "Chambers of Xeric(" + chambersOfXericNumber + ")";
-					screenShotSubDir = "Boss Kills";
+					screenshotSubDir = "Boss Kills";
 					chambersOfXericNumber = null;
 					break;
 				}
 				else if (chambersOfXericChallengeNumber != null)
 				{
 					fileName = "Chambers of Xeric Challenge Mode(" + chambersOfXericChallengeNumber + ")";
-					screenShotSubDir = "Boss Kills";
+					screenshotSubDir = "Boss Kills";
 					chambersOfXericChallengeNumber = null;
 					break;
 				}
@@ -510,7 +498,7 @@ public class ScreenshotPlugin extends Plugin
 				}
 
 				fileName = "Theatre of Blood(" + theatreOfBloodNumber + ")";
-				screenShotSubDir = "Boss Kills";
+				screenshotSubDir = "Boss Kills";
 				theatreOfBloodNumber = null;
 				break;
 			}
@@ -522,7 +510,7 @@ public class ScreenshotPlugin extends Plugin
 				}
 
 				fileName = "Barrows(" + barrowsNumber + ")";
-				screenShotSubDir = "Boss Kills";
+				screenshotSubDir = "Boss Kills";
 				barrowsNumber = null;
 				break;
 			}
@@ -542,7 +530,7 @@ public class ScreenshotPlugin extends Plugin
 				}
 
 				fileName = Character.toUpperCase(clueType.charAt(0)) + clueType.substring(1) + "(" + clueNumber + ")";
-				screenShotSubDir = "Clue Scroll Rewards";
+				screenshotSubDir = "Clue Scroll Rewards";
 				clueType = null;
 				clueNumber = null;
 				break;
@@ -551,7 +539,7 @@ public class ScreenshotPlugin extends Plugin
 				return;
 		}
 
-		takeScreenshot(fileName);
+		takeScreenshot(fileName, screenshotSubDir);
 	}
 
 	/**
@@ -586,8 +574,9 @@ public class ScreenshotPlugin extends Plugin
 	 * and optionally uploads it to an image-hosting service.
 	 *
 	 * @param fileName    Filename to use, without file extension.
+     * @param subDir    Sub directory where the file will be put.
 	 */
-	private void takeScreenshot(String fileName)
+	private void takeScreenshot(String fileName, String subDir)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -599,7 +588,7 @@ public class ScreenshotPlugin extends Plugin
 		Consumer<Image> imageCallback = (img) ->
 		{
 			// This callback is on the game thread, move to executor thread
-			executor.submit(() -> takeScreenshot(fileName, img));
+			executor.submit(() -> takeScreenshot(fileName, subDir, img));
 		};
 
 		if (config.displayDate())
@@ -612,7 +601,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	private void takeScreenshot(String fileName, Image image)
+	private void takeScreenshot(String fileName, String subDir, Image image)
 	{
 		BufferedImage screenshot = config.includeFrame()
 			? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
@@ -659,7 +648,7 @@ public class ScreenshotPlugin extends Plugin
 				playerDir += "-Deadman";
 			}
 			playerFolder = new File(SCREENSHOT_DIR, playerDir);
-			playerFolder = new File(playerFolder, screenShotSubDir);
+			playerFolder = new File(playerFolder, subDir);
 		}
 		else
 		{
@@ -687,7 +676,6 @@ public class ScreenshotPlugin extends Plugin
 		{
 			log.warn("error writing screenshot", ex);
 		}
-		screenShotSubDir = "Manual Screenshots";
 	}
 
 	/**
