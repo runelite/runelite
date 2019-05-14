@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Ryan <progrs.site@gmail.com>
+ * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,45 +22,59 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.barrows;
+package net.runelite.client.ui.overlay.infobox;
 
+import com.google.common.base.Preconditions;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
-import net.runelite.api.SpriteID;
-import net.runelite.client.game.SpriteManager;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import java.time.temporal.ChronoUnit;
+import lombok.Getter;
+import lombok.ToString;
+import net.runelite.client.plugins.Plugin;
 
-class BarrowsPrayerDrainTimer extends InfoBox
+@Getter
+@ToString
+public class LoopTimer extends InfoBox
 {
-	private static final long PRAYER_DRAIN_INTERVAL_MS = 18200;
-
 	private final Instant startTime;
+	private final Duration duration;
+	private final boolean reverse;
 
-	BarrowsPrayerDrainTimer(BarrowsPlugin plugin, SpriteManager spriteManager)
+	public LoopTimer(long period, ChronoUnit unit, BufferedImage image, Plugin plugin, boolean reverse)
 	{
-		super(spriteManager.getSprite(SpriteID.TAB_PRAYER, 0), plugin);
-		setPriority(InfoBoxPriority.MED);
-		setTooltip("Prayer Drain");
+		super(image, plugin);
+
+		Preconditions.checkArgument(period > 0, "negative period!");
+
 		startTime = Instant.now();
+		duration = Duration.of(period, unit);
+		this.reverse = reverse;
+	}
+
+	public LoopTimer(long period, ChronoUnit unit, BufferedImage image, Plugin plugin)
+	{
+		this(period, unit, image, plugin, false);
 	}
 
 	@Override
 	public String getText()
 	{
-		Duration timeLeft = Duration.between(Instant.now(), getNextPrayerDrainTime());
-		int seconds = (int) (timeLeft.toMillis() / 1000L);
-		return String.format("0:%02d", seconds);
+		final Duration progress = getProgress();
+		final int seconds = (int) (progress.toMillis() / 1000L);
+		final int minutes = (seconds % 3600) / 60;
+		final int secs = seconds % 60;
+		return String.format("%d:%02d", minutes, secs);
 	}
 
 	@Override
 	public Color getTextColor()
 	{
-		Duration timeLeft = Duration.between(Instant.now(), getNextPrayerDrainTime());
+		final Duration progress = getProgress();
 
-		//check if timer has 10% of time left
-		if (timeLeft.getSeconds() < (PRAYER_DRAIN_INTERVAL_MS / 1000 * .10))
+		// check if timer has 10% of time left
+		if (progress.getSeconds() < (duration.getSeconds() * .10))
 		{
 			return Color.RED.brighter();
 		}
@@ -68,10 +82,15 @@ class BarrowsPrayerDrainTimer extends InfoBox
 		return Color.WHITE;
 	}
 
-	private Instant getNextPrayerDrainTime()
+	private Duration getProgress()
 	{
-		Duration timePassed = Duration.between(startTime, Instant.now());
-		// Get how many intervals have passed so far and add one more to find the next prayer drain time
-		return startTime.plusMillis((timePassed.toMillis() / PRAYER_DRAIN_INTERVAL_MS + 1) * PRAYER_DRAIN_INTERVAL_MS);
+		final Duration passed = Duration.between(startTime, Instant.now());
+		final long passedMillis = passed.toMillis();
+		final long durationMillis = duration.toMillis();
+		final long progress = passedMillis % durationMillis;
+
+		return Duration.ofMillis(reverse
+			? durationMillis - progress
+			: progress);
 	}
 }
