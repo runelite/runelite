@@ -33,13 +33,16 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("runeliteplus")
 public interface RuneLitePlusConfig extends Config
 {
-    @ConfigItem(
-            position = 0,
-            keyName = "customPresence",
-            name = "RL+ Presence",
-            description = "Represent RL+ with a custom icon and discord presence."
-    )
-    default boolean customPresence() { return false; }
+	@ConfigItem(
+		position = 0,
+		keyName = "customPresence",
+		name = "RL+ Presence",
+		description = "Represent RL+ with a custom icon and discord presence."
+	)
+	default boolean customPresence()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "enableOpacity",
