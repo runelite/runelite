@@ -6,17 +6,16 @@
  * Written by PKLite(ST0NEWALL, others) <stonewall@thots.cc.usa>, 2019
  *
  */
- 
+
 package net.runelite.client.plugins.wildernesslocations;
 
 
+import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
-
-import com.google.inject.Provides;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -34,7 +33,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
@@ -42,44 +40,43 @@ import net.runelite.client.util.WildernessLocation;
 
 @Slf4j
 @PluginDescriptor(
-		name = "Wild Locations",
-		description = "Indicates the players current location in the wild",
-		tags = {"Wildy", "Wilderness Location", "location", "loc", "pvp", "pklite"},
-		type = PluginType.PVP
+	name = "Wild Locations",
+	description = "Indicates the players current location in the wild",
+	tags = {"Wildy", "Wilderness Location", "location", "loc", "pvp", "pklite"},
+	type = PluginType.PVP
 )
 public class WildernessLocationsPlugin extends Plugin
 {
-	
+
 	@Inject
 	private Client client;
-	
+
 	@Inject
 	OverlayManager overlayManager;
-	
+
 	@Inject
 	private WildernessLocationsOverlay overlay = new WildernessLocationsOverlay(this.client, this);
-	
+
 	@Getter
 	private boolean renderLocation;
-	
+
 	@Getter
 	private String locationString = "";
-	
+
 	@Inject
 	private ClientThread clientThread;
-	
+
 	@Inject
 	private WildernessLocationsConfig wildyConfig;
-	
+
 	@Inject
 	private KeyManager keyManager;
-	
+
 	private String oldChat = "";
 	private int currentCooldown = 0;
-	private final int COOLDOWN_TICKS = 30;
 	private WorldPoint worldPoint = null;
 	private final HashMap<WorldArea, String> wildLocs = getLocationMap();
-	
+
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> wildyConfig.keybind())
 	{
 		@Override
@@ -88,27 +85,27 @@ public class WildernessLocationsPlugin extends Plugin
 			sendLocToCC();
 		}
 	};
-	
+
 	@Provides
 	WildernessLocationsConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(WildernessLocationsConfig.class);
 	}
-	
+
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
 		keyManager.registerKeyListener(hotkeyListener);
 	}
-	
+
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
 		keyManager.unregisterKeyListener(hotkeyListener);
 	}
-	
+
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
@@ -131,7 +128,7 @@ public class WildernessLocationsPlugin extends Plugin
 			locationString = "";
 		}
 	}
-	
+
 	private String location()
 	{
 		int dist = 10000;
@@ -140,7 +137,7 @@ public class WildernessLocationsPlugin extends Plugin
 		for (Map.Entry<WorldArea, String> entry : wildLocs.entrySet())
 		{
 			WorldArea worldArea = entry.getKey();
-			
+
 			if (worldArea.toWorldPointList().contains(client.getLocalPlayer().getWorldLocation()))
 			{
 				s = entry.getValue();
@@ -154,7 +151,7 @@ public class WildernessLocationsPlugin extends Plugin
 			}
 		}
 		if (client.getLocalPlayer().getWorldLocation().getY() >
-				(Objects.requireNonNull(closestArea).toWorldPoint().getY() + closestArea.getHeight()))
+			(Objects.requireNonNull(closestArea).toWorldPoint().getY() + closestArea.getHeight()))
 		{
 			s = s + "N";
 		}
@@ -167,7 +164,7 @@ public class WildernessLocationsPlugin extends Plugin
 			s = s + "W";
 		}
 		if (client.getLocalPlayer().getWorldLocation().getX() >
-				(closestArea.toWorldPoint().getX() + closestArea.getWidth()))
+			(closestArea.toWorldPoint().getX() + closestArea.getWidth()))
 		{
 			s = s + "E";
 		}
@@ -179,15 +176,15 @@ public class WildernessLocationsPlugin extends Plugin
 		}
 		return s;
 	}
-	
+
 	private static HashMap<WorldArea, String> getLocationMap()
 	{
 		HashMap<WorldArea, String> hashMap = new HashMap<>();
 		Arrays.stream(WildernessLocation.values()).forEach(wildernessLocation ->
-				hashMap.put(wildernessLocation.getWorldArea(), wildernessLocation.getName()));
+			hashMap.put(wildernessLocation.getWorldArea(), wildernessLocation.getName()));
 		return hashMap;
 	}
-	
+
 	@Subscribe
 	public void onVarClientStrChanged(VarClientStrChanged varClient)
 	{
@@ -197,12 +194,12 @@ public class WildernessLocationsPlugin extends Plugin
 			oldChat = newChat;
 		}
 	}
-	
+
 	private boolean inClanChat()
 	{
 		return client.getWidget(WidgetInfo.CLAN_CHAT_TITLE) != null;
 	}
-	
+
 	private void sendMessage(String text)
 	{
 		int mode = 0;
@@ -221,7 +218,7 @@ public class WildernessLocationsPlugin extends Plugin
 		};
 		clientThread.invoke(r);
 	}
-	
+
 	private void sendLocToCC()
 	{
 		if (currentCooldown != 0)
@@ -234,6 +231,6 @@ public class WildernessLocationsPlugin extends Plugin
 			return;
 		}
 		sendMessage("/World: " + client.getWorld() + " Location: " + location);
-		currentCooldown = COOLDOWN_TICKS;
+		currentCooldown = 30;
 	}
 }

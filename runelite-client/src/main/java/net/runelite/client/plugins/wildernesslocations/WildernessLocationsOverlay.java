@@ -28,14 +28,13 @@ public class WildernessLocationsOverlay extends Overlay
 	private WildernessLocationsConfig wildyConfig;
 
 	@Inject
-	public WildernessLocationsOverlay(Client client, WildernessLocationsPlugin plugin)
+	public WildernessLocationsOverlay(WildernessLocationsPlugin plugin)
 	{
 		this.plugin = plugin;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGH);
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		textComponent = new TextComponent();
-
 	}
 
 	@Override
