@@ -99,10 +99,6 @@ public class HydraPlugin extends Plugin
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		if (!config.EnableHydra())
-		{
-			return;
-		}
 		NPC hydra = event.getNpc();
 		if (hydra.getCombatLevel() != 0 && hydra.getName() != null)
 		{
@@ -119,10 +115,6 @@ public class HydraPlugin extends Plugin
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
 	{
-		if (!config.EnableHydra())
-		{
-			return;
-		}
 		NPC hydra = event.getNpc();
 		if (hydra.getCombatLevel() != 0 && hydra.getName() != null)
 		{

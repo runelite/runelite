@@ -33,22 +33,12 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("aoe")
 public interface AoeWarningConfig extends Config
 {
-	@ConfigItem(
-		keyName = "enabled",
-		name = "AoE Warnings Enabled",
-		description = "Configures whether or not AoE Projectile Warnings plugin is displayed",
-		position = 1
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
 
 	@ConfigItem(
 		keyName = "outline",
 		name = "Display Outline",
 		description = "Configures whether or not AoE Projectile Warnings have an outline",
-		position = 2
+		position = 1
 	)
 	default boolean isOutlineEnabled()
 	{
@@ -59,7 +49,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "fade",
 		name = "Fade Warnings",
 		description = "Configures whether or not AoE Projectile Warnings fade over time",
-		position = 3
+		position = 2
 	)
 	default boolean isFadeEnabled()
 	{
@@ -70,7 +60,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "lizardmanaoe",
 		name = "Lizardman Shamans",
 		description = "Configures whether or not AoE Projectile Warnings for Lizardman Shamans is displayed",
-		position = 4
+		position = 3
 	)
 	default boolean isShamansEnabled()
 	{
@@ -92,7 +82,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "icedemon",
 		name = "Ice Demon",
 		description = "Configures whether or not AoE Projectile Warnings for Ice Demon is displayed",
-		position = 4
+		position = 5
 	)
 	default boolean isIceDemonEnabled()
 	{
@@ -103,7 +93,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "vasa",
 		name = "Vasa",
 		description = "Configures whether or not AoE Projectile Warnings for Vasa is displayed",
-		position = 4
+		position = 6
 	)
 	default boolean isVasaEnabled()
 	{
@@ -114,7 +104,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "tekton",
 		name = "Tekton",
 		description = "Configures whether or not AoE Projectile Warnings for Tekton is displayed",
-		position = 4
+		position = 7
 	)
 	default boolean isTektonEnabled()
 	{
@@ -125,7 +115,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "vorkath",
 		name = "Vorkath",
 		description = "Configures whether or not AoE Projectile Warnings for Vorkath are displayed",
-		position = 4
+		position = 7
 	)
 	default boolean isVorkathEnabled()
 	{
@@ -136,7 +126,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "galvek",
 		name = "Galvek",
 		description = "Configures whether or not AoE Projectile Warnings for Galvek are displayed",
-		position = 4
+		position = 8
 	)
 	default boolean isGalvekEnabled()
 	{
@@ -147,7 +137,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "gargboss",
 		name = "Gargoyle Boss",
 		description = "Configs whether or not AoE Projectile Warnings for Dawn/Dusk are displayed",
-		position = 4
+		position = 9
 	)
 	default boolean isGargBossEnabled()
 	{
@@ -158,7 +148,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "vetion",
 		name = "Vet'ion",
 		description = "Configures whether or not AoE Projectile Warnings for Vet'ion are displayed",
-		position = 4
+		position = 10
 	)
 	default boolean isVetionEnabled()
 	{
@@ -169,7 +159,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "chaosfanatic",
 		name = "Chaos Fanatic",
 		description = "Configures whether or not AoE Projectile Warnings for Chaos Fanatic are displayed",
-		position = 4
+		position = 11
 	)
 	default boolean isChaosFanaticEnabled()
 	{
@@ -180,7 +170,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "olm",
 		name = "Olm",
 		description = "Configures whether or not AoE Projectile Warnings for The Great Olm are displayed",
-		position = 4
+		position = 12
 	)
 	default boolean isOlmEnabled()
 	{
@@ -191,7 +181,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "bombDisplay",
 		name = "Olm Bombs",
 		description = "Display a timer and colour-coded AoE for Olm's crystal-phase bombs.",
-		position = 4
+		position = 13
 	)
 	default boolean bombDisplay()
 	{
@@ -202,7 +192,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "corp",
 		name = "Corporeal Beast",
 		description = "Configures whether or not AoE Projectile Warnings for the Corporeal Beast are displayed",
-		position = 4
+		position = 14
 	)
 	default boolean isCorpEnabled()
 	{
@@ -213,7 +203,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "wintertodt",
 		name = "Wintertodt Snow Fall",
 		description = "Configures whether or not AOE Projectile Warnings for the Wintertodt snow fall are displayed",
-		position = 4
+		position = 15
 	)
 	default boolean isWintertodtEnabled()
 	{
@@ -224,7 +214,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "isXarpusEnabled",
 		name = "Xarpus",
 		description = "Configures whether or not AOE Projectile Warnings for Xarpus are displayed",
-		position = 4
+		position = 16
 	)
 	default boolean isXarpusEnabled()
 	{
@@ -235,7 +225,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "lightning",
 		name = "Olm Lightning Trails",
 		description = "Show Lightning Trails",
-		position = 4
+		position = 17
 	)
 	default boolean LightningTrail()
 	{
@@ -246,27 +236,28 @@ public interface AoeWarningConfig extends Config
 		keyName = "addyDrags",
 		name = "Addy Drags",
 		description = "Show Bad Areas",
-		position = 4
+		position = 18
 	)
 	default boolean addyDrags()
 	{
 		return true;
 	}
 
-   	 @ConfigItem(
-            	keyName = "drake",
-            	name = "Drakes Breath",
-            	description = "Configures if Drakes Breath tile markers are displayed"
-    	)
-    	default boolean isDrakeEnabled() 
+	@ConfigItem(
+		keyName = "drake", name = "Drakes Breath",
+		description = "Configures if Drakes Breath tile markers are displayed",
+		position = 19
+	)
+	default boolean isDrakeEnabled()
 	{
-        	return true;
-    	}
-	
-    	@ConfigItem(
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "cerbFire",
 		name = "Cerberus Fire",
-		description = "Configures if Cerberus fire tile markers are displayed"
+		description = "Configures if Cerberus fire tile markers are displayed",
+		position = 20
 	)
 	default boolean isCerbFireEnabled()
 	{
@@ -276,7 +267,8 @@ public interface AoeWarningConfig extends Config
 	@ConfigItem(
 		keyName = "delay",
 		name = "Fade delay",
-		description = "Configures the amount of time in milliseconds that the warning lingers for after the projectile has touched the ground"
+		description = "Configures the amount of time in milliseconds that the warning lingers for after the projectile has touched the ground",
+		position = 21
 	)
 	default int delay()
 	{

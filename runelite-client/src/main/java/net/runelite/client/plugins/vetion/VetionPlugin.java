@@ -51,9 +51,6 @@ public class VetionPlugin extends Plugin
 {
 
 	@Inject
-	private VetionConfig config;
-
-	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -61,12 +58,6 @@ public class VetionPlugin extends Plugin
 
 	@Getter
 	private Map<Actor, Instant> vetions;
-
-	@Provides
-	VetionConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(VetionConfig.class);
-	}
 
 	@Override
 	protected void startUp()
@@ -86,7 +77,7 @@ public class VetionPlugin extends Plugin
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
-		if (config.eartquakeTimerActive() && event.getActor().getAnimation() == AnimationID.VETION_EARTHQUAKE)
+		if (event.getActor().getAnimation() == AnimationID.VETION_EARTHQUAKE)
 		{
 			Actor vet = event.getActor();
 			vetions.remove(vet, Instant.now());
