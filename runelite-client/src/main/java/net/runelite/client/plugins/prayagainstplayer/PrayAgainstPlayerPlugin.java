@@ -59,7 +59,8 @@ import net.runelite.client.util.ImageUtil;
 	name = "Pray Against Player",
 	description = "Use plugin in PvP situations for best results!!",
 	tags = {"highlight", "pvp", "overlay", "players"},
-	type = PluginType.PVP
+	type = PluginType.PVP,
+	enabledByDefault = false
 )
 
 /**

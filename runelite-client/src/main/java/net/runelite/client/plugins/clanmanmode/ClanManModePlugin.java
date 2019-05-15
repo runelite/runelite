@@ -30,7 +30,8 @@ import org.apache.commons.lang3.ArrayUtils;
 	name = "Clan Man Mode",
 	description = "Assists in clan PVP scenarios",
 	tags = {"highlight", "minimap", "overlay", "players"},
-		type = PluginType.PVP
+	type = PluginType.PVP,
+	enabledByDefault = false
 )
 public class ClanManModePlugin extends Plugin
 {

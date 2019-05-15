@@ -43,7 +43,8 @@ import net.runelite.client.util.WildernessLocation;
 	name = "Wild Locations",
 	description = "Indicates the players current location in the wild",
 	tags = {"Wildy", "Wilderness Location", "location", "loc", "pvp", "pklite"},
-	type = PluginType.PVP
+	type = PluginType.PVP,
+	enabledByDefault = false
 )
 public class WildernessLocationsPlugin extends Plugin
 {
@@ -55,7 +56,7 @@ public class WildernessLocationsPlugin extends Plugin
 	OverlayManager overlayManager;
 
 	@Inject
-	private WildernessLocationsOverlay overlay = new WildernessLocationsOverlay(this.client, this);
+	private WildernessLocationsOverlay overlay = new WildernessLocationsOverlay(this);
 
 	@Getter
 	private boolean renderLocation;

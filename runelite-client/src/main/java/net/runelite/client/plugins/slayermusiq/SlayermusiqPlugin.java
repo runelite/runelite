@@ -80,7 +80,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 	name = "Slayermusiq1 Guides",
 	description = "Adds a right-click option to go to Slayermusiq1's guides from the quest tab",
 	tags = {"quest", "guide", "slayermusiq"},
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
 @Slf4j
 public class SlayermusiqPlugin extends Plugin
