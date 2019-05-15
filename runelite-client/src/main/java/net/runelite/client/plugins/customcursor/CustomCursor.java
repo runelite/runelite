@@ -34,7 +34,12 @@ public enum CustomCursor
 	RS3_SILVER("RS3 Silver", "cursor-rs3-silver.png"),
 	DRAGON_DAGGER("Dragon Dagger", "cursor-dragon-dagger.png"),
 	TROUT("Trout", "cursor-trout.png"),
-	DRAGON_SCIMITAR("Dragon Scimitar", "cursor-dragon-scimitar.png");
+	DRAGON_SCIMITAR("Dragon Scimitar", "cursor-dragon-scimitar.png"),
+	ARMADYL_GODSWORD("Armadyl godsword", "cursor-armadyl-godsword.png"),
+	BANDOS_GODSWORD("BAndos godsword", "cursor-bandos-godsword.png"),
+	MOUSE("Mouse", "cursor-mouse.png"),
+	SARADOMIN_GODSWORD("Saradomin godsword", "cursor-saradomin-godsword.png"),
+	ZAMORAK_GODSWORD("Zamorak godsword", "cursor-zamorak-godsword.png");
 
 	private final String name;
 	@Getter
