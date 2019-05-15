@@ -64,7 +64,7 @@ public class AntiDragOverlay extends Overlay
 		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
 		final Point mousePosition = new Point(mouseCanvasPosition.getX() - RADIUS, mouseCanvasPosition.getY() - RADIUS);
 		final Rectangle bounds = new Rectangle(mousePosition.x, mousePosition.y, 2 * RADIUS, 2 * RADIUS);
-		g.fillOval(bounds.x, bounds.y, bounds.height, bounds.width);
+		g.fillOval(bounds.x, bounds.y, bounds.width, bounds.height);
 
 		return bounds.getSize();
 	}
