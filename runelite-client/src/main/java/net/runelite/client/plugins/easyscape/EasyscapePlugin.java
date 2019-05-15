@@ -323,6 +323,16 @@ public class EasyscapePlugin extends Plugin {
             }
         }
 
+        if (target.toLowerCase().contains("crafting cape") && config.getSwapCraftingCape()) {
+            swap("Teleport", option, target);
+
+        }
+
+        if (target.toLowerCase().contains("construct. cape") && config.getSwapConstructionCape()) {
+            swap("Tele to poh", option, target);
+
+        }
+
         startSwap();
         performSwap();
     }

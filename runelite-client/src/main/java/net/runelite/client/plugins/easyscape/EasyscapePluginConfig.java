@@ -268,8 +268,8 @@ public interface EasyscapePluginConfig extends Config {
     default GloryMode getGloryMode() {
         return GloryMode.EDGEVILLE;
     }
-	
-	@ConfigItem(
+
+    @ConfigItem(
             keyName = "swapWealthRing",
             name = "Swap Ring of Wealth",
             description = "Enables swapping of Ring of Wealth.",
@@ -278,7 +278,8 @@ public interface EasyscapePluginConfig extends Config {
     default boolean getWealthRing() {
         return true;
     }
-	@ConfigItem(
+
+    @ConfigItem(
             keyName = "WealthRingMode",
             name = "Wealth Ring Mode",
             description = "Teleport location mode.",
@@ -287,6 +288,26 @@ public interface EasyscapePluginConfig extends Config {
 
     default WealthRingMode getWealthRingMode() {
         return WealthRingMode.GRAND_EXCHANGE;
+    }
+
+    @ConfigItem(
+            keyName = "swapConstructionCape",
+            name = "Swap Construction Cape",
+            description = "Enables swapping of teleport and wear.",
+            position = 25
+    )
+    default boolean getSwapConstructionCape() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "swapCraftingCape",
+            name = "Swap Crafting Cape",
+            description = "Enables swapping of teleport and wear.",
+            position = 26
+    )
+    default boolean getSwapCraftingCape() {
+        return true;
     }
 }
 
