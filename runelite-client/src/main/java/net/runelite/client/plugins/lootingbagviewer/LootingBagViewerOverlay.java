@@ -74,20 +74,26 @@ class LootingBagViewerOverlay extends Overlay
 		{
 			if(client.getItemContainer(InventoryID.LOOTING_BAG) != null) {
 				itemContainer = client.getItemContainer(InventoryID.LOOTING_BAG);
-				items = itemContainer.getItems();
+				if (itemContainer != null)
+				{
+					items = itemContainer.getItems();
+				}
 			}
 			return null;
 		}
-		else if(itemContainer != null && client.getItemContainer(InventoryID.LOOTING_BAG) != null)
+		else if(items != null && client.getItemContainer(InventoryID.LOOTING_BAG) != null)
 		{
 			itemContainer = client.getItemContainer(InventoryID.LOOTING_BAG);
-			Item[] tempItems = itemContainer.getItems();
-
-			for(int i = 0; i < items.length; i++)
+			if (itemContainer != null)
 			{
-				if(!items[i].equals(tempItems[i]))
+				Item[] tempItems = itemContainer.getItems();
+
+				for (int i = 0; i < items.length; i++)
 				{
-					items = tempItems;
+					if (!items[i].equals(tempItems[i]))
+					{
+						items = tempItems;
+					}
 				}
 			}
 		}
