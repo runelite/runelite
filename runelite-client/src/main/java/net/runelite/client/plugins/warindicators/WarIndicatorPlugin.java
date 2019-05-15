@@ -24,43 +24,28 @@
  */
 package net.runelite.client.plugins.warindicators;
 
-import com.google.common.collect.Sets;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.util.Collection;
 import javax.inject.Inject;
-
-import net.runelite.client.plugins.PluginType;
-import org.apache.commons.lang3.ArrayUtils;
 import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.FOLLOW;
-import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
-import static net.runelite.api.MenuAction.PLAYER_EIGTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_FIFTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_FIRST_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_FOURTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_SECOND_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
-import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
-import static net.runelite.api.MenuAction.TRADE;
+import static net.runelite.api.MenuAction.*;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-        name = "War calling indicators",
-        description = "War War War.",
-        tags = {"skill", "total", "max", "PVP"},
-		type = PluginType.PVP,
-        enabledByDefault = false
+	name = "War calling indicators",
+	description = "War War War.",
+	tags = {"skill", "total", "max", "PVP"},
+	type = PluginType.PVP,
+	enabledByDefault = false
 )
 public class WarIndicatorPlugin extends Plugin
 {
@@ -85,19 +70,19 @@ public class WarIndicatorPlugin extends Plugin
 		return configManager.getConfig(WarIndicatorConfig.class);
 	}
 
- @Override
-    protected void startUp() throws Exception
-    {
-        overlayManager.add(warIndicatorOverlay);
-        overlayManager.add(warIndicatorMiniMapOverlay);
-    }
+	@Override
+	protected void startUp() throws Exception
+	{
+		overlayManager.add(warIndicatorOverlay);
+		overlayManager.add(warIndicatorMiniMapOverlay);
+	}
 
-    @Override
-    protected void shutDown() throws Exception
-    {
-        overlayManager.remove(warIndicatorOverlay);
-        overlayManager.remove(warIndicatorMiniMapOverlay);
-    }
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(warIndicatorOverlay);
+		overlayManager.remove(warIndicatorMiniMapOverlay);
+	}
 
 	@Subscribe
 	public void onMenuEntryAdd(MenuEntryAdded menuEntryAdded)

@@ -30,7 +30,6 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import org.apache.commons.lang3.ArrayUtils;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
@@ -38,6 +37,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import org.apache.commons.lang3.ArrayUtils;
 
 @Singleton
 public class WarIndicatorOverlay extends Overlay
