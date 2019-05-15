@@ -31,8 +31,8 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Stroke;
-import java.util.Map;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
@@ -60,9 +60,9 @@ import net.runelite.client.util.ImageUtil;
 class BarbarianAssaultOverlay extends Overlay
 {
 	private static final int MAX_EGG_DISTANCE = 2500;
-    private final int HEALTH_BAR_HEIGHT = 20;
-    private final Color HEALTH_BAR_COLOR = new Color(225, 35, 0, 125);
-    private static final Color BACKGROUND = new Color(0, 0, 0, 150);
+	private final int HEALTH_BAR_HEIGHT = 20;
+	private final Color HEALTH_BAR_COLOR = new Color(225, 35, 0, 125);
+	private static final Color BACKGROUND = new Color(0, 0, 0, 150);
 	private static final int OFFSET_Z = 20;
 
 	private final Client client;
@@ -124,13 +124,15 @@ class BarbarianAssaultOverlay extends Overlay
 			graphics.drawImage(plugin.getClockImage(), spriteBounds.x, spriteBounds.y, null);
 		}
 
-		if (role == Role.COLLECTOR && config.highlightCollectorEggs()) {
+		if (role == Role.COLLECTOR && config.highlightCollectorEggs())
+		{
 			String heardCall = plugin.getCollectorHeardCall();
 			Color highlightColor = BarbarianAssaultPlugin.getEggColor(heardCall);
 			Map<WorldPoint, Integer> calledEggMap = plugin.getCalledEggMap();
 			Map<WorldPoint, Integer> yellowEggMap = plugin.getYellowEggs();
 
-			if (calledEggMap != null) {
+			if (calledEggMap != null)
+			{
 				renderEggLocations(graphics, calledEggMap, highlightColor);
 			}
 
@@ -139,10 +141,12 @@ class BarbarianAssaultOverlay extends Overlay
 		}
 		Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
 
-		if (config.highlightItems() && inventory != null && !inventory.isHidden() && ((role == Role.DEFENDER || role == Role.HEALER))) {
+		if (config.highlightItems() && inventory != null && !inventory.isHidden() && ((role == Role.DEFENDER || role == Role.HEALER)))
+		{
 			int listenItemId = plugin.getListenItemId(role.getListen());
 
-			if (listenItemId != -1) {
+			if (listenItemId != -1)
+			{
 				Color color = config.highlightColor();
 				BufferedImage highlight = ImageUtil.fillImage(itemManager.getImage(listenItemId), new Color(color.getRed(), color.getGreen(), color.getBlue(), 150));
 
@@ -156,47 +160,47 @@ class BarbarianAssaultOverlay extends Overlay
 			}
 		}
 
-        if (role == Role.HEALER)
-        {
-            for (HealerTeam teammate : HealerTeam.values())
-            {
-                Widget widget = client.getWidget(teammate.getTeammate());
-                if (widget == null)
-                {
-                    continue;
-                }
+		if (role == Role.HEALER)
+		{
+			for (HealerTeam teammate : HealerTeam.values())
+			{
+				Widget widget = client.getWidget(teammate.getTeammate());
+				if (widget == null)
+				{
+					continue;
+				}
 
-                String[] teammateHealth = widget.getText().split(" / ");
-                final int curHealth = Integer.parseInt(teammateHealth[0]);
-                final int maxHealth = Integer.parseInt(teammateHealth[1]);
+				String[] teammateHealth = widget.getText().split(" / ");
+				final int curHealth = Integer.parseInt(teammateHealth[0]);
+				final int maxHealth = Integer.parseInt(teammateHealth[1]);
 
-                int width = teammate.getWidth();
-                final int filledWidth = getBarWidth(maxHealth, curHealth, width);
+				int width = teammate.getWidth();
+				final int filledWidth = getBarWidth(maxHealth, curHealth, width);
 
-                int offsetX = teammate.getOffset().getX();
-                int offsetY = teammate.getOffset().getY();
-                int x = widget.getCanvasLocation().getX() - offsetX;
-                int y = widget.getCanvasLocation().getY() - offsetY;
+				int offsetX = teammate.getOffset().getX();
+				int offsetY = teammate.getOffset().getY();
+				int x = widget.getCanvasLocation().getX() - offsetX;
+				int y = widget.getCanvasLocation().getY() - offsetY;
 
-                graphics.setColor(HEALTH_BAR_COLOR);
-                graphics.fillRect(x, y, filledWidth, HEALTH_BAR_HEIGHT);
-            }
-        }
+				graphics.setColor(HEALTH_BAR_COLOR);
+				graphics.fillRect(x, y, filledWidth, HEALTH_BAR_HEIGHT);
+			}
+		}
 
 		return null;
 	}
 
-    private static int getBarWidth(int base, int current, int size)
-    {
-        final double ratio = (double) current / base;
+	private static int getBarWidth(int base, int current, int size)
+	{
+		final double ratio = (double) current / base;
 
-        if (ratio >= 1)
-        {
-            return size;
-        }
+		if (ratio >= 1)
+		{
+			return size;
+		}
 
-        return (int) Math.round(ratio * size);
-    }
+		return (int) Math.round(ratio * size);
+	}
 
 	private void renderEggLocations(Graphics2D graphics, Map<WorldPoint, Integer> eggMap, Color color)
 	{
