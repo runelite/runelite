@@ -51,7 +51,7 @@ public class SafeSpotPlugin extends Plugin
 
 	@Getter
 	private ArrayList<Tile> safeSpotList;
-	
+
 	@Getter
 	private boolean safeSpotsRenderable = false;
 
