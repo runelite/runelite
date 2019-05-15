@@ -231,11 +231,11 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (chemistryUsedMatcher.find())
 			{
-				updateAmuletOfChemistryCharges(config.amuletOfChemistry() - 1);
 				if (config.chemistryNotification())
 				{
 					notifier.notify("Your amulet of chemistry has been destroyed.");
 				}
+				updateAmuletOfChemistryCharges(config.amuletOfChemistry() - 1);
 			}
 			else if (chemistryCheck2Matcher.find())
 			{
@@ -244,13 +244,8 @@ public class ItemChargePlugin extends Plugin
 			else if (chemistryCheckMatcher.find())
 			{
 				final String match = chemistryCheckMatcher.group(1);
-
 				int charges = 1;
-				if (!match.equals("1"))
-				{
-					charges = Integer.parseInt(match);
-				}
-
+				charges = Integer.parseInt(match);
 				updateAmuletOfChemistryCharges(charges);
 			}
 		}

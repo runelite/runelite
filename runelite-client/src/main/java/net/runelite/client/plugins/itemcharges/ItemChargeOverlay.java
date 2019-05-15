@@ -128,7 +128,6 @@ class ItemChargeOverlay extends WidgetItemOverlay
 	{
 		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
 			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
-			|| config.showBellowCharges() || config.showAbyssalBraceletCharges() || config.showBindingNecklaceCharges()
-			|| config.showAmuletOfChemistryCharges();
+			|| config.showBellowCharges() || config.showAbyssalBraceletCharges() || config.showAmuletOfChemistryCharges();
 	}
 }
