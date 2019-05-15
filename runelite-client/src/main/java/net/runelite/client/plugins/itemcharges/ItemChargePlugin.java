@@ -235,7 +235,7 @@ public class ItemChargePlugin extends Plugin
 				{
 					notifier.notify("Your amulet of chemistry has been destroyed.");
 				}
-				updateAmuletOfChemistryCharges(config.amuletOfChemistry() - 1);
+				updateAmuletOfChemistryCharges(MAX_CHEMISTRY_CHARGES);
 			}
 			else if (chemistryCheck2Matcher.find())
 			{
