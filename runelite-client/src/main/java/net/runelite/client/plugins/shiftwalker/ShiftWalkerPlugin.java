@@ -147,10 +147,9 @@ public class ShiftWalkerPlugin extends Plugin
 		MenuEntry walkkHereEntry = null;
 
 		for (MenuEntry entry : client.getMenuEntries()) {
-			switch (entry.getOption()) {
-				case "Walk here":
-					walkkHereEntry = entry;
-					break;
+			if ("Walk here".equals(entry.getOption()))
+			{
+				walkkHereEntry = entry;
 			}
 		}
 		if (walkkHereEntry != null) {
@@ -164,7 +163,7 @@ public class ShiftWalkerPlugin extends Plugin
 	 * Swaps menu entries if the entries could be found. This places Walk Here where the top level menu option was.
 	 * @param pOptionToReplace The String containing the Menu Option that needs to be replaced. IE: "Attack", "Chop Down".
 	 */
-	private void swap(String pOptionToReplace)
+	private void swap(String pOptionToReplace) // Swap isn't currently used, and I don't know what's going on here so leaving for now
 	{
 		MenuEntry[] entries = client.getMenuEntries();
 

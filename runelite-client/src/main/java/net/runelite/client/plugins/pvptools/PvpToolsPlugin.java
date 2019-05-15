@@ -416,6 +416,9 @@ public class PvpToolsPlugin extends Plugin
 		if (lastEntry.getOption().contains("attack".toLowerCase()))
 		{
 			ArrayUtils.shift(menuEntries, 1);
+			//ArrayUtils.add(menuEntries, menuEntries.length - 2);
+			//menuEntries = ArrayUtils.remove(menuEntries, menuEntries.length - 1);
+			//menuEntrySwapperPlugin.swap("attack", option, mtarget, false); TODO: Make sure to use menuutil when uncommenting this
 		}
 		if (lastEntry.getOption().equals("Attack"))
 		{

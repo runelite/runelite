@@ -205,33 +205,32 @@ public class SpellbookPlugin extends Plugin
 			str = removeFlyingComma(str).toLowerCase();
 			spell = spell.toLowerCase();
 
-			if (mode == WordFilterMode.CONTAINS)
+			switch (mode)
 			{
-				if (spell.contains(str))
-				{
-					return true;
-				}
-			}
-			else if (mode == WordFilterMode.STARTSWITH)
-			{
-				if (spell.startsWith(str))
-				{
-					return true;
-				}
-			}
-			else if (mode == WordFilterMode.ENDSWITH)
-			{
-				if (spell.endsWith(str))
-				{
-					return true;
-				}
-			}
-			else if (mode == WordFilterMode.EQUALS)
-			{
-				if (spell.equals(str))
-				{
-					return true;
-				}
+				case CONTAINS:
+					if (spell.contains(str))
+					{
+						return true;
+					}
+					break;
+				case STARTSWITH:
+					if (spell.startsWith(str))
+					{
+						return true;
+					}
+					break;
+				case ENDSWITH:
+					if (spell.endsWith(str))
+					{
+						return true;
+					}
+					break;
+				case EQUALS:
+					if (spell.equals(str))
+					{
+						return true;
+					}
+					break;
 			}
 		}
 
