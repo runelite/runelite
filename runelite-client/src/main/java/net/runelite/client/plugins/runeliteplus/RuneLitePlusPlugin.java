@@ -29,27 +29,21 @@ package net.runelite.client.plugins.runeliteplus;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
-import net.runelite.client.plugins.discord.DiscordPlugin;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
 
 @PluginDescriptor(
-
-		loadWhenOutdated = true, // prevent users from disabling
-		hidden = true, // prevent users from disabling
+	loadWhenOutdated = true, // prevent users from disabling
+	hidden = true, // prevent users from disabling
 	name = "RuneLitePlus",
 	description = "Configures various aspects of RuneLitePlus",
 	type = PluginType.EXTERNAL
@@ -61,17 +55,16 @@ public class RuneLitePlusPlugin extends Plugin
 	public static boolean customPresenceEnabled = false;
 	public static String rlPlusDiscordApp = "560644885250572289";
 	public static String rlDiscordApp = "409416265891971072";
+
 	@Inject
 	public RuneLitePlusConfig config;
-	@Inject
-	private OverlayManager overlayManager;
+
 	@Inject
 	private ConfigManager configManager;
+
 	@Inject
 	public DiscordService discordService;
 
-	@Inject
-	private Client client;
 
 	@Provides
     RuneLitePlusConfig getConfig(ConfigManager configManager)
