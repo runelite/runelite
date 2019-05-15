@@ -60,6 +60,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static net.runelite.client.util.MenuUtil.swap;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -170,12 +171,12 @@ public class RunecraftPlugin extends Plugin
 		{
 			if (option.equals("deposit-all") && type == 57 && id == 2)
 			{
-				swap("fill", option, target);
-				swap("cancel", option, "", target);
+				swap(client, "fill", option, target);
+				swap(client, "cancel", option, "", target);
 			}
 			else  if (option.equals("fill") && id != 9)
 			{
-				swap("empty", option, target);
+				swap(client, "empty", option, target);
 			}
 		}
 
@@ -183,11 +184,11 @@ public class RunecraftPlugin extends Plugin
 		{
 			if (target.contains("7") || target.contains("5") || target.contains("3") || target.contains("1"))
 			{
-				swap("castle wars", option, target);
+				swap(client, "castle wars", option, target);
 			}
 			else if (wearingBindingNeck())
 			{
-				swap("duel arena", option, target);
+				swap(client, "duel arena", option, target);
 			}
 		}
 
@@ -198,28 +199,6 @@ public class RunecraftPlugin extends Plugin
 		else if (target.contains("pure") && option.contains("use")) // Don't accidentally use pure essence on altar
 		{
 			hide(option, target, true);
-		}
-	}
-
-	private void swap(String opA, String opB, String target)
-	{
-		swap(opA, opB, target, target);
-	}
-
-	private void swap(String opA, String opB, String targetA, String targetB)
-	{
-		MenuEntry[] entries = client.getMenuEntries();
-
-		int idxA = searchIndex(entries, opA, targetA);
-		int idxB = searchIndex(entries, opB, targetB);
-
-		if (idxA >= 0 && idxB >= 0)
-		{
-			MenuEntry entry = entries[idxA];
-			entries[idxA] = entries[idxB];
-			entries[idxB] = entry;
-
-			client.setMenuEntries(entries);
 		}
 	}
 

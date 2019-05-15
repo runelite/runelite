@@ -26,7 +26,11 @@ package net.runelite.client.plugins.easyscape;
 
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.widgets.Widget;
@@ -35,15 +39,11 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.PluginType;
+import static net.runelite.client.util.MenuUtil.swap;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
-
 import javax.inject.Inject;
-
-import java.util.*;
-
 import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import static net.runelite.api.MenuAction.WALK;
 
@@ -62,7 +62,6 @@ public class EasyscapePlugin extends Plugin {
     private static final int PURO_PURO_REGION_ID = 10307;
     private static final int HOUSE_REGION_ID = 7513;
 
-    private Set<Swapper> swapping;
     private MenuEntry[] entries;
 
     @Inject
@@ -79,7 +78,6 @@ public class EasyscapePlugin extends Plugin {
     @Override
     public void startUp() {
         log.debug("Easyscape Started.");
-        swapping = new HashSet<>();
     }
 
     @Override
@@ -140,10 +138,10 @@ public class EasyscapePlugin extends Plugin {
                 client.setMenuEntries(entries);
             }
             else if (option.equalsIgnoreCase("examine")) {
-                swap("push-through", option, target);
+                swap(client, "push-through", option, target);
             }
             else if (option.equalsIgnoreCase("use")) {
-                swap("escape", option, target);
+                swap(client, "escape", option, target);
             }
         }
 
@@ -154,7 +152,7 @@ public class EasyscapePlugin extends Plugin {
                 client.setMenuEntries(entries);
             }
 
-            swap("Build", option, target);
+            swap(client, "Build", option, target);
 
             for (int i = entries.length - 1; i >= 0; i--) {
                 for (String item : config.getConstructionItems().split(",")) {
@@ -173,46 +171,46 @@ public class EasyscapePlugin extends Plugin {
         if (config.getSwapShop() && !config.getSwappedItems().equals("")) {
             for (String item : config.getSwappedItems().split(",")) {
                 if (target.equalsIgnoreCase(item.trim())) {
-                    swap("Buy 50", option, target);
+                    swap(client, "Buy 50", option, target);
                 }
             }
         }
 
         if (config.getSwapSmithing()) {
             if (option.equalsIgnoreCase("Smith 1")) {
-                swap("Smith All", option, target);
+                swap(client, "Smith All", option, target);
             } else if (option.equalsIgnoreCase("Smith 1 Set")) {
-                swap("Smith All Sets", option, target);
+                swap(client, "Smith All Sets", option, target);
             }
         }
 
         if (config.getSwapTanning() && option.equalsIgnoreCase("Tan 1")) {
-            swap("Tan All", option, target);
+            swap(client, "Tan All", option, target);
         }
 
         if (config.getSwapCrafting() && option.equalsIgnoreCase("Make-1")) {
-            swap("Make-All", option, target);
+            swap(client, "Make-All", option, target);
         }
 
         if (config.getSwapSawmill() && target.equalsIgnoreCase("Sawmill operator")) {
-            swap("Buy-plank", option, target);
+            swap(client, "Buy-plank", option, target);
         }
 
         if (config.getSwapSawmillPlanks() && option.equalsIgnoreCase("Buy 1")) {
-            swap("Buy All", option, target);
+            swap(client, "Buy All", option, target);
         }
 
         if (config.getSwapStairs() && option.equalsIgnoreCase("Climb Stairs")) {
-            swap("Climb Up Stairs", option, target);
+            swap(client, "Climb Up Stairs", option, target);
         }
 
         if (option.equalsIgnoreCase("Clear-All") && target.equalsIgnoreCase("Bank Filler")) {
-            swap("Clear", option, target);
+            swap(client, "Clear", option, target);
         }
 
         if (target.toLowerCase().contains("ardougne cloak") && config.getSwapArdougneCape()) {
-            swap("Kandarin Monastery", option, target);
-            swap("Monastery Teleport", option, target);
+            swap(client, "Kandarin Monastery", option, target);
+            swap(client, "Monastery Teleport", option, target);
         }
 
         if (config.getSwapEssencePouch()) {
@@ -221,16 +219,16 @@ public class EasyscapePlugin extends Plugin {
                 switch (config.getEssenceMode()) {
                     case RUNECRAFTING:
                         if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden()) {
-                            swap("Empty", option, target);
+                            swap(client, "Empty", option, target);
                         } else {
-                            swap("Fill", option, target);
+                            swap(client, "Fill", option, target);
                         }
                         break;
                     case ESSENCE_MINING:
                         if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden()) {
-                            swap("Fill", option, target);
+                            swap(client, "Fill", option, target);
                         } else {
-                            swap("Empty", option, target);
+                            swap(client, "Empty", option, target);
                         }
                         break;
                     default:
@@ -243,19 +241,19 @@ public class EasyscapePlugin extends Plugin {
             if (target.toLowerCase().contains("games necklace")) {
                 switch (config.getGamesNecklaceMode()) {
                     case BURTHORPE:
-                        swap(GamesNecklaceMode.BURTHORPE.toString(), option, target);
+                        swap(client, GamesNecklaceMode.BURTHORPE.toString(), option, target);
                         break;
                     case BARBARIAN_OUTPOST:
-                        swap(GamesNecklaceMode.BARBARIAN_OUTPOST.toString(), option, target);
+                        swap(client, GamesNecklaceMode.BARBARIAN_OUTPOST.toString(), option, target);
                         break;
                     case CORPOREAL_BEAST:
-                        swap(GamesNecklaceMode.CORPOREAL_BEAST.toString(), option, target);
+                        swap(client, GamesNecklaceMode.CORPOREAL_BEAST.toString(), option, target);
                         break;
                     case TEARS_OF_GUTHIX:
-                        swap(GamesNecklaceMode.TEARS_OF_GUTHIX.toString(), option, target);
+                        swap(client, GamesNecklaceMode.TEARS_OF_GUTHIX.toString(), option, target);
                         break;
                     case WINTERTODT:
-                        swap(GamesNecklaceMode.WINTERTODT.toString(), option, target);
+                        swap(client, GamesNecklaceMode.WINTERTODT.toString(), option, target);
                         break;
                     default:
                         break;
@@ -267,13 +265,13 @@ public class EasyscapePlugin extends Plugin {
             if (target.toLowerCase().contains("ring of dueling")) {
                 switch (config.getDuelingRingMode()) {
                     case DUEL_ARENA:
-                        swap(DuelingRingMode.DUEL_ARENA.toString(), option, target);
+                        swap(client, DuelingRingMode.DUEL_ARENA.toString(), option, target);
                         break;
                     case CASTLE_WARS:
-                        swap(DuelingRingMode.CASTLE_WARS.toString(), option, target);
+                        swap(client, DuelingRingMode.CASTLE_WARS.toString(), option, target);
                         break;
                     case CLAN_WARS:
-                        swap(DuelingRingMode.CLAN_WARS.toString(), option, target);
+                        swap(client, DuelingRingMode.CLAN_WARS.toString(), option, target);
                         break;
                     default:
                         break;
@@ -285,16 +283,16 @@ public class EasyscapePlugin extends Plugin {
             if (target.toLowerCase().contains("ring of wealth")) {
                 switch (config.getWealthRingMode()) {
                     case MISCELLANIA:
-                        swap(WealthRingMode.MISCELLANIA.toString(), option, target);
+                        swap(client, WealthRingMode.MISCELLANIA.toString(), option, target);
                         break;
                     case GRAND_EXCHANGE:
-                        swap(WealthRingMode.GRAND_EXCHANGE.toString(), option, target);
+                        swap(client, WealthRingMode.GRAND_EXCHANGE.toString(), option, target);
                         break;
                     case FALADOR:
-                        swap(WealthRingMode.FALADOR.toString(), option, target);
+                        swap(client, WealthRingMode.FALADOR.toString(), option, target);
                         break;
 					case DONDAKAN:
-                        swap(WealthRingMode.DONDAKAN.toString(), option, target);
+                        swap(client, WealthRingMode.DONDAKAN.toString(), option, target);
                         break;
                     default:
                         break;
@@ -306,16 +304,16 @@ public class EasyscapePlugin extends Plugin {
             if (target.toLowerCase().contains("amulet of glory")) {
                 switch (config.getGloryMode()) {
                     case EDGEVILLE:
-                        swap(GloryMode.EDGEVILLE.toString(), option, target);
+                        swap(client, GloryMode.EDGEVILLE.toString(), option, target);
                         break;
                     case KARAMJA:
-                        swap(GloryMode.KARAMJA.toString(), option, target);
+                        swap(client, GloryMode.KARAMJA.toString(), option, target);
                         break;
                     case DRAYNOR_VILLAGE:
-                        swap(GloryMode.DRAYNOR_VILLAGE.toString(), option, target);
+                        swap(client, GloryMode.DRAYNOR_VILLAGE.toString(), option, target);
                         break;
                     case AL_KHARID:
-                        swap(GloryMode.AL_KHARID.toString(), option, target);
+                        swap(client, GloryMode.AL_KHARID.toString(), option, target);
                         break;
                     default:
                         break;
@@ -324,50 +322,14 @@ public class EasyscapePlugin extends Plugin {
         }
 
         if (target.toLowerCase().contains("crafting cape") && config.getSwapCraftingCape()) {
-            swap("Teleport", option, target);
+            swap(client, "Teleport", option, target);
 
         }
 
         if (target.toLowerCase().contains("construct. cape") && config.getSwapConstructionCape()) {
-            swap("Tele to poh", option, target);
+            swap(client, "Tele to poh", option, target);
 
         }
-
-        startSwap();
-        performSwap();
-    }
-
-    private void swap(String optionA, String optionB, String target) {
-        swapping.add(new Swapper(target, optionA, optionB));
-    }
-
-    private void startSwap() {
-        int index = 0;
-        for (MenuEntry entry : entries) {
-            String target = Text.removeTags(entry.getTarget()).toLowerCase();
-            for (Swapper swap : swapping) {
-                if (swap.getTarget().equalsIgnoreCase(target)) {
-                    if (entry.getOption().equalsIgnoreCase(swap.getOptionOne())) {
-                        swap.setIndexOne(index);
-                    } else if (entry.getOption().equalsIgnoreCase(swap.getOptionTwo())) {
-                        swap.setIndexTwo(index);
-                    }
-                }
-            }
-            index++;
-        }
-    }
-
-    private void performSwap() {
-        for (Swapper swap : swapping) {
-            if (swap.isReady()) {
-                MenuEntry entry = entries[swap.getIndexOne()];
-                entries[swap.getIndexOne()] = entries[swap.getIndexTwo()];
-                entries[swap.getIndexTwo()] = entry;
-            }
-        }
-        client.setMenuEntries(entries);
-        swapping.clear();
     }
 
     private void delete(int target) {

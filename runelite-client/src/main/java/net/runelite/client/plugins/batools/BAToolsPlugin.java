@@ -73,6 +73,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import static net.runelite.client.util.MenuUtil.swap;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -450,7 +451,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 
 		if (config.swapLadder() && option.equals("climb-down") && target.equals("ladder"))
 		{
-			swap("quick-start", option, target, true);
+			swap(client, "quick-start", option, target, true);
 		}
 		else if(config.removeBA() && client.getVar(Varbits.IN_GAME_BA) == 1 && !option.contains("tell-"))//if in barbarian assault and menu isnt from a horn
 		{
@@ -719,23 +720,6 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 		}
 
 		client.setMenuEntries(entries);
-	}
-
-	private void swap(String optionA, String optionB, String target, boolean strict)
-	{
-		MenuEntry[] entries = client.getMenuEntries();
-
-		int idxA = searchIndex(entries, optionA, target, strict);
-		int idxB = searchIndex(entries, optionB, target, strict);
-
-		if (idxA >= 0 && idxB >= 0)
-		{
-			MenuEntry entry = entries[idxA];
-			entries[idxA] = entries[idxB];
-			entries[idxB] = entry;
-
-			client.setMenuEntries(entries);
-		}
 	}
 
 	private int searchIndex(MenuEntry[] entries, String option, String target, boolean strict)
