@@ -329,7 +329,7 @@ public class HidePrayersINDIVIDUALPlugin extends Plugin
 						prayerWidgets.get(Prayer.values()[11].ordinal()).setHidden(true);	// Hawk Eye
 					}
 
-					if (config.HideProtectItem())
+					if (config.HideMYSTIC_LORE())
 					{
 						prayerWidgets.get(Prayer.values()[12].ordinal()).setHidden(true);	// Mystic Lore
 					}
