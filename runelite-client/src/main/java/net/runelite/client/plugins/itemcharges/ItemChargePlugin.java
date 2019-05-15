@@ -231,7 +231,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (chemistryUsedMatcher.find())
 			{
-				updateAmuletOfChemistryCharges(5);
+				updateAmuletOfChemistryCharges(config.amuletOfChemistry() - 1);
 				if (config.chemistryNotification())
 				{
 					notifier.notify("Your amulet of chemistry has been destroyed.");
@@ -426,10 +426,6 @@ public class ItemChargePlugin extends Plugin
 			else if (id == ItemID.AMULET_OF_CHEMISTRY && type == ItemWithSlot.AMULET_OF_CHEMISTRY)
 			{
 				charges = config.amuletOfChemistry();
-			}
-			else
-			{
-				System.out.println("id: " + id + " - type: " + type + " - (def): " + ItemWithSlot.AMULET_OF_CHEMISTRY);
 			}
 		}
 		else if (itemWithCharge.getType() == type.getType())
