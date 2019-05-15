@@ -30,8 +30,6 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-import java.awt.*;
-
 @ConfigGroup("runeliteplus")
 public interface RuneLitePlusConfig extends Config
 {
@@ -42,5 +40,27 @@ public interface RuneLitePlusConfig extends Config
             description = "Represent RL+ with a custom icon and discord presence."
     )
     default boolean customPresence() { return false; }
+
+	@ConfigItem(
+		keyName = "enableOpacity",
+		name = "Enable opacity",
+		description = "Enables opacity for the whole window.<br>NOTE: This only stays enabled if your pc supports this!",
+		position = 1
+	)
+	default boolean enableOpacity()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "opacityPercentage",
+		name = "Opacity percentage",
+		description = "Changes the opacity of the window if opacity is enabled",
+		position = 2
+	)
+	default int opacityPercentage()
+	{
+		return 100;
+	}
 
 }
