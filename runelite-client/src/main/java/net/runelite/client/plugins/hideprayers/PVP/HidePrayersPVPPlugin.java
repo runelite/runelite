@@ -24,7 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+ 
 package net.runelite.client.plugins.hideprayers.PVP;
 
 import com.google.common.collect.ImmutableList;
@@ -98,6 +98,9 @@ public class HidePrayersPVPPlugin extends Plugin
 	@Inject
 	private HidePrayersPVPConfig config;
 
+	@Inject
+	private ConfigManager configManager;
+
 	@Provides
 	HidePrayersPVPConfig provideConfig(ConfigManager configManager)
 	{
@@ -105,28 +108,30 @@ public class HidePrayersPVPPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp() throws Exception 
 	{
 		hidePrayers();
+		configManager.setConfiguration("runelite", "hideprayerspvmplugin", false);
+		configManager.setConfiguration("runelite", "hideprayersindividualplugin", false);
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown() throws Exception 
 	{
 		restorePrayers();
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event) 
 	{
-		if (event.getGameState() == GameState.LOGGED_IN)
+		if (event.getGameState() == GameState.LOGGED_IN) 
 		{
 			hidePrayers();
 		}
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	public void onConfigChanged(ConfigChanged event) 
 	{
 		if (event.getGroup().equals("hideprayersPVP"))
 		{
@@ -135,9 +140,9 @@ public class HidePrayersPVPPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	public void onWidgetLoaded(WidgetLoaded event) 
 	{
-		if (event.getGroupId() == WidgetID.PRAYER_GROUP_ID || event.getGroupId() == WidgetID.QUICK_PRAYERS_GROUP_ID)
+		if (event.getGroupId() == WidgetID.PRAYER_GROUP_ID || event.getGroupId() == WidgetID.QUICK_PRAYERS_GROUP_ID) 
 		{
 			hidePrayers();
 		}
@@ -151,7 +156,8 @@ public class HidePrayersPVPPlugin extends Plugin
 			if (widgetNode.getId() == WidgetID.PRAYER_GROUP_ID)
 			{
 				return PrayerTabStates.PRAYERS;
-			} else if (widgetNode.getId() == WidgetID.QUICK_PRAYERS_GROUP_ID)
+			}
+			else if (widgetNode.getId() == WidgetID.QUICK_PRAYERS_GROUP_ID)
 			{
 				return PrayerTabStates.QUICK_PRAYERS;
 			}
@@ -166,7 +172,8 @@ public class HidePrayersPVPPlugin extends Plugin
 
 		PrayerTabStates prayerTabState = getPrayerTabState();
 
-		if (prayerTabState == PrayerTabStates.PRAYERS) {
+		if (prayerTabState == PrayerTabStates.PRAYERS)
+		{
 			List<Widget> prayerWidgets = PRAYER_WIDGET_INFO_LIST.stream().map(client::getWidget)
 					.filter(Objects::nonNull).collect(Collectors.toList());
 
@@ -193,143 +200,218 @@ public class HidePrayersPVPPlugin extends Plugin
 			if (prayerWidgets.size() != PRAYER_WIDGET_INFO_LIST.size())
 				return;
 
-			for (int index = 0; index < PRAYER_COUNT; index++)
+			for (int index = 0; index < PRAYER_COUNT; index++) 
 			{
 				Prayer prayer = Prayer.values()[index];
 				Widget prayerWidget = prayerWidgets.get(prayer.ordinal());
 
-				if (!config.showPVPPrayers()
-				&& !config.HideRapidRestore()
-				&& !config.HideRapidHeal()
-				&& !config.HideProtectItem()
-				&& !config.HideSteelSkin()
-				&& !config.HideUltimateStrength()
-				&& !config.HideIncredibleReflex()
-				&& !config.HidePTFMagic()
-				&& !config.HidePTFRange()
-				&& !config.HidePTFMelee()
-				&& !config.HideEagle()
-				&& !config.HideMystic()
-				&& !config.HideRedemption()
-				&& !config.HideSmite()
-				&& !config.HidePreserve()
-				&& !config.HideChivalry()
-				&& !config.HidePiety()
-				&& !config.HideRigour()
-				&& !config.HideAugury())
+				if (config.CombatPrayers() == CombatPrayers.DISABLED)
 				prayerWidget.setHidden(false);
 
-				if (config.showPVPPrayers())
+				if (config.CombatPrayers() == CombatPrayers.PRAY1)
 				{
 					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[8].ordinal()).setHidden(false);// Rapid Restore
-					prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(false);// Rapid Heal
-					prayerWidgets.get(Prayer.values()[10].ordinal()).setHidden(false);// Protect Item
-					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel Skin
-					prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);// Ultimate Strength
-					prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);// Incredible Reflexes
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
-					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
-					prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);// Eagle Eye
-					prayerWidgets.get(Prayer.values()[20].ordinal()).setHidden(false);// Mystic Might
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[23].ordinal()).setHidden(false);// Smite
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-					prayerWidgets.get(Prayer.values()[25].ordinal()).setHidden(false);// Chivalry
-					prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(false);// Piety
-					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
-					prayerWidgets.get(Prayer.values()[28].ordinal()).setHidden(false);// Augury
+					prayerWidgets.get(Prayer.values()[0].ordinal()).setHidden(false);	// Thick Skin
+				}
+				
+				if (config.CombatPrayers() == CombatPrayers.PRAY13)
+				{
+					prayerWidget.setHidden(true);
+					prayerWidgets.get(Prayer.values()[0].ordinal()).setHidden(false);	// Thick Skin
+					prayerWidgets.get(Prayer.values()[3].ordinal()).setHidden(false);	// Sharp Eye
+					prayerWidgets.get(Prayer.values()[4].ordinal()).setHidden(false);	// Mystic Will
+					prayerWidgets.get(Prayer.values()[5].ordinal()).setHidden(false);	// Rock Skin
+					prayerWidgets.get(Prayer.values()[6].ordinal()).setHidden(false);	// Super Human Strength
+				}
+			
+				if (config.CombatPrayers() == CombatPrayers.PRAY16)
+				{
+					prayerWidget.setHidden(true);
+					prayerWidgets.get(Prayer.values()[3].ordinal()).setHidden(false);	// Sharp Eye
+					prayerWidgets.get(Prayer.values()[4].ordinal()).setHidden(false);	// Mystic Will
+					prayerWidgets.get(Prayer.values()[5].ordinal()).setHidden(false);	// Rock Skin
+					prayerWidgets.get(Prayer.values()[6].ordinal()).setHidden(false);	// Super Human Strength
+					prayerWidgets.get(Prayer.values()[7].ordinal()).setHidden(false);	// Improved Reflexed
+				}
 
-					if (config.HideRapidRestore())
-					{
-						prayerWidgets.get(Prayer.values()[8].ordinal()).setHidden(true);// Rapid Restore
-					}
 
-					if (config.HideRapidHeal())
-					{
-						prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(true);// Rapid Heal
-					}
+				if (config.CombatPrayers() == CombatPrayers.PRAY25)
+				{
+					prayerWidget.setHidden(true);
+					prayerWidgets.get(Prayer.values()[3].ordinal()).setHidden(false);	// Sharp Eye
+					prayerWidgets.get(Prayer.values()[4].ordinal()).setHidden(false);	// Mystic Will
+					prayerWidgets.get(Prayer.values()[5].ordinal()).setHidden(false);	// Rock Skin
+					prayerWidgets.get(Prayer.values()[6].ordinal()).setHidden(false);	// Super Human Strength
+					prayerWidgets.get(Prayer.values()[7].ordinal()).setHidden(false);	// Improved Reflexed
+					prayerWidgets.get(Prayer.values()[8].ordinal()).setHidden(false);	// Rapid Restore
+					prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(false);	// Rapid Heal
+					prayerWidgets.get(Prayer.values()[10].ordinal()).setHidden(false);	// Protect Item
+				}
+							
+				if (config.CombatPrayers() == CombatPrayers.PRAY31)
+				{
+					prayerWidget.setHidden(true);
+					prayerWidgets.get(Prayer.values()[7].ordinal()).setHidden(false);	// Improved Reflexed
+					prayerWidgets.get(Prayer.values()[8].ordinal()).setHidden(false);	// Rapid Restore
+					prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(false);	// Rapid Heal
+					prayerWidgets.get(Prayer.values()[10].ordinal()).setHidden(false);	// Protect Item
+					prayerWidgets.get(Prayer.values()[11].ordinal()).setHidden(false);	// Hawk Eye
+					prayerWidgets.get(Prayer.values()[12].ordinal()).setHidden(false);	// Mystic Lore
+					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);	// Steel Skin
+					prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);	// Ultimate Strength
+				}
 
-					if (config.HideProtectItem())
-					{
-						prayerWidgets.get(Prayer.values()[10].ordinal()).setHidden(true);// Protect Item
-					}
+				if (config.CombatPrayers() == CombatPrayers.PRAY43)
+				{
+					prayerWidget.setHidden(true);
+					prayerWidgets.get(Prayer.values()[8].ordinal()).setHidden(false);	// Rapid Restore
+					prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(false);	// Rapid Heal
+					prayerWidgets.get(Prayer.values()[10].ordinal()).setHidden(false);	// Protect Item
+					prayerWidgets.get(Prayer.values()[11].ordinal()).setHidden(false);	// Hawk Eye
+					prayerWidgets.get(Prayer.values()[12].ordinal()).setHidden(false);	// Mystic Lore
+					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);	// Steel Skin
+					prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);	// Ultimate Strength
+					prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);	// Incredible Reflexes
+					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);	// Protect from Magic
+					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);	// Protect from Range
+					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);	// Protect from Melee
+				}	
+				
+				if (config.CombatPrayers() == CombatPrayers.PRAY44)
+				{
+					prayerWidget.setHidden(true);
+					prayerWidgets.get(Prayer.values()[8].ordinal()).setHidden(false);	// Rapid Restore
+					prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(false);	// Rapid Heal
+					prayerWidgets.get(Prayer.values()[10].ordinal()).setHidden(false);	// Protect Item
+					prayerWidgets.get(Prayer.values()[12].ordinal()).setHidden(false);	// Mystic Lore
+					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);	// Steel Skin
+					prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);	// Ultimate Strength
+					prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);	// Incredible Reflexes
+					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);	// Protect from Magic
+					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);	// Protect from Range
+					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);	// Protect from Melee
+					prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);	// Eagle Eye
+				}
+				
+				if (config.CombatPrayers() == CombatPrayers.PRAY45)
+				{
+					prayerWidget.setHidden(true);
+					prayerWidgets.get(Prayer.values()[8].ordinal()).setHidden(false);	// Rapid Restore
+					prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(false);	// Rapid Heal
+					prayerWidgets.get(Prayer.values()[10].ordinal()).setHidden(false);	// Protect Item
+					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);	// Steel Skin
+					prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);	// Ultimate Strength
+					prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);	// Incredible Reflexes
+					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);	// Protect from Magic
+					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);	// Protect from Range
+					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);	// Protect from Melee
+					prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);	// Eagle Eye
+					prayerWidgets.get(Prayer.values()[20].ordinal()).setHidden(false);	// Mystic Might
+				}					
+				
+				if (config.CombatPrayers() == CombatPrayers.PRAY52)
+				{
+					prayerWidget.setHidden(true);
+					prayerWidgets.get(Prayer.values()[8].ordinal()).setHidden(false);	// Rapid Restore
+					prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(false);	// Rapid Heal
+					prayerWidgets.get(Prayer.values()[10].ordinal()).setHidden(false);	// Protect Item
+					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);	// Steel Skin
+					prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);	// Ultimate Strength
+					prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);	// Incredible Reflexes
+					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);	// Protect from Magic
+					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);	// Protect from Range
+					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);	// Protect from Melee
+					prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);	// Eagle Eye
+					prayerWidgets.get(Prayer.values()[20].ordinal()).setHidden(false);	// Mystic Might
+					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);	// Redemption
+					prayerWidgets.get(Prayer.values()[23].ordinal()).setHidden(false);	// Smite
+				}
 
-					if (config.HideSteelSkin())
-					{
-						prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(true);// Steel Skin
-					}
+				if (config.CombatPrayers() == CombatPrayers.PRAY55)
+				{
+					prayerWidget.setHidden(true);
+					prayerWidgets.get(Prayer.values()[8].ordinal()).setHidden(false);	// Rapid Restore
+					prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(false);	// Rapid Heal
+					prayerWidgets.get(Prayer.values()[10].ordinal()).setHidden(false);	// Protect Item
+					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);	// Steel Skin
+					prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);	// Ultimate Strength
+					prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);	// Incredible Reflexes
+					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);	// Protect from Magic
+					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);	// Protect from Range
+					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);	// Protect from Melee
+					prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);	// Eagle Eye
+					prayerWidgets.get(Prayer.values()[20].ordinal()).setHidden(false);	// Mystic Might
+					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);	// Redemption
+					prayerWidgets.get(Prayer.values()[23].ordinal()).setHidden(false);	// Smite
+					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);	// Preserve
+				}
 
-					if (config.HideUltimateStrength())
-					{
-						prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(true);// Ultimate Strength
-					}
+				if (config.CombatPrayers() == CombatPrayers.PRAY60)
+				{
+					prayerWidget.setHidden(true);
+					prayerWidgets.get(Prayer.values()[8].ordinal()).setHidden(false);	// Rapid Restore
+					prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(false);	// Rapid Heal
+					prayerWidgets.get(Prayer.values()[10].ordinal()).setHidden(false);	// Protect Item
+					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);	// Protect from Magic
+					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);	// Protect from Range
+					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);	// Protect from Melee
+					prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);	// Eagle Eye
+					prayerWidgets.get(Prayer.values()[20].ordinal()).setHidden(false);	// Mystic Might
+					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);	// Redemption
+					prayerWidgets.get(Prayer.values()[23].ordinal()).setHidden(false);	// Smite
+					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);	// Preserve
+					prayerWidgets.get(Prayer.values()[25].ordinal()).setHidden(false);	// Chivalry
+				}
+							
+				if (config.CombatPrayers() == CombatPrayers.PRAY70)
+				{
+					prayerWidget.setHidden(true);
+					prayerWidgets.get(Prayer.values()[8].ordinal()).setHidden(false);	// Rapid Restore
+					prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(false);	// Rapid Heal
+					prayerWidgets.get(Prayer.values()[10].ordinal()).setHidden(false);	// Protect Item
+					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);	// Protect from Magic
+					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);	// Protect from Range
+					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);	// Protect from Melee
+					prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);	// Eagle Eye
+					prayerWidgets.get(Prayer.values()[20].ordinal()).setHidden(false);	// Mystic Might
+					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);	// Redemption
+					prayerWidgets.get(Prayer.values()[23].ordinal()).setHidden(false);	// Smite
+					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);	// Preserve
+					prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(false);	// Piety
+				}
 
-					if (config.HideIncredibleReflex())
-					{
-						prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(true);// Incredible Reflexes
-					}
-
-					if (config.HidePTFMagic())
-					{
-						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(true);// Protect from Magic
-					}
-
-					if (config.HidePTFRange())
-					{
-						prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(true);// Protect from Range
-					}
-
-					if (config.HidePTFMelee())
-					{
-						prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(true);// Protect from Melee
-					}
-
-					if (config.HideEagle())
-					{
-						prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(true);// eagle eye
-					}
-
-					if (config.HideMystic())
-					{
-						prayerWidgets.get(Prayer.values()[20].ordinal()).setHidden(true);// Mystic Might
-					}
-
-					if (config.HideRedemption())
-					{
-						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(true);// Redemption
-					}
-
-					if (config.HideSmite())
-					{
-						prayerWidgets.get(Prayer.values()[23].ordinal()).setHidden(true);// Smite
-					}
-
-					if (config.HidePreserve())
-					{
-						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(true);// Preserve
-					}
-
-					if (config.HideChivalry())
-					{
-						prayerWidgets.get(Prayer.values()[25].ordinal()).setHidden(true);// Chivalry
-					}
-
-					if (config.HidePiety())
-					{
-						prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(true);// Piety
-					}
-
-					if (config.HideRigour())
-					{
-						prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(true);// Rigour
-					}
-
-					if (config.HideAugury())
-					{
-						prayerWidgets.get(Prayer.values()[28].ordinal()).setHidden(true);// Augury
-					}
+				if (config.CombatPrayers() == CombatPrayers.PRAY74)
+				{
+					prayerWidget.setHidden(true);
+					prayerWidgets.get(Prayer.values()[8].ordinal()).setHidden(false);	// Rapid Restore
+					prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(false);	// Rapid Heal
+					prayerWidgets.get(Prayer.values()[10].ordinal()).setHidden(false);	// Protect Item
+					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);	// Protect from Magic
+					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);	// Protect from Range
+					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);	// Protect from Melee
+					prayerWidgets.get(Prayer.values()[20].ordinal()).setHidden(false);	// Mystic Might
+					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);	// Redemption
+					prayerWidgets.get(Prayer.values()[23].ordinal()).setHidden(false);	// Smite
+					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);	// Preserve
+					prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(false);	// Piety
+					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);	// Rigour
+				}				
+				
+				if (config.CombatPrayers() == CombatPrayers.PRAY77)
+				{
+					prayerWidget.setHidden(true);
+					prayerWidgets.get(Prayer.values()[8].ordinal()).setHidden(false);	// Rapid Restore
+					prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(false);	// Rapid Heal
+					prayerWidgets.get(Prayer.values()[10].ordinal()).setHidden(false);	// Protect Item
+					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);	// Protect from Magic
+					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);	// Protect from Range
+					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);	// Protect from Melee
+					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);	// Redemption
+					prayerWidgets.get(Prayer.values()[23].ordinal()).setHidden(false);	// Smite
+					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);	// Preserve
+					prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(false);	// Piety
+					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);	// Rigour
+					prayerWidgets.get(Prayer.values()[28].ordinal()).setHidden(false);	// Augury
 				}
 			}
 		}

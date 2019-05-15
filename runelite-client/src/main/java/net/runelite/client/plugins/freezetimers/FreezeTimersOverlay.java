@@ -113,6 +113,10 @@ public class FreezeTimersOverlay extends Overlay
 	private boolean drawTBOverlay(Graphics2D g, Actor actor, int overlaysDrawn)
 	{
 		long currentTick = System.currentTimeMillis();
+		if (!config.TB())
+		{
+			return false;
+		}
 		if (timers.getTimerEnd(actor, TimerType.TELEBLOCK) <= currentTick)
 		{
 			return false;
@@ -135,6 +139,10 @@ public class FreezeTimersOverlay extends Overlay
 			{
 				renderTextLocation(g, " | " + text, 11, Font.BOLD, Color.CYAN, FixedPoint);
 			}
+			if (timers.getTimerEnd(actor, TimerType.VENG) >= currentTick)
+			{
+				renderTextLocation(g, " | " + text, 11, Font.BOLD, Color.CYAN, FixedPoint);
+			}
 		}
 		else
 		{
@@ -146,6 +154,10 @@ public class FreezeTimersOverlay extends Overlay
 	private boolean drawVengOverlay(Graphics2D g, Actor actor, int overlaysDrawn)
 	{
 		long currentTick = System.currentTimeMillis();
+		if (!config.Veng())
+		{
+			return false;
+		}
 		if (timers.getTimerEnd(actor, TimerType.VENG) <= currentTick)
 		{
 			return false;
@@ -164,6 +176,10 @@ public class FreezeTimersOverlay extends Overlay
 				renderTextLocation(g, text, 11, Font.BOLD, Color.RED, poi);
 			}
 			if (timers.getTimerEnd(actor, TimerType.FREEZE) >= currentTick)
+			{
+				renderTextLocation(g, text + " | ", 11, Font.BOLD, Color.RED, FixedPoint);
+			}
+			if (timers.getTimerEnd(actor, TimerType.TELEBLOCK) >= currentTick)
 			{
 				renderTextLocation(g, text + " | ", 11, Font.BOLD, Color.RED, FixedPoint);
 			}
