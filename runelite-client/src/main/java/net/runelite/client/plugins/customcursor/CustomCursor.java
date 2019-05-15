@@ -36,7 +36,7 @@ public enum CustomCursor
 	TROUT("Trout", "cursor-trout.png"),
 	DRAGON_SCIMITAR("Dragon Scimitar", "cursor-dragon-scimitar.png"),
 	ARMADYL_GODSWORD("Armadyl godsword", "cursor-armadyl-godsword.png"),
-	BANDOS_GODSWORD("BAndos godsword", "cursor-bandos-godsword.png"),
+	BANDOS_GODSWORD("Bandos godsword", "cursor-bandos-godsword.png"),
 	MOUSE("Mouse", "cursor-mouse.png"),
 	SARADOMIN_GODSWORD("Saradomin godsword", "cursor-saradomin-godsword.png"),
 	ZAMORAK_GODSWORD("Zamorak godsword", "cursor-zamorak-godsword.png");
