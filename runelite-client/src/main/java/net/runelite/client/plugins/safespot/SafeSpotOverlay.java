@@ -44,7 +44,7 @@ public class SafeSpotOverlay extends Overlay
 	{
 		if (safeSpotPlugin.isSafeSpotsRenderable())
 		{
-			if(safeSpotPlugin.getSafeSpotList() != null)
+			if (safeSpotPlugin.getSafeSpotList() != null)
 			{
 				if (safeSpotPlugin.getSafeSpotList().size() > 0)
 				{
