@@ -31,16 +31,12 @@ import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.EnumMap;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
-import static net.runelite.api.Experience.ATT_STR_MULT;
-import static net.runelite.api.Experience.DEF_HP_MULT;
-import static net.runelite.api.Experience.RANGE_MAGIC_MULT;
 import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
@@ -66,7 +62,6 @@ import net.runelite.client.util.ColorUtil;
 )
 public class CombatLevelPlugin extends Plugin
 {
-	private static final double RANGE_MAGIC_LEVEL_MULT = 1.5;
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.###");
 	private static final String CONFIG_GROUP = "combatlevel";
 	private static final String ATTACK_RANGE_CONFIG_KEY = "wildernessAttackLevelRange";
@@ -75,7 +70,6 @@ public class CombatLevelPlugin extends Plugin
 	private static final int WILDERNESS_LEVEL_TEXT_ADJUSTED_ORIGINAL_Y = 3;
 	private static final int MIN_COMBAT_LEVEL = 3;
 	private static final Color COMBAT_LEVEL_COLOUR = new Color(0xff981f);
-	private static final double PRAY_MULT = 0.125;
 	static final EnumSet<Skill> COMBAT_SKILLS = EnumSet.of(
 		Skill.ATTACK,
 		Skill.STRENGTH,
@@ -344,112 +338,45 @@ public class CombatLevelPlugin extends Plugin
 	{
 		Preconditions.checkArgument(COMBAT_SKILLS.contains(skill));
 
-		final Map<String, Double> baseValues = getBaseValues();
-		final int nextCombatLevel = client.getLocalPlayer().getCombatLevel() + 1;
+		final EnumMap<Skill, Integer> levels = cmbSkillLevels.clone();
+		final int startingLevel = levels.get(skill);
+		final int startingCombat = client.getLocalPlayer().getCombatLevel();
 
-		switch (skill)
+		do
 		{
-			case ATTACK:
-			case STRENGTH:
-				return calcLevels(baseValues.get("base") + baseValues.get("melee"),
-					nextCombatLevel, ATT_STR_MULT);
-			case DEFENCE:
-			case HITPOINTS:
-				return calcLevels(baseValues.get("base") + baseValues.get("max"),
-					nextCombatLevel, DEF_HP_MULT);
-			case PRAYER:
-				return calcLevelsPray(baseValues.get("base") + baseValues.get("max"),
-					nextCombatLevel, cmbSkillLevels.get(Skill.PRAYER));
-			case RANGED:
-			case MAGIC:
-				return calcLevelsRM(cmbSkillLevels.get(skill),
-					nextCombatLevel, baseValues.get("base"));
-			default:
-				// Unreachable case
-				return -99;
+			levels.compute(skill, (skillKey, level) ->
+				{
+					if (level == null)
+					{
+						return 1;
+					}
+					return level + 1;
+				});
 		}
-	}
+		while (getCombatLevel(levels) <= startingCombat);
 
-	private HashMap<String, Double> getBaseValues()
-	{
-		int attackLevel = cmbSkillLevels.get(Skill.ATTACK);
-		int strengthLevel = cmbSkillLevels.get(Skill.STRENGTH);
-		int defenceLevel = cmbSkillLevels.get(Skill.DEFENCE);
-		int hitpointsLevel = cmbSkillLevels.get(Skill.HITPOINTS);
-		int magicLevel = cmbSkillLevels.get(Skill.MAGIC);
-		int rangedLevel = cmbSkillLevels.get(Skill.RANGED);
-		int prayerLevel = cmbSkillLevels.get(Skill.PRAYER);
-
-		double base = DEF_HP_MULT * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2));
-		double melee = ATT_STR_MULT * (attackLevel + strengthLevel);
-		double range = RANGE_MAGIC_MULT * Math.floor(rangedLevel * RANGE_MAGIC_LEVEL_MULT);
-		double mage = RANGE_MAGIC_MULT * Math.floor(magicLevel * RANGE_MAGIC_LEVEL_MULT);
-		double max = Math.max(melee, Math.max(range, mage));
-
-		HashMap<String, Double> result = new HashMap<>();
-		result.put("base", base);
-		result.put("melee", melee);
-		result.put("max", max);
-		return result;
+		return levels.get(skill) - startingLevel;
 	}
 
 	/**
-	 * Calculate skill levels required for increasing combat level, meant
-	 * for all combat skills besides prayer, ranged, and magic.
-	 * @param start	initial value
-	 * @param end	ending value (combat level + 1)
-	 * @param multiple	how much adding one skill level will change combat
-	 * @return	levels required for a specific skill to level up combat
+	 * Wrapper for {@link Experience#getCombatLevel(int, int, int, int, int, int, int)}, accepting a combat skills map
+	 * as the input.
+	 *
+	 * @param combatLevels A {@link Map} of {@link Skill}s to {@link Integer}s representing a player's combat skill
+	 *                     levels
+	 * @return The combat level of a player with the combat skills in the given map
 	 */
-	static int calcLevels(double start, int end, double multiple)
+	private static int getCombatLevel(final Map<Skill, Integer> combatLevels)
 	{
-		return (int) Math.ceil(calcMultipliedLevels(start, end, multiple));
-	}
+		Preconditions.checkArgument(combatLevels != null && COMBAT_SKILLS.equals(combatLevels.keySet()));
 
-	/**
-	 * Calculate skill levels for increasing combat level, meant ONLY for the Prayer skill.
-	 * <p>
-	 * Note: Prayer is a special case, only leveling up upon even level numbers. This is accounted
-	 *       for in this function.
-	 * </p>
-	 * @param start       current combat level
-	 * @param end         ending value (combat level + 1)
-	 * @param prayerLevel the player's current prayer level
-	 * @return Prayer levels required to level up combat
-	 */
-	static int calcLevelsPray(double start, int end, int prayerLevel)
-	{
-		int neededLevels = (int) Math.ceil(calcMultipliedLevels(start, end, PRAY_MULT));
-
-		if (prayerLevel % 2 != 0)
-		{
-			neededLevels--;
-		}
-
-		if ((prayerLevel + neededLevels) % 2 != 0)
-		{
-			return neededLevels + 1;
-		}
-
-		return neededLevels;
-	}
-
-	private static double calcMultipliedLevels(double start, int end, double multiple)
-	{
-		return (end - start) / multiple;
-	}
-
-	/**
-	 * Calculate skill levels required for increasing combat level, meant
-	 * ONLY for Ranged and Magic skills.
-	 * @param start	either the current ranged or magic level
-	 * @param end	ending value (combat level + 1)
-	 * @param dhp	defence, hitpoints, and prayer; this is the initial calculated "base" value
-	 * @return	levels required for a specific skill to level up combat
-	 */
-	static int calcLevelsRM(double start, int end, double dhp)
-	{
-		start = Math.floor(start * RANGE_MAGIC_LEVEL_MULT) * RANGE_MAGIC_MULT;
-		return (int) Math.ceil((end - dhp - start) / (RANGE_MAGIC_MULT * RANGE_MAGIC_LEVEL_MULT));
+		return Experience.getCombatLevel(
+			combatLevels.get(Skill.ATTACK),
+			combatLevels.get(Skill.STRENGTH),
+			combatLevels.get(Skill.DEFENCE),
+			combatLevels.get(Skill.HITPOINTS),
+			combatLevels.get(Skill.RANGED),
+			combatLevels.get(Skill.MAGIC),
+			combatLevels.get(Skill.PRAYER));
 	}
 }

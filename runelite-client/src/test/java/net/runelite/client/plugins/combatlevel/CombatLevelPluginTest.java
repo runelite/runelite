@@ -303,4 +303,25 @@ public class CombatLevelPluginTest
 
 		assertEquals(1, plugin.levelsToCombat(Skill.PRAYER));
 	}
+
+	@Test
+	public void testRangeMagicLevelsNeeded()
+	{
+		when(player.getCombatLevel()).thenReturn(68);
+		when(client.getRealSkillLevel(Skill.ATTACK)).thenReturn(60);
+		when(client.getRealSkillLevel(Skill.STRENGTH)).thenReturn(69);
+		when(client.getRealSkillLevel(Skill.DEFENCE)).thenReturn(1);
+		when(client.getRealSkillLevel(Skill.PRAYER)).thenReturn(52);
+		when(client.getRealSkillLevel(Skill.RANGED)).thenReturn(85);
+		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(85);
+		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(78);
+
+		postExperienceChangedEvents();
+
+		// test ranged
+		assertEquals(3, plugin.levelsToCombat(Skill.RANGED));
+
+		// test magic
+		assertEquals(3, plugin.levelsToCombat(Skill.MAGIC));
+	}
 }
