@@ -9,14 +9,13 @@
 
 package net.runelite.client.plugins.pvptools;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
 import javax.inject.Inject;
-
-import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -40,7 +39,7 @@ public class PvpToolsOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGH);
 		setPosition(OverlayPosition.DYNAMIC);
-}
+	}
 
 
 	@Override
