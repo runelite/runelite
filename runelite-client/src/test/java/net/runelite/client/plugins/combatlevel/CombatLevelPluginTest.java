@@ -25,26 +25,25 @@
 package net.runelite.client.plugins.combatlevel;
 
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import net.runelite.api.Client;
-import static net.runelite.api.Experience.ATT_STR_MULT;
-import static net.runelite.api.Experience.DEF_HP_MULT;
-import static net.runelite.api.Experience.RANGE_MAGIC_MULT;
+import net.runelite.api.Experience;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
-import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.calcLevels;
-import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.calcLevelsPray;
-import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.calcLevelsRM;
-import static net.runelite.client.plugins.combatlevel.CombatLevelOverlay.RANGE_MAGIC_LEVEL_MULT;
+import net.runelite.api.events.ExperienceChanged;
+import net.runelite.client.config.ConfigManager;
+import static net.runelite.client.plugins.combatlevel.CombatLevelPlugin.COMBAT_SKILLS;
+import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
-import java.util.HashMap;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CombatLevelPluginTest
@@ -54,7 +53,22 @@ public class CombatLevelPluginTest
 	private Client client;
 
 	@Mock
+	@Bind
+	private CombatLevelConfig config;
+
+	@Mock
+	@Bind
+	private ConfigManager configManager;
+
+	@Mock
+	@Bind
+	private OverlayManager overlayManager;
+
+	@Mock
 	private Player player;
+
+	@Inject
+	private CombatLevelPlugin plugin;
 
 	@Before
 	public void setUp()
@@ -64,27 +78,17 @@ public class CombatLevelPluginTest
 		when(client.getLocalPlayer()).thenReturn(player);
 	}
 
-	private HashMap<String, Double> getBaseValues()
+	private void postExperienceChangedEvents()
 	{
-		int attackLevel = client.getRealSkillLevel(Skill.ATTACK);
-		int strengthLevel = client.getRealSkillLevel(Skill.STRENGTH);
-		int defenceLevel = client.getRealSkillLevel(Skill.DEFENCE);
-		int hitpointsLevel = client.getRealSkillLevel(Skill.HITPOINTS);
-		int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
-		int rangedLevel = client.getRealSkillLevel(Skill.RANGED);
-		int prayerLevel = client.getRealSkillLevel(Skill.PRAYER);
+		for (final Skill skill : COMBAT_SKILLS)
+		{
+			final int skillLevel = client.getRealSkillLevel(skill);
+			when(client.getSkillExperience(skill)).thenReturn(Experience.getXpForLevel(skillLevel));
 
-		double base = DEF_HP_MULT * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2));
-		double melee = ATT_STR_MULT * (attackLevel + strengthLevel);
-		double range = RANGE_MAGIC_MULT * Math.floor(rangedLevel * RANGE_MAGIC_LEVEL_MULT);
-		double mage = RANGE_MAGIC_MULT * Math.floor(magicLevel * RANGE_MAGIC_LEVEL_MULT);
-		double max = Math.max(melee, Math.max(range, mage));
-
-		HashMap<String, Double> result = new HashMap<>();
-		result.put("base", base);
-		result.put("melee", melee);
-		result.put("max", max);
-		return result;
+			final ExperienceChanged event = new ExperienceChanged();
+			event.setSkill(skill);
+			plugin.onExperienceChanged(event);
+		}
 	}
 
 	@Test
@@ -99,27 +103,24 @@ public class CombatLevelPluginTest
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(1);
 		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(10);
 
-		HashMap<String, Double> baseValues = getBaseValues();
+		postExperienceChangedEvents();
 
 		// test attack/strength
-		assertEquals(2, calcLevels(baseValues.get("base") + baseValues.get("melee"),
-			player.getCombatLevel() + 1, ATT_STR_MULT));
+		assertEquals(2, plugin.levelsToCombat(Skill.ATTACK));
+		assertEquals(2, plugin.levelsToCombat(Skill.STRENGTH));
 
 		// test defence/hitpoints
-		assertEquals(3, calcLevels(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, DEF_HP_MULT));
+		assertEquals(3, plugin.levelsToCombat(Skill.DEFENCE));
+		assertEquals(3, plugin.levelsToCombat(Skill.HITPOINTS));
 
 		// test prayer
-		assertEquals(5, calcLevelsPray(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, client.getRealSkillLevel(Skill.PRAYER)));
+		assertEquals(5, plugin.levelsToCombat(Skill.PRAYER));
 
 		// test ranged
-		assertEquals(2, calcLevelsRM(client.getRealSkillLevel(Skill.RANGED),
-			player.getCombatLevel() + 1, baseValues.get("base")));
+		assertEquals(2, plugin.levelsToCombat(Skill.RANGED));
 
 		// test magic
-		assertEquals(2, calcLevelsRM(client.getRealSkillLevel(Skill.MAGIC),
-			player.getCombatLevel() + 1, baseValues.get("base")));
+		assertEquals(2, plugin.levelsToCombat(Skill.MAGIC));
 	}
 
 	@Test
@@ -134,27 +135,24 @@ public class CombatLevelPluginTest
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(10);
 		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(10);
 
-		HashMap<String, Double> baseValues = getBaseValues();
+		postExperienceChangedEvents();
 
 		// test attack/strength
-		assertEquals(1, calcLevels(baseValues.get("base") + baseValues.get("melee"),
-			player.getCombatLevel() + 1, ATT_STR_MULT));
+		assertEquals(1, plugin.levelsToCombat(Skill.ATTACK));
+		assertEquals(1, plugin.levelsToCombat(Skill.STRENGTH));
 
 		// test defence/hitpoints
-		assertEquals(1, calcLevels(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, DEF_HP_MULT));
+		assertEquals(1, plugin.levelsToCombat(Skill.DEFENCE));
+		assertEquals(1, plugin.levelsToCombat(Skill.HITPOINTS));
 
 		// test prayer
-		assertEquals(2, calcLevelsPray(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, client.getRealSkillLevel(Skill.PRAYER)));
+		assertEquals(2, plugin.levelsToCombat(Skill.PRAYER));
 
 		// test ranged
-		assertEquals(4, calcLevelsRM(client.getRealSkillLevel(Skill.RANGED),
-			player.getCombatLevel() + 1, baseValues.get("base")));
+		assertEquals(4, plugin.levelsToCombat(Skill.RANGED));
 
 		// test magic
-		assertEquals(4, calcLevelsRM(client.getRealSkillLevel(Skill.MAGIC),
-			player.getCombatLevel() + 1, baseValues.get("base")));
+		assertEquals(4, plugin.levelsToCombat(Skill.MAGIC));
 	}
 
 	@Test
@@ -170,27 +168,24 @@ public class CombatLevelPluginTest
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(73);
 		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(71);
 
-		HashMap<String, Double> baseValues = getBaseValues();
+		postExperienceChangedEvents();
 
 		// test attack/strength
-		assertEquals(2, calcLevels(baseValues.get("base") + baseValues.get("melee"),
-			player.getCombatLevel() + 1, ATT_STR_MULT));
+		assertEquals(2, plugin.levelsToCombat(Skill.ATTACK));
+		assertEquals(2, plugin.levelsToCombat(Skill.STRENGTH));
 
 		// test defence/hitpoints
-		assertEquals(2, calcLevels(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, DEF_HP_MULT));
+		assertEquals(2, plugin.levelsToCombat(Skill.DEFENCE));
+		assertEquals(2, plugin.levelsToCombat(Skill.HITPOINTS));
 
 		// test prayer
-		assertEquals(4, calcLevelsPray(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, client.getRealSkillLevel(Skill.PRAYER)));
+		assertEquals(4, plugin.levelsToCombat(Skill.PRAYER));
 
 		// test ranged
-		assertEquals(17, calcLevelsRM(client.getRealSkillLevel(Skill.RANGED),
-			player.getCombatLevel() + 1, baseValues.get("base")));
+		assertEquals(17, plugin.levelsToCombat(Skill.RANGED));
 
 		// test magic
-		assertEquals(19, calcLevelsRM(client.getRealSkillLevel(Skill.MAGIC),
-			player.getCombatLevel() + 1, baseValues.get("base")));
+		assertEquals(19, plugin.levelsToCombat(Skill.MAGIC));
 	}
 
 	@Test
@@ -206,34 +201,30 @@ public class CombatLevelPluginTest
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(64);
 		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(42);
 
-		HashMap<String, Double> baseValues = getBaseValues();
+		postExperienceChangedEvents();
 
 		// test attack/strength
-		assertEquals(18, calcLevels(baseValues.get("base") + baseValues.get("melee"),
-			player.getCombatLevel() + 1, ATT_STR_MULT));
+		assertEquals(18, plugin.levelsToCombat(Skill.ATTACK));
+		assertEquals(18, plugin.levelsToCombat(Skill.STRENGTH));
 
 		// test defence/hitpoints
-		assertEquals(2, calcLevels(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, DEF_HP_MULT));
+		assertEquals(2, plugin.levelsToCombat(Skill.DEFENCE));
+		assertEquals(2, plugin.levelsToCombat(Skill.HITPOINTS));
 
 		// test prayer
-		assertEquals(3, calcLevelsPray(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, client.getRealSkillLevel(Skill.PRAYER)));
+		assertEquals(3, plugin.levelsToCombat(Skill.PRAYER));
 
 		// test ranged
-		assertEquals(14, calcLevelsRM(client.getRealSkillLevel(Skill.RANGED),
-			player.getCombatLevel() + 1, baseValues.get("base")));
+		assertEquals(14, plugin.levelsToCombat(Skill.RANGED));
 
 		// test magic
-		assertEquals(1, calcLevelsRM(client.getRealSkillLevel(Skill.MAGIC),
-			player.getCombatLevel() + 1, baseValues.get("base")));
+		assertEquals(1, plugin.levelsToCombat(Skill.MAGIC));
 	}
 
 	@Test
 	public void testPlayerZezima()
 	{
 		// snapshot of current stats 2018-10-3
-		// Zezima cannot earn a combat level from ranged/magic anymore, so it won't show as the result is too high
 		when(player.getCombatLevel()).thenReturn(90);
 		when(client.getRealSkillLevel(Skill.ATTACK)).thenReturn(74);
 		when(client.getRealSkillLevel(Skill.STRENGTH)).thenReturn(74);
@@ -243,19 +234,23 @@ public class CombatLevelPluginTest
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(60);
 		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(72);
 
-		HashMap<String, Double> baseValues = getBaseValues();
+		postExperienceChangedEvents();
 
 		// test attack/strength
-		assertEquals(2, calcLevels(baseValues.get("base") + baseValues.get("melee"),
-			player.getCombatLevel() + 1, ATT_STR_MULT));
+		assertEquals(2, plugin.levelsToCombat(Skill.ATTACK));
+		assertEquals(2, plugin.levelsToCombat(Skill.STRENGTH));
 
 		// test defence/hitpoints
-		assertEquals(2, calcLevels(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, DEF_HP_MULT));
+		assertEquals(2, plugin.levelsToCombat(Skill.DEFENCE));
+		assertEquals(2, plugin.levelsToCombat(Skill.HITPOINTS));
 
 		// test prayer
-		assertEquals(4, calcLevelsPray(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, client.getRealSkillLevel(Skill.PRAYER)));
+		assertEquals(4, plugin.levelsToCombat(Skill.PRAYER));
+
+		// Zezima cannot earn a combat level from ranged/magic anymore, so it won't show as the result is too high
+		final String tooltipText = plugin.getLevelsUntilTooltip().getText();
+		assertFalse(tooltipText.contains("Ranged"));
+		assertFalse(tooltipText.contains("Magic"));
 	}
 
 	@Test
@@ -270,7 +265,9 @@ public class CombatLevelPluginTest
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(99);
 		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(99);
 
-		assertEquals(1, neededPrayerLevels());
+		postExperienceChangedEvents();
+
+		assertEquals(1, plugin.levelsToCombat(Skill.PRAYER));
 	}
 
 	@Test
@@ -285,7 +282,9 @@ public class CombatLevelPluginTest
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(60);
 		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(72);
 
-		assertEquals(2, neededPrayerLevels());
+		postExperienceChangedEvents();
+
+		assertEquals(2, plugin.levelsToCombat(Skill.PRAYER));
 	}
 
 	@Test
@@ -300,17 +299,8 @@ public class CombatLevelPluginTest
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(60);
 		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(72);
 
-		assertEquals(1, neededPrayerLevels());
-	}
+		postExperienceChangedEvents();
 
-	private int neededPrayerLevels()
-	{
-		HashMap<String, Double> baseValues = getBaseValues();
-
-		return calcLevelsPray(
-				baseValues.get("base") + baseValues.get("max"),
-				player.getCombatLevel() + 1,
-				client.getRealSkillLevel(Skill.PRAYER)
-		);
+		assertEquals(1, plugin.levelsToCombat(Skill.PRAYER));
 	}
 }
