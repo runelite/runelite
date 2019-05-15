@@ -85,16 +85,16 @@ public class WarIndicatorPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdd(MenuEntryAdded menuEntryAdded)
+	public void onMenuEntryAdd(MenuEntryAdded onMenuEntryAdded)
 	{
-		int type = menuEntryAdded.getType();
+		int type = onMenuEntryAdded.getType();
 
 		if (type >= 2000)
 		{
 			type -= 2000;
 		}
 
-		int identifier = menuEntryAdded.getIdentifier();
+		int identifier = onMenuEntryAdded.getIdentifier();
 		if (type == FOLLOW.getId() || type == TRADE.getId()
 			|| type == SPELL_CAST_ON_PLAYER.getId()
 			|| type == ITEM_USE_ON_PLAYER.getId()
