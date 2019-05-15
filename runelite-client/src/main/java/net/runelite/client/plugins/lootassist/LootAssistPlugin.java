@@ -2,13 +2,11 @@ package net.runelite.client.plugins.lootassist;
 
 import com.google.inject.Provides;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -28,21 +26,13 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class LootAssistPlugin extends Plugin
 {
-
-	@Inject
-	private Client client;
-
 	@Inject
 	OverlayManager overlayManager;
 
 	@Inject
 	LootAssistOverlay lootAssistOverlay;
 
-	@Inject
-	private LootAssitConfig config;
-
-
-	public static ConcurrentHashMap<WorldPoint, LootPile> lootPiles = new ConcurrentHashMap<>();
+	static ConcurrentHashMap<WorldPoint, LootPile> lootPiles = new ConcurrentHashMap<>();
 
 	@Provides
 	LootAssitConfig getConfig(ConfigManager configManager)
