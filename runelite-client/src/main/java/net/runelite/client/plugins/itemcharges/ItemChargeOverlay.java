@@ -84,6 +84,15 @@ class ItemChargeOverlay extends WidgetItemOverlay
 
 			charges = config.bindingNecklace();
 		}
+		else if (itemId == ItemID.AMULET_OF_CHEMISTRY)
+		{
+			if (!config.showAmuletOfChemistryCharges())
+			{
+				return;
+			}
+
+			charges = config.amuletOfChemistry();
+		}
 		else
 		{
 			ItemWithCharge chargeItem = ItemWithCharge.findItem(itemId);
@@ -119,6 +128,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 	{
 		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
 			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
-			|| config.showBellowCharges() || config.showAbyssalBraceletCharges();
+			|| config.showBellowCharges() || config.showAbyssalBraceletCharges() || config.showBindingNecklaceCharges()
+			|| config.showAmuletOfChemistryCharges();
 	}
 }

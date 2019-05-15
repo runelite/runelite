@@ -245,10 +245,50 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showAmuletOfChemistryCharges",
+		name = "Show Amulet of Chemistry Charges",
+		description = "Configures if amulet of chemistry item charge is shown",
+		position = 17
+	)
+	default boolean showAmuletOfChemistryCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "amuletOfChemistry",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int amuletOfChemistry()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "amuletOfChemistry",
+		name = "",
+		description = ""
+	)
+	void amuletOfChemistry(int amuletOfChemistry);
+
+	@ConfigItem(
+		keyName = "chemistryNotification",
+		name = "Amulet of Chemistry Notification",
+		description = "Configures if the amulet of chemistry breaking notification is shown",
+		position = 18
+	)
+	default boolean chemistryNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
-		position = 17
+		position = 19
 	)
 	default boolean showInfoboxes()
 	{

@@ -72,9 +72,16 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern BINDING_USED_PATTERN = Pattern.compile(
 		"You bind the temple's power into (mud|lava|steam|dust|smoke|mist) runes\\.");
 	private static final String BINDING_BREAK_TEXT = "Your Binding necklace has disintegrated.";
+	private static final Pattern CHEMISTRY_CHECK_PATTERN = Pattern.compile(
+		"Your amulet of chemistry helps you create a 4-dose potion. It has (\\d+) charges? left\\.");
+	private static final Pattern CHEMISTRY_CHECK2_PATTERN = Pattern.compile(
+		"Your amulet of chemistry helps you create a 4-dose potion. <col=ff0000>It has one charge left\\.</col>");
+	private static final Pattern CHEMISTRY_USED_PATTERN = Pattern.compile(
+		"Your amulet of chemistry helps you create a 4-dose potion. <col=ff0000>It then crumbles to dust\\.</col>");
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
+	private static final int MAX_CHEMISTRY_CHARGES = 5;
 
 	@Inject
 	private Client client;
@@ -153,6 +160,11 @@ public class ItemChargePlugin extends Plugin
 		{
 			removeInfobox(ItemWithSlot.BINDING_NECKLACE);
 		}
+
+		if (!config.showAmuletOfChemistryCharges())
+		{
+			removeInfobox(ItemWithSlot.AMULET_OF_CHEMISTRY);
+		}
 	}
 
 	@Subscribe
@@ -164,6 +176,9 @@ public class ItemChargePlugin extends Plugin
 		Matcher dodgyBreakMatcher = DODGY_BREAK_PATTERN.matcher(message);
 		Matcher bindingNecklaceCheckMatcher = BINDING_CHECK_PATTERN.matcher(event.getMessage());
 		Matcher bindingNecklaceUsedMatcher = BINDING_USED_PATTERN.matcher(event.getMessage());
+		Matcher chemistryCheckMatcher = CHEMISTRY_CHECK_PATTERN.matcher(event.getMessage());
+		Matcher chemistryCheck2Matcher = CHEMISTRY_CHECK2_PATTERN.matcher(event.getMessage());
+		Matcher chemistryUsedMatcher = CHEMISTRY_USED_PATTERN.matcher(event.getMessage());
 
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
 		{
@@ -214,6 +229,30 @@ public class ItemChargePlugin extends Plugin
 
 				updateBindingNecklaceCharges(charges);
 			}
+			else if (chemistryUsedMatcher.find())
+			{
+				updateAmuletOfChemistryCharges(5);
+				if (config.chemistryNotification())
+				{
+					notifier.notify("Your amulet of chemistry has been destroyed.");
+				}
+			}
+			else if (chemistryCheck2Matcher.find())
+			{
+				updateAmuletOfChemistryCharges(1);
+			}
+			else if (chemistryCheckMatcher.find())
+			{
+				final String match = chemistryCheckMatcher.group(1);
+
+				int charges = 1;
+				if (!match.equals("1"))
+				{
+					charges = Integer.parseInt(match);
+				}
+
+				updateAmuletOfChemistryCharges(charges);
+			}
 		}
 	}
 
@@ -245,6 +284,11 @@ public class ItemChargePlugin extends Plugin
 		if (config.showBindingNecklaceCharges())
 		{
 			updateJewelleryInfobox(ItemWithSlot.BINDING_NECKLACE, items);
+		}
+
+		if (config.showAmuletOfChemistryCharges())
+		{
+			updateJewelleryInfobox(ItemWithSlot.AMULET_OF_CHEMISTRY, items);
 		}
 	}
 
@@ -297,6 +341,23 @@ public class ItemChargePlugin extends Plugin
 		}
 	}
 
+	private void updateAmuletOfChemistryCharges(final int value)
+	{
+		config.amuletOfChemistry(value);
+
+		if (config.showInfoboxes() && config.showAmuletOfChemistryCharges())
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.AMULET_OF_CHEMISTRY, itemContainer.getItems());
+		}
+	}
+
 	private void checkDestroyWidget()
 	{
 		final int currentTick = client.getTickCount();
@@ -319,6 +380,9 @@ public class ItemChargePlugin extends Plugin
 				break;
 			case "Dodgy necklace":
 				updateDodgyNecklaceCharges(MAX_DODGY_CHARGES);
+				break;
+			case "Amulet of chemistry":
+				updateDodgyNecklaceCharges(MAX_CHEMISTRY_CHARGES);
 				break;
 		}
 	}
@@ -359,6 +423,14 @@ public class ItemChargePlugin extends Plugin
 			{
 				charges = config.bindingNecklace();
 			}
+			else if (id == ItemID.AMULET_OF_CHEMISTRY && type == ItemWithSlot.AMULET_OF_CHEMISTRY)
+			{
+				charges = config.amuletOfChemistry();
+			}
+			else
+			{
+				System.out.println("id: " + id + " - type: " + type + " - (def): " + ItemWithSlot.AMULET_OF_CHEMISTRY);
+			}
 		}
 		else if (itemWithCharge.getType() == type.getType())
 		{
@@ -390,7 +462,7 @@ public class ItemChargePlugin extends Plugin
 				return false;
 			}
 
-			final ItemChargeInfobox i = (ItemChargeInfobox)t;
+			final ItemChargeInfobox i = (ItemChargeInfobox) t;
 			return i.getItem() == item && i.getSlot() == slot;
 		});
 	}

@@ -35,6 +35,7 @@ enum ItemWithSlot
 	ABYSSAL_BRACELET(ItemChargeType.ABYSSAL_BRACELET, EquipmentInventorySlot.GLOVES),
 	DODGY_NECKLACE(ItemChargeType.DODGY_NECKLACE, EquipmentInventorySlot.AMULET),
 	BINDING_NECKLACE(ItemChargeType.BINDING_NECKLACE, EquipmentInventorySlot.AMULET),
+	AMULET_OF_CHEMISTRY(ItemChargeType.AMULET_OF_CHEMISTRY, EquipmentInventorySlot.AMULET),
 	TELEPORT(ItemChargeType.TELEPORT, EquipmentInventorySlot.WEAPON, EquipmentInventorySlot.AMULET, EquipmentInventorySlot.GLOVES, EquipmentInventorySlot.RING);
 
 	private final ItemChargeType type;
