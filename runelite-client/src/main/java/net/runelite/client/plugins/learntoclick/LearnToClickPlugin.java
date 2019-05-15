@@ -38,7 +38,6 @@ public class LearnToClickPlugin extends Plugin
 	@Inject
 	private LearnToClickConfig config;
 	private boolean forceRightClickFlag;
-	private MenuEntry[] entries;
 	@Inject
 	private Client client;
 
@@ -86,7 +85,7 @@ public class LearnToClickPlugin extends Plugin
 		{
 			forceRightClickFlag = true;
 		}
-		entries = client.getMenuEntries();
+		MenuEntry[] entries = client.getMenuEntries();
 		if (config.shouldBlockCompass())
 		{
 			for (int i = entries.length - 1; i >= 0; i--)
