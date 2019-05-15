@@ -85,7 +85,7 @@ public class WarIndicatorPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdd(MenuEntryAdded onMenuEntryAdded)
+	public void onMenuEntryAdded(MenuEntryAdded onMenuEntryAdded)
 	{
 		int type = onMenuEntryAdded.getType();
 
