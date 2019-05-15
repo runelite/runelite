@@ -24,262 +24,258 @@
  */
 package net.runelite.client.plugins.flinching;
 
-import net.runelite.client.eventbus.Subscribe;
-import net.runelite.api.Client;
-import net.runelite.api.Player;
+import com.google.inject.Provides;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
+import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
-import javax.inject.Inject;
-import net.runelite.api.Actor;
-import net.runelite.api.NPC;
-import net.runelite.api.GameState;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.HitsplatApplied;
-import com.google.inject.Provides;
 
 
 @Slf4j
 @PluginDescriptor(
-        name = "Flinching Timer",
-        description = "Time your attacks while flinching",
-        tags = {"overlay", "flinching", "timers", "combat"},
-        enabledByDefault = false,
-        type = PluginType.PVM
+	name = "Flinching Timer",
+	description = "Time your attacks while flinching",
+	tags = {"overlay", "flinching", "timers", "combat"},
+	enabledByDefault = false,
+	type = PluginType.PVM
 )
 public class FlinchingPlugin extends Plugin
 {
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private OverlayManager overlayManager;
+	@Inject
+	private OverlayManager overlayManager;
 
-    @Inject
-    private FlinchingConfig config;
+	@Inject
+	private FlinchingConfig config;
 
-    @Inject
-    private FlinchingOverlay overlay;
+	@Inject
+	private FlinchingOverlay overlay;
 
-    private int currentWorld = -1;
+	private int currentWorld = -1;
 
-    private int currentInteractingId = -1;
-    private final Map<Integer, FlinchingTarget> flinchingTargets = new HashMap<Integer, FlinchingTarget>();
+	private int currentInteractingId = -1;
+	private final Map<Integer, FlinchingTarget> flinchingTargets = new HashMap<>();
 
-    private boolean resetOnHit = true;
-    private boolean resetOnHitReceived = true;
+	private boolean resetOnHit = true;
+	private boolean resetOnHitReceived = true;
 
-    @Provides
-    FlinchingConfig provideConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(FlinchingConfig.class);
-    }
+	@Provides
+	FlinchingConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(FlinchingConfig.class);
+	}
 
-    @Override
-    protected void startUp()
-    {
-        overlayManager.add(overlay);
+	@Override
+	protected void startUp()
+	{
+		overlayManager.add(overlay);
 
-        overlay.updateConfig();
-        resetOnHit = config.getFlinchResetOnHit();
-        resetOnHitReceived = config.getFlinchResetOnHitReceived();
+		overlay.updateConfig();
+		resetOnHit = config.getFlinchResetOnHit();
+		resetOnHitReceived = config.getFlinchResetOnHitReceived();
 
-        ClearTargets();
-    }
+		ClearTargets();
+	}
 
-    @Override
-    protected void shutDown()
-    {
-        ClearTargets();
-    }
+	@Override
+	protected void shutDown()
+	{
+		ClearTargets();
+	}
 
-    @Subscribe
-    public void onConfigChanged(ConfigChanged event)
-    {
-        if (event.getGroup().equals("flinching"))
-        {
-            overlay.updateConfig();
-            resetOnHit = config.getFlinchResetOnHit();
-            resetOnHitReceived = config.getFlinchResetOnHitReceived();
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("flinching"))
+		{
+			overlay.updateConfig();
+			resetOnHit = config.getFlinchResetOnHit();
+			resetOnHitReceived = config.getFlinchResetOnHitReceived();
 
-            Iterator<Map.Entry<Integer, FlinchingTarget>> it = flinchingTargets.entrySet().iterator();
-            while (it.hasNext())
-            {
-                FlinchingTarget target = it.next().getValue();
-                if(target != null)
-                {
-                    target.SetDelayTime(config.getFlinchDelay(), config.getFlinchAttackedDelay());
-                }
-            }
-        }
-    }
+			for (Map.Entry<Integer, FlinchingTarget> integerFlinchingTargetEntry : flinchingTargets.entrySet())
+			{
+				FlinchingTarget target = integerFlinchingTargetEntry.getValue();
+				if (target != null)
+				{
+					target.SetDelayTime(config.getFlinchDelay(), config.getFlinchAttackedDelay());
+				}
+			}
+		}
+	}
 
-    @Subscribe
-    public void onGameStateChanged(GameStateChanged event)
-    {
-        if (event.getGameState() == GameState.LOGGED_IN)
-        {
-            if (currentWorld == -1)
-            {
-                currentWorld = client.getWorld();
-            }
-            else if (currentWorld != client.getWorld())
-            {
-                ClearTargets();
-            }
-        }
-    }
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			if (currentWorld == -1)
+			{
+				currentWorld = client.getWorld();
+			}
+			else if (currentWorld != client.getWorld())
+			{
+				ClearTargets();
+			}
+		}
+	}
 
-    private void ClearTargets()
-    {
-        Iterator<Map.Entry<Integer, FlinchingTarget>> it = flinchingTargets.entrySet().iterator();
+	private void ClearTargets()
+	{
+		Iterator<Map.Entry<Integer, FlinchingTarget>> it = flinchingTargets.entrySet().iterator();
 
-        while (it.hasNext())
-        {
-            it.remove();
-        }
-    }
+		while (it.hasNext())
+		{
+			it.remove();
+		}
+	}
 
-    @Subscribe
-    private void onGameTick(GameTick tick)
-    {
-        if (client.getGameState() != GameState.LOGGED_IN)
-        {
+	@Subscribe
+	private void onGameTick(GameTick tick)
+	{
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			return;
+		}
 
-        }
-        else
-        {
-            TickTargets();
-            checkInteracting();
-        }
-    }
+		TickTargets();
+		checkInteracting();
+	}
 
-    @Subscribe
-    public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
-    {
-        Actor actor = hitsplatApplied.getActor();
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
+	{
+		Actor actor = hitsplatApplied.getActor();
 
-        if (actor instanceof NPC)
-        {
-            NPC hitTarget = (NPC) actor;
+		if (actor instanceof NPC)
+		{
+			NPC hitTarget = (NPC) actor;
 
-            int hitId = hitTarget.getId();
-            if(hitId == currentInteractingId)
-            {
-                if (!flinchingTargets.containsKey(hitId))
-                {
-                    TargetGained(hitTarget);
-                }
-                else
-                {
-                    FlinchingTarget currentTarget = flinchingTargets.get(hitId);
-                    if(currentTarget != null)
-                    {
-                        if(resetOnHit)
-                        {
-                            currentTarget.TargetHit();
-                        }
-                    }
-                }
-            }
-        }
-        else if(resetOnHitReceived && actor == client.getLocalPlayer())
-        {
-            PlayerHit();
-        }
-    }
+			int hitId = hitTarget.getId();
+			if (hitId == currentInteractingId)
+			{
+				if (!flinchingTargets.containsKey(hitId))
+				{
+					TargetGained(hitTarget);
+				}
+				else
+				{
+					FlinchingTarget currentTarget = flinchingTargets.get(hitId);
+					if (currentTarget != null)
+					{
+						if (resetOnHit)
+						{
+							currentTarget.TargetHit();
+						}
+					}
+				}
+			}
+		}
+		else if (resetOnHitReceived && actor == client.getLocalPlayer())
+		{
+			PlayerHit();
+		}
+	}
 
-    private void checkInteracting()
-    {
-        Player localPlayer = client.getLocalPlayer();
-        Actor interacting = localPlayer.getInteracting();
+	private void checkInteracting()
+	{
+		Player localPlayer = client.getLocalPlayer();
+		Actor interacting = localPlayer.getInteracting();
 
-        if (interacting instanceof NPC)
-        {
-            NPC newTarget = (NPC) interacting;
-            currentInteractingId = newTarget.getId();
+		if (interacting instanceof NPC)
+		{
+			NPC newTarget = (NPC) interacting;
+			currentInteractingId = newTarget.getId();
 
-            if(newTarget.getHealth() <= 0 || newTarget.isDead())
-            {
-                if (flinchingTargets.containsKey(currentInteractingId))
-                {
-                    flinchingTargets.remove(currentInteractingId);
-                    currentInteractingId = -1;
-                }
-            }
-        }
-    }
+			if (newTarget.getHealth() <= 0 || newTarget.isDead())
+			{
+				if (flinchingTargets.containsKey(currentInteractingId))
+				{
+					flinchingTargets.remove(currentInteractingId);
+					currentInteractingId = -1;
+				}
+			}
+		}
+	}
 
-    private void TickTargets()
-    {
-        Iterator<Map.Entry<Integer, FlinchingTarget>> it = flinchingTargets.entrySet().iterator();
+	private void TickTargets()
+	{
+		Iterator<Map.Entry<Integer, FlinchingTarget>> it = flinchingTargets.entrySet().iterator();
 
-        while (it.hasNext())
-        {
-            FlinchingTarget target = it.next().getValue();
-            if(target != null)
-            {
-                target.Tick();
-                if(target.isActive == false)
-                {
-                    it.remove();
-                }
-            }
-            else
-            {
-                it.remove();
-            }
-        }
-    }
+		while (it.hasNext())
+		{
+			FlinchingTarget target = it.next().getValue();
+			if (target != null)
+			{
+				target.Tick();
+				if (!target.isActive)
+				{
+					it.remove();
+				}
+			}
+			else
+			{
+				it.remove();
+			}
+		}
+	}
 
-    @Subscribe
-    public void onNpcDespawned(NpcDespawned npcDespawned)
-    {
-        NPC actor = npcDespawned.getNpc();
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned npcDespawned)
+	{
+		NPC actor = npcDespawned.getNpc();
 
-        int actorId = actor.getId();
-        if (actor.isDead() && flinchingTargets.containsKey(actorId))
-        {
-            TargetLost(actorId);
-        }
-    }
+		int actorId = actor.getId();
+		if (actor.isDead() && flinchingTargets.containsKey(actorId))
+		{
+			TargetLost(actorId);
+		}
+	}
 
-    private void TargetLost(int targetId)
-    {
-        flinchingTargets.remove(targetId);
-    }
+	private void TargetLost(int targetId)
+	{
+		flinchingTargets.remove(targetId);
+	}
 
-    private void TargetGained(NPC _newTarget)
-    {
-        FlinchingTarget newTarget = new FlinchingTarget(_newTarget);
-        newTarget.SetDelayTime(config.getFlinchDelay(), config.getFlinchAttackedDelay());
-        flinchingTargets.put(_newTarget.getId(), newTarget);
-    }
+	private void TargetGained(NPC _newTarget)
+	{
+		FlinchingTarget newTarget = new FlinchingTarget(_newTarget);
+		newTarget.SetDelayTime(config.getFlinchDelay(), config.getFlinchAttackedDelay());
+		flinchingTargets.put(_newTarget.getId(), newTarget);
+	}
 
-    public void PlayerHit()
-    {
-        Iterator<Map.Entry<Integer, FlinchingTarget>> it = flinchingTargets.entrySet().iterator();
-        while (it.hasNext())
-        {
-            FlinchingTarget target = it.next().getValue();
-            if(target != null)
-            {
-                target.PlayerHit();
-            }
-        }
-    }
+	private void PlayerHit()
+	{
+		for (Map.Entry<Integer, FlinchingTarget> integerFlinchingTargetEntry : flinchingTargets.entrySet())
+		{
+			FlinchingTarget target = integerFlinchingTargetEntry.getValue();
+			if (target != null)
+			{
+				target.PlayerHit();
+			}
+		}
+	}
 
-    public Map<Integer, FlinchingTarget> GetTargets()
-    {
-        return(flinchingTargets);
-    }
+	Map<Integer, FlinchingTarget> GetTargets()
+	{
+		return (flinchingTargets);
+	}
 }
