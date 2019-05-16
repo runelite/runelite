@@ -97,8 +97,8 @@ import net.runelite.client.util.Text;
 public class ClanChatPlugin extends Plugin
 {
 	private static final int MAX_CHATS = 20;
-	private static final String CLAN_CHAT_TITLE = "                       Clan Chat";
-	private static final String RECENT_TITLE = "                       Recent Clan Chats";
+	private static final String CLAN_CHAT_TITLE = "CC";
+	private static final String RECENT_TITLE = "Recent CCs";
 	private static final int JOIN_LEAVE_DURATION = 20;
 	private static final int MESSAGE_DELAY = 10;
 
