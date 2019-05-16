@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.Comparator;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
@@ -164,7 +166,13 @@ public class GroundItemsOverlay extends Overlay
 
 		final boolean onlyShowLoot = config.onlyShowLoot();
 
-		for (GroundItem item : groundItemList)
+		List<GroundItem> groundItemListAsList = new ArrayList<>(groundItemList);  // make a copy so we can non-destructively modify the list
+
+		Comparator<GroundItem> compareByHaPrice = Comparator.comparingInt(GroundItem::getHaPrice);
+		Comparator<GroundItem> compareByGePrice = Comparator.comparingInt(GroundItem::getGePrice);
+		groundItemListAsList.sort(config.sortByGEPrice() ? compareByGePrice : compareByHaPrice);
+
+		for (GroundItem item : groundItemListAsList)
 		{
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
 

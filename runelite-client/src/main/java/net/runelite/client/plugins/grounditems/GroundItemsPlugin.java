@@ -41,6 +41,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -106,6 +108,7 @@ public class GroundItemsPlugin extends Plugin
 	private static final int FOURTH_OPTION = MenuAction.GROUND_ITEM_FOURTH_OPTION.getId();
 	private static final int FIFTH_OPTION = MenuAction.GROUND_ITEM_FIFTH_OPTION.getId();
 	private static final int EXAMINE_ITEM = MenuAction.EXAMINE_ITEM_GROUND.getId();
+	private static final int WALK = MenuAction.WALK.getId();
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -294,11 +297,6 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onClientTick(ClientTick event)
 	{
-		if (!config.collapseEntries())
-		{
-			return;
-		}
-
 		final MenuEntry[] menuEntries = client.getMenuEntries();
 		final List<MenuEntryWithCount> newEntries = new ArrayList<>(menuEntries.length);
 
@@ -307,16 +305,19 @@ public class GroundItemsPlugin extends Plugin
 		{
 			MenuEntry menuEntry = menuEntries[i];
 
-			int menuType = menuEntry.getType();
-			if (menuType == FIRST_OPTION || menuType == SECOND_OPTION || menuType == THIRD_OPTION
-				|| menuType == FOURTH_OPTION || menuType == FIFTH_OPTION || menuType == EXAMINE_ITEM)
+			if (config.collapseEntries())
 			{
-				for (MenuEntryWithCount entryWCount : newEntries)
+				int menuType = menuEntry.getType();
+				if (menuType == FIRST_OPTION || menuType == SECOND_OPTION || menuType == THIRD_OPTION
+						|| menuType == FOURTH_OPTION || menuType == FIFTH_OPTION || menuType == EXAMINE_ITEM)
 				{
-					if (entryWCount.getEntry().equals(menuEntry))
+					for (MenuEntryWithCount entryWCount : newEntries)
 					{
-						entryWCount.increment();
-						continue outer;
+						if (entryWCount.getEntry().equals(menuEntry))
+						{
+							entryWCount.increment();
+							continue outer;
+						}
 					}
 				}
 			}
@@ -326,13 +327,64 @@ public class GroundItemsPlugin extends Plugin
 
 		Collections.reverse(newEntries);
 
+		newEntries.sort((a, b) ->
+		{
+			final int aMenuType = a.getEntry().getType();
+			if (aMenuType == FIRST_OPTION || aMenuType == SECOND_OPTION || aMenuType == THIRD_OPTION
+					|| aMenuType == FOURTH_OPTION || aMenuType == FIFTH_OPTION || aMenuType == EXAMINE_ITEM
+					|| aMenuType == WALK)
+			{ // only check for item related menu types, so we don't sort other stuff
+				final int bMenuType = b.getEntry().getType();
+				if (bMenuType == FIRST_OPTION || bMenuType == SECOND_OPTION || bMenuType == THIRD_OPTION
+						|| bMenuType == FOURTH_OPTION || bMenuType == FIFTH_OPTION || bMenuType == EXAMINE_ITEM
+						|| bMenuType == WALK)
+				{
+					final MenuEntry aEntry = a.getEntry();
+					final int aId = aEntry.getIdentifier();
+					final boolean aHidden = isItemIdHidden(aId);
+					final int aQuantity = getCollapsedItemQuantity(aId, aEntry.getTarget());
+
+					final MenuEntry bEntry = b.getEntry();
+					final int bId = bEntry.getIdentifier();
+					final boolean bHidden = isItemIdHidden(bId);
+					final int bQuantity = getCollapsedItemQuantity(bId, bEntry.getTarget());
+
+					// only put items below walk if the config is set for it
+					if (config.rightClickHidden())
+					{
+						if (aHidden && bMenuType == WALK)
+							return -1;
+						if (bHidden && aMenuType == WALK)
+							return 1;
+					}
+
+					// sort hidden items below non-hidden items
+					if (aHidden && !bHidden && bMenuType != WALK)
+						return -1;
+					if (bHidden && !aHidden && aMenuType != WALK)
+						return 1;
+
+
+					// RS sorts by alch price by default, so no need to sort if config not set
+					if (config.sortByGEPrice())
+						return (getGePriceFromItemId(aId) * aQuantity) - (getGePriceFromItemId(bId) * bQuantity);
+				}
+			}
+
+			return 0;
+		});
+
 		client.setMenuEntries(newEntries.stream().map(e ->
 		{
 			final MenuEntry entry = e.getEntry();
-			final int count = e.getCount();
-			if (count > 1)
+
+			if (config.collapseEntries())
 			{
-				entry.setTarget(entry.getTarget() + " x " + count);
+				final int count = e.getCount();
+				if (count > 1)
+				{
+					entry.setTarget(entry.getTarget() + " x " + count);
+				}
 			}
 
 			return entry;
@@ -590,8 +642,46 @@ public class GroundItemsPlugin extends Plugin
 
 		// Explicit highlight takes priority over implicit hide
 		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa)
-			? config.hiddenColor()
-			: null;
+				? config.hiddenColor()
+				: null;
+	}
+
+	private int getGePriceFromItemId(int itemId)
+	{
+		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
+
+		return itemManager.getItemPrice(realItemId);
+	}
+
+	private boolean isItemIdHidden(int itemId)
+	{
+		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
+		final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+		final int gePrice = itemManager.getItemPrice(realItemId);
+
+		return getHidden(itemComposition.getName(), gePrice, alchPrice, itemComposition.isTradeable()) != null;
+	}
+
+	private int getCollapsedItemQuantity(int itemId, String item)
+	{
+		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final boolean itemNameIncludesQuantity = Pattern.compile("\\(\\d+\\)").matcher(itemComposition.getName()).find();
+
+		Matcher matcher = Pattern.compile("\\((\\d+)\\)").matcher(item);
+		int matches = 0;
+		String lastMatch = "1";
+		while (matcher.find())
+		{
+			// so that "Prayer Potion (4)" returns 1 instead of 4 and "Coins (25)" returns 25 instead of 1
+			if (!itemNameIncludesQuantity || matches >= 1)
+				lastMatch = matcher.group(1);
+
+			matches++;
+		}
+
+		return Integer.parseInt(lastMatch);
 	}
 
 	Color getItemColor(Color highlighted, Color hidden)
