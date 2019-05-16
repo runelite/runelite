@@ -182,6 +182,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showSkull",
+		name = "Skull timer",
+		description = "Configures whether skull timer is displayed"
+	)
+	default boolean showSkull()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showStaffOfTheDead",
 		name = "Staff of the Dead timer",
 		description = "Configures whether staff of the dead timer is displayed"
