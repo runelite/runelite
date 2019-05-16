@@ -117,6 +117,10 @@ public class SlayerPlugin extends Plugin
 	private static final String CHAT_SUPERIOR_MESSAGE = "A superior foe has appeared...";
 	private static final Pattern COMBAT_BRACELET_TASK_UPDATE_MESSAGE = Pattern.compile("^You still need to kill (\\d+) monsters to complete your current Slayer assignment");
 
+	private static final String CHAT_BRACELET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer";
+	private static final String CHAT_BRACELET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your";
+
+
 	//NPC messages
 	private static final Pattern NPC_ASSIGN_MESSAGE = Pattern.compile(".*(?:Your new task is to kill|You are to bring balance to)\\s*(?<amount>\\d+) (?<name>.+?)(?: (?:in|on|south of) (?:the )?(?<location>.+))?\\.");
 	private static final Pattern NPC_ASSIGN_BOSS_MESSAGE = Pattern.compile("^Excellent. You're now assigned to kill (?:the )?(.*) (\\d+) times.*Your reward point tally is (.*)\\.$");
@@ -625,6 +629,16 @@ public class SlayerPlugin extends Plugin
 
 			// Avoid race condition (combat brace message goes through first before XP drop)
 			currentTask.setAmount(currentTask.getAmount() + 1);
+		}
+
+		if (chatMsg.startsWith(CHAT_BRACELET_SLAUGHTER))
+		{
+			currentTask.setAmount(currentTask.getAmount() + 1);
+		}
+
+		if (chatMsg.startsWith(CHAT_BRACELET_EXPEDITIOUS))
+		{
+			currentTask.setAmount(currentTask.getAmount() - 1);
 		}
 	}
 
