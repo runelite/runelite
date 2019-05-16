@@ -238,7 +238,7 @@ public class ClientLoader
 					hooks.actorClass.equals("") ||
 					hooks.playerClass.equals(""))
 				{
-					System.out.println("[RuneLitePlus] Bad hooks, re-scraping.");
+					log.info("[RuneLitePlus] Bad hooks, re-scraping.");
 					stepCount = getStepCount(ByteCodeUtils.injectedClientFile.getPath());
 					ByteCodePatcher.clientInstance = initHookScrape(ByteCodeUtils.injectedClientFile.getPath());
 					ByteCodePatcher.findHooks(injectedClientFile.getPath());
@@ -247,13 +247,13 @@ public class ClientLoader
 				{
 					ByteCodePatcher.clientInstance = hooks.clientInstance;
 					ByteCodePatcher.applyHooks(ByteCodeUtils.injectedClientFile, hooks);
-					System.out.println("[RuneLitePlus] Loaded hooks");
+					log.info("[RuneLitePlus] Loaded hooks");
 				}
 
 			}
 			else
 			{
-				System.out.println("[RuneLitePlus] Hooks file not found, scraping hooks.");
+				log.info("[RuneLitePlus] Hooks file not found, scraping hooks.");
 				stepCount = getStepCount(ByteCodeUtils.injectedClientFile.getPath());
 				ByteCodePatcher.clientInstance = initHookScrape(ByteCodeUtils.injectedClientFile.getPath());
 				ByteCodePatcher.hooks.protectedStuff = preotectedStuffs;
@@ -428,7 +428,7 @@ public class ClientLoader
 										{
 											if (f.getName().contains("$"))
 											{
-												System.out.println(classToLoad.getName() + "." + f.getName());
+												log.info(classToLoad.getName() + "." + f.getName());
 												protectedStuff.add(classToLoad.getName() + "." + f.getName());
 											}
 											if (f.getType().getName().equals("client"))
@@ -466,7 +466,7 @@ public class ClientLoader
 						catch (Exception e)
 						{
 							e.printStackTrace();
-							System.out.println("Class not found: " + entry.getName());
+							log.info("Class not found: " + entry.getName());
 						}
 					}
 				}
