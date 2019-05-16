@@ -221,14 +221,6 @@ public class ClientLoader
 				
 			}
 			
-			for (Map.Entry<String, byte[]> entry : zipFile.entrySet())
-			{
-				if (entry.getKey().contains("class"))
-				{
-					Files.write(new File("H:\\rsclasses\\" + entry.getKey()).toPath(), entry.getValue());
-				}
-			}
-			
 			String initialClass = config.getInitialClass();
 			
 			ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
