@@ -287,7 +287,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		{
 			color = config.getTargetColor();
 		}
-			if (config.rightClickOverhead() && !player.isClanMember() && player.getOverheadIcon() != null)
+/*			if (config.rightClickOverhead() && !player.isClanMember() && player.getOverheadIcon() != null)
 			{
 				if (player.getOverheadIcon().equals(HeadIcon.MAGIC))
 				{
@@ -313,8 +313,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 				{
 					image = 34;
 				}
-				
-			}
+			}*/
 			if (config.playerSkull() && !player.isClanMember() && player.getSkullIcon() != null)
 			{
 				image2 = 35;
@@ -346,10 +345,10 @@ public class PlayerIndicatorsPlugin extends Plugin
 					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
 				}
 				
-				if (image != -1 && config.showClanRanks() || image != -1 && config.rightClickOverhead())
+/*				if (image != -1 && config.showClanRanks() || image != -1 && config.rightClickOverhead())
 				{
 					lastEntry.setTarget(lastEntry.getTarget() + "<img=" + image + ">");
-				}
+				}*/
 				if (image2 != -1 && config.playerSkull())
 				{
 					lastEntry.setTarget("<img=" + image2 + ">" + lastEntry.getTarget());

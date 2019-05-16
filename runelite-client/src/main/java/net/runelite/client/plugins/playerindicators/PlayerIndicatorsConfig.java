@@ -296,7 +296,7 @@ public interface PlayerIndicatorsConfig extends Config
 		return false;
 	}
 	
-	@ConfigItem(
+/*	@ConfigItem(
 			position = 23,
 			keyName = "rightClickOverhead",
 			name = "Add Overheads to Right Click Menu",
@@ -305,7 +305,7 @@ public interface PlayerIndicatorsConfig extends Config
 	default boolean rightClickOverhead()
 	{
 		return false;
-	}
+	}*/
 
 	@ConfigItem(
 			keyName = "useClanchatRanks",
