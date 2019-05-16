@@ -1614,7 +1614,18 @@ public interface Client extends GameEngine
 	
 	void toggleRenderSelf();
 
-	void invokeMenuAction(int var1, int var2, int var3, int var4, String var5, String var6, int var7, int var8);
+	/**
+	 *
+	 * @param param0 This is SceneX for gameObject, index for items, and 0 for npc.
+	 * @param param1 This is SceneY for gameObject, static for items, and 0 for npc.
+	 * @param type Menu entry Action type.
+	 * @param id Targets ID
+	 * @param menuEntry Do these actually matter?
+	 * @param targetString Do these actually matter?
+	 * @param canvasX Canvas X Point
+	 * @param canvasY Canvas Y Point
+	 */
+	void invokeMenuAction(int param0, int param1, int type, int id, String menuEntry, String targetString, int canvasX, int canvasY);
 	
 	MouseRecorder getMouseRecorder();
 	
