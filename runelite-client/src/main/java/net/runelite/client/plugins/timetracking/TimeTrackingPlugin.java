@@ -212,8 +212,9 @@ public class TimeTrackingPlugin extends Plugin
 	public void checkCompletion()
 	{
 		boolean birdHouseDataChanged = birdHouseTracker.checkCompletion();
+		boolean farmingDataChanged = farmingTracker.checkCompletion();
 
-		if (birdHouseDataChanged)
+		if (birdHouseDataChanged || farmingDataChanged)
 		{
 			panel.update();
 		}

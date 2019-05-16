@@ -31,17 +31,20 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.vars.Autoweed;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.Notifier;
 import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.Tab;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 
 @Singleton
+@Slf4j
 public class FarmingTracker
 {
 	private final Client client;
@@ -49,6 +52,8 @@ public class FarmingTracker
 	private final ConfigManager configManager;
 	private final TimeTrackingConfig config;
 	private final FarmingWorld farmingWorld;
+
+	private final Notifier notifier;
 
 	private final Map<Tab, SummaryState> summaries = new EnumMap<>(Tab.class);
 
@@ -60,13 +65,14 @@ public class FarmingTracker
 
 	@Inject
 	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager,
-		TimeTrackingConfig config, FarmingWorld farmingWorld)
+		TimeTrackingConfig config, FarmingWorld farmingWorld, Notifier notifier)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
 		this.configManager = configManager;
 		this.config = config;
 		this.farmingWorld = farmingWorld;
+		this.notifier = notifier;
 	}
 
 
@@ -248,6 +254,37 @@ public class FarmingTracker
 	}
 
 	/**
+	 * Checks if the bird houses have become ready to be dismantled,
+	 * and sends a notification if required.
+	 */
+	public boolean checkCompletion()
+	{
+		for (Map.Entry<Tab, Set<FarmingPatch>> tab : farmingWorld.getTabs().entrySet())
+		{
+			for (FarmingPatch patch : tab.getValue())
+			{
+				long completionTime = completionTimes.get(tab.getKey());
+				final SummaryState state = summaries.get(tab.getKey());
+
+				if (state == SummaryState.IN_PROGRESS && completionTime <= Instant.now().getEpochSecond()) {
+					summaries.put(tab.getKey(), SummaryState.COMPLETED);
+					completionTimes.put(tab.getKey(), (long) 0);
+
+					if (patch.getImplementation().getTab() == Tab.HERB && config.herbPatchNotification()) {
+						notifier.notify("Your herbs are grown.");
+					} else if (patch.getImplementation().getTab() == Tab.TREE && config.treePatchNotification()) {
+						notifier.notify("Your trees are grown.");
+					} else if (patch.getImplementation().getTab() == Tab.FRUIT_TREE && config.fruitTreePatchNotification()) {
+						notifier.notify("Your fruit trees are grown.");
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Updates the overall completion time for the given patch type.
 	 *
 	 * @see #completionTimes
@@ -291,11 +328,6 @@ public class FarmingTracker
 			{
 				state = SummaryState.EMPTY;
 				completionTime = -1L;
-			}
-			else if (maxCompletionTime <= Instant.now().getEpochSecond())
-			{
-				state = SummaryState.COMPLETED;
-				completionTime = 0;
 			}
 			else
 			{

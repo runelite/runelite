@@ -71,10 +71,44 @@ public interface TimeTrackingConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "herbPatchNotification",
+			name = "Herb patch notification",
+			description = "Notify you when all herb patches are grown.",
+			position = 4
+	)
+	default boolean herbPatchNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "treePatchNotification",
+			name = "Tree patch notification",
+			description = "Notify you when all trees are grown.",
+			position = 5
+	)
+	default boolean treePatchNotification()
+	{
+		return false;
+	}
+
+
+	@ConfigItem(
+			keyName = "fruitTreePatchNotification",
+			name = "Fruit tree patch notification",
+			description = "Notify you when all fruit trees are full",
+			position = 6
+	)
+	default boolean fruitTreePatchNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "defaultTimerMinutes",
 		name = "Default Time (Minutes)",
 		description = "The default time for the timer in minutes",
-		position = 4
+		position = 7
 	)
 	default int defaultTimerMinutes()
 	{
