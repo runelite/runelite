@@ -37,6 +37,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
@@ -58,7 +59,7 @@ class InventoryViewerOverlay extends Overlay
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		panelComponent.setWrapping(4);
 		panelComponent.setGap(new Point(6, 4));
-		panelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		this.itemManager = itemManager;
 		this.client = client;
 	}

@@ -63,7 +63,7 @@ public interface DailyTasksConfig extends Config
 	)
 	default boolean showEssence()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -74,7 +74,7 @@ public interface DailyTasksConfig extends Config
 	)
 	default boolean showRunes()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -85,7 +85,7 @@ public interface DailyTasksConfig extends Config
 	)
 	default boolean showSand()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -96,7 +96,7 @@ public interface DailyTasksConfig extends Config
 	)
 	default boolean showFlax()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -107,7 +107,7 @@ public interface DailyTasksConfig extends Config
 	)
 	default boolean showBonemeal()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
