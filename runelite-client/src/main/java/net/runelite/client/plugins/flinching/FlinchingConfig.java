@@ -32,75 +32,75 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("flinching")
 public interface FlinchingConfig extends Config
 {
-    @ConfigItem(
+	@ConfigItem(
 
-            position = 0,
-            keyName = "hexColorFlinch",
-            name = "Overlay Color",
-            description = "Color of flinching timer overlay"
-    )
-    default Color getFlinchOverlayColor()
-    {
-        return Color.CYAN;
-    }
+		position = 0,
+		keyName = "hexColorFlinch",
+		name = "Overlay Color",
+		description = "Color of flinching timer overlay"
+	)
+	default Color getFlinchOverlayColor()
+	{
+		return Color.CYAN;
+	}
 
-    @ConfigItem(
+	@ConfigItem(
 
-            position = 1,
-            keyName = "flinchOverlaySize",
-            name = "Overlay Diameter",
-            description = "Flinch overlay timer diameter"
-    )
-    default int getFlinchOverlaySize()
-    {
-        return 30;
-    }
+		position = 1,
+		keyName = "flinchOverlaySize",
+		name = "Overlay Diameter",
+		description = "Flinch overlay timer diameter"
+	)
+	default int getFlinchOverlaySize()
+	{
+		return 30;
+	}
 
-    @ConfigItem(
+	@ConfigItem(
 
-            position = 2,
-            keyName = "flinchDelay",
-            name = "Flinch Timer Delay",
-            description = "Shows the appropriate time to attack while flinching milliseconds"
-    )
-    default int getFlinchDelay()
-    {
-        return 5400;
-    }
+		position = 2,
+		keyName = "flinchDelay",
+		name = "Flinch Timer Delay",
+		description = "Shows the appropriate time to attack while flinching milliseconds"
+	)
+	default int getFlinchDelay()
+	{
+		return 5400;
+	}
 
-    @ConfigItem(
+	@ConfigItem(
 
-            position = 3,
-            keyName = "flinchOnHitReceivedDelay",
-            name = "Flinch Hit Received Delay",
-            description = "Slightly longer delay after being attacked milliseconds"
-    )
-    default int getFlinchAttackedDelay()
-    {
-        return 6600;
-    }
+		position = 3,
+		keyName = "flinchOnHitReceivedDelay",
+		name = "Flinch Hit Received Delay",
+		description = "Slightly longer delay after being attacked milliseconds"
+	)
+	default int getFlinchAttackedDelay()
+	{
+		return 6600;
+	}
 
-    @ConfigItem(
+	@ConfigItem(
 
-            position = 4,
-            keyName = "flinchResetOnHit",
-            name = "Reset on Hit",
-            description = "Timer resets after every attack from your character"
-    )
-    default boolean getFlinchResetOnHit()
-    {
-        return true;
-    }
+		position = 4,
+		keyName = "flinchResetOnHit",
+		name = "Reset on Hit",
+		description = "Timer resets after every attack from your character"
+	)
+	default boolean getFlinchResetOnHit()
+	{
+		return true;
+	}
 
-    @ConfigItem(
+	@ConfigItem(
 
-            position = 5,
-            keyName = "flinchResetOnHitReceived",
-            name = "Reset on Hit Received",
-            description = "Timer resets when your character gets attacked"
-    )
-    default boolean getFlinchResetOnHitReceived()
-    {
-        return true;
-    }
+		position = 5,
+		keyName = "flinchResetOnHitReceived",
+		name = "Reset on Hit Received",
+		description = "Timer resets when your character gets attacked"
+	)
+	default boolean getFlinchResetOnHitReceived()
+	{
+		return true;
+	}
 }

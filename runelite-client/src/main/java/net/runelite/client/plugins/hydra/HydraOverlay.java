@@ -24,16 +24,23 @@
  */
 package net.runelite.client.plugins.hydra;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import javax.inject.Inject;
-
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.overlay.*;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class HydraOverlay extends Overlay {
+public class HydraOverlay extends Overlay
+{
 	private final HydraConfig config;
 	private final HydraPlugin plugin;
 	private final PanelComponent panelComponent = new PanelComponent();
@@ -43,7 +50,8 @@ public class HydraOverlay extends Overlay {
 	private Client client;
 
 	@Inject
-	private HydraOverlay(HydraConfig config, HydraPlugin plugin) {
+	private HydraOverlay(HydraConfig config, HydraPlugin plugin)
+	{
 		this.config = config;
 		this.plugin = plugin;
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -53,41 +61,60 @@ public class HydraOverlay extends Overlay {
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics) {
-		if (!config.TextIndicator()) {
+	public Dimension render(Graphics2D graphics)
+	{
+		if (!config.TextIndicator())
+		{
 			return null;
 		}
 
-		for (NPC hydra : client.getNpcs()) {
-			if (hydra == null || hydra.getName() == null) {
+		for (NPC hydra : client.getNpcs())
+		{
+			if (hydra == null || hydra.getName() == null)
+			{
 				continue;
 			}
-			if (hydra.getName().equalsIgnoreCase("Hydra")) {
-				if (plugin.hydras.containsKey(hydra.getIndex())) {
+			if (hydra.getName().equalsIgnoreCase("Hydra"))
+			{
+				if (plugin.hydras.containsKey(hydra.getIndex()))
+				{
 					int val = plugin.hydras.get(hydra.getIndex());
-					if (val != 0) {
-						if (config.BoldText()) {
+					if (val != 0)
+					{
+						if (config.BoldText())
+						{
 							graphics.setFont(FontManager.getRunescapeBoldFont());
 						}
-						if (plugin.hydraattacks.containsKey(hydra.getIndex())) {
+						if (plugin.hydraattacks.containsKey(hydra.getIndex()))
+						{
 							int attack = plugin.hydraattacks.get(hydra.getIndex());
-							if (attack == 8261) {
-								if (val == 3) {
+							if (attack == 8261)
+							{
+								if (val == 3)
+								{
 									OverlayUtil.renderTextLocation(graphics, hydra.getCanvasTextLocation(graphics, "MAGE", hydra.getLogicalHeight() + 100), "MAGE", Color.BLUE);
-								} else {
+								}
+								else
+								{
 									OverlayUtil.renderTextLocation(graphics, hydra.getCanvasTextLocation(graphics, "RANGE", hydra.getLogicalHeight() + 100), "RANGE", Color.GREEN);
 								}
-							} else if (attack == 8262) {
-								if (val == 3) {
+							}
+							else if (attack == 8262)
+							{
+								if (val == 3)
+								{
 									OverlayUtil.renderTextLocation(graphics, hydra.getCanvasTextLocation(graphics, "RANGE", hydra.getLogicalHeight() + 100), "RANGE", Color.GREEN);
-								} else {
+								}
+								else
+								{
 									OverlayUtil.renderTextLocation(graphics, hydra.getCanvasTextLocation(graphics, "MAGE", hydra.getLogicalHeight() + 100), "MAGE", Color.BLUE);
 								}
 							}
 						}
-						Point runelitepleaseexplainwhyineedtocheckthisfornullinsteadoftheentirehydravariablethisshitcostmelikeanhourofmylifeandiblameyouadam = hydra.getCanvasTextLocation(graphics, Integer.toString(val), hydra.getLogicalHeight() + 40);
-						if (runelitepleaseexplainwhyineedtocheckthisfornullinsteadoftheentirehydravariablethisshitcostmelikeanhourofmylifeandiblameyouadam != null) {
-							OverlayUtil.renderTextLocation(graphics, runelitepleaseexplainwhyineedtocheckthisfornullinsteadoftheentirehydravariablethisshitcostmelikeanhourofmylifeandiblameyouadam, Integer.toString(val), Color.WHITE);
+						Point hydraPoint = hydra.getCanvasTextLocation(graphics, Integer.toString(val), hydra.getLogicalHeight() + 40);
+						if (hydraPoint != null)
+						{
+							OverlayUtil.renderTextLocation(graphics, hydraPoint, Integer.toString(val), Color.WHITE);
 						}
 					}
 				}

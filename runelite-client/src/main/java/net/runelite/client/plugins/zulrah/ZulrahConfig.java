@@ -34,17 +34,6 @@ import net.runelite.client.config.ConfigItem;
 public interface ZulrahConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
-		keyName = "zulrahenable",
-		name = "Enable Zulrah Helper",
-		description = "Configures whether or not to enable Zulrah Helper."
-	)
-	default boolean EnableZulrah()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		position = 1,
 		keyName = "zulrahprayenable",
 		name = "Show Prayer Helper",

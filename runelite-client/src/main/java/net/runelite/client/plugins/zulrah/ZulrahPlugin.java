@@ -230,11 +230,6 @@ public class ZulrahPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!config.EnableZulrah())
-		{
-			return;
-		}
-
 		if (phase4 && phases.size() == 11)
 		{
 			jadphase = 1;

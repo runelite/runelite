@@ -51,9 +51,14 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.ui.ColorScheme;
@@ -71,35 +76,33 @@ class ProfilesPanel extends PluginPanel
 	private static final String PASSWORD_LABEL = "Account Password";
 	private static final String HELP = "To add and load accounts, first enter a password into the Encryption Password " +
 		"field then press Load Accounts. You can now add as many accounts as you would like. The next time you restart" +
-		" Runelite, enter your encryption password and click load accounts to see the accounts you entered";
+		"Runelite, enter your encryption password and click load accounts to see the accounts you entered";
 	private static final Dimension PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 20, 30);
 	private static final Dimension HELP_PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 20, 130);
 
 	private static final Dimension MINIMUM_SIZE = new Dimension(0, 30);
-	
+
 	private final Client client;
 	private static ProfilesConfig profilesConfig;
-	
+
 	private final JPasswordField txtDecryptPassword = new JPasswordField(UNLOCK_PASSWORD);
-	private final JButton btnLoadAccounts = new JButton(LOAD_ACCOUNTS);
 	private final JTextField txtAccountLabel = new JTextField(ACCOUNT_LABEL);
 	private final JPasswordField txtAccountLogin = new JPasswordField(ACCOUNT_USERNAME);
 	private final JPasswordField txtPasswordLogin = new JPasswordField(PASSWORD_LABEL);
 	private final JPanel profilesPanel = new JPanel();
-	private final JPanel helpPanel = new JPanel(new BorderLayout());
 	private GridBagConstraints c;
-	
+
 	@Inject
 	public ProfilesPanel(Client client, ProfilesConfig config)
 	{
 		super();
 		this.client = client;
 		profilesConfig = config;
-		
+
 		setBorder(new EmptyBorder(18, 10, 0, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new GridBagLayout());
-		
+
 		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
@@ -108,17 +111,17 @@ class ProfilesPanel extends PluginPanel
 		c.weighty = 0;
 		c.insets = new Insets(0, 0, 4, 0);
 
+		JPanel helpPanel = new JPanel(new BorderLayout());
 		helpPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		JLabel helpLabel = new JLabel("<html> <p>" + HELP + "</p></html>");
 		helpLabel.setFont(FontManager.getRunescapeSmallFont());
 		helpPanel.setPreferredSize(HELP_PREFERRED_SIZE);
-		//helpPanel.setSize(MINIMUM_SIZE);
+		// helpPanel.setSize(MINIMUM_SIZE);
 		helpPanel.add(helpLabel, BorderLayout.NORTH);
 
 		add(helpPanel);
 		c.gridy = c.gridy + 3;
 		c.gridy++;
-
 
 		txtDecryptPassword.setEchoChar((char) 0);
 		txtDecryptPassword.setPreferredSize(PREFERRED_SIZE);
@@ -138,7 +141,7 @@ class ProfilesPanel extends PluginPanel
 					txtDecryptPassword.setEchoChar('*');
 				}
 			}
-			
+
 			@Override
 			public void focusLost(FocusEvent e)
 			{
@@ -150,10 +153,11 @@ class ProfilesPanel extends PluginPanel
 				}
 			}
 		});
-		
+
 		add(txtDecryptPassword, c);
 		c.gridy++;
-		
+
+		JButton btnLoadAccounts = new JButton(LOAD_ACCOUNTS);
 		btnLoadAccounts.setPreferredSize(PREFERRED_SIZE);
 		btnLoadAccounts.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		btnLoadAccounts.setMinimumSize(MINIMUM_SIZE);
@@ -163,15 +167,15 @@ class ProfilesPanel extends PluginPanel
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-			
+
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-			
+
 			}
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
@@ -184,23 +188,23 @@ class ProfilesPanel extends PluginPanel
 					showErrorMessage("Unable to load data", "Incorrect password!");
 				}
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
-			
+
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
-			
+
 			}
 		});
-		
+
 		add(btnLoadAccounts, c);
 		c.gridy++;
-		
+
 		txtAccountLabel.setPreferredSize(PREFERRED_SIZE);
 		txtAccountLabel.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
 		txtAccountLabel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -216,7 +220,7 @@ class ProfilesPanel extends PluginPanel
 					txtAccountLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 				}
 			}
-			
+
 			@Override
 			public void focusLost(FocusEvent e)
 			{
@@ -227,10 +231,10 @@ class ProfilesPanel extends PluginPanel
 				}
 			}
 		});
-		
+
 		add(txtAccountLabel, c);
 		c.gridy++;
-		
+
 		// Do not hide username characters until they focus or if in streamer mode
 		txtAccountLogin.setEchoChar((char) 0);
 		txtAccountLogin.setPreferredSize(PREFERRED_SIZE);
@@ -252,7 +256,7 @@ class ProfilesPanel extends PluginPanel
 					txtAccountLogin.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 				}
 			}
-			
+
 			@Override
 			public void focusLost(FocusEvent e)
 			{
@@ -264,10 +268,10 @@ class ProfilesPanel extends PluginPanel
 				}
 			}
 		});
-		
+
 		add(txtAccountLogin, c);
 		c.gridy++;
-		
+
 		txtPasswordLogin.setEchoChar((char) 0);
 		txtPasswordLogin.setPreferredSize(PREFERRED_SIZE);
 		txtPasswordLogin.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
@@ -286,7 +290,7 @@ class ProfilesPanel extends PluginPanel
 					txtPasswordLogin.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
 				}
 			}
-			
+
 			@Override
 			public void focusLost(FocusEvent e)
 			{
@@ -298,15 +302,15 @@ class ProfilesPanel extends PluginPanel
 				}
 			}
 		});
-		
-		
+
+
 		if (config.rememberPassword())
 		{
 			add(txtPasswordLogin, c);
 			c.gridy++;
 		}
 		c.insets = new Insets(0, 0, 15, 0);
-		
+
 		JButton btnAddAccount = new JButton("Add Account");
 		btnAddAccount.setPreferredSize(PREFERRED_SIZE);
 		btnAddAccount.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -316,7 +320,7 @@ class ProfilesPanel extends PluginPanel
 			String labelText = String.valueOf(txtAccountLabel.getText());
 			String loginText = String.valueOf(txtAccountLogin.getPassword());
 			String passwordText = String.valueOf(txtPasswordLogin.getPassword());
-			
+
 			if (labelText.equals(ACCOUNT_LABEL) || loginText.equals(ACCOUNT_USERNAME))
 			{
 				return;
@@ -330,10 +334,10 @@ class ProfilesPanel extends PluginPanel
 			{
 				data = labelText + ":" + loginText;
 			}
-			
+
 			try
 			{
-				if(!addProfile(data))
+				if (!addProfile(data))
 				{
 					return;
 				}
@@ -342,21 +346,21 @@ class ProfilesPanel extends PluginPanel
 			{
 				ex.printStackTrace();
 			}
-			
+
 			this.addAccount(data);
-			
+
 			txtAccountLabel.setText(ACCOUNT_LABEL);
 			txtAccountLabel.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
-			
+
 			txtAccountLogin.setText(ACCOUNT_USERNAME);
 			txtAccountLogin.setEchoChar((char) 0);
 			txtAccountLogin.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
-			
+
 			txtPasswordLogin.setText(PASSWORD_LABEL);
 			txtPasswordLogin.setEchoChar((char) 0);
 			txtPasswordLogin.setForeground(ColorScheme.MEDIUM_GRAY_COLOR);
 		});
-		
+
 		txtAccountLogin.addKeyListener(new KeyAdapter()
 		{
 			@Override
@@ -374,46 +378,46 @@ class ProfilesPanel extends PluginPanel
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-			
-			
+
+
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-			
+
 			}
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-			
+
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
-			
+
 			}
 		});
-		
+
 		add(btnAddAccount, c);
 		c.gridy++;
-		
+
 		profilesPanel.setLayout(new GridBagLayout());
 		add(profilesPanel, c);
 		c.gridy = 0;
 		c.insets = new Insets(0, 0, 5, 0);
-		
-		//addAccounts(config.profilesData());
+
+		// addAccounts(config.profilesData());
 	}
-	
-	void redrawProfiles() throws InvalidKeySpecException, NoSuchAlgorithmException
+
+	private void redrawProfiles() throws InvalidKeySpecException, NoSuchAlgorithmException
 	{
 		profilesPanel.removeAll();
 		c.gridy = 0;
@@ -422,20 +426,20 @@ class ProfilesPanel extends PluginPanel
 		revalidate();
 		repaint();
 	}
-	
+
 	private void addAccount(String data)
 	{
 		ProfilePanel profile = new ProfilePanel(client, data, profilesConfig, this);
 		c.gridy++;
 		profilesPanel.add(profile, c);
-		
+
 		revalidate();
 		repaint();
 	}
-	
-	void addAccounts(String data)
+
+	private void addAccounts(String data)
 	{
-		//log.info("Data: " + data);
+	// log.info("Data: " + data);
 		data = data.trim();
 		if (!data.contains(":"))
 		{
@@ -443,39 +447,39 @@ class ProfilesPanel extends PluginPanel
 		}
 		Arrays.stream(data.split("\\n")).forEach(this::addAccount);
 	}
-	
-	boolean addProfile(String data) throws InvalidKeySpecException, NoSuchAlgorithmException
+
+	private boolean addProfile(String data) throws InvalidKeySpecException, NoSuchAlgorithmException
 	{
 		return setProfileData(
-				getProfileData() + data + "\n");
+			getProfileData() + data + "\n");
 	}
-	
+
 	void removeProfile(String data) throws InvalidKeySpecException, NoSuchAlgorithmException
 	{
 		setProfileData(
-				getProfileData().replaceAll(data + "\\n", ""));
+			getProfileData().replaceAll(data + "\\n", ""));
 		revalidate();
 		repaint();
 
 	}
-	
-	void setSalt(byte[] bytes)
+
+	private void setSalt(byte[] bytes)
 	{
 		profilesConfig.salt(base64Encode(bytes));
 	}
-	
-	byte[] getSalt()
+
+	private byte[] getSalt()
 	{
-		if(profilesConfig.salt().length() == 0)
+		if (profilesConfig.salt().length() == 0)
 		{
 			return new byte[0];
 		}
 		return base64Decode(profilesConfig.salt());
 	}
-	
-	SecretKey getAesKey() throws NoSuchAlgorithmException, InvalidKeySpecException
+
+	private SecretKey getAesKey() throws NoSuchAlgorithmException, InvalidKeySpecException
 	{
-		if(getSalt().length == 0)
+		if (getSalt().length == 0)
 		{
 			byte[] b = new byte[16];
 			SecureRandom.getInstanceStrong().nextBytes(b);
@@ -483,16 +487,15 @@ class ProfilesPanel extends PluginPanel
 		}
 		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 		KeySpec spec = new PBEKeySpec(txtDecryptPassword.getPassword(), getSalt(), iterations, 128);
-		SecretKey key = factory.generateSecret(spec);
-		return key;
+		return factory.generateSecret(spec);
 	}
-	
-	String getProfileData() throws InvalidKeySpecException, NoSuchAlgorithmException
+
+	private String getProfileData() throws InvalidKeySpecException, NoSuchAlgorithmException
 	{
 		String tmp = profilesConfig.profilesData();
-		if(tmp.startsWith("¬"))
+		if (tmp.startsWith("¬"))
 		{
-			if(txtDecryptPassword.getPassword().length == 0 || String.valueOf(txtDecryptPassword.getPassword()).equals(UNLOCK_PASSWORD))
+			if (txtDecryptPassword.getPassword().length == 0 || String.valueOf(txtDecryptPassword.getPassword()).equals(UNLOCK_PASSWORD))
 			{
 				showErrorMessage("Unable to load data", "Please enter a password!");
 				return tmp;
@@ -502,39 +505,41 @@ class ProfilesPanel extends PluginPanel
 		}
 		return tmp;
 	}
-	
-	boolean setProfileData(String data) throws InvalidKeySpecException, NoSuchAlgorithmException
+
+	private boolean setProfileData(String data) throws InvalidKeySpecException, NoSuchAlgorithmException
 	{
-		if(txtDecryptPassword.getPassword().length == 0 || String.valueOf(txtDecryptPassword.getPassword()).equals(UNLOCK_PASSWORD))
+		if (txtDecryptPassword.getPassword().length == 0 || String.valueOf(txtDecryptPassword.getPassword()).equals(UNLOCK_PASSWORD))
 		{
 			showErrorMessage("Unable to save data", "Please enter a password!");
 			return false;
 		}
 		byte[] enc = encryptText(data, getAesKey());
-		if(enc.length == 0)
+		if (enc.length == 0)
+		{
 			return false;
-		String s = "¬"+base64Encode(enc);
+		}
+		String s = "¬" + base64Encode(enc);
 		profilesConfig.profilesData(s);
 		return true;
 	}
-	
-	public byte[] base64Decode(String data)
+
+	private byte[] base64Decode(String data)
 	{
 		return Base64.getDecoder().decode(data);
 	}
-	
-	public String base64Encode(byte[] data)
+
+	private String base64Encode(byte[] data)
 	{
 		return Base64.getEncoder().encodeToString(data);
 	}
-	
+
 	/**
 	 * Encrypts login info
 	 *
 	 * @param text text to encrypt
 	 * @return encrypted string
 	 */
-	public static byte[] encryptText(String text, SecretKey aesKey)
+	private static byte[] encryptText(String text, SecretKey aesKey)
 	{
 		try
 		{
@@ -549,8 +554,8 @@ class ProfilesPanel extends PluginPanel
 		}
 		return new byte[0];
 	}
-	
-	public static String decryptText(byte[] enc, SecretKey aesKey)
+
+	private static String decryptText(byte[] enc, SecretKey aesKey)
 	{
 		try
 		{
@@ -565,13 +570,13 @@ class ProfilesPanel extends PluginPanel
 		}
 		return "";
 	}
-	
-	public static void showErrorMessage(String title, String text)
+
+	private static void showErrorMessage(String title, String text)
 	{
 		SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(null,
-				text,
-				title,
-				JOptionPane.ERROR_MESSAGE));
+			text,
+			title,
+			JOptionPane.ERROR_MESSAGE));
 	}
-	
+
 }

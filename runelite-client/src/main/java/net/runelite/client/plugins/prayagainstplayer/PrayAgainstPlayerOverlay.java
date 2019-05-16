@@ -24,27 +24,35 @@
 
 package net.runelite.client.plugins.prayagainstplayer;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.image.BufferedImage;
+import java.util.ConcurrentModificationException;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.Player;
-import net.runelite.api.kit.KitType;
-import net.runelite.client.ui.overlay.*;
-import net.runelite.client.util.Text;
 import net.runelite.api.Point;
+import net.runelite.api.kit.KitType;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.Text;
 
-import javax.inject.Inject;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ConcurrentModificationException;
-
-class PrayAgainstPlayerOverlay extends Overlay {
+class PrayAgainstPlayerOverlay extends Overlay
+{
 
 	private final PrayAgainstPlayerPlugin plugin;
 	private final PrayAgainstPlayerConfig config;
 	private final Client client;
 
 	@Inject
-	private PrayAgainstPlayerOverlay(PrayAgainstPlayerPlugin plugin, PrayAgainstPlayerConfig config, Client client) {
+	private PrayAgainstPlayerOverlay(PrayAgainstPlayerPlugin plugin, PrayAgainstPlayerConfig config, Client client)
+	{
 		super(plugin);
 		this.plugin = plugin;
 		this.config = config;
@@ -57,73 +65,127 @@ class PrayAgainstPlayerOverlay extends Overlay {
 
 
 	@Override
-	public Dimension render(Graphics2D graphics) {
+	public Dimension render(Graphics2D graphics)
+	{
 		renderPotentialPlayers(graphics);
 		renderAttackingPlayers(graphics);
 		return null;
 	}
 
-	private void renderPotentialPlayers(Graphics2D graphics) {
-		if (plugin.getPotentialPlayersAttackingMe() == null || !plugin.getPotentialPlayersAttackingMe().isEmpty()) {
-			try {
-				for (PlayerContainer container : plugin.getPotentialPlayersAttackingMe()) {
-					if ((System.currentTimeMillis() > (container.getWhenTheyAttackedMe() + container.getMillisToExpireHighlight())) && (container.getPlayer().getInteracting() != client.getLocalPlayer())) {
-						plugin.removePlayerFromPotentialContainer(container);
+	private void renderPotentialPlayers(Graphics2D graphics)
+	{
+		if (plugin.getPotentialPlayersAttackingMe() == null || !plugin.getPotentialPlayersAttackingMe().isEmpty())
+		{
+			try
+			{
+				if (plugin.getPotentialPlayersAttackingMe() != null)
+				{
+					for (PlayerContainer container : plugin.getPotentialPlayersAttackingMe())
+					{
+						if ((System.currentTimeMillis() > (container.getWhenTheyAttackedMe() + container.getMillisToExpireHighlight())) && (container.getPlayer().getInteracting() != client.getLocalPlayer()))
+						{
+							plugin.removePlayerFromPotentialContainer(container);
+						}
+						if (config.drawPotentialTargetsName())
+						{
+							renderNameAboveHead(graphics, container.getPlayer(), config.potentialPlayerColor());
+						}
+						if (config.drawPotentialTargetHighlight())
+						{
+							renderHighlightedPlayer(graphics, container.getPlayer(), config.potentialPlayerColor());
+						}
+						if (config.drawPotentialTargetTile())
+						{
+							renderTileUnderPlayer(graphics, container.getPlayer(), config.potentialPlayerColor());
+						}
+						if (config.drawPotentialTargetPrayAgainst())
+						{
+							renderPrayAgainstOnPlayer(graphics, container.getPlayer(), config.potentialPlayerColor());
+						}
 					}
-					if (config.drawPotentialTargetsName()) renderNameAboveHead(graphics, container.getPlayer(), config.potentialPlayerColor());
-					if (config.drawPotentialTargetHighlight()) renderHighlightedPlayer(graphics, container.getPlayer(), config.potentialPlayerColor());
-					if (config.drawPotentialTargetTile()) renderTileUnderPlayer(graphics, container.getPlayer(), config.potentialPlayerColor());
-					if (config.drawPotentialTargetPrayAgainst()) renderPrayAgainstOnPlayer(graphics, container.getPlayer(), config.potentialPlayerColor());
 				}
-			} catch (ConcurrentModificationException e) {
+			}
+			catch (ConcurrentModificationException ignored)
+			{
 			}
 		}
 	}
 
-	private void renderAttackingPlayers(Graphics2D graphics) {
-		if (plugin.getPlayersAttackingMe() == null || !plugin.getPlayersAttackingMe().isEmpty()) {
-			try {
-				for (PlayerContainer container : plugin.getPlayersAttackingMe()) {
-					if ((System.currentTimeMillis() > (container.getWhenTheyAttackedMe() + container.getMillisToExpireHighlight())) && (container.getPlayer().getInteracting() != client.getLocalPlayer())) {
-						plugin.removePlayerFromAttackerContainer(container);
-					}
+	private void renderAttackingPlayers(Graphics2D graphics)
+	{
+		if (plugin.getPlayersAttackingMe() == null || !plugin.getPlayersAttackingMe().isEmpty())
+		{
+			try
+			{
+				if (plugin.getPlayersAttackingMe() != null)
+				{
+					for (PlayerContainer container : plugin.getPlayersAttackingMe())
+					{
+						if ((System.currentTimeMillis() > (container.getWhenTheyAttackedMe() + container.getMillisToExpireHighlight())) && (container.getPlayer().getInteracting() != client.getLocalPlayer()))
+						{
+							plugin.removePlayerFromAttackerContainer(container);
+						}
 
-					if (config.drawTargetsName()) renderNameAboveHead(graphics, container.getPlayer(), config.attackerPlayerColor());
-					if (config.drawTargetHighlight()) renderHighlightedPlayer(graphics, container.getPlayer(), config.attackerPlayerColor());
-					if (config.drawTargetTile()) renderTileUnderPlayer(graphics, container.getPlayer(), config.attackerPlayerColor());
-					if (config.drawTargetPrayAgainst()) renderPrayAgainstOnPlayer(graphics, container.getPlayer(), config.attackerPlayerColor());
+						if (config.drawTargetsName())
+						{
+							renderNameAboveHead(graphics, container.getPlayer(), config.attackerPlayerColor());
+						}
+						if (config.drawTargetHighlight())
+						{
+							renderHighlightedPlayer(graphics, container.getPlayer(), config.attackerPlayerColor());
+						}
+						if (config.drawTargetTile())
+						{
+							renderTileUnderPlayer(graphics, container.getPlayer(), config.attackerPlayerColor());
+						}
+						if (config.drawTargetPrayAgainst())
+						{
+							renderPrayAgainstOnPlayer(graphics, container.getPlayer(), config.attackerPlayerColor());
+						}
+					}
 				}
-			} catch (ConcurrentModificationException e) {
+			}
+			catch (ConcurrentModificationException ignored)
+			{
 			}
 		}
 	}
 
-	private void renderNameAboveHead(Graphics2D graphics, Player player, Color color) {
+	private void renderNameAboveHead(Graphics2D graphics, Player player, Color color)
+	{
 		final String name = Text.sanitize(player.getName());
 		final int offset = player.getLogicalHeight() + 40;
 		Point textLocation = player.getCanvasTextLocation(graphics, name, offset);
-		if (textLocation != null) {
+		if (textLocation != null)
+		{
 			OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
 		}
 	}
 
-	private void renderHighlightedPlayer(Graphics2D graphics, Player player, Color color) {
-		try {
+	private void renderHighlightedPlayer(Graphics2D graphics, Player player, Color color)
+	{
+		try
+		{
 			OverlayUtil.renderPolygon(graphics, player.getConvexHull(), color);
-		} catch (NullPointerException e) {
+		}
+		catch (NullPointerException ignored)
+		{
 		}
 	}
 
-	private void renderTileUnderPlayer(Graphics2D graphics, Player player, Color color) {
+	private void renderTileUnderPlayer(Graphics2D graphics, Player player, Color color)
+	{
 		Polygon poly = player.getCanvasTilePoly();
 		OverlayUtil.renderPolygon(graphics, poly, color);
 	}
 
-	private void renderPrayAgainstOnPlayer(Graphics2D graphics, Player player, Color color) {
+	private void renderPrayAgainstOnPlayer(Graphics2D graphics, Player player, Color color)
+	{
 		final int offset = (player.getLogicalHeight() / 2) + 75;
 		BufferedImage icon;
 
-		switch (WeaponType.checkWeaponOnPlayer(client, player)) {
+		switch (WeaponType.checkWeaponOnPlayer(client, player))
+		{
 			case WEAPON_MELEE:
 				icon = plugin.getProtectionIcon(WeaponType.WEAPON_MELEE);
 				break;
@@ -137,12 +199,17 @@ class PrayAgainstPlayerOverlay extends Overlay {
 				icon = null;
 				break;
 		}
-		try {
-			if (icon != null) {
+		try
+		{
+			if (icon != null)
+			{
 				Point point = player.getCanvasImageLocation(icon, offset);
 				OverlayUtil.renderImageLocation(graphics, point, icon);
-			} else {
-				if (config.drawUnknownWeapons()) {
+			}
+			else
+			{
+				if (config.drawUnknownWeapons())
+				{
 					int itemId = player.getPlayerComposition().getEquipmentId(KitType.WEAPON);
 					ItemComposition itemComposition = client.getItemDefinition(itemId);
 
@@ -151,7 +218,9 @@ class PrayAgainstPlayerOverlay extends Overlay {
 					OverlayUtil.renderTextLocation(graphics, point, str, color);
 				}
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception ignored)
+		{
 		}
 	}
 

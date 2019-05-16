@@ -24,41 +24,43 @@
  */
 package net.runelite.client.plugins.equipmentinspector;
 
-import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
-import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
-import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 
 @ConfigGroup("grounditems")
 public interface EquipmentInspectorConfig extends Config
 {
-    @ConfigItem(
-            keyName = "ShowValue",
-            name = "Show the total value of the items",
-            description = "shows the total value of the items",
-            position = 1
-    )
-    default boolean ShowValue()
-    {
-        return true;
-    }
-    @ConfigItem(
-            keyName = "protecteditems",
-            name = "# of protected items",
-            description = "Limit 4",
-            position = 2
-    )
-    default int protecteditems()
-    { return 1; }
-    @ConfigItem(
-            keyName = "ExactValue",
-            name = "Show exact value",
-            description = "shows the excact gp value",
-            position = 3
-    )
-    default boolean ExactValue()
-    { return false; }
+	@ConfigItem(
+		keyName = "ShowValue",
+		name = "Show the total value of the items",
+		description = "shows the total value of the items",
+		position = 1
+	)
+	default boolean ShowValue()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "protecteditems",
+		name = "# of protected items",
+		description = "Limit 4",
+		position = 2
+	)
+	default int protecteditems()
+	{
+		return 1;
+	}
+
+	@ConfigItem(
+		keyName = "ExactValue",
+		name = "Show exact value",
+		description = "shows the excact gp value",
+		position = 3
+	)
+	default boolean ExactValue()
+	{
+		return false;
+	}
 }

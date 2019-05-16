@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
@@ -28,7 +27,7 @@ public class ClanManModeService
 		this.plugin = plugin;
 	}
 
-	Map<String, String> interactors = new HashMap<>();
+	private Map<String, String> interactors = new HashMap<>();
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
@@ -102,7 +101,7 @@ public class ClanManModeService
 					if (config.highlightAttacked()) {
 						if (interactors.containsKey(player.getName())) {
 							String attackername = interactors.get(player.getName());
-							Boolean found = false;
+							boolean found = false;
 							for (Player attacker : client.getPlayers()) {
 								if (attacker == null || attacker.getName() == null) {
 									continue;

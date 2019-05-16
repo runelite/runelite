@@ -69,10 +69,6 @@ public class AoeWarningOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.enabled())
-		{
-			return null;
-		}
 		for (WorldPoint point : plugin.getLightningTrail())
 		{
 			drawTile(graphics, point, new Color(0,150,200), 2, 150, 50);

@@ -28,6 +28,7 @@ package net.runelite.client.plugins.runeliteplus;
 
 
 import com.google.inject.Provides;
+import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLiteProperties;
@@ -38,8 +39,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ClientUI;
-
-import javax.inject.Inject;
 
 @PluginDescriptor(
 	loadWhenOutdated = true, // prevent users from disabling
@@ -67,7 +66,7 @@ public class RuneLitePlusPlugin extends Plugin
 
 
 	@Provides
-    RuneLitePlusConfig getConfig(ConfigManager configManager)
+	RuneLitePlusConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(RuneLitePlusConfig.class);
 	}
@@ -75,16 +74,20 @@ public class RuneLitePlusPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		if (getConfig(configManager).customPresence()) {
+		if (getConfig(configManager).customPresence())
+		{
 			ClientUI.currentPresenceName = ("RuneLitePlus");
 			ClientUI.frame.setTitle(ClientUI.currentPresenceName);
 		}
 
-		if (config.customPresence()) {
+		if (config.customPresence())
+		{
 			RuneLiteProperties.discordAppID = rlPlusDiscordApp;
 			discordService.close();
 			discordService.init();
-		} else {
+		}
+		else
+		{
 			RuneLiteProperties.discordAppID = rlDiscordApp;
 			discordService.close();
 			discordService.init();
@@ -92,21 +95,29 @@ public class RuneLitePlusPlugin extends Plugin
 	}
 
 	@Subscribe
-	protected void onConfigChanged(ConfigChanged event) {
-		if (event.getKey().equals("customPresence")) {
-			if (config.customPresence()) {
+	protected void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getKey().equals("customPresence"))
+		{
+			if (config.customPresence())
+			{
 				ClientUI.currentPresenceName = ("RuneLitePlus");
 				ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-			} else {
+			}
+			else
+			{
 				ClientUI.currentPresenceName = ("RuneLite");
 				ClientUI.frame.setTitle(ClientUI.currentPresenceName);
 			}
 
-			if (config.customPresence()) {
+			if (config.customPresence())
+			{
 				RuneLiteProperties.discordAppID = rlPlusDiscordApp;
 				discordService.close();
 				discordService.init();
-			} else {
+			}
+			else
+			{
 				RuneLiteProperties.discordAppID = rlDiscordApp;
 				discordService.close();
 				discordService.init();

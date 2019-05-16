@@ -24,6 +24,10 @@
  */
 package net.runelite.client.plugins.equipmentinspector;
 
+import javax.swing.GroupLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.game.AsyncBufferedImage;
@@ -31,12 +35,8 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
 class ItemPanel extends JPanel
 {
-
 	ItemPanel(ItemComposition item, KitType kitType, AsyncBufferedImage icon)
 	{
 

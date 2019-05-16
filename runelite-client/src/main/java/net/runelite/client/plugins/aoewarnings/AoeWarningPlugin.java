@@ -52,7 +52,6 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ProjectileMoved;
-import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -74,23 +73,28 @@ public class AoeWarningPlugin extends Plugin
 	@Getter
 	private final Map<WorldPoint, CrystalBomb> bombs = new HashMap<>();
 	private final Map<Projectile, AoeProjectile> projectiles = new HashMap<>();
+
 	@Inject
 	public AoeWarningConfig config;
+
 	@Inject
 	private OverlayManager overlayManager;
+
 	@Inject
 	private AoeWarningOverlay coreOverlay;
 
 	@Inject
 	private BombOverlay bombOverlay;
+
 	@Inject
 	private Client client;
-	@Inject
-	private Notifier notifier;
+
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> LightningTrail = new ArrayList<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> AcidTrail = new ArrayList<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private List<WorldPoint> CrystalSpike = new ArrayList<>();
 
@@ -100,7 +104,7 @@ public class AoeWarningPlugin extends Plugin
 		return configManager.getConfig(AoeWarningConfig.class);
 	}
 
-	public Map<Projectile, AoeProjectile> getProjectiles()
+	Map<Projectile, AoeProjectile> getProjectiles()
 	{
 		return projectiles;
 	}
@@ -207,11 +211,8 @@ public class AoeWarningPlugin extends Plugin
 			}
 		}
 
-		Iterator<Map.Entry<WorldPoint, CrystalBomb>> it = bombs.entrySet().iterator();
-
-		while (it.hasNext())
+		for (Map.Entry<WorldPoint, CrystalBomb> entry : bombs.entrySet())
 		{
-			Map.Entry<WorldPoint, CrystalBomb> entry = it.next();
 			CrystalBomb bomb = entry.getValue();
 			bomb.bombClockUpdate();
 			//bombClockUpdate smooths the shown timer; not using this results in 1.2 --> .6 vs. 1.2 --> 1.1, etc.

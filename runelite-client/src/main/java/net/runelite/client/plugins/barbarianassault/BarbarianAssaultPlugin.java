@@ -29,27 +29,35 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.*;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.*;
-import net.runelite.api.kit.KitType;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.MessageNode;
+import net.runelite.api.Player;
+import net.runelite.api.Tile;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.ItemDespawned;
+import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.kit.KitType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -67,16 +75,15 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 
 
 @PluginDescriptor(
-		name = "Barbarian Assault+",
-		description = "Custom barbarian assault plugin, use along with BA Tools",
-		tags = {"minigame", "overlay", "timer"},
-		type = PluginType.PVM // don't remove this, added this because our barbarian assault plugin is big time modified
+	name = "Barbarian Assault+",
+	description = "Custom barbarian assault plugin, use along with BA Tools",
+	tags = {"minigame", "overlay", "timer"},
+	type = PluginType.PVM // don't remove this, added this because our barbarian assault plugin is big time modified
 )
 public class BarbarianAssaultPlugin extends Plugin
 {
@@ -86,19 +93,24 @@ public class BarbarianAssaultPlugin extends Plugin
 
 	@Getter
 	private int collectedEggCount = 0;
+
 	@Getter
 	private int positiveEggCount = 0;
+
 	@Getter
 	private int wrongEggs = 0;
+
 	@Getter
 	private int HpHealed = 0;
+
 	@Getter
 	private int totalCollectedEggCount = 0;
+
 	@Getter
 	private int totalHpHealed = 0;
 
 	private boolean hasAnnounced;
-   private Font font;
+	private Font font;
 	private final Image clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
 	private int inGameBit = 0;
 	private String currentWave = START_WAVE;
@@ -116,7 +128,6 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final HashMap<WorldPoint, Integer> yellowEggs = new HashMap<>();
 
-
 	@Inject
 	@Getter
 	private Client client;
@@ -133,45 +144,20 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Inject
 	private BarbarianAssaultOverlay overlay;
 
-	private final ImmutableList<WidgetInfo> WIDGETS = ImmutableList.of(
-			WidgetInfo.BA_FAILED_ATTACKER_ATTACKS,
-			WidgetInfo.BA_RUNNERS_PASSED,
-			WidgetInfo.BA_EGGS_COLLECTED,
-			WidgetInfo.BA_HITPOINTS_REPLENISHED,
-			WidgetInfo.BA_WRONG_POISON_PACKS,
-			WidgetInfo.BA_HONOUR_POINTS_REWARD
-	);
-	private final ImmutableList<WidgetInfo> POINTSWIDGETS = ImmutableList.of(
-			//base
-			WidgetInfo.BA_BASE_POINTS,
-			//att
-			WidgetInfo.BA_FAILED_ATTACKER_ATTACKS_POINTS,
-			WidgetInfo.BA_RANGERS_KILLED,
-			WidgetInfo.BA_FIGHTERS_KILLED,
-			//def
-			WidgetInfo.BA_RUNNERS_PASSED_POINTS,
-			WidgetInfo.BA_RUNNERS_KILLED,
-			//coll
-			WidgetInfo.BA_EGGS_COLLECTED_POINTS,
-			//heal
-			WidgetInfo.BA_HEALERS_KILLED,
-			WidgetInfo.BA_HITPOINTS_REPLENISHED_POINTS,
-			WidgetInfo.BA_WRONG_POISON_PACKS_POINTS
-	);
-
-    @Provides
+	@Provides
 	BarbarianAssaultConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(BarbarianAssaultConfig.class);
 	}
+
 	private Game game;
-    private Wave wave;
+
 	@Override
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
 		font = FontManager.getRunescapeFont()
-				.deriveFont(Font.BOLD, 24);
+			.deriveFont(Font.BOLD, 24);
 	}
 
 	@Override
@@ -202,12 +188,14 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		if (event.getGroupId() == WidgetID.BA_REWARD_GROUP_ID)
 		{
-			wave = new Wave(client);
+			Wave wave = new Wave(client);
 			Widget rewardWidget = client.getWidget(WidgetInfo.BA_REWARD_TEXT);
 			if (rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
 			{
 				if (config.waveTimes())
+				{
 					announceTime("Game finished, duration: ", gameTime.getTime(false));
+				}
 				if (config.showTotalRewards())
 				{
 					announceSomething(game.getGameSummary());
@@ -215,7 +203,7 @@ public class BarbarianAssaultPlugin extends Plugin
 			}
 			Widget pointsWidget = client.getWidget(WidgetInfo.BA_RUNNERS_PASSED);
 			if (!rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && pointsWidget != null
-					&& config.showSummaryOfPoints() && !hasAnnounced && client.getVar(Varbits.IN_GAME_BA) == 0)
+				&& config.showSummaryOfPoints() && !hasAnnounced && client.getVar(Varbits.IN_GAME_BA) == 0)
 			{
 				wave.setWaveAmounts();
 				wave.setWavePoints();
@@ -249,13 +237,15 @@ public class BarbarianAssaultPlugin extends Plugin
 		{
 			hasAnnounced = true;
 		}
-        if (!chatMessage.getType().equals(ChatMessageType.GAMEMESSAGE))
-        {
-            return;
-        }
+		if (!chatMessage.getType().equals(ChatMessageType.GAMEMESSAGE))
+		{
+			return;
+		}
 		int inGame = client.getVar(Varbits.IN_GAME_BA);
 		if (inGameBit != inGame)
+		{
 			return;
+		}
 		final String message = chatMessage.getMessage().toLowerCase();
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		final String nodeValue = Text.removeTags(messageNode.getValue());
@@ -368,13 +358,14 @@ public class BarbarianAssaultPlugin extends Plugin
 
 		inGameBit = inGame;
 	}
+
 	@Subscribe
 	public void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		int itemId = itemSpawned.getItem().getId();
 		WorldPoint worldPoint = itemSpawned.getTile().getWorldLocation();
 		HashMap<WorldPoint, Integer> eggMap = getEggMap(itemId);
-		if (eggMap !=  null)
+		if (eggMap != null)
 		{
 			Integer existingQuantity = eggMap.putIfAbsent(worldPoint, 1);
 			if (existingQuantity != null)
@@ -470,9 +461,9 @@ public class BarbarianAssaultPlugin extends Plugin
 	private void announceSomething(final ChatMessageBuilder chatMessage)
 	{
 		chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.CONSOLE)
-				.runeLiteFormattedMessage(chatMessage.build())
-				.build());
+			.type(ChatMessageType.CONSOLE)
+			.runeLiteFormattedMessage(chatMessage.build())
+			.build());
 	}
 
 	String getCollectorHeardCall()
@@ -570,26 +561,22 @@ public class BarbarianAssaultPlugin extends Plugin
 	private void announceTime(String preText, String time)
 	{
 		final String chatMessage = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append(preText)
-				.append(ChatColorType.HIGHLIGHT)
-				.append(time)
-				.build();
+			.append(ChatColorType.NORMAL)
+			.append(preText)
+			.append(ChatColorType.HIGHLIGHT)
+			.append(time)
+			.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.CONSOLE)
-				.runeLiteFormattedMessage(chatMessage)
-				.build());
+			.type(ChatMessageType.CONSOLE)
+			.runeLiteFormattedMessage(chatMessage)
+			.build());
 	}
 
 	private boolean isEgg(int itemID)
 	{
-		if (itemID == ItemID.RED_EGG || itemID == ItemID.GREEN_EGG
-				|| itemID == ItemID.BLUE_EGG || itemID == ItemID.YELLOW_EGG)
-		{
-			return true;
-		}
-		return false;
+		return itemID == ItemID.RED_EGG || itemID == ItemID.GREEN_EGG
+			|| itemID == ItemID.BLUE_EGG || itemID == ItemID.YELLOW_EGG;
 	}
 
 	private boolean isUnderPlayer(Tile tile)
@@ -616,12 +603,12 @@ public class BarbarianAssaultPlugin extends Plugin
 		return font;
 	}
 
-	public Image getClockImage()
+	Image getClockImage()
 	{
 		return clockImage;
 	}
 
-	public int getListenItemId(WidgetInfo listenInfo)
+	int getListenItemId(WidgetInfo listenInfo)
 	{
 		Widget listenWidget = client.getWidget(listenInfo);
 

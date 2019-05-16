@@ -30,14 +30,14 @@ package net.runelite.client.plugins.aoewarnings;
 import java.time.Instant;
 import net.runelite.api.coords.LocalPoint;
 
-public class AoeProjectile
+class AoeProjectile
 {
 	private final Instant startTime;
 	private final LocalPoint targetPoint;
 	private final AoeProjectileInfo aoeProjectileInfo;
 	private final int projectileLifetime;
 
-	public AoeProjectile(Instant startTime, LocalPoint targetPoint, AoeProjectileInfo aoeProjectileInfo, int projectileLifetime)
+	AoeProjectile(Instant startTime, LocalPoint targetPoint, AoeProjectileInfo aoeProjectileInfo, int projectileLifetime)
 	{
 		this.startTime = startTime;
 		this.targetPoint = targetPoint;
@@ -45,22 +45,22 @@ public class AoeProjectile
 		this.projectileLifetime = projectileLifetime;
 	}
 
-	public Instant getStartTime()
+	Instant getStartTime()
 	{
 		return startTime;
 	}
 
-	public LocalPoint getTargetPoint()
+	LocalPoint getTargetPoint()
 	{
 		return targetPoint;
 	}
 
-	public AoeProjectileInfo getAoeProjectileInfo()
+	AoeProjectileInfo getAoeProjectileInfo()
 	{
 		return aoeProjectileInfo;
 	}
 
-	public int getProjectileLifetime()
+	int getProjectileLifetime()
 	{
 		return projectileLifetime;
 	}

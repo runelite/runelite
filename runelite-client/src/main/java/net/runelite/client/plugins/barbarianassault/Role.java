@@ -36,10 +36,13 @@ enum Role
 
 	@Getter
 	private final WidgetInfo listen;
+
 	@Getter
 	private final WidgetInfo call;
+
 	@Getter
 	private final WidgetInfo roleText;
+
 	@Getter
 	private final WidgetInfo roleSprite;
 

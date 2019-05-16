@@ -25,19 +25,9 @@
 package net.runelite.client.plugins.profiles;
 
 import com.google.inject.Provides;
-import java.security.InvalidKeyException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.util.logging.Logger;
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
+import java.awt.image.BufferedImage;
+import javax.inject.Inject;
 import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -46,8 +36,6 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
-import javax.inject.Inject;
-import java.awt.image.BufferedImage;
 
 @PluginDescriptor(
 	name = "Account Switcher",
@@ -59,13 +47,6 @@ public class ProfilesPlugin extends Plugin
 {
 	@Inject
 	private ClientToolbar clientToolbar;
-
-	@Inject
-	private Client client;
-
-	@Inject
-	private ProfilesConfig config;
-
 
 	private ProfilesPanel panel;
 	private NavigationButton navButton;
@@ -92,7 +73,6 @@ public class ProfilesPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
-
 	}
 
 	@Override
@@ -100,7 +80,7 @@ public class ProfilesPlugin extends Plugin
 	{
 		clientToolbar.removeNavigation(navButton);
 	}
-	
+
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event) throws Exception
 	{

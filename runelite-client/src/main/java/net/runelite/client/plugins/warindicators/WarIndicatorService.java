@@ -24,12 +24,12 @@
  */
 package net.runelite.client.plugins.warindicators;
 
-import net.runelite.api.Client;
-import net.runelite.api.Player;
+import java.awt.Color;
+import java.util.function.BiConsumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.awt.*;
-import java.util.function.BiConsumer;
+import net.runelite.api.Client;
+import net.runelite.api.Player;
 
 @Singleton
 public class WarIndicatorService
@@ -62,14 +62,9 @@ public class WarIndicatorService
 
 				String[] targets = config.getTargetedSnipes().split(", ");
 
-				if (targets == null)
+				for (String target : targets)
 				{
-					return;
-				}
-
-				for (int i = 0; i < targets.length; i++)
-				{
-					if (player.getName().equalsIgnoreCase(targets[i]))
+					if (player.getName().equalsIgnoreCase(target))
 					{
 						consumer.accept(player, config.getSnipeColor());
 					}
@@ -88,14 +83,9 @@ public class WarIndicatorService
 
 				String[] callers = config.getActiveCallers().split(", ");
 
-				if (callers == null)
+				for (String caller : callers)
 				{
-					return;
-				}
-
-				for (int i = 0; i < callers.length; i++)
-				{
-					if (player.getName().equalsIgnoreCase(callers[i]))
+					if (player.getName().equalsIgnoreCase(caller))
 					{
 						consumer.accept(player, config.getCallerColor());
 					}

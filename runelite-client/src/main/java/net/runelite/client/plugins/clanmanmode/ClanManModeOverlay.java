@@ -3,10 +3,8 @@ package net.runelite.client.plugins.clanmanmode;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.client.game.ClanManager;
@@ -21,15 +19,12 @@ public class ClanManModeOverlay extends Overlay
 {
 	private final ClanManModeService ClanManModeService;
 	private final ClanManModeConfig config;
-	private final ClanManager clanManager;
 
 	@Inject
-	private ClanManModeOverlay(ClanManModeConfig config, ClanManModeService ClanManModeService,
-		ClanManager clanManager)
+	private ClanManModeOverlay(ClanManModeConfig config, ClanManModeService ClanManModeService)
 	{
 		this.config = config;
 		this.ClanManModeService = ClanManModeService;
-		this.clanManager = clanManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
 	}

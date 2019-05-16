@@ -40,16 +40,18 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class SafeSpotPlugin extends Plugin
 {
-
 	@Inject
 	private Client client;
+
 	@Inject
 	OverlayManager overlayManager;
+
 	@Inject
 	private SafeSpotConfig config;
 
 	@Getter
 	private ArrayList<Tile> safeSpotList;
+
 	@Getter
 	private boolean safeSpotsRenderable = false;
 
@@ -132,7 +134,8 @@ public class SafeSpotPlugin extends Plugin
 
 	/**
 	 * The ArrayList of 1-way safe spots
-	 * @param actor - The Actor that the tiles are a safe spot against
+	 *
+	 * @param actor       - The Actor that the tiles are a safe spot against
 	 * @param worldPoints - Worldpoints in the current scene
 	 * @return an ArrayList of Tiles where current player can attack actor but actor cannot attack local player
 	 */
@@ -140,7 +143,7 @@ public class SafeSpotPlugin extends Plugin
 	{
 		ArrayList<Tile> safeSpotList = new ArrayList<>();
 		Tile[][][] tiles = client.getScene().getTiles();
-		for (WorldPoint w:worldPoints)
+		for (WorldPoint w : worldPoints)
 		{
 			LocalPoint toPoint = LocalPoint.fromWorld(client, w);
 			Tile fromTile = tiles[client.getPlane()][actor.getLocalLocation().getSceneX()]
@@ -151,11 +154,11 @@ public class SafeSpotPlugin extends Plugin
 			int bit = client.getCollisionMaps()[plane].getFlags()[toPoint.getSceneX()][toPoint.getSceneY()];
 			if (toTile.hasLineOfSightTo(fromTile) && !fromTile.hasLineOfSightTo(toTile))
 			{
-				if (!((bit & CollisionDataFlag.BLOCK_MOVEMENT_OBJECT ) == CollisionDataFlag.BLOCK_MOVEMENT_OBJECT ||
-					(bit & CollisionDataFlag.BLOCK_MOVEMENT_FLOOR_DECORATION )
+				if (!((bit & CollisionDataFlag.BLOCK_MOVEMENT_OBJECT) == CollisionDataFlag.BLOCK_MOVEMENT_OBJECT ||
+					(bit & CollisionDataFlag.BLOCK_MOVEMENT_FLOOR_DECORATION)
 						== CollisionDataFlag.BLOCK_MOVEMENT_FLOOR_DECORATION ||
-					(bit & CollisionDataFlag.BLOCK_MOVEMENT_FLOOR ) == CollisionDataFlag.BLOCK_MOVEMENT_FLOOR ||
-					(bit & CollisionDataFlag.BLOCK_MOVEMENT_FULL ) == CollisionDataFlag.BLOCK_MOVEMENT_FULL))
+					(bit & CollisionDataFlag.BLOCK_MOVEMENT_FLOOR) == CollisionDataFlag.BLOCK_MOVEMENT_FLOOR ||
+					(bit & CollisionDataFlag.BLOCK_MOVEMENT_FULL) == CollisionDataFlag.BLOCK_MOVEMENT_FULL))
 				{
 					safeSpotList.add(toTile);
 				}

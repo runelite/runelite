@@ -33,21 +33,18 @@ public class PvpToolsPanel extends PluginPanel
 
 	private final JLabel loggedLabel = new JLabel();
 	private final JRichTextPane emailLabel = new JRichTextPane();
-	public JLabel numCC = new JLabel();
-	public JLabel numOther = new JLabel();
-	public JLabel numMageJLabel = new JLabel(" ");
-	public JLabel numRangeJLabel = new JLabel(" ");
-	public JLabel numMeleeJLabel = new JLabel(" ");
-	public JLabel totalRiskLabel = new JLabel(" ");
-	public JLabel riskProtectingItem = new JLabel(" ");
-	public JLabel biggestItemLabel = new JLabel("Protected Item: ");
-	public JButton missingPlayers = new JButton("Show missing CC members");
-	public JButton currentPlayers = new JButton("Show current CC members");
-	public JLabel numBrews = new JLabel();
-	@Inject
-	private JPanel pvpToolsPanel = new JPanel(new GridLayout(11, 1));
+	JLabel numCC = new JLabel();
+	JLabel numOther = new JLabel();
+	JLabel numMageJLabel = new JLabel(" ");
+	JLabel numRangeJLabel = new JLabel(" ");
+	JLabel numMeleeJLabel = new JLabel(" ");
+	JLabel totalRiskLabel = new JLabel(" ");
+	JLabel riskProtectingItem = new JLabel(" ");
+	JLabel biggestItemLabel = new JLabel("Protected Item: ");
+	JButton missingPlayers = new JButton("Show missing CC members");
+	JButton currentPlayers = new JButton("Show current CC members");
+	private JLabel numBrews = new JLabel();
 	private JPanel missingPlayersPanel = new JPanel();
-	private JPanel currentPlayersPanel = new JPanel();
 
 
 	public static String htmlLabel(String key, String value)
@@ -60,7 +57,6 @@ public class PvpToolsPanel extends PluginPanel
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setBorder(new EmptyBorder(10, 10, 10, 10));
-
 
 
 		JPanel versionPanel = new JPanel();
@@ -136,7 +132,7 @@ public class PvpToolsPanel extends PluginPanel
 
 	}
 
-	public void disablePlayerCount()
+	void disablePlayerCount()
 	{
 		this.numOther.setText("Disabled");
 		this.numCC.setText("Disabled");
@@ -144,7 +140,7 @@ public class PvpToolsPanel extends PluginPanel
 		this.numOther.repaint();
 	}
 
-	public void disablePrayerCount()
+	void disablePrayerCount()
 	{
 		this.numMageJLabel.setText("disabled");
 		this.numRangeJLabel.setText("disabled");
@@ -154,7 +150,7 @@ public class PvpToolsPanel extends PluginPanel
 		this.numMeleeJLabel.repaint();
 	}
 
-	public void disableRiskCalculator()
+	void disableRiskCalculator()
 	{
 		this.totalRiskLabel.setText("disabled");
 		this.riskProtectingItem.setText("disabled");

@@ -24,18 +24,19 @@
  */
 package net.runelite.client.plugins.menumodifier;
 
-import net.runelite.api.events.MenuOpened;
-import net.runelite.client.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.util.ArrayList;
+import java.util.List;
+import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOpened;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -43,158 +44,174 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.util.MiscUtils;
 import net.runelite.client.util.Text;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 @PluginDescriptor(
-        name = "Menu Modifier",
-        description = "Changes right click menu for players",
-        tags = { "menu", "modifier", "right", "click", "pk", "bogla" },
-        enabledByDefault = false,
-        type = PluginType.UTILITY
+	name = "Menu Modifier",
+	description = "Changes right click menu for players",
+	tags = {"menu", "modifier", "right", "click", "pk", "bogla"},
+	enabledByDefault = false,
+	type = PluginType.UTILITY
 )
 public class MenuModifierPlugin extends Plugin
 {
-    @Inject
-    private Client client;
-    
-    @Inject
-    private MenuModifierConfig config;
+	@Inject
+	private Client client;
 
-    @Inject
-    private MenuModifierInputListener inputListener;
+	@Inject
+	private MenuModifierConfig config;
 
-    @Inject
-    private KeyManager keyManager;
+	@Inject
+	private MenuModifierInputListener inputListener;
 
-    @Provides
-    MenuModifierConfig provideConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(MenuModifierConfig.class);
-    }
-    
-    @Override
-    protected void startUp() throws Exception
-    {
-        keyManager.registerKeyListener(inputListener);
-    }
-    
-    @Override
-    protected void shutDown() throws Exception
-    {
-        keyManager.unregisterKeyListener(inputListener);
-    }
+	@Inject
+	private KeyManager keyManager;
 
-    @Getter(AccessLevel.PACKAGE)
-    @Setter(AccessLevel.PACKAGE)
-    private boolean hotKeyPressed;
+	@Provides
+	MenuModifierConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(MenuModifierConfig.class);
+	}
 
-    @Subscribe
-    public void onMenuOpened(MenuOpened event)
-    {
-        Player localPlayer = client.getLocalPlayer();
-        
-        if (localPlayer == null)
-            return;
-        
-        if (!(MiscUtils.getWildernessLevelFrom(client, localPlayer.getWorldLocation()) >= 0))
-            return;
+	@Override
+	protected void startUp() throws Exception
+	{
+		keyManager.registerKeyListener(inputListener);
+	}
 
-        if (hotKeyPressed)
-            return;
+	@Override
+	protected void shutDown() throws Exception
+	{
+		keyManager.unregisterKeyListener(inputListener);
+	}
 
-        List<MenuEntry> menu_entries = new ArrayList<MenuEntry>();
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hotKeyPressed;
 
-        for (MenuEntry entry : event.getMenuEntries())
-        {
-            String option = Text.removeTags(entry.getOption()).toLowerCase();
+	@Subscribe
+	public void onMenuOpened(MenuOpened event)
+	{
+		Player localPlayer = client.getLocalPlayer();
 
-            if (option.contains("trade with") && config.hideTradeWith())
-                continue;
+		if (localPlayer == null)
+		{
+			return;
+		}
 
-            if (option.contains("lookup") && config.hideLookup())
-                continue;
+		if (!(MiscUtils.getWildernessLevelFrom(client, localPlayer.getWorldLocation()) >= 0))
+		{
+			return;
+		}
 
-            if (option.contains("report") && config.hideReport())
-                continue;
+		if (hotKeyPressed)
+		{
+			return;
+		}
 
-            if (option.contains("examine") && config.hideExamine())
-                continue;
+		List<MenuEntry> menu_entries = new ArrayList<>();
+
+		for (MenuEntry entry : event.getMenuEntries())
+		{
+			String option = Text.removeTags(entry.getOption()).toLowerCase();
+
+			if (option.contains("trade with") && config.hideTradeWith())
+			{
+				continue;
+			}
+
+			if (option.contains("lookup") && config.hideLookup())
+			{
+				continue;
+			}
+
+			if (option.contains("report") && config.hideReport())
+			{
+				continue;
+			}
+
+			if (option.contains("examine") && config.hideExamine())
+			{
+				continue;
+			}
 
 			if (option.contains("net") && config.hideNet())
+			{
 				continue;
+			}
 
 			if (option.contains("bait") && config.hideBait())
+			{
 				continue;
+			}
 
-            int identifier = entry.getIdentifier();
+			int identifier = entry.getIdentifier();
 
-            Player[] players = client.getCachedPlayers();
-            Player player = null;
+			Player[] players = client.getCachedPlayers();
+			Player player = null;
 
-            if (identifier >= 0 && identifier < players.length)
-                player = players[identifier];
+			if (identifier >= 0 && identifier < players.length)
+			{
+				player = players[identifier];
+			}
 
-            if (player == null)
-            {
-                menu_entries.add(entry);
-                continue;
-            }
+			if (player == null)
+			{
+				menu_entries.add(entry);
+				continue;
+			}
 
-            if ((option.contains("attack") || option.contains("cast")) && (player.isFriend() || player.isClanMember()))
-                continue;
+			if ((option.contains("attack") || option.contains("cast")) && (player.isFriend() || player.isClanMember()))
+			{
+				continue;
+			}
 
-            menu_entries.add(entry);
-        }
+			menu_entries.add(entry);
+		}
 
-        MenuEntry[] updated_menu_entries = new MenuEntry[menu_entries.size()];
-        updated_menu_entries = menu_entries.toArray(updated_menu_entries);
+		MenuEntry[] updated_menu_entries = new MenuEntry[menu_entries.size()];
+		updated_menu_entries = menu_entries.toArray(updated_menu_entries);
 
-        client.setMenuEntries(updated_menu_entries);
-    }
+		client.setMenuEntries(updated_menu_entries);
+	}
 
-    /*@Subscribe
-    public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
-    {
-        if (true)
-            return;
+/*@Subscribe
+public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+{
+if (true)
+return;
 
-        if (!inWilderness)
-            return;
+if (!inWilderness)
+return;
 
-        if (hotKeyPressed)
-            return;
-    
-        String option = Text.removeTags(menuEntryAdded.getOption()).toLowerCase();
+if (hotKeyPressed)
+return;
 
-        if ((option.contains("trade with") && config.hideTradeWith())
-            || (option.contains("lookup") && config.hideLookup())
-            || (option.contains("report") && config.hideReport())
-            || (option.contains("examine") && config.hideExamine())
-            || (option.contains("cancel") && config.hideCancel()))
-        {
-            int identifier = menuEntryAdded.getIdentifier();
+String option = Text.removeTags(menuEntryAdded.getOption()).toLowerCase();
 
-            Player[] players = client.getCachedPlayers();
-            Player player = null;
+if ((option.contains("trade with") && config.hideTradeWith())
+|| (option.contains("lookup") && config.hideLookup())
+|| (option.contains("report") && config.hideReport())
+|| (option.contains("examine") && config.hideExamine())
+|| (option.contains("cancel") && config.hideCancel()))
+{
+int identifier = menuEntryAdded.getIdentifier();
 
-            if (identifier >= 0 && identifier < players.length)
-                player = players[identifier];
+Player[] players = client.getCachedPlayers();
+Player player = null;
 
-            if (player == null)
-                return;
+if (identifier >= 0 && identifier < players.length)
+player = players[identifier];
 
-            //allow trading with friends/clanmates
-            if (option.contains("trade with") && (player.isFriend() || player.isClanMember()))
-                return;
+if (player == null)
+return;
 
-            MenuEntry[] menuEntries = client.getMenuEntries();
+//allow trading with friends/clanmates
+if (option.contains("trade with") && (player.isFriend() || player.isClanMember()))
+return;
 
-            if (menuEntries.length > 0)
-                client.setMenuEntries(Arrays.copyOf(menuEntries, menuEntries.length - 1));
-        }
-    }*/
+MenuEntry[] menuEntries = client.getMenuEntries();
+
+if (menuEntries.length > 0)
+client.setMenuEntries(Arrays.copyOf(menuEntries, menuEntries.length - 1));
+}
+}*/
 }

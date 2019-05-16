@@ -1,6 +1,5 @@
 package net.runelite.client.plugins.clanmanmode;
 
-import net.runelite.client.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,12 +7,17 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -26,7 +30,8 @@ import org.apache.commons.lang3.ArrayUtils;
 	name = "Clan Man Mode",
 	description = "Assists in clan PVP scenarios",
 	tags = {"highlight", "minimap", "overlay", "players"},
-		type = PluginType.PVP
+	type = PluginType.PVP,
+	enabledByDefault = false
 )
 public class ClanManModePlugin extends Plugin
 {
@@ -123,8 +128,8 @@ public class ClanManModePlugin extends Plugin
 		if (option.equals("attack")) {
 			final Pattern ppattern = Pattern.compile("<col=ffffff>(.+?)<col=");
 			final Matcher pmatch = ppattern.matcher(event.getTarget());
-			pmatch.find();
-			if (pmatch.matches()) {
+
+			if (pmatch.find() && pmatch.matches()) {
 				if (pmatch.group(1) != null) {
 					if (clan.containsKey(pmatch.group(1).replace(" ", " "))) {
 						MenuEntry[] entries = client.getMenuEntries();
