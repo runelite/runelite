@@ -270,10 +270,47 @@ public class CombatLevelPluginTest
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(99);
 		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(99);
 
+		assertEquals(1, neededPrayerLevels());
+	}
+
+	@Test
+	public void testEvenPrayerLevelsNeededWhenNearNextCombatLevel()
+	{
+		when(player.getCombatLevel()).thenReturn(90);
+		when(client.getRealSkillLevel(Skill.ATTACK)).thenReturn(74);
+		when(client.getRealSkillLevel(Skill.STRENGTH)).thenReturn(75);
+		when(client.getRealSkillLevel(Skill.DEFENCE)).thenReturn(72);
+		when(client.getRealSkillLevel(Skill.PRAYER)).thenReturn(52);
+		when(client.getRealSkillLevel(Skill.RANGED)).thenReturn(44);
+		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(60);
+		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(72);
+
+		assertEquals(2, neededPrayerLevels());
+	}
+
+	@Test
+	public void testOddPrayerLevelsNeededWhenNearNextCombatLevel()
+	{
+		when(player.getCombatLevel()).thenReturn(90);
+		when(client.getRealSkillLevel(Skill.ATTACK)).thenReturn(74);
+		when(client.getRealSkillLevel(Skill.STRENGTH)).thenReturn(75);
+		when(client.getRealSkillLevel(Skill.DEFENCE)).thenReturn(72);
+		when(client.getRealSkillLevel(Skill.PRAYER)).thenReturn(53);
+		when(client.getRealSkillLevel(Skill.RANGED)).thenReturn(44);
+		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(60);
+		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(72);
+
+		assertEquals(1, neededPrayerLevels());
+	}
+
+	private int neededPrayerLevels()
+	{
 		HashMap<String, Double> baseValues = getBaseValues();
 
-		// test prayer
-		assertEquals(1, calcLevelsPray(baseValues.get("base") + baseValues.get("max"),
-			player.getCombatLevel() + 1, client.getRealSkillLevel(Skill.PRAYER)));
+		return calcLevelsPray(
+				baseValues.get("base") + baseValues.get("max"),
+				player.getCombatLevel() + 1,
+				client.getRealSkillLevel(Skill.PRAYER)
+		);
 	}
 }

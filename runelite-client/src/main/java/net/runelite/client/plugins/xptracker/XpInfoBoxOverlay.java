@@ -110,12 +110,12 @@ class XpInfoBoxOverlay extends Overlay
 				rightNum = snapshot.getActionsRemainingToGoal();
 				break;
 			case XP_LEFT:
-				leftStr = config.onScreenDisplayMode().toString();
+				leftStr = "XP Left";
 				rightNum = snapshot.getXpRemainingToGoal();
 				break;
 			case XP_GAINED:
 			default:
-				leftStr = config.onScreenDisplayMode().toString();
+				leftStr = "XP Gained";
 				rightNum = snapshot.getXpGainedInSession();
 				break;
 		}
