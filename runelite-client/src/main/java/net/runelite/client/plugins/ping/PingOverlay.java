@@ -34,18 +34,7 @@ public class PingOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-        final String text;
-
-        if (pingPlugin.getCurrentPing() != 0)
-        {
-            text = pingPlugin.getCurrentPing() + PING_STRING;
-        }
-        else
-        {
-            text = "-" + PING_STRING;
-        }
-
-		//text = pingPlugin.getCurrentPing() + PING_STRING;
+		final String text = pingPlugin.getCurrentPing() + PING_STRING;
 		final int textWidth = graphics.getFontMetrics().stringWidth(text);
 		final int textHeight = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
 
