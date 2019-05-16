@@ -95,9 +95,9 @@ public class RuneLiteAPI
 			.build();
 	}
 
-	public static HttpUrl getApiRoot()
+	public static HttpUrl getSessionBase()
 	{
-		return HttpUrl.parse(BASE);
+		return HttpUrl.parse(BASE + "/session");
 	}
 
 	public static HttpUrl getApiBase()
