@@ -218,6 +218,7 @@ public interface RunecraftConfig extends Config
 	{
 		return true;
 	}
+
 	@ConfigItem(
 		keyName = "Lavas",
 		name = "Lavas",
