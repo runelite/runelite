@@ -25,23 +25,53 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.zulrah;
+package net.runelite.client.plugins.zulrah.patterns;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.util.ArrayList;
+import java.util.List;
+import net.runelite.api.Prayer;
+import net.runelite.client.plugins.zulrah.phase.StandLocation;
+import net.runelite.client.plugins.zulrah.phase.ZulrahLocation;
+import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
+import net.runelite.client.plugins.zulrah.phase.ZulrahType;
 
-@ConfigGroup("zulrah")
-
-public interface ZulrahConfig extends Config
+public abstract class ZulrahPattern
 {
-	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not zulrah overlays are displayed"
-	)
-	default boolean enabled()
+	private final List<ZulrahPhase> pattern = new ArrayList<>();
+
+	protected final void add(ZulrahLocation loc, ZulrahType type, StandLocation standLocation, Prayer prayer)
 	{
-		return true;
+		add(loc, type, standLocation, false, prayer);
+	}
+
+	protected final void addJad(ZulrahLocation loc, ZulrahType type, StandLocation standLocation, Prayer prayer)
+	{
+		add(loc, type, standLocation, true, prayer);
+	}
+
+	private void add(ZulrahLocation loc, ZulrahType type, StandLocation standLocation, boolean jad, Prayer prayer)
+	{
+		pattern.add(new ZulrahPhase(loc, type, jad, standLocation, prayer));
+	}
+
+	public ZulrahPhase get(int index)
+	{
+		if (index >= pattern.size())
+		{
+			return null;
+		}
+
+		return pattern.get(index);
+	}
+
+	public boolean stageMatches(int index, ZulrahPhase instance)
+	{
+		ZulrahPhase patternInstance = get(index);
+		return patternInstance != null && patternInstance.equals(instance);
+	}
+
+	public boolean canReset(int index)
+	{
+		return index >= pattern.size();
 	}
 }
