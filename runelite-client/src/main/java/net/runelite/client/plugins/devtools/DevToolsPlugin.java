@@ -126,6 +126,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton detachedCamera;
 	private DevToolsButton widgetInspector;
 	private DevToolsButton varInspector;
+	private DevToolsButton logMenuActions;
 	private NavigationButton navButton;
 
 	@Provides
@@ -173,6 +174,8 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.add(cameraOverlay);
 		overlayManager.add(worldMapLocationOverlay);
 		overlayManager.add(mapRegionOverlay);
+		
+		logMenuActions = new DevToolsButton("Menu Actions");
 
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
 

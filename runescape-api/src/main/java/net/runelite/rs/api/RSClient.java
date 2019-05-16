@@ -975,5 +975,11 @@ public interface RSClient extends RSGameEngine, Client
 	
 	@Import("renderSelf")
 	void toggleRenderSelf();
+	
+	@Import("mouseRecorder")
+	RSMouseRecorder getMouseRecorder();
+	
+	@Import("printMenuActions")
+	void setPrintMenuActions(boolean b);
 
 }
