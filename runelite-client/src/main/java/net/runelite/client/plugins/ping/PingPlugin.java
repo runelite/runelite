@@ -95,11 +95,9 @@ public class PingPlugin extends Plugin
 
 	private void fetchWorlds()
 	{
-		log.warn("fetchWorlds()");
 		try
 		{
 			worldResult = new WorldClient().lookupWorlds();
-			log.debug("world result {}", worldResult);
 
 			if (worldResult != null)
 			{
@@ -119,12 +117,7 @@ public class PingPlugin extends Plugin
 			return;
 		}
 
-		log.warn("pingWorld()");
-		log.warn("getworld {}", client.getWorld());
-
 		World currentWorld = worldResult.findWorld(client.getWorld());
 		currentPing = Ping.ping(currentWorld);
-
-		log.debug("ping {}", currentPing);
 	}
 }
