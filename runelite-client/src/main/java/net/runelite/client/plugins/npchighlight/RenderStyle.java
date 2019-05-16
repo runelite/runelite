@@ -29,5 +29,9 @@ public enum RenderStyle
 	OFF,
 	TILE,
 	HULL,
-	SOUTH_WEST_TILE
+	SOUTH_WEST_TILE,
+	THIN_OUTLINE,
+	OUTLINE,
+	THIN_GLOW,
+	GLOW
 }
