@@ -40,8 +40,10 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
@@ -74,7 +76,7 @@ public class ItemChargePlugin extends Plugin
 	private static final String BINDING_BREAK_TEXT = "Your Binding necklace has disintegrated.";
 	private static final Pattern CHEMISTRY_CHECK_PATTERN = Pattern.compile(
 		"Your amulet of chemistry helps you create a 4-dose potion. It has (\\d+) charges? left\\.");
-	private static final Pattern CHEMISTRY_CHECK2_PATTERN = Pattern.compile(
+	private static final Pattern CHEMISTRY_ONE_CHARGE_PATTERN = Pattern.compile(
 		"Your amulet of chemistry helps you create a 4-dose potion. <col=ff0000>It has one charge left\\.</col>");
 	private static final Pattern CHEMISTRY_USED_PATTERN = Pattern.compile(
 		"Your amulet of chemistry helps you create a 4-dose potion. <col=ff0000>It then crumbles to dust\\.</col>");
@@ -106,6 +108,8 @@ public class ItemChargePlugin extends Plugin
 
 	// Limits destroy callback to once per tick
 	private int lastCheckTick;
+
+	private boolean waitingForDialogue;
 
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
@@ -177,7 +181,7 @@ public class ItemChargePlugin extends Plugin
 		Matcher bindingNecklaceCheckMatcher = BINDING_CHECK_PATTERN.matcher(event.getMessage());
 		Matcher bindingNecklaceUsedMatcher = BINDING_USED_PATTERN.matcher(event.getMessage());
 		Matcher chemistryCheckMatcher = CHEMISTRY_CHECK_PATTERN.matcher(event.getMessage());
-		Matcher chemistryCheck2Matcher = CHEMISTRY_CHECK2_PATTERN.matcher(event.getMessage());
+		Matcher chemistryOneChargeMatcher = CHEMISTRY_ONE_CHARGE_PATTERN.matcher(event.getMessage());
 		Matcher chemistryUsedMatcher = CHEMISTRY_USED_PATTERN.matcher(event.getMessage());
 
 		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
@@ -233,11 +237,11 @@ public class ItemChargePlugin extends Plugin
 			{
 				if (config.chemistryNotification())
 				{
-					notifier.notify("Your amulet of chemistry has been destroyed.");
+					notifier.notify("Your amulet of chemistry has crumbled to dust.");
 				}
 				updateAmuletOfChemistryCharges(MAX_CHEMISTRY_CHARGES);
 			}
-			else if (chemistryCheck2Matcher.find())
+			else if (chemistryOneChargeMatcher.find())
 			{
 				updateAmuletOfChemistryCharges(1);
 			}
@@ -300,6 +304,32 @@ public class ItemChargePlugin extends Plugin
 		{
 			checkDestroyWidget();
 		}
+	}
+
+	@Subscribe
+	private void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() != 193)
+		{
+			return;
+		}
+		waitingForDialogue = true;
+	}
+
+	@Subscribe
+	private void onGameTick(GameTick event)
+	{
+		if (!waitingForDialogue)
+		{
+			return;
+		}
+		waitingForDialogue = false;
+		final String text = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT).getText();
+		if (!text.contains("amulet shatters") && !text.contains("necklace shatters"))
+		{
+			return;
+		}
+		checkBreakWidget(text);
 	}
 
 	private void updateDodgyNecklaceCharges(final int value)
@@ -367,18 +397,23 @@ public class ItemChargePlugin extends Plugin
 		{
 			return;
 		}
-
 		switch (widgetDestroyItemName.getText())
 		{
 			case "Binding necklace":
 				updateBindingNecklaceCharges(MAX_BINDING_CHARGES);
 				break;
-			case "Dodgy necklace":
-				updateDodgyNecklaceCharges(MAX_DODGY_CHARGES);
-				break;
-			case "Amulet of chemistry":
-				updateDodgyNecklaceCharges(MAX_CHEMISTRY_CHARGES);
-				break;
+		}
+	}
+
+	private void checkBreakWidget(String text)
+	{
+		if (text.contains("amulet of chemistry"))
+		{
+			updateAmuletOfChemistryCharges(MAX_CHEMISTRY_CHARGES);
+		}
+		else if (text.contains("dodgy necklace"))
+		{
+			updateDodgyNecklaceCharges(MAX_DODGY_CHARGES);
 		}
 	}
 
