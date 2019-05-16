@@ -115,6 +115,8 @@
 		<module>cache</module>
 		<module>cache-client</module>
 		<module>cache-updater</module>
+		<module>extended-mixin-processor</module>
+		<module>extended-mixins</module>
 		<module>runelite-api</module>
 		<module>runelite-client</module>
 		<module>runelite-mixins</module>

@@ -221,6 +221,11 @@
 			<version>1.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>extended-mixins</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -272,6 +277,11 @@
             <artifactId>naturalmouse</artifactId>
             <version>[1.0.0,)</version>
         </dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-all</artifactId>
+			<version>6.0_BETA</version>
+		</dependency>
     </dependencies>
 
 	<build>
@@ -315,7 +325,6 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<minimizeJar>true</minimizeJar>
 
 							<shadedArtifactAttached>true</shadedArtifactAttached>
 							<shadedClassifierName>shaded</shadedClassifierName>
