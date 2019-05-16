@@ -122,6 +122,7 @@ public class EmojiPlugin extends Plugin
 			case FRIENDSCHAT:
 			case PRIVATECHAT:
 			case PRIVATECHATOUT:
+			case MODPRIVATECHAT:
 				break;
 			default:
 				return;
