@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.runecraft;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
 import static net.runelite.api.ItemID.AIR_RUNE;
@@ -64,18 +64,14 @@ public enum AbyssRifts
 	@Getter
 	private final int itemId;
 
-	private static final Map<Integer, AbyssRifts> rifts;
+	private static final Map<Integer, AbyssRifts> rifts = new HashMap<>();
 
 	static
 	{
-		ImmutableMap.Builder<Integer, AbyssRifts> builder = new ImmutableMap.Builder<>();
-
 		for (AbyssRifts s : values())
 		{
-			builder.put(s.getObjectId(), s);
+			rifts.put(s.getObjectId(), s);
 		}
-
-		rifts = builder.build();
 	}
 
 	AbyssRifts(int objectId, int itemId)
