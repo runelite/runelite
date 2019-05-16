@@ -325,7 +325,7 @@ public class ItemChargePlugin extends Plugin
 		}
 		waitingForDialogue = false;
 		final String text = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT).getText();
-		if (!text.contains("amulet shatters") && !text.contains("necklace shatters"))
+		if (!text.contains("amulet shatters"))
 		{
 			return;
 		}
@@ -402,6 +402,9 @@ public class ItemChargePlugin extends Plugin
 			case "Binding necklace":
 				updateBindingNecklaceCharges(MAX_BINDING_CHARGES);
 				break;
+			case "Dodgy necklace":
+				updateDodgyNecklaceCharges(MAX_DODGY_CHARGES);
+				break;
 		}
 	}
 
@@ -410,10 +413,6 @@ public class ItemChargePlugin extends Plugin
 		if (text.contains("amulet of chemistry"))
 		{
 			updateAmuletOfChemistryCharges(MAX_CHEMISTRY_CHARGES);
-		}
-		else if (text.contains("dodgy necklace"))
-		{
-			updateDodgyNecklaceCharges(MAX_DODGY_CHARGES);
 		}
 	}
 
