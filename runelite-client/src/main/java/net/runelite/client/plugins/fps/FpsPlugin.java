@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.performance;
+package net.runelite.client.plugins.fps;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;
@@ -63,7 +63,7 @@ import net.runelite.client.util.ping.Ping;
 	tags = {"frames", "framerate", "limit", "overlay", "ping"},
 	enabledByDefault = false
 )
-public class PerformancePlugin extends Plugin
+public class FpsPlugin extends Plugin
 {
 	static final String CONFIG_GROUP_KEY = "fpscontrol";
 
@@ -74,7 +74,7 @@ public class PerformancePlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private PerformanceOverlay overlay;
+	private FpsOverlay overlay;
 
 	@Inject
 	private FpsDrawListener drawListener;
@@ -86,14 +86,14 @@ public class PerformancePlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private PerformanceConfig performanceConfig;
+	private FpsConfig fpsConfig;
 
 	private final ScheduledExecutorService pingExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
 
 	@Provides
-	PerformanceConfig provideConfig(ConfigManager configManager)
+	FpsConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(PerformanceConfig.class);
+		return configManager.getConfig(FpsConfig.class);
 	}
 
 	@Subscribe
@@ -131,7 +131,7 @@ public class PerformancePlugin extends Plugin
 
 	private void getPingToCurrentWorld()
 	{
-		if (client.getGameState().equals(GameState.LOGGED_IN) && performanceConfig.drawPing())
+		if (client.getGameState().equals(GameState.LOGGED_IN) && fpsConfig.drawPing())
 		{
 			ping = Ping.ping(String.format("oldschool%d.runescape.com", client.getWorld() - 300));
 		}

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.performance;
+package net.runelite.client.plugins.fps;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -47,18 +47,18 @@ import net.runelite.client.ui.overlay.OverlayUtil;
  * This locks "FPS:" into one position (the far top right corner of the canvas),
  * along with a locked position for the FPS value.
  */
-public class PerformanceOverlay extends Overlay
+public class FpsOverlay extends Overlay
 {
 	// Local dependencies
-	private final PerformanceConfig config;
+	private final FpsConfig config;
 	private final Client client;
-	private final PerformancePlugin plugin;
+	private final FpsPlugin plugin;
 
 	// Often changing values
 	private boolean isFocused = true;
 
 	@Inject
-	private PerformanceOverlay(PerformancePlugin plugin, PerformanceConfig config, Client client)
+	private FpsOverlay(FpsPlugin plugin, FpsConfig config, Client client)
 	{
 		this.config = config;
 		this.client = client;
