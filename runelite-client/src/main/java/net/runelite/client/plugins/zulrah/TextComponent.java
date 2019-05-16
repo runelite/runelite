@@ -27,21 +27,37 @@
 
 package net.runelite.client.plugins.zulrah;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import lombok.Setter;
+import net.runelite.client.ui.overlay.RenderableEntity;
 
-@ConfigGroup("zulrah")
-
-public interface ZulrahConfig extends Config
+public class TextComponent implements RenderableEntity
 {
-	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not zulrah overlays are displayed"
-	)
-	default boolean enabled()
+	@Setter
+	private String text;
+
+	@Setter
+	private Point position = new Point();
+
+	@Setter
+	private Color color = Color.WHITE;
+
+	@Override
+	public Dimension render(Graphics2D graphics)
 	{
-		return true;
+		// Draw shadow
+		graphics.setColor(Color.BLACK);
+		graphics.drawString(text, position.x + 1, position.y + 1);
+
+		// Draw actual text
+		graphics.setColor(color);
+		graphics.drawString(text, position.x, position.y);
+
+		final FontMetrics fontMetrics = graphics.getFontMetrics();
+		return new Dimension(fontMetrics.stringWidth(text), fontMetrics.getHeight());
 	}
 }

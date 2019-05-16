@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
@@ -24,24 +23,32 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.zulrah.phase;
 
-package net.runelite.client.plugins.zulrah;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.NpcID;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup("zulrah")
-
-public interface ZulrahConfig extends Config
+@Slf4j
+public enum ZulrahType
 {
-	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not zulrah overlays are displayed"
-	)
-	default boolean enabled()
+	RANGE, MAGIC, MELEE;
+
+	private static final int ZULRAH_RANGE = NpcID.ZULRAH;
+	private static final int ZULRAH_MELEE = NpcID.ZULRAH_2043;
+	private static final int ZULRAH_MAGIC = NpcID.ZULRAH_2044;
+
+	public static ZulrahType valueOf(int zulrahId)
 	{
-		return true;
+		switch (zulrahId)
+		{
+			case ZULRAH_RANGE:
+				return ZulrahType.RANGE;
+			case ZULRAH_MELEE:
+				return ZulrahType.MELEE;
+			case ZULRAH_MAGIC:
+				return ZulrahType.MAGIC;
+		}
+		log.debug("Unknown Zulrah Id: {}", zulrahId);
+		return null;
 	}
 }

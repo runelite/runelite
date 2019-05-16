@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
@@ -24,24 +23,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.zulrah.phase;
 
-package net.runelite.client.plugins.zulrah;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.coords.LocalPoint;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup("zulrah")
-
-public interface ZulrahConfig extends Config
+@Slf4j
+public enum ZulrahLocation
 {
-	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not zulrah overlays are displayed"
-	)
-	default boolean enabled()
+	NORTH, SOUTH, EAST, WEST;
+
+	public static ZulrahLocation valueOf(LocalPoint start, LocalPoint current)
 	{
-		return true;
+		int dx = start.getX() - current.getX();
+		int dy = start.getY() - current.getY();
+		if (dx == -10 * 128 && dy == 2 * 128)
+		{
+			return ZulrahLocation.EAST;
+		}
+		else if (dx == 10 * 128 && dy == 2 * 128)
+		{
+			return ZulrahLocation.WEST;
+		}
+		else if (dx == 0 && dy == 11 * 128)
+		{
+			return ZulrahLocation.SOUTH;
+		}
+		else if (dx == 0 && dy == 0)
+		{
+			return ZulrahLocation.NORTH;
+		}
+		else
+		{
+			log.debug("Unknown Zulrah location dx: {}, dy: {}", dx, dy);
+			return null;
+		}
 	}
 }

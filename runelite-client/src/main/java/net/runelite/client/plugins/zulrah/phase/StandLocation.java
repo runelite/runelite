@@ -1,6 +1,5 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
  * All rights reserved.
  *
@@ -24,24 +23,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.zulrah.phase;
 
-package net.runelite.client.plugins.zulrah;
-
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-
-@ConfigGroup("zulrah")
-
-public interface ZulrahConfig extends Config
+public enum StandLocation
 {
-	@ConfigItem(
-		keyName = "enabled",
-		name = "Enabled",
-		description = "Configures whether or not zulrah overlays are displayed"
-	)
-	default boolean enabled()
-	{
-		return true;
-	}
+	WEST,
+	EAST,
+	SOUTH,
+	SOUTH_WEST,
+	SOUTH_EAST,
+	TOP_EAST,
+	TOP_WEST,
+	PILLAR_WEST_INSIDE,
+	PILLAR_WEST_OUTSIDE,
+	PILLAR_EAST_INSIDE,
+	PILLAR_EAST_OUTSIDE
 }
