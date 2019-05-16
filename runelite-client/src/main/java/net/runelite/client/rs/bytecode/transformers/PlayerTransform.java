@@ -5,8 +5,10 @@ import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
 import javassist.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.rs.bytecode.ByteCodePatcher;
 
+@Slf4j
 public class PlayerTransform implements Transform
 {
 	private CtClass ct;
@@ -36,6 +38,13 @@ public class PlayerTransform implements Transform
 		protectedGetSkullIcon.setName("getRsSkullIcon");
 
 		ct.addMethod(protectedGetSkullIcon);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformGetSkullIcon() throws CannotCompileException, NotFoundException
@@ -69,5 +78,12 @@ public class PlayerTransform implements Transform
 					"return null;" +
 				"}", ct);
 		ct.addMethod(getSkullIcon);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 }

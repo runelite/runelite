@@ -4,8 +4,10 @@ import javassist.CannotCompileException;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.rs.bytecode.ByteCodePatcher;
 
+@Slf4j
 // This prevents the client from sending stack traces to Jagex at all, even classes outside of runelite.
 public class ErrorTransform implements Transform
 {
@@ -21,8 +23,6 @@ public class ErrorTransform implements Transform
 	{
 		try
 		{
-			System.out.println("[RuneLitePlus] Transforming error method at class: " + ERROR_INSTANCE_CLASS);
-
 			ct = ByteCodePatcher.classPool.get(ERROR_INSTANCE_CLASS);
 			transformError();
 
@@ -46,5 +46,12 @@ public class ErrorTransform implements Transform
 				"	System.out.println(\"[RuneLitePlus] Prevented preceeding stack trace from being sent to Jagex\");" +
 				"}", ct);
 		ct.addMethod(error);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 }

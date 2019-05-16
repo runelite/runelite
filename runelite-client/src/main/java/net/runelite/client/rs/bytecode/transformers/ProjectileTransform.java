@@ -5,8 +5,10 @@ import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
 import javassist.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.rs.bytecode.ByteCodePatcher;
 
+@Slf4j
 public class ProjectileTransform implements Transform
 {
 	private CtClass ct;
@@ -49,6 +51,13 @@ public class ProjectileTransform implements Transform
 					ByteCodePatcher.clientInstance + ".getCallbacks().post(projectileMoved);" +
 				"}", ct);
 		ct.addMethod(getAnimation);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformInteracting() throws CannotCompileException
@@ -92,5 +101,12 @@ public class ProjectileTransform implements Transform
 				"	}" +
 				"}", ct);
 		ct.addMethod(getInteracting);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 }

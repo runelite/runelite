@@ -233,6 +233,7 @@ public class ClientLoader
 				Hooks hooks = gson.fromJson(new BufferedReader(new FileReader(hooksFile)), Hooks.class);
 
 				if (hooks.clientInstance.equals("") ||
+					hooks.clientClass.equals("") ||
 					hooks.projectileClass.equals("") ||
 					hooks.actorClass.equals("") ||
 					hooks.playerClass.equals(""))

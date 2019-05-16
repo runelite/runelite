@@ -5,8 +5,10 @@ import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
 import javassist.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.rs.bytecode.ByteCodePatcher;
 
+@Slf4j
 public class ActorTransform implements Transform
 {
 	private CtClass ct;
@@ -47,6 +49,13 @@ public class ActorTransform implements Transform
 				"	return this.getRsAnimation();" +
 				"}", ct);
 		ct.addMethod(getAnimation);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 
@@ -63,6 +72,13 @@ public class ActorTransform implements Transform
 					ByteCodePatcher.clientInstance + ".getCallbacks().post((java.lang.Object)animationChanged);" +
 				"}", ct);
 		ct.addMethod(getAnimationChanged);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformGraphicChanged() throws CannotCompileException, NotFoundException
@@ -78,6 +94,13 @@ public class ActorTransform implements Transform
 					ByteCodePatcher.clientInstance + ".getCallbacks().post(localGraphicChanged);" +
 				"}", ct);
 		ct.addMethod(graphicChanged);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 }

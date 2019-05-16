@@ -18,6 +18,7 @@ import java.util.jar.JarInputStream;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.bytecode.transformers.ActorTransform;
@@ -28,6 +29,7 @@ import net.runelite.client.rs.bytecode.transformers.ProjectileTransform;
 import net.runelite.http.api.RuneLiteAPI;
 import org.xeustechnologies.jcl.JarClassLoader;
 
+@Slf4j
 public class ByteCodePatcher
 {
 
@@ -51,43 +53,43 @@ public class ByteCodePatcher
 			);
 			try
 			{
+				RuneLite.splashScreen.setSubMessage("Transforming Client");
+				Class clientClass = Class.forName(hooks.clientClass, false, child);
+				transformClient(clientClass);
+				RuneLite.splashScreen.setProgress(1, 5);
+
 				RuneLite.splashScreen.setSubMessage("Transforming Actor");
 				Class actorClass = Class.forName(hooks.actorClass, false, child);
 				transformActor(actorClass);
-				RuneLite.splashScreen.setProgress(1, 5);
+				RuneLite.splashScreen.setProgress(2, 5);
 
 				RuneLite.splashScreen.setSubMessage("Transforming Projectile");
 				Class projectileClass = Class.forName(hooks.projectileClass, false, child);
 				transformProjectile(projectileClass);
-				RuneLite.splashScreen.setProgress(2, 5);
+				RuneLite.splashScreen.setProgress(3, 5);
 
 				RuneLite.splashScreen.setSubMessage("Transforming Player");
 				Class playerClass = Class.forName(hooks.playerClass, false, child);
 				transformPlayer(playerClass);
-				RuneLite.splashScreen.setProgress(3, 5);
-
-				RuneLite.splashScreen.setSubMessage("Transforming Client");
-				Class clientClass = Class.forName("client", false, child);
-				transformClient(clientClass);
 				RuneLite.splashScreen.setProgress(4, 5);
 
 				// Odds and ends
 				RuneLite.splashScreen.setSubMessage("Transforming Error method");
-				ErrorTransform et = new ErrorTransform();
-				et.modify(null);
+				transformStackTrace();
 				RuneLite.splashScreen.setProgress(5, 5);
+
 				RuneLite.splashScreen.setSubMessage("");
 				ByteCodeUtils.updateHijackedJar();
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
+				// e.printStackTrace();
 			}
 
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
@@ -165,21 +167,48 @@ public class ByteCodePatcher
 			try
 			{
 				Class classToLoad = Class.forName(entry.getName().replace(".class", ""), false, child);
+				checkClient(classToLoad);
 				checkActor(classToLoad);
 				checkProjectile(classToLoad);
 				checkPlayer(classToLoad);
 			}
 			catch (Exception e)
 			{
-				e.printStackTrace();
+				// e.printStackTrace();
 			}
 
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			System.out.println("Class not found: " + entry.getName());
+			// e.printStackTrace();
+			// System.out.println("Class not found: "+entry.getName());
 		}
+	}
+
+	private static void checkClient(Class current)
+	{
+		try
+		{
+			Method method = current.getDeclaredMethod("getProjectiles");
+			if (method != null)
+			{
+				hooks.clientClass = current.getName();
+				log.info("[RuneLitePlus] Transforming Client at class: " + current.getName());
+				ClientTransform ct = new ClientTransform();
+				ct.modify(current);
+			}
+		}
+		catch (NoSuchMethodException | NoClassDefFoundError e)
+		{
+			// e.printStackTrace();
+		}
+	}
+
+	private static void transformClient(Class client)
+	{
+		log.info("[RuneLitePlus] Transforming Client at class: " + client.getName());
+		ClientTransform ct = new ClientTransform();
+		ct.modify(client);
 	}
 
 	private static void checkActor(Class current)
@@ -190,19 +219,20 @@ public class ByteCodePatcher
 			if (method != null)
 			{
 				hooks.actorClass = current.getName();
-				System.out.println("[RuneLitePlus] Transforming Actor at class: " + current.getName());
+				log.info("[RuneLitePlus] Transforming Actor at class: " + current.getName());
 				ActorTransform at = new ActorTransform();
 				at.modify(current);
 			}
 		}
-		catch (NoSuchMethodException | NoClassDefFoundError e) {
-			e.printStackTrace();
+		catch (NoSuchMethodException | NoClassDefFoundError e)
+		{
+			// e.printStackTrace();
 		}
 	}
 
 	private static void transformActor(Class actor)
 	{
-		System.out.println("[RuneLitePlus] Transforming Actor at class: " + actor.getName());
+		log.info("[RuneLitePlus] Transforming Actor at class: " + actor.getName());
 		ActorTransform at = new ActorTransform();
 		at.modify(actor);
 	}
@@ -215,20 +245,20 @@ public class ByteCodePatcher
 			if (method != null)
 			{
 				hooks.projectileClass = current.getName();
-				System.out.println("[RuneLitePlus] Transforming Projectile at class: " + current.getName());
+				log.info("[RuneLitePlus] Transforming Projectile at class: " + current.getName());
 				ProjectileTransform pt = new ProjectileTransform();
 				pt.modify(current);
 			}
 		}
 		catch (NoSuchMethodException | NoClassDefFoundError e)
 		{
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
 	private static void transformProjectile(Class projectile)
 	{
-		System.out.println("[RuneLitePlus] Transforming Projectile at class: " + projectile.getName());
+		log.info("[RuneLitePlus] Transforming Projectile at class: " + projectile.getName());
 		ProjectileTransform pt = new ProjectileTransform();
 		pt.modify(projectile);
 	}
@@ -241,29 +271,28 @@ public class ByteCodePatcher
 			if (method != null)
 			{
 				hooks.playerClass = current.getName();
-				System.out.println("[RuneLitePlus] Transforming Player at class: " + current.getName());
+				log.info("[RuneLitePlus] Transforming Player at class: " + current.getName());
 				PlayerTransform pt = new PlayerTransform();
 				pt.modify(current);
 			}
 		}
 		catch (NoSuchMethodException | NoClassDefFoundError e)
 		{
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 
 	private static void transformPlayer(Class player)
 	{
-		System.out.println("[RuneLitePlus] Transforming Player at class: " + player.getName());
+		log.info("[RuneLitePlus] Transforming Player at class: " + player.getName());
 		PlayerTransform pt = new PlayerTransform();
 		pt.modify(player);
 	}
 
-	private static void transformClient(Class clazz)
+	private static void transformStackTrace()
 	{
-		System.out.println("[RuneLitePlus] Transforming Client");
-		ClientTransform bt = new ClientTransform();
-		bt.modify(clazz);
+		log.info("[RuneLitePlus] Transforming Stack Trace");
+		ErrorTransform et = new ErrorTransform();
+		et.modify(null);
 	}
-
 }

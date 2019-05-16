@@ -8,8 +8,10 @@ import javassist.NotFoundException;
 import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.ClassFile;
 import javassist.bytecode.ConstPool;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.rs.bytecode.ByteCodePatcher;
 
+@Slf4j
 public class ClientTransform implements Transform
 {
 
@@ -55,6 +57,13 @@ public class ClientTransform implements Transform
 
 		protectedGetMenuOptions.setName("getMenuOptions");
 		ct.addMethod(protectedGetMenuOptions);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformGetProjectiles() throws CannotCompileException, NotFoundException
@@ -87,7 +96,13 @@ public class ClientTransform implements Transform
 		javassist.bytecode.annotation.Annotation annotation = new javassist.bytecode.annotation.Annotation("Override", constPool);
 		attr.setAnnotation(annotation);
 		getProjectiles.getMethodInfo().addAttribute(attr);
-		System.out.println("Added override annotation for getprojectiles");
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformProtectedGetMenuTargets() throws CannotCompileException, NotFoundException
@@ -99,6 +114,13 @@ public class ClientTransform implements Transform
 
 		protectedGetMenuTargets.setName("getMenuTargets");
 		ct.addMethod(protectedGetMenuTargets);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformGetCollisionMaps() throws CannotCompileException, NotFoundException
@@ -116,6 +138,13 @@ public class ClientTransform implements Transform
 
 		getCollisionMaps = CtMethod.make("public net.runelite.rs.api.RSCollisionData[] getCollisionMaps() {	return getRsCollisionMaps(); }", ct);
 		ct.addMethod(getCollisionMaps);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformProtectedGetMenuIdentifiers() throws CannotCompileException, NotFoundException
@@ -127,6 +156,13 @@ public class ClientTransform implements Transform
 
 		protectedGetMenuIdentifiers.setName("getMenuIdentifiers");
 		ct.addMethod(protectedGetMenuIdentifiers);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformProtectedGetMenuTypes() throws CannotCompileException, NotFoundException
@@ -141,6 +177,13 @@ public class ClientTransform implements Transform
 		newProtectedGetMenuTypes.setName("getMenuTypes");
 
 		ct.addMethod(newProtectedGetMenuTypes);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformProtectedGetMenuActionParams0() throws CannotCompileException, NotFoundException
@@ -152,6 +195,13 @@ public class ClientTransform implements Transform
 
 		protectedGetMenuActionParams0.setName("getMenuActionParams0");
 		ct.addMethod(protectedGetMenuActionParams0);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformProtectedGetMenuActionParams1() throws CannotCompileException, NotFoundException
@@ -162,6 +212,13 @@ public class ClientTransform implements Transform
 		ct.removeMethod(protectedGetMenuActionParams1);
 		protectedGetMenuActionParams1.setName("getMenuActionParams1");
 		ct.addMethod(protectedGetMenuActionParams1);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformGetMenuEntries() throws CannotCompileException, NotFoundException
@@ -199,6 +256,13 @@ public class ClientTransform implements Transform
 				"	return arrmenuEntry;" +
 				"}", ct);
 		ct.addMethod(getMenuEntries);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformSetMenuEntries() throws CannotCompileException, NotFoundException
@@ -273,6 +337,13 @@ public class ClientTransform implements Transform
 			, ct);
 
 		ct.addMethod(onMenuOptionsChanged);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformRenderSelf() throws CannotCompileException
@@ -289,6 +360,13 @@ public class ClientTransform implements Transform
 		renderSelf.getMethodInfo().addAttribute(attr);
 
 		ct.addMethod(renderSelf);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformDraw2010Menu() throws CannotCompileException, NotFoundException
@@ -350,6 +428,13 @@ public class ClientTransform implements Transform
 				"}"
 			, ct);
 		ct.addMethod(draw2010Menu);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	//TODO: fix not being able to click far away objects towards top of screen only.
@@ -431,6 +516,13 @@ public class ClientTransform implements Transform
 				"	return false;" +
 				"}", ct);
 		ct.addMethod(boundingboxCheck2);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 
 	private void transformcheckClickBox() throws CannotCompileException, NotFoundException
@@ -539,5 +631,12 @@ public class ClientTransform implements Transform
 				"	}" +
 				"}", ct);
 		ct.addMethod(checkClickBox);
+
+		log.info(
+			"[RuneLitePlus] transformed {} ({}) at class: {}",
+			this.getClass().getSimpleName(),
+			new Object(){}.getClass().getEnclosingMethod().getName(),
+			ct.getName()
+		);
 	}
 }
