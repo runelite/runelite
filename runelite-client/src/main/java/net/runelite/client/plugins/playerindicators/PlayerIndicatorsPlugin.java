@@ -31,15 +31,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
-
 import net.runelite.api.Actor;
 import net.runelite.api.ClanMember;
 import net.runelite.api.ClanMemberRank;
 import static net.runelite.api.ClanMemberRank.UNRANKED;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.*;
-
-import net.runelite.api.HeadIcon;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.events.ClanMemberJoined;
@@ -128,7 +125,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			{
 				for (String name:callers)
 				{
-					Actor pile = null;
+					Actor pile;
 					String finalName = name.toLowerCase().replace("_", " ");
 					if (p.getName().toLowerCase().replace("_", " ").equals(finalName))
 					{
@@ -160,7 +157,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		getCallerList();
 	}
 	
-	public void getCallerList()
+	private void getCallerList()
 	{
 		callers.clear();
 		if (config.useClanchatRanks() && client.getClanMembers() != null)
@@ -187,7 +184,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		pileList = Arrays.asList(new String[callers.size()]);
 	}
 	
-	public boolean isCaller(Player player)
+	boolean isCaller(Player player)
 	{
 		if (callers != null)
 		{
@@ -200,18 +197,15 @@ public class PlayerIndicatorsPlugin extends Plugin
 				}
 			}
 		}
-		else {return false;}
+
 		return false;
 	}
 	
-	public boolean isPile(Player player)
+	boolean isPile(Player player)
 	{
 		if (Objects.nonNull(pileList) && pileList.size() > 0)
 		{
-			if (pileList.contains(player.getName()))
-			{
-				return true;
-			}
+			return pileList.contains(player.getName());
 		}
 		return false;
 	}
@@ -359,7 +353,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		}
 	}
 	
-	public static enum minimapSkullLocations
+	public enum minimapSkullLocations
 	{
 		BEFORE_NAME,
 		AFTER_NAME

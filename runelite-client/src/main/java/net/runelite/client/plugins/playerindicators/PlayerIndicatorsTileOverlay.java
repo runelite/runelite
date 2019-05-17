@@ -63,11 +63,6 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 					Polygon objectClickbox = player.getConvexHull();
 
 					renderPoly(graphics, config.pileColor(), objectClickbox);
-
-					if (objectClickbox != null)
-					{
-
-					}
 				}
 			});
 		}

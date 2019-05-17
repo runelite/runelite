@@ -51,7 +51,7 @@ public class PlayerIndicatorsService
 	{
 		if (!config.highlightOwnPlayer() && !config.drawClanMemberNames()
 			&& !config.highlightFriends() && !config.highlightNonClanMembers() && !config.highlightTargets()
-		&& !config.highlightPile() && !config.highlightCallers() && !config.highlightTeamMembers())
+			&& !config.highlightPile() && !config.highlightCallers() && !config.highlightTeamMembers())
 		{
 			return;
 		}
@@ -94,14 +94,14 @@ public class PlayerIndicatorsService
 			else if (config.highlightTargets() && PvPUtil.isAttackable(client, player) &&
 				!client.isFriended(player.getName(), false) && !player.isClanMember())
 			{
-			    if (config.skulledTargetsOnly() && player.getSkullIcon() != null)
-                {
-                    consumer.accept(player, config.getTargetColor());
-                }
-			    else if (!config.skulledTargetsOnly())
-                {
-                    consumer.accept(player, config.getTargetColor());
-                }
+				if (config.skulledTargetsOnly() && player.getSkullIcon() != null)
+				{
+					consumer.accept(player, config.getTargetColor());
+				}
+				else if (!config.skulledTargetsOnly())
+				{
+					consumer.accept(player, config.getTargetColor());
+				}
 			}
 			if (config.highlightCallers() && config.callers() != null && playerIndicatorsPlugin.isCaller(player))
 			{
