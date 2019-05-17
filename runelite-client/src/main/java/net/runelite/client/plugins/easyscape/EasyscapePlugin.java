@@ -301,7 +301,7 @@ public class EasyscapePlugin extends Plugin {
         }	
 
         if (config.getGlory()) {
-            if (target.toLowerCase().contains("amulet of glory")) {
+            if (target.toLowerCase().contains("amulet of glory") || target.toLowerCase().contains("amulet of eternal glory")) {
                 switch (config.getGloryMode()) {
                     case EDGEVILLE:
                         swap(client, GloryMode.EDGEVILLE.toString(), option, target);
