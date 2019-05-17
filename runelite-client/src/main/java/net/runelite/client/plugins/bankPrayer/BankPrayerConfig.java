@@ -30,48 +30,40 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("bankPrayer")
-public interface BankPrayerConfig extends Config
-{
-	enum PrayerBoosts {
-		NONE,
-		GILDED_ALTAR,
-		ECTOFUNTUS;
-	}
+public interface BankPrayerConfig extends Config {
+    enum PrayerBoosts {
+        NONE,
+        GILDED_ALTAR,
+        ECTOFUNTUS;
+    }
 
-	@ConfigItem(
-			keyName = "showEnsouled",
-			name = "Show ensouled heads",
-			description = "Show experience from ensouled heads.",
-			position = 1
-	)
-	default boolean showEnsouled()
-	{
-		return true;
-	}
+    @ConfigItem(
+            keyName = "showEnsouled",
+            name = "Show ensouled heads",
+            description = "Show experience from ensouled heads.",
+            position = 1
+    )
+    default boolean showEnsouled() {
+        return true;
+    }
 
-	@ConfigItem(
-			keyName = "showBones",
-			name = "Show bones",
-			description = "Show experience from bones.",
-			position = 2
-	)
-	default boolean showBones() { return true; }
+    @ConfigItem(
+            keyName = "showBones",
+            name = "Show bones",
+            description = "Show experience from bones.",
+            position = 2
+    )
+    default boolean showBones() {
+        return true;
+    }
 
-	@ConfigItem(
-			keyName = "prayerBoost",
-			name = "Prayer boost",
-			description = "Select appropriate option for your training.",
-			position = 3
-	)
-	default PrayerBoosts prayerBoost() {
-		return PrayerBoosts.ECTOFUNTUS;
-	}
-
-	@ConfigItem(
-			keyName = "targetLevel",
-			name = "Target level",
-			description = "This will let the plugin show how far you've come towards your goal.",
-			position = 4
-	)
-	default int targetLevel() {return 0;}
+    @ConfigItem(
+            keyName = "prayerBoost",
+            name = "Prayer boost",
+            description = "Select appropriate option for your training.",
+            position = 3
+    )
+    default PrayerBoosts prayerBoost() {
+        return PrayerBoosts.ECTOFUNTUS;
+    }
 }

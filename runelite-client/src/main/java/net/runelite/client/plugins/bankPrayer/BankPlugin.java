@@ -28,7 +28,6 @@ package net.runelite.client.plugins.bankPrayer;
 
 import com.google.inject.Provides;
 import net.runelite.api.Client;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -43,83 +42,77 @@ import net.runelite.client.util.StackFormatter;
 import javax.inject.Inject;
 
 @PluginDescriptor(
-	name = "Bank Prayer",
-		description = "Show the banked prayer experience of your bank and/or current tab",
-		tags = {"prayer", "bank", "ecto", "gilded", "altar", "ensouled", "head", "ensouled head"}
+        name = "Bank Prayer",
+        description = "Show the banked prayer experience of your bank and/or current tab",
+        tags = {"prayer", "bank", "ecto", "gilded", "altar", "ensouled", "head", "ensouled head"}
 )
-public class BankPlugin extends Plugin
-{
-	private static final String DEPOSIT_WORN = "Deposit worn items";
-	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
-	private static final String DEPOSIT_LOOT = "Deposit loot";
+public class BankPlugin extends Plugin {
 
-	@Inject
-	private Client client;
+    @Inject
+    private Client client;
 
-	@Inject
-	private ClientThread clientThread;
+    @Inject
+    private ClientThread clientThread;
 
-	@Inject
-	private BankCalculation bankCalculation;
+    @Inject
+    private BankCalculation bankCalculation;
 
-	@Inject
-	private BankPrayerConfig config;
+    @Inject
+    private BankPrayerConfig config;
 
-	@Inject
-	private BankSearch bankSearch;
+    @Inject
+    private BankSearch bankSearch;
 
-	private boolean forceRightClickFlag;
+    private boolean forceRightClickFlag;
 
-	@Provides
-	BankPrayerConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(BankPrayerConfig.class);
-	}
+    @Provides
+    BankPrayerConfig getConfig(ConfigManager configManager) {
+        return configManager.getConfig(BankPrayerConfig.class);
+    }
 
-	@Override
-	protected void shutDown() {
-		clientThread.invokeLater(() -> bankSearch.reset(false));
-		forceRightClickFlag = false;
-	}
+    @Override
+    protected void shutDown() {
+        clientThread.invokeLater(() -> bankSearch.reset(false));
+        forceRightClickFlag = false;
+    }
 
-	@Subscribe
-	public void onMenuShouldLeftClick(MenuShouldLeftClick event) {
+    @Subscribe
+    public void onMenuShouldLeftClick(MenuShouldLeftClick event) {
 
-	}
+    }
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event) {
+    @Subscribe
+    public void onMenuEntryAdded(MenuEntryAdded event) {
 
-	}
+    }
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
-	{
-		if (!event.getEventName().equals("setBankTitle")) {
-			return;
-		}
+    @Subscribe
+    public void onScriptCallbackEvent(ScriptCallbackEvent event) {
+        if (!event.getEventName().equals("setBankTitle")) {
+            return;
+        }
 
-		String strCurrentTab = "";
-		bankCalculation.calculate();
-		long ensouledExp = bankCalculation.getEnsouledExperience();
-		long boneExp = Math.round(bankCalculation.getBonesExperience());
-		long total = 0;
+        String strCurrentTab = "";
+        bankCalculation.calculate();
+        long ensouledExp = bankCalculation.getEnsouledExperience();
+        long boneExp = Math.round(bankCalculation.getBonesExperience());
+        long total = 0;
 
-		if(config.showEnsouled() && config.showBones()) {
-			total = ensouledExp + boneExp;
-		} else if (config.showEnsouled() && !config.showBones()) {
-			total = ensouledExp;
-		} else if (!config.showEnsouled() && config.showBones()) {
-			total = boneExp;
-		}
+        if (config.showEnsouled() && config.showBones()) {
+            total = ensouledExp + boneExp;
+        } else if (config.showEnsouled() && !config.showBones()) {
+            total = ensouledExp;
+        } else if (!config.showEnsouled() && config.showBones()) {
+            total = boneExp;
+        }
 
-		if(total != 0) {
-			strCurrentTab += " (Prayer Experience: ";
-			strCurrentTab += StackFormatter.quantityToStackSize(total) + ")";
-		}
+        if (total != 0) {
+            strCurrentTab += " (Prayer Experience: ";
+            strCurrentTab += StackFormatter.quantityToStackSize(total) + ")";
+        }
 
-		String[] stringStack = client.getStringStack();
-		int stringStackSize = client.getStringStackSize();
-		stringStack[stringStackSize - 1] += strCurrentTab;
-	}
+        String[] stringStack = client.getStringStack();
+        int stringStackSize = client.getStringStackSize();
+        stringStack[stringStackSize - 1] += strCurrentTab;
+    }
 }
