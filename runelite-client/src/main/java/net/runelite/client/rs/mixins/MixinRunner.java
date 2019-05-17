@@ -25,8 +25,18 @@
 
 package net.runelite.client.rs.mixins;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import net.runelite.client.rs.mixins.transformers.*;
+import net.runelite.client.rs.mixins.transformers.AppendTransformer;
+import net.runelite.client.rs.mixins.transformers.DoNothingTransformer;
+import net.runelite.client.rs.mixins.transformers.InjectTransformer;
+import net.runelite.client.rs.mixins.transformers.InterfaceTransformer;
+import net.runelite.client.rs.mixins.transformers.OverwriteSanityCheck;
+import net.runelite.client.rs.mixins.transformers.OverwriteTransformer;
+import net.runelite.client.rs.mixins.transformers.PrependTransformer;
+import net.runelite.client.rs.mixins.transformers.ProtectTransformer;
+import net.runelite.client.rs.mixins.transformers.SanityChecker;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -34,18 +44,15 @@ import org.objectweb.asm.commons.ClassRemapper;
 import org.objectweb.asm.commons.Remapper;
 import org.objectweb.asm.tree.ClassNode;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
-
 @RequiredArgsConstructor
 public class MixinRunner
 {
-	
+
 	private final Map<String, byte[]> classes;
 	private final Map<String, byte[]> patches;
-	
+
 	public Map<String, byte[]> run()
-	throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+		throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
 	{
 		runVisitor(InterfaceTransformer.class);
 		runVisitor(OverwriteTransformer.class);
@@ -55,11 +62,11 @@ public class MixinRunner
 		// (test method:    Projectile.rl$$init()V    )
 		runVisitor(PrependTransformer.class);
 		runRemapper(ProtectTransformer.class);
-		
+
 		recalcMaxes();
 		return classes;
 	}
-	
+
 	private void runRemapper(Class<? extends Remapper> clazz) throws IllegalAccessException, InstantiationException
 	{
 		for (Map.Entry<String, byte[]> entry : classes.entrySet())
@@ -72,19 +79,19 @@ public class MixinRunner
 			ClassReader cr = new ClassReader(entry.getValue());
 			ClassWriter cw = new ClassWriter(cr, 1);
 			cr.accept(new ClassRemapper(cw, inst), 0);
-			
+
 			entry.setValue(cw.toByteArray());
 		}
 	}
-	
+
 	private void runVisitor(Class<? extends ClassVisitor> clazz)
-	throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException
+		throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException
 	{
 		runVisitor(clazz, 1);
 	}
-	
+
 	private void runVisitor(Class<? extends ClassVisitor> clazz, int flags)
-	throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException
+		throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException
 	{
 		for (Map.Entry<String, byte[]> entry : classes.entrySet())
 		{
@@ -98,21 +105,21 @@ public class MixinRunner
 			ClassNode node = new ClassNode();
 			cr.accept(node, 0);
 			ClassVisitor inst = clazz.getConstructor(ClassVisitor.class, byte[].class, ClassNode.class).newInstance(cw,
-					patch, node);
+				patch, node);
 			cr.accept(inst, 0);
-			
+
 			entry.setValue(cw.toByteArray());
 		}
 	}
-	
+
 	private void runSanityChecker(Class<? extends SanityChecker> clazz)
-	throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException
+		throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException
 	{
 		runSanityChecker(clazz, 1);
 	}
-	
+
 	private void runSanityChecker(Class<? extends SanityChecker> clazz, int flags)
-	throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException
+		throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException
 	{
 		for (Map.Entry<String, byte[]> entry : patches.entrySet())
 		{
@@ -124,11 +131,11 @@ public class MixinRunner
 			cr.accept(inst, 0);
 		}
 	}
-	
+
 	private void recalcMaxes()
-	throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
+		throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
 	{
 		runVisitor(DoNothingTransformer.class, 3);
 	}
-	
+
 }

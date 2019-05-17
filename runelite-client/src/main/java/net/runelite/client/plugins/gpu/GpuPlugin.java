@@ -718,8 +718,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	public void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
-							   SceneTilePaint paint, int tileZ, int tileX, int tileY,
-							   int zoom, int centerX, int centerY)
+							SceneTilePaint paint, int tileZ, int tileX, int tileY,
+							int zoom, int centerX, int centerY)
 	{
 		if (paint.getBufferLen() > 0)
 		{
@@ -744,8 +744,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	}
 
 	public void drawSceneModel(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
-							   SceneTileModel model, int tileZ, int tileX, int tileY,
-							   int zoom, int centerX, int centerY)
+							SceneTileModel model, int tileZ, int tileX, int tileY,
+							int zoom, int centerX, int centerY)
 	{
 		if (model.getBufferLen() > 0)
 		{

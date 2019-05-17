@@ -53,7 +53,8 @@ public class NPCManager
 
 	/**
 	 * Returns health for target NPC based on it's combat level and name
-	 * @param name npc name
+	 *
+	 * @param name        npc name
 	 * @param combatLevel npc combat level
 	 * @return health or null if HP is unknown
 	 */

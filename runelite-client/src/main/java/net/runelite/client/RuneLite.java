@@ -59,7 +59,6 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
-import net.runelite.client.plugins.config.ConfigPanel;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
@@ -86,10 +85,10 @@ public class RuneLite
 	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File PLUGIN_DIR = new File(RUNELITE_DIR, "plugins");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
-    public static RuneLiteSplashScreen splashScreen = new RuneLiteSplashScreen();
+	static final RuneLiteSplashScreen splashScreen = new RuneLiteSplashScreen();
 
 
-    @Getter
+	@Getter
 	private static Injector injector;
 
 	@Inject
@@ -242,7 +241,7 @@ public class RuneLite
 
 		// The submessage is shown in case the connection is slow
 		splashScreen.setMessage("Starting RuneLite Injector");
-		splashScreen.setSubMessage( " ");
+		splashScreen.setSubMessage(" ");
 
 		final long start = System.currentTimeMillis();
 

@@ -123,7 +123,7 @@ public class PluginListItem extends JPanel
 	 * if there is no configuration associated with the plugin.
 	 */
 	PluginListItem(ConfigPanel configPanel, ConfigManager configManager, Plugin plugin, PluginDescriptor descriptor,
-				   @Nullable Config config, @Nullable ConfigDescriptor configDescriptor)
+				@Nullable Config config, @Nullable ConfigDescriptor configDescriptor)
 	{
 		this(configPanel, configManager, plugin, config, configDescriptor,
 			descriptor.name(), descriptor.description(), descriptor.tags());
@@ -133,13 +133,13 @@ public class PluginListItem extends JPanel
 	 * Creates a new {@code PluginListItem} for a core configuration.
 	 */
 	PluginListItem(ConfigPanel configPanel, ConfigManager configManager, Config config, ConfigDescriptor configDescriptor,
-				   String name, String description, String... tags)
+				String name, String description, String... tags)
 	{
 		this(configPanel, configManager, null, config, configDescriptor, name, description, tags);
 	}
 
 	private PluginListItem(ConfigPanel configPanel, ConfigManager configManager, @Nullable Plugin plugin, @Nullable Config config,
-						   @Nullable ConfigDescriptor configDescriptor, String name, String description, String... tags)
+						@Nullable ConfigDescriptor configDescriptor, String name, String description, String... tags)
 	{
 		this.configPanel = configPanel;
 		this.configManager = configManager;

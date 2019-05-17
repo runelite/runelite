@@ -226,7 +226,7 @@ public class IDAStarMM extends IDAStar
 							Point locSwap = new Point(locBlank.getX(), locBlank.getY() + 1);
 							swap(locBlank, locSwap);
 						}
-						else if (distY <= -1)
+						else
 						{
 							Point locSwap = new Point(locBlank.getX(), locBlank.getY() - 1);
 							swap(locBlank, locSwap);
@@ -252,7 +252,7 @@ public class IDAStarMM extends IDAStar
 							Point locSwap = new Point(locBlank.getX() + 1, locBlank.getY());
 							swap(locBlank, locSwap);
 						}
-						else if (distX <= -1)
+						else
 						{
 							Point locSwap = new Point(locBlank.getX() - 1, locBlank.getY());
 							swap(locBlank, locSwap);

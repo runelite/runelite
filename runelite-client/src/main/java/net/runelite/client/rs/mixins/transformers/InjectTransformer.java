@@ -36,26 +36,26 @@ import org.objectweb.asm.tree.MethodNode;
 
 public class InjectTransformer extends ClassVisitor
 {
-	
+
 	private final byte[] patch;
 	private ClassNode node;
 	private String className;
 	private boolean patching = false;
-	
+
 	public InjectTransformer(ClassVisitor classVisitor, byte[] patch, ClassNode node)
 	{
 		super(Opcodes.ASM6, classVisitor);
 		this.patch = patch;
 		this.node = node;
 	}
-	
+
 	@Override
 	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces)
 	{
 		className = name;
 		super.visit(version, access, name, signature, superName, interfaces);
 	}
-	
+
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions)
 	{
@@ -63,8 +63,8 @@ public class InjectTransformer extends ClassVisitor
 		{
 			return super.visitMethod(access, name, descriptor, signature, exceptions);
 		}
-		if (name.startsWith("prepend$") || name.startsWith("append$")||
-				(patching && name.startsWith("<")))
+		if (name.startsWith("prepend$") || name.startsWith("append$") ||
+			(patching && name.startsWith("<")))
 		{
 			return null;
 		}
@@ -76,7 +76,7 @@ public class InjectTransformer extends ClassVisitor
 		{
 			MethodNode node = (MethodNode) obj;
 			if ((node.access == access && node.name.equals(name) && node.desc.equals(descriptor)) &&
-					RefUtils.checkAnnotation(node, "Inject"))
+				RefUtils.checkAnnotation(node, "Inject"))
 			{
 				mv.visitCode();
 				node.accept(new MethodReflector(mv));
@@ -85,17 +85,17 @@ public class InjectTransformer extends ClassVisitor
 		}
 		return mv;
 	}
-	
+
 	@Override
 	public void visitEnd()
 	{
-		
+
 		if (patch == null)
 		{
 			super.visitEnd();
 			return;
 		}
-		
+
 		ClassReader cr = new ClassReader(patch);
 		ClassNode patchNode = new ClassNode(Opcodes.ASM6);
 		cr.accept(patchNode, 0);
@@ -106,10 +106,10 @@ public class InjectTransformer extends ClassVisitor
 			if (RefUtils.checkAnnotation(node, "Inject"))
 			{
 				visitMethod(node.access, node.name, node.desc, node.signature,
-						(String[]) node.exceptions.toArray(new String[0]));
+					(String[]) node.exceptions.toArray(new String[0]));
 			}
 		}
-		
+
 		for (Object obj : patchNode.fields)
 		{
 			FieldNode node = (FieldNode) obj;
@@ -121,5 +121,5 @@ public class InjectTransformer extends ClassVisitor
 		patching = false;
 		super.visitEnd();
 	}
-	
+
 }

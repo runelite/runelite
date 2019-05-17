@@ -228,11 +228,6 @@ public class RunecraftPlugin extends Plugin
 		client.setMenuEntries(newEntries);
 	}
 
-	private int searchIndex(MenuEntry[] entries, String option, String target)
-	{
-		return searchIndex(entries, option, target, false);
-	}
-
 	private int searchIndex(MenuEntry[] entries, String option, String target, boolean contains)
 	{
 		for (int i = entries.length - 1; i >= 0; i--)

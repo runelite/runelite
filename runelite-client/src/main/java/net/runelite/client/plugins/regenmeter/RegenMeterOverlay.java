@@ -92,7 +92,7 @@ public class RegenMeterOverlay extends Overlay
 					g.setColor(RegenMeterOverlay.OVERLAY_COLOR);
 					g.fillOval(
 						bounds.x + OFFSET,
-						bounds.y + (int) (bounds.height / 2 - (DIAMETER) / 2),
+						bounds.y + (int) (bounds.height / 2D - (DIAMETER) / 2D),
 						(int) DIAMETER, (int) DIAMETER);
 				}
 			}
@@ -112,7 +112,7 @@ public class RegenMeterOverlay extends Overlay
 		}
 		Rectangle bounds = widget.getBounds();
 
-		Arc2D.Double arc = new Arc2D.Double(bounds.x + OFFSET, bounds.y + (bounds.height / 2 - DIAMETER / 2), DIAMETER, DIAMETER, 90.d, -360.d * percent, Arc2D.OPEN);
+		Arc2D.Double arc = new Arc2D.Double(bounds.x + OFFSET, bounds.y + (bounds.height / 2D - DIAMETER / 2D), DIAMETER, DIAMETER, 90.d, -360.d * percent, Arc2D.OPEN);
 		final Stroke STROKE = new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
 		g.setStroke(STROKE);
 		g.setColor(color);

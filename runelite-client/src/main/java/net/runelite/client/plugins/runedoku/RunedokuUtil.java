@@ -9,7 +9,7 @@ import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 
-public class RunedokuUtil
+class RunedokuUtil
 {
 
 	private final RunedokuConfig config;
@@ -20,7 +20,7 @@ public class RunedokuUtil
 		this.config = config;
 	}
 
-	protected Color sudokuPieceToColor(int i)
+	Color sudokuPieceToColor(int i)
 	{
 		switch (i)
 		{
@@ -47,7 +47,7 @@ public class RunedokuUtil
 		}
 	}
 
-	protected Color referenceColors(int i)
+	Color referenceColors(int i)
 	{
 		switch (i)
 		{
@@ -80,7 +80,7 @@ public class RunedokuUtil
 	 * @param board
 	 * @return
 	 */
-	protected ArrayList<Integer> makeSimple(int[][] board)
+	ArrayList<Integer> makeSimple(int[][] board)
 	{
 		ArrayList<Integer> list = new ArrayList<>();
 		for (int i = 0; i < 9; i++)
@@ -99,7 +99,7 @@ public class RunedokuUtil
 	 * @param rect
 	 * @return
 	 */
-	protected Polygon RectangleToPolygon(Rectangle rect)
+	public static Polygon rectangleToPolygon(Rectangle rect)
 	{
 		int[] xpoints = {rect.x, rect.x + rect.width, rect.x + rect.width, rect.x};
 		int[] ypoints = {rect.y, rect.y, rect.y + rect.height, rect.y + rect.height};
@@ -113,7 +113,7 @@ public class RunedokuUtil
 	 * @return sudoku table that the client currently sees in a 2d array
 	 * @author gazivodag
 	 */
-	protected int[][] createTable(Client client)
+	int[][] createTable(Client client)
 	{
 		int[][] myArr = new int[9][9];
 		Widget sudokuScreen = client.getWidget(288, 131);

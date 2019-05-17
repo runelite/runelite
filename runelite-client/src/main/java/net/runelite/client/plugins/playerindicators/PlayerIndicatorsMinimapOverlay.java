@@ -97,7 +97,7 @@ public class PlayerIndicatorsMinimapOverlay extends Overlay
 					{
 						int width = graphics.getFontMetrics().stringWidth(name);
 						int height = graphics.getFontMetrics().getHeight();
-						if (config.skullLocation().equals(PlayerIndicatorsPlugin.minimapSkullLocations.AFTER_NAME))
+						if (config.skullLocation().equals(PlayerIndicatorsPlugin.MinimapSkullLocations.AFTER_NAME))
 						{
 							OverlayUtil.renderImageLocation(graphics, new Point(minimapLocation.getX()
 									+ width, minimapLocation.getY() - height),

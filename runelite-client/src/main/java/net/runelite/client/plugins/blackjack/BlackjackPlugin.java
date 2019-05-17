@@ -59,11 +59,11 @@ public class BlackjackPlugin extends Plugin
 	@Inject
 	Client client;
 
-	private static long timeSinceKnockout;
-	private static long timeSinceAggro;
+	private long timeSinceKnockout;
+	private long timeSinceAggro;
 
 	@Getter
-	private static long currentGameTick;
+	private long currentGameTick;
 
 	@Override
 	public void configure(Binder binder)
@@ -109,7 +109,7 @@ public class BlackjackPlugin extends Plugin
 	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
 		String target = menuEntryAdded.getTarget().toLowerCase();
-		if ((target.contains("bandit") | target.contains("menaphite thug")))
+		if ((target.contains("bandit") || target.contains("menaphite thug")))
 		{
 			Quest quest = Quest.THE_FEUD;
 			if (quest.getState(client) == QuestState.FINISHED)

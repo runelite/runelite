@@ -50,7 +50,7 @@ class SessionClient
 		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 		{
 			ResponseBody body = response.body();
-			
+
 			InputStream in = body.byteStream();
 			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), UUID.class);
 		}

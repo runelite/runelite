@@ -101,8 +101,8 @@ public class WidgetOverlay extends Overlay
 		int y = bounds.y;
 		x = Math.max(parent.x, x);
 		y = Math.max(parent.y, y);
-		x = Math.min((int)parent.getMaxX() - bounds.width, x);
-		y = Math.min((int)parent.getMaxY() - bounds.height, y);
+		x = Math.min((int) parent.getMaxX() - bounds.width, x);
+		y = Math.min((int) parent.getMaxY() - bounds.height, y);
 		bounds.setLocation(x, y);
 		return bounds;
 	}
@@ -123,8 +123,8 @@ public class WidgetOverlay extends Overlay
 		int y = bounds.y;
 		x = Math.max(parent.x, x);
 		y = Math.max(parent.y, y);
-		x = Math.min((int)parent.getMaxX() - bounds.width, x);
-		y = Math.min((int)parent.getMaxY() - bounds.height, y);
+		x = Math.min((int) parent.getMaxX() - bounds.width, x);
+		y = Math.min((int) parent.getMaxY() - bounds.height, y);
 		bounds.setLocation(x, y);
 		widget.setOriginalX(0);
 		widget.setOriginalY(0);

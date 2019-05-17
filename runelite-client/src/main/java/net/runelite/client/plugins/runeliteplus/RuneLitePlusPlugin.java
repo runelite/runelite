@@ -52,8 +52,8 @@ import net.runelite.client.ui.ClientUI;
 public class RuneLitePlusPlugin extends Plugin
 {
 	public static boolean customPresenceEnabled = false;
-	public static String rlPlusDiscordApp = "560644885250572289";
-	public static String rlDiscordApp = "409416265891971072";
+	public static final String rlPlusDiscordApp = "560644885250572289";
+	public static final String rlDiscordApp = "409416265891971072";
 
 	@Inject
 	public RuneLitePlusConfig config;

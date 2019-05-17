@@ -162,6 +162,7 @@ public class PyramidPlunderPlugin extends Plugin
 				break;
 			case LOADING:
 				obstacles.clear();
+				break;
 			case LOGGED_IN:
 				if (!isInRegion())
 				{

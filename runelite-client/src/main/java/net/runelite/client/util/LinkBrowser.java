@@ -48,6 +48,7 @@ public class LinkBrowser
 	/**
 	 * Tries to navigate to specified URL in browser. In case operation fails, displays message box with message
 	 * and copies link to clipboard to navigate to.
+	 *
 	 * @param url url to open
 	 * @return true if operation was successful
 	 */
@@ -131,6 +132,7 @@ public class LinkBrowser
 
 	/**
 	 * Open swing message box with specified message and copy data to clipboard
+	 *
 	 * @param message message to show
 	 */
 	private static void showMessageBox(final String message, final String data)

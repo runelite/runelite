@@ -121,7 +121,7 @@ public class WhaleWatchersPlugin extends Plugin
 	{
 		if (config.showDamageCounter())
 		{
-			if (!(event.getActor() == client.getLocalPlayer() |
+			if (!(event.getActor() == client.getLocalPlayer() ||
 				event.getActor() == client.getLocalPlayer().getInteracting()))
 			{
 				return;

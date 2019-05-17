@@ -57,10 +57,10 @@ public class ContainableFrame extends JFrame
 		if (containedInScreen)
 		{
 			Rectangle bounds = this.getGraphicsConfiguration().getBounds();
-			x = Math.max(x, (int)bounds.getX());
-			x = Math.min(x, (int)(bounds.getX() + bounds.getWidth() - this.getWidth()));
-			y = Math.max(y, (int)bounds.getY());
-			y = Math.min(y, (int)(bounds.getY() + bounds.getHeight() - this.getHeight()));
+			x = Math.max(x, (int) bounds.getX());
+			x = Math.min(x, (int) (bounds.getX() + bounds.getWidth() - this.getWidth()));
+			y = Math.max(y, (int) bounds.getY());
+			y = Math.min(y, (int) (bounds.getY() + bounds.getHeight() - this.getHeight()));
 		}
 
 		super.setLocation(x, y);
@@ -72,12 +72,12 @@ public class ContainableFrame extends JFrame
 		if (containedInScreen)
 		{
 			Rectangle bounds = this.getGraphicsConfiguration().getBounds();
-			width = Math.min(width, width - (int)bounds.getX() + x);
-			x = Math.max(x, (int)bounds.getX());
-			height = Math.min(height, height - (int)bounds.getY() + y);
-			y = Math.max(y, (int)bounds.getY());
-			width = Math.min(width, (int)(bounds.getX() + bounds.getWidth()) - x);
-			height = Math.min(height, (int)(bounds.getY() + bounds.getHeight()) - y);
+			width = Math.min(width, width - (int) bounds.getX() + x);
+			x = Math.max(x, (int) bounds.getX());
+			height = Math.min(height, height - (int) bounds.getY() + y);
+			y = Math.max(y, (int) bounds.getY());
+			width = Math.min(width, (int) (bounds.getX() + bounds.getWidth()) - x);
+			height = Math.min(height, (int) (bounds.getY() + bounds.getHeight()) - y);
 		}
 
 		super.setBounds(x, y, width, height);
@@ -86,6 +86,7 @@ public class ContainableFrame extends JFrame
 	/**
 	 * Expand frame by specified value. If the frame is going to be expanded outside of screen push the frame to
 	 * the side.
+	 *
 	 * @param value size to expand frame by
 	 */
 	public void expandBy(final int value)
@@ -122,7 +123,7 @@ public class ContainableFrame extends JFrame
 				if (!isFrameCloseToRightEdge() || isFrameCloseToLeftEdge())
 				{
 					// Move the window to the edge
-					newWindowX = (int)(screenBounds.getX() + screenBounds.getWidth()) - getWidth();
+					newWindowX = (int) (screenBounds.getX() + screenBounds.getWidth()) - getWidth();
 				}
 
 				// Expand the window to the left as the user probably don't want the
@@ -141,6 +142,7 @@ public class ContainableFrame extends JFrame
 	/**
 	 * Contract frame by specified value. If new frame size is less than it's minimum size, force the minimum size.
 	 * If the frame was pushed from side before, restore it's original position.
+	 *
 	 * @param value value to contract frame by
 	 */
 	public void contractBy(final int value)

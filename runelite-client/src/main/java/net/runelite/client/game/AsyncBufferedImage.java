@@ -36,6 +36,7 @@ import javax.swing.JLabel;
 public class AsyncBufferedImage extends BufferedImage
 {
 	private final List<Runnable> listeners = new CopyOnWriteArrayList<>();
+
 	public AsyncBufferedImage(int width, int height, int imageType)
 	{
 		super(width, height, imageType);

@@ -80,7 +80,8 @@ class TaskBox extends JPanel
 		container.setLayout(new BorderLayout());
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		SwingUtilities.invokeLater(() -> {
+		SwingUtilities.invokeLater(() ->
+		{
 			BufferedImage taskImg = slayerPlugin.getImageForTask(Task.getTask(taskData.getTaskName()));
 			JLabel taskIcon = new JLabel(new ImageIcon(taskImg));
 			taskIcon.setHorizontalAlignment(SwingConstants.CENTER);

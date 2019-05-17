@@ -364,9 +364,9 @@ public class ConfigManager
 		}
 
 		itemGroups = itemGroups.stream().sorted((a, b) -> ComparisonChain.start()
-				.compare(a.getGroup(), b.getGroup())
-				.result())
-				.collect(Collectors.toList());
+			.compare(a.getGroup(), b.getGroup())
+			.result())
+			.collect(Collectors.toList());
 
 		return new ConfigDescriptor(group, itemGroups);
 	}
@@ -511,22 +511,22 @@ public class ConfigManager
 		{
 			return Duration.ofMillis(Long.parseLong(str));
 		}
-        if (type == Map.class)
-        {
-            Map<String, String> output = new HashMap<>();
-            str = str.substring(1, str.length() - 1);
-            String[] splitStr = str.split(", ");
-            for (String s : splitStr)
-            {
-                String[] keyVal = s.split("=");
-                if (keyVal.length > 1)
-                {
-                    output.put(keyVal[0], keyVal[1]);
-                }
-            }
+		if (type == Map.class)
+		{
+			Map<String, String> output = new HashMap<>();
+			str = str.substring(1, str.length() - 1);
+			String[] splitStr = str.split(", ");
+			for (String s : splitStr)
+			{
+				String[] keyVal = s.split("=");
+				if (keyVal.length > 1)
+				{
+					output.put(keyVal[0], keyVal[1]);
+				}
+			}
 
-            return output;
-        }
+			return output;
+		}
 		return str;
 	}
 

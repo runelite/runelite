@@ -266,9 +266,9 @@ public interface PlayerIndicatorsConfig extends Config
 		description = "The location of the skull icon for skulled players",
 		group = "Target Indicator"
 	)
-	default PlayerIndicatorsPlugin.minimapSkullLocations skullLocation()
+	default PlayerIndicatorsPlugin.MinimapSkullLocations skullLocation()
 	{
-		return PlayerIndicatorsPlugin.minimapSkullLocations.AFTER_NAME;
+		return PlayerIndicatorsPlugin.MinimapSkullLocations.AFTER_NAME;
 	}
 
 	@ConfigItem(

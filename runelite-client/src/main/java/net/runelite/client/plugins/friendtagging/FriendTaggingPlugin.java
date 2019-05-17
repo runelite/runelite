@@ -53,7 +53,7 @@ import org.apache.commons.lang3.ArrayUtils;
 )
 public class FriendTaggingPlugin extends Plugin
 {
-	public static ConcurrentHashMap<String, String> taggedFriends = new ConcurrentHashMap<>();
+	public static final ConcurrentHashMap<String, String> taggedFriends = new ConcurrentHashMap<>();
 
 	private static final String CONFIG_GROUP = "friendtagging";
 	private static final int CHARACTER_LIMIT = 30;

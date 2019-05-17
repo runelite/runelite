@@ -156,7 +156,7 @@ public class DemonicGorillaPlugin extends Plugin
 	}
 
 	private void checkGorillaAttackStyleSwitch(DemonicGorilla gorilla,
-											   final DemonicGorilla.AttackStyle... protectedStyles)
+											final DemonicGorilla.AttackStyle... protectedStyles)
 	{
 		if (gorilla.getAttacksUntilSwitch() <= 0 ||
 			gorilla.getNextPosibleAttackStyles().isEmpty())

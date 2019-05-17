@@ -100,7 +100,7 @@ public class InfoBoxManager
 	public void cull()
 	{
 		boolean culled = false;
-		for (Iterator<InfoBox> it = infoBoxes.iterator(); it.hasNext();)
+		for (Iterator<InfoBox> it = infoBoxes.iterator(); it.hasNext(); )
 		{
 			InfoBox box = it.next();
 

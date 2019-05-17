@@ -99,7 +99,7 @@ class CombatLevelOverlay extends Overlay
 		int prayerLevel = client.getRealSkillLevel(Skill.PRAYER);
 
 		// calculate initial required numbers
-		double base = DEF_HP_MULT * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2));
+		double base = DEF_HP_MULT * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2D));
 		double melee = ATT_STR_MULT * (attackLevel + strengthLevel);
 		double range = RANGE_MAGIC_MULT * Math.floor(rangedLevel * RANGE_MAGIC_LEVEL_MULT);
 		double mage = RANGE_MAGIC_MULT * Math.floor(magicLevel * RANGE_MAGIC_LEVEL_MULT);

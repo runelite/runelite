@@ -100,6 +100,7 @@ public class PlayerInfoCustomIndicator extends InfoBox
 				break;
 			case SPECIAL:
 				currLvl = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) / 1000.0F;
+				break;
 			case WORLD:
 				currLvl = 1000; // hacky
 		}

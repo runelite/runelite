@@ -24,11 +24,10 @@
  */
 package net.runelite.client.config;
 
-import lombok.RequiredArgsConstructor;
-import lombok.Getter;
-import net.runelite.client.ui.FontManager;
-
 import java.awt.Font;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.client.ui.FontManager;
 
 @Getter
 @RequiredArgsConstructor

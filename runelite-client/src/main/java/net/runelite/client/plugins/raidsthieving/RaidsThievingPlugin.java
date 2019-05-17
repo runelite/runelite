@@ -126,7 +126,7 @@ public class RaidsThievingPlugin extends Plugin
 
 		if (obj.getId() == RaidsThievingConstants.EMPTY_TROUGH)
 		{
-			ThievingRoomType type = ThievingRoomType.IdentifyByInstancePoint(absLoc);
+			ThievingRoomType type = ThievingRoomType.identifyByInstancePoint(absLoc);
 
 			if (type != null)
 			{

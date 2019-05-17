@@ -34,5 +34,5 @@ public abstract class SanityChecker extends ClassVisitor implements Opcodes
 	{
 		super(i, classVisitor);
 	}
-	
+
 }

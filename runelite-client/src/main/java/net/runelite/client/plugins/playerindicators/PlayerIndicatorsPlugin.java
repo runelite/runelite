@@ -365,7 +365,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		}
 	}
 
-	public enum minimapSkullLocations
+	public enum MinimapSkullLocations
 	{
 		BEFORE_NAME,
 		AFTER_NAME

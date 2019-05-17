@@ -60,7 +60,7 @@ final class ClientPanel extends JPanel
 		// and draw anywhere without it leaving artifacts
 		if (client instanceof Client)
 		{
-			((Client)client).setGameDrawingMode(2);
+			((Client) client).setGameDrawingMode(2);
 		}
 	}
 }

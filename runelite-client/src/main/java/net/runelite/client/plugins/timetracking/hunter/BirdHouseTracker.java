@@ -73,7 +73,7 @@ public class BirdHouseTracker
 
 	@Inject
 	private BirdHouseTracker(Client client, ItemManager itemManager, ConfigManager configManager,
-							 TimeTrackingConfig config, Notifier notifier)
+							TimeTrackingConfig config, Notifier notifier)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
