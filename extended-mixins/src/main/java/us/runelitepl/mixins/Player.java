@@ -51,7 +51,7 @@ public class Player
 	@Overwrite
 	public SkullIcon getSkullIcon()
 	{
-		switch(getHeadIconPk())
+		switch (getHeadIconPk())
 		{
 			case 0:
 				return SkullIcon.SKULL;

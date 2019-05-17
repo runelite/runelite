@@ -41,170 +41,170 @@ import java.util.List;
 
 public class Client
 {
-	
+
 	@Provided
 	public static boolean isHidingEntities;
-	
+
 	@Provided
 	public static boolean hideLocalPlayer2D;
-	
+
 	@Provided
 	public static boolean hideLocalPlayer;
-	
+
 	@Provided
 	public static boolean hidePlayers2D;
-	
+
 	@Provided
 	public static boolean hidePlayers;
-	
+
 	@Provided
 	public static boolean hideAttackers;
-	
+
 	@Provided
 	public static boolean hideProjectiles;
-	
+
 	@Provided
 	public static boolean hideNPCs2D;
-	
+
 	@Provided
 	public static boolean hideNPCs;
-	
+
 	@Provided
 	public static boolean hideFriends;
-	
+
 	@Provided
 	public static boolean hideClanMates;
-	
+
 	@Inject
 	public static Client INSTANCE;
-	
+
 	@Inject
 	public static boolean printMenuActions;
-	
+
 	@Provided
 	public static int oldMenuEntryCount;
-	
+
 	@Reobfuscate
 	@Provided
 	static boolean renderSelf;
-	
+
 	@Provided
 	public static final int[] rl$modelViewportXs = new int[0];
-	
+
 	@Provided
 	public static final int[] rl$modelViewportYs = new int[0];
-	
+
 	@Prepend
 	private void prepend$rl$$init()
 	{
 		INSTANCE = this;
 		printMenuActions = false;
 	}
-	
+
 	@Inject
 	public void toggleRenderSelf()
 	{
 		renderSelf = !renderSelf;
 	}
-	
+
 	@Provided
 	public int getMenuOptionCount()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public String[] getMenuOptions()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public String[] getMenuTargets()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public int[] getMenuIdentifiers()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public int[] getMenuTypes()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public int[] getMenuActionParams0()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public int[] getMenuActionParams1()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public boolean[] getMenuForceLeftClick()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public void setMenuOptionCount(int i)
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public Callbacks getCallbacks()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public RSCollisionData[] getRsCollisionMaps()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public RSDeque getProjectilesDeque()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Overwrite
 	public List getProjectiles()
 	{
 		List list = new java.util.ArrayList();
 		RSNode head = getProjectilesDeque().getHead();
 		for (Node node = ((Node) head).getNext();
-				node != head;
-				node = node.getNext())
+			node != head;
+			node = node.getNext())
 		{
 			list.add(node);
 		}
 		return list;
 	}
-	
+
 	@Inject
 	public void setPrintMenuActions(boolean b)
 	{
 		printMenuActions = b;
 	}
-	
+
 	@Overwrite
 	public RSCollisionData[] getCollisionMaps()
 	{
 		return getRsCollisionMaps();
 	}
-	
+
 	@Overwrite
 	public void setMenuEntries(MenuEntry[] arrmenuEntry)
 	{
@@ -242,7 +242,7 @@ public class Client
 		}
 		while (true);
 	}
-	
+
 	@Overwrite
 	public static void onMenuOptionsChanged(int n2)
 	{
@@ -254,28 +254,28 @@ public class Client
 			return;
 		}
 		net.runelite.api.events.MenuEntryAdded menuEntryAdded =
-				new net.runelite.api.events.MenuEntryAdded(INSTANCE.getMenuOptions()[n3 - 1],
-						INSTANCE.getMenuTargets()[n3 - 1],
-						INSTANCE.getMenuTypes()[n3 - 1],
-						INSTANCE.getMenuIdentifiers()[n3 - 1],
-						INSTANCE.getMenuActionParams0()[n3 - 1],
-						INSTANCE.getMenuActionParams1()[n3 - 1]);
+			new net.runelite.api.events.MenuEntryAdded(INSTANCE.getMenuOptions()[n3 - 1],
+				INSTANCE.getMenuTargets()[n3 - 1],
+				INSTANCE.getMenuTypes()[n3 - 1],
+				INSTANCE.getMenuIdentifiers()[n3 - 1],
+				INSTANCE.getMenuActionParams0()[n3 - 1],
+				INSTANCE.getMenuActionParams1()[n3 - 1]);
 		INSTANCE.getCallbacks().post(menuEntryAdded);
 	}
-	
+
 	@Overwrite
 	public static void copy$processClientError(String s, Throwable e, byte b)
 	{
 		System.err.println("[RL+] Error thrown: " + s);
 		e.printStackTrace();
 	}
-	
+
 	@Inject
 	public net.runelite.api.MouseRecorder getMouseRecorder()
 	{
 		return _Statics_.mouseRecorder;
 	}
-	
+
 	@Inject
 	public boolean boundingboxCheck2(net.runelite.api.Model model, int n2, int n3, int n4)
 	{
@@ -349,7 +349,7 @@ public class Client
 		}
 		return false;
 	}
-	
+
 	@Overwrite
 	public void checkClickbox(net.runelite.api.Model model, int n2, int n3, int n4, int n5, int n6, int n7, int n8, int n9, long l2)
 	{
@@ -441,10 +441,10 @@ public class Client
 				int n29 = rl$modelViewportXs[n10];
 				int n30 = rl$modelViewportXs[n24];
 				if (n25 != -5000 && n26 != -5000 && n27 != -5000 && (bl5 = (n23 = (n22 = rSModel.isClickable() ? 20
-						: 5) + n11) < n28 && n23 < n29 && n23 < n30 ? false
-						: ((n23 = n11 - n22) > n28 && n23 > n29 && n23 > n30 ? false
-								   : ((n23 = n22 + n14) < n25 && n23 < n26 && n23 < n27 ? false
-										      : (n23 = n14 - n22) <= n25 || n23 <= n26 || n23 <= n27))))
+					: 5) + n11) < n28 && n23 < n29 && n23 < n30 ? false
+					: ((n23 = n11 - n22) > n28 && n23 > n29 && n23 > n30 ? false
+					: ((n23 = n22 + n14) < n25 && n23 < n26 && n23 < n27 ? false
+					: (n23 = n14 - n22) <= n25 || n23 <= n26 || n23 <= n27))))
 				{
 					this.addHashAtMouse(l2);
 					return;
@@ -453,91 +453,90 @@ public class Client
 			++n13;
 		}
 	}
-	
+
 	@Provided
 	public boolean getViewportContainsMouse()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public void addHashAtMouse(long l)
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public int getCameraPitch()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public int getCameraYaw()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public int getCenterX()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public int getCenterY()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public int getViewportMouseX()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public int getViewportMouseY()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public int get3dZoom()
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public static int rl$rot1(int a, int b, int c, int d)
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public static int rl$rot2(int a, int b, int c, int d)
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public static int rl$rot3(int a, int b, int c, int d)
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Provided
 	public static int rl$rot4(int a, int b, int c, int d)
 	{
 		throw new RuntimeException();
 	}
-	
+
 	@Inject
-	public void invokeMenuAction(int actionParam, int widgetId, int opcode, int targetId, String menuOption,
-			String menuTarget, int mouseX, int mouseY)
+	public void invokeMenuAction(int actionParam, int widgetId, int opcode, int targetId, String menuOption, String menuTarget, int mouseX, int mouseY)
 	{
 		_Statics_.menuAction(actionParam, widgetId, opcode, targetId, menuOption,
 			menuTarget, mouseX, mouseY);
 	}
-	
+
 }
