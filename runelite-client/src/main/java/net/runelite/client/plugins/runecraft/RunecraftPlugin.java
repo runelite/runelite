@@ -53,8 +53,6 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -169,74 +167,68 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded entry)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (wearingCape || wearingTiara)
 		{
-			return;
-		}
+			final String option = Text.removeTags(entry.getOption()).toLowerCase();
+			final String target = Text.removeTags(entry.getTarget()).toLowerCase();
+			final int id = entry.getIdentifier();
+			final int type = entry.getType();
 
-		Widget loginScreenOne = client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN);
-		Widget loginScreenTwo = client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN_MESSAGE_OF_THE_DAY);
-
-		if (loginScreenOne != null || loginScreenTwo != null)
-		{
-			return;
-		}
-
-		final String option = Text.removeTags(entry.getOption()).toLowerCase();
-		final String target = Text.removeTags(entry.getTarget()).toLowerCase();
-
-
-		Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-		if (isEssencePouch(target))
-		{
-			if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden())
-			{ //swap pouches based on empty/full and in bank
-				swap(client, "Empty", option, target);
-			}
-			else
+			if (target.contains("pouch") && !target.startsWith("rune"))
 			{
-				swap(client, "Fill", option, target); //Due to RuneLite issues the "Deposit" menutext will always show even though it is on fill
+				if (option.contains("deposit") && type == 57 && id == 2) //swap pouches based on empty/full and in ban
+				{
+					swap(client, "fill", option, target);
+					swap(client, "cancel", option, "", target);
+				}
+				else if (option.equals("fill") && id != 9)
+				{
+					swap(client, "empty", option, target); //Due to RuneLite issues the "Deposit" menutext will always show even though it is on fill
+				}
 			}
-		}
-		else if (target.contains("ring of dueling") && option.contains("withdraw"))
-		{ //withdraw-1 ring of dueling
-			swap(client, "withdraw-1", option, target);
-		}
-		else if (target.contains("binding necklace") && option.contains("withdraw"))
-		{ //withdraw-1 binding necklace
-			swap(client, "withdraw-1", option, target);
-		}
-		else if (target.contains("ring of dueling") && option.contains("remove"))
-		{
-			if (client.getLocalPlayer().getWorldLocation().getRegionID() != 10315)
-			{ //changes duel ring teleport options based on location
-				swap(client, "duel arena", option, target);
-			}
-			else if (client.getLocalPlayer().getWorldLocation().getRegionID() == 10315)
-			{
-				swap(client, "castle wars", option, target);
-			}
-		}
-		else if (target.contains("crafting cape") && option.contains("remove"))
-		{ //teleport for crafting cape
-			swap(client, "Teleport", option, target);
-		}
-		else if (target.contains("max cape") && option.contains("remove"))
-		{ //teleport for max cape
-			swap(client, "Crafting Guild", option, target);
-		}
-		else if (target.contains("altar") && option.contains("craft")) // Don't accidentally click the altar to craft
-		{
-			hide(option, target, true);
-		}
-		else if (target.contains("pure")) // Don't accidentally use pure essence on altar
-		{
-			hide("use", target, true);
-			hide("drop", target, true);
-		}
+				if (target.contains("ring of dueling") && option.contains("withdraw"))//withdraw-1 ring of dueling
+				{
+					swap(client, "withdraw-1", option, target);
+				}
+				else if (target.contains("binding necklace") && option.contains("withdraw")) //withdraw-1 binding necklace
+				{
+					swap(client, "withdraw-1", option, target);
+				}
+				else if (target.contains("stamina") && option.contains("withdraw"))
+				{ //withdraw-1 stam
+					swap(client, "withdraw-1", option, target);
+				}
+				else if (target.contains("ring of dueling") && option.contains("remove"))
+				{
+					if (client.getLocalPlayer().getWorldLocation().getRegionID() != 10315)
+					{ //changes duel ring teleport options based on location
+						swap(client, "duel arena", option, target);
+					}
+					else if (client.getLocalPlayer().getWorldLocation().getRegionID() == 10315)
+					{
+						swap(client, "castle wars", option, target);
+					}
+				}
+				else if (target.contains("crafting cape") && option.contains("remove")) //teleport for crafting cape
+				{
+					swap(client, "Teleport", option, target);
+				}
+				else if (target.contains("max cape") && option.contains("remove")) //teleport for max cape
+				{
+					swap(client, "Crafting Guild", option, target);
+				}
+				else if (target.contains("altar") && option.contains("craft")) // Don't accidentally click the altar to craft
+				{
+					hide(option, target, true);
+				}
+				else if (target.contains("pure") && option.contains("use")) // Don't accidentally use pure essence on altar
+				{
+					hide("use", target, true);
+					hide("drop", target, true);
+				}
 
-	}
-
+			}
+		}
 	private void hide(String option, String target, boolean contains)
 	{
 		final MenuEntry[] entries = client.getMenuEntries();
@@ -281,11 +273,6 @@ public class RunecraftPlugin extends Plugin
 		return -1;
 	}
 
-
-	private boolean isEssencePouch(String target)
-	{
-		return (target.equalsIgnoreCase("Small Pouch") || target.equalsIgnoreCase("Medium Pouch") || target.equalsIgnoreCase("Large Pouch") || target.equalsIgnoreCase("Giant Pouch"));
-	}
 
 	@Subscribe
 	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
@@ -334,8 +321,9 @@ public class RunecraftPlugin extends Plugin
 		{
 			final Item[] items = event.getItemContainer().getItems();
 			wearingTiara = config.Lavas() && items[EquipmentInventorySlot.HEAD.getSlotIdx()].getId() == ItemID.FIRE_TIARA;
-			wearingCape = config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.RUNECRAFT_CAPE || items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.RUNECRAFT_CAPET;
-			System.out.println("item changed");
+			wearingCape = config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.RUNECRAFT_CAPE || config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.RUNECRAFT_CAPET || config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.MAX_CAPE_13342;
+
+			System.out.println("item changed" + wearingCape);
 		}
 	}
 
