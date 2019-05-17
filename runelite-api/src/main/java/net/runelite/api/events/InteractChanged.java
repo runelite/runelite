@@ -30,5 +30,5 @@ import net.runelite.api.Actor;
 @Data
 public class InteractChanged
 {
-    private Actor actor;
+	private Actor actor;
 }

@@ -930,7 +930,7 @@ public class WidgetID
 		static final int OURANIA_TELEPORT = 142;
 
 		// ARCEUUS SPELLS
-  		static final int ARCEUUS_HOME_TELEPORT = 143;
+		static final int ARCEUUS_HOME_TELEPORT = 143;
 	}
 
 	static class Pvp
@@ -1034,7 +1034,8 @@ public class WidgetID
 		static final int CUSTOM_TEXT_CONTAINER = 33;
 	}
 
-	public static class TradeScreen {
+	public static class TradeScreen 
+	{
 		public static final int SECOND_GROUP_ID = 334;
 		public static final int SECOND_TRADING_WITH = 30;
 		public static final int SECOND_MY_OFFER = 23;
@@ -1043,7 +1044,8 @@ public class WidgetID
 		public static final int SECOND_ACCEPT_TEXT = 25;
 	}
 
-	public static class DuelConfig {
+	public static class DuelConfig 
+	{
 		public static final int CONFIG_GROUP_IP = 482;
 		public static final int TITLE = 35;
 		public static final int OPPONENT_ATT = 9;
@@ -1052,7 +1054,8 @@ public class WidgetID
 		public static final int OPPONENT_HP = 21;
 	}
 
-	public static class DuelResult {
+	public static class DuelResult 
+	{
 		public static final int RESULT_GROUP_ID = 372;
 		public static final int TITLE = 16;
 		public static final int TOTAL_STAKED = 32;
