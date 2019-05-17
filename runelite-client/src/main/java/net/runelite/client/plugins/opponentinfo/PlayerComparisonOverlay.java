@@ -166,7 +166,7 @@ class PlayerComparisonOverlay extends Overlay
 			panelComponent.getChildren().add(
 				LineComponent.builder()
 					.left(hiscoreSkill.getName())
-					.right(Integer.toString(playerSkillLevel) + "/" + Integer.toString(opponentSkillLevel))
+					.right(playerSkillLevel + "/" + opponentSkillLevel)
 					.rightColor(comparisonStatColor(playerSkillLevel, opponentSkillLevel))
 					.build());
 		}

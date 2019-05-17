@@ -1,13 +1,10 @@
 package net.runelite.client.plugins.raids.shortcuts;
 
+import com.google.inject.Provides;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.inject.Inject;
-
-import com.google.inject.Provides;
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.TileObject;
@@ -31,58 +28,58 @@ public class ShortcutPlugin extends Plugin
 {
 	@Inject
 	private Client client;
-	
+
 	@Inject
 	private OverlayManager overlayManager;
-	
+
 	@Inject
 	private ShortcutOverlay overlay;
-	
+
 	private final List<TileObject> shortcut = new ArrayList<>();
-	
+
 	List<TileObject> getShortcut()
 	{
 		return shortcut;
 	}
-	
+
 	@Provides
 	ShortcutConfig provideConfig(ConfigManager configManager)
 	{
-		return (ShortcutConfig)configManager.getConfig(ShortcutConfig.class);
+		return configManager.getConfig(ShortcutConfig.class);
 	}
-	
+
 	@Override
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
 	}
-	
+
 	@Override
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
 	}
-	
+
 	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event) 
+	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, event.getGameObject().getLocalLocation());
 		if (worldPoint == null)
 		{
 			return;
 		}
-		if ((event.getGameObject().getId() == 29740) || (event.getGameObject().getId() == 29736) || (event.getGameObject().getId() == 29738)) 
+		if ((event.getGameObject().getId() == 29740) || (event.getGameObject().getId() == 29736) || (event.getGameObject().getId() == 29738))
 		{
 			shortcut.add(event.getGameObject());
 		}
-	  }
-	
+	}
+
 	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		shortcut.remove(event.getGameObject());
 	}
-	
+
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
@@ -93,8 +90,8 @@ public class ShortcutPlugin extends Plugin
 		Iterator<TileObject> it = shortcut.iterator();
 		while (it.hasNext())
 		{
-			TileObject object = (TileObject)it.next();
-			if (object.getCanvasLocation() == null) 
+			TileObject object = it.next();
+			if (object.getCanvasLocation() == null)
 			{
 				it.remove();
 			}

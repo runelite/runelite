@@ -3,7 +3,6 @@ package net.runelite.client.plugins.tickcounter;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 import javax.inject.Inject;
@@ -43,7 +42,8 @@ public class TickCounterOverlay extends Overlay
 		panelComponent.setBackgroundColor(config.bgColor());
 		elems.add(TitleComponent.builder().text("Combat counter").color(config.titleColor()).build());
 		List<Entry<String, Integer>> list = new ArrayList<>(plugin.activity.entrySet());
-		list.sort((o1, o2) -> {
+		list.sort((o1, o2) ->
+		{
 			int value = -Integer.compare(o1.getValue(), o2.getValue());
 			if (value == 0)
 			{

@@ -214,13 +214,9 @@ public class ItemStatPlugin extends Plugin
 		closeButton.setSpriteId(SpriteID.BOTTOM_LINE_MODE_WINDOW_CLOSE_BUTTON_SMALL);
 		closeButton.setAction(0, "Close");
 		closeButton.setOnMouseOverListener((JavaScriptCallback) (ev) ->
-		{
-			closeButton.setSpriteId(SpriteID.BOTTOM_LINE_MODE_WINDOW_CLOSE_BUTTON_SMALL_HOVERED);
-		});
+			closeButton.setSpriteId(SpriteID.BOTTOM_LINE_MODE_WINDOW_CLOSE_BUTTON_SMALL_HOVERED));
 		closeButton.setOnMouseLeaveListener((JavaScriptCallback) (ev) ->
-		{
-			closeButton.setSpriteId(SpriteID.BOTTOM_LINE_MODE_WINDOW_CLOSE_BUTTON_SMALL);
-		});
+			closeButton.setSpriteId(SpriteID.BOTTOM_LINE_MODE_WINDOW_CLOSE_BUTTON_SMALL));
 		closeButton.setOnOpListener((JavaScriptCallback) (ev) -> resetGEInventory());
 		closeButton.setHasListener(true);
 		closeButton.revalidate();
@@ -349,7 +345,7 @@ public class ItemStatPlugin extends Plugin
 	}
 
 	private static Widget createText(Widget parent, String text, int fontId, int textColor,
-								int x, int y, int width, int height)
+									int x, int y, int width, int height)
 	{
 		final Widget widget = parent.createChild(-1, WidgetType.TEXT);
 		widget.setText(text);

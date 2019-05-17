@@ -24,11 +24,11 @@
  */
 package net.runelite.client.ui;
 
-import javax.swing.text.StyleContext;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
+import javax.swing.text.StyleContext;
 
 public class FontManager
 {
@@ -48,7 +48,7 @@ public class FontManager
 			ge.registerFont(font);
 
 			runescapeFont = StyleContext.getDefaultStyleContext()
-					.getFont(font.getName(), Font.PLAIN, 16);
+				.getFont(font.getName(), Font.PLAIN, 16);
 			ge.registerFont(runescapeFont);
 
 			Font smallFont = Font.createFont(Font.TRUETYPE_FONT,
@@ -57,16 +57,16 @@ public class FontManager
 			ge.registerFont(smallFont);
 
 			runescapeSmallFont = StyleContext.getDefaultStyleContext()
-					.getFont(smallFont.getName(), Font.PLAIN, 16);
+				.getFont(smallFont.getName(), Font.PLAIN, 16);
 			ge.registerFont(runescapeSmallFont);
 
 			Font boldFont = Font.createFont(Font.TRUETYPE_FONT,
-					FontManager.class.getResourceAsStream("runescape_bold.ttf"))
-					.deriveFont(Font.PLAIN, 16);
+				FontManager.class.getResourceAsStream("runescape_bold.ttf"))
+				.deriveFont(Font.PLAIN, 16);
 			ge.registerFont(boldFont);
 
 			runescapeBoldFont = StyleContext.getDefaultStyleContext()
-					.getFont(boldFont.getName(), Font.PLAIN, 16);
+				.getFont(boldFont.getName(), Font.PLAIN, 16);
 			ge.registerFont(runescapeBoldFont);
 		}
 		catch (FontFormatException ex)

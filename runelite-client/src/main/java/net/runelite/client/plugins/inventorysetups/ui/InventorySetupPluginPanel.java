@@ -285,8 +285,8 @@ public class InventorySetupPluginPanel extends PluginPanel
 	}
 
 	public void highlightDifferences(final ArrayList<InventorySetupItem> container,
-									 final InventorySetup setupToCheck,
-									 final InventoryID type)
+									final InventorySetup setupToCheck,
+									final InventoryID type)
 	{
 		switch (type)
 		{

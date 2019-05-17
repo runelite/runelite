@@ -34,11 +34,12 @@ public abstract class AsmBaseTransformer implements Opcodes
 	
 	protected final ArrayList<String> validMethods = new ArrayList<>();
 	protected final ArrayList<String> validFields = new ArrayList<>();
-	
+
+	// CHECKSTYLE:OFF
 	protected void buildMethodList(){}
-	
 	protected void buildFieldList(){}
-	
+	// CHECKSTYLE:ON
+
 	public abstract byte[] transform();
 	
 }

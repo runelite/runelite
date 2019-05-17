@@ -46,88 +46,107 @@ import net.runelite.client.plugins.PluginType;
  * Authors gazivodag longstreet
  */
 @PluginDescriptor(
-        name = "Blackjack",
-        description = "Uses chat messages and tick timers instead of animations to read",
-        tags = {"blackjack", "thieving"},
-        type = PluginType.UTILITY
+	name = "Blackjack",
+	description = "Uses chat messages and tick timers instead of animations to read",
+	tags = {"blackjack", "thieving"},
+	type = PluginType.UTILITY
 )
 @Singleton
 @Slf4j
-public class BlackjackPlugin extends Plugin {
+public class BlackjackPlugin extends Plugin
+{
 
-    @Inject
-    Client client;
+	@Inject
+	Client client;
 
-    private static long timeSinceKnockout;
-    private static long timeSinceAggro;
+	private long timeSinceKnockout;
+	private long timeSinceAggro;
 
-    @Getter
-    private static long currentGameTick;
+	@Getter
+	private long currentGameTick;
 
-    @Override
-    public void configure(Binder binder) {
-    }
+	@Override
+	public void configure(Binder binder)
+	{
+	}
 
-    @Override
-    protected void startUp() throws Exception {
-        currentGameTick = 0;
-    }
+	@Override
+	protected void startUp() throws Exception
+	{
+		currentGameTick = 0;
+	}
 
-    @Override
-    protected void shutDown() throws Exception {
-        currentGameTick = 0;
-    }
+	@Override
+	protected void shutDown() throws Exception
+	{
+		currentGameTick = 0;
+	}
 
-    @Subscribe
-    public void onGameTick(GameTick gameTick) {
-        currentGameTick++;
-    }
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		currentGameTick++;
+	}
 
 
-    @Subscribe
-    public void onChatMessage(ChatMessage chatMessage) {
-        if (chatMessage.getType() == ChatMessageType.SPAM) {
-            if (chatMessage.getMessage().equals("You smack the bandit over the head and render them unconscious.")) {
-                timeSinceKnockout = getCurrentGameTick();
-            }
-            if (chatMessage.getMessage().equals("Your blow only glances off the bandit's head.")) {
-                timeSinceAggro = getCurrentGameTick();
-            }
-        }
-    }
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
+	{
+		if (chatMessage.getType() == ChatMessageType.SPAM)
+		{
+			if (chatMessage.getMessage().equals("You smack the bandit over the head and render them unconscious."))
+			{
+				timeSinceKnockout = getCurrentGameTick();
+			}
+			if (chatMessage.getMessage().equals("Your blow only glances off the bandit's head."))
+			{
+				timeSinceAggro = getCurrentGameTick();
+			}
+		}
+	}
 
-    @Subscribe
-    public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded) {
-        String target = menuEntryAdded.getTarget().toLowerCase();
-        if ((target.contains("bandit") | target.contains("menaphite thug"))) {
-            Quest quest = Quest.THE_FEUD;
-            if (quest.getState(client) == QuestState.FINISHED) {
-                if (currentGameTick < (timeSinceKnockout + 4)) {
-                    stripSpecificEntries("pickpocket");
-                }
-                if (currentGameTick < (timeSinceAggro + 4)) {
-                    stripSpecificEntries("pickpocket");
-                }
-                stripSpecificEntries("knock-out");
-            }
-        }
-    }
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		String target = menuEntryAdded.getTarget().toLowerCase();
+		if ((target.contains("bandit") || target.contains("menaphite thug")))
+		{
+			Quest quest = Quest.THE_FEUD;
+			if (quest.getState(client) == QuestState.FINISHED)
+			{
+				if (currentGameTick < (timeSinceKnockout + 4))
+				{
+					stripSpecificEntries("pickpocket");
+				}
+				if (currentGameTick < (timeSinceAggro + 4))
+				{
+					stripSpecificEntries("pickpocket");
+				}
+				stripSpecificEntries("knock-out");
+			}
+		}
+	}
 
-    private void stripSpecificEntries(String exceptFor) {
-        MenuEntry[] currentEntires = client.getMenuEntries();
-        MenuEntry[] newEntries = new MenuEntry[2];
+	private void stripSpecificEntries(String exceptFor)
+	{
+		MenuEntry[] currentEntires = client.getMenuEntries();
+		MenuEntry[] newEntries = new MenuEntry[2];
 
-        for (MenuEntry currentEntry : currentEntires) {
-            if (currentEntry.getOption().toLowerCase().equals(exceptFor.toLowerCase())) {
-                newEntries[1] = currentEntry;
-            }
-            if (currentEntry.getOption().toLowerCase().equals("lure")) {
-                newEntries[0] = currentEntry;
-            }
-        }
+		for (MenuEntry currentEntry : currentEntires)
+		{
+			if (currentEntry.getOption().toLowerCase().equals(exceptFor.toLowerCase()))
+			{
+				newEntries[1] = currentEntry;
+			}
+			if (currentEntry.getOption().toLowerCase().equals("lure"))
+			{
+				newEntries[0] = currentEntry;
+			}
+		}
 
-        if (newEntries[0] != null && newEntries[1] != null) {
-            client.setMenuEntries(newEntries);
-        }
-    }
+		if (newEntries[0] != null && newEntries[1] != null)
+		{
+			client.setMenuEntries(newEntries);
+		}
+	}
 }

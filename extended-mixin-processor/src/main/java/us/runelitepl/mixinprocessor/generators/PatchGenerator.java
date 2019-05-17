@@ -26,8 +26,6 @@
 package us.runelitepl.mixinprocessor.generators;
 
 import us.runelitepl.mixinprocessor.transformers.AnnotationRemoverTransformer;
-import us.runelitepl.mixinprocessor.transformers.AsmMethodGarbageTransformer;
-import us.runelitepl.mixinprocessor.transformers.AsmMethodSignatureTransformer;
 import us.runelitepl.mixinprocessor.transformers.AsmNameTransformer;
 import us.runelitepl.mixinprocessor.transformers.AsmStaticUsageTransformer;
 import us.runelitepl.mixinprocessor.transformers.DoNothingTransformer;

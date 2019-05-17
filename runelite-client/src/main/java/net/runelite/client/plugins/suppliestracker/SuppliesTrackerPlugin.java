@@ -50,7 +50,110 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
-import static net.runelite.api.ItemID.*;
+import static net.runelite.api.ItemID.ACCUMULATOR_MAX_CAPE;
+import static net.runelite.api.ItemID.ADAMANT_DART;
+import static net.runelite.api.ItemID.ADAMANT_KNIFE;
+import static net.runelite.api.ItemID.ADAMANT_THROWNAXE;
+import static net.runelite.api.ItemID.ADMIRAL_PIE;
+import static net.runelite.api.ItemID.AIR_RUNE;
+import static net.runelite.api.ItemID.ANCHOVY_PIZZA;
+import static net.runelite.api.ItemID.APPLE_PIE;
+import static net.runelite.api.ItemID.ASSEMBLER_MAX_CAPE;
+import static net.runelite.api.ItemID.ASTRAL_RUNE;
+import static net.runelite.api.ItemID.AVAS_ACCUMULATOR;
+import static net.runelite.api.ItemID.AVAS_ASSEMBLER;
+import static net.runelite.api.ItemID.AVAS_ATTRACTOR;
+import static net.runelite.api.ItemID.BLACK_CHINCHOMPA;
+import static net.runelite.api.ItemID.BLACK_DART;
+import static net.runelite.api.ItemID.BLACK_KNIFE;
+import static net.runelite.api.ItemID.BLOOD_RUNE;
+import static net.runelite.api.ItemID.BODY_RUNE;
+import static net.runelite.api.ItemID.BOTANICAL_PIE;
+import static net.runelite.api.ItemID.BRONZE_DART;
+import static net.runelite.api.ItemID.BRONZE_KNIFE;
+import static net.runelite.api.ItemID.BRONZE_THROWNAXE;
+import static net.runelite.api.ItemID.CAKE;
+import static net.runelite.api.ItemID.CANNONBALL;
+import static net.runelite.api.ItemID.CHAOS_RUNE;
+import static net.runelite.api.ItemID.CHINCHOMPA_10033;
+import static net.runelite.api.ItemID.CHOCOLATE_CAKE;
+import static net.runelite.api.ItemID.CHOCOLATE_SLICE;
+import static net.runelite.api.ItemID.COINS_995;
+import static net.runelite.api.ItemID.COSMIC_RUNE;
+import static net.runelite.api.ItemID.DEATH_RUNE;
+import static net.runelite.api.ItemID.DRAGON_DART;
+import static net.runelite.api.ItemID.DRAGON_KNIFE;
+import static net.runelite.api.ItemID.DRAGON_KNIFEP;
+import static net.runelite.api.ItemID.DRAGON_KNIFEP_22808;
+import static net.runelite.api.ItemID.DRAGON_KNIFEP_22810;
+import static net.runelite.api.ItemID.DRAGON_KNIFE_22812;
+import static net.runelite.api.ItemID.DRAGON_KNIFE_22814;
+import static net.runelite.api.ItemID.DRAGON_THROWNAXE;
+import static net.runelite.api.ItemID.DUST_RUNE;
+import static net.runelite.api.ItemID.EARTH_RUNE;
+import static net.runelite.api.ItemID.FIRE_RUNE;
+import static net.runelite.api.ItemID.FISH_PIE;
+import static net.runelite.api.ItemID.GARDEN_PIE;
+import static net.runelite.api.ItemID.HALF_AN_ADMIRAL_PIE;
+import static net.runelite.api.ItemID.HALF_AN_APPLE_PIE;
+import static net.runelite.api.ItemID.HALF_A_BOTANICAL_PIE;
+import static net.runelite.api.ItemID.HALF_A_FISH_PIE;
+import static net.runelite.api.ItemID.HALF_A_GARDEN_PIE;
+import static net.runelite.api.ItemID.HALF_A_MEAT_PIE;
+import static net.runelite.api.ItemID.HALF_A_MUSHROOM_PIE;
+import static net.runelite.api.ItemID.HALF_A_REDBERRY_PIE;
+import static net.runelite.api.ItemID.HALF_A_SUMMER_PIE;
+import static net.runelite.api.ItemID.HALF_A_WILD_PIE;
+import static net.runelite.api.ItemID.IRON_DART;
+import static net.runelite.api.ItemID.IRON_KNIFE;
+import static net.runelite.api.ItemID.IRON_THROWNAXE;
+import static net.runelite.api.ItemID.LAVA_RUNE;
+import static net.runelite.api.ItemID.LAW_RUNE;
+import static net.runelite.api.ItemID.MEAT_PIE;
+import static net.runelite.api.ItemID.MEAT_PIZZA;
+import static net.runelite.api.ItemID.MIND_RUNE;
+import static net.runelite.api.ItemID.MIST_RUNE;
+import static net.runelite.api.ItemID.MITHRIL_DART;
+import static net.runelite.api.ItemID.MITHRIL_KNIFE;
+import static net.runelite.api.ItemID.MITHRIL_THROWNAXE;
+import static net.runelite.api.ItemID.MUD_RUNE;
+import static net.runelite.api.ItemID.MUSHROOM_PIE;
+import static net.runelite.api.ItemID.NATURE_RUNE;
+import static net.runelite.api.ItemID.PINEAPPLE_PIZZA;
+import static net.runelite.api.ItemID.PLAIN_PIZZA;
+import static net.runelite.api.ItemID.RANGING_CAPE;
+import static net.runelite.api.ItemID.REDBERRY_PIE;
+import static net.runelite.api.ItemID.RED_CHINCHOMPA_10034;
+import static net.runelite.api.ItemID.RUNE_DART;
+import static net.runelite.api.ItemID.RUNE_KNIFE;
+import static net.runelite.api.ItemID.RUNE_THROWNAXE;
+import static net.runelite.api.ItemID.SANGUINESTI_STAFF;
+import static net.runelite.api.ItemID.SANGUINESTI_STAFF_UNCHARGED;
+import static net.runelite.api.ItemID.SLICE_OF_CAKE;
+import static net.runelite.api.ItemID.SMOKE_RUNE;
+import static net.runelite.api.ItemID.SOUL_RUNE;
+import static net.runelite.api.ItemID.STEAM_RUNE;
+import static net.runelite.api.ItemID.STEEL_DART;
+import static net.runelite.api.ItemID.STEEL_KNIFE;
+import static net.runelite.api.ItemID.STEEL_THROWNAXE;
+import static net.runelite.api.ItemID.SUMMER_PIE;
+import static net.runelite.api.ItemID.TRIDENT_OF_THE_SEAS;
+import static net.runelite.api.ItemID.TRIDENT_OF_THE_SEAS_E;
+import static net.runelite.api.ItemID.TRIDENT_OF_THE_SEAS_FULL;
+import static net.runelite.api.ItemID.TRIDENT_OF_THE_SWAMP;
+import static net.runelite.api.ItemID.TRIDENT_OF_THE_SWAMP_E;
+import static net.runelite.api.ItemID.UNCHARGED_TOXIC_TRIDENT;
+import static net.runelite.api.ItemID.UNCHARGED_TOXIC_TRIDENT_E;
+import static net.runelite.api.ItemID.WATER_RUNE;
+import static net.runelite.api.ItemID.WILD_PIE;
+import static net.runelite.api.ItemID.WRATH_RUNE;
+import static net.runelite.api.ItemID.ZULRAHS_SCALES;
+import static net.runelite.api.ItemID._12_ANCHOVY_PIZZA;
+import static net.runelite.api.ItemID._12_MEAT_PIZZA;
+import static net.runelite.api.ItemID._12_PINEAPPLE_PIZZA;
+import static net.runelite.api.ItemID._12_PLAIN_PIZZA;
+import static net.runelite.api.ItemID._23_CAKE;
+import static net.runelite.api.ItemID._23_CHOCOLATE_CAKE;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.events.AnimationChanged;
@@ -112,7 +215,7 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	private static final Random random = new Random();
 
-	private static final int[] THROWING_IDS = new int[]{BRONZE_DART, IRON_DART, STEEL_DART, BLACK_DART, MITHRIL_DART, ADAMANT_DART, RUNE_DART, DRAGON_DART, BRONZE_KNIFE, IRON_KNIFE, STEEL_KNIFE, BLACK_KNIFE, MITHRIL_KNIFE, ADAMANT_KNIFE, RUNE_KNIFE, BRONZE_THROWNAXE, IRON_THROWNAXE, STEEL_THROWNAXE, MITHRIL_THROWNAXE, ADAMANT_THROWNAXE, RUNE_THROWNAXE, DRAGON_KNIFE, DRAGON_KNIFE_22812, DRAGON_KNIFE_22814, DRAGON_KNIFEP_22808, DRAGON_KNIFEP_22810, DRAGON_KNIFEP , DRAGON_THROWNAXE, CHINCHOMPA_10033, RED_CHINCHOMPA_10034, BLACK_CHINCHOMPA};
+	private static final int[] THROWING_IDS = new int[]{BRONZE_DART, IRON_DART, STEEL_DART, BLACK_DART, MITHRIL_DART, ADAMANT_DART, RUNE_DART, DRAGON_DART, BRONZE_KNIFE, IRON_KNIFE, STEEL_KNIFE, BLACK_KNIFE, MITHRIL_KNIFE, ADAMANT_KNIFE, RUNE_KNIFE, BRONZE_THROWNAXE, IRON_THROWNAXE, STEEL_THROWNAXE, MITHRIL_THROWNAXE, ADAMANT_THROWNAXE, RUNE_THROWNAXE, DRAGON_KNIFE, DRAGON_KNIFE_22812, DRAGON_KNIFE_22814, DRAGON_KNIFEP_22808, DRAGON_KNIFEP_22810, DRAGON_KNIFEP, DRAGON_THROWNAXE, CHINCHOMPA_10033, RED_CHINCHOMPA_10034, BLACK_CHINCHOMPA};
 	private static final int[] RUNE_IDS = new int[]{AIR_RUNE, WATER_RUNE, EARTH_RUNE, MIND_RUNE, BODY_RUNE, COSMIC_RUNE, CHAOS_RUNE, NATURE_RUNE, LAW_RUNE, DEATH_RUNE, ASTRAL_RUNE, BLOOD_RUNE, SOUL_RUNE, WRATH_RUNE, MIST_RUNE, DUST_RUNE, MUD_RUNE, SMOKE_RUNE, STEAM_RUNE, LAVA_RUNE};
 
 	//Hold Supply Data
@@ -147,7 +250,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	@Inject
 	private Client client;
 
-	
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -206,6 +309,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	/**
 	 * checks the player's cape slot to determine what percent of their darts are lost
 	 * - where lost means either break or drop to floor
+	 *
 	 * @return the percent lost
 	 */
 	private double getAccumulatorPercent()
@@ -245,7 +349,8 @@ public class SuppliesTrackerPlugin extends Plugin
 			{
 				ticksInAnimation = BLOWPIPE_TICKS_NORMAL_PVM;
 				if (client.getLocalPlayer() != null &&
-						client.getLocalPlayer().getInteracting() instanceof Player) {
+					client.getLocalPlayer().getInteracting() instanceof Player)
+				{
 					ticksInAnimation = BLOWPIPE_TICKS_NORMAL_PVP;
 				}
 			}
@@ -253,7 +358,8 @@ public class SuppliesTrackerPlugin extends Plugin
 			{
 				ticksInAnimation = BLOWPIPE_TICKS_RAPID_PVM;
 				if (client.getLocalPlayer() != null &&
-						client.getLocalPlayer().getInteracting() instanceof Player) {
+					client.getLocalPlayer().getInteracting() instanceof Player)
+				{
 					ticksInAnimation = BLOWPIPE_TICKS_RAPID_PVP;
 				}
 			}
@@ -263,11 +369,12 @@ public class SuppliesTrackerPlugin extends Plugin
 	/**
 	 * Checks for changes between the provided inventories in runes specifically to add those runes
 	 * to the supply tracker
-	 *
+	 * <p>
 	 * we can't in general just check for when inventory slots change but this method is only run
 	 * immediately after the player performs a cast animation or cast menu click/entry
+	 *
 	 * @param itemContainer the new inventory
-	 * @param oldInv the old inventory
+	 * @param oldInv        the old inventory
 	 */
 	private void checkUsedRunes(ItemContainer itemContainer, Item[] oldInv)
 	{
@@ -296,7 +403,9 @@ public class SuppliesTrackerPlugin extends Plugin
 				}
 			}
 		}
-		catch (IndexOutOfBoundsException ignored) {}
+		catch (IndexOutOfBoundsException ignored)
+		{
+		}
 	}
 
 	@Subscribe
@@ -313,7 +422,7 @@ public class SuppliesTrackerPlugin extends Plugin
 			if (animationChanged.getActor().getAnimation() == HIGH_LEVEL_MAGIC_ATTACK)
 			{
 				//Trident of the seas
-				if (mainHand == TRIDENT_OF_THE_SEAS || mainHand == TRIDENT_OF_THE_SEAS_E || mainHand == TRIDENT_OF_THE_SEAS_FULL )
+				if (mainHand == TRIDENT_OF_THE_SEAS || mainHand == TRIDENT_OF_THE_SEAS_E || mainHand == TRIDENT_OF_THE_SEAS_FULL)
 				{
 					buildEntries(CHAOS_RUNE);
 					buildEntries(DEATH_RUNE);
@@ -406,7 +515,7 @@ public class SuppliesTrackerPlugin extends Plugin
 			{
 				mainHand = itemContainer.getItems()[EQUIPMENT_MAINHAND_SLOT].getId();
 				net.runelite.api.Item mainHandItem = itemContainer.getItems()[EQUIPMENT_MAINHAND_SLOT];
-				for (int throwingIDs: THROWING_IDS)
+				for (int throwingIDs : THROWING_IDS)
 				{
 					if (mainHand == throwingIDs)
 					{
@@ -520,7 +629,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		Pattern teleportPattern = Pattern.compile(TELEPORT_PATTERN);
 		Pattern teletabPattern = Pattern.compile(TELETAB_PATTERN);
 		if (teleportPattern.matcher(event.getMenuTarget().toLowerCase()).find() ||
-				teletabPattern.matcher(event.getMenuTarget().toLowerCase()).find())
+			teletabPattern.matcher(event.getMenuTarget().toLowerCase()).find())
 		{
 			old = client.getItemContainer(InventoryID.INVENTORY);
 
@@ -553,6 +662,7 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	/**
 	 * Checks if item name is potion
+	 *
 	 * @param name the name of the item
 	 * @return if the item is a potion - i.e. has a (1) (2) (3) or (4) in the name
 	 */
@@ -563,6 +673,7 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	/**
 	 * Checks if item name is pizza or pie
+	 *
 	 * @param name the name of the item
 	 * @return if the item is a pizza or a pie - i.e. has pizza or pie in the name
 	 */
@@ -582,9 +693,10 @@ public class SuppliesTrackerPlugin extends Plugin
 	 * so must divide price by total amount of doses in each
 	 * this is necessary b/c the most correct/accurate price for these resources is the
 	 * full price not the 1-dose price
-	 * @param name the item name
+	 *
+	 * @param name   the item name
 	 * @param itemId the item id
-	 * @param price the current calculated price
+	 * @param price  the current calculated price
 	 * @return the price modified by the number of doses
 	 */
 	private long scalePriceByDoses(String name, int itemId, long price)
@@ -606,6 +718,7 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	/**
 	 * Add an item to the supply tracker (with 1 count for that item)
+	 *
 	 * @param itemId the id of the item
 	 */
 	private void buildEntries(int itemId)
@@ -615,62 +728,66 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	/**
 	 * Add an item to the supply tracker
+	 *
 	 * @param itemId the id of the item
-	 * @param count the amount of the item to add to the tracker
+	 * @param count  the amount of the item to add to the tracker
 	 */
 	private void buildEntries(int itemId, int count)
 	{
-			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-			String name = itemComposition.getName();
-			long calculatedPrice;
+		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		String name = itemComposition.getName();
+		long calculatedPrice;
 
-			for (String raidsConsumables: RAIDS_CONSUMABLES)
+		for (String raidsConsumables : RAIDS_CONSUMABLES)
+		{
+			if (name.toLowerCase().contains(raidsConsumables))
 			{
-				if (name.toLowerCase().contains(raidsConsumables)) return;
+				return;
 			}
+		}
 
-			// convert potions, pizzas/pies, and cakes to their full equivalents
-			// e.g. a half pizza becomes full pizza, 3 dose potion becomes 4, etc...
-			if (isPotion(name))
-			{
-				name = name.replaceAll(POTION_PATTERN, "(4)");
-				itemId = getPotionID(name);
-			}
-			if (isPizzaPie(name))
-			{
-				itemId = getFullVersionItemID(itemId);
-				name = itemManager.getItemComposition(itemId).getName();
-			}
-			if (isCake(name, itemId))
-			{
-				itemId = getFullVersionItemID(itemId);
-				name = itemManager.getItemComposition(itemId).getName();
-			}
+		// convert potions, pizzas/pies, and cakes to their full equivalents
+		// e.g. a half pizza becomes full pizza, 3 dose potion becomes 4, etc...
+		if (isPotion(name))
+		{
+			name = name.replaceAll(POTION_PATTERN, "(4)");
+			itemId = getPotionID(name);
+		}
+		if (isPizzaPie(name))
+		{
+			itemId = getFullVersionItemID(itemId);
+			name = itemManager.getItemComposition(itemId).getName();
+		}
+		if (isCake(name, itemId))
+		{
+			itemId = getFullVersionItemID(itemId);
+			name = itemManager.getItemComposition(itemId).getName();
+		}
 
-			int newQuantity;
-			if (suppliesEntry.containsKey(itemId))
-			{
-				newQuantity = suppliesEntry.get(itemId).getQuantity() + count;
-			}
-			else
-			{
-				newQuantity = count;
-			}
+		int newQuantity;
+		if (suppliesEntry.containsKey(itemId))
+		{
+			newQuantity = suppliesEntry.get(itemId).getQuantity() + count;
+		}
+		else
+		{
+			newQuantity = count;
+		}
 
-			// calculate price for amount of doses used
-			calculatedPrice = ((long) itemManager.getItemPrice(itemId)) * ((long) newQuantity);
-			calculatedPrice = scalePriceByDoses(name, itemId, calculatedPrice);
+		// calculate price for amount of doses used
+		calculatedPrice = ((long) itemManager.getItemPrice(itemId)) * ((long) newQuantity);
+		calculatedPrice = scalePriceByDoses(name, itemId, calculatedPrice);
 
-			// write the new quantity and calculated price for this entry
-			SuppliesTrackerItem newEntry = new SuppliesTrackerItem(
-				itemId,
-				name,
-				newQuantity,
-				calculatedPrice);
+		// write the new quantity and calculated price for this entry
+		SuppliesTrackerItem newEntry = new SuppliesTrackerItem(
+			itemId,
+			name,
+			newQuantity,
+			calculatedPrice);
 
-			suppliesEntry.put(itemId, newEntry);
-			SwingUtilities.invokeLater(() ->
-				panel.addItem(newEntry));
+		suppliesEntry.put(itemId, newEntry);
+		SwingUtilities.invokeLater(() ->
+			panel.addItem(newEntry));
 	}
 
 	/**
@@ -683,6 +800,7 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	/**
 	 * reset an individual item stack
+	 *
 	 * @param itemId the id of the item stack
 	 */
 	void clearItem(int itemId)
@@ -692,6 +810,7 @@ public class SuppliesTrackerPlugin extends Plugin
 
 	/**
 	 * Gets the item id that matches the provided name within the itemManager
+	 *
 	 * @param name the given name
 	 * @return the item id for this name
 	 */
@@ -700,7 +819,7 @@ public class SuppliesTrackerPlugin extends Plugin
 		int itemId = 0;
 
 		List<ItemPrice> items = itemManager.search(name);
-		for (ItemPrice item: items)
+		for (ItemPrice item : items)
 		{
 			if (item.getName().contains(name))
 			{
@@ -713,6 +832,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	/**
 	 * Takes the item id of a partial item (e.g. 1 dose potion, 1/2 a pizza, etc...) and returns
 	 * the corresponding full item
+	 *
 	 * @param itemId the partial item id
 	 * @return the full item id
 	 */

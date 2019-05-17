@@ -743,7 +743,7 @@ public class ModelOutlineRenderer
 	 * @param outerColor   The color of the pixels of the outline furthest away from the model
 	 */
 	private void renderOutline(BufferedImage image, int outlineWidth,
-							   Color innerColor, Color outerColor)
+							Color innerColor, Color outerColor)
 	{
 		int[] imageData = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 		List<PixelDistanceAlpha> ps = getPriorityList(outlineWidth);
@@ -887,8 +887,8 @@ public class ModelOutlineRenderer
 	 * @param outerColor   The color of the pixels of the outline furthest away from the model
 	 */
 	private void drawModelOutline(Model model,
-								  int localX, int localY, int localZ, int orientation,
-								  int outlineWidth, Color innerColor, Color outerColor)
+								int localX, int localY, int localZ, int orientation,
+								int outlineWidth, Color innerColor, Color outerColor)
 	{
 		if (outlineWidth <= 0)
 		{

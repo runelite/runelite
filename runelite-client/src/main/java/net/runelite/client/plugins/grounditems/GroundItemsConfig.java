@@ -116,16 +116,16 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		keyName = "highlightTiles",
 		name = "Highlight Tiles",
 		description = "Configures whether or not to highlight tiles containing ground items",
 		position = 6
 	)
-	default boolean highlightTiles() 
-	{ 
-		return false; 
+	default boolean highlightTiles()
+	{
+		return false;
 	}
 
 	@ConfigItem(
@@ -360,10 +360,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 27,
-			keyName = "removeIgnored",
-			name = "Hide Ignored",
-			description = "Remove take option for items that are on the hidden items list."
+		position = 27,
+		keyName = "removeIgnored",
+		name = "Hide Ignored",
+		description = "Remove take option for items that are on the hidden items list."
 	)
 	default boolean removeIgnored()
 	{

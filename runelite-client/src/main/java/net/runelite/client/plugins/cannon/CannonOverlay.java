@@ -104,6 +104,7 @@ class CannonOverlay extends Overlay
 
 	/**
 	 * Draw the double hit spots on a 6 by 6 grid around the cannon
+	 *
 	 * @param startTile The position of the cannon
 	 */
 	private void drawDoubleHitSpots(Graphics2D graphics, LocalPoint startTile, Color color)

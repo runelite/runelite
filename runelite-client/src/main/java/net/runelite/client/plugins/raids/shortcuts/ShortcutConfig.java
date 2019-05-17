@@ -4,7 +4,8 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("shortcut")
-public interface ShortcutConfig {
+public interface ShortcutConfig
+{
 	@ConfigItem(
 		keyName = "highlightShortcuts",
 		name = "Highlight shortcuts",

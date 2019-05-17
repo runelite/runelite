@@ -67,8 +67,8 @@ public class ChatboxPanelManager
 
 	@Inject
 	private ChatboxPanelManager(EventBus eventBus, Client client, ClientThread clientThread,
-		KeyManager keyManager, MouseManager mouseManager,
-		Provider<ChatboxTextMenuInput> chatboxTextMenuInputProvider, Provider<ChatboxTextInput> chatboxTextInputProvider)
+								KeyManager keyManager, MouseManager mouseManager,
+								Provider<ChatboxTextMenuInput> chatboxTextMenuInputProvider, Provider<ChatboxTextInput> chatboxTextInputProvider)
 	{
 		this.client = client;
 		this.clientThread = clientThread;

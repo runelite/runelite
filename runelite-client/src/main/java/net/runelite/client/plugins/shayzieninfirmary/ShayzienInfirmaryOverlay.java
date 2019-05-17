@@ -32,7 +32,6 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
@@ -44,16 +43,14 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 public class ShayzienInfirmaryOverlay extends Overlay
 {
 	private final ShayzienInfirmaryPlugin plugin;
-	private final Client client;
 
 	private BufferedImage medPackImage;
 
 	@Inject
-	public ShayzienInfirmaryOverlay(ShayzienInfirmaryPlugin plugin, Client client, ItemManager itemManager)
+	public ShayzienInfirmaryOverlay(ShayzienInfirmaryPlugin plugin, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.plugin = plugin;
-		this.client = client;
 
 		medPackImage = itemManager.getImage(ItemID.SHAYZIEN_MEDPACK);
 	}

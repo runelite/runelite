@@ -125,7 +125,9 @@ public class GroundMarkerPlugin extends Plugin
 		}
 
 		// CHECKSTYLE:OFF
-		return GSON.fromJson(json, new TypeToken<List<GroundMarkerPoint>>(){}.getType());
+		return GSON.fromJson(json, new TypeToken<List<GroundMarkerPoint>>()
+		{
+		}.getType());
 		// CHECKSTYLE:ON
 	}
 
@@ -161,7 +163,7 @@ public class GroundMarkerPlugin extends Plugin
 	 *
 	 * @param points {@link GroundMarkerPoint}s to be converted to {@link ColorTileMarker}s
 	 * @return A collection of color tile markers, converted from the passed ground marker points, accounting for local
-	 *         instance points. See {@link WorldPoint#toLocalInstance(Client, WorldPoint)}
+	 * instance points. See {@link WorldPoint#toLocalInstance(Client, WorldPoint)}
 	 */
 	private Collection<ColorTileMarker> translateToColorTileMarker(Collection<GroundMarkerPoint> points)
 	{

@@ -27,10 +27,10 @@ package net.runelite.client.plugins.achievementdiary.diaries;
 import net.runelite.api.Favour;
 import net.runelite.api.Quest;
 import net.runelite.api.Skill;
-import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
-import net.runelite.client.plugins.achievementdiary.SkillRequirement;
-import net.runelite.client.plugins.achievementdiary.QuestRequirement;
 import net.runelite.client.plugins.achievementdiary.FavourRequirement;
+import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
+import net.runelite.client.plugins.achievementdiary.QuestRequirement;
+import net.runelite.client.plugins.achievementdiary.SkillRequirement;
 
 public class KourendDiaryRequirement extends GenericDiaryRequirement
 {

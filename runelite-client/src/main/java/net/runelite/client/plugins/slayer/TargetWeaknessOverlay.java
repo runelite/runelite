@@ -107,7 +107,7 @@ class TargetWeaknessOverlay extends Overlay
 			return -1;
 		}
 
-		return (int)((maxHealth * healthRatio / healthScale) + 0.5f);
+		return (int) ((maxHealth * healthRatio / healthScale) + 0.5f);
 	}
 
 	private void renderTargetItem(Graphics2D graphics, NPC actor, BufferedImage image)

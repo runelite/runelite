@@ -375,7 +375,7 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName);
 		}
 
-		if (config.screenshotBossKills() )
+		if (config.screenshotBossKills())
 		{
 			Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage);
 			if (m.matches())
@@ -562,7 +562,7 @@ public class ScreenshotPlugin extends Plugin
 	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
 	 * and optionally uploads it to an image-hosting service.
 	 *
-	 * @param fileName    Filename to use, without file extension.
+	 * @param fileName Filename to use, without file extension.
 	 */
 	private void takeScreenshot(String fileName)
 	{
@@ -696,7 +696,7 @@ public class ScreenshotPlugin extends Plugin
 				try (InputStream in = response.body().byteStream())
 				{
 					ImageUploadResponse imageUploadResponse = RuneLiteAPI.GSON
-							.fromJson(new InputStreamReader(in), ImageUploadResponse.class);
+						.fromJson(new InputStreamReader(in), ImageUploadResponse.class);
 
 					if (imageUploadResponse.isSuccess())
 					{

@@ -180,6 +180,7 @@ class BarrowsOverlay extends Overlay
 
 	/**
 	 * Get minimap dot color from client
+	 *
 	 * @param typeIndex index of minimap dot type (1 npcs, 2 players)
 	 * @return color
 	 */

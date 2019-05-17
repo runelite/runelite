@@ -46,7 +46,7 @@ enum ItemIdentification
 	DWARF_WEED_SEED(Type.SEED, "Dwarf", "D", ItemID.DWARF_WEED_SEED),
 	TORSTOL_SEED(Type.SEED, "Torstol", "TOR", ItemID.TORSTOL_SEED),
 	POISON_IVY_SEED(Type.SEED, "Ivy", "I", ItemID.POISON_IVY_SEED),
-	WHITEBERRY_SEED( Type.SEED, "White", "W", ItemID.WHITEBERRY_SEED),
+	WHITEBERRY_SEED(Type.SEED, "White", "W", ItemID.WHITEBERRY_SEED),
 
 	//Herbs
 	GUAM(Type.HERB, "Guam", "G", ItemID.GUAM_LEAF, ItemID.GRIMY_GUAM_LEAF),
@@ -92,7 +92,7 @@ enum ItemIdentification
 	final String shortName;
 	final int[] itemIDs;
 
-	ItemIdentification(Type type, String medName, String shortName, int ... ids)
+	ItemIdentification(Type type, String medName, String shortName, int... ids)
 	{
 		this.type = type;
 		this.medName = medName;

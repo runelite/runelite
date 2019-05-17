@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.client.game.ClanManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -49,7 +48,8 @@ public class ClanManModeOverlay extends Overlay
 
 		if (textLocation != null)
 		{
-			if (config.getClanAttackableColor().equals(color) && config.ShowBold()) {
+			if (config.getClanAttackableColor().equals(color) && config.ShowBold())
+			{
 				graphics.setFont(FontManager.getRunescapeBoldFont());
 			}
 			OverlayUtil.renderTextLocation(graphics, textLocation, name, color);

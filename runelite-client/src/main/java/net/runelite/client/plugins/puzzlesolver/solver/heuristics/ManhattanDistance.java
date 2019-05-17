@@ -26,13 +26,13 @@
  */
 package net.runelite.client.plugins.puzzlesolver.solver.heuristics;
 
-import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
 import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK_TILE_VALUE;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
+import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 
 /**
  * An implementation of the manhattan distance heuristic function.
- *
+ * <p>
  * https://heuristicswiki.wikispaces.com/Manhattan+Distance
  */
 public class ManhattanDistance implements Heuristic
@@ -88,32 +88,56 @@ public class ManhattanDistance implements Heuristic
 				int targetX = piece % DIMENSION;
 
 				// right
-				if (targetX > x) value++;
-				else value--;
+				if (targetX > x)
+				{
+					value++;
+				}
+				else
+				{
+					value--;
+				}
 			}
 			else if (x2 < x)
 			{
 				int targetX = piece % DIMENSION;
 
 				// left
-				if (targetX < x) value++;
-				else value--;
+				if (targetX < x)
+				{
+					value++;
+				}
+				else
+				{
+					value--;
+				}
 			}
 			else if (y2 > y)
 			{
 				int targetY = piece / DIMENSION;
 
 				// down
-				if (targetY > y) value++;
-				else value--;
+				if (targetY > y)
+				{
+					value++;
+				}
+				else
+				{
+					value--;
+				}
 			}
 			else
 			{
 				int targetY = piece / DIMENSION;
 
 				// up
-				if (targetY < y) value++;
-				else value--;
+				if (targetY < y)
+				{
+					value++;
+				}
+				else
+				{
+					value--;
+				}
 			}
 		}
 

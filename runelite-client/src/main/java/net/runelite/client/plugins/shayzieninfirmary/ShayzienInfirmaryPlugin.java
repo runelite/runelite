@@ -85,7 +85,7 @@ public class ShayzienInfirmaryPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if(!isAtInfirmary())
+		if (!isAtInfirmary())
 		{
 			return;
 		}
@@ -101,22 +101,17 @@ public class ShayzienInfirmaryPlugin extends Plugin
 		}
 	}
 
-	public boolean isSoldierId(int npcId)
+	private boolean isSoldierId(int npcId)
 	{
 		return (npcId >= 6826 && npcId <= 6857);
 	}
 
-	public boolean isUnhealedSoldierId(int npcId)
+	private boolean isUnhealedSoldierId(int npcId)
 	{
 		return (isSoldierId(npcId) && npcId % 2 == 0);
 	}
 
-	public boolean isHealedSoldierId(int npcId)
-	{
-		return (isSoldierId(npcId) && npcId % 2 == 1);
-	}
-
-	public boolean isAtInfirmary()
+	boolean isAtInfirmary()
 	{
 		return client.getLocalPlayer().getWorldLocation().getRegionID() == 6200;
 	}

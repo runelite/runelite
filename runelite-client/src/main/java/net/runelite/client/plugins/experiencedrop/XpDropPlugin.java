@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.experiencedrop;
 
 import com.google.inject.Provides;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -33,15 +32,23 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 import javax.inject.Inject;
-
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.*;
-
+import net.runelite.api.Actor;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.NPC;
+import net.runelite.api.Player;
 import static net.runelite.api.ScriptID.XPDROP_DISABLED;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.*;
-
-import net.runelite.api.events.*;
+import net.runelite.api.Skill;
+import net.runelite.api.SpriteID;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
+import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -52,6 +59,15 @@ import net.runelite.client.game.NPCManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.attackstyles.AttackStyle;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.ACCURATE;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.AGGRESSIVE;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.CONTROLLED;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.LONGRANGE;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.RANGING;
 import net.runelite.client.plugins.attackstyles.WeaponType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.Text;
@@ -127,9 +143,9 @@ public class XpDropPlugin extends Plugin
 			equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
 			castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
 			updateAttackStyle(
-					equippedWeaponTypeVarbit,
-					attackStyleVarbit,
-					castingModeVarbit);
+				equippedWeaponTypeVarbit,
+				attackStyleVarbit,
+				castingModeVarbit);
 		}
 	}
 
@@ -212,8 +228,8 @@ public class XpDropPlugin extends Plugin
 			{
 				case MELEE:
 					if (spriteIDs.anyMatch(id ->
-							id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE
-								|| correctPrayer))
+						id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE
+							|| correctPrayer))
 					{
 						color = config.getMeleePrayerColor().getRGB();
 						correctPrayer = true;
@@ -423,7 +439,7 @@ public class XpDropPlugin extends Plugin
 			return -1;
 		}
 
-		return (int)((maxHealth * healthRatio / healthScale) + 0.5f);
+		return (int) ((maxHealth * healthRatio / healthScale) + 0.5f);
 	}
 
 	@Subscribe
@@ -433,21 +449,21 @@ public class XpDropPlugin extends Plugin
 		{
 			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
 			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), attackStyleVarbit,
-					client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
+				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
 		}
 
 		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
 		{
 			equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
 			updateAttackStyle(equippedWeaponTypeVarbit, client.getVar(VarPlayer.ATTACK_STYLE),
-					client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
+				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
 		}
 
 		if (castingModeVarbit == -1 || castingModeVarbit != client.getVar(Varbits.DEFENSIVE_CASTING_MODE))
 		{
 			castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
 			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE),
-					castingModeVarbit);
+				castingModeVarbit);
 		}
 	}
 }

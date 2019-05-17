@@ -32,8 +32,6 @@ import org.objectweb.asm.MethodVisitor;
 import us.runelitepl.mixinprocessor.MethodGarbageValue;
 import us.runelitepl.mixinprocessor.MixinProcessorMojo;
 import us.runelitepl.mixinprocessor.util.RefUtils;
-
-import java.sql.Ref;
 import java.util.HashMap;
 
 public class AsmMethodGarbageTransformer extends AsmBaseTransformer
@@ -74,13 +72,13 @@ public class AsmMethodGarbageTransformer extends AsmBaseTransformer
 						// mv.visitLdcInsn(BIPUSH, constant);
 						// call super method with new descriptor
 						
-						if(RefUtils.shouldReobMethod(owner, name, desc))
+						if (RefUtils.shouldReobMethod(owner, name, desc))
 						{
 							String nc = RefUtils.reobMethodName(owner, name, desc).split(" ")[0];
 							String nn = RefUtils.reobMethodName(owner, name, desc).split(" ")[1];
 							String nd = RefUtils.reobMethodDescriptor(desc);
 							MethodGarbageValue value;
-							if((value = MixinProcessorMojo.methodGarbageValues.getOrDefault(String.format("%s.%s%s",
+							if ((value = MixinProcessorMojo.methodGarbageValues.getOrDefault(String.format("%s.%s%s",
 									nc,	nn, nd), null)) != null)
 							{
 								switch (value.getType())

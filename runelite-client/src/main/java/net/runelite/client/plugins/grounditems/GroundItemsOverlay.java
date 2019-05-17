@@ -106,7 +106,7 @@ public class GroundItemsOverlay extends Overlay
 		offsetMap.clear();
 		final LocalPoint localLocation = player.getLocalLocation();
 		final Point mousePos = client.getMouseCanvasPosition();
-		Collection<GroundItem> groundItemList = plugin.getCollectedGroundItems().values();
+		Collection<GroundItem> groundItemList = GroundItemsPlugin.getCollectedGroundItems().values();
 		GroundItem topGroundItem = null;
 
 		if (plugin.isHotKeyPressed())
@@ -336,10 +336,10 @@ public class GroundItemsOverlay extends Overlay
 			if (config.toggleOutline())
 			{
 				graphics.setColor(Color.BLACK);
-				graphics.drawString(itemString,  textX + 1, textY + 1);
-				graphics.drawString(itemString,  textX - 1, textY - 1);
-				graphics.drawString(itemString,  textX - 1, textY + 1);
-				graphics.drawString(itemString,  textX + 1, textY - 1);
+				graphics.drawString(itemString, textX + 1, textY + 1);
+				graphics.drawString(itemString, textX - 1, textY - 1);
+				graphics.drawString(itemString, textX - 1, textY + 1);
+				graphics.drawString(itemString, textX + 1, textY - 1);
 			}
 
 			textComponent.setText(itemString);

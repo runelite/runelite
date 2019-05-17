@@ -60,9 +60,9 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "chestLootChat",
-			name = "Show chest loot value in chat",
-			description = "Show the value of items from CoX/ToB/Barrows chests in chat"
+		keyName = "chestLootChat",
+		name = "Show chest loot value in chat",
+		description = "Show the value of items from CoX/ToB/Barrows chests in chat"
 	)
 	default boolean chestLootChat()
 	{

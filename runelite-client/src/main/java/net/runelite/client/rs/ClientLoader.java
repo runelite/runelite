@@ -32,17 +32,14 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import io.sigpipe.jbsdiff.InvalidHeaderException;
 import io.sigpipe.jbsdiff.Patch;
-
 import java.applet.Applet;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.Attributes;
@@ -53,13 +50,10 @@ import java.util.jar.Manifest;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-
 import lombok.extern.slf4j.Slf4j;
-
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
 import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
-
 import net.runelite.client.rs.mixins.MixinRunner;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Request;
@@ -72,41 +66,42 @@ public class ClientLoader
 {
 	private final ClientConfigLoader clientConfigLoader;
 	private ClientUpdateCheckMode updateCheckMode;
+
 	@Inject
 	private ClientLoader(
-			@Named("updateCheckMode") final ClientUpdateCheckMode updateCheckMode,
-			final ClientConfigLoader clientConfigLoader)
+		@Named("updateCheckMode") final ClientUpdateCheckMode updateCheckMode,
+		final ClientConfigLoader clientConfigLoader)
 	{
 		this.updateCheckMode = updateCheckMode;
 		this.clientConfigLoader = clientConfigLoader;
 	}
-	
+
 	public Applet load()
 	{
 		if (updateCheckMode == NONE)
 		{
 			return null;
 		}
-		
+
 		try
 		{
 			Manifest manifest = new Manifest();
 			manifest.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
 			RSConfig config = clientConfigLoader.fetch();
-			
+
 			Map<String, byte[]> zipFile = new HashMap<>();
 			{
 				String codebase = config.getCodeBase();
 				String initialJar = config.getInitialJar();
 				URL url = new URL(codebase + initialJar);
 				Request request = new Request.Builder()
-						.url(url)
-						.build();
-				
+					.url(url)
+					.build();
+
 				try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
 				{
 					JarInputStream jis;
-					
+
 					jis = new JarInputStream(response.body().byteStream());
 					byte[] tmp = new byte[4096];
 					ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
@@ -117,7 +112,7 @@ public class ClientLoader
 						{
 							break;
 						}
-						
+
 						buffer.reset();
 						for (; ; )
 						{
@@ -128,12 +123,12 @@ public class ClientLoader
 							}
 							buffer.write(tmp, 0, n);
 						}
-						
+
 						zipFile.put(metadata.getName(), buffer.toByteArray());
 					}
 				}
 			}
-			
+
 			if (updateCheckMode == AUTO)
 			{
 				Map<String, String> hashes;
@@ -143,33 +138,33 @@ public class ClientLoader
 					{
 					}.getType());
 				}
-				
+
 				for (Map.Entry<String, String> file : hashes.entrySet())
 				{
 					byte[] bytes = zipFile.get(file.getKey());
-					
+
 					String ourHash = null;
 					if (bytes != null)
 					{
 						ourHash = Hashing.sha512().hashBytes(bytes).toString();
 					}
-					
+
 					if (!file.getValue().equals(ourHash))
 					{
 						log.info("{} had a hash mismatch; falling back to vanilla. {} != {}", file.getKey(),
-								file.getValue(), ourHash);
+							file.getValue(), ourHash);
 						log.info("Client is outdated!");
 						updateCheckMode = VANILLA;
 						break;
 					}
 				}
 			}
-			
+
 			if (updateCheckMode == AUTO)
 			{
 				ByteArrayOutputStream patchOs = new ByteArrayOutputStream(756 * 1024);
 				int patchCount = 0;
-				
+
 				for (Map.Entry<String, byte[]> file : zipFile.entrySet())
 				{
 					byte[] bytes;
@@ -179,27 +174,27 @@ public class ClientLoader
 						{
 							continue;
 						}
-						
+
 						bytes = ByteStreams.toByteArray(is);
 					}
-					
+
 					patchOs.reset();
 					Patch.patch(file.getValue(), bytes, patchOs);
 					file.setValue(patchOs.toByteArray());
-					
+
 					++patchCount;
 				}
-				
+
 				log.info("Patched {} classes", patchCount);
 			}
-			
+
 			log.info("Patching for RuneLitePlus");
-			
+
 			if (updateCheckMode == AUTO)
 			{
-				
+
 				HashMap<String, byte[]> patches = new HashMap<>();
-				
+
 				for (Map.Entry<String, byte[]> file : zipFile.entrySet())
 				{
 					byte[] patchClass;
@@ -209,20 +204,20 @@ public class ClientLoader
 						{
 							continue;
 						}
-						
+
 						patchClass = ByteStreams.toByteArray(is);
 					}
-					
+
 					patches.put(file.getKey(), patchClass);
-					
+
 				}
-				
+
 				new MixinRunner(zipFile, patches).run();
-				
+
 			}
-			
+
 			String initialClass = config.getInitialClass();
-			
+
 			ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
 			{
 				@Override
@@ -234,13 +229,13 @@ public class ClientLoader
 					{
 						throw new ClassNotFoundException(name);
 					}
-					
+
 					return defineClass(name, data, 0, data.length);
 				}
 			};
-			
+
 			Class<?> clientClass = rsClassLoader.loadClass(initialClass);
-			
+
 			Applet rs = (Applet) clientClass.newInstance();
 			rs.setStub(new RSAppletStub(config));
 			return rs;
@@ -250,15 +245,15 @@ public class ClientLoader
 			if (e instanceof ClassNotFoundException)
 			{
 				log.error("Unable to load client - class not found. This means you"
-						+ " are not running RuneLite with Maven as the client patch"
-						+ " is not in your classpath.");
+					+ " are not running RuneLite with Maven as the client patch"
+					+ " is not in your classpath.");
 			}
-			
+
 			log.error("Error loading RS!", e);
 			return null;
 		}
 	}
-	
+
 	private void add(byte[] bytes, String entryName, JarOutputStream target) throws IOException
 	{
 		BufferedInputStream in = null;

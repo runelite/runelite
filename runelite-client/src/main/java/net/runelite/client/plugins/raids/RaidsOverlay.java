@@ -24,31 +24,35 @@
  */
 package net.runelite.client.plugins.raids;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.SpriteID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.plugins.raids.solver.Room;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.*;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
+import net.runelite.client.ui.overlay.components.ImageComponent;
+import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
@@ -191,7 +195,9 @@ public class RaidsOverlay extends Overlay
 				roomCount++;
 			}
 			if (tightrope)
+			{
 				puzzles = crabs ? "cr" : iceDemon ? "ri" : thieving ? "tr" : "?r";
+			}
 			else if (config.hideRopeless())
 			{
 				panelComponent.getChildren().add(TitleComponent.builder()
@@ -211,7 +217,9 @@ public class RaidsOverlay extends Overlay
 				for (Integer s : scavRooms)
 				{
 					if (s > i)
+					{
 						break;
+					}
 					prev = s;
 				}
 				scavsBeforeIceRooms.add(prev);
@@ -280,7 +288,9 @@ public class RaidsOverlay extends Overlay
 					if (config.showRecommendedItems())
 					{
 						if (plugin.getRecommendedItemsList().get(bossNameLC) != null)
+						{
 							imageIds.addAll(plugin.getRecommendedItemsList().get(bossNameLC));
+						}
 					}
 
 					panelComponent.getChildren().add(LineComponent.builder()
@@ -295,7 +305,9 @@ public class RaidsOverlay extends Overlay
 					String puzzleName = room.getPuzzle().getName();
 					String puzzleNameLC = puzzleName.toLowerCase();
 					if (plugin.getRecommendedItemsList().get(puzzleNameLC) != null)
+					{
 						imageIds.addAll(plugin.getRecommendedItemsList().get(puzzleNameLC));
+					}
 					if (plugin.getRoomWhitelist().contains(puzzleNameLC))
 					{
 						color = Color.GREEN;
@@ -370,7 +382,7 @@ public class RaidsOverlay extends Overlay
 
 			panelImages.setPreferredLocation(new Point(0, imagesVerticalOffset));
 			panelImages.setBackgroundColor(null);
-			if (2 * (imagesMaxHeight / ICON_SIZE) >= idArray.length )
+			if (2 * (imagesMaxHeight / ICON_SIZE) >= idArray.length)
 			{
 				panelImages.setWrapping(2);
 			}
@@ -399,15 +411,25 @@ public class RaidsOverlay extends Overlay
 	{
 		BufferedImage bim;
 		if (id != SpriteID.SPELL_ICE_BARRAGE)
+		{
 			bim = itemManager.getImage(id);
+		}
 		else
+		{
 			bim = spriteManager.getSprite(id, 0);
+		}
 		if (bim == null)
+		{
 			return null;
+		}
 		if (!small)
+		{
 			return ImageUtil.resizeCanvas(bim, ICON_SIZE, ICON_SIZE);
+		}
 		if (id != SpriteID.SPELL_ICE_BARRAGE)
+		{
 			return ImageUtil.resizeImage(bim, SMALL_ICON_SIZE, SMALL_ICON_SIZE);
+		}
 		return ImageUtil.resizeCanvas(bim, SMALL_ICON_SIZE, SMALL_ICON_SIZE);
 	}
 }

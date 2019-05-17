@@ -28,15 +28,10 @@ package net.runelite.client.plugins.rememberclan;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
-
-import net.runelite.api.*;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.Client;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.vars.AccountType;
-import net.runelite.client.chat.ChatColorType;
-import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -44,37 +39,37 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
-        name = "Remember Clan",
-        description = "Remember a specific clan!",
-		type = PluginType.UTILITY,
-        enabledByDefault = false
+	name = "Remember Clan",
+	description = "Remember a specific clan!",
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
 public class RememberClanPlugin extends Plugin
 {
 
-    @Inject
-    private Client client;
+	@Inject
+	private Client client;
 
-    @Inject
-    private RememberClanConfig config;
+	@Inject
+	private RememberClanConfig config;
 
-    @Inject
-    private ChatMessageManager chatMessageManager;
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
-    private boolean loggingIn;
+	private boolean loggingIn;
 
-    @Provides
-    RememberClanConfig provideConfig(ConfigManager configManager)
-    {
-        return configManager.getConfig(RememberClanConfig.class);
-    }
+	@Provides
+	RememberClanConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(RememberClanConfig.class);
+	}
 
-    @Subscribe
-    public void onGameTick(GameTick event)
-    {
-        client.setVar(VarClientStr.RECENT_CLAN_CHAT,config.clanname());
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		client.setVar(VarClientStr.RECENT_CLAN_CHAT, config.clanname());
 
-    }
+	}
 
 
 }

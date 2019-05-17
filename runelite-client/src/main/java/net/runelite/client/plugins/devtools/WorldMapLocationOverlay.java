@@ -96,7 +96,7 @@ public class WorldMapLocationOverlay extends Overlay
 		FontMetrics fm = graphics.getFontMetrics();
 		int height = fm.getHeight();
 		int width = fm.stringWidth(output);
-		graphics.fillRect((int)worldMapRectangle.getX(), (int)worldMapRectangle.getY() + worldMapRectangle.height - height, (int)worldMapRectangle.getX() + width, (int)worldMapRectangle.getY() + worldMapRectangle.height);
+		graphics.fillRect((int) worldMapRectangle.getX(), (int) worldMapRectangle.getY() + worldMapRectangle.height - height, (int) worldMapRectangle.getX() + width, (int) worldMapRectangle.getY() + worldMapRectangle.height);
 
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(output, (int) worldMapRectangle.getX(), (int) worldMapRectangle.getY() + worldMapRectangle.height);

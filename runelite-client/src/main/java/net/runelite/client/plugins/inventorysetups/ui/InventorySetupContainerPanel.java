@@ -70,8 +70,8 @@ public abstract class InventorySetupContainerPanel extends JPanel
 	}
 
 	void setContainerSlot(int index,
-						  final InventorySetupSlot containerSlot,
-						  final ArrayList<InventorySetupItem> items)
+						final InventorySetupSlot containerSlot,
+						final ArrayList<InventorySetupItem> items)
 	{
 		if (index >= items.size() || items.get(index).getId() == -1)
 		{
@@ -92,8 +92,8 @@ public abstract class InventorySetupContainerPanel extends JPanel
 	}
 
 	void highlightDifferentSlotColor(InventorySetupItem savedItem,
-									 InventorySetupItem currItem,
-									 final InventorySetupSlot containerSlot)
+									InventorySetupItem currItem,
+									final InventorySetupSlot containerSlot)
 	{
 		// important note: do not use item names for comparisons
 		// they are all empty to avoid clientThread usage when highlighting

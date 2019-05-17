@@ -33,16 +33,16 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("rememberclan")
 public interface RememberClanConfig extends Config
 {
-    @ConfigItem(
-            position = 1,
-            keyName = "clanname",
-            name = "Clan Name",
-            description = "Clanname to always remember"
-    )
-    default String clanname()
-    {
-        return "";
-    }
+	@ConfigItem(
+		position = 1,
+		keyName = "clanname",
+		name = "Clan Name",
+		description = "Clanname to always remember"
+	)
+	default String clanname()
+	{
+		return "";
+	}
 
 
 }

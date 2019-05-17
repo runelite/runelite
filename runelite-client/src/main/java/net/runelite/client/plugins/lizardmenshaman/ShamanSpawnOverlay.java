@@ -51,6 +51,7 @@ class ShamanSpawnOverlay extends Overlay
 		this.client = client;
 		this.plugin = plugin;
 	}
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -78,7 +79,7 @@ class ShamanSpawnOverlay extends Overlay
 
 			pieComponent.setPosition(loc);
 			pieComponent.setProgress(certainSec / spawn.getCountdownTimer());
-			if (certainSec >  4.8)
+			if (certainSec > 4.8)
 			{
 				pieComponent.setFill(Color.GREEN);
 				pieComponent.setBorderColor(Color.GREEN);

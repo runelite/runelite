@@ -251,7 +251,7 @@ public class DailyTasksPlugin extends Plugin
 					max += BONEMEAL_PER_DIARY;
 				}
 			}
-			if (dailyReset ||  collected < max)
+			if (dailyReset || collected < max)
 			{
 				sendChatMessage(BONEMEAL_MESSAGE);
 			}

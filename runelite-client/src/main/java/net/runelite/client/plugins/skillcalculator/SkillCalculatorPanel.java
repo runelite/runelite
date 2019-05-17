@@ -62,7 +62,7 @@ class SkillCalculatorPanel extends PluginPanel
 	private final MaterialTabGroup skillGroup;
 	private final MaterialTabGroup tabGroup;
 	private String currentTab;
-	private	ArrayList<String> tabs = new ArrayList<>();
+	private ArrayList<String> tabs = new ArrayList<>();
 	@Getter
 	private Map<Integer, Integer> bankMap = new HashMap<>();
 	private GridBagConstraints c;

@@ -25,7 +25,12 @@
 package net.runelite.client.plugins.playerinfo;
 
 import com.google.inject.Provides;
-import net.runelite.api.*;
+import java.awt.image.BufferedImage;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.SpriteID;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.SkillIconManager;
@@ -33,14 +38,8 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
+import static net.runelite.client.plugins.playerinfo.PlayerInfoCustomIndicator.IndicatorType;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import java.awt.image.BufferedImage;
-
-import static net.runelite.client.plugins.playerinfo.PlayerInfoCustomIndicator.*;
 
 @PluginDescriptor(
 	name = "Player Information",

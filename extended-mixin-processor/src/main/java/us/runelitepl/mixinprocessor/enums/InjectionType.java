@@ -31,5 +31,5 @@ public enum InjectionType
 	APPEND,
 	OVERWRITE,
 	PREPEND,
-	PROVIDED;
+	PROVIDED
 }

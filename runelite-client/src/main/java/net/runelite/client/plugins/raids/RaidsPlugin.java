@@ -26,9 +26,6 @@ package net.runelite.client.plugins.raids;
 
 import com.google.inject.Binder;
 import com.google.inject.Provides;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -51,7 +48,6 @@ import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
-import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
@@ -62,15 +58,14 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.game.ItemManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -81,7 +76,6 @@ import net.runelite.client.plugins.raids.solver.LayoutSolver;
 import net.runelite.client.plugins.raids.solver.RotationSolver;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.DrawManager;
-import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.WidgetOverlay;
@@ -90,7 +84,6 @@ import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
-import net.runelite.client.util.HotkeyListener;
 import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
@@ -351,7 +344,7 @@ public class RaidsPlugin extends Plugin
 
 						String ptssplit;
 						{
-							ptssplit = POINTS_FORMAT.format(((float) (totalPoints / (float) timesec) * 3600) / (partySize));
+							ptssplit = POINTS_FORMAT.format(((totalPoints / (float) timesec) * 3600) / (partySize));
 						}
 
 
@@ -392,8 +385,8 @@ public class RaidsPlugin extends Plugin
 	public void onClientTick(ClientTick event)
 	{
 		if (!config.raidsTimer()
-				|| !client.getGameState().equals(GameState.LOGGED_IN)
-				|| tooltip == null)
+			|| !client.getGameState().equals(GameState.LOGGED_IN)
+			|| tooltip == null)
 		{
 			return;
 		}
@@ -501,10 +494,14 @@ public class RaidsPlugin extends Plugin
 			String everything = m.group(1).toLowerCase();
 			int split = everything.indexOf(',');
 			if (split < 0)
+			{
 				continue;
+			}
 			String key = everything.substring(0, split);
 			if (key.length() < 1)
+			{
 				continue;
+			}
 			String[] itemNames = everything.substring(split).split(SPLIT_REGEX);
 
 			map.computeIfAbsent(key, k -> new ArrayList<>());
@@ -512,15 +509,25 @@ public class RaidsPlugin extends Plugin
 			for (String itemName : itemNames)
 			{
 				if (itemName.equals(""))
+				{
 					continue;
+				}
 				if (itemName.equals("ice barrage"))
+				{
 					map.get(key).add(SpriteID.SPELL_ICE_BARRAGE);
+				}
 				else if (itemName.startsWith("salve"))
+				{
 					map.get(key).add(ItemID.SALVE_AMULETEI);
+				}
 				else if (itemManager.search(itemName).size() > 0)
+				{
 					map.get(key).add(itemManager.search(itemName).get(0).getId());
+				}
 				else
+				{
 					log.info("RaidsPlugin: Could not find an item ID for item: " + itemName);
+				}
 			}
 		}
 	}
@@ -810,16 +817,16 @@ public class RaidsPlugin extends Plugin
 		StringBuilder builder = new StringBuilder();
 		if (seconds >= 3600)
 		{
-			builder.append((int)Math.floor(seconds / 3600) + ";");
+			builder.append((int) Math.floor(seconds / 3600)).append(";");
 		}
 		seconds %= 3600;
 		if (builder.toString().equals(""))
 		{
-			builder.append((int)Math.floor(seconds / 60));
+			builder.append((int) Math.floor(seconds / 60));
 		}
 		else
 		{
-			builder.append(StringUtils.leftPad(String.valueOf((int)Math.floor(seconds / 60)), 2, '0'));
+			builder.append(StringUtils.leftPad(String.valueOf((int) Math.floor(seconds / 60)), 2, '0'));
 		}
 		builder.append(":");
 		seconds %= 60;
@@ -835,7 +842,7 @@ public class RaidsPlugin extends Plugin
 			tooltip = null;
 			return;
 		}
-		builder.append("Upper level: " + secondsToTime(upperTime));
+		builder.append("Upper level: ").append(secondsToTime(upperTime));
 		if (middleTime == -1)
 		{
 			if (lowerTime == -1)
@@ -845,12 +852,12 @@ public class RaidsPlugin extends Plugin
 			}
 			else
 			{
-				builder.append("</br>Lower level: " + secondsToTime(lowerTime - upperTime));
+				builder.append("</br>Lower level: ").append(secondsToTime(lowerTime - upperTime));
 			}
 		}
 		else
 		{
-			builder.append("</br>Middle level: " + secondsToTime(middleTime - upperTime));
+			builder.append("</br>Middle level: ").append(secondsToTime(middleTime - upperTime));
 			if (lowerTime == -1)
 			{
 				tooltip = builder.toString();
@@ -858,7 +865,7 @@ public class RaidsPlugin extends Plugin
 			}
 			else
 			{
-				builder.append("</br>Lower level: " + secondsToTime(lowerTime - middleTime));
+				builder.append("</br>Lower level: ").append(secondsToTime(lowerTime - middleTime));
 			}
 		}
 		if (raidTime == -1)
@@ -866,7 +873,7 @@ public class RaidsPlugin extends Plugin
 			tooltip = builder.toString();
 			return;
 		}
-		builder.append("</br>Olm: " + secondsToTime(raidTime - lowerTime));
+		builder.append("</br>Olm: ").append(secondsToTime(raidTime - lowerTime));
 		tooltip = builder.toString();
 	}
 }

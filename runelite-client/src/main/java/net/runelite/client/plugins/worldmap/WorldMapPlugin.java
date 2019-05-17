@@ -231,8 +231,8 @@ public class WorldMapPlugin extends Plugin
 		if (config.transportationTeleportTooltips())
 		{
 			Arrays.stream(TransportationPointLocation.values())
-					.map(value -> new TransportationPoint(value, BLANK_ICON))
-					.forEach((worldMapPointManager::add));
+				.map(value -> new TransportationPoint(value, BLANK_ICON))
+				.forEach((worldMapPointManager::add));
 		}
 
 		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);

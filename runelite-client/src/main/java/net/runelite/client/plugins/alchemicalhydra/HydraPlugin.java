@@ -117,9 +117,9 @@ public class HydraPlugin extends Plugin
 		{
 
 			if (hydra != null)
-		{
-			removeOverlays();
-			hydra = null;
+			{
+				removeOverlays();
+				hydra = null;
 			}
 			return;
 		}
@@ -305,8 +305,8 @@ public class HydraPlugin extends Plugin
 		}
 		else
 		{
-		hydra.setNextSwitch(hydra.getNextSwitch() - 1);
-		hydra.setLastAttack(hydra.getNextAttack());
+			hydra.setNextSwitch(hydra.getNextSwitch() - 1);
+			hydra.setLastAttack(hydra.getNextAttack());
 		}
 
 		hydra.setAttackCount(hydra.getAttackCount() + 1);

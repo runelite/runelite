@@ -24,12 +24,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 package net.runelite.client.plugins.hideprayers.util;
 
 public enum PrayerTabStates
 {
-    NONE,
-    PRAYERS,
-    QUICK_PRAYERS
+	NONE,
+	PRAYERS,
+	QUICK_PRAYERS
 }

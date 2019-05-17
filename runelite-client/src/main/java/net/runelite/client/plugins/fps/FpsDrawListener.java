@@ -36,7 +36,7 @@ import net.runelite.api.events.FocusChanged;
  * For low powered computers, the RS client is often throttled by the hardware or OS and draws at 25-30 fps.
  * The nano timer is not used in this scenario.
  * Instead to catch up the RS client runs several cycles before drawing, thus maintaining 50 cycles / second.
- *
+ * <p>
  * Enforcing FPS in the draw code does not impact the client engine's ability to run including its audio,
  * even when forced to 1 FPS with this plugin.
  */

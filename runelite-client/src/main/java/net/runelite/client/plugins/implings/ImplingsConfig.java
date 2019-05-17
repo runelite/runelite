@@ -30,7 +30,6 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 /**
- *
  * @author robin
  */
 @ConfigGroup("implings")
@@ -312,10 +311,10 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 26,
-			keyName = "spawnColorDynamic",
-			name = "Impling dynamic spawn color",
-			description = "Text color for dynamic impling spawns in Puro Puro"
+		position = 26,
+		keyName = "spawnColorDynamic",
+		name = "Impling dynamic spawn color",
+		description = "Text color for dynamic impling spawns in Puro Puro"
 	)
 	default Color getDynamicSpawnColor()
 	{

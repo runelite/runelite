@@ -24,10 +24,9 @@
  */
 package net.runelite.client.plugins.batools;
 
+import java.awt.image.BufferedImage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
-
-import java.awt.image.BufferedImage;
 
 class CycleCounter extends Counter
 {

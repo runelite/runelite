@@ -59,6 +59,7 @@ public class PyramidPlunderOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{

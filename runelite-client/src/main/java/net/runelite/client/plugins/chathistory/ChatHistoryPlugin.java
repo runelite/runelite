@@ -87,7 +87,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	{
 		return configManager.getConfig(ChatHistoryConfig.class);
 	}
-	
+
 	@Override
 	protected void startUp()
 	{
@@ -187,6 +187,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 
 	/**
 	 * Small hack to prevent plugins checking for specific messages to match
+	 *
 	 * @param message message
 	 * @return message with nbsp
 	 */

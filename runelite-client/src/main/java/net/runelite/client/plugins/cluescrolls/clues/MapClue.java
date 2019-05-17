@@ -29,7 +29,38 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Set;
 import lombok.Getter;
-import static net.runelite.api.ItemID.*;
+import static net.runelite.api.ItemID.CLUE_SCROLL_EASY_12179;
+import static net.runelite.api.ItemID.CLUE_SCROLL_EASY_2713;
+import static net.runelite.api.ItemID.CLUE_SCROLL_EASY_2716;
+import static net.runelite.api.ItemID.CLUE_SCROLL_EASY_2719;
+import static net.runelite.api.ItemID.CLUE_SCROLL_EASY_3516;
+import static net.runelite.api.ItemID.CLUE_SCROLL_EASY_3518;
+import static net.runelite.api.ItemID.CLUE_SCROLL_EASY_7236;
+import static net.runelite.api.ItemID.CLUE_SCROLL_ELITE_12130;
+import static net.runelite.api.ItemID.CLUE_SCROLL_ELITE_19782;
+import static net.runelite.api.ItemID.CLUE_SCROLL_ELITE_19783;
+import static net.runelite.api.ItemID.CLUE_SCROLL_ELITE_19784;
+import static net.runelite.api.ItemID.CLUE_SCROLL_ELITE_19785;
+import static net.runelite.api.ItemID.CLUE_SCROLL_ELITE_19786;
+import static net.runelite.api.ItemID.CLUE_SCROLL_HARD;
+import static net.runelite.api.ItemID.CLUE_SCROLL_HARD_2729;
+import static net.runelite.api.ItemID.CLUE_SCROLL_HARD_3520;
+import static net.runelite.api.ItemID.CLUE_SCROLL_HARD_3522;
+import static net.runelite.api.ItemID.CLUE_SCROLL_HARD_3524;
+import static net.runelite.api.ItemID.CLUE_SCROLL_HARD_3525;
+import static net.runelite.api.ItemID.CLUE_SCROLL_HARD_7239;
+import static net.runelite.api.ItemID.CLUE_SCROLL_HARD_7241;
+import static net.runelite.api.ItemID.CLUE_SCROLL_MEDIUM_2827;
+import static net.runelite.api.ItemID.CLUE_SCROLL_MEDIUM_3596;
+import static net.runelite.api.ItemID.CLUE_SCROLL_MEDIUM_3598;
+import static net.runelite.api.ItemID.CLUE_SCROLL_MEDIUM_3599;
+import static net.runelite.api.ItemID.CLUE_SCROLL_MEDIUM_3601;
+import static net.runelite.api.ItemID.CLUE_SCROLL_MEDIUM_3602;
+import static net.runelite.api.ItemID.CLUE_SCROLL_MEDIUM_7286;
+import static net.runelite.api.ItemID.CLUE_SCROLL_MEDIUM_7288;
+import static net.runelite.api.ItemID.CLUE_SCROLL_MEDIUM_7290;
+import static net.runelite.api.ItemID.CLUE_SCROLL_MEDIUM_7292;
+import static net.runelite.api.ItemID.CLUE_SCROLL_MEDIUM_7294;
 import net.runelite.api.ObjectComposition;
 import static net.runelite.api.ObjectID.CRATE_18506;
 import static net.runelite.api.ObjectID.CRATE_2620;
@@ -204,6 +235,6 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 
 	public int[] getObjectIds()
 	{
-		return new int[] {objectId};
+		return new int[]{objectId};
 	}
 }

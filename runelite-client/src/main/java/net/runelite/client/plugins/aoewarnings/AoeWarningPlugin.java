@@ -301,8 +301,8 @@ public class AoeWarningPlugin extends Plugin
 				return config.isXarpusEnabled();
 			case ADDY_DRAG_POISON:
 				return config.addyDrags();
-            		case DRAKE_BREATH:
-                		return config.isDrakeEnabled();
+			case DRAKE_BREATH:
+				return config.isDrakeEnabled();
 			case CERB_FIRE:
 				return config.isCerbFireEnabled();
 		}

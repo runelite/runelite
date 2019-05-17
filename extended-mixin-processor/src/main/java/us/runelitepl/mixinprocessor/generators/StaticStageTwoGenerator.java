@@ -36,7 +36,6 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.TypeAnnotationNode;
-import us.runelitepl.mixinprocessor.MixinProcessorMojo;
 import us.runelitepl.mixinprocessor.parsers.MethodReflector;
 
 import java.util.HashMap;

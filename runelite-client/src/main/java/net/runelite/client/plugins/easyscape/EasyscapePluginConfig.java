@@ -29,285 +29,313 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("easyscape")
-public interface EasyscapePluginConfig extends Config {
+public interface EasyscapePluginConfig extends Config
+{
 
-    @ConfigItem(
-            keyName = "removeExamine",
-            name = "Remove Examine",
-            description = "",
-            position = 0
-    )
-    default boolean getRemoveExamine() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "removeExamine",
+		name = "Remove Examine",
+		description = "",
+		position = 0
+	)
+	default boolean getRemoveExamine()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "swapShop",
-            name = "Easy Shop",
-            description = "Enables swapping of items in the shop with their buy-50 option.",
-            position = 1
-    )
-    default boolean getSwapShop() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "swapShop",
+		name = "Easy Shop",
+		description = "Enables swapping of items in the shop with their buy-50 option.",
+		position = 1
+	)
+	default boolean getSwapShop()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "swappedItems",
-            name = "Shop Items",
-            description = "Items listed here will have their value and buy-50 options swapped.",
-            position = 2
-    )
-    default String getSwappedItems() {
-        return "";
-    }
+	@ConfigItem(
+		keyName = "swappedItems",
+		name = "Shop Items",
+		description = "Items listed here will have their value and buy-50 options swapped.",
+		position = 2
+	)
+	default String getSwappedItems()
+	{
+		return "";
+	}
 
-    @ConfigItem(
-            keyName = "easyConstruction",
-            name = "Easy Construction",
-            description = "",
-            position = 3
-    )
+	@ConfigItem(
+		keyName = "easyConstruction",
+		name = "Easy Construction",
+		description = "",
+		position = 3
+	)
 
-    default boolean getEasyConstruction() {
-        return true;
-    }
+	default boolean getEasyConstruction()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "constructionItems",
-            name = "Construction Items",
-            description = "",
-            position = 4
-    )
+	@ConfigItem(
+		keyName = "constructionItems",
+		name = "Construction Items",
+		description = "",
+		position = 4
+	)
 
-    default String getConstructionItems() {
-        return "";
-    }
+	default String getConstructionItems()
+	{
+		return "";
+	}
 
-    @ConfigItem(
-            keyName = "removeObjects",
-            name = "Remove Objects",
-            description = "",
-            position = 5
-    )
-    default boolean getRemoveObjects() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "removeObjects",
+		name = "Remove Objects",
+		description = "",
+		position = 5
+	)
+	default boolean getRemoveObjects()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "removedObjects",
-            name = "Removed Objects",
-            description = "",
-            position = 6
-    )
-    default String getRemovedObjects() {
-        return "";
-    }
+	@ConfigItem(
+		keyName = "removedObjects",
+		name = "Removed Objects",
+		description = "",
+		position = 6
+	)
+	default String getRemovedObjects()
+	{
+		return "";
+	}
 
-    @ConfigItem(
-            keyName = "swapSmithing",
-            name = "Swap Smithing",
-            description = "Enables swapping of smith-1 and smith-all options.",
-            position = 7
-    )
-    default boolean getSwapSmithing() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "swapSmithing",
+		name = "Swap Smithing",
+		description = "Enables swapping of smith-1 and smith-all options.",
+		position = 7
+	)
+	default boolean getSwapSmithing()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "swapTanning",
-            name = "Swap Tanning",
-            description = "Enables swapping of tan-1 and tan-all options.",
-            position = 8
-    )
-    default boolean getSwapTanning() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "swapTanning",
+		name = "Swap Tanning",
+		description = "Enables swapping of tan-1 and tan-all options.",
+		position = 8
+	)
+	default boolean getSwapTanning()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "swapCrafting",
-            name = "Swap Crafting",
-            description = "",
-            position = 9
-    )
-    default boolean getSwapCrafting() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "swapCrafting",
+		name = "Swap Crafting",
+		description = "",
+		position = 9
+	)
+	default boolean getSwapCrafting()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "swapArdougneCape",
-            name = "Swap Ardougne Cape",
-            description = "Enables swapping of teleport and wear.",
-            position = 10
-    )
-    default boolean getSwapArdougneCape() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "swapArdougneCape",
+		name = "Swap Ardougne Cape",
+		description = "Enables swapping of teleport and wear.",
+		position = 10
+	)
+	default boolean getSwapArdougneCape()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "swapStairs",
-            name = "Swap Stairs",
-            description = "",
-            position = 11
-    )
+	@ConfigItem(
+		keyName = "swapStairs",
+		name = "Swap Stairs",
+		description = "",
+		position = 11
+	)
 
-    default boolean getSwapStairs() {
-        return true;
-    }
+	default boolean getSwapStairs()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "swapSawmill",
-            name = "Swap Sawmill Operator",
-            description = "",
-            position = 12
-    )
-    default boolean getSwapSawmill() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "swapSawmill",
+		name = "Swap Sawmill Operator",
+		description = "",
+		position = 12
+	)
+	default boolean getSwapSawmill()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "swapSawmillPlanks",
-            name = "Swap Buy Planks",
-            description = "",
-            position = 13
-    )
+	@ConfigItem(
+		keyName = "swapSawmillPlanks",
+		name = "Swap Buy Planks",
+		description = "",
+		position = 13
+	)
 
-    default boolean getSwapSawmillPlanks() {
-        return true;
-    }
+	default boolean getSwapSawmillPlanks()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "swapPuroPuro",
-            name = "Swap Puro Puro Wheat",
-            description = "",
-            position = 14
-    )
-    default boolean getSwapPuro() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "swapPuroPuro",
+		name = "Swap Puro Puro Wheat",
+		description = "",
+		position = 14
+	)
+	default boolean getSwapPuro()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "swapEssencePounch",
-            name = "Swap Essence Pouch",
-            description = "Enables swapping of fill and empty for essence pounch.",
-            position = 15
-    )
-    default boolean getSwapEssencePouch() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "swapEssencePounch",
+		name = "Swap Essence Pouch",
+		description = "Enables swapping of fill and empty for essence pounch.",
+		position = 15
+	)
+	default boolean getSwapEssencePouch()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "essenceMode",
-            name = "Essence Pouch Mode",
-            description = "Runecrafting or essence mining mode.",
-            position = 16
-    )
+	@ConfigItem(
+		keyName = "essenceMode",
+		name = "Essence Pouch Mode",
+		description = "Runecrafting or essence mining mode.",
+		position = 16
+	)
 
-    default EssenceMode getEssenceMode() {
-        return EssenceMode.RUNECRAFTING;
-    }
+	default EssenceMode getEssenceMode()
+	{
+		return EssenceMode.RUNECRAFTING;
+	}
 
-    @ConfigItem(
-            keyName = "swapGamesNecklace",
-            name = "Swap Games Necklace",
-            description = "Enables swapping of games necklace.",
-            position = 17
-    )
-    default boolean getGamesNecklace() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "swapGamesNecklace",
+		name = "Swap Games Necklace",
+		description = "Enables swapping of games necklace.",
+		position = 17
+	)
+	default boolean getGamesNecklace()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "gamesNecklaceMode",
-            name = "Games Necklace Mode",
-            description = "Teleport location mode.",
-            position = 18
-    )
+	@ConfigItem(
+		keyName = "gamesNecklaceMode",
+		name = "Games Necklace Mode",
+		description = "Teleport location mode.",
+		position = 18
+	)
 
-    default GamesNecklaceMode getGamesNecklaceMode() {
-        return GamesNecklaceMode.BURTHORPE;
-    }
+	default GamesNecklaceMode getGamesNecklaceMode()
+	{
+		return GamesNecklaceMode.BURTHORPE;
+	}
 
-    @ConfigItem(
-            keyName = "swapDuelingRing",
-            name = "Swap Dueling Ring",
-            description = "Enables swapping of dueling ring.",
-            position = 19
-    )
-    default boolean getDuelingRing() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "swapDuelingRing",
+		name = "Swap Dueling Ring",
+		description = "Enables swapping of dueling ring.",
+		position = 19
+	)
+	default boolean getDuelingRing()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "duelingRingMode",
-            name = "Dueling Ring Mode",
-            description = "Teleport location mode.",
-            position = 20
-    )
+	@ConfigItem(
+		keyName = "duelingRingMode",
+		name = "Dueling Ring Mode",
+		description = "Teleport location mode.",
+		position = 20
+	)
 
-    default DuelingRingMode getDuelingRingMode() {
-        return DuelingRingMode.DUEL_ARENA;
-    }
+	default DuelingRingMode getDuelingRingMode()
+	{
+		return DuelingRingMode.DUEL_ARENA;
+	}
 
-    @ConfigItem(
-            keyName = "swapGlory",
-            name = "Swap Glory",
-            description = "Enables swapping of Amulet of Glory.",
-            position = 21
-    )
-    default boolean getGlory() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "swapGlory",
+		name = "Swap Glory",
+		description = "Enables swapping of Amulet of Glory.",
+		position = 21
+	)
+	default boolean getGlory()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "gloryMode",
-            name = "Glory Mode",
-            description = "Teleport location mode.",
-            position = 22
-    )
+	@ConfigItem(
+		keyName = "gloryMode",
+		name = "Glory Mode",
+		description = "Teleport location mode.",
+		position = 22
+	)
 
-    default GloryMode getGloryMode() {
-        return GloryMode.EDGEVILLE;
-    }
+	default GloryMode getGloryMode()
+	{
+		return GloryMode.EDGEVILLE;
+	}
 
-    @ConfigItem(
-            keyName = "swapWealthRing",
-            name = "Swap Ring of Wealth",
-            description = "Enables swapping of Ring of Wealth.",
-            position = 23
-    )
-    default boolean getWealthRing() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "swapWealthRing",
+		name = "Swap Ring of Wealth",
+		description = "Enables swapping of Ring of Wealth.",
+		position = 23
+	)
+	default boolean getWealthRing()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "WealthRingMode",
-            name = "Wealth Ring Mode",
-            description = "Teleport location mode.",
-            position = 24
-    )
+	@ConfigItem(
+		keyName = "WealthRingMode",
+		name = "Wealth Ring Mode",
+		description = "Teleport location mode.",
+		position = 24
+	)
 
-    default WealthRingMode getWealthRingMode() {
-        return WealthRingMode.GRAND_EXCHANGE;
-    }
+	default WealthRingMode getWealthRingMode()
+	{
+		return WealthRingMode.GRAND_EXCHANGE;
+	}
 
-    @ConfigItem(
-            keyName = "swapConstructionCape",
-            name = "Swap Construction Cape",
-            description = "Enables swapping of teleport and wear.",
-            position = 25
-    )
-    default boolean getSwapConstructionCape() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "swapConstructionCape",
+		name = "Swap Construction Cape",
+		description = "Enables swapping of teleport and wear.",
+		position = 25
+	)
+	default boolean getSwapConstructionCape()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-            keyName = "swapCraftingCape",
-            name = "Swap Crafting Cape",
-            description = "Enables swapping of teleport and wear.",
-            position = 26
-    )
-    default boolean getSwapCraftingCape() {
-        return true;
-    }
+	@ConfigItem(
+		keyName = "swapCraftingCape",
+		name = "Swap Crafting Cape",
+		description = "Enables swapping of teleport and wear.",
+		position = 26
+	)
+	default boolean getSwapCraftingCape()
+	{
+		return true;
+	}
 }
 

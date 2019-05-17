@@ -29,7 +29,7 @@ import net.runelite.api.ItemID;
 
 /**
  * Some non tradeable items are kept on death inside low level wilderness (1-20) but are turned into a broken variant.
- *
+ * <p>
  * The non-broken variant will be shown inside the interface.
  */
 public enum BrokenOnDeathItem
@@ -91,6 +91,7 @@ public enum BrokenOnDeathItem
 	private final int itemID;
 
 	private static final HashSet<Integer> ID_SET;
+
 	static
 	{
 		ID_SET = new HashSet<>();

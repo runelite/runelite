@@ -1,6 +1,7 @@
 package net.runelite.client.plugins;
 
-public enum PluginType {
+public enum PluginType
+{
 
 	PVM,
 	PVP,

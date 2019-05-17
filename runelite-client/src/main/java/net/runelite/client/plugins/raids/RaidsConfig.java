@@ -25,12 +25,9 @@
 package net.runelite.client.plugins.raids;
 
 import java.awt.Color;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Keybind;
 
 @ConfigGroup("raids")
 public interface RaidsConfig extends Config
@@ -189,6 +186,7 @@ public interface RaidsConfig extends Config
 	{
 		return true;
 	}
+
 	@ConfigItem(
 		position = 16,
 		keyName = "showRecommendedItems",
@@ -300,10 +298,10 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 26,
-			keyName = "displayFloorBreak",
-			name = "Layout floor break",
-			description = "Displays floor break in layout"
+		position = 26,
+		keyName = "displayFloorBreak",
+		name = "Layout floor break",
+		description = "Displays floor break in layout"
 	)
 	default boolean displayFloorBreak()
 	{

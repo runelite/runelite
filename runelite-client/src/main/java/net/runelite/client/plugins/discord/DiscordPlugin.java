@@ -417,10 +417,14 @@ public class DiscordPlugin extends Plugin
 
 		switch (event.getDiscordAreaType())
 		{
-			case BOSSES: return config.showBossActivity();
-			case CITIES: return config.showCityActivity();
-			case DUNGEONS: return config.showDungeonActivity();
-			case MINIGAMES: return config.showMinigameActivity();
+			case BOSSES:
+				return config.showBossActivity();
+			case CITIES:
+				return config.showCityActivity();
+			case DUNGEONS:
+				return config.showDungeonActivity();
+			case MINIGAMES:
+				return config.showMinigameActivity();
 		}
 
 		return false;

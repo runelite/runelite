@@ -439,7 +439,7 @@ class ProfilesPanel extends PluginPanel
 
 	private void addAccounts(String data)
 	{
-	// log.info("Data: " + data);
+		// log.info("Data: " + data);
 		data = data.trim();
 		if (!data.contains(":"))
 		{

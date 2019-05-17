@@ -67,7 +67,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "enablePlugins",
 		name = "Enable loading of external plugins",
 		description = "Enable loading of external plugins",
-			position = 10
+		position = 10
 	)
 	default boolean enablePlugins()
 	{

@@ -36,12 +36,11 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.SkullIcon;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.game.ClanManager;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.friendtagging.FriendTaggingPlugin;
-import net.runelite.client.plugins.pvptools.PvpToolsPlugin;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -62,11 +61,8 @@ public class PlayerIndicatorsOverlay extends Overlay
 	private final ClanManager clanManager;
 	private final BufferedImage skullIcon = ImageUtil.getResourceStreamFromClass(PlayerIndicatorsPlugin.class,
 		"skull.png");
-	PvpToolsPlugin pvpToolsPlugin;
 	@Inject
 	private Client client;
-	@Inject
-	private SpriteManager spriteManager;
 	@Inject
 	private PlayerIndicatorsPlugin playerIndicatorsPlugin;
 	@Inject
@@ -74,7 +70,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 	@Inject
 	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService,
-		ClanManager clanManager)
+									ClanManager clanManager)
 	{
 		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;
@@ -164,7 +160,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 			}
 		}
 
-		String tag = "";
+		String tag;
 		String prefix = "tag_";
 		if (FriendTaggingPlugin.taggedFriends.containsKey(prefix + name.trim().toLowerCase()))
 		{
@@ -190,13 +186,13 @@ public class PlayerIndicatorsOverlay extends Overlay
 		if (config.targetRisk() && PvPUtil.isAttackable(client, actor) && actor.getPlayerComposition() != null)
 		{
 			long totalValue = 0;
-			int newValue = 0;
+			int newValue;
 			StringBuilder stringBuilder = new StringBuilder(" ");
 			for (KitType kitType : KitType.values())
 			{
 				ItemComposition itemComposition =
 					itemManager.getItemComposition(actor.getPlayerComposition().getEquipmentId(kitType));
-				if (itemComposition != null || itemComposition.getName() != null)
+				if (itemComposition != null && itemComposition.getName() != null)
 				{
 					totalValue = totalValue + itemComposition.getPrice();
 				}
@@ -204,7 +200,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 			newValue = (int) (totalValue / 1000);
 			if (newValue != 0)
 			{
-				stringBuilder.append("(" + formatNumber(newValue) + "K)");
+				stringBuilder.append("(").append(formatNumber(newValue)).append("K)");
 				name = name + stringBuilder;
 			}
 		}
@@ -216,30 +212,24 @@ public class PlayerIndicatorsOverlay extends Overlay
 				name = name + " cGLORY";
 			}
 		}
-		if (actor.getSkullIcon() != null && config.playerSkull())
+
+		if (actor.getSkullIcon() != null && config.playerSkull() && actor.getSkullIcon() == SkullIcon.SKULL)
 		{
-			switch (actor.getSkullIcon())
+			int width = graphics.getFontMetrics().stringWidth(name);
+			int height = graphics.getFontMetrics().getHeight();
+			if (config.skullLocation().equals(PlayerIndicatorsPlugin.MinimapSkullLocations.AFTER_NAME))
 			{
-				case SKULL:
-					int width = graphics.getFontMetrics().stringWidth(name);
-					int height = graphics.getFontMetrics().getHeight();
-					if (config.skullLocation().equals(PlayerIndicatorsPlugin.minimapSkullLocations.AFTER_NAME))
-					{
-						OverlayUtil.renderImageLocation(graphics, new Point(textLocation.getX()
-								+ width, textLocation.getY() - height),
-							ImageUtil.resizeImage(skullIcon, height, height));
-					}
-					else
-					{
-						OverlayUtil.renderImageLocation(graphics, new Point(textLocation.getX(),
-								textLocation.getY() - height),
-							ImageUtil.resizeImage(skullIcon, height, height));
-						textLocation = new Point(textLocation.getX() + skullIcon.getWidth(),
-							textLocation.getY());
-					}
-					break;
-				default:
-					break;
+				OverlayUtil.renderImageLocation(graphics, new Point(textLocation.getX()
+						+ width, textLocation.getY() - height),
+					ImageUtil.resizeImage(skullIcon, height, height));
+			}
+			else
+			{
+				OverlayUtil.renderImageLocation(graphics, new Point(textLocation.getX(),
+						textLocation.getY() - height),
+					ImageUtil.resizeImage(skullIcon, height, height));
+				textLocation = new Point(textLocation.getX() + skullIcon.getWidth(),
+					textLocation.getY());
 			}
 		}
 		OverlayUtil.renderTextLocation(graphics, textLocation, name, color);

@@ -83,7 +83,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.PluginType;
-import net.runelite.client.plugins.pluginsorter.PluginSorterPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
@@ -197,8 +196,8 @@ public class ConfigPanel extends PluginPanel
 
 		// set RuneLite config on top, as it should always have been
 		final PluginListItem runeLite = new PluginListItem(this, configManager, runeLiteConfig,
-				configManager.getConfigDescriptor(runeLiteConfig),
-				RUNELITE_PLUGIN, "RuneLite client settings", "client");
+			configManager.getConfigDescriptor(runeLiteConfig),
+			RUNELITE_PLUGIN, "RuneLite client settings", "client");
 		runeLite.setPinned(pinnedPlugins.contains(RUNELITE_PLUGIN));
 		runeLite.nameLabel.setForeground(Color.WHITE);
 		pluginList.add(runeLite);
@@ -279,13 +278,13 @@ public class ConfigPanel extends PluginPanel
 		// populate pluginList with all vanilla RL plugins
 		List<PluginListItem> vanillaPlugins = new ArrayList<>();
 		pluginManager.getPlugins().stream()
-				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
-				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVM))
-				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVP))
-				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.UTILITY))
-				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PLUGIN_ORGANIZER))
-				.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.EXTERNAL))
-				.forEach(plugin ->
+			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
+			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVM))
+			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVP))
+			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.UTILITY))
+			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PLUGIN_ORGANIZER))
+			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.EXTERNAL))
+			.forEach(plugin ->
 				{
 					final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
 					final Config config = pluginManager.getPluginConfigProxy(plugin);
@@ -295,11 +294,11 @@ public class ConfigPanel extends PluginPanel
 					listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
 					vanillaPlugins.add(listItem);
 				}
-				);
+			);
 
 		final PluginListItem chatColor = new PluginListItem(this, configManager, chatColorConfig,
-				configManager.getConfigDescriptor(chatColorConfig),
-				CHAT_COLOR_PLUGIN, "Recolor chat text", "colour", "messages");
+			configManager.getConfigDescriptor(chatColorConfig),
+			CHAT_COLOR_PLUGIN, "Recolor chat text", "colour", "messages");
 		chatColor.setPinned(pinnedPlugins.contains(CHAT_COLOR_PLUGIN));
 		chatColor.nameLabel.setForeground(Color.WHITE);
 		vanillaPlugins.add(chatColor);
@@ -404,7 +403,9 @@ public class ConfigPanel extends PluginPanel
 		topPanel.add(topPanelBackButton, BorderLayout.WEST);
 
 		if (!listItem.getName().equals("RuneLitePlus"))
-		topPanel.add(listItem.createToggleButton(), BorderLayout.EAST);
+		{
+			topPanel.add(listItem.createToggleButton(), BorderLayout.EAST);
+		}
 
 		String name = listItem.getName();
 		JLabel title = new JLabel(name);
@@ -520,7 +521,7 @@ public class ConfigPanel extends PluginPanel
 					public void mouseClicked(MouseEvent e)
 					{
 						RuneliteColorPicker colorPicker = new RuneliteColorPicker(SwingUtilities.windowForComponent(ConfigPanel.this),
-								colorPickerBtn.getBackground(), cid.getItem().name(), cid.getAlpha() == null);
+							colorPickerBtn.getBackground(), cid.getItem().name(), cid.getAlpha() == null);
 						colorPicker.setLocation(getLocationOnScreen());
 						colorPicker.setOnColorChange(c ->
 						{
@@ -566,7 +567,7 @@ public class ConfigPanel extends PluginPanel
 				heightSpinnerTextField.setColumns(4);
 
 				ChangeListener listener = e ->
-						configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
+					configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), widthSpinner.getValue() + "x" + heightSpinner.getValue());
 
 				widthSpinner.addChangeListener(listener);
 				heightSpinner.addChangeListener(listener);
@@ -611,8 +612,8 @@ public class ConfigPanel extends PluginPanel
 			if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
 			{
 				Keybind startingValue = configManager.getConfiguration(cd.getGroup().value(),
-						cid.getItem().keyName(),
-						(Class<? extends Keybind>) cid.getType());
+					cid.getItem().keyName(),
+					(Class<? extends Keybind>) cid.getType());
 
 				HotkeyButton button = new HotkeyButton(startingValue, cid.getType() == ModifierlessKeybind.class);
 
@@ -635,8 +636,8 @@ public class ConfigPanel extends PluginPanel
 		resetButton.addActionListener((e) ->
 		{
 			final int result = JOptionPane.showOptionDialog(resetButton, "Are you sure you want to reset this plugin's configuration?",
-					"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-					null, new String[]{"Yes", "No"}, "No");
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"Yes", "No"}, "No");
 
 			if (result == JOptionPane.YES_OPTION)
 			{
@@ -663,8 +664,8 @@ public class ConfigPanel extends PluginPanel
 		if (!Strings.isNullOrEmpty(configItem.warning()))
 		{
 			final int result = JOptionPane.showOptionDialog(component, configItem.warning(),
-					"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-					null, new String[]{"Yes", "No"}, "No");
+				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"Yes", "No"}, "No");
 
 			if (result != JOptionPane.YES_OPTION)
 			{
@@ -758,9 +759,9 @@ public class ConfigPanel extends PluginPanel
 	void savePinnedPlugins()
 	{
 		final String value = pluginList.stream()
-				.filter(PluginListItem::isPinned)
-				.map(PluginListItem::getName)
-				.collect(Collectors.joining(","));
+			.filter(PluginListItem::isPinned)
+			.map(PluginListItem::getName)
+			.collect(Collectors.joining(","));
 
 		configManager.setConfiguration(RUNELITE_GROUP_NAME, PINNED_PLUGINS_CONFIG_KEY, value);
 	}

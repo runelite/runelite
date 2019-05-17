@@ -80,9 +80,12 @@ public class RuneLiteProperties
 
 	public String getDiscordAppId()
 	{
-		if (RuneLitePlusPlugin.customPresenceEnabled) {
+		if (RuneLitePlusPlugin.customPresenceEnabled)
+		{
 			return properties.getProperty(RuneLitePlusPlugin.rlPlusDiscordApp);
-		} else {
+		}
+		else
+		{
 			return properties.getProperty(DISCORD_APP_ID);
 		}
 	}

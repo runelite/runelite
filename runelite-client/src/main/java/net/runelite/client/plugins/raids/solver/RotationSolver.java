@@ -52,12 +52,12 @@ public class RotationSolver
 	}
 
 	private static final Rotation[] ROTATIONS =
-	{
+		{
 			new Rotation<>(Arrays.asList(Boss.TEKTON, Boss.VASA, Boss.GUARDIANS, Boss.MYSTICS, Boss.SHAMANS, Boss.MUTTADILES, Boss.VANGUARDS, Boss.VESPULA)),
 			new Rotation<>(Arrays.asList(Boss.TEKTON, Boss.MUTTADILES, Boss.GUARDIANS, Boss.VESPULA, Boss.SHAMANS, Boss.VASA, Boss.VANGUARDS, Boss.MYSTICS)),
 			new Rotation<>(Arrays.asList(Boss.VESPULA, Boss.VANGUARDS, Boss.MUTTADILES, Boss.SHAMANS, Boss.MYSTICS, Boss.GUARDIANS, Boss.VASA, Boss.TEKTON)),
 			new Rotation<>(Arrays.asList(Boss.MYSTICS, Boss.VANGUARDS, Boss.VASA, Boss.SHAMANS, Boss.VESPULA, Boss.GUARDIANS, Boss.MUTTADILES, Boss.TEKTON))
-	};
+		};
 
 	public static boolean solve(RaidRoom[] rooms)
 	{

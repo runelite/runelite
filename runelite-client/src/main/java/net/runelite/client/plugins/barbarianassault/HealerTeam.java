@@ -33,10 +33,10 @@ import net.runelite.api.widgets.WidgetInfo;
 @AllArgsConstructor
 enum HealerTeam
 {
-	TEAMMATE1(WidgetInfo.BA_HEAL_TEAMMATE1, new Point(28,  2), 115),
-	TEAMMATE2(WidgetInfo.BA_HEAL_TEAMMATE2, new Point(26,  2), 115),
-	TEAMMATE3(WidgetInfo.BA_HEAL_TEAMMATE3, new Point(26,  2), 115),
-	TEAMMATE4(WidgetInfo.BA_HEAL_TEAMMATE4, new Point(25,  2), 115);
+	TEAMMATE1(WidgetInfo.BA_HEAL_TEAMMATE1, new Point(28, 2), 115),
+	TEAMMATE2(WidgetInfo.BA_HEAL_TEAMMATE2, new Point(26, 2), 115),
+	TEAMMATE3(WidgetInfo.BA_HEAL_TEAMMATE3, new Point(26, 2), 115),
+	TEAMMATE4(WidgetInfo.BA_HEAL_TEAMMATE4, new Point(25, 2), 115);
 
 	private WidgetInfo teammate;
 	private Point offset;

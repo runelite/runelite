@@ -175,7 +175,7 @@ public final class AnimationID
 	public static final int VORKATH_ACID_ATTACK = 7957;
 	public static final int BLACKJACK_KO = 838;
 	public static final int VETION_EARTHQUAKE = 5507;
-	public static final int ZULRAH_DEATH = 5804;										 
+	public static final int ZULRAH_DEATH = 5804;
 
 	// Farming
 	public static final int FARMING_HARVEST_FRUIT_TREE = 2280;
@@ -214,8 +214,8 @@ public final class AnimationID
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
 	public static final int LOW_LEVEL_MAGIC_ATTACK = 1162;
-   	public static final int HIGH_LEVEL_MAGIC_ATTACK = 1167;
-   	public static final int BLOWPIPE_ATTACK = 5061;
+	public static final int HIGH_LEVEL_MAGIC_ATTACK = 1167;
+	public static final int BLOWPIPE_ATTACK = 5061;
 
 	// Hydra
 	public static final int HYDRA_POISON_1 = 8234;

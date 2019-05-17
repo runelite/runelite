@@ -653,7 +653,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	private void itemPriceLookup(ChatMessage chatMessage, String message)
 	{
@@ -689,17 +689,17 @@ public class ChatCommandsPlugin extends Plugin
 			int itemPrice = item.getPrice();
 
 			final ChatMessageBuilder builder = new ChatMessageBuilder();
-				builder.append(ChatColorType.NORMAL);
-				builder.append(ChatColorType.HIGHLIGHT);
-				builder.append(item.getName());
-				builder.append(ChatColorType.NORMAL);
-				builder.append(": GE ");
-				builder.append(ChatColorType.HIGHLIGHT);
-				builder.append(StackFormatter.formatNumber(itemPrice));
-				builder.append(ChatColorType.NORMAL);
-				builder.append(": OSB ");
-				builder.append(ChatColorType.HIGHLIGHT);
-				builder.append(StackFormatter.formatNumber(osbresult.getOverall_average()));
+			builder.append(ChatColorType.NORMAL);
+			builder.append(ChatColorType.HIGHLIGHT);
+			builder.append(item.getName());
+			builder.append(ChatColorType.NORMAL);
+			builder.append(": GE ");
+			builder.append(ChatColorType.HIGHLIGHT);
+			builder.append(StackFormatter.formatNumber(itemPrice));
+			builder.append(ChatColorType.NORMAL);
+			builder.append(": OSB ");
+			builder.append(ChatColorType.HIGHLIGHT);
+			builder.append(StackFormatter.formatNumber(osbresult.getOverall_average()));
 
 			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 			if (itemComposition != null)
@@ -726,7 +726,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	private void playerSkillLookup(ChatMessage chatMessage, String message)
 	{

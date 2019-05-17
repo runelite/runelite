@@ -374,6 +374,7 @@ public class Hooks implements Callbacks
 
 	/**
 	 * Copy an image
+	 *
 	 * @param src
 	 * @return
 	 */

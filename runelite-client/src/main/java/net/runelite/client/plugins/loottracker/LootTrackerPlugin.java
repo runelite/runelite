@@ -51,8 +51,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.Item;
 import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
@@ -121,7 +121,7 @@ public class LootTrackerPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
-	
+
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
@@ -372,16 +372,16 @@ public class LootTrackerPlugin extends Plugin
 			}
 
 			final ChatMessageBuilder message = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
-					.append("Your loot is worth around ")
-					.append(StackFormatter.formatNumber(chestPrice))
-					.append(" coins.")
-					.append(ChatColorType.NORMAL);
+				.append(ChatColorType.HIGHLIGHT)
+				.append("Your loot is worth around ")
+				.append(StackFormatter.formatNumber(chestPrice))
+				.append(" coins.")
+				.append(ChatColorType.NORMAL);
 
 			chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.ITEM_EXAMINE)
-					.runeLiteFormattedMessage(message.build())
-					.build());
+				.type(ChatMessageType.ITEM_EXAMINE)
+				.runeLiteFormattedMessage(message.build())
+				.build());
 		}
 
 		// Convert container items to array of ItemStack
@@ -489,7 +489,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			inventorySnapshot = HashMultiset.create();
 			Arrays.stream(itemContainer.getItems())
-					.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
+				.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
 		}
 	}
 

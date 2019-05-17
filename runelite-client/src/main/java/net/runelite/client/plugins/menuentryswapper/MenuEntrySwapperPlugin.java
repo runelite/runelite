@@ -363,7 +363,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		final int eventId = event.getIdentifier();
 		final String option = Text.removeTags(event.getOption()).toLowerCase();
 		final String target = Text.removeTags(event.getTarget()).toLowerCase();
-		final NPC hintArrowNpc  = client.getHintArrowNpc();
+		final NPC hintArrowNpc = client.getHintArrowNpc();
 
 		if (hintArrowNpc != null
 			&& hintArrowNpc.getIndex() == eventId
@@ -451,32 +451,32 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap(client, "quick-travel", option, target, true);
 			}
 		}
-		
+
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
 			swap(client, "pay-toll(2-ecto)", option, target, true);
 		}
-		
+
 		else if (config.swapTravel() && option.equals("open") && target.equals("gate"))
 		{
 			swap(client, "pay-toll(10gp)", option, target, true);
 		}
-		
+
 		else if (config.swapTravel() && option.equals("inspect") && target.equals("trapdoor"))
 		{
 			swap(client, "travel", option, target, true);
 		}
-		
+
 		else if (config.swapHarpoon() && option.equals("cage"))
 		{
 			swap(client, "harpoon", option, target, true);
 		}
-		
+
 		else if (config.swapHarpoon() && (option.equals("big net") || option.equals("net")))
 		{
 			swap(client, "harpoon", option, target, true);
 		}
-		
+
 		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter"))
 		{
 			switch (config.swapHomePortal())
@@ -504,76 +504,76 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap(client, "configure", option, target, false);
 			}
 		}
-		
+
 		else if (config.swapFairyRing() == FairyRingMode.ZANARIS && option.equals("tree"))
 		{
 			swap(client, "zanaris", option, target, false);
 		}
-		
+
 		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
 		{
 			swap(client, "reset", option, target, true);
 		}
-		
+
 		else if (config.swapBoxTrap() && option.equals("take"))
 		{
 			swap(client, "lay", option, target, true);
 		}
-		
+
 		else if (config.swapChase() && option.equals("pick-up"))
 		{
 			swap(client, "chase", option, target, true);
 		}
-		
+
 		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
 		{
 			swap(client, "empty", option, target, true);
 		}
-		
+
 		else if (config.swapQuick() && option.equals("ring"))
 		{
 			swap(client, "quick-start", option, target, true);
 		}
-		
+
 		else if (config.swapQuick() && option.equals("pass"))
 		{
 			swap(client, "quick-pass", option, target, true);
 			swap(client, "quick pass", option, target, true);
 		}
-		
+
 		else if (config.swapQuick() && option.equals("open"))
 		{
 			swap(client, "quick-open", option, target, true);
 		}
-		
+
 		else if (config.swapAdmire() && option.equals("admire"))
 		{
 			swap(client, "teleport", option, target, true);
 			swap(client, "spellbook", option, target, true);
 			swap(client, "perks", option, target, true);
 		}
-		
+
 		else if (config.swapPrivate() && option.equals("shared"))
 		{
 			swap(client, "private", option, target, true);
 		}
-		
+
 		else if (config.swapPick() && option.equals("pick"))
 		{
 			swap(client, "pick-lots", option, target, true);
 		}
-		
+
 		else if (config.swapRogueschests() && target.contains("chest"))
 		{
 			swap(client, "search for traps", option, target, true);
 		}
-		
+
 		else if (config.rockCake() && option.equals("eat"))
 		{
 			swap(client, "guzzle", option, target, true);
 		}
-		
-		
+
+
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(eventId);
@@ -583,7 +583,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap(client, "use", option, target, true);
 			}
 		}
-		
+
 		// Put all item-related swapping after shift-click
 		else if (config.swapTeleportItem() && option.equals("wear"))
 		{

@@ -41,10 +41,10 @@ public class _Statics_
 	static final void prepend$menuAction(int actionParam, int widgetId, int opcode, int targetId, String menuOption,
 			String menuTarget, int mouseX, int mouseY)
 	{
-		if(Client.printMenuActions)
+		if (Client.printMenuActions)
 		{
 			int printOpcode = opcode;
-			if(opcode >= 2000)
+			if (opcode >= 2000)
 			{
 				printOpcode -= 2000;
 			}

@@ -35,15 +35,15 @@ import org.objectweb.asm.TypePath;
 
 public class MethodReflector extends MethodVisitor
 {
-	
+
 	private MethodVisitor target;
-	
+
 	public MethodReflector(MethodVisitor target)
 	{
 		super(Opcodes.ASM6);
 		this.target = target;
 	}
-	
+
 	public void visitParameter(String var1, int var2)
 	{
 		if (target != null)
@@ -52,27 +52,27 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitParameter(var1, var2);
 	}
-	
+
 	public AnnotationVisitor visitAnnotationDefault()
 	{
 		return super.visitAnnotationDefault();
 	}
-	
+
 	public AnnotationVisitor visitAnnotation(String var1, boolean var2)
 	{
 		return super.visitAnnotation(var1, var2);
 	}
-	
+
 	public AnnotationVisitor visitTypeAnnotation(int var1, TypePath var2, String var3, boolean var4)
 	{
 		return super.visitTypeAnnotation(var1, var2, var3, var4);
 	}
-	
+
 	public AnnotationVisitor visitParameterAnnotation(int var1, String var2, boolean var3)
 	{
 		return super.visitParameterAnnotation(var1, var2, var3);
 	}
-	
+
 	public void visitAttribute(Attribute var1)
 	{
 		if (target != null)
@@ -81,7 +81,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitAttribute(var1);
 	}
-	
+
 	public void visitFrame(int var1, int var2, Object[] var3, int var4, Object[] var5)
 	{
 		if (target != null)
@@ -90,7 +90,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitFrame(var1, var2, var3, var4, var5);
 	}
-	
+
 	public void visitInsn(int var1)
 	{
 		if (target != null)
@@ -99,7 +99,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitInsn(var1);
 	}
-	
+
 	public void visitIntInsn(int var1, int var2)
 	{
 		if (target != null)
@@ -108,7 +108,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitIntInsn(var1, var2);
 	}
-	
+
 	public void visitVarInsn(int var1, int var2)
 	{
 		if (target != null)
@@ -117,7 +117,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitVarInsn(var1, var2);
 	}
-	
+
 	public void visitTypeInsn(int var1, String var2)
 	{
 		if (target != null)
@@ -126,7 +126,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitTypeInsn(var1, var2);
 	}
-	
+
 	public void visitFieldInsn(int var1, String var2, String var3, String var4)
 	{
 		if (target != null)
@@ -135,7 +135,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitFieldInsn(var1, var2, var3, var4);
 	}
-	
+
 	/**
 	 * @deprecated
 	 */
@@ -147,7 +147,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitMethodInsn(var1, var2, var3, var4);
 	}
-	
+
 	public void visitMethodInsn(int var1, String var2, String var3, String var4, boolean var5)
 	{
 		if (target != null)
@@ -156,7 +156,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitMethodInsn(var1, var2, var3, var4, var5);
 	}
-	
+
 	public void visitInvokeDynamicInsn(String var1, String var2, Handle var3, Object... var4)
 	{
 		if (target != null)
@@ -165,7 +165,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitInvokeDynamicInsn(var1, var2, var3, var4);
 	}
-	
+
 	public void visitJumpInsn(int var1, Label var2)
 	{
 		if (target != null)
@@ -174,7 +174,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitJumpInsn(var1, var2);
 	}
-	
+
 	public void visitLabel(Label var1)
 	{
 		if (target != null)
@@ -183,7 +183,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitLabel(var1);
 	}
-	
+
 	public void visitLdcInsn(Object var1)
 	{
 		if (target != null)
@@ -192,7 +192,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitLdcInsn(var1);
 	}
-	
+
 	public void visitIincInsn(int var1, int var2)
 	{
 		if (target != null)
@@ -201,7 +201,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitIincInsn(var1, var2);
 	}
-	
+
 	public void visitTableSwitchInsn(int var1, int var2, Label var3, Label... var4)
 	{
 		if (target != null)
@@ -210,7 +210,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitTableSwitchInsn(var1, var2, var3, var4);
 	}
-	
+
 	public void visitLookupSwitchInsn(Label var1, int[] var2, Label[] var3)
 	{
 		if (target != null)
@@ -219,7 +219,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitLookupSwitchInsn(var1, var2, var3);
 	}
-	
+
 	public void visitMultiANewArrayInsn(String var1, int var2)
 	{
 		if (target != null)
@@ -228,7 +228,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitMultiANewArrayInsn(var1, var2);
 	}
-	
+
 	public AnnotationVisitor visitInsnAnnotation(int var1, TypePath var2, String var3, boolean var4)
 	{
 		if (target != null)
@@ -237,7 +237,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		return super.visitInsnAnnotation(var1, var2, var3, var4);
 	}
-	
+
 	public void visitTryCatchBlock(Label var1, Label var2, Label var3, String var4)
 	{
 		if (target != null)
@@ -246,7 +246,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitTryCatchBlock(var1, var2, var3, var4);
 	}
-	
+
 	public AnnotationVisitor visitTryCatchAnnotation(int var1, TypePath var2, String var3, boolean var4)
 	{
 		if (target != null)
@@ -255,7 +255,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		return super.visitTryCatchAnnotation(var1, var2, var3, var4);
 	}
-	
+
 	public void visitLocalVariable(String var1, String var2, String var3, Label var4, Label var5, int var6)
 	{
 		if (target != null)
@@ -264,7 +264,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitLocalVariable(var1, var2, var3, var4, var5, var6);
 	}
-	
+
 	public AnnotationVisitor visitLocalVariableAnnotation(int var1, TypePath var2, Label[] var3, Label[] var4, int[] var5, String var6, boolean var7)
 	{
 		if (target != null)
@@ -273,7 +273,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		return super.visitLocalVariableAnnotation(var1, var2, var3, var4, var5, var6, var7);
 	}
-	
+
 	public void visitLineNumber(int var1, Label var2)
 	{
 		if (target != null)
@@ -282,7 +282,7 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitLineNumber(var1, var2);
 	}
-	
+
 	public void visitMaxs(int var1, int var2)
 	{
 		if (target != null)
@@ -291,5 +291,5 @@ public class MethodReflector extends MethodVisitor
 		}
 		super.visitMaxs(var1, var2);
 	}
-	
+
 }

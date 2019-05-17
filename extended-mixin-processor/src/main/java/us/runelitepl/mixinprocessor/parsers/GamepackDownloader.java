@@ -48,7 +48,7 @@ public class GamepackDownloader
 		ZipInputStream zipInputStream = new ZipInputStream(new ByteArrayInputStream(gamepackJarAry));
 		byte[] buffer = new byte[2048];
 		ZipEntry entry;
-		ByteArrayOutputStream fileContent = new ByteArrayOutputStream(1024*1024*4);
+		ByteArrayOutputStream fileContent = new ByteArrayOutputStream(1024 * 1024 * 4);
 		while ((entry = zipInputStream.getNextEntry()) != null)
 		{
 			if (entry.getName().startsWith("META-INF"))
@@ -56,8 +56,8 @@ public class GamepackDownloader
 				continue;
 			}
 			String key = entry.getName().replace(".class", "");
-			int len = 0;
-			while((len = zipInputStream.read(buffer)) > 0)
+			int len;
+			while ((len = zipInputStream.read(buffer)) > 0)
 			{
 				fileContent.write(buffer, 0, len);
 			}
@@ -83,7 +83,7 @@ public class GamepackDownloader
 		}
 	}
 	
-	public static String getGamepackUrl()
+	private static String getGamepackUrl()
 	{
 		return codebase + initial_jar;
 	}

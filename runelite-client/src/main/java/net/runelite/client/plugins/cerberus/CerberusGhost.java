@@ -60,6 +60,7 @@ public enum CerberusGhost
 
 	/**
 	 * Try to identify if NPC is ghost
+	 *
 	 * @param npc npc
 	 * @return optional ghost
 	 */

@@ -125,7 +125,7 @@ public class RefUtils
 	public static String reobMethodName(String owner, String deob, String signature)
 	{
 		String prefix = "";
-		if(owner.startsWith(RefUtils.TYPE_PREFIX))
+		if (owner.startsWith(RefUtils.TYPE_PREFIX))
 		{
 			owner = owner.substring(RefUtils.TYPE_PREFIX.length());
 		}
@@ -169,11 +169,7 @@ public class RefUtils
 				i++;
 			}
 		}
-		if (i == 1)
-		{
-			return true;
-		}
-		return false;
+		return i == 1;
 	}
 	
 	@Deprecated
@@ -187,11 +183,7 @@ public class RefUtils
 				i++;
 			}
 		}
-		if (i == 1)
-		{
-			return true;
-		}
-		return false;
+		return i == 1;
 	}
 	
 	public static boolean shouldReobField(String owner, String deob, String desc)
@@ -205,7 +197,7 @@ public class RefUtils
 	
 	public static boolean shouldReobMethod(String owner, String deob, String desc)
 	{
-		if(owner.startsWith(RefUtils.TYPE_PREFIX))
+		if (owner.startsWith(RefUtils.TYPE_PREFIX))
 		{
 			owner = owner.substring(RefUtils.TYPE_PREFIX.length());
 		}
@@ -275,7 +267,7 @@ public class RefUtils
 						{
 							obbedName = className;
 						}
-						deobbed.append("L" + obbedName + ";");
+						deobbed.append("L").append(obbedName ).append(";");
 						strIndex += sigPart.length();
 					}
 					catch (StringIndexOutOfBoundsException ex)

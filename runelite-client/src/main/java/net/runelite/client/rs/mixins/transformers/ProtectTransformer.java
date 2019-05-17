@@ -29,7 +29,7 @@ import org.objectweb.asm.commons.Remapper;
 
 public class ProtectTransformer extends Remapper
 {
-	
+
 	public String mapFieldName(String owner, String name, String descriptor)
 	{
 		if (name.startsWith("1protect$"))
@@ -38,7 +38,7 @@ public class ProtectTransformer extends Remapper
 		}
 		return super.mapFieldName(owner, name, descriptor);
 	}
-	
+
 	public String mapMethodName(String owner, String name, String descriptor)
 	{
 		if (name.startsWith("1protect$"))
@@ -47,5 +47,5 @@ public class ProtectTransformer extends Remapper
 		}
 		return super.mapMethodName(owner, name, descriptor);
 	}
-	
+
 }

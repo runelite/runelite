@@ -52,6 +52,7 @@ public class RaidsPointsOverlay extends Overlay
 	private final PanelComponent panel = new PanelComponent();
 
 	private static final NumberFormat UNIQUE_FORMAT = NumberFormat.getPercentInstance(Locale.ENGLISH);
+
 	static
 	{
 		UNIQUE_FORMAT.setMaximumFractionDigits(2);
@@ -82,28 +83,28 @@ public class RaidsPointsOverlay extends Overlay
 
 		panel.getChildren().clear();
 		panel.getChildren().add(LineComponent.builder()
-				.left("Total:")
-				.right(POINTS_FORMAT.format(totalPoints))
-				.build());
+			.left("Total:")
+			.right(POINTS_FORMAT.format(totalPoints))
+			.build());
 
 		panel.getChildren().add(LineComponent.builder()
-				.left(client.getLocalPlayer().getName() + ":")
-				.right(POINTS_FORMAT.format(personalPoints))
-				.build());
+			.left(client.getLocalPlayer().getName() + ":")
+			.right(POINTS_FORMAT.format(personalPoints))
+			.build());
 
 
 		if (partySize > 1)
 		{
 			panel.getChildren().add(LineComponent.builder()
-					.left("Party size:")
-					.right(String.valueOf(partySize))
-					.build());
+				.left("Party size:")
+				.right(String.valueOf(partySize))
+				.build());
 		}
 
 		panel.getChildren().add(LineComponent.builder()
-				.left("Unique:")
-				.right(UNIQUE_FORMAT.format(uniqueChance))
-				.build());
+			.left("Unique:")
+			.right(UNIQUE_FORMAT.format(uniqueChance))
+			.build());
 		//TODO this is annoyingly bugged, personalpoints returns null for some reason
 /*
 		if (partySize > 1)
