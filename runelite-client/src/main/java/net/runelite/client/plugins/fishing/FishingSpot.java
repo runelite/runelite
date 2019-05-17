@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.fishing;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -160,7 +160,7 @@ enum FishingSpot
 		FISHING_SPOT_8523);
 
 	@Getter
-	private static final Map<Integer, FishingSpot> SPOTS = new HashMap<>();
+	private static final Map<Integer, FishingSpot> SPOTS;
 
 	private final String name;
 	private final int fishSpriteId;
@@ -168,15 +168,17 @@ enum FishingSpot
 
 	static
 	{
-		FishingSpot[] spots = values();
+		ImmutableMap.Builder<Integer, FishingSpot> builder = new ImmutableMap.Builder<>();
 
-		for (FishingSpot spot : spots)
+		for (FishingSpot spot : values())
 		{
 			for (int spotId : spot.getIds())
 			{
-				SPOTS.put(spotId, spot);
+				builder.put(spotId, spot);
 			}
 		}
+
+		SPOTS = builder.build();
 	}
 
 	FishingSpot(String spot, int fishSpriteId, int... ids)

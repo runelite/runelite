@@ -67,6 +67,9 @@ class XpInfoBox extends JPanel
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
 
+	private static final String REMOVE_STATE = "Remove from canvas";
+	private static final String ADD_STATE = "Add to canvas";
+
 	// Instance members
 	private final JPanel panel;
 
@@ -89,6 +92,7 @@ class XpInfoBox extends JPanel
 	private final JLabel expLeft = new JLabel();
 	private final JLabel actionsLeft = new JLabel();
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
+	private final JMenuItem canvasItem = new JMenuItem(ADD_STATE);
 
 	private final XpTrackerConfig xpTrackerConfig;
 
@@ -128,6 +132,21 @@ class XpInfoBox extends JPanel
 		popupMenu.add(reset);
 		popupMenu.add(resetOthers);
 		popupMenu.add(pauseSkill);
+		popupMenu.add(canvasItem);
+
+		canvasItem.addActionListener(e ->
+		{
+			if (canvasItem.getText().equals(REMOVE_STATE))
+			{
+				xpTrackerPlugin.removeOverlay(skill);
+				canvasItem.setText(ADD_STATE);
+			}
+			else
+			{
+				xpTrackerPlugin.addOverlay(skill);
+				canvasItem.setText(REMOVE_STATE);
+			}
+		});
 
 		JLabel skillIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(skill)));
 		skillIcon.setHorizontalAlignment(SwingConstants.CENTER);
@@ -177,6 +196,7 @@ class XpInfoBox extends JPanel
 
 	void reset()
 	{
+		canvasItem.setText(ADD_STATE);
 		container.remove(statsPanel);
 		panel.remove(this);
 		panel.revalidate();
@@ -266,7 +286,7 @@ class XpInfoBox extends JPanel
 
 	static String htmlLabel(String key, int value)
 	{
-		String valueStr = StackFormatter.quantityToRSDecimalStack(value);
+		String valueStr = StackFormatter.quantityToRSDecimalStack(value, true);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 }

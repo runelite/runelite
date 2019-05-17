@@ -31,13 +31,15 @@ import java.awt.Image;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.kit.KitType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -145,14 +147,27 @@ public class BarbarianAssaultPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
-		if (client.getVar(Varbits.IN_GAME_BA) == 0 || client.getLocalPlayer() == null || overlay.getCurrentRound() != null)
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT))
 		{
 			return;
 		}
 
-		switch (client.getLocalPlayer().getPlayerComposition().getEquipmentId(KitType.CAPE))
+		if (overlay.getCurrentRound() != null)
+		{
+			return;
+		}
+
+		final Item[] items = event.getItemContainer().getItems();
+
+		// Check that the local player is wearing enough items to be wearing a cape.
+		if (items == null || items.length <= EquipmentInventorySlot.CAPE.getSlotIdx())
+		{
+			return;
+		}
+
+		switch (items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId())
 		{
 			case ItemID.ATTACKER_ICON:
 				overlay.setCurrentRound(new Round(Role.ATTACKER));
