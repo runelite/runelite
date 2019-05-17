@@ -39,15 +39,18 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
-import static net.runelite.api.ItemID.COINS_995;
-import static net.runelite.api.ItemID.PLATINUM_TOKEN;
 import net.runelite.api.Varbits;
 import net.runelite.client.game.ItemManager;
+
+import static net.runelite.api.ItemID.*;
+import static net.runelite.api.ItemID.ENSOULED_DRAGON_HEAD_13511;
 
 @Slf4j
 class BankCalculation
 {
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+	private static final double ECTOFUNTUS_MULTIPLIER = 4;
+	private static final double GILDED_ALTAR_MULTIPLIER = 3.5;
 	private static final ImmutableList<Varbits> TAB_VARBITS = ImmutableList.of(
 		Varbits.BANK_TAB_ONE_COUNT,
 		Varbits.BANK_TAB_TWO_COUNT,
@@ -72,6 +75,14 @@ class BankCalculation
 
 	@Getter
 	private long haPrice;
+
+	@Getter
+	private long ensouledExperience;
+
+	@Getter
+	private long bonesExperience;
+
+	private double multiplier;
 
 	@Inject
 	BankCalculation(ItemManager itemManager, BankConfig config, Client client)
@@ -117,6 +128,18 @@ class BankCalculation
 		log.debug("Calculating new bank value...");
 
 		gePrice = haPrice = 0;
+		ensouledExperience = bonesExperience = 0;
+		switch (config.prayerBoost()) {
+			case ECTOFUNTUS:
+				multiplier = ECTOFUNTUS_MULTIPLIER;
+				break;
+			case GILDED_ALTAR:
+				multiplier = GILDED_ALTAR_MULTIPLIER;
+				break;
+			case NONE:
+				multiplier = 1;
+				break;
+		}
 
 		List<Integer> itemIds = new ArrayList<>();
 
@@ -161,6 +184,8 @@ class BankCalculation
 						(long) quantity;
 				}
 			}
+			calculateEnsouled(item);
+			calculateBones(item);
 		}
 
 		// Now do the calculations
@@ -200,5 +225,125 @@ class BankCalculation
 		}
 
 		return false;
+	}
+
+	private void calculateEnsouled(Item item) {
+		int quantity = item.getQuantity();
+		if (item.getId() <= 0 || quantity == 0) {
+			return;
+		}
+		switch (item.getId()) {
+			case ENSOULED_GOBLIN_HEAD_13448:
+				ensouledExperience += quantity * 130;
+				break;
+			case ENSOULED_MONKEY_HEAD_13451:
+				ensouledExperience += quantity * 182;
+				break;
+			case ENSOULED_IMP_HEAD_13454:
+				ensouledExperience += quantity * 286;
+				break;
+			case ENSOULED_MINOTAUR_HEAD_13457:
+				ensouledExperience += quantity * 364;
+				break;
+			case ENSOULED_SCORPION_HEAD_13460:
+				ensouledExperience += quantity * 454;
+				break;
+			case ENSOULED_BEAR_HEAD_13463:
+				ensouledExperience += quantity * 480;
+				break;
+			case ENSOULED_UNICORN_HEAD_13466:
+				ensouledExperience += quantity * 494;
+				break;
+			case ENSOULED_DOG_HEAD_13469:
+				ensouledExperience += quantity * 520;
+				break;
+			case ENSOULED_CHAOS_DRUID_HEAD_13472:
+				ensouledExperience += quantity * 584;
+				break;
+			case ENSOULED_GIANT_HEAD_13475:
+				ensouledExperience += quantity * 650;
+				break;
+			case ENSOULED_OGRE_HEAD_13478:
+				ensouledExperience += quantity * 716;
+				break;
+			case ENSOULED_ELF_HEAD_13481:
+				ensouledExperience += quantity * 754;
+				break;
+			case ENSOULED_TROLL_HEAD_13484:
+				ensouledExperience += quantity * 780;
+				break;
+			case ENSOULED_HORROR_HEAD_13487:
+				ensouledExperience += quantity * 832;
+				break;
+			case ENSOULED_KALPHITE_HEAD_13490:
+				ensouledExperience += quantity * 884;
+				break;
+			case ENSOULED_DAGANNOTH_HEAD_13493:
+				ensouledExperience += quantity * 936;
+				break;
+			case ENSOULED_BLOODVELD_HEAD_13496:
+				ensouledExperience += quantity * 1040;
+				break;
+			case ENSOULED_TZHAAR_HEAD_13499:
+				ensouledExperience += quantity * 1104;
+				break;
+			case ENSOULED_DEMON_HEAD_13502:
+				ensouledExperience += quantity * 1170;
+				break;
+			case ENSOULED_AVIANSIE_HEAD_13505:
+				ensouledExperience += quantity * 1234;
+				break;
+			case ENSOULED_ABYSSAL_HEAD_13508:
+				ensouledExperience += quantity * 1300;
+				break;
+			case ENSOULED_DRAGON_HEAD_13511:
+				ensouledExperience += quantity * 1560;
+				break;
+		}
+	}
+
+	private void calculateBones(Item item) {
+		int quantity = item.getQuantity();
+		if (item.getId() <= 0 || quantity == 0) {
+			return;
+		}
+		switch (item.getId()) {
+			case 526:
+				bonesExperience += quantity * 4.5 * multiplier;
+				break;
+			case BIG_BONES:
+				bonesExperience += quantity * 15 * multiplier;
+				break;
+			case ZOGRE_BONES:
+				bonesExperience += quantity * 22.5 * multiplier;
+				break;
+			case BABY_DRAGON_BONE_7841:
+				bonesExperience += quantity * 30 * multiplier;
+				break;
+			case WYRM_BONES:
+				bonesExperience += quantity * 50 * multiplier;
+				break;
+			case DRAGON_BONES:
+				bonesExperience += quantity * 72 * multiplier;
+				break;
+			case WYVERN_BONES:
+				bonesExperience += quantity * 72 * multiplier;
+				break;
+			case DRAKE_BONES:
+				bonesExperience += quantity * 80 * multiplier;
+				break;
+			case LAVA_DRAGON_BONES:
+				bonesExperience += quantity * 85 * multiplier;
+				break;
+			case HYDRA_BONES:
+				bonesExperience += quantity * 110 * multiplier;
+				break;
+			case DAGANNOTH_BONES:
+				bonesExperience += quantity * 125 * multiplier;
+				break;
+			case SUPERIOR_DRAGON_BONES:
+				bonesExperience += quantity * 150 * multiplier;
+				break;
+		}
 	}
 }

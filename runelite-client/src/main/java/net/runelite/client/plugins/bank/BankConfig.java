@@ -32,6 +32,12 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("bank")
 public interface BankConfig extends Config
 {
+	enum PrayerBoosts {
+		NONE,
+		GILDED_ALTAR,
+		ECTOFUNTUS;
+	}
+
 	@ConfigItem(
 		keyName = "showGE",
 		name = "Show Grand Exchange price",
@@ -96,5 +102,35 @@ public interface BankConfig extends Config
 	default boolean rightClickBankLoot()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+			keyName = "showEnsouled",
+			name = "Show ensouled experience",
+			description = "Show experience from ensouled heads.",
+			position = 7
+	)
+	default boolean showEnsouled() {
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "showBones",
+			name = "Show bones experience",
+			description = "Show experience from bones.",
+			position = 8
+	)
+	default boolean showBones() {
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "prayerBoost",
+			name = "Prayer boost",
+			description = "Select appropriate option for your training.",
+			position = 9
+	)
+	default PrayerBoosts prayerBoost() {
+		return PrayerBoosts.NONE;
 	}
 }

@@ -44,7 +44,7 @@ import net.runelite.client.util.StackFormatter;
 @PluginDescriptor(
 	name = "Bank",
 	description = "Modifications to the banking interface",
-	tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit"}
+	tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit", "ensouled", "head", "bones"}
 )
 public class BankPlugin extends Plugin
 {
@@ -124,6 +124,30 @@ public class BankPlugin extends Plugin
 		}
 
 		String strCurrentTab = "";
+		if (config.showBones() || config.showEnsouled()) {
+			bankCalculation.calculate();
+			long ensouledExp = bankCalculation.getEnsouledExperience();
+			long boneExp = Math.round(bankCalculation.getBonesExperience());
+			long total = 0;
+
+			if (config.showEnsouled() && config.showBones()) {
+				total = ensouledExp + boneExp;
+			} else if (config.showEnsouled() && !config.showBones()) {
+				total = ensouledExp;
+			} else if (!config.showEnsouled() && config.showBones()) {
+				total = boneExp;
+			}
+
+			if (total != 0) {
+				strCurrentTab += " (Prayer Experience: ";
+				strCurrentTab += StackFormatter.quantityToStackSize(total) + ")";
+			}
+
+			String[] stringStack = client.getStringStack();
+			int stringStackSize = client.getStringStackSize();
+			stringStack[stringStackSize - 1] += strCurrentTab;
+		}
+
 		bankCalculation.calculate();
 		long gePrice = bankCalculation.getGePrice();
 		long haPrice = bankCalculation.getHaPrice();
