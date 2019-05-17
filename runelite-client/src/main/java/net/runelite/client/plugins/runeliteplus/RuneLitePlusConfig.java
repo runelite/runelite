@@ -29,6 +29,7 @@ package net.runelite.client.plugins.runeliteplus;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("runeliteplus")
 public interface RuneLitePlusConfig extends Config
@@ -55,6 +56,10 @@ public interface RuneLitePlusConfig extends Config
 		return false;
 	}
 
+	@Range(
+		min = 15,
+		max = 100
+	)
 	@ConfigItem(
 		keyName = "opacityPercentage",
 		name = "Opacity percentage",
