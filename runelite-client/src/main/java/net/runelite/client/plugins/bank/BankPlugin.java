@@ -27,7 +27,9 @@
 package net.runelite.client.plugins.bank;
 
 import com.google.inject.Provides;
+
 import javax.inject.Inject;
+
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuEntryAdded;
@@ -42,157 +44,129 @@ import net.runelite.client.plugins.banktags.tabs.BankSearch;
 import net.runelite.client.util.StackFormatter;
 
 @PluginDescriptor(
-	name = "Bank",
-	description = "Modifications to the banking interface",
-	tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit", "ensouled", "head", "bones"}
+        name = "Bank",
+        description = "Modifications to the banking interface",
+        tags = {"grand", "exchange", "high", "alchemy", "prices", "deposit", "ensouled", "head", "bones"}
 )
-public class BankPlugin extends Plugin
-{
-	private static final String DEPOSIT_WORN = "Deposit worn items";
-	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
-	private static final String DEPOSIT_LOOT = "Deposit loot";
+public class BankPlugin extends Plugin {
+    private static final String DEPOSIT_WORN = "Deposit worn items";
+    private static final String DEPOSIT_INVENTORY = "Deposit inventory";
+    private static final String DEPOSIT_LOOT = "Deposit loot";
 
-	@Inject
-	private Client client;
+    @Inject
+    private Client client;
 
-	@Inject
-	private ClientThread clientThread;
+    @Inject
+    private ClientThread clientThread;
 
-	@Inject
-	private BankCalculation bankCalculation;
+    @Inject
+    private BankCalculation bankCalculation;
 
-	@Inject
-	private BankConfig config;
+    @Inject
+    private BankConfig config;
 
-	@Inject
-	private BankSearch bankSearch;
+    @Inject
+    private BankSearch bankSearch;
 
-	private boolean forceRightClickFlag;
+    private boolean forceRightClickFlag;
 
-	@Provides
-	BankConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(BankConfig.class);
-	}
+    @Provides
+    BankConfig getConfig(ConfigManager configManager) {
+        return configManager.getConfig(BankConfig.class);
+    }
 
-	@Override
-	protected void shutDown()
-	{
-		clientThread.invokeLater(() -> bankSearch.reset(false));
-		forceRightClickFlag = false;
-	}
+    @Override
+    protected void shutDown() {
+        clientThread.invokeLater(() -> bankSearch.reset(false));
+        forceRightClickFlag = false;
+    }
 
-	@Subscribe
-	public void onMenuShouldLeftClick(MenuShouldLeftClick event)
-	{
-		if (!forceRightClickFlag)
-		{
-			return;
-		}
+    @Subscribe
+    public void onMenuShouldLeftClick(MenuShouldLeftClick event) {
+        if (!forceRightClickFlag) {
+            return;
+        }
 
-		forceRightClickFlag = false;
-		MenuEntry[] menuEntries = client.getMenuEntries();
-		for (MenuEntry entry : menuEntries)
-		{
-			if ((entry.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
-				|| (entry.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-				|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot()))
-			{
-				event.setForceRightClick(true);
-				return;
-			}
-		}
-	}
+        forceRightClickFlag = false;
+        MenuEntry[] menuEntries = client.getMenuEntries();
+        for (MenuEntry entry : menuEntries) {
+            if ((entry.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
+                    || (entry.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
+                    || (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())) {
+                event.setForceRightClick(true);
+                return;
+            }
+        }
+    }
 
-	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
-	{
-		if ((event.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
-			|| (event.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-			|| (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot()))
-		{
-			forceRightClickFlag = true;
-		}
-	}
+    @Subscribe
+    public void onMenuEntryAdded(MenuEntryAdded event) {
+        if ((event.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
+                || (event.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
+                || (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())) {
+            forceRightClickFlag = true;
+        }
+    }
 
-	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
-	{
-		if (!event.getEventName().equals("setBankTitle"))
-		{
-			return;
-		}
+    @Subscribe
+    public void onScriptCallbackEvent(ScriptCallbackEvent event) {
+        if (!event.getEventName().equals("setBankTitle")) {
+            return;
+        }
 
-		String strCurrentTab = "";
-		if (config.showBones() || config.showEnsouled()) {
-			bankCalculation.calculate();
-			long ensouledExp = bankCalculation.getEnsouledExperience();
-			long boneExp = Math.round(bankCalculation.getBonesExperience());
-			long total = 0;
+        String strCurrentTab = "";
+        bankCalculation.calculate();
+        long gePrice = bankCalculation.getGePrice();
+        long haPrice = bankCalculation.getHaPrice();
 
-			if (config.showEnsouled() && config.showBones()) {
-				total = ensouledExp + boneExp;
-			} else if (config.showEnsouled() && !config.showBones()) {
-				total = ensouledExp;
-			} else if (!config.showEnsouled() && config.showBones()) {
-				total = boneExp;
-			}
+        if (config.showGE() && gePrice != 0) {
+            strCurrentTab += " (";
 
-			if (total != 0) {
-				strCurrentTab += " (Prayer Experience: ";
-				strCurrentTab += StackFormatter.quantityToStackSize(total) + ")";
-			}
+            if (config.showHA()) {
+                strCurrentTab += "EX: ";
+            }
 
-			String[] stringStack = client.getStringStack();
-			int stringStackSize = client.getStringStackSize();
-			stringStack[stringStackSize - 1] += strCurrentTab;
-		}
+            if (config.showExact()) {
+                strCurrentTab += StackFormatter.formatNumber(gePrice) + ")";
+            } else {
+                strCurrentTab += StackFormatter.quantityToStackSize(gePrice) + ")";
+            }
+        }
 
-		bankCalculation.calculate();
-		long gePrice = bankCalculation.getGePrice();
-		long haPrice = bankCalculation.getHaPrice();
+        if (config.showHA() && haPrice != 0) {
+            strCurrentTab += " (";
 
-		if (config.showGE() && gePrice != 0)
-		{
-			strCurrentTab += " (";
+            if (config.showGE()) {
+                strCurrentTab += "HA: ";
+            }
 
-			if (config.showHA())
-			{
-				strCurrentTab += "EX: ";
-			}
+            if (config.showExact()) {
+                strCurrentTab += StackFormatter.formatNumber(haPrice) + ")";
+            } else {
+                strCurrentTab += StackFormatter.quantityToStackSize(haPrice) + ")";
+            }
+        }
 
-			if (config.showExact())
-			{
-				strCurrentTab += StackFormatter.formatNumber(gePrice) + ")";
-			}
-			else
-			{
-				strCurrentTab += StackFormatter.quantityToStackSize(gePrice) + ")";
-			}
-		}
+        if (config.showEnsouled() || config.showBones()) {
+            long ensouledExp = bankCalculation.getEnsouledExperience();
+            long boneExp = Math.round(bankCalculation.getBonesExperience());
+            long totalExp = 0;
 
-		if (config.showHA() && haPrice != 0)
-		{
-			strCurrentTab += " (";
+            if (config.showEnsouled() && config.showBones()) {
+                totalExp = ensouledExp + boneExp;
+            } else if (config.showEnsouled() && !config.showBones()) {
+                totalExp = ensouledExp;
+            } else if (!config.showEnsouled() && config.showBones()) {
+                totalExp = boneExp;
+            }
 
-			if (config.showGE())
-			{
-				strCurrentTab += "HA: ";
-			}
+            strCurrentTab += " (Prayer EXP: ";
+            strCurrentTab += StackFormatter.quantityToStackSize(totalExp) + ")";
+        }
 
-			if (config.showExact())
-			{
-				strCurrentTab += StackFormatter.formatNumber(haPrice) + ")";
-			}
-			else
-			{
-				strCurrentTab += StackFormatter.quantityToStackSize(haPrice) + ")";
-			}
-		}
+        String[] stringStack = client.getStringStack();
+        int stringStackSize = client.getStringStackSize();
 
-		String[] stringStack = client.getStringStack();
-		int stringStackSize = client.getStringStackSize();
-
-		stringStack[stringStackSize - 1] += strCurrentTab;
-	}
+        stringStack[stringStackSize - 1] += strCurrentTab;
+    }
 }
