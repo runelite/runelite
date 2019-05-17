@@ -178,7 +178,7 @@ public class InfoPanel extends PluginPanel
 
 		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "License info", "for distribution", "https://github.com/runelite-extended/runelite/blob/master/LICENSE"));
 		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "discord server", "https://discord.gg/s2fzu5U"));
-		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Patreon to support", "the RuneLite devs", runeLiteProperties.getPatreonLink()));
+		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Patreon to support", "the RuneLitePlus devs", runeLiteProperties.getPatreonLink()));
 		/*		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", runeLiteProperties.getWikiLink()));*/
 
 		add(versionPanel, BorderLayout.NORTH);
