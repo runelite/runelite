@@ -295,7 +295,8 @@ public class CannonPlugin extends Plugin
 			cballsLeft = 0;
 		}
 
-		if (event.getMessage().contains("You pick up the cannon"))
+		if (event.getMessage().contains("You pick up the cannon")
+			|| event.getMessage().contains("Your cannon has decayed. Speak to Nulodion to get a new one!"))
 		{
 			cannonPlaced = false;
 			cballsLeft = 0;
