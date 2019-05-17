@@ -32,11 +32,6 @@ import org.objectweb.asm.MethodVisitor;
 import us.runelitepl.mixinprocessor.MixinProcessorMojo;
 import us.runelitepl.mixinprocessor.util.RefUtils;
 
-import static org.objectweb.asm.Opcodes.ASM6;
-import static org.objectweb.asm.Opcodes.GETSTATIC;
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
-import static org.objectweb.asm.Opcodes.PUTSTATIC;
-
 public class AsmStaticUsageTransformer extends AsmBaseTransformer
 {
 	
@@ -89,7 +84,7 @@ public class AsmStaticUsageTransformer extends AsmBaseTransformer
 					@Override
 					public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface)
 					{
-						if(opcode == INVOKESTATIC && owner.endsWith(RefUtils.STATICS_STRING))
+						if (opcode == INVOKESTATIC && owner.endsWith(RefUtils.STATICS_STRING))
 						{
 							String originalOwner = owner.replace(TYPE_PREFIX, "");
 							String temp = RefUtils.reobMethodName(RefUtils.STATICS_STRING, name, descriptor);

@@ -96,7 +96,7 @@ public class AnnotationRemoverTransformer extends AsmBaseTransformer
 		return cw.toByteArray();
 	}
 	
-	public static String makeAnnotationDescriptor(String s)
+	static String makeAnnotationDescriptor(String s)
 	{
 		return "Lus/runelitepl/mixinprocessor/annotations/" + s + ";";
 	}

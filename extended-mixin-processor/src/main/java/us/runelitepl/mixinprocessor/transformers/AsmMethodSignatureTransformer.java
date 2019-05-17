@@ -72,7 +72,7 @@ public class AsmMethodSignatureTransformer extends AsmBaseTransformer
 	
 	private String fixMethodDesc(String className, String name, String desc)
 	{
-		if(className.startsWith(RefUtils.TYPE_PREFIX))
+		if (className.startsWith(RefUtils.TYPE_PREFIX))
 		{
 			className = className.substring(RefUtils.TYPE_PREFIX.length());
 		}

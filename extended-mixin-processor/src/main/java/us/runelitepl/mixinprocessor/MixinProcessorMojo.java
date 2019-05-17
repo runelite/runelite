@@ -33,10 +33,6 @@ import io.sigpipe.jbsdiff.Patch;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.LoaderClassPath;
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import us.runelitepl.mixinprocessor.generators.AnnotationProcessor;
 import us.runelitepl.mixinprocessor.generators.PatchGenerator;
@@ -50,14 +46,11 @@ import us.runelitepl.mixinprocessor.util.JavassistUtils;
 import us.runelitepl.mixinprocessor.util.RefUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -111,9 +104,9 @@ public class MixinProcessorMojo
 	
 	public static HashMap<String, MethodGarbageValue> methodGarbageValues = new HashMap<>();
 	
-	public static HashMap<String, byte[]> gamepack = new HashMap<>();
+	private static HashMap<String, byte[]> gamepack = new HashMap<>();
 	
-	public static final int BUFFER_SIZE = 1024 * 1024 * 4;
+	private static final int BUFFER_SIZE = 1024 * 1024 * 4;
 	
 	public void execute()
 	throws MojoExecutionException
@@ -257,7 +250,7 @@ public class MixinProcessorMojo
 		
 	}
 	
-	public void stderr(String s, Object... format)
+	private void stderr(String s, Object... format)
 	{
 		getLog().info(String.format(s, format));
 	}
@@ -267,7 +260,7 @@ public class MixinProcessorMojo
 		INST.stderr(s, format);
 	}
 	
-	static void deleteDir(File file) throws IOException
+	private static void deleteDir(File file) throws IOException
 	{
 		if (!file.exists())
 		{

@@ -53,22 +53,22 @@ public class ProvidedRemoverTransformer extends AsmBaseTransformer
 		ClassNode node = new ClassNode();
 		cr.accept(node, 0);
 		
-		for(Object obj : node.methods)
+		for (Object obj : node.methods)
 		{
 			MethodNode method = (MethodNode) obj;
-			if(method == null)
+			if (method == null)
 			{
 				MixinProcessorMojo.log("ProvidedRemoverTransformer: Method null?");
 				continue;
 			}
-			if(method.visibleAnnotations == null)
+			if (method.visibleAnnotations == null)
 			{
 				continue;
 			}
-			for(Object obj2 : method.visibleAnnotations)
+			for (Object obj2 : method.visibleAnnotations)
 			{
 				AnnotationNode annot = (AnnotationNode) obj2;
-				if(annot.desc.equals(AnnotationRemoverTransformer.makeAnnotationDescriptor("Provided")))
+				if (annot.desc.equals(AnnotationRemoverTransformer.makeAnnotationDescriptor("Provided")))
 				{
 					validMethods.add(method.access + " " + method.desc + " " + method.name);
 				}
@@ -88,7 +88,7 @@ public class ProvidedRemoverTransformer extends AsmBaseTransformer
 			public MethodVisitor visitMethod(int access, String name, String desc, String signature,
 					String[] exceptions)
 			{
-				if(validMethods.contains(access + " " + desc + " " + name))
+				if (validMethods.contains(access + " " + desc + " " + name))
 				{
 					return null;
 				}
