@@ -30,10 +30,12 @@ import net.runelite.api.ItemID;
 import net.runelite.api.Point;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.plugins.explorerring.config.ExplorerRingOverlayMode;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 
 import java.awt.*;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 
 public class ExplorerRingOverlay extends WidgetItemOverlay
@@ -46,7 +48,7 @@ public class ExplorerRingOverlay extends WidgetItemOverlay
 	private static final int MAX_ALCHS = 30;
 	private static final int MAX_TELEPORTS = 3;
 	private static final int[] MAX_RUNREPLENISH = {
-		2,
+		2, /* Explorer's ring 1 */
 		3,
 		4,
 		3
@@ -54,15 +56,16 @@ public class ExplorerRingOverlay extends WidgetItemOverlay
 
 	private final Client client;
 	private final ExplorerRingConfig config;
+	private final TooltipManager tooltipManager;
 
 	@Inject
 	ExplorerRingOverlay(Client client, ExplorerRingConfig config, TooltipManager tooltipManager)
 	{
 		this.client = client;
 		this.config = config;
+		this.tooltipManager = tooltipManager;
 
 		showOnInventory();
-		showOnBank();
 		showOnEquipment();
 	}
 
@@ -78,53 +81,80 @@ public class ExplorerRingOverlay extends WidgetItemOverlay
 		StringBuilder tooltipBuilder = new StringBuilder();
 
 		// Pen position tracking.
+		int penShadowX = location.getX() + 1;
+		int penX = location.getX();
 		int penShadowY = location.getY();
 		int penY = location.getY();
 
 		// Alchemy (level 4 ring is High Alc)
-		int alchAmount = client.getVar(ALCHS);
-		String alchStr = "A: " + (MAX_ALCHS - alchAmount);
-
-		penShadowY += 1 + (graphics.getFontMetrics().getHeight() - 1);
-		graphics.setColor(Color.BLACK);
-		graphics.drawString(alchStr, location.getX() + 1,
-				penShadowY);
-
-		penY += (graphics.getFontMetrics().getHeight() - 1);
-		graphics.setColor(config.fontColor());
-		graphics.drawString(alchStr, location.getX(),
-				penY);
-
-		// Run energy
-		int runAmount = client.getVar(RUNENERGY);
-		String runStr = "R: " + (MAX_RUNREPLENISH[itemId - ItemID.EXPLORERS_RING_1] - runAmount);
-
-		penShadowY += 1 + (graphics.getFontMetrics().getHeight() - 1);
-		graphics.setColor(Color.BLACK);
-		graphics.drawString(runStr, location.getX() + 1,
-				penShadowY);
-
-		penY += (graphics.getFontMetrics().getHeight() - 1);
-		graphics.setColor(config.fontColor());
-		graphics.drawString(runStr, location.getX(),
-				penY);
-
-		// Teleport charges (unique to level 2 ring).
-		if (itemId == ItemID.EXPLORERS_RING_2)
+		int alchAmount = MAX_ALCHS - client.getVar(ALCHS);
+		if (config.explorerRingOverlayMode() != ExplorerRingOverlayMode.MOUSE_HOVER)
 		{
-			int amount = client.getVar(TELEPORTS);
-			String teleStr = "T: " + (MAX_TELEPORTS - amount);
+			String alchStr = "A: " + alchAmount;
 
 			penShadowY += 1 + (graphics.getFontMetrics().getHeight() - 1);
 			graphics.setColor(Color.BLACK);
-			graphics.drawString(teleStr, location.getX() + 2,
+			graphics.drawString(alchStr, penShadowX,
 					penShadowY);
 
 			penY += (graphics.getFontMetrics().getHeight() - 1);
 			graphics.setColor(config.fontColor());
-			graphics.drawString(teleStr, location.getX() + 1,
+			graphics.drawString(alchStr, penX,
 					penY);
 		}
 
+		tooltipBuilder.append("Alchs: " + alchAmount + "</br>");
+
+		// Run energy
+		int runAmount = MAX_RUNREPLENISH[itemId - ItemID.EXPLORERS_RING_1] - client.getVar(RUNENERGY);
+
+		if (config.explorerRingOverlayMode() != ExplorerRingOverlayMode.MOUSE_HOVER)
+		{
+			String runStr = "R: " + runAmount;
+
+			penShadowY += 1 + (graphics.getFontMetrics().getHeight() - 1);
+			graphics.setColor(Color.BLACK);
+			graphics.drawString(runStr, penShadowX,
+					penShadowY);
+
+			penY += (graphics.getFontMetrics().getHeight() - 1);
+			graphics.setColor(config.fontColor());
+			graphics.drawString(runStr, penX,
+					penY);
+		}
+
+		tooltipBuilder.append("Run Replenish: " + runAmount + "</br>");
+
+		// Teleport charges (unique to level 2 ring).
+		if (itemId == ItemID.EXPLORERS_RING_2)
+		{
+			int teleAmount = MAX_TELEPORTS - client.getVar(TELEPORTS);
+
+			if (config.explorerRingOverlayMode() != ExplorerRingOverlayMode.MOUSE_HOVER)
+			{
+				String teleStr = "T: " + teleAmount;
+
+				penShadowY += 1 + (graphics.getFontMetrics().getHeight() - 1);
+				graphics.setColor(Color.BLACK);
+				graphics.drawString(teleStr, penShadowX + 1,
+						penShadowY);
+
+				penY += (graphics.getFontMetrics().getHeight() - 1);
+				graphics.setColor(config.fontColor());
+				graphics.drawString(teleStr, penX + 1,
+						penY);
+			}
+
+			tooltipBuilder.append("Teleports: " + teleAmount + "</br>");
+		}
+
+		// Display tooltip
+		String finalTooltip = tooltipBuilder.toString();
+		if (!finalTooltip.isEmpty() &&
+			(config.explorerRingOverlayMode() != ExplorerRingOverlayMode.INVENTORY) &&
+			itemWidget.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
+		{
+			tooltipManager.add(new Tooltip(finalTooltip));
+		}
 	}
 }

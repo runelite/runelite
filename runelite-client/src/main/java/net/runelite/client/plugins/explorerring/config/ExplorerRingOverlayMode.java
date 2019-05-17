@@ -22,45 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.explorerring;
+package net.runelite.client.plugins.explorerring.config;
 
-import com.google.inject.Provides;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
-
-import javax.inject.Inject;
-
-@PluginDescriptor(
-	name = "Explorer Ring",
-	description = "Show the charges left on your explorer's ring",
-	tags = {"combat", "magic", "overlay"}
-)
-
-public class ExplorerRingPlugin extends Plugin
+public enum ExplorerRingOverlayMode
 {
-	@Inject
-	private OverlayManager overlayManager;
-
-	@Inject
-	private ExplorerRingOverlay overlay;
-
-	@Provides
-	ExplorerRingConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(ExplorerRingConfig.class);
-	}
-
-	@Override
-	protected void startUp() throws Exception
-	{
-		overlayManager.add(overlay);
-	}
-
-	@Override
-	protected void shutDown() throws Exception
-	{
-		overlayManager.remove(overlay);
-	}
+	INVENTORY,
+	MOUSE_HOVER,
+	BOTH
 }

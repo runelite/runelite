@@ -28,6 +28,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.plugins.explorerring.config.ExplorerRingOverlayMode;
 
 @ConfigGroup("explorerring")
 public interface ExplorerRingConfig extends Config
@@ -41,5 +42,16 @@ public interface ExplorerRingConfig extends Config
 	default Color fontColor()
 	{
 		return Color.yellow;
+	}
+
+	@ConfigItem(
+		keyName = "explorerRingOverlayMode",
+		name = "Display mode",
+		description = "Configures where explorer ring overlay is displayed",
+		position = 3
+	)
+	default ExplorerRingOverlayMode explorerRingOverlayMode()
+	{
+		return ExplorerRingOverlayMode.BOTH;
 	}
 }
