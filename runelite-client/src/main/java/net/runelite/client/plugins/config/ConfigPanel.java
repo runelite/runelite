@@ -311,6 +311,7 @@ public class ConfigPanel extends PluginPanel
 		JLabel title = new JLabel(name);
 		title.setForeground(Color.WHITE);
 		title.setToolTipText("<html>" + name + ":<br>" + listItem.getDescription() + "</html>");
+		PluginListItem.addLabelPopupMenu(title, PluginListItem.wikiLinkMenuItem(listItem.getName()));
 		topPanel.add(title);
 
 		for (ConfigItemDescriptor cid : cd.getItems())
