@@ -6,10 +6,10 @@ import net.runelite.api.Actor;
 import net.runelite.api.coords.LocalPoint;
 
 @Builder
-public class FreezeInfo
+class FreezeInfo
 {
-    @Getter
-    private final Actor actor;
-    @Getter
-    private final LocalPoint freezePoint;
+	@Getter
+	private final Actor actor;
+	@Getter
+	private final LocalPoint freezePoint;
 }
