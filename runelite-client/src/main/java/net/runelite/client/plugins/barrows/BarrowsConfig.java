@@ -97,4 +97,15 @@ public interface BarrowsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showPrayerDrainTimer",
+		name = "Show Prayer Drain Timer",
+		description = "Configure whether or not a countdown until the next prayer drain is displayed",
+		position = 6
+	)
+	default boolean showPrayerDrainTimer()
+	{
+		return true;
+	}
 }

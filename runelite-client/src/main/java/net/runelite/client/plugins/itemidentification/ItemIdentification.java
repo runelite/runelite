@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.itemidentification;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
 
@@ -100,17 +100,21 @@ enum ItemIdentification
 		this.itemIDs = ids;
 	}
 
-	private static final Map<Integer, ItemIdentification> itemIdentifications = new HashMap<>();
+	private static final Map<Integer, ItemIdentification> itemIdentifications;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, ItemIdentification> builder = new ImmutableMap.Builder<>();
+
 		for (ItemIdentification i : values())
 		{
 			for (int id : i.itemIDs)
 			{
-				itemIdentifications.put(id, i);
+				builder.put(id, i);
 			}
 		}
+
+		itemIdentifications = builder.build();
 	}
 
 	static ItemIdentification get(int id)

@@ -42,6 +42,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.NullItemID;
 import net.runelite.api.RenderOverview;
@@ -79,7 +80,7 @@ import net.runelite.client.util.DeferredEventBus;
 @Slf4j
 public class Hooks implements Callbacks
 {
-	private static final long CHECK = 600; // ms - how often to run checks
+	private static final long CHECK = Constants.GAME_TICK_LENGTH; // ms - how often to run checks
 
 	private static final Injector injector = RuneLite.getInjector();
 	private static final Client client = injector.getInstance(Client.class);
