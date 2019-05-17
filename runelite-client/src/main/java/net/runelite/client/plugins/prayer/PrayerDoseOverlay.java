@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
@@ -50,7 +51,7 @@ import org.apache.commons.lang3.StringUtils;
 
 class PrayerDoseOverlay extends Overlay
 {
-	private static final float PULSE_TIME = 1200f;
+	private static final float PULSE_TIME = 2f * Constants.GAME_TICK_LENGTH;
 
 	private static final Color START_COLOR = new Color(0, 255, 255);
 	private static final Color END_COLOR = new Color(0, 92, 92);

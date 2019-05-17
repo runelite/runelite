@@ -30,10 +30,6 @@ import com.google.common.cache.LoadingCache;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.DataBufferByte;
-import java.awt.image.IndexColorModel;
-import java.awt.image.WritableRaster;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -152,8 +148,8 @@ public class ClanManager
 		for (int i = 0; i < CLANCHAT_IMAGES.length; i++, curPosition++)
 		{
 			final int resource = CLANCHAT_IMAGES[i];
-			clanChatImages[i] = rgbaToIndexedBufferedImage(clanChatImageFromSprite(spriteManager.getSprite(resource, 0)));
-			newModIcons[curPosition] = createIndexedSprite(client, clanChatImages[i]);
+			clanChatImages[i] = clanChatImageFromSprite(spriteManager.getSprite(resource, 0));
+			newModIcons[curPosition] = ImageUtil.getImageIndexedSprite(clanChatImages[i], client);
 		}
 
 		client.setModIcons(newModIcons);
@@ -164,54 +160,6 @@ public class ClanManager
 	{
 		final String cleaned = Text.removeTags(lookup);
 		return cleaned.replace('\u00A0', ' ');
-	}
-
-	private static IndexedSprite createIndexedSprite(final Client client, final BufferedImage bufferedImage)
-	{
-		final IndexColorModel indexedCM = (IndexColorModel) bufferedImage.getColorModel();
-
-		final int width = bufferedImage.getWidth();
-		final int height = bufferedImage.getHeight();
-		final byte[] pixels = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
-		final int[] palette = new int[indexedCM.getMapSize()];
-		indexedCM.getRGBs(palette);
-
-		final IndexedSprite newIndexedSprite = client.createIndexedSprite();
-		newIndexedSprite.setPixels(pixels);
-		newIndexedSprite.setPalette(palette);
-		newIndexedSprite.setWidth(width);
-		newIndexedSprite.setHeight(height);
-		newIndexedSprite.setOriginalWidth(width);
-		newIndexedSprite.setOriginalHeight(height);
-		newIndexedSprite.setOffsetX(0);
-		newIndexedSprite.setOffsetY(0);
-		return newIndexedSprite;
-	}
-
-	private static BufferedImage rgbaToIndexedBufferedImage(final BufferedImage sourceBufferedImage)
-	{
-		final BufferedImage indexedImage = new BufferedImage(
-			sourceBufferedImage.getWidth(),
-			sourceBufferedImage.getHeight(),
-			BufferedImage.TYPE_BYTE_INDEXED);
-
-		final ColorModel cm = indexedImage.getColorModel();
-		final IndexColorModel icm = (IndexColorModel) cm;
-
-		final int size = icm.getMapSize();
-		final byte[] reds = new byte[size];
-		final byte[] greens = new byte[size];
-		final byte[] blues = new byte[size];
-		icm.getReds(reds);
-		icm.getGreens(greens);
-		icm.getBlues(blues);
-
-		final WritableRaster raster = indexedImage.getRaster();
-		final int pixel = raster.getSample(0, 0, 0);
-		final IndexColorModel resultIcm = new IndexColorModel(8, size, reds, greens, blues, pixel);
-		final BufferedImage resultIndexedImage = new BufferedImage(resultIcm, raster, sourceBufferedImage.isAlphaPremultiplied(), null);
-		resultIndexedImage.getGraphics().drawImage(sourceBufferedImage, 0, 0, null);
-		return resultIndexedImage;
 	}
 
 	private static BufferedImage clanChatImageFromSprite(final BufferedImage clanSprite)

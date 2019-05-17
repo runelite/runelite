@@ -168,12 +168,18 @@ class CombatLevelOverlay extends Overlay
 	@VisibleForTesting
 	static int calcLevelsPray(double start, int end, int prayerLevel)
 	{
-		final int neededLevels = (int) Math.floor(calcMultipliedLevels(start, end, PRAY_MULT));
+		int neededLevels = (int) Math.ceil(calcMultipliedLevels(start, end, PRAY_MULT));
+
+		if (prayerLevel % 2 != 0)
+		{
+			neededLevels--;
+		}
 
 		if ((prayerLevel + neededLevels) % 2 != 0)
 		{
 			return neededLevels + 1;
 		}
+
 		return neededLevels;
 	}
 

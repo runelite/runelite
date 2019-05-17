@@ -25,12 +25,12 @@
 
 package net.runelite.client.game;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -39,7 +39,7 @@ import java.util.Map;
  */
 public class ItemVariationMapping
 {
-	private static final Map<Integer, Integer> MAPPINGS = new HashMap<>();
+	private static final Map<Integer, Integer> MAPPINGS;
 
 	static
 	{
@@ -51,6 +51,7 @@ public class ItemVariationMapping
 		final InputStream geLimitData = ItemVariationMapping.class.getResourceAsStream("/item_variations.json");
 		final Map<String, Collection<Integer>> itemVariations = gson.fromJson(new InputStreamReader(geLimitData), typeToken.getType());
 
+		ImmutableMap.Builder<Integer, Integer> builder = new ImmutableMap.Builder<>();
 		for (Collection<Integer> value : itemVariations.values())
 		{
 			final Iterator<Integer> iterator = value.iterator();
@@ -58,9 +59,10 @@ public class ItemVariationMapping
 
 			while (iterator.hasNext())
 			{
-				MAPPINGS.put(iterator.next(), base);
+				builder.put(iterator.next(), base);
 			}
 		}
+		MAPPINGS = builder.build();
 	}
 
 	/**
