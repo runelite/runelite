@@ -35,74 +35,98 @@ import net.runelite.client.config.ConfigItem;
 public interface HidePrayersPVMConfig extends Config
 {
 	@ConfigItem
-	(
-		position = 0,
-		keyName = "Barrows",
-		name = "Barrows",
-		description = "Shows prayers for Barrows"
-	)
-	default Barrows Barrows() {return Barrows.DISABLED;}
+		(
+			position = 0,
+			keyName = "Barrows",
+			name = "Barrows",
+			description = "Shows prayers for Barrows"
+		)
+	default Barrows Barrows()
+	{
+		return Barrows.DISABLED;
+	}
 
 	@ConfigItem
-	(
-		position = 1,
-		keyName = "Cerberus",
-		name = "Cerberus",
-		description = "Shows prayers for Cerberus"
-	)
-	default Cerberus Cerberus() {return Cerberus.DISABLED;}
+		(
+			position = 1,
+			keyName = "Cerberus",
+			name = "Cerberus",
+			description = "Shows prayers for Cerberus"
+		)
+	default Cerberus Cerberus()
+	{
+		return Cerberus.DISABLED;
+	}
 
 	@ConfigItem
-	(
-		position = 2,
-		keyName = "Vorkath",
-		name = "Vorkath",
-		description = "Shows prayers for Vorkath"
-	)
-	default Vorkath Vorkath() {return Vorkath.DISABLED;}
+		(
+			position = 2,
+			keyName = "Vorkath",
+			name = "Vorkath",
+			description = "Shows prayers for Vorkath"
+		)
+	default Vorkath Vorkath()
+	{
+		return Vorkath.DISABLED;
+	}
 
 	@ConfigItem
-	(
-		position = 3,
-		keyName = "Zulrah",
-		name = "Zulrah",
-		description = "Shows prayers for Zulrah"
-	)
-	default Zulrah Zulrah() {return Zulrah.DISABLED;}
+		(
+			position = 3,
+			keyName = "Zulrah",
+			name = "Zulrah",
+			description = "Shows prayers for Zulrah"
+		)
+	default Zulrah Zulrah()
+	{
+		return Zulrah.DISABLED;
+	}
 
 	@ConfigItem
-	(
-		position = 4,
-		keyName = "Armadyl",
-		name = "Armadyl",
-		description = "Shows prayers for Armadyl"
-	)
-	default Armadyl Armadyl() {return Armadyl.DISABLED;}
+		(
+			position = 4,
+			keyName = "Armadyl",
+			name = "Armadyl",
+			description = "Shows prayers for Armadyl"
+		)
+	default Armadyl Armadyl()
+	{
+		return Armadyl.DISABLED;
+	}
 
 	@ConfigItem
-	(
-		position = 5,
-		keyName = "Bandos",
-		name = "Bandos",
-		description = "Shows prayers for Bandos"
-	)
-	default Bandos Bandos() {return Bandos.DISABLED;}
+		(
+			position = 5,
+			keyName = "Bandos",
+			name = "Bandos",
+			description = "Shows prayers for Bandos"
+		)
+	default Bandos Bandos()
+	{
+		return Bandos.DISABLED;
+	}
 
 	@ConfigItem
-	(
-		position = 6,
-		keyName = "Saradomin",
-		name = "Saradomin",
-		description = "Shows prayers for Saradomin"
-	)
-	default Saradomin Saradomin() {return Saradomin.DISABLED;}
+		(
+			position = 6,
+			keyName = "Saradomin",
+			name = "Saradomin",
+			description = "Shows prayers for Saradomin"
+		)
+	default Saradomin Saradomin()
+	{
+		return Saradomin.DISABLED;
+	}
 
 	@ConfigItem
-	(
-		position = 7,
-		keyName = "Zamorak",
-		name = "Zamorak",
-		description = "Shows prayers for Zamorak"
-	)
-	default Zamorak Zamorak() {return Zamorak.DISABLED;}
+		(
+			position = 7,
+			keyName = "Zamorak",
+			name = "Zamorak",
+			description = "Shows prayers for Zamorak"
+		)
+	default Zamorak Zamorak()
+	{
+		return Zamorak.DISABLED;
+	}
 }

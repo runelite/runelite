@@ -32,6 +32,7 @@ public interface PartyPluginService
 {
 	/**
 	 * Get the party data for a party member
+	 *
 	 * @param memberId member id
 	 * @return party data for member
 	 */

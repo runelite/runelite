@@ -356,7 +356,7 @@ public class BoostsPlugin extends Plugin
 	 * section it will "activate" adding an additional 15 second section
 	 * to the boost timing. If again the preserve prayer is active for that
 	 * entire section a second 15 second section will be added.
-	 *
+	 * <p>
 	 * Preserve is only required to be on for the 4th and 5th sections of the boost timer
 	 * to gain full effect (seconds 45-75).
 	 *
@@ -365,8 +365,8 @@ public class BoostsPlugin extends Plugin
 	int getChangeDownTicks()
 	{
 		if (lastChangeDown == -1 ||
-				config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
-				(config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedUp))
+			config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
+			(config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedUp))
 		{
 			return -1;
 		}
@@ -393,8 +393,8 @@ public class BoostsPlugin extends Plugin
 	int getChangeUpTicks()
 	{
 		if (lastChangeUp == -1 ||
-				config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
-				(config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedDown))
+			config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
+			(config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedDown))
 		{
 			return -1;
 		}
@@ -406,12 +406,13 @@ public class BoostsPlugin extends Plugin
 
 	/**
 	 * Converts tick-based time to accurate second time
+	 *
 	 * @param time tick-based time
 	 * @return second-based time
 	 */
 	int getChangeTime(final int time)
 	{
 		final long diff = System.currentTimeMillis() - lastTickMillis;
-		return time != -1 ? (int)((time * Constants.GAME_TICK_LENGTH - diff) / 1000d) : time;
+		return time != -1 ? (int) ((time * Constants.GAME_TICK_LENGTH - diff) / 1000d) : time;
 	}
 }

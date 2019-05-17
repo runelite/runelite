@@ -73,7 +73,7 @@ public class BirdHouseTracker
 
 	@Inject
 	private BirdHouseTracker(Client client, ItemManager itemManager, ConfigManager configManager,
-		TimeTrackingConfig config, Notifier notifier)
+							 TimeTrackingConfig config, Notifier notifier)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
@@ -195,6 +195,7 @@ public class BirdHouseTracker
 
 	/**
 	 * Updates the overall completion time of the bird houses.
+	 *
 	 * @see #completionTime
 	 */
 	private void updateCompletionTime()

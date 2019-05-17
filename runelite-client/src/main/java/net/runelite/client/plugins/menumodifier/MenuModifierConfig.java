@@ -31,37 +31,49 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("menumodifier")
 public interface MenuModifierConfig extends Config
 {
-    @ConfigItem(
-    	position = 0,
+	@ConfigItem(
+		position = 0,
 		keyName = "hideExamine",
 		name = "Hide Examine",
 		description = "Hides the 'examine' option from the right click menu"
 	)
-    default boolean hideExamine() { return true; }
+	default boolean hideExamine()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-    	position = 1,
+	@ConfigItem(
+		position = 1,
 		keyName = "hideTradeWith",
 		name = "Hide Trade With",
 		description = "Hides the 'trade with' option from the right click menu"
 	)
-    default boolean hideTradeWith() { return true; }
+	default boolean hideTradeWith()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-    	position = 2,
+	@ConfigItem(
+		position = 2,
 		keyName = "hideReport",
 		name = "Hide Report",
 		description = "Hides the 'report' option from the right click menu"
 	)
-    default boolean hideReport() { return true; }
+	default boolean hideReport()
+	{
+		return true;
+	}
 
-    @ConfigItem(
-    	position = 3,
+	@ConfigItem(
+		position = 3,
 		keyName = "hideLookup",
 		name = "Hide Lookup",
 		description = "Hides the 'lookup' option from the right click menu"
 	)
-    default boolean hideLookup() { return true; }
+	default boolean hideLookup()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		position = 4,
@@ -69,7 +81,10 @@ public interface MenuModifierConfig extends Config
 		name = "Hide Net",
 		description = "Hides the 'net' option from the right click menu"
 	)
-	default boolean hideNet() { return true; }
+	default boolean hideNet()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		position = 5,
@@ -77,5 +92,8 @@ public interface MenuModifierConfig extends Config
 		name = "Hide Bait",
 		description = "Hides the 'Bait' option from the right click menu"
 	)
-	default boolean hideBait() { return true; }
+	default boolean hideBait()
+	{
+		return true;
+	}
 }

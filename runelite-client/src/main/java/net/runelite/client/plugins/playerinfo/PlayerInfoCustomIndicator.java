@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.playerinfo;
 
+import java.awt.Color;
+import java.awt.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Client;
@@ -31,8 +33,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.util.ColorUtil;
-
-import java.awt.*;
 
 public class PlayerInfoCustomIndicator extends InfoBox
 {

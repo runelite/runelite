@@ -35,11 +35,14 @@ import net.runelite.client.config.ConfigItem;
 public interface HidePrayersPVPConfig extends Config
 {
 	@ConfigItem
-	(
-		position = 0,
-		keyName = "CombatPrayers",
-		name = "Combat Prayers",
-		description = "Shows prayers based on prayer build"
-	)
-	default CombatPrayers CombatPrayers() {return CombatPrayers.DISABLED;}
+		(
+			position = 0,
+			keyName = "CombatPrayers",
+			name = "Combat Prayers",
+			description = "Shows prayers based on prayer build"
+		)
+	default CombatPrayers CombatPrayers()
+	{
+		return CombatPrayers.DISABLED;
+	}
 }

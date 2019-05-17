@@ -152,7 +152,7 @@ public class XpGlobesPlugin extends Plugin
 		if (!xpGlobes.isEmpty())
 		{
 			Instant currentTime = Instant.now();
-			for (Iterator<XpGlobe> it = xpGlobes.iterator(); it.hasNext();)
+			for (Iterator<XpGlobe> it = xpGlobes.iterator(); it.hasNext(); )
 			{
 				XpGlobe globe = it.next();
 				Instant globeCreationTime = globe.getTime();

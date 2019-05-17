@@ -60,38 +60,38 @@ public class CameraOverlay extends Overlay
 		panelComponent.getChildren().clear();
 
 		panelComponent.getChildren().add(TitleComponent.builder()
-				.text("Camera")
-				.build());
+			.text("Camera")
+			.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("X")
-				.right("" + client.getCameraX())
-				.build());
+			.left("X")
+			.right("" + client.getCameraX())
+			.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Y")
-				.right("" + client.getCameraY())
-				.build());
+			.left("Y")
+			.right("" + client.getCameraY())
+			.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Z")
-				.right("" + client.getCameraZ())
-				.build());
+			.left("Z")
+			.right("" + client.getCameraZ())
+			.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Pitch")
-				.right("" + client.getCameraPitch())
-				.build());
+			.left("Pitch")
+			.right("" + client.getCameraPitch())
+			.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Yaw")
-				.right("" + client.getCameraYaw())
-				.build());
+			.left("Yaw")
+			.right("" + client.getCameraYaw())
+			.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Scale")
-				.right("" + client.getScale())
-				.build());
+			.left("Scale")
+			.right("" + client.getScale())
+			.build());
 
 		return panelComponent.render(graphics);
 	}

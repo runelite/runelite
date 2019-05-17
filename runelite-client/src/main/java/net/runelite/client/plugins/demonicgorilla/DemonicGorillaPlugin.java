@@ -156,7 +156,7 @@ public class DemonicGorillaPlugin extends Plugin
 	}
 
 	private void checkGorillaAttackStyleSwitch(DemonicGorilla gorilla,
-		final DemonicGorilla.AttackStyle... protectedStyles)
+											   final DemonicGorilla.AttackStyle... protectedStyles)
 	{
 		if (gorilla.getAttacksUntilSwitch() <= 0 ||
 			gorilla.getNextPosibleAttackStyles().isEmpty())
@@ -194,7 +194,7 @@ public class DemonicGorillaPlugin extends Plugin
 	{
 		gorilla.setInitiatedCombat(true);
 
-		Player target = (Player)gorilla.getNpc().getInteracting();
+		Player target = (Player) gorilla.getNpc().getInteracting();
 
 		DemonicGorilla.AttackStyle protectedStyle = null;
 		if (target != null)
@@ -285,7 +285,7 @@ public class DemonicGorillaPlugin extends Plugin
 		int tickCounter = client.getTickCount();
 		for (DemonicGorilla gorilla : gorillas.values())
 		{
-			Player interacting = (Player)gorilla.getNpc().getInteracting();
+			Player interacting = (Player) gorilla.getNpc().getInteracting();
 			MemorizedPlayer mp = memorizedPlayers.get(interacting);
 
 			if (gorilla.getLastTickInteracting() != null && interacting == null)
@@ -625,7 +625,7 @@ public class DemonicGorillaPlugin extends Plugin
 
 		if (event.getActor() instanceof Player)
 		{
-			Player player = (Player)event.getActor();
+			Player player = (Player) event.getActor();
 			MemorizedPlayer mp = memorizedPlayers.get(player);
 			if (mp != null)
 			{

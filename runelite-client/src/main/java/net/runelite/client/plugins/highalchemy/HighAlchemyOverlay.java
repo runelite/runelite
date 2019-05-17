@@ -32,8 +32,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.HashSet;
-import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;

@@ -24,8 +24,8 @@
  */
 package net.runelite.client.plugins.itemstats;
 
-import net.runelite.client.plugins.itemstats.delta.DeltaCalculator;
 import net.runelite.api.Client;
+import net.runelite.client.plugins.itemstats.delta.DeltaCalculator;
 
 public class Food extends FoodBase
 {

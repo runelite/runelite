@@ -102,7 +102,8 @@ public class SlayerTaskPanel extends PluginPanel
 
 		playBtn.setIcon(PLAY);
 		playBtn.setToolTipText("Resume the current slayer task");
-		playBtn.addMouseListener(new MouseAdapter() {
+		playBtn.addMouseListener(new MouseAdapter()
+		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
@@ -137,13 +138,15 @@ public class SlayerTaskPanel extends PluginPanel
 
 		pauseBtn.setIcon(PAUSE);
 		pauseBtn.setToolTipText("Pause the current slayer task");
-		pauseBtn.addMouseListener(new MouseAdapter() {
+		pauseBtn.addMouseListener(new MouseAdapter()
+		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				slayerPlugin.setPaused(true);
 				changePauseState(true);
 			}
+
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{

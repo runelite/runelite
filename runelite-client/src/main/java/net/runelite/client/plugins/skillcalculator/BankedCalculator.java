@@ -81,11 +81,11 @@ public class BankedCalculator extends JPanel
 
 	// Banked Experience magic
 	private Map<Integer, Integer> bankMap = new HashMap<>();
-	private Map<String, Boolean> categoryMap = new HashMap<>();			// Check if CriticalItem Category is enabled
+	private Map<String, Boolean> categoryMap = new HashMap<>();            // Check if CriticalItem Category is enabled
 	private Map<CriticalItem, CriticalItemPanel> panelMap = new HashMap<>();
-	private Map<CriticalItem, Integer> criticalMap = new HashMap<>();	// Quantity of CriticalItem inside bankMap
-	private Map<CriticalItem, Activity> activityMap = new HashMap<>(); 	// Selected Activity used for calculating xp
-	private Map<CriticalItem, Integer> linkedMap = new HashMap<>();		// ItemID of item that links to the CriticalItem
+	private Map<CriticalItem, Integer> criticalMap = new HashMap<>();    // Quantity of CriticalItem inside bankMap
+	private Map<CriticalItem, Activity> activityMap = new HashMap<>();    // Selected Activity used for calculating xp
+	private Map<CriticalItem, Integer> linkedMap = new HashMap<>();        // ItemID of item that links to the CriticalItem
 
 	BankedCalculator(
 		SkillCalculatorPanel parent,
@@ -133,6 +133,7 @@ public class BankedCalculator extends JPanel
 
 	/**
 	 * Shows the Banked Xp tab for the CalculatorType
+	 *
 	 * @param calculatorType Selected Calculator Type
 	 */
 	void openBanked(CalculatorType calculatorType)
@@ -160,7 +161,7 @@ public class BankedCalculator extends JPanel
 		}
 		else if (bankMap.size() <= 0)
 		{
-			add(new JLabel( "Please visit a bank!", JLabel.CENTER));
+			add(new JLabel("Please visit a bank!", JLabel.CENTER));
 		}
 		else
 		{
@@ -236,8 +237,9 @@ public class BankedCalculator extends JPanel
 
 	/**
 	 * Used to toggle Categories of Items inside the Banked Xp tab
+	 *
 	 * @param category Category Name
-	 * @param enabled is enabled
+	 * @param enabled  is enabled
 	 */
 	private void toggleCategory(String category, boolean enabled)
 	{
@@ -305,6 +307,7 @@ public class BankedCalculator extends JPanel
 
 	/**
 	 * Creates an Individual Item Panel if it should be displayed
+	 *
 	 * @param item CriticalItem this information is tied too
 	 */
 	private void createItemPanel(CriticalItem item)
@@ -372,6 +375,7 @@ public class BankedCalculator extends JPanel
 
 	/**
 	 * Return the Activity the player selected for this Item. Defaults to First activity
+	 *
 	 * @param i CriticalItem to check for
 	 * @return selected Activity
 	 */
@@ -399,6 +403,7 @@ public class BankedCalculator extends JPanel
 
 	/**
 	 * Creates a Map of Item ID and QTY for this Skill by Category. Keeps order for better UI display
+	 *
 	 * @return Map of Item ID and QTY for this Skill by Category
 	 */
 	private Map<CriticalItem, Integer> getBankedXpBreakdown()
@@ -423,6 +428,7 @@ public class BankedCalculator extends JPanel
 
 	/**
 	 * Used to select an Activity for an item
+	 *
 	 * @param i CriticalItem
 	 * @param a Activity selected
 	 */
@@ -477,7 +483,8 @@ public class BankedCalculator extends JPanel
 
 	/**
 	 * Creates a Map of CriticalItem and Qty for all items that link to the passed CriticalItem
-	 * @param i CriticalItem to base Map off of
+	 *
+	 * @param i     CriticalItem to base Map off of
 	 * @param first Since this is called recursively we want to ensure the original CriticalItem is always added
 	 * @return Map of Linked CriticalItems and their Qty
 	 */
@@ -527,6 +534,7 @@ public class BankedCalculator extends JPanel
 
 	/**
 	 * SkillCalculatorPlugin sends the Bank Map when the bank contents change
+	 *
 	 * @param map Map of Item IDs and Quantity
 	 */
 	void updateBankMap(Map<Integer, Integer> map)
@@ -581,7 +589,8 @@ public class BankedCalculator extends JPanel
 
 	/**
 	 * Check Bank for Activity Secondaries and Limits to possible Activity amounts
-	 * @param a Selected Activity
+	 *
+	 * @param a        Selected Activity
 	 * @param possible Amount of Critical Item available
 	 * @return possible Limited to Banked Secondaries
 	 */

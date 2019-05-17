@@ -1,24 +1,29 @@
 package net.runelite.client.plugins.runedoku;
 
+import java.awt.Color;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 
-import javax.inject.Inject;
-import java.awt.*;
-import java.util.ArrayList;
-
-public class RunedokuUtil {
+public class RunedokuUtil
+{
 
 	private final RunedokuConfig config;
 
 	@Inject
-	RunedokuUtil(final RunedokuConfig config) {
+	RunedokuUtil(final RunedokuConfig config)
+	{
 		this.config = config;
 	}
 
-	protected Color sudokuPieceToColor(int i) {
-		switch (i) {
+	protected Color sudokuPieceToColor(int i)
+	{
+		switch (i)
+		{
 			case 1:
 				return config.mindRuneColor();
 			case 2:
@@ -42,8 +47,10 @@ public class RunedokuUtil {
 		}
 	}
 
-	protected Color referenceColors(int i) {
-		switch (i) {
+	protected Color referenceColors(int i)
+	{
+		switch (i)
+		{
 			case 121: //earth
 				return config.earthRuneColor();
 			case 122: //water
@@ -69,13 +76,17 @@ public class RunedokuUtil {
 
 	/**
 	 * Make the 2d array into an arraylist
+	 *
 	 * @param board
 	 * @return
 	 */
-	protected ArrayList<Integer> makeSimple(int[][] board) {
+	protected ArrayList<Integer> makeSimple(int[][] board)
+	{
 		ArrayList<Integer> list = new ArrayList<>();
-		for (int i = 0 ; i < 9 ; i++) {
-			for (int ii = 0 ; ii < 9 ; ii++) {
+		for (int i = 0; i < 9; i++)
+		{
+			for (int ii = 0; ii < 9; ii++)
+			{
 				list.add(board[i][ii]);
 			}
 		}
@@ -84,10 +95,12 @@ public class RunedokuUtil {
 
 	/**
 	 * utility method
+	 *
 	 * @param rect
 	 * @return
 	 */
-	protected Polygon RectangleToPolygon(Rectangle rect) {
+	protected Polygon RectangleToPolygon(Rectangle rect)
+	{
 		int[] xpoints = {rect.x, rect.x + rect.width, rect.x + rect.width, rect.x};
 		int[] ypoints = {rect.y, rect.y, rect.y + rect.height, rect.y + rect.height};
 		return new Polygon(xpoints, ypoints, 4);
@@ -95,27 +108,40 @@ public class RunedokuUtil {
 
 	/**
 	 * Pulls data from what's on the Runedoku interface and creates a 2dimensional array for it
-	 * @author gazivodag
+	 *
 	 * @param client
 	 * @return sudoku table that the client currently sees in a 2d array
+	 * @author gazivodag
 	 */
-	protected int[][] createTable(Client client) {
+	protected int[][] createTable(Client client)
+	{
 		int[][] myArr = new int[9][9];
-		Widget sudokuScreen = client.getWidget(288,131);
-		for (int i = 0 ; i < 9 ; i++) {
-			for (int ii = 0 ; ii < 9 ; ii++) {
+		Widget sudokuScreen = client.getWidget(288, 131);
+		for (int i = 0; i < 9; i++)
+		{
+			for (int ii = 0; ii < 9; ii++)
+			{
 				WidgetItem item;
 				int myIndex;
-				if (i > 0) {
+				if (i > 0)
+				{
 					myIndex = ((i * 10) + ii) - i;
-				} else {
+				}
+				else
+				{
 					myIndex = ii;
 				}
-				if (myIndex == 81) break;
+				if (myIndex == 81)
+				{
+					break;
+				}
 				item = sudokuScreen.getWidgetItem(myIndex);
-				if (item != null) {
+				if (item != null)
+				{
 					myArr[i][ii] = RunedokuPiece.getById(item.getId()).getPieceForSudoku();
-				} else {
+				}
+				else
+				{
 					myArr[i][ii] = 0;
 				}
 			}

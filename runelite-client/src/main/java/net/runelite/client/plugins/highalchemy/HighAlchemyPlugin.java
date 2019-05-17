@@ -113,7 +113,7 @@ public class HighAlchemyPlugin extends Plugin
 		if (config.showInventory())
 		{
 			Arrays.stream(
-				new int[] {
+				new int[]{
 					DEPOSIT_BOX_GROUP_ID,
 					BANK_INVENTORY_GROUP_ID,
 					SHOP_INVENTORY_GROUP_ID,

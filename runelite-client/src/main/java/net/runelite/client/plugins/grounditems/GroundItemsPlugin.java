@@ -509,7 +509,7 @@ public class GroundItemsPlugin extends Plugin
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
 			}
 
-			if(config.removeIgnored() && event.getOption().equals("Take") && hiddenItemList.contains(Text.removeTags(event.getTarget())))
+			if (config.removeIgnored() && event.getOption().equals("Take") && hiddenItemList.contains(Text.removeTags(event.getTarget())))
 			{
 				menuEntries = removeOption(event.getOption(), event.getTarget());
 			}
@@ -522,7 +522,7 @@ public class GroundItemsPlugin extends Plugin
 	{
 		MenuEntry[] entries = client.getMenuEntries();
 		int j = 0;
-		if(entries.length > 1)
+		if (entries.length > 1)
 		{
 			MenuEntry[] newEntries = new MenuEntry[entries.length - 1];
 			for (int i = 0; i < entries.length; ++i)

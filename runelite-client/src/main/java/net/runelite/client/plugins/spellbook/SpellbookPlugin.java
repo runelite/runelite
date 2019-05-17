@@ -78,10 +78,11 @@ public class SpellbookPlugin extends Plugin
 	private static final String MENU_TARGET = "Reordering";
 	private static final WidgetMenuOption FIXED_MAGIC_TAB_LOCK = new WidgetMenuOption(LOCK, MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_MAGIC_TAB);
 	private static final WidgetMenuOption FIXED_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK, MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_MAGIC_TAB);
-	private static final WidgetMenuOption RESIZABLE_MAGIC_TAB_LOCK = new WidgetMenuOption(LOCK,	MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_MAGIC_TAB);
-	private static final WidgetMenuOption RESIZABLE_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,	MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_MAGIC_TAB);
-	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_MAGIC_TAB_LOCK = new WidgetMenuOption(LOCK,	MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
-	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,	MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
+	private static final WidgetMenuOption RESIZABLE_MAGIC_TAB_LOCK = new WidgetMenuOption(LOCK, MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_MAGIC_TAB);
+	private static final WidgetMenuOption RESIZABLE_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK, MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_MAGIC_TAB);
+	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_MAGIC_TAB_LOCK = new WidgetMenuOption(LOCK, MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
+	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_MAGIC_TAB_UNLOCK = new WidgetMenuOption(UNLOCK, MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_MAGIC_TAB);
+
 	private enum WordFilterMode
 	{
 		CONTAINS,
@@ -382,9 +383,9 @@ public class SpellbookPlugin extends Plugin
 
 			int widget = iStack[iStackSize - 1];
 			int visCount = (int) spells.values().stream()
-					.map(Spell::getName)
-					.filter(s -> isUnfiltered(s, tmp))
-					.count();
+				.map(Spell::getName)
+				.filter(s -> isUnfiltered(s, tmp))
+				.count();
 
 			if (visCount > 20 || visCount == 0)
 			{
@@ -437,7 +438,9 @@ public class SpellbookPlugin extends Plugin
 		}
 
 		// CHECKSTYLE:OFF
-		Collection<Spell> gson = GSON.fromJson(cfg, new TypeToken<List<Spell>>(){}.getType());
+		Collection<Spell> gson = GSON.fromJson(cfg, new TypeToken<List<Spell>>()
+		{
+		}.getType());
 		// CHECKSTYLE:ON
 		gson.stream().filter(Objects::nonNull).forEach(s -> spells.put(s.getWidget(), s));
 

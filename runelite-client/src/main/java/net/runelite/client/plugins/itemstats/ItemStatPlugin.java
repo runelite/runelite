@@ -349,7 +349,7 @@ public class ItemStatPlugin extends Plugin
 	}
 
 	private static Widget createText(Widget parent, String text, int fontId, int textColor,
-								int x, int y, int width, int height)
+									 int x, int y, int width, int height)
 	{
 		final Widget widget = parent.createChild(-1, WidgetType.TEXT);
 		widget.setText(text);

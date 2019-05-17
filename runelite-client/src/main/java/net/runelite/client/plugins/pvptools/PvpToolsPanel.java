@@ -14,7 +14,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import javax.inject.Inject;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;

@@ -380,7 +380,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 			return false;
 		}
 
-		WorldPoint p3 = new WorldPoint((int) r.getMinX(), (int)r.getMaxY(), 0);
+		WorldPoint p3 = new WorldPoint((int) r.getMinX(), (int) r.getMaxY(), 0);
 
 		if (!isFirstPointCloser(firstWp, secondWp, p3))
 		{
@@ -406,6 +406,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 
 	public String[] getNpcs()
 	{
-		return new String[] {npc};
+		return new String[]{npc};
 	}
 }

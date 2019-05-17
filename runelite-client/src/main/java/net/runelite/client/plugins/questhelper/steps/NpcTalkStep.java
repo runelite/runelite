@@ -103,10 +103,7 @@ public class NpcTalkStep extends QuestStep
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
 	{
-		if (npcsToHighlight.contains(event.getNpc()))
-		{
-			npcsToHighlight.remove(event.getNpc());
-		}
+		npcsToHighlight.remove(event.getNpc());
 	}
 
 	@Override

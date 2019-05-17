@@ -89,6 +89,7 @@ class WaveOverlay extends Overlay
 
 		return panelComponent.render(graphics);
 	}
+
 	private void addWaveInfo(final String headerText, final Map<WaveMonster, Integer> waveContents)
 	{
 		panelComponent.getChildren().add(TitleComponent.builder()

@@ -43,12 +43,12 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import static net.runelite.api.SpriteID.MINIMAP_DESTINATION_FLAG;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK_TILE_VALUE;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK_TILE_VALUE;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.ManhattanDistance;
 import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStar;
@@ -101,7 +101,7 @@ public class PuzzleSolverOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		if ((!config.displaySolution() && !config.displayRemainingMoves())
-				|| client.getGameState() != GameState.LOGGED_IN)
+			|| client.getGameState() != GameState.LOGGED_IN)
 		{
 			return null;
 		}
@@ -242,10 +242,10 @@ public class PuzzleSolverOverlay extends Overlay
 									int markerSize = DOT_MARKER_SIZE - i * 3;
 
 									int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
-											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
+										+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
 
 									int y = puzzleBoxLocation.getY() + blankY * PUZZLE_TILE_SIZE
-											+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
+										+ PUZZLE_TILE_SIZE / 2 - markerSize / 2;
 
 									graphics.fillOval(x, y, markerSize, markerSize);
 								}
@@ -300,10 +300,10 @@ public class PuzzleSolverOverlay extends Overlay
 									}
 
 									int x = puzzleBoxLocation.getX() + blankX * PUZZLE_TILE_SIZE
-											+ PUZZLE_TILE_SIZE / 2 - arrow.getWidth() / 2;
+										+ PUZZLE_TILE_SIZE / 2 - arrow.getWidth() / 2;
 
 									int y = puzzleBoxLocation.getY() + blankY * PUZZLE_TILE_SIZE
-											+ PUZZLE_TILE_SIZE / 2 - arrow.getHeight() / 2;
+										+ PUZZLE_TILE_SIZE / 2 - arrow.getHeight() / 2;
 
 									OverlayUtil.renderImageLocation(graphics, new net.runelite.api.Point(x, y), arrow);
 

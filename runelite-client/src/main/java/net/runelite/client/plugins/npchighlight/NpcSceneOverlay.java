@@ -62,7 +62,7 @@ public class NpcSceneOverlay extends Overlay
 
 	static
 	{
-		((DecimalFormat)TIME_LEFT_FORMATTER).applyPattern("#0.0");
+		((DecimalFormat) TIME_LEFT_FORMATTER).applyPattern("#0.0");
 	}
 
 	private final Client client;

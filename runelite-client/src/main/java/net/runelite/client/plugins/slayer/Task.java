@@ -26,12 +26,11 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import java.util.Collections;
 import java.util.List;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -103,7 +102,7 @@ enum Task
 	CRAZY_ARCHAEOLOGIST("Crazy Archaeologist", ItemID.FEDORA),
 	CROCODILES("Crocodiles", ItemID.SWAMP_LIZARD),
 	DAGANNOTH("Dagannoth", ItemID.DAGANNOTH,
-			asList("Dagannoth Rex", "Dagannoth Prime", "Dagannoth Supreme"), Collections.emptyList()),
+		asList("Dagannoth Rex", "Dagannoth Prime", "Dagannoth Supreme"), Collections.emptyList()),
 	DAGANNOTH_KINGS("Dagannoth Kings", ItemID.PET_DAGANNOTH_PRIME,
 		asList("Dagannoth Rex", "Dagannoth Prime", "Dagannoth Supreme"), Collections.emptyList()),
 	DARK_BEASTS("Dark beasts", ItemID.DARK_BEAST,
@@ -311,7 +310,7 @@ enum Task
 		this.checkAsTokens = true;
 	}
 
-	Task(String name, int itemSpriteId, List<String> targetNames, List<Integer> npcIds,  int weaknessThreshold, int weaknessItem)
+	Task(String name, int itemSpriteId, List<String> targetNames, List<Integer> npcIds, int weaknessThreshold, int weaknessItem)
 	{
 		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;

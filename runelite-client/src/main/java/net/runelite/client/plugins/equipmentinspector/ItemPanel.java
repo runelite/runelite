@@ -40,7 +40,7 @@ class ItemPanel extends JPanel
 	ItemPanel(ItemComposition item, KitType kitType, AsyncBufferedImage icon)
 	{
 
-        setBorder(new EmptyBorder(3, 3, 3, 3));
+		setBorder(new EmptyBorder(3, 3, 3, 3));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		GroupLayout layout = new GroupLayout(this);
@@ -55,20 +55,20 @@ class ItemPanel extends JPanel
 		icon.addTo(imageLabel);
 
 		layout.setVerticalGroup(layout.createParallelGroup()
-				.addComponent(imageLabel)
-				.addGroup(layout.createSequentialGroup()
-						.addComponent(name)
-						.addComponent(location)
-				)
+			.addComponent(imageLabel)
+			.addGroup(layout.createSequentialGroup()
+				.addComponent(name)
+				.addComponent(location)
+			)
 		);
 
 		layout.setHorizontalGroup(layout.createSequentialGroup()
-				.addComponent(imageLabel)
-				.addGap(8)
-				.addGroup(layout.createParallelGroup()
-						.addComponent(name)
-						.addComponent(location)
-				)
+			.addComponent(imageLabel)
+			.addGap(8)
+			.addGroup(layout.createParallelGroup()
+				.addComponent(name)
+				.addComponent(location)
+			)
 		);
 
 		// AWT's Z order is weird. This put image at the back of the stack

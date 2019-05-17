@@ -112,8 +112,9 @@ public class WidgetButton
 
 	/**
 	 * Adds the collection of WidgetButtons to the container overriding any existing children.
+	 *
 	 * @param container Widget to add buttons too
-	 * @param buttons buttons to add
+	 * @param buttons   buttons to add
 	 */
 	static void addButtonsToContainerWidget(Widget container, Collection<WidgetButton> buttons)
 	{

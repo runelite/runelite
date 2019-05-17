@@ -114,10 +114,10 @@ public interface WorldHopperConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showHistory",
-			name = "Show history tab",
-			description = "Shows the history tab",
-			position = 7
+		keyName = "showHistory",
+		name = "Show history tab",
+		description = "Shows the history tab",
+		position = 7
 	)
 	default boolean showHistory()
 	{

@@ -24,13 +24,12 @@
  */
 package net.runelite.client.plugins.mining;
 
+import java.time.Duration;
+import java.time.Instant;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
-
-import java.time.Duration;
-import java.time.Instant;
 
 @Slf4j
 public class MiningSession

@@ -35,6 +35,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
+import static net.runelite.api.SpriteID.WINDOW_CLOSE_BUTTON_RED_X;
+import static net.runelite.api.SpriteID.WINDOW_CLOSE_BUTTON_RED_X_HOVERED;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
@@ -45,8 +47,6 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
-import static net.runelite.api.SpriteID.WINDOW_CLOSE_BUTTON_RED_X;
-import static net.runelite.api.SpriteID.WINDOW_CLOSE_BUTTON_RED_X_HOVERED;
 
 @Singleton
 class InstanceMapOverlay extends Overlay
@@ -214,7 +214,7 @@ class InstanceMapOverlay extends Overlay
 	 * @param graphics graphics to be drawn to
 	 */
 	private void drawPlayerDot(Graphics2D graphics, Player player,
-		Color dotColor, Color outlineColor)
+							   Color dotColor, Color outlineColor)
 	{
 		LocalPoint playerLoc = player.getLocalLocation();
 

@@ -125,6 +125,7 @@ public interface ItemStatConfig extends Config
 	{
 		return new Color(0xEEEE33);
 	}
+
 	@ConfigItem(
 		keyName = "colorNoChange",
 		name = "No change",

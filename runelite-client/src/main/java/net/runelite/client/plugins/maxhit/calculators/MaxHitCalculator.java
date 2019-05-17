@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.maxhit.calculators;
 
+import java.util.ArrayList;
+import java.util.function.BiFunction;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.VarPlayer;
@@ -36,9 +38,6 @@ import net.runelite.client.plugins.maxhit.config.EquipmentBonusConfig;
 import net.runelite.client.plugins.maxhit.config.PrayerBonusConfig;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentHelper;
 import net.runelite.client.plugins.maxhit.equipment.EquipmentItemset;
-
-import java.util.ArrayList;
-import java.util.function.BiFunction;
 
 public abstract class MaxHitCalculator
 {

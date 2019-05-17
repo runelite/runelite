@@ -63,7 +63,6 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -371,10 +370,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
 	{
-		if (healers.remove(event.getNpc()) != null && healers.isEmpty())
-		{
-			healers.clear();
-		}
+		healers.remove(event.getNpc());
 	}
 
 	@Subscribe
@@ -450,7 +446,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 				{
 					remove(new String[]{"take", "light"}, target, true);
 				}
-				else//remove "Light" option (and "Take" option if not defender).
+				else //remove "Light" option (and "Take" option if not defender).
 				{
 					remove("light", target, true);
 				}
@@ -466,7 +462,8 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 						List<String> poison = Arrays.asList("poisoned tofu", "poisoned meat", "poisoned worms");
 						List<String> vials = Arrays.asList("healing vial", "healing vial(1)", "healing vial(2)", "healing vial(3)", "healing vial(4)");//"healing vial(4)"
 						if (poison.contains(item))
-						{//if item is a poison item
+						{
+							//if item is a poison item
 							int calledPoison = 0;
 							switch (healer.getText())//choose which poison to hide the use/destroy option for
 							{
@@ -509,11 +506,13 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 				}
 			}
 			else if (option.equals("attack") && client.getWidget(WidgetInfo.BA_ATK_ROLE_TEXT) == null && !target.equals("queen spawn"))//if not attacker
-			{//remove attack option from everything but queen spawns
+			{
+				//remove attack option from everything but queen spawns
 				remove(option, target, true);
 			}
 			else if ((option.equals("fix") || (option.equals("block") && target.equals("penance cave"))) && client.getWidget(WidgetInfo.BA_DEF_ROLE_TEXT) == null)//if not defender
-			{//the check for option requires checking target as well because defensive attack style option is also called "block".
+			{
+				//the check for option requires checking target as well because defensive attack style option is also called "block".
 				remove(option, target, true);
 			}
 			else if ((option.equals("load")) && client.getWidget(WidgetInfo.BA_COLL_ROLE_TEXT) == null)//if not collector, remove hopper options
@@ -632,7 +631,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 			if (correctEgg != null)
 			{
 				entries.add(correctEgg);
-				client.setMenuEntries(entries.toArray(new MenuEntry[entries.size()]));
+				client.setMenuEntries(entries.toArray(new MenuEntry[0]));
 			}
 		}
 

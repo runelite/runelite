@@ -1,11 +1,10 @@
 package net.runelite.client.plugins.raidsthieving;
 
+import java.util.Objects;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
-
-import java.util.Objects;
 
 /**
  * Represents a point in the instance chunk, invariant of rotation.
@@ -79,8 +78,14 @@ public class InstancePoint
 	@Override
 	public boolean equals(Object o)
 	{
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+		{
+			return true;
+		}
+		if (o == null || getClass() != o.getClass())
+		{
+			return false;
+		}
 		InstancePoint that = (InstancePoint) o;
 		return x == that.x &&
 			y == that.y;

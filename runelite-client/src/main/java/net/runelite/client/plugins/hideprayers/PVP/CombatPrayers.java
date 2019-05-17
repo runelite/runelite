@@ -40,7 +40,7 @@ public enum CombatPrayers
 	PRAY25("25 prayer build"),
 	PRAY31("31 prayer build"),
 	PRAY43("43 prayer build"),
-	PRAY44("44 prayer build"),	
+	PRAY44("44 prayer build"),
 	PRAY45("45 prayer build"),
 	PRAY52("52 prayer build"),
 	PRAY55("55 prayer build"),

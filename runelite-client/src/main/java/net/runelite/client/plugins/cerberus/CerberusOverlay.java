@@ -63,13 +63,13 @@ public class CerberusOverlay extends Overlay
 
 		// Ghosts are already sorted
 		plugin.getGhosts().stream()
-				// Iterate only through the correct amount of ghosts
-				.limit(CerberusGhost.values().length)
-				.forEach(npc -> CerberusGhost
-						.fromNPC(npc)
-						.ifPresent(ghost -> panelComponent
-								.getChildren()
-								.add(new ImageComponent(iconManager.getSkillImage(ghost.getType())))));
+			// Iterate only through the correct amount of ghosts
+			.limit(CerberusGhost.values().length)
+			.forEach(npc -> CerberusGhost
+				.fromNPC(npc)
+				.ifPresent(ghost -> panelComponent
+					.getChildren()
+					.add(new ImageComponent(iconManager.getSkillImage(ghost.getType())))));
 
 
 		return panelComponent.render(graphics);

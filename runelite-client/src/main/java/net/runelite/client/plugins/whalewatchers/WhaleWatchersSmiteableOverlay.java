@@ -1,4 +1,3 @@
-
 /*******************************************************************************
  * Copyright (c) 2019. PKLite
  *  Redistributions and modifications of this software are permitted as long as this notice remains in its original unmodified state at the top of this file.
@@ -59,7 +58,7 @@ public class WhaleWatchersSmiteableOverlay extends Overlay
 				.build());
 
 			panelComponent.setPreferredSize(new Dimension(graphics.getFontMetrics().stringWidth(subText)
-				+ 20 , 0));
+				+ 20, 0));
 		}
 		else
 		{

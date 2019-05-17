@@ -24,12 +24,12 @@
  */
 package net.runelite.client.plugins.raidsthieving.BatSolver;
 
-import java.util.Map;
-import java.util.HashSet;
-import java.util.HashMap;
-import java.util.TreeSet;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 import static net.runelite.client.plugins.raidsthieving.BatSolver.SolutionSet.SOLUTION_SETS;
 
 public class BatSolver

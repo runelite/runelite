@@ -32,7 +32,6 @@ import java.util.Map;
 import net.runelite.api.ProjectileID;
 
 
-
 public enum AoeProjectileInfo
 {
 	LIZARDMAN_SHAMAN_AOE(ProjectileID.LIZARDMAN_SHAMAN_AOE, 5),
@@ -108,10 +107,10 @@ public enum AoeProjectileInfo
 	ADDY_DRAG_POISON(ProjectileID.ADDY_DRAG_POISON, 1),
 
 	/**
-	* the Breath of the Drake
-	*/
+	 * the Breath of the Drake
+	 */
 	DRAKE_BREATH(ProjectileID.DRAKE_BREATH, 1),
-	
+
 	/**
 	 * Cerbs fire
 	 */

@@ -57,11 +57,11 @@ class NightmareZoneOverlay extends Overlay
 
 	@Inject
 	NightmareZoneOverlay(
-			Client client,
-			NightmareZoneConfig config,
-			NightmareZonePlugin plugin,
-			InfoBoxManager infoBoxManager,
-			ItemManager itemManager)
+		Client client,
+		NightmareZoneConfig config,
+		NightmareZonePlugin plugin,
+		InfoBoxManager infoBoxManager,
+		ItemManager itemManager)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);

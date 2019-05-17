@@ -172,6 +172,7 @@ class SkillCalculator extends JPanel
 		currentXP = client.getSkillExperience(calculatorType.getSkill());
 		currentLevel = Experience.getLevelForXp(currentXP);
 	}
+
 	private void updateTargetValues()
 	{
 		targetLevel = enforceSkillBounds(currentLevel + 1);

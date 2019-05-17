@@ -26,8 +26,8 @@ package net.runelite.client.plugins.antidrag;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-import net.runelite.client.config.Alpha;
 import net.runelite.api.Constants;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;

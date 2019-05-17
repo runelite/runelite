@@ -31,7 +31,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nonnull;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.ui.ColorScheme;
@@ -116,7 +121,7 @@ class WorldTableHeader extends JPanel
 
 		add(textLabel, BorderLayout.WEST);
 		add(arrowLabel, BorderLayout.EAST);
-}
+	}
 
 	/**
 	 * The labels inherit the parent's mouse listeners.

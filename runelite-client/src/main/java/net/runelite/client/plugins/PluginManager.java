@@ -57,8 +57,6 @@ import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -67,6 +65,8 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
@@ -90,7 +90,7 @@ public class PluginManager
 	private final List<Plugin> plugins = new CopyOnWriteArrayList<>();
 	private final List<Plugin> activePlugins = new CopyOnWriteArrayList<>();
 	private final String runeliteGroupName = RuneLiteConfig.class
-			.getAnnotation(ConfigGroup.class).value();
+		.getAnnotation(ConfigGroup.class).value();
 
 	@Inject
 	PluginWatcher pluginWatcher;
@@ -116,7 +116,7 @@ public class PluginManager
 		this.sceneTileManager = sceneTileManager;
 	}
 
-		public void watch()
+	public void watch()
 	{
 		pluginWatcher.start();
 	}
@@ -243,7 +243,7 @@ public class PluginManager
 				if (clazz.getSuperclass() == Plugin.class)
 				{
 					log.warn("Class {} is a plugin, but has no plugin descriptor",
-							clazz);
+						clazz);
 				}
 				continue;
 			}
@@ -251,7 +251,7 @@ public class PluginManager
 			if (clazz.getSuperclass() != Plugin.class)
 			{
 				log.warn("Class {} has plugin descriptor, but is not a plugin",
-						clazz);
+					clazz);
 				continue;
 			}
 
@@ -516,6 +516,7 @@ public class PluginManager
 
 	/**
 	 * Topologically sort a graph. Uses Kahn's algorithm.
+	 *
 	 * @param graph
 	 * @param <T>
 	 * @return

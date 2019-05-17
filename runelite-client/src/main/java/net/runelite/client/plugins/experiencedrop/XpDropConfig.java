@@ -88,10 +88,10 @@ public interface XpDropConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showDamage",
-			name = "Show Damage on XP Drop",
-			description = "Show what you hit next to the XP drop",
-			position = 5
+		keyName = "showDamage",
+		name = "Show Damage on XP Drop",
+		description = "Show what you hit next to the XP drop",
+		position = 5
 	)
 	default boolean showDamage()
 	{

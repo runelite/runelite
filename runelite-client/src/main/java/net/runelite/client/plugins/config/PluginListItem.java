@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.config;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
@@ -33,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -41,13 +39,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
-import net.runelite.client.config.ConfigItemDescriptor;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconButton;
-import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 
@@ -105,17 +101,17 @@ public class PluginListItem extends JPanel
 		ON_STAR = new ImageIcon(onStar);
 		CONFIG_ICON_HOVER = new ImageIcon(ImageUtil.grayscaleOffset(configIcon, -100));
 		BufferedImage offSwitcherImage = ImageUtil.flipImage(
-				ImageUtil.grayscaleOffset(
-						ImageUtil.grayscaleImage(onSwitcher),
-						0.61f
-				),
-				true,
-				false
+			ImageUtil.grayscaleOffset(
+				ImageUtil.grayscaleImage(onSwitcher),
+				0.61f
+			),
+			true,
+			false
 		);
 		OFF_SWITCHER = new ImageIcon(offSwitcherImage);
 		BufferedImage offStar = ImageUtil.grayscaleOffset(
-				ImageUtil.grayscaleImage(onStar),
-				0.77f
+			ImageUtil.grayscaleImage(onStar),
+			0.77f
 		);
 		OFF_STAR = new ImageIcon(offStar);
 	}
@@ -130,7 +126,7 @@ public class PluginListItem extends JPanel
 				   @Nullable Config config, @Nullable ConfigDescriptor configDescriptor)
 	{
 		this(configPanel, configManager, plugin, config, configDescriptor,
-				descriptor.name(), descriptor.description(), descriptor.tags());
+			descriptor.name(), descriptor.description(), descriptor.tags());
 	}
 
 	/**
@@ -179,27 +175,28 @@ public class PluginListItem extends JPanel
 		});
 
 
-			final JPanel buttonPanel = new JPanel();
-			buttonPanel.setLayout(new GridLayout(1, 2));
-			add(buttonPanel, BorderLayout.LINE_END);
+		final JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new GridLayout(1, 2));
+		add(buttonPanel, BorderLayout.LINE_END);
 
-			configButton.setPreferredSize(new Dimension(25, 0));
-			configButton.setVisible(false);
-			buttonPanel.add(configButton);
+		configButton.setPreferredSize(new Dimension(25, 0));
+		configButton.setVisible(false);
+		buttonPanel.add(configButton);
 
-			// add a listener to configButton only if there are config items to show
-			if (config != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
+		// add a listener to configButton only if there are config items to show
+		if (config != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden()))
+		{
+			configButton.addActionListener(e ->
 			{
-				configButton.addActionListener(e ->
-				{
-					configButton.setIcon(CONFIG_ICON);
-					configPanel.openGroupConfigPanel(PluginListItem.this, config, configDescriptor);
-				});
+				configButton.setIcon(CONFIG_ICON);
+				configPanel.openGroupConfigPanel(PluginListItem.this, config, configDescriptor);
+			});
 
-				configButton.setVisible(true);
-				configButton.setToolTipText("Edit plugin configuration");
-			}
-		if (!name.equals("RuneLitePlus")) {
+			configButton.setVisible(true);
+			configButton.setToolTipText("Edit plugin configuration");
+		}
+		if (!name.equals("RuneLitePlus"))
+		{
 			toggleButton.setPreferredSize(new Dimension(25, 0));
 			attachToggleButtonListener(toggleButton);
 			buttonPanel.add(toggleButton);
@@ -261,6 +258,7 @@ public class PluginListItem extends JPanel
 
 	/**
 	 * Checks if all the search terms in the given list matches at least one keyword.
+	 *
 	 * @return true if all search terms matches at least one keyword, or false if otherwise.
 	 */
 	boolean matchesSearchTerms(String[] searchTerms)
@@ -268,7 +266,7 @@ public class PluginListItem extends JPanel
 		for (String term : searchTerms)
 		{
 			if (keywords.stream().noneMatch((t) -> t.contains(term) ||
-					DISTANCE.apply(t, term) > 0.9))
+				DISTANCE.apply(t, term) > 0.9))
 			{
 				return false;
 			}

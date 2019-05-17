@@ -33,7 +33,99 @@ import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import static net.runelite.api.ItemID.*;
+import static net.runelite.api.ItemID.AGILITY_CAPE;
+import static net.runelite.api.ItemID.AGILITY_CAPET;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_11861;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_13589;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_13590;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_13601;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_13602;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_13613;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_13614;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_13625;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_13626;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_13637;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_13638;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_13677;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_13678;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_21076;
+import static net.runelite.api.ItemID.GRACEFUL_BOOTS_21078;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_11853;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_13581;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_13582;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_13593;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_13594;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_13605;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_13606;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_13617;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_13618;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_13629;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_13630;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_13669;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_13670;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_21064;
+import static net.runelite.api.ItemID.GRACEFUL_CAPE_21066;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_11859;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_13587;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_13588;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_13599;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_13600;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_13611;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_13612;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_13623;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_13624;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_13635;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_13636;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_13675;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_13676;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_21073;
+import static net.runelite.api.ItemID.GRACEFUL_GLOVES_21075;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_11851;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_13579;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_13580;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_13591;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_13592;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_13603;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_13604;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_13615;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_13616;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_13627;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_13628;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_13667;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_13668;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_21061;
+import static net.runelite.api.ItemID.GRACEFUL_HOOD_21063;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_11857;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_13585;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_13586;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_13597;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_13598;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_13609;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_13610;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_13621;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_13622;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_13633;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_13634;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_13673;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_13674;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_21070;
+import static net.runelite.api.ItemID.GRACEFUL_LEGS_21072;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_11855;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_13583;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_13584;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_13595;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_13596;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_13607;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_13608;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_13619;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_13620;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_13631;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_13632;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_13671;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_13672;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_21067;
+import static net.runelite.api.ItemID.GRACEFUL_TOP_21069;
+import static net.runelite.api.ItemID.MAX_CAPE;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
@@ -135,8 +227,8 @@ public class RunEnergyPlugin extends Plugin
 	{
 		localPlayerRunningToDestination =
 			prevLocalPlayerLocation != null &&
-			client.getLocalDestinationLocation() != null &&
-			prevLocalPlayerLocation.distanceTo(client.getLocalPlayer().getWorldLocation()) > 1;
+				client.getLocalDestinationLocation() != null &&
+				prevLocalPlayerLocation.distanceTo(client.getLocalPlayer().getWorldLocation()) > 1;
 
 		prevLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
 
@@ -188,14 +280,14 @@ public class RunEnergyPlugin extends Plugin
 		// Return the text
 		if (inSeconds)
 		{
-			return Integer.toString((int) Math.floor(secondsLeft)) + "s";
+			return (int) Math.floor(secondsLeft) + "s";
 		}
 		else
 		{
 			final int minutes = (int) Math.floor(secondsLeft / 60.0);
 			final int seconds = (int) Math.floor(secondsLeft - (minutes * 60.0));
 
-			return Integer.toString(minutes) + ":" + StringUtils.leftPad(Integer.toString(seconds), 2, "0");
+			return minutes + ":" + StringUtils.leftPad(Integer.toString(seconds), 2, "0");
 		}
 	}
 

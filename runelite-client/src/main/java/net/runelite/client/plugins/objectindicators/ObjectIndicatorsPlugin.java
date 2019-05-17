@@ -53,14 +53,14 @@ import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
@@ -274,7 +274,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if ((worldPoint.getX() & (REGION_SIZE - 1)) == objectPoint.getRegionX()
-					&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
+				&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
 			{
 				if (objectPoint.getName().equals(client.getObjectDefinition(object.getId()).getName()))
 				{

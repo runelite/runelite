@@ -26,8 +26,8 @@
 package net.runelite.client.plugins.worldmap;
 
 import java.awt.image.BufferedImage;
-import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.game.AgilityShortcut;
+import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 
 class AgilityShortcutPoint extends WorldMapPoint
 {

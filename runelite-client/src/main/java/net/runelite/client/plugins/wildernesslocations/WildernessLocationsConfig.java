@@ -6,7 +6,7 @@
  * Written by PKLite(ST0NEWALL, others) <stonewall@thots.cc.usa>, 2019
  *
  */
- 
+
 package net.runelite.client.plugins.wildernesslocations;
 
 import net.runelite.client.config.Config;
@@ -17,7 +17,7 @@ import net.runelite.client.config.Keybind;
 @ConfigGroup("wildernesslocations")
 public interface WildernessLocationsConfig extends Config
 {
-	
+
 	@ConfigItem(
 		keyName = "drawOverlay",
 		name = "Draw Overlay",
@@ -28,7 +28,7 @@ public interface WildernessLocationsConfig extends Config
 	{
 		return true;
 	}
-	
+
 	@ConfigItem(
 		keyName = "keybind",
 		name = "Send to CC",
@@ -39,5 +39,5 @@ public interface WildernessLocationsConfig extends Config
 	{
 		return Keybind.NOT_SET;
 	}
-	
+
 }

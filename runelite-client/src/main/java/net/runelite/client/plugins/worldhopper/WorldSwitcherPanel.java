@@ -24,31 +24,30 @@
  */
 package net.runelite.client.plugins.worldhopper;
 
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.Color;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JTabbedPane;
-import javax.swing.border.Border;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import lombok.AccessLevel;
 import lombok.Setter;
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -291,16 +290,16 @@ class WorldSwitcherPanel extends PluginPanel
 
 		// Sort by ascending
 		matchedHist = matchedHist.entrySet().stream()
-				.sorted(Map.Entry.<String, String>comparingByValue().reversed())
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
-						(e1, e2) -> e1, LinkedHashMap::new));
+			.sorted(Map.Entry.<String, String>comparingByValue().reversed())
+			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+				(e1, e2) -> e1, LinkedHashMap::new));
 
 		// Add matched rows to history list
 		Iterator it = matchedHist.entrySet().iterator();
 		int histRowCount = 0;
 		while (it.hasNext())
 		{
-			Map.Entry pair = (Map.Entry)it.next();
+			Map.Entry pair = (Map.Entry) it.next();
 			for (WorldTableRow r : rows)
 			{
 				WorldTableRow histRow = r;
@@ -610,23 +609,23 @@ class WorldSwitcherPanel extends PluginPanel
 	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite, Integer ping)
 	{
 		WorldTableRow row = new WorldTableRow(world, current, favorite,
-				world1 ->
+			world1 ->
+			{
+				plugin.hopTo(world1);
+			},
+			(world12, add) ->
+			{
+				if (add)
 				{
-					plugin.hopTo(world1);
-				},
-				(world12, add) ->
-				{
-					if (add)
-					{
-						plugin.addToFavorites(world12);
-					}
-					else
-					{
-						plugin.removeFromFavorites(world12);
-					}
-
-					updateList();
+					plugin.addToFavorites(world12);
 				}
+				else
+				{
+					plugin.removeFromFavorites(world12);
+				}
+
+				updateList();
+			}
 		);
 		row.setBackground(stripe ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 		return row;

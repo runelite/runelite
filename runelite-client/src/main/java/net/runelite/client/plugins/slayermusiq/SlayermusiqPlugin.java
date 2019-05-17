@@ -51,30 +51,22 @@
  */
 package net.runelite.client.plugins.slayermusiq;
 
-import com.google.inject.Provides;
 import com.google.common.primitives.Ints;
-import java.awt.Dimension;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
-import javax.swing.SwingUtilities;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.client.plugins.PluginType;
-import net.runelite.client.util.Text;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Slayermusiq1 Guides",
@@ -118,7 +110,8 @@ public class SlayermusiqPlugin extends Plugin
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		int widgetID = event.getActionParam1();
-		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read Journal:".equals(event.getOption())) {
+		if (Ints.contains(QUESTLIST_WIDGET_IDS, widgetID) && "Read Journal:".equals(event.getOption()))
+		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
 
 			MenuEntry newMenuEntry = createSlayermusiqOptionMenuEntry(event);
@@ -130,15 +123,18 @@ public class SlayermusiqPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onMenuOptionClicked(MenuOptionClicked ev) {
-		if (ev.getMenuAction() == MenuAction.RUNELITE && ev.getMenuOption().equals(MENUOP_SLAYERMUSIQ)) {
+	private void onMenuOptionClicked(MenuOptionClicked ev)
+	{
+		if (ev.getMenuAction() == MenuAction.RUNELITE && ev.getMenuOption().equals(MENUOP_SLAYERMUSIQ))
+		{
 			ev.consume();
 			String quest = Text.removeTags(ev.getMenuTarget());
 			QuestGuideLinks.tryOpenGuide(quest, chatMessageManager);
 		}
 	}
 
-	private MenuEntry createSlayermusiqOptionMenuEntry(MenuEntryAdded event) {
+	private MenuEntry createSlayermusiqOptionMenuEntry(MenuEntryAdded event)
+	{
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
 

@@ -27,9 +27,7 @@ package net.runelite.client.plugins.batools;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import net.runelite.api.NPC;
-import net.runelite.api.Actor;
 
 
 class Healer
@@ -75,7 +73,7 @@ class Healer
 
 	private HealerCode getCode(int wave)
 	{
-		switch(wave)
+		switch (wave)
 		{
 			case 1:
 				return HealerCode.WAVEONE;
@@ -97,7 +95,8 @@ class Healer
 				return HealerCode.WAVENINE;
 			case 10:
 				return HealerCode.WAVETEN;
-			default: return null;
+			default:
+				return null;
 		}
 	}
 }

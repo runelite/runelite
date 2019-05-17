@@ -174,7 +174,7 @@ public class RunecraftPlugin extends Plugin
 				swap(client, "fill", option, target);
 				swap(client, "cancel", option, "", target);
 			}
-			else  if (option.equals("fill") && id != 9)
+			else if (option.equals("fill") && id != 9)
 			{
 				swap(client, "empty", option, target);
 			}
@@ -232,6 +232,7 @@ public class RunecraftPlugin extends Plugin
 	{
 		return searchIndex(entries, option, target, false);
 	}
+
 	private int searchIndex(MenuEntry[] entries, String option, String target, boolean contains)
 	{
 		for (int i = entries.length - 1; i >= 0; i--)
@@ -290,9 +291,9 @@ public class RunecraftPlugin extends Plugin
 		if (event.getItemContainer() == client.getItemContainer(InventoryID.INVENTORY))
 		{
 
-		final Item[] items = event.getItemContainer().getItems();
-		degradedPouchInInventory = Stream.of(items).anyMatch(i -> DEGRADED_POUCHES.contains(i.getId()));
-	}
+			final Item[] items = event.getItemContainer().getItems();
+			degradedPouchInInventory = Stream.of(items).anyMatch(i -> DEGRADED_POUCHES.contains(i.getId()));
+		}
 		else if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
 		{
 			final Item[] items = event.getItemContainer().getItems();
@@ -319,6 +320,7 @@ public class RunecraftPlugin extends Plugin
 			darkMage = null;
 		}
 	}
+
 	private boolean wearingBindingNeck()
 	{
 		final ItemContainer worn = client.getItemContainer(InventoryID.EQUIPMENT);

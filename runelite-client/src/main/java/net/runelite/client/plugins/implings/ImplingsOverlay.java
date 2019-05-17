@@ -35,8 +35,8 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
-import net.runelite.api.Point;
 import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -100,7 +100,7 @@ public class ImplingsOverlay extends Overlay
 
 			//Draw dynamic spawns
 			Map<Integer, String> dynamicSpawns = plugin.getDynamicSpawns();
-			for (Map.Entry<Integer, String>  dynamicSpawn : dynamicSpawns.entrySet())
+			for (Map.Entry<Integer, String> dynamicSpawn : dynamicSpawns.entrySet())
 			{
 				drawDynamicSpawn(graphics, dynamicSpawn.getKey(), dynamicSpawn.getValue(), config.getDynamicSpawnColor());
 

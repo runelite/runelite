@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.barbarianassault;
 
-import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Font;

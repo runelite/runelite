@@ -71,7 +71,7 @@ public class AoeWarningOverlay extends Overlay
 	{
 		for (WorldPoint point : plugin.getLightningTrail())
 		{
-			drawTile(graphics, point, new Color(0,150,200), 2, 150, 50);
+			drawTile(graphics, point, new Color(0, 150, 200), 2, 150, 50);
 		}
 		for (WorldPoint point : plugin.getAcidTrail())
 		{
@@ -84,7 +84,7 @@ public class AoeWarningOverlay extends Overlay
 
 		Instant now = Instant.now();
 		Map<Projectile, AoeProjectile> projectiles = plugin.getProjectiles();
-		for (Iterator<AoeProjectile> it = projectiles.values().iterator(); it.hasNext();)
+		for (Iterator<AoeProjectile> it = projectiles.values().iterator(); it.hasNext(); )
 		{
 			AoeProjectile aoeProjectile = it.next();
 
@@ -145,18 +145,22 @@ public class AoeWarningOverlay extends Overlay
 		return null;
 	}
 
-	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, int strokeWidth, int outlineAlpha, int fillAlpha) {
+	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, int strokeWidth, int outlineAlpha, int fillAlpha)
+	{
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-		if (point.distanceTo(playerLocation) >= 32) {
+		if (point.distanceTo(playerLocation) >= 32)
+		{
 			return;
 		}
 		LocalPoint lp = LocalPoint.fromWorld(client, point);
-		if (lp == null) {
+		if (lp == null)
+		{
 			return;
 		}
 
 		Polygon poly = Perspective.getCanvasTilePoly(client, lp);
-		if (poly == null) {
+		if (poly == null)
+		{
 			return;
 		}
 		//OverlayUtil.renderPolygon(graphics, poly, color);

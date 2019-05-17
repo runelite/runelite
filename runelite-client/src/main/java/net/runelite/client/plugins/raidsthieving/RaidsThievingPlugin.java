@@ -25,6 +25,11 @@
 package net.runelite.client.plugins.raidsthieving;
 
 import com.google.inject.Provides;
+import java.text.MessageFormat;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -46,11 +51,6 @@ import net.runelite.client.plugins.raidsthieving.BatSolver.BatSolver;
 import net.runelite.client.plugins.raidsthieving.BatSolver.ChestIdentifier;
 import net.runelite.client.plugins.raidsthieving.BatSolver.ThievingRoomType;
 import net.runelite.client.ui.overlay.OverlayManager;
-import javax.inject.Inject;
-import java.text.MessageFormat;
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @PluginDescriptor(

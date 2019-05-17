@@ -141,7 +141,7 @@ class FishingSpotOverlay extends Overlay
 
 			if (config.showSpotIcons())
 			{
-				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());;
+				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
 
 				if (spot == FishingSpot.COMMON_TENCH
 					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)

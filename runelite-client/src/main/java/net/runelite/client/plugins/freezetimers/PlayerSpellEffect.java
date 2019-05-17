@@ -57,10 +57,12 @@ public enum PlayerSpellEffect
 
 	public static PlayerSpellEffect getFromSpotAnim(int spotAnim)
 	{
-		for(PlayerSpellEffect effect : values())
+		for (PlayerSpellEffect effect : values())
 		{
-			if(effect.getSpotAnimId() == spotAnim)
+			if (effect.getSpotAnimId() == spotAnim)
+			{
 				return effect;
+			}
 		}
 		return NONE;
 	}

@@ -24,19 +24,22 @@
  */
 package net.runelite.client.plugins.easyscape;
 
-public enum DuelingRingMode {
-    DUEL_ARENA("Duel Arena"),
-    CASTLE_WARS("Castle Wars"),
-    CLAN_WARS("Clan Wars");
+public enum DuelingRingMode
+{
+	DUEL_ARENA("Duel Arena"),
+	CASTLE_WARS("Castle Wars"),
+	CLAN_WARS("Clan Wars");
 
-    private final String name;
+	private final String name;
 
-    DuelingRingMode(String name) {
-        this.name = name;
-    }
+	DuelingRingMode(String name)
+	{
+		this.name = name;
+	}
 
-    @Override
-    public String toString() {
-        return name;
-    }
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

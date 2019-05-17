@@ -194,7 +194,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private void transformWorldToLocal(float[] coords)
 	{
-		final LocalPoint lp = LocalPoint.fromWorld(client, (int)coords[0], (int)coords[1]);
+		final LocalPoint lp = LocalPoint.fromWorld(client, (int) coords[0], (int) coords[1]);
 		coords[0] = lp.getX() - Perspective.LOCAL_TILE_SIZE / 2f;
 		coords[1] = lp.getY() - Perspective.LOCAL_TILE_SIZE / 2f;
 	}

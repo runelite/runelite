@@ -24,15 +24,15 @@
  */
 package net.runelite.client.plugins.skillcalculator.banked;
 
-import lombok.Getter;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemID;
-import net.runelite.api.Skill;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import lombok.Getter;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
+import net.runelite.api.Skill;
 import net.runelite.client.game.ItemManager;
 
 public enum CriticalItem
@@ -330,7 +330,9 @@ public enum CriticalItem
 
 		return map;
 	}
+
 	private static final Map<Skill, ArrayList<CriticalItem>> bySkillName = buildSkillItemMap();
+
 	public static ArrayList<CriticalItem> getBySkillName(Skill skill)
 	{
 		return bySkillName.get(skill);
@@ -347,7 +349,9 @@ public enum CriticalItem
 
 		return map;
 	}
+
 	private static final Map<Skill, Set<String>> bySkillCategory = buildSkillCategoryMap();
+
 	public static Set<String> getSkillCategories(Skill skill)
 	{
 		return bySkillCategory.get(skill);
@@ -365,7 +369,9 @@ public enum CriticalItem
 
 		return map;
 	}
+
 	private static final Map<String, ArrayList<CriticalItem>> itemsBySkillCategory = buildItemSkillCategoryMap();
+
 	public static ArrayList<CriticalItem> getItemsForSkillCategories(Skill skill, String category)
 	{
 		return itemsBySkillCategory.get(category + skill.getName());
@@ -382,7 +388,9 @@ public enum CriticalItem
 
 		return map;
 	}
+
 	private static final Map<Integer, CriticalItem> itemsById = buildItemsByIdMap();
+
 	public static CriticalItem getByItemId(int id)
 	{
 		return itemsById.get(id);
@@ -390,6 +398,7 @@ public enum CriticalItem
 
 	/**
 	 * Attaches the Item Composition to each Critical Item on client initial load
+	 *
 	 * @param m ItemManager
 	 */
 	public static void prepareItemCompositions(ItemManager m)

@@ -36,7 +36,7 @@ public interface ShiftWalkerConfig extends Config
 		keyName = "shiftWalkEverything",
 		name = "Walk Under Everything",
 		description = "Enable this option when you do not want to interact with anything while Shift is pressed. " +
-				"If Walk Here is an option it will be the action taken."
+			"If Walk Here is an option it will be the action taken."
 	)
 	default boolean shiftWalkEverything()
 	{

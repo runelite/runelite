@@ -36,7 +36,19 @@ import net.runelite.api.ClanMember;
 import net.runelite.api.ClanMemberRank;
 import static net.runelite.api.ClanMemberRank.UNRANKED;
 import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.*;
+import static net.runelite.api.MenuAction.FOLLOW;
+import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
+import static net.runelite.api.MenuAction.PLAYER_EIGTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FIFTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FIRST_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_FOURTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SECOND_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
+import static net.runelite.api.MenuAction.RUNELITE;
+import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
+import static net.runelite.api.MenuAction.TRADE;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.events.ClanMemberJoined;
@@ -54,39 +66,39 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.PvPUtil;
 
 @PluginDescriptor(
-		name = "Player Indicators",
-		description = "Highlight players on-screen and/or on the minimap",
-		tags = {"highlight", "minimap", "overlay", "players", "pklite"}
+	name = "Player Indicators",
+	description = "Highlight players on-screen and/or on the minimap",
+	tags = {"highlight", "minimap", "overlay", "players", "pklite"}
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {
 	@Inject
 	private OverlayManager overlayManager;
-	
+
 	@Inject
 	private PlayerIndicatorsConfig config;
-	
+
 	@Inject
 	private PlayerIndicatorsOverlay playerIndicatorsOverlay;
-	
+
 	@Inject
 	private PlayerIndicatorsTileOverlay playerIndicatorsTileOverlay;
-	
+
 	@Inject
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
-	
+
 	@Inject
 	private Client client;
-	
+
 	@Inject
 	private ClanManager clanManager;
-	
+
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PlayerIndicatorsConfig.class);
 	}
-	
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -95,7 +107,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		overlayManager.add(playerIndicatorsMinimapOverlay);
 		getCallerList();
 	}
-	
+
 	@Override
 	protected void shutDown() throws Exception
 	{
@@ -103,10 +115,10 @@ public class PlayerIndicatorsPlugin extends Plugin
 		overlayManager.remove(playerIndicatorsTileOverlay);
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
 	}
-	
-	private ArrayList<String> callers =	new ArrayList<>();
+
+	private ArrayList<String> callers = new ArrayList<>();
 	private List<String> pileList;
-	
+
 	@Subscribe
 	public void onConfigChanged(ConfigChanged e)
 	{
@@ -115,7 +127,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			getCallerList();
 		}
 	}
-	
+
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
@@ -123,7 +135,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		{
 			for (Player p : client.getPlayers())
 			{
-				for (String name:callers)
+				for (String name : callers)
 				{
 					Actor pile;
 					String finalName = name.toLowerCase().replace("_", " ");
@@ -144,19 +156,19 @@ public class PlayerIndicatorsPlugin extends Plugin
 			}
 		}
 	}
-	
+
 	@Subscribe
 	public void onClanMemberJoined(ClanMemberJoined event)
 	{
 		getCallerList();
 	}
-	
+
 	@Subscribe
 	public void onClanMemberLeft(ClanMemberLeft event)
 	{
 		getCallerList();
 	}
-	
+
 	private void getCallerList()
 	{
 		callers.clear();
@@ -183,12 +195,12 @@ public class PlayerIndicatorsPlugin extends Plugin
 		}
 		pileList = Arrays.asList(new String[callers.size()]);
 	}
-	
+
 	boolean isCaller(Player player)
 	{
 		if (callers != null)
 		{
-			for (String name:callers)
+			for (String name : callers)
 			{
 				String finalName = name.toLowerCase().replace("_", " ");
 				if (player.getName().toLowerCase().replace("_", " ").equals(finalName))
@@ -200,7 +212,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 		return false;
 	}
-	
+
 	boolean isPile(Player player)
 	{
 		if (Objects.nonNull(pileList) && pileList.size() > 0)
@@ -209,48 +221,48 @@ public class PlayerIndicatorsPlugin extends Plugin
 		}
 		return false;
 	}
-	
+
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
 		int type = menuEntryAdded.getType();
-		
+
 		if (type >= 2000)
 		{
 			type -= 2000;
 		}
-		
+
 		int identifier = menuEntryAdded.getIdentifier();
 		if (type == FOLLOW.getId() || type == TRADE.getId()
-				|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
-				|| type == PLAYER_FIRST_OPTION.getId()
-				|| type == PLAYER_SECOND_OPTION.getId()
-				|| type == PLAYER_THIRD_OPTION.getId()
-				|| type == PLAYER_FOURTH_OPTION.getId()
-				|| type == PLAYER_FIFTH_OPTION.getId()
-				|| type == PLAYER_SIXTH_OPTION.getId()
-				|| type == PLAYER_SEVENTH_OPTION.getId()
-				|| type == PLAYER_EIGTH_OPTION.getId()
-				|| type == RUNELITE.getId())
+			|| type == SPELL_CAST_ON_PLAYER.getId() || type == ITEM_USE_ON_PLAYER.getId()
+			|| type == PLAYER_FIRST_OPTION.getId()
+			|| type == PLAYER_SECOND_OPTION.getId()
+			|| type == PLAYER_THIRD_OPTION.getId()
+			|| type == PLAYER_FOURTH_OPTION.getId()
+			|| type == PLAYER_FIFTH_OPTION.getId()
+			|| type == PLAYER_SIXTH_OPTION.getId()
+			|| type == PLAYER_SEVENTH_OPTION.getId()
+			|| type == PLAYER_EIGTH_OPTION.getId()
+			|| type == RUNELITE.getId())
 		{
 			final Player localPlayer = client.getLocalPlayer();
 			Player[] players = client.getCachedPlayers();
 			Player player = null;
-			
+
 			if (identifier >= 0 && identifier < players.length)
 			{
 				player = players[identifier];
 			}
-			
+
 			if (player == null)
 			{
 				return;
 			}
-			
+
 			int image = -1;
 			int image2 = -1;
 			Color color = null;
-			
+
 			if (config.colorPlayerMenu() && client.isFriended(player.getName(), false))
 			{
 				color = config.getFriendColor();
@@ -258,7 +270,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			else if (config.colorPlayerMenu() && player.isClanMember())
 			{
 				color = config.getClanMemberColor();
-				
+
 				ClanMemberRank rank = clanManager.getRank(player.getName());
 				if (rank != UNRANKED)
 				{
@@ -266,21 +278,21 @@ public class PlayerIndicatorsPlugin extends Plugin
 				}
 			}
 			else if (config.colorPlayerMenu() && player.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
-		{
-			color = config.getTeamMemberColor();
-		}
-		else if (!player.isClanMember() && !player.isFriend() && !PvPUtil.isAttackable(client, player))
-		{
-			color = config.getNonClanMemberColor();
-		}
-		else if (config.colorPlayerMenu() && !player.isClanMember() && client.isFriended(player.getName(), false) && PvPUtil.isAttackable(client, player))
-		{
-			color = config.getTargetColor();
-		}
-		else if (config.colorPlayerMenu() && PvPUtil.isAttackable(client, player) && !player.isClanMember() && !player.isFriend())
-		{
-			color = config.getTargetColor();
-		}
+			{
+				color = config.getTeamMemberColor();
+			}
+			else if (!player.isClanMember() && !player.isFriend() && !PvPUtil.isAttackable(client, player))
+			{
+				color = config.getNonClanMemberColor();
+			}
+			else if (config.colorPlayerMenu() && !player.isClanMember() && client.isFriended(player.getName(), false) && PvPUtil.isAttackable(client, player))
+			{
+				color = config.getTargetColor();
+			}
+			else if (config.colorPlayerMenu() && PvPUtil.isAttackable(client, player) && !player.isClanMember() && !player.isFriend())
+			{
+				color = config.getTargetColor();
+			}
 /*			if (config.rightClickOverhead() && !player.isClanMember() && player.getOverheadIcon() != null)
 			{
 				if (player.getOverheadIcon().equals(HeadIcon.MAGIC))
@@ -324,8 +336,8 @@ public class PlayerIndicatorsPlugin extends Plugin
 			{
 				MenuEntry[] menuEntries = client.getMenuEntries();
 				MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
-				
-				
+
+
 				if (color != null && config.colorPlayerMenu())
 				{
 					// strip out existing <col...
@@ -335,7 +347,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 					{
 						target = target.substring(idx + 1);
 					}
-					
+
 					lastEntry.setTarget(ColorUtil.prependColorTag(target, color));
 				}
 				
@@ -347,12 +359,12 @@ public class PlayerIndicatorsPlugin extends Plugin
 				{
 					lastEntry.setTarget("<img=" + image2 + ">" + lastEntry.getTarget());
 				}
-				
+
 				client.setMenuEntries(menuEntries);
 			}
 		}
 	}
-	
+
 	public enum minimapSkullLocations
 	{
 		BEFORE_NAME,

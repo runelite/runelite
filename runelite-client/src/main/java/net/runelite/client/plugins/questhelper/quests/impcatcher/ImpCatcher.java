@@ -31,10 +31,10 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Quest;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.questhelper.ItemRequirement;
+import net.runelite.client.plugins.questhelper.QuestDescriptor;
 import net.runelite.client.plugins.questhelper.QuestHelper;
 import net.runelite.client.plugins.questhelper.steps.NpcTalkStep;
 import net.runelite.client.plugins.questhelper.steps.QuestStep;
-import net.runelite.client.plugins.questhelper.QuestDescriptor;
 
 @QuestDescriptor(
 	quest = Quest.IMP_CATCHER

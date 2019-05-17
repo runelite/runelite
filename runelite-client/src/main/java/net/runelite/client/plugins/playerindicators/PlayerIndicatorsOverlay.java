@@ -70,7 +70,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 	@Inject
 	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService,
-		ClanManager clanManager)
+									ClanManager clanManager)
 	{
 		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;

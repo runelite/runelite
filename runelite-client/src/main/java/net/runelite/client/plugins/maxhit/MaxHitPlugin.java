@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.maxhit;
 
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -40,8 +41,6 @@ import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.maxhit.calculators.MagicMaxHitCalculator;
 import net.runelite.client.plugins.maxhit.calculators.MeleeMaxHitCalculator;
 import net.runelite.client.plugins.maxhit.calculators.RangeMaxHitCalculator;
-
-import javax.inject.Inject;
 
 @PluginDescriptor(
 	name = "Max Hit",

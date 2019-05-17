@@ -13,56 +13,61 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-public class TheatreXarpusOverlay extends Overlay {
-    private final TheatrePlugin plugin;
-    private final TheatreConfig config;
-    PanelComponent panelComponent = new PanelComponent();
+public class TheatreXarpusOverlay extends Overlay
+{
+	private final TheatrePlugin plugin;
+	private final TheatreConfig config;
+	PanelComponent panelComponent = new PanelComponent();
 
-    @Inject
+	@Inject
 	private TheatreXarpusOverlay(TheatrePlugin plugin, TheatreConfig config)
 	{
-        super(plugin);
-        setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
-        setPosition(OverlayPosition.DYNAMIC);
-        setPosition(OverlayPosition.DETACHED);
-        this.plugin = plugin;
-        this.config = config;
-        getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Theatre xarpus overlay"));
+		super(plugin);
+		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
+		setPosition(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DETACHED);
+		this.plugin = plugin;
+		this.config = config;
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Theatre xarpus overlay"));
 
-    }
-    @Override
-    public Dimension render(Graphics2D graphics) {
+	}
+
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
 		if (plugin.isRunXarpus())
 		{
-            if (config.XarpusExhumeOverlay()) {
-                if (plugin.getXarpus_NPC().getId() == 8339) {
-                    panelComponent.getChildren().clear();
-                    String overlayTitle = "Exhume Counter";
+			if (config.XarpusExhumeOverlay())
+			{
+				if (plugin.getXarpus_NPC().getId() == 8339)
+				{
+					panelComponent.getChildren().clear();
+					String overlayTitle = "Exhume Counter";
 
 
-                    // Build overlay title
-                    panelComponent.getChildren().add(TitleComponent.builder()
-                            .text(overlayTitle)
-                            .color(Color.GREEN)
-                            .build());
+					// Build overlay title
+					panelComponent.getChildren().add(TitleComponent.builder()
+						.text(overlayTitle)
+						.color(Color.GREEN)
+						.build());
 
-                    //Set the size of overlay
-                    panelComponent.setPreferredSize(new Dimension(
-                            graphics.getFontMetrics().stringWidth(overlayTitle) + 30, 0
-                    ));
+					//Set the size of overlay
+					panelComponent.setPreferredSize(new Dimension(
+						graphics.getFontMetrics().stringWidth(overlayTitle) + 30, 0
+					));
 
-                    panelComponent.getChildren().add(LineComponent.builder()
-                            .left("Exhumes: ")
-                            .right(String.valueOf(plugin.getExhumecount()))
-                            .build());
-                }
-            }
-            return panelComponent.render(graphics);
-        }
+					panelComponent.getChildren().add(LineComponent.builder()
+						.left("Exhumes: ")
+						.right(String.valueOf(plugin.getExhumecount()))
+						.build());
+				}
+			}
+			return panelComponent.render(graphics);
+		}
 
-        return null;
+		return null;
 
-    }
+	}
 
 
 }

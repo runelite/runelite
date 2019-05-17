@@ -157,7 +157,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.NET_TRAP_8992: // Net trap placed at red sallys
 			case ObjectID.NET_TRAP_9002: // Net trap placed at black sallys
 				if (lastTickLocalPlayerLocation != null
-						&& trapLocation.distanceTo(lastTickLocalPlayerLocation) == 0)
+					&& trapLocation.distanceTo(lastTickLocalPlayerLocation) == 0)
 				{
 					// Net traps facing to the north and east must have their tile translated.
 					// As otherwise, the wrong tile is stored.
@@ -241,25 +241,25 @@ public class HunterPlugin extends Plugin
 			// Imp entering box
 			case ObjectID.MAGIC_BOX_19225:
 
-			// Black chin shaking box
+				// Black chin shaking box
 			case ObjectID.BOX_TRAP:
 			case ObjectID.BOX_TRAP_2026:
 			case ObjectID.BOX_TRAP_2028:
 			case ObjectID.BOX_TRAP_2029:
 
-			// Red chin shaking box
+				// Red chin shaking box
 			case ObjectID.BOX_TRAP_9381:
 			case ObjectID.BOX_TRAP_9390:
 			case ObjectID.BOX_TRAP_9391:
 			case ObjectID.BOX_TRAP_9392:
 			case ObjectID.BOX_TRAP_9393:
 
-			// Grey chin shaking box
+				// Grey chin shaking box
 			case ObjectID.BOX_TRAP_9386:
 			case ObjectID.BOX_TRAP_9387:
 			case ObjectID.BOX_TRAP_9388:
 
-			// Bird traps
+				// Bird traps
 			case ObjectID.BIRD_SNARE_9346:
 			case ObjectID.BIRD_SNARE_9347:
 			case ObjectID.BIRD_SNARE_9349:
@@ -267,7 +267,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.BIRD_SNARE_9376:
 			case ObjectID.BIRD_SNARE_9378:
 
-			// Deadfall trap
+				// Deadfall trap
 			case ObjectID.DEADFALL_19218:
 			case ObjectID.DEADFALL_19851:
 			case ObjectID.DEADFALL_20128:
@@ -275,7 +275,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.DEADFALL_20130:
 			case ObjectID.DEADFALL_20131:
 
-			// Net trap
+				// Net trap
 			case ObjectID.NET_TRAP_9003:
 			case ObjectID.NET_TRAP_9005:
 			case ObjectID.NET_TRAP_8972:
@@ -285,7 +285,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.NET_TRAP_8993:
 			case ObjectID.NET_TRAP_8997:
 
-			// Maniacal monkey boulder trap
+				// Maniacal monkey boulder trap
 			case ObjectID.MONKEY_TRAP_28828:
 			case ObjectID.MONKEY_TRAP_28829:
 				if (myTrap != null)

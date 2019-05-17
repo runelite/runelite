@@ -134,8 +134,8 @@ public class TelekineticRoom extends MTARoom
 	public void onGameTick(GameTick event)
 	{
 		if (!config.telekinetic()
-				|| !inside()
-				|| client.getGameState() != GameState.LOGGED_IN)
+			|| !inside()
+			|| client.getGameState() != GameState.LOGGED_IN)
 		{
 			maze = null;
 			moves.clear();
@@ -374,7 +374,7 @@ public class TelekineticRoom extends MTARoom
 				WorldPoint nghbWorld = WorldPoint.fromLocal(client, neighbour);
 
 				if (!nghbWorld.equals(next)
-						&& !closed.contains(nghbWorld))
+					&& !closed.contains(nghbWorld))
 				{
 					int score = scores.get(next) + 1;
 
@@ -426,10 +426,10 @@ public class TelekineticRoom extends MTARoom
 	private LocalPoint[] neighbours(LocalPoint point)
 	{
 		return new LocalPoint[]
-		{
-			neighbour(point, Direction.NORTH), neighbour(point, Direction.SOUTH),
-			neighbour(point, Direction.EAST), neighbour(point, Direction.WEST)
-		};
+			{
+				neighbour(point, Direction.NORTH), neighbour(point, Direction.SOUTH),
+				neighbour(point, Direction.EAST), neighbour(point, Direction.WEST)
+			};
 	}
 
 	private LocalPoint neighbour(LocalPoint point, Direction direction)

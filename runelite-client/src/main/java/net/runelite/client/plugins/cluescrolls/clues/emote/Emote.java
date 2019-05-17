@@ -25,7 +25,33 @@
 package net.runelite.client.plugins.cluescrolls.clues.emote;
 
 import lombok.Getter;
-import static net.runelite.api.SpriteID.*;
+import static net.runelite.api.SpriteID.EMOTE_ANGRY;
+import static net.runelite.api.SpriteID.EMOTE_BECKON;
+import static net.runelite.api.SpriteID.EMOTE_BLOW_KISS;
+import static net.runelite.api.SpriteID.EMOTE_BOW;
+import static net.runelite.api.SpriteID.EMOTE_CHEER;
+import static net.runelite.api.SpriteID.EMOTE_CLAP;
+import static net.runelite.api.SpriteID.EMOTE_CRY;
+import static net.runelite.api.SpriteID.EMOTE_DANCE;
+import static net.runelite.api.SpriteID.EMOTE_FLAP;
+import static net.runelite.api.SpriteID.EMOTE_GOBLIN_SALUTE;
+import static net.runelite.api.SpriteID.EMOTE_HEADBANG;
+import static net.runelite.api.SpriteID.EMOTE_JIG;
+import static net.runelite.api.SpriteID.EMOTE_JUMP_FOR_JOY;
+import static net.runelite.api.SpriteID.EMOTE_LAUGH;
+import static net.runelite.api.SpriteID.EMOTE_NO;
+import static net.runelite.api.SpriteID.EMOTE_PANIC;
+import static net.runelite.api.SpriteID.EMOTE_PUSH_UP;
+import static net.runelite.api.SpriteID.EMOTE_RASPBERRY;
+import static net.runelite.api.SpriteID.EMOTE_SALUTE;
+import static net.runelite.api.SpriteID.EMOTE_SHRUG;
+import static net.runelite.api.SpriteID.EMOTE_SLAP_HEAD;
+import static net.runelite.api.SpriteID.EMOTE_SPIN;
+import static net.runelite.api.SpriteID.EMOTE_STOMP;
+import static net.runelite.api.SpriteID.EMOTE_THINK;
+import static net.runelite.api.SpriteID.EMOTE_WAVE;
+import static net.runelite.api.SpriteID.EMOTE_YAWN;
+import static net.runelite.api.SpriteID.EMOTE_YES;
 
 @Getter
 public enum Emote

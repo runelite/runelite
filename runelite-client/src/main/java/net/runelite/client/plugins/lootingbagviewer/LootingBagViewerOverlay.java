@@ -25,6 +25,11 @@
 
 package net.runelite.client.plugins.lootingbagviewer;
 
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -35,10 +40,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-
-import javax.inject.Inject;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 
 class LootingBagViewerOverlay extends Overlay
 {
@@ -72,7 +73,8 @@ class LootingBagViewerOverlay extends Overlay
 	{
 		if (itemContainer == null)
 		{
-			if(client.getItemContainer(InventoryID.LOOTING_BAG) != null) {
+			if (client.getItemContainer(InventoryID.LOOTING_BAG) != null)
+			{
 				itemContainer = client.getItemContainer(InventoryID.LOOTING_BAG);
 				if (itemContainer != null)
 				{
@@ -81,7 +83,7 @@ class LootingBagViewerOverlay extends Overlay
 			}
 			return null;
 		}
-		else if(items != null && client.getItemContainer(InventoryID.LOOTING_BAG) != null)
+		else if (items != null && client.getItemContainer(InventoryID.LOOTING_BAG) != null)
 		{
 			itemContainer = client.getItemContainer(InventoryID.LOOTING_BAG);
 			if (itemContainer != null)

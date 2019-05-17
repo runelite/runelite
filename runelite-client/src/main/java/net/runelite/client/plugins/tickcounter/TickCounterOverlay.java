@@ -3,7 +3,6 @@ package net.runelite.client.plugins.tickcounter;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map.Entry;
 import javax.inject.Inject;

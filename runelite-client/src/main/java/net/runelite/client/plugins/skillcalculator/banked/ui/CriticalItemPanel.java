@@ -49,7 +49,6 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.skillcalculator.BankedCalculator;
@@ -136,7 +135,7 @@ public class CriticalItemPanel extends JPanel
 		image.setBorder(new EmptyBorder(0, 8, 0, 0));
 
 		Runnable resize = () ->
-			image.setIcon(new ImageIcon(icon.getScaledInstance((int)ICON_SIZE.getWidth(), (int)ICON_SIZE.getHeight(), Image.SCALE_SMOOTH)));
+			image.setIcon(new ImageIcon(icon.getScaledInstance((int) ICON_SIZE.getWidth(), (int) ICON_SIZE.getHeight(), Image.SCALE_SMOOTH)));
 		icon.onChanged(resize);
 		resize.run();
 
@@ -196,15 +195,15 @@ public class CriticalItemPanel extends JPanel
 		// Only add button if has activity selection options or linked items
 		List<Activity> activities = Activity.getByCriticalItem(item);
 		// If linked map has 1 item and it isn't this item still show breakdown (cleaned herbs into unfinished)
-		if ( (linkedMap.size() > 1 || (linkedMap.size() == 1 && linkedMap.get(item) == null))
+		if ((linkedMap.size() > 1 || (linkedMap.size() == 1 && linkedMap.get(item) == null))
 			|| activities.size() > 1)
 		{
 			panel.add(settingsButton, BorderLayout.LINE_END);
 		}
 
 		panel.setToolTipText("<html>" + item.getComposition().getName()
-			+ "<br/>xp: " +  xp
-			+ "<br/>Total: " + StackFormatter.quantityToStackSize((long) total) +	"</html");
+			+ "<br/>xp: " + xp
+			+ "<br/>Total: " + StackFormatter.quantityToStackSize((long) total) + "</html");
 
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -279,7 +278,7 @@ public class CriticalItemPanel extends JPanel
 				image.setBorder(new EmptyBorder(0, 8, 0, 0));
 
 				Runnable resize = () ->
-					image.setIcon(new ImageIcon(icon.getScaledInstance((int)ICON_SIZE.getWidth(), (int)ICON_SIZE.getHeight(), Image.SCALE_SMOOTH)));
+					image.setIcon(new ImageIcon(icon.getScaledInstance((int) ICON_SIZE.getWidth(), (int) ICON_SIZE.getHeight(), Image.SCALE_SMOOTH)));
 				icon.onChanged(resize);
 				resize.run();
 
@@ -369,7 +368,7 @@ public class CriticalItemPanel extends JPanel
 		this.amount = newAmount;
 		AsyncBufferedImage icon = itemManager.getImage(item.getItemID(), amount, item.getComposition().isStackable() || amount > 1);
 		Runnable resize = () ->
-			image.setIcon(new ImageIcon(icon.getScaledInstance((int)ICON_SIZE.getWidth(), (int)ICON_SIZE.getHeight(), Image.SCALE_SMOOTH)));
+			image.setIcon(new ImageIcon(icon.getScaledInstance((int) ICON_SIZE.getWidth(), (int) ICON_SIZE.getHeight(), Image.SCALE_SMOOTH)));
 		icon.onChanged(resize);
 		resize.run();
 	}

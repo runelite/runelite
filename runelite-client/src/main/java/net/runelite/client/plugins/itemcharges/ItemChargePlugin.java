@@ -647,7 +647,7 @@ public class ItemChargePlugin extends Plugin
 				return false;
 			}
 
-			final ItemChargeInfobox i = (ItemChargeInfobox)t;
+			final ItemChargeInfobox i = (ItemChargeInfobox) t;
 			return i.getItem() == item && i.getSlot() == slot;
 		});
 	}
