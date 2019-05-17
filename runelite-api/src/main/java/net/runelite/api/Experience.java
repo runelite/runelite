@@ -26,6 +26,9 @@ package net.runelite.api;
 
 import static java.lang.Math.floor;
 import static java.lang.Math.max;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * A utility class used for calculating experience related values.
@@ -172,5 +175,23 @@ public class Experience
 		int rangeLevel, int prayerLevel)
 	{
 		return (int) getCombatLevelPrecise(attackLevel, strengthLevel, defenceLevel, hitpointsLevel, magicLevel, rangeLevel, prayerLevel);
+	}
+
+	/**
+	 * Calculate the percentages of each level compared to the difference of the goal exp and the start exp
+	 *
+	 * @param startXp Starting exp
+	 * @param goalXp The goal exp
+	 */
+	public static List<Double> levelPercentagesBetweenExperience(int startXp, int goalXp)
+	{
+		final int startLevel = Experience.getLevelForXp(startXp);
+		final int endLevel = Experience.getLevelForXp(goalXp);
+
+		return IntStream.range(startLevel + 1, endLevel)
+			.map(Experience::getXpForLevel)
+			.mapToDouble(expRequiredForLevel -> (expRequiredForLevel - startXp) * 1f / (goalXp - startXp))
+			.boxed()
+			.collect(Collectors.toList());
 	}
 }

@@ -24,6 +24,9 @@
  */
 package net.runelite.api;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -90,5 +93,37 @@ public class ExperienceTest
 	{
 		Assert.assertEquals(126, Experience.getCombatLevel(99, 99, 99, 99, 70, 42, 98));
 		Assert.assertEquals(40, Experience.getCombatLevel(27, 22, 1, 36, 64, 45, 1));
+	}
+
+	@Test
+	public void testLevelMarkersWithEnoughExperienceInBetween()
+	{
+		final List<Double> expectedList = new ArrayList<>();
+		expectedList.add(0.083);
+		expectedList.add(0.174);
+		expectedList.add(0.276);
+		expectedList.add(0.388);
+		expectedList.add(0.512);
+		expectedList.add(0.650);
+		expectedList.add(0.801);
+		expectedList.add(0.969);
+
+		final List<Double> actualList = Experience.levelPercentagesBetweenExperience(0, 1000);
+
+		// Use a loop because we want to compare doubles (with only 0.001 precision)
+		for (int i = 0; i < actualList.size(); i++)
+		{
+			Assert.assertEquals(expectedList.get(i), actualList.get(i), 0.001);
+		}
+	}
+
+	@Test
+	public void testLevelMarkersWithNotEnoughExperienceInBetween()
+	{
+		final List<Double> expected = Collections.emptyList();
+
+		final List<Double> actual = Experience.levelPercentagesBetweenExperience(0, 1);
+
+		Assert.assertEquals(expected, actual);
 	}
 }
