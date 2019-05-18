@@ -128,8 +128,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Getter
 	private boolean configuringShiftClick = false;
 
+	@Getter
 	@Setter
 	private boolean shiftModifier = false;
+
+	@Getter
+	@Setter
+	private boolean controlModifier = false;
 
 	@Provides
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
@@ -452,6 +457,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 		}
 
+		else if (option.equalsIgnoreCase("climb") && config.swapClimbUpDown()) {
+			if (controlModifier ^ shiftModifier) {
+				if (shiftModifier) {
+					stripExceptFor("climb-up");
+				}
+				if (controlModifier) {
+					stripExceptFor("climb-down");
+				}
+			}
+		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
 			swap(client, "pay-toll(2-ecto)", option, target, true);
@@ -600,6 +615,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap(client, "use", option, target, true);
+		}
+	}
+
+	private void stripExceptFor(String option)
+	{
+		MenuEntry[] newEntries = new MenuEntry[1];
+
+		for (MenuEntry entry : client.getMenuEntries())
+		{
+			if (entry.getOption().equalsIgnoreCase(option))
+			{
+				newEntries[0] = entry;
+			}
+		}
+
+		if (newEntries[0] != null)
+		{
+			client.setMenuEntries(newEntries);
 		}
 	}
 
