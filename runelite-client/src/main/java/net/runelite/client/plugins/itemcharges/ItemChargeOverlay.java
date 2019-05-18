@@ -46,14 +46,12 @@ class ItemChargeOverlay extends WidgetItemOverlay
 {
 	private final ItemChargePlugin itemChargePlugin;
 	private final ItemChargeConfig config;
-	private final Client client;
 
 	@Inject
-	ItemChargeOverlay(ItemChargePlugin itemChargePlugin, ItemChargeConfig config, Client client)
+	ItemChargeOverlay(ItemChargePlugin itemChargePlugin, ItemChargeConfig config)
 	{
 		this.itemChargePlugin = itemChargePlugin;
 		this.config = config;
-		this.client = client;
 		showOnInventory();
 		showOnEquipment();
 	}
