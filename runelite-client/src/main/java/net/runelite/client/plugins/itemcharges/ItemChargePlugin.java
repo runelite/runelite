@@ -45,6 +45,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -309,7 +310,7 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() != 193)
+		if (event.getGroupId() != WidgetID.DIALOG_SPRITE_GROUP_ID)
 		{
 			return;
 		}
@@ -323,12 +324,14 @@ public class ItemChargePlugin extends Plugin
 		{
 			return;
 		}
+
 		waitingForDialogue = false;
 		final String text = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT).getText();
 		if (!text.contains("amulet shatters"))
 		{
 			return;
 		}
+
 		checkBreakWidget(text);
 	}
 
@@ -390,13 +393,14 @@ public class ItemChargePlugin extends Plugin
 		{
 			return;
 		}
-		lastCheckTick = currentTick;
 
+		lastCheckTick = currentTick;
 		final Widget widgetDestroyItemName = client.getWidget(WidgetInfo.DESTROY_ITEM_NAME);
 		if (widgetDestroyItemName == null)
 		{
 			return;
 		}
+
 		switch (widgetDestroyItemName.getText())
 		{
 			case "Binding necklace":
