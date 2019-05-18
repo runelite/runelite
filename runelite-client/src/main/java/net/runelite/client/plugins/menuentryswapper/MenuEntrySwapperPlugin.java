@@ -457,12 +457,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 		}
 
-		else if (option.equalsIgnoreCase("climb") && config.swapClimbUpDown()) {
-			if (controlModifier ^ shiftModifier) {
-				if (shiftModifier) {
+		else if (option.equalsIgnoreCase("climb") && config.swapClimbUpDown())
+		{
+			if (controlModifier ^ shiftModifier)
+			{
+				if (shiftModifier)
+				{
 					stripExceptFor("climb-up");
 				}
-				if (controlModifier) {
+				if (controlModifier)
+				{
 					stripExceptFor("climb-down");
 				}
 			}
