@@ -29,15 +29,7 @@ package net.runelite.client.plugins.hideprayers.PVM;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.HashTable;
-import net.runelite.api.Prayer;
-import net.runelite.api.WidgetNode;
+import net.runelite.api.*;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -50,6 +42,11 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.hideprayers.util.PrayerTabStates;
+
+import javax.inject.Inject;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @PluginDescriptor
 	(
@@ -115,7 +112,7 @@ public class HidePrayersPVMPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		hidePrayers();
-		configManager.setConfiguration("runelite", "hideprayerspvmplugin", false);
+		configManager.setConfiguration("runelite", "hideprayersindividualplugin", false);
 		configManager.setConfiguration("runelite", "hideprayerspvpplugin", false);
 	}
 
@@ -219,213 +216,171 @@ public class HidePrayersPVMPlugin extends Plugin
 				Prayer prayer = Prayer.values()[index];
 				Widget prayerWidget = prayerWidgets.get(prayer.ordinal());
 
-				if (config.Armadyl() == Armadyl.DISABLED
-					&& config.Bandos() == Bandos.DISABLED
-					&& config.Barrows() == Barrows.DISABLED
-					&& config.Cerberus() == Cerberus.DISABLED
-					&& config.Saradomin() == Saradomin.DISABLED
-					&& config.Vorkath() == Vorkath.DISABLED
-					&& config.Zamorak() == Zamorak.DISABLED
-					&& config.Zulrah() == Zulrah.DISABLED
-				)
+				switch (config.PVMPrayers())
 				{
-					prayerWidget.setHidden(false);
-				}
+					case DISABLED:
+						prayerWidget.setHidden(false);
+						break;
 
-				if (config.Zulrah() == Zulrah.ZULRAH_CHEAP)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
-					prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);// eagle eye
-					prayerWidgets.get(Prayer.values()[20].ordinal()).setHidden(false);// mystic might
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-				}
-
-				if (config.Zulrah() == Zulrah.ZULRAH_EXPENSIVE)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
-					prayerWidgets.get(Prayer.values()[28].ordinal()).setHidden(false);// Augury
-				}
-
-				if (config.Barrows() == Barrows.BARROWS_CHEAP)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
-					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
-					prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);// eagle eye
-					prayerWidgets.get(Prayer.values()[20].ordinal()).setHidden(false);// mystic might
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-				}
-
-				if (config.Barrows() == Barrows.BARROWS_EXPENSIVE)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
-					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
-					prayerWidgets.get(Prayer.values()[28].ordinal()).setHidden(false);// Augury
-				}
-
-				if (config.Vorkath() == Vorkath.VORKATH_CHEAP)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
-					prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);// eagle eye
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-				}
-
-				if (config.Vorkath() == Vorkath.VORKATH_EXPENSIVE)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
-				}
-
-				if (config.Cerberus() == Cerberus.CERBERUS_CHEAP)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel PVM
-					prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);// Ultimate Strength
-					prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);// Incredible Reflex
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
-					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-				}
-
-				if (config.Cerberus() == Cerberus.CERBERUS_EXPENSIVE)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
-					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-					prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(false);// Piety
-				}
-
-				if (config.Cerberus() == Cerberus.CERBERUS_CHEAP_RANGE)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
-					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
-					prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);// eagle eye
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-				}
-
-				if (config.Cerberus() == Cerberus.CERBERUS_EXPENSIVE_RANGE)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
-					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
-				}
-
-				if (config.Armadyl() == Armadyl.ARMADYL_CHEAP)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
-					prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);// eagle eye
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-				}
-
-				if (config.Armadyl() == Armadyl.ARMADYL_EXPENSIVE)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
-				}
-
-				if (config.Bandos() == Bandos.BANDOS_CHEAP)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel PVM
-					prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);// Ultimate Strength
-					prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);// Incredible Reflex
-					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-				}
-
-				if (config.Bandos() == Bandos.BANDOS_EXPENSIVE)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-					prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(false);// Piety
-				}
-
-				if (config.Saradomin() == Saradomin.SARDOMIN_CHEAP)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel PVM
-					prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);// Ultimate Strength
-					prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);// Incredible Reflex
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from magic
-					prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);// eagle eye
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-				}
-
-				if (config.Saradomin() == Saradomin.SARADOMIN_EXPENSIVE)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-					prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(false);// Piety
-					prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
-				}
-
-				if (config.Zamorak() == Zamorak.ZAMORAK_CHEAP)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel Skin
-					prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);// Ultimate Strength
-					prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);// Incredible Reflex
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-				}
-
-				if (config.Zamorak() == Zamorak.ZAMORAK_EXPENSIVE)
-				{
-					prayerWidget.setHidden(true);
-					prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
-					prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
-					prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
-					prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
-					prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(false);// Piety
+					case ARMADYL_CHEAP:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
+						prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);// eagle eye
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						break;
+					case ARMADYL_EXPENSIVE:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
+						break;
+					case BANDOS_CHEAP:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel Skin
+						prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);// Ultimate Strength
+						prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);// Incredible Reflex
+						prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						break;
+					case BANDOS_EXPENSIVE:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(false);// Piety
+						break;
+					case BARROWS_CHEAP:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
+						prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
+						prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);// eagle eye
+						prayerWidgets.get(Prayer.values()[20].ordinal()).setHidden(false);// mystic might
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						break;
+					case BARROWS_EXPENSIVE:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
+						prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
+						prayerWidgets.get(Prayer.values()[28].ordinal()).setHidden(false);// Augury
+						break;
+					case CERBERUS_CHEAP:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel PVM
+						prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);// Ultimate Strength
+						prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);// Incredible Reflex
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
+						prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						break;
+					case CERBERUS_CHEAP_RANGE:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
+						prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
+						prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);// eagle eye
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						break;
+					case CERBERUS_EXPENSIVE:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
+						prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(false);// Piety
+						break;
+					case CERBERUS_EXPENSIVE_RANGE:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
+						prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
+						break;
+					case SARADOMIN_CHEAP:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel Skin
+						prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);// Ultimate Strength
+						prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);// Incredible Reflex
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from magic
+						prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);// eagle eye
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						break;
+					case SARADOMIN_EXPENSIVE:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(false);// Piety
+						prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
+						break;
+					case VORKATH_CHEAP:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
+						prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);// eagle eye
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						break;
+					case VORKATH_EXPENSIVE:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
+						break;
+					case ZAMORAK_CHEAP:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[13].ordinal()).setHidden(false);// Steel Skin
+						prayerWidgets.get(Prayer.values()[14].ordinal()).setHidden(false);// Ultimate Strength
+						prayerWidgets.get(Prayer.values()[15].ordinal()).setHidden(false);// Incredible Reflex
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						break;
+					case ZAMORAK_EXPENSIVE:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[18].ordinal()).setHidden(false);// Protect from Melee
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						prayerWidgets.get(Prayer.values()[26].ordinal()).setHidden(false);// Piety
+						break;
+					case ZULRAH_CHEAP:
+						prayerWidget.setHidden(true);
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
+						prayerWidgets.get(Prayer.values()[19].ordinal()).setHidden(false);// eagle eye
+						prayerWidgets.get(Prayer.values()[20].ordinal()).setHidden(false);// mystic might
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						break;
+					case ZULRAH_EXPENSIVE:
+						prayerWidgets.get(Prayer.values()[16].ordinal()).setHidden(false);// Protect from Magic
+						prayerWidgets.get(Prayer.values()[17].ordinal()).setHidden(false);// Protect from Range
+						prayerWidgets.get(Prayer.values()[22].ordinal()).setHidden(false);// Redemption
+						prayerWidgets.get(Prayer.values()[24].ordinal()).setHidden(false);// Preserve
+						prayerWidgets.get(Prayer.values()[27].ordinal()).setHidden(false);// Rigour
+						prayerWidgets.get(Prayer.values()[28].ordinal()).setHidden(false);// Augury
+						break;
 				}
 			}
 		}
