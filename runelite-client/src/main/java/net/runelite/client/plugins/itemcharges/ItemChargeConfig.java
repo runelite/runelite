@@ -246,8 +246,8 @@ public interface ItemChargeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showExplorerRingCharges",
-		name = "Show Explorer Ring Alch Charges",
-		description = "Configures if explorer ring alchemy charges are shown",
+		name = "Show Explorer's Ring Alch Charges",
+		description = "Configures if explorer's ring alchemy charges are shown",
 		position = 17
 	)
 	default boolean showExplorerRingCharges()
