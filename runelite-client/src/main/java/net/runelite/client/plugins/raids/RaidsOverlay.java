@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -151,7 +152,10 @@ public class RaidsOverlay extends Overlay
 		boolean iceDemon = false;
 		boolean tightrope = false;
 		boolean thieving = false;
+		boolean vanguards = false;
+		boolean unknownCombat = false;
 		String puzzles = "";
+		String roomName = "";
 		if (config.enhanceScouterTitle() || config.scavsBeforeIce() || sharable)
 		{
 			for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
@@ -168,9 +172,19 @@ public class RaidsOverlay extends Overlay
 				{
 					case COMBAT:
 						combatCount++;
+						roomName = room.getBoss().getName();
+						switch (RaidRoom.Boss.fromString(roomName))
+						{
+							case VANGUARDS:
+								vanguards = true;
+								break;
+							case UNKNOWN:
+								unknownCombat = true;
+								break;
+						}
 						break;
 					case PUZZLE:
-						String roomName = room.getPuzzle().getName();
+						roomName = room.getPuzzle().getName();
 						switch (RaidRoom.Puzzle.fromString(roomName))
 						{
 							case CRABS:
@@ -198,10 +212,11 @@ public class RaidsOverlay extends Overlay
 			{
 				puzzles = crabs ? "cr" : iceDemon ? "ri" : thieving ? "tr" : "?r";
 			}
-			else if (config.hideRopeless())
+
+			if ((config.hideVanguards() && vanguards) || (config.hideRopeless() && !tightrope) || (config.hideUnknownCombat() && unknownCombat))
 			{
 				panelComponent.getChildren().add(TitleComponent.builder()
-					.text("No Tightrope!")
+					.text("Bad Raid!")
 					.color(Color.RED)
 					.build());
 

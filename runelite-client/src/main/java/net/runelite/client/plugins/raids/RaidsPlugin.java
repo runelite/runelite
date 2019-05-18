@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +29,7 @@ import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,6 +50,7 @@ import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
 import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
+import static net.runelite.api.SpriteID.TAB_QUESTS_BROWN_RAIDING_PARTY;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
@@ -96,6 +99,9 @@ import org.apache.commons.lang3.StringUtils;
 public class RaidsPlugin extends Plugin
 {
 	private static final int LOBBY_PLANE = 3;
+	private static final String RAID_START_MESSAGE = "The raid has begun!";
+	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
+	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("###.##");
 	static final DecimalFormat POINTS_FORMAT = new DecimalFormat("#,###");
 	private static final String SPLIT_REGEX = "\\s*,\\s*";
@@ -181,6 +187,7 @@ public class RaidsPlugin extends Plugin
 	private String tooltip;
 	public boolean canShow;
 	private NavigationButton navButton;
+	private RaidsTimer timer;
 
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
@@ -220,9 +227,11 @@ public class RaidsPlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlayManager.remove(pointsOverlay);
 		clientToolbar.removeNavigation(navButton);
+		infoBoxManager.removeInfoBox(timer);
 		inRaidChambers = false;
 		widgetOverlay = null;
 		raid = null;
+		timer = null;
 
 		final Widget widget = client.getWidget(WidgetInfo.RAIDS_POINTS_INFOBOX);
 		if (widget != null)
@@ -237,6 +246,12 @@ public class RaidsPlugin extends Plugin
 	{
 		if (!event.getGroup().equals("raids"))
 		{
+			return;
+		}
+
+		if (event.getKey().equals("raidsTimer"))
+		{
+			updateInfoBoxState();
 			return;
 		}
 
@@ -274,26 +289,26 @@ public class RaidsPlugin extends Plugin
 			String message = Text.removeTags(event.getMessage());
 			Matcher matcher;
 
-			matcher = LEVEL_COMPLETE_REGEX.matcher(message);
-			if (matcher.find())
+			if (config.raidsTimer() && message.startsWith(RAID_START_MESSAGE))
 			{
-				String floor = matcher.group(1);
-				int time = timeToSeconds(matcher.group(2));
-				if (floor.equals("Upper"))
+				timer = new RaidsTimer(spriteManager.getSprite(TAB_QUESTS_BROWN_RAIDING_PARTY, 0), this, Instant.now());
+				infoBoxManager.addInfoBox(timer);
+			}
+
+			if (timer != null && message.contains(LEVEL_COMPLETE_MESSAGE))
+			{
+				timer.timeFloor();
+			}
+
+			if (message.startsWith(RAID_COMPLETE_MESSAGE))
+			{
+				if (timer != null)
 				{
-					upperTime = time;
-				}
-				else if (floor.equals("Middle"))
-				{
-					middleTime = time;
-				}
-				else if (floor.equals("Lower"))
-				{
-					lowerTime = time;
+					timer.timeOlm();
+					timer.setStopped(true);
 				}
 				updateTooltip();
 			}
-
 			matcher = RAID_COMPLETE_REGEX.matcher(message);
 			if (matcher.find())
 			{
@@ -410,6 +425,7 @@ public class RaidsPlugin extends Plugin
 		if (force || inRaidChambers != setting)
 		{
 			inRaidChambers = setting;
+			updateInfoBoxState();
 
 			if (inRaidChambers)
 			{
@@ -434,14 +450,9 @@ public class RaidsPlugin extends Plugin
 				overlay.setScoutOverlayShown(true);
 				sendRaidLayoutMessage();
 			}
-			else
+			else if (!config.scoutOverlayAtBank())
 			{
-				if (!config.scoutOverlayAtBank())
-				{
-					overlay.setScoutOverlayShown(false);
-				}
-
-				reset();
+				overlay.setScoutOverlayShown(false);
 			}
 		}
 
@@ -474,6 +485,30 @@ public class RaidsPlugin extends Plugin
 			.build());
 	}
 
+	private void updateInfoBoxState()
+	{
+		if (timer == null)
+		{
+			return;
+		}
+
+		if (inRaidChambers && config.raidsTimer())
+		{
+			if (!infoBoxManager.getInfoBoxes().contains(timer))
+			{
+				infoBoxManager.addInfoBox(timer);
+			}
+		}
+		else
+		{
+			infoBoxManager.removeInfoBox(timer);
+		}
+
+		if (!inRaidChambers)
+		{
+			timer = null;
+		}
+	}
 
 	private void updateLists()
 	{
@@ -817,7 +852,7 @@ public class RaidsPlugin extends Plugin
 		StringBuilder builder = new StringBuilder();
 		if (seconds >= 3600)
 		{
-			builder.append((int) Math.floor(seconds / 3600)).append(";");
+			builder.append((int) Math.floor(seconds / 3600) + ";");
 		}
 		seconds %= 3600;
 		if (builder.toString().equals(""))
