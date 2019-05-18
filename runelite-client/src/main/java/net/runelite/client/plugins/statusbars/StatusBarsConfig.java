@@ -72,7 +72,7 @@ public interface StatusBarsConfig extends Config
 	)
 	default boolean toggleRestorationBars()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
