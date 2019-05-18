@@ -31,7 +31,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum PVMPrayers 
+public enum PVMPrayers
 {
 	DISABLED("Disabled"),
 	ARMADYL_CHEAP("Eagle eye"),
@@ -56,7 +56,7 @@ public enum PVMPrayers
 	private String name;
 
 	@Override
-	public String toString() 
+	public String toString()
 	{
 		return getName();
 	}

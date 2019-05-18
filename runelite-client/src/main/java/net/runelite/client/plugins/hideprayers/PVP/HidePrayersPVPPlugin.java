@@ -29,7 +29,15 @@ package net.runelite.client.plugins.hideprayers.PVP;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
-import net.runelite.api.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.HashTable;
+import net.runelite.api.Prayer;
+import net.runelite.api.WidgetNode;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -42,11 +50,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.hideprayers.util.PrayerTabStates;
-
-import javax.inject.Inject;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @PluginDescriptor
 	(
@@ -216,7 +219,7 @@ public class HidePrayersPVPPlugin extends Plugin
 				Prayer prayer = Prayer.values()[index];
 				Widget prayerWidget = prayerWidgets.get(prayer.ordinal());
 
-				if (config.HideRapidHealRestore()) 
+				if (config.HideRapidHealRestore())
 				{
 					prayerWidgets.get(Prayer.values()[8].ordinal()).setHidden(true);    // Rapid Restore
 					prayerWidgets.get(Prayer.values()[9].ordinal()).setHidden(true);    // Rapid Heal
