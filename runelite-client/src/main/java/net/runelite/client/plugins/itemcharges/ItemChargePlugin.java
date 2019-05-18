@@ -38,10 +38,12 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
@@ -75,6 +77,8 @@ public class ItemChargePlugin extends Plugin
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
+
+	private int lastExplorerRingCharge = -1;
 
 	@Inject
 	private Client client;
@@ -152,6 +156,11 @@ public class ItemChargePlugin extends Plugin
 		if (!config.showBindingNecklaceCharges())
 		{
 			removeInfobox(ItemWithSlot.BINDING_NECKLACE);
+		}
+
+		if (!config.showExplorerRingCharges())
+		{
+			removeInfobox(ItemWithSlot.EXPLORER_RING);
 		}
 	}
 
@@ -246,6 +255,11 @@ public class ItemChargePlugin extends Plugin
 		{
 			updateJewelleryInfobox(ItemWithSlot.BINDING_NECKLACE, items);
 		}
+
+		if (config.showExplorerRingCharges())
+		{
+			updateJewelleryInfobox(ItemWithSlot.EXPLORER_RING, items);
+		}
 	}
 
 	@Subscribe
@@ -260,6 +274,16 @@ public class ItemChargePlugin extends Plugin
 		if (yesOption == 1)
 		{
 			checkDestroyWidget();
+		}
+	}
+
+	@Subscribe
+	private void onVarbitChanged(VarbitChanged event)
+	{
+		int explorerRingCharge = client.getVar(Varbits.EXPLORER_RING_ALCHS);
+		if (lastExplorerRingCharge != explorerRingCharge)
+		{
+			updateExplorerRingCharges(explorerRingCharge);
 		}
 	}
 
@@ -294,6 +318,24 @@ public class ItemChargePlugin extends Plugin
 			}
 
 			updateJewelleryInfobox(ItemWithSlot.BINDING_NECKLACE, itemContainer.getItems());
+		}
+	}
+
+	private void updateExplorerRingCharges(final int value)
+	{
+		// Note: Varbit counts upwards. We count down from the maximum charges.
+		config.explorerRing(config.explorerRingMaxCharges() - value);
+
+		if (config.showInfoboxes() && config.showExplorerRingCharges())
+		{
+			final ItemContainer itemContainer = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (itemContainer == null)
+			{
+				return;
+			}
+
+			updateJewelleryInfobox(ItemWithSlot.EXPLORER_RING, itemContainer.getItems());
 		}
 	}
 
@@ -358,6 +400,10 @@ public class ItemChargePlugin extends Plugin
 			else if (id == ItemID.BINDING_NECKLACE && type == ItemWithSlot.BINDING_NECKLACE)
 			{
 				charges = config.bindingNecklace();
+			}
+			else if ((id >= ItemID.EXPLORERS_RING_1 && id <= ItemID.EXPLORERS_RING_4) && type == ItemWithSlot.EXPLORER_RING)
+			{
+				charges = config.explorerRing();
 			}
 		}
 		else if (itemWithCharge.getType() == type.getType())

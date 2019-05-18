@@ -245,10 +245,50 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showExplorerRingCharges",
+		name = "Show Explorer Ring Alch Charges",
+		description = "Configures if explorer ring alchemy charges are shown",
+		position = 17
+	)
+	default boolean showExplorerRingCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "explorerRing",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int explorerRing()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "explorerRing",
+		name = "",
+		description = ""
+	)
+	void explorerRing(int explorerRing);
+
+	@ConfigItem(
+		keyName = "explorerRingMaxCharges",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int explorerRingMaxCharges()
+	{
+		return 30;
+	}
+
+	@ConfigItem(
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
-		position = 17
+		position = 18
 	)
 	default boolean showInfoboxes()
 	{

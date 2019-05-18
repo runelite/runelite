@@ -28,6 +28,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import javax.inject.Inject;
+import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import net.runelite.api.widgets.WidgetItem;
 import static net.runelite.client.plugins.itemcharges.ItemChargeType.ABYSSAL_BRACELET;
@@ -45,12 +46,14 @@ class ItemChargeOverlay extends WidgetItemOverlay
 {
 	private final ItemChargePlugin itemChargePlugin;
 	private final ItemChargeConfig config;
+	private final Client client;
 
 	@Inject
-	ItemChargeOverlay(ItemChargePlugin itemChargePlugin, ItemChargeConfig config)
+	ItemChargeOverlay(ItemChargePlugin itemChargePlugin, ItemChargeConfig config, Client client)
 	{
 		this.itemChargePlugin = itemChargePlugin;
 		this.config = config;
+		this.client = client;
 		showOnInventory();
 		showOnEquipment();
 	}
@@ -83,6 +86,15 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			}
 
 			charges = config.bindingNecklace();
+		}
+		else if (itemId >= ItemID.EXPLORERS_RING_1 && itemId <= ItemID.EXPLORERS_RING_4)
+		{
+			if (!config.showExplorerRingCharges())
+			{
+				return;
+			}
+
+			charges = config.explorerRing();
 		}
 		else
 		{
@@ -119,6 +131,6 @@ class ItemChargeOverlay extends WidgetItemOverlay
 	{
 		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
 			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
-			|| config.showBellowCharges() || config.showAbyssalBraceletCharges();
+			|| config.showBellowCharges() || config.showAbyssalBraceletCharges() || config.showExplorerRingCharges();
 	}
 }
