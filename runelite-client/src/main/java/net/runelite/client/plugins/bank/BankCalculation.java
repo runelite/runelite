@@ -177,7 +177,15 @@ class BankCalculation
 					continue;
 				}
 
-				gePrice += (long) itemManager.getItemPrice(itemId) * quantity;
+				//If item is MASTER_SCROLL_BOOK get price for one filled book and the empty books
+				if (itemId == ItemID.MASTER_SCROLL_BOOK)
+				{
+					gePrice += (long) itemManager.getItemPrice(itemId, quantity);
+				}
+				else
+				{
+					gePrice += (long) itemManager.getItemPrice(itemId) * quantity;
+				}
 			}
 		}
 	}
