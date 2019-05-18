@@ -154,9 +154,6 @@ public class ItemChargePlugin extends Plugin
 	private ItemRecoilOverlay recoilOverlay;
 
 	@Inject
-	private ItemExplorerRingOverlay eRingOverlay;
-
-	@Inject
 	private ItemManager itemManager;
 
 	@Inject
@@ -182,7 +179,6 @@ public class ItemChargePlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(recoilOverlay);
-		overlayManager.add(eRingOverlay);
 		recoilRingImage = itemManager.getImage(RING_OF_RECOIL);
 	}
 
@@ -191,7 +187,6 @@ public class ItemChargePlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(recoilOverlay);
-		overlayManager.remove(eRingOverlay);
 		infoBoxManager.removeIf(ItemChargeInfobox.class::isInstance);
 		lastCheckTick = -1;
 	}

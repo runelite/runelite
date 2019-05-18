@@ -399,37 +399,4 @@ public interface ItemChargeConfig extends Config
 	{
 		return false;
 	}
-
-	@ConfigItem(
-			keyName = "showExplorer",
-			name = "Show Explorer's Ring Charges",
-			description = "Configures if Explorer's Ring charge is shown",
-			position = 23
-	)
-	default boolean showExplorer()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-			keyName = "fontcolor",
-			name = "Font Color For Explorer's Ring",
-			description = "Color of the font for the number of charges",
-			position = 24
-	)
-	default Color fontColor()
-	{
-		return Color.yellow;
-	}
-
-	@ConfigItem(
-			keyName = "explorerRingOverlayMode",
-			name = "Explorer's Ring Display Mode",
-			description = "Configures where explorer ring overlay is displayed",
-			position = 25
-	)
-	default ItemExplorerRingOverlayMode explorerRingOverlayMode()
-	{
-		return ItemExplorerRingOverlayMode.BOTH;
-	}
 }
