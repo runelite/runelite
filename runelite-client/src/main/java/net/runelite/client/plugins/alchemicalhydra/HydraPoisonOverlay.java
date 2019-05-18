@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.alchemicalhydra;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -140,6 +141,7 @@ class HydraPoisonOverlay extends Overlay
 		}
 
 		graphics.setColor(color);
+		graphics.setStroke(new BasicStroke(3));
 		graphics.draw(poly);
 	}
 }
