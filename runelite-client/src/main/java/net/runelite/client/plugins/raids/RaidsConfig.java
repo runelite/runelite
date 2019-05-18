@@ -263,11 +263,77 @@ public interface RaidsConfig extends Config
 	)
 	default Color scavPrepColor()
 	{
+		return new Color(130, 222, 255); //light blue
+	}
+
+	@ConfigItem(
+		position = 21,
+		keyName = "alwaysShowWorldAndCC",
+		name = "Always show CC and World",
+		description = "The CC and World are not removed from being in the in-game scouter"
+	)
+	default boolean alwaysShowWorldAndCC()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 22,
+		keyName = "colorTightrope",
+		name = "Color tightrope",
+		description = "Colors tightrope a separate color"
+	)
+	default boolean colorTightrope()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 23,
+		keyName = "tightropeColor",
+		name = "Tightrope color",
+		description = "The color of tightropes"
+	)
+	default Color tightropeColor()
+	{
 		return Color.MAGENTA;
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 24,
+		keyName = "hideRopeless",
+		name = "Hide no Tightrope raids",
+		description = "Completely hides raids with no tightrope"
+	)
+	default boolean hideRopeless()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 25,
+			keyName = "hideVanguards",
+			name = "Hide Vanguard raids",
+			description = "Completely hides raids with Vanguards"
+	)
+	default boolean hideVanguards()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			position = 26,
+			keyName = "hideUnknownCombat",
+			name = "Hide Unknown combat raids",
+			description = "Completely hides raids with Unknown combat"
+	)
+	default boolean hideUnknownCombat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 27,
 		keyName = "layoutMessage",
 		name = "Send raid layout message when entering raid",
 		description = "Sends game message with raid layout on entering new raid"
@@ -286,5 +352,16 @@ public interface RaidsConfig extends Config
 	default boolean showLootValue()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			position = 28,
+			keyName = "displayFloorBreak",
+			name = "Layout floor break",
+			description = "Displays floor break in layout"
+	)
+	default boolean displayFloorBreak()
+	{
+		return false;
 	}
 }
