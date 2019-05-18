@@ -529,10 +529,14 @@ public class RaidsPlugin extends Plugin
 			String everything = m.group(1).toLowerCase();
 			int split = everything.indexOf(',');
 			if (split < 0)
+			{
 				continue;
+			}
 			String key = everything.substring(0, split);
 			if (key.length() < 1)
+			{
 				continue;
+			}
 			String[] itemNames = everything.substring(split).split(SPLIT_REGEX);
 
 			map.computeIfAbsent(key, k -> new ArrayList<>());
@@ -540,15 +544,25 @@ public class RaidsPlugin extends Plugin
 			for (String itemName : itemNames)
 			{
 				if (itemName.equals(""))
+				{
 					continue;
+				}
 				if (itemName.equals("ice barrage"))
+				{
 					map.get(key).add(SpriteID.SPELL_ICE_BARRAGE);
+				}
 				else if (itemName.startsWith("salve"))
+				{
 					map.get(key).add(ItemID.SALVE_AMULETEI);
+				}
 				else if (itemManager.search(itemName).size() > 0)
+				{
 					map.get(key).add(itemManager.search(itemName).get(0).getId());
+				}
 				else
+				{
 					log.info("RaidsPlugin: Could not find an item ID for item: " + itemName);
+				}
 			}
 		}
 	}
