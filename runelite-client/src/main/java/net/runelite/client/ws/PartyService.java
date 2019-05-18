@@ -114,6 +114,13 @@ public class PartyService
 	@Subscribe
 	public void onUserJoin(final UserJoin message)
 	{
+		if (!partyId.equals(message.getPartyId()))
+		{
+			// This can happen when a session is resumed server side after the client party
+			// changes when disconnected.
+			return;
+		}
+
 		final PartyMember partyMember = new PartyMember(message.getMemberId(), message.getName());
 		members.add(partyMember);
 

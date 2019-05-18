@@ -40,8 +40,10 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.RUNE_MYSTERIES));
 		add("Steal a cake from the Ardougne market stalls.",
 			new SkillRequirement(Skill.THIEVING, 5));
-		add("Enter the Combat Training Camp north of W. Ardougne",
+		add("Enter the Combat Training Camp north of W. Ardougne.",
 			new QuestRequirement(Quest.BIOHAZARD));
+		add("Go out fishing on the Fishing Trawler.",
+			new SkillRequirement(Skill.FISHING, 15));
 
 		// MEDIUM
 		add("Enter the Unicorn pen in Ardougne zoo using Fairy rings.",

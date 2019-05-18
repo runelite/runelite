@@ -42,4 +42,14 @@ public interface PoisonConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "changeHealthIcon",
+		name = "Change HP Orb Icon",
+		description = "Configures whether the hp orb icon should change color to match poison/disease"
+	)
+	default boolean changeHealthIcon()
+	{
+		return true;
+	}
 }

@@ -26,6 +26,7 @@
 package net.runelite.client.ui.overlay.infobox;
 
 import com.google.common.base.Strings;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -37,6 +38,7 @@ import net.runelite.api.Client;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -83,8 +85,8 @@ public class InfoBoxOverlay extends Overlay
 		panelComponent.getChildren().clear();
 		panelComponent.setWrapping(config.infoBoxWrap());
 		panelComponent.setOrientation(config.infoBoxVertical()
-			? PanelComponent.Orientation.VERTICAL
-			: PanelComponent.Orientation.HORIZONTAL);
+			? ComponentOrientation.VERTICAL
+			: ComponentOrientation.HORIZONTAL);
 		panelComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
 
 		for (InfoBox box : infoBoxes)
@@ -94,10 +96,16 @@ public class InfoBoxOverlay extends Overlay
 				continue;
 			}
 
+			final String text = box.getText();
+			final Color color = box.getTextColor();
+
 			final InfoBoxComponent infoBoxComponent = new InfoBoxComponent();
-			infoBoxComponent.setColor(box.getTextColor());
+			infoBoxComponent.setText(text);
+			if (color != null)
+			{
+				infoBoxComponent.setColor(color);
+			}
 			infoBoxComponent.setImage(box.getScaledImage());
-			infoBoxComponent.setText(box.getText());
 			infoBoxComponent.setTooltip(box.getTooltip());
 			panelComponent.getChildren().add(infoBoxComponent);
 		}

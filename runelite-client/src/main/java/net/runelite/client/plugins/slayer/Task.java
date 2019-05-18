@@ -26,7 +26,7 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.base.Preconditions;
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -38,7 +38,7 @@ enum Task
 	ABERRANT_SPECTRES("Aberrant spectres", ItemID.ABERRANT_SPECTRE, "Spectre"),
 	ABYSSAL_DEMONS("Abyssal demons", ItemID.ABYSSAL_DEMON),
 	ABYSSAL_SIRE("Abyssal Sire", ItemID.ABYSSAL_ORPHAN),
-	ADAMANT_DRAGONS("Adamant dragons", ItemID.ADAMANTITE_BAR),
+	ADAMANT_DRAGONS("Adamant dragons", ItemID.ADAMANT_DRAGON_MASK),
 	ALCHEMICAL_HYDRA("Alchemical Hydra", ItemID.IKKLE_HYDRA),
 	ANKOU("Ankou", ItemID.ANKOU_MASK),
 	AVIANSIES("Aviansies", ItemID.ENSOULED_AVIANSIE_HEAD),
@@ -65,11 +65,11 @@ enum Task
 	CAVE_SLIMES("Cave slimes", ItemID.SWAMP_CAVE_SLIME),
 	CERBERUS("Cerberus", ItemID.HELLPUPPY),
 	CHAOS_ELEMENTAL("Chaos Elemental", ItemID.PET_CHAOS_ELEMENTAL),
-	CHAOS_FANATIC("Chaos Fanatic", ItemID.PET_CHAOS_ELEMENTAL),
+	CHAOS_FANATIC("Chaos Fanatic", ItemID.ANCIENT_STAFF),
 	COCKATRICE("Cockatrice", ItemID.COCKATRICE, "Cockathrice"),
 	COWS("Cows", ItemID.COW_MASK),
 	CRAWLING_HANDS("Crawling hands", ItemID.CRAWLING_HAND, "Crushing hand"),
-	CRAZY_ARCHAEOLOGIST("Crazy Archaeologist", ItemID.FEDORA),
+	CRAZY_ARCHAEOLOGIST("Crazy Archaeologists", ItemID.FEDORA, "Crazy Archaeologist"),
 	CROCODILES("Crocodiles", ItemID.SWAMP_LIZARD),
 	DAGANNOTH("Dagannoth", ItemID.DAGANNOTH),
 	DAGANNOTH_KINGS("Dagannoth Kings", ItemID.PET_DAGANNOTH_PRIME),
@@ -129,7 +129,7 @@ enum Task
 	MOLANISKS("Molanisks", ItemID.MOLANISK),
 	MONKEYS("Monkeys", ItemID.ENSOULED_MONKEY_HEAD),
 	MOSS_GIANTS("Moss giants", ItemID.HILL_GIANT_CLUB),
-	MUTATED_ZYGOMITES("Mutated zygomites", ItemID.MUTATED_ZYGOMITE, 0, ItemID.FUNGICIDE_SPRAY_0, "Zygomite", "Fungi"),
+	MUTATED_ZYGOMITES("Mutated zygomites", ItemID.MUTATED_ZYGOMITE, 7, ItemID.FUNGICIDE_SPRAY_0, "Zygomite", "Fungi"),
 	NECHRYAEL("Nechryael", ItemID.NECHRYAEL, "Nechryarch"),
 	OGRES("Ogres", ItemID.ENSOULED_OGRE_HEAD),
 	OTHERWORLDLY_BEING("Otherworldly beings", ItemID.GHOSTLY_HOOD),
@@ -137,7 +137,7 @@ enum Task
 	RATS("Rats", ItemID.RATS_TAIL),
 	RED_DRAGONS("Red dragons", ItemID.BABY_RED_DRAGON),
 	ROCKSLUGS("Rockslugs", ItemID.ROCKSLUG, 4, ItemID.BAG_OF_SALT),
-	RUNE_DRAGONS("Rune dragons", ItemID.RUNITE_BAR),
+	RUNE_DRAGONS("Rune dragons", ItemID.RUNE_DRAGON_MASK),
 	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING),
 	CHAOS_DRUIDS("Chaos druids", ItemID.ELDER_CHAOS_HOOD, "Elder Chaos druid", "Chaos druid"),
 	BANDITS("Bandits", ItemID.BANDIT, "Bandit"),
@@ -174,7 +174,7 @@ enum Task
 	ZUK("TzKal-Zuk", ItemID.TZREKZUK);
 	//</editor-fold>
 
-	private static final Map<String, Task> tasks = new HashMap<>();
+	private static final Map<String, Task> tasks;
 
 	private final String name;
 	private final int itemSpriteId;
@@ -184,10 +184,14 @@ enum Task
 
 	static
 	{
+		ImmutableMap.Builder<String, Task> builder = new ImmutableMap.Builder<>();
+
 		for (Task task : values())
 		{
-			tasks.put(task.getName().toLowerCase(), task);
+			builder.put(task.getName().toLowerCase(), task);
 		}
+
+		tasks = builder.build();
 	}
 
 	Task(String name, int itemSpriteId, String... targetNames)

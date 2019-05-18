@@ -36,6 +36,7 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
@@ -69,6 +70,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_FARMING_PATCH_TOOLTIPS = "farmingpatchTooltips";
 	static final String CONFIG_KEY_RARE_TREE_TOOLTIPS = "rareTreeTooltips";
 	static final String CONFIG_KEY_RARE_TREE_LEVEL_ICON = "rareTreeIcon";
+	static final String CONFIG_KEY_TRANSPORATION_TELEPORT_TOOLTIPS = "transportationTooltips";
 
 	static
 	{
@@ -119,6 +121,7 @@ public class WorldMapPlugin extends Plugin
 		worldMapPointManager.removeIf(AgilityShortcutPoint.class::isInstance);
 		worldMapPointManager.removeIf(QuestStartPoint.class::isInstance);
 		worldMapPointManager.removeIf(TeleportPoint.class::isInstance);
+		worldMapPointManager.removeIf(TransportationPoint.class::isInstance);
 		worldMapPointManager.removeIf(MinigamePoint.class::isInstance);
 		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);
 		worldMapPointManager.removeIf(RareTreePoint.class::isInstance);
@@ -167,9 +170,10 @@ public class WorldMapPlugin extends Plugin
 
 		if (config.agilityShortcutLevelIcon() || config.agilityShortcutTooltips())
 		{
-			Arrays.stream(AgilityShortcutLocation.values())
+			Arrays.stream(AgilityShortcut.values())
+				.filter(value -> value.getWorldMapLocation() != null)
 				.map(value -> new AgilityShortcutPoint(value,
-					agilityLevel > 0 && config.agilityShortcutLevelIcon() && value.getLevelReq() > agilityLevel ? NOPE_ICON : BLANK_ICON,
+					agilityLevel > 0 && config.agilityShortcutLevelIcon() && value.getLevel() > agilityLevel ? NOPE_ICON : BLANK_ICON,
 					config.agilityShortcutTooltips()))
 				.forEach(worldMapPointManager::add);
 		}
@@ -221,6 +225,14 @@ public class WorldMapPlugin extends Plugin
 			Arrays.stream(QuestStartLocation.values())
 				.map(value -> new QuestStartPoint(value, BLANK_ICON))
 				.forEach(worldMapPointManager::add);
+		}
+
+		worldMapPointManager.removeIf(TransportationPoint.class::isInstance);
+		if (config.transportationTeleportTooltips())
+		{
+			Arrays.stream(TransportationPointLocation.values())
+					.map(value -> new TransportationPoint(value, BLANK_ICON))
+					.forEach((worldMapPointManager::add));
 		}
 
 		worldMapPointManager.removeIf(FarmingPatchPoint.class::isInstance);

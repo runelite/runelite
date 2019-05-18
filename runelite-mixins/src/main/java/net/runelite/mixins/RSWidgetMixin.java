@@ -300,7 +300,7 @@ public abstract class RSWidgetMixin implements RSWidget
 		int itemY = widgetCanvasLocation.getY() + ((ITEM_SLOT_SIZE + yPitch) * row);
 
 		Rectangle bounds = new Rectangle(itemX - 1, itemY - 1, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
-		return new WidgetItem(itemId - 1, itemQuantity, index, bounds);
+		return new WidgetItem(itemId - 1, itemQuantity, index, bounds, this);
 	}
 
 	@Inject
@@ -519,7 +519,15 @@ public abstract class RSWidgetMixin implements RSWidget
 			}
 			else
 			{
-				index = siblings.length;
+				index = 0;
+				for (int i = siblings.length - 1; i >= 0; i--)
+				{
+					if (siblings[i] != null)
+					{
+						index = i + 1;
+						break;
+					}
+				}
 			}
 		}
 

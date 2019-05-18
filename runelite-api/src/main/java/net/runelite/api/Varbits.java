@@ -126,6 +126,11 @@ public enum Varbits
 	DIARY_KARAMJA_HARD(3611),
 	DIARY_KARAMJA_ELITE(4566),
 
+	DIARY_KOUREND_EASY(7925),
+	DIARY_KOUREND_MEDIUM(7926),
+	DIARY_KOUREND_HARD(7927),
+	DIARY_KOUREND_ELITE(7928),
+
 	DIARY_LUMBRIDGE_EASY(4495),
 	DIARY_LUMBRIDGE_MEDIUM(4496),
 	DIARY_LUMBRIDGE_HARD(4497),
@@ -375,6 +380,8 @@ public enum Varbits
  	*/
 	DAILY_BONEMEAL_STATE(4543),
 
+	DAILY_DYNAMITE_COLLECTED(7939),
+
 	/**
 	 * Fairy Ring
 	 */
@@ -468,7 +475,19 @@ public enum Varbits
 	BANK_TAB_SIX_COUNT(4176),
 	BANK_TAB_SEVEN_COUNT(4177),
 	BANK_TAB_EIGHT_COUNT(4178),
-	BANK_TAB_NINE_COUNT(4179);
+	BANK_TAB_NINE_COUNT(4179),
+
+	/**
+	 * Type of GE offer currently being created
+	 * 0 = buy
+	 * 1 = sell
+	 */
+	GE_OFFER_CREATION_TYPE(4397),
+
+	/**
+	 * The active tab within the quest interface
+	 */
+	QUEST_TAB(8168);
 
 	/**
 	 * The raw varbit ID.

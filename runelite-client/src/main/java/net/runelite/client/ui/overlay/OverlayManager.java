@@ -41,6 +41,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.MenuAction;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
@@ -96,6 +97,8 @@ public class OverlayManager
 	 */
 	@Getter(AccessLevel.PACKAGE)
 	private final List<Overlay> overlays = new ArrayList<>();
+	@Getter
+	private final List<WidgetItem> itemWidgets = new ArrayList<>();
 
 	private final Map<OverlayLayer, List<Overlay>> overlayLayers = new EnumMap<>(OverlayLayer.class);
 
@@ -168,6 +171,12 @@ public class OverlayManager
 		// Add is always true
 		overlays.add(overlay);
 		loadOverlay(overlay);
+		// WidgetItemOverlays have a reference to the overlay manager in order to get the WidgetItems
+		// for each frame.
+		if (overlay instanceof WidgetItemOverlay)
+		{
+			((WidgetItemOverlay) overlay).setOverlayManager(this);
+		}
 		rebuildOverlayLayers();
 		return true;
 	}

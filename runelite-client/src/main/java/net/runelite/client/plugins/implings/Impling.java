@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.implings;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -70,14 +70,18 @@ enum Impling
 	private ImplingType implingType;
 	private final int npcId;
 
-	private static final Map<Integer, Impling> IMPLINGS = new HashMap<>();
+	private static final Map<Integer, Impling> IMPLINGS;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, Impling> builder = new ImmutableMap.Builder<>();
+
 		for (Impling impling : values())
 		{
-			IMPLINGS.put(impling.npcId, impling);
+			builder.put(impling.npcId, impling);
 		}
+
+		IMPLINGS = builder.build();
 	}
 
 	static Impling findImpling(int npcId)

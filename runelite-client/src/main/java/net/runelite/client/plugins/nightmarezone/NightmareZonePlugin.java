@@ -125,7 +125,7 @@ public class NightmareZonePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER
+		if (event.getType() != ChatMessageType.GAMEMESSAGE
 				|| !isInNightmareZone())
 		{
 			return;

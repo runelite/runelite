@@ -88,7 +88,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 		// HARD
 		add("Kill an Elf with a Crystal bow.",
 			new SkillRequirement(Skill.RANGED, 70),
-			new SkillRequirement(Skill.AGILITY, 50),
+			new SkillRequirement(Skill.AGILITY, 56),
 			new QuestRequirement(Quest.ROVING_ELVES));
 		add("Catch and cook a Monkfish in Piscatoris.",
 			new SkillRequirement(Skill.FISHING, 62),
@@ -140,6 +140,6 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING));
 		add("Pickpocket an Elf.",
 			new SkillRequirement(Skill.THIEVING, 85),
-			new QuestRequirement(Quest.MOURNINGS_ENDS_PART_II));
+			new QuestRequirement(Quest.MOURNINGS_ENDS_PART_I, true));
 	}
 }

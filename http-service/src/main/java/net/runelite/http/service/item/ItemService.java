@@ -377,7 +377,7 @@ public class ItemService
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Unsuccessful http response: " + response.message());
+				throw new IOException("Unsuccessful http response: " + response);
 			}
 
 			InputStream in = response.body().byteStream();
@@ -401,7 +401,7 @@ public class ItemService
 		{
 			if (!response.isSuccessful())
 			{
-				throw new IOException("Unsuccessful http response: " + response.message());
+				throw new IOException("Unsuccessful http response: " + response);
 			}
 
 			return response.body().bytes();

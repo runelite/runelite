@@ -25,33 +25,56 @@
 package net.runelite.client.plugins.specialcounter;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.client.ui.overlay.infobox.Counter;
 
 class SpecialCounter extends Counter
 {
-	private int hitValue;
+	private final SpecialCounterPlugin plugin;
 	private SpecialWeapon weapon;
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<String, Integer> partySpecs = new HashMap<>();
 
 	SpecialCounter(BufferedImage image, SpecialCounterPlugin plugin, int hitValue, SpecialWeapon weapon)
 	{
-		super(image, plugin, null);
+		super(image, plugin, hitValue);
+		this.plugin = plugin;
 		this.weapon = weapon;
-		this.hitValue = hitValue;
 	}
 
 	void addHits(double hit)
 	{
-		this.hitValue += hit;
-	}
-
-	@Override
-	public String getText()
-	{
-		return Integer.toString(hitValue);
+		int count = getCount();
+		setCount(count + (int) hit);
 	}
 
 	@Override
 	public String getTooltip()
+	{
+		int hitValue = getCount();
+
+		if (partySpecs.isEmpty())
+		{
+			return buildTooltip(hitValue);
+		}
+
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(buildTooltip(hitValue));
+
+		for (Map.Entry<String, Integer> entry : partySpecs.entrySet())
+		{
+			stringBuilder.append("</br>")
+				.append(entry.getKey() == null ? "You" : entry.getKey()).append(": ")
+				.append(buildTooltip(entry.getValue()));
+		}
+
+		return stringBuilder.toString();
+	}
+
+	private String buildTooltip(int hitValue)
 	{
 		if (!weapon.isDamage())
 		{

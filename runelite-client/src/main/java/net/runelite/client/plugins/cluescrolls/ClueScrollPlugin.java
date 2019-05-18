@@ -26,10 +26,15 @@
  */
 package net.runelite.client.plugins.cluescrolls;
 
+import com.google.common.base.MoreObjects;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +53,9 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
+import net.runelite.api.Point;
 import net.runelite.api.Scene;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
@@ -75,15 +82,19 @@ import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
 import net.runelite.client.plugins.cluescrolls.clues.CrypticClue;
 import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.plugins.cluescrolls.clues.FairyRingClue;
+import net.runelite.client.plugins.cluescrolls.clues.FaloTheBardClue;
 import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
 import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.LocationsClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.MapClue;
+import net.runelite.client.plugins.cluescrolls.clues.MusicClue;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ThreeStepCrypticClue;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
@@ -96,7 +107,9 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class ClueScrollPlugin extends Plugin
 {
-	private static final Duration WAIT_DURATION = Duration.ofMinutes(4);
+	private static final Color HIGHLIGHT_BORDER_COLOR = Color.ORANGE;
+	private static final Color HIGHLIGHT_HOVER_BORDER_COLOR = HIGHLIGHT_BORDER_COLOR.darker();
+	private static final Color HIGHLIGHT_FILL_COLOR = new Color(0, 255, 0, 20);
 
 	@Getter
 	private ClueScroll clue;
@@ -130,6 +143,9 @@ public class ClueScrollPlugin extends Plugin
 	private ClueScrollEmoteOverlay clueScrollEmoteOverlay;
 
 	@Inject
+	private ClueScrollMusicOverlay clueScrollMusicOverlay;
+
+	@Inject
 	private ClueScrollWorldOverlay clueScrollWorldOverlay;
 
 	@Inject
@@ -142,6 +158,8 @@ public class ClueScrollPlugin extends Plugin
 	private BufferedImage mapArrow;
 	private Integer clueItemId;
 	private boolean worldMapPointsSet = false;
+
+	private final TextComponent textComponent = new TextComponent();
 
 	@Provides
 	ClueScrollConfig getConfig(ConfigManager configManager)
@@ -161,6 +179,7 @@ public class ClueScrollPlugin extends Plugin
 		overlayManager.add(clueScrollOverlay);
 		overlayManager.add(clueScrollEmoteOverlay);
 		overlayManager.add(clueScrollWorldOverlay);
+		overlayManager.add(clueScrollMusicOverlay);
 	}
 
 	@Override
@@ -169,6 +188,7 @@ public class ClueScrollPlugin extends Plugin
 		overlayManager.remove(clueScrollOverlay);
 		overlayManager.remove(clueScrollEmoteOverlay);
 		overlayManager.remove(clueScrollWorldOverlay);
+		overlayManager.remove(clueScrollMusicOverlay);
 		npcsToMark.clear();
 		inventoryItems = null;
 		equippedItems = null;
@@ -178,7 +198,7 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER && event.getType() != ChatMessageType.FILTERED)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
 		{
 			return;
 		}
@@ -447,7 +467,8 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		if (text.startsWith("this anagram reveals who to speak to next:"))
+		// (This|The) anagram reveals who to speak to next:
+		if (text.contains("anagram reveals who to speak to next:"))
 		{
 			return AnagramClue.forText(text);
 		}
@@ -455,6 +476,11 @@ public class ClueScrollPlugin extends Plugin
 		if (text.startsWith("the cipher reveals who to speak to next:"))
 		{
 			return CipherClue.forText(text);
+		}
+
+		if (text.startsWith("i'd like to hear some music."))
+		{
+			return MusicClue.forText(clueScrollText.getText());
 		}
 
 		if (text.contains("degrees") && text.contains("minutes"))
@@ -481,6 +507,13 @@ public class ClueScrollPlugin extends Plugin
 		if (fairyRingClue != null)
 		{
 			return fairyRingClue;
+		}
+
+		final FaloTheBardClue faloTheBardClue = FaloTheBardClue.forText(text);
+
+		if (faloTheBardClue != null)
+		{
+			return faloTheBardClue;
 		}
 
 		final HotColdClue hotColdClue = HotColdClue.forText(text);
@@ -667,5 +700,81 @@ public class ClueScrollPlugin extends Plugin
 		resetClue(false);
 		checkClueNPCs(clue, client.getCachedNPCs());
 		this.clue = clue;
+	}
+
+	void highlightWidget(Graphics2D graphics, Widget toHighlight, Widget container, Rectangle padding, String text)
+	{
+		padding = MoreObjects.firstNonNull(padding, new Rectangle());
+
+		Point canvasLocation = toHighlight.getCanvasLocation();
+
+		if (canvasLocation == null)
+		{
+			return;
+		}
+
+		Point windowLocation = container.getCanvasLocation();
+
+		if (windowLocation.getY() > canvasLocation.getY() + toHighlight.getHeight()
+			|| windowLocation.getY() + container.getHeight() < canvasLocation.getY())
+		{
+			return;
+		}
+
+		// Visible area of widget
+		Area widgetArea = new Area(
+			new Rectangle(
+				canvasLocation.getX() - padding.x,
+				Math.max(canvasLocation.getY(), windowLocation.getY()) - padding.y,
+				toHighlight.getWidth() + padding.x + padding.width,
+				Math.min(
+					Math.min(windowLocation.getY() + container.getHeight() - canvasLocation.getY(), toHighlight.getHeight()),
+					Math.min(canvasLocation.getY() + toHighlight.getHeight() - windowLocation.getY(), toHighlight.getHeight())) + padding.y + padding.height
+			));
+
+		OverlayUtil.renderHoverableArea(graphics, widgetArea, client.getMouseCanvasPosition(),
+			HIGHLIGHT_FILL_COLOR, HIGHLIGHT_BORDER_COLOR, HIGHLIGHT_HOVER_BORDER_COLOR);
+
+		if (text == null)
+		{
+			return;
+		}
+
+		FontMetrics fontMetrics = graphics.getFontMetrics();
+
+		textComponent.setPosition(new java.awt.Point(
+			canvasLocation.getX() + toHighlight.getWidth() / 2 - fontMetrics.stringWidth(text) / 2,
+			canvasLocation.getY() + fontMetrics.getHeight()));
+		textComponent.setText(text);
+		textComponent.render(graphics);
+	}
+
+	void scrollToWidget(WidgetInfo list, WidgetInfo scrollbar, Widget ... toHighlight)
+	{
+		final Widget parent = client.getWidget(list);
+		int averageCentralY = 0;
+		int nonnullCount = 0;
+		for (Widget widget : toHighlight)
+		{
+			if (widget != null)
+			{
+				averageCentralY += widget.getRelativeY() + widget.getHeight() / 2;
+				nonnullCount += 1;
+			}
+		}
+		if (nonnullCount == 0)
+		{
+			return;
+		}
+		averageCentralY /= nonnullCount;
+		final int newScroll = Math.max(0, Math.min(parent.getScrollHeight(),
+			averageCentralY - parent.getHeight() / 2));
+
+		client.runScript(
+			ScriptID.UPDATE_SCROLLBAR,
+			scrollbar.getId(),
+			list.getId(),
+			newScroll
+		);
 	}
 }
