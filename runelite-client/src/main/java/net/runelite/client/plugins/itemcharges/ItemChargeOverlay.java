@@ -41,7 +41,6 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
-
 class ItemChargeOverlay extends WidgetItemOverlay
 {
 	private final ItemChargePlugin itemChargePlugin;
@@ -150,7 +149,6 @@ class ItemChargeOverlay extends WidgetItemOverlay
 
 			charges = chargeItem.getCharges();
 		}
-
 
 		final Rectangle bounds = itemWidget.getCanvasBounds();
 		final TextComponent textComponent = new TextComponent();
