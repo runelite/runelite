@@ -41,6 +41,7 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Projectile;
+import net.runelite.api.ProjectileID;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -269,13 +270,13 @@ public class CoxPlugin extends Plugin
 	public void onProjectileMoved(ProjectileMoved event)
 	{
 		Projectile projectile = event.getProjectile();
-		if (projectile.getId() == 1339)
+		if (projectile.getId() == ProjectileID.OLM_MAGE_ATTACK)
 		{
 			log.debug("Mage Detected");
 			prayAgainstOlm = PrayAgainst.MAGIC;
 			lastPrayTime = System.currentTimeMillis();
 		}
-		if (projectile.getId() == 1340)
+		if (projectile.getId() == ProjectileID.OLM_RANGE_ATTACK)
 		{
 			log.debug("Range Detected");
 			prayAgainstOlm = PrayAgainst.RANGED;
