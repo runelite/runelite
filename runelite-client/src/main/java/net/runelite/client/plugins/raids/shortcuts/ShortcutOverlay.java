@@ -68,7 +68,7 @@ public class ShortcutOverlay extends Overlay
 						case 29738:
 							name = "Rocks";
 							break;
-						case 297480:
+						case 29748:
 							name = "Boulder";
 							break;
 						case 29737:
