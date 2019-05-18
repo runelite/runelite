@@ -209,7 +209,9 @@ public class RaidsOverlay extends Overlay
 				roomCount++;
 			}
 			if (tightrope)
+			{
 				puzzles = crabs ? "cr" : iceDemon ? "ri" : thieving ? "tr" : "?r";
+			}
 
 			if ((config.hideVanguards() && vanguards) || (config.hideRopeless() && !tightrope) || (config.hideUnknownCombat() && unknownCombat))
 			{
@@ -230,7 +232,9 @@ public class RaidsOverlay extends Overlay
 				for (Integer s : scavRooms)
 				{
 					if (s > i)
+					{
 						break;
+					}
 					prev = s;
 				}
 				scavsBeforeIceRooms.add(prev);
@@ -299,7 +303,9 @@ public class RaidsOverlay extends Overlay
 					if (config.showRecommendedItems())
 					{
 						if (plugin.getRecommendedItemsList().get(bossNameLC) != null)
+						{
 							imageIds.addAll(plugin.getRecommendedItemsList().get(bossNameLC));
+						}
 					}
 
 					panelComponent.getChildren().add(LineComponent.builder()
@@ -314,7 +320,9 @@ public class RaidsOverlay extends Overlay
 					String puzzleName = room.getPuzzle().getName();
 					String puzzleNameLC = puzzleName.toLowerCase();
 					if (plugin.getRecommendedItemsList().get(puzzleNameLC) != null)
+					{
 						imageIds.addAll(plugin.getRecommendedItemsList().get(puzzleNameLC));
+					}
 					if (plugin.getRoomWhitelist().contains(puzzleNameLC))
 					{
 						color = Color.GREEN;
@@ -418,15 +426,25 @@ public class RaidsOverlay extends Overlay
 	{
 		BufferedImage bim;
 		if (id != SpriteID.SPELL_ICE_BARRAGE)
+		{
 			bim = itemManager.getImage(id);
+		}
 		else
+		{
 			bim = spriteManager.getSprite(id, 0);
+		}
 		if (bim == null)
+		{
 			return null;
+		}
 		if (!small)
+		{
 			return ImageUtil.resizeCanvas(bim, ICON_SIZE, ICON_SIZE);
+		}
 		if (id != SpriteID.SPELL_ICE_BARRAGE)
+		{
 			return ImageUtil.resizeImage(bim, SMALL_ICON_SIZE, SMALL_ICON_SIZE);
+		}
 		return ImageUtil.resizeCanvas(bim, SMALL_ICON_SIZE, SMALL_ICON_SIZE);
 	}
 }
