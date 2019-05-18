@@ -877,7 +877,7 @@ public class RaidsPlugin extends Plugin
 			tooltip = null;
 			return;
 		}
-		builder.append("Upper level: " + secondsToTime(upperTime));
+		builder.append("Upper level: ").append(secondsToTime(upperTime));
 		if (middleTime == -1)
 		{
 			if (lowerTime == -1)
@@ -887,12 +887,12 @@ public class RaidsPlugin extends Plugin
 			}
 			else
 			{
-				builder.append("</br>Lower level: " + secondsToTime(lowerTime - upperTime));
+				builder.append("</br>Lower level: ").append(secondsToTime(lowerTime - upperTime));
 			}
 		}
 		else
 		{
-			builder.append("</br>Middle level: " + secondsToTime(middleTime - upperTime));
+			builder.append("</br>Middle level: ").append(secondsToTime(middleTime - upperTime));
 			if (lowerTime == -1)
 			{
 				tooltip = builder.toString();
@@ -900,7 +900,7 @@ public class RaidsPlugin extends Plugin
 			}
 			else
 			{
-				builder.append("</br>Lower level: " + secondsToTime(lowerTime - middleTime));
+				builder.append("</br>Lower level: ").append(secondsToTime(lowerTime - middleTime));
 			}
 		}
 		if (raidTime == -1)
@@ -908,7 +908,7 @@ public class RaidsPlugin extends Plugin
 			tooltip = builder.toString();
 			return;
 		}
-		builder.append("</br>Olm: " + secondsToTime(raidTime - lowerTime));
+		builder.append("</br>Olm: ").append(secondsToTime(raidTime - lowerTime));
 		tooltip = builder.toString();
 	}
 }
