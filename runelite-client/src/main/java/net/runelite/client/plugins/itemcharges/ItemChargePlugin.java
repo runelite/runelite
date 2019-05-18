@@ -78,6 +78,7 @@ public class ItemChargePlugin extends Plugin
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
+	private static final int MAX_EXPLORER_RING_CHARGES = 30;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -325,7 +326,7 @@ public class ItemChargePlugin extends Plugin
 	private void updateExplorerRingCharges(final int value)
 	{
 		// Note: Varbit counts upwards. We count down from the maximum charges.
-		config.explorerRing(config.explorerRingMaxCharges() - value);
+		config.explorerRing(MAX_EXPLORER_RING_CHARGES - value);
 
 		if (config.showInfoboxes() && config.showExplorerRingCharges())
 		{

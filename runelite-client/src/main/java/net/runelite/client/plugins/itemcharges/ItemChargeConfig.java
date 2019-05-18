@@ -275,17 +275,6 @@ public interface ItemChargeConfig extends Config
 	void explorerRing(int explorerRing);
 
 	@ConfigItem(
-		keyName = "explorerRingMaxCharges",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int explorerRingMaxCharges()
-	{
-		return 30;
-	}
-
-	@ConfigItem(
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
