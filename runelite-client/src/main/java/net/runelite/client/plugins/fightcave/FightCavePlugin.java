@@ -50,7 +50,6 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.flexo.Flexo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -169,7 +168,6 @@ public class FightCavePlugin extends Plugin
 		overlayManager.add(waveOverlay);
 		overlayManager.add(jadOverlay);
 		overlayManager.add(timersOverlay);
-		Flexo.client = client;
 	}
 
 	@Override
