@@ -502,7 +502,7 @@ public interface EasyscapeConfig extends Config
 		name = "Mode",
 		description = "",
 		position = 38,
-		group = "Jewellery swapper"
+		group = "Miscellaneous swapper"
 	)
 	default EssenceMode getEssenceMode()
 	{
