@@ -463,11 +463,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				if (shiftModifier)
 				{
-					stripExceptFor("climb-up");
+					swap(client, "climb-up", option, target, true);
 				}
 				if (controlModifier)
 				{
-					stripExceptFor("climb-down");
+					swap(client, "climb-down", option, target, true);
 				}
 			}
 		}
@@ -619,24 +619,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap(client, "use", option, target, true);
-		}
-	}
-
-	private void stripExceptFor(String option)
-	{
-		MenuEntry[] newEntries = new MenuEntry[1];
-
-		for (MenuEntry entry : client.getMenuEntries())
-		{
-			if (entry.getOption().equalsIgnoreCase(option))
-			{
-				newEntries[0] = entry;
-			}
-		}
-
-		if (newEntries[0] != null)
-		{
-			client.setMenuEntries(newEntries);
 		}
 	}
 
