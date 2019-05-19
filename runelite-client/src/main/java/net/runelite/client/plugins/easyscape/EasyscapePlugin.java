@@ -382,38 +382,6 @@ public class EasyscapePlugin extends Plugin
 			swap(client, "Teleport", option, target);
 		}
 
-		if (config.getSwapEssencePouch())
-		{
-			if (isEssencePouch(target))
-			{
-				switch (config.getEssenceMode())
-				{
-					case RUNECRAFTING:
-						if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden())
-						{
-							swap(client, "Empty", option, target);
-						}
-						else
-						{
-							swap(client, "Fill", option, target);
-						}
-						break;
-					case ESSENCE_MINING:
-						if (widgetBankTitleBar == null || widgetBankTitleBar.isHidden())
-						{
-							swap(client, "Fill", option, target);
-						}
-						else
-						{
-							swap(client, "Empty", option, target);
-						}
-						break;
-					default:
-						break;
-				}
-			}
-		}
-
 		if (config.getGamesNecklace())
 		{
 			if (target.toLowerCase().contains("games necklace"))

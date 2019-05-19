@@ -31,7 +31,6 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.plugins.easyscape.util.DuelingRingMode;
-import net.runelite.client.plugins.easyscape.util.EssenceMode;
 import net.runelite.client.plugins.easyscape.util.GamesNecklaceMode;
 import net.runelite.client.plugins.easyscape.util.GloryMode;
 import net.runelite.client.plugins.easyscape.util.SkillsNecklaceMode;
@@ -485,37 +484,13 @@ public interface EasyscapeConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "swapEssencePounch",
-		name = "Swap Essence Pouch",
-		description = "",
-		position = 37,
-		group = "Miscellaneous swapper"
-	)
-	default boolean getSwapEssencePouch()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "essenceMode",
-		name = "Mode",
-		description = "",
-		position = 38,
-		group = "Miscellaneous swapper"
-	)
-	default EssenceMode getEssenceMode()
-	{
-		return EssenceMode.RUNECRAFTING;
-	}
-
 // ----------------------------------------------------------- //
 
 	@ConfigItem(
 		keyName = "swapGamesNecklace",
 		name = "Swap Games Necklace",
 		description = "",
-		position = 39,
+		position = 37,
 		group = "Jewellery swapper"
 	)
 	default boolean getGamesNecklace()
@@ -527,7 +502,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "gamesNecklaceMode",
 		name = "Mode",
 		description = "",
-		position = 40,
+		position = 38,
 		group = "Jewellery swapper"
 	)
 	default GamesNecklaceMode getGamesNecklaceMode()
@@ -539,7 +514,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapDuelingRing",
 		name = "Swap Dueling Ring",
 		description = "",
-		position = 41,
+		position = 39,
 		group = "Jewellery swapper"
 	)
 	default boolean getDuelingRing()
@@ -551,7 +526,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "duelingRingMode",
 		name = "Mode",
 		description = "",
-		position = 42,
+		position = 40,
 		group = "Jewellery swapper"
 	)
 	default DuelingRingMode getDuelingRingMode()
@@ -563,7 +538,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapGlory",
 		name = "Swap Glory",
 		description = "",
-		position = 43,
+		position = 41,
 		group = "Jewellery swapper"
 	)
 	default boolean getGlory()
@@ -575,7 +550,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "gloryMode",
 		name = "Mode",
 		description = "",
-		position = 44,
+		position = 42,
 		group = "Jewellery swapper"
 	)
 	default GloryMode getGloryMode()
@@ -587,7 +562,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapSkill",
 		name = "Swap Skill",
 		description = "",
-		position = 45,
+		position = 43,
 		group = "Jewellery swapper"
 	)
 	default boolean getSkillsNecklace()
@@ -599,7 +574,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "skillsnecklacemode",
 		name = "Mode",
 		description = "",
-		position = 46,
+		position = 44,
 		group = "Jewellery swapper"
 	)
 	default SkillsNecklaceMode getSkillsNecklaceMode()
@@ -611,7 +586,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapPassage",
 		name = "Swap Passage",
 		description = "",
-		position = 47,
+		position = 45,
 		group = "Jewellery swapper"
 	)
 	default boolean getNecklaceofPassage()
@@ -623,7 +598,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "necklaceofpassagemode",
 		name = "Mode",
 		description = "",
-		position = 48,
+		position = 46,
 		group = "Jewellery swapper"
 	)
 	default NecklaceOfPassageMode getNecklaceofPassageMode()
@@ -635,7 +610,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapDigsite",
 		name = "Swap Digsite",
 		description = "",
-		position = 49,
+		position = 47,
 		group = "Jewellery swapper"
 	)
 	default boolean getDigsitePendant()
@@ -647,7 +622,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "digsitependantmode",
 		name = "Mode",
 		description = "",
-		position = 50,
+		position = 48,
 		group = "Jewellery swapper"
 	)
 	default DigsitePendantMode getDigsitePendantMode()
@@ -659,7 +634,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapCombat",
 		name = "Swap Combat",
 		description = "",
-		position = 51,
+		position = 49,
 		group = "Jewellery swapper"
 	)
 	default boolean getCombatBracelet()
@@ -671,7 +646,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "combatbraceletmode",
 		name = "Mode",
 		description = "",
-		position = 52,
+		position = 50,
 		group = "Jewellery swapper"
 	)
 	default CombatBraceletMode getCombatBraceletMode()
@@ -683,7 +658,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapslayer",
 		name = "Swap slayer",
 		description = "",
-		position = 53,
+		position = 51,
 		group = "Jewellery swapper"
 	)
 	default boolean getSlayerRing()
@@ -695,7 +670,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "slayerringmode",
 		name = "Mode",
 		description = "",
-		position = 54,
+		position = 52,
 		group = "Jewellery swapper"
 	)
 	default SlayerRingMode getSlayerRingMode()
@@ -707,7 +682,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapburning",
 		name = "Swap burning",
 		description = "",
-		position = 55,
+		position = 53,
 		group = "Jewellery swapper"
 	)
 	default boolean getBurningAmulet()
@@ -719,7 +694,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "burningamuletmode",
 		name = "Mode",
 		description = "",
-		position = 56,
+		position = 54,
 		group = "Jewellery swapper"
 	)
 	default BurningAmuletMode getBurningAmuletMode()
@@ -731,7 +706,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapxeric",
 		name = "Swap xeric",
 		description = "",
-		position = 57,
+		position = 55,
 		group = "Jewellery swapper"
 	)
 	default boolean getXericsTalisman()
@@ -743,7 +718,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "xericstalismanmode",
 		name = "Mode",
 		description = "",
-		position = 58,
+		position = 56,
 		group = "Jewellery swapper"
 	)
 	default XericsTalismanMode getXericsTalismanMode()
@@ -755,7 +730,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapwealth",
 		name = "Swap wealth",
 		description = "",
-		position = 59,
+		position = 57,
 		group = "Jewellery swapper"
 	)
 	default boolean getRingofWealth()
@@ -767,7 +742,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "ringofwealthmode",
 		name = "Mode",
 		description = "",
-		position = 60,
+		position = 58,
 		group = "Jewellery swapper"
 	)
 	default RingOfWealthMode getRingofWealthMode()
@@ -781,7 +756,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapArdougneCape",
 		name = "Swap Ardougne Cape",
 		description = "Enables swapping of teleport and wear.",
-		position = 61,
+		position = 59,
 		group = "Equipment swapper"
 	)
 	default boolean getSwapArdougneCape()
@@ -793,7 +768,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapConstructionCape",
 		name = "Swap Construction Cape",
 		description = "Enables swapping of teleport and wear.",
-		position = 62,
+		position = 60,
 		group = "Equipment swapper"
 	)
 	default boolean getSwapConstructionCape()
@@ -805,7 +780,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapCraftingCape",
 		name = "Swap Crafting Cape",
 		description = "Enables swapping of teleport and wear.",
-		position = 63,
+		position = 61,
 		group = "Equipment swapper"
 	)
 	default boolean getSwapCraftingCape()
@@ -817,7 +792,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapMagicCape",
 		name = "Swap Magic Cape",
 		description = "Enables swapping of spellbook and wear.",
-		position = 64,
+		position = 62,
 		group = "Equipment swapper"
 	)
 	default boolean getSwapMagicCape()
@@ -829,7 +804,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapExplorersRing",
 		name = "Swap Explorers Ring",
 		description = "Enables swapping of spellbook and wear.",
-		position = 65,
+		position = 63,
 		group = "Equipment swapper"
 	)
 	default boolean getSwapExplorersRing()
