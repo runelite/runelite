@@ -45,7 +45,7 @@ public class ShiftWalkerInputListener implements KeyListener
 	{
 		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
-			plugin.setHotKeyPressed(true);
+			plugin.startPrioritizing();
 		}
 	}
 
@@ -54,7 +54,7 @@ public class ShiftWalkerInputListener implements KeyListener
 	{
 		if (event.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
-			plugin.setHotKeyPressed(false);
+			plugin.stopPrioritizing();
 		}
 	}
 }

@@ -26,11 +26,12 @@ package net.runelite.client.plugins.shiftwalker;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+// import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("shiftwalkhere")
 public interface ShiftWalkerConfig extends Config
 {
+/*
 
 	@ConfigItem(
 		keyName = "shiftWalkEverything",
@@ -62,5 +63,6 @@ public interface ShiftWalkerConfig extends Config
 	{
 		return true;
 	}
+*/
 
 }

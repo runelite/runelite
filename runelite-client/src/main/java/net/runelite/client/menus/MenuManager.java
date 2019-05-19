@@ -31,8 +31,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +62,7 @@ public class MenuManager
 	 */
 	private static final int IDX_LOWER = 4;
 	private static final int IDX_UPPER = 8;
+	private static final Pattern LEVEL_PATTERN = Pattern.compile("\\(level-[0-9]*\\)");
 
 	private final Client client;
 	private final EventBus eventBus;
@@ -69,6 +72,7 @@ public class MenuManager
 	//Used to manage custom non-player menu options
 	private final Multimap<Integer, WidgetMenuOption> managedMenuOptions = HashMultimap.create();
 	private final Set<String> npcMenuOptions = new HashSet<>();
+	private final Map<String, Set<String>> priorityEntries = new HashMap<>();
 
 	@Inject
 	private MenuManager(Client client, EventBus eventBus)
@@ -119,12 +123,12 @@ public class MenuManager
 	{
 		int widgetId = event.getActionParam1();
 		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
+		MenuEntry[] menuEntries = client.getMenuEntries();
 
 		for (WidgetMenuOption currentMenu : options)
 		{
 			if (!menuContainsCustomMenu(currentMenu))//Don't add if we have already added it to this widget
 			{
-				MenuEntry[] menuEntries = client.getMenuEntries();
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 
 				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
@@ -135,6 +139,49 @@ public class MenuManager
 
 				client.setMenuEntries(menuEntries);
 			}
+		}
+
+		List<MenuEntry> menuEntryList = Arrays.asList(menuEntries);
+		boolean shouldPurge = menuEntryList.stream().anyMatch(m ->
+			{
+				String opt = Text.standardize(m.getOption());
+				String tgt = Text.standardize(m.getTarget());
+				tgt = LEVEL_PATTERN.matcher(tgt).replaceAll("").trim();
+
+				if (!priorityEntries.containsKey(opt))
+				{
+					return false;
+				}
+
+				return priorityEntries.get(opt).contains(tgt);
+			});
+
+		if (shouldPurge)
+		{
+			client.setMenuEntries(menuEntryList.stream().filter(m ->
+				{
+					String opt = Text.standardize(m.getOption());
+					String tgt = Text.standardize(m.getTarget());
+					tgt = LEVEL_PATTERN.matcher(tgt).replaceAll("").trim();
+
+					if (opt.equals("cancel"))
+					{
+						return true;
+					}
+
+					if (!priorityEntries.containsKey(opt))
+					{
+						return false;
+					}
+
+					// Gets overridden by actor names
+					if (opt.equals("walk here"))
+					{
+						return true;
+					}
+
+					return priorityEntries.get(opt).contains(tgt);
+				}).toArray(MenuEntry[]::new));
 		}
 	}
 
@@ -306,5 +353,39 @@ public class MenuManager
 		}
 
 		return index;
+	}
+
+	/**
+	 * Adds to the map of menu entries which when present, will remove all entries except for this one
+	 */
+	public void addPriorityEntry(String option, String target)
+	{
+		option = Text.standardize(option);
+		target = Text.standardize(target);
+
+		Set<String> targets = priorityEntries.getOrDefault(option, new HashSet<>());
+
+		targets.add(target);
+
+		priorityEntries.put(option, targets);
+	}
+
+	public void removePriorityEntry(String option, String target)
+	{
+		option = Text.standardize(option);
+		target = Text.standardize(target);
+
+		Set<String> targets = priorityEntries.getOrDefault(option, new HashSet<>());
+
+		targets.remove(target);
+
+		if (targets.isEmpty())
+		{
+			priorityEntries.remove(option);
+		}
+		else
+		{
+			priorityEntries.put(option, targets);
+		}
 	}
 }

@@ -29,7 +29,6 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.plugins.easyscape.util.DuelingRingMode;
-import net.runelite.client.plugins.easyscape.util.EssenceMode;
 import net.runelite.client.plugins.easyscape.util.GamesNecklaceMode;
 import net.runelite.client.plugins.easyscape.util.GloryMode;
 
@@ -486,30 +485,6 @@ public interface EasyscapeConfig extends Config
 	default boolean getSwapPuro()
 	{
 		return false;
-	}
-
-	@ConfigItem(
-		keyName = "swapEssencePounch",
-		name = "Swap Essence Pouch",
-		description = "",
-		position = 38,
-		group = "Miscellaneous swapper"
-	)
-	default boolean getSwapEssencePouch()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "essenceMode",
-		name = "Mode",
-		description = "",
-		position = 39,
-		group = "Miscellaneous swapper"
-	)
-	default EssenceMode getEssenceMode()
-	{
-		return EssenceMode.RUNECRAFTING;
 	}
 
 	@ConfigItem(

@@ -624,33 +624,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	private int searchIndex(MenuEntry[] entries, String option, String target, boolean strict)
-	{
-		for (int i = entries.length - 1; i >= 0; i--)
-		{
-			MenuEntry entry = entries[i];
-			String entryOption = Text.removeTags(entry.getOption()).toLowerCase();
-			String entryTarget = Text.removeTags(entry.getTarget()).toLowerCase();
-
-			if (strict)
-			{
-				if (entryOption.equals(option) && entryTarget.equals(target))
-				{
-					return i;
-				}
-			}
-			else
-			{
-				if (entryOption.contains(option.toLowerCase()) && entryTarget.equals(target))
-				{
-					return i;
-				}
-			}
-		}
-
-		return -1;
-	}
-
 	private void removeShiftClickCustomizationMenus()
 	{
 		menuManager.removeManagedCustomMenu(FIXED_INVENTORY_TAB_CONFIGURE);

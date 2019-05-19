@@ -210,16 +210,17 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
 		{
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+			// Can't insert into abstract list you get from Arrays.asList()
+			List<MenuEntry> menuEntries = new ArrayList<>(Arrays.asList(client.getMenuEntries()));
 
-			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			MenuEntry menuEntry = new MenuEntry();
 
 			menuEntry.setOption(MARK);
 			menuEntry.setTarget(event.getTarget());
 			menuEntry.setType(MenuAction.CANCEL.getId());
 
-			client.setMenuEntries(menuEntries);
+			menuEntries.add(menuEntries.size() - 1, menuEntry);
+			client.setMenuEntries(menuEntries.toArray(new MenuEntry[0]));
 		}
 	}
 
