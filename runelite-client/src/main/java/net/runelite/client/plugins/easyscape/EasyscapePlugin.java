@@ -390,7 +390,7 @@ public class EasyscapePlugin extends Plugin
 			swap(client, config.getDuelingRingMode().toString(), option, target);
 		}
 
-		if (config.getGlory() && target.contains("amulet of glory") || target.contains("amulet of eternal glory")))
+		if (config.getGlory() && target.contains("amulet of glory") || target.contains("amulet of eternal glory"))
 		{
 			swap(client, config.getGloryMode().toString(), option, target);
 		}
