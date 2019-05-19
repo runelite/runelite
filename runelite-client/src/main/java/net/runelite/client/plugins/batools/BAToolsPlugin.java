@@ -188,21 +188,20 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 			}
 			pastCall = callWidget.getTextColor();
 		}
-		if (inGameBit == 1)
+		if (inGameBit == 1 && config.defTimer())
 		{
 			if (tickNum > 9)
 			{
 				tickNum = 0;
 			}
+
 			if (counter == null)
 			{
 				addCounter();
 			}
 			counter.setCount(tickNum);
-			if (config.defTimer())
-			{
-				tickNum++;
-			}
+
+			tickNum++;
 		}
 
 		Widget weapon = client.getWidget(593, 1);
