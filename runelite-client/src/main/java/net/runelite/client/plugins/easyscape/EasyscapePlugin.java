@@ -378,8 +378,8 @@ public class EasyscapePlugin extends Plugin
 		if (target.contains("explorer's ring") && config.getSwapExplorersRing())
 		{
 			swap(client, "Teleport", option, target);
-    }
-    
+		}
+
 		if (config.getGamesNecklace() && target.contains("games necklace"))
 		{
 			swap(client, config.getGamesNecklaceMode().toString(), option, target);
@@ -394,7 +394,7 @@ public class EasyscapePlugin extends Plugin
 		{
 			swap(client, config.getGloryMode().toString(), option, target);
 		}
-    
+
 		if (config.getSkillsNecklace() && target.contains("skills necklace"))
 			{
 				swap(client, config.getSkillsNecklaceMode().toString(), option, target);
@@ -404,12 +404,12 @@ public class EasyscapePlugin extends Plugin
 			{
 				swap(client, config.getNecklaceofPassageMode().toString(), option, target);
 			}
-      
+
 		if (config.getDigsitePendant() && target.contains("digsite pendant"))
 			{
 				swap(client, config.getDigsitePendantMode().toString(), option, target);
 			}
-      
+
 		if (config.getCombatBracelet() && target.contains("combat bracelet"))
 			{
 				swap(client, config.getCombatBraceletMode().toString(), option, target);
