@@ -32,7 +32,13 @@ import net.runelite.client.plugins.easyscape.util.DuelingRingMode;
 import net.runelite.client.plugins.easyscape.util.EssenceMode;
 import net.runelite.client.plugins.easyscape.util.GamesNecklaceMode;
 import net.runelite.client.plugins.easyscape.util.GloryMode;
-
+import net.runelite.client.plugins.easyscape.util.SkillsNecklaceMode;
+import net.runelite.client.plugins.easyscape.util.NecklaceOfPassageMode;
+import net.runelite.client.plugins.easyscape.util.DigsitePendantMode;
+import net.runelite.client.plugins.easyscape.util.CombatBraceletMode;
+import net.runelite.client.plugins.easyscape.util.SlayerRingMode;
+import net.runelite.client.plugins.easyscape.util.BurningAmuletMode;
+import net.runelite.client.plugins.easyscape.util.XericsTalismanMode;
 
 @ConfigGroup("easyscape")
 public interface EasyscapeConfig extends Config
@@ -441,22 +447,10 @@ public interface EasyscapeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapArdougneCape",
-		name = "Swap Ardougne Cape",
-		description = "Enables swapping of teleport and wear.",
-		position = 34,
-		group = "Miscellaneous swapper"
-	)
-	default boolean getSwapArdougneCape()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "swapSawmill",
 		name = "Swap Sawmill Operator",
 		description = "Makes Buy-plank the default option on the sawmill operator.",
-		position = 35,
+		position = 34,
 		group = "Miscellaneous swapper"
 	)
 	default boolean getSwapSawmill()
@@ -468,7 +462,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapSawmillPlanks",
 		name = "Swap Buy Planks",
 		description = "Makes Buy All the default option in buy planks.",
-		position = 36,
+		position = 35,
 		group = "Miscellaneous swapper"
 	)
 	default boolean getSwapSawmillPlanks()
@@ -480,7 +474,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapPuroPuro",
 		name = "Swap Puro Puro Wheat",
 		description = "",
-		position = 37,
+		position = 36,
 		group = "Miscellaneous swapper"
 	)
 	default boolean getSwapPuro()
@@ -492,7 +486,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapEssencePounch",
 		name = "Swap Essence Pouch",
 		description = "",
-		position = 38,
+		position = 37,
 		group = "Miscellaneous swapper"
 	)
 	default boolean getSwapEssencePouch()
@@ -504,20 +498,22 @@ public interface EasyscapeConfig extends Config
 		keyName = "essenceMode",
 		name = "Mode",
 		description = "",
-		position = 39,
-		group = "Miscellaneous swapper"
+		position = 38,
+		group = "Jewellery swapper"
 	)
 	default EssenceMode getEssenceMode()
 	{
 		return EssenceMode.RUNECRAFTING;
 	}
 
+// ----------------------------------------------------------- //
+
 	@ConfigItem(
 		keyName = "swapGamesNecklace",
 		name = "Swap Games Necklace",
 		description = "",
-		position = 40,
-		group = "Miscellaneous swapper"
+		position = 39,
+		group = "Jewellery swapper"
 	)
 	default boolean getGamesNecklace()
 	{
@@ -528,8 +524,8 @@ public interface EasyscapeConfig extends Config
 		keyName = "gamesNecklaceMode",
 		name = "Mode",
 		description = "",
-		position = 41,
-		group = "Miscellaneous swapper"
+		position = 40,
+		group = "Jewellery swapper"
 	)
 	default GamesNecklaceMode getGamesNecklaceMode()
 	{
@@ -540,8 +536,8 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapDuelingRing",
 		name = "Swap Dueling Ring",
 		description = "",
-		position = 42,
-		group = "Miscellaneous swapper"
+		position = 41,
+		group = "Jewellery swapper"
 	)
 	default boolean getDuelingRing()
 	{
@@ -552,8 +548,8 @@ public interface EasyscapeConfig extends Config
 		keyName = "duelingRingMode",
 		name = "Mode",
 		description = "",
-		position = 43,
-		group = "Miscellaneous swapper"
+		position = 42,
+		group = "Jewellery swapper"
 	)
 	default DuelingRingMode getDuelingRingMode()
 	{
@@ -564,8 +560,8 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapGlory",
 		name = "Swap Glory",
 		description = "",
-		position = 44,
-		group = "Miscellaneous swapper"
+		position = 43,
+		group = "Jewellery swapper"
 	)
 	default boolean getGlory()
 	{
@@ -576,11 +572,241 @@ public interface EasyscapeConfig extends Config
 		keyName = "gloryMode",
 		name = "Mode",
 		description = "",
-		position = 45,
-		group = "Miscellaneous swapper"
+		position = 44,
+		group = "Jewellery swapper"
 	)
 	default GloryMode getGloryMode()
 	{
 		return GloryMode.EDGEVILLE;
+	}
+
+	@ConfigItem(
+		keyName = "swapSkill",
+		name = "Swap Skill",
+		description = "",
+		position = 45,
+		group = "Jewellery swapper"
+	)
+	default boolean getSkillsNecklace()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "skillsnecklacemode",
+		name = "Mode",
+		description = "",
+		position = 46,
+		group = "Jewellery swapper"
+	)
+	default SkillsNecklaceMode getSkillsNecklaceMode()
+	{
+		return SkillsNecklaceMode.FARMING_GUILD;
+	}
+	
+	@ConfigItem(
+		keyName = "swapPassage",
+		name = "Swap Passage",
+		description = "",
+		position = 47,
+		group = "Jewellery swapper"
+	)
+	default boolean getNecklaceofPassage()
+	{
+		return false;
+	}
+	
+	@ConfigItem(
+		keyName = "necklaceofpassagemode",
+		name = "Mode",
+		description = "",
+		position = 48,
+		group = "Jewellery swapper"
+	)
+	default NecklaceOfPassageMode getNecklaceofPassageMode()
+	{
+		return NecklaceOfPassageMode.WIZARDS_TOWER;
+	}
+	
+	@ConfigItem(
+		keyName = "swapDigsite",
+		name = "Swap Digsite",
+		description = "",
+		position = 49,
+		group = "Jewellery swapper"
+	)
+	default boolean getDigsitePendant()
+	{
+		return false;
+	}
+	
+	@ConfigItem(
+		keyName = "digsitependantmode",
+		name = "Mode",
+		description = "",
+		position = 50,
+		group = "Jewellery swapper"
+	)
+	default DigsitePendantMode getDigsitePendantMode()
+	{
+		return DigsitePendantMode.FOSSIL_ISLAND;
+	}	
+
+	@ConfigItem(
+		keyName = "swapCombat",
+		name = "Swap Combat",
+		description = "",
+		position = 51,
+		group = "Jewellery swapper"
+	)
+	default boolean getCombatBracelet()
+	{
+		return false;
+	}
+	
+	@ConfigItem(
+		keyName = "combatbraceletmode",
+		name = "Mode",
+		description = "",
+		position = 52,
+		group = "Jewellery swapper"
+	)
+	default CombatBraceletMode getCombatBraceletMode()
+	{
+		return CombatBraceletMode.WARRIORS_GUILD;
+	}	
+
+	@ConfigItem(
+		keyName = "swapslayer",
+		name = "Swap slayer",
+		description = "",
+		position = 53,
+		group = "Jewellery swapper"
+	)
+	default boolean getSlayerRing()
+	{
+		return false;
+	}
+	
+	@ConfigItem(
+		keyName = "slayerringmode",
+		name = "Mode",
+		description = "",
+		position = 54,
+		group = "Jewellery swapper"
+	)
+	default SlayerRingMode getSlayerRingMode()
+	{
+		return SlayerRingMode.SLAYER_TOWER;
+	}	
+	
+	@ConfigItem(
+		keyName = "swapburning",
+		name = "Swap burning",
+		description = "",
+		position = 55,
+		group = "Jewellery swapper"
+	)
+	default boolean getBurningAmulet()
+	{
+		return false;
+	}
+	
+	@ConfigItem(
+		keyName = "burningamuletmode",
+		name = "Mode",
+		description = "",
+		position = 56,
+		group = "Jewellery swapper"
+	)
+	default BurningAmuletMode getBurningAmuletMode()
+	{
+		return BurningAmuletMode.BANDIT_CAMP;
+	}	
+
+	@ConfigItem(
+		keyName = "swapxeric",
+		name = "Swap xeric",
+		description = "",
+		position = 57,
+		group = "Jewellery swapper"
+	)
+	default boolean getXericsTalisman()
+	{
+		return false;
+	}
+	
+	@ConfigItem(
+		keyName = "xericstalismanmode",
+		name = "Mode",
+		description = "",
+		position = 58,
+		group = "Jewellery swapper"
+	)
+	default XericsTalismanMode getXericsTalismanMode()
+	{
+		return XericsTalismanMode.XERICS_LOOKOUT;
+	}	
+	
+// ----------------------------------------------------------- //
+	
+	@ConfigItem(
+		keyName = "swapArdougneCape",
+		name = "Swap Ardougne Cape",
+		description = "Enables swapping of teleport and wear.",
+		position = 59,
+		group = "Equipment swapper"
+	)
+	default boolean getSwapArdougneCape()
+	{
+		return false;
+	}	
+	
+	@ConfigItem(
+		keyName = "swapConstructionCape",
+		name = "Swap Construction Cape",
+		description = "Enables swapping of teleport and wear.",
+		position = 60,
+		group = "Equipment swapper"
+	)
+	default boolean getSwapConstructionCape()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapCraftingCape",
+		name = "Swap Crafting Cape",
+		description = "Enables swapping of teleport and wear.",
+		position = 61,
+		group = "Equipment swapper"
+	)
+	default boolean getSwapCraftingCape()
+	{
+		return true;
+	}	
+	
+	@ConfigItem(
+		keyName = "swapMagicCape",
+		name = "Swap Magic Cape",
+		description = "Enables swapping of spellbook and wear.",
+		position = 62,
+		group = "Equipment swapper"
+	)
+	default boolean getSwapMagicCape()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapExplorersRing",
+		name = "Swap Explorers Ring",
+		description = "Enables swapping of spellbook and wear.",
+		position = 63,
+		group = "Equipment swapper"
+	)
+	default boolean getExplorersRing()
+	{
+		return true;
 	}
 }

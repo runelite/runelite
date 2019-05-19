@@ -359,6 +359,26 @@ public class EasyscapePlugin extends Plugin
 			swap(client, "Kandarin Monastery", option, target);
 			swap(client, "Monastery Teleport", option, target);
 		}
+		
+		if (target.toLowerCase().contains("crafting cape") && config.getSwapCraftingCape())
+		{
+			swap(client, "Teleport", option, target);
+		}
+
+		if (target.toLowerCase().contains("construct. cape") && config.getSwapConstructionCape())
+		{
+			swap(client, "Tele to poh", option, target);
+		}
+
+		if (target.toLowerCase().contains("magic cape") && config.getSwapMagicCape())
+		{
+			swap(client, "Spellbook", option, target);
+		}
+
+		if (target.toLowerCase().contains("explorer's ring") && config.getSwapMagicCape())
+		{
+			swap(client, "Teleport", option, target);
+		}
 
 		if (config.getSwapEssencePouch())
 		{
@@ -415,6 +435,62 @@ public class EasyscapePlugin extends Plugin
 				swap(client, config.getGloryMode().toString(), option, target);
 			}
 		}
+
+		if (config.getSkillsNecklace())
+		{
+			if (target.toLowerCase().contains("skills necklace"))
+			{
+				swap(client, config.getSkillsNecklaceMode().toString(), option, target);
+			}
+		}
+		
+		if (config.getNecklaceofPassage())
+		{
+			if (target.toLowerCase().contains("necklace of passage"))
+			{
+				swap(client, config.getNecklaceofPassageMode().toString(), option, target);
+			}
+		}
+
+		if (config.getDigsitePendant())
+		{
+			if (target.toLowerCase().contains("digsite pendant"))
+			{
+				swap(client, config.getDigsitePendantMode().toString(), option, target);
+			}
+		}	
+
+		if (config.getCombatBracelet())
+		{
+			if (target.toLowerCase().contains("combat bracelet"))
+			{
+				swap(client, config.getCombatBraceletMode().toString(), option, target);
+			}
+		}
+
+		if (config.getSlayerRing())
+		{
+			if (target.toLowerCase().contains("slayer ring"))
+			{
+				swap(client, config.getSlayerRingMode().toString(), option, target);
+			}
+		}	
+
+		if (config.getBurningAmulet())
+		{
+			if (target.toLowerCase().contains("burning amulet"))
+			{
+				swap(client, config.getBurningAmuletMode().toString(), option, target);
+			}
+		}	
+
+		if (config.getXericsTalisman())
+		{
+			if (target.toLowerCase().contains("xeric's talisman"))
+			{
+				swap(client, config.getXericsTalismanMode().toString(), option, target);
+			}
+		}			
 	}
 
 	private void delete(int target)
