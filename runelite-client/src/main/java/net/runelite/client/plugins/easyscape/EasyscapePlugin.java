@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, Owain van Brakel <https://github.com/Owain94>
+ * Copyright (c) 2019, Alan Baumgartner <https://github.com/alanbaumgartner>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,15 +27,18 @@ package net.runelite.client.plugins.easyscape;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import static net.runelite.api.MenuAction.WALK;
 import net.runelite.api.MenuEntry;
+import static net.runelite.api.ObjectID.PORTAL_4525;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -50,49 +54,30 @@ import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Easyscape",
-	description = "Easyscape.",
-	tags = {"Easyscape"},
-	enabledByDefault = false,
 	type = PluginType.UTILITY
 )
-
-@Slf4j
 public class EasyscapePlugin extends Plugin
 {
-
 	private static final int PURO_PURO_REGION_ID = 10307;
-	private static final int HOUSE_REGION_ID = 7513;
 
 	private MenuEntry[] entries;
+	private boolean inHouse = false;
 
 	@Inject
 	private Client client;
 
 	@Inject
-	private EasyscapePluginConfig config;
+	private EasyscapeConfig config;
 
 	@Provides
-	EasyscapePluginConfig provideConfig(ConfigManager configManager)
+	EasyscapeConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(EasyscapePluginConfig.class);
-	}
-
-	@Override
-	public void startUp()
-	{
-		log.debug("Easyscape Started.");
-	}
-
-	@Override
-	public void shutDown()
-	{
-		log.debug("Easyscape Stopped.");
+		return configManager.getConfig(EasyscapeConfig.class);
 	}
 
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
@@ -111,17 +96,159 @@ public class EasyscapePlugin extends Plugin
 
 		entries = client.getMenuEntries();
 
-		if (config.getRemoveExamine())
-		{
-			for (int i = entries.length - 1; i >= 0; i--)
+		Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+
+			if (config.getWithdrawOne())
 			{
-				if (entries[i].getOption().equals("Examine"))
+				for (String item : config.getWithdrawOneItems().split(","))
 				{
-					entries = ArrayUtils.remove(entries, i);
-					i--;
+					item = item.trim();
+					if (target.equalsIgnoreCase(item))
+					{
+						swap(client, "Withdraw-1", option, target);
+						swap(client, "Deposit-1", option, target);
+					}
 				}
 			}
-			client.setMenuEntries(entries);
+
+			if (config.getWithdrawFive())
+			{
+				for (String item : config.getWithdrawFiveItems().split(","))
+				{
+					item = item.trim();
+					if (target.equalsIgnoreCase(item))
+					{
+						swap(client, "Withdraw-5", option, target);
+						swap(client, "Deposit-5", option, target);
+					}
+				}
+			}
+
+			if (config.getWithdrawTen())
+			{
+				for (String item : config.getWithdrawTenItems().split(","))
+				{
+					item = item.trim();
+					if (target.equalsIgnoreCase(item))
+					{
+						swap(client, "Withdraw-10", option, target);
+						swap(client, "Deposit-10", option, target);
+					}
+				}
+			}
+
+			if (config.getWithdrawX())
+			{
+				for (String item : config.getWithdrawXItems().split(","))
+				{
+					item = item.trim();
+					if (target.equalsIgnoreCase(item))
+					{
+						swap(client, "Withdraw-" + config.getWithdrawXAmount(), option, target);
+						swap(client, "Deposit-" + config.getWithdrawXAmount(), option, target);
+					}
+				}
+			}
+
+			if (config.getWithdrawAll())
+			{
+				for (String item : config.getWithdrawAllItems().split(","))
+				{
+					item = item.trim();
+					if (target.equalsIgnoreCase(item))
+					{
+						swap(client, "Withdraw-All", option, target);
+						swap(client, "Deposit-All", option, target);
+					}
+				}
+			}
+
+		if (config.getSwapBuyOne() && !config.getBuyOneItems().equals(""))
+		{
+			for (String item : config.getBuyOneItems().split(","))
+			{
+				if (target.equalsIgnoreCase(item.trim()))
+				{
+					swap(client, "Buy 1", option, target);
+				}
+			}
+		}
+
+		if (config.getSwapBuyFive() && !config.getBuyFiveItems().equals(""))
+		{
+			for (String item : config.getBuyFiveItems().split(","))
+			{
+				if (target.equalsIgnoreCase(item.trim()))
+				{
+					swap(client, "Buy 5", option, target);
+				}
+			}
+		}
+
+		if (config.getSwapBuyTen() && !config.getBuyTenItems().equals(""))
+		{
+			for (String item : config.getBuyTenItems().split(","))
+			{
+				if (target.equalsIgnoreCase(item.trim()))
+				{
+					swap(client, "Buy 10", option, target);
+				}
+			}
+		}
+
+		if (config.getSwapBuyFifty() && !config.getBuyFiftyItems().equals(""))
+		{
+			for (String item : config.getBuyFiftyItems().split(","))
+			{
+				if (target.equalsIgnoreCase(item.trim()))
+				{
+					swap(client, "Buy 50", option, target);
+				}
+			}
+		}
+
+		if (config.getSwapSellOne() && !config.getSellOneItems().equals(""))
+		{
+			for (String item : config.getSellOneItems().split(","))
+			{
+				if (target.equalsIgnoreCase(item.trim()))
+				{
+					swap(client, "Sell 1", option, target);
+				}
+			}
+		}
+
+		if (config.getSwapSellFive() && !config.getSellFiveItems().equals(""))
+		{
+			for (String item : config.getSellFiveItems().split(","))
+			{
+				if (target.equalsIgnoreCase(item.trim()))
+				{
+					swap(client, "Sell 5", option, target);
+				}
+			}
+		}
+
+		if (config.getSwapSellTen() && !config.getSellTenItems().equals(""))
+		{
+			for (String item : config.getSellTenItems().split(","))
+			{
+				if (target.equalsIgnoreCase(item.trim()))
+				{
+					swap(client, "Sell 10", option, target);
+				}
+			}
+		}
+
+		if (config.getSwapSellFifty() && !config.getSellFiftyItems().equals(""))
+		{
+			for (String item : config.getSellFiftyItems().split(","))
+			{
+				if (target.equalsIgnoreCase(item.trim()))
+				{
+					swap(client, "Sell 50", option, target);
+				}
+			}
 		}
 
 		if (config.getRemoveObjects() && !config.getRemovedObjects().equals(""))
@@ -129,7 +256,11 @@ public class EasyscapePlugin extends Plugin
 			for (String removed : config.getRemovedObjects().split(","))
 			{
 				removed = removed.trim();
-				if (target.contains("->"))
+				if (target.contains("(") && target.split(" \\(")[0].equalsIgnoreCase(removed))
+				{
+					delete(event.getIdentifier());
+				}
+				else if (target.contains("->"))
 				{
 					String trimmed = target.split("->")[1].trim();
 					if (trimmed.length() >= removed.length() && trimmed.substring(0, removed.length()).equalsIgnoreCase(removed))
@@ -138,7 +269,7 @@ public class EasyscapePlugin extends Plugin
 						break;
 					}
 				}
-				if (target.length() >= removed.length() && target.substring(0, removed.length()).equalsIgnoreCase(removed))
+				else if (target.length() >= removed.length() && target.substring(0, removed.length()).equalsIgnoreCase(removed))
 				{
 					delete(event.getIdentifier());
 					break;
@@ -152,7 +283,6 @@ public class EasyscapePlugin extends Plugin
 			{
 				MenuEntry menuEntry = entries[entries.length - 1];
 				menuEntry.setType(MenuAction.WALK.getId() + MENU_ACTION_DEPRIORITIZE_OFFSET);
-				client.setMenuEntries(entries);
 			}
 			else if (option.equalsIgnoreCase("examine"))
 			{
@@ -164,13 +294,12 @@ public class EasyscapePlugin extends Plugin
 			}
 		}
 
-		if (config.getEasyConstruction() && !config.getConstructionItems().equals(""))
+		if (config.getEasyConstruction() && !config.getConstructionItems().equals("") && inHouse)
 		{
 			if (event.getType() == WALK.getId())
 			{
 				MenuEntry menuEntry = entries[entries.length - 1];
 				menuEntry.setType(MenuAction.WALK.getId() + MENU_ACTION_DEPRIORITIZE_OFFSET);
-				client.setMenuEntries(entries);
 			}
 
 			swap(client, "Build", option, target);
@@ -193,17 +322,6 @@ public class EasyscapePlugin extends Plugin
 			client.setMenuEntries(entries);
 		}
 
-		if (config.getSwapShop() && !config.getSwappedItems().equals(""))
-		{
-			for (String item : config.getSwappedItems().split(","))
-			{
-				if (target.equalsIgnoreCase(item.trim()))
-				{
-					swap(client, "Buy 50", option, target);
-				}
-			}
-		}
-
 		if (config.getSwapSmithing())
 		{
 			if (option.equalsIgnoreCase("Smith 1"))
@@ -221,11 +339,6 @@ public class EasyscapePlugin extends Plugin
 			swap(client, "Tan All", option, target);
 		}
 
-		if (config.getSwapCrafting() && option.equalsIgnoreCase("Make-1"))
-		{
-			swap(client, "Make-All", option, target);
-		}
-
 		if (config.getSwapSawmill() && target.equalsIgnoreCase("Sawmill operator"))
 		{
 			swap(client, "Buy-plank", option, target);
@@ -236,12 +349,7 @@ public class EasyscapePlugin extends Plugin
 			swap(client, "Buy All", option, target);
 		}
 
-		if (config.getSwapStairs() && option.equalsIgnoreCase("Climb Stairs"))
-		{
-			swap(client, "Climb Up Stairs", option, target);
-		}
-
-		if (option.equalsIgnoreCase("Clear-All") && target.equalsIgnoreCase("Bank Filler"))
+		if (option.equalsIgnoreCase("Clear-All") && target.equalsIgnoreCase("bank Filler"))
 		{
 			swap(client, "Clear", option, target);
 		}
@@ -256,7 +364,6 @@ public class EasyscapePlugin extends Plugin
 		{
 			if (isEssencePouch(target))
 			{
-				Widget widgetBankTitleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 				switch (config.getEssenceMode())
 				{
 					case RUNECRAFTING:
@@ -289,26 +396,7 @@ public class EasyscapePlugin extends Plugin
 		{
 			if (target.toLowerCase().contains("games necklace"))
 			{
-				switch (config.getGamesNecklaceMode())
-				{
-					case BURTHORPE:
-						swap(client, GamesNecklaceMode.BURTHORPE.toString(), option, target);
-						break;
-					case BARBARIAN_OUTPOST:
-						swap(client, GamesNecklaceMode.BARBARIAN_OUTPOST.toString(), option, target);
-						break;
-					case CORPOREAL_BEAST:
-						swap(client, GamesNecklaceMode.CORPOREAL_BEAST.toString(), option, target);
-						break;
-					case TEARS_OF_GUTHIX:
-						swap(client, GamesNecklaceMode.TEARS_OF_GUTHIX.toString(), option, target);
-						break;
-					case WINTERTODT:
-						swap(client, GamesNecklaceMode.WINTERTODT.toString(), option, target);
-						break;
-					default:
-						break;
-				}
+				swap(client, config.getGamesNecklaceMode().toString(), option, target);
 			}
 		}
 
@@ -316,44 +404,7 @@ public class EasyscapePlugin extends Plugin
 		{
 			if (target.toLowerCase().contains("ring of dueling"))
 			{
-				switch (config.getDuelingRingMode())
-				{
-					case DUEL_ARENA:
-						swap(client, DuelingRingMode.DUEL_ARENA.toString(), option, target);
-						break;
-					case CASTLE_WARS:
-						swap(client, DuelingRingMode.CASTLE_WARS.toString(), option, target);
-						break;
-					case CLAN_WARS:
-						swap(client, DuelingRingMode.CLAN_WARS.toString(), option, target);
-						break;
-					default:
-						break;
-				}
-			}
-		}
-
-		if (config.getWealthRing())
-		{
-			if (target.toLowerCase().contains("ring of wealth"))
-			{
-				switch (config.getWealthRingMode())
-				{
-					case MISCELLANIA:
-						swap(client, WealthRingMode.MISCELLANIA.toString(), option, target);
-						break;
-					case GRAND_EXCHANGE:
-						swap(client, WealthRingMode.GRAND_EXCHANGE.toString(), option, target);
-						break;
-					case FALADOR:
-						swap(client, WealthRingMode.FALADOR.toString(), option, target);
-						break;
-					case DONDAKAN:
-						swap(client, WealthRingMode.DONDAKAN.toString(), option, target);
-						break;
-					default:
-						break;
-				}
+				swap(client, config.getDuelingRingMode().toString(), option, target);
 			}
 		}
 
@@ -361,36 +412,8 @@ public class EasyscapePlugin extends Plugin
 		{
 			if (target.toLowerCase().contains("amulet of glory") || target.toLowerCase().contains("amulet of eternal glory"))
 			{
-				switch (config.getGloryMode())
-				{
-					case EDGEVILLE:
-						swap(client, GloryMode.EDGEVILLE.toString(), option, target);
-						break;
-					case KARAMJA:
-						swap(client, GloryMode.KARAMJA.toString(), option, target);
-						break;
-					case DRAYNOR_VILLAGE:
-						swap(client, GloryMode.DRAYNOR_VILLAGE.toString(), option, target);
-						break;
-					case AL_KHARID:
-						swap(client, GloryMode.AL_KHARID.toString(), option, target);
-						break;
-					default:
-						break;
-				}
+				swap(client, config.getGloryMode().toString(), option, target);
 			}
-		}
-
-		if (target.toLowerCase().contains("crafting cape") && config.getSwapCraftingCape())
-		{
-			swap(client, "Teleport", option, target);
-
-		}
-
-		if (target.toLowerCase().contains("construct. cape") && config.getSwapConstructionCape())
-		{
-			swap(client, "Tele to poh", option, target);
-
 		}
 	}
 
@@ -409,12 +432,30 @@ public class EasyscapePlugin extends Plugin
 
 	private boolean isEssencePouch(String target)
 	{
-		return (target.equalsIgnoreCase("Small Pouch") || target.equalsIgnoreCase("Medium Pouch") || target.equalsIgnoreCase("Large Pouch") || target.equalsIgnoreCase("Giant Pouch"));
+		return (target.equalsIgnoreCase("Small Pouch") ||
+			target.equalsIgnoreCase("Medium Pouch") ||
+			target.equalsIgnoreCase("Large Pouch") ||
+			target.equalsIgnoreCase("Giant Pouch"));
 	}
 
-	private boolean isHouse()
+	@Subscribe
+	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
-		return client.getMapRegions()[0] == HOUSE_REGION_ID;
+		final GameObject gameObject = event.getGameObject();
+		if (PORTAL_4525 == gameObject.getId())
+		{
+			this.inHouse = true;
+		}
+	}
+
+	@Subscribe
+	public void onGameObjectDespawned(GameObjectDespawned event)
+	{
+		final GameObject gameObject = event.getGameObject();
+		if (PORTAL_4525 == gameObject.getId())
+		{
+			this.inHouse = false;
+		}
 	}
 
 	private boolean isPuroPuro()
@@ -431,5 +472,4 @@ public class EasyscapePlugin extends Plugin
 			return location.getRegionID() == PURO_PURO_REGION_ID;
 		}
 	}
-
 }
