@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2019, Owain van Brakel <https://github.com/Owain94>
- * Copyright (c) 2019, Alan Baumgartner <https://github.com/alanbaumgartner>
+ * Copyright (c) 2018, Alan Baumgartner <https://github.com/alanbaumgartner>
+ * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, Kyle <https://github.com/kyleeld>
+ * Copyright (c) 2018, Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,6 +41,7 @@ import net.runelite.client.plugins.easyscape.util.CombatBraceletMode;
 import net.runelite.client.plugins.easyscape.util.SlayerRingMode;
 import net.runelite.client.plugins.easyscape.util.BurningAmuletMode;
 import net.runelite.client.plugins.easyscape.util.XericsTalismanMode;
+import net.runelite.client.plugins.easyscape.util.RingOfWealthMode;
 
 @ConfigGroup("easyscape")
 public interface EasyscapeConfig extends Config
@@ -748,13 +751,37 @@ public interface EasyscapeConfig extends Config
 		return XericsTalismanMode.XERICS_LOOKOUT;
 	}	
 	
+	@ConfigItem(
+		keyName = "swapwealth",
+		name = "Swap wealth",
+		description = "",
+		position = 59,
+		group = "Jewellery swapper"
+	)
+	default boolean getRingofWealth()
+	{
+		return false;
+	}
+	
+	@ConfigItem(
+		keyName = "ringofwealthmode",
+		name = "Mode",
+		description = "",
+		position = 60,
+		group = "Jewellery swapper"
+	)
+	default RingOfWealthMode getRingofWealthMode()
+	{
+		return RingOfWealthMode.GRAND_EXCHANGE;
+	}	
+	
 // ----------------------------------------------------------- //
 	
 	@ConfigItem(
 		keyName = "swapArdougneCape",
 		name = "Swap Ardougne Cape",
 		description = "Enables swapping of teleport and wear.",
-		position = 59,
+		position = 61,
 		group = "Equipment swapper"
 	)
 	default boolean getSwapArdougneCape()
@@ -766,7 +793,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapConstructionCape",
 		name = "Swap Construction Cape",
 		description = "Enables swapping of teleport and wear.",
-		position = 60,
+		position = 62,
 		group = "Equipment swapper"
 	)
 	default boolean getSwapConstructionCape()
@@ -778,7 +805,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapCraftingCape",
 		name = "Swap Crafting Cape",
 		description = "Enables swapping of teleport and wear.",
-		position = 61,
+		position = 63,
 		group = "Equipment swapper"
 	)
 	default boolean getSwapCraftingCape()
@@ -790,7 +817,7 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapMagicCape",
 		name = "Swap Magic Cape",
 		description = "Enables swapping of spellbook and wear.",
-		position = 62,
+		position = 64,
 		group = "Equipment swapper"
 	)
 	default boolean getSwapMagicCape()
@@ -802,10 +829,10 @@ public interface EasyscapeConfig extends Config
 		keyName = "swapExplorersRing",
 		name = "Swap Explorers Ring",
 		description = "Enables swapping of spellbook and wear.",
-		position = 63,
+		position = 65,
 		group = "Equipment swapper"
 	)
-	default boolean getExplorersRing()
+	default boolean getSwapExplorersRing()
 	{
 		return true;
 	}

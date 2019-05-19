@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2019, Alan Baumgartner <https://github.com/alanbaumgartner>
+ * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, Kyle <https://github.com/kyleeld>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

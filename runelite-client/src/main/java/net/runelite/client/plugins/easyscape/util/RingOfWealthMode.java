@@ -25,16 +25,16 @@
  */
 package net.runelite.client.plugins.easyscape.util;
 
-public enum CombatBraceletMode
+public enum RingOfWealthMode
 {
-	WARRIORS_GUILD("Warriors' Guild"),
-	CHAMPIONS_GUILD("Champions' Guild"),
-	EDGEVILLE_MONASTERY("Edgeville Monstery"),
-	RANGING_GUILD("Ranging Guild");
+	MISCELLANIA("Miscellania"),
+	GRAND_EXCHANGE("Grand Exchange"),
+	FALADOR("Falador"),
+	DONDAKAN("Dondakan");
 
 	private final String name;
 
-	CombatBraceletMode(String name)
+	RingOfWealthMode(String name)
 	{
 		this.name = name;
 	}

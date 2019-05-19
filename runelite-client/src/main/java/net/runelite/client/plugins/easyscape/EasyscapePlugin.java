@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2019, Owain van Brakel <https://github.com/Owain94>
- * Copyright (c) 2019, Alan Baumgartner <https://github.com/alanbaumgartner>
+ * Copyright (c) 2018, Alan Baumgartner <https://github.com/alanbaumgartner>
+ * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, Kyle <https://github.com/kyleeld>
+ * Copyright (c) 2018, Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -375,7 +377,7 @@ public class EasyscapePlugin extends Plugin
 			swap(client, "Spellbook", option, target);
 		}
 
-		if (target.toLowerCase().contains("explorer's ring") && config.getSwapMagicCape())
+		if (target.toLowerCase().contains("explorer's ring") && config.getSwapExplorersRing())
 		{
 			swap(client, "Teleport", option, target);
 		}
@@ -490,7 +492,15 @@ public class EasyscapePlugin extends Plugin
 			{
 				swap(client, config.getXericsTalismanMode().toString(), option, target);
 			}
-		}			
+		}	
+
+		if (config.getRingofWealth())
+		{
+			if (target.toLowerCase().contains("ring of wealth"))
+			{
+				swap(client, config.getRingofWealthMode().toString(), option, target);
+			}
+		}		
 	}
 
 	private void delete(int target)
