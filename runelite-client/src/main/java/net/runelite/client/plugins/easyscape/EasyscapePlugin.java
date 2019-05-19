@@ -360,27 +360,27 @@ public class EasyscapePlugin extends Plugin
 			swap(client, "Monastery Teleport", option, target);
 		}
 		
-		if (target.toLowerCase().contains("crafting cape") && config.getSwapCraftingCape())
+		if (target.contains("crafting cape") && config.getSwapCraftingCape())
 		{
 			swap(client, "Teleport", option, target);
 		}
 
-		if (target.toLowerCase().contains("construct. cape") && config.getSwapConstructionCape())
+		if (target.contains("construct. cape") && config.getSwapConstructionCape())
 		{
 			swap(client, "Tele to poh", option, target);
 		}
 
-		if (target.toLowerCase().contains("magic cape") && config.getSwapMagicCape())
+		if (target.contains("magic cape") && config.getSwapMagicCape())
 		{
 			swap(client, "Spellbook", option, target);
 		}
 
-		if (target.toLowerCase().contains("explorer's ring") && config.getSwapExplorersRing())
+		if (target.contains("explorer's ring") && config.getSwapExplorersRing())
 		{
 			swap(client, "Teleport", option, target);
     }
     
-		if (config.getGamesNecklace() && target.toLowerCase().contains("games necklace"))
+		if (config.getGamesNecklace() && target.contains("games necklace"))
 		{
 			swap(client, config.getGamesNecklaceMode().toString(), option, target);
 		}
@@ -390,47 +390,47 @@ public class EasyscapePlugin extends Plugin
 			swap(client, config.getDuelingRingMode().toString(), option, target);
 		}
 
-		if (config.getGlory() && (target.contains("amulet of glory") || target.contains("amulet of eternal glory")))
+		if (config.getGlory() && target.contains("amulet of glory") || target.contains("amulet of eternal glory")))
 		{
 			swap(client, config.getGloryMode().toString(), option, target);
 		}
     
-		if (config.getSkillsNecklace() && (target.contains("skills necklace"))
+		if (config.getSkillsNecklace() && target.contains("skills necklace"))
 			{
 				swap(client, config.getSkillsNecklaceMode().toString(), option, target);
 			}
 		
-		if (config.getNecklaceofPassage() && (target.contains("necklace of passage"))
+		if (config.getNecklaceofPassage() && target.contains("necklace of passage"))
 			{
 				swap(client, config.getNecklaceofPassageMode().toString(), option, target);
 			}
       
-		if (config.getDigsitePendant() && (target.contains("digsite pendant"))
+		if (config.getDigsitePendant() && target.contains("digsite pendant"))
 			{
 				swap(client, config.getDigsitePendantMode().toString(), option, target);
 			}
       
-		if (config.getCombatBracelet() && (target.contains("combat bracelet"))
+		if (config.getCombatBracelet() && target.contains("combat bracelet"))
 			{
 				swap(client, config.getCombatBraceletMode().toString(), option, target);
 			}
 
-		if (config.getSlayerRing() && (target.contains("slayer ring"))
+		if (config.getSlayerRing() && target.contains("slayer ring"))
 			{
 				swap(client, config.getSlayerRingMode().toString(), option, target);
 			}
 
-		if (config.getBurningAmulet() && (target.contains("burning amulet"))
+		if (config.getBurningAmulet() && target.contains("burning amulet"))
 			{
 				swap(client, config.getBurningAmuletMode().toString(), option, target);
 			}
 
-		if (config.getXericsTalisman() && (target.contains("xeric's talisman"))
+		if (config.getXericsTalisman() && target.contains("xeric's talisman"))
 			{
 				swap(client, config.getXericsTalismanMode().toString(), option, target);
 			}
 
-		if (config.getRingofWealth() && (target.contains("ring of wealth"))
+		if (config.getRingofWealth() && target.contains("ring of wealth"))
 			{
 				swap(client, config.getRingofWealthMode().toString(), option, target);
 			}
