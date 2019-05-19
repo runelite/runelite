@@ -559,7 +559,7 @@ public enum Varbits
 	QUEST_THE_EYES_OF_GLOUPHRIE(2497),
 	QUEST_FAIRYTALE_I_GROWING_PAINS(1803),
 	QUEST_FAIRYTALE_II_CURE_A_QUEEN(2326),
-	QUEST_THE_FEUD(334),
+	QUEST_THE_FEUD(334), // 14 = able to pickpocket
 	QUEST_FORGETTABLE_TALE(822),
 	QUEST_GARDEN_OF_TRANQUILLITY(961),
 	QUEST_GHOSTS_AHOY(217),
@@ -628,7 +628,12 @@ public enum Varbits
 	/**
 	 * Spellbook filtering (1 = unfiltered, 0 = filtered)
 	 */
-	FILTER_SPELLBOOK(6718);
+	FILTER_SPELLBOOK(6718),
+
+	/**
+	 * POH Building mode (1 = yes, 0 = no)
+	 */
+	BUILDING_MODE(2176);
 
 	/**
 	 * The raw varbit ID.

@@ -195,12 +195,16 @@ public class PluginListItem extends JPanel
 			configButton.setVisible(true);
 			configButton.setToolTipText("Edit plugin configuration");
 		}
-		if (!name.equals("RuneLitePlus"))
+
+		toggleButton.setPreferredSize(new Dimension(25, 0));
+		attachToggleButtonListener(toggleButton);
+
+		if (name.equals("RuneLitePlus"))
 		{
-			toggleButton.setPreferredSize(new Dimension(25, 0));
-			attachToggleButtonListener(toggleButton);
-			buttonPanel.add(toggleButton);
+			toggleButton.setVisible(false);
 		}
+
+		buttonPanel.add(toggleButton);
 	}
 
 	private void attachToggleButtonListener(IconButton button)

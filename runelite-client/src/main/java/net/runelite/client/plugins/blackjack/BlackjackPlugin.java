@@ -27,20 +27,20 @@ package net.runelite.client.plugins.blackjack;
 import com.google.inject.Binder;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.Quest;
-import net.runelite.api.QuestState;
+import static net.runelite.api.Varbits.QUEST_THE_FEUD;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
+import static net.runelite.client.util.MenuUtil.swap;
 
 /**
  * Authors gazivodag longstreet
@@ -55,15 +55,21 @@ import net.runelite.client.plugins.PluginType;
 @Slf4j
 public class BlackjackPlugin extends Plugin
 {
+	private static final String PICKPOCKET = "Pickpocket";
+	private static final String KNOCK_OUT = "Knock-out";
+	private static final String LURE = "Lure";
+	private static final String BANDIT = "Bandit";
+	private static final String MENAPHITE = "Menaphite Thug";
 
 	@Inject
-	Client client;
+	private Client client;
 
-	private long timeSinceKnockout;
-	private long timeSinceAggro;
+	@Inject
+	private MenuManager menuManager;
 
-	@Getter
-	private long currentGameTick;
+	private int lastKnockout;
+	private boolean pickpocketing;
+	private boolean ableToBlackJack;
 
 	@Override
 	public void configure(Binder binder)
@@ -73,80 +79,87 @@ public class BlackjackPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		currentGameTick = 0;
+		menuManager.addPriorityEntry(LURE, BANDIT);
+		menuManager.addPriorityEntry(LURE, MENAPHITE);
+
+		menuManager.addPriorityEntry(KNOCK_OUT, BANDIT);
+		menuManager.addPriorityEntry(KNOCK_OUT, MENAPHITE);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		currentGameTick = 0;
+		menuManager.removePriorityEntry(LURE, BANDIT);
+		menuManager.removePriorityEntry(LURE, MENAPHITE);
+
+		menuManager.removePriorityEntry(PICKPOCKET, BANDIT);
+		menuManager.removePriorityEntry(PICKPOCKET, MENAPHITE);
+
+		menuManager.removePriorityEntry(KNOCK_OUT, BANDIT);
+		menuManager.removePriorityEntry(KNOCK_OUT, MENAPHITE);
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		currentGameTick++;
+		if (ableToBlackJack && pickpocketing && client.getTickCount() >= lastKnockout + 4)
+		{
+			pickpocketing = false;
+
+			menuManager.removePriorityEntry(PICKPOCKET, BANDIT);
+			menuManager.removePriorityEntry(PICKPOCKET, MENAPHITE);
+
+			menuManager.addPriorityEntry(KNOCK_OUT, BANDIT);
+			menuManager.addPriorityEntry(KNOCK_OUT, MENAPHITE);
+		}
 	}
 
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		// Lure has higher priority than knock-out
+		if (event.getTarget().contains(MENAPHITE) || event.getTarget().contains(BANDIT)
+			&& event.getOption().equals(LURE))
+		{
+			swap(client, KNOCK_OUT, LURE, event.getTarget(), false);
+		}
+	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() == ChatMessageType.SPAM)
 		{
-			if (chatMessage.getMessage().equals("You smack the bandit over the head and render them unconscious."))
+			if (chatMessage.getMessage().equals("You smack the bandit over the head and render them unconscious.")
+				|| chatMessage.getMessage().equals("Your blow only glances off the bandit's head."))
 			{
-				timeSinceKnockout = getCurrentGameTick();
-			}
-			if (chatMessage.getMessage().equals("Your blow only glances off the bandit's head."))
-			{
-				timeSinceAggro = getCurrentGameTick();
+				menuManager.removePriorityEntry(KNOCK_OUT, BANDIT);
+				menuManager.removePriorityEntry(KNOCK_OUT, MENAPHITE);
+
+				menuManager.addPriorityEntry(PICKPOCKET, BANDIT);
+				menuManager.addPriorityEntry(PICKPOCKET, MENAPHITE);
+
+				lastKnockout = client.getTickCount();
+				pickpocketing = true;
 			}
 		}
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	public void onVarbitChanged(VarbitChanged event)
 	{
-		String target = menuEntryAdded.getTarget().toLowerCase();
-		if ((target.contains("bandit") || target.contains("menaphite thug")))
-		{
-			Quest quest = Quest.THE_FEUD;
-			if (quest.getState(client) == QuestState.FINISHED)
-			{
-				if (currentGameTick < (timeSinceKnockout + 4))
-				{
-					stripSpecificEntries("pickpocket");
-				}
-				if (currentGameTick < (timeSinceAggro + 4))
-				{
-					stripSpecificEntries("pickpocket");
-				}
-				stripSpecificEntries("knock-out");
-			}
-		}
-	}
+		ableToBlackJack = client.getVar(QUEST_THE_FEUD) >= 13;
 
-	private void stripSpecificEntries(String exceptFor)
-	{
-		MenuEntry[] currentEntires = client.getMenuEntries();
-		MenuEntry[] newEntries = new MenuEntry[2];
-
-		for (MenuEntry currentEntry : currentEntires)
+		if (!ableToBlackJack)
 		{
-			if (currentEntry.getOption().toLowerCase().equals(exceptFor.toLowerCase()))
-			{
-				newEntries[1] = currentEntry;
-			}
-			if (currentEntry.getOption().toLowerCase().equals("lure"))
-			{
-				newEntries[0] = currentEntry;
-			}
-		}
+			menuManager.removePriorityEntry(LURE, BANDIT);
+			menuManager.removePriorityEntry(LURE, MENAPHITE);
 
-		if (newEntries[0] != null && newEntries[1] != null)
-		{
-			client.setMenuEntries(newEntries);
+			menuManager.removePriorityEntry(KNOCK_OUT, BANDIT);
+			menuManager.removePriorityEntry(KNOCK_OUT, MENAPHITE);
+
+			menuManager.removePriorityEntry(PICKPOCKET, BANDIT);
+			menuManager.removePriorityEntry(PICKPOCKET, MENAPHITE);
 		}
 	}
 }
