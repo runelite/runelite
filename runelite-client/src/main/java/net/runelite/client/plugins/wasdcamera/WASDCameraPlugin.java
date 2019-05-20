@@ -68,6 +68,9 @@ public class WASDCameraPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
+	private ConfigManager configManager;
+
+	@Inject
 	private KeyManager keyManager;
 
 	@Inject
@@ -80,6 +83,7 @@ public class WASDCameraPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		configManager.setConfiguration("runelite", "entertochatplugin", false);
 		typing = false;
 		keyManager.registerKeyListener(inputListener);
 
