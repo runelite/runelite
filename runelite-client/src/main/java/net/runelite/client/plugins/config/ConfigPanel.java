@@ -585,7 +585,7 @@ public class ConfigPanel extends PluginPanel
 					{
 						JSlider slider = new JSlider(min, max, value);
 						configEntryName.setText(name.concat(": ").concat(String.valueOf(slider.getValue())));
-						slider.setPreferredSize(new Dimension(100, 25));
+						slider.setPreferredSize(new Dimension(85, 25));
 						String finalName = name;
 						slider.addChangeListener((l) ->
 							{
