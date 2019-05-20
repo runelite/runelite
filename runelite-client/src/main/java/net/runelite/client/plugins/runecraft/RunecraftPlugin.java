@@ -228,11 +228,11 @@ public class RunecraftPlugin extends Plugin
 			}
 			else if (option.equals("fill") && id != 9)
 			{
-			  swap(client, "empty", option, target);
+				swap(client, "empty", option, target);
 			}
 		}
 	}
-  
+	
 	private void hide(String option, String target, boolean contains)
 	{
 		final MenuEntry[] entries = client.getMenuEntries();
