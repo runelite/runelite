@@ -75,9 +75,10 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.ConfigItemsGroup;
 import net.runelite.client.config.ConfigItemDescriptor;
+import net.runelite.client.config.ConfigItemsGroup;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.ConfigPanelItem;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
@@ -417,6 +418,10 @@ public class ConfigPanel extends PluginPanel
 		title.setToolTipText("<html>" + name + ":<br>" + listItem.getDescription() + "</html>");
 		topPanel.add(title);
 
+		ConfigPanelItem mainParent = new ConfigPanelItem(null, null);
+		List<ConfigPanelItem> parents = new ArrayList<>();
+		List<ConfigItemDescriptor> allItems = new ArrayList<>();
+
 		for (ConfigItemsGroup cig : cd.getItemGroups())
 		{
 			boolean collapsed = false;
@@ -430,11 +435,13 @@ public class ConfigPanel extends PluginPanel
 
 				JLabel headerLabel = new JLabel(header);
 				headerLabel.setForeground(Color.ORANGE);
-				headerLabel.setPreferredSize(new Dimension(PANEL_WIDTH, (int)headerLabel.getPreferredSize().getHeight()));
+				headerLabel.setPreferredSize(new Dimension(PANEL_WIDTH, (int) headerLabel.getPreferredSize().getHeight()));
 				String sCollapsed = configManager.getConfiguration(cd.getGroup().value(), cig.getGroup() + "_collapse");
 
 				if (sCollapsed != null)
+				{
 					collapsed = Boolean.parseBoolean(sCollapsed);
+				}
 
 				JButton collapse = new JButton(collapsed ? "+" : "-");
 				collapse.setPreferredSize(new Dimension(20, 20));
@@ -451,21 +458,65 @@ public class ConfigPanel extends PluginPanel
 			}
 
 			if (collapsed)
-				continue;
-
-			for (ConfigItemDescriptor cid : cig.getItems())
 			{
-				if (cid.getItem().hidden())
+				continue;
+			}
+
+			allItems.addAll(cig.getItems());
+
+			int maxDepth = 3;
+			do
+			{
+				for (ConfigItemDescriptor cid : new ArrayList<>(allItems))
 				{
-					continue;
+
+					String parent = cid.getItem().parent();
+
+					if (parent.equals(""))
+					{
+						mainParent.getChildren().add(new ConfigPanelItem(mainParent, cid));
+						allItems.remove(cid);
+					}
+					else
+					{
+						if (mainParent.addChildIfMatchParent(cid))
+						{
+							allItems.remove(cid);
+						}
+					}
+
+				}
+
+				maxDepth--;
+
+			} while (allItems.size() > 0 && maxDepth > 0);
+
+			List<ConfigPanelItem> orderedList = mainParent.getItemsAsList();
+
+			for (ConfigPanelItem cpi : orderedList)
+			{
+				ConfigItemDescriptor cid = cpi.getItem();
+
+				if (cid == null)
+				{
+					continue; // Ignore main 'parent'
 				}
 
 				JPanel item = new JPanel();
 				item.setLayout(new BorderLayout());
 				item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
 				name = cid.getItem().name();
+
+				StringBuilder depthOffset = new StringBuilder();
+				for (int depth = 1; depth < cpi.getDepth(); depth++)
+				{
+					depthOffset.append("   ");
+				}
+
+				name = depthOffset + name;
+
 				JLabel configEntryName = new JLabel(name);
-				configEntryName.setPreferredSize(new Dimension(PANEL_WIDTH, (int)configEntryName.getPreferredSize().getHeight()));
+				configEntryName.setPreferredSize(new Dimension(PANEL_WIDTH, (int) configEntryName.getPreferredSize().getHeight()));
 				configEntryName.setForeground(Color.WHITE);
 				configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
 				item.add(configEntryName, BorderLayout.CENTER);
@@ -505,7 +556,9 @@ public class ConfigPanel extends PluginPanel
 							{
 								configEntryName.setText(finalName.concat(": ").concat(String.valueOf(slider.getValue())));
 								if (!slider.getValueIsAdjusting())
+								{
 									changeConfiguration(listItem, config, slider, cd, cid);
+								}
 							}
 						);
 						item.add(slider, BorderLayout.EAST);
@@ -726,7 +779,9 @@ public class ConfigPanel extends PluginPanel
 			boolean collapse = true;
 
 			if (sCollapsed != null)
+			{
 				collapse = !Boolean.parseBoolean(sCollapsed);
+			}
 
 			configManager.setConfiguration(cd.getGroup().value(), cig.getGroup() + "_collapse", collapse);
 			openGroupConfigPanel(listItem, config, cd);
