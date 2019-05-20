@@ -75,13 +75,13 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.worldhopper.ping.Ping;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ExecutorServiceExceptionLogger;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WorldUtil;
-import net.runelite.client.util.ping.Ping;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldResult;
@@ -258,47 +258,8 @@ public class WorldHopperPlugin extends Plugin
 					panel.setFilterMode(config.subscriptionFilter());
 					updateList();
 					break;
-				case "showHistory":
-					panel.updateLayout();
-					break;
 			}
 		}
-	}
-
-	boolean showHistory()
-	{
-		return config.showHistory();
-	}
-
-	Map<String, String> getHistory()
-	{
-		Map<String, String> history = configManager.getConfiguration(WorldHopperConfig.GROUP, "history", Map.class);
-		if (history == null)
-		{
-			history = new HashMap<String, String>();
-		}
-
-		return history;
-	}
-
-	void clearHistory()
-	{
-		Map<String, String> history = getHistory();
-		history.clear();
-		configManager.setConfiguration(WorldHopperConfig.GROUP, "history", history);
-	}
-
-	void addToHistory()
-	{
-		addToHistory(client.getWorld());
-	}
-
-	void addToHistory(int world)
-	{
-		long unixTime = System.currentTimeMillis() / 1000L;
-		Map<String, String> history = getHistory();
-		history.put(String.valueOf(world), String.valueOf(unixTime));
-		configManager.setConfiguration(WorldHopperConfig.GROUP, "history", history);
 	}
 
 	private void setFavoriteConfig(int world)
@@ -456,12 +417,6 @@ public class WorldHopperPlugin extends Plugin
 				panel.switchCurrentHighlight(newWorld, lastWorld);
 				lastWorld = newWorld;
 			}
-		}
-
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
-		{
-			addToHistory(client.getWorld());
-			panel.updateList();
 		}
 	}
 
@@ -699,8 +654,6 @@ public class WorldHopperPlugin extends Plugin
 
 		quickHopTargetWorld = rsWorld;
 		displaySwitcherAttempts = 0;
-
-		addToHistory(worldId);
 	}
 
 	@Subscribe
