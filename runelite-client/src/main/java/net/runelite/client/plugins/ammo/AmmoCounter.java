@@ -24,24 +24,24 @@
  */
 package net.runelite.client.plugins.ammo;
 
+import lombok.Getter;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.Counter;
+import net.runelite.client.util.StackFormatter;
+
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.Instant;
 
-import lombok.Getter;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.Counter;
-import net.runelite.client.util.StackFormatter;
-
 class AmmoCounter extends Counter
 {
 	@Getter
-	private int itemID;
-	private String name;
-	private int total;
-	private Instant time;
+	private final int itemID;
+	private final String name;
+	private final int total;
+	private final Instant time;
 
 	AmmoCounter(Plugin plugin, int itemID, int count, String name, BufferedImage image)
 	{
