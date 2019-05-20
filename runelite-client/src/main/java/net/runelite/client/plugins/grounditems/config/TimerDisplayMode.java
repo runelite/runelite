@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Levi <me@levischuck.com>
+ * Copyright (c) 2018 Matthew Smith <https://github.com/ms813>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,61 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fps;
+package net.runelite.client.plugins.grounditems.config;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@ConfigGroup(FpsPlugin.CONFIG_GROUP_KEY)
-public interface FpsConfig extends Config
+@Getter
+@RequiredArgsConstructor
+public enum TimerDisplayMode
 {
-	@ConfigItem(
-		keyName = "limitMode",
-		name = "Limit Mode",
-		description = "Stay at or under the target frames per second even when in this mode",
-		position = 1
-	)
-	default FpsLimitMode limitMode()
-	{
-		return FpsLimitMode.NEVER;
-	}
+	ALWAYS("Always"),
+	HOTKEY_PRESSED("When Hotkey Pressed"),
+	NEVER("Never");
 
-	@Range(
-		min = 10,
-		max = 50
-	)
-	@ConfigItem(
-		keyName = "maxFps",
-		name = "FPS target",
-		description = "Desired max frames per second",
-		position = 2
-	)
-	default int maxFps()
-	{
-		return 50;
-	}
+	private final String name;
 
-	@ConfigItem(
-		keyName = "drawFps",
-		name = "Draw FPS indicator",
-		description = "Show a number in the corner for the current FPS",
-		position = 3
-	)
-	default boolean drawFps()
+	@Override
+	public String toString()
 	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "drawPing",
-		name = "Draw ping indicator",
-		description = "Show a number in the corner for the current ping",
-		position = 3
-	)
-	default boolean drawPing()
-	{
-		return false;
+		return name;
 	}
 }
