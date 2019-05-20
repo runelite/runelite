@@ -46,7 +46,9 @@ class SlayerOverlay extends WidgetItemOverlay
 		ItemID.SLAYER_RING_5,
 		ItemID.SLAYER_RING_6,
 		ItemID.SLAYER_RING_7,
-		ItemID.SLAYER_RING_8
+		ItemID.SLAYER_RING_8,
+		ItemID.BRACELET_OF_SLAUGHTER,
+		ItemID.EXPEDITIOUS_BRACELET
 	);
 
 	private final static Set<Integer> ALL_SLAYER_ITEMS = ImmutableSet.of(
@@ -122,7 +124,7 @@ class SlayerOverlay extends WidgetItemOverlay
 
 		textComponent.setText(String.valueOf(amount));
 
-		// Draw the counter in the bottom left for equipment, and top left for jewelry
+		// Draw the counter in the top left for equipment, and bottom left for jewelry
 		textComponent.setPosition(new Point(bounds.x, bounds.y + (SLAYER_JEWELRY.contains(itemId)
 			? bounds.height
 			: graphics.getFontMetrics().getHeight())));
