@@ -44,9 +44,9 @@ import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Prayer;
+import net.runelite.api.Skill;
 import net.runelite.api.SkullIcon;
 import net.runelite.api.VarPlayer;
-import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
@@ -74,7 +74,41 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameIndicator.VENGEANCE_ACTIVE;
-import static net.runelite.client.plugins.timers.GameTimer.*;
+import static net.runelite.client.plugins.timers.GameTimer.ABYSSAL_SIRE_STUN;
+import static net.runelite.client.plugins.timers.GameTimer.ANTIFIRE;
+import static net.runelite.client.plugins.timers.GameTimer.ANTIPOISON;
+import static net.runelite.client.plugins.timers.GameTimer.ANTIVENOM;
+import static net.runelite.client.plugins.timers.GameTimer.BIND;
+import static net.runelite.client.plugins.timers.GameTimer.CANNON;
+import static net.runelite.client.plugins.timers.GameTimer.CHARGE;
+import static net.runelite.client.plugins.timers.GameTimer.DMM_FULLTB;
+import static net.runelite.client.plugins.timers.GameTimer.DMM_HALFTB;
+import static net.runelite.client.plugins.timers.GameTimer.ENTANGLE;
+import static net.runelite.client.plugins.timers.GameTimer.EXANTIFIRE;
+import static net.runelite.client.plugins.timers.GameTimer.EXSUPERANTIFIRE;
+import static net.runelite.client.plugins.timers.GameTimer.FULLTB;
+import static net.runelite.client.plugins.timers.GameTimer.GOD_WARS_ALTAR;
+import static net.runelite.client.plugins.timers.GameTimer.HALFBIND;
+import static net.runelite.client.plugins.timers.GameTimer.HALFENTANGLE;
+import static net.runelite.client.plugins.timers.GameTimer.HALFSNARE;
+import static net.runelite.client.plugins.timers.GameTimer.HALFTB;
+import static net.runelite.client.plugins.timers.GameTimer.HOME_TELEPORT;
+import static net.runelite.client.plugins.timers.GameTimer.ICEBARRAGE;
+import static net.runelite.client.plugins.timers.GameTimer.ICEBLITZ;
+import static net.runelite.client.plugins.timers.GameTimer.ICEBURST;
+import static net.runelite.client.plugins.timers.GameTimer.ICERUSH;
+import static net.runelite.client.plugins.timers.GameTimer.IMBUEDHEART;
+import static net.runelite.client.plugins.timers.GameTimer.MAGICIMBUE;
+import static net.runelite.client.plugins.timers.GameTimer.MINIGAME_TELEPORT;
+import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD;
+import static net.runelite.client.plugins.timers.GameTimer.OVERLOAD_RAID;
+import static net.runelite.client.plugins.timers.GameTimer.PRAYER_ENHANCE;
+import static net.runelite.client.plugins.timers.GameTimer.SKULL;
+import static net.runelite.client.plugins.timers.GameTimer.SNARE;
+import static net.runelite.client.plugins.timers.GameTimer.STAFF_OF_THE_DEAD;
+import static net.runelite.client.plugins.timers.GameTimer.STAMINA;
+import static net.runelite.client.plugins.timers.GameTimer.SUPERANTIFIRE;
+import static net.runelite.client.plugins.timers.GameTimer.VENGEANCE;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 @PluginDescriptor(
@@ -590,7 +624,7 @@ public class TimersPlugin extends Plugin
 
 		final boolean isSkulled = player.getSkullIcon() != null && player.getSkullIcon() != SkullIcon.SKULL_FIGHT_PIT;
 
-		if (isSkulled != skulledLastTick)
+		if (isSkulled != skulledLastTick && config.showSkull())
 		{
 			skulledLastTick = isSkulled;
 			if (isSkulled)
@@ -655,7 +689,7 @@ public class TimersPlugin extends Plugin
 		if (config.showAbyssalSireStun()
 			&& actor instanceof NPC)
 		{
-			int npcId = ((NPC)actor).getId();
+			int npcId = ((NPC) actor).getId();
 
 			switch (npcId)
 			{

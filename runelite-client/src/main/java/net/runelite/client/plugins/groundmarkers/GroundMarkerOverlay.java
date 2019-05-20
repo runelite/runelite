@@ -29,7 +29,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.util.Collection;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
@@ -43,6 +43,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class GroundMarkerOverlay extends Overlay
 {
+	private static final int MAX_DRAW_DISTANCE = 32;
 
 	private final Client client;
 	private final GroundMarkerConfig config;
@@ -62,30 +63,28 @@ public class GroundMarkerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Collection<ColorTileMarker> points = plugin.getPoints();
-		for (final ColorTileMarker point : points)
+		List<GroundMarkerWorldPoint> points = plugin.getPoints();
+		for (GroundMarkerWorldPoint groundMarkerWorldPoint : points)
 		{
-			WorldPoint worldPoint = point.getWorldPoint();
-			if (worldPoint.getPlane() != client.getPlane())
-			{
-				continue;
-			}
-
-			Color tileColor = point.getColor();
-			if (tileColor == null || !config.rememberTileColors())
-			{
-				// If this is an old tile which has no color, or rememberTileColors is off, use marker color
-				tileColor = config.markerColor();
-			}
-
-			drawTile(graphics, worldPoint, tileColor);
+			drawTile(graphics, groundMarkerWorldPoint);
 		}
 
 		return null;
 	}
 
-	private void drawTile(Graphics2D graphics, WorldPoint point, Color color)
+	private void drawTile(Graphics2D graphics, GroundMarkerWorldPoint groundMarkerWorldPoint)
 	{
+		WorldPoint point = groundMarkerWorldPoint.getWorldPoint();
+		if (point.getPlane() != client.getPlane())
+		{
+			return;
+		}
+
+		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+		if (point.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
+		{
+			return;
+		}
 
 		LocalPoint lp = LocalPoint.fromWorld(client, point);
 		if (lp == null)
@@ -99,6 +98,18 @@ public class GroundMarkerOverlay extends Overlay
 			return;
 		}
 
+		Color color = config.markerColor();
+		switch (groundMarkerWorldPoint.getGroundMarkerPoint().getGroup())
+		{
+			case 2:
+				color = config.markerColor2();
+				break;
+			case 3:
+				color = config.markerColor3();
+				break;
+			case 4:
+				color = config.markerColor4();
+		}
 		OverlayUtil.renderPolygon(graphics, poly, color);
 	}
 }

@@ -44,7 +44,7 @@ public enum ThievingRoomType
 		this.y = y;
 	}
 
-	public static ThievingRoomType IdentifyByInstancePoint(InstancePoint point)
+	public static ThievingRoomType identifyByInstancePoint(InstancePoint point)
 	{
 		for (ThievingRoomType type : ThievingRoomType.values())
 		{

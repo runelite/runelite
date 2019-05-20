@@ -102,7 +102,8 @@ public class SlayerTaskPanel extends PluginPanel
 
 		playBtn.setIcon(PLAY);
 		playBtn.setToolTipText("Resume the current slayer task");
-		playBtn.addMouseListener(new MouseAdapter() {
+		playBtn.addMouseListener(new MouseAdapter()
+		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
@@ -137,13 +138,15 @@ public class SlayerTaskPanel extends PluginPanel
 
 		pauseBtn.setIcon(PAUSE);
 		pauseBtn.setToolTipText("Pause the current slayer task");
-		pauseBtn.addMouseListener(new MouseAdapter() {
+		pauseBtn.addMouseListener(new MouseAdapter()
+		{
 			@Override
 			public void mousePressed(MouseEvent mouseEvent)
 			{
 				slayerPlugin.setPaused(true);
 				changePauseState(true);
 			}
+
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
@@ -298,7 +301,8 @@ public class SlayerTaskPanel extends PluginPanel
 		if (tasks.isEmpty() || isNewAssignment)
 		{
 			// new task so append it to the front of the list
-			SwingUtilities.invokeLater(() -> {
+			SwingUtilities.invokeLater(() ->
+			{
 				TaskBox newBox = buildBox(slayerPlugin, tasksContainer, newData);
 				newBox.update(true, newData.isPaused(), newData);
 			});
@@ -319,7 +323,8 @@ public class SlayerTaskPanel extends PluginPanel
 
 				// so this previous task is invalid so delete it then add in the new actually
 				// correct task
-				SwingUtilities.invokeLater(() -> {
+				SwingUtilities.invokeLater(() ->
+				{
 					tasksContainer.remove(tasks.get(0));
 					tasks.remove(0);
 					TaskBox newBox = buildBox(slayerPlugin, tasksContainer, newData);

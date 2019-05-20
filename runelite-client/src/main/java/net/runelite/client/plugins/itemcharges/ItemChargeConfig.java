@@ -388,4 +388,15 @@ public interface ItemChargeConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "showrecoil",
+			name = "Show If Recoil is activated",
+			description = "Configures if Recoil is activated",
+			position = 22
+	)
+	default boolean showrecoil()
+	{
+		return false;
+	}
 }

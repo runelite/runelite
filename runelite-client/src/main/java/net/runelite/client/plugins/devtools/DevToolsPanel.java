@@ -118,11 +118,11 @@ class DevToolsPanel extends PluginPanel
 				varInspector.open();
 			}
 		});
-		
+
 		container.add(plugin.getLogMenuActions());
 		plugin.getLogMenuActions().addActionListener((ev) ->
 		{
-			if(plugin.getLogMenuActions().isActive())
+			if (plugin.getLogMenuActions().isActive())
 			{
 				client.setPrintMenuActions(false);
 			}

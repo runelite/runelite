@@ -27,6 +27,7 @@ package net.runelite.client.plugins.equipmentinspector;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("grounditems")
 public interface EquipmentInspectorConfig extends Config
@@ -42,9 +43,13 @@ public interface EquipmentInspectorConfig extends Config
 		return true;
 	}
 
+	@Range(
+		min = 1,
+		max = 4
+	)
 	@ConfigItem(
 		keyName = "protecteditems",
-		name = "# of protected items",
+		name = "protected items",
 		description = "Limit 4",
 		position = 2
 	)

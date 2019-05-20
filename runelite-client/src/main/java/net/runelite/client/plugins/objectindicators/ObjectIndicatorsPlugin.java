@@ -53,14 +53,14 @@ import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.KeyListener;
@@ -80,6 +80,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 {
 	private static final String CONFIG_GROUP = "objectindicators";
 	private static final String MARK = "Mark object";
+	private static final String UNMARK = "Unmark object";
 
 	private final Gson GSON = new Gson();
 	@Getter(AccessLevel.PACKAGE)
@@ -221,7 +222,44 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
 		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-		menuEntry.setOption(MARK);
+
+		String option = MARK;
+
+		Scene scene = client.getScene();
+		Tile[][][] tiles = scene.getTiles();
+		final int x = event.getActionParam0();
+		final int y = event.getActionParam1();
+		final int z = client.getPlane();
+		final Tile tile = tiles[z][x][y];
+		final TileObject object = findTileObject(tile, event.getIdentifier());
+		if (object != null)
+		{
+			final ObjectComposition objectDefinition = client.getObjectDefinition(object.getId());
+			final String name = objectDefinition.getName();
+
+			if (!Strings.isNullOrEmpty(name))
+			{
+				final WorldPoint loc = WorldPoint.fromLocalInstance(client, tile.getLocalLocation());
+				final int regionId = loc.getRegionID();
+
+				final ObjectPoint point = new ObjectPoint(
+					name,
+					regionId,
+					loc.getX() & (REGION_SIZE - 1),
+					loc.getY() & (REGION_SIZE - 1),
+					client.getPlane());
+
+				final Set<ObjectPoint> objectPoints = points.get(regionId);
+
+				if (objectPoints != null && objectPoints.contains(point))
+				{
+					option = UNMARK;
+				}
+			}
+		}
+
+		menuEntry.setOption(option);
+
 		menuEntry.setTarget(event.getTarget());
 		menuEntry.setParam0(event.getActionParam0());
 		menuEntry.setParam1(event.getActionParam1());
@@ -233,7 +271,9 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (event.getMenuAction() != MenuAction.RUNELITE || !event.getMenuOption().equals(MARK))
+		if (event.getMenuAction() != MenuAction.RUNELITE
+			|| (!event.getMenuOption().equals(MARK)
+			&& !event.getMenuOption().equals(UNMARK)))
 		{
 			return;
 		}
@@ -274,7 +314,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if ((worldPoint.getX() & (REGION_SIZE - 1)) == objectPoint.getRegionX()
-					&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
+				&& (worldPoint.getY() & (REGION_SIZE - 1)) == objectPoint.getRegionY())
 			{
 				if (objectPoint.getName().equals(client.getObjectDefinition(object.getId()).getName()))
 				{

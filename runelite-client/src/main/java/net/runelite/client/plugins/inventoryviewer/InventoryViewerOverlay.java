@@ -73,18 +73,18 @@ class InventoryViewerOverlay extends Overlay
 		inventoryComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		inventoryComponent.setBackgroundColor(null);
 		inventoryComponent.setBorder(new Rectangle(
-				0,
-				ComponentConstants.STANDARD_BORDER,
-				0,
-				ComponentConstants.STANDARD_BORDER));
+			0,
+			ComponentConstants.STANDARD_BORDER,
+			0,
+			ComponentConstants.STANDARD_BORDER));
 
 		wrapperComponent.setOrientation(ComponentOrientation.HORIZONTAL);
 		wrapperComponent.setWrapping(2);
 		wrapperComponent.setBorder(new Rectangle(
-				ComponentConstants.STANDARD_BORDER * 2,
-				ComponentConstants.STANDARD_BORDER,
-				ComponentConstants.STANDARD_BORDER * 2,
-				ComponentConstants.STANDARD_BORDER));
+			ComponentConstants.STANDARD_BORDER * 2,
+			ComponentConstants.STANDARD_BORDER,
+			ComponentConstants.STANDARD_BORDER * 2,
+			ComponentConstants.STANDARD_BORDER));
 
 		this.itemManager = itemManager;
 		this.client = client;
@@ -95,7 +95,7 @@ class InventoryViewerOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		if (config.hideWhenInvOpen()
-				&& client.getVar(VarClientInt.PLAYER_INVENTORY_OPENED) == 3)
+			&& client.getVar(VarClientInt.PLAYER_INVENTORY_OPENED) == 3)
 		{
 			return null;
 		}

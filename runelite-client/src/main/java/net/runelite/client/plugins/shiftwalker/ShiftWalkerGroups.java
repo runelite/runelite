@@ -1,10 +1,10 @@
 package net.runelite.client.plugins.shiftwalker;
 
-import java.util.HashSet;
+// import java.util.HashSet;
 
 public final class ShiftWalkerGroups
 {
-	//Specific Targets to limit the walking to
+	/*//Specific Targets to limit the walking to
 	private static final String BOX_TRAP = "BOX TRAP";
 	private static final String BOX_TRAP_SHAKING = "SHAKING BOX";
 
@@ -27,6 +27,6 @@ public final class ShiftWalkerGroups
 		BOX_TRAP_KEYWORDS.add(BOX_TRAP_CHECK);
 
 		ATTACK_OPTIONS_KEYWORDS.add(ATTACK_OPTIONS_ATTACK);
-	}
+	}*/
 
 }

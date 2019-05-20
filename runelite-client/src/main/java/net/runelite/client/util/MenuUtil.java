@@ -33,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 
+@Deprecated
 @Slf4j
 public class MenuUtil
 {
@@ -109,8 +110,8 @@ public class MenuUtil
 	private static MenuEntry findOptionTarget(Stream<MenuEntry> stream, String option, String target)
 	{
 		Optional<MenuEntry> maybeEntry = stream.filter(e -> Text.standardize(e.getOption()).equals(option) &&
-															Text.standardize(e.getTarget()).equals(target))
-				/* autism */								.findFirst();
+			Text.standardize(e.getTarget()).equals(target))
+			/* autism */.findFirst();
 
 		return maybeEntry.orElse(null);
 	}
@@ -118,8 +119,8 @@ public class MenuUtil
 	private static MenuEntry findOptionTargetLenient(Stream<MenuEntry> stream, String option, String target)
 	{
 		Optional<MenuEntry> maybeEntry = stream.filter(e -> Text.standardize(e.getOption()).contains(option) &&
-															Text.standardize(e.getTarget()).contains(target))
-				/* autism */								.findFirst();
+			Text.standardize(e.getTarget()).contains(target))
+			/* autism */.findFirst();
 
 		return maybeEntry.orElse(null);
 	}

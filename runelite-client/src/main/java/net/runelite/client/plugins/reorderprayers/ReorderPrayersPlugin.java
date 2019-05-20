@@ -83,67 +83,67 @@ public class ReorderPrayersPlugin extends Plugin
 	private static final int PRAYER_COUNT = Prayer.values().length;
 
 	private static final List<WidgetInfo> PRAYER_WIDGET_INFO_LIST = ImmutableList.of(
-			WidgetInfo.PRAYER_THICK_SKIN,
-			WidgetInfo.PRAYER_BURST_OF_STRENGTH,
-			WidgetInfo.PRAYER_CLARITY_OF_THOUGHT,
-			WidgetInfo.PRAYER_SHARP_EYE,
-			WidgetInfo.PRAYER_MYSTIC_WILL,
-			WidgetInfo.PRAYER_ROCK_SKIN,
-			WidgetInfo.PRAYER_SUPERHUMAN_STRENGTH,
-			WidgetInfo.PRAYER_IMPROVED_REFLEXES,
-			WidgetInfo.PRAYER_RAPID_RESTORE,
-			WidgetInfo.PRAYER_RAPID_HEAL,
-			WidgetInfo.PRAYER_PROTECT_ITEM,
-			WidgetInfo.PRAYER_HAWK_EYE,
-			WidgetInfo.PRAYER_MYSTIC_LORE,
-			WidgetInfo.PRAYER_STEEL_SKIN,
-			WidgetInfo.PRAYER_ULTIMATE_STRENGTH,
-			WidgetInfo.PRAYER_INCREDIBLE_REFLEXES,
-			WidgetInfo.PRAYER_PROTECT_FROM_MAGIC,
-			WidgetInfo.PRAYER_PROTECT_FROM_MISSILES,
-			WidgetInfo.PRAYER_PROTECT_FROM_MELEE,
-			WidgetInfo.PRAYER_EAGLE_EYE,
-			WidgetInfo.PRAYER_MYSTIC_MIGHT,
-			WidgetInfo.PRAYER_RETRIBUTION,
-			WidgetInfo.PRAYER_REDEMPTION,
-			WidgetInfo.PRAYER_SMITE,
-			WidgetInfo.PRAYER_PRESERVE,
-			WidgetInfo.PRAYER_CHIVALRY,
-			WidgetInfo.PRAYER_PIETY,
-			WidgetInfo.PRAYER_RIGOUR,
-			WidgetInfo.PRAYER_AUGURY
+		WidgetInfo.PRAYER_THICK_SKIN,
+		WidgetInfo.PRAYER_BURST_OF_STRENGTH,
+		WidgetInfo.PRAYER_CLARITY_OF_THOUGHT,
+		WidgetInfo.PRAYER_SHARP_EYE,
+		WidgetInfo.PRAYER_MYSTIC_WILL,
+		WidgetInfo.PRAYER_ROCK_SKIN,
+		WidgetInfo.PRAYER_SUPERHUMAN_STRENGTH,
+		WidgetInfo.PRAYER_IMPROVED_REFLEXES,
+		WidgetInfo.PRAYER_RAPID_RESTORE,
+		WidgetInfo.PRAYER_RAPID_HEAL,
+		WidgetInfo.PRAYER_PROTECT_ITEM,
+		WidgetInfo.PRAYER_HAWK_EYE,
+		WidgetInfo.PRAYER_MYSTIC_LORE,
+		WidgetInfo.PRAYER_STEEL_SKIN,
+		WidgetInfo.PRAYER_ULTIMATE_STRENGTH,
+		WidgetInfo.PRAYER_INCREDIBLE_REFLEXES,
+		WidgetInfo.PRAYER_PROTECT_FROM_MAGIC,
+		WidgetInfo.PRAYER_PROTECT_FROM_MISSILES,
+		WidgetInfo.PRAYER_PROTECT_FROM_MELEE,
+		WidgetInfo.PRAYER_EAGLE_EYE,
+		WidgetInfo.PRAYER_MYSTIC_MIGHT,
+		WidgetInfo.PRAYER_RETRIBUTION,
+		WidgetInfo.PRAYER_REDEMPTION,
+		WidgetInfo.PRAYER_SMITE,
+		WidgetInfo.PRAYER_PRESERVE,
+		WidgetInfo.PRAYER_CHIVALRY,
+		WidgetInfo.PRAYER_PIETY,
+		WidgetInfo.PRAYER_RIGOUR,
+		WidgetInfo.PRAYER_AUGURY
 	);
 
 	private static final List<Integer> QUICK_PRAYER_CHILD_IDS = ImmutableList.of(
-			WidgetID.QuickPrayer.THICK_SKIN_CHILD_ID,
-			WidgetID.QuickPrayer.BURST_OF_STRENGTH_CHILD_ID,
-			WidgetID.QuickPrayer.CLARITY_OF_THOUGHT_CHILD_ID,
-			WidgetID.QuickPrayer.SHARP_EYE_CHILD_ID,
-			WidgetID.QuickPrayer.MYSTIC_WILL_CHILD_ID,
-			WidgetID.QuickPrayer.ROCK_SKIN_CHILD_ID,
-			WidgetID.QuickPrayer.SUPERHUMAN_STRENGTH_CHILD_ID,
-			WidgetID.QuickPrayer.IMPROVED_REFLEXES_CHILD_ID,
-			WidgetID.QuickPrayer.RAPID_RESTORE_CHILD_ID,
-			WidgetID.QuickPrayer.RAPID_HEAL_CHILD_ID,
-			WidgetID.QuickPrayer.PROTECT_ITEM_CHILD_ID,
-			WidgetID.QuickPrayer.HAWK_EYE_CHILD_ID,
-			WidgetID.QuickPrayer.MYSTIC_LORE_CHILD_ID,
-			WidgetID.QuickPrayer.STEEL_SKIN_CHILD_ID,
-			WidgetID.QuickPrayer.ULTIMATE_STRENGTH_CHILD_ID,
-			WidgetID.QuickPrayer.INCREDIBLE_REFLEXES_CHILD_ID,
-			WidgetID.QuickPrayer.PROTECT_FROM_MAGIC_CHILD_ID,
-			WidgetID.QuickPrayer.PROTECT_FROM_MISSILES_CHILD_ID,
-			WidgetID.QuickPrayer.PROTECT_FROM_MELEE_CHILD_ID,
-			WidgetID.QuickPrayer.EAGLE_EYE_CHILD_ID,
-			WidgetID.QuickPrayer.MYSTIC_MIGHT_CHILD_ID,
-			WidgetID.QuickPrayer.RETRIBUTION_CHILD_ID,
-			WidgetID.QuickPrayer.REDEMPTION_CHILD_ID,
-			WidgetID.QuickPrayer.SMITE_CHILD_ID,
-			WidgetID.QuickPrayer.PRESERVE_CHILD_ID,
-			WidgetID.QuickPrayer.CHIVALRY_CHILD_ID,
-			WidgetID.QuickPrayer.PIETY_CHILD_ID,
-			WidgetID.QuickPrayer.RIGOUR_CHILD_ID,
-			WidgetID.QuickPrayer.AUGURY_CHILD_ID
+		WidgetID.QuickPrayer.THICK_SKIN_CHILD_ID,
+		WidgetID.QuickPrayer.BURST_OF_STRENGTH_CHILD_ID,
+		WidgetID.QuickPrayer.CLARITY_OF_THOUGHT_CHILD_ID,
+		WidgetID.QuickPrayer.SHARP_EYE_CHILD_ID,
+		WidgetID.QuickPrayer.MYSTIC_WILL_CHILD_ID,
+		WidgetID.QuickPrayer.ROCK_SKIN_CHILD_ID,
+		WidgetID.QuickPrayer.SUPERHUMAN_STRENGTH_CHILD_ID,
+		WidgetID.QuickPrayer.IMPROVED_REFLEXES_CHILD_ID,
+		WidgetID.QuickPrayer.RAPID_RESTORE_CHILD_ID,
+		WidgetID.QuickPrayer.RAPID_HEAL_CHILD_ID,
+		WidgetID.QuickPrayer.PROTECT_ITEM_CHILD_ID,
+		WidgetID.QuickPrayer.HAWK_EYE_CHILD_ID,
+		WidgetID.QuickPrayer.MYSTIC_LORE_CHILD_ID,
+		WidgetID.QuickPrayer.STEEL_SKIN_CHILD_ID,
+		WidgetID.QuickPrayer.ULTIMATE_STRENGTH_CHILD_ID,
+		WidgetID.QuickPrayer.INCREDIBLE_REFLEXES_CHILD_ID,
+		WidgetID.QuickPrayer.PROTECT_FROM_MAGIC_CHILD_ID,
+		WidgetID.QuickPrayer.PROTECT_FROM_MISSILES_CHILD_ID,
+		WidgetID.QuickPrayer.PROTECT_FROM_MELEE_CHILD_ID,
+		WidgetID.QuickPrayer.EAGLE_EYE_CHILD_ID,
+		WidgetID.QuickPrayer.MYSTIC_MIGHT_CHILD_ID,
+		WidgetID.QuickPrayer.RETRIBUTION_CHILD_ID,
+		WidgetID.QuickPrayer.REDEMPTION_CHILD_ID,
+		WidgetID.QuickPrayer.SMITE_CHILD_ID,
+		WidgetID.QuickPrayer.PRESERVE_CHILD_ID,
+		WidgetID.QuickPrayer.CHIVALRY_CHILD_ID,
+		WidgetID.QuickPrayer.PIETY_CHILD_ID,
+		WidgetID.QuickPrayer.RIGOUR_CHILD_ID,
+		WidgetID.QuickPrayer.AUGURY_CHILD_ID
 	);
 
 	private static final String LOCK = "Lock";
@@ -153,22 +153,22 @@ public class ReorderPrayersPlugin extends Plugin
 	private static final String MENU_TARGET = "Reordering";
 
 	private static final WidgetMenuOption FIXED_PRAYER_TAB_LOCK = new WidgetMenuOption(LOCK,
-			MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_PRAYER_TAB);
+		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_PRAYER_TAB);
 
 	private static final WidgetMenuOption FIXED_PRAYER_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-			MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_PRAYER_TAB);
+		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_PRAYER_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_PRAYER_TAB_LOCK = new WidgetMenuOption(LOCK,
-			MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_PRAYER_TAB);
+		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_PRAYER_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_PRAYER_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-			MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_PRAYER_TAB);
+		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_PRAYER_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_PRAYER_TAB_LOCK = new WidgetMenuOption(LOCK,
-			MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_PRAYER_TAB);
+		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_PRAYER_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_PRAYER_TAB_UNLOCK = new WidgetMenuOption(UNLOCK,
-			MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_PRAYER_TAB);
+		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_PRAYER_TAB);
 
 	@Inject
 	private Client client;
@@ -184,15 +184,15 @@ public class ReorderPrayersPlugin extends Plugin
 	static String prayerOrderToString(Prayer[] prayerOrder)
 	{
 		return Arrays.stream(prayerOrder)
-				.map(Prayer::name)
-				.collect(Collectors.joining(","));
+			.map(Prayer::name)
+			.collect(Collectors.joining(","));
 	}
 
 	private static Prayer[] stringToPrayerOrder(String string)
 	{
 		return Arrays.stream(string.split(","))
-				.map(Prayer::valueOf)
-				.toArray(Prayer[]::new);
+			.map(Prayer::valueOf)
+			.toArray(Prayer[]::new);
 	}
 
 	private static int getPrayerIndex(Widget widget)
@@ -280,7 +280,7 @@ public class ReorderPrayersPlugin extends Plugin
 				int draggedGroupId = WidgetInfo.TO_GROUP(draggedWidget.getId());
 				int draggedOnGroupId = WidgetInfo.TO_GROUP(draggedOnWidget.getId());
 				if (draggedGroupId != WidgetID.PRAYER_GROUP_ID || draggedOnGroupId != WidgetID.PRAYER_GROUP_ID
-						|| draggedOnWidget.getWidth() != PRAYER_WIDTH || draggedOnWidget.getHeight() != PRAYER_HEIGHT)
+					|| draggedOnWidget.getWidth() != PRAYER_WIDTH || draggedOnWidget.getHeight() != PRAYER_HEIGHT)
 				{
 					return;
 				}
@@ -303,8 +303,8 @@ public class ReorderPrayersPlugin extends Plugin
 	public void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
 	{
 		if (event.getWidget() == WidgetInfo.FIXED_VIEWPORT_PRAYER_TAB
-				|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_PRAYER_TAB
-				|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_PRAYER_TAB)
+			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_PRAYER_TAB
+			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_PRAYER_TAB)
 		{
 			config.unlockPrayerReordering(event.getMenuOption().equals(UNLOCK));
 		}
@@ -376,9 +376,9 @@ public class ReorderPrayersPlugin extends Plugin
 		if (prayerTabState == PrayerTabState.PRAYERS)
 		{
 			List<Widget> prayerWidgets = PRAYER_WIDGET_INFO_LIST.stream()
-					.map(client::getWidget)
-					.filter(Objects::nonNull)
-					.collect(Collectors.toList());
+				.map(client::getWidget)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
 
 			if (prayerWidgets.size() != PRAYER_WIDGET_INFO_LIST.size())
 			{
@@ -441,8 +441,8 @@ public class ReorderPrayersPlugin extends Plugin
 
 				Widget prayerSpriteWidget = prayerWidgets[childId];
 				setWidgetPosition(prayerSpriteWidget,
-						QUICK_PRAYER_SPRITE_X_OFFSET + x * PRAYER_X_OFFSET,
-						QUICK_PRAYER_SPRITE_Y_OFFSET + y * PRAYER_Y_OFFSET);
+					QUICK_PRAYER_SPRITE_X_OFFSET + x * PRAYER_X_OFFSET,
+					QUICK_PRAYER_SPRITE_Y_OFFSET + y * PRAYER_Y_OFFSET);
 
 				Widget prayerToggleWidget = prayerWidgets[childId + 1];
 				setWidgetPosition(prayerToggleWidget, x * PRAYER_X_OFFSET, y * PRAYER_Y_OFFSET);

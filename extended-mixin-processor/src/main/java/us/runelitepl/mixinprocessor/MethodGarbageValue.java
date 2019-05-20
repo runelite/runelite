@@ -33,11 +33,11 @@ public class MethodGarbageValue
 	
 	public MethodGarbageValue(int value)
 	{
-		if(value <= Byte.MAX_VALUE && value >= Byte.MIN_VALUE)
+		if (value <= Byte.MAX_VALUE && value >= Byte.MIN_VALUE)
 		{
 			type = "B";
 		}
-		else if(value <= Short.MAX_VALUE && value >= Short.MIN_VALUE)
+		else if (value <= Short.MAX_VALUE && value >= Short.MIN_VALUE)
 		{
 			type = "S";
 		}
@@ -60,6 +60,6 @@ public class MethodGarbageValue
 	
 	public String toString()
 	{
-		return "MethodGarbageValue[type="+getType()+",value="+getValue()+"]";
+		return "MethodGarbageValue[type=" + getType() + ",value=" + getValue() + "]";
 	}
 }

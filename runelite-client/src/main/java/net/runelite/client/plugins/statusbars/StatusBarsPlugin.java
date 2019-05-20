@@ -24,12 +24,12 @@
  */
 package net.runelite.client.plugins.statusbars;
 
+import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
-import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;

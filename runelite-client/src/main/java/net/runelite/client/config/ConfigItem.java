@@ -49,4 +49,7 @@ public @interface ConfigItem
 
 	String group() default "";
 
+	String unhide() default "";
+
+	String parent() default "";
 }

@@ -36,12 +36,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.RuneLite;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.ws.WSClient;
 import net.runelite.http.api.account.AccountClient;
@@ -147,7 +147,7 @@ public class SessionManager
 		{
 			// Initialize config for new session
 			// If the session isn't logged in yet, don't switch to the new config
-			configManager.switchSession(session);
+			configManager.switchSession();
 		}
 
 		eventBus.post(new SessionOpen());
@@ -177,7 +177,7 @@ public class SessionManager
 		accountSession = null; // No more account
 
 		// Restore config
-		configManager.switchSession(null);
+		configManager.switchSession();
 
 		eventBus.post(new SessionClose());
 	}

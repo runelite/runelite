@@ -39,7 +39,7 @@ public class AbsorptionCounter extends Counter
 
 	AbsorptionCounter(BufferedImage image, Plugin plugin, int absorption, int threshold)
 	{
-		super(image, plugin,  absorption);
+		super(image, plugin, absorption);
 		this.threshold = threshold;
 	}
 
@@ -56,7 +56,7 @@ public class AbsorptionCounter extends Counter
 			return belowThresholdColor;
 		}
 	}
-	
+
 	@Override
 	public String getTooltip()
 	{

@@ -25,10 +25,9 @@
  */
 package net.runelite.client.plugins.worldmap;
 
+import java.awt.image.BufferedImage;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
-
-import java.awt.image.BufferedImage;
 
 class RareTreePoint extends WorldMapPoint
 {

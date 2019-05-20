@@ -45,6 +45,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.NullItemID;
+import net.runelite.api.Point;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.Renderable;
 import net.runelite.api.WorldMapManager;
@@ -374,6 +375,7 @@ public class Hooks implements Callbacks
 
 	/**
 	 * Copy an image
+	 *
 	 * @param src
 	 * @return
 	 */
@@ -394,6 +396,18 @@ public class Hooks implements Callbacks
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
 		BufferedImage image = (BufferedImage) bufferProvider.getImage();
 		Graphics2D graphics2d = image.createGraphics();
+
+		// Update selected scene tile
+		if (!client.isMenuOpen())
+		{
+			Point p = client.getMouseCanvasPosition();
+			p = new Point(
+				p.getX() - client.getViewportXOffset(),
+				p.getY() - client.getViewportYOffset());
+
+			client.setCheckClick(true);
+			client.setMouseCanvasHoverPosition(p);
+		}
 
 		try
 		{

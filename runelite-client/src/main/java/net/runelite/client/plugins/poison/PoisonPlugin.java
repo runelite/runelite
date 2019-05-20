@@ -299,8 +299,8 @@ public class PoisonPlugin extends Plugin
 		}
 
 		String line1 = MessageFormat.format("Next {0} damage: {1}</br>Time until damage: {2}",
-			envenomed ? "venom" : "poison",	ColorUtil.wrapWithColorTag(String.valueOf(lastDamage), Color.RED),
-				getFormattedTime(Duration.between(Instant.now(), nextPoisonTick)));
+			envenomed ? "venom" : "poison", ColorUtil.wrapWithColorTag(String.valueOf(lastDamage), Color.RED),
+			getFormattedTime(Duration.between(Instant.now(), nextPoisonTick)));
 		String line2 = envenomed ? "" : MessageFormat.format("</br>Time until cure: {0}", getFormattedTime(timeLeft));
 
 		return line1 + line2;

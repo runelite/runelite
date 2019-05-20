@@ -52,7 +52,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 {
 	/**
 	 * The largest (most zoomed in) value that can be used without the client crashing.
-	 *
+	 * <p>
 	 * Larger values trigger an overflow in the engine's fov to scale code.
 	 */
 	private static final int INNER_ZOOM_LIMIT = 1004;
@@ -90,7 +90,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
 
-		if ("scrollWheelZoom".equals(event.getEventName()) &&  zoomConfig.controlFunction() == ControlFunction.CONTROL_TO_ZOOM && !controlDown)
+		if ("scrollWheelZoom".equals(event.getEventName()) && zoomConfig.controlFunction() == ControlFunction.CONTROL_TO_ZOOM && !controlDown)
 		{
 			intStack[intStackSize - 1] = 1;
 		}

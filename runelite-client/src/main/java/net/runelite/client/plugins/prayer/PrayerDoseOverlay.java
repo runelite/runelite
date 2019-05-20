@@ -199,6 +199,6 @@ class PrayerDoseOverlay extends Overlay
 		final int seconds = (int) Math.floor(secondsLeft - (minutes * 60.0));
 
 		// Return the text
-		return Integer.toString(minutes) + ":" + StringUtils.leftPad(Integer.toString(seconds), 2, "0");
+		return minutes + ":" + StringUtils.leftPad(Integer.toString(seconds), 2, "0");
 	}
 }

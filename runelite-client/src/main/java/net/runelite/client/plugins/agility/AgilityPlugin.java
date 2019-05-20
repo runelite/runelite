@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.agility;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,6 +38,8 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import static net.runelite.api.Skill.AGILITY;
@@ -72,10 +75,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.api.MenuEntry;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.api.MenuAction;
-import java.awt.Color;
 
 @PluginDescriptor(
 	name = "Agility",
@@ -447,7 +447,8 @@ public class AgilityPlugin extends Plugin
 		for (Obstacle nearbyObstacle : getObstacles().values())
 		{
 			AgilityShortcut shortcut = nearbyObstacle.getShortcut();
-			if (shortcut != null && Arrays.stream(shortcut.getObstacleIds()).anyMatch(i -> i == entryId)) {
+			if (shortcut != null && Arrays.stream(shortcut.getObstacleIds()).anyMatch(i -> i == entryId))
+			{
 				MenuEntry entry = menuEntries[menuEntries.length - 1];
 				int level = shortcut.getLevel();
 				Color color = level <= getAgilityLevel() ? Color.GREEN : Color.RED;

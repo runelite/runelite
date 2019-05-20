@@ -27,7 +27,8 @@ package net.runelite.client.plugins.groundmarkers;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.Collection;
+import static java.lang.Math.floor;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
@@ -64,13 +65,13 @@ class GroundMarkerMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.drawTileOnMinimmap())
+		if (!config.showMinimap())
 		{
 			return null;
 		}
 
-		final Collection<ColorTileMarker> points = plugin.getPoints();
-		for (final ColorTileMarker point : points)
+		final List<GroundMarkerWorldPoint> points = plugin.getPoints();
+		for (final GroundMarkerWorldPoint point : points)
 		{
 			WorldPoint worldPoint = point.getWorldPoint();
 			if (worldPoint.getPlane() != client.getPlane())
@@ -78,12 +79,21 @@ class GroundMarkerMinimapOverlay extends Overlay
 				continue;
 			}
 
-			Color tileColor = point.getColor();
-			if (tileColor == null || !config.rememberTileColors())
+			Color color = config.markerColor();
+			switch (point.getGroundMarkerPoint().getGroup())
 			{
-				// If this is an old tile which has no color, or rememberTileColors is off, use marker color
-				tileColor = config.markerColor();
+				case 2:
+					color = config.markerColor2();
+					break;
+				case 3:
+					color = config.markerColor3();
+					break;
+				case 4:
+					color = config.markerColor4();
 			}
+
+			int opacity = (int) floor(config.minimapOverlayOpacity() * 2.55);
+			Color tileColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
 
 			drawOnMinimap(graphics, worldPoint, tileColor);
 		}

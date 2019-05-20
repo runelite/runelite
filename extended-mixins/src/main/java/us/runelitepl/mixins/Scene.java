@@ -43,10 +43,10 @@ public class Scene
 			return true;
 		}
 		
-		if(renderable instanceof RSPlayer)
+		if (renderable instanceof RSPlayer)
 		{
 			RSPlayer p = (RSPlayer) renderable;
-			if(Client.hideClanMates && p.isClanMember())
+			if (Client.hideClanMates && p.isClanMember())
 			{
 				return false;
 			}

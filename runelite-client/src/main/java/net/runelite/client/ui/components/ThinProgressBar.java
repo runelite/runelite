@@ -54,7 +54,7 @@ public class ThinProgressBar extends JPanel
 
 	public double getPercentage()
 	{
-		return (value * 100) / maximumValue;
+		return (value * 100) / (double) maximumValue;
 	}
 
 	@Override

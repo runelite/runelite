@@ -26,19 +26,21 @@
  */
 package net.runelite.client.plugins.mining;
 
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.GameObject;
+import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.*;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.SkillIconManager;
-import net.runelite.client.plugins.mining.MiningConfig;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
-
-import javax.inject.Inject;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 
 class MiningRocksOverlay extends Overlay
 {
@@ -76,11 +78,14 @@ class MiningRocksOverlay extends Overlay
 	{
 		LocalPoint localLocation = local.getLocalLocation();
 
-		if (config.showMiningRocks()) {
-			for (GameObject rock : plugin.getRocks()) {
+		if (config.showMiningRocks())
+		{
+			for (GameObject rock : plugin.getRocks())
+			{
 
 				LocalPoint location = rock.getLocalLocation();
-				if (localLocation.distanceTo(location) <= MAX_DISTANCE) {
+				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
+				{
 					renderMiningRock(graphics, rock);
 				}
 			}

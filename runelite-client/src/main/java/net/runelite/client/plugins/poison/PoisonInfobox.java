@@ -25,10 +25,10 @@
 package net.runelite.client.plugins.poison;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.awt.image.BufferedImage;
 import net.runelite.client.ui.overlay.infobox.Timer;
 
 class PoisonInfobox extends Timer

@@ -48,7 +48,10 @@ class Message
 			for (String tag : tags)
 			{
 				int eq = tag.indexOf('=');
-				if (eq == -1) continue;
+				if (eq == -1)
+				{
+					continue;
+				}
 
 				String key = tag.substring(0, eq);
 				String value = tag.substring(eq + 1)

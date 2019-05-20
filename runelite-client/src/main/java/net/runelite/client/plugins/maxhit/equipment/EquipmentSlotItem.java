@@ -24,9 +24,8 @@
  */
 package net.runelite.client.plugins.maxhit.equipment;
 
-import net.runelite.api.EquipmentInventorySlot;
-
 import java.util.ArrayList;
+import net.runelite.api.EquipmentInventorySlot;
 
 public class EquipmentSlotItem
 {

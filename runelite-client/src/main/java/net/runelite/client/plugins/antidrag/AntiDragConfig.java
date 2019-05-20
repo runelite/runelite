@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, DennisDeV <https://github.com/DevDennis>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,11 +24,10 @@
  */
 package net.runelite.client.plugins.antidrag;
 
-import net.runelite.api.Constants;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-import net.runelite.client.config.Alpha;
 import net.runelite.api.Constants;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;

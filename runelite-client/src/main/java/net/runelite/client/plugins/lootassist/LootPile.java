@@ -2,7 +2,6 @@ package net.runelite.client.plugins.lootassist;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 
 class LootPile

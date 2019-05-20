@@ -574,8 +574,9 @@ public class KeptOnDeathPlugin extends Plugin
 
 	/**
 	 * Creates an Item Widget for use inside the Kept on Death Interface
+	 *
 	 * @param qty Amount of item
-	 * @param c Items Composition
+	 * @param c   Items Composition
 	 * @return
 	 */
 	private Widget createItemWidget(int qty, ItemComposition c)

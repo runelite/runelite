@@ -173,7 +173,7 @@ public class StackFormatter
 	 * <p>
 	 *
 	 * @param quantity The quantity to convert.
-	 * @param precise If true, the returned string will have thousandths precision if quantity is larger than 1 million.
+	 * @param precise  If true, the returned string will have thousandths precision if quantity is larger than 1 million.
 	 * @return The stack size as it would appear in RS, with decimals,
 	 * with K after 100,000 and M after 10,000,000
 	 */

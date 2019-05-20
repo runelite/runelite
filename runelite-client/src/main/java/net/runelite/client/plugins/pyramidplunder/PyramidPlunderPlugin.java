@@ -130,7 +130,7 @@ public class PyramidPlunderPlugin extends Plugin
 			if (remainingTime >= 2)
 			{
 				double timeInSeconds = remainingTime * GAMETICK_SECOND;
-				showTimer((int)timeInSeconds, ChronoUnit.SECONDS);
+				showTimer((int) timeInSeconds, ChronoUnit.SECONDS);
 			}
 		}
 	}
@@ -162,6 +162,7 @@ public class PyramidPlunderPlugin extends Plugin
 				break;
 			case LOADING:
 				obstacles.clear();
+				break;
 			case LOGGED_IN:
 				if (!isInRegion())
 				{
@@ -180,12 +181,8 @@ public class PyramidPlunderPlugin extends Plugin
 		}
 
 		WorldPoint location = local.getWorldLocation();
-		if (location.getRegionID() != PYRAMIND_PLUNDER_REGION_ID)
-		{
-			return false;
-		}
+		return location.getRegionID() == PYRAMIND_PLUNDER_REGION_ID;
 
-		return true;
 	}
 
 	@Subscribe

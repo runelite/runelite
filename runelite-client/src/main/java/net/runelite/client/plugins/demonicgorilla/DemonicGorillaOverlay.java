@@ -70,9 +70,12 @@ public class DemonicGorillaOverlay extends Overlay
 	{
 		switch (attackStyle)
 		{
-			case MELEE: return iconManager.getSkillImage(Skill.ATTACK);
-			case RANGED: return iconManager.getSkillImage(Skill.RANGED);
-			case MAGIC: return iconManager.getSkillImage(Skill.MAGIC);
+			case MELEE:
+				return iconManager.getSkillImage(Skill.ATTACK);
+			case RANGED:
+				return iconManager.getSkillImage(Skill.RANGED);
+			case MAGIC:
+				return iconManager.getSkillImage(Skill.MAGIC);
 		}
 		return null;
 	}

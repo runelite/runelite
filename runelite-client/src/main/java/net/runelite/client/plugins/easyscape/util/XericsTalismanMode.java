@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, Kyle <https://github.com/kyleeld>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +23,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.easyscape;
+package net.runelite.client.plugins.easyscape.util;
 
-public enum DuelingRingMode {
-    DUEL_ARENA("Duel Arena"),
-    CASTLE_WARS("Castle Wars"),
-    CLAN_WARS("Clan Wars");
+public enum XericsTalismanMode
+{
+	XERICS_LOOKOUT("Xeric's Lookout"),
+	XERICS_GLADE("Xeric's Glade"),
+	XERICS_INFERNO("Xeric's Inferno"),
+	XERICS_HEART("Xeric's Heart"),
+	XERICS_HONOUR("Xeric's Honour");
 
-    private final String name;
+	private final String name;
 
-    DuelingRingMode(String name) {
-        this.name = name;
-    }
+	XericsTalismanMode(String name)
+	{
+		this.name = name;
+	}
 
-    @Override
-    public String toString() {
-        return name;
-    }
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

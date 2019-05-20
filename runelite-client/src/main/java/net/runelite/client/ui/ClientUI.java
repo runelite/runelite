@@ -174,8 +174,8 @@ public class ClientUI
 	{
 		if (!event.getGroup().equals(CONFIG_GROUP)
 			&& !(event.getGroup().equals(PLUS_CONFIG_GROUP)
-				&&	event.getKey().equals(CONFIG_OPACITY) ||
-					event.getKey().equals(CONFIG_OPACITY_AMOUNT)) ||
+			&& event.getKey().equals(CONFIG_OPACITY) ||
+			event.getKey().equals(CONFIG_OPACITY_AMOUNT)) ||
 			event.getKey().equals(CONFIG_CLIENT_MAXIMIZED) ||
 			event.getKey().equals(CONFIG_CLIENT_BOUNDS))
 		{
@@ -278,7 +278,7 @@ public class ClientUI
 			return;
 		}
 
-		final Client client = (Client)this.client;
+		final Client client = (Client) this.client;
 		final ClientThread clientThread = clientThreadProvider.get();
 
 		// Keep scheduling event until we get our name
@@ -615,8 +615,9 @@ public class ClientUI
 	/**
 	 * Changes cursor for client window. Requires ${@link ClientUI#open(RuneLite)} to be called first.
 	 * FIXME: This is working properly only on Windows, Linux and Mac are displaying cursor incorrectly
+	 *
 	 * @param image cursor image
-	 * @param name cursor name
+	 * @param name  cursor name
 	 */
 	public void setCursor(final BufferedImage image, final String name)
 	{
@@ -632,6 +633,7 @@ public class ClientUI
 
 	/**
 	 * Resets client window cursor to default one.
+	 *
 	 * @see ClientUI#setCursor(BufferedImage, String)
 	 */
 	public void resetCursor()
@@ -666,6 +668,7 @@ public class ClientUI
 
 	/**
 	 * Paint UI related overlays to target graphics
+	 *
 	 * @param graphics target graphics
 	 */
 	public void paintOverlays(final Graphics2D graphics)
@@ -845,7 +848,7 @@ public class ClientUI
 
 		if (config.usernameInTitle() && (client instanceof Client))
 		{
-			final Player player = ((Client)client).getLocalPlayer();
+			final Player player = ((Client) client).getLocalPlayer();
 
 			if (player != null && player.getName() != null)
 			{

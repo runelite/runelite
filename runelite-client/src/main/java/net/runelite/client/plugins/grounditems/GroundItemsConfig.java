@@ -32,6 +32,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
 import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
+import net.runelite.client.plugins.grounditems.config.TimerDisplayMode;
 import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 
 @ConfigGroup("grounditems")
@@ -116,16 +117,16 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
-	
+
 	@ConfigItem(
 		keyName = "highlightTiles",
 		name = "Highlight Tiles",
 		description = "Configures whether or not to highlight tiles containing ground items",
 		position = 6
 	)
-	default boolean highlightTiles() 
-	{ 
-		return false; 
+	default boolean highlightTiles()
+	{
+		return false;
 	}
 
 	@ConfigItem(
@@ -261,10 +262,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "notifyLowValueDrops",
+		name = "Notify for low value drops",
+		description = "Configures whether or not to notify for drops of low value",
+		position = 19
+	)
+	default boolean notifyLowValueDrops()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "mediumValueColor",
 		name = "Medium value items color",
 		description = "Configures the color for medium value items",
-		position = 19
+		position = 20
 	)
 	default Color mediumValueColor()
 	{
@@ -275,7 +287,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "mediumValuePrice",
 		name = "Medium value price",
 		description = "Configures the start price for medium value items",
-		position = 20
+		position = 21
 	)
 	default int mediumValuePrice()
 	{
@@ -283,10 +295,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "notifyMediumValueDrops",
+		name = "Notify for medium value drops",
+		description = "Configures whether or not to notify for drops of medium value",
+		position = 22
+	)
+	default boolean notifyMediumValueDrops()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "highValueColor",
 		name = "High value items color",
 		description = "Configures the color for high value items",
-		position = 21
+		position = 23
 	)
 	default Color highValueColor()
 	{
@@ -297,7 +320,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "highValuePrice",
 		name = "High value price",
 		description = "Configures the start price for high value items",
-		position = 22
+		position = 24
 	)
 	default int highValuePrice()
 	{
@@ -305,10 +328,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "notifyHighValueDrops",
+		name = "Notify for high value drops",
+		description = "Configures whether or not to notify for drops of high value",
+		position = 25
+	)
+	default boolean notifyHighValueDrops()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "insaneValueColor",
 		name = "Insane value items color",
 		description = "Configures the color for insane value items",
-		position = 23
+		position = 26
 	)
 	default Color insaneValueColor()
 	{
@@ -319,7 +353,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "insaneValuePrice",
 		name = "Insane value price",
 		description = "Configures the start price for insane value items",
-		position = 24
+		position = 27
 	)
 	default int insaneValuePrice()
 	{
@@ -327,10 +361,21 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "notifyInsaneValueDrops",
+		name = "Notify for insane value drops",
+		description = "Configures whether or not to notify for drops of insane value",
+		position = 28
+	)
+	default boolean notifyInsaneValueDrops()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "onlyShowLoot",
 		name = "Only show loot",
 		description = "Only shows drops from NPCs and players",
-		position = 25
+		position = 29
 	)
 	default boolean onlyShowLoot()
 	{
@@ -341,7 +386,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "doubleTapDelay",
 		name = "Delay for double-tap ALT to hide",
 		description = "Decrease this number if you accidentally hide ground items often. (0 = Disabled)",
-		position = 26
+		position = 30
 	)
 	default int doubleTapDelay()
 	{
@@ -352,7 +397,7 @@ public interface GroundItemsConfig extends Config
 		keyName = "collapseEntries",
 		name = "Collapse ground item menu entries",
 		description = "Collapses ground item menu entries together and appends count",
-		position = 27
+		position = 31
 	)
 	default boolean collapseEntries()
 	{
@@ -360,10 +405,10 @@ public interface GroundItemsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 27,
-			keyName = "removeIgnored",
-			name = "Hide Ignored",
-			description = "Remove take option for items that are on the hidden items list."
+		keyName = "removeIgnored",
+		name = "Hide Ignored",
+		description = "Remove take option for items that are on the hidden items list.",
+		position = 32
 	)
 	default boolean removeIgnored()
 	{
@@ -374,10 +419,21 @@ public interface GroundItemsConfig extends Config
 		keyName = "toggleOutline",
 		name = "Text Outline",
 		description = "Use an outline around text instead of a text shadow",
-		position = 29
+		position = 33
 	)
 	default boolean toggleOutline()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showGroundItemDuration",
+		name = "Show time remaining",
+		description = "Turn on a countdown timer to show how long an item will remain on the ground",
+		position = 34
+	)
+	default TimerDisplayMode showGroundItemDuration()
+	{
+		return TimerDisplayMode.HOTKEY_PRESSED;
 	}
 }

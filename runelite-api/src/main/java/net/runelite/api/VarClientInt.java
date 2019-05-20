@@ -36,20 +36,20 @@ public enum VarClientInt
 {
 	TOOLTIP_TIMEOUT(1),
 
-	/**
-	 * 0 = no tooltip displayed
-	 * 1 = tooltip displaying
-	 */
+/**
+ * 0 = no tooltip displayed
+ * 1 = tooltip displaying
+*/
 	TOOLTIP_VISIBLE(2),
 
 	INPUT_TYPE(5),
 
 	MEMBERSHIP_STATUS(103),
-    /**
-     * -1 = player inventory closed
-     * 3 = player inventory opened
-     */
-    PLAYER_INVENTORY_OPENED(171),
+/**
+ * -1 = player inventory closed
+ * 3 = player inventory opened
+*/
+	PLAYER_INVENTORY_OPENED(171),
 
 	INVENTORY_TAB(171),
 

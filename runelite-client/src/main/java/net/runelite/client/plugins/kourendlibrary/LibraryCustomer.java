@@ -27,7 +27,6 @@ package net.runelite.client.plugins.kourendlibrary;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
-
 import net.runelite.api.NpcID;
 
 enum LibraryCustomer

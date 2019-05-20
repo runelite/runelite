@@ -32,7 +32,7 @@ import net.runelite.client.plugins.puzzlesolver.solver.heuristics.Heuristic;
 
 /**
  * An implementation of the IDA* algorithm.
- *
+ * <p>
  * https://en.wikipedia.org/wiki/Iterative_deepening_A*
  */
 public class IDAStar extends Pathfinder

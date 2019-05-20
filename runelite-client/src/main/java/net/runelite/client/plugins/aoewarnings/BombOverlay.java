@@ -73,7 +73,7 @@ public class BombOverlay extends Overlay
 
 	//Utilized from the npc highlight code for formatting text being displayed on the client canvas.
 	private static final NumberFormat TIME_LEFT_FORMATTER =
-			DecimalFormat.getInstance(Locale.US);
+		DecimalFormat.getInstance(Locale.US);
 
 	static
 	{
@@ -157,22 +157,22 @@ public class BombOverlay extends Overlay
 
 		Instant now = Instant.now();
 		double timeLeft = ((BOMB_DETONATE_TIME - (client.getTickCount() -
-				bomb.getTickStarted())) * ESTIMATED_TICK_LENGTH) -
-				(now.toEpochMilli() - bomb.getLastClockUpdate().toEpochMilli()) / 1000.0;
-				//divided by 1000.00 because of milliseconds :)
+			bomb.getTickStarted())) * ESTIMATED_TICK_LENGTH) -
+			(now.toEpochMilli() - bomb.getLastClockUpdate().toEpochMilli()) / 1000.0;
+		//divided by 1000.00 because of milliseconds :)
 
 		timeLeft = Math.max(0.0, timeLeft);
 		String bombTimerString = TIME_LEFT_FORMATTER.format(timeLeft);
 		int textWidth = graphics.getFontMetrics().stringWidth(bombTimerString);
 		int textHeight = graphics.getFontMetrics().getAscent();
 		Point canvasPoint = Perspective.localToCanvas(client, localLoc.getX(),
-				localLoc.getY(), bomb.getWorldLocation().getPlane());
+			localLoc.getY(), bomb.getWorldLocation().getPlane());
 
 		if (canvasPoint != null)
 		{
 			Point canvasCenterPoint = new Point(
-					canvasPoint.getX() - textWidth / 2,
-					canvasPoint.getY() + textHeight / 2);
+				canvasPoint.getX() - textWidth / 2,
+				canvasPoint.getY() + textHeight / 2);
 			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, bombTimerString, color_code);
 		}
 

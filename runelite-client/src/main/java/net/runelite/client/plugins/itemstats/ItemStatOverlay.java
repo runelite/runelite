@@ -182,7 +182,7 @@ public class ItemStatOverlay extends Overlay
 
 		final String prefix = value > 0 ? "+" : "";
 		final String suffix = showPercent ? "%" : "";
-		final String valueString = (int)value == value ? String.valueOf((int)value) : String.valueOf(value);
+		final String valueString = (int) value == value ? String.valueOf((int) value) : String.valueOf(value);
 		return label + ": " + ColorUtil.wrapWithColorTag(prefix + valueString + suffix, color) + "</br>";
 	}
 

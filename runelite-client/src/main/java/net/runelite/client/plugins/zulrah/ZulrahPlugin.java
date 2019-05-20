@@ -196,20 +196,34 @@ public class ZulrahPlugin extends Plugin
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		NPC npc = event.getNpc();
-		if (npc != null && npc.getName().toLowerCase().contains("zulrah"))
+		try
 		{
-			zulrah = npc;
+			NPC npc = event.getNpc();
+			if (npc != null && npc.getName().toLowerCase().contains("zulrah"))
+			{
+				zulrah = npc;
+			}
+		}
+		catch (Exception e)
+		{
+
 		}
 	}
 
 	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
 	{
-		NPC npc = event.getNpc();
-		if (npc != null && npc.getName().toLowerCase().contains("zulrah"))
+		try
 		{
-			zulrah = null;
+			NPC npc = event.getNpc();
+			if (npc != null && npc.getName().toLowerCase().contains("zulrah"))
+			{
+				zulrah = null;
+			}
+		}
+		catch (Exception e)
+		{
+
 		}
 	}
 

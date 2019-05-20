@@ -29,7 +29,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("skillCalculator")
-public interface  SkillCalculatorConfig extends Config
+public interface SkillCalculatorConfig extends Config
 {
 	@ConfigItem(
 		keyName = "showBankedXp",

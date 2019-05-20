@@ -23,22 +23,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.client.plugins.groundmarkers;
 
-import java.awt.Color;
-import lombok.EqualsAndHashCode;
 import lombok.Value;
 
-/**
- * Used for serialization of ground marker points.
- */
 @Value
-@EqualsAndHashCode(exclude = { "color" })
-class GroundMarkerPoint
+public class GroundMarkerPoint
 {
 	private int regionId;
 	private int regionX;
 	private int regionY;
 	private int z;
-	private Color color;
+	private int group;
+
+	@Override
+	public String toString()
+	{
+		return "GroundMarkerPoint(regionId=" + regionId + ",regionX=" + regionX + ",=regionY" + regionY + ",z=" + z + ")";
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (!(o instanceof GroundMarkerPoint))
+		{
+			return false;
+		}
+
+		return o.toString().equals(this.toString());
+	}
 }

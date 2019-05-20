@@ -89,7 +89,7 @@ public class PluginWatcher extends Thread
 			scan();
 		}
 
-		for (;;)
+		for (; ; )
 		{
 			try
 			{

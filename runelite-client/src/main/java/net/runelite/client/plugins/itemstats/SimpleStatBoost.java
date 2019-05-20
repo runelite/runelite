@@ -24,9 +24,9 @@
  */
 package net.runelite.client.plugins.itemstats;
 
+import net.runelite.api.Client;
 import net.runelite.client.plugins.itemstats.delta.DeltaCalculator;
 import net.runelite.client.plugins.itemstats.stats.Stat;
-import net.runelite.api.Client;
 
 /**
  * A stat boost using the real stat level. Eg, non-boosted.

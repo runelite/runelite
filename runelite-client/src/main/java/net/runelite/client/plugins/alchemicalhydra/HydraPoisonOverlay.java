@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.alchemicalhydra;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -93,8 +94,8 @@ class HydraPoisonOverlay extends Overlay
 
 			if (poly != null)
 			{
-			poisonTiles.add(new Area(poly));
-		}
+				poisonTiles.add(new Area(poly));
+			}
 		}
 
 		graphics.setPaintMode();
@@ -134,12 +135,13 @@ class HydraPoisonOverlay extends Overlay
 
 		Color color = new Color(255, 0, 0, 100); // like
 
-		if (hydra.getNpc().getWorldArea().intersectsWith(new WorldArea(wp, 1, 1))) 	// coords
-		{																							// WHICH FUCKING RETARD DID X, Y, dX, dY, Z???? IT'S XYZdXdY REEEEEEEEEE
+		if (hydra.getNpc().getWorldArea().intersectsWith(new WorldArea(wp, 1, 1)))    // coords
+		{                                                                                            // WHICH FUCKING RETARD DID X, Y, dX, dY, Z???? IT'S XYZdXdY REEEEEEEEEE
 			color = new Color(0, 255, 0, 100);
 		}
 
 		graphics.setColor(color);
+		graphics.setStroke(new BasicStroke(3));
 		graphics.draw(poly);
 	}
 }

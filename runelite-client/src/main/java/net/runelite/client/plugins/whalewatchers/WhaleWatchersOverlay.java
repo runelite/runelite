@@ -85,7 +85,7 @@ public class WhaleWatchersOverlay extends Overlay
 		else
 		{
 			panelComponent.getChildren().clear();
-			
+
 		}
 		return panelComponent.render(graphics);
 	}

@@ -344,8 +344,8 @@ public class HerbiboarPlugin extends Plugin
 	private boolean checkArea()
 	{
 		return client.getMapRegions() != null && Arrays.stream(client.getMapRegions())
-				.filter(x -> Arrays.stream(HERBIBOAR_REGIONS).anyMatch(y -> y == x))
-				.toArray().length > 0;
+			.filter(x -> Arrays.stream(HERBIBOAR_REGIONS).anyMatch(y -> y == x))
+			.toArray().length > 0;
 	}
 
 	public List<WorldPoint> getEndLocations()

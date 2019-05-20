@@ -24,11 +24,10 @@
  */
 package net.runelite.client.plugins.maxhit.requirements;
 
+import java.util.ArrayList;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.client.plugins.maxhit.config.SpellBaseDamageConfig;
-
-import java.util.ArrayList;
 
 public class AutocastSpellRequirement implements Requirement
 {

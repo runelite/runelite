@@ -136,6 +136,7 @@ class SuppliesTrackerPanel extends PluginPanel
 
 	/**
 	 * loads an img to the icon on the header
+	 *
 	 * @param img the img for the header icon
 	 */
 	void loadHeaderIcon(BufferedImage img)
@@ -145,7 +146,8 @@ class SuppliesTrackerPanel extends PluginPanel
 
 	/**
 	 * convert key value pair to html formatting needed to display nicely
-	 * @param key key
+	 *
+	 * @param key   key
 	 * @param value value
 	 * @return key: value in html
 	 */
@@ -157,6 +159,7 @@ class SuppliesTrackerPanel extends PluginPanel
 
 	/**
 	 * Add an item to the supply panel by placing it into the correct box
+	 *
 	 * @param item the item to add
 	 */
 	void addItem(SuppliesTrackerItem item)

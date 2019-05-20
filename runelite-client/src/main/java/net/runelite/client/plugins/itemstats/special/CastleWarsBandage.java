@@ -44,7 +44,7 @@ import static net.runelite.client.plugins.itemstats.stats.Stats.RUN_ENERGY;
 public class CastleWarsBandage implements Effect
 {
 	private static final ImmutableSet<Integer> BRACELETS = ImmutableSet.of(
-			ItemID.CASTLE_WARS_BRACELET1, ItemID.CASTLE_WARS_BRACELET2, ItemID.CASTLE_WARS_BRACELET3
+		ItemID.CASTLE_WARS_BRACELET1, ItemID.CASTLE_WARS_BRACELET2, ItemID.CASTLE_WARS_BRACELET3
 	);
 
 	private static final double BASE_HP_PERC = .10;

@@ -11,8 +11,7 @@ package net.runelite.client.plugins.friendtagging;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ObjectArrays;
-
-import java.awt.*;
+import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -21,8 +20,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Inject;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
-import net.runelite.api.events.*;
+import net.runelite.api.Client;
+import net.runelite.api.Friend;
+import net.runelite.api.Ignore;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.Nameable;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NameableNameChanged;
+import net.runelite.api.events.RemovedFriend;
+import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -40,12 +48,12 @@ import org.apache.commons.lang3.ArrayUtils;
 @PluginDescriptor(
 	name = "Friend Tagging",
 	description = "Tag people on your friends list.",
-		tags = {"PVP", "friend", "finder", "pk", "pklite"},
-		type = PluginType.UTILITY
+	tags = {"PVP", "friend", "finder", "pk", "pklite"},
+	type = PluginType.UTILITY
 )
 public class FriendTaggingPlugin extends Plugin
 {
-	public static ConcurrentHashMap<String, String> taggedFriends = new ConcurrentHashMap<>();
+	public static final ConcurrentHashMap<String, String> taggedFriends = new ConcurrentHashMap<>();
 
 	private static final String CONFIG_GROUP = "friendtagging";
 	private static final int CHARACTER_LIMIT = 30;
@@ -267,8 +275,8 @@ public class FriendTaggingPlugin extends Plugin
 	}
 
 	/**
-	 *  This method combines the list of usernames on local players friend/ignore list into a comma delimited string
-	 *  and then copies it to the clipboard.
+	 * This method combines the list of usernames on local players friend/ignore list into a comma delimited string
+	 * and then copies it to the clipboard.
 	 */
 	private void friendIgnoreToClipboard()
 	{

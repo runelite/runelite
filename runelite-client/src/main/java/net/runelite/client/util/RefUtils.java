@@ -32,20 +32,20 @@ import org.objectweb.asm.tree.MethodNode;
 
 public class RefUtils implements Opcodes
 {
-	
+
 	private static final String TYPE_PREFIX = "us/runelitepl/mixinprocessor/annotations/";
-	
+
 	public static boolean isReturn(int opcode, boolean checkType)
 	{
 		return (opcode == RETURN && !checkType) || opcode == IRETURN || opcode == LRETURN || opcode == DRETURN ||
-				opcode == ARETURN || opcode == FRETURN;
+			opcode == ARETURN || opcode == FRETURN;
 	}
-	
+
 	public static boolean isReturn(int opcode)
 	{
 		return isReturn(opcode, false);
 	}
-	
+
 	public static boolean checkAnnotation(MethodNode method, String annotation)
 	{
 		if (method.visibleAnnotations != null)
@@ -60,7 +60,7 @@ public class RefUtils implements Opcodes
 		}
 		return false;
 	}
-	
+
 	public static boolean checkAnnotation(FieldNode field, String annotation)
 	{
 		if (field.visibleAnnotations != null)
@@ -75,10 +75,10 @@ public class RefUtils implements Opcodes
 		}
 		return false;
 	}
-	
+
 	public static String makeAnnotationDesc(String annot)
 	{
 		return "L" + TYPE_PREFIX + annot + ";";
 	}
-	
+
 }

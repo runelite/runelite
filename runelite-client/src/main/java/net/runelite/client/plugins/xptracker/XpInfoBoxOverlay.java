@@ -33,10 +33,12 @@ import java.awt.image.BufferedImage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Experience;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
@@ -45,8 +47,6 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.SplitComponent;
 import net.runelite.client.util.StackFormatter;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
 class XpInfoBoxOverlay extends Overlay
 {
@@ -126,23 +126,23 @@ class XpInfoBoxOverlay extends Overlay
 			.build();
 
 		final LineComponent xpHour = LineComponent.builder()
-				.left("XP/Hour:")
-				.right(StackFormatter.quantityToRSDecimalStack(snapshot.getXpPerHour(), true))
-				.build();
+			.left("XP/Hour:")
+			.right(StackFormatter.quantityToRSDecimalStack(snapshot.getXpPerHour(), true))
+			.build();
 
 		final SplitComponent xpSplit = SplitComponent.builder()
-				.first(xpLine)
-				.second(xpHour)
-				.orientation(ComponentOrientation.VERTICAL)
-				.build();
+			.first(xpLine)
+			.second(xpHour)
+			.orientation(ComponentOrientation.VERTICAL)
+			.build();
 
 		final ImageComponent imageComponent = new ImageComponent(icon);
 		final SplitComponent iconXpSplit = SplitComponent.builder()
-				.first(imageComponent)
-				.second(xpSplit)
-				.orientation(ComponentOrientation.HORIZONTAL)
-				.gap(new Point(XP_AND_ICON_GAP, 0))
-				.build();
+			.first(imageComponent)
+			.second(xpSplit)
+			.orientation(ComponentOrientation.HORIZONTAL)
+			.gap(new Point(XP_AND_ICON_GAP, 0))
+			.build();
 
 		iconXpSplitPanel.getChildren().add(iconXpSplit);
 

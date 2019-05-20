@@ -186,49 +186,53 @@ public class RunecraftPlugin extends Plugin
 					swap(client, "empty", option, target); //Due to RuneLite issues the "Deposit" menutext will always show even though it is on fill
 				}
 			}
-				if (target.contains("ring of dueling") && option.contains("withdraw"))//withdraw-1 ring of dueling
+			if (target.contains("ring of dueling") && option.contains("withdraw"))//withdraw-1 ring of dueling
+			{
+				swap(client, "withdraw-1", option, target);
+			}
+			else if (target.contains("binding necklace") && option.contains("withdraw")) //withdraw-1 binding necklace
+			{
+				swap(client, "withdraw-1", option, target);
+			}
+			else if (target.contains("stamina") && option.contains("withdraw"))
+			{ //withdraw-1 stam
+				swap(client, "withdraw-1", option, target);
+			}
+			else if (target.contains("ring of dueling") && option.contains("remove"))
+			{
+				if (client.getLocalPlayer().getWorldLocation().getRegionID() != 10315)
+				{ //changes duel ring teleport options based on location
+					swap(client, "duel arena", option, target);
+				}
+				else if (client.getLocalPlayer().getWorldLocation().getRegionID() == 10315)
 				{
-					swap(client, "withdraw-1", option, target);
+					swap(client, "castle wars", option, target);
 				}
-				else if (target.contains("binding necklace") && option.contains("withdraw")) //withdraw-1 binding necklace
-				{
-					swap(client, "withdraw-1", option, target);
-				}
-				else if (target.contains("stamina") && option.contains("withdraw"))
-				{ //withdraw-1 stam
-					swap(client, "withdraw-1", option, target);
-				}
-				else if (target.contains("ring of dueling") && option.contains("remove"))
-				{
-					if (client.getLocalPlayer().getWorldLocation().getRegionID() != 10315)
-					{ //changes duel ring teleport options based on location
-						swap(client, "duel arena", option, target);
-					}
-					else if (client.getLocalPlayer().getWorldLocation().getRegionID() == 10315)
-					{
-						swap(client, "castle wars", option, target);
-					}
-				}
-				else if (target.contains("crafting cape") && option.contains("remove")) //teleport for crafting cape
-				{
-					swap(client, "Teleport", option, target);
-				}
-				else if (target.contains("max cape") && option.contains("remove")) //teleport for max cape
-				{
-					swap(client, "Crafting Guild", option, target);
-				}
-				else if (target.contains("altar") && option.contains("craft")) // Don't accidentally click the altar to craft
-				{
-					hide(option, target, true);
-				}
-				else if (target.contains("pure") && option.contains("use")) // Don't accidentally use pure essence on altar
-				{
-					hide("use", target, true);
-					hide("drop", target, true);
-				}
-
+			}
+			else if (target.contains("crafting cape") && option.contains("remove")) //teleport for crafting cape
+			{
+				swap(client, "Teleport", option, target);
+			}
+			else if (target.contains("max cape") && option.contains("remove")) //teleport for max cape
+			{
+				swap(client, "Crafting Guild", option, target);
+			}
+			else if (target.contains("altar") && option.contains("craft")) // Don't accidentally click the altar to craft
+			{
+				hide(option, target, true);
+			}
+			else if (target.contains("pure") && option.contains("use")) // Don't accidentally use pure essence on altar
+			{
+				hide("use", target, true);
+				hide("drop", target, true);
+			}
+			else if (option.equals("fill") && id != 9)
+			{
+			  swap(client, "empty", option, target);
 			}
 		}
+	}
+  
 	private void hide(String option, String target, boolean contains)
 	{
 		final MenuEntry[] entries = client.getMenuEntries();
@@ -346,5 +350,4 @@ public class RunecraftPlugin extends Plugin
 			darkMage = null;
 		}
 	}
-
 }

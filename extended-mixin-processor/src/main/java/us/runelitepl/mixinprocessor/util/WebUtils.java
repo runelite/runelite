@@ -50,14 +50,17 @@ public class WebUtils
 		return pageText;
 	}
 	
-	public static byte[] downloadFile(String urlText) throws IOException {
+	public static byte[] downloadFile(String urlText) throws IOException
+	{
 		URL url = new URL(urlText);
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		
-		try (InputStream inputStream = url.openStream()) {
-			int n = 0;
+		try (InputStream inputStream = url.openStream())
+		{
+			int n;
 			byte [] buffer = new byte[ 1024 ];
-			while (-1 != (n = inputStream.read(buffer))) {
+			while (-1 != (n = inputStream.read(buffer)))
+			{
 				output.write(buffer, 0, n);
 			}
 		}

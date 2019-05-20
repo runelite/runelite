@@ -111,11 +111,11 @@ public class TeamCapesPlugin extends Plugin
 
 		// Sort teams by value in descending order and then by key in ascending order, limited to 5 entries
 		teams = teams.entrySet().stream()
-					.sorted(
-						Comparator.comparing(Map.Entry<Integer, Integer>::getValue, Comparator.reverseOrder())
-								.thenComparingInt(Map.Entry::getKey)
-					)
-					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+			.sorted(
+				Comparator.comparing(Map.Entry<Integer, Integer>::getValue, Comparator.reverseOrder())
+					.thenComparingInt(Map.Entry::getKey)
+			)
+			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 	}
 
 	public Map<Integer, Integer> getTeams()

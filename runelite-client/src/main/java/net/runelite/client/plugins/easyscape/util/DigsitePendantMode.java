@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, Kyle <https://github.com/kyleeld>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +23,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.easyscape;
+package net.runelite.client.plugins.easyscape.util;
 
-public enum WealthRingMode {
-	MISCELLANIA ("Miscellania"),
-	GRAND_EXCHANGE ("Grand Exchange"),
-	FALADOR ("Falador"),
-	DONDAKAN ("Dondakan");
+public enum DigsitePendantMode
+{
+	DIGSITE("Digsite"),
+	FOSSIL_ISLAND("Fossil Island"),
+	LITHKREN("Lithkren");
 
-    private final String name;
+	private final String name;
 
-    WealthRingMode(String name) {
-        this.name = name;
-    }
+	DigsitePendantMode(String name)
+	{
+		this.name = name;
+	}
 
-    @Override
-    public String toString() {
-        return name;
-    }
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

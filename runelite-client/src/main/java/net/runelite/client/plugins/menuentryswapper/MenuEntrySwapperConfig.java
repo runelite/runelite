@@ -33,6 +33,17 @@ import net.runelite.client.config.ConfigItem;
 public interface MenuEntrySwapperConfig extends Config
 {
 	@ConfigItem(
+		position = -3,
+		keyName = "customSwaps",
+		name = "Custom swaps",
+		description = "Add custom swaps here, 1 per line. Syntax: option, target : option, target<br>Note that the first entry should be the left click one!"
+	)
+	default String customSwaps()
+	{
+		return "";
+	}
+
+	@ConfigItem(
 		position = -2,
 		keyName = "shiftClickCustomization",
 		name = "Customizable shift-click",
@@ -100,7 +111,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean swapContract()
 	{
-		return true; 
+		return true;
 	}
 
 	@ConfigItem(
@@ -123,7 +134,7 @@ public interface MenuEntrySwapperConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(		
+	@ConfigItem(
 		keyName = "swapDarkMage",
 		name = "Repairs",
 		description = "Swap Talk-to with Repairs for Dark Mage"
@@ -282,14 +293,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
-	
+
 	@ConfigItem(
 		keyName = "rockCake",
 		name = "Rock Cake Guzzle",
 		description = "Enables Left Click Guzzle to Rock Cake"
 	)
-	default boolean rockCake() 
-	{ 
+	default boolean rockCake()
+	{
 		return false;
 	}
 
@@ -301,5 +312,15 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapRogueschests()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			keyName = "swapClimbUpDown",
+			name = "Climb",
+			description = "Swap Climb-Up/Down depending on Shift or Control key									"
+	)
+	default boolean swapClimbUpDown()
+	{
+		return false;
 	}
 }

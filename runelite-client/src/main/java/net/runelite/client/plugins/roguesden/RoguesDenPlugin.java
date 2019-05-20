@@ -49,9 +49,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Rogues' Den",
-	description = "Mark tiles and clickboxes to help traverse the maze",
-	tags = {"agility", "maze", "minigame", "overlay", "thieving"}
+		name = "Rogues' Den",
+		description = "Mark tiles and clickboxes to help traverse the maze",
+		tags = {"agility", "maze", "minigame", "overlay", "thieving"}
 )
 public class RoguesDenPlugin extends Plugin
 {

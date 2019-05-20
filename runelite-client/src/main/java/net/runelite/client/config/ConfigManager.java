@@ -62,7 +62,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.client.RuneLite;
-import net.runelite.client.account.AccountSession;
+import static net.runelite.client.RuneLite.PROFILES_DIR;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.util.ColorUtil;
 
@@ -71,14 +71,14 @@ import net.runelite.client.util.ColorUtil;
 public class ConfigManager
 {
 	private static final String SETTINGS_FILE_NAME = "runeliteplus.properties";
+	private static final String STANDARD_SETTINGS_FILE_NAME = "settings.properties";
 	private static final File SETTINGS_FILE = new File(RuneLite.RUNELITE_DIR, SETTINGS_FILE_NAME);
-	private static final File STANDARD_SETTINGS_FILE = new File(RuneLite.RUNELITE_DIR, "settings.properties");
+	private static final File STANDARD_SETTINGS_FILE = new File(RuneLite.RUNELITE_DIR, STANDARD_SETTINGS_FILE_NAME);
 
 	@Inject
 	EventBus eventBus;
 
 	private final ScheduledExecutorService executor;
-
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
 	private final Properties properties = new Properties();
 	private final Map<String, String> pendingChanges = new HashMap<>();
@@ -91,7 +91,7 @@ public class ConfigManager
 		executor.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
 	}
 
-	public final void switchSession(AccountSession session)
+	public final void switchSession()
 	{
 		// Ensure existing config is saved
 		load();
@@ -164,7 +164,7 @@ public class ConfigManager
 		catch (FileNotFoundException ex)
 		{
 			log.debug("Unable to load settings - no such file, syncing from standard settings");
-			syncPropertiesFromFile(STANDARD_SETTINGS_FILE);
+			syncLastModified();
 		}
 		catch (IllegalArgumentException | IOException ex)
 		{
@@ -201,11 +201,11 @@ public class ConfigManager
 		}
 	}
 
-	private void saveToFile(final File propertiesFile) throws IOException
+	private void saveToFile() throws IOException
 	{
-		propertiesFile.getParentFile().mkdirs();
+		ConfigManager.SETTINGS_FILE.getParentFile().mkdirs();
 
-		try (FileOutputStream out = new FileOutputStream(propertiesFile))
+		try (FileOutputStream out = new FileOutputStream(ConfigManager.SETTINGS_FILE))
 		{
 			final FileLock lock = out.getChannel().lock();
 
@@ -364,9 +364,9 @@ public class ConfigManager
 		}
 
 		itemGroups = itemGroups.stream().sorted((a, b) -> ComparisonChain.start()
-				.compare(a.getGroup(), b.getGroup())
-				.result())
-				.collect(Collectors.toList());
+			.compare(a.getGroup(), b.getGroup())
+			.result())
+			.collect(Collectors.toList());
 
 		return new ConfigDescriptor(group, itemGroups);
 	}
@@ -511,22 +511,22 @@ public class ConfigManager
 		{
 			return Duration.ofMillis(Long.parseLong(str));
 		}
-        if (type == Map.class)
-        {
-            Map<String, String> output = new HashMap<>();
-            str = str.substring(1, str.length() - 1);
-            String[] splitStr = str.split(", ");
-            for (String s : splitStr)
-            {
-                String[] keyVal = s.split("=");
-                if (keyVal.length > 1)
-                {
-                    output.put(keyVal[0], keyVal[1]);
-                }
-            }
+		if (type == Map.class)
+		{
+			Map<String, String> output = new HashMap<>();
+			str = str.substring(1, str.length() - 1);
+			String[] splitStr = str.split(", ");
+			for (String s : splitStr)
+			{
+				String[] keyVal = s.split("=");
+				if (keyVal.length > 1)
+				{
+					output.put(keyVal[0], keyVal[1]);
+				}
+			}
 
-            return output;
-        }
+			return output;
+		}
 		return str;
 	}
 
@@ -589,12 +589,40 @@ public class ConfigManager
 		{
 			try
 			{
-				saveToFile(SETTINGS_FILE);
+				saveToFile();
 			}
 			catch (IOException ex)
 			{
 				log.warn("unable to save configuration file", ex);
 			}
 		}
+	}
+
+	private void syncLastModified()
+	{
+		File newestFile;
+
+		newestFile = STANDARD_SETTINGS_FILE;
+
+		for (File profileDir : PROFILES_DIR.listFiles())
+		{
+			if (!profileDir.isDirectory())
+			{
+				continue;
+			}
+
+			for (File settings : profileDir.listFiles())
+			{
+				if (!settings.getName().equals(STANDARD_SETTINGS_FILE_NAME) ||
+					settings.lastModified() < newestFile.lastModified())
+				{
+					continue;
+				}
+
+				newestFile = settings;
+			}
+		}
+
+		syncPropertiesFromFile(newestFile);
 	}
 }

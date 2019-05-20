@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,31 +25,35 @@
  */
 package net.runelite.client.plugins.raids;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.SpriteID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.plugins.raids.solver.Room;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.*;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
+import net.runelite.client.ui.overlay.components.ImageComponent;
+import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
@@ -147,7 +152,10 @@ public class RaidsOverlay extends Overlay
 		boolean iceDemon = false;
 		boolean tightrope = false;
 		boolean thieving = false;
+		boolean vanguards = false;
+		boolean unknownCombat = false;
 		String puzzles = "";
+		String roomName = "";
 		if (config.enhanceScouterTitle() || config.scavsBeforeIce() || sharable)
 		{
 			for (Room layoutRoom : plugin.getRaid().getLayout().getRooms())
@@ -164,9 +172,19 @@ public class RaidsOverlay extends Overlay
 				{
 					case COMBAT:
 						combatCount++;
+						roomName = room.getBoss().getName();
+						switch (RaidRoom.Boss.fromString(roomName))
+						{
+							case VANGUARDS:
+								vanguards = true;
+								break;
+							case UNKNOWN:
+								unknownCombat = true;
+								break;
+						}
 						break;
 					case PUZZLE:
-						String roomName = room.getPuzzle().getName();
+						roomName = room.getPuzzle().getName();
 						switch (RaidRoom.Puzzle.fromString(roomName))
 						{
 							case CRABS:
@@ -191,11 +209,14 @@ public class RaidsOverlay extends Overlay
 				roomCount++;
 			}
 			if (tightrope)
+			{
 				puzzles = crabs ? "cr" : iceDemon ? "ri" : thieving ? "tr" : "?r";
-			else if (config.hideRopeless())
+			}
+
+			if ((config.hideVanguards() && vanguards) || (config.hideRopeless() && !tightrope) || (config.hideUnknownCombat() && unknownCombat))
 			{
 				panelComponent.getChildren().add(TitleComponent.builder()
-					.text("No Tightrope!")
+					.text("Bad Raid!")
 					.color(Color.RED)
 					.build());
 
@@ -211,7 +232,9 @@ public class RaidsOverlay extends Overlay
 				for (Integer s : scavRooms)
 				{
 					if (s > i)
+					{
 						break;
+					}
 					prev = s;
 				}
 				scavsBeforeIceRooms.add(prev);
@@ -280,7 +303,9 @@ public class RaidsOverlay extends Overlay
 					if (config.showRecommendedItems())
 					{
 						if (plugin.getRecommendedItemsList().get(bossNameLC) != null)
+						{
 							imageIds.addAll(plugin.getRecommendedItemsList().get(bossNameLC));
+						}
 					}
 
 					panelComponent.getChildren().add(LineComponent.builder()
@@ -295,7 +320,9 @@ public class RaidsOverlay extends Overlay
 					String puzzleName = room.getPuzzle().getName();
 					String puzzleNameLC = puzzleName.toLowerCase();
 					if (plugin.getRecommendedItemsList().get(puzzleNameLC) != null)
+					{
 						imageIds.addAll(plugin.getRecommendedItemsList().get(puzzleNameLC));
+					}
 					if (plugin.getRoomWhitelist().contains(puzzleNameLC))
 					{
 						color = Color.GREEN;
@@ -370,7 +397,7 @@ public class RaidsOverlay extends Overlay
 
 			panelImages.setPreferredLocation(new Point(0, imagesVerticalOffset));
 			panelImages.setBackgroundColor(null);
-			if (2 * (imagesMaxHeight / ICON_SIZE) >= idArray.length )
+			if (2 * (imagesMaxHeight / ICON_SIZE) >= idArray.length)
 			{
 				panelImages.setWrapping(2);
 			}
@@ -399,15 +426,25 @@ public class RaidsOverlay extends Overlay
 	{
 		BufferedImage bim;
 		if (id != SpriteID.SPELL_ICE_BARRAGE)
+		{
 			bim = itemManager.getImage(id);
+		}
 		else
+		{
 			bim = spriteManager.getSprite(id, 0);
+		}
 		if (bim == null)
+		{
 			return null;
+		}
 		if (!small)
+		{
 			return ImageUtil.resizeCanvas(bim, ICON_SIZE, ICON_SIZE);
+		}
 		if (id != SpriteID.SPELL_ICE_BARRAGE)
+		{
 			return ImageUtil.resizeImage(bim, SMALL_ICON_SIZE, SMALL_ICON_SIZE);
+		}
 		return ImageUtil.resizeCanvas(bim, SMALL_ICON_SIZE, SMALL_ICON_SIZE);
 	}
 }

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.fps;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup(FpsPlugin.CONFIG_GROUP_KEY)
 public interface FpsConfig extends Config
@@ -42,6 +43,10 @@ public interface FpsConfig extends Config
 		return FpsLimitMode.NEVER;
 	}
 
+	@Range(
+		min = 10,
+		max = 50
+	)
 	@ConfigItem(
 		keyName = "maxFps",
 		name = "FPS target",

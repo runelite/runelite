@@ -29,8 +29,6 @@ import com.google.common.collect.Multimap;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.events.NpcSpawned;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 
 @Singleton

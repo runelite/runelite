@@ -36,6 +36,7 @@ class LootTrackerRecord
 
 	/**
 	 * Checks if this record matches specified id
+	 *
 	 * @param id other record id
 	 * @return true if match is made
 	 */

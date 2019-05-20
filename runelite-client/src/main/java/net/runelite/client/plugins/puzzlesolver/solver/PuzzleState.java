@@ -28,9 +28,9 @@ package net.runelite.client.plugins.puzzlesolver.solver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import net.runelite.client.plugins.puzzlesolver.solver.heuristics.Heuristic;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
 import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK_TILE_VALUE;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
+import net.runelite.client.plugins.puzzlesolver.solver.heuristics.Heuristic;
 
 public class PuzzleState
 {
@@ -215,11 +215,7 @@ public class PuzzleState
 			return true;
 		}
 
-		if (y1 == y2 && absX == 1)
-		{
-			return true;
-		}
+		return y1 == y2 && absX == 1;
 
-		return false;
 	}
 }

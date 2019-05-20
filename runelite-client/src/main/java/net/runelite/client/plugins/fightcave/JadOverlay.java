@@ -41,47 +41,47 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public class JadOverlay extends Overlay
 {
-    private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
+	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
 
-    private final Client client;
-    private final FightCavePlugin plugin;
-    private final SpriteManager spriteManager;
-    private final PanelComponent imagePanelComponent = new PanelComponent();
+	private final Client client;
+	private final FightCavePlugin plugin;
+	private final SpriteManager spriteManager;
+	private final PanelComponent imagePanelComponent = new PanelComponent();
 
-    @Inject
-    private JadOverlay(Client client, FightCavePlugin plugin, SpriteManager spriteManager)
-    {
-        setPosition(OverlayPosition.BOTTOM_RIGHT);
-        setPriority(OverlayPriority.HIGH);
-        this.client = client;
-        this.plugin = plugin;
-        this.spriteManager = spriteManager;
-    }
+	@Inject
+	private JadOverlay(Client client, FightCavePlugin plugin, SpriteManager spriteManager)
+	{
+		setPosition(OverlayPosition.BOTTOM_RIGHT);
+		setPriority(OverlayPriority.HIGH);
+		this.client = client;
+		this.plugin = plugin;
+		this.spriteManager = spriteManager;
+	}
 
-    @Override
-    public Dimension render(Graphics2D graphics)
-    {
-        final JadAttack attack = plugin.getAttack();
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		final JadAttack attack = plugin.getAttack();
 
-        if (attack == null)
-        {
-            return null;
-        }
+		if (attack == null)
+		{
+			return null;
+		}
 
-        final BufferedImage prayerImage = getPrayerImage(attack);
+		final BufferedImage prayerImage = getPrayerImage(attack);
 
-        imagePanelComponent.getChildren().clear();
-        imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
-        imagePanelComponent.setBackgroundColor(client.isPrayerActive(attack.getPrayer())
-                ? ComponentConstants.STANDARD_BACKGROUND_COLOR
-                : NOT_ACTIVATED_BACKGROUND_COLOR);
+		imagePanelComponent.getChildren().clear();
+		imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
+		imagePanelComponent.setBackgroundColor(client.isPrayerActive(attack.getPrayer())
+			? ComponentConstants.STANDARD_BACKGROUND_COLOR
+			: NOT_ACTIVATED_BACKGROUND_COLOR);
 
-        return imagePanelComponent.render(graphics);
-    }
+		return imagePanelComponent.render(graphics);
+	}
 
-    private BufferedImage getPrayerImage(JadAttack attack)
-    {
-        final int prayerSpriteID = attack == JadAttack.MAGIC ? SpriteID.PRAYER_PROTECT_FROM_MAGIC : SpriteID.PRAYER_PROTECT_FROM_MISSILES;
-        return spriteManager.getSprite(prayerSpriteID, 0);
-    }
+	private BufferedImage getPrayerImage(JadAttack attack)
+	{
+		final int prayerSpriteID = attack == JadAttack.MAGIC ? SpriteID.PRAYER_PROTECT_FROM_MAGIC : SpriteID.PRAYER_PROTECT_FROM_MISSILES;
+		return spriteManager.getSprite(prayerSpriteID, 0);
+	}
 }

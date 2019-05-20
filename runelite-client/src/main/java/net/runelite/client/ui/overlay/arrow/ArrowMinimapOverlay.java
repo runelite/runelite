@@ -200,10 +200,7 @@ public class ArrowMinimapOverlay extends Overlay
 				localPoint = new LocalPoint(localPoint.getX() + 1, localPoint.getY() + 1);
 			}
 		}
-		else
-		{
-			localPoint = npc.getLocalLocation();
-		}
+		localPoint = null;
 
 		renderMinimapArrow(graphics, arrowPoint, localPoint, localPlayerPos, worldPlayerPos);
 	}

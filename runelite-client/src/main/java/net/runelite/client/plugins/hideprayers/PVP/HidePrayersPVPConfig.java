@@ -41,5 +41,20 @@ public interface HidePrayersPVPConfig extends Config
 		name = "Combat Prayers",
 		description = "Shows prayers based on prayer build"
 	)
-	default CombatPrayers CombatPrayers() {return CombatPrayers.DISABLED;}
+	default CombatPrayers CombatPrayers()
+	{
+		return CombatPrayers.DISABLED;
+	}
+
+	@ConfigItem
+	(
+		position = 1,
+		keyName = "HideRapidHealRestore",
+		name = "Hide Rapid Heal and Rapid Restore",
+		description = "Hides the Rapid Heal and Rapid Restore prayers"
+	)
+	default boolean HideRapidHealRestore() 
+	{
+		return false;
+	}
 }

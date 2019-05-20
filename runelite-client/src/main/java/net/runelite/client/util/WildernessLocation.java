@@ -18,7 +18,7 @@ public enum WildernessLocation
 	MAGE_BANK("Mage Bank", new Location(3082, 3960, 3103, 3952), 0),
 	MAGE_ARENA("Mage Arena", new Location(3088, 3949, 3123, 3919), 0),
 	LEVER("Lever", new Location(3149, 3933, 3162, 3917), 0),
-	WEB("Web",  new Location(3153, 3961, 3163, 3948), 0),
+	WEB("Web", new Location(3153, 3961, 3163, 3948), 0),
 	RESOURCE_ARENA("Resource Arena", new Location(3174, 3946, 3195, 3923), 0),
 	AXE_HUT("Axe Hut", new Location(3187, 3962, 3194, 3957), 0),
 	SCORPIA("Scorpia", new Location(3216, 3949, 3248, 3935), 0),
@@ -46,7 +46,7 @@ public enum WildernessLocation
 	CHAOS_TEMPLE("Chaos Temple", new Location(3220, 3632, 3255, 3593), 0),
 	NINETEEN_OBELISK("19s", new Location(3220, 3672, 3234, 3660), 0),
 	CORP_CAVE("Corp Cave", new Location(3201, 3684, 3219, 3672), 0),
-	THIRTEEN_OBELISK("13s",  new Location(3145, 3628, 3168, 3609), 0),
+	THIRTEEN_OBELISK("13s", new Location(3145, 3628, 3168, 3609), 0),
 	SOUTH_REV_ENTRANCE("Lvl 18 Rev Ent", new Location(3071, 3660, 3092, 3645), 0),
 	GRAVES("Graves", new Location(3128, 3686, 3181, 3658), 0),
 	GRAVEYARD_DRAGS("Graveyard Drags", new Location(3129, 3717, 3172, 3691), 0),
@@ -70,6 +70,7 @@ public enum WildernessLocation
 	private final String name;
 	@Getter
 	private final WorldArea worldArea;
+
 	WildernessLocation(String name, Location location, int plane)
 	{
 		this.name = name;
@@ -82,6 +83,7 @@ public enum WildernessLocation
 		public int y;
 		public int width;
 		public int height;
+
 		Location(int x, int y, int x1, int y1)
 		{
 			this.x = x;

@@ -25,18 +25,12 @@
 
 package us.runelitepl.mixinprocessor.generators;
 
-import javassist.CannotCompileException;
-import javassist.CtClass;
-import javassist.NotFoundException;
 import us.runelitepl.mixinprocessor.MixinProcessorMojo;
-import us.runelitepl.mixinprocessor.util.JavassistUtils;
 import us.runelitepl.mixinprocessor.util.RefUtils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,11 +39,11 @@ import java.util.Set;
 public class StaticGenerator
 {
 	
-	public static HashMap<String, ArrayList<MethodNode>> staticMethods = new HashMap<>();
-	public static HashMap<String, ArrayList<FieldNode>> staticFields = new HashMap<>();
-	public static Set<String> modifiedClasses = new HashSet<>();
+	static HashMap<String, ArrayList<MethodNode>> staticMethods = new HashMap<>();
+	static HashMap<String, ArrayList<FieldNode>> staticFields = new HashMap<>();
+	static Set<String> modifiedClasses = new HashSet<>();
 	
-	public void run(byte[] bytecode) throws NotFoundException, IOException, CannotCompileException
+	public void run(byte[] bytecode)
 	{
 		ClassReader cr = new ClassReader(bytecode);
 		
@@ -68,7 +62,7 @@ public class StaticGenerator
 				continue;
 			}
 			String reobbed = RefUtils.reobMethodName(RefUtils.STATICS_STRING, methodName, method.desc);
-			if(reobbed == null)
+			if (reobbed == null)
 			{
 				MixinProcessorMojo.log("Failed to reob static method: %s %s", methodName, method.desc);
 				throw new RuntimeException();
@@ -93,7 +87,7 @@ public class StaticGenerator
 				continue;
 			}
 			String reobbed = RefUtils.reobFieldName(RefUtils.STATICS_STRING, fieldName, field.desc);
-			if(reobbed == null)
+			if (reobbed == null)
 			{
 				MixinProcessorMojo.log("Failed to reob static field: %s %s", fieldName, field.desc);
 				throw new RuntimeException();

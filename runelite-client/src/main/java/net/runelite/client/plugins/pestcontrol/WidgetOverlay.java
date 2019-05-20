@@ -175,7 +175,7 @@ public class WidgetOverlay extends Overlay
 		else
 		{
 			percentage = (int) ((prgs.getBounds().getWidth() / bounds.getWidth()) * 100);
-			text = String.valueOf(percentage) + "%";
+			text = percentage + "%";
 		}
 
 		Color color = Color.GREEN;

@@ -25,10 +25,14 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import joptsimple.internal.Strings;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
@@ -51,6 +55,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.menus.AbstractMenuEntry;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
@@ -71,7 +76,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String SAVE = "Save";
 	private static final String RESET = "Reset";
 	private static final String MENU_TARGET = "Shift-click";
-
 	private static final String CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
 
@@ -100,6 +104,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 		MenuAction.NPC_FOURTH_OPTION,
 		MenuAction.NPC_FIFTH_OPTION,
 		MenuAction.EXAMINE_NPC);
+
+	private static final Splitter NEWLINE_SPLITTER = Splitter
+		.on("\n")
+		.omitEmptyStrings()
+		.trimResults();
+
+	private final Map<AbstractMenuEntry, AbstractMenuEntry> customSwaps = new HashMap<>();
 
 	@Inject
 	private Client client;
@@ -157,6 +168,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		if (!CONFIG_GROUP.equals(event.getGroup()))
 		{
+			if (event.getKey().equals("customSwaps"))
+			{
+				loadCustomSwaps(config.customSwaps());
+			}
+
 			return;
 		}
 
@@ -363,7 +379,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		final int eventId = event.getIdentifier();
 		final String option = Text.removeTags(event.getOption()).toLowerCase();
 		final String target = Text.removeTags(event.getTarget()).toLowerCase();
-		final NPC hintArrowNpc  = client.getHintArrowNpc();
+		final NPC hintArrowNpc = client.getHintArrowNpc();
 
 		if (hintArrowNpc != null
 			&& hintArrowNpc.getIndex() == eventId
@@ -451,32 +467,32 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap(client, "quick-travel", option, target, true);
 			}
 		}
-		
+
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
 			swap(client, "pay-toll(2-ecto)", option, target, true);
 		}
-		
+
 		else if (config.swapTravel() && option.equals("open") && target.equals("gate"))
 		{
 			swap(client, "pay-toll(10gp)", option, target, true);
 		}
-		
+
 		else if (config.swapTravel() && option.equals("inspect") && target.equals("trapdoor"))
 		{
 			swap(client, "travel", option, target, true);
 		}
-		
+
 		else if (config.swapHarpoon() && option.equals("cage"))
 		{
 			swap(client, "harpoon", option, target, true);
 		}
-		
+
 		else if (config.swapHarpoon() && (option.equals("big net") || option.equals("net")))
 		{
 			swap(client, "harpoon", option, target, true);
 		}
-		
+
 		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter"))
 		{
 			switch (config.swapHomePortal())
@@ -504,76 +520,76 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap(client, "configure", option, target, false);
 			}
 		}
-		
+
 		else if (config.swapFairyRing() == FairyRingMode.ZANARIS && option.equals("tree"))
 		{
 			swap(client, "zanaris", option, target, false);
 		}
-		
+
 		else if (config.swapBoxTrap() && (option.equals("check") || option.equals("dismantle")))
 		{
 			swap(client, "reset", option, target, true);
 		}
-		
+
 		else if (config.swapBoxTrap() && option.equals("take"))
 		{
 			swap(client, "lay", option, target, true);
 		}
-		
+
 		else if (config.swapChase() && option.equals("pick-up"))
 		{
 			swap(client, "chase", option, target, true);
 		}
-		
+
 		else if (config.swapBirdhouseEmpty() && option.equals("interact") && target.contains("birdhouse"))
 		{
 			swap(client, "empty", option, target, true);
 		}
-		
+
 		else if (config.swapQuick() && option.equals("ring"))
 		{
 			swap(client, "quick-start", option, target, true);
 		}
-		
+
 		else if (config.swapQuick() && option.equals("pass"))
 		{
 			swap(client, "quick-pass", option, target, true);
 			swap(client, "quick pass", option, target, true);
 		}
-		
+
 		else if (config.swapQuick() && option.equals("open"))
 		{
 			swap(client, "quick-open", option, target, true);
 		}
-		
+
 		else if (config.swapAdmire() && option.equals("admire"))
 		{
 			swap(client, "teleport", option, target, true);
 			swap(client, "spellbook", option, target, true);
 			swap(client, "perks", option, target, true);
 		}
-		
+
 		else if (config.swapPrivate() && option.equals("shared"))
 		{
 			swap(client, "private", option, target, true);
 		}
-		
+
 		else if (config.swapPick() && option.equals("pick"))
 		{
 			swap(client, "pick-lots", option, target, true);
 		}
-		
+
 		else if (config.swapRogueschests() && target.contains("chest"))
 		{
 			swap(client, "search for traps", option, target, true);
 		}
-		
+
 		else if (config.rockCake() && option.equals("eat"))
 		{
 			swap(client, "guzzle", option, target, true);
 		}
-		
-		
+
+
 		else if (config.shiftClickCustomization() && shiftModifier && !option.equals("use"))
 		{
 			Integer customOption = getSwapConfig(eventId);
@@ -583,7 +599,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap(client, "use", option, target, true);
 			}
 		}
-		
+
 		// Put all item-related swapping after shift-click
 		else if (config.swapTeleportItem() && option.equals("wear"))
 		{
@@ -624,33 +640,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	private int searchIndex(MenuEntry[] entries, String option, String target, boolean strict)
-	{
-		for (int i = entries.length - 1; i >= 0; i--)
-		{
-			MenuEntry entry = entries[i];
-			String entryOption = Text.removeTags(entry.getOption()).toLowerCase();
-			String entryTarget = Text.removeTags(entry.getTarget()).toLowerCase();
-
-			if (strict)
-			{
-				if (entryOption.equals(option) && entryTarget.equals(target))
-				{
-					return i;
-				}
-			}
-			else
-			{
-				if (entryOption.contains(option.toLowerCase()) && entryTarget.equals(target))
-				{
-					return i;
-				}
-			}
-		}
-
-		return -1;
-	}
-
 	private void removeShiftClickCustomizationMenus()
 	{
 		menuManager.removeManagedCustomMenu(FIXED_INVENTORY_TAB_CONFIGURE);
@@ -676,5 +665,97 @@ public class MenuEntrySwapperPlugin extends Plugin
 			menuManager.addManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_CONFIGURE);
 			menuManager.addManagedCustomMenu(RESIZABLE_INVENTORY_TAB_CONFIGURE);
 		}
+	}
+
+	private void loadCustomSwaps(String config)
+	{
+		Map<AbstractMenuEntry, AbstractMenuEntry> tmp = new HashMap<>();
+
+		if (!Strings.isNullOrEmpty(config))
+		{
+			Map<String, String> split = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(config);
+
+			for (Map.Entry<String, String> entry : split.entrySet())
+			{
+				String from = entry.getKey();
+				String to = entry.getValue();
+				String[] splitFrom = Text.standardize(from).split(",");
+				String optionFrom = splitFrom[0].trim();
+				String targetFrom;
+				if (splitFrom.length == 1)
+				{
+					targetFrom = "";
+				}
+				else
+				{
+					targetFrom = splitFrom[1].trim();
+				}
+
+				AbstractMenuEntry fromEntry = new AbstractMenuEntry(optionFrom, targetFrom);
+
+				String[] splitTo = Text.standardize(to).split(",");
+				String optionTo = splitTo[0].trim();
+				String targetTo;
+				if (splitTo.length == 1)
+				{
+					targetTo = "";
+				}
+				else
+				{
+					targetTo = splitTo[1].trim();
+				}
+
+				AbstractMenuEntry toEntry = new AbstractMenuEntry(optionTo, targetTo);
+
+				tmp.put(fromEntry, toEntry);
+			}
+		}
+
+		for (Map.Entry<AbstractMenuEntry, AbstractMenuEntry> e : customSwaps.entrySet())
+		{
+			AbstractMenuEntry key = e.getKey();
+			AbstractMenuEntry value = e.getValue();
+			menuManager.removeSwap(key, value);
+		}
+
+		customSwaps.clear();
+		customSwaps.putAll(tmp);
+
+		for (Map.Entry<AbstractMenuEntry, AbstractMenuEntry> entry : customSwaps.entrySet())
+		{
+			AbstractMenuEntry a1 = entry.getKey();
+			AbstractMenuEntry a2 = entry.getValue();
+			menuManager.addSwap(a1, a2);
+		}
+	}
+
+	void startShift()
+	{
+		if (!config.swapClimbUpDown())
+		{
+			return;
+		}
+
+		menuManager.addPriorityEntry("climb-up");
+	}
+
+	void stopShift()
+	{
+		menuManager.removePriorityEntry("climb-up");
+	}
+
+	void startControl()
+	{
+		if (!config.swapClimbUpDown())
+		{
+			return;
+		}
+
+		menuManager.addPriorityEntry("climb-down");
+	}
+
+	void stopControl()
+	{
+		menuManager.removePriorityEntry("climb-down");
 	}
 }

@@ -24,7 +24,10 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -36,7 +39,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicProgressBarUI;
-
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
@@ -64,6 +66,7 @@ public class RuneLiteSplashScreen
 	/**
 	 * This is not done in the constructor in order to avoid processing in case the user chooses to not load
 	 * the splash screen.
+	 *
 	 * @param estimatedSteps steps until completion, used for the progress bar
 	 */
 	private void initLayout(final int estimatedSteps)
@@ -183,6 +186,7 @@ public class RuneLiteSplashScreen
 
 	/**
 	 * Set the splash screen to be visible.
+	 *
 	 * @param estimatedSteps steps until completion, used for the progress bar
 	 */
 	public void open(final int estimatedSteps)
@@ -226,7 +230,8 @@ public class RuneLiteSplashScreen
 			{
 				return;
 			}
-			if (progressGoal!=progressBar.getMaximum()) {
+			if (progressGoal != progressBar.getMaximum())
+			{
 				panel.remove(progressBar);
 				panel.validate();
 				final GridBagConstraints progressConstraints = new GridBagConstraints();

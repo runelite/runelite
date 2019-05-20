@@ -87,19 +87,19 @@ public class LocationOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Base")
-				.right(client.getBaseX() + ", " + client.getBaseY())
-				.build());
+			.left("Base")
+			.right(client.getBaseX() + ", " + client.getBaseY())
+			.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Local")
-				.right(localPoint.getX() + ", " + localPoint.getY())
-				.build());
+			.left("Local")
+			.right(localPoint.getX() + ", " + localPoint.getY())
+			.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Scene")
-				.right(localPoint.getSceneX() + ", " + localPoint.getSceneY())
-				.build());
+			.left("Scene")
+			.right(localPoint.getSceneX() + ", " + localPoint.getSceneY())
+			.build());
 
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Tile")

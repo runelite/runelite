@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.runedoku;
 
 import com.google.inject.Provides;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.config.ConfigManager;
@@ -33,18 +35,16 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 @PluginDescriptor(
-		name = "Runedoku Solver",
-		description = "Show solutions for current Runedoku puzzle.",
-		tags = {"overlay", "runedoku", "sudoku", "puzzle", "solving"},
-		type = PluginType.UTILITY
+	name = "Runedoku Solver",
+	description = "Show solutions for current Runedoku puzzle.",
+	tags = {"overlay", "runedoku", "sudoku", "puzzle", "solving"},
+	type = PluginType.UTILITY
 )
 @Slf4j
 @Singleton
-public class RunedokuPlugin extends Plugin {
+public class RunedokuPlugin extends Plugin
+{
 
 	@Inject
 	private Client client;
@@ -62,17 +62,20 @@ public class RunedokuPlugin extends Plugin {
 	private RunedokuConfig config;
 
 	@Provides
-	RunedokuConfig provideConfig(ConfigManager configManager) {
+	RunedokuConfig provideConfig(ConfigManager configManager)
+	{
 		return configManager.getConfig(RunedokuConfig.class);
 	}
 
 	@Override
-	protected void startUp() throws Exception {
+	protected void startUp() throws Exception
+	{
 		overlayManager.add(runedokuOverlay);
 	}
 
 	@Override
-	protected void shutDown() throws Exception {
+	protected void shutDown() throws Exception
+	{
 		overlayManager.remove(runedokuOverlay);
 	}
 

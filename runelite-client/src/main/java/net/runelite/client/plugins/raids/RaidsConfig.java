@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kamiel
+ * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,12 +26,9 @@
 package net.runelite.client.plugins.raids;
 
 import java.awt.Color;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Keybind;
 
 @ConfigGroup("raids")
 public interface RaidsConfig extends Config
@@ -38,8 +36,8 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 		position = 0,
 		keyName = "raidsTimer",
-		name = "Level time tooltip",
-		description = "Displays your level times as a tooltip on the points overlay"
+		name = "Display elapsed raid time",
+		description = "Display elapsed raid time"
 	)
 	default boolean raidsTimer()
 	{
@@ -171,8 +169,7 @@ public interface RaidsConfig extends Config
 		position = 12,
 		keyName = "enhanceScouterTitle",
 		name = "Enhance scouter title",
-		description = "Adds #combat and good puzzles to scouter title",
-		hidden = true
+		description = "Adds #combat and good puzzles to scouter title"
 	)
 	default boolean enhanceScouterTitle()
 	{
@@ -189,6 +186,7 @@ public interface RaidsConfig extends Config
 	{
 		return true;
 	}
+
 	@ConfigItem(
 		position = 16,
 		keyName = "showRecommendedItems",
@@ -290,6 +288,28 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 25,
+		keyName = "hideVanguards",
+		name = "Hide Vanguard raids",
+		description = "Completely hides raids with Vanguards"
+	)
+	default boolean hideVanguards()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 26,
+		keyName = "hideUnknownCombat",
+		name = "Hide Unknown combat raids",
+		description = "Completely hides raids with Unknown combat"
+	)
+	default boolean hideUnknownCombat()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 27,
 		keyName = "layoutMessage",
 		name = "Send raid layout message when entering raid",
 		description = "Sends game message with raid layout on entering new raid"
@@ -300,10 +320,10 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 26,
-			keyName = "displayFloorBreak",
-			name = "Layout floor break",
-			description = "Displays floor break in layout"
+		position = 28,
+		keyName = "displayFloorBreak",
+		name = "Layout floor break",
+		description = "Displays floor break in layout"
 	)
 	default boolean displayFloorBreak()
 	{

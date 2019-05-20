@@ -26,8 +26,8 @@ package net.runelite.client.plugins.itemstats;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.client.plugins.itemstats.stats.Stat;
 import net.runelite.api.Client;
+import net.runelite.client.plugins.itemstats.stats.Stat;
 
 public abstract class StatBoost extends SingleEffect
 {

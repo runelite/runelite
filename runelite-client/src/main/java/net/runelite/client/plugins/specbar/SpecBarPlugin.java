@@ -11,7 +11,6 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.PluginType;
 
 @PluginDescriptor(
@@ -40,7 +39,7 @@ public class SpecBarPlugin extends Plugin
 	@Subscribe
 	private void onWidgetHiddenChanged(WidgetHiddenChanged event)
 	{
-		if (WidgetInfo.TO_GROUP(event.getWidget().getId()) ==  WidgetID.COMBAT_GROUP_ID)
+		if (WidgetInfo.TO_GROUP(event.getWidget().getId()) == WidgetID.COMBAT_GROUP_ID)
 		{
 			hideSpecBar();
 		}

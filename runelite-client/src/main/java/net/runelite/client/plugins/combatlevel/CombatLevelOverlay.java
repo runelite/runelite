@@ -25,6 +25,11 @@
 package net.runelite.client.plugins.combatlevel;
 
 import com.google.common.annotations.VisibleForTesting;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
@@ -34,11 +39,6 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
-import javax.inject.Inject;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 
 class CombatLevelOverlay extends Overlay
 {
@@ -99,7 +99,7 @@ class CombatLevelOverlay extends Overlay
 		int prayerLevel = client.getRealSkillLevel(Skill.PRAYER);
 
 		// calculate initial required numbers
-		double base = DEF_HP_MULT * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2));
+		double base = DEF_HP_MULT * (defenceLevel + hitpointsLevel + Math.floor(prayerLevel / 2D));
 		double melee = ATT_STR_MULT * (attackLevel + strengthLevel);
 		double range = RANGE_MAGIC_MULT * Math.floor(rangedLevel * RANGE_MAGIC_LEVEL_MULT);
 		double mage = RANGE_MAGIC_MULT * Math.floor(magicLevel * RANGE_MAGIC_LEVEL_MULT);
@@ -143,10 +143,11 @@ class CombatLevelOverlay extends Overlay
 	/**
 	 * Calculate skill levels required for increasing combat level, meant
 	 * for all combat skills besides prayer, ranged, and magic.
-	 * @param start	initial value
-	 * @param end	ending value (combat level + 1)
-	 * @param multiple	how much adding one skill level will change combat
-	 * @return	levels required for a specific skill to level up combat
+	 *
+	 * @param start    initial value
+	 * @param end      ending value (combat level + 1)
+	 * @param multiple how much adding one skill level will change combat
+	 * @return levels required for a specific skill to level up combat
 	 */
 	@VisibleForTesting
 	static int calcLevels(double start, int end, double multiple)
@@ -158,8 +159,9 @@ class CombatLevelOverlay extends Overlay
 	 * Calculate skill levels for increasing combat level, meant ONLY for the Prayer skill.
 	 * <p>
 	 * Note: Prayer is a special case, only leveling up upon even level numbers. This is accounted
-	 *       for in this function.
+	 * for in this function.
 	 * </p>
+	 *
 	 * @param start       current combat level
 	 * @param end         ending value (combat level + 1)
 	 * @param prayerLevel the player's current prayer level
@@ -191,10 +193,11 @@ class CombatLevelOverlay extends Overlay
 	/**
 	 * Calculate skill levels required for increasing combat level, meant
 	 * ONLY for Ranged and Magic skills.
-	 * @param start	either the current ranged or magic level
-	 * @param end	ending value (combat level + 1)
-	 * @param dhp	defence, hitpoints, and prayer; this is the initial calculated "base" value
-	 * @return	levels required for a specific skill to level up combat
+	 *
+	 * @param start either the current ranged or magic level
+	 * @param end   ending value (combat level + 1)
+	 * @param dhp   defence, hitpoints, and prayer; this is the initial calculated "base" value
+	 * @return levels required for a specific skill to level up combat
 	 */
 	@VisibleForTesting
 	static int calcLevelsRM(double start, int end, double dhp)

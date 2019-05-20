@@ -71,7 +71,7 @@ public class HooksParser
 				String f_owner = (String) field.get("owner");
 				long f_decoder = (long) field.getOrDefault("decoder", (long) 1);
 				String f_deobbedOwner = null;
-				if(f_deobbedName.startsWith("__"))
+				if (f_deobbedName.startsWith("__"))
 				{
 					continue;
 				}
@@ -104,7 +104,7 @@ public class HooksParser
 				String m_deobbedOwner = null;
 				String m_obbedName = (String) method.get("name");
 				String m_descriptor = (String) method.get("descriptor");
-				if(m_deobbedName.startsWith("__"))
+				if (m_deobbedName.startsWith("__"))
 				{
 					continue;
 				}

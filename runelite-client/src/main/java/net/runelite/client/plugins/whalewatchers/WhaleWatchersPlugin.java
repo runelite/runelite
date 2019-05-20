@@ -121,7 +121,7 @@ public class WhaleWatchersPlugin extends Plugin
 	{
 		if (config.showDamageCounter())
 		{
-			if (!(event.getActor() == client.getLocalPlayer() |
+			if (!(event.getActor() == client.getLocalPlayer() ||
 				event.getActor() == client.getLocalPlayer().getInteracting()))
 			{
 				return;
@@ -149,14 +149,7 @@ public class WhaleWatchersPlugin extends Plugin
 		{
 			final int amuletID = ObjectUtils.defaultIfNull(client.getLocalPlayer()
 				.getPlayerComposition().getEquipmentId(KitType.AMULET), 0);
-			if (amuletID == ItemID.AMULET_OF_GLORY)
-			{
-				displayGloryOverlay = true;
-			}
-			else
-			{
-				displayGloryOverlay = false;
-			}
+			displayGloryOverlay = amuletID == ItemID.AMULET_OF_GLORY;
 		}
 		else
 		{
@@ -254,6 +247,7 @@ public class WhaleWatchersPlugin extends Plugin
 
 	/**
 	 * Checks to see if client is attacking another player
+	 *
 	 * @return returns true if they are, false otherwise
 	 */
 	private boolean isAttackingPlayer()

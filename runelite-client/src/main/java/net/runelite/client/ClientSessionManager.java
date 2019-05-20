@@ -79,7 +79,7 @@ public class ClientSessionManager
 			}
 			sessionId = null;
 		}
-		
+
 		scheduledFuture.cancel(true);
 	}
 

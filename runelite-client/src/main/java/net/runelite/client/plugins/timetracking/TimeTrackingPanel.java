@@ -64,7 +64,7 @@ class TimeTrackingPanel extends PluginPanel
 	private TabContentPanel activeTabPanel = null;
 
 	TimeTrackingPanel(ItemManager itemManager, TimeTrackingConfig config,
-		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager)
+					FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager)
 	{
 		super(false);
 

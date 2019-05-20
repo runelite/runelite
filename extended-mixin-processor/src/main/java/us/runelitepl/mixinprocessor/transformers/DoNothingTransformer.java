@@ -47,10 +47,10 @@ public class DoNothingTransformer extends AsmBaseTransformer
 		
 		ClassReader cr = new ClassReader(bytecode);
 		ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES);
-		
+		// CHECKSTYLE:OFF
 		cr.accept(new ClassVisitor(ASM6, cw)
 		{}, 0);
-		
+		//CHECKSTYLE:ON
 		return cw.toByteArray();
 	}
 }

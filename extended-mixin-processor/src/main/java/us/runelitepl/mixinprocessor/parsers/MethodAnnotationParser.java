@@ -51,7 +51,7 @@ public class MethodAnnotationParser
 	
 	public void run() throws ClassNotFoundException
 	{
-		for(CtMethod method : patch.getDeclaredMethods())
+		for (CtMethod method : patch.getDeclaredMethods())
 		{
 			Object[] annotations = method.getAnnotations();
 			
@@ -112,7 +112,7 @@ public class MethodAnnotationParser
 				}
 			}
 			
-			if(reobfuscate)
+			if (reobfuscate)
 			{
 				MixinProcessorMojo.log("Marking: %s %s %s", method.getDeclaringClass().getSimpleName(), methodName,
 						RefUtils.reobMethodDescriptor(method.getSignature()));

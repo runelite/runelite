@@ -39,6 +39,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import static net.runelite.api.ItemID.RING_OF_RECOIL;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
@@ -118,6 +119,27 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_EXPEDITIOUS_CHARGES = 30;
 	private static final int MAX_BINDING_CHARGES = 16;
 
+	public boolean isRingOfRecoilAvailable()
+	{
+		return ringOfRecoilAvailable;
+	}
+
+	private boolean ringOfRecoilAvailable = false;
+
+	boolean isRingOfRecoilEquipped()
+	{
+		return ringOfRecoilEquipped;
+	}
+
+	private boolean ringOfRecoilEquipped = false;
+	private BufferedImage recoilRingImage;
+
+	BufferedImage getRecoilRingImage()
+	{
+		return recoilRingImage;
+	}
+
+
 	@Inject
 	private Client client;
 
@@ -126,6 +148,9 @@ public class ItemChargePlugin extends Plugin
 
 	@Inject
 	private ItemChargeOverlay overlay;
+
+	@Inject
+	private ItemRecoilOverlay recoilOverlay;
 
 	@Inject
 	private ItemManager itemManager;
@@ -152,12 +177,15 @@ public class ItemChargePlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(recoilOverlay);
+		recoilRingImage = itemManager.getImage(RING_OF_RECOIL);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(recoilOverlay);
 		infoBoxManager.removeIf(ItemChargeInfobox.class::isInstance);
 		lastCheckTick = -1;
 	}
@@ -379,6 +407,35 @@ public class ItemChargePlugin extends Plugin
 			else if (braceletText.contains("expeditious bracelet"))
 			{
 				config.expeditious(MAX_EXPEDITIOUS_CHARGES);
+			}
+		}
+
+		ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		ringOfRecoilAvailable = false;
+		ringOfRecoilEquipped = false;
+
+		Item ring = null;
+		if (equipment != null)
+		{
+			ring = equipment.getItems()[EquipmentInventorySlot.RING.getSlotIdx()];
+		}
+		if (ring != null && ring.getId() == RING_OF_RECOIL)
+		{
+			ringOfRecoilEquipped = true;
+			ringOfRecoilAvailable = true;
+		}
+		Item[] items = new Item[0];
+		if (inventory != null)
+		{
+			items = inventory.getItems();
+		}
+		for (Item item : items)
+		{
+			if (item.getId() == RING_OF_RECOIL)
+			{
+				ringOfRecoilAvailable = true;
+				break;
 			}
 		}
 
@@ -647,7 +704,7 @@ public class ItemChargePlugin extends Plugin
 				return false;
 			}
 
-			final ItemChargeInfobox i = (ItemChargeInfobox)t;
+			final ItemChargeInfobox i = (ItemChargeInfobox) t;
 			return i.getItem() == item && i.getSlot() == slot;
 		});
 	}

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.cannon;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.temporal.ChronoUnit;
@@ -38,7 +39,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ObjectID.CANNON_BASE;
 import net.runelite.api.Player;
@@ -62,6 +62,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.ItemUtil;
 
 @PluginDescriptor(
 	name = "Cannon",
@@ -72,6 +73,9 @@ public class CannonPlugin extends Plugin
 {
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final int MAX_CBALLS = 30;
+	private static final ImmutableSet<Integer> CANNON_PARTS = ImmutableSet.of(
+		ItemID.CANNON_BASE, ItemID.CANNON_STAND, ItemID.CANNON_BARRELS, ItemID.CANNON_FURNACE
+	);
 
 	private CannonCounter counter;
 	private boolean skipProjectileCheckThisTick;
@@ -157,46 +161,7 @@ public class CannonPlugin extends Plugin
 			return;
 		}
 
-		boolean hasBase = false;
-		boolean hasStand = false;
-		boolean hasBarrels = false;
-		boolean hasFurnace = false;
-		boolean hasAll = false;
-
-		if (!cannonPlaced)
-		{
-			for (Item item : event.getItemContainer().getItems())
-			{
-				if (item == null)
-				{
-					continue;
-				}
-
-				switch (item.getId())
-				{
-					case ItemID.CANNON_BASE:
-						hasBase = true;
-						break;
-					case ItemID.CANNON_STAND:
-						hasStand = true;
-						break;
-					case ItemID.CANNON_BARRELS:
-						hasBarrels = true;
-						break;
-					case ItemID.CANNON_FURNACE:
-						hasFurnace = true;
-						break;
-				}
-
-				if (hasBase && hasStand && hasBarrels && hasFurnace)
-				{
-					hasAll = true;
-					break;
-				}
-			}
-		}
-
-		cannonSpotOverlay.setHidden(!hasAll);
+		cannonSpotOverlay.setHidden(!ItemUtil.containsAllItemIds(event.getItemContainer().getItems(), CANNON_PARTS));
 	}
 
 	@Subscribe
