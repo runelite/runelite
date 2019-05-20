@@ -436,4 +436,26 @@ public interface GroundItemsConfig extends Config
 	{
 		return TimerDisplayMode.HOTKEY_PRESSED;
 	}
+
+	@ConfigItem(
+		keyName = "sortByGEPrice",
+		name = "Sort by GE price",
+		description = "Sorts ground items by GE price, instead of alch value",
+		position = 35
+	)
+	default boolean sortByGEPrice()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rightClickHidden",
+		name = "Right click hidden items",
+		description = "Places hidden items below the 'Walk here' option, making it so that you need to right click to pick them up",
+		position = 36
+	)
+	default boolean rightClickHidden()
+	{
+		return false;
+	}
 }
