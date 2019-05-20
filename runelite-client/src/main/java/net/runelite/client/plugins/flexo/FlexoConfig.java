@@ -27,16 +27,28 @@ package net.runelite.client.plugins.flexo;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Stub;
 
 @ConfigGroup("flexo")
 public interface FlexoConfig extends Config
 {
+	@ConfigItem(
+		keyName = "overlayStub",
+		name = "Overlay",
+		description = "",
+		position = 1
+	)
+	default Stub overlayStub()
+	{
+		return new Stub();
+	}
 
 	@ConfigItem(
-		position = 0,
+		position = 2,
 		keyName = "overlayEnabled",
 		name = "Overlay Enabled",
-		description = "Shows clicking area and points etc."
+		description = "Shows clicking area and points etc.",
+		parent = "overlayStub"
 	)
 	default boolean overlayEnabled()
 	{
@@ -44,10 +56,64 @@ public interface FlexoConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
+		position = 3,
+		keyName = "debugNPCs",
+		name = "Debug NPCs",
+		description = "Draws clickArea and clickPoints across all visible npcs",
+		parent = "overlayStub",
+		hidden = true,
+		unhide = "overlayEnabled"
+	)
+	default boolean getDebugNPCs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "debugPlayers",
+		name = "Debug Players",
+		description = "Draws clickArea and clickPoints across all visible players",
+		parent = "overlayStub",
+		hidden = true,
+		unhide = "overlayEnabled"
+	)
+	default boolean getDebugPlayers()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "debugGroundItems",
+		name = "Debug Ground Items",
+		description = "Draws clickArea and clickPoints across all visible ground items",
+		parent = "overlayStub",
+		hidden = true,
+		unhide = "overlayEnabled"
+	)
+	default boolean getDebugGroundItems()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "mouseStub",
+		name = "Mouse",
+		description = "",
+		position = 6
+	)
+	default Stub mouseStub()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		position = 7,
 		keyName = "minDelayAmount",
 		name = "Min Delay",
-		description = "Minimum delay that is applied to every action at the end (ms)"
+		description = "Minimum delay that is applied to every action at the end (ms)",
+		parent = "mouseStub"
 	)
 	default int minDelayAmt()
 	{
@@ -56,10 +122,11 @@ public interface FlexoConfig extends Config
 
 
 	@ConfigItem(
-		position = 2,
+		position = 8,
 		keyName = "reactionTime",
 		name = "Reaction Time",
-		description = "The base time between actions (ms)"
+		description = "The base time between actions (ms)",
+		parent = "mouseStub"
 	)
 	default int getReactionTimeVariation()
 	{
@@ -67,10 +134,11 @@ public interface FlexoConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 9,
 		keyName = "mouseDragSpeed",
 		name = "Mouse drag speed",
-		description = "The speed at which steps are executed. Keep at 49? cuz jagex mouse recorder?"
+		description = "The speed at which steps are executed. Keep at 49? cuz jagex mouse recorder?",
+		parent = "mouseStub"
 	)
 	default int getMouseDragSpeed()
 	{
@@ -79,10 +147,11 @@ public interface FlexoConfig extends Config
 
 
 	@ConfigItem(
-		position = 4,
+		position = 10,
 		keyName = "overshoots",
 		name = "Overshoots",
-		description = "Higher number = more overshoots"
+		description = "Higher number = more overshoots",
+		parent = "mouseStub"
 	)
 	default int getOvershoots()
 	{
@@ -90,10 +159,11 @@ public interface FlexoConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 11,
 		keyName = "variatingFlow",
 		name = "Flow - Variating",
-		description = ""
+		description = "",
+		parent = "mouseStub"
 	)
 	default boolean getVariatingFlow()
 	{
@@ -101,10 +171,11 @@ public interface FlexoConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 12,
 		keyName = "slowStartupFlow",
 		name = "Flow - Slow startup",
-		description = ""
+		description = "",
+		parent = "mouseStub"
 	)
 	default boolean getSlowStartupFlow()
 	{
@@ -113,10 +184,11 @@ public interface FlexoConfig extends Config
 
 
 	@ConfigItem(
-		position = 7,
+		position = 13,
 		keyName = "slowStartup2Flow",
 		name = "Flow - Slow startup 2",
-		description = ""
+		description = "",
+		parent = "mouseStub"
 	)
 	default boolean getSlowStartup2Flow()
 	{
@@ -124,10 +196,11 @@ public interface FlexoConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 14,
 		keyName = "jaggedFlow",
 		name = "Flow - Jagged",
-		description = ""
+		description = "",
+		parent = "mouseStub"
 	)
 	default boolean getJaggedFlow()
 	{
@@ -135,10 +208,11 @@ public interface FlexoConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 15,
 		keyName = "interruptedFlow",
 		name = "Flow - Interrupted",
-		description = ""
+		description = "",
+		parent = "mouseStub"
 	)
 	default boolean getInterruptedFlow()
 	{
@@ -147,10 +221,11 @@ public interface FlexoConfig extends Config
 
 
 	@ConfigItem(
-		position = 10,
+		position = 16,
 		keyName = "interruptedFlow2",
 		name = "Flow - Interrupted 2",
-		description = ""
+		description = "",
+		parent = "mouseStub"
 	)
 	default boolean getInterruptedFlow2()
 	{
@@ -158,10 +233,11 @@ public interface FlexoConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 17,
 		keyName = "stoppingFlow",
 		name = "Flow - Stopping",
-		description = ""
+		description = "",
+		parent = "mouseStub"
 	)
 	default boolean getStoppingFlow()
 	{
@@ -169,10 +245,11 @@ public interface FlexoConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 18,
 		keyName = "deviationSlopeDivider",
 		name = "Deviation slope divider",
-		description = ""
+		description = "",
+		parent = "mouseStub"
 	)
 	default int getDeviationSlope()
 	{
@@ -181,46 +258,14 @@ public interface FlexoConfig extends Config
 
 
 	@ConfigItem(
-		position = 13,
+		position = 19,
 		keyName = "noisinessDivider",
 		name = "Noisiness divider",
-		description = ""
+		description = "",
+		parent = "mouseStub"
 	)
 	default String getNoisinessDivider()
 	{
 		return "2.0D";
-	}
-
-	@ConfigItem(
-		position = 14,
-		keyName = "debugNPCs",
-		name = "Debug NPCs",
-		description = "Draws clickArea and clickPoints across all visible npcs"
-	)
-	default boolean getDebugNPCs()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 15,
-		keyName = "debugPlayers",
-		name = "Debug Players",
-		description = "Draws clickArea and clickPoints across all visible players"
-	)
-	default boolean getDebugPlayers()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 16,
-		keyName = "debugGroundItems",
-		name = "Debug Ground Items",
-		description = "Draws clickArea and clickPoints across all visible ground items"
-	)
-	default boolean getDebugGroundItems()
-	{
-		return false;
 	}
 }

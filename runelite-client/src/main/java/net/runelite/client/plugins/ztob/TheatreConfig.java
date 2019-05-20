@@ -11,16 +11,29 @@ package net.runelite.client.plugins.ztob;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Stub;
 
 @ConfigGroup("Theatre")
 
 public interface TheatreConfig extends Config
 {
 	@ConfigItem(
-		position = 0,
+		keyName = "maidenStub",
+		name = "Maiden",
+		description = "",
+		position = 0
+	)
+	default Stub maidenStub()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		position = 1,
 		keyName = "MaidenBlood",
 		name = "Maiden blood attack",
-		description = ""
+		description = "",
+		parent = "maidenStub"
 	)
 	default boolean MaidenBlood()
 	{
@@ -28,10 +41,11 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
+		position = 2,
 		keyName = "MaidenSpawns",
 		name = "Maiden blood spawns",
-		description = ""
+		description = "",
+		parent = "maidenStub"
 	)
 	default boolean MaidenSpawns()
 	{
@@ -39,10 +53,22 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		keyName = "bloatStub",
+		name = "Bloat",
+		description = "",
+		position = 3
+	)
+	default Stub bloatStub()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "BloatIndicator",
 		name = "Bloat Indicator",
-		description = ""
+		description = "",
+		parent = "bloatStub"
 	)
 	default boolean BloatIndicator()
 	{
@@ -50,10 +76,11 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 5,
 		keyName = "bloat Timer",
 		name = "Bloat Timer",
-		description = ""
+		description = "",
+		parent = "bloatStub"
 	)
 	default boolean bloatTimer()
 	{
@@ -61,10 +88,11 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 6,
 		keyName = "bloatFeet",
 		name = "Bloat Feet",
-		description = ""
+		description = "",
+		parent = "bloatStub"
 	)
 	default boolean bloatFeetIndicator()
 	{
@@ -72,10 +100,22 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		keyName = "nylocasStub",
+		name = "Nylocas",
+		description = "",
+		position = 7
+	)
+	default Stub NylocasStub()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		position = 8,
 		keyName = "NyloPillars",
 		name = "Nylocas pillar health",
-		description = ""
+		description = "",
+		parent = "nylocasStub"
 	)
 	default boolean NyloPillars()
 	{
@@ -84,10 +124,11 @@ public interface TheatreConfig extends Config
 
 
 	@ConfigItem(
-		position = 6,
+		position = 9,
 		keyName = "NyloBlasts",
 		name = "Nylocas explosions",
-		description = ""
+		description = "",
+		parent = "nylocasStub"
 	)
 	default boolean NyloBlasts()
 	{
@@ -95,10 +136,11 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 10,
 		keyName = "NyloMenu",
 		name = "Hide Attack options for Nylocas",
-		description = ""
+		description = "",
+		parent = "nylocasStub"
 	)
 
 	default boolean NyloMenu()
@@ -107,10 +149,22 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		keyName = "sotetsegStub",
+		name = "Sotetseg",
+		description = "",
+		position = 11
+	)
+	default Stub sotetsegStub()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		position = 12,
 		keyName = "highlightSote",
-		name = "Sote Missiles",
-		description = "Highlight Sotetseg's Missiles with pray type"
+		name = "Sotetseg Missiles",
+		description = "Highlight Sotetseg's Missiles with pray type",
+		parent = "sotetsegStub"
 	)
 	default boolean highlightSote()
 	{
@@ -118,10 +172,11 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 13,
 		keyName = "SotetsegMaze1",
 		name = "Sotetseg maze",
-		description = ""
+		description = "",
+		parent = "sotetsegStub"
 	)
 	default boolean SotetsegMaze1()
 	{
@@ -129,10 +184,11 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 14,
 		keyName = "SotetsegMaze2",
 		name = "Sotetseg maze (solo mode)",
-		description = ""
+		description = "",
+		parent = "sotetsegStub"
 	)
 	default boolean SotetsegMaze2()
 	{
@@ -140,10 +196,22 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		keyName = "xarpusStub",
+		name = "Xarpus",
+		description = "",
+		position = 15
+	)
+	default Stub xarpusStub()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		position = 16,
 		keyName = "XarpusExhumed",
 		name = "Xarpus Exhumed",
-		description = ""
+		description = "",
+		parent = "xarpusStub"
 	)
 	default boolean XarpusExhumed()
 	{
@@ -151,10 +219,11 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 17,
 		keyName = "XarpusTick",
 		name = "Xarpus Tick",
-		description = ""
+		description = "",
+		parent = "xarpusStub"
 	)
 	default boolean XarpusTick()
 	{
@@ -162,10 +231,11 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 18,
 		keyName = "xarpusExhumes",
 		name = "Xarpus Exhume Counter",
-		description = ""
+		description = "",
+		parent = "xarpusStub"
 	)
 	default boolean XarpusExhumeOverlay()
 	{
@@ -173,10 +243,22 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		keyName = "verzikStub",
+		name = "Verzik",
+		description = "",
+		position = 19
+	)
+	default Stub verzikStub()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		position = 20,
 		keyName = "VerzikCupcakes",
 		name = "Verzik Projectile Markers",
-		description = ""
+		description = "",
+		parent = "verzikStub"
 	)
 	default boolean VerzikCupcakes()
 	{
@@ -184,10 +266,11 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 21,
 		keyName = "VerzikTick",
 		name = "Verzik P3 Tick",
-		description = ""
+		description = "",
+		parent = "verzikStub"
 	)
 	default boolean VerzikTick()
 	{
@@ -195,10 +278,11 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 16,
+		position = 22,
 		keyName = "VerzikMelee",
 		name = "Verzik P3 Melee Range",
-		description = ""
+		description = "",
+		parent = "verzikStub"
 	)
 	default boolean VerzikMelee()
 	{
@@ -206,10 +290,11 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
+		position = 23,
 		keyName = "VerzikYellow",
 		name = "Verzik Yellow Timing",
-		description = ""
+		description = "",
+		parent = "verzikStub"
 	)
 	default boolean VerzikYellow()
 	{
@@ -217,10 +302,23 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 18,
+		keyName = "verzikOverlayStub",
+		name = "Overlay",
+		description = "",
+		position = 24,
+		parent = "verzikStub"
+	)
+	default Stub verzikOverlayStub()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		position = 25,
 		keyName = "Verzik Nylo",
 		name = "Verzik Nylo Overlay",
-		description = ""
+		description = "",
+		parent = "verzikOverlayStub"
 	)
 	default boolean NyloTargetOverlay()
 	{
@@ -228,15 +326,14 @@ public interface TheatreConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 19,
+		position = 26,
 		keyName = "VerzikTankTile",
 		name = "Verzik P3 Tile Overlay",
-		description = ""
+		description = "",
+		parent = "verzikOverlayStub"
 	)
 	default boolean verzikTankTile()
 	{
 		return true;
 	}
-
-
 }

@@ -424,7 +424,6 @@ public class ConfigPanel extends PluginPanel
 		for (ConfigItemsGroup cig : cd.getItemGroups())
 		{
 			ConfigPanelItem mainParent = new ConfigPanelItem(null, null);
-			List<ConfigItemDescriptor> allItems = new ArrayList<>();
 
 			boolean collapsed = false;
 			if (!cig.getGroup().equals(""))
@@ -464,7 +463,7 @@ public class ConfigPanel extends PluginPanel
 				continue;
 			}
 
-			allItems.addAll(cig.getItems());
+			List<ConfigItemDescriptor> allItems = new ArrayList<>(cig.getItems());
 
 			int maxDepth = 3;
 			do

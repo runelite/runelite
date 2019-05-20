@@ -28,52 +28,29 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Stub;
 
 @ConfigGroup("flinching")
 public interface FlinchingConfig extends Config
 {
-	@ConfigItem(
 
-		position = 0,
-		keyName = "hexColorFlinch",
-		name = "Overlay Color",
-		description = "Color of flinching timer overlay"
+	@ConfigItem(
+		keyName = "flinchStub",
+		name = "Flinch",
+		description = "",
+		position = 1
 	)
-	default Color getFlinchOverlayColor()
+	default Stub flinchStub()
 	{
-		return Color.CYAN;
+		return new Stub();
 	}
 
 	@ConfigItem(
-
-		position = 1,
-		keyName = "flinchOverlaySize",
-		name = "Overlay Diameter",
-		description = "Flinch overlay timer diameter"
-	)
-	default int getFlinchOverlaySize()
-	{
-		return 30;
-	}
-
-	@ConfigItem(
-
 		position = 2,
-		keyName = "flinchDelay",
-		name = "Flinch Timer Delay",
-		description = "Shows the appropriate time to attack while flinching milliseconds"
-	)
-	default int getFlinchDelay()
-	{
-		return 5400;
-	}
-
-	@ConfigItem(
-
-		position = 3,
 		keyName = "flinchOnHitReceivedDelay",
 		name = "Flinch Hit Received Delay",
-		description = "Slightly longer delay after being attacked milliseconds"
+		description = "Slightly longer delay after being attacked milliseconds",
+		parent = "flinchStub"
 	)
 	default int getFlinchAttackedDelay()
 	{
@@ -81,8 +58,54 @@ public interface FlinchingConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
+		keyName = "flinchDelay",
+		name = "Flinch Timer Delay",
+		description = "Shows the appropriate time to attack while flinching milliseconds",
+		parent = "flinchStub"
+	)
+	default int getFlinchDelay()
+	{
+		return 5400;
+	}
 
-		position = 4,
+	@ConfigItem(
+		keyName = "overlayStub",
+		name = "Overlay",
+		description = "",
+		position = 4
+	)
+	default Stub overlayStub()
+	{
+		return new Stub();
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "flinchOverlaySize",
+		name = "Overlay Diameter",
+		description = "Flinch overlay timer diameter",
+		parent = "overlayStub"
+	)
+	default int getFlinchOverlaySize()
+	{
+		return 30;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "hexColorFlinch",
+		name = "Overlay Color",
+		description = "Color of flinching timer overlay",
+		parent = "overlayStub"
+	)
+	default Color getFlinchOverlayColor()
+	{
+		return Color.CYAN;
+	}
+
+	@ConfigItem(
+		position = 7,
 		keyName = "flinchResetOnHit",
 		name = "Reset on Hit",
 		description = "Timer resets after every attack from your character"
@@ -93,8 +116,7 @@ public interface FlinchingConfig extends Config
 	}
 
 	@ConfigItem(
-
-		position = 5,
+		position = 8,
 		keyName = "flinchResetOnHitReceived",
 		name = "Reset on Hit Received",
 		description = "Timer resets when your character gets attacked"
