@@ -24,22 +24,10 @@
  */
 package net.runelite.client.plugins.runecraft;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
-import static net.runelite.api.ItemID.AIR_RUNE;
-import static net.runelite.api.ItemID.BLOOD_RUNE;
-import static net.runelite.api.ItemID.BODY_RUNE;
-import static net.runelite.api.ItemID.CHAOS_RUNE;
-import static net.runelite.api.ItemID.COSMIC_RUNE;
-import static net.runelite.api.ItemID.DEATH_RUNE;
-import static net.runelite.api.ItemID.EARTH_RUNE;
-import static net.runelite.api.ItemID.FIRE_RUNE;
-import static net.runelite.api.ItemID.LAW_RUNE;
-import static net.runelite.api.ItemID.MIND_RUNE;
-import static net.runelite.api.ItemID.NATURE_RUNE;
-import static net.runelite.api.ItemID.SOUL_RUNE;
-import static net.runelite.api.ItemID.WATER_RUNE;
+import static net.runelite.api.ItemID.*;
 import net.runelite.api.ObjectID;
 
 public enum AbyssRifts
@@ -64,18 +52,14 @@ public enum AbyssRifts
 	@Getter
 	private final int itemId;
 
-	private static final Map<Integer, AbyssRifts> rifts;
+	private static final Map<Integer, AbyssRifts> rifts = new HashMap<>();
 
 	static
 	{
-		ImmutableMap.Builder<Integer, AbyssRifts> builder = new ImmutableMap.Builder<>();
-
 		for (AbyssRifts s : values())
 		{
-			builder.put(s.getObjectId(), s);
+			rifts.put(s.getObjectId(), s);
 		}
-
-		rifts = builder.build();
 	}
 
 	AbyssRifts(int objectId, int itemId)
