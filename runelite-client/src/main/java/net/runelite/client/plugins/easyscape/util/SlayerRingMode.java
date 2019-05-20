@@ -27,11 +27,11 @@ package net.runelite.client.plugins.easyscape.util;
 
 public enum SlayerRingMode
 {
-	SLAYER_TOWER("Slayer Tower"),
-	FREMENNIK_SLAYER_DUNGEON("Fremennik Slayer Dungeon"),
-	TARNS_LAIR("Tarn's Lair"),
-	STRONGHOLD_SLAYER_CAVE("Stronghold Slayer Cave"),
-	DARK_BEASTS("Dark Beasts");
+	CHECK("Check"),
+	TELEPORT("Teleport"),
+	MASTER("Master"),
+	PARTNER("Partner"),
+	LOG("Log");
 
 	private final String name;
 
