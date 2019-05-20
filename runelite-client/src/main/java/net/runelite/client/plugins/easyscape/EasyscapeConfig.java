@@ -675,7 +675,7 @@ public interface EasyscapeConfig extends Config
 	)
 	default SlayerRingMode getSlayerRingMode()
 	{
-		return SlayerRingMode.SLAYER_TOWER;
+		return SlayerRingMode.CHECK;
 	}	
 	
 	@ConfigItem(
