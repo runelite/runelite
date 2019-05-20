@@ -505,6 +505,29 @@ public class ConfigPanel extends PluginPanel
 					continue; // Ignore main 'parent'
 				}
 
+				if (cid.getItem().hidden())
+				{
+					boolean show = false;
+					String unhideat = cid.getItem().unhide();
+
+					for (ConfigItemDescriptor cid2 : cd.getItems())
+					{
+
+						if (cid2.getItem().keyName().equals(unhideat))
+						{
+							if (cid2.getType() == boolean.class)
+							{
+								show = Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().value(), cid2.getItem().keyName()));
+							}
+						}
+					}
+
+					if (!show)
+					{
+						continue;
+					}
+				}
+
 				JPanel item = new JPanel();
 				item.setLayout(new BorderLayout());
 				item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
@@ -821,6 +844,18 @@ public class ConfigPanel extends PluginPanel
 		{
 			JCheckBox checkbox = (JCheckBox) component;
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), "" + checkbox.isSelected());
+
+			for (ConfigItemDescriptor cid2 : cd.getItems())
+			{
+				if (cid2.getItem().hidden())
+				{
+					if (cid2.getItem().unhide().equals(cid.getItem().keyName()))
+					{ // If another options visibility changes depending on the value of this checkbox, then render the entire menu again
+						openGroupConfigPanel(listItem, config, cd);
+						return;
+					}
+				}
+			}
 		}
 		else if (component instanceof JSpinner)
 		{
