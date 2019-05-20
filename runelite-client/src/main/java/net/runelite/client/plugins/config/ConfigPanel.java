@@ -421,12 +421,11 @@ public class ConfigPanel extends PluginPanel
 		title.setToolTipText("<html>" + name + ":<br>" + listItem.getDescription() + "</html>");
 		topPanel.add(title);
 
-		ConfigPanelItem mainParent = new ConfigPanelItem(null, null);
-		List<ConfigPanelItem> parents = new ArrayList<>();
-		List<ConfigItemDescriptor> allItems = new ArrayList<>();
-
 		for (ConfigItemsGroup cig : cd.getItemGroups())
 		{
+			ConfigPanelItem mainParent = new ConfigPanelItem(null, null);
+			List<ConfigItemDescriptor> allItems = new ArrayList<>();
+
 			boolean collapsed = false;
 			if (!cig.getGroup().equals(""))
 			{

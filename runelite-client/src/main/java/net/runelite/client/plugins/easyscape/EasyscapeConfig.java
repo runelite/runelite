@@ -62,7 +62,9 @@ public interface EasyscapeConfig extends Config
 		name = "Items",
 		description = "",
 		position = 1,
-		group = "Banking"
+		group = "Banking",
+		hidden = true,
+		unhide = "withdrawOne"
 	)
 	default String getWithdrawOneItems()
 	{
@@ -86,7 +88,9 @@ public interface EasyscapeConfig extends Config
 		name = "Items",
 		description = "",
 		position = 3,
-		group = "Banking"
+		group = "Banking",
+		hidden = true,
+		unhide = "withdrawFive"
 	)
 	default String getWithdrawFiveItems()
 	{
@@ -110,7 +114,9 @@ public interface EasyscapeConfig extends Config
 		name = "Items",
 		description = "",
 		position = 5,
-		group = "Banking"
+		group = "Banking",
+		hidden = true,
+		unhide = "withdrawTen"
 	)
 	default String getWithdrawTenItems()
 	{
@@ -134,7 +140,9 @@ public interface EasyscapeConfig extends Config
 		name = "Amount",
 		description = "",
 		position = 7,
-		group = "Banking"
+		group = "Banking",
+		hidden = true,
+		unhide = "withdrawX"
 	)
 	default String getWithdrawXAmount()
 	{
@@ -146,7 +154,9 @@ public interface EasyscapeConfig extends Config
 		name = "Items",
 		description = "",
 		position = 8,
-		group = "Banking"
+		group = "Banking",
+		hidden = true,
+		unhide = "withdrawX"
 	)
 	default String getWithdrawXItems()
 	{
@@ -170,7 +180,9 @@ public interface EasyscapeConfig extends Config
 		name = "Items",
 		description = "",
 		position = 10,
-		group = "Banking"
+		group = "Banking",
+		hidden = true,
+		unhide = "withdrawAll"
 	)
 	default String getWithdrawAllItems()
 	{
@@ -196,7 +208,9 @@ public interface EasyscapeConfig extends Config
 		name = "Objects",
 		description = "Objects listed here will have all interaction be removed.",
 		position = 13,
-		group = "Miscellaneous easyscape"
+		group = "Miscellaneous easyscape",
+		hidden = true,
+		unhide = "removeObjects"
 	)
 	default String getRemovedObjects()
 	{
@@ -222,7 +236,9 @@ public interface EasyscapeConfig extends Config
 		name = "Items",
 		description = "",
 		position = 15,
-		group = "Shop / stores"
+		group = "Shop / stores",
+		hidden = true,
+		unhide = "swapBuyOne"
 	)
 	default String getBuyOneItems()
 	{
@@ -246,7 +262,9 @@ public interface EasyscapeConfig extends Config
 		name = "Items",
 		description = "",
 		position = 17,
-		group = "Shop / stores"
+		group = "Shop / stores",
+		hidden = true,
+		unhide = "swapBuyFive"
 	)
 	default String getBuyFiveItems()
 	{
@@ -270,7 +288,9 @@ public interface EasyscapeConfig extends Config
 		name = "Items",
 		description = "",
 		position = 19,
-		group = "Shop / stores"
+		group = "Shop / stores",
+		hidden = true,
+		unhide = "swapBuyTen"
 	)
 	default String getBuyTenItems()
 	{
@@ -294,7 +314,9 @@ public interface EasyscapeConfig extends Config
 		name = "Items",
 		description = "",
 		position = 21,
-		group = "Shop / stores"
+		group = "Shop / stores",
+		hidden = true,
+		unhide = "swapBuyFifty"
 	)
 	default String getBuyFiftyItems()
 	{
@@ -318,7 +340,9 @@ public interface EasyscapeConfig extends Config
 		name = "Items",
 		description = "",
 		position = 23,
-		group = "Shop / stores"
+		group = "Shop / stores",
+		hidden = true,
+		unhide = "swapSellOne"
 	)
 	default String getSellOneItems()
 	{
@@ -342,7 +366,9 @@ public interface EasyscapeConfig extends Config
 		name = "Items",
 		description = "",
 		position = 25,
-		group = "Shop / stores"
+		group = "Shop / stores",
+		hidden = true,
+		unhide = "swapSellFive"
 	)
 	default String getSellFiveItems()
 	{
@@ -366,7 +392,9 @@ public interface EasyscapeConfig extends Config
 		name = "Items",
 		description = "",
 		position = 27,
-		group = "Shop / stores"
+		group = "Shop / stores",
+		hidden = true,
+		unhide = "swapSellTen"
 	)
 	default String getSellTenItems()
 	{
@@ -390,7 +418,9 @@ public interface EasyscapeConfig extends Config
 		name = "Items",
 		description = "",
 		position = 29,
-		group = "Shop / stores"
+		group = "Shop / stores",
+		hidden = true,
+		unhide = "swapSellFifty"
 	)
 	default String getSellFiftyItems()
 	{
@@ -416,7 +446,9 @@ public interface EasyscapeConfig extends Config
 		name = "Construction Items",
 		description = "Items listed here will have the default option set to \"Removed\" in build mode.",
 		position = 31,
-		group = "Miscellaneous swapper"
+		group = "Miscellaneous swapper",
+		hidden = true,
+		unhide = "easyConstruction"
 	)
 	default String getConstructionItems()
 	{
@@ -503,7 +535,9 @@ public interface EasyscapeConfig extends Config
 		name = "Mode",
 		description = "",
 		position = 38,
-		group = "Jewellery swapper"
+		group = "Jewellery swapper",
+		hidden = true,
+		unhide = "swapGamesNecklace"
 	)
 	default GamesNecklaceMode getGamesNecklaceMode()
 	{
@@ -527,7 +561,9 @@ public interface EasyscapeConfig extends Config
 		name = "Mode",
 		description = "",
 		position = 40,
-		group = "Jewellery swapper"
+		group = "Jewellery swapper",
+		hidden = true,
+		unhide = "swapDuelingRing"
 	)
 	default DuelingRingMode getDuelingRingMode()
 	{
@@ -551,7 +587,9 @@ public interface EasyscapeConfig extends Config
 		name = "Mode",
 		description = "",
 		position = 42,
-		group = "Jewellery swapper"
+		group = "Jewellery swapper",
+		hidden = true,
+		unhide = "swapGlory"
 	)
 	default GloryMode getGloryMode()
 	{
@@ -575,7 +613,9 @@ public interface EasyscapeConfig extends Config
 		name = "Mode",
 		description = "",
 		position = 44,
-		group = "Jewellery swapper"
+		group = "Jewellery swapper",
+		hidden = true,
+		unhide = "swapSkill"
 	)
 	default SkillsNecklaceMode getSkillsNecklaceMode()
 	{
@@ -599,7 +639,9 @@ public interface EasyscapeConfig extends Config
 		name = "Mode",
 		description = "",
 		position = 46,
-		group = "Jewellery swapper"
+		group = "Jewellery swapper",
+		hidden = true,
+		unhide = "swapPassage"
 	)
 	default NecklaceOfPassageMode getNecklaceofPassageMode()
 	{
@@ -623,7 +665,9 @@ public interface EasyscapeConfig extends Config
 		name = "Mode",
 		description = "",
 		position = 48,
-		group = "Jewellery swapper"
+		group = "Jewellery swapper",
+		hidden = true,
+		unhide = "swapDigsite"
 	)
 	default DigsitePendantMode getDigsitePendantMode()
 	{
@@ -647,7 +691,9 @@ public interface EasyscapeConfig extends Config
 		name = "Mode",
 		description = "",
 		position = 50,
-		group = "Jewellery swapper"
+		group = "Jewellery swapper",
+		hidden = true,
+		unhide = "swapCombat"
 	)
 	default CombatBraceletMode getCombatBraceletMode()
 	{
@@ -671,7 +717,9 @@ public interface EasyscapeConfig extends Config
 		name = "Mode",
 		description = "",
 		position = 52,
-		group = "Jewellery swapper"
+		group = "Jewellery swapper",
+		hidden = true,
+		unhide = "swapslayer"
 	)
 	default SlayerRingMode getSlayerRingMode()
 	{
@@ -695,7 +743,9 @@ public interface EasyscapeConfig extends Config
 		name = "Mode",
 		description = "",
 		position = 54,
-		group = "Jewellery swapper"
+		group = "Jewellery swapper",
+		hidden = true,
+		unhide = "swapburning"
 	)
 	default BurningAmuletMode getBurningAmuletMode()
 	{
@@ -719,7 +769,9 @@ public interface EasyscapeConfig extends Config
 		name = "Mode",
 		description = "",
 		position = 56,
-		group = "Jewellery swapper"
+		group = "Jewellery swapper",
+		hidden = true,
+		unhide = "swapxeric"
 	)
 	default XericsTalismanMode getXericsTalismanMode()
 	{
@@ -743,7 +795,9 @@ public interface EasyscapeConfig extends Config
 		name = "Mode",
 		description = "",
 		position = 58,
-		group = "Jewellery swapper"
+		group = "Jewellery swapper",
+		hidden = true,
+		unhide = "swapwealth"
 	)
 	default RingOfWealthMode getRingofWealthMode()
 	{
