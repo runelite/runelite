@@ -64,6 +64,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -83,6 +85,7 @@ import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.config.Stub;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
@@ -520,6 +523,15 @@ public class ConfigPanel extends PluginPanel
 				configEntryName.setForeground(Color.WHITE);
 				configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
 				item.add(configEntryName, BorderLayout.CENTER);
+
+				if (cid.getType() == Stub.class)
+				{
+					Border border = item.getBorder();
+					Border margin = new EmptyBorder(10,0,0,0);
+					item.setBorder(new CompoundBorder(border, margin));
+
+					configEntryName.setForeground(Color.ORANGE);
+				}
 
 				if (cid.getType() == boolean.class)
 				{
