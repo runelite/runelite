@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Craftiii4 <craftiii4@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,32 +24,68 @@
  */
 package net.runelite.client.config;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AccessLevel;
+import lombok.Getter;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface ConfigItem
+public class ConfigPanelItem
 {
-	int position() default -1;
 
-	String keyName();
+	@Getter(AccessLevel.PUBLIC)
+	private ConfigPanelItem parent;
 
-	String name();
+	@Getter(AccessLevel.PUBLIC)
+	private List<ConfigPanelItem> children;
 
-	String description();
+	@Getter(AccessLevel.PUBLIC)
+	private ConfigItemDescriptor item;
 
-	boolean hidden() default false;
+	public ConfigPanelItem(ConfigPanelItem parent, ConfigItemDescriptor item)
+	{
+		this.parent = parent;
+		this.children = new ArrayList<>();
+		this.item = item;
+	}
 
-	String warning() default "";
+	public List<ConfigPanelItem> getItemsAsList()
+	{
+		List<ConfigPanelItem> items = new ArrayList<>();
 
-	boolean secret() default false;
+		items.add(this);
 
-	String group() default "";
+		for (ConfigPanelItem child : children)
+		{
+			items.addAll(child.getItemsAsList());
+		}
+		return items;
+	}
 
-	String unhide() default "";
+	public int getDepth()
+	{
+		return (parent == null ? 0 : parent.getDepth() + 1);
+	}
 
-	String parent() default "";
+	public boolean addChildIfMatchParent(ConfigItemDescriptor cid)
+	{
+
+		if (item != null && item.getItem().keyName().equals(cid.getItem().parent()))
+		{
+			children.add(new ConfigPanelItem(this, cid));
+			return true;
+		}
+		else
+		{
+			for (ConfigPanelItem child : children)
+			{
+				if (child.addChildIfMatchParent(cid))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+	}
+
 }
