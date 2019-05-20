@@ -140,7 +140,6 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 		wave_start = Instant.now();
 		lastInteracted = null;
 		foodPressed.clear();
-		client.setInventoryDragDelay(config.antiDragDelay());
 		keyManager.registerKeyListener(this);
 	}
 
@@ -152,7 +151,6 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 		inGameBit = 0;
 		lastInteracted = null;
 		overlayManager.remove(overlay);
-		client.setInventoryDragDelay(5);
 		keyManager.unregisterKeyListener(this);
 		shiftDown = false;
 	}
@@ -173,11 +171,6 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (config.antiDrag())
-		{
-			client.setInventoryDragDelay(config.antiDragDelay());
-		}
-
 		Widget callWidget = getWidget();
 
 		if (callWidget != null)
@@ -304,7 +297,9 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 
 		if (inGameBit != inGame)
 		{
-			if (inGameBit == 1)
+			inGameBit = inGame;
+
+			if (inGameBit == 0)
 			{
 				pastCall = 0;
 				removeCounter();
@@ -315,8 +310,6 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 				addCounter();
 			}
 		}
-
-		inGameBit = inGame;
 	}
 
 	@Subscribe
@@ -660,12 +653,11 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 		}
 	}
 
-	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (config.antiDrag())
+		if (counter != null && !config.defTimer())
 		{
-			client.setInventoryDragDelay(config.antiDragDelay());
+			removeCounter();
 		}
 	}
 

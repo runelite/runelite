@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.batools;
 
 import java.awt.Color;
+import static java.awt.Color.GREEN;
+import static java.awt.Color.RED;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.time.Duration;
@@ -40,16 +42,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class BAToolsOverlay extends Overlay
 {
-	private static final Color RED = new Color(221, 44, 0);
-	private static final Color GREEN = new Color(0, 200, 83);
-	private static final Color ORANGE = new Color(255, 109, 0);
-	private static final Color YELLOW = new Color(255, 214, 0);
-	private static final Color CYAN = new Color(0, 184, 212);
-	private static final Color BLUE = new Color(41, 98, 255);
-	private static final Color DEEP_PURPLE = new Color(98, 0, 234);
-	private static final Color PURPLE = new Color(170, 0, 255);
-	private static final Color GRAY = new Color(158, 158, 158);
-
 	private final BAToolsConfig config;
 	private BAToolsPlugin plugin;
 
