@@ -41,6 +41,7 @@ public class WidgetID
 	public static final int LOGOUT_PANEL_ID = 182;
 	public static final int BANK_GROUP_ID = 12;
 	public static final int BANK_INVENTORY_GROUP_ID = 15;
+	public static final int BANK_PIN_GROUP_ID = 213;
 	public static final int GRAND_EXCHANGE_INVENTORY_GROUP_ID = 467;
 	public static final int GRAND_EXCHANGE_GROUP_ID = 465;
 	public static final int DEPOSIT_BOX_GROUP_ID = 192;
@@ -353,6 +354,7 @@ public class WidgetID
 		static final int MINIMAP = 3;
 		static final int MINIMAP_DRAW_AREA = 8;
 		static final int MULTICOMBAT_INDICATOR = 20;
+		static final int BANK_PIN = 21;
 		static final int CLAN_CHAT_TAB = 31;
 		static final int FRIENDS_TAB = 33;
 		static final int IGNORES_TAB = 32;
@@ -390,6 +392,7 @@ public class WidgetID
 	static class ResizableViewport
 	{
 		static final int ITEMS_KEPT_ON_DEATH = 13;
+		static final int BANK_PIN = 13;
 		static final int MULTICOMBAT_INDICATOR = 16;
 		static final int CLAN_CHAT_TAB = 35;
 		static final int FRIENDS_TAB = 37;
@@ -425,6 +428,7 @@ public class WidgetID
 
 	static class ResizableViewportBottomLine
 	{
+		static final int BANK_PIN = 13;
 		static final int LOGOUT_BUTTON_OVERLAY = 29;
 		static final int CMB_TAB = 50;
 		static final int CMB_ICON = 57;
@@ -1061,5 +1065,19 @@ public class WidgetID
 		public static final int TOTAL_STAKED = 32;
 		public static final int TOTAL_TAX = 39;
 		public static final int WINNINGS = 40;
+	}
+
+	public static class BankPin
+	{
+		public static final int BUTTON_1 = 16;
+		public static final int BUTTON_2 = 18;
+		public static final int BUTTON_3 = 20;
+		public static final int BUTTON_4 = 22;
+		public static final int BUTTON_5 = 24;
+		public static final int BUTTON_6 = 26;
+		public static final int BUTTON_7 = 28;
+		public static final int BUTTON_8 = 30;
+		public static final int BUTTON_9 = 32;
+		public static final int BUTTON_0 = 34;
 	}
 }

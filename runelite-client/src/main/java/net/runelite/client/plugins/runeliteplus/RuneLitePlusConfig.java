@@ -71,4 +71,14 @@ public interface RuneLitePlusConfig extends Config
 		return 100;
 	}
 
+	@ConfigItem(
+		keyName = "keyboardPin",
+		name = "Keyboard bank pin",
+		description = "Enables you to type your bank pin",
+		position = 3
+	)
+	default boolean keyboardPin()
+	{
+		return false;
+	}
 }
