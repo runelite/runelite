@@ -31,6 +31,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.TRUE;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -99,6 +100,15 @@ public class GroundItemsPlugin extends Plugin
 	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
+
+	// items stay on the ground for 30 mins in an instance
+	private static final int INSTANCE_DURATION_MILLIS = 45 * 60 * 1000;
+	//untradeables stay on the ground for 150 seconds (http://oldschoolrunescape.wikia.com/wiki/Item#Dropping_and_Destroying)
+	private static final int UNTRADEABLE_DURATION_MILLIS = 150 * 1000;
+	//items stay on the ground for 1 hour after death
+	private static final int DEATH_DURATION_MILLIS = 60 * 60 * 1000;
+	private static final int NORMAL_DURATION_MILLIS = 60 * 1000;
+
 	// Ground item menu options
 	private static final int FIRST_OPTION = MenuAction.GROUND_ITEM_FIRST_OPTION.getId();
 	private static final int SECOND_OPTION = MenuAction.GROUND_ITEM_SECOND_OPTION.getId();
@@ -280,8 +290,19 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onNpcLootReceived(NpcLootReceived npcLootReceived)
 	{
+		npcLootReceived.getItems().forEach(item ->
+			{
+				GroundItem.GroundItemKey groundItemKey = new GroundItem.GroundItemKey(item.getId(), npcLootReceived.getNpc().getWorldLocation());
+				if (collectedGroundItems.containsKey(groundItemKey))
+				{
+					collectedGroundItems.get(groundItemKey).setOwnedByPlayer(true);
+				}
+			}
+		);
+
 		Collection<ItemStack> items = npcLootReceived.getItems();
 		lootReceived(items);
+		lootNotifier(items);
 	}
 
 	@Subscribe
@@ -289,6 +310,47 @@ public class GroundItemsPlugin extends Plugin
 	{
 		Collection<ItemStack> items = playerLootReceived.getItems();
 		lootReceived(items);
+		lootNotifier(items);
+	}
+
+	private void lootNotifier(Collection<ItemStack> items)
+	{
+		ItemComposition composition;
+		for (ItemStack is : items)
+		{
+			composition = itemManager.getItemComposition(is.getId());
+			Color itemColor = getHighlighted(composition.getName(), itemManager.getItemPrice(is.getId()) * is.getQuantity(), Math.round(composition.getPrice() * HIGH_ALCHEMY_CONSTANT) * is.getQuantity());
+			if (itemColor != null)
+			{
+				if (config.notifyHighlightedDrops() && itemColor.equals(config.highlightedColor()))
+				{
+					sendLootNotification(composition.getName(), "highlighted");
+				}
+				else if (config.notifyLowValueDrops() && itemColor.equals(config.lowValueColor()))
+				{
+					sendLootNotification(composition.getName(), "low value");
+				}
+				else if (config.notifyMediumValueDrops() && itemColor.equals(config.mediumValueColor()))
+				{
+					sendLootNotification(composition.getName(), "medium value");
+				}
+				else if (config.notifyHighValueDrops() && itemColor.equals(config.highValueColor()))
+				{
+					sendLootNotification(composition.getName(), "high value");
+				}
+				else if (config.notifyInsaneValueDrops() && itemColor.equals(config.insaneValueColor()))
+				{
+					sendLootNotification(composition.getName(), "insane value");
+				}
+			}
+		}
+	}
+
+	private  void sendLootNotification(String itemName, String message)
+	{
+		String notification = "[" + client.getLocalPlayer().getName() + "] " +
+			"Received a " + message + " item: " + itemName;
+		notifier.notify(notification);
 	}
 
 	@Subscribe
@@ -370,6 +432,21 @@ public class GroundItemsPlugin extends Plugin
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
 		final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+		int durationMillis;
+		if (client.isInInstancedRegion())
+		{
+			durationMillis = INSTANCE_DURATION_MILLIS;
+		}
+		else if (!itemComposition.isTradeable() && realItemId != COINS)
+		{
+			durationMillis = UNTRADEABLE_DURATION_MILLIS;
+		}
+		else
+		{
+			durationMillis = NORMAL_DURATION_MILLIS;
+		}
+
+		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -378,8 +455,12 @@ public class GroundItemsPlugin extends Plugin
 			.quantity(item.getQuantity())
 			.name(itemComposition.getName())
 			.haPrice(alchPrice)
-			.height(tile.getItemLayer().getHeight())
+			.height(-1)
 			.tradeable(itemComposition.isTradeable())
+			.droppedInstant(Instant.now())
+			.durationMillis(durationMillis)
+			.isAlwaysPrivate(client.isInInstancedRegion() || (!itemComposition.isTradeable() && realItemId != COINS))
+			.isOwnedByPlayer(tile.getWorldLocation().equals(playerLocation))
 			.build();
 
 
@@ -539,8 +620,6 @@ public class GroundItemsPlugin extends Plugin
 		{
 			return entries;
 		}
-
-
 	}
 
 	void updateList(String item, boolean hiddenList)

@@ -31,6 +31,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,15 +43,18 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
+import net.runelite.client.plugins.grounditems.config.TimerDisplayMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
+import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.StackFormatter;
 
@@ -67,12 +72,20 @@ public class GroundItemsOverlay extends Overlay
 	// Size of the hidden/highlight boxes
 	private static final int RECTANGLE_SIZE = 8;
 
+	private static final int TIMER_OVERLAY_DIAMETER = 10;
+	private static final int PUBLIC_ITEM_DURATION_MILLIS = 60000;
+	private static final float WARNING_THRESHOLD = 0.25f;
+	private static final Color PUBLIC_TIMER_COLOR = Color.YELLOW;
+	private static final Color PRIVATE_TIMER_COLOR = Color.GREEN;
+	private static final Color PUBLIC_WARNING_TIMER_COLOR = Color.RED;
+
 	private final Client client;
 	private final GroundItemsPlugin plugin;
 	private final GroundItemsConfig config;
 	private final StringBuilder itemStringBuilder = new StringBuilder();
 	private final BackgroundComponent backgroundComponent = new BackgroundComponent();
 	private final TextComponent textComponent = new TextComponent();
+	private final ProgressPieComponent progressPieComponent = new ProgressPieComponent();
 	private final Map<WorldPoint, Integer> offsetMap = new HashMap<>();
 
 	@Inject
@@ -259,6 +272,13 @@ public class GroundItemsOverlay extends Overlay
 			final String itemString = itemStringBuilder.toString();
 			itemStringBuilder.setLength(0);
 
+			if (item.getHeight() == -1)
+			{
+				final Tile[][][] sceneTiles = client.getScene().getTiles();
+				final Tile itemTile = sceneTiles[client.getPlane()][groundPoint.getSceneX()][groundPoint.getSceneY()];
+				item.setHeight(itemTile.getItemLayer().getHeight());
+			}
+
 			final Point textPoint = Perspective.getCanvasTextLocation(client,
 				graphics,
 				groundPoint,
@@ -333,6 +353,12 @@ public class GroundItemsOverlay extends Overlay
 				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted != null, false);
 			}
 
+			if (config.showGroundItemDuration() == TimerDisplayMode.ALWAYS
+				|| (config.showGroundItemDuration() == TimerDisplayMode.HOTKEY_PRESSED && plugin.isHotKeyPressed()))
+			{
+				drawTimerOverlay(graphics, new java.awt.Point(textX, textY), item);
+			}
+
 			if (config.toggleOutline())
 			{
 				graphics.setColor(Color.BLACK);
@@ -388,4 +414,62 @@ public class GroundItemsOverlay extends Overlay
 
 	}
 
+	private void drawTimerOverlay(Graphics2D graphics, java.awt.Point location, GroundItem item)
+	{
+		progressPieComponent.setDiameter(TIMER_OVERLAY_DIAMETER);
+
+		int x = (int) location.getX() - TIMER_OVERLAY_DIAMETER;
+		int y = (int) location.getY() - TIMER_OVERLAY_DIAMETER / 2;
+
+		progressPieComponent.setPosition(new Point(x, y));
+
+		double millisOnGround = Duration.between(item.getDroppedInstant(), Instant.now()).toMillis();
+		boolean isPubliclyVisible = !item.isAlwaysPrivate() && millisOnGround > item.getDurationMillis();
+		double timeLeftRelative;
+		Color fillColor;
+
+		if (isPubliclyVisible || !item.isOwnedByPlayer())
+		{
+			if (item.isOwnedByPlayer())
+			{
+				timeLeftRelative = getTimeLeftRelative(millisOnGround - PUBLIC_ITEM_DURATION_MILLIS, PUBLIC_ITEM_DURATION_MILLIS);
+
+			}
+			else
+			{
+				timeLeftRelative = getTimeLeftRelative(millisOnGround, PUBLIC_ITEM_DURATION_MILLIS);
+			}
+
+			if (timeLeftRelative < WARNING_THRESHOLD)
+			{
+				fillColor = PUBLIC_WARNING_TIMER_COLOR;
+			}
+			else
+			{
+				fillColor = PUBLIC_TIMER_COLOR;
+			}
+		}
+		else
+		{
+			timeLeftRelative = getTimeLeftRelative(millisOnGround, item.getDurationMillis());
+			fillColor = PRIVATE_TIMER_COLOR;
+
+		}
+
+		// don't draw timer for any permanently spawned items or broken edge cases
+		if (timeLeftRelative > 1 || timeLeftRelative < 0)
+		{
+			return;
+		}
+
+		progressPieComponent.setFill(fillColor);
+		progressPieComponent.setBorderColor(fillColor);
+		progressPieComponent.setProgress(timeLeftRelative);
+		progressPieComponent.render(graphics);
+	}
+
+	private double getTimeLeftRelative(double millisOnGround, int duration)
+	{
+		return (duration - millisOnGround) / duration;
+	}
 }

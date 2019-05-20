@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018 Matthew Smith <https://github.com/ms813>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems;
+package net.runelite.client.plugins.grounditems.config;
 
-import java.time.Instant;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Value;
-import net.runelite.api.coords.WorldPoint;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Data
-@Builder
-public
-class GroundItem
+@Getter
+@RequiredArgsConstructor
+public enum TimerDisplayMode
 {
-	private int id;
-	private int itemId;
-	private String name;
-	private int quantity;
-	private WorldPoint location;
-	private int height;
-	private int haPrice;
-	private int gePrice;
-	private int offset;
-	private boolean tradeable;
-	private boolean isMine;
-	private int durationMillis;
-	private boolean isAlwaysPrivate;
-	private boolean isOwnedByPlayer;
-	private Instant droppedInstant;
+	ALWAYS("Always"),
+	HOTKEY_PRESSED("When Hotkey Pressed"),
+	NEVER("Never");
 
-	int getHaPrice()
-	{
-		return haPrice * quantity;
-	}
+	private final String name;
 
-	int getGePrice()
+	@Override
+	public String toString()
 	{
-		return gePrice * quantity;
-	}
-
-	@Value
-	static class GroundItemKey
-	{
-		private int itemId;
-		private WorldPoint location;
+		return name;
 	}
 }
