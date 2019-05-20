@@ -33,6 +33,17 @@ import net.runelite.client.config.ConfigItem;
 public interface MenuEntrySwapperConfig extends Config
 {
 	@ConfigItem(
+		position = -3,
+		keyName = "customSwaps",
+		name = "Custom swaps",
+		description = "Add custom swaps here, 1 per line. Syntax: option, target : option, target<br>Note that the first entry should be the left click one!"
+	)
+	default String customSwaps()
+	{
+		return "";
+	}
+
+	@ConfigItem(
 		position = -2,
 		keyName = "shiftClickCustomization",
 		name = "Customizable shift-click",
