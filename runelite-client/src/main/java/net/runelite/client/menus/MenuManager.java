@@ -26,6 +26,7 @@ package net.runelite.client.menus;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -168,7 +168,15 @@ public class MenuManager
 
 		MenuEntry newestEntry = menuEntries[menuEntries.length - 1];
 
-		boolean isPrio = priorityEntries.stream().anyMatch(p -> p.matches(newestEntry));
+		boolean isPrio = false;
+		for (AbstractMenuEntry p : priorityEntries)
+		{
+			if (p.matches(newestEntry))
+			{
+				isPrio = true;
+				break;
+			}
+		}
 
 		// If the last entry was a priority entry, keep track of it
 		if (isPrio)
@@ -187,26 +195,42 @@ public class MenuManager
 			copy.add(CANCEL());
 		}
 
-		/*// Find the current entry in the swaps map
-		Optional<AbstractMenuEntry> swapEntry = swaps.keySet().stream().filter(e -> e.matches(newestEntry)).findFirst();
-
-		if (swapEntry.isPresent())
+		// Find the current entry in the swaps map
+		AbstractMenuEntry swapEntry = null;
+		for (AbstractMenuEntry e : swaps.keySet())
 		{
-			AbstractMenuEntry swap = swapEntry.get();
-			AbstractMenuEntry swapTarget = swaps.get(swap);
+			if (e.matches(newestEntry))
+			{
+				swapEntry = e;
+				break;
+			}
+		}
+
+		if (swapEntry != null)
+		{
+			AbstractMenuEntry swapTarget = swaps.get(swapEntry);
 
 			// Find the target for the swap in current menu entries
-			Optional<MenuEntry> foundSwap = Lists.reverse(copy).stream().filter(swapTarget::matches).findFirst();
+			MenuEntry foundSwap = null;
+			for (MenuEntry entry : Lists.reverse(copy))
+			{
+				if (swapTarget.matches(entry))
+				{
+					foundSwap = entry;
+					break;
+				}
+			}
 
-			if (foundSwap.isPresent())
+			if (foundSwap != null)
 			{
 				// Swap
-				int index = copy.indexOf(foundSwap.get());
+				int index = copy.indexOf(foundSwap);
+				int newIndex = copy.indexOf(newestEntry);
 
 				copy.set(index, newestEntry);
-				copy.set(copy.size() - 1, foundSwap.get());
+				copy.set(newIndex, foundSwap);
 			}
-		}*/
+		}
 
 		client.setMenuEntries(copy.toArray(new MenuEntry[0]));
 	}
@@ -394,6 +418,19 @@ public class MenuManager
 		priorityEntries.add(entry);
 	}
 
+	/**
+	 * Adds to the set of menu entries which when present, will remove all entries except for this one
+	 * This method will add one with strict option, but not-strict target (contains for target, equals for option)
+	 */
+	public void addPriorityEntry(String option)
+	{
+		option = Text.standardize(option);
+
+		AbstractMenuEntry entry = new AbstractMenuEntry(option, "", false);
+
+		priorityEntries.add(entry);
+	}
+
 	public void removePriorityEntry(String option, String target)
 	{
 		option = Text.standardize(option);
@@ -401,8 +438,89 @@ public class MenuManager
 
 		AbstractMenuEntry entry = new AbstractMenuEntry(option, target);
 
-		Set<AbstractMenuEntry> toRemove = priorityEntries.stream().filter(entry::equals).collect(Collectors.toSet());
+		for (AbstractMenuEntry priorityEntry : priorityEntries)
+		{
+			if (entry.equals(priorityEntry))
+			{
+				priorityEntries.remove(priorityEntry);
+			}
+		}
+	}
 
-		priorityEntries.removeAll(toRemove);
+	public void removePriorityEntry(String option)
+	{
+		option = Text.standardize(option);
+
+		AbstractMenuEntry entry = new AbstractMenuEntry(option, "", false);
+
+		for (AbstractMenuEntry priorityEntry : priorityEntries)
+		{
+			if (entry.equals(priorityEntry))
+			{
+				priorityEntries.remove(priorityEntry);
+			}
+		}
+	}
+
+	/**
+	 * Adds to the map of swaps. - Strict option + target
+	 */
+	public void addSwap(String option, String target, String option2, String target2)
+	{
+		option = Text.standardize(option);
+		target = Text.standardize(target);
+
+		option2 = Text.standardize(option2);
+		target2 = Text.standardize(target2);
+
+		AbstractMenuEntry swapFrom = new AbstractMenuEntry(option, target);
+		AbstractMenuEntry swapTo = new AbstractMenuEntry(option2, target2);
+
+		if (swapTo.equals(swapFrom))
+		{
+			log.warn("You shouldn't try swapping an entry for itself");
+			return;
+		}
+
+		swaps.put(swapFrom, swapTo);
+	}
+
+	/**
+	 * Adds to the map of swaps - Pre-baked Abstract entry
+	 */
+	public void addSwap(AbstractMenuEntry swapFrom, AbstractMenuEntry swapTo)
+	{
+		if (swapTo.equals(swapFrom))
+		{
+			log.warn("You shouldn't try swapping an entry for itself");
+			return;
+		}
+
+		swaps.put(swapFrom, swapTo);
+	}
+
+	public void removeSwap(String option, String target, String option2, String target2)
+	{
+		option = Text.standardize(option);
+		target = Text.standardize(target);
+
+		option2 = Text.standardize(option2);
+		target2 = Text.standardize(target2);
+
+		AbstractMenuEntry swapFrom = new AbstractMenuEntry(option, target);
+		AbstractMenuEntry swapTo = new AbstractMenuEntry(option2, target2);
+
+		removeSwap(swapFrom, swapTo);
+	}
+
+	public void removeSwap(AbstractMenuEntry swapFrom, AbstractMenuEntry swapTo)
+	{
+		for (Map.Entry<AbstractMenuEntry, AbstractMenuEntry> e : swaps.entrySet())
+		{
+			if (e.getKey().equals(swapFrom) && e.getValue().equals(swapTo))
+			{
+				swaps.remove(e.getKey());
+			}
+		}
 	}
 }

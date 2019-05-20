@@ -6,7 +6,7 @@ import net.runelite.api.MenuEntry;
 import static net.runelite.client.menus.MenuManager.LEVEL_PATTERN;
 import net.runelite.client.util.Text;
 
-class AbstractMenuEntry
+public class AbstractMenuEntry
 {
 	@Getter
 	private String option;
@@ -26,17 +26,17 @@ class AbstractMenuEntry
 	@Getter
 	private boolean strictTarget;
 
-	AbstractMenuEntry(String option, String target)
+	public AbstractMenuEntry(String option, String target)
 	{
 		this(option, target, -1, -1, true, true);
 	}
 
-	AbstractMenuEntry(String option, String target, boolean strictTarget)
+	public AbstractMenuEntry(String option, String target, boolean strictTarget)
 	{
 		this(option, target, -1, -1, true, strictTarget);
 	}
 
-	AbstractMenuEntry(String option, String target, int id, int type, boolean strictOption, boolean strictTarget)
+	public AbstractMenuEntry(String option, String target, int id, int type, boolean strictOption, boolean strictTarget)
 	{
 		this.option = option;
 		this.target = target;
