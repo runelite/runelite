@@ -128,11 +128,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Getter
 	private boolean configuringShiftClick = false;
 
-	@Getter
 	@Setter
 	private boolean shiftModifier = false;
 
-	@Getter
 	@Setter
 	private boolean controlModifier = false;
 
