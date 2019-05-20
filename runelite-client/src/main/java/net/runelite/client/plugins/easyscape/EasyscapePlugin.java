@@ -1,6 +1,8 @@
 /*
- * Copyright (c) 2019, Owain van Brakel <https://github.com/Owain94>
- * Copyright (c) 2019, Alan Baumgartner <https://github.com/alanbaumgartner>
+ * Copyright (c) 2018, Alan Baumgartner <https://github.com/alanbaumgartner>
+ * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, Kyle <https://github.com/kyleeld>
+ * Copyright (c) 2018, Owain van Brakel <https://github.com/Owain94>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -357,8 +359,28 @@ public class EasyscapePlugin extends Plugin
 			swap(client, "Kandarin Monastery", option, target);
 			swap(client, "Monastery Teleport", option, target);
 		}
+		
+		else if (target.contains("crafting cape") && config.getSwapCraftingCape())
+		{
+			swap(client, "Teleport", option, target);
+		}
 
-		else if (config.getGamesNecklace() && target.toLowerCase().contains("games necklace"))
+		else if (target.contains("construct. cape") && config.getSwapConstructionCape())
+		{
+			swap(client, "Tele to poh", option, target);
+		}
+
+		else if (target.contains("magic cape") && config.getSwapMagicCape())
+		{
+			swap(client, "Spellbook", option, target);
+		}
+
+		else if (target.contains("explorer's ring") && config.getSwapExplorersRing())
+		{
+			swap(client, "Teleport", option, target);
+		}
+
+		else if (config.getGamesNecklace() && target.contains("games necklace"))
 		{
 			swap(client, config.getGamesNecklaceMode().toString(), option, target);
 		}
@@ -368,11 +390,50 @@ public class EasyscapePlugin extends Plugin
 			swap(client, config.getDuelingRingMode().toString(), option, target);
 		}
 
-
 		else if (config.getGlory() && (target.contains("amulet of glory") || target.contains("amulet of eternal glory")))
 		{
 			swap(client, config.getGloryMode().toString(), option, target);
 		}
+
+		else if (config.getSkillsNecklace() && target.contains("skills necklace"))
+			{
+				swap(client, config.getSkillsNecklaceMode().toString(), option, target);
+			}
+		
+		else if (config.getNecklaceofPassage() && target.contains("necklace of passage"))
+			{
+				swap(client, config.getNecklaceofPassageMode().toString(), option, target);
+			}
+
+		else if (config.getDigsitePendant() && target.contains("digsite pendant"))
+			{
+				swap(client, config.getDigsitePendantMode().toString(), option, target);
+			}
+
+		else if (config.getCombatBracelet() && target.contains("combat bracelet"))
+			{
+				swap(client, config.getCombatBraceletMode().toString(), option, target);
+			}
+
+		else if (config.getSlayerRing() && target.contains("slayer ring"))
+			{
+				swap(client, config.getSlayerRingMode().toString(), option, target);
+			}
+
+		else if (config.getBurningAmulet() && target.contains("burning amulet"))
+			{
+				swap(client, config.getBurningAmuletMode().toString(), option, target);
+			}
+
+		else if (config.getXericsTalisman() && target.contains("xeric's talisman"))
+			{
+				swap(client, config.getXericsTalismanMode().toString(), option, target);
+			}
+
+		else if (config.getRingofWealth() && target.contains("ring of wealth"))
+			{
+				swap(client, config.getRingofWealthMode().toString(), option, target);
+			}
 	}
 
 	private void delete(int target)
