@@ -48,7 +48,7 @@ import net.runelite.client.plugins.PluginType;
 public class ShiftWalkerPlugin extends Plugin
 {
 
-	private static final String WALK_HERE = "WALK HERE";
+	private static final String WALK_HERE = "Walk here";
 
 	@Inject
 	private ShiftWalkerConfig config;
@@ -91,11 +91,11 @@ public class ShiftWalkerPlugin extends Plugin
 
 	void startPrioritizing()
 	{
-		menuManager.addPriorityEntry(WALK_HERE, "");
+		menuManager.addPriorityEntry(WALK_HERE);
 	}
 
 	void stopPrioritizing()
 	{
-		menuManager.removePriorityEntry(WALK_HERE, "");
+		menuManager.removePriorityEntry(WALK_HERE);
 	}
 }

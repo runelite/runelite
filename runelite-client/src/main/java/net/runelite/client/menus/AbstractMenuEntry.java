@@ -1,11 +1,13 @@
 package net.runelite.client.menus;
 
 import joptsimple.internal.Strings;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import net.runelite.api.MenuEntry;
 import static net.runelite.client.menus.MenuManager.LEVEL_PATTERN;
 import net.runelite.client.util.Text;
 
+@EqualsAndHashCode
 public class AbstractMenuEntry
 {
 	@Getter
@@ -88,7 +90,7 @@ public class AbstractMenuEntry
 		return true;
 	}
 
-	boolean equals(AbstractMenuEntry other)
+	/*boolean equals(AbstractMenuEntry other)
 	{
 		return target.equals(other.getTarget())
 			&& option.equals(other.getOption())
@@ -96,5 +98,5 @@ public class AbstractMenuEntry
 			&& type == other.getType()
 			&& strictOption == other.isStrictOption()
 			&& strictTarget == other.isStrictTarget();
-	}
+	}*/
 }

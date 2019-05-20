@@ -418,6 +418,29 @@ public class MenuManager
 		priorityEntries.add(entry);
 	}
 
+	public void removePriorityEntry(String option, String target)
+	{
+		option = Text.standardize(option);
+		target = Text.standardize(target);
+
+		AbstractMenuEntry entry = new AbstractMenuEntry(option, target);
+
+		Set<AbstractMenuEntry> toRemove = new HashSet<>();
+		for (AbstractMenuEntry priorityEntry : priorityEntries)
+		{
+			if (entry.equals(priorityEntry))
+			{
+				toRemove.add(entry);
+			}
+		}
+
+		for (AbstractMenuEntry e : toRemove)
+		{
+			priorityEntries.remove(e);
+		}
+	}
+
+
 	/**
 	 * Adds to the set of menu entries which when present, will remove all entries except for this one
 	 * This method will add one with strict option, but not-strict target (contains for target, equals for option)
@@ -431,34 +454,24 @@ public class MenuManager
 		priorityEntries.add(entry);
 	}
 
-	public void removePriorityEntry(String option, String target)
-	{
-		option = Text.standardize(option);
-		target = Text.standardize(target);
-
-		AbstractMenuEntry entry = new AbstractMenuEntry(option, target);
-
-		for (AbstractMenuEntry priorityEntry : priorityEntries)
-		{
-			if (entry.equals(priorityEntry))
-			{
-				priorityEntries.remove(priorityEntry);
-			}
-		}
-	}
-
 	public void removePriorityEntry(String option)
 	{
 		option = Text.standardize(option);
 
 		AbstractMenuEntry entry = new AbstractMenuEntry(option, "", false);
 
+		Set<AbstractMenuEntry> toRemove = new HashSet<>();
 		for (AbstractMenuEntry priorityEntry : priorityEntries)
 		{
 			if (entry.equals(priorityEntry))
 			{
-				priorityEntries.remove(priorityEntry);
+				toRemove.add(entry);
 			}
+		}
+
+		for (AbstractMenuEntry e : toRemove)
+		{
+			priorityEntries.remove(e);
 		}
 	}
 
@@ -515,12 +528,18 @@ public class MenuManager
 
 	public void removeSwap(AbstractMenuEntry swapFrom, AbstractMenuEntry swapTo)
 	{
+		Set<AbstractMenuEntry> toRemove = new HashSet<>();
 		for (Map.Entry<AbstractMenuEntry, AbstractMenuEntry> e : swaps.entrySet())
 		{
 			if (e.getKey().equals(swapFrom) && e.getValue().equals(swapTo))
 			{
-				swaps.remove(e.getKey());
+				toRemove.add(e.getKey());
 			}
+		}
+
+		for (AbstractMenuEntry entry : toRemove)
+		{
+			swaps.remove(entry);
 		}
 	}
 }
