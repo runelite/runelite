@@ -27,6 +27,7 @@ package net.runelite.client.menus;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +64,20 @@ public class MenuManager
 	 */
 	private static final int IDX_LOWER = 4;
 	private static final int IDX_UPPER = 8;
-	private static final Pattern LEVEL_PATTERN = Pattern.compile("\\(level-[0-9]*\\)");
+	static final Pattern LEVEL_PATTERN = Pattern.compile("\\(level-[0-9]*\\)");
+
+	private static MenuEntry CANCEL()
+	{
+		MenuEntry cancel = new MenuEntry();
+		cancel.setOption("Cancel");
+		cancel.setTarget("");
+		cancel.setIdentifier(0);
+		cancel.setType(MenuAction.CANCEL.getId());
+		cancel.setParam0(0);
+		cancel.setParam1(0);
+
+		return cancel;
+	}
 
 	private final Client client;
 	private final EventBus eventBus;
@@ -72,7 +87,11 @@ public class MenuManager
 	//Used to manage custom non-player menu options
 	private final Multimap<Integer, WidgetMenuOption> managedMenuOptions = HashMultimap.create();
 	private final Set<String> npcMenuOptions = new HashSet<>();
-	private final Map<String, Set<String>> priorityEntries = new HashMap<>();
+
+	private final Set<AbstractMenuEntry> priorityEntries = new HashSet<>();
+	private final Set<MenuEntry> currentPriorityEntries = new HashSet<>();
+
+	private final Map<AbstractMenuEntry, AbstractMenuEntry> swaps = new HashMap<>();
 
 	@Inject
 	private MenuManager(Client client, EventBus eventBus)
@@ -125,6 +144,12 @@ public class MenuManager
 		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
 		MenuEntry[] menuEntries = client.getMenuEntries();
 
+		if (menuEntries.length == 1)
+		{
+			// Menu entries reset, so priority entries should reset as well
+			currentPriorityEntries.clear();
+		}
+
 		for (WidgetMenuOption currentMenu : options)
 		{
 			if (!menuContainsCustomMenu(currentMenu))//Don't add if we have already added it to this widget
@@ -141,48 +166,49 @@ public class MenuManager
 			}
 		}
 
-		List<MenuEntry> menuEntryList = Arrays.asList(menuEntries);
-		boolean shouldPurge = menuEntryList.stream().anyMatch(m ->
-			{
-				String opt = Text.standardize(m.getOption());
-				String tgt = Text.standardize(m.getTarget());
-				tgt = LEVEL_PATTERN.matcher(tgt).replaceAll("").trim();
+		MenuEntry newestEntry = menuEntries[menuEntries.length - 1];
 
-				if (!priorityEntries.containsKey(opt))
-				{
-					return false;
-				}
+		boolean isPrio = priorityEntries.stream().anyMatch(p -> p.matches(newestEntry));
 
-				return priorityEntries.get(opt).contains(tgt);
-			});
-
-		if (shouldPurge)
+		// If the last entry was a priority entry, keep track of it
+		if (isPrio)
 		{
-			client.setMenuEntries(menuEntryList.stream().filter(m ->
-				{
-					String opt = Text.standardize(m.getOption());
-					String tgt = Text.standardize(m.getTarget());
-					tgt = LEVEL_PATTERN.matcher(tgt).replaceAll("").trim();
-
-					if (opt.equals("cancel"))
-					{
-						return true;
-					}
-
-					if (!priorityEntries.containsKey(opt))
-					{
-						return false;
-					}
-
-					// Gets overridden by actor names
-					if (opt.equals("walk here"))
-					{
-						return true;
-					}
-
-					return priorityEntries.get(opt).contains(tgt);
-				}).toArray(MenuEntry[]::new));
+			currentPriorityEntries.add(newestEntry);
 		}
+
+		// Make a copy of the menu entries, cause you can't remove from Arrays.asList()
+		List<MenuEntry> copy = new ArrayList<>(Arrays.asList(menuEntries));
+
+		// If there are entries we want to prioritize, we have to remove the rest
+		if (!currentPriorityEntries.isEmpty())
+		{
+			copy.retainAll(currentPriorityEntries);
+
+			copy.add(CANCEL());
+		}
+
+		/*// Find the current entry in the swaps map
+		Optional<AbstractMenuEntry> swapEntry = swaps.keySet().stream().filter(e -> e.matches(newestEntry)).findFirst();
+
+		if (swapEntry.isPresent())
+		{
+			AbstractMenuEntry swap = swapEntry.get();
+			AbstractMenuEntry swapTarget = swaps.get(swap);
+
+			// Find the target for the swap in current menu entries
+			Optional<MenuEntry> foundSwap = Lists.reverse(copy).stream().filter(swapTarget::matches).findFirst();
+
+			if (foundSwap.isPresent())
+			{
+				// Swap
+				int index = copy.indexOf(foundSwap.get());
+
+				copy.set(index, newestEntry);
+				copy.set(copy.size() - 1, foundSwap.get());
+			}
+		}*/
+
+		client.setMenuEntries(copy.toArray(new MenuEntry[0]));
 	}
 
 	public void addPlayerMenuItem(String menuText)
@@ -356,18 +382,16 @@ public class MenuManager
 	}
 
 	/**
-	 * Adds to the map of menu entries which when present, will remove all entries except for this one
+	 * Adds to the set of menu entries which when present, will remove all entries except for this one
 	 */
 	public void addPriorityEntry(String option, String target)
 	{
 		option = Text.standardize(option);
 		target = Text.standardize(target);
 
-		Set<String> targets = priorityEntries.getOrDefault(option, new HashSet<>());
+		AbstractMenuEntry entry = new AbstractMenuEntry(option, target);
 
-		targets.add(target);
-
-		priorityEntries.put(option, targets);
+		priorityEntries.add(entry);
 	}
 
 	public void removePriorityEntry(String option, String target)
@@ -375,17 +399,10 @@ public class MenuManager
 		option = Text.standardize(option);
 		target = Text.standardize(target);
 
-		Set<String> targets = priorityEntries.getOrDefault(option, new HashSet<>());
+		AbstractMenuEntry entry = new AbstractMenuEntry(option, target);
 
-		targets.remove(target);
+		Set<AbstractMenuEntry> toRemove = priorityEntries.stream().filter(entry::equals).collect(Collectors.toSet());
 
-		if (targets.isEmpty())
-		{
-			priorityEntries.remove(option);
-		}
-		else
-		{
-			priorityEntries.put(option, targets);
-		}
+		priorityEntries.removeAll(toRemove);
 	}
 }
