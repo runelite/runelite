@@ -524,6 +524,14 @@ public enum Varbits
 	QUEST_TAB(8168),
 
 	/**
+	 * Explorer ring
+	 */
+	EXPLORER_RING_ALCHTYPE(5398),
+	EXPLORER_RING_TELEPORTS(4552),
+	EXPLORER_RING_ALCHS(4554),
+	EXPLORER_RING_RUNENERGY(4553),
+
+	/**
 	 * Temple Trekking
 	 */
 	TREK_POINTS(1955),

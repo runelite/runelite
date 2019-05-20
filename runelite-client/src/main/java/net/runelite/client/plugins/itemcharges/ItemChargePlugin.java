@@ -57,6 +57,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
+import static net.runelite.api.ItemID.RING_OF_RECOIL;
+
 @PluginDescriptor(
 	name = "Item Charges",
 	description = "Show number of item charges remaining",
@@ -118,6 +120,27 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_EXPEDITIOUS_CHARGES = 30;
 	private static final int MAX_BINDING_CHARGES = 16;
 
+	public boolean isRingOfRecoilAvailable()
+	{
+		return ringOfRecoilAvailable;
+	}
+
+	private boolean ringOfRecoilAvailable = false;
+
+	boolean isRingOfRecoilEquipped()
+	{
+		return ringOfRecoilEquipped;
+	}
+
+	private boolean ringOfRecoilEquipped = false;
+	private BufferedImage recoilRingImage;
+
+	BufferedImage getRecoilRingImage()
+	{
+		return recoilRingImage;
+	}
+
+
 	@Inject
 	private Client client;
 
@@ -126,6 +149,9 @@ public class ItemChargePlugin extends Plugin
 
 	@Inject
 	private ItemChargeOverlay overlay;
+
+	@Inject
+	private ItemRecoilOverlay recoilOverlay;
 
 	@Inject
 	private ItemManager itemManager;
@@ -152,12 +178,15 @@ public class ItemChargePlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		overlayManager.add(recoilOverlay);
+		recoilRingImage = itemManager.getImage(RING_OF_RECOIL);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(recoilOverlay);
 		infoBoxManager.removeIf(ItemChargeInfobox.class::isInstance);
 		lastCheckTick = -1;
 	}
@@ -381,6 +410,27 @@ public class ItemChargePlugin extends Plugin
 				config.expeditious(MAX_EXPEDITIOUS_CHARGES);
 			}
 		}
+
+			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+			ringOfRecoilAvailable = false;
+			ringOfRecoilEquipped = false;
+
+			Item ring = equipment.getItems()[net.runelite.api.EquipmentInventorySlot.RING.getSlotIdx()];
+			if (ring.getId() == RING_OF_RECOIL)
+			{
+				ringOfRecoilEquipped = true;
+				ringOfRecoilAvailable = true;
+			}
+			Item[] items = inventory.getItems();
+			for (Item item : items)
+			{
+				if (item.getId() == RING_OF_RECOIL)
+				{
+					ringOfRecoilAvailable = true;
+					break;
+				}
+			}
 
 		Widget dialog1 = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
 		Widget dialog2 = client.getWidget(WidgetInfo.DIALOG2_SPRITE_TEXT);
