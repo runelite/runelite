@@ -75,8 +75,8 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.ConfigItemsGroup;
 import net.runelite.client.config.ConfigItemDescriptor;
+import net.runelite.client.config.ConfigItemsGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
@@ -430,11 +430,13 @@ public class ConfigPanel extends PluginPanel
 
 				JLabel headerLabel = new JLabel(header);
 				headerLabel.setForeground(Color.ORANGE);
-				headerLabel.setPreferredSize(new Dimension(PANEL_WIDTH, (int)headerLabel.getPreferredSize().getHeight()));
+				headerLabel.setPreferredSize(new Dimension(PANEL_WIDTH, (int) headerLabel.getPreferredSize().getHeight()));
 				String sCollapsed = configManager.getConfiguration(cd.getGroup().value(), cig.getGroup() + "_collapse");
 
 				if (sCollapsed != null)
+				{
 					collapsed = Boolean.parseBoolean(sCollapsed);
+				}
 
 				JButton collapse = new JButton(collapsed ? "+" : "-");
 				collapse.setPreferredSize(new Dimension(20, 20));
@@ -451,7 +453,9 @@ public class ConfigPanel extends PluginPanel
 			}
 
 			if (collapsed)
+			{
 				continue;
+			}
 
 			for (ConfigItemDescriptor cid : cig.getItems())
 			{
@@ -465,7 +469,7 @@ public class ConfigPanel extends PluginPanel
 				item.setMinimumSize(new Dimension(PANEL_WIDTH, 0));
 				name = cid.getItem().name();
 				JLabel configEntryName = new JLabel(name);
-				configEntryName.setPreferredSize(new Dimension(PANEL_WIDTH, (int)configEntryName.getPreferredSize().getHeight()));
+				configEntryName.setPreferredSize(new Dimension(PANEL_WIDTH, (int) configEntryName.getPreferredSize().getHeight()));
 				configEntryName.setForeground(Color.WHITE);
 				configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
 				item.add(configEntryName, BorderLayout.CENTER);
@@ -499,13 +503,15 @@ public class ConfigPanel extends PluginPanel
 					{
 						JSlider slider = new JSlider(min, max, value);
 						configEntryName.setText(name.concat(": ").concat(String.valueOf(slider.getValue())));
-						slider.setPreferredSize(new Dimension(topPanel.getPreferredSize().width, slider.getHeight()));
+						slider.setPreferredSize(new Dimension(100, 25));
 						String finalName = name;
 						slider.addChangeListener((l) ->
 							{
 								configEntryName.setText(finalName.concat(": ").concat(String.valueOf(slider.getValue())));
 								if (!slider.getValueIsAdjusting())
+								{
 									changeConfiguration(listItem, config, slider, cd, cid);
+								}
 							}
 						);
 						item.add(slider, BorderLayout.EAST);
@@ -726,7 +732,9 @@ public class ConfigPanel extends PluginPanel
 			boolean collapse = true;
 
 			if (sCollapsed != null)
+			{
 				collapse = !Boolean.parseBoolean(sCollapsed);
+			}
 
 			configManager.setConfiguration(cd.getGroup().value(), cig.getGroup() + "_collapse", collapse);
 			openGroupConfigPanel(listItem, config, cd);
