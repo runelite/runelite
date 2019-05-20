@@ -550,7 +550,7 @@ public class ConfigPanel extends PluginPanel
 				if (cid.getType() == Stub.class)
 				{
 					Border border = item.getBorder();
-					Border margin = new EmptyBorder(10,0,0,0);
+					Border margin = new EmptyBorder(10, 0, 0, 0);
 					item.setBorder(new CompoundBorder(border, margin));
 
 					configEntryName.setForeground(Color.ORANGE);
