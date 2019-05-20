@@ -39,6 +39,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import static net.runelite.api.ItemID.RING_OF_RECOIL;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
@@ -56,8 +57,6 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
-
-import static net.runelite.api.ItemID.RING_OF_RECOIL;
 
 @PluginDescriptor(
 	name = "Item Charges",
@@ -411,26 +410,34 @@ public class ItemChargePlugin extends Plugin
 			}
 		}
 
-			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-			ringOfRecoilAvailable = false;
-			ringOfRecoilEquipped = false;
+		ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		ringOfRecoilAvailable = false;
+		ringOfRecoilEquipped = false;
 
-			Item ring = equipment.getItems()[net.runelite.api.EquipmentInventorySlot.RING.getSlotIdx()];
-			if (ring.getId() == RING_OF_RECOIL)
+		Item ring = null;
+		if (equipment != null)
+		{
+			ring = equipment.getItems()[EquipmentInventorySlot.RING.getSlotIdx()];
+		}
+		if (ring != null && ring.getId() == RING_OF_RECOIL)
+		{
+			ringOfRecoilEquipped = true;
+			ringOfRecoilAvailable = true;
+		}
+		Item[] items = new Item[0];
+		if (inventory != null)
+		{
+			items = inventory.getItems();
+		}
+		for (Item item : items)
+		{
+			if (item.getId() == RING_OF_RECOIL)
 			{
-				ringOfRecoilEquipped = true;
 				ringOfRecoilAvailable = true;
+				break;
 			}
-			Item[] items = inventory.getItems();
-			for (Item item : items)
-			{
-				if (item.getId() == RING_OF_RECOIL)
-				{
-					ringOfRecoilAvailable = true;
-					break;
-				}
-			}
+		}
 
 		Widget dialog1 = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
 		Widget dialog2 = client.getWidget(WidgetInfo.DIALOG2_SPRITE_TEXT);
