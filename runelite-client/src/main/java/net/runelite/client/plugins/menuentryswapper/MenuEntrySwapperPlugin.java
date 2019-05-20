@@ -131,6 +131,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Setter
 	private boolean shiftModifier = false;
 
+	@Setter
+	private boolean controlModifier = false;
+
 	@Provides
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
 	{
@@ -452,6 +455,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 		}
 
+		else if (option.equalsIgnoreCase("climb") && config.swapClimbUpDown())
+		{
+			if (controlModifier ^ shiftModifier)
+			{
+				if (shiftModifier)
+				{
+					swap(client, "climb-up", option, target, true);
+				}
+				if (controlModifier)
+				{
+					swap(client, "climb-down", option, target, true);
+				}
+			}
+		}
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
 			swap(client, "pay-toll(2-ecto)", option, target, true);

@@ -302,4 +302,14 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "swapClimbUpDown",
+			name = "Climb",
+			description = "Swap Climb-Up/Down depending on Shift or Control key									"
+	)
+	default boolean swapClimbUpDown()
+	{
+		return false;
+	}
 }
