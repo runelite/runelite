@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.zcox;
+package net.runelite.client.plugins.coxhelper;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -75,7 +75,6 @@ public class CoxOverlay extends Overlay
 			if (config.Muttadile())
 			{
 				NPC boss = plugin.getMomma_NPC();
-
 				NPC baby = plugin.getMutta_NPC();
 				if (boss != null)
 				{
@@ -84,9 +83,7 @@ public class CoxOverlay extends Overlay
 					{
 						size = composition.getSize();
 					}
-
 					List<WorldPoint> meleeRangeMom = getHitSquares(boss.getWorldLocation(), size, 1, false);
-
 					for (WorldPoint p : meleeRangeMom)
 					{
 						drawTile(graphics, p, Color.RED, 2, 155, 10);
@@ -99,9 +96,7 @@ public class CoxOverlay extends Overlay
 					{
 						size = compositionbaby.getSize();
 					}
-
 					List<WorldPoint> meleeRange = getHitSquares(baby.getWorldLocation(), size, 1, false);
-
 					for (WorldPoint p : meleeRange)
 					{
 						drawTile(graphics, p, Color.RED, 1, 155, 10);
@@ -127,9 +122,7 @@ public class CoxOverlay extends Overlay
 						{
 							size = composition.getSize();
 						}
-
 						List<WorldPoint> meleeRange = getHitSquares(G1.getWorldLocation(), size, 1, true);
-
 						for (WorldPoint p : meleeRange)
 						{
 							drawTile(graphics, p, Color.GREEN, 1, 155, 10);
@@ -142,9 +135,7 @@ public class CoxOverlay extends Overlay
 						{
 							size = composition.getSize();
 						}
-
 						List<WorldPoint> meleeRange = getHitSquares(G2.getWorldLocation(), size, 1, true);
-
 						for (WorldPoint p : meleeRange)
 						{
 							drawTile(graphics, p, Color.GREEN, 1, 155, 10);
@@ -159,9 +150,7 @@ public class CoxOverlay extends Overlay
 		{
 			if (config.Tekton())
 			{
-
 				NPC boss = plugin.getTekton_NPC();
-
 				if (boss != null)
 				{
 					int size = 1;
@@ -169,9 +158,7 @@ public class CoxOverlay extends Overlay
 					{
 						size = composition.getSize();
 					}
-
 					List<WorldPoint> meleeRange = getHitSquares(boss.getWorldLocation(), size, 1, false);
-
 					for (WorldPoint p : meleeRange)
 					{
 						drawTile(graphics, p, Color.WHITE, 1, 155, 10);
@@ -183,28 +170,7 @@ public class CoxOverlay extends Overlay
 		if (plugin.isRunOlm())
 		{
 			NPC boss = plugin.getOlm_NPC();
-			if (config.OlmCrystals())
-			{
-				for (WorldPoint p : plugin.getOlm_Crystals())
-				{
-					drawTile(graphics, p, Color.RED, 1, 255, 0);
-				}
-				for (WorldPoint p : plugin.getOlm_Heal())
-				{
-					drawTile(graphics, p, Color.BLUE, 3, 255, 0);
-				}
-				for (WorldPoint p : plugin.getOlm_PSN())
-				{
-					drawTile(graphics, p, Color.GREEN, 3, 255, 0);
-				}
 
-
-			}
-			if (config.OlmSpec())
-			{
-
-
-			}
 			if (config.OlmTick())
 			{
 				if (boss != null)

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zcox;
+package net.runelite.client.plugins.coxhelper;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -37,22 +37,25 @@ import net.runelite.api.SpriteID;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.InfoBoxComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 class OlmPrayAgainstOverlay extends Overlay
 {
-
+	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
 	private final CoxPlugin plugin;
+	private final CoxConfig config;
 	private final Client client;
 	private final SpriteManager spriteManager;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	OlmPrayAgainstOverlay(CoxPlugin plugin, Client client, SpriteManager spriteManager)
+	OlmPrayAgainstOverlay(CoxPlugin plugin, CoxConfig config, Client client, SpriteManager spriteManager)
 	{
 		this.plugin = plugin;
+		this.config = config;
 		this.client = client;
 		this.spriteManager = spriteManager;
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
@@ -61,7 +64,8 @@ class OlmPrayAgainstOverlay extends Overlay
 
 	public Dimension render(Graphics2D graphics2D)
 	{
-		if (plugin.getPrayAgainstOlm() == null)
+		final PrayAgainst prayAgainst = plugin.getPrayAgainstOlm();
+		if (plugin.getPrayAgainstOlm() == null && !config.prayAgainstOlm())
 		{
 			return null;
 		}
@@ -74,6 +78,9 @@ class OlmPrayAgainstOverlay extends Overlay
 			Image prayImg = scaleImg(getPrayerImage(plugin.prayAgainstOlm));
 			prayComponent.setImage(prayImg);
 			prayComponent.setColor(Color.WHITE);
+			prayComponent.setBackgroundColor(client.isPrayerActive(prayAgainst.getPrayer())
+				? ComponentConstants.STANDARD_BACKGROUND_COLOR
+				: NOT_ACTIVATED_BACKGROUND_COLOR);
 			prayComponent.setPreferredSize(new Dimension(40, 40));
 			panelComponent.getChildren().add(prayComponent);
 
@@ -82,6 +89,10 @@ class OlmPrayAgainstOverlay extends Overlay
 			return panelComponent.render(graphics2D);
 		}
 		else
+		{
+			plugin.setPrayAgainstOlm(null);
+		}
+		if (client.getLocalPlayer().getWorldLocation().getRegionID() == 4919)
 		{
 			plugin.setPrayAgainstOlm(null);
 		}

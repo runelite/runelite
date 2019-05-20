@@ -22,11 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.zcox;
+package net.runelite.client.plugins.coxhelper;
 
-enum PrayAgainst
+import net.runelite.api.Prayer;
+
+public enum PrayAgainst
 {
-	MELEE,
-	MAGIC,
-	RANGED
+	MELEE(Prayer.PROTECT_FROM_MELEE),
+	MAGIC(Prayer.PROTECT_FROM_MAGIC),
+	RANGED(Prayer.PROTECT_FROM_MISSILES);
+
+	private final Prayer prayer;
+
+	PrayAgainst(Prayer prayer)
+	{
+		this.prayer = prayer;
+	}
+
+	public Prayer getPrayer()
+	{
+		return prayer;
+	}
 }

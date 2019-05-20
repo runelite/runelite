@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins.zcox;
+package net.runelite.client.plugins.coxhelper;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -68,11 +68,33 @@ public interface CoxConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "OlmSpec",
-		name = "Olm Next Spec",
-		description = ""
+		keyName = "prayAgainstOlm",
+		name = "Olm Show Prayer",
+		description = "Shows what prayer to use during olm."
 	)
-	default boolean OlmSpec()
+	default boolean prayAgainstOlm()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "timers",
+		name = "Olm Show Burn/Acid Timers",
+		description = "Shows tick timers for burns/acids."
+	)
+	default boolean timers()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "tpOverlay",
+		name = "Olm Show Teleport Overlays",
+		description = "Shows Overlays for targeted teleports."
+	)
+	default boolean tpOverlay()
 	{
 		return true;
 	}
@@ -81,31 +103,9 @@ public interface CoxConfig extends Config
 		position = 4,
 		keyName = "OlmTick",
 		name = "Olm Tick Counter",
-		description = ""
+		description = "Show Tick Counter on Olm"
 	)
 	default boolean OlmTick()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 5,
-		keyName = "OlmCrystals",
-		name = "Olm AoE Indicator",
-		description = ""
-	)
-	default boolean OlmCrystals()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		position = 6,
-		keyName = "LargeCrystals",
-		name = "Mark Large AoE Crystals rather then small ones",
-		description = ""
-	)
-	default boolean LargeCrystals()
 	{
 		return true;
 	}
