@@ -28,10 +28,12 @@ import com.google.inject.Provides;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.config.ConfigManager;
@@ -43,56 +45,101 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Hydra Helper",
-	description = "Hydra Helper",
-	tags = {"Hydra", "Helper"},
+	description = "Overlays for small hydras",
+	tags = {"Hydra", "Helper", "you", "probably", "want", "the", "other", "one"},
 	type = PluginType.PVM
 )
-public class HydraPlugin extends Plugin
+public class BabyHydraPlugin extends Plugin
 {
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
-	private HydraConfig config;
+	private BabyHydraConfig config;
 
 	@Inject
-	private HydraOverlay HydraOverlay;
+	private BabyHydraOverlay hydraOverlay;
 
 	@Inject
-	private HydraPrayOverlay HydraPrayOverlay;
+	private BabyHydraPrayOverlay hydraPrayOverlay;
 
 	@Inject
-	private HydraIndicatorOverlay HydraIndicatorOverlay;
+	private BabyHydraIndicatorOverlay hydraIndicatorOverlay;
 
 	@Inject
 	private Client client;
 
 	@Provides
-	HydraConfig provideConfig(ConfigManager configManager)
+	BabyHydraConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(HydraConfig.class);
+		return configManager.getConfig(BabyHydraConfig.class);
 	}
 
-	Map<Integer, Integer> hydras = new HashMap<>();
-	Map<Integer, Integer> hydraattacks = new HashMap<>();
-	NPC Hydra;
+	@Getter
+	private Map<Integer, Integer> hydras = new HashMap<>();
+
+	@Getter
+	private Map<Integer, Integer> hydraattacks = new HashMap<>();
+
+	@Getter
+	private NPC hydra;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(HydraOverlay);
-		overlayManager.add(HydraPrayOverlay);
-		overlayManager.add(HydraIndicatorOverlay);
+		if (config.TextIndicator())
+		{
+			overlayManager.add(hydraOverlay);
+		}
+		if (config.PrayerHelper())
+		{
+			overlayManager.add(hydraPrayOverlay);
+			overlayManager.add(hydraIndicatorOverlay);
+		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(HydraOverlay);
-		overlayManager.remove(HydraPrayOverlay);
-		overlayManager.remove(HydraIndicatorOverlay);
+		overlayManager.remove(hydraOverlay);
+		overlayManager.remove(hydraPrayOverlay);
+		overlayManager.remove(hydraIndicatorOverlay);
 		hydras.clear();
 		hydraattacks.clear();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals("hydra"))
+		{
+			return;
+		}
+
+		if (event.getKey().equals("textindicators"))
+		{
+			if (Boolean.parseBoolean(event.getNewValue()))
+			{
+				overlayManager.add(hydraOverlay);
+			}
+			else
+			{
+				overlayManager.remove(hydraOverlay);
+			}
+		}
+		else if (event.getKey().equals("prayerhelper"))
+		{
+			if (Boolean.parseBoolean(event.getNewValue()))
+			{
+				overlayManager.add(hydraPrayOverlay);
+				overlayManager.add(hydraIndicatorOverlay);
+			}
+			else
+			{
+				overlayManager.remove(hydraPrayOverlay);
+				overlayManager.remove(hydraIndicatorOverlay);
+			}
+		}
 	}
 
 	@Subscribe
@@ -130,59 +177,65 @@ public class HydraPlugin extends Plugin
 	{
 		Actor monster = event.getActor();
 		Actor local = client.getLocalPlayer();
-		if (monster instanceof NPC)
+		if (!(monster instanceof NPC))
 		{
-			NPC hydra = (NPC) monster;
-			if (hydra.getCombatLevel() != 0 && hydra.getName() != null)
-			{
-				if (hydra.getName().equalsIgnoreCase("Hydra"))
-				{
-					if (hydras.containsKey(hydra.getIndex()))
-					{
-						if (hydra.getAnimation() == 8261 || hydra.getAnimation() == 8262)
-						{
-							if (hydra.getInteracting().equals(local))
-							{
-								Hydra = hydra;
-							}
-							if (hydraattacks.containsKey(hydra.getIndex()))
-							{
-								int lastattack = hydraattacks.get(hydra.getIndex());
-								hydraattacks.replace(hydra.getIndex(), hydra.getAnimation());
+			return;
+		}
+		NPC hydra = (NPC) monster;
 
-								if (lastattack != hydra.getAnimation())
-								{
-									hydras.replace(hydra.getIndex(), 2);
-								}
-								else
-								{
-									int currval = hydras.get(hydra.getIndex());
-									if (currval == 1)
-									{
-										hydras.replace(hydra.getIndex(), 3);
-									}
-									else
-									{
-										hydras.replace(hydra.getIndex(), currval - 1);
-									}
-								}
-							}
-							else
-							{
-								hydraattacks.put(hydra.getIndex(), hydra.getAnimation());
-								int currval = hydras.get(hydra.getIndex());
-								if (currval == 1)
-								{
-									hydras.replace(hydra.getIndex(), 3);
-								}
-								else
-								{
-									hydras.replace(hydra.getIndex(), currval - 1);
-								}
-							}
-						}
-					}
+		if (hydra.getCombatLevel() == 0 || hydra.getName() == null)
+		{
+			return;
+		}
+
+		if (!hydra.getName().equalsIgnoreCase("Hydra") || !hydras.containsKey(hydra.getIndex()))
+		{
+			return;
+		}
+
+		if (hydra.getAnimation() != 8261 && hydra.getAnimation() != 8262)
+		{
+			return;
+		}
+
+		if (hydra.getInteracting().equals(local))
+		{
+			this.hydra = hydra;
+		}
+
+		if (hydraattacks.containsKey(hydra.getIndex()))
+		{
+			int lastattack = hydraattacks.get(hydra.getIndex());
+			hydraattacks.replace(hydra.getIndex(), hydra.getAnimation());
+
+			if (lastattack != hydra.getAnimation())
+			{
+				hydras.replace(hydra.getIndex(), 2);
+			}
+			else
+			{
+				int currval = hydras.get(hydra.getIndex());
+				if (currval == 1)
+				{
+					hydras.replace(hydra.getIndex(), 3);
 				}
+				else
+				{
+					hydras.replace(hydra.getIndex(), currval - 1);
+				}
+			}
+		}
+		else
+		{
+			hydraattacks.put(hydra.getIndex(), hydra.getAnimation());
+			int currval = hydras.get(hydra.getIndex());
+			if (currval == 1)
+			{
+				hydras.replace(hydra.getIndex(), 3);
+			}
+			else
+			{
+				hydras.replace(hydra.getIndex(), currval - 1);
 			}
 		}
 	}

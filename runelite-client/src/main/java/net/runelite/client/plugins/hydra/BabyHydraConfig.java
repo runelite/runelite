@@ -24,53 +24,44 @@
  */
 package net.runelite.client.plugins.hydra;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
 
-public class HydraIndicatorOverlay extends Overlay
+@ConfigGroup("hydra")
+public interface BabyHydraConfig extends Config
 {
-	private final HydraConfig config;
-	private final HydraPlugin plugin;
 
-	private final PanelComponent panelComponent = new PanelComponent();
-
-	@Inject
-	private HydraIndicatorOverlay(HydraConfig config, HydraPlugin plugin)
+	@ConfigItem(
+		position = 1,
+		keyName = "textindicators",
+		name = "Text Indicator",
+		description = "Configures if text indicator is shown above hydra's or not."
+	)
+	default boolean TextIndicator()
 	{
-		this.config = config;
-		this.plugin = plugin;
-		setPosition(OverlayPosition.BOTTOM_RIGHT);
-		setPriority(OverlayPriority.MED);
-		panelComponent.setPreferredSize(new Dimension(14, 0));
+		return true;
 	}
 
-	@Override
-	public Dimension render(Graphics2D graphics)
+	@ConfigItem(
+		position = 2,
+		keyName = "countersize",
+		name = "Bold indicator",
+		description = "Configures if text indicator is bold or not."
+	)
+	default boolean BoldText()
 	{
-		if (!config.PrayerHelper())
-		{
-			return null;
-		}
+		return false;
+	}
 
-		if (plugin.Hydra != null)
-		{
-			if (plugin.hydras.containsKey(plugin.Hydra.getIndex()))
-			{
-				int val = plugin.hydras.get(plugin.Hydra.getIndex());
-				if (val != 0)
-				{
-					panelComponent.getChildren().clear();
-					panelComponent.getChildren().add(LineComponent.builder().right(Integer.toString(val)).build());
-					return panelComponent.render(graphics);
-				}
-			}
-		}
-		return null;
+	@ConfigItem(
+		position = 3,
+		keyName = "prayerhelper",
+		name = "Prayer Helper",
+		description = "Configures if prayer helper is shown or not."
+	)
+	default boolean PrayerHelper()
+	{
+		return true;
 	}
 }

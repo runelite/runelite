@@ -37,37 +37,29 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class HydraOverlay extends Overlay
+public class BabyHydraOverlay extends Overlay
 {
-	private final HydraConfig config;
-	private final HydraPlugin plugin;
-	private final PanelComponent panelComponent = new PanelComponent();
+	private final BabyHydraConfig config;
+	private final BabyHydraPlugin plugin;
 
 
 	@Inject
 	private Client client;
 
 	@Inject
-	private HydraOverlay(HydraConfig config, HydraPlugin plugin)
+	private BabyHydraOverlay(BabyHydraConfig config, BabyHydraPlugin plugin)
 	{
 		this.config = config;
 		this.plugin = plugin;
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
-		panelComponent.setPreferredSize(new Dimension(150, 0));
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.TextIndicator())
-		{
-			return null;
-		}
-
 		for (NPC hydra : client.getNpcs())
 		{
 			if (hydra == null || hydra.getName() == null)
@@ -76,38 +68,41 @@ public class HydraOverlay extends Overlay
 			}
 			if (hydra.getName().equalsIgnoreCase("Hydra"))
 			{
-				if (plugin.hydras.containsKey(hydra.getIndex()))
+				if (plugin.getHydras().containsKey(hydra.getIndex()))
 				{
-					int val = plugin.hydras.get(hydra.getIndex());
+					int val = plugin.getHydras().get(hydra.getIndex());
 					if (val != 0)
 					{
 						if (config.BoldText())
 						{
 							graphics.setFont(FontManager.getRunescapeBoldFont());
 						}
-						if (plugin.hydraattacks.containsKey(hydra.getIndex()))
+						if (plugin.getHydraattacks().containsKey(hydra.getIndex()))
 						{
-							int attack = plugin.hydraattacks.get(hydra.getIndex());
-							if (attack == 8261)
+							int attack = plugin.getHydraattacks().get(hydra.getIndex());
+
+							Point textLocation = hydra.getCanvasTextLocation(graphics, "TEMP!!", hydra.getLogicalHeight() + 100);
+
+							if (textLocation != null && attack == 8261)
 							{
 								if (val == 3)
 								{
-									OverlayUtil.renderTextLocation(graphics, hydra.getCanvasTextLocation(graphics, "MAGE", hydra.getLogicalHeight() + 100), "MAGE", Color.BLUE);
+									OverlayUtil.renderTextLocation(graphics, textLocation, "MAGE", Color.BLUE);
 								}
 								else
 								{
-									OverlayUtil.renderTextLocation(graphics, hydra.getCanvasTextLocation(graphics, "RANGE", hydra.getLogicalHeight() + 100), "RANGE", Color.GREEN);
+									OverlayUtil.renderTextLocation(graphics, textLocation, "RANGE", Color.GREEN);
 								}
 							}
-							else if (attack == 8262)
+							else if (textLocation != null && attack == 8262)
 							{
 								if (val == 3)
 								{
-									OverlayUtil.renderTextLocation(graphics, hydra.getCanvasTextLocation(graphics, "RANGE", hydra.getLogicalHeight() + 100), "RANGE", Color.GREEN);
+									OverlayUtil.renderTextLocation(graphics, textLocation, "RANGE", Color.GREEN);
 								}
 								else
 								{
-									OverlayUtil.renderTextLocation(graphics, hydra.getCanvasTextLocation(graphics, "MAGE", hydra.getLogicalHeight() + 100), "MAGE", Color.BLUE);
+									OverlayUtil.renderTextLocation(graphics, textLocation, "MAGE", Color.BLUE);
 								}
 							}
 						}

@@ -24,44 +24,46 @@
  */
 package net.runelite.client.plugins.hydra;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import javax.inject.Inject;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
 
-@ConfigGroup("hydra")
-public interface HydraConfig extends Config
+public class BabyHydraIndicatorOverlay extends Overlay
 {
+	private final BabyHydraPlugin plugin;
 
-	@ConfigItem(
-		position = 1,
-		keyName = "textindicators",
-		name = "Text Indicator",
-		description = "Configures if text indicator is shown above hydra's or not."
-	)
-	default boolean TextIndicator()
+	private final PanelComponent panelComponent = new PanelComponent();
+
+	@Inject
+	private BabyHydraIndicatorOverlay(BabyHydraPlugin plugin)
 	{
-		return true;
+		this.plugin = plugin;
+		setPosition(OverlayPosition.BOTTOM_RIGHT);
+		setPriority(OverlayPriority.MED);
+		panelComponent.setPreferredSize(new Dimension(14, 0));
 	}
 
-	@ConfigItem(
-		position = 2,
-		keyName = "countersize",
-		name = "Bold indicator",
-		description = "Configures if text indicator is bold or not."
-	)
-	default boolean BoldText()
+	@Override
+	public Dimension render(Graphics2D graphics)
 	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "prayerhelper",
-		name = "Prayer Helper",
-		description = "Configures if prayer helper is shown or not."
-	)
-	default boolean PrayerHelper()
-	{
-		return true;
+		if (plugin.getHydra() != null)
+		{
+			if (plugin.getHydras().containsKey(plugin.getHydra().getIndex()))
+			{
+				int val = plugin.getHydras().get(plugin.getHydra().getIndex());
+				if (val != 0)
+				{
+					panelComponent.getChildren().clear();
+					panelComponent.getChildren().add(LineComponent.builder().right(Integer.toString(val)).build());
+					return panelComponent.render(graphics);
+				}
+			}
+		}
+		return null;
 	}
 }

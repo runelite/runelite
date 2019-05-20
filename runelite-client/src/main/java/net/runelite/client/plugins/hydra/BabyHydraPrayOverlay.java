@@ -40,56 +40,58 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class HydraPrayOverlay extends Overlay
+public class BabyHydraPrayOverlay extends Overlay
 {
-	private final HydraConfig config;
-	private final HydraPlugin plugin;
+	private final BabyHydraPlugin plugin;
 
 	private static final Color NOT_ACTIVATED_BACKGROUND_COLOR = new Color(150, 0, 0, 150);
-
-	private final SpriteManager spriteManager;
+	private BufferedImage PRAY_MAGE;
+	private BufferedImage PRAY_RANGED;
 	private final PanelComponent imagePanelComponent = new PanelComponent();
 
+	@Inject
+	private SpriteManager spriteManager;
 
 	@Inject
 	private Client client;
 
 	@Inject
-	private HydraPrayOverlay(HydraConfig config, HydraPlugin plugin, SpriteManager spriteManager)
+	private BabyHydraPrayOverlay(BabyHydraPlugin plugin, SpriteManager spriteManager)
 	{
-		this.config = config;
 		this.plugin = plugin;
+		this.spriteManager = spriteManager;
 		setPosition(OverlayPosition.BOTTOM_RIGHT);
 		setPriority(OverlayPriority.HIGH);
-		this.spriteManager = spriteManager;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.PrayerHelper())
+		if (PRAY_MAGE == null)
 		{
-			return null;
+			PRAY_MAGE = spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MAGIC, 0);
+		}
+		if (PRAY_RANGED == null)
+		{
+			PRAY_RANGED = spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MISSILES, 0);
 		}
 
-		if (plugin.Hydra != null)
+		if (plugin.getHydra() != null)
 		{
-			if (plugin.hydras.containsKey(plugin.Hydra.getIndex()))
+			if (plugin.getHydras().containsKey(plugin.getHydra().getIndex()))
 			{
-				int val = plugin.hydras.get(plugin.Hydra.getIndex());
+				int val = plugin.getHydras().get(plugin.getHydra().getIndex());
 				if (val != 0)
 				{
-					if (plugin.hydraattacks.containsKey(plugin.Hydra.getIndex()))
+					if (plugin.getHydraattacks().containsKey(plugin.getHydra().getIndex()))
 					{
-						int attack = plugin.hydraattacks.get(plugin.Hydra.getIndex());
+						int attack = plugin.getHydraattacks().get(plugin.getHydra().getIndex());
 						if (attack == 8261)
 						{
 							if (val == 3)
 							{
-								final BufferedImage prayerImage = spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MAGIC, 0);
-
 								imagePanelComponent.getChildren().clear();
-								imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
+								imagePanelComponent.getChildren().add(new ImageComponent(PRAY_MAGE));
 								imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
 									? ComponentConstants.STANDARD_BACKGROUND_COLOR
 									: NOT_ACTIVATED_BACKGROUND_COLOR);
@@ -98,10 +100,8 @@ public class HydraPrayOverlay extends Overlay
 							}
 							else
 							{
-								final BufferedImage prayerImage = spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MISSILES, 0);
-
 								imagePanelComponent.getChildren().clear();
-								imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
+								imagePanelComponent.getChildren().add(new ImageComponent(PRAY_RANGED));
 								imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MISSILES)
 									? ComponentConstants.STANDARD_BACKGROUND_COLOR
 									: NOT_ACTIVATED_BACKGROUND_COLOR);
@@ -113,10 +113,8 @@ public class HydraPrayOverlay extends Overlay
 						{
 							if (val == 3)
 							{
-								final BufferedImage prayerImage = spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MISSILES, 0);
-
 								imagePanelComponent.getChildren().clear();
-								imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
+								imagePanelComponent.getChildren().add(new ImageComponent(PRAY_RANGED));
 								imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MISSILES)
 									? ComponentConstants.STANDARD_BACKGROUND_COLOR
 									: NOT_ACTIVATED_BACKGROUND_COLOR);
@@ -125,10 +123,8 @@ public class HydraPrayOverlay extends Overlay
 							}
 							else
 							{
-								final BufferedImage prayerImage = spriteManager.getSprite(SpriteID.PRAYER_PROTECT_FROM_MAGIC, 0);
-
 								imagePanelComponent.getChildren().clear();
-								imagePanelComponent.getChildren().add(new ImageComponent(prayerImage));
+								imagePanelComponent.getChildren().add(new ImageComponent(PRAY_MAGE));
 								imagePanelComponent.setBackgroundColor(client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
 									? ComponentConstants.STANDARD_BACKGROUND_COLOR
 									: NOT_ACTIVATED_BACKGROUND_COLOR);
