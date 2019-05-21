@@ -297,7 +297,6 @@ public class RunecraftPlugin extends Plugin
 			wearingTiara = config.Lavas() && items[EquipmentInventorySlot.HEAD.getSlotIdx()].getId() == ItemID.FIRE_TIARA;
 			wearingCape = config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.RUNECRAFT_CAPE || config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.RUNECRAFT_CAPET || config.Lavas() && items[EquipmentInventorySlot.CAPE.getSlotIdx()].getId() == ItemID.MAX_CAPE_13342;
 
-			System.out.println("item changed" + wearingCape);
 		}
 	}
 
