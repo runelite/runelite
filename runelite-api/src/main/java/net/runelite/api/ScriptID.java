@@ -96,11 +96,7 @@ public final class ScriptID
 	public static final int CHAT_PROMPT_INIT = 223;
 	
 	/**
-	 * Joins a clan chat
-	 * <ul>
-	 *     <li>string Name of player's clan chat to join</li>
-	 * </ul>
-	 *
+	 * Joins the corresponding minigame chat
 	 */
 	public static final int FORCE_JOIN_CC = 437;
 
@@ -175,4 +171,10 @@ public final class ScriptID
 	 * </ul>
 	 */
 	public static final int XPDROP_DISABLED = 2091;
+
+
+	/**
+	 * Join a clan, duh
+	 */
+	public static final int CUSTOM_JOIN_CLAN = 10690;
 }
