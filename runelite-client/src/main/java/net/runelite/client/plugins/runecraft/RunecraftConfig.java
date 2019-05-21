@@ -228,4 +228,14 @@ public interface RunecraftConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "essPouch",
+		name = "Swap essence pouch",
+		description = "Makes essence pouch left-click fill in bank"
+	)
+	default boolean essPouch()
+	{
+		return true;
+	}
 }

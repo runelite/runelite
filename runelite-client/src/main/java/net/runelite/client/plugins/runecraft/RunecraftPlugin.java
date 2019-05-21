@@ -56,6 +56,7 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -117,6 +118,9 @@ public class RunecraftPlugin extends Plugin
 	@Inject
 	private Notifier notifier;
 
+	@Inject
+	private MenuManager menuManager;
+
 	@Provides
 	RunecraftConfig getConfig(ConfigManager configManager)
 	{
@@ -144,6 +148,23 @@ public class RunecraftPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
+		if (!event.getGroup().equals("runecraft"))
+		{
+			return;
+		}
+
+		if (event.getKey().equals("essPouch"))
+		{
+			if (config.essPouch())
+			{
+				menuManager.addSwap("deposit", "pouch", 2, 57, "fill", "pouch", 9, 1007);
+			}
+			else
+			{
+				menuManager.removeSwap("deposit", "pouch", 2, 57, "fill", "pouch", 9, 1007);
+			}
+		}
+
 		abyssOverlay.updateConfig();
 	}
 
@@ -172,33 +193,8 @@ public class RunecraftPlugin extends Plugin
 			final String option = Text.removeTags(entry.getOption()).toLowerCase();
 			final String target = Text.removeTags(entry.getTarget()).toLowerCase();
 			final int id = entry.getIdentifier();
-			final int type = entry.getType();
 
-			if (target.contains("pouch") && !target.startsWith("rune"))
-			{
-				if (option.contains("deposit") && type == 57 && id == 2) //swap pouches based on empty/full and in ban
-				{
-					swap(client, "fill", option, target);
-					swap(client, "cancel", option, "", target);
-				}
-				else if (option.equals("fill") && id != 9)
-				{
-					swap(client, "empty", option, target); //Due to RuneLite issues the "Deposit" menutext will always show even though it is on fill
-				}
-			}
-			if (target.contains("ring of dueling") && option.contains("withdraw"))//withdraw-1 ring of dueling
-			{
-				swap(client, "withdraw-1", option, target);
-			}
-			else if (target.contains("binding necklace") && option.contains("withdraw")) //withdraw-1 binding necklace
-			{
-				swap(client, "withdraw-1", option, target);
-			}
-			else if (target.contains("stamina") && option.contains("withdraw"))
-			{ //withdraw-1 stam
-				swap(client, "withdraw-1", option, target);
-			}
-			else if (target.contains("ring of dueling") && option.contains("remove"))
+			if (target.contains("ring of dueling") && option.contains("remove"))
 			{
 				if (client.getLocalPlayer().getWorldLocation().getRegionID() != 10315)
 				{ //changes duel ring teleport options based on location

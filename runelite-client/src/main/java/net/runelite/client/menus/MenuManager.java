@@ -223,6 +223,15 @@ public class MenuManager
 
 			if (foundSwap != null)
 			{
+				if (swapTarget.getType() != -1 && newestEntry.getType() != foundSwap.getType())
+				{
+					int newType = foundSwap.getType();
+
+					foundSwap.setType(newestEntry.getType());
+
+					newestEntry.setType(newType);
+				}
+
 				// Swap
 				int index = copy.indexOf(foundSwap);
 				int newIndex = copy.indexOf(newestEntry);
@@ -510,6 +519,56 @@ public class MenuManager
 		}
 
 		swaps.put(swapFrom, swapTo);
+	}
+
+	/**
+	 * Adds to the map of swaps - Non-strict option/target, but with type & id
+	 * ID's of -1 are ignored in matches()!
+	 */
+	public void addSwap(String option, String target, int id, int type, String option2, String target2, int id2, int type2)
+	{
+		option = Text.standardize(option);
+		target = Text.standardize(target);
+
+		option2 = Text.standardize(option2);
+		target2 = Text.standardize(target2);
+
+		AbstractMenuEntry swapFrom = new AbstractMenuEntry(option, target, id, type, false, false);
+		AbstractMenuEntry swapTo = new AbstractMenuEntry(option2, target2, id2, type2, false, false);
+
+		if (swapTo.equals(swapFrom))
+		{
+			log.warn("You shouldn't try swapping an entry for itself");
+			return;
+		}
+
+		swaps.put(swapFrom, swapTo);
+	}
+
+	public void removeSwap(String option, String target, int id, int type, String option2, String target2, int id2, int type2)
+	{
+		option = Text.standardize(option);
+		target = Text.standardize(target);
+
+		option2 = Text.standardize(option2);
+		target2 = Text.standardize(target2);
+
+		AbstractMenuEntry swapFrom = new AbstractMenuEntry(option, target, id, type, false, false);
+		AbstractMenuEntry swapTo = new AbstractMenuEntry(option2, target2, id2, type2, false, false);
+
+		Set<AbstractMenuEntry> toRemove = new HashSet<>();
+		for (Map.Entry<AbstractMenuEntry, AbstractMenuEntry> e : swaps.entrySet())
+		{
+			if (e.getKey().equals(swapFrom) && e.getValue().equals(swapTo))
+			{
+				toRemove.add(e.getKey());
+			}
+		}
+
+		for (AbstractMenuEntry entry : toRemove)
+		{
+			swaps.remove(entry);
+		}
 	}
 
 	public void removeSwap(String option, String target, String option2, String target2)
