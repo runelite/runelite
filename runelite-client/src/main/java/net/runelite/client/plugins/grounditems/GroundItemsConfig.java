@@ -384,7 +384,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigItem(
 		keyName = "highlightProfitableOverValue",
 		name = "High Alch Profit > Value",
-		description = "Highlights ground items with a high alch profit greater than value",
+		description = "Highlights ground items with a high alch profit greater than value. (0 = Disabled)",
 		position = 30
 	)
 	default int getHighlightProfitOverValue()

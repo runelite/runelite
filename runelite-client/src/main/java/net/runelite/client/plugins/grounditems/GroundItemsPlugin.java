@@ -606,10 +606,9 @@ public class GroundItemsPlugin extends Plugin
 
 	Color getProfitable(int gePrice, int haPrice)
 	{
-		final int FIRE_RUNE_PRICE = itemManager.getItemPrice(FIRE_RUNE);
 		final int NATURE_RUNE_PRICE = itemManager.getItemPrice(NATURE_RUNE);
 
-		if (haPrice - (gePrice + ((FIRE_RUNE_PRICE * 5) + NATURE_RUNE_PRICE)) > config.getHighlightProfitOverValue())
+		if (haPrice - (gePrice + NATURE_RUNE_PRICE) > config.getHighlightProfitOverValue())
 		{
 			return config.profitValueColor();
 		}
@@ -620,7 +619,10 @@ public class GroundItemsPlugin extends Plugin
 	Color getItemColor(Color highlighted, Color hidden, Color profitable)
 	{
 
-		if (config.showHighlightProfit() && profitable != null && !config.showHighlightedOnly())
+		if (config.showHighlightProfit()
+				&& profitable != null
+				&& !config.showHighlightedOnly()
+				&& config.getHighlightProfitOverValue() > 0)
 		{
 			return profitable;
 		}
