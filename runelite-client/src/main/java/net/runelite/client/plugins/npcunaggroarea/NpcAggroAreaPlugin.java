@@ -141,6 +141,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(notWorkingOverlay);
 		npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
+		recheckActive();
 	}
 
 	@Override
@@ -393,7 +394,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		lastPlayerLocation = configManager.getConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_LOCATION, WorldPoint.class);
 
 		Duration timeLeft = configManager.getConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_DURATION, Duration.class);
-		if (timeLeft != null)
+		if (timeLeft != null && !timeLeft.isNegative())
 		{
 			createTimer(timeLeft);
 		}

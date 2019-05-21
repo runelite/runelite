@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -171,7 +172,7 @@ public class RunEnergyPlugin extends Plugin
 
 	String getEstimatedRunTimeRemaining(boolean inSeconds)
 	{
-		// Calculate the amount of energy lost every 2 ticks (0.6 seconds).
+		// Calculate the amount of energy lost every tick.
 		// Negative weight has the same depletion effect as 0 kg.
 		final int effectiveWeight = Math.max(client.getWeight(), 0);
 		double lossRate = (Math.min(effectiveWeight, 64) / 100.0) + 0.64;
@@ -182,7 +183,7 @@ public class RunEnergyPlugin extends Plugin
 		}
 
 		// Calculate the number of seconds left
-		final double secondsLeft = (client.getEnergy() * 0.6) / lossRate;
+		final double secondsLeft = (client.getEnergy() * Constants.GAME_TICK_LENGTH) / (lossRate * 1000.0);
 
 		// Return the text
 		if (inSeconds)

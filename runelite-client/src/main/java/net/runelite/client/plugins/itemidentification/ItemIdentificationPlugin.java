@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2019, Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,50 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.client.plugins.itemidentification;
 
-import net.runelite.api.Client;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
+import com.google.inject.Provides;
+import javax.inject.Inject;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
-
-public class ShopItemQuery extends WidgetItemQuery
+@PluginDescriptor(
+	name = "Item Identification",
+	description = "Show identifying text over items with difficult to distinguish sprites",
+	enabledByDefault = false
+)
+public class ItemIdentificationPlugin extends Plugin
 {
-	@Override
-	public WidgetItem[] result(Client client)
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private ItemIdentificationOverlay overlay;
+
+	@Provides
+	ItemIdentificationConfig getConfig(ConfigManager configManager)
 	{
-		Collection<WidgetItem> widgetItems = getShopItems(client);
-		if (widgetItems != null)
-		{
-			return widgetItems.stream()
-				.filter(Objects::nonNull)
-				.filter(predicate)
-				.toArray(WidgetItem[]::new);
-		}
-		return new WidgetItem[0];
+		return configManager.getConfig(ItemIdentificationConfig.class);
 	}
 
-	private Collection<WidgetItem> getShopItems(Client client)
+	@Override
+	protected void startUp()
 	{
-		Collection<WidgetItem> widgetItems = new ArrayList<>();
-		Widget shop = client.getWidget(WidgetInfo.SHOP_ITEMS_CONTAINER);
-		if (shop != null && !shop.isHidden())
-		{
-			Widget[] children = shop.getDynamicChildren();
-			for (int i = 1; i < children.length; i++)
-			{
-				Widget child = children[i];
-				// set bounds to same size as default inventory
-				Rectangle bounds = child.getBounds();
-				bounds.setBounds(bounds.x - 1, bounds.y - 1, 32, 32);
-				widgetItems.add(new WidgetItem(child.getItemId(), child.getItemQuantity(), i - 1, bounds));
-			}
-		}
-		return widgetItems;
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		overlayManager.remove(overlay);
 	}
 }

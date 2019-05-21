@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2019, Brandon White <bmwqg@live.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,53 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.queries;
+package net.runelite.client.plugins.blastfurnace;
 
-import net.runelite.api.Client;
-import net.runelite.api.Query;
-import net.runelite.api.widgets.WidgetItem;
+import java.time.temporal.ChronoUnit;
+import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.infobox.Timer;
 
-public abstract class WidgetItemQuery extends Query<WidgetItem, WidgetItemQuery>
+class ForemanTimer extends Timer
 {
+	private static final String TOOLTIP_TEXT = "Foreman Fee";
 
-	public WidgetItemQuery idEquals(int... ids)
+	ForemanTimer(BlastFurnacePlugin plugin, ItemManager itemManager)
 	{
-		predicate = and(item ->
-		{
-			for (int id : ids)
-			{
-				if (item.getId() == id)
-				{
-					return true;
-				}
-			}
-			return false;
-		});
-		return this;
-	}
+		super(10, ChronoUnit.MINUTES, itemManager.getImage(ItemID.COAL_BAG), plugin);
 
-	public WidgetItemQuery indexEquals(int... indexes)
-	{
-		predicate = and(item ->
-		{
-			for (int index : indexes)
-			{
-				if (item.getIndex() == index)
-				{
-					return true;
-				}
-			}
-			return false;
-		});
-		return this;
+		setTooltip(TOOLTIP_TEXT);
 	}
-
-	public WidgetItemQuery quantityEquals(int quantity)
-	{
-		predicate = and(item -> item.getQuantity() == quantity);
-		return this;
-	}
-
-	@Override
-	public abstract WidgetItem[] result(Client client);
 }

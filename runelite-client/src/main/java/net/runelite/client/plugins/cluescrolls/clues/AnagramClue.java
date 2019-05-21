@@ -34,11 +34,11 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
-import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -47,9 +47,13 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
 {
+	private static final String ANAGRAM_TEXT = "This anagram reveals who to speak to next: ";
+	private static final String ANAGRAM_TEXT_BEGINNER = "The anagram reveals who to speak to next: ";
+
 	private static final Set<AnagramClue> CLUES = ImmutableSet.of(
 		new AnagramClue("A BAKER", "Baraek", new WorldPoint(3217, 3434, 0), "Varrock square", "5"),
 		new AnagramClue("A BASIC ANTI POT", "Captain Tobias", new WorldPoint(3026, 3216, 0), "Port Sarim", "6"),
+		new AnagramClue("A ELF KNOWS", "Snowflake", new WorldPoint(2872, 3934, 0), "Weiss"),
 		new AnagramClue("A HEART", "Aretha", new WorldPoint(1814, 3851, 0), "Soul altar", "2"),
 		new AnagramClue("A ZEN SHE", "Zenesha", new WorldPoint(2652, 3295, 0), "Platebody Southern Ardougne centre square"),
 		new AnagramClue("ACE MATCH ELM", "Cam The Camel", new WorldPoint(3300, 3231, 0), "North of the glider in Al Kharid"),
@@ -66,8 +70,10 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("BAKER CLIMB", "Brambickle", new WorldPoint(2783, 3861, 0), "Trollweiss mountain"),
 		new AnagramClue("BLUE GRIM GUIDED", "Lumbridge Guide", new WorldPoint(3232, 3232, 0), "Lumbridge"),
 		new AnagramClue("BY LOOK", "Bolkoy", new WorldPoint(2529, 3162, 0), "Tree Gnome Village general store", "13"),
+		new AnagramClue("CALAMARI MADE MUD", "Madame Caldarium", new WorldPoint(2553, 2868, 0), "Corsair Cove", "6"),
 		new AnagramClue("CAR IF ICES", "Sacrifice", new WorldPoint(2209, 3056, 0), "Zul-Andra"),
 		new AnagramClue("CAREER IN MOON", "Oneiromancer", new WorldPoint(2150, 3866, 0), "Astral altar", "25"),
+		new AnagramClue("CLASH ION", "Nicholas", new WorldPoint(1841, 3803, 0), "North of Port Piscarilius fishing shop", "4"),
 		new AnagramClue("C ON GAME HOC", "Gnome Coach", new WorldPoint(2395, 3486, 0), "Gnome Ball course", "6"),
 		new AnagramClue("COOL NERD", "Old crone", new WorldPoint(3462, 3557, 0), "East of the Slayer Tower", "619"),
 		new AnagramClue("COPPER ORE CRYPTS", "Prospector Percy", new WorldPoint(3061, 3377, 0), "Motherlode Mine", "12"),
@@ -112,13 +118,13 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("MOLD LA RAN", "Old Man Ral", new WorldPoint(3602, 3209, 0), "Meiyerditch"),
 		new AnagramClue("MOTHERBOARD", "Brother Omad", new WorldPoint(2606, 3211, 0), "Monastery south of Ardougne", "129"),
 		new AnagramClue("MUS KIL READER", "Radimus Erkle", new WorldPoint(2726, 3368, 0), "Legends' Guild"),
-		new AnagramClue("MY MANGLE LAL", "Lammy Langle", new WorldPoint(1688, 3540, 0), "Hosidius House spirit tree patch"),
+		new AnagramClue("MY MANGLE LAL", "Lammy Langle", new WorldPoint(1688, 3540, 0), "Hosidius spirit tree patch"),
 		new AnagramClue("NO OWNER", "Oronwen", new WorldPoint(1162, 3178, 0), "Lletya Seamstress shop in Lletya", "20"),
 		new AnagramClue("NOD MED", "Edmond", new WorldPoint(2566, 3332, 0), "Behind the most NW house in East Ardougne", "3"),
 		new AnagramClue("O BIRDZ A ZANY EN PC", "Cap'n Izzy No-Beard", new WorldPoint(2807, 3191, 0), "Brimhaven Agility Arena", "33"),
 		new AnagramClue("OK CO", "Cook", new WorldPoint(3207, 3214, 0), "Ground floor of Lumbridge Castle", "9"),
 		new AnagramClue("OR ZINC FUMES WARD", "Wizard Frumscone", new WorldPoint(2594, 3086, 0), "Downstairs in the Wizards' Guild"),
-		new AnagramClue("OUR OWN NEEDS", "Nurse Wooned", new WorldPoint(1575, 3590, 0), "Shayzien House Infirmary", "19"),
+		new AnagramClue("OUR OWN NEEDS", "Nurse Wooned", new WorldPoint(1575, 3590, 0), "Shayzien Infirmary", "19"),
 		new AnagramClue("PACINNG A TAIE", "Captain Ginea", new WorldPoint(1561, 3602, 0), "Building east of Shayzien combat ring", "113"),
 		new AnagramClue("PEAK REFLEX", "Flax keeper", new WorldPoint(2744, 3444, 0), "Flax field south of Seers Village", "676"),
 		new AnagramClue("PEATY PERT", "Party Pete", new WorldPoint(3047, 3376, 0), "Falador Party Room"),
@@ -130,30 +136,40 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("RED ART TANS", "Trader Stan", new WorldPoint(3041, 3193, 0), "Port Sarim Charter ship"),
 		new AnagramClue("RATAI", "Taria", new WorldPoint(2940, 3223, 0), "Rimmington bush patch", "7"),
 		new AnagramClue("R SLICER", "Clerris", new WorldPoint(1761, 3850, 0), "Arceuus mine, Zeah", "738"),
+		new AnagramClue("RIP MAUL", "Primula", new WorldPoint(2454, 2853, 1), "Myth's Guild, first floor"),
 		new AnagramClue("SAND NUT", "Dunstan", new WorldPoint(2919, 3574, 0), "Anvil in north east Burthorpe", "8"),
 		new AnagramClue("SEQUIN DIRGE", "Queen Sigrid", new WorldPoint(2612, 3867, 0), "Throne room of Etceteria Castle."),
 		new AnagramClue("SLAM DUSTER GRAIL", "Guildmaster Lars", new WorldPoint(1649, 3498, 0), "Woodcutting guild, Zeah"),
 		new AnagramClue("SLIDE WOMAN", "Wise Old Man", new WorldPoint(3088, 3253, 0), "Draynor Village", "28"),
 		new AnagramClue("SNAH", "Hans", new WorldPoint(3218, 3219, 0), "Lumbridge Castle courtyard"),
 		new AnagramClue("SNAKES SO I SAIL", "Lisse Isaakson", new WorldPoint(2351, 3801, 0), "Neitiznot", "2"),
-		new AnagramClue("TAMED ROCKS", "Dockmaster", new WorldPoint(1822, 3739, 0), "Piscarilius House, NE of General store", "5"),
+		new AnagramClue("TAMED ROCKS", "Dockmaster", new WorldPoint(1822, 3739, 0), "Port Piscarilius, NE of General store", "5"),
 		new AnagramClue("TEN WIGS ON", "Wingstone", new WorldPoint(3389, 2877, 0), "Between Nardah & Agility Pyramid"),
 		new AnagramClue("THEM CAL CAME", "Cam the Camel", new WorldPoint(3300, 3231, 0), "Just outside of the Duel Arena"),
 		new AnagramClue("THICKNO", "Hickton", new WorldPoint(2822, 3442, 0), "Catherby fletching shop", "2"),
-		new AnagramClue("TWENTY CURE IRON", "New recruit Tony", new WorldPoint(1498, 3544, 0), "Shayzien House's Graveyard"),
+		new AnagramClue("TWENTY CURE IRON", "New recruit Tony", new WorldPoint(1498, 3544, 0), "Shayzien Graveyard"),
 		new AnagramClue("UNLEASH NIGHT MIST", "Sigli the Huntsman", new WorldPoint(2660, 3654, 0), "Rellekka", "302"),
 		new AnagramClue("VESTE", "Steve", new WorldPoint(2432, 3423, 0), "Upstairs Wyvern Area or Stronghold Slayer Cave", "2"),
 		new AnagramClue("VEIL VEDA", "Evil Dave", new WorldPoint(3079, 9892, 0), "Doris' basement, Edgeville", "666"),
 		new AnagramClue("WOO AN EGG KIWI", "Awowogei", ObjectID.AWOWOGEI, new WorldPoint(2802, 2765, 0), "Ape Atoll", "24"),
 		new AnagramClue("YAWNS GY", "Ysgawyn", new WorldPoint(2340, 3167, 0), "Lletya"),
-		new AnagramClue("MAJORS LAVA BADS AIR", "Ambassador Alvijar", new WorldPoint(2736, 5351, 1), "Dorgesh-Kaan, NE Middle Level", "2505")
+		new AnagramClue("MAJORS LAVA BADS AIR", "Ambassador Alvijar", new WorldPoint(2736, 5351, 1), "Dorgesh-Kaan, NE Middle Level", "2505"),
+		new AnagramClue("AN EARL", "Ranael", new WorldPoint(3315, 3163, 0), "Al Kharid skirt shop"),
+		new AnagramClue("CARPET AHOY", "Apothecary", new WorldPoint(3195, 3404, 0), "Southwest Varrock"),
+		new AnagramClue("DISORDER", "Sedridor", new WorldPoint(3102, 9570, 0), "Wizards' Tower basement"),
+		new AnagramClue("I CORD", "Doric", new WorldPoint(2951, 3450, 0), "North of Falador"),
+		new AnagramClue("IN BAR", "Brian", new WorldPoint(3026, 3246, 0), "Port Sarim battleaxe shop"),
+		new AnagramClue("RAIN COVE", "Veronica", new WorldPoint(3110, 3330, 0), "Outside Draynor Manor"),
+		new AnagramClue("RUG DETER", "Gertrude", new WorldPoint(3151, 3412, 0), "West of Varrock, south of the Cooks' Guild"),
+		new AnagramClue("SIR SHARE RED", "Hairdresser", new WorldPoint(2944, 3381, 0), "Western Falador"),
+		new AnagramClue("TAUNT ROOF", "Fortunato", new WorldPoint(3080, 3250, 0), "Draynor Village Market")
 	);
 
-	private String text;
-	private String npc;
-	private WorldPoint location;
-	private String area;
-	private String answer;
+	private final String text;
+	private final String npc;
+	private final WorldPoint location;
+	private final String area;
+	private final String answer;
 	private int objectId;
 
 	private AnagramClue(String text, String npc, WorldPoint location, String area)
@@ -163,7 +179,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 	private AnagramClue(String text, String npc, WorldPoint location, String area, String answer)
 	{
-		this.text = "This anagram reveals who to speak to next: " + text;
+		this.text = text;
 		this.npc = npc;
 		this.location = location;
 		this.area = area;
@@ -239,7 +255,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	{
 		for (AnagramClue clue : CLUES)
 		{
-			if (clue.text.equalsIgnoreCase(text))
+			if (text.equalsIgnoreCase(ANAGRAM_TEXT + clue.text) || text.equalsIgnoreCase(ANAGRAM_TEXT_BEGINNER + clue.text))
 			{
 				return clue;
 			}
@@ -248,11 +264,13 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		return null;
 	}
 
+	@Override
 	public String[] getNpcs()
 	{
 		return new String[] {npc};
 	}
 
+	@Override
 	public int[] getObjectIds()
 	{
 		return new int[] {objectId};
