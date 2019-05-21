@@ -27,7 +27,7 @@ package net.runelite.client.plugins.easyscape.util;
 
 public enum XericsTalismanMode
 {
-	XERICS_LOOKOUT("Xeric's Lookout"),
+	XERICS_LOOKOUT("Xeric's Look-out"),
 	XERICS_GLADE("Xeric's Glade"),
 	XERICS_INFERNO("Xeric's Inferno"),
 	XERICS_HEART("Xeric's Heart"),

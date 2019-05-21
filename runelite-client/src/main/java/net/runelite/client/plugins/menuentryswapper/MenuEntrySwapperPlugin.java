@@ -155,12 +155,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			enableCustomization();
 		}
+
+		loadCustomSwaps(config.customSwaps());
 	}
 
 	@Override
 	public void shutDown()
 	{
 		disableCustomization();
+
+		loadCustomSwaps(""); // Removes all custom swaps
 	}
 
 	@Subscribe

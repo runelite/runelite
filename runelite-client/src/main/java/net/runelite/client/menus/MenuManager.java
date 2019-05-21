@@ -223,7 +223,8 @@ public class MenuManager
 
 			if (foundSwap != null)
 			{
-				if (swapTarget.getType() != -1 && newestEntry.getType() != foundSwap.getType())
+				// This is to make things like games necklace and essence pouches show up right
+				if (foundSwap.getType() == MenuAction.EXAMINE_ITEM_BANK_EQ.getId())
 				{
 					int newType = foundSwap.getType();
 
@@ -485,9 +486,9 @@ public class MenuManager
 	}
 
 	/**
-	 * Adds to the map of swaps. - Strict option + target
+	 * Adds to the map of swaps.
 	 */
-	public void addSwap(String option, String target, String option2, String target2)
+	public void addSwap(String option, String target, String option2, String target2, boolean strictOption, boolean strictTarget)
 	{
 		option = Text.standardize(option);
 		target = Text.standardize(target);
@@ -495,8 +496,8 @@ public class MenuManager
 		option2 = Text.standardize(option2);
 		target2 = Text.standardize(target2);
 
-		AbstractMenuEntry swapFrom = new AbstractMenuEntry(option, target);
-		AbstractMenuEntry swapTo = new AbstractMenuEntry(option2, target2);
+		AbstractMenuEntry swapFrom = new AbstractMenuEntry(option, target, -1, -1, strictOption, strictTarget);
+		AbstractMenuEntry swapTo = new AbstractMenuEntry(option2, target2, -1, -1, strictOption, strictTarget);
 
 		if (swapTo.equals(swapFrom))
 		{
@@ -505,6 +506,34 @@ public class MenuManager
 		}
 
 		swaps.put(swapFrom, swapTo);
+	}
+
+
+	public void removeSwap(String option, String target, String option2, String target2, boolean strictOption, boolean strictTarget)
+	{
+		option = Text.standardize(option);
+		target = Text.standardize(target);
+
+		option2 = Text.standardize(option2);
+		target2 = Text.standardize(target2);
+
+		AbstractMenuEntry swapFrom = new AbstractMenuEntry(option, target, -1, -1, strictOption, strictTarget);
+		AbstractMenuEntry swapTo = new AbstractMenuEntry(option2, target2, -1, -1, strictOption, strictTarget);
+
+		removeSwap(swapFrom, swapTo);
+	}
+
+	/**
+	 * Adds to the map of swaps. - Strict option + target
+	 */
+	public void addSwap(String option, String target, String option2, String target2)
+	{
+		addSwap(option, target, option2, target2, false, false);
+	}
+
+	public void removeSwap(String option, String target, String option2, String target2)
+	{
+		removeSwap(option, target, option2, target2, false, false);
 	}
 
 	/**
@@ -571,20 +600,6 @@ public class MenuManager
 		}
 	}
 
-	public void removeSwap(String option, String target, String option2, String target2)
-	{
-		option = Text.standardize(option);
-		target = Text.standardize(target);
-
-		option2 = Text.standardize(option2);
-		target2 = Text.standardize(target2);
-
-		AbstractMenuEntry swapFrom = new AbstractMenuEntry(option, target);
-		AbstractMenuEntry swapTo = new AbstractMenuEntry(option2, target2);
-
-		removeSwap(swapFrom, swapTo);
-	}
-
 	public void removeSwap(AbstractMenuEntry swapFrom, AbstractMenuEntry swapTo)
 	{
 		Set<AbstractMenuEntry> toRemove = new HashSet<>();
@@ -593,6 +608,29 @@ public class MenuManager
 			if (e.getKey().equals(swapFrom) && e.getValue().equals(swapTo))
 			{
 				toRemove.add(e.getKey());
+			}
+		}
+
+		for (AbstractMenuEntry entry : toRemove)
+		{
+			swaps.remove(entry);
+		}
+	}
+
+	/**
+	 * Removes all swaps with target
+	 */
+	public void removeSwaps(String withTarget)
+	{
+		withTarget = Text.standardize(withTarget);
+
+		Set<AbstractMenuEntry> toRemove = new HashSet<>();
+
+		for (AbstractMenuEntry e : swaps.keySet())
+		{
+			if (e.getTarget().equals(withTarget))
+			{
+				toRemove.add(e);
 			}
 		}
 

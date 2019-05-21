@@ -39,9 +39,11 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import static net.runelite.api.Varbits.BUILDING_MODE;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -66,6 +68,9 @@ public class EasyscapePlugin extends Plugin
 	@Inject
 	private EasyscapeConfig config;
 
+	@Inject
+	private MenuManager menuManager;
+
 	@Provides
 	EasyscapeConfig provideConfig(ConfigManager configManager)
 	{
@@ -75,11 +80,13 @@ public class EasyscapePlugin extends Plugin
 	@Override
 	public void startUp()
 	{
+		addSwaps();
 	}
 
 	@Override
 	public void shutDown()
 	{
+		removeSwaps();
 	}
 
 	@Subscribe
@@ -379,61 +386,99 @@ public class EasyscapePlugin extends Plugin
 		{
 			swap(client, "Teleport", option, target);
 		}
+	}
 
-		else if (config.getGamesNecklace() && target.contains("games necklace"))
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!"easyscape".equals(event.getGroup()))
 		{
-			swap(client, config.getGamesNecklaceMode().toString(), option, target);
+			return;
 		}
 
-		else if (config.getDuelingRing() && target.contains("ring of dueling"))
+		removeSwaps();
+		addSwaps();
+	}
+
+	private void addSwaps()
+	{
+		if (config.getBurningAmulet())
 		{
-			swap(client, config.getDuelingRingMode().toString(), option, target);
+			menuManager.addSwap("remove", "burning amulet", config.getBurningAmuletMode().toString(), "burning amulet", true, false);
 		}
 
-		else if (config.getGlory() && (target.contains("amulet of glory") || target.contains("amulet of eternal glory")))
+		if (config.getCombatBracelet())
 		{
-			swap(client, config.getGloryMode().toString(), option, target);
+			menuManager.addSwap("remove", "combat bracelet", config.getCombatBraceletMode().toString(), "combat bracelet", true, false);
 		}
 
-		else if (config.getSkillsNecklace() && target.contains("skills necklace"))
-			{
-				swap(client, config.getSkillsNecklaceMode().toString(), option, target);
-			}
-		
-		else if (config.getNecklaceofPassage() && target.contains("necklace of passage"))
-			{
-				swap(client, config.getNecklaceofPassageMode().toString(), option, target);
-			}
+		if (config.getGamesNecklace())
+		{
+			menuManager.addSwap("remove", "games necklace", config.getGamesNecklaceMode().toString(), "games necklace", true, false);
+		}
 
-		else if (config.getDigsitePendant() && target.contains("digsite pendant"))
-			{
-				swap(client, config.getDigsitePendantMode().toString(), option, target);
-			}
+		if (config.getDuelingRing())
+		{
+			menuManager.addSwap("remove", "ring of dueling", config.getDuelingRingMode().toString(), "ring of dueling", true, false);
+		}
 
-		else if (config.getCombatBracelet() && target.contains("combat bracelet"))
-			{
-				swap(client, config.getCombatBraceletMode().toString(), option, target);
-			}
+		if (config.getGlory())
+		{
+			menuManager.addSwap("remove", "amulet of glory", config.getGloryMode().toString(), "amulet of glory", true, false);
+			menuManager.addSwap("remove", "amulet of eternal glory", config.getGloryMode().toString(), "amulet of eternal glory", true, false);
+		}
 
-		else if (config.getSlayerRing() && target.contains("slayer ring"))
-			{
-				swap(client, config.getSlayerRingMode().toString(), option, target);
-			}
+		if (config.getSkillsNecklace())
+		{
+			menuManager.addSwap("remove", "skills necklace", config.getSkillsNecklaceMode().toString(), "skills necklace", true, false);
+		}
 
-		else if (config.getBurningAmulet() && target.contains("burning amulet"))
-			{
-				swap(client, config.getBurningAmuletMode().toString(), option, target);
-			}
+		if (config.getNecklaceofPassage())
+		{
+			menuManager.addSwap("remove", "necklace of passage", config.getNecklaceofPassageMode().toString(),  "necklace of passage", true, false);
+		}
 
-		else if (config.getXericsTalisman() && target.contains("xeric's talisman"))
-			{
-				swap(client, config.getXericsTalismanMode().toString(), option, target);
-			}
+		if (config.getDigsitePendant())
+		{
+			menuManager.addSwap("remove", "digsite pendant", config.getDigsitePendantMode().toString(),  "digsite pendant", true, false);
+		}
 
-		else if (config.getRingofWealth() && target.contains("ring of wealth"))
-			{
-				swap(client, config.getRingofWealthMode().toString(), option, target);
-			}
+
+		if (config.getSlayerRing())
+		{
+			menuManager.addSwap("remove", "slayer ring", config.getSlayerRingMode().toString(),  "slayer ring", true, false);
+		}
+
+		else if (config.getXericsTalisman())
+		{
+			menuManager.addSwap("remove", "xeric's talisman", config.getXericsTalismanMode().toString(),  "xeric's talisman", true, false);
+		}
+
+		if (config.getRingofWealth())
+		{
+			menuManager.addSwap("remove", "ring of wealth", config.getRingofWealthMode().toString(),  "ring of wealth", true, false);
+		}
+
+		if (config.swapMax())
+		{
+			menuManager.addSwap("remove", "max cape", config.maxMode().toString(), "max cape", true, false);
+		}
+	}
+
+	private void removeSwaps()
+	{
+		menuManager.removeSwaps("burning amulet");
+		menuManager.removeSwaps("combat bracelet");
+		menuManager.removeSwaps("games necklace");
+		menuManager.removeSwaps("ring of dueling");
+		menuManager.removeSwaps("amulet of glory");
+		menuManager.removeSwaps("amulet of eternal glory");
+		menuManager.removeSwaps("skills necklace");
+		menuManager.removeSwaps("necklace of passage");
+		menuManager.removeSwaps("digsite pendant");
+		menuManager.removeSwaps("slayer ring");
+		menuManager.removeSwaps("xeric's talisman");
+		menuManager.removeSwaps("ring of wealth");
 	}
 
 	private void delete(int target)

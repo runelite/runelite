@@ -71,10 +71,7 @@ import net.runelite.client.util.Text;
 )
 public class RunecraftPlugin extends Plugin
 {
-	private static final int[] CASTLE_WARS = {9776};
-	private static final int[] FIRE_ALTAR = {10315};
-
-
+	private static final int FIRE_ALTAR = 10315;
 	private static final String POUCH_DECAYED_NOTIFICATION_MESSAGE = "Your rune pouch has decayed.";
 	private static final String POUCH_DECAYED_MESSAGE = "Your pouch has decayed through use.";
 	private static final List<Integer> DEGRADED_POUCHES = ImmutableList.of(
@@ -82,12 +79,7 @@ public class RunecraftPlugin extends Plugin
 		ItemID.LARGE_POUCH_5513,
 		ItemID.GIANT_POUCH_5515
 	);
-	private static final List<Integer> POUCHES = ImmutableList.of(
-		ItemID.SMALL_POUCH,
-		ItemID.MEDIUM_POUCH,
-		ItemID.LARGE_POUCH,
-		ItemID.GIANT_POUCH
-	);
+
 	private boolean wearingTiara;
 	private boolean wearingCape;
 
@@ -133,6 +125,7 @@ public class RunecraftPlugin extends Plugin
 		overlayManager.add(abyssOverlay);
 		abyssOverlay.updateConfig();
 		overlayManager.add(runecraftOverlay);
+		addSwaps();
 	}
 
 	@Override
@@ -143,6 +136,7 @@ public class RunecraftPlugin extends Plugin
 		darkMage = null;
 		degradedPouchInInventory = false;
 		overlayManager.remove(runecraftOverlay);
+		removeSwaps();
 	}
 
 	@Subscribe
@@ -155,14 +149,7 @@ public class RunecraftPlugin extends Plugin
 
 		if (event.getKey().equals("essPouch"))
 		{
-			if (config.essPouch())
-			{
-				menuManager.addSwap("deposit", "pouch", 2, 57, "fill", "pouch", 9, 1007);
-			}
-			else
-			{
-				menuManager.removeSwap("deposit", "pouch", 2, 57, "fill", "pouch", 9, 1007);
-			}
+			addSwaps();
 		}
 
 		abyssOverlay.updateConfig();
@@ -192,47 +179,34 @@ public class RunecraftPlugin extends Plugin
 		{
 			final String option = Text.removeTags(entry.getOption()).toLowerCase();
 			final String target = Text.removeTags(entry.getTarget()).toLowerCase();
-			final int id = entry.getIdentifier();
 
-			if (target.contains("ring of dueling") && option.contains("remove"))
+			if (target.contains("ring of dueling") && option.contains("remove")) // Incompatible with easyscape
 			{
-				if (client.getLocalPlayer().getWorldLocation().getRegionID() != 10315)
+				if (client.getLocalPlayer().getWorldLocation().getRegionID() != FIRE_ALTAR)
 				{ //changes duel ring teleport options based on location
 					swap(client, "duel arena", option, target);
 				}
-				else if (client.getLocalPlayer().getWorldLocation().getRegionID() == 10315)
+				else if (client.getLocalPlayer().getWorldLocation().getRegionID() == FIRE_ALTAR)
 				{
 					swap(client, "castle wars", option, target);
 				}
 			}
-			else if (target.contains("crafting cape") && option.contains("remove")) //teleport for crafting cape
-			{
-				swap(client, "Teleport", option, target);
-			}
-			else if (target.contains("max cape") && option.contains("remove")) //teleport for max cape
-			{
-				swap(client, "Crafting Guild", option, target);
-			}
 			else if (target.contains("altar") && option.contains("craft")) // Don't accidentally click the altar to craft
 			{
-				hide(option, target, true);
+				hide(option, target);
 			}
 			else if (target.contains("pure") && option.contains("use")) // Don't accidentally use pure essence on altar
 			{
-				hide("use", target, true);
-				hide("drop", target, true);
-			}
-			else if (option.equals("fill") && id != 9)
-			{
-				swap(client, "empty", option, target);
+				hide("use", target);
+				hide("drop", target);
 			}
 		}
 	}
 	
-	private void hide(String option, String target, boolean contains)
+	private void hide(String option, String target)
 	{
 		final MenuEntry[] entries = client.getMenuEntries();
-		int index = searchIndex(entries, option, target, contains);
+		int index = searchIndex(entries, option, target);
 		if (index < 0)
 		{
 			return;
@@ -255,7 +229,7 @@ public class RunecraftPlugin extends Plugin
 		client.setMenuEntries(newEntries);
 	}
 
-	private int searchIndex(MenuEntry[] entries, String option, String target, boolean contains)
+	private int searchIndex(MenuEntry[] entries, String option, String target)
 	{
 		for (int i = entries.length - 1; i >= 0; i--)
 		{
@@ -264,7 +238,7 @@ public class RunecraftPlugin extends Plugin
 			String entryTarget = Text.removeTags(entry.getTarget()).toLowerCase();
 
 			if (entryOption.contains(option.toLowerCase())
-				&& (entryTarget.equals(target) || (entryTarget.contains(target) && contains)))
+				&& (entryTarget.contains(target)))
 			{
 				return i;
 			}
@@ -345,5 +319,25 @@ public class RunecraftPlugin extends Plugin
 		{
 			darkMage = null;
 		}
+	}
+
+	private void addSwaps()
+	{
+		if (config.essPouch())
+		{
+			menuManager.addSwap("deposit", "pouch", 2, 57, "fill", "pouch", 9, 1007);
+			menuManager.addSwap("fill", "pouch", "empty", "pouch", true, false);
+		}
+		else
+		{
+			menuManager.removeSwap("deposit", "pouch", 2, 57, "fill", "pouch", 9, 1007);
+			menuManager.removeSwap("fill", "pouch", "empty", "pouch", true, false);
+		}
+	}
+
+	private void removeSwaps()
+	{
+		menuManager.removeSwap("deposit", "pouch", 2, 57, "fill", "pouch", 9, 1007);
+		menuManager.removeSwap("fill", "pouch", "empty", "pouch", true, false);
 	}
 }

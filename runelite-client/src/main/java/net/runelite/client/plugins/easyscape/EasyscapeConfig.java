@@ -33,6 +33,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.plugins.easyscape.util.DuelingRingMode;
 import net.runelite.client.plugins.easyscape.util.GamesNecklaceMode;
 import net.runelite.client.plugins.easyscape.util.GloryMode;
+import net.runelite.client.plugins.easyscape.util.MaxCapeMode;
 import net.runelite.client.plugins.easyscape.util.SkillsNecklaceMode;
 import net.runelite.client.plugins.easyscape.util.NecklaceOfPassageMode;
 import net.runelite.client.plugins.easyscape.util.DigsitePendantMode;
@@ -802,10 +803,34 @@ public interface EasyscapeConfig extends Config
 	default RingOfWealthMode getRingofWealthMode()
 	{
 		return RingOfWealthMode.GRAND_EXCHANGE;
-	}	
+	}
 	
 // ----------------------------------------------------------- //
-	
+
+	@ConfigItem(
+		keyName = "swapMax",
+		name = "Swap max cape",
+		description = "Enables swapping max cape options in worn interface",
+		position = 59,
+		group = "Equipment swapper"
+	)
+	default boolean swapMax()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "maxMode",
+		name = "Max cape mode",
+		description = "",
+		position = 60,
+		group = "Equipment swapper"
+	)
+	default MaxCapeMode maxMode()
+	{
+		return MaxCapeMode.CRAFTING_GUILD;
+	}
+
 	@ConfigItem(
 		keyName = "swapArdougneCape",
 		name = "Swap Ardougne Cape",
