@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.config;
 
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.primitives.Ints;
 import java.awt.BorderLayout;
@@ -503,24 +504,36 @@ public class ConfigPanel extends PluginPanel
 					continue; // Ignore main 'parent'
 				}
 
-				if (cid.getItem().hidden())
+				Boolean unhide = cid.getItem().hidden();
+				Boolean hide = !cid.getItem().hide().isEmpty();
+
+				if (unhide || hide)
 				{
 					boolean show = false;
-					String unhideat = cid.getItem().unhide();
+
+					List<String> itemHide = Splitter
+						.onPattern("\\|\\|")
+						.trimResults()
+						.omitEmptyStrings()
+						.splitToList(String.format("%s || %s", cid.getItem().unhide(), cid.getItem().hide()));
 
 					for (ConfigItemDescriptor cid2 : cd.getItems())
 					{
-
-						if (cid2.getItem().keyName().equals(unhideat))
+						if (itemHide.contains(cid2.getItem().keyName()))
 						{
 							if (cid2.getType() == boolean.class)
 							{
 								show = Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().value(), cid2.getItem().keyName()));
 							}
 						}
+
+						if (show)
+						{
+							break;
+						}
 					}
 
-					if (!show)
+					if ((unhide && !show) || (hide && show))
 					{
 						continue;
 					}
@@ -845,9 +858,15 @@ public class ConfigPanel extends PluginPanel
 
 			for (ConfigItemDescriptor cid2 : cd.getItems())
 			{
-				if (cid2.getItem().hidden())
+				if (cid2.getItem().hidden() || !cid2.getItem().hide().isEmpty())
 				{
-					if (cid2.getItem().unhide().equals(cid.getItem().keyName()))
+					List<String> itemHide = Splitter
+						.onPattern("\\|\\|")
+						.trimResults()
+						.omitEmptyStrings()
+						.splitToList(String.format("%s || %s", cid2.getItem().unhide(), cid2.getItem().hide()));
+
+					if (itemHide.contains(cid.getItem().keyName()))
 					{ // If another options visibility changes depending on the value of this checkbox, then render the entire menu again
 						openGroupConfigPanel(listItem, config, cd);
 						return;

@@ -51,5 +51,7 @@ public @interface ConfigItem
 
 	String unhide() default "";
 
+	String hide() default "";
+
 	String parent() default "";
 }
