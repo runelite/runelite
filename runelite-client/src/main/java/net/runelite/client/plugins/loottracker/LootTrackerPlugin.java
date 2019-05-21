@@ -139,6 +139,7 @@ public class LootTrackerPlugin extends Plugin
 	private String eventType;
 
 	private List<String> ignoredItems = new ArrayList<>();
+	private List<String> ignoredNpcs = new ArrayList<>();
 
 	private Multiset<Integer> inventorySnapshot;
 
@@ -206,6 +207,7 @@ public class LootTrackerPlugin extends Plugin
 		if (event.getGroup().equals("loottracker"))
 		{
 			ignoredItems = Text.fromCSV(config.getIgnoredItems());
+			ignoredNpcs = Text.fromCSV(config.getIgnoredNpcs());
 			SwingUtilities.invokeLater(panel::updateIgnoredRecords);
 		}
 	}
@@ -214,8 +216,10 @@ public class LootTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		ignoredItems = Text.fromCSV(config.getIgnoredItems());
+		ignoredNpcs = Text.fromCSV(config.getIgnoredNpcs());
 		panel = new LootTrackerPanel(this, itemManager, config);
 		spriteManager.getSpriteAsync(SpriteID.TAB_INVENTORY, 0, panel::loadHeaderIcon);
+
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "panel_icon.png");
 
@@ -291,10 +295,12 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
 
-		if (lootTrackerClient != null && config.saveLoot())
-		{
-			LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items), Instant.now());
-			lootTrackerClient.submit(lootRecord);
+		if (!ignoredNpcs.contains(name)) {
+			if (lootTrackerClient != null && config.saveLoot())
+			{
+				LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items), Instant.now());
+				lootTrackerClient.submit(lootRecord);
+			}
 		}
 	}
 
@@ -508,6 +514,7 @@ public class LootTrackerPlugin extends Plugin
 	boolean isIgnored(String name)
 	{
 		return ignoredItems.contains(name);
+
 	}
 
 	private LootTrackerItem buildLootTrackerItem(int itemId, int quantity)

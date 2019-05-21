@@ -32,9 +32,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -51,6 +49,7 @@ import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.Text;
 import net.runelite.http.api.loottracker.LootTrackerClient;
 
 class LootTrackerPanel extends PluginPanel
@@ -449,6 +448,10 @@ class LootTrackerPanel extends PluginPanel
 				}
 			}
 		}
+		if (config.getIgnoredNpcs().contains(record.getTitle()))
+		{
+			return null;
+		}
 
 		// Show main view
 		remove(errorPanel);
@@ -463,6 +466,30 @@ class LootTrackerPanel extends PluginPanel
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		box.setComponentPopupMenu(popupMenu);
+		// Create IgnoreNpc menu
+		List<String> ignoredNpcs = new ArrayList<>();
+		ignoredNpcs = Text.fromCSV(config.getIgnoredNpcs());
+		final Set<String> ignoredNpcSet = new HashSet<>(ignoredNpcs);
+		System.out.println(ignoredNpcSet);
+		final JMenuItem IgnoreNpc = new JMenuItem("Ignore Npc");
+		IgnoreNpc.addActionListener(e ->
+		{
+			ignoredNpcSet.add(record.getTitle());
+			System.out.println(ignoredNpcSet);
+			config.setIgnoredNpcs(Text.toCSV(ignoredNpcSet));
+			records.removeAll(box.getRecords());
+			boxes.remove(box);
+			updateOverall();
+			logsContainer.remove(box);
+			logsContainer.repaint();
+			LootTrackerClient client = plugin.getLootTrackerClient();
+			// Without loot being grouped we have no way to identify single kills to be deleted
+			if (client != null && groupLoot && config.syncPanel())
+			{
+				client.delete(box.getId());
+			}
+		});
+		popupMenu.add(IgnoreNpc);
 
 		// Create reset menu
 		final JMenuItem reset = new JMenuItem("Reset");

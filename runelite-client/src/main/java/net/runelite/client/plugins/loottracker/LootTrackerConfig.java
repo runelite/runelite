@@ -50,6 +50,21 @@ public interface LootTrackerConfig extends Config
 	void setIgnoredItems(String key);
 
 	@ConfigItem(
+			keyName = "ignoredNpcs",
+			name = "Ignored Npcs",
+			description = "Configures which Npcs should be ignored."
+	)
+	default String getIgnoredNpcs()
+	{
+		return "";
+	}
+	@ConfigItem(
+			keyName = "ignoredNpcs",
+			name = "",
+			description = ""
+	)
+	void setIgnoredNpcs(String key);
+	@ConfigItem(
 		keyName = "saveLoot",
 		name = "Submit loot tracker data",
 		description = "Submit loot tracker data (requires being logged in)"
