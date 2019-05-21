@@ -96,7 +96,6 @@ class XpPanel extends PluginPanel
 		final JMenuItem unpauseAll = new JMenuItem("Unpause All");
 		unpauseAll.addActionListener(e -> xpTrackerPlugin.pauseAllSkills(false));
 
-
 		// Create popup menu
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -121,7 +120,6 @@ class XpPanel extends PluginPanel
 
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
-
 
 		final JPanel infoBoxPanel = new JPanel();
 		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
@@ -208,4 +206,8 @@ class XpPanel extends PluginPanel
 		overallExpHour.setText(XpInfoBox.htmlLabel("Per hour: ", xpSnapshotTotal.getXpPerHour()));
 	}
 
+	void toggleCanvasItemText(Skill skill)
+	{
+		infoBoxes.get(skill).toggleCanvasItemText();
+	}
 }

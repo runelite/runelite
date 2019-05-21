@@ -24,6 +24,8 @@
  */
 
 package net.runelite.api;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An enumeration of skills that a player can level.
@@ -58,6 +60,16 @@ public enum Skill
 	 */
 	OVERALL("Overall");
 
+	private static final Map<String, Skill> skillMap = new HashMap<String, Skill>()
+	{
+		{
+			for (Skill s : Skill.values())
+			{
+				put(s.getName(), s);
+			}
+		}
+	};
+
 	private final String name;
 
 	Skill(String name)
@@ -74,4 +86,10 @@ public enum Skill
 	{
 		return name;
 	}
+
+	public static Skill getSkill(String skill)
+	{
+		return skillMap.get(skill);
+	}
+
 }

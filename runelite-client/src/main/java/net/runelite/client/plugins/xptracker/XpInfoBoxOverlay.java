@@ -33,10 +33,16 @@ import java.awt.image.BufferedImage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Experience;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_REMOVE;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_RESET;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_TOGGLE_TRACKING;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
@@ -45,8 +51,6 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.SplitComponent;
 import net.runelite.client.util.StackFormatter;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
 class XpInfoBoxOverlay extends Overlay
 {
@@ -60,14 +64,18 @@ class XpInfoBoxOverlay extends Overlay
 	private final PanelComponent iconXpSplitPanel = new PanelComponent();
 	private final XpTrackerPlugin plugin;
 	private final XpTrackerConfig config;
+	private final XpPauseState xpPauseState;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Skill skill;
 	private final BufferedImage icon;
 
+	private static final Color backgroundColor = new Color(61, 56, 49);
+
 	XpInfoBoxOverlay(
 		XpTrackerPlugin plugin,
 		XpTrackerConfig config,
+		XpPauseState xpPauseState,
 		Skill skill,
 		BufferedImage icon)
 	{
@@ -76,6 +84,7 @@ class XpInfoBoxOverlay extends Overlay
 		this.config = config;
 		this.skill = skill;
 		this.icon = icon;
+		this.xpPauseState = xpPauseState;
 		panel.setBorder(new Rectangle(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE));
 		panel.setGap(new Point(0, XP_AND_PROGRESS_BAR_GAP));
 		panel.setPreferredSize(new Dimension(PANEL_PREFERRED_WIDTH, 0));
@@ -83,6 +92,9 @@ class XpInfoBoxOverlay extends Overlay
 		iconXpSplitPanel.setBackgroundColor(null);
 		iconXpSplitPanel.setPreferredSize(new Dimension(PANEL_PREFERRED_WIDTH, 0));
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "XP Tracker overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, OPTION_REMOVE, skill.getName()));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, OPTION_RESET, skill.getName()));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, OPTION_TOGGLE_TRACKING, skill.getName()));
 	}
 
 	@Override
@@ -164,16 +176,26 @@ class XpInfoBoxOverlay extends Overlay
 
 		final ProgressBarComponent progressBarComponent = new ProgressBarComponent();
 
-		progressBarComponent.setBackgroundColor(new Color(61, 56, 49));
-		progressBarComponent.setForegroundColor(SkillColor.find(skill).getColor());
+		Color foregroundColor = SkillColor.find(skill).getColor();
 
+		if (xpPauseState.isPaused(skill))
+		{
+			progressBarComponent.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.TEXT_ONLY);
+			progressBarComponent.setCenterLabel("Paused");
+			progressBarComponent.setBackgroundColor(backgroundColor.darker());
+			progressBarComponent.setForegroundColor(foregroundColor.darker());
+		}
+		else
+		{
+			progressBarComponent.setBackgroundColor(backgroundColor);
+			progressBarComponent.setForegroundColor(foregroundColor);
+		}
 		progressBarComponent.setLeftLabel(String.valueOf(snapshot.getStartLevel()));
 		progressBarComponent.setRightLabel(snapshot.getEndGoalXp() == Experience.MAX_SKILL_XP
 			? "200M"
 			: String.valueOf(snapshot.getEndLevel()));
 
 		progressBarComponent.setValue(snapshot.getSkillProgressToGoal());
-
 		panel.getChildren().add(iconXpSplitPanel);
 		panel.getChildren().add(progressBarComponent);
 

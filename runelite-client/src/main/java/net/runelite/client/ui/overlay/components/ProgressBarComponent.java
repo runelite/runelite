@@ -157,4 +157,5 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 	{
 		return DECIMAL_FORMAT.format(ratio * 100d) + "%";
 	}
+
 }
