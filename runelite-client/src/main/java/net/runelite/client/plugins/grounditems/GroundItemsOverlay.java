@@ -193,7 +193,7 @@ public class GroundItemsOverlay extends Overlay
 				}
 			}
 
-			Color color = plugin.getItemColor(highlighted, hidden, profitable);
+			final Color color = plugin.getItemColor(highlighted, hidden, profitable);
 
 			if (config.highlightTiles())
 			{

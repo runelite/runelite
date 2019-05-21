@@ -609,17 +609,12 @@ public class GroundItemsPlugin extends Plugin
 		final int FIRE_RUNE_PRICE = itemManager.getItemPrice(FIRE_RUNE);
 		final int NATURE_RUNE_PRICE = itemManager.getItemPrice(NATURE_RUNE);
 
-		log.debug("GE price of item {}", gePrice);
-		log.debug("fire rune price {}", FIRE_RUNE_PRICE);
-		log.debug("nature rune price {}", NATURE_RUNE_PRICE);
-		log.debug("config value {}", config.getHighlightProfitOverValue());
-
 		if (haPrice - (gePrice + ((FIRE_RUNE_PRICE * 5) + NATURE_RUNE_PRICE)) > config.getHighlightProfitOverValue())
 		{
 			return config.profitValueColor();
 		}
 
-		return config.defaultColor();
+		return null;
 	}
 
 	Color getItemColor(Color highlighted, Color hidden, Color profitable)
