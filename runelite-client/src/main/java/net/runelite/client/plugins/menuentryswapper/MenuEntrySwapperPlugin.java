@@ -457,6 +457,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap(client, "pay (", option, target, false);
 			}
 
+			if (config.swapDream())
+			{
+				swap(client, "dream", option, target, true);
+			}
+
 			if (config.swapDecant())
 			{
 				swap(client, "decant", option, target, true);
