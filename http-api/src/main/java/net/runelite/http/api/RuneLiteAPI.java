@@ -48,6 +48,7 @@ public class RuneLiteAPI
 	public static String userAgent;
 
 	private static final String BASE = "https://api.runelite.net";
+	private static final String RLPLUS = "https://session.runelitepl.us";
 	private static final String WSBASE = "https://api.runelite.net/ws";
 	private static final String STATICBASE = "https://static.runelite.net";
 	private static final Properties properties = new Properties();
@@ -98,6 +99,11 @@ public class RuneLiteAPI
 	public static HttpUrl getApiRoot()
 	{
 		return HttpUrl.parse(BASE);
+	}
+
+	public static HttpUrl getSessionBase()
+	{
+		return HttpUrl.parse(RLPLUS);
 	}
 
 	public static HttpUrl getApiBase()
