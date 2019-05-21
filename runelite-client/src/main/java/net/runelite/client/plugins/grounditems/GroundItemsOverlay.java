@@ -193,12 +193,7 @@ public class GroundItemsOverlay extends Overlay
 				}
 			}
 
-			Color color = plugin.getItemColor(highlighted, hidden);
-
-			if (config.showHighlightProfit() && profitable != null && !config.showHighlightedOnly())
-			{
-				color = profitable;
-			}
+			Color color = plugin.getItemColor(highlighted, hidden, profitable);
 
 			if (config.highlightTiles())
 			{

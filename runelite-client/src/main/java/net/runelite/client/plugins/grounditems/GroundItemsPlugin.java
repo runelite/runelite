@@ -494,7 +494,8 @@ public class GroundItemsPlugin extends Plugin
 			final int gePrice = quantity * price;
 			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
 			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
-			final Color color = getItemColor(highlighted, hidden);
+			final Color profitable = getProfitable(gePrice, haPrice);
+			final Color color = getItemColor(highlighted, hidden, profitable);
 			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
 
 			if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
@@ -621,8 +622,14 @@ public class GroundItemsPlugin extends Plugin
 		return config.defaultColor();
 	}
 
-	Color getItemColor(Color highlighted, Color hidden)
+	Color getItemColor(Color highlighted, Color hidden, Color profitable)
 	{
+
+		if (config.showHighlightProfit() && profitable != null && !config.showHighlightedOnly())
+		{
+			return profitable;
+		}
+
 		if (highlighted != null)
 		{
 			return highlighted;
