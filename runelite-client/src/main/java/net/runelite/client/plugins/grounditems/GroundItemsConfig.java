@@ -358,4 +358,37 @@ public interface GroundItemsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showProfitable",
+		name = "Show profitable high alch items",
+		description = "Configures whether or not to highlight profitable high alch items",
+		position = 28
+	)
+	default boolean showHighlightProfit()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "profitValueColor",
+		name = "Profitable high alch items color",
+		description = "Configures the color for profitable high alch items",
+		position = 29
+	)
+	default Color profitValueColor()
+	{
+		return Color.decode("#ffff00");
+	}
+
+	@ConfigItem(
+		keyName = "highlightProfitableOverValue",
+		name = "High Alch Profit > Value",
+		description = "Highlights ground items with a high alch profit greater than value",
+		position = 30
+	)
+	default int getHighlightProfitOverValue()
+	{
+		return 0;
+	}
 }

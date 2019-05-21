@@ -45,11 +45,14 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
+import static net.runelite.api.ItemID.FIRE_RUNE;
+import static net.runelite.api.ItemID.NATURE_RUNE;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -93,6 +96,7 @@ import net.runelite.client.util.Text;
 	description = "Highlight ground items and/or show price information",
 	tags = {"grand", "exchange", "high", "alchemy", "prices", "highlight", "overlay"}
 )
+@Slf4j
 public class GroundItemsPlugin extends Plugin
 {
 	// Used when getting High Alchemy value - multiplied by general store price.
@@ -442,6 +446,11 @@ public class GroundItemsPlugin extends Plugin
 		{
 			priceChecks.put(config.getHighlightOverValue(), config.highlightedColor());
 		}
+
+		if (config.getHighlightProfitOverValue() > 0)
+		{
+			priceChecks.put(config.getHighlightProfitOverValue(),  config.profitValueColor());
+		}
 	}
 
 	@Subscribe
@@ -592,6 +601,24 @@ public class GroundItemsPlugin extends Plugin
 		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa)
 			? config.hiddenColor()
 			: null;
+	}
+
+	Color getProfitable(int gePrice, int haPrice)
+	{
+		final int FIRE_RUNE_PRICE = itemManager.getItemPrice(FIRE_RUNE);
+		final int NATURE_RUNE_PRICE = itemManager.getItemPrice(NATURE_RUNE);
+
+		log.debug("GE price of item {}", gePrice);
+		log.debug("fire rune price {}", FIRE_RUNE_PRICE);
+		log.debug("nature rune price {}", NATURE_RUNE_PRICE);
+		log.debug("config value {}", config.getHighlightProfitOverValue());
+
+		if (haPrice - (gePrice + ((FIRE_RUNE_PRICE * 5) + NATURE_RUNE_PRICE)) > config.getHighlightProfitOverValue())
+		{
+			return config.profitValueColor();
+		}
+
+		return config.defaultColor();
 	}
 
 	Color getItemColor(Color highlighted, Color hidden)
