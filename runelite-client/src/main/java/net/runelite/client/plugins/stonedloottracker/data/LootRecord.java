@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <https://github.com/sethtroll>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,40 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grandexchange;
+package net.runelite.client.plugins.stonedloottracker.data;
 
-import lombok.Value;
-import net.runelite.client.game.AsyncBufferedImage;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import lombok.Getter;
 
-@Value
-class GrandExchangeItems
+@Getter
+@Deprecated
+public class LootRecord
 {
-	private final AsyncBufferedImage icon;
+	private final int id;
 	private final String name;
-	private final int itemId;
-	private final int gePrice;
-	private final int haPrice;
-	private final int geItemLimit;
+	private final int level;
+	private final int killCount;
+	final Collection<LootTrackerItemEntry> drops;
+
+	public LootRecord(int id, String name, int level, int kc, Collection<LootTrackerItemEntry> drops)
+	{
+		this.id = id;
+		this.name = name;
+		this.level = level;
+		this.killCount = kc;
+		this.drops = (drops == null ? new ArrayList<>() : drops);
+	}
+
+	LootRecordCustom toNewFormat()
+	{
+		List<LootTrackerItemEntry> drops = new ArrayList<>();
+		for (LootTrackerItemEntry e : this.getDrops())
+		{
+			drops.add(new LootTrackerItemEntry(e.getName(), e.getId(), e.getQuantity(), e.getPrice(), e.getHaPrice(), e.isStackable()));
+		}
+
+		return new LootRecordCustom(this.getId(), this.getName(), this.getLevel(), this.getKillCount(), drops);
+	}
 }

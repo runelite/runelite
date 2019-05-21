@@ -40,6 +40,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.zulrah.overlays.ZulrahCurrentPhaseOverlay;
 import net.runelite.client.plugins.zulrah.overlays.ZulrahNextPhaseOverlay;
 import net.runelite.client.plugins.zulrah.overlays.ZulrahOverlay;
@@ -55,7 +56,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Zulrah",
 	description = "Overlays to assist with killing Zulrah",
-	tags = {"zulrah", "boss", "helper"}
+	tags = {"zulrah", "boss", "helper"},
+	type = PluginType.PVM
 )
 
 @Slf4j

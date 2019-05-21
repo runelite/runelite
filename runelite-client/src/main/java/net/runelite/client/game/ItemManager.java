@@ -187,6 +187,9 @@ public class ItemManager
 		private final Color outlineColor;
 	}
 
+	// Used when getting High Alchemy value - multiplied by general store price.
+	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
+
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
 	private final ClientThread clientThread;
@@ -409,6 +412,27 @@ public class ItemManager
 		}
 
 		return price;
+	}
+
+	public int getAlchValue(int itemID)
+	{
+		if (itemID == ItemID.COINS_995)
+		{
+			return 1;
+		}
+		if (itemID == ItemID.PLATINUM_TOKEN)
+		{
+			return 1000;
+		}
+
+		float alchValue = getItemComposition(itemID).getPrice() * HIGH_ALCHEMY_CONSTANT;
+
+		/*
+		 * If the alch value is below 1, do not round up, return 0 instead.
+		 * For example bones have a base price of 1, multiplied by 0.6 will be 0.6,
+		 * if rounded up, the alch price will be 1, when it should be 0.
+		 */
+		return alchValue < 1 ? 0 : Math.round(alchValue);
 	}
 
 	/**

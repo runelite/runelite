@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <https://github.com/sethtroll>
+ * Copyright (c) 2018, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grandexchange;
+package net.runelite.client.plugins.stonedloottracker.data;
 
 import lombok.Value;
-import net.runelite.client.game.AsyncBufferedImage;
 
 @Value
-class GrandExchangeItems
+public class UniqueItemPrepared
 {
-	private final AsyncBufferedImage icon;
-	private final String name;
-	private final int itemId;
-	private final int gePrice;
-	private final int haPrice;
-	private final int geItemLimit;
+	private int linkedID;
+	private int price;
+	private UniqueItem uniqueItem;
 }

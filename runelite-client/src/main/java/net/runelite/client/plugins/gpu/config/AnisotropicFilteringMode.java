@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <https://github.com/sethtroll>
+ * Copyright (c) 2018, pacf531 <https://github.com/pacf531>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grandexchange;
+package net.runelite.client.plugins.gpu.config;
 
-import lombok.Value;
-import net.runelite.client.game.AsyncBufferedImage;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Value
-class GrandExchangeItems
+@Getter
+@RequiredArgsConstructor
+public enum AnisotropicFilteringMode
 {
-	private final AsyncBufferedImage icon;
+	DISABLED("Disabled", 0f),
+	BILINEAR("Bilinear", 0.5f),
+	TRILINEAR("Trilinear", 1f),
+	AF_2("x2", 2f),
+	AF_4("x4", 4f),
+	AF_8("x8", 8f),
+	AF_16("x16", 16f);
+
 	private final String name;
-	private final int itemId;
-	private final int gePrice;
-	private final int haPrice;
-	private final int geItemLimit;
+	private final float samples;
+
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }

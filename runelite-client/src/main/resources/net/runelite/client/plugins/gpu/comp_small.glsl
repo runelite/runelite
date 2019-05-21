@@ -37,7 +37,7 @@ shared int dfs[512]; // packed face id and distance
 
 layout(local_size_x = 512) in;
 
-#include common.glsl
+#include common_func.glsl
 #include priority_render.glsl
 
 void main() {

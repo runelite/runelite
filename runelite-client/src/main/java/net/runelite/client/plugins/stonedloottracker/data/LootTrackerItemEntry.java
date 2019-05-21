@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018, Seth <https://github.com/sethtroll>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, TheStonedTurtle <www.github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +23,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grandexchange;
+package net.runelite.client.plugins.stonedloottracker.data;
 
-import lombok.Value;
-import net.runelite.client.game.AsyncBufferedImage;
+import lombok.Getter;
 
-@Value
-class GrandExchangeItems
+@Getter
+public class LootTrackerItemEntry
 {
-	private final AsyncBufferedImage icon;
 	private final String name;
-	private final int itemId;
-	private final int gePrice;
-	private final int haPrice;
-	private final int geItemLimit;
+	private final int id;
+	private int quantity;
+	private final long price;
+	private final long haPrice;
+	private long total;
+	private long haTotal;
+	private final boolean stackable;
+
+	public LootTrackerItemEntry(String name, int id, int quantity, long price, long haPrice, boolean stackable)
+	{
+		this.name = name;
+		this.id = id;
+		this.quantity = quantity;
+		this.price = price;
+		this.haPrice = haPrice;
+		this.stackable = stackable;
+		this.total = price * quantity;
+		this.haTotal = haPrice * quantity;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "LootTrackerItemEntry(name=" + name + ",id=" + id + ",quantity=" + quantity + ",price=" + price + ",haprice=" + haPrice + ",total=" + total + ",haTotal=" + haTotal + ",stackable=" + stackable + ")";
+	}
 }

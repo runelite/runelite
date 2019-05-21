@@ -85,7 +85,7 @@ class TextureManager
 	 * @param textureProvider
 	 * @return
 	 */
-	private boolean allTexturesLoaded(TextureProvider textureProvider)
+	private static boolean allTexturesLoaded(TextureProvider textureProvider)
 	{
 		Texture[] textures = textureProvider.getTextures();
 		if (textures == null || textures.length == 0)
@@ -109,7 +109,7 @@ class TextureManager
 		return true;
 	}
 
-	private void updateTextures(TextureProvider textureProvider, GL4 gl, int textureArrayId)
+	private static void updateTextures(TextureProvider textureProvider, GL4 gl, int textureArrayId)
 	{
 		Texture[] textures = textureProvider.getTextures();
 

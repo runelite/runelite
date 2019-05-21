@@ -74,18 +74,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
-import static net.runelite.client.plugins.gpu.GLUtil.glDeleteBuffer;
-import static net.runelite.client.plugins.gpu.GLUtil.glDeleteFrameBuffer;
-import static net.runelite.client.plugins.gpu.GLUtil.glDeleteRenderbuffers;
-import static net.runelite.client.plugins.gpu.GLUtil.glDeleteTexture;
-import static net.runelite.client.plugins.gpu.GLUtil.glDeleteVertexArrays;
-import static net.runelite.client.plugins.gpu.GLUtil.glGenBuffers;
-import static net.runelite.client.plugins.gpu.GLUtil.glGenFrameBuffer;
-import static net.runelite.client.plugins.gpu.GLUtil.glGenRenderbuffer;
-import static net.runelite.client.plugins.gpu.GLUtil.glGenTexture;
-import static net.runelite.client.plugins.gpu.GLUtil.glGenVertexArrays;
-import static net.runelite.client.plugins.gpu.GLUtil.glGetInteger;
-import static net.runelite.client.plugins.gpu.GLUtil.inputStreamToString;
+import static net.runelite.client.plugins.gpu.GLUtil.*;
+import net.runelite.client.plugins.gpu.config.AnisotropicFilteringMode;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.DrawManager;
@@ -102,7 +92,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 {
 	// This is the maximum number of triangles the compute shaders support
 	private static final int MAX_TRIANGLE = 4096;
-	private static final int SMALL_TRIANGLE_COUNT = 512;
+	static final int SMALL_TRIANGLE_COUNT = 512;
 	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
 	static final int MAX_DISTANCE = 90;
 	static final int MAX_FOG_DEPTH = 100;
@@ -215,6 +205,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int lastStretchedCanvasWidth;
 	private int lastStretchedCanvasHeight;
 	private AntiAliasingMode lastAntiAliasingMode;
+	private AnisotropicFilteringMode lastAnisotropicFilteringMode;
 
 	private int centerX;
 	private int centerY;
@@ -223,6 +214,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniUseFog;
 	private int uniFogColor;
 	private int uniFogDepth;
+	private int uniFogCornerRadius;
+	private int uniFogDensity;
 	private int uniDrawDistance;
 	private int uniProjectionMatrix;
 	private int uniBrightness;
@@ -499,6 +492,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniUseFog = gl.glGetUniformLocation(glProgram, "useFog");
 		uniFogColor = gl.glGetUniformLocation(glProgram, "fogColor");
 		uniFogDepth = gl.glGetUniformLocation(glProgram, "fogDepth");
+		uniFogCornerRadius = gl.glGetUniformLocation(glProgram, "fogCornerRadius");
+		uniFogDensity = gl.glGetUniformLocation(glProgram, "fogDensity");
 		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
@@ -524,8 +519,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glDeleteProgram(glProgram);
 		glProgram = -1;
 
-		///
-
 		gl.glDeleteShader(glComputeShader);
 		glComputeShader = -1;
 
@@ -543,8 +536,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		gl.glDeleteProgram(glUnorderedComputeProgram);
 		glUnorderedComputeProgram = -1;
-
-		///
 
 		gl.glDeleteShader(glUiVertexShader);
 		glUiVertexShader = -1;
@@ -635,7 +626,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 		uniformBuffer.flip();
 
-		gl.glBufferData(gl.GL_UNIFORM_BUFFER, uniformBuffer.limit() * Integer.BYTES, uniformBuffer, gl.GL_STATIC_DRAW);
+		gl.glBufferData(gl.GL_UNIFORM_BUFFER, uniformBuffer.limit() * Integer.BYTES, uniformBuffer, gl.GL_DYNAMIC_DRAW);
 		gl.glBindBuffer(gl.GL_UNIFORM_BUFFER, 0);
 	}
 
@@ -985,6 +976,40 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			int renderViewportHeight = viewportHeight;
 			int renderViewportWidth = viewportWidth;
 
+			// Setup anisotropic filtering
+			final AnisotropicFilteringMode anisotropicFilteringMode = config.anisotropicFilteringMode();
+			final boolean afEnabled = anisotropicFilteringMode != anisotropicFilteringMode.DISABLED;
+
+			if (lastAnisotropicFilteringMode != anisotropicFilteringMode)
+			{
+				if (afEnabled)
+				{
+					switch (anisotropicFilteringMode)
+					{
+						case BILINEAR:
+							gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_NEAREST);
+							break;
+						case TRILINEAR:
+							gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_LINEAR);
+							break;
+						default:
+							final float maxSamples = glGetFloat(gl, gl.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+							final float samples = Math.min(anisotropicFilteringMode.getSamples(), maxSamples);
+							gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_LINEAR_MIPMAP_LINEAR);
+							gl.glTexParameterf(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MAX_ANISOTROPY_EXT, samples);
+							break;
+					}
+
+					gl.glGenerateMipmap(gl.GL_TEXTURE_2D_ARRAY);
+				}
+				else
+				{
+					gl.glTexParameteri(gl.GL_TEXTURE_2D_ARRAY, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST);
+				}
+			}
+
+			lastAnisotropicFilteringMode = anisotropicFilteringMode;
+
 			if (client.isStretchedEnabled())
 			{
 				Dimension dim = client.getStretchedDimensions();
@@ -1011,9 +1036,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			final int drawDistance = Math.max(0, Math.min(MAX_DISTANCE, config.drawDistance()));
 			final int fogDepth = config.fogDepth();
+			float effectiveDrawDistance = Perspective.LOCAL_TILE_SIZE * Math.min(Constants.SCENE_SIZE / 2, drawDistance);
 			gl.glUniform1i(uniUseFog, fogDepth > 0 ? 1 : 0);
 			gl.glUniform4f(uniFogColor, (sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
-			gl.glUniform1i(uniFogDepth, fogDepth);
+			gl.glUniform1f(uniFogDepth, config.fogDepth() * 0.01f * effectiveDrawDistance);
+			gl.glUniform1f(uniFogCornerRadius, config.fogCircularity() * 0.01f * effectiveDrawDistance);
+			gl.glUniform1f(uniFogDensity, config.fogDensity() * 0.1f);
 			gl.glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
 
 			// Brightness happens to also be stored in the texture provider, so we use that
@@ -1306,7 +1334,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					{
 						int var21 = (pitchCos * modelHeight >> 16) + var19;
 						int var22 = (var18 - var21) * zoom;
-						return var22 / var14 < Rasterizer3D_clipMidY2;
+						if (var22 / var14 < Rasterizer3D_clipMidY2)
+						{
+							return true;
+						}
 					}
 				}
 			}
@@ -1348,6 +1379,35 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			int tc = Math.min(MAX_TRIANGLE, model.getTrianglesCount());
 			int uvOffset = model.getUvBufferOffset();
+			boolean hasUv = model.getFaceTextures() != null;
+
+			// Speed hack: the scene uploader splits up large models with no priorities
+			// based on face height, and then we sort each smaller set of faces
+			if (tc > SMALL_TRIANGLE_COUNT && model.getFaceRenderPriorities() == null)
+			{
+				int left = tc;
+				int off = 0;
+				while (left > 0)
+				{
+					tc = Math.min(SMALL_TRIANGLE_COUNT, left);
+
+					GpuIntBuffer b = bufferForTriangles(tc);
+					b.ensureCapacity(8);
+					IntBuffer buffer = b.getBuffer();
+					buffer.put(model.getBufferOffset() + off);
+					buffer.put(hasUv ? uvOffset + off : -1);
+					buffer.put(tc);
+					buffer.put(targetBufferOffset);
+					buffer.put(FLAG_SCENE_BUFFER | (model.getRadius() << 12) | orientation);
+					buffer.put(x + client.getCameraX2()).put(y + client.getCameraY2()).put(z + client.getCameraZ2());
+
+					targetBufferOffset += tc * 3;
+
+					off += tc * 3;
+					left -= tc;
+				}
+				return;
+			}
 
 			GpuIntBuffer b = bufferForTriangles(tc);
 
@@ -1422,7 +1482,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	 */
 	private GpuIntBuffer bufferForTriangles(int triangles)
 	{
-		if (triangles < SMALL_TRIANGLE_COUNT)
+		if (triangles <= SMALL_TRIANGLE_COUNT)
 		{
 			++smallModels;
 			return modelBufferSmall;

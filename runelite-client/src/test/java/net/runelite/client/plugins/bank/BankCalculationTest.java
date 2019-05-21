@@ -110,6 +110,6 @@ public class BankCalculationTest
 		bankCalculation.calculate();
 
 		long value = bankCalculation.getHaPrice();
-		assertTrue(value > Integer.MAX_VALUE);
+		assertTrue(value == Integer.MAX_VALUE);
 	}
 }
