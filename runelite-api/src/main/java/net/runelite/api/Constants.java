@@ -97,4 +97,9 @@ public class Constants
 	 * All game-play actions operate within multiples of this duration.
 	 */
 	public static final int GAME_TICK_LENGTH = 600;
+
+	/**
+	 * Used when getting High Alchemy value - multiplied by general store price.
+	 */
+	public static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 }
