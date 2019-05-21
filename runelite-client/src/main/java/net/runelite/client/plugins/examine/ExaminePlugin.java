@@ -349,7 +349,7 @@ public class ExaminePlugin extends Plugin
 				OSBGrandExchangeResult osbresult = new OSBGrandExchangeResult();
 				try
 				{
-					osbresult = CLIENT.lookupItem(itemComposition.getId());
+					osbresult = CLIENT.lookupItem(id);
 				}
 				catch (IOException e)
 				{
@@ -359,11 +359,16 @@ public class ExaminePlugin extends Plugin
 					.append(ChatColorType.NORMAL)
 					.append(" GE  ")
 					.append(ChatColorType.HIGHLIGHT)
-					.append(StackFormatter.formatNumber(gePrice * quantity))
-					.append(ChatColorType.NORMAL)
-					.append(" OSB  ")
-					.append(ChatColorType.HIGHLIGHT)
-					.append(StackFormatter.formatNumber(osbresult.getOverall_average() * quantity));
+					.append(StackFormatter.formatNumber(gePrice * quantity));
+
+				if (osbresult != null)
+				{
+					message
+						.append(ChatColorType.NORMAL)
+						.append(" OSB  ")
+						.append(ChatColorType.HIGHLIGHT)
+						.append(StackFormatter.formatNumber(osbresult.getOverall_average() * quantity));
+				}
 
 				if (quantity > 1)
 				{
