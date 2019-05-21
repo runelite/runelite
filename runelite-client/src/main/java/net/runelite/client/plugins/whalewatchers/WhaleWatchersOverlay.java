@@ -63,10 +63,9 @@ public class WhaleWatchersOverlay extends Overlay
 			panelComponent.setWrapping(5);
 			String opp = client.getLocalPlayer().getInteracting() != null ?
 				client.getLocalPlayer().getInteracting().getName() : lastOpponent;
-			if (client.getLocalPlayer().getInteracting() != null)
-			{
-				lastOpponent = client.getLocalPlayer().getInteracting().getName();
-			}
+
+			lastOpponent = opp;
+
 			String damageTaken = "Damage Taken: " + plugin.damageTaken;
 			String damageDealt = "Damage Dealt: " + plugin.damageDone;
 
@@ -85,8 +84,8 @@ public class WhaleWatchersOverlay extends Overlay
 		else
 		{
 			panelComponent.getChildren().clear();
-
 		}
+
 		return panelComponent.render(graphics);
 	}
 }

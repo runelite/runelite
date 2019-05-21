@@ -47,13 +47,11 @@ public class Ping
 	{
 		try
 		{
-			switch (OSType.getOSType())
+			if (OSType.getOSType() == OSType.Windows)
 			{
-				case Windows:
-					return windowsPing(world);
-				default:
-					return tcpPing(world);
+				return windowsPing(world);
 			}
+			return tcpPing(world);
 		}
 		catch (IOException ex)
 		{

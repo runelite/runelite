@@ -63,7 +63,6 @@ public class HintArrowOverlay extends Overlay
 		}
 
 		List<NPC> visibleActivePortals = new ArrayList<>();
-		List<NPC> visibleShieldedPortals = new ArrayList<>();
 
 		for (NPC npc : client.getNpcs())
 		{

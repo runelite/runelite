@@ -130,10 +130,10 @@ public class PestControlPlugin extends Plugin
 	private Game game;
 
 	@Getter
-	private HashMap<Integer, NpcHighlightContext> highlightedNpcList = new HashMap<Integer, NpcHighlightContext>();
+	private HashMap<Integer, NpcHighlightContext> highlightedNpcList = new HashMap<>();
 
 	@Getter
-	private List<TileObject> highlightedRepairList = new ArrayList<TileObject>();
+	private List<TileObject> highlightedRepairList = new ArrayList<>();
 
 	@Getter
 	private Tile noviceGangplankTile;
@@ -150,8 +150,6 @@ public class PestControlPlugin extends Plugin
 	private String userConfigKey;
 
 	private boolean checkForPointWidgets;
-
-	private boolean pointsRewarded = false;
 
 	private PointsInfoboxCounter pointsInfoboxCounter;
 
@@ -330,7 +328,7 @@ public class PestControlPlugin extends Plugin
 		}
 	}
 
-	public void handlePointsInfoboxCounter()
+	private void handlePointsInfoboxCounter()
 	{
 		if (!config.showPoints())
 		{
@@ -370,7 +368,7 @@ public class PestControlPlugin extends Plugin
 	}
 
 
-	public void getPointsFromWidgets()
+	private void getPointsFromWidgets()
 	{
 
 		// Get points from dialog after the game
@@ -444,7 +442,7 @@ public class PestControlPlugin extends Plugin
 		}
 	}
 
-	public void setCommendationPoints(int newPoints)
+	private void setCommendationPoints(int newPoints)
 	{
 		if (userConfigKey == null)
 		{
@@ -507,7 +505,6 @@ public class PestControlPlugin extends Plugin
 		{
 			log.debug("Pest control game has started");
 			game = new Game(client, this);
-			pointsRewarded = false;
 		}
 
 		// Check if we are in a game
@@ -658,12 +655,12 @@ public class PestControlPlugin extends Plugin
 		unlistTileObject(event.getGroundObject());
 	}
 
-	public boolean isInPestControlInstance()
+	private boolean isInPestControlInstance()
 	{
 		return client.getWidget(WidgetInfo.PEST_CONTROL_BLUE_SHIELD) != null;
 	}
 
-	public boolean isOnPestControlMainIsland()
+	boolean isOnPestControlMainIsland()
 	{
 		return client.getLocalPlayer().getWorldLocation().getRegionID() == 10537;
 	}

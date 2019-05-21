@@ -347,7 +347,7 @@ public class SlayerPlugin extends Plugin
 		{
 			highlightedTargets.add(npc);
 			NPCPresence newPresence = NPCPresence.buildPresence(npc);
-			log.debug("New presence of " + newPresence.toString());
+			// log.debug("New presence of " + newPresence.toString());
 		}
 	}
 
@@ -360,7 +360,7 @@ public class SlayerPlugin extends Plugin
 		{
 			NPCPresence lingeringPresence = NPCPresence.buildPresence(npc);
 			lingeringPresences.add(lingeringPresence);
-			log.debug("Presence of " + lingeringPresence.toString() + " now lingering");
+			// log.debug("Presence of " + lingeringPresence.toString() + " now lingering");
 		}
 	}
 
@@ -401,14 +401,13 @@ public class SlayerPlugin extends Plugin
 			return 0;
 		}
 
-		StringBuilder debugString = new StringBuilder();
-		for (NPCPresence presence : potentialKills)
-		{
-			debugString.append(presence.toString());
-			debugString.append(", ");
-		}
-		log.debug("Estimating kc of xp drop " + gains + " for presences {" +
-			debugString.toString() + "}");
+		//StringBuilder debugString = new StringBuilder();
+		//for (NPCPresence presence : potentialKills)
+		//{
+		//	debugString.append(presence.toString());
+		//	debugString.append(", ");
+		//}
+		// log.debug("Estimating kc of xp drop " + gains + " for presences {" + debugString.toString() + "}");
 
 		// first determine potential xp drops given by all npcs that died this tick by grabbing the slayer xp
 		// info from the map made out of the data in slayer_xp.json
@@ -422,14 +421,13 @@ public class SlayerPlugin extends Plugin
 			}
 		}
 
-		debugString = new StringBuilder();
-		for (Double drop : potentialXpDrops)
-		{
-			debugString.append(drop);
-			debugString.append(", ");
-		}
-		log.debug("Determined xp drop " + gains + " can be made of {" + debugString.toString()
-			+ "}");
+		//debugString = new StringBuilder();
+		//for (Double drop : potentialXpDrops)
+		//{
+		//	debugString.append(drop);
+		//	debugString.append(", ");
+		//}
+		// log.debug("Determined xp drop " + gains + " can be made of {" + debugString.toString() + "}");
 
 		// we can attempt to determine exactly how many npcs died to give this amount of xp
 		// by using a solver for the knapsack problem
@@ -485,7 +483,7 @@ public class SlayerPlugin extends Plugin
 			presence.tickExistence();
 			if (!presence.shouldExist())
 			{
-				log.debug("Lingering presence of " + presence.toString() + " expired");
+				// log.debug("Lingering presence of " + presence.toString() + " expired");
 				presenceIterator.remove();
 			}
 		}
@@ -662,29 +660,29 @@ public class SlayerPlugin extends Plugin
 			// this is not the initial xp sent on login so these are new xp gains
 			int gains = slayerExp - cachedXp;
 
-			log.debug("Slayer xp drop received");
+			//log.debug("Slayer xp drop received");
 
-			StringBuilder debugString = new StringBuilder();
+			//StringBuilder debugString = new StringBuilder();
 
 			// potential npcs to give xp drop are current highlighted npcs and the lingering presences
 			List<NPCPresence> potentialNPCs = new ArrayList<>();
-			debugString.append("Lingering presences {");
+			//debugString.append("Lingering presences {");
 			for (NPCPresence presence : lingeringPresences)
 			{
 				potentialNPCs.add(presence);
-				debugString.append(presence.toString());
-				debugString.append(", ");
+			//	debugString.append(presence.toString());
+			//	debugString.append(", ");
 			}
-			debugString.append("}\nCurrent presences {");
+			//debugString.append("}\nCurrent presences {");
 			for (NPC npc : highlightedTargets)
 			{
 				NPCPresence currentPresence = NPCPresence.buildPresence(npc);
 				potentialNPCs.add(currentPresence);
-				debugString.append(currentPresence.toString());
-				debugString.append(", ");
+			//	debugString.append(currentPresence.toString());
+			//	debugString.append(", ");
 			}
-			debugString.append("}");
-			log.debug(debugString.toString());
+			//debugString.append("}");
+			//log.debug(debugString.toString());
 
 			int killCount = estimateKillCount(potentialNPCs, gains);
 			for (int i = 0; i < killCount; i++)
@@ -707,7 +705,7 @@ public class SlayerPlugin extends Plugin
 		final Actor interacting = client.getLocalPlayer().getInteracting();
 		weaknessTask = null;
 
-		if (interacting == null || !(interacting instanceof NPC))
+		if (!(interacting instanceof NPC))
 		{
 			return;
 		}
@@ -791,11 +789,12 @@ public class SlayerPlugin extends Plugin
 		{
 			for (int j = i; j < seq0.length; j++)
 			{
-				String sub0 = "";
+				StringBuilder sub0Builder = new StringBuilder();
 				for (int k = i; k <= j; k++)
 				{
-					sub0 += seq0[k] + " ";
+					sub0Builder.append(seq0[k]).append(" ");
 				}
+				String sub0 = sub0Builder.toString();
 				sub0 = sub0.substring(0, sub0.length() - 1); // remove extra space
 				if (sub0.equals(toMatch))
 				{

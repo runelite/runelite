@@ -659,7 +659,7 @@ public class TheatrePlugin extends Plugin
 			WorldPoint p = WorldPoint.fromLocal(client, obj.getLocation());
 			if (temp.size() == 0)
 			{
-
+// TODO: ???
 			}
 			else
 			{

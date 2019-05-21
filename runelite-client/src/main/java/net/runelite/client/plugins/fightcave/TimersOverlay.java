@@ -48,7 +48,6 @@ public class TimersOverlay extends Overlay
 {
 	private FightCavePlugin plugin;
 	private Client client;
-	private Color tickcolor = new Color(255, 255, 255, 255);
 
 	@Inject
 	TimersOverlay(FightCavePlugin plugin, Client client)
@@ -65,87 +64,88 @@ public class TimersOverlay extends Overlay
 	{
 		for (NPCContainer npc : plugin.getDrainers().values())
 		{
-			renderNpcOverlay(graphics, npc.getNpc(), new Color(255, 0, 0, 255), 2, 255, 20);
+			renderNpcOverlay(graphics, npc.getNpc(), Color.RED, 255, 20);
 			String str = "drainer";
 			Point canvasPoint = npc.getNpc().getCanvasTextLocation(graphics, str, 0);
-			renderTextLocation(graphics, str, 12, Font.BOLD, new Color(255, 255, 255, 255), canvasPoint);
+			renderTextLocation(graphics, str, 12, Color.WHITE, canvasPoint);
 		}
 
 		for (NPCContainer npc : plugin.getIgnore().values())
 		{
-			renderNpcOverlay(graphics, npc.getNpc(), new Color(0, 0, 0, 255), 2, 50, 5);
+			renderNpcOverlay(graphics, npc.getNpc(), Color.BLACK, 50, 5);
 			String str = "ignore";
 			Point canvasPoint = npc.getNpc().getCanvasTextLocation(graphics, str, 0);
-			renderTextLocation(graphics, str, 10, Font.BOLD, new Color(255, 255, 255, 255), canvasPoint);
+			renderTextLocation(graphics, str, 10, Color.WHITE, canvasPoint);
 		}
+
+		Color tickcolor;
 
 		for (NPCContainer npc : plugin.getRangers().values())
 		{
-			renderNpcOverlay(graphics, npc.getNpc(), new Color(0, 255, 0, 255), 2, 100, 10);
+			renderNpcOverlay(graphics, npc.getNpc(), Color.GREEN, 100, 10);
 			final int ticksLeft = npc.getTicksUntilAttack();
 			if (ticksLeft > 0)
 			{
 				if (ticksLeft == 1)
 				{
-					tickcolor = new Color(0, 255, 0, 255);
+					tickcolor = Color.GREEN;
 				}
 				else
 				{
-
-					tickcolor = new Color(255, 255, 255, 255);
+					tickcolor = Color.WHITE;
 				}
 				final String ticksLeftStr = String.valueOf(ticksLeft);
 				Point canvasPoint = npc.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
-				renderTextLocation(graphics, ticksLeftStr, 32, Font.BOLD, tickcolor, canvasPoint);
+				renderTextLocation(graphics, ticksLeftStr, 32, tickcolor, canvasPoint);
 			}
 		}
 
 		for (NPCContainer npc : plugin.getMagers().values())
 		{
-			renderNpcOverlay(graphics, npc.getNpc(), new Color(0, 255, 255, 255), 2, 100, 10);
+			renderNpcOverlay(graphics, npc.getNpc(), Color.CYAN, 100, 10);
 			final int ticksLeft = npc.getTicksUntilAttack();
 			if (ticksLeft > 0)
 			{
 				if (ticksLeft == 1)
 				{
-					tickcolor = new Color(0, 255, 255, 255);
+					tickcolor = Color.CYAN;
 				}
 				else
 				{
 
-					tickcolor = new Color(255, 255, 255, 255);
+					tickcolor = Color.WHITE;
 				}
 				final String ticksLeftStr = String.valueOf(ticksLeft);
 				Point canvasPoint = npc.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
-				renderTextLocation(graphics, ticksLeftStr, 32, Font.BOLD, tickcolor, canvasPoint);
+				renderTextLocation(graphics, ticksLeftStr, 32, tickcolor, canvasPoint);
 			}
 		}
 
 		for (NPCContainer npc : plugin.getMeleers().values())
 		{
-			renderNpcOverlay(graphics, npc.getNpc(), new Color(255, 0, 0, 255), 2, 100, 10);
+			renderNpcOverlay(graphics, npc.getNpc(), Color.RED, 100, 10);
 			final int ticksLeft = npc.getTicksUntilAttack();
 			if (ticksLeft > 0)
 			{
 				if (ticksLeft == 1)
 				{
-					tickcolor = new Color(255, 0, 0, 255);
+					tickcolor = Color.RED;
 				}
 				else
 				{
 
-					tickcolor = new Color(255, 255, 255, 255);
+					tickcolor = Color.WHITE;
 				}
 				final String ticksLeftStr = String.valueOf(ticksLeft);
 				Point canvasPoint = npc.getNpc().getCanvasTextLocation(graphics, ticksLeftStr, 0);
-				renderTextLocation(graphics, ticksLeftStr, 32, Font.BOLD, tickcolor, canvasPoint);
+				renderTextLocation(graphics, ticksLeftStr, 32, tickcolor, canvasPoint);
 			}
 		}
 
 		return null;
 	}
 
-	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color, int outlineWidth, int outlineAlpha, int fillAlpha)
+	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color, int outlineAlpha, int fillAlpha)
 	{
 		int size = 1;
 		NPCComposition composition = actor.getTransformedComposition();
@@ -159,16 +159,16 @@ public class TimersOverlay extends Overlay
 		if (tilePoly != null)
 		{
 			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), outlineAlpha));
-			graphics.setStroke(new BasicStroke(outlineWidth));
+			graphics.setStroke(new BasicStroke(2));
 			graphics.draw(tilePoly);
 			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fillAlpha));
 			graphics.fill(tilePoly);
 		}
 	}
 
-	private void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint)
+	private void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, Color fontColor, Point canvasPoint)
 	{
-		graphics.setFont(new Font("Arial", fontStyle, fontSize));
+		graphics.setFont(new Font("Arial", Font.BOLD, fontSize));
 		if (canvasPoint != null)
 		{
 			final Point canvasCenterPoint = new Point(

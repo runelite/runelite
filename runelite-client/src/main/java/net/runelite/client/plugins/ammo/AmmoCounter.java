@@ -42,9 +42,6 @@ class AmmoCounter extends Counter
 	private int total;
 	private Instant time;
 	private BigDecimal ammoPerHour;
-	private BigDecimal timeSinceStartInHours;
-	private BigDecimal timeSinceStart;
-	private BigDecimal diff;
 
 	AmmoCounter(Plugin plugin, int itemID, int count, String name, BufferedImage image)
 	{
@@ -74,14 +71,14 @@ class AmmoCounter extends Counter
 		}
 	}
 
-	int lossRate()
+	private int lossRate()
 	{
-		diff = BigDecimal.valueOf(total).subtract(BigDecimal.valueOf(getCount()));
-		timeSinceStart = BigDecimal.valueOf(Duration.between(time, Instant.now()).getSeconds())
+		BigDecimal diff = BigDecimal.valueOf(total).subtract(BigDecimal.valueOf(getCount()));
+		BigDecimal timeSinceStart = BigDecimal.valueOf(Duration.between(time, Instant.now()).getSeconds())
 			.setScale(6, RoundingMode.UP);
 		if (timeSinceStart.compareTo(BigDecimal.ZERO) != 0)
 		{
-			timeSinceStartInHours = timeSinceStart.divide(BigDecimal.valueOf(3600), RoundingMode.UP);
+			BigDecimal timeSinceStartInHours = timeSinceStart.divide(BigDecimal.valueOf(3600), RoundingMode.UP);
 			ammoPerHour = diff.divide(timeSinceStartInHours, RoundingMode.HALF_UP);
 		}
 		if (ammoPerHour != null)

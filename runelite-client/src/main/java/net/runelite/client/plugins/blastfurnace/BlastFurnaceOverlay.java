@@ -86,7 +86,6 @@ class BlastFurnaceOverlay extends Overlay
 
 	private BufferedImage getImage(int itemID, int amount)
 	{
-		BufferedImage image = itemManager.getImage(itemID, amount, true);
-		return image;
+		return itemManager.getImage(itemID, amount, true);
 	}
 }

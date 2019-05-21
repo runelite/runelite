@@ -38,7 +38,6 @@ public class PvPUtil
 	 */
 	public static int getWildernessLevelFrom(WorldPoint point)
 	{
-		int x = point.getX();
 		int y = point.getY();
 
 		int underLevel = ((y - 9920) / 8) + 1;

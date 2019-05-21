@@ -60,7 +60,7 @@ import net.runelite.client.util.ImageUtil;
 class BarbarianAssaultOverlay extends Overlay
 {
 	private static final int MAX_EGG_DISTANCE = 2500;
-	private final int HEALTH_BAR_HEIGHT = 20;
+	private static final int HEALTH_BAR_HEIGHT = 20;
 	private final Color HEALTH_BAR_COLOR = new Color(225, 35, 0, 125);
 	private static final Color BACKGROUND = new Color(0, 0, 0, 150);
 	private static final int OFFSET_Z = 20;

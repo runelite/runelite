@@ -71,8 +71,6 @@ public class MinimapDot
 	{
 		int[] pixels = createPixels(color);
 
-		SpritePixels dotSprite = client.createSpritePixels(pixels, MAP_DOT_WIDTH, MAP_DOT_HEIGHT);
-
-		return dotSprite;
+		return client.createSpritePixels(pixels, MAP_DOT_WIDTH, MAP_DOT_HEIGHT);
 	}
 }

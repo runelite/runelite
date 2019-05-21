@@ -174,11 +174,9 @@ public class WikiPlugin extends Plugin
 		icon.setAction(5, "Search"); // Start at option 5 so the target op is ontop
 		icon.setOnOpListener((JavaScriptCallback) ev ->
 		{
-			switch (ev.getOp())
+			if (ev.getOp() == 6)
 			{
-				case 6:
-					openSearchInput();
-					break;
+				openSearchInput();
 			}
 		});
 		// This doesn't always run because we cancel the menuop

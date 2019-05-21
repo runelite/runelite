@@ -758,8 +758,8 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 
 	private static WorldPoint rotate(WorldPoint point, int rotation)
 	{
-		int chunkX = point.getX() & ~(CHUNK_SIZE - 1);
-		int chunkY = point.getY() & ~(CHUNK_SIZE - 1);
+		int chunkX = point.getX() & -CHUNK_SIZE;
+		int chunkY = point.getY() & -CHUNK_SIZE;
 		int x = point.getX() & (CHUNK_SIZE - 1);
 		int y = point.getY() & (CHUNK_SIZE - 1);
 		switch (rotation)

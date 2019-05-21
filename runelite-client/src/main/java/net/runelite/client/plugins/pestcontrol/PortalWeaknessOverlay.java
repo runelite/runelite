@@ -95,9 +95,8 @@ public class PortalWeaknessOverlay extends Overlay
 		}
 
 		// We can use any image here as it's only needed to calculate the position
-		Point imageLocation = Perspective.getCanvasImageLocation(client, localLocation, magicImage, zOffset);
 
-		return imageLocation;
+		return Perspective.getCanvasImageLocation(client, localLocation, magicImage, zOffset);
 
 	}
 
@@ -143,7 +142,7 @@ public class PortalWeaknessOverlay extends Overlay
 			graphics.setComposite(translucentComposite);
 
 			OverlayUtil.renderImageLocation(graphics, portalLeft, imageLeft);
-			OverlayUtil.renderImageLocation(graphics, portalPoint, imageRight);
+			OverlayUtil.renderImageLocation(graphics, portalRight, imageRight);
 
 			graphics.setComposite(originalComposite);
 		}

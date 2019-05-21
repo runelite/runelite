@@ -100,16 +100,16 @@ class RunedokuOverlay extends Overlay
 			{
 				if (!util.makeSimple(util.createTable(client)).contains(0))
 				{
-					OverlayUtil.renderPolygon(graphics, util.rectangleToPolygon(widget.getBounds()), Color.GREEN);
+					OverlayUtil.renderPolygon(graphics, RunedokuUtil.rectangleToPolygon(widget.getBounds()), Color.GREEN);
 				}
 				else
 				{
-					OverlayUtil.renderPolygon(graphics, util.rectangleToPolygon(widget.getBounds()), util.referenceColors(i));
+					OverlayUtil.renderPolygon(graphics, RunedokuUtil.rectangleToPolygon(widget.getBounds()), util.referenceColors(i));
 				}
 			}
 			else
 			{
-				OverlayUtil.renderPolygon(graphics, util.rectangleToPolygon(widget.getBounds()), RED);
+				OverlayUtil.renderPolygon(graphics, RunedokuUtil.rectangleToPolygon(widget.getBounds()), RED);
 			}
 
 		}
@@ -134,17 +134,17 @@ class RunedokuOverlay extends Overlay
 			{
 				if (!util.makeSimple(util.createTable(client)).contains(0))
 				{
-					OverlayUtil.renderPolygon(graphics, util.rectangleToPolygon(squareToHighlight.getBounds()), Color.GREEN);
+					OverlayUtil.renderPolygon(graphics, RunedokuUtil.rectangleToPolygon(squareToHighlight.getBounds()), Color.GREEN);
 				}
 				else
 				{
-					OverlayUtil.renderPolygon(graphics, util.rectangleToPolygon(squareToHighlight.getBounds()), util.sudokuPieceToColor(simpleArr.get(iteration)));
+					OverlayUtil.renderPolygon(graphics, RunedokuUtil.rectangleToPolygon(squareToHighlight.getBounds()), util.sudokuPieceToColor(simpleArr.get(iteration)));
 				}
 				iteration++;
 			}
 			else
 			{
-				OverlayUtil.renderPolygon(graphics, util.rectangleToPolygon(squareToHighlight.getBounds()), RED);
+				OverlayUtil.renderPolygon(graphics, RunedokuUtil.rectangleToPolygon(squareToHighlight.getBounds()), RED);
 			}
 
 		}

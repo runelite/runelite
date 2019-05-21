@@ -460,14 +460,14 @@ public class AlchemyRoom extends MTARoom
 				continue;
 			}
 
-			drawItem(graphics, item, Color.GREEN);
+			drawItem(graphics, item);
 		}
 	}
 
-	private void drawItem(Graphics2D graphics, WidgetItem item, Color border)
+	private void drawItem(Graphics2D graphics, WidgetItem item)
 	{
 		Rectangle bounds = item.getCanvasBounds();
-		graphics.setColor(border);
+		graphics.setColor(Color.GREEN);
 		graphics.draw(bounds);
 	}
 

@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
-import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.events.AnimationChanged;
@@ -75,7 +74,6 @@ public class TickCounterPlugin extends Plugin
 
 	private List<Player> blowpiping = new ArrayList<>();
 	private boolean instanced = false;
-	private boolean prevInstance = false;
 
 	@Override
 	protected void startUp() throws Exception
@@ -223,8 +221,7 @@ public class TickCounterPlugin extends Plugin
 		 */
 		for (Player p : blowpiping)
 		{
-			Actor rsp = p;
-			if (rsp.getActionFrame() == 0 && rsp.getActionFrameCycle() == 1)
+			if (p.getActionFrame() == 0 && p.getActionFrameCycle() == 1)
 			{
 				String name = p.getName();
 				int activity = this.activity.getOrDefault(name, 0);
@@ -240,7 +237,7 @@ public class TickCounterPlugin extends Plugin
 		{
 			return;
 		}
-		prevInstance = instanced;
+		boolean prevInstance = instanced;
 		instanced = client.isInInstancedRegion();
 		if (!prevInstance && instanced)
 		{

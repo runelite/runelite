@@ -59,13 +59,12 @@ public class Flexo extends Robot
 	public static double scale;
 	public static Client client;
 	public static ClientUI clientUI;
-	public static int fixedWidth = Constants.GAME_FIXED_WIDTH;
-	public static int fixedHeight = Constants.GAME_FIXED_HEIGHT;
+	public static final int fixedWidth = Constants.GAME_FIXED_WIDTH;
+	public static final int fixedHeight = Constants.GAME_FIXED_HEIGHT;
 	public static boolean isStretched;
 	public static int minDelay = 45;
 	public static MouseMotionFactory currentMouseMotionFactory;
 	public boolean pausedIndefinitely = false;
-	private Thread holdKeyThread;
 	private RobotPeer peer;
 
 	public Flexo() throws AWTException
@@ -143,7 +142,6 @@ public class Flexo extends Robot
 
 	public synchronized void mouseMove(Point p)
 	{
-		Point p2 = p;
 		mouseMove((int) p.getX(), (int) p.getY());
 		try
 		{
@@ -293,7 +291,7 @@ public class Flexo extends Robot
 
 	public synchronized void holdKeyIndefinitely(int keycode)
 	{
-		holdKeyThread = new Thread(() ->
+		Thread holdKeyThread = new Thread(() ->
 		{
 			pausedIndefinitely = true;
 			peer.keyPress(keycode);
@@ -318,8 +316,7 @@ public class Flexo extends Robot
 	@Override
 	public Color getPixelColor(int x, int y)
 	{
-		Color color = new Color(peer.getRGBPixel(x, y));
-		return color;
+		return new Color(peer.getRGBPixel(x, y));
 	}
 
 	@Override
