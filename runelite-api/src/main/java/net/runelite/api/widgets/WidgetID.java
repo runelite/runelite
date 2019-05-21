@@ -1067,17 +1067,17 @@ public class WidgetID
 		public static final int WINNINGS = 40;
 	}
 
-	public static class BankPin
+	static class BankPin
 	{
-		public static final int BUTTON_1 = 16;
-		public static final int BUTTON_2 = 18;
-		public static final int BUTTON_3 = 20;
-		public static final int BUTTON_4 = 22;
-		public static final int BUTTON_5 = 24;
-		public static final int BUTTON_6 = 26;
-		public static final int BUTTON_7 = 28;
-		public static final int BUTTON_8 = 30;
-		public static final int BUTTON_9 = 32;
-		public static final int BUTTON_0 = 34;
+		static final int BUTTON_1 = 16;
+		static final int BUTTON_2 = 18;
+		static final int BUTTON_3 = 20;
+		static final int BUTTON_4 = 22;
+		static final int BUTTON_5 = 24;
+		static final int BUTTON_6 = 26;
+		static final int BUTTON_7 = 28;
+		static final int BUTTON_8 = 30;
+		static final int BUTTON_9 = 32;
+		static final int BUTTON_0 = 34;
 	}
 }

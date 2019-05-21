@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -198,7 +199,7 @@ public class SpellbookPlugin extends Plugin
 		}
 	}
 
-	private static boolean isUnfiltered(String spell, ImmutableSet<String> unfiltereds)
+	private static boolean isUnfiltered(String spell, Set<String> unfiltereds)
 	{
 		for (String str : unfiltereds)
 		{
@@ -379,15 +380,19 @@ public class SpellbookPlugin extends Plugin
 		}
 		else if ("resizeIndividualSpells".equals(event.getEventName()))
 		{
-			ImmutableSet<String> tmp = ImmutableSet.copyOf(notFilteredSpells);
-
 			int widget = iStack[iStackSize - 1];
-			int visCount = (int) spells.values().stream()
-				.map(Spell::getName)
-				.filter(s -> isUnfiltered(s, tmp))
-				.count();
 
-			if (visCount > 20 || visCount == 0)
+			int visibleCount = 0;
+			for (Spell spell1 : spells.values())
+			{
+				String s = spell1.getName();
+				if (isUnfiltered(s, notFilteredSpells))
+				{
+					visibleCount++;
+				}
+			}
+
+			if (visibleCount > 20 || visibleCount == 0)
 			{
 				return;
 			}
@@ -446,7 +451,10 @@ public class SpellbookPlugin extends Plugin
 
 		if (tmp != null)
 		{
-			tmp.forEach((k, v) -> spells.replace(k, v));
+			for (Map.Entry<Integer, Spell> entry : tmp.entrySet())
+			{
+				spells.replace(entry.getKey(), entry.getValue());
+			}
 		}
 	}
 
@@ -457,7 +465,10 @@ public class SpellbookPlugin extends Plugin
 			return;
 		}
 
-		tmp.forEach((k, v) -> spells.replace(k, v));
+		for (Map.Entry<Integer, Spell> entry : tmp.entrySet())
+		{
+			spells.replace(entry.getKey(), entry.getValue());
+		}
 
 		String key = spellbook.getConfigKey();
 

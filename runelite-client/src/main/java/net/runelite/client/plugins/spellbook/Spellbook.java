@@ -24,8 +24,7 @@
  */
 package net.runelite.client.plugins.spellbook;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.common.collect.ImmutableMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -43,14 +42,16 @@ public enum Spellbook
 	@Getter
 	private final String configKey;
 
-	private static final Map<Integer, Spellbook> map = new HashMap<>();
+	private static final ImmutableMap<Integer, Spellbook> map;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, Spellbook> builder = new ImmutableMap.Builder<>();
 		for (Spellbook s : values())
 		{
-			map.put(s.id, s);
+			builder.put(s.id, s);
 		}
+		map = builder.build();
 	}
 
 	public static Spellbook getByID(int id)

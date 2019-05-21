@@ -719,7 +719,15 @@ public enum WidgetInfo
 	BANK_PIN_7(WidgetID.BANK_PIN_GROUP_ID, WidgetID.BankPin.BUTTON_7),
 	BANK_PIN_8(WidgetID.BANK_PIN_GROUP_ID, WidgetID.BankPin.BUTTON_8),
 	BANK_PIN_9(WidgetID.BANK_PIN_GROUP_ID, WidgetID.BankPin.BUTTON_9),
-	BANK_PIN_0(WidgetID.BANK_PIN_GROUP_ID, WidgetID.BankPin.BUTTON_0);
+	BANK_PIN_0(WidgetID.BANK_PIN_GROUP_ID, WidgetID.BankPin.BUTTON_0),
+
+	XP_DROP_1(WidgetID.EXPERIENCE_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_1),
+	XP_DROP_2(WidgetID.EXPERIENCE_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_2),
+	XP_DROP_3(WidgetID.EXPERIENCE_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_3),
+	XP_DROP_4(WidgetID.EXPERIENCE_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_4),
+	XP_DROP_5(WidgetID.EXPERIENCE_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_5),
+	XP_DROP_6(WidgetID.EXPERIENCE_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_6),
+	XP_DROP_7(WidgetID.EXPERIENCE_DROP_GROUP_ID, WidgetID.ExperienceDrop.DROP_7);
 
 	private final int groupId;
 	private final int childId;

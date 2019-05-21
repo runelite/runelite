@@ -31,6 +31,8 @@ import java.awt.image.BufferedImage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -119,26 +121,14 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_EXPEDITIOUS_CHARGES = 30;
 	private static final int MAX_BINDING_CHARGES = 16;
 
-	public boolean isRingOfRecoilAvailable()
-	{
-		return ringOfRecoilAvailable;
-	}
-
+	@Getter(AccessLevel.PACKAGE)
 	private boolean ringOfRecoilAvailable = false;
 
-	boolean isRingOfRecoilEquipped()
-	{
-		return ringOfRecoilEquipped;
-	}
-
+	@Getter(AccessLevel.PACKAGE)
 	private boolean ringOfRecoilEquipped = false;
+
+	@Getter(AccessLevel.PACKAGE)
 	private BufferedImage recoilRingImage;
-
-	BufferedImage getRecoilRingImage()
-	{
-		return recoilRingImage;
-	}
-
 
 	@Inject
 	private Client client;
@@ -416,7 +406,7 @@ public class ItemChargePlugin extends Plugin
 		ringOfRecoilEquipped = false;
 
 		Item ring = null;
-		if (equipment != null && equipment.getItems().length > EquipmentInventorySlot.RING.getSlotIdx())
+		if (equipment != null && equipment.getItems().length >= EquipmentInventorySlot.RING.getSlotIdx())
 		{
 			ring = equipment.getItems()[EquipmentInventorySlot.RING.getSlotIdx()];
 		}

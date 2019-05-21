@@ -425,14 +425,7 @@ public class ItemManager
 			return 1000;
 		}
 
-		float alchValue = getItemComposition(itemID).getPrice() * HIGH_ALCHEMY_CONSTANT;
-
-		/*
-		 * If the alch value is below 1, do not round up, return 0 instead.
-		 * For example bones have a base price of 1, multiplied by 0.6 will be 0.6,
-		 * if rounded up, the alch price will be 1, when it should be 0.
-		 */
-		return alchValue < 1 ? 0 : Math.round(alchValue);
+		return (int) (getItemComposition(itemID).getPrice() * HIGH_ALCHEMY_CONSTANT);
 	}
 
 	/**
