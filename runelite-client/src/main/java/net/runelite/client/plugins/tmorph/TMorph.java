@@ -32,6 +32,7 @@ import net.runelite.api.Player;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.kit.KitType;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -84,6 +85,15 @@ public class TMorph extends Plugin
 	private void updateEquip()
 	{
 		Player player = client.getLocalPlayer();
+
+
+		if (player == null
+			|| player.getPlayerComposition() == null
+			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
+			|| client.getViewportWidget() == null)
+		{
+			return;
+		}
 
 		final int mainhandID = ObjectUtils.defaultIfNull(player.getPlayerComposition().
 			getEquipmentId(KitType.WEAPON), 0);
