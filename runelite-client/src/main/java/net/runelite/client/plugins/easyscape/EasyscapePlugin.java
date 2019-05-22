@@ -29,6 +29,8 @@ package net.runelite.client.plugins.easyscape;
 
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
+import java.util.HashSet;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -40,6 +42,7 @@ import net.runelite.api.Player;
 import static net.runelite.api.Varbits.BUILDING_MODE;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -61,6 +64,7 @@ public class EasyscapePlugin extends Plugin
 	private static final int PURO_PURO_REGION_ID = 10307;
 
 	private MenuEntry[] entries;
+	private final Set<Integer> leftClickConstructionIDs = new HashSet<>();
 
 	@Inject
 	private Client client;
@@ -81,12 +85,25 @@ public class EasyscapePlugin extends Plugin
 	public void startUp()
 	{
 		addSwaps();
+		loadConstructionIDs(config.getConstructionItems());
 	}
 
 	@Override
 	public void shutDown()
 	{
 		removeSwaps();
+		loadConstructionIDs("");
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		loadConstructionIDs(config.getConstructionItems());
 	}
 
 	@Subscribe
@@ -301,35 +318,7 @@ public class EasyscapePlugin extends Plugin
 			}
 		}
 
-		if (config.getEasyConstruction() && client.getVar(BUILDING_MODE) == 1 && !Strings.isNullOrEmpty(config.getConstructionItems()))
-		{
-			if (event.getType() == WALK.getId())
-			{
-				MenuEntry menuEntry = entries[entries.length - 1];
-				menuEntry.setType(MenuAction.WALK.getId() + MENU_ACTION_DEPRIORITIZE_OFFSET);
-			}
-
-			swap(client, "Build", option, target);
-
-			for (int i = entries.length - 1; i >= 0; i--)
-			{
-				for (String item : Text.fromCSV(config.getConstructionItems()))
-				{
-					if (item.equalsIgnoreCase(Text.removeTags(entries[i].getTarget())))
-					{
-						if (!entries[i].getOption().equalsIgnoreCase("remove"))
-						{
-							entries = ArrayUtils.remove(entries, i);
-							i--;
-						}
-					}
-				}
-			}
-
-			client.setMenuEntries(entries);
-		}
-
-		if (config.getSwapSmithing() && option.contains("smith"))
+		else if (config.getSwapSmithing() && option.contains("smith"))
 		{
 			if (option.equalsIgnoreCase("Smith 1"))
 			{
@@ -396,6 +385,7 @@ public class EasyscapePlugin extends Plugin
 			return;
 		}
 
+		loadConstructionIDs(config.getConstructionItems());
 		removeSwaps();
 		addSwaps();
 	}
@@ -442,7 +432,6 @@ public class EasyscapePlugin extends Plugin
 		{
 			menuManager.addSwap("remove", "digsite pendant", config.getDigsitePendantMode().toString(),  "digsite pendant", true, false);
 		}
-
 
 		if (config.getSlayerRing())
 		{
@@ -506,6 +495,47 @@ public class EasyscapePlugin extends Plugin
 		{
 			WorldPoint location = player.getWorldLocation();
 			return location.getRegionID() == PURO_PURO_REGION_ID;
+		}
+	}
+
+	private void loadConstructionIDs(String from)
+	{
+		if (client.getGameState() != GameState.LOGGED_IN
+			|| Strings.isNullOrEmpty(from) && leftClickConstructionIDs.isEmpty())
+		{
+			return;
+		}
+
+		if (!leftClickConstructionIDs.isEmpty())
+		{
+			for (int i : leftClickConstructionIDs)
+			{
+				menuManager.toggleLeftClick("build", i, true);
+				menuManager.toggleLeftClick("remove", i, true);
+			}
+
+			leftClickConstructionIDs.clear();
+		}
+
+		if (!config.getEasyConstruction() &&
+			!Strings.isNullOrEmpty(from) &&
+			client.getVar(BUILDING_MODE) == 1)
+		{
+			for (String s : Text.fromCSV(from))
+			{
+				int id = Integer.parseInt(s.replaceAll("[^0-9]", ""));
+
+				if (leftClickConstructionIDs.contains(id))
+				{
+					continue;
+				}
+
+				if (menuManager.toggleLeftClick("build", id, false)
+					|| menuManager.toggleLeftClick("remove", id, false))
+				{
+					leftClickConstructionIDs.add(id);
+				}
+			}
 		}
 	}
 }

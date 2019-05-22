@@ -433,7 +433,7 @@ public interface EasyscapeConfig extends Config
 	@ConfigItem(
 		keyName = "easyConstruction",
 		name = "Easy Construction",
-		description = "Makes \"Remove\" the default option for listed items in build mode.",
+		description = "Makes \"Remove\"/\"Build\" the default option for listed item ID's in build mode.<br>Tip: Use dev tools \"Game Objects\" to find out the ID!",
 		position = 30,
 		group = "Miscellaneous swapper"
 	)
@@ -445,7 +445,7 @@ public interface EasyscapeConfig extends Config
 	@ConfigItem(
 		keyName = "constructionItems",
 		name = "Construction Items",
-		description = "Items listed here will have the default option set to \"Removed\" in build mode.",
+		description = "Makes \"Remove\"/\"Build\" the default option for listed item ID's in build mode.<br>Tip: Use dev tools \"Game Objects\" to find out the ID, and seperate values with a ','",
 		position = 31,
 		group = "Miscellaneous swapper",
 		hidden = true,
