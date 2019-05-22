@@ -567,8 +567,8 @@ public class ClanChatPlugin extends Plugin
 			widget.setText(chat);
 			widget.setTextShadowed(true);
 			widget.setBorderType(1);
-			widget.setAction(0, "Join");
-			widget.setOnOpListener(ScriptID.CUSTOM_JOIN_CLAN, widget.getText());
+			widget.setAction(0, String.format("Join %s", chat));
+			widget.setOnOpListener(ScriptID.FORCE_JOIN_CC, widget.getText());
 			widget.setOriginalHeight(14);
 			widget.setOriginalWidth(142);
 			widget.setOriginalY(y);
