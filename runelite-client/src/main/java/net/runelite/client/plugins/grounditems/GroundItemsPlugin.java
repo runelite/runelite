@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Aria <aria@ar1as.space>
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, gregg1494 <https://github.com/gregg1494>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +52,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
-import static net.runelite.api.ItemID.FIRE_RUNE;
 import static net.runelite.api.ItemID.NATURE_RUNE;
 import net.runelite.api.ItemLayer;
 import net.runelite.api.MenuAction;
@@ -446,11 +446,6 @@ public class GroundItemsPlugin extends Plugin
 		{
 			priceChecks.put(config.getHighlightOverValue(), config.highlightedColor());
 		}
-
-		if (config.getHighlightProfitOverValue() > 0)
-		{
-			priceChecks.put(config.getHighlightProfitOverValue(),  config.profitValueColor());
-		}
 	}
 
 	@Subscribe
@@ -607,7 +602,7 @@ public class GroundItemsPlugin extends Plugin
 	Color getProfitable(int gePrice, int haPrice)
 	{
 		final int NATURE_RUNE_PRICE = itemManager.getItemPrice(NATURE_RUNE);
-
+		
 		if (haPrice - (gePrice + NATURE_RUNE_PRICE) > config.getHighlightProfitOverValue())
 		{
 			return config.profitValueColor();
@@ -619,10 +614,7 @@ public class GroundItemsPlugin extends Plugin
 	Color getItemColor(Color highlighted, Color hidden, Color profitable)
 	{
 
-		if (config.showHighlightProfit()
-				&& profitable != null
-				&& !config.showHighlightedOnly()
-				&& config.getHighlightProfitOverValue() > 0)
+		if (profitable != null && !config.showHighlightedOnly() && config.getHighlightProfitOverValue() > 0)
 		{
 			return profitable;
 		}
