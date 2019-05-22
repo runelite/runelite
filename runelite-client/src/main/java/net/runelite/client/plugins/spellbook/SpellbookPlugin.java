@@ -56,6 +56,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
+import static net.runelite.client.util.MiscUtils.clamp;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
@@ -308,7 +309,9 @@ public class SpellbookPlugin extends Plugin
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
-		if (client.getVar(Varbits.FILTER_SPELLBOOK) != 0 || !config.enableMobile() || !event.getEventName().toLowerCase().contains("spell"))
+		if (client.getVar(Varbits.FILTER_SPELLBOOK) != 0
+			|| !config.enableMobile()
+			|| !event.getEventName().toLowerCase().contains("spell"))
 		{
 			return;
 		}
@@ -363,7 +366,7 @@ public class SpellbookPlugin extends Plugin
 		else if ("resizeSpell".equals(event.getEventName()))
 		{
 			int size = config.size();
-			int columns = clamp(FULL_WIDTH / size, 3, 2);
+			int columns = clamp(FULL_WIDTH / size, 2, 3);
 
 			iStack[iStackSize - 2] = size;
 			iStack[iStackSize - 1] = columns;
@@ -399,7 +402,7 @@ public class SpellbookPlugin extends Plugin
 
 			Spell spell = spells.get(widget);
 
-			int newSize = clamp(trueSize(spell), FULL_WIDTH, 0);
+			int newSize = clamp(trueSize(spell), 0, FULL_WIDTH);
 
 			iStack[iStackSize - 3] = newSize;
 			iStack[iStackSize - 2] = newSize;
@@ -509,7 +512,10 @@ public class SpellbookPlugin extends Plugin
 	boolean isOnSpellWidget(java.awt.Point point)
 	{
 		Widget boundsWidget = client.getWidget(WidgetInfo.SPELLBOOK_FILTERED_BOUNDS);
-		if (client.getVar(VarClientInt.INVENTORY_TAB) != 6 || boundsWidget == null || !boundsWidget.getBounds().contains(point))
+		if (client.getVar(VarClientInt.INVENTORY_TAB) != 6
+			|| client.isMenuOpen()
+			|| boundsWidget == null
+			|| !boundsWidget.getBounds().contains(point))
 		{
 			return false;
 		}
@@ -549,8 +555,8 @@ public class SpellbookPlugin extends Plugin
 		int y = point.y - draggingLocation.getY() - parentPos.getY();
 		int size = draggingWidget.getWidth();
 
-		x = clamp(x, FULL_WIDTH - size, 0);
-		y = clamp(y, FULL_HEIGHT - size, 0);
+		x = clamp(x, 0, FULL_WIDTH - size);
+		y = clamp(y, 0, FULL_HEIGHT - size);
 
 		int draggedID = draggingWidget.getId();
 		Spell n = spells.get(draggedID);
@@ -606,14 +612,14 @@ public class SpellbookPlugin extends Plugin
 		if (trueSize(scrolledSpell) > FULL_WIDTH - 2)
 		{
 			scrolledSpell.setX(0);
-			scrolledSpell.setY(clamp(scrolledSpell.getY(), FULL_HEIGHT - FULL_WIDTH, 0));
+			scrolledSpell.setY(clamp(scrolledSpell.getY(), 0, FULL_HEIGHT - FULL_WIDTH));
 			return;
 		}
 
 		scrolledSpell.setSize(scrolledSpell.getSize() + 1);
 
-		scrolledSpell.setX(clamp(scrolledSpell.getX() - 1, FULL_WIDTH - trueSize(scrolledSpell), 0));
-		scrolledSpell.setY(clamp(scrolledSpell.getY() - 1, FULL_HEIGHT - trueSize(scrolledSpell), 0));
+		scrolledSpell.setX(clamp(scrolledSpell.getX() - 1, 0, FULL_WIDTH - trueSize(scrolledSpell)));
+		scrolledSpell.setY(clamp(scrolledSpell.getY() - 1, 0, FULL_HEIGHT - trueSize(scrolledSpell)));
 
 		tmp.put(scrolledWidgetId, scrolledSpell);
 
@@ -653,11 +659,6 @@ public class SpellbookPlugin extends Plugin
 		tmp.put(clickedWidgetId, clickedSpell);
 
 		runRebuild();
-	}
-
-	private static int clamp(int i, int upper, int lower)
-	{
-		return Math.min(Math.max(i, lower), upper);
 	}
 
 	void decreaseSize(java.awt.Point point)

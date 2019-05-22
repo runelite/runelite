@@ -41,7 +41,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -102,11 +101,12 @@ import org.apache.commons.lang3.ArrayUtils;
 )
 public class BAToolsPlugin extends Plugin implements KeyListener
 {
-	private int inGameBit = 0;
+	private boolean inGame;
 	private int tickNum;
 	private int pastCall = 0;
 	private int currentWave = 1;
 	private static final int BA_WAVE_NUM_INDEX = 2;
+	private static final WorldPoint healerSpawnPoint = new WorldPoint(1898, 1586, 0);
 	private final List<MenuEntry> entries = new ArrayList<>();
 	private ImmutableMap<WidgetInfo, Boolean> originalAttackStyles;
 	private HashMap<Integer, Instant> foodPressed = new HashMap<>();
@@ -165,7 +165,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	{
 		removeCounter();
 		healers.clear();
-		inGameBit = 0;
+		inGame = false;
 		lastInteracted = null;
 		overlayManager.remove(overlay);
 		keyManager.unregisterKeyListener(this);
@@ -198,7 +198,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 			}
 			pastCall = callWidget.getTextColor();
 		}
-		if (inGameBit == 1 && config.defTimer())
+		if (inGame && config.defTimer())
 		{
 			if (tickNum > 9)
 			{
@@ -218,7 +218,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 
 		if (config.attackStyles()
 			&& weapon != null
-			&& inGameBit == 1
+			&& inGame
 			&& weapon.getText().contains("Crystal halberd") || weapon.getText().contains("Dragon claws")
 			&& client.getWidget(BA_ATK_LISTEN_TEXT) != null)
 		{
@@ -319,13 +319,14 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		int inGame = client.getVar(Varbits.IN_GAME_BA);
+		int inGameBit = client.getVar(Varbits.IN_GAME_BA);
 
-		if (inGameBit != inGame)
+		if (inGameBit == 1 && !inGame ||
+			inGameBit == 0 && inGame)
 		{
-			inGameBit = inGame;
+			inGame = inGameBit == 1;
 
-			if (inGameBit == 0)
+			if (!inGame)
 			{
 				pastCall = 0;
 				removeCounter();
@@ -356,7 +357,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	{
 		NPC npc = event.getNpc();
 
-		if (isNpcHealer(npc.getId()))
+		if (inGame && isNpcHealer(npc.getId()))
 		{
 			if (checkNewSpawn(npc) || Duration.between(wave_start, Instant.now()).getSeconds() < 16)
 			{
@@ -576,7 +577,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 		}
 
 
-		if (inGameBit == 1 && config.healerMenuOption() && event.getTarget().contains("Penance Healer"))
+		if (inGame && config.healerMenuOption() && event.getTarget().contains("Penance Healer"))
 		{
 
 			MenuEntry[] menuEntries = client.getMenuEntries();
@@ -600,7 +601,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 			client.setMenuEntries(menuEntries);
 		}
 
-		if (client.getWidget(BA_COLL_LISTEN_TEXT) != null && inGameBit == 1 && config.eggBoi() && event.getTarget().endsWith("egg") && shiftDown)
+		if (client.getWidget(BA_COLL_LISTEN_TEXT) != null && inGame && config.eggBoi() && event.getTarget().endsWith("egg") && shiftDown)
 		{
 			String[] currentCall = client.getWidget(BA_COLL_LISTEN_TEXT).getText().split(" ");
 
@@ -626,7 +627,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 			client.setMenuEntries(entries.toArray(new MenuEntry[0]));
 		}
 
-		if (client.getWidget(BA_HEAL_LISTEN_TEXT) != null && inGameBit == 1 && config.osHelp() && event.getTarget().equals("<col=ffff>Healer item machine") && shiftDown)
+		if (client.getWidget(BA_HEAL_LISTEN_TEXT) != null && inGame && config.osHelp() && event.getTarget().equals("<col=ffff>Healer item machine") && shiftDown)
 		{
 			String[] currentCall = client.getWidget(BA_HEAL_LISTEN_TEXT).getText().split(" ");
 
@@ -756,59 +757,13 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 		return -1;
 	}
 
-	private static WorldPoint rotate(WorldPoint point, int rotation)
-	{
-		int chunkX = point.getX() & -CHUNK_SIZE;
-		int chunkY = point.getY() & -CHUNK_SIZE;
-		int x = point.getX() & (CHUNK_SIZE - 1);
-		int y = point.getY() & (CHUNK_SIZE - 1);
-		switch (rotation)
-		{
-			case 1:
-				return new WorldPoint(chunkX + y, chunkY + (CHUNK_SIZE - 1 - x), point.getPlane());
-			case 2:
-				return new WorldPoint(chunkX + (CHUNK_SIZE - 1 - x), chunkY + (CHUNK_SIZE - 1 - y), point.getPlane());
-			case 3:
-				return new WorldPoint(chunkX + (CHUNK_SIZE - 1 - y), chunkY + x, point.getPlane());
-		}
-		return point;
-	}
-
 	private boolean checkNewSpawn(NPC npc)
 	{
-		int regionId = 7509;
-		int regionX = 42;
-		int regionY = 46;
-		int z = 0;
-
-		// world point of the tile marker
-		WorldPoint worldPoint = new WorldPoint(
-			((regionId >>> 8) << 6) + regionX,
-			((regionId & 0xff) << 6) + regionY,
-			z
-		);
-
-		int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
-		for (int x = 0; x < instanceTemplateChunks[z].length; ++x)
+		for (WorldPoint p : WorldPoint.toLocalInstance(client, healerSpawnPoint))
 		{
-			for (int y = 0; y < instanceTemplateChunks[z][x].length; ++y)
+			if (p.distanceTo(npc.getWorldLocation()) < 5)
 			{
-				int chunkData = instanceTemplateChunks[z][x][y];
-				int rotation = chunkData >> 1 & 0x3;
-				int templateChunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
-				int templateChunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
-				if (worldPoint.getX() >= templateChunkX && worldPoint.getX() < templateChunkX + CHUNK_SIZE
-					&& worldPoint.getY() >= templateChunkY && worldPoint.getY() < templateChunkY + CHUNK_SIZE)
-				{
-					WorldPoint p = new WorldPoint(client.getBaseX() + x * CHUNK_SIZE + (worldPoint.getX() & (CHUNK_SIZE - 1)),
-						client.getBaseY() + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
-						worldPoint.getPlane());
-					p = rotate(p, rotation);
-					if (p.distanceTo(npc.getWorldLocation()) < 5)
-					{
-						return true;
-					}
-				}
+				return true;
 			}
 		}
 		return false;
