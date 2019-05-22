@@ -25,8 +25,6 @@
 package net.runelite.client.plugins.experiencedrop;
 
 import com.google.inject.Provides;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
@@ -42,37 +40,21 @@ import net.runelite.api.Player;
 import static net.runelite.api.ScriptID.XPDROP_DISABLED;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.ExperienceChanged;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.InteractingChanged;
-import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.game.HiscoreManager;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.attackstyles.AttackStyle;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.ACCURATE;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.AGGRESSIVE;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.CONTROLLED;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.LONGRANGE;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.RANGING;
-import net.runelite.client.plugins.attackstyles.WeaponType;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.Text;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
-import net.runelite.http.api.hiscore.HiscoreResult;
 
 @PluginDescriptor(
 	name = "XP Drop",
@@ -82,7 +64,8 @@ import net.runelite.http.api.hiscore.HiscoreResult;
 public class XpDropPlugin extends Plugin
 {
 	private static final int XPDROP_PADDING = 2; // space between xp drop icons
-	private static final Duration WAIT = Duration.ofSeconds(5);
+	private static final double HITPOINT_RATIO = 1.33; // Base rate of hp xp per point damage
+	private static final double DMM_MULTIPLIER_RATIO = 10;
 
 	@Inject
 	private Client client;
@@ -90,29 +73,8 @@ public class XpDropPlugin extends Plugin
 	@Inject
 	private XpDropConfig config;
 
-	private int tickCounter = 0;
-	private int previousExpGained;
-	private boolean hasHit = false;
-	private boolean hasDropped = false;
-	private boolean correctPrayer;
-	private Skill lastSkill = null;
-	private Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
-	private PrayerType currentTickPrayer;
-	private AttackStyle attackStyle;
-	private int attackStyleVarbit = -1;
-	private int equippedWeaponTypeVarbit = -1;
-	private int castingModeVarbit = -1;
-	private int opponentHealth = -1;
-	private int xpGains = 0;
-	private AttackStyle[] offensiveStyles = {ACCURATE, AGGRESSIVE, DEFENSIVE, CONTROLLED, RANGING, LONGRANGE, CASTING, DEFENSIVE_CASTING};
-
-	@Getter(AccessLevel.PACKAGE)
-	private int damage = 0;
-
-	@Getter(AccessLevel.PACKAGE)
-	private Actor lastOpponent;
-
-	private Instant lastTime;
+	@Inject
+	private NPCManager npcManager;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -120,11 +82,25 @@ public class XpDropPlugin extends Plugin
 	@Inject
 	private XpDropOverlay overlay;
 
-	@Inject
-	private NPCManager npcManager;
+	@Getter(AccessLevel.PACKAGE)
+	private int damage = 0;
 
-	@Inject
-	private HiscoreManager hiscoreManager;
+	@Getter(AccessLevel.PACKAGE)
+	private int tickShow = 0;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Actor lastOpponent;
+
+	private double hpExp = 0;
+	private boolean loginTick = false;
+
+	private int tickCounter = 0;
+	private int previousExpGained;
+	private boolean hasDropped = false;
+	private boolean correctPrayer;
+	private Skill lastSkill = null;
+	private Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
+	private PrayerType currentTickPrayer;
 
 	@Provides
 	XpDropConfig provideConfig(ConfigManager configManager)
@@ -135,18 +111,25 @@ public class XpDropPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		lastOpponent = null;
 		overlayManager.add(overlay);
-		if (client.getGameState() == GameState.LOGGED_IN)
+	}
+
+	@Override
+	protected void shutDown() throws Exception
+	{
+		overlayManager.remove(overlay);
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
-			equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
-			castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
-			updateAttackStyle(
-				equippedWeaponTypeVarbit,
-				attackStyleVarbit,
-				castingModeVarbit);
+			loginTick = true;
 		}
+
+		damage = 0;
+		tickShow = 0;
 	}
 
 	@Subscribe
@@ -277,40 +260,16 @@ public class XpDropPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		// Detect hitting a 0
-		if (lastOpponent != null)
+		loginTick = false;
+		lastOpponent = client.getLocalPlayer().getInteracting();
+
+		if (tickShow > 0)
 		{
-			int health = calculateHealth(lastOpponent);
-			if (health != -1 && opponentHealth != -1 && health == opponentHealth && hasHit)
-			{
-				damage = 0;
-				hasHit = false;
-			}
+			tickShow--;
 		}
-
-		// Handle getting XP gains
-		if (hasDropped)
+		else
 		{
-			if (xpGains != 0 && attackStyle.getSkills().length > 1 && attackStyle != LONGRANGE)
-			{
-				damage = (int) (xpGains / (attackStyle.getSkills().length * 1.3));
-			}
-			else if (xpGains != 0)
-			{
-				damage = xpGains / 4;
-			}
-
-			xpGains = 0;
-			hasDropped = false;
-		}
-
-		// Clear opponent
-		if (lastOpponent != null && lastTime != null && client.getLocalPlayer().getInteracting() == null)
-		{
-			if (Duration.between(lastTime, Instant.now()).compareTo(WAIT) > 0)
-			{
-				lastOpponent = null;
-			}
+			damage = 0;
 		}
 
 		currentTickPrayer = getActivePrayerType();
@@ -350,120 +309,67 @@ public class XpDropPlugin extends Plugin
 		Integer previous = previousSkillExpTable.put(skill, xp);
 		if (previous != null)
 		{
-			opponentHealth = calculateHealth(lastOpponent);
 			previousExpGained = xp - previous;
-			if (skill != Skill.HITPOINTS && Arrays.stream(offensiveStyles).anyMatch(attackStyle::equals))
-			{
-				xpGains += previousExpGained;
-			}
-
 			hasDropped = true;
-			hasHit = true;
 		}
-	}
 
-	private void updateAttackStyle(int equippedWeaponType, int attackStyleIndex, int castingMode)
-	{
-		AttackStyle[] attackStyles = WeaponType.getWeaponType(equippedWeaponType).getAttackStyles();
-		if (attackStyleIndex < attackStyles.length)
-		{
-			attackStyle = attackStyles[attackStyleIndex];
-			if (attackStyle == null)
-			{
-				attackStyle = OTHER;
-			}
-			else if ((attackStyle == CASTING) && (castingMode == 1))
-			{
-				attackStyle = DEFENSIVE_CASTING;
-			}
-		}
-	}
-
-	@Subscribe
-	public void onInteractingChanged(InteractingChanged event)
-	{
-		if (event.getSource() != client.getLocalPlayer())
+		if (loginTick)
 		{
 			return;
 		}
 
-		Actor opponent = event.getTarget();
-
-		if (opponent == null)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
-			lastTime = Instant.now();
-			return;
-		}
-		else if (opponent.getName().equalsIgnoreCase("fishing spot"))
-		{
-			lastTime = Instant.now().minus(WAIT);
+			damage = 0;
+			tickShow = 0;
 			return;
 		}
 
-		damage = 0;
-		lastOpponent = opponent;
-		opponentHealth = calculateHealth(opponent);
-	}
-
-	private int calculateHealth(Actor target)
-	{
-		if (target == null || target.getName() == null)
+		if (event.getSkill().equals(Skill.HITPOINTS))
 		{
-			return -1;
-		}
+			final double oldExp = hpExp;
+			hpExp = client.getSkillExperience(Skill.HITPOINTS);
 
-		final int healthScale = target.getHealth();
-		final int healthRatio = target.getHealthRatio();
-		final String targetName = Text.removeTags(target.getName());
-
-		Integer maxHealth = -1;
-		if (target instanceof NPC)
-		{
-			maxHealth = npcManager.getHealth(targetName, target.getCombatLevel());
-		}
-		else if (target instanceof Player)
-		{
-			final HiscoreResult hiscoreResult = hiscoreManager.lookupAsync(targetName, HiscoreEndpoint.NORMAL);
-			if (hiscoreResult != null)
+			final double diff = hpExp - oldExp;
+			if (diff < 1)
 			{
-				final int hp = hiscoreResult.getHitpoints().getLevel();
-				if (hp > 0)
-				{
-					maxHealth = hp;
-				}
+				return;
 			}
-		}
 
-		if (healthRatio < 0 || healthScale <= 0 || maxHealth == null)
-		{
-			return -1;
+			final double damageDealt = calculateDamageDealt(diff);
+			damage = (int) Math.rint(damageDealt);
+			tickShow = 3;
 		}
-
-		return (int) ((maxHealth * healthRatio / healthScale) + 0.5f);
 	}
 
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private double calculateDamageDealt(double diff)
 	{
-		if (attackStyleVarbit == -1 || attackStyleVarbit != client.getVar(VarPlayer.ATTACK_STYLE))
+		double damageDealt = diff / HITPOINT_RATIO;
+		// DeadMan mode has an XP modifier
+		if (client.getWorldType().contains(WorldType.DEADMAN))
 		{
-			attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
-			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), attackStyleVarbit,
-				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
+			damageDealt = damageDealt / DMM_MULTIPLIER_RATIO;
 		}
 
-		if (equippedWeaponTypeVarbit == -1 || equippedWeaponTypeVarbit != client.getVar(Varbits.EQUIPPED_WEAPON_TYPE))
+		// Some NPCs have an XP modifier, account for it here.
+		Actor a = client.getLocalPlayer().getInteracting();
+		if (!(a instanceof NPC) && !(a instanceof Player))
 		{
-			equippedWeaponTypeVarbit = client.getVar(Varbits.EQUIPPED_WEAPON_TYPE);
-			updateAttackStyle(equippedWeaponTypeVarbit, client.getVar(VarPlayer.ATTACK_STYLE),
-				client.getVar(Varbits.DEFENSIVE_CASTING_MODE));
+			// If we are interacting with nothing we may have clicked away at the perfect time fall back to last tick
+			if (!(lastOpponent instanceof NPC) && !(lastOpponent instanceof Player))
+			{
+				return damageDealt;
+			}
+
+			a = lastOpponent;
 		}
 
-		if (castingModeVarbit == -1 || castingModeVarbit != client.getVar(Varbits.DEFENSIVE_CASTING_MODE))
+		if (a instanceof Player)
 		{
-			castingModeVarbit = client.getVar(Varbits.DEFENSIVE_CASTING_MODE);
-			updateAttackStyle(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE), client.getVar(VarPlayer.ATTACK_STYLE),
-				castingModeVarbit);
+			return damageDealt;
 		}
+
+		NPC target = (NPC) a;
+		return damageDealt / NpcExpModifier.getByNpcId(target.getId());
 	}
 }
