@@ -445,7 +445,7 @@ class LootTrackerPanel extends PluginPanel
 		{
 			return null;
 		}
-		
+
 		// Group all similar loot together
 		if (groupLoot)
 		{
@@ -458,7 +458,6 @@ class LootTrackerPanel extends PluginPanel
 				}
 			}
 		}
-
 
 		// Show main view
 		remove(errorPanel);
