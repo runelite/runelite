@@ -304,7 +304,6 @@ public class LootTrackerPlugin extends Plugin
 			LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items), Instant.now());
 			lootTrackerClient.submit(lootRecord);
 		}
-
 	}
 
 	@Subscribe
