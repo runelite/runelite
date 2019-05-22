@@ -370,6 +370,6 @@ public class XpDropPlugin extends Plugin
 		}
 
 		NPC target = (NPC) a;
-		return damageDealt / NpcExpModifier.getByNpcId(target.getId());
+		return damageDealt / npcManager.getXpModifier(target.getId());
 	}
 }
