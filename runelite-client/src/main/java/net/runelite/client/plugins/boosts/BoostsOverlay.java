@@ -62,7 +62,7 @@ class BoostsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.displayInfoboxes())
+		if (config.displayInfoboxes() || config.displayIcons())
 		{
 			return null;
 		}

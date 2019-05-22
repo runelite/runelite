@@ -28,7 +28,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
@@ -87,14 +87,16 @@ public class BoostsPlugin extends Plugin
 	@Inject
 	private BoostsOverlay boostsOverlay;
 
+	//made this a LinkedHashSet so the order stays consistent for my OCD
+	@Getter
+	private final Set<Skill> shownSkills = new LinkedHashSet<>();
 	@Inject
 	private BoostsConfig config;
 
 	@Inject
 	private SkillIconManager skillIconManager;
-
-	@Getter
-	private final Set<Skill> shownSkills = new HashSet<>();
+	@Inject
+	private CombatIconsOverlay combatIconsOverlay;
 
 	private boolean isChangedDown = false;
 	private boolean isChangedUp = false;
@@ -115,7 +117,7 @@ public class BoostsPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(boostsOverlay);
-
+		overlayManager.add(combatIconsOverlay);
 		updateShownSkills();
 		updateBoostedStats();
 		Arrays.fill(lastSkillLevels, -1);
@@ -137,6 +139,7 @@ public class BoostsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(boostsOverlay);
+		overlayManager.remove(combatIconsOverlay);
 		infoBoxManager.removeIf(t -> t instanceof BoostIndicator || t instanceof StatChangeIndicator);
 		preserveBeenActive = false;
 		lastChangeDown = -1;
