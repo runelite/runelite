@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.Set;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import static net.runelite.api.EquipmentInventorySlot.LEGS;
 import static net.runelite.api.EquipmentInventorySlot.*;
@@ -37,6 +38,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.Perspective;
+import net.runelite.api.ScriptID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
@@ -252,7 +254,10 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 
 		if (itemRequirements.length > 0)
 		{
-			boolean stashUnitBuilt = plugin.getClient().getVar(stashUnit.getVarbit()) == 1;
+			Client client = plugin.getClient();
+			client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getObjectId(), 0, 0, 0);
+			int[] intStack = client.getIntStack();
+			boolean stashUnitBuilt = intStack[0] == 1;
 
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("STASH Unit:")
@@ -287,7 +292,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 				boolean combinedFulfilled = requirement.fulfilledBy(combined);
 
 				panelComponent.getChildren().add(LineComponent.builder()
-					.left(requirement.getCollectiveName(plugin.getClient()))
+					.left(requirement.getCollectiveName(client))
 					.leftColor(TITLED_CONTENT_COLOR)
 					.right(combinedFulfilled ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
 					.rightColor(equipmentFulfilled ? Color.GREEN : (combinedFulfilled ? Color.ORANGE : Color.RED))
