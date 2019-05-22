@@ -32,7 +32,11 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -436,6 +440,12 @@ class LootTrackerPanel extends PluginPanel
 			return null;
 		}
 
+		// If npc is meant to be ignored, return
+		if (config.getIgnoredNpcs().contains(record.getTitle()))
+		{
+			return null;
+		}
+		
 		// Group all similar loot together
 		if (groupLoot)
 		{
@@ -448,10 +458,7 @@ class LootTrackerPanel extends PluginPanel
 				}
 			}
 		}
-		if (config.getIgnoredNpcs().contains(record.getTitle()))
-		{
-			return null;
-		}
+
 
 		// Show main view
 		remove(errorPanel);

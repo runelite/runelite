@@ -58,12 +58,14 @@ public interface LootTrackerConfig extends Config
 	{
 		return "";
 	}
+
 	@ConfigItem(
 			keyName = "ignoredNpcs",
 			name = "",
 			description = ""
 	)
 	void setIgnoredNpcs(String key);
+
 	@ConfigItem(
 		keyName = "saveLoot",
 		name = "Submit loot tracker data",
