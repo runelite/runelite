@@ -32,7 +32,7 @@ import static net.runelite.client.menus.MenuManager.LEVEL_PATTERN;
 import net.runelite.client.util.Text;
 
 @EqualsAndHashCode
-public class AbstractMenuEntry
+public class ComparableEntry
 {
 	@Getter
 	private String option;
@@ -52,17 +52,17 @@ public class AbstractMenuEntry
 	@Getter
 	private boolean strictTarget;
 
-	public AbstractMenuEntry(String option, String target)
+	public ComparableEntry(String option, String target)
 	{
 		this(option, target, -1, -1, true, true);
 	}
 
-	public AbstractMenuEntry(String option, String target, boolean strictTarget)
+	public ComparableEntry(String option, String target, boolean strictTarget)
 	{
 		this(option, target, -1, -1, true, strictTarget);
 	}
 
-	public AbstractMenuEntry(String option, String target, int id, int type, boolean strictOption, boolean strictTarget)
+	public ComparableEntry(String option, String target, int id, int type, boolean strictOption, boolean strictTarget)
 	{
 		this.option = option;
 		this.target = target;
@@ -113,14 +113,4 @@ public class AbstractMenuEntry
 
 		return true;
 	}
-
-	/*boolean equals(AbstractMenuEntry other)
-	{
-		return target.equals(other.getTarget())
-			&& option.equals(other.getOption())
-			&& id == other.getId()
-			&& type == other.getType()
-			&& strictOption == other.isStrictOption()
-			&& strictTarget == other.isStrictTarget();
-	}*/
 }

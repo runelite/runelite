@@ -55,7 +55,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.input.KeyManager;
-import net.runelite.client.menus.AbstractMenuEntry;
+import net.runelite.client.menus.ComparableEntry;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
@@ -110,7 +110,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		.omitEmptyStrings()
 		.trimResults();
 
-	private final Map<AbstractMenuEntry, AbstractMenuEntry> customSwaps = new HashMap<>();
+	private final Map<ComparableEntry, ComparableEntry> customSwaps = new HashMap<>();
 
 	@Inject
 	private Client client;
@@ -762,7 +762,7 @@ else if (config.swapOccult() != OccultAltarMode.VENERATE && option.equals("vener
 
 	private void loadCustomSwaps(String config)
 	{
-		Map<AbstractMenuEntry, AbstractMenuEntry> tmp = new HashMap<>();
+		Map<ComparableEntry, ComparableEntry> tmp = new HashMap<>();
 
 		if (!Strings.isNullOrEmpty(config))
 		{
@@ -784,7 +784,7 @@ else if (config.swapOccult() != OccultAltarMode.VENERATE && option.equals("vener
 					targetFrom = splitFrom[1].trim();
 				}
 
-				AbstractMenuEntry fromEntry = new AbstractMenuEntry(optionFrom, targetFrom);
+				ComparableEntry fromEntry = new ComparableEntry(optionFrom, targetFrom);
 
 				String[] splitTo = Text.standardize(to).split(",");
 				String optionTo = splitTo[0].trim();
@@ -798,26 +798,26 @@ else if (config.swapOccult() != OccultAltarMode.VENERATE && option.equals("vener
 					targetTo = splitTo[1].trim();
 				}
 
-				AbstractMenuEntry toEntry = new AbstractMenuEntry(optionTo, targetTo);
+				ComparableEntry toEntry = new ComparableEntry(optionTo, targetTo);
 
 				tmp.put(fromEntry, toEntry);
 			}
 		}
 
-		for (Map.Entry<AbstractMenuEntry, AbstractMenuEntry> e : customSwaps.entrySet())
+		for (Map.Entry<ComparableEntry, ComparableEntry> e : customSwaps.entrySet())
 		{
-			AbstractMenuEntry key = e.getKey();
-			AbstractMenuEntry value = e.getValue();
+			ComparableEntry key = e.getKey();
+			ComparableEntry value = e.getValue();
 			menuManager.removeSwap(key, value);
 		}
 
 		customSwaps.clear();
 		customSwaps.putAll(tmp);
 
-		for (Map.Entry<AbstractMenuEntry, AbstractMenuEntry> entry : customSwaps.entrySet())
+		for (Map.Entry<ComparableEntry, ComparableEntry> entry : customSwaps.entrySet())
 		{
-			AbstractMenuEntry a1 = entry.getKey();
-			AbstractMenuEntry a2 = entry.getValue();
+			ComparableEntry a1 = entry.getKey();
+			ComparableEntry a2 = entry.getValue();
 			menuManager.addSwap(a1, a2);
 		}
 	}

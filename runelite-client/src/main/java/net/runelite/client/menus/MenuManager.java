@@ -91,10 +91,10 @@ public class MenuManager
 	private final Multimap<Integer, WidgetMenuOption> managedMenuOptions = HashMultimap.create();
 	private final Set<String> npcMenuOptions = new HashSet<>();
 
-	private final Set<AbstractMenuEntry> priorityEntries = new HashSet<>();
+	private final Set<ComparableEntry> priorityEntries = new HashSet<>();
 	private final Set<MenuEntry> currentPriorityEntries = new HashSet<>();
 
-	private final Map<AbstractMenuEntry, AbstractMenuEntry> swaps = new HashMap<>();
+	private final Map<ComparableEntry, ComparableEntry> swaps = new HashMap<>();
 	private final Set<MenuEntry> originalTypes = new HashSet<>();
 	private final Set<Integer> leftClickObjects = new HashSet<>();
 
@@ -176,7 +176,7 @@ public class MenuManager
 		final MenuEntry newestEntry = menuEntries[menuEntries.length - 1];
 
 		boolean isPrio = false;
-		for (AbstractMenuEntry p : priorityEntries)
+		for (ComparableEntry p : priorityEntries)
 		{
 			if (p.matches(newestEntry))
 			{
@@ -203,8 +203,8 @@ public class MenuManager
 		}
 
 		// Find the current entry in the swaps map
-		AbstractMenuEntry swapEntry = null;
-		for (AbstractMenuEntry e : swaps.keySet())
+		ComparableEntry swapEntry = null;
+		for (ComparableEntry e : swaps.keySet())
 		{
 			if (e.matches(newestEntry))
 			{
@@ -215,7 +215,7 @@ public class MenuManager
 
 		if (swapEntry != null)
 		{
-			AbstractMenuEntry swapTarget = swaps.get(swapEntry);
+			ComparableEntry swapTarget = swaps.get(swapEntry);
 
 			// Find the target for the swap in current menu entries
 			MenuEntry foundSwap = null;
@@ -587,7 +587,7 @@ public class MenuManager
 		option = Text.standardize(option);
 		target = Text.standardize(target);
 
-		AbstractMenuEntry entry = new AbstractMenuEntry(option, target);
+		ComparableEntry entry = new ComparableEntry(option, target);
 
 		priorityEntries.add(entry);
 	}
@@ -597,10 +597,10 @@ public class MenuManager
 		option = Text.standardize(option);
 		target = Text.standardize(target);
 
-		AbstractMenuEntry entry = new AbstractMenuEntry(option, target);
+		ComparableEntry entry = new ComparableEntry(option, target);
 
-		Set<AbstractMenuEntry> toRemove = new HashSet<>();
-		for (AbstractMenuEntry priorityEntry : priorityEntries)
+		Set<ComparableEntry> toRemove = new HashSet<>();
+		for (ComparableEntry priorityEntry : priorityEntries)
 		{
 			if (entry.equals(priorityEntry))
 			{
@@ -608,7 +608,7 @@ public class MenuManager
 			}
 		}
 
-		for (AbstractMenuEntry e : toRemove)
+		for (ComparableEntry e : toRemove)
 		{
 			priorityEntries.remove(e);
 		}
@@ -623,7 +623,7 @@ public class MenuManager
 	{
 		option = Text.standardize(option);
 
-		AbstractMenuEntry entry = new AbstractMenuEntry(option, "", false);
+		ComparableEntry entry = new ComparableEntry(option, "", false);
 
 		priorityEntries.add(entry);
 	}
@@ -632,10 +632,10 @@ public class MenuManager
 	{
 		option = Text.standardize(option);
 
-		AbstractMenuEntry entry = new AbstractMenuEntry(option, "", false);
+		ComparableEntry entry = new ComparableEntry(option, "", false);
 
-		Set<AbstractMenuEntry> toRemove = new HashSet<>();
-		for (AbstractMenuEntry priorityEntry : priorityEntries)
+		Set<ComparableEntry> toRemove = new HashSet<>();
+		for (ComparableEntry priorityEntry : priorityEntries)
 		{
 			if (entry.equals(priorityEntry))
 			{
@@ -643,7 +643,7 @@ public class MenuManager
 			}
 		}
 
-		for (AbstractMenuEntry e : toRemove)
+		for (ComparableEntry e : toRemove)
 		{
 			priorityEntries.remove(e);
 		}
@@ -660,8 +660,8 @@ public class MenuManager
 		option2 = Text.standardize(option2);
 		target2 = Text.standardize(target2);
 
-		AbstractMenuEntry swapFrom = new AbstractMenuEntry(option, target, -1, -1, strictOption, strictTarget);
-		AbstractMenuEntry swapTo = new AbstractMenuEntry(option2, target2, -1, -1, strictOption, strictTarget);
+		ComparableEntry swapFrom = new ComparableEntry(option, target, -1, -1, strictOption, strictTarget);
+		ComparableEntry swapTo = new ComparableEntry(option2, target2, -1, -1, strictOption, strictTarget);
 
 		if (swapTo.equals(swapFrom))
 		{
@@ -681,8 +681,8 @@ public class MenuManager
 		option2 = Text.standardize(option2);
 		target2 = Text.standardize(target2);
 
-		AbstractMenuEntry swapFrom = new AbstractMenuEntry(option, target, -1, -1, strictOption, strictTarget);
-		AbstractMenuEntry swapTo = new AbstractMenuEntry(option2, target2, -1, -1, strictOption, strictTarget);
+		ComparableEntry swapFrom = new ComparableEntry(option, target, -1, -1, strictOption, strictTarget);
+		ComparableEntry swapTo = new ComparableEntry(option2, target2, -1, -1, strictOption, strictTarget);
 
 		removeSwap(swapFrom, swapTo);
 	}
@@ -703,7 +703,7 @@ public class MenuManager
 	/**
 	 * Adds to the map of swaps - Pre-baked Abstract entry
 	 */
-	public void addSwap(AbstractMenuEntry swapFrom, AbstractMenuEntry swapTo)
+	public void addSwap(ComparableEntry swapFrom, ComparableEntry swapTo)
 	{
 		if (swapTo.equals(swapFrom))
 		{
@@ -726,8 +726,8 @@ public class MenuManager
 		option2 = Text.standardize(option2);
 		target2 = Text.standardize(target2);
 
-		AbstractMenuEntry swapFrom = new AbstractMenuEntry(option, target, id, type, false, false);
-		AbstractMenuEntry swapTo = new AbstractMenuEntry(option2, target2, id2, type2, false, false);
+		ComparableEntry swapFrom = new ComparableEntry(option, target, id, type, false, false);
+		ComparableEntry swapTo = new ComparableEntry(option2, target2, id2, type2, false, false);
 
 		if (swapTo.equals(swapFrom))
 		{
@@ -746,11 +746,11 @@ public class MenuManager
 		option2 = Text.standardize(option2);
 		target2 = Text.standardize(target2);
 
-		AbstractMenuEntry swapFrom = new AbstractMenuEntry(option, target, id, type, false, false);
-		AbstractMenuEntry swapTo = new AbstractMenuEntry(option2, target2, id2, type2, false, false);
+		ComparableEntry swapFrom = new ComparableEntry(option, target, id, type, false, false);
+		ComparableEntry swapTo = new ComparableEntry(option2, target2, id2, type2, false, false);
 
-		Set<AbstractMenuEntry> toRemove = new HashSet<>();
-		for (Map.Entry<AbstractMenuEntry, AbstractMenuEntry> e : swaps.entrySet())
+		Set<ComparableEntry> toRemove = new HashSet<>();
+		for (Map.Entry<ComparableEntry, ComparableEntry> e : swaps.entrySet())
 		{
 			if (e.getKey().equals(swapFrom) && e.getValue().equals(swapTo))
 			{
@@ -758,16 +758,16 @@ public class MenuManager
 			}
 		}
 
-		for (AbstractMenuEntry entry : toRemove)
+		for (ComparableEntry entry : toRemove)
 		{
 			swaps.remove(entry);
 		}
 	}
 
-	public void removeSwap(AbstractMenuEntry swapFrom, AbstractMenuEntry swapTo)
+	public void removeSwap(ComparableEntry swapFrom, ComparableEntry swapTo)
 	{
-		Set<AbstractMenuEntry> toRemove = new HashSet<>();
-		for (Map.Entry<AbstractMenuEntry, AbstractMenuEntry> e : swaps.entrySet())
+		Set<ComparableEntry> toRemove = new HashSet<>();
+		for (Map.Entry<ComparableEntry, ComparableEntry> e : swaps.entrySet())
 		{
 			if (e.getKey().equals(swapFrom) && e.getValue().equals(swapTo))
 			{
@@ -775,7 +775,7 @@ public class MenuManager
 			}
 		}
 
-		for (AbstractMenuEntry entry : toRemove)
+		for (ComparableEntry entry : toRemove)
 		{
 			swaps.remove(entry);
 		}
@@ -788,9 +788,9 @@ public class MenuManager
 	{
 		withTarget = Text.standardize(withTarget);
 
-		Set<AbstractMenuEntry> toRemove = new HashSet<>();
+		Set<ComparableEntry> toRemove = new HashSet<>();
 
-		for (AbstractMenuEntry e : swaps.keySet())
+		for (ComparableEntry e : swaps.keySet())
 		{
 			if (e.getTarget().equals(withTarget))
 			{
@@ -798,7 +798,7 @@ public class MenuManager
 			}
 		}
 
-		for (AbstractMenuEntry entry : toRemove)
+		for (ComparableEntry entry : toRemove)
 		{
 			swaps.remove(entry);
 		}
