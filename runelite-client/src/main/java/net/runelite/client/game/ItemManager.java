@@ -45,6 +45,7 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
+import static net.runelite.api.Constants.HIGH_ALCHEMY_CONSTANT;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
@@ -186,9 +187,6 @@ public class ItemManager
 		private final int itemQuantity;
 		private final Color outlineColor;
 	}
-
-	// Used when getting High Alchemy value - multiplied by general store price.
-	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
@@ -425,7 +423,7 @@ public class ItemManager
 			return 1000;
 		}
 
-		return (int) (getItemComposition(itemID).getPrice() * HIGH_ALCHEMY_CONSTANT);
+		return (int) Math.max(1, getItemComposition(itemID).getPrice() * HIGH_ALCHEMY_CONSTANT);
 	}
 
 	/**

@@ -98,8 +98,6 @@ import net.runelite.client.util.Text;
 )
 public class GroundItemsPlugin extends Plugin
 {
-	// Used when getting High Alchemy value - multiplied by general store price.
-	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
 
@@ -322,7 +320,7 @@ public class GroundItemsPlugin extends Plugin
 		for (ItemStack is : items)
 		{
 			composition = itemManager.getItemComposition(is.getId());
-			Color itemColor = getHighlighted(composition.getName(), itemManager.getItemPrice(is.getId()) * is.getQuantity(), Math.round(composition.getPrice() * HIGH_ALCHEMY_CONSTANT) * is.getQuantity());
+			Color itemColor = getHighlighted(composition.getName(), itemManager.getItemPrice(is.getId()) * is.getQuantity(), itemManager.getAlchValue(is.getId()) * is.getQuantity());
 			if (itemColor != null)
 			{
 				if (config.notifyHighlightedDrops() && itemColor.equals(config.highlightedColor()))
@@ -483,7 +481,7 @@ public class GroundItemsPlugin extends Plugin
 		final int itemId = item.getId();
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
-		final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+		final int alchPrice = itemManager.getAlchValue(realItemId);
 		int durationMillis;
 		if (client.isInInstancedRegion())
 		{
@@ -614,7 +612,7 @@ public class GroundItemsPlugin extends Plugin
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemComposition.getId();
 			final int itemPrice = itemManager.getItemPrice(realItemId);
 			final int price = itemPrice <= 0 ? itemComposition.getPrice() : itemPrice;
-			final int haPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT) * quantity;
+			final int haPrice = itemManager.getAlchValue(realItemId);
 			final int gePrice = quantity * price;
 			final Color hidden = getHidden(itemComposition.getName(), gePrice, haPrice, itemComposition.isTradeable());
 			final Color highlighted = getHighlighted(itemComposition.getName(), gePrice, haPrice);
@@ -767,7 +765,7 @@ public class GroundItemsPlugin extends Plugin
 	{
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
-		final int alchPrice = Math.round(itemComposition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+		final int alchPrice = itemManager.getAlchValue(realItemId);
 		final int gePrice = itemManager.getItemPrice(realItemId);
 
 		return getHidden(itemComposition.getName(), gePrice, alchPrice, itemComposition.isTradeable()) != null;

@@ -48,7 +48,6 @@ public class HighAlchemyOverlay extends WidgetItemOverlay
 	private final HighAlchemyPlugin plugin;
 	private final int alchPrice;
 	private final int alchPriceNoStaff;
-	private static final float HIGH_ALCHEMY_CONSTANT = 0.6f;
 
 	@Inject
 	public HighAlchemyOverlay(ItemManager itemManager, HighAlchemyPlugin plugin, HighAlchemyConfig config)
@@ -107,9 +106,8 @@ public class HighAlchemyOverlay extends WidgetItemOverlay
 		{
 			return 0;
 		}
-		ItemComposition itemComp = itemManager.getItemComposition(id);
-		float haValue = itemComp.getPrice() * HIGH_ALCHEMY_CONSTANT;
-		return Math.round(haValue);
+
+		return itemManager.getAlchValue(id);
 	}
 
 	private int getHAProfit(int haPrice, int gePrice, int alchCost)
