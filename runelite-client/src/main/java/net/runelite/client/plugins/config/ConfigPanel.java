@@ -492,7 +492,7 @@ public class ConfigPanel extends PluginPanel
 				{
 					Enum selectedItem = Enum.valueOf(type, configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
 					box.setSelectedItem(selectedItem);
-					box.setToolTipText(selectedItem.toString());
+					box.setToolTipText(Text.titleCase(selectedItem));
 				}
 				catch (IllegalArgumentException ex)
 				{
@@ -503,7 +503,7 @@ public class ConfigPanel extends PluginPanel
 					if (e.getStateChange() == ItemEvent.SELECTED)
 					{
 						changeConfiguration(listItem, config, box, cd, cid);
-						box.setToolTipText(box.getSelectedItem().toString());
+						box.setToolTipText(Text.titleCase((Enum) box.getSelectedItem()));
 					}
 				});
 				item.add(box, BorderLayout.EAST);

@@ -27,6 +27,8 @@ package net.runelite.mixins;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +42,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.HashTable;
+import net.runelite.api.HealthBarOverride;
 import net.runelite.api.HintArrowType;
 import net.runelite.api.Ignore;
 import net.runelite.api.IndexDataBase;
@@ -85,6 +88,7 @@ import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
@@ -105,6 +109,8 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.rs.api.RSChatLineBuffer;
 import net.runelite.rs.api.RSClanMemberManager;
 import net.runelite.rs.api.RSClient;
@@ -183,6 +189,9 @@ public abstract class RSClientMixin implements RSClient
 	private final Cache<Integer, RSEnum> enumCache = CacheBuilder.newBuilder()
 		.maximumSize(64)
 		.build();
+
+	@Inject
+	private static HealthBarOverride healthBarOverride;
 
 	@Inject
 	public RSClientMixin()
@@ -734,7 +743,13 @@ public abstract class RSClientMixin implements RSClient
 	public ClanMember[] getClanMembers()
 	{
 		final RSClanMemberManager clanMemberManager = getClanMemberManager();
-		return clanMemberManager != null ? getClanMemberManager().getNameables() : null;
+		if (clanMemberManager == null)
+		{
+			return null;
+		}
+
+		final int count = clanMemberManager.getCount();
+		return Arrays.copyOf(clanMemberManager.getNameables(), count);
 	}
 
 	@Inject
@@ -767,7 +782,8 @@ public abstract class RSClientMixin implements RSClient
 			return null;
 		}
 
-		return friendContainer.getNameables();
+		final int count = friendContainer.getCount();
+		return Arrays.copyOf(friendContainer.getNameables(), count);
 	}
 
 	@Inject
@@ -805,7 +821,8 @@ public abstract class RSClientMixin implements RSClient
 			return null;
 		}
 
-		return ignoreContainer.getNameables();
+		final int count = ignoreContainer.getCount();
+		return Arrays.copyOf(ignoreContainer.getNameables(), count);
 	}
 
 	@Inject
@@ -1236,6 +1253,13 @@ public abstract class RSClientMixin implements RSClient
 		client.getCallbacks().post(new UsernameChanged());
 	}
 
+	@Inject
+	@Override
+	public void setHealthBarOverride(HealthBarOverride override)
+	{
+		healthBarOverride = override;
+	}
+
 	@Override
 	@Inject
 	public int getTickCount()
@@ -1303,12 +1327,15 @@ public abstract class RSClientMixin implements RSClient
 
 	@MethodHook("renderWidgetLayer")
 	@Inject
-	public static void renderWidgetLayer(Widget[] widgets, int parentId, int var2, int var3, int var4, int var5, int x, int y, int var8)
+	public static void renderWidgetLayer(Widget[] widgets, int parentId, int minX, int minY, int maxX, int maxY, int x, int y, int var8)
 	{
+		Callbacks callbacks = client.getCallbacks();
+		HashTable<WidgetNode> componentTable = client.getComponentTable();
+
 		for (Widget rlWidget : widgets)
 		{
 			RSWidget widget = (RSWidget) rlWidget;
-			if (widget == null || widget.getRSParentId() != parentId)
+			if (widget == null || widget.getRSParentId() != parentId || widget.isSelfHidden())
 			{
 				continue;
 			}
@@ -1317,10 +1344,30 @@ public abstract class RSClientMixin implements RSClient
 			{
 				widget.setRenderParentId(parentId);
 			}
-			widget.setRenderX(x + widget.getRelativeX());
-			widget.setRenderY(y + widget.getRelativeY());
 
-			HashTable<WidgetNode> componentTable = client.getComponentTable();
+			final int renderX = x + widget.getRelativeX();
+			final int renderY = y + widget.getRelativeY();
+			widget.setRenderX(renderX);
+			widget.setRenderY(renderY);
+
+			final int widgetType = widget.getType();
+			if (widgetType == WidgetType.GRAPHIC && widget.getItemId() != -1)
+			{
+				if (renderX >= minX && renderX <= maxX && renderY >= minY && renderY <= maxY)
+				{
+					WidgetItem widgetItem = new WidgetItem(widget.getItemId(), widget.getItemQuantity(), -1, widget.getBounds(), widget);
+					callbacks.drawItem(widget.getItemId(), widgetItem);
+				}
+			}
+			else if (widgetType == WidgetType.INVENTORY)
+			{
+				Collection<WidgetItem> widgetItems = widget.getWidgetItems();
+				for (WidgetItem widgetItem : widgetItems)
+				{
+					callbacks.drawItem(widgetItem.getId(), widgetItem);
+				}
+			}
+
 			WidgetNode childNode = componentTable.get(widget.getId());
 			if (childNode != null)
 			{
@@ -1465,6 +1512,14 @@ public abstract class RSClientMixin implements RSClient
 	boolean rl$shouldLeftClickOpenMenu()
 	{
 		if (rs$shouldLeftClickOpenMenu())
+		{
+			return true;
+		}
+
+		MenuShouldLeftClick menuShouldLeftClick = new MenuShouldLeftClick();
+		client.getCallbacks().post(menuShouldLeftClick);
+
+		if (menuShouldLeftClick.isForceRightClick())
 		{
 			return true;
 		}

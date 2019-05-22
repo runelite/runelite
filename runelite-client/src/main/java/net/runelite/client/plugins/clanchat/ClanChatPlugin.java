@@ -77,7 +77,6 @@ import static net.runelite.client.ui.JagexColors.CHAT_CLAN_NAME_TRANSPARENT_BACK
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
 import static net.runelite.client.ui.JagexColors.CHAT_CLAN_TEXT_TRANSPARENT_BACKGROUND;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -88,8 +87,8 @@ import net.runelite.client.util.Text;
 public class ClanChatPlugin extends Plugin
 {
 	private static final int MAX_CHATS = 10;
-	private static final String CLAN_CHAT_TITLE = "Clan Chat";
-	private static final String RECENT_TITLE = "Recent Clan Chats";
+	private static final String CLAN_CHAT_TITLE = "CC";
+	private static final String RECENT_TITLE = "Recent CCs";
 	private static final int JOIN_LEAVE_DURATION = 20;
 	private static final int MESSAGE_DELAY = 10;
 
@@ -169,11 +168,12 @@ public class ClanChatPlugin extends Plugin
 
 		if (member.getWorld() == client.getWorld())
 		{
+			final Player local = client.getLocalPlayer();
 			final String memberName = Text.toJagexName(member.getUsername());
 
 			for (final Player player : client.getPlayers())
 			{
-				if (player != null && memberName.equals(Text.toJagexName(player.getName())))
+				if (player != null && player != local && memberName.equals(Text.toJagexName(player.getName())))
 				{
 					clanMembers.add(player);
 					addClanCounter();
@@ -308,7 +308,7 @@ public class ClanChatPlugin extends Plugin
 				// If this message has been reused since, it will get a different id
 				if (clanJoinMessage.getGetMessageId() == messageNode.getId())
 				{
-					ChatLineBuffer ccInfoBuffer = client.getChatLineMap().get(ChatMessageType.CLANCHAT_INFO.getType());
+					ChatLineBuffer ccInfoBuffer = client.getChatLineMap().get(ChatMessageType.FRIENDSCHATNOTIFICATION.getType());
 					if (ccInfoBuffer != null)
 					{
 						ccInfoBuffer.removeMessageNode(messageNode);
@@ -349,9 +349,9 @@ public class ClanChatPlugin extends Plugin
 	{
 		final String activityMessage = activityType == ClanActivityType.JOINED ? " has joined." : " has left.";
 		final ClanMemberRank rank = member.getRank();
-		String rankTag = "";
 		Color textColor = CHAT_CLAN_TEXT_OPAQUE_BACKGROUND;
 		Color channelColor = CHAT_CLAN_NAME_OPAQUE_BACKGROUND;
+		int rankIcon = -1;
 
 		if (client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1)
 		{
@@ -361,21 +361,26 @@ public class ClanChatPlugin extends Plugin
 
 		if (config.clanChatIcons() && rank != null && rank != ClanMemberRank.UNRANKED)
 		{
-			int iconNumber = clanManager.getIconNumber(rank);
-			rankTag = " <img=" + iconNumber + ">";
+			rankIcon = clanManager.getIconNumber(rank);
 		}
 
-		ChatMessageBuilder message = new ChatMessageBuilder();
-		String messageString = message
+		ChatMessageBuilder message = new ChatMessageBuilder()
 			.append("[")
-			.append(ColorUtil.wrapWithColorTag(client.getClanChatName(), channelColor) + rankTag)
+			.append(channelColor, client.getClanChatName());
+		if (rankIcon > -1)
+		{
+			message
+				.append(" ")
+				.img(rankIcon);
+		}
+		message
 			.append("] ")
-			.append(ColorUtil.wrapWithColorTag(member.getUsername() + activityMessage, textColor))
-			.build();
+			.append(textColor, member.getUsername() + activityMessage);
 
-		client.addChatMessage(ChatMessageType.CLANCHAT_INFO, "", messageString, "");
+		final String messageString = message.build();
+		client.addChatMessage(ChatMessageType.FRIENDSCHATNOTIFICATION, "", messageString, "");
 
-		final ChatLineBuffer chatLineBuffer = client.getChatLineMap().get(ChatMessageType.CLANCHAT_INFO.getType());
+		final ChatLineBuffer chatLineBuffer = client.getChatLineMap().get(ChatMessageType.FRIENDSCHATNOTIFICATION.getType());
 		final MessageNode[] lines = chatLineBuffer.getLines();
 		final MessageNode line = lines[0];
 
@@ -407,21 +412,21 @@ public class ClanChatPlugin extends Plugin
 
 		switch (chatMessage.getType())
 		{
-			case PRIVATE_MESSAGE_RECEIVED:
-			case PRIVATE_MESSAGE_RECEIVED_MOD:
+			case PRIVATECHAT:
+			case MODPRIVATECHAT:
 				if (!config.privateMessageIcons())
 				{
 					return;
 				}
 				break;
-			case PUBLIC:
-			case PUBLIC_MOD:
+			case PUBLICCHAT:
+			case MODCHAT:
 				if (!config.publicChatIcons())
 				{
 					return;
 				}
 				break;
-			case CLANCHAT:
+			case FRIENDSCHAT:
 				if (!config.clanChatIcons())
 				{
 					return;
@@ -451,9 +456,12 @@ public class ClanChatPlugin extends Plugin
 	@Subscribe
 	public void onPlayerSpawned(PlayerSpawned event)
 	{
-		if (event.getPlayer().isClanMember())
+		final Player local = client.getLocalPlayer();
+		final Player player = event.getPlayer();
+
+		if (player != local && player.isClanMember())
 		{
-			clanMembers.add(event.getPlayer());
+			clanMembers.add(player);
 			addClanCounter();
 		}
 	}
@@ -496,7 +504,7 @@ public class ClanChatPlugin extends Plugin
 		{
 			int iconNumber = clanManager.getIconNumber(rank);
 			final String img = "<img=" + iconNumber + ">";
-			if (message.getType() == ChatMessageType.CLANCHAT)
+			if (message.getType() == ChatMessageType.FRIENDSCHAT)
 			{
 				message.getMessageNode()
 					.setSender(message.getMessageNode().getSender() + " " + img);

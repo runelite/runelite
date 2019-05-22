@@ -30,7 +30,6 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-
 public enum STASHUnit
 {
 	NEAR_A_SHED_IN_LUMBRIDGE_SWAMP(NullObjectID.NULL_28958, Varbits.STASH_UNIT_28958, new WorldPoint(3201, 3171, 0)),
@@ -136,7 +135,10 @@ public enum STASHUnit
 	DEATH_ALTAR(NullObjectID.NULL_29058, Varbits.STASH_UNIT_29058, new WorldPoint(2210, 4842, 0)),
 	BEHIND_MISS_SCHISM_IN_DRAYNOR_VILLAGE(NullObjectID.NULL_29059, Varbits.STASH_UNIT_29059, new WorldPoint(3095, 3254, 0)),
 	NORTHWESTERN_CORNER_OF_THE_ENCHANTED_VALLEY(NullObjectID.NULL_29060, Varbits.STASH_UNIT_29060, new WorldPoint(3022, 4517, 0)),
-	NORTH_OF_MOUNT_KARUULM(NullObjectID.NULL_34647, Varbits.STASH_UNIT_34647, new WorldPoint(1308, 3840, 0));
+	NORTH_OF_MOUNT_KARUULM(NullObjectID.NULL_34647, Varbits.STASH_UNIT_34647, new WorldPoint(1308, 3840, 0)),
+	GYPSY_TENT_ENTRANCE(NullObjectID.NULL_34736, Varbits.STASH_UNIT_34736, new WorldPoint(3206, 3422, 0)),
+	FINE_CLOTHES_ENTRANCE(NullObjectID.NULL_34737, Varbits.STASH_UNIT_34737, new WorldPoint(3209, 3416, 0)),
+	BOB_AXES_ENTRANCE(NullObjectID.NULL_34738, Varbits.STASH_UNIT_34738, new WorldPoint(3233, 3200, 0));
 
 	private WorldPoint[] worldPoints;
 	private int objectId;

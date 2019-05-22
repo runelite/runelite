@@ -126,6 +126,11 @@ public enum Varbits
 	DIARY_KARAMJA_HARD(3611),
 	DIARY_KARAMJA_ELITE(4566),
 
+	DIARY_KOUREND_EASY(7925),
+	DIARY_KOUREND_MEDIUM(7926),
+	DIARY_KOUREND_HARD(7927),
+	DIARY_KOUREND_ELITE(7928),
+
 	DIARY_LUMBRIDGE_EASY(4495),
 	DIARY_LUMBRIDGE_MEDIUM(4496),
 	DIARY_LUMBRIDGE_HARD(4497),
@@ -227,12 +232,12 @@ public enum Varbits
 
 	/**
 	 * Blast Furnace Bar Dispenser
-	 *
+	 * <p>
 	 * These are the expected values:
-	 *	0 = No bars being processed
-	 *	1 = Ores are being processed on the conveyor belt, bar dispenser cannot be checked
-	 *	2 = Bars are cooling down
-	 *	3 = Bars can be collected
+	 * 0 = No bars being processed
+	 * 1 = Ores are being processed on the conveyor belt, bar dispenser cannot be checked
+	 * 2 = Bars are cooling down
+	 * 3 = Bars can be collected
 	 */
 	BAR_DISPENSER(936),
 
@@ -244,11 +249,11 @@ public enum Varbits
 
 	/**
 	 * Experience tracker
-	 *
+	 * <p>
 	 * EXPERIENCE_TRACKER_POSITION expected values:
-	 *   0 = Right
-	 *   1 = Middle
-	 *   2 = Left
+	 * 0 = Right
+	 * 1 = Middle
+	 * 2 = Left
 	 */
 	EXPERIENCE_TRACKER_POSITION(4692),
 	EXPERIENCE_TRACKER_COUNTER(4697),
@@ -265,7 +270,7 @@ public enum Varbits
 	TITHE_FARM_SACK_AMOUNT(4900),
 	TITHE_FARM_SACK_ICON(5370),
 	TITHE_FARM_POINTS(4893),
-	
+
 	/**
 	 * Blast Mine
 	 */
@@ -372,8 +377,10 @@ public enum Varbits
 	/**
 	 * This varbit tracks how much bonemeal has been redeemed from Robin
 	 * The player gets 13 for each diary completed above and including Medium, for a maxiumum of 39
- 	*/
+	 */
 	DAILY_BONEMEAL_STATE(4543),
+
+	DAILY_DYNAMITE_COLLECTED(7939),
 
 	/**
 	 * Fairy Ring
@@ -430,7 +437,7 @@ public enum Varbits
 	 * The varbit that stores the oxygen percentage for player
 	 */
 	OXYGEN_LEVEL(5811),
-	
+
 	/**
 	 * Corp beast damage
 	 */
@@ -576,7 +583,30 @@ public enum Varbits
 	STASH_UNIT_28988(5227),
 	STASH_UNIT_29044(5286),
 	STASH_UNIT_29042(5284),
-	STASH_UNIT_34647(7970);
+	STASH_UNIT_34647(7970),
+	STASH_UNIT_34736(8254),
+	STASH_UNIT_34737(8255),
+	STASH_UNIT_34738(8256),
+
+	/**
+	 * Type of GE offer currently being created
+	 * 0 = buy
+	 * 1 = sell
+	 */
+	GE_OFFER_CREATION_TYPE(4397),
+
+	/**
+	 * The active tab within the quest interface
+	 */
+	QUEST_TAB(8168),
+
+	/**
+	 * Explorer ring
+	 */
+	EXPLORER_RING_ALCHTYPE(5398),
+	EXPLORER_RING_TELEPORTS(4552),
+	EXPLORER_RING_ALCHS(4554),
+	EXPLORER_RING_RUNENERGY(4553);
 
 	/**
 	 * The raw varbit ID.

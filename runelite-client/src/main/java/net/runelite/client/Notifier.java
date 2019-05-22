@@ -140,7 +140,7 @@ public class Notifier
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
+				.type(ChatMessageType.CONSOLE)
 				.name(appName)
 				.runeLiteFormattedMessage(formattedMessage)
 				.build());
@@ -150,6 +150,8 @@ public class Notifier
 		{
 			flashStart = Instant.now();
 		}
+
+		log.debug(message);
 	}
 
 	public void processFlash(final Graphics2D graphics)

@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.agility;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
@@ -48,7 +48,7 @@ enum Courses
 	RELLEKA(780.0, 475, 10553),
 	ARDOUGNE(793.0, 529, 10547);
 
-	private final static Map<Integer, Courses> coursesByRegion = new HashMap<>();
+	private final static Map<Integer, Courses> coursesByRegion;
 
 	@Getter
 	private final double totalXp;
@@ -64,10 +64,14 @@ enum Courses
 
 	static
 	{
+		ImmutableMap.Builder<Integer, Courses> builder = new ImmutableMap.Builder<>();
+
 		for (Courses course : values())
 		{
-			coursesByRegion.put(course.regionId, course);
+			builder.put(course.regionId, course);
 		}
+
+		coursesByRegion = builder.build();
 	}
 
 	Courses(double totalXp, int lastObstacleXp, int regionId, WorldPoint... courseEndWorldPoints)

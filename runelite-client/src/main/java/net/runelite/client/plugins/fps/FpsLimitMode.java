@@ -24,22 +24,9 @@
  */
 package net.runelite.client.plugins.fps;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum FpsLimitMode
 {
-	NEVER("Never"),
-	UNFOCUSED("Unfocused"),
-	ALWAYS("Always");
-
-	private final String name;
-
-	@Override
-	public String toString()
-	{
-		return name;
-	}
+	NEVER,
+	UNFOCUSED,
+	ALWAYS
 }

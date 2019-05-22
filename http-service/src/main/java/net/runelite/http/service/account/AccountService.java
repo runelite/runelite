@@ -52,6 +52,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -88,7 +89,6 @@ public class AccountService
 
 	private static final String SCOPE = "https://www.googleapis.com/auth/userinfo.email";
 	private static final String USERINFO = "https://www.googleapis.com/oauth2/v2/userinfo";
-	private static final String RL_OAUTH_URL = "https://api.runelite.net/oauth/";
 	private static final String RL_REDIR = "https://runelite.net/logged-in";
 
 	private final Gson gson = RuneLiteAPI.GSON;
@@ -97,6 +97,7 @@ public class AccountService
 	private final Sql2o sql2o;
 	private final String oauthClientId;
 	private final String oauthClientSecret;
+	private final String oauthCallback;
 	private final AuthFilter auth;
 	private final RedisPool jedisPool;
 
@@ -105,6 +106,7 @@ public class AccountService
 		@Qualifier("Runelite SQL2O") Sql2o sql2o,
 		@Value("${oauth.client-id}") String oauthClientId,
 		@Value("${oauth.client-secret}") String oauthClientSecret,
+		@Value("${oauth.callback}") String oauthCallback,
 		AuthFilter auth,
 		RedisPool jedisPool
 	)
@@ -112,6 +114,7 @@ public class AccountService
 		this.sql2o = sql2o;
 		this.oauthClientId = oauthClientId;
 		this.oauthClientSecret = oauthClientSecret;
+		this.oauthCallback = oauthCallback;
 		this.auth = auth;
 		this.jedisPool = jedisPool;
 
@@ -135,7 +138,7 @@ public class AccountService
 		}
 	}
 
-	@RequestMapping("/login")
+	@GetMapping("/login")
 	public OAuthResponse login(@RequestParam UUID uuid)
 	{
 		State state = new State();
@@ -146,7 +149,7 @@ public class AccountService
 			.apiKey(oauthClientId)
 			.apiSecret(oauthClientSecret)
 			.scope(SCOPE)
-			.callback(RL_OAUTH_URL)
+			.callback(oauthCallback)
 			.state(gson.toJson(state))
 			.build(GoogleApi20.instance());
 
@@ -162,7 +165,7 @@ public class AccountService
 		return lr;
 	}
 
-	@RequestMapping("/callback")
+	@GetMapping("/callback")
 	public Object callback(
 		HttpServletRequest request,
 		HttpServletResponse response,
@@ -185,7 +188,7 @@ public class AccountService
 			.apiKey(oauthClientId)
 			.apiSecret(oauthClientSecret)
 			.scope(SCOPE)
-			.callback(RL_OAUTH_URL)
+			.callback(oauthCallback)
 			.state(gson.toJson(state))
 			.build(GoogleApi20.instance());
 
@@ -250,7 +253,7 @@ public class AccountService
 		}
 	}
 
-	@RequestMapping("/logout")
+	@GetMapping("/logout")
 	public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		SessionEntry session = auth.handle(request, response);
@@ -268,7 +271,7 @@ public class AccountService
 		}
 	}
 
-	@RequestMapping("/session-check")
+	@GetMapping("/session-check")
 	public void sessionCheck(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		auth.handle(request, response);
