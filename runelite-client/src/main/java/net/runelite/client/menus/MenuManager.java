@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Robin <robin.weymans@gmail.com>
+ * Copyright (c) 2019, Lucas <https://github.com/Lucwousin>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,11 +40,13 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import joptsimple.internal.Strings;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.ObjectComposition;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcActionChanged;
@@ -92,6 +95,8 @@ public class MenuManager
 	private final Set<MenuEntry> currentPriorityEntries = new HashSet<>();
 
 	private final Map<AbstractMenuEntry, AbstractMenuEntry> swaps = new HashMap<>();
+	private final Set<MenuEntry> originalTypes = new HashSet<>();
+	private final Set<Integer> leftClickObjects = new HashSet<>();
 
 	@Inject
 	private MenuManager(Client client, EventBus eventBus)
@@ -148,6 +153,8 @@ public class MenuManager
 		{
 			// Menu entries reset, so priority entries should reset as well
 			currentPriorityEntries.clear();
+
+			originalTypes.clear();
 		}
 
 		for (WidgetMenuOption currentMenu : options)
@@ -166,7 +173,7 @@ public class MenuManager
 			}
 		}
 
-		MenuEntry newestEntry = menuEntries[menuEntries.length - 1];
+		final MenuEntry newestEntry = menuEntries[menuEntries.length - 1];
 
 		boolean isPrio = false;
 		for (AbstractMenuEntry p : priorityEntries)
@@ -192,7 +199,7 @@ public class MenuManager
 		{
 			copy.retainAll(currentPriorityEntries);
 
-			copy.add(CANCEL());
+			copy.add(0, CANCEL());
 		}
 
 		// Find the current entry in the swaps map
@@ -223,14 +230,18 @@ public class MenuManager
 
 			if (foundSwap != null)
 			{
-				// This is to make things like games necklace and essence pouches show up right
-				if (foundSwap.getType() == MenuAction.EXAMINE_ITEM_BANK_EQ.getId())
+				// This is the menu entry added last's type
+				final int otherType = foundSwap.getType();
+
+				// MenuActions with an id of over 1000 get shifted to the back of the menu entry array
+				// They have different id's in the packet buffer though, so we got to modify them back on click
+				// I couldn't get this to work with objects, so we're using modified objectcomposition for that
+				final boolean shouldModifyType = otherType == MenuAction.EXAMINE_ITEM_BANK_EQ.getId();
+
+				if (shouldModifyType)
 				{
-					int newType = foundSwap.getType();
-
-					foundSwap.setType(newestEntry.getType());
-
-					newestEntry.setType(newType);
+					foundSwap.setType(MenuAction.WIDGET_DEFAULT.getId());
+					originalTypes.add(foundSwap);
 				}
 
 				// Swap
@@ -269,6 +280,86 @@ public class MenuManager
 				break;
 			}
 		}
+	}
+
+	public boolean toggleLeftClick(String menuText, int objectID, boolean reset)
+	{
+		Preconditions.checkNotNull(menuText);
+
+		if (client == null)
+		{
+			return false;
+		}
+
+		ObjectComposition oc = client.getObjectDefinition(objectID);
+
+		if (oc == null)
+		{
+			return false;
+		}
+
+		ObjectComposition impostor = oc.getImpostorIds() != null ? oc.getImpostor() : null;
+
+		if (impostor != null)
+		{
+			if (toggleLeftClick(menuText, impostor.getId(), reset))
+			{
+				// Sorry about this
+				leftClickObjects.remove(impostor.getId());
+
+				if (reset)
+				{
+					leftClickObjects.remove(objectID);
+				}
+				else
+				{
+					leftClickObjects.add(objectID);
+				}
+
+				return true;
+			}
+		}
+
+		String[] options = oc.getActions();
+
+		if (options == null)
+		{
+			return false;
+		}
+
+		boolean hasOption5 = !Strings.isNullOrEmpty(options[options.length - 1]);
+		boolean hasOption1 = !Strings.isNullOrEmpty(options[0]);
+
+		if (hasOption5 || hasOption1)
+		{
+			String option1 = options[0];
+			String option5 = options[options.length - 1];
+
+			if (reset && !hasOption1 // Won't have to reset anything cause
+				|| reset && !menuText.equalsIgnoreCase(option1) // theres nothing to reset
+				|| hasOption5 && !menuText.equalsIgnoreCase(option5))
+			{
+				return false;
+			}
+
+			options[0] = option5;
+			options[options.length - 1] = option1;
+		}
+		else
+		{
+			return false;
+		}
+
+		if (reset)
+		{
+			leftClickObjects.remove(objectID);
+		}
+		else
+		{
+			leftClickObjects.add(objectID);
+		}
+
+		return true;
 	}
 
 	@Subscribe
@@ -349,6 +440,79 @@ public class MenuManager
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
+		if (!event.getMenuTarget().equals("do not edit") &&
+			!originalTypes.isEmpty() &&
+			event.getMenuAction() == MenuAction.WIDGET_DEFAULT)
+		{
+			for (MenuEntry e : originalTypes)
+			{
+				// Honestly, I was about to write a huge ass rant about
+				// how I hate whoever wrote the menuoptionclicked class
+				// but I decided that that'd be un-nice to them, and they
+				// probably spent over 24 hours writing it. Not because
+				// it was that difficult to write, of course, but because
+				// they must have the fucking iq of a retarded, under developed,
+				// braindead, basically good-for-nothing, idiotic chimp.
+				//
+				// Just kidding, of course, that would be too big of an
+				// insult towards those poor chimps. It's not their fault
+				// some dumbass is the way they are, right? Why should they
+				// feel bad for something they can't do anything about?
+				//
+				// Whoever wrote that class though, should actually feel
+				// 100% terrible. If they aren't depressed, I really wish
+				// they become depressed very, very soon. What the fuck
+				// were they even thinking.
+				if (event.getMenuAction().getId() != e.getType()
+					|| event.getId() != e.getIdentifier()
+					|| !event.getMenuOption().equals(e.getOption()))
+				{
+					continue;
+				}
+
+				event.consume();
+
+				client.invokeMenuAction(
+					event.getActionParam(),
+					event.getWidgetId(),
+					MenuAction.EXAMINE_ITEM_BANK_EQ.getId(),
+					event.getId(),
+					event.getMenuOption(),
+					"do not edit",
+					client.getMouseCanvasPosition().getX(),
+					client.getMouseCanvasPosition().getY()
+				);
+
+				break;
+			}
+		}
+
+		if (!event.getMenuTarget().equals("do not edit") &&
+			!leftClickObjects.isEmpty() &&
+			event.getMenuAction() == MenuAction.GAME_OBJECT_FIRST_OPTION &&
+			(
+			leftClickObjects.contains(event.getId())
+			||
+			client.getObjectDefinition(event.getId()) != null &&
+			client.getObjectDefinition(event.getId()).getImpostorIds() != null &&
+			client.getObjectDefinition(event.getId()).getImpostor() != null &&
+			client.getObjectDefinition(event.getId()).getImpostor().getId() == event.getId()))
+		{
+
+			event.consume();
+
+			client.invokeMenuAction(
+				event.getActionParam(),
+				event.getWidgetId(),
+				MenuAction.GAME_OBJECT_FIFTH_OPTION.getId(),
+				event.getId(),
+				event.getMenuOption(),
+				"do not edit",
+				client.getMouseCanvasPosition().getX(),
+				client.getMouseCanvasPosition().getY()
+			);
+		}
+
 		if (event.getMenuAction() != MenuAction.RUNELITE)
 		{
 			return; // not a player menu
