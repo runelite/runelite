@@ -40,14 +40,4 @@ public interface ClueScrollConfig extends Config
 	{
 		return true;
 	}
-
-	@ConfigItem(
-		keyName = "highlightStashUnits",
-		name = "Highlight STASH units",
-		description = "Configures whether or not to highlight STASH units for the emote clue scrolls"
-	)
-	default boolean highlightStashUnits()
-	{
-		return true;
-	}
 }

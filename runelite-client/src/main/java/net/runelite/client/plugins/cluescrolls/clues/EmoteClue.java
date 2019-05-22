@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -219,12 +220,12 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 	private Emote secondEmote;
 	private ItemRequirement[] itemRequirements;
 
-	private EmoteClue(String text, STASHUnit stashUnit, WorldPoint location, Emote firstEmote, ItemRequirement... itemRequirements)
+	private EmoteClue(String text, STASHUnit stashUnit, WorldPoint location, Emote firstEmote, @Nonnull ItemRequirement... itemRequirements)
 	{
 		this(text, stashUnit, location, firstEmote, null, itemRequirements);
 	}
 
-	private EmoteClue(String text, STASHUnit stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, ItemRequirement... itemRequirements)
+	private EmoteClue(String text, STASHUnit stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, @Nonnull ItemRequirement... itemRequirements)
 	{
 		this.text = text;
 		this.stashUnit = stashUnit;
@@ -311,16 +312,11 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localPoint, plugin.getEmoteImage(), Color.ORANGE);
 		}
 
+		final WorldPoint[] worldPoints = stashUnit.getWorldPoints();
 
-		if (!plugin.getConfig().highlightStashUnits())
+		for (final WorldPoint worldPoint : worldPoints)
 		{
-			return;
-		}
-		WorldPoint[] worldPoints = stashUnit.getWorldPoints();
-
-		for (WorldPoint worldPoint : worldPoints)
-		{
-			LocalPoint stashUnitLocalPoint = LocalPoint.fromWorld(plugin.getClient(), worldPoint);
+			final LocalPoint stashUnitLocalPoint = LocalPoint.fromWorld(plugin.getClient(), worldPoint);
 
 			if (stashUnitLocalPoint != null)
 			{
@@ -342,6 +338,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 				return clue;
 			}
 		}
+
 		return null;
 	}
 }

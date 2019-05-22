@@ -26,7 +26,6 @@ package net.runelite.client.plugins.cluescrolls.clues.emote;
 
 import lombok.Getter;
 import net.runelite.api.NullObjectID;
-import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
