@@ -49,7 +49,7 @@ import static net.runelite.client.util.MenuUtil.swap;
 	name = "Blackjack",
 	description = "Uses chat messages and tick timers instead of animations to read",
 	tags = {"blackjack", "thieving"},
-	type = PluginType.UTILITY
+	type = PluginType.SKILLING
 )
 @Singleton
 @Slf4j

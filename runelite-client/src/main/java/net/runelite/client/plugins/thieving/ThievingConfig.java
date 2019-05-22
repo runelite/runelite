@@ -1,5 +1,7 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, Joris K <kjorisje@gmail.com>
+ * Copyright (c) 2018, Lasse <cronick@zytex.dk>
+ * Copyright (c) 2019, ermalsh <github.com/ermalsh>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,82 +24,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.pluginsorter;
+package net.runelite.client.plugins.thieving;
 
-import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("pluginsorter")
-public interface PluginSorterConfig extends Config
+@ConfigGroup("thieving")
+public interface ThievingConfig extends Config
 {
-	boolean pluginsHidden = false;
-
-	@ConfigItem(
-		position = 0,
-		keyName = "hidePlugins",
-		name = "Hide Plugins",
-		description = "Hides all 3rd party plugins if checked"
-	)
-	default boolean hidePlugins()
-	{
-		return pluginsHidden;
-	}
-
-	@ConfigItem(
+	@ConfigItem
+	(
 		position = 1,
-		keyName = "externalColor",
-		name = "External color",
-		description = "Configure the color of external plugins"
+		keyName = "statTimeout",
+		name = "Reset stats (minutes)",
+		description = "Change the time until the thieving session is reset and the overlay is hidden"
 	)
-	default Color externalColor()
+	default int statTimeout()
 	{
-		return Color.MAGENTA;
+		return 5;
 	}
-
-	@ConfigItem(
-		position = 2,
-		keyName = "pvmColor",
-		name = "PVM color",
-		description = "Configure the color of PVM related plugins"
-	)
-	default Color pvmColor()
-	{
-		return Color.GREEN;
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "pvpColor",
-		name = "PVP color",
-		description = "Configure the color of PVP related plugins"
-	)
-	default Color pvpColor()
-	{
-		return Color.RED;
-	}
-	
-	@ConfigItem(
-		position = 4,
-		keyName = "skillingColor",
-		name = "Skilling color",
-		description = "Configure the color of Skilling related plugins"
-	)
-	default Color skillingColor()
-	{
-		return Color.YELLOW;
-	}
-
-	@ConfigItem(
-		position = 5,
-		keyName = "utilityColor",
-		name = "Utility color",
-		description = "Configure the color of Utility related plugins"
-	)
-	default Color utilityColor()
-	{
-		return Color.CYAN;
-	}
-
 }

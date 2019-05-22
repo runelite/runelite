@@ -404,6 +404,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 				swap(client, "teleport", option, target, true);
 			}
 
+			if (config.swapHardWoodGrove() && target.contains("rionasta"))
+			{
+				swap(client, "send-parcel", option, target, true);
+			}
 			if (config.swapBank())
 			{
 				swap(client, "bank", option, target, true);
@@ -429,6 +433,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap(client, "assignment", option, target, true);
 			}
+			
+			if (config.swapPlank())
+			{
+				swap(client, "buy-plank", option, target, true);
+			}
 
 			if (config.swapTrade())
 			{
@@ -439,6 +448,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (config.claimSlime() && target.equals("robin"))
 			{
 				swap(client, "claim-slime", option, target, true);
+			}
+			
+			if (config.claimDynamite() && target.contains("Thirus"))
+			{
+				swap(client, "claim-dynamite", option, target, true);
 			}
 
 			if (config.swapTravel())
@@ -475,8 +489,33 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				swap(client, "quick-travel", option, target, true);
 			}
+			
+			if (config.swapStory())
+			{
+				swap(client, "story", option, target, true);
+			}
+
+			if (config.swapEscort())
+			{
+				swap(client, "escort", option, target, true);
+			}
 		}
 
+		else if (config.swapWildernessLever() && target.equals("lever") && option.equals("ardougne"))
+		{
+			swap(client, "edgeville", option, target, true);
+		}
+		
+		else if (config.swapMetamorphosis() && target.contains("baby chinchompa"))
+		{
+			swap(client, "metamorphosis", option, target, true);
+		}
+
+		else if (config.swapStun() && target.contains("hoop snake"))
+		{
+			swap(client, "stun", option, target, true);
+		}
+		
 		else if (config.swapTravel() && option.equals("pass") && target.equals("energy barrier"))
 		{
 			swap(client, "pay-toll(2-ecto)", option, target, true);
@@ -500,6 +539,41 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapHarpoon() && (option.equals("big net") || option.equals("net")))
 		{
 			swap(client, "harpoon", option, target, true);
+		}
+
+else if (config.swapOccult() != OccultAltarMode.VENERATE && option.equals("venerate"))
+		{
+			switch (config.swapOccult())
+			{
+				case VENERATE:
+					swap(client, "Venerate", option, target, true);
+				break;
+				case ANCIENT:
+					swap(client, "Ancient", option, target, true);
+				break;
+				case LUNAR:
+				swap(client, "Lunar", option, target, true);
+				break;
+				case ARCEUUS:
+				swap(client, "Arceuus", option, target, true);
+			}
+				
+		}
+
+		else if (config.swapObelisk() != ObeliskMode.ACTIVATE && option.equals("activate"))
+		{
+			switch (config.swapObelisk())
+			{
+				case ACTIVATE:
+					swap(client, "activate", option, target, true);
+				break;
+				case SET_DESTINATION:
+					swap(client, "set destination", option, target, true);
+				break;
+				case TELEPORT_TO_DESTINATION:
+					swap(client, "teleport to destination", option, target, true);
+				break;
+			}
 		}
 
 		else if (config.swapHomePortal() != HouseMode.ENTER && option.equals("enter"))
@@ -543,6 +617,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBoxTrap() && option.equals("take"))
 		{
 			swap(client, "lay", option, target, true);
+			swap(client, "activate", option, target, true);
 		}
 
 		else if (config.swapChase() && option.equals("pick-up"))
@@ -588,6 +663,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap(client, "pick-lots", option, target, true);
 		}
 
+		else if (config.swapSearch() && (option.equals("close") || option.equals("shut")))
+		{
+			swap(client, "search", option, target, true);
+		}
+		
 		else if (config.swapRogueschests() && target.contains("chest"))
 		{
 			swap(client, "search for traps", option, target, true);
@@ -625,6 +705,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapBones() && option.equals("bury"))
 		{
 			swap(client, "use", option, target, true);
+		}
+		else if (config.swapNexus() && target.contains("portal nexus"))
+		{
+			swap(client, "teleport menu", option, target, true);
 		}
 	}
 

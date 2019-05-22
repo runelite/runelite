@@ -248,6 +248,25 @@ public class ConfigPanel extends PluginPanel
 		pvmPlugins.sort(Comparator.comparing(PluginListItem::getName));
 		pluginList.addAll(pvmPlugins);
 
+		List<PluginListItem> skillingPlugins = new ArrayList<>();
+
+		// populate pluginList with all non-hidden plugins
+		pluginManager.getPlugins().stream()
+			.filter(plugin -> plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.SKILLING))
+			.forEach(plugin ->
+			{
+				final PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
+				final Config config = pluginManager.getPluginConfigProxy(plugin);
+				final ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
+
+				final PluginListItem listItem = new PluginListItem(this, configManager, plugin, descriptor, config, configDescriptor);
+				listItem.setPinned(pinnedPlugins.contains(listItem.getName()));
+				skillingPlugins.add(listItem);
+			});
+
+		skillingPlugins.sort(Comparator.comparing(PluginListItem::getName));
+		pluginList.addAll(skillingPlugins);
+
 		List<PluginListItem> pvpPlugins = new ArrayList<>();
 		// populate pluginList with all PVP Plugins
 		pluginManager.getPlugins().stream()
@@ -290,6 +309,7 @@ public class ConfigPanel extends PluginPanel
 			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).hidden())
 			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVM))
 			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PVP))
+			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.SKILLING))
 			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.UTILITY))
 			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.PLUGIN_ORGANIZER))
 			.filter(plugin -> !plugin.getClass().getAnnotation(PluginDescriptor.class).type().equals(PluginType.EXTERNAL))

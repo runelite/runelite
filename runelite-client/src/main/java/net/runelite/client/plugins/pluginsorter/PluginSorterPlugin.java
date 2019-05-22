@@ -120,6 +120,9 @@ public class PluginSorterPlugin extends Plugin
 					case PVP:
 						pli.nameLabel.setForeground(config.pvpColor());
 						break;
+					case SKILLING:
+						pli.nameLabel.setForeground(config.skillingColor());
+						break;
 					case UTILITY:
 						pli.nameLabel.setForeground(config.utilityColor());
 						break;
@@ -143,6 +146,7 @@ public class PluginSorterPlugin extends Plugin
 				{
 					case PVM:
 					case PVP:
+					case SKILLING:
 					case UTILITY:
 					case EXTERNAL:
 						iter.remove();

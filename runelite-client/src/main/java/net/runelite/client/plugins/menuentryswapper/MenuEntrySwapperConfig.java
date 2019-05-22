@@ -57,7 +57,8 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapAdmire",
 		name = "Admire",
-		description = "Swap Admire with Teleport, Spellbook and Perks (max cape) for mounted skill capes."
+		description = "Swap Admire with Teleport, Spellbook and Perks (max cape) for mounted skill capes.",
+		group = "Swap Teleport"
 	)
 	default boolean swapAdmire()
 	{
@@ -67,7 +68,8 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapAssignment",
 		name = "Assignment",
-		description = "Swap Talk-to with Assignment for Slayer Masters. This will take priority over swapping Trade."
+		description = "Swap Talk-to with Assignment for Slayer Masters. This will take priority over swapping Trade.",
+		group = "Swap Talk-To"
 	)
 	default boolean swapAssignment()
 	{
@@ -77,7 +79,8 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapBanker",
 		name = "Bank",
-		description = "Swap Talk-to with Bank on Bank NPC<br>Example: Banker"
+		description = "Swap Talk-to with Bank on Bank NPC<br>Example: Banker",
+		group = "Swap Talk-To"
 	)
 	default boolean swapBank()
 	{
@@ -107,7 +110,8 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapContract",
 		name = "Contract",
-		description = "Swap Talk-to with Contract on Guildmaster Jane"
+		description = "Swap Talk-to with Contract on Guildmaster Jane",
+		group = "Swap Talk-To"
 	)
 	default boolean swapContract()
 	{
@@ -125,9 +129,21 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "claimDynamite",
+		name = "Claim Dynamite",
+		description = "Swap Talk-to with Claim Dynamite on Thirus",
+		group = "Swap Talk-To"
+	)		
+	default boolean claimDynamite()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "claimSlime",
 		name = "Claim Slime",
-		description = "Swap Talk-to with Claim Slime from Morytania diaries"
+		description = "Swap Talk-to with Claim Slime from Morytania diaries",
+		group = "Swap Talk-To"
 	)
 	default boolean claimSlime()
 	{
@@ -137,7 +153,8 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapDarkMage",
 		name = "Repairs",
-		description = "Swap Talk-to with Repairs for Dark Mage"
+		description = "Swap Talk-to with Repairs for Dark Mage",
+		group = "Swap Talk-To"
 	)
 	default boolean swapDarkMage()
 	{
@@ -147,7 +164,8 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapDecant",
 		name = "Decant",
-		description = "Swap Talk-to with Decant for Bob Barter and Murky Matt at the Grand Exchange."
+		description = "Swap Talk-to with Decant for Bob Barter and Murky Matt at the Grand Exchange.",
+		group = "Swap Talk-To"
 	)
 	default boolean swapDecant()
 	{
@@ -157,7 +175,8 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapExchange",
 		name = "Exchange",
-		description = "Swap Talk-to with Exchange on NPC<br>Example: Grand Exchange Clerk, Tool Leprechaun, Void Knight"
+		description = "Swap Talk-to with Exchange on NPC<br>Example: Grand Exchange Clerk, Tool Leprechaun, Void Knight",
+		group = "Swap Talk-To"
 	)
 	default boolean swapExchange()
 	{
@@ -167,7 +186,8 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapFairyRing",
 		name = "Fairy ring",
-		description = "Swap Zanaris with Last-destination or Configure on Fairy rings"
+		description = "Swap Zanaris with Last-destination or Configure on Fairy rings",
+		group = "Swap Teleport"
 	)
 	default FairyRingMode swapFairyRing()
 	{
@@ -183,6 +203,27 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+	
+	@ConfigItem(
+		keyName = "swapOccult",
+		name = "Occult Altar",
+		description = "Swap Venerate with Ancient, Lunar, or Arceuus on an Altar of the Occult"
+	)
+	default OccultAltarMode swapOccult()
+	{
+		return OccultAltarMode.VENERATE;
+	}
+
+	@ConfigItem(
+		keyName = "swapObelisk",
+		name = "Obelisk",
+		description = "Swap the options on wilderness obelisks between Activate, Set destination or Teleport to destination",
+		group = "Swap Teleport"
+	)
+	default ObeliskMode swapObelisk()
+	{
+		return ObeliskMode.ACTIVATE;
+	}
 
 	@ConfigItem(
 		keyName = "swapHomePortal",
@@ -197,7 +238,8 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapPickpocket",
 		name = "Pickpocket on H.A.M.",
-		description = "Swap Talk-to with Pickpocket on H.A.M members"
+		description = "Swap Talk-to with Pickpocket on H.A.M members",
+		group = "Swap Talk-To"
 	)
 	default boolean swapPickpocket()
 	{
@@ -207,7 +249,8 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapPay",
 		name = "Pay",
-		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth"
+		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth",
+		group = "Swap Talk-To"
 	)
 	default boolean swapPay()
 	{
@@ -267,7 +310,8 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapAbyssTeleport",
 		name = "Teleport to Abyss",
-		description = "Swap Talk-to with Teleport for the Mage of Zamorak"
+		description = "Swap Talk-to with Teleport for the Mage of Zamorak",
+		group = "Swap Talk-To"
 	)
 	default boolean swapAbyssTeleport()
 	{
@@ -277,7 +321,8 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapTrade",
 		name = "Trade",
-		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant"
+		description = "Swap Talk-to with Trade on NPC<br>Example: Shop keeper, Shop assistant",
+		group = "Swap Talk-To"
 	)
 	default boolean swapTrade()
 	{
@@ -287,7 +332,8 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapTravel",
 		name = "Travel",
-		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember"
+		description = "Swap Talk-to with Travel, Take-boat, Pay-fare, Charter on NPC<br>Example: Squire, Monk of Entrana, Customs officer, Trader Crewmember",
+		group = "Swap Talk-To"
 	)
 	default boolean swapTravel()
 	{
@@ -315,9 +361,9 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "swapClimbUpDown",
-			name = "Climb",
-			description = "Swap Climb-Up/Down depending on Shift or Control key									"
+		keyName = "swapClimbUpDown",
+		name = "Climb",
+		description = "Swap Climb-Up/Down depending on Shift or Control key									"
 	)
 	default boolean swapClimbUpDown()
 	{
@@ -325,11 +371,108 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "swapDream",
-			name = "Dream",
-			description = "Swap Talk-to with Dream for Dominic Onion"
+		keyName = "swapDream",
+		name = "Dream",
+		description = "Swap Talk-to with Dream for Dominic Onion",
+		group = "Swap Talk-To"
 	)
 	default boolean swapDream()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapStory",
+		name = "Story",
+		description = "Swap Talk-to with Story for Juna at Tears of Guthix",
+		group = "Swap Talk-To"
+	)
+	default boolean swapStory()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapPlank",
+		name = "Buy Planks",
+		description = "Swap Talk-to with Buy-planks at the Lumber Yard.",
+		group = "Swap Talk-To"
+	)
+	default boolean swapPlank()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapStun",
+		name = "Stun Hoop Snakes",
+		description = "Swap Attack with Stun"
+	)
+	default boolean swapStun()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapMetamorphosis",
+		name = "Metamorphosis",
+		description = "Swap Talk-to with Metamorphosis for Baby Chinchompa pet.",
+		group = "Swap Talk-To"
+	)
+	default boolean swapMetamorphosis()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapEscort",
+		name = "Escort",
+		description = "Swap Talk-to with Escort for the Temple Trekking mini-game.",
+		group = "Swap Talk-To"
+	)
+	default boolean swapEscort()
+	{
+		return true;
+	}	
+
+	@ConfigItem(
+		keyName = "swapWildernessLever",
+		name = "Wilderness Lever",
+		description = "Swap wilderness lever left click to be Edgeville/Ardougne.",
+		group = "Swap Teleport"
+	)
+	default boolean swapWildernessLever()
+	{
+		return true;
+	}
+	
+	@ConfigItem(
+		keyName = "swapNexus",
+		name = "Portal Nexus",
+		description = "Makes the teleport menu have priority over the left click destination on the portal nexus",
+		group = "Swap Teleport"
+	)
+	default boolean swapNexus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapSearch",
+		name = "Search",
+		description = "Swap Close, Shut with Search on chests, cupboards, etc."
+	)
+	default boolean swapSearch()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "swapHardWoodGrove",
+		name = "Hardwood Grove",
+		description =  "Swap Quick-Pay(100) and Send-Parcel at Hardwood Grove"
+	)
+	default boolean swapHardWoodGrove()
 	{
 		return true;
 	}

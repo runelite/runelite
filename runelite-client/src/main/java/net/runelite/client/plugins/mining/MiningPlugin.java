@@ -60,7 +60,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Mining",
 	description = "Show helpful information about Mining",
 	tags = {"mining", "skilling", "overlay"},
-	type = PluginType.UTILITY,
+	type = PluginType.SKILLING,
 	enabledByDefault = false
 )
 public class MiningPlugin extends Plugin
