@@ -472,11 +472,11 @@ class LootTrackerPanel extends PluginPanel
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		box.setComponentPopupMenu(popupMenu);
+
 		// Create IgnoreNpc menu
 		List<String> ignoredNpcs = new ArrayList<>();
 		ignoredNpcs = Text.fromCSV(config.getIgnoredNpcs());
 		final Set<String> ignoredNpcSet = new HashSet<>(ignoredNpcs);
-		System.out.println(ignoredNpcSet);
 		final JMenuItem IgnoreNpc = new JMenuItem("Ignore Npc");
 		IgnoreNpc.addActionListener(e ->
 		{
