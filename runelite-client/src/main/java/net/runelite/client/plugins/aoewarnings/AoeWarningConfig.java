@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.aoewarnings;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -46,11 +47,22 @@ public interface AoeWarningConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 2,
+		keyName = "overlayColor",
+		name = "Overlay Color",
+		description = "Configures the color of the AoE Projectile Warnings overlay"
+	)
+	default Color overlayColor()
+	{
+		return new Color(0, 150, 200);
+	}
+
+	@ConfigItem(
 		keyName = "outline",
 		name = "Display Outline",
 		description = "Configures whether or not AoE Projectile Warnings have an outline",
 		parent = "overlayStub",
-		position = 2
+		position = 3
 	)
 	default boolean isOutlineEnabled()
 	{
@@ -59,10 +71,10 @@ public interface AoeWarningConfig extends Config
 
 	@ConfigItem(
 		keyName = "delay",
-		name = "Fade delay",
+		name = "Fade Delay",
 		description = "Configures the amount of time in milliseconds that the warning lingers for after the projectile has touched the ground",
 		parent = "overlayStub",
-		position = 3
+		position = 4
 	)
 	default int delay()
 	{
@@ -74,7 +86,7 @@ public interface AoeWarningConfig extends Config
 		name = "Fade Warnings",
 		description = "Configures whether or not AoE Projectile Warnings fade over time",
 		parent = "overlayStub",
-		position = 4
+		position = 5
 	)
 	default boolean isFadeEnabled()
 	{
@@ -85,7 +97,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "npcStub",
 		name = "NPC's",
 		description = "",
-		position = 5
+		position = 6
 	)
 	default Stub npcStub()
 	{
@@ -97,7 +109,7 @@ public interface AoeWarningConfig extends Config
 		name = "Lizardman Shamans",
 		description = "Configures whether or not AoE Projectile Warnings for Lizardman Shamans is displayed",
 		parent = "npcStub",
-		position = 6
+		position = 7
 	)
 	default boolean isShamansEnabled()
 	{
@@ -109,7 +121,7 @@ public interface AoeWarningConfig extends Config
 		name = "Crazy Archaeologist",
 		description = "Configures whether or not AoE Projectile Warnings for Archaeologist is displayed",
 		parent = "npcStub",
-		position = 7
+		position = 8
 	)
 	default boolean isArchaeologistEnabled()
 	{
@@ -121,7 +133,7 @@ public interface AoeWarningConfig extends Config
 		name = "Ice Demon",
 		description = "Configures whether or not AoE Projectile Warnings for Ice Demon is displayed",
 		parent = "npcStub",
-		position = 8
+		position = 9
 	)
 	default boolean isIceDemonEnabled()
 	{
@@ -133,7 +145,7 @@ public interface AoeWarningConfig extends Config
 		name = "Vasa",
 		description = "Configures whether or not AoE Projectile Warnings for Vasa is displayed",
 		parent = "npcStub",
-		position = 9
+		position = 10
 	)
 	default boolean isVasaEnabled()
 	{
@@ -145,7 +157,7 @@ public interface AoeWarningConfig extends Config
 		name = "Tekton",
 		description = "Configures whether or not AoE Projectile Warnings for Tekton is displayed",
 		parent = "npcStub",
-		position = 10
+		position = 11
 	)
 	default boolean isTektonEnabled()
 	{
@@ -157,7 +169,7 @@ public interface AoeWarningConfig extends Config
 		name = "Vorkath",
 		description = "Configures whether or not AoE Projectile Warnings for Vorkath are displayed",
 		parent = "npcStub",
-		position = 11
+		position = 12
 	)
 	default boolean isVorkathEnabled()
 	{
@@ -169,7 +181,7 @@ public interface AoeWarningConfig extends Config
 		name = "Galvek",
 		description = "Configures whether or not AoE Projectile Warnings for Galvek are displayed",
 		parent = "npcStub",
-		position = 12
+		position = 13
 	)
 	default boolean isGalvekEnabled()
 	{
@@ -181,7 +193,7 @@ public interface AoeWarningConfig extends Config
 		name = "Gargoyle Boss",
 		description = "Configs whether or not AoE Projectile Warnings for Dawn/Dusk are displayed",
 		parent = "npcStub",
-		position = 13
+		position = 14
 	)
 	default boolean isGargBossEnabled()
 	{
@@ -193,7 +205,7 @@ public interface AoeWarningConfig extends Config
 		name = "Vet'ion",
 		description = "Configures whether or not AoE Projectile Warnings for Vet'ion are displayed",
 		parent = "npcStub",
-		position = 14
+		position = 15
 	)
 	default boolean isVetionEnabled()
 	{
@@ -205,7 +217,7 @@ public interface AoeWarningConfig extends Config
 		name = "Chaos Fanatic",
 		description = "Configures whether or not AoE Projectile Warnings for Chaos Fanatic are displayed",
 		parent = "npcStub",
-		position = 15
+		position = 16
 	)
 	default boolean isChaosFanaticEnabled()
 	{
@@ -217,7 +229,7 @@ public interface AoeWarningConfig extends Config
 		name = "Olm",
 		description = "Configures whether or not AoE Projectile Warnings for The Great Olm are displayed",
 		parent = "npcStub",
-		position = 16
+		position = 17
 	)
 	default boolean isOlmEnabled()
 	{
@@ -229,7 +241,7 @@ public interface AoeWarningConfig extends Config
 		name = "Olm Bombs",
 		description = "Display a timer and colour-coded AoE for Olm's crystal-phase bombs.",
 		parent = "npcStub",
-		position = 17
+		position = 18
 	)
 	default boolean bombDisplay()
 	{
@@ -241,7 +253,7 @@ public interface AoeWarningConfig extends Config
 		name = "Corporeal Beast",
 		description = "Configures whether or not AoE Projectile Warnings for the Corporeal Beast are displayed",
 		parent = "npcStub",
-		position = 18
+		position = 19
 	)
 	default boolean isCorpEnabled()
 	{
@@ -253,7 +265,7 @@ public interface AoeWarningConfig extends Config
 		name = "Wintertodt Snow Fall",
 		description = "Configures whether or not AOE Projectile Warnings for the Wintertodt snow fall are displayed",
 		parent = "npcStub",
-		position = 19
+		position = 20
 	)
 	default boolean isWintertodtEnabled()
 	{
@@ -265,7 +277,7 @@ public interface AoeWarningConfig extends Config
 		name = "Xarpus",
 		description = "Configures whether or not AOE Projectile Warnings for Xarpus are displayed",
 		parent = "npcStub",
-		position = 20
+		position = 21
 	)
 	default boolean isXarpusEnabled()
 	{
@@ -277,7 +289,7 @@ public interface AoeWarningConfig extends Config
 		name = "Olm Lightning Trails",
 		description = "Show Lightning Trails",
 		parent = "npcStub",
-		position = 21
+		position = 22
 	)
 	default boolean LightningTrail()
 	{
@@ -289,7 +301,7 @@ public interface AoeWarningConfig extends Config
 		name = "Addy Drags",
 		description = "Show Bad Areas",
 		parent = "npcStub",
-		position = 22
+		position = 23
 	)
 	default boolean addyDrags()
 	{
@@ -300,7 +312,7 @@ public interface AoeWarningConfig extends Config
 		keyName = "drake", name = "Drakes Breath",
 		description = "Configures if Drakes Breath tile markers are displayed",
 		parent = "npcStub",
-		position = 23
+		position = 24
 	)
 	default boolean isDrakeEnabled()
 	{
@@ -312,7 +324,7 @@ public interface AoeWarningConfig extends Config
 		name = "Cerberus Fire",
 		description = "Configures if Cerberus fire tile markers are displayed",
 		parent = "npcStub",
-		position = 24
+		position = 25
 	)
 	default boolean isCerbFireEnabled()
 	{
