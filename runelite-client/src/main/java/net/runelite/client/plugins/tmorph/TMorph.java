@@ -27,10 +27,9 @@ import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
 import net.runelite.api.Player;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.kit.KitType;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
@@ -62,20 +61,28 @@ public class TMorph extends Plugin
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(final ItemContainerChanged event)
+	public void onAnimationChanged(AnimationChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.EQUIPMENT))
+		if (config.animationTarget() < 0 && config.animationSwap() < 0)
 		{
-			return;
+			if (event.getActor().getAnimation() != -1)
+			{
+				event.getActor().setAnimation(config.globalAnimSwap());
+			}
 		}
-
-		updateEquip();
+		if (config.animationTarget() > 0 && config.animationSwap() > 0)
+		{
+			if (event.getActor().getAnimation() == config.animationTarget())
+			{
+				event.getActor().setAnimation(config.animationSwap());
+			}
+		}
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	public void onGameTick(GameTick event)
 	{
-		if (event.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -85,7 +92,6 @@ public class TMorph extends Plugin
 	private void updateEquip()
 	{
 		Player player = client.getLocalPlayer();
-
 
 		if (player == null
 			|| player.getPlayerComposition() == null
@@ -113,8 +119,6 @@ public class TMorph extends Plugin
 			getEquipmentId(KitType.BOOTS), 0);
 		final int glovesID = ObjectUtils.defaultIfNull(player.getPlayerComposition().
 			getEquipmentId(KitType.HANDS), 0);
-
-		//Mage Swap
 
 		if (config.mageSwap())
 		{
@@ -209,9 +213,6 @@ public class TMorph extends Plugin
 				}
 			}
 		}
-
-		//Range Swap
-
 		if (config.rangeSwap())
 		{
 			if (config.MainhandRange() > 0)

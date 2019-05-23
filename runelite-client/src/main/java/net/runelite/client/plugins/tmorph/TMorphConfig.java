@@ -51,7 +51,7 @@ public interface TMorphConfig extends Config
 	)
 	default boolean mageSwap()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -63,7 +63,7 @@ public interface TMorphConfig extends Config
 	)
 	default boolean rangeSwap()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -75,8 +75,63 @@ public interface TMorphConfig extends Config
 	)
 	default boolean meleeSwap()
 	{
-		return true;
+		return false;
 	}
+
+	@ConfigItem(
+		keyName = "experimentalFunctions",
+		name = "Experimental Functions",
+		description = "May bug out in unintended ways.",
+		parent = "swaps",
+		position = 4
+	)
+	default boolean experimentalFunctions()
+	{
+		return false;
+	}
+
+	//////////////////Experimental Functions
+
+	@ConfigItem(
+		keyName = "globalAnimSwap",
+		name = "Global Animation Swap",
+		description = "DO NOT USE WITH ANIMATION SWAP BELOW",
+
+		group = "Experimental Functions",
+		hidden = true,
+		unhide = "experimentalFunctions"
+	)
+	default int globalAnimSwap()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "animationSwap",
+		name = "Animation Swap",
+		description = "ID",
+		group = "Experimental Functions",
+		hidden = true,
+		unhide = "experimentalFunctions"
+	)
+	default int animationSwap()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "animationTarget",
+		name = "Animation Target",
+		description = "ID",
+		group = "Experimental Functions",
+		hidden = true,
+		unhide = "experimentalFunctions"
+	)
+	default int animationTarget()
+	{
+		return 0;
+	}
+
 
 	//////////////////Mage
 
