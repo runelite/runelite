@@ -158,7 +158,7 @@ public class StaticStageTwoGenerator implements Opcodes
 			{
 				ClassReader cr = new ClassReader(targetBytecode);
 				ClassWriter cw = new ClassWriter(cr, 0);
-				ClassVisitor cv = new ClassVisitor(ASM6)
+				ClassVisitor cv = new ClassVisitor(ASM6, cw)
 				{
 					@Override
 					public void visit(int version, int access, String name, String signature, String superName, String[] interfaces)
