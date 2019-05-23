@@ -58,7 +58,7 @@ public class InventoryTagsOverlay extends WidgetItemOverlay
 			{
 				Rectangle bounds = itemWidget.getCanvasBounds();
 				final BufferedImage outline = itemManager.getItemOutline(itemId, itemWidget.getQuantity(), color);
-				graphics.drawImage(outline, (int) bounds.getX() + 1, (int) bounds.getY() + 1, null);
+				graphics.drawImage(outline, (int) bounds.getX(), (int) bounds.getY(), null);
 			}
 		}
 	}
