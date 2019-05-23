@@ -29,6 +29,7 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -60,6 +61,8 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.Text;
 
 @Slf4j
 @PluginDescriptor(
@@ -93,6 +96,9 @@ public class GroundMarkerPlugin extends Plugin
 
 	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	private GroundMarkerConfig config;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -295,8 +301,7 @@ public class GroundMarkerPlugin extends Plugin
 				final GroundMarkerPoint point = new GroundMarkerPoint(regionId, loc.getRegionX(), loc.getRegionY(), client.getPlane(), i);
 				final Optional<GroundMarkerPoint> stream = getPoints(regionId).stream().filter(x -> x.equals(point)).findAny();
 				final String option = (stream.isPresent() && stream.get().getGroup() == i) ? UNMARK : MARK;
-
-				menuEntry.setOption(option + (i == 1 ? "" : " (Group " + i + ")"));
+				menuEntry.setOption(ColorUtil.prependColorTag(Text.removeTags(option + (i == 1 ? "" : " (Group " + i + ")")), getColor(i)));
 				menuEntry.setTarget(event.getTarget());
 				menuEntry.setType(MenuAction.CANCEL.getId());
 
@@ -381,5 +386,23 @@ public class GroundMarkerPlugin extends Plugin
 		savePoints(regionId, points);
 
 		loadPoints();
+	}
+
+	private Color getColor(int group)
+	{
+		Color color = config.markerColor();
+		switch (group)
+		{
+			case 2:
+				color = config.markerColor2();
+				break;
+			case 3:
+				color = config.markerColor3();
+				break;
+			case 4:
+				color = config.markerColor4();
+		}
+
+		return color;
 	}
 }
