@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.combatlevel;
 
-import com.google.common.annotations.VisibleForTesting;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
