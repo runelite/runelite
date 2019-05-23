@@ -321,13 +321,6 @@ public class XpDropPlugin extends Plugin
 			return;
 		}
 
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			damage = 0;
-			tickShow = 0;
-			return;
-		}
-
 		if (event.getSkill().equals(Skill.HITPOINTS))
 		{
 			final double oldExp = hpExp;
