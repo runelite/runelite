@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2019, Aleios <https://github.com/aleios>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -172,10 +173,10 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showBellowCharges",
-		name = "Show Bellow Charges",
-		description = "Configures if ogre bellow item charge is shown",
-		position = 12
+			keyName = "showBellowCharges",
+			name = "Show Bellow Charges",
+			description = "Configures if ogre bellow item charge is shown",
+			position = 12
 	)
 	default boolean showBellowCharges()
 	{
@@ -183,10 +184,10 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showAbyssalBraceletCharges",
-		name = "Show Abyssal Bracelet Charges",
-		description = "Configures if abyssal bracelet item charge is shown",
-		position = 13
+			keyName = "showAbyssalBraceletCharges",
+			name = "Show Abyssal Bracelet Charges",
+			description = "Configures if abyssal bracelet item charge is shown",
+			position = 13
 	)
 	default boolean showAbyssalBraceletCharges()
 	{
@@ -205,57 +206,10 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showSlayerBracelets",
-		name = "Show Slayer Bracelets Charges",
-		description = "Configures if slayer bracelets' item charges are shown",
-		position = 15
-	)
-	default boolean showSlayerBracelets()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "expeditious",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int expeditious()
-	{
-		return -1;
-	}
-
-	@ConfigItem(
-		keyName = "expeditious",
-		name = "",
-		description = ""
-	)
-	void expeditious(int expeditious);
-
-	@ConfigItem(
-		keyName = "slaughter",
-		name = "",
-		description = "",
-		hidden = true
-	)
-	default int slaughter()
-	{
-		return -1;
-	}
-
-	@ConfigItem(
-		keyName = "slaughter",
-		name = "",
-		description = ""
-	)
-	void slaughter(int slaughter);
-
-	@ConfigItem(
 		keyName = "showBindingNecklaceCharges",
 		name = "Show Binding Necklace Charges",
 		description = "Configures if binding necklace item charge is shown",
-		position = 16
+		position = 15
 	)
 	default boolean showBindingNecklaceCharges()
 	{
@@ -284,7 +238,7 @@ public interface ItemChargeConfig extends Config
 		keyName = "bindingNotification",
 		name = "Binding Necklace Notification",
 		description = "Configures if the binding necklace breaking notification is shown",
-		position = 17
+		position = 16
 	)
 	default boolean bindingNotification()
 	{
@@ -292,21 +246,101 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showXericTalismanCharges",
-		name = "Show Xeric's Talisman Charges",
-		description = "Configures if Xeric's Talisman item charge is shown",
-		position = 18
+		keyName = "showExplorerRingCharges",
+		name = "Show Explorer's Ring Alch Charges",
+		description = "Configures if explorer's ring alchemy charges are shown",
+		position = 17
 	)
-	default boolean showXericTalismanCharges()
+	default boolean showExplorerRingCharges()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
-		keyName = "xericTalisman",
+		keyName = "explorerRing",
 		name = "",
 		description = "",
 		hidden = true
+	)
+	default int explorerRing()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "explorerRing",
+		name = "",
+		description = ""
+	)
+	void explorerRing(int explorerRing);
+
+	@ConfigItem(
+		keyName = "showInfoboxes",
+		name = "Show Infoboxes",
+		description = "Configures whether to show an infobox equipped charge items",
+		position = 18
+	)
+	default boolean showInfoboxes()
+	{
+		return false;
+	}
+	
+	
+	@ConfigItem(
+		keyName = "showSlayerBracelets",
+		name = "Show Slayer Bracelets Charges",
+		description = "Configures if slayer bracelets' item charges are shown",
+		position = 19
+	)
+	default boolean showSlayerBracelets()
+	{
+		return true;
+	}
+
+
+
+	@ConfigItem(
+			keyName = "expeditious",
+			name = "",
+			description = "",
+			hidden = true
+	)
+	default int expeditious()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+			keyName = "expeditious",
+			name = "",
+			description = ""
+	)
+	void expeditious(int expeditious);
+
+	@ConfigItem(
+		keyName = "slaughter",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int slaughter()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "slaughter",
+		name = "",
+		description = ""
+	)
+	void slaughter(int slaughter);
+
+
+	@ConfigItem(
+			keyName = "xericTalisman",
+			name = "",
+			description = "",
+			hidden = true
 	)
 	default int xericTalisman()
 	{
@@ -314,17 +348,17 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "xericTalisman",
-		name = "",
-		description = ""
+			keyName = "xericTalisman",
+			name = "",
+			description = ""
 	)
 	void xericTalisman(int xericTalisman);
 
 	@ConfigItem(
-		keyName = "showSoulBearerCharges",
-		name = "Show Soul Bearer Charges",
-		description = "Configures if Soul Bearer item charge is shown",
-		position = 19
+			keyName = "showSoulBearerCharges",
+			name = "Show Soul Bearer Charges",
+			description = "Configures if Soul Bearer item charge is shown",
+			position = 19
 	)
 	default boolean showSoulBearerCharges()
 	{
@@ -332,10 +366,10 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "soulBearer",
-		name = "",
-		description = "",
-		hidden = true
+			keyName = "soulBearer",
+			name = "",
+			description = "",
+			hidden = true
 	)
 	default int soulBearer()
 	{
@@ -343,17 +377,17 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "soulBearer",
-		name = "",
-		description = ""
+			keyName = "soulBearer",
+			name = "",
+			description = ""
 	)
 	void soulBearer(int soulBearer);
 
 	@ConfigItem(
-		keyName = "showChronicleCharges",
-		name = "Show Chronicle Charges",
-		description = "Configures if Chronicle item charge is shown",
-		position = 20
+			keyName = "showChronicleCharges",
+			name = "Show Chronicle Charges",
+			description = "Configures if Chronicle item charge is shown",
+			position = 20
 	)
 	default boolean showChronicleCharges()
 	{
@@ -361,33 +395,17 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "chronicle",
-		name = "",
-		description = "",
-		hidden = true
+			keyName = "showXericTalismanCharges",
+			name = "Show Xeric's Talisman Charges",
+			description = "Configures if Xeric's Talisman item charge is shown",
+			position = 21
 	)
-	default int chronicle()
-	{
-		return -1;
-	}
-
-	@ConfigItem(
-		keyName = "chronicle",
-		name = "",
-		description = ""
-	)
-	void chronicle(int chronicle);
-
-	@ConfigItem(
-		keyName = "showInfoboxes",
-		name = "Show Infoboxes",
-		description = "Configures whether to show an infobox equipped charge items",
-		position = 21
-	)
-	default boolean showInfoboxes()
+	default boolean showXericTalismanCharges()
 	{
 		return false;
 	}
+
+
 
 	@ConfigItem(
 			keyName = "showrecoil",
@@ -399,4 +417,23 @@ public interface ItemChargeConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "chronicle",
+			name = "",
+			description = "",
+			hidden = true
+	)
+	default int chronicle()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+			keyName = "chronicle",
+			name = "",
+			description = ""
+	)
+	void chronicle(int chronicle);
+
 }
