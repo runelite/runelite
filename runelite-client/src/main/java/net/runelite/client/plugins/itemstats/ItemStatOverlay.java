@@ -143,7 +143,7 @@ public class ItemStatOverlay extends Overlay
 
 			if (stats != null)
 			{
-				final String tooltip = buildStatBonusString(stats);
+				final String tooltip = buildStatBonusString(stats, group);
 
 				if (!tooltip.isEmpty())
 				{
@@ -186,33 +186,37 @@ public class ItemStatOverlay extends Overlay
 		return label + ": " + ColorUtil.wrapWithColorTag(prefix + valueString + suffix, color) + "</br>";
 	}
 
-	private String buildStatBonusString(ItemStats s)
+	private String buildStatBonusString(ItemStats s, int groupId)
 	{
 		final StringBuilder b = new StringBuilder();
 		b.append(getChangeString("Weight", s.getWeight(), true, false));
 
 		ItemStats other = null;
-		final ItemEquipmentStats currentEquipment = s.getEquipment();
 
-		ItemContainer c = client.getItemContainer(InventoryID.EQUIPMENT);
-		if (s.isEquipable() && currentEquipment != null && c != null)
+		if (!(config.showInEquipmentGroup() && groupId == WidgetInfo.EQUIPMENT.getGroupId()))
 		{
-			final Item[] items = c.getItems();
-			final int slot = currentEquipment.getSlot();
+			final ItemEquipmentStats currentEquipment = s.getEquipment();
+			ItemContainer c = client.getItemContainer(InventoryID.EQUIPMENT);
 
-			if (slot != -1 && slot < items.length)
+			if (s.isEquipable() && currentEquipment != null && c != null)
 			{
-				final Item item = items[slot];
-				if (item != null)
+				final Item[] items = c.getItems();
+				final int slot = currentEquipment.getSlot();
+
+				if (slot != -1 && slot < items.length)
 				{
-					other = itemManager.getItemStats(item.getId(), false);
+					final Item item = items[slot];
+					if (item != null)
+					{
+						other = itemManager.getItemStats(item.getId(), false);
+					}
 				}
-			}
 
-			if (other == null && slot == EquipmentInventorySlot.WEAPON.getSlotIdx())
-			{
-				// Unarmed
-				other = UNARMED;
+				if (other == null && slot == EquipmentInventorySlot.WEAPON.getSlotIdx())
+				{
+					// Unarmed
+					other = UNARMED;
+				}
 			}
 		}
 

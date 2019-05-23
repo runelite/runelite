@@ -53,6 +53,16 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "showInEquipmentGroup",
+			name = "Show in worn equipment",
+			description = "Will show equipment stat tooltips within worn equipment"
+	)
+	default boolean showInEquipmentGroup()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "geStats",
 		name = "Enable GE item information",
 		description = "Shows an item information panel when buying items in the GE"
