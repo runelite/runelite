@@ -36,7 +36,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import static net.runelite.api.ScriptID.XPDROP_DISABLED;
@@ -44,6 +43,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -58,6 +58,7 @@ import net.runelite.client.game.NPCManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "XP Drop",
@@ -94,9 +95,6 @@ public class XpDropPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Actor lastOpponent;
 
-	private double hpExp = 0;
-	private boolean loginTick = false;
-
 	private int tickCounter = 0;
 	private int previousExpGained;
 	private boolean hasDropped = false;
@@ -104,6 +102,7 @@ public class XpDropPlugin extends Plugin
 	private Skill lastSkill = null;
 	private Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
 	private PrayerType currentTickPrayer;
+	private XpDropConfig.DamageMode damageMode;
 
 	@Provides
 	XpDropConfig provideConfig(ConfigManager configManager)
@@ -114,7 +113,12 @@ public class XpDropPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(overlay);
+		damageMode = config.showDamage();
+
+		if (damageMode == XpDropConfig.DamageMode.ABOVE_OPPONENT)
+		{
+			overlayManager.add(overlay);
+		}
 	}
 
 	@Override
@@ -124,13 +128,37 @@ public class XpDropPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGameState() == GameState.LOGIN_SCREEN)
+		if (!event.getGroup().equals("xpdrop"))
 		{
-			loginTick = true;
+			return;
 		}
 
+
+		if (damageMode != XpDropConfig.DamageMode.ABOVE_OPPONENT)
+		{
+			damageMode = config.showDamage();
+
+			if (damageMode == XpDropConfig.DamageMode.ABOVE_OPPONENT)
+			{
+				overlayManager.add(overlay);
+			}
+		}
+		else
+		{
+			damageMode = config.showDamage();
+
+			if (damageMode != XpDropConfig.DamageMode.ABOVE_OPPONENT)
+			{
+				overlayManager.remove(overlay);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
 		damage = 0;
 		tickShow = 0;
 	}
@@ -263,16 +291,11 @@ public class XpDropPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		loginTick = false;
 		lastOpponent = client.getLocalPlayer().getInteracting();
 
 		if (tickShow > 0)
 		{
 			tickShow--;
-		}
-		else
-		{
-			damage = 0;
 		}
 
 		currentTickPrayer = getActivePrayerType();
@@ -315,32 +338,16 @@ public class XpDropPlugin extends Plugin
 			previousExpGained = xp - previous;
 			hasDropped = true;
 		}
-
-		if (loginTick)
-		{
-			return;
-		}
-
-		if (event.getSkill().equals(Skill.HITPOINTS))
-		{
-			final double oldExp = hpExp;
-			hpExp = client.getSkillExperience(Skill.HITPOINTS);
-
-			final double diff = hpExp - oldExp;
-			if (diff < 1)
-			{
-				return;
-			}
-
-			final double damageDealt = calculateDamageDealt(diff);
-			damage = (int) Math.rint(damageDealt);
-			tickShow = 3;
-		}
 	}
 
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent e)
 	{
+		if (config.showDamage() == XpDropConfig.DamageMode.NONE)
+		{
+			return;
+		}
+
 		final String eventName = e.getEventName();
 
 		// Handles Fake XP drops (Ironman, DMM Cap, 200m xp, etc)
@@ -351,19 +358,40 @@ public class XpDropPlugin extends Plugin
 
 			final int skillId = intStack[intStackSize - 2];
 			final Skill skill = Skill.values()[skillId];
+
 			if (skill.equals(Skill.HITPOINTS))
 			{
 				final int exp = intStack[intStackSize - 1];
-				final double damageDealt = calculateDamageDealt(exp);
-				damage = (int) Math.rint(damageDealt);
-				tickShow = 3;
+				calculateDamageDealt(exp);
 			}
 
 			client.setIntStackSize(intStackSize - 2);
 		}
+		else if (eventName.equals("hpXpGained"))
+		{
+			final int[] intStack = client.getIntStack();
+			final int intStackSize = client.getIntStackSize();
+
+			final int exp = intStack[intStackSize - 1];
+			calculateDamageDealt(exp);
+		}
+		else if (eventName.equals("xpDropAddDamage") &&
+			damageMode == XpDropConfig.DamageMode.IN_XP_DROP &&
+			damage > 0)
+		{
+			final String[] stringStack = client.getStringStack();
+			final int stringStackSize = client.getStringStackSize();
+
+			StringBuilder builder = new StringBuilder()
+				.append(stringStack[stringStackSize - 1])
+				.append(ColorUtil.colorTag(config.getDamageColor()))
+				.append(" (").append(damage).append(")");
+
+			stringStack[stringStackSize - 1] = builder.toString();
+		}
 	}
 
-	private double calculateDamageDealt(double diff)
+	private void calculateDamageDealt(int diff)
 	{
 		double damageDealt = diff / HITPOINT_RATIO;
 		// DeadMan mode has an XP modifier
@@ -379,7 +407,9 @@ public class XpDropPlugin extends Plugin
 			// If we are interacting with nothing we may have clicked away at the perfect time fall back to last tick
 			if (!(lastOpponent instanceof NPC) && !(lastOpponent instanceof Player))
 			{
-				return damageDealt;
+				damage = (int) Math.rint(damageDealt);
+				tickShow = 3;
+				return;
 			}
 
 			a = lastOpponent;
@@ -387,10 +417,13 @@ public class XpDropPlugin extends Plugin
 
 		if (a instanceof Player)
 		{
-			return damageDealt;
+			damage = (int) Math.rint(damageDealt);
+			tickShow = 3;
+			return;
 		}
 
 		NPC target = (NPC) a;
-		return damageDealt / npcManager.getXpModifier(target.getId());
+		damage = (int) Math.rint(damageDealt / npcManager.getXpModifier(target.getId()));
+		tickShow = 3;
 	}
 }

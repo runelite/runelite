@@ -51,7 +51,7 @@ class XpDropOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.showDamage() && plugin.getTickShow() > 0)
+		if (plugin.getTickShow() > 0)
 		{
 			final Actor opponent = plugin.getLastOpponent();
 			if (opponent != null)
