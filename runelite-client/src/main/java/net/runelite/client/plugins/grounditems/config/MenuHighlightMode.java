@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 public enum MenuHighlightMode
 {
 	OPTION("Menu option"),
-	NAME("Menu item name"),
+	NAME("Menu item"),
 	BOTH("Both");
 
 	private final String name;
