@@ -521,7 +521,7 @@ public enum Varbits
 	/**
 	 * The active tab within the quest interface
 	 */
-	QUEST_TAB(8168);
+	QUEST_TAB(8168),
 
 	/**
 	 * Explorer ring
