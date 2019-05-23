@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2019, Owain van Brakel <https://github.com/Owain94>
+ * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * Copyright (c) 2018, Cameron <https://github.com/noremac201>, SoyChai <https://github.com/SoyChai>
  * All rights reserved.
  *
@@ -45,6 +47,7 @@ import net.runelite.api.WorldType;
 import net.runelite.api.events.ExperienceChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.WidgetHiddenChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -339,6 +342,31 @@ public class XpDropPlugin extends Plugin
 			final double damageDealt = calculateDamageDealt(diff);
 			damage = (int) Math.rint(damageDealt);
 			tickShow = 3;
+		}
+	}
+
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent e)
+	{
+		final String eventName = e.getEventName();
+
+		// Handles Fake XP drops (Ironman, DMM Cap, 200m xp, etc)
+		if (eventName.equals("fakeXpDrop"))
+		{
+			final int[] intStack = client.getIntStack();
+			final int intStackSize = client.getIntStackSize();
+
+			final int skillId = intStack[intStackSize - 2];
+			final Skill skill = Skill.values()[skillId];
+			if (skill.equals(Skill.HITPOINTS))
+			{
+				final int exp = intStack[intStackSize - 1];
+				final double damageDealt = calculateDamageDealt(exp);
+				damage = (int) Math.rint(damageDealt);
+				tickShow = 3;
+			}
+
+			client.setIntStackSize(intStackSize - 2);
 		}
 	}
 
