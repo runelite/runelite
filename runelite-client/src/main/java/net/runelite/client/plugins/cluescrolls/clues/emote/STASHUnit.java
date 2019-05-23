@@ -139,12 +139,12 @@ public enum STASHUnit
 	FINE_CLOTHES_ENTRANCE(NullObjectID.NULL_34737, new WorldPoint(3209, 3416, 0)),
 	BOB_AXES_ENTRANCE(NullObjectID.NULL_34738, new WorldPoint(3233, 3200, 0));
 
-	private WorldPoint[] worldPoints;
-	private int objectId;
+	private final int objectId;
+	private final WorldPoint[] worldPoints;
 
 	STASHUnit(int objectId, WorldPoint... worldPoints)
 	{
-		this.worldPoints = worldPoints;
 		this.objectId = objectId;
+		this.worldPoints = worldPoints;
 	}
 }

@@ -33,8 +33,8 @@ import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import static net.runelite.api.EquipmentInventorySlot.LEGS;
 import static net.runelite.api.EquipmentInventorySlot.*;
+import static net.runelite.api.EquipmentInventorySlot.LEGS;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.*;
@@ -47,13 +47,13 @@ import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.plugins.cluescrolls.clues.emote.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.emote.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROARER;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
+import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROARER;
 import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.emote.RangeItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.SHANTAY_PASS;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.*;
+import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.SHANTAY_PASS;
 import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.emote.SlotLimitationRequirement;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -213,12 +213,12 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		return new SlotLimitationRequirement(description, slots);
 	}
 
-	private String text;
-	private STASHUnit stashUnit;
-	private WorldPoint location;
-	private Emote firstEmote;
-	private Emote secondEmote;
-	private ItemRequirement[] itemRequirements;
+	private final String text;
+	private final STASHUnit stashUnit;
+	private final WorldPoint location;
+	private final Emote firstEmote;
+	private final Emote secondEmote;
+	private final ItemRequirement[] itemRequirements;
 
 	private EmoteClue(String text, STASHUnit stashUnit, WorldPoint location, Emote firstEmote, @Nonnull ItemRequirement... itemRequirements)
 	{
