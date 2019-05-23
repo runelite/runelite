@@ -1,4 +1,4 @@
-/*'
+/*
  * Copyright (c) 2018, Robb <rla@navadrag.com>
  * All rights reserved.
  *
@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.fnkeyremapping;
+package net.runelite.client.plugins.keyremapping;
 
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -49,12 +49,12 @@ import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
-	name = "Function Key Remapping",
-	description = "Remaps Function Keys to 1 through 0 (F10) and - + (F11, F12)",
-	tags = {"enter", "chat", "fn"},
+	name = "Remap keyboard actions",
+	description = "Allows use of the number row instead of Fn keys and WASD keys for camera movement.",
+	tags = {"enter", "chat","fn"},
 	enabledByDefault = false
 )
-public class FnKeyRemappingPlugin extends Plugin
+public class KeyRemappingPlugin extends Plugin
 {
 	private static final String PRESS_ENTER_TO_CHAT = "Press Enter to Chat...";
 	private static final String SCRIPT_EVENT_SET_CHATBOX_INPUT = "setChatboxInput";
@@ -70,7 +70,10 @@ public class FnKeyRemappingPlugin extends Plugin
 	private KeyManager keyManager;
 
 	@Inject
-	private FnKeyRemappingListener inputListener;
+	private KeyRemappingConfig config;
+
+	@Inject
+	private KeyRemappingListener inputListener;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -84,9 +87,13 @@ public class FnKeyRemappingPlugin extends Plugin
 
 		clientThread.invoke(() ->
 		{
-			if (client.getGameState() == GameState.LOGGED_IN)
+			if (client.getGameState() == GameState.LOGGED_IN && (config.wasdCameraRemap() || config.functionKeyRemap()))
 			{
 				lockChat();
+
+			}
+			else{
+				typing = true;
 			}
 		});
 	}
@@ -105,6 +112,11 @@ public class FnKeyRemappingPlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 	}
 
+	@Provides
+	KeyRemappingConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(KeyRemappingConfig.class);
+	}
 
 	boolean chatboxFocused()
 	{
