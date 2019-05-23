@@ -650,6 +650,14 @@ public class MenuManager
 	}
 
 	/**
+	 *  Adds to the map of swaps. Strict options, not strict target but target1=target2
+	 */
+	public void addSwap(String option, String target, String option2)
+	{
+		addSwap(option, target, option2, target, true, false);
+	}
+
+	/**
 	 * Adds to the map of swaps.
 	 */
 	public void addSwap(String option, String target, String option2, String target2, boolean strictOption, boolean strictTarget)

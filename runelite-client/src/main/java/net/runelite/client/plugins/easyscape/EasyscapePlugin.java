@@ -44,6 +44,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.menus.MenuManager;
@@ -65,6 +66,7 @@ public class EasyscapePlugin extends Plugin
 
 	private MenuEntry[] entries;
 	private final Set<Integer> leftClickConstructionIDs = new HashSet<>();
+	private boolean buildingMode;
 
 	@Inject
 	private Client client;
@@ -104,6 +106,12 @@ public class EasyscapePlugin extends Plugin
 		}
 
 		loadConstructionIDs(config.getConstructionItems());
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		buildingMode = client.getVar(BUILDING_MODE) == 1;
 	}
 
 	@Subscribe
@@ -394,63 +402,63 @@ public class EasyscapePlugin extends Plugin
 	{
 		if (config.getBurningAmulet())
 		{
-			menuManager.addSwap("remove", "burning amulet", config.getBurningAmuletMode().toString(), "burning amulet", true, false);
+			menuManager.addSwap("remove", "burning amulet", config.getBurningAmuletMode().toString());
 		}
 
 		if (config.getCombatBracelet())
 		{
-			menuManager.addSwap("remove", "combat bracelet", config.getCombatBraceletMode().toString(), "combat bracelet", true, false);
+			menuManager.addSwap("remove", "combat bracelet", config.getCombatBraceletMode().toString());
 		}
 
 		if (config.getGamesNecklace())
 		{
-			menuManager.addSwap("remove", "games necklace", config.getGamesNecklaceMode().toString(), "games necklace", true, false);
+			menuManager.addSwap("remove", "games necklace", config.getGamesNecklaceMode().toString());
 		}
 
 		if (config.getDuelingRing())
 		{
-			menuManager.addSwap("remove", "ring of dueling", config.getDuelingRingMode().toString(), "ring of dueling", true, false);
+			menuManager.addSwap("remove", "ring of dueling", config.getDuelingRingMode().toString());
 		}
 
 		if (config.getGlory())
 		{
-			menuManager.addSwap("remove", "amulet of glory", config.getGloryMode().toString(), "amulet of glory", true, false);
-			menuManager.addSwap("remove", "amulet of eternal glory", config.getGloryMode().toString(), "amulet of eternal glory", true, false);
+			menuManager.addSwap("remove", "amulet of glory", config.getGloryMode().toString());
+			menuManager.addSwap("remove", "amulet of eternal glory", config.getGloryMode().toString());
 		}
 
 		if (config.getSkillsNecklace())
 		{
-			menuManager.addSwap("remove", "skills necklace", config.getSkillsNecklaceMode().toString(), "skills necklace", true, false);
+			menuManager.addSwap("remove", "skills necklace", config.getSkillsNecklaceMode().toString());
 		}
 
 		if (config.getNecklaceofPassage())
 		{
-			menuManager.addSwap("remove", "necklace of passage", config.getNecklaceofPassageMode().toString(),  "necklace of passage", true, false);
+			menuManager.addSwap("remove", "necklace of passage", config.getNecklaceofPassageMode().toString());
 		}
 
 		if (config.getDigsitePendant())
 		{
-			menuManager.addSwap("remove", "digsite pendant", config.getDigsitePendantMode().toString(),  "digsite pendant", true, false);
+			menuManager.addSwap("remove", "digsite pendant", config.getDigsitePendantMode().toString());
 		}
 
 		if (config.getSlayerRing())
 		{
-			menuManager.addSwap("remove", "slayer ring", config.getSlayerRingMode().toString(),  "slayer ring", true, false);
+			menuManager.addSwap("remove", "slayer ring", config.getSlayerRingMode().toString());
 		}
 
-		else if (config.getXericsTalisman())
+		if (config.getXericsTalisman())
 		{
-			menuManager.addSwap("remove", "xeric's talisman", config.getXericsTalismanMode().toString(),  "xeric's talisman", true, false);
+			menuManager.addSwap("remove", "xeric's talisman", config.getXericsTalismanMode().toString());
 		}
 
 		if (config.getRingofWealth())
 		{
-			menuManager.addSwap("remove", "ring of wealth", config.getRingofWealthMode().toString(),  "ring of wealth", true, false);
+			menuManager.addSwap("remove", "ring of wealth", config.getRingofWealthMode().toString());
 		}
 
 		if (config.swapMax())
 		{
-			menuManager.addSwap("remove", "max cape", config.maxMode().toString(), "max cape", true, false);
+			menuManager.addSwap("remove", "max cape", config.maxMode().toString());
 		}
 	}
 
@@ -517,9 +525,9 @@ public class EasyscapePlugin extends Plugin
 			leftClickConstructionIDs.clear();
 		}
 
-		if (!config.getEasyConstruction() &&
+		if (config.getEasyConstruction() &&
 			!Strings.isNullOrEmpty(from) &&
-			client.getVar(BUILDING_MODE) == 1)
+			buildingMode)
 		{
 			for (String s : Text.fromCSV(from))
 			{
