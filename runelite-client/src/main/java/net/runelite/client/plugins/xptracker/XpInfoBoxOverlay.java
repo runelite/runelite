@@ -36,13 +36,14 @@ import net.runelite.api.Experience;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
+import static net.runelite.client.plugins.xptracker.XpTrackerPlugin.OPTION_PAUSE;
+import static net.runelite.client.plugins.xptracker.XpTrackerPlugin.OPTION_REMOVE;
+import static net.runelite.client.plugins.xptracker.XpTrackerPlugin.OPTION_RESET;
+import static net.runelite.client.plugins.xptracker.XpTrackerPlugin.OPTION_RESUME;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.SkillColor;
 import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_REMOVE;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_RESET;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_TOGGLE_TRACKING;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
@@ -94,7 +95,20 @@ class XpInfoBoxOverlay extends Overlay
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "XP Tracker overlay"));
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, OPTION_REMOVE, skill.getName()));
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, OPTION_RESET, skill.getName()));
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, OPTION_TOGGLE_TRACKING, skill.getName()));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, OPTION_PAUSE, skill.getName())
+		{
+			public String getOption()
+			{
+				if (xpPauseState.isPaused(skill))
+				{
+					return OPTION_RESUME;
+				}
+				else
+				{
+					return OPTION_PAUSE;
+				}
+			}
+		});
 	}
 
 	@Override

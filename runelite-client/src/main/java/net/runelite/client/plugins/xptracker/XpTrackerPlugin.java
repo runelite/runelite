@@ -62,9 +62,6 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_REMOVE;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_RESET;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_TOGGLE_TRACKING;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.xp.XpClient;
 
@@ -118,6 +115,11 @@ public class XpTrackerPlugin extends Plugin
 	private final XpClient xpClient = new XpClient();
 	private final XpState xpState = new XpState();
 	private final XpPauseState xpPauseState = new XpPauseState();
+
+	public static final String OPTION_RESET = "Reset";
+	public static final String OPTION_REMOVE = "Remove";
+	public static final String OPTION_PAUSE = "Pause";
+	public static final String OPTION_RESUME = "Resume";
 
 	@Provides
 	XpTrackerConfig provideConfig(ConfigManager configManager)
@@ -569,7 +571,7 @@ public class XpTrackerPlugin extends Plugin
 	@Subscribe
 	public void onOverlayMenuClicked(OverlayMenuClicked event)
 	{
-		Skill skill = Skill.getSkill(event.getEntry().getTarget());
+		Skill skill = Skill.forName(event.getEntry().getTarget());
 		if (skill != null &&
 				event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
 				event.getEntry().getTarget() != null )
@@ -579,7 +581,7 @@ public class XpTrackerPlugin extends Plugin
 			{
 				resetSkillState(skill);
 			}
-			else if (option.equals(OPTION_TOGGLE_TRACKING))
+			else if (option.equals(OPTION_PAUSE) || option.equals(OPTION_RESUME))
 			{
 				pauseSkill(skill, !xpPauseState.isPaused(skill));
 			}

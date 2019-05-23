@@ -87,7 +87,7 @@ public enum Skill
 		return name;
 	}
 
-	public static Skill getSkill(String skill)
+	public static Skill forName(String skill)
 	{
 		return skillMap.get(skill);
 	}

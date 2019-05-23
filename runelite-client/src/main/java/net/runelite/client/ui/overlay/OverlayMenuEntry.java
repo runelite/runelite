@@ -25,9 +25,10 @@
 package net.runelite.client.ui.overlay;
 
 import lombok.Value;
+import lombok.experimental.NonFinal;
 import net.runelite.api.MenuAction;
 
-@Value
+@Value @NonFinal
 public class OverlayMenuEntry
 {
 	private MenuAction menuAction;
