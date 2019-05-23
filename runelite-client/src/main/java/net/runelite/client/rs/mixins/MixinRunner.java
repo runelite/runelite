@@ -54,16 +54,16 @@ public class MixinRunner
 	public Map<String, byte[]> run()
 		throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
 	{
-		runVisitor(InterfaceTransformer.class);
-		runVisitor(OverwriteTransformer.class);
-		runSanityChecker(OverwriteSanityCheck.class);
-		runVisitor(InjectTransformer.class);
-		runVisitor(AppendTransformer.class); // append has to come before prepend or append does nothing
+	//	runVisitor(InterfaceTransformer.class);
+	//	runVisitor(OverwriteTransformer.class);
+	//	runSanityChecker(OverwriteSanityCheck.class);
+	//	runVisitor(InjectTransformer.class);
+	//	runVisitor(AppendTransformer.class); // append has to come before prepend or append does nothing
 		// (test method:    Projectile.rl$$init()V    )
-		runVisitor(PrependTransformer.class);
-		runRemapper(ProtectTransformer.class);
+	//	runVisitor(PrependTransformer.class);
+	//	runRemapper(ProtectTransformer.class);
 
-		recalcMaxes();
+	//	recalcMaxes();
 		return classes;
 	}
 
