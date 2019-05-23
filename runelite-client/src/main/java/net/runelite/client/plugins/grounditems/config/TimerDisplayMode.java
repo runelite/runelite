@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 public enum TimerDisplayMode
 {
 	ALWAYS("Always"),
-	HOTKEY_PRESSED("When Hotkey Pressed"),
+	HOTKEY_PRESSED("Hotkey"),
 	NEVER("Never");
 
 	private final String name;
