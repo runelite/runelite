@@ -299,7 +299,7 @@ public abstract class RSWidgetMixin implements RSWidget
 		int itemX = widgetCanvasLocation.getX() + ((ITEM_SLOT_SIZE + xPitch) * col);
 		int itemY = widgetCanvasLocation.getY() + ((ITEM_SLOT_SIZE + yPitch) * row);
 
-		Rectangle bounds = new Rectangle(itemX - 1, itemY - 1, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
+		Rectangle bounds = new Rectangle(itemX, itemY, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
 		return new WidgetItem(itemId - 1, itemQuantity, index, bounds, this);
 	}
 
