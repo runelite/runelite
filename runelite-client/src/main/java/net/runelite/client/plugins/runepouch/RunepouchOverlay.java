@@ -118,12 +118,12 @@ public class RunepouchOverlay extends WidgetItemOverlay
 			}
 
 			graphics.setColor(Color.black);
-			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 13 : 6),
-				location.getY() + 14 + (graphics.getFontMetrics().getHeight() - 1) * i);
-
-			graphics.setColor(config.fontColor());
 			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 5),
 				location.getY() + 13 + (graphics.getFontMetrics().getHeight() - 1) * i);
+
+			graphics.setColor(config.fontColor());
+			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 11 : 4),
+				location.getY() + 12 + (graphics.getFontMetrics().getHeight() - 1) * i);
 
 			if (!config.showIcons())
 			{
@@ -134,7 +134,7 @@ public class RunepouchOverlay extends WidgetItemOverlay
 			if (image != null)
 			{
 				OverlayUtil.renderImageLocation(graphics,
-					new Point(location.getX(), location.getY() + graphics.getFontMetrics().getHeight() * i),
+					new Point(location.getX() - 1, location.getY() + graphics.getFontMetrics().getHeight() * i - 1),
 					image);
 			}
 		}
