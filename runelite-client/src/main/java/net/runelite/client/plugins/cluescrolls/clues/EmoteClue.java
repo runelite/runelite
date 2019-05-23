@@ -320,7 +320,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 
 			if (stashUnitLocalPoint != null)
 			{
-				Polygon poly = Perspective.getCanvasTilePoly(plugin.getClient(), stashUnitLocalPoint);
+				final Polygon poly = Perspective.getCanvasTilePoly(plugin.getClient(), stashUnitLocalPoint);
 				if (poly != null)
 				{
 					OverlayUtil.renderPolygon(graphics, poly, Color.RED);
