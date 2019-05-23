@@ -46,6 +46,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import static net.runelite.client.util.ColorUtil.setAlphaComponent;
 
 public class AoeWarningOverlay extends Overlay
 {
@@ -135,11 +136,11 @@ public class AoeWarningOverlay extends Overlay
 
 			if (config.isOutlineEnabled())
 			{
-				graphics.setColor(new Color(0, 150, 200, outlineAlpha));
+				graphics.setColor(new Color(setAlphaComponent(config.overlayColor().getRGB(), outlineAlpha), true));
 				graphics.drawPolygon(tilePoly);
 			}
 
-			graphics.setColor(new Color(0, 150, 200, fillAlpha));
+			graphics.setColor(new Color(setAlphaComponent(config.overlayColor().getRGB(), fillAlpha), true));
 			graphics.fillPolygon(tilePoly);
 		}
 		return null;
