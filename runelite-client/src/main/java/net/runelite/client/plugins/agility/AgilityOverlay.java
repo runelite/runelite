@@ -44,7 +44,6 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class AgilityOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE = 2350;
 	private static final Color SHORTCUT_HIGH_LEVEL_COLOR = Color.ORANGE;
 
 	private final Client client;
@@ -77,8 +76,7 @@ class AgilityOverlay extends Overlay
 			}
 
 			Tile tile = obstacle.getTile();
-			if (tile.getPlane() == client.getPlane()
-				&& object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+			if (tile.getPlane() == client.getPlane())
 			{
 				// This assumes that the obstacle is not clickable.
 				if (Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()))
@@ -121,8 +119,7 @@ class AgilityOverlay extends Overlay
 		{
 			for (Tile markOfGraceTile : marksOfGrace)
 			{
-				if (markOfGraceTile.getPlane() == client.getPlane() && markOfGraceTile.getItemLayer() != null
-					&& markOfGraceTile.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+				if (markOfGraceTile.getPlane() == client.getPlane() && markOfGraceTile.getItemLayer() != null)
 				{
 					final Polygon poly = markOfGraceTile.getItemLayer().getCanvasTilePoly();
 
