@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.freezetimers;
 
-import com.google.common.eventbus.Subscribe;
 import java.awt.Color;
 import static java.awt.Color.RED;
 import static java.awt.Color.WHITE;
@@ -34,14 +33,10 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
-import java.util.Map;
-import java.util.HashMap;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.GraphicID;
-import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -53,7 +48,6 @@ import net.runelite.client.util.ImageUtil;
 
 public class FreezeTimersOverlay extends Overlay
 {
-	private final Map<String, FreezeInfo> freezes = new HashMap<>();
 	private final FreezeTimersConfig config;
 	private final Client client;
 	private final Font timerFont = FontManager.getRunescapeBoldFont().deriveFont(14.0f);
@@ -64,7 +58,7 @@ public class FreezeTimersOverlay extends Overlay
 	private Timers timers;
 	private boolean lock;
 	private long finishedAtTest;
-	private Actor player;
+
 
 	@Inject
 	public FreezeTimersOverlay(FreezeTimersConfig config, Client client)
@@ -90,22 +84,6 @@ public class FreezeTimersOverlay extends Overlay
 		return null;
 	}
 
-	@Subscribe
-	public void onPlayerDespawned(PlayerDespawned playerDespawned)
-	{
-		final Player player = playerDespawned.getPlayer();
-		// All despawns ok: death, teleports, log out, runs away from screen
-		if (config.showPlayers() | config.showNpcs() | config.FreezeTimers() | config.Veng() | config.TB())
-		{
-			this.remove(player);
-		}
-
-	}
-
-	public void remove(Actor actor)
-	{
-		freezes.remove(actor.getName());
-	}
 	private void renderOverlayFor(Graphics2D g, Actor actor)
 	{
 		if (timers.areAllTimersZero(actor))
