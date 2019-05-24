@@ -35,18 +35,17 @@ public interface XpTrackerConfig extends Config
 	@AllArgsConstructor
 	enum OnScreenDisplayMode
 	{
-		XP_GAINED("XP Gained"),
-		XP_LEFT("XP Left"),
-		ACTIONS_DONE("Actions Done"),
-		ACTIONS_LEFT("Actions Left");
+		XP_GAINED,
+		XP_LEFT,
+		ACTIONS_DONE,
+		ACTIONS_LEFT
+	}
 
-		private final String name;
-
-		@Override
-		public String toString()
-		{
-			return name;
-		}
+	@AllArgsConstructor
+	enum OnScreenDisplayModeBottom
+	{
+		XP_HOUR,
+		ACTIONS_HOUR,
 	}
 
 	@ConfigItem(
@@ -96,11 +95,22 @@ public interface XpTrackerConfig extends Config
 	@ConfigItem(
 		position = 4,
 		keyName = "onScreenDisplayMode",
-		name = "On-screen tracker display mode",
+		name = "On-screen tracker display mode (top)",
 		description = "Configures the information displayed in the first line of on-screen XP overlays"
 	)
 	default OnScreenDisplayMode onScreenDisplayMode()
 	{
 		return OnScreenDisplayMode.XP_GAINED;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "onScreenDisplayModeBottom",
+		name = "On-screen tracker display mode (bottom)",
+		description = "Configures the information displayed in the second line of on-screen XP overlays"
+	)
+	default OnScreenDisplayModeBottom onScreenDisplayModeBottom()
+	{
+		return OnScreenDisplayModeBottom.XP_HOUR;
 	}
 }

@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.cerberus;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import java.util.Optional;
 import lombok.Getter;
@@ -41,18 +41,21 @@ public enum CerberusGhost
 	MAGE(NpcID.SUMMONED_SOUL_5868, Skill.MAGIC),
 	MELEE(NpcID.SUMMONED_SOUL_5869, Skill.ATTACK);
 
-	private static final Map<Integer, CerberusGhost> MAP = new HashMap<>();
 	private final int npcId;
 	private final Skill type;
 
+	private static final Map<Integer, CerberusGhost> MAP;
+
 	static
 	{
-		final CerberusGhost[] values = CerberusGhost.values();
+		ImmutableMap.Builder<Integer, CerberusGhost> builder = new ImmutableMap.Builder<>();
 
-		for (final CerberusGhost ghost : values)
+		for (final CerberusGhost ghost : values())
 		{
-			MAP.put(ghost.getNpcId(), ghost);
+			builder.put(ghost.getNpcId(), ghost);
 		}
+
+		MAP = builder.build();
 	}
 
 	/**

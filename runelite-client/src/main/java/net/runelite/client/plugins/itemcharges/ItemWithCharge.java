@@ -24,13 +24,19 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import static net.runelite.api.ItemID.*;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.ABYSSAL_BRACELET;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.BELLOWS;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.FUNGICIDE_SPRAY;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.IMPBOX;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.TELEPORT;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERCAN;
+import static net.runelite.client.plugins.itemcharges.ItemChargeType.WATERSKIN;
 
 @AllArgsConstructor
 @Getter
@@ -168,14 +174,18 @@ enum ItemWithCharge
 	private final int id;
 	private final int charges;
 
-	private static final Map<Integer, ItemWithCharge> ID_MAP = new HashMap<>();
+	private static final Map<Integer, ItemWithCharge> ID_MAP;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, ItemWithCharge> builder = new ImmutableMap.Builder<>();
+
 		for (ItemWithCharge itemCharge : values())
 		{
-			ID_MAP.put(itemCharge.getId(), itemCharge);
+			builder.put(itemCharge.getId(), itemCharge);
 		}
+
+		ID_MAP = builder.build();
 	}
 
 	@Nullable
