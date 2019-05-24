@@ -29,6 +29,7 @@ import com.google.common.cache.CacheBuilder;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.chat.Task;
 import net.runelite.http.service.util.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,5 +177,35 @@ public class ChatController
 			throw new NotFoundException();
 		}
 		return pb;
+	}
+
+	@PostMapping("/duels")
+	public void submitDuels(@RequestParam String name, @RequestParam int wins,
+		@RequestParam int losses,
+		@RequestParam int winningStreak, @RequestParam int losingStreak)
+	{
+		if (wins < 0 || losses < 0 || winningStreak < 0 || losingStreak < 0)
+		{
+			return;
+		}
+
+		Duels duels = new Duels();
+		duels.setWins(wins);
+		duels.setLosses(losses);
+		duels.setWinningStreak(winningStreak);
+		duels.setLosingStreak(losingStreak);
+
+		chatService.setDuels(name, duels);
+	}
+
+	@GetMapping("/duels")
+	public Duels getDuels(@RequestParam String name)
+	{
+		Duels duels = chatService.getDuels(name);
+		if (duels == null)
+		{
+			throw new NotFoundException();
+		}
+		return duels;
 	}
 }

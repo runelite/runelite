@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
 import java.util.Map;
 import net.runelite.http.api.chat.Task;
+import net.runelite.http.api.chat.Duels;
 import net.runelite.http.service.util.redis.RedisPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -155,6 +156,46 @@ public class ChatService
 		try (Jedis jedis = jedisPool.getResource())
 		{
 			jedis.setex("gc." + name, (int) EXPIRE.getSeconds(), Integer.toString(gc));
+		}
+	}
+
+	public Duels getDuels(String name)
+	{
+		Map<String, String> map;
+
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			map = jedis.hgetAll("duels." + name);
+		}
+
+		if (map.isEmpty())
+		{
+			return null;
+		}
+
+		Duels duels = new Duels();
+		duels.setWins(Integer.parseInt(map.get("wins")));
+		duels.setLosses(Integer.parseInt(map.get("losses")));
+		duels.setWinningStreak(Integer.parseInt(map.get("winningStreak")));
+		duels.setLosingStreak(Integer.parseInt(map.get("losingStreak")));
+		return duels;
+	}
+
+	public void setDuels(String name, Duels duels)
+	{
+		Map<String, String> duelsMap = ImmutableMap.<String, String>builderWithExpectedSize(4)
+			.put("wins", Integer.toString(duels.getWins()))
+			.put("losses", Integer.toString(duels.getLosses()))
+			.put("winningStreak", Integer.toString(duels.getWinningStreak()))
+			.put("losingStreak", Integer.toString(duels.getLosingStreak()))
+			.build();
+
+		String key = "duels." + name;
+
+		try (Jedis jedis = jedisPool.getResource())
+		{
+			jedis.hmset(key, duelsMap);
+			jedis.expire(key, (int) EXPIRE.getSeconds());
 		}
 	}
 }
