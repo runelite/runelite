@@ -94,6 +94,19 @@ enum Emoji
 			builder.put(emoji.trigger, emoji);
 		}
 
+		// Additional mappings are found here
+		builder.put(":crab:", CRAB);
+		builder.put(":dog:", DOG);
+		builder.put(":eyes:", EYES);
+		builder.put(":cat:", CAT);
+		builder.put(":thinking:", THINKING);
+		builder.put(":yum:", YUM);
+		builder.put(":poo:", PILE_OF_POO);
+		builder.put(":sob:", SOB);
+		builder.put(":hug:", HUGGING);
+		builder.put(":o", HUSHED);
+		builder.put(":@", SCREAM);
+
 		emojiMap = builder.build();
 	}
 
