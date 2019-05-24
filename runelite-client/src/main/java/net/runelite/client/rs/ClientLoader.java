@@ -34,6 +34,8 @@ import io.sigpipe.jbsdiff.InvalidHeaderException;
 import io.sigpipe.jbsdiff.Patch;
 import java.applet.Applet;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -49,6 +51,7 @@ import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -181,6 +184,11 @@ public class ClientLoader
 
 			if (updateCheckMode == AUTO)
 			{
+				File injectedClientFile = new File("./InjectedClient.jar");
+				Manifest manifest2 = new Manifest();
+				manifest2.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
+				JarOutputStream target = new JarOutputStream(new FileOutputStream(injectedClientFile), manifest2);
+
 				ByteArrayOutputStream patchOs = new ByteArrayOutputStream(756 * 1024);
 				int patchCount = 0;
 
@@ -202,8 +210,12 @@ public class ClientLoader
 					file.setValue(patchOs.toByteArray());
 
 					++patchCount;
+					if (!file.getKey().startsWith("META"))
+					{
+						add(file.getValue(), file.getKey(), target);
+					}
 				}
-
+				target.close();
 				log.info("Patched {} classes", patchCount);
 			}
 
@@ -211,7 +223,6 @@ public class ClientLoader
 
 			if (updateCheckMode == AUTO)
 			{
-
 				HashMap<String, byte[]> patches = new HashMap<>();
 
 				for (Map.Entry<String, byte[]> file : zipFile.entrySet())
@@ -228,7 +239,6 @@ public class ClientLoader
 					}
 
 					patches.put(file.getKey(), patchClass);
-
 				}
 
 				new MixinRunner(zipFile, patches).run();
@@ -284,5 +294,13 @@ public class ClientLoader
 		CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
 		Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(ClientLoader.class.getResourceAsStream("jagex.crt"));
 		return certificates.toArray(new Certificate[0]);
+	}
+
+	private void add(byte[] bytes, String entryName, JarOutputStream target) throws IOException
+	{
+		JarEntry entry = new JarEntry(entryName);
+		target.putNextEntry(entry);
+		target.write(bytes);
+		target.closeEntry();
 	}
 }

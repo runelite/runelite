@@ -194,9 +194,9 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite</groupId>
+			<groupId>net.runelit</groupId>
 			<artifactId>client-patch</artifactId>
-			<version>${project.version}</version>
+			<version>1.5.25.1</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -327,7 +327,14 @@
 								<!-- include runtime apis -->
 								<filter>
 									<!-- net.runelite:client-patch and net.runelite:api -->
-									<artifact>net.runelite:*</artifact>
+									<artifact>net.runelite:api</artifact>
+									<includes>
+										<include>**</include>
+									</includes>
+								</filter>
+								<filter>
+									<!-- net.runelit:client-patch -->
+									<artifact>net.runelite:client-patch</artifact>
 									<includes>
 										<include>**</include>
 									</includes>
