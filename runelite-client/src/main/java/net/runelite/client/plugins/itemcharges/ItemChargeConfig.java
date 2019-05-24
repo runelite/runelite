@@ -1,5 +1,7 @@
 /*
  * Copyright (c) 2017, Devin French <https://github.com/devinfrench>
+ * Copyright (c) 2019, Aleios <https://github.com/aleios>
+ * Copyright (c) 2019, Alex <https://github.com/barragek0>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -285,10 +287,39 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showExplorerRingCharges",
+		name = "Show Explorer's Ring Alch Charges",
+		description = "Configures if explorer's ring alchemy charges are shown",
+		position = 19
+	)
+	default boolean showExplorerRingCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "explorerRing",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int explorerRing()
+	{
+		return -1;
+	}
+
+	@ConfigItem(
+		keyName = "explorerRing",
+		name = "",
+		description = ""
+	)
+	void explorerRing(int explorerRing);
+
+	@ConfigItem(
 		keyName = "showInfoboxes",
 		name = "Show Infoboxes",
 		description = "Configures whether to show an infobox equipped charge items",
-		position = 19
+		position = 20
 	)
 	default boolean showInfoboxes()
 	{
