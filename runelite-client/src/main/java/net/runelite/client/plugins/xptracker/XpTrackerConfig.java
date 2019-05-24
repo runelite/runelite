@@ -94,7 +94,7 @@ public interface XpTrackerConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "onScreenDisplayMode",
+		keyName = "onScreenDisplayModeBottom",
 		name = "On-screen tracker display mode (top)",
 		description = "Configures the information displayed in the first line of on-screen XP overlays"
 	)
