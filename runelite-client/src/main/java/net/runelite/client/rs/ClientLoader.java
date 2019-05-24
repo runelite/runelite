@@ -35,6 +35,7 @@ import io.sigpipe.jbsdiff.Patch;
 import java.applet.Applet;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -245,6 +246,33 @@ public class ClientLoader
 
 			}
 
+			Map<String, byte[]> injectedClient = new HashMap<>();
+			JarInputStream jis = new JarInputStream(new FileInputStream("./injectedClient.jar"));
+
+			byte[] tmp = new byte[4096];
+			ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
+			for (; ; )
+			{
+				JarEntry metadata = jis.getNextJarEntry();
+				if (metadata == null)
+				{
+					break;
+				}
+
+				buffer.reset();
+				for (; ; )
+				{
+					int n = jis.read(tmp);
+					if (n <= -1)
+					{
+						break;
+					}
+					buffer.write(tmp, 0, n);
+				}
+
+				injectedClient.put(metadata.getName(), buffer.toByteArray());
+			}
+
 			String initialClass = config.getInitialClass();
 
 			ClassLoader rsClassLoader = new ClassLoader(ClientLoader.class.getClassLoader())
@@ -253,7 +281,7 @@ public class ClientLoader
 				protected Class<?> findClass(String name) throws ClassNotFoundException
 				{
 					String path = name.replace('.', '/').concat(".class");
-					byte[] data = zipFile.get(path);
+					byte[] data = injectedClient.get(path);
 					if (data == null)
 					{
 						throw new ClassNotFoundException(name);
