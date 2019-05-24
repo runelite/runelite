@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>	
+ * Copyright (c) 2018, Abexlry <abexlry@gmail.com>
  * Copyright (c) 2018, Robb <rla@navadrag.com>
  * All rights reserved.
  *
