@@ -30,6 +30,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
+import static net.runelite.api.ChatMessageType.TRADE;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.config.ChatColorConfig;
@@ -190,5 +191,39 @@ public class ChatCommandsPluginTest
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setConfiguration(eq("personalbest.adam"), eq("kree'arra"), eq(181));
+	}
+
+	@Test
+	public void testDuelArenaWin()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You won! You have now won 27 duels.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+
+		verify(configManager).setConfiguration("killcount.adam", "duel arena wins", 27);
+		verify(configManager).setConfiguration("killcount.adam", "duel arena win streak", 1);
+	}
+
+	@Test
+	public void testDuelArenaWin2()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You were defeated! You have won 22 duels.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+
+		verify(configManager).setConfiguration("killcount.adam", "duel arena wins", 22);
+	}
+
+	@Test
+	public void testDuelArenaLose()
+	{
+		when(client.getUsername()).thenReturn("Adam");
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, TRADE, "", "You have now lost 999 duels.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+
+		verify(configManager).setConfiguration("killcount.adam", "duel arena losses", 999);
 	}
 }
