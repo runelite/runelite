@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.24-SNAPSHOT</version>
+		<version>1.5.25-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -186,12 +186,6 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite.rs</groupId>
-			<artifactId>runescape-api</artifactId>
-			<version>${project.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>client-patch</artifactId>
 			<version>${project.version}</version>
@@ -297,12 +291,6 @@
 								<filter>
 									<!-- net.runelite:client-patch and net.runelite:api -->
 									<artifact>net.runelite:*</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-								<filter>
-									<artifact>net.runelite.rs:runescape-api</artifact>
 									<includes>
 										<include>**</include>
 									</includes>

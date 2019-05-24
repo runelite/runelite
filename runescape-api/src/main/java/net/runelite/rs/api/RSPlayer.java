@@ -26,7 +26,6 @@ package net.runelite.rs.api;
 
 import net.runelite.api.Player;
 import net.runelite.mapping.Import;
-import net.runelite.mapping.Protect;
 
 public interface RSPlayer extends RSActor, Player
 {
@@ -63,6 +62,5 @@ public interface RSPlayer extends RSActor, Player
 	int getRsOverheadIcon();
 
 	@Import("skullIcon")
-	@Protect
 	int getRsSkullIcon();
 }
