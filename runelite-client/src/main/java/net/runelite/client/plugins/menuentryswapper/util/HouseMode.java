@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Spedwards <https://github.com/Spedwards>
+ * Copyright (c) 2018, Snakk <http://github.com/SnakkSnokk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.menuentryswapper;
+
+package net.runelite.client.plugins.menuentryswapper.util;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum OccultAltarMode
+public enum HouseMode
 {
-	ANCIENT("Ancient"),
-	LUNAR("Lunar"),
-	ARCEUUS("Arceuus"),
-	VENERATE("Venerate");
+	ENTER("Enter"),
+	HOME("Home"),
+	BUILD_MODE("Build mode"),
+	FRIENDS_HOUSE("Friend's House");
 
 	private final String name;
 

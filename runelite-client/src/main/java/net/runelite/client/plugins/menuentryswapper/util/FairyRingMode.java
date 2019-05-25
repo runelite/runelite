@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
- * Copyright (c) 2018, Kyle <https://github.com/kyleeld>
+ * Copyright (c) 2018, Ethan <http://github.com/shmeeps>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,21 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.easyscape.util;
+package net.runelite.client.plugins.menuentryswapper.util;
 
-public enum CombatBraceletMode
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum FairyRingMode
 {
-	WARRIORS_GUILD("Warriors' Guild"),
-	CHAMPIONS_GUILD("Champions' Guild"),
-	EDGEVILLE_MONASTERY("Edgeville Monstery"),
-	RANGING_GUILD("Ranging Guild");
+	ZANARIS("Zanaris"),
+	LAST_DESTINATION("Last-Destination"),
+	CONFIGURE("Configure"),
+	OFF("Off");
 
 	private final String name;
-
-	CombatBraceletMode(String name)
-	{
-		this.name = name;
-	}
 
 	@Override
 	public String toString()

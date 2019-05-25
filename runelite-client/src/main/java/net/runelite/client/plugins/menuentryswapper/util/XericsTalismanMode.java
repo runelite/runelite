@@ -23,19 +23,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.easyscape.util;
+package net.runelite.client.plugins.menuentryswapper.util;
 
-public enum SlayerRingMode
+public enum XericsTalismanMode
 {
-	CHECK("Check"),
-	TELEPORT("Teleport"),
-	MASTER("Master"),
-	PARTNER("Partner"),
-	LOG("Log");
+	XERICS_LOOKOUT("Xeric's Look-out"),
+	XERICS_GLADE("Xeric's Glade"),
+	XERICS_INFERNO("Xeric's Inferno"),
+	XERICS_HEART("Xeric's Heart"),
+	XERICS_HONOUR("Xeric's Honour");
 
 	private final String name;
 
-	SlayerRingMode(String name)
+	XericsTalismanMode(String name)
 	{
 		this.name = name;
 	}

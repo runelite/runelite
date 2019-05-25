@@ -23,17 +23,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.easyscape.util;
+package net.runelite.client.plugins.menuentryswapper.util;
 
-public enum BurningAmuletMode
+public enum RingOfWealthMode
 {
-	CHAOS_TEMPLE("Chaos Temple"),
-	BANDIT_CAMP("Bandit Camp"),
-	LAVA_MAZE("Lava Maze");
+	MISCELLANIA("Miscellania"),
+	GRAND_EXCHANGE("Grand Exchange"),
+	FALADOR("Falador"),
+	DONDAKAN("Dondakan");
 
 	private final String name;
 
-	BurningAmuletMode(String name)
+	RingOfWealthMode(String name)
 	{
 		this.name = name;
 	}

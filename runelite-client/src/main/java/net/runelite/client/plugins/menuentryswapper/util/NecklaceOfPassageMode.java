@@ -23,18 +23,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.easyscape.util;
+package net.runelite.client.plugins.menuentryswapper.util;
 
-public enum RingOfWealthMode
+public enum NecklaceOfPassageMode
 {
-	MISCELLANIA("Miscellania"),
-	GRAND_EXCHANGE("Grand Exchange"),
-	FALADOR("Falador"),
-	DONDAKAN("Dondakan");
+	WIZARDS_TOWER("Wizards' Tower"),
+	THE_OUTPOST("The Outpost"),
+	EAGLES_EYRIE("Eagles' Eyrie");
 
 	private final String name;
 
-	RingOfWealthMode(String name)
+	NecklaceOfPassageMode(String name)
 	{
 		this.name = name;
 	}

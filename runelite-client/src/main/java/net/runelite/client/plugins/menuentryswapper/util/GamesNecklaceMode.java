@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Ethan <http://github.com/shmeeps>
+ * Copyright (c) 2019, Alan Baumgartner <https://github.com/alanbaumgartner>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.menuentryswapper;
+package net.runelite.client.plugins.menuentryswapper.util;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
-public enum FairyRingMode
+public enum GamesNecklaceMode
 {
-	ZANARIS("Zanaris"),
-	LAST_DESTINATION("Last-Destination"),
-	CONFIGURE("Configure"),
-	OFF("Off");
+	BURTHORPE("Burthorpe"),
+	BARBARIAN_OUTPOST("Barbarian Outpost"),
+	CORPOREAL_BEAST("Corporeal Beast"),
+	TEARS_OF_GUTHIX("Tears of Guthix"),
+	WINTER("Wintertodt Camp");
 
 	private final String name;
+
+	GamesNecklaceMode(String name)
+	{
+		this.name = name;
+	}
 
 	@Override
 	public String toString()

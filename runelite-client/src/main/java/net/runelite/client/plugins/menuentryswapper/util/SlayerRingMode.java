@@ -23,17 +23,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.easyscape.util;
+package net.runelite.client.plugins.menuentryswapper.util;
 
-public enum DigsitePendantMode
+public enum SlayerRingMode
 {
-	DIGSITE("Digsite"),
-	FOSSIL_ISLAND("Fossil Island"),
-	LITHKREN("Lithkren");
+	CHECK("Check"),
+	TELEPORT("Teleport"),
+	MASTER("Master"),
+	PARTNER("Partner"),
+	LOG("Log");
 
 	private final String name;
 
-	DigsitePendantMode(String name)
+	SlayerRingMode(String name)
 	{
 		this.name = name;
 	}
