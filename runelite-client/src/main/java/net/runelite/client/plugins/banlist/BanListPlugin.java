@@ -54,7 +54,7 @@ import okhttp3.Response;
 @PluginDescriptor(
 		name = "Ban List",
 		description = "Displays warning in chat when you join a" +
-				"clan chat/new member join your clan chat and he is in a WDR/RuneWatch List",
+				"clan chat/new member join your clan chat and he is in a WDR/RuneWatch/Manual List",
 		tags = {"PVM", "WDR", "RuneWatch"},
 		type = PluginType.UTILITY
 )
@@ -84,6 +84,7 @@ public class BanListPlugin extends Plugin
 	{
 		wdrArrayList = new ArrayList<>();
 		runeWatchArrayList = new ArrayList<>();
+		manualBans = new ArrayList<>();
 		manualBans.addAll(Text.fromCSV(config.getBannedPlayers()));
 		fetchFromWebsites();
 	}
@@ -110,7 +111,7 @@ public class BanListPlugin extends Plugin
 		{
 			if (!manualBans.contains(manual))
 			{
-				manualBans.add(manual);
+				manualBans.add(Text.standardize(manual));
 			}
 		}
 	}
@@ -119,7 +120,7 @@ public class BanListPlugin extends Plugin
 	{
 		if (client.getClanMembers() != null)
 		{
-			if (wdrArrayList.size() > 1 && config.enableWDR())
+			if (wdrArrayList.size() > 0 && config.enableWDR())
 			{
 				if (wdrArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
 				{
@@ -127,7 +128,7 @@ public class BanListPlugin extends Plugin
 				}
 			}
 
-			if (runeWatchArrayList.size() > 1 && config.enableRuneWatch())
+			if (runeWatchArrayList.size() > 0 && config.enableRuneWatch())
 			{
 				if (runeWatchArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
 				{
@@ -135,7 +136,7 @@ public class BanListPlugin extends Plugin
 				}
 			}
 
-			if (manualBans.size() > 1)
+			if (manualBans.size() > 0)
 			{
 				if (manualBans.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
 				{
