@@ -28,14 +28,7 @@ package net.runelite.client.rs.mixins;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import net.runelite.client.rs.mixins.transformers.AppendTransformer;
 import net.runelite.client.rs.mixins.transformers.DoNothingTransformer;
-import net.runelite.client.rs.mixins.transformers.InjectTransformer;
-import net.runelite.client.rs.mixins.transformers.InterfaceTransformer;
-import net.runelite.client.rs.mixins.transformers.OverwriteSanityCheck;
-import net.runelite.client.rs.mixins.transformers.OverwriteTransformer;
-import net.runelite.client.rs.mixins.transformers.PrependTransformer;
-import net.runelite.client.rs.mixins.transformers.ProtectTransformer;
 import net.runelite.client.rs.mixins.transformers.SanityChecker;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -54,16 +47,16 @@ public class MixinRunner
 	public Map<String, byte[]> run()
 		throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
 	{
-	//	runVisitor(InterfaceTransformer.class);
-	//	runVisitor(OverwriteTransformer.class);
-	//	runSanityChecker(OverwriteSanityCheck.class);
-	//	runVisitor(InjectTransformer.class);
-	//	runVisitor(AppendTransformer.class); // append has to come before prepend or append does nothing
+		//	runVisitor(InterfaceTransformer.class);
+		//	runVisitor(OverwriteTransformer.class);
+		//	runSanityChecker(OverwriteSanityCheck.class);
+		//	runVisitor(InjectTransformer.class);
+		//	runVisitor(AppendTransformer.class); // append has to come before prepend or append does nothing
 		// (test method:    Projectile.rl$$init()V    )
-	//	runVisitor(PrependTransformer.class);
-	//	runRemapper(ProtectTransformer.class);
+		//	runVisitor(PrependTransformer.class);
+		//	runRemapper(ProtectTransformer.class);
 
-	//	recalcMaxes();
+		//	recalcMaxes();
 		return classes;
 	}
 
