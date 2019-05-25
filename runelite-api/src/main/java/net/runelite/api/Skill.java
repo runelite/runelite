@@ -60,15 +60,19 @@ public enum Skill
 	 */
 	OVERALL("Overall");
 
-	private static final Map<String, Skill> skillMap = new HashMap<String, Skill>()
+	private static final Map<String, Skill> skillMap;
+	static
 	{
+		skillMap = new HashMap<String, Skill>()
 		{
-			for (Skill s : Skill.values())
 			{
-				put(s.getName(), s);
+				for (Skill s : Skill.values())
+				{
+					put(s.getName(), s);
+				}
 			}
-		}
-	};
+		};
+	}
 
 	private final String name;
 

@@ -55,6 +55,8 @@ import net.runelite.client.util.StackFormatter;
 
 class XpInfoBoxOverlay extends Overlay
 {
+	private static final Color BACKGROUND_COLOR = new Color(61, 56, 49);
+
 	private static final int PANEL_PREFERRED_WIDTH = 150;
 	private static final int BORDER_SIZE = 2;
 	private static final int XP_AND_PROGRESS_BAR_GAP = 2;
@@ -70,8 +72,6 @@ class XpInfoBoxOverlay extends Overlay
 	@Getter(AccessLevel.PACKAGE)
 	private final Skill skill;
 	private final BufferedImage icon;
-
-	private static final Color backgroundColor = new Color(61, 56, 49);
 
 	XpInfoBoxOverlay(
 		XpTrackerPlugin plugin,
@@ -190,18 +190,18 @@ class XpInfoBoxOverlay extends Overlay
 
 		final ProgressBarComponent progressBarComponent = new ProgressBarComponent();
 
-		Color foregroundColor = SkillColor.find(skill).getColor();
+		final Color foregroundColor = SkillColor.find(skill).getColor();
 
 		if (xpPauseState.isPaused(skill))
 		{
 			progressBarComponent.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.TEXT_ONLY);
 			progressBarComponent.setCenterLabel("Paused");
-			progressBarComponent.setBackgroundColor(backgroundColor.darker());
+			progressBarComponent.setBackgroundColor(BACKGROUND_COLOR.darker());
 			progressBarComponent.setForegroundColor(foregroundColor.darker());
 		}
 		else
 		{
-			progressBarComponent.setBackgroundColor(backgroundColor);
+			progressBarComponent.setBackgroundColor(BACKGROUND_COLOR);
 			progressBarComponent.setForegroundColor(foregroundColor);
 		}
 		progressBarComponent.setLeftLabel(String.valueOf(snapshot.getStartLevel()));
