@@ -1460,4 +1460,78 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	//------------------------------------------------------------//
+
+	@ConfigItem(
+			keyName = "hideExamine",
+			name = "Hide Examine",
+			description = "Hides the 'examine' option from the right click menu",
+			position = 111,
+			group = "Right Click Options"
+	)
+	default boolean hideExamine()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "hideTradeWith",
+			name = "Hide Trade With",
+			description = "Hides the 'trade with' option from the right click menu",
+			position = 112,
+			group = "Right Click Options"
+	)
+	default boolean hideTradeWith()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "hideReport",
+			name = "Hide Report",
+			description = "Hides the 'report' option from the right click menu",
+			position = 113,
+			group = "Right Click Options"
+	)
+	default boolean hideReport()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "hideLookup",
+			name = "Hide Lookup",
+			description = "Hides the 'lookup' option from the right click menu",
+			position = 114,
+			group = "Right Click Options"
+	)
+	default boolean hideLookup()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "hideNet",
+			name = "Hide Net",
+			description = "Hides the 'net' option from the right click menu",
+			position = 115,
+			group = "Right Click Options"
+	)
+	default boolean hideNet()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "hideBait",
+			name = "Hide Bait",
+			description = "Hides the 'Bait' option from the right click menu",
+			position = 116,
+			group = "Right Click Options"
+	)
+	default boolean hideBait()
+	{
+		return true;
+	}
+
+	//------------------------------------------------------------//
 }
