@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
- * Copyright (c) 2018, Kyle <https://github.com/kyleeld>
+ * Copyright (c) 2018, Snakk <http://github.com/SnakkSnokk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,21 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.easyscape.util;
 
-public enum RingOfWealthMode
+package net.runelite.client.plugins.menuentryswapper.util;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum ObeliskMode
 {
-	MISCELLANIA("Miscellania"),
-	GRAND_EXCHANGE("Grand Exchange"),
-	FALADOR("Falador"),
-	DONDAKAN("Dondakan");
+	ACTIVATE("Activate"),
+	SET_DESTINATION("Set destination"),
+	TELEPORT_TO_DESTINATION("Teleport to destination");
 
 	private final String name;
-
-	RingOfWealthMode(String name)
-	{
-		this.name = name;
-	}
 
 	@Override
 	public String toString()

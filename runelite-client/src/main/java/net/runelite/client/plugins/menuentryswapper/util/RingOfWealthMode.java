@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018, Kyle <https://github.com/kyleeld>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,41 +23,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.menumodifier;
+package net.runelite.client.plugins.menuentryswapper.util;
 
-import java.awt.event.KeyEvent;
-import javax.inject.Inject;
-import net.runelite.client.input.KeyListener;
-import net.runelite.client.input.MouseAdapter;
-
-public class MenuModifierInputListener extends MouseAdapter implements KeyListener
+public enum RingOfWealthMode
 {
-	private static final int HOTKEY = KeyEvent.VK_CONTROL;
+	MISCELLANIA("Miscellania"),
+	GRAND_EXCHANGE("Grand Exchange"),
+	FALADOR("Falador"),
+	DONDAKAN("Dondakan");
 
-	@Override
-	public void keyTyped(KeyEvent e)
+	private final String name;
+
+	RingOfWealthMode(String name)
 	{
-
-	}
-
-	@Inject
-	private MenuModifierPlugin plugin;
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == HOTKEY)
-		{
-			plugin.setHotKeyPressed(true);
-		}
+		this.name = name;
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e)
+	public String toString()
 	{
-		if (e.getKeyCode() == HOTKEY)
-		{
-			plugin.setHotKeyPressed(false);
-		}
+		return name;
 	}
 }

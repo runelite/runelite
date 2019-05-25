@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.easyscape.util;
+package net.runelite.client.plugins.menuentryswapper.util;
 
 public enum MaxCapeMode
 {
