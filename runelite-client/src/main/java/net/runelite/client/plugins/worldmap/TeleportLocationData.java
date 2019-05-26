@@ -115,7 +115,7 @@ enum TeleportLocationData
 
 	// Misc
 	XERICS_LOOKOUT(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Lookout", new WorldPoint(1576, 3528, 0), "xerics_talisman_teleport_icon.png"),
-	XERICS_GLADE(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Glade", new WorldPoint(1773, 3502, 0), "xerics_talisman_teleport_icon.png"),
+	XERICS_GLADE(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Glade", new WorldPoint(1754, 3564, 0), "xerics_talisman_teleport_icon.png"),
 	XERICS_INFERNO(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Inferno", new WorldPoint(1504, 3819, 0), "xerics_talisman_teleport_icon.png"),
 	XERICS_HEART(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Heart", new WorldPoint(1641, 3670, 0), "xerics_talisman_teleport_icon.png"),
 	XERICS_HONOUR(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Honour", new WorldPoint(1254, 3559, 0), "xerics_talisman_teleport_icon.png"),
