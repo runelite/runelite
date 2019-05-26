@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Magic fTail
+ * Copyright (c) 2019, osrs-music-map <osrs-music-map@users.noreply.github.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,6 +36,7 @@ import java.util.regex.PatternSyntaxException;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.OverheadTextChanged;
@@ -97,7 +99,10 @@ public class ChatFilterPlugin extends Plugin
 
 		int[] intStack = client.getIntStack();
 		int intStackSize = client.getIntStackSize();
-		ChatMessageType chatMessageType = ChatMessageType.of(intStack[intStackSize - 1]);
+		int messageType = intStack[intStackSize - 2];
+		int messageId = intStack[intStackSize - 1];
+
+		ChatMessageType chatMessageType = ChatMessageType.of(messageType);
 
 		// Only filter public chat and private messages
 		switch (chatMessageType)
@@ -113,6 +118,13 @@ public class ChatFilterPlugin extends Plugin
 				return;
 		}
 
+		MessageNode messageNode = (MessageNode) client.getMessages().get(messageId);
+		String name = messageNode.getName();
+		if (!shouldFilterPlayerMessage(name))
+		{
+			return;
+		}
+
 		String[] stringStack = client.getStringStack();
 		int stringStackSize = client.getStringStackSize();
 
@@ -122,7 +134,7 @@ public class ChatFilterPlugin extends Plugin
 		if (censoredMessage == null)
 		{
 			// Block the message
-			intStack[intStackSize - 2] = 0;
+			intStack[intStackSize - 3] = 0;
 		}
 		else
 		{
@@ -134,7 +146,7 @@ public class ChatFilterPlugin extends Plugin
 	@Subscribe
 	public void onOverheadTextChanged(OverheadTextChanged event)
 	{
-		if (!(event.getActor() instanceof Player))
+		if (!(event.getActor() instanceof Player) || !shouldFilterPlayerMessage(event.getActor().getName()))
 		{
 			return;
 		}
@@ -147,6 +159,14 @@ public class ChatFilterPlugin extends Plugin
 		}
 
 		event.getActor().setOverheadText(message);
+	}
+
+	boolean shouldFilterPlayerMessage(String playerName)
+	{
+		boolean isMessageFromSelf = playerName.equals(client.getLocalPlayer().getName());
+		return !isMessageFromSelf &&
+			(config.filterFriends() || !client.isFriended(playerName, false)) &&
+			(config.filterClan() || !client.isClanMember(playerName));
 	}
 
 	String censorMessage(final String message)
