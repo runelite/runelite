@@ -533,6 +533,7 @@ public class WidgetID
 		static final int SPELL_ICON = 27;
 		static final int SPELL_TEXT = 28;
 		static final int AUTO_RETALIATE = 29;
+		static final int SPEC_BAR = 34;
 	}
 
 	static class VolcanicMine
