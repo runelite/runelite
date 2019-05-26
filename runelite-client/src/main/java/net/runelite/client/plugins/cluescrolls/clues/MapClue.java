@@ -102,7 +102,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		this(itemId, location, objectId, null);
 	}
 
-	private MapClue(int itemId, WorldPoint location, String description)
+	MapClue(int itemId, WorldPoint location, String description)
 	{
 		this(itemId, location, -1, description);
 	}

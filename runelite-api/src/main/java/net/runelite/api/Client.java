@@ -60,6 +60,8 @@ public interface Client extends GameEngine
 	 */
 	Logger getLogger();
 
+	String getBuildID();
+
 	/**
 	 * Gets a list of all valid players from the player cache.
 	 *
