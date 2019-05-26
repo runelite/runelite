@@ -404,7 +404,7 @@ class DevToolsOverlay extends Overlay
 			}
 
 			int projectileId = projectile.getId();
-			Actor projectileInteracting = projectile.getInteracting();
+			Actor projectileInteracting = null;
 
 			String infoString = "";
 

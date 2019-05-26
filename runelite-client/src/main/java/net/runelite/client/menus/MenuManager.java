@@ -469,8 +469,8 @@ public class MenuManager
 				{
 					continue;
 				}
-
-				event.consume();
+//todo once bytecodes work again, re-enable
+/*				event.consume();
 
 				client.invokeMenuAction(
 					event.getActionParam(),
@@ -481,7 +481,7 @@ public class MenuManager
 					"do not edit",
 					client.getMouseCanvasPosition().getX(),
 					client.getMouseCanvasPosition().getY()
-				);
+				);*/
 
 				break;
 			}
@@ -491,15 +491,15 @@ public class MenuManager
 			!leftClickObjects.isEmpty() &&
 			event.getMenuAction() == MenuAction.GAME_OBJECT_FIRST_OPTION &&
 			(
-			leftClickObjects.contains(event.getId())
-			||
-			client.getObjectDefinition(event.getId()) != null &&
-			client.getObjectDefinition(event.getId()).getImpostorIds() != null &&
-			client.getObjectDefinition(event.getId()).getImpostor() != null &&
-			client.getObjectDefinition(event.getId()).getImpostor().getId() == event.getId()))
+				leftClickObjects.contains(event.getId())
+					||
+					client.getObjectDefinition(event.getId()) != null &&
+						client.getObjectDefinition(event.getId()).getImpostorIds() != null &&
+						client.getObjectDefinition(event.getId()).getImpostor() != null &&
+						client.getObjectDefinition(event.getId()).getImpostor().getId() == event.getId()))
 		{
-
-			event.consume();
+//todo once bytecodes work again, re-enable
+/*			event.consume();
 
 			client.invokeMenuAction(
 				event.getActionParam(),
@@ -510,7 +510,7 @@ public class MenuManager
 				"do not edit",
 				client.getMouseCanvasPosition().getX(),
 				client.getMouseCanvasPosition().getY()
-			);
+			);*/
 		}
 
 		if (event.getMenuAction() != MenuAction.RUNELITE)
@@ -650,7 +650,7 @@ public class MenuManager
 	}
 
 	/**
-	 *  Adds to the map of swaps. Strict options, not strict target but target1=target2
+	 * Adds to the map of swaps. Strict options, not strict target but target1=target2
 	 */
 	public void addSwap(String option, String target, String option2)
 	{

@@ -27,7 +27,6 @@ package net.runelite.client.plugins.raids;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.lang.reflect.Method;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -83,7 +82,9 @@ public class RaidsPanel extends PluginPanel
 			if ((client.getGameState() == GameState.LOGGED_IN))
 			{
 
-				try
+				//todo once bytecodes work again, re-enable
+				
+/*				try
 				{
 					//look for client.gameStateChanged(-1); in src files to find
 					Method m = client.getClass().getClassLoader().loadClass("jr").getDeclaredMethod("fn", int.class, int.class);
@@ -99,7 +100,7 @@ public class RaidsPanel extends PluginPanel
 				catch (ReflectiveOperationException f)
 				{
 					throw new RuntimeException(f);
-				}
+				}*/
 			}
 			else
 			{

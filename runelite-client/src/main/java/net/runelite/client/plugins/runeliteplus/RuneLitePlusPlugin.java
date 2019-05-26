@@ -35,7 +35,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.MenuAction;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -299,7 +298,9 @@ public class RuneLitePlusPlugin extends Plugin
 		}
 
 		Widget w = buttonMap.get(c);
-
+//todo once bytecodes work again, re-enable
+/*
 		client.invokeMenuAction(0, w.getId(), MenuAction.WIDGET_DEFAULT.getId(), 1, "Select", "", w.getCanvasLocation().getX() + 32, w.getCanvasLocation().getY() + 32);
+*/
 	}
 }

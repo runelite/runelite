@@ -25,21 +25,7 @@
  */
 package net.runelite.client.plugins.tickcounter;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
-import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
-import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.TitleComponent;
-
-public class TickCounterOverlay extends Overlay
+/*public class TickCounterOverlay extends Overlay
 {
 
 	private TickCounterPlugin plugin;
@@ -94,4 +80,4 @@ public class TickCounterOverlay extends Overlay
 		return this.panelComponent.render(g);
 	}
 
-}
+}*/

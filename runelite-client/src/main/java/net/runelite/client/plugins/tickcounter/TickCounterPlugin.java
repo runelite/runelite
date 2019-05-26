@@ -25,24 +25,9 @@
  */
 package net.runelite.client.plugins.tickcounter;
 
-import com.google.inject.Provides;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.inject.Inject;
-import net.runelite.api.Client;
-import net.runelite.api.Player;
-import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.ClientTick;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.kit.KitType;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
-import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(name = "Tick Counter",
 	description = "Counts combat activity for nearby players",
@@ -51,7 +36,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class TickCounterPlugin extends Plugin
 {
-
+	//todo once bytecodes work again, re-enable
+/*
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -215,10 +201,10 @@ public class TickCounterPlugin extends Plugin
 	@Subscribe
 	public void onClientTick(ClientTick e)
 	{
-		/*
-		 * Hack for blowpipe since the AnimationChanged event doesn't fire when using a
-		 * blowpipe because of its speed. If blowpipe animation restarts, then add 2
-		 */
+		*//*
+ * Hack for blowpipe since the AnimationChanged event doesn't fire when using a
+ * blowpipe because of its speed. If blowpipe animation restarts, then add 2
+ *//*
 		for (Player p : blowpiping)
 		{
 			if (p.getActionFrame() == 0 && p.getActionFrameCycle() == 1)
@@ -243,5 +229,5 @@ public class TickCounterPlugin extends Plugin
 		{
 			activity.clear();
 		}
-	}
+	}*/
 }
