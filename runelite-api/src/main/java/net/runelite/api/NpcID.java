@@ -384,13 +384,13 @@ public final class NpcID
 	public static final int EVIL_BOB_391 = 391;
 	public static final int SERVANT = 392;
 	public static final int SERVANT_393 = 393;
-	public static final int BANKER = 394;
-	public static final int BANKER_395 = 395;
-	public static final int BANKER_396 = 396;
-	public static final int BANKER_397 = 397;
-	public static final int BANKER_398 = 398;
-	public static final int BANKER_399 = 399;
-	public static final int BANKER_400 = 400;
+	public static final int ROD_FISHING_SPOT = 394;
+	public static final int CAT = 395;
+	public static final int JON = 396;
+	public static final int TOWN_GUARD = 397;
+	public static final int TOWN_GUARD_398 = 398;
+	public static final int TOWN_GUARD_399 = 399;
+	public static final int TOWN_GUARD_400 = 400;
 	public static final int TURAEL = 401;
 	public static final int MAZCHNA = 402;
 	public static final int VANNAKA = 403;
@@ -744,7 +744,7 @@ public final class NpcID
 	public static final int GIANT_ROC = 763;
 	public static final int SHADOW = 764;
 	public static final int QUEEN_SIGRID = 765;
-	public static final int BANKER_766 = 766;
+	public static final int BANKER = 766;
 	public static final int ARNOR = 767;
 	public static final int HAMING = 768;
 	public static final int MOLDOF = 769;
@@ -865,7 +865,6 @@ public final class NpcID
 	public static final int GRUH = 887;
 	public static final int IRWIN_FEASELBAUM = 888;
 	public static final int ELUNED = 889;
-	public static final int ISLWYN = 890;
 	public static final int MOSS_GIANT = 891;
 	public static final int GOLRIE = 892;
 	public static final int FATHER_REEN = 893;
@@ -1440,7 +1439,7 @@ public final class NpcID
 	public static final int HUNTING_EXPERT = 1503;
 	public static final int HUNTING_EXPERT_1504 = 1504;
 	public static final int FERRET = 1505;
-	public static final int ROD_FISHING_SPOT = 1506;
+	public static final int ROD_FISHING_SPOT_1506 = 1506;
 	public static final int ROD_FISHING_SPOT_1507 = 1507;
 	public static final int ROD_FISHING_SPOT_1508 = 1508;
 	public static final int ROD_FISHING_SPOT_1509 = 1509;
@@ -1551,7 +1550,7 @@ public final class NpcID
 	public static final int BANKNOTE_EXCHANGE_MERCHANT = 1615;
 	public static final int HIGH_PRIESTESS_ZULHARCINQA = 1616;
 	public static final int PRIESTESS_ZULGWENWYNIG = 1617;
-	public static final int CAT = 1619;
+	public static final int CAT_1619 = 1619;
 	public static final int CAT_1620 = 1620;
 	public static final int CAT_1621 = 1621;
 	public static final int CAT_1622 = 1622;
@@ -3722,7 +3721,7 @@ public final class NpcID
 	public static final int BRUNDT_THE_CHIEFTAIN = 3926;
 	public static final int GUARD_3928 = 3928;
 	public static final int GUARD_3929 = 3929;
-	public static final int TOWN_GUARD = 3930;
+	public static final int TOWN_GUARD_3930 = 3930;
 	public static final int TOWN_GUARD_3931 = 3931;
 	public static final int THORA_THE_BARKEEP = 3932;
 	public static final int YRSA_3933 = 3933;
@@ -3791,7 +3790,6 @@ public final class NpcID
 	public static final int MOUSE = 4000;
 	public static final int CHOMPY_CHICK = 4001;
 	public static final int CHOMPY_CHICK_4002 = 4002;
-	public static final int ILFEEN = 4003;
 	public static final int SHADOW_4004 = 4004;
 	public static final int DARK_BEAST = 4005;
 	public static final int MOURNER_4006 = 4006;
@@ -5178,10 +5176,10 @@ public final class NpcID
 	public static final int MURKY_MATT_RUNES = 5450;
 	public static final int RELOBO_BLINYO_LOGS = 5451;
 	public static final int HOFUTHAND_WEAPONS_AND_ARMOUR = 5452;
-	public static final int BANKER_5453 = 5453;
+	public static final int RESHI = 5453;
 	public static final int THUMPY = 5454;
-	public static final int BANKER_5455 = 5455;
-	public static final int BANKER_5456 = 5456;
+	public static final int THOMDRIL = 5455;
+	public static final int KENDALL = 5456;
 	public static final int DRUID_5457 = 5457;
 	public static final int SUSPECT_5458 = 5458;
 	public static final int SUSPECT_5459 = 5459;
@@ -5592,8 +5590,12 @@ public final class NpcID
 	public static final int ABYSSAL_SIRE_5891 = 5891;
 	public static final int TZREKJAD = 5892;
 	public static final int TZREKJAD_5893 = 5893;
-	public static final int PORTAL_5895 = 5895;
-	public static final int PORTAL_5897 = 5897;
+	public static final int BAST = 5894;
+	public static final int BANKER_5895 = 5895;
+	public static final int BANKER_5896 = 5896;
+	public static final int BANKER_5897 = 5897;
+	public static final int BANKER_5904 = 5904;
+	public static final int BANKER_5905 = 5905;
 	public static final int PROBITA = 5906;
 	public static final int CHAOS_ELEMENTAL_JR_5907 = 5907;
 	public static final int ABYSSAL_SIRE_5908 = 5908;
@@ -6019,8 +6021,8 @@ public final class NpcID
 	public static final int FIDELIO = 6525;
 	public static final int SBOTT = 6526;
 	public static final int ROAVAR = 6527;
-	public static final int FERAL_VAMPYRE_6529 = 6529;
-	public static final int ABIDOR_CRANK_6530 = 6530;
+	public static final int BANKER_6529 = 6529;
+	public static final int BANKER_6530 = 6530;
 	public static final int BLURBERRY = 6531;
 	public static final int BARMAN_6532 = 6532;
 	public static final int ROMILY_WEAKLAX = 6533;
@@ -7115,8 +7117,8 @@ public final class NpcID
 	public static final int WEVE = 7777;
 	public static final int IRENE = 7778;
 	public static final int BOBBING_FOSSIL = 7779;
-	public static final int PUFFER_FISH = 7780;
-	public static final int PUFFER_FISH_7781 = 7781;
+	public static final int ISLWYN = 7780;
+	public static final int PUFFER_FISH = 7781;
 	public static final int FISH_SHOAL = 7782;
 	public static final int CETO = 7783;
 	public static final int MAIRIN = 7784;
@@ -7847,6 +7849,17 @@ public final class NpcID
 	public static final int DODGY_GEEZER = 8644;
 	public static final int ARTHUR_THE_CLUE_HUNTER = 8665;
 	public static final int BANKER_8666 = 8666;
+	public static final int PUFFER_FISH_8667 = 8667;
+	public static final int ISLWYN_8675 = 8675;
+	public static final int ILFEEN = 8676;
+	public static final int ILFEEN_8677 = 8677;
+	public static final int FERAL_VAMPYRE_8678 = 8678;
+	public static final int ABIDOR_CRANK_8679 = 8679;
+	public static final int BANKER_8680 = 8680;
+	public static final int BANKER_8681 = 8681;
+	public static final int BANKER_8682 = 8682;
+	public static final int PORTAL_8684 = 8684;
+	public static final int PORTAL_8686 = 8686;
 	public static final int MOSOL_REI_8696 = 8696;
 	/* This file is automatically generated. Do not edit. */
 }

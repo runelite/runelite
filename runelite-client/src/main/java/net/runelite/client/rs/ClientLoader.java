@@ -51,6 +51,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
 import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
@@ -220,6 +221,12 @@ public class ClientLoader
 
 			Applet rs = (Applet) clientClass.newInstance();
 			rs.setStub(new RSAppletStub(config));
+
+			if (rs instanceof Client)
+			{
+				log.info("client-patch {}", ((Client) rs).getBuildID());
+			}
+
 			return rs;
 		}
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
