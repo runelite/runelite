@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.freezetimers;
 
 import com.google.inject.Provides;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -38,8 +40,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
-import java.util.HashMap;
-import java.util.Map;
 
 @PluginDescriptor(
 	name = "Freeze Timers",
@@ -115,6 +115,15 @@ public class FreezeTimersPlugin extends Plugin
 	{
 		timers.gameTick();
 		prayerTracker.gameTick();
+		for (Actor actor : client.getPlayers())
+		{
+			if (prayerTracker.getSpotanimLastTick(actor) != actor.getGraphic())
+			{
+				GraphicChanged callback = new GraphicChanged();
+				callback.setActor(actor);
+				client.getCallbacks().post(callback);
+			}
+		}
 	}
 
 	@Subscribe
@@ -124,6 +133,7 @@ public class FreezeTimersPlugin extends Plugin
 		// All despawns ok: death, teleports, log out, runs away from screen
 		this.remove(player);
 	}
+
 	public void remove(Actor actor)
 	{
 		freezes.remove(actor.getName());
