@@ -44,6 +44,7 @@ import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.ProjectileID;
 import net.runelite.api.Varbits;
@@ -175,7 +176,7 @@ public class CoxPlugin extends Plugin
 	private List<Actor> burnTarget = new ArrayList<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private List<Actor> teleportTarget = new ArrayList<>();
+	private Actor teleportTarget;
 
 	@Getter(AccessLevel.PACKAGE)
 	private Actor acidTarget;
@@ -234,7 +235,7 @@ public class CoxPlugin extends Plugin
 		overlayManager.remove(timersOverlay);
 		HandCripple = false;
 		acidTarget = null;
-		teleportTarget.clear();
+		teleportTarget = null;
 		burnTarget.clear();
 		timer = 45;
 		burnTicks = 40;
@@ -248,7 +249,7 @@ public class CoxPlugin extends Plugin
 	{
 		final Matcher tpMatcher = TP_REGEX.matcher(chatMessage.getMessage());
 		String msg = chatMessage.getMessageNode().getValue();
-		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
+		if (chatMessage.getType() == ChatMessageType.PUBLICCHAT)
 		{
 			if (msg.toLowerCase().contains("The Great Olm rises with the power of".toLowerCase()))
 			{
@@ -315,7 +316,7 @@ public class CoxPlugin extends Plugin
 				{
 					if (actor.getName().equals((tpMatcher.group(1))))
 					{
-						teleportTarget.add(actor);
+						teleportTarget = actor;
 					}
 				}
 			}
@@ -350,10 +351,6 @@ public class CoxPlugin extends Plugin
 		if (actor.getGraphic() == GraphicID.OLM_BURN)
 		{
 			burnTarget.add(actor);
-		}
-		if (actor.getGraphic() == GraphicID.OLM_TELEPORT)
-		{
-			teleportTarget.add(actor);
 		}
 	}
 
@@ -461,12 +458,15 @@ public class CoxPlugin extends Plugin
 				acidTicks = 25;
 			}
 		}
-		if (teleportTarget.size() > 0)
+		if (teleportTarget != null)
 		{
+			Player target = (Player) teleportTarget;
+			client.setHintArrow(target);
 			teleportTicks--;
 			if (teleportTicks <= 0)
 			{
-				teleportTarget.clear();
+				client.clearHintArrow();
+				teleportTarget = null;
 				teleportTicks = 10;
 			}
 		}

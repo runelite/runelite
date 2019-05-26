@@ -33,7 +33,6 @@ import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
-import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -123,21 +122,9 @@ public class TimersOverlay extends Overlay
 
 		if (config.tpOverlay())
 		{
-			if (plugin.getTeleportTarget().size() > 0)
+			if (plugin.getTeleportTarget() != null)
 			{
-				for (Actor actor : plugin.getTeleportTarget())
-				{
-					if (actor instanceof Player)
-					{
-						Player target = (Player) actor;
-						renderNpcOverlay(graphics, target, new Color(193, 255, 245, 255), 2, 100, 10);
-						client.setHintArrow(target);
-					}
-					else
-					{
-						renderNpcOverlay(graphics, actor, new Color(193, 255, 245, 255), 2, 100, 10);
-					}
-				}
+				renderNpcOverlay(graphics, plugin.getTeleportTarget(), new Color(193, 255, 245, 255), 2, 100, 10);
 			}
 		}
 

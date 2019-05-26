@@ -1471,7 +1471,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean hideExamine()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -1483,7 +1483,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean hideTradeWith()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -1495,7 +1495,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean hideReport()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -1507,7 +1507,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean hideLookup()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -1519,7 +1519,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean hideNet()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -1531,7 +1531,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean hideBait()
 	{
-		return true;
+		return false;
 	}
 
 	//------------------------------------------------------------//
