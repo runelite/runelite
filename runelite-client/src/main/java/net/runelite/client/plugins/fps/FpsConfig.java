@@ -44,7 +44,7 @@ public interface FpsConfig extends Config
 	}
 
 	@Range(
-		min = 10,
+		min = 1,
 		max = 50
 	)
 	@ConfigItem(
