@@ -31,6 +31,8 @@ import io.sigpipe.jbsdiff.InvalidHeaderException;
 import io.sigpipe.jbsdiff.Patch;
 import java.applet.Applet;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -51,6 +53,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
+import static net.runelite.client.rs.ClientUpdateCheckMode.CUSTOM;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Request;
@@ -61,6 +64,7 @@ import org.apache.commons.compress.compressors.CompressorException;
 @Singleton
 public class ClientLoader
 {
+	private static final File CUSTOMFILE = new File("replace me!");
 	private final ClientConfigLoader clientConfigLoader;
 	private ClientUpdateCheckMode updateCheckMode;
 
@@ -168,6 +172,33 @@ public class ClientLoader
 				}
 
 				log.info("Patched {} classes", patchCount);
+			}
+
+			if (updateCheckMode == CUSTOM)
+			{
+				JarInputStream fis = new JarInputStream(new FileInputStream(CUSTOMFILE));
+				byte[] tmp = new byte[4096];
+				ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
+				for (; ; )
+				{
+					JarEntry metadata = fis.getNextJarEntry();
+					if (metadata == null)
+					{
+						break;
+					}
+
+					buffer.reset();
+					for (; ; )
+					{
+						int n = fis.read(tmp);
+						if (n <= -1)
+						{
+							break;
+						}
+						buffer.write(tmp, 0, n);
+					}
+					zipFile.replace(metadata.getName(), buffer.toByteArray());
+				}
 			}
 
 			String initialClass = config.getInitialClass();
