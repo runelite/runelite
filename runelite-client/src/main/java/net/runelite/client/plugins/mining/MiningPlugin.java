@@ -255,7 +255,6 @@ public class MiningPlugin extends Plugin
 	{
 		GameObject previous = event.getPrevious();
 		GameObject gameObject = event.getGameObject();
-		System.out.println("Hey");
 		rocks.remove(previous);
 		if (MINING_ROCKS.contains(gameObject.getId()))
 		{

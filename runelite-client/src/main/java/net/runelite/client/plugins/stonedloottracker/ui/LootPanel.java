@@ -271,7 +271,7 @@ class LootPanel extends JPanel
 				}
 				catch (InterruptedException e)
 				{
-					System.out.println(e.getMessage());
+					log.warn("Error in playback: " + e.getMessage());
 				}
 			}
 		}
