@@ -1089,7 +1089,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 			keyName = "swapMetamorphosis",
 			name = "Metamorphosis",
-			description = "Swap 'Talk-t'o with 'Metamorphosis' for Baby Chinchompa pet.",
+			description = "Swap 'Talk-to' with 'Metamorphosis' for Baby Chinchompa pet.",
 			position = 82,
 			group = "Talk-To"
 	)
