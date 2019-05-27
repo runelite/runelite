@@ -121,7 +121,6 @@ public class ZulrahPhase
 			case PILLAR_EAST_OUTSIDE:
 				return new LocalPoint(startTile.getX() + (4 * 128), startTile.getY() - (4 * 128));
 		}
-		System.out.println("Fell through switch block");
 		return startTile;
 	}
 

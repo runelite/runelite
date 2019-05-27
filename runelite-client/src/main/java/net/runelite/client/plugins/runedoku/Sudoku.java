@@ -113,11 +113,7 @@ public class Sudoku
 			{
 				System.out.print(" " + board[i][j]);
 			}
-
-			System.out.println();
 		}
-
-		System.out.println();
 	}
 
 	public int[][] getBoard()
