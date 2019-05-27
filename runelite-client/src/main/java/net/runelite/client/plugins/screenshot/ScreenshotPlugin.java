@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ *     Modified by Jason <https://github.com/JasonT20015>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,6 +47,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -53,6 +57,7 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -62,11 +67,12 @@ import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
@@ -105,11 +111,12 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.jetbrains.annotations.Nullable;
 
 @PluginDescriptor(
-	name = "Screenshot",
-	description = "Enable the manual and automatic taking of screenshots",
-	tags = {"external", "images", "imgur", "integration", "notifications"}
+		name = "Screenshot",
+		description = "Enable the manual and automatic taking of screenshots",
+		tags = {"external", "images", "imgur", "integration", "notifications"}
 )
 @Slf4j
 public class ScreenshotPlugin extends Plugin
@@ -127,8 +134,8 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9]+) duels?\\.");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
-		"You feel something weird sneaking into your backpack",
-		"You have a funny feeling like you would have been followed");
+			"You feel something weird sneaking into your backpack",
+			"You have a funny feeling like you would have been followed");
 
 	static String format(Date date)
 	{
@@ -187,6 +194,8 @@ public class ScreenshotPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private BufferedImage reportButton;
 
+	private Map<Player, Integer> dying = new HashMap<Player, Integer>();
+
 	private NavigationButton titleBarButton;
 
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.hotkey())
@@ -214,25 +223,25 @@ public class ScreenshotPlugin extends Plugin
 		final BufferedImage iconImage = ImageUtil.getResourceStreamFromClass(getClass(), "screenshot.png");
 
 		titleBarButton = NavigationButton.builder()
-			.tab(false)
-			.tooltip("Take screenshot")
-			.icon(iconImage)
-			.onClick(() -> takeScreenshot(format(new Date())))
-			.popup(ImmutableMap
-				.<String, Runnable>builder()
-				.put("Open screenshot folder...", () ->
-				{
-					try
-					{
-						Desktop.getDesktop().open(SCREENSHOT_DIR);
-					}
-					catch (IOException ex)
-					{
-						log.warn("Error opening screenshot dir", ex);
-					}
-				})
-				.build())
-			.build();
+				.tab(false)
+				.tooltip("Take screenshot")
+				.icon(iconImage)
+				.onClick(() -> takeScreenshot(format(new Date())))
+				.popup(ImmutableMap
+						.<String, Runnable>builder()
+						.put("Open screenshot folder...", () ->
+						{
+							try
+							{
+								Desktop.getDesktop().open(SCREENSHOT_DIR);
+							}
+							catch (IOException ex)
+							{
+								log.warn("Error opening screenshot dir", ex);
+							}
+						})
+						.build())
+				.build();
 
 		clientToolbar.addNavigation(titleBarButton);
 	}
@@ -249,7 +258,7 @@ public class ScreenshotPlugin extends Plugin
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN
-			&& reportButton == null)
+				&& reportButton == null)
 		{
 			reportButton = spriteManager.getSprite(SpriteID.CHATBOX_REPORT_BUTTON, 0);
 		}
@@ -258,6 +267,23 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		if (config.screenshotFriendDeath())
+		{
+			for (Iterator<Player> it = dying.keySet().iterator(); it.hasNext();)
+			{
+				Player key = it.next();
+				if (key.getAnimation() != 836)
+				{
+					it.remove();
+				}
+				dying.replace(key, dying.get(key) - 1);
+				if (dying.get(key) == 0)
+				{
+					takeScreenshot(key.getName() + " ded " + format(new Date()), "Deaths");
+					it.remove();
+				}
+			}
+		}
 		if (!shouldTakeScreenshot)
 		{
 			return;
@@ -288,11 +314,43 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onLocalPlayerDeath(LocalPlayerDeath death)
+	public void onAnimationChanged(AnimationChanged e)
 	{
-		if (config.screenshotPlayerDeath())
+		//this got refactored somewhere, but some things were missing
+		if (!config.screenshotFriendDeath() || !config.screenshotPlayerDeath())
+			return;
+
+		if (!(e.getActor() instanceof Player))
+			return;
+		Player p = (Player) e.getActor();
+
+
+		if (p.getAnimation() != 836)
 		{
-			takeScreenshot("Death " + format(new Date()));
+			return;
+		}
+		if (p.getName().equals(client.getLocalPlayer().getName()))
+		{
+
+			if (config.screenshotPlayerDeath())
+			{
+				dying.put(p, 3);
+				return;
+			}
+			else
+			{
+				return;
+			}
+		}
+		if (config.screenshotFriendDeath())
+		{
+			int tob = client.getVar(Varbits.THEATRE_OF_BLOOD);
+
+			if (client.getVar(Varbits.IN_RAID) == 1 || tob == 2 || tob == 3 || p.isFriend())
+			{
+				//this is the same as the tick counter had, just want to make ss at right timing
+				dying.put(p, 3);
+			}
 		}
 	}
 
@@ -375,7 +433,7 @@ public class ScreenshotPlugin extends Plugin
 			takeScreenshot(fileName);
 		}
 
-		if (config.screenshotBossKills())
+		if (config.screenshotBossKills() )
 		{
 			Matcher m = BOSSKILL_MESSAGE_PATTERN.matcher(chatMessage);
 			if (m.matches())
@@ -562,7 +620,7 @@ public class ScreenshotPlugin extends Plugin
 	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
 	 * and optionally uploads it to an image-hosting service.
 	 *
-	 * @param fileName Filename to use, without file extension.
+	 * @param fileName    Filename to use, without file extension.
 	 */
 	private void takeScreenshot(String fileName)
 	{
@@ -576,7 +634,7 @@ public class ScreenshotPlugin extends Plugin
 		Consumer<Image> imageCallback = (img) ->
 		{
 			// This callback is on the game thread, move to executor thread
-			executor.submit(() -> takeScreenshot(fileName, img));
+			executor.submit(() -> takeScreenshot(fileName, img, null));
 		};
 
 		if (config.displayDate())
@@ -589,11 +647,43 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	private void takeScreenshot(String fileName, Image image)
+	/**
+	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
+	 * and optionally uploads it to an image-hosting service.
+	 *
+	 * @param fileName    Filename to use, without file extension.
+	 * @param subdirectory The subdirectory to save it in
+	 */
+	private void takeScreenshot(String fileName, String subdirectory)
+	{
+		if (client.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			// Prevent the screenshot from being captured
+			log.info("Login screenshot prevented");
+			return;
+		}
+
+		Consumer<Image> imageCallback = (img) ->
+		{
+			// This callback is on the game thread, move to executor thread
+				executor.submit(() -> takeScreenshot(fileName, img, subdirectory));
+
+		};
+
+		if (config.displayDate())
+		{
+			screenshotOverlay.queueForTimestamp(imageCallback);
+		}
+		else
+		{
+			drawManager.requestNextFrameListener(imageCallback);
+		}
+	}
+	private void takeScreenshot(String fileName, Image image, @Nullable String subdirectory)
 	{
 		BufferedImage screenshot = config.includeFrame()
-			? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
-			: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+				? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
+				: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
 		Graphics graphics = screenshot.getGraphics();
 
@@ -644,6 +734,14 @@ public class ScreenshotPlugin extends Plugin
 
 		playerFolder.mkdirs();
 
+		if (subdirectory != null)
+		{
+			//uhh just tried to do this as workaround, not sure if it's the best idea tho
+			File actualplayerFolder = new File(playerFolder, subdirectory);
+			actualplayerFolder.mkdir();
+			playerFolder = actualplayerFolder;
+		}
+
 		try
 		{
 			File screenshotFile = new File(playerFolder, fileName + ".png");
@@ -677,10 +775,10 @@ public class ScreenshotPlugin extends Plugin
 		String json = RuneLiteAPI.GSON.toJson(new ImageUploadRequest(screenshotFile));
 
 		Request request = new Request.Builder()
-			.url(IMGUR_IMAGE_UPLOAD_URL)
-			.addHeader("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
-			.post(RequestBody.create(JSON, json))
-			.build();
+				.url(IMGUR_IMAGE_UPLOAD_URL)
+				.addHeader("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
+				.post(RequestBody.create(JSON, json))
+				.build();
 
 		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
 		{
@@ -696,7 +794,7 @@ public class ScreenshotPlugin extends Plugin
 				try (InputStream in = response.body().byteStream())
 				{
 					ImageUploadResponse imageUploadResponse = RuneLiteAPI.GSON
-						.fromJson(new InputStreamReader(in), ImageUploadResponse.class);
+							.fromJson(new InputStreamReader(in), ImageUploadResponse.class);
 
 					if (imageUploadResponse.isSuccess())
 					{
