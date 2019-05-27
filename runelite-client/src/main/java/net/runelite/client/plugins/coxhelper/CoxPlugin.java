@@ -249,7 +249,7 @@ public class CoxPlugin extends Plugin
 	{
 		final Matcher tpMatcher = TP_REGEX.matcher(chatMessage.getMessage());
 		String msg = chatMessage.getMessageNode().getValue();
-		if (chatMessage.getType() == ChatMessageType.PUBLICCHAT)
+		if (chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
 			if (msg.toLowerCase().contains("The Great Olm rises with the power of".toLowerCase()))
 			{
