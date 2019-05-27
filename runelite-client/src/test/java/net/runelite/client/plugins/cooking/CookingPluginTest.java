@@ -29,10 +29,12 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,7 +51,6 @@ public class CookingPluginTest
 		"You cook the karambwan. It looks delicious.",
 		"You roast a lobster.",
 		"You cook a bass.",
-		"You squeeze the grapes into the jug. The wine begins to ferment.",
 		"You successfully bake a tasty garden pie."
 	};
 
@@ -58,11 +59,19 @@ public class CookingPluginTest
 
 	@Mock
 	@Bind
+	Client client;
+
+	@Mock
+	@Bind
 	CookingConfig config;
 
 	@Mock
 	@Bind
 	CookingOverlay cookingOverlay;
+
+	@Mock
+	@Bind
+	FermentTimerOverlay fermentTimerOverlay;
 
 	@Mock
 	@Bind
@@ -83,7 +92,7 @@ public class CookingPluginTest
 			cookingPlugin.onChatMessage(chatMessage);
 		}
 
-		CookingSession cookingSession = cookingPlugin.getSession();
+		CookingSession cookingSession = cookingPlugin.getCookingSession();
 		assertNotNull(cookingSession);
 		assertEquals(COOKING_MESSAGES.length, cookingSession.getCookAmount());
 	}

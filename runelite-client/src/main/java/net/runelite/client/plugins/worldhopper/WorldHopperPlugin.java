@@ -350,8 +350,18 @@ public class WorldHopperPlugin extends Plugin
 			// Don't add entry if user is offline
 			ChatPlayer player = getChatPlayerFromName(event.getTarget());
 
-			if (player == null || player.getWorld() == 0 || player.getWorld() == client.getWorld())
+			if (player == null || player.getWorld() == 0 || player.getWorld() == client.getWorld()
+				|| worldResult == null)
 			{
+				return;
+			}
+
+			World currentWorld = worldResult.findWorld(client.getWorld());
+			World targetWorld = worldResult.findWorld(player.getWorld());
+			if (targetWorld == null || currentWorld == null
+				|| (!currentWorld.getTypes().contains(WorldType.PVP) && targetWorld.getTypes().contains(WorldType.PVP)))
+			{
+				// Disable Hop-to a PVP world from a regular world
 				return;
 			}
 

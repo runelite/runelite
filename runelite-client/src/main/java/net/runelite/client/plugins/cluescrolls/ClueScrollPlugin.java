@@ -55,6 +55,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Point;
 import net.runelite.api.Scene;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
@@ -67,7 +68,9 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -75,12 +78,14 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.cluescrolls.clues.AnagramClue;
+import net.runelite.client.plugins.cluescrolls.clues.BeginnerMapClue;
 import net.runelite.client.plugins.cluescrolls.clues.CipherClue;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.CoordinateClue;
 import net.runelite.client.plugins.cluescrolls.clues.CrypticClue;
 import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.plugins.cluescrolls.clues.FairyRingClue;
+import net.runelite.client.plugins.cluescrolls.clues.FaloTheBardClue;
 import net.runelite.client.plugins.cluescrolls.clues.HotColdClue;
 import net.runelite.client.plugins.cluescrolls.clues.LocationClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.LocationsClueScroll;
@@ -387,6 +392,18 @@ public class ClueScrollPlugin extends Plugin
 		updateClue(findClueScroll());
 	}
 
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded event)
+	{
+		if (event.getGroupId() < WidgetID.BEGINNER_CLUE_MAP_CHAMPIONS_GUILD
+			|| event.getGroupId() > WidgetID.BEGINNER_CLUE_MAP_WIZARDS_TOWER)
+		{
+			return;
+		}
+
+		updateClue(BeginnerMapClue.forWidgetID(event.getGroupId()));
+	}
+
 	public BufferedImage getClueScrollImage()
 	{
 		return itemManager.getImage(ItemID.CLUE_SCROLL_MASTER);
@@ -505,6 +522,13 @@ public class ClueScrollPlugin extends Plugin
 		if (fairyRingClue != null)
 		{
 			return fairyRingClue;
+		}
+
+		final FaloTheBardClue faloTheBardClue = FaloTheBardClue.forText(text);
+
+		if (faloTheBardClue != null)
+		{
+			return faloTheBardClue;
 		}
 
 		final HotColdClue hotColdClue = HotColdClue.forText(text);
@@ -738,5 +762,34 @@ public class ClueScrollPlugin extends Plugin
 			canvasLocation.getY() + fontMetrics.getHeight()));
 		textComponent.setText(text);
 		textComponent.render(graphics);
+	}
+
+	void scrollToWidget(WidgetInfo list, WidgetInfo scrollbar, Widget ... toHighlight)
+	{
+		final Widget parent = client.getWidget(list);
+		int averageCentralY = 0;
+		int nonnullCount = 0;
+		for (Widget widget : toHighlight)
+		{
+			if (widget != null)
+			{
+				averageCentralY += widget.getRelativeY() + widget.getHeight() / 2;
+				nonnullCount += 1;
+			}
+		}
+		if (nonnullCount == 0)
+		{
+			return;
+		}
+		averageCentralY /= nonnullCount;
+		final int newScroll = Math.max(0, Math.min(parent.getScrollHeight(),
+			averageCentralY - parent.getHeight() / 2));
+
+		client.runScript(
+			ScriptID.UPDATE_SCROLLBAR,
+			scrollbar.getId(),
+			list.getId(),
+			newScroll
+		);
 	}
 }

@@ -31,7 +31,11 @@ import java.time.Instant;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import static net.runelite.api.AnimationID.COOKING_WINE;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.Player;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
@@ -51,16 +55,25 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class CookingPlugin extends Plugin
 {
 	@Inject
+	private Client client;
+
+	@Inject
 	private CookingConfig config;
 
 	@Inject
-	private CookingOverlay overlay;
+	private CookingOverlay cookingOverlay;
+
+	@Inject
+	private FermentTimerOverlay fermentTimerOverlay;
 
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Getter(AccessLevel.PACKAGE)
-	private CookingSession session;
+	private CookingSession cookingSession;
+
+	@Getter(AccessLevel.PACKAGE)
+	private FermentTimerSession fermentTimerSession;
 
 	@Provides
 	CookingConfig getConfig(ConfigManager configManager)
@@ -71,31 +84,69 @@ public class CookingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		session = null;
-		overlayManager.add(overlay);
+		cookingSession = null;
+		fermentTimerSession = null;
+		overlayManager.add(cookingOverlay);
+		overlayManager.add(fermentTimerOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(overlay);
-		session = null;
+		overlayManager.remove(fermentTimerOverlay);
+		overlayManager.remove(cookingOverlay);
+		fermentTimerSession = null;
+		cookingSession = null;
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (session == null || config.statTimeout() == 0)
+		if (config.statTimeout() == 0)
 		{
 			return;
 		}
 
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(session.getLastCookingAction(), Instant.now());
-
-		if (sinceCut.compareTo(statTimeout) >= 0)
+		if (cookingSession != null)
 		{
-			session = null;
+			Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+			Duration sinceCut = Duration.between(cookingSession.getLastCookingAction(), Instant.now());
+
+			if (sinceCut.compareTo(statTimeout) >= 0)
+			{
+				cookingSession = null;
+			}
+		}
+		if (fermentTimerSession != null)
+		{
+			Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+			Duration sinceCut = Duration.between(fermentTimerSession.getLastWineMakingAction(), Instant.now());
+
+			if (sinceCut.compareTo(statTimeout) >= 0)
+			{
+				fermentTimerSession = null;
+			}
+		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged animationChanged)
+	{
+		Player localPlayer = client.getLocalPlayer();
+
+		if (localPlayer != animationChanged.getActor())
+		{
+			return;
+		}
+
+		if (localPlayer.getAnimation() == COOKING_WINE && config.fermentTimer())
+		{
+			if (fermentTimerSession == null)
+			{
+				fermentTimerSession = new FermentTimerSession();
+			}
+
+			fermentTimerSession.updateLastWineMakingAction();
 		}
 	}
 
@@ -113,27 +164,26 @@ public class CookingPlugin extends Plugin
 			|| message.startsWith("You successfully bake")
 			|| message.startsWith("You manage to cook")
 			|| message.startsWith("You roast a")
-			|| message.startsWith("You cook")
-			|| message.startsWith("You squeeze the grapes into the jug"))
+			|| message.startsWith("You cook"))
 		{
-			if (session == null)
+			if (cookingSession == null)
 			{
-				session = new CookingSession();
+				cookingSession = new CookingSession();
 			}
 
-			session.updateLastCookingAction();
-			session.increaseCookAmount();
+			cookingSession.updateLastCookingAction();
+			cookingSession.increaseCookAmount();
 
 		}
 		else if (message.startsWith("You accidentally burn"))
 		{
-			if (session == null)
+			if (cookingSession == null)
 			{
-				session = new CookingSession();
+				cookingSession = new CookingSession();
 			}
 
-			session.updateLastCookingAction();
-			session.increaseBurnAmount();
+			cookingSession.updateLastCookingAction();
+			cookingSession.increaseBurnAmount();
 		}
 	}
 }

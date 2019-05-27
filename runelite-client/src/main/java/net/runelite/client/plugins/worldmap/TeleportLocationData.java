@@ -61,6 +61,7 @@ enum TeleportLocationData
 	ICE_PLATEAU(TeleportType.LUNAR_MAGIC, "Ice Plateau", 89, new WorldPoint(2973, 3939, 0), "ice_plateau_teleport_icon.png"),
 	LUMBRIDGE_GRAVEYARD(TeleportType.ARCEUUS_MAGIC, "Lumbridge Graveyard", 6, new WorldPoint(3241, 3194, 0), "lumbridge_graveyard_teleport_icon.png"),
 	DRAYNOR_MANOR(TeleportType.ARCEUUS_MAGIC, "Draynor Manor", 17, new WorldPoint(3108, 3352, 0), "draynor_manor_teleport_icon.png"),
+	BATTLEFRONT(TeleportType.ARCEUUS_MAGIC, "Battlefront", 23, new WorldPoint(1349, 3739, 0), "battlefront_teleport_icon.png"),
 	MIND_ALTAR(TeleportType.ARCEUUS_MAGIC, "Mind Altar", 28, new WorldPoint(2979, 3509, 0), "mind_altar_teleport_icon.png"),
 	SALVE_GRAVEYARD(TeleportType.ARCEUUS_MAGIC, "Salve Graveyard", 40, new WorldPoint(3433, 3461, 0), "salve_graveyard_teleport_icon.png"),
 	FENKENSTRAINS_CASTLE(TeleportType.ARCEUUS_MAGIC, "Fenkenstrain's Castle", 48, new WorldPoint(3548, 3528, 0), "fenkenstrains_castle_teleport_icon.png"),
@@ -114,7 +115,7 @@ enum TeleportLocationData
 
 	// Misc
 	XERICS_LOOKOUT(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Lookout", new WorldPoint(1576, 3528, 0), "xerics_talisman_teleport_icon.png"),
-	XERICS_GLADE(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Glade", new WorldPoint(1773, 3502, 0), "xerics_talisman_teleport_icon.png"),
+	XERICS_GLADE(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Glade", new WorldPoint(1754, 3564, 0), "xerics_talisman_teleport_icon.png"),
 	XERICS_INFERNO(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Inferno", new WorldPoint(1504, 3819, 0), "xerics_talisman_teleport_icon.png"),
 	XERICS_HEART(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Heart", new WorldPoint(1641, 3670, 0), "xerics_talisman_teleport_icon.png"),
 	XERICS_HONOUR(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Honour", new WorldPoint(1254, 3559, 0), "xerics_talisman_teleport_icon.png"),

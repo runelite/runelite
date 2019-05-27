@@ -40,16 +40,21 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 	public enum LabelDisplayMode
 	{
 		PERCENTAGE,
-		FULL
+		FULL,
+		BOTH
 	}
 
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.0");
 	private static final DecimalFormat DECIMAL_FORMAT_ABS = new DecimalFormat("#0");
 
+	private static final int SIDE_LABEL_OFFSET = 4;
+
 	private long minimum;
 	private long maximum = 100;
 	private double value;
 	private LabelDisplayMode labelDisplayMode = LabelDisplayMode.PERCENTAGE;
+	private String leftLabel;
+	private String rightLabel;
 	private Color foregroundColor = new Color(82, 161, 82);
 	private Color backgroundColor = new Color(255, 255, 255, 127);
 	private Color fontColor = Color.WHITE;
@@ -75,10 +80,13 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 		switch (labelDisplayMode)
 		{
 			case PERCENTAGE:
-				textToWrite = DECIMAL_FORMAT.format(pc * 100d) + "%";
+				textToWrite = formatPercentageProgress(pc);
+				break;
+			case BOTH:
+				textToWrite = formatFullProgress(currentValue, maximum) + " (" + formatPercentageProgress(pc) + ")";
 				break;
 			default:
-				textToWrite = DECIMAL_FORMAT_ABS.format(Math.floor(currentValue)) + "/" + maximum;
+				textToWrite = formatFullProgress(currentValue, maximum);
 		}
 
 		final int width = preferredSize.width;
@@ -99,9 +107,37 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 		textComponent.setText(textToWrite);
 		textComponent.render(graphics);
 
+		if (leftLabel != null)
+		{
+			final TextComponent leftTextComponent = new TextComponent();
+			leftTextComponent.setPosition(new Point(barX + SIDE_LABEL_OFFSET, progressTextY));
+			leftTextComponent.setColor(fontColor);
+			leftTextComponent.setText(leftLabel);
+			leftTextComponent.render(graphics);
+		}
+
+		if (rightLabel != null)
+		{
+			final TextComponent leftTextComponent = new TextComponent();
+			leftTextComponent.setPosition(new Point(barX + width - metrics.stringWidth(rightLabel) - SIDE_LABEL_OFFSET, progressTextY));
+			leftTextComponent.setColor(fontColor);
+			leftTextComponent.setText(rightLabel);
+			leftTextComponent.render(graphics);
+		}
+
 		final Dimension dimension = new Dimension(width, height);
 		bounds.setLocation(preferredLocation);
 		bounds.setSize(dimension);
 		return dimension;
+	}
+
+	private static String formatFullProgress(double current, long maximum)
+	{
+		return DECIMAL_FORMAT_ABS.format(Math.floor(current)) + "/" + maximum;
+	}
+
+	private static String formatPercentageProgress(double ratio)
+	{
+		return DECIMAL_FORMAT.format(ratio * 100d) + "%";
 	}
 }

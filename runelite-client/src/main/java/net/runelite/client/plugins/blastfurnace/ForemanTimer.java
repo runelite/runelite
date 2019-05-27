@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, Brandon White <bmwqg@live.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,19 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mapping;
+package net.runelite.client.plugins.blastfurnace;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.time.temporal.ChronoUnit;
+import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.infobox.Timer;
 
-/**
- * Used to indicate a method can only be called from within mixins.
- * Calling methods annotated with this annotation outside mixins results in a AbstractMethodError.
- * Only works in net.runelite.rs.api.*
- */
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Protect
+class ForemanTimer extends Timer
 {
+	private static final String TOOLTIP_TEXT = "Foreman Fee";
+
+	ForemanTimer(BlastFurnacePlugin plugin, ItemManager itemManager)
+	{
+		super(10, ChronoUnit.MINUTES, itemManager.getImage(ItemID.COAL_BAG), plugin);
+
+		setTooltip(TOOLTIP_TEXT);
+	}
 }
