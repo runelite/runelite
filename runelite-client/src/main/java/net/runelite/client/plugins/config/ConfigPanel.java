@@ -896,12 +896,12 @@ public class ConfigPanel extends PluginPanel
 
 				if (checkbox.isSelected())
 				{
-					if (cid2.getItem().enabledBy().equals(cid.getItem().keyName()))
+					if (cid2.getItem().enabledBy().contains(cid.getItem().keyName()))
 					{
 						configManager.setConfiguration(cd.getGroup().value(), cid2.getItem().keyName(), "true");
 						reloadPluginlist(listItem, config, cd);
 					}
-					else if (cid2.getItem().disabledBy().equals(cid.getItem().keyName()))
+					else if (cid2.getItem().disabledBy().contains(cid.getItem().keyName()))
 					{
 						configManager.setConfiguration(cd.getGroup().value(), cid2.getItem().keyName(), "false");
 						reloadPluginlist(listItem, config, cd);
