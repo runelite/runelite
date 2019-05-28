@@ -1537,5 +1537,17 @@ public interface MenuEntrySwapperConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+			keyName = "swapImps",
+			name = "Impling Jars",
+			description = "Don't open implings if bank has a clue.",
+			position = 117,
+			group = "Miscellaneous"
+	)
+	default boolean swapImps()
+	{
+		return false;
+	}
+
 	//------------------------------------------------------------//
 }
