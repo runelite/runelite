@@ -301,7 +301,10 @@ public interface MenuEntrySwapperConfig extends Config
 			name = "Custom Swaps",
 			description = "Add custom swaps here, 1 per line. Syntax: option, target : option, target<br>Note that the first entry should be the left click one!",
 			position = 19,
-			group = "Miscellaneous"
+			group = "Miscellaneous",
+			parse = true,
+			clazz = Parse.class,
+			method = "parse"
 	)
 	default String customSwaps()
 	{

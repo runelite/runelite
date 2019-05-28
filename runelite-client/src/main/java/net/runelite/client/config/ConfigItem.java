@@ -58,4 +58,9 @@ public @interface ConfigItem
 	String enabledBy() default "";
 
 	String disabledBy() default "";
+
+	boolean parse() default false;
+
+	Class<?> clazz() default void.class;
+	String method() default "";
 }

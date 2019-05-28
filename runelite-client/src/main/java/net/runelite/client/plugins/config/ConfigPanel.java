@@ -36,11 +36,15 @@ import java.awt.Rectangle;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -65,6 +69,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -426,6 +431,44 @@ public class ConfigPanel extends PluginPanel
 		});
 	}
 
+	private Boolean parse(ConfigItem item, String value)
+	{
+		try
+		{
+			Method parse = item.clazz().getMethod(item.method(), String.class);
+			boolean result = (boolean) parse.invoke(null, value);
+
+			return result;
+		}
+		catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex)
+		{
+			log.error("Parsing failed: {}", ex.getMessage());
+		}
+
+		return null;
+	}
+
+	private void parseLabel(ConfigItem item, JLabel label, String value)
+	{
+		Boolean result = parse(item, value);
+
+		if (result == null)
+		{
+			label.setForeground(Color.RED);
+			label.setText("Parsing failed");
+		}
+		else if (result)
+		{
+			label.setForeground(Color.GREEN);
+			label.setText("Valid input");
+		}
+		else
+		{
+			label.setForeground(Color.RED);
+			label.setText("Error: Invalid input");
+		}
+	}
+
 	void openGroupConfigPanel(PluginListItem listItem, Config config, ConfigDescriptor cd)
 	{
 		showingPluginList = false;
@@ -586,7 +629,7 @@ public class ConfigPanel extends PluginPanel
 				configEntryName.setPreferredSize(new Dimension(PANEL_WIDTH, (int) configEntryName.getPreferredSize().getHeight()));
 				configEntryName.setForeground(Color.WHITE);
 				configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
-				item.add(configEntryName, BorderLayout.CENTER);
+				item.add(configEntryName, cid.getType() != String.class ? BorderLayout.CENTER : BorderLayout.NORTH);
 
 				if (cid.getType() == Stub.class)
 				{
@@ -595,6 +638,7 @@ public class ConfigPanel extends PluginPanel
 					item.setBorder(new CompoundBorder(border, margin));
 
 					configEntryName.setForeground(Color.ORANGE);
+					configEntryName.setToolTipText(null);
 				}
 
 				if (cid.getType() == boolean.class)
@@ -676,11 +720,51 @@ public class ConfigPanel extends PluginPanel
 						@Override
 						public void focusLost(FocusEvent e)
 						{
-							changeConfiguration(listItem, config, textField, cd, cid);
+							ConfigItem item = cid.getItem();
+							if (item.parse())
+							{
+								Boolean result = parse(item, textField.getText());
+
+								if (result != null && result)
+								{
+									changeConfiguration(listItem, config, textField, cd, cid);
+								}
+							}
+							else
+							{
+								changeConfiguration(listItem, config, textField, cd, cid);
+							}
 						}
 					});
 
-					item.add(textField, BorderLayout.SOUTH);
+
+					if (cid.getItem().parse())
+					{
+						JLabel parsingLabel = new JLabel();
+						parsingLabel.setHorizontalAlignment(SwingConstants.CENTER);
+						parsingLabel.setPreferredSize(new Dimension(PANEL_WIDTH, 15));
+
+						textField.addKeyListener(new KeyAdapter()
+						{
+							public void keyReleased(KeyEvent e)
+							{
+								ConfigItem item = cid.getItem();
+								if (item.parse())
+								{
+									parseLabel(item, parsingLabel, textField.getText());
+								}
+							}
+						});
+
+						item.add(textField, BorderLayout.CENTER);
+
+						parseLabel(cid.getItem(), parsingLabel, textField.getText());
+						item.add(parsingLabel, BorderLayout.SOUTH);
+					}
+					else
+					{
+						item.add(textField, BorderLayout.SOUTH);
+					}
 				}
 
 				if (cid.getType() == Color.class)
