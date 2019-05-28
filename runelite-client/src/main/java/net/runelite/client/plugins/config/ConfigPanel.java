@@ -850,10 +850,8 @@ public class ConfigPanel extends PluginPanel
 			}
 
 			configManager.setConfiguration(cd.getGroup().value(), cig.getGroup() + "_collapse", collapse);
-			
-			int scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
-			openGroupConfigPanel(listItem, config, cd);
-			scrollPane.getVerticalScrollBar().setValue(scrollBarPosition);
+
+			reloadPluginlist(listItem, config, cd);
 		}
 	}
 
@@ -891,10 +889,22 @@ public class ConfigPanel extends PluginPanel
 
 					if (itemHide.contains(cid.getItem().keyName()))
 					{ // If another options visibility changes depending on the value of this checkbox, then render the entire menu again
-						int scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
-						openGroupConfigPanel(listItem, config, cd);
-						scrollPane.getVerticalScrollBar().setValue(scrollBarPosition);
-						return;
+
+						reloadPluginlist(listItem, config, cd);
+					}
+				}
+
+				if (checkbox.isSelected())
+				{
+					if (cid2.getItem().enabledBy().contains(cid.getItem().keyName()))
+					{
+						configManager.setConfiguration(cd.getGroup().value(), cid2.getItem().keyName(), "true");
+						reloadPluginlist(listItem, config, cd);
+					}
+					else if (cid2.getItem().disabledBy().contains(cid.getItem().keyName()))
+					{
+						configManager.setConfiguration(cd.getGroup().value(), cid2.getItem().keyName(), "false");
+						reloadPluginlist(listItem, config, cd);
 					}
 				}
 			}
@@ -1028,5 +1038,12 @@ public class ConfigPanel extends PluginPanel
 			return new Dimension(PANEL_WIDTH, super.getPreferredSize().height);
 		}
 
+	}
+
+	private void reloadPluginlist(PluginListItem listItem, Config config, ConfigDescriptor cd)
+	{
+		int scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
+		openGroupConfigPanel(listItem, config, cd);
+		scrollPane.getVerticalScrollBar().setValue(scrollBarPosition);
 	}
 }
