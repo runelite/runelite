@@ -1155,7 +1155,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		if (!Strings.isNullOrEmpty(config))
 		{
-			Map<String, String> split = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(config);
+			Map<String, String> split;
+
+			try
+			{
+				split = NEWLINE_SPLITTER.withKeyValueSeparator(':').split(config);
+			}
+			catch (IllegalArgumentException ex)
+			{
+				return;
+			}
 
 			for (Map.Entry<String, String> entry : split.entrySet())
 			{

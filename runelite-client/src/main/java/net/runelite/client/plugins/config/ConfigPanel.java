@@ -32,6 +32,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
@@ -197,6 +198,15 @@ public class ConfigPanel extends PluginPanel
 		initializePluginList();
 		refreshPluginList();
 
+	}
+
+	static class configTextArea extends JTextArea
+	{
+		@Override
+		public void scrollRectToVisible(final Rectangle aRect)
+		{
+			// supress scrollToRect in textarea
+		}
 	}
 
 	private void initializePluginList()
@@ -652,7 +662,7 @@ public class ConfigPanel extends PluginPanel
 					}
 					else
 					{
-						final JTextArea textArea = new JTextArea();
+						final JTextArea textArea = new configTextArea();
 						textArea.setLineWrap(true);
 						textArea.setWrapStyleWord(true);
 						textField = textArea;
