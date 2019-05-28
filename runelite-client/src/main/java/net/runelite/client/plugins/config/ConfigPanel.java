@@ -850,7 +850,10 @@ public class ConfigPanel extends PluginPanel
 			}
 
 			configManager.setConfiguration(cd.getGroup().value(), cig.getGroup() + "_collapse", collapse);
+			
+			int scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
 			openGroupConfigPanel(listItem, config, cd);
+			scrollPane.getVerticalScrollBar().setValue(scrollBarPosition);
 		}
 	}
 
@@ -888,7 +891,9 @@ public class ConfigPanel extends PluginPanel
 
 					if (itemHide.contains(cid.getItem().keyName()))
 					{ // If another options visibility changes depending on the value of this checkbox, then render the entire menu again
+						int scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
 						openGroupConfigPanel(listItem, config, cd);
+						scrollPane.getVerticalScrollBar().setValue(scrollBarPosition);
 						return;
 					}
 				}
