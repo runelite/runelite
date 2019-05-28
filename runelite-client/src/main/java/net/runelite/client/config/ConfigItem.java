@@ -54,4 +54,8 @@ public @interface ConfigItem
 	String hide() default "";
 
 	String parent() default "";
+
+	String enabledBy() default "";
+
+	String disabledBy() default "";
 }
