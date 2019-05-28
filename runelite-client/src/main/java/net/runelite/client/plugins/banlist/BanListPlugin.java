@@ -1,5 +1,7 @@
 /*
- * Copyright (c) 2019 xperiaclash <https://github.com/xperiaclash>
+ * Copyright (c) 2019, xperiaclash <https://github.com/xperiaclash>
+ * Copyright (c) 2019, ganom <https://github.com/Ganom>
+
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -82,9 +84,6 @@ public class BanListPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		wdrArrayList = new ArrayList<>();
-		runeWatchArrayList = new ArrayList<>();
-		manualBans = new ArrayList<>();
 		manualBans.addAll(Text.fromCSV(config.getBannedPlayers()));
 		fetchFromWebsites();
 	}
@@ -92,9 +91,9 @@ public class BanListPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		wdrArrayList = null;
-		runeWatchArrayList = null;
-		manualBans = null;
+		wdrArrayList.clear();
+		runeWatchArrayList.clear();
+		manualBans.clear();
 	}
 
 	@Subscribe
@@ -107,11 +106,17 @@ public class BanListPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		for (String manual : Text.fromCSV(config.getBannedPlayers()))
+		if (event.getGroup().equals("banlist"))
 		{
-			if (!manualBans.contains(manual))
+			if (event.getKey().equals("bannedPlayers"))
 			{
-				manualBans.add(Text.standardize(manual));
+				for (String manual : Text.fromCSV(config.getBannedPlayers()))
+				{
+					if (!manualBans.contains(manual))
+					{
+						manualBans.add(Text.standardize(manual));
+					}
+				}
 			}
 		}
 	}
@@ -153,7 +158,7 @@ public class BanListPlugin extends Plugin
 			// on wdr list
 			final String message = new ChatMessageBuilder()
 					.append(ChatColorType.HIGHLIGHT)
-					.append("Warning! " + playerName + " is on WDR ban List")
+					.append("Warning! " + playerName + " is on WDRs' scammer list")
 					.build();
 
 			chatMessageManager.queue(
@@ -167,7 +172,7 @@ public class BanListPlugin extends Plugin
 			// on runewatch list
 			final String message = new ChatMessageBuilder()
 					.append(ChatColorType.HIGHLIGHT)
-					.append("Warning! " + playerName + " is on Runewatch ban List")
+					.append("Warning! " + playerName + " is on Runewatchs' scammer list")
 					.build();
 
 			chatMessageManager.queue(
@@ -181,7 +186,7 @@ public class BanListPlugin extends Plugin
 			// on manual list
 			final String message = new ChatMessageBuilder()
 					.append(ChatColorType.HIGHLIGHT)
-					.append("Warning! " + playerName + " is on Your Manual ban List")
+					.append("Warning! " + playerName + " is on your Manual scammer list")
 					.build();
 
 			chatMessageManager.queue(

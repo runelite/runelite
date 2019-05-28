@@ -11,8 +11,8 @@ public interface BanListConfig extends Config
 
 	@ConfigItem(
 			keyName = "bannedPlayers",
-			name = "Banned Players List",
-			description = "manual entry ",
+			name = "Manual Scammer List",
+			description = "Players you add to this list will be shown when you join a clan.",
 			position = 0
 
 	)
@@ -31,8 +31,8 @@ public interface BanListConfig extends Config
 	@ConfigItem(
 			position = 1,
 			keyName = "enableWDR",
-			name = "use WDR list",
-			description = "Incorporate WDR ban list"
+			name = "Enable WDR Scammer List",
+			description = "Incorporate WDR Scammer list"
 	)
 	default boolean enableWDR()
 	{
@@ -42,8 +42,8 @@ public interface BanListConfig extends Config
 	@ConfigItem(
 			position = 2,
 			keyName = "enableRuneWatch",
-			name = "use RuneWatch list",
-			description = "Incorporate RuneWatch Ban list"
+			name = "Enable RuneWatch Scammer List",
+			description = "Incorporate RuneWatch Scammer list"
 	)
 	default boolean enableRuneWatch()
 	{
