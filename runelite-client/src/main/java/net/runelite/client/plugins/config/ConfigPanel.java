@@ -31,6 +31,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.FocusAdapter;
@@ -108,6 +109,7 @@ import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
 public class ConfigPanel extends PluginPanel
@@ -207,10 +209,40 @@ public class ConfigPanel extends PluginPanel
 
 	static class configTextArea extends JTextArea
 	{
+		private static final int WIDTH = 212;
+		private static final int HEIGHT_PADDING = 13;
+
 		@Override
 		public void scrollRectToVisible(final Rectangle aRect)
 		{
-			// supress scrollToRect in textarea
+			// suppress scrollToRect in textarea
+		}
+
+		@Override
+		public Dimension getSize()
+		{
+			if (StringUtils.isAllEmpty(getText()))
+			{
+				return super.getSize();
+			}
+
+			final ArrayList<String> lines = new ArrayList<>();
+			final FontMetrics fontMetrics = getFontMetrics(getFont());
+
+			StringBuilder sb = new StringBuilder();
+			for (final Character c : getText().toCharArray())
+			{
+				sb.append(c);
+				if (fontMetrics.stringWidth(sb.toString()) > WIDTH || c == '\n')
+				{
+					sb.setLength(sb.length() - 1);
+					lines.add(sb.toString());
+					sb = new StringBuilder(c.toString());
+				}
+			}
+			lines.add(sb.toString());
+
+			return new Dimension(WIDTH, (lines.size()  * fontMetrics.getHeight()) + HEIGHT_PADDING);
 		}
 	}
 
@@ -471,6 +503,11 @@ public class ConfigPanel extends PluginPanel
 
 	void openGroupConfigPanel(PluginListItem listItem, Config config, ConfigDescriptor cd)
 	{
+		openGroupConfigPanel(listItem, config, cd, false);
+	}
+
+	void openGroupConfigPanel(PluginListItem listItem, Config config, ConfigDescriptor cd, boolean refresh)
+	{
 		showingPluginList = false;
 
 		scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
@@ -641,7 +678,7 @@ public class ConfigPanel extends PluginPanel
 					configEntryName.setToolTipText(null);
 				}
 
-				if (cid.getType() == boolean.class)
+				else if (cid.getType() == boolean.class)
 				{
 					JCheckBox checkbox = new JCheckBox();
 					checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
@@ -651,7 +688,7 @@ public class ConfigPanel extends PluginPanel
 					item.add(checkbox, BorderLayout.EAST);
 				}
 
-				if (cid.getType() == int.class)
+				else if (cid.getType() == int.class)
 				{
 					int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
 
@@ -696,7 +733,7 @@ public class ConfigPanel extends PluginPanel
 					}
 				}
 
-				if (cid.getType() == String.class)
+				else if (cid.getType() == String.class)
 				{
 					JTextComponent textField;
 
@@ -767,7 +804,7 @@ public class ConfigPanel extends PluginPanel
 					}
 				}
 
-				if (cid.getType() == Color.class)
+				else if (cid.getType() == Color.class)
 				{
 					String existing = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
 
@@ -816,7 +853,7 @@ public class ConfigPanel extends PluginPanel
 					item.add(colorPickerBtn, BorderLayout.EAST);
 				}
 
-				if (cid.getType() == Dimension.class)
+				else if (cid.getType() == Dimension.class)
 				{
 					JPanel dimensionPanel = new JPanel();
 					dimensionPanel.setLayout(new BorderLayout());
@@ -851,7 +888,7 @@ public class ConfigPanel extends PluginPanel
 					item.add(dimensionPanel, BorderLayout.EAST);
 				}
 
-				if (cid.getType().isEnum())
+				else if (cid.getType().isEnum())
 				{
 					Class<? extends Enum> type = (Class<? extends Enum>) cid.getType();
 					JComboBox box = new JComboBox(type.getEnumConstants());
@@ -881,7 +918,7 @@ public class ConfigPanel extends PluginPanel
 					item.add(box, BorderLayout.EAST);
 				}
 
-				if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
+				else if (cid.getType() == Keybind.class || cid.getType() == ModifierlessKeybind.class)
 				{
 					Keybind startingValue = configManager.getConfiguration(cd.getGroup().value(),
 						cid.getItem().keyName(),
@@ -926,8 +963,15 @@ public class ConfigPanel extends PluginPanel
 		backButton.addActionListener(e -> openConfigList());
 		mainPanel.add(backButton);
 
+		if (refresh)
+		{
+			scrollPane.getVerticalScrollBar().setValue(scrollBarPosition);
+		}
+		else
+		{
+			scrollPane.getVerticalScrollBar().setValue(0);
+		}
 		revalidate();
-		scrollPane.getVerticalScrollBar().setValue(0);
 	}
 
 	private void changeGroupCollapse(PluginListItem listItem, Config config, JComponent component, ConfigDescriptor cd, ConfigItemsGroup cig)
@@ -1136,8 +1180,6 @@ public class ConfigPanel extends PluginPanel
 
 	private void reloadPluginlist(PluginListItem listItem, Config config, ConfigDescriptor cd)
 	{
-		int scrollBarPosition = scrollPane.getVerticalScrollBar().getValue();
-		openGroupConfigPanel(listItem, config, cd);
-		scrollPane.getVerticalScrollBar().setValue(scrollBarPosition);
+		openGroupConfigPanel(listItem, config, cd, true);
 	}
 }
