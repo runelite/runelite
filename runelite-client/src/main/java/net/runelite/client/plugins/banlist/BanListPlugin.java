@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2019, xperiaclash <https://github.com/xperiaclash>
  * Copyright (c) 2019, ganom <https://github.com/Ganom>
-
+ * Copyright (c) 2019, gazivodag <https://github.com/gazivodag>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,12 +31,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.inject.Inject;
-import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.Client;
 import net.runelite.api.events.ClanMemberJoined;
 import net.runelite.api.events.ConfigChanged;
+import net.runelite.api.events.WidgetHiddenChanged;
+import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -60,10 +65,14 @@ import okhttp3.Response;
 		tags = {"PVM", "WDR", "RuneWatch"},
 		type = PluginType.UTILITY
 )
+@Slf4j
 public class BanListPlugin extends Plugin
 {
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private BanListConfig config;
@@ -97,13 +106,6 @@ public class BanListPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClanMemberJoined(ClanMemberJoined event)
-	{
-		ClanMember member = event.getMember();
-		checkBanList(Text.standardize(member.getUsername()));
-	}
-
-	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("banlist"))
@@ -121,83 +123,150 @@ public class BanListPlugin extends Plugin
 		}
 	}
 
-	private void checkBanList(String nameToBeChecked)
+	/**
+	 * Event to keep making sure player names are highlighted red in clan chat, since the red name goes away frequently
+	 *
+	 * @param widgetHiddenChanged
+	 */
+	@Subscribe
+	public void onWidgetHiddenChanged(WidgetHiddenChanged widgetHiddenChanged)
 	{
-		if (client.getClanMembers() != null)
+		if (config.highlightInClan())
 		{
-			if (wdrArrayList.size() > 0 && config.enableWDR())
+			clientThread.invokeLater(() ->
 			{
-				if (wdrArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
+				if (!client.getWidget(WidgetInfo.CLAN_CHAT).isHidden())
 				{
-					sendWarning(nameToBeChecked, 1);
+					highlightRedInCC();
 				}
-			}
+			});
+		}
+	}
 
-			if (runeWatchArrayList.size() > 0 && config.enableRuneWatch())
+	@Subscribe
+	public void onClanMemberJoined(ClanMemberJoined event)
+	{
+		ClanMember member = event.getMember();
+		ListType listType = checkBanList(Text.standardize(member.getUsername()));
+		if (listType != null)
+		{
+			sendWarning(Text.standardize(member.getUsername()), listType);
+			if (config.highlightInClan())
 			{
-				if (runeWatchArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
-				{
-					sendWarning(nameToBeChecked, 2);
-				}
-			}
-
-			if (manualBans.size() > 0)
-			{
-				if (manualBans.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
-				{
-					sendWarning(nameToBeChecked, 3);
-				}
+				highlightRedInCC();
 			}
 		}
 	}
 
-	private void sendWarning(String playerName, int list)
+	/**
+	 * If a trade window is opened and the person trading us is on the list, modify "trading with"
+	 */
+	@Subscribe
+	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (list == 1)
+		if (config.highlightInTrade())
 		{
-			// on wdr list
-			final String message = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
-					.append("Warning! " + playerName + " is on WDRs' scammer list")
-					.build();
-
-			chatMessageManager.queue(
-					QueuedMessage.builder()
-							.type(ChatMessageType.CONSOLE)
-							.runeLiteFormattedMessage(message)
-							.build());
-		}
-		else if (list == 2)
-		{
-			// on runewatch list
-			final String message = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
-					.append("Warning! " + playerName + " is on Runewatchs' scammer list")
-					.build();
-
-			chatMessageManager.queue(
-					QueuedMessage.builder()
-							.type(ChatMessageType.CONSOLE)
-							.runeLiteFormattedMessage(message)
-							.build());
-		}
-		else if (list == 3)
-		{
-			// on manual list
-			final String message = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
-					.append("Warning! " + playerName + " is on your Manual scammer list")
-					.build();
-
-			chatMessageManager.queue(
-					QueuedMessage.builder()
-							.type(ChatMessageType.CONSOLE)
-							.runeLiteFormattedMessage(message)
-							.build());
+			if (widgetLoaded.getGroupId() == 335)
+			{ //if trading window was loaded
+				clientThread.invokeLater(() ->
+				{
+					Widget tradingWith = client.getWidget(335, 31);
+					String name = tradingWith.getText().replaceAll("Trading With: ", "");
+					if (checkBanList(name) != null)
+					{
+						tradingWith.setText(tradingWith.getText().replaceAll(name, "<col=ff0000>" + name + " (Scammer)" + "</col>"));
+					}
+				});
+			}
 		}
 	}
 
+	/**
+	 * Compares player name to everything in the ban lists
+	 *
+	 * @param nameToBeChecked
+	 */
+	private ListType checkBanList(String nameToBeChecked)
+	{
+		if (wdrArrayList.size() > 0 && config.enableWDR())
+		{
+			if (wdrArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
+			{
+				return ListType.WEDORAIDS_LIST;
+			}
+		}
 
+		if (runeWatchArrayList.size() > 0 && config.enableRuneWatch())
+		{
+			if (runeWatchArrayList.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
+			{
+				return ListType.RUNEWATCH_LIST;
+			}
+		}
+
+		if (manualBans.size() > 0)
+		{
+			if (manualBans.stream().anyMatch(nameToBeChecked::equalsIgnoreCase))
+			{
+				return ListType.MANUAL_LIST;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Sends a warning to our player, notifying them that a player is on a ban list
+	 *
+	 * @param playerName
+	 * @param listType
+	 */
+	private void sendWarning(String playerName, ListType listType)
+	{
+		switch (listType)
+		{
+			case WEDORAIDS_LIST:
+				final String wdr_message = new ChatMessageBuilder()
+						.append(ChatColorType.HIGHLIGHT)
+						.append("Warning! " + playerName + " is on WeDoRaids\' scammer list!")
+						.build();
+
+				chatMessageManager.queue(
+						QueuedMessage.builder()
+								.type(ChatMessageType.CONSOLE)
+								.runeLiteFormattedMessage(wdr_message)
+								.build());
+				break;
+			case RUNEWATCH_LIST:
+				final String rw_message = new ChatMessageBuilder()
+						.append(ChatColorType.HIGHLIGHT)
+						.append("Warning! " + playerName + " is on the Runewatch\'s scammer list!")
+						.build();
+
+				chatMessageManager.queue(
+						QueuedMessage.builder()
+								.type(ChatMessageType.CONSOLE)
+								.runeLiteFormattedMessage(rw_message)
+								.build());
+				break;
+			case MANUAL_LIST:
+				final String manual_message = new ChatMessageBuilder()
+						.append(ChatColorType.HIGHLIGHT)
+						.append("Warning! " + playerName + " is on your manual scammer list!")
+						.build();
+
+				chatMessageManager.queue(
+						QueuedMessage.builder()
+								.type(ChatMessageType.CONSOLE)
+								.runeLiteFormattedMessage(manual_message)
+								.build());
+				break;
+		}
+	}
+
+	/**
+	 * Pulls data from wdr and runewatch to build a list of blacklisted usernames
+	 */
 	private void fetchFromWebsites()
 	{
 		Request request = new Request.Builder()
@@ -208,7 +277,7 @@ public class BanListPlugin extends Plugin
 			@Override
 			public void onFailure(Call call, IOException e)
 			{
-				log.println("error retrieving names from wdr");
+				log.debug("error retrieving names from wdr");
 			}
 
 			@Override
@@ -236,7 +305,7 @@ public class BanListPlugin extends Plugin
 			@Override
 			public void onFailure(Call call, IOException e)
 			{
-				log.println("error retrieving names from runewatch");
+				log.debug("error retrieving names from runewatch");
 			}
 
 			@Override
@@ -253,6 +322,26 @@ public class BanListPlugin extends Plugin
 						x = x.substring(x.indexOf("=") + 2, x.length() - 1);
 						runeWatchArrayList.add(Text.standardize(x));
 					}
+				}
+			}
+		});
+	}
+
+	/**
+	 * Iterates through the clan chat list widget and checks if a string (name) is on any of the ban lists to highlight them red.
+	 */
+	private void highlightRedInCC()
+	{
+		clientThread.invokeLater(() ->
+		{
+			Widget widget = client.getWidget(WidgetInfo.CLAN_CHAT_LIST);
+			for (Widget widgetChild : widget.getDynamicChildren())
+			{
+				ListType listType = checkBanList(widgetChild.getText());
+
+				if (listType != null)
+				{
+					widgetChild.setText("<col=ff0000>" + widgetChild.getText() + "</col>");
 				}
 			}
 		});
