@@ -108,7 +108,7 @@ public class HydraPlugin extends Plugin
 	@Subscribe
 	private void onGameTick(GameTick event)
 	{
-		if (!inHydraInstance)
+		if (!inHydraInstance || hydra == null)
 		{
 			return;
 		}
