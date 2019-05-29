@@ -258,14 +258,17 @@ public class BarrowsPlugin extends Plugin
 		}
 		else if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			boolean isInCrypt = isInCrypt();
-			if (wasInCrypt && !isInCrypt)
+			if (client.getLocalPlayer() != null)
 			{
-				stopPrayerDrainTimer();
-			}
-			else if (!wasInCrypt && isInCrypt)
-			{
-				startPrayerDrainTimer();
+				boolean isInCrypt = isInCrypt();
+				if (wasInCrypt && !isInCrypt)
+				{
+					stopPrayerDrainTimer();
+				}
+				else if (!wasInCrypt && isInCrypt)
+				{
+					startPrayerDrainTimer();
+				}
 			}
 		}
 	}
