@@ -1,4 +1,4 @@
-![](https://runelite.net/img/logo.png)
+![](https://cdn.discordapp.com/attachments/544989120036995072/583409161920970762/Chunklite_icon.png)
 # runelite [![Travis](https://img.shields.io/travis/runelite/runelite.svg)](https://travis-ci.org/runelite/runelite) [![Discord](https://img.shields.io/discord/301497432909414422.svg)](https://discord.gg/mePCs8U)
 
 ChunkLite is a version of [RuneLite](https://github.com/runelite/runelite) which includes the Region Locker plugin. Which adds a visual aid for chunk based accounts such as [Pookaguy's OneChunkMan](https://www.youtube.com/channel/UCWX9WjEHpy2LdNt2C8spCcg).
