@@ -3,10 +3,10 @@
 .string_stack_count 0
 .int_var_count      1
 .string_var_count   0
-   ; Attach specbar redraw listeners to special attack bar instead of to
+   ; Attach specbar redraw listeners to the weapon name text instead of to
    ; auto retaliate text (which is var0). Test by enabling "Hide auto retaliate"
    ; and using a spec.
-   iconst                 38862882 ; 593.34 - spec bar
+   iconst                 38862849 ; 593.1 - weapon name widget
    istore                 0        ; overwrite script parameter which is the autoretail text
    iload                  0
    invoke                 187
