@@ -24,30 +24,18 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.hideprayers.PVP;
+package net.runelite.client.plugins.hideprayers.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum CombatPrayers
+public enum Zamorak
 {
 	DISABLED("Disabled"),
-	PRAY1("1 prayer build"),
-	PRAY13("13 prayer build"),
-	PRAY16("16 prayer build"),
-	PRAY25("25 prayer build"),
-	PRAY31("31 prayer build"),
-	PRAY43("43 prayer build"),
-	PRAY44("44 prayer build"),
-	PRAY45("45 prayer build"),
-	PRAY52("52 prayer build"),
-	PRAY55("55 prayer build"),
-	PRAY60("60 prayer build"),
-	PRAY70("70 prayer build"),
-	PRAY74("74 prayer build"),
-	PRAY77("77 prayer build");
+	ZAMORAK_CHEAP("Low LVL Melee"),
+	ZAMORAK_EXPENSIVE("Piety");
 
 	private String name;
 

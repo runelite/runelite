@@ -24,34 +24,18 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.hideprayers.PVM;
+package net.runelite.client.plugins.hideprayers.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum PVMPrayers
+public enum Saradomin
 {
 	DISABLED("Disabled"),
-	ARMADYL_CHEAP("Eagle eye"),
-	ARMADYL_EXPENSIVE("Rigour"),
-	BANDOS_CHEAP("Low LVL Melee"),
-	BANDOS_EXPENSIVE("Piety"),
-	BARROWS_CHEAP("Eagle/Mystic"),
-	BARROWS_EXPENSIVE("Augury/Rigour"),
-	CERBERUS_CHEAP("Low LVL Melee"),
-	CERBERUS_EXPENSIVE("Melee Piety"),
-	CERBERUS_CHEAP_RANGE("Range Eagle Eye"),
-	CERBERUS_EXPENSIVE_RANGE("Range Rigour"),
-	SARADOMIN_CHEAP("Melee/Eagle"),
-	SARADOMIN_EXPENSIVE("Piety/Rigour"),
-	VORKATH_CHEAP("Eagle Eye"),
-	VORKATH_EXPENSIVE("Rigour"),
-	ZAMORAK_CHEAP("Low LVL Melee"),
-	ZAMORAK_EXPENSIVE("Piety"),
-	ZULRAH_CHEAP("Eagle/Mystic"),
-	ZULRAH_EXPENSIVE("Augury/Rigour");
+	SARDOMIN_CHEAP("Melee/Eagle"),
+	SARADOMIN_EXPENSIVE("Piety/Rigour");
 
 	private String name;
 

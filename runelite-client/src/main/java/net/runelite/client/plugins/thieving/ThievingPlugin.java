@@ -114,7 +114,7 @@ public class ThievingPlugin extends Plugin
 
 		final String message = event.getMessage();
 
-		if (message.startsWith("You pick") || message.startsWith("You steal"))
+		if (message.startsWith("You pickpocket") || message.startsWith("You pick-pocket") || message.startsWith("You steal") || message.startsWith("You successfully pick-pocket") || message.startsWith("You successfully pick") || message.startsWith("You successfully steal"))
 		{
 			if (session == null)
 			{
@@ -125,7 +125,7 @@ public class ThievingPlugin extends Plugin
 			session.hasSucceeded();
 
 		}
-		else if (message.startsWith("You fail to pick"))
+		else if (message.startsWith("You fail to pickpocket") || message.startsWith("You fail to pick-pocket") || message.startsWith("You fail to steal"))
 		{
 			if (session == null)
 			{

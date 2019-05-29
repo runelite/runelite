@@ -1347,6 +1347,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (config.getSlayerRing())
 		{
 			menuManager.addSwap("remove", "slayer ring", config.getSlayerRingMode().toString());
+			menuManager.addSwap("remove", "slayer ring (eternal)", config.getSlayerRingMode().toString());
 		}
 
 		if (config.getXericsTalisman())

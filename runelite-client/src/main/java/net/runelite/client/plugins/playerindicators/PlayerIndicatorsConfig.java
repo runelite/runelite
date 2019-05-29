@@ -185,7 +185,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean colorPlayerMenu()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
