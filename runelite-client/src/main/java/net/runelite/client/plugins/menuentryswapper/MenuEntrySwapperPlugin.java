@@ -1216,7 +1216,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				{
 					if (temp.equalsIgnoreCase(Text.removeTags(entries[i].getTarget())))
 					{
-						if (entries[i].getType() == 3 || entries[i].getType() == 1002)
+						if (!entries[i].getOption().equalsIgnoreCase("remove"))
 						{
 							entries = ArrayUtils.remove(entries, i);
 							i--;
@@ -1224,6 +1224,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					}
 				}
 			}
+
 			client.setMenuEntries(entries);
 		}
 	}

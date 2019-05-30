@@ -106,7 +106,7 @@ public interface NpcAggroAreaConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "npcUnaggroShowNotWorkingOverlay",
+		keyName = "hideOverlayHint",
 		name = "Hide overlay hint",
 		description = "Hide overlay hint if plugin is enabled in unsupported area",
 		position = 6
