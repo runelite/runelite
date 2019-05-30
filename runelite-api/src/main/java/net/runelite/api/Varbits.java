@@ -293,6 +293,7 @@ public enum Varbits
 	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
 	 */
 	THEATRE_OF_BLOOD(6440),
+	BLOAT_DOOR(6447),
 
 	/**
 	 * Nightmare Zone
