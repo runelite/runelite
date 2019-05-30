@@ -26,16 +26,16 @@
 package net.runelite.client.plugins.objectindicators;
 
 import java.awt.Color;
-import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("objectindicators")
 public interface ObjectIndicatorsConfig extends Config
 {
-	@Alpha
 	@ConfigItem(
+		position = 0,
 		keyName = "markerColor",
 		name = "Marker color",
 		description = "Configures the color of object marker"
@@ -43,5 +43,35 @@ public interface ObjectIndicatorsConfig extends Config
 	default Color markerColor()
 	{
 		return Color.YELLOW;
+	}
+
+	@Range(
+		min = 0,
+		max = 10
+	)
+	@ConfigItem(
+		position = 1,
+		keyName = "stroke",
+		name = "Stroke Size",
+		description = "Configures the stroke size of object marker"
+	)
+	default int stroke()
+	{
+		return 2;
+	}
+
+	@Range(
+		min = 0,
+		max = 255
+	)
+	@ConfigItem(
+		position = 2,
+		keyName = "alpha",
+		name = "Alpha",
+		description = "Configures the opacity/alpha of object marker"
+	)
+	default int alpha()
+	{
+		return 20;
 	}
 }
