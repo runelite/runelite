@@ -519,20 +519,20 @@ public class WidgetID
 	static class Combat
 	{
 		static final int WEAPON_NAME = 1;
-		static final int LEVEL = 2;
-		static final int STYLE_ONE = 3;
-		static final int STYLE_TWO = 7;
-		static final int STYLE_THREE = 11;
-		static final int STYLE_FOUR = 15;
-		static final int SPELLS = 19;
-		static final int DEFENSIVE_SPELL_BOX = 20;
-		static final int DEFENSIVE_SPELL_ICON = 22;
-		static final int DEFENSIVE_SPELL_SHIELD = 23;
-		static final int DEFENSIVE_SPELL_TEXT = 24;
-		static final int SPELL_BOX = 25;
-		static final int SPELL_ICON = 27;
-		static final int SPELL_TEXT = 28;
-		static final int AUTO_RETALIATE = 29;
+		static final int LEVEL = 3;
+		static final int STYLE_ONE = 4;
+		static final int STYLE_TWO = 8;
+		static final int STYLE_THREE = 12;
+		static final int STYLE_FOUR = 16;
+		static final int SPELLS = 20;
+		static final int DEFENSIVE_SPELL_BOX = 21;
+		static final int DEFENSIVE_SPELL_ICON = 23;
+		static final int DEFENSIVE_SPELL_SHIELD = 24;
+		static final int DEFENSIVE_SPELL_TEXT = 25;
+		static final int SPELL_BOX = 26;
+		static final int SPELL_ICON = 28;
+		static final int SPELL_TEXT = 29;
+		static final int AUTO_RETALIATE = 30;
 	}
 
 	static class VolcanicMine
