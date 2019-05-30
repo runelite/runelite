@@ -65,7 +65,13 @@ public class RuneLiteProperties
 
 	public String getTitle()
 	{
-		return properties.getProperty(RUNELITE_TITLE);
+		final StringBuilder sb = new StringBuilder(properties.getProperty(RUNELITE_TITLE));
+		String proxy;
+		if ((proxy = System.getProperty("socksProxyHost")) != null)
+		{
+			sb.append(String.format(" (%s)", proxy));
+		}
+		return sb.toString();
 	}
 
 	public String getVersion()
