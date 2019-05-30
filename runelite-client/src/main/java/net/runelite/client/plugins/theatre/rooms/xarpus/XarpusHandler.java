@@ -108,7 +108,7 @@ public class XarpusHandler extends RoomHandler
 		if (npc == null)
 			return;
 
-		if (npc.getId() == NpcID.XARPUS_8340 //&& !staring&& config.showXarpusTick())
+		if (npc.getId() == NpcID.XARPUS_8340) //&& !staring&& config.showXarpusTick())
 		{
 			if (!this.up)
 			{
