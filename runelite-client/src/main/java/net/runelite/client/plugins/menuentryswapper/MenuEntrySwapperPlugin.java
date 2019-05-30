@@ -1197,7 +1197,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			swap(client, "teleport menu", option, target, true);
 		}
 
-		if (config.getTempConstruction() && buildingMode)
+		if (config.getTempConstruction() && buildingMode && !Strings.isNullOrEmpty(config.getTempConstructionItems()))
 		{
 			if (event.getType() == WALK.getId())
 			{
