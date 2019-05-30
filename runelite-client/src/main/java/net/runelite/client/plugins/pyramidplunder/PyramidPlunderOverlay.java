@@ -28,14 +28,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.Area;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ObjectComposition;
-import static net.runelite.api.ObjectID.SPEARTRAP_21280;
-import static net.runelite.api.ObjectID.TOMB_DOOR_20948;
-import static net.runelite.api.ObjectID.TOMB_DOOR_20949;
 import net.runelite.api.Point;
+import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
+import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.CLOSED_DOOR;
+import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.OPENED_DOOR;
+import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.TRAP;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -48,14 +51,12 @@ public class PyramidPlunderOverlay extends Overlay
 
 	private final Client client;
 	private final PyramidPlunderPlugin plugin;
-	private final PyramidPlunderConfig config;
 
 	@Inject
-	private PyramidPlunderOverlay(Client client, PyramidPlunderPlugin plugin, PyramidPlunderConfig config)
+	private PyramidPlunderOverlay(Client client, PyramidPlunderPlugin plugin)
 	{
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
@@ -71,19 +72,16 @@ public class PyramidPlunderOverlay extends Overlay
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 		Point mousePosition = client.getMouseCanvasPosition();
 
-		plugin.getObstacles().forEach((object, tile) ->
+		for (Map.Entry<TileObject, Tile> entry : plugin.getHighlighted().entrySet())
 		{
-			if (Obstacles.WALL_OBSTACLE_IDS.contains(object.getId()) && !config.highlightDoors() ||
-				Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSpearTrap())
-			{
-				return;
-			}
+			TileObject object = entry.getKey();
+			Tile tile = entry.getValue();
 
 			if (tile.getPlane() == client.getPlane() &&
 				object.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
 			{
 				int objectID = object.getId();
-				if (Obstacles.WALL_OBSTACLE_IDS.contains(object.getId()))
+				if (object.getId() == CLOSED_DOOR || object.getId() == OPENED_DOOR)
 				{
 					//Impostor
 					ObjectComposition comp = client.getObjectDefinition(objectID);
@@ -91,7 +89,7 @@ public class PyramidPlunderOverlay extends Overlay
 
 					if (impostor == null)
 					{
-						return;
+						continue;
 					}
 					objectID = impostor.getId();
 				}
@@ -102,11 +100,11 @@ public class PyramidPlunderOverlay extends Overlay
 					Color configColor = Color.GREEN;
 					switch (objectID)
 					{
-						case SPEARTRAP_21280:
+						case TRAP:
 							configColor = COLOR_SPEAR_TRAP;
 							break;
-						case TOMB_DOOR_20948:
-						case TOMB_DOOR_20949:
+						case OPENED_DOOR: // Does this need a overlay?
+						case CLOSED_DOOR:
 							configColor = COLOR_DOOR;
 							break;
 					}
@@ -125,7 +123,7 @@ public class PyramidPlunderOverlay extends Overlay
 					graphics.fill(objectClickbox);
 				}
 			}
-		});
+		}
 
 		return null;
 	}
