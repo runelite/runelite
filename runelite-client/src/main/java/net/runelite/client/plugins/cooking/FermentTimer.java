@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Joris K <kjorisje@gmail.com>
- * Copyright (c) 2018, Lasse <cronick@zytex.dk>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,32 +24,53 @@
  */
 package net.runelite.client.plugins.cooking;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.awt.Color;
+import java.awt.Image;
+import java.time.Duration;
+import java.time.Instant;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-@ConfigGroup("cooking")
-public interface CookingConfig extends Config
+final class FermentTimer extends InfoBox
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until the session resets and the overlay is hidden (0 = Disable feature)"
-	)
-	default int statTimeout()
+	private static final Duration FERMENT_TIME = Duration.ofMillis(13_800);
+
+	private Instant fermentTime;
+
+	FermentTimer(Image image, Plugin plugin)
 	{
-		return 5;
+		super(image, plugin);
+		reset();
 	}
 
-	@ConfigItem(
-		position = 2,
-		keyName = "fermentTimer",
-		name = "Show wine ferment timer",
-		description = "Configures if the timer before wines are fermented is shown"
-	)
-	default boolean fermentTimer()
+	@Override
+	public String getText()
 	{
-		return true;
+		int seconds = timeUntilFerment();
+		return Integer.toString(seconds);
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		int seconds = timeUntilFerment();
+		return seconds <= 3 ? Color.RED : Color.WHITE;
+	}
+
+	@Override
+	public boolean cull()
+	{
+		int seconds = timeUntilFerment();
+		return seconds <= 0;
+	}
+
+	void reset()
+	{
+		fermentTime = Instant.now().plus(FERMENT_TIME);
+	}
+
+	private int timeUntilFerment()
+	{
+		return (int) Duration.between(Instant.now(), fermentTime).getSeconds();
 	}
 }
