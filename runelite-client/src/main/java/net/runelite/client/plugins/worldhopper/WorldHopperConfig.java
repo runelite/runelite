@@ -92,21 +92,32 @@ public interface WorldHopperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showMessage",
-		name = "Show world hop message in chat",
-		description = "Shows what world is being hopped to in the chat",
+		keyName = "showWorldMessage",
+		name = "Show world on login",
+		description = "Shows the world you're in upon login in the chat",
 		position = 5
 	)
-	default boolean showWorldHopMessage()
+	default boolean showWorldMessage()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showWorldHistoryMessage",
+		name = "Show world history on login",
+		description = "Shows the worlds you've visited upon login in the chat",
+		position = 6
+	)
+	default boolean showWorldHistoryMessage()
+	{
+		return false;
 	}
 
 	@ConfigItem(
 		keyName = "subscriptionFilter",
 		name = "Show subscription types",
 		description = "Only show free worlds, member worlds, or both types of worlds in sidebar",
-		position = 6
+		position = 7
 	)
 	default SubscriptionFilterMode subscriptionFilter()
 	{

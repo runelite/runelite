@@ -38,6 +38,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -148,6 +149,7 @@ public class WorldHopperPlugin extends Plugin
 	private WorldResult worldResult;
 	private Instant lastFetch;
 	private boolean firstRun;
+	private List<Integer> worldsVisited;
 
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
 	{
@@ -205,6 +207,7 @@ public class WorldHopperPlugin extends Plugin
 
 		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
 		pingFuture = hopperExecutorService.scheduleAtFixedRate(this::pingWorlds, WORLD_PING_TIMER, WORLD_PING_TIMER, TimeUnit.MINUTES);
+		worldsVisited = new ArrayList<>();
 	}
 
 	@Override
@@ -225,6 +228,7 @@ public class WorldHopperPlugin extends Plugin
 
 		hopperExecutorService.shutdown();
 		hopperExecutorService = null;
+		worldsVisited = null;
 	}
 
 	@Subscribe
@@ -418,6 +422,44 @@ public class WorldHopperPlugin extends Plugin
 				lastWorld = newWorld;
 			}
 		}
+
+		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		{
+			this.worldsVisited.add(client.getWorld());
+
+			clientThread.invokeLater(() ->
+			{
+				if (config.showWorldHistoryMessage())
+				{
+					printWorldHistoryToGameChat();
+				}
+
+				if (config.showWorldMessage())
+				{
+					printWorldToGameChat();
+				}
+			});
+		}
+	}
+
+	private void printWorldHistoryToGameChat()
+	{
+		chatMessageManager
+			.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.timestamp((int) (System.currentTimeMillis() / 1000L))
+				.runeLiteFormattedMessage("visited worlds: " + this.worldsVisited.toString())
+				.build());
+	}
+
+	private void printWorldToGameChat()
+	{
+		chatMessageManager
+			.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.timestamp((int) (System.currentTimeMillis() / 1000L))
+				.runeLiteFormattedMessage("Now on world: " + client.getWorld() + ".")
+				.build());
 	}
 
 	@Subscribe
@@ -632,24 +674,6 @@ public class WorldHopperPlugin extends Plugin
 			// on the login screen we can just change the world by ourselves
 			client.changeWorld(rsWorld);
 			return;
-		}
-
-		if (config.showWorldHopMessage())
-		{
-			String chatMessage = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("Quick-hopping to World ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(Integer.toString(world.getId()))
-				.append(ChatColorType.NORMAL)
-				.append("..")
-				.build();
-
-			chatMessageManager
-				.queue(QueuedMessage.builder()
-					.type(ChatMessageType.CONSOLE)
-					.runeLiteFormattedMessage(chatMessage)
-					.build());
 		}
 
 		quickHopTargetWorld = rsWorld;
