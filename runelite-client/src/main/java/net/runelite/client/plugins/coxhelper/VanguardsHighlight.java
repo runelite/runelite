@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, lyzrds <https://discord.gg/5eb9Fe>
  * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
@@ -11,7 +11,6 @@
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,71 +24,74 @@
  */
 package net.runelite.client.plugins.coxhelper;
 
-
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
-
-public class OlmCrippleTimerOverlay extends Overlay
+public class VanguardsHighlight extends Overlay
 {
-
 
 	private final Client client;
 	private final CoxPlugin plugin;
 	private final CoxConfig config;
 
 	@Inject
-	private OlmCrippleTimerOverlay(Client client, CoxPlugin plugin, CoxConfig config)
+	VanguardsHighlight(Client client, CoxPlugin plugin, CoxConfig config)
 	{
+		super(plugin);
+		setLayer(OverlayLayer.ABOVE_MAP);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
-		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGH);
-		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.isHandCripple())
+		if (plugin.isRunVanguards())
 		{
-			int tick = plugin.getTimer();
-			NPC olmHand = plugin.getHand();
-			final String tickStr = String.valueOf(tick);
-			Point canvasPoint = olmHand.getCanvasTextLocation(graphics, tickStr, 50);
-			renderTextLocation(graphics, tickStr, config.textSize(), config.fontStyle().getFont(), Color.GRAY, canvasPoint);
+			if (config.vangHighlight())
+			{
+				if (plugin.getRangeVang() != null)
+				{
+					renderNpcOverlay(graphics, plugin.getRangeVang(), "Range", Color.GREEN);
+				}
+				if (plugin.getMageVang() != null)
+				{
+					renderNpcOverlay(graphics, plugin.getMageVang(), "Mage", Color.BLUE);
+				}
+				if (plugin.getMeleeVang() != null)
+				{
+					renderNpcOverlay(graphics, plugin.getMeleeVang(), "Melee", Color.RED);
+				}
+			}
 		}
-
-
 		return null;
 	}
 
-	private void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint)
+
+	private void renderNpcOverlay(Graphics2D graphics, NPC actor, String name, Color color)
 	{
-		graphics.setFont(new Font("Arial", fontStyle, fontSize));
-		if (canvasPoint != null)
-		{
-			final Point canvasCenterPoint = new Point(
-				canvasPoint.getX(),
-				canvasPoint.getY());
-			final Point canvasCenterPoint_shadow = new Point(
-				canvasPoint.getX() + 1,
-				canvasPoint.getY() + 1);
-			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
-			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor);
-		}
+		Polygon objectClickbox = actor.getConvexHull();
+		renderPoly(graphics, color, objectClickbox);
 	}
 
+	private void renderPoly(Graphics2D graphics, Color color, Polygon polygon)
+	{
+		if (polygon != null)
+		{
+			graphics.setColor(color);
+			graphics.setStroke(new BasicStroke(2));
+			graphics.draw(polygon);
+			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 20));
+			graphics.fill(polygon);
+		}
+	}
 }

@@ -47,7 +47,6 @@ public class TimersOverlay extends Overlay
 	private CoxPlugin plugin;
 	private CoxConfig config;
 	private Client client;
-	private Color tickcolor = new Color(255, 255, 255, 255);
 
 	@Inject
 	TimersOverlay(CoxPlugin plugin, CoxConfig config, Client client)
@@ -63,15 +62,59 @@ public class TimersOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (config.tektonTickCounter())
+		{
+			Actor actor = plugin.getTekton_NPC();
+			final int ticksLeft = plugin.getTektonTicks();
+			final int attackTicksleft = plugin.getTektonAttackTicks();
+			String attacksLeftStr;
+			Color tickcolor;
+			Color attackcolor;
+			if (ticksLeft > 0)
+			{
+				if (ticksLeft == 1)
+				{
+					tickcolor = new Color(255, 0, 0, 255);
+				}
+				else
+				{
+					tickcolor = new Color(255, 255, 255, 255);
+				}
+				final String ticksLeftStr = String.valueOf(ticksLeft);
+				Point canvasPoint = actor.getCanvasTextLocation(graphics, ticksLeftStr, 0);
+				renderTextLocation(graphics, ticksLeftStr, config.textSize(), config.fontStyle().getFont(), tickcolor, canvasPoint);
+			}
+			if (attackTicksleft >= 0 && plugin.getTektonAttacks() > 0)
+			{
+				if (attackTicksleft <= 1)
+				{
+					attackcolor = new Color(255, 0, 0, 255);
+					attacksLeftStr = "Phase Over";
+				}
+				else
+				{
+					attackcolor = new Color(255, 255, 255, 255);
+					attacksLeftStr = String.valueOf(attackTicksleft);
+				}
+
+				if (actor != null)
+				{
+					Point canvasPoint = actor.getCanvasTextLocation(graphics, attacksLeftStr, 0);
+					renderTextLocationAbove(graphics, attacksLeftStr, config.textSize(), config.fontStyle().getFont(), attackcolor, canvasPoint);
+				}
+			}
+		}
+
 		if (config.timers())
 		{
 			if (plugin.getBurnTarget().size() > 0)
 			{
 				for (Actor actor : plugin.getBurnTarget())
 				{
-					renderNpcOverlay(graphics, actor, new Color(255, 100, 0, 255), 2, 100, 10);
+					renderNpcOverlay(graphics, actor, config.burnColor(), 2, 100, 10);
 					final int ticksLeft = plugin.getBurnTicks();
 					String ticksLeftStr = String.valueOf(ticksLeft);
+					Color tickcolor = new Color(255, 255, 255, 255);
 					if (ticksLeft >= 0)
 					{
 						if (ticksLeft == 34 ||
@@ -93,7 +136,7 @@ public class TimersOverlay extends Overlay
 							tickcolor = new Color(255, 255, 255, 255);
 						}
 						Point canvasPoint = actor.getCanvasTextLocation(graphics, ticksLeftStr, 0);
-						renderTextLocation(graphics, ticksLeftStr, 14, Font.BOLD, tickcolor, canvasPoint);
+						renderTextLocation(graphics, ticksLeftStr, config.textSize(), config.fontStyle().getFont(), tickcolor, canvasPoint);
 					}
 				}
 			}
@@ -101,8 +144,9 @@ public class TimersOverlay extends Overlay
 			if (plugin.getAcidTarget() != null)
 			{
 				Actor actor = plugin.getAcidTarget();
-				renderNpcOverlay(graphics, actor, new Color(69, 241, 44, 255), 2, 100, 10);
+				renderNpcOverlay(graphics, actor, config.acidColor(), 2, 100, 10);
 				final int ticksLeft = plugin.getAcidTicks();
+				Color tickcolor = new Color(255, 255, 255, 255);
 				if (ticksLeft > 0)
 				{
 					if (ticksLeft > 1)
@@ -115,7 +159,7 @@ public class TimersOverlay extends Overlay
 					}
 					final String ticksLeftStr = String.valueOf(ticksLeft);
 					Point canvasPoint = actor.getCanvasTextLocation(graphics, ticksLeftStr, 0);
-					renderTextLocation(graphics, ticksLeftStr, 14, Font.BOLD, tickcolor, canvasPoint);
+					renderTextLocation(graphics, ticksLeftStr, config.textSize(), config.fontStyle().getFont(), tickcolor, canvasPoint);
 				}
 			}
 		}
@@ -158,7 +202,29 @@ public class TimersOverlay extends Overlay
 			final Point canvasCenterPoint_shadow = new Point(
 				canvasPoint.getX() + 1,
 				canvasPoint.getY() + 1);
-			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
+			if (config.shadows())
+			{
+				OverlayUtil.renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
+			}
+			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor);
+		}
+	}
+
+	private void renderTextLocationAbove(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint)
+	{
+		graphics.setFont(new Font("Arial", fontStyle, fontSize));
+		if (canvasPoint != null)
+		{
+			final Point canvasCenterPoint = new Point(
+				canvasPoint.getX(),
+				canvasPoint.getY() + 20);
+			final Point canvasCenterPoint_shadow = new Point(
+				canvasPoint.getX() + 1,
+				canvasPoint.getY() + 21);
+			if (config.shadows())
+			{
+				OverlayUtil.renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
+			}
 			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor);
 		}
 	}

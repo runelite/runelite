@@ -70,6 +70,18 @@ public class CoxOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		for (WorldPoint point : plugin.getOlm_Heal())
+		{
+			client.setHintArrow(point);
+			drawTile(graphics, point, config.tpColor(), 2, 150, 50);
+		}
+
+		for (WorldPoint point : plugin.getOlm_TP())
+		{
+			client.setHintArrow(point);
+			drawTile(graphics, point, config.tpColor(), 2, 150, 50);
+		}
+
 		if (plugin.isRunMutta())
 		{
 			if (config.Muttadile())
@@ -86,7 +98,7 @@ public class CoxOverlay extends Overlay
 					List<WorldPoint> meleeRangeMom = getHitSquares(boss.getWorldLocation(), size, 1, false);
 					for (WorldPoint p : meleeRangeMom)
 					{
-						drawTile(graphics, p, Color.RED, 2, 155, 10);
+						drawTile(graphics, p, config.muttaColor(), 0, 0, 50);
 					}
 				}
 				if (baby != null)
@@ -99,10 +111,9 @@ public class CoxOverlay extends Overlay
 					List<WorldPoint> meleeRange = getHitSquares(baby.getWorldLocation(), size, 1, false);
 					for (WorldPoint p : meleeRange)
 					{
-						drawTile(graphics, p, Color.RED, 1, 155, 10);
+						drawTile(graphics, p, config.muttaColor(), 0, 0, 50);
 					}
 				}
-
 			}
 		}
 
@@ -125,7 +136,7 @@ public class CoxOverlay extends Overlay
 						List<WorldPoint> meleeRange = getHitSquares(G1.getWorldLocation(), size, 1, true);
 						for (WorldPoint p : meleeRange)
 						{
-							drawTile(graphics, p, Color.GREEN, 1, 155, 10);
+							drawTile(graphics, p, config.guardColor(), 0, 0, 50);
 						}
 					}
 					if (G2 != null)
@@ -138,7 +149,7 @@ public class CoxOverlay extends Overlay
 						List<WorldPoint> meleeRange = getHitSquares(G2.getWorldLocation(), size, 1, true);
 						for (WorldPoint p : meleeRange)
 						{
-							drawTile(graphics, p, Color.GREEN, 1, 155, 10);
+							drawTile(graphics, p, config.guardColor(), 0, 0, 50);
 						}
 					}
 				}
@@ -161,7 +172,7 @@ public class CoxOverlay extends Overlay
 					List<WorldPoint> meleeRange = getHitSquares(boss.getWorldLocation(), size, 1, false);
 					for (WorldPoint p : meleeRange)
 					{
-						drawTile(graphics, p, Color.WHITE, 1, 155, 10);
+						drawTile(graphics, p, config.tektonColor(), 0, 0, 50);
 					}
 				}
 			}
@@ -214,15 +225,12 @@ public class CoxOverlay extends Overlay
 						case -1:
 							cycleStr = "??";
 							break;
-
-
 					}
 					final String combinedStr = cycleStr + ":" + tickStr;
 					Point canvasPoint = boss.getCanvasTextLocation(graphics, combinedStr, 130);
-					renderTextLocation(graphics, combinedStr, 12, Font.BOLD, Color.WHITE, canvasPoint);
+					renderTextLocation(graphics, combinedStr, config.textSize(), config.fontStyle().getFont(), Color.WHITE, canvasPoint);
 				}
 			}
-
 		}
 		return null;
 	}
@@ -285,7 +293,10 @@ public class CoxOverlay extends Overlay
 			final Point canvasCenterPoint_shadow = new Point(
 				canvasPoint.getX() + 1,
 				canvasPoint.getY() + 1);
-			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
+			if (config.shadows())
+			{
+				OverlayUtil.renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
+			}
 			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor);
 		}
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2019, lyzrds <https://discord.gg/5eb9Fe>
  * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
@@ -11,7 +11,6 @@
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,71 +24,67 @@
  */
 package net.runelite.client.plugins.coxhelper;
 
-
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.NPC;
-import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.components.LineComponent;
+import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
-
-public class OlmCrippleTimerOverlay extends Overlay
+public class VanguardsOverlay extends Overlay
 {
-
 
 	private final Client client;
 	private final CoxPlugin plugin;
 	private final CoxConfig config;
+	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	private OlmCrippleTimerOverlay(Client client, CoxPlugin plugin, CoxConfig config)
+	VanguardsOverlay(Client client, CoxPlugin plugin, CoxConfig config)
 	{
+		super(plugin);
+		setPosition(OverlayPosition.DYNAMIC);
+		setPosition(OverlayPosition.DETACHED);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
-		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGH);
-		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.isHandCripple())
+		if (plugin.isRunVanguards())
 		{
-			int tick = plugin.getTimer();
-			NPC olmHand = plugin.getHand();
-			final String tickStr = String.valueOf(tick);
-			Point canvasPoint = olmHand.getCanvasTextLocation(graphics, tickStr, 50);
-			renderTextLocation(graphics, tickStr, config.textSize(), config.fontStyle().getFont(), Color.GRAY, canvasPoint);
+			panelComponent.getChildren().clear();
+
+			if (config.vangHealth())
+			{
+				panelComponent.getChildren().add(TitleComponent.builder()
+					.text("Vanguards")
+					.color(Color.pink)
+					.build());
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Range")
+					.right(Integer.toString(plugin.getRangeVangHP()))
+					.leftColor(Color.green)
+					.build());
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Mage")
+					.right(Integer.toString(plugin.getMageVangHP()))
+					.leftColor(Color.blue)
+					.build());
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Melee")
+					.right(Integer.toString(plugin.getMeleeVangHP()))
+					.leftColor(Color.red)
+					.build());
+				return panelComponent.render(graphics);
+			}
 		}
-
-
 		return null;
 	}
-
-	private void renderTextLocation(Graphics2D graphics, String txtString, int fontSize, int fontStyle, Color fontColor, Point canvasPoint)
-	{
-		graphics.setFont(new Font("Arial", fontStyle, fontSize));
-		if (canvasPoint != null)
-		{
-			final Point canvasCenterPoint = new Point(
-				canvasPoint.getX(),
-				canvasPoint.getY());
-			final Point canvasCenterPoint_shadow = new Point(
-				canvasPoint.getX() + 1,
-				canvasPoint.getY() + 1);
-			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint_shadow, txtString, Color.BLACK);
-			OverlayUtil.renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor);
-		}
-	}
-
 }

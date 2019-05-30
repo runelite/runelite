@@ -64,15 +64,15 @@ class OlmPrayAgainstOverlay extends Overlay
 
 	public Dimension render(Graphics2D graphics2D)
 	{
+		panelComponent.getChildren().clear();
+
 		final PrayAgainst prayAgainst = plugin.getPrayAgainstOlm();
 		if (plugin.getPrayAgainstOlm() == null && !config.prayAgainstOlm())
 		{
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-
-		if (System.currentTimeMillis() < (plugin.getLastPrayTime() + 120000))
+		if (System.currentTimeMillis() < (plugin.getLastPrayTime() + 120000) && plugin.getPrayAgainstOlm() != null)
 		{
 			InfoBoxComponent prayComponent = new InfoBoxComponent();
 			Image prayImg = scaleImg(getPrayerImage(plugin.prayAgainstOlm));

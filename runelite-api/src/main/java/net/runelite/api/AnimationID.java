@@ -219,6 +219,17 @@ public final class AnimationID
 	public static final int HIGH_LEVEL_MAGIC_ATTACK = 1167;
 	public static final int BLOWPIPE_ATTACK = 5061;
 
+	// Tekton
+	public static final int TEKTON_ANVIL = 7475;
+	public static final int TEKTON_AUTO1 = 7482;
+	public static final int TEKTON_AUTO2 = 7483;
+	public static final int TEKTON_AUTO3 = 7484;
+	public static final int TEKTON_FAST_AUTO1 = 7478;
+	public static final int TEKTON_FAST_AUTO2 = 7488;
+	public static final int TEKTON_ENRAGE_AUTO1 = 7492;
+	public static final int TEKTON_ENRAGE_AUTO2 = 7493;
+	public static final int TEKTON_ENRAGE_AUTO3 = 7494;
+
 	// Hydra
 	public static final int HYDRA_POISON_1 = 8234;
 	public static final int HYDRA_RANGED_1 = 8235;

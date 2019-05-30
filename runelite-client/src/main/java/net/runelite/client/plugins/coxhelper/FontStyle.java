@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2019, gazivodag <https://github.com/gazivodag>
  * Copyright (c) 2019, ganom <https://github.com/Ganom>
  * All rights reserved.
  *
@@ -24,17 +23,24 @@
  */
 package net.runelite.client.plugins.coxhelper;
 
+import java.awt.Font;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.Prayer;
 
-@AllArgsConstructor
 @Getter
-public enum PrayAgainst
+@AllArgsConstructor
+public enum FontStyle
 {
-	MELEE(Prayer.PROTECT_FROM_MELEE),
-	MAGIC(Prayer.PROTECT_FROM_MAGIC),
-	RANGED(Prayer.PROTECT_FROM_MISSILES);
+	BOLD("Bold", Font.BOLD),
+	ITALIC("Italic", Font.ITALIC),
+	PLAIN("Plain", Font.PLAIN);
 
-	private final Prayer prayer;
+	private String name;
+	private int font;
+
+	@Override
+	public String toString()
+	{
+		return getName();
+	}
 }
