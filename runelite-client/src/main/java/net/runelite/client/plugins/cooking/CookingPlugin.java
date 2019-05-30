@@ -50,8 +50,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDependency(XpTrackerPlugin.class)
 public class CookingPlugin extends Plugin
 {
-	private static final String WINE_MESSAGE = "You squeeze the grapes into the jug";
-
 	@Inject
 	private CookingConfig config;
 
@@ -59,16 +57,10 @@ public class CookingPlugin extends Plugin
 	private CookingOverlay cookingOverlay;
 
 	@Inject
-	private FermentTimerOverlay fermentTimerOverlay;
-
-	@Inject
 	private OverlayManager overlayManager;
 
 	@Getter(AccessLevel.PACKAGE)
 	private CookingSession cookingSession;
-
-	@Getter(AccessLevel.PACKAGE)
-	private FermentTimerSession fermentTimerSession;
 
 	@Provides
 	CookingConfig getConfig(ConfigManager configManager)
@@ -80,47 +72,30 @@ public class CookingPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		cookingSession = null;
-		fermentTimerSession = null;
 		overlayManager.add(cookingOverlay);
-		overlayManager.add(fermentTimerOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(fermentTimerOverlay);
 		overlayManager.remove(cookingOverlay);
-		fermentTimerSession = null;
 		cookingSession = null;
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (config.statTimeout() == 0)
+		if (cookingSession == null || config.statTimeout() == 0)
 		{
 			return;
 		}
 
-		if (cookingSession != null)
-		{
-			Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-			Duration sinceCut = Duration.between(cookingSession.getLastCookingAction(), Instant.now());
+		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
+		Duration sinceCut = Duration.between(cookingSession.getLastCookingAction(), Instant.now());
 
-			if (sinceCut.compareTo(statTimeout) >= 0)
-			{
-				cookingSession = null;
-			}
-		}
-		if (fermentTimerSession != null)
+		if (sinceCut.compareTo(statTimeout) >= 0)
 		{
-			Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-			Duration sinceCut = Duration.between(fermentTimerSession.getLastWineMakingAction(), Instant.now());
-
-			if (sinceCut.compareTo(statTimeout) >= 0)
-			{
-				fermentTimerSession = null;
-			}
+			cookingSession = null;
 		}
 	}
 
@@ -134,22 +109,12 @@ public class CookingPlugin extends Plugin
 
 		final String message = event.getMessage();
 
-		if (message.startsWith(WINE_MESSAGE) && config.fermentTimer())
-		{
-			if (fermentTimerSession == null)
-			{
-				fermentTimerSession = new FermentTimerSession();
-			}
-
-			fermentTimerSession.updateLastWineMakingAction();
-		}
-
 		if (message.startsWith("You successfully cook")
 			|| message.startsWith("You successfully bake")
 			|| message.startsWith("You manage to cook")
 			|| message.startsWith("You roast a")
 			|| message.startsWith("You cook")
-			|| message.startsWith(WINE_MESSAGE))
+			|| message.startsWith("You squeeze the grapes into the jug"))
 		{
 			if (cookingSession == null)
 			{
