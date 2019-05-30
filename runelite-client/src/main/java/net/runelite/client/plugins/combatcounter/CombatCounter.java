@@ -55,7 +55,7 @@ import java.util.List;
 import java.util.Map;
 
 @PluginDescriptor(
-		name = "[L] Tick Counter",
+		name = "Tick Counter",
 		description = "Count the amount of perfect combat ticks performed by each player.",
 		tags = {"combat", "counter", "tick"},
 		type = PluginType.UTILITY,
