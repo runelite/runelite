@@ -32,11 +32,12 @@ import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
@@ -55,9 +56,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
-	name = "Barbarian Assault",
-	description = "Show a timer to the next call change and game/wave duration in chat.",
-	tags = {"minigame", "overlay", "timer"}
+		name = "Barbarian Assault",
+		description = "Show a timer to the next call change and game/wave duration in chat.",
+		tags = {"minigame", "overlay", "timer"}
 )
 public class BarbarianAssaultPlugin extends Plugin
 {
@@ -97,7 +98,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		font = FontManager.getRunescapeFont()
-			.deriveFont(Font.BOLD, 24);
+				.deriveFont(Font.BOLD, 24);
 
 		clockImage = ImageUtil.getResourceStreamFromClass(getClass(), "clock.png");
 	}
@@ -121,7 +122,6 @@ public class BarbarianAssaultPlugin extends Plugin
 			if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
 			{
 				announceTime("Game finished, duration: ", gameTime.getTime(false));
-				gameTime = null;
 			}
 		}
 	}
@@ -130,7 +130,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() == ChatMessageType.GAMEMESSAGE
-			&& event.getMessage().startsWith("---- Wave:"))
+				&& event.getMessage().startsWith("---- Wave:"))
 		{
 			String[] message = event.getMessage().split(" ");
 			currentWave = message[BA_WAVE_NUM_INDEX];
@@ -147,39 +147,23 @@ public class BarbarianAssaultPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
-		if (client.getVar(Varbits.IN_GAME_BA) == 0 || client.getLocalPlayer() == null || overlay.getCurrentRound() != null)
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
 		{
 			return;
 		}
 
-		for (Item item : client.getItemContainer(InventoryID.INVENTORY).getItems())
+		if (overlay.getCurrentRound() != null)
 		{
-			if (item == null)
-			{
-				continue;
-			}
+			return;
+		}
 
-			switch (item.getId())
-			{
-				case ItemID.ATTACKER_HORN:
-				case ItemID.ATTACKER_HORN_10520:
-				case ItemID.ATTACKER_HORN_10517:
-				case ItemID.ATTACKER_HORN_10518:
-				case ItemID.ATTACKER_HORN_10519:
-					overlay.setCurrentRound(new Round(Role.ATTACKER));
-					break;
-				case ItemID.DEFENDER_HORN:
-					overlay.setCurrentRound(new Round(Role.COLLECTOR));
-					break;
-				case ItemID.HEALER_HORN:
-					overlay.setCurrentRound(new Round(Role.DEFENDER));
-					break;
-				case ItemID.COLLECTOR_HORN:
-					overlay.setCurrentRound(new Round(Role.HEALER));
-					break;
-			}
+		Role currentRole = getRole(event.getItemContainer());
+
+		if(currentRole != null)
+		{
+			overlay.setCurrentRound(new Round(currentRole));
 		}
 	}
 
@@ -207,16 +191,43 @@ public class BarbarianAssaultPlugin extends Plugin
 	private void announceTime(String preText, String time)
 	{
 		final String chatMessage = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append(preText)
-			.append(ChatColorType.HIGHLIGHT)
-			.append(time)
-			.build();
+				.append(ChatColorType.NORMAL)
+				.append(preText)
+				.append(ChatColorType.HIGHLIGHT)
+				.append(time)
+				.build();
 
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.CONSOLE)
-			.runeLiteFormattedMessage(chatMessage)
-			.build());
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(chatMessage)
+				.build());
+	}
+
+	private Role getRole(ItemContainer itemContainer)
+	{
+		for (Item item : itemContainer.getItems())
+		{
+			if (item == null)
+			{
+				continue;
+			}
+
+			switch (item.getId())
+			{
+				case ItemID.ATTACKER_HORN:
+				case ItemID.ATTACKER_HORN_10520:
+				case ItemID.ATTACKER_HORN_10517:
+				case ItemID.ATTACKER_HORN_10518:
+				case ItemID.ATTACKER_HORN_10519:
+					return Role.ATTACKER;
+				case ItemID.DEFENDER_HORN:
+					return Role.COLLECTOR;
+				case ItemID.HEALER_HORN:
+					return Role.DEFENDER;
+				case ItemID.COLLECTOR_HORN:
+			}
+		}
+		return null;
 	}
 
 	public Font getFont()
