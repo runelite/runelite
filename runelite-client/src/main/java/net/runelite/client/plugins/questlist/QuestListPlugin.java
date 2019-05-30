@@ -93,6 +93,22 @@ public class QuestListPlugin extends Plugin
 
 	private QuestState currentFilterState;
 
+	@Override
+	protected void startUp()
+	{
+		clientThread.invoke(this::addQuestButtons);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
+		if (header != null)
+		{
+			header.deleteAllChildren();
+		}
+	}
+
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged e)
 	{
@@ -110,6 +126,11 @@ public class QuestListPlugin extends Plugin
 			return;
 		}
 
+		addQuestButtons();
+	}
+
+	private void addQuestButtons()
+	{
 		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
 		if (header != null)
 		{

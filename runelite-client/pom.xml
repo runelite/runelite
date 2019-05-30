@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.25-SNAPSHOT</version>
+		<version>1.5.26-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -215,11 +215,11 @@
 			<version>1.0</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>net.runelite</groupId>
-			<artifactId>extended-mixins</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+		<!--		<dependency>
+					<groupId>net.runelite</groupId>
+					<artifactId>extended-mixins</artifactId>
+					<version>${project.version}</version>
+				</dependency>-->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

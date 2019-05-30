@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui.overlay.components;
 
+import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -41,6 +42,7 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 	{
 		PERCENTAGE,
 		FULL,
+		TEXT_ONLY,
 		BOTH
 	}
 
@@ -53,6 +55,7 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 	private long maximum = 100;
 	private double value;
 	private LabelDisplayMode labelDisplayMode = LabelDisplayMode.PERCENTAGE;
+	private String centerLabel;
 	private String leftLabel;
 	private String rightLabel;
 	private Color foregroundColor = new Color(82, 161, 82);
@@ -75,19 +78,32 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 		final long span = maximum - minimum;
 		final double currentValue = value - minimum;
 		final double pc = currentValue / span;
-		final String textToWrite;
+		String textToWrite;
 
 		switch (labelDisplayMode)
 		{
+			case TEXT_ONLY:
+				textToWrite = "";
+				break;
 			case PERCENTAGE:
-				textToWrite = DECIMAL_FORMAT.format(pc * 100d) + "%";
+				textToWrite = formatPercentageProgress(pc);
 				break;
 			case BOTH:
-				textToWrite = DECIMAL_FORMAT_ABS.format(Math.floor(currentValue)) + "/" + maximum
-					+ " (" + DECIMAL_FORMAT.format(pc * 100d) + "%)";
+				textToWrite = formatFullProgress(currentValue, maximum) + " (" + formatPercentageProgress(pc) + ")";
 				break;
+			case FULL:
 			default:
-				textToWrite = DECIMAL_FORMAT_ABS.format(Math.floor(currentValue)) + "/" + maximum;
+				textToWrite = formatFullProgress(currentValue, maximum);
+		}
+
+		if (!Strings.isNullOrEmpty(centerLabel))
+		{
+			if (!textToWrite.isEmpty())
+			{
+				textToWrite += " ";
+			}
+
+			textToWrite += centerLabel;
 		}
 
 		final int width = preferredSize.width;
@@ -130,5 +146,15 @@ public class ProgressBarComponent implements LayoutableRenderableEntity
 		bounds.setLocation(preferredLocation);
 		bounds.setSize(dimension);
 		return dimension;
+	}
+
+	private static String formatFullProgress(double current, long maximum)
+	{
+		return DECIMAL_FORMAT_ABS.format(Math.floor(current)) + "/" + maximum;
+	}
+
+	private static String formatPercentageProgress(double ratio)
+	{
+		return DECIMAL_FORMAT.format(ratio * 100d) + "%";
 	}
 }

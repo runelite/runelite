@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.5.25-SNAPSHOT</version>
+	<version>1.5.26-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -115,8 +115,8 @@
 		<module>cache</module>
 		<module>cache-client</module>
 		<module>cache-updater</module>
-		<module>extended-mixin-processor</module>
-		<module>extended-mixins</module>
+		<!--		<module>extended-mixin-processor</module>
+				<module>extended-mixins</module>-->
 		<module>runelite-api</module>
 		<module>runelite-client</module>
 		<module>runelite-mixins</module>
