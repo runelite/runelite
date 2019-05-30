@@ -561,6 +561,7 @@ public class WidgetID
 		static final int SPELL_TEXT = 28;
 		static final int AUTO_RETALIATE = 29;
 		static final int SPECIAL_ATTACK_BAR = 34;
+		static final int TOOLTIP = 41;
 	}
 
 	static class VolcanicMine
@@ -886,6 +887,8 @@ public class WidgetID
 		static final int ANNAKARL_TELEPORT = 96;
 		static final int GHORROCK_TELEPORT = 97;
 		static final int EDGEVILLE_HOME_TELEPORT = 98;
+		static final int TOOLTIP = 188;
+
 
 		// LUNAR SPELLS
 		static final int LUNAR_HOME_TELEPORT = 99;
