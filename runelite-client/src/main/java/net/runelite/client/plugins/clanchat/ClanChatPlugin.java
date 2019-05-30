@@ -61,6 +61,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -496,6 +497,19 @@ public class ClanChatPlugin extends Plugin
 		}
 
 		activityBuffer.clear();
+	}
+
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
+	{
+		if (!scriptCallbackEvent.getEventName().equalsIgnoreCase("clanchatInput"))
+		{
+			return;
+		}
+
+		final int[] intStack = client.getIntStack();
+		final int size = client.getIntStackSize();
+		intStack[size - 1] = config.clanTabChat() ? 1 : 0;
 	}
 
 	int getClanAmount()

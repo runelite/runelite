@@ -32,56 +32,7 @@ import lombok.Getter;
 import net.runelite.api.NPC;
 import static net.runelite.api.NullObjectID.NULL_1293;
 import net.runelite.api.ObjectComposition;
-import static net.runelite.api.ObjectID.BOOKCASE_12539;
-import static net.runelite.api.ObjectID.BOOKCASE_380;
-import static net.runelite.api.ObjectID.BOOKCASE_394;
-import static net.runelite.api.ObjectID.BOOKCASE_9523;
-import static net.runelite.api.ObjectID.BOXES;
-import static net.runelite.api.ObjectID.BOXES_360;
-import static net.runelite.api.ObjectID.BOXES_361;
-import static net.runelite.api.ObjectID.BOXES_3686;
-import static net.runelite.api.ObjectID.BOXES_5111;
-import static net.runelite.api.ObjectID.BOXES_6176;
-import static net.runelite.api.ObjectID.BUCKET_9568;
-import static net.runelite.api.ObjectID.BUSH_2357;
-import static net.runelite.api.ObjectID.CLOSED_CHEST_25592;
-import static net.runelite.api.ObjectID.CLOSED_CHEST_375;
-import static net.runelite.api.ObjectID.CLOSED_CHEST_5108;
-import static net.runelite.api.ObjectID.COFFIN;
-import static net.runelite.api.ObjectID.CRATES_11600;
-import static net.runelite.api.ObjectID.CRATES_24088;
-import static net.runelite.api.ObjectID.CRATE_11485;
-import static net.runelite.api.ObjectID.CRATE_12963;
-import static net.runelite.api.ObjectID.CRATE_14934;
-import static net.runelite.api.ObjectID.CRATE_18204;
-import static net.runelite.api.ObjectID.CRATE_18506;
-import static net.runelite.api.ObjectID.CRATE_18889;
-import static net.runelite.api.ObjectID.CRATE_24344;
-import static net.runelite.api.ObjectID.CRATE_25775;
-import static net.runelite.api.ObjectID.CRATE_27532;
-import static net.runelite.api.ObjectID.CRATE_27533;
-import static net.runelite.api.ObjectID.CRATE_354;
-import static net.runelite.api.ObjectID.CRATE_355;
-import static net.runelite.api.ObjectID.CRATE_356;
-import static net.runelite.api.ObjectID.CRATE_357;
-import static net.runelite.api.ObjectID.CRATE_358;
-import static net.runelite.api.ObjectID.CRATE_366;
-import static net.runelite.api.ObjectID.CRATE_5106;
-import static net.runelite.api.ObjectID.CRATE_5107;
-import static net.runelite.api.ObjectID.CRATE_5113;
-import static net.runelite.api.ObjectID.CRATE_9534;
-import static net.runelite.api.ObjectID.DRAWERS;
-import static net.runelite.api.ObjectID.DRAWERS_25766;
-import static net.runelite.api.ObjectID.DRAWERS_350;
-import static net.runelite.api.ObjectID.DRAWERS_352;
-import static net.runelite.api.ObjectID.DRAWERS_5618;
-import static net.runelite.api.ObjectID.DRAWERS_7194;
-import static net.runelite.api.ObjectID.HAYSTACK;
-import static net.runelite.api.ObjectID.JUNA;
-import static net.runelite.api.ObjectID.MINE_CART_6045;
-import static net.runelite.api.ObjectID.STONES_26633;
-import static net.runelite.api.ObjectID.WARDROBE_5622;
-import static net.runelite.api.ObjectID.WHEELBARROW_9625;
+import static net.runelite.api.ObjectID.*;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -347,7 +298,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("I would make a chemistry joke, but I'm afraid I wouldn't get a reaction.", "Chemist", new WorldPoint(2932, 3212, 0), "Talk to the Chemist in Rimmington"),
 		new CrypticClue("Show this to Hazelmere.", "Hazelmere", new WorldPoint(2677, 3088, 1), "Hazelmere is found upstairs on the island located just east of Yanille."),
 		new CrypticClue("Does one really need a fire to stay warm here?", new WorldPoint(3816, 3810, 0), "Dig next to the fire near the Volcanic Mine entrance."),
-		new CrypticClue("Search the open crate found in a small farmhouse in Hosidius. Cabbages grow outside.", CRATE_27533, new WorldPoint(1687, 3628, 0), "The house is north-east of the general store in Hosidius."),
+		new CrypticClue("Search the open crate found in the Hosidius kitchens.", CRATE_27533, new WorldPoint(1683, 3616, 0), "The kitchens are north-west of the town in Hosidius."),
 		new CrypticClue("Dig under Ithoi's cabin.", new WorldPoint(2529, 2838, 0), "Dig under Ithoi's cabin in the Corsair Cove."),
 		new CrypticClue("Search the drawers, upstairs in the bank to the East of Varrock.", DRAWERS_7194, new WorldPoint(3250, 3420, 1), "Search the drawers upstairs in Varrock east bank."),
 		new CrypticClue("Speak to Hazelmere.", "Hazelmere", new WorldPoint(2677, 3088, 1), "Located upstairs in the house to the north of fairy ring CLS. Answer: 6859"),

@@ -148,7 +148,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3573, 3425, 0), "North of Dessous's tomb from Desert Treasure.")
 		.put(new WorldPoint(3828, 2848, 0), "East of Harmony Island.")
 		.put(new WorldPoint(3225, 2838, 0), "South of Desert Treasure pyramid.")
-		.put(new WorldPoint(1773, 3510, 0), "Between magic trees South of Tithe Farm.")
+		.put(new WorldPoint(1773, 3510, 0), "Ruins north of the Hosidius mine.")
 		.put(new WorldPoint(3822, 3562, 0), "North-east of Dragontooth Island.")
 		.put(new WorldPoint(3603, 3564, 0), "North of the wrecked ship, outside of Port Phasmatys.")
 		.put(new WorldPoint(2936, 2721, 0), "Eastern shore of Crash Island.")

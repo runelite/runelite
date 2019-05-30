@@ -1008,7 +1008,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			swap(client, "pay-toll(10gp)", option, target, true);
 		}
-
+		else if (config.swapHardWoodGrove() && option.equals("open") && target.equals("hardwood grove doors"))
+		{
+			swap(client, "quick-pay(100)", option, target, true);
+		}
 		else if (config.swapTravel() && option.equals("inspect") && target.equals("trapdoor"))
 		{
 			swap(client, "travel", option, target, true);
@@ -1213,7 +1216,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				{
 					if (temp.equalsIgnoreCase(Text.removeTags(entries[i].getTarget())))
 					{
-						if (entries[i].getType() == 3 || entries[i].getType() == 1002)
+						if (!entries[i].getOption().equalsIgnoreCase("remove"))
 						{
 							entries = ArrayUtils.remove(entries, i);
 							i--;
@@ -1221,6 +1224,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					}
 				}
 			}
+
 			client.setMenuEntries(entries);
 		}
 	}
