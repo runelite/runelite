@@ -10,18 +10,12 @@ package net.runelite.client.plugins.theatre;
 
 import java.awt.*;
 import java.util.*;
-import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.*;
-import net.runelite.api.Point;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldArea;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class TheatreOverlay extends Overlay 
 {
@@ -45,7 +39,7 @@ public class TheatreOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		switch(plugin.getRoom())
+		switch (plugin.getRoom())
 		{
 			case MAIDEN:
 				plugin.getMaidenHandler().render(graphics);

@@ -19,13 +19,9 @@ import net.runelite.client.plugins.theatre.TheatreConfig;
 import net.runelite.client.plugins.theatre.TheatreConstant;
 import net.runelite.client.plugins.theatre.TheatrePlugin;
 import net.runelite.client.plugins.theatre.TheatreRoom;
-import net.runelite.client.plugins.theatre.timers.Timeable;
-import net.runelite.client.ui.overlay.OverlayUtil;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class XarpusHandler extends RoomHandler
@@ -120,7 +116,7 @@ public class XarpusHandler extends RoomHandler
 				seconds = seconds % 60;
 	
 				this.ticksUntilShoot = 8;
-				if(config.extraTimers())
+				if (config.extraTimers())
 				this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'Xarpus - Recovery' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
 			}
 
@@ -241,7 +237,8 @@ public class XarpusHandler extends RoomHandler
 			if (i >= 0)
 			{
 				exhumes.replace(key, i);
-			} else
+			}
+			else
 			{
 				exhumes.remove(key);
 				this.exhumesCount--;
@@ -259,7 +256,7 @@ public class XarpusHandler extends RoomHandler
 
 				long minutes = seconds / 60L;
 				seconds = seconds % 60;
-				if(config.extraTimers())
+				if (config.extraTimers())
 				this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'Xarpus - Acid' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
 			}
 

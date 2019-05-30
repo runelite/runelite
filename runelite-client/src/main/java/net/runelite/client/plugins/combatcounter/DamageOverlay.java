@@ -29,14 +29,11 @@ import net.runelite.api.Player;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-
 import javax.inject.Inject;
 import java.awt.*;
-import java.util.HashMap;
 import java.util.Map;
 
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
@@ -95,7 +92,7 @@ class DamageOverlay extends Overlay
 				for (String name : map.keySet())
 				{
 					String val = String.format("%.1f", map.get(name));
-					if(client.getLocalPlayer().getName().contains(name))
+					if (client.getLocalPlayer().getName().contains(name))
 					{
 						panelComponent.getChildren().add(1, LineComponent.builder().left(name).right(val).leftColor(config.selfColor()).rightColor(config.selfColor()).build());
 					}

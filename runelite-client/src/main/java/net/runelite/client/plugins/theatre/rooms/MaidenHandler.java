@@ -8,10 +8,8 @@ import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.theatre.RoomHandler;
 import net.runelite.client.plugins.theatre.TheatreConfig;
 import net.runelite.client.plugins.theatre.TheatreConstant;
@@ -138,7 +136,8 @@ public class MaidenHandler extends RoomHandler
 		if (npc.getName() != null && name.equals("The Maiden of Sugadinti")) 
 		{
 			this.onStop();
-		} else if (plugin.getRoom() == TheatreRoom.MAIDEN) 
+		}
+		else if (plugin.getRoom() == TheatreRoom.MAIDEN) 
 		{
 			if (id == NpcID.BLOOD_SPAWN) 
 			{
@@ -170,7 +169,7 @@ public class MaidenHandler extends RoomHandler
 			bloodSpawnTarget.add(spawn.getWorldLocation());
 		}
 
-		if(this.healerCount != this.healers.size()) 
+		if (this.healerCount != this.healers.size()) 
 		{
 			this.healerCount = this.healers.size();
 
@@ -181,7 +180,7 @@ public class MaidenHandler extends RoomHandler
 			seconds = seconds % 60;
 
 			int percentage = 70 - (20 * ((wave++) - 1));
-			if(config.extraTimers())
+			if (config.extraTimers())
 			this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Maiden of Sugadinti - " + percentage + "%' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
 		}
 	}

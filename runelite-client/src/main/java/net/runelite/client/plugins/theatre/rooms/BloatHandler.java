@@ -117,7 +117,7 @@ public class BloatHandler extends RoomHandler
 			}
 		}
 
-		if(config.showBloatTimer())
+		if (config.showBloatTimer())
 		{
 			final String tickCounter = String.valueOf(bloatTimer);
 			int secondConversion = (int)(bloatTimer * .6);
@@ -130,7 +130,7 @@ public class BloatHandler extends RoomHandler
 				} 
 				else 
 				{
-					renderTextLocation(graphics, tickCounter+ "( " + secondConversion + " )", 15, Font.BOLD, Color.RED, canvasPoint);
+					renderTextLocation(graphics, tickCounter + "( " + secondConversion + " )", 15, Font.BOLD, Color.RED, canvasPoint);
 				}
 			}
 		}

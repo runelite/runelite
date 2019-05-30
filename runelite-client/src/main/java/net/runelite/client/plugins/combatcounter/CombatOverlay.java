@@ -24,14 +24,11 @@
  */
 package net.runelite.client.plugins.combatcounter;
 
-import com.google.inject.Provides;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
@@ -74,29 +71,29 @@ class CombatOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if(config.showTickCounter())
+		if (config.showTickCounter())
 		{
 			panelComponent.getChildren().clear();
 
 			Player local = client.getLocalPlayer();
-			if(local == null || local.getName() == null)
+			if (local == null || local.getName() == null)
 				return null;
 			panelComponent.setBackgroundColor(config.bgColor());
 			panelComponent.getChildren().add(TitleComponent.builder().text("Tick Counter").color(config.titleColor()).build());
 			int total = 0;
-			if(plugin.getCounter().isEmpty())
+			if (plugin.getCounter().isEmpty())
 			{
 				panelComponent.getChildren().add(LineComponent.builder().left(local.getName()).right("0").build());
 			}
 			else
 			{
 				Map<String, Long> map = this.plugin.getCounter();
-				if(map == null)
+				if (map == null)
 					return null;
 
-				for(String name : map.keySet())
+				for (String name : map.keySet())
 				{
-					if(client.getLocalPlayer().getName().contains(name))
+					if (client.getLocalPlayer().getName().contains(name))
 					{
 						panelComponent.getChildren().add(1, LineComponent.builder().left(name).right(Long.toString(map.get(name))).leftColor(config.selfColor()).rightColor(config.selfColor()).build());
 					}
@@ -107,7 +104,7 @@ class CombatOverlay extends Overlay
 					total += map.get(name);
 				}
 
-				if(!map.containsKey(local.getName()))
+				if (!map.containsKey(local.getName()))
 				{
 					panelComponent.getChildren().add(LineComponent.builder().left(local.getName()).right("0").leftColor(config.selfColor()).rightColor(config.selfColor()).build());
 				}

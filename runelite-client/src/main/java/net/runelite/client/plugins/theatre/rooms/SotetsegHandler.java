@@ -118,11 +118,12 @@ public class SotetsegHandler extends RoomHandler
 		{
 
 			Map<Projectile, String> projectileMap = new HashMap<>();
-			for(Projectile p : soteyProjectiles.keySet()){
+			for (Projectile p : soteyProjectiles.keySet())
+			{
 				final int ticksRemaining = p.getRemainingCycles()/30;
 				int id = p.getId();
 				String countdownStr;
-				if(id == 1607)
+				if (id == 1607)
 				{
 					countdownStr = "R " + String.valueOf(ticksRemaining);
 				}
@@ -173,7 +174,7 @@ public class SotetsegHandler extends RoomHandler
 
 			 if (loc != null)
 			 {
-			 if(id == TheatreConstant.SOTETSEG_BOMB)
+			 if (id == TheatreConstant.SOTETSEG_BOMB)
 			 {
 			 graphics.setFont(new Font("Arial", Font.BOLD, 20));
 			 }
@@ -254,7 +255,8 @@ public class SotetsegHandler extends RoomHandler
 		{
 			Tile t = event.getTile();
 			WorldPoint p = t.getWorldLocation();
-			if (p.getPlane() == 0){
+			if (p.getPlane() == 0)
+			{
 				if (!redTiles.containsValue(t))
 				{
 					redTiles.put(o, t);
@@ -362,7 +364,8 @@ public class SotetsegHandler extends RoomHandler
 					{
 						minX = x;
 					}
-					if (y < minY){
+					if (y < minY)
+					{
 						minY = y;
 					}
 				}

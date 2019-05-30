@@ -11,7 +11,6 @@ package net.runelite.client.plugins.theatre;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.plugins.theatre.rooms.nylocas.NyloPredictor;
 import java.awt.*;
 
 @ConfigGroup("Theatre")

@@ -101,7 +101,7 @@ public class NyloHandler extends RoomHandler
 
 		if (this.startTime != 0)
 		{
-			if(config.extraTimers())
+			if (config.extraTimers())
 			this.client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Wave 'The Nylocas - Waves' completed! Duration: <col=ff0000>" + minutes + ":" + twoDigitString(seconds), null);
 		}
 		System.out.println("Stopping Nylocas Room");
@@ -169,14 +169,15 @@ public class NyloHandler extends RoomHandler
 			}
 		}
 
-		switch(config.showNylocasExplosions())
+		switch (config.showNylocasExplosions())
 		{
 			case TILE:
 				for (NPC npc : spiders.keySet())
 				{
 					int ticksLeft = spiders.get(npc);
-					if (ticksLeft > -1 && ticksLeft < 6) {
-						Color color = new Color(255, 255,0 ,180);
+					if (ticksLeft > -1 && ticksLeft < 6)
+					{
+						Color color = new Color(255, 255, 0, 180);
 						int outlineWidth = 2;
 						int outlineAlpha = 150;
 						renderNpcOverlay(graphics, npc, color, outlineWidth, outlineAlpha, 15);
@@ -264,7 +265,8 @@ public class NyloHandler extends RoomHandler
 					color = Color.LIGHT_GRAY;
 
 				renderPoly(graphics, color, objectClickbox);
-			} catch (Exception ex)
+			} 
+			catch (Exception ex)
 			{
 
 			}
@@ -327,7 +329,8 @@ public class NyloHandler extends RoomHandler
 			{
 				Pattern p = Pattern.compile("Nylocas (Hagios|Toxobolos|Ischyros)");
 				Matcher m = p.matcher(npc.getName());
-				if (m.matches()) {
+				if (m.matches())
+				{
 					this.spiders.put(npc, 52);
 
 					if (this.predictor != null)

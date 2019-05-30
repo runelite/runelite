@@ -58,7 +58,6 @@ public class SpawnTimerPlugin extends Plugin
 		return configManager.getConfig(SpawnTimerConfig.class);
 	}
 
-
 	@Getter(AccessLevel.PACKAGE)
 	public int currentTick;
 	@Override
@@ -97,7 +96,7 @@ public class SpawnTimerPlugin extends Plugin
 	@Subscribe
 	public void onNpcSpawned(NpcSpawned n)
 	{
-		if(n.getNpc() != null)
+		if (n.getNpc() != null)
 		{
 			final NPC npc = n.getNpc();
 			highlightedNpcs.add(npc);
@@ -112,11 +111,11 @@ public class SpawnTimerPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned n)
 	{
 		final NPC npc = n.getNpc();
-		if(highlightedNpcs.contains(npc))
+		if (highlightedNpcs.contains(npc))
 		{
 			highlightedNpcs.remove(npc);
-			 for (Iterator<thing> iterator = ticks.iterator(); iterator.hasNext();)
-			 {
+			for (Iterator<thing> iterator = ticks.iterator(); iterator.hasNext();)
+			{
 				thing t =  iterator.next();
 				if (t.getNpc() == npc) 
 				{

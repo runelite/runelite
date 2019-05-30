@@ -225,12 +225,12 @@ public class TheatrePlugin extends Plugin
 	@Subscribe
 	public void onProjectileMoved(ProjectileMoved event)
 	{
-		if(sotetsegHandler != null)
+		if (sotetsegHandler != null)
 		{
 			sotetsegHandler.onProjectileMoved(event);
 
 		}
-		if(verzikHandler != null)
+		if (verzikHandler != null)
 		{
 			verzikHandler.onProjectileMoved(event);
 		}

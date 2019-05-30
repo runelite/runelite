@@ -1,7 +1,5 @@
 package net.runelite.client.plugins.combatcounter;
 
-import net.runelite.api.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

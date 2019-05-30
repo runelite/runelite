@@ -100,9 +100,9 @@ class NyloOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 		int nyloCount = (hagios + toxobolos + ischyros);
-		if(nylohandler.getWave() < 21)
+		if (nylohandler.getWave() < 21)
 		{
-			if(nyloCount > 12)
+			if (nyloCount > 12)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
 						.left("Total Nylocas:")
@@ -123,7 +123,7 @@ class NyloOverlay extends Overlay
 		} 
 		else 
 		{
-			if(nyloCount > 24)
+			if (nyloCount > 24)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
 						.left("Total Nylocas:")

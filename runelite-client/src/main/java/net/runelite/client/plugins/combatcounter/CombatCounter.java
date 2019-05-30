@@ -33,12 +33,10 @@ import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
-import net.runelite.api.Projectile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -249,8 +247,6 @@ public class CombatCounter extends Plugin
 		this.playerDamage.clear();
 	}
 
-
-
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
@@ -271,7 +267,7 @@ public class CombatCounter extends Plugin
 						 * This part handles the Tick Counter.
 						 */
 						long ticks = variables.get(animation);
-						if(((Player) actor).getPlayerComposition().getEquipmentId(KitType.WEAPON) == 23360)
+						if (((Player) actor).getPlayerComposition().getEquipmentId(KitType.WEAPON) == 23360)
 						{
 							ticks = 3;
 						}
@@ -296,12 +292,12 @@ public class CombatCounter extends Plugin
 							List<NPC> actives = new ArrayList<NPC>();
 							actives.add(npc);
 
-							if(animation == 1979 || animation == 7618)
+							if (animation == 1979 || animation == 7618)
 							{ // Barrage or chin.
-								for(NPC nearby : this.client.getNpcs())
+								for (NPC nearby : this.client.getNpcs())
 								{
 									int distance = npc.getWorldLocation().distanceTo(nearby.getWorldLocation());
-									if(distance <= 1 && npc != nearby)
+									if (distance <= 1 && npc != nearby)
 									{
 										actives.add(nearby);
 									}
@@ -347,7 +343,7 @@ public class CombatCounter extends Plugin
 								List<Integer> ticksToAdd = new ArrayList<Integer>();
 								ticksToAdd.add(delay);
 
-								if(canFarcast && delay > 2)
+								if (canFarcast && delay > 2)
 								{
 									ticksToAdd.add(delay - 1);
 								}
@@ -360,7 +356,7 @@ public class CombatCounter extends Plugin
 									ticksToAdd.add(delay + 1);
 								}
 
-								for(NPC target : actives)
+								for (NPC target : actives)
 								{
 									NPCDamageCounter dc = new NPCDamageCounter();
 									if (this.npcDamageMap.containsKey(target))
@@ -393,11 +389,11 @@ public class CombatCounter extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if(config.resetOnNewInstance())
+		if (config.resetOnNewInstance())
 		{
 			prevInstance = instanced;
 			instanced = client.isInInstancedRegion();
-			if(!prevInstance && instanced) 
+			if (!prevInstance && instanced) 
 			{
 				this.counter.clear();
 				this.blowpipe.clear();
@@ -499,10 +495,10 @@ public class CombatCounter extends Plugin
 
 						List<Integer> counts = new ArrayList<Integer>();
 						counts.add(delay);
-						if(delay > 2)
+						if (delay > 2)
 							counts.add(delay - 1);
 
-						for(int tick : counts)
+						for (int tick : counts)
 						{
 							List<String> attackers = new ArrayList<String>();
 							if (dc.attackers.containsKey(tick))
@@ -561,7 +557,7 @@ public class CombatCounter extends Plugin
 	{
 		int size = 1;
 		NPCComposition comp = npc.getTransformedComposition();
-		if(comp != null)
+		if (comp != null)
 		{
 			size = comp.getSize();
 		}
@@ -570,14 +566,14 @@ public class CombatCounter extends Plugin
 		WorldPoint wpNPC = npc.getWorldLocation();
 		int distance = wpNPC.distanceTo(wpPlayer);
 
-		if(size > 1)
-			for(int x = 0; x < size; x++)
+		if (size > 1)
+			for (int x = 0; x < size; x++)
 			{
-				for(int y = 0; y < size; y++)
+				for (int y = 0; y < size; y++)
 				{
 					WorldPoint wpNPCB = WorldPoint.fromRegion(wpNPC.getRegionID(), wpNPC.getRegionX() + x, wpNPC.getRegionY() + y, wpNPC.getPlane());
 					int distB = wpNPCB.distanceTo(wpPlayer);
-					if(distB >= 1 && distB < distance)
+					if (distB >= 1 && distB < distance)
 					{
 						distance = distB;
 					}

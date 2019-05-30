@@ -3,9 +3,7 @@ package net.runelite.client.plugins.theatre.rooms.nylocas;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.client.plugins.theatre.TheatreConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -383,7 +381,9 @@ public class NyloPredictor
 		else if (wave == 21 && spawn == Spawn.EAST)
 		{
 			return true;
-		} else if (wave == 22 && spawn == Spawn.SOUTH) {
+		}
+		else if (wave == 22 && spawn == Spawn.SOUTH)
+		{
 			return true;
 		}
 		else if (wave == 23)
@@ -409,7 +409,8 @@ public class NyloPredictor
 			else if (spawn == Spawn.WEST && type == NylocasType.MELEE_162)
 				return true;
 
-		} else if (wave == 29 && spawn == Spawn.EAST)
+		}
+		else if (wave == 29 && spawn == Spawn.EAST)
 		{
 			return true;
 		}
@@ -433,7 +434,8 @@ public class NyloPredictor
 		{
 			Wave nextWave = NYLOCAS_WAVES[currentIndex + 1];
 			return nextWave;
-		} else
+		}
+		else
 		{
 			return null;
 		}
@@ -444,7 +446,8 @@ public class NyloPredictor
 		if (wave == null || spawn == null)
 		{
 			return null;
-		} else
+		}
+		else
 		{
 			String types = "";
 

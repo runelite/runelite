@@ -2,9 +2,6 @@ package net.runelite.client.plugins.spawntimer;
 
 import net.runelite.api.*;
 import net.runelite.api.Point;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.client.plugins.npchighlight.NpcIndicatorsConfig;
-import net.runelite.client.plugins.npchighlight.NpcIndicatorsPlugin;
 import net.runelite.client.plugins.spawntimer.SpawnTimerPlugin;
 import net.runelite.client.plugins.spawntimer.SpawnTimerConfig;
 import net.runelite.client.ui.overlay.Overlay;
@@ -40,15 +37,15 @@ public class SpawnTimerOverlay extends Overlay
 		highlights = plugin.getHighlights();
 		for (thing npc : plugin.getTicks())
 		{
-			if(npc == null)
+			if (npc == null)
 			{
 				continue;
 			}
-			if(npc.getNpc() == null)
+			if (npc.getNpc() == null)
 			{
 				continue;
 			}
-			if(npc.getNpc().getName() == null)
+			if (npc.getNpc().getName() == null)
 			{
 				continue;
 			}
