@@ -31,11 +31,7 @@ import java.time.Instant;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import static net.runelite.api.AnimationID.COOKING_WINE;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.Player;
-import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
@@ -54,8 +50,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDependency(XpTrackerPlugin.class)
 public class CookingPlugin extends Plugin
 {
-	@Inject
-	private Client client;
+	private static final String WINE_MESSAGE = "You squeeze the grapes into the jug";
 
 	@Inject
 	private CookingConfig config;
@@ -130,27 +125,6 @@ public class CookingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onAnimationChanged(AnimationChanged animationChanged)
-	{
-		Player localPlayer = client.getLocalPlayer();
-
-		if (localPlayer != animationChanged.getActor())
-		{
-			return;
-		}
-
-		if (localPlayer.getAnimation() == COOKING_WINE && config.fermentTimer())
-		{
-			if (fermentTimerSession == null)
-			{
-				fermentTimerSession = new FermentTimerSession();
-			}
-
-			fermentTimerSession.updateLastWineMakingAction();
-		}
-	}
-
-	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM)
@@ -160,11 +134,22 @@ public class CookingPlugin extends Plugin
 
 		final String message = event.getMessage();
 
+		if (message.startsWith(WINE_MESSAGE) && config.fermentTimer())
+		{
+			if (fermentTimerSession == null)
+			{
+				fermentTimerSession = new FermentTimerSession();
+			}
+
+			fermentTimerSession.updateLastWineMakingAction();
+		}
+
 		if (message.startsWith("You successfully cook")
 			|| message.startsWith("You successfully bake")
 			|| message.startsWith("You manage to cook")
 			|| message.startsWith("You roast a")
-			|| message.startsWith("You cook"))
+			|| message.startsWith("You cook")
+			|| message.startsWith(WINE_MESSAGE))
 		{
 			if (cookingSession == null)
 			{

@@ -29,11 +29,12 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,15 +52,12 @@ public class CookingPluginTest
 		"You cook the karambwan. It looks delicious.",
 		"You roast a lobster.",
 		"You cook a bass.",
+		"You squeeze the grapes into the jug. The wine begins to ferment.",
 		"You successfully bake a tasty garden pie."
 	};
 
 	@Inject
 	CookingPlugin cookingPlugin;
-
-	@Mock
-	@Bind
-	Client client;
 
 	@Mock
 	@Bind
@@ -95,5 +93,27 @@ public class CookingPluginTest
 		CookingSession cookingSession = cookingPlugin.getCookingSession();
 		assertNotNull(cookingSession);
 		assertEquals(COOKING_MESSAGES.length, cookingSession.getCookAmount());
+	}
+
+	@Test
+	public void testFermentTimerOnChatMessage()
+	{
+		when(config.fermentTimer()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", COOKING_MESSAGES[6], "", 0);
+		cookingPlugin.onChatMessage(chatMessage);
+		FermentTimerSession fermentTimerSession = cookingPlugin.getFermentTimerSession();
+
+		assertNotNull(fermentTimerSession);
+	}
+
+	@Test
+	public void testFermentTimerOnChatMessage_pluginDisabled()
+	{
+		when(config.fermentTimer()).thenReturn(false);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", COOKING_MESSAGES[6], "", 0);
+		cookingPlugin.onChatMessage(chatMessage);
+		FermentTimerSession fermentTimerSession = cookingPlugin.getFermentTimerSession();
+
+		assertNull(fermentTimerSession);
 	}
 }
