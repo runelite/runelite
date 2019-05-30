@@ -52,6 +52,7 @@ import static net.runelite.api.MenuAction.WALK;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import static net.runelite.api.Varbits.BUILDING_MODE;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
@@ -60,10 +61,9 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
-import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.Varbits.BUILDING_MODE;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -73,24 +73,24 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.menus.ComparableEntry;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.menuentryswapper.util.FairyRingMode;
 import net.runelite.client.plugins.menuentryswapper.util.HouseMode;
 import net.runelite.client.plugins.menuentryswapper.util.ObeliskMode;
 import net.runelite.client.plugins.menuentryswapper.util.OccultAltarMode;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.PluginType;
 import static net.runelite.client.util.MenuUtil.swap;
 import net.runelite.client.util.MiscUtils;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-		name = "Menu Entry Swapper",
-		description = "Change the default option that is displayed when hovering over objects",
-		tags = {"npcs", "inventory", "items", "objects"},
-		type = PluginType.UTILITY,
-		enabledByDefault = false
+	name = "Menu Entry Swapper",
+	description = "Change the default option that is displayed when hovering over objects",
+	tags = {"npcs", "inventory", "items", "objects"},
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
 public class MenuEntrySwapperPlugin extends Plugin
 {
@@ -108,35 +108,35 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean buildingMode;
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
-			MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
+		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
 
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
-			MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
+		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
-			MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB);
+		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
-			MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB);
+		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
-			MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
+		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
-			MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
+		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
 	private static final Set<MenuAction> NPC_MENU_TYPES = ImmutableSet.of(
-			MenuAction.NPC_FIRST_OPTION,
-			MenuAction.NPC_SECOND_OPTION,
-			MenuAction.NPC_THIRD_OPTION,
-			MenuAction.NPC_FOURTH_OPTION,
-			MenuAction.NPC_FIFTH_OPTION,
-			MenuAction.EXAMINE_NPC);
+		MenuAction.NPC_FIRST_OPTION,
+		MenuAction.NPC_SECOND_OPTION,
+		MenuAction.NPC_THIRD_OPTION,
+		MenuAction.NPC_FOURTH_OPTION,
+		MenuAction.NPC_FIFTH_OPTION,
+		MenuAction.EXAMINE_NPC);
 
 	private static final Splitter NEWLINE_SPLITTER = Splitter
-			.on("\n")
-			.omitEmptyStrings()
-			.trimResults();
+		.on("\n")
+		.omitEmptyStrings()
+		.trimResults();
 
 	private final Map<ComparableEntry, ComparableEntry> customSwaps = new HashMap<>();
 
@@ -180,7 +180,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	public void startUp()
 	{
 		addSwaps();
-		loadConstructionIDs(config.getConstructionItems());
+		//todo re-enable when fixed.
+		/*loadConstructionIDs(config.getConstructionItems());*/
 
 		if (config.shiftClickCustomization())
 		{
@@ -194,7 +195,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	public void shutDown()
 	{
 		disableCustomization();
-		loadConstructionIDs("");
+		//todo re-enable when fixed.
+		/*loadConstructionIDs("");*/
 		loadCustomSwaps(""); // Removes all custom swaps
 		removeSwaps();
 	}
@@ -206,8 +208,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			return;
 		}
+		//todo re-enable when fixed.
 
-		loadConstructionIDs(config.getConstructionItems());
+		/*loadConstructionIDs(config.getConstructionItems());*/
 		removeSwaps();
 		addSwaps();
 
@@ -287,8 +290,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	public void onWidgetMenuOptionClicked(WidgetMenuOptionClicked event)
 	{
 		if (event.getWidget() == WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB
-				|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB
-				|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB)
+			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB
+			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB)
 		{
 			configuringShiftClick = event.getMenuOption().equals(CONFIGURE) && Text.removeTags(event.getMenuTarget()).equals(MENU_TARGET);
 			refreshShiftClickCustomizationMenus();
@@ -302,8 +305,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			return;
 		}
+		//todo re-enable when fixed.
 
-		loadConstructionIDs(config.getConstructionItems());
+		/*loadConstructionIDs(config.getConstructionItems());*/
 	}
 
 	@Subscribe
@@ -779,8 +783,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		if (hintArrowNpc != null
-				&& hintArrowNpc.getIndex() == eventId
-				&& NPC_MENU_TYPES.contains(MenuAction.of(event.getType())))
+			&& hintArrowNpc.getIndex() == eventId
+			&& NPC_MENU_TYPES.contains(MenuAction.of(event.getType())))
 		{
 			return;
 		}
@@ -1071,7 +1075,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 		}
 		else if (config.swapFairyRingMode() != FairyRingMode.OFF && config.swapFairyRingMode() != FairyRingMode.ZANARIS
-				&& (option.equals("zanaris") || option.equals("configure") || option.equals("tree")))
+			&& (option.equals("zanaris") || option.equals("configure") || option.equals("tree")))
 		{
 			if (config.swapFairyRingMode() == FairyRingMode.LAST_DESTINATION)
 			{
@@ -1188,6 +1192,36 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else if (config.swapNexus() && target.contains("portal nexus"))
 		{
 			swap(client, "teleport menu", option, target, true);
+		}
+
+		if (config.getTempConstruction() && buildingMode)
+		{
+			if (event.getType() == WALK.getId())
+			{
+				MenuEntry[] menuEntries = client.getMenuEntries();
+				MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
+				menuEntry.setType(MenuAction.WALK.getId() + MENU_ACTION_DEPRIORITIZE_OFFSET);
+				client.setMenuEntries(menuEntries);
+			}
+
+			swap(client, "Build", option, target);
+
+			MenuEntry[] entries = client.getMenuEntries();
+			for (int i = entries.length - 1; i >= 0; i--)
+			{
+				for (String temp : config.getTempConstructionItems().split(","))
+				{
+					if (temp.equalsIgnoreCase(Text.removeTags(entries[i].getTarget())))
+					{
+						if (entries[i].getType() == 3 || entries[i].getType() == 1002)
+						{
+							entries = ArrayUtils.remove(entries, i);
+							i--;
+						}
+					}
+				}
+			}
+			client.setMenuEntries(entries);
 		}
 	}
 
@@ -1409,11 +1443,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return location.getRegionID() == PURO_PURO_REGION_ID;
 		}
 	}
+	//todo re-enable when fixed.
 
-	private void loadConstructionIDs(String from)
+/*	private void loadConstructionIDs(String from)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN
-				|| Strings.isNullOrEmpty(from) && leftClickConstructionIDs.isEmpty())
+			|| Strings.isNullOrEmpty(from) && leftClickConstructionIDs.isEmpty())
 		{
 			return;
 		}
@@ -1430,8 +1465,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		if (config.getEasyConstruction() &&
-				!Strings.isNullOrEmpty(from) &&
-				buildingMode)
+			!Strings.isNullOrEmpty(from) &&
+			buildingMode)
 		{
 			for (String s : Text.fromCSV(from))
 			{
@@ -1443,13 +1478,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 				}
 
 				if (menuManager.toggleLeftClick("build", id, false)
-						|| menuManager.toggleLeftClick("remove", id, false))
+					|| menuManager.toggleLeftClick("remove", id, false))
 				{
 					leftClickConstructionIDs.add(id);
 				}
 			}
 		}
-	}
+	}*/
 
 	void startShift()
 	{
