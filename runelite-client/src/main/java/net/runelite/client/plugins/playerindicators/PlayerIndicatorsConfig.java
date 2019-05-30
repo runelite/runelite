@@ -64,7 +64,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean highlightFriends()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -108,7 +108,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean highlightTeamMembers()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -196,7 +196,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean showClanRanks()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -350,7 +350,7 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	default boolean highlightCallers()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(

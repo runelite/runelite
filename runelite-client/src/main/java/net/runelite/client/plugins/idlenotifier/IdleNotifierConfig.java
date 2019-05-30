@@ -146,12 +146,12 @@ public interface IdleNotifierConfig extends Config
 		name = "PKer Notifier",
 		position = 9,
 		description = "Notifies if an attackable player based on your level range appears on screen.",
-		group = "pvp",
+		group = "PvP",
 		warning = "This will not notify you if the player is in your cc or is online on your friends list."
 	)
 	default boolean notifyPkers()
 	{
-		return true;
+		return false;
 	}
 
 }

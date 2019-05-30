@@ -54,8 +54,8 @@ import net.runelite.client.plugins.zulrah.phase.ZulrahPhase;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
-	name = "Zulrah",
-	description = "Overlays to assist with killing Zulrah",
+	name = "Zulrah Helper",
+	description = "Shows tiles on where to stand during the phases and what prayer to use.",
 	tags = {"zulrah", "boss", "helper"},
 	type = PluginType.PVM
 )
