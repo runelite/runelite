@@ -120,7 +120,7 @@ public class SotetsegHandler extends RoomHandler
 			Map<Projectile, String> projectileMap = new HashMap<>();
 			for (Projectile p : soteyProjectiles.keySet())
 			{
-				final int ticksRemaining = p.getRemainingCycles()/30;
+				final int ticksRemaining = p.getRemainingCycles() / 30;
 				int id = p.getId();
 				String countdownStr;
 				if (id == 1607)

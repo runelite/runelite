@@ -91,7 +91,8 @@ class NyloOverlay extends Overlay
 				else if (name.equals("Nylocas Toxobolos"))
 				{
 					toxobolos++;
-				} else if (name.equals("Nylocas Ischyros"))
+				}
+				else if (name.equals("Nylocas Ischyros"))
 				{
 					ischyros++;
 				}
