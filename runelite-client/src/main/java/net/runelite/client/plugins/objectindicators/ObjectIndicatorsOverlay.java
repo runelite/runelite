@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.objectindicators;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -36,7 +38,6 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 class ObjectIndicatorsOverlay extends Overlay
 {
@@ -84,15 +85,27 @@ class ObjectIndicatorsOverlay extends Overlay
 
 			if (polygon != null)
 			{
-				OverlayUtil.renderPolygon(graphics, polygon, config.markerColor());
+				renderPoly(graphics, polygon, config.markerColor(), config.stroke(), config.alpha());
 			}
 
 			if (polygon2 != null)
 			{
-				OverlayUtil.renderPolygon(graphics, polygon2, config.markerColor());
+				renderPoly(graphics, polygon2, config.markerColor(), config.stroke(), config.alpha());
 			}
 		}
 
 		return null;
+	}
+
+	private void renderPoly(Graphics2D graphics, Polygon polygon, Color color, int stroke, int alpha)
+	{
+		if (polygon != null)
+		{
+			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 255));
+			graphics.setStroke(new BasicStroke(stroke));
+			graphics.draw(polygon);
+			graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha));
+			graphics.fill(polygon);
+		}
 	}
 }
