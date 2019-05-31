@@ -64,13 +64,23 @@ public interface MouseHighlightConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(position = 3, keyName = "hideSpells", name = "Spellbook", description = "Hides vanilla client tooltips in the spellbook")
+	@ConfigItem(
+		position = 3,
+		keyName = "hideSpells",
+		name = "Spellbook",
+		description = "Hides vanilla client tooltips in the spellbook"
+	)
 	default boolean shouldHideSpells()
 	{
 		return false;
 	}
 
-	@ConfigItem(position = 4, keyName = "hideCombat", name = "Combat", description = "Hides vanilla client tooltips in the combat menu")
+	@ConfigItem(
+		position = 4,
+		keyName = "hideCombat",
+		name = "Combat",
+		description = "Hides vanilla client tooltips in the combat menu"
+	)
 	default boolean shouldHideCombat()
 	{
 		return false;
