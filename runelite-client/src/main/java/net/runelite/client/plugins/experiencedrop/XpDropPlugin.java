@@ -350,8 +350,12 @@ public class XpDropPlugin extends Plugin
 
 		final String eventName = e.getEventName();
 
+		if (eventName.equals("newXpDrop"))
+		{
+			damage = 0;
+		}
 		// Handles Fake XP drops (Ironman, DMM Cap, 200m xp, etc)
-		if (eventName.equals("fakeXpDrop"))
+		else if (eventName.equals("fakeXpDrop"))
 		{
 			final int[] intStack = client.getIntStack();
 			final int intStackSize = client.getIntStackSize();

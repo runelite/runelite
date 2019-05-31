@@ -84,6 +84,8 @@ LABEL55:
 LABEL70:
    jump                   LABEL508
 LABEL71:
+   sconst                 "newXpDrop"
+   runelite_callback
    iconst                 10
    stat_xp               
    iload                  25
