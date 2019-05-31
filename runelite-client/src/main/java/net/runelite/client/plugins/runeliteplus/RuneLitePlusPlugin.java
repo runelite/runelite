@@ -33,6 +33,7 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import io.sentry.Sentry;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
@@ -155,6 +156,11 @@ public class RuneLitePlusPlugin extends Plugin
 		{
 			ClientUI.currentPresenceName = ("RuneLitePlus");
 			ClientUI.frame.setTitle(ClientUI.currentPresenceName);
+		}
+
+		if (config.logOpt())
+		{
+			Sentry.init("https://f0ed76be2fe847f8b9eb3620fa55d729@sentry.io/1468399?stacktrace.app.packages=net.runelite.client");
 		}
 
 		if (config.customPresence())

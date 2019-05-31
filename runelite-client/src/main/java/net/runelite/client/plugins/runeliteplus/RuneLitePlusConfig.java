@@ -81,4 +81,15 @@ public interface RuneLitePlusConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "logOpt",
+			name = "Send logs",
+			description = "Send logs to help us analyze errors",
+			position = 4
+	)
+	default boolean logOpt()
+	{
+		return false;
+	}
 }
