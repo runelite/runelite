@@ -126,7 +126,8 @@ class MouseHighlightOverlay extends Overlay
 			}
 		}
 
-		if (widget == null && !config.mainTooltip()){
+		if (widget == null && !config.mainTooltip())
+		{
 			return null;
 		}
 
