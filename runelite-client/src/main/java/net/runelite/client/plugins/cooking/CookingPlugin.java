@@ -54,13 +54,13 @@ public class CookingPlugin extends Plugin
 	private CookingConfig config;
 
 	@Inject
-	private CookingOverlay cookingOverlay;
+	private CookingOverlay overlay;
 
 	@Inject
 	private OverlayManager overlayManager;
 
 	@Getter(AccessLevel.PACKAGE)
-	private CookingSession cookingSession;
+	private CookingSession session;
 
 	@Provides
 	CookingConfig getConfig(ConfigManager configManager)
@@ -71,31 +71,31 @@ public class CookingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		cookingSession = null;
-		overlayManager.add(cookingOverlay);
+		session = null;
+		overlayManager.add(overlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(cookingOverlay);
-		cookingSession = null;
+		overlayManager.remove(overlay);
+		session = null;
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (cookingSession == null || config.statTimeout() == 0)
+		if (session == null || config.statTimeout() == 0)
 		{
 			return;
 		}
 
 		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(cookingSession.getLastCookingAction(), Instant.now());
+		Duration sinceCut = Duration.between(session.getLastCookingAction(), Instant.now());
 
 		if (sinceCut.compareTo(statTimeout) >= 0)
 		{
-			cookingSession = null;
+			session = null;
 		}
 	}
 
@@ -116,24 +116,24 @@ public class CookingPlugin extends Plugin
 			|| message.startsWith("You cook")
 			|| message.startsWith("You squeeze the grapes into the jug"))
 		{
-			if (cookingSession == null)
+			if (session == null)
 			{
-				cookingSession = new CookingSession();
+				session = new CookingSession();
 			}
 
-			cookingSession.updateLastCookingAction();
-			cookingSession.increaseCookAmount();
+			session.updateLastCookingAction();
+			session.increaseCookAmount();
 
 		}
 		else if (message.startsWith("You accidentally burn"))
 		{
-			if (cookingSession == null)
+			if (session == null)
 			{
-				cookingSession = new CookingSession();
+				session = new CookingSession();
 			}
 
-			cookingSession.updateLastCookingAction();
-			cookingSession.increaseBurnAmount();
+			session.updateLastCookingAction();
+			session.increaseBurnAmount();
 		}
 	}
 }
