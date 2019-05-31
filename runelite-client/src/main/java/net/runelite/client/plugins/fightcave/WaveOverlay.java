@@ -35,9 +35,9 @@ import javax.inject.Inject;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 class WaveOverlay extends Overlay
 {
@@ -97,25 +97,30 @@ class WaveOverlay extends Overlay
 			.color(HEADER_COLOR)
 			.build());
 
-		for (LineComponent line : buildWaveLines(waveContents))
+		TableComponent tableComponent = new TableComponent();
+
+		for (String line : buildWaveLines(waveContents))
 		{
-			panelComponent.getChildren().add(line);
+			tableComponent.addRow(line);
+		}
+
+		if (!tableComponent.isEmpty())
+		{
+			panelComponent.getChildren().add(tableComponent);
 		}
 	}
 
-	private static Collection<LineComponent> buildWaveLines(final Map<WaveMonster, Integer> wave)
+	private static Collection<String> buildWaveLines(final Map<WaveMonster, Integer> wave)
 	{
 		final List<Map.Entry<WaveMonster, Integer>> monsters = new ArrayList<>(wave.entrySet());
 		monsters.sort(Map.Entry.comparingByKey());
-		final List<LineComponent> outputLines = new ArrayList<>();
+		final List<String> outputLines = new ArrayList<>();
 
 		for (Map.Entry<WaveMonster, Integer> monsterEntry : monsters)
 		{
 			final WaveMonster monster = monsterEntry.getKey();
 			final int quantity = monsterEntry.getValue();
-			final LineComponent line = LineComponent.builder()
-				.left(FightCavePlugin.formatMonsterQuantity(monster, quantity))
-				.build();
+			final String line = FightCavePlugin.formatMonsterQuantity(monster, quantity);
 
 			outputLines.add(line);
 		}

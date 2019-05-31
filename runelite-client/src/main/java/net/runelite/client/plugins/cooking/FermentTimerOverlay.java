@@ -38,9 +38,10 @@ import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 @Slf4j
 class FermentTimerOverlay extends Overlay
@@ -78,10 +79,15 @@ class FermentTimerOverlay extends Overlay
 				.text("Making Wine")
 				.color(Color.GREEN)
 				.build());
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Ferments in: ")
-				.right(String.valueOf(INITIAL_TIME - Duration.between(session.getLastWineMakingAction(), Instant.now()).getSeconds()))
-				.build());
+
+			TableComponent tableComponent = new TableComponent();
+			tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+			tableComponent.addRow("Ferments in:", String.valueOf(INITIAL_TIME - Duration.between(session.getLastWineMakingAction(), Instant.now()).getSeconds()));
+
+			if (!tableComponent.isEmpty())
+			{
+				panelComponent.getChildren().add(tableComponent);
+			}
 		}
 		else
 		{

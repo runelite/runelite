@@ -51,8 +51,10 @@ import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.util.ColorUtil;
 
 public class XpGlobesOverlay extends Overlay
 {
@@ -248,16 +250,11 @@ public class XpGlobesOverlay extends Overlay
 		xpTooltip.setPreferredLocation(new java.awt.Point(x, y));
 		xpTooltip.setPreferredSize(new Dimension(TOOLTIP_RECT_SIZE_X, 0));
 
-		xpTooltip.getChildren().add(LineComponent.builder()
-			.left(skillName)
-			.right(skillLevel)
-			.build());
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 
-		xpTooltip.getChildren().add(LineComponent.builder()
-			.left("Current XP:")
-			.leftColor(Color.ORANGE)
-			.right(skillCurrentXp)
-			.build());
+		tableComponent.addRow(skillName, skillLevel);
+		tableComponent.addRow(ColorUtil.prependColorTag("Current XP:", Color.ORANGE), skillCurrentXp);
 
 		if (goalXp > mouseOverSkill.getCurrentXp())
 		{
@@ -267,41 +264,25 @@ public class XpGlobesOverlay extends Overlay
 			if (actionsLeft != Integer.MAX_VALUE)
 			{
 				String actionsLeftString = decimalFormat.format(actionsLeft);
-				xpTooltip.getChildren().add(LineComponent.builder()
-					.left(xpActionType.getLabel() + " left:")
-					.leftColor(Color.ORANGE)
-					.right(actionsLeftString)
-					.build());
+
+				tableComponent.addRow(ColorUtil.prependColorTag(xpActionType.getLabel() + " left:", Color.ORANGE), actionsLeftString);
 			}
 
 			int xpLeft = goalXp - mouseOverSkill.getCurrentXp();
 			String skillXpToLvl = decimalFormat.format(xpLeft);
-			xpTooltip.getChildren().add(LineComponent.builder()
-				.left("XP left:")
-				.leftColor(Color.ORANGE)
-				.right(skillXpToLvl)
-				.build());
+			tableComponent.addRow(ColorUtil.prependColorTag("XP left:", Color.ORANGE), skillXpToLvl);
 
 			int xpHr = xpTrackerService.getXpHr(mouseOverSkill.getSkill());
 			if (xpHr != 0)
 			{
 				String xpHrString = decimalFormat.format(xpHr);
-				xpTooltip.getChildren().add(LineComponent.builder()
-					.left("XP per hour:")
-					.leftColor(Color.ORANGE)
-					.right(xpHrString)
-					.build());
+				tableComponent.addRow(ColorUtil.prependColorTag("XP per hour:", Color.ORANGE), xpHrString);
 			}
+		}
 
-			if (config.enableTimeToLevel())
-			{
-				String timeLeft = xpTrackerService.getTimeTillGoal(mouseOverSkill.getSkill());
-				xpTooltip.getChildren().add(LineComponent.builder()
-					.left("Time left:")
-					.leftColor(Color.ORANGE)
-					.right(timeLeft)
-					.build());
-			}
+		if (!tableComponent.isEmpty())
+		{
+			xpTooltip.getChildren().add(tableComponent);
 		}
 
 		xpTooltip.render(graphics);

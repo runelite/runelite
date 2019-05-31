@@ -38,8 +38,10 @@ import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.util.ColorUtil;
 
 public class BarrowsBrotherSlainOverlay extends Overlay
 {
@@ -75,24 +77,23 @@ public class BarrowsBrotherSlainOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().clear();
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
 			final boolean brotherSlain = client.getVar(brother.getKilledVarbit()) > 0;
 			String slain = brotherSlain ? "\u2713" : "\u2717";
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left(brother.getName())
-				.right(slain)
-				.rightColor(brotherSlain ? Color.GREEN : Color.RED)
-				.build());
+			tableComponent.addRow(brother.getName(), ColorUtil.prependColorTag(slain, brotherSlain ? Color.RED : Color.GREEN));
 		}
 
 		float rewardPercent = client.getVar(Varbits.BARROWS_REWARD_POTENTIAL) / 10.0f;
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Potential")
-			.right(rewardPercent != 0 ? rewardPercent + "%" : "0%")
-			.rightColor(rewardPercent >= 73.0f && rewardPercent <= 88.0f ? Color.GREEN : rewardPercent < 65.6f ? Color.WHITE : Color.YELLOW)
-			.build());
+		tableComponent.addRow("Potential", ColorUtil.prependColorTag(rewardPercent != 0 ? rewardPercent + "%" : "0%", rewardPercent >= 73.0f && rewardPercent <= 88.0f ? Color.GREEN : rewardPercent < 65.6f ? Color.WHITE : Color.YELLOW));
+
+		if (!tableComponent.isEmpty())
+		{
+			panelComponent.getChildren().add(tableComponent);
+		}
 
 		return panelComponent.render(graphics);
 	}

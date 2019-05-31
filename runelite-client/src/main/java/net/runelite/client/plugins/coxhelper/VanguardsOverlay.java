@@ -28,28 +28,27 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.util.ColorUtil;
 
 public class VanguardsOverlay extends Overlay
 {
 
-	private final Client client;
 	private final CoxPlugin plugin;
 	private final CoxConfig config;
 	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	VanguardsOverlay(Client client, CoxPlugin plugin, CoxConfig config)
+	VanguardsOverlay(CoxPlugin plugin, CoxConfig config)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.DYNAMIC);
 		setPosition(OverlayPosition.DETACHED);
-		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
 	}
@@ -67,21 +66,19 @@ public class VanguardsOverlay extends Overlay
 					.text("Vanguards")
 					.color(Color.pink)
 					.build());
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Range")
-					.right(Integer.toString(plugin.getRangeVangHP()))
-					.leftColor(Color.green)
-					.build());
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Mage")
-					.right(Integer.toString(plugin.getMageVangHP()))
-					.leftColor(Color.blue)
-					.build());
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Melee")
-					.right(Integer.toString(plugin.getMeleeVangHP()))
-					.leftColor(Color.red)
-					.build());
+
+				TableComponent tableComponent = new TableComponent();
+				tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+
+				tableComponent.addRow(ColorUtil.prependColorTag("Range", Color.GREEN), Integer.toString(plugin.getRangeVangHP()));
+				tableComponent.addRow(ColorUtil.prependColorTag("Mage", Color.BLUE), Integer.toString(plugin.getMageVangHP()));
+				tableComponent.addRow(ColorUtil.prependColorTag("Melee", Color.RED), Integer.toString(plugin.getMeleeVangHP()));
+
+				if (!tableComponent.isEmpty())
+				{
+					panelComponent.getChildren().add(tableComponent);
+				}
+
 				return panelComponent.render(graphics);
 			}
 		}

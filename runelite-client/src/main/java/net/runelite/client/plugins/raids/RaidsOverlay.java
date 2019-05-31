@@ -51,9 +51,11 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
@@ -245,6 +247,10 @@ public class RaidsOverlay extends Overlay
 			.text(displayLayout)
 			.color(color)
 			.build());
+
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+
 		color = Color.ORANGE;
 		if (sharable || config.alwaysShowWorldAndCC())
 		{
@@ -254,12 +260,8 @@ public class RaidsOverlay extends Overlay
 				clanOwner = "Open CC tab...";
 				color = Color.RED;
 			}
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("W" + client.getWorld())
-				.right("" + clanOwner)
-				.leftColor(Color.ORANGE)
-				.rightColor(color)
-				.build());
+
+			tableComponent.addRow(ColorUtil.prependColorTag("W" + client.getWorld(), Color.ORANGE), ColorUtil.prependColorTag("" + clanOwner, color));
 		}
 
 		int bossMatches = 0;
@@ -308,11 +310,7 @@ public class RaidsOverlay extends Overlay
 						}
 					}
 
-					panelComponent.getChildren().add(LineComponent.builder()
-						.left(config.showRecommendedItems() ? "" : room.getType().getName())
-						.right(bossName)
-						.rightColor(color)
-						.build());
+					tableComponent.addRow(config.showRecommendedItems() ? "" : room.getType().getName(), ColorUtil.prependColorTag(bossName, color));
 
 					break;
 
@@ -336,50 +334,36 @@ public class RaidsOverlay extends Overlay
 						color = config.tightropeColor();
 					}
 
-					panelComponent.getChildren().add(LineComponent.builder()
-						.left(config.showRecommendedItems() ? "" : room.getType().getName())
-						.right(puzzleName)
-						.rightColor(color)
-						.build());
+					tableComponent.addRow(config.showRecommendedItems() ? "" : room.getType().getName(), ColorUtil.prependColorTag(puzzleName, color));
+
 					break;
 				case FARMING:
 					if (config.showScavsFarms())
 					{
-						panelComponent.getChildren().add(LineComponent.builder()
-							.left("")
-							.right(room.getType().getName())
-							.rightColor(new Color(181, 230, 29)) //yellow green
-							.build());
+						tableComponent.addRow("", ColorUtil.prependColorTag(room.getType().getName(), new Color(181, 230, 29)));
 					}
 					break;
 				case SCAVENGERS:
 					if (config.scavsBeforeOlm() && roomCount == lastScavs)
 					{
-						panelComponent.getChildren().add(LineComponent.builder()
-							.left(config.showRecommendedItems() ? "" : "OlmPrep")
-							.right("Scavs")
-							.rightColor(config.scavPrepColor())
-							.build());
+						tableComponent.addRow(config.showRecommendedItems() ? "" : "OlmPrep", ColorUtil.prependColorTag("Scavs", config.scavPrepColor()));
 					}
 					else if (config.scavsBeforeIce() && scavsBeforeIceRooms.contains(roomCount))
 					{
-						panelComponent.getChildren().add(LineComponent.builder()
-							.left(config.showRecommendedItems() ? "" : "IcePrep")
-							.right("Scavs")
-							.rightColor(config.scavPrepColor())
-							.build());
+						tableComponent.addRow(config.showRecommendedItems() ? "" : "IcePrep", ColorUtil.prependColorTag("Scavs", config.scavPrepColor()));
 					}
 					else if (config.showScavsFarms())
 					{
-						panelComponent.getChildren().add(LineComponent.builder()
-							.left("")
-							.right("Scavs")
-							.rightColor(new Color(181, 230, 29)) //yellow green
-							.build());
+						tableComponent.addRow("", ColorUtil.prependColorTag("Scavs", new Color(181, 230, 29)));
 					}
 					break;
 			}
 			roomCount++;
+		}
+
+		if (!tableComponent.isEmpty())
+		{
+			panelComponent.getChildren().add(tableComponent);
 		}
 
 		Dimension panelDims = panelComponent.render(graphics);

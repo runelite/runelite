@@ -40,9 +40,10 @@ import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 class SmeltingOverlay extends Overlay
 {
@@ -94,26 +95,25 @@ class SmeltingOverlay extends Overlay
 		int actions = xpTrackerService.getActions(Skill.SMITHING);
 		if (actions > 0)
 		{
+			TableComponent tableComponent = new TableComponent();
+			tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+
 			if (plugin.getSession().getBarsSmelted() > 0)
 			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Bars:")
-					.right(Integer.toString(session.getBarsSmelted()))
-					.build());
+				tableComponent.addRow("Bars:", Integer.toString(session.getBarsSmelted()));
 			}
 			if (plugin.getSession().getCannonBallsSmelted() > 0)
 			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Cannonballs:")
-					.right(Integer.toString(session.getCannonBallsSmelted()))
-					.build());
+				tableComponent.addRow("Cannonballs:", Integer.toString(session.getCannonBallsSmelted()));
 			}
 			if (actions > 2)
 			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Actions/hr:")
-					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.SMITHING)))
-					.build());
+				tableComponent.addRow("Actions/hr:", Integer.toString(xpTrackerService.getActionsHr(Skill.SMITHING)));
+			}
+
+			if (!tableComponent.isEmpty())
+			{
+				panelComponent.getChildren().add(tableComponent);
 			}
 		}
 

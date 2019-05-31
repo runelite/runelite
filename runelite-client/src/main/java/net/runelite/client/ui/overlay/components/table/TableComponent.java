@@ -290,6 +290,19 @@ public class TableComponent implements LayoutableRenderableEntity
 		return wrapped.toString().split("\n");
 	}
 
+	public boolean isEmpty()
+	{
+		return columns.size() == 0 || rows.size() == 0;
+	}
+
+	private void ensureColumnSize(final int size)
+	{
+		while (size > columns.size())
+		{
+			columns.add(TableElement.builder().build());
+		}
+	}
+
 	private static int getAlignedPosition(final String str, final TableAlignment alignment, final int columnWidth, final FontMetrics metrics)
 	{
 		final int stringWidth = getTextWidth(metrics, str);
@@ -326,6 +339,21 @@ public class TableComponent implements LayoutableRenderableEntity
 			row.getRowColor(),
 			column.getColor(),
 			defaultColor);
+	}
+
+	public void setColumnAlignment(final int col, final TableAlignment alignment)
+	{
+		assert columns.size() > col;
+		columns.get(col).setAlignment(alignment);
+	}
+
+	public void setColumnAlignments(@Nonnull final TableAlignment... alignments)
+	{
+		ensureColumnSize(alignments.length);
+		for (int i = 0; i < alignments.length; i++)
+		{
+			setColumnAlignment(i, alignments[i]);
+		}
 	}
 
 	/**
@@ -429,10 +457,5 @@ public class TableComponent implements LayoutableRenderableEntity
 		{
 			addColumn(col);
 		}
-	}
-
-	public boolean isEmpty()
-	{
-		return columns.size() == 0 || rows.size() == 0;
 	}
 }
