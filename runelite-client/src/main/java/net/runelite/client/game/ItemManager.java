@@ -412,6 +412,20 @@ public class ItemManager
 		return price;
 	}
 
+	public int getAlchValue(ItemComposition composition)
+	{
+		if (composition.getId() == ItemID.COINS_995)
+		{
+			return 1;
+		}
+		if (composition.getId() == ItemID.PLATINUM_TOKEN)
+		{
+			return 1000;
+		}
+
+		return (int) Math.max(1, composition.getPrice() * HIGH_ALCHEMY_CONSTANT);
+	}
+
 	public int getAlchValue(int itemID)
 	{
 		if (itemID == ItemID.COINS_995)
