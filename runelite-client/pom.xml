@@ -196,7 +196,7 @@
 		<dependency>
 			<groupId>net.runelit</groupId>
 			<artifactId>client-patch</artifactId>
-			<version>1.5.25.3</version>
+			<version>1.5.26.2</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
