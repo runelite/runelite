@@ -430,4 +430,9 @@ public class TableComponent implements LayoutableRenderableEntity
 			addColumn(col);
 		}
 	}
+
+	public boolean isEmpty()
+	{
+		return columns.size() == 0 || rows.size() == 0;
+	}
 }
