@@ -35,6 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.events.ClanMemberJoined;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetHiddenChanged;
@@ -125,23 +126,28 @@ public class BanListPlugin extends Plugin
 
 	/**
 	 * Event to keep making sure player names are highlighted red in clan chat, since the red name goes away frequently
-	 *
-	 * @param widgetHiddenChanged
 	 */
 	@Subscribe
 	public void onWidgetHiddenChanged(WidgetHiddenChanged widgetHiddenChanged)
 	{
-		if (config.highlightInClan())
+		if (client.getGameState() != GameState.LOGGED_IN
+			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
+			|| client.getViewportWidget() == null
+			|| !config.highlightInClan())
 		{
-			clientThread.invokeLater(() ->
-			{
-				if (!client.getWidget(WidgetInfo.CLAN_CHAT).isHidden())
-				{
-					highlightRedInCC();
-				}
-			});
+			return;
 		}
+
+		clientThread.invokeLater(() ->
+		{
+			if (!client.getWidget(WidgetInfo.CLAN_CHAT).isHidden())
+			{
+				highlightRedInCC();
+			}
+		});
 	}
+
+
 
 	@Subscribe
 	public void onClanMemberJoined(ClanMemberJoined event)
@@ -183,8 +189,6 @@ public class BanListPlugin extends Plugin
 
 	/**
 	 * Compares player name to everything in the ban lists
-	 *
-	 * @param nameToBeChecked
 	 */
 	private ListType checkBanList(String nameToBeChecked)
 	{
@@ -217,9 +221,6 @@ public class BanListPlugin extends Plugin
 
 	/**
 	 * Sends a warning to our player, notifying them that a player is on a ban list
-	 *
-	 * @param playerName
-	 * @param listType
 	 */
 	private void sendWarning(String playerName, ListType listType)
 	{
