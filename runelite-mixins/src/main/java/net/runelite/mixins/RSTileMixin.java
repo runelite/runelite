@@ -26,12 +26,10 @@ package net.runelite.mixins;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.api.Actor;
 import net.runelite.api.CollisionData;
 import net.runelite.api.CollisionDataFlag;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
-import net.runelite.api.GameObject;
 import net.runelite.api.GroundObject;
 import net.runelite.api.Item;
 import net.runelite.api.ItemLayer;
@@ -59,22 +57,24 @@ import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSActor;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSDeque;
 import net.runelite.rs.api.RSGameObject;
+import net.runelite.rs.api.RSGraphicsObject;
 import net.runelite.rs.api.RSItem;
 import net.runelite.rs.api.RSItemLayer;
 import net.runelite.rs.api.RSNode;
+import net.runelite.rs.api.RSProjectile;
+import net.runelite.rs.api.RSRenderable;
 import net.runelite.rs.api.RSTile;
+import org.slf4j.Logger;
 
 @Mixin(RSTile.class)
 public abstract class RSTileMixin implements RSTile
 {
 	@Shadow("clientInstance")
 	private static RSClient client;
-
-	@Inject
-	private static GameObject lastGameObject;
 
 	@Inject
 	private static RSDeque[][][] lastGroundItems = new RSDeque[Constants.MAX_Z][Constants.SCENE_SIZE][Constants.SCENE_SIZE];
@@ -89,7 +89,7 @@ public abstract class RSTileMixin implements RSTile
 	private GroundObject previousGroundObject;
 
 	@Inject
-	private GameObject[] previousGameObjects;
+	private RSGameObject[] previousGameObjects;
 
 	@Inject
 	@Override
@@ -222,55 +222,82 @@ public abstract class RSTileMixin implements RSTile
 
 		if (previousGameObjects == null)
 		{
-			previousGameObjects = new GameObject[5];
+			previousGameObjects = new RSGameObject[5];
 		}
 
 		// Previous game object
-		GameObject previous = previousGameObjects[idx];
+		RSGameObject previous = previousGameObjects[idx];
 
 		// GameObject that was changed.
 		RSGameObject current = (RSGameObject) getGameObjects()[idx];
-
-		// Last game object
-		GameObject last = lastGameObject;
-
-		// Update last game object
-		lastGameObject = current;
 
 		// Update previous object to current
 		previousGameObjects[idx] = current;
 
 		// Duplicate event, return
-		if (current != null && current.equals(last))
+		if (current == previous)
 		{
 			return;
 		}
 
-		// Characters seem to generate a constant stream of new GameObjects
-		if (current == null || !(current.getRenderable() instanceof Actor))
+		// actors, projectiles, and graphics objects are added and removed from the scene each frame as GameObjects,
+		// so ignore them.
+		boolean currentInvalid = false, prevInvalid = false;
+		if (current != null)
 		{
-			if (current == null && previous != null)
+			RSRenderable renderable = current.getRenderable();
+			currentInvalid = renderable instanceof RSActor || renderable instanceof RSProjectile || renderable instanceof RSGraphicsObject;
+		}
+
+		if (previous != null)
+		{
+			RSRenderable renderable = previous.getRenderable();
+			prevInvalid = renderable instanceof RSActor || renderable instanceof RSProjectile || renderable instanceof RSGraphicsObject;
+		}
+
+		Logger logger = client.getLogger();
+		if (current == null)
+		{
+			if (prevInvalid)
 			{
-				GameObjectDespawned gameObjectDespawned = new GameObjectDespawned();
-				gameObjectDespawned.setTile(this);
-				gameObjectDespawned.setGameObject(previous);
-				client.getCallbacks().post(gameObjectDespawned);
+				return;
 			}
-			else if (current != null && previous == null)
+
+			logger.trace("Game object despawn: {}", previous.getId());
+
+			GameObjectDespawned gameObjectDespawned = new GameObjectDespawned();
+			gameObjectDespawned.setTile(this);
+			gameObjectDespawned.setGameObject(previous);
+			client.getCallbacks().post(gameObjectDespawned);
+		}
+		else if (previous == null)
+		{
+			if (currentInvalid)
 			{
-				GameObjectSpawned gameObjectSpawned = new GameObjectSpawned();
-				gameObjectSpawned.setTile(this);
-				gameObjectSpawned.setGameObject(current);
-				client.getCallbacks().post(gameObjectSpawned);
+				return;
 			}
-			else if (current != null && previous != null)
+
+			logger.trace("Game object spawn: {}", current.getId());
+
+			GameObjectSpawned gameObjectSpawned = new GameObjectSpawned();
+			gameObjectSpawned.setTile(this);
+			gameObjectSpawned.setGameObject(current);
+			client.getCallbacks().post(gameObjectSpawned);
+		}
+		else
+		{
+			if (currentInvalid && prevInvalid)
 			{
-				GameObjectChanged gameObjectsChanged = new GameObjectChanged();
-				gameObjectsChanged.setTile(this);
-				gameObjectsChanged.setPrevious(previous);
-				gameObjectsChanged.setGameObject(current);
-				client.getCallbacks().post(gameObjectsChanged);
+				return;
 			}
+
+			logger.trace("Game object change: {} -> {}", previous.getId(), current.getId());
+
+			GameObjectChanged gameObjectsChanged = new GameObjectChanged();
+			gameObjectsChanged.setTile(this);
+			gameObjectsChanged.setPrevious(previous);
+			gameObjectsChanged.setGameObject(current);
+			client.getCallbacks().post(gameObjectsChanged);
 		}
 	}
 
