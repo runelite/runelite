@@ -26,19 +26,14 @@
  */
 package net.runelite.client.plugins.runeliteplus;
 
-
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
-import java.util.Map;
 import javax.inject.Inject;
 import io.sentry.Sentry;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.RuneLiteProperties;
@@ -106,18 +101,29 @@ public class RuneLitePlusPlugin extends Plugin
 		}
 	}
 
-	private static final ImmutableSet<WidgetInfo> buttons = ImmutableSet.of(
-		WidgetInfo.BANK_PIN_1,
-		WidgetInfo.BANK_PIN_2,
-		WidgetInfo.BANK_PIN_3,
-		WidgetInfo.BANK_PIN_4,
-		WidgetInfo.BANK_PIN_5,
-		WidgetInfo.BANK_PIN_6,
-		WidgetInfo.BANK_PIN_7,
-		WidgetInfo.BANK_PIN_8,
-		WidgetInfo.BANK_PIN_9,
-		WidgetInfo.BANK_PIN_0
-	);
+	/* Can't feed this as args to runscript?
+	private static final int[] widgetArgs = new int[]
+		{
+			WidgetInfo.BANK_PIN_EXIT_BUTTON.getId(),
+			WidgetInfo.BANK_PIN_FORGOT_BUTTON.getId(),
+			WidgetInfo.BANK_PIN_1.getId(),
+			WidgetInfo.BANK_PIN_2.getId(),
+			WidgetInfo.BANK_PIN_3.getId(),
+			WidgetInfo.BANK_PIN_4.getId(),
+			WidgetInfo.BANK_PIN_5.getId(),
+			WidgetInfo.BANK_PIN_6.getId(),
+			WidgetInfo.BANK_PIN_7.getId(),
+			WidgetInfo.BANK_PIN_8.getId(),
+			WidgetInfo.BANK_PIN_9.getId(),
+			WidgetInfo.BANK_PIN_0.getId(),
+			WidgetInfo.BANK_PIN_EXIT_BUTTON.getId(),
+			WidgetInfo.BANK_PIN_FORGOT_BUTTON.getId(),
+			WidgetInfo.BANK_PIN_FIRST_ENTERED.getId(),
+			WidgetInfo.BANK_PIN_SECOND_ENTERED.getId(),
+			WidgetInfo.BANK_PIN_THIRD_ENTERED.getId(),
+			WidgetInfo.BANK_PIN_FOURTH_ENTERED.getId(),
+			WidgetInfo.BANK_PIN_INSTRUCTION_TEXT.getId()
+		};*/
 	public static boolean customPresenceEnabled = false;
 	public static final String rlPlusDiscordApp = "560644885250572289";
 	public static final String rlDiscordApp = "409416265891971072";
@@ -148,10 +154,15 @@ public class RuneLitePlusPlugin extends Plugin
 	}
 
 	private RuneLitePlusKeyListener keyListener;
+	private int entered = -1;
+	private int enterIdx;
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		entered = -1;
+		enterIdx = 0;
+
 		if (getConfig(configManager).customPresence())
 		{
 			ClientUI.currentPresenceName = ("RuneLitePlus");
@@ -180,6 +191,11 @@ public class RuneLitePlusPlugin extends Plugin
 	@Subscribe
 	protected void onConfigChanged(ConfigChanged event)
 	{
+		if (!event.getGroup().equals("runeliteplus"))
+		{
+			return;
+		}
+
 		if (event.getKey().equals("customPresence"))
 		{
 			if (config.customPresence())
@@ -205,17 +221,20 @@ public class RuneLitePlusPlugin extends Plugin
 				discordService.close();
 				discordService.init();
 			}
-
-			if (!config.keyboardPin())
-			{
-				keyManager.unregisterKeyListener(keyListener);
-			}
+		}
+		else if (!config.keyboardPin())
+		{
+			entered = -1;
+			enterIdx = 0;
+			keyManager.unregisterKeyListener(keyListener);
 		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		entered = -1;
+		enterIdx = 0;
 		keyManager.unregisterKeyListener(keyListener);
 	}
 
@@ -234,6 +253,7 @@ public class RuneLitePlusPlugin extends Plugin
 			return;
 		}
 		else if (event.getGroupId() != WidgetID.BANK_PIN_GROUP_ID)
+			//|| !Text.standardize(client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText()).equals("bank of gielinor"))
 		{
 			return;
 		}
@@ -245,68 +265,41 @@ public class RuneLitePlusPlugin extends Plugin
 
 	private void handleKey(char c)
 	{
-		if (client.getWidget(WidgetID.BANK_PIN_GROUP_ID, 0) == null)
+		if (client.getWidget(WidgetID.BANK_PIN_GROUP_ID, 0) == null
+			|| !client.getWidget(WidgetInfo.BANK_PIN_TOP_LEFT_TEXT).getText().equals("Bank of Gielinor"))
 		{
 			// log.debug("Key was pressed, but widget wasn't open");
+			entered = -1;
+			enterIdx = 0;
 			keyManager.unregisterKeyListener(keyListener);
+			keyListener = null;
 			return;
 		}
 
-		Map<Character, Widget> buttonMap = new HashMap<>();
-		Widget unknown = null;
+		int num = Character.getNumericValue(c);
 
-		for (WidgetInfo w : buttons)
+	client.runScript(685, num, enterIdx, entered, 13959181, 13959183, 13959184, 13959186, 13959188, 13959190, 13959192, 13959194, 13959196, 13959198, 13959200, 13959202, 13959171, 13959172, 13959173, 13959174, 13959178);
+
+		if (enterIdx == 0)
 		{
-			Widget widget = client.getWidget(w);
-
-			if (widget == null)
-			{
-				// log.debug(w.toString() + " is null, returning early");
-				continue;
-			}
-			else if (widget.getChild(1) == null || widget.getChild(1).isHidden())
-			{
-				// log.debug(widget.getId() + " wasn't null, but either the text was missing or child was null");
-				unknown = widget;
-			}
-			else
-			{
-				try
-				{
-					char number = widget.getChild(1).getText().charAt(0);
-					buttonMap.put(number, widget);
-					// log.debug(number + " is widget " + widget.getId());
-				}
-				catch (IndexOutOfBoundsException e)
-				{
-					// log.debug("There was no text in widget " + widget.getId());
-					unknown = widget;
-				}
-			}
+			entered = num * 1000;
+			enterIdx++;
 		}
-
-		if (unknown != null && buttonMap.size() == 9)
+		else if (enterIdx == 1)
 		{
-			for (char num : numbers)
-			{
-				if (!buttonMap.containsKey(num))
-				{
-					// log.debug(num + " must be the unknown char for widget " + unknown.getId());
-					buttonMap.put(num, unknown);
-				}
-			}
+			entered += num * 100;
+			enterIdx++;
 		}
-
-		if (buttonMap.size() != 10)
+		else if (enterIdx == 2)
 		{
-			// log.debug("We didn't have 10 numbers, rip");
-			return;
+			entered += num * 10;
+			enterIdx++;
 		}
-
-		Widget w = buttonMap.get(c);
-//todo once bytecodes work again, re-enable
-/*
-		client.invokeMenuAction(0, w.getId(), MenuAction.WIDGET_DEFAULT.getId(), 1, "Select", "", w.getCanvasLocation().getX() + 32, w.getCanvasLocation().getY() + 32);
-*/
+		else if (enterIdx == 3)
+		{
+			entered = -1;
+			enterIdx = 0;
+			keyManager.unregisterKeyListener(keyListener);
+		}
 	}
 }

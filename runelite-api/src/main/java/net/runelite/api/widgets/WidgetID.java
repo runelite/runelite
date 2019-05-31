@@ -1075,8 +1075,17 @@ public class WidgetID
 		public static final int WINNINGS = 40;
 	}
 
+	// Also used for many other interfaces!
 	static class BankPin
 	{
+		static final int TOP_LEFT_TEXT = 2;
+		static final int FIRST_ENTERED = 3;
+		static final int SECOND_ENTERED = 4;
+		static final int THIRD_ENTERED = 5;
+		static final int FOURTH_ENTERED = 6;
+		static final int INSTRUCTION_TEXT = 10;
+		static final int EXIT_BUTTON = 13;
+		static final int FORGOT_BUTTON = 15;
 		static final int BUTTON_1 = 16;
 		static final int BUTTON_2 = 18;
 		static final int BUTTON_3 = 20;
