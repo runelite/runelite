@@ -577,6 +577,7 @@ public class CoxPlugin extends Plugin
 
 		if (runTekton)
 		{
+			runVanguards = false;
 			if (Tekton_NPC.getId() == NpcID.TEKTON_ENRAGED || Tekton_NPC.getId() == NpcID.TEKTON_ENRAGED_7544)
 			{
 				enrageStage = true;
@@ -593,6 +594,7 @@ public class CoxPlugin extends Plugin
 
 		if (runGuard)
 		{
+			runVanguards = false;
 			if (guardTick == -1)
 			{
 				if (Guard1_NPC != null)
@@ -644,17 +646,19 @@ public class CoxPlugin extends Plugin
 					case NpcID.VANGUARD_7526:
 						break;
 				}
-				if (meleeVangHP <= 0 && mageVangHP <= 0 && rangeVangHP <= 0)
-				{
-					runVanguards = false;
-				}
+			}
+			if (mageVangHP == 0 && meleeVangHP == 0 && rangeVangHP == 0)
+			{
+				runVanguards = false;
 			}
 		}
 
 		if (runOlm)
 		{
+			runVanguards = false;
 			Olm_Crystals.clear();
 			Olm_Heal.clear();
+			Olm_TP.clear();
 			client.clearHintArrow();
 			sleepcount--;
 
