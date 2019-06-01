@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
-import com.google.common.collect.Lists;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -38,6 +37,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
@@ -92,7 +93,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	@Override
 	public WorldPoint[] getLocations()
 	{
-		return Lists.transform(digLocations, HotColdLocation::getWorldPoint).toArray(new WorldPoint[0]);
+		return digLocations.stream().map(hotColdLocation -> hotColdLocation.getWorldPoint()).collect(Collectors.toList()).toArray(new WorldPoint[0]);
 	}
 
 	@Override
