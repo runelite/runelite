@@ -84,7 +84,7 @@ class FishingSpotOverlay extends Overlay
 			return null;
 		}
 
-		List<WorldPoint> rendered = new ArrayList<>();
+		List<NPC> rendered = new ArrayList<>();
 		for (NPC npc : plugin.getFishingSpots())
 		{
 			FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
@@ -101,9 +101,17 @@ class FishingSpotOverlay extends Overlay
 
 			Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
 
-			// If a polygon is already on the same tile, dont render
-			if (rendered.contains(npc.getWorldLocation()))
+			// If a polygon of the same type is already on the same tile, dont render
+			boolean contains = false;
+			for (NPC npc1 : rendered)
 			{
+				FishingSpot spot1 = FishingSpot.getSPOTS().get(npc1.getId());
+				if (npc1.getWorldLocation().equals(npc.getWorldLocation()) && spot.getFishSpriteId() == spot1.getFishSpriteId())
+				{
+					contains = true;
+				}
+			}
+			if (contains) {
 				continue;
 			}
 
@@ -111,13 +119,14 @@ class FishingSpotOverlay extends Overlay
 			int duplicates = 0;
 			for (NPC npc1 : plugin.getFishingSpots())
 			{
-				if (npc1.getWorldLocation().equals(npc.getWorldLocation()))
+				FishingSpot spot1 = FishingSpot.getSPOTS().get(npc1.getId());
+				if (npc1.getWorldLocation().equals(npc.getWorldLocation()) && spot.getFishSpriteId() == spot1.getFishSpriteId())
 				{
 					duplicates++;
 				}
 			}
 
-			rendered.add(npc.getWorldLocation());
+			rendered.add(npc);
 
 			if (spot == FishingSpot.MINNOW && config.showMinnowOverlay())
 			{
