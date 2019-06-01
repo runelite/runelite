@@ -111,7 +111,8 @@ class FishingSpotOverlay extends Overlay
 					contains = true;
 				}
 			}
-			if (contains) {
+			if (contains)
+			{
 				continue;
 			}
 
