@@ -25,8 +25,12 @@
 package net.runelite.http.api;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import okhttp3.HttpUrl;
@@ -44,7 +48,7 @@ public class RuneLiteAPI
 	public static final String RUNELITE_AUTH = "RUNELITE-AUTH";
 
 	public static final OkHttpClient CLIENT;
-	public static final Gson GSON = new Gson();
+	public static final Gson GSON;
 	public static String userAgent;
 
 	private static final String BASE = "https://api.runelite.net";
@@ -56,6 +60,16 @@ public class RuneLiteAPI
 
 	static
 	{
+		GSON = new GsonBuilder()
+			.registerTypeAdapter(Instant.class, (JsonDeserializer<Instant>) (jsonElement, type, jsonDeserializationContext) ->
+			{
+				JsonObject jsonObject = jsonElement.getAsJsonObject();
+				long seconds = jsonObject.get("seconds").getAsLong();
+				long nanos = jsonObject.get("nanos").getAsLong();
+				return Instant.ofEpochSecond(seconds, nanos);
+			})
+			.create();
+
 		try
 		{
 			InputStream in = RuneLiteAPI.class.getResourceAsStream("/runelite.properties");
