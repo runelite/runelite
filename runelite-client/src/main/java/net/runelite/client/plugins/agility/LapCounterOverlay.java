@@ -95,10 +95,7 @@ class LapCounterOverlay extends Overlay
 			tableComponent.addRow("Laps until goal:", Integer.toString(session.getLapsTillGoal()));
 		}
 
-		if (!tableComponent.isEmpty())
-		{
-			panelComponent.getChildren().add(tableComponent);
-		}
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

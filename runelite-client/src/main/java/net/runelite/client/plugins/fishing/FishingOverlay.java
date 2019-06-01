@@ -102,10 +102,7 @@ class FishingOverlay extends Overlay
 				tableComponent.addRow("Fish/hr:", Integer.toString(xpTrackerService.getActionsHr(Skill.FISHING)));
 			}
 
-			if (!tableComponent.isEmpty())
-			{
-				panelComponent.getChildren().add(tableComponent);
-			}
+			panelComponent.getChildren().add(tableComponent);
 		}
 
 		return panelComponent.render(graphics);

@@ -111,10 +111,7 @@ class SmeltingOverlay extends Overlay
 				tableComponent.addRow("Actions/hr:", Integer.toString(xpTrackerService.getActionsHr(Skill.SMITHING)));
 			}
 
-			if (!tableComponent.isEmpty())
-			{
-				panelComponent.getChildren().add(tableComponent);
-			}
+			panelComponent.getChildren().add(tableComponent);
 		}
 
 		return panelComponent.render(graphics);

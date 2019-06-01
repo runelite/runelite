@@ -128,10 +128,7 @@ class NyloOverlay extends Overlay
 			}
 		}
 
-		if (!tableComponent.isEmpty())
-		{
-			panelComponent.getChildren().add(tableComponent);
-		}
+		panelComponent.getChildren().add(tableComponent);
 
 
 		/**

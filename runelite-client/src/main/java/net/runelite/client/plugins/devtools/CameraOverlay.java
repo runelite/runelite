@@ -69,10 +69,7 @@ public class CameraOverlay extends Overlay
 		tableComponent.addRow("Yaw", "" + client.getCameraYaw());
 		tableComponent.addRow("Scale", "" + client.getScale());
 
-		if (!tableComponent.isEmpty())
-		{
-			panelComponent.getChildren().add(tableComponent);
-		}
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

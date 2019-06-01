@@ -99,10 +99,7 @@ class CookingOverlay extends Overlay
 		tableComponent.addRow("Cooked:", session.getCookAmount() + (session.getCookAmount() >= 1 ? " (" + xpTrackerService.getActionsHr(Skill.COOKING) + "/hr)" : ""));
 		tableComponent.addRow("Burnt:", session.getBurnAmount() + (session.getBurnAmount() >= 1 ? " (" + FORMAT.format(session.getBurntPercentage()) + "%)" : ""));
 
-		if (!tableComponent.isEmpty())
-		{
-			panelComponent.getChildren().add(tableComponent);
-		}
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

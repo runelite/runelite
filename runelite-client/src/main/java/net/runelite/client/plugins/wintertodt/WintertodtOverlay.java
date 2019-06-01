@@ -95,10 +95,7 @@ class WintertodtOverlay extends Overlay
 		tableComponent.addRow(ColorUtil.prependColorTag("Kindling:", Color.WHITE), ColorUtil.prependColorTag(kindlingScore + " pts (" + kindlingXp + " xp)", plugin.getNumKindling() > 0 ? Color.GREEN : Color.RED));
 		tableComponent.addRow(ColorUtil.prependColorTag("Total:", Color.WHITE), ColorUtil.prependColorTag((rootsScore + kindlingScore) + " pts (" + (rootsXp + kindlingXp) + " xp)", (rootsScore + kindlingScore > 0) ? Color.GREEN : Color.RED));
 
-		if (!tableComponent.isEmpty())
-		{
-			panelComponent.getChildren().add(tableComponent);
-		}
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

@@ -361,10 +361,7 @@ public class RaidsOverlay extends Overlay
 			roomCount++;
 		}
 
-		if (!tableComponent.isEmpty())
-		{
-			panelComponent.getChildren().add(tableComponent);
-		}
+		panelComponent.getChildren().add(tableComponent);
 
 		Dimension panelDims = panelComponent.render(graphics);
 		width = (int) panelDims.getWidth();

@@ -84,10 +84,7 @@ class FermentTimerOverlay extends Overlay
 			tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 			tableComponent.addRow("Ferments in:", String.valueOf(INITIAL_TIME - Duration.between(session.getLastWineMakingAction(), Instant.now()).getSeconds()));
 
-			if (!tableComponent.isEmpty())
-			{
-				panelComponent.getChildren().add(tableComponent);
-			}
+			panelComponent.getChildren().add(tableComponent);
 		}
 		else
 		{

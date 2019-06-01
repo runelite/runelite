@@ -116,10 +116,7 @@ class MotherlodeOverlay extends Overlay
 		tableComponent.addRow("Pay-dirt mined:", Integer.toString(session.getTotalMined()));
 		tableComponent.addRow("Pay-dirt/hr:", session.getRecentMined() > 2 ? Integer.toString(session.getPerHour()) : "");
 
-		if (!tableComponent.isEmpty())
-		{
-			panelComponent.getChildren().add(tableComponent);
-		}
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

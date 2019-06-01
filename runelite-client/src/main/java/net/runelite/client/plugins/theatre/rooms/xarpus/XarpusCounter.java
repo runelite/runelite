@@ -62,10 +62,7 @@ public class XarpusCounter extends Overlay
 			TableComponent tableComponent = new TableComponent();
 			tableComponent.addRow("Exhumes", String.valueOf(xarpusHandler.getExhumesCount()));
 
-			if (!tableComponent.isEmpty())
-			{
-				panelComponent.getChildren().add(tableComponent);
-			}
+			panelComponent.getChildren().add(tableComponent);
 
 			return panelComponent.render(graphics);
 		}

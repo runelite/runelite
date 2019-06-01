@@ -171,10 +171,7 @@ class PlayerComparisonOverlay extends Overlay
 				ColorUtil.prependColorTag(Integer.toString(opponentSkillLevel), comparisonStatColor(opponentSkillLevel, playerSkillLevel)));
 		}
 
-		if (!tableComponent.isEmpty())
-		{
-			panelComponent.getChildren().add(tableComponent);
-		}
+		panelComponent.getChildren().add(tableComponent);
 	}
 
 	private static Color comparisonStatColor(int a, int b)

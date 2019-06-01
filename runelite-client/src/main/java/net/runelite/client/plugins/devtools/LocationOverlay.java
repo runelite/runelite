@@ -98,10 +98,7 @@ public class LocationOverlay extends Overlay
 			tableComponent.addRow((i == 0) ? "Map regions" : " ", ColorUtil.prependColorTag(String.valueOf(region), (region == regionID) ? Color.GREEN : Color.WHITE));
 		}
 
-		if (!tableComponent.isEmpty())
-		{
-			panelComponent.getChildren().add(tableComponent);
-		}
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

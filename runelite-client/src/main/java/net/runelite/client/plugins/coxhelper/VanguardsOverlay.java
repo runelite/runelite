@@ -74,10 +74,7 @@ public class VanguardsOverlay extends Overlay
 				tableComponent.addRow(ColorUtil.prependColorTag("Mage", Color.BLUE), Integer.toString(plugin.getMageVangHP()));
 				tableComponent.addRow(ColorUtil.prependColorTag("Melee", Color.RED), Integer.toString(plugin.getMeleeVangHP()));
 
-				if (!tableComponent.isEmpty())
-				{
-					panelComponent.getChildren().add(tableComponent);
-				}
+				panelComponent.getChildren().add(tableComponent);
 
 				return panelComponent.render(graphics);
 			}

@@ -104,10 +104,7 @@ class WaveOverlay extends Overlay
 			tableComponent.addRow(line);
 		}
 
-		if (!tableComponent.isEmpty())
-		{
-			panelComponent.getChildren().add(tableComponent);
-		}
+		panelComponent.getChildren().add(tableComponent);
 	}
 
 	private static Collection<String> buildWaveLines(final Map<WaveMonster, Integer> wave)

@@ -110,10 +110,7 @@ public class MotherlodeOreOverlay extends Overlay
 			tableComponent.addRow("Runite:", Integer.toString(runiteFound));
 		}
 
-		if (!tableComponent.isEmpty())
-		{
-			panelComponent.getChildren().add(tableComponent);
-		}
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

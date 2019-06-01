@@ -102,10 +102,7 @@ public class ThievingOverlay extends Overlay
 		tableComponent.addRow("Succeeded:", session.getSuccessful() + (session.getSuccessful() >= 1 ? " (" + xpTrackerService.getActionsHr(Skill.THIEVING) + "/hr)" : ""));
 		tableComponent.addRow("Failed:", session.getFailed() + (session.getFailed() >= 1 ? " (" + FORMAT.format(session.getSuccessRate()) + "%)" : ""));
 
-		if (!tableComponent.isEmpty())
-		{
-			panelComponent.getChildren().add(tableComponent);
-		}
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

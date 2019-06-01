@@ -106,10 +106,7 @@ public class MotherlodeGemOverlay extends Overlay
 			tableComponent.addRow("Sapphires:", Integer.toString(sapphiresFound));
 		}
 
-		if (!tableComponent.isEmpty())
-		{
-			panelComponent.getChildren().add(tableComponent);
-		}
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

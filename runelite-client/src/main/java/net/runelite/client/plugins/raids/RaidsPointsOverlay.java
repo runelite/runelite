@@ -108,10 +108,7 @@ public class RaidsPointsOverlay extends Overlay
 					.build());
 		}*/
 
-		if (!tableComponent.isEmpty())
-		{
-			panel.getChildren().add(tableComponent);
-		}
+		panel.getChildren().add(tableComponent);
 
 		return panel.render(graphics);
 	}

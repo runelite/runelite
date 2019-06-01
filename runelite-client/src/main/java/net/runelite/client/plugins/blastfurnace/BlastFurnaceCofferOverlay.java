@@ -75,10 +75,7 @@ class BlastFurnaceCofferOverlay extends Overlay
 			TableComponent tableComponent = new TableComponent();
 			tableComponent.addRow("Coffer:", StackFormatter.quantityToStackSize(client.getVar(BLAST_FURNACE_COFFER)) + " gp");
 
-			if (!tableComponent.isEmpty())
-			{
-				panelComponent.getChildren().add(tableComponent);
-			}
+			panelComponent.getChildren().add(tableComponent);
 		}
 
 		return panelComponent.render(graphics);

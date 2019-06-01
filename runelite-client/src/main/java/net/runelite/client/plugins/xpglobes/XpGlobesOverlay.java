@@ -280,10 +280,7 @@ public class XpGlobesOverlay extends Overlay
 			}
 		}
 
-		if (!tableComponent.isEmpty())
-		{
-			xpTooltip.getChildren().add(tableComponent);
-		}
+		xpTooltip.getChildren().add(tableComponent);
 
 		xpTooltip.render(graphics);
 	}
