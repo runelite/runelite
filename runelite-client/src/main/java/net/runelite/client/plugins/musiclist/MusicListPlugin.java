@@ -123,6 +123,14 @@ public class MusicListPlugin extends Plugin
 			return;
 		}
 
+		//See if the search and filter buttons have already been added to avoid re-adding
+		if (header.getChildren() != null)
+		{
+			for (Widget w : header.getChildren())
+				if (w.getName().equals("Search") || w.getName().equals("All"))
+					return;
+		}
+
 		//Creation of the search and toggle status buttons
 		musicSearchButton = header.createChild(-1, WidgetType.GRAPHIC);
 		musicSearchButton.setSpriteId(SpriteID.GE_SEARCH);
