@@ -103,10 +103,10 @@ class FishingSpotOverlay extends Overlay
 
 			// If a polygon of the same type is already on the same tile, dont render
 			boolean contains = false;
-			for (NPC npc1 : rendered)
+			for (NPC existingNPC : rendered)
 			{
-				FishingSpot spot1 = FishingSpot.getSPOTS().get(npc1.getId());
-				if (npc1.getWorldLocation().equals(npc.getWorldLocation()) && spot.getFishSpriteId() == spot1.getFishSpriteId())
+				FishingSpot spot1 = FishingSpot.getSPOTS().get(existingNPC.getId());
+				if (existingNPC.getWorldLocation().equals(npc.getWorldLocation()) && spot.getFishSpriteId() == spot1.getFishSpriteId())
 				{
 					contains = true;
 				}
@@ -117,10 +117,10 @@ class FishingSpotOverlay extends Overlay
 
 			// Check how many spots share the same tile
 			int duplicates = 0;
-			for (NPC npc1 : plugin.getFishingSpots())
+			for (NPC existingNPC : plugin.getFishingSpots())
 			{
-				FishingSpot spot1 = FishingSpot.getSPOTS().get(npc1.getId());
-				if (npc1.getWorldLocation().equals(npc.getWorldLocation()) && spot.getFishSpriteId() == spot1.getFishSpriteId())
+				FishingSpot spot1 = FishingSpot.getSPOTS().get(existingNPC.getId());
+				if (existingNPC.getWorldLocation().equals(npc.getWorldLocation()) && spot.getFishSpriteId() == spot1.getFishSpriteId())
 				{
 					duplicates++;
 				}
