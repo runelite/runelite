@@ -154,7 +154,7 @@ public class TooltipComponent implements RenderableEntity
 			// Draw trailing text (after last tag)
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setColor(nextColor);
-			textComponent.setText(line.substring(begin, line.length()));
+			textComponent.setText(line.substring(begin));
 			textComponent.setPosition(new Point(lineX, textY + (i + 1) * textHeight - textDescent));
 			textComponent.render(graphics);
 		}
@@ -194,7 +194,7 @@ public class TooltipComponent implements RenderableEntity
 		}
 
 		// Include trailing text (after last tag)
-		textWidth += metrics.stringWidth(line.substring(begin, line.length()));
+		textWidth += metrics.stringWidth(line.substring(begin));
 
 		return textWidth;
 	}
