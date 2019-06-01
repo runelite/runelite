@@ -42,6 +42,9 @@ public class Timer extends InfoBox
 	private final Instant endTime;
 	private final Duration duration;
 
+	private static final int SEC_PER_HOUR = 3600;
+	private static final int SEC_PER_MINUTE = 60;
+
 	public Timer(long period, ChronoUnit unit, BufferedImage image, Plugin plugin)
 	{
 		super(image, plugin);
@@ -58,12 +61,20 @@ public class Timer extends InfoBox
 	{
 		Duration timeLeft = Duration.between(Instant.now(), endTime);
 
-		int seconds = (int) (timeLeft.toMillis() / 1000L);
+		float totalMillis = timeLeft.toMillis();
+		int totalSeconds = (int) (totalMillis / 1000L);
 
-		int minutes = (seconds % 3600) / 60;
-		int secs = seconds % 60;
-
-		return String.format("%d:%02d", minutes, secs);
+		if (totalSeconds >= 10)
+		{
+			int minutes = (totalSeconds % SEC_PER_HOUR) / 60;
+			int seconds = totalSeconds % SEC_PER_MINUTE;
+			return String.format("%d:%02d", minutes, seconds);
+		}
+		else
+		{
+			float seconds = (totalMillis / 1000F) % SEC_PER_MINUTE;
+			return String.format("%.1f", seconds);
+		}
 	}
 
 	@Override
@@ -83,12 +94,16 @@ public class Timer extends InfoBox
 	@Override
 	public boolean render()
 	{
-		Duration timeLeft = Duration.between(Instant.now(), endTime);
-		return !timeLeft.isNegative();
+		return !isExpired();
 	}
 
 	@Override
 	public boolean cull()
+	{
+		return isExpired();
+	}
+
+	public boolean isExpired()
 	{
 		Duration timeLeft = Duration.between(Instant.now(), endTime);
 		return timeLeft.isZero() || timeLeft.isNegative();
