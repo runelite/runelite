@@ -24,7 +24,6 @@
  */
 package net.runelite.client.util;
 
-import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
@@ -171,7 +170,7 @@ public class ColorUtil
 	 */
 	public static int constrainValue(int value)
 	{
-		return Ints.constrainToRange(value, MIN_RGB_VALUE, MAX_RGB_VALUE);
+		return MiscUtils.clamp(value, MIN_RGB_VALUE, MAX_RGB_VALUE);
 	}
 
 	/**
