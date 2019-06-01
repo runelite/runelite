@@ -119,6 +119,7 @@ public class BarbarianAssaultPlugin extends Plugin
 				if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
 				{
 					announceTime("Game finished, duration: ", gameTime.getTime(false));
+					gameTime = null;
 				}
 
 				break;
