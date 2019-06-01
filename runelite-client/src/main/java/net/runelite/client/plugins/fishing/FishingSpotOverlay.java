@@ -31,6 +31,8 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
@@ -40,6 +42,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -81,6 +84,7 @@ class FishingSpotOverlay extends Overlay
 			return null;
 		}
 
+		List<WorldPoint> rendered = new ArrayList<>();
 		for (NPC npc : plugin.getFishingSpots())
 		{
 			FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
@@ -96,6 +100,24 @@ class FishingSpotOverlay extends Overlay
 			}
 
 			Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
+
+			// If a polygon is already on the same tile, dont render
+			if (rendered.contains(npc.getWorldLocation()))
+			{
+				continue;
+			}
+
+			// Check how many spots share the same tile
+			int duplicates = 0;
+			for (NPC npc1 : plugin.getFishingSpots())
+			{
+				if (npc1.getWorldLocation().equals(npc.getWorldLocation()))
+				{
+					duplicates++;
+				}
+			}
+
+			rendered.add(npc.getWorldLocation());
 
 			if (spot == FishingSpot.MINNOW && config.showMinnowOverlay())
 			{
@@ -141,12 +163,20 @@ class FishingSpotOverlay extends Overlay
 
 			if (config.showSpotIcons())
 			{
-				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());;
+				BufferedImage fishImage;
+				if (duplicates > 1 && !(config.showSpotNames()))
+				{
+					fishImage = itemManager.getImage(spot.getFishSpriteId(), duplicates, true);
+				}
+				else
+				{
+					fishImage = itemManager.getImage(spot.getFishSpriteId());
+				}
 
 				if (spot == FishingSpot.COMMON_TENCH
 					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
 				{
-					fishImage = ImageUtil.outlineImage(itemManager.getImage(spot.getFishSpriteId()), Color.GREEN);
+					fishImage = ImageUtil.outlineImage(fishImage, Color.GREEN);
 				}
 
 				if (fishImage != null)
@@ -172,7 +202,7 @@ class FishingSpotOverlay extends Overlay
 
 				if (textLocation != null)
 				{
-					OverlayUtil.renderTextLocation(graphics, textLocation, text, color.darker());
+					OverlayUtil.renderTextLocation(graphics, textLocation, text + " (" + duplicates + ")", color.darker());
 				}
 			}
 		}
