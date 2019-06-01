@@ -42,7 +42,6 @@ import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
