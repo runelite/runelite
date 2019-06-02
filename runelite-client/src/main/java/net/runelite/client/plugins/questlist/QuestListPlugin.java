@@ -143,7 +143,7 @@ public class QuestListPlugin extends Plugin
 		toggleButton.setOriginalX(24);
 		toggleButton.setOriginalY(2);
 		toggleButton.setHasListener(true);
-		toggleButton.setOnOpListener((JavaScriptCallback) e -> toggleHidden());
+		toggleButton.setOnOpListener((JavaScriptCallback) e -> toggleHidden(questState));
 		toggleButton.setAction(1, MENU_TOGGLE);
 		toggleButton.setName(MENU_SHOW + " " + questState.getName());
 		toggleButton.revalidate();
@@ -183,7 +183,7 @@ public class QuestListPlugin extends Plugin
 			questHideButton.setOriginalX(24);
 			questHideButton.setOriginalY(2);
 			questHideButton.setHasListener(true);
-			questHideButton.setOnOpListener((JavaScriptCallback) e -> toggleHidden());
+			questHideButton.setOnOpListener((JavaScriptCallback) e -> toggleHidden(null));
 			questHideButton.setAction(1, MENU_TOGGLE);
 			questHideButton.revalidate();
 
@@ -214,12 +214,16 @@ public class QuestListPlugin extends Plugin
 		}
 	}
 
-	private void toggleHidden()
+	private void toggleHidden(QuestState questState)
 	{
 		Widget[] header = client.getWidget(WidgetInfo.QUESTLIST_BOX).getChildren();
 
 		QuestState[] questStates = QuestState.values();
-		int nextState = (currentFilterState.ordinal() + 1) % questStates.length;
+		int nextState;
+		if (questState == null)
+			nextState = (currentFilterState.ordinal() + 1) % questStates.length;
+		else
+			nextState = questState.ordinal();
 		currentFilterState = questStates[nextState];
 
 		for (int i = 0; i < QuestState.values().length; i++)
