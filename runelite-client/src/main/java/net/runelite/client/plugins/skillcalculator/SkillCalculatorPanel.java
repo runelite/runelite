@@ -48,8 +48,8 @@ class SkillCalculatorPanel extends PluginPanel
 	private final SkillIconManager iconManager;
 	private final MaterialTabGroup tabGroup;
 
-	SkillCalculatorPanel(SkillIconManager iconManager, Client client, SpriteManager spriteManager, ItemManager itemManager,
-						SkillCalculatorConfig config, EventBus eventBus)
+	SkillCalculatorPanel(SkillIconManager iconManager, Client client, SpriteManager spriteManager,
+						ItemManager itemManager, EventBus eventBus)
 	{
 		super();
 		getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -73,7 +73,7 @@ class SkillCalculatorPanel extends PluginPanel
 		final UICalculatorInputArea uiInput = new UICalculatorInputArea();
 		uiInput.setBorder(new EmptyBorder(15, 0, 15, 0));
 		uiInput.setBackground(ColorScheme.DARK_GRAY_COLOR);
-		uiCalculator = new SkillCalculator(client, uiInput, spriteManager, itemManager, config, eventBus);
+		uiCalculator = new SkillCalculator(client, uiInput, spriteManager, itemManager, eventBus);
 
 		add(tabGroup, c);
 		c.gridy++;

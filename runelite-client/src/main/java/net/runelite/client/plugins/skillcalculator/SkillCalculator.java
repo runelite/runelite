@@ -72,7 +72,6 @@ class SkillCalculator extends JPanel
 	private final ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
 	private final List<JCheckBox> bonusCheckBoxes = new ArrayList<>();
 	private final IconTextField searchBar = new IconTextField();
-	private final SkillCalculatorConfig config;
 
 	private SkillData skillData;
 	private int currentLevel = 1;
@@ -83,13 +82,12 @@ class SkillCalculator extends JPanel
 	private CalculatorType selectedCalculator;
 
 	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager,
-					SkillCalculatorConfig config, EventBus eventBus)
+					EventBus eventBus)
 	{
 		this.client = client;
 		this.uiInput = uiInput;
 		this.spriteManager = spriteManager;
 		this.itemManager = itemManager;
-		this.config = config;
 		eventBus.register(this);
 
 		combinedActionSlot = new UICombinedActionSlot(spriteManager);
@@ -429,7 +427,7 @@ class SkillCalculator extends JPanel
 	@Subscribe
 	public void onExperienceChanged(ExperienceChanged changeEvent)
 	{
-		if (this.selectedCalculator == null || !config.realtimeUpdate())
+		if (this.selectedCalculator == null)
 		{
 			// If no skill calculator selected or real time update disabled, do nothing.
 			return;
