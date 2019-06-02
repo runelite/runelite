@@ -357,7 +357,14 @@ public class QuestListPlugin extends Plugin
 			else
 			{
 				// Otherwise hide if it doesn't match the filter state
-				hidden = currentFilterState != QuestState.ALL && questState != currentFilterState;
+				if (currentFilterState != QuestState.NOT_COMPLETED)
+				{
+					hidden = currentFilterState != QuestState.ALL && questState != currentFilterState;
+				}
+				else
+				{
+					hidden = questState == QuestState.COMPLETE;
+				}
 			}
 
 			quest.setHidden(hidden);
@@ -388,8 +395,9 @@ public class QuestListPlugin extends Plugin
 	@Getter
 	private enum QuestState
 	{
-		NOT_STARTED(0xff0000, "Not started", SpriteID.MINIMAP_ORB_HITPOINTS),
-		IN_PROGRESS(0xffff00, "In progress", SpriteID.MINIMAP_ORB_HITPOINTS_DISEASE),
+		NOT_STARTED(0xff0000, "Not Started", SpriteID.MINIMAP_ORB_HITPOINTS),
+		IN_PROGRESS(0xffff00, "In Progress", SpriteID.MINIMAP_ORB_HITPOINTS_DISEASE),
+		NOT_COMPLETED(0, "Not Completed", SpriteID.MINIMAP_ORB_HITPOINTS_VENOM),
 		COMPLETE(0xdc10d, "Completed", SpriteID.MINIMAP_ORB_HITPOINTS_POISON),
 		ALL(0, "All", SpriteID.MINIMAP_ORB_PRAYER);
 
