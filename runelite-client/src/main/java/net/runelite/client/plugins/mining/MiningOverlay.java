@@ -32,22 +32,14 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Set;
 import javax.inject.Inject;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_ADAMANT;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BLACK;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_BRONZE;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_DRAGON_ORN;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_INFERNAL;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_IRON;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_MITHRIL;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_RUNE;
-import static net.runelite.api.AnimationID.MINING_MOTHERLODE_STEEL;
+import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 class MiningOverlay extends Overlay
 {
@@ -115,15 +107,13 @@ class MiningOverlay extends Overlay
 			}
 		}
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Pay-dirt mined:")
-			.right(Integer.toString(session.getTotalMined()))
-			.build());
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Pay-dirt/hr:")
-			.right(session.getRecentMined() > 2 ? Integer.toString(session.getPerHour()) : "")
-			.build());
+		tableComponent.addRow("Pay-dirt mined:", Integer.toString(session.getTotalMined()));
+		tableComponent.addRow("Pay-dirt/hr:", session.getRecentMined() > 2 ? Integer.toString(session.getPerHour()) : "");
+
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

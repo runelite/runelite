@@ -36,8 +36,9 @@ import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 import net.runelite.client.util.ColorUtil;
 
 class BoostsOverlay extends Overlay
@@ -69,24 +70,21 @@ class BoostsOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+
 		int nextChange = plugin.getChangeDownTicks();
 
 		if (nextChange != -1)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Next + restore in")
-				.right(String.valueOf(plugin.getChangeTime(nextChange)))
-				.build());
+			tableComponent.addRow("Next + restore:", String.valueOf(plugin.getChangeTime(nextChange)));
 		}
 
 		nextChange = plugin.getChangeUpTicks();
 
 		if (nextChange != -1)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Next - restore in")
-				.right(String.valueOf(plugin.getChangeTime(nextChange)))
-				.build());
+			tableComponent.addRow("Next - restore:", String.valueOf(plugin.getChangeTime(nextChange)));
 		}
 
 		if (plugin.canShowBoosts())
@@ -119,13 +117,11 @@ class BoostsOverlay extends Overlay
 						+ ColorUtil.prependColorTag("/" + base, Color.WHITE);
 				}
 
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left(skill.getName())
-					.right(str)
-					.rightColor(strColor)
-					.build());
+				tableComponent.addRow(skill.getName() + ":", str);
 			}
 		}
+
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

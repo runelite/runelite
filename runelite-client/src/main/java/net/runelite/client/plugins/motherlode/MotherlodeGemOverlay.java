@@ -34,9 +34,10 @@ import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 public class MotherlodeGemOverlay extends Overlay
 {
@@ -82,37 +83,30 @@ public class MotherlodeGemOverlay extends Overlay
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(TitleComponent.builder().text("Gems found").build());
 
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+
 		if (diamondsFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Diamonds:")
-				.right(Integer.toString(diamondsFound))
-				.build());
+			tableComponent.addRow("Diamonds:", Integer.toString(diamondsFound));
 		}
 
 		if (rubiesFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Rubies:")
-				.right(Integer.toString(rubiesFound))
-				.build());
+			tableComponent.addRow("Rubies:", Integer.toString(rubiesFound));
 		}
 
 		if (emeraldsFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Emeralds:")
-				.right(Integer.toString(emeraldsFound))
-				.build());
+			tableComponent.addRow("Emeralds:", Integer.toString(emeraldsFound));
 		}
 
 		if (sapphiresFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Sapphires:")
-				.right(Integer.toString(sapphiresFound))
-				.build());
+			tableComponent.addRow("Sapphires:", Integer.toString(sapphiresFound));
 		}
+
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

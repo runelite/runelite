@@ -32,21 +32,7 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import static net.runelite.api.AnimationID.CONSTRUCTION;
-import static net.runelite.api.AnimationID.FIREMAKING;
-import static net.runelite.api.AnimationID.FLETCHING_BOW_CUTTING;
-import static net.runelite.api.AnimationID.IDLE;
-import static net.runelite.api.AnimationID.LOOKING_INTO;
-import static net.runelite.api.AnimationID.WOODCUTTING_3A_AXE;
-import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
-import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
-import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
-import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
-import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
-import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
-import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
-import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
-import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
+import static net.runelite.api.AnimationID.*;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -79,6 +65,9 @@ public class WintertodtPlugin extends Plugin
 {
 	private static final int WINTERTODT_REGION = 6462;
 
+	static final int WINTERTODT_ROOTS_MULTIPLIER = 10;
+	static final int WINTERTODT_KINDLING_MULTIPLIER = 25;
+
 	@Inject
 	private Notifier notifier;
 
@@ -101,13 +90,7 @@ public class WintertodtPlugin extends Plugin
 	private WintertodtActivity currentActivity = WintertodtActivity.IDLE;
 
 	@Getter(AccessLevel.PACKAGE)
-	private int inventoryScore;
-
-	@Getter(AccessLevel.PACKAGE)
-	private int totalPotentialinventoryScore;
-
-	@Getter(AccessLevel.PACKAGE)
-	private int numLogs;
+	private int numRoots;
 
 	@Getter(AccessLevel.PACKAGE)
 	private int numKindling;
@@ -139,9 +122,7 @@ public class WintertodtPlugin extends Plugin
 
 	private void reset()
 	{
-		inventoryScore = 0;
-		totalPotentialinventoryScore = 0;
-		numLogs = 0;
+		numRoots = 0;
 		numKindling = 0;
 		currentActivity = WintertodtActivity.IDLE;
 		lastActionTime = null;
@@ -410,20 +391,15 @@ public class WintertodtPlugin extends Plugin
 
 		final Item[] inv = container.getItems();
 
-		inventoryScore = 0;
-		totalPotentialinventoryScore = 0;
-		numLogs = 0;
+		numRoots = 0;
 		numKindling = 0;
 
 		for (Item item : inv)
 		{
-			inventoryScore += getPoints(item.getId());
-			totalPotentialinventoryScore += getPotentialPoints(item.getId());
-
 			switch (item.getId())
 			{
 				case BRUMA_ROOT:
-					++numLogs;
+					++numRoots;
 					break;
 				case BRUMA_KINDLING:
 					++numKindling;
@@ -431,13 +407,13 @@ public class WintertodtPlugin extends Plugin
 			}
 		}
 
-		//If we're currently fletching but there are no more logs, go ahead and abort fletching immediately
-		if (numLogs == 0 && currentActivity == WintertodtActivity.FLETCHING)
+		//If we're currently fletching but there are no more roots, go ahead and abort fletching immediately
+		if (numRoots == 0 && currentActivity == WintertodtActivity.FLETCHING)
 		{
 			currentActivity = WintertodtActivity.IDLE;
 		}
-		//Otherwise, if we're currently feeding the brazier but we've run out of both logs and kindling, abort the feeding activity
-		else if (numLogs == 0 && numKindling == 0 && currentActivity == WintertodtActivity.FEEDING_BRAZIER)
+		//Otherwise, if we're currently feeding the brazier but we've run out of both roots and kindling, abort the feeding activity
+		else if (numRoots == 0 && numKindling == 0 && currentActivity == WintertodtActivity.FEEDING_BRAZIER)
 		{
 			currentActivity = WintertodtActivity.IDLE;
 		}
@@ -447,30 +423,5 @@ public class WintertodtPlugin extends Plugin
 	{
 		currentActivity = action;
 		lastActionTime = Instant.now();
-	}
-
-	private static int getPoints(int id)
-	{
-		switch (id)
-		{
-			case BRUMA_ROOT:
-				return 10;
-			case BRUMA_KINDLING:
-				return 25;
-			default:
-				return 0;
-		}
-	}
-
-	private static int getPotentialPoints(int id)
-	{
-		switch (id)
-		{
-			case BRUMA_ROOT:
-			case BRUMA_KINDLING:
-				return 25;
-			default:
-				return 0;
-		}
 	}
 }

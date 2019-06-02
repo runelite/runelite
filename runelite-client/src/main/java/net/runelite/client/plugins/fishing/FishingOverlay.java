@@ -36,9 +36,10 @@ import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 class FishingOverlay extends Overlay
 {
@@ -91,18 +92,17 @@ class FishingOverlay extends Overlay
 		int actions = xpTrackerService.getActions(Skill.FISHING);
 		if (actions > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Caught fish:")
-				.right(Integer.toString(actions))
-				.build());
+			TableComponent tableComponent = new TableComponent();
+			tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+
+			tableComponent.addRow("Caught fish:", Integer.toString(actions));
 
 			if (actions > 2)
 			{
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("Fish/hr:")
-					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.FISHING)))
-					.build());
+				tableComponent.addRow("Fish/hr:", Integer.toString(xpTrackerService.getActionsHr(Skill.FISHING)));
 			}
+
+			panelComponent.getChildren().add(tableComponent);
 		}
 
 		return panelComponent.render(graphics);

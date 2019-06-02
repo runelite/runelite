@@ -29,9 +29,10 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 public class MotherlodeOreOverlay extends Overlay
 {
@@ -76,53 +77,40 @@ public class MotherlodeOreOverlay extends Overlay
 		panelComponent.getChildren().clear();
 		panelComponent.getChildren().add(TitleComponent.builder().text("Ores found").build());
 
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+
 		if (nuggetsFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Nuggets:")
-				.right(Integer.toString(nuggetsFound))
-				.build());
+			tableComponent.addRow("Nuggets:", Integer.toString(nuggetsFound));
 		}
 
 		if (coalFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Coal:")
-				.right(Integer.toString(coalFound))
-				.build());
+			tableComponent.addRow("Coal:", Integer.toString(coalFound));
 		}
 
 		if (goldFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Gold:")
-				.right(Integer.toString(goldFound))
-				.build());
+			tableComponent.addRow("Gold:", Integer.toString(goldFound));
 		}
 
 		if (mithrilFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Mithril:")
-				.right(Integer.toString(mithrilFound))
-				.build());
+			tableComponent.addRow("Mithril:", Integer.toString(mithrilFound));
 		}
 
 		if (adamantiteFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Adamantite:")
-				.right(Integer.toString(adamantiteFound))
-				.build());
+			tableComponent.addRow("Adamantite:", Integer.toString(adamantiteFound));
 		}
 
 		if (runiteFound > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Runite:")
-				.right(Integer.toString(runiteFound))
-				.build());
+			tableComponent.addRow("Runite:", Integer.toString(runiteFound));
 		}
+
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

@@ -24,22 +24,23 @@
  */
 package net.runelite.client.plugins.theatre.rooms.nylocas;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
 import net.runelite.client.plugins.theatre.TheatreConfig;
 import net.runelite.client.plugins.theatre.TheatrePlugin;
 import net.runelite.client.plugins.theatre.TheatreRoom;
 import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-
-import java.awt.*;
-
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.util.ColorUtil;
 
 class NyloOverlay extends Overlay 
 {
@@ -100,25 +101,18 @@ class NyloOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().clear();
+		TableComponent tableComponent = new TableComponent();
+
 		int nyloCount = (hagios + toxobolos + ischyros);
 		if (nylohandler.getWave() < 21)
 		{
 			if (nyloCount > 12)
 			{
-				panelComponent.getChildren().add(LineComponent.builder()
-						.left("Total Nylocas:")
-						.right(nyloCount + " / 12" )
-						.rightColor(Color.RED)
-						.build());
+				tableComponent.addRow("Total Nylocas:", ColorUtil.prependColorTag(nyloCount + " / 12", Color.RED));
 			} 
 			else
 			{
-				panelComponent.getChildren().add(LineComponent.builder()
-						.left("Total Nylocas:")
-						.right(nyloCount + " / 12" )
-						.rightColor(Color.GREEN)
-						.build());
-
+				tableComponent.addRow("Total Nylocas:", ColorUtil.prependColorTag(nyloCount + " / 12", Color.GREEN));
 			}
 
 		} 
@@ -126,21 +120,15 @@ class NyloOverlay extends Overlay
 		{
 			if (nyloCount > 24)
 			{
-				panelComponent.getChildren().add(LineComponent.builder()
-						.left("Total Nylocas:")
-						.right(nyloCount + " / 24" )
-						.rightColor(Color.RED)
-						.build());
+				tableComponent.addRow("Total Nylocas:", ColorUtil.prependColorTag(nyloCount + " / 24", Color.RED));
 			}
 			else
 			{
-				panelComponent.getChildren().add(LineComponent.builder()
-						.left("Total Nylocas:")
-						.right(nyloCount + " / 24" )
-						.rightColor(Color.GREEN)
-						.build());
+				tableComponent.addRow("Total Nylocas:", ColorUtil.prependColorTag(nyloCount + " / 24", Color.GREEN));
 			}
 		}
+
+		panelComponent.getChildren().add(tableComponent);
 
 
 		/**

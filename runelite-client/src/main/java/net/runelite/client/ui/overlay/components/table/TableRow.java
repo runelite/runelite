@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, terminatusx <jbfleischman@gmail.com>
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,21 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.wintertodt;
+package net.runelite.client.ui.overlay.components.table;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import java.awt.Color;
+import java.util.List;
+import lombok.Builder;
+import lombok.Data;
 
-@AllArgsConstructor
-@Getter
-enum WintertodtActivity
+@Data
+@Builder
+public class TableRow
 {
-	IDLE("IDLE"),
-	WOODCUTTING("Woodcutting"),
-	FLETCHING("Fletching"),
-	FEEDING_BRAZIER("Feeding"),
-	FIXING_BRAZIER("Fixing"),
-	LIGHTING_BRAZIER("Lighting");
-
-	private final String actionString;
+	Color rowColor;
+	TableAlignment rowAlignment;
+	@Builder.Default
+	List<TableElement> elements;
 }

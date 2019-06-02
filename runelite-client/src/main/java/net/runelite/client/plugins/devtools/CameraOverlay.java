@@ -30,9 +30,9 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.TitleComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 public class CameraOverlay extends Overlay
 {
@@ -59,39 +59,17 @@ public class CameraOverlay extends Overlay
 
 		panelComponent.getChildren().clear();
 
-		panelComponent.getChildren().add(TitleComponent.builder()
-			.text("Camera")
-			.build());
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("X")
-			.right("" + client.getCameraX())
-			.build());
+		tableComponent.addRow("X", "" + client.getCameraX());
+		tableComponent.addRow("Y", "" + client.getCameraY());
+		tableComponent.addRow("Z", "" + client.getCameraZ());
+		tableComponent.addRow("Pitch", "" + client.getCameraPitch());
+		tableComponent.addRow("Yaw", "" + client.getCameraYaw());
+		tableComponent.addRow("Scale", "" + client.getScale());
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Y")
-			.right("" + client.getCameraY())
-			.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Z")
-			.right("" + client.getCameraZ())
-			.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Pitch")
-			.right("" + client.getCameraPitch())
-			.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Yaw")
-			.right("" + client.getCameraYaw())
-			.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Scale")
-			.right("" + client.getScale())
-			.build());
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}

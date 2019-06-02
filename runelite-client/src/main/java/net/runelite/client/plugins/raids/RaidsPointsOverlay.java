@@ -38,8 +38,9 @@ import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 public class RaidsPointsOverlay extends Overlay
 {
@@ -82,29 +83,19 @@ public class RaidsPointsOverlay extends Overlay
 		double uniqueChance = totalPoints / 867500f;
 
 		panel.getChildren().clear();
-		panel.getChildren().add(LineComponent.builder()
-			.left("Total:")
-			.right(POINTS_FORMAT.format(totalPoints))
-			.build());
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
 
-		panel.getChildren().add(LineComponent.builder()
-			.left(client.getLocalPlayer().getName() + ":")
-			.right(POINTS_FORMAT.format(personalPoints))
-			.build());
+		tableComponent.addRow("Total:", POINTS_FORMAT.format(totalPoints));
+		tableComponent.addRow(client.getLocalPlayer().getName() + ":", POINTS_FORMAT.format(personalPoints));
 
 
 		if (partySize > 1)
 		{
-			panel.getChildren().add(LineComponent.builder()
-				.left("Party size:")
-				.right(String.valueOf(partySize))
-				.build());
+			tableComponent.addRow("Party size:", String.valueOf(partySize));
 		}
 
-		panel.getChildren().add(LineComponent.builder()
-			.left("Unique:")
-			.right(UNIQUE_FORMAT.format(uniqueChance))
-			.build());
+		tableComponent.addRow("Unique:", UNIQUE_FORMAT.format(uniqueChance));
 		//TODO this is annoyingly bugged, personalpoints returns null for some reason
 /*
 		if (partySize > 1)
@@ -116,6 +107,8 @@ public class RaidsPointsOverlay extends Overlay
 					.right(UNIQUE_FORMAT.format(personalChance))
 					.build());
 		}*/
+
+		panel.getChildren().add(tableComponent);
 
 		return panel.render(graphics);
 	}

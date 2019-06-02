@@ -35,8 +35,9 @@ import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
+import net.runelite.client.ui.overlay.components.table.TableAlignment;
+import net.runelite.client.ui.overlay.components.table.TableComponent;
 
 class LapCounterOverlay extends Overlay
 {
@@ -80,26 +81,21 @@ class LapCounterOverlay extends Overlay
 		}
 
 		panelComponent.getChildren().clear();
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Total Laps:")
-			.right(Integer.toString(session.getTotalLaps()))
-			.build());
+		TableComponent tableComponent = new TableComponent();
+		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
+		tableComponent.addRow("Total Laps:", Integer.toString(session.getTotalLaps()));
 
 		if (config.lapsToLevel() && session.getLapsTillLevel() > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Laps until level:")
-				.right(Integer.toString(session.getLapsTillLevel()))
-				.build());
+			tableComponent.addRow("Laps until level:", Integer.toString(session.getLapsTillLevel()));
 		}
 
 		if (config.lapsToGoal() && session.getLapsTillGoal() > 0)
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Laps until goal:")
-				.right(Integer.toString(session.getLapsTillGoal()))
-				.build());
+			tableComponent.addRow("Laps until goal:", Integer.toString(session.getLapsTillGoal()));
 		}
+
+		panelComponent.getChildren().add(tableComponent);
 
 		return panelComponent.render(graphics);
 	}
