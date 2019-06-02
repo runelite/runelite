@@ -36,6 +36,7 @@
 	
 	<properties>
 		<spring.boot.version>1.5.6.RELEASE</spring.boot.version>
+		<mysql.connector.version>5.1.45</mysql.connector.version>
 	</properties>
     
 	<dependencies>
@@ -58,7 +59,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.45</version>
+			<version>${mysql.connector.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
@@ -68,12 +69,10 @@
 		<dependency>
 			<groupId>org.sql2o</groupId>
 			<artifactId>sql2o</artifactId>
-			<version>1.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>io.minio</groupId>
 			<artifactId>minio</artifactId>
-			<version>3.0.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
