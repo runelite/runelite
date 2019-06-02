@@ -1,5 +1,7 @@
 /*
- * Copyright (c) 2018, https://runelitepl.us
+ * Copyright (c) 2018 gazivodag <https://github.com/gazivodag>
+ * Copyright (c) 2019 lucwousin <https://github.com/lucwousin>
+ * Copyright (c) 2019 infinitay <https://github.com/Infinitay>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,12 +35,11 @@ import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
-import net.runelite.client.util.MenuUtil;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.RandomUtils;
 
@@ -55,21 +56,22 @@ import org.apache.commons.lang3.RandomUtils;
 @Slf4j
 public class BlackjackPlugin extends Plugin
 {
-	private static int POLLNIVNEACH_REGION = 13358;
-
 	@Inject
 	private Client client;
 
-	private boolean isKnockedOut = false;
-	private boolean ableToBlackJack = false;
+	@Inject
+	private MenuManager menuManager;
 
+	private static final int POLLNIVNEACH_REGION = 13358;
+	private boolean isKnockedOut = false;
 	private long nextKnockOutTick = 0;
 
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN
-			|| (client.getLocalPlayer().getWorldLocation().getRegionID() != POLLNIVNEACH_REGION || !ableToBlackJack))
+		if (client.getGameState() != GameState.LOGGED_IN ||
+			client.getVar(Varbits.QUEST_THE_FEUD) < 13 ||
+			client.getLocalPlayer().getWorldLocation().getRegionID() != POLLNIVNEACH_REGION)
 		{
 			return;
 		}
@@ -78,28 +80,24 @@ public class BlackjackPlugin extends Plugin
 		String target = Text.removeTags(event.getTarget().toLowerCase());
 		if (isKnockedOut && nextKnockOutTick >= client.getTickCount())
 		{
-			MenuUtil.swap(client, "pickpocket", option, target);
+			menuManager.addSwap("", target, "pickpocket", target, false, false);
 		}
 		else
 		{
-			MenuUtil.swap(client, "knock-out", option, target);
+			menuManager.addSwap("", target, "knock-out", target, false, false);
 		}
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() == ChatMessageType.SPAM
-			&& event.getMessage().equals("You smack the bandit over the head and render them unconscious."))
+		if (event.getType() == ChatMessageType.SPAM)
 		{
-			isKnockedOut = true;
-			nextKnockOutTick = client.getTickCount() + RandomUtils.nextInt(3, 4);
+			if (event.getMessage().equals("You smack the bandit over the head and render them unconscious."))
+			{
+				isKnockedOut = true;
+				nextKnockOutTick = client.getTickCount() + RandomUtils.nextInt(3, 4);
+			}
 		}
-	}
-
-	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
-	{
-		ableToBlackJack = client.getVar(Varbits.QUEST_THE_FEUD) >= 13;
 	}
 }
