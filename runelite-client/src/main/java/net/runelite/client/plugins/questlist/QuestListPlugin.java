@@ -130,10 +130,19 @@ public class QuestListPlugin extends Plugin
 		addQuestButtons();
 	}
 
+	/**
+	 *
+	 * @param questState The QuestState value the toggle button is for.
+	 * @return A new Widget that will switch the current filter to the QuestState param
+	 */
+
 	private Widget addToggleButton(QuestState questState)
 	{
 		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
 
+
+		// Note that these buttons are placed where the questHideButton is later placed.
+		// This means that they will be underneath the questHideButton, allowing them to form a right click menu.
 		Widget toggleButton = header.createChild(-1, WidgetType.GRAPHIC);
 
 		toggleButton.setOriginalWidth(13);
@@ -169,6 +178,8 @@ public class QuestListPlugin extends Plugin
 			questSearchButton.setName(MENU_SEARCH);
 			questSearchButton.revalidate();
 
+			// Create all the toggle buttons to form a menu
+			// By default, the ALL filter is selected. It needs to be hidden from the menu so it doesn't appear twice.
 			for (int i = QuestState.values().length - 1; i >= 0; i--)
 				toggles[i] = addToggleButton(QuestState.values()[i]);
 			toggles[toggles.length - 1].setHidden(true);
@@ -213,18 +224,29 @@ public class QuestListPlugin extends Plugin
 		}
 	}
 
+	/**
+	 *
+	 * @param questState The QuestState of the toggle button pressed. If the questHideButton is clicked,
+	 *                   questState is null.
+	 */
+
 	private void toggleHidden(QuestState questState)
 	{
 		Widget[] header = client.getWidget(WidgetInfo.QUESTLIST_BOX).getChildren();
 
 		QuestState[] questStates = QuestState.values();
 		int nextState;
+
+		// If questState is null, just move on to the next filter state in the list.
+		// Otherwise, jump to the filter corresponding to the given questState.
 		if (questState == null)
 			nextState = (currentFilterState.ordinal() + 1) % questStates.length;
 		else
 			nextState = questState.ordinal();
 		currentFilterState = questStates[nextState];
 
+		// Hide the toggle button corresponding to the "next" filter state so it doesn't appear twice.
+		// This reduces the size of the menu when right clicking.
 		for (int i = 0; i < QuestState.values().length; i++)
 		{
 			if (i == nextState)
@@ -241,6 +263,8 @@ public class QuestListPlugin extends Plugin
 
 	private void redrawHideButton()
 	{
+		// Set the questHideButton to indicate the current filter.
+
 		questHideButton.setSpriteId(currentFilterState.getSpriteId());
 		questHideButton.setName(MENU_SHOW + " Next");
 	}
