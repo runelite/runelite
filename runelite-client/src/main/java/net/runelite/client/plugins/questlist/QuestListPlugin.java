@@ -37,7 +37,6 @@ import lombok.Data;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Quest;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
