@@ -79,7 +79,9 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.FAIRYTALE_II__CURE_A_QUEEN, true));
 
 		// HARD
-		add("Recharge some Jewellery at Totem in the Legends Guild.",
+		//For some reason this task text changes on completion
+		String[] TotemRechargeTextOptions = {"Recharge some Jewellery at the Totem in the Legends Guild.", "Recharge some Jewellery at Totem in the Legends Guild."};
+		add(TotemRechargeTextOptions,
 			new QuestRequirement(Quest.LEGENDS_QUEST));
 		add("Enter the Magic Guild.",
 			new SkillRequirement(Skill.MAGIC, 66));

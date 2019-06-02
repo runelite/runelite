@@ -27,6 +27,7 @@ package net.runelite.client.plugins.achievementdiary.diaries;
 
 import net.runelite.api.Quest;
 import net.runelite.api.Skill;
+import net.runelite.api.vars.AccountType;
 import net.runelite.client.plugins.achievementdiary.CombatLevelRequirement;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.OrRequirement;
@@ -35,7 +36,7 @@ import net.runelite.client.plugins.achievementdiary.SkillRequirement;
 
 public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 {
-	public MorytaniaDiaryRequirement()
+	public MorytaniaDiaryRequirement(AccountType accountType)
 	{
 		// EASY
 		add("Craft any Snelm from scratch in Morytania.",
@@ -46,8 +47,10 @@ public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 			new CombatLevelRequirement(20));
 		add("Kill a Banshee in the Slayer Tower.",
 			new SkillRequirement(Skill.SLAYER, 15));
+		//47 Farming requirement for Ironman accounts because the watermelon used to create a scarecrow can only be obtained through Farming
+		int farmingRequirement = ((accountType.isIronman()) ? 47 : 23);
 		add("Place a Scarecrow in the Morytania flower patch.",
-			new SkillRequirement(Skill.FARMING, 23));
+			new SkillRequirement(Skill.FARMING, farmingRequirement));
 		add("Kill a werewolf in its human form using the Wolfbane Dagger.",
 			new QuestRequirement(Quest.PRIEST_IN_PERIL));
 		add("Restore your prayer points at the nature altar.",

@@ -230,7 +230,7 @@ public class DiaryRequirementsPlugin extends Plugin
 				diaryRequirementContainer = new DesertDiaryRequirement();
 				break;
 			case "FALADOR_AREA_TASKS":
-				diaryRequirementContainer = new FaladorDiaryRequirement();
+				diaryRequirementContainer = new FaladorDiaryRequirement(client.getAccountType());
 				break;
 			case "FREMENNIK_TASKS":
 				diaryRequirementContainer = new FremennikDiaryRequirement();
@@ -248,10 +248,10 @@ public class DiaryRequirementsPlugin extends Plugin
 				diaryRequirementContainer = new LumbridgeDiaryRequirement();
 				break;
 			case "MORYTANIA_TASKS":
-				diaryRequirementContainer = new MorytaniaDiaryRequirement();
+				diaryRequirementContainer = new MorytaniaDiaryRequirement(client.getAccountType());
 				break;
 			case "VARROCK_TASKS":
-				diaryRequirementContainer = new VarrockDiaryRequirement();
+				diaryRequirementContainer = new VarrockDiaryRequirement(client.getAccountType());
 				break;
 			case "WESTERN_AREA_TASKS":
 				diaryRequirementContainer = new WesternDiaryRequirement();

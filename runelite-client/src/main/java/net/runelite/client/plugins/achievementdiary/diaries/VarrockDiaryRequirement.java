@@ -27,6 +27,7 @@ package net.runelite.client.plugins.achievementdiary.diaries;
 
 import net.runelite.api.Quest;
 import net.runelite.api.Skill;
+import net.runelite.api.vars.AccountType;
 import net.runelite.client.plugins.achievementdiary.CombatLevelRequirement;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.QuestPointRequirement;
@@ -35,7 +36,7 @@ import net.runelite.client.plugins.achievementdiary.SkillRequirement;
 
 public class VarrockDiaryRequirement extends GenericDiaryRequirement
 {
-	public VarrockDiaryRequirement()
+	public VarrockDiaryRequirement(AccountType accountType)
 	{
 		// EASY
 		add("Have Aubury teleport you to the Essence mine.",
@@ -79,8 +80,10 @@ public class VarrockDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.AGILITY, 30));
 
 		// HARD
+		//69 Hunter requirement for Ironman accounts because the fur used to create the cape can only be caught at level 69
+		int hunterRequirement = ((accountType.isIronman()) ? 69 : 66);
 		add("Trade furs with the Fancy Dress Seller for a spottier cape and equip it.",
-			new SkillRequirement(Skill.HUNTER, 66));
+			new SkillRequirement(Skill.HUNTER, hunterRequirement));
 		add("Make a Waka Canoe near Edgeville.",
 			new SkillRequirement(Skill.WOODCUTTING, 57));
 		add("Teleport to Paddewwa.",

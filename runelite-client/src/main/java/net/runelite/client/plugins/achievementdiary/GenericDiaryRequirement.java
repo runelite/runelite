@@ -39,4 +39,12 @@ public abstract class GenericDiaryRequirement
 		DiaryRequirement diaryRequirement = new DiaryRequirement(task, requirements);
 		this.requirements.add(diaryRequirement);
 	}
+
+	protected void add(String[] tasks, Requirement... requirements)
+	{
+		for (String task: tasks)
+		{
+			add(task, requirements);
+		}
+	}
 }

@@ -27,13 +27,15 @@ package net.runelite.client.plugins.achievementdiary.diaries;
 
 import net.runelite.api.Quest;
 import net.runelite.api.Skill;
+import net.runelite.api.vars.AccountType;
 import net.runelite.client.plugins.achievementdiary.GenericDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.QuestRequirement;
 import net.runelite.client.plugins.achievementdiary.SkillRequirement;
 
 public class FaladorDiaryRequirement extends GenericDiaryRequirement
 {
-	public FaladorDiaryRequirement()
+
+	public FaladorDiaryRequirement(AccountType accountType)
 	{
 		// EASY
 		add("Find out what your family crest is from Sir Renitee.",
@@ -53,8 +55,10 @@ public class FaladorDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.FIREMAKING, 49));
 		add("Telegrab some Wine of Zamorak at the Chaos Temple by the Wilderness.",
 			new SkillRequirement(Skill.MAGIC, 33));
+		//47 Farming requirement for Ironman accounts because the watermelon used to create a scarecrow can only be obtained through Farming
+		int farmingRequirement = ((accountType.isIronman()) ? 47 : 23);
 		add("Place a Scarecrow in the Falador farming patch.",
-			new SkillRequirement(Skill.FARMING, 23));
+			new SkillRequirement(Skill.FARMING, farmingRequirement));
 		add("Kill a Mogre at Mudskipper Point.",
 			new SkillRequirement(Skill.SLAYER, 32),
 			new QuestRequirement(Quest.SKIPPY_AND_THE_MOGRES));
@@ -78,8 +82,21 @@ public class FaladorDiaryRequirement extends GenericDiaryRequirement
 		add("Chop and burn some Willow logs in Taverley",
 			new SkillRequirement(Skill.WOODCUTTING, 30),
 			new SkillRequirement(Skill.FIREMAKING, 30));
-		add("Craft a fruit basket on the Falador Farm loom.",
-			new SkillRequirement(Skill.CRAFTING, 36));
+
+		String fruitBasketTaskText = "Craft a fruit basket on the Falador Farm loom.";
+		if (accountType.isIronman())
+		{
+			//30 Farming requirement for Ironman accounts because the willow root used to create a fruit basket can only be obtained through Farming
+			add(fruitBasketTaskText,
+					new SkillRequirement(Skill.CRAFTING, 36),
+					new SkillRequirement(Skill.FARMING, 30));
+		}
+		else
+		{
+			add(fruitBasketTaskText,
+					new SkillRequirement(Skill.CRAFTING, 36));
+		}
+
 		add("Teleport to Falador.",
 			new SkillRequirement(Skill.MAGIC, 37));
 

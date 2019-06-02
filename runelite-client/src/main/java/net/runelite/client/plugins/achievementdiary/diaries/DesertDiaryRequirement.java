@@ -65,7 +65,9 @@ public class DesertDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.ENAKHRAS_LAMENT));
 		add("Visit the Genie.",
 			new QuestRequirement(Quest.SPIRITS_OF_THE_ELID));
-		add("Teleport to Pollnivneach with a redirected teleport to house tablet.",
+		//Player owned house task is different on Ironman accounts, however the same skill requirement stands
+		String[] playerOwnedHouseTextOptions = {"Enter your player owned house from Pollnivneach.", "Teleport to Pollnivneach with a redirected teleport to house tablet."};
+		add(playerOwnedHouseTextOptions,
 			new SkillRequirement(Skill.CONSTRUCTION, 20));
 		add("Chop some Teak logs near Uzer.",
 			new SkillRequirement(Skill.WOODCUTTING, 35));
