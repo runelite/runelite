@@ -66,6 +66,6 @@ class CacheKey
 		{
 			return false;
 		}
-        return this.type == other.type;
-    }
+		return this.type == other.type;
+	}
 }

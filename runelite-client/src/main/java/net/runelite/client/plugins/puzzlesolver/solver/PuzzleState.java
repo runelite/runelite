@@ -215,6 +215,6 @@ public class PuzzleState
 			return true;
 		}
 
-        return y1 == y2 && absX == 1;
-    }
+		return y1 == y2 && absX == 1;
+	}
 }
