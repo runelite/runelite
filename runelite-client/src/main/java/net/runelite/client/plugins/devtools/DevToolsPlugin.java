@@ -27,7 +27,6 @@ package net.runelite.client.plugins.devtools;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.collect.ImmutableList;
-import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
@@ -60,6 +59,7 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.MiscUtils;
 import org.slf4j.LoggerFactory;
 
 @PluginDescriptor(
@@ -288,7 +288,7 @@ public class DevToolsPlugin extends Plugin
 				Skill skill = Skill.valueOf(args[0].toUpperCase());
 				int level = Integer.parseInt(args[1]);
 
-				level = Ints.constrainToRange(level, 1, Experience.MAX_REAL_LEVEL);
+				level = MiscUtils.clamp(level, 1, Experience.MAX_REAL_LEVEL);
 				int xp = Experience.getXpForLevel(level);
 
 				client.getBoostedSkillLevels()[skill.ordinal()] = level;

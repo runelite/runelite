@@ -33,6 +33,17 @@ public interface MouseHighlightConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
+		keyName = "mainTooltip",
+		name = "Main Tooltips",
+		description = "Whether or not tooltips are shown on things other than interfaces or the chatbox"
+	)
+	default boolean mainTooltip()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 1,
 		keyName = "uiTooltip",
 		name = "Interface Tooltips",
 		description = "Whether or not tooltips are shown on interfaces"
@@ -43,7 +54,7 @@ public interface MouseHighlightConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
+		position = 2,
 		keyName = "chatboxTooltip",
 		name = "Chatbox Tooltips",
 		description = "Whether or not tooltips are shown over the chatbox"
@@ -53,13 +64,23 @@ public interface MouseHighlightConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(position = 2, keyName = "hideSpells", name = "Spellbook", description = "Hides vanilla client tooltips in the spellbook")
+	@ConfigItem(
+		position = 3,
+		keyName = "hideSpells",
+		name = "Spellbook",
+		description = "Hides vanilla client tooltips in the spellbook"
+	)
 	default boolean shouldHideSpells()
 	{
 		return false;
 	}
 
-	@ConfigItem(position = 3, keyName = "hideCombat", name = "Combat", description = "Hides vanilla client tooltips in the combat menu")
+	@ConfigItem(
+		position = 4,
+		keyName = "hideCombat",
+		name = "Combat",
+		description = "Hides vanilla client tooltips in the combat menu"
+	)
 	default boolean shouldHideCombat()
 	{
 		return false;

@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.zoom;
 
-import com.google.common.primitives.Ints;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
@@ -41,6 +40,7 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.MiscUtils;
 
 @PluginDescriptor(
 	name = "Camera Zoom",
@@ -103,7 +103,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 
 		if ("outerZoomLimit".equals(event.getEventName()))
 		{
-			int outerLimit = Ints.constrainToRange(zoomConfig.outerLimit(), ZoomConfig.OUTER_LIMIT_MIN, ZoomConfig.OUTER_LIMIT_MAX);
+			int outerLimit = MiscUtils.clamp(zoomConfig.outerLimit(), ZoomConfig.OUTER_LIMIT_MIN, ZoomConfig.OUTER_LIMIT_MAX);
 			int outerZoomLimit = 128 - outerLimit;
 			intStack[intStackSize - 1] = outerZoomLimit;
 			return;
@@ -192,7 +192,7 @@ public class ZoomPlugin extends Plugin implements KeyListener
 			controlDown = false;
 			if (zoomConfig.controlFunction() == ControlFunction.CONTROL_TO_RESET)
 			{
-				final int zoomValue = Ints.constrainToRange(zoomConfig.ctrlZoomValue(), zoomConfig.OUTER_LIMIT_MIN, INNER_ZOOM_LIMIT);
+				final int zoomValue = MiscUtils.clamp(zoomConfig.ctrlZoomValue(), zoomConfig.OUTER_LIMIT_MIN, INNER_ZOOM_LIMIT);
 				clientThread.invokeLater(() -> client.runScript(ScriptID.CAMERA_DO_ZOOM, zoomValue, zoomValue));
 			}
 		}
