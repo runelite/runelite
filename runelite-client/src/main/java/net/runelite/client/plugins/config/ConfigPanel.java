@@ -26,7 +26,6 @@ package net.runelite.client.plugins.config;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.primitives.Ints;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -108,6 +107,7 @@ import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.MiscUtils;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
@@ -701,7 +701,7 @@ public class ConfigPanel extends PluginPanel
 					}
 
 					// Config may previously have been out of range
-					value = Ints.constrainToRange(value, min, max);
+					value = MiscUtils.clamp(value, min, max);
 
 					if (max < Integer.MAX_VALUE)
 					{

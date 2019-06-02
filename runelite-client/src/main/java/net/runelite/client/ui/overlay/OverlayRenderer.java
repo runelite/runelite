@@ -25,7 +25,6 @@
 package net.runelite.client.ui.overlay;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -54,6 +53,7 @@ import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.MiscUtils;
 
 @Singleton
 public class OverlayRenderer extends MouseAdapter implements KeyListener
@@ -250,8 +250,8 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 					}
 
 					final Dimension realDimensions = client.getRealDimensions();
-					location.x = Ints.constrainToRange(location.x, 0, Math.max(0, realDimensions.width - dimension.width));
-					location.y = Ints.constrainToRange(location.y, 0, Math.max(0, realDimensions.height - dimension.height));
+					location.x = MiscUtils.clamp(location.x, 0, Math.max(0, realDimensions.width - dimension.width));
+					location.y = MiscUtils.clamp(location.y, 0, Math.max(0, realDimensions.height - dimension.height));
 				}
 
 				if (overlay.getPreferredSize() != null)
@@ -347,8 +347,8 @@ public class OverlayRenderer extends MouseAdapter implements KeyListener
 		{
 			final Dimension realDimension = client.getRealDimensions();
 			mousePoint.translate(-overlayOffset.x, -overlayOffset.y);
-			mousePoint.x = Ints.constrainToRange(mousePoint.x, 0, Math.max(0, realDimension.width - movedOverlay.getBounds().width));
-			mousePoint.y = Ints.constrainToRange(mousePoint.y, 0, Math.max(0, realDimension.height - movedOverlay.getBounds().height));
+			mousePoint.x = MiscUtils.clamp(mousePoint.x, 0, Math.max(0, realDimension.width - movedOverlay.getBounds().width));
+			mousePoint.y = MiscUtils.clamp(mousePoint.y, 0, Math.max(0, realDimension.height - movedOverlay.getBounds().height));
 			movedOverlay.setPreferredPosition(null);
 			movedOverlay.setPreferredLocation(mousePoint);
 			mouseEvent.consume();

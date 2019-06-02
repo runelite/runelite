@@ -25,7 +25,6 @@
 package net.runelite.client.game.chatbox;
 
 import com.google.common.base.Strings;
-import com.google.common.primitives.Ints;
 import com.google.inject.Inject;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -58,6 +57,7 @@ import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseListener;
+import net.runelite.client.util.MiscUtils;
 import net.runelite.client.util.Text;
 
 @Slf4j
@@ -349,8 +349,8 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 
 			if (isStartLine || isEndLine || (cursorEnd > line.end && cursorStart < line.start))
 			{
-				final int cIdx = Ints.constrainToRange(cursorStart - line.start, 0, len);
-				final int ceIdx = Ints.constrainToRange(cursorEnd - line.start, 0, len);
+				final int cIdx = MiscUtils.clamp(cursorStart - line.start, 0, len);
+				final int ceIdx = MiscUtils.clamp(cursorEnd - line.start, 0, len);
 
 				lt = Text.escapeJagex(text.substring(0, cIdx));
 				mt = Text.escapeJagex(text.substring(cIdx, ceIdx));
@@ -452,7 +452,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 			int cx = p.x - ccl.getX() - ox;
 			int cy = p.y - ccl.getY() - oy;
 
-			int currentLine = Ints.constrainToRange(cy / oh, 0, editLines.size() - 1);
+			int currentLine = MiscUtils.clamp(cy / oh, 0, editLines.size() - 1);
 
 			final Line line = editLines.get(currentLine);
 			final String tsValue = line.text;
@@ -489,7 +489,7 @@ public class ChatboxTextInput extends ChatboxInput implements KeyListener, Mouse
 				break;
 			}
 
-			charIndex = Ints.constrainToRange(charIndex, 0, tsValue.length());
+			charIndex = MiscUtils.clamp(charIndex, 0, tsValue.length());
 			return line.start + charIndex;
 		};
 
