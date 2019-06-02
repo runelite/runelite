@@ -294,7 +294,7 @@ class SkillCalculator extends JPanel
 					// Loop through the array and set the slot to selected if any element matches
 					for (UIActionSlot list : combinedActionSlots)
 					{
-						if(list == slot)
+						if (list == slot)
 						{
 							slot.setSelected(true);
 						}
