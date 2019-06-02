@@ -35,6 +35,17 @@ public interface KeyRemappingConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
+		keyName = "cameraRemap",
+		name = "Remap Camera",
+		description = "Configures whether the camera movement uses remapped keys"
+	)
+	default boolean cameraRemap()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
 		keyName = "up",
 		name = "Camera Up key",
 		description = "The key which will replace up."
@@ -45,7 +56,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 2,
+		position = 3,
 		keyName = "down",
 		name = "Camera Down key",
 		description = "The key which will replace down."
@@ -56,7 +67,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 4,
 		keyName = "left",
 		name = "Camera Left key",
 		description = "The key which will replace left."
@@ -67,7 +78,7 @@ public interface KeyRemappingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 5,
 		keyName = "right",
 		name = "Camera Right key",
 		description = "The key which will replace right."
@@ -75,5 +86,16 @@ public interface KeyRemappingConfig extends Config
 	default ModifierlessKeybind right()
 	{
 		return new ModifierlessKeybind(KeyEvent.VK_D, 0);
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "fkeyRemap",
+		name = "Remap F Keys",
+		description = "Configures whether F-Keys are Remapped to 1 (F1) through 0 (F10), '-' (F11), and '=' (F12)"
+	)
+	default boolean fkeyRemap()
+	{
+		return false;
 	}
 }
