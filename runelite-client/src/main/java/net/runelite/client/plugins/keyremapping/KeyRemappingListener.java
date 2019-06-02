@@ -76,7 +76,7 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || !plugin.chatboxFocused())
+		if (client.getGameState() == GameState.LOGIN_SCREEN || !plugin.chatboxFocused())
 		{
 			return;
 		}
@@ -218,7 +218,7 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			return;
 		}
