@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
  * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2019, rbbi <31489752+rbbi@users.noreply.github.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,6 +42,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.Skill;
+import net.runelite.api.events.ExperienceChanged;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.skillcalculator.beans.SkillData;
@@ -67,6 +72,7 @@ class SkillCalculator extends JPanel
 	private final ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
 	private final List<JCheckBox> bonusCheckBoxes = new ArrayList<>();
 	private final IconTextField searchBar = new IconTextField();
+	private final SkillCalculatorConfig config;
 
 	private SkillData skillData;
 	private int currentLevel = 1;
@@ -74,13 +80,17 @@ class SkillCalculator extends JPanel
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1.0f;
+	private CalculatorType selectedCalculator;
 
-	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
+	SkillCalculator(Client client, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager,
+					SkillCalculatorConfig config, EventBus eventBus)
 	{
 		this.client = client;
 		this.uiInput = uiInput;
 		this.spriteManager = spriteManager;
 		this.itemManager = itemManager;
+		this.config = config;
+		eventBus.register(this);
 
 		combinedActionSlot = new UICombinedActionSlot(spriteManager);
 
@@ -111,6 +121,8 @@ class SkillCalculator extends JPanel
 
 	void openCalculator(CalculatorType calculatorType)
 	{
+		this.selectedCalculator = calculatorType;
+
 		// Load the skill data.
 		skillData = cacheSkillData.getSkillData(calculatorType.getDataFile());
 
@@ -118,8 +130,7 @@ class SkillCalculator extends JPanel
 		xpFactor = 1.0f;
 
 		// Update internal skill/XP values.
-		currentXP = client.getSkillExperience(calculatorType.getSkill());
-		currentLevel = Experience.getLevelForXp(currentXP);
+		calculateCurrentXPAndLevelFor(calculatorType.getSkill());
 		targetLevel = enforceSkillBounds(currentLevel + 1);
 		targetXP = Experience.getXpForLevel(targetLevel);
 
@@ -143,6 +154,12 @@ class SkillCalculator extends JPanel
 
 		// Update the input fields.
 		updateInputFields();
+	}
+
+	private void calculateCurrentXPAndLevelFor(Skill skill)
+	{
+		currentXP = client.getSkillExperience(skill);
+		currentLevel = Experience.getLevelForXp(currentXP);
 	}
 
 	private void updateCombinedAction()
@@ -407,6 +424,28 @@ class SkillCalculator extends JPanel
 	private boolean slotContainsText(UIActionSlot slot, String text)
 	{
 		return slot.getAction().getName().toLowerCase().contains(text.toLowerCase());
+	}
+
+	@Subscribe
+	public void onExperienceChanged(ExperienceChanged changeEvent)
+	{
+		if (this.selectedCalculator == null || !config.realtimeUpdate())
+		{
+			// If no skill calculator selected or real time update disabled, do nothing.
+			return;
+		}
+
+		Skill selectedSkill = selectedCalculator.getSkill();
+
+		/*
+		If the currently-selected skill calculator is the same as the skill we have just gained
+		experience in - update its Current Level and Current Experience fields to reflect this change
+		 */
+		if (selectedSkill == changeEvent.getSkill())
+		{
+			calculateCurrentXPAndLevelFor(selectedSkill);
+			updateInputFields();
+		}
 	}
 
 }

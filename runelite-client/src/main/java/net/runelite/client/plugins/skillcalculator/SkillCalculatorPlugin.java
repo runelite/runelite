@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Kruithne <kruithne@gmail.com>
+ * Copyright (c) 2019, rbbi <31489752+rbbi@users.noreply.github.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,9 +26,12 @@
 
 package net.runelite.client.plugins.skillcalculator;
 
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.game.SpriteManager;
@@ -59,13 +63,18 @@ public class SkillCalculatorPlugin extends Plugin
 	@Inject
 	private ClientToolbar clientToolbar;
 
+	@Inject
+	private EventBus eventBus;
+
 	private NavigationButton uiNavigationButton;
+
+	private SkillCalculatorConfig config;
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "calc.png");
-		final SkillCalculatorPanel uiPanel = new SkillCalculatorPanel(skillIconManager, client, spriteManager, itemManager);
+		final SkillCalculatorPanel uiPanel = new SkillCalculatorPanel(skillIconManager, client, spriteManager, itemManager, config, eventBus);
 
 		uiNavigationButton = NavigationButton.builder()
 			.tooltip("Skill Calculator")
@@ -81,5 +90,12 @@ public class SkillCalculatorPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		clientToolbar.removeNavigation(uiNavigationButton);
+	}
+
+	@Provides
+	SkillCalculatorConfig getConfig(ConfigManager configManager)
+	{
+		this.config = configManager.getConfig(SkillCalculatorConfig.class);
+		return config;
 	}
 }
