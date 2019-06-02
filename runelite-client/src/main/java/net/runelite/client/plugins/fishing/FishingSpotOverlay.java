@@ -102,12 +102,19 @@ class FishingSpotOverlay extends Overlay
 
 			// If a polygon of the same type is already on the same tile, dont render
 			boolean contains = false;
+			boolean drawPolygon = true;
 			for (NPC existingNPC : rendered)
 			{
 				FishingSpot spot1 = FishingSpot.getSPOTS().get(existingNPC.getId());
-				if (existingNPC.getWorldLocation().equals(npc.getWorldLocation()) && spot.getFishSpriteId() == spot1.getFishSpriteId())
+				if (existingNPC.getWorldLocation().equals(npc.getWorldLocation()))
 				{
-					contains = true;
+					if (spot.getFishSpriteId() == spot1.getFishSpriteId())
+					{
+						contains = true;
+						break;
+					}
+
+					drawPolygon = false;
 				}
 			}
 			if (contains)
@@ -154,7 +161,7 @@ class FishingSpotOverlay extends Overlay
 				}
 			}
 
-			if (config.showSpotTiles())
+			if (config.showSpotTiles() && drawPolygon)
 			{
 				Polygon poly = npc.getCanvasTilePoly();
 
