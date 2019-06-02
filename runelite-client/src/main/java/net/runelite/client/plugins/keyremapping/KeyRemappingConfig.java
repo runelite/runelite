@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.wasdcamera;
+package net.runelite.client.plugins.keyremapping;
 
 import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
@@ -30,13 +30,13 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ModifierlessKeybind;
 
-@ConfigGroup("wasdcamera")
-public interface WASDCameraConfig extends Config
+@ConfigGroup("keyremapping")
+public interface KeyRemappingConfig extends Config
 {
 	@ConfigItem(
 		position = 1,
 		keyName = "up",
-		name = "Up key",
+		name = "Camera Up key",
 		description = "The key which will replace up."
 	)
 	default ModifierlessKeybind up()
@@ -47,7 +47,7 @@ public interface WASDCameraConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "down",
-		name = "Down key",
+		name = "Camera Down key",
 		description = "The key which will replace down."
 	)
 	default ModifierlessKeybind down()
@@ -58,7 +58,7 @@ public interface WASDCameraConfig extends Config
 	@ConfigItem(
 		position = 3,
 		keyName = "left",
-		name = "Left key",
+		name = "Camera Left key",
 		description = "The key which will replace left."
 	)
 	default ModifierlessKeybind left()
@@ -69,7 +69,7 @@ public interface WASDCameraConfig extends Config
 	@ConfigItem(
 		position = 4,
 		keyName = "right",
-		name = "Right key",
+		name = "Camera Right key",
 		description = "The key which will replace right."
 	)
 	default ModifierlessKeybind right()
