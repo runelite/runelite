@@ -37,6 +37,7 @@ import lombok.Data;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Quest;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
@@ -88,6 +89,7 @@ public class QuestListPlugin extends Plugin
 	private ChatboxTextInput searchInput;
 	private Widget questSearchButton;
 	private Widget questHideButton;
+	private Widget[] toggles = new Widget[5];
 
 	private EnumMap<QuestContainer, Collection<QuestWidget>> questSet;
 
@@ -129,6 +131,25 @@ public class QuestListPlugin extends Plugin
 		addQuestButtons();
 	}
 
+	private Widget addToggleButton(QuestState questState)
+	{
+		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
+
+		Widget toggleButton = header.createChild(-1, WidgetType.GRAPHIC);
+
+		toggleButton.setOriginalWidth(13);
+		toggleButton.setOriginalHeight(13);
+		toggleButton.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
+		toggleButton.setOriginalX(24);
+		toggleButton.setOriginalY(2);
+		toggleButton.setHasListener(true);
+		toggleButton.setOnOpListener((JavaScriptCallback) e -> toggleHidden());
+		toggleButton.setAction(1, MENU_TOGGLE);
+		toggleButton.setName(MENU_SHOW + " " + questState.getName());
+		toggleButton.revalidate();
+		return toggleButton;
+	}
+
 	private void addQuestButtons()
 	{
 		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
@@ -148,6 +169,10 @@ public class QuestListPlugin extends Plugin
 			questSearchButton.setOnOpListener((JavaScriptCallback) e -> openSearch());
 			questSearchButton.setName(MENU_SEARCH);
 			questSearchButton.revalidate();
+
+			for (int i = QuestState.values().length - 1; i >= 0; i--)
+				toggles[i] = addToggleButton(QuestState.values()[i]);
+			toggles[toggles.length - 1].setHidden(true);
 
 			questHideButton = header.createChild(-1, WidgetType.GRAPHIC);
 			redrawHideButton();
@@ -191,9 +216,19 @@ public class QuestListPlugin extends Plugin
 
 	private void toggleHidden()
 	{
+		Widget[] header = client.getWidget(WidgetInfo.QUESTLIST_BOX).getChildren();
+
 		QuestState[] questStates = QuestState.values();
 		int nextState = (currentFilterState.ordinal() + 1) % questStates.length;
 		currentFilterState = questStates[nextState];
+
+		for (int i = 0; i < QuestState.values().length; i++)
+		{
+			if (i == nextState)
+				header[1 + (4 - i)].setHidden(true);
+			else
+				header[1 + (4 - i)].setHidden(false);
+		}
 
 		redrawHideButton();
 
@@ -204,7 +239,7 @@ public class QuestListPlugin extends Plugin
 	private void redrawHideButton()
 	{
 		questHideButton.setSpriteId(currentFilterState.getSpriteId());
-		questHideButton.setName(MENU_SHOW + " " + currentFilterState.getName());
+		questHideButton.setName(MENU_SHOW + " Next");
 	}
 
 	private boolean isOnQuestTab()
