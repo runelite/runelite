@@ -178,10 +178,7 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 				case KeyEvent.VK_COLON:
 					// refocus chatbox
 					plugin.setTyping(true);
-					clientThread.invoke(() ->
-					{
-						plugin.unlockChat();
-					});
+					clientThread.invoke(plugin::unlockChat);
 					break;
 			}
 
@@ -192,10 +189,7 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 			{
 				case KeyEvent.VK_ENTER:
 					plugin.setTyping(false);
-					clientThread.invoke(() ->
-					{
-						plugin.lockChat();
-					});
+					clientThread.invoke(plugin::lockChat);
 					break;
 				case KeyEvent.VK_ESCAPE:
 					plugin.setTyping(false);
@@ -209,7 +203,7 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 					if (Strings.isNullOrEmpty(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT)))
 					{
 						plugin.setTyping(false);
-						clientThread.invoke(() -> plugin.lockChat());
+						clientThread.invoke(plugin::lockChat);
 					}
 			}
 		}
