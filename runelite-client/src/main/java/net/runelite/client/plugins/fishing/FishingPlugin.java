@@ -60,7 +60,6 @@ import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Duration;
