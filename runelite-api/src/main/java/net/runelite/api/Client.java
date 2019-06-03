@@ -152,11 +152,25 @@ public interface Client extends GameEngine
 	void setPassword(String password);
 
 	/**
+	 * Sets the 6 digit pin used for authenticator on login screen.
+	 *
+	 * @param otp one time password
+	 */
+	void setOtp(String otp);
+
+	/**
 	 * Gets currently selected login field. 0 is username, and 1 is password.
 	 *
 	 * @return currently selected login field
 	 */
 	int getCurrentLoginField();
+
+	/**
+	 * Gets index of current login state. 2 is username/password form, 4 is authenticator form
+	 *
+	 * @return current login state index
+	 */
+	int getLoginIndex();
 
 	/**
 	 * Gets the account type of the logged in player.

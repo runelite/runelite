@@ -248,9 +248,17 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	void setPassword(String password);
 
+	@Import("otp")
+	@Override
+	void setOtp(String otp);
+
 	@Import("currentLoginField")
 	@Override
 	int getCurrentLoginField();
+
+	@Import("loginIndex")
+	@Override
+	int getLoginIndex();
 
 	@Import("playerOptions")
 	@Override
