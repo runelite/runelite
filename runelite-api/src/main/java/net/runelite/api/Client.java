@@ -1606,6 +1606,19 @@ public interface Client extends GameEngine
 	void checkClickbox(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
 
 	/**
+	 * Get the if1 widget whose item is being dragged
+	 *
+	 * @return
+	 */
+	Widget getIf1DraggedWidget();
+
+	/**
+	 * Get the item index of the item being dragged on an if1 widget
+	 * @return
+	 */
+	int getIf1DraggedItemIndex();
+
+	/**
 	 * Sets if a widget is in target mode
 	 */
 	void setSpellSelected(boolean selected);
