@@ -78,7 +78,7 @@ public interface AntiDragConfig extends Config
 	)
 	default boolean overlay()
 	{
-		return true;
+		return false;
 	}
 
 	@Alpha
@@ -86,10 +86,36 @@ public interface AntiDragConfig extends Config
 		keyName = "color",
 		name = "Overlay color",
 		description = "Change the overlay color, duh",
+		hidden = true,
+		unhide = "overlay",
 		position = 5
 	)
 	default Color color()
 	{
 		return new Color(255, 0, 0, 30);
+	}
+
+	@ConfigItem(
+		keyName = "changeCursor",
+		name = "Change Cursor",
+		description = "Change cursor when you have anti-drag enabled.",
+		position = 6
+	)
+	default boolean changeCursor()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "cursorStyle",
+		name = "Cursor",
+		description = "Select which cursor you wish to use",
+		hidden = true,
+		unhide = "changeCursor",
+		position = 7
+	)
+	default CustomCursor selectedCursor()
+	{
+		return CustomCursor.DRAGON_SCIMITAR;
 	}
 }

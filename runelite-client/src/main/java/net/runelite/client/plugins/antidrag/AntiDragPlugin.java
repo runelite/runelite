@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, DennisDeV <https://github.com/DevDennis>
+ * Copyright (c) 2019, ganom <https://github.com/ganom>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,6 +35,8 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
+import net.runelite.client.plugins.customcursor.CustomCursorConfig;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.HotkeyListener;
 
@@ -53,6 +56,9 @@ public class AntiDragPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientUI clientUI;
+
+	@Inject
 	private AntiDragConfig config;
 
 	@Inject
@@ -60,6 +66,9 @@ public class AntiDragPlugin extends Plugin
 
 	@Inject
 	private OverlayManager overlayManager;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	private KeyManager keyManager;
@@ -99,6 +108,11 @@ public class AntiDragPlugin extends Plugin
 				{
 					overlayManager.add(overlay);
 				}
+				if (config.changeCursor())
+				{
+					CustomCursor selectedCursor = config.selectedCursor();
+					clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
+				}
 
 				client.setInventoryDragDelay(config.dragDelay());
 			}
@@ -106,6 +120,11 @@ public class AntiDragPlugin extends Plugin
 			{
 				overlayManager.remove(overlay);
 				client.setInventoryDragDelay(DEFAULT_DELAY);
+				if (config.changeCursor())
+				{
+					net.runelite.client.plugins.customcursor.CustomCursor selectedCursor = configManager.getConfig(CustomCursorConfig.class).selectedCursor();
+					clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
+				}
 			}
 		}
 	};
