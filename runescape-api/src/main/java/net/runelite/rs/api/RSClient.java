@@ -932,6 +932,14 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("endY")
 	int getEndY();
 
+	@Import("if1DraggedWidget")
+	@Override
+	RSWidget getIf1DraggedWidget();
+
+	@Import("if1DraggedItemIndex")
+	@Override
+	int getIf1DraggedItemIndex();
+
 	@Import("spellSelected")
 	@Override
 	void setSpellSelected(boolean selected);
