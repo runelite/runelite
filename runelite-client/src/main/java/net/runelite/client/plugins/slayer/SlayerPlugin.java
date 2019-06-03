@@ -284,13 +284,6 @@ public class SlayerPlugin extends Plugin
 
 		clientToolbar.addNavigation(navButton);
 
-		if (config.amount() != -1
-			&& !config.taskName().isEmpty())
-		{
-			streak = config.streak();
-			clientThread.invoke(() -> setTask(config.taskName(), config.amount(), config.initialAmount(), true, config.taskLocation(), config.lastCertainAmount()));
-		}
-
 		chatCommandManager.registerCommandAsync(TASK_COMMAND_STRING, this::taskLookup, this::taskSubmit);
 	}
 
@@ -326,6 +319,14 @@ public class SlayerPlugin extends Plugin
 				break;
 			case LOGIN_SCREEN:
 				currentTask.setPaused(true);
+				break;
+			case LOGGED_IN:
+				if (config.amount() != -1
+					&& !config.taskName().isEmpty())
+				{
+					streak = config.streak();
+					setTask(config.taskName(), config.amount(), config.initialAmount(), true, config.taskLocation(), config.lastCertainAmount());
+				}
 		}
 	}
 
