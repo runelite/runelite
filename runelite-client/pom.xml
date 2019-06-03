@@ -283,11 +283,6 @@
 			<artifactId>asm-all</artifactId>
 			<version>6.0_BETA</version>
 		</dependency>
-		<dependency>
-			<groupId>io.sentry</groupId>
-			<artifactId>sentry-logback</artifactId>
-			<version>1.7.16</version>
-		</dependency>
     </dependencies>
 
 	<build>
