@@ -43,7 +43,8 @@ import org.apache.commons.lang3.ObjectUtils;
 	name = "TMorph",
 	description = "Want to wear a infernal cape? well now you can!",
 	tags = {"transform", "model", "item", "morph"},
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
 
 public class TMorph extends Plugin
