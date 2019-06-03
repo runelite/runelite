@@ -26,15 +26,6 @@
 package net.runelite.client.plugins.fishing;
 
 import com.google.inject.Provides;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -69,6 +60,16 @@ import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @PluginDescriptor(
 	name = "Fishing",
@@ -328,6 +329,11 @@ public class FishingPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		final NPC npc = npcDespawned.getNpc();
+
+		if (!FishingSpot.getSPOTS().containsKey(npc.getId()))
+		{
+			return;
+		}
 
 		fishingSpots.remove(npc);
 

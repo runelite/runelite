@@ -24,24 +24,17 @@
  */
 package net.runelite.client.plugins.fishing;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.image.BufferedImage;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Inject;
+import com.google.common.collect.LinkedHashMultimap;
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicID;
+import net.runelite.api.HashTable;
 import net.runelite.api.NPC;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -49,6 +42,14 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.util.ImageUtil;
+
+import javax.inject.Inject;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 class FishingSpotOverlay extends Overlay
 {
@@ -83,7 +84,35 @@ class FishingSpotOverlay extends Overlay
 			return null;
 		}
 
-		List<NPC> rendered = new ArrayList<>();
+		Map<WorldPoint, HashMap<FishingSpot, Integer>> spotCount = new HashMap<>();
+		for (NPC npc : plugin.getFishingSpots())
+		{
+			FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
+
+			if (spot == null)
+			{
+				continue;
+			}
+
+			if (!spotCount.containsKey(npc.getWorldLocation()))
+			{
+				HashMap<FishingSpot, Integer> map = new HashMap<>();
+				map.put(spot, 1);
+
+				spotCount.put(npc.getWorldLocation(), map);
+			}
+			else if (!spotCount.get(npc.getWorldLocation()).containsKey(spot))
+			{
+				spotCount.get(npc.getWorldLocation()).put(spot, 1);
+			}
+			else
+			{
+				int amount = spotCount.get(npc.getWorldLocation()).get(spot) + 1;
+				spotCount.get(npc.getWorldLocation()).replace(spot, amount);
+			}
+		}
+
+		LinkedHashMultimap<WorldPoint, FishingSpot> rendered = LinkedHashMultimap.create();
 		for (NPC npc : plugin.getFishingSpots())
 		{
 			FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
@@ -100,40 +129,12 @@ class FishingSpotOverlay extends Overlay
 
 			Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
 
-			// If a polygon of the same type is already on the same tile, dont render
-			boolean contains = false;
-			boolean drawPolygon = true;
-			for (NPC existingNPC : rendered)
-			{
-				FishingSpot spot1 = FishingSpot.getSPOTS().get(existingNPC.getId());
-				if (existingNPC.getWorldLocation().equals(npc.getWorldLocation()))
-				{
-					if (spot.getFishSpriteId() == spot1.getFishSpriteId())
-					{
-						contains = true;
-						break;
-					}
-
-					drawPolygon = false;
-				}
-			}
-			if (contains)
+			if (rendered.get(npc.getWorldLocation()).contains(spot))
 			{
 				continue;
 			}
 
-			// Check how many spots share the same tile
-			int duplicates = 0;
-			for (NPC existingNPC : plugin.getFishingSpots())
-			{
-				FishingSpot spot1 = FishingSpot.getSPOTS().get(existingNPC.getId());
-				if (existingNPC.getWorldLocation().equals(npc.getWorldLocation()) && spot.getFishSpriteId() == spot1.getFishSpriteId())
-				{
-					duplicates++;
-				}
-			}
-
-			rendered.add(npc);
+			int duplicates = spotCount.get(npc.getWorldLocation()).get(spot);
 
 			if (spot == FishingSpot.MINNOW && config.showMinnowOverlay())
 			{
@@ -161,7 +162,7 @@ class FishingSpotOverlay extends Overlay
 				}
 			}
 
-			if (config.showSpotTiles() && drawPolygon)
+			if (config.showSpotTiles() && !rendered.containsKey(npc.getWorldLocation()))
 			{
 				Polygon poly = npc.getCanvasTilePoly();
 
@@ -218,9 +219,11 @@ class FishingSpotOverlay extends Overlay
 
 				if (textLocation != null)
 				{
-					OverlayUtil.renderTextLocation(graphics, textLocation, text + " (" + duplicates + ")", color.darker());
+					OverlayUtil.renderTextLocation(graphics, textLocation, text + (duplicates > 1 ? " (" + duplicates + ")" : ""), color.darker());
 				}
 			}
+
+			rendered.put(npc.getWorldLocation(), spot);
 		}
 
 		return null;
