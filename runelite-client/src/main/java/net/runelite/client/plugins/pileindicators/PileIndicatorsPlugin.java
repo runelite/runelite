@@ -39,15 +39,16 @@ import javax.inject.Singleton;
 import java.awt.*;
 import java.util.ArrayList;
 
+@PluginDescriptor(
+	name = "Pile Indicators",
+	description = "Highlight and count how many npcs/players are stacked on each other.",
+	tags = {"overlay", "pile", "stack", "pvp", "pvm", "pve"},
+	type = PluginType.UTILITY,
+	enabledByDefault = false
+)
+
 @Singleton
 @Slf4j
-@PluginDescriptor(
-		name = "Pile Indicators",
-		description = "Highlight and count how many npcs/players are stacked on each other.",
-		tags = {"overlay", "pile", "stack", "pvp", "pvm", "pve"},
-		enabledByDefault = false,
-		type = PluginType.UTILITY
-)
 public class PileIndicatorsPlugin extends Plugin
 {
 

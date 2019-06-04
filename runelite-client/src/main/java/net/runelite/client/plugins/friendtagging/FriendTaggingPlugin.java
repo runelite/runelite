@@ -49,8 +49,10 @@ import org.apache.commons.lang3.ArrayUtils;
 	name = "Friend Tagging",
 	description = "Tag people on your friends list.",
 	tags = {"PVP", "friend", "finder", "pk", "pklite"},
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
+
 public class FriendTaggingPlugin extends Plugin
 {
 	public static final ConcurrentHashMap<String, String> taggedFriends = new ConcurrentHashMap<>();

@@ -53,9 +53,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Flinching Timer",
 	description = "Time your attacks while flinching",
 	tags = {"overlay", "flinching", "timers", "combat"},
-	enabledByDefault = false,
-	type = PluginType.PVM
+	type = PluginType.PVM,
+	enabledByDefault = false
 )
+
 public class FlinchingPlugin extends Plugin
 {
 	@Inject

@@ -49,8 +49,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Thieving",
 	description = "Show thieving overlay",
 	tags = {"overlay", "skilling", "thieving", "pickpocketing"},
-	type = PluginType.SKILLING
+	type = PluginType.SKILLING,
+	enabledByDefault = false
 )
+
 @PluginDependency(XpTrackerPlugin.class)
 public class ThievingPlugin extends Plugin
 {

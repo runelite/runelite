@@ -58,6 +58,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
+
 public class WarIndicatorPlugin extends Plugin
 {
 	@Inject

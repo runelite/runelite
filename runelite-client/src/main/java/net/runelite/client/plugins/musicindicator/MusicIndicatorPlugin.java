@@ -52,8 +52,10 @@ import net.runelite.client.plugins.PluginType;
 @PluginDescriptor(
 	name = "Music Track Indicator",
 	description = "Show chat notifications when unlocking music tracks",
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
+
 public class MusicIndicatorPlugin extends Plugin
 {
 	private static final List<VarPlayer> MUSIC_TRACK_VARPS = ImmutableList.of(

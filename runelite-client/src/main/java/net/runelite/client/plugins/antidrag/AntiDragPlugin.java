@@ -47,6 +47,7 @@ import net.runelite.client.util.HotkeyListener;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
+
 public class AntiDragPlugin extends Plugin
 {
 	private static final int DEFAULT_DELAY = 5;

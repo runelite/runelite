@@ -31,6 +31,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
+
 public class PrayerAlertPlugin extends Plugin
 {
 	@Inject

@@ -32,6 +32,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
+
 @Slf4j
 public class LearnToClickPlugin extends Plugin
 {

@@ -23,6 +23,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
+
 public class LootAssistPlugin extends Plugin
 {
 	@Inject

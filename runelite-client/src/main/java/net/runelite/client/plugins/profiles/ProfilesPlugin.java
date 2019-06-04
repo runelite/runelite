@@ -41,8 +41,10 @@ import net.runelite.client.util.ImageUtil;
 	name = "Account Switcher",
 	description = "Allow for a allows you to easily switch between multiple OSRS Accounts",
 	tags = {"profile", "account", "login", "log in", "pklite"},
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
+
 public class ProfilesPlugin extends Plugin
 {
 	@Inject

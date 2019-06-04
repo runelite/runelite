@@ -63,6 +63,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.SKILLING,
 	enabledByDefault = false
 )
+
 public class MiningPlugin extends Plugin
 {
 	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);

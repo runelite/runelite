@@ -56,9 +56,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Multi-Lines",
 	description = "Show borders of multicombat and PvP safezones",
 	tags = {"multicombat", "lines", "pvp", "deadman", "safezones", "bogla"},
-	enabledByDefault = false,
-	type = PluginType.PVP
+	type = PluginType.PVP,
+	enabledByDefault = false
 )
+
 public class MultiIndicatorsPlugin extends Plugin
 {
 	@Inject

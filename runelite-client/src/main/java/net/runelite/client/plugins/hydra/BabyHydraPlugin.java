@@ -47,8 +47,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Hydra Helper",
 	description = "Overlays for small hydras",
 	tags = {"Hydra", "Helper", "you", "probably", "want", "the", "other", "one"},
-	type = PluginType.PVM
+	type = PluginType.PVM,
+	enabledByDefault = false
 )
+
 public class BabyHydraPlugin extends Plugin
 {
 	@Inject

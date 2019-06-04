@@ -42,8 +42,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Vetion Helper",
 	description = "Tracks Vet'ion's special attacks",
 	tags = {"bosses", "combat", "pve", "overlay"},
-	type = PluginType.PVM
+	type = PluginType.PVM,
+	enabledByDefault = false
 )
+
 public class VetionPlugin extends Plugin
 {
 

@@ -70,8 +70,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "CoX Helper",
 	description = "All-in-one plugin for Chambers of Xeric",
 	tags = {"CoX", "chamber", "xeric", "helper"},
-	enabledByDefault = false,
-	type = PluginType.PVM
+	type = PluginType.PVM,
+	enabledByDefault = false
 )
 
 @Slf4j

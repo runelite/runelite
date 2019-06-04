@@ -65,8 +65,10 @@ import org.apache.commons.lang3.ArrayUtils;
 	name = "PvP Tools",
 	description = "Enable the PvP Tools panel",
 	tags = {"panel", "pvp", "pk", "pklite", "renderself"},
-	type = PluginType.PVP
+	type = PluginType.PVP,
+	enabledByDefault = false
 )
+
 public class PvpToolsPlugin extends Plugin
 {
 	@Inject

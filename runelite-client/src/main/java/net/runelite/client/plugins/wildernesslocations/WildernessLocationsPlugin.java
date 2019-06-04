@@ -46,6 +46,7 @@ import net.runelite.client.util.WildernessLocation;
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
+
 public class WildernessLocationsPlugin extends Plugin
 {
 

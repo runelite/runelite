@@ -63,7 +63,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "AoE Warnings",
 	description = "Shows the final destination for AoE Attack projectiles",
 	tags = {"bosses", "combat", "pve", "overlay"},
-	type = PluginType.PVM
+	type = PluginType.PVM,
+	enabledByDefault = false
 )
 
 @Slf4j

@@ -60,12 +60,14 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 @PluginDescriptor(
-		name = "Ban List",
-		description = "Displays warning in chat when you join a" +
-				"clan chat/new member join your clan chat and he is in a WDR/RuneWatch/Manual List",
-		tags = {"PVM", "WDR", "RuneWatch"},
-		type = PluginType.UTILITY
+	name = "Ban List",
+	description = "Displays warning in chat when you join a" +
+	"clan chat/new member join your clan chat and he is in a WDR/RuneWatch/Manual List",
+	tags = {"PVM", "WDR", "RuneWatch"},
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
+
 @Slf4j
 public class BanListPlugin extends Plugin
 {

@@ -42,9 +42,10 @@ import net.runelite.client.plugins.PluginType;
 	name = "Shift To Walk",
 	description = "Use Shift to toggle the Walk Here menu option. While pressed you will Walk rather than interact with objects.",
 	tags = {"npcs", "items", "objects"},
-	enabledByDefault = false,
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
+
 public class ShiftWalkerPlugin extends Plugin
 {
 

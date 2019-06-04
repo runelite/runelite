@@ -48,8 +48,10 @@ import net.runelite.client.util.ImageUtil;
 	name = "Vorkath Helper",
 	description = "Count vorkath attacks, and which phase is coming next",
 	tags = {"combat", "overlay", "pve", "pvm"},
-	type = PluginType.PVM
+	type = PluginType.PVM,
+	enabledByDefault = false
 )
+
 public class VorkathPlugin extends Plugin
 {
 	@Inject

@@ -63,12 +63,11 @@ import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Equipment Inspector",
-	enabledByDefault = false,
-	type = PluginType.PVP
+	type = PluginType.PVP,
+	enabledByDefault = false
 )
 
 @Slf4j
-
 public class EquipmentInspectorPlugin extends Plugin
 {
 	private static final String INSPECT_EQUIPMENT = "Gear";

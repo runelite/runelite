@@ -99,8 +99,10 @@ import net.runelite.client.menus.MenuManager;
 	name = "BA Tools",
 	description = "Custom tools for Barbarian Assault",
 	tags = {"minigame", "overlay", "timer"},
-	type = PluginType.PVM
+	type = PluginType.PVM,
+	enabledByDefault = false
 )
+
 public class BAToolsPlugin extends Plugin implements KeyListener
 {
 	private boolean inGame;

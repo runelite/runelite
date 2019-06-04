@@ -92,6 +92,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
+
 public class MenuEntrySwapperPlugin extends Plugin
 {
 	private static final String CONFIGURE = "Configure";

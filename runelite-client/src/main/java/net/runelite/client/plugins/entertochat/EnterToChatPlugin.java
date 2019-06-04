@@ -53,9 +53,10 @@ import net.runelite.client.util.ColorUtil;
 	name = "Press Enter to Chat",
 	description = "'Press Enter to Chat'",
 	tags = {"enter", "chat"},
-	enabledByDefault = false,
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
+
 public class EnterToChatPlugin extends Plugin
 {
 	private static final String PRESS_ENTER_TO_CHAT = "Press Enter to Chat...";

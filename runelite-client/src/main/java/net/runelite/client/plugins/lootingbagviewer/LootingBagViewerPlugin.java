@@ -38,6 +38,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
+
 public class LootingBagViewerPlugin extends Plugin
 {
 	@Inject

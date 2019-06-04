@@ -32,9 +32,10 @@ import net.runelite.client.plugins.PluginType;
 @PluginDescriptor(
 	name = "Kept on Death",
 	description = "Reworks the Items Kept on Death interface to be more accurate",
-	enabledByDefault = false,
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
+
 @Slf4j
 public class KeptOnDeathPlugin extends Plugin
 {

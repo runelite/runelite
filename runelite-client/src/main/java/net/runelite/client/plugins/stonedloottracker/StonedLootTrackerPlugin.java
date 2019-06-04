@@ -94,9 +94,10 @@ import net.runelite.client.util.Text;
 	name = "Stoned Loot Tracker",
 	description = "Tracks loot from monsters and minigames",
 	tags = {"drops"},
-	enabledByDefault = false,
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
+
 @Slf4j
 public class StonedLootTrackerPlugin extends Plugin
 {

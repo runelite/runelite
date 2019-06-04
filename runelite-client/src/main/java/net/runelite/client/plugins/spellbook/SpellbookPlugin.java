@@ -67,8 +67,10 @@ import net.runelite.client.util.Text;
 	name = "Spellbook",
 	description = "Modifications to the spellbook",
 	tags = {"resize", "spell", "mobile", "lowers", "pvp", "skill", "level"},
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
+
 @Slf4j
 public class SpellbookPlugin extends Plugin
 {

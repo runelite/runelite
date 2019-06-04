@@ -66,6 +66,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"flexo", "null"},
 	type = PluginType.UTILITY
 )
+
 public class FlexoPlugin extends Plugin
 {
 	private Flexo flexo;

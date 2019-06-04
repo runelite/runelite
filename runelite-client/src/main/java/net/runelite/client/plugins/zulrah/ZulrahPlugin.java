@@ -57,7 +57,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Zulrah Helper",
 	description = "Shows tiles on where to stand during the phases and what prayer to use.",
 	tags = {"zulrah", "boss", "helper"},
-	type = PluginType.PVM
+	type = PluginType.PVM,
+	enabledByDefault = false
 )
 
 @Slf4j

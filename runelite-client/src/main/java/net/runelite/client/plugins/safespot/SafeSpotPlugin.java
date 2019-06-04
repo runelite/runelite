@@ -38,6 +38,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
+
 public class SafeSpotPlugin extends Plugin
 {
 	@Inject

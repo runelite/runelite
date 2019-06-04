@@ -46,6 +46,7 @@ import org.apache.commons.lang3.ObjectUtils;
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
+
 public class WhaleWatchersPlugin extends Plugin
 {
 

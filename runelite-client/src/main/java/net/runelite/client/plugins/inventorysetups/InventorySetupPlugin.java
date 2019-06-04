@@ -64,8 +64,8 @@ import net.runelite.client.util.ImageUtil;
 	name = "Inventory Setups",
 	description = "Save inventory setups",
 	tags = {"items", "inventory", "setups"},
-	enabledByDefault = false,
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
 
 @Slf4j

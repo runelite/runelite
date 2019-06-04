@@ -39,8 +39,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Runedoku Solver",
 	description = "Show solutions for current Runedoku puzzle.",
 	tags = {"overlay", "runedoku", "sudoku", "puzzle", "solving"},
-	type = PluginType.UTILITY
+	type = PluginType.UTILITY,
+	enabledByDefault = false
 )
+
 @Slf4j
 @Singleton
 public class RunedokuPlugin extends Plugin

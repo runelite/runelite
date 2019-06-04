@@ -50,8 +50,10 @@ import org.apache.commons.lang3.RandomUtils;
 	name = "Blackjack",
 	description = "Allows for one-click blackjacking, both knocking out and pickpocketing",
 	tags = {"blackjack", "thieving"},
-	type = PluginType.SKILLING
+	type = PluginType.SKILLING,
+	enabledByDefault = false
 )
+
 @Singleton
 @Slf4j
 public class BlackjackPlugin extends Plugin

@@ -48,6 +48,7 @@ import net.runelite.client.plugins.maxhit.calculators.RangeMaxHitCalculator;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
+
 public class MaxHitPlugin extends Plugin
 {
 

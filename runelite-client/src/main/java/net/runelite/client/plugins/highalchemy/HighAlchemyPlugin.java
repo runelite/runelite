@@ -57,6 +57,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	type = PluginType.UTILITY,
 	enabledByDefault = false
 )
+
 public class HighAlchemyPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "highalchemy";

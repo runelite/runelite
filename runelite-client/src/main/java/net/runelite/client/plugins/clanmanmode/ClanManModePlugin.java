@@ -33,6 +33,7 @@ import org.apache.commons.lang3.ArrayUtils;
 	type = PluginType.PVP,
 	enabledByDefault = false
 )
+
 public class ClanManModePlugin extends Plugin
 {
 	@Inject

@@ -45,8 +45,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	name = "Freeze Timers",
 	description = "Shows a freeze timer overlay on players",
 	tags = {"freeze", "timers", "barrage", "teleblock", "pklite"},
-	type = PluginType.PVP
+	type = PluginType.PVP,
+	enabledByDefault = false
 )
+
 public class FreezeTimersPlugin extends Plugin
 {
 	private final Map<String, FreezeInfo> freezes = new HashMap<>();

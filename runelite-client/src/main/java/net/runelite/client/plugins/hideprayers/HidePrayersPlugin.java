@@ -50,13 +50,12 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.hideprayers.util.PrayerTabStates;
 
-@PluginDescriptor
-	(
-		name = "Show/Hide Prayers",
-		description = "Hides specific Prayers.",
-		enabledByDefault = false,
-		type = PluginType.UTILITY
-	)
+@PluginDescriptor(
+	name = "Show/Hide Prayers",
+	description = "Hides specific Prayers.",
+	type = PluginType.UTILITY,
+	enabledByDefault = false
+)
 
 public class HidePrayersPlugin extends Plugin
 {
