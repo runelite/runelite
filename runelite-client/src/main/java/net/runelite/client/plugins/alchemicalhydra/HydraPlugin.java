@@ -322,10 +322,11 @@ public class HydraPlugin extends Plugin
 		hydra.setPhase(newPhase);
 		hydra.setNextSpecial(3);
 		hydra.setAttackCount(0);
-		hydra.setWeakened(newPhase != HydraPhase.FOUR);
+		hydra.setWeakened(false);
 
 		if (newPhase == HydraPhase.FOUR)
 		{
+			hydra.setWeakened(true);
 			switchStyles();
 			hydra.setNextSwitch(newPhase.getAttacksPerSwitch());
 		}
