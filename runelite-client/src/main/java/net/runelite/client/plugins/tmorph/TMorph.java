@@ -64,7 +64,7 @@ public class TMorph extends Plugin
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event)
 	{
-		if (config.animationTarget() < 0 && config.animationSwap() < 0)
+		if (config.animationTarget() <= 0 && config.animationSwap() <= 0 && config.globalAnimSwap() > 0)
 		{
 			if (event.getActor().getAnimation() != -1)
 			{
