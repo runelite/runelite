@@ -47,9 +47,14 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemContainer;
+import static net.runelite.api.ItemID.COINS_995;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.FocusChanged;
@@ -57,8 +62,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -68,6 +71,8 @@ import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
@@ -92,11 +97,13 @@ import net.runelite.http.api.osbuddy.OSBGrandExchangeResult;
 public class GrandExchangePlugin extends Plugin
 {
 	private static final int OFFER_CONTAINER_ITEM = 21;
+	private static final int OFFER_PRICE_PER_ITEM = 39;
 	private static final int OFFER_DEFAULT_ITEM_ID = 6512;
 	private static final OSBGrandExchangeClient CLIENT = new OSBGrandExchangeClient();
 	private static final String OSB_GE_TEXT = "<br>OSBuddy Actively traded price: ";
 
-	private static final String BUY_LIMIT_GE_TEXT = "<br>Buy limit: ";
+	private static final String BUY_LIMIT_GE_TEXT = "Buy limit: ";
+	private static final String AFFORD_GE_TEXT = "Afford: ";
 	private static final Gson GSON = new Gson();
 	private static final TypeToken<Map<Integer, Integer>> BUY_LIMIT_TOKEN = new TypeToken<Map<Integer, Integer>>()
 	{
@@ -152,6 +159,11 @@ public class GrandExchangePlugin extends Plugin
 	private Map<Integer, Integer> itemGELimits;
 
 	private GrandExchangeClient grandExchangeClient;
+
+	private int oldPrice = 0;
+	private String afford = "";
+	private String itemDescription = "";
+	private int coins = 0;
 
 	private SavedOffer getOffer(int slot)
 	{
@@ -440,10 +452,49 @@ public class GrandExchangePlugin extends Plugin
 		final String geTextString = geText.getText();
 		final int itemId = grandExchangeItem.getItemId();
 
+		if (!geText.getText().contains("<br>"))
+		{
+			geText.setText(geText.getText() + "<br>");
+			itemDescription = geText.getText();
+		}
+
 		if (itemId == OFFER_DEFAULT_ITEM_ID || itemId == -1)
 		{
 			// This item is invalid/nothing has been searched for
 			return;
+		}
+
+		if (config.enableAfford())
+		{
+			int currentItemPrice = client.getVar(Varbits.GRAND_EXCHANGE_PRICE_PER_ITEM);
+			if (!geTextString.contains(AFFORD_GE_TEXT))
+			{
+				final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+				final Item[] items = itemContainer.getItems();
+				for (Item item : items)
+				{
+					if (item.getId() == COINS_995)
+					{
+						coins = item.getQuantity();
+						break;
+					}
+				}
+				oldPrice = currentItemPrice;
+				afford = AFFORD_GE_TEXT + StackFormatter.formatNumber(Math.floor(coins / currentItemPrice)) + "   ";
+				geText.setText(geText.getText().replace(itemDescription, itemDescription + afford ));
+			}
+			else if (oldPrice != currentItemPrice)
+			{
+				oldPrice = currentItemPrice;
+				final String newAfford = AFFORD_GE_TEXT + StackFormatter.formatNumber(Math.floor(coins / currentItemPrice)) + "   ";
+				geText.setText(geText.getText().replace(afford, newAfford));
+				afford = newAfford;
+			}
+		}
+		else if (!afford.equals(""))
+		{
+			geText.setText(geText.getText().replace(afford, ""));
+			afford = "";
 		}
 
 		if (config.enableGELimits() && itemGELimits != null && !geTextString.contains(BUY_LIMIT_GE_TEXT))
@@ -453,8 +504,8 @@ public class GrandExchangePlugin extends Plugin
 			// If we have item buy limit, append it
 			if (itemLimit != null)
 			{
-				final String text = geText.getText() + BUY_LIMIT_GE_TEXT + StackFormatter.formatNumber(itemLimit);
-				geText.setText(text);
+				final String text = BUY_LIMIT_GE_TEXT + StackFormatter.formatNumber(itemLimit);
+				geText.setText(geText.getText().replace(itemDescription + afford, itemDescription + afford + text));
 			}
 		}
 
