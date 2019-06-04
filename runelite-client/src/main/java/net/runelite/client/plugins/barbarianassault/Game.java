@@ -37,7 +37,7 @@ public class Game
 {
 	private Client client;
 	private String currentWave;
-	private ArrayList<Wave> waves = new ArrayList<>();
+	private ArrayList<Wave> Waves = new ArrayList<>();
 	private String[] totalDescriptions = {
 		"A: ",
 		"; D: ",
@@ -63,7 +63,7 @@ public class Game
 	Game(Client client, ArrayList<Wave> waves)
 	{
 		this.client = client;
-		this.waves = waves;
+		this.Waves = waves;
 	}
 
 	@Subscribe
@@ -77,7 +77,7 @@ public class Game
 		}
 		if (currentWave.equals("1"))
 		{
-			waves = null;
+			Waves = null;
 			totalPoints = new int[6];
 			totalAmounts = new int[6];
 		}
@@ -90,7 +90,7 @@ public class Game
 		int[] otherRolesPointsList;
 		ChatMessageBuilder message = new ChatMessageBuilder();
 		message.append("Round points: ");
-		for (Wave w : waves)
+		for (Wave w : Waves)
 		{
 			amountsList = w.getWaveAmounts();
 			pointsList = w.getWavePoints();

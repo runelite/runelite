@@ -62,6 +62,26 @@ public interface BAToolsConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapCollectorBag",
+			name = "swaps collector bag in ba to empty left click",
+			description = "Make empty the left-click option on collector bag"
+	)
+	default boolean swapCollectorBag()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "swapDestroyEggs",
+			name = "Left click destroy eggs in BA",
+			description = "Make destroy the left-click option for collector eggs"
+	)
+	default boolean swapDestroyEggs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "healerCodes",
 		name = "Healer Codes",
 		description = "Overlay to show healer codes"
@@ -74,7 +94,7 @@ public interface BAToolsConfig extends Config
 	@ConfigItem(
 		keyName = "healerMenuOption",
 		name = "Healer menu options",
-		description = "asd"
+		description = "Shows time since last food placed on healer"
 	)
 	default boolean healerMenuOption()
 	{
@@ -84,7 +104,7 @@ public interface BAToolsConfig extends Config
 	@ConfigItem(
 		keyName = "eggBoi",
 		name = "Collector helper",
-		description = "asd"
+		description = "Hold shift to collect the correct egg"
 	)
 	default boolean eggBoi()
 	{
@@ -94,7 +114,7 @@ public interface BAToolsConfig extends Config
 	@ConfigItem(
 		keyName = "osHelp",
 		name = "Shift OS",
-		description = "asd"
+		description = "Hold shift to only pick up correct eggs"
 	)
 	default boolean osHelp()
 	{
@@ -104,7 +124,7 @@ public interface BAToolsConfig extends Config
 	@ConfigItem(
 		keyName = "prayerMetronome",
 		name = "Prayer Metronome",
-		description = "asd"
+		description = "Similar to metronome plugin but only activates when a prayer is active"
 	)
 	default boolean prayerMetronome()
 	{
@@ -114,7 +134,7 @@ public interface BAToolsConfig extends Config
 	@ConfigItem(
 		keyName = "prayerMetronomeVolume",
 		name = "Prayer Metronome Volume",
-		description = "asd"
+		description = "Volume level"
 	)
 	default int prayerMetronomeVolume()
 	{
@@ -157,6 +177,36 @@ public interface BAToolsConfig extends Config
 		description = "Remove unnecessary menu options in Barbarian Assault depending on role<br>Examples: Remove attack options when not attacker<br>Remove take options when not collector"
 	)
 	default boolean removeHealWrongFood()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "tagging",
+			name = "Attack Tags",
+			description = "Highlights the menu entry of an attacker/ranger that has not been tagged."
+	)
+	default boolean tagging()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "ctrlHealer",
+			name = "Control Healer",
+			description = "Hold ctrl to put last healer clicked on top"
+	)
+	default boolean ctrlHealer()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "removePenanceCave",
+			name = "Remove Block Penance Cave",
+			description = "Removes unnecessary menu option, however Moon wanted it back"
+	)
+	default boolean removePenanceCave()
 	{
 		return false;
 	}

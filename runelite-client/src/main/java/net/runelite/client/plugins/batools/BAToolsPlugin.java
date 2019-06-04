@@ -61,7 +61,9 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.BA_REWARD_GROUP_ID;
+
+
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.api.widgets.WidgetInfo.BA_ATK_CALL_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.BA_ATK_LISTEN_TEXT;
@@ -73,7 +75,6 @@ import static net.runelite.api.widgets.WidgetInfo.BA_DEF_CALL_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.BA_DEF_ROLE_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.BA_HEAL_CALL_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.BA_HEAL_LISTEN_TEXT;
-import static net.runelite.api.widgets.WidgetInfo.BA_REWARD_TEXT;
 import static net.runelite.api.widgets.WidgetInfo.COMBAT_STYLE_FOUR;
 import static net.runelite.api.widgets.WidgetInfo.COMBAT_STYLE_ONE;
 import static net.runelite.api.widgets.WidgetInfo.COMBAT_STYLE_THREE;
@@ -88,9 +89,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import static net.runelite.client.util.MenuUtil.swap;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
+import net.runelite.client.menus.MenuManager;
+
 
 @Slf4j
 @PluginDescriptor(
@@ -105,6 +107,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	private int tickNum;
 	private int pastCall = 0;
 	private int currentWave = 1;
+	private int lastHealer;
 	private static final int BA_WAVE_NUM_INDEX = 2;
 	private static final WorldPoint healerSpawnPoint = new WorldPoint(1898, 1586, 0);
 	private final List<MenuEntry> entries = new ArrayList<>();
@@ -114,6 +117,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	private Actor lastInteracted;
 
 	private boolean shiftDown;
+	private boolean ctrlDown;
 
 	@Inject
 	private Client client;
@@ -140,6 +144,9 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	private Instant wave_start;
 
 	@Inject
+	private MenuManager menuManager;
+
+	@Inject
 	private KeyManager keyManager;
 
 
@@ -155,7 +162,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 		overlayManager.add(overlay);
 		healers = new HashMap<>();
 		wave_start = Instant.now();
-		lastInteracted = null;
+		//lastInteracted = null;
 		foodPressed.clear();
 		keyManager.registerKeyListener(this);
 	}
@@ -175,12 +182,16 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == BA_REWARD_GROUP_ID)
+		switch (event.getGroupId())
 		{
-			Widget rewardWidget = client.getWidget(BA_REWARD_TEXT);
-			if (rewardWidget != null && rewardWidget.getText().contains("<br>5"))
+			case WidgetID.BA_REWARD_GROUP_ID:
 			{
-				tickNum = 0;
+				Widget rewardWidget = client.getWidget(WidgetInfo.BA_REWARD_TEXT);
+
+				if (rewardWidget != null && rewardWidget.getText().contains("<br>5"))
+				{
+					tickNum = 0;
+				}
 			}
 		}
 	}
@@ -208,6 +219,7 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 			if (counter == null)
 			{
 				addCounter();
+				lastHealer = 0;
 			}
 			counter.setCount(tickNum);
 
@@ -420,42 +432,24 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (config.calls() && getWidget() != null && event.getTarget().endsWith("horn") && !event.getTarget().contains("Unicorn"))
-		{
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			Widget callWidget = getWidget();
-			String call = Calls.getOption(callWidget.getText());
-			MenuEntry correctCall = null;
-
-			entries.clear();
-			for (MenuEntry entry : menuEntries)
-			{
-				String option = entry.getOption();
-				if (option.equals(call))
-				{
-					correctCall = entry;
-				}
-				else if (!option.startsWith("Tell-"))
-				{
-					entries.add(entry);
-				}
-			}
-
-			if (correctCall != null) //&& callWidget.getTextColor()==16316664)
-			{
-				entries.add(correctCall);
-				client.setMenuEntries(entries.toArray(new MenuEntry[0]));
-			}
-		}
 
 		final int itemId = event.getIdentifier();
 		String option = Text.removeTags(event.getOption()).toLowerCase();
 		String target = Text.removeTags(event.getTarget()).toLowerCase();
 
+		if (config.swapDestroyEggs() & (target.equals("red egg") || target.equals("green egg") || target.equals("blue egg")))
+		{
+			menuManager.addSwap("destroy", option, target);
+		}
+
+		if (config.swapCollectorBag() & target.equals("collection bag"))
+		{
+			menuManager.addSwap("empty", option, target);
+		}
 
 		if (config.swapLadder() && option.equals("climb-down") && target.equals("ladder"))
 		{
-			swap(client, "quick-start", option, target);
+			menuManager.addSwap("Quick-start", option, target);
 		}
 		else if (config.removeBA() && client.getVar(Varbits.IN_GAME_BA) == 1 && !option.contains("tell-"))//if in barbarian assault and menu isnt from a horn
 		{
@@ -528,11 +522,15 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 				//remove attack option from everything but queen spawns
 				remove(option, target);
 			}
-			else if ((option.equals("fix") || (option.equals("block") && target.equals("penance cave"))) && client.getWidget(BA_DEF_ROLE_TEXT) == null)//if not defender
+			else if ((option.equals("fix")) && client.getWidget(WidgetInfo.BA_DEF_ROLE_TEXT) == null)//if not defender
 			{
-				//the check for option requires checking target as well because defensive attack style option is also called "block".
 				remove(option, target);
 			}
+			else if ((option.equals("block") && target.equals("penance cave") && config.removePenanceCave()))
+			{
+				remove(option, target);
+			}
+
 			else if ((option.equals("load")) && client.getWidget(BA_COLL_ROLE_TEXT) == null)//if not collector, remove hopper options
 			{
 				remove(new String[]{option, "look-in"}, target);
@@ -576,7 +574,40 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 		}
 
 
-		if (inGame && config.healerMenuOption() && event.getTarget().contains("Penance Healer"))
+		if (client.getWidget(WidgetInfo.BA_HEAL_CALL_TEXT) == getWidget() && lastHealer != 0 && inGame && config.ctrlHealer() && ctrlDown)
+		{
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			MenuEntry correctHealer = null;
+			entries.clear();
+
+			for (MenuEntry entry : menuEntries)
+			{
+
+				if (( entry.getIdentifier() == lastHealer  && entry.getOption().equals("Use"))
+						||
+						(
+								(entry.getTarget().equals("<col=ff9040>Poisoned meat") || entry.getTarget().equals("<col=ff9040>Poisoned worms") || entry.getTarget().equals("<col=ff9040>Poisoned tofu"))
+										&&
+										entry.getOption().equals("Use")
+						)
+				)
+				{
+					correctHealer = entry;
+				}
+				else
+				{
+					log.info((entry.getIdentifier() == lastHealer  && entry.getOption().equals("Use")) + " " + ((entry.getTarget().equals("<col=ff9040>Poisoned meat") || entry.getTarget().equals("<col=ff9040>Poisoned worms") || entry.getTarget().equals("<col=ff9040>Poisoned tofu")) && entry.getOption().equals("Use")) );
+				}
+			}
+			if (correctHealer != null)
+			{
+				entries.add(correctHealer);
+			}
+			client.setMenuEntries(entries.toArray(new MenuEntry[entries.size()]));
+		}
+
+
+		if ((event.getTarget().contains("Penance Healer") || event.getTarget().contains("Penance Fighter") || event.getTarget().contains("Penance Ranger")))
 		{
 
 			MenuEntry[] menuEntries = client.getMenuEntries();
@@ -626,6 +657,22 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 			client.setMenuEntries(entries.toArray(new MenuEntry[0]));
 		}
 
+		if (client.getWidget(WidgetInfo.BA_ATK_LISTEN_TEXT) != null && inGame && config.attackStyles() && shiftDown)
+		{
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			MenuEntry correctEgg = null;
+			entries.clear();
+
+			for (MenuEntry entry : menuEntries)
+			{
+				if (entry.getOption().contains("Walk here"))
+				{
+					entries.add(entry);
+				}
+			}
+			client.setMenuEntries(entries.toArray(new MenuEntry[entries.size()]));
+		}
+
 		if (client.getWidget(BA_HEAL_LISTEN_TEXT) != null && inGame && config.osHelp() && event.getTarget().equals("<col=ffff>Healer item machine") && shiftDown)
 		{
 			String[] currentCall = client.getWidget(BA_HEAL_LISTEN_TEXT).getText().split(" ");
@@ -658,26 +705,25 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!config.healerMenuOption() || !event.getMenuTarget().contains("Penance Healer") || client.getWidget(BA_HEAL_CALL_TEXT) == null)
-		{
-			return;
-		}
-
-		String currentCall = client.getWidget(BA_HEAL_CALL_TEXT).getText();
 		String target = event.getMenuTarget();
 
-		if ((currentCall.equals("Pois. Worms") && (target.contains("Poisoned worms") && target.contains("->") && target.contains("Penance Healer")))
-			|| (currentCall.equals("Pois. Meat") && (target.contains("Poisoned meat") && target.contains("->") && target.contains("Penance Healer")))
-			|| (currentCall.equals("Pois. Tofu") && (target.contains("Poisoned tofu") && target.contains("->") && target.contains("Penance Healer"))))
+		if (config.tagging() && (event.getMenuTarget().contains("Penance Ranger") || event.getMenuTarget().contains("Penance Fighter")))
 		{
-			foodPressed.put(event.getId(), Instant.now());
+			if (event.getMenuOption().contains("Attack"))
+			{
+				foodPressed.put(event.getId(), Instant.now());
+			}
+			log.info(target);
 		}
 
-		if (target.contains("->") && target.contains("Penance Healer"))
+		if (config.healerMenuOption() && target.contains("Penance Healer") && target.contains("<col=ff9040>Poisoned") && target.contains("->"))
 		{
 			foodPressed.put(event.getId(), Instant.now());
+			lastHealer = event.getId();
+			log.info("Last healer changed: " + lastHealer);
 		}
 	}
+
 
 	public void onConfigChanged(ConfigChanged event)
 	{
@@ -780,6 +826,10 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 		{
 			shiftDown = true;
 		}
+		if (e.getKeyCode() == KeyEvent.VK_CONTROL)
+		{
+			ctrlDown = true;
+		}
 	}
 
 	@Override
@@ -788,6 +838,10 @@ public class BAToolsPlugin extends Plugin implements KeyListener
 		if (e.getKeyCode() == KeyEvent.VK_SHIFT)
 		{
 			shiftDown = false;
+		}
+		if (e.getKeyCode() == KeyEvent.VK_CONTROL)
+		{
+			ctrlDown = false;
 		}
 	}
 

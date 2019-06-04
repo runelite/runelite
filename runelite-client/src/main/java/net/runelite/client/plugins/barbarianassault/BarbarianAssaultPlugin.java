@@ -52,7 +52,6 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.kit.KitType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -146,6 +145,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	}
 
 	private Game game;
+	private Wave wave;
 
 	@Override
 	protected void startUp() throws Exception
@@ -185,31 +185,32 @@ public class BarbarianAssaultPlugin extends Plugin
 		{
 			case WidgetID.BA_REWARD_GROUP_ID:
 			{
-				Wave wave = new Wave(client);
 				Widget rewardWidget = client.getWidget(WidgetInfo.BA_REWARD_TEXT);
-				if (rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
+				Widget pointsWidget = client.getWidget(WidgetInfo.BA_RUNNERS_PASSED);
+				if (!rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && pointsWidget != null
+						&& !hasAnnounced && client.getVar(Varbits.IN_GAME_BA) == 0)
 				{
-					if (config.waveTimes())
+					wave = new Wave(client);
+					wave.setWaveAmounts();
+					wave.setWavePoints();
+					game.getWaves().add(wave);
+					if (config.showSummaryOfPoints())
 					{
-						announceTime("Game finished, duration: ", gameTime.getTime(false));
+						announceSomething(wave.getWaveSummary());
 					}
+				}
+				if (config.waveTimes() && rewardWidget != null && rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && gameTime != null)
+				{
+					announceTime("Game finished, duration: ", gameTime.getTime(false));
+					gameTime = null;
 					if (config.showTotalRewards())
 					{
 						announceSomething(game.getGameSummary());
 					}
 				}
-				Widget pointsWidget = client.getWidget(WidgetInfo.BA_RUNNERS_PASSED);
-				if (rewardWidget != null && !rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && pointsWidget != null
-						&& config.showSummaryOfPoints() && !hasAnnounced && client.getVar(Varbits.IN_GAME_BA) == 0)
-				{
-					wave.setWaveAmounts();
-					wave.setWavePoints();
-					game.getWaves().add(wave);
-					announceSomething(wave.getWaveSummary());
-				}
 
-				break;
 			}
+			break;
 			case WidgetID.BA_ATTACKER_GROUP_ID:
 			{
 				setOverlayRound(Role.ATTACKER);
@@ -382,7 +383,7 @@ public class BarbarianAssaultPlugin extends Plugin
 		}
 		if (isUnderPlayer(itemDespawned.getTile()))
 		{
-			if (client.getLocalPlayer().getPlayerComposition().getEquipmentId(KitType.CAPE) == ItemID.COLLECTOR_ICON)
+			if (overlay.getCurrentRound().getRoundRole() == Role.COLLECTOR)
 			{
 				positiveEggCount++;
 				if (positiveEggCount > 60)
