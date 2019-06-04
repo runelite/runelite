@@ -382,6 +382,26 @@ public class MenuEntrySwapperPlugin extends Plugin
 				{
 					continue;
 				}
+				if (config.hideDestroyBoltpouch() && entry.getTarget().contains("Bolt pouch"))
+				{
+					continue;
+				}
+				if (config.hideDestroyGembag() && entry.getTarget().contains("Gem bag"))
+				{
+					continue;
+				}
+			}
+
+			if (option.contains("drop"))
+			{
+				if (config.hideDropRunecraftingPouch() && (
+						entry.getTarget().contains("Small pouch")
+								|| entry.getTarget().contains("Medium pouch")
+								|| entry.getTarget().contains("Large pouch")
+								|| entry.getTarget().contains("Giant pouch")))
+				{
+					continue;
+				}
 			}
 
 			int identifier = entry.getIdentifier();

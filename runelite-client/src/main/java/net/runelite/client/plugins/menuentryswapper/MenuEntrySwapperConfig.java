@@ -1563,12 +1563,14 @@ public interface MenuEntrySwapperConfig extends Config
 		return false;
 	}
 
+	//----------------------Untradeables---------------------------//
+
 	@ConfigItem(
 			keyName = "hideDestroyRunepouch",
 			name = "Hide Destroy on Rune Pouch",
 			description = "Hides the 'Destroy' option when right clicking a Rune pouch.",
 			position = 117,
-			group = "Right Click Options"
+			group = "Untradeables"
 	)
 	default boolean hideDestroyRunepouch()
 	{
@@ -1580,7 +1582,7 @@ public interface MenuEntrySwapperConfig extends Config
 			name = "Hide Destroy on Coal bag",
 			description = "Hides the 'Destroy' option when right clicking a Coal bag.",
 			position = 118,
-			group = "Right Click Options"
+			group = "Untradeables"
 	)
 	default boolean hideDestroyCoalbag()
 	{
@@ -1592,9 +1594,45 @@ public interface MenuEntrySwapperConfig extends Config
 			name = "Hide Destroy on Herb sack",
 			description = "Hides the 'Destroy' option when right clicking a Herb sack.",
 			position = 119,
-			group = "Right Click Options"
+			group = "Untradeables"
 	)
 	default boolean hideDestroyHerbsack()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "hideDestroyBoltpouch",
+			name = "Hide Destroy on Bolt pouch",
+			description = "Hides the 'Destroy' option when right clicking a Bolt pouch.",
+			position = 120,
+			group = "Untradeables"
+	)
+	default boolean hideDestroyBoltpouch()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "hideDestroyGembag",
+			name = "Hide Destroy on Gem bag",
+			description = "Hides the 'Destroy' option when right clicking a Gem bag.",
+			position = 121,
+			group = "Untradeables"
+	)
+	default boolean hideDestroyGembag()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "hideDropRunecraftingPouch",
+			name = "Hide Drop on RC pouches",
+			description = "Hides the 'Drop' option when right clicking a Small, Medium, Large, or Giant pouch.",
+			position = 122,
+			group = "Untradeables"
+	)
+	default boolean hideDropRunecraftingPouch()
 	{
 		return false;
 	}
@@ -1605,7 +1643,7 @@ public interface MenuEntrySwapperConfig extends Config
 			keyName = "swapImps",
 			name = "Impling Jars",
 			description = "Don't open implings if bank has a clue.",
-			position = 120,
+			position = 123,
 			group = "Miscellaneous"
 	)
 	default boolean swapImps()
