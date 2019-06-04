@@ -368,6 +368,22 @@ public class MenuEntrySwapperPlugin extends Plugin
 				continue;
 			}
 
+			if (option.contains("destroy"))
+			{
+				if (config.hideDestroyRunepouch() && entry.getTarget().contains("Rune pouch"))
+				{
+					continue;
+				}
+				if (config.hideDestroyCoalbag() && entry.getTarget().contains("Coal bag"))
+				{
+					continue;
+				}
+				if (config.hideDestroyHerbsack() && entry.getTarget().contains("Herb sack"))
+				{
+					continue;
+				}
+			}
+
 			int identifier = entry.getIdentifier();
 
 			Player[] players = client.getCachedPlayers();

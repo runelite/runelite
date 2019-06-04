@@ -1564,11 +1564,49 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapImps",
-		name = "Impling Jars",
-		description = "Don't open implings if bank has a clue.",
-		position = 117,
-		group = "Miscellaneous"
+			keyName = "hideDestroyRunepouch",
+			name = "Hide Destroy on Rune Pouch",
+			description = "Hides the 'Destroy' option when right clicking a Rune pouch.",
+			position = 117,
+			group = "Right Click Options"
+	)
+	default boolean hideDestroyRunepouch()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "hideDestroyCoalbag",
+			name = "Hide Destroy on Coal bag",
+			description = "Hides the 'Destroy' option when right clicking a Coal bag.",
+			position = 118,
+			group = "Right Click Options"
+	)
+	default boolean hideDestroyCoalbag()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+			keyName = "hideDestroyHerbsack",
+			name = "Hide Destroy on Herb sack",
+			description = "Hides the 'Destroy' option when right clicking a Herb sack.",
+			position = 119,
+			group = "Right Click Options"
+	)
+	default boolean hideDestroyHerbsack()
+	{
+		return false;
+	}
+
+	//------------------------------------------------------------//
+
+	@ConfigItem(
+			keyName = "swapImps",
+			name = "Impling Jars",
+			description = "Don't open implings if bank has a clue.",
+			position = 120,
+			group = "Miscellaneous"
 	)
 	default boolean swapImps()
 	{
