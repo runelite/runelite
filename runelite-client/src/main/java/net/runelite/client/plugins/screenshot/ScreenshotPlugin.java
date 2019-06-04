@@ -217,7 +217,7 @@ public class ScreenshotPlugin extends Plugin
 			.tab(false)
 			.tooltip("Take screenshot")
 			.icon(iconImage)
-			.onClick(() -> takeScreenshot(format(new Date()), "Manual Screenshot"))
+			.onClick(() -> takeScreenshot(format(new Date()), "Manual Screenshots"))
 			.popup(ImmutableMap
 				.<String, Runnable>builder()
 				.put("Open screenshot folder...", () ->
@@ -263,7 +263,7 @@ public class ScreenshotPlugin extends Plugin
 			return;
 		}
 
-		String screenshotSubDir = "";
+		String screenshotSubDir = null;
 		shouldTakeScreenshot = false;
 
 		String fileName = null;
@@ -285,7 +285,7 @@ public class ScreenshotPlugin extends Plugin
 			screenshotSubDir = "Quests";
 		}
 
-		if (fileName != null)
+		if (fileName != null && screenshotSubDir != null)
 		{
 			takeScreenshot(fileName, screenshotSubDir);
 		}
@@ -646,8 +646,7 @@ public class ScreenshotPlugin extends Plugin
 			{
 				playerDir += "-Deadman";
 			}
-			playerFolder = new File(SCREENSHOT_DIR, playerDir);
-			playerFolder = new File(playerFolder, subDir);
+			playerFolder = new File(SCREENSHOT_DIR, playerDir + "/" + subDir);
 		}
 		else
 		{
