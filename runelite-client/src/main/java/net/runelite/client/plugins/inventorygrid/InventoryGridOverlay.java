@@ -45,6 +45,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 class InventoryGridOverlay extends Overlay
 {
 	private static final int INVENTORY_SIZE = 28;
+	private static final int DRAG_DELAY = 5;
 
 	private static final Color HIGHLIGHT = new Color(0, 255, 0, 45);
 	private static final Color GRID = new Color(255, 255, 255, 45);
@@ -70,7 +71,8 @@ class InventoryGridOverlay extends Overlay
 		final Widget if1DraggingWidget = client.getIf1DraggedWidget();
 		final Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
 
-		if (if1DraggingWidget == null || if1DraggingWidget != inventoryWidget)
+		if (if1DraggingWidget == null || if1DraggingWidget != inventoryWidget
+			|| client.getItemPressedDuration() < DRAG_DELAY)
 		{
 			return null;
 		}

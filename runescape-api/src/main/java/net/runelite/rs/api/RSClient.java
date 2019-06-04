@@ -777,6 +777,7 @@ public interface RSClient extends RSGameEngine, Client
 	boolean isInInstancedRegion();
 
 	@Import("itemPressedDuration")
+	@Override
 	int getItemPressedDuration();
 
 	@Import("itemPressedDuration")

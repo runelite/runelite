@@ -1361,6 +1361,13 @@ public interface Client extends GameEngine
 	boolean isInInstancedRegion();
 
 	/**
+	 * Get the number of client ticks an item has been pressed
+	 *
+	 * @return the number of client ticks an item has been pressed
+	 */
+	int getItemPressedDuration();
+
+	/**
 	 * Sets whether the client is hiding entities.
 	 * <p>
 	 * This method does not itself hide any entities. It behaves as a master
