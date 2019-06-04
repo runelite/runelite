@@ -33,7 +33,8 @@ import net.runelite.client.game.SpriteOverride;
 public enum WikiSprite implements SpriteOverride
 {
 	WIKI_ICON(-300, "wiki.png"),
-	WIKI_SELECTED_ICON(-301, "wiki_selected.png"),
+	WIKI_HOVER_ICON(-301, "wiki_hover.png"),
+	WIKI_SELECTED_ICON(-302, "wiki_selected.png"),
 	FIXED_MODE_MINIMAP_CLICKMASK(SpriteID.MINIMAP_CLICK_MASK, "fixed_mode_minimap_clickmask.png");
 
 	@Getter

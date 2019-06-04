@@ -166,6 +166,23 @@ public class WikiPlugin extends Plugin
 		icon.setName("Wiki");
 		icon.setClickMask(WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_ITEM | WidgetConfig.USE_NPC | WidgetConfig.USE_OBJECT);
 		icon.setNoClickThrough(true);
+		icon.setHasListener(true);
+		icon.setOnMouseOverListener((JavaScriptCallback) ev ->
+		{
+			if (wikiSelected)
+			{
+				return;
+			}
+			icon.setSpriteId(WikiSprite.WIKI_HOVER_ICON.getSpriteId());
+		});
+		icon.setOnMouseLeaveListener((JavaScriptCallback) ev ->
+		{
+			if (wikiSelected)
+			{
+				return;
+			}
+			icon.setSpriteId(WikiSprite.WIKI_ICON.getSpriteId());
+		});
 		icon.setOnTargetEnterListener((JavaScriptCallback) ev ->
 		{
 			wikiSelected = true;
@@ -191,7 +208,14 @@ public class WikiPlugin extends Plugin
 		wikiSelected = false;
 		if (icon != null)
 		{
-			icon.setSpriteId(WikiSprite.WIKI_ICON.getSpriteId());
+			if (icon.contains(client.getMouseCanvasPosition()))
+			{
+				icon.setSpriteId(WikiSprite.WIKI_HOVER_ICON.getSpriteId());
+			}
+			else
+			{
+				icon.setSpriteId(WikiSprite.WIKI_ICON.getSpriteId());
+			}
 		}
 	}
 
