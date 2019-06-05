@@ -47,6 +47,8 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
+import static ch.qos.logback.core.joran.action.ActionConst.NULL;
+
 class UIActionSlot extends JPanel
 {
 	private static final Border GREEN_BORDER = new CompoundBorder(
@@ -66,6 +68,7 @@ class UIActionSlot extends JPanel
 	@Getter(AccessLevel.PACKAGE)
 	private final SkillDataEntry action;
 	private final JShadowedLabel uiLabelActions;
+	private final JShadowedLabel uiLabelName;
 
 	private final JPanel uiInfo;
 
@@ -74,6 +77,7 @@ class UIActionSlot extends JPanel
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isSelected;
+	private int selectedNumber;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isOverlapping;
@@ -121,7 +125,7 @@ class UIActionSlot extends JPanel
 		uiInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
 
-		JShadowedLabel uiLabelName = new JShadowedLabel(action.getName());
+		uiLabelName = new JShadowedLabel(action.getName());
 		uiLabelName.setForeground(Color.WHITE);
 
 		uiLabelActions = new JShadowedLabel("Unknown");
@@ -133,11 +137,19 @@ class UIActionSlot extends JPanel
 
 		add(uiIcon, BorderLayout.LINE_START);
 		add(uiInfo, BorderLayout.CENTER);
+
+		selectedNumber = 0;
 	}
 
 	void setSelected(boolean selected)
 	{
 		isSelected = selected;
+		if (selected == false)
+		{
+			selectedNumber = 0;
+			// add the number to the string
+			appendNumberToTitle(selectedNumber);
+		}
 		this.updateBackground();
 	}
 
@@ -156,6 +168,37 @@ class UIActionSlot extends JPanel
 	void setText(String text)
 	{
 		uiLabelActions.setText(text);
+	}
+
+	void updateSelectedNumber(boolean increase)
+	{
+		if (increase == true)
+		{
+			selectedNumber++;
+		}
+		else if (selectedNumber > 0)
+		{
+			selectedNumber--;
+		}
+
+		// add the number to the string
+		appendNumberToTitle(selectedNumber);
+	}
+
+	private void appendNumberToTitle(int num)
+	{
+		// grab the same and take off any numbers
+		String name = uiLabelName.getText().split("\\(")[0].trim();
+		if (num == (0))
+		{
+			// If none selected, just use the name
+			uiLabelName.setText(name);
+		}
+		else
+		{
+			// Add the number to the text
+			uiLabelName.setText(name+" ("+num+")");
+		}
 	}
 
 	private void updateBackground()

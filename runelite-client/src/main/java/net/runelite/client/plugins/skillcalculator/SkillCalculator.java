@@ -284,21 +284,16 @@ class SkillCalculator extends JPanel
 					if (slot.isSelected() && !e.isControlDown())
 					{
 						combinedActionSlots.remove(slot);
-						slot.setSelected(false);
+						slot.updateSelectedNumber(false);
 					}
 					else
 					{
 						combinedActionSlots.add(slot);
+						slot.updateSelectedNumber(true);
 					}
 
 					// Loop through the array and set the slot to selected if any element matches
-					for (UIActionSlot list : combinedActionSlots)
-					{
-						if (list == slot)
-						{
-							slot.setSelected(true);
-						}
-					}
+					slot.setSelected(combinedActionSlots.contains(slot));
 					updateCombinedAction();
 				}
 			});
