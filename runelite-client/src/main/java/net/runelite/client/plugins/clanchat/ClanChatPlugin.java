@@ -60,6 +60,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.api.events.PlayerSpawned;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarClientStrChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -87,8 +88,8 @@ import net.runelite.client.util.Text;
 public class ClanChatPlugin extends Plugin
 {
 	private static final int MAX_CHATS = 10;
-	private static final String CLAN_CHAT_TITLE = "Clan Chat";
-	private static final String RECENT_TITLE = "Recent Clan Chats";
+	private static final String CLAN_CHAT_TITLE = "CC";
+	private static final String RECENT_TITLE = "Recent CCs";
 	private static final int JOIN_LEAVE_DURATION = 20;
 	private static final int MESSAGE_DELAY = 10;
 
@@ -168,11 +169,12 @@ public class ClanChatPlugin extends Plugin
 
 		if (member.getWorld() == client.getWorld())
 		{
+			final Player local = client.getLocalPlayer();
 			final String memberName = Text.toJagexName(member.getUsername());
 
 			for (final Player player : client.getPlayers())
 			{
-				if (player != null && memberName.equals(Text.toJagexName(player.getName())))
+				if (player != null && player != local && memberName.equals(Text.toJagexName(player.getName())))
 				{
 					clanMembers.add(player);
 					addClanCounter();
@@ -455,9 +457,12 @@ public class ClanChatPlugin extends Plugin
 	@Subscribe
 	public void onPlayerSpawned(PlayerSpawned event)
 	{
-		if (event.getPlayer().isClanMember())
+		final Player local = client.getLocalPlayer();
+		final Player player = event.getPlayer();
+
+		if (player != local && player.isClanMember())
 		{
-			clanMembers.add(event.getPlayer());
+			clanMembers.add(player);
 			addClanCounter();
 		}
 	}
@@ -485,6 +490,19 @@ public class ClanChatPlugin extends Plugin
 		}
 
 		activityBuffer.clear();
+	}
+
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
+	{
+		if (!scriptCallbackEvent.getEventName().equalsIgnoreCase("clanchatInput"))
+		{
+			return;
+		}
+
+		final int[] intStack = client.getIntStack();
+		final int size = client.getIntStackSize();
+		intStack[size - 1] = config.clanTabChat() ? 1 : 0;
 	}
 
 	int getClanAmount()

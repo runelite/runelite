@@ -25,9 +25,9 @@
  */
 package net.runelite.client.plugins.bosstimer;
 
+import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -59,7 +59,7 @@ enum Boss
 	DUSK(NpcID.DUSK_7889, 2, ChronoUnit.MINUTES, ItemID.NOON),
 	ALCHEMICAL_HYDRA(NpcID.ALCHEMICAL_HYDRA_8622, 25200, ChronoUnit.MILLIS, ItemID.IKKLE_HYDRA);
 
-	private static final Map<Integer, Boss> bosses = new HashMap<>();
+	private static final Map<Integer, Boss> bosses;
 
 	private final int id;
 	private final Duration spawnTime;
@@ -67,10 +67,14 @@ enum Boss
 
 	static
 	{
+		ImmutableMap.Builder<Integer, Boss> builder = new ImmutableMap.Builder<>();
+
 		for (Boss boss : values())
 		{
-			bosses.put(boss.getId(), boss);
+			builder.put(boss.getId(), boss);
 		}
+
+		bosses = builder.build();
 	}
 
 	private Boss(int id, long period, ChronoUnit unit, int itemSpriteId)

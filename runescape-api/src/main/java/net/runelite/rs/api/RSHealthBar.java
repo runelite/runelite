@@ -24,10 +24,23 @@
  */
 package net.runelite.rs.api;
 
+import net.runelite.api.HealthBar;
 import net.runelite.mapping.Import;
 
-public interface RSHealthBar
+public interface RSHealthBar extends RSCacheableNode, HealthBar
 {
 	@Import("healthScale")
 	int getHealthScale();
+
+	@Import("getHealthBarFrontSprite")
+	@Override
+	RSSpritePixels getHealthBarFrontSprite();
+
+	@Import("getHealthBarBackSprite")
+	@Override
+	RSSpritePixels getHealthBarBackSprite();
+
+	@Import("healthBarPadding")
+	@Override
+	void setPadding(int padding);
 }

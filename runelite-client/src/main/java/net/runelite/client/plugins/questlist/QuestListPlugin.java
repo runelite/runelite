@@ -25,6 +25,13 @@
 package net.runelite.client.plugins.questlist;
 
 import com.google.common.collect.ImmutableList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -36,12 +43,11 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
@@ -52,13 +58,6 @@ import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
-import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @PluginDescriptor(
 	name = "Quest List",
@@ -94,6 +93,22 @@ public class QuestListPlugin extends Plugin
 
 	private QuestState currentFilterState;
 
+	@Override
+	protected void startUp()
+	{
+		clientThread.invoke(this::addQuestButtons);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
+		if (header != null)
+		{
+			header.deleteAllChildren();
+		}
+	}
+
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged e)
 	{
@@ -104,46 +119,52 @@ public class QuestListPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
-		if (widgetLoaded.getGroupId() == WidgetID.QUESTLIST_GROUP_ID)
+		if (!event.getEventName().equals("questProgressUpdated"))
 		{
-			Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
-			if (header != null)
-			{
-				questSearchButton = header.createChild(-1, WidgetType.GRAPHIC);
-				questSearchButton.setSpriteId(SpriteID.GE_SEARCH);
-				questSearchButton.setOriginalWidth(18);
-				questSearchButton.setOriginalHeight(17);
-				questSearchButton.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
-				questSearchButton.setOriginalX(5);
-				questSearchButton.setOriginalY(0);
-				questSearchButton.setHasListener(true);
-				questSearchButton.setAction(1, MENU_OPEN);
-				questSearchButton.setOnOpListener((JavaScriptCallback) e -> openSearch());
-				questSearchButton.setName(MENU_SEARCH);
-				questSearchButton.revalidate();
+			return;
+		}
 
-				questHideButton = header.createChild(-1, WidgetType.GRAPHIC);
-				redrawHideButton();
+		addQuestButtons();
+	}
 
-				questHideButton.setOriginalWidth(13);
-				questHideButton.setOriginalHeight(13);
-				questHideButton.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
-				questHideButton.setOriginalX(24);
-				questHideButton.setOriginalY(2);
-				questHideButton.setHasListener(true);
-				questHideButton.setOnOpListener((JavaScriptCallback) e -> toggleHidden());
-				questHideButton.setAction(1, MENU_TOGGLE);
-				questHideButton.revalidate();
+	private void addQuestButtons()
+	{
+		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
+		if (header != null)
+		{
+			header.deleteAllChildren();
 
-				questSet = new EnumMap<>(QuestContainer.class);
+			questSearchButton = header.createChild(-1, WidgetType.GRAPHIC);
+			questSearchButton.setSpriteId(SpriteID.GE_SEARCH);
+			questSearchButton.setOriginalWidth(18);
+			questSearchButton.setOriginalHeight(17);
+			questSearchButton.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
+			questSearchButton.setOriginalX(5);
+			questSearchButton.setOriginalY(0);
+			questSearchButton.setHasListener(true);
+			questSearchButton.setAction(1, MENU_OPEN);
+			questSearchButton.setOnOpListener((JavaScriptCallback) e -> openSearch());
+			questSearchButton.setName(MENU_SEARCH);
+			questSearchButton.revalidate();
 
-				if (!header.isHidden())
-				{
-					updateFilter();
-				}
-			}
+			questHideButton = header.createChild(-1, WidgetType.GRAPHIC);
+			redrawHideButton();
+
+			questHideButton.setOriginalWidth(13);
+			questHideButton.setOriginalHeight(13);
+			questHideButton.setXPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
+			questHideButton.setOriginalX(24);
+			questHideButton.setOriginalY(2);
+			questHideButton.setHasListener(true);
+			questHideButton.setOnOpListener((JavaScriptCallback) e -> toggleHidden());
+			questHideButton.setAction(1, MENU_TOGGLE);
+			questHideButton.revalidate();
+
+			questSet = new EnumMap<>(QuestContainer.class);
+
+			updateFilter();
 		}
 	}
 
@@ -259,21 +280,26 @@ public class QuestListPlugin extends Plugin
 
 		int y = miniList.getRelativeY() + miniList.getHeight() + 10;
 
-		int newHeight = 0;
+		int newHeight;
 		if (container.getScrollHeight() > 0)
 		{
 			newHeight = (container.getScrollY() * y) / container.getScrollHeight();
+		}
+		else
+		{
+			newHeight = 0;
 		}
 
 		container.setScrollHeight(y);
 		container.revalidateScroll();
 
-		client.runScript(
-			ScriptID.UPDATE_SCROLLBAR,
-			WidgetInfo.QUESTLIST_SCROLLBAR.getId(),
-			WidgetInfo.QUESTLIST_CONTAINER.getId(),
-			newHeight
-		);
+		clientThread.invokeLater(() ->
+			client.runScript(
+				ScriptID.UPDATE_SCROLLBAR,
+				WidgetInfo.QUESTLIST_SCROLLBAR.getId(),
+				WidgetInfo.QUESTLIST_CONTAINER.getId(),
+				newHeight
+			));
 	}
 
 	private void updateList(QuestContainer questContainer, String filter)
@@ -309,7 +335,7 @@ public class QuestListPlugin extends Plugin
 			// Find all of the widgets that we care about, sorting by their Y value
 			quests = Arrays.stream(list.getDynamicChildren())
 				.sorted(Comparator.comparing(Widget::getRelativeY))
-				.filter(w -> !w.isSelfHidden() && !QUEST_HEADERS.contains(w.getText()))
+				.filter(w -> !QUEST_HEADERS.contains(w.getText()))
 				.map(w -> new QuestWidget(w, Text.removeTags(w.getText()).toLowerCase()))
 				.collect(Collectors.toList());
 			questSet.put(questContainer, quests);

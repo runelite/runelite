@@ -43,14 +43,14 @@ public interface OpponentInfoConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showPercent",
-		name = "Show percent",
-		description = "Shows hitpoints as a percentage even if hitpoints are known",
+		keyName = "hitpointsDisplayStyle",
+		name = "Hitpoints display style",
+		description = "Show opponent's hitpoints as a value (if known), percentage, or both",
 		position = 1
 	)
-	default boolean showPercent()
+	default HitpointsDisplayStyle hitpointsDisplayStyle()
 	{
-		return false;
+		return HitpointsDisplayStyle.HITPOINTS;
 	}
 
 	@ConfigItem(

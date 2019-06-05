@@ -44,6 +44,8 @@ class ClueScrollMusicOverlay extends Overlay
 	private final ClueScrollPlugin plugin;
 	private final Client client;
 
+	private boolean hasScrolled;
+
 	@Inject
 	private ClueScrollMusicOverlay(ClueScrollPlugin plugin, Client client)
 	{
@@ -60,6 +62,7 @@ class ClueScrollMusicOverlay extends Overlay
 
 		if (!(clue instanceof MusicClue))
 		{
+			hasScrolled = false;
 			return null;
 		}
 
@@ -95,6 +98,11 @@ class ClueScrollMusicOverlay extends Overlay
 			return null;
 		}
 
+		if (!hasScrolled)
+		{
+			hasScrolled = true;
+			plugin.scrollToWidget(WidgetInfo.MUSIC_TRACK_LIST, WidgetInfo.MUSIC_TRACK_SCROLLBAR, found);
+		}
 		plugin.highlightWidget(graphics, found, trackList, PADDING, null);
 
 		return null;

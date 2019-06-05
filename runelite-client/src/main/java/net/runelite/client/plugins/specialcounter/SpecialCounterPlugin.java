@@ -36,6 +36,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
@@ -51,6 +52,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ws.PartyService;
 import net.runelite.client.ws.WSClient;
+import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
@@ -181,7 +183,16 @@ public class SpecialCounterPlugin extends Plugin
 
 		if (interacting instanceof NPC)
 		{
-			int interactingId = ((NPC) interacting).getId();
+			NPC npc = (NPC) interacting;
+			NPCComposition composition = npc.getComposition();
+			int interactingId = npc.getId();
+
+			if (!ArrayUtils.contains(composition.getActions(), "Attack"))
+			{
+				// Skip over non attackable npcs so that eg. talking to bankers doesn't reset
+				// the counters.
+				return -1;
+			}
 
 			if (!interactedNpcIds.contains(interactingId))
 			{
