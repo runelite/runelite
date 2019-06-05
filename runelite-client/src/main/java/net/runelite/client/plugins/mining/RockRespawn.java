@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,58 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.wasdcamera;
+package net.runelite.client.plugins.mining;
 
-import java.awt.event.KeyEvent;
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.ModifierlessKeybind;
+import java.time.Instant;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.coords.WorldPoint;
 
-@ConfigGroup("wasdcamera")
-public interface WASDCameraConfig extends Config
+@AllArgsConstructor
+@Getter
+class RockRespawn
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "up",
-		name = "Up key",
-		description = "The key which will replace up."
-	)
-	default ModifierlessKeybind up()
-	{
-		return new ModifierlessKeybind(KeyEvent.VK_W, 0);
-	}
-
-	@ConfigItem(
-		position = 2,
-		keyName = "down",
-		name = "Down key",
-		description = "The key which will replace down."
-	)
-	default ModifierlessKeybind down()
-	{
-		return new ModifierlessKeybind(KeyEvent.VK_S, 0);
-	}
-
-	@ConfigItem(
-		position = 3,
-		keyName = "left",
-		name = "Left key",
-		description = "The key which will replace left."
-	)
-	default ModifierlessKeybind left()
-	{
-		return new ModifierlessKeybind(KeyEvent.VK_A, 0);
-	}
-
-	@ConfigItem(
-		position = 4,
-		keyName = "right",
-		name = "Right key",
-		description = "The key which will replace right."
-	)
-	default ModifierlessKeybind right()
-	{
-		return new ModifierlessKeybind(KeyEvent.VK_D, 0);
-	}
+	private final Rock rock;
+	private final WorldPoint worldPoint;
+	private final Instant startTime;
+	private final int respawnTime;
 }

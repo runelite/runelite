@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
- * Copyright (c) 2018, Lars <lars.oernlo@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,54 +22,80 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.mining;
+package net.runelite.client.plugins.keyremapping;
 
+import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ModifierlessKeybind;
 
-@ConfigGroup("mining")
-public interface MiningConfig extends Config
+@ConfigGroup("keyremapping")
+public interface KeyRemappingConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showMiningRocks",
-		name = "Show rock mining spots",
-		description = "Configures whether or not the mining spots are displayed."
+		position = 1,
+		keyName = "cameraRemap",
+		name = "Remap Camera",
+		description = "Configures whether the camera movement uses remapped keys"
 	)
-	default boolean showMiningRocks()
+	default boolean cameraRemap()
 	{
 		return true;
 	}
 
-
 	@ConfigItem(
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until statistics are reset"
+		position = 2,
+		keyName = "up",
+		name = "Camera Up key",
+		description = "The key which will replace up."
 	)
-	default int statTimeout()
+	default ModifierlessKeybind up()
 	{
-		return 5;
+		return new ModifierlessKeybind(KeyEvent.VK_W, 0);
 	}
 
 	@ConfigItem(
-		keyName = "showMiningStats",
-		name = "Show mining session stats",
-		description = "Configures whether to display mining session stats"
+		position = 3,
+		keyName = "down",
+		name = "Camera Down key",
+		description = "The key which will replace down."
 	)
-	default boolean showMiningStats()
+	default ModifierlessKeybind down()
 	{
-		return true;
+		return new ModifierlessKeybind(KeyEvent.VK_S, 0);
 	}
 
+	@ConfigItem(
+		position = 4,
+		keyName = "left",
+		name = "Camera Left key",
+		description = "The key which will replace left."
+	)
+	default ModifierlessKeybind left()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_A, 0);
+	}
 
 	@ConfigItem(
-		keyName = "showMiningState",
-		name = "Show current mining state",
-		description = "Shows current mining state. 'You are currently mining' / 'You are currently NOT mining'"
+		position = 5,
+		keyName = "right",
+		name = "Camera Right key",
+		description = "The key which will replace right."
 	)
-	default boolean showMiningState()
+	default ModifierlessKeybind right()
 	{
-		return true;
+		return new ModifierlessKeybind(KeyEvent.VK_D, 0);
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "fkeyRemap",
+		name = "Remap F Keys",
+		description = "Configures whether F-Keys are Remapped to 1 (F1) through 0 (F10), '-' (F11), and '=' (F12)"
+	)
+	default boolean fkeyRemap()
+	{
+		return false;
 	}
 }
