@@ -120,7 +120,7 @@ public class ExaminePlugin extends Plugin
 				int widgetChild = TO_CHILD(widgetId);
 				Widget widget = client.getWidget(widgetGroup, widgetChild);
 				WidgetItem widgetItem = widget.getWidgetItem(event.getActionParam());
-				quantity = widgetItem != null ? widgetItem.getQuantity() : 1;
+				quantity = widgetItem != null && widgetItem.getId() >= 0 ? widgetItem.getQuantity() : 1;
 				break;
 			}
 			case EXAMINE_ITEM_BANK_EQ:

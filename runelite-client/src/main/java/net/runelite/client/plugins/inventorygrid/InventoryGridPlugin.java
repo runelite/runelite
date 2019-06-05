@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2018, Joris K <kjorisje@gmail.com>
- * Copyright (c) 2018, Lasse <cronick@zytex.dk>
+ * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,34 +23,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cooking;
+package net.runelite.client.plugins.inventorygrid;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
-@ConfigGroup("cooking")
-public interface CookingConfig extends Config
+@PluginDescriptor(
+	name = "Inventory Grid",
+	description = "Shows a grid over the inventory and a preview of where items will be dragged",
+	tags = {"items", "overlay"},
+	enabledByDefault = false
+)
+public class InventoryGridPlugin extends Plugin
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until the session resets and the overlay is hidden (0 = Disable feature)"
-	)
-	default int statTimeout()
+	@Inject
+	private InventoryGridOverlay overlay;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Override
+	public void startUp()
 	{
-		return 5;
+		overlayManager.add(overlay);
 	}
 
-	@ConfigItem(
-		position = 2,
-		keyName = "fermentTimer",
-		name = "Show wine ferment timer",
-		description = "Configures if the timer before wines are fermented is shown"
-	)
-	default boolean fermentTimer()
+	@Override
+	public void shutDown()
 	{
-		return true;
+		overlayManager.remove(overlay);
+	}
+
+	@Provides
+	InventoryGridConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(InventoryGridConfig.class);
 	}
 }

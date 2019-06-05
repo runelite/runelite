@@ -248,9 +248,17 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	void setPassword(String password);
 
+	@Import("otp")
+	@Override
+	void setOtp(String otp);
+
 	@Import("currentLoginField")
 	@Override
 	int getCurrentLoginField();
+
+	@Import("loginIndex")
+	@Override
+	int getLoginIndex();
 
 	@Import("playerOptions")
 	@Override
@@ -769,6 +777,7 @@ public interface RSClient extends RSGameEngine, Client
 	boolean isInInstancedRegion();
 
 	@Import("itemPressedDuration")
+	@Override
 	int getItemPressedDuration();
 
 	@Import("itemPressedDuration")
@@ -923,6 +932,14 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Import("endY")
 	int getEndY();
+
+	@Import("if1DraggedWidget")
+	@Override
+	RSWidget getIf1DraggedWidget();
+
+	@Import("if1DraggedItemIndex")
+	@Override
+	int getIf1DraggedItemIndex();
 
 	@Import("spellSelected")
 	@Override

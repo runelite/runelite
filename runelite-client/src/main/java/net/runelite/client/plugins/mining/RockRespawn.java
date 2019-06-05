@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Joris K <kjorisje@gmail.com>
- * Copyright (c) 2018, Lasse <cronick@zytex.dk>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,34 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cooking;
+package net.runelite.client.plugins.mining;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.time.Instant;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import net.runelite.api.coords.WorldPoint;
 
-@ConfigGroup("cooking")
-public interface CookingConfig extends Config
+@AllArgsConstructor
+@Getter
+class RockRespawn
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until the session resets and the overlay is hidden (0 = Disable feature)"
-	)
-	default int statTimeout()
-	{
-		return 5;
-	}
-
-	@ConfigItem(
-		position = 2,
-		keyName = "fermentTimer",
-		name = "Show wine ferment timer",
-		description = "Configures if the timer before wines are fermented is shown"
-	)
-	default boolean fermentTimer()
-	{
-		return true;
-	}
+	private final Rock rock;
+	private final WorldPoint worldPoint;
+	private final Instant startTime;
+	private final int respawnTime;
 }

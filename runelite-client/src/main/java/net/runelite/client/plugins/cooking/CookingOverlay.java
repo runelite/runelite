@@ -29,8 +29,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.text.DecimalFormat;
-import java.time.Duration;
 import java.time.Instant;
+import java.time.Duration;
 import javax.inject.Inject;
 import static net.runelite.api.AnimationID.COOKING_FIRE;
 import static net.runelite.api.AnimationID.COOKING_RANGE;
@@ -72,7 +72,7 @@ class CookingOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		CookingSession session = plugin.getCookingSession();
+		CookingSession session = plugin.getSession();
 		if (session == null)
 		{
 			return null;

@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Joris K <kjorisje@gmail.com>
- * Copyright (c) 2018, Lasse <cronick@zytex.dk>
+ * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,33 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cooking;
+package net.runelite.client.plugins.inventorygrid;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("cooking")
-public interface CookingConfig extends Config
+@ConfigGroup("inventorygrid")
+public interface InventoryGridConfig extends Config
 {
 	@ConfigItem(
-		position = 1,
-		keyName = "statTimeout",
-		name = "Reset stats (minutes)",
-		description = "Configures the time until the session resets and the overlay is hidden (0 = Disable feature)"
+		keyName = "showItem",
+		name = "Show item",
+		description = "Show a preview of the item in the new slot"
 	)
-	default int statTimeout()
+	default boolean showItem()
 	{
-		return 5;
+		return true;
 	}
 
 	@ConfigItem(
-		position = 2,
-		keyName = "fermentTimer",
-		name = "Show wine ferment timer",
-		description = "Configures if the timer before wines are fermented is shown"
+		keyName = "showGrid",
+		name = "Show grid",
+		description = "Show a grid on the inventory while dragging"
 	)
-	default boolean fermentTimer()
+	default boolean showGrid()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showHighlight",
+		name = "Highlight background",
+		description = "Show a green background highlight on the new slot"
+	)
+	default boolean showHighlight()
 	{
 		return true;
 	}
