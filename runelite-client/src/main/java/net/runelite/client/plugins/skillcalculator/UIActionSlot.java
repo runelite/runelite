@@ -47,8 +47,6 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
-import static ch.qos.logback.core.joran.action.ActionConst.NULL;
-
 class UIActionSlot extends JPanel
 {
 	private static final Border GREEN_BORDER = new CompoundBorder(
@@ -197,7 +195,7 @@ class UIActionSlot extends JPanel
 		else
 		{
 			// Add the number to the text
-			uiLabelName.setText(name+" ("+num+")");
+			uiLabelName.setText(name + " (" + num + ")");
 		}
 	}
 
