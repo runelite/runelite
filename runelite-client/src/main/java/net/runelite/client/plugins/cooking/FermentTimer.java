@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Lucas C <lucas1757@gmail.com>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,17 +24,53 @@
  */
 package net.runelite.client.plugins.cooking;
 
+import java.awt.Color;
+import java.awt.Image;
+import java.time.Duration;
 import java.time.Instant;
-import lombok.AccessLevel;
-import lombok.Getter;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-class FermentTimerSession
+final class FermentTimer extends InfoBox
 {
-	@Getter(AccessLevel.PACKAGE)
-	private Instant lastWineMakingAction;
+	private static final Duration FERMENT_TIME = Duration.ofMillis(13_800);
 
-	void updateLastWineMakingAction()
+	private Instant fermentTime;
+
+	FermentTimer(Image image, Plugin plugin)
 	{
-		this.lastWineMakingAction = Instant.now();
+		super(image, plugin);
+		reset();
+	}
+
+	@Override
+	public String getText()
+	{
+		int seconds = timeUntilFerment();
+		return Integer.toString(seconds);
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		int seconds = timeUntilFerment();
+		return seconds <= 3 ? Color.RED : Color.WHITE;
+	}
+
+	@Override
+	public boolean cull()
+	{
+		int seconds = timeUntilFerment();
+		return seconds <= 0;
+	}
+
+	void reset()
+	{
+		fermentTime = Instant.now().plus(FERMENT_TIME);
+	}
+
+	private int timeUntilFerment()
+	{
+		return (int) Duration.between(Instant.now(), fermentTime).getSeconds();
 	}
 }

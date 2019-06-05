@@ -87,7 +87,7 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 	private void renderText(Graphics2D graphics, Rectangle bounds, ItemIdentification iden)
 	{
 		final TextComponent textComponent = new TextComponent();
-		textComponent.setPosition(new Point(bounds.x, bounds.y + bounds.height));
+		textComponent.setPosition(new Point(bounds.x - 1, bounds.y + bounds.height - 1));
 		textComponent.setColor(config.textColor());
 		switch (config.identificationType())
 		{

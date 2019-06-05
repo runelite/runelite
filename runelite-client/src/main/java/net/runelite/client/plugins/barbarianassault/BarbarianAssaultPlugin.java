@@ -188,7 +188,7 @@ public class BarbarianAssaultPlugin extends Plugin
 				Widget rewardWidget = client.getWidget(WidgetInfo.BA_REWARD_TEXT);
 				Widget pointsWidget = client.getWidget(WidgetInfo.BA_RUNNERS_PASSED);
 				if (!rewardWidget.getText().contains(ENDGAME_REWARD_NEEDLE_TEXT) && pointsWidget != null
-						&& !hasAnnounced && client.getVar(Varbits.IN_GAME_BA) == 0)
+					&& !hasAnnounced && client.getVar(Varbits.IN_GAME_BA) == 0)
 				{
 					wave = new Wave(client);
 					wave.setWaveAmounts();
@@ -328,7 +328,10 @@ public class BarbarianAssaultPlugin extends Plugin
 			{
 				overlay.setCurrentRound(null);
 
-				if (config.waveTimes() && gameTime != null)
+				// Use an instance check to determine if this is exiting a game or a tutorial
+				// After exiting tutorials there is a small delay before changing IN_GAME_BA back to
+				// 0 whereas when in a real wave it changes while still in the instance.
+				if (config.waveTimes() && gameTime != null && client.isInInstancedRegion())
 				{
 					announceTime("Wave " + currentWave + " duration: ", gameTime.getTime(true));
 				}

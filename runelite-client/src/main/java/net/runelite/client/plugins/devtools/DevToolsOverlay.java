@@ -489,6 +489,7 @@ class DevToolsOverlay extends Overlay
 
 		WidgetItem widgetItem = widget.getWidgetItem(itemIndex);
 		if (widgetItem == null
+			|| widgetItem.getId() < 0
 			|| widgetItem.getId() == ITEM_EMPTY
 			|| widgetItem.getId() == ITEM_FILLED)
 		{

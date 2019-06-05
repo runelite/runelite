@@ -123,6 +123,8 @@ public class MusicListPlugin extends Plugin
 			return;
 		}
 
+		header.deleteAllChildren();
+
 		//Creation of the search and toggle status buttons
 		musicSearchButton = header.createChild(-1, WidgetType.GRAPHIC);
 		musicSearchButton.setSpriteId(SpriteID.GE_SEARCH);

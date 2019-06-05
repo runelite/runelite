@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,97 +24,73 @@
  */
 package net.runelite.client.plugins.mining;
 
-import com.google.common.collect.ImmutableSet;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.time.Duration;
 import java.time.Instant;
-import java.util.Set;
+import java.util.Iterator;
+import java.util.List;
 import javax.inject.Inject;
-import static net.runelite.api.AnimationID.*;
 import net.runelite.api.Client;
+import net.runelite.api.Perspective;
+import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.PanelComponent;
-import net.runelite.client.ui.overlay.components.TitleComponent;
-import net.runelite.client.ui.overlay.components.table.TableAlignment;
-import net.runelite.client.ui.overlay.components.table.TableComponent;
+import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 
 class MiningOverlay extends Overlay
 {
-	private static final Set<Integer> MINING_ANIMATION_IDS = ImmutableSet.of(
-		MINING_MOTHERLODE_BRONZE, MINING_MOTHERLODE_IRON, MINING_MOTHERLODE_STEEL,
-		MINING_MOTHERLODE_BLACK, MINING_MOTHERLODE_MITHRIL, MINING_MOTHERLODE_ADAMANT,
-		MINING_MOTHERLODE_RUNE, MINING_MOTHERLODE_DRAGON, MINING_MOTHERLODE_DRAGON_ORN,
-		MINING_MOTHERLODE_INFERNAL
-	);
-
 	private final Client client;
 	private final MiningPlugin plugin;
-	private final MiningConfig config;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
-	MiningOverlay(Client client, MiningPlugin plugin, MiningConfig config)
+	private MiningOverlay(Client client, MiningPlugin plugin)
 	{
-		setPosition(OverlayPosition.TOP_LEFT);
-		this.client = client;
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
-		this.config = config;
+		this.client = client;
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isInMlm() || !config.showMiningStats())
+		List<RockRespawn> respawns = plugin.getRespawns();
+		if (respawns.isEmpty())
 		{
 			return null;
 		}
 
-		MiningSession session = plugin.getSession();
-
-		if (session.getLastPayDirtMined() == null)
+		Instant now = Instant.now();
+		for (Iterator<RockRespawn> it = respawns.iterator(); it.hasNext();)
 		{
-			return null;
-		}
-
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceCut = Duration.between(session.getLastPayDirtMined(), Instant.now());
-
-		if (sinceCut.compareTo(statTimeout) >= 0)
-		{
-			return null;
-		}
-
-		panelComponent.getChildren().clear();
-
-		if (config.showMiningState())
-		{
-			if (MINING_ANIMATION_IDS.contains(client.getLocalPlayer().getAnimation()))
+			RockRespawn rockRespawn = it.next();
+			float percent = (now.toEpochMilli() - rockRespawn.getStartTime().toEpochMilli()) / (float) rockRespawn.getRespawnTime();
+			WorldPoint worldPoint = rockRespawn.getWorldPoint();
+			LocalPoint loc = LocalPoint.fromWorld(client, worldPoint);
+			if (loc == null || percent > 1.0f)
 			{
-				panelComponent.getChildren().add(TitleComponent.builder()
-					.text("Mining")
-					.color(Color.GREEN)
-					.build());
+				it.remove();
+				continue;
 			}
-			else
+
+			Point point = Perspective.localToCanvas(client, loc, client.getPlane());
+			if (point == null)
 			{
-				panelComponent.getChildren().add(TitleComponent.builder()
-					.text("NOT mining")
-					.color(Color.RED)
-					.build());
+				it.remove();
+				continue;
 			}
+
+			ProgressPieComponent ppc = new ProgressPieComponent();
+			ppc.setBorderColor(Color.ORANGE);
+			ppc.setFill(Color.YELLOW);
+			ppc.setPosition(point);
+			ppc.setProgress(percent);
+			ppc.render(graphics);
 		}
-
-		TableComponent tableComponent = new TableComponent();
-		tableComponent.setColumnAlignments(TableAlignment.LEFT, TableAlignment.RIGHT);
-
-		tableComponent.addRow("Pay-dirt mined:", Integer.toString(session.getTotalMined()));
-		tableComponent.addRow("Pay-dirt/hr:", session.getRecentMined() > 2 ? Integer.toString(session.getPerHour()) : "");
-
-		panelComponent.getChildren().add(tableComponent);
-
-		return panelComponent.render(graphics);
+		return null;
 	}
 }

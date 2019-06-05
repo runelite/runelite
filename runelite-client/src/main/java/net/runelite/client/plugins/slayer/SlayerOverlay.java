@@ -124,8 +124,8 @@ class SlayerOverlay extends WidgetItemOverlay
 
 		textComponent.setText(String.valueOf(amount));
 
-		// Draw the counter in the top left for equipment, and bottom left for jewelry
-		textComponent.setPosition(new Point(bounds.x, bounds.y + (SLAYER_JEWELRY.contains(itemId)
+		// Draw the counter in the bottom left for equipment, and top left for jewelry
+		textComponent.setPosition(new Point(bounds.x - 1, bounds.y - 1 + (SLAYER_JEWELRY.contains(itemId)
 			? bounds.height
 			: graphics.getFontMetrics().getHeight())));
 		textComponent.render(graphics);
