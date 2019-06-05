@@ -121,6 +121,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton cameraPosition;
 	private DevToolsButton worldMapLocation;
 	private DevToolsButton tileLocation;
+	private DevToolsButton cursorPos;
 	private DevToolsButton interacting;
 	private DevToolsButton examine;
 	private DevToolsButton detachedCamera;
@@ -154,6 +155,7 @@ public class DevToolsPlugin extends Plugin
 		location = new DevToolsButton("Location");
 		worldMapLocation = new DevToolsButton("World Map Location");
 		tileLocation = new DevToolsButton("Tile Location");
+		cursorPos = new DevToolsButton("Cursor Position");
 		cameraPosition = new DevToolsButton("Camera Position");
 
 		chunkBorders = new DevToolsButton("Chunk Borders");

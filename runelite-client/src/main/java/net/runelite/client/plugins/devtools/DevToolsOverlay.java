@@ -144,6 +144,11 @@ class DevToolsOverlay extends Overlay
 			renderGraphicsObjects(graphics);
 		}
 
+		if (plugin.getCursorPos().isActive())
+		{
+			renderCursorTooltip(graphics);
+		}
+
 		renderWidgets(graphics);
 
 		return null;
@@ -252,6 +257,14 @@ class DevToolsOverlay extends Overlay
 					renderTileTooltip(graphics, tile);
 				}
 			}
+		}
+	}
+
+	private void renderCursorTooltip(Graphics2D graphics)
+	{
+		if (client.getMouseCanvasPosition().getX() >= 0 && client.getMouseCanvasPosition().getY() >= 0)
+		{
+			toolTipManager.add(new Tooltip("Cursor Point: " + client.getMouseCanvasPosition().getX() + ", " + client.getMouseCanvasPosition().getY()));
 		}
 	}
 
