@@ -36,8 +36,6 @@ import java.awt.Rectangle;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -468,9 +466,8 @@ public class ConfigPanel extends PluginPanel
 		try
 		{
 			Method parse = item.clazz().getMethod(item.method(), String.class);
-			boolean result = (boolean) parse.invoke(null, value);
 
-			return result;
+			return (boolean) parse.invoke(null, value);
 		}
 		catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex)
 		{
@@ -506,7 +503,7 @@ public class ConfigPanel extends PluginPanel
 		openGroupConfigPanel(listItem, config, cd, false);
 	}
 
-	void openGroupConfigPanel(PluginListItem listItem, Config config, ConfigDescriptor cd, boolean refresh)
+	private void openGroupConfigPanel(PluginListItem listItem, Config config, ConfigDescriptor cd, boolean refresh)
 	{
 		showingPluginList = false;
 
@@ -781,17 +778,14 @@ public class ConfigPanel extends PluginPanel
 						parsingLabel.setHorizontalAlignment(SwingConstants.CENTER);
 						parsingLabel.setPreferredSize(new Dimension(PANEL_WIDTH, 15));
 
-						textField.addKeyListener(new KeyAdapter()
-						{
-							public void keyReleased(KeyEvent e)
+						DeferredDocumentChangedListener listener = new DeferredDocumentChangedListener();
+						listener.addChangeListener(e -> {
+							if (cid.getItem().parse())
 							{
-								ConfigItem item = cid.getItem();
-								if (item.parse())
-								{
-									parseLabel(item, parsingLabel, textField.getText());
-								}
+								parseLabel(cid.getItem(), parsingLabel, textField.getText());
 							}
 						});
+						textField.getDocument().addDocumentListener(listener);
 
 						item.add(textField, BorderLayout.CENTER);
 
