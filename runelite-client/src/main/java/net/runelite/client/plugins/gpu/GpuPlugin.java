@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, Slay to Stay <https://github.com/slaytostay>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -74,11 +75,21 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
-import static net.runelite.client.plugins.gpu.GLUtil.*;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteFrameBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteRenderbuffers;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteTexture;
+import static net.runelite.client.plugins.gpu.GLUtil.glDeleteVertexArrays;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenBuffers;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenFrameBuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenRenderbuffer;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenTexture;
+import static net.runelite.client.plugins.gpu.GLUtil.glGenVertexArrays;
+import static net.runelite.client.plugins.gpu.GLUtil.glGetInteger;
+import static net.runelite.client.plugins.gpu.GLUtil.inputStreamToString;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.plugins.regionlocker.RegionLocker;
-import net.runelite.client.plugins.regionlocker.RegionLockerPlugin;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.util.OSType;
 
@@ -729,37 +740,44 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glUseProgram(0);
 	}
 
-	private boolean instanceRegionUnlocked() {
-		for (int i = 0; i < client.getMapRegions().length; i++) {
+	private boolean instanceRegionUnlocked()
+	{
+		for (int i = 0; i < client.getMapRegions().length; i++)
+		{
 			int region = client.getMapRegions()[i];
 			if (RegionLocker.hasRegion(region)) return true;
 		}
 		return false;
 	}
 
-	private void createLockedRegions() {
+	private void createLockedRegions()
+	{
 		int bx, by;
 		bx = client.getBaseX() * 128;
 		by = client.getBaseY() * 128;
 
-		for (int i = 0; i < loadedLockedRegions.length; i++) {
+		for (int i = 0; i < loadedLockedRegions.length; i++)
+		{
 			loadedLockedRegions[i] = 0;
 		}
 
-		for (int i = 0; i < client.getMapRegions().length; i++) {
+		for (int i = 0; i < client.getMapRegions().length; i++)
+		{
 			int region = client.getMapRegions()[i];
-			if (RegionLocker.hasRegion(region)) {
+			if (RegionLocker.hasRegion(region))
+			{
 				loadedLockedRegions[i] = region;
 			}
 		}
 
-		for (int i = 0; i < loadedLockedRegions.length; i++) {
+		for (int i = 0; i < loadedLockedRegions.length; i++)
+		{
 			int region = loadedLockedRegions[i];
-			int j = i*4;
-			regionCoords[j]   = (region >> 8) << 13;
-			regionCoords[j+1] = (region & 255) << 13;
-			regionCoords[j+2] = regionCoords[j]   + 8192;
-			regionCoords[j+3] = regionCoords[j+1] + 8192;
+			int j = i * 4;
+			regionCoords[j] = (region >> 8) << 13;
+			regionCoords[j + 1] = (region & 255) << 13;
+			regionCoords[j + 2] = regionCoords[j] + 8192;
+			regionCoords[j + 3] = regionCoords[j + 1] + 8192;
 		}
 
 		gl.glUniform1i(uniBaseX, bx);
@@ -1077,9 +1095,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUniform1i(uniFogDepth, fogDepth);
 			gl.glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
 
-			if (!RegionLocker.renderLockedRegions || (client.isInInstancedRegion() && instanceRegionUnlocked())) {
+			if (!RegionLocker.renderLockedRegions || (client.isInInstancedRegion() && instanceRegionUnlocked()))
+			{
 				gl.glUniform1i(uniUseGray, 0);
-			} else {
+			}
+			else
+			{
 				createLockedRegions();
 				gl.glUniform1i(uniUseGray, 1);
 			}
