@@ -770,8 +770,7 @@ public class ConfigPanel extends PluginPanel
 							}
 						}
 					});
-
-
+					
 					if (cid.getItem().parse())
 					{
 						JLabel parsingLabel = new JLabel();
@@ -779,7 +778,8 @@ public class ConfigPanel extends PluginPanel
 						parsingLabel.setPreferredSize(new Dimension(PANEL_WIDTH, 15));
 
 						DeferredDocumentChangedListener listener = new DeferredDocumentChangedListener();
-						listener.addChangeListener(e -> {
+						listener.addChangeListener(e ->
+						{
 							if (cid.getItem().parse())
 							{
 								parseLabel(cid.getItem(), parsingLabel, textField.getText());
