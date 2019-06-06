@@ -112,6 +112,12 @@ public class DefaultWorldPlugin extends Plugin
 		try
 		{
 			final WorldResult worldResult = worldClient.lookupWorlds();
+
+			if (worldResult == null)
+			{
+				return;
+			}
+
 			final World world = worldResult.findWorld(correctedWorld);
 
 			if (world != null)
