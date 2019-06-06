@@ -248,6 +248,7 @@ public class SlayerPlugin extends Plugin
 	private SlayerTaskPanel panel;
 	private NavigationButton navButton;
 	private long lastTickMillis = 0;
+	private boolean loginTick = false;
 
 	private void clearTrackedNPCs()
 	{
@@ -318,10 +319,11 @@ public class SlayerPlugin extends Plugin
 				clearTrackedNPCs();
 				break;
 			case LOGIN_SCREEN:
+				loginTick = true;
 				currentTask.setPaused(true);
 				break;
 			case LOGGED_IN:
-				if (config.amount() != -1
+				if (loginTick && config.amount() != -1
 					&& !config.taskName().isEmpty())
 				{
 					streak = config.streak();
@@ -476,6 +478,8 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
+		loginTick = false;
+
 		// update the lingering presence of npcs in the slayer xp consideration list
 		Iterator<NPCPresence> presenceIterator = lingeringPresences.iterator();
 		while (presenceIterator.hasNext())
