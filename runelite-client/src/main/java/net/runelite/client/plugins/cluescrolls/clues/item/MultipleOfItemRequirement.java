@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019 Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,47 +24,51 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues.item;
 
-import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.Client;
+import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
 
-public class ItemRequirements
+public class MultipleOfItemRequirement implements ItemRequirement
 {
-	public static SingleItemRequirement item(int itemId)
+	private int itemId;
+	private int quantity;
+
+	public MultipleOfItemRequirement(int itemId, int quantity)
 	{
-		return new SingleItemRequirement(itemId);
+		this.itemId = itemId;
+		this.quantity = quantity;
 	}
 
-	public static RangeItemRequirement range(int startItemId, int endItemId)
+	@Override
+	public boolean fulfilledBy(int itemId)
 	{
-		return range(null, startItemId, endItemId);
+		return itemId == this.itemId && this.quantity == 1;
 	}
 
-	public static RangeItemRequirement range(String name, int startItemId, int endItemId)
+	@Override
+	public boolean fulfilledBy(Item[] items)
 	{
-		return new RangeItemRequirement(name, startItemId, endItemId);
+		for (Item item : items)
+		{
+			if (item.getId() == itemId && item.getQuantity() >= quantity)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
-	public static AnyRequirementCollection any(String name, ItemRequirement... requirements)
+	@Override
+	public String getCollectiveName(Client client)
 	{
-		return new AnyRequirementCollection(name, requirements);
-	}
+		ItemComposition definition = client.getItemDefinition(itemId);
 
-	public static AllRequirementsCollection all(ItemRequirement... requirements)
-	{
-		return new AllRequirementsCollection(requirements);
-	}
+		if (definition == null)
+		{
+			return "N/A";
+		}
 
-	public static AllRequirementsCollection all(String name, ItemRequirement... requirements)
-	{
-		return new AllRequirementsCollection(name, requirements);
-	}
-
-	public static SlotLimitationRequirement emptySlot(String description, EquipmentInventorySlot... slots)
-	{
-		return new SlotLimitationRequirement(description, slots);
-	}
-
-	public static MultipleOfItemRequirement xOfItem(int itemId, int quantity)
-	{
-		return new MultipleOfItemRequirement(itemId, quantity);
+		return definition.getName() + " x" + this.quantity;
 	}
 }
