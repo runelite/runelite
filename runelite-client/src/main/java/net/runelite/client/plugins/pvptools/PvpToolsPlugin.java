@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NavigableMap;
 import java.util.Objects;
@@ -98,6 +99,15 @@ public class PvpToolsPlugin extends Plugin
 	private ItemManager itemManager;
 
 	private PvpToolsPlugin uhPvpToolsPlugin = this;
+
+	private static final String WALK_HERE = "WALK HERE";
+	private static final String CANCEL = "CANCEL";
+	private static final String ATTACK_OPTIONS_ATTACK = "ATTACK";
+	public static final HashSet<String> ATTACK_OPTIONS_KEYWORDS = new HashSet<>();
+		static
+		{
+			ATTACK_OPTIONS_KEYWORDS.add(ATTACK_OPTIONS_ATTACK);
+		}
 
 	/**
 	 * ActionListener for the missing cc members and refresh buttons
@@ -376,10 +386,18 @@ public class PvpToolsPlugin extends Plugin
 	{
 		if (config.attackOptionsFriend() || config.attackOptionsClan() || config.levelRangeAttackOptions())
 		{
+			final String pOptionToReplace = Text.removeTags(menuEntryAdded.getOption()).toUpperCase();
+
 			if (client.getGameState() != GameState.LOGGED_IN)
 			{
 				return;
 			}
+
+			if (pOptionToReplace.equals(CANCEL) || pOptionToReplace.equals(WALK_HERE))
+			{
+				return;
+			}
+
 			Player[] players = client.getCachedPlayers();
 			Player player = null;
 			int identifier = menuEntryAdded.getIdentifier();
@@ -391,44 +409,25 @@ public class PvpToolsPlugin extends Plugin
 			{
 				return;
 			}
+
+
 			if (attackHotKeyPressed && config.attackOptionsClan() || config.attackOptionsFriend() ||
 				config.levelRangeAttackOptions())
 			{
 				if (config.attackOptionsFriend() && player.isFriend())
 				{
-					moveEntry();
+					swap(pOptionToReplace);
 				}
 				if (config.attackOptionsClan() && player.isClanMember())
 				{
-					moveEntry();
+					swap(pOptionToReplace);
 				}
 				if (config.levelRangeAttackOptions() && !PvPUtil.isAttackable(client, player))
 				{
-					moveEntry();
+					swap(pOptionToReplace);
 				}
 			}
 		}
-	}
-
-	private void moveEntry()
-	{
-		MenuEntry[] menuEntries = client.getMenuEntries();
-		MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
-
-		if (lastEntry.getOption().contains("attack".toLowerCase()))
-		{
-			ArrayUtils.shift(menuEntries, 1);
-			//ArrayUtils.add(menuEntries, menuEntries.length - 2);
-			//menuEntries = ArrayUtils.remove(menuEntries, menuEntries.length - 1);
-			//menuEntrySwapperPlugin.swap("attack", option, mtarget, false); TODO: Make sure to use menuutil when uncommenting this
-		}
-		if (lastEntry.getOption().equals("Attack"))
-		{
-			ArrayUtils.shift(menuEntries, 1);
-		}
-
-		client.setMenuEntries(menuEntries);
-
 	}
 
 	@Subscribe
@@ -626,6 +625,49 @@ public class PvpToolsPlugin extends Plugin
 			itemImage.addTo(panel.biggestItemLabel);
 		}
 		panel.biggestItemLabel.repaint();
+	}
+
+	/**
+	 * Swaps menu entries if the entries could be found. This places Walk Here where the top level menu option was.
+	 * @param pOptionToReplace The String containing the Menu Option that needs to be replaced. IE: "Attack", "Chop Down".
+	 */
+	private void swap(String pOptionToReplace)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+		Integer walkHereEntry = searchIndex(entries, WALK_HERE);
+		Integer entryToReplace = searchIndex(entries, pOptionToReplace);
+
+		if (walkHereEntry != null
+				&& entryToReplace != null)
+		{
+			MenuEntry walkHereMenuEntry = entries[walkHereEntry];
+			entries[walkHereEntry] = entries[entryToReplace];
+			entries[entryToReplace] = walkHereMenuEntry;
+			client.setMenuEntries(entries);
+		}
+	}
+
+	/**
+	 * Finds the index of the menu that contains the verbiage we are looking for.
+	 * @param pMenuEntries The list of {@link MenuEntry}s.
+	 * @param pMenuEntryToSearchFor The Option in the menu to search for.
+	 * @return The index location or null if it was not found.
+	 */
+	private Integer searchIndex(MenuEntry[] pMenuEntries, String pMenuEntryToSearchFor)
+	{
+		Integer indexLocation = 0;
+
+		for (MenuEntry menuEntry : pMenuEntries)
+		{
+			String entryOption = Text.removeTags(menuEntry.getOption()).toUpperCase();
+
+			if (entryOption.equals(pMenuEntryToSearchFor))
+			{
+				return indexLocation;
+			}
+			indexLocation++;
+		}
+		return null;
 	}
 
 }

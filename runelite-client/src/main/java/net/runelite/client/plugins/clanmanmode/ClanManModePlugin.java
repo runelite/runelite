@@ -3,6 +3,7 @@ package net.runelite.client.plugins.clanmanmode;
 import com.google.inject.Provides;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,6 +37,10 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class ClanManModePlugin extends Plugin
 {
+
+	private static final String WALK_HERE = "WALK HERE";
+	private static final String CANCEL = "CANCEL";
+
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -56,6 +61,13 @@ public class ClanManModePlugin extends Plugin
 
 	@Inject
 	private ClanManager clanManager;
+
+	private static final String ATTACK_OPTIONS_ATTACK = "ATTACK";
+	public static final HashSet<String> ATTACK_OPTIONS_KEYWORDS = new HashSet<>();
+		static
+		{
+			ATTACK_OPTIONS_KEYWORDS.add(ATTACK_OPTIONS_ATTACK);
+		}
 
 	@Provides
 	ClanManModeConfig provideConfig(ConfigManager configManager)
@@ -125,11 +137,41 @@ public class ClanManModePlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!config.hideAtkOpt())
+
+		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
-		if (client.getGameState() != GameState.LOGGED_IN)
+		
+		Player[] players = client.getCachedPlayers();
+		Player player = null;
+		int identifier = event.getIdentifier();
+
+		if (identifier >= 0 && identifier < players.length)
+		{
+			player = players[identifier];
+		}
+
+		if (player == null)
+		{
+			return;
+		}
+
+		final String pOptionToReplace = Text.removeTags(event.getOption()).toUpperCase();
+
+		//If the option is already to walk there, or cancel we don't need to swap it with anything
+		if (pOptionToReplace.equals(CANCEL) || pOptionToReplace.equals(WALK_HERE))
+		{
+			return;
+		}
+
+		if (config.hideAtkOpt()
+				&& ATTACK_OPTIONS_KEYWORDS.contains(pOptionToReplace)
+				&&  (player.isFriend() || player.isClanMember()))
+		{
+			swap(pOptionToReplace);
+		}
+		else if (!config.hideAtkOpt())
 		{
 			return;
 		}
@@ -156,4 +198,46 @@ public class ClanManModePlugin extends Plugin
 		}
 	}
 
+	/**
+	 * Swaps menu entries if the entries could be found. This places Walk Here where the top level menu option was.
+	 * @param pOptionToReplace The String containing the Menu Option that needs to be replaced. IE: "Attack", "Chop Down".
+	 */
+	private void swap(String pOptionToReplace)
+	{
+		MenuEntry[] entries = client.getMenuEntries();
+		Integer walkHereEntry = searchIndex(entries, WALK_HERE);
+		Integer entryToReplace = searchIndex(entries, pOptionToReplace);
+
+		if (walkHereEntry != null
+				&& entryToReplace != null)
+		{
+			MenuEntry walkHereMenuEntry = entries[walkHereEntry];
+			entries[walkHereEntry] = entries[entryToReplace];
+			entries[entryToReplace] = walkHereMenuEntry;
+			client.setMenuEntries(entries);
+		}
+	}
+
+	/**
+	 * Finds the index of the menu that contains the verbiage we are looking for.
+	 * @param pMenuEntries The list of {@link MenuEntry}s.
+	 * @param pMenuEntryToSearchFor The Option in the menu to search for.
+	 * @return The index location or null if it was not found.
+	 */
+	private Integer searchIndex(MenuEntry[] pMenuEntries, String pMenuEntryToSearchFor)
+	{
+		Integer indexLocation = 0;
+
+		for (MenuEntry menuEntry : pMenuEntries)
+		{
+			String entryOption = Text.removeTags(menuEntry.getOption()).toUpperCase();
+
+			if (entryOption.equals(pMenuEntryToSearchFor))
+			{
+				return indexLocation;
+			}
+			indexLocation++;
+		}
+		return null;
+	}
 }
