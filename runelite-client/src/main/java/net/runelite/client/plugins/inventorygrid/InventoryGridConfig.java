@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,76 +22,42 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.inventorygrid;
 
-/**
- * An enumeration of game states the client is in.
- */
-public enum GameState
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup("inventorygrid")
+public interface InventoryGridConfig extends Config
 {
-	/**
-	 * Unknown game state.
-	 */
-	UNKNOWN(-1),
-	/**
-	 * The client is starting.
-	 */
-	STARTING(0),
-	/**
-	 * The client is at the login screen.
-	 */
-	LOGIN_SCREEN(10),
-	/**
-	 * The client is at the login screen entering authenticator code.
-	 */
-	LOGIN_SCREEN_AUTHENTICATOR(11),
-	/**
-	 * There is a player logging in.
-	 */
-	LOGGING_IN(20),
-	/**
-	 * The game is being loaded.
-	 */
-	LOADING(25),
-	/**
-	 * The user has successfully logged in.
-	 */
-	LOGGED_IN(30),
-	/**
-	 * Connection to the server was lost.
-	 */
-	CONNECTION_LOST(40),
-	/**
-	 * A world hop is taking place.
-	 */
-	HOPPING(45);
-
-	/**
-	 * The raw state value.
-	 */
-	private final int state;
-
-	GameState(int state)
+	@ConfigItem(
+		keyName = "showItem",
+		name = "Show item",
+		description = "Show a preview of the item in the new slot"
+	)
+	default boolean showItem()
 	{
-		this.state = state;
+		return true;
 	}
 
-	/**
-	 * Utility method that maps the rank value to its respective
-	 * {@link GameState} value.
-	 *
-	 * @param state the raw state value
-	 * @return the gamestate
-	 */
-	public static GameState of(int state)
+	@ConfigItem(
+		keyName = "showGrid",
+		name = "Show grid",
+		description = "Show a grid on the inventory while dragging"
+	)
+	default boolean showGrid()
 	{
-		for (GameState gs : GameState.values())
-		{
-			if (gs.state == state)
-			{
-				return gs;
-			}
-		}
-		return UNKNOWN;
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showHighlight",
+		name = "Highlight background",
+		description = "Show a green background highlight on the new slot"
+	)
+	default boolean showHighlight()
+	{
+		return true;
 	}
 }

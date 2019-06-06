@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,76 +23,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.inventorygrid;
 
-/**
- * An enumeration of game states the client is in.
- */
-public enum GameState
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
+
+@PluginDescriptor(
+	name = "Inventory Grid",
+	description = "Shows a grid over the inventory and a preview of where items will be dragged",
+	tags = {"items", "overlay"},
+	enabledByDefault = false
+)
+public class InventoryGridPlugin extends Plugin
 {
-	/**
-	 * Unknown game state.
-	 */
-	UNKNOWN(-1),
-	/**
-	 * The client is starting.
-	 */
-	STARTING(0),
-	/**
-	 * The client is at the login screen.
-	 */
-	LOGIN_SCREEN(10),
-	/**
-	 * The client is at the login screen entering authenticator code.
-	 */
-	LOGIN_SCREEN_AUTHENTICATOR(11),
-	/**
-	 * There is a player logging in.
-	 */
-	LOGGING_IN(20),
-	/**
-	 * The game is being loaded.
-	 */
-	LOADING(25),
-	/**
-	 * The user has successfully logged in.
-	 */
-	LOGGED_IN(30),
-	/**
-	 * Connection to the server was lost.
-	 */
-	CONNECTION_LOST(40),
-	/**
-	 * A world hop is taking place.
-	 */
-	HOPPING(45);
+	@Inject
+	private InventoryGridOverlay overlay;
 
-	/**
-	 * The raw state value.
-	 */
-	private final int state;
+	@Inject
+	private OverlayManager overlayManager;
 
-	GameState(int state)
+	@Override
+	public void startUp()
 	{
-		this.state = state;
+		overlayManager.add(overlay);
 	}
 
-	/**
-	 * Utility method that maps the rank value to its respective
-	 * {@link GameState} value.
-	 *
-	 * @param state the raw state value
-	 * @return the gamestate
-	 */
-	public static GameState of(int state)
+	@Override
+	public void shutDown()
 	{
-		for (GameState gs : GameState.values())
-		{
-			if (gs.state == state)
-			{
-				return gs;
-			}
-		}
-		return UNKNOWN;
+		overlayManager.remove(overlay);
+	}
+
+	@Provides
+	InventoryGridConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(InventoryGridConfig.class);
 	}
 }
