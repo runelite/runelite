@@ -50,7 +50,8 @@ public interface AoeWarningConfig extends Config
 		position = 2,
 		keyName = "overlayColor",
 		name = "Overlay Color",
-		description = "Configures the color of the AoE Projectile Warnings overlay"
+		description = "Configures the color of the AoE Projectile Warnings overlay",
+		parent = "overlayStub"
 	)
 	default Color overlayColor()
 	{
