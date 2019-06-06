@@ -53,6 +53,11 @@ public class ItemRequirements
 		return new AllRequirementsCollection(requirements);
 	}
 
+	public static AllRequirementsCollection all(String name, ItemRequirement... requirements)
+	{
+		return new AllRequirementsCollection(name, requirements);
+	}
+
 	public static SlotLimitationRequirement emptySlot(String description, EquipmentInventorySlot... slots)
 	{
 		return new SlotLimitationRequirement(description, slots);

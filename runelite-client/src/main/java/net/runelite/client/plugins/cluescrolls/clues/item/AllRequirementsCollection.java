@@ -29,11 +29,18 @@ import net.runelite.api.Item;
 
 public class AllRequirementsCollection implements ItemRequirement
 {
+	private String name;
 	private ItemRequirement[] requirements;
+
+	public AllRequirementsCollection(String name, ItemRequirement... requirements)
+	{
+		this.name = name;
+		this.requirements = requirements;
+	}
 
 	public AllRequirementsCollection(ItemRequirement... requirements)
 	{
-		this.requirements = requirements;
+		this("N/A", requirements);
 	}
 
 	@Override
@@ -67,6 +74,6 @@ public class AllRequirementsCollection implements ItemRequirement
 	@Override
 	public String getCollectiveName(Client client)
 	{
-		return "N/A";
+		return name;
 	}
 }
