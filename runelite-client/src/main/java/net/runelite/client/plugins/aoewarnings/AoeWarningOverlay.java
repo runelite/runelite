@@ -74,10 +74,12 @@ public class AoeWarningOverlay extends Overlay
 		{
 			drawTile(graphics, point, new Color(0, 150, 200), 2, 150, 50);
 		}
+
 		for (WorldPoint point : plugin.getAcidTrail())
 		{
 			drawTile(graphics, point, new Color(69, 241, 44), 2, 150, 50);
 		}
+
 		for (WorldPoint point : plugin.getCrystalSpike())
 		{
 			drawTile(graphics, point, new Color(255, 0, 84), 2, 150, 50);

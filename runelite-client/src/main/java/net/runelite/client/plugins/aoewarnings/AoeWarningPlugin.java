@@ -52,6 +52,7 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ProjectileMoved;
+import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -77,6 +78,9 @@ public class AoeWarningPlugin extends Plugin
 
 	@Inject
 	public AoeWarningConfig config;
+
+	@Inject
+	private Notifier notifier;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -138,11 +142,16 @@ public class AoeWarningPlugin extends Plugin
 		int projectileId = projectile.getId();
 		int projectileLifetime = config.delay() + (projectile.getRemainingCycles() * 20);
 		AoeProjectileInfo aoeProjectileInfo = AoeProjectileInfo.getById(projectileId);
-		if (aoeProjectileInfo != null && isConfigEnabledForProjectileId(projectileId))
+		if (aoeProjectileInfo != null && isConfigEnabledForProjectileId(projectileId, false))
 		{
 			LocalPoint targetPoint = event.getPosition();
 			AoeProjectile aoeProjectile = new AoeProjectile(Instant.now(), targetPoint, aoeProjectileInfo, projectileLifetime);
 			projectiles.put(projectile, aoeProjectile);
+
+			if (config.aoeNotifyAll() || isConfigEnabledForProjectileId(projectileId, true))
+			{
+				notifier.notify("AoE attack detected!");
+			}
 		}
 	}
 
@@ -156,6 +165,11 @@ public class AoeWarningPlugin extends Plugin
 		{
 			case ObjectID.CRYSTAL_BOMB:
 				bombs.put(bombLocation, new CrystalBomb(gameObject, client.getTickCount()));
+
+				if (config.aoeNotifyAll() || config.bombDisplayNotifyEnabled())
+				{
+					notifier.notify("Bomb!");
+				}
 				break;
 			case ObjectID.ACID_POOL:
 				AcidTrail.add(bombLocation);
@@ -208,6 +222,11 @@ public class AoeWarningPlugin extends Plugin
 				if (o.getId() == 1356)
 				{
 					LightningTrail.add(WorldPoint.fromLocal(client, o.getLocation()));
+
+					if (config.aoeNotifyAll() || config.LightningTrailNotifyEnabled())
+					{
+						notifier.notify("Lightning!");
+					}
 				}
 			}
 		}
@@ -250,7 +269,7 @@ public class AoeWarningPlugin extends Plugin
 		}
 	}
 
-	private boolean isConfigEnabledForProjectileId(int projectileId)
+	private boolean isConfigEnabledForProjectileId(int projectileId, boolean notify)
 	{
 		AoeProjectileInfo projectileInfo = AoeProjectileInfo.getById(projectileId);
 		if (projectileInfo == null)
@@ -258,57 +277,61 @@ public class AoeWarningPlugin extends Plugin
 			return false;
 		}
 
+		if (notify && config.aoeNotifyAll())
+		{
+			return true;
+		}
+
 		switch (projectileInfo)
 		{
 			case LIZARDMAN_SHAMAN_AOE:
-				return config.isShamansEnabled();
+				return notify ? config.isShamansNotifyEnabled() : config.isShamansEnabled();
 			case CRAZY_ARCHAEOLOGIST_AOE:
-				return config.isArchaeologistEnabled();
+				return notify ? config.isArchaeologistNotifyEnabled() : config.isArchaeologistEnabled();
 			case ICE_DEMON_RANGED_AOE:
 			case ICE_DEMON_ICE_BARRAGE_AOE:
-				return config.isIceDemonEnabled();
+				return notify ? config.isIceDemonNotifyEnabled() : config.isIceDemonEnabled();
 			case VASA_AWAKEN_AOE:
 			case VASA_RANGED_AOE:
-				return config.isVasaEnabled();
+				return notify ? config.isVasaNotifyEnabled() : config.isVasaEnabled();
 			case TEKTON_METEOR_AOE:
-				return config.isTektonEnabled();
+				return notify ? config.isTektonNotifyEnabled() : config.isTektonEnabled();
 			case VORKATH_BOMB:
 			case VORKATH_POISON_POOL:
 			case VORKATH_SPAWN:
 			case VORKATH_TICK_FIRE:
-				return config.isVorkathEnabled();
+				return notify ? config.isVorkathNotifyEnabled() : config.isVorkathEnabled();
 			case VETION_LIGHTNING:
-				return config.isVetionEnabled();
+				return notify ? config.isVetionNotifyEnabled() : config.isVetionEnabled();
 			case CHAOS_FANATIC:
-				return config.isChaosFanaticEnabled();
+				return notify ? config.isChaosFanaticNotifyEnabled() : config.isChaosFanaticEnabled();
 			case GALVEK_BOMB:
 			case GALVEK_MINE:
-				return config.isGalvekEnabled();
+				return notify ? config.isGalvekNotifyEnabled() : config.isGalvekEnabled();
 			case DAWN_FREEZE:
 			case DUSK_CEILING:
-				return config.isGargBossEnabled();
+				return notify ? config.isGargBossNotifyEnabled() : config.isGargBossEnabled();
 			case OLM_FALLING_CRYSTAL:
 			case OLM_BURNING:
 			case OLM_FALLING_CRYSTAL_TRAIL:
 			case OLM_ACID_TRAIL:
 			case OLM_FIRE_LINE:
-				return config.isOlmEnabled();
+				return notify ? config.isOlmNotifyEnabled() : config.isOlmEnabled();
 			case CORPOREAL_BEAST:
 			case CORPOREAL_BEAST_DARK_CORE:
-				return config.isCorpEnabled();
+				return notify ? config.isCorpNotifyEnabled() : config.isCorpEnabled();
 			case WINTERTODT_SNOW_FALL:
-				return config.isWintertodtEnabled();
+				return notify ? config.isWintertodtNotifyEnabled() : config.isWintertodtEnabled();
 			case XARPUS_POISON_AOE:
-				return config.isXarpusEnabled();
+				return notify ? config.isXarpusNotifyEnabled() : config.isXarpusEnabled();
 			case ADDY_DRAG_POISON:
-				return config.addyDrags();
+				return notify ? config.addyDragsNotifyEnabled() : config.addyDrags();
 			case DRAKE_BREATH:
-				return config.isDrakeEnabled();
+				return notify ? config.isDrakeNotifyEnabled() : config.isDrakeEnabled();
 			case CERB_FIRE:
-				return config.isCerbFireEnabled();
+				return notify ? config.isCerbFireNotifyEnabled() : config.isCerbFireEnabled();
 		}
 
 		return false;
 	}
-
 }
