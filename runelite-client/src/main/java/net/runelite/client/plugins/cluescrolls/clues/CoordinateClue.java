@@ -166,6 +166,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(3380, 3963, 0), "Wilderness. North of Volcano.")
 		.put(new WorldPoint(3051, 3736, 0), "East of the Wilderness Obelisk in 28 Wilderness.")
 		.put(new WorldPoint(2316, 3814, 0), "West of Neitiznot, near the bridge.")
+		.put(new WorldPoint(2872, 3937, 0), "Weiss.")
 		// Master
 		.put(new WorldPoint(2178, 3209, 0), "South of Elf Camp.")
 		.put(new WorldPoint(2155, 3100, 0), "South of Port Tyras (BJS).")
