@@ -1,0 +1,166 @@
+# Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+# Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+RuneLite Enabled {
+    kind=Dark
+    colorUltraLight=#232323
+    colorExtraLight=#232323
+    colorLight=#232323
+    colorMid=#232323
+    colorDark=#232323
+    colorUltraDark=#232323
+    colorForeground=#C6C6C6
+}
+
+RuneLite Active {
+    kind=Light
+    colorUltraLight=#4e4e4e
+    colorExtraLight=#4e4e4e
+    colorLight=#4e4e4e
+    colorMid=#232323
+    colorDark=#232323
+    colorUltraDark=#232323
+    colorForeground=#000000
+}
+
+RuneLite Selected Disabled Border {
+	kind=Dark
+	colorUltraLight=#191919
+	colorExtraLight=#191919
+	colorLight=#191919
+	colorMid=#191919
+	colorDark=#191919
+	colorUltraDark=#191919
+	colorForeground=#C6C6C6
+}
+
+RuneLite Border {
+    kind=Dark
+    colorUltraLight=#191919
+    colorExtraLight=#191919
+    colorLight=#191919
+    colorMid=#191919
+    colorDark=#191919
+    colorUltraDark=#191919
+    colorForeground=#C6C6C6
+}
+
+RuneLite Tab Border {
+    kind=Light
+    colorUltraLight=#232323
+    colorExtraLight=#232323
+    colorLight=#232323
+    colorMid=#232323
+    colorDark=#232323
+    colorUltraDark=#232323
+    colorForeground=#232323
+}
+
+RuneLite Mark Active {
+    kind=Dark
+    colorUltraLight=#191919
+    colorExtraLight=#191919
+    colorLight=#191919
+    colorMid=#191919
+    colorDark=#191919
+    colorUltraDark=#191919
+    colorForeground=#191919
+}
+
+RuneLite Highlight {
+    kind=Light
+    colorUltraLight=#C6C6C6
+    colorExtraLight=#C6C6C6
+    colorLight=#C6C6C6
+    colorMid=#C6C6C6
+    colorDark=#C6C6C6
+    colorUltraDark=#C6C6C6
+    colorForeground=#191919
+}
+
+RuneLite Watermark {
+    kind=Light
+    colorUltraLight=#313131
+    colorExtraLight=#313131
+    colorLight=#313131
+    colorMid=#313131
+    colorDark=#313131
+    colorUltraDark=#313131
+    colorForeground=#C6C6C6
+}
+
+RuneLite Decorations Watermark {
+    kind=Light
+    colorUltraLight=#1e1e1e
+    colorExtraLight=#1e1e1e
+    colorLight=#1e1e1e
+    colorMid=#1e1e1e
+    colorDark=#1e1e1e
+    colorUltraDark=#1e1e1e
+    colorForeground=#1e1e1e
+}
+
+RuneLite Separator {
+    kind=Dark
+    colorUltraLight=#232323
+    colorExtraLight=#232323
+    colorLight=#232323
+    colorMid=#232323
+    colorDark=#232323
+    colorUltraDark=#232323
+    colorForeground=#232323
+}
+
+RuneLite Decorations Separator {
+    kind=Dark
+    colorUltraLight=#232323
+    colorExtraLight=#232323
+    colorLight=#232323
+    colorMid=#232323
+    colorDark=#232323
+    colorUltraDark=#232323
+    colorForeground=#232323
+}
+
+RuneLite Header Watermark {
+    kind=Dark
+    colorUltraLight=#1e1e1e
+    colorExtraLight=#1e1e1e
+    colorLight=#1e1e1e
+    colorMid=#1e1e1e
+    colorDark=#1e1e1e
+    colorUltraDark=#1e1e1e
+    colorForeground=#C6C6C6
+}
+
+RuneLite Header Border {
+    kind=Dark
+    colorUltraLight=#1e1e1e
+    colorExtraLight=#1e1e1e
+    colorLight=#1e1e1e
+    colorMid=#1e1e1e
+    colorDark=#1e1e1e
+    colorUltraDark=#1e1e1e
+    colorForeground=#C6C6C6
+}
