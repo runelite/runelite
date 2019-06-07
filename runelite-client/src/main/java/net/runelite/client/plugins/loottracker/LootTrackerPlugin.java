@@ -27,6 +27,7 @@ package net.runelite.client.plugins.loottracker;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 import com.google.inject.Provides;
@@ -58,10 +59,13 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.account.AccountSession;
@@ -116,6 +120,16 @@ public class LootTrackerPlugin extends Plugin
 		11573, "Crystal Chest"
 	);
 
+	// Player death handling
+	private static final String PLAYER_DEATH_MESSAGE = "Oh dear, you are dead!";
+	private static final Set<Integer> RESPAWN_REGIONS = ImmutableSet.of(
+		12850, // Lumbridge
+		11828, // Falador
+		12342, // Edgeville
+		11062 // Camelot
+	);
+	private boolean pvpDeath = false;
+
 	@Inject
 	private ClientToolbar clientToolbar;
 
@@ -150,6 +164,7 @@ public class LootTrackerPlugin extends Plugin
 	private List<String> ignoredItems = new ArrayList<>();
 
 	private Multiset<Integer> inventorySnapshot;
+
 
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
@@ -207,6 +222,16 @@ public class LootTrackerPlugin extends Plugin
 	public void onSessionClose(SessionClose sessionClose)
 	{
 		lootTrackerClient = null;
+	}
+
+	@Subscribe
+	public void onLocalPlayerDeath(LocalPlayerDeath event)
+	{
+		if (client.getVar(Varbits.IN_WILDERNESS) == 1 || WorldType.isPvpWorld(client.getWorldType()))
+		{
+			deathInventorySnapshot();
+			pvpDeath = true;
+		}
 	}
 
 	@Subscribe
@@ -416,6 +441,34 @@ public class LootTrackerPlugin extends Plugin
 
 		final String message = event.getMessage();
 
+		if (message.equals(PLAYER_DEATH_MESSAGE))
+		{
+			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+			if (inventorySnapshot != null)
+			{
+				Multiset<Integer> currentInventory = HashMultiset.create();
+				if (inventory != null)
+				{
+					Arrays.stream(client.getItemContainer(InventoryID.INVENTORY).getItems())
+						.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
+				}
+
+				final Multiset<Integer> diff = Multisets.difference(inventorySnapshot, currentInventory);
+
+				log.info(inventorySnapshot.toString());
+				log.info(currentInventory.toString());
+				log.info(diff.toString());
+
+				List<ItemStack> itemsLost = diff.entrySet().stream()
+					.map(e -> new ItemStack(e.getElement(), (-1 * e.getCount()), client.getLocalPlayer().getLocalLocation()))
+					.collect(Collectors.toList());
+
+				final LootTrackerItem[] entries = buildEntries(stack(itemsLost));
+				SwingUtilities.invokeLater(() -> panel.add("Death: " + client.getLocalPlayer().getName(),
+					client.getLocalPlayer().getCombatLevel(), entries));
+			}
+		}
+
 		if (message.equals(CHEST_LOOTED_MESSAGE))
 		{
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
@@ -470,6 +523,50 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
+		final ItemContainer itemContainer = event.getItemContainer();
+
+		if (pvpDeath && RESPAWN_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID()))
+		{
+			Multiset snapshot = HashMultiset.create();
+			snapshot = inventorySnapshot;
+			deathInventorySnapshot();
+			if (inventorySnapshot != snapshot)
+			{
+				inventorySnapshot = snapshot;
+				ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+				if (inventorySnapshot != null)
+				{
+					Multiset<Integer> currentInventory = HashMultiset.create();
+					if (inventory != null)
+					{
+						Arrays.stream(client.getItemContainer(InventoryID.INVENTORY).getItems())
+							.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
+					}
+
+					final Multiset<Integer> diff = Multisets.difference(inventorySnapshot, currentInventory);
+
+					List<ItemStack> itemsLost = diff.entrySet().stream()
+						.map(e -> new ItemStack(e.getElement(), (-1 * e.getCount()), client.getLocalPlayer().getLocalLocation()))
+						.collect(Collectors.toList());
+
+					final LootTrackerItem[] entries = buildEntries(stack(itemsLost));
+					String name = "Death: " + client.getLocalPlayer().getName();
+					SwingUtilities.invokeLater(() -> panel.add(name,
+						client.getLocalPlayer().getCombatLevel(), entries));
+
+					if (lootTrackerClient != null && config.saveLoot())
+					{
+						LootRecord lootRecord = new LootRecord(name, LootRecordType.DEATH, toGameItems(itemsLost),
+							Instant.now());
+						lootTrackerClient.submit(lootRecord);
+					}
+
+					pvpDeath = false;
+					inventorySnapshot = null;
+				}
+			}
+
+		}
 		if (eventType != null && (CHEST_EVENT_TYPES.containsValue(eventType) || HERBIBOR_EVENT.equals(eventType)))
 		{
 			if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
@@ -479,6 +576,28 @@ public class LootTrackerPlugin extends Plugin
 
 			processChestLoot(eventType, event.getItemContainer());
 			eventType = null;
+		}
+	}
+
+	/**
+	 * Takes a snapshot of the local player's inventory and equipment right before respawn.
+	 */
+	private void deathInventorySnapshot()
+	{
+		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		inventorySnapshot = HashMultiset.create();
+		if (inventory != null)
+		{
+
+			Arrays.stream(inventory.getItems())
+				.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
+		}
+
+			if (equipment != null)
+			{
+				Arrays.stream(equipment.getItems())
+					.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
 		}
 	}
 
