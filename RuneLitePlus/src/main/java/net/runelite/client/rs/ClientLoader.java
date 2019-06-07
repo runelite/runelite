@@ -34,6 +34,7 @@ import java.applet.Applet;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +59,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+
+import static net.runelite.client.RuneLite.RUNELITE_DIR;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.CUSTOM;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
@@ -184,17 +187,20 @@ public class ClientLoader
 			{
 				URL url = new URL("https://github.com/runelite-extended/maven-repo/raw/master/artifacts/injected-client.jar");
 				ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
-				File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runeliteplus");
 				File INJECTED_CLIENT = new File(RUNELITE_DIR+"/injected-client.jar");
-				if (INJECTED_CLIENT.exists())
+				INJECTED_CLIENT.mkdirs();
+				if (INJECTED_CLIENT.exists()) {
 					if (getFileSize(INJECTED_CLIENT.toURI().toURL())!= getFileSize(url)) {
+						INJECTED_CLIENT.delete();
+						INJECTED_CLIENT.createNewFile();
 						System.out.println("Updating Injected Client");
-						FileOutputStream fileOutputStream = new FileOutputStream(INJECTED_CLIENT);
-						FileChannel fileChannel = fileOutputStream.getChannel();
-						fileOutputStream.getChannel()
-								.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
-
+						updateInjectedClient(readableByteChannel);
 					}
+				} else {
+					INJECTED_CLIENT.createNewFile();
+					System.out.println("Initializing Inject Client");
+					updateInjectedClient(readableByteChannel);
+				}
 
 				JarInputStream fis = new JarInputStream(new FileInputStream(INJECTED_CLIENT));
 				byte[] tmp = new byte[4096];
@@ -280,6 +286,21 @@ public class ClientLoader
 			if(conn instanceof HttpURLConnection) {
 				((HttpURLConnection)conn).disconnect();
 			}
+		}
+	}
+
+	private void updateInjectedClient(ReadableByteChannel readableByteChannel) {
+		File INJECTED_CLIENT = new File(RUNELITE_DIR,"injected-client.jar");
+		FileOutputStream fileOutputStream = null;
+		try {
+			fileOutputStream = new FileOutputStream(INJECTED_CLIENT);
+			FileChannel fileChannel = fileOutputStream.getChannel();
+			fileOutputStream.getChannel()
+					.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
