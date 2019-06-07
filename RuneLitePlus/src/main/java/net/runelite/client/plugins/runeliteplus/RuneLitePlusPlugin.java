@@ -160,31 +160,18 @@ public class RuneLitePlusPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		ClientUI.currentPresenceName = ("RuneLitePlus");
+		ClientUI.frame.setTitle(ClientUI.currentPresenceName);
+		RuneLiteProperties.discordAppID = rlPlusDiscordApp;
+		discordService.close();
+		discordService.init();
+
 		entered = -1;
 		enterIdx = 0;
-
-		if (getConfig(configManager).customPresence())
-		{
-			ClientUI.currentPresenceName = ("RuneLitePlus");
-			ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-		}
 
 		if (config.logOpt())
 		{
 			Sentry.init("https://f0ed76be2fe847f8b9eb3620fa55d729@sentry.io/1468399?stacktrace.app.packages=net.runelite.client");
-		}
-
-		if (config.customPresence())
-		{
-			RuneLiteProperties.discordAppID = rlPlusDiscordApp;
-			discordService.close();
-			discordService.init();
-		}
-		else
-		{
-			RuneLiteProperties.discordAppID = rlDiscordApp;
-			discordService.close();
-			discordService.init();
 		}
 	}
 
@@ -196,33 +183,7 @@ public class RuneLitePlusPlugin extends Plugin
 			return;
 		}
 
-		if (event.getKey().equals("customPresence"))
-		{
-			if (config.customPresence())
-			{
-				ClientUI.currentPresenceName = ("RuneLitePlus");
-				ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-			}
-			else
-			{
-				ClientUI.currentPresenceName = ("RuneLite");
-				ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-			}
-
-			if (config.customPresence())
-			{
-				RuneLiteProperties.discordAppID = rlPlusDiscordApp;
-				discordService.close();
-				discordService.init();
-			}
-			else
-			{
-				RuneLiteProperties.discordAppID = rlDiscordApp;
-				discordService.close();
-				discordService.init();
-			}
-		}
-		else if (!config.keyboardPin())
+		if (!config.keyboardPin())
 		{
 			entered = -1;
 			enterIdx = 0;
