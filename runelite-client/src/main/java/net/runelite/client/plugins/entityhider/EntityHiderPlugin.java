@@ -67,11 +67,10 @@ public class EntityHiderPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged e)
 	{
-	 	if (!e.getGroup().equals("entityhider"))
-      	  	{
-            		return;
-      	  	}
-		
+		if (!e.getGroup().equals("entityhider"))
+		{
+			return;
+		}
 		updateConfig();
 	}
 
