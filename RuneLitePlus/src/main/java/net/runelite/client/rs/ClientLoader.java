@@ -64,7 +64,7 @@ import org.apache.commons.compress.compressors.CompressorException;
 @Singleton
 public class ClientLoader
 {
-	private static final File CUSTOMFILE = new File("./injected-client/target/injected-client-1.5.25-SNAPSHOT.jar");
+	private static final File CUSTOMFILE = new File("./injected-client/target/injected-client-1.0-SNAPSHOT.jar");
 	private final ClientConfigLoader clientConfigLoader;
 	private ClientUpdateCheckMode updateCheckMode;
 

@@ -27,9 +27,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>net.runelite</groupId>
-		<artifactId>runelite-parent</artifactId>
-		<version>1.5.25-SNAPSHOT</version>
+		<groupId>com.runeswag</groupId>
+		<artifactId>runeswag-parent</artifactId>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>injected-client</artifactId>
@@ -37,9 +37,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.runeswag</groupId>
+			<groupId>net.runelite</groupId>
 			<artifactId>client</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.5.26-SNAPSHOT</version>
 			<optional>true</optional> <!-- to prevent the dependency on this from runelite-client -->
 		</dependency>
 		<dependency>
@@ -51,7 +51,7 @@
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>vanilla</artifactId>
-			<version>${rs.version}</version>
+			<version>180</version>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
@@ -61,7 +61,7 @@
 			<plugin>
 				<groupId>net.runelite.rs</groupId>
 				<artifactId>injector-plugin</artifactId>
-				<version>${project.version}</version>
+				<version>1.5.26-SNAPSHOT</version>
 				<executions>
 					<execution>
 						<goals>
