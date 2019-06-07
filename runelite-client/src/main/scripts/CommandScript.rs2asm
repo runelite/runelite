@@ -3,6 +3,10 @@
 .string_stack_count 0
 .int_var_count      5
 .string_var_count   0
+; With devtools enabled, Pressing PageUp/PageDown will scroll through a
+; buffer of previously sent chatmessages starting with `::`.
+; 	Moves the invoke of 77 up to after the :: check, and jump over
+; 	the old invoke. Also jumps over the 2 rights check for 75 and 76.
 ; Clanchat Plugin's "Clan Tab Chat" option will make any messages sent
 ; while the "Clan" chat tab is open go to the CC without the need for the
 ; "/" prefix
@@ -171,6 +175,8 @@ LABEL112:
    if_icmpeq              LABEL119
    jump                   LABEL171
 LABEL119:
+   get_varc_string        335 ; move this up here so it only triggers on ::s
+   invoke                 77  ;
    iload                  2
    iconst                 2
    if_icmpgt              LABEL123
@@ -241,8 +247,10 @@ LABEL171:
    iconst                 0
    invoke                 96
 LABEL174:
+   jump AFTER77  ; don't write this here - we do it ourselves
    get_varc_string        335
    invoke                 77
+AFTER77:
    sconst                 ""
    set_varc_string        335
 LABEL178:
@@ -254,6 +262,8 @@ LABEL179:
    jump                   LABEL189
 LABEL183:
    iload                  3
+   sconst                 "devtoolsEnabled"
+   runelite_callback
    iconst                 1
    if_icmpeq              LABEL187
    jump                   LABEL188
@@ -268,6 +278,8 @@ LABEL189:
    jump                   LABEL199
 LABEL193:
    iload                  3
+   sconst                 "devtoolsEnabled"
+   runelite_callback
    iconst                 1
    if_icmpeq              LABEL197
    jump                   LABEL198
