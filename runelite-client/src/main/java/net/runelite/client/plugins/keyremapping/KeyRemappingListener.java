@@ -107,7 +107,10 @@ class KeyRemappingListener extends MouseAdapter implements KeyListener
 				}
 			}
 
-			if (config.fkeyRemap())
+			// In addition to the above checks, the F-key remapping shouldn't
+			// activate when dialogs are open which listen for number keys
+			// to select options
+			if (config.fkeyRemap() && !plugin.isDialogOpen())
 			{
 				if (ONE.matches(e))
 				{

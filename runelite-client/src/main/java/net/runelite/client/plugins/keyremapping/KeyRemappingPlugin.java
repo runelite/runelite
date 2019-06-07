@@ -131,6 +131,26 @@ public class KeyRemappingPlugin extends Plugin
 		return true;
 	}
 
+	/**
+	 * Check if a dialog is open that will grab numerical input, to prevent F-key remapping
+	 * from triggering.
+	 *
+	 * @return
+	 */
+	boolean isDialogOpen()
+	{
+		// Most chat dialogs with numerical input are added without the chatbox or its key listener being removed,
+		// so chatboxFocused() is true. The chatbox onkey script uses the following logic to ignore key presses,
+		// so we will use it too to not remap F-keys.
+		return isHidden(WidgetInfo.CHATBOX_MESSAGES) || isHidden(WidgetInfo.CHATBOX_TRANSPARENT_LINES);
+	}
+
+	private boolean isHidden(WidgetInfo widgetInfo)
+	{
+		Widget w = client.getWidget(widgetInfo);
+		return w == null || w.isSelfHidden();
+	}
+
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
