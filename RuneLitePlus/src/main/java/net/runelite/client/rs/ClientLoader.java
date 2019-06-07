@@ -34,9 +34,15 @@ import java.applet.Applet;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -176,7 +182,21 @@ public class ClientLoader
 
 			if (updateCheckMode == CUSTOM)
 			{
-				JarInputStream fis = new JarInputStream(new FileInputStream(CUSTOMFILE));
+				URL url = new URL("https://github.com/runelite-extended/maven-repo/raw/master/artifacts/injected-client.jar");
+				ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
+				File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runeliteplus");
+				File INJECTED_CLIENT = new File(RUNELITE_DIR+"/injected-client.jar");
+				if (INJECTED_CLIENT.exists())
+					if (getFileSize(INJECTED_CLIENT.toURI().toURL())!= getFileSize(url)) {
+						System.out.println("Updating Injected Client");
+						FileOutputStream fileOutputStream = new FileOutputStream(INJECTED_CLIENT);
+						FileChannel fileChannel = fileOutputStream.getChannel();
+						fileOutputStream.getChannel()
+								.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+
+					}
+
+				JarInputStream fis = new JarInputStream(new FileInputStream(INJECTED_CLIENT));
 				byte[] tmp = new byte[4096];
 				ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
 				for (; ; )
@@ -242,6 +262,24 @@ public class ClientLoader
 
 			log.error("Error loading RS!", e);
 			return null;
+		}
+	}
+
+	private static int getFileSize(URL url) {
+		URLConnection conn = null;
+		try {
+			conn = url.openConnection();
+			if(conn instanceof HttpURLConnection) {
+				((HttpURLConnection)conn).setRequestMethod("HEAD");
+			}
+			conn.getInputStream();
+			return conn.getContentLength();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			if(conn instanceof HttpURLConnection) {
+				((HttpURLConnection)conn).disconnect();
+			}
 		}
 	}
 
