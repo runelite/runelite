@@ -34,6 +34,7 @@ import static java.lang.Math.min;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -61,17 +62,19 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
 
 @PluginDescriptor(
 	name = "Developer Tools",
 	tags = {"panel"},
 	developerPlugin = true
 )
+@Slf4j
 @Getter
 public class DevToolsPlugin extends Plugin
 {
 	private static final List<MenuAction> EXAMINE_MENU_ACTIONS = ImmutableList.of(MenuAction.EXAMINE_ITEM,
-			MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
+		MenuAction.EXAMINE_ITEM_GROUND, MenuAction.EXAMINE_NPC, MenuAction.EXAMINE_OBJECT);
 
 	@Inject
 	private Client client;
@@ -119,7 +122,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton validMovement;
 	private DevToolsButton lineOfSight;
 	private DevToolsButton cameraPosition;
-	private DevToolsButton worldMapLocation ;
+	private DevToolsButton worldMapLocation;
 	private DevToolsButton tileLocation;
 	private DevToolsButton interacting;
 	private DevToolsButton examine;
@@ -200,6 +203,13 @@ public class DevToolsPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 	}
 
+	private void logAndChat(String format, Object... args)
+	{
+		String msg = MessageFormatter.arrayFormat(format, args).getMessage();
+		log.info("{}", msg);
+		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", msg, null);
+	}
+
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
@@ -210,28 +220,25 @@ public class DevToolsPlugin extends Plugin
 			case "logger":
 			{
 				final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-				String message;
 				Level currentLoggerLevel = logger.getLevel();
 
 				if (args.length < 1)
 				{
-					message = "Logger level is currently set to " + currentLoggerLevel;
+					logAndChat("Logger level is currently set to {}", currentLoggerLevel);
 				}
 				else
 				{
 					Level newLoggerLevel = Level.toLevel(args[0], currentLoggerLevel);
 					logger.setLevel(newLoggerLevel);
-					message = "Logger level has been set to " + newLoggerLevel;
+					logAndChat("Logger level has been set to {}", newLoggerLevel);
 				}
-
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", message, null);
 				break;
 			}
 			case "getvarp":
 			{
 				int varp = Integer.parseInt(args[0]);
 				int value = client.getVarpValue(client.getVarps(), varp);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "VarPlayer " + varp + ": " + value, null);
+				logAndChat("VarPlayer {}: {}", varp, value);
 				break;
 			}
 			case "setvarp":
@@ -239,7 +246,7 @@ public class DevToolsPlugin extends Plugin
 				int varp = Integer.parseInt(args[0]);
 				int value = Integer.parseInt(args[1]);
 				client.setVarpValue(client.getVarps(), varp, value);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set VarPlayer " + varp + " to " + value, null);
+				logAndChat("Set VarPlayer {} to {}", varp, value);
 				VarbitChanged varbitChanged = new VarbitChanged();
 				varbitChanged.setIndex(varp);
 				eventBus.post(varbitChanged); // fake event
@@ -249,7 +256,7 @@ public class DevToolsPlugin extends Plugin
 			{
 				int varbit = Integer.parseInt(args[0]);
 				int value = client.getVarbitValue(client.getVarps(), varbit);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Varbit " + varbit + ": " + value, null);
+				logAndChat("Varbit {}: {}", varbit, value);
 				break;
 			}
 			case "setvarb":
@@ -257,7 +264,7 @@ public class DevToolsPlugin extends Plugin
 				int varbit = Integer.parseInt(args[0]);
 				int value = Integer.parseInt(args[1]);
 				client.setVarbitValue(client.getVarps(), varbit, value);
-				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set varbit " + varbit + " to " + value, null);
+				logAndChat("Set Varbit {} to {}", varbit, value);
 				eventBus.post(new VarbitChanged()); // fake event
 				break;
 			}
