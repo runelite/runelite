@@ -422,7 +422,7 @@
 			<plugin>
 				<groupId>net.runelite</groupId>
 				<artifactId>script-assembler-plugin</artifactId>
-				<version>1.5.23-SNAPSHOT</version>
+				<version>1.5.26-SNAPSHOT</version>
 				<executions>
 					<execution>
 						<id>assemble</id>
