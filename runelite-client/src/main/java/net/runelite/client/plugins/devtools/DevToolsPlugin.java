@@ -32,6 +32,7 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.PlayerComposition;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BoostedLevelChanged;
@@ -335,12 +337,108 @@ public class DevToolsPlugin extends Plugin
 				player.setPoseAnimation(-1);
 				break;
 			}
-			case "cape":
+			case "equip":
 			{
-				int id = Integer.parseInt(args[0]);
-				Player player = client.getLocalPlayer();
-				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = id + 512;
-				player.getPlayerComposition().setHash();
+				PlayerComposition pc = client.getLocalPlayer().getPlayerComposition();
+				int[] equip = pc.getEquipmentIds();
+				int offset = 0;
+				switch (args.length)
+				{
+					case 0:
+						for (int i = 0; i < equip.length; i++)
+						{
+							final int fi = i;
+							String kitName = Stream.of(KitType.values())
+								.filter(kit -> kit.getIndex() == fi)
+								.findFirst()
+								.map(Enum::name)
+								.orElse("");
+							int value = equip[i];
+
+							String name = "";
+							offset = 0;
+							if (value >= 256 && value < 512)
+							{
+								name = "(Kit)";
+								offset = 256;
+							}
+							else if (value >= 512)
+							{
+								name = "(Item)";
+								offset = 512;
+							}
+
+							logAndChat("{}[{}] = +{}{} {}", kitName, i, offset, name, value - offset);
+						}
+						break;
+					case 3:
+					{
+						String offsetArg = args[1];
+						if (offsetArg.startsWith("+"))
+						{
+							offsetArg = offsetArg.substring(1);
+						}
+						try
+						{
+							offset = Integer.parseInt(offsetArg);
+						}
+						catch (NumberFormatException y)
+						{
+							switch (offsetArg.toLowerCase())
+							{
+								case "item":
+									offset = 512;
+									break;
+								case "kit":
+									offset = 256;
+									break;
+								default:
+									logAndChat("\"{}\" is not a number or KitType", args[2]);
+									return;
+							}
+						}
+					}
+					// fallthrough
+					case 2:
+						String kitArg = args[0];
+						int slot;
+						try
+						{
+							slot = KitType.valueOf(kitArg.toUpperCase()).getIndex();
+						}
+						catch (IllegalArgumentException v)
+						{
+							try
+							{
+								slot = Integer.parseInt(kitArg);
+							}
+							catch (NumberFormatException y)
+							{
+								logAndChat("\"{}\" is not a number or KitType", kitArg);
+								return;
+							}
+						}
+
+						String valueArg = args[args.length - 1];
+						int value;
+						try
+						{
+							value = Integer.parseInt(valueArg);
+						}
+						catch (NumberFormatException v)
+						{
+							logAndChat("\"{}\" is not a number", valueArg);
+							return;
+						}
+
+						equip[slot] = value = value + offset;
+						pc.setHash();
+
+						logAndChat("Set equip slot {} to {}", slot, value);
+						break;
+					default:
+						logAndChat("::equip <slot> [offset/type] <value>");
+				}
 				break;
 			}
 		}
