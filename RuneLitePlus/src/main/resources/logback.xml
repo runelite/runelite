@@ -51,30 +51,9 @@
         </encoder>
     </appender>
 
-    <!-- Configure the Sentry appender, overriding the logging threshold to the WARN level -->
-    <appender name="SENTRY_ERROR" class="io.sentry.logback.SentryAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>ERROR</level>
-        </filter>
-    </appender>
-
-    <appender name="SENTRY_WARN" class="io.sentry.logback.SentryAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>WARN</level>
-        </filter>
-    </appender>
-
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
-    </root>
-
-    <root level="ERROR">
-        <appender-ref ref="SENTRY_ERROR" />
-    </root>
-
-    <root level="WARN">
-        <appender-ref ref="SENTRY_WARN" />
     </root>
 
 </configuration>
