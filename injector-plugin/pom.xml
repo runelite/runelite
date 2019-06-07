@@ -66,9 +66,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>net.runelite</groupId>
+			<groupId>com.runeswag</groupId>
 			<artifactId>deobfuscator</artifactId>
-			<version>${project.version}</version>
+			<version>1.0-SNAPSHOT</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
