@@ -37,6 +37,7 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
+        <module>http-api</module>
         <module>RuneLitePlus</module>
         <module>api</module>
         <module>rs-client</module>
