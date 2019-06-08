@@ -4717,7 +4717,7 @@ public final class Client extends GameShell implements Usernamed {
          var2 = GameShell.menuY;
          var3 = class214.menuWidth;
          var4 = AbstractWorldMapIcon.menuHeight;
-         int var5 = 6116423;
+         int var5 = 0x5d5447;
          Rasterizer2D.Rasterizer2D_fillRectangle(var1, var2, var3, var4, var5);
          Rasterizer2D.Rasterizer2D_fillRectangle(var1 + 1, var2 + 1, var3 - 2, 16, 0);
          Rasterizer2D.Rasterizer2D_drawRectangle(var1 + 1, var2 + 18, var3 - 2, var4 - 19, 0);
@@ -4729,9 +4729,9 @@ public final class Client extends GameShell implements Usernamed {
          int var10;
          for(var8 = 0; var8 < menuOptionsCount; ++var8) {
             var9 = var2 + (menuOptionsCount - 1 - var8) * 15 + 31;
-            var10 = 16777215;
+            var10 = 0xffffff;
             if(var6 > var1 && var6 < var3 + var1 && var7 > var9 - 13 && var7 < var9 + 3) {
-               var10 = 16776960;
+               var10 = 0xffff00;
             }
 
             Font var11 = class2.fontBold12;
@@ -4762,9 +4762,9 @@ public final class Client extends GameShell implements Usernamed {
       if(gameDrawingMode == 3) {
          for(var1 = 0; var1 < rootWidgetCount; ++var1) {
             if(__client_oq[var1]) {
-               Rasterizer2D.Rasterizer2D_moreAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 16711935, 128);
+               Rasterizer2D.Rasterizer2D_moreAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 0xff00ff, 128);
             } else if(__client_ot[var1]) {
-               Rasterizer2D.Rasterizer2D_moreAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 16711680, 128);
+               Rasterizer2D.Rasterizer2D_moreAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 0xff0000, 128);
             }
          }
       }

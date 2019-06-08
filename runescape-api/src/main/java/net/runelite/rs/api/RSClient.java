@@ -252,9 +252,17 @@ public interface RSClient extends RSGameShell, Client
 	@Override
 	void setPassword(String password);
 
+	@Import("otp")
+	@Override
+	void setOtp(String otp);
+
 	@Import("currentLoginField")
 	@Override
 	int getCurrentLoginField();
+
+	@Import("loginIndex")
+	@Override
+	int getLoginIndex();
 
 	@Import("playerMenuActions")
 	@Override
@@ -502,8 +510,6 @@ public interface RSClient extends RSGameShell, Client
 	/**
 	 * Get the widget top group. widgets[topGroup] contains widgets with
 	 * parentId -1, which are the widget roots.
-	 *
-	 * @return
 	 */
 	@Import("rootWidgetGroup")
 	int getWidgetRoot();
@@ -778,6 +784,7 @@ public interface RSClient extends RSGameShell, Client
 	boolean isInInstancedRegion();
 
 	@Import("itemDragDuration")
+	@Override
 	int getItemPressedDuration();
 
 	@Import("itemDragDuration")
@@ -930,6 +937,14 @@ public interface RSClient extends RSGameShell, Client
 	@Import("Rasterizer2D_yClipEnd")
 	int getEndY();
 
+	@Import("dragInventoryWidget")
+	@Override
+	RSWidget getIf1DraggedWidget();
+
+	@Import("dragItemSlotSource")
+	@Override
+	int getIf1DraggedItemIndex();
+
 	@Import("isSpellSelected")
 	@Override
 	void setSpellSelected(boolean selected);
@@ -975,6 +990,7 @@ public interface RSClient extends RSGameShell, Client
 	RSEvictingDualNodeHashTable getHealthBarCache();
 
 	@Import("renderSelf")
+	@Override
 	void setRenderSelf(boolean enabled);
 
 	@Import("mouseRecorder")

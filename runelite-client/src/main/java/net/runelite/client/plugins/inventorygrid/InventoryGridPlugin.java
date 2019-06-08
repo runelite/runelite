@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +23,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.rs;
+package net.runelite.client.plugins.inventorygrid;
 
-public enum ClientUpdateCheckMode
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
+
+@PluginDescriptor(
+	name = "Inventory Grid",
+	description = "Shows a grid over the inventory and a preview of where items will be dragged",
+	tags = {"items", "overlay"},
+	enabledByDefault = false
+)
+public class InventoryGridPlugin extends Plugin
 {
-	AUTO,
-	NONE,
-	VANILLA,
-	CUSTOM,
-	PATCH
+	@Inject
+	private InventoryGridOverlay overlay;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Override
+	public void startUp()
+	{
+		overlayManager.add(overlay);
+	}
+
+	@Override
+	public void shutDown()
+	{
+		overlayManager.remove(overlay);
+	}
+
+	@Provides
+	InventoryGridConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(InventoryGridConfig.class);
+	}
 }

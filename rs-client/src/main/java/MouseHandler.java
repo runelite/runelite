@@ -282,7 +282,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener, FocusLi
       Login.Login_response1 = "";
       Login.Login_response2 = "Enter your username/email & password.";
       Login.Login_response3 = "";
-      Login.__cu_aw = 2;
+      Login.loginIndex = 2;
       if(var0) {
          Login.Login_password = "";
       }

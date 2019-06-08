@@ -4,6 +4,6 @@ import net.runelite.mapping.Import;
 
 public interface RSIterableNodeDeque
 {
-	@Import("current")
+	@Import("sentinel")
 	RSNode getCurrent();
 }

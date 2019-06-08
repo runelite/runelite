@@ -59,11 +59,11 @@ final class class2 implements class0 {
    static void method27(AbstractIndexCache var0, AbstractIndexCache var1, boolean var2, int var3) {
       if(Login.__cu_f) {
          if(var3 == 4) {
-            Login.__cu_aw = 4;
+            Login.loginIndex = 4;
          }
 
       } else {
-         Login.__cu_aw = var3;
+         Login.loginIndex = var3;
          Rasterizer2D.Rasterizer2D_clear();
          byte[] var4 = var0.takeRecordByNames("title.jpg", "");
          Login.__cu_g = class27.method438(var4);
@@ -109,7 +109,7 @@ final class class2 implements class0 {
          }
 
          class13.__i_af = 0;
-         Login.__cu_ai = "";
+         Login.otp = "";
          Login.__cu_ba = true;
          Login.__cu_bk = false;
          if(!ReflectionCheck.clientPreferences.titleMusicDisabled) {

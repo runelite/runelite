@@ -27,12 +27,14 @@
 package net.runelite.client.rs;
 
 import com.google.common.io.ByteStreams;
+import io.sigpipe.jbsdiff.Diff;
 import io.sigpipe.jbsdiff.InvalidHeaderException;
 import io.sigpipe.jbsdiff.Patch;
 import java.applet.Applet;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -46,15 +48,16 @@ import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.CUSTOM;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
+import static net.runelite.client.rs.ClientUpdateCheckMode.PATCH;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -64,7 +67,9 @@ import org.apache.commons.compress.compressors.CompressorException;
 @Singleton
 public class ClientLoader
 {
-	private static final File CUSTOMFILE = new File("replace me!");
+	private static final File CUSTOMFILE = new File("./injected-client/target/injected-client-1.5.27-SNAPSHOT.jar");
+	private static final File PATCHFILE = new File("replace me!");
+	private static final File OUTPUT = new File("replace me!");
 	private final ClientConfigLoader clientConfigLoader;
 	private ClientUpdateCheckMode updateCheckMode;
 
@@ -145,6 +150,44 @@ public class ClientLoader
 				}
 			}
 
+			if (updateCheckMode == PATCH)
+			{
+				log.debug("Creating patches");
+				int patchCount = 0;
+
+				Map<String, byte[]> injectedFile = new HashMap<>();
+
+				loadJar(injectedFile, CUSTOMFILE);
+
+				ByteArrayOutputStream patchOs = new ByteArrayOutputStream(756 * 1024);
+				Map<String, byte[]> patchJar = new HashMap<>();
+
+				for (Map.Entry<String, byte[]> file : zipFile.entrySet())
+				{
+					byte[] gamepackBytes = file.getValue();
+					byte[] injectedBytes = injectedFile.get(file.getKey());
+					byte[] patchBytes;
+
+					if (Arrays.equals(gamepackBytes, injectedBytes))
+					{
+						continue;
+					}
+
+					Diff.diff(gamepackBytes, injectedBytes, patchOs);
+					patchBytes = patchOs.toByteArray();
+					String patchName = file.getKey() + ".bs";
+
+					patchJar.put(patchName, patchBytes);
+					patchCount++;
+
+					patchOs.reset();
+				}
+
+				log.debug("Created patch files for {} files", patchCount);
+				saveJar(patchJar, PATCHFILE);
+
+				System.exit(0);
+			}
 
 			if (updateCheckMode == AUTO)
 			{
@@ -176,29 +219,7 @@ public class ClientLoader
 
 			if (updateCheckMode == CUSTOM)
 			{
-				JarInputStream fis = new JarInputStream(new FileInputStream(CUSTOMFILE));
-				byte[] tmp = new byte[4096];
-				ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
-				for (; ; )
-				{
-					JarEntry metadata = fis.getNextJarEntry();
-					if (metadata == null)
-					{
-						break;
-					}
-
-					buffer.reset();
-					for (; ; )
-					{
-						int n = fis.read(tmp);
-						if (n <= -1)
-						{
-							break;
-						}
-						buffer.write(tmp, 0, n);
-					}
-					zipFile.replace(metadata.getName(), buffer.toByteArray());
-				}
+				loadJar(zipFile, CUSTOMFILE);
 			}
 
 			String initialClass = config.getInitialClass();
@@ -245,5 +266,49 @@ public class ClientLoader
 		CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
 		Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(ClientLoader.class.getResourceAsStream("jagex.crt"));
 		return certificates.toArray(new Certificate[0]);
+	}
+
+	private static void saveJar(Map<String, byte[]> fileMap, File toFile) throws IOException
+	{
+		try (JarOutputStream jout = new JarOutputStream(new FileOutputStream(toFile), new Manifest()))
+		{
+			for (Map.Entry<String, byte[]> entry : fileMap.entrySet())
+			{
+				JarEntry e = new JarEntry(entry.getKey());
+				jout.putNextEntry(e);
+
+				byte[] data = entry.getValue();
+
+				jout.write(data);
+				jout.closeEntry();
+			}
+		}
+	}
+
+	private static void loadJar(Map<String, byte[]> toMap, File fromFile) throws IOException
+	{
+		JarInputStream fis = new JarInputStream(new FileInputStream(fromFile));
+		byte[] tmp = new byte[4096];
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
+		for (; ; )
+		{
+			JarEntry metadata = fis.getNextJarEntry();
+			if (metadata == null)
+			{
+				break;
+			}
+
+			buffer.reset();
+			for (; ; )
+			{
+				int n = fis.read(tmp);
+				if (n <= -1)
+				{
+					break;
+				}
+				buffer.write(tmp, 0, n);
+			}
+			toMap.put(metadata.getName(), buffer.toByteArray());
+		}
 	}
 }

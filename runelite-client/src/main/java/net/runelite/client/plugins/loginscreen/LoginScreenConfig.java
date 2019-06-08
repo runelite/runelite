@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.rs;
+package net.runelite.client.plugins.loginscreen;
 
-public enum ClientUpdateCheckMode
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+
+@ConfigGroup("loginscreen")
+public interface LoginScreenConfig extends Config
 {
-	AUTO,
-	NONE,
-	VANILLA,
-	CUSTOM,
-	PATCH
+	@ConfigItem(
+		keyName = "syncusername",
+		name = "Sync username",
+		description = "Syncs the username that is currently remembered between computers"
+	)
+	default boolean syncUsername()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "pasteenabled",
+		name = "Ctrl-V paste",
+		description = "Enables Ctrl+V pasting on the login screen"
+	)
+	default boolean pasteEnabled()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "username",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String username()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "username",
+		name = "",
+		description = ""
+	)
+	void username(String key);
 }

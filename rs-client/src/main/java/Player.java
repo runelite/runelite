@@ -305,7 +305,7 @@ public final class Player extends Actor {
    @Export("isFriend")
    boolean isFriend() {
       if(this.isFriendTriBool == TriBool.TriBool_unknown) {
-         this.__w_126();
+         this.checkIsFriend();
       }
 
       return this.isFriendTriBool == TriBool.TriBool_true;
@@ -316,8 +316,8 @@ public final class Player extends Actor {
       signature = "(I)V",
       garbageValue = "-2059706128"
    )
-   @Export("__q_125")
-   void __q_125() {
+   @Export("clearIsFriend")
+   void clearIsFriend() {
       this.isFriendTriBool = TriBool.TriBool_unknown;
    }
 
@@ -326,8 +326,8 @@ public final class Player extends Actor {
       signature = "(I)V",
       garbageValue = "2126310249"
    )
-   @Export("__w_126")
-   void __w_126() {
+   @Export("checkIsFriend")
+   void checkIsFriend() {
       this.isFriendTriBool = WorldMapArea.friendSystem.__t_161(this.username)?TriBool.TriBool_true:TriBool.TriBool_false;
    }
 

@@ -527,7 +527,7 @@ public class Inject
 		return Type.getType("L" + finalType.getName().replace('.', '/') + ";", type.getDimensions());
 	}
 
-	Type apiTypeToDeobfuscatedType(Type type) throws InjectionException
+	Type apiTypeToDeobfuscatedType(Type type)
 	{
 		if (type.isPrimitive())
 		{

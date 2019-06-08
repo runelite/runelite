@@ -132,11 +132,11 @@ under the License.
     </server>
     -->
 
-    <server>
+<!--    <server>
       <id>runelite</id>
       <username>repo</username>
       <password>${env.REPO_PASSWORD}</password>
-    </server>
+    </server>-->
 
   </servers>
 

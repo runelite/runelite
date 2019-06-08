@@ -705,7 +705,7 @@ public class NpcDefinition extends DualNode {
          switch(var0) {
          case 2:
             class54.method1089(Strings.__id_jr, Strings.__id_jv, Strings.__id_ju);
-            Login.__cu_aw = 6;
+            Login.loginIndex = 6;
             break;
          case 3:
             class54.method1089("", "Error connecting to server.", "");

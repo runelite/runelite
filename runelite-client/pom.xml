@@ -227,11 +227,11 @@
 			<version>${runelite.orange.extensions.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		<!--		<dependency>
-					<groupId>net.runelite</groupId>
-					<artifactId>extended-mixins</artifactId>
-					<version>${project.version}</version>
-				</dependency>-->
+			<dependency>
+				<groupId>net.runelite.rs</groupId>
+				<artifactId>runescape-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -335,6 +335,12 @@
 								<filter>
 									<!-- net.runelite:client-patch and net.runelite:api -->
 									<artifact>net.runelite:api</artifact>
+									<includes>
+										<include>**</include>
+									</includes>
+								</filter>
+								<filter>
+									<artifact>net.runelite.rs:runescape-api</artifact>
 									<includes>
 										<include>**</include>
 									</includes>

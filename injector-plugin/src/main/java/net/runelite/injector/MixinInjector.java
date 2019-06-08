@@ -48,6 +48,7 @@ import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.asm.attributes.code.instructions.ALoad;
+import net.runelite.asm.attributes.code.instructions.ANewArray;
 import net.runelite.asm.attributes.code.instructions.CheckCast;
 import net.runelite.asm.attributes.code.instructions.GetField;
 import net.runelite.asm.attributes.code.instructions.ILoad;
@@ -229,10 +230,10 @@ public class MixinInjector
 
 					cf.addField(copy);
 
-					if (injectedFields.containsKey(field.getName()))
+					if (injectedFields.containsKey(field.getName()) && !field.getName().equals(ASSERTION_FIELD))
 					{
 						java.util.logging.Logger.getAnonymousLogger().severe("Duplicate field : "+ field.getName());
-						//throw new InjectionException("Injected field names must be globally unique");
+						throw new InjectionException("Injected field names must be globally unique");
 					}
 
 					injectedFields.put(field.getName(), copy);
@@ -653,6 +654,21 @@ public class MixinInjector
 		while (iterator.hasNext())
 		{
 			Instruction i = iterator.next();
+
+			if (i instanceof ANewArray)
+			{
+				Type type = ((ANewArray) i).getType_();
+				ClassFile deobCf = inject.getDeobfuscated().findClass(type.toString().replace("Lnet/runelite/rs/api/RS", "").replace(";", ""));
+
+				if (deobCf != null)
+				{
+					ClassFile obReturnTypeClass = inject.toObClass(deobCf);
+					Type newType = new Type("L" + obReturnTypeClass.getName() + ";");
+
+					((ANewArray) i).setType(newType);
+					logger.info("Replaced {} type {} with type {}", i, type, newType);
+				}
+			}
 
 			if (i instanceof InvokeInstruction)
 			{
