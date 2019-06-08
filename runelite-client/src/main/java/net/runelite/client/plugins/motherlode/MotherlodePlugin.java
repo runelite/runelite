@@ -182,6 +182,7 @@ public class MotherlodePlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isMining;
+	@Getter(AccessLevel.PACKAGE)
 	private WorldPoint targetVeinLocation = null;
 	private boolean playerHasReachedTargetVein;
 	private int lastAnimation = AnimationID.IDLE;

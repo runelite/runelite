@@ -131,4 +131,15 @@ public interface MotherlodeConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showTargetVein",
+		name = "Show vein currently being mined",
+		description = "Highlights the vein currently being mined"
+	)
+	default boolean showTargetVein()
+	{
+		return false;
+	}
+
 }
