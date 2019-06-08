@@ -150,7 +150,7 @@ public class ClientLoader
 				INJECTED_CLIENT.mkdirs();
 				if (INJECTED_CLIENT.exists())
 				{
-					if (getFileSize(INJECTED_CLIENT.toURI().toURL())!= getFileSize(url))
+					if (getFileSize(INJECTED_CLIENT.toURI().toURL()) != getFileSize(url))
 					{
 						INJECTED_CLIENT.delete();
 						INJECTED_CLIENT.createNewFile();
@@ -269,7 +269,7 @@ public class ClientLoader
 
 	private void updateInjectedClient(ReadableByteChannel readableByteChannel)
 	{
-		File INJECTED_CLIENT = new File(RUNELITE_DIR,"injected-client.jar");
+		File INJECTED_CLIENT = new File(RUNELITE_DIR,  "injected-client.jar");
 		try
 		{
 			FileOutputStream fileOutputStream = new FileOutputStream(INJECTED_CLIENT);

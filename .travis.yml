@@ -9,3 +9,5 @@ jdk:
 - openjdk11
 install: true
 script: ./travis/build.sh
+before_install:
+- chmod +x ./travis/build.sh
