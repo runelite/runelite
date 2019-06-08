@@ -217,11 +217,11 @@ public interface RSWidget extends Widget
 	@Override
 	void setScrollHeight(int height);
 
-	@Import("spriteId")
+	@Import("spriteId2")
 	@Override
 	int getSpriteId();
 
-	@Import("spriteId")
+	@Import("spriteId2")
 	@Override
 	void setSpriteId(int spriteId);
 
