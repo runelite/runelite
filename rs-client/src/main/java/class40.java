@@ -835,14 +835,14 @@ public class class40 {
          ViewportMouse.ViewportMouse_entityCount = 0;
       }
 
-      class13.method163();
+      class13.playPcmPlayers();
       Rasterizer2D.Rasterizer2D_fillRectangle(var0, var1, var2, var3, 0);
-      class13.method163();
+      class13.playPcmPlayers();
       var12 = Rasterizer3D.Rasterizer3D_zoom;
       Rasterizer3D.Rasterizer3D_zoom = Client.viewportZoom;
       class65.scene.draw(WorldMapSection1.cameraX, GrandExchangeEvents.cameraY, class11.cameraZ, WorldMapIcon1.cameraPitch, MusicPatchNode.cameraYaw, var4);
       Rasterizer3D.Rasterizer3D_zoom = var12;
-      class13.method163();
+      class13.playPcmPlayers();
       class65.scene.clearTempGameObjects();
       UrlRequester.method3258(var0, var1, var2, var3);
       UnitPriceComparator.method136(var0, var1);

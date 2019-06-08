@@ -35,7 +35,8 @@ public class class13 {
       signature = "(B)V",
       garbageValue = "63"
    )
-   static final void method163() {
+   @Export("playPcmPlayers")
+   static final void playPcmPlayers() {
       if(AbstractIndexCache.pcmPlayer1 != null) {
          AbstractIndexCache.pcmPlayer1.run();
       }
