@@ -75,6 +75,9 @@ public class RegionLockerPlugin extends Plugin
 	private RegionLockerOverlay regionLockerOverlay;
 
 	@Inject
+	private RegionBorderOverlay regionBorderOverlay;
+
+	@Inject
 	private RegionLockerInput inputListener;
 
 	@Inject
@@ -109,6 +112,7 @@ public class RegionLockerPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(CHUNK_COMMAND, this::chunkAmountLookup);
 		regionLocker = new RegionLocker(client, config, configManager);
 		overlayManager.add(regionLockerOverlay);
+		overlayManager.add(regionBorderOverlay);
 		keyManager.registerKeyListener(inputListener);
 		setKeys();
 	}
@@ -118,6 +122,7 @@ public class RegionLockerPlugin extends Plugin
 	{
 		chatCommandManager.unregisterCommand(CHUNK_COMMAND);
 		overlayManager.remove(regionLockerOverlay);
+		overlayManager.remove(regionBorderOverlay);
 		keyManager.unregisterKeyListener(inputListener);
 		RegionLocker.renderLockedRegions = false;
 	}
