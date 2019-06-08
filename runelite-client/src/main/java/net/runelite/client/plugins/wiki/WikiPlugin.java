@@ -36,7 +36,6 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
-import net.runelite.api.NPCDefinition;
 import net.runelite.api.ObjectDefinition;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.MenuEntryAdded;

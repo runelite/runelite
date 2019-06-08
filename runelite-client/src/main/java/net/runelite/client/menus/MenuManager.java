@@ -709,7 +709,7 @@ public class MenuManager
 	}
 
 	/**
-	 * Adds to the map of swaps - Pre-baked Abstract entry
+	 * Adds to the map of swaps - Pre-baked entry
 	 */
 	public void addSwap(ComparableEntry swapFrom, ComparableEntry swapTo)
 	{

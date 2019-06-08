@@ -24,19 +24,19 @@
  */
 package net.runelite.api;
 
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.hooks.Callbacks;
-import net.runelite.api.hooks.DrawCallbacks;
-import api.vars.AccountType;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.hooks.Callbacks;
+import net.runelite.api.hooks.DrawCallbacks;
+import net.runelite.api.vars.AccountType;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import org.slf4j.Logger;
 
 /**
@@ -149,11 +149,25 @@ public interface Client extends GameShell
 	void setPassword(String password);
 
 	/**
+	 * Sets the 6 digit pin used for authenticator on login screen.
+	 *
+	 * @param otp one time password
+	 */
+	void setOtp(String otp);
+
+	/**
 	 * Gets currently selected login field. 0 is username, and 1 is password.
 	 *
 	 * @return currently selected login field
 	 */
 	int getCurrentLoginField();
+
+	/**
+	 * Gets index of current login state. 2 is username/password form, 4 is authenticator form
+	 *
+	 * @return current login state index
+	 */
+	int getLoginIndex();
 
 	/**
 	 * Gets the account type of the logged in player.
@@ -354,10 +368,6 @@ public interface Client extends GameShell
 	 * @return the sprite image of the file
 	 */
 	Sprite[] getSprites(IndexDataBase source, int archiveId, int fileId);
-
-	byte[][] getSpritePixels();
-
-	void setSpritePixels(byte[][] pixels);
 
 	/**
 	 * Gets the sprite index.
@@ -702,7 +712,7 @@ public interface Client extends GameShell
 	 * @param varps passed varbits
 	 * @param varbitId the variable ID
 	 * @return the value
-	 * @see //Varbits#id
+	 * @see Varbits#id
 	 */
 	int getVarbitValue(int[] varps, int varbitId);
 
@@ -732,7 +742,7 @@ public interface Client extends GameShell
 	 * @param varps passed varbits
 	 * @param varbit the variable
 	 * @param value the value
-	 * @see //Varbits#id
+	 * @see Varbits#id
 	 */
 	void setVarbitValue(int[] varps, int varbit, int value);
 
@@ -1347,6 +1357,13 @@ public interface Client extends GameShell
 	boolean isInInstancedRegion();
 
 	/**
+	 * Get the number of client ticks an item has been pressed
+	 *
+	 * @return the number of client ticks an item has been pressed
+	 */
+	int getItemPressedDuration();
+
+	/**
 	 * Sets whether the client is hiding entities.
 	 * <p>
 	 * This method does not itself hide any entities. It behaves as a master
@@ -1386,7 +1403,6 @@ public interface Client extends GameShell
 	 * @param state the new clan mates hidden state
 	 */
 	void setClanMatesHidden(boolean state);
-
 
 	/**
 	 * Sets whether the local player is hidden.
@@ -1588,6 +1604,19 @@ public interface Client extends GameShell
 	int getRasterizer3D_clipMidY2();
 
 	void checkClickbox(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
+
+	/**
+	 * Get the if1 widget whose item is being dragged
+	 *
+	 * @return
+	 */
+	Widget getIf1DraggedWidget();
+
+	/**
+	 * Get the item index of the item being dragged on an if1 widget
+	 * @return
+	 */
+	int getIf1DraggedItemIndex();
 
 	/**
 	 * Sets if a widget is in target mode

@@ -265,7 +265,7 @@ public class MouseRecorder implements Runnable {
       garbageValue = "-335916694"
    )
    static final void method1189(Widget var0, int var1, int var2, int var3) {
-      class13.method163();
+      class13.playPcmPlayers();
       SpriteMask var4 = var0.getSpriteMask(false);
       if(var4 != null) {
          Rasterizer2D.Rasterizer2D_setClip(var1, var2, var4.width + var1, var2 + var4.height);

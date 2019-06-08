@@ -152,34 +152,24 @@ public class RuneLitePlusPlugin extends Plugin
 		return configManager.getConfig(RuneLitePlusConfig.class);
 	}
 
-	private RuneLitePlusKeyListener keyListener;
+	private RuneLitePlusKeyListener keyListener = new RuneLitePlusKeyListener();
 	private int entered = -1;
 	private int enterIdx;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		entered = -1;
-		enterIdx = 0;
-
-		if (getConfig(configManager).customPresence())
+		if (config.customPresence())
 		{
 			ClientUI.currentPresenceName = ("RuneLitePlus");
 			ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-		}
-
-		if (config.customPresence())
-		{
 			RuneLiteProperties.discordAppID = rlPlusDiscordApp;
 			discordService.close();
 			discordService.init();
 		}
-		else
-		{
-			RuneLiteProperties.discordAppID = rlDiscordApp;
-			discordService.close();
-			discordService.init();
-		}
+
+		entered = -1;
+		enterIdx = 0;
 	}
 
 	@Subscribe
@@ -196,26 +186,20 @@ public class RuneLitePlusPlugin extends Plugin
 			{
 				ClientUI.currentPresenceName = ("RuneLitePlus");
 				ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-			}
-			else
-			{
-				ClientUI.currentPresenceName = ("RuneLite");
-				ClientUI.frame.setTitle(ClientUI.currentPresenceName);
-			}
-
-			if (config.customPresence())
-			{
 				RuneLiteProperties.discordAppID = rlPlusDiscordApp;
 				discordService.close();
 				discordService.init();
 			}
 			else
 			{
+				ClientUI.currentPresenceName = ("RuneLite");
+				ClientUI.frame.setTitle(ClientUI.currentPresenceName);
 				RuneLiteProperties.discordAppID = rlDiscordApp;
 				discordService.close();
 				discordService.init();
 			}
 		}
+
 		else if (!config.keyboardPin())
 		{
 			entered = -1;
@@ -253,7 +237,6 @@ public class RuneLitePlusPlugin extends Plugin
 		}
 
 		// log.debug("Registering key listener");
-		keyListener = new RuneLitePlusKeyListener();
 		keyManager.registerKeyListener(keyListener);
 	}
 
@@ -266,7 +249,6 @@ public class RuneLitePlusPlugin extends Plugin
 			entered = -1;
 			enterIdx = 0;
 			keyManager.unregisterKeyListener(keyListener);
-			keyListener = null;
 			return;
 		}
 

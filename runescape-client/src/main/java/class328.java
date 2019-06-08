@@ -32,6 +32,6 @@ public class class328 {
    @Export("indexedSpritePalette")
    static int[] indexedSpritePalette;
    @ObfuscatedName("e")
-   @Export("Sprite")
-   static byte[][] Sprite;
+   @Export("spritePixels")
+   static byte[][] spritePixels;
 }

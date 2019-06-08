@@ -199,26 +199,26 @@ public class ExaminePlugin extends Plugin
 		log.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
 
 		// If it is an item, show the price of it
-		final ItemDefinition ItemDefinition;
+		final ItemDefinition itemComposition;
 		if (pendingExamine.getType() == ExamineType.ITEM || pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
 		{
 			final int itemId = pendingExamine.getId();
 			final int itemQuantity = pendingExamine.getQuantity();
-			ItemDefinition = itemManager.getItemDefinition(itemId);
+			itemComposition = itemManager.getItemDefinition(itemId);
 
-			if (ItemDefinition != null)
+			if (itemComposition != null)
 			{
-				final int id = itemManager.canonicalize(ItemDefinition.getId());
-				executor.submit(() -> getItemPrice(id, ItemDefinition, itemQuantity));
+				final int id = itemManager.canonicalize(itemComposition.getId());
+				executor.submit(() -> getItemPrice(id, itemComposition, itemQuantity));
 			}
 		}
 		else
 		{
-			ItemDefinition = null;
+			itemComposition = null;
 		}
 
 		// Don't submit examine info for tradeable items, which we already have from the RS item api
-		if (ItemDefinition != null && ItemDefinition.isTradeable())
+		if (itemComposition != null && itemComposition.isTradeable())
 		{
 			return;
 		}
@@ -316,13 +316,13 @@ public class ExaminePlugin extends Plugin
 		return null;
 	}
 
-	private void getItemPrice(int id, ItemDefinition ItemDefinition, int quantity)
+	private void getItemPrice(int id, ItemDefinition itemComposition, int quantity)
 	{
 		// quantity is at least 1
 		quantity = Math.max(1, quantity);
-		int ItemDefinitionPrice = ItemDefinition.getPrice();
+		int itemCompositionPrice = itemComposition.getPrice();
 		final int gePrice = itemManager.getItemPrice(id);
-		final int alchPrice = ItemDefinitionPrice <= 0 ? 0 : itemManager.getAlchValue(ItemDefinition);
+		final int alchPrice = itemCompositionPrice <= 0 ? 0 : itemManager.getAlchValue(itemComposition);
 
 		if (gePrice > 0 || alchPrice > 0)
 		{
@@ -339,7 +339,7 @@ public class ExaminePlugin extends Plugin
 			}
 
 			message
-				.append(ItemDefinition.getName())
+				.append(itemComposition.getName())
 				.append(ChatColorType.NORMAL)
 				.append(":");
 

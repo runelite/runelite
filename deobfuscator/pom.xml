@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-        <version>1.5.27-SNAPSHOT</version>
+		<version>1.5.27-SNAPSHOT</version>
 	</parent>
 
     <artifactId>deobfuscator</artifactId>
@@ -60,7 +60,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.8.0-beta4</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -79,8 +78,8 @@
         </dependency>
 
         <dependency>
-            <groupId>net.runelite</groupId>
-            <artifactId>runescape-client</artifactId>
+            <groupId>net.runelite.rs</groupId>
+            <artifactId>rs-client</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

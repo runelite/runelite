@@ -24,8 +24,8 @@
  */
 package net.runelite.api.events;
 
-import net.runelite.api.NPCDefinition;
 import lombok.Data;
+import net.runelite.api.NPCDefinition;
 
 /**
  * An event where an action of an {@link NPCDefinition} has changed.

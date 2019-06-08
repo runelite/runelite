@@ -170,7 +170,7 @@ public class PvpToolsPlugin extends Plugin
 	};
 
 	private final HotkeyListener renderselfHotkeyListener = new HotkeyListener(() -> config.renderSelf())
-	{//TODO FIX
+	{ //TODO FIX
 		public void hotkeyPressed()
 		{
 			//client.toggleRenderSelf();
@@ -561,10 +561,10 @@ public class PvpToolsPlugin extends Plugin
 		{
 			int value = (itemManager.getItemPrice(i.getId()) * i.getQuantity());
 
-			final ItemDefinition ItemDefinition = itemManager.getItemDefinition(i.getId());
-			if (!ItemDefinition.isTradeable() && value == 0)
+			final ItemDefinition itemComposition = itemManager.getItemDefinition(i.getId());
+			if (!itemComposition.isTradeable() && value == 0)
 			{
-				value = ItemDefinition.getPrice() * i.getQuantity();
+				value = itemComposition.getPrice() * i.getQuantity();
 				priceMap.put(value, i);
 			}
 			else

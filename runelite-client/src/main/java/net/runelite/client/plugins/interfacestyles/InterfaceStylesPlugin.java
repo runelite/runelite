@@ -162,15 +162,15 @@ public class InterfaceStylesPlugin extends Plugin
 				if (skin == config.skin())
 				{
 					String file = config.skin().toString() + "/" + spriteOverride.getSpriteID() + ".png";
-					Sprite Sprite = getFileSprite(file);
+					Sprite spritePixels = getFileSprite(file);
 
 					if (spriteOverride.getSpriteID() == SpriteID.COMPASS_TEXTURE)
 					{
-						client.setCompass(Sprite);
+						client.setCompass(spritePixels);
 					}
 					else
 					{
-						client.getSpriteOverrides().put(spriteOverride.getSpriteID(), Sprite);
+						client.getSpriteOverrides().put(spriteOverride.getSpriteID(), spritePixels);
 					}
 				}
 			}
@@ -194,13 +194,13 @@ public class InterfaceStylesPlugin extends Plugin
 			if (widgetOverride.getSkin() == config.skin())
 			{
 				String file = config.skin().toString() + "/widget/" + widgetOverride.getName() + ".png";
-				Sprite Sprite = getFileSprite(file);
+				Sprite spritePixels = getFileSprite(file);
 
-				if (Sprite != null)
+				if (spritePixels != null)
 				{
 					for (WidgetInfo widgetInfo : widgetOverride.getWidgetInfo())
 					{
-						client.getWidgetSpriteOverrides().put(widgetInfo.getPackedId(), Sprite);
+						client.getWidgetSpriteOverrides().put(widgetInfo.getPackedId(), spritePixels);
 					}
 				}
 			}

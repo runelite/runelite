@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.NPCDefinition;
 import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;

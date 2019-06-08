@@ -138,13 +138,13 @@ public class SpriteIds {
          if(var5 == null) {
             var4 = null;
          } else {
-            Font var6 = new Font(var5, class328.indexedSpriteOffsetXs, class328.indexedSpriteOffsetYs, VarbitDefinition.indexedSpriteWidths, SecureRandomCallable.indexedSpriteHeights, class328.indexedSpritePalette, class328.Sprite);
+            Font var6 = new Font(var5, class328.indexedSpriteOffsetXs, class328.indexedSpriteOffsetYs, VarbitDefinition.indexedSpriteWidths, SecureRandomCallable.indexedSpriteHeights, class328.indexedSpritePalette, class328.spritePixels);
             class328.indexedSpriteOffsetXs = null;
             class328.indexedSpriteOffsetYs = null;
             VarbitDefinition.indexedSpriteWidths = null;
             SecureRandomCallable.indexedSpriteHeights = null;
             class328.indexedSpritePalette = null;
-            class328.Sprite = null;
+            class328.spritePixels = null;
             var4 = var6;
          }
 

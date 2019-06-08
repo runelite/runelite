@@ -50,7 +50,6 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCDefinition;
 import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Point;
 import net.runelite.api.Scene;

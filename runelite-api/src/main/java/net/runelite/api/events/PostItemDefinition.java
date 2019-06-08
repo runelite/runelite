@@ -24,8 +24,8 @@
  */
 package net.runelite.api.events;
 
-import net.runelite.api.ItemDefinition;
 import lombok.Data;
+import net.runelite.api.ItemDefinition;
 
 /**
  * An event called after a new {@link ItemDefinition} is created and

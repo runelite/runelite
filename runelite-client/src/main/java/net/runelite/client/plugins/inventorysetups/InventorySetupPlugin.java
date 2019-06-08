@@ -415,11 +415,11 @@ public class InventorySetupPlugin extends Plugin
 		for (InventorySetupItem item : items)
 		{
 			int id = item.getId();
-			ItemDefinition ItemDefinition = itemManager.getItemDefinition(id);
+			ItemDefinition itemComposition = itemManager.getItemDefinition(id);
 			if (id > 0)
 			{
 				itemIds.add(ItemVariationMapping.map(id));
-				itemIds.add(ItemDefinition.getPlaceholderId());
+				itemIds.add(itemComposition.getPlaceholderId());
 			}
 
 		}

@@ -32,7 +32,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.SpotAnimationChanged;
 import net.runelite.api.events.PlayerDespawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -86,7 +86,7 @@ public class FreezeTimersPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGraphicChanged(GraphicChanged graphicChanged)
+	public void onSpotAnimationChanged(SpotAnimationChanged graphicChanged)
 	{
 		int oldGraphic = prayerTracker.getSpotanimLastTick(graphicChanged.getActor());
 		int newGraphic = graphicChanged.getActor().getSpotAnimation();
@@ -121,7 +121,7 @@ public class FreezeTimersPlugin extends Plugin
 		{
 			if (prayerTracker.getSpotanimLastTick(actor) != actor.getSpotAnimation())
 			{
-				GraphicChanged callback = new GraphicChanged();
+				SpotAnimationChanged callback = new SpotAnimationChanged();
 				callback.setActor(actor);
 				client.getCallbacks().post(callback);
 			}

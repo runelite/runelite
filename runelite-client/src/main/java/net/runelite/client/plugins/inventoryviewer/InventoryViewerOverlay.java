@@ -186,7 +186,7 @@ class InventoryViewerOverlay extends Overlay
 
 	private BufferedImage getImage(Item item)
 	{
-		ItemDefinition ItemDefinition = itemManager.getItemDefinition(item.getId());
-		return itemManager.getImage(item.getId(), item.getQuantity(), ItemDefinition.isStackable());
+		ItemDefinition itemComposition = itemManager.getItemDefinition(item.getId());
+		return itemManager.getImage(item.getId(), item.getQuantity(), itemComposition.isStackable());
 	}
 }

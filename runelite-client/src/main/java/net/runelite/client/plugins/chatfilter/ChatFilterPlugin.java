@@ -120,8 +120,10 @@ public class ChatFilterPlugin extends Plugin
 		}
 
 		MessageNode messageNode = (MessageNode) client.getMessages().get(messageId);
-		String name = messageNode.getName();
-		if (!shouldFilterPlayerMessage(name))
+
+		if (client.getLocalPlayer().getName().equals(messageNode.getName()) ||
+			!config.filterFriends() && messageNode.isFromFriend() ||
+			!config.filterClan() && messageNode.isFromClanMate())
 		{
 			return;
 		}

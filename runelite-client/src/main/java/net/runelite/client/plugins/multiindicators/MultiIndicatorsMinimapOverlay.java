@@ -31,7 +31,7 @@ import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
 import javax.inject.Inject;
 
-import api.geometry.Geometry;
+import net.runelite.api.geometry.Geometry;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;

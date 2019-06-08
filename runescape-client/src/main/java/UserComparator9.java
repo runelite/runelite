@@ -74,7 +74,7 @@ public class UserComparator9 extends AbstractUserComparator {
          var2.subWidth = VarbitDefinition.indexedSpriteWidths[var1];
          var2.subHeight = SecureRandomCallable.indexedSpriteHeights[var1];
          int var3 = var2.subHeight * var2.subWidth;
-         byte[] var4 = class328.Sprite[var1];
+         byte[] var4 = class328.spritePixels[var1];
          var2.pixels = new int[var3];
 
          for(int var5 = 0; var5 < var3; ++var5) {
@@ -87,7 +87,7 @@ public class UserComparator9 extends AbstractUserComparator {
       VarbitDefinition.indexedSpriteWidths = null;
       SecureRandomCallable.indexedSpriteHeights = null;
       class328.indexedSpritePalette = null;
-      class328.Sprite = null;
+      class328.spritePixels = null;
       return var0;
    }
 }

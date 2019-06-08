@@ -34,7 +34,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCDefinition;
-import net.runelite.api.NPCDefinition;
 import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;

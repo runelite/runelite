@@ -277,8 +277,8 @@ public final class Player extends Actor {
       }
 
       this.username = new Username(var1.readStringCp1252NullTerminated(), KeyHandler.loginType);
-      this.__q_125();
-      this.__u_128();
+      this.clearIsFriend();
+      this.clearIsInClanChat();
       if(this == Canvas.localPlayer) {
          RunException.localPlayerName = this.username.getName();
       }
@@ -305,7 +305,7 @@ public final class Player extends Actor {
    @Export("isFriend")
    boolean isFriend() {
       if(this.isFriendTriBool == TriBool.TriBool_unknown) {
-         this.__w_126();
+         this.checkIsFriend();
       }
 
       return this.isFriendTriBool == TriBool.TriBool_true;
@@ -316,8 +316,8 @@ public final class Player extends Actor {
       signature = "(I)V",
       garbageValue = "-2059706128"
    )
-   @Export("__q_125")
-   void __q_125() {
+   @Export("clearIsFriend")
+   void clearIsFriend() {
       this.isFriendTriBool = TriBool.TriBool_unknown;
    }
 
@@ -326,8 +326,8 @@ public final class Player extends Actor {
       signature = "(I)V",
       garbageValue = "2126310249"
    )
-   @Export("__w_126")
-   void __w_126() {
+   @Export("checkIsFriend")
+   void checkIsFriend() {
       this.isFriendTriBool = WorldMapArea.friendSystem.__t_161(this.username)?TriBool.TriBool_true:TriBool.TriBool_false;
    }
 
@@ -339,7 +339,7 @@ public final class Player extends Actor {
    @Export("isClanMember")
    boolean isClanMember() {
       if(this.isInClanChat == TriBool.TriBool_unknown) {
-         this.__g_129();
+         this.updateIsInClanChat();
       }
 
       return this.isInClanChat == TriBool.TriBool_true;
@@ -350,8 +350,8 @@ public final class Player extends Actor {
       signature = "(I)V",
       garbageValue = "1982407728"
    )
-   @Export("__u_128")
-   void __u_128() {
+   @Export("clearIsInClanChat")
+   void clearIsInClanChat() {
       this.isInClanChat = TriBool.TriBool_unknown;
    }
 
@@ -360,8 +360,8 @@ public final class Player extends Actor {
       signature = "(I)V",
       garbageValue = "833825629"
    )
-   @Export("__g_129")
-   void __g_129() {
+   @Export("updateIsInClanChat")
+   void updateIsInClanChat() {
       this.isInClanChat = PacketWriter.clanChat != null && PacketWriter.clanChat.contains(this.username)?TriBool.TriBool_true:TriBool.TriBool_false;
    }
 

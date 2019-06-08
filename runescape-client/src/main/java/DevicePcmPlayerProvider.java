@@ -76,7 +76,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
       class328.indexedSpriteOffsetYs = new int[class328.indexedSpriteCount];
       VarbitDefinition.indexedSpriteWidths = new int[class328.indexedSpriteCount];
       SecureRandomCallable.indexedSpriteHeights = new int[class328.indexedSpriteCount];
-      class328.Sprite = new byte[class328.indexedSpriteCount][];
+      class328.spritePixels = new byte[class328.indexedSpriteCount][];
       var1.index = var0.length - 7 - class328.indexedSpriteCount * 8;
       class328.indexedSpriteWidth = var1.__ag_302();
       class328.indexedSpriteHeight = var1.__ag_302();
@@ -116,7 +116,7 @@ public class DevicePcmPlayerProvider implements PcmPlayerProvider {
          int var5 = SecureRandomCallable.indexedSpriteHeights[var3];
          int var6 = var4 * var5;
          byte[] var7 = new byte[var6];
-         class328.Sprite[var3] = var7;
+         class328.spritePixels[var3] = var7;
          int var8 = var1.readUnsignedByte();
          int var9;
          if(var8 == 0) {

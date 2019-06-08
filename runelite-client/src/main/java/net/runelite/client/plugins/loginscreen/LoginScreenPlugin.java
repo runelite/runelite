@@ -36,9 +36,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -46,14 +46,15 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.OSType;
 
 @PluginDescriptor(
-		name = "Login Screen",
-		description = "Provides various enhancements for login screen"
+	name = "Login Screen",
+	description = "Provides various enhancements for login screen"
 )
 @Slf4j
 public class LoginScreenPlugin extends Plugin implements KeyListener
 {
 	private static final int MAX_USERNAME_LENGTH = 254;
 	private static final int MAX_PASSWORD_LENGTH = 20;
+	private static final int MAX_PIN_LENGTH = 6;
 
 	@Inject
 	private Client client;
@@ -163,7 +164,9 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (!config.pasteEnabled() || client.getGameState() != GameState.LOGIN_SCREEN)
+		if (!config.pasteEnabled() || (
+			client.getGameState() != GameState.LOGIN_SCREEN &&
+				client.getGameState() != GameState.LOGIN_SCREEN_AUTHENTICATOR))
 		{
 			return;
 		}
@@ -176,22 +179,33 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 			try
 			{
 				final String data = Toolkit
-						.getDefaultToolkit()
-						.getSystemClipboard()
-						.getData(DataFlavor.stringFlavor)
-						.toString()
-						.trim();
+					.getDefaultToolkit()
+					.getSystemClipboard()
+					.getData(DataFlavor.stringFlavor)
+					.toString()
+					.trim();
 
-				// 0 is username, 1 is password
-				if (client.getCurrentLoginField() == 0)
+				switch (client.getLoginIndex())
 				{
-					// Truncate data to maximum username length if necessary
-					client.setUsername(data.substring(0, Math.min(data.length(), MAX_USERNAME_LENGTH)));
-				}
-				else
-				{
-					// Truncate data to maximum password length if necessary
-					client.setPassword(data.substring(0, Math.min(data.length(), MAX_PASSWORD_LENGTH)));
+					// Username/password form
+					case 2:
+						if (client.getCurrentLoginField() == 0)
+						{
+							// Truncate data to maximum username length if necessary
+							client.setUsername(data.substring(0, Math.min(data.length(), MAX_USERNAME_LENGTH)));
+						}
+						else
+						{
+							// Truncate data to maximum password length if necessary
+							client.setPassword(data.substring(0, Math.min(data.length(), MAX_PASSWORD_LENGTH)));
+						}
+
+						break;
+					// Authenticator form
+					case 4:
+						// Truncate data to maximum OTP code length if necessary
+						client.setOtp(data.substring(0, Math.min(data.length(), MAX_PIN_LENGTH)));
+						break;
 				}
 			}
 			catch (UnsupportedFlavorException | IOException ex)

@@ -190,7 +190,7 @@ public final class class54 {
 
                int var7;
                short var8;
-               if(Login.__cu_aw == 0) {
+               if(Login.loginIndex == 0) {
                   boolean var17 = false;
 
                   while(Decimator.method2490()) {
@@ -212,7 +212,7 @@ public final class class54 {
                         Login.Login_response1 = "This is a <col=00ffff>Beta<col=ffffff> world.";
                         Login.Login_response2 = "Your normal account will not be affected.";
                         Login.Login_response3 = "";
-                        Login.__cu_aw = 1;
+                        Login.loginIndex = 1;
                         class196.method3740();
                      } else if((Client.worldProperties & 4) != 0) {
                         if((Client.worldProperties & 1024) != 0) {
@@ -226,14 +226,14 @@ public final class class54 {
                         }
 
                         Login.Login_response0 = "Warning!";
-                        Login.__cu_aw = 1;
+                        Login.loginIndex = 1;
                         class196.method3740();
                      } else if((Client.worldProperties & 1024) != 0) {
                         Login.Login_response1 = "This is a <col=ffff00>High Risk<col=ffffff> world.";
                         Login.Login_response2 = "The Protect Item prayer will";
                         Login.Login_response3 = "not work on this world.";
                         Login.Login_response0 = "Warning!";
-                        Login.__cu_aw = 1;
+                        Login.loginIndex = 1;
                         class196.method3740();
                      } else {
                         MouseHandler.method1084(false);
@@ -242,11 +242,11 @@ public final class class54 {
                } else {
                   int var18;
                   short var20;
-                  if(Login.__cu_aw != 1) {
+                  if(Login.loginIndex != 1) {
                      boolean var9;
                      int var10;
                      short var19;
-                     if(Login.__cu_aw == 2) {
+                     if(Login.loginIndex == 2) {
                         var19 = 201;
                         var18 = var19 + 52;
                         if(var3 == 1 && var16 >= var18 - 12 && var16 < var18 + 2) {
@@ -266,7 +266,7 @@ public final class class54 {
                               switch(Login.__cu_ac) {
                               case 1:
                                  method1089("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
-                                 Login.__cu_aw = 5;
+                                 Login.loginIndex = 5;
                                  return;
                               case 2:
                                  WorldMapCacheName.method635("https://support.runescape.com/hc/en-gb", true, false);
@@ -296,11 +296,11 @@ public final class class54 {
 
                         var7 = Login.__cu_y + 180 + 80;
                         if(var3 == 1 && var15 >= var7 - 75 && var15 <= var7 + 75 && var16 >= var8 - 20 && var16 <= var8 + 20) {
-                           Login.__cu_aw = 0;
+                           Login.loginIndex = 0;
                            Login.Login_username = "";
                            Login.Login_password = "";
                            class13.__i_af = 0;
-                           Login.__cu_ai = "";
+                           Login.otp = "";
                            Login.__cu_ba = true;
                         }
 
@@ -341,11 +341,11 @@ public final class class54 {
                               }
 
                               if(IndexStoreAction.__ik_cn == 13) {
-                                 Login.__cu_aw = 0;
+                                 Login.loginIndex = 0;
                                  Login.Login_username = "";
                                  Login.Login_password = "";
                                  class13.__i_af = 0;
-                                 Login.__cu_ai = "";
+                                 Login.otp = "";
                                  Login.__cu_ba = true;
                               } else if(Login.currentLoginField == 0) {
                                  if(IndexStoreAction.__ik_cn == 85 && Login.Login_username.length() > 0) {
@@ -394,7 +394,7 @@ public final class class54 {
 
                            return;
                         }
-                     } else if(Login.__cu_aw == 3) {
+                     } else if(Login.loginIndex == 3) {
                         var18 = Login.__cu_y + 180;
                         var20 = 276;
                         if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
@@ -405,23 +405,23 @@ public final class class54 {
                         var20 = 326;
                         if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                            method1089("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
-                           Login.__cu_aw = 5;
+                           Login.loginIndex = 5;
                            return;
                         }
                      } else {
                         int var22;
-                        if(Login.__cu_aw == 4) {
+                        if(Login.loginIndex == 4) {
                            var18 = Login.__cu_y + 180 - 80;
                            var20 = 321;
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
-                              Login.__cu_ai.trim();
-                              if(Login.__cu_ai.length() != 6) {
+                              Login.otp.trim();
+                              if(Login.otp.length() != 6) {
                                  method1089("", "Please enter a 6-digit PIN.", "");
                                  return;
                               }
 
-                              class13.__i_af = Integer.parseInt(Login.__cu_ai);
-                              Login.__cu_ai = "";
+                              class13.__i_af = Integer.parseInt(Login.otp);
+                              Login.otp = "";
                               class15.method184(true);
                               method1089("", "Connecting to server...", "");
                               GameShell.updateGameState(20);
@@ -438,11 +438,11 @@ public final class class54 {
 
                            var18 = Login.__cu_y + 180 + 80;
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
-                              Login.__cu_aw = 0;
+                              Login.loginIndex = 0;
                               Login.Login_username = "";
                               Login.Login_password = "";
                               class13.__i_af = 0;
-                              Login.__cu_ai = "";
+                              Login.otp = "";
                            }
 
                            while(Decimator.method2490()) {
@@ -456,37 +456,37 @@ public final class class54 {
                               }
 
                               if(IndexStoreAction.__ik_cn == 13) {
-                                 Login.__cu_aw = 0;
+                                 Login.loginIndex = 0;
                                  Login.Login_username = "";
                                  Login.Login_password = "";
                                  class13.__i_af = 0;
-                                 Login.__cu_ai = "";
+                                 Login.otp = "";
                               } else {
-                                 if(IndexStoreAction.__ik_cn == 85 && Login.__cu_ai.length() > 0) {
-                                    Login.__cu_ai = Login.__cu_ai.substring(0, Login.__cu_ai.length() - 1);
+                                 if(IndexStoreAction.__ik_cn == 85 && Login.otp.length() > 0) {
+                                    Login.otp = Login.otp.substring(0, Login.otp.length() - 1);
                                  }
 
                                  if(IndexStoreAction.__ik_cn == 84) {
-                                    Login.__cu_ai.trim();
-                                    if(Login.__cu_ai.length() != 6) {
+                                    Login.otp.trim();
+                                    if(Login.otp.length() != 6) {
                                        method1089("", "Please enter a 6-digit PIN.", "");
                                        return;
                                     }
 
-                                    class13.__i_af = Integer.parseInt(Login.__cu_ai);
-                                    Login.__cu_ai = "";
+                                    class13.__i_af = Integer.parseInt(Login.otp);
+                                    Login.otp = "";
                                     class15.method184(true);
                                     method1089("", "Connecting to server...", "");
                                     GameShell.updateGameState(20);
                                     return;
                                  }
 
-                                 if(var21 && Login.__cu_ai.length() < 6) {
-                                    Login.__cu_ai = Login.__cu_ai + GzipDecompressor.__go_ck;
+                                 if(var21 && Login.otp.length() < 6) {
+                                    Login.otp = Login.otp + GzipDecompressor.__go_ck;
                                  }
                               }
                            }
-                        } else if(Login.__cu_aw == 5) {
+                        } else if(Login.loginIndex == 5) {
                            var18 = Login.__cu_y + 180 - 80;
                            var20 = 321;
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
@@ -534,7 +534,7 @@ public final class class54 {
                                  }
                               }
                            }
-                        } else if(Login.__cu_aw == 6) {
+                        } else if(Login.loginIndex == 6) {
                            while(true) {
                               do {
                                  if(!Decimator.method2490()) {
@@ -549,13 +549,13 @@ public final class class54 {
 
                               MouseHandler.method1084(true);
                            }
-                        } else if(Login.__cu_aw == 7) {
+                        } else if(Login.loginIndex == 7) {
                            var18 = Login.__cu_y + 180 - 80;
                            var20 = 321;
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                               WorldMapCacheName.method635(Message.method1227("secure", true) + "m=dob/set_dob.ws", true, false);
                               method1089("", "Page has opened in a new window.", "(Please check your popup blocker.)");
-                              Login.__cu_aw = 6;
+                              Login.loginIndex = 6;
                               return;
                            }
 
@@ -563,13 +563,13 @@ public final class class54 {
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                               MouseHandler.method1084(true);
                            }
-                        } else if(Login.__cu_aw == 8) {
+                        } else if(Login.loginIndex == 8) {
                            var18 = Login.__cu_y + 180 - 80;
                            var20 = 321;
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                               WorldMapCacheName.method635("https://www.jagex.com/terms/privacy/#eight", true, false);
                               method1089("", "Page has opened in a new window.", "(Please check your popup blocker.)");
-                              Login.__cu_aw = 6;
+                              Login.loginIndex = 6;
                               return;
                            }
 
@@ -577,7 +577,7 @@ public final class class54 {
                            if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
                               MouseHandler.method1084(true);
                            }
-                        } else if(Login.__cu_aw == 12) {
+                        } else if(Login.loginIndex == 12) {
                            String var14 = "";
                            switch(Login.__cu_aj) {
                            case 0:
@@ -595,7 +595,7 @@ public final class class54 {
                            if(var3 == 1 && var15 >= var7 - 75 && var15 <= var7 + 75 && var16 >= var8 - 20 && var16 <= var8 + 20) {
                               WorldMapCacheName.method635(var14, true, false);
                               method1089("", "Page has opened in a new window.", "(Please check your popup blocker.)");
-                              Login.__cu_aw = 6;
+                              Login.loginIndex = 6;
                               return;
                            }
 
@@ -611,7 +611,7 @@ public final class class54 {
                         if(IndexStoreAction.__ik_cn == 84) {
                            MouseHandler.method1084(false);
                         } else if(IndexStoreAction.__ik_cn == 13) {
-                           Login.__cu_aw = 0;
+                           Login.loginIndex = 0;
                         }
                      }
 
@@ -623,7 +623,7 @@ public final class class54 {
 
                      var18 = Varps.__hv_h + 80;
                      if(var3 == 1 && var15 >= var18 - 75 && var15 <= var18 + 75 && var16 >= var20 - 20 && var16 <= var20 + 20) {
-                        Login.__cu_aw = 0;
+                        Login.loginIndex = 0;
                      }
                   }
                }

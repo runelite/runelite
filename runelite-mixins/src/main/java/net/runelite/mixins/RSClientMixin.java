@@ -24,7 +24,6 @@
  */
 package net.runelite.mixins;
 
-import api.vars.AccountType;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
 import net.runelite.api.EnumDefinition;
@@ -90,6 +89,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
+import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
@@ -187,17 +187,14 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	private final Cache<Integer, RSEnumDefinition> enumCache = CacheBuilder.newBuilder()
-			.maximumSize(64)
-			.build();
+		.maximumSize(64)
+		.build();
 
 	@Inject
 	private static HealthBarOverride healthBarOverride;
 
 	@Inject
 	private static boolean printMenuActions;
-
-	@Inject
-	private byte[][] spritePixels;
 
 	@Inject
 	@Override
@@ -652,12 +649,12 @@ public abstract class RSClientMixin implements RSClient
 		if (newCount == oldCount + 1)
 		{
 			MenuEntryAdded event = new MenuEntryAdded(
-					client.getMenuOptions()[newCount - 1],
-					client.getMenuTargets()[newCount - 1],
-					client.getMenuTypes()[newCount - 1],
-					client.getMenuIdentifiers()[newCount - 1],
-					client.getMenuActionParams0()[newCount - 1],
-					client.getMenuActionParams1()[newCount - 1]
+				client.getMenuOptions()[newCount - 1],
+				client.getMenuTargets()[newCount - 1],
+				client.getMenuTypes()[newCount - 1],
+				client.getMenuIdentifiers()[newCount - 1],
+				client.getMenuActionParams0()[newCount - 1],
+				client.getMenuActionParams1()[newCount - 1]
 			);
 
 			client.getCallbacks().post(event);
@@ -865,7 +862,7 @@ public abstract class RSClientMixin implements RSClient
 		return clanMemberManager != null && clanMemberManager.isMember(createName(name, getLoginType()));
 	}
 
-	@FieldHook("clickedWidget")
+	@FieldHook("isDraggingWidget")
 	@Inject
 	public static void draggingWidgetChanged(int idx)
 	{
@@ -972,7 +969,7 @@ public abstract class RSClientMixin implements RSClient
 	{
 		// Reset the menu type
 		MenuAction[] playerActions = {PLAYER_FIRST_OPTION, PLAYER_SECOND_OPTION, PLAYER_THIRD_OPTION, PLAYER_FOURTH_OPTION,
-				PLAYER_FIFTH_OPTION, PLAYER_SIXTH_OPTION, PLAYER_SEVENTH_OPTION, PLAYER_EIGTH_OPTION};
+			PLAYER_FIFTH_OPTION, PLAYER_SIXTH_OPTION, PLAYER_SEVENTH_OPTION, PLAYER_EIGTH_OPTION};
 		if (idx >= 0 && idx < playerActions.length)
 		{
 			MenuAction playerAction = playerActions[idx];
@@ -1497,18 +1494,6 @@ public abstract class RSClientMixin implements RSClient
 		setSpritePixels(null);
 
 		return array;
-	}
-
-	@Inject
-	@Override
-	public byte[][] getSpritePixels() {
-		return spritePixels;
-	}
-
-	@Inject
-	@Override
-	public void setSpritePixels(byte[][] sprites) {
-		spritePixels = sprites;
 	}
 
 	@Inject

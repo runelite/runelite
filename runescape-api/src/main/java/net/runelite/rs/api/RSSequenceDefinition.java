@@ -4,7 +4,6 @@ import net.runelite.mapping.Import;
 
 public interface RSSequenceDefinition
 {
-	//TODO:Finish
 //	@Import("stretches")
 //	boolean getStretches();
 //

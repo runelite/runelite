@@ -90,10 +90,10 @@ public class PvPUtil
 		{
 			int value = (itemManager.getItemPrice(i.getId()) * i.getQuantity());
 
-			final ItemDefinition ItemDefinition = itemManager.getItemDefinition(i.getId());
-			if (!ItemDefinition.isTradeable() && value == 0)
+			final ItemDefinition itemComposition = itemManager.getItemDefinition(i.getId());
+			if (!itemComposition.isTradeable() && value == 0)
 			{
-				value = ItemDefinition.getPrice() * i.getQuantity();
+				value = itemComposition.getPrice() * i.getQuantity();
 				priceMap.put(value, i);
 			}
 			else

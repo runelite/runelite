@@ -38,9 +38,9 @@ import net.runelite.cache.models.VertexNormal;
 public class ItemSpriteFactory
 {
 	public static final BufferedImage createSprite(ItemProvider itemProvider, ModelProvider modelProvider,
-												   SpriteProvider spriteProvider, TextureProvider textureProvider,
-												   int itemId, int quantity, int border, int shadowColor,
-												   boolean noted) throws IOException
+												SpriteProvider spriteProvider, TextureProvider textureProvider,
+												int itemId, int quantity, int border, int shadowColor,
+												boolean noted) throws IOException
 	{
 		Sprite spritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
 				itemId, quantity, border, shadowColor, noted);
@@ -48,9 +48,9 @@ public class ItemSpriteFactory
 	}
 
 	private static final Sprite createSpritePixels(ItemProvider itemProvider, ModelProvider modelProvider,
-														 SpriteProvider spriteProvider, TextureProvider textureProvider,
-														 int itemId, int quantity, int border, int shadowColor,
-														 boolean noted) throws IOException
+														SpriteProvider spriteProvider, TextureProvider textureProvider,
+														int itemId, int quantity, int border, int shadowColor,
+														boolean noted) throws IOException
 	{
 		ItemDefinition item = itemProvider.provide(itemId);
 

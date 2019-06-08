@@ -86,7 +86,7 @@ public class ConstructorMapper
 	}
 
 	/**
-	 * Map constructors based on the class mapping of the given mapping
+	 * Map constructors based on the class mappings of the given mapping
 	 */
 	public void mapConstructors()
 	{

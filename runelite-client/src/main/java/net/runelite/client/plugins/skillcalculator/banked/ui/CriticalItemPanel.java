@@ -126,7 +126,7 @@ public class CriticalItemPanel extends JPanel
 		infoContainer.setBorder(new MatteBorder(1, 0, 0, 0, Color.GRAY));
 
 		// Icon
-		AsyncBufferedImage icon = itemManager.getImage(item.getItemID(), amount, item.getComposition().isStackable() || amount > 1);
+		AsyncBufferedImage icon = itemManager.getImage(item.getItemID(), amount, item.getDefinition().isStackable() || amount > 1);
 		image = new JLabel();
 		image.setMinimumSize(ICON_SIZE);
 		image.setMaximumSize(ICON_SIZE);
@@ -144,7 +144,7 @@ public class CriticalItemPanel extends JPanel
 		uiInfo.setBorder(new EmptyBorder(0, 5, 0, 0));
 		uiInfo.setBackground(BACKGROUND_COLOR);
 
-		JShadowedLabel labelName = new JShadowedLabel(item.getComposition().getName());
+		JShadowedLabel labelName = new JShadowedLabel(item.getDefinition().getName());
 		labelName.setForeground(Color.WHITE);
 		labelName.setVerticalAlignment(SwingUtilities.BOTTOM);
 
@@ -201,7 +201,7 @@ public class CriticalItemPanel extends JPanel
 			panel.add(settingsButton, BorderLayout.LINE_END);
 		}
 
-		panel.setToolTipText("<html>" + item.getComposition().getName()
+		panel.setToolTipText("<html>" + item.getDefinition().getName()
 			+ "<br/>xp: " + xp
 			+ "<br/>Total: " + StackFormatter.quantityToStackSize((long) total) + "</html");
 
@@ -269,7 +269,7 @@ public class CriticalItemPanel extends JPanel
 			for (Map.Entry<CriticalItem, Integer> e : linkedMap.entrySet())
 			{
 				// Icon
-				AsyncBufferedImage icon = itemManager.getImage(e.getKey().getItemID(), e.getValue(), e.getKey().getComposition().isStackable() || e.getValue() > 1);
+				AsyncBufferedImage icon = itemManager.getImage(e.getKey().getItemID(), e.getValue(), e.getKey().getDefinition().isStackable() || e.getValue() > 1);
 				JLabel image = new JLabel();
 				image.setMinimumSize(ICON_SIZE);
 				image.setMaximumSize(ICON_SIZE);
@@ -282,7 +282,7 @@ public class CriticalItemPanel extends JPanel
 				icon.onChanged(resize);
 				resize.run();
 
-				image.setToolTipText(e.getKey().getComposition().getName());
+				image.setToolTipText(e.getKey().getDefinition().getName());
 
 				con.add(image, c);
 				c.gridx++;
@@ -366,7 +366,7 @@ public class CriticalItemPanel extends JPanel
 	{
 		this.setVisible(newAmount > 0 || forceVisible);
 		this.amount = newAmount;
-		AsyncBufferedImage icon = itemManager.getImage(item.getItemID(), amount, item.getComposition().isStackable() || amount > 1);
+		AsyncBufferedImage icon = itemManager.getImage(item.getItemID(), amount, item.getDefinition().isStackable() || amount > 1);
 		Runnable resize = () ->
 			image.setIcon(new ImageIcon(icon.getScaledInstance((int) ICON_SIZE.getWidth(), (int) ICON_SIZE.getHeight(), Image.SCALE_SMOOTH)));
 		icon.onChanged(resize);

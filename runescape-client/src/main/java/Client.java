@@ -1736,7 +1736,7 @@ public final class Client extends GameShell implements Usernamed {
          class214.__hf_u = null;
       }
 
-      class13.method163();
+      class13.playPcmPlayers();
       class171.method3498();
       MouseHandler var47 = MouseHandler.MouseHandler_instance;
       synchronized(MouseHandler.MouseHandler_instance) {
@@ -1820,7 +1820,7 @@ public final class Client extends GameShell implements Usernamed {
                      class68.drawLoadingMessage("Loading - please wait." + "<br>" + " (" + 100 + "%" + ")", true);
                   }
 
-                  class13.method163();
+                  class13.playPcmPlayers();
                   class65.scene.clear();
 
                   for(var48 = 0; var48 < 4; ++var48) {
@@ -1836,7 +1836,7 @@ public final class Client extends GameShell implements Usernamed {
                      }
                   }
 
-                  class13.method163();
+                  class13.playPcmPlayers();
                   Tiles.Tiles_minPlane = 99;
                   Tiles.__bq_w = new byte[4][104][104];
                   Fonts.__kz_o = new byte[4][104][104];
@@ -1874,7 +1874,7 @@ public final class Client extends GameShell implements Usernamed {
                         var5 = (class308.regions[var49] & 255) * 64 - GraphicsObject.baseY;
                         var6 = class40.regionLandArchives[var49];
                         if(var6 != null) {
-                           class13.method163();
+                           class13.playPcmPlayers();
                            Varcs.method2166(var6, var4, var5, GameObject.__eh_fy * 8 - 48, WorldMapLabelSize.__s_fi * 8 - 48, collisionMaps);
                         }
                      }
@@ -1884,7 +1884,7 @@ public final class Client extends GameShell implements Usernamed {
                         var5 = (class308.regions[var49] & 255) * 64 - GraphicsObject.baseY;
                         var6 = class40.regionLandArchives[var49];
                         if(var6 == null && WorldMapLabelSize.__s_fi < 800) {
-                           class13.method163();
+                           class13.playPcmPlayers();
                            UserComparator6.method3390(var4, var5, 64, 64);
                         }
                      }
@@ -1896,7 +1896,7 @@ public final class Client extends GameShell implements Usernamed {
                         if(var50 != null) {
                            var5 = (class308.regions[var49] >> 8) * 64 - class50.baseX;
                            var51 = (class308.regions[var49] & 255) * 64 - GraphicsObject.baseY;
-                           class13.method163();
+                           class13.playPcmPlayers();
                            Scene var7 = class65.scene;
                            CollisionMap[] var8 = collisionMaps;
                            Buffer var9 = new Buffer(var50);
@@ -1971,7 +1971,7 @@ public final class Client extends GameShell implements Usernamed {
                                  break label1186;
                               }
 
-                              class13.method163();
+                              class13.playPcmPlayers();
 
                               for(var4 = 0; var4 < 13; ++var4) {
                                  for(var5 = 0; var5 < 13; ++var5) {
@@ -1997,7 +1997,7 @@ public final class Client extends GameShell implements Usernamed {
                            }
                         }
 
-                        class13.method163();
+                        class13.playPcmPlayers();
 
                         for(var4 = 0; var4 < 13; ++var4) {
                            for(var5 = 0; var5 < 13; ++var5) {
@@ -2058,7 +2058,7 @@ public final class Client extends GameShell implements Usernamed {
                   }
 
                   UserComparator10.method3352(true);
-                  class13.method163();
+                  class13.playPcmPlayers();
                   Scene var65 = class65.scene;
                   CollisionMap[] var71 = collisionMaps;
 
@@ -2548,7 +2548,7 @@ public final class Client extends GameShell implements Usernamed {
                      }
                   }
 
-                  class13.method163();
+                  class13.playPcmPlayers();
                   ScriptEvent.method1179();
                   ObjectDefinition.__jr_o.clear();
                   PacketBufferNode var67;
@@ -2575,7 +2575,7 @@ public final class Client extends GameShell implements Usernamed {
                   }
 
                   GameShell.updateGameState(30);
-                  class13.method163();
+                  class13.playPcmPlayers();
                   BufferedSink.method3603();
                   var67 = Interpreter.method1915(ClientPacket.__gs_bv, packetWriter.isaacCipher);
                   packetWriter.__q_167(var67);
@@ -4717,7 +4717,7 @@ public final class Client extends GameShell implements Usernamed {
          var2 = GameShell.menuY;
          var3 = class214.menuWidth;
          var4 = AbstractWorldMapIcon.menuHeight;
-         int var5 = 6116423;
+         int var5 = 0x5d5447;
          Rasterizer2D.Rasterizer2D_fillRectangle(var1, var2, var3, var4, var5);
          Rasterizer2D.Rasterizer2D_fillRectangle(var1 + 1, var2 + 1, var3 - 2, 16, 0);
          Rasterizer2D.Rasterizer2D_drawRectangle(var1 + 1, var2 + 18, var3 - 2, var4 - 19, 0);
@@ -4729,9 +4729,9 @@ public final class Client extends GameShell implements Usernamed {
          int var10;
          for(var8 = 0; var8 < menuOptionsCount; ++var8) {
             var9 = var2 + (menuOptionsCount - 1 - var8) * 15 + 31;
-            var10 = 16777215;
+            var10 = 0xffffff;
             if(var6 > var1 && var6 < var3 + var1 && var7 > var9 - 13 && var7 < var9 + 3) {
-               var10 = 16776960;
+               var10 = 0xffff00;
             }
 
             Font var11 = class2.fontBold12;
@@ -4762,9 +4762,9 @@ public final class Client extends GameShell implements Usernamed {
       if(gameDrawingMode == 3) {
          for(var1 = 0; var1 < rootWidgetCount; ++var1) {
             if(__client_oq[var1]) {
-               Rasterizer2D.Rasterizer2D_moreAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 16711935, 128);
+               Rasterizer2D.Rasterizer2D_moreAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 0xff00ff, 128);
             } else if(__client_ot[var1]) {
-               Rasterizer2D.Rasterizer2D_moreAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 16711680, 128);
+               Rasterizer2D.Rasterizer2D_moreAlpha(rootWidgetXs[var1], rootWidgetYs[var1], rootWidgetWidths[var1], rootWidgetHeights[var1], 0xff0000, 128);
             }
          }
       }

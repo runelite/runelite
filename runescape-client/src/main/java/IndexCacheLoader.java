@@ -384,7 +384,7 @@ public class IndexCacheLoader {
             var0.drawCentered(Login.Login_response3, Login.__cu_y + 180, var48, 16776960, 0);
             var48 += 15;
             var48 += 7;
-            if(Login.__cu_aw != 4) {
+            if(Login.loginIndex != 4) {
                var0.draw("Login: ", Login.__cu_y + 180 - 110, var48, 16777215, 0);
                var49 = 200;
                if(ReflectionCheck.clientPreferences.hideUsername) {
@@ -412,7 +412,7 @@ public class IndexCacheLoader {
          if(Client.gameState == 10 || Client.gameState == 11) {
             Login.__cu_o.__q_496(Login.__cu_y, 171);
             short var5;
-            if(Login.__cu_aw == 0) {
+            if(Login.loginIndex == 0) {
                var47 = 251;
                var0.drawCentered("Welcome to RuneScape", Login.__cu_y + 180, var47, 16776960, 0);
                var48 = var47 + 30;
@@ -423,7 +423,7 @@ public class IndexCacheLoader {
                var24 = Login.__cu_y + 180 + 80;
                __bd_u.__q_496(var24 - 73, var5 - 20);
                var0.drawLines("Existing User", var24 - 73, var5 - 20, 144, 40, 16777215, 0, 1, 1, 0);
-            } else if(Login.__cu_aw == 1) {
+            } else if(Login.loginIndex == 1) {
                var0.drawCentered(Login.Login_response0, Login.__cu_y + 180, 201, 16776960, 0);
                var47 = 236;
                var0.drawCentered(Login.Login_response1, Login.__cu_y + 180, var47, 16777215, 0);
@@ -439,7 +439,7 @@ public class IndexCacheLoader {
                var24 = Login.__cu_y + 180 + 80;
                __bd_u.__q_496(var24 - 73, var5 - 20);
                var0.drawCentered("Cancel", var24, var5 + 5, 16777215, 0);
-            } else if(Login.__cu_aw == 2) {
+            } else if(Login.loginIndex == 2) {
                var47 = 201;
                var0.drawCentered(Login.Login_response1, Varps.__hv_h, var47, 16776960, 0);
                var48 = var47 + 15;
@@ -504,7 +504,7 @@ public class IndexCacheLoader {
                TilePaint.__eb_ah = new Bounds(Varps.__hv_h, var47, var1.stringWidth(AttackOption.__cj_ay), 11);
                UrlRequester.__eo_ak = new Bounds(Varps.__hv_h, var47, var1.stringWidth("Still having trouble logging in?"), 11);
                var1.drawCentered(AttackOption.__cj_ay, Varps.__hv_h, var47, 16777215, 0);
-            } else if(Login.__cu_aw == 3) {
+            } else if(Login.loginIndex == 3) {
                var47 = 201;
                var0.drawCentered("Invalid credentials.", Login.__cu_y + 180, var47, 16776960, 0);
                var48 = var47 + 20;
@@ -522,7 +522,7 @@ public class IndexCacheLoader {
                var2.drawCentered("Forgotten password?", var24, var5 + 5, 16777215, 0);
             } else {
                String var26;
-               if(Login.__cu_aw == 4) {
+               if(Login.loginIndex == 4) {
                   var0.drawCentered("Authenticator", Login.__cu_y + 180, 201, 16776960, 0);
                   var47 = 236;
                   var0.drawCentered(Login.Login_response1, Login.__cu_y + 180, var47, 16777215, 0);
@@ -532,7 +532,7 @@ public class IndexCacheLoader {
                   var0.drawCentered(Login.Login_response3, Login.__cu_y + 180, var48, 16777215, 0);
                   var48 += 15;
                   var26 = "PIN: ";
-                  var7 = Login.__cu_ai;
+                  var7 = Login.otp;
                   var25 = class168.method3450('*', var7.length());
                   var0.draw(var26 + var25 + (Client.cycle % 40 < 20?BufferedFile.colorStartTag(16776960) + "|":""), Login.__cu_y + 180 - 108, var48, 16777215, 0);
                   var48 -= 8;
@@ -560,7 +560,7 @@ public class IndexCacheLoader {
                   var1.drawCentered("<u=ff>Can\'t Log In?</u>", Login.__cu_y + 180, var12 + 36, 255, 0);
                } else {
                   short var50;
-                  if(Login.__cu_aw == 5) {
+                  if(Login.loginIndex == 5) {
                      var0.drawCentered("Forgotten your password?", Login.__cu_y + 180, 201, 16776960, 0);
                      var47 = 221;
                      var2.drawCentered(Login.Login_response1, Login.__cu_y + 180, var47, 16776960, 0);
@@ -595,7 +595,7 @@ public class IndexCacheLoader {
                      var0.drawCentered("Back", var27, var50 + 5, 16777215, 0);
                      var50 = 356;
                      var1.drawCentered("Still having trouble logging in?", Varps.__hv_h, var50, 268435455, 0);
-                  } else if(Login.__cu_aw == 6) {
+                  } else if(Login.loginIndex == 6) {
                      var47 = 201;
                      var0.drawCentered(Login.Login_response1, Login.__cu_y + 180, var47, 16776960, 0);
                      var48 = var47 + 15;
@@ -607,7 +607,7 @@ public class IndexCacheLoader {
                      var5 = 321;
                      __bd_u.__q_496(var24 - 73, var5 - 20);
                      var0.drawCentered("Back", var24, var5 + 5, 16777215, 0);
-                  } else if(Login.__cu_aw == 7) {
+                  } else if(Login.loginIndex == 7) {
                      var47 = 216;
                      var0.drawCentered("Your date of birth isn\'t set.", Login.__cu_y + 180, var47, 16776960, 0);
                      var48 = var47 + 15;
@@ -622,7 +622,7 @@ public class IndexCacheLoader {
                      var24 = Login.__cu_y + 180 + 80;
                      __bd_u.__q_496(var24 - 73, var5 - 20);
                      var0.drawCentered("Back", var24, var5 + 5, 16777215, 0);
-                  } else if(Login.__cu_aw == 8) {
+                  } else if(Login.loginIndex == 8) {
                      var47 = 216;
                      var0.drawCentered("Sorry, but your account is not eligible to play.", Login.__cu_y + 180, var47, 16776960, 0);
                      var48 = var47 + 15;
@@ -637,7 +637,7 @@ public class IndexCacheLoader {
                      var24 = Login.__cu_y + 180 + 80;
                      __bd_u.__q_496(var24 - 73, var5 - 20);
                      var0.drawCentered("Back", var24, var5 + 5, 16777215, 0);
-                  } else if(Login.__cu_aw == 12) {
+                  } else if(Login.loginIndex == 12) {
                      var47 = 201;
                      String var4 = "";
                      var26 = "";

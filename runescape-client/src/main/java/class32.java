@@ -78,7 +78,7 @@ public class class32 {
       garbageValue = "972977798"
    )
    static void method578(int var0) {
-      Login.__cu_aw = 12;
+      Login.loginIndex = 12;
       Login.__cu_aj = var0;
    }
 

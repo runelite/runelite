@@ -202,8 +202,8 @@ public class ParallelExecutorMapping
 	/**
 	 * makes the map one to one based on the weight of each mapping. If a
 	 * mapping is mapped from the same object multiple places, the highest
-	 * is used, and the other mapping are not considered when deducing the
-	 * mapping of the other objects.
+	 * is used, and the other mappings are not considered when deducing the
+	 * mappings of the other objects.
 	 */
 	public void reduce()
 	{

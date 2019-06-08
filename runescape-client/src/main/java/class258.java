@@ -17,7 +17,7 @@ public class class258 {
       var0.subWidth = VarbitDefinition.indexedSpriteWidths[0];
       var0.subHeight = SecureRandomCallable.indexedSpriteHeights[0];
       int var1 = var0.subHeight * var0.subWidth;
-      byte[] var2 = class328.Sprite[0];
+      byte[] var2 = class328.spritePixels[0];
       var0.pixels = new int[var1];
 
       for(int var3 = 0; var3 < var1; ++var3) {
@@ -29,7 +29,7 @@ public class class258 {
       VarbitDefinition.indexedSpriteWidths = null;
       SecureRandomCallable.indexedSpriteHeights = null;
       class328.indexedSpritePalette = null;
-      class328.Sprite = null;
+      class328.spritePixels = null;
       return var0;
    }
 

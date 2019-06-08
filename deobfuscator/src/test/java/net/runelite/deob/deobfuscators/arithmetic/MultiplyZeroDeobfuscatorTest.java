@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,49 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mapping;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package net.runelite.deob.deobfuscators.arithmetic;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(
-	{
-		ElementType.METHOD, ElementType.CONSTRUCTOR
-	})
-@Documented
-public @interface Hook
+import java.io.File;
+import java.io.IOException;
+import net.runelite.asm.ClassGroup;
+import net.runelite.deob.DeobTestProperties;
+import net.runelite.deob.TemporyFolderLocation;
+import net.runelite.deob.util.JarUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+public class MultiplyZeroDeobfuscatorTest
 {
-	String value();
+	@Rule
+	public DeobTestProperties properties = new DeobTestProperties();
 
-	boolean end() default false;
+	@Rule
+	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
+
+	private ClassGroup group;
+
+	@Before
+	public void before() throws IOException
+	{
+		group = JarUtil.loadJar(new File(properties.getVanillaClient()));
+	}
+
+	@After
+	public void after() throws IOException
+	{
+		JarUtil.saveJar(group, folder.newFile());
+	}
+
+	@Test
+	@Ignore
+	public void testRun()
+	{
+		MultiplyZeroDeobfuscator m = new MultiplyZeroDeobfuscator();
+		m.run(group);
+	}
 }

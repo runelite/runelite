@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.mapping;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
+package net.runelite.asm.annotations;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
-/**
- * Inject a method to create and construct an object.
- * The object type is inferred from the return value
- * of the method.
- * 
- * {@code
- * {@literal @}Construct
- * RSIndexedImage createIndexedImage();
- * }
- * 
- * @author Adam
- */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-@Documented
-public @interface Construct
+public @interface MyAnnotation
 {
-
+	String value();
 }

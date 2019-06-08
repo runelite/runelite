@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.deob.deobfuscators.menuaction;
 
-package net.runelite.asm.attributes.code.instructions;
+import java.io.File;
+import java.io.IOException;
+import net.runelite.asm.ClassGroup;
+import net.runelite.deob.DeobTestProperties;
+import net.runelite.deob.TemporyFolderLocation;
+import net.runelite.deob.util.JarUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
 
-import net.runelite.asm.Type;
-import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.attributes.code.InstructionType;
-import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.execution.Frame;
-import net.runelite.asm.execution.InstructionContext;
-import net.runelite.asm.execution.Stack;
-import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Value;
-
-public class IConstZero extends Instruction
+public class MenuActionDeobfuscatorTest
 {
-	public IConstZero(Instructions instructions, InstructionType type)
+	@Rule
+	public DeobTestProperties properties = new DeobTestProperties();
+
+	@Rule
+	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
+
+	private ClassGroup group;
+
+	@Before
+	public void before() throws IOException
 	{
-		super(instructions, type);
+		group = JarUtil.loadJar(new File(properties.getRsClient()));
 	}
 
-	public IConstZero(Instructions instructions)
+	@After
+	public void after() throws IOException
 	{
-		super(instructions, InstructionType.ICONST_0);
+		JarUtil.saveJar(group, folder.newFile());
 	}
 
-	@Override
-	public InstructionContext execute(Frame frame)
+	@Test
+	@Ignore
+	public void testRun()
 	{
-		InstructionContext ins = new InstructionContext(this, frame);
-		Stack stack = frame.getStack();
-		
-		StackContext ctx = new StackContext(ins, Type.INT, new Value(0));
-		stack.push(ctx);
-		
-		ins.push(ctx);
-		
-		return ins;
+		new MenuActionDeobfuscator().run(group);
 	}
 }

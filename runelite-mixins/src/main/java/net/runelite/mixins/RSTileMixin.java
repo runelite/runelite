@@ -135,7 +135,7 @@ public abstract class RSTileMixin implements RSTile
 			wallObjectSpawned.setWallObject(current);
 			client.getCallbacks().post(wallObjectSpawned);
 		}
-		else if (current != null && previous != null)
+		else if (current != null)
 		{
 			WallObjectChanged wallObjectChanged = new WallObjectChanged();
 			wallObjectChanged.setTile(this);
@@ -168,7 +168,7 @@ public abstract class RSTileMixin implements RSTile
 			decorativeObjectSpawned.setDecorativeObject(current);
 			client.getCallbacks().post(decorativeObjectSpawned);
 		}
-		else if (current != null && previous != null)
+		else if (current != null)
 		{
 			DecorativeObjectChanged decorativeObjectChanged = new DecorativeObjectChanged();
 			decorativeObjectChanged.setTile(this);
@@ -201,7 +201,7 @@ public abstract class RSTileMixin implements RSTile
 			groundObjectSpawned.setGroundObject(current);
 			client.getCallbacks().post(groundObjectSpawned);
 		}
-		else if (current != null && previous != null)
+		else if (current != null)
 		{
 			GroundObjectChanged groundObjectChanged = new GroundObjectChanged();
 			groundObjectChanged.setTile(this);
@@ -263,7 +263,7 @@ public abstract class RSTileMixin implements RSTile
 				gameObjectSpawned.setGameObject(current);
 				client.getCallbacks().post(gameObjectSpawned);
 			}
-			else if (current != null && previous != null)
+			else if (current != null)
 			{
 				GameObjectChanged gameObjectsChanged = new GameObjectChanged();
 				gameObjectsChanged.setTile(this);

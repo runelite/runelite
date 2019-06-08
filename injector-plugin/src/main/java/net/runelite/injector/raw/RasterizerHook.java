@@ -11,6 +11,8 @@ import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.asm.attributes.code.instructions.ALoad;
 import net.runelite.asm.attributes.code.instructions.ArrayStore;
 import net.runelite.asm.attributes.code.instructions.GetField;
 import net.runelite.asm.attributes.code.instructions.GetStatic;
@@ -44,6 +46,8 @@ public class RasterizerHook
 	private static final String r3d_vert = "Rasterizer3D_vertAlpha";
 	private static final String r3d_horiz = "Rasterizer3D_horizAlpha";
 	private static final String r3d_field = "Rasterizer3D_alpha";
+	private static final String sprite_alpha1 = "Sprite_alpha1";
+	private static final String sprite_alpha2 = "Sprite_alpha2";
 
 	private static final String font = "AbstractFont_placeGlyph";
 	private static final String rast3D = "Rasterizer3D_iDontKnow";
@@ -71,14 +75,13 @@ public class RasterizerHook
 	public void inject() throws InjectionException
 	{
 		runDrawAlpha();
+
 		logger.info("Injected {} drawAlpha's", count);
+		assert count == 35 : "Either too many or not enough drawAlpha's were injected";
+
 		count = 0;
 
 		runVars();
-
-		{
-		//	throw new InjectionException("Not all variable alpha thingshits were found");
-		}
 
 		run();
 	}
@@ -92,6 +95,8 @@ public class RasterizerHook
 		runAlpha(line_alpha, 1, 4);
 		runAlpha(line_alpha2, 1, 4);
 		runAlpha(more_alpha, 1, 5);
+		runAlpha(sprite_alpha1, 1, 9, 0);
+		runAlpha(sprite_alpha2, 1, 12, 0);
 	}
 
 	private void runR3DAlpha(String methodName, int req, String fieldName) throws InjectionException
@@ -136,15 +141,26 @@ public class RasterizerHook
 
 	private void runAlpha(String methodName, int req, int extraArg) throws InjectionException
 	{
+		runAlpha(methodName, req, extraArg, -1);
+	}
+
+	private void runAlpha(String methodName, int req, int extraArg, int varIndex) throws InjectionException
+	{
 		final net.runelite.asm.pool.Field pixels = findDeobField("Rasterizer2D_pixels").getPoolField();
 		Method meth = findStaticMethod(methodName);
-		Instructions ins = meth.getCode().getInstructions();
+		if (meth == null)
+		{
+			throw new InjectionException(methodName + " couldnt be found");
+		}
+
+		Code code = meth.getCode();
+		Instructions ins = code.getInstructions();
 		int added = 0;
 
 		List<Integer> indices = new ArrayList<>();
 		for (Instruction i : ins.getInstructions())
 		{
-			if (!(i instanceof IALoad) && !(i instanceof GetField))
+			if (!(i instanceof IALoad) && !(i instanceof GetField) && !(i instanceof ALoad))
 			{
 				continue;
 			}
@@ -155,10 +171,15 @@ public class RasterizerHook
 				{
 					indices.add(ins.getInstructions().indexOf(i));
 				}
-				continue;
 			}
-
-			indices.add(ins.getInstructions().indexOf(i));
+			else if ((i instanceof ALoad) && varIndex >= 0 && ((LVTInstruction) i).getVariableIndex() == varIndex)
+			{
+				indices.add(ins.getInstructions().indexOf(i));
+			}
+			else if (varIndex == -1)
+			{
+				indices.add(ins.getInstructions().indexOf(i));
+			}
 		}
 
 		if (indices.isEmpty())
@@ -273,7 +294,7 @@ public class RasterizerHook
 			Instructions ins = i.getInstructions();
 			Code code = ins.getCode();
 			Method method = code.getMethod();
-			logger.debug(i.toString());
+			//logger.debug(i.toString());
 
 			if (!(i instanceof IAStore))
 			{

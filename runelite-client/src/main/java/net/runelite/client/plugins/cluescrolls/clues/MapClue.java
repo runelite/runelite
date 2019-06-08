@@ -30,14 +30,12 @@ import java.awt.Graphics2D;
 import java.util.Set;
 import lombok.Getter;
 import static net.runelite.api.ItemID.*;
-import net.runelite.api.NPCDefinition;
+import net.runelite.api.ObjectDefinition;
 import static net.runelite.api.ObjectID.CRATE_18506;
 import static net.runelite.api.ObjectID.CRATE_2620;
 import static net.runelite.api.ObjectID.CRATE_354;
 import static net.runelite.api.ObjectID.CRATE_357;
 import static net.runelite.api.ObjectID.CRATE_6616;
-
-import net.runelite.api.ObjectDefinition;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;

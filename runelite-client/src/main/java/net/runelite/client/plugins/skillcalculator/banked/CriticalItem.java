@@ -296,7 +296,7 @@ public enum CriticalItem
 	private boolean ignoreBonus;
 
 	@Getter
-	private ItemDefinition composition;
+	private ItemDefinition definition;
 
 	CriticalItem(int itemID, String category, Skill skill, int linkedItem)
 	{
@@ -304,7 +304,7 @@ public enum CriticalItem
 		this.category = category;
 		this.skill = skill;
 		this.linkedItemId = linkedItem;
-		this.composition = null;
+		this.definition = null;
 		this.ignoreBonus = false;
 	}
 
@@ -405,7 +405,7 @@ public enum CriticalItem
 	{
 		for (CriticalItem i : values())
 		{
-			i.composition = m.getItemDefinition(i.getItemID());
+			i.definition = m.getItemDefinition(i.getItemID());
 		}
 	}
 

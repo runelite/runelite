@@ -240,11 +240,11 @@ class InstanceMapOverlay extends Overlay
 		mapImage = null;
 	}
 
-	private static BufferedImage minimapToBufferedImage(Sprite Sprite)
+	private static BufferedImage minimapToBufferedImage(Sprite spritePixels)
 	{
-		int width = Sprite.getWidth();
-		int height = Sprite.getHeight();
-		int[] pixels = Sprite.getPixels();
+		int width = spritePixels.getWidth();
+		int height = spritePixels.getHeight();
+		int[] pixels = spritePixels.getPixels();
 		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		img.setRGB(0, 0, width, height, pixels, 0, width);
 		// 24624 / 512 and 24624 % 512 are both 48

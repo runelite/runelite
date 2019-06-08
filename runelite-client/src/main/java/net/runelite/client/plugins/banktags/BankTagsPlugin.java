@@ -344,8 +344,8 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 			}
 
 			int itemId = item.getId();
-			ItemDefinition ItemDefinition = itemManager.getItemDefinition(itemId);
-			String name = ItemDefinition.getName();
+			ItemDefinition itemDefinition = itemManager.getItemDefinition(itemId);
+			String name = itemDefinition.getName();
 
 			// Get both tags and vartags and append * to end of vartags name
 			Collection<String> tags = tagManager.getTags(itemId, false);

@@ -643,13 +643,13 @@ public class ServerPacket {
       var0.subWidth = VarbitDefinition.indexedSpriteWidths[0];
       var0.subHeight = SecureRandomCallable.indexedSpriteHeights[0];
       var0.palette = class328.indexedSpritePalette;
-      var0.pixels = class328.Sprite[0];
+      var0.pixels = class328.spritePixels[0];
       class328.indexedSpriteOffsetXs = null;
       class328.indexedSpriteOffsetYs = null;
       VarbitDefinition.indexedSpriteWidths = null;
       SecureRandomCallable.indexedSpriteHeights = null;
       class328.indexedSpritePalette = null;
-      class328.Sprite = null;
+      class328.spritePixels = null;
       return var0;
    }
 

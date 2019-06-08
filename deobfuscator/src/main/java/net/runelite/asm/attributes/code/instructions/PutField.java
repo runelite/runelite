@@ -255,7 +255,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 		Instruction i = value.getPushed().getInstruction();
 
 		// sometimes ConstantValue field attributes and inlined into the constructor,
-		// which are all constants, so we ignore those mapping here
+		// which are all constants, so we ignore those mappings here
 		if (thisIc.getFrame().getMethod().getName().equals("<init>"))
 		{
 			if (i instanceof PushConstantInstruction || i instanceof AConstNull)

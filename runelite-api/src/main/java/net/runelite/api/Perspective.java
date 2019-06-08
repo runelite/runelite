@@ -24,14 +24,7 @@
  */
 package net.runelite.api;
 
-import net.runelite.api.config.Constants;
-import static net.runelite.api.config.Constants.TILE_FLAG_BRIDGE;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.model.Jarvis;
-import net.runelite.api.model.Triangle;
-import net.runelite.api.model.Vertex;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+import static net.runelite.api.Constants.TILE_FLAG_BRIDGE;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -44,7 +37,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.model.Jarvis;
+import net.runelite.api.model.Triangle;
+import net.runelite.api.model.Vertex;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 
 /**
  * A utility class containing methods to help with conversion between
@@ -557,7 +555,7 @@ public class Perspective
 
 		for (Triangle triangle : triangles)
 		{
-			Vertex _a = triangle.getA();
+			net.runelite.api.model.Vertex _a = triangle.getA();
 			Point a = localToCanvas(client,
 				point.getX() - _a.getX(),
 				point.getY() - _a.getZ(),

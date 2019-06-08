@@ -466,7 +466,7 @@ public class Inject
 		return null;
 	}
 
-	Field toObField(Field field)
+	public Field toObField(Field field)
 	{
 		String obfuscatedClassName = DeobAnnotations.getObfuscatedName(field.getClassFile().getAnnotations());
 		String obfuscatedFieldName = DeobAnnotations.getObfuscatedName(field.getAnnotations()); // obfuscated name of field
@@ -524,7 +524,7 @@ public class Inject
 		return Type.getType("L" + finalType.getName().replace('.', '/') + ";", type.getDimensions());
 	}
 
-	Type apiTypeToDeobfuscatedType(Type type) throws InjectionException
+	Type apiTypeToDeobfuscatedType(Type type)
 	{
 		if (type.isPrimitive())
 		{

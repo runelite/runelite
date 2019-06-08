@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,47 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.deob.deobfuscators.cfg;
 
-import lombok.Data;
-import net.runelite.api.Actor;
+import java.io.File;
+import java.io.IOException;
+import net.runelite.asm.ClassGroup;
+import net.runelite.deob.DeobTestProperties;
+import net.runelite.deob.TemporyFolderLocation;
+import net.runelite.deob.util.JarUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
-/**
- * An event where the graphic of an {@link Actor} has changed.
- * <p>
- * The graphic the player has changed to can be obtained using
- * {@link //Actor#getGraphic()}.
- * <p>
- * Examples of when this event may trigger include:
- * <ul>
- *     <li>Casting a magic spell</li>
- *     <li>Using a fairy ring</li>
- *     <li>Breaking a teleport tab</li>
- * </ul>
- *
- * @see net.runelite.api.GraphicID
- */
-@Data
-public class GraphicChanged
+public class ControlFlowDeobfuscatorTest
 {
-	/**
-	 * The actor that has had their graphic changed.
-	 */
-	private Actor actor;
+	@Rule
+	public DeobTestProperties properties = new DeobTestProperties();
+
+	@Rule
+	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
+
+	private ClassGroup group;
+
+	@Before
+	public void before() throws IOException
+	{
+		group = JarUtil.loadJar(new File(properties.getVanillaClient()));
+	}
+
+	@After
+	public void after() throws IOException
+	{
+		JarUtil.saveJar(group, folder.newFile());
+	}
+
+	@Test
+	@Ignore
+	public void testRun() throws Exception
+	{
+		new ControlFlowDeobfuscator().run(group);
+	}
 }

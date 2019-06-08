@@ -195,8 +195,8 @@ public class EquipmentInspectorPlugin extends Plugin
 						int itemId = p.getPlayerAppearance().getEquipmentId(kitType);
 						if (itemId != -1)
 						{
-							ItemDefinition ItemDefinition = client.getItemDefinition(itemId);
-							playerEquipment.put(kitType, ItemDefinition);
+							ItemDefinition itemComposition = client.getItemDefinition(itemId);
+							playerEquipment.put(kitType, itemComposition);
 							int ItemPrice = itemManager.getItemPrice(itemId);
 							TotalPrice += ItemPrice;
 							if (ItemPrice > Prot1)

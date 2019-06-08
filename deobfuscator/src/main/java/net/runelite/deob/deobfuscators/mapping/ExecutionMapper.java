@@ -30,7 +30,7 @@ import net.runelite.asm.Method;
 
 public class ExecutionMapper
 {
-	// method1 maps to one of methods2, find out based on mapping
+	// method1 maps to one of methods2, find out based on mappings
 	
 	private Method method1;
 	private Collection<Method> methods2;

@@ -119,10 +119,10 @@ public class HighAlchemyOverlay extends WidgetItemOverlay
 	private int getNotedId(int id)
 	{
 		int noteID = id;
-		ItemDefinition ItemDefinition = itemManager.getItemDefinition(noteID);
-		if (ItemDefinition.getNote() != -1)
+		ItemDefinition itemComposition = itemManager.getItemDefinition(noteID);
+		if (itemComposition.getNote() != -1)
 		{
-			noteID = ItemDefinition.getLinkedNoteId();
+			noteID = itemComposition.getLinkedNoteId();
 		}
 		return noteID;
 	}

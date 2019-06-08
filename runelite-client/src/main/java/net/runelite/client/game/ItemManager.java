@@ -196,7 +196,7 @@ public class ItemManager
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
-	private final LoadingCache<Integer, ItemDefinition> ItemDefinitions;
+	private final LoadingCache<Integer, ItemDefinition> itemDefinitions;
 	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
 
 	// Worn items with weight reducing property have a different worn and inventory ItemID
@@ -284,7 +284,7 @@ public class ItemManager
 				}
 			});
 
-		ItemDefinitions = CacheBuilder.newBuilder()
+		itemDefinitions = CacheBuilder.newBuilder()
 			.maximumSize(1024L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
 			.build(new CacheLoader<Integer, ItemDefinition>()
@@ -356,14 +356,14 @@ public class ItemManager
 	{
 		if (event.getGameState() == GameState.HOPPING || event.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			ItemDefinitions.invalidateAll();
+			itemDefinitions.invalidateAll();
 		}
 	}
 
 	@Subscribe
 	public void onPostItemDefinition(PostItemDefinition event)
 	{
-		ItemDefinitions.put(event.getItemDefinition().getId(), event.getItemDefinition());
+		itemDefinitions.put(event.getItemDefinition().getId(), event.getItemDefinition());
 	}
 
 	/**
@@ -373,7 +373,7 @@ public class ItemManager
 	 */
 	public void invalidateItemDefinitionCache()
 	{
-		ItemDefinitions.invalidateAll();
+		itemDefinitions.invalidateAll();
 	}
 
 	/**
@@ -449,9 +449,9 @@ public class ItemManager
 	@Nullable
 	public ItemStats getItemStats(int itemId, boolean allowNote)
 	{
-		ItemDefinition ItemDefinition = getItemDefinition(itemId);
+		ItemDefinition itemDefinition = getItemDefinition(itemId);
 
-		if (ItemDefinition == null || ItemDefinition.getName() == null || (!allowNote && ItemDefinition.getNote() != -1))
+		if (itemDefinition == null || itemDefinition.getName() == null || (!allowNote && itemDefinition.getNote() != -1))
 		{
 			return null;
 		}
@@ -490,7 +490,7 @@ public class ItemManager
 	public ItemDefinition getItemDefinition(int itemId)
 	{
 		assert client.isClientThread() : "getItemDefinition must be called on client thread";
-		return ItemDefinitions.getUnchecked(itemId);
+		return itemDefinitions.getUnchecked(itemId);
 	}
 
 	/**
@@ -498,16 +498,16 @@ public class ItemManager
 	 */
 	public int canonicalize(int itemID)
 	{
-		ItemDefinition ItemDefinition = getItemDefinition(itemID);
+		ItemDefinition itemDefinition = getItemDefinition(itemID);
 
-		if (ItemDefinition.getNote() != -1)
+		if (itemDefinition.getNote() != -1)
 		{
-			return ItemDefinition.getLinkedNoteId();
+			return itemDefinition.getLinkedNoteId();
 		}
 
-		if (ItemDefinition.getPlaceholderTemplateId() != -1)
+		if (itemDefinition.getPlaceholderTemplateId() != -1)
 		{
-			return ItemDefinition.getPlaceholderId();
+			return itemDefinition.getPlaceholderId();
 		}
 
 		return WORN_ITEMS.getOrDefault(itemID, itemID);

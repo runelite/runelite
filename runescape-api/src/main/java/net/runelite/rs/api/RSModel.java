@@ -24,9 +24,8 @@
  */
 package net.runelite.rs.api;
 
-import java.awt.Polygon;
-
 import net.runelite.api.Model;
+import java.awt.Polygon;
 import net.runelite.mapping.Import;
 
 public interface RSModel extends RSEntity, Model
@@ -158,8 +157,7 @@ public interface RSModel extends RSEntity, Model
 	@Override
 	int getXYZMag();
 
-	void interpolateFrames(RSFrames frames, int frameId, RSFrames nextFrames, int nextFrameId, int interval,
-                           int intervalCount);
+	void interpolateFrames(RSFrames frames, int frameId, RSFrames nextFrames, int nextFrameId, int interval, int intervalCount);
 
 	/**
 	 * Compute the convex hull of this model

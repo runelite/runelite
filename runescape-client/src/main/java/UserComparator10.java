@@ -37,7 +37,7 @@ public class UserComparator10 extends AbstractUserComparator {
       garbageValue = "653874364"
    )
    static final void method3352(boolean var0) {
-      class13.method163();
+      class13.playPcmPlayers();
       ++Client.packetWriter.__d;
       if(Client.packetWriter.__d >= 50 || var0) {
          Client.packetWriter.__d = 0;

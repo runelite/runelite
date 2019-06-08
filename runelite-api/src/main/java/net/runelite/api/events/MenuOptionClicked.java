@@ -24,8 +24,8 @@
  */
 package net.runelite.api.events;
 
-import net.runelite.api.MenuAction;
 import lombok.Data;
+import net.runelite.api.MenuAction;
 
 /**
  * An event where a menu option has been clicked.
@@ -64,7 +64,7 @@ public class MenuOptionClicked
 	/**
 	 * The ID of the widget where the menu was clicked.
 	 *
-	 * @see api.WidgetID
+	 * @see net.runelite.api.WidgetID
 	 */
 	private int widgetId;
 	/**

@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.npcunaggroarea;
 
-import api.geometry.Geometry;
+import net.runelite.api.geometry.Geometry;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;

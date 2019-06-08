@@ -31,10 +31,8 @@ import java.util.Set;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import static net.runelite.api.NullObjectID.NULL_1293;
-import net.runelite.api.NPCDefinition;
-import static net.runelite.api.ObjectID.*;
-
 import net.runelite.api.ObjectDefinition;
+import static net.runelite.api.ObjectID.*;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;

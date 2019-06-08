@@ -24,13 +24,13 @@
  */
 package net.runelite.api;
 
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldArea;
-import net.runelite.api.coords.WorldPoint;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
+import net.runelite.api.coords.WorldPoint;
 
 /**
  * Represents a RuneScape actor/entity.
@@ -208,7 +208,7 @@ public interface Actor extends Renderable
 	 * Gets the convex hull of the actors model.
 	 *
 	 * @return the convex hull
-	 * @see //net.runelite.api.model.Jarvis
+	 * @see net.runelite.api.model.Jarvis
 	 */
 	Polygon getConvexHull();
 

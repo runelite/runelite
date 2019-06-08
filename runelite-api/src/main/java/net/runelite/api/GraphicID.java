@@ -27,6 +27,7 @@ package net.runelite.api;
 
 public class GraphicID
 {
+	public static final int WINE_MAKE = 47;
 	public static final int SPLASH = 85;
 	public static final int GREY_BUBBLE_TELEPORT = 86;
 	public static final int TELEPORT = 111;

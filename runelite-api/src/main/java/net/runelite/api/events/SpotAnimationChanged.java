@@ -1,7 +1,7 @@
 package net.runelite.api.events;
 
-import net.runelite.api.Actor;
 import lombok.Data;
+import net.runelite.api.Actor;
 
 /**
  * An event where the graphic of an {@link Actor} has changed.
@@ -16,7 +16,7 @@ import lombok.Data;
  *     <li>Breaking a teleport tab</li>
  * </ul>
  *
- * @see api.GraphicID
+ * @see net.runelite.api.GraphicID
  */
 @Data
 public class SpotAnimationChanged

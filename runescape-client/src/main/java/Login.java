@@ -72,8 +72,8 @@ public class Login {
    @ObfuscatedGetter(
       intValue = 1861681835
    )
-   @Export("__cu_aw")
-   static int __cu_aw;
+   @Export("loginIndex")
+   static int loginIndex;
    @ObfuscatedName("al")
    @Export("Login_response0")
    static String Login_response0;
@@ -99,8 +99,8 @@ public class Login {
    @Export("__cu_ax")
    static boolean __cu_ax;
    @ObfuscatedName("ai")
-   @Export("__cu_ai")
-   static String __cu_ai;
+   @Export("otp")
+   static String otp;
    @ObfuscatedName("ba")
    @Export("__cu_ba")
    static boolean __cu_ba;
@@ -157,7 +157,7 @@ public class Login {
       Login_loadingText = "";
       __cu_aj = -1;
       __cu_ac = 1;
-      __cu_aw = 0;
+      loginIndex = 0;
       Login_response0 = "";
       Login_response1 = "";
       Login_response2 = "";

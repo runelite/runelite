@@ -141,8 +141,8 @@
 		<module>runelite-script-assembler-plugin</module>
 		<module>runescape-api</module>
 		<module>runescape-client</module>
-		<module>injected-client</module>
 		<module>injector-plugin</module>
+		<module>injected-client</module>
 		<module>runelite-plugin-archetype</module>
 		<module>http-api</module>
 		<module>http-service</module>

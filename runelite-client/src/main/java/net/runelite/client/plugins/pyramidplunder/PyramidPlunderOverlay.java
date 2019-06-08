@@ -31,7 +31,6 @@ import java.awt.geom.Area;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.NPCDefinition;
 import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;

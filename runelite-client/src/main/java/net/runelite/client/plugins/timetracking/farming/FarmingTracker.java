@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
-import api.vars.Autoweed;
+import net.runelite.api.vars.Autoweed;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.time.Instant;

@@ -1,6 +1,6 @@
 package net.runelite.mixins;
 
-import api.overlay.OverlayIndex;
+import net.runelite.api.overlay.OverlayIndex;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.io.BaseEncoding;

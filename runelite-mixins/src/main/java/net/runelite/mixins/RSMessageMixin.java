@@ -5,6 +5,7 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
+import net.runelite.rs.api.RSClanChat;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSMessage;
 
@@ -69,5 +70,14 @@ public abstract class RSMessageMixin implements RSMessage
 		// Clear the runelite formatted message then.
 		runeLiteFormatMessage = null;
 		rl$timestamp = (int) (System.currentTimeMillis() / 1000L);
+	}
+
+	@Inject
+	@Override
+	public boolean isFromClanMate()
+	{
+		RSClanChat cc = client.getClanMemberManager();
+
+		return cc != null && cc.isMember(this.getSenderUsername());
 	}
 }

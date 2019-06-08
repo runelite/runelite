@@ -25,7 +25,7 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
-import api.vars.AccountType;
+import net.runelite.api.vars.AccountType;
 import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.List;

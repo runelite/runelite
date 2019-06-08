@@ -20,7 +20,7 @@ public interface RSWorldMap extends RenderOverview
 
 	@Import("worldMapTargetY")
 	int getWorldMapTargetY();
-	//TODO fix this
+
 	//@Import("worldMapDisplayWidth")
 	//int getWorldMapDisplayWidth();
 //Both unused

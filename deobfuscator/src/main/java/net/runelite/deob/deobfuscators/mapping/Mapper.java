@@ -61,7 +61,7 @@ public class Mapper
 
 		finalm.reduce();
 		
-		// map unexecuted methods (their mapping have not yet been merged)
+		// map unexecuted methods (their mappings have not yet been merged)
 		while (mapUnexecutedMethods(finalm));
 
 		finalm.buildClasses();
@@ -149,7 +149,7 @@ public class Mapper
 
 	private void mapMemberMethods(ParallelExecutorMapping mapping)
 	{
-		// pass #2 at method mapping, can use class file mapping learned
+		// pass #2 at method mapping, can use class file mappings learned
 
 		for (ClassFile cf : source.getClasses())
 		{
@@ -201,7 +201,7 @@ public class Mapper
 
 	/**
 	 * execute and map already mapped methods that have not yet been "executed",
-	 * and apply their mapping
+	 * and apply their mappings
 	 * @param mapping
 	 * @return
 	 */
