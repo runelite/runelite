@@ -161,7 +161,12 @@ class WorldSwitcherPanel extends PluginPanel
 			switch (orderIndex)
 			{
 				case PING:
-					return getCompareValue(r1, r2, WorldTableRow::getPing);
+					// Leave worlds with unknown ping at the bottom
+					return getCompareValue(r1, r2, row ->
+					{
+						int ping = row.getPing();
+						return ping > 0 ? ping : null;
+					});
 				case WORLD:
 					return getCompareValue(r1, r2, row -> row.getWorld().getId());
 				case PLAYERS:
