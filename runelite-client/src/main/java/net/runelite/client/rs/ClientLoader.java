@@ -143,7 +143,7 @@ public class ClientLoader
 
 			if (updateCheckMode == CUSTOM)
 			{
-				URL url = new URL("https://raw.githubusercontent.com/runelite-extended/maven-repo/master/artifacts/injected-client.jar");
+				URL url = new URL("https://raw.githubusercontent.com/runelite-extended/maven-repo/master/live/injected-client.jar");
 				ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
 				File LOCAL_INJECTED_CLIENT = new File("./injected-client/target/injected-client-" + RuneLiteAPI.getVersion() + ".jar");
 				File INJECTED_CLIENT = new File(RUNELITE_DIR + "/injected-client.jar");
