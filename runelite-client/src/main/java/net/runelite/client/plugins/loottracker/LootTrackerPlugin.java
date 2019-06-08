@@ -27,11 +27,22 @@ package net.runelite.client.plugins.loottracker;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonStreamParser;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,12 +69,16 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.LocalPlayerDeath;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
@@ -87,6 +102,7 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.StackFormatter;
 import net.runelite.client.util.Text;
+import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
 import net.runelite.http.api.loottracker.LootRecordType;
@@ -115,6 +131,17 @@ public class LootTrackerPlugin extends Plugin
 		5179, "Brimstone Chest",
 		11573, "Crystal Chest"
 	);
+
+	// Player deaths
+	private static final String PLAYER_DEATH_MESSAGE = "Oh dear, you are dead!";
+	private static final File LOOT_RECORDS_FILE = new File(RuneLite.RUNELITE_DIR, "lootRecords.json");
+	private static final Set<Integer> RESPAWN_REGIONS = ImmutableSet.of(
+		12850, // Lumbridge
+		11828, // Falador
+		12342, // Edgeville
+		11062 // Camelot
+	);
+	private boolean pvpDeath = false;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -151,8 +178,12 @@ public class LootTrackerPlugin extends Plugin
 
 	private Multiset<Integer> inventorySnapshot;
 
+
 	@Getter(AccessLevel.PACKAGE)
 	private LootTrackerClient lootTrackerClient;
+	private BufferedReader bufferedReader;
+	private JsonStreamParser jsonStreamParser;
+	private Collection<LootRecord> lootRecords = new ArrayList<>();
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -210,6 +241,16 @@ public class LootTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onLocalPlayerDeath(LocalPlayerDeath event)
+	{
+		if (client.getVar(Varbits.IN_WILDERNESS) == 1 || WorldType.isPvpWorld(client.getWorldType()))
+		{
+			deathInventorySnapshot();
+			pvpDeath = true;
+		}
+	}
+
+	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("loottracker"))
@@ -238,9 +279,10 @@ public class LootTrackerPlugin extends Plugin
 		clientToolbar.addNavigation(navButton);
 
 		AccountSession accountSession = sessionManager.getAccountSession();
-		if (accountSession != null)
+		LOOT_RECORDS_FILE.createNewFile();
+		bufferedReader = Files.newBufferedReader(LOOT_RECORDS_FILE.toPath());
+		if (accountSession != null || config.localPersistence())
 		{
-			lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
 
 			clientThread.invokeLater(() ->
 			{
@@ -253,28 +295,41 @@ public class LootTrackerPlugin extends Plugin
 
 				executor.submit(() ->
 				{
-					Collection<LootRecord> lootRecords;
 
-					if (!config.syncPanel())
+					if (config.syncPanel() && lootTrackerClient != null)
 					{
-						return;
+						lootTrackerClient = new LootTrackerClient(accountSession.getUuid());
+						try
+						{
+							lootRecords = lootTrackerClient.get();
+						}
+						catch (IOException e)
+						{
+							log.debug("Unable to look up loot", e);
+							return;
+						}
+						log.debug("Loaded {} remote data entries", lootRecords.size());
 					}
 
-					try
+					if (config.localPersistence() )
 					{
-						lootRecords = lootTrackerClient.get();
-					}
-					catch (IOException e)
-					{
-						log.debug("Unable to look up loot", e);
-						return;
+						try
+						{
+							lootRecords.addAll(RuneLiteAPI.GSON.fromJson(new FileReader(LOOT_RECORDS_FILE),
+								new TypeToken<ArrayList<LootRecord>>()
+								{ }.getType()));
+						}
+						catch (IOException e)
+						{
+							e.printStackTrace();
+						}
 					}
 
-					log.debug("Loaded {} data entries", lootRecords.size());
 
+					Collection<LootRecord> finalLootRecords = lootRecords;
 					clientThread.invokeLater(() ->
 					{
-						Collection<LootTrackerRecord> records = convertToLootTrackerRecord(lootRecords);
+						Collection<LootTrackerRecord> records = convertToLootTrackerRecord(finalLootRecords);
 						SwingUtilities.invokeLater(() -> panel.addRecords(records));
 					});
 				});
@@ -299,11 +354,15 @@ public class LootTrackerPlugin extends Plugin
 		final int combat = npc.getCombatLevel();
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
+		LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items), Instant.now());
 
 		if (lootTrackerClient != null && config.saveLoot())
 		{
-			LootRecord lootRecord = new LootRecord(name, LootRecordType.NPC, toGameItems(items), Instant.now());
 			lootTrackerClient.submit(lootRecord);
+		}
+		if (config.localPersistence())
+		{
+			saveLocalLootRecord(lootRecord);
 		}
 	}
 
@@ -316,11 +375,15 @@ public class LootTrackerPlugin extends Plugin
 		final int combat = player.getCombatLevel();
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, combat, entries));
+		LootRecord lootRecord = new LootRecord(name, LootRecordType.PLAYER, toGameItems(items), Instant.now());
 
 		if (lootTrackerClient != null && config.saveLoot())
 		{
-			LootRecord lootRecord = new LootRecord(name, LootRecordType.PLAYER, toGameItems(items), Instant.now());
 			lootTrackerClient.submit(lootRecord);
+		}
+		if (config.localPersistence() && lootTrackerClient == null)
+		{
+			saveLocalLootRecord(lootRecord);
 		}
 	}
 
@@ -416,6 +479,34 @@ public class LootTrackerPlugin extends Plugin
 
 		final String message = event.getMessage();
 
+		if (message.equals(PLAYER_DEATH_MESSAGE))
+		{
+			ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+			if (inventorySnapshot != null)
+			{
+				Multiset<Integer> currentInventory = HashMultiset.create();
+				if (inventory != null)
+				{
+					Arrays.stream(client.getItemContainer(InventoryID.INVENTORY).getItems())
+						.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
+				}
+
+				final Multiset<Integer> diff = Multisets.difference(inventorySnapshot, currentInventory);
+
+				log.info(inventorySnapshot.toString());
+				log.info(currentInventory.toString());
+				log.info(diff.toString());
+
+				List<ItemStack> itemsLost = diff.entrySet().stream()
+					.map(e -> new ItemStack(e.getElement(), (-1 * e.getCount()), client.getLocalPlayer().getLocalLocation()))
+					.collect(Collectors.toList());
+
+				final LootTrackerItem[] entries = buildEntries(stack(itemsLost));
+				SwingUtilities.invokeLater(() -> panel.add("Death: " + client.getLocalPlayer().getName(),
+					client.getLocalPlayer().getCombatLevel(), entries));
+			}
+		}
+
 		if (message.equals(CHEST_LOOTED_MESSAGE))
 		{
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
@@ -470,6 +561,54 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
+		final ItemContainer itemContainer = event.getItemContainer();
+
+		if (pvpDeath && RESPAWN_REGIONS.contains(client.getLocalPlayer().getWorldLocation().getRegionID()))
+		{
+			Multiset snapshot = HashMultiset.create();
+			snapshot = inventorySnapshot;
+			deathInventorySnapshot();
+			if (inventorySnapshot != snapshot)
+			{
+				inventorySnapshot = snapshot;
+				ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+				if (inventorySnapshot != null)
+				{
+					Multiset<Integer> currentInventory = HashMultiset.create();
+					if (inventory != null)
+					{
+						Arrays.stream(client.getItemContainer(InventoryID.INVENTORY).getItems())
+							.forEach(item -> currentInventory.add(item.getId(), item.getQuantity()));
+					}
+
+					final Multiset<Integer> diff = Multisets.difference(inventorySnapshot, currentInventory);
+
+					List<ItemStack> itemsLost = diff.entrySet().stream()
+						.map(e -> new ItemStack(e.getElement(), (-1 * e.getCount()), client.getLocalPlayer().getLocalLocation()))
+						.collect(Collectors.toList());
+
+					final LootTrackerItem[] entries = buildEntries(stack(itemsLost));
+					String name = "Death: " + client.getLocalPlayer().getName();
+					SwingUtilities.invokeLater(() -> panel.add(name,
+						client.getLocalPlayer().getCombatLevel(), entries));
+					LootRecord lootRecord = new LootRecord(name, LootRecordType.DEATH, toGameItems(itemsLost),
+						Instant.now());
+
+					if (lootTrackerClient != null && config.saveLoot())
+					{
+						lootTrackerClient.submit(lootRecord);
+					}
+					if (config.localPersistence() && lootTrackerClient == null)
+					{
+						saveLocalLootRecord(lootRecord);
+					}
+
+					pvpDeath = false;
+					inventorySnapshot = null;
+				}
+			}
+
+		}
 		if (eventType != null && (CHEST_EVENT_TYPES.containsValue(eventType) || HERBIBOR_EVENT.equals(eventType)))
 		{
 			if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
@@ -479,6 +618,58 @@ public class LootTrackerPlugin extends Plugin
 
 			processChestLoot(eventType, event.getItemContainer());
 			eventType = null;
+		}
+	}
+
+	private void saveLocalLootRecord(LootRecord lootRecord)
+	{
+		lootRecords.add(lootRecord);
+		try
+		{
+			BufferedWriter bufferedWriter = Files.newBufferedWriter(LOOT_RECORDS_FILE.toPath());
+
+			GsonBuilder gsonBuilder = new GsonBuilder();
+			gsonBuilder.setPrettyPrinting();
+			Gson gson = gsonBuilder.create();
+			bufferedWriter.append(gson.toJson(lootRecords));
+			bufferedWriter.close();
+		}
+		catch (IOException e)
+		{
+			if (e instanceof FileNotFoundException)
+			{
+				try
+				{
+					LOOT_RECORDS_FILE.createNewFile();
+				}
+				catch (IOException ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Takes a snapshot of the local player's inventory and equipment right before respawn.
+	 */
+	private void deathInventorySnapshot()
+	{
+		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		inventorySnapshot = HashMultiset.create();
+		if (inventory != null)
+		{
+
+			Arrays.stream(inventory.getItems())
+				.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
+		}
+
+			if (equipment != null)
+			{
+				Arrays.stream(equipment.getItems())
+					.forEach(item -> inventorySnapshot.add(item.getId(), item.getQuantity()));
 		}
 	}
 
