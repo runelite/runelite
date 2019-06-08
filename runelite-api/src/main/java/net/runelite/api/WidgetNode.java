@@ -9,7 +9,7 @@ public interface WidgetNode extends Node
 	 * The ID of the widget.
 	 *
 	 * @return the ID of the widget
-	 * @see net.runelite.api.widgets.Widget
+	 * @see api.widgets.Widget
 	 */
 	int getId();
 }

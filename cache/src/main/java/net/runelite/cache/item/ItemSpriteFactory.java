@@ -38,19 +38,19 @@ import net.runelite.cache.models.VertexNormal;
 public class ItemSpriteFactory
 {
 	public static final BufferedImage createSprite(ItemProvider itemProvider, ModelProvider modelProvider,
-		SpriteProvider spriteProvider, TextureProvider textureProvider,
-		int itemId, int quantity, int border, int shadowColor,
-		boolean noted) throws IOException
+												SpriteProvider spriteProvider, TextureProvider textureProvider,
+												int itemId, int quantity, int border, int shadowColor,
+												boolean noted) throws IOException
 	{
-		SpritePixels spritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-			itemId, quantity, border, shadowColor, noted);
+		Sprite spritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
+				itemId, quantity, border, shadowColor, noted);
 		return spritePixels == null ? null : spritePixels.toBufferedImage();
 	}
 
-	private static final SpritePixels createSpritePixels(ItemProvider itemProvider, ModelProvider modelProvider,
-		SpriteProvider spriteProvider, TextureProvider textureProvider,
-		int itemId, int quantity, int border, int shadowColor,
-		boolean noted) throws IOException
+	private static final Sprite createSpritePixels(ItemProvider itemProvider, ModelProvider modelProvider,
+														SpriteProvider spriteProvider, TextureProvider textureProvider,
+														int itemId, int quantity, int border, int shadowColor,
+														boolean noted) throws IOException
 	{
 		ItemDefinition item = itemProvider.provide(itemId);
 
@@ -83,11 +83,11 @@ public class ItemSpriteFactory
 			return null;
 		}
 
-		SpritePixels auxSpritePixels = null;
+		Sprite auxSpritePixels = null;
 		if (item.notedTemplate != -1)
 		{
 			auxSpritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-				item.notedID, 10, 1, 0, true);
+					item.notedID, 10, 1, 0, true);
 			if (auxSpritePixels == null)
 			{
 				return null;
@@ -96,7 +96,7 @@ public class ItemSpriteFactory
 		else if (item.boughtTemplateId != -1)
 		{
 			auxSpritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-				item.boughtId, quantity, border, shadowColor, false);
+					item.boughtId, quantity, border, shadowColor, false);
 			if (auxSpritePixels == null)
 			{
 				return null;
@@ -105,7 +105,7 @@ public class ItemSpriteFactory
 		else if (item.placeholderTemplateId != -1)
 		{
 			auxSpritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-				item.placeholderId, quantity, 0, 0, false);
+					item.placeholderId, quantity, 0, 0, false);
 			if (auxSpritePixels == null)
 			{
 				return null;
@@ -114,7 +114,7 @@ public class ItemSpriteFactory
 
 		RSTextureProvider rsTextureProvider = new RSTextureProvider(textureProvider, spriteProvider);
 
-		SpritePixels spritePixels = new SpritePixels(36, 32);
+		Sprite spritePixels = new Sprite(36, 32);
 		Graphics3D graphics = new Graphics3D(rsTextureProvider);
 		graphics.setBrightness(0.6d);
 		graphics.setRasterBuffer(spritePixels.pixels, 36, 32);
@@ -142,12 +142,12 @@ public class ItemSpriteFactory
 
 		itemModel.calculateBoundsCylinder();
 		itemModel.rotateAndProject(graphics, 0,
-			item.yan2d,
-			item.zan2d,
-			item.xan2d,
-			item.xOffset2d,
-			itemModel.modelHeight / 2 + var17 + item.yOffset2d,
-			var18 + item.yOffset2d);
+				item.yan2d,
+				item.zan2d,
+				item.xan2d,
+				item.xOffset2d,
+				itemModel.modelHeight / 2 + var17 + item.yOffset2d,
+				var18 + item.yOffset2d);
 		if (item.boughtTemplateId != -1)
 		{
 			auxSpritePixels.drawAtOn(graphics, 0, 0);
@@ -175,8 +175,8 @@ public class ItemSpriteFactory
 		}
 
 		graphics.setRasterBuffer(graphics.graphicsPixels,
-			graphics.graphicsPixelsWidth,
-			graphics.graphicsPixelsHeight);
+				graphics.graphicsPixelsWidth,
+				graphics.graphicsPixelsHeight);
 
 		graphics.setRasterClipping();
 		graphics.rasterGouraudLowRes = true;

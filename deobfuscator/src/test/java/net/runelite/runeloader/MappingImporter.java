@@ -33,11 +33,11 @@ import net.runelite.asm.Type;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
+import net.runelite.deob.util.JarUtil;
 import net.runelite.runeloader.inject.AddInterfaceInstruction;
 import net.runelite.runeloader.inject.GetterInjectInstruction;
-import net.runelite.runeloader.inject.InjectionModscript;
-import net.runelite.deob.util.JarUtil;
 import net.runelite.runeloader.inject.Injection;
+import net.runelite.runeloader.inject.InjectionModscript;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -138,7 +138,7 @@ public class MappingImporter
 
 		for (int i = 0; i < mod.getGetterInjects().size(); ++i)
 		{
-			GetterInjectInstruction gii = (GetterInjectInstruction) mod.getGetterInjects().get(i);
+			GetterInjectInstruction gii = mod.getGetterInjects().get(i);
 
 			ClassFile cf = this.findClassWithObfuscatedName(gii.getGetterClassName());
 			Assert.assertNotNull(cf);

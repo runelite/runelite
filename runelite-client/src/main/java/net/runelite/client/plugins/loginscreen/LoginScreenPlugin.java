@@ -166,7 +166,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	{
 		if (!config.pasteEnabled() || (
 			client.getGameState() != GameState.LOGIN_SCREEN &&
-			client.getGameState() != GameState.LOGIN_SCREEN_AUTHENTICATOR))
+				client.getGameState() != GameState.LOGIN_SCREEN_AUTHENTICATOR))
 		{
 			return;
 		}

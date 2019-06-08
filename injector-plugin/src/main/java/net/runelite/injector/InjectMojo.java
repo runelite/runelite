@@ -48,7 +48,7 @@ public class InjectMojo extends AbstractMojo
 	@Parameter(defaultValue = "${project.build.outputDirectory}")
 	private File outputDirectory;
 
-	@Parameter(defaultValue = "./rs-client/target/rs-client-1.5.27-SNAPSHOT.jar", readonly = true, required = true)
+	@Parameter(defaultValue = "./rs-client/target/rs-client-${project.version}.jar", readonly = true, required = true)
 	private String rsClientPath;
 
 	@Parameter(defaultValue = "${net.runelite.rs:vanilla:jar}", readonly = true, required = true)

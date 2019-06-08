@@ -554,7 +554,7 @@ public interface Client extends GameShell
 	 * @return world list
 	 */
 	World[] getWorldList();
-  
+
 	/**
 	 * Gets an array of currently open right-click menu entries that can be
 	 * clicked and activated.

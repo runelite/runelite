@@ -36,6 +36,6 @@ public class DeobProperties
 		InputStream resourceAsStream = DeobProperties.class.getResourceAsStream("/deob.properties");
 		properties.load(resourceAsStream);
 
-		return properties.getProperty("git.commit.id");
+		return "420";
 	}
 }

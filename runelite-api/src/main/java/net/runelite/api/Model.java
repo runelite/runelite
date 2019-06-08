@@ -24,9 +24,9 @@
  */
 package net.runelite.api;
 
-import java.util.List;
 import net.runelite.api.model.Triangle;
 import net.runelite.api.model.Vertex;
+import java.util.List;
 
 /**
  * Represents the model of an object.

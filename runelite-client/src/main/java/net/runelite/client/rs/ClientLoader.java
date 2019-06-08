@@ -37,7 +37,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.channels.ReadableByteChannel;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -54,6 +57,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import static net.runelite.client.RuneLite.RUNELITE_DIR;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.CUSTOM;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
@@ -220,6 +224,48 @@ public class ClientLoader
 			if (updateCheckMode == CUSTOM)
 			{
 				loadJar(zipFile, CUSTOMFILE);
+//TODO: Change this				URL url = new URL("https://raw.githubusercontent.com/runelite-extended/maven-repo/master/artifacts/injected-client.jar");
+//TODO: Change this				ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
+//TODO: Change this				File INJECTED_CLIENT = new File(RUNELITE_DIR+"/injected-client.jar");
+//TODO: Change this				INJECTED_CLIENT.mkdirs();
+//TODO: Change this				if (INJECTED_CLIENT.exists())
+// {
+//TODO: Change this					if (getFileSize(INJECTED_CLIENT.toURI().toURL())!= getFileSize(url))
+// {
+//TODO: Change this						INJECTED_CLIENT.delete();
+//TODO: Change this						INJECTED_CLIENT.createNewFile();
+//TODO: Change this						System.out.println("Updating Injected Client");
+//TODO: Change this						updateInjectedClient(readableByteChannel);
+//TODO: Change this					}
+//TODO: Change this				} else {
+//TODO: Change this					INJECTED_CLIENT.createNewFile();
+//TODO: Change this					System.out.println("Initializing Inject Client");
+//TODO: Change this					updateInjectedClient(readableByteChannel);
+//TODO: Change this				}
+//TODO: Change this
+//TODO: Change this				JarInputStream fis = new JarInputStream(new FileInputStream(INJECTED_CLIENT));
+//TODO: Change this				byte[] tmp = new byte[4096];
+//TODO: Change this				ByteArrayOutputStream buffer = new ByteArrayOutputStream(756 * 1024);
+//TODO: Change this				for (; ; )
+//TODO: Change this				{
+//TODO: Change this					JarEntry metadata = fis.getNextJarEntry();
+//TODO: Change this					if (metadata == null)
+//TODO: Change this					{
+//TODO: Change this						break;
+//TODO: Change this					}
+//TODO: Change this
+//TODO: Change this					buffer.reset();
+//TODO: Change this					for (; ; )
+//TODO: Change this					{
+//TODO: Change this						int n = fis.read(tmp);
+//TODO: Change this						if (n <= -1)
+//TODO: Change this						{
+//TODO: Change this							break;
+//TODO: Change this						}
+//TODO: Change this						buffer.write(tmp, 0, n);
+//TODO: Change this					}
+//TODO: Change this					zipFile.replace(metadata.getName(), buffer.toByteArray());
+//				}
 			}
 
 			String initialClass = config.getInitialClass();
@@ -258,6 +304,48 @@ public class ClientLoader
 
 			log.error("Error loading RS!", e);
 			return null;
+		}
+	}
+
+	private static int getFileSize(URL url)
+	{
+		URLConnection conn = null;
+		try
+		{
+			conn = url.openConnection();
+			if (conn instanceof HttpURLConnection)
+			{
+				((HttpURLConnection)conn).setRequestMethod("HEAD");
+			}
+			conn.getInputStream();
+			return conn.getContentLength();
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+		finally
+		{
+			if (conn instanceof HttpURLConnection)
+			{
+				((HttpURLConnection)conn).disconnect();
+			}
+		}
+	}
+
+	private void updateInjectedClient(ReadableByteChannel readableByteChannel)
+	{
+		File INJECTED_CLIENT = new File(RUNELITE_DIR, "injected-client.jar");
+		FileOutputStream fileOutputStream;
+		try
+		{
+			fileOutputStream = new FileOutputStream(INJECTED_CLIENT);
+			fileOutputStream.getChannel()
+					.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
 		}
 	}
 

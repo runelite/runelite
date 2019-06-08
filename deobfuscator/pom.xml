@@ -39,7 +39,12 @@
         <dependency>
             <groupId>net.runelite</groupId>
             <artifactId>runelite-api</artifactId>
-            <version>1.5.27-SNAPSHOT</version>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.runelite.rs</groupId>
+            <artifactId>runescape-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>net.runelite</groupId>
@@ -75,14 +80,9 @@
         <dependency>
             <groupId>net.runelite.rs</groupId>
             <artifactId>rs-client</artifactId>
-            <version>1.5.27-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
-		<dependency>
-			<groupId>net.runelite.rs</groupId>
-			<artifactId>runescape-api</artifactId>
-			<version>1.5.27-SNAPSHOT</version>
-		</dependency>
         <dependency>
             <groupId>net.runelite.rs</groupId>
             <artifactId>vanilla</artifactId>

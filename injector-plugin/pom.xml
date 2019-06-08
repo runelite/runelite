@@ -46,12 +46,17 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>mixins</artifactId>
-			<version>1.5.27-SNAPSHOT</version>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>runelite-api</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>runescape-api</artifactId>
-			<version>1.5.27-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>

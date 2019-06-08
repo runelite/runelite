@@ -43,7 +43,7 @@ public interface ScriptEvent
 	 * Gets the widget of the event.
 	 *
 	 * @return the widget
-	 * @see net.runelite.api.widgets.Widget
+	 * @see Widget
 	 */
 	Widget getSource();
 

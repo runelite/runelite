@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import net.runelite.api.vars.AccountType;
 import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.List;
@@ -46,7 +47,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;

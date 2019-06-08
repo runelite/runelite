@@ -1,5 +1,6 @@
 package net.runelite.api.events;
 
+import net.runelite.api.Actor;
 import lombok.Data;
 import net.runelite.api.Actor;
 

@@ -55,7 +55,7 @@ final class ClientPanel extends JPanel
 
 		add(client, BorderLayout.CENTER);
 
-		// This causes the whole game frame to be redrawn each frame instead
+		// api.renderableThis causes the whole game frame to be redrawn each frame instead
 		// of only the viewport, so we can hook to MainBufferProvider#draw
 		// and draw anywhere without it leaving artifacts
 		if (client instanceof Client)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.inventorygrid;
+package net.runelite.mapping;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@ConfigGroup("inventorygrid")
-public interface InventoryGridConfig extends Config
+@Retention(RetentionPolicy.RUNTIME)
+@Target(
 {
-	@ConfigItem(
-		keyName = "showItem",
-		name = "Show item",
-		description = "Show a preview of the item in the new slot"
-	)
-	default boolean showItem()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showGrid",
-		name = "Show grid",
-		description = "Show a grid on the inventory while dragging"
-	)
-	default boolean showGrid()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showHighlight",
-		name = "Highlight background",
-		description = "Show a green background highlight on the new slot"
-	)
-	default boolean showHighlight()
-	{
-		return true;
-	}
+	ElementType.FIELD, ElementType.METHOD
+})
+public @interface Import
+{
+	String value();
 }

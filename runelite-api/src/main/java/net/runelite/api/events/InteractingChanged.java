@@ -1,7 +1,7 @@
 package net.runelite.api.events;
 
-import lombok.Value;
 import net.runelite.api.Actor;
+import lombok.Value;
 
 /**
  * An event called when the actor an actor is interacting with changes

@@ -24,9 +24,9 @@
  */
 package net.runelite.api;
 
-import java.util.List;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import java.util.List;
 
 /**
  * Represents a tile in the game.

@@ -1,13 +1,6 @@
 package net.runelite.runeloader.inject;
 
-import java.util.Iterator;
-import org.objectweb.asm.Label;
 import org.objectweb.asm.tree.AbstractInsnNode;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.InsnList;
-import org.objectweb.asm.tree.JumpInsnNode;
-import org.objectweb.asm.tree.LabelNode;
-import org.objectweb.asm.tree.MethodNode;
 
 public class TableJumpInstruction
 {

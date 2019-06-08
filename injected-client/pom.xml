@@ -39,13 +39,19 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>client</artifactId>
-			<version>1.5.27-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<optional>true</optional> <!-- to prevent the dependency on this from runelite-client -->
+		</dependency>
+		<dependency>
+			<groupId>net.runelite.rs</groupId>
+			<artifactId>runescape-api</artifactId>
+			<version>${project.version}</version>
+			<optional>false</optional> <!-- to prevent the dependency on this from runelite-client -->
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>runelite-api</artifactId>
-			<version>1.5.27-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<optional>false</optional> <!-- to prevent the dependency on this from runelite-client -->
 		</dependency>
 		<dependency>
@@ -61,7 +67,7 @@
 			<plugin>
 				<groupId>net.runelite.rs</groupId>
 				<artifactId>injector-plugin</artifactId>
-				<version>1.5.27-SNAPSHOT</version>
+				<version>${project.version}</version>
 				<executions>
 					<execution>
 						<goals>

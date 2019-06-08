@@ -36,7 +36,9 @@ public class Utils
 		}
 
 		if (attrName.equalsIgnoreCase("fps"))
+		{
 			attrName = "FPS";
+		}
 
 		return attrName;
 	}

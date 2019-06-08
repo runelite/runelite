@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *     list of conditions and the following disclaimer.
+ *    list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -22,24 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.vars;
+package net.runelite.mapping;
 
-import net.runelite.api.VarClientInt;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
- * An enumeration of input types for {@link VarClientInt#INPUT_TYPE}.
+ * Used to indicate a method can only be called from within mixins.
+ * Calling methods annotated with this annotation outside mixins results in a AbstractMethodError.
+ * Only works in net.runelite.rs.api.*
  */
-@Getter
-@RequiredArgsConstructor
-public enum InputType
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Protect
 {
-	RUNELITE_CHATBOX_PANEL(-3),
-	RUNELITE(-2),
-	NONE(0),
-	PRIVATE_MESSAGE(6),
-	SEARCH(11);
-
-	private final int type;
 }

@@ -232,7 +232,7 @@ public class MixinInjector
 
 					if (injectedFields.containsKey(field.getName()) && !field.getName().equals(ASSERTION_FIELD))
 					{
-						java.util.logging.Logger.getAnonymousLogger().severe("Duplicate field : "+ field.getName());
+						java.util.logging.Logger.getAnonymousLogger().severe("Duplicate field : " + field.getName());
 						throw new InjectionException("Injected field names must be globally unique");
 					}
 

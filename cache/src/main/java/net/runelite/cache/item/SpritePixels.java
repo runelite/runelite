@@ -26,7 +26,7 @@ package net.runelite.cache.item;
 
 import java.awt.image.BufferedImage;
 
-class SpritePixels
+class Sprite
 {
 	public int[] pixels;
 	public int width;
@@ -34,7 +34,7 @@ class SpritePixels
 	public int offsetX;
 	int offsetY;
 
-	public SpritePixels(int[] var1, int var2, int var3)
+	public Sprite(int[] var1, int var2, int var3)
 	{
 		this.pixels = var1;
 		this.width = var2;
@@ -43,7 +43,7 @@ class SpritePixels
 		this.offsetX = 0;
 	}
 
-	public SpritePixels(int var1, int var2)
+	public Sprite(int var1, int var2)
 	{
 		this(new int[var2 * var1], var1, var2);
 	}

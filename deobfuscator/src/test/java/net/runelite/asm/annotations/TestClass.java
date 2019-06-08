@@ -31,5 +31,7 @@ public class TestClass
 	public int field1;
 	
 	@MyAnnotation("method1")
-	public void method1() { }
+	public void method1()
+	{
+	}
 }

@@ -24,7 +24,6 @@
  */
 package net.runelite.deob.deobfuscators.exprargorder;
 
-import java.io.File;
 import java.util.List;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.attributes.Code;
@@ -48,7 +47,6 @@ import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.deob.ClassGroupFactory;
-import net.runelite.deob.util.JarUtil;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 

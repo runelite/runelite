@@ -67,11 +67,12 @@ public class MultiplyOneDeobfuscatorTest
 			ins.addInstruction(i);
 		
 		Label label = new Label(ins),
-		    label2 = new Label(ins);
+			label2 = new Label(ins);
 		
 		LDC one = new LDC(ins, 1);
 		
-		Instruction body[] = {
+		Instruction body[] =
+		{
 			new SiPush(ins, (short) 256),
 			
 			new ILoad(ins, 0),
@@ -122,7 +123,7 @@ public class MultiplyOneDeobfuscatorTest
 			ins.addInstruction(i);
 		
 		Label label = new Label(ins),
-		    label2 = new Label(ins);
+			label2 = new Label(ins);
 		
 		LDC one = new LDC(ins, 1);
 		IMul mul = new IMul(ins);
@@ -204,8 +205,8 @@ public class MultiplyOneDeobfuscatorTest
 			ins.addInstruction(i);
 		
 		Label label = new Label(ins),
-		    label2 = new Label(ins),
-		    label3 = new Label(ins);
+			label2 = new Label(ins),
+			label3 = new Label(ins);
 		
 		LDC one = new LDC(ins, 1);
 		IMul mul = new IMul(ins);
