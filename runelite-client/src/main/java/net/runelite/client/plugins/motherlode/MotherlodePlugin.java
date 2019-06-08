@@ -95,6 +95,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -155,6 +156,9 @@ public class MotherlodePlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private Notifier notifier;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inMlm;
@@ -423,6 +427,7 @@ public class MotherlodePlugin extends Plugin
 				lastAnimating = null;
 				isMining = false;
 				resetIdleChecks();
+				sendIdleNotification();
 			}
 		}
 		else
@@ -445,6 +450,7 @@ public class MotherlodePlugin extends Plugin
 		{
 			isMining = false;
 			resetIdleChecks();
+			sendIdleNotification();
 		}
 	}
 
@@ -455,6 +461,16 @@ public class MotherlodePlugin extends Plugin
 		lastAnimating = null;
 		playerHasReachedTargetVein = false;
 		targetVeinLocation = null;
+	}
+
+	private void sendIdleNotification()
+	{
+		if (!config.notifyOnIdle())
+		{
+			return;
+		}
+
+		notifier.notify(client.getLocalPlayer().getName() + " has stopped mining!");
 	}
 
 	@Subscribe
@@ -475,6 +491,7 @@ public class MotherlodePlugin extends Plugin
 		{
 			isMining = false;
 			resetIdleChecks();
+			sendIdleNotification();
 		}
 	}
 

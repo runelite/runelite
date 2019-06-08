@@ -121,4 +121,14 @@ public interface MotherlodeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "notifyOnIdle",
+		name = "Idle notification",
+		description = "Sends a notification when the player stops mining"
+	)
+	default boolean notifyOnIdle()
+	{
+		return false;
+	}
 }
