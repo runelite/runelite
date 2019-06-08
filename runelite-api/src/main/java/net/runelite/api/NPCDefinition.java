@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,72 +24,91 @@
  */
 package net.runelite.api;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-
-/**
- * Represents data about the pixels of a sprite image.
- */
-public interface SpritePixels
+public interface NPCDefinition
 {
-	int DEFAULT_SHADOW_COLOR = 3153952;
-
 	/**
-	 * Draws the pixels at the given coordinates on the canvas.
+	 * Gets the name of the NPC.
 	 *
-	 * @param x the x-axis coordinate
-	 * @param y the y-axis coordinate
+	 * @return the name
 	 */
-	void drawAt(int x, int y);
+	String getName();
 
 	/**
-	 * Gets the width of the sprite image in pixels.
+	 * Gets the model IDs that compose this NPC.
 	 *
-	 * @return the width
+	 * @return the NPCs model IDs
 	 */
-	int getWidth();
+	int[] getModels();
 
 	/**
-	 * Gets the height of the sprite image in pixels.
+	 * Gets an array of possible right-click menu actions that can be
+	 * performed on the NPC.
 	 *
-	 * @return the height
+	 * @return the menu actions
 	 */
-	int getHeight();
+	String[] getActions();
 
 	/**
-	 * Gets an array of all pixels data in the sprite.
+	 * Gets whether the NPC can be clicked.
 	 *
-	 * @return the pixel data
+	 * @return true if the NPC can be clicked, false otherwise
 	 */
-	int[] getPixels();
+	boolean isClickable();
 
 	/**
-	 * Converts the sprite into a BufferedImage.
+	 * Gets whether the NPC is visible on the mini-map.
 	 *
-	 * @return the resulting BufferedImage
+	 * @return the mini-map visible state
 	 */
-	BufferedImage toBufferedImage();
+	boolean isMinimapVisible();
 
 	/**
-	 * Writes the contents of the sprite to the given BufferedImage.
+	 * Gets whether the NPC is visible.
 	 *
-	 * @param img the passsed buffered image
-	 * @throws IllegalArgumentException if the width or height do not match
- 	 */
-	void toBufferedImage(BufferedImage img) throws IllegalArgumentException;
-
-	/**
-	 * Writes the contents of the SpritePixels with chosen outline to the BufferedImage
-	 *
-	 * @param color target color
+	 * @return the visible state
 	 */
-	BufferedImage toBufferedOutline(Color color);
+	boolean isVisible();
 
 	/**
-	 * Writes the contents of the SpritePixels with chosen outline to the BufferedImage
+	 * Gets the ID of the NPC.
 	 *
-	 * @param img target image
-	 * @param color target color
+	 * @return the ID of the NPC
+	 * @see NpcID
 	 */
-	void toBufferedOutline(BufferedImage img, int color);
+	int getId();
+
+	/**
+	 * Gets the combat level of the NPC.
+	 *
+	 * @return the combat level, -1 if none
+	 */
+	int getCombatLevel();
+
+	/**
+	 * Gets the configuration data for the NPC.
+	 *
+	 * @return the configuration data
+	 */
+	int[] getConfigs();
+
+	/**
+	 * Transforms this NPC into a new state, which may have a different ID.
+	 *
+	 * @return the transformed composition
+	 */
+	NPCDefinition transform();
+
+	/**
+	 * Gets the size of the NPC.
+	 *
+	 * @return the NPCs size
+	 */
+	int getSize();
+
+	/**
+	 * Gets the displayed overhead icon of the NPC.
+	 *
+	 * @return the overhead icon
+	 */
+	HeadIcon getOverheadIcon();
 }

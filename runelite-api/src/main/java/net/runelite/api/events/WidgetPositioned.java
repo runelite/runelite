@@ -27,7 +27,7 @@ package net.runelite.api.events;
 import lombok.Value;
 
 /**
- * An event where the position of a {@link net.runelite.api.widgets.Widget}
+ * An event where the position of a {@link api.widgets.Widget}
  * relative to its parent has changed.
  */
 @Value

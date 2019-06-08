@@ -27,7 +27,7 @@ package net.runelite.api;
 /**
  * Represents the template of a specific object.
  */
-public interface ObjectComposition
+public interface ObjectDefinition
 {
 	/**
 	 * Gets ID for the object.
@@ -78,5 +78,5 @@ public interface ObjectComposition
 	 *
 	 * @return the impostor
 	 */
-	ObjectComposition getImpostor();
+	ObjectDefinition getImpostor();
 }

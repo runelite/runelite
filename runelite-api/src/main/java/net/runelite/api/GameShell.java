@@ -25,11 +25,12 @@
 package net.runelite.api;
 
 import java.awt.Canvas;
+import net.runelite.api.hooks.DrawCallbacks;
 
 /**
  * Represents the client game engine.
  */
-public interface GameEngine
+public interface GameShell
 {
 	/**
 	 * Gets the canvas that contains everything.
@@ -51,6 +52,8 @@ public interface GameEngine
 	 * @return true if on the main thread, false otherwise
 	 */
 	boolean isClientThread();
+
+	DrawCallbacks getDrawCallbacks();
 
 	void resizeCanvas();
 }

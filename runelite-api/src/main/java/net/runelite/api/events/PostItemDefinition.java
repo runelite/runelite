@@ -25,17 +25,17 @@
 package net.runelite.api.events;
 
 import lombok.Data;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 
 /**
- * An event called after a new {@link ItemComposition} is created and
+ * An event called after a new {@link ItemDefinition} is created and
  * its data is initialized.
  */
 @Data
-public class PostItemComposition
+public class PostItemDefinition
 {
 	/**
 	 * The newly created item.
 	 */
-	private ItemComposition itemComposition;
+	private ItemDefinition itemDefinition;
 }

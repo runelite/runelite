@@ -27,7 +27,7 @@ package net.runelite.api.events;
 import lombok.Data;
 
 /**
- * An event where a {@link net.runelite.api.widgets.Widget} has been loaded.
+ * An event where a {@link api.widgets.Widget} has been loaded.
  */
 @Data
 public class WidgetLoaded

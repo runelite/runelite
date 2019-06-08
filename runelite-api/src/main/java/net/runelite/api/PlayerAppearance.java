@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,15 +24,45 @@
  */
 package net.runelite.api;
 
-public interface EnumComposition
+import net.runelite.api.kit.KitType;
+
+/**
+ * Represents the template of a player.
+ */
+public interface PlayerAppearance
 {
-	int[] getKeys();
+	/**
+	 * Gets an array of IDs related to equipment slots.
+	 * <p>
+	 * If the ID for a specific slot is between 256 and 512, subtracting
+	 * 256 will result in the kit ID. Values above 512 indicate an item
+	 * and can be converted to the item ID by subtracting 512.
+	 *
+	 * @return the equipment IDs
+	 */
+	int[] getEquipmentIds();
 
-	int[] getIntVals();
+	/**
+	 * Gets the equipment ID of a particular slot.
+	 *
+	 * @param type equipment slot
+	 * @return the equipment ID
+	 */
+	int getEquipmentId(KitType type);
 
-	String[] getStringVals();
+	/**
+	 * Gets the kit ID of a particular slot.
+	 *
+	 * @param type equipment slot
+	 * @return the kit ID
+	 */
+	int getKitId(KitType type);
 
-	int getIntValue(int key);
+	/**
+	 * Update the cached hash value for player equipment
+	 * Used to cache the player models based on equipment.
+	 */
+	void setHash();
 
-	String getStringValue(int key);
+	void setTransformedNpcId(int id);
 }

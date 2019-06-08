@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import static api.config.Constants.TILE_FLAG_BRIDGE;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -36,7 +37,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import static net.runelite.api.Constants.TILE_FLAG_BRIDGE;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.model.Jarvis;
 import net.runelite.api.model.Triangle;
@@ -471,7 +471,7 @@ public class Perspective
 	public static Point getCanvasSpriteLocation(
 		@Nonnull Client client,
 		@Nonnull LocalPoint localLocation,
-		@Nonnull SpritePixels sprite,
+		@Nonnull Sprite sprite,
 		int zOffset)
 	{
 		int plane = client.getPlane();
@@ -490,7 +490,7 @@ public class Perspective
 	}
 
 	/**
-	 * You don't want this. Use {@link TileObject#getClickbox()} instead.
+	 * You don't want this. Use {@link //TileObject#getClickbox()} instead.
 	 * <p>
 	 * Get the on-screen clickable area of {@code model} as though it's for the
 	 * object on the tile at ({@code localX}, {@code localY}) and rotated to
@@ -555,7 +555,7 @@ public class Perspective
 
 		for (Triangle triangle : triangles)
 		{
-			Vertex _a = triangle.getA();
+			api.model.Vertex _a = triangle.getA();
 			Point a = localToCanvas(client,
 				point.getX() - _a.getX(),
 				point.getY() - _a.getZ(),

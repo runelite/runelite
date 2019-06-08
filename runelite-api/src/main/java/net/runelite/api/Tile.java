@@ -134,8 +134,6 @@ public interface Tile
 
 	/**
 	 * Return the tile under this one, if this tile is a bridge
-	 *
-	 * @return
 	 */
 	Tile getBridge();
 }

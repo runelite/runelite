@@ -24,7 +24,6 @@
  */
 package net.runelite.api.widgets;
 
-import net.runelite.api.MenuAction;
 
 /**
  * Utility class used for defining options to be used on the click mask
@@ -92,7 +91,7 @@ public class WidgetConfig
 	/**
 	 * Add a USE option
 	 *
-	 * @see MenuAction#ITEM_USE
+	 * @see// MenuAction#ITEM_USE
 	 */
 	public static final int ITEM_USE_OP = 1 << 31;
 }
