@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.prayagainstplayer;
 
 import net.runelite.api.Client;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.kit.KitType;
 
@@ -46,8 +46,8 @@ enum WeaponType
 	 */
 	public static WeaponType checkWeaponOnPlayer(Client client, Player attacker)
 	{
-		int itemId = attacker.getPlayerComposition().getEquipmentId(KitType.WEAPON);
-		ItemComposition itemComposition = client.getItemDefinition(itemId);
+		int itemId = attacker.getPlayerAppearance().getEquipmentId(KitType.WEAPON);
+		ItemDefinition itemComposition = client.getItemDefinition(itemId);
 		String weaponNameGivenLowerCase = itemComposition.getName().toLowerCase();
 
 		if (itemId == -1)

@@ -48,7 +48,8 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.ObjectComposition;
+import net.runelite.api.NPCDefinition;
+import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
@@ -234,7 +235,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 		final TileObject object = findTileObject(tile, event.getIdentifier());
 		if (object != null)
 		{
-			final ObjectComposition objectDefinition = client.getObjectDefinition(object.getId());
+			final ObjectDefinition objectDefinition = client.getObjectDefinition(object.getId());
 			final String name = objectDefinition.getName();
 
 			if (!Strings.isNullOrEmpty(name))
@@ -291,7 +292,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		ObjectComposition objectDefinition = client.getObjectDefinition(object.getId());
+		ObjectDefinition objectDefinition = client.getObjectDefinition(object.getId());
 		String name = objectDefinition.getName();
 		if (Strings.isNullOrEmpty(name))
 		{
@@ -353,7 +354,7 @@ public class ObjectIndicatorsPlugin extends Plugin implements KeyListener
 			}
 
 			// Check impostors
-			final ObjectComposition comp = client.getObjectDefinition(object.getId());
+			final ObjectDefinition comp = client.getObjectDefinition(object.getId());
 
 			if (comp.getImpostorIds() != null)
 			{

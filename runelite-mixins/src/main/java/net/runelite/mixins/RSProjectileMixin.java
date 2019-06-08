@@ -39,7 +39,7 @@ import net.runelite.rs.api.RSProjectile;
 @Mixin(RSProjectile.class)
 public abstract class RSProjectileMixin implements RSProjectile
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Inject
@@ -92,7 +92,7 @@ public abstract class RSProjectileMixin implements RSProjectile
 	 * @param cycle
 	 */
 	@Inject
-	@MethodHook("moveProjectile")
+	@MethodHook("setDestination")
 	public void projectileMoved(int targetX, int targetY, int targetZ, int cycle)
 	{
 		final LocalPoint position = new LocalPoint(targetX, targetY);

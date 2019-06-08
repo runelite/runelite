@@ -745,14 +745,14 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (config.showImbuedHeart() && actor.getGraphic() == IMBUEDHEART.getGraphicId())
+		if (config.showImbuedHeart() && actor.getSpotAnimation() == IMBUEDHEART.getGraphicId())
 		{
 			createGameTimer(IMBUEDHEART);
 		}
 
 		if (config.showFreezes())
 		{
-			if (actor.getGraphic() == BIND.getGraphicId())
+			if (actor.getSpotAnimation() == BIND.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
 					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
@@ -766,7 +766,7 @@ public class TimersPlugin extends Plugin
 				}
 			}
 
-			if (actor.getGraphic() == SNARE.getGraphicId())
+			if (actor.getSpotAnimation() == SNARE.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
 					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
@@ -780,7 +780,7 @@ public class TimersPlugin extends Plugin
 				}
 			}
 
-			if (actor.getGraphic() == ENTANGLE.getGraphicId())
+			if (actor.getSpotAnimation() == ENTANGLE.getGraphicId())
 			{
 				if (client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC)
 					&& !client.getWorldType().contains(WorldType.SEASONAL_DEADMAN)
@@ -797,19 +797,19 @@ public class TimersPlugin extends Plugin
 			// downgrade freeze based on graphic, if at the same tick as the freeze message
 			if (freezeTime == client.getTickCount())
 			{
-				if (actor.getGraphic() == ICERUSH.getGraphicId())
+				if (actor.getSpotAnimation() == ICERUSH.getGraphicId())
 				{
 					removeGameTimer(ICEBARRAGE);
 					freezeTimer = createGameTimer(ICERUSH);
 				}
 
-				if (actor.getGraphic() == ICEBURST.getGraphicId())
+				if (actor.getSpotAnimation() == ICEBURST.getGraphicId())
 				{
 					removeGameTimer(ICEBARRAGE);
 					freezeTimer = createGameTimer(ICEBURST);
 				}
 
-				if (actor.getGraphic() == ICEBLITZ.getGraphicId())
+				if (actor.getSpotAnimation() == ICEBLITZ.getGraphicId())
 				{
 					removeGameTimer(ICEBARRAGE);
 					freezeTimer = createGameTimer(ICEBLITZ);

@@ -53,7 +53,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
@@ -544,7 +544,7 @@ public class LootTrackerPlugin extends Plugin
 
 	private LootTrackerItem buildLootTrackerItem(int itemId, int quantity)
 	{
-		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
 		final long price = (long) itemManager.getItemPrice(realItemId) * (long) quantity;
 		final boolean ignored = ignoredItems.contains(itemComposition.getName());

@@ -35,7 +35,7 @@ import net.runelite.rs.api.RSMouseWheelHandler;
 @Mixin(RSMouseWheelHandler.class)
 public abstract class RSMouseWheelHandlerMixin implements RSMouseWheelHandler
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Copy("mouseWheelMoved")

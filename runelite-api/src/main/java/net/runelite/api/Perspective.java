@@ -24,6 +24,14 @@
  */
 package net.runelite.api;
 
+import net.runelite.api.config.Constants;
+import static net.runelite.api.config.Constants.TILE_FLAG_BRIDGE;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.model.Jarvis;
+import net.runelite.api.model.Triangle;
+import net.runelite.api.model.Vertex;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -36,13 +44,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import static net.runelite.api.Constants.TILE_FLAG_BRIDGE;
-import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.model.Jarvis;
-import net.runelite.api.model.Triangle;
-import net.runelite.api.model.Vertex;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.Point;
 
 /**
  * A utility class containing methods to help with conversion between
@@ -471,7 +473,7 @@ public class Perspective
 	public static Point getCanvasSpriteLocation(
 		@Nonnull Client client,
 		@Nonnull LocalPoint localLocation,
-		@Nonnull SpritePixels sprite,
+		@Nonnull Sprite sprite,
 		int zOffset)
 	{
 		int plane = client.getPlane();
@@ -490,7 +492,7 @@ public class Perspective
 	}
 
 	/**
-	 * You don't want this. Use {@link TileObject#getClickbox()} instead.
+	 * You don't want this. Use {@link //TileObject#getClickbox()} instead.
 	 * <p>
 	 * Get the on-screen clickable area of {@code model} as though it's for the
 	 * object on the tile at ({@code localX}, {@code localY}) and rotated to

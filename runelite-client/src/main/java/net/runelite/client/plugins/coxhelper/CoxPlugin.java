@@ -401,7 +401,7 @@ public class CoxPlugin extends Plugin
 		if (inRaid())
 		{
 			Actor actor = graphicChanged.getActor();
-			if (actor.getGraphic() == GraphicID.OLM_BURN)
+			if (actor.getSpotAnimation() == GraphicID.OLM_BURN)
 			{
 				burnTarget.add(actor);
 			}

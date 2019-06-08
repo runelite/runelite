@@ -25,14 +25,14 @@
  */
 package net.runelite.api.coords;
 
+import net.runelite.api.Client;
+import net.runelite.api.Perspective;
+import static net.runelite.api.config.Constants.CHUNK_SIZE;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import lombok.Value;
-import net.runelite.api.Client;
-import static net.runelite.api.Constants.CHUNK_SIZE;
-import net.runelite.api.Perspective;
 
 /**
  * A three-dimensional point representing the coordinate of a Tile.

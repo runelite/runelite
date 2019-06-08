@@ -33,8 +33,9 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
-import net.runelite.api.ObjectComposition;
+import net.runelite.api.NPCDefinition;
+import net.runelite.api.NPCDefinition;
+import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.WallObject;
@@ -78,7 +79,7 @@ class BarrowsOverlay extends Overlay
 			final List<NPC> npcs = client.getNpcs();
 			for (NPC npc : npcs)
 			{
-				final NPCComposition composition = npc.getComposition();
+				final NPCDefinition composition = npc.getDefinition();
 
 				if (composition != null && !composition.isMinimapVisible())
 				{
@@ -163,8 +164,8 @@ class BarrowsOverlay extends Overlay
 			return;
 		}
 
-		ObjectComposition objectComp = client.getObjectDefinition(wall.getId());
-		ObjectComposition impostor = objectComp.getImpostorIds() != null ? objectComp.getImpostor() : null;
+		ObjectDefinition objectComp = client.getObjectDefinition(wall.getId());
+		ObjectDefinition impostor = objectComp.getImpostorIds() != null ? objectComp.getImpostor() : null;
 
 		if (impostor != null && impostor.getActions()[0] != null)
 		{
@@ -199,7 +200,7 @@ class BarrowsOverlay extends Overlay
 			return;
 		}
 
-		ObjectComposition objectComp = client.getObjectDefinition(ladder.getId());
+		ObjectDefinition objectComp = client.getObjectDefinition(ladder.getId());
 
 		if (objectComp.getImpostorIds() != null && objectComp.getImpostor() != null)
 		{

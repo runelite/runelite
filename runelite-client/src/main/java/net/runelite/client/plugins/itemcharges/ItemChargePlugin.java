@@ -504,7 +504,7 @@ public class ItemChargePlugin extends Plugin
 	{
 		if (event.getActor() == client.getLocalPlayer())
 		{
-			if (client.getLocalPlayer().getGraphic() == GraphicID.XERIC_TELEPORT)
+			if (client.getLocalPlayer().getSpotAnimation() == GraphicID.XERIC_TELEPORT)
 			{
 				final int xericCharges = Math.max(config.xericTalisman() - 1, 0);
 				updateXericCharges(xericCharges);
@@ -723,7 +723,7 @@ public class ItemChargePlugin extends Plugin
 			return;
 		}
 
-		final String name = itemManager.getItemComposition(id).getName();
+		final String name = itemManager.getItemDefinition(id).getName();
 		final BufferedImage image = itemManager.getImage(id);
 		final ItemChargeInfobox infobox = new ItemChargeInfobox(this, image, name, charges, type, slot);
 		infoBoxManager.addInfoBox(infobox);

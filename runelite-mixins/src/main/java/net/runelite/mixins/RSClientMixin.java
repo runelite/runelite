@@ -24,19 +24,10 @@
  */
 package net.runelite.mixins;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Nullable;
-import javax.inject.Named;
+import api.vars.AccountType;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ClanMember;
-import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumDefinition;
 import net.runelite.api.Friend;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
@@ -68,7 +59,7 @@ import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Projectile;
 import net.runelite.api.Skill;
-import net.runelite.api.SpritePixels;
+import net.runelite.api.Sprite;
 import net.runelite.api.Tile;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
@@ -99,6 +90,20 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetItem;
+import net.runelite.api.widgets.WidgetType;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Nullable;
+import javax.inject.Named;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -106,35 +111,30 @@ import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
-import net.runelite.api.vars.AccountType;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
-import net.runelite.api.widgets.WidgetType;
-import net.runelite.rs.api.RSChatLineBuffer;
-import net.runelite.rs.api.RSClanMemberManager;
+import org.slf4j.Logger;
+import net.runelite.rs.api.RSAbstractIndexCache;
+import net.runelite.rs.api.RSChatChannel;
+import net.runelite.rs.api.RSClanChat;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSDeque;
-import net.runelite.rs.api.RSEnum;
-import net.runelite.rs.api.RSFriendContainer;
-import net.runelite.rs.api.RSFriendManager;
-import net.runelite.rs.api.RSHashTable;
-import net.runelite.rs.api.RSIgnoreContainer;
-import net.runelite.rs.api.RSIndexDataBase;
+import net.runelite.rs.api.RSEnumDefinition;
+import net.runelite.rs.api.RSFriendSystem;
+import net.runelite.rs.api.RSFriendsList;
+import net.runelite.rs.api.RSGroundItem;
+import net.runelite.rs.api.RSIgnoreList;
 import net.runelite.rs.api.RSIndexedSprite;
-import net.runelite.rs.api.RSItem;
 import net.runelite.rs.api.RSItemContainer;
 import net.runelite.rs.api.RSNPC;
-import net.runelite.rs.api.RSName;
+import net.runelite.rs.api.RSNodeDeque;
+import net.runelite.rs.api.RSNodeHashTable;
 import net.runelite.rs.api.RSPlayer;
-import net.runelite.rs.api.RSSpritePixels;
+import net.runelite.rs.api.RSSprite;
+import net.runelite.rs.api.RSUsername;
 import net.runelite.rs.api.RSWidget;
-import org.slf4j.Logger;
 
 @Mixin(RSClient.class)
 public abstract class RSClientMixin implements RSClient
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Inject
@@ -174,7 +174,7 @@ public abstract class RSClientMixin implements RSClient
 	private static int oldMenuEntryCount;
 
 	@Inject
-	private static RSItem lastItemDespawn;
+	private static RSGroundItem lastItemDespawn;
 
 	@Inject
 	private boolean gpu;
@@ -186,12 +186,25 @@ public abstract class RSClientMixin implements RSClient
 	static int skyboxColor;
 
 	@Inject
-	private final Cache<Integer, RSEnum> enumCache = CacheBuilder.newBuilder()
-		.maximumSize(64)
-		.build();
+	private final Cache<Integer, RSEnumDefinition> enumCache = CacheBuilder.newBuilder()
+			.maximumSize(64)
+			.build();
 
 	@Inject
 	private static HealthBarOverride healthBarOverride;
+
+	@Inject
+	private static boolean printMenuActions;
+
+	@Inject
+	private byte[][] spritePixels;
+
+	@Inject
+	@Override
+	public void setPrintMenuActions(boolean yes)
+	{
+		printMenuActions = yes;
+	}
 
 	@Inject
 	public RSClientMixin()
@@ -627,7 +640,7 @@ public abstract class RSClientMixin implements RSClient
 		oldMenuEntryCount = count;
 	}
 
-	@FieldHook("menuOptionCount")
+	@FieldHook("menuOptionsCount")
 	@Inject
 	public static void onMenuOptionsChanged(int idx)
 	{
@@ -639,12 +652,12 @@ public abstract class RSClientMixin implements RSClient
 		if (newCount == oldCount + 1)
 		{
 			MenuEntryAdded event = new MenuEntryAdded(
-				client.getMenuOptions()[newCount - 1],
-				client.getMenuTargets()[newCount - 1],
-				client.getMenuTypes()[newCount - 1],
-				client.getMenuIdentifiers()[newCount - 1],
-				client.getMenuActionParams0()[newCount - 1],
-				client.getMenuActionParams1()[newCount - 1]
+					client.getMenuOptions()[newCount - 1],
+					client.getMenuTargets()[newCount - 1],
+					client.getMenuTypes()[newCount - 1],
+					client.getMenuIdentifiers()[newCount - 1],
+					client.getMenuActionParams0()[newCount - 1],
+					client.getMenuActionParams1()[newCount - 1]
 			);
 
 			client.getCallbacks().post(event);
@@ -656,7 +669,7 @@ public abstract class RSClientMixin implements RSClient
 	public List<Projectile> getProjectiles()
 	{
 		List<Projectile> projectiles = new ArrayList<Projectile>();
-		RSDeque projectileDeque = this.getProjectilesDeque();
+		RSNodeDeque projectileDeque = this.getProjectilesDeque();
 		Node head = projectileDeque.getHead();
 
 		for (Node node = head.getNext(); node != head; node = node.getNext())
@@ -672,7 +685,7 @@ public abstract class RSClientMixin implements RSClient
 	public List<GraphicsObject> getGraphicsObjects()
 	{
 		List<GraphicsObject> graphicsObjects = new ArrayList<GraphicsObject>();
-		RSDeque graphicsObjectDeque = this.getGraphicsObjectDeque();
+		RSNodeDeque graphicsObjectDeque = this.getGraphicsObjectDeque();
 		Node head = graphicsObjectDeque.getHead();
 
 		for (Node node = head.getNext(); node != head; node = node.getNext())
@@ -711,14 +724,14 @@ public abstract class RSClientMixin implements RSClient
 		setLowMemory(lowMemory);
 		setSceneLowMemory(lowMemory);
 		setAudioHighMemory(true);
-		setObjectCompositionLowDetail(lowMemory);
+		setObjectDefinitionLowDetail(lowMemory);
 	}
 
 	@Inject
 	@Override
 	public RSItemContainer getItemContainer(InventoryID inventory)
 	{
-		RSHashTable itemContainers = getItemContainers();
+		RSNodeHashTable itemContainers = getItemContainers();
 		return (RSItemContainer) itemContainers.get(inventory.getId());
 	}
 
@@ -726,7 +739,7 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public boolean isFriended(String name, boolean mustBeLoggedIn)
 	{
-		RSName rsName = createName(name, getLoginType());
+		RSUsername rsName = createName(name, getLoginType());
 		return getFriendManager().isFriended(rsName, mustBeLoggedIn);
 	}
 
@@ -734,7 +747,7 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public int getClanChatCount()
 	{
-		final RSClanMemberManager clanMemberManager = getClanMemberManager();
+		final RSClanChat clanMemberManager = getClanMemberManager();
 		return clanMemberManager != null ? clanMemberManager.getCount() : 0;
 	}
 
@@ -742,7 +755,7 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public ClanMember[] getClanMembers()
 	{
-		final RSClanMemberManager clanMemberManager = getClanMemberManager();
+		final RSClanChat clanMemberManager = getClanMemberManager();
 		if (clanMemberManager == null)
 		{
 			return null;
@@ -770,13 +783,13 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public Friend[] getFriends()
 	{
-		final RSFriendManager friendManager = getFriendManager();
+		final RSFriendSystem friendManager = getFriendManager();
 		if (friendManager == null)
 		{
 			return null;
 		}
 
-		final RSFriendContainer friendContainer = friendManager.getFriendContainer();
+		final RSFriendsList friendContainer = friendManager.getFriendContainer();
 		if (friendContainer == null)
 		{
 			return null;
@@ -790,13 +803,13 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public int getFriendsCount()
 	{
-		final RSFriendManager friendManager = getFriendManager();
+		final RSFriendSystem friendManager = getFriendManager();
 		if (friendManager == null)
 		{
 			return -1;
 		}
 
-		final RSFriendContainer friendContainer = friendManager.getFriendContainer();
+		final RSFriendsList friendContainer = friendManager.getFriendContainer();
 		if (friendContainer == null)
 		{
 			return -1;
@@ -809,13 +822,13 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public Ignore[] getIgnores()
 	{
-		final RSFriendManager friendManager = getFriendManager();
+		final RSFriendSystem friendManager = getFriendManager();
 		if (friendManager == null)
 		{
 			return null;
 		}
 
-		final RSIgnoreContainer ignoreContainer = friendManager.getIgnoreContainer();
+		final RSIgnoreList ignoreContainer = friendManager.getIgnoreContainer();
 		if (ignoreContainer == null)
 		{
 			return null;
@@ -829,13 +842,13 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public int getIgnoreCount()
 	{
-		final RSFriendManager friendManager = getFriendManager();
+		final RSFriendSystem friendManager = getFriendManager();
 		if (friendManager == null)
 		{
 			return -1;
 		}
 
-		final RSIgnoreContainer ignoreContainer = friendManager.getIgnoreContainer();
+		final RSIgnoreList ignoreContainer = friendManager.getIgnoreContainer();
 		if (ignoreContainer == null)
 		{
 			return -1;
@@ -848,11 +861,11 @@ public abstract class RSClientMixin implements RSClient
 	@Override
 	public boolean isClanMember(String name)
 	{
-		final RSClanMemberManager clanMemberManager = getClanMemberManager();
+		final RSClanChat clanMemberManager = getClanMemberManager();
 		return clanMemberManager != null && clanMemberManager.isMember(createName(name, getLoginType()));
 	}
 
-	@FieldHook("draggingWidget")
+	@FieldHook("clickedWidget")
 	@Inject
 	public static void draggingWidgetChanged(int idx)
 	{
@@ -863,7 +876,7 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public SpritePixels createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale)
+	public Sprite createItemSprite(int itemId, int quantity, int border, int shadowColor, int stackable, boolean noted, int scale)
 	{
 		assert isClientThread();
 		int zoom = get3dZoom();
@@ -900,7 +913,7 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@FieldHook("itemPressedDuration")
+	@FieldHook("itemDragDuration")
 	@Inject
 	public static void itemPressedDurationChanged(int idx)
 	{
@@ -922,7 +935,7 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@FieldHook("skillExperiences")
+	@FieldHook("experience")
 	@Inject
 	public static void experiencedChanged(int idx)
 	{
@@ -938,7 +951,7 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@FieldHook("boostedSkillLevels")
+	@FieldHook("currentLevels")
 	@Inject
 	public static void boostedSkillLevelsChanged(int idx)
 	{
@@ -953,13 +966,13 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@FieldHook("playerOptions")
+	@FieldHook("playerMenuActions")
 	@Inject
 	public static void playerOptionsChanged(int idx)
 	{
 		// Reset the menu type
 		MenuAction[] playerActions = {PLAYER_FIRST_OPTION, PLAYER_SECOND_OPTION, PLAYER_THIRD_OPTION, PLAYER_FOURTH_OPTION,
-			PLAYER_FIFTH_OPTION, PLAYER_SIXTH_OPTION, PLAYER_SEVENTH_OPTION, PLAYER_EIGTH_OPTION};
+				PLAYER_FIFTH_OPTION, PLAYER_SIXTH_OPTION, PLAYER_SEVENTH_OPTION, PLAYER_EIGTH_OPTION};
 		if (idx >= 0 && idx < playerActions.length)
 		{
 			MenuAction playerAction = playerActions[idx];
@@ -981,7 +994,7 @@ public abstract class RSClientMixin implements RSClient
 	}
 
 
-	@FieldHook("cachedNPCs")
+	@FieldHook("npcs")
 	@Inject
 	public static void cachedNPCsChanged(int idx)
 	{
@@ -1000,7 +1013,7 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@FieldHook("cachedPlayers")
+	@FieldHook("players")
 	@Inject
 	public static void cachedPlayersChanged(int idx)
 	{
@@ -1046,7 +1059,7 @@ public abstract class RSClientMixin implements RSClient
 		client.getCallbacks().post(offerChangedEvent);
 	}
 
-	@FieldHook("clientVarps")
+	@FieldHook("Varps_main")
 	@Inject
 	public static void settingsChanged(int idx)
 	{
@@ -1055,7 +1068,7 @@ public abstract class RSClientMixin implements RSClient
 		client.getCallbacks().post(varbitChanged);
 	}
 
-	@FieldHook("isResized")
+	@FieldHook("isResizable")
 	@Inject
 	public static void resizeChanged(int idx)
 	{
@@ -1072,7 +1085,7 @@ public abstract class RSClientMixin implements RSClient
 		}
 	}
 
-	@FieldHook("clanMemberManager")
+	@FieldHook("clanChat")
 	@Inject
 	public static void clanMemberManagerChanged(int idx)
 	{
@@ -1221,6 +1234,11 @@ public abstract class RSClientMixin implements RSClient
 	@Replace("menuAction")
 	static void rl$menuAction(int actionParam, int widgetId, int menuAction, int id, String menuOption, String menuTarget, int var6, int var7)
 	{
+		if (printMenuActions && client.getLogger().isDebugEnabled())
+		{
+			client.getLogger().debug("Menuaction: {} {} {} {} {} {} {} {}", actionParam, widgetId, menuAction, id, menuOption, menuTarget, var6, var7);
+		}
+
 		/* Along the way, the RuneScape client may change a menuAction by incrementing it with 2000.
 		 * I have no idea why, but it does. Their code contains the same conditional statement.
 		 */
@@ -1246,7 +1264,7 @@ public abstract class RSClientMixin implements RSClient
 		rs$menuAction(actionParam, widgetId, menuAction, id, menuOption, menuTarget, var6, var7);
 	}
 
-	@FieldHook("username")
+	@FieldHook("Login_username")
 	@Inject
 	public static void onUsernameChanged(int idx)
 	{
@@ -1309,8 +1327,8 @@ public abstract class RSClientMixin implements RSClient
 		}
 
 		// Get the message node which was added
-		Map<Integer, RSChatLineBuffer> chatLineMap = client.getChatLineMap();
-		RSChatLineBuffer chatLineBuffer = chatLineMap.get(type);
+		Map<Integer, RSChatChannel> chatLineMap = client.getChatLineMap();
+		RSChatChannel chatLineBuffer = chatLineMap.get(type);
 		MessageNode messageNode = chatLineBuffer.getLines()[0];
 
 		final ChatMessageType chatMessageType = ChatMessageType.of(type);
@@ -1325,7 +1343,7 @@ public abstract class RSClientMixin implements RSClient
 		callbacks.clientMainLoop();
 	}
 
-	@MethodHook("renderWidgetLayer")
+	@MethodHook("drawWidgetGroup")
 	@Inject
 	public static void renderWidgetLayer(Widget[] widgets, int parentId, int minX, int minY, int maxX, int maxY, int x, int y, int var8)
 	{
@@ -1388,14 +1406,14 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public RSItem getLastItemDespawn()
+	public RSGroundItem getLastItemDespawn()
 	{
 		return lastItemDespawn;
 	}
 
 	@Inject
 	@Override
-	public void setLastItemDespawn(RSItem lastItemDespawn)
+	public void setLastItemDespawn(RSGroundItem lastItemDespawn)
 	{
 		RSClientMixin.lastItemDespawn = lastItemDespawn;
 	}
@@ -1426,9 +1444,9 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public RSSpritePixels[] getSprites(IndexDataBase source, int archiveId, int fileId)
+	public RSSprite[] getSprites(IndexDataBase source, int archiveId, int fileId)
 	{
-		RSIndexDataBase rsSource = (RSIndexDataBase) source;
+		RSAbstractIndexCache rsSource = (RSAbstractIndexCache) source;
 		byte[] configData = rsSource.getConfigData(archiveId, fileId);
 		if (configData == null)
 		{
@@ -1442,12 +1460,12 @@ public abstract class RSClientMixin implements RSClient
 		int maxHeight = getIndexedSpriteHeight();
 		int[] offsetX = getIndexedSpriteOffsetXs();
 		int[] offsetY = getIndexedSpriteOffsetYs();
-		int[] widths = getIndexSpriteWidths();
+		int[] widths = getIndexedSpriteWidths();
 		int[] heights = getIndexedSpriteHeights();
 		byte[][] spritePixelsArray = getSpritePixels();
 		int[] indexedSpritePalette = getIndexedSpritePalette();
 
-		RSSpritePixels[] array = new RSSpritePixels[indexedSpriteCount];
+		RSSprite[] array = new RSSprite[indexedSpriteCount];
 
 		for (int i = 0; i < indexedSpriteCount; ++i)
 		{
@@ -1457,7 +1475,7 @@ public abstract class RSClientMixin implements RSClient
 			byte[] pixelArray = spritePixelsArray[i];
 			int[] pixels = new int[width * height];
 
-			RSSpritePixels spritePixels = createSpritePixels(pixels, width, height);
+			RSSprite spritePixels = createSprite(pixels, width, height);
 			spritePixels.setMaxHeight(maxHeight);
 			spritePixels.setMaxWidth(maxWidth);
 			spritePixels.setOffsetX(offsetX[i]);
@@ -1473,12 +1491,24 @@ public abstract class RSClientMixin implements RSClient
 
 		setIndexedSpriteOffsetXs(null);
 		setIndexedSpriteOffsetYs(null);
-		setIndexSpriteWidths(null);
+		setIndexedSpriteWidths(null);
 		setIndexedSpriteHeights(null);
-		setIndexSpritePalette(null);
+		setIndexedSpritePalette(null);
 		setSpritePixels(null);
 
 		return array;
+	}
+
+	@Inject
+	@Override
+	public byte[][] getSpritePixels() {
+		return spritePixels;
+	}
+
+	@Inject
+	@Override
+	public void setSpritePixels(byte[][] sprites) {
+		spritePixels = sprites;
 	}
 
 	@Inject
@@ -1536,18 +1566,18 @@ public abstract class RSClientMixin implements RSClient
 
 	@Inject
 	@Override
-	public EnumComposition getEnum(int id)
+	public EnumDefinition getEnum(int id)
 	{
 		assert isClientThread() : "getEnum must be called on client thread";
 
-		RSEnum rsEnum = enumCache.getIfPresent(id);
-		if (rsEnum != null)
+		RSEnumDefinition rsEnumDefinition = enumCache.getIfPresent(id);
+		if (rsEnumDefinition != null)
 		{
-			return rsEnum;
+			return rsEnumDefinition;
 		}
 
-		rsEnum = getRsEnum(id);
-		enumCache.put(id, rsEnum);
-		return rsEnum;
+		rsEnumDefinition = getRsEnum(id);
+		enumCache.put(id, rsEnumDefinition);
+		return rsEnumDefinition;
 	}
 }

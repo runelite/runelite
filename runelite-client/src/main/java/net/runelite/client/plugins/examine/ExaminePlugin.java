@@ -36,7 +36,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
@@ -199,26 +199,26 @@ public class ExaminePlugin extends Plugin
 		log.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
 
 		// If it is an item, show the price of it
-		final ItemComposition itemComposition;
+		final ItemDefinition ItemDefinition;
 		if (pendingExamine.getType() == ExamineType.ITEM || pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
 		{
 			final int itemId = pendingExamine.getId();
 			final int itemQuantity = pendingExamine.getQuantity();
-			itemComposition = itemManager.getItemComposition(itemId);
+			ItemDefinition = itemManager.getItemDefinition(itemId);
 
-			if (itemComposition != null)
+			if (ItemDefinition != null)
 			{
-				final int id = itemManager.canonicalize(itemComposition.getId());
-				executor.submit(() -> getItemPrice(id, itemComposition, itemQuantity));
+				final int id = itemManager.canonicalize(ItemDefinition.getId());
+				executor.submit(() -> getItemPrice(id, ItemDefinition, itemQuantity));
 			}
 		}
 		else
 		{
-			itemComposition = null;
+			ItemDefinition = null;
 		}
 
 		// Don't submit examine info for tradeable items, which we already have from the RS item api
-		if (itemComposition != null && itemComposition.isTradeable())
+		if (ItemDefinition != null && ItemDefinition.isTradeable())
 		{
 			return;
 		}
@@ -316,13 +316,13 @@ public class ExaminePlugin extends Plugin
 		return null;
 	}
 
-	private void getItemPrice(int id, ItemComposition itemComposition, int quantity)
+	private void getItemPrice(int id, ItemDefinition ItemDefinition, int quantity)
 	{
 		// quantity is at least 1
 		quantity = Math.max(1, quantity);
-		int itemCompositionPrice = itemComposition.getPrice();
+		int ItemDefinitionPrice = ItemDefinition.getPrice();
 		final int gePrice = itemManager.getItemPrice(id);
-		final int alchPrice = itemCompositionPrice <= 0 ? 0 : itemManager.getAlchValue(itemComposition);
+		final int alchPrice = ItemDefinitionPrice <= 0 ? 0 : itemManager.getAlchValue(ItemDefinition);
 
 		if (gePrice > 0 || alchPrice > 0)
 		{
@@ -339,7 +339,7 @@ public class ExaminePlugin extends Plugin
 			}
 
 			message
-				.append(itemComposition.getName())
+				.append(ItemDefinition.getName())
 				.append(ChatColorType.NORMAL)
 				.append(":");
 

@@ -260,5 +260,5 @@ public enum VarPlayer
 
 
 
-	private final int id;
+	public final int id;
 }

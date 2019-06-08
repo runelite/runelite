@@ -34,7 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.components.PluginErrorPanel;
 
@@ -103,7 +103,7 @@ public class GrandExchangeOffersPanel extends JPanel
 		updateEmptyOffersPanel();
 	}
 
-	void updateOffer(ItemComposition item, BufferedImage itemImage, GrandExchangeOffer newOffer, int slot)
+	void updateOffer(ItemDefinition item, BufferedImage itemImage, GrandExchangeOffer newOffer, int slot)
 	{
 		/* If slot was previously filled, and is now empty, remove it from the list */
 		if (newOffer == null || newOffer.getState() == GrandExchangeOfferState.EMPTY)

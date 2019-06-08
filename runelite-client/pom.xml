@@ -206,6 +206,11 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>net.runelite.rs</groupId>
+			<artifactId>runescape-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>net.runelit</groupId>
 			<artifactId>client-patch</artifactId>
 			<version>1.5.26.2</version>

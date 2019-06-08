@@ -28,7 +28,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.kit.KitType;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.ui.ColorScheme;
@@ -37,7 +37,7 @@ import org.apache.commons.lang3.StringUtils;
 
 class ItemPanel extends JPanel
 {
-	ItemPanel(ItemComposition item, KitType kitType, AsyncBufferedImage icon)
+	ItemPanel(ItemDefinition item, KitType kitType, AsyncBufferedImage icon)
 	{
 
 		setBorder(new EmptyBorder(3, 3, 3, 3));

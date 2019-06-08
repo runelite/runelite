@@ -41,7 +41,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -375,7 +375,7 @@ public class InventorySetupPlugin extends Plugin
 				String itemName = "";
 				if (client.isClientThread())
 				{
-					itemName = itemManager.getItemComposition(item.getId()).getName();
+					itemName = itemManager.getItemDefinition(item.getId()).getName();
 				}
 				newContainer.add(new InventorySetupItem(item.getId(), itemName, item.getQuantity()));
 			}
@@ -415,11 +415,11 @@ public class InventorySetupPlugin extends Plugin
 		for (InventorySetupItem item : items)
 		{
 			int id = item.getId();
-			ItemComposition itemComposition = itemManager.getItemComposition(id);
+			ItemDefinition ItemDefinition = itemManager.getItemDefinition(id);
 			if (id > 0)
 			{
 				itemIds.add(ItemVariationMapping.map(id));
-				itemIds.add(itemComposition.getPlaceholderId());
+				itemIds.add(ItemDefinition.getPlaceholderId());
 			}
 
 		}

@@ -36,7 +36,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.VarClientInt;
 import net.runelite.client.game.ItemManager;
@@ -186,7 +186,7 @@ class InventoryViewerOverlay extends Overlay
 
 	private BufferedImage getImage(Item item)
 	{
-		ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
-		return itemManager.getImage(item.getId(), item.getQuantity(), itemComposition.isStackable());
+		ItemDefinition ItemDefinition = itemManager.getItemDefinition(item.getId());
+		return itemManager.getImage(item.getId(), item.getQuantity(), ItemDefinition.isStackable());
 	}
 }

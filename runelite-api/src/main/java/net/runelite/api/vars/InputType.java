@@ -24,9 +24,9 @@
  */
 package net.runelite.api.vars;
 
+import net.runelite.api.VarClientInt;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.VarClientInt;
 
 /**
  * An enumeration of input types for {@link VarClientInt#INPUT_TYPE}.

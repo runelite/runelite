@@ -128,7 +128,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.GraphicID;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.SkullIcon;
@@ -213,7 +213,7 @@ public class IdleNotifierPlugin extends Plugin
 			return;
 		}
 
-		int graphic = localPlayer.getGraphic();
+		int graphic = localPlayer.getSpotAnimation();
 		int animation = localPlayer.getAnimation();
 		switch (animation)
 		{
@@ -390,7 +390,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 
 		final NPC npc = (NPC) target;
-		final NPCComposition npcComposition = npc.getComposition();
+		final NPCDefinition npcComposition = npc.getDefinition();
 		final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
 
 		if (npcMenuActions.contains("Attack"))
@@ -471,7 +471,7 @@ public class IdleNotifierPlugin extends Plugin
 			return;
 		}
 
-		if (actor.getGraphic() == GraphicID.SPLASH)
+		if (actor.getSpotAnimation() == GraphicID.SPLASH)
 		{
 			lastCombatCountdown = HIGHEST_MONSTER_ATTACK_SPEED;
 		}

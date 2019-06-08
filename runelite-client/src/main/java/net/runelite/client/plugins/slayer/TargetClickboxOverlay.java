@@ -35,7 +35,7 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
@@ -102,7 +102,7 @@ public class TargetClickboxOverlay extends Overlay
 
 			case TILE:
 				int size = 1;
-				NPCComposition composition = actor.getTransformedComposition();
+				NPCDefinition composition = actor.getTransformedDefinition();
 				if (composition != null)
 				{
 					size = composition.getSize();
@@ -135,7 +135,7 @@ public class TargetClickboxOverlay extends Overlay
 				break;
 			case TRUE_LOCATIONS:
 				size = 1;
-				composition = actor.getTransformedComposition();
+				composition = actor.getTransformedDefinition();
 				if (composition != null)
 				{
 					size = composition.getSize();

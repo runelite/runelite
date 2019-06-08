@@ -26,8 +26,10 @@ package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
 import java.util.Collection;
+
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.Point;
+import net.runelite.api.SpriteID;
 
 /**
  * Represents an on-screen UI element that is drawn on the canvas.
@@ -252,7 +254,7 @@ public interface Widget
 	 * Gets the sprite ID displayed in the widget.
 	 *
 	 * @return the sprite ID
-	 * @see net.runelite.api.SpriteID
+	 * @see SpriteID
 	 */
 	int getSpriteId();
 
@@ -260,7 +262,7 @@ public interface Widget
 	 * Sets the sprite ID displayed in the widget.
 	 *
 	 * @param spriteId the sprite ID
-	 * @see net.runelite.api.SpriteID
+	 * @see SpriteID
 	 */
 	void setSpriteId(int spriteId);
 
@@ -306,7 +308,7 @@ public interface Widget
 	/**
 	 * Gets the width of the widget.
 	 * <p>
-	 * If this widget is storing any {@link WidgetItem}s, this value is
+	 * If this widget is storing any {@link // WidgetItem}s, this value is
 	 * used to store the number of item slot columns.
 	 *
 	 * @return the width

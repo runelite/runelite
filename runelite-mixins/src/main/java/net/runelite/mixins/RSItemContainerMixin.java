@@ -31,13 +31,13 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSItem;
+import net.runelite.rs.api.RSGroundItem;
 import net.runelite.rs.api.RSItemContainer;
 
 @Mixin(RSItemContainer.class)
 public abstract class RSItemContainerMixin implements RSItemContainer
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Inject
@@ -53,7 +53,7 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 
 		for (int i = 0; i < itemIds.length; ++i)
 		{
-			RSItem item = client.createItem();
+			RSGroundItem item = client.createItem();
 			item.setId(itemIds[i]);
 			item.setQuantity(stackSizes[i]);
 			items[i] = item;
@@ -62,7 +62,7 @@ public abstract class RSItemContainerMixin implements RSItemContainer
 		return items;
 	}
 
-	@FieldHook("stackSizes")
+	@FieldHook("quantities")
 	@Inject
 	public void stackSizesChanged(int idx)
 	{

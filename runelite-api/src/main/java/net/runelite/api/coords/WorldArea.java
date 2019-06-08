@@ -24,16 +24,16 @@
  */
 package net.runelite.api.coords;
 
+import net.runelite.api.Client;
+import net.runelite.api.CollisionData;
+import net.runelite.api.CollisionDataFlag;
+import net.runelite.api.Point;
+import net.runelite.api.Tile;
+import net.runelite.api.config.Constants;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.CollisionData;
-import net.runelite.api.CollisionDataFlag;
-import net.runelite.api.Constants;
-import net.runelite.api.Point;
-import net.runelite.api.Tile;
 
 /**
  * Represents an area on the world.
@@ -208,7 +208,7 @@ public class WorldArea
 	 * Note that this method does not consider other actors as
 	 * a collision, but most non-boss NPCs do check for collision
 	 * with some actors. For actor collision checking, use the
-	 * {@link #canTravelInDirection(Client, int, int, Predicate)} method.
+	 * {@link #canTravelInDirection(Client, int, int, java.util.function.Predicate)} method.
 	 *
 	 * @param client the client to test in
 	 * @param dx the x-axis direction to travel (-1, 0, or 1)

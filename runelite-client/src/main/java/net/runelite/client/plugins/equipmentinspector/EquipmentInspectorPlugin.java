@@ -41,7 +41,7 @@ import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.kit.KitType;
@@ -179,7 +179,7 @@ public class EquipmentInspectorPlugin extends Plugin
 					Prot3 = 0;
 					Prot4 = 0;
 					Player p = targetPlayer.get();
-					Map<KitType, ItemComposition> playerEquipment = new HashMap<>();
+					Map<KitType, ItemDefinition> playerEquipment = new HashMap<>();
 
 					for (KitType kitType : KitType.values())
 					{
@@ -192,11 +192,11 @@ public class EquipmentInspectorPlugin extends Plugin
 							continue;
 						}
 
-						int itemId = p.getPlayerComposition().getEquipmentId(kitType);
+						int itemId = p.getPlayerAppearance().getEquipmentId(kitType);
 						if (itemId != -1)
 						{
-							ItemComposition itemComposition = client.getItemDefinition(itemId);
-							playerEquipment.put(kitType, itemComposition);
+							ItemDefinition ItemDefinition = client.getItemDefinition(itemId);
+							playerEquipment.put(kitType, ItemDefinition);
 							int ItemPrice = itemManager.getItemPrice(itemId);
 							TotalPrice += ItemPrice;
 							if (ItemPrice > Prot1)

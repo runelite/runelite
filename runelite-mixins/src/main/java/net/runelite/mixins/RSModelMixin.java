@@ -24,31 +24,31 @@
  */
 package net.runelite.mixins;
 
-import java.awt.Polygon;
-import java.util.ArrayList;
-import java.util.List;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.model.Jarvis;
+import net.runelite.api.model.Triangle;
+import net.runelite.api.model.Vertex;
+import java.awt.Polygon;
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.MethodHook;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.api.mixins.Replace;
 import net.runelite.api.mixins.Shadow;
-import net.runelite.api.model.Jarvis;
-import net.runelite.api.model.Triangle;
-import net.runelite.api.model.Vertex;
+import net.runelite.rs.api.RSAnimation;
 import net.runelite.rs.api.RSClient;
-import net.runelite.rs.api.RSFrame;
-import net.runelite.rs.api.RSFrameMap;
 import net.runelite.rs.api.RSFrames;
 import net.runelite.rs.api.RSModel;
+import net.runelite.rs.api.RSSkeleton;
 
 @Mixin(RSModel.class)
 public abstract class RSModelMixin implements RSModel
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Inject
@@ -65,6 +65,12 @@ public abstract class RSModelMixin implements RSModel
 
 	@Inject
 	private float[][] rl$faceTextureVCoordinates;
+
+	@Inject
+	public void rl$init(Model[] models, int length)
+	{
+		rl$init((RSModel[]) models, length);
+	}
 
 	@MethodHook(value = "<init>", end = true)
 	@Inject
@@ -194,9 +200,9 @@ public abstract class RSModelMixin implements RSModel
 		{
 			if (frameId != -1)
 			{
-				RSFrame frame = frames.getFrames()[frameId];
-				RSFrameMap skin = frame.getSkin();
-				RSFrame nextFrame = null;
+				RSAnimation frame = frames.getFrames()[frameId];
+				RSSkeleton skin = frame.getSkin();
+				RSAnimation nextFrame = null;
 				if (nextFrames != null)
 				{
 					nextFrame = nextFrames.getFrames()[nextFrameId];
@@ -217,7 +223,7 @@ public abstract class RSModelMixin implements RSModel
 	}
 
 	@Inject
-	public void interpolateFrames(RSFrameMap skin, RSFrame frame, RSFrame nextFrame, int interval, int intervalCount)
+	public void interpolateFrames(RSSkeleton skin, RSAnimation frame, RSAnimation nextFrame, int interval, int intervalCount)
 	{
 		if (nextFrame == null || interval == 0)
 		{
@@ -226,7 +232,7 @@ public abstract class RSModelMixin implements RSModel
 			{
 				int type = frame.getTransformTypes()[i];
 				this.animate(skin.getTypes()[type], skin.getList()[type], frame.getTranslatorX()[i],
-						frame.getTranslatorY()[i], frame.getTranslatorZ()[i]);
+					frame.getTranslatorY()[i], frame.getTranslatorZ()[i]);
 			}
 		}
 		else
@@ -237,13 +243,13 @@ public abstract class RSModelMixin implements RSModel
 			{
 				boolean frameValid = false;
 				if (transformIndex < frame.getTransformCount()
-						&& frame.getTransformTypes()[transformIndex] == i)
+					&& frame.getTransformTypes()[transformIndex] == i)
 				{
 					frameValid = true;
 				}
 				boolean nextFrameValid = false;
 				if (nextTransformIndex < nextFrame.getTransformCount()
-						&& nextFrame.getTransformTypes()[nextTransformIndex] == i)
+					&& nextFrame.getTransformTypes()[nextTransformIndex] == i)
 				{
 					nextFrameValid = true;
 				}

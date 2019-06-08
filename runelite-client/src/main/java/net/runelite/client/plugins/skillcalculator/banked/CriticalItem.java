@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import lombok.Getter;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.client.game.ItemManager;
@@ -296,7 +296,7 @@ public enum CriticalItem
 	private boolean ignoreBonus;
 
 	@Getter
-	private ItemComposition composition;
+	private ItemDefinition composition;
 
 	CriticalItem(int itemID, String category, Skill skill, int linkedItem)
 	{
@@ -401,11 +401,11 @@ public enum CriticalItem
 	 *
 	 * @param m ItemManager
 	 */
-	public static void prepareItemCompositions(ItemManager m)
+	public static void prepareItemDefinitions(ItemManager m)
 	{
 		for (CriticalItem i : values())
 		{
-			i.composition = m.getItemComposition(i.getItemID());
+			i.composition = m.getItemDefinition(i.getItemID());
 		}
 	}
 

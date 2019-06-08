@@ -31,7 +31,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
@@ -178,11 +178,11 @@ class ItemPricesOverlay extends Overlay
 			return StackFormatter.formatNumber(qty * 1000) + " gp";
 		}
 
-		ItemComposition itemDef = itemManager.getItemComposition(id);
+		ItemDefinition itemDef = itemManager.getItemDefinition(id);
 		if (itemDef.getNote() != -1)
 		{
 			id = itemDef.getLinkedNoteId();
-			itemDef = itemManager.getItemComposition(id);
+			itemDef = itemManager.getItemDefinition(id);
 		}
 
 		// Only check prices for things with store prices

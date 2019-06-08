@@ -35,7 +35,7 @@ import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -101,7 +101,7 @@ public class StatusBarsPlugin extends Plugin
 		if (isNpc)
 		{
 			final NPC npc = (NPC) interacting;
-			final NPCComposition npcComposition = npc.getComposition();
+			final NPCDefinition npcComposition = npc.getDefinition();
 			final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
 			if (npcMenuActions.contains("Attack") && config.toggleRestorationBars())
 			{

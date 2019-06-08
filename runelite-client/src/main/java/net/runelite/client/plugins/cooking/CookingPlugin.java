@@ -126,7 +126,7 @@ public class CookingPlugin extends Plugin
 		{
 			return;
 		}
-
+/*TODO FIXME
 		if (player.getGraphic() == GraphicID.WINE_MAKE && config.fermentTimer())
 		{
 			Optional<FermentTimer> fermentTimerOpt = infoBoxManager.getInfoBoxes().stream()
@@ -145,6 +145,7 @@ public class CookingPlugin extends Plugin
 				infoBoxManager.addInfoBox(fermentTimer);
 			}
 		}
+		*/
 	}
 
 	@Subscribe

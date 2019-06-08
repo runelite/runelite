@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.multiindicators;
 
+import api.geometry.Geometry;
 import com.google.inject.Provides;
 import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
@@ -33,7 +34,8 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
-import net.runelite.api.ObjectComposition;
+import net.runelite.api.NPCDefinition;
+import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
@@ -43,7 +45,6 @@ import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.geometry.Geometry;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -152,7 +153,7 @@ public class MultiIndicatorsPlugin extends Plugin
 			return false;
 		}
 
-		ObjectComposition objectComposition = client.getObjectDefinition(wallObject.getId());
+		ObjectDefinition objectComposition = client.getObjectDefinition(wallObject.getId());
 		if (objectComposition == null)
 		{
 			return false;

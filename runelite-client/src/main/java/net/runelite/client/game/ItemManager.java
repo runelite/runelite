@@ -47,7 +47,7 @@ import net.runelite.api.Client;
 import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import static net.runelite.api.Constants.HIGH_ALCHEMY_CONSTANT;
 import net.runelite.api.GameState;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_CAPE;
 import static net.runelite.api.ItemID.AGILITY_CAPET;
@@ -159,9 +159,9 @@ import static net.runelite.api.ItemID.SPOTTED_CAPE;
 import static net.runelite.api.ItemID.SPOTTED_CAPE_10073;
 import static net.runelite.api.ItemID.SPOTTIER_CAPE;
 import static net.runelite.api.ItemID.SPOTTIER_CAPE_10074;
-import net.runelite.api.SpritePixels;
+import net.runelite.api.Sprite;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.PostItemComposition;
+import net.runelite.api.events.PostItemDefinition;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.http.api.item.ItemClient;
@@ -196,7 +196,7 @@ public class ItemManager
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
 	private final LoadingCache<ImageKey, AsyncBufferedImage> itemImages;
-	private final LoadingCache<Integer, ItemComposition> itemCompositions;
+	private final LoadingCache<Integer, ItemDefinition> ItemDefinitions;
 	private final LoadingCache<OutlineKey, BufferedImage> itemOutlines;
 
 	// Worn items with weight reducing property have a different worn and inventory ItemID
@@ -284,13 +284,13 @@ public class ItemManager
 				}
 			});
 
-		itemCompositions = CacheBuilder.newBuilder()
+		ItemDefinitions = CacheBuilder.newBuilder()
 			.maximumSize(1024L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new CacheLoader<Integer, ItemComposition>()
+			.build(new CacheLoader<Integer, ItemDefinition>()
 			{
 				@Override
-				public ItemComposition load(Integer key) throws Exception
+				public ItemDefinition load(Integer key) throws Exception
 				{
 					return client.getItemDefinition(key);
 				}
@@ -356,24 +356,24 @@ public class ItemManager
 	{
 		if (event.getGameState() == GameState.HOPPING || event.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			itemCompositions.invalidateAll();
+			ItemDefinitions.invalidateAll();
 		}
 	}
 
 	@Subscribe
-	public void onPostItemComposition(PostItemComposition event)
+	public void onPostItemDefinition(PostItemDefinition event)
 	{
-		itemCompositions.put(event.getItemComposition().getId(), event.getItemComposition());
+		ItemDefinitions.put(event.getItemDefinition().getId(), event.getItemDefinition());
 	}
 
 	/**
 	 * Invalidates internal item manager item composition cache (but not client item composition cache)
 	 *
-	 * @see Client#getItemCompositionCache()
+	 * @see Client#getItemDefinitionCache()
 	 */
-	public void invalidateItemCompositionCache()
+	public void invalidateItemDefinitionCache()
 	{
-		itemCompositions.invalidateAll();
+		ItemDefinitions.invalidateAll();
 	}
 
 	/**
@@ -412,7 +412,7 @@ public class ItemManager
 		return price;
 	}
 
-	public int getAlchValue(ItemComposition composition)
+	public int getAlchValue(ItemDefinition composition)
 	{
 		if (composition.getId() == ItemID.COINS_995)
 		{
@@ -437,7 +437,7 @@ public class ItemManager
 			return 1000;
 		}
 
-		return (int) Math.max(1, getItemComposition(itemID).getPrice() * HIGH_ALCHEMY_CONSTANT);
+		return (int) Math.max(1, getItemDefinition(itemID).getPrice() * HIGH_ALCHEMY_CONSTANT);
 	}
 
 	/**
@@ -449,9 +449,9 @@ public class ItemManager
 	@Nullable
 	public ItemStats getItemStats(int itemId, boolean allowNote)
 	{
-		ItemComposition itemComposition = getItemComposition(itemId);
+		ItemDefinition ItemDefinition = getItemDefinition(itemId);
 
-		if (itemComposition == null || itemComposition.getName() == null || (!allowNote && itemComposition.getNote() != -1))
+		if (ItemDefinition == null || ItemDefinition.getName() == null || (!allowNote && ItemDefinition.getNote() != -1))
 		{
 			return null;
 		}
@@ -487,10 +487,10 @@ public class ItemManager
 	 * @param itemId item id
 	 * @return item composition
 	 */
-	public ItemComposition getItemComposition(int itemId)
+	public ItemDefinition getItemDefinition(int itemId)
 	{
-		assert client.isClientThread() : "getItemComposition must be called on client thread";
-		return itemCompositions.getUnchecked(itemId);
+		assert client.isClientThread() : "getItemDefinition must be called on client thread";
+		return ItemDefinitions.getUnchecked(itemId);
 	}
 
 	/**
@@ -498,16 +498,16 @@ public class ItemManager
 	 */
 	public int canonicalize(int itemID)
 	{
-		ItemComposition itemComposition = getItemComposition(itemID);
+		ItemDefinition ItemDefinition = getItemDefinition(itemID);
 
-		if (itemComposition.getNote() != -1)
+		if (ItemDefinition.getNote() != -1)
 		{
-			return itemComposition.getLinkedNoteId();
+			return ItemDefinition.getLinkedNoteId();
 		}
 
-		if (itemComposition.getPlaceholderTemplateId() != -1)
+		if (ItemDefinition.getPlaceholderTemplateId() != -1)
 		{
-			return itemComposition.getPlaceholderId();
+			return ItemDefinition.getPlaceholderId();
 		}
 
 		return WORN_ITEMS.getOrDefault(itemID, itemID);
@@ -528,7 +528,7 @@ public class ItemManager
 			{
 				return false;
 			}
-			SpritePixels sprite = client.createItemSprite(itemId, quantity, 1, SpritePixels.DEFAULT_SHADOW_COLOR,
+			Sprite sprite = client.createItemSprite(itemId, quantity, 1, Sprite.DEFAULT_SHADOW_COLOR,
 				stackable ? 1 : 0, false, CLIENT_DEFAULT_ZOOM);
 			if (sprite == null)
 			{
@@ -589,7 +589,7 @@ public class ItemManager
 	 */
 	private BufferedImage loadItemOutline(final int itemId, final int itemQuantity, final Color outlineColor)
 	{
-		final SpritePixels itemSprite = client.createItemSprite(itemId, itemQuantity, 1, 0, 0, true, 710);
+		final Sprite itemSprite = client.createItemSprite(itemId, itemQuantity, 1, 0, 0, true, 710);
 		return itemSprite.toBufferedOutline(outlineColor);
 	}
 
