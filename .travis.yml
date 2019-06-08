@@ -1,0 +1,11 @@
+language: java
+sudo: false
+dist: xenial
+cache:
+  directories:
+    - $HOME/.m2
+jdk:
+- openjdk8
+- openjdk11
+install: true
+script: ./travis/build.sh

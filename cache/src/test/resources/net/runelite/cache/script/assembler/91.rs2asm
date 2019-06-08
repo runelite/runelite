@@ -1,0 +1,122 @@
+.id                 91
+.int_stack_count    2
+.string_stack_count 1
+.int_var_count      2
+.string_var_count   1
+   iload                  0
+   switch                
+      3: LABEL20
+      5: LABEL54
+      6: LABEL54
+      7: LABEL3
+   jump                   LABEL84
+LABEL3:
+   iload                  1
+   get_varc_int           175
+   if_icmplt              LABEL7
+   jump                   LABEL9
+LABEL7:
+   iconst                 0
+   return                
+LABEL9:
+   sload                  0
+   removetags            
+   ignore_test           
+   iconst                 1
+   if_icmpeq              LABEL15
+   jump                   LABEL17
+LABEL15:
+   iconst                 0
+   return                
+LABEL17:
+   iconst                 1
+   return                
+   jump                   LABEL84
+LABEL20:
+   iload                  1
+   get_varc_int           175
+   if_icmplt              LABEL24
+   jump                   LABEL26
+LABEL24:
+   iconst                 0
+   return                
+LABEL26:
+   sload                  0
+   removetags            
+   ignore_test           
+   iconst                 1
+   if_icmpeq              LABEL32
+   jump                   LABEL34
+LABEL32:
+   iconst                 0
+   return                
+LABEL34:
+   chat_getfilter_private
+   iconst                 0
+   if_icmpeq              LABEL38
+   jump                   LABEL40
+LABEL38:
+   iconst                 1
+   return                
+LABEL40:
+   chat_getfilter_private
+   iconst                 1
+   if_icmpeq              LABEL44
+   jump                   LABEL51
+LABEL44:
+   sload                  0
+   friend_test           
+   iconst                 1
+   if_icmpeq              LABEL49
+   jump                   LABEL51
+LABEL49:
+   iconst                 1
+   return                
+LABEL51:
+   iconst                 0
+   return                
+   jump                   LABEL84
+LABEL54:
+   iload                  1
+   get_varc_int           175
+   if_icmplt              LABEL58
+   jump                   LABEL60
+LABEL58:
+   iconst                 0
+   return                
+LABEL60:
+   iload                  0
+   iconst                 5
+   if_icmpeq              LABEL64
+   jump                   LABEL76
+LABEL64:
+   get_varbit             1627
+   iconst                 0
+   if_icmpeq              LABEL68
+   jump                   LABEL76
+LABEL68:
+   clientclock           
+   iload                  1
+   sub                   
+   iconst                 500
+   if_icmpge              LABEL74
+   jump                   LABEL76
+LABEL74:
+   iconst                 0
+   return                
+LABEL76:
+   chat_getfilter_private
+   iconst                 2
+   if_icmpne              LABEL80
+   jump                   LABEL82
+LABEL80:
+   iconst                 1
+   return                
+LABEL82:
+   iconst                 0
+   return                
+LABEL84:
+   iconst                 0
+   return                
+   iconst                 -1
+   return                
