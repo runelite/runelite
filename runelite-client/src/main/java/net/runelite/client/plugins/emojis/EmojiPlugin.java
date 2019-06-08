@@ -164,7 +164,7 @@ public class EmojiPlugin extends Plugin
 	@Nullable
 	private String updateMessage(final String message)
 	{
-		final String[] messageWords = message.split(" ");
+		final String[] messageWords = message.split("[\\s\\u00A0]");
 
 		boolean editedMessage = false;
 		for (int i = 0; i < messageWords.length; i++)
