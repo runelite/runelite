@@ -1,60 +1,64 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * BSD 2-Clause License
+ *
+ * Copyright (c) 2019, ThatGamerBlue <thatgamerblue@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *  Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *  Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.rs.api;
 
-import java.util.Map;
 import net.runelite.api.Client;
-import net.runelite.api.SpritePixels;
+import net.runelite.api.Sprite;
 import net.runelite.api.World;
 import net.runelite.api.widgets.Widget;
+import java.util.Map;
 import net.runelite.mapping.Construct;
 import net.runelite.mapping.Import;
 
-public interface RSClient extends RSGameEngine, Client
+public interface RSClient extends RSGameShell, Client
 {
 	@Import("cameraX")
 	@Override
 	int getCameraX();
 
-	@Import("cameraY")
+	@Import("cameraZ") // <--- This is correct!
 	@Override
 	int getCameraY();
 
-	@Import("cameraZ")
+	@Import("cameraY") // <--- This is correct!
 	@Override
 	int getCameraZ();
 
-	@Import("cameraX2")
+	@Import("Scene_cameraX")
 	@Override
 	int getCameraX2();
 
-	@Import("cameraY2")
+	@Import("Scene_cameraY")
 	@Override
 	int getCameraY2();
 
-	@Import("cameraZ2")
+	@Import("Scene_cameraZ")
 	@Override
 	int getCameraZ2();
 
@@ -73,33 +77,33 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getCameraYaw();
 
-	@Import("world")
+	@Import("worldId")
 	int getWorld();
 
-	@Import("FPS")
+	@Import("fps")
 	@Override
 	int getFPS();
 
-	@Import("mapAngle")
+	@Import("minimapOrientation")
 	@Override
 	int getMapAngle();
 
-	@Import("tileHeights")
+	@Import("Tiles_heights")
 	@Override
 	int[][][] getTileHeights();
 
-	@Import("tileSettings")
+	@Import("Tiles_renderFlags")
 	@Override
 	byte[][][] getTileSettings();
 
-	@Import("clientVarps")
+	@Import("Varps_main")
 	@Override
 	int[] getVarps();
 
 	@Import("varcs")
 	RSVarcs getVarcs();
 
-	@Import("energy")
+	@Import("runEnergy")
 	@Override
 	int getEnergy();
 
@@ -115,15 +119,15 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getBaseY();
 
-	@Import("boostedSkillLevels")
+	@Import("currentLevels")
 	@Override
 	int[] getBoostedSkillLevels();
 
-	@Import("realSkillLevels")
+	@Import("levels")
 	@Override
 	int[] getRealSkillLevels();
 
-	@Import("skillExperiences")
+	@Import("experience")
 	@Override
 	int[] getSkillExperiences();
 
@@ -143,33 +147,33 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	void setCheckClick(boolean checkClick);
 
-	@Import("mouseX2")
+	@Import("Scene_selectedScreenX")
 	void setMouseCanvasHoverPositionX(int x);
 
-	@Import("mouseY2")
+	@Import("Scene_selectedScreenY")
 	void setMouseCanvasHoverPositionY(int y);
 
-	@Import("mouseCurrentButton")
+	@Import("MouseHandler_currentButton")
 	@Override
 	int getMouseCurrentButton();
 
-	@Import("selectedSceneTileX")
+	@Import("Scene_selectedX")
 	int getSelectedSceneTileX();
 
-	@Import("selectedSceneTileX")
+	@Import("Scene_selectedX")
 	void setSelectedSceneTileX(int selectedSceneTileX);
 
-	@Import("selectedSceneTileY")
+	@Import("Scene_selectedY")
 	int getSelectedSceneTileY();
 
-	@Import("selectedSceneTileY")
+	@Import("Scene_selectedY")
 	void setSelectedSceneTileY(int selectedSceneTileY);
 
-	@Import("draggingWidget")
+	@Import("isDraggingWidget")
 	@Override
 	boolean isDraggingWidget();
 
-	@Import("draggedWidget")
+	@Import("clickedWidget")
 	@Override
 	RSWidget getDraggedWidget();
 
@@ -189,7 +193,7 @@ public interface RSClient extends RSGameEngine, Client
 	 *
 	 * @param groupId the group ID
 	 * @return the widget group
-	 * @see net.runelite.api.widgets.WidgetID
+	 * @see api.widgets.WidgetID
 	 */
 	RSWidget[] getGroup(int groupId);
 
@@ -201,66 +205,58 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	RSPlayer getLocalPlayer();
 
-	@Import("npcIndexesCount")
+	@Import("npcCount")
 	int getNpcIndexesCount();
 
 	@Import("npcIndices")
 	int[] getNpcIndices();
 
-	@Import("cachedNPCs")
+	@Import("npcs")
 	@Override
 	RSNPC[] getCachedNPCs();
 
 	@Import("collisionMaps")
-	RSCollisionData[] getCollisionMaps();
+	RSCollisionMap[] getCollisionMaps();
 
-	@Import("playerIndexesCount")
+	@Import("Players_count")
 	int getPlayerIndexesCount();
 
-	@Import("playerIndices")
+	@Import("Players_indices")
 	int[] getPlayerIndices();
 
-	@Import("cachedPlayers")
+	@Import("players")
 	@Override
 	RSPlayer[] getCachedPlayers();
 
-	@Import("localInteractingIndex")
+	@Import("combatTargetPlayerIndex")
 	int getLocalInteractingIndex();
 
-	@Import("groundItemDeque")
-	RSDeque[][][] getGroundItemDeque();
+	@Import("groundItems")
+	RSNodeDeque[][][] getGroundItemDeque();
 
 	@Import("projectiles")
-	RSDeque getProjectilesDeque();
+	RSNodeDeque getProjectilesDeque();
 
-	@Import("graphicsObjectDeque")
-	RSDeque getGraphicsObjectDeque();
+	@Import("graphicsObjects")
+	RSNodeDeque getGraphicsObjectDeque();
 
-	@Import("username")
+	@Import("Login_username")
 	@Override
 	String getUsername();
 
-	@Import("username")
+	@Import("Login_username")
 	@Override
 	void setUsername(String username);
 
-	@Import("password")
+	@Import("Login_password")
 	@Override
 	void setPassword(String password);
-
-	@Import("otp")
-	@Override
-	void setOtp(String otp);
 
 	@Import("currentLoginField")
 	@Override
 	int getCurrentLoginField();
 
-	@Import("loginIndex")
-	@Override
-	int getLoginIndex();
-
-	@Import("playerOptions")
+	@Import("playerMenuActions")
 	@Override
 	String[] getPlayerOptions();
 
@@ -268,20 +264,20 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	boolean[] getPlayerOptionsPriorities();
 
-	@Import("playerMenuTypes")
+	@Import("playerMenuOpcodes")
 	@Override
 	int[] getPlayerMenuTypes();
 
-	@Import("mouseX")
+	@Import("MouseHandler_x0")
 	int getMouseX();
 
-	@Import("mouseY")
+	@Import("MouseHandler_y0")
 	int getMouseY();
 
-	@Import("mouseX2")
+	@Import("Scene_selectedScreenX")
 	int getMouseX2();
 
-	@Import("mouseY2")
+	@Import("Scene_selectedScreenY")
 	int getMouseY2();
 
 	@Import("containsBounds")
@@ -290,34 +286,34 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("checkClick")
 	boolean isCheckClick();
 
-	@Import("menuOptionCount")
+	@Import("menuOptionsCount")
 	int getMenuOptionCount();
 
-	@Import("menuOptionCount")
+	@Import("menuOptionsCount")
 	void setMenuOptionCount(int menuOptionCount);
 
-	@Import("menuOptions")
+	@Import("menuActions")
 	String[] getMenuOptions();
 
-	@Import("menuTargets")
+	@Import("menuTargetNames")
 	String[] getMenuTargets();
 
-	@Import("menuIdentifiers")
+	@Import("menuArguments0")
 	int[] getMenuIdentifiers();
 
-	@Import("menuTypes")
+	@Import("menuOpcodes")
 	int[] getMenuTypes();
 
-	@Import("menuActionParams0")
+	@Import("menuArguments1")
 	int[] getMenuActionParams0();
 
-	@Import("menuActionParams1")
+	@Import("menuArguments2")
 	int[] getMenuActionParams1();
 
-	@Import("menuForceLeftClick")
+	@Import("menuShiftClick")
 	boolean[] getMenuForceLeftClick();
 
-	@Import("worldList")
+	@Import("worlds")
 	@Override
 	RSWorld[] getWorldList();
 
@@ -326,13 +322,13 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Override
 	@Import("getObjectDefinition")
-	RSObjectComposition getObjectDefinition(int objectId);
+	RSObjectDefinition getObjectDefinition(int objectId);
 
 	@Override
 	@Import("getNpcDefinition")
-	RSNPCComposition getNpcDefinition(int npcId);
+	RSNPCDefinition getNpcDefinition(int npcId);
 
-	@Import("scale")
+	@Import("viewportZoom")
 	@Override
 	int getScale();
 
@@ -352,36 +348,37 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getViewportWidth();
 
-	@Import("Viewport_xOffset")
+	@Import("viewportOffsetX")
 	@Override
 	int getViewportXOffset();
 
-	@Import("Viewport_yOffset")
+	@Import("viewportOffsetY")
 	@Override
 	int getViewportYOffset();
 
-	@Import("isResized")
+	@Import("isResizable")
 	@Override
 	boolean isResized();
 
-	@Import("widgetPositionX")
+	@Import("rootWidgetXs")
 	@Override
 	int[] getWidgetPositionsX();
 
-	@Import("widgetPositionY")
+	@Import("rootWidgetYs")
 	@Override
 	int[] getWidgetPositionsY();
 
 	@Import("itemContainers")
-	RSHashTable getItemContainers();
+	RSNodeHashTable getItemContainers();
 
 	@Import("getItemDefinition")
 	@Override
-	RSItemComposition getItemDefinition(int itemId);
+	RSItemDefinition getItemDefinition(int itemId);
 
-	@Import("createSprite")
-	RSSpritePixels createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
+	@Import("getItemSprite")
+	RSSprite createItemSprite(int itemId, int quantity, int thickness, int borderColor, int stackable, boolean noted);
 
+	@Import("menuAction")
 	@Override
 	void invokeMenuAction(int n2, int n3, int n4, int n5, String string, String string2, int n6, int n7);
 
@@ -409,11 +406,11 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("indexedSpriteOffsetYs")
 	void setIndexedSpriteOffsetYs(int[] indexedSpriteOffsetYs);
 
-	@Import("indexSpriteWidths")
-	int[] getIndexSpriteWidths();
+	@Import("indexedSpriteWidths")
+	int[] getIndexedSpriteWidths();
 
-	@Import("indexSpriteWidths")
-	void setIndexSpriteWidths(int[] indexSpriteWidths);
+	@Import("indexedSpriteWidths")
+	void setIndexedSpriteWidths(int[] indexedSpriteWidths);
 
 	@Import("indexedSpriteHeights")
 	int[] getIndexedSpriteHeights();
@@ -431,23 +428,23 @@ public interface RSClient extends RSGameEngine, Client
 	int[] getIndexedSpritePalette();
 
 	@Import("indexedSpritePalette")
-	void setIndexSpritePalette(int[] indexSpritePalette);
+	void setIndexedSpritePalette(int[] indexedSpritePalette);
 
-	@Import("indexSprites")
+	@Import("indexCache8")
 	@Override
-	RSIndexDataBase getIndexSprites();
+	RSAbstractIndexCache getIndexSprites();
 
-	@Import("indexScripts")
+	@Import("indexCache12")
 	@Override
-	RSIndexDataBase getIndexScripts();
+	RSAbstractIndexCache getIndexScripts();
 
-	@Import("widgetFlags")
+	@Import("widgetClickMasks")
 	@Override
-	RSHashTable getWidgetFlags();
+	RSNodeHashTable getWidgetFlags();
 
-	@Import("componentTable")
+	@Import("widgetGroupParents")
 	@Override
-	RSHashTable getComponentTable();
+	RSNodeHashTable getComponentTable();
 
 	@Import("grandExchangeOffers")
 	RSGrandExchangeOffer[] getGrandExchangeOffers();
@@ -456,30 +453,31 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	boolean isMenuOpen();
 
-	@Import("gameCycle")
+	@Import("cycle")
 	@Override
 	int getGameCycle();
 
-	@Import("packetHandler")
-	void packetHandler();
+	// unused
+	//@Import("packetHandler")
+	//void packetHandler();
 
-	@Import("chatLineMap")
+	@Import("Messages_channels")
 	@Override
 	Map getChatLineMap();
 
-	@Import("messages")
+	@Import("Messages_hashTable")
 	@Override
-	RSIterableHashTable getMessages();
+	RSIterableNodeHashTable getMessages();
 
 	@Import("revision")
 	@Override
 	int getRevision();
 
-	@Import("mapRegions")
+	@Import("regions")
 	@Override
 	int[] getMapRegions();
 
-	@Import("instanceTemplateChunks")
+	@Import("instanceChunkTemplates")
 	@Override
 	int[][][] getInstanceTemplateChunks();
 
@@ -507,29 +505,29 @@ public interface RSClient extends RSGameEngine, Client
 	 *
 	 * @return
 	 */
-	@Import("widgetRoot")
+	@Import("rootWidgetGroup")
 	int getWidgetRoot();
 
-	@Import("mapElementConfigs")
+	@Import("WorldMapElement_cached")
 	@Override
-	RSMapElementConfig[] getMapElementConfigs();
+	RSWorldMapElement[] getMapElementConfigs();
 
-	@Import("mapscene")
+	@Import("mapSceneSprites")
 	@Override
 	RSIndexedSprite[] getMapScene();
 
 	@Import("mapIcons")
 	@Override
-	RSSpritePixels[] getMapIcons();
+	RSSprite[] getMapIcons();
 
-	@Import("mapDots")
-	RSSpritePixels[] getMapDots();
+	@Import("mapDotSprites")
+	RSSprite[] getMapDots();
 
-	@Import("modIcons")
+	@Import("modIconSprites")
 	@Override
 	RSIndexedSprite[] getModIcons();
 
-	@Import("modIcons")
+	@Import("modIconSprites")
 	void setRSModIcons(RSIndexedSprite[] modIcons);
 
 	@Construct
@@ -538,7 +536,7 @@ public interface RSClient extends RSGameEngine, Client
 
 	@Construct
 	@Override
-	RSSpritePixels createSpritePixels(int[] pixels, int width, int height);
+	RSSprite createSprite(int[] pixels, int width, int height);
 
 	@Import("destinationX")
 	int getDestinationX();
@@ -546,10 +544,10 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("destinationY")
 	int getDestinationY();
 
-	@Import("audioEffects")
+	@Import("soundEffects")
 	RSSoundEffect[] getAudioEffects();
 
-	@Import("queuedSoundEffectIDs")
+	@Import("soundEffectIds")
 	int[] getQueuedSoundEffectIDs();
 
 	@Import("soundLocations")
@@ -561,88 +559,88 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("queuedSoundEffectDelays")
 	int[] getQueuedSoundEffectDelays();
 
-	@Import("queuedSoundEffectCount")
+	@Import("soundEffectCount")
 	int getQueuedSoundEffectCount();
 
-	@Import("queuedSoundEffectCount")
+	@Import("soundEffectCount")
 	void setQueuedSoundEffectCount(int queuedSoundEffectCount);
 
 	@Import("rasterProvider")
 	@Override
-	RSBufferProvider getBufferProvider();
+	RSAbstractRasterProvider getBufferProvider();
 
-	@Import("mouseIdleTicks")
+	@Import("MouseHandler_idleCycles")
 	@Override
 	int getMouseIdleTicks();
 
-	@Import("mouseLastPressedTimeMillis")
+	@Import("MouseHandler_lastPressedTimeMillis")
 	@Override
 	long getMouseLastPressedMillis();
 
-	@Import("keyboardIdleTicks")
+	@Import("KeyHandler_idleCycles")
 	@Override
 	int getKeyboardIdleTicks();
 
-	@Import("lowMemory")
+	@Import("isLowDetail")
 	void setLowMemory(boolean lowMemory);
 
-	@Import("sceneLowMemory")
+	@Import("Scene_isLowDetail")
 	void setSceneLowMemory(boolean lowMemory);
 
-	@Import("audioHighMemory")
+	@Import("isStereo")
 	void setAudioHighMemory(boolean highMemory);
 
-	@Import("objectCompositionLowDetail")
-	void setObjectCompositionLowDetail(boolean lowDetail);
+	@Import("ObjectDefinition_isLowDetail")
+	void setObjectDefinitionLowDetail(boolean lowDetail);
 
 	@Construct
-	RSItem createItem();
+	RSGroundItem createItem();
 
-	@Import("intStackSize")
+	@Import("Interpreter_intStackSize")
 	@Override
 	int getIntStackSize();
 
-	@Import("intStackSize")
+	@Import("Interpreter_intStackSize")
 	@Override
 	void setIntStackSize(int stackSize);
 
-	@Import("intStack")
+	@Import("Interpreter_intStack")
 	@Override
 	int[] getIntStack();
 
-	@Import("scriptStringStackSize")
+	@Import("Interpreter_stringStackSize")
 	@Override
 	int getStringStackSize();
 
-	@Import("scriptStringStackSize")
+	@Import("Interpreter_stringStackSize")
 	@Override
 	void setStringStackSize(int stackSize);
 
-	@Import("scriptStringStack")
+	@Import("Interpreter_stringStack")
 	@Override
 	String[] getStringStack();
 
-	@Import("friendManager")
-	RSFriendManager getFriendManager();
+	@Import("friendSystem")
+	RSFriendSystem getFriendManager();
 
-	@Import("clanMemberManager")
-	RSClanMemberManager getClanMemberManager();
+	@Import("clanChat")
+	RSClanChat getClanMemberManager();
 
 	@Import("loginType")
-	RSJagexLoginType getLoginType();
+	RSLoginType getLoginType();
 
 	@Construct
-	RSName createName(String name, RSJagexLoginType type);
+	RSUsername createName(String name, RSLoginType type);
 
 	@Import("getVarbit")
 	int getVarbit(int varbitId);
 
-	@Import("varbits")
-	RSNodeCache getVarbitCache();
+	@Import("VarbitDefinition_cached")
+	RSEvictingDualNodeHashTable getVarbitCache();
 
-	@Import("preferences")
+	@Import("clientPreferences")
 	@Override
-	RSPreferences getPreferences();
+	RSClientPreferences getPreferences();
 
 	/**
 	 * This is the pitch the user has set the camera to.
@@ -658,16 +656,16 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("cameraPitchTarget")
 	void setCameraPitchTarget(int pitch);
 
-	@Import("pitchSin")
+	@Import("Scene_cameraPitchSine")
 	void setPitchSin(int v);
 
-	@Import("pitchCos")
+	@Import("Scene_cameraPitchCosine")
 	void setPitchCos(int v);
 
-	@Import("yawSin")
+	@Import("Scene_cameraYawSine")
 	void setYawSin(int v);
 
-	@Import("yawCos")
+	@Import("Scene_cameraYawCosine")
 	void setYawCos(int v);
 
 	@Import("Rasterizer3D_zoom")
@@ -693,16 +691,16 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	int getRasterizer3D_clipMidY2();
 
-	@Import("centerX")
+	@Import("Rasterizer3D_clipMidX")
 	@Override
 	int getCenterX();
 
-	@Import("centerY")
+	@Import("Rasterizer3D_clipMidY")
 	@Override
 	int getCenterY();
 
-	@Import("renderOverview")
-	RSRenderOverview getRenderOverview();
+	@Import("worldMap0")
+	RSWorldMap getRenderOverview();
 
 	@Import("changeWorld")
 	@Override
@@ -712,23 +710,23 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	RSWorld createWorld();
 
-	@Import("animOffsetX")
+	@Import("Model_transformTempX")
 	void setAnimOffsetX(int animOffsetX);
 
-	@Import("animOffsetY")
+	@Import("Model_transformTempY")
 	void setAnimOffsetY(int animOffsetY);
 
-	@Import("animOffsetZ")
+	@Import("Model_transformTempZ")
 	void setAnimOffsetZ(int animOffsetZ);
 
 	@Import("getFrames")
 	RSFrames getFrames(int frameId);
 
-	@Import("minimapSprite")
-	RSSpritePixels getMinimapSprite();
+	@Import("sceneMinimapSprite")
+	RSSprite getMinimapSprite();
 
-	@Import("minimapSprite")
-	void setMinimapSprite(SpritePixels spritePixels);
+	@Import("sceneMinimapSprite")
+	void setMinimapSprite(Sprite spritePixels);
 
 	@Import("drawObject")
 	void drawObject(int z, int x, int y, int randomColor1, int randomColor2);
@@ -736,13 +734,13 @@ public interface RSClient extends RSGameEngine, Client
 	@Construct
 	RSScriptEvent createScriptEvent();
 
-	@Import("runScript")
+	@Import("runScript0")
 	void runScript(RSScriptEvent ev, int ex);
 
-	@Import("hintArrowTargetType")
+	@Import("hintArrowType")
 	void setHintArrowTargetType(int value);
 
-	@Import("hintArrowTargetType")
+	@Import("hintArrowType")
 	int getHintArrowTargetType();
 
 	@Import("hintArrowX")
@@ -757,48 +755,47 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("hintArrowY")
 	int getHintArrowY();
 
-	@Import("hintArrowOffsetX")
+	@Import("hintArrowSubX")
 	void setHintArrowOffsetX(int value);
 
-	@Import("hintArrowOffsetY")
+	@Import("hintArrowSubY")
 	void setHintArrowOffsetY(int value);
 
-	@Import("hintArrowNpcTargetIdx")
+	@Import("hintArrowNpcIndex")
 	void setHintArrowNpcTargetIdx(int value);
 
-	@Import("hintArrowNpcTargetIdx")
+	@Import("hintArrowNpcIndex")
 	int getHintArrowNpcTargetIdx();
 
-	@Import("hintArrowPlayerTargetIdx")
+	@Import("hintArrowPlayerIndex")
 	void setHintArrowPlayerTargetIdx(int value);
 
-	@Import("hintArrowPlayerTargetIdx")
+	@Import("hintArrowPlayerIndex")
 	int getHintArrowPlayerTargetIdx();
 
-	@Import("isDynamicRegion")
+	@Import("isInInstance")
 	@Override
 	boolean isInInstancedRegion();
 
-	@Import("itemPressedDuration")
-	@Override
+	@Import("itemDragDuration")
 	int getItemPressedDuration();
 
-	@Import("itemPressedDuration")
+	@Import("itemDragDuration")
 	void setItemPressedDuration(int duration);
 
-	@Import("flags")
+	@Import("worldProperties")
 	int getFlags();
 
 	@Import("compass")
-	void setCompass(SpritePixels spritePixels);
+	void setCompass(Sprite spritePixels);
 
 	@Import("widgetSpriteCache")
 	@Override
-	RSNodeCache getWidgetSpriteCache();
+	RSEvictingDualNodeHashTable getWidgetSpriteCache();
 
-	@Import("items")
+	@Import("ItemDefinition_cached")
 	@Override
-	RSNodeCache getItemCompositionCache();
+	RSEvictingDualNodeHashTable getItemDefinitionCache();
 
 	@Import("oculusOrbState")
 	@Override
@@ -812,96 +809,93 @@ public interface RSClient extends RSGameEngine, Client
 	@Override
 	void setOculusOrbNormalSpeed(int state);
 
-	@Import("lookingAtX")
+	@Import("oculusOrbFocalPointX")
 	@Override
 	int getOculusOrbFocalPointX();
 
-	@Import("lookingAtY")
+	@Import("oculusOrbFocalPointY")
 	@Override
 	int getOculusOrbFocalPointY();
 
-	RSItem getLastItemDespawn();
+	RSGroundItem getLastItemDespawn();
 
-	void setLastItemDespawn(RSItem lastItemDespawn);
+	void setLastItemDespawn(RSGroundItem lastItemDespawn);
 
 	@Construct
 	RSWidget createWidget();
 
-	@Import("revalidateWidget")
+	@Import("alignWidget")
 	void revalidateWidget(Widget w);
 
 	@Import("revalidateWidgetScroll")
 	void revalidateWidgetScroll(Widget[] group, Widget w, boolean postEvent);
 
-	@Import("menuAction")
-	void menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7);
-
-	@Import("Viewport_entityCountAtMouse")
+	@Import("ViewportMouse_entityCount")
 	int getEntitiesAtMouseCount();
 
-	@Import("Viewport_entityCountAtMouse")
+	@Import("ViewportMouse_entityCount")
 	void setEntitiesAtMouseCount(int i);
 
-	@Import("Viewport_entitiesAtMouse")
+	@Import("ViewportMouse_entityTags")
 	long[] getEntitiesAtMouse();
 
-	@Import("Viewport_mouseX")
+	@Import("ViewportMouse_x")
 	int getViewportMouseX();
 
-	@Import("Viewport_mouseY")
+	@Import("ViewportMouse_y")
 	int getViewportMouseY();
 
 	@Import("textureProvider")
 	@Override
 	RSTextureProvider getTextureProvider();
 
-	@Import("occupiedTilesTick")
+	@Import("tileLastDrawnActor")
 	int[][] getOccupiedTilesTick();
 
-	@Import("cachedModels2")
-	RSNodeCache getCachedModels2();
+	@Import("ObjectDefinition_cachedModels")
+	RSEvictingDualNodeHashTable getCachedModels2();
 
-	@Import("cycle")
+	@Import("Scene_drawnCount")
 	int getCycle();
 
-	@Import("cycle")
+	@Import("Scene_drawnCount")
 	void setCycle(int cycle);
 
-	@Import("visibilityMaps")
+	@Import("visibilityMap")
 	boolean[][][][] getVisibilityMaps();
 
-	@Import("renderArea")
+	@Import("visibleTiles")
 	void setRenderArea(boolean[][] renderArea);
 
-	@Import("cameraX2")
+	@Import("Scene_cameraX")
 	void setCameraX2(int cameraX2);
 
-	@Import("cameraY2")
+	@Import("Scene_cameraY")
 	void setCameraY2(int cameraY2);
 
-	@Import("cameraZ2")
+	@Import("Scene_cameraZ")
 	void setCameraZ2(int cameraZ2);
 
-	@Import("screenCenterX")
+	@Import("Scene_cameraXTile")
 	void setScreenCenterX(int screenCenterX);
 
-	@Import("screenCenterZ")
-	void setScreenCenterZ(int screenCenterZ);
+	@Import("Scene_cameraYTile")
+	void setScreenCenterZ(int screenCenterZ); // <-- This is correct!
 
 	@Import("Scene_plane")
 	void setScenePlane(int scenePlane);
 
-	@Import("minTileX")
+	@Import("Scene_cameraXTileMin")
 	void setMinTileX(int i);
 
-	@Import("minTileZ")
-	void setMinTileZ(int i);
+	@Import("Scene_cameraYTileMin")
+	void setMinTileZ(int i); // <-- This is correct!
 
-	@Import("maxTileX")
+	@Import("Scene_cameraXTileMax")
 	void setMaxTileX(int i);
 
-	@Import("maxTileZ")
-	void setMaxTileZ(int i);
+	@Import("Scene_cameraYTileMax")
+	void setMaxTileZ(int i); // <-- This is correct!
 
 	@Import("tileUpdateCount")
 	int getTileUpdateCount();
@@ -909,47 +903,39 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("tileUpdateCount")
 	void setTileUpdateCount(int tileUpdateCount);
 
-	@Import("Viewport_containsMouse")
+	@Import("ViewportMouse_isInViewport")
 	boolean getViewportContainsMouse();
 
-	@Import("graphicsPixels")
+	@Import("Rasterizer2D_pixels")
 	int[] getGraphicsPixels();
 
-	@Import("graphicsPixelsWidth")
+	@Import("Rasterizer2D_width")
 	int getGraphicsPixelsWidth();
 
-	@Import("graphicsPixelsHeight")
+	@Import("Rasterizer2D_height")
 	int getGraphicsPixelsHeight();
 
-	@Import("fillRectangle")
-	void RasterizerFillRectangle(int x, int y, int w, int h, int rgb);
+	@Import("Rasterizer2D_fillRectangle")
+	void rasterizerFillRectangle(int x, int y, int w, int h, int rgb);
 
-	@Import("startX")
+	@Import("Rasterizer2D_xClipStart")
 	int getStartX();
 
-	@Import("startY")
+	@Import("Rasterizer2D_yClipStart")
 	int getStartY();
 
-	@Import("endX")
+	@Import("Rasterizer2D_xClipEnd")
 	int getEndX();
 
-	@Import("endY")
+	@Import("Rasterizer2D_yClipEnd")
 	int getEndY();
 
-	@Import("if1DraggedWidget")
-	@Override
-	RSWidget getIf1DraggedWidget();
-
-	@Import("if1DraggedItemIndex")
-	@Override
-	int getIf1DraggedItemIndex();
-
-	@Import("spellSelected")
+	@Import("isSpellSelected")
 	@Override
 	void setSpellSelected(boolean selected);
 
 	@Import("getEnum")
-	RSEnum getRsEnum(int id);
+	RSEnumDefinition getRsEnum(int id);
 
 	@Import("menuX")
 	int getMenuX();
@@ -966,35 +952,31 @@ public interface RSClient extends RSGameEngine, Client
 	@Import("fontBold12")
 	RSFont getFontBold12();
 
-	@Import("drawHorizontalLine")
-	void RasterizerDrawHorizontalLine(int x, int y, int w, int rgb);
+	@Import("Rasterizer2D_drawHorizontalLine")
+	void rasterizerDrawHorizontalLine(int x, int y, int w, int rgb);
 
-	@Import("drawVerticalLine")
-	void RasterizerDrawVerticalLine(int x, int y, int h, int rgb);
+	@Import("Rasterizer2D_drawVerticalLine")
+	void rasterizerDrawVerticalLine(int x, int y, int h, int rgb);
 
 	@Import("drawGradient")
-	void RasterizerDrawGradient(int x, int y, int w, int h, int rgbTop, int rgbBottom);
+	void rasterizerDrawGradient(int x, int y, int w, int h, int rgbTop, int rgbBottom);
 
-	@Import("fillRectangleAlpha")
-	void RasterizerFillRectangleAlpha(int x, int y, int w, int h, int rgb, int a);
+	@Import("Rasterizer2D_drawRectangleAlpha")
+	void rasterizerFillRectangleAlpha(int x, int y, int w, int h, int rgb, int a);
 
-	@Import("drawRectangle")
-	void RasterizerDrawRectangle(int x, int y, int w, int h, int rgb);
+	@Import("Rasterizer2D_drawRectangle")
+	void rasterizerDrawRectangle(int x, int y, int w, int h, int rgb);
 
 	@Import("drawCircle")
-	void RasterizerDrawCircle(int x, int y, int r, int rgb);
+	void rasterizerDrawCircle(int x, int y, int r, int rgb);
 
-	@Import("healthbarCache")
+	@Import("HealthBarDefinition_cached")
 	@Override
-	RSNodeCache getHealthBarCache();
-	
+	RSEvictingDualNodeHashTable getHealthBarCache();
+
 	@Import("renderSelf")
-	void toggleRenderSelf();
-	
+	void setRenderSelf(boolean enabled);
+
 	@Import("mouseRecorder")
 	RSMouseRecorder getMouseRecorder();
-	
-	@Import("printMenuActions")
-	void setPrintMenuActions(boolean b);
-
 }
