@@ -45,7 +45,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.MenuAction;
 import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import static net.runelite.api.MenuAction.WALK;
@@ -60,7 +60,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.PostItemComposition;
+import net.runelite.api.events.PostItemDefinition;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
@@ -238,14 +238,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 		else if (event.getKey().startsWith(ITEM_KEY_PREFIX))
 		{
-			clientThread.invoke(this::resetItemCompositionCache);
+			clientThread.invoke(this::resetItemDefinitionCache);
 		}
 	}
 
-	private void resetItemCompositionCache()
+	private void resetItemDefinitionCache()
 	{
-		itemManager.invalidateItemCompositionCache();
-		client.getItemCompositionCache().reset();
+		itemManager.invalidateItemDefinitionCache();
+		client.getItemDefinitionCache().reset();
 	}
 
 	private Integer getSwapConfig(int itemId)
@@ -276,7 +276,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		keyManager.registerKeyListener(inputListener);
 		refreshShiftClickCustomizationMenus();
-		clientThread.invoke(this::resetItemCompositionCache);
+		clientThread.invoke(this::resetItemDefinitionCache);
 	}
 
 	private void disableCustomization()
@@ -284,7 +284,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		keyManager.unregisterKeyListener(inputListener);
 		removeShiftClickCustomizationMenus();
 		configuringShiftClick = false;
-		clientThread.invoke(this::resetItemCompositionCache);
+		clientThread.invoke(this::resetItemDefinitionCache);
 	}
 
 	@Subscribe
@@ -456,7 +456,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		ItemComposition itemComposition = client.getItemDefinition(itemId);
+		ItemDefinition itemComposition = client.getItemDefinition(itemId);
 		String itemName = itemComposition.getName();
 		String option = "Use";
 		int shiftClickActionindex = itemComposition.getShiftClickActionIndex();
@@ -508,7 +508,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		String option = event.getMenuOption();
 		String target = event.getMenuTarget();
-		ItemComposition itemComposition = client.getItemDefinition(itemId);
+		ItemDefinition itemComposition = client.getItemDefinition(itemId);
 
 		if (option.equals(RESET) && target.equals(MENU_TARGET))
 		{
@@ -1267,9 +1267,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPostItemComposition(PostItemComposition event)
+	public void onPostItemDefinition(PostItemDefinition event)
 	{
-		ItemComposition itemComposition = event.getItemComposition();
+		ItemDefinition itemComposition = event.getItemDefinition();
 		Integer option = getSwapConfig(itemComposition.getId());
 
 		if (option != null)

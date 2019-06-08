@@ -37,7 +37,7 @@ import net.runelite.rs.api.RSModelData;
 @Mixin(RSModelData.class)
 public abstract class RSModelDataMixin implements RSModelData
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Inject
@@ -46,10 +46,10 @@ public abstract class RSModelDataMixin implements RSModelData
 	@Inject
 	private float[][] faceTextureVCoordinates;
 
-	@Copy("light")
+	@Copy("toModel")
 	public abstract Model rs$light(int ambient, int contrast, int var3, int var4, int var5);
 
-	@Replace("light")
+	@Replace("toModel")
 	public Model rl$light(int ambient, int contrast, int var3, int var4, int var5)
 	{
 		client.getLogger().trace("Lighting model {}", this);
@@ -198,5 +198,4 @@ public abstract class RSModelDataMixin implements RSModelData
 			}
 		}
 	}
-
 }

@@ -134,12 +134,14 @@
 		<module>cache</module>
 		<module>cache-client</module>
 		<module>cache-updater</module>
-		<!--		<module>extended-mixin-processor</module>
-				<module>extended-mixins</module>-->
 		<module>runelite-api</module>
 		<module>runelite-client</module>
 		<module>runelite-mixins</module>
 		<module>runelite-script-assembler-plugin</module>
+		<module>deobfuscator</module>
+		<module>rs-client</module>
+		<module>injector-plugin</module>
+		<module>injected-client</module>
 		<module>runescape-api</module>
 		<module>runelite-plugin-archetype</module>
 		<module>http-api</module>

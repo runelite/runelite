@@ -33,7 +33,7 @@ import net.runelite.api.CollisionData;
 import net.runelite.api.CollisionDataFlag;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
-import net.runelite.api.config.Constants;
+import net.runelite.api.Constants;
 
 /**
  * Represents an area on the world.

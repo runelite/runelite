@@ -237,7 +237,7 @@ public class LootManager
 
 		final int x = location.getSceneX();
 		final int y = location.getSceneY();
-		final int size = npc.getComposition().getSize();
+		final int size = npc.getDefinition().getSize();
 
 		// Some NPCs drop items onto multiple tiles
 		final List<ItemStack> allItems = new ArrayList<>();

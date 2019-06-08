@@ -30,7 +30,7 @@ import java.awt.Graphics2D;
 import java.util.Set;
 import lombok.Getter;
 import static net.runelite.api.ItemID.*;
-import net.runelite.api.ObjectComposition;
+import net.runelite.api.ObjectDefinition;
 import static net.runelite.api.ObjectID.CRATE_18506;
 import static net.runelite.api.ObjectID.CRATE_2620;
 import static net.runelite.api.ObjectID.CRATE_354;
@@ -127,7 +127,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 
 		if (objectId != -1)
 		{
-			ObjectComposition objectToClick = plugin.getClient().getObjectDefinition(getObjectId());
+			ObjectDefinition objectToClick = plugin.getClient().getObjectDefinition(getObjectId());
 
 			String objectName = "N/A";
 

@@ -38,7 +38,7 @@ import net.runelite.api.Skill;
  *     <li>Levelling up a skill</li>
  * </ul>
  * <p>
- * Use {@link api.Client#getBoostedSkillLevel(Skill)} in order to
+ * Use {@link net.runelite.api.Client#getBoostedSkillLevel(Skill)} in order to
  * retrieve the newly boosted skill level.
  */
 @Data

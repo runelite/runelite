@@ -193,7 +193,7 @@ public interface RSClient extends RSGameShell, Client
 	 *
 	 * @param groupId the group ID
 	 * @return the widget group
-	 * @see api.widgets.WidgetID
+	 * @see net.runelite.api.widgets.WidgetID
 	 */
 	RSWidget[] getGroup(int groupId);
 

@@ -34,7 +34,7 @@ import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
@@ -148,7 +148,7 @@ public class TimersOverlay extends Overlay
 	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color, int outlineAlpha, int fillAlpha)
 	{
 		int size = 1;
-		NPCComposition composition = actor.getTransformedComposition();
+		NPCDefinition composition = actor.getTransformedDefinition();
 		if (composition != null)
 		{
 			size = composition.getSize();

@@ -34,7 +34,7 @@ import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
@@ -115,12 +115,12 @@ public class ImplingsOverlay extends Overlay
 		List<NPC> npcs = client.getNpcs();
 		for (NPC npc : npcs)
 		{
-			if (npc.getComposition().getId() == spawnID)
+			if (npc.getDefinition().getId() == spawnID)
 			{
-				NPCComposition composition = npc.getComposition();
+				NPCDefinition composition = npc.getDefinition();
 				if (composition.getConfigs() != null)
 				{
-					NPCComposition transformedComposition = composition.transform();
+					NPCDefinition transformedComposition = composition.transform();
 					if (transformedComposition == null)
 					{
 						OverlayUtil.renderActorOverlay(graphics, npc, text, color);

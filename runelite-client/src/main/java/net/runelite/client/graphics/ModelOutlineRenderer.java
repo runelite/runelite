@@ -37,7 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.Model;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
@@ -934,7 +934,7 @@ public class ModelOutlineRenderer
 							Color innerColor, Color outerColor)
 	{
 		int size = 1;
-		NPCComposition composition = npc.getTransformedComposition();
+		NPCDefinition composition = npc.getTransformedDefinition();
 		if (composition != null)
 		{
 			size = composition.getSize();

@@ -16,7 +16,7 @@ import net.runelite.api.Actor;
  *     <li>Breaking a teleport tab</li>
  * </ul>
  *
- * @see api.GraphicID
+ * @see net.runelite.api.GraphicID
  */
 @Data
 public class SpotAnimationChanged

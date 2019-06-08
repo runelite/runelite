@@ -24,7 +24,7 @@
  */
 package net.runelite.api;
 
-import static api.config.Constants.TILE_FLAG_BRIDGE;
+import static net.runelite.api.Constants.TILE_FLAG_BRIDGE;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -555,7 +555,7 @@ public class Perspective
 
 		for (Triangle triangle : triangles)
 		{
-			api.model.Vertex _a = triangle.getA();
+			net.runelite.api.model.Vertex _a = triangle.getA();
 			Point a = localToCanvas(client,
 				point.getX() - _a.getX(),
 				point.getY() - _a.getZ(),

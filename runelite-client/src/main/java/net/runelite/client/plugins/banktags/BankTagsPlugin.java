@@ -39,7 +39,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -211,7 +211,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 					}
 
 					// not a placeholder
-					else if (itemManager.getItemComposition(itemId).getPlaceholderTemplateId() == -1)
+					else if (itemManager.getItemDefinition(itemId).getPlaceholderTemplateId() == -1)
 					{
 						// return true
 						intStack[intStackSize - 2] = 1;
@@ -344,7 +344,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener, KeyLis
 			}
 
 			int itemId = item.getId();
-			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+			ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
 			String name = itemComposition.getName();
 
 			// Get both tags and vartags and append * to end of vartags name

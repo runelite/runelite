@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.ObjectComposition;
+import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 
@@ -34,8 +34,8 @@ class ArrowUtil
 					}
 
 					// Check impostors
-					final ObjectComposition comp = client.getObjectDefinition(object.getId());
-					final ObjectComposition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
+					final ObjectDefinition comp = client.getObjectDefinition(object.getId());
+					final ObjectDefinition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
 
 					if (impostor != null && objectIDs.contains(impostor.getId()))
 					{

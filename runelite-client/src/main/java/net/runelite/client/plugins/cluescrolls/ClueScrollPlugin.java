@@ -47,10 +47,10 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.ObjectComposition;
+import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Point;
 import net.runelite.api.Scene;
 import net.runelite.api.ScriptID;
@@ -227,7 +227,7 @@ public class ClueScrollPlugin extends Plugin
 	{
 		if (event.getMenuOption() != null && event.getMenuOption().equals("Read"))
 		{
-			final ItemComposition itemComposition = itemManager.getItemComposition(event.getId());
+			final ItemDefinition itemComposition = itemManager.getItemDefinition(event.getId());
 
 			if (itemComposition != null && itemComposition.getName().startsWith("Clue scroll"))
 			{
@@ -652,8 +652,8 @@ public class ClueScrollPlugin extends Plugin
 				}
 
 				// Check impostors
-				final ObjectComposition comp = client.getObjectDefinition(object.getId());
-				final ObjectComposition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
+				final ObjectDefinition comp = client.getObjectDefinition(object.getId());
+				final ObjectDefinition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
 
 				if (impostor != null && impostor.getId() == id)
 				{

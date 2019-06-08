@@ -24,12 +24,12 @@
  */
 package net.runelite.mixins;
 
-import java.awt.Polygon;
 import net.runelite.api.AnimationID;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.NpcDespawned;
+import java.awt.Polygon;
 import net.runelite.api.mixins.Copy;
 import net.runelite.api.mixins.FieldHook;
 import net.runelite.api.mixins.Inject;
@@ -39,12 +39,12 @@ import net.runelite.api.mixins.Shadow;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSModel;
 import net.runelite.rs.api.RSNPC;
-import net.runelite.rs.api.RSNPCComposition;
+import net.runelite.rs.api.RSNPCDefinition;
 
 @Mixin(RSNPC.class)
 public abstract class RSNPCMixin implements RSNPC
 {
-	@Shadow("clientInstance")
+	@Shadow("client")
 	private static RSClient client;
 
 	@Inject
@@ -57,7 +57,7 @@ public abstract class RSNPCMixin implements RSNPC
 	@Override
 	public int getId()
 	{
-		RSNPCComposition composition = getComposition();
+		RSNPCDefinition composition = getDefinition();
 		if (composition != null && composition.getConfigs() != null)
 		{
 			composition = composition.transform();
@@ -69,7 +69,7 @@ public abstract class RSNPCMixin implements RSNPC
 	@Override
 	public String getName()
 	{
-		RSNPCComposition composition = getComposition();
+		RSNPCDefinition composition = getDefinition();
 		if (composition != null && composition.getConfigs() != null)
 		{
 			composition = composition.transform();
@@ -81,7 +81,7 @@ public abstract class RSNPCMixin implements RSNPC
 	@Override
 	public int getCombatLevel()
 	{
-		RSNPCComposition composition = getComposition();
+		RSNPCDefinition composition = getDefinition();
 		if (composition != null && composition.getConfigs() != null)
 		{
 			composition = composition.transform();
@@ -103,9 +103,9 @@ public abstract class RSNPCMixin implements RSNPC
 		npcIndex = id;
 	}
 
-	@FieldHook(value = "composition", before = true)
+	@FieldHook(value = "definition", before = true)
 	@Inject
-	public void onCompositionChanged(RSNPCComposition composition)
+	public void onDefinitionChanged(RSNPCDefinition composition)
 	{
 		if (composition == null)
 		{
@@ -126,14 +126,14 @@ public abstract class RSNPCMixin implements RSNPC
 		}
 		int actionFrame = getActionFrame();
 		int poseFrame = getPoseFrame();
-		int spotAnimFrame = getSpotAnimFrame();
+		int spotAnimFrame = getSpotAnimationFrame();
 		try
 		{
 			// combine the frames with the frame cycle so we can access this information in the sequence methods
 			// without having to change method calls
 			setActionFrame(Integer.MIN_VALUE | getActionFrameCycle() << 16 | actionFrame);
 			setPoseFrame(Integer.MIN_VALUE | getPoseFrameCycle() << 16 | poseFrame);
-			setSpotAnimFrame(Integer.MIN_VALUE | getSpotAnimFrameCycle() << 16 | spotAnimFrame);
+			setSpotAnimationFrame(Integer.MIN_VALUE | getSpotAnimationFrameCycle() << 16 | spotAnimFrame);
 			return rs$getModel();
 		}
 		finally
@@ -141,15 +141,15 @@ public abstract class RSNPCMixin implements RSNPC
 			// reset frames
 			setActionFrame(actionFrame);
 			setPoseFrame(poseFrame);
-			setSpotAnimFrame(spotAnimFrame);
+			setSpotAnimationFrame(spotAnimFrame);
 		}
 	}
 
 	@Inject
 	@Override
-	public NPCComposition getTransformedComposition()
+	public NPCDefinition getTransformedDefinition()
 	{
-		RSNPCComposition composition = getComposition();
+		RSNPCDefinition composition = getDefinition();
 		if (composition != null && composition.getConfigs() != null)
 		{
 			composition = composition.transform();
@@ -181,7 +181,7 @@ public abstract class RSNPCMixin implements RSNPC
 			return null;
 		}
 
-		int size = getComposition().getSize();
+		int size = getDefinition().getSize();
 		LocalPoint tileHeightPoint = new LocalPoint(
 			size * Perspective.LOCAL_HALF_TILE_SIZE - Perspective.LOCAL_HALF_TILE_SIZE + getX(),
 			size * Perspective.LOCAL_HALF_TILE_SIZE - Perspective.LOCAL_HALF_TILE_SIZE + getY());

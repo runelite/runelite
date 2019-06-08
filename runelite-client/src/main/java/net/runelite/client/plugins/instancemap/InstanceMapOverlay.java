@@ -37,7 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Player;
 import static net.runelite.api.SpriteID.WINDOW_CLOSE_BUTTON_RED_X;
 import static net.runelite.api.SpriteID.WINDOW_CLOSE_BUTTON_RED_X_HOVERED;
-import net.runelite.api.SpritePixels;
+import net.runelite.api.Sprite;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.GameStateChanged;
@@ -168,7 +168,7 @@ class InstanceMapOverlay extends Overlay
 		{
 			BufferedImage closeButton = getCloseButtonImage();
 
-			SpritePixels map = client.drawInstanceMap(viewedPlane);
+			Sprite map = client.drawInstanceMap(viewedPlane);
 			image = minimapToBufferedImage(map);
 			synchronized (this)
 			{
@@ -240,7 +240,7 @@ class InstanceMapOverlay extends Overlay
 		mapImage = null;
 	}
 
-	private static BufferedImage minimapToBufferedImage(SpritePixels spritePixels)
+	private static BufferedImage minimapToBufferedImage(Sprite spritePixels)
 	{
 		int width = spritePixels.getWidth();
 		int height = spritePixels.getHeight();

@@ -626,14 +626,14 @@ public interface Widget
 	/**
 	 * Returns the archive id of the font used
 	 *
-	 * @see api.FontID
+	 * @see net.runelite.api.FontID
 	 */
 	int getFontId();
 
 	/**
 	 * Sets the archive id of the font
 	 *
-	 * @see api.FontID
+	 * @see net.runelite.api.FontID
 	 */
 	void setFontId(int id);
 
@@ -681,12 +681,12 @@ public interface Widget
 	void setDragDeadTime(int deadTime);
 
 	/**
-	 * Returns widget {@link api.widgets.ItemQuantityMode}.
+	 * Returns widget {@link net.runelite.api.widgets.ItemQuantityMode}.
 	 */
 	int getItemQuantityMode();
 
 	/**
-	 * Sets the widget {@link api.widgets.ItemQuantityMode}
+	 * Sets the widget {@link net.runelite.api.widgets.ItemQuantityMode}
 	 */
 	void setItemQuantityMode(int itemQuantityMode);
 

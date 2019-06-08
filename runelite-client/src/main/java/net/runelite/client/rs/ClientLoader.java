@@ -224,11 +224,6 @@ public class ClientLoader
 			Applet rs = (Applet) clientClass.newInstance();
 			rs.setStub(new RSAppletStub(config));
 
-			if (rs instanceof Client)
-			{
-				log.info("client-patch {}", ((Client) rs).getBuildID());
-			}
-
 			return rs;
 		}
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException | SecurityException | VerificationException | CertificateException | CompressorException | InvalidHeaderException e)

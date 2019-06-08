@@ -43,7 +43,7 @@ public interface ScriptEvent
 	 * Gets the widget of the event.
 	 *
 	 * @return the widget
-	 * @see api.widgets.Widget
+	 * @see net.runelite.api.widgets.Widget
 	 */
 	Widget getSource();
 
@@ -58,7 +58,7 @@ public interface ScriptEvent
 	 * Gets the target of the menu option
 	 *
 	 * @return the target
-	 * @see api.events.MenuOptionClicked
+	 * @see net.runelite.api.events.MenuOptionClicked
 	 */
 	String getOpbase();
 }

@@ -31,8 +31,8 @@ import net.runelite.api.PlayerAppearance;
  * <p>
  * These values are intended for use with {@link PlayerAppearance} equipment
  * slots. For obtaining information about equipment in the local players
- * equipment {@link api.ItemContainer}, use
- * {@link api.EquipmentInventorySlot}.
+ * equipment {@link net.runelite.api.ItemContainer}, use
+ * {@link net.runelite.api.EquipmentInventorySlot}.
  */
 public enum KitType
 {

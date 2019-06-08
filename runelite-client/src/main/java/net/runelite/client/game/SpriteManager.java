@@ -40,7 +40,7 @@ import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.SpritePixels;
+import net.runelite.api.Sprite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.util.ImageUtil;
 
@@ -75,7 +75,7 @@ public class SpriteManager
 			return cached;
 		}
 
-		SpritePixels[] sp = client.getSprites(client.getIndexSprites(), archive, 0);
+		Sprite[] sp = client.getSprites(client.getIndexSprites(), archive, 0);
 		BufferedImage img = sp[file].toBufferedImage();
 
 		cache.put(key, img);
@@ -141,12 +141,12 @@ public class SpriteManager
 
 		clientThread.invokeLater(() ->
 		{
-			Map<Integer, SpritePixels> overrides = client.getSpriteOverrides();
+			Map<Integer, Sprite> overrides = client.getSpriteOverrides();
 			Class<?> owner = add[0].getClass();
 			for (SpriteOverride o : add)
 			{
 				BufferedImage image = ImageUtil.getResourceStreamFromClass(owner, o.getFileName());
-				SpritePixels sp = ImageUtil.getImageSpritePixels(image, client);
+				Sprite sp = ImageUtil.getImageSprite(image, client);
 				overrides.put(o.getSpriteId(), sp);
 			}
 		});
@@ -156,7 +156,7 @@ public class SpriteManager
 	{
 		clientThread.invokeLater(() ->
 		{
-			Map<Integer, SpritePixels> overrides = client.getSpriteOverrides();
+			Map<Integer, Sprite> overrides = client.getSpriteOverrides();
 			for (SpriteOverride o : remove)
 			{
 				overrides.remove(o.getSpriteId());

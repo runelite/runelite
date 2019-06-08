@@ -107,7 +107,7 @@ public interface Actor extends Renderable
 	 * Gets the orientation of the actor.
 	 *
 	 * @return the orientation
-	 * @see api.coords.Angle
+	 * @see net.runelite.api.coords.Angle
 	 */
 	int getOrientation();
 
@@ -208,7 +208,7 @@ public interface Actor extends Renderable
 	 * Gets the convex hull of the actors model.
 	 *
 	 * @return the convex hull
-	 * @see api.model.Jarvis
+	 * @see net.runelite.api.model.Jarvis
 	 */
 	Polygon getConvexHull();
 

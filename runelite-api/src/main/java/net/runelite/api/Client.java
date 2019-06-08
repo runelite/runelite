@@ -433,7 +433,7 @@ public interface Client extends GameShell
 	/**
 	 * Gets the widget that is being dragged on.
 	 * <p>
-	 * The widget being dragged has the {@link api.widgets.WidgetConfig#DRAG_ON}
+	 * The widget being dragged has the {@link net.runelite.api.widgets.WidgetConfig#DRAG_ON}
 	 * flag set, and is the widget currently under the dragged widget.
 	 *
 	 * @return the dragged on widget, null if not dragging any widget
@@ -552,7 +552,7 @@ public interface Client extends GameShell
 	/**
 	 * Sets the array of open menu entries.
 	 * <p>
-	 * This method should typically be used in the context of the {@link api.events.MenuOpened}
+	 * This method should typically be used in the context of the {@link net.runelite.api.events.MenuOpened}
 	 * event, since setting the menu entries will be overwritten the next frame
 	 *
 	 * @param entries new array of open menu entries

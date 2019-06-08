@@ -37,7 +37,7 @@ import net.runelite.api.widgets.WidgetItem;
 public interface Callbacks
 {
 	/**
-	 * Post an event. See the events in api.events.
+	 * Post an event. See the events in net.runelite.api.events.
 	 *
 	 * @param event the event
 	 */

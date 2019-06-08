@@ -38,7 +38,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.IconID;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.MessageNode;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
@@ -700,7 +700,7 @@ public class ChatCommandsPlugin extends Plugin
 			builder.append(ChatColorType.HIGHLIGHT);
 			builder.append(StackFormatter.formatNumber(osbresult.getOverall_average()));
 
-			ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+			ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
 			if (itemComposition != null)
 			{
 				int alchPrice = itemManager.getAlchValue(itemId);

@@ -24,10 +24,10 @@
  */
 package net.runelite.api.coords;
 
-import static api.coords.Direction.EAST;
-import static api.coords.Direction.NORTH;
-import static api.coords.Direction.SOUTH;
-import static api.coords.Direction.WEST;
+import static net.runelite.api.coords.Direction.EAST;
+import static net.runelite.api.coords.Direction.NORTH;
+import static net.runelite.api.coords.Direction.SOUTH;
+import static net.runelite.api.coords.Direction.WEST;
 import lombok.Value;
 
 /**

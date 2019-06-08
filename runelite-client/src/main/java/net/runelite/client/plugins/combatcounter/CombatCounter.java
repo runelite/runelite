@@ -31,7 +31,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -267,7 +267,7 @@ public class CombatCounter extends Plugin
 						 * This part handles the Tick Counter.
 						 */
 						long ticks = variables.get(animation);
-						if (((Player) actor).getPlayerComposition().getEquipmentId(KitType.WEAPON) == 23360)
+						if (((Player) actor).getPlayerAppearance().getEquipmentId(KitType.WEAPON) == 23360)
 						{
 							ticks = 3;
 						}
@@ -556,7 +556,7 @@ public class CombatCounter extends Plugin
 	public int calculateDistance(Player p, NPC npc)
 	{
 		int size = 1;
-		NPCComposition comp = npc.getTransformedComposition();
+		NPCDefinition comp = npc.getTransformedDefinition();
 		if (comp != null)
 		{
 			size = comp.getSize();

@@ -25,7 +25,7 @@
  */
 package net.runelite.api.coords;
 
-import static api.config.Constants.CHUNK_SIZE;
+import static net.runelite.api.Constants.CHUNK_SIZE;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

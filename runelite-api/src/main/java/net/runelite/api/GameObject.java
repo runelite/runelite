@@ -57,7 +57,7 @@ public interface GameObject extends TileObject
 	 * Gets the convex hull of the actors model.
 	 *
 	 * @return the convex hull
-	 * @see api.model.Jarvis
+	 * @see net.runelite.api.model.Jarvis
 	 */
 	Polygon getConvexHull();
 
