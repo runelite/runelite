@@ -862,7 +862,7 @@ public abstract class RSClientMixin implements RSClient
 		return clanMemberManager != null && clanMemberManager.isMember(createName(name, getLoginType()));
 	}
 
-	@FieldHook("clickedWidget")
+	@FieldHook("isDraggingWidget")
 	@Inject
 	public static void draggingWidgetChanged(int idx)
 	{
