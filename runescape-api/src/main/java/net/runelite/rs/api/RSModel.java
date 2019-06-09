@@ -157,6 +157,10 @@ public interface RSModel extends RSEntity, Model
 	@Override
 	int getXYZMag();
 
+	@Import("__du_bx")
+	@Override
+	boolean isClickable();
+
 	void interpolateFrames(RSFrames frames, int frameId, RSFrames nextFrames, int nextFrameId, int interval, int intervalCount);
 
 	/**
