@@ -258,6 +258,11 @@ public abstract class RSWidgetMixin implements RSWidget
 
 		for (int i = 0; i < itemIds.length; ++i)
 		{
+			if (itemIds[i] <= 0)
+			{
+				continue;
+			}
+
 			WidgetItem item = getWidgetItem(i);
 
 			if (item != null)
@@ -287,19 +292,17 @@ public abstract class RSWidgetMixin implements RSWidget
 		int itemId = itemIds[index];
 		int itemQuantity = itemQuantities[index];
 
-		Point widgetCanvasLocation = getCanvasLocation();
-
-		if (itemId <= 0 || itemQuantity <= 0 || columns <= 0)
+		if (columns <= 0)
 		{
 			return null;
 		}
 
 		int row = index / columns;
 		int col = index % columns;
-		int itemX = widgetCanvasLocation.getX() + ((ITEM_SLOT_SIZE + xPitch) * col);
-		int itemY = widgetCanvasLocation.getY() + ((ITEM_SLOT_SIZE + yPitch) * row);
+		int itemX = rl$x + ((ITEM_SLOT_SIZE + xPitch) * col);
+		int itemY = rl$y + ((ITEM_SLOT_SIZE + yPitch) * row);
 
-		Rectangle bounds = new Rectangle(itemX - 1, itemY - 1, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
+		Rectangle bounds = new Rectangle(itemX, itemY, ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
 		return new WidgetItem(itemId - 1, itemQuantity, index, bounds, this);
 	}
 

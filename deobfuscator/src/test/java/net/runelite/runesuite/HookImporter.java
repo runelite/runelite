@@ -52,6 +52,7 @@ import net.runelite.deob.util.JarUtil;
 import net.runelite.deob.util.NameMappings;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -87,12 +88,13 @@ public class HookImporter
 	@After
 	public void after() throws IOException
 	{
-		File out = new File("C:/Users/Lucas/Desktop/client.jar");
+		File out = folder.newFile("client.jar");
 		JarUtil.saveJar(group, out);
 		logger.info("Wrote to {}", out);
 	}
 
 	@Test
+	@Ignore
 	public void importHooks()
 	{
 		int classes = 0, fields = 0, methods = 0, access = 0;

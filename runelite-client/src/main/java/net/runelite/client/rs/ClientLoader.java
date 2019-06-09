@@ -222,7 +222,7 @@ public class ClientLoader
 
 			if (rs instanceof Client)
 			{
-				log.info("client-patch {}", "420 blaze it RL pricks");
+				log.info("client-patch 420 blaze it RL pricks");
 			}
 
 			return rs;
@@ -274,7 +274,7 @@ public class ClientLoader
 		{
 			FileOutputStream fileOutputStream = new FileOutputStream(INJECTED_CLIENT);
 			fileOutputStream.getChannel()
-					.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+					.transferFrom(readableByteChannel, 0, Integer.MAX_VALUE);
 		}
 		catch (IOException e)
 		{

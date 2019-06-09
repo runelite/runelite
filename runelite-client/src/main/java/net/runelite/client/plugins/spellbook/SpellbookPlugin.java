@@ -448,9 +448,7 @@ public class SpellbookPlugin extends Plugin
 		}
 
 		// CHECKSTYLE:OFF
-		Collection<Spell> gson = GSON.fromJson(cfg, new TypeToken<List<Spell>>()
-		{
-		}.getType());
+		Collection<Spell> gson = GSON.fromJson(cfg, new TypeToken<List<Spell>>() {}.getType());
 		// CHECKSTYLE:ON
 		gson.stream().filter(Objects::nonNull).forEach(s -> spells.put(s.getWidget(), s));
 
@@ -465,7 +463,7 @@ public class SpellbookPlugin extends Plugin
 
 	private void saveSpells()
 	{
-		if (spells.isEmpty())
+		if (spells.isEmpty() || tmp == null || tmp.isEmpty())
 		{
 			return;
 		}
