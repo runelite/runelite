@@ -41,9 +41,11 @@ import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.asm.attributes.code.instructions.ArrayStore;
 import net.runelite.asm.attributes.code.instructions.CheckCast;
 import net.runelite.asm.attributes.code.instructions.Dup;
+import net.runelite.asm.attributes.code.instructions.IMul;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
 import net.runelite.asm.attributes.code.instructions.LDC;
+import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.attributes.code.instructions.PutField;
 import net.runelite.asm.attributes.code.instructions.Swap;
 import net.runelite.asm.execution.Execution;
@@ -63,6 +65,7 @@ public class InjectHook
 		String clazz;
 		Method method;
 		boolean before;
+		Number getter;
 	}
 
 	private static final String HOOK_METHOD_SIGNATURE = "(I)V";
@@ -154,7 +157,7 @@ public class InjectHook
 				}
 				else
 				{
-				// idx + 1 to insert after the set
+					// idx + 1 to insert after the set
 					injectCallback(ins, idx + 1, hookInfo, null, objectStackContext);
 				}
 			}
@@ -262,6 +265,22 @@ public class InjectHook
 			ins.getInstructions().add(idx++, new Dup(ins)); // dup value
 			idx = recursivelyPush(ins, idx, object);
 			ins.getInstructions().add(idx++, new Swap(ins));
+			if (hookInfo.getter != null)
+			{
+				assert hookInfo.getter instanceof Integer || hookInfo.getter instanceof Long;
+
+				if (hookInfo.getter instanceof Integer)
+				{
+					ins.getInstructions().add(new LDC(ins, (int) hookInfo.getter));
+					ins.getInstructions().add(new IMul(ins));
+				}
+				else
+				{
+					ins.getInstructions().add(new LDC(ins, (long) hookInfo.getter));
+					ins.getInstructions().add(new LMul(ins));
+				}
+
+			}
 			if (!value.type.equals(methodArgumentType))
 			{
 				CheckCast checkCast = new CheckCast(ins);

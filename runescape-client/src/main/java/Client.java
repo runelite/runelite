@@ -4710,7 +4710,7 @@ public final class Client extends GameShell implements Usernamed {
       int var8;
       if(!isMenuOpen) {
          if(__client_lq != -1) {
-            class39.method741(__client_lq, __client_ln);
+            class39.drawMenuActionTextAt(__client_lq, __client_ln);
          }
       } else {
          var1 = class25.menuX;

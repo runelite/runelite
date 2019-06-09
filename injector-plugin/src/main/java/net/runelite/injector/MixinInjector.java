@@ -909,6 +909,13 @@ public class MixinInjector
 							throw new InjectionException("Field hook for nonexistent field " + hookName + " on " + method);
 						}
 
+						Annotation an = targetField.getAnnotations().find(DeobAnnotations.OBFUSCATED_GETTER);
+						Number getter = null;
+						if (an != null)
+						{
+							getter = (Number) an.getElement().getValue();
+						}
+
 						Field obField = inject.toObField(targetField);
 
 						if (method.isStatic() != targetField.isStatic())
@@ -922,6 +929,7 @@ public class MixinInjector
 						hookInfo.fieldName = hookName;
 						hookInfo.method = method;
 						hookInfo.before = before;
+						hookInfo.getter = getter;
 						injectHook.hook(obField, hookInfo);
 					}
 				}
