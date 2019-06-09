@@ -31,6 +31,7 @@ import lombok.Value;
 class LootTrackerRecord
 {
 	private final String title;
+	private String localUsername;
 	private final String subTitle;
 	@SerializedName("item_records")
 	private final LootTrackerItem[] items;

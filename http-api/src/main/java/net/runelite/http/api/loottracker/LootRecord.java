@@ -28,6 +28,7 @@ import java.time.Instant;
 import java.util.Collection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -36,6 +37,8 @@ import lombok.NoArgsConstructor;
 public class LootRecord
 {
 	private String eventId;
+	@Getter
+	private String username;
 	private LootRecordType type;
 	private Collection<GameItem> drops;
 	private Instant time;
