@@ -114,7 +114,12 @@ public enum AoeProjectileInfo
 	/**
 	 * Cerbs fire
 	 */
-	CERB_FIRE(ProjectileID.CERB_FIRE, 2);
+	CERB_FIRE(ProjectileID.CERB_FIRE, 2),
+
+	/**
+	 * Demonic gorilla
+	 */
+	DEMONIC_GORILLA_BOULDER(ProjectileID.DEMONIC_GORILLA_BOULDER, 1);
 
 	private static final Map<Integer, AoeProjectileInfo> map = new HashMap<>();
 
