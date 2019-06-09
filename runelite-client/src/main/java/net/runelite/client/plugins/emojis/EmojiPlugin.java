@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-
 import com.google.common.annotations.VisibleForTesting;
 import joptsimple.internal.Strings;
 import lombok.extern.slf4j.Slf4j;

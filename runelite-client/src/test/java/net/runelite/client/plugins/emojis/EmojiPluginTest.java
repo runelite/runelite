@@ -30,14 +30,12 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import net.runelite.api.Client;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-
 import net.runelite.client.config.ChatColorConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import javax.inject.Inject;
 
 @RunWith(MockitoJUnitRunner.class)
