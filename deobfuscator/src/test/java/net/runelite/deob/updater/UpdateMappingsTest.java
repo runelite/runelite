@@ -70,6 +70,7 @@ public class UpdateMappingsTest
 	}
 
 	@Test
+	@Ignore
 	public void testRun() throws IOException
 	{
 		File client = new File(properties.getRsClient());
