@@ -271,15 +271,14 @@ public class InjectHook
 
 				if (hookInfo.getter instanceof Integer)
 				{
-					ins.getInstructions().add(new LDC(ins, (int) hookInfo.getter));
-					ins.getInstructions().add(new IMul(ins));
+					ins.getInstructions().add(idx++, new LDC(ins, (int) hookInfo.getter));
+					ins.getInstructions().add(idx++,new IMul(ins));
 				}
 				else
 				{
-					ins.getInstructions().add(new LDC(ins, (long) hookInfo.getter));
-					ins.getInstructions().add(new LMul(ins));
+					ins.getInstructions().add(idx++, new LDC(ins, (long) hookInfo.getter));
+					ins.getInstructions().add(idx++, new LMul(ins));
 				}
-
 			}
 			if (!value.type.equals(methodArgumentType))
 			{
