@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.npcunaggroarea;
 
+import net.runelite.api.geometry.Geometry;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
@@ -43,7 +44,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
@@ -52,7 +53,6 @@ import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.geometry.Geometry;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -257,7 +257,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private boolean isNpcMatch(NPC npc)
 	{
-		NPCComposition composition = npc.getTransformedComposition();
+		NPCDefinition composition = npc.getTransformedDefinition();
 		if (composition == null)
 		{
 			return false;

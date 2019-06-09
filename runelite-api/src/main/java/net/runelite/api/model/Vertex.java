@@ -24,8 +24,8 @@
  */
 package net.runelite.api.model;
 
-import lombok.Value;
 import net.runelite.api.Perspective;
+import lombok.Value;
 
 /**
  * Represents a point in a three-dimensional space.

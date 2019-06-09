@@ -33,7 +33,7 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
-import net.runelite.api.ObjectComposition;
+import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
@@ -152,7 +152,7 @@ public class MultiIndicatorsPlugin extends Plugin
 			return false;
 		}
 
-		ObjectComposition objectComposition = client.getObjectDefinition(wallObject.getId());
+		ObjectDefinition objectComposition = client.getObjectDefinition(wallObject.getId());
 		if (objectComposition == null)
 		{
 			return false;

@@ -25,10 +25,10 @@
  */
 package net.runelite.api.coords;
 
-import javax.annotation.Nullable;
-import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import javax.annotation.Nullable;
+import lombok.Value;
 
 /**
  * A two-dimensional point in the local coordinate space.

@@ -95,30 +95,30 @@ public class TMorph extends Plugin
 		Player player = client.getLocalPlayer();
 
 		if (player == null
-			|| player.getPlayerComposition() == null
+			|| player.getPlayerAppearance() == null
 			|| client.getWidget(WidgetInfo.LOGIN_CLICK_TO_PLAY_SCREEN) != null
 			|| client.getViewportWidget() == null)
 		{
 			return;
 		}
 
-		final int mainhandID = ObjectUtils.defaultIfNull(player.getPlayerComposition().
+		final int mainhandID = ObjectUtils.defaultIfNull(player.getPlayerAppearance().
 			getEquipmentId(KitType.WEAPON), 0);
-		final int offhandID = ObjectUtils.defaultIfNull(player.getPlayerComposition().
+		final int offhandID = ObjectUtils.defaultIfNull(player.getPlayerAppearance().
 			getEquipmentId(KitType.SHIELD), 0);
-		final int helmetID = ObjectUtils.defaultIfNull(player.getPlayerComposition().
+		final int helmetID = ObjectUtils.defaultIfNull(player.getPlayerAppearance().
 			getEquipmentId(KitType.HELMET), 0);
-		final int capeID = ObjectUtils.defaultIfNull(player.getPlayerComposition().
+		final int capeID = ObjectUtils.defaultIfNull(player.getPlayerAppearance().
 			getEquipmentId(KitType.CAPE), 0);
-		final int neckID = ObjectUtils.defaultIfNull(player.getPlayerComposition().
+		final int neckID = ObjectUtils.defaultIfNull(player.getPlayerAppearance().
 			getEquipmentId(KitType.AMULET), 0);
-		final int bodyID = ObjectUtils.defaultIfNull(player.getPlayerComposition().
+		final int bodyID = ObjectUtils.defaultIfNull(player.getPlayerAppearance().
 			getEquipmentId(KitType.TORSO), 0);
-		final int legsID = ObjectUtils.defaultIfNull(player.getPlayerComposition().
+		final int legsID = ObjectUtils.defaultIfNull(player.getPlayerAppearance().
 			getEquipmentId(KitType.LEGS), 0);
-		final int bootsID = ObjectUtils.defaultIfNull(player.getPlayerComposition().
+		final int bootsID = ObjectUtils.defaultIfNull(player.getPlayerAppearance().
 			getEquipmentId(KitType.BOOTS), 0);
-		final int glovesID = ObjectUtils.defaultIfNull(player.getPlayerComposition().
+		final int glovesID = ObjectUtils.defaultIfNull(player.getPlayerAppearance().
 			getEquipmentId(KitType.HANDS), 0);
 
 		if (config.mageSwap())
@@ -129,7 +129,7 @@ public class TMorph extends Plugin
 				{
 					if (mainhandID == config.targetMainhandMage())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.WEAPON.getIndex()] = config.MainhandMage() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.WEAPON.getIndex()] = config.MainhandMage() + 512;
 					}
 				}
 			}
@@ -139,7 +139,7 @@ public class TMorph extends Plugin
 				{
 					if (offhandID == config.targetOffhandMage())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.SHIELD.getIndex()] = config.OffhandMage() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.SHIELD.getIndex()] = config.OffhandMage() + 512;
 					}
 				}
 			}
@@ -149,7 +149,7 @@ public class TMorph extends Plugin
 				{
 					if (helmetID == config.targetHelmetMage())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.HELMET.getIndex()] = config.HelmetMage() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.HELMET.getIndex()] = config.HelmetMage() + 512;
 					}
 				}
 			}
@@ -159,7 +159,7 @@ public class TMorph extends Plugin
 				{
 					if (capeID == config.targetCapeMage())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = config.CapeMage() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.CAPE.getIndex()] = config.CapeMage() + 512;
 					}
 				}
 			}
@@ -169,7 +169,7 @@ public class TMorph extends Plugin
 				{
 					if (neckID == config.targetNeckMage())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.AMULET.getIndex()] = config.NeckMage() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.AMULET.getIndex()] = config.NeckMage() + 512;
 					}
 				}
 			}
@@ -179,7 +179,7 @@ public class TMorph extends Plugin
 				{
 					if (bodyID == config.targetBodyMage())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.TORSO.getIndex()] = config.BodyMage() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.TORSO.getIndex()] = config.BodyMage() + 512;
 					}
 				}
 			}
@@ -189,7 +189,7 @@ public class TMorph extends Plugin
 				{
 					if (legsID == config.targetLegsMage())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.LEGS.getIndex()] = config.LegsMage() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.LEGS.getIndex()] = config.LegsMage() + 512;
 					}
 				}
 			}
@@ -199,7 +199,7 @@ public class TMorph extends Plugin
 				{
 					if (bootsID == config.targetBootsMage())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.BOOTS.getIndex()] = config.BootsMage() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.BOOTS.getIndex()] = config.BootsMage() + 512;
 					}
 				}
 			}
@@ -209,7 +209,7 @@ public class TMorph extends Plugin
 				{
 					if (glovesID == config.targetGlovesMage())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.HANDS.getIndex()] = config.GlovesMage() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.HANDS.getIndex()] = config.GlovesMage() + 512;
 					}
 				}
 			}
@@ -222,7 +222,7 @@ public class TMorph extends Plugin
 				{
 					if (mainhandID == config.targetMainhandRange())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.WEAPON.getIndex()] = config.MainhandRange() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.WEAPON.getIndex()] = config.MainhandRange() + 512;
 					}
 				}
 			}
@@ -232,7 +232,7 @@ public class TMorph extends Plugin
 				{
 					if (offhandID == config.targetOffhandRange())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.SHIELD.getIndex()] = config.OffhandRange() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.SHIELD.getIndex()] = config.OffhandRange() + 512;
 					}
 				}
 			}
@@ -242,7 +242,7 @@ public class TMorph extends Plugin
 				{
 					if (helmetID == config.targetHelmetRange())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.HELMET.getIndex()] = config.HelmetRange() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.HELMET.getIndex()] = config.HelmetRange() + 512;
 					}
 				}
 			}
@@ -252,7 +252,7 @@ public class TMorph extends Plugin
 				{
 					if (capeID == config.targetCapeRange())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = config.CapeRange() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.CAPE.getIndex()] = config.CapeRange() + 512;
 					}
 				}
 			}
@@ -262,7 +262,7 @@ public class TMorph extends Plugin
 				{
 					if (neckID == config.targetNeckRange())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.AMULET.getIndex()] = config.NeckRange() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.AMULET.getIndex()] = config.NeckRange() + 512;
 					}
 				}
 			}
@@ -272,7 +272,7 @@ public class TMorph extends Plugin
 				{
 					if (bodyID == config.targetBodyRange())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.TORSO.getIndex()] = config.BodyRange() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.TORSO.getIndex()] = config.BodyRange() + 512;
 					}
 				}
 			}
@@ -282,7 +282,7 @@ public class TMorph extends Plugin
 				{
 					if (legsID == config.targetLegsRange())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.LEGS.getIndex()] = config.LegsRange() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.LEGS.getIndex()] = config.LegsRange() + 512;
 					}
 				}
 			}
@@ -292,7 +292,7 @@ public class TMorph extends Plugin
 				{
 					if (bootsID == config.targetBootsRange())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.BOOTS.getIndex()] = config.BootsRange() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.BOOTS.getIndex()] = config.BootsRange() + 512;
 					}
 				}
 			}
@@ -302,7 +302,7 @@ public class TMorph extends Plugin
 				{
 					if (glovesID == config.targetGlovesRange())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.HANDS.getIndex()] = config.GlovesRange() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.HANDS.getIndex()] = config.GlovesRange() + 512;
 					}
 				}
 			}
@@ -315,7 +315,7 @@ public class TMorph extends Plugin
 				{
 					if (mainhandID == config.targetMainhandMelee())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.WEAPON.getIndex()] = config.MainhandMelee() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.WEAPON.getIndex()] = config.MainhandMelee() + 512;
 					}
 				}
 			}
@@ -325,7 +325,7 @@ public class TMorph extends Plugin
 				{
 					if (offhandID == config.targetOffhandMelee())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.SHIELD.getIndex()] = config.OffhandMelee() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.SHIELD.getIndex()] = config.OffhandMelee() + 512;
 					}
 				}
 			}
@@ -335,7 +335,7 @@ public class TMorph extends Plugin
 				{
 					if (helmetID == config.targetHelmetMelee())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.HELMET.getIndex()] = config.HelmetMelee() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.HELMET.getIndex()] = config.HelmetMelee() + 512;
 					}
 				}
 			}
@@ -345,7 +345,7 @@ public class TMorph extends Plugin
 				{
 					if (capeID == config.targetCapeMelee())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = config.CapeMelee() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.CAPE.getIndex()] = config.CapeMelee() + 512;
 					}
 				}
 			}
@@ -355,7 +355,7 @@ public class TMorph extends Plugin
 				{
 					if (neckID == config.targetNeckMelee())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.AMULET.getIndex()] = config.NeckMelee() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.AMULET.getIndex()] = config.NeckMelee() + 512;
 					}
 				}
 			}
@@ -365,7 +365,7 @@ public class TMorph extends Plugin
 				{
 					if (bodyID == config.targetBodyMelee())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.TORSO.getIndex()] = config.BodyMelee() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.TORSO.getIndex()] = config.BodyMelee() + 512;
 					}
 				}
 			}
@@ -375,7 +375,7 @@ public class TMorph extends Plugin
 				{
 					if (legsID == config.targetLegsMelee())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.LEGS.getIndex()] = config.LegsMelee() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.LEGS.getIndex()] = config.LegsMelee() + 512;
 					}
 				}
 			}
@@ -385,7 +385,7 @@ public class TMorph extends Plugin
 				{
 					if (bootsID == config.targetBootsMelee())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.BOOTS.getIndex()] = config.BootsMelee() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.BOOTS.getIndex()] = config.BootsMelee() + 512;
 					}
 				}
 			}
@@ -395,11 +395,11 @@ public class TMorph extends Plugin
 				{
 					if (glovesID == config.targetGlovesMelee())
 					{
-						player.getPlayerComposition().getEquipmentIds()[KitType.HANDS.getIndex()] = config.GlovesMelee() + 512;
+						player.getPlayerAppearance().getEquipmentIds()[KitType.HANDS.getIndex()] = config.GlovesMelee() + 512;
 					}
 				}
 			}
 		}
-		player.getPlayerComposition().setHash();
+		player.getPlayerAppearance().setHash();
 	}
 }

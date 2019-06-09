@@ -46,7 +46,7 @@ import net.runelite.api.GrandExchangeOfferState;
 import static net.runelite.api.GrandExchangeOfferState.CANCELLED_BUY;
 import static net.runelite.api.GrandExchangeOfferState.CANCELLED_SELL;
 import static net.runelite.api.GrandExchangeOfferState.EMPTY;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ThinProgressBar;
@@ -193,7 +193,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		add(progressBar, BorderLayout.SOUTH);
 	}
 
-	void updateOffer(ItemComposition offerItem, BufferedImage itemImage, @Nullable GrandExchangeOffer newOffer)
+	void updateOffer(ItemDefinition offerItem, BufferedImage itemImage, @Nullable GrandExchangeOffer newOffer)
 	{
 		if (newOffer == null || newOffer.getState() == EMPTY)
 		{

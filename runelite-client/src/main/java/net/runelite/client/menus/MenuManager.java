@@ -45,8 +45,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.NPCComposition;
-import net.runelite.api.ObjectComposition;
+import net.runelite.api.NPCDefinition;
+import net.runelite.api.ObjectDefinition;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcActionChanged;
@@ -291,14 +291,14 @@ public class MenuManager
 			return false;
 		}
 
-		ObjectComposition oc = client.getObjectDefinition(objectID);
+		ObjectDefinition oc = client.getObjectDefinition(objectID);
 
 		if (oc == null)
 		{
 			return false;
 		}
 
-		ObjectComposition impostor = oc.getImpostorIds() != null ? oc.getImpostor() : null;
+		ObjectDefinition impostor = oc.getImpostorIds() != null ? oc.getImpostor() : null;
 
 		if (impostor != null)
 		{
@@ -390,14 +390,14 @@ public class MenuManager
 	@Subscribe
 	public void onNpcActionChanged(NpcActionChanged event)
 	{
-		NPCComposition composition = event.getNpcComposition();
+		NPCDefinition composition = event.getNpcDefinition();
 		for (String npcOption : npcMenuOptions)
 		{
 			addNpcOption(composition, npcOption);
 		}
 	}
 
-	private void addNpcOption(NPCComposition composition, String npcOption)
+	private void addNpcOption(NPCDefinition composition, String npcOption)
 	{
 		String[] actions = composition.getActions();
 		int unused = -1;
@@ -419,7 +419,7 @@ public class MenuManager
 		actions[unused] = npcOption;
 	}
 
-	private void removeNpcOption(NPCComposition composition, String npcOption)
+	private void removeNpcOption(NPCDefinition composition, String npcOption)
 	{
 		String[] actions = composition.getActions();
 
@@ -709,7 +709,7 @@ public class MenuManager
 	}
 
 	/**
-	 * Adds to the map of swaps - Pre-baked Abstract entry
+	 * Adds to the map of swaps - Pre-baked entry
 	 */
 	public void addSwap(ComparableEntry swapFrom, ComparableEntry swapTo)
 	{

@@ -36,7 +36,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
@@ -184,7 +184,7 @@ public class SpecialCounterPlugin extends Plugin
 		if (interacting instanceof NPC)
 		{
 			NPC npc = (NPC) interacting;
-			NPCComposition composition = npc.getComposition();
+			NPCDefinition composition = npc.getDefinition();
 			int interactingId = npc.getId();
 
 			if (!ArrayUtils.contains(composition.getActions(), "Attack"))

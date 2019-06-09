@@ -36,7 +36,7 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
+import net.runelite.api.NPCDefinition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
@@ -91,7 +91,7 @@ public class CoxOverlay extends Overlay
 				if (boss != null)
 				{
 					int size = 1;
-					NPCComposition composition = boss.getTransformedComposition();
+					NPCDefinition composition = boss.getTransformedDefinition();
 					{
 						size = composition.getSize();
 					}
@@ -104,7 +104,7 @@ public class CoxOverlay extends Overlay
 				if (baby != null)
 				{
 					int size = 1;
-					NPCComposition compositionbaby = baby.getTransformedComposition();
+					NPCDefinition compositionbaby = baby.getTransformedDefinition();
 					{
 						size = compositionbaby.getSize();
 					}
@@ -129,7 +129,7 @@ public class CoxOverlay extends Overlay
 					if (G1 != null)
 					{
 						int size = 1;
-						NPCComposition composition = G1.getTransformedComposition();
+						NPCDefinition composition = G1.getTransformedDefinition();
 						{
 							size = composition.getSize();
 						}
@@ -142,7 +142,7 @@ public class CoxOverlay extends Overlay
 					if (G2 != null)
 					{
 						int size = 1;
-						NPCComposition composition = G2.getTransformedComposition();
+						NPCDefinition composition = G2.getTransformedDefinition();
 						{
 							size = composition.getSize();
 						}
@@ -165,7 +165,7 @@ public class CoxOverlay extends Overlay
 				if (boss != null)
 				{
 					int size = 1;
-					NPCComposition composition = boss.getTransformedComposition();
+					NPCDefinition composition = boss.getTransformedDefinition();
 					{
 						size = composition.getSize();
 					}
@@ -264,7 +264,7 @@ public class CoxOverlay extends Overlay
 	private void renderNpcOverlay(Graphics2D graphics, NPC actor, Color color, int outlineWidth, int outlineAlpha, int fillAlpha)
 	{
 		int size = 1;
-		NPCComposition composition = actor.getTransformedComposition();
+		NPCDefinition composition = actor.getTransformedDefinition();
 		if (composition != null)
 		{
 			size = composition.getSize();

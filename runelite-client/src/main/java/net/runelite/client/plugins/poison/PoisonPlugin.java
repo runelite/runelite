@@ -339,7 +339,7 @@ public class PoisonPlugin extends Plugin
 		{
 			heart = newHeart;
 			client.getWidgetSpriteCache().reset();
-			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, ImageUtil.getImageSpritePixels(heart, client));
+			client.getSpriteOverrides().put(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, ImageUtil.getImageSprite(heart, client));
 		}
 	}
 

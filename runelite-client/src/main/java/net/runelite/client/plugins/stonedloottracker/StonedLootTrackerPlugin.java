@@ -52,7 +52,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
@@ -206,7 +206,7 @@ public class StonedLootTrackerPlugin extends Plugin
 		loaded = true;
 		for (UniqueItem i : UniqueItem.values())
 		{
-			ItemComposition c = itemManager.getItemComposition(i.getItemID());
+			ItemDefinition c = itemManager.getItemDefinition(i.getItemID());
 			for (String s : i.getActivities())
 			{
 				uniques.put(s.toUpperCase(), new UniqueItemPrepared(c.getLinkedNoteId(), itemManager.getItemPrice(i.getItemID()), i));
@@ -522,7 +522,7 @@ public class StonedLootTrackerPlugin extends Plugin
 	{
 		return itemStacks.stream().map(itemStack ->
 		{
-			final ItemComposition itemComposition = itemManager.getItemComposition(itemStack.getId());
+			final ItemDefinition itemComposition = itemManager.getItemDefinition(itemStack.getId());
 			final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemStack.getId();
 			final long price = itemManager.getItemPrice(realItemId);
 			final long haPrice = itemManager.getAlchValue(realItemId);
@@ -606,7 +606,7 @@ public class StonedLootTrackerPlugin extends Plugin
 		clientThread.invokeLater(() ->
 		{
 			Collection<LootRecordCustom> data = getDataByName("Abyssal sire");
-			ItemComposition c = itemManager.getItemComposition(itemID);
+			ItemDefinition c = itemManager.getItemDefinition(itemID);
 			LootTrackerItemEntry itemEntry = new LootTrackerItemEntry(c.getName(), itemID, 1, 0, 0, false);
 
 			log.debug("Received Unsired item: {}", c.getName());

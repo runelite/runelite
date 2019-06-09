@@ -239,7 +239,7 @@ public class ItemStatPlugin extends Plugin
 		icon.setBorderType(1);
 		icon.revalidate();
 
-		Widget itemName = createText(invContainer, itemManager.getItemComposition(id).getName(), FontID.PLAIN_12, ORANGE_TEXT,
+		Widget itemName = createText(invContainer, itemManager.getItemDefinition(id).getName(), FontID.PLAIN_12, ORANGE_TEXT,
 			50, yPos, invContainer.getWidth() - 40, 30);
 		itemName.setYTextAlignment(WidgetTextAlignment.CENTER);
 

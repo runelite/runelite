@@ -121,7 +121,7 @@ public class SkillCalculatorPlugin extends Plugin
 					return false;
 			}
 
-			CriticalItem.prepareItemCompositions(itemManager);
+			CriticalItem.prepareItemDefinitions(itemManager);
 			return true;
 		});
 	}

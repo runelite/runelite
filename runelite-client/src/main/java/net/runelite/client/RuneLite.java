@@ -61,6 +61,7 @@ import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.task.Scheduler;
 import net.runelite.client.ui.ClientUI;
@@ -183,6 +184,7 @@ public class RuneLite
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("no-splash", "Do not show the splash screen");
+		parser.accepts("local-injected", "Use local injected-client");
 
 		final ArgumentAcceptingOptionSpec<String> proxyInfo = parser
 			.accepts("proxy")
@@ -259,6 +261,11 @@ public class RuneLite
 		{
 			final Logger logger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 			logger.setLevel(Level.DEBUG);
+		}
+
+		if (options.has("local-injected"))
+		{
+			ClientLoader.useLocalInjected = true;
 		}
 
 		Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->

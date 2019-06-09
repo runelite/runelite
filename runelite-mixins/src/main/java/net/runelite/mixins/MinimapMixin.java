@@ -29,17 +29,17 @@ import net.runelite.api.mixins.Inject;
 import net.runelite.api.mixins.Mixin;
 import net.runelite.rs.api.RSClient;
 import net.runelite.rs.api.RSScene;
-import net.runelite.rs.api.RSSpritePixels;
+import net.runelite.rs.api.RSSprite;
 
 @Mixin(RSClient.class)
 public abstract class MinimapMixin implements RSClient
 {
 	@Inject
 	@Override
-	public RSSpritePixels drawInstanceMap(int z)
+	public RSSprite drawInstanceMap(int z)
 	{
-		RSSpritePixels ourSprite = createSpritePixels(new int[512 * 512], 512, 512);
-		RSSpritePixels theirSprite = getMinimapSprite();
+		RSSprite ourSprite = createSprite(new int[512 * 512], 512, 512);
+		RSSprite theirSprite = getMinimapSprite();
 
 		RSScene scene = getScene();
 		int[] pixels = ourSprite.getPixels();

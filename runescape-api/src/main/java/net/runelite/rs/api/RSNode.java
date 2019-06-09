@@ -33,7 +33,7 @@ public interface RSNode extends Node
 	@Override
 	RSNode getNext();
 
-	@Import("hash")
+	@Import("key")
 	@Override
 	long getHash();
 
@@ -41,7 +41,7 @@ public interface RSNode extends Node
 	@Override
 	RSNode getPrevious();
 
-	@Import("unlink")
+	@Import("remove")
 	void unlink();
 
 	/**

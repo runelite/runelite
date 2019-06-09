@@ -32,7 +32,7 @@ import java.awt.image.BufferedImage;
 import java.util.ConcurrentModificationException;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.kit.KitType;
@@ -210,8 +210,8 @@ class PrayAgainstPlayerOverlay extends Overlay
 			{
 				if (config.drawUnknownWeapons())
 				{
-					int itemId = player.getPlayerComposition().getEquipmentId(KitType.WEAPON);
-					ItemComposition itemComposition = client.getItemDefinition(itemId);
+					int itemId = player.getPlayerAppearance().getEquipmentId(KitType.WEAPON);
+					ItemDefinition itemComposition = client.getItemDefinition(itemId);
 
 					final String str = itemComposition.getName().toUpperCase();
 					Point point = player.getCanvasTextLocation(graphics, str, offset);

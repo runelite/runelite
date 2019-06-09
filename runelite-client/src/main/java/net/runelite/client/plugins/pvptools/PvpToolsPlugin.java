@@ -31,7 +31,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.SkullIcon;
@@ -170,10 +170,10 @@ public class PvpToolsPlugin extends Plugin
 	};
 
 	private final HotkeyListener renderselfHotkeyListener = new HotkeyListener(() -> config.renderSelf())
-	{
+	{ //TODO FIX
 		public void hotkeyPressed()
 		{
-			client.toggleRenderSelf();
+			//client.toggleRenderSelf();
 		}
 	};
 
@@ -561,7 +561,7 @@ public class PvpToolsPlugin extends Plugin
 		{
 			int value = (itemManager.getItemPrice(i.getId()) * i.getQuantity());
 
-			final ItemComposition itemComposition = itemManager.getItemComposition(i.getId());
+			final ItemDefinition itemComposition = itemManager.getItemDefinition(i.getId());
 			if (!itemComposition.isTradeable() && value == 0)
 			{
 				value = itemComposition.getPrice() * i.getQuantity();
@@ -610,7 +610,7 @@ public class PvpToolsPlugin extends Plugin
 			{
 				if (!descendingMap.isEmpty())
 				{
-					itemManager.getItemComposition(priceMap.descendingMap().pollFirstEntry().getValue().getId())
+					itemManager.getItemDefinition(priceMap.descendingMap().pollFirstEntry().getValue().getId())
 						.getName();
 				}
 			}

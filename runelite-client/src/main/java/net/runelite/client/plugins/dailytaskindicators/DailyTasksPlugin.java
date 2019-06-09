@@ -26,6 +26,7 @@
 
 package net.runelite.client.plugins.dailytaskindicators;
 
+import net.runelite.api.vars.AccountType;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
@@ -36,7 +37,6 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.vars.AccountType;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;

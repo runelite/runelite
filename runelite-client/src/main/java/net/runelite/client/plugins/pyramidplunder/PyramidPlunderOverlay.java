@@ -31,7 +31,7 @@ import java.awt.geom.Area;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.ObjectComposition;
+import net.runelite.api.ObjectDefinition;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
@@ -84,8 +84,8 @@ public class PyramidPlunderOverlay extends Overlay
 				if (object.getId() == CLOSED_DOOR || object.getId() == OPENED_DOOR)
 				{
 					//Impostor
-					ObjectComposition comp = client.getObjectDefinition(objectID);
-					ObjectComposition impostor = comp.getImpostor();
+					ObjectDefinition comp = client.getObjectDefinition(objectID);
+					ObjectDefinition impostor = comp.getImpostor();
 
 					if (impostor == null)
 					{

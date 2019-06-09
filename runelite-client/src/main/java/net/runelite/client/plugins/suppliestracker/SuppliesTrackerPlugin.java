@@ -47,7 +47,7 @@ import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.ACCUMULATOR_MAX_CAPE;
@@ -735,7 +735,7 @@ public class SuppliesTrackerPlugin extends Plugin
 	 */
 	private void buildEntries(int itemId, int count)
 	{
-		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final ItemDefinition itemComposition = itemManager.getItemDefinition(itemId);
 		String name = itemComposition.getName();
 		long calculatedPrice;
 
@@ -757,12 +757,12 @@ public class SuppliesTrackerPlugin extends Plugin
 		if (isPizzaPie(name))
 		{
 			itemId = getFullVersionItemID(itemId);
-			name = itemManager.getItemComposition(itemId).getName();
+			name = itemManager.getItemDefinition(itemId).getName();
 		}
 		if (isCake(name, itemId))
 		{
 			itemId = getFullVersionItemID(itemId);
-			name = itemManager.getItemComposition(itemId).getName();
+			name = itemManager.getItemDefinition(itemId).getName();
 		}
 
 		int newQuantity;

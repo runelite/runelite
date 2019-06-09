@@ -33,7 +33,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.ClanMemberRank;
 import net.runelite.api.Client;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.SkullIcon;
@@ -183,15 +183,15 @@ public class PlayerIndicatorsOverlay extends Overlay
 				color);
 
 		}
-		if (config.targetRisk() && PvPUtil.isAttackable(client, actor) && actor.getPlayerComposition() != null)
+		if (config.targetRisk() && PvPUtil.isAttackable(client, actor) && actor.getPlayerAppearance() != null)
 		{
 			long totalValue = 0;
 			int newValue;
 			StringBuilder stringBuilder = new StringBuilder(" ");
 			for (KitType kitType : KitType.values())
 			{
-				ItemComposition itemComposition =
-					itemManager.getItemComposition(actor.getPlayerComposition().getEquipmentId(kitType));
+				ItemDefinition itemComposition =
+					itemManager.getItemDefinition(actor.getPlayerAppearance().getEquipmentId(kitType));
 				if (itemComposition != null && itemComposition.getName() != null)
 				{
 					totalValue = totalValue + itemComposition.getPrice();
@@ -204,9 +204,9 @@ public class PlayerIndicatorsOverlay extends Overlay
 				name = name + stringBuilder;
 			}
 		}
-		if (config.unchargedGlory() && actor.getPlayerComposition() != null)
+		if (config.unchargedGlory() && actor.getPlayerAppearance() != null)
 		{
-			ItemComposition itemComposition = itemManager.getItemComposition(actor.getPlayerComposition().getEquipmentId(KitType.AMULET));
+			ItemDefinition itemComposition = itemManager.getItemDefinition(actor.getPlayerAppearance().getEquipmentId(KitType.AMULET));
 			if (itemComposition != null && itemComposition.getId() == 1704) //1704 is uncharged glory, to be certain
 			{
 				name = name + " cGLORY";

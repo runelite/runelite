@@ -219,7 +219,7 @@ public class FreezeTimersOverlay extends Overlay
 		{
 			renderActorText(g, actor, text, overlaysDrawn, VENG_IMAGE);
 		}
-		if (actor.getGraphic() == GraphicID.VENGEANCE || actor.getGraphic() == GraphicID.VENGEANCE_OTHER)
+		if (actor.getSpotAnimation() == GraphicID.VENGEANCE || actor.getSpotAnimation() == GraphicID.VENGEANCE_OTHER)
 		{
 
 			g.setColor(RED);
