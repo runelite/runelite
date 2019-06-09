@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2019, William <https://github.com/WilliamCollishaw>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
